@@ -2,6 +2,7 @@
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
+import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -42,6 +43,7 @@ import { type AppRouterInput, useTRPC } from '@/lib/trpc';
 import { useFeedback } from '@/components/providers/feedback';
 import type { DeepPartial } from '@/lib/types/utils';
 import { createOrderInputSchema } from '@namefi-astra/common/order-input';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import {
   isNfscPayment,
   isStripePayment,
@@ -150,6 +152,37 @@ export default function CartPage() {
     () => items && items.length > 0 && totalAmountInUsdCents === 0,
     [items, totalAmountInUsdCents],
   );
+
+  const { data: domainAvailabilityInfo } = useQuery({
+    ...trpc.registry.getDomainListInfo.queryOptions({
+      domains: items?.map((item) => item.normalizedDomainName) ?? [],
+    }),
+    enabled: Boolean(items && items.length > 0),
+    placeholderData: (previousData) => previousData,
+  });
+
+  // Block checkout while any REGISTER/IMPORT item whose TLD requires explicit
+  // confirmation (e.g. the .app/.dev HTTPS notice) has not been acknowledged.
+  const hasUnacknowledgedRegistrationRequirements = useMemo(() => {
+    if (!items || items.length === 0) {
+      return false;
+    }
+    return items.some((item) => {
+      if (
+        item.type !== itemTypeSchema.enum.REGISTER &&
+        item.type !== itemTypeSchema.enum.IMPORT
+      ) {
+        return false;
+      }
+      const requirement = domainAvailabilityInfo?.find(
+        (domain) => domain.domain === item.normalizedDomainName,
+      )?.registrationRequirement;
+      return (
+        requirement?.confirmation === 'explicit' &&
+        item.metadata?.tldRegistrationRequirementAcknowledged !== true
+      );
+    });
+  }, [items, domainAvailabilityInfo]);
 
   const router = useRouter();
 
@@ -455,6 +488,9 @@ export default function CartPage() {
     if (isCartUpdating || isCartLoading) {
       return true;
     }
+    if (hasUnacknowledgedRegistrationRequirements) {
+      return true;
+    }
     if (multiPayment.enabled) {
       return !multiPayment.isValid;
     }
@@ -470,6 +506,41 @@ export default function CartPage() {
     isCartUpdating,
     isCartLoading,
     multiPayment,
+    hasUnacknowledgedRegistrationRequirements,
+  ]);
+
+  // Why the submit button is disabled, surfaced via a tooltip. Ordered so the
+  // most actionable blocker wins.
+  const submitDisabledReason = useMemo(() => {
+    if (isCartUpdating || isCartLoading) {
+      return 'Your cart is still updating.';
+    }
+    if (hasUnacknowledgedRegistrationRequirements) {
+      return 'Review and accept the registration requirements shown on your cart items.';
+    }
+    if (multiPayment.enabled) {
+      return multiPayment.isValid
+        ? undefined
+        : 'Finish splitting your payment to continue.';
+    }
+    if (!selectedNftWalletAddress) {
+      return 'Select a wallet to receive your domains.';
+    }
+    if (!unlinkedWalletConfirmed) {
+      return 'Confirm the wallet that will receive your domains.';
+    }
+    if (!paymentMethodSelected) {
+      return 'Select a payment method.';
+    }
+    return undefined;
+  }, [
+    isCartUpdating,
+    isCartLoading,
+    hasUnacknowledgedRegistrationRequirements,
+    multiPayment,
+    selectedNftWalletAddress,
+    unlinkedWalletConfirmed,
+    paymentMethodSelected,
   ]);
 
   const logSubmitOrderFailure = useCallback(
@@ -600,14 +671,6 @@ export default function CartPage() {
       isClearingCart,
     ],
   );
-
-  const { data: domainAvailabilityInfo } = useQuery({
-    ...trpc.registry.getDomainListInfo.queryOptions({
-      domains: items?.map((item) => item.normalizedDomainName) ?? [],
-    }),
-    enabled: Boolean(items && items.length > 0),
-    placeholderData: (previousData) => previousData,
-  });
 
   const handleRetryOrder = useCallback(() => {
     setIsErrorDialogOpen(false);
@@ -811,20 +874,28 @@ export default function CartPage() {
               cartItemsAreAllPromo ? (
                 <NoPaymentMethodRequiredCard
                   footerButton={
-                    <NamefiButton
-                      variant="default"
-                      className="w-full"
-                      disabled={submitOrderDisabled || isDisabled}
-                      onClick={handleSubmitOrder}
-                      size="lg"
+                    <DisabledReasonTooltip
+                      reason={
+                        submitOrderDisabled || isDisabled
+                          ? submitDisabledReason
+                          : undefined
+                      }
                     >
-                      {(isCreateOrderPending ||
-                        isRedirecting ||
-                        isExplicitlyCheckingCartItemsForUpdates) && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {submitButtonText}
-                    </NamefiButton>
+                      <NamefiButton
+                        variant="default"
+                        className="w-full"
+                        disabled={submitOrderDisabled || isDisabled}
+                        onClick={handleSubmitOrder}
+                        size="lg"
+                      >
+                        {(isCreateOrderPending ||
+                          isRedirecting ||
+                          isExplicitlyCheckingCartItemsForUpdates) && (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {submitButtonText}
+                      </NamefiButton>
+                    </DisabledReasonTooltip>
                   }
                 />
               ) : !multiPayment.enabled ? (
@@ -839,21 +910,29 @@ export default function CartPage() {
                     }
                     disabled={isDisabled}
                     footerButton={
-                      <NamefiButton
-                        variant="default"
-                        className="w-full"
-                        disabled={submitOrderDisabled || isDisabled}
-                        onClick={handleSubmitOrder}
-                        size="lg"
+                      <DisabledReasonTooltip
+                        reason={
+                          submitOrderDisabled || isDisabled
+                            ? submitDisabledReason
+                            : undefined
+                        }
                       >
-                        {(isCreateOrderPending ||
-                          isCreateOrderV2Pending ||
-                          isRedirecting ||
-                          isExplicitlyCheckingCartItemsForUpdates) && (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        {submitButtonText}
-                      </NamefiButton>
+                        <NamefiButton
+                          variant="default"
+                          className="w-full"
+                          disabled={submitOrderDisabled || isDisabled}
+                          onClick={handleSubmitOrder}
+                          size="lg"
+                        >
+                          {(isCreateOrderPending ||
+                            isCreateOrderV2Pending ||
+                            isRedirecting ||
+                            isExplicitlyCheckingCartItemsForUpdates) && (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          )}
+                          {submitButtonText}
+                        </NamefiButton>
+                      </DisabledReasonTooltip>
                     }
                   />
                   <MultiPaymentHints
@@ -882,6 +961,7 @@ export default function CartPage() {
                     isExplicitlyCheckingCartItemsForUpdates
                   }
                   submitOrderDisabled={submitOrderDisabled}
+                  submitDisabledReason={submitDisabledReason}
                   submitButtonText={submitButtonText}
                   totalAmountInUsdCents={totalAmountInUsdCents}
                   nfscMaxUsableInUsdCents={nfscMaxUsableInUsdCents}

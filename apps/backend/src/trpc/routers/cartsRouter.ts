@@ -268,6 +268,17 @@ export const cartsRouter = createContractTRPCRouter<typeof cartsContract>({
         );
       }
 
+      // Persist the user's acknowledgement of the TLD's registration
+      // requirements (e.g. .app/.dev HTTPS notice). Merge into any metadata
+      // already staged this request, falling back to the current metadata.
+      if (input.tldRegistrationRequirementAcknowledged !== undefined) {
+        updateSet.metadata = {
+          ...(updateSet.metadata ?? currentItem.metadata),
+          tldRegistrationRequirementAcknowledged:
+            input.tldRegistrationRequirementAcknowledged,
+        };
+      }
+
       // If EPP authorization code is being updated for import items
       if (
         currentItem.type === itemTypeSchema.enum.IMPORT &&

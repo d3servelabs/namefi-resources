@@ -3,6 +3,7 @@ import { keccak256 } from 'viem';
 import { db, poweredbyNamefiDomainsTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import type { TldRegistrationRequirement } from '@namefi-astra/common/domain-availability';
 
 const reservedCommonPrefixes = [
   'academy',
@@ -441,4 +442,171 @@ export const isReservedKeywordForParentDomain = async (
   const additionalReservedNames =
     await getAdditionalReservedNamesForParentDomain(parentDomain);
   return additionalReservedNames.has(keyword);
+};
+
+// ---------------------------------------------------------------------------
+// TLD registration requirements
+// ---------------------------------------------------------------------------
+
+/**
+ * TLD-specific registration requirements surfaced in the cart before checkout.
+ *
+ * Google Registry operates a large set of TLDs, each with a registration
+ * policy at `https://www.registry.google/policies/registration/<tld>/`
+ * (see https://www.registry.google/for-partners/). A subset are "secure
+ * namespaces" (encrypted by default): the registry mandates a conspicuous
+ * pre-purchase notice — separate from the terms of service — that the site
+ * will not load in browsers without HTTPS. Those are surfaced as `'explicit'`
+ * (the cart blocks checkout until the user ticks an acknowledgement). The
+ * remaining Google TLDs carry a general policy disclosure shown as an
+ * `'implicit'` informational banner.
+ *
+ * This list is intentionally hardcoded; edit it to add TLDs or to move a TLD
+ * between the explicit and implicit tiers.
+ */
+const googleRegistrationPolicyUrl = (tld: string) =>
+  `https://www.registry.google/policies/registration/${tld}/`;
+
+// Google "secure namespaces" — encrypted by default, HTTPS required. The
+// registry requires a conspicuous pre-purchase notice, so these get an
+// explicit acknowledgement checkbox in the cart.
+const GOOGLE_SECURE_NAMESPACE_TLDS = ['ing', 'app', 'dev'] as const;
+
+// Other Google Registry TLDs — general registration policy, shown as an
+// informational (implicit) banner. IDN TLDs (e.g. みんな) are omitted because
+// normalized domains arrive as punycode and would not match by label.
+const GOOGLE_GENERAL_POLICY_TLDS = [
+  'new',
+  'how',
+  'phd',
+  'prof',
+  'esq',
+  'foo',
+  'zip',
+  'mov',
+  'nexus',
+  'dad',
+  'boo',
+  'day',
+  'channel',
+  'meme',
+  'rsvp',
+  'soy',
+  'app',
+  'dev',
+  'page',
+] as const;
+
+const buildSecureNamespaceRequirement = (
+  tld: string,
+): TldRegistrationRequirement => ({
+  tld,
+  title: `.${tld} requires HTTPS`,
+  summary: `.${tld} is a secure namespace. Sites will not load in browsers until you set up HTTPS.`,
+  outline: [
+    `.${tld} is an encrypted-by-default namespace operated by Google Registry.`,
+    'Browsers require a valid HTTPS certificate before they load any site on this domain.',
+    'You must obtain an SSL/TLS certificate and configure HTTPS for the site to be reachable.',
+    'Two-character labels must not falsely imply a government or country-code affiliation.',
+  ],
+  links: [
+    {
+      label: `Google Registry: .${tld} policy`,
+      url: googleRegistrationPolicyUrl(tld),
+    },
+  ],
+  confirmation: 'explicit',
+});
+
+const buildGeneralPolicyRequirement = (
+  tld: string,
+): TldRegistrationRequirement => ({
+  tld,
+  title: `.${tld} registration policy`,
+  summary: `.${tld} is operated by Google Registry and is subject to its registration and acceptable-use policies.`,
+  outline: [
+    `.${tld} is operated by Google Registry.`,
+    'Registration is subject to the registration and acceptable-use policies of Google Registry.',
+    'Review the policy before registering to confirm your intended use is allowed.',
+  ],
+  links: [
+    {
+      label: `Google Registry: .${tld} policy`,
+      url: googleRegistrationPolicyUrl(tld),
+    },
+  ],
+  confirmation: 'implicit',
+});
+
+const TLD_REGISTRATION_REQUIREMENTS: Record<
+  string,
+  TldRegistrationRequirement
+> = {
+  ...Object.fromEntries(
+    GOOGLE_SECURE_NAMESPACE_TLDS.map((tld) => [
+      tld,
+      buildSecureNamespaceRequirement(tld),
+    ]),
+  ),
+  ...Object.fromEntries(
+    GOOGLE_GENERAL_POLICY_TLDS.map((tld) => [
+      tld,
+      buildGeneralPolicyRequirement(tld),
+    ]),
+  ),
+  ...(process.env.ENVIRONMENT !== 'production'
+    ? {
+        pw: {
+          confirmation: 'explicit',
+          tld: 'pw',
+          title: '.pw registration policy',
+          summary:
+            '.pw is operated by Centralnic Registry and is subject to its registration and acceptable-use policies.',
+          outline: [
+            '.pw is operated by Centralnic Registry.',
+            'Registration is subject to the registration and acceptable-use policies of Centralnic Registry.',
+            'Review the policy before registering to confirm your intended use is allowed.',
+          ],
+          links: [
+            {
+              label: 'Centralnic Registry: .pw policy',
+              url: 'https://google.com',
+            },
+          ],
+        },
+        gl: {
+          confirmation: 'implicit',
+          tld: 'gl',
+          title: '.gl registration policy',
+          summary:
+            '.gl is operated by Centralnic Registry and is subject to its registration and acceptable-use policies.',
+          outline: [
+            '.gl is operated by Centralnic Registry.',
+            'Registration is subject to the registration and acceptable-use policies of Centralnic Registry.',
+            'Review the policy before registering to confirm your intended use is allowed.',
+          ],
+          links: [
+            {
+              label: 'Centralnic Registry: .gl policy',
+              url: 'https://google.com',
+            },
+          ],
+        },
+      }
+    : {}),
+};
+
+/**
+ * Returns the hardcoded registration requirement for a domain's TLD, or
+ * `undefined` when the TLD has no special requirement. Matches on the final
+ * dot-separated label (all currently listed TLDs are single-label).
+ */
+export const getTldRegistrationRequirement = (
+  domain: string,
+): TldRegistrationRequirement | undefined => {
+  const tld = domain.split('.').pop()?.toLowerCase();
+  if (!tld) {
+    return undefined;
+  }
+  return TLD_REGISTRATION_REQUIREMENTS[tld];
 };

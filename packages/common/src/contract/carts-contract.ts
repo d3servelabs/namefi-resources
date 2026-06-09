@@ -50,15 +50,20 @@ const updateItemInputSchema = z
     // import-only keepExistingNameservers). The backend merges this into the
     // cart item's metadata.domainSetupOptions.
     domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
+    // Acknowledgement of the TLD's registration requirements (e.g. .app/.dev
+    // HTTPS notice). The backend merges this into the cart item's
+    // metadata.tldRegistrationRequirementAcknowledged.
+    tldRegistrationRequirementAcknowledged: z.boolean().optional(),
   })
   .refine(
     (data) =>
       data.durationInYears !== undefined ||
       data.eppAuthorizationCode !== undefined ||
-      data.domainSetupOptions !== undefined,
+      data.domainSetupOptions !== undefined ||
+      data.tldRegistrationRequirementAcknowledged !== undefined,
     {
       message:
-        'At least one of durationInYears, eppAuthorizationCode, or domainSetupOptions must be provided',
+        'At least one of durationInYears, eppAuthorizationCode, domainSetupOptions, or tldRegistrationRequirementAcknowledged must be provided',
     },
   );
 

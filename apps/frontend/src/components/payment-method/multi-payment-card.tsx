@@ -1,5 +1,6 @@
 import { AddPaymentMethodDialog } from '@/components/payment-method/add-payment-method-dialog';
 import { CartCard } from '@/components/cart-card';
+import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { useEffect, useMemo, useState } from 'react';
@@ -28,6 +29,8 @@ export type MultiPaymentCardProps = {
   isProcessing: boolean;
   submitButtonText: string;
   submitOrderDisabled: boolean;
+  /** When the submit button is disabled, explains why (shown in a tooltip). */
+  submitDisabledReason?: string;
   totalAmountInUsdCents: number;
   nfscMaxUsableInUsdCents: number;
   initialIncludeNfsc?: boolean;
@@ -43,6 +46,7 @@ export function MultiPaymentCard({
   isProcessing,
   submitButtonText,
   submitOrderDisabled,
+  submitDisabledReason,
   totalAmountInUsdCents,
   nfscMaxUsableInUsdCents,
   initialIncludeNfsc = true,
@@ -176,16 +180,24 @@ export function MultiPaymentCard({
     <CartCard
       title="Multi-payment"
       footer={
-        <NamefiButton
-          variant="default"
-          className="w-full"
-          disabled={isDisabled || submitOrderDisabled || isProcessing}
-          onClick={onSubmit}
-          size="lg"
+        <DisabledReasonTooltip
+          reason={
+            isDisabled || submitOrderDisabled || isProcessing
+              ? submitDisabledReason
+              : undefined
+          }
         >
-          {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {submitButtonText}
-        </NamefiButton>
+          <NamefiButton
+            variant="default"
+            className="w-full"
+            disabled={isDisabled || submitOrderDisabled || isProcessing}
+            onClick={onSubmit}
+            size="lg"
+          >
+            {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {submitButtonText}
+          </NamefiButton>
+        </DisabledReasonTooltip>
       }
     >
       <div className="space-y-3">

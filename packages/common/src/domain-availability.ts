@@ -22,6 +22,33 @@ export type DomainPricingDetails = {
   importPrice: PricingDetails;
 };
 
+/**
+ * A TLD-specific registration requirement surfaced in the cart before
+ * checkout. Sourced from a hardcoded backend list (see
+ * `getTldRegistrationRequirement` in the backend) and attached to each
+ * {@link DomainAvailabilityInfo}.
+ *
+ * `confirmation`:
+ * - `'explicit'` — the registry mandates a conspicuous pre-purchase notice
+ *   (e.g. Google secure namespaces like .app/.dev that require HTTPS). The
+ *   cart shows a checkbox and blocks checkout until the user acknowledges it.
+ * - `'implicit'` — informational disclosure only; showing the banner is
+ *   sufficient and checkout is never blocked.
+ */
+export type TldRegistrationRequirement = {
+  /** TLD this applies to, without the leading dot (e.g. "app", "ing"). */
+  tld: string;
+  /** Short banner headline, front-loaded with the key fact. */
+  title: string;
+  /** One-line summary shown in the banner. */
+  summary: string;
+  /** Bullet-point outline of the requirements, shown in the modal. */
+  outline: string[];
+  /** External policy/example links shown in the modal. */
+  links: { label: string; url: string }[];
+  confirmation: 'explicit' | 'implicit';
+};
+
 export type DomainAvailabilityInfo = {
   domain: NamefiNormalizedDomain;
   availability: boolean;
@@ -34,6 +61,12 @@ export type DomainAvailabilityInfo = {
   };
   importable: boolean;
   supported: boolean;
+  /**
+   * TLD-specific registration requirement (e.g. Google's HTTPS notice for
+   * .app/.dev). Present only for TLDs in the hardcoded requirements list;
+   * `undefined` otherwise.
+   */
+  registrationRequirement?: TldRegistrationRequirement;
 };
 
 export function isDomainImportable(domain: DomainAvailabilityInfo): boolean {

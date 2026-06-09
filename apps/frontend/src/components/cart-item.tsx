@@ -4,6 +4,7 @@ import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { useFlag } from '@openfeature/react-sdk';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
+import { CartItemRegistrationRequirement } from '@/components/cart-item-registration-requirement';
 import { CartItemSetupOptions } from '@/components/cart-item-setup-options';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
@@ -56,6 +57,15 @@ export function CartItem({
 
   const showSetupOptions =
     setupOptionsEnabled &&
+    (item.type === itemTypeSchema.enum.REGISTER ||
+      item.type === itemTypeSchema.enum.IMPORT);
+
+  // TLD-specific registration requirements (e.g. Google's HTTPS notice for
+  // .app/.dev) apply when acquiring the domain — REGISTER or IMPORT, not RENEW.
+  const registrationRequirement =
+    domainAvailabilityInfo?.registrationRequirement;
+  const showRegistrationRequirement =
+    !!registrationRequirement &&
     (item.type === itemTypeSchema.enum.REGISTER ||
       item.type === itemTypeSchema.enum.IMPORT);
 
@@ -133,6 +143,13 @@ export function CartItem({
   return (
     <div>
       <div className="flex flex-col gap-4">
+        {showRegistrationRequirement && registrationRequirement && (
+          <CartItemRegistrationRequirement
+            item={item}
+            requirement={registrationRequirement}
+            readOnly={readOnly}
+          />
+        )}
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
             <span className="text-xl">{displayName}</span>

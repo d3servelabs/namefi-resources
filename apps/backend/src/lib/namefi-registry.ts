@@ -22,6 +22,7 @@ import { groupBy, isNil, pluck, filter, isNotNil } from 'ramda';
 import { config } from '#lib/env';
 import { userQualifiesForDomainNamePromo } from '#lib/user-promo';
 import {
+  getTldRegistrationRequirement,
   hashBasedPercentageRollouted,
   isReservedKeywordForParentDomain,
 } from './namefi-registry-helpers';
@@ -399,10 +400,15 @@ export const getDomainListInfo = async (
 
   return domains.map((domain) => {
     const domainInfo = eppDomains.get(domain) || subdomains.get(domain);
-    if (isNil(domainInfo)) {
-      return generateUnavailableDomainInfo(domain);
-    }
-    return domainInfo;
+    const base = isNil(domainInfo)
+      ? generateUnavailableDomainInfo(domain)
+      : domainInfo;
+    // Attach the TLD's hardcoded registration requirement (e.g. Google's
+    // HTTPS notice for .app/.dev) so the cart can surface it before checkout.
+    const registrationRequirement = getTldRegistrationRequirement(domain);
+    return registrationRequirement
+      ? { ...base, registrationRequirement }
+      : base;
   });
 };
 

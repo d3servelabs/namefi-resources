@@ -59,9 +59,10 @@ export type AddToCartParams = {
 
 /**
  * A cart-item update. At least one of `durationInYears`, `eppAuthorizationCode`,
- * or `domainSetupOptions` must be provided (enforced by the server contract).
- * `domainAvailabilityInfo` is only needed to recompute price on a duration
- * change, so it's optional for setup-options-only updates.
+ * `domainSetupOptions`, or `tldRegistrationRequirementAcknowledged` must be
+ * provided (enforced by the server contract). `domainAvailabilityInfo` is only
+ * needed to recompute price on a duration change, so it's optional for
+ * metadata-only updates.
  */
 export type UpdateItemParams = {
   id: string;
@@ -69,6 +70,7 @@ export type UpdateItemParams = {
   durationInYears?: number;
   eppAuthorizationCode?: string;
   domainSetupOptions?: OrderItemDomainSetupOptions;
+  tldRegistrationRequirementAcknowledged?: boolean;
 };
 
 type Optimistic<T> = T & OptimisticTag;
@@ -545,17 +547,29 @@ export function useCartServerSync() {
     onMutate: async (payload: ServerUpdateCartItem) => {
       await queryClient.cancelQueries({ queryKey: CartKey, exact: true });
       const prev = queryClient.getQueryData<UnifiedCartItem[]>(CartKey) ?? [];
-      // `domainSetupOptions` lives under `metadata.domainSetupOptions` on a
-      // cart row, so nest it rather than spreading it at the top level.
-      const { domainSetupOptions, ...rest } = payload;
+      // `domainSetupOptions` and `tldRegistrationRequirementAcknowledged` live
+      // under `metadata` on a cart row, so nest them rather than spreading at
+      // the top level.
+      const {
+        domainSetupOptions,
+        tldRegistrationRequirementAcknowledged,
+        ...rest
+      } = payload;
+      const metadataPatch = {
+        ...(domainSetupOptions !== undefined && { domainSetupOptions }),
+        ...(tldRegistrationRequirementAcknowledged !== undefined && {
+          tldRegistrationRequirementAcknowledged,
+        }),
+      };
+      const hasMetadataPatch = Object.keys(metadataPatch).length > 0;
       queryClient.setQueryData(CartKey, (old: UnifiedCartItem[] = []) =>
         old.map((item) =>
           item.id === payload.id
             ? {
                 ...item,
                 ...rest,
-                ...(domainSetupOptions !== undefined && {
-                  metadata: { ...item.metadata, domainSetupOptions },
+                ...(hasMetadataPatch && {
+                  metadata: { ...item.metadata, ...metadataPatch },
                 }),
                 [OPTIMISTIC]: true,
               }
@@ -707,6 +721,10 @@ export function useCartServerSync() {
         }
         if (p.domainSetupOptions !== undefined) {
           payload.domainSetupOptions = p.domainSetupOptions;
+        }
+        if (p.tldRegistrationRequirementAcknowledged !== undefined) {
+          payload.tldRegistrationRequirementAcknowledged =
+            p.tldRegistrationRequirementAcknowledged;
         }
         return payload;
       },
@@ -952,12 +970,23 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
           const updatePayload = sync.buildServerUpdateCartItem(input);
           const optimisticPrice = sync.calculateOptimisticPrice(input);
 
-          // `domainSetupOptions` is nested under `metadata` (merged with any
-          // existing metadata) rather than stored top-level on the row.
-          const { domainSetupOptions, ...restUpdate } = updatePayload;
+          // `domainSetupOptions` and `tldRegistrationRequirementAcknowledged`
+          // are nested under `metadata` (merged with any existing metadata)
+          // rather than stored top-level on the row.
+          const {
+            domainSetupOptions,
+            tldRegistrationRequirementAcknowledged,
+            ...restUpdate
+          } = updatePayload;
           const existingMetadata = sync.cartData?.find(
             (i) => i.id === input.id,
           )?.metadata;
+          const metadataPatch = {
+            ...(domainSetupOptions !== undefined && { domainSetupOptions }),
+            ...(tldRegistrationRequirementAcknowledged !== undefined && {
+              tldRegistrationRequirementAcknowledged,
+            }),
+          };
 
           const localUpdatePayload = {
             ...restUpdate,
@@ -967,8 +996,8 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
             ...(input.eppAuthorizationCode !== undefined && {
               eppAuthorizationCode: input.eppAuthorizationCode,
             }),
-            ...(domainSetupOptions !== undefined && {
-              metadata: { ...existingMetadata, domainSetupOptions },
+            ...(Object.keys(metadataPatch).length > 0 && {
+              metadata: { ...existingMetadata, ...metadataPatch },
             }),
           };
 

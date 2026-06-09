@@ -1,4 +1,5 @@
 import { CartCard } from '@/components/cart-card';
+import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { AddPaymentMethodDialog } from '@/components/payment-method/add-payment-method-dialog';
 import { PaymentSummary } from '@/components/payment-method/payment-summary';
@@ -44,6 +45,8 @@ export type HybridPaymentCardProps = {
   isProcessing: boolean;
   submitButtonText: string;
   submitOrderDisabled: boolean;
+  /** When the submit button is disabled, explains why (shown in a tooltip). */
+  submitDisabledReason?: string;
   onSubmit: (payments: CreateOrderV2Input['payments']) => void;
 };
 
@@ -79,6 +82,7 @@ export function HybridPaymentCard({
   isProcessing,
   submitButtonText,
   submitOrderDisabled,
+  submitDisabledReason,
   onSubmit,
 }: HybridPaymentCardProps) {
   const [shouldUseBalance, setShouldUseBalance] = useState(true);
@@ -216,18 +220,28 @@ export function HybridPaymentCard({
             <span>Total</span>
             <span>{formatAmountInUSD(totalAmountInUsdCents, true)} USD</span>
           </div>
-          <NamefiButton
-            variant="default"
-            className="w-full"
-            disabled={
+          <DisabledReasonTooltip
+            reason={
               submitOrderDisabled || isDisabled || !calculation?.isValid
+                ? submitDisabledReason
+                : undefined
             }
-            onClick={handleSubmit}
-            size="lg"
           >
-            {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {submitButtonText}
-          </NamefiButton>
+            <NamefiButton
+              variant="default"
+              className="w-full"
+              disabled={
+                submitOrderDisabled || isDisabled || !calculation?.isValid
+              }
+              onClick={handleSubmit}
+              size="lg"
+            >
+              {isProcessing && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              {submitButtonText}
+            </NamefiButton>
+          </DisabledReasonTooltip>
         </div>
       }
     >

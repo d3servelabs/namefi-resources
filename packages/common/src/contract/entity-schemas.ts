@@ -106,6 +106,13 @@ export const cartItemMetadataSchema = z
   .object({
     ...claimMetadataShape,
     domainSetupOptions: orderItemDomainSetupOptionsSchema.optional(),
+    /**
+     * User's acknowledgement of the TLD's registration requirements (e.g. the
+     * .app/.dev "HTTPS required" notice). Only set for TLDs that require
+     * explicit confirmation; gates checkout in the cart UI and is carried onto
+     * the order item for audit.
+     */
+    tldRegistrationRequirementAcknowledged: z.boolean().optional(),
   })
   .loose();
 export type CartItemMetadata = z.infer<typeof cartItemMetadataSchema>;

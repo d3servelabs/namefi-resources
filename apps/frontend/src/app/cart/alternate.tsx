@@ -2,6 +2,7 @@
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
+import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -34,6 +35,7 @@ import {
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { useCartContext } from '@/components/providers/cart';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@namefi-astra/ui/lib/cn';
@@ -177,6 +179,37 @@ export default function CartPage() {
     [items, totalAmountInUsdCents],
   );
 
+  const { data: domainAvailabilityInfo } = useQuery({
+    ...trpc.registry.getDomainListInfo.queryOptions({
+      domains: items?.map((item) => item.normalizedDomainName) ?? [],
+    }),
+    enabled: Boolean(items && items.length > 0),
+    placeholderData: (previousData) => previousData,
+  });
+
+  // Block checkout while any REGISTER/IMPORT item whose TLD requires explicit
+  // confirmation (e.g. the .app/.dev HTTPS notice) has not been acknowledged.
+  const hasUnacknowledgedRegistrationRequirements = useMemo(() => {
+    if (!items || items.length === 0) {
+      return false;
+    }
+    return items.some((item) => {
+      if (
+        item.type !== itemTypeSchema.enum.REGISTER &&
+        item.type !== itemTypeSchema.enum.IMPORT
+      ) {
+        return false;
+      }
+      const requirement = domainAvailabilityInfo?.find(
+        (domain) => domain.domain === item.normalizedDomainName,
+      )?.registrationRequirement;
+      return (
+        requirement?.confirmation === 'explicit' &&
+        item.metadata?.tldRegistrationRequirementAcknowledged !== true
+      );
+    });
+  }, [items, domainAvailabilityInfo]);
+
   const router = useRouter();
 
   const { mutate: createOrder, isPending: isCreateOrderPending } = useMutation({
@@ -233,13 +266,39 @@ export default function CartPage() {
       isCartUpdating ||
       isCartLoading ||
       !selectedNftWalletAddress ||
-      !isLinkedOrUserConfirmed
+      !isLinkedOrUserConfirmed ||
+      hasUnacknowledgedRegistrationRequirements
     );
   }, [
     selectedNftWalletAddress,
     isLinkedOrUserConfirmed,
     isCartUpdating,
     isCartLoading,
+    hasUnacknowledgedRegistrationRequirements,
+  ]);
+
+  // Why the submit button is disabled, surfaced via a tooltip. Ordered so the
+  // most actionable blocker wins.
+  const submitDisabledReason = useMemo(() => {
+    if (isCartUpdating || isCartLoading) {
+      return 'Your cart is still updating.';
+    }
+    if (!selectedNftWalletAddress) {
+      return 'Select a wallet to receive your domains.';
+    }
+    if (!isLinkedOrUserConfirmed) {
+      return 'Confirm the wallet that will receive your domains.';
+    }
+    if (hasUnacknowledgedRegistrationRequirements) {
+      return 'Review and accept the registration requirements shown on your cart items.';
+    }
+    return undefined;
+  }, [
+    isCartUpdating,
+    isCartLoading,
+    selectedNftWalletAddress,
+    isLinkedOrUserConfirmed,
+    hasUnacknowledgedRegistrationRequirements,
   ]);
 
   const logSubmitOrderFailure = useCallback(
@@ -499,14 +558,6 @@ export default function CartPage() {
     [isRedirecting, isExplicitlyCheckingCartItemsForUpdates, isClearingCart],
   );
 
-  const { data: domainAvailabilityInfo } = useQuery({
-    ...trpc.registry.getDomainListInfo.queryOptions({
-      domains: items?.map((item) => item.normalizedDomainName) ?? [],
-    }),
-    enabled: Boolean(items && items.length > 0),
-    placeholderData: (previousData) => previousData,
-  });
-
   if (isLoading) {
     return <LoadingSkeletons />;
   }
@@ -636,35 +687,43 @@ export default function CartPage() {
               cartItemsAreAllPromo ? (
                 <NoPaymentMethodRequiredCard
                   footerButton={
-                    <NamefiButton
-                      variant="default"
-                      className="w-full"
-                      disabled={submitOrderDisabled || isDisabled}
-                      onClick={() => {
-                        // For promo orders, create a zero-dollar payment
-                        const zeroPayment = [
-                          {
-                            amountInUsdCents: 0,
-                            paymentProviderDetails: {
-                              paymentProvider: defaultNfscPaymentProvider,
-                              nfscPaymentDetails: {
-                                walletAddress: selectedNftWalletAddress || '',
-                                chainId: defaultNfscBalanceChainId,
+                    <DisabledReasonTooltip
+                      reason={
+                        submitOrderDisabled || isDisabled
+                          ? submitDisabledReason
+                          : undefined
+                      }
+                    >
+                      <NamefiButton
+                        variant="default"
+                        className="w-full"
+                        disabled={submitOrderDisabled || isDisabled}
+                        onClick={() => {
+                          // For promo orders, create a zero-dollar payment
+                          const zeroPayment = [
+                            {
+                              amountInUsdCents: 0,
+                              paymentProviderDetails: {
+                                paymentProvider: defaultNfscPaymentProvider,
+                                nfscPaymentDetails: {
+                                  walletAddress: selectedNftWalletAddress || '',
+                                  chainId: defaultNfscBalanceChainId,
+                                },
                               },
                             },
-                          },
-                        ];
-                        handleHybridPaymentSubmit(zeroPayment);
-                      }}
-                      size="lg"
-                    >
-                      {(isCreateOrderPending ||
-                        isRedirecting ||
-                        isExplicitlyCheckingCartItemsForUpdates) && (
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      )}
-                      {submitButtonText}
-                    </NamefiButton>
+                          ];
+                          handleHybridPaymentSubmit(zeroPayment);
+                        }}
+                        size="lg"
+                      >
+                        {(isCreateOrderPending ||
+                          isRedirecting ||
+                          isExplicitlyCheckingCartItemsForUpdates) && (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        {submitButtonText}
+                      </NamefiButton>
+                    </DisabledReasonTooltip>
                   }
                 />
               ) : (
@@ -681,6 +740,7 @@ export default function CartPage() {
                   }
                   submitButtonText={submitButtonText}
                   submitOrderDisabled={submitOrderDisabled}
+                  submitDisabledReason={submitDisabledReason}
                   onSubmit={handleHybridPaymentSubmit}
                 />
               )
