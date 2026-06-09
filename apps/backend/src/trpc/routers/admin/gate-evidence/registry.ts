@@ -11,6 +11,7 @@ import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { eq } from 'drizzle-orm';
 import { sldRegistrar } from '#lib/namefi-registry';
+import { getViemPublicClient } from '#lib/crypto/viem-clients';
 
 /**
  * Admin-side decision-support evidence gatherers, keyed by a gate's `gateKind`
@@ -154,6 +155,61 @@ async function gatherNfscChargeEvidence(
   return evidence;
 }
 
+/**
+ * Evidence for a mint double-commit gate: the on-chain receipt status of each
+ * candidate hash tells the admin which transaction(s) actually mined, so they
+ * can RESPOND with the hash to keep (or CANCEL).
+ */
+async function gatherMintDoubleCommitEvidence(
+  params: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const chainId = Number(params.chainId);
+  const winners = Array.isArray(params.winners)
+    ? (params.winners as string[])
+    : [];
+
+  const evidence: Record<string, unknown> = {
+    chainId,
+    canonical: params.canonical,
+    account: params.account ?? params.chargee,
+    amountInUsd: params.amountInUsd,
+    reason: params.reason,
+  };
+
+  if (!Number.isFinite(chainId) || winners.length === 0) {
+    evidence.error = 'missing chainId or winners in evidenceParams';
+    return evidence;
+  }
+
+  try {
+    const publicClient = getViemPublicClient(chainId);
+    evidence.receipts = await Promise.all(
+      winners.map(async (hash) => {
+        try {
+          const receipt = await publicClient.getTransactionReceipt({
+            hash: hash as `0x${string}`,
+          });
+          return {
+            hash,
+            status: receipt.status,
+            blockNumber: receipt.blockNumber.toString(),
+          };
+        } catch (error) {
+          return {
+            hash,
+            status: 'not-found-or-pending',
+            error: errorMessage(error),
+          };
+        }
+      }),
+    );
+  } catch (error) {
+    evidence.receipts = { error: errorMessage(error) };
+  }
+
+  return evidence;
+}
+
 /** GateKind → gatherer. Add an entry when a new known gate needs evidence. */
 export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'register-or-import-poll': gatherDomainEvidence,
@@ -165,4 +221,6 @@ export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'process-order-item': gatherDomainEvidence,
   // NFSC charge: the payment record shows whether the charge already landed.
   'nfsc-charge': gatherNfscChargeEvidence,
+  // Mint double-commit: per-candidate on-chain receipt status.
+  'mint-double-commit': gatherMintDoubleCommitEvidence,
 };

@@ -1,26 +1,51 @@
 import { CHAINS_IDS, type NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
+import type { Hash } from 'viem';
 import type {
   PreparedTxOnlySerializableParams,
   TxPrepareResult,
 } from '../activities/mint/mint.activities';
-import { TEMPORAL_ENUMS } from '../shared/enums';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 import { shortRunningOpts } from '../shared';
-import { staggeredSendRace } from '../shared/workflow-helpers/staggered-send-race';
+import {
+  staggeredSendRace,
+  type StaggeredRaceRecovery,
+} from '../shared/workflow-helpers/staggered-send-race';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
+import {
+  makeDoubleCommitReconciler,
+  type ReconciliationPolicy,
+} from './mint-double-commit-reconciliation';
+
+interface SignAndSendOptions {
+  /** Number of staggered replacement lanes (default 5). */
+  maxAttempts?: number;
+  /** Bounded fresh-nonce re-pins on nonce-exhaustion, case 1b (default 2). */
+  maxNonceRepins?: number;
+  /** Per-operation double-commit policy (case 2). Defaults to CRITICAL_ALERT. */
+  reconciliation?: {
+    policy: ReconciliationPolicy;
+    /** AUTOFIX compensating action over the extra confirmed hashes. */
+    autofix?: (extraWinners: Hash[]) => Promise<void>;
+    evidenceParams?: Record<string, unknown>;
+  };
+}
 
 /**
- * Sends a prepared transaction using the pinned-nonce staggered-parallel race.
+ * Sends a prepared transaction using the pinned-nonce staggered-parallel race,
+ * with bounded nonce re-pin recovery (1b) and per-operation double-commit
+ * reconciliation (2). Signature stays backward compatible (`(tx, chainId)`).
  *
- * Splits sign+send from wait/confirm and reuses ONE nonce for every escalating-gas
- * replacement, so the chain can mine at most one — no double-mint. See
- * {@link staggeredSendRace}. Signature is preserved for all existing callers.
+ * @see {@link staggeredSendRace}, {@link makeDoubleCommitReconciler}.
  */
 async function _signAndSendTransactionWithRetry(
   tx: PreparedTxOnlySerializableParams,
   chainId: number,
-  maxAttempts = 5,
+  options: SignAndSendOptions = {},
 ) {
+  const { maxAttempts = 5, maxNonceRepins = 2, reconciliation } = options;
+  const label = `mint:${workflow.workflowInfo().workflowType}`;
+
   const {
     getSignerNonce,
     sendPreparedTransaction,
@@ -41,10 +66,21 @@ async function _signAndSendTransactionWithRetry(
   const initialGasPriceMultiplier = await getInitalGasPriceMultiplier(chainId);
   const maxGasPriceMultiplier = await getMaxGasPriceMultiplier(chainId);
 
+  const recovery: StaggeredRaceRecovery = {
+    maxNonceRepins,
+    onDoubleCommit: makeDoubleCommitReconciler({
+      policy: reconciliation?.policy ?? 'CRITICAL_ALERT',
+      label,
+      chainId,
+      autofix: reconciliation?.autofix,
+      evidenceParams: reconciliation?.evidenceParams,
+    }),
+  };
+
   return staggeredSendRace({
     preparedTx: tx,
     chainId,
-    label: `mint:${workflow.workflowInfo().workflowType}`,
+    label,
     activities: {
       getSignerNonce,
       sendPreparedTransaction,
@@ -55,8 +91,35 @@ async function _signAndSendTransactionWithRetry(
       initialGasPriceMultiplier,
       maxGasPriceMultiplier,
     },
+    recovery,
   });
 }
+
+/**
+ * AUTOFIX for a double NFSC mint: charge the over-minted amount back from the
+ * recipient once per extra confirmed mint, with a `void tx(0x…)` reason. The
+ * compensating charge runs with a non-recursive (`CRITICAL_ALERT`) policy so an
+ * autofix can never recurse into another autofix.
+ */
+const voidNfscDoubleMint =
+  (input: MintNfscInput) =>
+  async (extraWinners: Hash[]): Promise<void> => {
+    for (const extra of extraWinners) {
+      await workflow.executeChild(chargeNfscWorkflow, {
+        args: [
+          input.chainId,
+          input.account,
+          input.amountInUsd,
+          `void tx(${extra})`,
+          '0x',
+          'CRITICAL_ALERT',
+        ],
+        workflowId: `void-nfsc-double-mint-[${input.account}]-[${input.chainId}]-[${extra}]`,
+        taskQueue: TEMPORAL_QUEUES.MINT,
+        retry: { maximumAttempts: 1 },
+      });
+    }
+  };
 
 export async function mintNamefiNFT({
   chainId,
@@ -92,10 +155,17 @@ export async function mintNamefiNFT({
     );
   }
 
-  // For gas price too low issues
+  // NFT mint is naturally idempotent: a duplicate tokenId reverts on-chain, so a
+  // double-commit is practically impossible — alert + fail if it ever happens.
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
+    {
+      reconciliation: {
+        policy: 'CRITICAL_ALERT',
+        evidenceParams: { domain: normalizedDomainName, to: toAddress },
+      },
+    },
   );
 }
 
@@ -103,6 +173,8 @@ type MintNfscInput = {
   chainId: number;
   account: `0x${string}`;
   amountInUsd: number;
+  /** Override the default double-commit policy (defaults to AUTOFIX). */
+  reconciliationPolicy?: ReconciliationPolicy;
 };
 export async function mintNfsc(input: MintNfscInput): Promise<string> {
   const { prepareTxToMintNfsc } = typedProxyActivities({
@@ -127,10 +199,20 @@ export async function mintNfsc(input: MintNfscInput): Promise<string> {
     );
   }
 
-  // For gas price too low issues
+  // Double NFSC mint auto-fixes by charging the over-minted amount back.
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     input.chainId,
+    {
+      reconciliation: {
+        policy: input.reconciliationPolicy ?? 'AUTOFIX',
+        autofix: voidNfscDoubleMint(input),
+        evidenceParams: {
+          account: input.account,
+          amountInUsd: input.amountInUsd,
+        },
+      },
+    },
   );
 }
 
@@ -144,6 +226,7 @@ export async function chargeNfscWorkflow(
   amountInUsd: number,
   reason: string,
   extra: `0x${string}`,
+  reconciliationPolicy: ReconciliationPolicy = 'WAIT_FOR_ADMIN',
 ): Promise<string> {
   const { prepareTxToChargeNfsc } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.MINT,
@@ -169,9 +252,16 @@ export async function chargeNfscWorkflow(
     });
   }
 
+  // Double charge over-deducts a user; a human decides (refund / accept / fail).
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
+    {
+      reconciliation: {
+        policy: reconciliationPolicy,
+        evidenceParams: { chargee, amountInUsd, reason },
+      },
+    },
   );
 }
 

@@ -23,7 +23,8 @@ export type GateKind =
   | 'register-or-import-poll'
   | 'register-or-import-submit'
   | 'process-order-item'
-  | 'nfsc-charge';
+  | 'nfsc-charge'
+  | 'mint-double-commit';
 
 interface KnownGateDefaults {
   /** Auto-retry policy applied unless the caller overrides {@link RunWithDecisionGateOptions.autoRetry}. */

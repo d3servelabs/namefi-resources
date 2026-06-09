@@ -14,9 +14,12 @@ import { TEMPORAL_ENUMS } from '../../shared/enums';
 import { shortRunningOpts } from '../../shared';
 import { staggeredSendRace } from '../../shared/workflow-helpers/staggered-send-race';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
+import { makeDoubleCommitReconciler } from '../mint-double-commit-reconciliation';
 
 /**
- * Sends a prepared USDC transfer using the pinned-nonce staggered-parallel race.
+ * Sends a prepared USDC transfer using the pinned-nonce staggered-parallel race,
+ * with bounded nonce re-pin recovery (1b) and admin-gated double-commit
+ * reconciliation (2) — a double USDC refund moves money out, so a human decides.
  *
  * Same idempotency guarantee as the mint path: one pinned nonce reused across
  * escalating-gas replacements, so the chain mines at most one. See
@@ -53,6 +56,14 @@ async function _signAndSendX402TransactionWithRetry(
       lanes: maxAttempts,
       initialGasPriceMultiplier: 1.05,
       maxGasPriceMultiplier: 1.2,
+    },
+    recovery: {
+      maxNonceRepins: 2,
+      onDoubleCommit: makeDoubleCommitReconciler({
+        policy: 'WAIT_FOR_ADMIN',
+        label: 'x402-usdc-transfer',
+        chainId,
+      }),
     },
   });
 }
