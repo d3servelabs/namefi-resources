@@ -211,10 +211,10 @@ interface SetupChipProps {
 }
 
 /**
- * A compact, custom-styled option chip. Three visual states:
- * - on:       check icon, primary fill, black text
- * - off:      x icon, transparent fill, primary text
- * - disabled: minus icon, grey fill, black text (not clickable)
+ * A compact, custom-styled option chip (outline style). Three visual states:
+ * - on:       check icon, primary border + faint primary fill, primary text
+ * - off:      x icon, neutral border, transparent fill, muted text
+ * - disabled: minus icon, dim border + muted text, transparent (not clickable)
  *
  * The whole chip is the tooltip trigger (no info icon); the tooltip carries
  * the description and, when disabled, the reason. The element stays
@@ -246,10 +246,10 @@ function SetupChip({
               className={cn(
                 'flex min-w-0 items-center justify-center gap-1 rounded-full border px-2 py-1 text-xs font-medium transition-colors',
                 disabled
-                  ? 'cursor-not-allowed border-transparent bg-zinc-500 text-black'
+                  ? 'cursor-not-allowed border-zinc-700 bg-transparent text-zinc-600'
                   : checked
-                    ? 'border-transparent bg-brand-primary/80 text-black'
-                    : 'border-brand-primary/60 bg-transparent text-brand-primary hover:bg-brand-primary/10',
+                    ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
+                    : 'border-zinc-600 bg-transparent text-zinc-300 hover:border-zinc-400',
                 props.className,
                 chipClassName,
               )}
