@@ -2117,10 +2117,41 @@ function PastRuns({
   const runListRef = useRef<HTMLDivElement | null>(null);
   const selectedRunRef = useRef<HTMLDivElement | null>(null);
   const scrolledRunIdRef = useRef<string | null>(null);
+  const [runListFade, setRunListFade] = useState({
+    top: false,
+    bottom: false,
+  });
   const activeRunListKey =
     activeRunId && runs.some((run) => run.id === activeRunId)
       ? activeRunId
       : null;
+
+  const updateRunListFade = useCallback(() => {
+    const runList = runListRef.current;
+    if (!runList) {
+      setRunListFade((current) =>
+        current.top || current.bottom ? { top: false, bottom: false } : current,
+      );
+      return;
+    }
+
+    const edgeTolerance = 1;
+    const hasOverflow =
+      runList.scrollHeight - runList.clientHeight > edgeTolerance;
+    const nextFade = {
+      top: hasOverflow && runList.scrollTop > edgeTolerance,
+      bottom:
+        hasOverflow &&
+        runList.scrollTop + runList.clientHeight <
+          runList.scrollHeight - edgeTolerance,
+    };
+
+    setRunListFade((current) =>
+      current.top === nextFade.top && current.bottom === nextFade.bottom
+        ? current
+        : nextFade,
+    );
+  }, []);
 
   useEffect(() => {
     if (
@@ -2151,10 +2182,54 @@ function PastRuns({
         behavior: 'auto',
       });
       scrolledRunIdRef.current = activeRunId;
+      updateRunListFade();
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [activeRunId, activeRunListKey, isLoading, scrollActiveRunIntoView]);
+  }, [
+    activeRunId,
+    activeRunListKey,
+    isLoading,
+    scrollActiveRunIntoView,
+    updateRunListFade,
+  ]);
+
+  useEffect(() => {
+    const runList = runListRef.current;
+    if (isLoading || runs.length === 0 || !runList) {
+      setRunListFade((current) =>
+        current.top || current.bottom ? { top: false, bottom: false } : current,
+      );
+      return;
+    }
+
+    let frame: number | null = null;
+    const scheduleUpdate = () => {
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+      }
+      frame = window.requestAnimationFrame(() => {
+        frame = null;
+        updateRunListFade();
+      });
+    };
+
+    updateRunListFade();
+    runList.addEventListener('scroll', scheduleUpdate, { passive: true });
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(scheduleUpdate);
+    resizeObserver?.observe(runList);
+
+    return () => {
+      runList.removeEventListener('scroll', scheduleUpdate);
+      resizeObserver?.disconnect();
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
+  }, [isLoading, runs.length, updateRunListFade]);
 
   return (
     <section className="rounded-lg border border-border/70 bg-card/70 p-4 shadow-sm backdrop-blur">
@@ -2179,62 +2254,80 @@ function PastRuns({
           Your buyer searches will stay here.
         </p>
       ) : (
-        <div
-          ref={runListRef}
-          className="flex max-h-[24rem] flex-col gap-2 overflow-y-auto pr-1"
-        >
-          {runs.map((run) => {
-            const canExport = isLeadgenCrmCsvExportAvailable(run);
-            const isExporting = exportingRunId === run.id;
+        <div className="relative">
+          <div
+            ref={runListRef}
+            className="flex max-h-[24rem] flex-col gap-2 overflow-y-auto pr-1"
+          >
+            {runs.map((run) => {
+              const canExport = isLeadgenCrmCsvExportAvailable(run);
+              const isExporting = exportingRunId === run.id;
 
-            return (
-              <div
-                key={run.id}
-                ref={run.id === activeRunId ? selectedRunRef : undefined}
-                className={cn(
-                  'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
-                  run.id === activeRunId
-                    ? 'border-primary/60 bg-primary/5'
-                    : 'border-border/70',
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={getLeadgenRunHref(run.id)}
-                    className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                  >
-                    <p className="truncate text-sm font-medium">{run.domain}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {isTerminalLeadgenStatus(run.status)
-                        ? `${run.leadCount} leads - ${run.draftCount} drafts`
-                        : 'Searching...'}
-                    </p>
-                  </Link>
-                  {canExport && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon-sm"
-                      disabled={isExporting}
-                      aria-label={`Download CRM CSV for ${run.domain}`}
-                      onClick={() => {
-                        void onExportRun(run.id);
-                      }}
-                    >
-                      {isExporting ? (
-                        <Loader2 className="animate-spin" />
-                      ) : (
-                        <Download />
-                      )}
-                    </Button>
+              return (
+                <div
+                  key={run.id}
+                  ref={run.id === activeRunId ? selectedRunRef : undefined}
+                  className={cn(
+                    'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
+                    run.id === activeRunId
+                      ? 'border-primary/60 bg-primary/5'
+                      : 'border-border/70',
                   )}
-                  <span className="flex w-4 shrink-0 items-center justify-center">
-                    <RunStatusIcon status={run.status} />
-                  </span>
+                >
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={getLeadgenRunHref(run.id)}
+                      className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                    >
+                      <p className="truncate text-sm font-medium">
+                        {run.domain}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {isTerminalLeadgenStatus(run.status)
+                          ? `${run.leadCount} leads - ${run.draftCount} drafts`
+                          : 'Searching...'}
+                      </p>
+                    </Link>
+                    {canExport && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        disabled={isExporting}
+                        aria-label={`Download CRM CSV for ${run.domain}`}
+                        onClick={() => {
+                          void onExportRun(run.id);
+                        }}
+                      >
+                        {isExporting ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <Download />
+                        )}
+                      </Button>
+                    )}
+                    <span className="flex w-4 shrink-0 items-center justify-center">
+                      <RunStatusIcon status={run.status} />
+                    </span>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <div
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none absolute top-0 left-0 right-1 z-10 h-10 rounded-t-md bg-gradient-to-b from-card/95 via-card/75 to-card/0 transition-opacity duration-200',
+              runListFade.top ? 'opacity-100' : 'opacity-0',
+            )}
+          />
+          <div
+            aria-hidden="true"
+            className={cn(
+              'pointer-events-none absolute bottom-0 left-0 right-1 z-10 h-10 rounded-b-md bg-gradient-to-t from-card/95 via-card/75 to-card/0 transition-opacity duration-200',
+              runListFade.bottom ? 'opacity-100' : 'opacity-0',
+            )}
+          />
         </div>
       )}
     </section>
