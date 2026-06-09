@@ -132,34 +132,42 @@ jobs:
     steps:
       - name: Compute environment values
         id: compute
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment || '' }}
+          GITHUB_REF_NAME_FULL: ${{ github.ref }}
         run: |
           # Determine if this is a production deployment
           IS_PROD="false"
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
+          if [[ "$EVENT_NAME" == "workflow_dispatch" && "$DEPLOY_ENVIRONMENT" == "production" ]]; then
+            if [[ "$GITHUB_REF_NAME_FULL" != "refs/heads/main" && ! "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra/(prod/)?v ]]; then
+              echo "Manual production Astra deployments must be run from main or an astra release tag, got $GITHUB_REF_NAME_FULL" >&2
+              exit 1
+            fi
             IS_PROD="true"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/astra/prod/v* ]]; then
+          elif [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" == refs/tags/astra/prod/v* ]]; then
             IS_PROD="true"
           fi
 
           # Set label (prod or dev)
           if [[ "$IS_PROD" == "true" ]]; then
-            echo "label=prod" >> $GITHUB_OUTPUT
-            echo "vercel_env=production" >> $GITHUB_OUTPUT
+            echo "label=prod" >> "$GITHUB_OUTPUT"
+            echo "vercel_env=production" >> "$GITHUB_OUTPUT"
           else
-            echo "label=dev" >> $GITHUB_OUTPUT
-            echo "vercel_env=dev" >> $GITHUB_OUTPUT
+            echo "label=dev" >> "$GITHUB_OUTPUT"
+            echo "vercel_env=dev" >> "$GITHUB_OUTPUT"
           fi
 
           # Determine if we should trigger prod deployment (only for astra/v* tags, not astra/prod/v*)
           SHOULD_TRIGGER="false"
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/astra/v* && "${{ github.ref }}" != refs/tags/astra/prod/v* ]]; then
+          if [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" == refs/tags/astra/v* && "$GITHUB_REF_NAME_FULL" != refs/tags/astra/prod/v* ]]; then
             SHOULD_TRIGGER="true"
           fi
-          echo "should_trigger_prod=$SHOULD_TRIGGER" >> $GITHUB_OUTPUT
+          echo "should_trigger_prod=$SHOULD_TRIGGER" >> "$GITHUB_OUTPUT"
 
           # Output for debugging
-          echo "Event: ${{ github.event_name }}"
-          echo "Ref: ${{ github.ref }}"
+          echo "Event: $EVENT_NAME"
+          echo "Ref: $GITHUB_REF_NAME_FULL"
           echo "Is Production: $IS_PROD"
           echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
           echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "dev")"
@@ -560,12 +568,28 @@ jobs:
           echo "Development deployment is ready at: ${{ needs.deploy-vercel.outputs.deployment_url }}"
           echo "✅ No promotion needed for dev environment"
 
-  # Optional: Trigger additional workflow for prod deployment after tag build
+  # Optional: Trigger additional workflow for prod deployment after the tag's
+  # dev deployment, migrations, and Vercel routing have completed.
   # Only runs for astra/v* tags (not astra/prod/v*)
   trigger-prod-deployment:
     name: Trigger Production Deployment
-    needs: [compute-env, build-backend]
-    if: needs.compute-env.outputs.should_trigger_prod == 'true'
+    needs:
+      - compute-env
+      - build-backend
+      - deploy-backend-api
+      - deploy-backend-temporal
+      - migrate
+      - deploy-vercel
+      - route-vercel-traffic
+    if: |-
+      !cancelled() &&
+      needs.compute-env.outputs.should_trigger_prod == 'true' &&
+      needs.build-backend.result == 'success' &&
+      needs.deploy-backend-api.result == 'success' &&
+      needs.deploy-backend-temporal.result == 'success' &&
+      needs.migrate.result == 'success' &&
+      needs.deploy-vercel.result == 'success' &&
+      needs.route-vercel-traffic.result == 'success'
     runs-on: "ubuntu-latest"
     env:
       WORKFLOW_ID: ${{ vars.DEPLOY_BACKEND_VERCEL_WORKFLOW_ID }}

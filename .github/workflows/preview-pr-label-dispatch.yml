@@ -1,0 +1,48 @@
+name: Dispatch Preview PR Label
+
+on:
+  pull_request:
+    types:
+      - labeled
+    branches-ignore:
+      - prod
+      - gtmq_spec_*
+      - "*_nopreview_*"
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  dispatch:
+    name: Dispatch Preview PR
+    if: github.event.label.name == 'preview' || github.event.label.name == 'force-preview'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch Preview PR workflow
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const pr = context.payload.pull_request;
+            const repository = `${context.repo.owner}/${context.repo.repo}`;
+
+            if (pr.head.repo.full_name !== repository) {
+              core.info(`Skipping preview dispatch for fork PR #${pr.number}: ${pr.head.repo.full_name}`);
+              return;
+            }
+
+            const forcePreview = pr.labels.some((label) => label.name === 'force-preview');
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'preview-pr.yml',
+              ref: pr.base.ref,
+              inputs: {
+                pr_number: String(pr.number),
+                force_preview: String(forcePreview),
+              },
+            });
+
+            core.info(`Dispatched Preview PR workflow for PR #${pr.number} (${context.payload.label.name})`);

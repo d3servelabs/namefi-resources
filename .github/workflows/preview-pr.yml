@@ -6,7 +6,6 @@ on:
       - opened
       - synchronize
       - reopened
-      - labeled
     branches-ignore:
       - prod
       - gtmq_spec_*
@@ -17,6 +16,11 @@ on:
         description: "PR number to deploy preview for"
         required: true
         type: number
+      force_preview:
+        description: "Force all preview targets"
+        required: false
+        default: true
+        type: boolean
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.inputs.pr_number || github.ref }}
@@ -38,6 +42,7 @@ jobs:
     needs: preview-label-gate
     if: |-
       needs.preview-label-gate.outputs.pr_number != '' &&
+      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||
         (
@@ -54,6 +59,7 @@ jobs:
       park_changed: ${{ steps.evaluate.outputs.park_changed }}
       resources_changed: ${{ steps.evaluate.outputs.resources_changed }}
       docs_changed: ${{ steps.evaluate.outputs.docs_changed }}
+      resources_only_sync: ${{ steps.resources-only.outputs.result || 'false' }}
     steps:
       - name: Evaluate head branch
         id: head-branch-gate
@@ -72,8 +78,37 @@ jobs:
               ;;
           esac
 
-      - name: Checkout repository
+      - name: Detect resources-only sync PR
+        id: resources-only
         if: steps.head-branch-gate.outputs.should_run == 'true'
+        uses: actions/github-script@v8
+        env:
+          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prNumber = Number(process.env.PR_NUMBER);
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber,
+              per_page: 100,
+            });
+
+            // Submodule pointer updates appear as a single file entry at the
+            // submodule path, so this intentionally uses exact path equality.
+            const resourcesOnly =
+              process.env.HEAD_REF === 'chore/resources-data/sync' &&
+              files.length > 0 &&
+              files.every((file) => file.filename === 'apps/resources/data');
+
+            core.info(`Changed files: ${files.map((file) => file.filename).join(', ') || '(none)'}`);
+            core.info(`Resources-only sync PR: ${resourcesOnly}`);
+            core.setOutput('result', resourcesOnly ? 'true' : 'false');
+
+      - name: Checkout repository
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.resources-only.outputs.result != 'true'
         uses: actions/checkout@v5
         with:
           ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
@@ -87,7 +122,7 @@ jobs:
         # from the true PR diff so base-branch drift does not trigger
         # unrelated preview deploys.
         id: comparison
-        if: steps.head-branch-gate.outputs.should_run == 'true'
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.resources-only.outputs.result != 'true'
         env:
           EVENT_ACTION: ${{ github.event.action }}
           BEFORE_SHA: ${{ github.event.before }}
@@ -121,7 +156,7 @@ jobs:
 
       - name: Detect existing previews
         id: preview-state
-        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.comparison.outputs.has_incremental == 'true'
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.resources-only.outputs.result != 'true' && steps.comparison.outputs.has_incremental == 'true' && needs.preview-label-gate.outputs.is_same_repo == 'true'
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
           VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -170,10 +205,12 @@ jobs:
           RESOURCES_EXISTS="$(preview_exists "$RESOURCES_PROJECT_ID")"
           DOCS_EXISTS="$(preview_exists "$DOCS_PROJECT_ID")"
 
-          echo "frontend_exists=$FRONTEND_EXISTS" >> "$GITHUB_OUTPUT"
-          echo "park_exists=$PARK_EXISTS" >> "$GITHUB_OUTPUT"
-          echo "resources_exists=$RESOURCES_EXISTS" >> "$GITHUB_OUTPUT"
-          echo "docs_exists=$DOCS_EXISTS" >> "$GITHUB_OUTPUT"
+          {
+            echo "frontend_exists=$FRONTEND_EXISTS"
+            echo "park_exists=$PARK_EXISTS"
+            echo "resources_exists=$RESOURCES_EXISTS"
+            echo "docs_exists=$DOCS_EXISTS"
+          } >> "$GITHUB_OUTPUT"
 
           if [[ "$FRONTEND_EXISTS" == "true" || "$PARK_EXISTS" == "true" || "$RESOURCES_EXISTS" == "true" || "$DOCS_EXISTS" == "true" ]]; then
             echo "any_preview_exists=true" >> "$GITHUB_OUTPUT"
@@ -183,7 +220,7 @@ jobs:
 
       - name: Detect preview target changes
         id: base-changes
-        if: steps.head-branch-gate.outputs.should_run == 'true'
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.resources-only.outputs.result != 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
           base-ref: ${{ steps.comparison.outputs.base_sha }}
@@ -201,7 +238,7 @@ jobs:
 
       - name: Detect incremental preview target changes
         id: incremental-changes
-        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.comparison.outputs.has_incremental == 'true' && steps.preview-state.outputs.any_preview_exists == 'true'
+        if: steps.head-branch-gate.outputs.should_run == 'true' && steps.resources-only.outputs.result != 'true' && steps.comparison.outputs.has_incremental == 'true' && steps.preview-state.outputs.any_preview_exists == 'true'
         uses: ./.github/actions/detect-turbo-changes
         with:
           base-ref: ${{ steps.comparison.outputs.incremental_sha }}
@@ -222,6 +259,7 @@ jobs:
         if: always()
         env:
           SHOULD_RUN: ${{ steps.head-branch-gate.outputs.should_run }}
+          RESOURCES_ONLY: ${{ steps.resources-only.outputs.result || 'false' }}
           HAS_INCREMENTAL: ${{ steps.comparison.outputs.has_incremental }}
           BASE_CHANGED_PACKAGES: ${{ steps.base-changes.outputs.changed-packages || '[]' }}
           INCREMENTAL_CHANGED_PACKAGES: ${{ steps.incremental-changes.outputs.changed-packages || '[]' }}
@@ -249,25 +287,30 @@ jobs:
             fi
           }
 
-          if [[ "$SHOULD_RUN" != "true" ]]; then
-            echo "frontend_changed=false" >> "$GITHUB_OUTPUT"
-            echo "park_changed=false" >> "$GITHUB_OUTPUT"
-            echo "resources_changed=false" >> "$GITHUB_OUTPUT"
-            echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+          if [[ "$SHOULD_RUN" != "true" || "$RESOURCES_ONLY" == "true" ]]; then
+            {
+              echo "frontend_changed=false"
+              echo "park_changed=false"
+              echo "resources_changed=false"
+              echo "docs_changed=false"
+            } >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          echo "frontend_changed=$(package_changed '@namefi-astra/frontend' "$FRONTEND_EXISTS")" >> "$GITHUB_OUTPUT"
-          echo "park_changed=$(package_changed '@namefi-astra/park' "$PARK_EXISTS")" >> "$GITHUB_OUTPUT"
-          echo "resources_changed=$(package_changed '@namefi-astra/resources' "$RESOURCES_EXISTS")" >> "$GITHUB_OUTPUT"
-          echo "docs_changed=$(package_changed 'api-client-docs' "$DOCS_EXISTS")" >> "$GITHUB_OUTPUT"
+          {
+            echo "frontend_changed=$(package_changed '@namefi-astra/frontend' "$FRONTEND_EXISTS")"
+            echo "park_changed=$(package_changed '@namefi-astra/park' "$PARK_EXISTS")"
+            echo "resources_changed=$(package_changed '@namefi-astra/resources' "$RESOURCES_EXISTS")"
+            echo "docs_changed=$(package_changed 'api-client-docs' "$DOCS_EXISTS")"
+          } >> "$GITHUB_OUTPUT"
 
   publish-preview-progress:
     name: Publish Preview Progress
     if: |-
-      always() &&
+      !cancelled() &&
       needs.preview-label-gate.outputs.pr_number != '' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+      needs.detect.outputs.resources_only_sync != 'true' &&
       needs.head-branch-gate.outputs.should_run == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||
@@ -394,6 +437,7 @@ jobs:
     if: |-
       always() &&
       needs.detect.result == 'success' &&
+      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       needs.detect.outputs.frontend_changed == 'true' &&
       (
         needs.preview-label-gate.outputs.should_run != 'true' ||
@@ -445,7 +489,7 @@ jobs:
   deploy-park:
     name: Deploy Park Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.detect.outputs.park_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.park_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -479,7 +523,7 @@ jobs:
   deploy-resources:
     name: Deploy Resources Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.detect.outputs.resources_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.resources_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -522,7 +566,7 @@ jobs:
   deploy-api-client-docs:
     name: Deploy Docs Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.detect.outputs.docs_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.docs_changed == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -549,7 +593,7 @@ jobs:
     name: Resolve Backend State
     needs:
       [preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview]
-    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
+    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -673,6 +717,7 @@ jobs:
           EVENT_NAME: ${{ github.event_name }}
           EVENT_ACTION: ${{ github.event.action }}
           INPUT_PR_NUMBER: ${{ github.event.inputs.pr_number || '' }}
+          INPUT_FORCE_PREVIEW: ${{ github.event.inputs.force_preview || 'true' }}
           REPOSITORY: ${{ github.repository }}
           PR_NUMBER_FROM_EVENT: ${{ github.event.pull_request.number || '' }}
           HEAD_SHA_FROM_EVENT: ${{ github.event.pull_request.head.sha || '' }}
@@ -691,6 +736,10 @@ jobs:
 
           if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
             PR_NUMBER="$INPUT_PR_NUMBER"
+            FORCE_PREVIEW="$INPUT_FORCE_PREVIEW"
+            if [[ "$FORCE_PREVIEW" != "true" ]]; then
+              FORCE_PREVIEW="false"
+            fi
             echo "Workflow dispatch triggered for PR #$PR_NUMBER"
 
             PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref, head_repo_full_name: .head.repo.full_name}')
@@ -699,18 +748,22 @@ jobs:
             HEAD_REF=$(echo "$PR_DATA" | jq -r '.head_ref')
             HEAD_REPO_FULL_NAME=$(echo "$PR_DATA" | jq -r '.head_repo_full_name')
 
-            echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
-            echo "checkout_ref=refs/pull/$PR_NUMBER/merge" >> "$GITHUB_OUTPUT"
-            echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
-            echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
-            echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+            {
+              echo "pr_number=$PR_NUMBER"
+              echo "checkout_ref=refs/pull/$PR_NUMBER/merge"
+              echo "head_sha=$HEAD_SHA"
+              echo "base_sha=$BASE_SHA"
+              echo "head_ref=$HEAD_REF"
+            } >> "$GITHUB_OUTPUT"
             if [[ "$HEAD_REPO_FULL_NAME" == "$REPOSITORY" ]]; then
               echo "is_same_repo=true" >> "$GITHUB_OUTPUT"
             else
               echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
             fi
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "should_run=true"
+              echo "is_force_preview=$FORCE_PREVIEW"
+            } >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -720,11 +773,13 @@ jobs:
           HEAD_REF="$HEAD_REF_FROM_EVENT"
           HEAD_REPO_FULL_NAME="$HEAD_REPO_FULL_NAME_FROM_EVENT"
 
-          echo "pr_number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
-          echo "checkout_ref=refs/pull/$PR_NUMBER/merge" >> "$GITHUB_OUTPUT"
-          echo "head_sha=$HEAD_SHA" >> "$GITHUB_OUTPUT"
-          echo "base_sha=$BASE_SHA" >> "$GITHUB_OUTPUT"
-          echo "head_ref=$HEAD_REF" >> "$GITHUB_OUTPUT"
+          {
+            echo "pr_number=$PR_NUMBER"
+            echo "checkout_ref=refs/pull/$PR_NUMBER/merge"
+            echo "head_sha=$HEAD_SHA"
+            echo "base_sha=$BASE_SHA"
+            echo "head_ref=$HEAD_REF"
+          } >> "$GITHUB_OUTPUT"
           if [[ "$HEAD_REPO_FULL_NAME" == "$REPOSITORY" ]]; then
             echo "is_same_repo=true" >> "$GITHUB_OUTPUT"
           else
@@ -735,27 +790,39 @@ jobs:
             LABEL_NAME="$LABEL_NAME_FROM_EVENT"
             echo "Label added: $LABEL_NAME"
             if [[ "$LABEL_NAME" == "force-preview" ]]; then
-              echo "should_run=true" >> "$GITHUB_OUTPUT"
-              echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+              {
+                echo "should_run=true"
+                echo "is_force_preview=true"
+              } >> "$GITHUB_OUTPUT"
             elif [[ "$LABEL_NAME" == "preview" ]]; then
-              echo "should_run=true" >> "$GITHUB_OUTPUT"
-              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+              {
+                echo "should_run=true"
+                echo "is_force_preview=false"
+              } >> "$GITHUB_OUTPUT"
             else
-              echo "should_run=false" >> "$GITHUB_OUTPUT"
-              echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+              {
+                echo "should_run=false"
+                echo "is_force_preview=false"
+              } >> "$GITHUB_OUTPUT"
             fi
             exit 0
           fi
 
           if [[ "$HAS_FORCE_PREVIEW_LABEL" == "true" ]]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "is_force_preview=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "should_run=true"
+              echo "is_force_preview=true"
+            } >> "$GITHUB_OUTPUT"
           elif [[ "$HAS_PREVIEW_LABEL" == "true" ]]; then
-            echo "should_run=true" >> "$GITHUB_OUTPUT"
-            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "should_run=true"
+              echo "is_force_preview=false"
+            } >> "$GITHUB_OUTPUT"
           else
-            echo "should_run=false" >> "$GITHUB_OUTPUT"
-            echo "is_force_preview=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "should_run=false"
+              echo "is_force_preview=false"
+            } >> "$GITHUB_OUTPUT"
           fi
 
   head-branch-gate:
@@ -826,9 +893,11 @@ jobs:
           fi
 
           if [[ "$EVENT_NAME" == "workflow_dispatch" || "$EVENT_ACTION" == "labeled" ]]; then
-            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
-            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
-            echo "comparison_sha=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
+            {
+              echo "is_new_commit=false"
+              echo "is_force_push=false"
+              echo "comparison_sha=$PR_BASE_SHA"
+            } >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -840,17 +909,22 @@ jobs:
           fi
 
           if [[ "$EVENT_ACTION" == "synchronize" && "$BEFORE_SHA_EXISTS" == "true" && "$BEFORE_SHA" != "$HEAD_SHA" ]] && git merge-base --is-ancestor "$BEFORE_SHA" "$HEAD_SHA"; then
-            echo "is_new_commit=true" >> "$GITHUB_OUTPUT"
-            echo "is_force_push=false" >> "$GITHUB_OUTPUT"
-            echo "comparison_sha=$BEFORE_SHA" >> "$GITHUB_OUTPUT"
+            {
+              echo "is_new_commit=true"
+              echo "is_force_push=false"
+              echo "comparison_sha=$BEFORE_SHA"
+            } >> "$GITHUB_OUTPUT"
           else
             if [[ "$EVENT_ACTION" == "synchronize" ]]; then
-              echo "is_force_push=true" >> "$GITHUB_OUTPUT"
+              IS_FORCE_PUSH="true"
             else
-              echo "is_force_push=false" >> "$GITHUB_OUTPUT"
+              IS_FORCE_PUSH="false"
             fi
-            echo "is_new_commit=false" >> "$GITHUB_OUTPUT"
-            echo "comparison_sha=$PR_BASE_SHA" >> "$GITHUB_OUTPUT"
+            {
+              echo "is_force_push=$IS_FORCE_PUSH"
+              echo "is_new_commit=false"
+              echo "comparison_sha=$PR_BASE_SHA"
+            } >> "$GITHUB_OUTPUT"
           fi
 
   detect-backend-changes:
@@ -918,7 +992,7 @@ jobs:
   build-backend:
     name: Build Backend Image
     needs: [preview-label-gate, detect-backend-changes]
-    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     timeout-minutes: 10
     permissions:
@@ -945,14 +1019,14 @@ jobs:
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+        run: gcloud auth configure-docker "${{ env.REGION }}-docker.pkg.dev"
 
       - name: Set Docker tag
         id: set-tag
         run: |
           IMAGE_SHA="$(git rev-parse HEAD)"
           IMAGE_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api:${IMAGE_SHA}"
-          echo "image_tag=$IMAGE_TAG" >> $GITHUB_OUTPUT
+          echo "image_tag=$IMAGE_TAG" >> "$GITHUB_OUTPUT"
 
       - name: Check if Docker image exists
         id: check-image
@@ -962,12 +1036,12 @@ jobs:
             IMAGE_DETAILS="$(gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" 2>/dev/null)"
             DIGEST="$(echo "$IMAGE_DETAILS" | jq .image_summary.digest)"
             if [[ -n "$DIGEST" && "$DIGEST" != "null" ]]; then
-              echo "exists=true" >> $GITHUB_OUTPUT
+              echo "exists=true" >> "$GITHUB_OUTPUT"
             else
-              echo "exists=false" >> $GITHUB_OUTPUT
+              echo "exists=false" >> "$GITHUB_OUTPUT"
             fi
           } || {
-            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "exists=false" >> "$GITHUB_OUTPUT"
           }
 
       - name: Set up Docker Buildx
@@ -998,14 +1072,16 @@ jobs:
             exit 1
           fi
           NEW_IMAGE="${IMAGE_BASE}@${DIGEST}"
-          echo "image_digest=$DIGEST" >> $GITHUB_OUTPUT
-          echo "new_image=$NEW_IMAGE" >> $GITHUB_OUTPUT
+          {
+            echo "image_digest=$DIGEST"
+            echo "new_image=$NEW_IMAGE"
+          } >> "$GITHUB_OUTPUT"
 
   prepare-database:
     name: Prepare Preview DB
     timeout-minutes: 5
     needs: [preview-label-gate, detect-backend-changes]
-    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
       branch_id: ${{ steps.branch-name.outputs.branch_id }}
@@ -1033,21 +1109,24 @@ jobs:
 
       - name: Set Neon branch name
         id: branch-name
-        run: echo "branch_id=pr-${{ needs.preview-label-gate.outputs.pr_number }}" >> $GITHUB_OUTPUT
+        run: echo "branch_id=pr-${{ needs.preview-label-gate.outputs.pr_number }}" >> "$GITHUB_OUTPUT"
 
       - name: Create Neon branch
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
           BRANCH_ID="${{ steps.branch-name.outputs.branch_id }}"
-          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
-          if [ ! -z "$EXISTING_BRANCH" ]; then
-            ./apps/backend/node_modules/.bin/neonctl branches delete "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" | grep -w "$BRANCH_ID" || true)
+          if [ -n "$EXISTING_BRANCH" ]; then
+            ./apps/backend/node_modules/.bin/neonctl branches delete "$BRANCH_ID" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" --force
           fi
-          ./apps/backend/node_modules/.bin/neonctl branches create --name "$BRANCH_ID" --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+          ./apps/backend/node_modules/.bin/neonctl branches create --name "$BRANCH_ID" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY"
 
       - name: Check for SQL migration changes
         id: check-sql-changes
         run: |
-          echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+          echo "has_sql_changes=true" >> "$GITHUB_OUTPUT"
           # COMPARE_BASE=$(git merge-base ${{ needs.preview-label-gate.outputs.base_sha }} ${{ needs.preview-label-gate.outputs.head_sha }})
           # SQL_FILES=$(git diff --name-only "$COMPARE_BASE" ${{ needs.preview-label-gate.outputs.head_sha }} | grep -E '\.sql$' || true)
           # if [[ -n "$SQL_FILES" ]]; then
@@ -1058,9 +1137,13 @@ jobs:
 
       - name: Get connection string for PR branch
         id: connection-string
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
-          CS=$(./apps/backend/node_modules/.bin/neonctl connection-string --role-name neondb_owner --branch "${{ steps.branch-name.outputs.branch_id }}" --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
-          echo "database_url=$CS" >> $GITHUB_OUTPUT
+          CS=$(./apps/backend/node_modules/.bin/neonctl connection-string --role-name neondb_owner --branch "${{ steps.branch-name.outputs.branch_id }}" --database-name neondb --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY")
+          echo "::add-mask::$CS"
+          echo "database_url=$CS" >> "$GITHUB_OUTPUT"
 
       - name: Run migrations on PR branch
         if: steps.check-sql-changes.outputs.has_sql_changes == 'true'
@@ -1072,7 +1155,7 @@ jobs:
   deploy-preview:
     name: Deploy Backend Preview
     needs: [preview-label-gate, detect-backend-changes, build-backend, prepare-database]
-    if: needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
@@ -1096,9 +1179,13 @@ jobs:
 
       - name: Get connection string for PR branch
         id: connection-string
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
-          CS=$(neonctl connection-string --role-name neondb_owner --branch "${{ needs.prepare-database.outputs.branch_id }}" --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
-          echo "database_url=$CS" >> $GITHUB_OUTPUT
+          CS=$(neonctl connection-string --role-name neondb_owner --branch "${{ needs.prepare-database.outputs.branch_id }}" --database-name neondb --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY")
+          echo "::add-mask::$CS"
+          echo "database_url=$CS" >> "$GITHUB_OUTPUT"
 
       - name: Google Auth
         id: auth
@@ -1176,7 +1263,7 @@ jobs:
           if [[ -z "$REVISION_TAG_URL" ]]; then
             exit 1
           fi
-          echo "revision_tag_url=$REVISION_TAG_URL" >> $GITHUB_OUTPUT
+          echo "revision_tag_url=$REVISION_TAG_URL" >> "$GITHUB_OUTPUT"
 
   deploy-frontend-preview:
     name: "Frontend Preview (Preview Backend)"
@@ -1184,6 +1271,7 @@ jobs:
       [detect, preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview, resolve-backend-preview-context]
     if: |-
       needs.preview-label-gate.outputs.should_run == 'true' &&
+      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       needs.head-branch-gate.outputs.should_run == 'true' &&
       needs.resolve-backend-preview-context.outputs.backend_preview_url != '' &&
       (
@@ -1401,9 +1489,10 @@ jobs:
   publish-preview-results:
     name: Publish Preview Results
     if: |-
-      always() &&
+      !cancelled() &&
       needs.preview-label-gate.outputs.pr_number != '' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+      needs.detect.outputs.resources_only_sync != 'true' &&
       needs.head-branch-gate.outputs.should_run == 'true' &&
       (
         github.event_name == 'workflow_dispatch' ||

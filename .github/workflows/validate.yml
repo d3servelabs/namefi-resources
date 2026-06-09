@@ -4,8 +4,10 @@ on:
   pull_request:
     branches-ignore:
       - prod
-    paths-ignore:
-      - apps/resources/data
+
+permissions:
+  contents: read
+  pull-requests: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -23,17 +25,123 @@ jobs:
   validate:
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     steps:
+      - name: Detect resources-only PR
+        id: resources-only
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (context.eventName !== 'pull_request') {
+              core.setOutput('result', 'false');
+              return;
+            }
+
+            const allowedExactPaths = ['apps/resources/data'];
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            const isAllowedFile = (filename) => allowedExactPaths.includes(filename);
+
+            const resourcesOnly = files.length > 0 && files.every((file) => isAllowedFile(file.filename));
+            core.info(`Changed files: ${files.map((file) => file.filename).join(', ') || '(none)'}`);
+            core.info(`Resources-only PR: ${resourcesOnly}`);
+            core.setOutput('result', resourcesOnly ? 'true' : 'false');
+
+      - name: Checkout repository for resources submodule validation
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          submodules: false
+
+      - name: Ensure resources data submodule moves forward only
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha }}
+          HEAD_REF: ${{ github.event.pull_request.head.sha }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          SUBMODULE_PATH="apps/resources/data"
+
+          # Only the bot-managed sync branch may bypass the forward-only guard;
+          # arbitrary similarly named branches must still be checked.
+          if [[ "$HEAD_BRANCH" == "chore/resources-data/sync" ]]; then
+            echo "Trusted resources data sync branch; allowing explicit submodule pointer updates."
+            exit 0
+          fi
+
+          if ! git cat-file -e "$HEAD_REF^{commit}" 2>/dev/null; then
+            git fetch origin "pull/$PR_NUMBER/head:refs/remotes/origin/pr/$PR_NUMBER/head"
+            HEAD_REF="refs/remotes/origin/pr/$PR_NUMBER/head"
+          fi
+
+          BASE_SHA="$(git ls-tree "$BASE_REF" "$SUBMODULE_PATH" | awk '{print $3}')"
+          HEAD_SHA="$(git ls-tree "$HEAD_REF" "$SUBMODULE_PATH" | awk '{print $3}')"
+
+          if [[ -z "$BASE_SHA" || -z "$HEAD_SHA" ]]; then
+            echo "::error::$SUBMODULE_PATH must remain a git submodule pointer."
+            echo "Base SHA: ${BASE_SHA:-missing}"
+            echo "Head SHA: ${HEAD_SHA:-missing}"
+            exit 1
+          fi
+
+          echo "Base resources data SHA: $BASE_SHA"
+          echo "Head resources data SHA: $HEAD_SHA"
+
+          if [[ "$BASE_SHA" == "$HEAD_SHA" ]]; then
+            echo "Resources data submodule did not change."
+            exit 0
+          fi
+
+          git submodule update --init "$SUBMODULE_PATH"
+          git -C "$SUBMODULE_PATH" fetch origin --tags --prune
+
+          if ! git -C "$SUBMODULE_PATH" cat-file -e "$BASE_SHA^{commit}"; then
+            echo "::error::Base resources data commit $BASE_SHA is not available from the submodule remote."
+            exit 1
+          fi
+
+          if ! git -C "$SUBMODULE_PATH" cat-file -e "$HEAD_SHA^{commit}"; then
+            echo "::error::Head resources data commit $HEAD_SHA is not available from the submodule remote."
+            exit 1
+          fi
+
+          if git -C "$SUBMODULE_PATH" merge-base --is-ancestor "$BASE_SHA" "$HEAD_SHA"; then
+            echo "Resources data submodule moves forward."
+            exit 0
+          fi
+
+          echo "::error::$SUBMODULE_PATH walks backward from $BASE_SHA to $HEAD_SHA."
+          exit 1
+
+      - name: Skip resources-only PR
+        if: steps.resources-only.outputs.result == 'true'
+        run: echo "Resources-only PR; skipping full validation."
+
       - uses: actions/checkout@v5
+        if: steps.resources-only.outputs.result != 'true'
         with:
           fetch-depth: 0
           submodules: recursive
 
       - name: Setup Bun
+        if: steps.resources-only.outputs.result != 'true'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
+        if: steps.resources-only.outputs.result != 'true'
         uses: actions/cache@v5
         with:
           path: |
@@ -41,15 +149,18 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
 
       - name: Install dependencies
+        if: steps.resources-only.outputs.result != 'true'
         run: |
           # required because infisical binary is not linked on the first run
           bun install --frozen-lockfile
           bun install --frozen-lockfile
 
       - name: Run validation of secrets
+        if: steps.resources-only.outputs.result != 'true'
         run: bun validate:secrets
         env:
           INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_SERVICE_TOKEN }}
 
       - name: Run validation
+        if: steps.resources-only.outputs.result != 'true'
         run: bun validate

@@ -431,51 +431,9 @@ jobs:
           echo "✅ Version bump committed and pushed successfully"
           echo "   Commit SHA: $COMMIT_SHA"
 
-  create-release-tag:
-    name: Create Release Tag
-    needs: [auth-namefi-bot, update-versions]
-    runs-on: ubuntu-latest
-    outputs:
-      tag_name: ${{ steps.create-tag.outputs.tag_name }}
-    steps:
-      - name: Create Release Tag
-        id: create-tag
-        run: |
-          TAG_NAME="astra/v${{ needs.update-versions.outputs.backend_version }}"
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-          echo "✅ Created release tag: $TAG_NAME"
-      # - uses: actions/create-github-app-token@v2
-      #   id: app-token
-      #   with:
-      #     app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
-      #     private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
-
-      # - name: Checkout repository
-      #   uses: actions/checkout@v5
-      #   with:
-      #     token: ${{ steps.app-token.outputs.token }}
-      #     fetch-depth: 0
-      #     ref: ${{ needs.update-versions.outputs.commit_sha }}
-
-      # - name: Configure git
-      #   run: |
-      #     git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
-      #     git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
-
-      # - name: Create Release Tag
-      #   id: create-tag
-      #   run: |
-      #     TAG_NAME="astra/v${{ needs.update-versions.outputs.backend_version }}"
-
-      #     git tag -a "$TAG_NAME" -m "Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}"
-      #     git push origin "$TAG_NAME"
-
-      #     echo "✅ Created release tag: $TAG_NAME"
-      #     echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
-
   create-pull-request:
     name: Create Pull Request
-    needs: [auth-namefi-bot, check-deployment-status, update-versions, create-release-tag]
+    needs: [auth-namefi-bot, check-deployment-status, update-versions]
     runs-on: ubuntu-latest
     if: ${{ vars.CREATE_RELEASE_PR == 'true' }}
     outputs:
@@ -599,7 +557,6 @@ jobs:
       - auth-namefi-bot
       - check-deployment-status
       - update-versions
-      - create-release-tag
       - create-pull-request
       - enable-auto-merge
     if: always()
@@ -709,9 +666,9 @@ jobs:
           fi
 
           # Release tag
-          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
+          if [[ -n "${{ needs.update-versions.outputs.tag_name }}" ]]; then
             echo "### Release Tag" >> $GITHUB_STEP_SUMMARY
-            echo "- **Tag**: \`${{ needs.create-release-tag.outputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "- **Tag**: \`${{ needs.update-versions.outputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
           fi
 

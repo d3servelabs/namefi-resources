@@ -4,9 +4,11 @@ on:
   pull_request:
     branches-ignore:
       - prod
-    paths-ignore:
-      - apps/resources/data
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -20,8 +22,43 @@ env:
   TURBO_CHECKERROR_CONCURRENCY: 8
 
 jobs:
+  detect-resources-only:
+    name: Detect Resources-only PR
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.resources-only.outputs.result }}
+    steps:
+      - name: Detect resources-only PR
+        id: resources-only
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (context.eventName !== 'pull_request') {
+              core.setOutput('result', 'false');
+              return;
+            }
+
+            const allowedExactPaths = ['apps/resources/data'];
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            const isAllowedFile = (filename) => allowedExactPaths.includes(filename);
+
+            const resourcesOnly = files.length > 0 && files.every((file) => isAllowedFile(file.filename));
+            core.info(`Changed files: ${files.map((file) => file.filename).join(', ') || '(none)'}`);
+            core.info(`Resources-only PR: ${resourcesOnly}`);
+            core.setOutput('result', resourcesOnly ? 'true' : 'false');
+
   validate-workflow-exports:
     name: Validate Workflow Exports
+    needs: detect-resources-only
+    if: needs.detect-resources-only.outputs.result != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     steps:
       - name: Checkout code
@@ -50,6 +87,8 @@ jobs:
 
   test-workflow-bundling:
     name: Test Workflow Bundling
+    needs: detect-resources-only
+    if: needs.detect-resources-only.outputs.result != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     steps:
       - name: Checkout code
@@ -80,7 +119,7 @@ jobs:
   summary:
     name: Workflow Validation Summary
     runs-on: ubuntu-latest
-    needs: [validate-workflow-exports, test-workflow-bundling]
+    needs: [detect-resources-only, validate-workflow-exports, test-workflow-bundling]
     if: always()
     steps:
       - name: Check validation results
@@ -90,9 +129,17 @@ jobs:
 
           export_result="${{ needs.validate-workflow-exports.result }}"
           bundle_result="${{ needs.test-workflow-bundling.result }}"
+          resources_only="${{ needs.detect-resources-only.outputs.result }}"
 
+          echo "📦 Resources-only: $resources_only"
           echo "✅ Workflow Exports: $export_result"
           echo "🧪 Workflow Bundling: $bundle_result"
+
+          if [[ "$resources_only" == "true" ]]; then
+            echo ""
+            echo "ℹ️ Resources-only PR; skipping workflow export and bundling validation."
+            exit 0
+          fi
 
           if [[ "$export_result" == "cancelled" ]] || [[ "$bundle_result" == "cancelled" ]]; then
             echo ""

@@ -12,6 +12,11 @@ on:
           - squash
           - merge
           - rebase
+      forceRelease:
+        description: 'Force release even if no changes detected in apps/resources'
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Run daily at 11:00 UTC
     - cron: '0 11 * * *'
@@ -19,7 +24,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
-  actions: read
+  actions: write
   checks: read
 
 jobs:
@@ -33,33 +38,251 @@ jobs:
       - name: Check Configuration
         id: check
         run: |
+          write_summary() {
+            printf '%s\n' "$@" >> "$GITHUB_STEP_SUMMARY"
+          }
+
           # For manual triggers, always proceed
           if [ "${{ github.event_name }}" != "schedule" ]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "should-deploy=true" >> "$GITHUB_OUTPUT"
             echo "✅ Manual trigger detected, proceeding with release"
             exit 0
           fi
 
-          # For scheduled triggers, check AUTO_DEPLOY variable
-          AUTO_DEPLOY="${{ vars.AUTO_DEPLOY || 'false' }}"
+          # For scheduled triggers, check the resources-specific flag first.
+          # AUTO_DEPLOY remains a backward-compatible fallback shared with Astra.
+          AUTO_DEPLOY="${{ vars.AUTO_DEPLOY_RESOURCES || vars.AUTO_DEPLOY || 'false' }}"
 
           if [ "$AUTO_DEPLOY" = "true" ]; then
-            echo "should-deploy=true" >> $GITHUB_OUTPUT
+            echo "should-deploy=true" >> "$GITHUB_OUTPUT"
             echo "✅ Auto-deploy is enabled, proceeding with scheduled release"
           else
-            echo "should-deploy=false" >> $GITHUB_OUTPUT
-            echo "❌ Auto-deploy is disabled (AUTO_DEPLOY=$AUTO_DEPLOY)"
-            echo "## ⏭️ Scheduled Release Skipped" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Auto-deploy is disabled. To enable scheduled releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "This workflow was triggered by the daily schedule (11:00 UTC) but will not create a release." >> $GITHUB_STEP_SUMMARY
+            echo "should-deploy=false" >> "$GITHUB_OUTPUT"
+            echo "❌ Auto-deploy is disabled (AUTO_DEPLOY_RESOURCES/AUTO_DEPLOY=$AUTO_DEPLOY)"
+            write_summary \
+              "## ⏭️ Scheduled Release Skipped" \
+              "" \
+              "Auto-deploy is disabled. To enable scheduled resources releases, set the repository variable \`AUTO_DEPLOY_RESOURCES=true\`." \
+              "If unset, this workflow falls back to \`AUTO_DEPLOY=true\` for compatibility with Astra releases." \
+              "" \
+              "This workflow was triggered by the daily schedule (11:00 UTC) but will not create a release."
+          fi
+
+  detect-changes:
+    name: Detect Changes in Resources
+    needs: check-auto-deploy
+    if: needs.check-auto-deploy.outputs.should-deploy == 'true'
+    runs-on: 'blacksmith-4vcpu-ubuntu-2204'
+    outputs:
+      should-release: ${{ steps.check-changes.outputs.should-release }}
+      changed-packages: ${{ steps.detect.outputs.changed-packages }}
+      has-resources-changes: ${{ steps.check-changes.outputs.has-resources-changes }}
+      release-mode: ${{ steps.check-changes.outputs.release-mode }}
+      existing-release-tag: ${{ steps.get-tag.outputs.latest-tag }}
+      existing-release-sha: ${{ steps.get-tag.outputs.latest-tag-sha }}
+      retry-existing-release: ${{ steps.latest-prod.outputs.retry-existing-release }}
+      retry-dispatch-required: ${{ steps.latest-prod.outputs.retry-dispatch-required }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Get latest resources release tag
+        id: get-tag
+        run: |
+          # Get the latest astra resources release tag.
+          LATEST_TAG=$(git tag -l 'astra-resources/v*' --sort=-version:refname | head -n 1)
+          if [ -z "$LATEST_TAG" ]; then
+            echo "No previous resources release tag found, will proceed with release"
+            {
+              echo "first-release=true"
+              echo "latest-tag="
+              echo "latest-tag-sha="
+              echo "base-ref=HEAD^"
+            } >> "$GITHUB_OUTPUT"
+          else
+            LATEST_TAG_SHA="$(git rev-list -n 1 "$LATEST_TAG")"
+            echo "Latest resources release tag: $LATEST_TAG"
+            echo "Latest resources release SHA: $LATEST_TAG_SHA"
+            {
+              echo "first-release=false"
+              echo "latest-tag=$LATEST_TAG"
+              echo "latest-tag-sha=$LATEST_TAG_SHA"
+              echo "base-ref=$LATEST_TAG"
+            } >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check latest tag production deployment
+        id: latest-prod
+        uses: actions/github-script@v8
+        env:
+          LATEST_TAG: ${{ steps.get-tag.outputs.latest-tag }}
+          LATEST_TAG_SHA: ${{ steps.get-tag.outputs.latest-tag-sha }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const tagName = process.env.LATEST_TAG;
+            const tagSha = process.env.LATEST_TAG_SHA;
+
+            const setRetry = (reason, dispatchRequired = true, runUrl = '', conclusion = '') => {
+              core.info(`Latest resources release needs production retry: ${reason}`);
+              core.setOutput('retry-existing-release', 'true');
+              core.setOutput('retry-dispatch-required', dispatchRequired ? 'true' : 'false');
+              core.setOutput('retry-reason', reason);
+              core.setOutput('production-run-url', runUrl);
+              core.setOutput('production-deploy-conclusion', conclusion);
+            };
+
+            const setReady = (runUrl = '') => {
+              core.info('Latest resources release already has a successful production deploy.');
+              core.setOutput('retry-existing-release', 'false');
+              core.setOutput('retry-dispatch-required', 'false');
+              core.setOutput('retry-reason', '');
+              core.setOutput('production-run-url', runUrl);
+              core.setOutput('production-deploy-conclusion', 'success');
+            };
+
+            if (!tagName || !tagSha) {
+              core.info('No previous resources release tag found; no production retry candidate.');
+              setReady();
+              return;
+            }
+
+            const runs = await github.paginate(
+              github.rest.actions.listWorkflowRuns,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'deploy-resources.yml',
+                per_page: 100,
+              },
+              (response) => response.data.workflow_runs,
+            );
+
+            const matchingRuns = runs
+              .filter((run) => run.head_sha === tagSha && run.head_branch === tagName)
+              .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+            const run = matchingRuns[0];
+
+            if (!run) {
+              setRetry('no_production_deploy_found');
+              return;
+            }
+
+            core.info(`Latest production deploy run: ${run.html_url}`);
+            core.info(`Status: ${run.status}, conclusion: ${run.conclusion || '(pending)'}`);
+
+            if (run.status !== 'completed') {
+              setRetry('production_deploy_in_progress', false, run.html_url, run.conclusion || 'pending');
+              return;
+            }
+
+            const jobs = await github.paginate(
+              github.rest.actions.listJobsForWorkflowRun,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run.id,
+                per_page: 100,
+              },
+              (response) => response.data.jobs,
+            );
+            const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
+
+            if (deployJob?.conclusion === 'success') {
+              setReady(run.html_url);
+              return;
+            }
+
+            setRetry(
+              'production_deploy_failed',
+              true,
+              run.html_url,
+              deployJob?.conclusion || run.conclusion || 'unknown',
+            );
+
+      - name: Detect changed packages
+        id: detect
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          base-ref: ${{ steps.get-tag.outputs.base-ref }}
+          head-ref: ${{ github.sha }}
+          packages: "@namefi-astra/resources"
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
+
+      - name: Check for resources changes
+        id: check-changes
+        run: |
+          write_summary() {
+            printf '%s\n' "$@" >> "$GITHUB_STEP_SUMMARY"
+          }
+
+          FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
+          FIRST_RELEASE="${{ steps.get-tag.outputs.first-release }}"
+          HAS_RESOURCES_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/resources') }}"
+          RETRY_EXISTING_RELEASE="${{ steps.latest-prod.outputs.retry-existing-release }}"
+
+          echo "Force release: $FORCE_RELEASE"
+          echo "First release: $FIRST_RELEASE"
+          echo "Changed packages: ${{ steps.detect.outputs.changed-packages }}"
+          echo "Has resources changes: $HAS_RESOURCES_CHANGES"
+          echo "Retry existing release: $RETRY_EXISTING_RELEASE"
+
+          echo "has-resources-changes=$HAS_RESOURCES_CHANGES" >> "$GITHUB_OUTPUT"
+
+          if [ "$RETRY_EXISTING_RELEASE" == "true" ] && [ "$HAS_RESOURCES_CHANGES" != "true" ]; then
+            echo "Latest resources release tag needs production retry; reusing existing release."
+            echo "should-release=true" >> "$GITHUB_OUTPUT"
+            echo "release-mode=retry-existing" >> "$GITHUB_OUTPUT"
+          elif [ "$FORCE_RELEASE" == "true" ]; then
+            echo "Force release enabled, proceeding with resources release"
+            echo "should-release=true" >> "$GITHUB_OUTPUT"
+            echo "release-mode=new" >> "$GITHUB_OUTPUT"
+          elif [ "$FIRST_RELEASE" == "true" ]; then
+            echo "No previous resources release tag found, proceeding with initial release"
+            echo "should-release=true" >> "$GITHUB_OUTPUT"
+            echo "release-mode=new" >> "$GITHUB_OUTPUT"
+          elif [ "$HAS_RESOURCES_CHANGES" == "true" ]; then
+            echo "Changes detected in resources, proceeding with release"
+            echo "should-release=true" >> "$GITHUB_OUTPUT"
+            echo "release-mode=new" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes detected in resources, skipping release"
+            echo "should-release=false" >> "$GITHUB_OUTPUT"
+            echo "release-mode=skip" >> "$GITHUB_OUTPUT"
+            write_summary \
+              "## ⏭️ Release Skipped - No Changes" \
+              "" \
+              "No changes were detected in \`apps/resources\` since the last resources release." \
+              "" \
+              "To force a release anyway, trigger the workflow manually with \`forceRelease: true\`"
           fi
 
   auth-namefi-bot:
     name: Get NameFi Bot Info
-    needs: check-auto-deploy
-    if: needs.check-auto-deploy.outputs.should-deploy == 'true'
+    needs: [check-auto-deploy, detect-changes]
+    if: needs.check-auto-deploy.outputs.should-deploy == 'true' && needs.detect-changes.outputs.should-release == 'true'
     runs-on: ubuntu-latest
     outputs:
       app-slug: ${{ steps.app-token.outputs.app-slug }}
@@ -79,12 +302,13 @@ jobs:
 
   update-versions:
     name: Update Package Versions
-    needs: [auth-namefi-bot]
+    needs: [auth-namefi-bot, detect-changes]
     runs-on: 'blacksmith-4vcpu-ubuntu-2204'
     outputs:
-      resources_version: ${{ steps.version.outputs.resources_version }}
-      old_resources_version: ${{ steps.version.outputs.old_resources_version }}
-      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      resources_version: ${{ steps.existing-release.outputs.resources_version || steps.version.outputs.resources_version }}
+      old_resources_version: ${{ steps.existing-release.outputs.old_resources_version || steps.version.outputs.old_resources_version }}
+      commit_sha: ${{ steps.existing-release.outputs.commit_sha || steps.commit.outputs.commit_sha }}
+      tag_name: ${{ steps.existing-release.outputs.tag_name || steps.commit.outputs.tag_name }}
     steps:
       - uses: actions/create-github-app-token@v2
         id: app-token
@@ -99,8 +323,38 @@ jobs:
           fetch-depth: 0
           submodules: recursive
 
+      - name: Resolve existing release retry
+        id: existing-release
+        if: needs.detect-changes.outputs.release-mode == 'retry-existing'
+        shell: bash
+        env:
+          TAG_NAME: ${{ needs.detect-changes.outputs.existing-release-tag }}
+          COMMIT_SHA: ${{ needs.detect-changes.outputs.existing-release-sha }}
+        run: |
+          set -euo pipefail
+
+          git fetch --tags origin
+
+          RESOURCES_VERSION="${TAG_NAME#astra-resources/v}"
+          if PACKAGE_JSON="$(git show "$COMMIT_SHA:apps/resources/package.json" 2>/dev/null)"; then
+            PACKAGE_VERSION="$(jq -r '.version // empty' <<<"$PACKAGE_JSON")"
+            if [[ -n "$PACKAGE_VERSION" ]]; then
+              RESOURCES_VERSION="$PACKAGE_VERSION"
+            fi
+          fi
+
+          {
+            echo "resources_version=$RESOURCES_VERSION"
+            echo "old_resources_version=$RESOURCES_VERSION"
+            echo "commit_sha=$COMMIT_SHA"
+            echo "tag_name=$TAG_NAME"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "Reusing existing resources release $TAG_NAME at $COMMIT_SHA"
+
       - name: Read and increment versions
         id: version
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         uses: actions/github-script@v8
         with:
           script: |
@@ -146,6 +400,7 @@ jobs:
             core.setOutput('old_resources_version', oldResourcesVersion);
 
       - name: Update package versions
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         uses: actions/github-script@v8
         with:
           script: |
@@ -162,11 +417,13 @@ jobs:
             console.log(`✅ Updated resources version to ${resourcesVersion}`);
       
       - name: Setup Bun
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         uses: actions/cache@v5
         with:
           path: |
@@ -174,21 +431,25 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
 
       - name: Install dependencies
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         run: |
           bun install # required to update bun.lock
       
       - name: Format Resources files
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         run: |
           bun biome format --write ./apps/resources || true
           bunx sherif@latest -f || true
 
       - name: Configure git
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         run: |
           git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
           git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
 
       - name: Commit version changes
         id: commit
+        if: needs.detect-changes.outputs.release-mode != 'retry-existing'
         run: |
           echo "📝 Committing version changes..."
 
@@ -196,6 +457,7 @@ jobs:
 
           # Create commit message
           COMMIT_MESSAGE="chore(v${{ steps.version.outputs.resources_version }}): resources ${{ steps.version.outputs.resources_version }}"
+          TAG_NAME="astra-resources/v${{ steps.version.outputs.resources_version }}"
 
           git commit -m "$COMMIT_MESSAGE"
 
@@ -203,21 +465,27 @@ jobs:
 
           # Push to main
           echo "🚀 Pushing to main branch..."
-          git push origin main
+          git push origin HEAD:main
 
           # Get the commit SHA
           COMMIT_SHA=$(git rev-parse HEAD)
-          echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "commit_sha=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
 
           echo "✅ Version bump committed and pushed successfully"
           echo "   Commit SHA: $COMMIT_SHA"
 
-  create-release-tag:
-    name: Create Release Tag
+  wait-version-dev-deploy:
+    name: Wait for Version Dev Deploy
     needs: [auth-namefi-bot, update-versions]
     runs-on: ubuntu-latest
     outputs:
-      tag_name: ${{ steps.create-tag.outputs.tag_name }}
+      deployment_run_url: ${{ steps.wait-deploy.outputs.deployment_run_url }}
+      deployment_run_id: ${{ steps.wait-deploy.outputs.deployment_run_id }}
+      deployment_sha: ${{ steps.wait-deploy.outputs.deployment_sha }}
+      failure_reason: ${{ steps.wait-deploy.outputs.failure_reason }}
+      failed_deployment_url: ${{ steps.wait-deploy.outputs.failed_deployment_url }}
+      failed_deployment_conclusion: ${{ steps.wait-deploy.outputs.failed_deployment_conclusion }}
     steps:
       - uses: actions/create-github-app-token@v2
         id: app-token
@@ -225,86 +493,396 @@ jobs:
           app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
           private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
 
-      - name: Checkout repository
+      - name: Wait for Deploy Resources Workflow Status
+        id: wait-deploy
+        uses: actions/github-script@v8
+        env:
+          TARGET_SHA: ${{ needs.update-versions.outputs.commit_sha }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const targetSha = process.env.TARGET_SHA;
+            const timeoutMs = 20 * 60 * 1000;
+            const pollIntervalMs = 15 * 1000;
+            const deadline = Date.now() + timeoutMs;
+
+            console.log(`🔍 Waiting for Deploy Resources dev deployment on main at ${targetSha}...`);
+
+            while (Date.now() < deadline) {
+              const runs = await github.paginate(
+                github.rest.actions.listWorkflowRuns,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'deploy-resources.yml',
+                  branch: 'main',
+                  event: 'push',
+                  per_page: 100,
+                },
+                (response) => response.data.workflow_runs,
+              );
+
+              const matchingRuns = runs
+                .filter((run) => run.head_sha === targetSha)
+                .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+              const run = matchingRuns[0];
+
+              if (!run) {
+                console.log(`No Deploy Resources run found yet for ${targetSha}; waiting...`);
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+                continue;
+              }
+
+              console.log(`Found workflow run: ${run.html_url}`);
+              console.log(`Status: ${run.status}, conclusion: ${run.conclusion || '(pending)'}`);
+
+              if (run.status !== 'completed') {
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+                continue;
+              }
+
+              const jobs = await github.paginate(
+                github.rest.actions.listJobsForWorkflowRun,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id,
+                  per_page: 100,
+                },
+                (response) => response.data.jobs,
+              );
+              const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
+
+              if (run.conclusion !== 'success' || deployJob?.conclusion !== 'success') {
+                core.setFailed(`❌ Deploy Resources did not succeed for ${targetSha}: ${run.html_url}`);
+                core.setOutput('failure_reason', 'deployment_failed');
+                core.setOutput('failed_deployment_url', run.html_url);
+                core.setOutput('failed_deployment_conclusion', deployJob?.conclusion || run.conclusion || 'unknown');
+                return;
+              }
+
+              console.log('✅ Deploy Resources dev deployment succeeded for the exact version commit.');
+              core.setOutput('deployment_run_url', run.html_url);
+              core.setOutput('deployment_run_id', String(run.id));
+              core.setOutput('deployment_sha', run.head_sha);
+              return;
+            }
+
+            core.setFailed(`❌ Timed out waiting for Deploy Resources dev deployment on main at ${targetSha}.`);
+            core.setOutput('failure_reason', 'no_deployment_found');
+
+  push-release-tag:
+    name: Push Release Tag
+    needs: [auth-namefi-bot, detect-changes, update-versions, wait-version-dev-deploy]
+    runs-on: ubuntu-latest
+    outputs:
+      tag_name: ${{ steps.push-tag.outputs.tag_name }}
+      production_dispatch_started_at: ${{ steps.dispatch-production-retry.outputs.started_at }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Checkout version commit
         uses: actions/checkout@v5
         with:
           token: ${{ steps.app-token.outputs.token }}
-          fetch-depth: 0
-          submodules: recursive
           ref: ${{ needs.update-versions.outputs.commit_sha }}
+          fetch-depth: 0
 
       - name: Configure git
         run: |
           git config --global user.name '${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]'
           git config --global user.email '${{ needs.auth-namefi-bot.outputs.user-id }}+${{ needs.auth-namefi-bot.outputs.app-slug }}[bot]@users.noreply.github.com'
 
-      - name: Create Release Tag
-        id: create-tag
+      - name: Push resources release tag
+        id: push-tag
+        shell: bash
+        env:
+          TAG_NAME: ${{ needs.update-versions.outputs.tag_name }}
+          TARGET_SHA: ${{ needs.update-versions.outputs.commit_sha }}
+          RESOURCES_VERSION: ${{ needs.update-versions.outputs.resources_version }}
         run: |
-          TAG_NAME="astra-resources/v${{ needs.update-versions.outputs.resources_version }}"
+          set -euo pipefail
 
-          git tag -a "$TAG_NAME" -m "Release: resources ${{ needs.update-versions.outputs.resources_version }}"
-          git push origin "$TAG_NAME"
+          git fetch --tags origin
 
-          echo "✅ Created release tag: $TAG_NAME"
-          echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+          if git show-ref --tags --quiet --verify "refs/tags/$TAG_NAME"; then
+            EXISTING_SHA="$(git rev-list -n 1 "$TAG_NAME")"
+            if [[ "$EXISTING_SHA" != "$TARGET_SHA" ]]; then
+              echo "Tag $TAG_NAME already exists at $EXISTING_SHA, expected $TARGET_SHA" >&2
+              exit 1
+            fi
+
+            echo "Release tag already exists at the version commit: $TAG_NAME"
+          else
+            git tag -a "$TAG_NAME" -m "Release: resources $RESOURCES_VERSION" "$TARGET_SHA"
+            git push origin "refs/tags/$TAG_NAME"
+            echo "✅ Pushed release tag: $TAG_NAME"
+          fi
+
+          echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Dispatch production retry
+        id: dispatch-production-retry
+        if: needs.detect-changes.outputs.release-mode == 'retry-existing' && needs.detect-changes.outputs.retry-dispatch-required == 'true'
+        uses: actions/github-script@v8
+        env:
+          TAG_NAME: ${{ needs.update-versions.outputs.tag_name }}
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const tagName = process.env.TAG_NAME;
+            const startedAt = new Date().toISOString();
+
+            core.info(`Dispatching production Deploy Resources retry for ${tagName}`);
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy-resources.yml',
+              ref: tagName,
+              inputs: {
+                environment: 'production',
+              },
+            });
+
+            core.setOutput('started_at', startedAt);
+
+  wait-production-deploy:
+    name: Wait for Production Deploy
+    needs: [auth-namefi-bot, update-versions, push-release-tag]
+    runs-on: ubuntu-latest
+    outputs:
+      deployment_run_url: ${{ steps.wait-deploy.outputs.deployment_run_url }}
+      deployment_run_id: ${{ steps.wait-deploy.outputs.deployment_run_id }}
+      deployment_sha: ${{ steps.wait-deploy.outputs.deployment_sha }}
+      failure_reason: ${{ steps.wait-deploy.outputs.failure_reason }}
+      failed_deployment_url: ${{ steps.wait-deploy.outputs.failed_deployment_url }}
+      failed_deployment_conclusion: ${{ steps.wait-deploy.outputs.failed_deployment_conclusion }}
+    steps:
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Wait for production Deploy Resources Workflow Status
+        id: wait-deploy
+        uses: actions/github-script@v8
+        env:
+          TARGET_SHA: ${{ needs.update-versions.outputs.commit_sha }}
+          TAG_NAME: ${{ needs.push-release-tag.outputs.tag_name }}
+          MIN_CREATED_AT: ${{ needs.push-release-tag.outputs.production_dispatch_started_at }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const targetSha = process.env.TARGET_SHA;
+            const tagName = process.env.TAG_NAME;
+            const minCreatedAt = Date.parse(process.env.MIN_CREATED_AT || '');
+            const timeoutMs = 20 * 60 * 1000;
+            const pollIntervalMs = 15 * 1000;
+            const deadline = Date.now() + timeoutMs;
+
+            console.log(`🔍 Waiting for Deploy Resources production deployment for ${tagName} at ${targetSha}...`);
+
+            while (Date.now() < deadline) {
+              const runs = await github.paginate(
+                github.rest.actions.listWorkflowRuns,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'deploy-resources.yml',
+                  per_page: 100,
+                },
+                (response) => response.data.workflow_runs,
+              );
+
+              const matchingRuns = runs
+                .filter((run) => {
+                  const createdAt = Date.parse(run.created_at || '');
+                  const isAfterDispatch = Number.isNaN(minCreatedAt) || createdAt >= minCreatedAt - 5000;
+
+                  return (
+                    run.head_sha === targetSha &&
+                    run.head_branch === tagName &&
+                    isAfterDispatch &&
+                    (run.event === 'push' || run.event === 'workflow_dispatch')
+                  );
+                })
+                .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+              const run = matchingRuns[0];
+
+              if (!run) {
+                console.log(`No production Deploy Resources run found yet for ${tagName}; waiting...`);
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+                continue;
+              }
+
+              console.log(`Found workflow run: ${run.html_url}`);
+              console.log(`Status: ${run.status}, conclusion: ${run.conclusion || '(pending)'}`);
+
+              if (run.status !== 'completed') {
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+                continue;
+              }
+
+              const jobs = await github.paginate(
+                github.rest.actions.listJobsForWorkflowRun,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  run_id: run.id,
+                  per_page: 100,
+                },
+                (response) => response.data.jobs,
+              );
+              const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
+
+              // Production release success is defined by the critical Vercel
+              // deploy job; summary/notification failures should not force a
+              // duplicate release if the production deploy itself succeeded.
+              if (deployJob?.conclusion !== 'success') {
+                core.setFailed(`❌ Production Deploy Resources did not succeed for ${tagName}: ${run.html_url}`);
+                core.setOutput('failure_reason', 'deployment_failed');
+                core.setOutput('failed_deployment_url', run.html_url);
+                core.setOutput('failed_deployment_conclusion', deployJob?.conclusion || run.conclusion || 'unknown');
+                return;
+              }
+
+              if (run.conclusion !== 'success') {
+                console.log(`Production workflow concluded ${run.conclusion}, but the Vercel deploy job succeeded.`);
+              }
+
+              console.log('✅ Production resources deployment succeeded.');
+              core.setOutput('deployment_run_url', run.html_url);
+              core.setOutput('deployment_run_id', String(run.id));
+              core.setOutput('deployment_sha', run.head_sha);
+              return;
+            }
+
+            core.setFailed(`❌ Timed out waiting for production Deploy Resources deployment for ${tagName}.`);
+            core.setOutput('failure_reason', 'no_deployment_found');
 
   release-summary:
     name: Release Summary
-    needs: [check-auto-deploy, auth-namefi-bot, create-release-tag, update-versions]
+    needs: [check-auto-deploy, detect-changes, auth-namefi-bot, update-versions, wait-version-dev-deploy, push-release-tag, wait-production-deploy]
     if: always()
     runs-on: ubuntu-latest
     steps:
       - name: Generate Release Summary
         run: |
+          write_summary() {
+            printf '%s\n' "$@" >> "$GITHUB_STEP_SUMMARY"
+          }
+
           # Check if release was skipped due to auto-deploy config
           if [[ "${{ needs.check-auto-deploy.outputs.should-deploy }}" != "true" ]]; then
-            echo "## ⏭️ Release Skipped" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "The scheduled release was skipped because auto-deploy is disabled." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "To enable automatic releases, set the repository variable \`AUTO_DEPLOY=true\`" >> $GITHUB_STEP_SUMMARY
+            write_summary \
+              "## ⏭️ Release Skipped" \
+              "" \
+              "The scheduled release was skipped because auto-deploy is disabled." \
+              "" \
+              "To enable scheduled resources releases, set the repository variable \`AUTO_DEPLOY_RESOURCES=true\`."
             exit 0
           fi
 
+          if [[ "${{ needs.detect-changes.outputs.should-release }}" != "true" ]]; then
+            write_summary \
+              "## ⏭️ Release Skipped - No Changes" \
+              "" \
+              "No changes were detected in \`apps/resources\` since the last resources release." \
+              "" \
+              "### Change Detection Results" \
+              "- **Resources changes**: ${{ needs.detect-changes.outputs.has-resources-changes }}" \
+              "- **Changed packages**: \`${{ needs.detect-changes.outputs.changed-packages }}\`" \
+              "" \
+              "To force a release anyway, trigger the workflow manually with \`forceRelease: true\`"
+            exit 0
+          fi
 
           if [[ "${{ needs.update-versions.result }}" == "failure" ]]; then
-            echo "## ❌ Release Failed - Version Update" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Failed to update package versions and commit changes." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Action Required:** Check the workflow logs for details about what went wrong." >> $GITHUB_STEP_SUMMARY
+            write_summary \
+              "## ❌ Release Failed - Version Update" \
+              "" \
+              "Failed to update package versions and commit changes." \
+              "" \
+              "**Action Required:** Check the workflow logs for details about what went wrong."
+            exit 0
+          fi
+
+          if [[ "${{ needs.wait-version-dev-deploy.result }}" == "failure" ]]; then
+            write_summary \
+              "## ❌ Release Failed - Version Dev Deploy" \
+              "" \
+              "The version commit was pushed to main, but its exact resources dev deployment did not succeed." \
+              "" \
+              "- **Version commit**: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" \
+              "- **Failed workflow**: [${{ needs.wait-version-dev-deploy.outputs.failed_deployment_url }}](${{ needs.wait-version-dev-deploy.outputs.failed_deployment_url }})" \
+              "" \
+              "**Action Required:** Fix the dev deployment before pushing the resources release tag."
+            exit 0
+          fi
+
+          if [[ "${{ needs.push-release-tag.result }}" == "failure" ]]; then
+            write_summary \
+              "## ❌ Release Failed - Tag Push" \
+              "" \
+              "The exact version commit deployed successfully to dev, but the resources release tag could not be pushed." \
+              "" \
+              "- **Expected tag**: \`${{ needs.update-versions.outputs.tag_name }}\`" \
+              "- **Version commit**: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})"
+            exit 0
+          fi
+
+          if [[ "${{ needs.wait-production-deploy.result }}" == "failure" ]]; then
+            write_summary \
+              "## ❌ Release Failed - Production Deploy" \
+              "" \
+              "The resources release tag was pushed, but the production deployment did not complete successfully." \
+              "" \
+              "- **Tag**: \`${{ needs.push-release-tag.outputs.tag_name }}\`" \
+              "- **Failed workflow**: [${{ needs.wait-production-deploy.outputs.failed_deployment_url }}](${{ needs.wait-production-deploy.outputs.failed_deployment_url }})" \
+              "" \
+              "**Action Required:** Fix the production Deploy Resources workflow and rerun the release if needed."
             exit 0
           fi
 
           # Success case
-          echo "## 🎉 Release Created Successfully!" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          write_summary \
+            "## 🎉 Release Created and Deployed Successfully!" \
+            ""
 
-          echo "### Release Information" >> $GITHUB_STEP_SUMMARY
-          echo "- **Type**: ${{ github.event_name == 'schedule' && '⏰ Automated (Daily @ 11:00 UTC)' || '🔧 Manual' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled Job' || github.actor }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          write_summary \
+            "### Release Information" \
+            "- **Type**: ${{ github.event_name == 'schedule' && '⏰ Automated (Daily @ 11:00 UTC)' || '🔧 Manual' }}" \
+            "- **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled Job' || github.actor }}" \
+            ""
 
           # Version updates (if available)
           if [[ -n "${{ needs.update-versions.outputs.resources_version }}" ]]; then
-            echo "### Version Updates" >> $GITHUB_STEP_SUMMARY
-            echo "- **Resources**: ${{ needs.update-versions.outputs.old_resources_version }} → ${{ needs.update-versions.outputs.resources_version }}" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+            write_summary \
+              "### Version Updates" \
+              "- **Resources**: ${{ needs.update-versions.outputs.old_resources_version }} → ${{ needs.update-versions.outputs.resources_version }}" \
+              ""
           fi
 
 
           # Release tag
-          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
-            echo "### Release Tag" >> $GITHUB_STEP_SUMMARY
-            echo "- **Tag**: \`${{ needs.create-release-tag.outputs.tag_name }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ -n "${{ needs.push-release-tag.outputs.tag_name }}" ]]; then
+            write_summary \
+              "### Release Tag" \
+              "- **Tag**: \`${{ needs.push-release-tag.outputs.tag_name }}\`" \
+              ""
           fi
 
           # Deployment verification
-          if [[ -n "${{ needs.create-release-tag.outputs.tag_name }}" ]]; then
-            echo "### Pre-release Verification" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ Deploy Resources on main: [Successful](${{ needs.create-release-tag.outputs.tag_name }})" >> $GITHUB_STEP_SUMMARY
-            echo "- ✅ Version commit: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+          if [[ -n "${{ needs.push-release-tag.outputs.tag_name }}" ]]; then
+            write_summary \
+              "### Deployment Verification" \
+              "- ✅ Version commit dev deploy: [Successful](${{ needs.wait-version-dev-deploy.outputs.deployment_run_url }})" \
+              "- ✅ Production deploy: [Successful](${{ needs.wait-production-deploy.outputs.deployment_run_url }})" \
+              "- ✅ Version commit: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" \
+              ""
           fi

@@ -5,7 +5,7 @@ on:
     branches:
       - main    # Regular push to main branch deploys to dev
     tags:
-      - 'astra-resources/v*'  # Tags like astra-resources/v1.0.0 for production deployment
+      - 'astra-resources/v*'  # Release tags deploy to production
   workflow_dispatch:
     inputs:
       environment:
@@ -32,14 +32,14 @@ jobs:
         id: deploy-mode
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "skip-detection=true" >> $GITHUB_OUTPUT
-            echo "reason=manual workflow dispatch" >> $GITHUB_OUTPUT
+            echo "skip-detection=true" >> "$GITHUB_OUTPUT"
+            echo "reason=manual workflow dispatch" >> "$GITHUB_OUTPUT"
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
-            echo "skip-detection=true" >> $GITHUB_OUTPUT
-            echo "reason=tag push" >> $GITHUB_OUTPUT
+            echo "skip-detection=true" >> "$GITHUB_OUTPUT"
+            echo "reason=release tag push" >> "$GITHUB_OUTPUT"
           else
-            echo "skip-detection=false" >> $GITHUB_OUTPUT
-            echo "reason=change detection required" >> $GITHUB_OUTPUT
+            echo "skip-detection=false" >> "$GITHUB_OUTPUT"
+            echo "reason=change detection required" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Checkout repository
@@ -73,7 +73,7 @@ jobs:
         run: |
           # Deploy if:
           # 1. Manual workflow dispatch
-          # 2. Tag push (astra-resources/v*)
+          # 2. Release tag push (astra-resources/v*)
           # 3. Main branch push AND resources has changes
           SKIP_DETECTION="${{ steps.deploy-mode.outputs.skip-detection }}"
           HAS_CHANGES="${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/resources' ) }}"
@@ -81,13 +81,13 @@ jobs:
           echo "Detection mode: ${{ steps.deploy-mode.outputs.reason }}"
 
           if [[ "$SKIP_DETECTION" == "true" ]]; then
-            echo "result=true" >> $GITHUB_OUTPUT
+            echo "result=true" >> "$GITHUB_OUTPUT"
             echo "Deploying without change detection"
           elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" && "$HAS_CHANGES" == "true" ]]; then
-            echo "result=true" >> $GITHUB_OUTPUT
+            echo "result=true" >> "$GITHUB_OUTPUT"
             echo "Deploying: Main branch push with resources changes"
           else
-            echo "result=false" >> $GITHUB_OUTPUT
+            echo "result=false" >> "$GITHUB_OUTPUT"
             echo "Skipping: No relevant changes or trigger"
           fi
 
@@ -101,77 +101,42 @@ jobs:
       label: ${{ steps.compute.outputs.label }}
       vercel_env: ${{ steps.compute.outputs.vercel_env }}
     steps:
-      - name: Checkout repository
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
-          filter: blob:none
-
-      - name: Determine before commit
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        id: determine-before-commit
-        uses: ./.github/actions/determine-before-commit
-
-      - name: Detect content-only change
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        id: content-only
-        run: |
-          # A push is "content-only" when every changed path lives under
-          # apps/resources/data/ (the namefi-resources submodule). Such pushes
-          # are blog/copy bumps and can be auto-promoted straight to prod —
-          # the submodule SHA itself is the audit trail / rollback handle.
-          BEFORE="${{ steps.determine-before-commit.outputs.before-commit }}"
-          HEAD="${{ github.sha }}"
-          CHANGED=$(git diff --name-only "$BEFORE" "$HEAD")
-          echo "Changed files between $BEFORE and $HEAD:"
-          echo "$CHANGED"
-
-          if [[ -z "$CHANGED" ]]; then
-            echo "is_content_only=false" >> $GITHUB_OUTPUT
-            echo "No changed files detected; treating as non-content-only"
-            exit 0
-          fi
-
-          if echo "$CHANGED" | grep -qvE '^apps/resources/data($|/)'; then
-            echo "is_content_only=false" >> $GITHUB_OUTPUT
-            echo "Non-content paths changed; not content-only"
-          else
-            echo "is_content_only=true" >> $GITHUB_OUTPUT
-            echo "All changes are inside apps/resources/data — content-only"
-          fi
-
       - name: Compute environment values
         id: compute
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment || '' }}
+          GITHUB_REF_NAME_FULL: ${{ github.ref }}
         run: |
           # Production triggers:
-          # - Tag push (astra-resources/v*)
-          # - Manual dispatch with environment=production
-          # - Main branch push whose only changes are content (apps/resources/data/**)
-          # Everything else deploys to dev.
+          # - Release tag push (astra-resources/v*).
+          # - Manual dispatch with environment=production from main or a resources release tag.
+          # Main branch pushes, including content-only resources data bumps,
+          # deploy to dev.
 
           IS_PROD="false"
-          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" =~ ^refs/tags/astra-resources/v ]]; then
+          if [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra-resources/v ]]; then
             IS_PROD="true"
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.environment }}" == "production" ]]; then
-            IS_PROD="true"
-          elif [[ "${{ steps.content-only.outputs.is_content_only }}" == "true" ]]; then
+          elif [[ "$EVENT_NAME" == "workflow_dispatch" && "$DEPLOY_ENVIRONMENT" == "production" ]]; then
+            if [[ "$GITHUB_REF_NAME_FULL" != "refs/heads/main" && ! "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra-resources/v ]]; then
+              echo "Manual production resources deployments must be run from refs/heads/main or an astra-resources release tag, got $GITHUB_REF_NAME_FULL" >&2
+              exit 1
+            fi
             IS_PROD="true"
           fi
 
           # Set label (prod or dev)
           if [[ "$IS_PROD" == "true" ]]; then
-            echo "label=prod" >> $GITHUB_OUTPUT
-            echo "vercel_env=production" >> $GITHUB_OUTPUT
+            echo "label=prod" >> "$GITHUB_OUTPUT"
+            echo "vercel_env=production" >> "$GITHUB_OUTPUT"
           else
-            echo "label=dev" >> $GITHUB_OUTPUT
-            echo "vercel_env=dev" >> $GITHUB_OUTPUT
+            echo "label=dev" >> "$GITHUB_OUTPUT"
+            echo "vercel_env=dev" >> "$GITHUB_OUTPUT"
           fi
 
           # Output for debugging
-          echo "Event: ${{ github.event_name }}"
-          echo "Ref: ${{ github.ref }}"
-          echo "Content-only: ${{ steps.content-only.outputs.is_content_only }}"
+          echo "Event: $EVENT_NAME"
+          echo "Ref: $GITHUB_REF_NAME_FULL"
           echo "Is Production: $IS_PROD"
           echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
           echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "dev")"
@@ -179,10 +144,12 @@ jobs:
   # Deploy to Vercel
   deploy-vercel:
     name: Deploy Resources to Vercel
-    needs: [compute-env]
+    needs: compute-env
     runs-on: 'ubuntu-latest'
     outputs:
       deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+      deployment_id: ${{ steps.deploy.outputs.deployment_id }}
+      deployment_state: ${{ steps.inspect.outputs.deployment_state }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -200,22 +167,63 @@ jobs:
 
       - name: Deploy to Vercel
         id: deploy
+        shell: bash
         run: |
+          set -euo pipefail
+
           # Deploy to Vercel - builds on Vercel and automatically routes traffic
           # Use --target=production or --target=dev based on environment
           if [[ "${{ needs.compute-env.outputs.label }}" == "prod" ]]; then
             echo "Deploying to production target"
-            DEPLOYMENT_URL=$(vercel deploy --target=production --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+            DEPLOYMENT_URL="$(vercel deploy --yes --target=production --token="$VERCEL_ACCOUNT_TOKEN" --scope="$VERCEL_ORG_ID" | tail -n 1 | tr -d '\r')"
           else
             echo "Deploying to dev target"
-            DEPLOYMENT_URL=$(vercel deploy --target=dev --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }})
+            DEPLOYMENT_URL="$(vercel deploy --yes --target=dev --token="$VERCEL_ACCOUNT_TOKEN" --scope="$VERCEL_ORG_ID" | tail -n 1 | tr -d '\r')"
           fi
 
-          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+          if [[ -z "$DEPLOYMENT_URL" ]]; then
+            echo "Failed to capture Vercel deployment URL" >&2
+            exit 1
+          fi
+
+          DEPLOYMENT_ID="${DEPLOYMENT_URL#https://}"
+          echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+          echo "deployment_id=$DEPLOYMENT_ID" >> "$GITHUB_OUTPUT"
           echo "Deployment triggered: $DEPLOYMENT_URL"
         env:
+          VERCEL_ACCOUNT_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_RESOURCES_PROJECT_ID }}
+
+      - name: Wait for Vercel deployment readiness
+        id: inspect
+        shell: bash
+        env:
+          VERCEL_ACCOUNT_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          DEPLOYMENT_URL: ${{ steps.deploy.outputs.deployment_url }}
+        run: |
+          set -euo pipefail
+
+          INSPECT_JSON="$(
+            vercel inspect "$DEPLOYMENT_URL" \
+              --wait \
+              --timeout 20m \
+              --format=json \
+              --token="$VERCEL_ACCOUNT_TOKEN" \
+              --scope="$VERCEL_ORG_ID"
+          )"
+
+          READY_STATE="$(jq -r '.readyState // .state // empty' <<<"$INSPECT_JSON")"
+          echo "Vercel deployment state: $READY_STATE"
+
+          if [[ "$READY_STATE" != "READY" ]]; then
+            echo "$INSPECT_JSON" | jq .
+            echo "Vercel deployment did not become READY" >&2
+            exit 1
+          fi
+
+          echo "deployment_state=$READY_STATE" >> "$GITHUB_OUTPUT"
 
       - name: Show Deployment URL
         run: |
@@ -226,7 +234,7 @@ jobs:
   # Summary job
   deployment-summary:
     name: Deployment Summary
-    needs: [compute-env,  deploy-vercel]
+    needs: [compute-env, deploy-vercel]
     if: always()
     runs-on: 'ubuntu-latest'
     steps:
@@ -241,17 +249,18 @@ jobs:
           echo ""
           echo "### Frontend Status:"
           echo "- Vercel Deploy: ${{ needs.deploy-vercel.result }}"
+          echo "- Vercel State: ${{ needs.deploy-vercel.outputs.deployment_state }}"
 
           # Determine overall status
           if [[ "${{ needs.deploy-vercel.result }}" == "success" ]]; then
             echo "### 🎉 Deployment Complete!"
-            echo "status=success" >> $GITHUB_OUTPUT
+            echo "status=success" >> "$GITHUB_OUTPUT"
           elif [[ "${{ needs.deploy-vercel.result }}" == "skipped" ]]; then
             echo "### Deployment skipped"
-            echo "status=skipped" >> $GITHUB_OUTPUT
+            echo "status=skipped" >> "$GITHUB_OUTPUT"
           else
             echo "### ⚠️ Deployment had issues, please check the logs"
-            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "status=failure" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Notify Slack

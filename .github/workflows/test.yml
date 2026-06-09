@@ -6,14 +6,16 @@ on:
     paths-ignore:
       - apps/resources/data
   pull_request:
-    paths-ignore:
-      - apps/resources/data
   workflow_dispatch: # Allow manual triggering from GitHub UI or CLI
     inputs:
       package_filter:
         description: 'Filter for specific package to test (e.g., "@namefi-astra/backend")'
         required: false
         default: ""
+
+permissions:
+  contents: read
+  pull-requests: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -29,17 +31,48 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     steps:
+      - name: Detect resources-only PR
+        id: resources-only
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (context.eventName !== 'pull_request') {
+              core.setOutput('result', 'false');
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            const resourcesOnly =
+              files.length > 0 && files.every((file) => file.filename === 'apps/resources/data');
+            core.info(`Changed files: ${files.map((file) => file.filename).join(', ') || '(none)'}`);
+            core.info(`Resources-only PR: ${resourcesOnly}`);
+            core.setOutput('result', resourcesOnly ? 'true' : 'false');
+
+      - name: Skip resources-only PR
+        if: steps.resources-only.outputs.result == 'true'
+        run: echo "Resources-only PR; skipping tests."
+
       - uses: actions/checkout@v5
+        if: steps.resources-only.outputs.result != 'true'
         with:
           fetch-depth: 0
           submodules: recursive
 
       - name: Setup Bun
+        if: steps.resources-only.outputs.result != 'true'
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: ".bun-version"
 
       - name: Cache bun dependencies
+        if: steps.resources-only.outputs.result != 'true'
         uses: actions/cache@v5
         with:
           path: |
@@ -47,19 +80,23 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
 
       - name: Install dependencies
+        if: steps.resources-only.outputs.result != 'true'
         run: bun install
 
       - name: Setup test environment
+        if: steps.resources-only.outputs.result != 'true'
         run: |
           # Copy the .env.test file to the root directory to ensure it's available for all packages
           cp apps/backend/.env.test .env.test || echo "No .env.test file found"
 
       - name: Run tests with filter and coverage
-        if: ${{ github.event.inputs.package_filter != '' }}
-        run: bun test:coverage --filter="${{ github.event.inputs.package_filter }}"
+        if: ${{ steps.resources-only.outputs.result != 'true' && github.event.inputs.package_filter != '' }}
+        env:
+          PACKAGE_FILTER: ${{ github.event.inputs.package_filter }}
+        run: bun test:coverage --filter="$PACKAGE_FILTER"
 
       - name: Run all tests with coverage
-        if: ${{ github.event.inputs.package_filter == '' }}
+        if: ${{ steps.resources-only.outputs.result != 'true' && github.event.inputs.package_filter == '' }}
         run: bun test:coverage
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -68,6 +105,6 @@ jobs:
           slug: d3servelabs/namefi-astra
           fail_ci_if_error: false
           verbose: true
-        if: ${{ env.CODECOV_TOKEN != '' }}
+        if: ${{ steps.resources-only.outputs.result != 'true' && env.CODECOV_TOKEN != '' }}
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

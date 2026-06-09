@@ -44,38 +44,119 @@ jobs:
 
       - name: Determine target ref
         id: target
+        env:
+          RAW_TARGET_REF: ${{ github.event.client_payload.sha || github.event.client_payload.ref || github.event.inputs.sha || github.event.inputs.ref || 'main' }}
         run: |
-          REF_INPUT="${{ github.event.client_payload.sha || github.event.client_payload.ref || github.event.inputs.sha || github.event.inputs.ref || 'main' }}"
+          set -euo pipefail
+
+          validate_ref_or_sha() {
+            local value="$1"
+            local label="$2"
+
+            if [[ "$value" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+              return 0
+            fi
+
+            if git check-ref-format --allow-onelevel "$value" || git check-ref-format "$value"; then
+              return 0
+            fi
+
+            echo "::error::$label is not a valid git ref or SHA: $value"
+            exit 1
+          }
+
+          REF_INPUT="$RAW_TARGET_REF"
+          validate_ref_or_sha "$REF_INPUT" "target ref"
           echo "ref=$REF_INPUT" >> "$GITHUB_OUTPUT"
           echo "target ref: $REF_INPUT"
 
       - name: Update data submodule
         id: update-submodule
         env:
-          DISPATCH_REF: ${{ github.event.client_payload.ref }}
-          DISPATCH_SHA: ${{ github.event.client_payload.sha }}
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_REF: ${{ github.event.client_payload.ref || github.event.inputs.ref }}
+          DISPATCH_SHA: ${{ github.event.client_payload.sha || github.event.inputs.sha }}
+          INPUT_SHA: ${{ github.event.inputs.sha || '' }}
+          TARGET_REF: ${{ steps.target.outputs.ref }}
         run: |
-          set -e
-          TARGET_REF="${{ steps.target.outputs.ref }}"
+          set -euo pipefail
+
+          validate_ref_or_sha() {
+            local value="$1"
+            local label="$2"
+
+            if [ -z "$value" ]; then
+              return 0
+            fi
+
+            if [[ "$value" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+              return 0
+            fi
+
+            if git check-ref-format --allow-onelevel "$value" || git check-ref-format "$value"; then
+              return 0
+            fi
+
+            echo "::error::$label is not a valid git ref or SHA: $value"
+            exit 1
+          }
+
+          validate_sha() {
+            local value="$1"
+            local label="$2"
+
+            if [ -z "$value" ]; then
+              return 0
+            fi
+
+            if [[ "$value" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+              return 0
+            fi
+
+            echo "::error::$label is not a valid SHA: $value"
+            exit 1
+          }
+
+          validate_ref_or_sha "$TARGET_REF" "target ref"
+          validate_ref_or_sha "$DISPATCH_REF" "dispatch ref"
+          validate_sha "$DISPATCH_SHA" "dispatch SHA"
+          validate_sha "$INPUT_SHA" "manual input SHA"
+
+          MANUAL_EXACT_SHA="false"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ] && [ -n "$INPUT_SHA" ]; then
+            MANUAL_EXACT_SHA="true"
+          fi
 
           git submodule update --init apps/resources/data
 
           pushd apps/resources/data
-          git fetch origin "$TARGET_REF" --tags
+          if [ "$MANUAL_EXACT_SHA" = "true" ]; then
+            git fetch origin "$TARGET_REF" --tags || git fetch origin --tags
+          elif [ -n "$DISPATCH_REF" ]; then
+            git fetch origin "$DISPATCH_REF" --tags
+          else
+            git fetch origin "$TARGET_REF" --tags
+          fi
           git checkout "$TARGET_REF"
           TARGET_SHA=$(git rev-parse HEAD)
 
           # Because all sync runs reuse a single PR branch, a stale repository_dispatch
-          # can serialize behind a newer one and regress the submodule pointer. Skip the
-          # update when the dispatched ref no longer points at the dispatched SHA — the
-          # newer dispatch (or its successor) will produce the authoritative update.
-          if [ "${{ github.event_name }}" = "repository_dispatch" ] && [ -n "$DISPATCH_REF" ] && [ -n "$DISPATCH_SHA" ]; then
-            REMOTE_HEAD_SHA=$(git rev-parse "origin/$DISPATCH_REF")
-            if [ "$TARGET_SHA" != "$REMOTE_HEAD_SHA" ]; then
+          # or workflow_dispatch can serialize behind a newer one and regress the
+          # submodule pointer. Skip the update when the dispatched ref no longer points
+          # at the dispatched SHA — the newer dispatch will produce the authoritative update.
+          if [ "$MANUAL_EXACT_SHA" != "true" ] && [ -n "$DISPATCH_REF" ] && [ -n "$DISPATCH_SHA" ]; then
+            REMOTE_HEAD_SHA=$(git ls-remote origin "$DISPATCH_REF" | awk '{print $1}' | head -n 1)
+            if [ -z "$REMOTE_HEAD_SHA" ]; then
+              REMOTE_HEAD_SHA=$(git ls-remote origin "refs/heads/$DISPATCH_REF" | awk '{print $1}' | head -n 1)
+            fi
+
+            if [ -n "$REMOTE_HEAD_SHA" ] && [ "$DISPATCH_SHA" != "$REMOTE_HEAD_SHA" ]; then
               echo "Stale dispatch: $DISPATCH_SHA on $DISPATCH_REF is behind current tip $REMOTE_HEAD_SHA; skipping."
-              echo "sha=$TARGET_SHA" >> "$GITHUB_OUTPUT"
-              echo "changed=false" >> "$GITHUB_OUTPUT"
-              echo "stale=true" >> "$GITHUB_OUTPUT"
+              {
+                echo "sha=$TARGET_SHA"
+                echo "changed=false"
+                echo "stale=true"
+              } >> "$GITHUB_OUTPUT"
               popd
               exit 0
             fi
@@ -139,9 +220,7 @@ jobs:
             resources
             automation
           add-paths: |
-            .gitmodules
             apps/resources/data
-            apps/resources/.gitignore
 
       - name: Enable auto-merge (rebase)
         if: steps.cpr.outputs.pull-request-number != ''

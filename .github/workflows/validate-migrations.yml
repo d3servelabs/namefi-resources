@@ -4,9 +4,11 @@ on:
   pull_request:
     branches-ignore:
       - prod
-    paths-ignore:
-      - apps/resources/data
   workflow_dispatch: # Allow manual triggering
+
+permissions:
+  contents: read
+  pull-requests: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -18,8 +20,43 @@ env:
   TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 jobs:
+  detect-resources-only:
+    name: Detect Resources-only PR
+    runs-on: ubuntu-latest
+    outputs:
+      result: ${{ steps.resources-only.outputs.result }}
+    steps:
+      - name: Detect resources-only PR
+        id: resources-only
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            if (context.eventName !== 'pull_request') {
+              core.setOutput('result', 'false');
+              return;
+            }
+
+            const allowedExactPaths = ['apps/resources/data'];
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+
+            const isAllowedFile = (filename) => allowedExactPaths.includes(filename);
+
+            const resourcesOnly = files.length > 0 && files.every((file) => isAllowedFile(file.filename));
+            core.info(`Changed files: ${files.map((file) => file.filename).join(', ') || '(none)'}`);
+            core.info(`Resources-only PR: ${resourcesOnly}`);
+            core.setOutput('result', resourcesOnly ? 'true' : 'false');
+
   check-for-sql-changes:
     name: Check for SQL Changes
+    needs: detect-resources-only
+    if: needs.detect-resources-only.outputs.result != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
       has_sql_changes: ${{ steps.check-sql-changes.outputs.has_sql_changes }}
@@ -35,7 +72,7 @@ jobs:
         run: |
           # For pull requests, check files changed between base and head
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            SQL_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep -E '\.sql$' || true)
+            SQL_FILES=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" | grep -E '\.sql$' || true)
           else
             # For workflow_dispatch or other events, check last commit
             SQL_FILES=$(git diff --name-only HEAD^ HEAD | grep -E '\.sql$' || true)
@@ -44,14 +81,16 @@ jobs:
           if [[ -n "$SQL_FILES" ]]; then
             echo "SQL files changed in this diff:"
             echo "$SQL_FILES"
-            echo "has_sql_changes=true" >> $GITHUB_OUTPUT
+            echo "has_sql_changes=true" >> "$GITHUB_OUTPUT"
           else
             echo "No SQL files changed, workflow will be skipped"
-            echo "has_sql_changes=false" >> $GITHUB_OUTPUT
+            echo "has_sql_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
   check-duplicate-migration-indices:
     name: Check Duplicate Migration Indices
+    needs: detect-resources-only
+    if: needs.detect-resources-only.outputs.result != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     steps:
       - name: Checkout repository
@@ -61,8 +100,8 @@ jobs:
         run: |
           MIGRATIONS_DIR="packages/db/src/migrations"
           DUPLICATES=$(
-            ls "$MIGRATIONS_DIR"/*.sql 2>/dev/null \
-              | xargs -n1 basename \
+            find "$MIGRATIONS_DIR" -maxdepth 1 -type f -name '*.sql' -print0 \
+              | xargs -0 -n1 basename \
               | grep -oP '^\d+' \
               | sort \
               | uniq -d
@@ -72,7 +111,9 @@ jobs:
             echo "::error::Duplicate migration indices found:"
             for IDX in $DUPLICATES; do
               echo "::error::Index $IDX is used by multiple migrations:"
-              ls "$MIGRATIONS_DIR"/${IDX}_*.sql | xargs -n1 basename | sed 's/^/  /'
+              find "$MIGRATIONS_DIR" -maxdepth 1 -type f -name "${IDX}_*.sql" -print0 \
+                | xargs -0 -n1 basename \
+                | sed 's/^/  /'
             done
             exit 1
           fi
@@ -81,8 +122,10 @@ jobs:
 
   validate-migrations-run:
     name: Validate Migrations (Neon)
-    needs: check-for-sql-changes
-    if: needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
+    needs:
+      - detect-resources-only
+      - check-for-sql-changes
+    if: needs.detect-resources-only.outputs.result != 'true' && needs.check-for-sql-changes.outputs.has_sql_changes == 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
 
     steps:
@@ -111,48 +154,58 @@ jobs:
 
       - name: Create test branch in Neon
         id: create-branch
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
           # Create a new branch with timestamp for uniqueness
           BRANCH_ID="migration-test-${GITHUB_REF_NAME:-${GITHUB_SHA}}"
           echo "Creating test branch: $BRANCH_ID"
           # Check if branch already exists
-          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} | grep -w "$BRANCH_ID" || true)
+          EXISTING_BRANCH=$(./apps/backend/node_modules/.bin/neonctl branches list --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" | grep -w "$BRANCH_ID" || true)
 
-          if [ ! -z "$EXISTING_BRANCH" ]; then
+          if [ -n "$EXISTING_BRANCH" ]; then
             echo "Branch $BRANCH_ID already exists, deleting it first"
-            ./apps/backend/node_modules/.bin/neonctl branches delete $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+            ./apps/backend/node_modules/.bin/neonctl branches delete "$BRANCH_ID" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" --force
           fi
-          ./apps/backend/node_modules/.bin/neonctl branches create --name $BRANCH_ID --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }}
+          ./apps/backend/node_modules/.bin/neonctl branches create --name "$BRANCH_ID" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY"
 
           # Save branch ID for later steps
-          echo "BRANCH_ID=$BRANCH_ID" >> $GITHUB_ENV
+          echo "BRANCH_ID=$BRANCH_ID" >> "$GITHUB_ENV"
 
       - name: Get connection string for test branch
         id: connection-string
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
-          CS=$(./apps/backend/node_modules/.bin/neonctl connection-string --role-name neondb_owner --branch ${{ env.BRANCH_ID }} --database-name neondb --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }})
-          echo "DATABASE_URL=$CS" >> $GITHUB_ENV
+          CS=$(./apps/backend/node_modules/.bin/neonctl connection-string --role-name neondb_owner --branch "${{ env.BRANCH_ID }}" --database-name neondb --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY")
+          echo "::add-mask::$CS"
+          echo "DATABASE_URL=$CS" >> "$GITHUB_ENV"
 
       - name: Run migrations on test branch
         working-directory: ./packages/db
         run: |
           echo "Running migrations on branch: ${{ env.BRANCH_ID }}"
-          echo "DATABASE_URL: ${{ env.DATABASE_URL }}"
           bun db:migrate
 
       - name: Clean up test branch
         if: always()
+        env:
+          NEON_API_KEY: ${{ secrets.NEON_API_KEY }}
+          NEON_PROJECT_ID: ${{ secrets.NEON_PROJECT_ID }}
         run: |
           if [ "${{ job.status }}" == "success" ]; then
             echo "Migrations successful, cleaning up branch: ${{ env.BRANCH_ID }}"
           else
             echo "Migrations failed, but still cleaning up branch: ${{ env.BRANCH_ID }}"
           fi
-          ./apps/backend/node_modules/.bin/neonctl branches delete ${{ env.BRANCH_ID }} --project-id ${{ secrets.NEON_PROJECT_ID }} --api-key ${{ secrets.NEON_API_KEY }} --force
+          ./apps/backend/node_modules/.bin/neonctl branches delete "${{ env.BRANCH_ID }}" --project-id "$NEON_PROJECT_ID" --api-key "$NEON_API_KEY" --force
 
   validate-migrations:
     name: Validate DB Migrations
     needs:
+      - detect-resources-only
       - check-for-sql-changes
       - check-duplicate-migration-indices
       - validate-migrations-run
@@ -168,11 +221,18 @@ jobs:
           HAS_SQL="${{ needs.check-for-sql-changes.outputs.has_sql_changes }}"
           DUPLICATE_RESULT="${{ needs.check-duplicate-migration-indices.result }}"
           RUN_RESULT="${{ needs.validate-migrations-run.result }}"
+          RESOURCES_ONLY="${{ needs.detect-resources-only.outputs.result }}"
 
+          echo "resources-only=$RESOURCES_ONLY"
           echo "check-for-sql-changes.result=$CHECK_RESULT"
           echo "has_sql_changes=$HAS_SQL"
           echo "check-duplicate-migration-indices.result=$DUPLICATE_RESULT"
           echo "validate-migrations-run.result=$RUN_RESULT"
+
+          if [[ "$RESOURCES_ONLY" == "true" ]]; then
+            echo "Resources-only PR; skipping database migration validation."
+            exit 0
+          fi
 
           if [[ "$CHECK_RESULT" == "cancelled" ]] || [[ "$DUPLICATE_RESULT" == "cancelled" ]] || [[ "$RUN_RESULT" == "cancelled" ]]; then
             echo "Migration validation run was superseded and cancelled."
