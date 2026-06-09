@@ -1657,6 +1657,7 @@ function RunWorkspace({
             <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
               {headerSubtitle}
             </p>
+            <HowToSellDomainLink className="mt-2" />
             {(presentation.leads.length > 1 ||
               canRetryRun ||
               canExport ||
@@ -2513,7 +2514,6 @@ function LeadCard({
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {presentation.buyerSummary}
           </p>
-          <HowToSellDomainLink className="mt-2" />
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {dragHandle ? (
