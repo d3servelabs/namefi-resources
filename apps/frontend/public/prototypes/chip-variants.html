@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart Item — Option Selector Variants</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Mirror the app's design tokens. brand-primary is the real value from
+    // packages/ui/src/styles/globals.css (dark theme). The `<alpha-value>`
+    // placeholder makes opacity modifiers like `bg-brand-primary/80` work.
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            'brand-primary': 'oklch(75.85% 0.1804 155.5 / <alpha-value>)',
+            background: 'oklch(13% 0 0 / <alpha-value>)',
+            foreground: 'oklch(98.5% 0 0 / <alpha-value>)',
+            card: 'oklch(19% 0 0 / <alpha-value>)',
+            border: 'oklch(30% 0 0 / <alpha-value>)',
+            secondary: 'oklch(27% 0 0 / <alpha-value>)',
+            'muted-foreground': 'oklch(70% 0 0 / <alpha-value>)',
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Light tooltip matching the app (bg-foreground / text-background). */
+    .tip {
+      position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+      margin-bottom: 8px; display: none; z-index: 30; width: max-content; max-width: 240px;
+      border-radius: 6px; padding: 6px 12px; font-size: 12px; line-height: 1.35;
+      background: oklch(98.5% 0 0); color: oklch(13% 0 0); box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    }
+    .group\/chip:hover .tip { display: block; }
+    .tip-sub { margin-top: 4px; color: oklch(13% 0 0 / .7); }
+  </style>
+</head>
+<body class="bg-background text-foreground px-5 py-10">
+  <div class="mx-auto max-w-5xl">
+    <!-- 1. Header -->
+    <h1 class="text-2xl font-semibold">Cart Item — Option Selector Variants</h1>
+    <p class="mt-1 text-muted-foreground">
+      Per-item domain setup controls (Auto Renew, Auto Park, Auto ENS, DNSSEC, Keep NS),
+      each shown inside a cart-item-style card. Styled with the app's tokens via Tailwind CDN.
+    </p>
+
+    <!-- 2. Design Requirements -->
+    <div class="mt-8 rounded-2xl border border-brand-primary/20 bg-brand-primary/5 p-6">
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-brand-primary">Design requirements</h2>
+      <dl class="mt-4 grid grid-cols-1 gap-y-3 sm:grid-cols-[120px_1fr] sm:gap-x-4">
+        <dt class="font-semibold text-muted-foreground">Problem</dt>
+        <dd class="m-0">Let users configure per-item setup flags without bloating each cart row.</dd>
+        <dt class="font-semibold text-muted-foreground">Goals</dt>
+        <dd class="m-0">Compact, scannable, four flags + one import-only flag, clear on/off/disabled states.</dd>
+        <dt class="font-semibold text-muted-foreground">Constraints</dt>
+        <dd class="m-0">DNSSEC & Auto ENS disabled when the TLD lacks DNSSEC; Keep NS disables Auto Park/ENS/DNSSEC.</dd>
+        <dt class="font-semibold text-muted-foreground">Success</dt>
+        <dd class="m-0">A single tidy row, whole-control tooltips, no info icons, ~4–5 per row.</dd>
+      </dl>
+    </div>
+
+    <!-- 3. Recommended (current) + configurator -->
+    <section class="mt-12">
+      <h2 class="text-lg font-semibold">✨ Recommended — togglable chips (current)</h2>
+      <p class="mt-1 mb-4 text-sm text-muted-foreground">
+        check = on (primary fill), x = off (primary text), – = disabled (grey). Whole chip is the
+        tooltip trigger. Try the configurator.
+      </p>
+
+      <div class="mb-4 flex flex-wrap items-end gap-4 rounded-xl border border-border bg-card/60 p-4 text-sm">
+        <label class="flex flex-col gap-1">
+          <span class="text-muted-foreground">Item type</span>
+          <select id="cfg-type" class="rounded-md border border-border bg-background px-2 py-1">
+            <option value="REGISTER">Register</option>
+            <option value="IMPORT" selected>Import</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-muted-foreground">Size</span>
+          <select id="cfg-size" class="rounded-md border border-border bg-background px-2 py-1">
+            <option value="sm">sm</option>
+            <option value="default" selected>default</option>
+            <option value="lg">lg</option>
+          </select>
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-muted-foreground">Style</span>
+          <select id="cfg-variant" class="rounded-md border border-border bg-background px-2 py-1">
+            <option value="solid">solid</option>
+            <option value="outline" selected>outline</option>
+            <option value="secondary">secondary</option>
+          </select>
+        </label>
+        <label class="flex items-center gap-2"><input id="cfg-dnssec" type="checkbox" checked /> <span>DNSSEC supported</span></label>
+        <label class="flex items-center gap-2"><input id="cfg-readonly" type="checkbox" /> <span>Read-only</span></label>
+      </div>
+
+      <div class="mx-auto mt-10 w-full md:w-1/2">
+        <p class="mb-2 text-sm font-semibold text-muted-foreground">View:</p>
+        <div id="hero-mount"></div>
+      </div>
+    </section>
+
+    <!-- 4. Variants -->
+    <section class="mt-14">
+      <h2 class="text-lg font-semibold">🎨 Variants</h2>
+      <p class="mt-1 mb-4 text-sm text-muted-foreground">Same data, different control patterns.</p>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">A · Togglable chips — solid (current)</h3>
+          <div id="v-solid"></div>
+        </div>
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">B · Togglable chips — outline</h3>
+          <div id="v-outline"></div>
+        </div>
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">C · Togglable chips — secondary</h3>
+          <div id="v-secondary"></div>
+        </div>
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">D · Sizes (sm / default / lg)</h3>
+          <div id="v-sizes"></div>
+        </div>
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">E · Switches</h3>
+          <div id="v-switch"></div>
+        </div>
+        <div data-variant-card>
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">F · Checkboxes</h3>
+          <div id="v-checkbox"></div>
+        </div>
+        <div data-variant-card class="lg:col-span-2">
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">G · Add / remove chips — solid (collapsible Add)</h3>
+          <div id="v-addremove"></div>
+        </div>
+        <div data-variant-card class="lg:col-span-2">
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">H · Add / remove chips — outline (collapsible Add)</h3>
+          <div id="v-addremove-outline"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Spectrum -->
+    <section class="mt-14">
+      <h2 class="text-lg font-semibold">📐 Spectrum — same option, every chip style</h2>
+      <p class="mt-1 mb-4 text-sm text-muted-foreground">"AutoRenew" rendered on → off → disabled across styles & sizes.</p>
+      <div id="spectrum" class="rounded-2xl border border-border bg-card p-6"></div>
+    </section>
+
+    <!-- 6. Recommendations -->
+    <section class="mt-14 border-l-2 border-brand-primary pl-5">
+      <h2 class="text-lg font-semibold">💡 Recommendations</h2>
+      <ul class="mt-3 space-y-2 text-sm text-muted-foreground">
+        <li><strong class="text-foreground">Default:</strong> solid togglable chips (A) — densest, clear three-state semantics, whole-chip tooltip.</li>
+        <li><strong class="text-foreground">Lower emphasis:</strong> outline (B) when the row shouldn't compete with price/CTA.</li>
+        <li><strong class="text-foreground">Avoid switches/checkboxes (E/F)</strong> here — they're taller and need separate labels, defeating the compact goal.</li>
+        <li><strong class="text-foreground">Add/remove (G)</strong> fits open-ended sets, not a fixed list of 4–5 known flags.</li>
+      </ul>
+    </section>
+  </div>
+
+  <script>
+    /* ----------------------------- icons ----------------------------- */
+    function icon(name, cls = 'size-3') {
+      const p = {
+        check: '<polyline points="20 6 9 17 4 12"/>',
+        x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+        minus: '<path d="M5 12h14"/>',
+        plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
+        trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+      }[name];
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="${cls} shrink-0">${p}</svg>`;
+    }
+
+    /* --------------------------- option model ------------------------- */
+    const OPTIONS = [
+      { key: 'autoRenew', label: 'AutoRenew', desc: 'Automatically renew the domain before it expires.' },
+      { key: 'autoPark',  label: 'AutoPark',  desc: 'Automatically park the domain.' },
+      { key: 'autoEns',   label: 'AutoENS',   desc: 'Automatically enable ENS for the domain.' },
+      { key: 'dnssec',    label: 'DNSSEC',    desc: 'Enable DNSSEC for the domain.' },
+      { key: 'keepNs',    label: 'Keep NS',   desc: "Keep the domain's current nameservers. When on, Auto Park, Auto ENS and DNSSEC are skipped.", importOnly: true },
+    ];
+
+    // Fixed heights so the chips land in the ~17–24px range (leading-none keeps
+    // text from forcing them taller). sm ≈ 17px, default ≈ 24px.
+    const SIZE = {
+      sm:      { btn: 'h-[17px] gap-1 px-2 text-[11px] leading-none',  icon: 'size-2.5' },
+      default: { btn: 'h-[24px] gap-1 px-2.5 text-xs leading-none',    icon: 'size-3' },
+      lg:      { btn: 'h-[31px] gap-1.5 px-3 text-sm leading-none',    icon: 'size-4' },
+    };
+
+    // state: 'on' | 'off' | 'disabled'
+    function stateClasses(variant, state) {
+      if (state === 'disabled') {
+        if (variant === 'outline')   return 'cursor-not-allowed border-zinc-700 bg-transparent text-zinc-600';
+        if (variant === 'secondary') return 'cursor-not-allowed border-transparent bg-zinc-800 text-zinc-600';
+        return 'cursor-not-allowed border-transparent bg-zinc-500 text-black';
+      }
+      if (variant === 'outline') {
+        return state === 'on'
+          ? 'border-brand-primary bg-brand-primary/10 text-brand-primary'
+          : 'border-zinc-600 bg-transparent text-zinc-300 hover:border-zinc-400';
+      }
+      if (variant === 'secondary') {
+        return state === 'on'
+          ? 'border-transparent bg-secondary text-foreground'
+          : 'border-border bg-transparent text-muted-foreground hover:bg-secondary/50';
+      }
+      return state === 'on'
+        ? 'border-transparent bg-brand-primary/80 text-black'
+        : 'border-brand-primary/60 bg-transparent text-brand-primary hover:bg-brand-primary/10';
+    }
+
+    /**
+     * One togglable chip (wrapper carries flex-basis + tooltip; button is w-full).
+     * @param {object} o {label, desc}
+     */
+    function chip(o, { state, size = 'default', variant = 'solid', basis = '', reason } = {}) {
+      const s = SIZE[size];
+      const ic = state === 'disabled' ? 'minus' : state === 'on' ? 'check' : 'x';
+      return `
+        <span class="group/chip relative min-w-0 ${basis}">
+          <button type="button" data-key="${o.key}" aria-disabled="${state === 'disabled'}"
+            class="flex w-full min-w-0 items-center justify-center rounded-full border font-medium transition-colors ${s.btn} ${stateClasses(variant, state)}">
+            ${icon(ic, s.icon)}<span class="truncate">${o.label}</span>
+          </button>
+          <span class="tip">${o.desc}${reason ? `<span class="tip-sub block">${reason}</span>` : ''}</span>
+        </span>`;
+    }
+
+    /* ----------------------- cart-item card shell --------------------- */
+    function makeCard({ domain = 'example.com', badge = 'Import', price = '$12.00' } = {}) {
+      const card = document.createElement('div');
+      card.className = 'rounded-2xl border border-border bg-card p-5';
+      card.innerHTML = `
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-2">
+            <span class="text-lg">${domain}</span>
+            ${badge ? `<span class="rounded-md border border-blue-400/50 bg-blue-600/20 px-1.5 py-0.5 text-xs text-blue-400">${badge}</span>` : ''}
+          </div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <button class="rounded-lg bg-[#27272A] p-2 text-zinc-300 hover:bg-[#3f3f46]">${icon('trash', 'size-4')}</button>
+              <div class="flex items-center gap-2 rounded-lg border border-border px-2 py-1 text-sm">
+                <button class="text-zinc-400 hover:text-foreground">${icon('minus', 'size-3')}</button>
+                <span class="tabular-nums">1 year</span>
+                <button class="text-zinc-400 hover:text-foreground">${icon('plus', 'size-3')}</button>
+              </div>
+            </div>
+            <span class="text-lg">${price}</span>
+          </div>
+          <div class="chips"></div>
+        </div>`;
+      return card;
+    }
+
+    function mount(targetId, opts) {
+      const host = document.getElementById(targetId);
+      host.innerHTML = '';
+      const card = makeCard(opts);
+      host.appendChild(card);
+      return card.querySelector('.chips');
+    }
+
+    /* --------- shared rule logic (mirrors the real component) --------- */
+    // Returns {visible, checked, disabled, reason} for an option given state.
+    function deriveChip(o, st) {
+      const isImport = st.type === 'IMPORT';
+      if (o.importOnly && !isImport) return { visible: false };
+      const keepOn = isImport && st.values.keepNs;
+      let disabled = !!st.readOnly;
+      let reason;
+      let checked = !!st.values[o.key];
+
+      if (o.key === 'autoEns' || o.key === 'dnssec') {
+        if (!st.dnssecSupported) { disabled = true; checked = false;
+          reason = o.key === 'dnssec' ? "This domain doesn't support DNSSEC."
+                                      : "Auto ENS requires DNSSEC, which this domain doesn't support."; }
+        else if (keepOn) { disabled = true; reason = 'Disabled while keeping the existing nameservers.'; }
+      } else if (o.key === 'autoPark' && keepOn) {
+        disabled = true; reason = 'Disabled while keeping the existing nameservers.';
+      }
+      return { visible: true, checked, disabled, reason };
+    }
+
+    /* ------------------- A–D: togglable chip rows --------------------- */
+    function renderToggle(targetId, st) {
+      const chips = mount(targetId, { badge: st.type === 'IMPORT' ? 'Import' : '' });
+      const basis = 'basis-[calc(25%-9px)] md:basis-[calc(20%-9.6px)]';
+      chips.className = 'chips flex flex-wrap gap-x-3 gap-y-2' + (st.readOnly ? ' opacity-80' : '');
+      chips.innerHTML = OPTIONS.map((o) => {
+        const d = deriveChip(o, st);
+        if (!d.visible) return '';
+        const state = d.disabled ? 'disabled' : d.checked ? 'on' : 'off';
+        return chip(o, { state, size: st.size, variant: st.variant, basis, reason: d.reason });
+      }).join('');
+      bindToggle(chips, st, () => renderToggle(targetId, st));
+    }
+
+    function bindToggle(container, st, rerender) {
+      if (container._bound) return;            // delegate once per container
+      container._bound = true;
+      container.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-key]');
+        if (!btn || btn.getAttribute('aria-disabled') === 'true') return;
+        const key = btn.dataset.key;
+        st.values[key] = !st.values[key];
+        rerender();
+      });
+    }
+
+    /* --------------------------- E: switches -------------------------- */
+    function renderSwitch(targetId, st) {
+      const chips = mount(targetId, { badge: 'Import' });
+      chips.className = 'chips grid grid-cols-2 gap-2';
+      const draw = () => {
+        chips.innerHTML = OPTIONS.map((o) => {
+          const d = deriveChip(o, st);
+          if (!d.visible) return '';
+          const on = d.checked;
+          const dis = d.disabled;
+          return `
+            <div class="flex items-center justify-between rounded-xl border border-border bg-black/40 px-3 py-2 ${dis ? 'opacity-50' : ''}" title="${o.desc}${d.reason ? ' — ' + d.reason : ''}">
+              <span class="text-sm">${o.label}</span>
+              <button type="button" data-key="${o.key}" aria-disabled="${dis}"
+                class="relative h-[18px] w-8 shrink-0 rounded-full transition-colors ${on ? 'bg-brand-primary' : 'bg-zinc-600'} ${dis ? 'cursor-not-allowed' : ''}">
+                <span class="absolute top-0.5 left-0.5 size-3.5 rounded-full bg-white transition-transform ${on ? 'translate-x-[14px]' : 'translate-x-0'}"></span>
+              </button>
+            </div>`;
+        }).join('');
+      };
+      draw();
+      bindToggle(chips, st, draw);
+    }
+
+    /* -------------------------- F: checkboxes ------------------------- */
+    function renderCheckbox(targetId, st) {
+      const chips = mount(targetId, { badge: 'Import' });
+      chips.className = 'chips flex flex-wrap gap-x-5 gap-y-2.5';
+      const draw = () => {
+        chips.innerHTML = OPTIONS.map((o) => {
+          const d = deriveChip(o, st);
+          if (!d.visible) return '';
+          const on = d.checked;
+          const dis = d.disabled;
+          return `
+            <label class="flex items-center gap-2 text-sm ${dis ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}" title="${o.desc}${d.reason ? ' — ' + d.reason : ''}">
+              <span data-key="${o.key}" aria-disabled="${dis}"
+                class="flex size-4 items-center justify-center rounded-[5px] border transition-colors ${on ? 'border-transparent bg-brand-primary text-black' : 'border-zinc-500 bg-transparent text-transparent'}">
+                ${icon('check', 'size-3')}
+              </span>
+              <span>${o.label}</span>
+            </label>`;
+        }).join('');
+      };
+      draw();
+      bindToggle(chips, st, draw);
+    }
+
+    /* --------------------- G: add / remove chips ---------------------- */
+    function renderAddRemove(targetId, st, { variant = 'solid' } = {}) {
+      const chips = mount(targetId, { badge: 'Import' });
+      chips.className = 'chips flex flex-col gap-3';
+      // Selected-chip styling per variant.
+      const selClass = variant === 'outline'
+        ? 'border border-brand-primary bg-brand-primary/10 text-brand-primary'
+        : 'border border-transparent bg-brand-primary/80 text-black';
+      const xHover = variant === 'outline' ? 'hover:bg-brand-primary/20' : 'hover:bg-black/20';
+      const draw = () => {
+        // Respect the same constraints as the togglable chips: Keep NS hides
+        // Auto Park / Auto ENS / DNSSEC, and Auto ENS / DNSSEC require DNSSEC
+        // support. A blocked option appears in neither the selected chips nor
+        // the Add list (i.e. it's effectively removed while the condition holds;
+        // its value is preserved, so it returns when the condition clears).
+        const rows = OPTIONS.map((o) => ({ o, d: deriveChip(o, st) })).filter((r) => r.d.visible);
+        const selected = rows.filter((r) => r.d.checked && !r.d.disabled).map((r) => r.o);
+        const available = rows.filter((r) => !r.d.disabled && !r.d.checked).map((r) => r.o);
+        const open = !!st.addOpen && available.length > 0;
+        chips.innerHTML = `
+          <div class="flex flex-wrap items-center gap-2">
+            ${selected.length ? selected.map((o) => `
+              <span class="group/chip relative inline-flex items-center gap-1 rounded-full py-1 pl-3 pr-1 text-xs font-medium ${selClass}">
+                ${o.label}
+                <button type="button" data-remove="${o.key}" class="rounded-full p-0.5 ${xHover}">${icon('x', 'size-3')}</button>
+                <span class="tip">${o.desc}</span>
+              </span>`).join('')
+              : '<span class="text-xs text-muted-foreground">No options selected.</span>'}
+            ${available.length ? `
+              <button type="button" data-toggle-add aria-expanded="${open}" title="${open ? 'Hide options' : 'Add options'}"
+                class="inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-zinc-600 text-zinc-300 transition-colors hover:border-brand-primary hover:text-brand-primary">
+                ${icon(open ? 'x' : 'plus', 'size-3')}
+              </button>` : ''}
+          </div>
+          ${open ? `
+            <div class="flex flex-wrap items-center gap-2 border-t border-border pt-3">
+              <span class="text-xs text-muted-foreground">Add:</span>
+              ${available.map((o) => `
+                <button type="button" data-add="${o.key}"
+                  class="inline-flex items-center gap-1 rounded-full border border-dashed border-zinc-600 px-2.5 py-1 text-xs text-zinc-300 hover:border-brand-primary hover:text-brand-primary">
+                  ${icon('plus', 'size-3')}${o.label}
+                </button>`).join('')}
+            </div>` : ''}`;
+      };
+      draw();
+      if (!chips._bound) {
+        chips._bound = true;
+        chips.addEventListener('click', (e) => {
+          const toggle = e.target.closest('[data-toggle-add]');
+          const add = e.target.closest('[data-add]');
+          const rem = e.target.closest('[data-remove]');
+          if (toggle) st.addOpen = !st.addOpen;
+          if (add) st.values[add.dataset.add] = true;   // keep the panel open after adding
+          if (rem) st.values[rem.dataset.remove] = false;
+          if (toggle || add || rem) draw();
+        });
+      }
+    }
+
+    /* ----------------------------- spectrum --------------------------- */
+    function renderSpectrum() {
+      const o = OPTIONS[0];
+      const host = document.getElementById('spectrum');
+      const row = (title, html) => `
+        <div class="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-border/60 py-3 last:border-0">
+          <span class="w-28 shrink-0 text-xs text-muted-foreground">${title}</span>
+          <div class="flex flex-wrap items-center gap-2">${html}</div>
+        </div>`;
+      const triple = (variant, size) =>
+        ['on', 'off', 'disabled'].map((state) => chip(o, { state, variant, size, basis: 'basis-auto' })).join('');
+      host.innerHTML =
+        row('solid', triple('solid', 'default')) +
+        row('outline', triple('outline', 'default')) +
+        row('secondary', triple('secondary', 'default')) +
+        row('sizes (solid)',
+          chip(o, { state: 'on', variant: 'solid', size: 'sm', basis: 'basis-auto' }) +
+          chip(o, { state: 'on', variant: 'solid', size: 'default', basis: 'basis-auto' }) +
+          chip(o, { state: 'on', variant: 'solid', size: 'lg', basis: 'basis-auto' }));
+    }
+
+    /* ------------------------------ boot ------------------------------ */
+    function freshValues() {
+      return { autoRenew: true, autoPark: true, autoEns: true, dnssec: false, keepNs: false };
+    }
+
+    const hero = {
+      type: 'IMPORT', size: 'default', variant: 'outline',
+      dnssecSupported: true, readOnly: false, values: freshValues(),
+    };
+
+    function renderHero() { renderToggle('hero-mount', hero); }
+
+    function init() {
+      // Hero + configurator
+      renderHero();
+      const cfg = (id, prop, isCheck) => {
+        const el = document.getElementById(id);
+        el.addEventListener('change', () => { hero[prop] = isCheck ? el.checked : el.value; renderHero(); });
+      };
+      cfg('cfg-type', 'type'); cfg('cfg-size', 'size'); cfg('cfg-variant', 'variant');
+      cfg('cfg-dnssec', 'dnssecSupported', true); cfg('cfg-readonly', 'readOnly', true);
+
+      // Variant cards (independent state each)
+      renderToggle('v-solid',     { type: 'IMPORT', size: 'default', variant: 'solid',     dnssecSupported: true, readOnly: false, values: freshValues() });
+      renderToggle('v-outline',   { type: 'IMPORT', size: 'default', variant: 'outline',   dnssecSupported: true, readOnly: false, values: freshValues() });
+      renderToggle('v-secondary', { type: 'IMPORT', size: 'default', variant: 'secondary', dnssecSupported: true, readOnly: false, values: freshValues() });
+      renderToggle('v-sizes',     { type: 'IMPORT', size: 'lg',      variant: 'solid',     dnssecSupported: false, readOnly: false, values: freshValues() });
+      renderSwitch('v-switch',    { type: 'IMPORT', dnssecSupported: true, readOnly: false, values: freshValues() });
+      renderCheckbox('v-checkbox',{ type: 'IMPORT', dnssecSupported: false, readOnly: false, values: freshValues() });
+      renderAddRemove('v-addremove', { type: 'IMPORT', dnssecSupported: true, addOpen: false, values: { autoRenew: true, autoPark: true, autoEns: false, dnssec: false, keepNs: false } }, { variant: 'solid' });
+      renderAddRemove('v-addremove-outline', { type: 'IMPORT', dnssecSupported: true, addOpen: false, values: { autoRenew: true, autoPark: true, autoEns: false, dnssec: false, keepNs: false } }, { variant: 'outline' });
+
+      renderSpectrum();
+    }
+
+    // The script lives at the end of <body>, so the DOM is already parsed.
+    // Guard against the case where DOMContentLoaded has already fired.
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
