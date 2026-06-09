@@ -1,6 +1,6 @@
 'use client';
 
-import { type CSSProperties, useState } from 'react';
+import { type CSSProperties, type ReactNode, useState } from 'react';
 import { z } from 'zod';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -16,13 +16,14 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@namefi-astra/ui/components/shadcn/table';
+  MobileTableItem,
+  MobileTableItemActions,
+  MobileTableItemContent,
+  MobileTableItemField,
+  MobileTableItemHeader,
+  MobileTableItemTitle,
+  MobileTableList,
+} from '@/components/ui/mobile-table';
 import {
   Dialog,
   DialogContent,
@@ -123,18 +124,23 @@ function deepestError(error: unknown): { message?: string; type?: string } {
   return deepest;
 }
 
-/** CSS-variable theme for `@uiw/react-json-view` matching the admin dashboard. */
+/** CSS-variable theme for `@uiw/react-json-view` — bright, high-contrast colors
+ *  in dark mode so values are easy to read against the muted panel. */
 function jsonViewStyle(theme: string | undefined): CSSProperties {
   const dark = theme === 'dark';
   return {
     '--w-rjv-background-color': 'transparent',
     '--w-rjv-border-left-width': '0px',
-    '--w-rjv-color': dark ? '#e5e7eb' : '#1f2937',
-    '--w-rjv-key-string': dark ? '#93c5fd' : '#2563eb',
-    '--w-rjv-string-color': dark ? '#86efac' : '#16a34a',
-    '--w-rjv-info-color': dark ? '#9ca3af' : '#6b7280',
-    '--w-rjv-line-color': dark ? '#4b5563' : '#d1d5db',
-    '--w-rjv-arrow-color': dark ? '#9ca3af' : '#6b7280',
+    '--w-rjv-color': dark ? '#f3f4f6' : '#1f2937',
+    '--w-rjv-key-string': dark ? '#bfdbfe' : '#2563eb',
+    '--w-rjv-string-color': dark ? '#bbf7d0' : '#16a34a',
+    '--w-rjv-number-color': dark ? '#fdba74' : '#b45309',
+    '--w-rjv-boolean-color': dark ? '#fdba74' : '#b45309',
+    '--w-rjv-null-color': dark ? '#cbd5e1' : '#6b7280',
+    '--w-rjv-nan-color': dark ? '#cbd5e1' : '#6b7280',
+    '--w-rjv-info-color': dark ? '#cbd5e1' : '#6b7280',
+    '--w-rjv-line-color': dark ? '#6b7280' : '#d1d5db',
+    '--w-rjv-arrow-color': dark ? '#cbd5e1' : '#6b7280',
     '--w-rjv-copied-color': dark ? '#34d399' : '#10b981',
   } as unknown as CSSProperties;
 }
@@ -275,12 +281,20 @@ interface GateGuidance {
 /** True when the gathered evidence suggests the domain already exists somewhere. */
 function evidenceSuggestsPresent(evidence: Record<string, unknown>): boolean {
   const registrar = evidence.registrar as Record<string, unknown> | undefined;
+  const registrarAccount = evidence.registrarAccount as
+    | { found?: boolean }
+    | undefined;
   const inSystem = evidence.inSystem as { inSystem?: boolean } | undefined;
   const rdapWhois = evidence.rdapWhois as Record<string, unknown> | undefined;
   const registrarKnown = Boolean(registrar) && !('error' in (registrar ?? {}));
   const publiclyRegistered =
     Boolean(rdapWhois) && !('error' in (rdapWhois ?? {}));
-  return registrarKnown || inSystem?.inSystem === true || publiclyRegistered;
+  return (
+    registrarAccount?.found === true ||
+    registrarKnown ||
+    inSystem?.inSystem === true ||
+    publiclyRegistered
+  );
 }
 
 type PaymentChargeState = 'charged' | 'not-charged' | 'unknown';
@@ -377,14 +391,42 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
   },
 };
 
+/**
+ * A titled card section for the details modal — consistent border + tint so the
+ * sections read as distinct blocks instead of a flat wall of text.
+ */
+function ModalSection({
+  title,
+  tone = 'default',
+  children,
+}: {
+  title: string;
+  tone?: 'default' | 'error' | 'info';
+  children: ReactNode;
+}) {
+  const toneClass =
+    tone === 'error'
+      ? 'border-red-500/30 bg-red-500/5'
+      : tone === 'info'
+        ? 'border-blue-500/30 bg-blue-500/5'
+        : 'border-border bg-muted/30';
+  return (
+    <section className={`space-y-2 rounded-lg border p-4 ${toneClass}`}>
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        {title}
+      </h3>
+      {children}
+    </section>
+  );
+}
+
 /** "What to do" panel: gate-kind summary + advice for each allowed action. */
 function GateGuidanceSection({ gate }: { gate: Gate }) {
   const gateKind = gate.context?.gateKind;
   const guidance = gateKind ? GATE_GUIDANCE[gateKind] : undefined;
   if (!guidance) return null;
   return (
-    <section className="space-y-2 rounded-md border border-blue-500/30 bg-blue-500/5 p-3">
-      <h3 className="text-base font-semibold">What to do</h3>
+    <ModalSection title="What to do" tone="info">
       <p className="text-sm text-foreground/80">{guidance.summary}</p>
       <ul className="space-y-1">
         {gate.allowedActions.map((action) => {
@@ -398,7 +440,7 @@ function GateGuidanceSection({ gate }: { gate: Gate }) {
           );
         })}
       </ul>
-    </section>
+    </ModalSection>
   );
 }
 
@@ -428,6 +470,14 @@ function GateEvidenceView({
       </p>
     );
   }
+  const registrar = evidence.registrar as Record<string, unknown> | undefined;
+  const registrarAccount = evidence.registrarAccount as
+    | {
+        found?: boolean;
+        registrarKey?: string;
+        isMissingFromRegistrar?: boolean;
+      }
+    | undefined;
   const inSystem = evidence.inSystem as
     | { inSystem?: boolean; chainId?: number }
     | undefined;
@@ -444,6 +494,19 @@ function GateEvidenceView({
   const hint = gateKind
     ? GATE_GUIDANCE[gateKind]?.evidenceHint?.(evidence)
     : undefined;
+  // "In our system" is three independent folds; the umbrella is true if ANY holds:
+  //  1. found by the registrar service (sldRegistrar.getDomainDetails)
+  //  2. present in indexedDomainsTable (our 3rd-party registrar-account index)
+  //  3. owned as a Namefi NFT on-chain (namefiNftOwnersView)
+  const registrarFound = registrar !== undefined && !('error' in registrar);
+  const indexed = registrarAccount?.found === true;
+  const hasNft = inSystem?.inSystem === true;
+  const inOurSystem = registrarFound || indexed || hasNft;
+  // Domain gates gather these folds; payment-only gates (nfsc-charge) skip them.
+  const hasSystemEvidence =
+    registrar !== undefined ||
+    registrarAccount !== undefined ||
+    inSystem !== undefined;
   return (
     <div className="space-y-3">
       {hint ? (
@@ -451,14 +514,37 @@ function GateEvidenceView({
           {hint}
         </p>
       ) : null}
-      <div className="flex flex-wrap gap-2">
-        {inSystem?.inSystem !== undefined ? (
-          <Badge variant={inSystem.inSystem ? 'default' : 'outline'}>
-            {inSystem.inSystem
-              ? `In our accounts in 3rd party registrars${inSystem.chainId != null ? ` · chain ${inSystem.chainId}` : ''}`
-              : 'Not in our accounts in 3rd party registrars'}
+      {hasSystemEvidence ? (
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant={inOurSystem ? 'default' : 'outline'}>
+            In our system: {inOurSystem ? 'Yes' : 'No'}
           </Badge>
-        ) : null}
+          {registrar !== undefined ? (
+            <Badge variant={registrarFound ? 'secondary' : 'outline'}>
+              Registrar (sldRegistrar): {registrarFound ? 'found' : 'not found'}
+            </Badge>
+          ) : null}
+          {registrarAccount !== undefined ? (
+            <Badge variant={indexed ? 'secondary' : 'outline'}>
+              Indexed domains:{' '}
+              {indexed
+                ? `${registrarAccount.registrarKey ?? 'found'}${registrarAccount.isMissingFromRegistrar ? ' · missing' : ''}`
+                : 'not found'}
+            </Badge>
+          ) : null}
+          {inSystem?.inSystem !== undefined ? (
+            <Badge variant={hasNft ? 'secondary' : 'outline'}>
+              Namefi NFT:{' '}
+              {hasNft
+                ? inSystem.chainId != null
+                  ? `chain ${inSystem.chainId}`
+                  : 'yes'
+                : 'none'}
+            </Badge>
+          ) : null}
+        </div>
+      ) : null}
+      <div className="flex flex-wrap gap-2">
         {rdapWhois?.locked !== undefined ? (
           <Badge variant="outline">
             {rdapWhois.locked ? 'Locked' : 'Unlocked'}
@@ -480,11 +566,12 @@ function GateEvidenceView({
         ) : null}
       </div>
       <EvidenceJson label="Payment" value={evidence.payment} />
-      <EvidenceJson label="Registrar" value={evidence.registrar} />
       <EvidenceJson
-        label="In our accounts in 3rd party registrars"
-        value={evidence.inSystem}
+        label="Registrar (sldRegistrar)"
+        value={evidence.registrar}
       />
+      <EvidenceJson label="Indexed domains" value={evidence.registrarAccount} />
+      <EvidenceJson label="Namefi NFT (on-chain)" value={evidence.inSystem} />
       <EvidenceJson label="RDAP / WHOIS" value={evidence.rdapWhois} />
     </div>
   );
@@ -583,12 +670,12 @@ function GateDetailsDialog({
   return (
     <Dialog>
       <DialogTrigger
-        render={<Button size="sm" variant="outline" className="mt-2 h-7" />}
+        render={<Button size="sm" variant="outline" className="h-8" />}
       >
         <Info className="mr-1.5 h-3.5 w-3.5" />
         Details
       </DialogTrigger>
-      <DialogContent className="!max-w-xl max-h-[85vh] overflow-y-auto text-base">
+      <DialogContent className="!max-w-2xl max-h-[85vh] overflow-y-auto text-base">
         <DialogHeader>
           <DialogTitle>Gate details</DialogTitle>
           <DialogDescription>
@@ -600,8 +687,7 @@ function GateDetailsDialog({
         <GateGuidanceSection gate={gate} />
 
         {error ? (
-          <section className="space-y-2">
-            <h3 className="text-base font-semibold">Error</h3>
+          <ModalSection title="Error" tone="error">
             <p className="break-words text-base font-semibold text-red-600 dark:text-red-400">
               {error.type ? `${error.type}: ` : ''}
               {error.message}
@@ -613,33 +699,28 @@ function GateDetailsDialog({
               </p>
             ) : null}
             <JsonBlock value={error} />
-          </section>
+          </ModalSection>
         ) : null}
 
         {context?.alertDetails ? (
-          <section className="space-y-2">
-            <h3 className="text-base font-semibold">Alert details</h3>
+          <ModalSection title="Alert details">
             <JsonBlock value={context.alertDetails} />
-          </section>
+          </ModalSection>
         ) : null}
 
         {context?.gateKind ? (
-          <section className="space-y-2">
-            <h3 className="text-base font-semibold">Decision support</h3>
+          <ModalSection title="Decision support">
             <GateEvidencePanel
               workflowId={workflow.workflowId}
               interactionId={gate.interactionId}
               gateKind={context.gateKind}
               armedQueryName={armedQueryName}
             />
-          </section>
+          </ModalSection>
         ) : null}
 
         {history.length > 1 ? (
-          <section className="space-y-2">
-            <h3 className="text-base font-semibold">
-              History ({history.length})
-            </h3>
+          <ModalSection title={`History (${history.length})`}>
             <ul className="space-y-1">
               {history.map((entry) => (
                 <GateHistoryItem
@@ -648,7 +729,7 @@ function GateDetailsDialog({
                 />
               ))}
             </ul>
-          </section>
+          </ModalSection>
         ) : null}
       </DialogContent>
     </Dialog>
@@ -725,6 +806,129 @@ function buildCandidate(
     return candidate;
   }
   return values[''] ?? '';
+}
+
+/** One gate rendered as a card (orders-page style); titled by its alert message. */
+function GateCard({
+  workflow,
+  gate,
+  onSend,
+}: {
+  workflow: GateWorkflow;
+  gate: Gate;
+  onSend: (input: SendDecisionInput) => Promise<boolean>;
+}) {
+  const title =
+    gate.context?.alertMessage ??
+    gate.context?.gateKind ??
+    workflow.workflowType;
+  return (
+    <MobileTableItem>
+      <MobileTableItemHeader>
+        <MobileTableItemTitle className="break-words">
+          {title}
+        </MobileTableItemTitle>
+        {gate.context?.gateKind ? (
+          <Badge variant="secondary" className="shrink-0">
+            {gate.context.gateKind}
+          </Badge>
+        ) : null}
+      </MobileTableItemHeader>
+
+      <MobileTableItemContent>
+        <MobileTableItemField
+          label="Workflow"
+          className="items-start"
+          value={
+            <span className="break-all">
+              <span className="font-medium">{workflow.workflowType}</span>{' '}
+              <span className="text-muted-foreground">
+                · {workflow.workflowId}
+              </span>
+              {workflow.temporalUiUrl ? (
+                <a
+                  href={workflow.temporalUiUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ml-2 inline-flex items-center gap-1 text-sm text-blue-500 hover:underline"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  View in Temporal
+                </a>
+              ) : null}
+            </span>
+          }
+        />
+        <MobileTableItemField
+          label="Gate"
+          value={
+            <span className="break-all font-mono">{gate.interactionId}</span>
+          }
+        />
+        <MobileTableItemField
+          label="Allowed"
+          className="items-start"
+          value={
+            <span className="flex flex-wrap gap-1">
+              {gate.allowedActions.map((a) => (
+                <Badge key={a} variant="outline">
+                  {actionLabel(a)}
+                </Badge>
+              ))}
+            </span>
+          }
+        />
+        <GateTimingCell startedAt={workflow.startedAt} context={gate.context} />
+        <GateErrorSummary context={gate.context} />
+      </MobileTableItemContent>
+
+      <MobileTableItemActions className="flex-wrap">
+        <GateDetailsDialog workflow={workflow} gate={gate} />
+        {gate.allowedActions.map((rawAction) => {
+          const action = rawAction as SendDecisionInput['action'];
+          if (action === 'RESPOND') {
+            return (
+              <RespondDialog
+                key={action}
+                workflowId={workflow.workflowId}
+                gate={gate}
+                onSend={onSend}
+              />
+            );
+          }
+          if (action === 'CANCEL') {
+            return (
+              <CancelDialog
+                key={action}
+                workflowId={workflow.workflowId}
+                gate={gate}
+                onSend={onSend}
+              />
+            );
+          }
+          const Icon = ACTION_ICON[action];
+          return (
+            <AsyncButton
+              key={action}
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                onSend({
+                  workflowId: workflow.workflowId,
+                  signalName: gate.signalName,
+                  action,
+                  interactionId: gate.interactionId,
+                })
+              }
+            >
+              <Icon className="h-3.5 w-3.5 mr-1.5" />
+              {action}
+            </AsyncButton>
+          );
+        })}
+      </MobileTableItemActions>
+    </MobileTableItem>
+  );
 }
 
 export default withAdminGuard(function DecisionGatesPage() {
@@ -814,118 +1018,16 @@ export default withAdminGuard(function DecisionGatesPage() {
               No workflows are currently awaiting a decision.
             </p>
           ) : (
-            <Table className="table-fixed text-base">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[18%]">Workflow</TableHead>
-                  <TableHead className="w-[32%]">Gate</TableHead>
-                  <TableHead className="w-[16%]">Timing</TableHead>
-                  <TableHead className="w-[14%]">Allowed</TableHead>
-                  <TableHead className="w-[20%] text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {rows.map(({ workflow, gate }) => (
-                  <TableRow
-                    key={`${workflow.workflowId}:${gate.signalName}:${gate.interactionId}`}
-                  >
-                    <TableCell className="align-top whitespace-normal">
-                      <div className="font-medium break-words">
-                        {workflow.workflowType}
-                      </div>
-                      <div className="text-sm text-muted-foreground break-all">
-                        {workflow.workflowId}
-                      </div>
-                      {workflow.temporalUiUrl ? (
-                        <a
-                          href={workflow.temporalUiUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="mt-1 inline-flex items-center gap-1 text-sm text-blue-500 hover:underline"
-                        >
-                          <ExternalLink className="h-3 w-3" />
-                          View in Temporal
-                        </a>
-                      ) : null}
-                    </TableCell>
-                    <TableCell className="align-top whitespace-normal">
-                      <div className="break-all font-mono text-sm">
-                        {gate.interactionId}
-                      </div>
-                      {gate.context?.gateKind ? (
-                        <Badge variant="secondary" className="mt-1">
-                          {gate.context.gateKind}
-                        </Badge>
-                      ) : null}
-                      <GateErrorSummary context={gate.context} />
-                      <GateDetailsDialog workflow={workflow} gate={gate} />
-                    </TableCell>
-                    <TableCell className="align-top whitespace-normal">
-                      <GateTimingCell
-                        startedAt={workflow.startedAt}
-                        context={gate.context}
-                      />
-                    </TableCell>
-                    <TableCell className="align-top">
-                      <div className="flex flex-wrap gap-1">
-                        {gate.allowedActions.map((a) => (
-                          <Badge key={a} variant="secondary">
-                            {actionLabel(a)}
-                          </Badge>
-                        ))}
-                      </div>
-                    </TableCell>
-                    <TableCell className="align-top">
-                      <div className="flex flex-wrap justify-end gap-2">
-                        {gate.allowedActions.map((rawAction) => {
-                          const action =
-                            rawAction as SendDecisionInput['action'];
-                          if (action === 'RESPOND') {
-                            return (
-                              <RespondDialog
-                                key={action}
-                                workflowId={workflow.workflowId}
-                                gate={gate}
-                                onSend={send}
-                              />
-                            );
-                          }
-                          if (action === 'CANCEL') {
-                            return (
-                              <CancelDialog
-                                key={action}
-                                workflowId={workflow.workflowId}
-                                gate={gate}
-                                onSend={send}
-                              />
-                            );
-                          }
-                          const Icon = ACTION_ICON[action];
-                          return (
-                            <AsyncButton
-                              key={action}
-                              size="sm"
-                              variant="outline"
-                              onClick={() =>
-                                send({
-                                  workflowId: workflow.workflowId,
-                                  signalName: gate.signalName,
-                                  action,
-                                  interactionId: gate.interactionId,
-                                })
-                              }
-                            >
-                              <Icon className="h-3.5 w-3.5 mr-1.5" />
-                              {action}
-                            </AsyncButton>
-                          );
-                        })}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <MobileTableList>
+              {rows.map(({ workflow, gate }) => (
+                <GateCard
+                  key={`${workflow.workflowId}:${gate.signalName}:${gate.interactionId}`}
+                  workflow={workflow}
+                  gate={gate}
+                  onSend={send}
+                />
+              ))}
+            </MobileTableList>
           )}
         </CardContent>
       </Card>

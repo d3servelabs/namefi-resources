@@ -1,5 +1,6 @@
 import {
   db,
+  indexedDomainsTable,
   namefiNftOwnersCte,
   namefiNftOwnersView,
   paymentsTable,
@@ -77,8 +78,27 @@ async function gatherDomainEvidence(
     evidence.registrar = { error: errorMessage(error) };
   }
 
-  // Is the domain minted/owned in our system? (same query as the getDomainChain
-  // activity, but tolerant of an absent row instead of throwing.)
+  // Is the domain in one of OUR 3rd-party registrar accounts? `indexedDomainsTable`
+  // is the source of truth for which registrar a domain belongs to (it backs the
+  // registrar routing — see getRegistrarKeyForExistingDomain).
+  try {
+    const row = await db.query.indexedDomainsTable.findFirst({
+      where: eq(indexedDomainsTable.normalizedDomainName, normalizedDomainName),
+    });
+    evidence.registrarAccount = row
+      ? {
+          found: true,
+          registrarKey: row.registrarKey,
+          isMissingFromRegistrar: row.isMissingFromRegistrar,
+        }
+      : { found: false };
+  } catch (error) {
+    evidence.registrarAccount = { error: errorMessage(error) };
+  }
+
+  // Owned as a Namefi NFT on-chain? (same query as the getDomainChain activity,
+  // but tolerant of an absent row.) NOTE: this is NFT ownership, NOT registrar
+  // account presence — the two are distinct.
   try {
     const rows = await db
       .with(namefiNftOwnersCte)

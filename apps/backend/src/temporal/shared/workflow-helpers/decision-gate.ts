@@ -681,36 +681,33 @@ async function emitFailureAlert(args: {
     ...(args.alertDetails ?? {}),
   };
 
+  const title = `Decision gate awaiting action (${info.workflowId})`;
+
   try {
     if (args.alertSeverity === 'critical') {
+      // Critical gates also file a ClickUp incident + start the monitor workflow.
       await criticalAlertWithTicket({
-        title: `Decision gate awaiting action (${info.workflowId})`,
+        title,
         message: args.alertMessage,
         extraData: detail,
         priority: args.alertPriority,
       });
     } else {
-      //TODO make generalAlert send an Alert to Slack uncomment this code
-      // const { generalAlertNamefi } = typedProxyActivities({
-      //   temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-      //   options: {
-      //     ...shortRunningOpts,
-      //     retry: { maximumInterval: '1 minute', maximumAttempts: 10 },
-      //   },
-      // });
-      // await generalAlertNamefi({
-      //   title: `Decision gate awaiting action (${info.workflowId})`,
-      //   message: args.alertMessage,
-      //   ...detail,
-      // });
-      await criticalAlertWithTicket({
-        title: `Decision gate awaiting action (${info.workflowId})`,
-        message: args.alertMessage,
-        extraData: detail,
-        priority: args.alertPriority,
-        createIncident: true,
-        monitorIncident: false,
+      // Default (general) gates: a Slack ping only — a gate awaiting a decision is
+      // not a hard incident, so call criticalAlertNamefi directly with
+      // createIncident:false (no ClickUp ticket). criticalAlertNamefi posts to
+      // Slack when NAMEFI_ALERT_SLACK_WEBHOOK_URL is set.
+      const { criticalAlertNamefi } = typedProxyActivities({
+        temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+        options: {
+          ...shortRunningOpts,
+          retry: { maximumInterval: '1 minute', maximumAttempts: 10 },
+        },
       });
+      await criticalAlertNamefi(
+        { title, message: args.alertMessage, extraData: detail },
+        { createIncident: false, incidentPriority: args.alertPriority },
+      );
     }
   } catch (alertError) {
     // Alerting must never break the guarded flow.
