@@ -6,6 +6,7 @@ tags: ['domains', 'guide', 'domain-investing', 'outbound']
 authors: ['namefiteam']
 draft: false
 description: "A practical, seller-first checklist for pricing a domain, finding likely buyers, handling outreach, avoiding scams, and closing the transfer safely."
+ogImage: ../../assets/how-to-sell-a-domain-name-you-own-og.png
 keywords: ['how to sell a domain name', 'sell domain name', 'domain selling checklist', 'domain valuation', 'domain sale escrow', 'domain transfer', 'domain outbound sales', 'find domain buyers', 'domain negotiation', 'sell a domain you own', 'Namefi Outbound', 'domain aftermarket', 'domain sale process', 'domain sales outreach', 'domain seller guide']
 ---
 
