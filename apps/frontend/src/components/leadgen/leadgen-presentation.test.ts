@@ -50,6 +50,7 @@ function runSnapshot(
     createdAt: baseDate,
     updatedAt: baseDate,
     intentQueries: [],
+    userLeadOrder: [],
     events: [],
     leads,
     ...overrides,
@@ -159,6 +160,27 @@ describe('buildLeadPresentationModel', () => {
       visibleProspects: 0,
       hidden: 1,
     });
+  });
+
+  it('applies user order while keeping new agent-ranked leads visible', () => {
+    const model = buildLeadPresentationModel(
+      runSnapshot({
+        leads: [
+          lead({ id: 'agent-top', businessDomain: 'top.example' }),
+          lead({ id: 'agent-middle', businessDomain: 'middle.example' }),
+          lead({ id: 'new-agent-lead', businessDomain: 'new.example' }),
+        ],
+      }),
+      {
+        userOrderLeadIds: ['agent-middle', 'missing-lead', 'agent-top'],
+      },
+    );
+
+    expect(model.leads.map(({ lead }) => lead.id)).toEqual([
+      'agent-middle',
+      'agent-top',
+      'new-agent-lead',
+    ]);
   });
 
   it('uses the discovery rationale as the full stable card summary', () => {

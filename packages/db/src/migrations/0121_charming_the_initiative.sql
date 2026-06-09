@@ -1,0 +1,1 @@
+ALTER TABLE "leadgen_runs" ADD COLUMN "user_lead_order" jsonb DEFAULT '[]'::jsonb NOT NULL;

@@ -19,6 +19,10 @@ import {
   getLeadgenRunCreditEstimate,
 } from '@namefi-astra/common/ai-generation-credits';
 import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
+import {
+  isLeadgenLeadOrderCustomized,
+  reconcileLeadgenLeadOrder,
+} from '@namefi-astra/common/leadgen-order';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -49,6 +53,37 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LeadgenUserSignalState } from '@namefi-astra/common/contract/leadgen-contract';
+import {
+  closestCorners,
+  closestCenter,
+  DragOverlay,
+  DndContext,
+  getFirstCollision,
+  KeyboardCode,
+  KeyboardSensor,
+  MeasuringStrategy,
+  PointerSensor,
+  pointerWithin,
+  rectIntersection,
+  useDroppable,
+  useSensor,
+  useSensors,
+  type CollisionDetection,
+  type DroppableContainer,
+  type DragEndEvent,
+  type DragOverEvent,
+  type DragStartEvent,
+  type DraggableAttributes,
+  type DraggableSyntheticListeners,
+  type KeyboardCoordinateGetter,
+  type UniqueIdentifier,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { useFlag } from '@openfeature/react-sdk';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@trpc/tanstack-react-query';
@@ -63,10 +98,12 @@ import {
   EyeOff,
   ExternalLink,
   FileText,
+  GripVertical,
   ListChecks,
   Loader2,
   Mail,
   Play,
+  RotateCcw,
   RefreshCw,
   Search,
   ShoppingBag,
@@ -96,11 +133,25 @@ import {
   type CSSProperties,
   type ReactNode,
 } from 'react';
+import { createPortal } from 'react-dom';
 import { toast } from 'sonner';
 import {
   buildLeadgenCrmCsv,
   isLeadgenCrmCsvExportAvailable,
 } from './leadgen-export';
+import {
+  areLeadIdsEqual,
+  flattenSectionLeadIds,
+  getDropTargetSectionId,
+  getLeadSectionIdByLeadId,
+  getSectionLeadIds,
+  getSectionUserSignalState,
+  leadOrganizationSectionIds,
+  moveLeadInSections,
+  moveLeadToSectionEnd,
+  type LeadOrganizationSectionId,
+  type LeadSectionLeadIds,
+} from './leadgen-lead-sections';
 import { buildMailtoHref } from './leadgen-mailto';
 import {
   buildLeadPresentationModel,
@@ -117,6 +168,16 @@ type LeadgenStartSuggestion = {
   domain: string;
   reason: 'parked' | 'unconfigured' | 'active' | 'owned';
   hasPreviousRun: boolean;
+};
+type LeadgenLeadSignalUpdate = {
+  leadId: string;
+  state: LeadgenUserSignalState;
+};
+type LeadOrderSaveOptions = {
+  signalUpdates?: LeadgenLeadSignalUpdate[];
+  onSaved?: () => void;
+  onError?: () => void;
+  onSettled?: () => void;
 };
 type LeadgenLead = LeadgenSnapshot['leads'][number];
 type LeadgenEvent = LeadgenSnapshot['events'][number];
@@ -196,10 +257,195 @@ const runListScrollAreaClassName = cn(
 const RUN_LIST_VIEWPORT_SELECTOR = '[data-slot="scroll-area-viewport"]';
 const leadLayoutTransition = {
   type: 'spring',
-  stiffness: 520,
-  damping: 42,
+  stiffness: 380,
+  damping: 38,
   mass: 0.8,
 } as const;
+const leadSortableTransition = {
+  duration: 170,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+} as const;
+const leadDropAnimation = {
+  duration: 160,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+} as const;
+const leadDndMeasuring = {
+  droppable: {
+    strategy: MeasuringStrategy.Always,
+  },
+} as const;
+const leadKeyboardDirections: string[] = [
+  KeyboardCode.Down,
+  KeyboardCode.Right,
+  KeyboardCode.Up,
+  KeyboardCode.Left,
+];
+type LeadCollisionDetectionArgs = Parameters<CollisionDetection>[0];
+
+const leadMultipleContainersKeyboardCoordinates: KeyboardCoordinateGetter = (
+  event,
+  { context: { active, collisionRect, droppableContainers, droppableRects } },
+) => {
+  if (!leadKeyboardDirections.includes(event.code)) {
+    return undefined;
+  }
+
+  event.preventDefault();
+
+  if (!active || !collisionRect) {
+    return undefined;
+  }
+
+  const filteredContainers = droppableContainers.getEnabled().filter((entry) =>
+    isLeadKeyboardDroppableCandidate({
+      active,
+      collisionRect,
+      droppableRects,
+      entry,
+      eventCode: event.code,
+    }),
+  );
+  const closestId = getFirstCollision(
+    closestCorners({
+      active,
+      collisionRect,
+      droppableContainers: filteredContainers,
+      droppableRects,
+      pointerCoordinates: null,
+    }),
+    'id',
+  );
+
+  if (closestId == null) {
+    return undefined;
+  }
+
+  const newDroppable = droppableContainers.get(closestId);
+  const newNode = newDroppable?.node.current;
+  const newRect = newDroppable?.rect.current;
+
+  if (!newNode || !newRect) {
+    return undefined;
+  }
+
+  if (newDroppable.data.current?.type === 'section') {
+    return {
+      x: newRect.left + 20,
+      y: newRect.top + 74,
+    };
+  }
+
+  return {
+    x: newRect.left,
+    y: newRect.top,
+  };
+};
+
+function isLeadKeyboardDroppableCandidate({
+  active,
+  collisionRect,
+  droppableRects,
+  entry,
+  eventCode,
+}: {
+  active: NonNullable<
+    Parameters<KeyboardCoordinateGetter>[1]['context']['active']
+  >;
+  collisionRect: NonNullable<
+    Parameters<KeyboardCoordinateGetter>[1]['context']['collisionRect']
+  >;
+  droppableRects: Parameters<KeyboardCoordinateGetter>[1]['context']['droppableRects'];
+  entry: DroppableContainer;
+  eventCode: string;
+}) {
+  if (entry.disabled) {
+    return false;
+  }
+
+  const rect = droppableRects.get(entry.id);
+
+  if (!rect || shouldSkipPopulatedLeadSection(entry, active)) {
+    return false;
+  }
+
+  switch (eventCode) {
+    case KeyboardCode.Down:
+      return collisionRect.top < rect.top;
+    case KeyboardCode.Up:
+      return collisionRect.top > rect.top;
+    case KeyboardCode.Left:
+      return collisionRect.left >= rect.left + rect.width;
+    case KeyboardCode.Right:
+      return collisionRect.left + collisionRect.width <= rect.left;
+    default:
+      return false;
+  }
+}
+
+function shouldSkipPopulatedLeadSection(
+  entry: DroppableContainer,
+  active: NonNullable<
+    Parameters<KeyboardCoordinateGetter>[1]['context']['active']
+  >,
+) {
+  const data = entry.data.current;
+
+  return (
+    data?.type === 'section' &&
+    Array.isArray(data.children) &&
+    data.children.length > 0 &&
+    active.data.current?.type !== 'section'
+  );
+}
+
+function getLeadCollisionOverId(
+  args: LeadCollisionDetectionArgs,
+  sectionLeadIds: LeadSectionLeadIds,
+) {
+  const pointerIntersections = pointerWithin(args);
+  const intersections =
+    pointerIntersections.length > 0
+      ? pointerIntersections
+      : rectIntersection(args);
+  const overId = getFirstCollision(intersections, 'id');
+
+  if (overId == null) {
+    return null;
+  }
+
+  const overSectionId = getLeadOrganizationSectionId(overId);
+
+  if (!overSectionId) {
+    return overId;
+  }
+
+  return (
+    getClosestLeadIdInSection(args, overId, sectionLeadIds[overSectionId]) ??
+    overId
+  );
+}
+
+function getClosestLeadIdInSection(
+  args: LeadCollisionDetectionArgs,
+  sectionId: UniqueIdentifier,
+  sectionItemIds: string[],
+) {
+  if (sectionItemIds.length === 0) {
+    return null;
+  }
+
+  return getFirstCollision(
+    closestCenter({
+      ...args,
+      droppableContainers: args.droppableContainers.filter(
+        (container) =>
+          container.id !== sectionId &&
+          sectionItemIds.includes(toStringIdentifier(container.id)),
+      ),
+    }),
+    'id',
+  );
+}
 
 export function LeadgenApp({
   initialRunId,
@@ -282,10 +528,12 @@ export function LeadgenApp({
   const syncRunSnapshot = useCallback(
     (snapshot: LeadgenSnapshot) => {
       const queryKey = trpc.leadgen.getRun.queryKey({ runId: snapshot.id });
-      const cachedSnapshot = queryClient.getQueryData<LeadgenSnapshot>(queryKey);
+      const cachedSnapshot =
+        queryClient.getQueryData<LeadgenSnapshot>(queryKey);
       if (
         cachedSnapshot &&
-        getTimestamp(snapshot.updatedAt) < getTimestamp(cachedSnapshot.updatedAt)
+        getTimestamp(snapshot.updatedAt) <
+          getTimestamp(cachedSnapshot.updatedAt)
       ) {
         return;
       }
@@ -882,6 +1130,275 @@ function LeadgenWorkspacePanel({
   );
 }
 
+function useLeadgenLeadOrder({
+  run,
+  onRunUpdated,
+}: {
+  run: LeadgenSnapshot;
+  onRunUpdated: (run: LeadgenSnapshot) => void;
+}) {
+  const trpc = useTRPC();
+  const currentRunIdRef = useRef(run.id);
+  const currentRunGenerationRef = useRef(0);
+  const latestSaveIdRef = useRef(0);
+  const pendingSaveCountRef = useRef(0);
+  const saveQueueRef = useRef<Promise<void>>(Promise.resolve());
+  const lastSavedSnapshotRef = useRef<LeadgenSnapshot | null>(null);
+  const { mutateAsync: saveLeadOrder } = useMutation(
+    trpc.leadgen.setLeadOrder.mutationOptions(),
+  );
+  const agentOrderedLeadIds = useMemo(
+    () => run.leads.map((lead) => lead.id),
+    [run.leads],
+  );
+  const [userOrderedLeadIds, setUserOrderedLeadIds] = useState<string[]>(() =>
+    reconcileLeadgenLeadOrder(run.userLeadOrder, agentOrderedLeadIds),
+  );
+  const hasCustomLeadOrder = isLeadgenLeadOrderCustomized({
+    agentOrderedLeadIds,
+    userOrderedLeadIds,
+  });
+  const getSnapshotLeadOrder = useCallback((snapshot: LeadgenSnapshot) => {
+    return reconcileLeadgenLeadOrder(
+      snapshot.userLeadOrder,
+      snapshot.leads.map((lead) => lead.id),
+    );
+  }, []);
+  const isCurrentRunGeneration = useCallback(
+    (requestRunId: string, requestRunGeneration: number) => {
+      return (
+        currentRunIdRef.current === requestRunId &&
+        currentRunGenerationRef.current === requestRunGeneration
+      );
+    },
+    [],
+  );
+  const isCurrentSave = useCallback(
+    ({
+      requestRunGeneration,
+      requestRunId,
+      saveId,
+    }: {
+      requestRunGeneration: number;
+      requestRunId: string;
+      saveId: number;
+    }) => {
+      return (
+        isCurrentRunGeneration(requestRunId, requestRunGeneration) &&
+        latestSaveIdRef.current === saveId
+      );
+    },
+    [isCurrentRunGeneration],
+  );
+  const applySavedSnapshot = useCallback(
+    (snapshot: LeadgenSnapshot) => {
+      setUserOrderedLeadIds(getSnapshotLeadOrder(snapshot));
+      onRunUpdated(snapshot);
+    },
+    [getSnapshotLeadOrder, onRunUpdated],
+  );
+  const rollbackLeadOrderSave = useCallback(
+    ({
+      agentLeadIds,
+      requestRunId,
+      runLeadOrder,
+    }: {
+      agentLeadIds: string[];
+      requestRunId: string;
+      runLeadOrder: string[];
+    }) => {
+      const rollbackSnapshot =
+        lastSavedSnapshotRef.current?.id === requestRunId
+          ? lastSavedSnapshotRef.current
+          : null;
+
+      if (rollbackSnapshot) {
+        applySavedSnapshot(rollbackSnapshot);
+        return;
+      }
+
+      setUserOrderedLeadIds(
+        reconcileLeadgenLeadOrder(runLeadOrder, agentLeadIds),
+      );
+    },
+    [applySavedSnapshot],
+  );
+  const handleSavedLeadOrder = useCallback(
+    ({
+      options,
+      requestRunGeneration,
+      requestRunId,
+      saveId,
+      snapshot,
+    }: {
+      options: LeadOrderSaveOptions;
+      requestRunGeneration: number;
+      requestRunId: string;
+      saveId: number;
+      snapshot: LeadgenSnapshot;
+    }) => {
+      if (!isCurrentRunGeneration(requestRunId, requestRunGeneration)) return;
+
+      lastSavedSnapshotRef.current = snapshot;
+
+      if (!isCurrentSave({ requestRunGeneration, requestRunId, saveId })) {
+        return;
+      }
+
+      applySavedSnapshot(snapshot);
+      options.onSaved?.();
+    },
+    [applySavedSnapshot, isCurrentRunGeneration, isCurrentSave],
+  );
+  const handleFailedLeadOrderSave = useCallback(
+    ({
+      agentLeadIds,
+      error,
+      options,
+      requestRunGeneration,
+      requestRunId,
+      runLeadOrder,
+      saveId,
+    }: {
+      agentLeadIds: string[];
+      error: unknown;
+      options: LeadOrderSaveOptions;
+      requestRunGeneration: number;
+      requestRunId: string;
+      runLeadOrder: string[];
+      saveId: number;
+    }) => {
+      if (!isCurrentSave({ requestRunGeneration, requestRunId, saveId })) {
+        return;
+      }
+
+      rollbackLeadOrderSave({
+        agentLeadIds,
+        requestRunId,
+        runLeadOrder,
+      });
+      options.onError?.();
+      toast.error('Could not save prospect order', {
+        description:
+          error instanceof Error ? error.message : 'Please try again.',
+      });
+    },
+    [isCurrentSave, rollbackLeadOrderSave],
+  );
+  const settleLeadOrderSave = useCallback(
+    ({
+      options,
+      requestRunGeneration,
+      requestRunId,
+    }: {
+      options: LeadOrderSaveOptions;
+      requestRunGeneration: number;
+      requestRunId: string;
+    }) => {
+      pendingSaveCountRef.current = Math.max(
+        0,
+        pendingSaveCountRef.current - 1,
+      );
+      if (isCurrentRunGeneration(requestRunId, requestRunGeneration)) {
+        options.onSettled?.();
+      }
+    },
+    [isCurrentRunGeneration],
+  );
+
+  useEffect(() => {
+    currentRunIdRef.current = run.id;
+    currentRunGenerationRef.current += 1;
+    latestSaveIdRef.current += 1;
+    pendingSaveCountRef.current = 0;
+    saveQueueRef.current = Promise.resolve();
+    lastSavedSnapshotRef.current = null;
+  }, [run.id]);
+
+  useEffect(() => {
+    setUserOrderedLeadIds((currentLeadIds) =>
+      reconcileLeadgenLeadOrder(
+        pendingSaveCountRef.current > 0 ? currentLeadIds : run.userLeadOrder,
+        agentOrderedLeadIds,
+      ),
+    );
+  }, [agentOrderedLeadIds, run.userLeadOrder]);
+
+  const queueLeadOrderSave = useCallback(
+    (orderedLeadIds: string[], options: LeadOrderSaveOptions = {}) => {
+      const requestRunId = run.id;
+      const requestRunGeneration = currentRunGenerationRef.current;
+      const reconciledLeadIds = reconcileLeadgenLeadOrder(
+        orderedLeadIds,
+        agentOrderedLeadIds,
+      );
+      const saveId = latestSaveIdRef.current + 1;
+      latestSaveIdRef.current = saveId;
+      pendingSaveCountRef.current += 1;
+      setUserOrderedLeadIds(reconciledLeadIds);
+
+      const save = async () => {
+        try {
+          const snapshot = await saveLeadOrder({
+            runId: requestRunId,
+            leadIds: reconciledLeadIds,
+            signalUpdates: options.signalUpdates ?? [],
+          });
+          handleSavedLeadOrder({
+            options,
+            requestRunGeneration,
+            requestRunId,
+            saveId,
+            snapshot,
+          });
+        } catch (error) {
+          handleFailedLeadOrderSave({
+            agentLeadIds: agentOrderedLeadIds,
+            error,
+            options,
+            requestRunGeneration,
+            requestRunId,
+            runLeadOrder: run.userLeadOrder,
+            saveId,
+          });
+        } finally {
+          settleLeadOrderSave({
+            options,
+            requestRunGeneration,
+            requestRunId,
+          });
+        }
+      };
+
+      saveQueueRef.current = saveQueueRef.current.then(save, save);
+    },
+    [
+      agentOrderedLeadIds,
+      handleFailedLeadOrderSave,
+      handleSavedLeadOrder,
+      run.id,
+      run.userLeadOrder,
+      saveLeadOrder,
+      settleLeadOrderSave,
+    ],
+  );
+
+  const handleResetLeadOrder = useCallback(() => {
+    queueLeadOrderSave([], {
+      onSaved() {
+        toast.success('Prospect order reset');
+      },
+    });
+  }, [queueLeadOrderSave]);
+
+  return {
+    userOrderedLeadIds,
+    hasCustomLeadOrder,
+    handleLeadOrderChange: queueLeadOrderSave,
+    handleResetLeadOrder,
+  };
+}
+
 function RunWorkspace({
   run,
   isRunning,
@@ -934,6 +1451,15 @@ function RunWorkspace({
     optimisticUserSignalStateByLeadId,
     setOptimisticUserSignalStateByLeadId,
   ] = useState<Partial<Record<string, LeadgenUserSignalState>>>({});
+  const {
+    userOrderedLeadIds,
+    hasCustomLeadOrder,
+    handleLeadOrderChange,
+    handleResetLeadOrder,
+  } = useLeadgenLeadOrder({
+    run,
+    onRunUpdated,
+  });
   const [reviewOutreachLeadId, setReviewOutreachLeadId] = useState<
     string | null
   >(null);
@@ -943,8 +1469,9 @@ function RunWorkspace({
     () =>
       buildLeadPresentationModel(run, {
         userSignalStateByLeadId: optimisticUserSignalStateByLeadId,
+        userOrderLeadIds: userOrderedLeadIds,
       }),
-    [optimisticUserSignalStateByLeadId, run],
+    [optimisticUserSignalStateByLeadId, run, userOrderedLeadIds],
   );
   const buyerAngles = getBuyerAngles(run);
 
@@ -1021,45 +1548,6 @@ function RunWorkspace({
     }),
   );
 
-  const setLeadUserSignal = useMutation(
-    trpc.leadgen.setLeadUserSignal.mutationOptions({
-      onSuccess(result) {
-        const queryKey = trpc.leadgen.getRun.queryKey({ runId: result.runId });
-        const currentRun =
-          queryClient.getQueryData<LeadgenSnapshot>(queryKey) ?? run;
-        onRunUpdated(
-          applyLeadgenUserSignalToRun({
-            run: currentRun,
-            leadId: result.leadId,
-            state: result.state,
-          }),
-        );
-        setOptimisticUserSignalStateByLeadId((states) =>
-          omitLeadSignalState(states, result.leadId),
-        );
-
-        if (result.state === 'hidden') {
-          toast('Prospect hidden', {
-            description: 'Moved to the Hidden section.',
-          });
-        }
-      },
-      onError(error, variables) {
-        setOptimisticUserSignalStateByLeadId((states) =>
-          omitLeadSignalState(states, variables.leadId),
-        );
-        toast.error('Could not update prospect', {
-          description: error.message,
-        });
-      },
-      onSettled(_result, _error, variables) {
-        setPendingUserSignalLeadIds((leadIds) =>
-          leadIds.filter((leadId) => leadId !== variables.leadId),
-        );
-      },
-    }),
-  );
-
   const estimatedOutreachCredits = usageQuery.data
     ? getLeadgenOutreachCreditEstimate({
         creditCosts: usageQuery.data.creditCosts,
@@ -1090,20 +1578,46 @@ function RunWorkspace({
     generateLeadOutreach.mutate({ runId: run.id, leadId });
   };
 
-  const handleSetLeadUserSignal = (
-    leadId: string,
-    state: LeadgenUserSignalState,
+  const handleLeadOrganizationChange = (
+    orderedLeadIds: string[],
+    signalUpdate?: LeadgenLeadSignalUpdate,
   ) => {
-    if (pendingUserSignalLeadIds.includes(leadId)) return;
+    if (!signalUpdate) {
+      handleLeadOrderChange(orderedLeadIds);
+      return;
+    }
+
+    if (pendingUserSignalLeadIds.includes(signalUpdate.leadId)) return;
 
     setPendingUserSignalLeadIds((leadIds) =>
-      leadIds.includes(leadId) ? leadIds : [...leadIds, leadId],
+      leadIds.includes(signalUpdate.leadId)
+        ? leadIds
+        : [...leadIds, signalUpdate.leadId],
     );
     setOptimisticUserSignalStateByLeadId((states) => ({
       ...states,
-      [leadId]: state,
+      [signalUpdate.leadId]: signalUpdate.state,
     }));
-    setLeadUserSignal.mutate({ runId: run.id, leadId, state });
+    const clearPendingSignal = () => {
+      setOptimisticUserSignalStateByLeadId((states) =>
+        omitLeadSignalState(states, signalUpdate.leadId),
+      );
+      setPendingUserSignalLeadIds((leadIds) =>
+        leadIds.filter((leadId) => leadId !== signalUpdate.leadId),
+      );
+    };
+
+    handleLeadOrderChange(orderedLeadIds, {
+      signalUpdates: [signalUpdate],
+      onSaved() {
+        if (signalUpdate.state === 'hidden') {
+          toast('Prospect hidden', {
+            description: 'Moved to the Hidden section.',
+          });
+        }
+      },
+      onSettled: clearPendingSignal,
+    });
   };
 
   const headerSubtitle = getRunHeaderSubtitle(run);
@@ -1141,8 +1655,23 @@ function RunWorkspace({
             <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
               {headerSubtitle}
             </p>
-            {(canRetryRun || canExport || (canListOnMarketplace && ownedDomain)) && (
+            {(presentation.leads.length > 1 ||
+              canRetryRun ||
+              canExport ||
+              (canListOnMarketplace && ownedDomain)) && (
               <div className="mt-3 flex flex-wrap gap-2">
+                {presentation.leads.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={!hasCustomLeadOrder}
+                    onClick={handleResetLeadOrder}
+                  >
+                    <RotateCcw data-icon="inline-start" />
+                    Reset order
+                  </Button>
+                )}
                 {canRetryRun && (
                   <Button
                     type="button"
@@ -1153,7 +1682,10 @@ function RunWorkspace({
                     onClick={() => onRetryRun(run.id)}
                   >
                     {isRetrying ? (
-                      <Loader2 data-icon="inline-start" className="animate-spin" />
+                      <Loader2
+                        data-icon="inline-start"
+                        className="animate-spin"
+                      />
                     ) : (
                       <RefreshCw data-icon="inline-start" />
                     )}
@@ -1208,6 +1740,7 @@ function RunWorkspace({
           )}
 
           <LeadList
+            runId={run.id}
             leads={presentation.leads}
             emptyStateMessage="Prospects will appear here as search finds them."
             sourceDomain={run.domain}
@@ -1221,7 +1754,7 @@ function RunWorkspace({
             pendingUserSignalLeadIds={pendingUserSignalLeadIds}
             onGenerateLeadOutreach={handleGenerateLeadOutreach}
             onReviewOutreachLead={setReviewOutreachLeadId}
-            onSetLeadUserSignal={handleSetLeadUserSignal}
+            onLeadOrderChange={handleLeadOrganizationChange}
           />
         </section>
 
@@ -1284,6 +1817,7 @@ function OutboundMarketplaceListingCta({ domain }: { domain: UserDomain }) {
 }
 
 function LeadList({
+  runId,
   leads,
   emptyStateMessage,
   sourceDomain,
@@ -1297,8 +1831,9 @@ function LeadList({
   pendingUserSignalLeadIds,
   onGenerateLeadOutreach,
   onReviewOutreachLead,
-  onSetLeadUserSignal,
+  onLeadOrderChange,
 }: {
+  runId: string;
   leads: LeadPresentation[];
   emptyStateMessage: string;
   sourceDomain: string;
@@ -1312,9 +1847,31 @@ function LeadList({
   pendingUserSignalLeadIds: string[];
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachLead: (leadId: string | null) => void;
-  onSetLeadUserSignal: (leadId: string, state: LeadgenUserSignalState) => void;
+  onLeadOrderChange: (
+    leadIds: string[],
+    signalUpdate?: LeadgenLeadSignalUpdate,
+  ) => void;
 }) {
   const shouldReduceMotion = useReducedMotion();
+  const [activeLeadId, setActiveLeadId] = useState<string | null>(null);
+  const [activeLeadOverlayWidth, setActiveLeadOverlayWidth] = useState<
+    number | null
+  >(null);
+  const [dragOverlayContainer, setDragOverlayContainer] =
+    useState<HTMLElement | null>(null);
+  const [dragPreviewSectionLeadIds, setDragPreviewSectionLeadIdsState] =
+    useState<LeadSectionLeadIds | null>(null);
+  const dragPreviewSectionLeadIdsRef = useRef<LeadSectionLeadIds | null>(null);
+  const lastOverIdRef = useRef<UniqueIdentifier | null>(null);
+  const recentlyMovedToNewSectionRef = useRef(false);
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: { distance: 6 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: leadMultipleContainersKeyboardCoordinates,
+    }),
+  );
   const [openSections, setOpenSections] = useState<
     Record<LeadOrganizationSectionId, boolean>
   >({
@@ -1322,14 +1879,6 @@ function LeadList({
     prospects: true,
     hidden: false,
   });
-
-  if (leads.length === 0) {
-    return (
-      <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        {emptyStateMessage}
-      </div>
-    );
-  }
 
   const transition = shouldReduceMotion
     ? { duration: 0 }
@@ -1343,13 +1892,241 @@ function LeadList({
   const hiddenLeads = leads.filter(
     (presentation) => presentation.organizationState === 'hidden',
   );
+  const sectionLeads: Record<LeadOrganizationSectionId, LeadPresentation[]> = {
+    bookmarked: bookmarkedLeads,
+    prospects: visibleProspectLeads,
+    hidden: hiddenLeads,
+  };
+  const baseSectionLeadIds = getSectionLeadIds(sectionLeads);
+  const sectionLeadIds = dragPreviewSectionLeadIds ?? baseSectionLeadIds;
+  const baseLeadSectionIdByLeadId =
+    getLeadSectionIdByLeadId(baseSectionLeadIds);
+  const collisionDetectionStrategy: CollisionDetection = useCallback(
+    (args) => {
+      const currentSectionLeadIds =
+        dragPreviewSectionLeadIdsRef.current ?? baseSectionLeadIds;
+      const overId = getLeadCollisionOverId(args, currentSectionLeadIds);
 
-  const renderLeadCard = (presentation: LeadPresentation) => (
-    <LeadCard
+      if (overId != null) {
+        lastOverIdRef.current = overId;
+
+        return [{ id: overId }];
+      }
+
+      if (recentlyMovedToNewSectionRef.current) {
+        lastOverIdRef.current = activeLeadId;
+      }
+
+      return lastOverIdRef.current ? [{ id: lastOverIdRef.current }] : [];
+    },
+    [activeLeadId, baseSectionLeadIds],
+  );
+  const leadPresentationById = useMemo(
+    () =>
+      new Map(
+        leads.map((presentation) => [presentation.lead.id, presentation]),
+      ),
+    [leads],
+  );
+  const activePresentation = activeLeadId
+    ? (leadPresentationById.get(activeLeadId) ?? null)
+    : null;
+  const displaySectionLeads = {
+    bookmarked: getLeadPresentationsBySectionIds(
+      sectionLeadIds.bookmarked,
+      leadPresentationById,
+    ),
+    prospects: getLeadPresentationsBySectionIds(
+      sectionLeadIds.prospects,
+      leadPresentationById,
+    ),
+    hidden: getLeadPresentationsBySectionIds(
+      sectionLeadIds.hidden,
+      leadPresentationById,
+    ),
+  } satisfies Record<LeadOrganizationSectionId, LeadPresentation[]>;
+
+  const setSectionOpen = (
+    sectionId: LeadOrganizationSectionId,
+    open: boolean,
+  ) => {
+    setOpenSections((sections) => ({
+      ...sections,
+      [sectionId]: open,
+    }));
+  };
+
+  useEffect(() => {
+    setDragOverlayContainer(document.body);
+  }, []);
+
+  useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      recentlyMovedToNewSectionRef.current = false;
+    });
+
+    return () => cancelAnimationFrame(frameId);
+  });
+
+  const setDragPreviewSectionLeadIds = (
+    sectionLeadIds: LeadSectionLeadIds | null,
+  ) => {
+    dragPreviewSectionLeadIdsRef.current = sectionLeadIds;
+    setDragPreviewSectionLeadIdsState(sectionLeadIds);
+  };
+
+  const clearDragState = () => {
+    setActiveLeadId(null);
+    setActiveLeadOverlayWidth(null);
+    setDragPreviewSectionLeadIds(null);
+    lastOverIdRef.current = null;
+    recentlyMovedToNewSectionRef.current = false;
+  };
+
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveLeadId(toStringIdentifier(event.active.id));
+    setActiveLeadOverlayWidth(event.active.rect.current.initial?.width ?? null);
+    setDragPreviewSectionLeadIds(null);
+    lastOverIdRef.current = null;
+    recentlyMovedToNewSectionRef.current = false;
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    if (!event.over) return;
+
+    const draggedLeadId = toStringIdentifier(event.active.id);
+    const overId = toStringIdentifier(event.over.id);
+    const currentSectionLeadIds =
+      dragPreviewSectionLeadIdsRef.current ?? baseSectionLeadIds;
+    const currentLeadSectionIdByLeadId = getLeadSectionIdByLeadId(
+      currentSectionLeadIds,
+    );
+    const sourceSectionId =
+      currentLeadSectionIdByLeadId.get(draggedLeadId) ??
+      baseLeadSectionIdByLeadId.get(draggedLeadId);
+    const targetSectionId = getDropTargetSectionId({
+      overId,
+      leadSectionIdByLeadId: currentLeadSectionIdByLeadId,
+    });
+
+    if (!sourceSectionId || !targetSectionId) return;
+
+    const insertIndex =
+      sourceSectionId === targetSectionId
+        ? undefined
+        : getLeadCrossSectionInsertIndex({
+            activeTop: event.active.rect.current.translated?.top,
+            overId,
+            overRect: event.over.rect,
+            sectionLeadIds: currentSectionLeadIds,
+            targetSectionId,
+          });
+    const nextSectionLeadIds = moveLeadInSections({
+      activeLeadId: draggedLeadId,
+      insertIndex,
+      overId,
+      sourceSectionId,
+      targetSectionId,
+      sectionLeadIds: currentSectionLeadIds,
+    });
+
+    if (
+      areLeadIdsEqual(
+        flattenSectionLeadIds(currentSectionLeadIds),
+        flattenSectionLeadIds(nextSectionLeadIds),
+      )
+    ) {
+      return;
+    }
+
+    if (sourceSectionId !== targetSectionId) {
+      recentlyMovedToNewSectionRef.current = true;
+    }
+
+    setDragPreviewSectionLeadIds(nextSectionLeadIds);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const previewSectionLeadIds = dragPreviewSectionLeadIdsRef.current;
+    const overId = event.over?.id ?? lastOverIdRef.current;
+    clearDragState();
+
+    if (overId == null) return;
+
+    const draggedLeadId = toStringIdentifier(event.active.id);
+    const overIdString = toStringIdentifier(overId);
+    const sourceSectionId = baseLeadSectionIdByLeadId.get(draggedLeadId);
+    const dragEndSectionLeadIds = previewSectionLeadIds ?? baseSectionLeadIds;
+    const dragEndLeadSectionIdByLeadId = getLeadSectionIdByLeadId(
+      dragEndSectionLeadIds,
+    );
+    const targetSectionId =
+      getDropTargetSectionId({
+        overId: overIdString,
+        leadSectionIdByLeadId: dragEndLeadSectionIdByLeadId,
+      }) ?? dragEndLeadSectionIdByLeadId.get(draggedLeadId);
+
+    if (!sourceSectionId || !targetSectionId) return;
+
+    const nextSectionLeadIds =
+      previewSectionLeadIds ??
+      moveLeadInSections({
+        activeLeadId: draggedLeadId,
+        insertIndex:
+          sourceSectionId === targetSectionId
+            ? undefined
+            : getLeadCrossSectionInsertIndex({
+                activeTop: event.active.rect.current.translated?.top,
+                overId: overIdString,
+                overRect: event.over?.rect ?? null,
+                sectionLeadIds: baseSectionLeadIds,
+                targetSectionId,
+              }),
+        overId: overIdString,
+        sourceSectionId,
+        targetSectionId,
+        sectionLeadIds: baseSectionLeadIds,
+      });
+    const previousLeadIds = flattenSectionLeadIds(baseSectionLeadIds);
+    const nextLeadIds = flattenSectionLeadIds(nextSectionLeadIds);
+
+    const nextState =
+      sourceSectionId === targetSectionId
+        ? null
+        : getSectionUserSignalState(targetSectionId);
+    const activeLead = leadPresentationById.get(draggedLeadId);
+    const signalUpdate =
+      nextState && activeLead?.organizationState !== nextState
+        ? { leadId: draggedLeadId, state: nextState }
+        : undefined;
+
+    if (!areLeadIdsEqual(previousLeadIds, nextLeadIds) || signalUpdate) {
+      onLeadOrderChange(nextLeadIds, signalUpdate);
+    }
+
+    if (sourceSectionId !== targetSectionId) {
+      setSectionOpen(targetSectionId, true);
+    }
+  };
+
+  if (leads.length === 0) {
+    return (
+      <div className="rounded-lg border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
+        {emptyStateMessage}
+      </div>
+    );
+  }
+
+  const renderLeadCard = (
+    presentation: LeadPresentation,
+    sectionId: LeadOrganizationSectionId,
+  ) => (
+    <SortableLeadCard
       key={presentation.lead.id}
-      layoutId={`leadgen-lead-${presentation.lead.id}`}
+      sectionId={sectionId}
       presentation={presentation}
       transition={transition}
+      shouldReduceMotion={shouldReduceMotion}
       sourceDomain={sourceDomain}
       isPreparingOutreach={pendingOutreachLeadIds.includes(
         presentation.lead.id,
@@ -1363,87 +2140,302 @@ function LeadList({
       isUserSignalPending={pendingUserSignalLeadIds.includes(
         presentation.lead.id,
       )}
+      isSortingDisabled={pendingUserSignalLeadIds.includes(
+        presentation.lead.id,
+      )}
       onGenerateLeadOutreach={onGenerateLeadOutreach}
       onReviewOutreachChange={(open) =>
         onReviewOutreachLead(open ? presentation.lead.id : null)
       }
       onSetUserSignal={(state) => {
-        setSectionOpen(getUserSignalDestinationSectionId(state), true);
-        onSetLeadUserSignal(presentation.lead.id, state);
+        const targetSectionId = getUserSignalDestinationSectionId(state);
+        const nextSectionLeadIds = moveLeadToSectionEnd({
+          leadId: presentation.lead.id,
+          sectionLeadIds,
+          targetSectionId,
+        });
+        const nextLeadIds = flattenSectionLeadIds(nextSectionLeadIds);
+
+        setSectionOpen(targetSectionId, true);
+        onLeadOrderChange(nextLeadIds, {
+          leadId: presentation.lead.id,
+          state,
+        });
       }}
     />
   );
 
-  const setSectionOpen = (
-    sectionId: LeadOrganizationSectionId,
-    open: boolean,
-  ) => {
-    setOpenSections((sections) => ({
-      ...sections,
-      [sectionId]: open,
-    }));
-  };
-
   return (
-    <LayoutGroup id={`leadgen-list-${sourceDomain}`}>
-      <motion.div
-        layout="position"
-        className="flex flex-col gap-3"
-        transition={transition}
-      >
-        <AnimatePresence initial={false} mode="popLayout">
-          {bookmarkedLeads.length > 0 && (
+    <DndContext
+      sensors={sensors}
+      collisionDetection={collisionDetectionStrategy}
+      measuring={leadDndMeasuring}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      onDragCancel={clearDragState}
+    >
+      <LayoutGroup id={`leadgen-list-${runId}-${sourceDomain}`}>
+        <motion.div
+          layout="position"
+          className="flex flex-col gap-3"
+          transition={transition}
+          data-dragging={Boolean(activeLeadId) || undefined}
+        >
+          <AnimatePresence initial={false} mode="popLayout">
             <LeadOrganizationSection
               key="bookmarked"
               sectionId="bookmarked"
               title="Bookmarks"
-              count={bookmarkedLeads.length}
+              count={displaySectionLeads.bookmarked.length}
               icon={Star}
               open={openSections.bookmarked}
+              leadIds={sectionLeadIds.bookmarked}
               emptyStateMessage="Bookmarked prospects will stay pinned here."
               transition={transition}
               onOpenChange={(open) => setSectionOpen('bookmarked', open)}
             >
-              {bookmarkedLeads.map(renderLeadCard)}
+              {displaySectionLeads.bookmarked.map((presentation) =>
+                renderLeadCard(presentation, 'bookmarked'),
+              )}
             </LeadOrganizationSection>
+
+            <LeadOrganizationSection
+              key="prospects"
+              sectionId="prospects"
+              title="Prospects"
+              count={displaySectionLeads.prospects.length}
+              icon={ListChecks}
+              open={openSections.prospects}
+              leadIds={sectionLeadIds.prospects}
+              emptyStateMessage="No unmarked prospects right now."
+              transition={transition}
+              onOpenChange={(open) => setSectionOpen('prospects', open)}
+            >
+              {displaySectionLeads.prospects.map((presentation) =>
+                renderLeadCard(presentation, 'prospects'),
+              )}
+            </LeadOrganizationSection>
+
+            <LeadOrganizationSection
+              key="hidden"
+              sectionId="hidden"
+              title="Hidden"
+              count={displaySectionLeads.hidden.length}
+              icon={EyeOff}
+              open={openSections.hidden}
+              leadIds={sectionLeadIds.hidden}
+              emptyStateMessage="Crossed-out prospects move here."
+              muted
+              transition={transition}
+              onOpenChange={(open) => setSectionOpen('hidden', open)}
+            >
+              {displaySectionLeads.hidden.map((presentation) =>
+                renderLeadCard(presentation, 'hidden'),
+              )}
+            </LeadOrganizationSection>
+          </AnimatePresence>
+        </motion.div>
+      </LayoutGroup>
+      {dragOverlayContainer
+        ? createPortal(
+            <DragOverlay
+              adjustScale={false}
+              dropAnimation={shouldReduceMotion ? null : leadDropAnimation}
+              style={
+                activeLeadOverlayWidth
+                  ? { width: activeLeadOverlayWidth }
+                  : undefined
+              }
+            >
+              {activePresentation ? (
+                <div className="pointer-events-none">
+                  <LeadCard
+                    presentation={activePresentation}
+                    transition={
+                      shouldReduceMotion ? { duration: 0 } : transition
+                    }
+                    sourceDomain={sourceDomain}
+                    isPreparingOutreach={pendingOutreachLeadIds.includes(
+                      activePresentation.lead.id,
+                    )}
+                    isReviewingOutreach={false}
+                    estimatedOutreachCredits={estimatedOutreachCredits}
+                    remainingCredits={remainingCredits}
+                    isOutreachCreditLoading={isOutreachCreditLoading}
+                    isOutreachCreditError={isOutreachCreditError}
+                    isOutreachCreditBlocked={isOutreachCreditBlocked}
+                    isUserSignalPending={pendingUserSignalLeadIds.includes(
+                      activePresentation.lead.id,
+                    )}
+                    showDragHandlePreview
+                    isDragOverlay
+                    onGenerateLeadOutreach={() => undefined}
+                    onReviewOutreachChange={() => undefined}
+                    onSetUserSignal={() => undefined}
+                  />
+                </div>
+              ) : null}
+            </DragOverlay>,
+            dragOverlayContainer,
+          )
+        : null}
+    </DndContext>
+  );
+}
+
+function SortableLeadCard({
+  sectionId,
+  presentation,
+  transition,
+  shouldReduceMotion,
+  sourceDomain,
+  isPreparingOutreach,
+  isReviewingOutreach,
+  estimatedOutreachCredits,
+  remainingCredits,
+  isOutreachCreditLoading,
+  isOutreachCreditError,
+  isOutreachCreditBlocked,
+  isUserSignalPending,
+  isSortingDisabled,
+  onGenerateLeadOutreach,
+  onReviewOutreachChange,
+  onSetUserSignal,
+}: {
+  sectionId: LeadOrganizationSectionId;
+  presentation: LeadPresentation;
+  transition: typeof leadLayoutTransition | { duration: number };
+  shouldReduceMotion: boolean | null;
+  sourceDomain: string;
+  isPreparingOutreach: boolean;
+  isReviewingOutreach: boolean;
+  estimatedOutreachCredits?: number;
+  remainingCredits?: number;
+  isOutreachCreditLoading: boolean;
+  isOutreachCreditError: boolean;
+  isOutreachCreditBlocked: boolean;
+  isUserSignalPending: boolean;
+  isSortingDisabled: boolean;
+  onGenerateLeadOutreach: (leadId: string) => void;
+  onReviewOutreachChange: (open: boolean) => void;
+  onSetUserSignal: (state: LeadgenUserSignalState) => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setNodeRef,
+    transform,
+    transition: sortableTransition,
+    isDragging,
+  } = useSortable({
+    id: presentation.lead.id,
+    disabled: isSortingDisabled,
+    transition: shouldReduceMotion ? null : leadSortableTransition,
+    data: {
+      sectionId,
+      type: 'lead',
+    },
+  });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition: sortableTransition,
+  } satisfies CSSProperties;
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={cn(
+        'will-change-transform',
+        isDragging && 'relative z-10 opacity-30',
+      )}
+    >
+      <LeadCard
+        presentation={presentation}
+        transition={transition}
+        sourceDomain={sourceDomain}
+        isPreparingOutreach={isPreparingOutreach}
+        isReviewingOutreach={isReviewingOutreach}
+        estimatedOutreachCredits={estimatedOutreachCredits}
+        remainingCredits={remainingCredits}
+        isOutreachCreditLoading={isOutreachCreditLoading}
+        isOutreachCreditError={isOutreachCreditError}
+        isOutreachCreditBlocked={isOutreachCreditBlocked}
+        isUserSignalPending={isUserSignalPending}
+        dragHandle={{
+          attributes,
+          isDisabled: isSortingDisabled,
+          isDragging,
+          listeners,
+          setActivatorNodeRef,
+        }}
+        onGenerateLeadOutreach={onGenerateLeadOutreach}
+        onReviewOutreachChange={onReviewOutreachChange}
+        onSetUserSignal={onSetUserSignal}
+      />
+    </div>
+  );
+}
+
+type LeadDragHandleProps = {
+  attributes: DraggableAttributes;
+  isDisabled: boolean;
+  isDragging: boolean;
+  listeners: DraggableSyntheticListeners;
+  setActivatorNodeRef: (element: HTMLButtonElement | null) => void;
+};
+
+function LeadOrganizationDropArea({
+  sectionId,
+  leadIds,
+  count,
+  emptyStateMessage,
+  isOver,
+  transition,
+  children,
+}: {
+  sectionId: LeadOrganizationSectionId;
+  leadIds: string[];
+  count: number;
+  emptyStateMessage: string;
+  isOver: boolean;
+  transition: typeof leadLayoutTransition | { duration: number };
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className={cn(
+        'grid min-h-20 gap-3 p-3 transition-colors',
+        isOver && 'bg-primary/5',
+      )}
+    >
+      <SortableContext
+        id={sectionId}
+        items={leadIds}
+        strategy={verticalListSortingStrategy}
+      >
+        <AnimatePresence initial={false} mode="popLayout">
+          {count > 0 ? (
+            children
+          ) : (
+            <motion.div
+              key={`${sectionId}-empty`}
+              layout
+              transition={transition}
+              className="rounded-md border border-dashed border-border/70 p-4 text-sm text-muted-foreground"
+            >
+              {emptyStateMessage}
+            </motion.div>
           )}
-
-          <LeadOrganizationSection
-            key="prospects"
-            sectionId="prospects"
-            title="Prospects"
-            count={visibleProspectLeads.length}
-            icon={ListChecks}
-            open={openSections.prospects}
-            emptyStateMessage="No unmarked prospects right now."
-            transition={transition}
-            onOpenChange={(open) => setSectionOpen('prospects', open)}
-          >
-            {visibleProspectLeads.map(renderLeadCard)}
-          </LeadOrganizationSection>
-
-          <LeadOrganizationSection
-            key="hidden"
-            sectionId="hidden"
-            title="Hidden"
-            count={hiddenLeads.length}
-            icon={EyeOff}
-            open={openSections.hidden}
-            emptyStateMessage="Crossed-out prospects move here."
-            muted
-            transition={transition}
-            onOpenChange={(open) => setSectionOpen('hidden', open)}
-          >
-            {hiddenLeads.map(renderLeadCard)}
-          </LeadOrganizationSection>
         </AnimatePresence>
-      </motion.div>
-    </LayoutGroup>
+      </SortableContext>
+    </div>
   );
 }
 
 function LeadCard({
-  layoutId,
   presentation,
   transition,
   sourceDomain,
@@ -1455,11 +2447,13 @@ function LeadCard({
   isOutreachCreditError,
   isOutreachCreditBlocked,
   isUserSignalPending,
+  dragHandle,
+  showDragHandlePreview = false,
+  isDragOverlay = false,
   onGenerateLeadOutreach,
   onReviewOutreachChange,
   onSetUserSignal,
 }: {
-  layoutId: string;
   presentation: LeadPresentation;
   transition: typeof leadLayoutTransition | { duration: number };
   sourceDomain: string;
@@ -1471,6 +2465,9 @@ function LeadCard({
   isOutreachCreditError: boolean;
   isOutreachCreditBlocked: boolean;
   isUserSignalPending: boolean;
+  dragHandle?: LeadDragHandleProps;
+  showDragHandlePreview?: boolean;
+  isDragOverlay?: boolean;
   onGenerateLeadOutreach: (leadId: string) => void;
   onReviewOutreachChange: (open: boolean) => void;
   onSetUserSignal: (state: LeadgenUserSignalState) => void;
@@ -1485,13 +2482,14 @@ function LeadCard({
 
   return (
     <motion.article
-      id={getLeadCardDomId(lead.id)}
-      layout
-      layoutId={layoutId}
+      id={isDragOverlay ? undefined : getLeadCardDomId(lead.id)}
+      layout={isDragOverlay ? false : 'position'}
       transition={transition}
       className={cn(
-        'scroll-mt-6 rounded-lg border border-border/70 bg-background/60 p-4 shadow-xs',
+        'w-full scroll-mt-6 rounded-lg border border-border/70 bg-background/60 p-4 shadow-xs will-change-transform',
         isHidden && 'border-dashed bg-muted/20 opacity-75',
+        isDragOverlay &&
+          'border-primary/40 bg-background/95 opacity-100 shadow-xl ring-1 ring-primary/15 backdrop-blur-sm',
       )}
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
@@ -1515,6 +2513,11 @@ function LeadCard({
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
+          {dragHandle ? (
+            <ProspectDragHandle dragHandle={dragHandle} />
+          ) : showDragHandlePreview ? (
+            <ProspectDragHandlePreview />
+          ) : null}
           <ProspectSignalActions
             state={presentation.organizationState}
             isPending={isUserSignalPending}
@@ -1539,18 +2542,18 @@ function LeadCard({
           onOpenEmailDialog={() => onReviewOutreachChange(true)}
         />
       )}
-      <LeadEmailDialog
-        lead={lead}
-        open={isReviewingOutreach}
-        recipients={recipients}
-        sourceDomain={sourceDomain}
-        onOpenChange={onReviewOutreachChange}
-      />
+      {!isDragOverlay && (
+        <LeadEmailDialog
+          lead={lead}
+          open={isReviewingOutreach}
+          recipients={recipients}
+          sourceDomain={sourceDomain}
+          onOpenChange={onReviewOutreachChange}
+        />
+      )}
     </motion.article>
   );
 }
-
-type LeadOrganizationSectionId = 'bookmarked' | 'prospects' | 'hidden';
 
 function getUserSignalDestinationSectionId(
   state: LeadgenUserSignalState,
@@ -1566,12 +2569,70 @@ function getUserSignalDestinationSectionId(
   return 'prospects';
 }
 
+function getLeadPresentationsBySectionIds(
+  leadIds: string[],
+  leadPresentationById: Map<string, LeadPresentation>,
+) {
+  return leadIds.flatMap((leadId) => {
+    const presentation = leadPresentationById.get(leadId);
+    return presentation ? [presentation] : [];
+  });
+}
+
+function ProspectDragHandle({
+  dragHandle,
+}: {
+  dragHandle: LeadDragHandleProps;
+}) {
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={
+          <Button
+            ref={dragHandle.setActivatorNodeRef}
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Reorder prospect"
+            disabled={dragHandle.isDisabled}
+            className={cn(
+              'touch-none cursor-grab text-muted-foreground active:cursor-grabbing',
+              dragHandle.isDragging && 'cursor-grabbing',
+            )}
+            {...dragHandle.attributes}
+            {...(dragHandle.listeners ?? {})}
+          />
+        }
+      >
+        <GripVertical data-icon="inline-start" />
+      </TooltipTrigger>
+      <TooltipContent sideOffset={6}>Reorder prospect</TooltipContent>
+    </Tooltip>
+  );
+}
+
+function ProspectDragHandlePreview() {
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      tabIndex={-1}
+      aria-hidden="true"
+      className="pointer-events-none cursor-grabbing text-muted-foreground"
+    >
+      <GripVertical data-icon="inline-start" />
+    </Button>
+  );
+}
+
 function LeadOrganizationSection({
   sectionId,
   title,
   count,
   icon: Icon,
   open,
+  leadIds,
   emptyStateMessage,
   muted = false,
   transition,
@@ -1583,14 +2644,25 @@ function LeadOrganizationSection({
   count: number;
   icon: LucideIcon;
   open: boolean;
+  leadIds: string[];
   emptyStateMessage: string;
   muted?: boolean;
   transition: typeof leadLayoutTransition | { duration: number };
   onOpenChange: (open: boolean) => void;
   children: ReactNode;
 }) {
+  const { isOver, setNodeRef } = useDroppable({
+    id: sectionId,
+    data: {
+      children: leadIds,
+      sectionId,
+      type: 'section',
+    },
+  });
+
   return (
     <motion.section
+      ref={setNodeRef}
       layout="position"
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
@@ -1599,6 +2671,7 @@ function LeadOrganizationSection({
       className={cn(
         'overflow-hidden rounded-lg border border-border/70 bg-background/45',
         muted && 'bg-muted/10',
+        isOver && 'border-primary/50 bg-primary/5',
       )}
     >
       <Collapsible open={open} onOpenChange={onOpenChange}>
@@ -1617,25 +2690,64 @@ function LeadOrganizationSection({
           <Badge variant={muted ? 'outline' : 'secondary'}>{count}</Badge>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="grid gap-3 p-3">
-            <AnimatePresence initial={false} mode="popLayout">
-              {count > 0 ? (
-                children
-              ) : (
-                <motion.div
-                  key={`${sectionId}-empty`}
-                  layout
-                  className="rounded-md border border-dashed border-border/70 p-4 text-sm text-muted-foreground"
-                >
-                  {emptyStateMessage}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+          <LeadOrganizationDropArea
+            sectionId={sectionId}
+            leadIds={leadIds}
+            count={count}
+            emptyStateMessage={emptyStateMessage}
+            isOver={isOver}
+            transition={transition}
+          >
+            {children}
+          </LeadOrganizationDropArea>
         </CollapsibleContent>
       </Collapsible>
     </motion.section>
   );
+}
+
+function toStringIdentifier(id: UniqueIdentifier) {
+  return String(id);
+}
+
+function getLeadOrganizationSectionId(
+  id: UniqueIdentifier,
+): LeadOrganizationSectionId | null {
+  const sectionId = toStringIdentifier(id);
+
+  return leadOrganizationSectionIds.includes(
+    sectionId as LeadOrganizationSectionId,
+  )
+    ? (sectionId as LeadOrganizationSectionId)
+    : null;
+}
+
+function getLeadCrossSectionInsertIndex({
+  activeTop,
+  overId,
+  overRect,
+  sectionLeadIds,
+  targetSectionId,
+}: {
+  activeTop?: number;
+  overId: string;
+  overRect: { top: number; height: number } | null;
+  sectionLeadIds: LeadSectionLeadIds;
+  targetSectionId: LeadOrganizationSectionId;
+}) {
+  const targetLeadIds = sectionLeadIds[targetSectionId];
+
+  if (getLeadOrganizationSectionId(overId)) {
+    return targetLeadIds.length;
+  }
+
+  const overIndex = targetLeadIds.indexOf(overId);
+  const isBelowOverItem =
+    overRect && activeTop != null && activeTop > overRect.top + overRect.height;
+
+  return overIndex >= 0
+    ? overIndex + (isBelowOverItem ? 1 : 0)
+    : targetLeadIds.length;
 }
 
 function ProspectSignalActions({
@@ -2428,28 +3540,6 @@ function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
 
 function getTimestamp(value: Date | string) {
   return value instanceof Date ? value.getTime() : new Date(value).getTime();
-}
-
-function applyLeadgenUserSignalToRun({
-  run,
-  leadId,
-  state,
-}: {
-  run: LeadgenSnapshot;
-  leadId: string;
-  state: LeadgenUserSignalState;
-}): LeadgenSnapshot {
-  return {
-    ...run,
-    leads: run.leads.map((lead) =>
-      lead.id === leadId
-        ? {
-            ...lead,
-            organizationState: state,
-          }
-        : lead,
-    ),
-  };
 }
 
 function omitLeadSignalState(

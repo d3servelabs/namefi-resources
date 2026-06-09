@@ -34,6 +34,7 @@ export type LeadPresentationModel = {
 
 export type BuildLeadPresentationModelOptions = {
   userSignalStateByLeadId?: Partial<Record<string, LeadgenUserSignalState>>;
+  userOrderLeadIds?: string[] | null;
 };
 
 const whitespaceRe = /\s+/g;
@@ -52,10 +53,13 @@ export function buildLeadPresentationModel(
       prospects: [],
       hidden: [],
     };
-  const leads = run.leads.map((lead) =>
-    buildLeadPresentation(lead, {
-      userSignalState: options.userSignalStateByLeadId?.[lead.id],
-    }),
+  const leads = orderLeadPresentations(
+    run.leads.map((lead) =>
+      buildLeadPresentation(lead, {
+        userSignalState: options.userSignalStateByLeadId?.[lead.id],
+      }),
+    ),
+    options.userOrderLeadIds,
   );
 
   for (const lead of leads) {
@@ -77,6 +81,36 @@ export function buildLeadPresentationModel(
       hidden: organizationGroups.hidden.length,
     },
   };
+}
+
+export function orderLeadPresentations<T extends { lead: { id: string } }>(
+  leads: T[],
+  orderedLeadIds: string[] | null | undefined,
+): T[] {
+  if (!orderedLeadIds?.length) return leads;
+
+  const orderIndexByLeadId = new Map<string, number>();
+  for (const leadId of orderedLeadIds) {
+    if (!orderIndexByLeadId.has(leadId)) {
+      orderIndexByLeadId.set(leadId, orderIndexByLeadId.size);
+    }
+  }
+
+  return leads
+    .map((lead, originalIndex) => ({
+      lead,
+      originalIndex,
+      orderIndex: orderIndexByLeadId.get(lead.lead.id),
+    }))
+    .toSorted((a, b) => {
+      if (a.orderIndex !== undefined && b.orderIndex !== undefined) {
+        return a.orderIndex - b.orderIndex;
+      }
+      if (a.orderIndex !== undefined) return -1;
+      if (b.orderIndex !== undefined) return 1;
+      return a.originalIndex - b.originalIndex;
+    })
+    .map(({ lead }) => lead);
 }
 
 export function buildLeadPresentation(

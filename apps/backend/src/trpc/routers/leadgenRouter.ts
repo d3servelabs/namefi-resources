@@ -24,6 +24,7 @@ import { and, desc, eq } from 'drizzle-orm';
 
 import {
   deriveLeadgenRunSummary,
+  getLeadgenAgentOrderedLeadIds,
   getLeadgenLeadSnapshotForRun,
   getLeadgenRunForUser,
   getLeadgenRunCountsByRunId,
@@ -36,6 +37,7 @@ import {
   retryFailedLeadgenRunForUser,
   startLeadgenRunForUser,
 } from '#lib/leadgen/runs';
+import { buildLeadgenLeadOrderUpdate } from '#lib/leadgen/order-update';
 import { config } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import {
@@ -129,7 +131,8 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         if (error instanceof LeadgenRunNoLongerRetryableError) {
           throw new TRPCError({
             code: 'CONFLICT',
-            message: 'This buyer search is already retrying or no longer failed.',
+            message:
+              'This buyer search is already retrying or no longer failed.',
             cause: error,
           });
         }
@@ -140,7 +143,8 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         );
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: 'Could not retry the buyer search. Try again in a few minutes.',
+          message:
+            'Could not retry the buyer search. Try again in a few minutes.',
           cause: error,
         });
       }
@@ -266,6 +270,48 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
       };
     }),
 
+  setLeadOrder: protectedProcedure
+    .input(leadgenContract.setLeadOrder.input)
+    .output(leadgenContract.setLeadOrder.output)
+    .mutation(async ({ input, ctx }) => {
+      const run = await getLeadgenRunForUser({
+        runId: input.runId,
+        userId: ctx.user.id,
+      });
+      const agentOrderedLeadIds = await getLeadgenAgentOrderedLeadIds(run.id);
+      const { signalUpdates, userLeadOrder } = buildLeadgenLeadOrderUpdate({
+        agentOrderedLeadIds,
+        requestedLeadIds: input.leadIds,
+        signalUpdates: input.signalUpdates,
+      });
+
+      await db.transaction(async (tx) => {
+        await tx
+          .update(leadgenRunsTable)
+          .set({
+            userLeadOrder,
+            updatedAt: new Date(),
+          })
+          .where(eq(leadgenRunsTable.id, run.id));
+
+        for (const update of signalUpdates) {
+          await persistLeadgenUserSignal(
+            {
+              leadId: update.leadId,
+              state: update.state,
+              userId: ctx.user.id,
+            },
+            tx,
+          );
+        }
+      });
+
+      return await getLeadgenRunSnapshotForUser({
+        runId: run.id,
+        userId: ctx.user.id,
+      });
+    }),
+
   listRuns: protectedProcedure
     .input(leadgenContract.listRuns.input)
     .output(leadgenContract.listRuns.output)
@@ -334,16 +380,19 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
     }),
 });
 
-async function persistLeadgenUserSignal(params: {
-  leadId: string;
-  state: LeadgenUserSignalState;
-  userId: string;
-}) {
+async function persistLeadgenUserSignal(
+  params: {
+    leadId: string;
+    state: LeadgenUserSignalState;
+    userId: string;
+  },
+  database: Pick<typeof db, 'insert'> = db,
+) {
   const now = new Date();
   const signalType = leadgenUserSignalTypeByState[params.state];
   const evidenceSnippet = leadgenUserSignalEvidenceByState[params.state];
 
-  const [signal] = await db
+  const [signal] = await database
     .insert(leadgenLeadSignalsTable)
     .values({
       leadId: params.leadId,

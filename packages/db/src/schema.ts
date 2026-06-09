@@ -981,6 +981,7 @@ type AiGenerationTokenUsage = Array<{
 type LeadgenTokenUsage = AiGenerationTokenUsage;
 
 type LeadgenMetadata = Record<string, unknown>;
+type LeadgenUserLeadOrder = string[];
 
 type CinematicAnimationModel =
   | 'veo-3.1-generate-preview'
@@ -1599,6 +1600,10 @@ export const leadgenRunsTable = pgTable(
     errorMessage: text('error_message'),
     tokenUsage: jsonb('token_usage')
       .$type<LeadgenTokenUsage>()
+      .notNull()
+      .default([]),
+    userLeadOrder: jsonb('user_lead_order')
+      .$type<LeadgenUserLeadOrder>()
       .notNull()
       .default([]),
     metadata: jsonb('metadata').default({}).$type<LeadgenMetadata>(),

@@ -3,6 +3,7 @@ import {
   leadgenUserSignalTypeByState,
   type LeadgenUserSignalState,
 } from '@namefi-astra/common/contract/leadgen-contract';
+import { reconcileLeadgenLeadOrder } from '@namefi-astra/common/leadgen-order';
 import {
   db,
   leadgenContactsTable,
@@ -157,6 +158,7 @@ export async function getLeadgenRunSnapshotForUser(params: {
     contactCount: contacts.length,
     draftCount: drafts.length,
   };
+  const agentOrderedLeadIds = leads.map((lead) => lead.id);
 
   return {
     id: run.id,
@@ -173,6 +175,10 @@ export async function getLeadgenRunSnapshotForUser(params: {
     }),
     createdAt: run.createdAt,
     updatedAt: run.updatedAt,
+    userLeadOrder: reconcileLeadgenLeadOrder(
+      run.userLeadOrder,
+      agentOrderedLeadIds,
+    ),
     intentQueries,
     events: publicEvents,
     leads: leads.map((lead) =>
@@ -208,6 +214,21 @@ export async function getLeadgenRunForUser(params: {
   }
 
   return run;
+}
+
+export async function getLeadgenAgentOrderedLeadIds(runId: string) {
+  const leads = await db
+    .select({ id: leadgenLeadsTable.id })
+    .from(leadgenLeadsTable)
+    .where(eq(leadgenLeadsTable.runId, runId))
+    .orderBy(
+      getLeadgenLeadPriorityOrder(),
+      desc(leadgenLeadsTable.score),
+      asc(leadgenLeadsTable.createdAt),
+      asc(leadgenLeadsTable.id),
+    );
+
+  return leads.map((lead) => lead.id);
 }
 
 export async function getLeadgenLeadSnapshotForRun(params: {

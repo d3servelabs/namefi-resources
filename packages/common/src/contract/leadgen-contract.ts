@@ -14,6 +14,11 @@ export const leadgenRunStatusSchema = z.enum([
 ]);
 
 const leadgenLeadRankingStateSchema = z.enum(['checking', 'ranked']);
+const leadgenLeadOrderSchema = z.array(z.string().uuid()).default([]);
+const leadgenLeadOrderInputSchema = z
+  .array(z.string().uuid())
+  .max(500)
+  .default([]);
 
 export const leadgenUserSignalStateSchema = z.enum([
   'none',
@@ -91,6 +96,7 @@ const leadgenRunBaseSchema = z.object({
 });
 
 export const leadgenRunSnapshotSchema = leadgenRunBaseSchema.extend({
+  userLeadOrder: leadgenLeadOrderSchema,
   intentQueries: z.array(z.string()),
   events: z.array(leadgenEventSchema),
   leads: z.array(leadgenLeadSchema),
@@ -118,6 +124,16 @@ const setLeadUserSignalOutputSchema = z.object({
   runId: z.string(),
   leadId: z.string(),
   state: leadgenUserSignalStateSchema,
+});
+
+const leadgenLeadSignalUpdateSchema = z.object({
+  leadId: z.string().uuid(),
+  state: leadgenUserSignalStateSchema,
+});
+
+const setLeadOrderInputSchema = runIdInputSchema.extend({
+  leadIds: leadgenLeadOrderInputSchema,
+  signalUpdates: z.array(leadgenLeadSignalUpdateSchema).max(25).default([]),
 });
 
 const listRunsInputSchema = z
@@ -153,6 +169,11 @@ export const leadgenContract = createContract(
       type: 'mutation',
       input: setLeadUserSignalInputSchema,
       output: setLeadUserSignalOutputSchema,
+    },
+    setLeadOrder: {
+      type: 'mutation',
+      input: setLeadOrderInputSchema,
+      output: leadgenRunSnapshotSchema,
     },
     listRuns: {
       type: 'query',

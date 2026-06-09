@@ -18,8 +18,7 @@ const mockLeadgenEventsTable = {
   runId: 'leadgen_events.run_id',
 };
 const mockLeadgenLeadsTable = {
-  contactDiscoveryAttemptedAt:
-    'leadgen_leads.contact_discovery_attempted_at',
+  contactDiscoveryAttemptedAt: 'leadgen_leads.contact_discovery_attempted_at',
   id: 'leadgen_leads.id',
   runId: 'leadgen_leads.run_id',
   status: 'leadgen_leads.status',
@@ -86,10 +85,8 @@ vi.mock('#temporal/workflows/leadgen.workflow', () => ({
   runLeadgenWorkflow: vi.fn(),
 }));
 
-const {
-  LeadgenRunNoLongerRetryableError,
-  retryFailedLeadgenRunForUser,
-} = await import('./runs');
+const { LeadgenRunNoLongerRetryableError, retryFailedLeadgenRunForUser } =
+  await import('./runs');
 const { runLeadgenWorkflow } = await import(
   '#temporal/workflows/leadgen.workflow'
 );
