@@ -6,7 +6,7 @@ tags: ['thesis']
 authors: ['namefiteam']
 draft: false
 description: "Un tour d'horizon neutre des cas d'utilisation réels des domaines tokenisés en 2026 : prêts DeFi, location, propriété fractionnée, identité pour agents IA, et les cas d'utilisation qui n'ont pas encore tout à fait abouti."
-keywords: ['cas d\'utilisation domaine tokenisé', 'DomainFi', 'prêt domaine tokenisé', 'collatéral domaine tokenisé', 'louer domaine tokenisé', 'propriété fractionnée de domaine', 'domaine agent IA', 'DeFi domaine', 'marketplace de domaines tokenisés', 'applications de domaines tokenisés', 'cas d\'utilisation domaine NFT', 'pourquoi tokeniser un domaine en 2026', 'utilisation de domaine on-chain', 'exemples de domaines tokenisés']
+keywords: ["cas d'utilisation domaine tokenisé", 'DomainFi', 'prêt domaine tokenisé', 'collatéral domaine tokenisé', 'louer domaine tokenisé', 'propriété fractionnée de domaine', 'domaine agent IA', 'DeFi domaine', 'marketplace de domaines tokenisés', 'applications de domaines tokenisés', "cas d'utilisation domaine NFT", 'pourquoi tokeniser un domaine en 2026', 'utilisation de domaine on-chain', 'exemples de domaines tokenisés']
 ---
 
 Il est tentant de parler des domaines tokenisés comme d'une *technologie*. Il est plus utile d'en parler comme d'un ensemble de *choses que vous pouvez faire avec* et que vous ne pourriez pas facilement réaliser avec un simple domaine détenu par un bureau d'enregistrement (registrar). Cet article propose un tour d'horizon de ces cas d'utilisation : ce qui est réel aujourd'hui, ce qui émerge, et ce qui relève encore principalement de la présentation théorique (slide-deck).
