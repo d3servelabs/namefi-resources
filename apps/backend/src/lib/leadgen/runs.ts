@@ -3,6 +3,7 @@ import {
   db,
   leadgenContactsTable,
   leadgenEmailDraftsTable,
+  leadgenEventsTable,
   leadgenLeadsTable,
   leadgenRunsTable,
 } from '@namefi-astra/db';
@@ -27,6 +28,13 @@ const FIRST_SENTENCE_RE = /^.*?[.!?](?:\s|$)/;
 
 type LeadgenRunRow = typeof leadgenRunsTable.$inferSelect;
 type LeadgenReasoningEffort = 'low' | 'medium' | 'high';
+
+export class LeadgenRunNoLongerRetryableError extends Error {
+  constructor(message = 'Leadgen run is no longer retryable.') {
+    super(message);
+    this.name = 'LeadgenRunNoLongerRetryableError';
+  }
+}
 
 export type LeadgenEmailLead = {
   leadId: string;
@@ -105,6 +113,155 @@ export async function startLeadgenRunForUser({
   }
 
   return getLeadgenRunOrThrow(runId);
+}
+
+export async function retryFailedLeadgenRunForUser({
+  runId,
+  userId,
+}: {
+  runId: string;
+  userId: string;
+}): Promise<LeadgenRunRow> {
+  const [run] = await db
+    .select()
+    .from(leadgenRunsTable)
+    .where(
+      and(eq(leadgenRunsTable.id, runId), eq(leadgenRunsTable.userId, userId)),
+    )
+    .limit(1);
+
+  if (!run) {
+    throw new Error('Leadgen run not found.');
+  }
+
+  if (run.status !== 'FAILED') {
+    throw new Error('Only failed leadgen runs can be retried.');
+  }
+
+  const workflowId = run.workflowId ?? `leadgen-${run.id}`;
+  const queuedAt = new Date();
+  const [queuedRun] = await db
+    .update(leadgenRunsTable)
+    .set({
+      status: 'QUEUED',
+      workflowId,
+      errorMessage: null,
+      startedAt: null,
+      finishedAt: null,
+      tokenUsage: [],
+      updatedAt: queuedAt,
+    })
+    .where(
+      and(
+        eq(leadgenRunsTable.id, run.id),
+        eq(leadgenRunsTable.userId, userId),
+        eq(leadgenRunsTable.status, 'FAILED'),
+      ),
+    )
+    .returning();
+
+  if (!queuedRun) {
+    throw new LeadgenRunNoLongerRetryableError();
+  }
+
+  try {
+    await resetRetryableLeadgenContactDiscovery({
+      runId: run.id,
+      updatedAt: queuedAt,
+    });
+    await temporalClient.workflow.start(runLeadgenWorkflow, {
+      args: [
+        {
+          runId: run.id,
+          userId,
+          domain: run.domain,
+          reasoningEffort: run.reasoningEffort,
+        },
+      ],
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
+      workflowId,
+      workflowIdReusePolicy: 'ALLOW_DUPLICATE_FAILED_ONLY',
+      workflowIdConflictPolicy: 'FAIL',
+    });
+    try {
+      await db.insert(leadgenEventsTable).values({
+        runId: run.id,
+        eventType: 'status',
+        stage: 'intent',
+        message: 'Retrying buyer search.',
+        payload: {},
+      });
+    } catch (eventError) {
+      logger.warn(
+        { error: eventError, runId: run.id },
+        'Failed to persist leadgen retry event',
+      );
+    }
+  } catch (error) {
+    const failedAt = new Date();
+    const isPreviousExecutionStillOpen = isWorkflowAlreadyStartedError(error);
+    const errorMessage =
+      isPreviousExecutionStillOpen && run.errorMessage
+        ? run.errorMessage
+        : error instanceof Error
+          ? error.message
+          : 'Workflow retry failed';
+    logger.error(
+      { error, runId: run.id, workflowId },
+      'Failed to retry leadgen run',
+    );
+    await db
+      .update(leadgenRunsTable)
+      .set({
+        status: 'FAILED',
+        errorMessage,
+        startedAt: run.startedAt,
+        finishedAt: isPreviousExecutionStillOpen
+          ? (run.finishedAt ?? failedAt)
+          : failedAt,
+        tokenUsage: run.tokenUsage,
+        updatedAt: failedAt,
+      })
+      .where(eq(leadgenRunsTable.id, run.id));
+    throw error;
+  }
+
+  return getLeadgenRunOrThrow(run.id);
+}
+
+async function resetRetryableLeadgenContactDiscovery({
+  runId,
+  updatedAt,
+}: {
+  runId: string;
+  updatedAt: Date;
+}) {
+  await db
+    .update(leadgenLeadsTable)
+    .set({
+      contactDiscoveryAttemptedAt: null,
+      updatedAt,
+    })
+    .where(
+      and(
+        eq(leadgenLeadsTable.runId, runId),
+        eq(leadgenLeadsTable.status, 'contact_now'),
+        sql`${leadgenLeadsTable.contactDiscoveryAttemptedAt} IS NOT NULL`,
+        sql`NOT EXISTS (
+          SELECT 1
+          FROM ${leadgenContactsTable}
+          INNER JOIN ${leadgenEmailDraftsTable}
+            ON ${leadgenEmailDraftsTable.contactId} = ${leadgenContactsTable.id}
+          WHERE ${leadgenContactsTable.leadId} = ${leadgenLeadsTable.id}
+        )`,
+      ),
+    );
+}
+
+function isWorkflowAlreadyStartedError(error: unknown): boolean {
+  if (!(error instanceof Error)) return false;
+  if (error.name === 'WorkflowExecutionAlreadyStartedError') return true;
+  return /already.*started/i.test(error.message);
 }
 
 export async function findActiveLeadgenRunForUserDomain({

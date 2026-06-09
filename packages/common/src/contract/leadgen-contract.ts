@@ -134,6 +134,11 @@ export const leadgenContract = createContract(
       input: startRunInputSchema,
       output: leadgenRunSnapshotSchema,
     },
+    retryRun: {
+      type: 'mutation',
+      input: runIdInputSchema,
+      output: leadgenRunSnapshotSchema,
+    },
     getRun: {
       type: 'query',
       input: runIdInputSchema,

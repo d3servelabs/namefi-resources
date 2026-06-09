@@ -67,6 +67,7 @@ import {
   Loader2,
   Mail,
   Play,
+  RefreshCw,
   Search,
   ShoppingBag,
   Sparkles,
@@ -224,7 +225,9 @@ export function LeadgenApp({
     initialRunId ?? null,
   );
   const [liveRun, setLiveRun] = useState<LeadgenSnapshot | null>(null);
+  const [retryingRunIds, setRetryingRunIds] = useState<string[]>([]);
   const activeRunIdRef = useRef(activeRunId);
+  const retryingRunIdsRef = useRef<Set<string>>(new Set());
   const startRunInFlightRef = useRef(false);
 
   const selectActiveRunId = useCallback((runId: string | null) => {
@@ -278,13 +281,19 @@ export function LeadgenApp({
 
   const syncRunSnapshot = useCallback(
     (snapshot: LeadgenSnapshot) => {
+      const queryKey = trpc.leadgen.getRun.queryKey({ runId: snapshot.id });
+      const cachedSnapshot = queryClient.getQueryData<LeadgenSnapshot>(queryKey);
+      if (
+        cachedSnapshot &&
+        getTimestamp(snapshot.updatedAt) < getTimestamp(cachedSnapshot.updatedAt)
+      ) {
+        return;
+      }
+
       if (activeRunIdRef.current === snapshot.id) {
         setLiveRun(snapshot);
       }
-      queryClient.setQueryData(
-        trpc.leadgen.getRun.queryKey({ runId: snapshot.id }),
-        snapshot,
-      );
+      queryClient.setQueryData(queryKey, snapshot);
       queryClient.setQueryData(
         trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
         (runs: LeadgenRunSummary[] | undefined) =>
@@ -349,6 +358,49 @@ export function LeadgenApp({
       },
       onSettled() {
         startRunInFlightRef.current = false;
+      },
+    }),
+  );
+
+  const retryRun = useMutation(
+    trpc.leadgen.retryRun.mutationOptions({
+      async onMutate(variables) {
+        await Promise.all([
+          queryClient.cancelQueries({
+            queryKey: trpc.leadgen.getRun.queryKey({ runId: variables.runId }),
+          }),
+          queryClient.cancelQueries({
+            queryKey: trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
+          }),
+        ]);
+      },
+      onSuccess(snapshot) {
+        selectActiveRunId(snapshot.id);
+        syncRunSnapshot(snapshot);
+        router.push(getLeadgenRunHref(snapshot.id));
+        toast.success('Buyer search restarted');
+        void queryClient.invalidateQueries({
+          queryKey: trpc.ai.getUserGenerationUsage.queryKey(),
+        });
+      },
+      onError(error) {
+        toast.error('Could not retry buyer search', {
+          description: error.message,
+        });
+      },
+      onSettled(_snapshot, _error, variables) {
+        if (!variables) return;
+
+        retryingRunIdsRef.current.delete(variables.runId);
+        setRetryingRunIds((runIds) =>
+          runIds.filter((runId) => runId !== variables.runId),
+        );
+        void queryClient.invalidateQueries({
+          queryKey: trpc.leadgen.getRun.queryKey({ runId: variables.runId }),
+        });
+        void queryClient.invalidateQueries({
+          queryKey: trpc.leadgen.listRuns.queryKey(recentRunsQueryInput),
+        });
       },
     }),
   );
@@ -511,6 +563,16 @@ export function LeadgenApp({
     });
   };
 
+  const handleRetryRun = (runId: string) => {
+    if (retryingRunIdsRef.current.has(runId)) return;
+
+    retryingRunIdsRef.current.add(runId);
+    setRetryingRunIds((runIds) =>
+      runIds.includes(runId) ? runIds : [...runIds, runId],
+    );
+    retryRun.mutate({ runId });
+  };
+
   return (
     <PageShell
       size="full"
@@ -610,8 +672,10 @@ export function LeadgenApp({
               activeRunId={activeRunId}
               isLoading={runsQuery.isLoading}
               exportingRunId={exportingRunId}
+              retryingRunIds={retryingRunIds}
               scrollActiveRunIntoView={Boolean(initialRunId)}
               onExportRun={exportRunCsv}
+              onRetryRun={handleRetryRun}
             />
           )}
         </aside>
@@ -620,12 +684,14 @@ export function LeadgenApp({
           <LeadgenWorkspacePanel
             isRunLoading={isRunLoading}
             isRunning={isRunning}
+            isRetrying={run ? retryingRunIds.includes(run.id) : false}
             run={run}
             ownedDomain={ownedDomainForRun}
             initialLeadId={initialLeadId}
             startSuggestions={startSuggestions}
             isStartSuggestionsLoading={isStartSuggestionsLoading}
             onSelectStartSuggestion={handleSelectStartSuggestion}
+            onRetryRun={handleRetryRun}
             onRunUpdated={syncRunSnapshot}
           />
         </main>
@@ -767,22 +833,26 @@ function useLeadgenRunCsvExport() {
 function LeadgenWorkspacePanel({
   isRunLoading,
   isRunning,
+  isRetrying,
   run,
   ownedDomain,
   initialLeadId,
   startSuggestions,
   isStartSuggestionsLoading,
   onSelectStartSuggestion,
+  onRetryRun,
   onRunUpdated,
 }: {
   isRunLoading: boolean;
   isRunning: boolean;
+  isRetrying: boolean;
   run: LeadgenSnapshot | null;
   ownedDomain?: UserDomain;
   initialLeadId?: string;
   startSuggestions: LeadgenStartSuggestion[];
   isStartSuggestionsLoading: boolean;
   onSelectStartSuggestion: (suggestion: LeadgenStartSuggestion) => void;
+  onRetryRun: (runId: string) => void;
   onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
   if (isRunLoading) {
@@ -794,8 +864,10 @@ function LeadgenWorkspacePanel({
       <RunWorkspace
         run={run}
         isRunning={isRunning}
+        isRetrying={isRetrying}
         ownedDomain={ownedDomain}
         initialLeadId={initialLeadId}
+        onRetryRun={onRetryRun}
         onRunUpdated={onRunUpdated}
       />
     );
@@ -813,14 +885,18 @@ function LeadgenWorkspacePanel({
 function RunWorkspace({
   run,
   isRunning,
+  isRetrying,
   ownedDomain,
   initialLeadId,
+  onRetryRun,
   onRunUpdated,
 }: {
   run: LeadgenSnapshot;
   isRunning: boolean;
+  isRetrying: boolean;
   ownedDomain?: UserDomain;
   initialLeadId?: string;
+  onRetryRun: (runId: string) => void;
   onRunUpdated: (run: LeadgenSnapshot) => void;
 }) {
   const trpc = useTRPC();
@@ -1031,6 +1107,7 @@ function RunWorkspace({
   };
 
   const headerSubtitle = getRunHeaderSubtitle(run);
+  const canRetryRun = run.status === 'FAILED';
   const canExport = isLeadgenCrmCsvExportAvailable(run);
   const canListOnMarketplace =
     marketplaceListingEnabled &&
@@ -1064,8 +1141,25 @@ function RunWorkspace({
             <p className="mt-2 min-h-10 max-w-2xl text-sm leading-5 text-muted-foreground line-clamp-2">
               {headerSubtitle}
             </p>
-            {(canExport || (canListOnMarketplace && ownedDomain)) && (
+            {(canRetryRun || canExport || (canListOnMarketplace && ownedDomain)) && (
               <div className="mt-3 flex flex-wrap gap-2">
+                {canRetryRun && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    disabled={isRetrying}
+                    aria-busy={isRetrying}
+                    onClick={() => onRetryRun(run.id)}
+                  >
+                    {isRetrying ? (
+                      <Loader2 data-icon="inline-start" className="animate-spin" />
+                    ) : (
+                      <RefreshCw data-icon="inline-start" />
+                    )}
+                    {isRetrying ? 'Retrying...' : 'Retry search'}
+                  </Button>
+                )}
                 {canExport && (
                   <Button
                     type="button"
@@ -2122,15 +2216,19 @@ function PastRuns({
   activeRunId,
   isLoading,
   exportingRunId,
+  retryingRunIds,
   scrollActiveRunIntoView,
   onExportRun,
+  onRetryRun,
 }: {
   runs: LeadgenRunSummary[];
   activeRunId: string | null;
   isLoading: boolean;
   exportingRunId: string | null;
+  retryingRunIds: string[];
   scrollActiveRunIntoView: boolean;
   onExportRun: (runId: string) => Promise<void>;
+  onRetryRun: (runId: string) => void;
 }) {
   const runListRootRef = useRef<HTMLDivElement | null>(null);
   const selectedRunRef = useRef<HTMLDivElement | null>(null);
@@ -2208,6 +2306,11 @@ function PastRuns({
               {runs.map((run) => {
                 const canExport = isLeadgenCrmCsvExportAvailable(run);
                 const isExporting = exportingRunId === run.id;
+                const canRetry = run.status === 'FAILED';
+                const isRetrying = retryingRunIds.includes(run.id);
+                const retryLabel = isRetrying
+                  ? `Retrying buyer search for ${run.domain}`
+                  : `Retry buyer search for ${run.domain}`;
 
                 return (
                   <div
@@ -2234,6 +2337,32 @@ function PastRuns({
                             : 'Searching...'}
                         </p>
                       </Link>
+                      {canRetry && (
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                type="button"
+                                variant="outline"
+                                size="icon-sm"
+                                disabled={isRetrying}
+                                aria-busy={isRetrying}
+                                aria-label={retryLabel}
+                                onClick={() => onRetryRun(run.id)}
+                              />
+                            }
+                          >
+                            {isRetrying ? (
+                              <Loader2 className="animate-spin" />
+                            ) : (
+                              <RefreshCw />
+                            )}
+                          </TooltipTrigger>
+                          <TooltipContent sideOffset={6}>
+                            {isRetrying ? 'Retrying search' : 'Retry search'}
+                          </TooltipContent>
+                        </Tooltip>
+                      )}
                       {canExport && (
                         <Button
                           type="button"
@@ -2295,6 +2424,10 @@ function toLeadgenRunSummary(snapshot: LeadgenSnapshot): LeadgenRunSummary {
     createdAt: snapshot.createdAt,
     updatedAt: snapshot.updatedAt,
   };
+}
+
+function getTimestamp(value: Date | string) {
+  return value instanceof Date ? value.getTime() : new Date(value).getTime();
 }
 
 function applyLeadgenUserSignalToRun({

@@ -32,6 +32,8 @@ import {
 } from '#lib/leadgen/snapshot';
 import {
   findActiveLeadgenRunForUserDomain,
+  LeadgenRunNoLongerRetryableError,
+  retryFailedLeadgenRunForUser,
   startLeadgenRunForUser,
 } from '#lib/leadgen/runs';
 import { config } from '#lib/env';
@@ -86,6 +88,62 @@ export const leadgenRouter = createContractTRPCRouter<typeof leadgenContract>({
         runId: run.id,
         userId: ctx.user.id,
       });
+    }),
+
+  retryRun: protectedProcedure
+    .input(leadgenContract.retryRun.input)
+    .output(leadgenContract.retryRun.output)
+    .mutation(async ({ input, ctx }) => {
+      const run = await getLeadgenRunForUser({
+        runId: input.runId,
+        userId: ctx.user.id,
+      });
+
+      if (run.status !== 'FAILED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Only failed buyer searches can be retried.',
+        });
+      }
+
+      await assertUserCanSpendGenerationCredits({
+        userId: ctx.user.id,
+        requestedCredits: getLeadgenRunCreditEstimate({
+          creditCosts: config.AI_GENERATION_CREDIT_COSTS,
+          reasoningEffort: run.reasoningEffort,
+          model: getLeadgenPrimaryResearchModel(run.reasoningEffort),
+        }),
+      });
+
+      try {
+        const retriedRun = await retryFailedLeadgenRunForUser({
+          runId: run.id,
+          userId: ctx.user.id,
+        });
+
+        return await getLeadgenRunSnapshotForUser({
+          runId: retriedRun.id,
+          userId: ctx.user.id,
+        });
+      } catch (error) {
+        if (error instanceof LeadgenRunNoLongerRetryableError) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'This buyer search is already retrying or no longer failed.',
+            cause: error,
+          });
+        }
+
+        logger.error(
+          { error, runId: run.id, userId: ctx.user.id },
+          'Failed to retry leadgen run',
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Could not retry the buyer search. Try again in a few minutes.',
+          cause: error,
+        });
+      }
     }),
 
   getRun: protectedProcedure
