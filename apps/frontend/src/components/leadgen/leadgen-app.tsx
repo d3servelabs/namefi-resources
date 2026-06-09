@@ -247,7 +247,7 @@ const negativeTimelineMessageRe =
 const skeletonRows = ['first', 'second', 'third'];
 const recentRunsQueryInput = { limit: 12 };
 const runListEdgeFadeMask =
-  'linear-gradient(to bottom, transparent 0, black min(24px, var(--scroll-area-overflow-y-start, 0px)), black calc(100% - min(24px, var(--scroll-area-overflow-y-end, 0px))), transparent 100%)';
+  'linear-gradient(to bottom, transparent 0, black min(24px, var(--scroll-area-overflow-y-start)), black calc(100% - min(24px, var(--scroll-area-overflow-y-end, 24px))), transparent 100%)';
 const runListScrollAreaStyle: CSSProperties & {
   '--leadgen-run-list-edge-fade-mask': string;
 } = {
