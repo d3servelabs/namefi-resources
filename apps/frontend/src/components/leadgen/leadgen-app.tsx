@@ -222,7 +222,8 @@ const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
 const WHITESPACE_RE = /\s+/g;
 const getLeadgenRunHref = (runId: string) => `/outbound/${runId}` as Route;
-const HOW_TO_SELL_DOMAIN_BLOG_HREF = '/r/en/blog/how-to-sell-a-domain' as Route;
+const HOW_TO_SELL_DOMAIN_BLOG_HREF =
+  '/r/en/blog/how-to-sell-a-domain-name-you-own' as Route;
 const CreateListingModal = dynamic(
   () =>
     import(
