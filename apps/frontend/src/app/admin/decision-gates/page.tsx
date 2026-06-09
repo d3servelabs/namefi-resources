@@ -273,23 +273,57 @@ interface GateGuidance {
   evidenceHint?: (evidence: Record<string, unknown>) => string;
 }
 
-/** True when the gathered evidence suggests the domain already exists somewhere. */
-function evidenceSuggestsPresent(evidence: Record<string, unknown>): boolean {
-  const registrar = evidence.registrar as Record<string, unknown> | undefined;
-  const registrarAccount = evidence.registrarAccount as
-    | { found?: boolean }
-    | undefined;
-  const inSystem = evidence.inSystem as { inSystem?: boolean } | undefined;
-  const rdapWhois = evidence.rdapWhois as Record<string, unknown> | undefined;
-  const registrarKnown = Boolean(registrar) && !('error' in (registrar ?? {}));
-  const publiclyRegistered =
-    Boolean(rdapWhois) && !('error' in (rdapWhois ?? {}));
-  return (
-    registrarAccount?.found === true ||
-    registrarKnown ||
-    inSystem?.inSystem === true ||
-    publiclyRegistered
-  );
+type FoldState = 'present' | 'absent' | 'unknown';
+
+/**
+ * Classify one evidence fold tri-state. A lookup that errored (returned
+ * `{ error }`) or is missing is `unknown` — never `absent` — so a failed lookup
+ * can't be read as a negative and push a hint toward an unsafe retry on a
+ * non-idempotent flow.
+ */
+function foldState(
+  value: unknown,
+  isPresent: (obj: Record<string, unknown>) => boolean,
+): FoldState {
+  if (value === null || typeof value !== 'object') return 'unknown';
+  const obj = value as Record<string, unknown>;
+  if ('error' in obj) return 'unknown';
+  return isPresent(obj) ? 'present' : 'absent';
+}
+
+/** Registrar fold — a live `getDomainDetails` returned the domain object. */
+const registrarFoldState = (evidence: Record<string, unknown>): FoldState =>
+  foldState(evidence.registrar, () => true);
+/** `indexedDomainsTable` fold — present in one of our 3rd-party registrar accounts. */
+const indexedFoldState = (evidence: Record<string, unknown>): FoldState =>
+  foldState(evidence.registrarAccount, (o) => o.found === true);
+/** Namefi NFT ownership fold (`namefiNftOwnersView`). */
+const nftFoldState = (evidence: Record<string, unknown>): FoldState =>
+  foldState(evidence.inSystem, (o) => o.inSystem === true);
+
+/**
+ * Tri-state "does the domain look present in our system?": `present` if any fold
+ * is present; else `unknown` if any fold errored (don't claim absence on a failed
+ * lookup); else `absent`.
+ */
+function evidencePresenceState(evidence: Record<string, unknown>): FoldState {
+  const folds: FoldState[] = [
+    registrarFoldState(evidence),
+    indexedFoldState(evidence),
+    nftFoldState(evidence),
+    foldState(evidence.rdapWhois, () => true),
+  ];
+  if (folds.includes('present')) return 'present';
+  if (folds.includes('unknown')) return 'unknown';
+  return 'absent';
+}
+
+/** Pick the hint for the current presence tri-state. */
+function presenceHint(
+  evidence: Record<string, unknown>,
+  msgs: Record<FoldState, string>,
+): string {
+  return msgs[evidencePresenceState(evidence)];
 }
 
 type PaymentChargeState = 'charged' | 'not-charged' | 'unknown';
@@ -333,9 +367,14 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
         'Fail the workflow when the operation cannot recover (optionally with a custom message).',
     },
     evidenceHint: (evidence) =>
-      evidenceSuggestsPresent(evidence)
-        ? 'The domain appears registered (registrar / RDAP / WHOIS) — you can RESPOND SUCCESSFUL.'
-        : 'No sign the domain is registered yet — RETRY to keep polling (IMPORT) or verify at the registrar before deciding.',
+      presenceHint(evidence, {
+        present:
+          'The domain appears registered (registrar / RDAP / WHOIS) — you can RESPOND SUCCESSFUL.',
+        absent:
+          'No sign the domain is registered yet — RETRY to keep polling (IMPORT) or verify at the registrar before deciding.',
+        unknown:
+          'Evidence is inconclusive (a lookup failed). Verify the registrar / RDAP state manually before deciding.',
+      }),
   },
   'register-or-import-submit': {
     summary:
@@ -348,9 +387,14 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
       CANCEL: 'Fail the workflow when the submit cannot succeed.',
     },
     evidenceHint: (evidence) =>
-      evidenceSuggestsPresent(evidence)
-        ? 'The domain appears already present (registrar / our accounts / RDAP) — re-submitting could create a DUPLICATE. Prefer RESPOND with the verified status over RETRY.'
-        : 'No sign the request landed — RETRY (re-submit) is likely safe.',
+      presenceHint(evidence, {
+        present:
+          'The domain appears already present (registrar / our accounts / RDAP) — re-submitting could create a DUPLICATE. Prefer RESPOND with the verified status over RETRY.',
+        absent:
+          'No sign the request landed — RETRY (re-submit) is likely safe.',
+        unknown:
+          'Evidence is inconclusive (a lookup failed). Verify at the registrar before RETRY — re-submitting could create a duplicate if it actually landed.',
+      }),
   },
   'process-order-item': {
     summary:
@@ -361,9 +405,14 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
       CANCEL: 'Fail the item (it is refunded) when it cannot be completed.',
     },
     evidenceHint: (evidence) =>
-      evidenceSuggestsPresent(evidence)
-        ? 'The domain appears registered / in our accounts — it may already be done. RESPOND to mark the item complete.'
-        : 'No sign the domain landed — CANCEL to fail and refund, or complete it manually then RESPOND.',
+      presenceHint(evidence, {
+        present:
+          'The domain appears registered / in our accounts — it may already be done. RESPOND to mark the item complete.',
+        absent:
+          'No sign the domain landed — CANCEL to fail and refund, or complete it manually then RESPOND.',
+        unknown:
+          'Evidence is inconclusive (a lookup failed). Verify the domain manually before deciding.',
+      }),
   },
   'nfsc-charge': {
     summary:
@@ -489,14 +538,16 @@ function GateEvidenceView({
   const hint = gateKind
     ? GATE_GUIDANCE[gateKind]?.evidenceHint?.(evidence)
     : undefined;
-  // "In our system" is three independent folds; the umbrella is true if ANY holds:
+  // "In our system" is three independent folds, each tri-state (present / absent
+  // / unknown). The umbrella is `present` if ANY holds, else `unknown` if any
+  // lookup failed (never claim absence on a failed lookup), else `absent`:
   //  1. found by the registrar service (sldRegistrar.getDomainDetails)
   //  2. present in indexedDomainsTable (our 3rd-party registrar-account index)
   //  3. owned as a Namefi NFT on-chain (namefiNftOwnersView)
-  const registrarFound = registrar !== undefined && !('error' in registrar);
-  const indexed = registrarAccount?.found === true;
-  const hasNft = inSystem?.inSystem === true;
-  const inOurSystem = registrarFound || indexed || hasNft;
+  const registrarFold = registrarFoldState(evidence);
+  const indexedFold = indexedFoldState(evidence);
+  const nftFold = nftFoldState(evidence);
+  const systemState = evidencePresenceState(evidence);
   // Domain gates gather these folds; payment-only gates (nfsc-charge) skip them.
   const hasSystemEvidence =
     registrar !== undefined ||
@@ -511,30 +562,48 @@ function GateEvidenceView({
       ) : null}
       {hasSystemEvidence ? (
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant={inOurSystem ? 'default' : 'outline'}>
-            In our system: {inOurSystem ? 'Yes' : 'No'}
+          <Badge variant={systemState === 'present' ? 'default' : 'outline'}>
+            In our system:{' '}
+            {systemState === 'present'
+              ? 'Yes'
+              : systemState === 'unknown'
+                ? 'Unknown'
+                : 'No'}
           </Badge>
           {registrar !== undefined ? (
-            <Badge variant={registrarFound ? 'secondary' : 'outline'}>
-              Registrar (sldRegistrar): {registrarFound ? 'found' : 'not found'}
+            <Badge
+              variant={registrarFold === 'present' ? 'secondary' : 'outline'}
+            >
+              Registrar (sldRegistrar):{' '}
+              {registrarFold === 'present'
+                ? 'found'
+                : registrarFold === 'unknown'
+                  ? 'lookup failed'
+                  : 'not found'}
             </Badge>
           ) : null}
           {registrarAccount !== undefined ? (
-            <Badge variant={indexed ? 'secondary' : 'outline'}>
+            <Badge
+              variant={indexedFold === 'present' ? 'secondary' : 'outline'}
+            >
               Indexed domains:{' '}
-              {indexed
+              {indexedFold === 'present'
                 ? `${registrarAccount.registrarKey ?? 'found'}${registrarAccount.isMissingFromRegistrar ? ' · missing' : ''}`
-                : 'not found'}
+                : indexedFold === 'unknown'
+                  ? 'lookup failed'
+                  : 'not found'}
             </Badge>
           ) : null}
-          {inSystem?.inSystem !== undefined ? (
-            <Badge variant={hasNft ? 'secondary' : 'outline'}>
+          {inSystem !== undefined ? (
+            <Badge variant={nftFold === 'present' ? 'secondary' : 'outline'}>
               Namefi NFT:{' '}
-              {hasNft
+              {nftFold === 'present'
                 ? inSystem.chainId != null
                   ? `chain ${inSystem.chainId}`
                   : 'yes'
-                : 'none'}
+                : nftFold === 'unknown'
+                  ? 'lookup failed'
+                  : 'none'}
             </Badge>
           ) : null}
         </div>
