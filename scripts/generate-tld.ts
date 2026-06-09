@@ -13,8 +13,8 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-// Default to gemini-3-pro-preview as requested
-let modelName = "gemini-3-pro-preview";
+// Default to the current Gemini Pro replacement model.
+let modelName = "gemini-3.1-pro-preview";
 
 // CLI Argument Parsing
 const args = process.argv.slice(2);

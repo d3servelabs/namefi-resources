@@ -13,7 +13,7 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-3-pro-preview";
+const MODEL_NAME = process.env.GEMINI_MODEL || "gemini-3.1-pro-preview";
 
 const model = genAI.getGenerativeModel({ model: MODEL_NAME });
 
