@@ -99,6 +99,7 @@ import {
   ExternalLink,
   FileText,
   GripVertical,
+  Info,
   ListChecks,
   Loader2,
   Mail,
@@ -221,6 +222,7 @@ const PROTOCOL_RE = /^https?:\/\//;
 const TRAILING_DOT_RE = /\.$/;
 const WHITESPACE_RE = /\s+/g;
 const getLeadgenRunHref = (runId: string) => `/outbound/${runId}` as Route;
+const HOW_TO_SELL_DOMAIN_BLOG_HREF = '/r/en/blog/how-to-sell-a-domain' as Route;
 const CreateListingModal = dynamic(
   () =>
     import(
@@ -2511,6 +2513,7 @@ function LeadCard({
           <p className="mt-2 max-w-3xl text-sm leading-6 text-muted-foreground">
             {presentation.buyerSummary}
           </p>
+          <HowToSellDomainLink className="mt-2" />
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {dragHandle ? (
@@ -2831,6 +2834,21 @@ function LeadContactCountBadge({ contactCount }: { contactCount: number }) {
 
 function getLeadCardDomId(leadId: string) {
   return `leadgen-lead-${leadId}`;
+}
+
+function HowToSellDomainLink({ className }: { className?: string }) {
+  return (
+    <Link
+      href={HOW_TO_SELL_DOMAIN_BLOG_HREF}
+      className={cn(
+        'inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground underline-offset-4 hover:text-primary hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+        className,
+      )}
+    >
+      <Info className="size-3.5" aria-hidden="true" />
+      How to sell a domain
+    </Link>
+  );
 }
 
 function LeadOutreachPanel({
@@ -3653,6 +3671,7 @@ function EmptyWorkspace({
               ? 'Select one from your portfolio, or enter another domain you own.'
               : 'Enter a domain you own or represent. Namefi Outbound will build buyer angles and outreach drafts from there.'}
           </p>
+          <HowToSellDomainLink className="mt-3 justify-center" />
         </div>
 
         <div className="mt-7 grid items-stretch gap-3 md:grid-cols-3">
