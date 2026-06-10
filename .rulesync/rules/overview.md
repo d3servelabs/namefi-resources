@@ -220,6 +220,25 @@ This repo has heavy Next.js dev compile costs. When making changes, follow these
 - Avoid `export *` in frequently imported modules for the frontend.
 - If you touch `/` or app shell code, run the benchmark script to ensure no regression.
 
+### SEO Pages: Speed, Non-Blocking, and Indexing
+
+These apply to any publicly indexable, SEO-relevant route (e.g. `apps/resources` blog/marketing pages, public `apps/frontend` landing pages). For these pages, treat render speed, efficiency, and quality as first-class — they drive Core Web Vitals (a ranking signal) and how fast social crawlers (Twitterbot/X, facebookexternalhit, Slackbot) show OpenGraph cards.
+
+- **Keep the critical path non-blocking.** Nothing that isn't needed for first paint should sit in the render-blocking `<head>`. Do not `@import` large prebuilt stylesheets into a global `globals.css` that loads on every route (this inlines them into the render-blocking CSS chunk and delays LCP). Scope CSS to where it is used.
+- **Lazy-load below-the-fold / post-load UI.** Overlays, banners, dialogs, consent boxes, widgets, and anything not visible at first paint should be loaded with `next/dynamic` (typically `{ ssr: false }`), with their CSS imported *inside* the lazily-loaded component so it ships as a separate, non-blocking chunk. Example: the cookie-consent banner (`apps/resources/src/components/providers/consent-ui.tsx`) — its ~64KB c15t stylesheet is kept off the first-paint path this way; do not move it back into `globals.css`.
+- **Defer third-party scripts.** Analytics/tag scripts should use `next/script` with `afterInteractive` (or `lazyOnload`) unless a deliberate consent/bootstrap reason requires earlier; avoid `beforeInteractive` for non-critical scripts.
+- **Keep OG/Twitter metadata server-rendered in the initial HTML** (via the Metadata API), with absolute HTTPS image URLs. Crawlers do not run JS — metadata must be in the prerendered `<head>`. Prefer linking the no-trailing-slash canonical to avoid a redirect hop on crawl. Keep OG images modestly sized (a ~1200x630 JPEG well under a few hundred KB) so crawlers fetch them with ample time/space buffer.
+- **Verify before/after.** Check what lands in the render-blocking `<head>` and the LCP element (it is often *text*, not an image — confirm before optimizing). Use Lighthouse / PageSpeed; the `render-blocking-resources` and `largest-contentful-paint` audits are the ones to watch.
+
+### Non-Indexable / Internal Pages: Mark `noindex`
+
+For any page we do **not** want search engines to surface (internal tools, dashboards, admin, preview/staging-only, auth-gated app shells, utility routes), add an explicit no-index marker so it is never crawled and served in search results:
+
+- Use the Next.js Metadata API: `export const metadata = { robots: { index: false, follow: false } }` (or `robots: 'noindex, nofollow'`), or set it in `generateMetadata`.
+- For whole subtrees, set it on the route-group/layout so every nested page inherits it.
+- Do not rely on `robots.txt` alone to keep a page out of the index — `robots.txt` blocks crawling, not indexing of already-known URLs; the `noindex` meta/header is the reliable marker.
+- When in doubt about whether a route should be public, default internal/app routes to `noindex` and only opt specific marketing/content routes into indexing.
+
 ### Frontend Benchmarking
 
 Use the benchmark script for cold/hot timing:

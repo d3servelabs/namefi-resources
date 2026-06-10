@@ -1,14 +1,19 @@
 'use client';
 
-import {
-  ConsentBanner,
-  ConsentDialog,
-  ConsentManagerProvider,
-} from '@c15t/nextjs';
+import { ConsentManagerProvider } from '@c15t/nextjs';
+import dynamic from 'next/dynamic';
 import type { PropsWithChildren } from 'react';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { ConsentManagerClient } from './consent-manager-client';
+
+// The consent banner/dialog UI (and its ~64KB stylesheet) is loaded lazily and
+// client-only so it never blocks the article's first paint. The provider below
+// still wraps the tree synchronously, so consent context/state is unaffected.
+const ConsentUI = dynamic(
+  () => import('./consent-ui').then((m) => m.ConsentUI),
+  { ssr: false },
+);
 
 const c15tTheme = {
   consentActions: {
@@ -36,11 +41,7 @@ export function ConsentProvider({ children }: PropsWithChildren) {
       }}
     >
       <ConsentManagerClient>
-        <ConsentBanner
-          layout={['customize', ['reject', 'accept']]}
-          primaryButton="accept"
-        />
-        <ConsentDialog />
+        <ConsentUI />
         <GoogleAnalyticsCookieConsentGated />
         {children}
       </ConsentManagerClient>

@@ -1,5 +1,9 @@
 @import "@namefi-astra/ui/styles/globals.css";
-@import "@c15t/nextjs/styles.css";
+/* @c15t/nextjs/styles.css is intentionally NOT imported here: it is a ~64KB
+   prebuilt stylesheet that would be inlined into the global, render-blocking CSS
+   chunk and delay LCP on every route. It is instead imported inside the
+   lazily-loaded consent UI (see components/providers/consent-ui.tsx) so it loads
+   off the first-paint critical path. */
 
 @source "..";
 @source "../../../../packages/ui/src";
