@@ -13,6 +13,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { TldRegistrationRequirement } from '@namefi-astra/common/domain-availability';
+import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { CheckCircle2, ExternalLink, Info } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { useCartRow } from '@/hooks/use-cart-row';
@@ -74,25 +75,38 @@ export function CartItemRegistrationRequirement({
 
   const { container, icon, Icon } = TONE_STYLES[tone];
 
+  // Agreeing to a policy applies to every cart item that shares the same TLD,
+  // so one acknowledgement automatically covers all matching items.
+  const matchingItemIds = useMemo(() => {
+    const tld = requirement.tld;
+    return (cart.cartData ?? [])
+      .filter(
+        (row) =>
+          (row.type === itemTypeSchema.enum.REGISTER ||
+            row.type === itemTypeSchema.enum.IMPORT) &&
+          row.normalizedDomainName.split('.').pop()?.toLowerCase() === tld,
+      )
+      .map((row) => row.id);
+  }, [cart.cartData, requirement.tld]);
+
   const setAcknowledged = useCallback(
     (value: boolean) => {
       if (readOnly) {
         return;
       }
-      void cart
-        .updateItem({
-          id: item.id,
-          tldRegistrationRequirementAcknowledged: value,
-        })
-        .catch((error) => {
-          // The cart hook rolls back optimistic state on failure.
-          console.error(
-            'Failed to update registration requirement acknowledgement:',
-            error,
-          );
-        });
+      for (const id of matchingItemIds) {
+        void cart
+          .updateItem({ id, tldRegistrationRequirementAcknowledged: value })
+          .catch((error) => {
+            // The cart hook rolls back optimistic state on failure.
+            console.error(
+              'Failed to update registration requirement acknowledgement:',
+              error,
+            );
+          });
+      }
     },
-    [cart, item.id, readOnly],
+    [cart, matchingItemIds, readOnly],
   );
 
   const handleAgree = useCallback(() => {

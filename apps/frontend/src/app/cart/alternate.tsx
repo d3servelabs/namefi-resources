@@ -1,8 +1,8 @@
 'use client';
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
+import { CartFootnote } from '@/components/cart-footnote';
 import { CartItem } from '@/components/cart-item';
-import { CartTermsFootnote } from '@/components/cart-terms-footnote';
 import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
@@ -15,6 +15,7 @@ import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
+import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -102,6 +103,11 @@ export default function CartPage() {
   useRegisterAdminFlags(X402_CART_PAYMENT_FLAG_DEFINITION);
   const [x402CartPaymentEnabled] = useAdminFeatureFlag(
     X402_CART_PAYMENT_FLAG_DEFINITION[0],
+  );
+
+  useRegisterAdminFlags(CART_REQUIREMENTS_VARIANT_FLAG);
+  const [requirementsInFootnote] = useAdminFeatureFlag(
+    CART_REQUIREMENTS_VARIANT_FLAG[0],
   );
 
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
@@ -755,7 +761,12 @@ export default function CartPage() {
                 footerButton={<UserDropdown className="w-full" />}
               />
             )}
-            {isAuthenticated && <CartTermsFootnote />}
+            {isAuthenticated && (
+              <CartFootnote
+                domainAvailabilityInfo={domainAvailabilityInfo}
+                showPolicies={requirementsInFootnote}
+              />
+            )}
           </div>
         </div>
       ) : (
