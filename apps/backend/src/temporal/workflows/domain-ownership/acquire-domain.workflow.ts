@@ -1,4 +1,4 @@
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,

@@ -21,29 +21,27 @@ import {
   HOST_NS,
   type EppClientRuntime,
 } from '@namefi-astra/epp-client';
-import type {
-  ContactsMap,
-  DnssecKey,
-  DomainContacts,
-  DomainOwnershipOperation,
-  DomainPricingDetails,
-  DomainRegistration,
-  DomainSuggestionsQueryResult,
-  DomainSummary,
-  Nameservers,
-  PendingTransferInfo,
-  PricingDetails,
-  RdapDomainStatus,
-  RenewOption,
-} from '#lib/abstract-registrar';
+import { AbstractRegistrarService } from '#lib/abstract-registrar';
 import {
-  AbstractRegistrarService,
   DomainAvailability,
   type DomainContactPrivacyEnum,
+  type ContactsMap,
+  type DnssecKey,
+  type DomainContacts,
+  type DomainOwnershipOperation,
+  type DomainPricingDetails,
+  type DomainRegistration,
+  type DomainSuggestionsQueryResult,
+  type DomainSummary,
+  type Nameservers,
+  type PendingTransferInfo,
+  type PricingDetails,
+  type RdapDomainStatus,
+  type RenewOption,
   OperationStatus,
   OperationType,
   singleYearPricingTemplate,
-} from '#lib/abstract-registrar';
+} from '#lib/data';
 import type {
   DomainQueryResult,
   LongRunningOperationResult,
@@ -52,7 +50,7 @@ import type {
   CancelImportDomainRequestInput,
   RenewDomainInput,
   TransferDomainInput,
-} from '#lib/abstract-registrar/registrar-service';
+} from '#lib/abstract-registrar/types';
 import {
   type PunycodeDomainName,
   assertPunycodeDomainName,

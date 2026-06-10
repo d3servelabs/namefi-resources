@@ -23,11 +23,11 @@ import {
   type DnssecFlags,
   type PendingTransferInfo,
   type TransferStatus,
-} from '#lib/abstract-registrar';
+} from '#lib/data';
 import type {
   DomainQueryResult,
   LongRunningOperationResult,
-} from '#lib/abstract-registrar/registrar-service';
+} from '#lib/abstract-registrar/types';
 import type {
   EppResponseTypeXml,
   EppResultCode,

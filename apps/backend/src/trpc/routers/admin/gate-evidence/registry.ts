@@ -5,9 +5,9 @@ import {
   namefiNftOwnersView,
   paymentsTable,
 } from '@namefi-astra/db';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
+import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { eq } from 'drizzle-orm';
 import { sldRegistrar } from '#lib/namefi-registry';

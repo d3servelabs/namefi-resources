@@ -39,7 +39,7 @@ import { config } from '#lib/env';
 import {
   toPunycodeDomainName,
   toPunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 
 // Project constants
 const NAMEFI_IO_ZONE = 'namefi-io';

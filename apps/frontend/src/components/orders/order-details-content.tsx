@@ -6,7 +6,7 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type {
   OrderMintTransactionMetadata,
   OrderItemMetadata,

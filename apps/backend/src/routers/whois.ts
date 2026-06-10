@@ -1,5 +1,5 @@
 import { createLogger } from '#lib/logger';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { Hono } from 'hono';
 import { convertRdapDomainToWhois } from '../lib/whois/rdap-to-whois';
 import { lookupRdapDomain, type RdapErrorData } from './rdap';

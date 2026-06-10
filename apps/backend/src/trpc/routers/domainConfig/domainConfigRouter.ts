@@ -1,7 +1,7 @@
 import {
   toPunycodeDomainName,
   toPunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 import {
   isDomainExpirationDatePassed,
   isDomainAssumedInLateRenewalPeriod,
@@ -70,10 +70,10 @@ import {
   ordersTable,
 } from '@namefi-astra/db';
 import { and, desc, eq, inArray } from 'drizzle-orm';
-import type { DomainRegistration } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain';
-import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
+import type { DomainRegistration } from '@namefi-astra/registrars/data/types/domain';
+import type { WithRegistrar } from '@namefi-astra/registrars/registrars-keys';
 import { config } from '#lib/env';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
+import { RenewOption } from '@namefi-astra/registrars/data/types/renew-option';
 import { audit, createAuditRecord, ResourceType } from '#lib/auditor';
 import { isNotNil } from 'ramda';
 import { addDays } from 'date-fns';

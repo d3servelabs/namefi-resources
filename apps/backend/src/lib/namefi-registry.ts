@@ -27,22 +27,22 @@ import {
   isReservedKeywordForParentDomain,
 } from './namefi-registry-helpers';
 
-import { DomainAvailability } from '@namefi-astra/registrars/lib/abstract-registrar/data/domain-availability';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { DomainAvailability } from '@namefi-astra/registrars/data/types/domain-availability';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 import type {
   DomainPricingDetails,
   PricingDetails,
-} from '@namefi-astra/registrars/lib/abstract-registrar/index';
+} from '@namefi-astra/registrars/data/types';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { and, eq, gt, inArray, isNull, or, sql, ne } from 'drizzle-orm';
 import { logger } from '#lib/logger';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import { getDomainDurationConstraints } from './domains/duration-constraints';
 import pMap from 'p-map';
 import { maybeGetUserEmail } from '#temporal/activities/notify.activities';
 import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import { sldRegistrar } from './epp-registrars';
 import superjson from 'superjson';
 import { getRedisClient } from '#lib/redis';

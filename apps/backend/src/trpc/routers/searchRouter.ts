@@ -18,7 +18,7 @@ import type { UserSelect } from '@namefi-astra/db';
 import { promiseWithAbortSignal } from '@namefi-astra/utils/promises/promiseWithAbortSignal';
 import pMap from 'p-map';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { resolveNs } from 'node:dns/promises';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { gaEventUserBeginSearch } from '#lib/tracking/checkout/events';

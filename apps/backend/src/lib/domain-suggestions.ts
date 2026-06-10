@@ -19,7 +19,7 @@ import {
   toUnicodeDomainName,
   type PunycodeDomainName,
   type UnicodeDomainName,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 
 export interface SanitisedDomain {
   ascii: PunycodeDomainName;

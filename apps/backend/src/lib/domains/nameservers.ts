@@ -1,11 +1,11 @@
 import { resolveNs } from 'node:dns/promises';
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
+import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
 import {
   type PunycodeDomainName,
   type PunycodeFqdn,
   toPunycodeDomainName,
   toPunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { config } from '#lib/env';
 import { createLogger } from '#lib/logger';

@@ -1,7 +1,7 @@
 import * as workflow from '@temporalio/workflow';
 import { shortRunningOpts, TEMPORAL_ENUMS } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import type {
   AutoRenewalDisablingSummary,
   DomainAutoRenewalProcessResult,

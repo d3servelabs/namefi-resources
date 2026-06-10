@@ -10,7 +10,7 @@ import { BaseSchedule } from './base-schedule';
 import { TEMPORAL_QUEUES } from '../shared';
 import type { ScheduleConfig } from './types';
 import { weeklyDisableAutoRenewalWorkflow } from '../workflows/weekly-disable-auto-renewal.workflow';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 
 const WeeklyDisableAutoRenewalSchedule = BaseSchedule.forWorkflowType(
   weeklyDisableAutoRenewalWorkflow,

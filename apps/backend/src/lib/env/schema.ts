@@ -4,11 +4,11 @@ import {
   defaultAiGenerationCreditCosts,
   defaultAiTokenCreditRates,
 } from '@namefi-astra/common/ai-generation-credits';
-import { punycodeFqdnSchema } from '@namefi-astra/registrars/lib/data/validations';
+import { punycodeFqdnSchema } from '@namefi-astra/registrars/data/validations';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 
 const numericStringKeySchema = z
   .string()
@@ -348,14 +348,14 @@ export const configSchema = z.object({
   RDAP_ENABLE_DUMMY_OBJECTS: z.boolean().default(true),
   /**
    * Optional override for the upstream RDAP endpoint used by
-   * `@namefi-astra/registrars/lib/rdap-whois/rdap_client`. When unset, the
+   * `@namefi-astra/registrars/rdap-whois/rdap_client`. When unset, the
    * client falls back to its built-in default (`https://rdap.org`).
    * Useful for dev/test pointing at a local mock server.
    */
   RDAP_BASE_URL: z.string().url().optional(),
   /**
    * Optional override for the upstream WHOIS JSON API endpoint used by
-   * `@namefi-astra/registrars/lib/rdap-whois/whois_client`. When unset, the
+   * `@namefi-astra/registrars/rdap-whois/whois_client`. When unset, the
    * client falls back to its built-in default (`https://whoisjsonapi.com/v1`).
    * Useful for dev/test pointing at a local mock server.
    */

@@ -8,7 +8,7 @@ import {
 import { useCartRow } from '@/hooks/use-cart-row';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { formatAmountInUSD } from '@/lib/number';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   DropdownMenuGroup,

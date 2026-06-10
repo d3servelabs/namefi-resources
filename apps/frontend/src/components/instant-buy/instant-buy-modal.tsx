@@ -32,7 +32,7 @@ import { formatAmountInUSD } from '@/lib/number';
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
+} from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {

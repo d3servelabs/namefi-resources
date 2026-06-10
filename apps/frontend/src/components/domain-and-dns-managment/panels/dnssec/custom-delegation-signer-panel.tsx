@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { PlusIcon } from 'lucide-react';
 
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,

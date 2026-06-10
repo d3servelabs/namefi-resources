@@ -17,7 +17,7 @@ import { toast } from 'sonner';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import {
   AlertDialog,
   AlertDialogAction,

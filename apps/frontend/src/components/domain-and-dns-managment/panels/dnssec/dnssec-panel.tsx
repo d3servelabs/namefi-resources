@@ -44,8 +44,8 @@ import {
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import {
   useMutation,
   useQuery,

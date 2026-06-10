@@ -8,7 +8,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { supportsDnssec } from '@namefi-astra/registrars/lib/supports-dnssec';
+import { supportsDnssec } from '@namefi-astra/registrars/data/supports-dnssec';
 import { Check, CheckCheck, Minus, X } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 import { useCartRow } from '@/hooks/use-cart-row';

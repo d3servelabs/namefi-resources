@@ -9,11 +9,11 @@ import {
   DnssecDigestType,
   DnssecFlags,
   type DnssecKey,
-} from '@namefi-astra/registrars/lib/abstract-registrar/data/dnssec';
+} from '@namefi-astra/registrars/data/types/dnssec';
 import {
   type PunycodeDomainName,
   toPunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 import {
   namefiNormalizedDomainSchema,
   resolve,

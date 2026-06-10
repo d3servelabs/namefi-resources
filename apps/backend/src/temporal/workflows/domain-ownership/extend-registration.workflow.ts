@@ -1,4 +1,4 @@
-import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+import { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
 import type {
   ChecksumWalletAddress,
   NamefiNormalizedDomain,

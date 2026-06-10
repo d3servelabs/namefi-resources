@@ -1,5 +1,5 @@
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { matchAny } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';

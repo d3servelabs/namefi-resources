@@ -31,8 +31,8 @@ import {
   type DomainAvailabilityInfo,
 } from '@namefi-astra/common/domain-availability';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Gift, User } from 'lucide-react';
 import Image from 'next/image';

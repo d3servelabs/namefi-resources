@@ -1,6 +1,6 @@
 import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { supportsDnssec } from '@namefi-astra/registrars/lib/supports-dnssec';
+import { supportsDnssec } from '@namefi-astra/registrars/data/supports-dnssec';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 

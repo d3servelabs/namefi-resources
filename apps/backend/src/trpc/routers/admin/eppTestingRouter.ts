@@ -11,13 +11,13 @@ import { getCentralnicOte2Registrar } from '#lib/epp-registrars/centralnic';
 import {
   toPunycodeDomainName,
   type PunycodeDomainName,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 import { ResourceType } from '#lib/auditor';
 import type {
   RegisterDomainInput,
   TransferDomainInput,
-} from '@namefi-astra/registrars/lib/abstract-registrar/index';
-import { DomainContactPrivacyEnum } from '@namefi-astra/registrars/lib/abstract-registrar/index';
+} from '@namefi-astra/registrars/abstract-registrar/types';
+import { DomainContactPrivacyEnum } from '@namefi-astra/registrars/data/types';
 
 const normalizeDomainName = (val: string): PunycodeDomainName =>
   toPunycodeDomainName(val.toLowerCase().trim());

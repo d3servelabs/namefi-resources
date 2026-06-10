@@ -1,15 +1,15 @@
 import { db, indexedDomainsTable } from '@namefi-astra/db';
-import { createRegistrarService } from '@namefi-astra/registrars/registrars/main-registrar';
-import { R53RegistrarService } from '@namefi-astra/registrars/registrars/sub-registrars';
+import { createRegistrarService } from '@namefi-astra/registrars/main-registrar';
+import { R53RegistrarService } from '@namefi-astra/registrars/sub-registrars';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 
-import type { AbstractRegistrarService } from '@namefi-astra/registrars/lib/abstract-registrar/index';
+import type { AbstractRegistrarService } from '@namefi-astra/registrars/abstract-registrar/registrar-service';
 import { eq, inArray } from 'drizzle-orm';
 import { secrets, config } from '#lib/env';
 import { createLogger, logger } from '#lib/logger';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 import { getCentralnicRegistrar } from './centralnic';
 import { getDynadotRegistrars } from './dynadot';

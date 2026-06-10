@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest';
 import type {
   DomainPricingDetails,
   PricingDetails,
-} from './abstract-registrar/data/price-with-currency';
+} from './data/types/price-with-currency';
 import {
   computeChargesInUsdFromDomainAvailabilityInfo,
   computeChargesInUsdOrThrow,
-} from './multi-year-pricing';
+} from './data/multi-year-pricing';
 
 describe('computeChargesInUsdOrThrow', () => {
   describe('with PER_YEAR pricing', () => {

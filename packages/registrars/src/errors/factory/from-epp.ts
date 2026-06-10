@@ -22,7 +22,7 @@ import {
   EppTransportError,
   EppProtocolError,
   EppCommandFailedError,
-} from '@namefi-astra/epp-client';
+} from '@namefi-astra/epp-client/errors';
 import type { Registrars } from '../../registrars/registrars-keys';
 import {
   RegistrarUnknownError,

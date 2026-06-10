@@ -1,11 +1,11 @@
 import * as workflow from '@temporalio/workflow';
 import { lockNamefiNftByName } from '../mint.workflow';
-import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+import { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../../shared';
 import { typedProxyActivities } from '../../shared/workflow-helpers';
 import { catchAndAlertLocally } from '../../shared/workflow-helpers/catch-and-alert-locally';
 import { pollingOpts } from '../../shared';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { isNil } from 'ramda';
 import { criticalAlertWithTicket } from '#temporal/shared/workflow-helpers/critical-alert-with-ticket';
 import {

@@ -1,6 +1,6 @@
 import { CHAINS } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 
 const developmentConfig: ConfigInput = {
   LOG_LEVEL: 'debug',

@@ -35,7 +35,7 @@ import {
   createDynadotRegularSchedule,
   createRegistrarSpecificSchedule,
 } from '../temporal/schedules/weekly-disable-auto-renewal';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 
 interface ScriptOptions {
   action: 'create' | 'trigger' | 'status' | 'delete' | 'pause' | 'unpause';

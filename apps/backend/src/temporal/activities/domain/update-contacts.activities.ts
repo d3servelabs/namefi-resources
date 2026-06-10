@@ -1,13 +1,13 @@
 import type {
   ContactEntity,
   DomainContacts,
-} from '@namefi-astra/registrars/lib/abstract-registrar/data/index';
-import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+} from '@namefi-astra/registrars/data/types/index';
+import { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
 import {
   type PunycodeDomainName,
   toPunycodeDomainName,
-} from '@namefi-astra/registrars/lib/data/validations';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+} from '@namefi-astra/registrars/data/validations';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import { Context } from '@temporalio/activity';
 import pMap from 'p-map';
 import { sldRegistrar } from '#lib/namefi-registry';

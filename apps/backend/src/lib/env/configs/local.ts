@@ -1,6 +1,6 @@
 import { CHAINS } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 
 // Dynamic port support: use environment variables if set by dev runner
 const backendPort = Number(process.env.PORT) || 3000;

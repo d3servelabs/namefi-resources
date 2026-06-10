@@ -1,5 +1,5 @@
 import { head, tail } from 'ramda';
-import type { ContactEntity, DomainContacts } from '#lib/abstract-registrar';
+import type { ContactEntity, DomainContacts } from '#lib/data';
 import type { DynadotGetContactDetails } from '#lib/dynadot/common-types';
 
 export function toDynadotContact(

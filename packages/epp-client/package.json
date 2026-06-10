@@ -6,7 +6,8 @@
     ".": "./src/index.ts",
     "./data": "./src/data/index.ts",
     "./data/*": "./src/data/*.ts",
-    "./utils/*": "./src/utils/*.ts"
+    "./utils/*": "./src/utils/*.ts",
+    "./errors": "./src/errors/index.ts"
   },
   "imports": {
     "#lib/env": "./src/lib/env/index.ts",

@@ -5,7 +5,7 @@ import {
   type NamefiNormalizedDomain,
   resolve,
 } from '@namefi-astra/utils';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/index';
+import { RenewOption } from '@namefi-astra/registrars/data/types/renew-option';
 import { differenceInDays, isBefore, subHours } from 'date-fns';
 import {
   isNotNil,
@@ -65,14 +65,14 @@ import {
   parseDomainName,
 } from '@namefi-astra/utils';
 import { getDomainListInfo } from '#lib/namefi-registry';
-import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/multi-year-pricing';
+import { computeChargesInUsdFromDomainAvailabilityInfo } from '@namefi-astra/registrars/data/multi-year-pricing';
 import { secrets } from '#lib/env';
 import { TEMPORAL_QUEUES } from '../../../temporal/shared/enums';
 import { temporalClient } from '../../../temporal/client';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import pMap from 'p-map';
 import { committedNamefiNftView } from '@namefi-astra/db';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
 import type { PrepareMultiPaymentsOutput } from '#temporal/workflows/prepare-multi-payments.workflow';
 import { setTimeout } from 'node:timers/promises';
 import { createHash } from 'node:crypto';

@@ -8,7 +8,7 @@ import {
 import {
   computeChargesInUsdFromDomainAvailabilityInfo,
   usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
+} from '@namefi-astra/registrars/data/multi-year-pricing';
 import {
   isDomainAssumedBeyondLateRenewalPeriod,
   type NamefiNormalizedDomain,
@@ -28,7 +28,7 @@ import {
 } from 'ramda';
 import type { DomainAvailabilityInfo } from '#lib/namefi-registry';
 import { isDomainImportable } from '../../trpc/types';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { pluck } from 'ramda';
 import { logger } from '#lib/logger';
 import { determineDurationLimitsForRenewItems } from '#lib/domains/duration-constraints/index';

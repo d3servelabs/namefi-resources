@@ -3,7 +3,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { logger } from '#lib/logger';
 import { secrets } from '#lib/env';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { GetProjectDomainResponseBody } from '@vercel/sdk/models/getprojectdomainop';
 import type { AddProjectDomainResponseBody } from '@vercel/sdk/models/addprojectdomainop';
 import type { GetDomainConfigResponseBody } from '@vercel/sdk/models/getdomainconfigop.js';

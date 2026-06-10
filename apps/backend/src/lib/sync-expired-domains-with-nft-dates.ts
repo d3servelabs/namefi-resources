@@ -8,8 +8,8 @@ import {
 import { eq, inArray, sql } from 'drizzle-orm';
 import { logger } from '#lib/logger';
 import { indexBy, prop } from 'ramda';
-import type { WithRegistrar } from '@namefi-astra/registrars/registrars/main-registrar';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { WithRegistrar } from '@namefi-astra/registrars/registrars-keys';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 
 /**
@@ -210,8 +210,8 @@ async function syncExpiredDomainsWithNftDates(
               expirationTime: domain.nftExpirationTime!,
               updatedAt: new Date(),
               // Only update registrarKey if we have a value and the existing one is null/unknown
-              registrarKey: sql`CASE 
-                WHEN ${indexedDomainsTable.registrarKey} IS NULL OR ${indexedDomainsTable.registrarKey} = 'unknown' 
+              registrarKey: sql`CASE
+                WHEN ${indexedDomainsTable.registrarKey} IS NULL OR ${indexedDomainsTable.registrarKey} = 'unknown'
                 THEN ${domain.registrarKey || 'unknown'}
                 ELSE ${indexedDomainsTable.registrarKey}
               END`,

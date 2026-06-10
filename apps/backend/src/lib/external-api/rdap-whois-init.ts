@@ -11,11 +11,11 @@
 import {
   RdapClient,
   setRdapClientFactory,
-} from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
+} from '@namefi-astra/registrars/rdap-whois/rdap_client';
 import {
   setWhoisClientFactory,
   WhoisJsonApiClient,
-} from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+} from '@namefi-astra/registrars/rdap-whois/whois_client';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 

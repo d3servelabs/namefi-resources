@@ -3,7 +3,7 @@ import type { OriginInfo } from '@/lib/origin/types';
 import Image from 'next/image';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { NftDomainLabel } from '@/components/nft-domain-label';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 type NFTDomainProps = {
   origin: OriginInfo | string;

@@ -4,7 +4,7 @@ import { stripNonImportDomainSetupOptions } from '@namefi-astra/common/contract/
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
+} from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { and, eq, ilike, sql } from 'drizzle-orm';

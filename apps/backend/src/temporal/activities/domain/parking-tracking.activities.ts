@@ -1,4 +1,4 @@
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { ApplicationFailure } from '@temporalio/common';
 

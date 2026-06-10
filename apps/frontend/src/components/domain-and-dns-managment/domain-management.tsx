@@ -12,7 +12,7 @@ import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/lib/trpc';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
 import {

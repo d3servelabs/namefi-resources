@@ -1,4 +1,4 @@
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { WorkflowIdReusePolicy } from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';

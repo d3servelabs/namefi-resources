@@ -9,7 +9,7 @@ import type {
   OperationStatusResponse,
   ProcessOrderItemGateResponse,
 } from '@namefi-astra/common/contract/admin/decision-gate-response-schemas';
-import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+import type { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
 import { describe, expect, it } from 'vitest';
 import type {
   pollAndExpectExpirationChange,

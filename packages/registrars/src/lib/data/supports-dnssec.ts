@@ -1,5 +1,5 @@
 import { parse as tldtsParse } from 'tldts';
-import { NAMEFI_DNSSEC_SUPPORTED_TLDS } from './abstract-registrar/data/dnssec-tlds';
+import { NAMEFI_DNSSEC_SUPPORTED_TLDS } from './dnssec-tlds';
 
 /**
  * @param domainName

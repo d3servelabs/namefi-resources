@@ -10,7 +10,7 @@ import type {
 } from './autorenew-report.activities';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { getEppLockState } from './registrar.activities';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import {
   determineActionRequired,
   formatDeferredRowReason,

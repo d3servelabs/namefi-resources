@@ -27,7 +27,7 @@ import {
   DnssecDigestType,
   DnssecFlags,
 } from '@namefi-astra/zod-dns';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import {
   Accordion,
   AccordionContent,

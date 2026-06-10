@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type {
   DomainPricingDetails,
   PricingDetails,
-} from './abstract-registrar/data/price-with-currency';
+} from './types/price-with-currency';
 
 export type PriceFromDomainAvailabilityInfo = {
   pricingDetails: DomainPricingDetails;

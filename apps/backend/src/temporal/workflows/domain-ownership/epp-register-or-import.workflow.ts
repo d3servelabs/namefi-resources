@@ -1,8 +1,8 @@
-import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
-import { OperationType } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-type';
-import type { LongRunningOperationResult } from '@namefi-astra/registrars/lib/abstract-registrar/registrar-service';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
+import { OperationType } from '@namefi-astra/registrars/data/types/operation-type';
+import type { LongRunningOperationResult } from '@namefi-astra/registrars/abstract-registrar/types';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import type { OrderItemMetadata } from '@namefi-astra/db';
 import type { GetLockStateResponse } from '../../activities/domain/registrar.activities';
 import {

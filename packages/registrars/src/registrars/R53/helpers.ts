@@ -1,6 +1,6 @@
 import type * as R53 from '@aws-sdk/client-route-53-domains';
 import { isNil, isNotNil } from 'ramda';
-import { DomainContactPrivacyEnum, RenewOption } from '#lib/abstract-registrar';
+import { DomainContactPrivacyEnum, RenewOption } from '#lib/data/types';
 import type {
   ContactEntity,
   DnssecAlgorithms,
@@ -10,7 +10,7 @@ import type {
   DomainPricingDetails,
   DomainRegistration,
   PriceWithCurrency,
-} from '#lib/abstract-registrar';
+} from '#lib/data/types';
 import { toPunycodeDomainName, toPunycodeFqdn } from '#lib/data/validations';
 
 export type R53ContactsMap = {

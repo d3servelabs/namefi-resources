@@ -10,8 +10,8 @@ import { eq, lt, inArray, desc } from 'drizzle-orm';
 import { namefiNftView, indexedDomainsTable } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { ExportExpirationDailyReport } from '../../../mail/templates/export-expiration-daily-report';
 
 const SEND_TO_SLACK_DIRECT = false;

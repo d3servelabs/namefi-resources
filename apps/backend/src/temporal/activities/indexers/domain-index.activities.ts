@@ -12,11 +12,11 @@ import { indexedDomainsTable } from '@namefi-astra/db/schema';
 import type { IndexedDomainDnssecStatus } from '@namefi-astra/db/schema';
 import { sldRegistrar } from '../../../lib/namefi-registry';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
+import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
 import { createLogger } from '#lib/logger';
 import { splitEvery } from 'ramda';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { getDnssecStatusDetails } from '#lib/domains/dnssec';
 
 const logger = createLogger({ module: 'domain-index-activities' });

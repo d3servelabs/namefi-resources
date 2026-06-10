@@ -43,12 +43,12 @@ import {
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type { Nameserver } from '@namefi-astra/registrars/lib/abstract-registrar/data/nameservers';
+import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
 import {
   type PunycodeDomainName,
   punycodeFqdnSchema,
-} from '@namefi-astra/registrars/lib/data/validations';
-import { toPunycodeFqdn } from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
+import { toPunycodeFqdn } from '@namefi-astra/registrars/data/validations';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import {
   useMutation,

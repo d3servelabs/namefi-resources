@@ -2,15 +2,15 @@ import {
   type ContactEntity,
   DomainContactPrivacyEnum,
   type DomainContacts,
-} from '@namefi-astra/registrars/lib/abstract-registrar/data/index';
-import { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
-import type { LongRunningOperationResult } from '@namefi-astra/registrars/lib/abstract-registrar/registrar-service';
+} from '@namefi-astra/registrars/data/types/index';
+import { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
+import { RenewOption } from '@namefi-astra/registrars/data/types/renew-option';
+import type { LongRunningOperationResult } from '@namefi-astra/registrars/abstract-registrar/types';
 import {
   type PunycodeDomainName,
   toPunycodeDomainName,
-} from '@namefi-astra/registrars/lib/data/validations';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+} from '@namefi-astra/registrars/data/validations';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import {
   type NamefiNormalizedDomain,
   matchAny,
@@ -23,8 +23,8 @@ import { addYears, isSameDay } from 'date-fns';
 import { decryptEppAuthCode } from '#lib/epp-code-encryption';
 import { logger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
+import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
 import { camelCase, noCase } from 'change-case';
 import { config } from '#lib/env';
 import {

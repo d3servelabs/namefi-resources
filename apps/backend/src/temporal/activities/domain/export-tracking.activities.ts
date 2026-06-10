@@ -13,13 +13,13 @@ import {
 } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
 import { sldRegistrar } from '#lib/namefi-registry';
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { WhoisClient } from '@namefi-astra/registrars/lib/rdap-whois/whois_client';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
+import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
 import type {
   PendingTransferInfo,
   TransferStatus,
-} from '@namefi-astra/registrars/lib/abstract-registrar/data/transfer-status';
+} from '@namefi-astra/registrars/data/types/transfer-status';
 import { sendMail } from '../../../mail/mail-client';
 import { render } from '@react-email/components';
 import React from 'react';

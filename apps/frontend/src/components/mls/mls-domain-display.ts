@@ -1,4 +1,4 @@
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 const DOMAIN_MARK_CHARACTER_PATTERN = /[\p{L}\p{N}]/u;
 

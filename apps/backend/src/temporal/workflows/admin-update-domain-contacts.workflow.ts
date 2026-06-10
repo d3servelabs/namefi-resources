@@ -1,4 +1,3 @@
-import type { DomainContacts } from '@namefi-astra/registrars/lib/abstract-registrar/data/contact';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
@@ -7,6 +6,7 @@ import type {
   UpdateContactsProcessResult,
   UpdateContactsSummary,
 } from '../activities/domain/update-contacts.activities';
+import type { DomainContacts } from '@namefi-astra/registrars/data/types/contact/domain-contacts';
 
 export interface AdminUpdateDomainContactsWorkflowInput {
   /**

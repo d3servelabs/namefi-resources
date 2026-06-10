@@ -1,4 +1,4 @@
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { TEMPORAL_ENUMS, pollingOpts, shortRunningOpts } from '../shared';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';

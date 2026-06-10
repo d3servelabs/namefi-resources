@@ -40,20 +40,12 @@ import type {
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
-  DomainQueryResult,
-  LongRunningOperationResult,
   Nameserver,
   Nameservers,
   PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
-  RegisterDomainInput,
-  ResubmitImportDomainRequestInput,
-  CancelImportDomainRequestInput,
-  RenewDomainInput,
-  TransferDomainInput,
-  VerifyImportAuthCodeOutput,
-} from '#lib/abstract-registrar';
+} from '#lib/data';
 import {
   DomainAvailability,
   DomainContactPrivacyEnum,
@@ -61,10 +53,20 @@ import {
   OperationStatus,
   OperationType,
   RenewOption,
+} from '#lib/data';
+import type {
+  DomainQueryResult,
+  LongRunningOperationResult,
+  RegisterDomainInput,
+  ResubmitImportDomainRequestInput,
+  CancelImportDomainRequestInput,
+  RenewDomainInput,
+  TransferDomainInput,
+  VerifyImportAuthCodeOutput,
 } from '#lib/abstract-registrar';
 import { toPunycodeDomainName } from '#lib/data/validations';
 import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
-import { supportsDnssec } from '#lib/supports-dnssec';
+import { supportsDnssec } from '#lib/data/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 
 import type {

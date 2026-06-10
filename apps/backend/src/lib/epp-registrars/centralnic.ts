@@ -4,14 +4,14 @@ import {
   indexedDomainsTable,
   namefiNftView,
 } from '@namefi-astra/db';
-import { CentralNicRegistrarService } from '@namefi-astra/registrars/registrars/sub-registrars';
+import { CentralNicRegistrarService } from '@namefi-astra/registrars/sub-registrars';
 
-import { toPunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { and, eq, isNull, or } from 'drizzle-orm';
 import { secrets } from '#lib/env';
 import { createLogger, logger } from '#lib/logger';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type { DomainIndexFunctions } from '@namefi-astra/registrars/registrars/centralnic/domain-index';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
+import type { DomainIndexFunctions } from '@namefi-astra/registrars/centralnic/domain-index';
 import { addYears } from 'date-fns';
 
 const UnclaimedDomainsIndex = (key: Registrars) => {

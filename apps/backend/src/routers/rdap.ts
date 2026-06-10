@@ -5,9 +5,9 @@ import {
   toPunycodeDomainName,
   toUnicodeDomainName,
   type PunycodeDomainName,
-} from '@namefi-astra/registrars/lib/data/validations';
-import { RDAP } from '@namefi-astra/registrars/lib/rdap-whois/rdap_client';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+} from '@namefi-astra/registrars/data/validations';
+import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import { EppStatuses } from '@namefi-astra/utils';
 import axios from 'axios';
 import { Hono, type Context } from 'hono';
@@ -155,7 +155,7 @@ rdapRouter.get('/:type/:handle', async (c) => {
 
 /**
  * Debug-only endpoint that proxies the request through the configurable RDAP
- * client (`@namefi-astra/registrars/lib/rdap-whois/rdap_client`) instead of
+ * client (`@namefi-astra/registrars/rdap-whois/rdap_client`) instead of
  * serving from CentralNic directly. Use it to verify that `RDAP_BASE_URL`
  * overrides (including the local loopback) actually route as expected.
  *

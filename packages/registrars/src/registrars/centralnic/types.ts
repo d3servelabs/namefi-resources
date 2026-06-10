@@ -1,7 +1,7 @@
 import type Bottleneck from 'bottleneck';
 import type pino from 'pino';
 import type { DomainIndexFunctions } from './domain-index';
-import type { Nameservers } from '#lib/abstract-registrar/index';
+import type { Nameservers } from '#lib/data/types';
 import type { Registrars } from '../registrars-keys';
 
 /**

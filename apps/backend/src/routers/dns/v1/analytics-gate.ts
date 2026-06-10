@@ -20,7 +20,7 @@ import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {
   toPunycodeFqdn,
   type PunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 
 const dnsAnalyticsGateRouter = new Hono();
 const _logger = createLogger({ context: 'TRACKING' });

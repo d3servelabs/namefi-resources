@@ -1,5 +1,5 @@
-import type { DnssecKey } from '@namefi-astra/registrars/lib/abstract-registrar/data/dnssec';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { DnssecKey } from '@namefi-astra/registrars/data/types/dnssec';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../shared';

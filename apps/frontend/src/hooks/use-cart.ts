@@ -19,7 +19,7 @@ import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/
 import {
   computeChargesInUsdOrThrow,
   usdToCents,
-} from '@namefi-astra/registrars/multi-year-pricing';
+} from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useDebounceCallback } from 'usehooks-ts';
 import { LocalStorageKeys } from '@/lib/local-storage-keys';

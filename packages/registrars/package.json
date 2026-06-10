@@ -7,7 +7,24 @@
   "imports": {
     "#lib/*": "./src/lib/*.ts",
     "#lib/abstract-registrar": "./src/lib/abstract-registrar/index.ts",
-    "#multi-year-pricing": "./src/lib/multi-year-pricing.ts"
+    "#multi-year-pricing": "./src/lib/multi-year-pricing.ts",
+    "#lib/data": "./src/lib/data/index.ts",
+    "#lib/data/types": "./src/lib/data/types/index.ts",
+    "#lib/data/*": "./src/lib/data/*.ts"
+  },
+  "exports": {
+    ".": "./src/registrars/main-registrar.ts",
+    "./registrars-keys": "./src/registrars/registrars-keys.ts",
+    "./data": "./src/lib/data/index.ts",
+    "./data/types": "./src/lib/data/types/index.ts",
+    "./data/*": "./src/lib/data/*.ts",
+    "./rdap-whois/*": "./src/lib/rdap-whois/*.ts",
+    "./dynadot/*": "./src/lib/dynadot/*.ts",
+    "./errors": "./src/errors/index.ts",
+    "./abstract-registrar/*": "./src/lib/abstract-registrar/*.ts",
+    "./sub-registrars": "./src/registrars/sub-registrars.ts",
+    "./main-registrar": "./src/registrars/main-registrar.ts",
+    "./centralnic/domain-index": "./src/registrars/centralnic/domain-index.ts"
   },
   "scripts": {
     "clean": "git clean -xdf .next .turbo node_modules out dist",
@@ -46,10 +63,7 @@
     "tldts": "^7.0.8",
     "vcf": "^2.1.2"
   },
-  "exports": {
-    "./*": "./src/*.ts",
-    "./multi-year-pricing": "./src/lib/multi-year-pricing.ts"
-  },
+
   "peerDependencies": {
     "vitest": "^3.1.2",
     "zod": "catalog:"

@@ -9,6 +9,5 @@ export * from './operation-status';
 export * from './price-with-currency';
 export * from './renew-option';
 export * from './dnssec';
-export * from './dnssec-tlds';
 export * from './suggestions';
 export * from './transfer-status';

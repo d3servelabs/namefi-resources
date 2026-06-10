@@ -1,4 +1,4 @@
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import type { WorkflowExecutionStatusName } from '@temporalio/client';
 import { logger } from '#lib/logger';
 import { queryActiveNameserversChangeWorkflow } from '#lib/domains/nameservers';

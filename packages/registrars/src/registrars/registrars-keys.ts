@@ -9,3 +9,7 @@ export const Registrars = {
   NamefiInMemoryMock: 'namefiInMemoryMock',
 };
 export type Registrars = (typeof Registrars)[keyof typeof Registrars];
+
+export type WithRegistrar<T> = T & {
+  registrarKey: Registrars;
+};

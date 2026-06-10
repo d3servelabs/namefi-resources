@@ -1,5 +1,5 @@
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import type { OperationStatus } from '@namefi-astra/registrars/lib/abstract-registrar/data/operation-status';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
+import type { OperationStatus } from '@namefi-astra/registrars/data/types/operation-status';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import * as workflow from '@temporalio/workflow';
 import { defineQuery } from '@temporalio/workflow';

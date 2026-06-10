@@ -13,6 +13,7 @@ import {
   range,
   splitEvery,
 } from 'ramda';
+import { AbstractRegistrarService } from '#lib/abstract-registrar';
 import type {
   ContactsMap,
   DnssecAlgorithms,
@@ -27,20 +28,19 @@ import type {
   PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
-} from '#lib/abstract-registrar';
+  DnssecDigestType,
+  PriceWithCurrency,
+} from '#lib/data';
 import {
-  AbstractRegistrarService,
-  type DnssecDigestType,
-  DomainAvailability,
   DomainContactPrivacyEnum,
   DomainOwnershipOperation,
+  DomainAvailability,
   OperationStatus,
   OperationType,
-  type PriceWithCurrency,
   RenewOption,
   multiYearPricingTemplate,
   singleYearPricingTemplate,
-} from '#lib/abstract-registrar';
+} from '#lib/data';
 import type {
   DomainQueryResult,
   LongRunningOperationResult,
@@ -50,7 +50,7 @@ import type {
   RenewDomainInput,
   TransferDomainInput,
   VerifyImportAuthCodeOutput,
-} from '#lib/abstract-registrar';
+} from '#lib/abstract-registrar/types';
 import {
   type PunycodeDomainName,
   assertPunycodeDomainName,
@@ -76,7 +76,7 @@ import {
 } from '#lib/dynadot/index';
 import { IdnLanguageCodeISO639_2 } from '#lib/idn/idn-language-code';
 import { RDAP } from '#lib/rdap-whois/rdap_client';
-import { supportsDnssec } from '#lib/supports-dnssec';
+import { supportsDnssec } from '#lib/data/supports-dnssec';
 import { Registrars } from '../registrars-keys';
 import { fromDynadotContactsMap } from './helpers';
 import { getTldFromDomainName } from '#lib/get-tld';

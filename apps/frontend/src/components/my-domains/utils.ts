@@ -4,7 +4,7 @@ import {
   differenceInYears,
   isPast,
 } from 'date-fns';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 export const DEFAULT_DOMAIN_LIST_PAGE_SIZE = 500;
 

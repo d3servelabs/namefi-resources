@@ -1,7 +1,7 @@
 import { sldRegistrar } from '#lib/namefi-registry';
 import { logger } from '#lib/logger';
-import { RenewOption } from '@namefi-astra/registrars/lib/abstract-registrar/data/renew-option';
-import type { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
+import { RenewOption } from '@namefi-astra/registrars/data/types/renew-option';
+import type { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import pMap from 'p-map';
 import { getUnixTime } from 'date-fns';
 import {

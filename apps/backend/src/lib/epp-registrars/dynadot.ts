@@ -1,9 +1,9 @@
-import { DynadotRegistrarService } from '@namefi-astra/registrars/registrars/sub-registrars';
+import { DynadotRegistrarService } from '@namefi-astra/registrars/sub-registrars';
 import { config } from '#lib/env';
 import { secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
-import { Registrars } from '@namefi-astra/registrars/registrars/registrars-keys';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import { Registrars } from '@namefi-astra/registrars/registrars-keys';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { CENTRALNIC_OTE_TLDS } from './centralnic';
 import { defaultKeyv } from '#lib/keyv';
 import { z } from 'zod';

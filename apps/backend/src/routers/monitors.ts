@@ -5,8 +5,8 @@ import {
 import { config, secrets } from '#lib/env';
 import { getConfiguredAllowedChainIds } from '#lib/env/allowed-chains';
 import { getDynadotRegistrars } from '#lib/epp-registrars/dynadot';
-import type { Dynadot } from '@namefi-astra/registrars/lib/dynadot/client';
-import { DynadotCommand } from '@namefi-astra/registrars/lib/dynadot/common-types';
+import type { Dynadot } from '@namefi-astra/registrars/dynadot/client';
+import { DynadotCommand } from '@namefi-astra/registrars/dynadot/common-types';
 import { CHAINS } from '@namefi-astra/utils';
 import pMap, { pMapSkip } from 'p-map';
 import pProps from 'p-props';

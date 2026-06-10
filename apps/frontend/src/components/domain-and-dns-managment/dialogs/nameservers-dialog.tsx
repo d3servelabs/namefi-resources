@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { NameserversPanelInner } from '../panels/nameservers/nameservers-panel';
-import type { PunycodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
+import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 
 export function NameserversDialog({
   isOpen,

@@ -23,46 +23,37 @@ import type {
   DomainRegistration,
   DomainSuggestionsQueryResult,
   DomainSummary,
-  DomainQueryResult,
   Nameservers,
   PendingTransferInfo,
   PricingDetails,
   RdapDomainStatus,
   RenewOption,
-} from '#lib/abstract-registrar';
-import { DomainAvailability } from '#lib/abstract-registrar';
-import type { DnssecKey } from '#lib/abstract-registrar/data/dnssec';
+} from '#lib/data/types';
+import { DomainAvailability } from '#lib/data/types';
+import type { DnssecKey } from '#lib/data/types/dnssec';
 import type {
   RegisterDomainInput,
   RenewDomainInput,
   TransferDomainInput,
   ResubmitImportDomainRequestInput,
   CancelImportDomainRequestInput,
-  LongRunningOperationResult as iLongRunningOperationResult,
-} from '#lib/abstract-registrar/registrar-service';
+  LongRunningOperationResult as WithoutRegistrarLongRunningOperationResult,
+} from '#lib/abstract-registrar/types';
 import { AbstractRegistrarService } from '#lib/abstract-registrar/registrar-service';
 import {
   type PunycodeDomainName,
   assertPunycodeDomainName,
   toPunycodeDomainName,
 } from '#lib/data/validations';
-import { computeChargesInUsdOrThrow } from '#lib/multi-year-pricing';
-import { supportsDnssec } from '#lib/supports-dnssec';
-import { R53RegistrarService } from './R53/r53-registrar';
-import { DynadotRegistrarService } from './dynadot/dynadot-registrar';
-import {
-  CentralNicRegistrarService,
-  type CentralNicConfig,
-} from './centralnic';
-import { Registrars } from './registrars-keys';
+import { computeChargesInUsdOrThrow } from '#lib/data/multi-year-pricing';
+import { supportsDnssec } from '#lib/data/supports-dnssec';
+import { Registrars, type WithRegistrar } from './registrars-keys';
 import pProps from 'p-props';
 import Bottleneck from 'bottleneck';
+import type { DomainQueryResult } from '#lib/abstract-registrar/types';
 
-export type WithRegistrar<T> = T & {
-  registrarKey: Registrars;
-};
 type LongRunningOperationResult<T> = WithRegistrar<
-  iLongRunningOperationResult<T>
+  WithoutRegistrarLongRunningOperationResult<T>
 >;
 type RegistrarWithTldPricing = AbstractRegistrarService<Registrars> & {
   getTldPrices: () => Promise<Record<string, DomainPricingDetails>>;

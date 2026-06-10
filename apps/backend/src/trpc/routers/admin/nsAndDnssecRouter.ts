@@ -18,7 +18,7 @@ import {
 import {
   toPunycodeDomainName,
   toPunycodeFqdn,
-} from '@namefi-astra/registrars/lib/data/validations';
+} from '@namefi-astra/registrars/data/validations';
 import {
   adminProcedureWithPermissions,
   auditedAdminProcedureWithPermissions,

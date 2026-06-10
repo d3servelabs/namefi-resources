@@ -15,8 +15,8 @@ import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirem
 import { CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG } from '@/lib/cart-setup-options';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
+import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
+import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Settings2 as Settings, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
