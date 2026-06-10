@@ -7,7 +7,10 @@ import { getOriginRuntime } from '@/lib/origin/utils.server';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Providers } from '@/components/providers';
 import { AddToCartFromUrl } from '@/components/add-to-cart-from-url';
-import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
+import {
+  GoogleAnalyticsAuthenticatedUserGated,
+  GoogleAnalyticsCookieConsentGated,
+} from '@/components/ga';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata, Viewport } from 'next';
@@ -115,6 +118,7 @@ function RootLayoutInner({ children }: PropsWithChildren) {
       <Suspense>
         <Providers>
           <GoogleAnalyticsCookieConsentGated />
+          <GoogleAnalyticsAuthenticatedUserGated />
           {ReactQueryDevtoolsWrapper ? <ReactQueryDevtoolsWrapper /> : null}
           <OriginBackground />
           <Toaster expand={true} visibleToasts={3} />

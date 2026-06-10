@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import Script from 'next/script';
 import { config } from '@/lib/env';
 import { getOriginRuntime } from '@/lib/origin/utils.server';
@@ -14,8 +14,9 @@ const C15T_BROWSER_BACKEND_URL = '/api/c15t';
 export async function GoogleAnalyticsBootstrap() {
   if (!config.GA_MEASUREMENT_ID) return null;
 
-  const [cookieStore, originInfo] = await Promise.all([
+  const [cookieStore, requestHeaders, originInfo] = await Promise.all([
     cookies(),
+    headers(),
     getOriginRuntime(),
   ]);
   const consentCookieValue = cookieStore.get(C15T_CONSENT_COOKIE_NAME)?.value;
@@ -23,11 +24,12 @@ export async function GoogleAnalyticsBootstrap() {
     getC15tMeasurementConsentState(consentCookieValue);
   const measurementGranted = resolveInitialMeasurementConsent({
     consentCookieValue,
+    requestHasGlobalPrivacyControl: requestHeaders.get('sec-gpc') === '1',
   });
-  // First-page GA bootstrap is intentionally policy-blind: awaiting /c15t/init
-  // here would put every route back on the request-render critical path this PR
-  // removes. Browser prefetch consumes hosted policy data and can grant GA for
-  // opt-out/no-banner jurisdictions without blocking server rendering.
+  // First-page GA bootstrap avoids awaiting hosted policy data: doing that here
+  // would put every route back on the request-render critical path this PR
+  // removes. We still honor request-level GPC, while browser prefetch can grant
+  // GA for opt-out/no-banner jurisdictions without blocking server rendering.
   const bootstrapScript = buildGoogleAnalyticsBootstrapScript({
     measurementId: config.GA_MEASUREMENT_ID,
     measurementGranted,
@@ -48,7 +50,7 @@ export async function GoogleAnalyticsBootstrap() {
       <Script
         id="ga-loader"
         src={`https://www.googletagmanager.com/gtag/js?id=${config.GA_MEASUREMENT_ID}`}
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
       />
     </>
   );

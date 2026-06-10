@@ -1,22 +1,27 @@
 'use client';
 
 import { config } from '@/lib/env';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
-import { useAuth } from '@/hooks/use-auth';
 import {
   getGoogleAnalyticsConfig,
   getGoogleConsentState,
 } from '@/lib/google-analytics-consent';
+import dynamic from 'next/dynamic';
+
+const GoogleAnalyticsAuthenticatedUserSync = dynamic(
+  () =>
+    import('@/components/ga-auth-sync').then(
+      (mod) => mod.GoogleAnalyticsAuthenticatedUserSync,
+    ),
+  { ssr: false },
+);
 
 export function GoogleAnalyticsCookieConsentGated() {
   const { consents, isLoadingConsentInfo } = useConsentManager();
   const hasMeasurement = consents.measurement;
   const originInfo = useOrigin();
-  const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
-  const gaUserId =
-    hasMeasurement && !isAuthLoading && isAuthenticated ? user?.id : null;
 
   useEffect(() => {
     if (!config.GA_MEASUREMENT_ID) return;
@@ -34,11 +39,9 @@ export function GoogleAnalyticsCookieConsentGated() {
         originDomain: originInfo.thirdPartyHostname || 'astra',
         debugMode: config.TYPE === 'development',
       }),
-      user_id: gaUserId,
       update: true,
     });
   }, [
-    gaUserId,
     hasMeasurement,
     isLoadingConsentInfo,
     originInfo.isFirstPartyOrigin,
@@ -46,4 +49,23 @@ export function GoogleAnalyticsCookieConsentGated() {
   ]);
 
   return null;
+}
+
+export function GoogleAnalyticsAuthenticatedUserGated() {
+  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const [shouldMountUserSync, setShouldMountUserSync] = useState(false);
+
+  // Keep the sync mounted after first grant so logout or consent revocation can
+  // explicitly clear GA's page-level user_id state.
+  useEffect(() => {
+    if (!config.GA_MEASUREMENT_ID) return;
+    if (isLoadingConsentInfo) return;
+    if (consents.measurement) {
+      setShouldMountUserSync(true);
+    }
+  }, [consents.measurement, isLoadingConsentInfo]);
+
+  if (!shouldMountUserSync) return null;
+
+  return <GoogleAnalyticsAuthenticatedUserSync />;
 }
