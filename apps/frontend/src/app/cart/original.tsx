@@ -2,6 +2,7 @@
 import { AuthRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { CartCard } from '@/components/cart-card';
 import { CartItem } from '@/components/cart-item';
+import { CartTermsFootnote } from '@/components/cart-terms-footnote';
 import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
@@ -869,7 +870,7 @@ export default function CartPage() {
           </div>
 
           {/* Right Column */}
-          <div>
+          <div className="space-y-3">
             {isAuthenticated ? (
               cartItemsAreAllPromo ? (
                 <NoPaymentMethodRequiredCard
@@ -979,6 +980,7 @@ export default function CartPage() {
                 footerButton={<UserDropdown className="w-full" />}
               />
             )}
+            {isAuthenticated && <CartTermsFootnote />}
           </div>
         </div>
       ) : (
