@@ -101,18 +101,61 @@ jobs:
       label: ${{ steps.compute.outputs.label }}
       vercel_env: ${{ steps.compute.outputs.vercel_env }}
     steps:
+      - name: Checkout repository
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Determine before commit
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: determine-before-commit
+        uses: ./.github/actions/determine-before-commit
+
+      - name: Detect resources content-only change
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: content-only
+        run: |
+          set -euo pipefail
+
+          # The resources sync PR only updates the apps/resources/data
+          # submodule pointer. Those commits are content-only and can be
+          # promoted directly to production without cutting an Astra release.
+          BEFORE="${{ steps.determine-before-commit.outputs.before-commit }}"
+          HEAD="${{ github.sha }}"
+          CHANGED="$(git diff --name-only "$BEFORE" "$HEAD")"
+
+          echo "Changed files between $BEFORE and $HEAD:"
+          echo "$CHANGED"
+
+          if [[ -z "$CHANGED" ]]; then
+            echo "is_content_only=false" >> "$GITHUB_OUTPUT"
+            echo "No changed files detected; treating as non-content-only"
+            exit 0
+          fi
+
+          if grep -qvE '^apps/resources/data($|/)' <<< "$CHANGED"; then
+            echo "is_content_only=false" >> "$GITHUB_OUTPUT"
+            echo "Non-content resources paths changed; not content-only"
+          else
+            echo "is_content_only=true" >> "$GITHUB_OUTPUT"
+            echo "Only apps/resources/data changed; enabling production deploy"
+          fi
+
       - name: Compute environment values
         id: compute
         env:
           EVENT_NAME: ${{ github.event_name }}
           DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment || '' }}
           GITHUB_REF_NAME_FULL: ${{ github.ref }}
+          IS_CONTENT_ONLY: ${{ steps.content-only.outputs.is_content_only || 'false' }}
         run: |
           # Production triggers:
           # - Release tag push (astra-resources/v*).
           # - Manual dispatch with environment=production from main or a resources release tag.
-          # Main branch pushes, including content-only resources data bumps,
-          # deploy to dev.
+          # - Main branch pushes whose only changed path is apps/resources/data.
+          # Other main branch pushes deploy to dev.
 
           IS_PROD="false"
           if [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra-resources/v ]]; then
@@ -122,6 +165,8 @@ jobs:
               echo "Manual production resources deployments must be run from refs/heads/main or an astra-resources release tag, got $GITHUB_REF_NAME_FULL" >&2
               exit 1
             fi
+            IS_PROD="true"
+          elif [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" == "refs/heads/main" && "$IS_CONTENT_ONLY" == "true" ]]; then
             IS_PROD="true"
           fi
 

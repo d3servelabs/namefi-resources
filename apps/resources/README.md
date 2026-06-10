@@ -48,3 +48,9 @@ The content under `apps/resources/data` is a git submodule that points to `d3ser
 - Validate or lint content locally via the submodule scripts:
   - `bun run --cwd apps/resources data:validate`
   - `bun run --cwd apps/resources lint:mdx`
+
+## Publishing content
+
+Content changes are authored in `d3servelabs/namefi-resources`. When a resources content PR is merged there, the resources repository dispatches the `sync-resources-data.yml` workflow in this repository. That workflow opens and auto-merges a PR that only bumps the `apps/resources/data` submodule pointer.
+
+Main-branch pushes that only change `apps/resources/data` are treated as content-only updates and are deployed to the resources production target automatically. Main-branch pushes that touch any other resources app path still deploy to the dev target unless they are deployed manually with `environment=production` or through an `astra-resources/v*` release tag.
