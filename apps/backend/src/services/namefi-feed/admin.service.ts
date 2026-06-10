@@ -11,7 +11,14 @@ import {
 import { and, count, desc, eq, isNotNull, type SQL } from 'drizzle-orm';
 import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
 import { DEFAULT_NAMEFI_FEED_SEARCH_QUERIES } from './normalization';
-import { resolveNamefiFeedSource } from './sources';
+import {
+  buildNamefiFeedAdminSources,
+  DEFAULT_NAMEFI_FEED_ENABLED_SOURCES,
+  normalizeNamefiFeedEnabledSources,
+  readNamefiFeedEnabledSourcesFromMetadata,
+  resolveNamefiFeedSource,
+  type NamefiFeedAutoScanSource,
+} from './sources';
 import {
   listNamefiFeedSalesDigestTargets,
   listRecentNamefiFeedSalesDigestDeliveries,
@@ -29,6 +36,7 @@ export async function getNamefiFeedSettingsRow() {
     .values({
       id: SETTINGS_ID,
       searchQueries: DEFAULT_NAMEFI_FEED_SEARCH_QUERIES,
+      metadata: { enabledSources: DEFAULT_NAMEFI_FEED_ENABLED_SOURCES },
     })
     .onConflictDoNothing();
 
@@ -51,6 +59,7 @@ export async function getNamefiFeedAdminSettings(): Promise<AdminNamefiFeedSetti
 
 export async function updateNamefiFeedSettings(input: {
   autoScanEnabled?: boolean;
+  enabledSources?: NamefiFeedAutoScanSource[];
   searchQueries?: string[];
   maxQueries?: number;
   maxPagesPerQuery?: number;
@@ -62,6 +71,16 @@ export async function updateNamefiFeedSettings(input: {
   const updateValues = {
     ...(typeof input.autoScanEnabled === 'boolean'
       ? { autoScanEnabled: input.autoScanEnabled }
+      : {}),
+    ...(Array.isArray(input.enabledSources)
+      ? {
+          metadata: {
+            ...currentSettings.metadata,
+            enabledSources: normalizeNamefiFeedEnabledSources(
+              input.enabledSources,
+            ),
+          },
+        }
       : {}),
     ...(input.searchQueries
       ? {
@@ -376,8 +395,14 @@ async function listRecentReports(): Promise<
 function toAdminSettings(
   settings: typeof namefiFeedSettingsTable.$inferSelect,
 ): AdminNamefiFeedSettings {
+  const enabledSources = readNamefiFeedEnabledSourcesFromMetadata(
+    settings.metadata,
+  );
+
   return {
     autoScanEnabled: settings.autoScanEnabled,
+    enabledSources,
+    sources: buildNamefiFeedAdminSources(enabledSources),
     searchQueries:
       settings.searchQueries.length > 0
         ? settings.searchQueries

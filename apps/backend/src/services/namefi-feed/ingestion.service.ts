@@ -32,6 +32,11 @@ import {
   updateNamefiFeedLastAutoScanCursorAt,
 } from './admin.service';
 import {
+  DEFAULT_NAMEFI_FEED_ENABLED_SOURCES,
+  readNamefiFeedEnabledSourcesFromMetadata,
+  type NamefiFeedAutoScanSource,
+} from './sources';
+import {
   NAMEFI_FEED_MARKETPLACE_RSS_FEEDS,
   parseNamefiFeedMarketplaceRss,
   shouldQueueNamefiFeedMarketplaceRssItem,
@@ -66,7 +71,7 @@ const X_TWEET_FIELDS = [
 const X_USER_FIELDS = ['username', 'name', 'profile_image_url'].join(',');
 const REQUEUEABLE_POST_STATUSES = ['processed', 'skipped', 'failed'] as const;
 
-export type NamefiFeedAutoScanSource = 'x' | NamefiFeedMarketplaceRssSource;
+export type { NamefiFeedAutoScanSource } from './sources';
 
 export interface NamefiFeedScanResult {
   skipped: boolean;
@@ -79,7 +84,7 @@ export interface NamefiFeedScanResult {
 }
 
 export interface NamefiFeedScanSourceResult {
-  source: 'x' | NamefiFeedMarketplaceRssSource;
+  source: NamefiFeedAutoScanSource;
   feedId?: string;
   feedUrl?: string;
   skipped: boolean;
@@ -228,11 +233,31 @@ export async function scanAndQueueNamefiFeedAutoPosts(input: {
     return result;
   }
 
+  const enabledSourceSet = new Set(
+    readNamefiFeedEnabledSourcesFromMetadata(settings.metadata),
+  );
+  const requestedSources = input.sources ?? DEFAULT_NAMEFI_FEED_ENABLED_SOURCES;
   const sources = new Set<NamefiFeedAutoScanSource>(
-    input.sources ?? ['x', 'namepros', 'dnforum'],
+    requestedSources.filter((source) => enabledSourceSet.has(source)),
   );
   const counters = createScanCounters();
-  const sourceResults: NamefiFeedScanSourceResult[] = [];
+  const sourceResults: NamefiFeedScanSourceResult[] = requestedSources
+    .filter((source) => !enabledSourceSet.has(source))
+    .map((source) => createSkippedSourceResult(source, 'source_disabled'));
+
+  if (sources.size === 0) {
+    const result: NamefiFeedScanResult = {
+      skipped: true,
+      reason: 'all_sources_disabled',
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      latestCursorAt: null,
+      sourceResults,
+    };
+    await persistScanCounts(input.runId, result);
+    return result;
+  }
 
   if (sources.has('x')) {
     if (input.bearerToken) {
@@ -249,16 +274,9 @@ export async function scanAndQueueNamefiFeedAutoPosts(input: {
         );
       }
     } else {
-      sourceResults.push({
-        source: 'x',
-        skipped: true,
-        reason: 'x_bearer_token_missing',
-        scannedPostCount: 0,
-        queuedPostCount: 0,
-        alreadyExistingCount: 0,
-        skippedPostCount: 0,
-        latestCursorAt: null,
-      });
+      sourceResults.push(
+        createSkippedSourceResult('x', 'x_bearer_token_missing'),
+      );
     }
   }
 
@@ -278,6 +296,20 @@ export async function scanAndQueueNamefiFeedAutoPosts(input: {
       });
     mergeScanCounters(counters, marketplaceRssResult.counters);
     sourceResults.push(...marketplaceRssResult.sourceResults);
+  }
+
+  if (didSkipEveryRequestedSource(sourceResults, counters)) {
+    const result: NamefiFeedScanResult = {
+      skipped: true,
+      reason: resolveSkippedScanReason(sourceResults),
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      latestCursorAt: null,
+      sourceResults,
+    };
+    await persistScanCounts(input.runId, result);
+    return result;
   }
 
   const result: NamefiFeedScanResult = {
@@ -311,6 +343,24 @@ export async function scanAndQueueNamefiFeedXPosts(input: {
     await persistScanCounts(input.runId, result);
     return result;
   }
+
+  const enabledSources = readNamefiFeedEnabledSourcesFromMetadata(
+    settings.metadata,
+  );
+  if (!enabledSources.includes('x')) {
+    const result: NamefiFeedScanResult = {
+      skipped: true,
+      reason: 'all_sources_disabled',
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      latestCursorAt: null,
+      sourceResults: [createSkippedSourceResult('x', 'source_disabled')],
+    };
+    await persistScanCounts(input.runId, result);
+    return result;
+  }
+
   if (!input.bearerToken) {
     throw new NamefiFeedXConfigurationError();
   }
@@ -708,6 +758,44 @@ function createScanCounters(): ScanCounters {
   };
 }
 
+function createSkippedSourceResult(
+  source: NamefiFeedAutoScanSource,
+  reason: string,
+): NamefiFeedScanSourceResult {
+  return {
+    source,
+    skipped: true,
+    reason,
+    scannedPostCount: 0,
+    queuedPostCount: 0,
+    alreadyExistingCount: 0,
+    skippedPostCount: 0,
+    latestCursorAt: null,
+  };
+}
+
+function didSkipEveryRequestedSource(
+  sourceResults: NamefiFeedScanSourceResult[],
+  counters: ScanCounters,
+) {
+  return (
+    sourceResults.length > 0 &&
+    sourceResults.every((result) => result.skipped) &&
+    counters.scannedPostCount === 0 &&
+    counters.queuedPostCount === 0 &&
+    counters.alreadyExistingCount === 0 &&
+    counters.skippedPostCount === 0
+  );
+}
+
+function resolveSkippedScanReason(sourceResults: NamefiFeedScanSourceResult[]) {
+  if (sourceResults.length === 1) {
+    return sourceResults[0]?.reason ?? 'all_sources_unavailable';
+  }
+
+  return 'all_sources_unavailable';
+}
+
 function mergeScanCounters(target: ScanCounters, source: ScanCounters) {
   target.scannedPostCount += source.scannedPostCount;
   target.queuedPostCount += source.queuedPostCount;
@@ -727,6 +815,13 @@ export async function ingestManualNamefiFeedXPosts(input: {
   tweets: string[];
   includeReplies?: boolean;
 }): Promise<NamefiFeedManualIngestResult> {
+  const settings = await getNamefiFeedSettingsRow();
+  if (
+    !readNamefiFeedEnabledSourcesFromMetadata(settings.metadata).includes('x')
+  ) {
+    throw new Error('Namefi Feed X source is disabled.');
+  }
+
   if (!input.bearerToken) {
     throw new NamefiFeedXConfigurationError();
   }

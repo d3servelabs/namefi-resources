@@ -25,7 +25,7 @@ export async function scanNamefiFeedXPosts(input: {
   return scanAndQueueNamefiFeedXPosts({
     runId: input.runId,
     ignoreAutoScanEnabled: input.ignoreAutoScanEnabled,
-    bearerToken: getNamefiFeedXBearerToken(),
+    bearerToken: getOptionalNamefiFeedXBearerToken(),
   });
 }
 

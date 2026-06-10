@@ -4,8 +4,23 @@ import { createContract } from '../create-contract';
 
 const nullableIsoDateSchema = z.string().nullable();
 
+export const adminNamefiFeedSourceIdSchema = z.enum([
+  'x',
+  'namepros',
+  'dnforum',
+]);
+
+export const adminNamefiFeedSourceSchema = z.object({
+  id: adminNamefiFeedSourceIdSchema,
+  label: z.string(),
+  kind: z.enum(['social', 'external']),
+  enabled: z.boolean(),
+});
+
 export const adminNamefiFeedSettingsSchema = z.object({
   autoScanEnabled: z.boolean(),
+  enabledSources: z.array(adminNamefiFeedSourceIdSchema),
+  sources: z.array(adminNamefiFeedSourceSchema),
   searchQueries: z.array(z.string()),
   maxQueries: z.number().int().positive(),
   maxPagesPerQuery: z.number().int().positive(),
@@ -186,6 +201,7 @@ export const adminNamefiFeedOverviewSchema = z.object({
 
 const updateSettingsInputSchema = z.object({
   autoScanEnabled: z.boolean().optional(),
+  enabledSources: z.array(adminNamefiFeedSourceIdSchema).max(3).optional(),
   searchQueries: z.array(z.string().trim().min(1)).max(12).optional(),
   maxQueries: z.number().int().min(1).max(12).optional(),
   maxPagesPerQuery: z.number().int().min(1).max(10).optional(),

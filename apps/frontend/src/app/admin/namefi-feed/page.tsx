@@ -1,6 +1,9 @@
 'use client';
 
-import { PermissionGate } from '@/components/access/PermissionGate';
+import {
+  PermissionGate,
+  useHasPermissions,
+} from '@/components/access/PermissionGate';
 import { withAdminGuard } from '@/components/admin/admin-guard';
 import { PageShell } from '@/components/page-shell';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
@@ -67,8 +70,18 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { toast } from 'sonner';
 
+type NamefiFeedOverview = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['getOverview'];
+type FeedSettings = NamefiFeedOverview['settings'];
+type FeedSource = NamefiFeedOverview['settings']['sources'][number];
+type FeedSourceId = FeedSource['id'];
+type DigestTarget = NamefiFeedOverview['digestTargets'][number];
+type DigestTargetType = DigestTarget['targetType'];
+
 type SettingsDraft = {
   autoScanEnabled: boolean;
+  enabledSources: FeedSourceId[];
   searchQueriesText: string;
   maxQueries: number;
   maxPagesPerQuery: number;
@@ -76,12 +89,6 @@ type SettingsDraft = {
   maxTweetAgeMinutes: number;
   overlapMinutes: number;
 };
-
-type NamefiFeedOverview = InferContractOutputs<
-  typeof adminNamefiFeedContract
->['getOverview'];
-type DigestTarget = NamefiFeedOverview['digestTargets'][number];
-type DigestTargetType = DigestTarget['targetType'];
 
 type TargetDraft = {
   id: string | null;
@@ -96,6 +103,7 @@ type TargetDraft = {
 
 const EMPTY_SETTINGS_DRAFT: SettingsDraft = {
   autoScanEnabled: false,
+  enabledSources: ['x', 'namepros', 'dnforum'],
   searchQueriesText: '',
   maxQueries: 3,
   maxPagesPerQuery: 1,
@@ -128,6 +136,9 @@ export default withAdminGuard(function AdminNamefiFeedPage() {
 function NamefiFeedAdminContent() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const { hasPermissions: canWriteNamefiFeed } = useHasPermissions([
+    Permission.WRITE_NAMEFI_FEED,
+  ]);
   const [settingsDraft, setSettingsDraft] =
     useState<SettingsDraft>(EMPTY_SETTINGS_DRAFT);
   const [manualTweetsText, setManualTweetsText] = useState('');
@@ -166,6 +177,7 @@ function NamefiFeedAdminContent() {
 
     setSettingsDraft({
       autoScanEnabled: overview.settings.autoScanEnabled,
+      enabledSources: overview.settings.enabledSources,
       searchQueriesText: overview.settings.searchQueries.join('\n'),
       maxQueries: overview.settings.maxQueries,
       maxPagesPerQuery: overview.settings.maxPagesPerQuery,
@@ -331,20 +343,33 @@ function NamefiFeedAdminContent() {
       ],
     ] as const;
   }, [overview?.stats]);
+  const settingsLoaded = Boolean(overview?.settings);
+  const settingsDirty = overview?.settings
+    ? !settingsDraftMatchesSettings(settingsDraft, overview.settings)
+    : false;
+  const settingsControlsDisabled =
+    !settingsLoaded || !canWriteNamefiFeed || updateSettingsMutation.isPending;
 
   const saveSettings = () => {
     updateSettingsMutation.mutate({
       autoScanEnabled: settingsDraft.autoScanEnabled,
-      searchQueries: settingsDraft.searchQueriesText
-        .split('\n')
-        .map((query) => query.trim())
-        .filter(Boolean),
+      enabledSources: settingsDraft.enabledSources,
+      searchQueries: parseSearchQueriesText(settingsDraft.searchQueriesText),
       maxQueries: settingsDraft.maxQueries,
       maxPagesPerQuery: settingsDraft.maxPagesPerQuery,
       maxTweetsPerQuery: settingsDraft.maxTweetsPerQuery,
       maxTweetAgeMinutes: settingsDraft.maxTweetAgeMinutes,
       overlapMinutes: settingsDraft.overlapMinutes,
     });
+  };
+
+  const toggleFeedSource = (sourceId: FeedSourceId, enabled: boolean) => {
+    setSettingsDraft((draft) => ({
+      ...draft,
+      enabledSources: enabled
+        ? Array.from(new Set([...draft.enabledSources, sourceId]))
+        : draft.enabledSources.filter((id) => id !== sourceId),
+    }));
   };
 
   const startManualIngest = () => {
@@ -419,6 +444,13 @@ function NamefiFeedAdminContent() {
   };
 
   const missingDigestTokens = getMissingDigestTokenLabels(overview);
+  const savedEnabledSourceIds = overview?.settings.enabledSources ?? [];
+  const xScanSourceEnabled = savedEnabledSourceIds.includes('x');
+  const hasRunnableSavedScanSource =
+    savedEnabledSourceIds.some((sourceId) => sourceId !== 'x') ||
+    (xScanSourceEnabled && Boolean(overview?.xBearerTokenConfigured));
+  const canQueueManualTweets =
+    xScanSourceEnabled && Boolean(overview?.xBearerTokenConfigured);
   const digestTargetSelectionLabel =
     enabledDigestTargetIds.length === 0
       ? 'no targets'
@@ -453,8 +485,9 @@ function NamefiFeedAdminContent() {
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>X bearer token missing</AlertTitle>
           <AlertDescription>
-            Configure NAMEFI_FEED_X_BEARER_TOKEN before running scans or manual
-            ingestion.
+            Configure NAMEFI_FEED_X_BEARER_TOKEN before running X scans or
+            manual tweet ingestion. Marketplace RSS scans can still run when
+            enabled.
           </AlertDescription>
         </Alert>
       )}
@@ -511,6 +544,7 @@ function NamefiFeedAdminContent() {
               <Switch
                 id="auto-scan"
                 checked={settingsDraft.autoScanEnabled}
+                disabled={settingsControlsDisabled}
                 onCheckedChange={(autoScanEnabled) =>
                   setSettingsDraft((draft) => ({
                     ...draft,
@@ -520,6 +554,41 @@ function NamefiFeedAdminContent() {
               />
             </div>
 
+            <div className="flex flex-col gap-2">
+              <Label>Sources</Label>
+              <div className="grid gap-2 md:grid-cols-3">
+                {(overview?.settings.sources ?? []).map((source) => {
+                  const sourceSwitchId = `feed-source-${source.id}`;
+                  const enabled = settingsDraft.enabledSources.includes(
+                    source.id,
+                  );
+
+                  return (
+                    <div
+                      key={source.id}
+                      className="flex items-center justify-between gap-3 rounded-md border p-3"
+                    >
+                      <div className="min-w-0">
+                        <Label htmlFor={sourceSwitchId}>{source.label}</Label>
+                        <p className="text-xs text-muted-foreground">
+                          {feedSourceKindLabel(source.kind)}
+                        </p>
+                      </div>
+                      <Switch
+                        id={sourceSwitchId}
+                        checked={enabled}
+                        disabled={settingsControlsDisabled}
+                        onCheckedChange={(checked) =>
+                          toggleFeedSource(source.id, checked)
+                        }
+                        aria-label={`Toggle ${source.label}`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="grid gap-3 md:grid-cols-5">
               <NumberField
                 id="max-queries"
@@ -527,6 +596,7 @@ function NamefiFeedAdminContent() {
                 value={settingsDraft.maxQueries}
                 min={1}
                 max={12}
+                disabled={settingsControlsDisabled}
                 onChange={(maxQueries) =>
                   setSettingsDraft((draft) => ({ ...draft, maxQueries }))
                 }
@@ -537,6 +607,7 @@ function NamefiFeedAdminContent() {
                 value={settingsDraft.maxPagesPerQuery}
                 min={1}
                 max={10}
+                disabled={settingsControlsDisabled}
                 onChange={(maxPagesPerQuery) =>
                   setSettingsDraft((draft) => ({
                     ...draft,
@@ -550,6 +621,7 @@ function NamefiFeedAdminContent() {
                 value={settingsDraft.maxTweetsPerQuery}
                 min={10}
                 max={100}
+                disabled={settingsControlsDisabled}
                 onChange={(maxTweetsPerQuery) =>
                   setSettingsDraft((draft) => ({
                     ...draft,
@@ -563,6 +635,7 @@ function NamefiFeedAdminContent() {
                 value={settingsDraft.maxTweetAgeMinutes}
                 min={15}
                 max={10080}
+                disabled={settingsControlsDisabled}
                 onChange={(maxTweetAgeMinutes) =>
                   setSettingsDraft((draft) => ({
                     ...draft,
@@ -576,6 +649,7 @@ function NamefiFeedAdminContent() {
                 value={settingsDraft.overlapMinutes}
                 min={0}
                 max={1440}
+                disabled={settingsControlsDisabled}
                 onChange={(overlapMinutes) =>
                   setSettingsDraft((draft) => ({ ...draft, overlapMinutes }))
                 }
@@ -588,6 +662,7 @@ function NamefiFeedAdminContent() {
                 id="search-queries"
                 className="min-h-32 font-mono text-xs"
                 value={settingsDraft.searchQueriesText}
+                disabled={settingsControlsDisabled}
                 onChange={(event) =>
                   setSettingsDraft((draft) => ({
                     ...draft,
@@ -601,7 +676,7 @@ function NamefiFeedAdminContent() {
               <Button
                 className="self-end"
                 onClick={saveSettings}
-                disabled={updateSettingsMutation.isPending}
+                disabled={!settingsLoaded || updateSettingsMutation.isPending}
               >
                 <Save className="h-4 w-4" />
                 Save
@@ -622,8 +697,11 @@ function NamefiFeedAdminContent() {
               <Button
                 onClick={() => startIngestionMutation.mutate({ mode: 'scan' })}
                 disabled={
+                  !settingsLoaded ||
+                  settingsDirty ||
+                  updateSettingsMutation.isPending ||
                   startIngestionMutation.isPending ||
-                  !overview?.xBearerTokenConfigured
+                  !hasRunnableSavedScanSource
                 }
               >
                 <Play className="h-4 w-4" />
@@ -656,8 +734,7 @@ function NamefiFeedAdminContent() {
                 variant="secondary"
                 onClick={startManualIngest}
                 disabled={
-                  startIngestionMutation.isPending ||
-                  !overview?.xBearerTokenConfigured
+                  startIngestionMutation.isPending || !canQueueManualTweets
                 }
               >
                 <Play className="h-4 w-4" />
@@ -906,6 +983,7 @@ function NumberField({
   value,
   min,
   max,
+  disabled = false,
   onChange,
 }: {
   id: string;
@@ -913,6 +991,7 @@ function NumberField({
   value: number;
   min: number;
   max: number;
+  disabled?: boolean;
   onChange: (value: number) => void;
 }) {
   return (
@@ -926,6 +1005,7 @@ function NumberField({
         max={max}
         step={1}
         value={value}
+        disabled={disabled}
         onChange={(event) => {
           if (event.target.value === '') {
             return;
@@ -957,6 +1037,49 @@ function ToggleRow({
       <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
     </div>
   );
+}
+
+function settingsDraftMatchesSettings(
+  draft: SettingsDraft,
+  settings: FeedSettings,
+) {
+  return (
+    draft.autoScanEnabled === settings.autoScanEnabled &&
+    sameStringSet(draft.enabledSources, settings.enabledSources) &&
+    sameStringArray(
+      parseSearchQueriesText(draft.searchQueriesText),
+      settings.searchQueries,
+    ) &&
+    draft.maxQueries === settings.maxQueries &&
+    draft.maxPagesPerQuery === settings.maxPagesPerQuery &&
+    draft.maxTweetsPerQuery === settings.maxTweetsPerQuery &&
+    draft.maxTweetAgeMinutes === settings.maxTweetAgeMinutes &&
+    draft.overlapMinutes === settings.overlapMinutes
+  );
+}
+
+function parseSearchQueriesText(value: string) {
+  return value
+    .split('\n')
+    .map((query) => query.trim())
+    .filter(Boolean);
+}
+
+function sameStringArray(left: readonly string[], right: readonly string[]) {
+  return (
+    left.length === right.length &&
+    left.every((value, index) => value === right[index])
+  );
+}
+
+function sameStringSet(left: readonly string[], right: readonly string[]) {
+  return (
+    left.length === right.length && left.every((value) => right.includes(value))
+  );
+}
+
+function feedSourceKindLabel(kind: FeedSource['kind']) {
+  return kind === 'social' ? 'Social scan' : 'Marketplace RSS';
 }
 
 function ListingsTable({

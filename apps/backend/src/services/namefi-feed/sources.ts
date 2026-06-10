@@ -6,7 +6,78 @@ export const NAMEFI_MARKETPLACE_FEED_SOURCE_ID = 'namefi_marketplace';
 export const NAMEPROS_FEED_SOURCE_ID = 'namepros';
 export const DNFORUM_FEED_SOURCE_ID = 'dnforum';
 
+export const NAMEFI_FEED_AUTO_SCAN_SOURCES = [
+  {
+    id: X_FEED_SOURCE_ID,
+    label: 'X',
+    kind: 'social',
+  },
+  {
+    id: NAMEPROS_FEED_SOURCE_ID,
+    label: 'NamePros',
+    kind: 'external',
+  },
+  {
+    id: DNFORUM_FEED_SOURCE_ID,
+    label: 'DNForum',
+    kind: 'external',
+  },
+] as const;
+
+export type NamefiFeedAutoScanSource =
+  (typeof NAMEFI_FEED_AUTO_SCAN_SOURCES)[number]['id'];
+
+export const DEFAULT_NAMEFI_FEED_ENABLED_SOURCES =
+  NAMEFI_FEED_AUTO_SCAN_SOURCES.map((source) => source.id);
+
 const SOURCE_ID_SPLIT_PATTERN = /[_\s-]+/;
+const AUTO_SCAN_SOURCE_IDS = new Set<string>(
+  NAMEFI_FEED_AUTO_SCAN_SOURCES.map((source) => source.id),
+);
+
+export function isNamefiFeedAutoScanSource(
+  value: string,
+): value is NamefiFeedAutoScanSource {
+  return AUTO_SCAN_SOURCE_IDS.has(value);
+}
+
+export function normalizeNamefiFeedEnabledSources(
+  sources: readonly unknown[],
+): NamefiFeedAutoScanSource[] {
+  const seen = new Set<NamefiFeedAutoScanSource>();
+
+  for (const source of sources) {
+    if (typeof source !== 'string' || !isNamefiFeedAutoScanSource(source)) {
+      continue;
+    }
+    seen.add(source);
+  }
+
+  return Array.from(seen);
+}
+
+export function readNamefiFeedEnabledSourcesFromMetadata(
+  metadata: Record<string, unknown> | null | undefined,
+): NamefiFeedAutoScanSource[] {
+  const enabledSources = metadata?.enabledSources;
+
+  if (!Array.isArray(enabledSources)) {
+    return [...DEFAULT_NAMEFI_FEED_ENABLED_SOURCES];
+  }
+
+  return normalizeNamefiFeedEnabledSources(enabledSources);
+}
+
+export function buildNamefiFeedAdminSources(
+  enabledSources: readonly NamefiFeedAutoScanSource[],
+) {
+  const enabledSourceSet = new Set(enabledSources);
+
+  return NAMEFI_FEED_AUTO_SCAN_SOURCES.map((source) => ({
+    ...source,
+    enabled: enabledSourceSet.has(source.id),
+  }));
+}
 
 export function resolveNamefiFeedSource(input: {
   externalSource: string;
