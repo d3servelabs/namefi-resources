@@ -23,6 +23,7 @@ import { useAuth } from './use-auth';
 import { dropLast, isNil, isEmpty } from 'ramda';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
+import { dispatchSearchIntent } from '@/lib/search-intent-event';
 
 declare global {
   interface Window {
@@ -66,6 +67,11 @@ export const useSearch = (
   const normalizedQuery = sanitized.toLowerCase();
   const suggestionEnabled =
     normalizedQuery.length > 0 && searchMode === SearchMode.REGISTER;
+  useEffect(() => {
+    if (sanitized.length === 0) return;
+    dispatchSearchIntent();
+  }, [sanitized.length]);
+
   const useClientRankedSuggestions =
     options.suggestionSource === 'client-ranked-tlds' && !parentDomain;
   const clientSuggestionKey = `${normalizedQuery}:${parentDomain ?? ''}`;
@@ -195,8 +201,11 @@ export const useSearch = (
     Map<NamefiNormalizedDomain, DomainAvailabilityInfo>
   >(new Map());
 
+  const shouldLoadPricingTable = domains.length > 0;
   const tldPricingQuery = useQuery(
-    trpc.registry.getTldPricingTable.queryOptions(),
+    trpc.registry.getTldPricingTable.queryOptions(undefined, {
+      enabled: shouldLoadPricingTable,
+    }),
   );
   const { data: preliminaryDomainAvailability } = useQuery({
     queryKey: ['preliminaryDomainAvailability', domains],
@@ -206,7 +215,7 @@ export const useSearch = (
         tldPricingQuery.data?.tldPricing ?? [],
         tldPricingQuery.data?.pbnDomains ?? [],
       ),
-    enabled: domains.length > 0 && !tldPricingQuery.isLoading,
+    enabled: domains.length > 0 && Boolean(tldPricingQuery.data),
   });
 
   const domainInfo = useMemo(() => {

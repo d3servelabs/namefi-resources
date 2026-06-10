@@ -1,8 +1,9 @@
 'use client';
 
+import { SEARCH_INTENT_EVENT } from '@/lib/search-intent-event';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { type FC, useEffect, useMemo } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 
 declare global {
   var namefi_tlds: string[];
@@ -25,6 +26,11 @@ const FALLBACK_UNOFFICIAL_TLDS: string[] = [
 ]; //TODO: replace with request to backend
 const PERSISTENCE_KEY = 'unofficial-tlds-config';
 const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
+const SEARCH_INPUT_NAMES = new Set([
+  'floating-search-input',
+  'search-input',
+  'search-textarea',
+]);
 
 interface PersistedData {
   unofficialTlds: string[];
@@ -99,17 +105,48 @@ function persistUnofficialTlds(unofficialTlds: string[]): void {
 
 export const UnofficialTldsInjector: FC = () => {
   const trpc = useTRPC();
-
-  const query = useQuery(
-    trpc.config.unofficialTlds.queryOptions(undefined, {
-      staleTime: PERSISTENCE_EXPIRY,
-      retry: 2,
-    }),
-  );
-
+  const [shouldRefreshRemoteConfig, setShouldRefreshRemoteConfig] =
+    useState(false);
   const persistedUnofficialTlds = useMemo(
     () => getPersistedUnofficialTlds(),
     [],
+  );
+  const hasPersistedUnofficialTlds = persistedUnofficialTlds !== null;
+
+  useEffect(() => {
+    if (hasPersistedUnofficialTlds || typeof window === 'undefined') {
+      return;
+    }
+
+    const refresh = () => {
+      setShouldRefreshRemoteConfig(true);
+    };
+    const refreshOnSearchFocus = (event: FocusEvent) => {
+      const target = event.target;
+      if (
+        (target instanceof HTMLInputElement ||
+          target instanceof HTMLTextAreaElement) &&
+        SEARCH_INPUT_NAMES.has(target.name)
+      ) {
+        refresh();
+      }
+    };
+
+    window.addEventListener(SEARCH_INTENT_EVENT, refresh, { once: true });
+    window.addEventListener('focusin', refreshOnSearchFocus);
+
+    return () => {
+      window.removeEventListener(SEARCH_INTENT_EVENT, refresh);
+      window.removeEventListener('focusin', refreshOnSearchFocus);
+    };
+  }, [hasPersistedUnofficialTlds]);
+
+  const query = useQuery(
+    trpc.config.unofficialTlds.queryOptions(undefined, {
+      enabled: shouldRefreshRemoteConfig && !hasPersistedUnofficialTlds,
+      staleTime: PERSISTENCE_EXPIRY,
+      retry: 2,
+    }),
   );
 
   const unofficialTlds = useMemo<string[]>(
