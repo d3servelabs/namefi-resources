@@ -1,11 +1,13 @@
 import {
   createEppError,
   EppProtocolError,
+  EppStatusProhibitsError,
   EppTransportError,
   type EppResultCode,
 } from '@namefi-astra/epp-client';
 import { describe, expect, it } from 'vitest';
 import { RegistrarErrorCodes } from '../codes';
+import { RegistrarStatusProhibitsError } from '../known';
 import { createRegistrarErrorFromEpp } from './from-epp';
 
 const ctx = {
@@ -98,5 +100,36 @@ describe('createRegistrarErrorFromEpp - non-result errors', () => {
     const result = createRegistrarErrorFromEpp({ ...ctx, error: original });
     expect((result as { cause?: unknown }).cause).toBe(original);
     expect(result.originalError).toBe(original);
+  });
+});
+
+describe('createRegistrarErrorFromEpp - data assignment', () => {
+  it('threads context, native data, and type-specific fields', () => {
+    const results = [{ resultCode: 2304 }];
+    const eppError = new EppStatusProhibitsError(
+      'example.com',
+      'update',
+      ['clientUpdateProhibited'],
+      { resultCode: 2304 as EppResultCode, results: results as never },
+    );
+
+    const result = createRegistrarErrorFromEpp({
+      error: eppError,
+      domainName: 'example.com',
+      operation: 'lockDomain',
+      registrarKey: 'centralnic_ote_01',
+    });
+
+    expect(result).toBeInstanceOf(RegistrarStatusProhibitsError);
+    const e = result as RegistrarStatusProhibitsError;
+    expect(e.code).toBe(RegistrarErrorCodes.STATUS_PROHIBITS);
+    expect(e.registrarKey).toBe('centralnic_ote_01');
+    expect(e.domainName).toBe('example.com');
+    expect(e.operation).toBe('lockDomain');
+    expect(e.nativeCode).toBe(2304);
+    expect(e.nativeResponse).toBe(results);
+    expect(e.prohibitingStatuses).toEqual(['clientUpdateProhibited']);
+    expect(e.originalError).toBe(eppError);
+    expect((e as { cause?: unknown }).cause).toBe(eppError);
   });
 });

@@ -1,6 +1,7 @@
 import { Route53DomainsServiceException } from '@aws-sdk/client-route-53-domains';
 import { describe, expect, it } from 'vitest';
 import { RegistrarErrorCodes } from '../codes';
+import { RegistrarDuplicateRequestError } from '../known';
 import { createRegistrarErrorFromR53 } from './from-r53';
 
 function makeAwsException(
@@ -151,5 +152,28 @@ describe('createRegistrarErrorFromR53', () => {
     });
     expect((result as { cause?: unknown }).cause).toBe(original);
     expect(result.originalError).toBe(original);
+  });
+
+  it('threads context, native data, and type-specific fields', () => {
+    const original = makeAwsException('DuplicateRequest', 'in progress', {
+      requestId: 'req-789',
+    });
+    const result = createRegistrarErrorFromR53({
+      error: original,
+      domainName: 'example.com',
+      operation: 'transferDomain',
+    });
+
+    expect(result).toBeInstanceOf(RegistrarDuplicateRequestError);
+    const e = result as RegistrarDuplicateRequestError;
+    expect(e.code).toBe(RegistrarErrorCodes.DUPLICATE_REQUEST);
+    expect(e.registrarKey).toBe('route53');
+    expect(e.domainName).toBe('example.com');
+    expect(e.operation).toBe('transferDomain');
+    expect(e.nativeCode).toBe('DuplicateRequest');
+    expect(e.nativeResponse).toBe(original);
+    expect(e.existingRequestId).toBe('req-789');
+    expect(e.originalError).toBe(original);
+    expect((e as { cause?: unknown }).cause).toBe(original);
   });
 });

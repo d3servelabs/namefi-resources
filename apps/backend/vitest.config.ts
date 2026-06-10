@@ -45,8 +45,21 @@ export default defineConfig({
         find: /^#lib\/abstract-registrar\/(.*)$/,
         replacement: `${resolve(registrarsLibRoot, 'abstract-registrar')}/$1`,
       },
+      // Registrars `#lib/data` subtree (mirrors packages/registrars imports map).
       {
-        find: /^#lib\/(data\/validations|dynadot\/common-types|dynadot\/index|get-tld|idn\/idn-language-code|multi-year-pricing|rdap-whois\/rdap_client|sign-message|supports-dnssec)$/,
+        find: /^#lib\/data$/,
+        replacement: resolve(registrarsLibRoot, 'data/index.ts'),
+      },
+      {
+        find: /^#lib\/data\/types$/,
+        replacement: resolve(registrarsLibRoot, 'data/types/index.ts'),
+      },
+      {
+        find: /^#lib\/data\/(.*)$/,
+        replacement: `${registrarsLibRoot}/data/$1`,
+      },
+      {
+        find: /^#lib\/(dynadot\/common-types|dynadot\/index|get-tld|idn\/idn-language-code|multi-year-pricing|rdap-whois\/rdap_client|sign-message|supports-dnssec)$/,
         replacement: `${registrarsLibRoot}/$1`,
       },
       {

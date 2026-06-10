@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { RegistrarErrorCodes } from '../codes';
+import { RegistrarDuplicateRequestError } from '../known';
 import {
   createRegistrarErrorFromDynadot,
   isDynadotResponseFailed,
@@ -121,5 +122,28 @@ describe('createRegistrarErrorFromDynadot - thrown errors', () => {
     const result = createRegistrarErrorFromDynadot({ ...ctx, response });
     expect((result as { cause?: unknown }).cause).toBe(response);
     expect(result.originalError).toBe(response);
+  });
+});
+
+describe('createRegistrarErrorFromDynadot - data assignment', () => {
+  it('threads context and native response data', () => {
+    const response = failedResponse('Currently processing another request');
+    const result = createRegistrarErrorFromDynadot({
+      response,
+      domainName: 'example.com',
+      operation: 'registerDomain',
+      registrarKey: 'dynadot_regular',
+    });
+
+    expect(result).toBeInstanceOf(RegistrarDuplicateRequestError);
+    const e = result as RegistrarDuplicateRequestError;
+    expect(e.code).toBe(RegistrarErrorCodes.DUPLICATE_REQUEST);
+    expect(e.registrarKey).toBe('dynadot_regular');
+    expect(e.domainName).toBe('example.com');
+    expect(e.operation).toBe('registerDomain');
+    expect(e.nativeCode).toBe('-1');
+    expect(e.nativeResponse).toBe(response);
+    expect(e.originalError).toBe(response);
+    expect((e as { cause?: unknown }).cause).toBe(response);
   });
 });
