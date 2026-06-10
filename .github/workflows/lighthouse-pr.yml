@@ -1,0 +1,502 @@
+name: Lighthouse PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to run Lighthouse for"
+        required: true
+        type: number
+  pull_request:
+    types:
+      - labeled
+      - synchronize
+      - reopened
+    branches-ignore:
+      - prod
+      - gtmq_spec_*
+      - "*_nopreview_*"
+
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && github.event.inputs.pr_number || github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  CI: true
+
+jobs:
+  lighthouse:
+    name: Lighthouse
+    if: |-
+      github.event_name == 'workflow_dispatch' ||
+      (
+        github.event_name == 'pull_request' &&
+        github.event.pull_request.head.repo.full_name == github.repository &&
+        (
+          (
+            github.event.action == 'labeled' &&
+            github.event.label.name == 'lighthouse'
+          ) ||
+          (
+            github.event.action != 'labeled' &&
+            contains(github.event.pull_request.labels.*.name, 'lighthouse')
+          )
+        )
+      )
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    timeout-minutes: 60
+
+    steps:
+      - name: Resolve PR context
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.pr_number || github.event.pull_request.number }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          pr_data="$(
+            gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" \
+              --jq '{base_ref: .base.ref, head_sha: .head.sha, head_ref: .head.ref, head_repo_full_name: .head.repo.full_name}'
+          )"
+          base_ref="$(jq -r '.base_ref' <<<"$pr_data")"
+          head_sha="$(jq -r '.head_sha' <<<"$pr_data")"
+          head_ref="$(jq -r '.head_ref' <<<"$pr_data")"
+          head_repo_full_name="$(jq -r '.head_repo_full_name' <<<"$pr_data")"
+
+          {
+            echo "pr_number=$PR_NUMBER"
+            echo "base_ref=$base_ref"
+            echo "checkout_ref=refs/pull/$PR_NUMBER/merge"
+            echo "head_sha=$head_sha"
+            echo "head_ref=$head_ref"
+          } >> "$GITHUB_OUTPUT"
+
+          if [[ "$head_repo_full_name" == "$REPOSITORY" ]]; then
+            echo "is_same_repo=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Stop for fork PR
+        if: steps.pr.outputs.is_same_repo != 'true'
+        shell: bash
+        run: |
+          echo "Lighthouse runs are skipped for fork PRs."
+          exit 1
+
+      - name: Publish initial PR comment
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const marker = '<!-- lighthouse-status:v1 -->';
+            const prNumber = Number('${{ steps.pr.outputs.pr_number }}');
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const headSha = '${{ steps.pr.outputs.head_sha }}';
+            const shortSha = headSha.slice(0, 7) || 'unknown';
+            const commitUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/commit/${headSha}`;
+            const updatedAt = new Date().toISOString();
+            const body = [
+              marker,
+              '### Lighthouse',
+              '',
+              '- Target: Resolving frontend preview',
+              `- Commit: [${shortSha}](${commitUrl})`,
+              `- Run: [Workflow run](${runUrl})`,
+              `- Updated: \`${updatedAt}\``,
+              '',
+              '| Check | Status | Performance | Accessibility | Best Practices | SEO | Agent Browsability |',
+              '|---|---|---:|---:|---:|---:|---:|',
+              '| Lighthouse | 🟡 Pending | ⚪ n/a | ⚪ n/a | ⚪ n/a | ⚪ n/a | ⚪ n/a |',
+              '',
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.pr.outputs.checkout_ref }}
+          persist-credentials: false
+
+      - name: Setup Bun
+        id: setup_bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Build PR progress comment
+        env:
+          LIGHTHOUSE_OUTCOME: running
+          LIGHTHOUSE_PR_APPEND_STEP_SUMMARY: "false"
+          LIGHTHOUSE_PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+        run: bun run scripts/lighthouse-pr-comment.ts
+
+      - name: Publish PR progress comment
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const fs = require('node:fs');
+            const marker = '<!-- lighthouse-status:v1 -->';
+            const prNumber = Number('${{ steps.pr.outputs.pr_number }}');
+            const body = fs.readFileSync('test-results/lighthouse-pr-comment.md', 'utf8');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+      - name: Resolve frontend preview URL
+        id: preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.pr.outputs.pr_number }}
+          BASE_REF: ${{ steps.pr.outputs.base_ref }}
+          HEAD_REF: ${{ steps.pr.outputs.head_ref }}
+          HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
+          VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
+          FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$VERCEL_TOKEN" || -z "$VERCEL_TEAM_ID" || -z "$FRONTEND_PROJECT_ID" ]]; then
+            echo "Missing Vercel token, team id, or frontend project id." >&2
+            exit 1
+          fi
+
+          encoded_branch="$(jq -rn --arg value "$HEAD_REF" '$value|@uri')"
+
+          normalize_preview_url() {
+            local url="$1"
+            if [[ -n "$url" && "$url" != http://* && "$url" != https://* ]]; then
+              url="https://$url"
+            fi
+            echo "$url"
+          }
+
+          inspect_preview() {
+            local response
+            if ! response="$(
+              curl --silent --show-error --fail \
+                --header "Authorization: Bearer $VERCEL_TOKEN" \
+                "https://api.vercel.com/v6/deployments?projectId=$FRONTEND_PROJECT_ID&teamId=$VERCEL_TEAM_ID&branch=$encoded_branch&state=QUEUED,INITIALIZING,BUILDING,READY,ERROR,CANCELED&limit=50"
+            )"; then
+              echo "Vercel deployment lookup failed; retrying." >&2
+              printf 'RETRY\t\n'
+              return 0
+            fi
+
+            local deployment
+            deployment="$(
+              jq -r --arg head_sha "$HEAD_SHA" '
+                def mode_rank:
+                  if (.meta.previewMode // "") == "backend-preview" then 0
+                  elif (.meta.previewMode // "") == "standard" then 1
+                  else 2
+                  end;
+
+                .deployments
+                | map(select((.meta.githubCommitSha // "") == $head_sha))
+                | sort_by([mode_rank, -(.createdAt // 0)])
+                | .[0] // null
+                | if . == null then
+                    "MISSING\t"
+                  else
+                    "\(.state // "UNKNOWN")\t\(.url // "")"
+                  end
+              ' <<<"$response"
+            )"
+
+            echo "$deployment"
+          }
+
+          preview_url=""
+          preview_state=""
+          read -r preview_state preview_url < <(inspect_preview)
+          preview_url="$(normalize_preview_url "$preview_url")"
+          requested_preview=false
+
+          if [[ "$preview_state" != "READY" || -z "$preview_url" ]]; then
+            requested_preview=true
+            label_data="$(
+              gh api "repos/$REPOSITORY/issues/$PR_NUMBER" \
+                --jq '{has_preview: ([.labels[].name] | index("preview") != null), has_force_preview: ([.labels[].name] | index("force-preview") != null)}'
+            )"
+            had_preview_label="$(jq -r '.has_preview' <<<"$label_data")"
+            had_force_preview_label="$(jq -r '.has_force_preview' <<<"$label_data")"
+            label_dispatch_expected=true
+            if [[ "$had_preview_label" == "true" && "$had_force_preview_label" == "true" ]]; then
+              label_dispatch_expected=false
+            fi
+
+            gh api \
+              --method POST \
+              "repos/$REPOSITORY/issues/$PR_NUMBER/labels" \
+              -f labels[]='preview' \
+              -f labels[]='force-preview' >/dev/null
+
+            fallback_dispatched=false
+
+            for attempt in {1..80}; do
+              read -r preview_state preview_url < <(inspect_preview)
+              preview_url="$(normalize_preview_url "$preview_url")"
+
+              if [[ "$preview_state" == "READY" && -n "$preview_url" ]]; then
+                break
+              fi
+
+              if [[ "$preview_state" == "ERROR" || "$preview_state" == "CANCELED" ]]; then
+                echo "Frontend preview reached terminal state $preview_state for PR #$PR_NUMBER at $HEAD_SHA." >&2
+                exit 1
+              fi
+
+              if [[ "$attempt" -eq 20 && "$fallback_dispatched" == "false" && "$label_dispatch_expected" != "true" ]]; then
+                gh workflow run preview-pr.yml \
+                  --repo "$REPOSITORY" \
+                  --ref "$BASE_REF" \
+                  --field pr_number="$PR_NUMBER" \
+                  --field force_preview=true
+                fallback_dispatched=true
+              fi
+
+              sleep 30
+            done
+          fi
+
+          if [[ -z "$preview_url" ]]; then
+            echo "Timed out waiting for a ready frontend preview for PR #$PR_NUMBER." >&2
+            exit 1
+          fi
+
+          {
+            echo "url=$preview_url"
+            echo "requested_preview=$requested_preview"
+          } >> "$GITHUB_OUTPUT"
+          echo "LIGHTHOUSE_BASE_URL=$preview_url" >> "$GITHUB_ENV"
+
+      - name: Build PR Lighthouse running comment
+        env:
+          LIGHTHOUSE_OUTCOME: running
+          LIGHTHOUSE_BASE_URL: ${{ steps.preview.outputs.url }}
+          LIGHTHOUSE_PR_APPEND_STEP_SUMMARY: "false"
+          LIGHTHOUSE_PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+        run: bun run scripts/lighthouse-pr-comment.ts
+
+      - name: Publish PR Lighthouse running comment
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const fs = require('node:fs');
+            const marker = '<!-- lighthouse-status:v1 -->';
+            const prNumber = Number('${{ steps.pr.outputs.pr_number }}');
+            const body = fs.readFileSync('test-results/lighthouse-pr-comment.md', 'utf8');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package.json', 'bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Chromium
+        id: install-chromium
+        continue-on-error: true
+        run: bunx playwright install --with-deps chromium
+
+      - name: Configure browser executable
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          playwright_chrome="$(bun -e 'console.log(require("playwright").chromium.executablePath())')"
+          if [[ -x "$playwright_chrome" ]]; then
+            echo "CHROME_PATH=$playwright_chrome" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          system_chrome="$(
+            command -v google-chrome-stable ||
+            command -v google-chrome ||
+            command -v chromium ||
+            command -v chromium-browser ||
+            true
+          )"
+
+          if [[ -n "$system_chrome" ]]; then
+            echo "CHROME_PATH=$system_chrome" >> "$GITHUB_ENV"
+          else
+            echo "No Playwright-managed Chromium or system Chrome executable found."
+            exit 1
+          fi
+
+      - name: Run Lighthouse
+        id: lighthouse
+        continue-on-error: true
+        run: bun run lighthouse:namefi
+
+      - name: Build PR results comment
+        if: always() && steps.pr.outputs.pr_number != '' && steps.setup_bun.outcome == 'success'
+        env:
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
+          LIGHTHOUSE_BASE_URL: ${{ steps.preview.outputs.url }}
+          LIGHTHOUSE_PR_HEAD_SHA: ${{ steps.pr.outputs.head_sha }}
+        run: bun run scripts/lighthouse-pr-comment.ts
+
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-pr-${{ steps.pr.outputs.pr_number }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .lighthouseci/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Publish PR results comment
+        if: always() && hashFiles('test-results/lighthouse-pr-comment.md') != ''
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const fs = require('node:fs');
+            const marker = '<!-- lighthouse-status:v1 -->';
+            const prNumber = Number('${{ steps.pr.outputs.pr_number }}');
+            const body = fs.readFileSync('test-results/lighthouse-pr-comment.md', 'utf8');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+
+            const existingComment = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+      - name: Fail workflow if Lighthouse failed
+        if: steps.lighthouse.outcome != 'success'
+        shell: bash
+        run: |
+          echo "Lighthouse outcome: ${{ steps.lighthouse.outcome }}"
+          exit 1

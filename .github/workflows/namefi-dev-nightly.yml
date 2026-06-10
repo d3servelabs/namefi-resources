@@ -1,0 +1,162 @@
+name: Namefi.dev Nightly
+
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: "Domain override. Defaults to a unique namefi-e2e-*.pw domain."
+        required: false
+        type: string
+  schedule:
+    # Run nightly off the top of the hour to reduce scheduled-workflow contention.
+    - cron: "37 8 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  CI: true
+  LIGHTHOUSE_BASE_URL: https://namefi.dev
+  NAMEFI_DEV_BASE_URL: https://namefi.dev
+  NAMEFI_E2E_MAX_USD_CENTS: ${{ vars.NAMEFI_E2E_MAX_USD_CENTS || '5000' }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
+
+jobs:
+  namefi-dev-nightly:
+    name: Checkout E2E and Lighthouse
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Configure domain under test
+        id: domain
+        shell: bash
+        run: |
+          set -euo pipefail
+          domain_input="${{ github.event.inputs.domain || '' }}"
+          if [[ -n "$domain_input" ]]; then
+            domain="$domain_input"
+          else
+            run_id="${GITHUB_RUN_ID:-$(date -u +%Y%m%d%H%M%S)}"
+            run_attempt="${GITHUB_RUN_ATTEMPT:-1}"
+            domain="namefi-e2e-${run_id}-${run_attempt}.pw"
+          fi
+
+          echo "domain=$domain" >> "$GITHUB_OUTPUT"
+          echo "NAMEFI_E2E_DOMAIN=$domain" >> "$GITHUB_ENV"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package.json', 'bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Chromium
+        id: install-chromium
+        continue-on-error: true
+        run: bunx playwright install --with-deps chromium
+
+      - name: Configure browser executables
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          playwright_chrome="$(bun -e 'console.log(require("playwright").chromium.executablePath())')"
+          if [[ -x "$playwright_chrome" ]]; then
+            echo "CHROME_PATH=$playwright_chrome" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          system_chrome="$(
+            command -v google-chrome-stable ||
+            command -v google-chrome ||
+            command -v chromium ||
+            command -v chromium-browser ||
+            true
+          )"
+
+          if [[ -n "$system_chrome" ]]; then
+            echo "CHROME_PATH=$system_chrome" >> "$GITHUB_ENV"
+            echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$system_chrome" >> "$GITHUB_ENV"
+          else
+            echo "No Playwright-managed Chromium or system Chrome executable found."
+            exit 1
+          fi
+
+      - name: Run Playwright checkout smoke
+        id: e2e
+        continue-on-error: true
+        run: bun run test:e2e:namefi-dev
+
+      - name: Run Lighthouse
+        id: lighthouse
+        continue-on-error: true
+        run: bun run lighthouse:namefi
+
+      - name: Build Slack payload
+        if: always()
+        env:
+          E2E_OUTCOME: ${{ steps.e2e.outcome }}
+          LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
+          NAMEFI_E2E_DOMAIN: ${{ steps.domain.outputs.domain }}
+        run: bun run scripts/namefi-nightly-summary.ts
+
+      - name: Upload Playwright results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: namefi-dev-playwright-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/namefi-dev/
+            test-results/namefi-dev/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload Lighthouse results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: namefi-dev-lighthouse-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .lighthouseci/
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Publish results to Slack
+        if: always() && env.SLACK_WEBHOOK_URL != ''
+        uses: slackapi/slack-github-action@v3.0.3
+        with:
+          webhook: ${{ env.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload-file-path: test-results/namefi-dev-slack-payload.json
+          errors: true
+          retries: RAPID
+
+      - name: Fail workflow if checks failed
+        if: steps.e2e.outcome != 'success' || steps.lighthouse.outcome != 'success'
+        shell: bash
+        run: |
+          echo "Playwright outcome: ${{ steps.e2e.outcome }}"
+          echo "Lighthouse outcome: ${{ steps.lighthouse.outcome }}"
+          exit 1

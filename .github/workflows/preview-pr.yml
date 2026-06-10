@@ -650,6 +650,7 @@ jobs:
           VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
           FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
           HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
+          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
           BACKEND_PREVIEW_URL: ${{ steps.backend-preview.outputs.backend_preview_url }}
         shell: bash
         run: |
@@ -669,21 +670,23 @@ jobs:
           )"
 
           HAS_MATCHING_FRONTEND_BACKEND_PREVIEW="$(
-            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" '
+            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" --arg head_sha "$HEAD_SHA" '
               .deployments | any(
                 (.meta.previewMode // "") == "backend-preview" and
-                (.meta.backendPreviewUrl // "") == $backend_preview_url
+                (.meta.backendPreviewUrl // "") == $backend_preview_url and
+                (.meta.githubCommitSha // "") == $head_sha
               )
             ' <<<"$RESPONSE"
           )"
 
           MATCHING_FRONTEND_BACKEND_PREVIEW_URL="$(
-            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" '
+            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" --arg head_sha "$HEAD_SHA" '
               .deployments
               | map(
                   select(
                     (.meta.previewMode // "") == "backend-preview" and
-                    (.meta.backendPreviewUrl // "") == $backend_preview_url
+                    (.meta.backendPreviewUrl // "") == $backend_preview_url and
+                    (.meta.githubCommitSha // "") == $head_sha
                   )
                 )
               | .[0].url // ""

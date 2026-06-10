@@ -72,10 +72,11 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('apps/frontend/package.json') }}
+          # @storybook/test-runner 0.24.4 vendors Playwright 1.57.0.
+          key: ${{ runner.os }}-playwright-1.57.0-${{ hashFiles('apps/frontend/package.json') }}
 
       - name: Install Playwright (chromium)
-        run: bunx playwright install --with-deps chromium
+        run: bunx --package playwright@1.57.0 playwright install --with-deps chromium
         working-directory: apps/frontend
 
       - name: Build Storybook
