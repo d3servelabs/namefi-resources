@@ -127,6 +127,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
     },
   });
   const { order, payments = [], items } = orderDetails ?? {};
+  // Actual in-flight NFT ops per item domain — used to gate the optimistic
+  // "Minting…" / "Updating expiration…" rows so legacy items (whose tx simply
+  // hasn't been backfilled) don't show a perpetual pending state.
+  const pendingNftStatesByDomain = orderDetails?.pendingNftStatesByDomain;
   const recipientWalletAddress = order?.nftWalletAddress ?? null;
   const isRecipientLinked = useMemo(() => {
     if (!recipientWalletAddress) {
@@ -525,6 +529,12 @@ export function OrderDetailsContent({ id }: { id: string }) {
               const tokenId = getTokenIdFromDomainName(
                 item.normalizedDomainName,
               );
+              const itemPendingNftStates =
+                pendingNftStatesByDomain?.[item.normalizedDomainName] ?? [];
+              const hasInFlightMint = itemPendingNftStates.includes('MINTING');
+              const hasInFlightExtend = itemPendingNftStates.includes(
+                'CHANGING_EXPIRATION',
+              );
               const requiredAction = item.metadata?.requiredAction;
               const failureDetailsText =
                 item.status === 'FAILED'
@@ -583,11 +593,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       />
                     ) : tokenId &&
                       (item.type === 'REGISTER' || item.type === 'IMPORT') &&
-                      (item.status === 'SUCCEEDED' ||
-                        item.status === 'PROCESSING') ? (
-                      // Deferred mint: the registrar step is done but the on-chain
-                      // mint hasn't been recorded yet. Show an optimistic
-                      // "Minting…" state until the real mint tx lands.
+                      hasInFlightMint ? (
+                      // Deferred mint actually in flight: registrar step done, the
+                      // on-chain mint hasn't landed yet. (Legacy items without an
+                      // in-flight tx show nothing until their tx is backfilled.)
                       <div className="flex items-center justify-between gap-3 py-1">
                         <span className="text-sm text-muted-foreground">
                           NFT
@@ -606,10 +615,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       />
                     ) : item.type === 'RENEW' &&
                       tokenId &&
-                      (item.status === 'SUCCEEDED' ||
-                        item.status === 'PROCESSING') ? (
-                      // Deferred expiration update: registrar renewal succeeded but
-                      // the on-chain expiration tx hasn't been recorded yet.
+                      hasInFlightExtend ? (
+                      // Deferred expiration update actually in flight. (Legacy
+                      // renew items without an in-flight tx show nothing until
+                      // their tx is backfilled.)
                       <div className="flex items-center justify-between gap-3 py-1">
                         <span className="text-sm text-muted-foreground">
                           NFT

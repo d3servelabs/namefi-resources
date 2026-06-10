@@ -18,6 +18,7 @@ import type {
   ReflectCartChangesSummary,
 } from '../orders-shared-types';
 import { orderStatusSchema } from '../shared-schemas';
+import type { NftPendingChangeType } from './users-contract';
 import { createContract } from './create-contract';
 
 /**
@@ -324,7 +325,15 @@ const createdOrderSchema = z.custom<CreatedOrder>(() => true);
 const createdNfscOrderSchema = z.custom<CreatedNfscOrder>(() => true);
 
 // TODO(contract): replace with structural schema for OrderWithPayments
-const orderDetailsSchema = z.custom<OrderWithPayments>(() => true);
+const orderDetailsSchema = z.custom<
+  OrderWithPayments & {
+    // Actual in-flight NFT operations per item domain (from the optimistic
+    // overlay). Empty/absent when no real pending tx — used by the UI to avoid
+    // showing "Minting…" / "Updating expiration…" for legacy items that simply
+    // haven't had their tx backfilled yet.
+    pendingNftStatesByDomain?: Record<string, NftPendingChangeType[]>;
+  }
+>(() => true);
 
 // TODO(contract): replace with structural schema for getOrderItemsForUser rows
 const orderItemsForUserSchema = z.custom<OrderItemsForUser>(() => true);

@@ -10,6 +10,8 @@ import {
   isMppPayment,
   isNfscPayment,
   isX402Payment,
+  namefiNftCte,
+  namefiNftView,
   orderItemsTable,
   ordersTable,
   paymentsTable,
@@ -59,6 +61,7 @@ import { resolve } from '../../utils/resolve';
 import { protectedProcedure, withAudit } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { ordersContract } from '@namefi-astra/common/contract/orders-contract';
+import type { NftPendingChangeType } from '@namefi-astra/common/contract/users-contract';
 import type { C15tMeasurementConsentState } from '@namefi-astra/common/google-analytics';
 import { validateDomainForInstantPurchaseOrThrow } from '../../lib/instant-buy';
 import { itemTypeSchema } from '@namefi-astra/db/types';
@@ -293,7 +296,34 @@ export const ordersRouter = createContractTRPCRouter<typeof ordersContract>({
           message: 'You are not authorized to access this order',
         });
       }
-      return data;
+
+      // Actual in-flight NFT operations per item domain (from the optimistic
+      // overlay). The UI uses this to show "Minting…" / "Updating expiration…"
+      // ONLY when there is a real pending tx — not merely because the tx hasn't
+      // been recorded on the item yet (e.g. legacy items awaiting backfill).
+      const itemDomains = Array.from(
+        new Set(data.items.map((item) => item.normalizedDomainName)),
+      );
+      const pendingNftStatesByDomain: Record<string, NftPendingChangeType[]> =
+        {};
+      if (itemDomains.length > 0) {
+        const overlayRows = await db
+          .with(namefiNftCte)
+          .select({
+            normalizedDomainName: namefiNftView.normalizedDomainName,
+            pendingStates: namefiNftView.pendingStates,
+          })
+          .from(namefiNftView)
+          .where(inArray(namefiNftView.normalizedDomainName, itemDomains));
+        for (const row of overlayRows) {
+          if (row.pendingStates && row.pendingStates.length > 0) {
+            pendingNftStatesByDomain[row.normalizedDomainName] =
+              row.pendingStates;
+          }
+        }
+      }
+
+      return { ...data, pendingNftStatesByDomain };
     }),
 
   updateImportAuthCode: withAudit(
