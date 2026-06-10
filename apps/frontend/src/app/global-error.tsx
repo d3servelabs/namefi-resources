@@ -2,6 +2,7 @@
 
 import { reportAppRouterError } from '@/lib/datadog-react-error';
 import { useEffect } from 'react';
+import { ErrorHelpLinks } from '@/components/error-help-links';
 
 export default function GlobalError({
   error,
@@ -45,6 +46,7 @@ export default function GlobalError({
               Go to Homepage
             </a>
           </div>
+          <ErrorHelpLinks />
         </main>
       </body>
     </html>

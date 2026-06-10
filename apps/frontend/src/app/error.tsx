@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { PageShell } from '@/components/page-shell';
 import { TRPCClientError } from '@trpc/client';
 import Link from 'next/link';
+import { ErrorHelpLinks } from '@/components/error-help-links';
 
 function getStatusCode(error: Error): number {
   if (error instanceof TRPCClientError) {
@@ -202,6 +203,7 @@ export default function ErrorPage({
       className="flex min-h-[50svh] flex-col items-center justify-center"
     >
       {renderContent()}
+      <ErrorHelpLinks />
     </PageShell>
   );
 }

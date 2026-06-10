@@ -2,6 +2,7 @@ import { CartCard } from '@/components/cart-card';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useRouter } from 'next/navigation';
 import { PageShell } from '@/components/page-shell';
+import { ErrorHelpLinks } from '@/components/error-help-links';
 
 export const OrderNotFound = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ export const OrderNotFound = () => {
             </Button>
           }
         />
+        <ErrorHelpLinks className="mt-6 text-center" />
       </div>
     </PageShell>
   );

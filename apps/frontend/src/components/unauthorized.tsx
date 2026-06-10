@@ -11,6 +11,7 @@ import {
 import { useAuth } from '@/hooks/use-auth';
 import { ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
+import { ErrorHelpLinks } from '@/components/error-help-links';
 
 export interface UnauthorizedProps {
   title?: string;
@@ -58,8 +59,9 @@ export function Unauthorized({
             </Button>
           </div>
         </CardContent>
-        <CardFooter className="text-center text-sm text-muted-foreground">
-          If you believe this is an error, please contact support.
+        <CardFooter className="flex flex-col gap-1 text-center text-sm text-muted-foreground">
+          <span>If you believe this is an error, please contact support.</span>
+          <ErrorHelpLinks className="mt-1" />
         </CardFooter>
       </Card>
     </div>

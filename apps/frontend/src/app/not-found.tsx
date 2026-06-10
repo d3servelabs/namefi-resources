@@ -3,6 +3,7 @@
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ErrorHelpLinks } from '@/components/error-help-links';
 
 export default function NotFoundPage() {
   return (
@@ -32,6 +33,7 @@ export default function NotFoundPage() {
           Search Domains
         </Button>
       </div>
+      <ErrorHelpLinks />
     </div>
   );
 }
