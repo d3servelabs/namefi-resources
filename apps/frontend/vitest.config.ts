@@ -39,6 +39,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@/lib/privy-login': path.resolve(
+        __dirname,
+        'src/lib/mock/privy-login.ts',
+      ),
       '@': path.resolve(__dirname, 'src'),
     },
   },

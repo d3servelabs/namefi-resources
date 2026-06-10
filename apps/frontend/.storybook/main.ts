@@ -37,6 +37,9 @@ function moveStorybookStylesBeforeEntryScript(html: string) {
 }
 
 const shouldCopyStaticDirs = process.env.STORYBOOK_SKIP_STATIC_COPY !== '1';
+const mockPrivyLoginAdapter = fileURLToPath(
+  new URL('../src/lib/mock/privy-login.ts', import.meta.url),
+);
 
 const config: StorybookConfig = {
   stories: [
@@ -58,6 +61,22 @@ const config: StorybookConfig = {
     },
   },
   viteFinal: async (config) => {
+    const existingAlias = config.resolve?.alias;
+    config.resolve = {
+      ...(config.resolve ?? {}),
+      alias: Array.isArray(existingAlias)
+        ? [
+            ...existingAlias,
+            {
+              find: '@/lib/privy-login',
+              replacement: mockPrivyLoginAdapter,
+            },
+          ]
+        : {
+            ...(existingAlias ?? {}),
+            '@/lib/privy-login': mockPrivyLoginAdapter,
+          },
+    };
     config.build = {
       ...(config.build ?? {}),
       assetsDir: 'storybook-assets',

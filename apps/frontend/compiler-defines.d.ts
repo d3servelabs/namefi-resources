@@ -1,0 +1,2 @@
+declare const __NAMEFI_PREVIEW_GATE_BUNDLED__: boolean;
+declare const __NAMEFI_REACT_QUERY_DEVTOOLS_BUNDLED__: boolean;

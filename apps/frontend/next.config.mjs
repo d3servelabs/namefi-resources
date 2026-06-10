@@ -63,18 +63,18 @@ const nextConfig = {
         ),
       ),
       // Statically inlined so the preview-gate component and its imports are
-      // dead-code-eliminated from production builds. '1' = bundle the gate;
-      // '0' = strip it. See apps/frontend/src/app/layout.tsx.
-      'process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED':
-        appConfig.TYPE === 'production' ? '0' : '1',
+      // dead-code-eliminated from production builds. See
+      // apps/frontend/src/app/layout.tsx.
+      __NAMEFI_PREVIEW_GATE_BUNDLED__:
+        appConfig.TYPE === 'production' ? false : true,
       // TanStack Query Devtools are useful during focused debugging, but they
       // add a large root-layout compile edge. Keep them out of the default dev
       // graph; opt in before starting Next with NEXT_PUBLIC_REACT_QUERY_DEVTOOLS=1.
-      'process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_BUNDLED':
+      __NAMEFI_REACT_QUERY_DEVTOOLS_BUNDLED__:
         appConfig.TYPE !== 'production' &&
         process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS === '1'
-          ? '1'
-          : '0',
+          ? true
+          : false,
     },
   },
   logging: {

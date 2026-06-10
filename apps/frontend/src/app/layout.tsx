@@ -24,9 +24,9 @@ const C15T_BROWSER_BACKEND_URL = '/api/c15t';
 const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
 const LLMS_TXT_AGENT_CALLOUT = `Use llms.txt if you are an LLM agent such as Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode and any other AI agent ${LLMS_TXT_URL}`;
 
-// `NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` is statically inlined by `compiler.define`
-// in next.config.mjs (set to '0' for production builds, '1' otherwise). The
-// equality folds to a literal at build time: in prod the ternary collapses to
+// `__NAMEFI_PREVIEW_GATE_BUNDLED__` is statically inlined by `compiler.define`
+// in next.config.mjs (false for production builds, true otherwise). The
+// branch folds to a literal at build time: in prod the ternary collapses to
 // `null`, the `dynamic(() => import(...))` is unreachable, and the entire
 // preview-gate module graph (component, form, state check, cookie helpers) is
 // dead-code-eliminated from the build output.
@@ -37,10 +37,9 @@ const PreviewGate = dynamic(() =>
 // Keep the TanStack Query Devtools in the recommended root position when
 // explicitly enabled, while letting the default dev graph dead-code-eliminate
 // the @tanstack/react-query-devtools package.
-const ReactQueryDevtoolsWrapper =
-  process.env.NEXT_PUBLIC_REACT_QUERY_DEVTOOLS_BUNDLED === '1'
-    ? dynamic(() => import('@/components/react-query-devtools-lazy'))
-    : null;
+const ReactQueryDevtoolsWrapper = __NAMEFI_REACT_QUERY_DEVTOOLS_BUNDLED__
+  ? dynamic(() => import('@/components/react-query-devtools-lazy'))
+  : null;
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -97,7 +96,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
           'antialiased min-h-screen w-full overflow-x-hidden overflow-y-auto flex flex-col',
         )}
       >
-        {process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED === '1' ? (
+        {__NAMEFI_PREVIEW_GATE_BUNDLED__ ? (
           <PreviewGate>
             <RootLayoutInner>{children}</RootLayoutInner>
           </PreviewGate>

@@ -1,13 +1,11 @@
 import { useTRPC } from '@/lib/trpc';
 import {
   usePrivy,
-  useLogin as usePrivyLogin,
   useLogout as usePrivyLogout,
-  type LoginModalOptions,
   type User as PrivyUser,
 } from '@privy-io/react-auth';
 import { useQuery, type AnyUseQueryOptions } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
@@ -15,9 +13,13 @@ import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
 import { TRPCClientError } from '@trpc/client';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from './use-skip-auth';
 import { useConsentIdentify } from './use-consent-identify';
+import {
+  useAppPrivyLogin,
+  type LoginCallbacks,
+  type LoginModalOptions,
+} from '@/lib/privy-login';
 import { useMockPrivy } from '@/lib/mock/privy';
 
-type LoginCallbacks = Parameters<typeof usePrivyLogin>[0];
 type LogoutCallbacks = Parameters<typeof usePrivyLogout>[0];
 
 export function useAuth() {
@@ -245,16 +247,17 @@ export function useLogin(callbacks?: LoginCallbacks) {
     return loginCallbacks;
   }, [showEmailPrompt, callbacks, stagePreAuthAugmentations]);
 
-  const { login: privyLogin } = usePrivyLogin(combinedCallbacks);
+  const { login: privyLogin } = useAppPrivyLogin(combinedCallbacks);
 
-  const login = useMemo(() => {
-    return (options?: LoginModalOptions) => {
+  const login = useCallback(
+    (options?: LoginModalOptions) => {
       privyLogin({
         loginMethods: ['email', 'wallet'],
         ...options,
       });
-    };
-  }, [privyLogin]);
+    },
+    [privyLogin],
+  );
 
   return { login };
 }

@@ -1,13 +1,13 @@
 // In production builds (`compiler.define` substitutes
-// `process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED` to '0') the equality folds
+// `__NAMEFI_PREVIEW_GATE_BUNDLED__` to `false`) the branch folds
 // to `false`, the dynamic `import(...)` is unreachable, and the entire
 // preview-gate handler module graph is dead-code-eliminated. Only the 404
 // short-circuit remains.
 export async function POST(request: Request): Promise<Response> {
   console.log('[preview-gate/route] POST', {
-    bundled: process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED,
+    bundled: __NAMEFI_PREVIEW_GATE_BUNDLED__,
   });
-  if (process.env.NEXT_PUBLIC_PREVIEW_GATE_BUNDLED !== '1') {
+  if (!__NAMEFI_PREVIEW_GATE_BUNDLED__) {
     console.log('[preview-gate/route] not bundled -> 404');
     return new Response(null, { status: 404 });
   }

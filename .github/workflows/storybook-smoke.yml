@@ -22,10 +22,15 @@ on:
     paths:
       - "packages/ui/**"
       - "apps/frontend/src/components/**"
+      - "apps/frontend/src/hooks/**"
+      - "apps/frontend/src/lib/**"
       - "apps/frontend/src/stories/**"
       - "apps/frontend/src/pbns/**"
       - "apps/frontend/src/app/**"
       - "apps/frontend/.storybook/**"
+      - "apps/frontend/*.d.ts"
+      - "apps/frontend/next.config.*"
+      - "apps/frontend/vitest.config.*"
       - "apps/frontend/package.json"
 
 concurrency:
