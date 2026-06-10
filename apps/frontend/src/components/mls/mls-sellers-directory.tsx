@@ -77,6 +77,7 @@ const MIN_POST_OPTIONS = [1, 3, 5, 10, 20] as const;
 const DEFAULT_USERS_SORT_BY: MlsSellerDirectorySortBy = 'domains';
 const DEFAULT_USERS_SORT_ORDER: MlsSellerDirectorySortOrder = 'desc';
 const CSV_HEADERS = [
+  'source',
   'handle',
   'display_name',
   'profile_url',
@@ -810,6 +811,9 @@ function SellerIdentityCell({ seller }: { seller: MlsSellerDirectoryRow }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <div className="flex min-w-0 flex-wrap items-center gap-1.5">
+        <span className="rounded-sm bg-muted px-1.5 py-0.5 text-[0.6875rem] font-medium text-muted-foreground">
+          {seller.source.label}
+        </span>
         <Link
           href={seller.listingUrl as Route}
           className="min-w-0 truncate font-medium text-foreground transition-colors hover:text-primary hover:underline"
@@ -875,7 +879,7 @@ function SellerActionsCell({ seller }: { seller: MlsSellerDirectoryRow }) {
         rel="noreferrer noopener"
         className={buttonVariants({ variant: 'ghost', size: 'xs' })}
       >
-        X
+        {seller.source.label}
       </a>
     </div>
   );
@@ -1090,6 +1094,8 @@ function getMlsSellerDirectoryCsvValue(
   switch (header) {
     case 'handle':
       return row.handle;
+    case 'source':
+      return row.source.id;
     case 'display_name':
       return row.displayName ?? '';
     case 'profile_url':

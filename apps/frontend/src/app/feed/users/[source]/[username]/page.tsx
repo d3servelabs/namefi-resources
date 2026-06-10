@@ -8,12 +8,12 @@ export const metadata: Metadata = {
 };
 
 interface MlsFeedUserPageProps {
-  params: Promise<{ username: string }>;
+  params: Promise<{ source: string; username: string }>;
 }
 
 export default async function MlsFeedUserPage({
   params,
 }: MlsFeedUserPageProps) {
-  const { username } = await params;
-  return <MlsHandleFeed username={username} />;
+  const { source, username } = await params;
+  return <MlsHandleFeed source={source} username={username} />;
 }

@@ -54,8 +54,9 @@ export function MlsSaleCard({
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
   const sellerDisplayName = listing.seller.displayName?.trim() || null;
   const sellerLabel = sellerHandle ?? sellerDisplayName ?? '@unknown';
+  const source = resolveMlsListingSource(listing);
   const sellerDetailsPath = sellerHandle
-    ? getMlsHandlePath(sellerHandle)
+    ? getMlsHandlePath(source.id, sellerHandle)
     : null;
   const domainUrl = getDomainUrl(listing.domain);
   const logoUrl = normalizeExternalUrl(listing.logoUrl);
@@ -66,7 +67,6 @@ export function MlsSaleCard({
   );
   const postedLabel = formatPostedLabel(listing.postedAt);
   const excerpt = formatExcerpt(listing.messageText);
-  const source = resolveMlsListingSource(listing);
   const domainParts = getMlsDomainDisplayParts(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
   const sellerTier = getListingSellerTier({

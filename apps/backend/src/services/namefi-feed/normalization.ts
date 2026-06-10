@@ -8,7 +8,9 @@ import currencySymbolMap from 'currency-symbol-map';
 
 const CURRENCY_CODE_PATTERN = /^[A-Z]{3}$/;
 const EDGE_DOTS_PATTERN = /^\.+|\.+$/g;
-const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
+const HANDLE_PATTERN = /^[a-z0-9_.-]+$/i;
+const HANDLE_EDGE_SEPARATOR_PATTERN = /^[.-]|[.-]$/;
+const HANDLE_CONSECUTIVE_SEPARATOR_PATTERN = /[.-]{2}/;
 const TLD_FILTER_PATTERN =
   /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 
@@ -286,12 +288,32 @@ export function trimLeadingAt(value: string | null | undefined): string | null {
   return normalized.startsWith('@') ? normalized.slice(1) : normalized;
 }
 
+/**
+ * Normalizes a seller handle for lookup by trimming whitespace, stripping one
+ * leading `@`, lowercasing, and validating via `isValidHandleLookup`.
+ *
+ * Lookup handles may contain letters, digits, `_`, `.`, and `-`. Dot and hyphen
+ * separators cannot appear at the start or end and cannot be consecutive.
+ *
+ * @returns A normalized handle without the `@` prefix, or null when invalid.
+ */
 export function normalizeHandleLookup(value: string): string | null {
   const withoutAt = value.trim().replace(/^@/, '').toLowerCase();
-  if (!withoutAt || !HANDLE_PATTERN.test(withoutAt)) {
+  if (!isValidHandleLookup(withoutAt)) {
     return null;
   }
   return withoutAt;
+}
+
+// Underscores remain allowed at edges and consecutively for legacy handles; dot
+// and hyphen are restricted because they are route-visible separators.
+function isValidHandleLookup(value: string): boolean {
+  return (
+    Boolean(value) &&
+    HANDLE_PATTERN.test(value) &&
+    !HANDLE_EDGE_SEPARATOR_PATTERN.test(value) &&
+    !HANDLE_CONSECUTIVE_SEPARATOR_PATTERN.test(value)
+  );
 }
 
 export function normalizeTldFilter(

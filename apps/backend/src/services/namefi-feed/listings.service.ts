@@ -46,7 +46,10 @@ import {
   getActiveNamefiFeedListingWhereClauses,
   isNamefiFeedListingActive,
 } from './listing-visibility';
-import { resolveNamefiFeedSource } from './sources';
+import {
+  NAMEFI_MARKETPLACE_FEED_SOURCE_ID,
+  resolveNamefiFeedSource,
+} from './sources';
 
 type ListingRow = {
   listingId: string;
@@ -85,6 +88,7 @@ export interface PublicListingsQuery {
 }
 
 export interface HandleListingsQuery {
+  source: MlsFeedSourceFilter;
   handle: string;
   limit?: number;
   cursor?: string | null;
@@ -150,9 +154,8 @@ export async function getPublicNamefiFeedListings(
   const rows = await selectListingRows(whereClauses, pageSize + 1);
   const visibleRows = rows.slice(0, pageSize);
   const normalizedRows = normalizeListingRows(visibleRows);
-  const domainCountsByAuthorId = await getDomainCountsByAuthorId(
-    normalizedRows.map((row) => row.externalAuthorId),
-  );
+  const domainCountsByAuthorId =
+    await getDomainCountsBySellerIdentities(normalizedRows);
   const lastRow = normalizedRows.at(-1);
   const hasMore = rows.length > pageSize;
 
@@ -212,9 +215,7 @@ export async function getNamefiFeedListingsForSellerDirectory({
     cursor = { sortAt: lastRow.postedAt, id: lastRow.listingId };
   }
 
-  const domainCountsByAuthorId = await getDomainCountsByAuthorId(
-    rows.map((row) => row.externalAuthorId),
-  );
+  const domainCountsByAuthorId = await getDomainCountsBySellerIdentities(rows);
 
   return rows.map((row) =>
     toMlsListing(row, resolveOtherDomainsCount(row, domainCountsByAuthorId)),
@@ -224,6 +225,12 @@ export async function getNamefiFeedListingsForSellerDirectory({
 export async function getPublicNamefiFeedListingsByHandle(
   query: HandleListingsQuery,
 ): Promise<MlsHandleListingsPage> {
+  const source = query.source;
+  const resolvedSource = resolveNamefiFeedSource({
+    externalSource: source,
+    sourceUrl: null,
+    externalPostId: null,
+  });
   const normalizedHandleLookup = normalizeHandleLookup(query.handle);
   if (!normalizedHandleLookup) {
     throw new NamefiFeedInvalidHandleError();
@@ -236,7 +243,10 @@ export async function getPublicNamefiFeedListingsByHandle(
     throw new NamefiFeedInvalidCursorError();
   }
 
-  const sellerMatch = await findSellerMatchByHandle(normalizedHandleLookup);
+  const sellerMatch = await findSellerMatchByHandle(
+    source,
+    normalizedHandleLookup,
+  );
   const fallbackHandle = `@${normalizedHandleLookup}`;
   const sellerUsername = normalizeHandle(sellerMatch?.sellerUsername);
   const resolvedHandle = sellerUsername ?? fallbackHandle;
@@ -247,8 +257,10 @@ export async function getPublicNamefiFeedListingsByHandle(
 
   if (!sellerAuthorId) {
     return {
+      source: resolvedSource,
       handle: resolvedHandle,
       seller: {
+        source: resolvedSource,
         authorId: null,
         username: resolvedHandle,
         displayName: null,
@@ -265,6 +277,7 @@ export async function getPublicNamefiFeedListingsByHandle(
 
   const whereClauses = [
     ...buildBasePublicListingWhereClauses(activeAt),
+    eq(namefiFeedPostsTable.externalSource, source),
     eq(namefiFeedPostsTable.externalAuthorId, sellerAuthorId),
   ];
   if (cursor) {
@@ -273,10 +286,11 @@ export async function getPublicNamefiFeedListingsByHandle(
     );
   }
 
-  const totalDomainsByAuthorId = await getDomainCountsByAuthorId([
-    sellerAuthorId,
+  const totalDomainsByAuthorId = await getDomainCountsBySellerIdentities([
+    { externalSource: source, externalAuthorId: sellerAuthorId },
   ]);
-  const totalDomains = totalDomainsByAuthorId.get(sellerAuthorId) ?? 0;
+  const totalDomains =
+    totalDomainsByAuthorId.get(sellerIdentityKey(source, sellerAuthorId)) ?? 0;
   const rows = await selectListingRows(whereClauses, pageSize + 1);
   const normalizedRows = normalizeListingRows(rows.slice(0, pageSize));
   const lastRow = normalizedRows.at(-1);
@@ -284,8 +298,10 @@ export async function getPublicNamefiFeedListingsByHandle(
   const otherDomainsCount = Math.max(0, totalDomains - 1);
 
   return {
+    source: resolvedSource,
     handle: resolvedHandle,
     seller: {
+      source: resolvedSource,
       authorId: sellerAuthorId,
       username: resolvedHandle,
       displayName: sellerDisplayName,
@@ -337,8 +353,8 @@ export async function searchNamefiFeedListingsByDomain(
     }
   }
 
-  const domainCountsByAuthorId = await getDomainCountsByAuthorId(
-    Array.from(latestRowsByDomain.values()).map((row) => row.externalAuthorId),
+  const domainCountsByAuthorId = await getDomainCountsBySellerIdentities(
+    Array.from(latestRowsByDomain.values()),
   );
   const offersByDomain: MlsDomainSearchResponse['offersByDomain'] = {};
 
@@ -637,11 +653,25 @@ async function selectListingRows(
     .limit(limit);
 }
 
-async function findSellerMatchByHandle(normalizedHandleLookup: string) {
+async function findSellerMatchByHandle(
+  source: MlsFeedSourceFilter,
+  normalizedHandleLookup: string,
+) {
+  const sellerIdentityClauses = [
+    sql`LOWER(TRIM(LEADING '@' FROM COALESCE(${namefiFeedListingsTable.sellerUsername}, ''))) = ${normalizedHandleLookup}`,
+  ];
+  if (source === NAMEFI_MARKETPLACE_FEED_SOURCE_ID) {
+    sellerIdentityClauses.push(
+      sql`LOWER(${namefiFeedPostsTable.externalAuthorId}) = ${normalizedHandleLookup}`,
+    );
+  }
+  const sellerIdentityClause = or(...sellerIdentityClauses);
+
   const [row] = await selectListingRows(
     [
       ...buildBasePublicListingWhereClauses(),
-      sql`LOWER(TRIM(LEADING '@' FROM COALESCE(${namefiFeedListingsTable.sellerUsername}, ''))) = ${normalizedHandleLookup}`,
+      eq(namefiFeedPostsTable.externalSource, source),
+      ...(sellerIdentityClause ? [sellerIdentityClause] : []),
     ],
     1,
   );
@@ -649,18 +679,40 @@ async function findSellerMatchByHandle(normalizedHandleLookup: string) {
   return row ?? null;
 }
 
-async function getDomainCountsByAuthorId(
-  authorIds: string[],
+async function getDomainCountsBySellerIdentities(
+  sellerIdentities: Array<
+    Pick<ListingRow, 'externalSource' | 'externalAuthorId'>
+  >,
 ): Promise<Map<string, number>> {
-  const normalizedAuthorIds = Array.from(
-    new Set(authorIds.map((authorId) => authorId.trim()).filter(Boolean)),
+  const normalizedSellerIdentitiesByKey = new Map<
+    string,
+    { source: string; authorId: string }
+  >();
+  for (const identity of sellerIdentities) {
+    const source = identity.externalSource.trim();
+    const authorId = identity.externalAuthorId.trim();
+    if (!source || !authorId) {
+      continue;
+    }
+    normalizedSellerIdentitiesByKey.set(sellerIdentityKey(source, authorId), {
+      source,
+      authorId,
+    });
+  }
+  const normalizedSellerIdentities = Array.from(
+    normalizedSellerIdentitiesByKey.values(),
   );
-  if (normalizedAuthorIds.length === 0) {
+  if (normalizedSellerIdentities.length === 0) {
     return new Map();
   }
+  const identityTuples = normalizedSellerIdentities.map(
+    (identity) => sql`(${identity.source}, ${identity.authorId})`,
+  );
+  const identityWhereClause = sql`(${namefiFeedPostsTable.externalSource}, ${namefiFeedPostsTable.externalAuthorId}) IN (${sql.join(identityTuples, sql`, `)})`;
 
   const rows = await db
     .select({
+      source: namefiFeedPostsTable.externalSource,
       authorId: namefiFeedPostsTable.externalAuthorId,
       listingCount: sql<number>`count(distinct ${namefiFeedListingsTable.domain})`,
     })
@@ -669,17 +721,18 @@ async function getDomainCountsByAuthorId(
       namefiFeedPostsTable,
       eq(namefiFeedPostsTable.id, namefiFeedListingsTable.postId),
     )
-    .where(
-      and(
-        ...buildBasePublicListingWhereClauses(),
-        inArray(namefiFeedPostsTable.externalAuthorId, normalizedAuthorIds),
-      ),
-    )
-    .groupBy(namefiFeedPostsTable.externalAuthorId);
+    .where(and(...buildBasePublicListingWhereClauses(), identityWhereClause))
+    .groupBy(
+      namefiFeedPostsTable.externalSource,
+      namefiFeedPostsTable.externalAuthorId,
+    );
 
   const countsByAuthorId = new Map<string, number>();
   for (const row of rows) {
-    countsByAuthorId.set(row.authorId, Number(row.listingCount));
+    countsByAuthorId.set(
+      sellerIdentityKey(row.source, row.authorId),
+      Number(row.listingCount),
+    );
   }
 
   return countsByAuthorId;
@@ -700,8 +753,15 @@ function resolveOtherDomainsCount(
   row: NormalizedListingRow,
   domainCountsByAuthorId: Map<string, number>,
 ): number {
-  const totalDomains = domainCountsByAuthorId.get(row.externalAuthorId) ?? 1;
+  const totalDomains =
+    domainCountsByAuthorId.get(
+      sellerIdentityKey(row.externalSource, row.externalAuthorId),
+    ) ?? 1;
   return Math.max(0, totalDomains - 1);
+}
+
+function sellerIdentityKey(source: string, authorId: string) {
+  return `${source.trim()}:${authorId.trim()}`;
 }
 
 function toMlsListing(
@@ -723,7 +783,7 @@ function toMlsListing(
     purchaseUrl: normalizePublicHttpUrl(row.purchaseUrl),
     messageText: normalizeOptionalText(row.messageText),
     seller: {
-      username: normalizeHandle(row.sellerUsername),
+      username: resolveListingSellerUsername(row),
       displayName: normalizeOptionalText(row.sellerDisplayName),
       namefiDomainsCount: 0,
       tierDomainCount: 0,
@@ -734,6 +794,28 @@ function toMlsListing(
     postedAt: row.postedAt.toISOString(),
     listedAt: row.listedAt.toISOString(),
   };
+}
+
+/**
+ * Resolves the seller identity used for display and feed user routes.
+ * Marketplace lifecycle rows do not have social usernames, so their author id
+ * (wallet address) becomes the routeable seller handle.
+ */
+export function resolveListingSellerUsername(row: {
+  sellerUsername: string | null;
+  externalSource: string;
+  externalAuthorId: string;
+}) {
+  const sellerUsername = normalizeHandle(row.sellerUsername);
+  if (sellerUsername) {
+    return sellerUsername;
+  }
+
+  if (row.externalSource === NAMEFI_MARKETPLACE_FEED_SOURCE_ID) {
+    return normalizeHandle(row.externalAuthorId);
+  }
+
+  return null;
 }
 
 export function listingMatchesTld(listing: MlsListing, tld: string | null) {

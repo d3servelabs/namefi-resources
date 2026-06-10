@@ -6,6 +6,7 @@ import {
 import {
   MAX_MLS_FEED_LIMIT,
   type MlsFeedPage,
+  type MlsListingSource,
   type MlsHandleListingsPage,
   type MlsListing,
   type MlsSellerDirectoryRow,
@@ -41,6 +42,7 @@ import {
   domainMatchesTld,
   normalizeTldFilter,
 } from '../../services/namefi-feed/normalization';
+import { X_FEED_SOURCE_ID } from '../../services/namefi-feed/sources';
 import { ensurePrivyTableFresh } from '../../services/admin/privy-user-cache';
 import {
   adminProcedure,
@@ -57,7 +59,9 @@ import {
 const MAX_CURRENT_USER_LISTED_DOMAIN_PAGES = 10;
 const SELLER_DIRECTORY_SOURCE_CACHE_TTL_MS = 5 * 60 * 1_000;
 const LEADING_AT_SYMBOL = /^@/;
-const HANDLE_PATTERN = /^[a-z0-9_]+$/i;
+const HANDLE_PATTERN = /^[a-z0-9_.-]+$/i;
+const HANDLE_EDGE_SEPARATOR_PATTERN = /^[.-]|[.-]$/;
+const HANDLE_CONSECUTIVE_SEPARATOR_PATTERN = /[.-]{2}/;
 const DAY_MS = 24 * 60 * 60 * 1_000;
 
 let sellerDirectorySourceCache: {
@@ -147,7 +151,9 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       );
       const generatedAt = new Date().toISOString();
       const sellerPortfolios = await getNamefiPortfoliosBySellerHandles(
-        filteredRows.map((row) => row.seller.username),
+        filteredRows
+          .filter((row) => row.source.id === X_FEED_SOURCE_ID)
+          .map((row) => row.seller.username),
       );
       const sellersWithPortfolio = aggregateSellerDirectoryRows(
         filteredRows,
@@ -198,6 +204,7 @@ export const mlsRouter = createContractTRPCRouter<typeof mlsContract>({
       try {
         return await enrichMlsHandleListingsPageSellerPortfolio(
           await getPublicNamefiFeedListingsByHandle({
+            source: input.source,
             handle: normalizedHandle,
             cursor: input.cursor ?? null,
             limit: input.limit,
@@ -339,7 +346,9 @@ async function enrichMlsFeedPageSellerPortfolio(
   page: MlsFeedPage,
 ): Promise<MlsFeedPage> {
   const portfolios = await getNamefiPortfoliosBySellerHandles(
-    page.rows.map((row) => row.seller.username),
+    page.rows
+      .filter((row) => row.source.id === X_FEED_SOURCE_ID)
+      .map((row) => row.seller.username),
   );
 
   return {
@@ -356,9 +365,12 @@ async function enrichMlsHandleListingsPageSellerPortfolio(
   const sellerHandle =
     normalizeMlsSellerHandle(page.seller.username ?? page.handle) ??
     normalizeMlsSellerHandle(page.handle);
-  const portfolios = await getNamefiPortfoliosBySellerHandles([
-    sellerHandle?.slug ?? page.handle,
-  ]);
+  const portfolios =
+    page.source.id === X_FEED_SOURCE_ID
+      ? await getNamefiPortfoliosBySellerHandles([
+          sellerHandle?.slug ?? page.handle,
+        ])
+      : new Map<string, SellerNamefiPortfolio>();
   const namefiPortfolio = sellerHandle
     ? getSellerNamefiPortfolio(portfolios, sellerHandle.slug)
     : null;
@@ -390,9 +402,10 @@ function enrichMlsListingSellerPortfolio(
   portfolios: Map<string, SellerNamefiPortfolio>,
 ): MlsListing {
   const sellerHandle = normalizeMlsSellerHandle(listing.seller.username);
-  const namefiPortfolio = sellerHandle
-    ? getSellerNamefiPortfolio(portfolios, sellerHandle.slug)
-    : null;
+  const namefiPortfolio =
+    sellerHandle && listing.source.id === X_FEED_SOURCE_ID
+      ? getSellerNamefiPortfolio(portfolios, sellerHandle.slug)
+      : null;
   const namefiDomainsCount = namefiPortfolio?.count ?? 0;
   const feedDomainsCount = getMlsListingSellerDomainCount(
     listing.otherDomainsCount,
@@ -533,6 +546,7 @@ async function fetchCurrentUserListedDomains(twitterHandle: string) {
     pageIndex += 1
   ) {
     const page = await getPublicNamefiFeedListingsByHandle({
+      source: X_FEED_SOURCE_ID,
       handle: twitterHandle,
       cursor,
       limit: MAX_MLS_FEED_LIMIT,
@@ -562,7 +576,7 @@ async function fetchCurrentUserListedDomains(twitterHandle: string) {
 
 function normalizeMlsHandleSlug(value: string) {
   const normalized = value.trim().replace(LEADING_AT_SYMBOL, '');
-  if (!normalized || !HANDLE_PATTERN.test(normalized)) {
+  if (!isValidMlsHandleSlug(normalized)) {
     return null;
   }
 
@@ -571,7 +585,7 @@ function normalizeMlsHandleSlug(value: string) {
 
 function normalizeMlsSellerHandle(value: string | null | undefined) {
   const rawHandle = value?.trim().replace(LEADING_AT_SYMBOL, '');
-  if (!rawHandle || !HANDLE_PATTERN.test(rawHandle)) {
+  if (!rawHandle || !isValidMlsHandleSlug(rawHandle)) {
     return null;
   }
 
@@ -579,6 +593,15 @@ function normalizeMlsSellerHandle(value: string | null | undefined) {
     handle: `@${rawHandle}`,
     slug: rawHandle.toLowerCase(),
   };
+}
+
+function isValidMlsHandleSlug(value: string) {
+  return (
+    Boolean(value) &&
+    HANDLE_PATTERN.test(value) &&
+    !HANDLE_EDGE_SEPARATOR_PATTERN.test(value) &&
+    !HANDLE_CONSECUTIVE_SEPARATOR_PATTERN.test(value)
+  );
 }
 
 function normalizeFeedSearchQuery(value?: string | null) {
@@ -631,6 +654,8 @@ function listingMatchesSellerDirectoryQuery(
     listing.messageText,
     listing.seller.username,
     listing.seller.displayName,
+    listing.source.id,
+    listing.source.label,
     sellerHandle?.handle,
     sellerHandle?.slug,
   ];
@@ -641,6 +666,7 @@ function listingMatchesSellerDirectoryQuery(
 }
 
 interface SellerDirectoryAggregate {
+  source: MlsListingSource;
   handle: string;
   slug: string;
   displayName: string | null;
@@ -680,8 +706,12 @@ function aggregateSellerDirectoryRows(
       parseDateTime(listing.listedAt) ??
       generatedTime;
     const normalizedDomain = listing.domain.trim().toLowerCase();
+    const aggregateKey = sellerIdentityKey(
+      listing.source.id,
+      sellerHandle.slug,
+    );
     const aggregate =
-      aggregates.get(sellerHandle.slug) ??
+      aggregates.get(aggregateKey) ??
       createSellerDirectoryAggregate(
         listing,
         sellerHandle,
@@ -689,7 +719,7 @@ function aggregateSellerDirectoryRows(
         postedTime,
       );
 
-    aggregates.set(sellerHandle.slug, aggregate);
+    aggregates.set(aggregateKey, aggregate);
     updateSellerDirectoryAggregate(
       aggregate,
       listing,
@@ -710,6 +740,7 @@ function createSellerDirectoryAggregate(
   postedTime: number,
 ): SellerDirectoryAggregate {
   return {
+    source: listing.source,
     handle: sellerHandle.handle,
     slug: sellerHandle.slug,
     displayName: normalizeNullableText(listing.seller.displayName),
@@ -785,7 +816,10 @@ function toSellerDirectoryRow(
 ): MlsSellerDirectoryRow {
   const salePostCount = aggregate.sourceTweetSet.size;
   const domainCount = aggregate.domainSet.size;
-  const namefiPortfolio = getSellerNamefiPortfolio(portfolios, aggregate.slug);
+  const namefiPortfolio =
+    aggregate.source.id === X_FEED_SOURCE_ID
+      ? getSellerNamefiPortfolio(portfolios, aggregate.slug)
+      : null;
   const namefiDomainsCount = namefiPortfolio?.count ?? 0;
   const overlappingDomainsCount = namefiPortfolio
     ? countSetIntersection(aggregate.domainSet, namefiPortfolio.domains)
@@ -802,10 +836,11 @@ function toSellerDirectoryRow(
 
   return {
     priority: resolveSellerPriority(salePostCount, daysSinceLastPost),
+    source: aggregate.source,
     handle: aggregate.handle,
     displayName: aggregate.displayName,
-    profileUrl: `https://x.com/${aggregate.slug}`,
-    listingUrl: `/feed/users/${encodeURIComponent(aggregate.slug)}`,
+    profileUrl: getSellerSourceProfileUrl(aggregate),
+    listingUrl: `/feed/users/${encodeURIComponent(aggregate.source.id)}/${encodeURIComponent(aggregate.slug)}`,
     salePostCount,
     domainCount,
     namefiDomainsCount,
@@ -825,6 +860,18 @@ function toSellerDirectoryRow(
     sampleDomains: aggregate.sampleDomains,
     sourceTweetUrls: aggregate.sourceTweetUrls,
   };
+}
+
+function sellerIdentityKey(source: string, slug: string) {
+  return `${source}:${slug}`;
+}
+
+function getSellerSourceProfileUrl(aggregate: SellerDirectoryAggregate) {
+  if (aggregate.source.id === X_FEED_SOURCE_ID) {
+    return `https://x.com/${aggregate.slug}`;
+  }
+
+  return aggregate.source.url || aggregate.latestSourceTweetUrl;
 }
 
 function resolveSellerPriority(

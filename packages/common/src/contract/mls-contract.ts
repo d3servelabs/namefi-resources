@@ -153,6 +153,7 @@ export const mlsSellerDirectoryInputSchema = z.object({
 
 export const mlsSellerDirectoryRowSchema = z.object({
   priority: mlsSellerPrioritySchema,
+  source: mlsListingSourceSchema,
   handle: z.string().min(1),
   displayName: z.string().nullable(),
   profileUrl: z.string().min(1),
@@ -199,6 +200,7 @@ export type MlsSellerDirectoryPage = z.infer<
 // ---------------------------------------------------------------------------
 
 export const mlsHandleListingsInputSchema = z.object({
+  source: mlsFeedSourceFilterSchema,
   handle: z.string().trim().min(1),
   limit: z
     .number()
@@ -211,8 +213,10 @@ export const mlsHandleListingsInputSchema = z.object({
 });
 
 export const mlsHandleListingsPageSchema = z.object({
+  source: mlsListingSourceSchema,
   handle: z.string().min(1),
   seller: z.object({
+    source: mlsListingSourceSchema,
     authorId: z.string().nullable(),
     username: z.string().nullable(),
     displayName: z.string().nullable(),

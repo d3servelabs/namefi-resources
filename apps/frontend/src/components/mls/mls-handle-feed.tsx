@@ -18,7 +18,12 @@ import {
   type MlsSaleListing,
   type MlsSalesByHandlePage,
 } from '@/lib/mls/feed';
-import { normalizeMlsHandle, normalizeMlsHandleSlug } from '@/lib/mls/handles';
+import {
+  getMlsFeedSourceLabel,
+  normalizeMlsFeedSource,
+  normalizeMlsHandle,
+  normalizeMlsHandleSlug,
+} from '@/lib/mls/handles';
 import { useTRPCClient } from '@/lib/trpc';
 
 const SKELETON_KEYS = [
@@ -29,13 +34,15 @@ const SKELETON_KEYS = [
 ] as const;
 
 interface MlsHandleFeedProps {
+  source: string;
   username: string;
 }
 
-export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
+export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
   const trpcClient = useTRPCClient();
+  const normalizedSource = normalizeMlsFeedSource(source);
   const normalizedHandleSlug = normalizeMlsHandleSlug(username);
-  const hasValidHandle = Boolean(normalizedHandleSlug);
+  const hasValidHandle = Boolean(normalizedSource && normalizedHandleSlug);
   const fallbackHandle = normalizedHandleSlug
     ? `@${normalizedHandleSlug}`
     : '@unknown';
@@ -52,15 +59,16 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery<MlsSalesByHandlePage, Error>({
-    queryKey: ['mls-feed-handle', normalizedHandleSlug],
+    queryKey: ['mls-feed-handle', normalizedSource, normalizedHandleSlug],
     enabled: hasValidHandle,
     initialPageParam: null,
     queryFn: ({ pageParam }) => {
-      if (!normalizedHandleSlug) {
-        throw new Error('Invalid seller handle.');
+      if (!normalizedSource || !normalizedHandleSlug) {
+        throw new Error('Invalid feed user path.');
       }
 
       return trpcClient.mls.getHandleListings.query({
+        source: normalizedSource,
         handle: normalizedHandleSlug,
         limit: DEFAULT_MLS_FEED_LIMIT,
         cursor: typeof pageParam === 'string' ? pageParam : null,
@@ -80,6 +88,8 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     firstPage?.seller.username ?? firstPage?.handle ?? fallbackHandle,
   );
   const sellerLabel = sellerHandle ?? fallbackHandle;
+  const sourceLabel =
+    firstPage?.source.label ?? getMlsFeedSourceLabel(normalizedSource);
   const totalDomains = firstPage?.totalDomains ?? 0;
   const namefiDomainsCount = firstPage?.seller.namefiDomainsCount ?? 0;
   const tierDomainCount = firstPage?.seller.tierDomainCount ?? totalDomains;
@@ -109,6 +119,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
     <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
       <MlsHandleHeader
         sellerLabel={sellerLabel}
+        sourceLabel={sourceLabel}
         sellerTier={sellerTier}
         subtitle={getSellerSubtitle(
           hasValidHandle,
@@ -142,6 +153,7 @@ export function MlsHandleFeed({ username }: MlsHandleFeedProps) {
 
 interface MlsHandleHeaderProps {
   sellerLabel: string;
+  sourceLabel: string | null;
   sellerTier: MlsSellerTier | null;
   subtitle: string;
   hasValidHandle: boolean;
@@ -152,6 +164,7 @@ interface MlsHandleHeaderProps {
 
 function MlsHandleHeader({
   sellerLabel,
+  sourceLabel,
   sellerTier,
   subtitle,
   hasValidHandle,
@@ -176,6 +189,11 @@ function MlsHandleHeader({
               <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
                 {sellerLabel}
               </h1>
+              {sourceLabel ? (
+                <span className="rounded-sm bg-background/80 px-2 py-1 text-xs font-medium text-muted-foreground">
+                  {sourceLabel}
+                </span>
+              ) : null}
               {sellerTier ? <MlsSellerTierBadge tier={sellerTier} /> : null}
             </div>
             <p
@@ -282,7 +300,7 @@ function MlsHandleListingsSection({
 function MlsHandleInvalidHandleBanner() {
   return (
     <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
-      This username is not valid.
+      This feed user path is not valid.
     </div>
   );
 }
@@ -377,7 +395,7 @@ function getSellerSubtitle(
   namefiDomainsCount: number,
 ) {
   if (!hasValidHandle) {
-    return 'Invalid seller handle.';
+    return 'Invalid feed user path.';
   }
 
   if (totalDomains === 0 && namefiDomainsCount === 0) {

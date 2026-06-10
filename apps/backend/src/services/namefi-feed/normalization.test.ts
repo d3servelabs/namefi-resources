@@ -4,6 +4,7 @@ import {
   decodeListingCursor,
   encodeListingCursor,
   normalizeCurrencyCode,
+  normalizeHandleLookup,
   normalizePriceAndCurrency,
   normalizePublicHttpUrl,
 } from './normalization';
@@ -74,5 +75,23 @@ describe('Namefi feed normalization', () => {
       sortAt: new Date('2026-06-02T09:00:00Z'),
       id: 'abc',
     });
+  });
+
+  it('allows URL-safe forum-style seller handles', () => {
+    expect(normalizeHandleLookup('@alice-co')).toBe('alice-co');
+    expect(normalizeHandleLookup('alice.co')).toBe('alice.co');
+    expect(normalizeHandleLookup('not valid')).toBeNull();
+  });
+
+  it('rejects unsafe dot and hyphen seller handle separators', () => {
+    expect(normalizeHandleLookup('.alice')).toBeNull();
+    expect(normalizeHandleLookup('-alice')).toBeNull();
+    expect(normalizeHandleLookup('alice-')).toBeNull();
+    expect(normalizeHandleLookup('alice.')).toBeNull();
+    expect(normalizeHandleLookup('..')).toBeNull();
+    expect(normalizeHandleLookup('--')).toBeNull();
+    expect(normalizeHandleLookup('alice..bob')).toBeNull();
+    expect(normalizeHandleLookup('alice-.bob')).toBeNull();
+    expect(normalizeHandleLookup('alice.-bob')).toBeNull();
   });
 });

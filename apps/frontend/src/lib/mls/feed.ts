@@ -38,6 +38,7 @@ export interface MlsSalesFeedPage {
 }
 
 export interface MlsSalesByHandleSeller {
+  source: MlsSaleListingSource;
   authorId: string | null;
   username: string | null;
   displayName: string | null;
@@ -46,6 +47,7 @@ export interface MlsSalesByHandleSeller {
 }
 
 export interface MlsSalesByHandlePage {
+  source: MlsSaleListingSource;
   handle: string;
   seller: MlsSalesByHandleSeller;
   rows: MlsSaleListing[];
@@ -65,6 +67,7 @@ export type MlsSellerDirectorySortOrder = 'asc' | 'desc';
 
 export interface MlsSellerDirectoryRow {
   priority: MlsSellerPriority;
+  source: MlsSaleListingSource;
   handle: string;
   displayName: string | null;
   profileUrl: string;
