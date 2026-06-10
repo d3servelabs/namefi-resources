@@ -25,6 +25,8 @@ The story did not end there. Five years later, Facebook would reportedly pay **[
 
 ## 2004: the campus network that needed a literal name
 
+![Editorial diagram of TheFacebook.com as a campus directory becoming a searchable student network](../../assets/from-thefacebook-com-to-facebook-com-01-campus-network.jpg)
+
 TheFacebook.com launched into a very specific historical moment. [Friendster was the social media leader in early 2004](https://www.wired.com/2011/02/0204facebook-debuts/#:~:text=Friendster%20was%20the%20social%20media%20leader%20in%20early%202004), and MySpace was beginning its run toward mass-market dominance. But most social networks of that era were open, messy, and identity-light.
 
 Facebook's early distinction was the opposite: it was restricted, structured, and tied to real campus identity.
@@ -41,6 +43,8 @@ TheFacebook.com was not a bad domain. It was the right kind of domain for the fi
 
 ## 2005: the name had to grow up
 
+![Editorial diagram showing TheFacebook.com becoming Facebook.com after the 2005 funding context](../../assets/from-thefacebook-com-to-facebook-com-02-name-grew-up.jpg)
+
 By 2005, the company was moving into a different phase. The Facebook was no longer a dorm-room experiment. The Harvard Crimson reported in May 2005 that [Accel Partners would invest $13 million into the 15-month-old company](https://www.thecrimson.com/article/2005/5/27/firm-invests-13m-in-facebook-a/#:~:text=invest%20%2413%20million%20into%20thefacebook.com), which already had [nearly three million registered users across more than 800 colleges](https://www.thecrimson.com/article/2005/5/27/firm-invests-13m-in-facebook-a/#:~:text=nearly%20three%20million%20registered%20users%20at%20over%20800%20colleges).
 
 That financing headline is important because it puts the domain purchase in context. Today, $200,000 for Facebook.com sounds like a bargain. In 2005, it was still a meaningful capital-allocation decision for a very young company.
@@ -56,6 +60,8 @@ Even with the Accel round announced, $200,000 was not "just" $200,000. It was:
 That last point is the lesson. Facebook was spending startup capital on brand infrastructure.
 
 ## 2010: FB.com and the price of operational shorthand
+
+![Editorial diagram of the FB.com acquisition as an internal email and domain-transfer asset](../../assets/from-thefacebook-com-to-facebook-com-03-fb-operational-shorthand.jpg)
 
 The Facebook.com purchase made the public brand cleaner. The later **FB.com** purchase was different. It was not about replacing the consumer-facing name. It was about owning the shortest possible shorthand for a company whose infrastructure, employees, products, and communications had outgrown the main domain.
 
@@ -75,6 +81,8 @@ The later deal also shows why premium domains do not have one fixed kind of valu
 
 ## The money looked different then
 
+![Editorial bar chart comparing the $200K Facebook.com purchase, funding context, and the later $8.5M FB.com deal](../../assets/from-thefacebook-com-to-facebook-com-04-money-context.jpg)
+
 The temptation is to judge the deal from the end of the story. Facebook became Meta. Facebook.com became one of the most visited domains in the world. $200,000 now looks almost comically cheap.
 
 But a domain purchase should be evaluated at the moment of uncertainty, not after the outcome is obvious.
@@ -88,6 +96,8 @@ Against that backdrop, spending $200,000 on a domain was not obvious. It was a t
 That thesis turned out to be right.
 
 ## Why dropping "The" mattered
+
+![Editorial illustration of TheFacebook.com losing the word The and becoming the cleaner Facebook.com brand](../../assets/from-thefacebook-com-to-facebook-com-05-dropping-the.jpg)
 
 The difference between TheFacebook.com and Facebook.com is only three letters and a space in speech, but strategically it is much larger.
 
@@ -113,6 +123,8 @@ Facebook hit that timing well.
 
 ## Public discussion: hindsight, regret, and the "right domain"
 
+![Editorial diagram of public discussion around Facebook domain upgrades, founder hindsight, and the FB.com headlines](../../assets/from-thefacebook-com-to-facebook-com-06-public-discussion.jpg)
+
 The Facebook.com purchase has become a recurring example in domain and startup discussions because it is so easy to understand in hindsight. Domain investors point to it as proof that exact-match brand domains can look expensive before they look obvious. Startup communities often use it as a counterexample to the idea that a young company should never spend serious money on a domain.
 
 The most interesting public comment came from Zuckerberg himself. In a 2009 TechCrunch interview, when asked what he would do differently, he answered that he would [get the right domain name](https://techcrunch.com/2009/10/24/startup-school-an-interview-with-mark-zuckerberg/#:~:text=I%E2%80%99d%20get%20the%20right%20domain%20name). TechCrunch's transcript frames the lesson plainly: Facebook eventually could get the domain, but it had to pay for the mistake later.
@@ -124,6 +136,8 @@ There is also a useful tension in public forum discussions. In a Hacker News dis
 The smart move was not buying the perfect domain on day one. The smart move was upgrading as soon as the company knew the name could carry a much larger business.
 
 ## The domain became part of the operating system
+
+![Editorial diagram showing Facebook.com repeated across email, press, search, links, pitch decks, and word of mouth](../../assets/from-thefacebook-com-to-facebook-com-07-operating-system.jpg)
 
 The reason premium domains matter is not vanity. It is repetition.
 
@@ -144,6 +158,8 @@ That is why the $200,000 decision aged so well. It was not a one-time branding e
 
 ## What founders should learn from Case 1
 
+![Editorial four-step diagram for founders moving from descriptive launch domain to canonical brand and shorthand domain](../../assets/from-thefacebook-com-to-facebook-com-08-founders-lessons.jpg)
+
 The Facebook story is sometimes simplified into "buy the best domain early." That is too blunt.
 
 The better lesson is staged:
@@ -158,6 +174,8 @@ The domain upgrade did not make Facebook win by itself. Product, timing, exclusi
 But Facebook.com made the win easier to name.
 
 ## The Namefi angle
+
+![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-thefacebook-com-to-facebook-com-09-namefi-angle.jpg)
 
 Most domain upgrades are not just naming decisions. They are asset-transfer decisions.
 
