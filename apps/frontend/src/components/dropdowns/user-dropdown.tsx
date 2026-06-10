@@ -1,14 +1,23 @@
 'use client';
 
 import { HeaderActionButton } from '@/components/header-action-button';
+import { CurrentUserAvatar } from '@/components/user-avatar';
 import { useAuth, useLogin } from '@/hooks/use-auth';
+import { shortage } from '@/lib/string';
+import { getUserDisplayName } from '@/lib/user';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { Loader2Icon, WalletIcon } from 'lucide-react';
+import { Loader2Icon, MoreHorizontalIcon, WalletIcon } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
-  useEffect,
+  useCallback,
   useMemo,
   useState,
   type ForwardedRef,
@@ -22,7 +31,16 @@ export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 type UserDropdownFullComponent =
-  typeof import('@/components/dropdowns/user-dropdown-full').UserDropdownFull;
+  typeof import('@/components/dropdowns/user-dropdown-full').UserDropdownMenu;
+
+let userDropdownMenuPromise: Promise<UserDropdownFullComponent> | null = null;
+
+function loadUserDropdownMenu(): Promise<UserDropdownFullComponent> {
+  userDropdownMenuPromise ??= import(
+    '@/components/dropdowns/user-dropdown-full'
+  ).then((mod) => mod.UserDropdownMenu);
+  return userDropdownMenuPromise;
+}
 
 type SignedOutButtonProps = {
   actionVariant: HeaderActionVariant;
@@ -42,24 +60,31 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const { state: sidebarState, isMobile } = useSidebar();
-    const { isLoading, isAuthenticated } = useAuth();
-    const [UserDropdownFull, setUserDropdownFull] =
+    const { isLoading, isAuthenticated, privyUser } = useAuth();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
+    const [hasRequestedMenu, setHasRequestedMenu] = useState(false);
+    const [UserDropdownMenu, setUserDropdownMenu] =
       useState<UserDropdownFullComponent | null>(null);
 
-    useEffect(() => {
-      if (isLoading || !isAuthenticated || UserDropdownFull) return;
-
-      let isCancelled = false;
-      void import('@/components/dropdowns/user-dropdown-full').then((mod) => {
-        if (!isCancelled) {
-          setUserDropdownFull(() => mod.UserDropdownFull);
-        }
+    const requestMenu = useCallback(() => {
+      if (isLoading || !isAuthenticated || UserDropdownMenu) return;
+      setHasRequestedMenu(true);
+      void loadUserDropdownMenu().then((Component) => {
+        setUserDropdownMenu(() => Component);
       });
+    }, [isAuthenticated, isLoading, UserDropdownMenu]);
 
-      return () => {
-        isCancelled = true;
-      };
-    }, [isAuthenticated, isLoading, UserDropdownFull]);
+    const handleMenuOpenChange = useCallback(
+      (nextOpen: boolean) => {
+        setIsMenuOpen(nextOpen);
+        if (nextOpen) {
+          setHasOpenedMenu(true);
+          requestMenu();
+        }
+      },
+      [requestMenu],
+    );
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -71,18 +96,8 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     );
 
     const actionVariant = isExpanded ? 'pill' : 'icon';
-
-    if (UserDropdownFull) {
-      return (
-        <UserDropdownFull
-          ref={ref}
-          forceExpanded={forceExpanded}
-          disableBackdropBlur={disableBackdropBlur}
-          className={className}
-          {...rest}
-        />
-      );
-    }
+    const name = getUserDisplayName(privyUser);
+    const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
 
     return (
       <div
@@ -95,12 +110,110 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       >
         <AnimatePresence initial={false} mode="popLayout">
           {isLoading || isAuthenticated ? (
-            <LoadingButton
-              actionVariant={actionVariant}
-              disableBackdropBlur={disableBackdropBlur}
-              isExpanded={isExpanded}
-              stretch={shouldStretch}
-            />
+            isAuthenticated && !isLoading ? (
+              <motion.div
+                key="user-authed"
+                initial={{ opacity: 0, y: -12 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.32, ease: 'easeOut' },
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -12,
+                  transition: { duration: 0.22, ease: 'easeIn' },
+                }}
+                layout
+              >
+                <DropdownMenu
+                  open={isMenuOpen}
+                  onOpenChange={handleMenuOpenChange}
+                >
+                  <DropdownMenuTrigger
+                    render={
+                      <HeaderActionButton
+                        actionVariant={actionVariant}
+                        disableBackdropBlur={disableBackdropBlur}
+                        stretch={shouldStretch}
+                        className={expandedAvatarPaddingClass}
+                      />
+                    }
+                  >
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.28, ease: 'easeOut' },
+                      }}
+                      className="shrink-0"
+                      layout
+                    >
+                      <CurrentUserAvatar
+                        enableAdminLookupButtons={
+                          hasOpenedMenu && Boolean(UserDropdownMenu)
+                        }
+                      />
+                    </motion.div>
+                    {isExpanded && (
+                      <>
+                        <motion.span
+                          className="hidden text-sm md:block"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              duration: 0.24,
+                              ease: 'easeOut',
+                              delay: 0.03,
+                            },
+                          }}
+                          layout
+                        >
+                          {shortage(name, 11)}
+                        </motion.span>
+                        <motion.span
+                          className="ml-auto"
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                              duration: 0.24,
+                              ease: 'easeOut',
+                              delay: 0.05,
+                            },
+                          }}
+                          layout
+                        >
+                          <MoreHorizontalIcon className="h-5 w-5" />
+                        </motion.span>
+                      </>
+                    )}
+                  </DropdownMenuTrigger>
+
+                  {UserDropdownMenu && hasOpenedMenu ? (
+                    <UserDropdownMenu />
+                  ) : isMenuOpen && hasRequestedMenu ? (
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuItem disabled>
+                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                        <span>Loading...</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  ) : null}
+                </DropdownMenu>
+              </motion.div>
+            ) : (
+              <LoadingButton
+                actionVariant={actionVariant}
+                disableBackdropBlur={disableBackdropBlur}
+                isExpanded={isExpanded}
+                stretch={shouldStretch}
+              />
+            )
           ) : (
             <SignedOutButton
               actionVariant={actionVariant}

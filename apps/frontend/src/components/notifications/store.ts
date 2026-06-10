@@ -17,7 +17,12 @@ import type {
  * subscribe to this store directly.
  */
 
-let state: NotificationsModalState = { isOpen: false, filter: null };
+const CLOSED_NOTIFICATIONS_MODAL_STATE: NotificationsModalState = {
+  isOpen: false,
+  filter: null,
+};
+
+let state: NotificationsModalState = CLOSED_NOTIFICATIONS_MODAL_STATE;
 const listeners = new Set<() => void>();
 
 function emit() {
@@ -36,7 +41,7 @@ function getSnapshot(): NotificationsModalState {
 }
 
 function getServerSnapshot(): NotificationsModalState {
-  return { isOpen: false, filter: null };
+  return CLOSED_NOTIFICATIONS_MODAL_STATE;
 }
 
 export function openNotificationsModal(

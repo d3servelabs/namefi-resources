@@ -1,11 +1,8 @@
 'use client';
-import { HeaderActionButton } from '@/components/header-action-button';
 import {
-  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -15,21 +12,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
-import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
-import { useAuth, useLogin, useLogout } from '@/hooks/use-auth';
+import { useAuth, useLogout } from '@/hooks/use-auth';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import type { NavItem } from '@/lib/types/nav-item';
 import { reportReactBoundaryError } from '@/lib/datadog-react-error';
 import { formatAmountInUSD } from '@/lib/number';
-import { getShortAddress, shortage } from '@/lib/string';
-import { getUserDisplayName } from '@/lib/user';
-import { BalanceBreakdownDialog } from '@/components/payment-method/nfsc-balance-dialog';
+import { getShortAddress } from '@/lib/string';
 import type { LucideIcon } from 'lucide-react';
 import {
   Loader2Icon,
   LogOutIcon,
-  MoreHorizontalIcon,
   SearchIcon,
   UserIcon,
   UsersIcon,
@@ -49,18 +42,12 @@ import { toast } from 'sonner';
 import type { Route } from 'next';
 import Link from 'next/link';
 import React, {
-  type ForwardRefExoticComponent,
-  type ForwardedRef,
-  type HTMLAttributes,
-  type RefAttributes,
-  forwardRef,
   useCallback,
   useMemo,
   useState,
   type ComponentProps,
   type ErrorInfo,
 } from 'react';
-import { CurrentUserAvatar } from '../user-avatar';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -78,8 +65,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import { AnimatePresence, motion } from 'motion/react';
-import { cn } from '@namefi-astra/ui/lib/cn';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
@@ -91,10 +76,7 @@ import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { ErrorBoundary } from '@suspensive/react';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
-import {
-  AdminUserLookupDialog,
-  type AdminUserLookupReference,
-} from '@/components/admin/user-details';
+import type { AdminUserLookupReference } from '@/components/admin/user-details';
 import { useDebounceValue } from 'usehooks-ts';
 
 import {
@@ -106,11 +88,6 @@ import {
   both,
 } from 'ramda';
 
-export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
-  forceExpanded?: boolean;
-  disableBackdropBlur?: boolean;
-};
-
 const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
   {
     key: 'show_balance_in_user_dropdown',
@@ -120,32 +97,59 @@ const FEATURE_FLAGS_ITEMS: FeatureFlagDefinition[] = [
   },
 ];
 
+type BalanceBreakdownDialogComponent =
+  typeof import('@/components/payment-method/nfsc-balance-dialog').BalanceBreakdownDialog;
+
+let balanceBreakdownDialogPromise: Promise<BalanceBreakdownDialogComponent> | null =
+  null;
+
+function loadBalanceBreakdownDialog(): Promise<BalanceBreakdownDialogComponent> {
+  balanceBreakdownDialogPromise ??= import(
+    '@/components/payment-method/nfsc-balance-dialog'
+  )
+    .then((mod) => mod.BalanceBreakdownDialog)
+    .catch((error) => {
+      balanceBreakdownDialogPromise = null;
+      throw error;
+    });
+  return balanceBreakdownDialogPromise;
+}
+
+type AdminUserLookupDialogComponent =
+  typeof import('@/components/admin/user-details').AdminUserLookupDialog;
+
+let adminUserLookupDialogPromise: Promise<AdminUserLookupDialogComponent> | null =
+  null;
+
+function loadAdminUserLookupDialog(): Promise<AdminUserLookupDialogComponent> {
+  adminUserLookupDialogPromise ??= import('@/components/admin/user-details')
+    .then((mod) => mod.AdminUserLookupDialog)
+    .catch((error) => {
+      adminUserLookupDialogPromise = null;
+      throw error;
+    });
+  return adminUserLookupDialogPromise;
+}
+
 /**
  * To Add NavItems to the UserDropdown, go to @see {getUserDropdownItems}
  */
 
-export const UserDropdownFull = ErrorBoundary.with(
-  { fallback: <div>Error</div> },
-  forwardRef<HTMLDivElement, UserDropdownProps>(function UserDropdownFull(
-    {
-      forceExpanded = true,
-      disableBackdropBlur = false,
-      className,
-      ...rest
-    }: UserDropdownProps,
-    ref: ForwardedRef<HTMLDivElement>,
-  ) {
+export const UserDropdownMenu = ErrorBoundary.with(
+  {
+    fallback: (
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuItem disabled>Unable to load menu.</DropdownMenuItem>
+      </DropdownMenuContent>
+    ),
+  },
+  function UserDropdownMenu() {
     useRegisterAdminFlags(FEATURE_FLAGS_ITEMS);
     const [showBalanceInUserDropdown] = useAdminFeatureFlag(
       FEATURE_FLAGS_ITEMS[0],
     );
 
-    const { state: sidebarState, isMobile } = useSidebar();
-    const { isLoading, isAuthenticated, privyUser } = useAuth();
-    const { login: handleConnect } = useLogin();
-
-    // Resolves the display name based on user metadata/availability
-    const name = getUserDisplayName(privyUser);
+    const { isAuthenticated } = useAuth();
 
     const trpc = useTRPC();
     const pbnOwnerQuery = useQuery(
@@ -167,10 +171,40 @@ export const UserDropdownFull = ErrorBoundary.with(
     // dialog survives the dropdown closing on item-click. Otherwise the menu
     // item unmounts and takes the dialog down with it.
     const [isBalanceDialogOpen, setIsBalanceDialogOpen] = useState(false);
+    const [hasOpenedBalanceDialog, setHasOpenedBalanceDialog] = useState(false);
+    const [BalanceBreakdownDialog, setBalanceBreakdownDialog] =
+      useState<BalanceBreakdownDialogComponent | null>(null);
+    const [isBalanceDialogLoading, setIsBalanceDialogLoading] = useState(false);
+    const [balanceDialogError, setBalanceDialogError] = useState<string | null>(
+      null,
+    );
+
+    const requestBalanceBreakdownDialog = useCallback(() => {
+      if (BalanceBreakdownDialog) return;
+      setIsBalanceDialogLoading(true);
+      setBalanceDialogError(null);
+      void loadBalanceBreakdownDialog()
+        .then((Component) => {
+          setBalanceBreakdownDialog(() => Component);
+        })
+        .catch((error) => {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'The balance details failed to load.';
+          setBalanceDialogError(message);
+          toast.error('Failed to load balance details', {
+            description: message,
+          });
+        })
+        .finally(() => {
+          setIsBalanceDialogLoading(false);
+        });
+    }, [BalanceBreakdownDialog]);
 
     // Data fetched once at the parent and shared between the dropdown preview
     // and the dialog content; react-query dedupes the underlying request.
-    const { linkedWallets, linkedWalletsReady } = useLinkedWallets();
+    const { linkedWallets } = useLinkedWallets();
     const nfscWalletAddresses = useMemo(
       () =>
         linkedWallets
@@ -183,7 +217,10 @@ export const UserDropdownFull = ErrorBoundary.with(
     );
     const { chainBalances, totalBalanceInUsdCents, isLoadingBalance } =
       useUserChainBalances({
-        enabled: isAuthenticated && nfscWalletAddresses.length > 0,
+        enabled:
+          isAuthenticated &&
+          showBalanceInUserDropdown &&
+          nfscWalletAddresses.length > 0,
         walletAddresses: nfscWalletAddresses,
       });
 
@@ -191,7 +228,11 @@ export const UserDropdownFull = ErrorBoundary.with(
       return getUserDropdownItems({
         showBalanceInUserDropdown,
         balanceItem: {
-          onOpen: () => setIsBalanceDialogOpen(true),
+          onOpen: () => {
+            setHasOpenedBalanceDialog(true);
+            setIsBalanceDialogOpen(true);
+            requestBalanceBreakdownDialog();
+          },
           totalBalanceInUsdCents,
           isLoadingBalance,
           hasWallets: nfscWalletAddresses.length > 0,
@@ -202,194 +243,31 @@ export const UserDropdownFull = ErrorBoundary.with(
       totalBalanceInUsdCents,
       isLoadingBalance,
       nfscWalletAddresses.length,
+      requestBalanceBreakdownDialog,
     ]);
 
-    const isExpanded = useMemo(() => {
-      return forceExpanded || sidebarState !== 'collapsed' || isMobile;
-    }, [forceExpanded, sidebarState, isMobile]);
-
-    const shouldStretch = useMemo(
-      () => !forceExpanded && sidebarState !== 'collapsed' && !isMobile,
-      [forceExpanded, sidebarState, isMobile],
-    );
-
-    const actionVariant = isExpanded ? 'pill' : 'icon';
-    const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
-
     return (
-      <div
-        ref={ref}
-        className={cn(
-          !isExpanded && !shouldStretch && 'flex justify-center',
-          className,
-        )}
-        {...rest}
-      >
-        <AnimatePresence initial={false} mode="popLayout">
-          {isLoading && (
-            <motion.div
-              key="user-loading"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.28, ease: 'easeOut' },
-              }}
-              exit={{
-                opacity: 0,
-                y: -12,
-                transition: { duration: 0.2, ease: 'easeIn' },
-              }}
-              layout
-            >
-              <HeaderActionButton
-                actionVariant={actionVariant}
-                disableBackdropBlur={disableBackdropBlur}
-                stretch={shouldStretch}
-                className={cn(!isExpanded && 'text-white/90')}
-                disabled={true}
-              >
-                <Loader2Icon className="size-5 animate-spin" />
-                {isExpanded && <span>Loading...</span>}
-              </HeaderActionButton>
-            </motion.div>
+      <>
+        <DropdownMenuContent align="end" className="w-56">
+          {(canReadUsers ||
+            canViewAdminDashboard ||
+            pbnOwnerQuery.data?.isOwner) && (
+            <AdminDropdownSection
+              canReadUsers={canReadUsers}
+              canViewAdminDashboard={canViewAdminDashboard}
+              isPbnOwner={pbnOwnerQuery.data?.isOwner ?? false}
+              onOpenFindUser={() => setIsFindUserDialogOpen(true)}
+              onOpenAdminQuickAccess={() => setIsAdminQuickAccessOpen(true)}
+            />
           )}
 
-          {!isLoading && !isAuthenticated && (
-            <motion.div
-              key="user-signedout"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.3, ease: 'easeOut' },
-              }}
-              exit={{
-                opacity: 0,
-                y: -12,
-                transition: { duration: 0.22, ease: 'easeIn' },
-              }}
-              layout
-            >
-              <HeaderActionButton
-                actionVariant={actionVariant}
-                disableBackdropBlur={disableBackdropBlur}
-                stretch={shouldStretch}
-                onClick={() => {
-                  void handleConnect();
-                }}
-              >
-                <WalletIcon className="size-5" />
-                {isExpanded && <span>Sign In</span>}
-              </HeaderActionButton>
-            </motion.div>
-          )}
-
-          {!isLoading && isAuthenticated && (
-            <motion.div
-              key="user-authed"
-              initial={{ opacity: 0, y: -12 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.32, ease: 'easeOut' },
-              }}
-              exit={{
-                opacity: 0,
-                y: -12,
-                transition: { duration: 0.22, ease: 'easeIn' },
-              }}
-              layout
-            >
-              <DropdownMenu>
-                <DropdownMenuTrigger
-                  render={
-                    <HeaderActionButton
-                      actionVariant={actionVariant}
-                      disableBackdropBlur={disableBackdropBlur}
-                      stretch={shouldStretch}
-                      className={expandedAvatarPaddingClass}
-                    />
-                  }
-                >
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                      transition: { duration: 0.28, ease: 'easeOut' },
-                    }}
-                    className="shrink-0"
-                    layout
-                  >
-                    <CurrentUserAvatar />
-                  </motion.div>
-                  {isExpanded && (
-                    <>
-                      <motion.span
-                        className="hidden text-sm md:block"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          transition: {
-                            duration: 0.24,
-                            ease: 'easeOut',
-                            delay: 0.03,
-                          },
-                        }}
-                        layout
-                      >
-                        {shortage(name, 11)}
-                      </motion.span>
-                      <motion.span
-                        className="ml-auto"
-                        initial={{ opacity: 0, y: -10 }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          transition: {
-                            duration: 0.24,
-                            ease: 'easeOut',
-                            delay: 0.05,
-                          },
-                        }}
-                        layout
-                      >
-                        <MoreHorizontalIcon className="h-5 w-5" />
-                      </motion.span>
-                    </>
-                  )}
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  {(canReadUsers ||
-                    canViewAdminDashboard ||
-                    pbnOwnerQuery.data?.isOwner) && (
-                    <AdminDropdownSection
-                      canReadUsers={canReadUsers}
-                      canViewAdminDashboard={canViewAdminDashboard}
-                      isPbnOwner={pbnOwnerQuery.data?.isOwner ?? false}
-                      onOpenFindUser={() => setIsFindUserDialogOpen(true)}
-                      onOpenAdminQuickAccess={() =>
-                        setIsAdminQuickAccessOpen(true)
-                      }
-                    />
-                  )}
-                  {items.map((item, index) =>
-                    item ? (
-                      <UserDropdownItem
-                        key={`${item.type}-${'title' in item ? item.title : `unknown-${index}`}`}
-                        item={item}
-                      />
-                    ) : (
-                      <div>error</div>
-                    ),
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </motion.div>
-          )}
-        </AnimatePresence>
+          {items.map((item, index) => (
+            <UserDropdownItem
+              key={`${item.type}-${'title' in item ? item.title : `unknown-${index}`}`}
+              item={item}
+            />
+          ))}
+        </DropdownMenuContent>
         <FindUserDialog
           open={isFindUserDialogOpen}
           onOpenChange={setIsFindUserDialogOpen}
@@ -398,21 +276,32 @@ export const UserDropdownFull = ErrorBoundary.with(
           open={isAdminQuickAccessOpen}
           onOpenChange={setIsAdminQuickAccessOpen}
         />
-        <BalanceBreakdownDialog
-          open={isBalanceDialogOpen}
-          onOpenChange={setIsBalanceDialogOpen}
-          chainBalances={chainBalances}
-          totalBalanceInUsdCents={totalBalanceInUsdCents}
-          isLoadingBalances={isLoadingBalance}
-          walletAddresses={nfscWalletAddresses}
-        />
-      </div>
+        {hasOpenedBalanceDialog && BalanceBreakdownDialog ? (
+          <BalanceBreakdownDialog
+            open={isBalanceDialogOpen}
+            onOpenChange={setIsBalanceDialogOpen}
+            chainBalances={chainBalances}
+            totalBalanceInUsdCents={totalBalanceInUsdCents}
+            isLoadingBalances={isLoadingBalance}
+            walletAddresses={nfscWalletAddresses}
+          />
+        ) : null}
+        {hasOpenedBalanceDialog && !BalanceBreakdownDialog ? (
+          <LazyDialogStatus
+            open={isBalanceDialogOpen}
+            onOpenChange={setIsBalanceDialogOpen}
+            title="Balance"
+            loadingLabel="Loading balance details..."
+            errorMessage={balanceDialogError}
+            isLoading={isBalanceDialogLoading}
+            onRetry={requestBalanceBreakdownDialog}
+          />
+        ) : null}
+      </>
     );
-  }) as ForwardRefExoticComponent<
-    UserDropdownProps & RefAttributes<HTMLDivElement>
-  >,
+  },
 );
-UserDropdownFull.displayName = 'UserDropdownFull';
+UserDropdownMenu.displayName = 'UserDropdownMenu';
 
 type EmptyStateProps = {
   message: string;
@@ -683,6 +572,47 @@ function AdminQuickAccessDropdownItem({ onOpen }: { onOpen: () => void }) {
   );
 }
 
+function LazyDialogStatus({
+  open,
+  onOpenChange,
+  title,
+  loadingLabel,
+  errorMessage,
+  isLoading,
+  onRetry,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  loadingLabel: string;
+  errorMessage: string | null;
+  isLoading: boolean;
+  onRetry: () => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{errorMessage ?? loadingLabel}</DialogDescription>
+        </DialogHeader>
+        {errorMessage ? (
+          <div className="flex justify-end">
+            <Button type="button" variant="outline" onClick={onRetry}>
+              Retry
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <Loader2Icon className="h-4 w-4 animate-spin" />
+            <span>{isLoading ? loadingLabel : 'Preparing...'}</span>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function FindUserDialog({
   open,
   onOpenChange,
@@ -692,6 +622,13 @@ function FindUserDialog({
 }) {
   const [selectedReference, setSelectedReference] =
     useState<AdminUserLookupReference | null>(null);
+  const [AdminUserLookupDialog, setAdminUserLookupDialog] =
+    useState<AdminUserLookupDialogComponent | null>(null);
+  const [isAdminLookupDialogLoading, setIsAdminLookupDialogLoading] =
+    useState(false);
+  const [adminLookupDialogError, setAdminLookupDialogError] = useState<
+    string | null
+  >(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm] = useDebounceValue(searchTerm, 250);
   const normalizedSearchTerm = debouncedSearchTerm.trim();
@@ -704,6 +641,36 @@ function FindUserDialog({
     }),
     enabled: shouldSearch,
   });
+  const requestAdminUserLookupDialog = useCallback(() => {
+    if (AdminUserLookupDialog) return;
+    setIsAdminLookupDialogLoading(true);
+    setAdminLookupDialogError(null);
+    void loadAdminUserLookupDialog()
+      .then((Component) => {
+        setAdminUserLookupDialog(() => Component);
+      })
+      .catch((error) => {
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'The account details failed to load.';
+        setAdminLookupDialogError(message);
+        toast.error('Failed to load account details', {
+          description: message,
+        });
+      })
+      .finally(() => {
+        setIsAdminLookupDialogLoading(false);
+      });
+  }, [AdminUserLookupDialog]);
+
+  const openSelectedReference = useCallback(
+    (reference: AdminUserLookupReference) => {
+      setSelectedReference(reference);
+      requestAdminUserLookupDialog();
+    },
+    [requestAdminUserLookupDialog],
+  );
 
   return (
     <>
@@ -748,7 +715,7 @@ function FindUserDialog({
                     className="w-full rounded-xl border border-border/60 p-4 text-left transition-colors hover:bg-muted/40"
                     onClick={() => {
                       onOpenChange(false);
-                      setSelectedReference({ userId: user.id });
+                      openSelectedReference({ userId: user.id });
                     }}
                   >
                     <div className="flex items-start justify-between gap-4">
@@ -789,15 +756,31 @@ function FindUserDialog({
       </Dialog>
 
       {selectedReference ? (
-        <AdminUserLookupDialog
-          open={true}
-          onOpenChange={(open) => {
-            if (!open) {
-              setSelectedReference(null);
-            }
-          }}
-          reference={selectedReference}
-        />
+        AdminUserLookupDialog ? (
+          <AdminUserLookupDialog
+            open={true}
+            onOpenChange={(open) => {
+              if (!open) {
+                setSelectedReference(null);
+              }
+            }}
+            reference={selectedReference}
+          />
+        ) : (
+          <LazyDialogStatus
+            open={true}
+            onOpenChange={(nextOpen) => {
+              if (!nextOpen) {
+                setSelectedReference(null);
+              }
+            }}
+            title="Account details"
+            loadingLabel="Loading account details..."
+            errorMessage={adminLookupDialogError}
+            isLoading={isAdminLookupDialogLoading}
+            onRetry={requestAdminUserLookupDialog}
+          />
+        )
       ) : null}
     </>
   );

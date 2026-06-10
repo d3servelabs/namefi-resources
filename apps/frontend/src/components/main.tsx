@@ -6,8 +6,7 @@ import { usePathname } from 'next/navigation';
 import { type ReactNode, type UIEvent, useCallback, useState } from 'react';
 import { Footer } from './footer';
 import { Header } from './header';
-import { LeaderCoordinator } from './notifications/leader/leader-coordinator-loader';
-import { NotificationsModal } from './notifications/notifications-modal';
+import { NotificationsRuntime } from './notifications/notifications-runtime';
 import {
   SidebarInset,
   SidebarTrigger,
@@ -76,8 +75,7 @@ export const Main = ({ children }: { children: ReactNode }) => {
         </div>
         <Footer className="row-start-3 col-start-1" />
       </div>
-      <NotificationsModal />
-      <LeaderCoordinator />
+      <NotificationsRuntime />
     </SidebarInset>
   );
 };
