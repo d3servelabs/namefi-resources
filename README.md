@@ -8,15 +8,6 @@
 - [Logs Access](./docs/logs.md)
 - [Dev Guides](./docs/dev-guides.md)
 
-## Turbo Build Graph
-
-The root `turbo.json` includes a virtual `transit` task to make build impact
-propagate across workspace package boundaries without inventing fake outputs.
-`@namefi-astra/backend#build`, `@namefi-astra/frontend#build`, and the default
-`build` task all depend on `transit`, so shared package changes still mark the
-right app builds as affected. `transit` does not execute side effects of its
-own; it exists only to preserve correct dependency edges for change detection.
-
 ## Quick Start
 
 Once you have all dependencies installed
@@ -41,16 +32,6 @@ The dev runner will automatically allocate an available port block and display t
 4. Temporal UI at [http://localhost:3005](http://localhost:3005)
 
 Ports are dynamically assigned to allow multiple dev instances to run concurrently (3000-3005, 3100-3105, etc.).
-
-### Namefi Feed Digest Channel Tokens
-
-Namefi Feed digest publishing supports Slack, Telegram, and Discord targets. These backend secrets are optional at process startup, but the matching token is required when an enabled digest target uses that channel:
-
-- `SLACK_BOT_TOKEN`: Slack bot token for posting digest messages and uploaded media.
-- `TELEGRAM_BOT_TOKEN`: Telegram bot token for sending digest messages and media to configured chats.
-- `DISCORD_BOT_TOKEN`: Discord bot token for posting digest messages and uploaded media.
-
-For example, enabling a Slack digest target requires `SLACK_BOT_TOKEN` to be present; enabling Telegram or Discord targets similarly requires `TELEGRAM_BOT_TOKEN` or `DISCORD_BOT_TOKEN`.
 
 ## Installing the prerequisites and dependencies
 
