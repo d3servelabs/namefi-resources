@@ -69,6 +69,7 @@ const previewConfig: ConfigInput = {
   ).map((campaign) => campaign.trim()),
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
   LAUNCHDARKLY_CLIENT_SIDE_ID: '6a155e4748c03f0a9f351d57',
+  DOMAINS_SUGGESTIONS_TLDS_SET: 'test-tlds',
 };
 
 export default previewConfig;

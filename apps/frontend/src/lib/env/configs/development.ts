@@ -24,6 +24,7 @@ const developmentConfig: ConfigInput = {
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
   LAUNCHDARKLY_CLIENT_SIDE_ID: '6a156ee2449acb0a75e3ae79',
+  DOMAINS_SUGGESTIONS_TLDS_SET: 'test-tlds',
 };
 
 export default developmentConfig;

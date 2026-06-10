@@ -24,6 +24,7 @@ const productionConfig: ConfigInput = {
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
   LAUNCHDARKLY_CLIENT_SIDE_ID: '6a155e4748c03f0a9f351d58',
+  DOMAINS_SUGGESTIONS_TLDS_SET: 'real-prod-tlds',
 };
 
 export default productionConfig;

@@ -3,7 +3,15 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils';
 import { toASCII, verifyNormalized } from '@namefi-astra/zod-dns';
-import { DEFAULT_RANKED_TLD_PAGE_SIZE, RANKED_TLDS } from './tld-rank';
+import {
+  DEFAULT_RANKED_TLD_PAGE_SIZE,
+  RANKED_TLDS as PROD_RANKED_TLDS,
+} from './tld-rank';
+import { CENTRALNIC_OTE_TLDS } from './centralnic-test-tlds';
+
+type TLD_SET = 'test-tlds' | 'real-prod-tlds';
+const RANKED_TLDS = (tldSet: TLD_SET) =>
+  tldSet === 'test-tlds' ? CENTRALNIC_OTE_TLDS : PROD_RANKED_TLDS;
 
 export type RankedDomainSuggestionsResult = {
   domains: NamefiNormalizedDomain[];
@@ -33,6 +41,7 @@ export function generateRankedDomainSuggestions(
   query: string,
   page = 1,
   pageSize = DEFAULT_RANKED_TLD_PAGE_SIZE,
+  tldSet?: TLD_SET,
 ): RankedDomainSuggestionsResult {
   const sanitizedResult = sanitizeDomainSearchQueryResult(query);
   if (!sanitizedResult.success) {
@@ -43,6 +52,7 @@ export function generateRankedDomainSuggestions(
     sanitizedResult.data,
     page,
     pageSize,
+    tldSet,
   );
 }
 
@@ -53,10 +63,11 @@ export function safeGenerateRankedDomainSuggestions(
   query: string,
   page = 1,
   pageSize = DEFAULT_RANKED_TLD_PAGE_SIZE,
+  tldSet?: TLD_SET,
 ): SafeRankedDomainSuggestionsResult {
   return {
     success: true,
-    data: generateRankedDomainSuggestions(query, page, pageSize),
+    data: generateRankedDomainSuggestions(query, page, pageSize, tldSet),
   };
 }
 
@@ -81,18 +92,19 @@ function generateRankedDomainSuggestionsForSanitizedQuery(
   sanitizedQuery: NamefiNormalizedDomain,
   page: number,
   pageSize: number,
+  tldSet: TLD_SET = 'real-prod-tlds',
 ): RankedDomainSuggestionsResult {
   const normalizedPageSize = Math.trunc(pageSize);
   const effectivePageSize =
     normalizedPageSize > 0 ? normalizedPageSize : DEFAULT_RANKED_TLD_PAGE_SIZE;
   const totalPages = Math.max(
     1,
-    Math.ceil(RANKED_TLDS.length / effectivePageSize),
+    Math.ceil(RANKED_TLDS(tldSet).length / effectivePageSize),
   );
   const currentPage = Math.min(Math.max(Math.trunc(page) || 1, 1), totalPages);
 
   const sliceStart = (currentPage - 1) * effectivePageSize;
-  const rankedTldsForPage = RANKED_TLDS.slice(
+  const rankedTldsForPage = RANKED_TLDS(tldSet).slice(
     sliceStart,
     sliceStart + effectivePageSize,
   );

@@ -24,6 +24,7 @@ import { dropLast, isNil, isEmpty } from 'ramda';
 import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { dispatchSearchIntent } from '@/lib/search-intent-event';
+import { config } from '@/lib/env';
 
 declare global {
   interface Window {
@@ -134,6 +135,7 @@ export const useSearch = (
         normalizedQuery,
         index + 1,
         RANKED_TLD_PAGE_SIZE,
+        config.DOMAINS_SUGGESTIONS_TLDS_SET,
       );
       if (!result.success) {
         return { pages: [], error: result.error };

@@ -31,6 +31,7 @@ const localConfig: ConfigInput = {
   HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
   DATADOG_LOGS_SESSION_SAMPLE_RATE: 0,
   LAUNCHDARKLY_CLIENT_SIDE_ID: '6a156f0ee7a0a90a6a1d799c',
+  DOMAINS_SUGGESTIONS_TLDS_SET: 'test-tlds',
 };
 
 export default localConfig;
