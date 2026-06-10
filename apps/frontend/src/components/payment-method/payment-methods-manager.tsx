@@ -33,7 +33,6 @@ import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
-import { useQueryState, parseAsBoolean } from 'nuqs';
 import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-placeholder';
 import { NFSCWalletCard } from '../ui/untitled/nfsc-wallet-card';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
@@ -54,19 +53,17 @@ import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { useActiveWallet } from '@/hooks/use-active-wallet';
-import NfscSwapDialog from '../dialogs/nfsc-swap-dialog';
 import {
   bind,
   RequestWalletConnectionDialog,
   useRequestWalletConnection,
   type RequestCancelledError,
 } from '../dialogs/use-request-wallet-connection';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
+import dynamic from 'next/dynamic';
+
+const NfscSwapDialog = dynamic(() => import('../dialogs/nfsc-swap-dialog'), {
+  ssr: false,
+});
 
 const LoadingSkeletons = () => {
   return (
@@ -387,7 +384,7 @@ const _userWalletCardsGridFlags = [
   },
 ] as FeatureFlagDefinition[];
 
-function UserWalletCardsGrid(props: {}) {
+function UserWalletCardsGrid() {
   const {
     isUnlinkWalletDialogOpen,
     setIsUnlinkWalletDialogOpen,
@@ -687,11 +684,13 @@ function UserWalletCardsGrid(props: {}) {
         handleUnlinkWalletConfirm={handleConfirmUnlinkWalletClicked}
         isUnlinkWalletPending={isUnlinkWalletPending}
       />
-      <NfscSwapDialog
-        open={isSwapDialogOpen}
-        onOpenChange={setIsSwapDialogOpen}
-        walletAddress={activeWalletAddress}
-      />
+      {isSwapDialogOpen ? (
+        <NfscSwapDialog
+          open={isSwapDialogOpen}
+          onOpenChange={setIsSwapDialogOpen}
+          walletAddress={activeWalletAddress}
+        />
+      ) : null}
       <RequestWalletConnectionDialog {...bind(walletDialog)} />
     </div>
   );

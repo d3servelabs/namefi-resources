@@ -8,7 +8,7 @@ import { mock } from 'wagmi/connectors';
 import {
   BalanceBreakdownDialog,
   type BalanceBreakdownDialogProps,
-} from '@/components/dropdowns/user-dropdown';
+} from '@/components/payment-method/nfsc-balance-dialog';
 import type { ChainBalance } from '@/hooks/use-user-chain-balances';
 import type { OriginRuntime } from '@/lib/origin/types';
 import { OriginProvider } from '@/components/providers/origin';
@@ -135,7 +135,7 @@ const meta: Meta<BalanceBreakdownDialogProps> = {
   },
   args: {
     open: true,
-    onOpenChange: () => {},
+    onOpenChange: () => undefined,
   },
   render: (args) => (
     <StoryProviders>

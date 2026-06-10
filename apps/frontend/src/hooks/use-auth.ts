@@ -137,6 +137,8 @@ export function useAuth() {
       impersonation: {
         originalPrivyUser: null,
         targetPrivyUser: null,
+        status: null,
+        refetchStatus: async () => undefined,
       },
     };
   }
@@ -154,6 +156,8 @@ export function useAuth() {
     impersonation: {
       originalPrivyUser,
       targetPrivyUser: impersonationTargetPrivyUser,
+      status: impersonation.data,
+      refetchStatus: impersonation.refetch,
     },
   };
 }

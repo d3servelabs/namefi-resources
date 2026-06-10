@@ -15,8 +15,7 @@ import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { useBuyNfsc } from '@/hooks/use-buy-nfsc';
 import useGetNfscExchangeRate from '@/hooks/use-get-nfsc-exchange-rate';
 import useNfscBalance from '@/hooks/use-nfsc-balance';
-import { AlertCircle, ArrowDown } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
+import { AlertCircle, ArrowDown, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { toast } from 'sonner';
@@ -40,10 +39,25 @@ import {
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
-import { NfscCardTopUpTab } from '@/components/dialogs/nfsc-card-topup-tab';
 import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+
+const NfscCardTopUpTab = dynamic(
+  () =>
+    import('@/components/dialogs/nfsc-card-topup-tab').then(
+      (mod) => mod.NfscCardTopUpTab,
+    ),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        Loading...
+      </div>
+    ),
+  },
+);
 
 type Props = {
   open: boolean;
@@ -53,6 +67,7 @@ type Props = {
 
 const DISPLAY_DECIMALS = 2;
 const CALCULATION_DECIMALS = 6;
+const DECIMAL_INPUT_PATTERN = /^\d*\.?\d*$/;
 
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
@@ -72,6 +87,7 @@ export default function NFSCSwapDialog(props: Props) {
   const [amountReceive, setAmountReceive] = useState('');
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [paymentTab, setPaymentTab] = useState<'eth' | 'card'>('eth');
 
   const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
@@ -149,7 +165,7 @@ export default function NFSCSwapDialog(props: Props) {
 
   const handlePayChange = useCallback((value: string) => {
     // Only allow valid decimal numbers
-    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+    if (value === '' || DECIMAL_INPUT_PATTERN.test(value)) {
       setAmountPay(value);
     }
   }, []);
@@ -194,9 +210,10 @@ export default function NFSCSwapDialog(props: Props) {
 
     try {
       await exchangeNfsc(parseEther(amountPay));
-    } catch (e: any) {
-      console.error(e);
-      setErrorMessage(e?.message || 'Transaction failed');
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error ? error.message : 'Transaction failed',
+      );
     }
   };
 
@@ -314,7 +331,11 @@ export default function NFSCSwapDialog(props: Props) {
           </div>
         )}
 
-        <Tabs defaultValue="eth" className="w-full">
+        <Tabs
+          value={paymentTab}
+          onValueChange={(value) => setPaymentTab(value as 'eth' | 'card')}
+          className="w-full"
+        >
           <TabsList className="grid grid-cols-2 mx-6">
             <TabsTrigger value="eth">Pay with ETH</TabsTrigger>
             <TabsTrigger value="card">Pay with card</TabsTrigger>
@@ -439,11 +460,13 @@ export default function NFSCSwapDialog(props: Props) {
             )}
           </TabsContent>
           <TabsContent value="card">
-            <NfscCardTopUpTab
-              recipientWalletAddress={checksummedAddress}
-              chainId={chainId}
-              onClose={() => onOpenChange(false)}
-            />
+            {paymentTab === 'card' && (
+              <NfscCardTopUpTab
+                recipientWalletAddress={checksummedAddress}
+                chainId={chainId}
+                onClose={() => onOpenChange(false)}
+              />
+            )}
           </TabsContent>
         </Tabs>
       </DialogContent>

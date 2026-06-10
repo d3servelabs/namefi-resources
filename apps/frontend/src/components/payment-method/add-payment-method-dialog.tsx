@@ -9,6 +9,7 @@ import {
 import { useTRPC } from '@/lib/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
 import { AddPaymentMethodForm } from './add-payment-method-form';
@@ -36,20 +37,27 @@ export function AddPaymentMethodDialog({
     useState<string | undefined>(undefined);
   const trpc = useTRPC();
 
-  const { mutate: createCustomerSession } = useMutation(
-    trpc.payments.createCustomerSession.mutationOptions({
-      onSuccess: (data) => {
-        setCustomerSessionClientSecret(data.customerSessionClientSecret);
-      },
-      onError: (_error) => {
-        setCustomerSessionClientSecret(undefined);
-      },
-    }),
-  );
+  const { mutate: createCustomerSession, isError: isCustomerSessionError } =
+    useMutation(
+      trpc.payments.createCustomerSession.mutationOptions({
+        onSuccess: (data) => {
+          setCustomerSessionClientSecret(data.customerSessionClientSecret);
+        },
+        onError: (_error) => {
+          setCustomerSessionClientSecret(undefined);
+        },
+      }),
+    );
 
   useEffect(() => {
+    if (!showAddPaymentMethodDialog) {
+      setCustomerSessionClientSecret(undefined);
+      return;
+    }
+
+    setCustomerSessionClientSecret(undefined);
     createCustomerSession();
-  }, [createCustomerSession]);
+  }, [createCustomerSession, showAddPaymentMethodDialog]);
 
   return (
     <Dialog
@@ -68,15 +76,28 @@ export function AddPaymentMethodDialog({
             confirm your order.
           </DialogDescription>
         </DialogHeader>
-        <StripeProvider
-          amount={amountInUsdCents}
-          customerSessionClientSecret={customerSessionClientSecret}
-        >
-          <AddPaymentMethodForm
-            onSuccess={onAddPaymentMethodSuccess}
-            onError={onAddPaymentMethodError}
-          />
-        </StripeProvider>
+        {customerSessionClientSecret ? (
+          <StripeProvider
+            amount={amountInUsdCents}
+            customerSessionClientSecret={customerSessionClientSecret}
+          >
+            <AddPaymentMethodForm
+              onSuccess={onAddPaymentMethodSuccess}
+              onError={onAddPaymentMethodError}
+            />
+          </StripeProvider>
+        ) : (
+          <div className="flex items-center justify-center gap-2 py-10 text-muted-foreground">
+            {!isCustomerSessionError && (
+              <Loader2 className="size-4 animate-spin" />
+            )}
+            <span>
+              {isCustomerSessionError
+                ? 'Unable to load payment form'
+                : 'Loading payment form...'}
+            </span>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
