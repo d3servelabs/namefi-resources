@@ -106,6 +106,7 @@ type NamefiFeedDigestRunsPage = InferContractOutputs<
   typeof adminNamefiFeedContract
 >['listDigestRuns'];
 type NamefiFeedRunRow = NamefiFeedRunsPage['rows'][number];
+type NamefiFeedRunSourceResult = NamefiFeedRunRow['sourceResults'][number];
 
 type SettingsDraft = {
   autoScanEnabled: boolean;
@@ -145,6 +146,8 @@ const EMPTY_SETTINGS_DRAFT: SettingsDraft = {
   },
   maxPostsProcessedPerRun: 500,
 };
+const DEFAULT_SETTINGS_ACCORDION_VALUE = ['global', 'x', 'namepros', 'dnforum'];
+const SOURCE_DISPLAY_ORDER: FeedSourceId[] = ['x', 'namepros', 'dnforum'];
 
 const MANUAL_TWEET_SPLIT_PATTERN = /[\s,]+/;
 const POSITIVE_INTEGER_PATTERN = /^[1-9]\d*$/;
@@ -238,6 +241,9 @@ function NamefiFeedAdminContent() {
   const [digestIncludeAnimation, setDigestIncludeAnimation] = useState(true);
   const [digestDryRun, setDigestDryRun] = useState(false);
   const [digestConfirmOpen, setDigestConfirmOpen] = useState(false);
+  const [settingsAccordionValue, setSettingsAccordionValue] = useState<
+    string[]
+  >(DEFAULT_SETTINGS_ACCORDION_VALUE);
   const [selectedDigestTargetIds, setSelectedDigestTargetIds] = useState<
     string[]
   >([]);
@@ -442,6 +448,14 @@ function NamefiFeedAdminContent() {
     : false;
   const settingsControlsDisabled =
     !settingsLoaded || !canWriteNamefiFeed || updateSettingsMutation.isPending;
+  const openSettingsPanels = useMemo(
+    () =>
+      filterSettingsAccordionValue(
+        settingsAccordionValue,
+        settingsDraft.enabledSources,
+      ),
+    [settingsAccordionValue, settingsDraft.enabledSources],
+  );
 
   const saveSettings = () => {
     updateSettingsMutation.mutate({
@@ -460,6 +474,25 @@ function NamefiFeedAdminContent() {
         ? Array.from(new Set([...draft.enabledSources, sourceId]))
         : draft.enabledSources.filter((id) => id !== sourceId),
     }));
+    setSettingsAccordionValue((current) =>
+      enabled
+        ? Array.from(new Set([...current, sourceId]))
+        : current.filter((value) => value !== sourceId),
+    );
+  };
+
+  const updateDigestIncludeImage = (checked: boolean) => {
+    setDigestIncludeImage(checked);
+    if (!checked) {
+      setDigestIncludeAnimation(false);
+    }
+  };
+
+  const updateDigestIncludeAnimation = (checked: boolean) => {
+    setDigestIncludeAnimation(checked);
+    if (checked) {
+      setDigestIncludeImage(true);
+    }
   };
 
   const updateXSourceSetting = (
@@ -523,7 +556,7 @@ function NamefiFeedAdminContent() {
 
   const runDigest = () => {
     runDigestMutation.mutate({
-      includeImage: digestIncludeImage,
+      includeImage: digestIncludeImage || digestIncludeAnimation,
       includeAnimation: digestIncludeAnimation,
       enabledOnly: true,
       dryRun: digestDryRun,
@@ -567,9 +600,6 @@ function NamefiFeedAdminContent() {
   };
 
   const missingDigestTokens = getMissingDigestTokenLabels(overview);
-  const latestFailedDigestDelivery = overview?.recentDigestDeliveries.find(
-    (delivery) => delivery.status === 'failed' || delivery.status === 'partial',
-  );
   const savedEnabledSourceIds = overview?.settings.enabledSources ?? [];
   const xScanSourceEnabled = savedEnabledSourceIds.includes('x');
   const hasRunnableSavedScanSource =
@@ -629,19 +659,6 @@ function NamefiFeedAdminContent() {
         </Alert>
       )}
 
-      {latestFailedDigestDelivery && (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Latest digest delivery failed</AlertTitle>
-          <AlertDescription>
-            {latestFailedDigestDelivery.targetLabel ??
-              latestFailedDigestDelivery.targetKey}{' '}
-            failed at {formatDate(latestFailedDigestDelivery.generatedAt)}:{' '}
-            {latestFailedDigestDelivery.error ?? 'No error recorded.'}
-          </AlertDescription>
-        </Alert>
-      )}
-
       {overviewQuery.isError && (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
@@ -653,15 +670,15 @@ function NamefiFeedAdminContent() {
         </Alert>
       )}
 
-      <Tabs defaultValue="listings" className="w-full">
+      <Tabs defaultValue="runs" className="w-full">
         <TabsList className="flex h-auto w-full flex-wrap justify-start lg:w-auto">
-          <TabsTrigger value="listings">Listings</TabsTrigger>
+          <TabsTrigger value="runs">Ingested</TabsTrigger>
+          <TabsTrigger value="posts">Processed</TabsTrigger>
+          <TabsTrigger value="listings">Listed</TabsTrigger>
           <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="targets">Targets</TabsTrigger>
+          <TabsTrigger value="targets">Digest Targets</TabsTrigger>
           <TabsTrigger value="digest-runs">Digest Runs</TabsTrigger>
-          <TabsTrigger value="deliveries">Deliveries</TabsTrigger>
-          <TabsTrigger value="runs">Runs</TabsTrigger>
-          <TabsTrigger value="posts">Posts</TabsTrigger>
+          <TabsTrigger value="deliveries">Digest Deliveries</TabsTrigger>
           <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
 
@@ -677,7 +694,17 @@ function NamefiFeedAdminContent() {
               <CardContent className="flex flex-col gap-5">
                 <Accordion
                   multiple
-                  defaultValue={['global', 'x', 'namepros', 'dnforum']}
+                  value={openSettingsPanels}
+                  onValueChange={(value) =>
+                    setSettingsAccordionValue(
+                      filterSettingsAccordionValue(
+                        value.filter(
+                          (item): item is string => typeof item === 'string',
+                        ),
+                        settingsDraft.enabledSources,
+                      ),
+                    )
+                  }
                   className="rounded-md border"
                 >
                   <AccordionItem value="global" className="px-4">
@@ -731,6 +758,8 @@ function NamefiFeedAdminContent() {
                     const enabled = settingsDraft.enabledSources.includes(
                       source.id,
                     );
+                    const sourceControlsDisabled =
+                      settingsControlsDisabled || !enabled;
 
                     return (
                       <AccordionItem
@@ -738,34 +767,28 @@ function NamefiFeedAdminContent() {
                         value={source.id}
                         className="px-4"
                       >
-                        <AccordionTrigger className="hover:no-underline">
-                          <SettingsPanelHeading
-                            title={source.label}
-                            description={feedSourceKindLabel(source.kind)}
-                            badge={enabled ? 'Enabled' : 'Disabled'}
-                          />
-                        </AccordionTrigger>
-                        <AccordionContent className="flex flex-col gap-4">
-                          <div className="flex items-center justify-between gap-4 rounded-md border p-3">
-                            <div>
-                              <Label htmlFor={sourceSwitchId}>
-                                {source.label} scans
-                              </Label>
-                              <p className="text-sm text-muted-foreground">
-                                Include this source in scheduled ingestion.
-                              </p>
-                            </div>
-                            <Switch
-                              id={sourceSwitchId}
-                              checked={enabled}
-                              disabled={settingsControlsDisabled}
-                              onCheckedChange={(checked) =>
-                                toggleFeedSource(source.id, checked)
-                              }
-                              aria-label={`Toggle ${source.label}`}
+                        <div className="flex items-center gap-3">
+                          <AccordionTrigger
+                            className="min-w-0 flex-1 hover:no-underline"
+                            disabled={!enabled}
+                          >
+                            <SettingsPanelHeading
+                              title={source.label}
+                              description={feedSourceKindLabel(source.kind)}
+                              badge={enabled ? 'Enabled' : 'Disabled'}
                             />
-                          </div>
-
+                          </AccordionTrigger>
+                          <Switch
+                            id={sourceSwitchId}
+                            checked={enabled}
+                            disabled={settingsControlsDisabled}
+                            onCheckedChange={(checked) =>
+                              toggleFeedSource(source.id, checked)
+                            }
+                            aria-label={`Toggle ${source.label}`}
+                          />
+                        </div>
+                        <AccordionContent className="flex flex-col gap-4">
                           {source.id === 'x' ? (
                             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                               <NumberField
@@ -776,7 +799,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={1}
                                 max={12}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(maxQueries) =>
                                   updateXSourceSetting('maxQueries', maxQueries)
                                 }
@@ -790,7 +813,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={1}
                                 max={10}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(maxPagesPerQuery) =>
                                   updateXSourceSetting(
                                     'maxPagesPerQuery',
@@ -807,7 +830,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={10}
                                 max={100}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(maxTweetsPerQuery) =>
                                   updateXSourceSetting(
                                     'maxTweetsPerQuery',
@@ -824,7 +847,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={15}
                                 max={1440}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(maxTweetAgeMinutes) =>
                                   updateXSourceSetting(
                                     'maxTweetAgeMinutes',
@@ -840,7 +863,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={0}
                                 max={1440}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(overlapMinutes) =>
                                   updateXSourceSetting(
                                     'overlapMinutes',
@@ -863,7 +886,7 @@ function NamefiFeedAdminContent() {
                                 }
                                 min={15}
                                 max={1440}
-                                disabled={settingsControlsDisabled}
+                                disabled={sourceControlsDisabled}
                                 onChange={(maxPostAgeMinutes) =>
                                   updateMarketplaceSourceSetting(
                                     source.id === 'dnforum'
@@ -973,13 +996,13 @@ function NamefiFeedAdminContent() {
                   id="digest-image"
                   label="Word cloud image"
                   checked={digestIncludeImage}
-                  onCheckedChange={setDigestIncludeImage}
+                  onCheckedChange={updateDigestIncludeImage}
                 />
                 <ToggleRow
                   id="digest-animation"
                   label="Animation"
                   checked={digestIncludeAnimation}
-                  onCheckedChange={setDigestIncludeAnimation}
+                  onCheckedChange={updateDigestIncludeAnimation}
                 />
                 <ToggleRow
                   id="digest-dry-run"
@@ -1265,6 +1288,22 @@ function SettingsPanelHeading({
   );
 }
 
+function filterSettingsAccordionValue(
+  values: string[],
+  enabledSources: FeedSourceId[],
+) {
+  const enabledSourceSet = new Set(enabledSources);
+  return values.filter(
+    (value) =>
+      value === 'global' ||
+      (isFeedSourceId(value) && enabledSourceSet.has(value)),
+  );
+}
+
+function isFeedSourceId(value: string): value is FeedSourceId {
+  return value === 'x' || value === 'namepros' || value === 'dnforum';
+}
+
 function settingsDraftMatchesSettings(
   draft: SettingsDraft,
   settings: FeedSettings,
@@ -1300,6 +1339,14 @@ function sameStringSet(left: readonly string[], right: readonly string[]) {
 
 function feedSourceKindLabel(kind: FeedSource['kind']) {
   return kind === 'social' ? 'Social scan' : 'Marketplace RSS';
+}
+
+function formatFeedSourceId(source: FeedSourceId) {
+  if (source === 'x') {
+    return 'X';
+  }
+
+  return source === 'namepros' ? 'NamePros' : 'DNForum';
 }
 
 function useNamefiFeedServerTableControls({
@@ -1375,20 +1422,122 @@ function useNamefiFeedServerTableControls({
   };
 }
 
-function formatRunSources(run: NamefiFeedRunRow) {
+function RunSourcesCell({ run }: { run: NamefiFeedRunRow }) {
   if (run.sourceResults.length === 0) {
-    return '-';
+    return <span>-</span>;
   }
 
-  return run.sourceResults
+  const summaries = summarizeRunSources(run.sourceResults);
+  const totals = summaries.reduce(
+    (accumulator, summary) => ({
+      scannedPostCount: accumulator.scannedPostCount + summary.scannedPostCount,
+      queuedPostCount: accumulator.queuedPostCount + summary.queuedPostCount,
+      alreadyExistingCount:
+        accumulator.alreadyExistingCount + summary.alreadyExistingCount,
+      skippedPostCount: accumulator.skippedPostCount + summary.skippedPostCount,
+      failedFeedCount: accumulator.failedFeedCount + summary.failedFeedCount,
+      skippedFeedCount: accumulator.skippedFeedCount + summary.skippedFeedCount,
+    }),
+    {
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      skippedPostCount: 0,
+      failedFeedCount: 0,
+      skippedFeedCount: 0,
+    },
+  );
+
+  return (
+    <div
+      className="max-w-[320px] space-y-1"
+      title={formatRunSourceDetails(run.sourceResults)}
+    >
+      <div className="flex flex-wrap gap-1">
+        {summaries.map((summary) => (
+          <Badge
+            key={summary.source}
+            variant={summary.failedFeedCount > 0 ? 'destructive' : 'outline'}
+          >
+            {formatFeedSourceId(summary.source)} {summary.queuedPostCount}/
+            {summary.scannedPostCount}
+          </Badge>
+        ))}
+      </div>
+      <p className="truncate text-xs text-muted-foreground">
+        {run.sourceResults.length} feeds · {totals.queuedPostCount} queued ·{' '}
+        {totals.alreadyExistingCount} existing · {totals.skippedPostCount}{' '}
+        skipped
+        {totals.failedFeedCount > 0
+          ? ` · ${totals.failedFeedCount} failed`
+          : ''}
+        {totals.skippedFeedCount > 0
+          ? ` · ${totals.skippedFeedCount} skipped feeds`
+          : ''}
+      </p>
+    </div>
+  );
+}
+
+function summarizeRunSources(sources: NamefiFeedRunSourceResult[]) {
+  const summaries = new Map<
+    FeedSourceId,
+    {
+      source: FeedSourceId;
+      scannedPostCount: number;
+      queuedPostCount: number;
+      alreadyExistingCount: number;
+      skippedPostCount: number;
+      failedFeedCount: number;
+      skippedFeedCount: number;
+    }
+  >();
+
+  for (const source of sources) {
+    const summary = summaries.get(source.source) ?? {
+      source: source.source,
+      scannedPostCount: 0,
+      queuedPostCount: 0,
+      alreadyExistingCount: 0,
+      skippedPostCount: 0,
+      failedFeedCount: 0,
+      skippedFeedCount: 0,
+    };
+
+    summary.scannedPostCount += source.scannedPostCount;
+    summary.queuedPostCount += source.queuedPostCount;
+    summary.alreadyExistingCount += source.alreadyExistingCount;
+    summary.skippedPostCount += source.skippedPostCount;
+    if (isRunSourceFailure(source)) {
+      summary.failedFeedCount += 1;
+    } else if (source.skipped) {
+      summary.skippedFeedCount += 1;
+    }
+
+    summaries.set(source.source, summary);
+  }
+
+  return Array.from(summaries.values()).sort(
+    (a, b) =>
+      SOURCE_DISPLAY_ORDER.indexOf(a.source) -
+      SOURCE_DISPLAY_ORDER.indexOf(b.source),
+  );
+}
+
+function formatRunSourceDetails(sources: NamefiFeedRunSourceResult[]) {
+  return sources
     .map((source) => {
       const sourceLabel = source.feedId
-        ? `${source.source}:${source.feedId}`
-        : source.source;
+        ? `${formatFeedSourceId(source.source)}: ${source.feedId}`
+        : formatFeedSourceId(source.source);
       const status = source.skipped ? (source.reason ?? 'skipped') : 'ok';
-      return `${sourceLabel} ${status} scanned ${source.scannedPostCount}, queued ${source.queuedPostCount}, existing ${source.alreadyExistingCount}, skipped ${source.skippedPostCount}`;
+      return `${sourceLabel} · ${status} · scanned ${source.scannedPostCount}, queued ${source.queuedPostCount}, existing ${source.alreadyExistingCount}, skipped ${source.skippedPostCount}`;
     })
-    .join(' | ');
+    .join('\n');
+}
+
+function isRunSourceFailure(source: NamefiFeedRunSourceResult) {
+  return Boolean(source.errorMessage || source.reason?.includes('failed'));
 }
 
 function formatDigestRunRender(run: NamefiFeedDigestRunsPage['rows'][number]) {
@@ -1754,7 +1903,7 @@ function RunsTable() {
       {
         id: 'sources',
         header: 'Sources',
-        cell: ({ row }) => formatRunSources(row.original),
+        cell: ({ row }) => <RunSourcesCell run={row.original} />,
       },
       {
         accessorKey: 'errorMessage',
