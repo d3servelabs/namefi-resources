@@ -2,22 +2,27 @@
 
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { useFlag } from '@openfeature/react-sdk';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { CartItemDurationControl } from '@/components/cart-item-duration-stepper';
 import { CartItemRegistrationRequirement } from '@/components/cart-item-registration-requirement';
-import { CartItemSetupOptions } from '@/components/cart-item-setup-options';
+import {
+  CartItemSetupOptions,
+  CartItemSetupOptionsSummary,
+} from '@/components/cart-item-setup-options';
 import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
+import { CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG } from '@/lib/cart-setup-options';
 import { formatAmountInUSD } from '@/lib/number';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { Loader2, Trash2 } from 'lucide-react';
+import { Loader2, Settings2 as Settings, Trash2 } from 'lucide-react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 interface CartItemProps {
   item: UnifiedCartItem;
@@ -61,6 +66,14 @@ export function CartItem({
     setupOptionsEnabled &&
     (item.type === itemTypeSchema.enum.REGISTER ||
       item.type === itemTypeSchema.enum.IMPORT);
+
+  // Collapsible-setup variant: chips hidden behind a settings toggle (with an
+  // enabled-flags summary), and the duration stepper moved next to the price.
+  const [collapsibleSetup] = useAdminFeatureFlag(
+    CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG[0],
+  );
+  const useCollapsibleSetup = showSetupOptions && collapsibleSetup;
+  const [setupExpanded, setSetupExpanded] = useState(false);
 
   // TLD-specific registration requirements (e.g. Google's HTTPS notice for
   // .app/.dev) apply when acquiring the domain — REGISTER or IMPORT, not RENEW.
@@ -147,6 +160,31 @@ export function CartItem({
     return null;
   }
 
+  const durationControl = (
+    <CartItemDurationControl
+      item={item}
+      domainAvailabilityInfo={domainAvailabilityInfo}
+      onDurationChange={handleDurationChange}
+      isDisabled={isDisabled || updatingBusy || !!readOnly}
+    />
+  );
+
+  const priceDisplay =
+    originalAmountInUsdCents !== undefined ? (
+      <span className="flex items-baseline gap-2">
+        <span className="text-sm text-muted-foreground line-through">
+          {formatAmountInUSD(originalAmountInUsdCents, true)}
+        </span>
+        <span className="text-xl font-semibold text-brand-primary">
+          {formatAmountInUSD(displayedAmountInUsdCents, true)}
+        </span>
+      </span>
+    ) : (
+      <span className="text-xl">
+        {formatAmountInUSD(displayedAmountInUsdCents, true)}
+      </span>
+    );
+
   return (
     <div>
       <div className="flex flex-col gap-4">
@@ -166,8 +204,8 @@ export function CartItem({
             </span>
           )}
         </div>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
             {!readOnly ? (
               <button
                 type="button"
@@ -182,31 +220,46 @@ export function CartItem({
                 )}
               </button>
             ) : null}
-            <CartItemDurationControl
-              item={item}
-              domainAvailabilityInfo={domainAvailabilityInfo}
-              onDurationChange={handleDurationChange}
-              isDisabled={isDisabled || updatingBusy || !!readOnly}
-            />
+            {useCollapsibleSetup ? (
+              <>
+                <button
+                  type="button"
+                  className={cn(
+                    'rounded-lg p-2 transition-colors disabled:cursor-not-allowed disabled:opacity-50',
+                    setupExpanded
+                      ? 'bg-brand-primary/15 text-brand-primary'
+                      : 'bg-[#27272A] hover:bg-[#3F3F46]',
+                  )}
+                  onClick={() => setSetupExpanded((open) => !open)}
+                  disabled={isDisabled}
+                  aria-expanded={setupExpanded}
+                  aria-label="Domain setup options"
+                >
+                  <Settings className="size-4" />
+                </button>
+                {!setupExpanded && (
+                  <CartItemSetupOptionsSummary
+                    item={item}
+                    onExpand={() => setSetupExpanded(true)}
+                  />
+                )}
+              </>
+            ) : (
+              durationControl
+            )}
           </div>
-          {originalAmountInUsdCents !== undefined ? (
-            <span className="flex items-baseline gap-2">
-              <span className="text-sm text-muted-foreground line-through">
-                {formatAmountInUSD(originalAmountInUsdCents, true)}
-              </span>
-              <span className="text-xl font-semibold text-brand-primary">
-                {formatAmountInUSD(displayedAmountInUsdCents, true)}
-              </span>
-            </span>
-          ) : (
-            <span className="text-xl">
-              {formatAmountInUSD(displayedAmountInUsdCents, true)}
-            </span>
-          )}
+          <div className="flex items-center gap-4">
+            {useCollapsibleSetup && durationControl}
+            {priceDisplay}
+          </div>
         </div>
-        {showSetupOptions && (
-          <CartItemSetupOptions item={item} readOnly={readOnly} />
-        )}
+        {useCollapsibleSetup
+          ? setupExpanded && (
+              <CartItemSetupOptions item={item} readOnly={readOnly} />
+            )
+          : showSetupOptions && (
+              <CartItemSetupOptions item={item} readOnly={readOnly} />
+            )}
         {showRegistrationRequirement && registrationRequirement && (
           <CartItemRegistrationRequirement
             item={item}

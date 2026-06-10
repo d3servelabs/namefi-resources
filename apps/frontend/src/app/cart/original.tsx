@@ -7,6 +7,7 @@ import { DisabledReasonTooltip } from '@/components/disabled-reason-tooltip';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
+import { CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG } from '@/lib/cart-setup-options';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { useInteractionLoggers } from '@/components/providers/analytics';
@@ -98,6 +99,8 @@ export default function CartPage() {
   const [requirementsInFootnote] = useAdminFeatureFlag(
     CART_REQUIREMENTS_VARIANT_FLAG[0],
   );
+
+  useRegisterAdminFlags(CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG);
 
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 

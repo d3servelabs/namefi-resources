@@ -145,6 +145,10 @@
           <h3 class="mb-2 text-sm font-medium text-muted-foreground">H · Add / remove chips — outline (collapsible Add)</h3>
           <div id="v-addremove-outline"></div>
         </div>
+        <div data-variant-card class="lg:col-span-2">
+          <h3 class="mb-2 text-sm font-medium text-muted-foreground">I · Collapsible setup — settings toggle + enabled summary (duration moved next to price)</h3>
+          <div id="v-collapsible"></div>
+        </div>
       </div>
     </section>
 
@@ -163,6 +167,7 @@
         <li><strong class="text-foreground">Lower emphasis:</strong> outline (B) when the row shouldn't compete with price/CTA.</li>
         <li><strong class="text-foreground">Avoid switches/checkboxes (E/F)</strong> here — they're taller and need separate labels, defeating the compact goal.</li>
         <li><strong class="text-foreground">Add/remove (G)</strong> fits open-ended sets, not a fixed list of 4–5 known flags.</li>
+        <li><strong class="text-foreground">Collapsible (I)</strong> when the row should stay minimal by default: chips hidden behind a settings toggle, with an enabled-flags summary and the duration moved next to the price.</li>
       </ul>
     </section>
   </div>
@@ -176,6 +181,8 @@
         minus: '<path d="M5 12h14"/>',
         plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
         trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+        checkCheck: '<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>',
+        settings: '<path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>',
       }[name];
       return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="${cls} shrink-0">${p}</svg>`;
     }
@@ -424,6 +431,81 @@
       }
     }
 
+    /* ------- I: collapsible setup (settings toggle + summary) --------- */
+    // Mirrors the app's `cart_setup_options_collapsible` admin-flag variant:
+    // the chips are hidden behind a settings toggle next to the trash button;
+    // while collapsed a summary of only the ENABLED flags shows; and the
+    // duration stepper moves to the right, next to the price.
+    function renderCollapsible(targetId, st) {
+      const host = document.getElementById(targetId);
+      host.innerHTML = '';
+      const card = document.createElement('div');
+      card.className = 'rounded-2xl border border-border bg-card p-5';
+
+      const durationHtml = `
+        <div class="flex items-center gap-2 rounded-lg border border-border px-2 py-1 text-sm">
+          <button class="text-zinc-400 hover:text-foreground">${icon('minus', 'size-3')}</button>
+          <span class="tabular-nums">1 year</span>
+          <button class="text-zinc-400 hover:text-foreground">${icon('plus', 'size-3')}</button>
+        </div>`;
+
+      const draw = () => {
+        const rows = OPTIONS.map((o) => ({ o, d: deriveChip(o, st) })).filter((r) => r.d.visible);
+        const enabled = rows.filter((r) => r.d.checked && !r.d.disabled).map((r) => r.o);
+        const summary = enabled.length
+          ? enabled.map((o) => `
+              <span class="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-800/40 px-1.5 py-0.5 text-[10px] font-medium text-zinc-300">
+                ${icon('checkCheck', 'size-2.5 text-brand-primary')}${o.label}
+              </span>`).join('')
+          : '<span class="text-[11px] text-zinc-500">No setup options</span>';
+        const settingsCls = st.expanded
+          ? 'bg-brand-primary/15 text-brand-primary'
+          : 'bg-[#27272A] text-zinc-300 hover:bg-[#3f3f46]';
+        card.innerHTML = `
+          <div class="flex flex-col gap-4">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">example.com</span>
+              <span class="rounded-md border border-blue-400/50 bg-blue-600/20 px-1.5 py-0.5 text-xs text-blue-400">Import</span>
+            </div>
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <button class="rounded-lg bg-[#27272A] p-2 text-zinc-300 hover:bg-[#3f3f46]">${icon('trash', 'size-4')}</button>
+                <button type="button" data-toggle aria-expanded="${!!st.expanded}" title="Domain setup options"
+                  class="rounded-lg p-2 transition-colors ${settingsCls}">${icon('settings', 'size-4')}</button>
+                ${st.expanded ? '' : `<button type="button" data-toggle class="flex max-w-[15rem] flex-wrap items-center gap-1 text-left">${summary}</button>`}
+              </div>
+              <div class="flex items-center gap-3">
+                ${durationHtml}
+                <span class="text-lg">$12.00</span>
+              </div>
+            </div>
+            ${st.expanded ? '<div class="chips"></div>' : ''}
+          </div>`;
+
+        if (st.expanded) {
+          const chipsEl = card.querySelector('.chips');
+          const basis = 'basis-[calc(25%-9px)] md:basis-[calc(20%-9.6px)]';
+          chipsEl.className = 'chips flex flex-wrap gap-x-3 gap-y-2';
+          chipsEl.innerHTML = rows.map(({ o, d }) => {
+            const state = d.disabled ? 'disabled' : d.checked ? 'on' : 'off';
+            return chip(o, { state, size: 'default', variant: 'outline', basis, reason: d.reason });
+          }).join('');
+        }
+      };
+
+      draw();
+      card.addEventListener('click', (e) => {
+        const toggle = e.target.closest('[data-toggle]');
+        const chipBtn = e.target.closest('[data-key]');
+        if (toggle) { st.expanded = !st.expanded; draw(); return; }
+        if (chipBtn && chipBtn.getAttribute('aria-disabled') !== 'true') {
+          st.values[chipBtn.dataset.key] = !st.values[chipBtn.dataset.key];
+          draw();
+        }
+      });
+      host.appendChild(card);
+    }
+
     /* ----------------------------- spectrum --------------------------- */
     function renderSpectrum() {
       const o = OPTIONS[0];
@@ -476,6 +558,7 @@
       renderCheckbox('v-checkbox',{ type: 'IMPORT', dnssecSupported: false, readOnly: false, values: freshValues() });
       renderAddRemove('v-addremove', { type: 'IMPORT', dnssecSupported: true, addOpen: false, values: { autoRenew: true, autoPark: true, autoEns: false, dnssec: false, keepNs: false } }, { variant: 'solid' });
       renderAddRemove('v-addremove-outline', { type: 'IMPORT', dnssecSupported: true, addOpen: false, values: { autoRenew: true, autoPark: true, autoEns: false, dnssec: false, keepNs: false } }, { variant: 'outline' });
+      renderCollapsible('v-collapsible', { type: 'IMPORT', dnssecSupported: true, expanded: false, values: freshValues() });
 
       renderSpectrum();
     }

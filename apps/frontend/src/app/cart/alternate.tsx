@@ -16,6 +16,7 @@ import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
+import { CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG } from '@/lib/cart-setup-options';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -109,6 +110,8 @@ export default function CartPage() {
   const [requirementsInFootnote] = useAdminFeatureFlag(
     CART_REQUIREMENTS_VARIANT_FLAG[0],
   );
+
+  useRegisterAdminFlags(CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG);
 
   const [selectedNftWalletAddress, setSelectedNftWalletAddress] = useState<
     string | null

@@ -8,27 +8,17 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import type { OrderItemDomainSetupOptions } from '@namefi-astra/common/contract/entity-schemas';
 import { supportsDnssec } from '@namefi-astra/registrars/lib/supports-dnssec';
-import { Check, Minus, X } from 'lucide-react';
+import { Check, CheckCheck, Minus, X } from 'lucide-react';
 import { useCallback, useMemo } from 'react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
-
-/**
- * Display defaults for the per-item domain setup chips. These mirror the
- * built-in defaults applied at order processing (`fillDefaultDomainConfig`):
- * autoEns/autoPark/autoRenew = true, dnssec = false. The cart is authoritative
- * — once the user touches a chip the full option set is persisted to the
- * item's `metadata.domainSetupOptions`.
- */
-const DEFAULT_DOMAIN_SETUP_OPTIONS = {
-  autoRenew: true,
-  autoPark: true,
-  autoEns: true,
-  dnssec: false,
-  keepExistingNameservers: false,
-} as const;
+import {
+  buildPersistedSetupOptions,
+  computeCurrentSetupOptions,
+  getEnabledSetupOptionLabels,
+  SETUP_OPTION_LABELS,
+} from '@/lib/cart-setup-options';
 
 const KEEP_NS_DISABLED_REASON =
   'Disabled while keeping the existing nameservers.';
@@ -57,45 +47,19 @@ export function CartItemSetupOptions({
 
   const isImport = item.type === itemTypeSchema.enum.IMPORT;
 
-  const current = useMemo(() => {
-    const stored = item.metadata?.domainSetupOptions ?? {};
-    return {
-      autoRenew: stored.autoRenew ?? DEFAULT_DOMAIN_SETUP_OPTIONS.autoRenew,
-      autoPark: stored.autoPark ?? DEFAULT_DOMAIN_SETUP_OPTIONS.autoPark,
-      // Auto ENS requires DNSSEC, so it can only be on when the TLD supports it.
-      autoEns: dnssecSupported
-        ? (stored.autoEns ?? DEFAULT_DOMAIN_SETUP_OPTIONS.autoEns)
-        : false,
-      // DNSSEC can only be on when the TLD supports it.
-      dnssec: dnssecSupported
-        ? (stored.dnssec ?? DEFAULT_DOMAIN_SETUP_OPTIONS.dnssec)
-        : false,
-      keepExistingNameservers: isImport
-        ? (stored.keepExistingNameservers ??
-          DEFAULT_DOMAIN_SETUP_OPTIONS.keepExistingNameservers)
-        : false,
-    };
-  }, [item.metadata?.domainSetupOptions, dnssecSupported, isImport]);
+  const current = useMemo(
+    () => computeCurrentSetupOptions(item, dnssecSupported),
+    [item, dnssecSupported],
+  );
 
   const keepOn = isImport && current.keepExistingNameservers;
 
   const persist = useCallback(
     (next: typeof current) => {
-      // When keeping existing nameservers, autoPark/autoEns/dnssec don't apply
-      // and are omitted — only autoRenew (and the keep flag) are persisted.
-      const domainSetupOptions: OrderItemDomainSetupOptions =
-        isImport && next.keepExistingNameservers
-          ? {
-              autoRenew: next.autoRenew,
-              keepExistingNameservers: true,
-            }
-          : {
-              autoRenew: next.autoRenew,
-              autoPark: next.autoPark,
-              autoEns: dnssecSupported ? next.autoEns : false,
-              dnssec: dnssecSupported ? next.dnssec : false,
-              ...(isImport ? { keepExistingNameservers: false } : {}),
-            };
+      const domainSetupOptions = buildPersistedSetupOptions(next, {
+        isImport,
+        dnssecSupported,
+      });
 
       void cart
         .updateItem({ id: item.id, domainSetupOptions })
@@ -124,14 +88,14 @@ export function CartItemSetupOptions({
   }> = [
     {
       key: 'autoRenew',
-      label: 'AutoRenew',
+      label: SETUP_OPTION_LABELS.autoRenew,
       description: 'Automatically renew the domain before it expires.',
       checked: current.autoRenew,
       disabled: !!readOnly,
     },
     {
       key: 'autoPark',
-      label: 'AutoPark',
+      label: SETUP_OPTION_LABELS.autoPark,
       description: 'Automatically park the domain.',
       checked: current.autoPark,
       disabled: !!readOnly || keepOn,
@@ -139,7 +103,7 @@ export function CartItemSetupOptions({
     },
     {
       key: 'autoEns',
-      label: 'AutoENS',
+      label: SETUP_OPTION_LABELS.autoEns,
       description: 'Automatically enable ENS for the domain.',
       checked: current.autoEns,
       disabled: !!readOnly || keepOn || !dnssecSupported,
@@ -151,7 +115,7 @@ export function CartItemSetupOptions({
     },
     {
       key: 'dnssec',
-      label: 'DNSSEC',
+      label: SETUP_OPTION_LABELS.dnssec,
       description: 'Enable DNSSEC for the domain.',
       checked: current.dnssec,
       disabled: !!readOnly || keepOn || !dnssecSupported,
@@ -166,7 +130,7 @@ export function CartItemSetupOptions({
   if (isImport) {
     chips.push({
       key: 'keepExistingNameservers',
-      label: 'Keep NS',
+      label: SETUP_OPTION_LABELS.keepExistingNameservers,
       description:
         "Keep the domain's current nameservers by skipping the nameserver reset. When on, Auto Park, Auto ENS, and DNSSEC are skipped.",
       checked: current.keepExistingNameservers,
@@ -197,6 +161,52 @@ export function CartItemSetupOptions({
         />
       ))}
     </div>
+  );
+}
+
+interface CartItemSetupOptionsSummaryProps {
+  item: UnifiedCartItem;
+  /** Clicking the summary opens the collapsible chips. */
+  onExpand: () => void;
+  className?: string;
+}
+
+/**
+ * Compact, read-only summary of the enabled setup flags shown next to the
+ * settings toggle while the chips are collapsed. The whole summary is clickable
+ * and expands the chips.
+ */
+export function CartItemSetupOptionsSummary({
+  item,
+  onExpand,
+  className,
+}: CartItemSetupOptionsSummaryProps) {
+  const labels = useMemo(() => getEnabledSetupOptionLabels(item), [item]);
+
+  return (
+    <button
+      type="button"
+      onClick={onExpand}
+      aria-label="Show domain setup options"
+      className={cn(
+        'flex max-w-[15rem] flex-wrap items-center gap-1 text-left',
+        className,
+      )}
+    >
+      {labels.length === 0 ? (
+        <span className="text-[11px] text-zinc-500">No setup options</span>
+      ) : (
+        labels.map((label) => (
+          <span
+            key={label}
+            className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-800/40 px-1.5 py-0.5 text-[10px] font-medium text-zinc-300"
+          >
+            <CheckCheck className="size-2.5 shrink-0 text-brand-primary" />
+            {label}
+          </span>
+        ))
+      )}
+    </button>
   );
 }
 
