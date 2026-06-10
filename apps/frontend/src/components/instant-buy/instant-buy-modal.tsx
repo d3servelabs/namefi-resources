@@ -21,11 +21,13 @@ import {
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { CartCard } from '@/components/cart-card';
+import { useFeedback } from '@/components/providers/feedback';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { useAuth } from '@/hooks/use-auth';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { type AppRouterInput, useTRPC } from '@/lib/trpc';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { formatAmountInUSD } from '@/lib/number';
 import {
   computeChargesInUsdOrThrow,
@@ -57,6 +59,7 @@ export function InstantBuyModal({
   domainAvailabilityInfo,
 }: InstantBuyModalProps) {
   const router = useRouter();
+  const { requestFeedback } = useFeedback();
   const parentDomain = useMemo(() => {
     const parsedDomainName = parseDomainName(domainAvailabilityInfo.domain);
 
@@ -111,6 +114,7 @@ export function InstantBuyModal({
     ...trpc.orders.instantBuy.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
+        requestFeedback(feedbackTriggerSchema.enum.MILESTONE_CHECKOUT_SUCCESS);
         router.push(`/orders/${data.id}`);
         onOpenChange(false);
       },

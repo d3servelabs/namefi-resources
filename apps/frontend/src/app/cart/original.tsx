@@ -191,7 +191,7 @@ export default function CartPage() {
     ...trpc.orders.createOrder.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
-        requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
+        requestFeedback(feedbackTriggerSchema.enum.MILESTONE_CHECKOUT_SUCCESS);
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {
@@ -208,7 +208,9 @@ export default function CartPage() {
       ...trpc.orders.createOrderV2.mutationOptions({
         onSuccess: (data) => {
           setIsRedirecting(true);
-          requestFeedback(feedbackTriggerSchema.enum.CHECKOUT_SUCCESS);
+          requestFeedback(
+            feedbackTriggerSchema.enum.MILESTONE_CHECKOUT_SUCCESS,
+          );
           router.push(`/orders/${data.id}`);
         },
         onError: (error) => {

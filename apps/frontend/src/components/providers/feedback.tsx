@@ -6,10 +6,7 @@ import {
 } from '@/components/feedback/feedback-toast';
 import { LocalStorageKeys } from '@/lib/local-storage-keys';
 import { useTRPC } from '@/lib/trpc';
-import {
-  type feedbackTriggerSchema,
-  isMilestoneTrigger,
-} from '@/lib/feedback-triggers';
+import type { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { useMutation } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 import {
@@ -42,7 +39,6 @@ type FeedbackState = {
   lastMilestonePromptedAt?: string;
   entries?: Partial<Record<FeedbackTrigger, FeedbackEntry>>;
 };
-type FeedbackUsageState = { seconds: number; lastUpdatedAt?: string };
 type FeedbackSubmissions = Record<
   string,
   {
@@ -67,15 +63,12 @@ const FeedbackContext = createContext<FeedbackContextValue | undefined>(
   undefined,
 );
 
-const FEEDBACK_REASK_INTERVAL_MS = 14 * 24 * 60 * 60 * 1_000; // ask again after 14 days since last submission
 const FEEDBACK_PROMPT_COOLDOWN_MS = 24 * 60 * 60 * 1_000; // avoid re-prompting more than once a day
 const MILESTONE_COOLDOWN_MS = 30 * 24 * 60 * 60 * 1_000; // 30 days between milestone triggers
 const ENABLE_ANONYMOUS_CLAIMING = false;
 
 const FEEDBACK_TOAST_IDS: Record<FeedbackTrigger, string> = {
-  USAGE_TIME: 'feedback-usage-toast',
-  CHECKOUT_SUCCESS: 'feedback-checkout-toast',
-  MILESTONE_DOMAIN_ACQUIRED: 'feedback-milestone-toast',
+  MILESTONE_CHECKOUT_SUCCESS: 'feedback-checkout-toast',
   MILESTONE_LOGO_GENERATED: 'feedback-milestone-toast',
   MILESTONE_DNS_UPDATED: 'feedback-milestone-toast',
 };
@@ -87,27 +80,15 @@ const MILESTONE_FEEDBACK_COPY: FeedbackToastCopy = {
 };
 
 const FEEDBACK_COPY: Record<FeedbackTrigger, FeedbackToastCopy> = {
-  USAGE_TIME: {
-    title: 'Enjoying Namefi?',
-    description:
-      "You've been exploring for a while. Tell us what feels great and what is rough around the edges.",
-    placeholder: 'What is working well? Where did you get stuck?',
-  },
-  CHECKOUT_SUCCESS: {
+  MILESTONE_CHECKOUT_SUCCESS: {
     title: 'Thanks for your purchase!',
     description:
       'Mind telling us how checkout felt? Two lines help us polish the flow.',
     placeholder:
       'Tell us about speed, clarity, or anything surprising during checkout.',
   },
-  MILESTONE_DOMAIN_ACQUIRED: MILESTONE_FEEDBACK_COPY,
   MILESTONE_LOGO_GENERATED: MILESTONE_FEEDBACK_COPY,
   MILESTONE_DNS_UPDATED: MILESTONE_FEEDBACK_COPY,
-};
-const DEFAULT_FEEDBACK_COPY: FeedbackToastCopy = {
-  title: 'Share feedback',
-  description: 'Tell us how your experience feels.',
-  placeholder: 'What is great? What is rough?',
 };
 
 export function useFeedback() {
@@ -134,44 +115,12 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
       {},
       { initializeWithValue: false },
     );
-  const [usageState, setUsageState] = useLocalStorage<FeedbackUsageState>(
-    LocalStorageKeys.FEEDBACK_USAGE_SECONDS,
-    { seconds: 0, lastUpdatedAt: undefined },
-    { initializeWithValue: false },
-  );
   const [hasHydrated, setHasHydrated] = useState(false);
   const lastClaimKeyRef = useRef<string>('');
 
   useEffect(() => {
     setHasHydrated(true);
   }, []);
-
-  const latestSubmissionAt = useMemo(() => {
-    let latest: Date | null = null;
-    for (const entry of Object.values(feedbackSubmissions)) {
-      if (!entry.submittedAt) continue;
-      const date = new Date(entry.submittedAt);
-      if (Number.isNaN(date.getTime())) continue;
-      if (!latest || date > latest) {
-        latest = date;
-      }
-    }
-    return latest;
-  }, [feedbackSubmissions]);
-
-  const currentState = feedbackState;
-
-  const combinedLastSubmittedAt = useMemo(() => {
-    const localDate = currentState?.lastSubmittedAt
-      ? new Date(currentState.lastSubmittedAt)
-      : null;
-
-    const candidates = [localDate, latestSubmissionAt].filter(
-      (d): d is Date => Boolean(d) && !Number.isNaN((d as Date).getTime()),
-    );
-    if (!candidates.length) return null;
-    return candidates.reduce((max, d) => (d > max ? d : max), candidates[0]);
-  }, [currentState?.lastSubmittedAt, latestSubmissionAt]);
 
   const markDismissed = useCallback(
     (at: Date = new Date()) => {
@@ -185,7 +134,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
 
   const openFeedbackToast = useCallback(
     (trigger: FeedbackTrigger) => {
-      const copy = FEEDBACK_COPY[trigger] ?? DEFAULT_FEEDBACK_COPY;
+      const copy = FEEDBACK_COPY[trigger];
       const entry = feedbackState.entries?.[trigger];
 
       toast.custom(
@@ -201,9 +150,7 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
                 ...prev,
                 lastPromptedAt: shownAtIso,
                 lastTrigger: trigger,
-                ...(isMilestoneTrigger(trigger)
-                  ? { lastMilestonePromptedAt: shownAtIso }
-                  : {}),
+                lastMilestonePromptedAt: shownAtIso,
               }));
             }}
             onSavedAction={({ id, rating, message, submittedAt }) => {
@@ -325,8 +272,6 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
         new Date(state.lastMilestonePromptedAt);
 
       if (!options?.force) {
-        // Check general cooldowns first (applies to all triggers including milestones)
-        // This prevents multiple feedback prompts appearing close together
         if (
           lastPrompted &&
           now.getTime() - lastPrompted.getTime() < FEEDBACK_PROMPT_COOLDOWN_MS
@@ -340,65 +285,24 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
           return false;
         }
 
-        // For milestone triggers, also check the 30-day milestone-specific cooldown
-        if (isMilestoneTrigger(trigger)) {
-          if (
-            lastMilestonePrompted &&
-            now.getTime() - lastMilestonePrompted.getTime() <
-              MILESTONE_COOLDOWN_MS
-          ) {
-            return false;
-          }
-        } else {
-          // For non-milestone triggers, also check submission cooldown
-          if (
-            combinedLastSubmittedAt &&
-            now.getTime() - combinedLastSubmittedAt.getTime() <
-              FEEDBACK_REASK_INTERVAL_MS
-          ) {
-            return false;
-          }
+        if (
+          lastMilestonePrompted &&
+          now.getTime() - lastMilestonePrompted.getTime() <
+            MILESTONE_COOLDOWN_MS
+        ) {
+          return false;
         }
       }
 
       openFeedbackToast(trigger);
       return true;
     },
-    [combinedLastSubmittedAt, feedbackState, hasHydrated, openFeedbackToast],
+    [feedbackState, hasHydrated, openFeedbackToast],
   );
 
-  const usageSeconds = usageState.seconds ?? 0;
-
-  useEffect(() => {
-    if (!hasHydrated) return;
-
-    let lastTick = Date.now();
-    const interval = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') {
-        lastTick = Date.now();
-        return;
-      }
-
-      const now = Date.now();
-      const deltaSeconds = Math.floor((now - lastTick) / 1_000);
-      if (deltaSeconds <= 0) {
-        return;
-      }
-      lastTick = now;
-
-      setUsageState((prev) => ({
-        ...prev,
-        seconds: (prev.seconds ?? 0) + deltaSeconds,
-        lastUpdatedAt: new Date(now).toISOString(),
-      }));
-    }, 1_000);
-
-    return () => window.clearInterval(interval);
-  }, [hasHydrated, setUsageState]);
-
-  // Note: The automatic time-based USAGE_TIME trigger has been removed.
-  // Feedback is now only triggered on specific milestones (domain acquisition,
-  // logo generation, DNS update) with a 30-day cooldown between any milestone triggers.
+  // Feedback is solicited only when product code calls requestFeedback after a
+  // meaningful event. The old time-spent tracker was removed so idle browsing
+  // never writes usage counters or opens usage-time prompts.
 
   return (
     <FeedbackContext.Provider

@@ -38,9 +38,11 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cartItemsToInteractionLoggingCartItems } from '@/hooks/use-cart';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { useCartContext } from '@/components/providers/cart';
+import { useFeedback } from '@/components/providers/feedback';
 import { useAuth } from '@/hooks/use-auth';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { type AppRouterInput, type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -212,11 +214,13 @@ export default function CartPage() {
   }, [items, domainAvailabilityInfo]);
 
   const router = useRouter();
+  const { requestFeedback } = useFeedback();
 
   const { mutate: createOrder, isPending: isCreateOrderPending } = useMutation({
     ...trpc.orders.createOrderV2.mutationOptions({
       onSuccess: (data) => {
         setIsRedirecting(true);
+        requestFeedback(feedbackTriggerSchema.enum.MILESTONE_CHECKOUT_SUCCESS);
         router.push(`/orders/${data.id}`);
       },
       onError: (error) => {

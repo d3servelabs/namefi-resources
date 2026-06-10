@@ -28,8 +28,6 @@ import { useOrigin } from '@/components/providers/origin';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
-import { useFeedback } from '@/components/providers/feedback';
-import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import { OrderNotFound } from '@/components/orders/order-not-found';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
@@ -226,7 +224,6 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
-  const { requestFeedback } = useFeedback();
   useEffect(() => {
     refetchCart();
   }, [refetchCart]);
@@ -401,27 +398,6 @@ export default function OrderPage({ params }: OrderPageProps) {
     refetchInternalAiGenerations,
     invalidateNotifications,
   ]);
-
-  // Track if we've already triggered feedback for this order
-  const hasFeedbackTriggeredRef = useRef(false);
-
-  // Trigger feedback when order completes successfully (domain acquired milestone)
-  useEffect(() => {
-    if (
-      isCompletedOrder &&
-      !hasFeedbackTriggeredRef.current &&
-      orderItems.length > 0
-    ) {
-      const wasTriggered = requestFeedback(
-        feedbackTriggerSchema.enum.MILESTONE_DOMAIN_ACQUIRED,
-      );
-      // Only mark as triggered if the feedback was actually shown
-      // (requestFeedback returns false during hydration or if cooldown is active)
-      if (wasTriggered) {
-        hasFeedbackTriggeredRef.current = true;
-      }
-    }
-  }, [isCompletedOrder, orderItems.length, requestFeedback]);
 
   const viewState: 'loading' | 'processing' | 'success' | 'failed' = (() => {
     if (!hasOrderDetails) {
