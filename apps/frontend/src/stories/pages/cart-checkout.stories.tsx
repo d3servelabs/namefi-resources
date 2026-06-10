@@ -6,6 +6,7 @@ import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals'
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { OriginProvider } from '@/components/providers/origin';
 import { CartContext } from '@/components/providers/cart';
+import { FeedbackProvider } from '@/components/providers/feedback';
 import { WishlistProvider } from '@/components/providers/wishlist';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
@@ -251,7 +252,7 @@ function StoryProviders({
                           <CartContext.Provider value={mockCartValue}>
                             <SidebarProvider defaultOpen={false}>
                               <FreeMintsGuidanceProvider>
-                                {children}
+                                <FeedbackProvider>{children}</FeedbackProvider>
                               </FreeMintsGuidanceProvider>
                             </SidebarProvider>
                           </CartContext.Provider>
