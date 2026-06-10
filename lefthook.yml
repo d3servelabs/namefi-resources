@@ -1,9 +1,30 @@
 pre-commit:
   commands:
+    # Snapshot staged changes to a patch BEFORE the checks run. lefthook can
+    # fail to roll back its internal stash when a later step errors, losing
+    # staged work. Recover the most recent snapshot with:
+    #   git apply --index .lefthook-local/staged-<timestamp>.patch
+    backup-staged:
+      priority: 1
+      run: |
+        if [ -n "$CI" ]; then
+          exit 0
+        fi
+        if ! git diff --cached --quiet; then
+          mkdir -p .lefthook-local
+          # Append the PID so two runs in the same second don't overwrite.
+          snapshot=".lefthook-local/staged-$(date +%Y%m%d-%H%M%S)-$$.patch"
+          git diff --cached --binary > "$snapshot" || true
+          # Prune snapshots older than 7 days to bound the directory size.
+          find .lefthook-local -name 'staged-*.patch' -mtime +7 -delete 2>/dev/null || true
+        fi
+        exit 0
     check:
+      priority: 2
       run: bun run biome check --diagnostic-level=error --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
       stage_fixed: true
     sgr:
+      priority: 3
       run: bun run sgr
       files: git diff --name-only --staged
 
