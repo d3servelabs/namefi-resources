@@ -5,6 +5,10 @@ import { defineConfig } from 'vitest/config';
 
 const backendRoot = fileURLToPath(new URL('.', import.meta.url));
 const srcRoot = resolve(backendRoot, 'src');
+const registrarsLibRoot = resolve(
+  backendRoot,
+  '../../packages/registrars/src/lib',
+);
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -29,7 +33,29 @@ export default defineConfig({
   },
   resolve: {
     alias: [
-      { find: '#lib/env', replacement: resolve(srcRoot, 'lib/env/index.ts') },
+      {
+        find: /^#lib\/env$/,
+        replacement: resolve(srcRoot, 'lib/env/index.ts'),
+      },
+      {
+        find: /^#lib\/abstract-registrar$/,
+        replacement: resolve(registrarsLibRoot, 'abstract-registrar/index.ts'),
+      },
+      {
+        find: /^#lib\/abstract-registrar\/(.*)$/,
+        replacement: `${resolve(registrarsLibRoot, 'abstract-registrar')}/$1`,
+      },
+      {
+        find: /^#lib\/(data\/validations|dynadot\/common-types|dynadot\/index|get-tld|idn\/idn-language-code|multi-year-pricing|rdap-whois\/rdap_client|sign-message|supports-dnssec)$/,
+        replacement: `${registrarsLibRoot}/$1`,
+      },
+      {
+        find: /^#multi-year-pricing$/,
+        replacement: resolve(
+          backendRoot,
+          '../../packages/registrars/src/lib/multi-year-pricing.ts',
+        ),
+      },
       { find: /^#lib\/(.*)$/, replacement: `${srcRoot}/lib/$1` },
       { find: /^#services\/(.*)$/, replacement: `${srcRoot}/services/$1` },
       {

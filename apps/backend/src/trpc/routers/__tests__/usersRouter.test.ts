@@ -2,12 +2,61 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 process.env.DATABASE_URL ??= 'postgres://postgres:postgres@localhost:5432/test';
 
+const { mockAllowedChains } = vi.hoisted(() => ({
+  mockAllowedChains: {
+    NFT_ALLOWED_CHAINS: [1, 11_155_111],
+    DNS_SERVING_ALLOWED_NFT_CHAINS: [1, 11_155_111],
+    NFSC_BALANCE_ALLOWED_CHAINS: [1, 11_155_111],
+  },
+}));
+
+const mockDb = vi.hoisted(() => {
+  const db = {
+    query: {
+      orderItemsTable: {
+        findMany: vi.fn(),
+      },
+      usersTable: {
+        findFirst: vi.fn(),
+      },
+    },
+    select: vi.fn(),
+  };
+
+  function reset() {
+    db.query.orderItemsTable.findMany.mockReset().mockResolvedValue([]);
+    db.query.usersTable.findFirst.mockReset().mockResolvedValue(null);
+    db.select.mockReset().mockReturnValue({
+      from: vi.fn().mockReturnValue({
+        where: vi.fn().mockResolvedValue([]),
+      }),
+    });
+  }
+
+  reset();
+
+  return {
+    db,
+    reset,
+  };
+});
+
+vi.mock('@namefi-astra/db', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@namefi-astra/db')>();
+  return {
+    ...actual,
+    db: mockDb.db,
+  };
+});
+
 vi.mock('#lib/env', () => ({
   config: {
+    ALLOWED_CHAINS: mockAllowedChains,
     EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {},
   },
   secrets: {
     ALCHEMY_API_KEY: 'test-alchemy-key',
+    STRIPE_SECRET_KEY: 'sk_test',
   },
 }));
 
@@ -15,15 +64,16 @@ import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
 import testEnvConfig from '../../../lib/env/configs/test'; // Import the test config file directly
-import { getQualifyingDomainNameFromUserIdentifier } from '../../../lib/user-promo';
+import {
+  getQualifyingDomainNameFromUserIdentifier,
+  viemEthereumPublicClient,
+} from '../../../lib/user-promo';
 import type { TrpcContext } from '../../base';
 import { privyClient } from '../../utils';
 import * as ensModule from '#lib/crypto/ens';
 
 const { config: actualAppConfig } = await import('#lib/env');
 const { usersRouter } = await import('../usersRouter');
-const { getViemPublicClient } = await import('#lib/crypto/viem-clients');
-const viemEthereumPublicClient = getViemPublicClient(1);
 
 type LocalTrpcContextWithReq = Omit<
   TrpcContext,
@@ -31,6 +81,10 @@ type LocalTrpcContextWithReq = Omit<
 >;
 
 type LocalTrpcContext = Omit<LocalTrpcContextWithReq, 'req'>;
+
+beforeEach(() => {
+  mockDb.reset();
+});
 
 describe('getUserQualifiesForDomainNamePromo', () => {
   // TODO(Luis): consider refactoring mocking

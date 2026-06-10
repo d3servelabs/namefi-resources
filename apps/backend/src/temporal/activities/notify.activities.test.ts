@@ -1,11 +1,25 @@
-import { describe, expect, it } from 'vitest';
-import { getOrderProcessedEmailContent } from './notify.activities';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+const mockGetPoweredByNamefi3PDomains = vi.hoisted(() => vi.fn());
+
+vi.mock('#lib/namefi-registry', () => ({
+  getPoweredByNamefi3PDomains: mockGetPoweredByNamefi3PDomains,
+}));
+
+const { getOrderProcessedEmailContent } = await import('./notify.activities');
 
 /**
  * Tests for the getOrderProcessedEmailContent activity that determines the
  * content of the email we send to a user when their order items are processed
  */
 describe('getOrderProcessedEmailContent', () => {
+  beforeEach(() => {
+    mockGetPoweredByNamefi3PDomains.mockResolvedValue([
+      '0x.city',
+      'defi.build',
+    ]);
+  });
+
   const succeededItems0xCity = [
     { normalizedDomainName: 'succeeded1.0x.city' },
     { normalizedDomainName: 'succeeded2.0x.city' },
@@ -80,7 +94,7 @@ describe('getOrderProcessedEmailContent', () => {
       failedItems: failedItems0xCity,
     });
     const expected =
-      'Some items in your recent order failed to process.\nYour new domains: succeeded1.0x.city, succeeded2.0x.city.\nFailed to process: failed1.0x.city, failed2.0x.city.\nVisit https://0x.city/orders/testOrderId to see more details.';
+      'Some items in your recent order failed to process.\nYour new domains: succeeded1.0x.city, succeeded2.0x.city.\nFailed to process: failed1.0x.city, failed2.0x.city.\nVisit https://0x.city/user/orders/testOrderId to see more details.';
     expect(result.content).toEqual(expected);
   });
 
@@ -91,7 +105,7 @@ describe('getOrderProcessedEmailContent', () => {
       failedItems: failedItems0xCity.slice(0, 1),
     });
     const expected =
-      'An item in your recent order failed to process.\nYour new domains: succeeded1.0x.city, succeeded2.0x.city.\nFailed to process: failed1.0x.city.\nVisit https://0x.city/orders/testOrderId to see more details.';
+      'An item in your recent order failed to process.\nYour new domains: succeeded1.0x.city, succeeded2.0x.city.\nFailed to process: failed1.0x.city.\nVisit https://0x.city/user/orders/testOrderId to see more details.';
     expect(result.content).toEqual(expected);
   });
 
@@ -102,7 +116,7 @@ describe('getOrderProcessedEmailContent', () => {
       failedItems: failedItems0xCity.slice(0, 1),
     });
     const expected =
-      'An item in your recent order failed to process.\nYour new domain: succeeded1.0x.city.\nFailed to process: failed1.0x.city.\nVisit https://0x.city/orders/testOrderId to see more details.';
+      'An item in your recent order failed to process.\nYour new domain: succeeded1.0x.city.\nFailed to process: failed1.0x.city.\nVisit https://0x.city/user/orders/testOrderId to see more details.';
     expect(result.content).toEqual(expected);
   });
 
@@ -113,7 +127,7 @@ describe('getOrderProcessedEmailContent', () => {
       failedItems: failedItems0xCity,
     });
     const expected =
-      'Some items in your recent order failed to process.\nYour new domain: succeeded1.0x.city.\nFailed to process: failed1.0x.city, failed2.0x.city.\nVisit https://0x.city/orders/testOrderId to see more details.';
+      'Some items in your recent order failed to process.\nYour new domain: succeeded1.0x.city.\nFailed to process: failed1.0x.city, failed2.0x.city.\nVisit https://0x.city/user/orders/testOrderId to see more details.';
     expect(result.content).toEqual(expected);
   });
 
@@ -124,9 +138,9 @@ describe('getOrderProcessedEmailContent', () => {
       failedItems: failedItems0xCity,
     });
 
-    expect(result.content.includes('https://0x.city/orders/testOrderId')).toBe(
-      true,
-    );
+    expect(
+      result.content.includes('https://0x.city/user/orders/testOrderId'),
+    ).toBe(true);
   });
 
   it('should return link to defi.build if only has defi.build items', async () => {
@@ -143,11 +157,11 @@ describe('getOrderProcessedEmailContent', () => {
     });
 
     expect(
-      result.content.includes('https://defi.build/orders/testOrderId'),
+      result.content.includes('https://defi.build/user/orders/testOrderId'),
     ).toBe(true);
   });
 
-  it('should return link to poweredby.namefi.io if it has items with multiple parent domains', async () => {
+  it('should return link to namefi.io if it has items with multiple parent domains', async () => {
     const result = await getOrderProcessedEmailContent({
       orderId: 'testOrderId',
       succeededItems: [
@@ -161,7 +175,7 @@ describe('getOrderProcessedEmailContent', () => {
     });
 
     expect(
-      result.content.includes('https://poweredby.namefi.io/orders/testOrderId'),
+      result.content.includes('https://namefi.io/user/orders/testOrderId'),
     ).toBe(true);
   });
 });

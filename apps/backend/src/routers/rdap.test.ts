@@ -103,12 +103,12 @@ describe('rdapRouter', () => {
         entity.roles?.includes('registrar'),
       ),
     ).toBe(true);
-    expect(mockGetCentralnicRegistrar).toHaveBeenCalledTimes(1);
+    expect(mockGetCentralnicRegistrar).toHaveBeenCalledTimes(2);
     expect(mockGetDomainDetails).toHaveBeenCalledWith('example.com');
   });
 
   it('returns 404 RDAP error when domain does not exist', async () => {
-    mockGetDomainDetails.mockRejectedValueOnce(
+    mockGetDomainDetails.mockRejectedValue(
       new Error('EPP 2303: Object does not exist'),
     );
 

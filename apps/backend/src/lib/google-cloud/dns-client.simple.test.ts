@@ -1,40 +1,59 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock the Google Cloud DNS library before importing anything
-vi.mock('@google-cloud/dns', () => {
-  const mockZone = {
-    getMetadata: vi
-      .fn()
-      .mockResolvedValue([{ dnsName: 'test-zone.example.com.' }]),
-    getRecords: vi.fn().mockResolvedValue([[]]),
-    createChange: vi.fn().mockResolvedValue([{ id: 'test-change-id' }]),
-    record: vi.fn().mockReturnValue({
-      name: 'test-record.test-zone.example.com.',
-      type: 'CNAME',
-      ttl: 300,
-      data: ['target.example.com.'],
-    }),
+const dnsMock = vi.hoisted(() => {
+  const change = {
+    getMetadata: vi.fn(),
   };
+  const zone = {
+    getMetadata: vi.fn(),
+    getRecords: vi.fn(),
+    createChange: vi.fn(),
+    record: vi.fn(),
+    change: vi.fn(),
+  };
+  const dnsInstance = {
+    zone: vi.fn(),
+  };
+  const Dns = vi.fn();
 
-  const mockDns = vi.fn(() => ({
-    zone: vi.fn(() => mockZone),
-  }));
+  function reset() {
+    Dns.mockReset().mockReturnValue(dnsInstance);
+    dnsInstance.zone.mockReset().mockReturnValue(zone);
+    zone.getMetadata
+      .mockReset()
+      .mockResolvedValue([{ dnsName: 'test-zone.example.com.' }]);
+    zone.getRecords.mockReset().mockResolvedValue([[]]);
+    zone.createChange.mockReset().mockResolvedValue([{ id: 'test-change-id' }]);
+    zone.record.mockReset().mockImplementation((type, record) => ({
+      type,
+      ...record,
+    }));
+    zone.change.mockReset().mockReturnValue(change);
+    change.getMetadata.mockReset().mockResolvedValue([{ status: 'done' }]);
+  }
+
+  reset();
 
   return {
-    DNS: mockDns,
+    DNS: Dns,
+    reset,
+    zone,
   };
 });
 
-// Mock the logger
+vi.mock('@google-cloud/dns', () => ({
+  DNS: dnsMock.DNS,
+}));
+
 vi.mock('#lib/logger', () => ({
   logger: {
-    info: vi.fn(),
+    debug: vi.fn(),
     error: vi.fn(),
+    info: vi.fn(),
     warn: vi.fn(),
   },
 }));
 
-// Mock environment with minimal required values
 vi.mock('#lib/env', () => ({
   secrets: {
     GOOGLE_CLOUD_PROJECT_ID: 'test-project',
@@ -42,73 +61,61 @@ vi.mock('#lib/env', () => ({
 }));
 
 describe('GoogleCloudDnsClient Basic Functionality', () => {
-  let GoogleCloudDnsClient: any;
+  let GoogleCloudDnsClient: typeof import('./dns-client').GoogleCloudDnsClient;
 
   beforeEach(async () => {
-    // Clear all mocks
-    vi.clearAllMocks();
-
-    // Import the client after all mocks are set up
+    dnsMock.reset();
     const module = await import('./dns-client');
     GoogleCloudDnsClient = module.GoogleCloudDnsClient;
   });
 
-  it('should create a client instance successfully', () => {
+  it('creates a client instance successfully', () => {
     const client = new GoogleCloudDnsClient('test-project');
+
     expect(client).toBeDefined();
     expect(client).toBeInstanceOf(GoogleCloudDnsClient);
   });
 
-  it('should create CNAME record successfully', async () => {
+  it('creates CNAME records successfully', async () => {
     const client = new GoogleCloudDnsClient('test-project');
+
     const result = await client.createCnameRecord(
       'test-zone',
       'test-record',
       'target.example.com',
+      300,
     );
 
     expect(result).toEqual({
       name: 'test-record.test-zone.example.com.',
-      type: 'CNAME',
-      ttl: 300,
       rrdatas: ['target.example.com.'],
+      ttl: 300,
+      type: 'CNAME',
     });
   });
 
-  it('should check if record exists', async () => {
+  it('checks whether records exist', async () => {
     const client = new GoogleCloudDnsClient('test-project');
+
     const exists = await client.recordExists(
       'test-zone',
       'test-record',
       'CNAME',
     );
 
-    expect(exists).toBe(false); // Should be false since we mocked empty records
+    expect(exists).toBe(false);
   });
 
-  it('should list records', async () => {
+  it('lists records', async () => {
     const client = new GoogleCloudDnsClient('test-project');
+
     const records = await client.listRecords('test-zone', 'CNAME');
 
-    expect(records).toEqual([]); // Should be empty since we mocked empty records
-  });
-});
-
-describe('Error Handling', () => {
-  let GoogleCloudDnsClient: any;
-
-  beforeEach(async () => {
-    vi.clearAllMocks();
-    const module = await import('./dns-client');
-    GoogleCloudDnsClient = module.GoogleCloudDnsClient;
+    expect(records).toEqual([]);
   });
 
-  it('should handle errors when creating record', async () => {
-    // Mock the DNS library to throw an error
-    const mockDns = vi.mocked(require('@google-cloud/dns').DNS);
-    const mockZone = mockDns().zone();
-    mockZone.createChange.mockRejectedValue(new Error('API error'));
-
+  it('propagates record creation errors', async () => {
+    dnsMock.zone.createChange.mockRejectedValue(new Error('API error'));
     const client = new GoogleCloudDnsClient('test-project');
 
     await expect(
@@ -116,16 +123,13 @@ describe('Error Handling', () => {
         'test-zone',
         'test-record',
         'target.example.com',
+        300,
       ),
     ).rejects.toThrow('API error');
   });
 
-  it('should handle errors when checking record existence', async () => {
-    // Mock the DNS library to throw an error
-    const mockDns = vi.mocked(require('@google-cloud/dns').DNS);
-    const mockZone = mockDns().zone();
-    mockZone.getRecords.mockRejectedValue(new Error('API error'));
-
+  it('returns false when record existence checks fail', async () => {
+    dnsMock.zone.getRecords.mockRejectedValue(new Error('API error'));
     const client = new GoogleCloudDnsClient('test-project');
 
     const exists = await client.recordExists(
@@ -133,6 +137,7 @@ describe('Error Handling', () => {
       'test-record',
       'CNAME',
     );
-    expect(exists).toBe(false); // Should return false on error
+
+    expect(exists).toBe(false);
   });
 });

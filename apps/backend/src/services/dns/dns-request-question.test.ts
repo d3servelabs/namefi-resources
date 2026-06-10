@@ -88,19 +88,21 @@ describe('parseDnsQuestion', () => {
     });
   });
 
-  it('returns an immediate empty response for known but unsupported record types', () => {
+  it('parses SIG record type queries', () => {
     const result = parseDnsQuestion({
       name: 'example.com.',
       type: '24',
     });
 
-    expect(result).toEqual({
-      ok: false,
-      kind: 'response',
-      response: {
-        RCODE: 0,
-        Answer: [],
-      },
+    expect(result.ok).toBe(true);
+    if (!result.ok) {
+      throw new Error('Expected parseDnsQuestion to succeed');
+    }
+
+    expect(result.question).toMatchObject({
+      recordName: 'example.com',
+      recordType: 'SIG',
+      rawType: 24,
     });
   });
 });

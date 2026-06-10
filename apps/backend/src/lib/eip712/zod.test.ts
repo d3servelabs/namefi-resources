@@ -7,26 +7,34 @@ describe('ZodType Analysis', () => {
   let testingType: any = baseType;
   it('base type', () => {
     const result = analyzeZodType(baseType);
-    expect(result).toEqual({ type: 'string' });
+    expect(result).toMatchObject({ type: 'string' });
+    expect(result.innermostType).toBe(baseType);
   });
   testingType = baseType.nullable();
   it('nullable', () => {
     let result = analyzeZodType(testingType);
-    expect(result).toEqual({ type: 'string', nullable: true });
+    expect(result).toMatchObject({ type: 'string', nullable: true });
+    expect(result.innermostType).toBe(baseType);
 
     testingType = testingType.optional();
 
     result = analyzeZodType(testingType);
-    expect(result).toEqual({ type: 'string', nullable: true, optional: true });
+    expect(result).toMatchObject({
+      type: 'string',
+      nullable: true,
+      optional: true,
+    });
+    expect(result.innermostType).toBe(baseType);
 
     testingType = testingType.nonoptional();
 
     result = analyzeZodType(testingType);
-    expect(result).toEqual({
+    expect(result).toMatchObject({
       type: 'string',
       nonoptional: true,
       nullable: true,
       optional: true,
     });
+    expect(result.innermostType).toBe(baseType);
   });
 });

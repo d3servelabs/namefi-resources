@@ -34,7 +34,9 @@ type LocalTrpcContext = Omit<
 
 config({ path: '.env.test' });
 
-describe('Hunt Router', () => {
+const runDbIntegrationTests = process.env.RUN_DB_INTEGRATION_TESTS === 'true';
+
+describe.skipIf(!runDbIntegrationTests)('Hunt Router', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     // Ensure test users exist in database

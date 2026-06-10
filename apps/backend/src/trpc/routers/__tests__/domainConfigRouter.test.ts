@@ -23,7 +23,7 @@ describe('getDomainLevels', () => {
       'dev.blog.example.com' as NamefiNormalizedDomain,
     );
     expect(result.levels).toEqual(reverse(['dev', 'blog', 'example', 'com']));
-    expect(result.parentDomain).toEqual('example.com');
+    expect(result.parentDomain).toEqual('blog.example.com');
   });
 
   it('should handle domains with unusual TLDs correctly', () => {

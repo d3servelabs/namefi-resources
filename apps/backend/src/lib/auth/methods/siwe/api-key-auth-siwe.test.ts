@@ -67,6 +67,7 @@ describe('authenticateWithSiweTokenFromHeader', () => {
     expect(result).toEqual({
       success: true,
       user,
+      chainId: 8453,
     });
   });
 
@@ -102,6 +103,7 @@ describe('authenticateWithSiweTokenFromHeader', () => {
     expect(result).toEqual({
       success: true,
       user,
+      chainId: 8453,
     });
   });
 });

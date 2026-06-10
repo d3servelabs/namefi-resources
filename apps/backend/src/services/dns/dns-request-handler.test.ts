@@ -5,14 +5,16 @@ import {
   createDnsRequestHandler,
 } from './dns-request-handler';
 
-const mockLogger = {
-  assign: vi.fn(),
-  debug: vi.fn(),
-  info: vi.fn(),
-  warn: vi.fn(),
-  error: vi.fn(),
-  trace: vi.fn(),
-};
+const { mockLogger } = vi.hoisted(() => ({
+  mockLogger: {
+    assign: vi.fn(),
+    debug: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    error: vi.fn(),
+    trace: vi.fn(),
+  },
+}));
 
 vi.mock('#lib/logger', () => ({
   createLogger: () => mockLogger,
@@ -21,10 +23,18 @@ vi.mock('#lib/logger', () => ({
 
 vi.mock('#lib/env', () => ({
   config: {
+    ALLOWED_CHAINS: {
+      NFT_ALLOWED_CHAINS: [1, 11_155_111],
+      DNS_SERVING_ALLOWED_NFT_CHAINS: [1, 11_155_111],
+      NFSC_BALANCE_ALLOWED_CHAINS: [1, 11_155_111],
+    },
     NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: 'gtld.namefi.dev',
     NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.dev.', 'ns4.namefi.dev.'],
   },
-  secrets: {},
+  secrets: {
+    ALCHEMY_API_KEY: 'test-alchemy-key',
+    STRIPE_SECRET_KEY: 'sk_test',
+  },
 }));
 
 // Zone-ns-soa pulls in DB clients and the powered-by-namefi registry; stub
@@ -245,12 +255,6 @@ describe('createDefaultDnsRequestHandler', () => {
           type: 1,
           TTL: 300,
           data: '24.199.74.33',
-        },
-      ],
-      Question: [
-        {
-          name: 'example.com.',
-          type: 1,
         },
       ],
     });

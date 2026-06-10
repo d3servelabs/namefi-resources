@@ -188,12 +188,24 @@ export const secretsSchema = z.object({
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
 
+const temporalApiUrlSchema = z
+  .string()
+  .trim()
+  .min(1)
+  .transform((value) => {
+    if (/^[a-z][a-z\d+.-]*:\/\//i.test(value)) {
+      return new URL(value).host;
+    }
+
+    return value;
+  });
+
 export const configSchema = z.object({
   PORT: z.number().default(3000),
   TEMPORAL_WORKER_PORT: z.number().default(3000),
   LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
   PRIVY_APP_ID: z.string(),
-  TEMPORAL_API_URL: z.string().url(),
+  TEMPORAL_API_URL: temporalApiUrlSchema,
   TEMPORAL_NAMESPACE: z.string(),
   SMTP_SECURE: z.boolean(),
   SMTP_PORT: z.number().default(465),

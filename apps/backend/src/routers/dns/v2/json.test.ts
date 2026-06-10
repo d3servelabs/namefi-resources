@@ -54,8 +54,11 @@ describe('createNsJsonHandlerRouter', () => {
     expect(handle).not.toHaveBeenCalled();
   });
 
-  it('returns immediate parser responses without calling the handler', async () => {
-    const handle = vi.fn();
+  it('delegates SIG queries to the injected handler', async () => {
+    const handle = vi.fn().mockResolvedValue({
+      RCODE: 0,
+      Answer: [],
+    });
     const router = createNsJsonHandlerRouter({
       dnsRequestHandler: { handle },
     });
@@ -70,7 +73,13 @@ describe('createNsJsonHandlerRouter', () => {
       RCODE: 0,
       Answer: [],
     });
-    expect(handle).not.toHaveBeenCalled();
+    expect(handle).toHaveBeenCalledWith(
+      expect.objectContaining({
+        recordName: 'example.com',
+        recordType: 'SIG',
+        wildcard: false,
+      }),
+    );
   });
 
   it('delegates valid questions to the injected handler', async () => {

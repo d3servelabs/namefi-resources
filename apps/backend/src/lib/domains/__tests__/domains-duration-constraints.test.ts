@@ -1,23 +1,41 @@
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
+import { addMonths, addYears } from 'date-fns';
+
+const mockFindPoweredByNamefiDomain = vi.hoisted(() => vi.fn());
+
+vi.mock('@namefi-astra/db', () => ({
+  db: {
+    query: {
+      poweredbyNamefiDomainsTable: {
+        findFirst: mockFindPoweredByNamefiDomain,
+      },
+    },
+  },
+}));
+
 import {
   determineDurationLimitsForRenewItems,
   getDomainDurationConstraints,
 } from '../duration-constraints';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { addMonths, addYears } from 'date-fns';
 
 describe('getDomainDurationConstraints', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockFindPoweredByNamefiDomain.mockResolvedValue(null);
+  });
+
   describe('2-level domains', () => {
     describe('co domains', () => {
-      it('should return minYears: 1, maxYears: 5 for co domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 5 for co domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.co' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
       });
 
-      it('should return minYears: 1, maxYears: 5 for co.com domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 5 for co.com domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.com.co' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
@@ -25,8 +43,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('be domains', () => {
-      it('should return minYears: 1, maxYears: 1 for be domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for be domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.be' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -34,8 +52,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('de domains', () => {
-      it('should return minYears: 1, maxYears: 2 for de domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 2 for de domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.de' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 2 });
@@ -43,8 +61,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('at domains', () => {
-      it('should return minYears: 1, maxYears: 1 for at domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for at domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.at' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -52,8 +70,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('lt domains', () => {
-      it('should return minYears: 1, maxYears: 1 for lt domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for lt domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.lt' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -61,8 +79,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('nl domains', () => {
-      it('should return minYears: 1, maxYears: 1 for nl domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for nl domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.nl' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -70,8 +88,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('cx domains', () => {
-      it('should return minYears: 1, maxYears: 5 for cx domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 5 for cx domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.cx' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
@@ -79,8 +97,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('ai domains', () => {
-      it('should return minYears: 2, maxYears: 10 for ai domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 2, maxYears: 10 for ai domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.ai' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 2, maxYears: 10 });
@@ -88,8 +106,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('lv domains', () => {
-      it('should return minYears: 1, maxYears: 1 for lv domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for lv domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.lv' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -97,8 +115,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('dk domains', () => {
-      it('should return minYears: 1, maxYears: 3 for dk domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 3 for dk domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.dk' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 3 });
@@ -106,8 +124,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('it domains', () => {
-      it('should return minYears: 1, maxYears: 1 for it domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for it domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.it' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -115,8 +133,8 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('co.za domains', () => {
-      it('should return minYears: 1, maxYears: 1 for co.za domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for co.za domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.co.za' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -124,15 +142,15 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('ch and li domains', () => {
-      it('should return minYears: 1, maxYears: 1 for ch domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for ch domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.ch' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
       });
 
-      it('should return minYears: 1, maxYears: 1 for li domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for li domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.li' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -140,29 +158,29 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('default case for 2-level domains', () => {
-      it('should return minYears: 1, maxYears: 10 for unspecified 2-level domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 10 for unspecified 2-level domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.com' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 10 });
       });
 
-      it('should return minYears: 1, maxYears: 10 for org domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 10 for org domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.org' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 10 });
       });
 
-      it('should return minYears: 1, maxYears: 10 for net domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 10 for net domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.net' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 10 });
       });
 
-      it('should return minYears: 1, maxYears: 10 for info domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 10 for info domains', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.info' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 10 });
@@ -172,45 +190,54 @@ describe('getDomainDurationConstraints', () => {
 
   describe('3-level domains', () => {
     describe('0x.city domains', () => {
-      it('should return minYears: 3, maxYears: 10 for 0x.city domains', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 0, maxYears: 5 for 0x.city domains', async () => {
+        mockFindPoweredByNamefiDomain.mockResolvedValue({
+          enabled: true,
+          normalizedDomainName: '0x.city',
+          durationConstraints: {
+            minDurationInYears: 3,
+            maxDurationInYears: 5,
+          },
+        });
+
+        const constraints = await getDomainDurationConstraints(
           'example.0x.city' as NamefiNormalizedDomain,
         );
-        expect(constraints).toEqual({ minYears: 3, maxYears: 5 });
+        expect(constraints).toEqual({ minYears: 0, maxYears: 5 });
       });
     });
 
     describe('other 3-level domains that should be treated as 2-level', () => {
-      it('should return minYears: 1, maxYears: 5 for co.net domains (3-level parsed as 2-level)', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 5 for co.net domains (3-level parsed as 2-level)', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.net.co' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
       });
 
-      it('should return minYears: 1, maxYears: 1 for at.co domains (3-level parsed as 2-level)', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for at.co domains (3-level parsed as 2-level)', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.co.at' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
       });
 
-      it('should return minYears: 1, maxYears: 1 for lv.com domains (3-level parsed as 2-level)', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for lv.com domains (3-level parsed as 2-level)', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.com.lv' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
       });
 
-      it('should return minYears: 1, maxYears: 1 for lv.org domains (3-level parsed as 2-level)', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for lv.org domains (3-level parsed as 2-level)', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.org.lv' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
       });
 
-      it('should return minYears: 1, maxYears: 1 for lv.net domains (3-level parsed as 2-level)', () => {
-        const constraints = getDomainDurationConstraints(
+      it('should return minYears: 1, maxYears: 1 for lv.net domains (3-level parsed as 2-level)', async () => {
+        const constraints = await getDomainDurationConstraints(
           'example.net.lv' as NamefiNormalizedDomain,
         );
         expect(constraints).toEqual({ minYears: 1, maxYears: 1 });
@@ -218,56 +245,58 @@ describe('getDomainDurationConstraints', () => {
     });
 
     describe('invalid 3-level domains', () => {
-      it('should throw error for non-0x.city 3-level domains not in the special cases', () => {
-        expect(() => {
+      it('should throw error for non-powered-by 3-level domains not in the special cases', async () => {
+        await expect(
           getDomainDurationConstraints(
             'example.subdomain.com' as NamefiNormalizedDomain,
-          );
-        }).toThrow(
-          'Domain example.subdomain.com is not a valid 0x.city domain',
+          ),
+        ).rejects.toThrow(
+          'Domain example.subdomain.com is not a valid powered by namefi 3P domain',
         );
       });
 
-      it('should throw error for other 3-level domains not in the special cases', () => {
-        expect(() => {
+      it('should throw error for other non-powered-by 3-level domains not in the special cases', async () => {
+        await expect(
           getDomainDurationConstraints(
             'example.qwerty.uk' as NamefiNormalizedDomain,
-          );
-        }).toThrow('Domain example.qwerty.uk is not a valid 0x.city domain');
+          ),
+        ).rejects.toThrow(
+          'Domain example.qwerty.uk is not a valid powered by namefi 3P domain',
+        );
       });
     });
   });
 
   describe('invalid domains', () => {
-    it('should throw error for single-level domains', () => {
-      expect(() => {
-        getDomainDurationConstraints('invalid' as NamefiNormalizedDomain);
-      }).toThrow('Domain invalid is not a valid domain');
+    it('should throw error for single-level domains', async () => {
+      await expect(
+        getDomainDurationConstraints('invalid' as NamefiNormalizedDomain),
+      ).rejects.toThrow('Domain invalid is not a valid domain name');
     });
 
-    it('should throw error for empty domain', () => {
-      expect(() => {
-        getDomainDurationConstraints('' as NamefiNormalizedDomain);
-      }).toThrow('Domain  is not a valid domain');
+    it('should throw error for empty domain', async () => {
+      await expect(
+        getDomainDurationConstraints('' as NamefiNormalizedDomain),
+      ).rejects.toThrow('Domain  is not a valid domain name');
     });
 
-    it('should throw error for domains with more than 3 levels', () => {
-      expect(() => {
-        getDomainDurationConstraints('a.b.c.d' as NamefiNormalizedDomain);
-      }).toThrow('Domain a.b.c.d is not a valid domain');
+    it('should throw error for domains with more than 3 levels', async () => {
+      await expect(
+        getDomainDurationConstraints('a.b.c.d' as NamefiNormalizedDomain),
+      ).rejects.toThrow('Domain a.b.c.d is not a valid domain name');
     });
   });
 
   describe('edge cases', () => {
-    it('should handle domains with numbers', () => {
-      const constraints = getDomainDurationConstraints(
+    it('should handle domains with numbers', async () => {
+      const constraints = await getDomainDurationConstraints(
         'test123.co' as NamefiNormalizedDomain,
       );
       expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
     });
 
-    it('should handle domains with hyphens', () => {
-      const constraints = getDomainDurationConstraints(
+    it('should handle domains with hyphens', async () => {
+      const constraints = await getDomainDurationConstraints(
         'test-domain.co' as NamefiNormalizedDomain,
       );
       expect(constraints).toEqual({ minYears: 1, maxYears: 5 });
@@ -285,8 +314,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 3,
-        min: 1,
-        max: 7, // 10 - 3 = 7 years can be added
+        minimumPossibleRenewalYears: 1,
+        maxAdditionalYears: 7, // 10 - 3 = 7 years can be added
       });
     });
 
@@ -300,8 +329,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 10,
-        min: 0,
-        max: 0, // 10 - 10 = 0 years can be added
+        minimumPossibleRenewalYears: 0,
+        maxAdditionalYears: 0, // 10 - 10 = 0 years can be added
       });
     });
 
@@ -315,8 +344,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 13,
-        min: 0,
-        max: 0, // Cannot add any more years
+        minimumPossibleRenewalYears: 0,
+        maxAdditionalYears: 0, // Cannot add any more years
       });
     });
 
@@ -330,8 +359,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 1,
-        min: 1,
-        max: 9, // Can add up to 9 years
+        minimumPossibleRenewalYears: 1,
+        maxAdditionalYears: 9, // Can add up to 9 years
       });
     });
 
@@ -345,8 +374,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 9,
-        min: 1, // min(1, 2) = 1
-        max: 1, // 10 - 9 = 1 year can be added
+        minimumPossibleRenewalYears: 1, // min(1, 2) = 1
+        maxAdditionalYears: 1, // 10 - 9 = 1 year can be added
       });
     });
 
@@ -360,8 +389,8 @@ describe('getDomainDurationConstraints', () => {
 
       expect(result).toEqual({
         activeRegistrationYears: 2,
-        min: 1,
-        max: 8, // 10 - 2 = 8 years can be added
+        minimumPossibleRenewalYears: 1,
+        maxAdditionalYears: 8, // 10 - 2 = 8 years can be added
       });
     });
   });
