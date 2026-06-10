@@ -98,7 +98,62 @@ export abstract class RegistrarError extends Error {
       domainName: this.domainName,
       operation: this.operation,
       timestamp: this.timestamp.toISOString(),
+      cause: this.serializeCause(),
     };
+  }
+
+  /**
+   * Reduce the cause (original error) to a logging-safe shape:
+   * - `Error` → `{ name, message, code? }` (no stack, avoids circular structures)
+   * - nested `RegistrarError` → its own `toJSON()`
+   * - anything else (e.g. a raw provider response) → returned as-is
+   */
+  private serializeCause(): unknown {
+    const cause = (this as Error & { cause?: unknown }).cause;
+    if (cause === undefined) {
+      return undefined;
+    }
+    if (cause instanceof RegistrarError) {
+      return cause.toJSON();
+    }
+    if (cause instanceof Error) {
+      const code = (cause as { code?: unknown }).code;
+      return {
+        name: cause.name,
+        message: cause.message,
+        ...(typeof code === 'string' || typeof code === 'number'
+          ? { code }
+          : {}),
+      };
+    }
+    return cause;
+  }
+
+  /**
+   * Context fields rendered inline by {@link toString}. Subclasses override to
+   * surface type-specific details (native code, retry delay, ...).
+   */
+  protected describeContext(): string[] {
+    const context = [`registrar=${this.registrarKey}`];
+    if (this.domainName) {
+      context.push(`domain=${this.domainName}`);
+    }
+    if (this.operation) {
+      context.push(`operation=${this.operation}`);
+    }
+    return context;
+  }
+
+  /**
+   * Single-line, log-friendly representation that includes the error code and
+   * context, e.g. used by `String(error)` and template interpolation.
+   *
+   * `RegistrarDomainNotFoundError [REGISTRAR_DOMAIN_NOT_FOUND] (registrar=route53, domain=example.com): Domain 'example.com' does not exist`
+   */
+  override toString(): string {
+    const context = this.describeContext();
+    const suffix = context.length > 0 ? ` (${context.join(', ')})` : '';
+    return `${this.name} [${this.code}]${suffix}: ${this.message}`;
   }
 }
 
@@ -127,6 +182,14 @@ export abstract class RegistrarKnownError extends RegistrarError {
       ...super.toJSON(),
       nativeCode: this.nativeCode,
     };
+  }
+
+  protected override describeContext(): string[] {
+    const context = super.describeContext();
+    if (this.nativeCode !== undefined) {
+      context.push(`native=${this.nativeCode}`);
+    }
+    return context;
   }
 }
 
@@ -181,5 +244,13 @@ export class RegistrarRateLimitError extends RegistrarError {
       ...super.toJSON(),
       retryAfterMs: this.retryAfterMs,
     };
+  }
+
+  protected override describeContext(): string[] {
+    const context = super.describeContext();
+    if (this.retryAfterMs !== undefined) {
+      context.push(`retryAfterMs=${this.retryAfterMs}`);
+    }
+    return context;
   }
 }

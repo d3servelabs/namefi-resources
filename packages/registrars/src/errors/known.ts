@@ -93,6 +93,14 @@ export class RegistrarAuthorizationError extends RegistrarKnownError {
     this.objectId = objectId;
     this.operationName = operationName;
   }
+
+  protected override describeContext(): string[] {
+    return [
+      ...super.describeContext(),
+      `object=${this.objectId}`,
+      `deniedOperation=${this.operationName}`,
+    ];
+  }
 }
 
 /**
@@ -146,6 +154,14 @@ export class RegistrarStatusProhibitsError extends RegistrarKnownError {
     this.operationName = operationName;
     this.prohibitingStatuses = meta.prohibitingStatuses;
   }
+
+  protected override describeContext(): string[] {
+    const context = super.describeContext();
+    if (this.prohibitingStatuses?.length) {
+      context.push(`statuses=${this.prohibitingStatuses.join('|')}`);
+    }
+    return context;
+  }
 }
 
 /**
@@ -187,6 +203,10 @@ export class RegistrarTransferError extends RegistrarKnownError {
     }[transferState];
     super(`Domain '${domainName}' ${stateMsg}`, { ...meta, domainName });
     this.transferState = transferState;
+  }
+
+  protected override describeContext(): string[] {
+    return [...super.describeContext(), `transferState=${this.transferState}`];
   }
 }
 
@@ -241,6 +261,17 @@ export class RegistrarValidationError extends RegistrarKnownError {
     this.field = meta.field;
     this.value = meta.value;
   }
+
+  protected override describeContext(): string[] {
+    const context = super.describeContext();
+    if (this.field !== undefined) {
+      context.push(`field=${this.field}`);
+    }
+    if (this.value !== undefined) {
+      context.push(`value=${this.value}`);
+    }
+    return context;
+  }
 }
 
 // ============================================================================
@@ -266,6 +297,10 @@ export class RegistrarTLDNotSupportedError extends RegistrarKnownError {
       domainName,
     });
     this.tld = tld;
+  }
+
+  protected override describeContext(): string[] {
+    return [...super.describeContext(), `tld=${this.tld}`];
   }
 }
 
@@ -300,6 +335,14 @@ export class RegistrarDuplicateRequestError extends RegistrarKnownError {
   ) {
     super(message, meta);
     this.existingRequestId = meta.existingRequestId;
+  }
+
+  protected override describeContext(): string[] {
+    const context = super.describeContext();
+    if (this.existingRequestId !== undefined) {
+      context.push(`existingRequestId=${this.existingRequestId}`);
+    }
+    return context;
   }
 }
 

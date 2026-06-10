@@ -109,4 +109,17 @@ describe('createRegistrarErrorFromDynadot - thrown errors', () => {
     });
     expect(result.code).toBe(RegistrarErrorCodes.UNKNOWN_ERROR);
   });
+
+  it('keeps the thrown error as cause', () => {
+    const original = new Error('upstream dynadot failure');
+    const result = createRegistrarErrorFromDynadot({ ...ctx, error: original });
+    expect((result as { cause?: unknown }).cause).toBe(original);
+  });
+
+  it('keeps the failing response as cause and originalError', () => {
+    const response = failedResponse('Domain already exists');
+    const result = createRegistrarErrorFromDynadot({ ...ctx, response });
+    expect((result as { cause?: unknown }).cause).toBe(response);
+    expect(result.originalError).toBe(response);
+  });
 });

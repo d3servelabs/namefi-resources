@@ -142,4 +142,14 @@ describe('createRegistrarErrorFromR53', () => {
     });
     expect(result.code).toBe(RegistrarErrorCodes.UNKNOWN_ERROR);
   });
+
+  it('preserves the original error as cause', () => {
+    const original = makeAwsException('DomainLimitExceeded', 'too many');
+    const result = createRegistrarErrorFromR53({
+      ...baseOptions,
+      error: original,
+    });
+    expect((result as { cause?: unknown }).cause).toBe(original);
+    expect(result.originalError).toBe(original);
+  });
 });

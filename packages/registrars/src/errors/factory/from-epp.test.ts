@@ -92,4 +92,11 @@ describe('createRegistrarErrorFromEpp - non-result errors', () => {
     const result = createRegistrarErrorFromEpp({ ...ctx, error: undefined });
     expect(result.code).toBe(RegistrarErrorCodes.UNKNOWN_ERROR);
   });
+
+  it('preserves the original error as cause', () => {
+    const original = new Error('upstream epp failure');
+    const result = createRegistrarErrorFromEpp({ ...ctx, error: original });
+    expect((result as { cause?: unknown }).cause).toBe(original);
+    expect(result.originalError).toBe(original);
+  });
 });
