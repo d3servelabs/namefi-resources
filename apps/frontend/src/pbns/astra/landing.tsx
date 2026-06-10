@@ -154,37 +154,17 @@ const HeroSection = ({
       </motion.div>
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6, ease: [0.25, 0.8, 0.25, 1] }}
-          className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur"
-        >
+        <span className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur">
           ICANN Accredited Registrar on Ethereum & Base
-        </motion.span>
-        <motion.h1
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-6 text-balance text-2xl font-semibold leading-tight md:mt-8 md:text-6xl"
-        >
+        </span>
+        <h1 className="mt-6 text-balance text-2xl font-semibold leading-tight md:mt-8 md:text-6xl">
           {HERO_HEADING}
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-3 max-w-2xl text-pretty text-sm text-muted-foreground md:mt-4 md:text-xl"
-        >
+        </h1>
+        <p className="mt-3 max-w-2xl text-pretty text-sm text-muted-foreground md:mt-4 md:text-xl">
           {HERO_SUBTITLE}
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35, duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-          className="mt-8 md:mt-12 flex w-full max-w-3xl flex-col items-center gap-6"
-        >
+        <div className="mt-8 md:mt-12 flex w-full max-w-3xl flex-col items-center gap-6">
           <div className="mx-auto w-full max-w-md">
             <SearchModeTabs
               searchMode={searchMode}
@@ -280,7 +260,7 @@ const HeroSection = ({
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {!isSearchActive && (
           <ScrollIndicator
