@@ -18,6 +18,7 @@ import { OriginProvider } from '@/components/providers/origin';
 import { TrpcProvider } from '@/components/providers/trpc';
 import { CartProvider } from '@/components/providers/cart';
 import { WishlistProvider } from '@/components/providers/wishlist';
+import { CENTRALNIC_OTE_TLDS } from '@namefi-astra/common/centralnic-test-tlds';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
@@ -74,18 +75,24 @@ function StoryProviders({
   );
 }
 
+const MOCK_SEARCH_TLDS = CENTRALNIC_OTE_TLDS.slice(0, 6);
+
 // Minimal pricing table so client-ranked domain suggestions resolve to priced,
-// renderable result cards without a backend. `useSearch` generates the domain
-// list on the client (suggestionSource: 'client-ranked-tlds'), so the only data
-// the results panel needs to render cards is the TLD pricing table below.
-const MOCK_TLD_PRICING = ['com', 'io', 'xyz', 'org', 'net', 'app'].map(
-  (tld, index) => ({
-    tld,
-    registrationPriceUsdPerYear: 12 + index,
-    renewalPriceUsdPerYear: 14 + index,
-    transferPriceUsdPerYear: 12 + index,
-    registrarKey: 'DynadotGdg',
-  }),
+// renderable result cards without a backend. The test env uses the CentralNic
+// OTE TLD set, so this mirrors the first client-ranked suggestions.
+const MOCK_TLD_PRICING = MOCK_SEARCH_TLDS.map((tld, index) => ({
+  tld,
+  registrationPriceUsdPerYear: 12 + index,
+  renewalPriceUsdPerYear: 14 + index,
+  transferPriceUsdPerYear: 12 + index,
+  registrarKey: 'DynadotGdg',
+}));
+
+const RESULT_CARD_REGEX = new RegExp(
+  `acme\\.(${MOCK_SEARCH_TLDS.map((tld) =>
+    tld.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+  ).join('|')})`,
+  'i',
 );
 
 async function getSearchMockData(opts: {
@@ -242,9 +249,6 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-// Matches a rendered result card for the searched term (e.g. "acme.com").
-const RESULT_CARD_REGEX = /acme\.(com|io|xyz|org|net|app)/i;
 
 export const Default: Story = {
   args: {

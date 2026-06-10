@@ -338,9 +338,10 @@ function lighthouseSlackText(
   report?: LighthouseReport | null,
 ) {
   if (!lighthouseSummary) {
-    return [lighthouseSlackHeading(status, averageDuration), `- ${summary}`].join(
-      '\n',
-    );
+    return [
+      lighthouseSlackHeading(status, averageDuration),
+      `- ${summary}`,
+    ].join('\n');
   }
 
   return [
@@ -421,9 +422,7 @@ const lighthouseSlackSummary = lighthouseSlackText(
 const heading = headingForStatus(overallSlackStatus);
 
 const payload = {
-  text: `${heading}: E2E ${slackStatusLabel(
-    e2eSlackStatus,
-  )}${
+  text: `${heading}: E2E ${slackStatusLabel(e2eSlackStatus)}${
     lighthouseSlackStatus === 'success'
       ? ''
       : `, Lighthouse ${slackStatusLabel(lighthouseSlackStatus)}`

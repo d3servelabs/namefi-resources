@@ -26,7 +26,8 @@ export type NamefiFeedIngestionWorkflowResult = {
   status: 'completed' | 'skipped';
 };
 
-const MAX_PROCESS_BATCHES = 200;
+// Safety ceiling; the per-run processing budget controls normal throughput.
+const MAX_PROCESS_BATCHES = 10;
 
 const {
   startNamefiFeedIngestionRun,
@@ -57,6 +58,9 @@ export async function namefiFeedIngestionWorkflow(
       requestedByUserId: input.requestedByUserId,
     });
     runId = run.runId;
+    if (run.skipped) {
+      return { runId, status: 'skipped' };
+    }
 
     const isXOnlyScan = input.sources?.length === 1 && input.sources[0] === 'x';
     const enqueueResult =
@@ -100,6 +104,9 @@ export async function namefiFeedIngestionWorkflow(
       failedPostCount: 0,
       remainingPostCount: 0,
       batches: 0,
+      budgetExhausted: false,
+      maxPostsProcessedPerRun: null as number | null,
+      stopReason: null as string | null,
     };
 
     for (
@@ -119,6 +126,12 @@ export async function namefiFeedIngestionWorkflow(
       processResult.skippedPostCount += batch.skippedPostCount;
       processResult.failedPostCount += batch.failedPostCount;
       processResult.remainingPostCount = batch.remainingPostCount;
+      processResult.maxPostsProcessedPerRun = batch.maxPostsProcessedPerRun;
+      if (batch.budgetExhausted) {
+        processResult.budgetExhausted = true;
+        processResult.stopReason = 'processing_budget_exhausted';
+        break;
+      }
 
       const changedPostCount =
         batch.processedPostCount +
@@ -129,7 +142,10 @@ export async function namefiFeedIngestionWorkflow(
       }
     }
 
-    if (processResult.remainingPostCount > 0) {
+    if (
+      processResult.remainingPostCount > 0 &&
+      !processResult.budgetExhausted
+    ) {
       throw new Error(
         `Namefi feed ingestion left ${processResult.remainingPostCount} pending posts after ${processResult.batches} batches.`,
       );

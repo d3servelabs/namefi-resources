@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import {
   analyseNamefiFeedPostForDomainSale,
   type NamefiFeedDomainSaleOpportunity,
@@ -7,10 +8,22 @@ import {
   namefiFeedIngestionRunsTable,
   namefiFeedListingsTable,
   namefiFeedPostsTable,
+  namefiFeedSettingsTable,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { Json } from 'drizzle-zod';
-import { and, asc, count, eq, inArray, lt, sql } from 'drizzle-orm';
+import {
+  and,
+  asc,
+  count,
+  desc,
+  eq,
+  gt,
+  inArray,
+  lt,
+  lte,
+  sql,
+} from 'drizzle-orm';
 import { createLogger } from '#lib/logger';
 import {
   buildSaleSearchQuery,
@@ -28,6 +41,8 @@ import {
 } from './normalization';
 import {
   getNamefiFeedSettingsRow,
+  readNamefiFeedMaxPostsProcessedPerRunFromMetadata,
+  readNamefiFeedSourceSettingsFromSettingsRow,
   touchNamefiFeedLastRunAt,
   updateNamefiFeedLastAutoScanCursorAt,
 } from './admin.service';
@@ -58,8 +73,10 @@ const MARKETPLACE_RSS_REQUEST_TIMEOUT_MS = 15_000;
 const MARKETPLACE_RSS_MAX_REQUEST_ATTEMPTS = 3;
 const MARKETPLACE_RSS_DEFAULT_RETRY_DELAY_MS = 1_000;
 const MARKETPLACE_RSS_MAX_RETRY_DELAY_MS = 15_000;
-const MARKETPLACE_RSS_MAX_POST_AGE_MINUTES = 7 * 24 * 60;
+const MARKETPLACE_RSS_MAX_POST_AGE_MINUTES = 24 * 60;
 const PROCESSING_POST_STALE_MS = 45 * 60 * 1000;
+const ACTIVE_INGESTION_RUN_STALE_MS = 3 * 60 * 60 * 1000;
+const INGESTION_RUN_CREATION_LOCK_KEY = 'namefi-feed-ingestion-run';
 const X_TWEET_FIELDS = [
   'author_id',
   'conversation_id',
@@ -112,6 +129,9 @@ export interface NamefiFeedProcessResult {
   skippedPostCount: number;
   failedPostCount: number;
   remainingPostCount: number;
+  budgetExhausted: boolean;
+  maxPostsProcessedPerRun: number;
+  budgetRemaining: number;
 }
 
 interface XTweet {
@@ -196,20 +216,101 @@ export async function createNamefiFeedIngestionRun(input: {
   trigger: 'scheduled' | 'manual';
   requestedByUserId?: string | null;
 }) {
-  const [run] = await db
-    .insert(namefiFeedIngestionRunsTable)
-    .values({
-      workflowId: input.workflowId,
-      trigger: input.trigger,
-      requestedByUserId: input.requestedByUserId ?? null,
-    })
-    .returning({ id: namefiFeedIngestionRunsTable.id });
+  return await db.transaction(async (tx) => {
+    await tx.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtext(${INGESTION_RUN_CREATION_LOCK_KEY}))`,
+    );
 
-  if (!run) {
-    throw new Error('Failed to create Namefi feed ingestion run.');
-  }
+    const staleBefore = new Date(Date.now() - ACTIVE_INGESTION_RUN_STALE_MS);
+    const staleRetiredAt = new Date();
+    await tx
+      .update(namefiFeedIngestionRunsTable)
+      .set({
+        errorMessage:
+          'Namefi feed ingestion run exceeded the active-run stale timeout.',
+        finishedAt: staleRetiredAt,
+        metadata: sql`${namefiFeedIngestionRunsTable.metadata} || ${JSON.stringify(
+          {
+            staleAfterMs: ACTIVE_INGESTION_RUN_STALE_MS,
+            staleReason: 'stale_after_timeout',
+            staleRetiredAt: staleRetiredAt.toISOString(),
+          },
+        )}::jsonb`,
+        status: 'failed',
+        updatedAt: staleRetiredAt,
+      })
+      .where(
+        and(
+          eq(namefiFeedIngestionRunsTable.status, 'running'),
+          lte(namefiFeedIngestionRunsTable.startedAt, staleBefore),
+        ),
+      );
 
-  return { runId: run.id };
+    const [activeRun] = await tx
+      .select({
+        id: namefiFeedIngestionRunsTable.id,
+        workflowId: namefiFeedIngestionRunsTable.workflowId,
+        startedAt: namefiFeedIngestionRunsTable.startedAt,
+      })
+      .from(namefiFeedIngestionRunsTable)
+      .where(
+        and(
+          eq(namefiFeedIngestionRunsTable.status, 'running'),
+          gt(namefiFeedIngestionRunsTable.startedAt, staleBefore),
+        ),
+      )
+      .orderBy(desc(namefiFeedIngestionRunsTable.startedAt))
+      .limit(1);
+
+    if (activeRun) {
+      const [run] = await tx
+        .insert(namefiFeedIngestionRunsTable)
+        .values({
+          workflowId: input.workflowId,
+          trigger: input.trigger,
+          requestedByUserId: input.requestedByUserId ?? null,
+          status: 'skipped',
+          finishedAt: new Date(),
+          metadata: {
+            skipReason: 'ingestion_already_running',
+            activeRunId: activeRun.id,
+            activeWorkflowId: activeRun.workflowId,
+            activeRunStartedAt: activeRun.startedAt.toISOString(),
+          },
+        })
+        .returning({ id: namefiFeedIngestionRunsTable.id });
+
+      if (!run) {
+        throw new Error('Failed to create skipped Namefi feed ingestion run.');
+      }
+
+      await tx
+        .update(namefiFeedSettingsTable)
+        .set({ lastRunAt: new Date() })
+        .where(eq(namefiFeedSettingsTable.id, 'default'));
+
+      return {
+        runId: run.id,
+        skipped: true,
+        reason: 'ingestion_already_running',
+      };
+    }
+
+    const [run] = await tx
+      .insert(namefiFeedIngestionRunsTable)
+      .values({
+        workflowId: input.workflowId,
+        trigger: input.trigger,
+        requestedByUserId: input.requestedByUserId ?? null,
+      })
+      .returning({ id: namefiFeedIngestionRunsTable.id });
+
+    if (!run) {
+      throw new Error('Failed to create Namefi feed ingestion run.');
+    }
+
+    return { runId: run.id };
+  });
 }
 
 export async function scanAndQueueNamefiFeedAutoPosts(input: {
@@ -285,13 +386,15 @@ export async function scanAndQueueNamefiFeedAutoPosts(input: {
       source === 'namepros' || source === 'dnforum',
   );
   if (marketplaceRssSources.length > 0) {
+    const sourceSettings =
+      readNamefiFeedSourceSettingsFromSettingsRow(settings);
     const marketplaceRssResult =
       await scanAndQueueNamefiFeedMarketplaceRssPosts({
         runId: input.runId,
-        maxPostAgeMinutes: Math.max(
-          settings.maxTweetAgeMinutes,
-          MARKETPLACE_RSS_MAX_POST_AGE_MINUTES,
-        ),
+        maxPostAgeMinutesBySource: {
+          dnforum: sourceSettings.dnforum.maxPostAgeMinutes,
+          namepros: sourceSettings.namepros.maxPostAgeMinutes,
+        },
         sources: marketplaceRssSources,
       });
     mergeScanCounters(counters, marketplaceRssResult.counters);
@@ -396,18 +499,19 @@ async function scanAndQueueNamefiFeedXPostsForSettings(input: {
   sourceResult: NamefiFeedScanSourceResult;
 }> {
   const { settings } = input;
+  const xSettings = readNamefiFeedSourceSettingsFromSettingsRow(settings).x;
 
   const startTime = resolveStartTime({
     sinceAt: settings.lastAutoScanCursorAt,
-    maxTweetAgeMinutes: settings.maxTweetAgeMinutes,
-    overlapMinutes: settings.overlapMinutes,
+    maxTweetAgeMinutes: xSettings.maxTweetAgeMinutes,
+    overlapMinutes: xSettings.overlapMinutes,
   });
   const queries = (
     settings.searchQueries.length > 0
       ? settings.searchQueries
       : DEFAULT_NAMEFI_FEED_SEARCH_QUERIES
   )
-    .slice(0, settings.maxQueries)
+    .slice(0, xSettings.maxQueries)
     .map((query) => buildSaleSearchQuery(query))
     .filter((query): query is string => Boolean(query));
 
@@ -421,9 +525,9 @@ async function scanAndQueueNamefiFeedXPostsForSettings(input: {
         bearerToken: input.bearerToken,
         query,
         startTime,
-        maxPages: settings.maxPagesPerQuery,
-        maxResults: settings.maxTweetsPerQuery,
-        maxTweetAgeMinutes: settings.maxTweetAgeMinutes,
+        maxPages: xSettings.maxPagesPerQuery,
+        maxResults: xSettings.maxTweetsPerQuery,
+        maxTweetAgeMinutes: xSettings.maxTweetAgeMinutes,
       }),
     );
   }
@@ -445,7 +549,7 @@ async function scanAndQueueNamefiFeedXPostsForSettings(input: {
 
 async function scanAndQueueNamefiFeedMarketplaceRssPosts(input: {
   runId: string;
-  maxPostAgeMinutes: number;
+  maxPostAgeMinutesBySource: Record<NamefiFeedMarketplaceRssSource, number>;
   sources: NamefiFeedMarketplaceRssSource[];
 }): Promise<{
   counters: ScanCounters;
@@ -464,6 +568,9 @@ async function scanAndQueueNamefiFeedMarketplaceRssPosts(input: {
     try {
       const xml = await fetchMarketplaceRssXml(feed);
       const items = parseNamefiFeedMarketplaceRss(xml, feed);
+      const maxPostAgeMinutes =
+        input.maxPostAgeMinutesBySource[feed.source] ??
+        MARKETPLACE_RSS_MAX_POST_AGE_MINUTES;
 
       for (const item of items) {
         feedCounters.scannedPostCount += 1;
@@ -472,7 +579,7 @@ async function scanAndQueueNamefiFeedMarketplaceRssPosts(input: {
           item.postedAt.toISOString(),
         );
 
-        if (!isPostDateFresh(item.postedAt, input.maxPostAgeMinutes)) {
+        if (!isPostDateFresh(item.postedAt, maxPostAgeMinutes)) {
           feedCounters.skippedPostCount += 1;
           continue;
         }
@@ -1006,6 +1113,38 @@ export async function processPendingNamefiFeedPosts(input: {
   limit?: number;
 }): Promise<NamefiFeedProcessResult> {
   await resetStaleProcessingPosts(input.runId);
+  const settings = await getNamefiFeedSettingsRow();
+  const maxPostsProcessedPerRun =
+    readNamefiFeedMaxPostsProcessedPerRunFromMetadata(settings.metadata);
+  const alreadyAttemptedPostCount = await countPostsForRunByStatuses(
+    input.runId,
+    ['processed', 'skipped', 'failed'],
+  );
+  const budgetRemaining = Math.max(
+    0,
+    maxPostsProcessedPerRun - alreadyAttemptedPostCount,
+  );
+
+  const result: NamefiFeedProcessResult = {
+    processedPostCount: 0,
+    listingUpsertedCount: 0,
+    logoCandidateDomains: [],
+    skippedPostCount: 0,
+    failedPostCount: 0,
+    remainingPostCount: 0,
+    budgetExhausted: budgetRemaining === 0,
+    maxPostsProcessedPerRun,
+    budgetRemaining,
+  };
+
+  if (budgetRemaining === 0) {
+    result.remainingPostCount = await countPostsForRunByStatus(
+      input.runId,
+      'pending',
+    );
+    await persistProcessCounts(input.runId);
+    return result;
+  }
 
   const posts = await db
     .select()
@@ -1017,16 +1156,7 @@ export async function processPendingNamefiFeedPosts(input: {
       ),
     )
     .orderBy(asc(namefiFeedPostsTable.createdAt))
-    .limit(clamp(input.limit ?? 50, 1, 100));
-
-  const result: NamefiFeedProcessResult = {
-    processedPostCount: 0,
-    listingUpsertedCount: 0,
-    logoCandidateDomains: [],
-    skippedPostCount: 0,
-    failedPostCount: 0,
-    remainingPostCount: 0,
-  };
+    .limit(clamp(Math.min(input.limit ?? 50, budgetRemaining), 1, 100));
 
   for (const post of posts) {
     const [claimed] = await db
@@ -1099,6 +1229,16 @@ export async function processPendingNamefiFeedPosts(input: {
     input.runId,
     'pending',
   );
+  const attemptedPostCount =
+    alreadyAttemptedPostCount +
+    result.processedPostCount +
+    result.skippedPostCount +
+    result.failedPostCount;
+  result.budgetRemaining = Math.max(
+    0,
+    maxPostsProcessedPerRun - attemptedPostCount,
+  );
+  result.budgetExhausted = result.budgetRemaining === 0;
   await persistProcessCounts(input.runId);
   return result;
 }
@@ -1190,9 +1330,19 @@ async function insertNamefiFeedPost(input: {
     authorDisplayName: input.author?.name ?? null,
     text: tweetText,
     source: input.source,
-    rawPayload: buildRawPayload(input) as Json,
+    rawPayload: buildRawPayload({
+      ...input,
+      normalizedText: tweetText,
+    }) as Json,
     postedAt,
     requeueExisting: input.requeueExisting,
+    requeueExistingContentHash: input.requeueExisting
+      ? hashNamefiFeedPostContent({
+          candidateUrls: input.candidateUrls,
+          domains: input.domains,
+          text: tweetText,
+        })
+      : null,
   });
 }
 
@@ -1235,7 +1385,10 @@ async function insertNamefiFeedPostRecord(input: {
 
   const insertBuilder = db.insert(namefiFeedPostsTable).values(values);
   const conflictUpdateWhere = input.requeueExistingContentHash
-    ? sql`${namefiFeedPostsTable.rawPayload}->>'contentHash' IS DISTINCT FROM ${input.requeueExistingContentHash}`
+    ? and(
+        inArray(namefiFeedPostsTable.status, REQUEUEABLE_POST_STATUSES),
+        sql`(${namefiFeedPostsTable.rawPayload}->>'contentHash' IS DISTINCT FROM ${input.requeueExistingContentHash} OR ${namefiFeedPostsTable.text} IS DISTINCT FROM ${postText})`,
+      )
     : input.requeueExisting
       ? inArray(namefiFeedPostsTable.status, REQUEUEABLE_POST_STATUSES)
       : null;
@@ -1490,6 +1643,26 @@ async function countPostsForRunByStatus(
   return Number(row?.value ?? 0);
 }
 
+async function countPostsForRunByStatuses(
+  runId: string,
+  statuses: Array<'processed' | 'skipped' | 'failed'>,
+): Promise<number> {
+  if (statuses.length === 0) {
+    return 0;
+  }
+
+  const [row] = await db
+    .select({ value: count() })
+    .from(namefiFeedPostsTable)
+    .where(
+      and(
+        eq(namefiFeedPostsTable.ingestionRunId, runId),
+        inArray(namefiFeedPostsTable.status, statuses),
+      ),
+    );
+  return Number(row?.value ?? 0);
+}
+
 async function countListingsForRun(runId: string): Promise<number> {
   const [row] = await db
     .select({ value: count() })
@@ -1575,6 +1748,7 @@ function shouldQueueAutoScannedTweet(
 function buildRawPayload(input: {
   tweet: XTweet;
   author?: XUser;
+  normalizedText: string;
   candidateUrls: string[];
   domains: string[];
 }) {
@@ -1584,7 +1758,28 @@ function buildRawPayload(input: {
     author: input.author ?? null,
     candidateUrls: input.candidateUrls,
     domains: input.domains,
+    contentHash: hashNamefiFeedPostContent({
+      candidateUrls: input.candidateUrls,
+      domains: input.domains,
+      text: input.normalizedText,
+    }),
   };
+}
+
+function hashNamefiFeedPostContent(input: {
+  candidateUrls: string[];
+  domains: string[];
+  text: string;
+}) {
+  return createHash('sha256')
+    .update(
+      JSON.stringify({
+        candidateUrls: [...input.candidateUrls].sort(),
+        domains: [...input.domains].sort(),
+        text: input.text.trim(),
+      }),
+    )
+    .digest('hex');
 }
 
 function extractCandidateUrlsFromRawPayload(rawPayload: Json): string[] {

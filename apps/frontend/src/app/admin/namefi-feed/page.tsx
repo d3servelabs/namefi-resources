@@ -8,10 +8,17 @@ import { withAdminGuard } from '@/components/admin/admin-guard';
 import { PageShell } from '@/components/page-shell';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import { applyClientSideSorting } from '@/components/table/filters';
+import { ServerDataTable } from '@/components/table/server-data-table';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
 import type { adminNamefiFeedContract } from '@namefi-astra/common/contract/admin/admin-namefi-feed-contract';
 import type { InferContractOutputs } from '@namefi-astra/common/contract/trpc-contract';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@namefi-astra/ui/components/shadcn/accordion';
 import {
   Alert,
   AlertDescription,
@@ -50,6 +57,7 @@ import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { Permission } from '@namefi-astra/utils/permissions';
 import type {
   ColumnDef,
+  ColumnFiltersState,
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
@@ -74,20 +82,36 @@ type NamefiFeedOverview = InferContractOutputs<
   typeof adminNamefiFeedContract
 >['getOverview'];
 type FeedSettings = NamefiFeedOverview['settings'];
+type FeedSourceSettings = FeedSettings['sourceSettings'];
 type FeedSource = NamefiFeedOverview['settings']['sources'][number];
 type FeedSourceId = FeedSource['id'];
 type DigestTarget = NamefiFeedOverview['digestTargets'][number];
 type DigestTargetType = DigestTarget['targetType'];
+type NamefiFeedRunsPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listRuns'];
+type NamefiFeedPostsPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listPosts'];
+type NamefiFeedListingsPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listListings'];
+type NamefiFeedReportsPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listReports'];
+type NamefiFeedDigestDeliveriesPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listDigestDeliveries'];
+type NamefiFeedDigestRunsPage = InferContractOutputs<
+  typeof adminNamefiFeedContract
+>['listDigestRuns'];
+type NamefiFeedRunRow = NamefiFeedRunsPage['rows'][number];
 
 type SettingsDraft = {
   autoScanEnabled: boolean;
   enabledSources: FeedSourceId[];
-  searchQueriesText: string;
-  maxQueries: number;
-  maxPagesPerQuery: number;
-  maxTweetsPerQuery: number;
-  maxTweetAgeMinutes: number;
-  overlapMinutes: number;
+  sourceSettings: FeedSourceSettings;
+  maxPostsProcessedPerRun: number;
 };
 
 type TargetDraft = {
@@ -104,16 +128,83 @@ type TargetDraft = {
 const EMPTY_SETTINGS_DRAFT: SettingsDraft = {
   autoScanEnabled: false,
   enabledSources: ['x', 'namepros', 'dnforum'],
-  searchQueriesText: '',
-  maxQueries: 3,
-  maxPagesPerQuery: 1,
-  maxTweetsPerQuery: 10,
-  maxTweetAgeMinutes: 1440,
-  overlapMinutes: 5,
+  sourceSettings: {
+    x: {
+      maxQueries: 3,
+      maxPagesPerQuery: 1,
+      maxTweetsPerQuery: 10,
+      maxTweetAgeMinutes: 1440,
+      overlapMinutes: 5,
+    },
+    namepros: {
+      maxPostAgeMinutes: 1440,
+    },
+    dnforum: {
+      maxPostAgeMinutes: 1440,
+    },
+  },
+  maxPostsProcessedPerRun: 500,
 };
 
 const MANUAL_TWEET_SPLIT_PATTERN = /[\s,]+/;
 const POSITIVE_INTEGER_PATTERN = /^[1-9]\d*$/;
+const TABLE_FILTER_DISPLAY_OPTIONS = { showInHeader: false } as const;
+const INGESTION_RUN_STATUS_FILTER_OPTIONS = selectFilterOptions([
+  'running',
+  'completed',
+  'failed',
+  'skipped',
+]);
+const INGESTION_RUN_TRIGGER_FILTER_OPTIONS = selectFilterOptions([
+  'scheduled',
+  'manual',
+]);
+const POST_STATUS_FILTER_OPTIONS = selectFilterOptions([
+  'pending',
+  'processing',
+  'processed',
+  'skipped',
+  'failed',
+]);
+const POST_SOURCE_FILTER_OPTIONS = selectFilterOptions([
+  'auto_scan',
+  'manual',
+  'system',
+]);
+const LISTING_END_REASON_FILTER_OPTIONS = selectFilterOptions([
+  'cancelled',
+  'expired',
+  'sold',
+  'superseded',
+]);
+const REPORT_REASON_FILTER_OPTIONS = selectFilterOptions([
+  'already_sold',
+  'inaccurate_price',
+  'not_for_sale',
+  'duplicate_listing',
+  'other',
+]);
+const DIGEST_RUN_STATUS_FILTER_OPTIONS = selectFilterOptions([
+  'running',
+  'dry_run',
+  'sent',
+  'skipped',
+  'failed',
+  'partial',
+]);
+const DIGEST_DELIVERY_STATUS_FILTER_OPTIONS = selectFilterOptions([
+  'pending',
+  'sent',
+  'failed',
+  'skipped',
+  'partial',
+]);
+const DIGEST_TARGET_TYPE_FILTER_OPTIONS = [
+  { value: 'slack', label: 'Slack' },
+  { value: 'telegram_group', label: 'Telegram' },
+  { value: 'discord_channel', label: 'Discord' },
+];
+
 const EMPTY_TARGET_DRAFT: TargetDraft = {
   id: null,
   targetType: 'slack',
@@ -178,12 +269,8 @@ function NamefiFeedAdminContent() {
     setSettingsDraft({
       autoScanEnabled: overview.settings.autoScanEnabled,
       enabledSources: overview.settings.enabledSources,
-      searchQueriesText: overview.settings.searchQueries.join('\n'),
-      maxQueries: overview.settings.maxQueries,
-      maxPagesPerQuery: overview.settings.maxPagesPerQuery,
-      maxTweetsPerQuery: overview.settings.maxTweetsPerQuery,
-      maxTweetAgeMinutes: overview.settings.maxTweetAgeMinutes,
-      overlapMinutes: overview.settings.overlapMinutes,
+      sourceSettings: overview.settings.sourceSettings,
+      maxPostsProcessedPerRun: overview.settings.maxPostsProcessedPerRun,
     });
   }, [overview?.settings]);
 
@@ -200,9 +287,29 @@ function NamefiFeedAdminContent() {
   }, [enabledDigestTargetIds]);
 
   const invalidateOverview = () =>
-    queryClient.invalidateQueries({
-      queryKey: trpc.admin.namefiFeed.getOverview.queryKey(),
-    });
+    Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.getOverview.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listRuns.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listPosts.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listListings.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listReports.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listDigestDeliveries.queryKey(),
+      }),
+      queryClient.invalidateQueries({
+        queryKey: trpc.admin.namefiFeed.listDigestRuns.queryKey(),
+      }),
+    ]);
 
   const updateSettingsMutation = useMutation(
     trpc.admin.namefiFeed.updateSettings.mutationOptions({
@@ -329,20 +436,6 @@ function NamefiFeedAdminContent() {
     }),
   );
 
-  const stats = useMemo(() => {
-    const source = overview?.stats;
-    return [
-      ['Visible listings', source?.activeListings ?? 0],
-      ['Active reports', source?.activeReports ?? 0],
-      ['Pending posts', source?.pendingPosts ?? 0],
-      ['Failed posts', source?.failedPosts ?? 0],
-      ['Running scans', source?.runningRuns ?? 0],
-      [
-        'Digest targets',
-        `${source?.enabledDigestTargets ?? 0}/${source?.digestTargets ?? 0}`,
-      ],
-    ] as const;
-  }, [overview?.stats]);
   const settingsLoaded = Boolean(overview?.settings);
   const settingsDirty = overview?.settings
     ? !settingsDraftMatchesSettings(settingsDraft, overview.settings)
@@ -354,12 +447,9 @@ function NamefiFeedAdminContent() {
     updateSettingsMutation.mutate({
       autoScanEnabled: settingsDraft.autoScanEnabled,
       enabledSources: settingsDraft.enabledSources,
-      searchQueries: parseSearchQueriesText(settingsDraft.searchQueriesText),
-      maxQueries: settingsDraft.maxQueries,
-      maxPagesPerQuery: settingsDraft.maxPagesPerQuery,
-      maxTweetsPerQuery: settingsDraft.maxTweetsPerQuery,
-      maxTweetAgeMinutes: settingsDraft.maxTweetAgeMinutes,
-      overlapMinutes: settingsDraft.overlapMinutes,
+      searchQueries: overview?.settings.searchQueries ?? [],
+      sourceSettings: settingsDraft.sourceSettings,
+      maxPostsProcessedPerRun: settingsDraft.maxPostsProcessedPerRun,
     });
   };
 
@@ -369,6 +459,39 @@ function NamefiFeedAdminContent() {
       enabledSources: enabled
         ? Array.from(new Set([...draft.enabledSources, sourceId]))
         : draft.enabledSources.filter((id) => id !== sourceId),
+    }));
+  };
+
+  const updateXSourceSetting = (
+    key: keyof FeedSourceSettings['x'],
+    value: number,
+  ) => {
+    setSettingsDraft((draft) => ({
+      ...draft,
+      sourceSettings: {
+        ...draft.sourceSettings,
+        x: {
+          ...draft.sourceSettings.x,
+          [key]: value,
+        },
+      },
+    }));
+  };
+
+  const updateMarketplaceSourceSetting = (
+    sourceId: 'namepros' | 'dnforum',
+    key: keyof FeedSourceSettings['namepros'],
+    value: number,
+  ) => {
+    setSettingsDraft((draft) => ({
+      ...draft,
+      sourceSettings: {
+        ...draft.sourceSettings,
+        [sourceId]: {
+          ...draft.sourceSettings[sourceId],
+          [key]: value,
+        },
+      },
     }));
   };
 
@@ -444,6 +567,9 @@ function NamefiFeedAdminContent() {
   };
 
   const missingDigestTokens = getMissingDigestTokenLabels(overview);
+  const latestFailedDigestDelivery = overview?.recentDigestDeliveries.find(
+    (delivery) => delivery.status === 'failed' || delivery.status === 'partial',
+  );
   const savedEnabledSourceIds = overview?.settings.enabledSources ?? [];
   const xScanSourceEnabled = savedEnabledSourceIds.includes('x');
   const hasRunnableSavedScanSource =
@@ -503,6 +629,19 @@ function NamefiFeedAdminContent() {
         </Alert>
       )}
 
+      {latestFailedDigestDelivery && (
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertTitle>Latest digest delivery failed</AlertTitle>
+          <AlertDescription>
+            {latestFailedDigestDelivery.targetLabel ??
+              latestFailedDigestDelivery.targetKey}{' '}
+            failed at {formatDate(latestFailedDigestDelivery.generatedAt)}:{' '}
+            {latestFailedDigestDelivery.error ?? 'No error recorded.'}
+          </AlertDescription>
+        </Alert>
+      )}
+
       {overviewQuery.isError && (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
@@ -514,334 +653,403 @@ function NamefiFeedAdminContent() {
         </Alert>
       )}
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-6">
-        {stats.map(([label, value]) => (
-          <Card key={label} className="rounded-md">
-            <CardHeader className="p-4 pb-2">
-              <CardDescription>{label}</CardDescription>
-              <CardTitle className="text-2xl">{value}</CardTitle>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-
-      <div className="grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(360px,0.7fr)_minmax(360px,0.7fr)]">
-        <Card className="rounded-md">
-          <CardHeader>
-            <CardTitle>Ingestion Settings</CardTitle>
-            <CardDescription>
-              Scheduled scans use these limits and queries.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-5">
-            <div className="flex items-center justify-between gap-4 rounded-md border p-3">
-              <div>
-                <Label htmlFor="auto-scan">Auto scan</Label>
-                <p className="text-sm text-muted-foreground">
-                  Scheduled ingestion skips work while disabled.
-                </p>
-              </div>
-              <Switch
-                id="auto-scan"
-                checked={settingsDraft.autoScanEnabled}
-                disabled={settingsControlsDisabled}
-                onCheckedChange={(autoScanEnabled) =>
-                  setSettingsDraft((draft) => ({
-                    ...draft,
-                    autoScanEnabled,
-                  }))
-                }
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label>Sources</Label>
-              <div className="grid gap-2 md:grid-cols-3">
-                {(overview?.settings.sources ?? []).map((source) => {
-                  const sourceSwitchId = `feed-source-${source.id}`;
-                  const enabled = settingsDraft.enabledSources.includes(
-                    source.id,
-                  );
-
-                  return (
-                    <div
-                      key={source.id}
-                      className="flex items-center justify-between gap-3 rounded-md border p-3"
-                    >
-                      <div className="min-w-0">
-                        <Label htmlFor={sourceSwitchId}>{source.label}</Label>
-                        <p className="text-xs text-muted-foreground">
-                          {feedSourceKindLabel(source.kind)}
-                        </p>
-                      </div>
-                      <Switch
-                        id={sourceSwitchId}
-                        checked={enabled}
-                        disabled={settingsControlsDisabled}
-                        onCheckedChange={(checked) =>
-                          toggleFeedSource(source.id, checked)
-                        }
-                        aria-label={`Toggle ${source.label}`}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="grid gap-3 md:grid-cols-5">
-              <NumberField
-                id="max-queries"
-                label="Queries"
-                value={settingsDraft.maxQueries}
-                min={1}
-                max={12}
-                disabled={settingsControlsDisabled}
-                onChange={(maxQueries) =>
-                  setSettingsDraft((draft) => ({ ...draft, maxQueries }))
-                }
-              />
-              <NumberField
-                id="max-pages"
-                label="Pages/query"
-                value={settingsDraft.maxPagesPerQuery}
-                min={1}
-                max={10}
-                disabled={settingsControlsDisabled}
-                onChange={(maxPagesPerQuery) =>
-                  setSettingsDraft((draft) => ({
-                    ...draft,
-                    maxPagesPerQuery,
-                  }))
-                }
-              />
-              <NumberField
-                id="max-tweets"
-                label="Tweets/query"
-                value={settingsDraft.maxTweetsPerQuery}
-                min={10}
-                max={100}
-                disabled={settingsControlsDisabled}
-                onChange={(maxTweetsPerQuery) =>
-                  setSettingsDraft((draft) => ({
-                    ...draft,
-                    maxTweetsPerQuery,
-                  }))
-                }
-              />
-              <NumberField
-                id="max-age"
-                label="Age min"
-                value={settingsDraft.maxTweetAgeMinutes}
-                min={15}
-                max={10080}
-                disabled={settingsControlsDisabled}
-                onChange={(maxTweetAgeMinutes) =>
-                  setSettingsDraft((draft) => ({
-                    ...draft,
-                    maxTweetAgeMinutes,
-                  }))
-                }
-              />
-              <NumberField
-                id="overlap"
-                label="Overlap"
-                value={settingsDraft.overlapMinutes}
-                min={0}
-                max={1440}
-                disabled={settingsControlsDisabled}
-                onChange={(overlapMinutes) =>
-                  setSettingsDraft((draft) => ({ ...draft, overlapMinutes }))
-                }
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="search-queries">Search queries</Label>
-              <Textarea
-                id="search-queries"
-                className="min-h-32 font-mono text-xs"
-                value={settingsDraft.searchQueriesText}
-                disabled={settingsControlsDisabled}
-                onChange={(event) =>
-                  setSettingsDraft((draft) => ({
-                    ...draft,
-                    searchQueriesText: event.target.value,
-                  }))
-                }
-              />
-            </div>
-
-            <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-              <Button
-                className="self-end"
-                onClick={saveSettings}
-                disabled={!settingsLoaded || updateSettingsMutation.isPending}
-              >
-                <Save className="h-4 w-4" />
-                Save
-              </Button>
-            </PermissionGate>
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-md">
-          <CardHeader>
-            <CardTitle>Manual Ingestion</CardTitle>
-            <CardDescription>
-              Run a scan or queue specific posts.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-              <Button
-                onClick={() => startIngestionMutation.mutate({ mode: 'scan' })}
-                disabled={
-                  !settingsLoaded ||
-                  settingsDirty ||
-                  updateSettingsMutation.isPending ||
-                  startIngestionMutation.isPending ||
-                  !hasRunnableSavedScanSource
-                }
-              >
-                <Play className="h-4 w-4" />
-                Start Scan
-              </Button>
-            </PermissionGate>
-
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="manual-tweets">Tweet URLs or IDs</Label>
-              <Textarea
-                id="manual-tweets"
-                className="min-h-28 font-mono text-xs"
-                value={manualTweetsText}
-                onChange={(event) => setManualTweetsText(event.target.value)}
-                placeholder="https://x.com/name/status/123"
-              />
-            </div>
-
-            <div className="flex items-center justify-between rounded-md border p-3">
-              <Label htmlFor="include-replies">Include replies</Label>
-              <Switch
-                id="include-replies"
-                checked={includeReplies}
-                onCheckedChange={setIncludeReplies}
-              />
-            </div>
-
-            <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-              <Button
-                variant="secondary"
-                onClick={startManualIngest}
-                disabled={
-                  startIngestionMutation.isPending || !canQueueManualTweets
-                }
-              >
-                <Play className="h-4 w-4" />
-                Queue Posts
-              </Button>
-            </PermissionGate>
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-md">
-          <CardHeader>
-            <CardTitle>Digest</CardTitle>
-            <CardDescription>
-              Generate the rolling 24-hour digest and publish to enabled
-              targets.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-4">
-            <ToggleRow
-              id="digest-image"
-              label="Word cloud image"
-              checked={digestIncludeImage}
-              onCheckedChange={setDigestIncludeImage}
-            />
-            <ToggleRow
-              id="digest-animation"
-              label="Animation"
-              checked={digestIncludeAnimation}
-              onCheckedChange={setDigestIncludeAnimation}
-            />
-            <ToggleRow
-              id="digest-dry-run"
-              label="Dry run"
-              checked={digestDryRun}
-              onCheckedChange={setDigestDryRun}
-            />
-            <div className="space-y-2">
-              <Label>Publish Targets</Label>
-              {enabledDigestTargets.length === 0 ? (
-                <p className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
-                  No enabled digest targets
-                </p>
-              ) : (
-                <div className="space-y-2 rounded-md border p-3">
-                  {enabledDigestTargets.map((target) => {
-                    const checkboxId = `digest-target-${target.id}`;
-                    return (
-                      <label
-                        key={target.id}
-                        htmlFor={checkboxId}
-                        className="flex cursor-pointer items-center gap-3 text-sm"
-                      >
-                        <Checkbox
-                          id={checkboxId}
-                          checked={selectedDigestTargetIds.includes(target.id)}
-                          disabled={runDigestMutation.isPending}
-                          onCheckedChange={(checked) =>
-                            setSelectedDigestTargetIds((current) =>
-                              checked === true
-                                ? Array.from(new Set([...current, target.id]))
-                                : current.filter((id) => id !== target.id),
-                            )
-                          }
-                        />
-                        <span className="min-w-0 flex-1 truncate">
-                          {target.label}
-                        </span>
-                        <Badge variant="outline">
-                          {channelLabel(target.targetType)}
-                        </Badge>
-                      </label>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-            <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-              <Button
-                onClick={openDigestConfirmation}
-                disabled={
-                  runDigestMutation.isPending ||
-                  (!digestDryRun && selectedDigestTargetIds.length === 0)
-                }
-              >
-                <Play className="h-4 w-4" />
-                Run Digest
-              </Button>
-            </PermissionGate>
-          </CardContent>
-        </Card>
-      </div>
-
       <Tabs defaultValue="listings" className="w-full">
         <TabsList className="flex h-auto w-full flex-wrap justify-start lg:w-auto">
-          <TabsTrigger value="listings">Recent Listings</TabsTrigger>
-          <TabsTrigger value="reports">Recent Reports</TabsTrigger>
+          <TabsTrigger value="listings">Listings</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
           <TabsTrigger value="targets">Targets</TabsTrigger>
-          <TabsTrigger value="deliveries">Recent Deliveries</TabsTrigger>
-          <TabsTrigger value="runs">Recent Runs</TabsTrigger>
-          <TabsTrigger value="posts">Recent Posts</TabsTrigger>
+          <TabsTrigger value="digest-runs">Digest Runs</TabsTrigger>
+          <TabsTrigger value="deliveries">Deliveries</TabsTrigger>
+          <TabsTrigger value="runs">Runs</TabsTrigger>
+          <TabsTrigger value="posts">Posts</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
         </TabsList>
+
+        <TabsContent value="settings" className="mt-4">
+          <div className="grid gap-4 xl:grid-cols-[minmax(0,1.4fr)_minmax(360px,0.7fr)_minmax(360px,0.7fr)]">
+            <Card className="rounded-md">
+              <CardHeader>
+                <CardTitle>Ingestion Settings</CardTitle>
+                <CardDescription>
+                  Scheduled scans use these sources and processing limits.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-5">
+                <Accordion
+                  multiple
+                  defaultValue={['global', 'x', 'namepros', 'dnforum']}
+                  className="rounded-md border"
+                >
+                  <AccordionItem value="global" className="px-4">
+                    <AccordionTrigger className="hover:no-underline">
+                      <SettingsPanelHeading
+                        title="Global"
+                        description="Run scheduling and shared AI processing budget."
+                      />
+                    </AccordionTrigger>
+                    <AccordionContent className="flex flex-col gap-4">
+                      <div className="flex items-center justify-between gap-4 rounded-md border p-3">
+                        <div>
+                          <Label htmlFor="auto-scan">Auto scan</Label>
+                          <p className="text-sm text-muted-foreground">
+                            Scheduled ingestion skips work while disabled.
+                          </p>
+                        </div>
+                        <Switch
+                          id="auto-scan"
+                          checked={settingsDraft.autoScanEnabled}
+                          disabled={settingsControlsDisabled}
+                          onCheckedChange={(autoScanEnabled) =>
+                            setSettingsDraft((draft) => ({
+                              ...draft,
+                              autoScanEnabled,
+                            }))
+                          }
+                        />
+                      </div>
+                      <div className="grid gap-3 md:grid-cols-2">
+                        <NumberField
+                          id="max-process-posts"
+                          label="AI/run"
+                          value={settingsDraft.maxPostsProcessedPerRun}
+                          min={1}
+                          max={2000}
+                          disabled={settingsControlsDisabled}
+                          onChange={(maxPostsProcessedPerRun) =>
+                            setSettingsDraft((draft) => ({
+                              ...draft,
+                              maxPostsProcessedPerRun,
+                            }))
+                          }
+                        />
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  {(overview?.settings.sources ?? []).map((source) => {
+                    const sourceSwitchId = `feed-source-${source.id}`;
+                    const enabled = settingsDraft.enabledSources.includes(
+                      source.id,
+                    );
+
+                    return (
+                      <AccordionItem
+                        key={source.id}
+                        value={source.id}
+                        className="px-4"
+                      >
+                        <AccordionTrigger className="hover:no-underline">
+                          <SettingsPanelHeading
+                            title={source.label}
+                            description={feedSourceKindLabel(source.kind)}
+                            badge={enabled ? 'Enabled' : 'Disabled'}
+                          />
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col gap-4">
+                          <div className="flex items-center justify-between gap-4 rounded-md border p-3">
+                            <div>
+                              <Label htmlFor={sourceSwitchId}>
+                                {source.label} scans
+                              </Label>
+                              <p className="text-sm text-muted-foreground">
+                                Include this source in scheduled ingestion.
+                              </p>
+                            </div>
+                            <Switch
+                              id={sourceSwitchId}
+                              checked={enabled}
+                              disabled={settingsControlsDisabled}
+                              onCheckedChange={(checked) =>
+                                toggleFeedSource(source.id, checked)
+                              }
+                              aria-label={`Toggle ${source.label}`}
+                            />
+                          </div>
+
+                          {source.id === 'x' ? (
+                            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                              <NumberField
+                                id="x-max-queries"
+                                label="Queries"
+                                value={
+                                  settingsDraft.sourceSettings.x.maxQueries
+                                }
+                                min={1}
+                                max={12}
+                                disabled={settingsControlsDisabled}
+                                onChange={(maxQueries) =>
+                                  updateXSourceSetting('maxQueries', maxQueries)
+                                }
+                              />
+                              <NumberField
+                                id="x-max-pages"
+                                label="Pages/query"
+                                value={
+                                  settingsDraft.sourceSettings.x
+                                    .maxPagesPerQuery
+                                }
+                                min={1}
+                                max={10}
+                                disabled={settingsControlsDisabled}
+                                onChange={(maxPagesPerQuery) =>
+                                  updateXSourceSetting(
+                                    'maxPagesPerQuery',
+                                    maxPagesPerQuery,
+                                  )
+                                }
+                              />
+                              <NumberField
+                                id="x-max-tweets"
+                                label="Tweets/query"
+                                value={
+                                  settingsDraft.sourceSettings.x
+                                    .maxTweetsPerQuery
+                                }
+                                min={10}
+                                max={100}
+                                disabled={settingsControlsDisabled}
+                                onChange={(maxTweetsPerQuery) =>
+                                  updateXSourceSetting(
+                                    'maxTweetsPerQuery',
+                                    maxTweetsPerQuery,
+                                  )
+                                }
+                              />
+                              <NumberField
+                                id="x-max-age"
+                                label="Lookback min"
+                                value={
+                                  settingsDraft.sourceSettings.x
+                                    .maxTweetAgeMinutes
+                                }
+                                min={15}
+                                max={1440}
+                                disabled={settingsControlsDisabled}
+                                onChange={(maxTweetAgeMinutes) =>
+                                  updateXSourceSetting(
+                                    'maxTweetAgeMinutes',
+                                    maxTweetAgeMinutes,
+                                  )
+                                }
+                              />
+                              <NumberField
+                                id="x-overlap"
+                                label="Overlap min"
+                                value={
+                                  settingsDraft.sourceSettings.x.overlapMinutes
+                                }
+                                min={0}
+                                max={1440}
+                                disabled={settingsControlsDisabled}
+                                onChange={(overlapMinutes) =>
+                                  updateXSourceSetting(
+                                    'overlapMinutes',
+                                    overlapMinutes,
+                                  )
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <div className="grid gap-3 md:grid-cols-2">
+                              <NumberField
+                                id={`${source.id}-max-post-age`}
+                                label="Lookback min"
+                                value={
+                                  settingsDraft.sourceSettings[
+                                    source.id === 'dnforum'
+                                      ? 'dnforum'
+                                      : 'namepros'
+                                  ].maxPostAgeMinutes
+                                }
+                                min={15}
+                                max={1440}
+                                disabled={settingsControlsDisabled}
+                                onChange={(maxPostAgeMinutes) =>
+                                  updateMarketplaceSourceSetting(
+                                    source.id === 'dnforum'
+                                      ? 'dnforum'
+                                      : 'namepros',
+                                    'maxPostAgeMinutes',
+                                    maxPostAgeMinutes,
+                                  )
+                                }
+                              />
+                            </div>
+                          )}
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+                </Accordion>
+
+                <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
+                  <Button
+                    className="self-end"
+                    onClick={saveSettings}
+                    disabled={
+                      !settingsLoaded || updateSettingsMutation.isPending
+                    }
+                  >
+                    <Save className="h-4 w-4" />
+                    Save
+                  </Button>
+                </PermissionGate>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-md">
+              <CardHeader>
+                <CardTitle>Manual Ingestion</CardTitle>
+                <CardDescription>
+                  Run a scan or queue specific posts.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
+                  <Button
+                    onClick={() =>
+                      startIngestionMutation.mutate({ mode: 'scan' })
+                    }
+                    disabled={
+                      !settingsLoaded ||
+                      settingsDirty ||
+                      updateSettingsMutation.isPending ||
+                      startIngestionMutation.isPending ||
+                      !hasRunnableSavedScanSource
+                    }
+                  >
+                    <Play className="h-4 w-4" />
+                    Start Scan
+                  </Button>
+                </PermissionGate>
+
+                <div className="flex flex-col gap-2">
+                  <Label htmlFor="manual-tweets">Tweet URLs or IDs</Label>
+                  <Textarea
+                    id="manual-tweets"
+                    className="min-h-28 font-mono text-xs"
+                    value={manualTweetsText}
+                    onChange={(event) =>
+                      setManualTweetsText(event.target.value)
+                    }
+                    placeholder="https://x.com/name/status/123"
+                  />
+                </div>
+
+                <div className="flex items-center justify-between rounded-md border p-3">
+                  <Label htmlFor="include-replies">Include replies</Label>
+                  <Switch
+                    id="include-replies"
+                    checked={includeReplies}
+                    onCheckedChange={setIncludeReplies}
+                  />
+                </div>
+
+                <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
+                  <Button
+                    variant="secondary"
+                    onClick={startManualIngest}
+                    disabled={
+                      startIngestionMutation.isPending || !canQueueManualTweets
+                    }
+                  >
+                    <Play className="h-4 w-4" />
+                    Queue Posts
+                  </Button>
+                </PermissionGate>
+              </CardContent>
+            </Card>
+
+            <Card className="rounded-md">
+              <CardHeader>
+                <CardTitle>Digest</CardTitle>
+                <CardDescription>
+                  Generate the rolling 24-hour digest and publish to enabled
+                  targets.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                <ToggleRow
+                  id="digest-image"
+                  label="Word cloud image"
+                  checked={digestIncludeImage}
+                  onCheckedChange={setDigestIncludeImage}
+                />
+                <ToggleRow
+                  id="digest-animation"
+                  label="Animation"
+                  checked={digestIncludeAnimation}
+                  onCheckedChange={setDigestIncludeAnimation}
+                />
+                <ToggleRow
+                  id="digest-dry-run"
+                  label="Dry run"
+                  checked={digestDryRun}
+                  onCheckedChange={setDigestDryRun}
+                />
+                <div className="space-y-2">
+                  <Label>Publish Targets</Label>
+                  {enabledDigestTargets.length === 0 ? (
+                    <p className="rounded-md border border-dashed p-3 text-sm text-muted-foreground">
+                      No enabled digest targets
+                    </p>
+                  ) : (
+                    <div className="space-y-2 rounded-md border p-3">
+                      {enabledDigestTargets.map((target) => {
+                        const checkboxId = `digest-target-${target.id}`;
+                        return (
+                          <label
+                            key={target.id}
+                            htmlFor={checkboxId}
+                            className="flex cursor-pointer items-center gap-3 text-sm"
+                          >
+                            <Checkbox
+                              id={checkboxId}
+                              checked={selectedDigestTargetIds.includes(
+                                target.id,
+                              )}
+                              disabled={runDigestMutation.isPending}
+                              onCheckedChange={(checked) =>
+                                setSelectedDigestTargetIds((current) =>
+                                  checked === true
+                                    ? Array.from(
+                                        new Set([...current, target.id]),
+                                      )
+                                    : current.filter((id) => id !== target.id),
+                                )
+                              }
+                            />
+                            <span className="min-w-0 flex-1 truncate">
+                              {target.label}
+                            </span>
+                            <Badge variant="outline">
+                              {channelLabel(target.targetType)}
+                            </Badge>
+                          </label>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+                <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
+                  <Button
+                    onClick={openDigestConfirmation}
+                    disabled={
+                      runDigestMutation.isPending ||
+                      (!digestDryRun && selectedDigestTargetIds.length === 0)
+                    }
+                  >
+                    <Play className="h-4 w-4" />
+                    Run Digest
+                  </Button>
+                </PermissionGate>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
 
         <TabsContent value="listings" className="mt-4">
           <ListingsTable
-            listings={overview?.recentListings ?? []}
-            isLoading={overviewQuery.isLoading}
-            isFetching={overviewQuery.isFetching}
             isMutating={suppressListingMutation.isPending}
             onToggleSuppressed={(listingId, suppressed) =>
               suppressListingMutation.mutate({ listingId, suppressed })
@@ -851,9 +1059,6 @@ function NamefiFeedAdminContent() {
 
         <TabsContent value="reports" className="mt-4">
           <ReportsTable
-            reports={overview?.recentReports ?? []}
-            isLoading={overviewQuery.isLoading}
-            isFetching={overviewQuery.isFetching}
             isMutating={resolveReportMutation.isPending}
             onResolve={(reportId, resolution) =>
               resolveReportMutation.mutate({ reportId, resolution })
@@ -889,28 +1094,20 @@ function NamefiFeedAdminContent() {
           />
         </TabsContent>
 
+        <TabsContent value="digest-runs" className="mt-4">
+          <DigestRunsTable />
+        </TabsContent>
+
         <TabsContent value="deliveries" className="mt-4">
-          <DeliveriesTable
-            deliveries={overview?.recentDigestDeliveries ?? []}
-            isLoading={overviewQuery.isLoading}
-            isFetching={overviewQuery.isFetching}
-          />
+          <DeliveriesTable />
         </TabsContent>
 
         <TabsContent value="runs" className="mt-4">
-          <RunsTable
-            runs={overview?.recentRuns ?? []}
-            isLoading={overviewQuery.isLoading}
-            isFetching={overviewQuery.isFetching}
-          />
+          <RunsTable />
         </TabsContent>
 
         <TabsContent value="posts" className="mt-4">
-          <PostsTable
-            posts={overview?.recentPosts ?? []}
-            isLoading={overviewQuery.isLoading}
-            isFetching={overviewQuery.isFetching}
-          />
+          <PostsTable />
         </TabsContent>
       </Tabs>
 
@@ -1023,18 +1220,47 @@ function NumberField({
 function ToggleRow({
   id,
   label,
+  disabled,
   checked,
   onCheckedChange,
 }: {
   id: string;
   label: string;
+  disabled?: boolean;
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
 }) {
   return (
     <div className="flex items-center justify-between rounded-md border p-3">
       <Label htmlFor={id}>{label}</Label>
-      <Switch id={id} checked={checked} onCheckedChange={onCheckedChange} />
+      <Switch
+        id={id}
+        checked={checked}
+        disabled={disabled}
+        onCheckedChange={onCheckedChange}
+      />
+    </div>
+  );
+}
+
+function SettingsPanelHeading({
+  badge,
+  description,
+  title,
+}: {
+  badge?: string;
+  description: string;
+  title: string;
+}) {
+  return (
+    <div className="flex min-w-0 flex-col gap-1">
+      <div className="flex items-center gap-2">
+        <span>{title}</span>
+        {badge ? <Badge variant="secondary">{badge}</Badge> : null}
+      </div>
+      <span className="text-xs font-normal text-muted-foreground">
+        {description}
+      </span>
     </div>
   );
 }
@@ -1046,29 +1272,23 @@ function settingsDraftMatchesSettings(
   return (
     draft.autoScanEnabled === settings.autoScanEnabled &&
     sameStringSet(draft.enabledSources, settings.enabledSources) &&
-    sameStringArray(
-      parseSearchQueriesText(draft.searchQueriesText),
-      settings.searchQueries,
-    ) &&
-    draft.maxQueries === settings.maxQueries &&
-    draft.maxPagesPerQuery === settings.maxPagesPerQuery &&
-    draft.maxTweetsPerQuery === settings.maxTweetsPerQuery &&
-    draft.maxTweetAgeMinutes === settings.maxTweetAgeMinutes &&
-    draft.overlapMinutes === settings.overlapMinutes
+    sourceSettingsMatch(draft.sourceSettings, settings.sourceSettings) &&
+    draft.maxPostsProcessedPerRun === settings.maxPostsProcessedPerRun
   );
 }
 
-function parseSearchQueriesText(value: string) {
-  return value
-    .split('\n')
-    .map((query) => query.trim())
-    .filter(Boolean);
-}
-
-function sameStringArray(left: readonly string[], right: readonly string[]) {
+function sourceSettingsMatch(
+  draft: FeedSourceSettings,
+  settings: FeedSourceSettings,
+) {
   return (
-    left.length === right.length &&
-    left.every((value, index) => value === right[index])
+    draft.x.maxQueries === settings.x.maxQueries &&
+    draft.x.maxPagesPerQuery === settings.x.maxPagesPerQuery &&
+    draft.x.maxTweetsPerQuery === settings.x.maxTweetsPerQuery &&
+    draft.x.maxTweetAgeMinutes === settings.x.maxTweetAgeMinutes &&
+    draft.x.overlapMinutes === settings.x.overlapMinutes &&
+    draft.namepros.maxPostAgeMinutes === settings.namepros.maxPostAgeMinutes &&
+    draft.dnforum.maxPostAgeMinutes === settings.dnforum.maxPostAgeMinutes
   );
 }
 
@@ -1082,20 +1302,142 @@ function feedSourceKindLabel(kind: FeedSource['kind']) {
   return kind === 'social' ? 'Social scan' : 'Marketplace RSS';
 }
 
+function useNamefiFeedServerTableControls({
+  defaultColumnVisibility = {},
+  defaultSorting,
+  tableId,
+}: {
+  defaultColumnVisibility?: VisibilityState;
+  defaultSorting: SortingState;
+  tableId: string;
+}) {
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const {
+    preferences: {
+      columnVisibility,
+      filters: columnFilters,
+      sorting,
+      pageSize,
+    },
+    setColumnVisibility,
+    setFilters,
+    setSorting,
+    setPageSize,
+    resetToDefaults,
+  } = useTablePreferences({
+    tableId,
+    defaultPreferences: {
+      columnVisibility: defaultColumnVisibility,
+      filters: [],
+      sorting: defaultSorting,
+      pageSize: 25,
+    },
+  });
+  const queryInput = useMemo(
+    () => ({
+      page,
+      pageSize,
+      columnFilters: columnFilters.length > 0 ? columnFilters : undefined,
+      searchTerm: searchTerm.trim() || undefined,
+      sorting: sorting.length > 0 ? sorting : undefined,
+    }),
+    [columnFilters, page, pageSize, searchTerm, sorting],
+  );
+
+  return {
+    columnFilters,
+    columnVisibility,
+    page,
+    pageSize,
+    queryInput,
+    resetToDefaults,
+    searchTerm,
+    setColumnFilters: (nextColumnFilters: ColumnFiltersState) => {
+      setPage(1);
+      setFilters(nextColumnFilters);
+    },
+    setColumnVisibility,
+    setPage,
+    setPageSize: (nextPageSize: number) => {
+      setPage(1);
+      setPageSize(nextPageSize);
+    },
+    setSearchTerm: (nextSearchTerm: string) => {
+      setPage(1);
+      setSearchTerm(nextSearchTerm);
+    },
+    setSorting: (nextSorting: SortingState) => {
+      setPage(1);
+      setSorting(nextSorting);
+    },
+    sorting,
+  };
+}
+
+function formatRunSources(run: NamefiFeedRunRow) {
+  if (run.sourceResults.length === 0) {
+    return '-';
+  }
+
+  return run.sourceResults
+    .map((source) => {
+      const sourceLabel = source.feedId
+        ? `${source.source}:${source.feedId}`
+        : source.source;
+      const status = source.skipped ? (source.reason ?? 'skipped') : 'ok';
+      return `${sourceLabel} ${status} scanned ${source.scannedPostCount}, queued ${source.queuedPostCount}, existing ${source.alreadyExistingCount}, skipped ${source.skippedPostCount}`;
+    })
+    .join(' | ');
+}
+
+function formatDigestRunRender(run: NamefiFeedDigestRunsPage['rows'][number]) {
+  const parts = [
+    run.usedFallback ? 'fallback' : 'ai',
+    run.imageGenerated ? 'image' : null,
+    run.animationGenerated ? 'animation' : null,
+    run.dryRun ? 'dry run' : null,
+  ].filter(Boolean);
+
+  return parts.length > 0 ? parts.join(', ') : '-';
+}
+
 function ListingsTable({
-  listings,
-  isLoading,
-  isFetching,
   isMutating,
   onToggleSuppressed,
 }: {
-  listings: NamefiFeedOverview['recentListings'];
-  isLoading: boolean;
-  isFetching: boolean;
   isMutating: boolean;
   onToggleSuppressed: (listingId: string, suppressed: boolean) => void;
 }) {
-  const columns = useMemo<ColumnDef<(typeof listings)[number]>[]>(
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-listings',
+    defaultSorting: [{ id: 'postedAt', desc: true }],
+  });
+  const listingsQuery = useQuery(
+    trpc.admin.namefiFeed.listListings.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const listings = listingsQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      domain: { type: 'text' as const, label: 'Domain' },
+      sellerUsername: { type: 'text' as const, label: 'Seller' },
+      asking: { type: 'text' as const, label: 'Asking' },
+      postedAt: { type: 'date' as const, label: 'Posted' },
+      listedAt: { type: 'date' as const, label: 'Listed' },
+      expiresAt: { type: 'date' as const, label: 'Expires' },
+      endReason: {
+        type: 'select' as const,
+        label: 'End Reason',
+        options: LISTING_END_REASON_FILTER_OPTIONS,
+      },
+    }),
+    [],
+  );
+  const columns = useMemo<ColumnDef<NamefiFeedListingsPage['rows'][number]>[]>(
     () => [
       {
         accessorKey: 'domain',
@@ -1175,55 +1517,70 @@ function ListingsTable({
   );
 
   return (
-    <ClientDataTable
-      tableId="admin-namefi-feed-listings"
+    <ServerDataTable
       columns={columns}
       data={listings}
-      defaultSorting={[{ id: 'postedAt', desc: true }]}
-      fieldAccessors={{
-        domain: (row) => row.domain,
-        sellerUsername: (row) => row.sellerUsername ?? row.sellerDisplayName,
-        asking: (row) => `${row.askingPrice ?? ''} ${row.askingCurrency ?? ''}`,
-        postedAt: (row) => new Date(row.postedAt),
-        expiresAt: (row) => (row.expiresAt ? new Date(row.expiresAt) : null),
-        status: (row) => getListingLifecycleStatus(row).label,
-      }}
-      searchText={(row) =>
-        [
-          row.domain,
-          row.sellerUsername,
-          row.sellerDisplayName,
-          row.askingPrice,
-          row.askingCurrency,
-          row.endReason,
-          row.sourceUrl,
-        ].join(' ')
-      }
-      isLoading={isLoading}
-      isFetching={isFetching}
+      isLoading={listingsQuery.isLoading}
+      isFetching={listingsQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={listingsQuery.data?.totalPages ?? 1}
+      totalCount={listingsQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
       emptyMessage="No recent listings found"
       searchPlaceholder="Search listings..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
     />
   );
 }
 
 function ReportsTable({
-  reports,
-  isLoading,
-  isFetching,
   isMutating,
   onResolve,
 }: {
-  reports: NamefiFeedOverview['recentReports'];
-  isLoading: boolean;
-  isFetching: boolean;
   isMutating: boolean;
   onResolve: (
     reportId: string,
     resolution: 'suppressed_listing' | 'dismissed',
   ) => void;
 }) {
-  const columns = useMemo<ColumnDef<(typeof reports)[number]>[]>(
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-reports',
+    defaultSorting: [{ id: 'createdAt', desc: true }],
+  });
+  const reportsQuery = useQuery(
+    trpc.admin.namefiFeed.listReports.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const reports = reportsQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      domain: { type: 'text' as const, label: 'Domain' },
+      reason: {
+        type: 'select' as const,
+        label: 'Reason',
+        options: REPORT_REASON_FILTER_OPTIONS,
+      },
+      details: { type: 'text' as const, label: 'Details' },
+      createdAt: { type: 'date' as const, label: 'Reported' },
+    }),
+    [],
+  );
+  const columns = useMemo<ColumnDef<NamefiFeedReportsPage['rows'][number]>[]>(
     () => [
       {
         accessorKey: 'domain',
@@ -1287,36 +1644,72 @@ function ReportsTable({
   );
 
   return (
-    <ClientDataTable
-      tableId="admin-namefi-feed-reports"
+    <ServerDataTable
       columns={columns}
       data={reports}
-      defaultSorting={[{ id: 'createdAt', desc: true }]}
-      fieldAccessors={{
-        domain: (row) => row.domain,
-        reason: (row) => row.reason,
-        details: (row) => row.details,
-        createdAt: (row) => new Date(row.createdAt),
-      }}
-      searchText={(row) => [row.domain, row.reason, row.details].join(' ')}
-      isLoading={isLoading}
-      isFetching={isFetching}
+      isLoading={reportsQuery.isLoading}
+      isFetching={reportsQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={reportsQuery.data?.totalPages ?? 1}
+      totalCount={reportsQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
       emptyMessage="No active reports"
       searchPlaceholder="Search reports..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
     />
   );
 }
 
-function RunsTable({
-  runs,
-  isLoading,
-  isFetching,
-}: {
-  runs: NamefiFeedOverview['recentRuns'];
-  isLoading: boolean;
-  isFetching: boolean;
-}) {
-  const columns = useMemo<ColumnDef<(typeof runs)[number]>[]>(
+function RunsTable() {
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-runs',
+    defaultSorting: [{ id: 'startedAt', desc: true }],
+  });
+  const runsQuery = useQuery(
+    trpc.admin.namefiFeed.listRuns.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const runs = runsQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      status: {
+        type: 'select' as const,
+        label: 'Status',
+        options: INGESTION_RUN_STATUS_FILTER_OPTIONS,
+      },
+      trigger: {
+        type: 'select' as const,
+        label: 'Trigger',
+        options: INGESTION_RUN_TRIGGER_FILTER_OPTIONS,
+      },
+      startedAt: { type: 'date' as const, label: 'Started' },
+      finishedAt: { type: 'date' as const, label: 'Finished' },
+      scannedPostCount: { type: 'number' as const, label: 'Scanned' },
+      queuedPostCount: { type: 'number' as const, label: 'Queued' },
+      processedPostCount: { type: 'number' as const, label: 'Processed' },
+      listingUpsertedCount: { type: 'number' as const, label: 'Listings' },
+      skippedPostCount: { type: 'number' as const, label: 'Skipped' },
+      failedPostCount: { type: 'number' as const, label: 'Failed' },
+      errorMessage: { type: 'text' as const, label: 'Error' },
+    }),
+    [],
+  );
+  const columns = useMemo<ColumnDef<NamefiFeedRunsPage['rows'][number]>[]>(
     () => [
       {
         accessorKey: 'status',
@@ -1330,55 +1723,121 @@ function RunsTable({
         cell: ({ row }) => formatDate(row.original.startedAt),
       },
       { accessorKey: 'queuedPostCount', header: 'Queued' },
+      {
+        accessorKey: 'alreadyExistingPostCount',
+        header: 'Existing',
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'scanSkippedPostCount',
+        header: 'Scan Skipped',
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'aiAnalysisAttemptedPostCount',
+        header: 'AI Attempts',
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'maxPostsProcessedPerRun',
+        header: 'AI Budget',
+        enableSorting: false,
+      },
+      {
+        accessorKey: 'remainingPostCount',
+        header: 'Remaining',
+        enableSorting: false,
+      },
       { accessorKey: 'processedPostCount', header: 'Processed' },
       { accessorKey: 'listingUpsertedCount', header: 'Listings' },
       { accessorKey: 'failedPostCount', header: 'Failed' },
       {
+        id: 'sources',
+        header: 'Sources',
+        cell: ({ row }) => formatRunSources(row.original),
+      },
+      {
         accessorKey: 'errorMessage',
         header: 'Error',
-        cell: ({ row }) => row.original.errorMessage ?? '-',
+        cell: ({ row }) =>
+          row.original.errorMessage ?? row.original.skipReason ?? '-',
+      },
+      {
+        accessorKey: 'stopReason',
+        header: 'Stop',
+        enableSorting: false,
+        cell: ({ row }) =>
+          row.original.stopReason
+            ? formatEnumLabel(row.original.stopReason)
+            : '-',
       },
     ],
     [],
   );
 
   return (
-    <ClientDataTable
-      tableId="admin-namefi-feed-runs"
+    <ServerDataTable
       columns={columns}
       data={runs}
-      defaultSorting={[{ id: 'startedAt', desc: true }]}
-      fieldAccessors={{
-        status: (row) => row.status,
-        trigger: (row) => row.trigger,
-        startedAt: (row) => new Date(row.startedAt),
-        queuedPostCount: (row) => row.queuedPostCount,
-        processedPostCount: (row) => row.processedPostCount,
-        listingUpsertedCount: (row) => row.listingUpsertedCount,
-        failedPostCount: (row) => row.failedPostCount,
-        errorMessage: (row) => row.errorMessage,
-      }}
-      searchText={(row) =>
-        [row.status, row.trigger, row.workflowId, row.errorMessage].join(' ')
-      }
-      isLoading={isLoading}
-      isFetching={isFetching}
+      isLoading={runsQuery.isLoading}
+      isFetching={runsQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={runsQuery.data?.totalPages ?? 1}
+      totalCount={runsQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
       emptyMessage="No recent ingestion runs"
       searchPlaceholder="Search runs..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
     />
   );
 }
 
-function PostsTable({
-  posts,
-  isLoading,
-  isFetching,
-}: {
-  posts: NamefiFeedOverview['recentPosts'];
-  isLoading: boolean;
-  isFetching: boolean;
-}) {
-  const columns = useMemo<ColumnDef<(typeof posts)[number]>[]>(
+function PostsTable() {
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-posts',
+    defaultSorting: [{ id: 'postedAt', desc: true }],
+  });
+  const postsQuery = useQuery(
+    trpc.admin.namefiFeed.listPosts.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const posts = postsQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      status: {
+        type: 'select' as const,
+        label: 'Status',
+        options: POST_STATUS_FILTER_OPTIONS,
+      },
+      source: {
+        type: 'select' as const,
+        label: 'Source',
+        options: POST_SOURCE_FILTER_OPTIONS,
+      },
+      authorUsername: { type: 'text' as const, label: 'Author' },
+      postedAt: { type: 'date' as const, label: 'Posted' },
+      createdAt: { type: 'date' as const, label: 'Queued' },
+      processedAt: { type: 'date' as const, label: 'Processed' },
+      reason: { type: 'text' as const, label: 'Reason' },
+    }),
+    [],
+  );
+  const columns = useMemo<ColumnDef<NamefiFeedPostsPage['rows'][number]>[]>(
     () => [
       {
         accessorKey: 'status',
@@ -1422,31 +1881,30 @@ function PostsTable({
   );
 
   return (
-    <ClientDataTable
-      tableId="admin-namefi-feed-posts"
+    <ServerDataTable
       columns={columns}
       data={posts}
-      defaultSorting={[{ id: 'postedAt', desc: true }]}
-      fieldAccessors={{
-        status: (row) => row.status,
-        source: (row) => row.source,
-        authorUsername: (row) => row.authorUsername,
-        postedAt: (row) => new Date(row.postedAt),
-        reason: (row) => row.failureReason ?? row.skipReason,
-      }}
-      searchText={(row) =>
-        [
-          row.externalPostId,
-          row.authorUsername,
-          row.status,
-          row.failureReason,
-          row.skipReason,
-        ].join(' ')
-      }
-      isLoading={isLoading}
-      isFetching={isFetching}
+      isLoading={postsQuery.isLoading}
+      isFetching={postsQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={postsQuery.data?.totalPages ?? 1}
+      totalCount={postsQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
       emptyMessage="No recent posts"
       searchPlaceholder="Search posts..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
     />
   );
 }
@@ -1562,16 +2020,151 @@ function TargetsTable({
   );
 }
 
-function DeliveriesTable({
-  deliveries,
-  isLoading,
-  isFetching,
-}: {
-  deliveries: NamefiFeedOverview['recentDigestDeliveries'];
-  isLoading: boolean;
-  isFetching: boolean;
-}) {
-  const columns = useMemo<ColumnDef<(typeof deliveries)[number]>[]>(
+function DigestRunsTable() {
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-digest-runs',
+    defaultSorting: [{ id: 'generatedAt', desc: true }],
+  });
+  const runsQuery = useQuery(
+    trpc.admin.namefiFeed.listDigestRuns.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const runs = runsQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      status: {
+        type: 'select' as const,
+        label: 'Status',
+        options: DIGEST_RUN_STATUS_FILTER_OPTIONS,
+      },
+      trigger: {
+        type: 'select' as const,
+        label: 'Trigger',
+        options: INGESTION_RUN_TRIGGER_FILTER_OPTIONS,
+      },
+      generatedAt: { type: 'date' as const, label: 'Generated' },
+      window: { type: 'date' as const, label: 'Window Start' },
+      entriesCount: { type: 'number' as const, label: 'Entries' },
+      targetCount: { type: 'number' as const, label: 'Targets' },
+      sentCount: { type: 'number' as const, label: 'Sent' },
+      skippedCount: { type: 'number' as const, label: 'Skipped' },
+      failedCount: { type: 'number' as const, label: 'Failed' },
+      reason: { type: 'text' as const, label: 'Reason' },
+    }),
+    [],
+  );
+  const columns = useMemo<
+    ColumnDef<NamefiFeedDigestRunsPage['rows'][number]>[]
+  >(
+    () => [
+      {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: ({ row }) => <StatusBadge status={row.original.status} />,
+      },
+      { accessorKey: 'trigger', header: 'Trigger' },
+      {
+        accessorKey: 'generatedAt',
+        header: 'Generated',
+        cell: ({ row }) => formatDate(row.original.generatedAt),
+      },
+      {
+        id: 'window',
+        header: 'Window',
+        cell: ({ row }) =>
+          formatDigestWindow(row.original.windowStart, row.original.windowEnd),
+      },
+      { accessorKey: 'entriesCount', header: 'Entries' },
+      { accessorKey: 'targetCount', header: 'Targets' },
+      { accessorKey: 'sentCount', header: 'Sent' },
+      { accessorKey: 'skippedCount', header: 'Skipped' },
+      { accessorKey: 'failedCount', header: 'Failed' },
+      {
+        id: 'render',
+        header: 'Render',
+        cell: ({ row }) => formatDigestRunRender(row.original),
+      },
+      {
+        id: 'reason',
+        header: 'Reason',
+        cell: ({ row }) =>
+          row.original.errorMessage ??
+          row.original.skipReason ??
+          row.original.fallbackReason ??
+          '-',
+      },
+    ],
+    [],
+  );
+
+  return (
+    <ServerDataTable
+      columns={columns}
+      data={runs}
+      isLoading={runsQuery.isLoading}
+      isFetching={runsQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={runsQuery.data?.totalPages ?? 1}
+      totalCount={runsQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
+      emptyMessage="No digest runs yet"
+      searchPlaceholder="Search digest runs..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
+    />
+  );
+}
+
+function DeliveriesTable() {
+  const trpc = useTRPC();
+  const table = useNamefiFeedServerTableControls({
+    tableId: 'admin-namefi-feed-digest-deliveries',
+    defaultSorting: [{ id: 'generatedAt', desc: true }],
+  });
+  const deliveriesQuery = useQuery(
+    trpc.admin.namefiFeed.listDigestDeliveries.queryOptions(table.queryInput, {
+      placeholderData: (previous) => previous,
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+  const deliveries = deliveriesQuery.data?.rows ?? [];
+  const filterConfig = useMemo(
+    () => ({
+      status: {
+        type: 'select' as const,
+        label: 'Status',
+        options: DIGEST_DELIVERY_STATUS_FILTER_OPTIONS,
+      },
+      targetType: {
+        type: 'select' as const,
+        label: 'Channel',
+        options: DIGEST_TARGET_TYPE_FILTER_OPTIONS,
+      },
+      targetLabel: { type: 'text' as const, label: 'Target' },
+      generatedAt: { type: 'date' as const, label: 'Generated' },
+      window: { type: 'date' as const, label: 'Window Start' },
+      message: { type: 'text' as const, label: 'Message' },
+      error: { type: 'text' as const, label: 'Error' },
+    }),
+    [],
+  );
+  const columns = useMemo<
+    ColumnDef<NamefiFeedDigestDeliveriesPage['rows'][number]>[]
+  >(
     () => [
       {
         accessorKey: 'status',
@@ -1629,34 +2222,30 @@ function DeliveriesTable({
   );
 
   return (
-    <ClientDataTable
-      tableId="admin-namefi-feed-digest-deliveries"
+    <ServerDataTable
       columns={columns}
       data={deliveries}
-      defaultSorting={[{ id: 'generatedAt', desc: true }]}
-      fieldAccessors={{
-        status: (row) => row.status,
-        targetType: (row) => row.targetType,
-        targetLabel: (row) => row.targetLabel,
-        generatedAt: (row) => new Date(row.generatedAt),
-        window: (row) => new Date(row.windowStart),
-        message: (row) => row.externalMessageId,
-        error: (row) => row.error,
-      }}
-      searchText={(row) =>
-        [
-          row.status,
-          row.targetType,
-          row.targetLabel,
-          row.targetKey,
-          row.externalMessageId,
-          row.error,
-        ].join(' ')
-      }
-      isLoading={isLoading}
-      isFetching={isFetching}
+      isLoading={deliveriesQuery.isLoading}
+      isFetching={deliveriesQuery.isFetching}
+      page={table.page}
+      pageSize={table.pageSize}
+      totalPages={deliveriesQuery.data?.totalPages ?? 1}
+      totalCount={deliveriesQuery.data?.totalCount ?? 0}
+      onPageChange={table.setPage}
+      onPageSizeChange={table.setPageSize}
+      sorting={table.sorting}
+      onSortingChange={table.setSorting}
+      searchTerm={table.searchTerm}
+      onSearchChange={table.setSearchTerm}
+      columnFilters={table.columnFilters}
+      onColumnFiltersChange={table.setColumnFilters}
+      filterConfig={filterConfig}
+      filterDisplayOptions={TABLE_FILTER_DISPLAY_OPTIONS}
       emptyMessage="No digest deliveries yet"
       searchPlaceholder="Search deliveries..."
+      columnVisibility={table.columnVisibility}
+      onColumnVisibilityChange={table.setColumnVisibility}
+      onResetPreferences={table.resetToDefaults}
     />
   );
 }
@@ -2159,6 +2748,10 @@ function getListingLifecycleStatus(
 
 function formatDigestWindow(start: string, end: string) {
   return `${formatDate(start)} - ${formatDate(end)}`;
+}
+
+function selectFilterOptions(values: readonly string[]) {
+  return values.map((value) => ({ value, label: formatEnumLabel(value) }));
 }
 
 function formatEnumLabel(value: string) {

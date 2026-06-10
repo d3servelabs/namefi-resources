@@ -10,8 +10,18 @@ import { namefiFeedSalesDigestWorkflow } from '#temporal/workflows/namefi-feed-d
 import { namefiFeedIngestionWorkflow } from '#temporal/workflows/namefi-feed-ingestion.workflow';
 import {
   getNamefiFeedAdminOverview,
+  listNamefiFeedAdminDigestDeliveries,
+  listNamefiFeedAdminDigestRuns,
+  listNamefiFeedAdminListings,
+  listNamefiFeedAdminPosts,
+  listNamefiFeedAdminReports,
+  listNamefiFeedAdminRuns,
   updateNamefiFeedSettings,
 } from '../../../services/namefi-feed/admin.service';
+import {
+  createPendingNamefiFeedSalesDigestRun,
+  failNamefiFeedSalesDigestRun,
+} from '../../../services/namefi-feed/digest.service';
 import {
   createNamefiFeedSalesDigestTarget,
   deleteNamefiFeedSalesDigestTarget,
@@ -47,6 +57,38 @@ export const namefiFeedRouter = createContractTRPCRouter<
         },
       );
     }),
+
+  listRuns: adminProcedureWithPermissions(Permission.READ_NAMEFI_FEED)
+    .input(adminNamefiFeedContract.listRuns.input)
+    .output(adminNamefiFeedContract.listRuns.output)
+    .query(async ({ input }) => listNamefiFeedAdminRuns(input)),
+
+  listPosts: adminProcedureWithPermissions(Permission.READ_NAMEFI_FEED)
+    .input(adminNamefiFeedContract.listPosts.input)
+    .output(adminNamefiFeedContract.listPosts.output)
+    .query(async ({ input }) => listNamefiFeedAdminPosts(input)),
+
+  listListings: adminProcedureWithPermissions(Permission.READ_NAMEFI_FEED)
+    .input(adminNamefiFeedContract.listListings.input)
+    .output(adminNamefiFeedContract.listListings.output)
+    .query(async ({ input }) => listNamefiFeedAdminListings(input)),
+
+  listReports: adminProcedureWithPermissions(Permission.READ_NAMEFI_FEED)
+    .input(adminNamefiFeedContract.listReports.input)
+    .output(adminNamefiFeedContract.listReports.output)
+    .query(async ({ input }) => listNamefiFeedAdminReports(input)),
+
+  listDigestDeliveries: adminProcedureWithPermissions(
+    Permission.READ_NAMEFI_FEED,
+  )
+    .input(adminNamefiFeedContract.listDigestDeliveries.input)
+    .output(adminNamefiFeedContract.listDigestDeliveries.output)
+    .query(async ({ input }) => listNamefiFeedAdminDigestDeliveries(input)),
+
+  listDigestRuns: adminProcedureWithPermissions(Permission.READ_NAMEFI_FEED)
+    .input(adminNamefiFeedContract.listDigestRuns.input)
+    .output(adminNamefiFeedContract.listDigestRuns.output)
+    .query(async ({ input }) => listNamefiFeedAdminDigestRuns(input)),
 
   updateSettings: auditedAdminProcedureWithPermissions(
     Permission.WRITE_NAMEFI_FEED,
@@ -130,12 +172,24 @@ export const namefiFeedRouter = createContractTRPCRouter<
     .output(adminNamefiFeedContract.runDigest.output)
     .mutation(async ({ ctx, input }) => {
       const workflowId = `namefi-feed-digest-${Date.now()}-${randomUUID()}`;
+      const pendingRun = await createPendingNamefiFeedSalesDigestRun({
+        createdByUserId: ctx.user.id,
+        trigger: 'manual',
+        workflowId,
+        includeImage: input.includeImage,
+        includeAnimation: input.includeAnimation,
+        enabledOnly: input.enabledOnly,
+        dryRun: input.dryRun,
+        targetIds: input.targetIds,
+      });
       try {
         await temporalClient.workflow.start(namefiFeedSalesDigestWorkflow, {
           args: [
             {
               trigger: 'manual',
               requestedByUserId: ctx.user.id,
+              digestRunId: pendingRun.digestRunId,
+              at: pendingRun.generatedAt,
               includeImage: input.includeImage,
               includeAnimation: input.includeAnimation,
               enabledOnly: input.enabledOnly,
@@ -149,6 +203,14 @@ export const namefiFeedRouter = createContractTRPCRouter<
           workflowIdConflictPolicy: 'USE_EXISTING',
         });
       } catch (error) {
+        await failNamefiFeedSalesDigestRun({
+          digestRunId: pendingRun.digestRunId,
+          errorMessage:
+            error instanceof Error
+              ? error.message
+              : 'Failed to start Namefi feed digest workflow.',
+          failedCount: 0,
+        });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
@@ -158,7 +220,7 @@ export const namefiFeedRouter = createContractTRPCRouter<
         });
       }
 
-      return { workflowId };
+      return { digestRunId: pendingRun.digestRunId, workflowId };
     }),
 
   createDigestTarget: auditedAdminProcedureWithPermissions(

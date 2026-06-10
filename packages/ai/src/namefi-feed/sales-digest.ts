@@ -214,12 +214,12 @@ Rules:
 - Keep claims concise and evidence-based.
 - For each top pick, provide:
   - "thesis": one short sentence for the shared digest.
-  - "tweetTake": a denser, sharper follow-up take for an X thread.
-  - "tweetPoints": exactly two short supporting points for an expanded X reply.
+  - "tweetTake": a denser, sharper follow-up take for a social digest thread.
+  - "tweetPoints": exactly two short supporting points for expanded social copy.
 - "tweetTake" should be 1-2 tight sentences, more specific/opinionated than "thesis", but still grounded only in the supplied listing details.
 - "tweetTake" must discuss only that domain's qualities, ask, and likely buyer demand.
 - Each "tweetPoints" item should be short, concrete, and non-overlapping: one point about likely buyer/use-case pull, one point about liquidity, ask discipline, or flip angle.
-- Write "tweetTake" so it reads naturally when shown as "<domain> - {analysis}" in a threaded X reply.
+- Write "tweetTake" so it reads naturally when shown as "<domain> - {analysis}" in a threaded digest follow-up.
 - Do not mention seller usernames, handles, or tell the reader to "see below".
 - Output JSON only matching the schema exactly.
 - Never include fields named "overpricedWatchlist" or "methodNotes".`;
@@ -347,7 +347,7 @@ export function formatStructuredNamefiFeedSalesDigest({
 }): string {
   const safeRemainingCount = Math.max(remainingCount, 0);
   const lines: string[] = [
-    `Domains listed for sale on X in the ${windowLabel.headline} | ${DIGEST_SOURCE_LABEL}`,
+    `Domains listed for sale in the ${windowLabel.headline} | ${DIGEST_SOURCE_LABEL}`,
     '',
     'Top picks',
   ];
@@ -363,7 +363,7 @@ export function formatStructuredNamefiFeedSalesDigest({
   lines.push(
     `More: ${safeRemainingCount} additional ${domainNoun} in this ${windowLabel.short}.`,
   );
-  lines.push(`Reply with stronger names: ${NAMEFI_FEED_URL}`);
+  lines.push(`Browse more listings: ${NAMEFI_FEED_URL}`);
 
   return lines.join('\n');
 }

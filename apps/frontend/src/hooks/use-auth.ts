@@ -7,6 +7,7 @@ import {
 import { useQuery, type AnyUseQueryOptions } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
+import { Permission } from '@namefi-astra/utils/permissions';
 import { useEmailPrompt } from './use-email-prompt';
 import { useCartContext } from '@/components/providers/cart';
 import { usePreAuthSignals } from '@/components/providers/pre-auth-signals';
@@ -165,8 +166,12 @@ export function useAuth() {
 }
 
 export function useMyPermissions() {
-  const { definitelyNotAuthenticated, canPrefetchOrShouldFetch, isPrefetch } =
-    useAuthenticatedQueryState();
+  const {
+    definitelyNotAuthenticated,
+    canPrefetchOrShouldFetch,
+    isPrefetch,
+    isSkipAuthActive,
+  } = useAuthenticatedQueryState();
 
   const trpc = useTRPC();
 
@@ -175,6 +180,9 @@ export function useMyPermissions() {
       isPrefetch,
       trpc.users.getMyPermissions.queryOptions(void 0, {
         enabled: canPrefetchOrShouldFetch,
+        placeholderData: isSkipAuthActive
+          ? [Permission.SUPER_ADMIN]
+          : undefined,
         retry(failureCount, error) {
           if (definitelyNotAuthenticated || failureCount > 1) {
             return false;

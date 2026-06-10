@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { addMonths, addYears } from 'date-fns';
 
@@ -304,6 +304,16 @@ describe('getDomainDurationConstraints', () => {
   });
 
   describe('determineDurationLimitsForRenewItems', () => {
+    beforeEach(() => {
+      vi.useFakeTimers({
+        now: new Date('2026-06-10T12:00:00.000Z'),
+      });
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     it('should calculate correct duration limits for domain with years remaining', () => {
       const expirationTime = addMonths(new Date(), 25); // Expires in 2+ years, so current registration is 3 years
 

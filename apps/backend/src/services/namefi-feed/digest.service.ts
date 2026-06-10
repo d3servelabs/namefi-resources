@@ -3,7 +3,6 @@ import {
   buildNamefiFeedSalesDigestAnimationSummary,
   buildNamefiFeedSalesDigestFormattedPicks,
   formatNamefiFeedSalesDigestInsight,
-  formatStructuredNamefiFeedSalesDigest,
   generateNamefiFeedSalesDigestInsight,
   generateNamefiFeedSalesDigestWordCloudImage,
   NAMEFI_FEED_SALES_DIGEST_ANIMATION_EXTERNAL_USER_ID,
@@ -17,6 +16,7 @@ import {
   db,
   namefiFeedListingsTable,
   salesDigestAnimationsTable,
+  salesDigestRunsTable,
 } from '@namefi-astra/db';
 import { createS3Client } from '@namefi-astra/storage';
 import { and, asc, eq, gte, lt } from 'drizzle-orm';
@@ -68,6 +68,9 @@ export interface NamefiFeedSalesDigestRenderResult {
 export interface RunNamefiFeedSalesDigestInput {
   at?: Date;
   createdByUserId?: string | null;
+  digestRunId?: string | null;
+  trigger?: 'scheduled' | 'manual';
+  workflowId?: string | null;
   includeAnimation?: boolean;
   includeImage?: boolean;
   enabledOnly?: boolean;
@@ -76,6 +79,7 @@ export interface RunNamefiFeedSalesDigestInput {
 }
 
 export interface RunNamefiFeedSalesDigestResult {
+  digestRunId: string;
   status: 'dry_run' | 'sent' | 'skipped';
   skipReason: string | null;
   bounds: {
@@ -97,6 +101,15 @@ export interface RunNamefiFeedSalesDigestResult {
     failed: number;
     targetCount: number;
   } | null;
+}
+
+export interface PendingNamefiFeedSalesDigestRun {
+  digestRunId: string;
+  generatedAt: string;
+  bounds: {
+    start: string;
+    end: string;
+  };
 }
 
 interface SalesDigestAnimationPersistenceKey {
@@ -242,79 +255,53 @@ export async function renderNamefiFeedSalesDigest({
   includeImage?: boolean;
 }): Promise<NamefiFeedSalesDigestRenderResult> {
   if (entries.length === 0) {
-    return {
-      text: formatFallbackSalesDigest(entries),
-      usedFallback: true,
-      fallbackReason: 'no_entries',
-      imageDataUrl: null,
-      animation: null,
-      topPicks: [],
-    };
+    throw new Error('Cannot render Namefi Feed sales digest without entries.');
   }
 
-  try {
-    const { insight, context } = await generateNamefiFeedSalesDigestInsight({
-      entries,
-      windowStart: bounds.start,
-      windowEnd: bounds.end,
-    });
-    const topPicks = attachLogoUrlsToTopPicks(
-      buildNamefiFeedSalesDigestFormattedPicks(insight, context),
-      entries,
-    );
-    const imagePicks = topPicks.map((pick) => ({
-      domain: pick.domain,
-      thesis: pick.thesis,
-      logoUrl: pick.logoUrl,
-    }));
-    const imageDataUrl = await maybeGenerateDigestWordCloud({
-      includeImage,
-      picks: imagePicks,
-    });
-    const text = formatNamefiFeedSalesDigestInsight(insight, context);
-    const animation = await maybeGenerateDigestAnimation({
-      bounds,
-      generatedAt: bounds.end,
-      imageDataUrl,
-      includeAnimation,
-      picks: imagePicks,
-      text,
-    });
+  const { insight, context } = await generateNamefiFeedSalesDigestInsight({
+    entries,
+    windowStart: bounds.start,
+    windowEnd: bounds.end,
+  });
+  const topPicks = attachLogoUrlsToTopPicks(
+    buildNamefiFeedSalesDigestFormattedPicks(insight, context),
+    entries,
+  );
+  const text = formatNamefiFeedSalesDigestInsight(insight, context);
+  const imagePicks = topPicks.map((pick) => ({
+    domain: pick.domain,
+    thesis: pick.thesis,
+    logoUrl: pick.logoUrl,
+  }));
+  const sourceImageDataUrl = await maybeGenerateDigestWordCloud({
+    includeImage: includeAnimation || includeImage,
+    picks: imagePicks,
+  });
+  const animation = await maybeGenerateDigestAnimation({
+    bounds,
+    generatedAt: bounds.end,
+    imageDataUrl: sourceImageDataUrl,
+    includeAnimation,
+    picks: imagePicks,
+    text,
+  });
+  const imageDataUrl = includeImage ? sourceImageDataUrl : null;
 
-    return {
-      text,
-      usedFallback: false,
-      fallbackReason: null,
-      imageDataUrl,
-      animation,
-      topPicks,
-    };
-  } catch (error) {
-    logger.error(
-      { error: serializeLogError(error) },
-      'Failed to generate AI sales digest; using fallback',
-    );
-    const topPicks = buildFallbackTopPicks(entries);
+  assertRequestedDigestMediaAvailable({
+    animation,
+    imageDataUrl,
+    includeAnimation,
+    includeImage,
+  });
 
-    return {
-      text: formatStructuredNamefiFeedSalesDigest({
-        topPicks,
-        remainingCount: entries.length - topPicks.length,
-      }),
-      usedFallback: true,
-      fallbackReason: 'ai_generation_failed',
-      imageDataUrl: await maybeGenerateDigestWordCloud({
-        includeImage,
-        picks: topPicks.map((pick) => ({
-          domain: pick.domain,
-          thesis: pick.thesis,
-          logoUrl: pick.logoUrl,
-        })),
-      }),
-      animation: null,
-      topPicks,
-    };
-  }
+  return {
+    text,
+    usedFallback: false,
+    fallbackReason: null,
+    imageDataUrl,
+    animation,
+    topPicks,
+  };
 }
 
 export async function runNamefiFeedSalesDigest(
@@ -326,98 +313,181 @@ export async function runNamefiFeedSalesDigest(
   } = await import('./digest-targets.service');
   const runAt = resolveNamefiFeedSalesDigestRunAt(input.at);
   const bounds = getRollingNamefiFeedSalesDigestBounds(runAt);
-  const entries = await getNamefiFeedSalesDigestEntries({ at: runAt });
-  const targetCount = input.dryRun
-    ? null
-    : await countNamefiFeedSalesDigestDeliveryTargets({
-        enabledOnly: input.enabledOnly ?? true,
-        targetIds: input.targetIds,
-      });
-
-  if (targetCount === 0) {
-    return buildSalesDigestRunResult({
+  const includeImage = input.includeImage ?? true;
+  const includeAnimation = input.includeAnimation ?? true;
+  const enabledOnly = input.enabledOnly ?? true;
+  const dryRun = input.dryRun ?? false;
+  const digestRunId =
+    input.digestRunId ??
+    (await createNamefiFeedSalesDigestRun({
       bounds,
-      deliverySummary: {
+      createdByUserId: input.createdByUserId ?? null,
+      dryRun,
+      enabledOnly,
+      generatedAt: runAt,
+      includeAnimation,
+      includeImage,
+      targetIds: input.targetIds,
+      trigger: input.trigger ?? 'manual',
+      workflowId: input.workflowId ?? null,
+    }));
+  let runCompleted = false;
+
+  try {
+    const entries = await getNamefiFeedSalesDigestEntries({ at: runAt });
+    const targetCount = await countNamefiFeedSalesDigestDeliveryTargets({
+      enabledOnly,
+      targetIds: input.targetIds,
+    });
+
+    if (entries.length === 0) {
+      const deliverySummary = {
+        sent: 0,
+        skipped: targetCount,
+        failed: 0,
+        targetCount,
+      };
+      await completeNamefiFeedSalesDigestRun({
+        digestRunId,
+        deliverySummary,
+        entriesCount: 0,
+        render: null,
+        skipReason: 'no_entries',
+        status: 'skipped',
+      });
+      runCompleted = true;
+      return buildSalesDigestRunResult({
+        bounds,
+        deliverySummary,
+        digestRunId,
+        entriesCount: 0,
+        render: null,
+        skipReason: 'no_entries',
+        status: 'skipped',
+      });
+    }
+
+    if (!dryRun && targetCount === 0) {
+      const deliverySummary = {
         sent: 0,
         skipped: 0,
         failed: 0,
         targetCount: 0,
-      },
-      entriesCount: entries.length,
-      render: null,
-      skipReason: 'no_targets',
-      status: 'skipped',
-    });
-  }
-
-  const render = await renderNamefiFeedSalesDigest({
-    bounds,
-    entries,
-    includeAnimation: input.includeAnimation ?? true,
-    includeImage: input.includeImage ?? true,
-  });
-
-  if (!input.dryRun && render.usedFallback) {
-    return buildSalesDigestRunResult({
-      bounds,
-      deliverySummary: {
-        sent: 0,
-        skipped: targetCount ?? 0,
-        failed: 0,
-        targetCount: targetCount ?? 0,
-      },
-      entriesCount: entries.length,
-      render,
-      skipReason: render.fallbackReason ?? 'fallback_digest',
-      status: 'skipped',
-    });
-  }
-
-  const deliverySummary = input.dryRun
-    ? null
-    : await publishNamefiFeedSalesDigestToTargets({
-        at: runAt,
-        bounds,
-        createdByUserId: input.createdByUserId ?? null,
-        digestRender: render,
-        enabledOnly: input.enabledOnly ?? true,
+      };
+      await completeNamefiFeedSalesDigestRun({
+        digestRunId,
+        deliverySummary,
         entriesCount: entries.length,
-        targetIds: input.targetIds,
+        render: null,
+        skipReason: 'no_targets',
+        status: 'skipped',
       });
+      runCompleted = true;
+      return buildSalesDigestRunResult({
+        bounds,
+        deliverySummary,
+        digestRunId,
+        entriesCount: entries.length,
+        render: null,
+        skipReason: 'no_targets',
+        status: 'skipped',
+      });
+    }
 
-  if (deliverySummary && deliverySummary.failed > 0) {
-    throw new NamefiFeedSalesDigestDeliveryError({
-      sent: deliverySummary.sent,
-      skipped: deliverySummary.skipped,
-      failed: deliverySummary.failed,
-      targetCount: deliverySummary.targetCount,
+    const render = await renderNamefiFeedSalesDigest({
+      bounds,
+      entries,
+      includeAnimation,
+      includeImage,
     });
-  }
 
-  return buildSalesDigestRunResult({
-    bounds,
-    deliverySummary: deliverySummary
-      ? {
+    const deliverySummary = dryRun
+      ? { sent: 0, skipped: 0, failed: 0, targetCount }
+      : await publishNamefiFeedSalesDigestToTargets({
+          at: runAt,
+          bounds,
+          createdByUserId: input.createdByUserId ?? null,
+          digestRender: render,
+          digestRunId,
+          enabledOnly,
+          entriesCount: entries.length,
+          targetIds: input.targetIds,
+        });
+
+    if (deliverySummary.failed > 0) {
+      const failedStatus = deliverySummary.sent > 0 ? 'partial' : 'failed';
+      await completeNamefiFeedSalesDigestRun({
+        digestRunId,
+        deliverySummary: {
           sent: deliverySummary.sent,
           skipped: deliverySummary.skipped,
           failed: deliverySummary.failed,
           targetCount: deliverySummary.targetCount,
-        }
-      : null,
-    entriesCount: entries.length,
-    render,
-    skipReason: null,
-    status: input.dryRun
+        },
+        entriesCount: entries.length,
+        errorMessage: `Delivery failed for ${deliverySummary.failed} target${deliverySummary.failed === 1 ? '' : 's'}.`,
+        render,
+        skipReason: null,
+        status: failedStatus,
+      });
+      runCompleted = true;
+      throw new NamefiFeedSalesDigestDeliveryError({
+        sent: deliverySummary.sent,
+        skipped: deliverySummary.skipped,
+        failed: deliverySummary.failed,
+        targetCount: deliverySummary.targetCount,
+      });
+    }
+
+    const status = dryRun
       ? 'dry_run'
-      : deliverySummary && deliverySummary.sent > 0
+      : deliverySummary.sent > 0
         ? 'sent'
-        : 'skipped',
-  });
+        : 'skipped';
+    await completeNamefiFeedSalesDigestRun({
+      digestRunId,
+      deliverySummary: {
+        sent: deliverySummary.sent,
+        skipped: deliverySummary.skipped,
+        failed: deliverySummary.failed,
+        targetCount: deliverySummary.targetCount,
+      },
+      entriesCount: entries.length,
+      render,
+      skipReason: null,
+      status,
+    });
+    runCompleted = true;
+
+    return buildSalesDigestRunResult({
+      bounds,
+      deliverySummary: {
+        sent: deliverySummary.sent,
+        skipped: deliverySummary.skipped,
+        failed: deliverySummary.failed,
+        targetCount: deliverySummary.targetCount,
+      },
+      digestRunId,
+      entriesCount: entries.length,
+      render,
+      skipReason: null,
+      status,
+    });
+  } catch (error) {
+    if (!runCompleted) {
+      await failNamefiFeedSalesDigestRun({
+        digestRunId,
+        errorMessage: describeError(error, 'Namefi Feed sales digest failed.'),
+      });
+    }
+    throw error;
+  }
 }
 
 function buildSalesDigestRunResult({
   bounds,
   deliverySummary,
+  digestRunId,
   entriesCount,
   render,
   skipReason,
@@ -425,12 +495,14 @@ function buildSalesDigestRunResult({
 }: {
   bounds: NamefiFeedSalesDigestBounds;
   deliverySummary: RunNamefiFeedSalesDigestResult['deliverySummary'];
+  digestRunId: string;
   entriesCount: number;
   render: NamefiFeedSalesDigestRenderResult | null;
   skipReason: RunNamefiFeedSalesDigestResult['skipReason'];
   status: RunNamefiFeedSalesDigestResult['status'];
 }): RunNamefiFeedSalesDigestResult {
   return {
+    digestRunId,
     status,
     skipReason,
     bounds: {
@@ -452,26 +524,155 @@ function buildSalesDigestRunResult({
   };
 }
 
-function formatFallbackSalesDigest(
-  entries: ReadonlyArray<NamefiFeedSalesDigestEntry>,
-): string {
-  const topPicks = buildFallbackTopPicks(entries);
-  return formatStructuredNamefiFeedSalesDigest({
-    topPicks,
-    remainingCount: entries.length - topPicks.length,
+export async function createPendingNamefiFeedSalesDigestRun(input: {
+  at?: Date;
+  createdByUserId?: string | null;
+  trigger?: 'scheduled' | 'manual';
+  workflowId?: string | null;
+  includeAnimation?: boolean;
+  includeImage?: boolean;
+  enabledOnly?: boolean;
+  targetIds?: string[];
+  dryRun?: boolean;
+}): Promise<PendingNamefiFeedSalesDigestRun> {
+  const generatedAt = resolveNamefiFeedSalesDigestRunAt(input.at);
+  const bounds = getRollingNamefiFeedSalesDigestBounds(generatedAt);
+  const digestRunId = await createNamefiFeedSalesDigestRun({
+    bounds,
+    createdByUserId: input.createdByUserId ?? null,
+    dryRun: input.dryRun ?? false,
+    enabledOnly: input.enabledOnly ?? true,
+    generatedAt,
+    includeAnimation: input.includeAnimation ?? true,
+    includeImage: input.includeImage ?? true,
+    targetIds: input.targetIds,
+    trigger: input.trigger ?? 'manual',
+    workflowId: input.workflowId ?? null,
   });
+
+  return {
+    digestRunId,
+    generatedAt: generatedAt.toISOString(),
+    bounds: {
+      start: bounds.start.toISOString(),
+      end: bounds.end.toISOString(),
+    },
+  };
 }
 
-function buildFallbackTopPicks(
-  entries: ReadonlyArray<NamefiFeedSalesDigestEntry>,
-): NamefiFeedSalesDigestFormattedPick[] {
-  return entries.slice(0, 12).map((entry) => ({
-    domain: entry.domain,
-    thesis: 'No summary available.',
-    tweetTake: 'Worth a closer look.',
-    sourceTweetUrl: entry.sourceTweetUrl,
-    logoUrl: entry.logoUrl,
-  }));
+async function createNamefiFeedSalesDigestRun({
+  bounds,
+  createdByUserId,
+  dryRun,
+  enabledOnly,
+  generatedAt,
+  includeAnimation,
+  includeImage,
+  targetIds,
+  trigger,
+  workflowId,
+}: {
+  bounds: NamefiFeedSalesDigestBounds;
+  createdByUserId: string | null;
+  dryRun: boolean;
+  enabledOnly: boolean;
+  generatedAt: Date;
+  includeAnimation: boolean;
+  includeImage: boolean;
+  targetIds?: string[];
+  trigger: 'scheduled' | 'manual';
+  workflowId: string | null;
+}): Promise<string> {
+  const [run] = await db
+    .insert(salesDigestRunsTable)
+    .values({
+      createdByUserId,
+      dryRun,
+      enabledOnly,
+      generatedAt,
+      includeAnimation,
+      includeImage,
+      metadata: {},
+      status: 'running',
+      targetIds: targetIds ?? null,
+      trigger,
+      windowEnd: bounds.end,
+      windowStart: bounds.start,
+      workflowId,
+    })
+    .returning({ id: salesDigestRunsTable.id });
+
+  if (!run) {
+    throw new Error('Failed to create Namefi Feed sales digest run.');
+  }
+
+  return run.id;
+}
+
+async function completeNamefiFeedSalesDigestRun({
+  deliverySummary,
+  digestRunId,
+  entriesCount,
+  errorMessage,
+  render,
+  skipReason,
+  status,
+}: {
+  deliverySummary: RunNamefiFeedSalesDigestResult['deliverySummary'];
+  digestRunId: string;
+  entriesCount: number;
+  errorMessage?: string | null;
+  render: NamefiFeedSalesDigestRenderResult | null;
+  skipReason: RunNamefiFeedSalesDigestResult['skipReason'];
+  status: 'dry_run' | 'sent' | 'skipped' | 'failed' | 'partial';
+}) {
+  await db
+    .update(salesDigestRunsTable)
+    .set({
+      animationGenerated: Boolean(render?.animation),
+      digestTextHash: render?.text
+        ? hashDigestAnimationValue(render.text)
+        : null,
+      entriesCount,
+      errorMessage: errorMessage ?? null,
+      failedCount: deliverySummary?.failed ?? 0,
+      fallbackReason: render?.fallbackReason ?? null,
+      finishedAt: new Date(),
+      imageGenerated: Boolean(render?.imageDataUrl),
+      metadata: {
+        deliverySummary: deliverySummary ?? null,
+        topPicks: render?.topPicks ?? [],
+      },
+      sentCount: deliverySummary?.sent ?? 0,
+      skippedCount: deliverySummary?.skipped ?? 0,
+      skipReason,
+      status,
+      targetCount: deliverySummary?.targetCount ?? 0,
+      updatedAt: new Date(),
+      usedFallback: Boolean(render?.usedFallback),
+    })
+    .where(eq(salesDigestRunsTable.id, digestRunId));
+}
+
+export async function failNamefiFeedSalesDigestRun({
+  digestRunId,
+  errorMessage,
+  failedCount = 1,
+}: {
+  digestRunId: string;
+  errorMessage: string;
+  failedCount?: number;
+}) {
+  await db
+    .update(salesDigestRunsTable)
+    .set({
+      errorMessage,
+      failedCount,
+      finishedAt: new Date(),
+      status: 'failed',
+      updatedAt: new Date(),
+    })
+    .where(eq(salesDigestRunsTable.id, digestRunId));
 }
 
 function attachLogoUrlsToTopPicks(
@@ -533,6 +734,40 @@ async function maybeGenerateDigestWordCloud({
     );
     return null;
   }
+}
+
+function assertRequestedDigestMediaAvailable({
+  animation,
+  imageDataUrl,
+  includeAnimation,
+  includeImage,
+}: {
+  animation: NamefiFeedSalesDigestAnimationResult | null;
+  imageDataUrl: string | null;
+  includeAnimation: boolean;
+  includeImage: boolean;
+}) {
+  if (!includeAnimation && !includeImage) {
+    return;
+  }
+
+  if (includeAnimation && animation) {
+    return;
+  }
+
+  if (includeImage && imageDataUrl) {
+    return;
+  }
+
+  const requestedMedia =
+    includeAnimation && includeImage
+      ? 'animation or fallback image'
+      : includeAnimation
+        ? 'animation'
+        : 'image';
+  throw new Error(
+    `Namefi Feed sales digest media generation failed: required ${requestedMedia} was not generated.`,
+  );
 }
 
 async function maybeGenerateDigestAnimation({
@@ -827,4 +1062,10 @@ function serializeLogError(error: unknown) {
     };
   }
   return error;
+}
+
+function describeError(error: unknown, fallback: string) {
+  return error instanceof Error && error.message.trim().length > 0
+    ? error.message
+    : fallback;
 }

@@ -44,6 +44,12 @@ const slackUploadUrlResponseSchema = z
     upload_url: z.string(),
   })
   .passthrough();
+const slackPostMessageResponseSchema = z
+  .object({
+    channel: z.string(),
+    ts: z.string(),
+  })
+  .passthrough();
 
 export type SalesDigestTargetType =
   | 'slack'
@@ -108,6 +114,7 @@ export interface SalesDigestTargetDeliverySummary {
 
 export interface SalesDigestTargetDeliveryAdminSummary {
   id: string;
+  digestRunId: string | null;
   targetId: string | null;
   targetKey: string;
   targetLabel: string | null;
@@ -195,6 +202,7 @@ export async function listRecentNamefiFeedSalesDigestDeliveries(
   const rows = await db
     .select({
       id: salesDigestTargetDeliveriesTable.id,
+      digestRunId: salesDigestTargetDeliveriesTable.digestRunId,
       targetId: salesDigestTargetDeliveriesTable.targetId,
       targetKey: salesDigestTargetDeliveriesTable.targetKey,
       status: salesDigestTargetDeliveriesTable.status,
@@ -218,6 +226,7 @@ export async function listRecentNamefiFeedSalesDigestDeliveries(
 
   return rows.map((row) => ({
     id: row.id,
+    digestRunId: row.digestRunId,
     targetId: row.targetId,
     targetKey: row.targetKey,
     targetLabel: row.targetLabel,
@@ -349,16 +358,11 @@ export async function publishNamefiFeedSalesDigestToTargets(params: {
   bounds: NamefiFeedSalesDigestBounds;
   createdByUserId?: string | null;
   digestRender: NamefiFeedSalesDigestRenderResult;
+  digestRunId?: string | null;
   enabledOnly?: boolean;
   entriesCount?: number;
   targetIds?: string[];
 }): Promise<SalesDigestTargetDeliverySummary> {
-  if (params.digestRender.usedFallback) {
-    throw new Error(
-      `Namefi Feed sales digest fallback mode is disabled (${params.digestRender.fallbackReason ?? 'unknown_reason'}).`,
-    );
-  }
-
   const targets = await listTargetsForDelivery({
     enabledOnly: params.enabledOnly ?? true,
     targetIds: params.targetIds,
@@ -378,6 +382,7 @@ export async function publishNamefiFeedSalesDigestToTargets(params: {
           createdByUserId: params.createdByUserId ?? null,
           digestRender: params.digestRender,
           digestTextHash,
+          digestRunId: params.digestRunId ?? null,
           target,
         }),
       );
@@ -688,6 +693,7 @@ async function deliverSalesDigestToTarget({
   createdByUserId,
   digestRender,
   digestTextHash,
+  digestRunId,
   target,
 }: {
   at: Date;
@@ -695,6 +701,7 @@ async function deliverSalesDigestToTarget({
   createdByUserId: string | null;
   digestRender: NamefiFeedSalesDigestRenderResult;
   digestTextHash: string;
+  digestRunId: string | null;
   target: SalesDigestDeliveryTarget;
 }): Promise<SalesDigestTargetDeliveryResult> {
   const existing = await findTargetDelivery({
@@ -765,6 +772,7 @@ async function deliverSalesDigestToTarget({
             externalMessageId: null,
             externalMessageUrl: null,
             generatedAt: at,
+            digestRunId,
             response: null,
             status: 'pending',
             updatedAt: new Date(),
@@ -778,6 +786,7 @@ async function deliverSalesDigestToTarget({
           .insert(salesDigestTargetDeliveriesTable)
           .values({
             createdByUserId,
+            digestRunId,
             digestTextHash,
             generatedAt: at,
             status: 'pending',
@@ -952,13 +961,38 @@ async function sendSlackDigest(
   let latestFileId: string | null = null;
 
   try {
-    const hero = await uploadSlackHeroMediaWithFallback({
-      at,
-      channelId: config.channelId,
-      comment,
-      mediaPlan,
-      token,
-    });
+    const hero = mediaPlan.heroMedia
+      ? await uploadSlackHeroMediaWithFallback({
+          at,
+          channelId: config.channelId,
+          comment,
+          mediaPlan,
+          token,
+        })
+      : null;
+
+    if (!hero) {
+      const messageId = await sendSlackTextMessage({
+        channelId: config.channelId,
+        text: comment,
+        token,
+      });
+
+      return {
+        externalMessageId: messageId,
+        externalMessageUrl: null,
+        response: {
+          channel: 'slack',
+          channelId: config.channelId,
+          mediaKind: null,
+          sentMessageIds: [messageId],
+          sentLogoDomains,
+          textOnly: true,
+          mediaUnavailableReason: 'hero_media_not_generated',
+        },
+      };
+    }
+
     latestFileId = hero.fileId;
     heroMediaKind = hero.mediaKind;
     sentFileIds.push(hero.fileId);
@@ -1489,6 +1523,27 @@ async function uploadSlackFileWithComment({
   });
 
   return fileId;
+}
+
+async function sendSlackTextMessage({
+  channelId,
+  text,
+  token,
+}: {
+  channelId: string;
+  text: string;
+  token: string;
+}): Promise<string> {
+  const response = slackPostMessageResponseSchema.parse(
+    await slackApi<unknown>(token, 'chat.postMessage', {
+      channel: channelId,
+      text,
+      unfurl_links: false,
+      unfurl_media: false,
+    }),
+  );
+
+  return `${response.channel}:${response.ts}`;
 }
 
 async function slackApi<T>(

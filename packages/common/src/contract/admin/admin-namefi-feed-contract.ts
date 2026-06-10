@@ -17,6 +17,38 @@ export const adminNamefiFeedSourceSchema = z.object({
   enabled: z.boolean(),
 });
 
+const adminNamefiFeedXSourceSettingsSchema = z.object({
+  maxQueries: z.number().int().positive(),
+  maxPagesPerQuery: z.number().int().positive(),
+  maxTweetsPerQuery: z.number().int().positive(),
+  maxTweetAgeMinutes: z.number().int().positive(),
+  overlapMinutes: z.number().int().nonnegative(),
+});
+
+const adminNamefiFeedMarketplaceSourceSettingsSchema = z.object({
+  maxPostAgeMinutes: z.number().int().positive(),
+});
+
+const adminNamefiFeedSourceSettingsSchema = z.object({
+  x: adminNamefiFeedXSourceSettingsSchema,
+  namepros: adminNamefiFeedMarketplaceSourceSettingsSchema,
+  dnforum: adminNamefiFeedMarketplaceSourceSettingsSchema,
+});
+
+export const adminNamefiFeedRunSourceResultSchema = z.object({
+  source: adminNamefiFeedSourceIdSchema,
+  feedId: z.string().nullable(),
+  feedUrl: z.string().nullable(),
+  skipped: z.boolean(),
+  reason: z.string().nullable(),
+  scannedPostCount: z.number().int().nonnegative(),
+  queuedPostCount: z.number().int().nonnegative(),
+  alreadyExistingCount: z.number().int().nonnegative(),
+  skippedPostCount: z.number().int().nonnegative(),
+  latestCursorAt: nullableIsoDateSchema,
+  errorMessage: z.string().nullable(),
+});
+
 export const adminNamefiFeedSettingsSchema = z.object({
   autoScanEnabled: z.boolean(),
   enabledSources: z.array(adminNamefiFeedSourceIdSchema),
@@ -26,7 +58,9 @@ export const adminNamefiFeedSettingsSchema = z.object({
   maxPagesPerQuery: z.number().int().positive(),
   maxTweetsPerQuery: z.number().int().positive(),
   maxTweetAgeMinutes: z.number().int().positive(),
+  maxPostsProcessedPerRun: z.number().int().positive(),
   overlapMinutes: z.number().int().nonnegative(),
+  sourceSettings: adminNamefiFeedSourceSettingsSchema,
   lastAutoScanCursorAt: nullableIsoDateSchema,
   lastRunAt: nullableIsoDateSchema,
   updatedAt: z.string(),
@@ -41,11 +75,19 @@ export const adminNamefiFeedRunSchema = z.object({
   finishedAt: nullableIsoDateSchema,
   scannedPostCount: z.number().int().nonnegative(),
   queuedPostCount: z.number().int().nonnegative(),
+  alreadyExistingPostCount: z.number().int().nonnegative(),
+  scanSkippedPostCount: z.number().int().nonnegative(),
   processedPostCount: z.number().int().nonnegative(),
+  aiAnalysisAttemptedPostCount: z.number().int().nonnegative(),
+  maxPostsProcessedPerRun: z.number().int().positive().nullable(),
+  remainingPostCount: z.number().int().nonnegative().nullable(),
+  stopReason: z.string().nullable(),
   listingUpsertedCount: z.number().int().nonnegative(),
   skippedPostCount: z.number().int().nonnegative(),
   failedPostCount: z.number().int().nonnegative(),
+  skipReason: z.string().nullable(),
   errorMessage: z.string().nullable(),
+  sourceResults: z.array(adminNamefiFeedRunSourceResultSchema),
 });
 
 export const adminNamefiFeedPostSchema = z.object({
@@ -158,6 +200,7 @@ export const adminNamefiFeedDigestTargetSchema = z.discriminatedUnion(
 
 export const adminNamefiFeedDigestDeliverySchema = z.object({
   id: z.string().uuid(),
+  digestRunId: z.string().uuid().nullable(),
   targetId: z.string().uuid().nullable(),
   targetKey: z.string(),
   targetLabel: z.string().nullable(),
@@ -169,6 +212,42 @@ export const adminNamefiFeedDigestDeliverySchema = z.object({
   externalMessageId: z.string().nullable(),
   externalMessageUrl: z.string().nullable(),
   error: z.string().nullable(),
+  createdAt: z.string(),
+});
+
+export const adminNamefiFeedDigestRunSchema = z.object({
+  id: z.string().uuid(),
+  workflowId: z.string().nullable(),
+  trigger: z.enum(['scheduled', 'manual']),
+  status: z.enum([
+    'running',
+    'dry_run',
+    'sent',
+    'skipped',
+    'failed',
+    'partial',
+  ]),
+  createdByUserId: z.string().uuid().nullable(),
+  windowStart: z.string(),
+  windowEnd: z.string(),
+  generatedAt: z.string(),
+  finishedAt: nullableIsoDateSchema,
+  entriesCount: z.number().int().nonnegative(),
+  targetCount: z.number().int().nonnegative(),
+  sentCount: z.number().int().nonnegative(),
+  skippedCount: z.number().int().nonnegative(),
+  failedCount: z.number().int().nonnegative(),
+  includeImage: z.boolean(),
+  includeAnimation: z.boolean(),
+  enabledOnly: z.boolean(),
+  dryRun: z.boolean(),
+  usedFallback: z.boolean(),
+  fallbackReason: z.string().nullable(),
+  skipReason: z.string().nullable(),
+  errorMessage: z.string().nullable(),
+  digestTextHash: z.string().nullable(),
+  imageGenerated: z.boolean(),
+  animationGenerated: z.boolean(),
   createdAt: z.string(),
 });
 
@@ -196,6 +275,7 @@ export const adminNamefiFeedOverviewSchema = z.object({
   recentListings: z.array(adminNamefiFeedListingSchema),
   recentReports: z.array(adminNamefiFeedReportSchema),
   digestTargets: z.array(adminNamefiFeedDigestTargetSchema),
+  recentDigestRuns: z.array(adminNamefiFeedDigestRunSchema),
   recentDigestDeliveries: z.array(adminNamefiFeedDigestDeliverySchema),
 });
 
@@ -212,11 +292,54 @@ const updateSettingsInputSchema = z.object({
     .min(15)
     .max(60 * 24 * 7)
     .optional(),
+  maxPostsProcessedPerRun: z.number().int().min(1).max(2_000).optional(),
   overlapMinutes: z
     .number()
     .int()
     .min(0)
     .max(60 * 24)
+    .optional(),
+  sourceSettings: z
+    .object({
+      x: adminNamefiFeedXSourceSettingsSchema
+        .extend({
+          maxQueries: z.number().int().min(1).max(12),
+          maxPagesPerQuery: z.number().int().min(1).max(10),
+          maxTweetsPerQuery: z.number().int().min(10).max(100),
+          maxTweetAgeMinutes: z
+            .number()
+            .int()
+            .min(15)
+            .max(60 * 24),
+          overlapMinutes: z
+            .number()
+            .int()
+            .min(0)
+            .max(60 * 24),
+        })
+        .partial()
+        .optional(),
+      namepros: adminNamefiFeedMarketplaceSourceSettingsSchema
+        .extend({
+          maxPostAgeMinutes: z
+            .number()
+            .int()
+            .min(15)
+            .max(60 * 24),
+        })
+        .partial()
+        .optional(),
+      dnforum: adminNamefiFeedMarketplaceSourceSettingsSchema
+        .extend({
+          maxPostAgeMinutes: z
+            .number()
+            .int()
+            .min(15)
+            .max(60 * 24),
+        })
+        .partial()
+        .optional(),
+    })
     .optional(),
 });
 
@@ -238,6 +361,38 @@ const runDigestInputSchema = z.object({
   dryRun: z.boolean().optional().default(false),
   targetIds: z.array(z.string().uuid()).max(25).optional(),
 });
+
+const adminNamefiFeedSortingSchema = z
+  .array(
+    z.object({
+      id: z.string(),
+      desc: z.boolean(),
+    }),
+  )
+  .max(3);
+
+const adminNamefiFeedColumnFilterSchema = z.object({
+  id: z.string(),
+  value: z.any(),
+});
+
+const adminNamefiFeedTableInputSchema = z.object({
+  page: z.number().int().min(1).default(1),
+  pageSize: z.number().int().min(1).max(100).default(25),
+  searchTerm: z.string().trim().max(200).optional(),
+  sorting: adminNamefiFeedSortingSchema.optional(),
+  columnFilters: z.array(adminNamefiFeedColumnFilterSchema).max(20).optional(),
+});
+
+function paginatedNamefiFeedTableSchema<T extends z.ZodTypeAny>(row: T) {
+  return z.object({
+    rows: z.array(row),
+    page: z.number().int().min(1),
+    pageSize: z.number().int().min(1),
+    totalCount: z.number().int().nonnegative(),
+    totalPages: z.number().int().nonnegative(),
+  });
+}
 
 const createDigestTargetInputSchema = z.discriminatedUnion('targetType', [
   z.object({
@@ -292,6 +447,38 @@ export const adminNamefiFeedContract = createContract(
       input: z.void(),
       output: adminNamefiFeedOverviewSchema,
     },
+    listRuns: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(adminNamefiFeedRunSchema),
+    },
+    listPosts: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(adminNamefiFeedPostSchema),
+    },
+    listListings: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(adminNamefiFeedListingSchema),
+    },
+    listReports: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(adminNamefiFeedReportSchema),
+    },
+    listDigestDeliveries: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(
+        adminNamefiFeedDigestDeliverySchema,
+      ),
+    },
+    listDigestRuns: {
+      type: 'query',
+      input: adminNamefiFeedTableInputSchema,
+      output: paginatedNamefiFeedTableSchema(adminNamefiFeedDigestRunSchema),
+    },
     updateSettings: {
       type: 'mutation',
       input: updateSettingsInputSchema,
@@ -308,6 +495,7 @@ export const adminNamefiFeedContract = createContract(
       type: 'mutation',
       input: runDigestInputSchema,
       output: z.object({
+        digestRunId: z.string().uuid(),
         workflowId: z.string(),
       }),
     },
