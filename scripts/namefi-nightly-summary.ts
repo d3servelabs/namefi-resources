@@ -31,19 +31,25 @@ type LighthouseReport = {
     {
       score?: number | null;
       categoryScoreDisplayMode?: string;
-      auditRefs?: Array<{
-        id?: string;
-        weight?: number;
-      }>;
     }
   >;
-  audits?: Record<string, { score?: number | null }>;
+  timing?: {
+    total?: number;
+  };
 };
 
 type Metric = {
   key: string;
   label: string;
 };
+
+type CheckStatus =
+  | 'success'
+  | 'failed'
+  | 'flaky'
+  | 'running'
+  | 'pending'
+  | 'skipped';
 
 const slackPayloadPath = 'test-results/namefi-dev-slack-payload.json';
 const markdownSummaryPath = 'test-results/namefi-dev-summary.md';
@@ -104,45 +110,152 @@ function metricText(summary: Record<string, number>, metric: Metric) {
   return `${metric.label} ${scoreEmoji(score)} ${formatScore(score)}`;
 }
 
-function formatAgenticBrowsingScore(report: LighthouseReport | null) {
+function metricSlackLine(summary: Record<string, number>, metric: Metric) {
+  const score = summary[metric.key];
+  return `- ${scoreEmoji(score)} ${metric.label}: \`${formatScore(score)}\``;
+}
+
+function agenticBrowsingScore(report: LighthouseReport | null) {
   const category = report?.categories?.['agentic-browsing'];
   const score = category?.score;
   if (typeof score !== 'number') {
-    return `${scoreEmoji(undefined)} n/a`;
+    return undefined;
   }
 
-  const scoredAuditRefs =
-    category.auditRefs?.filter((auditRef) => (auditRef.weight ?? 0) > 0) ?? [];
-  if (scoredAuditRefs.length === 0) {
-    return `${scoreEmoji(score)} ${formatScore(score)}`;
-  }
-
-  const auditScores = scoredAuditRefs
-    .map((auditRef) => report?.audits?.[auditRef.id ?? '']?.score)
-    .filter(
-      (auditScore): auditScore is number => typeof auditScore === 'number',
-    );
-  if (auditScores.length !== scoredAuditRefs.length) {
-    return `${scoreEmoji(score)} ${formatScore(score)}`;
-  }
-
-  const total = scoredAuditRefs.length;
-  const passed = auditScores.filter((auditScore) => auditScore === 1).length;
-  return `${scoreEmoji(score)} ${passed}/${total}`;
+  return score;
 }
 
-function statusLabel(outcome: string) {
+function formatAgenticBrowsingScore(report: LighthouseReport | null) {
+  const score = agenticBrowsingScore(report);
+  return `${scoreEmoji(score)} ${formatScore(score)}`;
+}
+
+function agenticBrowsingSlackLine(report: LighthouseReport | null) {
+  const score = agenticBrowsingScore(report);
+  return `- ${scoreEmoji(score)} Agent Browsability: \`${formatScore(score)}\``;
+}
+
+function statusFromOutcome(outcome: string): CheckStatus {
   switch (outcome) {
     case 'success':
-      return '🟢 Passed';
+      return 'success';
+    case 'running':
+      return 'running';
+    case 'pending':
+      return 'pending';
+    case 'skipped':
+      return 'skipped';
+    default:
+      return 'failed';
+  }
+}
+
+function e2eCheckStatus(
+  outcome: string,
+  stats?: PlaywrightReport['stats'],
+): CheckStatus {
+  const status = statusFromOutcome(outcome);
+  if (status !== 'success') {
+    return status;
+  }
+
+  if (!stats) {
+    return 'failed';
+  }
+
+  if ((stats?.unexpected ?? 0) > 0) {
+    return 'failed';
+  }
+
+  if (
+    (stats?.expected ?? 0) === 0 &&
+    (stats?.flaky ?? 0) === 0 &&
+    (stats?.skipped ?? 0) > 0
+  ) {
+    return 'failed';
+  }
+
+  if ((stats?.flaky ?? 0) > 0) {
+    return 'flaky';
+  }
+
+  return 'success';
+}
+
+function lighthouseCheckStatus(
+  outcome: string,
+  entry: LighthouseManifestEntry | null,
+  report: LighthouseReport | null,
+): CheckStatus {
+  const status = statusFromOutcome(outcome);
+  if (status !== 'success') {
+    return status;
+  }
+
+  if (!entry?.summary || !report) {
+    return 'failed';
+  }
+
+  return 'success';
+}
+
+function overallCheckStatus(
+  e2eStatus: CheckStatus,
+  lighthouseStatus: CheckStatus,
+): CheckStatus {
+  if (e2eStatus === 'failed' || lighthouseStatus === 'failed') {
+    return 'failed';
+  }
+
+  if (e2eStatus === 'skipped' || lighthouseStatus === 'skipped') {
+    return 'failed';
+  }
+
+  if (
+    e2eStatus === 'running' ||
+    lighthouseStatus === 'running' ||
+    e2eStatus === 'pending' ||
+    lighthouseStatus === 'pending'
+  ) {
+    return 'running';
+  }
+
+  if (e2eStatus === 'flaky' || lighthouseStatus === 'flaky') {
+    return 'flaky';
+  }
+
+  return 'success';
+}
+
+function slackStatusLabel(status: CheckStatus) {
+  switch (status) {
+    case 'success':
+      return '🟢 Success';
+    case 'flaky':
+      return '🟡 Flaky';
     case 'running':
       return '🟡 Running';
     case 'pending':
       return '🟡 Pending';
     case 'skipped':
       return '⚪ Skipped';
-    default:
+    case 'failed':
       return '🔴 Failed';
+  }
+}
+
+function headingForStatus(status: CheckStatus) {
+  switch (status) {
+    case 'success':
+      return 'Namefi.dev nightly succeeded';
+    case 'flaky':
+      return 'Namefi.dev nightly flaky';
+    case 'running':
+    case 'pending':
+      return 'Namefi.dev nightly running';
+    case 'failed':
+    case 'skipped':
+      return 'Namefi.dev nightly failed';
   }
 }
 
@@ -176,6 +289,67 @@ function readLighthouseReport(entry: LighthouseManifestEntry | null) {
   return readJson<LighthouseReport>(entry.jsonPath);
 }
 
+function readLighthouseReports(entries: LighthouseManifestEntry[]) {
+  return entries
+    .map((entry) => readLighthouseReport(entry))
+    .filter((report): report is LighthouseReport => report !== null);
+}
+
+function formatAverageLighthouseDuration(reports: LighthouseReport[]) {
+  const durations = reports
+    .map((report) => report.timing?.total)
+    .filter((duration): duration is number => typeof duration === 'number');
+  if (durations.length === 0) {
+    return 'n/a';
+  }
+
+  const averageDuration =
+    durations.reduce((total, duration) => total + duration, 0) /
+    durations.length;
+  return formatDuration(averageDuration);
+}
+
+function e2eSlackText(
+  status: CheckStatus,
+  summary: string,
+  stats?: PlaywrightReport['stats'],
+) {
+  if (!stats) {
+    return [`*E2E:* ${slackStatusLabel(status)}`, `- ${summary}`].join('\n');
+  }
+
+  return `*E2E (${formatDuration(stats.duration)}):* ${slackStatusLabel(status)}`;
+}
+
+function lighthouseSlackHeading(status: CheckStatus, averageDuration: string) {
+  const durationText =
+    averageDuration === 'n/a' ? '' : ` (~${averageDuration})`;
+
+  return status === 'success'
+    ? `*Lighthouse${durationText}:*`
+    : `*Lighthouse${durationText}:* ${slackStatusLabel(status)}`;
+}
+
+function lighthouseSlackText(
+  status: CheckStatus,
+  summary: string,
+  averageDuration: string,
+  lighthouseSummary?: Record<string, number>,
+  report?: LighthouseReport | null,
+) {
+  if (!lighthouseSummary) {
+    return [lighthouseSlackHeading(status, averageDuration), `- ${summary}`].join(
+      '\n',
+    );
+  }
+
+  return [
+    lighthouseSlackHeading(status, averageDuration),
+    ...metrics.map((metric) => metricSlackLine(lighthouseSummary, metric)),
+    agenticBrowsingSlackLine(report ?? null),
+  ].join('\n');
+}
+
 const e2eOutcome = process.env.E2E_OUTCOME || 'unknown';
 const lighthouseOutcome = process.env.LIGHTHOUSE_OUTCOME || 'unknown';
 const domain = process.env.NAMEFI_E2E_DOMAIN || 'unknown';
@@ -185,12 +359,6 @@ const commitUrl = `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${pr
 const shortSha = (process.env.GITHUB_SHA || '').slice(0, 7) || 'unknown';
 const branch = process.env.GITHUB_REF_NAME || 'unknown';
 const runContext = `*Branch:* ${branch} | *Commit:* <${commitUrl}|${shortSha}> | *Run:* <${runUrl}|View details> | <${runUrl}#artifacts|Artifacts>`;
-const overallOutcome =
-  e2eOutcome === 'success' && lighthouseOutcome === 'success'
-    ? 'success'
-    : e2eOutcome === 'running' || lighthouseOutcome === 'running'
-      ? 'running'
-      : 'failed';
 
 const shouldReadPlaywrightReport = !['pending', 'running'].includes(e2eOutcome);
 const shouldReadLighthouseReport = !['pending', 'running'].includes(
@@ -207,6 +375,9 @@ const lighthouse = selectLighthouseEntry(lighthouseManifest);
 const lighthouseReport = shouldReadLighthouseReport
   ? readLighthouseReport(lighthouse)
   : null;
+const lighthouseReports = shouldReadLighthouseReport
+  ? readLighthouseReports(lighthouseManifest)
+  : [];
 
 const e2eSummary = playwright?.stats
   ? `${playwright.stats.expected ?? 0} passed, ${
@@ -222,36 +393,70 @@ const lighthouseSummary = lighthouse?.summary
 const lighthouseSummaryWithAgentic = lighthouse?.summary
   ? `${lighthouseSummary} / Agent Browsability ${formatAgenticBrowsingScore(lighthouseReport)}`
   : lighthouseSummary;
+const lighthouseAverageDuration =
+  formatAverageLighthouseDuration(lighthouseReports);
+const e2eSlackStatus = e2eCheckStatus(e2eOutcome, playwright?.stats);
+const lighthouseSlackStatus = lighthouseCheckStatus(
+  lighthouseOutcome,
+  lighthouse,
+  lighthouseReport,
+);
+const overallSlackStatus = overallCheckStatus(
+  e2eSlackStatus,
+  lighthouseSlackStatus,
+);
+const e2eSlackSummary = e2eSlackText(
+  e2eSlackStatus,
+  e2eSummary,
+  playwright?.stats,
+);
+const lighthouseSlackSummary = lighthouseSlackText(
+  lighthouseSlackStatus,
+  lighthouseSummary,
+  lighthouseAverageDuration,
+  lighthouse?.summary,
+  lighthouseReport,
+);
 
-const heading =
-  overallOutcome === 'success'
-    ? 'Namefi.dev nightly passed'
-    : overallOutcome === 'running'
-      ? 'Namefi.dev nightly running'
-      : 'Namefi.dev nightly failed';
+const heading = headingForStatus(overallSlackStatus);
 
 const payload = {
-  text: `${heading}: ${domain}`,
+  text: `${heading}: E2E ${slackStatusLabel(
+    e2eSlackStatus,
+  )}${
+    lighthouseSlackStatus === 'success'
+      ? ''
+      : `, Lighthouse ${slackStatusLabel(lighthouseSlackStatus)}`
+  } for ${domain}`,
   blocks: [
     {
-      type: 'section',
+      type: 'header',
       text: {
-        type: 'mrkdwn',
-        text: `*${heading}*\nCheckout smoke for \`${domain}\` on <${baseUrl}|namefi.dev>.`,
+        type: 'plain_text',
+        text: heading,
+        emoji: true,
       },
     },
     {
       type: 'section',
-      fields: [
-        {
-          type: 'mrkdwn',
-          text: `*E2E*\n${statusLabel(e2eOutcome)} - ${e2eSummary}`,
-        },
-        {
-          type: 'mrkdwn',
-          text: `*Lighthouse*\n${statusLabel(lighthouseOutcome)} - ${lighthouseSummaryWithAgentic}`,
-        },
-      ],
+      text: {
+        type: 'mrkdwn',
+        text: `Checkout smoke for \`${domain}\` on <${baseUrl}|namefi.dev>.`,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: e2eSlackSummary,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: lighthouseSlackSummary,
+      },
     },
     {
       type: 'context',
@@ -270,8 +475,9 @@ const markdown = [
   '',
   `- Domain: \`${domain}\``,
   `- Base URL: ${baseUrl}`,
-  `- E2E: ${statusLabel(e2eOutcome)} - ${e2eSummary}`,
-  `- Lighthouse: ${statusLabel(lighthouseOutcome)} - ${lighthouseSummaryWithAgentic}`,
+  `- E2E: ${slackStatusLabel(e2eSlackStatus)} - ${e2eSummary}`,
+  `- Lighthouse: ${slackStatusLabel(lighthouseSlackStatus)} - ${lighthouseSummaryWithAgentic}`,
+  `- Lighthouse average duration: ${lighthouseAverageDuration}`,
   `- Run: ${runUrl}`,
   '',
 ].join('\n');
