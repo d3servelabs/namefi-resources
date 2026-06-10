@@ -1,34 +1,18 @@
 'use client';
 
-import {
-  Hero,
-  WhyCVMatters,
-  FamousPeople,
-  WhoCanJoin,
-  ExampleProfiles,
-  Testimonials,
-  CTA,
-  CVHuntSection,
-  type FamousPerson,
-  type ExampleProfile,
-  type Testimonial,
-} from './index';
+import { Hero } from './hero';
+import { WhyCVMatters } from './why-cv-matters';
+import { FamousPeople, type FamousPerson } from './famous-people';
+import { WhoCanJoin } from './who-can-join';
+import { ExampleProfiles, type ExampleProfile } from './example-profiles';
+import { Testimonials, type Testimonial } from './testimonials';
+import { CTA } from './cta';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useEffect, useRef } from 'react';
 import { useInView, motion, AnimatePresence } from 'motion/react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryState, parseAsBoolean } from 'nuqs';
-import { useSearch } from '@/hooks/use-search';
-import { useSearchFromQuery } from '@/hooks/use-search-from-query';
-import { FloatingCart } from '@/components/floating-cart';
-import {
-  type EppAuthorizationCodesFormData,
-  SearchMode,
-  eppAuthorizationCodesFormSchema,
-  SearchResults,
-} from '@/components/search';
-import { isDomainImportable } from '@namefi-astra/common/domain-availability';
+import { useDeferredSectionLoad } from '@/hooks/use-deferred-section-load';
+import { useCartContext } from '@/components/providers/cart';
 import dynamic from 'next/dynamic';
 
 const NewsletterForm = dynamic(
@@ -41,6 +25,87 @@ const NewsletterForm = dynamic(
     loading: () => <div className="h-12 rounded-md bg-muted animate-pulse" />,
   },
 );
+
+const CVHuntSection = dynamic(
+  () => import('./hunt-section').then((module) => module.CVHuntSection),
+  {
+    ssr: false,
+    loading: () => <CVHuntSectionFallback />,
+  },
+);
+
+const FloatingCart = dynamic(
+  () =>
+    import('@/components/floating-cart').then((module) => module.FloatingCart),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
+
+const CVSearchExperience = lazy(() =>
+  import('./search-experience').then((module) => ({
+    default: module.CVSearchExperience,
+  })),
+);
+
+const HUNT_SECTION_SKELETON_ROWS = ['campaign', 'trending'] as const;
+const HUNT_SECTION_SKELETON_ITEMS = [
+  'first',
+  'second',
+  'third',
+  'fourth',
+  'fifth',
+] as const;
+
+function CVHuntSectionFallback() {
+  return (
+    <section id="cv-hunt" className="py-20 px-4 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900 to-slate-950" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center">
+          <div className="h-14 md:h-16 max-w-4xl mx-auto rounded-xl bg-slate-700/30 animate-pulse" />
+          <div className="mt-6 h-6 max-w-3xl mx-auto rounded-full bg-slate-700/25 animate-pulse" />
+          <div className="mt-16 grid grid-cols-1 xl:grid-cols-2 gap-8 xl:gap-12">
+            {HUNT_SECTION_SKELETON_ROWS.map((section) => (
+              <div key={section} className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-slate-700/40 animate-pulse" />
+                  <div className="flex-1 space-y-3">
+                    <div className="h-6 max-w-xs rounded-full bg-slate-700/30 animate-pulse" />
+                    <div className="h-4 max-w-sm rounded-full bg-slate-800/40 animate-pulse" />
+                  </div>
+                </div>
+                <div className="border border-border shadow-sm rounded-xl bg-white/[0.03] divide-y divide-border">
+                  {HUNT_SECTION_SKELETON_ITEMS.map((item) => (
+                    <div
+                      key={`${section}-${item}`}
+                      className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 animate-pulse"
+                    >
+                      <div className="w-20 sm:w-24 flex justify-center border-r border-border px-4 sm:px-6">
+                        <div className="w-8 h-8 bg-slate-700/50 rounded" />
+                      </div>
+                      <div className="flex-1 space-y-2">
+                        <div className="h-5 sm:h-6 bg-slate-700/50 rounded w-3/4" />
+                        <div className="h-4 bg-slate-800/50 rounded w-1/2" />
+                      </div>
+                      <div className="w-12 sm:w-16 flex flex-col items-center gap-2">
+                        <div className="w-10 h-10 rounded-full bg-slate-700/50" />
+                        <div className="h-4 w-8 bg-slate-700/50 rounded" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="sr-only">Loading .cv hunt</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export interface CVLandingConfig {
   /** The name (e.g., "taylor") - will be auto-capitalized for display */
   name: string;
@@ -56,8 +121,42 @@ export interface CVLandingConfig {
   testimonials: Testimonial[];
 }
 
+function CVSearchExperienceFallback({
+  config,
+  huntUrl,
+}: {
+  config: CVLandingConfig;
+  huntUrl: string;
+}) {
+  return (
+    <Hero
+      name={config.name}
+      rotatingNames={config.rotatingNames}
+      backgroundImage={config.backgroundImage}
+      huntUrl={huntUrl}
+      searchSlot={
+        <div
+          className="mx-auto h-16 w-full max-w-3xl rounded-full border border-white/14 bg-[#14161D] animate-pulse"
+          aria-busy="true"
+        />
+      }
+    />
+  );
+}
+
+function CVDefaultFloatingCart() {
+  const { cartData } = useCartContext();
+
+  if ((cartData?.length ?? 0) === 0) {
+    return null;
+  }
+
+  return <FloatingCart />;
+}
+
 export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
   const newsletterRef = useRef<HTMLDivElement>(null);
+  const huntSectionRef = useRef<HTMLDivElement>(null);
   const [isNewsletterVisible, setNewsletterVisible] = useQueryState(
     'newsletter',
     parseAsBoolean.withDefault(false),
@@ -67,6 +166,9 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
   const isInView = useInView(newsletterRef, {
     once: false,
     margin: '-20% 0px -20% 0px',
+  });
+  const shouldLoadHuntSection = useDeferredSectionLoad(huntSectionRef, {
+    hash: '#cv-hunt',
   });
 
   // Scroll to newsletter when it becomes visible
@@ -88,165 +190,51 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
   const domainName = namefiNormalizedDomainSchema.parse(`${config.name}.cv`);
   const huntUrl = `/hunt/domains/${domainName}`;
 
-  // Search functionality
-  const {
-    query,
-    setQuery,
-    runSearch,
-    searchMode,
-    importQuery,
-    isLoading,
-    isError,
-    error,
-    hasData,
-    domainInfos,
-    authoritativeDomainInfos,
-    domains,
-    freeClaimEligibility,
-  } = useSearch(`${config.name}.cv`); // Filter for .cv domains
+  const cvContent = (
+    <>
+      <div ref={huntSectionRef}>
+        {shouldLoadHuntSection ? (
+          <CVHuntSection name={config.name} />
+        ) : (
+          <CVHuntSectionFallback />
+        )}
+      </div>
 
-  // Handle initial search from query parameters
-  useSearchFromQuery(setQuery, runSearch);
+      <FamousPeople name={displayName} famousPeople={config.famousPeople} />
 
-  // Form for EPP authorization codes
-  const form = useForm<EppAuthorizationCodesFormData>({
-    resolver: zodResolver(eppAuthorizationCodesFormSchema),
-    defaultValues: {
-      eppAuthorizationCodes: {},
-    },
-  });
+      <WhoCanJoin name={displayName} />
 
-  // Initialize form with auth codes from importQuery
-  const initializeEppCodes = useCallback(() => {
-    if (importQuery && importQuery.size > 0) {
-      const initialCodes: Record<string, string> = {};
-      importQuery.forEach((query, domain) => {
-        if (query.eppAuthorizationCode) {
-          initialCodes[domain] = query.eppAuthorizationCode;
-        }
-      });
-      form.reset({ eppAuthorizationCodes: initialCodes });
-    }
-  }, [importQuery, form]);
+      <ExampleProfiles exampleProfiles={config.exampleProfiles} />
 
-  // Initialize when importQuery changes
-  useEffect(() => {
-    initializeEppCodes();
-  }, [initializeEppCodes]);
+      <Testimonials name={displayName} testimonials={config.testimonials} />
 
-  // Handle EPP authorization code changes
-  const handleEppCodeChange = useCallback(
-    (domain: string, eppCode: string) => {
-      form.setValue('eppAuthorizationCodes', {
-        ...form.getValues('eppAuthorizationCodes'),
-        [domain]: eppCode,
-      });
-    },
-    [form],
+      <WhyCVMatters />
+
+      <CTA name={config.name} huntUrl={huntUrl} />
+    </>
   );
-
-  const eppAuthorizationCodes = form.watch('eppAuthorizationCodes');
-
-  // Calculate importable domains for FloatingCart
-  const importableDomains = useMemo(() => {
-    if (
-      searchMode !== SearchMode.IMPORT ||
-      !domains ||
-      !authoritativeDomainInfos
-    ) {
-      return [];
-    }
-
-    return domains
-      .map((domain) => {
-        const availabilityInfo = authoritativeDomainInfos.get(domain);
-        const eppCode = eppAuthorizationCodes[domain];
-
-        if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
-
-        if (!isDomainImportable(availabilityInfo)) return null;
-
-        return {
-          domain,
-          availabilityInfo,
-          eppAuthorizationCode: eppCode,
-        };
-      })
-      .filter((item): item is NonNullable<typeof item> => item !== null);
-  }, [searchMode, domains, authoritativeDomainInfos, eppAuthorizationCodes]);
-
-  // Check if user is actively searching
-  const isSearching = searchEnabled && query.trim().length > 0;
-  const showSearchResults = isSearching && (isLoading || hasData || isError);
 
   return (
     <>
-      {/* Hero with search or hunt widget */}
-      <Hero
-        name={config.name}
-        rotatingNames={config.rotatingNames}
-        backgroundImage={config.backgroundImage}
-        huntUrl={huntUrl}
-        searchEnabled={searchEnabled}
-        searchProps={
-          searchEnabled
-            ? {
-                query,
-                setQuery,
-                runSearch,
-                isLoading,
-                searchMode,
-                importQuery,
-                hasSearchResults: showSearchResults,
-              }
-            : undefined
-        }
-      />
-
-      {/* Search Results */}
-      {searchEnabled && showSearchResults && (
-        <div className="relative flex gap-4 flex-col p-4 pb-0 -mt-88">
-          <div className="-mx-4">
-            <div className="backdrop-blur-3xl bg-slate-900/20 px-4 pb-4 relative">
-              <div className="flex flex-col md:flex-row justify-between items-center py-5">
-                <h2 className="text-2xl font-semibold">Search Results</h2>
-              </div>
-
-              <SearchResults
-                isLoading={isLoading}
-                isError={isError}
-                error={error}
-                hasData={hasData}
-                domainInfos={domainInfos}
-                authoritativeDomainInfos={authoritativeDomainInfos}
-                domains={domains}
-                query={query}
-                eppAuthorizationCodes={eppAuthorizationCodes}
-                onEppCodeChange={handleEppCodeChange}
-                searchMode={searchMode}
-                freeClaimEligibility={freeClaimEligibility}
-              />
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Original CV content when not searching or search disabled */}
-      {(!searchEnabled || !isSearching) && (
+      {searchEnabled ? (
+        <Suspense
+          fallback={
+            <CVSearchExperienceFallback config={config} huntUrl={huntUrl} />
+          }
+        >
+          <CVSearchExperience config={config} huntUrl={huntUrl}>
+            {cvContent}
+          </CVSearchExperience>
+        </Suspense>
+      ) : (
         <>
-          <CVHuntSection name={config.name} />
-
-          <FamousPeople name={displayName} famousPeople={config.famousPeople} />
-
-          <WhoCanJoin name={displayName} />
-
-          <ExampleProfiles exampleProfiles={config.exampleProfiles} />
-
-          <Testimonials name={displayName} testimonials={config.testimonials} />
-
-          <WhyCVMatters />
-
-          <CTA name={config.name} huntUrl={huntUrl} />
+          <Hero
+            name={config.name}
+            rotatingNames={config.rotatingNames}
+            backgroundImage={config.backgroundImage}
+            huntUrl={huntUrl}
+          />
+          {cvContent}
         </>
       )}
 
@@ -278,10 +266,7 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <FloatingCart
-        searchMode={searchMode}
-        importableDomains={importableDomains}
-      />
+      {!searchEnabled && <CVDefaultFloatingCart />}
     </>
   );
 };

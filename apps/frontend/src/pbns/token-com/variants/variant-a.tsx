@@ -3,13 +3,12 @@
 import {
   type EppAuthorizationCodesFormData,
   type LandingComponent,
-  SearchInput,
   SearchMode,
-  SearchResults,
   eppAuthorizationCodesFormSchema,
-} from '@/components/search';
+} from '@/components/search/types';
 import { FloatingCart } from '@/components/floating-cart';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
+import { SearchInput } from '@/components/search/search-input';
 import { useSearchFromQuery } from '@/hooks/use-search-from-query';
 import { useSearch } from '@/hooks/use-search';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,6 +30,10 @@ import {
   AccordionTrigger,
 } from '@namefi-astra/ui/components/shadcn/accordion';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import {
+  LazySearchResults as TokenComSearchResults,
+  preloadSearchResults as preloadTokenComSearchResults,
+} from '@/components/search/lazy-search-results';
 
 const uiFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -116,7 +119,6 @@ type VariantAContentProps = {
   | 'query'
   | 'setQuery'
   | 'runSearch'
-  | 'importQuery'
   | 'isLoading'
   | 'isError'
   | 'error'
@@ -139,9 +141,9 @@ function HeroTickerMarquee() {
   return (
     <div className="absolute top-8 left-0 right-0 overflow-hidden">
       <Marquee className="[--duration:25s] py-1" pauseOnHover={true}>
-        {liveTickerTape.map((entry, index) => (
+        {liveTickerTape.map((entry) => (
           <p
-            key={`${entry.symbol}-${index}`}
+            key={entry.symbol}
             className="mx-4 text-sm font-bold text-[#18181B]/45"
           >
             {entry.symbol} {entry.price}{' '}
@@ -322,9 +324,9 @@ function TrustedIdentityCarousel() {
       </h3>
 
       <Marquee className="[--duration:30s]" pauseOnHover={true}>
-        {identityCards.map((card, index) => (
+        {identityCards.map((card) => (
           <div
-            key={`${card.domain}-${index}`}
+            key={card.domain}
             className="mx-3 w-[320px] rounded-[24px] bg-white p-6"
           >
             <p className="text-xl font-bold text-[#18181B]">{card.domain}</p>
@@ -448,18 +450,15 @@ function HeroSection({
   query,
   setQuery,
   runSearch,
-  importQuery,
   isLoading,
   parentDomain,
+  onSearchIntent,
 }: Pick<
   VariantAContentProps,
-  | 'query'
-  | 'setQuery'
-  | 'runSearch'
-  | 'importQuery'
-  | 'isLoading'
-  | 'parentDomain'
->) {
+  'query' | 'setQuery' | 'runSearch' | 'isLoading' | 'parentDomain'
+> & {
+  onSearchIntent?: () => void;
+}) {
   return (
     <section className="grid w-full grid-cols-1 gap-8 lg:grid-cols-12">
       <div className="relative col-span-12 flex w-full min-h-[700px] flex-col items-center justify-center overflow-hidden rounded-[40px] bg-[#D4E8B8] p-10 text-center md:p-20 lg:p-24">
@@ -508,13 +507,13 @@ function HeroSection({
           <SearchInput
             query={query}
             setQuery={setQuery}
-            importQuery={importQuery}
             isLoading={isLoading}
             onSearch={runSearch}
             searchMode={SearchMode.REGISTER}
             parentDomain={parentDomain}
             isFirstPartyOrigin={false}
             ctaClassName="bg-[#18181B] text-white hover:bg-black"
+            onSearchIntent={onSearchIntent}
           />
         </div>
 
@@ -561,7 +560,7 @@ function SearchResultsPanel({
         </p>
       </div>
       <div className="[&_[data-slot=card]]:!h-[152px] [&_[data-slot=card]]:!rounded-[28px] [&_[data-slot=card]]:!border-[#3BC2C8]/25 [&_[data-slot=card]]:!bg-gradient-to-b [&_[data-slot=card]]:!from-[#182136] [&_[data-slot=card]]:!to-[#121A2C] [&_[data-slot=card]]:!text-[#ECF2FF] [&_[data-slot=card]]:[box-shadow:0_18px_30px_-22px_rgba(0,0,0,0.55)] [&_[data-slot=card]_h3_span.text-brand-tertiary]:!text-[#F8A51A] [&_[data-slot=card]_h3_span.text-foreground]:!text-[#E6EDF9] [&_[data-slot=card]_.text-muted-foreground]:!text-[#9FB0C8] [&_[data-slot=card]_[data-slot=badge][data-variant=secondary]]:!bg-[#22314B] [&_[data-slot=card]_[data-slot=badge][data-variant=secondary]]:!text-[#D5E2F6] [&_[data-slot=card]_[data-slot=badge][data-variant=destructive]]:!bg-[#42232A] [&_[data-slot=card]_[data-slot=badge][data-variant=destructive]]:!text-[#FFD7DE] [&_[data-slot=card]_[data-slot=button].bg-brand-primary]:!bg-[#F8A51A] [&_[data-slot=card]_[data-slot=button].bg-brand-primary]:!text-[#101521]">
-        <SearchResults
+        <TokenComSearchResults
           isLoading={isLoading}
           isError={isError}
           error={error}
@@ -585,7 +584,6 @@ function VariantAContent({
   query,
   setQuery,
   runSearch,
-  importQuery,
   shouldShowResults,
   isLoading,
   isError,
@@ -610,9 +608,9 @@ function VariantAContent({
           query={query}
           setQuery={setQuery}
           runSearch={runSearch}
-          importQuery={importQuery}
           isLoading={isLoading}
           parentDomain={parentDomain}
+          onSearchIntent={preloadTokenComSearchResults}
         />
       </motion.div>
 
@@ -655,6 +653,12 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
   } = useSearch(origin.thirdPartyHostname || undefined);
 
   useSearchFromQuery(setQuery, runSearch);
+
+  useEffect(() => {
+    if (query.trim().length > 0) {
+      preloadTokenComSearchResults();
+    }
+  }, [query]);
 
   const form = useForm<EppAuthorizationCodesFormData>({
     resolver: zodResolver(eppAuthorizationCodesFormSchema),
@@ -753,7 +757,6 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
         query={query}
         setQuery={setQuery}
         runSearch={runSearch}
-        importQuery={importQuery}
         isLoading={isLoading}
         isError={isError}
         error={error}

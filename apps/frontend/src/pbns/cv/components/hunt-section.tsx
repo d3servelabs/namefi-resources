@@ -5,17 +5,46 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { useTRPC } from '@/lib/trpc';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { AuthGuard } from '@/components/dialogs/auth-required-dialog';
 import { DomainsList } from '@/components/hunt/domains-list';
 import { CampaignDomainsList } from '@/components/hunt/campaign-domains-list';
-import { SubmitDomainDialog } from '@/components/hunt/submit-domain-dialog';
-import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
 import { useHuntVote } from '@/hooks/use-hunt-vote';
-import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import { Trophy, Target, TrendingUp, Plus } from 'lucide-react';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
+import dynamic from 'next/dynamic';
 
 const TRENDING_LIMIT = 5;
+
+const AuthRequiredDialog = dynamic(
+  () =>
+    import('@/components/dialogs/auth-required-dialog').then(
+      (module) => module.AuthRequiredDialog,
+    ),
+  { ssr: false },
+);
+
+const SubmitDomainDialog = dynamic(
+  () =>
+    import('@/components/hunt/submit-domain-dialog').then(
+      (module) => module.SubmitDomainDialog,
+    ),
+  { ssr: false },
+);
+
+const TwitterShareDialog = dynamic(
+  () =>
+    import('@/components/hunt/twitter-share-dialog').then(
+      (module) => module.TwitterShareDialog,
+    ),
+  { ssr: false },
+);
+
+const VoteOrShareChoiceDialog = dynamic(
+  () =>
+    import('@/components/dialogs/vote-or-share-choice-dialog').then(
+      (module) => module.VoteOrShareChoiceDialog,
+    ),
+  { ssr: false },
+);
 
 interface CVHuntSectionProps {
   /** The name (e.g., "taylor") for generating domain-specific content */
@@ -24,6 +53,7 @@ interface CVHuntSectionProps {
 
 export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
   const [campaignPage, setCampaignPage] = useState(1);
+  const [isAuthDialogOpen, setAuthDialogOpen] = useState(false);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
@@ -170,15 +200,13 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   </Button>
                 </SubmitDomainDialog>
               ) : (
-                <AuthGuard
-                  title="Sign in to submit domains"
-                  description="You need to sign in to submit domains to the hunt. Join the community and share your favorite .cv domains!"
+                <Button
+                  className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25"
+                  onClick={() => setAuthDialogOpen(true)}
                 >
-                  <Button className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25">
-                    <Plus className="w-5 h-5 mr-1" />
-                    Submit Your .cv Domain
-                  </Button>
-                </AuthGuard>
+                  <Plus className="w-5 h-5 mr-1" />
+                  Submit Your .cv Domain
+                </Button>
               )}
             </div>
           </div>
@@ -186,28 +214,40 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
       </div>
 
       {/* Vote or Share Choice Dialog */}
-      <VoteOrShareChoiceDialog
-        isOpen={vote.choiceDialog.isOpen}
-        onClose={vote.choiceDialog.onClose}
-        domainName={vote.choiceDialog.currentDomain}
-        onChooseLogin={vote.choiceDialog.onChooseLogin}
-        onChooseShare={vote.choiceDialog.onChooseShare}
-      />
+      {vote.choiceDialog.isOpen ? (
+        <VoteOrShareChoiceDialog
+          isOpen={vote.choiceDialog.isOpen}
+          onClose={vote.choiceDialog.onClose}
+          domainName={vote.choiceDialog.currentDomain}
+          onChooseLogin={vote.choiceDialog.onChooseLogin}
+          onChooseShare={vote.choiceDialog.onChooseShare}
+        />
+      ) : null}
 
       {/* Twitter Share Dialog */}
-      <TwitterShareDialog
-        isOpen={vote.shareDialog.isOpen}
-        onClose={vote.shareDialog.onClose}
-        domainName={vote.shareDialog.currentDomain}
-        shareUrl={vote.shareDialog.shareUrl}
-        hasShared={vote.shareDialog.hasShared}
-        isCheckingStatus={vote.shareDialog.isCheckingStatus}
-        isSubmitting={vote.shareDialog.isSubmitting}
-        onSubmit={vote.shareDialog.onSubmit}
-        trackShares={true} // CV domains track shares for rewards
-        campaignKey={vote.shareDialog.campaignKey}
-        featureKey="hunt"
-      />
+      {vote.shareDialog.isOpen ? (
+        <TwitterShareDialog
+          isOpen={vote.shareDialog.isOpen}
+          onClose={vote.shareDialog.onClose}
+          domainName={vote.shareDialog.currentDomain}
+          shareUrl={vote.shareDialog.shareUrl}
+          hasShared={vote.shareDialog.hasShared}
+          isCheckingStatus={vote.shareDialog.isCheckingStatus}
+          isSubmitting={vote.shareDialog.isSubmitting}
+          onSubmit={vote.shareDialog.onSubmit}
+          trackShares={true}
+          campaignKey={vote.shareDialog.campaignKey}
+          featureKey="hunt"
+        />
+      ) : null}
+      {isAuthDialogOpen ? (
+        <AuthRequiredDialog
+          isOpen={isAuthDialogOpen}
+          onClose={() => setAuthDialogOpen(false)}
+          title="Sign in to submit domains"
+          description="You need to sign in to submit domains to the hunt. Join the community and share your favorite .cv domains!"
+        />
+      ) : null}
     </section>
   );
 };

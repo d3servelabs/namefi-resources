@@ -1,9 +1,7 @@
-import type {
-  CVLandingConfig,
-  FamousPerson,
-  ExampleProfile,
-  Testimonial,
-} from '../components';
+import type { ExampleProfile } from '../components/example-profiles';
+import type { FamousPerson } from '../components/famous-people';
+import type { CVLandingConfig } from '../components/landing';
+import type { Testimonial } from '../components/testimonials';
 import type { OriginConfig } from '@/lib/origin/types';
 
 /**

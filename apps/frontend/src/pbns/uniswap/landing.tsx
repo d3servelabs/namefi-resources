@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
-import type { LandingComponent } from '@/components/search';
+import type { LandingComponent } from '@/components/search/types';
 import Image from 'next/image';
 import { Fraunces, IBM_Plex_Mono, Manrope, Sora } from 'next/font/google';
 import { ArrowRight } from 'lucide-react';

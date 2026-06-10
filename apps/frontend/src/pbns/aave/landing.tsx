@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
-import type { LandingComponent } from '@/components/search';
+import type { LandingComponent } from '@/components/search/types';
 import {
   IBM_Plex_Mono,
   Inter,

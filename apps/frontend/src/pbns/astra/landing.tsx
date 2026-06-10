@@ -26,17 +26,16 @@ import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
 import { useQueryState, parseAsBoolean } from 'nuqs';
+import { SearchInput, SearchModeTabs } from '@/components/search/search-input';
 import {
-  SearchInput,
-  SearchModeTabs,
-  SearchResults,
-} from '@/components/search/search';
+  LazySearchResults,
+  preloadSearchResults,
+} from '@/components/search/lazy-search-results';
 import {
   eppAuthorizationCodesFormSchema,
   SearchMode,
   type LandingComponent,
   type EppAuthorizationCodesFormData,
-  type ImportQuery,
 } from '@/components/search/types';
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -56,7 +55,6 @@ const HeroSection = ({
   onSearchModeChange,
   query,
   setQuery,
-  importQuery,
   isLoading,
   runSearch,
   parentDomain,
@@ -66,12 +64,12 @@ const HeroSection = ({
   onV3BetaClick,
   isSearchActive = false,
   searchAnchorRef,
+  onSearchIntent,
 }: {
   searchMode: SearchMode;
   onSearchModeChange: (mode: SearchMode) => void;
   query: string;
   setQuery: (value: string) => void;
-  importQuery: Map<NamefiNormalizedDomain, ImportQuery>;
   isLoading: boolean;
   runSearch: () => void;
   parentDomain: string | undefined;
@@ -92,6 +90,7 @@ const HeroSection = ({
    * while results are showing).
    */
   searchAnchorRef?: RefObject<HTMLDivElement | null>;
+  onSearchIntent?: () => void;
 }) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -223,12 +222,12 @@ const HeroSection = ({
                 setQuery={setQuery}
                 isLoading={isLoading}
                 searchMode={searchMode}
-                importQuery={importQuery}
                 onSearch={runSearch}
                 parentDomain={parentDomain}
                 onClearParentDomain={onClearParentDomain}
                 isFirstPartyOrigin
                 ctaClassName="text-primary-foreground"
+                onSearchIntent={onSearchIntent}
               />
               <div className="mt-4 flex justify-center">
                 <Link
@@ -553,6 +552,12 @@ export const Landing: LandingComponent = ({ origin }) => {
   const showSearchResults =
     query.length > 0 && (isLoading || hasData || isError);
 
+  useEffect(() => {
+    if (query.trim().length > 0) {
+      preloadSearchResults();
+    }
+  }, [query]);
+
   // The hero search is considered "visible" until its bottom scrolls within the
   // header band (~72px). Once results are showing and it scrolls past, the
   // compact floating search bar takes over so a new name can be searched
@@ -606,7 +611,6 @@ export const Landing: LandingComponent = ({ origin }) => {
           onSearchModeChange={enhancedOnSearchModeChange}
           query={query}
           setQuery={setQuery}
-          importQuery={importQuery}
           isLoading={isLoading}
           runSearch={runSearch}
           parentDomain={parentDomain}
@@ -616,6 +620,7 @@ export const Landing: LandingComponent = ({ origin }) => {
           onV3BetaClick={handleV3BetaClick}
           isSearchActive={showSearchResults}
           searchAnchorRef={searchAnchorRef}
+          onSearchIntent={preloadSearchResults}
         />
 
         <AnimatePresence>
@@ -641,7 +646,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                 className="mx-auto max-w-6xl px-6 pb-16 pt-2 md:pt-4"
               >
                 <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
-                  <SearchResults
+                  <LazySearchResults
                     isLoading={isLoading}
                     isError={isError}
                     error={error}

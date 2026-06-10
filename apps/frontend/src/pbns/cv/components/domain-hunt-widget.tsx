@@ -14,11 +14,26 @@ import {
   type HuntVoteRowOptions,
   useHuntVoteRow,
 } from '@/hooks/use-hunt-vote-row';
-import { TwitterShareDialog } from '@/components/hunt/twitter-share-dialog';
-import { VoteOrShareChoiceDialog } from '@/components/dialogs/vote-or-share-choice-dialog';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { motion, AnimatePresence } from 'motion/react';
 import NumberFlow from '@number-flow/react';
+import dynamic from 'next/dynamic';
+
+const TwitterShareDialog = dynamic(
+  () =>
+    import('@/components/hunt/twitter-share-dialog').then(
+      (module) => module.TwitterShareDialog,
+    ),
+  { ssr: false },
+);
+
+const VoteOrShareChoiceDialog = dynamic(
+  () =>
+    import('@/components/dialogs/vote-or-share-choice-dialog').then(
+      (module) => module.VoteOrShareChoiceDialog,
+    ),
+  { ssr: false },
+);
 
 interface DomainHuntWidgetProps extends Omit<HuntVoteRowOptions, 'domain'> {
   /** The domain name to display and vote on */
@@ -224,28 +239,32 @@ export const DomainHuntWidget = ({
       </div>
 
       {/* Vote or Share Choice Dialog */}
-      <VoteOrShareChoiceDialog
-        isOpen={choiceDialog.isOpen}
-        onClose={choiceDialog.onClose}
-        domainName={choiceDialog.currentDomain || domainName}
-        onChooseLogin={choiceDialog.onChooseLogin}
-        onChooseShare={choiceDialog.onChooseShare}
-      />
+      {choiceDialog.isOpen ? (
+        <VoteOrShareChoiceDialog
+          isOpen={choiceDialog.isOpen}
+          onClose={choiceDialog.onClose}
+          domainName={choiceDialog.currentDomain || domainName}
+          onChooseLogin={choiceDialog.onChooseLogin}
+          onChooseShare={choiceDialog.onChooseShare}
+        />
+      ) : null}
 
       {/* Twitter Share Dialog */}
-      <TwitterShareDialog
-        isOpen={shareDialog.isOpen}
-        onClose={shareDialog.onClose}
-        domainName={shareDialog.currentDomain}
-        shareUrl={shareDialog.shareUrl}
-        hasShared={shareDialog.hasShared}
-        isCheckingStatus={shareDialog.isCheckingStatus}
-        isSubmitting={shareDialog.isSubmitting}
-        onSubmit={shareDialog.onSubmit}
-        trackShares={true} // .cv domains track shares for rewards
-        campaignKey={shareDialog.campaignKey}
-        featureKey="hunt"
-      />
+      {shareDialog.isOpen ? (
+        <TwitterShareDialog
+          isOpen={shareDialog.isOpen}
+          onClose={shareDialog.onClose}
+          domainName={shareDialog.currentDomain}
+          shareUrl={shareDialog.shareUrl}
+          hasShared={shareDialog.hasShared}
+          isCheckingStatus={shareDialog.isCheckingStatus}
+          isSubmitting={shareDialog.isSubmitting}
+          onSubmit={shareDialog.onSubmit}
+          trackShares={true}
+          campaignKey={shareDialog.campaignKey}
+          featureKey="hunt"
+        />
+      ) : null}
     </BackgroundGradient>
   );
 };

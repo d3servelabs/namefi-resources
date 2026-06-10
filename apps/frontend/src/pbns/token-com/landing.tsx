@@ -1,6 +1,6 @@
 'use client';
 
-import type { LandingComponent } from '@/components/search';
+import type { LandingComponent } from '@/components/search/types';
 import { useSearchParams } from 'next/navigation';
 import { TokenComVariantALanding } from './variants/variant-a';
 import { TokenComVariantBLanding } from './variants/variant-b';

@@ -6,15 +6,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useMemo, useCallback, useEffect, useRef } from 'react';
 import { useInView, motion, AnimatePresence } from 'motion/react';
 import { FloatingCart } from '@/components/floating-cart';
+import { SearchHeader, SearchInput } from '@/components/search/search-input';
+import {
+  LazySearchResults,
+  preloadSearchResults,
+} from '@/components/search/lazy-search-results';
 import {
   type EppAuthorizationCodesFormData,
   type LandingComponent,
   SearchMode,
   eppAuthorizationCodesFormSchema,
-  SearchHeader,
-  SearchInput,
-  SearchResults,
-} from '@/components/search';
+} from '@/components/search/types';
 import {
   Alert,
   AlertDescription,
@@ -83,6 +85,12 @@ export const Landing: LandingComponent = ({ origin }) => {
 
   // Handle initial search from query parameters
   useSearchFromQuery(setQuery, runSearch);
+
+  useEffect(() => {
+    if (query.trim().length > 0) {
+      preloadSearchResults();
+    }
+  }, [query]);
 
   const trpc = useTRPC();
 
@@ -154,7 +162,7 @@ export const Landing: LandingComponent = ({ origin }) => {
         const availabilityInfo = authoritativeDomainInfos.get(domain);
         const eppCode = eppAuthorizationCodes[domain];
 
-        if (!availabilityInfo || !eppCode || !eppCode.trim()) return null;
+        if (!availabilityInfo || !eppCode?.trim()) return null;
 
         if (!isDomainImportable(availabilityInfo)) return null;
 
@@ -198,9 +206,9 @@ export const Landing: LandingComponent = ({ origin }) => {
           setQuery={setQuery}
           isLoading={isLoading}
           searchMode={searchMode}
-          importQuery={importQuery}
           onSearch={runSearch}
           parentDomain={origin.thirdPartyHostname}
+          onSearchIntent={preloadSearchResults}
         />
         {shouldShowRolloutBanner && (
           <Alert className="w-full max-w-3xl mx-auto bg-gray-700/80">
@@ -221,7 +229,7 @@ export const Landing: LandingComponent = ({ origin }) => {
               <h2 className="text-2xl font-semibold">Search Results</h2>
             </div>
 
-            <SearchResults
+            <LazySearchResults
               isLoading={isLoading}
               isError={isError}
               error={error}

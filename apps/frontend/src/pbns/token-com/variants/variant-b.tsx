@@ -3,13 +3,12 @@
 import {
   type EppAuthorizationCodesFormData,
   type LandingComponent,
-  SearchInput,
   SearchMode,
-  SearchResults,
   eppAuthorizationCodesFormSchema,
-} from '@/components/search';
+} from '@/components/search/types';
 import { FloatingCart } from '@/components/floating-cart';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
+import { SearchInput } from '@/components/search/search-input';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { Marquee } from '@/components/ui/magicui/marquee';
 import {
@@ -35,6 +34,10 @@ import {
 import type { ReactNode } from 'react';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import {
+  LazySearchResults as TokenComSearchResults,
+  preloadSearchResults as preloadTokenComSearchResults,
+} from '@/components/search/lazy-search-results';
 
 const rotatingProjects = [
   'openclaw',
@@ -128,9 +131,10 @@ type SearchState = ReturnType<typeof useSearch>;
 
 type HeroSectionProps = Pick<
   SearchState,
-  'query' | 'setQuery' | 'runSearch' | 'importQuery' | 'isLoading'
+  'query' | 'setQuery' | 'runSearch' | 'isLoading'
 > & {
   parentDomain: string;
+  onSearchIntent?: () => void;
 };
 
 type SearchResultsPanelProps = Pick<
@@ -173,9 +177,9 @@ function HeroSection({
   query,
   setQuery,
   runSearch,
-  importQuery,
   isLoading,
   parentDomain,
+  onSearchIntent,
 }: HeroSectionProps) {
   return (
     <section className="relative min-h-[52vh] overflow-hidden rounded-[16px] border-4 border-[#1A1A1A] bg-[#FF8C00] px-6 pb-8 pt-10 shadow-[8px_8px_0_0_#1A1A1A] md:min-h-[56vh] md:px-12 md:pb-10 md:pt-12">
@@ -214,13 +218,13 @@ function HeroSection({
             <SearchInput
               query={query}
               setQuery={setQuery}
-              importQuery={importQuery}
               isLoading={isLoading}
               onSearch={runSearch}
               searchMode={SearchMode.REGISTER}
               parentDomain={parentDomain}
               isFirstPartyOrigin={false}
               ctaClassName="bg-[#FF8C00] text-[#1A1A1A] hover:bg-[#ff9b1f] border border-[#1A1A1A]"
+              onSearchIntent={onSearchIntent}
             />
           </div>
         </motion.div>
@@ -254,7 +258,7 @@ function SearchResultsPanel({
       </div>
 
       <div className="[&_[data-slot=card]]:!h-[168px] [&_[data-slot=card]]:!border-[#FF8C00]/35 [&_[data-slot=card]]:!bg-[#222222] [&_[data-slot=card]]:!text-[#FFECD2] [&_[data-slot=card]]:[box-shadow:inset_0_1px_0_rgba(255,255,255,0.05)] [&_[data-slot=card]_h3_span.text-brand-tertiary]:!text-[#FFB347] [&_[data-slot=card]_h3_span.text-foreground]:!text-[#FFE2BC] [&_[data-slot=card]_.text-muted-foreground]:!text-[#D5B48A] [&_[data-slot=card]_[data-slot=badge][data-variant=secondary]]:!bg-[#3C2D14] [&_[data-slot=card]_[data-slot=badge][data-variant=secondary]]:!text-[#FFD7A5] [&_[data-slot=card]_[data-slot=badge][data-variant=destructive]]:!bg-[#4A2525] [&_[data-slot=card]_[data-slot=badge][data-variant=destructive]]:!text-[#FFD7D7] [&_[data-slot=card]_[data-slot=button].bg-brand-primary]:!bg-[#FF8C00] [&_[data-slot=card]_[data-slot=button].bg-brand-primary]:!text-[#1A1A1A]">
-        <SearchResults
+        <TokenComSearchResults
           isLoading={isLoading}
           isError={isError}
           error={error}
@@ -456,6 +460,12 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
 
   useSearchFromQuery(setQuery, runSearch);
 
+  useEffect(() => {
+    if (query.trim().length > 0) {
+      preloadTokenComSearchResults();
+    }
+  }, [query]);
+
   const form = useForm<EppAuthorizationCodesFormData>({
     resolver: zodResolver(eppAuthorizationCodesFormSchema),
     defaultValues: {
@@ -553,9 +563,9 @@ export const TokenComVariantBLanding: LandingComponent = ({ origin }) => {
           query={query}
           setQuery={setQuery}
           runSearch={runSearch}
-          importQuery={importQuery}
           isLoading={isLoading}
           parentDomain={origin.thirdPartyHostname}
+          onSearchIntent={preloadTokenComSearchResults}
         />
 
         {shouldShowResults ? (

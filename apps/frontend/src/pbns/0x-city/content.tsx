@@ -2,16 +2,24 @@
 
 import { Marquee } from '@/components/ui/magicui/marquee';
 import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
+import { useDeferredSectionLoad } from '@/hooks/use-deferred-section-load';
 import { IdCard } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { type FC, useCallback } from 'react';
-import { DomainClaim } from '@/components/domain-claim';
-import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { useInteractionLoggers } from '@/components/providers/analytics';
+import { type FC, useRef } from 'react';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import './styles.css';
+
+const loadDomainClaimSection = () => import('./domain-claim-section');
+
+const DomainClaimSectionContent = dynamic(
+  () => loadDomainClaimSection().then((module) => module.DomainClaimSection),
+  {
+    ssr: false,
+    loading: () => <DomainClaimSectionFallback />,
+  },
+);
 
 // Hero Section
 const Hero: FC = () => {
@@ -244,9 +252,9 @@ export const WhoAre0xCitizens: FC = () => {
 
       <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
         <Marquee pauseOnHover={true}>
-          {citizenTypes.map((citizen, index) => (
+          {citizenTypes.map((citizen) => (
             <CitizenCard
-              key={`citizen-${index}`}
+              key={citizen.title}
               title={citizen.title}
               description={citizen.description}
               imageSrc={citizen.imageSrc}
@@ -255,9 +263,9 @@ export const WhoAre0xCitizens: FC = () => {
           ))}
         </Marquee>
         <Marquee pauseOnHover={true} reverse={true}>
-          {citizenTypes.map((citizen, index) => (
+          {citizenTypes.map((citizen) => (
             <CitizenCard
-              key={`citizen-${index}`}
+              key={citizen.title}
               title={citizen.title}
               description={citizen.description}
               imageSrc={citizen.imageSrc}
@@ -272,32 +280,48 @@ export const WhoAre0xCitizens: FC = () => {
   );
 };
 
-const DomainClaimSection: FC = () => {
-  const { logEventWithInteractionLoggers } = useInteractionLoggers();
-  const router = useRouter();
-
-  const logBeginCheckout = useCallback(() => {
-    logEventWithInteractionLoggers({
-      name: InteractionLoggingEventName.BeginCheckout,
-      properties: {},
-    });
-  }, [logEventWithInteractionLoggers]);
-
+const DomainClaimSectionFallback: FC = () => {
   return (
-    <section className="flex flex-col items-center gradient-border-bottom">
+    <section
+      id="claim"
+      className="flex flex-col items-center gradient-border-bottom"
+    >
       <div className="relative my-20 w-[80%]">
         <div className="relative gradient-border-mask">
           <div className="absolute top-0 left-0 right-0 h-[400px] w-full bg-[radial-gradient(54.3%_55.57%_at_50%_0%,rgba(79,70,229,0.20)_0%,rgba(79,70,229,0.00)_100%)] pointer-events-none" />
-          <DomainClaim
-            domain="0x.city"
-            onClaim={() => {
-              logBeginCheckout();
-              router.push('/cart');
-            }}
-          />
+          <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">
+            <div className="flex flex-col items-center justify-center text-center mb-12">
+              <div className="h-10 w-56 rounded-full bg-white/12" />
+              <div className="mt-4 h-5 w-72 max-w-full rounded-full bg-white/10" />
+              <div className="mt-3 h-5 w-80 max-w-full rounded-full bg-white/8" />
+              <div className="mt-6 h-36 w-full rounded-lg border border-white/10 bg-white/[0.03]" />
+            </div>
+            <div className="flex h-18 flex-col items-center justify-between gap-2 rounded-lg border border-white/10 p-2 md:flex-row">
+              <div className="h-14 flex-1 rounded-md bg-white/[0.04]" />
+              <div className="h-14 w-40 rounded-md bg-white/10 md:w-44" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
+  );
+};
+
+const LazyDomainClaimSection: FC = () => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const shouldLoad = useDeferredSectionLoad(sectionRef, {
+    hash: '#claim',
+    visibleMargin: '-10% 0px -10% 0px',
+  });
+
+  return (
+    <div ref={sectionRef}>
+      {shouldLoad ? (
+        <DomainClaimSectionContent />
+      ) : (
+        <DomainClaimSectionFallback />
+      )}
+    </div>
   );
 };
 
@@ -352,7 +376,7 @@ export const Content: FC = () => {
         <WhatIsSection />
         <WhyJoin />
         <WhoAre0xCitizens />
-        <DomainClaimSection />
+        <LazyDomainClaimSection />
         <CommunitySection />
       </div>
     </div>

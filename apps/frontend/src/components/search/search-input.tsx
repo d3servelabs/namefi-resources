@@ -1,55 +1,27 @@
 'use client';
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
-import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
-import { PasswordInput } from '@/components/password-input';
-import { useCartRow } from '@/hooks/use-cart-row';
 import { config } from '@/lib/env';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import { formatAmountInUSD } from '@/lib/number';
-import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/multi-year-pricing';
-import { Loader2, SearchIcon, User, X, Gift, Download } from 'lucide-react';
-import { useWishlistRow } from '@/hooks/use-wishlist-row';
-import {
-  AnimatedWishlistButton,
-  type WishlistButtonState,
-} from '../buttons/animated-wishlist-button';
-import { useRouter } from 'next/navigation';
-import { isNotNil } from 'ramda';
+import { Loader2, SearchIcon, X, Download } from 'lucide-react';
 import {
   type FC,
   useCallback,
-  useMemo,
+  useEffect,
   useRef,
   useState,
   type ClipboardEvent,
   type FormEvent,
 } from 'react';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
-import { AnimatedCartButton } from '../buttons/animated-cart-button';
-import { useInteractionLoggers } from '@/components/providers/analytics';
-import { Placeholder } from './placeholder';
-import type { ImportQuery } from './types';
-import type { MlsSaleListing } from '@/lib/mls/feed';
-import {
-  isDomainImportable,
-  isDomainUnsupported,
-  getDomainPricingForOperation,
-  type DomainAvailabilityInfo,
-} from '@namefi-astra/common/domain-availability';
-import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
-import { toUnicodeDomainName } from '@namefi-astra/registrars/lib/data/validations';
 import { SearchMode } from './types';
 import {
   Tabs,
@@ -57,19 +29,10 @@ import {
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
 import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
-import { useEffect } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { Spotlight } from '@/components/ui/spotlight';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
-import { InstantBuyButton } from '@/components/instant-buy';
-import { useQuery } from '@tanstack/react-query';
-import { useTRPCClient } from '@/lib/trpc';
-import { DomainCard, LoadingSkeletons } from './domain-card';
-
-export { DomainCard, LoadingSkeletons };
-
-const MLS_DOMAIN_OFFERS_BATCH_SIZE = 200;
 
 // Components
 export const SearchHeader: FC<{
@@ -158,7 +121,6 @@ export const SearchModeTabs: FC<{
 export const SearchInput: FC<{
   query: string;
   setQuery: (query: string) => void;
-  importQuery: Map<NamefiNormalizedDomain, ImportQuery>;
   isLoading: boolean;
   onSearch: () => void;
   searchMode: SearchMode;
@@ -166,10 +128,10 @@ export const SearchInput: FC<{
   onClearParentDomain?: () => void;
   isFirstPartyOrigin?: boolean;
   ctaClassName?: string;
+  onSearchIntent?: () => void;
 }> = ({
   query,
   setQuery,
-  importQuery,
   isLoading,
   searchMode,
   onSearch,
@@ -177,6 +139,7 @@ export const SearchInput: FC<{
   onClearParentDomain,
   isFirstPartyOrigin,
   ctaClassName,
+  onSearchIntent,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -205,6 +168,7 @@ export const SearchInput: FC<{
   }, [onClearParentDomain]);
 
   const handleSearchClick = useCallback(() => {
+    onSearchIntent?.();
     const trimmedQuery = query.trim();
     if (trimmedQuery.length === 0) {
       // If no query, focus the input/textarea
@@ -217,11 +181,12 @@ export const SearchInput: FC<{
       // Handle search
       onSearch();
     }
-  }, [query, onSearch, searchMode]);
+  }, [onSearchIntent, query, onSearch, searchMode]);
 
   // Handle raw text with newlines for CSV import
   const handleRawText = useCallback(
     (rawText: string) => {
+      onSearchIntent?.();
       // For import mode, preserve newlines to maintain CSV format
       if (searchMode === SearchMode.IMPORT) {
         setQuery(rawText);
@@ -230,7 +195,15 @@ export const SearchInput: FC<{
         setQuery(rawText.replace(/\n+/g, ' '));
       }
     },
-    [searchMode, setQuery],
+    [onSearchIntent, searchMode, setQuery],
+  );
+
+  const handleQueryChange = useCallback(
+    (value: string) => {
+      onSearchIntent?.();
+      setQuery(value);
+    },
+    [onSearchIntent, setQuery],
   );
   // Expose focus method for other components (e.g., free mint claim)
   useEffect(() => {
@@ -373,7 +346,10 @@ domain3.com`;
                         name="search-textarea"
                         placeholder={importPlaceholder}
                         value={query}
-                        onChange={(event) => setQuery(event.target.value)}
+                        onFocus={onSearchIntent}
+                        onChange={(event) =>
+                          handleQueryChange(event.target.value)
+                        }
                         onPaste={intercept}
                         onKeyDown={(e) => {
                           // Allow Enter for newlines in textarea, but Ctrl/Cmd+Enter to submit
@@ -395,7 +371,7 @@ domain3.com`;
                         variant="ghost"
                         size="icon"
                         className="absolute top-2 right-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
-                        onClick={() => setQuery('')}
+                        onClick={() => handleQueryChange('')}
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -423,7 +399,8 @@ domain3.com`;
                   name="search-input"
                   placeholder="Search for a domain..."
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
+                  onFocus={onSearchIntent}
+                  onChange={(event) => handleQueryChange(event.target.value)}
                   onPaste={intercept}
                   onKeyDown={(e) => {
                     // Only intercept newline insertion; ordinary keystrokes can proceed
@@ -440,7 +417,7 @@ domain3.com`;
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white"
-                    onClick={() => setQuery('')}
+                    onClick={() => handleQueryChange('')}
                   >
                     <X className="h-4 w-4" />
                   </Button>
@@ -580,179 +557,4 @@ domain3.com`;
       />
     </>
   );
-};
-
-export const SearchResults: FC<{
-  isLoading: boolean;
-  isError: boolean;
-  error?: string;
-  hasData: boolean;
-  domains: NamefiNormalizedDomain[];
-  domainInfos: Map<NamefiNormalizedDomain, DomainAvailabilityInfo>;
-  authoritativeDomainInfos?: Map<
-    NamefiNormalizedDomain,
-    DomainAvailabilityInfo
-  >;
-  query: string;
-  eppAuthorizationCodes: Record<string, string | undefined>;
-  onEppCodeChange: (domain: NamefiNormalizedDomain, eppCode: string) => void;
-  searchMode: SearchMode;
-  freeClaimEligibility?: Array<{
-    domain: string;
-    eligible: boolean;
-    eligibility: Array<{
-      groupOrCampaignKey: string;
-      claimsAvailable: number;
-      hasExactMatch: boolean;
-      hasParentMatch: boolean;
-    }>;
-  }>;
-  canLoadMore?: boolean;
-  onLoadMore?: () => void;
-  isLoadingMore?: boolean;
-}> = ({
-  isLoading,
-  isError,
-  error,
-  hasData,
-  domainInfos,
-  authoritativeDomainInfos,
-  domains,
-  query,
-  eppAuthorizationCodes,
-  onEppCodeChange,
-  searchMode,
-  freeClaimEligibility,
-  canLoadMore = false,
-  onLoadMore,
-  isLoadingMore = false,
-}) => {
-  const trpcClient = useTRPCClient();
-  const { data: mlsOffersByDomain } = useQuery<Record<string, MlsSaleListing>>({
-    queryKey: ['search.mlsDomainOffers', domains],
-    enabled: domains.length > 0,
-    staleTime: 15_000,
-    retry: 1,
-    queryFn: async () => {
-      const normalizedDomains = Array.from(
-        new Set(
-          domains
-            .map((domain) => domain.trim().toLowerCase())
-            .filter((domain) => domain.length > 0),
-        ),
-      );
-
-      if (normalizedDomains.length === 0) {
-        return {};
-      }
-
-      const offersByDomain: Record<string, MlsSaleListing> = {};
-      for (
-        let offset = 0;
-        offset < normalizedDomains.length;
-        offset += MLS_DOMAIN_OFFERS_BATCH_SIZE
-      ) {
-        const batch = normalizedDomains.slice(
-          offset,
-          offset + MLS_DOMAIN_OFFERS_BATCH_SIZE,
-        );
-        if (batch.length === 0) {
-          continue;
-        }
-
-        const result = await trpcClient.mls.searchDomainOffers.query({
-          domains: batch,
-        });
-        Object.assign(offersByDomain, result.offersByDomain);
-      }
-
-      return offersByDomain;
-    },
-  });
-
-  // Show error state
-  if (isError && query.length > 0) {
-    return (
-      <div>
-        <Placeholder
-          title="Search Error"
-          description={
-            error || 'An error occurred while searching. Please try again.'
-          }
-        />
-      </div>
-    );
-  }
-
-  // Show loading skeletons when fetching but no data yet
-  if (isLoading && !hasData) {
-    return (
-      <div className="flex flex-col gap-4">
-        <LoadingSkeletons key="initial-loading" />
-      </div>
-    );
-  }
-
-  // Show search results with progressive loading
-  if (hasData) {
-    const isImportMode = searchMode === SearchMode.IMPORT;
-
-    return (
-      <div className="flex flex-col gap-4">
-        {domains.map((domain) => {
-          const availabilityInfo = domainInfos.get(domain);
-          const isAvailabilityAuthoritative = authoritativeDomainInfos
-            ? authoritativeDomainInfos.has(domain)
-            : availabilityInfo !== undefined;
-          const claimEligibility = freeClaimEligibility?.find(
-            (e) => e.domain === domain,
-          );
-          const mlsOffer = mlsOffersByDomain?.[domain.toLowerCase()];
-          return (
-            <DomainCard
-              key={domain}
-              domain={domain}
-              availabilityInfo={availabilityInfo}
-              isAvailabilityAuthoritative={isAvailabilityAuthoritative}
-              mlsOffer={mlsOffer}
-              eppAuthorizationCode={eppAuthorizationCodes[domain]}
-              onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
-              isImportMode={isImportMode}
-              freeClaimEligibility={claimEligibility}
-            />
-          );
-        })}
-        {canLoadMore && (
-          <div className="flex justify-center">
-            <Button
-              variant="outline"
-              className="mt-2 rounded-full border-white/30 bg-white/5 text-white hover:bg-white/10"
-              disabled={isLoadingMore}
-              onClick={onLoadMore}
-            >
-              {isLoadingMore && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Load more
-            </Button>
-          </div>
-        )}
-      </div>
-    );
-  }
-
-  // Show "no results" if we have searched, completed, and have no data
-  if (query.length > 0 && !isLoading && !hasData) {
-    return (
-      <div>
-        <Placeholder
-          title="No domains found"
-          description={`No domains matching "${query}" were found. Try a different search term.`}
-        />
-      </div>
-    );
-  }
-
-  // If idle or empty query, don't render anything
-  return null;
 };
