@@ -1,5 +1,6 @@
 import type { Duration } from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
+import { interruptibleSleep } from './interruptible-sleep';
 
 /**
  * One phase of an escalating poll schedule.
@@ -154,13 +155,11 @@ export async function escalatingPoll<T>(
       overallTimeoutMs - elapsedMs,
     );
 
+    const sleepSummary = label ? `poll-wait:${label}` : 'poll-wait';
     if (interrupt) {
-      await Promise.race([
-        workflow.condition(() => interrupt()),
-        workflow.sleep(sleepMs),
-      ]);
+      await interruptibleSleep(sleepMs, interrupt, { summary: sleepSummary });
     } else {
-      await workflow.sleep(sleepMs);
+      await workflow.sleep(sleepMs, { summary: sleepSummary });
     }
     elapsedMs += sleepMs;
   }

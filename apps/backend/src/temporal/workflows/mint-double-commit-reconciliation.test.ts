@@ -107,6 +107,31 @@ describe('makeDoubleCommitReconciler', () => {
     expect(result).toBe('0xkept');
   });
 
+  it('WAIT_FOR_ADMIN validateResponse never resolves to an empty hash', async () => {
+    const reconcile = makeDoubleCommitReconciler({
+      policy: 'WAIT_FOR_ADMIN',
+      label: 'test',
+      chainId: 8453,
+    });
+    await reconcile(WINNERS);
+
+    const { validateResponse } = runWithKnownGate.mock.calls[0][0] as {
+      validateResponse: (raw: unknown) => Hash;
+    };
+
+    // A keepHash that is one of the winners is returned as-is.
+    expect(validateResponse({ keepHash: '0xextra1' })).toBe('0xextra1');
+    // Missing or empty keepHash falls back to the canonical winner — and must
+    // NEVER resolve to an empty-string hash.
+    expect(validateResponse({ keepHash: '' })).toBe('0xcanonical');
+    expect(validateResponse({})).toBe('0xcanonical');
+    expect(validateResponse(undefined)).toBe('0xcanonical');
+    // A non-empty keepHash that is not a confirmed winner is rejected.
+    expect(() => validateResponse({ keepHash: '0xnope' })).toThrow(
+      /not a confirmed winner/,
+    );
+  });
+
   it('CRITICAL_ALERT alerts and throws', async () => {
     const reconcile = makeDoubleCommitReconciler({
       policy: 'CRITICAL_ALERT',

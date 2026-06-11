@@ -1,28 +1,23 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Hash } from 'viem';
+import type { TxConfirmationResult } from '../../activities/shared/eth-tx-primitives';
 import type {
-  TxConfirmationResult,
-  TxSendOnlyResult,
-} from '../../activities/shared/eth-tx-primitives';
+  SendAndConfirmTxInput,
+  SendAndConfirmTxResult,
+} from '../../workflows/send-and-confirm-tx.workflow';
 import type {
-  StaggeredRaceActivities,
   StaggeredRaceConfig,
   StaggeredRaceRecovery,
 } from './staggered-send-race';
 
-const sleepCalls: number[] = [];
-
 const workflowMocks = {
-  sleep: vi.fn(async (ms: number) => {
-    sleepCalls.push(ms);
-  }),
-  // Never resolves; the interruptible stagger always wins via the instant sleep.
-  condition: vi.fn(
-    () =>
-      new Promise<void>(() => {
-        /* never resolves in tests */
-      }),
-  ),
+  sleep: vi.fn(async () => undefined),
+  // Never resolves on its own: the watchdog stays dormant, the fast-path race
+  // resolves via Promise.all(pending), and interruptibleSleep falls through to
+  // the (immediate) mocked sleep.
+  condition: vi.fn(() => new Promise<void>(() => {})),
+  setCurrentDetails: vi.fn(),
+  workflowInfo: () => ({ workflowId: 'parent-wf', workflowType: 'mintNfsc' }),
   log: { debug: vi.fn(), error: vi.fn(), info: vi.fn(), warn: vi.fn() },
   ApplicationFailure: class ApplicationFailure extends Error {
     type?: string;
@@ -44,482 +39,282 @@ const workflowMocks = {
   },
 };
 
+const getSignerNonce = vi.fn(async () => 100);
+const getX402SignerNonce = vi.fn(async () => 100);
+const getTransactionConfirmation = vi.fn(
+  async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
+);
+const getX402TransactionConfirmation = vi.fn(
+  async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
+);
 const generalAlertNamefi = vi.fn(async () => undefined);
 const criticalAlertWithTicket = vi.fn(async () => ({
   taskId: 't',
   taskUrl: 'u',
 }));
 
+type ChildHandle = { result: () => Promise<SendAndConfirmTxResult> };
+const startChild = vi.fn(
+  async (..._args: unknown[]): Promise<ChildHandle> => makeHandle(timedOut()),
+);
+
 vi.mock('@temporalio/workflow', () => workflowMocks);
 vi.mock('./typed-proxy-activities', () => ({
-  typedProxyActivities: () => ({ generalAlertNamefi }),
+  typedProxyActivities: () => ({
+    getSignerNonce,
+    getX402SignerNonce,
+    getTransactionConfirmation,
+    getX402TransactionConfirmation,
+    generalAlertNamefi,
+  }),
+}));
+vi.mock('./typed-child-workflow', () => ({
+  typedChildWorkflow: () => ({ startChild }),
 }));
 vi.mock('./critical-alert-with-ticket', () => ({ criticalAlertWithTicket }));
 
 const { staggeredSendRace } = await import('./staggered-send-race');
 
-const PINNED_NONCE = 42;
 const CHAIN_ID = 8453;
+const NONCE = 100;
 
-const baseConfig: StaggeredRaceConfig = {
-  lanes: 5,
-  staggerMs: 1_000,
-  pollIntervalMs: 1_000,
-  alertThresholdMs: 1_000_000,
-  failThresholdMs: 1_000_000,
-  initialGasPriceMultiplier: 1.0,
-  maxGasPriceMultiplier: 2,
-};
+function makeHandle(result: SendAndConfirmTxResult): ChildHandle {
+  return { result: () => Promise.resolve(result) };
+}
+
+/** Drive the children: map each attempt's input to a scripted result. */
+function scriptChildren(
+  fn: (input: SendAndConfirmTxInput) => SendAndConfirmTxResult,
+) {
+  startChild.mockImplementation(async (...callArgs: unknown[]) => {
+    const input = (callArgs[1] as [SendAndConfirmTxInput])[0];
+    return makeHandle(fn(input));
+  });
+}
+
+const confirmed = (
+  txHash: string,
+  attempt = 0,
+  nonce = NONCE,
+): SendAndConfirmTxResult => ({
+  status: 'CONFIRMED',
+  txHash: txHash as Hash,
+  blockNumber: '1',
+  nonce,
+  attempt,
+});
+const lost = (
+  txHash: string,
+  attempt = 0,
+  onChainNonce = NONCE + 1,
+  nonce = NONCE,
+): SendAndConfirmTxResult => ({
+  status: 'LOST',
+  txHash: txHash as Hash,
+  onChainNonce,
+  nonce,
+  attempt,
+});
+const reverted = (txHash: string, attempt = 0): SendAndConfirmTxResult => ({
+  status: 'REVERTED',
+  txHash: txHash as Hash,
+  blockNumber: '1',
+  nonce: NONCE,
+  attempt,
+});
+const timedOut = (attempt = 0): SendAndConfirmTxResult => ({
+  status: 'PENDING_TIMEOUT',
+  txHash: `0xpending${attempt}` as Hash,
+  nonce: NONCE,
+  attempt,
+});
+const notSent = (benign: boolean, attempt = 0): SendAndConfirmTxResult => ({
+  status: 'NOT_SENT',
+  sendStatus: benign ? 'NONCE_EXPIRED' : 'FAILED_TO_SEND_TRANSACTION',
+  benign,
+  nonce: NONCE,
+  attempt,
+});
 
 function run(
-  activities: StaggeredRaceActivities,
   config: Partial<StaggeredRaceConfig> = {},
   recovery?: StaggeredRaceRecovery,
+  signerKind: 'mint' | 'x402' = 'mint',
 ) {
   return staggeredSendRace({
     preparedTx: {} as never,
     chainId: CHAIN_ID,
     label: 'test',
-    activities,
-    config: { ...baseConfig, ...config },
+    signerKind,
+    config: {
+      lanes: 5,
+      staggerMs: 1,
+      pollIntervalMs: 1,
+      alertThresholdMs: 1_000_000,
+      failThresholdMs: 1_000_000,
+      initialGasPriceMultiplier: 1,
+      maxGasPriceMultiplier: 2,
+      ...config,
+    },
     recovery,
   });
 }
 
-function makeActivities(
-  overrides: Partial<StaggeredRaceActivities> = {},
-): StaggeredRaceActivities {
-  return {
-    getSignerNonce: vi.fn(async () => PINNED_NONCE),
-    sendPreparedTransaction: vi.fn(
-      async (): Promise<TxSendOnlyResult> => ({
-        status: 'SENT',
-        txHash: '0xsent' as Hash,
-      }),
-    ),
-    getTransactionConfirmation: vi.fn(
-      async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
-    ),
-    ...overrides,
-  };
-}
-
 beforeEach(() => {
   vi.clearAllMocks();
-  sleepCalls.length = 0;
+  getSignerNonce.mockResolvedValue(100);
+  getX402SignerNonce.mockResolvedValue(100);
+  getTransactionConfirmation.mockResolvedValue({ kind: 'PENDING' });
+  getX402TransactionConfirmation.mockResolvedValue({ kind: 'PENDING' });
+  generalAlertNamefi.mockResolvedValue(undefined);
+  criticalAlertWithTicket.mockResolvedValue({ taskId: 't', taskUrl: 'u' });
+  startChild.mockImplementation(async (...callArgs: unknown[]) => {
+    const input = (callArgs[1] as [SendAndConfirmTxInput])[0];
+    return makeHandle(timedOut(input.attempt));
+  });
 });
 
-describe('staggeredSendRace', () => {
-  it('returns the confirmed winner and pins the nonce exactly once', async () => {
-    let sendIdx = 0;
-    const activities = makeActivities({
-      sendPreparedTransaction: vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: `0xtx${sendIdx++}` as Hash,
-        }),
-      ),
-      getTransactionConfirmation: vi.fn(
-        async (hashes: Hash[]): Promise<TxConfirmationResult> =>
-          hashes.length > 0
-            ? {
-                kind: 'CONFIRMED',
-                winner: hashes[0],
-                blockNumber: '1',
-                confirmations: 3,
-              }
-            : { kind: 'PENDING' },
-      ),
-    });
-
-    const winner = await run(activities);
-
-    expect(winner).toBe('0xtx0');
-    expect(activities.getSignerNonce).toHaveBeenCalledTimes(1);
-    // Every broadcast reused the single pinned nonce.
-    for (const call of (
-      activities.sendPreparedTransaction as ReturnType<typeof vi.fn>
-    ).mock.calls) {
-      expect(call[2]).toBe(PINNED_NONCE);
-    }
-    // Confirmation poll receives the pinned nonce and required confirmations.
-    const firstConfirm = (
-      activities.getTransactionConfirmation as ReturnType<typeof vi.fn>
-    ).mock.calls[0];
-    expect(firstConfirm[1]).toBe(CHAIN_ID);
-    expect(firstConfirm[2]).toBe(PINNED_NONCE);
-    expect(firstConfirm[3]).toBe(3);
-  });
-
-  it('broadcasts each lane with an escalating, capped gas multiplier', async () => {
-    const send = vi.fn(
-      async (
-        _tx: unknown,
-        _chainId: number,
-        _nonce: number,
-        gas: number,
-      ): Promise<TxSendOnlyResult> => ({
-        status: 'SENT',
-        txHash: `0x${gas}` as Hash,
-      }),
-    );
-    const activities = makeActivities({
-      sendPreparedTransaction: send as never,
-      // Confirm only once all 5 lanes have broadcast.
-      getTransactionConfirmation: vi.fn(
-        async (hashes: Hash[]): Promise<TxConfirmationResult> =>
-          send.mock.calls.length >= 5
-            ? {
-                kind: 'CONFIRMED',
-                winner: hashes[0],
-                blockNumber: '1',
-                confirmations: 3,
-              }
-            : { kind: 'PENDING' },
-      ),
-    });
-
-    await run(activities);
-
-    const gasArgs = send.mock.calls.map((c) => c[3]);
-    const expected = Array.from({ length: 5 }, (_, i) =>
-      Math.min(1.0 + i * 0.05, 2),
-    );
-    expect(gasArgs).toEqual(expected);
-  });
-
-  it('treats NONCE_EXPIRED / REPLACEMENT_UNDERPRICED lanes as benign', async () => {
-    let callIdx = 0;
-    const send = vi.fn(async (): Promise<TxSendOnlyResult> => {
-      const idx = callIdx++;
-      if (idx === 0) return { status: 'SENT', txHash: '0xwinner' as Hash };
-      return idx % 2 === 0
-        ? { status: 'REPLACEMENT_UNDERPRICED', error: 'x' }
-        : { status: 'NONCE_EXPIRED', error: 'x' };
-    });
-    const activities = makeActivities({
-      sendPreparedTransaction: send,
-      getTransactionConfirmation: vi.fn(
-        async (hashes: Hash[]): Promise<TxConfirmationResult> =>
-          hashes.length > 0
-            ? {
-                kind: 'CONFIRMED',
-                winner: hashes[0],
-                blockNumber: '1',
-                confirmations: 3,
-              }
-            : { kind: 'PENDING' },
-      ),
-    });
-
-    await expect(run(activities)).resolves.toBe('0xwinner');
+describe('staggeredSendRace (child orchestrator)', () => {
+  it('returns the confirmed winner and pins the nonce once', async () => {
+    scriptChildren((i) => confirmed(`0xwin${i.attempt}`));
+    const winner = await run();
+    expect(winner).toBe('0xwin0');
+    expect(getSignerNonce).toHaveBeenCalledTimes(1);
     expect(criticalAlertWithTicket).not.toHaveBeenCalled();
   });
 
-  it('alerts and throws non-retryable on MULTIPLE_CONFIRMED', async () => {
-    const activities = makeActivities({
-      sendPreparedTransaction: vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: '0xa' as Hash,
-        }),
-      ),
-      getTransactionConfirmation: vi.fn(
-        async (): Promise<TxConfirmationResult> => ({
-          kind: 'MULTIPLE_CONFIRMED',
-          winners: ['0xa' as Hash, '0xb' as Hash],
-        }),
-      ),
+  it('starts every attempt at the pinned nonce with escalating, capped gas', async () => {
+    // PENDING_TIMEOUT never consumes the nonce, so all lanes launch.
+    scriptChildren((i) => timedOut(i.attempt));
+    await expect(run()).rejects.toMatchObject({
+      type: 'staggered-race/timeout',
     });
-
-    await expect(run(activities)).rejects.toMatchObject({
-      type: 'staggered-race/multi-confirm',
-      nonRetryable: true,
-    });
-    expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
+    const inputs = startChild.mock.calls.map(
+      (c) => (c[1] as [SendAndConfirmTxInput])[0],
+    );
+    expect(inputs).toHaveLength(5);
+    expect(inputs.map((i) => i.gasPriceMultiplier)).toEqual(
+      Array.from({ length: 5 }, (_, i) => Math.min(1 + i * 0.05, 2)),
+    );
+    expect(inputs.every((i) => i.nonce === NONCE)).toBe(true);
+    expect(getSignerNonce).toHaveBeenCalledTimes(1);
   });
 
-  it('alerts and throws on a reverted candidate', async () => {
-    const activities = makeActivities({
-      sendPreparedTransaction: vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: '0xa' as Hash,
-        }),
-      ),
-      getTransactionConfirmation: vi.fn(
-        async (): Promise<TxConfirmationResult> => ({
-          kind: 'REVERTED',
-          reverted: '0xa' as Hash,
-          blockNumber: '7',
-        }),
-      ),
-    });
-
-    await expect(run(activities)).rejects.toMatchObject({
+  it('throws (and critical-alerts) on a reverted child', async () => {
+    scriptChildren(() => reverted('0xrev'));
+    await expect(run()).rejects.toMatchObject({
       type: 'staggered-race/reverted',
     });
     expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
   });
 
-  it('fails fast on a stolen nonce after the grace window, without runaway sends', async () => {
-    const send = vi.fn(
-      async (): Promise<TxSendOnlyResult> => ({
-        status: 'SENT',
-        txHash: '0xa' as Hash,
-      }),
-    );
-    const activities = makeActivities({
-      sendPreparedTransaction: send,
-      getTransactionConfirmation: vi.fn(
-        async (): Promise<TxConfirmationResult> => ({
-          kind: 'NONCE_FILLED_NO_CANDIDATE',
-          onChainNonce: 99,
-        }),
-      ),
-    });
-
-    await expect(run(activities, { graceCycles: 3 })).rejects.toMatchObject({
+  it('throws nonce-stolen when all children LOST and no re-pin budget', async () => {
+    scriptChildren((i) => lost('0xlost', i.attempt));
+    await expect(run({}, { maxNonceRepins: 0 })).rejects.toMatchObject({
       type: 'staggered-race/nonce-stolen',
     });
     expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
-    // Never broadcasts more than the configured number of lanes.
-    expect(send.mock.calls.length).toBeLessThanOrEqual(5);
   });
 
-  it('alerts (soft then critical) and throws on overall timeout', async () => {
-    const activities = makeActivities({
-      sendPreparedTransaction: vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: '0xa' as Hash,
-        }),
-      ),
-      getTransactionConfirmation: vi.fn(
-        async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
-      ),
+  it('CONFIRMED dominates a sibling PENDING_TIMEOUT (never re-pins, hole #1)', async () => {
+    // attempt 0 stays pending (does not consume the nonce), so attempt 1 launches
+    // and confirms; the confirmed winner must win over the pending terminal.
+    scriptChildren((i) =>
+      i.attempt === 0 ? timedOut(0) : confirmed('0xwin', i.attempt),
+    );
+    const winner = await run({}, { maxNonceRepins: 2 });
+    expect(winner).toBe('0xwin');
+    expect(getSignerNonce).toHaveBeenCalledTimes(1);
+    expect(criticalAlertWithTicket).not.toHaveBeenCalled();
+  });
+
+  it('PENDING_TIMEOUT is terminal — does not re-pin even alongside a LOST', async () => {
+    scriptChildren((i) =>
+      i.attempt === 0 ? timedOut(0) : lost('0xlost', i.attempt),
+    );
+    await expect(run({}, { maxNonceRepins: 5 })).rejects.toMatchObject({
+      type: 'staggered-race/timeout',
     });
+    expect(getSignerNonce).toHaveBeenCalledTimes(1); // never re-pinned
+  });
 
-    await expect(
-      run(activities, {
-        pollIntervalMs: 1_000,
-        alertThresholdMs: 1_000,
-        failThresholdMs: 3_000,
-      }),
-    ).rejects.toMatchObject({ type: 'staggered-race/timeout' });
+  it('re-pins a fresh nonce after a LOST round, then confirms', async () => {
+    let nonceCall = 0;
+    getSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    scriptChildren((i) =>
+      i.roundIndex === 0
+        ? lost('0xr0', i.attempt, 101)
+        : confirmed('0xr1', i.attempt, 101),
+    );
+    const winner = await run({}, { maxNonceRepins: 2 });
+    expect(winner).toBe('0xr1');
+    expect(getSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
 
-    expect(generalAlertNamefi).toHaveBeenCalledTimes(1);
+  it('reconciles a cross-round double-commit via onDoubleCommit', async () => {
+    let nonceCall = 0;
+    getSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    scriptChildren((i) =>
+      i.roundIndex === 0
+        ? lost('0xr0', i.attempt, 101)
+        : confirmed('0xr1', i.attempt, 101),
+    );
+    // The cross-round re-confirm finds two mined hashes.
+    getTransactionConfirmation.mockResolvedValue({
+      kind: 'MULTIPLE_CONFIRMED',
+      winners: ['0xr0' as Hash, '0xr1' as Hash],
+    });
+    const onDoubleCommit = vi.fn(async (winners: Hash[]) => winners[0]);
+    const winner = await run({}, { maxNonceRepins: 2, onDoubleCommit });
+    expect(onDoubleCommit).toHaveBeenCalledWith(['0xr0', '0xr1']);
+    expect(winner).toBe('0xr0');
+  });
+
+  it('zero-candidate with an advanced nonce re-pins, then confirms', async () => {
+    const nonces = [100, 150, 151]; // pin r0, zero-candidate re-read, pin r1
+    let n = 0;
+    getSignerNonce.mockImplementation(
+      async () => nonces[Math.min(n++, nonces.length - 1)],
+    );
+    scriptChildren((i) =>
+      i.roundIndex === 0
+        ? notSent(true, i.attempt)
+        : confirmed('0xr1', i.attempt, 151),
+    );
+    const winner = await run({}, { maxNonceRepins: 2 });
+    expect(winner).toBe('0xr1');
+  });
+
+  it('zero-candidate with an unchanged nonce is a terminal send failure', async () => {
+    getSignerNonce.mockResolvedValue(100); // pin AND re-read both 100
+    scriptChildren((i) => notSent(true, i.attempt));
+    await expect(run({}, { maxNonceRepins: 2 })).rejects.toMatchObject({
+      type: 'staggered-race/send-failed',
+    });
     expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
   });
 
-  describe('recovery', () => {
-    it('re-pins a fresh nonce when the pinned nonce is consumed by a foreign tx (1b)', async () => {
-      let nonceCall = 0;
-      const getSignerNonce = vi.fn(async () => 100 + nonceCall++);
-      let sendIdx = 0;
-      const send = vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: `0xtx${sendIdx++}` as Hash,
-        }),
-      );
-      const confirm = vi.fn(
-        async (
-          hashes: Hash[],
-          _chainId: number,
-          pinnedNonce: number,
-          confs: number,
-        ): Promise<TxConfirmationResult> => {
-          // cross-round re-check (shallow): single winner, not a double.
-          if (confs === 1) {
-            return {
-              kind: 'CONFIRMED',
-              winner: hashes[0],
-              blockNumber: '1',
-              confirmations: 1,
-            };
-          }
-          // round 0: nonce consumed by a foreign tx.
-          if (pinnedNonce === 100) {
-            return { kind: 'NONCE_FILLED_NO_CANDIDATE', onChainNonce: 101 };
-          }
-          // round 1 (fresh nonce): confirms.
-          return {
-            kind: 'CONFIRMED',
-            winner: hashes[0],
-            blockNumber: '2',
-            confirmations: 3,
-          };
-        },
-      );
+  it("signerKind 'x402' routes the nonce read to the x402 signer", async () => {
+    scriptChildren((i) => confirmed('0xx402', i.attempt));
+    const winner = await run({}, undefined, 'x402');
+    expect(winner).toBe('0xx402');
+    expect(getX402SignerNonce).toHaveBeenCalled();
+    expect(getSignerNonce).not.toHaveBeenCalled();
+    const input = (startChild.mock.calls[0][1] as [SendAndConfirmTxInput])[0];
+    expect(input.signerKind).toBe('x402');
+  });
 
-      const winner = await run(
-        {
-          getSignerNonce,
-          sendPreparedTransaction: send,
-          getTransactionConfirmation: confirm,
-        },
-        { graceCycles: 1 },
-        { maxNonceRepins: 2 },
-      );
-
-      expect(getSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(2);
-      expect(winner).toBeDefined();
-      expect(criticalAlertWithTicket).not.toHaveBeenCalled();
+  it('a startChild failure terminates the race (does not hang) and critical-alerts', async () => {
+    // A child workflowId collision — or any startChild rejection — must surface
+    // as a terminal race failure, not stall. The runRound try/finally also
+    // releases the slow-confirmation watchdog (roundDone) on this throw path.
+    startChild.mockImplementationOnce(async () => {
+      throw new Error('WorkflowExecutionAlreadyStarted');
     });
-
-    it('throws nonce-stolen after exhausting the re-pin budget', async () => {
-      await expect(
-        run(
-          {
-            getSignerNonce: vi.fn(async () => 100),
-            sendPreparedTransaction: vi.fn(
-              async (): Promise<TxSendOnlyResult> => ({
-                status: 'SENT',
-                txHash: '0xa' as Hash,
-              }),
-            ),
-            getTransactionConfirmation: vi.fn(
-              async (
-                _h: Hash[],
-                _c: number,
-                _n: number,
-                confs: number,
-              ): Promise<TxConfirmationResult> =>
-                confs === 1
-                  ? { kind: 'PENDING' }
-                  : { kind: 'NONCE_FILLED_NO_CANDIDATE', onChainNonce: 999 },
-            ),
-          },
-          { graceCycles: 1 },
-          { maxNonceRepins: 1 },
-        ),
-      ).rejects.toMatchObject({ type: 'staggered-race/nonce-stolen' });
-      expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
+    await expect(run({}, { maxNonceRepins: 2 })).rejects.toMatchObject({
+      type: 'staggered-race/failed',
     });
-
-    it('does NOT re-pin on a revert (1a terminal)', async () => {
-      const getSignerNonce = vi.fn(async () => 100);
-      await expect(
-        run(
-          {
-            getSignerNonce,
-            sendPreparedTransaction: vi.fn(
-              async (): Promise<TxSendOnlyResult> => ({
-                status: 'SENT',
-                txHash: '0xa' as Hash,
-              }),
-            ),
-            getTransactionConfirmation: vi.fn(
-              async (): Promise<TxConfirmationResult> => ({
-                kind: 'REVERTED',
-                reverted: '0xa' as Hash,
-                blockNumber: '5',
-              }),
-            ),
-          },
-          {},
-          { maxNonceRepins: 5 },
-        ),
-      ).rejects.toMatchObject({ type: 'staggered-race/reverted' });
-      // Budget was 5, but a revert is terminal — pinned exactly once.
-      expect(getSignerNonce).toHaveBeenCalledTimes(1);
-    });
-
-    it('re-pins when all lanes fail to send and the nonce advanced (zero-candidate)', async () => {
-      let nonceCall = 0;
-      const getSignerNonce = vi.fn(async () => {
-        nonceCall += 1;
-        if (nonceCall === 1) return 100; // round 0 pin
-        if (nonceCall === 2) return 150; // zero-candidate re-read: advanced
-        return 151; // round 1 pin
-      });
-      const send = vi.fn(
-        async (
-          _tx: unknown,
-          _chainId: number,
-          nonce: number,
-        ): Promise<TxSendOnlyResult> =>
-          nonce === 100
-            ? { status: 'NONCE_EXPIRED', error: 'taken' }
-            : { status: 'SENT', txHash: `0xtx${nonce}` as Hash },
-      );
-      const confirm = vi.fn(
-        async (
-          hashes: Hash[],
-          _chainId: number,
-          _pinnedNonce: number,
-          confs: number,
-        ): Promise<TxConfirmationResult> => ({
-          kind: 'CONFIRMED',
-          winner: hashes[0],
-          blockNumber: confs === 1 ? '1' : '2',
-          confirmations: confs,
-        }),
-      );
-
-      const winner = await run(
-        {
-          getSignerNonce,
-          sendPreparedTransaction: send,
-          getTransactionConfirmation: confirm,
-        },
-        {},
-        { maxNonceRepins: 2 },
-      );
-      expect(winner).toBe('0xtx151');
-      expect(getSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(3);
-    });
-
-    it('reconciles a cross-round double-commit via onDoubleCommit', async () => {
-      let nonceCall = 0;
-      const getSignerNonce = vi.fn(async () => 100 + nonceCall++);
-      let sendIdx = 0;
-      const send = vi.fn(
-        async (): Promise<TxSendOnlyResult> => ({
-          status: 'SENT',
-          txHash: `0xtx${sendIdx++}` as Hash,
-        }),
-      );
-      const confirm = vi.fn(
-        async (
-          hashes: Hash[],
-          _chainId: number,
-          pinnedNonce: number,
-          confs: number,
-        ): Promise<TxConfirmationResult> => {
-          // cross-round re-check finds TWO mined hashes → double-commit.
-          if (confs === 1) {
-            return {
-              kind: 'MULTIPLE_CONFIRMED',
-              winners: ['0xa' as Hash, '0xb' as Hash],
-            };
-          }
-          if (pinnedNonce === 100) {
-            return { kind: 'NONCE_FILLED_NO_CANDIDATE', onChainNonce: 101 };
-          }
-          return {
-            kind: 'CONFIRMED',
-            winner: hashes[0],
-            blockNumber: '2',
-            confirmations: 3,
-          };
-        },
-      );
-      const onDoubleCommit = vi.fn(async (winners: Hash[]) => winners[0]);
-
-      const winner = await run(
-        {
-          getSignerNonce,
-          sendPreparedTransaction: send,
-          getTransactionConfirmation: confirm,
-        },
-        { graceCycles: 1 },
-        { maxNonceRepins: 2, onDoubleCommit },
-      );
-
-      expect(onDoubleCommit).toHaveBeenCalledWith(['0xa', '0xb']);
-      expect(winner).toBe('0xa');
-    });
+    expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
+    expect(generalAlertNamefi).not.toHaveBeenCalled();
   });
 });

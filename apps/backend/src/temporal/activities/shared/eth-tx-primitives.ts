@@ -254,8 +254,11 @@ export function createEthTxPrimitives(
 
     const currentBlock = await publicClient.getBlockNumber();
 
-    const confirmed: Array<{ hash: Hash; blockNumber: bigint; confs: number }> =
-      [];
+    const confirmed: Array<{
+      hash: Hash;
+      blockNumber: bigint;
+      confirmationCount: number;
+    }> = [];
     let revertedHash: { hash: Hash; blockNumber: bigint } | null = null;
     let anyReceiptFound = false;
 
@@ -273,9 +276,14 @@ export function createEthTxPrimitives(
       }
       anyReceiptFound = true;
       if (receipt.status === 'success') {
-        const confs = Number(currentBlock - receipt.blockNumber) + 1;
-        if (confs >= confirmations) {
-          confirmed.push({ hash, blockNumber: receipt.blockNumber, confs });
+        const confirmationCount =
+          Number(currentBlock - receipt.blockNumber) + 1;
+        if (confirmationCount >= confirmations) {
+          confirmed.push({
+            hash,
+            blockNumber: receipt.blockNumber,
+            confirmationCount,
+          });
         }
       } else if (!revertedHash) {
         revertedHash = { hash, blockNumber: receipt.blockNumber };
@@ -285,16 +293,16 @@ export function createEthTxPrimitives(
     if (confirmed.length > 1) {
       return {
         kind: 'MULTIPLE_CONFIRMED',
-        winners: confirmed.map((c) => c.hash),
+        winners: confirmed.map((entry) => entry.hash),
       };
     }
     if (confirmed.length === 1) {
-      const { hash, blockNumber, confs } = confirmed[0];
+      const { hash, blockNumber, confirmationCount } = confirmed[0];
       return {
         kind: 'CONFIRMED',
         winner: hash,
         blockNumber: blockNumber.toString(),
-        confirmations: confs,
+        confirmations: confirmationCount,
       };
     }
     if (revertedHash) {
@@ -309,10 +317,12 @@ export function createEthTxPrimitives(
     // the workflow can distinguish "still pending" from "someone else took our
     // nonce". Failures to read are treated as PENDING (keep waiting).
     if (!anyReceiptFound) {
-      const [addrError, address] = await resolve(
-        clients.getWalletClient(chainId).then((w) => w.account.address),
+      const [addressError, address] = await resolve(
+        clients
+          .getWalletClient(chainId)
+          .then((walletClient) => walletClient.account.address),
       );
-      if (!addrError) {
+      if (!addressError) {
         const [nonceError, onChainNonce] = await resolve(
           publicClient.getTransactionCount({ address, blockTag: 'latest' }),
         );

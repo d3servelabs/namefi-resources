@@ -116,10 +116,15 @@ export function makeDoubleCommitReconciler(
           evidenceParams: { chainId, winners, canonical, ...evidenceParams },
           validateResponse: (raw) => {
             const keep = (raw as { keepHash?: string } | undefined)?.keepHash;
-            if (keep && !winners.includes(keep as Hash)) {
+            // No keepHash (missing or empty) → keep the canonical winner.
+            if (!keep) {
+              return canonical;
+            }
+            // A provided keepHash must be one of the confirmed winners.
+            if (!winners.includes(keep as Hash)) {
               throw new Error(`keepHash ${keep} is not a confirmed winner`);
             }
-            return (keep ?? canonical) as Hash;
+            return keep as Hash;
           },
         });
       }

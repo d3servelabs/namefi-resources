@@ -6,7 +6,6 @@ import type {
   TxPrepareResult,
 } from '../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
-import { shortRunningOpts } from '../shared';
 import {
   staggeredSendRace,
   type StaggeredRaceRecovery,
@@ -46,22 +45,17 @@ async function _signAndSendTransactionWithRetry(
   const { maxAttempts = 5, maxNonceRepins = 2, reconciliation } = options;
   const label = `mint:${workflow.workflowInfo().workflowType}`;
 
-  const {
-    getSignerNonce,
-    sendPreparedTransaction,
-    getInitalGasPriceMultiplier,
-    getMaxGasPriceMultiplier,
-  } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.MINT,
-    options: {
-      startToCloseTimeout: '30 seconds',
-      retry: { maximumAttempts: 1 },
-    },
-  });
-  const { getTransactionConfirmation } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: { ...shortRunningOpts },
-  });
+  // The race orchestrates per-attempt `sendAndConfirmTxWorkflow` children that
+  // proxy the mint send/confirm activities themselves (selected via signerKind);
+  // here we only read the chain-aware gas bounds.
+  const { getInitalGasPriceMultiplier, getMaxGasPriceMultiplier } =
+    typedProxyActivities({
+      temporalEnum: TEMPORAL_ENUMS.MINT,
+      options: {
+        startToCloseTimeout: '30 seconds',
+        retry: { maximumAttempts: 1 },
+      },
+    });
 
   const initialGasPriceMultiplier = await getInitalGasPriceMultiplier(chainId);
   const maxGasPriceMultiplier = await getMaxGasPriceMultiplier(chainId);
@@ -81,11 +75,7 @@ async function _signAndSendTransactionWithRetry(
     preparedTx: tx,
     chainId,
     label,
-    activities: {
-      getSignerNonce,
-      sendPreparedTransaction,
-      getTransactionConfirmation,
-    },
+    signerKind: 'mint',
     config: {
       lanes: maxAttempts,
       initialGasPriceMultiplier,

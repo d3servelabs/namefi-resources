@@ -11,15 +11,15 @@ import type {
   TxPrepareResult,
 } from '../../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS } from '../../shared/enums';
-import { shortRunningOpts } from '../../shared';
 import { staggeredSendRace } from '../../shared/workflow-helpers/staggered-send-race';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { makeDoubleCommitReconciler } from '../mint-double-commit-reconciliation';
 
 /**
- * Sends a prepared USDC transfer using the pinned-nonce staggered-parallel race,
- * with bounded nonce re-pin recovery (1b) and admin-gated double-commit
- * reconciliation (2) — a double USDC refund moves money out, so a human decides.
+ * Sends a prepared USDC transfer using the pinned-nonce staggered race of
+ * per-attempt child workflows, with bounded nonce re-pin recovery (1b) and
+ * admin-gated double-commit reconciliation (2) — a double USDC refund moves
+ * money out, so a human decides.
  *
  * Same idempotency guarantee as the mint path: one pinned nonce reused across
  * escalating-gas replacements, so the chain mines at most one. See
@@ -30,28 +30,11 @@ async function _signAndSendX402TransactionWithRetry(
   chainId: number,
   maxAttempts = 5,
 ) {
-  const { getX402SignerNonce, sendX402PreparedTransaction } =
-    typedProxyActivities({
-      temporalEnum: TEMPORAL_ENUMS.MINT,
-      options: {
-        startToCloseTimeout: '30 seconds',
-        retry: { maximumAttempts: 1 },
-      },
-    });
-  const { getX402TransactionConfirmation } = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: { ...shortRunningOpts },
-  });
-
   return staggeredSendRace({
     preparedTx: tx,
     chainId,
     label: 'x402-usdc-transfer',
-    activities: {
-      getSignerNonce: getX402SignerNonce,
-      sendPreparedTransaction: sendX402PreparedTransaction,
-      getTransactionConfirmation: getX402TransactionConfirmation,
-    },
+    signerKind: 'x402',
     config: {
       lanes: maxAttempts,
       initialGasPriceMultiplier: 1.05,

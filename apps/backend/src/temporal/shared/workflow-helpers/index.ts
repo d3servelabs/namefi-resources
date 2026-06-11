@@ -11,6 +11,7 @@ export * from './decision-gate';
 export * from './known-gates';
 export * from './test-harness';
 export * from './escalating-poller';
+export * from './interruptible-sleep';
 export * from './staggered-send-race';
 export * from './workflow-progress';
 export * from './payment-dispatch';
