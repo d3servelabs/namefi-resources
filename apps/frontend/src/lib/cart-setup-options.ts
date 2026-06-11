@@ -20,7 +20,7 @@ export const CART_SETUP_OPTIONS_COLLAPSIBLE_FLAG: FeatureFlagDefinition[] = [
       'Hide the per-item domain setup chips behind a settings toggle (with an enabled-flags summary when collapsed) and move the duration stepper next to the price.',
     scope: 'page',
     pageKey: 'cart',
-    defaultValue: false,
+    defaultValue: true,
   },
 ];
 

@@ -21,7 +21,7 @@ export const CART_REQUIREMENTS_VARIANT_FLAG: FeatureFlagDefinition[] = [
       'Aggregate per-item TLD registration requirements (deduped by TLD) into the cart footnote instead of showing a banner inside each cart item.',
     scope: 'page',
     pageKey: 'cart',
-    defaultValue: false,
+    defaultValue: true,
   },
 ];
 
