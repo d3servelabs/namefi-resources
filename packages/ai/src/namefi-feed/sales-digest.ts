@@ -1,5 +1,3 @@
-import { readFile } from 'node:fs/promises';
-import path from 'node:path';
 import {
   createOpenAI,
   type OpenAIResponsesProviderOptions,
@@ -27,6 +25,7 @@ const MAX_TOP_PATTERNS = 12;
 export const MAX_WORD_CLOUD_DOMAINS = 7;
 const DIGEST_SOURCE_LABEL = 'Namefi Feed';
 const NAMEFI_FEED_URL = 'https://namefi.io/feed';
+const NAMEFI_LOGOTYPE_URL = 'https://namefi.io/logotype.svg';
 const PRIMARY_ACCENT_COLOR = '#0EA5E9';
 const SECONDARY_ACCENT_COLOR = '#22C55E';
 const DIGEST_IMAGE_WIDTH = 1536;
@@ -67,6 +66,7 @@ const ASK_COMMA_PATTERN = /,/g;
 const ASK_USD_PATTERN = /([0-9]+(?:\.[0-9]+)?)\s*([kmb])?/i;
 const CURRENCY_CODE_PATTERN = /^[A-Z]{3}$/;
 const REGEXP_SPECIAL_CHARS_PATTERN = /[.*+?^${}()|[\]\\]/g;
+const SVG_TAG_PATTERN = /<svg[\s>]/i;
 
 export const NAMEFI_FEED_SALES_DIGEST_WORD_CLOUD_IMAGE_MODEL = 'gpt-image-1.5';
 export const NAMEFI_FEED_SALES_DIGEST_ANIMATION_MODEL =
@@ -949,20 +949,7 @@ async function buildDigestLogoPng(
 
 async function getNamefiLogotypeSvg(): Promise<string> {
   if (!logotypeSvgPromise) {
-    logotypeSvgPromise = readFirstExistingTextFile([
-      path.join(process.cwd(), 'apps', 'frontend', 'public', 'logotype.svg'),
-      path.join(process.cwd(), '..', 'frontend', 'public', 'logotype.svg'),
-      path.join(
-        process.cwd(),
-        '..',
-        '..',
-        'apps',
-        'frontend',
-        'public',
-        'logotype.svg',
-      ),
-      path.join(process.cwd(), 'public', 'logotype.svg'),
-    ])
+    logotypeSvgPromise = fetchTextFile(NAMEFI_LOGOTYPE_URL)
       .then((svg) =>
         svg.replace(LOGOTYPE_FILL_PATTERN, `fill="${DIGEST_LOGO_FILL}"`),
       )
@@ -975,19 +962,18 @@ async function getNamefiLogotypeSvg(): Promise<string> {
   return logotypeSvgPromise;
 }
 
-async function readFirstExistingTextFile(paths: string[]): Promise<string> {
-  let lastError: unknown = null;
-  for (const candidate of paths) {
-    try {
-      return await readFile(candidate, 'utf8');
-    } catch (error) {
-      lastError = error;
-    }
+async function fetchTextFile(url: string): Promise<string> {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`GET ${url} failed with ${response.status}.`);
   }
 
-  throw new Error(
-    `Could not find Namefi logotype SVG for sales digest image overlay. ${lastError instanceof Error ? lastError.message : ''}`.trim(),
-  );
+  const text = await response.text();
+  if (!SVG_TAG_PATTERN.test(text)) {
+    throw new Error(`GET ${url} did not return SVG content.`);
+  }
+
+  return text;
 }
 
 function formatTopPickLine(pick: NamefiFeedSalesDigestFormattedPick): string {
