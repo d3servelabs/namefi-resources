@@ -1,4 +1,4 @@
-import * as workflow from '@temporalio/workflow';
+import { log, patched, startChild, workflowInfo } from '@temporalio/workflow';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type { NamefiFeedAutoScanSource } from '../../services/namefi-feed/ingestion.service';
 import { longRunningOpts, TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
@@ -48,11 +48,16 @@ const {
 export async function namefiFeedIngestionWorkflow(
   input: NamefiFeedIngestionWorkflowInput,
 ): Promise<NamefiFeedIngestionWorkflowResult> {
-  const workflowId = workflow.workflowInfo().workflowId;
+  const workflowRun = workflowInfo();
+  const workflowId = workflowRun.workflowId;
+  const shouldRecordTemporalRunId = patched('namefi-feed-temporal-run-id-v1');
   let runId: string | null = null;
 
   try {
     const run = await startNamefiFeedIngestionRun({
+      ...(shouldRecordTemporalRunId
+        ? { temporalRunId: workflowRun.runId }
+        : {}),
       workflowId,
       trigger: input.trigger,
       requestedByUserId: input.requestedByUserId,
@@ -154,12 +159,12 @@ export async function namefiFeedIngestionWorkflow(
     const completedRunId = runId;
     if (
       completedRunId &&
-      workflow.patched('namefi-feed-listing-logo-generation-v1') &&
+      patched('namefi-feed-listing-logo-generation-v1') &&
       processResult.logoCandidateDomains.length > 0
     ) {
       await catchAndAlertLocally(
         async () => {
-          await workflow.startChild(generateNamefiFeedListingLogosWorkflow, {
+          await startChild(generateNamefiFeedListingLogosWorkflow, {
             args: [
               {
                 domains: processResult.logoCandidateDomains,
@@ -199,7 +204,7 @@ export async function namefiFeedIngestionWorkflow(
           errorMessage: describeWorkflowError(error),
         });
       } catch (failureRecordError) {
-        workflow.log.warn('Failed to record Namefi feed ingestion failure', {
+        log.warn('Failed to record Namefi feed ingestion failure', {
           errorMessage: describeWorkflowError(failureRecordError),
         });
       }

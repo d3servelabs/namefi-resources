@@ -1,5 +1,5 @@
 import { longRunningOpts, TEMPORAL_ENUMS } from '../shared';
-import { workflowInfo } from '@temporalio/workflow';
+import { patched, workflowInfo } from '@temporalio/workflow';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
 export type NamefiFeedSalesDigestWorkflowInput = {
@@ -32,12 +32,17 @@ const { runNamefiFeedSalesDigestActivity } = typedProxyActivities({
 export async function namefiFeedSalesDigestWorkflow(
   input: NamefiFeedSalesDigestWorkflowInput,
 ): Promise<NamefiFeedSalesDigestWorkflowResult> {
-  const workflowId = workflowInfo().workflowId;
+  const workflowRun = workflowInfo();
+  const workflowId = workflowRun.workflowId;
+  const shouldRecordTemporalRunId = patched(
+    'namefi-feed-digest-temporal-run-id-v1',
+  );
   return runNamefiFeedSalesDigestActivity({
     at: input.at,
     createdByUserId: input.requestedByUserId ?? null,
     digestRunId: input.digestRunId ?? null,
     trigger: input.trigger,
+    ...(shouldRecordTemporalRunId ? { temporalRunId: workflowRun.runId } : {}),
     workflowId,
     includeAnimation: input.includeAnimation ?? true,
     includeImage: input.includeImage ?? true,

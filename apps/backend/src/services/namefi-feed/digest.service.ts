@@ -5,6 +5,7 @@ import {
   formatNamefiFeedSalesDigestInsight,
   generateNamefiFeedSalesDigestInsight,
   generateNamefiFeedSalesDigestWordCloudImage,
+  MAX_WORD_CLOUD_DOMAINS,
   NAMEFI_FEED_SALES_DIGEST_ANIMATION_EXTERNAL_USER_ID,
   NAMEFI_FEED_SALES_DIGEST_ANIMATION_MODEL,
   NAMEFI_FEED_SALES_DIGEST_ANIMATION_SHEET_MODEL,
@@ -19,7 +20,7 @@ import {
   salesDigestRunsTable,
 } from '@namefi-astra/db';
 import { createS3Client } from '@namefi-astra/storage';
-import { and, asc, eq, gte, lt } from 'drizzle-orm';
+import { and, asc, eq, gte, lt, sql } from 'drizzle-orm';
 import type { Json } from 'drizzle-zod';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
@@ -35,6 +36,7 @@ import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
 const DIGEST_WINDOW_MS = 24 * 60 * 60 * 1000;
 const DIGEST_RUN_SLOT_UTC_HOUR = 12;
 const DIGEST_RUN_SLOT_UTC_MINUTE = 30;
+const DIGEST_WORD_CLOUD_IMAGE_MAX_ATTEMPTS = 2;
 const logger = createLogger({ module: 'namefi-feed-sales-digest' });
 const SALES_DIGEST_ANIMATION_MODEL =
   NAMEFI_FEED_SALES_DIGEST_ANIMATION_MODEL as NonNullable<
@@ -70,6 +72,7 @@ export interface RunNamefiFeedSalesDigestInput {
   createdByUserId?: string | null;
   digestRunId?: string | null;
   trigger?: 'scheduled' | 'manual';
+  temporalRunId?: string | null;
   workflowId?: string | null;
   includeAnimation?: boolean;
   includeImage?: boolean;
@@ -329,16 +332,27 @@ export async function runNamefiFeedSalesDigest(
       includeImage,
       targetIds: input.targetIds,
       trigger: input.trigger ?? 'manual',
+      temporalRunId: input.temporalRunId ?? null,
       workflowId: input.workflowId ?? null,
     }));
+  if (input.digestRunId) {
+    await persistNamefiFeedSalesDigestTemporalRunId({
+      digestRunId,
+      temporalRunId: input.temporalRunId,
+    });
+  }
   let runCompleted = false;
+  let failureEntriesCount = 0;
+  let failureTargetCount = 0;
 
   try {
     const entries = await getNamefiFeedSalesDigestEntries({ at: runAt });
+    failureEntriesCount = entries.length;
     const targetCount = await countNamefiFeedSalesDigestDeliveryTargets({
       enabledOnly,
       targetIds: input.targetIds,
     });
+    failureTargetCount = targetCount;
 
     if (entries.length === 0) {
       const deliverySummary = {
@@ -478,6 +492,9 @@ export async function runNamefiFeedSalesDigest(
       await failNamefiFeedSalesDigestRun({
         digestRunId,
         errorMessage: describeError(error, 'Namefi Feed sales digest failed.'),
+        entriesCount: failureEntriesCount,
+        targetCount: failureTargetCount,
+        failure: serializeDigestRunFailure(error),
       });
     }
     throw error;
@@ -547,6 +564,7 @@ export async function createPendingNamefiFeedSalesDigestRun(input: {
     includeImage: input.includeImage ?? true,
     targetIds: input.targetIds,
     trigger: input.trigger ?? 'manual',
+    temporalRunId: null,
     workflowId: input.workflowId ?? null,
   });
 
@@ -570,6 +588,7 @@ async function createNamefiFeedSalesDigestRun({
   includeImage,
   targetIds,
   trigger,
+  temporalRunId,
   workflowId,
 }: {
   bounds: NamefiFeedSalesDigestBounds;
@@ -581,6 +600,7 @@ async function createNamefiFeedSalesDigestRun({
   includeImage: boolean;
   targetIds?: string[];
   trigger: 'scheduled' | 'manual';
+  temporalRunId: string | null;
   workflowId: string | null;
 }): Promise<string> {
   const [run] = await db
@@ -592,7 +612,7 @@ async function createNamefiFeedSalesDigestRun({
       generatedAt,
       includeAnimation,
       includeImage,
-      metadata: {},
+      metadata: buildTemporalRunMetadata(temporalRunId),
       status: 'running',
       targetIds: targetIds ?? null,
       trigger,
@@ -639,10 +659,10 @@ async function completeNamefiFeedSalesDigestRun({
       fallbackReason: render?.fallbackReason ?? null,
       finishedAt: new Date(),
       imageGenerated: Boolean(render?.imageDataUrl),
-      metadata: {
+      metadata: mergeSalesDigestRunMetadata({
         deliverySummary: deliverySummary ?? null,
         topPicks: render?.topPicks ?? [],
-      },
+      }),
       sentCount: deliverySummary?.sent ?? 0,
       skippedCount: deliverySummary?.skipped ?? 0,
       skipReason,
@@ -656,23 +676,70 @@ async function completeNamefiFeedSalesDigestRun({
 
 export async function failNamefiFeedSalesDigestRun({
   digestRunId,
+  entriesCount,
   errorMessage,
   failedCount = 1,
+  failure,
+  targetCount,
 }: {
   digestRunId: string;
+  entriesCount?: number;
   errorMessage: string;
   failedCount?: number;
+  failure?: Record<string, Json> | null;
+  targetCount?: number;
 }) {
   await db
     .update(salesDigestRunsTable)
     .set({
+      ...(typeof entriesCount === 'number' ? { entriesCount } : {}),
       errorMessage,
       failedCount,
       finishedAt: new Date(),
+      ...(failure
+        ? { metadata: mergeSalesDigestRunMetadata({ failure }) }
+        : {}),
       status: 'failed',
+      ...(typeof targetCount === 'number' ? { targetCount } : {}),
       updatedAt: new Date(),
     })
     .where(eq(salesDigestRunsTable.id, digestRunId));
+}
+
+async function persistNamefiFeedSalesDigestTemporalRunId({
+  digestRunId,
+  temporalRunId,
+}: {
+  digestRunId: string;
+  temporalRunId?: string | null;
+}) {
+  const metadata = buildTemporalRunMetadata(temporalRunId);
+  if (!metadata.temporalRunId) {
+    return;
+  }
+
+  await db
+    .update(salesDigestRunsTable)
+    .set({
+      metadata: mergeSalesDigestRunMetadata(metadata),
+      updatedAt: new Date(),
+    })
+    .where(eq(salesDigestRunsTable.id, digestRunId));
+}
+
+function buildTemporalRunMetadata(
+  temporalRunId?: string | null,
+): Record<string, Json> {
+  const normalizedTemporalRunId = temporalRunId?.trim();
+  return normalizedTemporalRunId
+    ? { temporalRunId: normalizedTemporalRunId }
+    : {};
+}
+
+function mergeSalesDigestRunMetadata(metadata: Record<string, Json>) {
+  return sql`${salesDigestRunsTable.metadata} || ${JSON.stringify(
+    metadata,
+  )}::jsonb`;
 }
 
 function attachLogoUrlsToTopPicks(
@@ -724,16 +791,41 @@ async function maybeGenerateDigestWordCloud({
     return null;
   }
 
-  try {
-    const generated = await generateNamefiFeedSalesDigestWordCloudImage(picks);
-    return generated?.imageDataUrl ?? null;
-  } catch (error) {
-    logger.error(
-      { error: serializeLogError(error) },
+  let lastError: unknown = null;
+  for (
+    let attempt = 1;
+    attempt <= DIGEST_WORD_CLOUD_IMAGE_MAX_ATTEMPTS;
+    attempt++
+  ) {
+    try {
+      const generated =
+        await generateNamefiFeedSalesDigestWordCloudImage(picks);
+      if (generated?.imageDataUrl) {
+        return generated.imageDataUrl;
+      }
+      lastError = new Error('image_generation tool did not return image data.');
+    } catch (error) {
+      lastError = error;
+    }
+
+    logger.warn(
+      {
+        attempt,
+        error: serializeLogError(lastError),
+        maxAttempts: DIGEST_WORD_CLOUD_IMAGE_MAX_ATTEMPTS,
+        pickCount: picks.length,
+      },
       'Failed to generate sales digest word cloud image',
     );
-    return null;
   }
+
+  throw new Error(
+    `Namefi Feed sales digest word cloud image generation failed after ${DIGEST_WORD_CLOUD_IMAGE_MAX_ATTEMPTS} attempts: ${describeError(
+      lastError,
+      'unknown image generation error',
+    )}`,
+    { cause: lastError },
+  );
 }
 
 function assertRequestedDigestMediaAvailable({
@@ -827,7 +919,7 @@ async function maybeGenerateDigestAnimation({
       jobId: requestId,
       externalUserId: persistenceContext.externalUserId,
       title: 'Daily Namefi Feed sales digest',
-      domains: domains.slice(0, 12),
+      domains: domains.slice(0, MAX_WORD_CLOUD_DOMAINS),
       summary: buildNamefiFeedSalesDigestAnimationSummary({ picks, text }),
       model: persistenceContext.model,
       sheetModel: persistenceContext.sheetModel,
@@ -1064,8 +1156,59 @@ function serializeLogError(error: unknown) {
   return error;
 }
 
+function serializeDigestRunFailure(error: unknown): Record<string, Json> {
+  if (!(error instanceof Error)) {
+    return { error: toJsonValue(error) };
+  }
+
+  const cause =
+    error.cause instanceof Error
+      ? {
+          name: error.cause.name,
+          message: error.cause.message,
+        }
+      : error.cause
+        ? { value: toJsonValue(error.cause) }
+        : null;
+
+  return {
+    name: error.name,
+    message: error.message,
+    cause,
+  };
+}
+
 function describeError(error: unknown, fallback: string) {
-  return error instanceof Error && error.message.trim().length > 0
-    ? error.message
-    : fallback;
+  if (error instanceof Error && error.message.trim().length > 0) {
+    return error.message;
+  }
+  if (typeof error === 'string' && error.trim().length > 0) {
+    return error;
+  }
+  return fallback;
+}
+
+function toJsonValue(value: unknown): Json {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  if (
+    typeof value === 'string' ||
+    typeof value === 'number' ||
+    typeof value === 'boolean'
+  ) {
+    return value;
+  }
+  if (Array.isArray(value)) {
+    return value.map(toJsonValue);
+  }
+  if (typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>).map(([key, item]) => [
+        key,
+        toJsonValue(item),
+      ]),
+    );
+  }
+  return String(value);
 }

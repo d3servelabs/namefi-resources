@@ -17,12 +17,14 @@ import {
   count,
   desc,
   eq,
+  getTableColumns,
   isNotNull,
   or,
   sql,
   type SQL,
 } from 'drizzle-orm';
 import type { Json } from 'drizzle-zod';
+import { getTemporalWorkflowUrl } from '#temporal/activities/default/get-workflow-url';
 import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
 import { DEFAULT_NAMEFI_FEED_SEARCH_QUERIES } from './normalization';
 import {
@@ -339,6 +341,7 @@ export async function listNamefiFeedAdminRuns(
   const orderBy = resolveTableSorting(
     input.sorting,
     {
+      workflow: namefiFeedIngestionRunsTable.workflowId,
       status: namefiFeedIngestionRunsTable.status,
       trigger: namefiFeedIngestionRunsTable.trigger,
       startedAt: namefiFeedIngestionRunsTable.startedAt,
@@ -398,6 +401,7 @@ export async function listNamefiFeedAdminPosts(
   const orderBy = resolveTableSorting(
     input.sorting,
     {
+      workflow: namefiFeedIngestionRunsTable.workflowId,
       status: namefiFeedPostsTable.status,
       source: namefiFeedPostsTable.source,
       authorUsername: namefiFeedPostsTable.authorUsername,
@@ -409,10 +413,21 @@ export async function listNamefiFeedAdminPosts(
     [desc(namefiFeedPostsTable.createdAt)],
   );
   const [total, rows] = await Promise.all([
-    countRows(namefiFeedPostsTable, where),
+    countNamefiFeedPostRows(where),
     db
-      .select()
+      .select({
+        ...getTableColumns(namefiFeedPostsTable),
+        ingestionRunMetadata: namefiFeedIngestionRunsTable.metadata,
+        ingestionWorkflowId: namefiFeedIngestionRunsTable.workflowId,
+      })
       .from(namefiFeedPostsTable)
+      .leftJoin(
+        namefiFeedIngestionRunsTable,
+        eq(
+          namefiFeedIngestionRunsTable.id,
+          namefiFeedPostsTable.ingestionRunId,
+        ),
+      )
       .where(where)
       .orderBy(...orderBy)
       .limit(input.pageSize)
@@ -665,6 +680,7 @@ export async function listNamefiFeedAdminDigestRuns(
   const orderBy = resolveTableSorting(
     input.sorting,
     {
+      workflow: salesDigestRunsTable.workflowId,
       status: salesDigestRunsTable.status,
       trigger: salesDigestRunsTable.trigger,
       generatedAt: salesDigestRunsTable.generatedAt,
@@ -755,8 +771,16 @@ async function listRecentPosts(): Promise<
   AdminNamefiFeedOverview['recentPosts']
 > {
   const rows = await db
-    .select()
+    .select({
+      ...getTableColumns(namefiFeedPostsTable),
+      ingestionRunMetadata: namefiFeedIngestionRunsTable.metadata,
+      ingestionWorkflowId: namefiFeedIngestionRunsTable.workflowId,
+    })
     .from(namefiFeedPostsTable)
+    .leftJoin(
+      namefiFeedIngestionRunsTable,
+      eq(namefiFeedIngestionRunsTable.id, namefiFeedPostsTable.ingestionRunId),
+    )
     .orderBy(desc(namefiFeedPostsTable.createdAt))
     .limit(15);
 
@@ -856,6 +880,7 @@ function serializeRunRow(
   const enqueueResult = asRecord(metadata.enqueueResult);
   const processResult = asRecord(metadata.processResult);
   const sourceResults = parseRunSourceResults(enqueueResult.sourceResults);
+  const temporalRunId = readOptionalString(metadata.temporalRunId);
   const scanSkippedPostCount =
     readNonnegativeInteger(enqueueResult.skippedPostCount) ??
     sourceResults.reduce((total, source) => total + source.skippedPostCount, 0);
@@ -869,6 +894,11 @@ function serializeRunRow(
   return {
     id: row.id,
     workflowId: row.workflowId,
+    temporalRunId,
+    temporalUiUrl: buildTemporalWorkflowUrl({
+      temporalRunId,
+      workflowId: row.workflowId,
+    }),
     trigger: row.trigger,
     status: row.status,
     startedAt: row.startedAt.toISOString(),
@@ -898,11 +928,40 @@ function serializeRunRow(
   };
 }
 
+function buildTemporalWorkflowUrl({
+  temporalRunId,
+  workflowId,
+}: {
+  temporalRunId?: string | null;
+  workflowId: string | null;
+}): string | null {
+  const normalizedWorkflowId = workflowId?.trim();
+  const normalizedTemporalRunId = temporalRunId?.trim();
+  return normalizedWorkflowId
+    ? getTemporalWorkflowUrl({
+        workflowId: normalizedWorkflowId,
+        runId: normalizedTemporalRunId || null,
+      })
+    : null;
+}
+
 function serializePostRow(
-  row: typeof namefiFeedPostsTable.$inferSelect,
+  row: typeof namefiFeedPostsTable.$inferSelect & {
+    ingestionRunMetadata?: Record<string, Json> | null;
+    ingestionWorkflowId?: string | null;
+  },
 ): AdminNamefiFeedOutputs['listPosts']['rows'][number] {
+  const ingestionRunMetadata = asRecord(row.ingestionRunMetadata);
+  const temporalRunId = readOptionalString(ingestionRunMetadata.temporalRunId);
   return {
     id: row.id,
+    ingestionRunId: row.ingestionRunId,
+    ingestionWorkflowId: row.ingestionWorkflowId ?? null,
+    temporalRunId,
+    temporalUiUrl: buildTemporalWorkflowUrl({
+      temporalRunId,
+      workflowId: row.ingestionWorkflowId ?? null,
+    }),
     externalPostId: row.externalPostId,
     authorUsername: row.authorUsername,
     authorDisplayName: row.authorDisplayName,
@@ -997,9 +1056,16 @@ function serializeDigestDeliveryRow(row: {
 function serializeDigestRunRow(
   row: typeof salesDigestRunsTable.$inferSelect,
 ): AdminNamefiFeedOutputs['listDigestRuns']['rows'][number] {
+  const metadata = asRecord(row.metadata);
+  const temporalRunId = readOptionalString(metadata.temporalRunId);
   return {
     id: row.id,
     workflowId: row.workflowId,
+    temporalRunId,
+    temporalUiUrl: buildTemporalWorkflowUrl({
+      temporalRunId,
+      workflowId: row.workflowId,
+    }),
     trigger: row.trigger,
     status: row.status,
     createdByUserId: row.createdByUserId,
@@ -1062,6 +1128,18 @@ function resolveTableSorting(
 
 async function countRows(table: CountableNamefiFeedTable, where?: SQL) {
   const [row] = await db.select({ value: count() }).from(table).where(where);
+  return Number(row?.value ?? 0);
+}
+
+async function countNamefiFeedPostRows(where?: SQL) {
+  const [row] = await db
+    .select({ value: count() })
+    .from(namefiFeedPostsTable)
+    .leftJoin(
+      namefiFeedIngestionRunsTable,
+      eq(namefiFeedIngestionRunsTable.id, namefiFeedPostsTable.ingestionRunId),
+    )
+    .where(where);
   return Number(row?.value ?? 0);
 }
 
@@ -1305,6 +1383,7 @@ function buildPostsSearchWhere(searchTerm?: string): SQL | undefined {
   }
 
   return or(
+    textMatches(namefiFeedPostsTable.ingestionRunId, pattern),
     textMatches(namefiFeedPostsTable.externalPostId, pattern),
     textMatches(namefiFeedPostsTable.authorUsername, pattern),
     textMatches(namefiFeedPostsTable.authorDisplayName, pattern),
@@ -1313,6 +1392,8 @@ function buildPostsSearchWhere(searchTerm?: string): SQL | undefined {
     textMatches(namefiFeedPostsTable.failureReason, pattern),
     textMatches(namefiFeedPostsTable.skipReason, pattern),
     textMatches(namefiFeedPostsTable.text, pattern),
+    textMatches(namefiFeedIngestionRunsTable.workflowId, pattern),
+    textMatches(namefiFeedIngestionRunsTable.metadata, pattern),
   );
 }
 
@@ -1385,6 +1466,7 @@ function buildDigestRunsSearchWhere(searchTerm?: string): SQL | undefined {
     textMatches(salesDigestRunsTable.fallbackReason, pattern),
     textMatches(salesDigestRunsTable.errorMessage, pattern),
     textMatches(salesDigestRunsTable.digestTextHash, pattern),
+    textMatches(salesDigestRunsTable.metadata, pattern),
   );
 }
 

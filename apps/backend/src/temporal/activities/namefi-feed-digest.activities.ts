@@ -5,6 +5,7 @@ export async function runNamefiFeedSalesDigestActivity(input: {
   createdByUserId?: string | null;
   digestRunId?: string | null;
   trigger?: 'scheduled' | 'manual';
+  temporalRunId?: string | null;
   workflowId?: string | null;
   includeAnimation?: boolean;
   includeImage?: boolean;
@@ -17,6 +18,7 @@ export async function runNamefiFeedSalesDigestActivity(input: {
     createdByUserId: input.createdByUserId,
     digestRunId: input.digestRunId,
     trigger: input.trigger,
+    temporalRunId: input.temporalRunId,
     workflowId: input.workflowId,
     includeAnimation: input.includeAnimation,
     includeImage: input.includeImage,

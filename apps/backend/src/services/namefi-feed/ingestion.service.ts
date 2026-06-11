@@ -212,6 +212,7 @@ export class NamefiFeedXApiError extends Error {
 }
 
 export async function createNamefiFeedIngestionRun(input: {
+  temporalRunId?: string | null;
   workflowId: string;
   trigger: 'scheduled' | 'manual';
   requestedByUserId?: string | null;
@@ -266,17 +267,18 @@ export async function createNamefiFeedIngestionRun(input: {
       const [run] = await tx
         .insert(namefiFeedIngestionRunsTable)
         .values({
-          workflowId: input.workflowId,
-          trigger: input.trigger,
-          requestedByUserId: input.requestedByUserId ?? null,
-          status: 'skipped',
-          finishedAt: new Date(),
           metadata: {
+            ...buildTemporalRunMetadata(input.temporalRunId),
             skipReason: 'ingestion_already_running',
             activeRunId: activeRun.id,
             activeWorkflowId: activeRun.workflowId,
             activeRunStartedAt: activeRun.startedAt.toISOString(),
           },
+          workflowId: input.workflowId,
+          trigger: input.trigger,
+          requestedByUserId: input.requestedByUserId ?? null,
+          status: 'skipped',
+          finishedAt: new Date(),
         })
         .returning({ id: namefiFeedIngestionRunsTable.id });
 
@@ -299,6 +301,7 @@ export async function createNamefiFeedIngestionRun(input: {
     const [run] = await tx
       .insert(namefiFeedIngestionRunsTable)
       .values({
+        metadata: buildTemporalRunMetadata(input.temporalRunId),
         workflowId: input.workflowId,
         trigger: input.trigger,
         requestedByUserId: input.requestedByUserId ?? null,
@@ -1248,12 +1251,15 @@ export async function completeNamefiFeedIngestionRun(input: {
   status?: 'completed' | 'skipped';
   metadata?: Record<string, Json>;
 }) {
+  const metadata = input.metadata
+    ? mergeNamefiFeedIngestionRunMetadata(input.metadata)
+    : undefined;
   const [updated] = await db
     .update(namefiFeedIngestionRunsTable)
     .set({
       status: input.status ?? 'completed',
       finishedAt: new Date(),
-      metadata: input.metadata ?? {},
+      ...(metadata ? { metadata } : {}),
     })
     .where(eq(namefiFeedIngestionRunsTable.id, input.runId))
     .returning({ id: namefiFeedIngestionRunsTable.id });
@@ -1280,6 +1286,21 @@ export async function failNamefiFeedIngestionRun(input: {
     throw new Error('Namefi feed ingestion run not found.');
   }
   await touchNamefiFeedLastRunAt();
+}
+
+function buildTemporalRunMetadata(
+  temporalRunId?: string | null,
+): Record<string, Json> {
+  const normalizedTemporalRunId = temporalRunId?.trim();
+  return normalizedTemporalRunId
+    ? { temporalRunId: normalizedTemporalRunId }
+    : {};
+}
+
+function mergeNamefiFeedIngestionRunMetadata(metadata: Record<string, Json>) {
+  return sql`${namefiFeedIngestionRunsTable.metadata} || ${JSON.stringify(
+    metadata,
+  )}::jsonb`;
 }
 
 async function insertNamefiFeedPostFromX(input: {

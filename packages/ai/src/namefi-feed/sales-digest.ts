@@ -24,7 +24,7 @@ const MAX_LISTINGS_FOR_PROMPT = 120;
 const MAX_MESSAGE_SNIPPET_LENGTH = 180;
 const MAX_TOP_TLDS = 12;
 const MAX_TOP_PATTERNS = 12;
-const MAX_WORD_CLOUD_DOMAINS = 12;
+export const MAX_WORD_CLOUD_DOMAINS = 7;
 const DIGEST_SOURCE_LABEL = 'Namefi Feed';
 const NAMEFI_FEED_URL = 'https://namefi.io/feed';
 const PRIMARY_ACCENT_COLOR = '#0EA5E9';
@@ -91,7 +91,7 @@ const salesDigestInsightSchema = z
           .strict(),
       )
       .min(1)
-      .max(12),
+      .max(MAX_WORD_CLOUD_DOMAINS),
   })
   .strict();
 
@@ -666,9 +666,12 @@ export function normalizeSalesDigestInsight(
       seenDomains.add(pick.domain);
       return true;
     })
-    .slice(0, 12);
+    .slice(0, MAX_WORD_CLOUD_DOMAINS);
 
-  const requiredTopPicks = context.marketStats.requiredTopPicks;
+  const requiredTopPicks = Math.min(
+    context.marketStats.requiredTopPicks,
+    MAX_WORD_CLOUD_DOMAINS,
+  );
   for (const pick of buildSupplementalTopPicks(topPicks, context)) {
     topPicks.push(pick);
     if (topPicks.length >= requiredTopPicks) {

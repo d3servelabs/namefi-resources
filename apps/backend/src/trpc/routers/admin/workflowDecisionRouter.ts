@@ -2,9 +2,9 @@ import { adminWorkflowDecisionContract } from '@namefi-astra/common/contract/adm
 import { Permission } from '@namefi-astra/utils';
 import { TRPCError } from '@trpc/server';
 import { ResourceType } from '#lib/auditor';
-import { config } from '#lib/env';
 import { logger } from '#lib/logger';
 import { temporalClient } from '#temporal/client';
+import { getTemporalWorkflowUrl } from '#temporal/activities/default/get-workflow-url';
 import type { ArmedGateContext } from '#temporal/shared/workflow-helpers/decision-gate';
 import {
   adminProcedureWithPermissions,
@@ -37,13 +37,6 @@ interface ArmedSnapshot {
 
 /** Memo key the decision-gate registry writes (signal names of its registries). */
 const REGISTRY_NAMES_MEMO_KEY = '__decisionGateRegistryNames';
-
-/** Base of the Temporal Web UI for deep-linking a run (localhost in dev, cloud otherwise). */
-const TEMPORAL_UI_NAMESPACE_BASE = `${
-  config.TEMPORAL_API_URL?.includes('localhost')
-    ? 'http://localhost:8233'
-    : 'https://cloud.temporal.io'
-}/namespaces/${config.TEMPORAL_NAMESPACE}`;
 
 /** `decisionGate[:prefix]` → `decisionGateArmed[:prefix]`. */
 function armedQueryNameForSignal(signalName: string): string {
@@ -148,9 +141,10 @@ export const workflowDecisionRouter = createContractTRPCRouter<
             runId: wf.runId,
             workflowType: wf.type,
             startedAt: wf.startTime?.toISOString(),
-            temporalUiUrl: `${TEMPORAL_UI_NAMESPACE_BASE}/workflows/${encodeURIComponent(
-              wf.workflowId,
-            )}/${encodeURIComponent(wf.runId)}`,
+            temporalUiUrl: getTemporalWorkflowUrl({
+              workflowId: wf.workflowId,
+              runId: wf.runId,
+            }),
             gates,
           });
         }

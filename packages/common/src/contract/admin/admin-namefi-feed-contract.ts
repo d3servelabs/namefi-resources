@@ -69,6 +69,8 @@ export const adminNamefiFeedSettingsSchema = z.object({
 export const adminNamefiFeedRunSchema = z.object({
   id: z.string().uuid(),
   workflowId: z.string().nullable(),
+  temporalRunId: z.string().nullable(),
+  temporalUiUrl: z.string().url().nullable(),
   trigger: z.enum(['scheduled', 'manual']),
   status: z.enum(['running', 'completed', 'failed', 'skipped']),
   startedAt: z.string(),
@@ -92,6 +94,10 @@ export const adminNamefiFeedRunSchema = z.object({
 
 export const adminNamefiFeedPostSchema = z.object({
   id: z.string().uuid(),
+  ingestionRunId: z.string().uuid().nullable(),
+  ingestionWorkflowId: z.string().nullable(),
+  temporalRunId: z.string().nullable(),
+  temporalUiUrl: z.string().url().nullable(),
   externalPostId: z.string(),
   authorUsername: z.string().nullable(),
   authorDisplayName: z.string().nullable(),
@@ -218,6 +224,8 @@ export const adminNamefiFeedDigestDeliverySchema = z.object({
 export const adminNamefiFeedDigestRunSchema = z.object({
   id: z.string().uuid(),
   workflowId: z.string().nullable(),
+  temporalRunId: z.string().nullable(),
+  temporalUiUrl: z.string().url().nullable(),
   trigger: z.enum(['scheduled', 'manual']),
   status: z.enum([
     'running',

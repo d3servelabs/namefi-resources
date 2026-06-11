@@ -51,6 +51,7 @@ import {
 import type { CheckoutTrackingIdentity } from '#lib/tracking/checkout/context';
 import { getPreferredEvmWalletAddressToBeCharged } from './payment.activities';
 import { sendAlertToSlack } from './domain/renew.activities';
+import { getTemporalWorkflowUrl } from './default/get-workflow-url';
 
 function pickCheckoutTrackingIdentity(
   input: CheckoutTrackingIdentity,
@@ -1489,7 +1490,10 @@ export async function sendOrderCompletionSlackAlert(
     return;
   }
 
-  const temporalUrl = `https://cloud.temporal.io/namespaces/${encodeURIComponent(config.TEMPORAL_NAMESPACE)}/workflows/${encodeURIComponent(input.workflowId)}/${encodeURIComponent(input.runId)}/history`;
+  const temporalUrl = getTemporalWorkflowUrl({
+    workflowId: input.workflowId,
+    runId: input.runId,
+  });
 
   // `config.APP_URL` is a bare hostname (e.g. `astra.namefi.io` or
   // `localhost:3001`); localhost is served over http, everything else https.

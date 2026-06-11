@@ -1551,6 +1551,42 @@ function formatDigestRunRender(run: NamefiFeedDigestRunsPage['rows'][number]) {
   return parts.length > 0 ? parts.join(', ') : '-';
 }
 
+function TemporalWorkflowLink({
+  temporalRunId,
+  temporalUiUrl,
+  workflowId,
+}: {
+  temporalRunId?: string | null;
+  temporalUiUrl?: string | null;
+  workflowId?: string | null;
+}) {
+  if (!temporalUiUrl) {
+    return '-';
+  }
+
+  const label =
+    workflowId && temporalRunId
+      ? `Open Temporal workflow ${workflowId} run ${temporalRunId}`
+      : `Open Temporal workflow ${workflowId ?? ''}`;
+
+  return (
+    <a
+      href={temporalUiUrl}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={label}
+      title={
+        workflowId && temporalRunId
+          ? `${workflowId} / ${temporalRunId}`
+          : (workflowId ?? 'Open Temporal workflow')
+      }
+      className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+    >
+      <ExternalLink className="h-4 w-4" />
+    </a>
+  );
+}
+
 function ListingsTable({
   isMutating,
   onToggleSuppressed,
@@ -1867,6 +1903,18 @@ function RunsTable() {
       },
       { accessorKey: 'trigger', header: 'Trigger' },
       {
+        id: 'workflow',
+        accessorFn: (row) => row.workflowId ?? '',
+        header: 'Workflow',
+        cell: ({ row }) => (
+          <TemporalWorkflowLink
+            temporalRunId={row.original.temporalRunId}
+            workflowId={row.original.workflowId}
+            temporalUiUrl={row.original.temporalUiUrl}
+          />
+        ),
+      },
+      {
         accessorKey: 'startedAt',
         header: 'Started',
         cell: ({ row }) => formatDate(row.original.startedAt),
@@ -1994,6 +2042,18 @@ function PostsTable() {
         cell: ({ row }) => <StatusBadge status={row.original.status} />,
       },
       { accessorKey: 'source', header: 'Source' },
+      {
+        id: 'workflow',
+        accessorFn: (row) => row.ingestionWorkflowId ?? '',
+        header: 'Workflow',
+        cell: ({ row }) => (
+          <TemporalWorkflowLink
+            temporalRunId={row.original.temporalRunId}
+            workflowId={row.original.ingestionWorkflowId}
+            temporalUiUrl={row.original.temporalUiUrl}
+          />
+        ),
+      },
       {
         accessorKey: 'authorUsername',
         header: 'Author',
@@ -2215,6 +2275,18 @@ function DigestRunsTable() {
         cell: ({ row }) => <StatusBadge status={row.original.status} />,
       },
       { accessorKey: 'trigger', header: 'Trigger' },
+      {
+        id: 'workflow',
+        accessorFn: (row) => row.workflowId ?? '',
+        header: 'Workflow',
+        cell: ({ row }) => (
+          <TemporalWorkflowLink
+            temporalRunId={row.original.temporalRunId}
+            workflowId={row.original.workflowId}
+            temporalUiUrl={row.original.temporalUiUrl}
+          />
+        ),
+      },
       {
         accessorKey: 'generatedAt',
         header: 'Generated',

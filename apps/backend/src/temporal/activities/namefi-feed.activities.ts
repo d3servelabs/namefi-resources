@@ -11,6 +11,7 @@ import {
 } from '../../services/namefi-feed/ingestion.service';
 
 export async function startNamefiFeedIngestionRun(input: {
+  temporalRunId?: string | null;
   workflowId: string;
   trigger: 'scheduled' | 'manual';
   requestedByUserId?: string | null;
