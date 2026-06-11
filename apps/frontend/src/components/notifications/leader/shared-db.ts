@@ -89,9 +89,10 @@ async function buildSharedDb(): Promise<SharedDb> {
     // `multiInstance: true` is what enables the BroadcastChannel-based
     // change-event fan-out and the leader-election plugin's tab election.
     multiInstance: true,
-    // HMR re-runs this module in dev; without this flag the second
-    // `createRxDatabase` call throws "database already exists".
-    ignoreDuplicate: process.env.NODE_ENV !== 'production',
+    // HMR re-runs this module in dev; close the stale in-memory instance
+    // instead of using `ignoreDuplicate`, which RxDB allows only with its
+    // dev-mode plugin enabled.
+    closeDuplicates: process.env.NODE_ENV !== 'production',
     // Tab close fires `beforeunload` too late to cleanly close; let RxDB
     // assume the previous instance was killed.
     allowSlowCount: true,

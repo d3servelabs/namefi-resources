@@ -168,14 +168,22 @@ function LeaderCoordinatorInner(): null {
   // the seeded-but-never-polled state; skip those so we don't briefly
   // flicker a stale cache value to 0 on first mount.
   useEffect(() => {
-    const sub = readSharedDoc$().subscribe((doc) => {
-      if (!doc) return;
-      const json = doc.toJSON() as SharedStateDocType;
-      setSharedDoc(json);
-      if (json.lastUpdatedAt === 0) return;
-      queryClient.setQueryData(trpc.notifications.getUnreadCount.queryKey({}), {
-        count: json.count,
-      });
+    const sub = readSharedDoc$().subscribe({
+      next: (doc) => {
+        if (!doc) return;
+        const json = doc.toJSON() as SharedStateDocType;
+        setSharedDoc(json);
+        if (json.lastUpdatedAt === 0) return;
+        queryClient.setQueryData(
+          trpc.notifications.getUnreadCount.queryKey({}),
+          {
+            count: json.count,
+          },
+        );
+      },
+      error: (error) => {
+        console.error('[LeaderCoordinator] readSharedDoc failed', error);
+      },
     });
     return () => sub.unsubscribe();
   }, [queryClient, trpc.notifications.getUnreadCount]);
