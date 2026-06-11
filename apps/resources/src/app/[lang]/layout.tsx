@@ -16,11 +16,18 @@ import '../globals.css';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap',
+  preload: true,
 });
 
+// Geist Mono is only used for code blocks (prose-pre/prose-code) and a few
+// tabular-nums timestamps — never the LCP body text. Keep it off the preload /
+// render-blocking critical path so it doesn't compete with the body font.
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {

@@ -7,7 +7,12 @@
 
 @source "..";
 @source "../../../../packages/ui/src";
-@source "../../data";
+/* Note: the `data` content submodule is intentionally NOT an `@source`. It holds
+   blog/MDX content rendered through `mdx-components.tsx` as prose — no `class`/
+   `className` Tailwind utilities live there, so the app + UI sources above
+   already cover every class emitted on these routes. Scanning `data` (1.3k+ .md
+   plus the submodule's own .ts/.js) only risks future false-positive utilities
+   leaking into the always-loaded, render-blocking global CSS. */
 
 @layer base {
   body.ltr {

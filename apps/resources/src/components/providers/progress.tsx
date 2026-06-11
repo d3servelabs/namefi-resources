@@ -1,22 +1,23 @@
 'use client';
 
-import { ProgressProvider as NextProgressProvider } from '@bprogress/next/app';
-import type { AppProgressProviderProps } from '@bprogress/next';
+import dynamic from 'next/dynamic';
+import type { PropsWithChildren } from 'react';
 
-export const ProgressProvider = ({
-  children,
-  ...rest
-}: AppProgressProviderProps) => {
+// The bprogress navigation bar is loaded lazily and client-only so its runtime
+// ships as a separate, non-critical chunk instead of being bundled into the
+// initial provider chunk that the (mostly static) article route downloads. The
+// bar renders no children, so `children` pass straight through and keep their
+// server-rendered first paint intact.
+const NavigationProgressBar = dynamic(
+  () =>
+    import('./navigation-progress-bar').then((m) => m.NavigationProgressBar),
+  { ssr: false },
+);
+
+export const ProgressProvider = ({ children }: PropsWithChildren) => {
   return (
     <>
-      <NextProgressProvider
-        {...rest}
-        height="2px"
-        color="var(--color-brand-primary)"
-        options={{ showSpinner: false }}
-        shallowRouting
-        disableSameURL
-      />
+      <NavigationProgressBar />
       {children}
     </>
   );
