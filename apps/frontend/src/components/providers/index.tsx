@@ -11,7 +11,6 @@ import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
-import { WagmiProvider } from './wagmi';
 import { DeferredProviders } from './deferred-providers';
 
 export const Providers: FC<PropsWithChildren> = async ({ children }) => {
@@ -23,19 +22,17 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
           <TrpcProvider>
             <NuqsAdapter>
               <ProgressProvider>
-                <WagmiProvider>
-                  <ConsentProvider>
-                    <PreAuthSignalsProvider>
-                      <InteractionLoggersProvider>
-                        <WishlistProvider>
-                          <CartProvider>
-                            <DeferredProviders>{children}</DeferredProviders>
-                          </CartProvider>
-                        </WishlistProvider>
-                      </InteractionLoggersProvider>
-                    </PreAuthSignalsProvider>
-                  </ConsentProvider>
-                </WagmiProvider>
+                <ConsentProvider>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <WishlistProvider>
+                        <CartProvider>
+                          <DeferredProviders>{children}</DeferredProviders>
+                        </CartProvider>
+                      </WishlistProvider>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </ConsentProvider>
               </ProgressProvider>
             </NuqsAdapter>
           </TrpcProvider>

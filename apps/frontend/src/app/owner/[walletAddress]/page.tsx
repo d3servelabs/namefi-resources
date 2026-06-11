@@ -7,6 +7,7 @@ import type { OriginInfo } from '@/lib/origin';
 import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 import { PageShell } from '@/components/page-shell';
+import { WagmiProvider } from '@/components/providers/wagmi';
 
 interface PageProps {
   params: Promise<{ walletAddress: string }>;
@@ -38,7 +39,9 @@ export default async function OwnerWalletPage({ params }: PageProps) {
         </p>
       </div>
       <Suspense fallback={<WalletNftGridSkeleton />}>
-        <WalletNftGrid walletIdentifier={decoded} origin={originInfo} />
+        <WagmiProvider>
+          <WalletNftGrid walletIdentifier={decoded} origin={originInfo} />
+        </WagmiProvider>
       </Suspense>
     </PageShell>
   );

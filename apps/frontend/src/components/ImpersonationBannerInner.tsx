@@ -18,11 +18,14 @@ import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
 
 type ImpersonationStatus = AppRouterOutput['users']['getImpersonationStatus'];
+type ImpersonationTarget = NonNullable<
+  NonNullable<ImpersonationStatus>['target']
+>;
 type ImpersonationParticipant =
   | NonNullable<ImpersonationStatus>['actor']
-  | NonNullable<ImpersonationStatus>['target'];
+  | ImpersonationTarget;
 
-type ImpersonationBannerInnerProps = {
+export type ImpersonationBannerInnerProps = {
   refetchStatus: () => Promise<unknown>;
   status: ImpersonationStatus | null | undefined;
 };
@@ -31,15 +34,35 @@ export default function ImpersonationBannerInner({
   refetchStatus,
   status,
 }: ImpersonationBannerInnerProps) {
+  const isImpersonating = Boolean(status?.impersonating);
+  const targetUser = status?.impersonating ? status.target : null;
+
+  if (!isImpersonating || !targetUser) return null;
+
+  return (
+    <ActiveImpersonationBannerInner
+      actorUser={status?.actor}
+      refetchStatus={refetchStatus}
+      targetUser={targetUser}
+    />
+  );
+}
+
+function ActiveImpersonationBannerInner({
+  actorUser,
+  refetchStatus,
+  targetUser,
+}: {
+  actorUser: ImpersonationParticipant | null | undefined;
+  refetchStatus: () => Promise<unknown>;
+  targetUser: ImpersonationTarget;
+}) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const stopMutation = useMutation(
     trpc.users.stopImpersonating.mutationOptions(),
   );
 
-  const isImpersonating = Boolean(status?.impersonating);
-  const targetUser = status?.impersonating ? status.target : null;
-  const actorUser = status?.actor;
   const actorWalletAddress = parseWalletAddress(actorUser?.mainWalletAddress);
   const targetWalletAddress = parseWalletAddress(targetUser?.mainWalletAddress);
 
@@ -77,8 +100,6 @@ export default function ImpersonationBannerInner({
     ens?: string | null,
   ) =>
     u?.displayName || u?.primaryEmail || ens || u?.mainWalletAddress || u?.id;
-
-  if (!isImpersonating || !targetUser) return null;
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">

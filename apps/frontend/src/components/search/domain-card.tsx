@@ -5,7 +5,7 @@ import {
   AnimatedWishlistButton,
   type WishlistButtonState,
 } from '@/components/buttons/animated-wishlist-button';
-import { InstantBuyButton } from '@/components/instant-buy';
+import { InstantBuyButton } from '@/components/instant-buy/instant-buy-button';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';

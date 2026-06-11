@@ -31,14 +31,19 @@ export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 type UserDropdownFullComponent =
-  typeof import('@/components/dropdowns/user-dropdown-full').UserDropdownMenu;
+  typeof import('@/components/dropdowns/user-dropdown-full-runtime').UserDropdownMenuRuntime;
 
 let userDropdownMenuPromise: Promise<UserDropdownFullComponent> | null = null;
 
 function loadUserDropdownMenu(): Promise<UserDropdownFullComponent> {
   userDropdownMenuPromise ??= import(
-    '@/components/dropdowns/user-dropdown-full'
-  ).then((mod) => mod.UserDropdownMenu);
+    '@/components/dropdowns/user-dropdown-full-runtime'
+  )
+    .then((mod) => mod.UserDropdownMenuRuntime)
+    .catch((error) => {
+      userDropdownMenuPromise = null;
+      throw error;
+    });
   return userDropdownMenuPromise;
 }
 
@@ -70,9 +75,13 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     const requestMenu = useCallback(() => {
       if (isLoading || !isAuthenticated || UserDropdownMenu) return;
       setHasRequestedMenu(true);
-      void loadUserDropdownMenu().then((Component) => {
-        setUserDropdownMenu(() => Component);
-      });
+      void loadUserDropdownMenu()
+        .then((Component) => {
+          setUserDropdownMenu(() => Component);
+        })
+        .catch(() => {
+          setHasRequestedMenu(false);
+        });
     }, [isAuthenticated, isLoading, UserDropdownMenu]);
 
     const handleMenuOpenChange = useCallback(
@@ -98,6 +107,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     const actionVariant = isExpanded ? 'pill' : 'icon';
     const name = getUserDisplayName(privyUser);
     const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
+    const hasMenuRuntime = hasOpenedMenu && Boolean(UserDropdownMenu);
 
     return (
       <div
@@ -150,10 +160,10 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                       className="shrink-0"
                       layout
                     >
+                      {/* The visible shell avatar stays eager; menu runtime only gates admin controls. */}
                       <CurrentUserAvatar
-                        enableAdminLookupButtons={
-                          hasOpenedMenu && Boolean(UserDropdownMenu)
-                        }
+                        enableAdminLookupButtons={hasMenuRuntime}
+                        enableWalletImage={true}
                       />
                     </motion.div>
                     {isExpanded && (

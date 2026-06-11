@@ -1,10 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { Zap } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import { Loader2, Zap } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
-import { InstantBuyModal } from './instant-buy-modal';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
 import {
   Tooltip,
@@ -21,6 +20,24 @@ export interface InstantBuyButtonProps {
   disabled?: boolean;
   className?: string;
 }
+
+type InstantBuyModalRuntimeComponent =
+  typeof import('./instant-buy-modal-runtime').InstantBuyModalRuntime;
+
+let instantBuyModalRuntimePromise: Promise<InstantBuyModalRuntimeComponent> | null =
+  null;
+
+function loadInstantBuyModalRuntime(): Promise<InstantBuyModalRuntimeComponent> {
+  instantBuyModalRuntimePromise ??= import('./instant-buy-modal-runtime')
+    .then((mod) => mod.InstantBuyModalRuntime)
+    .catch((error) => {
+      instantBuyModalRuntimePromise = null;
+      throw error;
+    });
+
+  return instantBuyModalRuntimePromise;
+}
+
 const FLAG_DEFINITION: FeatureFlagDefinition[] = [
   {
     key: 'instant_buy',
@@ -43,15 +60,37 @@ export function InstantBuyButtonInner({
   className,
 }: InstantBuyButtonProps) {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isModalRuntimeLoading, setIsModalRuntimeLoading] = useState(false);
+  const [InstantBuyModalRuntime, setInstantBuyModalRuntime] =
+    useState<InstantBuyModalRuntimeComponent | null>(null);
   const { isAuthenticated } = useAuth();
+
+  const requestModalRuntime = useCallback(() => {
+    if (InstantBuyModalRuntime) return;
+
+    setIsModalRuntimeLoading(true);
+    void loadInstantBuyModalRuntime()
+      .then((Component) => {
+        setInstantBuyModalRuntime(() => Component);
+      })
+      .catch(() => {
+        setModalOpen(false);
+      })
+      .finally(() => {
+        setIsModalRuntimeLoading(false);
+      });
+  }, [InstantBuyModalRuntime]);
 
   const handleClick = () => {
     if (!isAuthenticated) {
       // TODO: User not authenticated - the modal will handle showing auth required state
     }
     setModalOpen(true);
+    requestModalRuntime();
   };
   if (!isAuthenticated) return null;
+
+  const isOpeningModal = modalOpen && isModalRuntimeLoading;
 
   return (
     <>
@@ -68,9 +107,13 @@ export function InstantBuyButtonInner({
             />
           }
           onClick={handleClick}
-          disabled={disabled}
+          disabled={disabled || isOpeningModal}
         >
-          <Zap className="h-4 w-4 ml-1 group-hover:ml-0" />
+          {isOpeningModal ? (
+            <Loader2 className="h-4 w-4 ml-1 animate-spin group-hover:ml-0" />
+          ) : (
+            <Zap className="h-4 w-4 ml-1 group-hover:ml-0" />
+          )}
           <span
             className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
             style={{ transition: 'all 0.4s ease-in-out' }}
@@ -83,11 +126,13 @@ export function InstantBuyButtonInner({
         </TooltipContent>
       </Tooltip>
 
-      <InstantBuyModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
-        domainAvailabilityInfo={domainAvailabilityInfo}
-      />
+      {InstantBuyModalRuntime && modalOpen ? (
+        <InstantBuyModalRuntime
+          open={modalOpen}
+          onOpenChange={setModalOpen}
+          domainAvailabilityInfo={domainAvailabilityInfo}
+        />
+      ) : null}
     </>
   );
 }

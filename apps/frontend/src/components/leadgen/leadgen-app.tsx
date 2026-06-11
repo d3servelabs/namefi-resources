@@ -227,8 +227,8 @@ const HOW_TO_SELL_DOMAIN_BLOG_HREF =
 const CreateListingModal = dynamic(
   () =>
     import(
-      '@/components/domain-and-dns-managment/panels/marketplace/create-listing-modal'
-    ).then((m) => m.CreateListingModal),
+      '@/components/domain-and-dns-managment/panels/marketplace/create-listing-modal-runtime'
+    ).then((m) => m.CreateListingModalRuntime),
   { ssr: false },
 );
 const leadgenStatusLabels = {

@@ -17,9 +17,9 @@
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun"
   },
   "dependencies": {
-    "@cfx-kit/wallet-avatar": "catalog:",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/ui": "workspace:*",
+    "@namefi-astra/utils": "workspace:*",
     "lucide-react": "catalog:",
     "next": "catalog:",
     "next-themes": "catalog:",

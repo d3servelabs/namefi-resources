@@ -8,6 +8,7 @@ import {
 import { getOriginRuntime } from '@/lib/origin/utils.server';
 import type { OriginInfo } from '@/lib/origin';
 import { PageShell } from '@/components/page-shell';
+import { WagmiProvider } from '@/components/providers/wagmi';
 
 // 0xmaks.eth — a public, well-known wallet with a diverse Namefi NFT
 // portfolio. Hardcoded as the featured holder so this page renders meaningful
@@ -81,10 +82,12 @@ export default async function GalleryPage() {
         </p>
       </header>
       <Suspense fallback={<WalletNftGridSkeleton />}>
-        <WalletNftGrid
-          walletIdentifier={FEATURED_GALLERY_WALLET}
-          origin={originInfo}
-        />
+        <WagmiProvider>
+          <WalletNftGrid
+            walletIdentifier={FEATURED_GALLERY_WALLET}
+            origin={originInfo}
+          />
+        </WagmiProvider>
       </Suspense>
     </PageShell>
   );

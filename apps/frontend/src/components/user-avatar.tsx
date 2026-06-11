@@ -23,6 +23,7 @@ import {
   Avatar,
   AvatarFallback,
 } from '@namefi-astra/ui/components/shadcn/avatar';
+import { walletAvatarFallbackClassName } from '@namefi-astra/ui/components/namefi/wallet-avatar-fallback';
 
 type UserWalletAvatarProps = ComponentProps<typeof Avatar> & {
   address?: string | null;
@@ -30,7 +31,10 @@ type UserWalletAvatarProps = ComponentProps<typeof Avatar> & {
   adminOpenTarget?: 'user' | 'wallet';
   userId?: string;
   enableAdminLookupButtons?: boolean;
+  enableWalletImage?: boolean;
 };
+
+type UserWalletAvatarFrameProps = UserWalletAvatarProps;
 
 type AdminLookupButtonBaseProps = {
   className?: string;
@@ -90,30 +94,19 @@ const UserWalletAvatarInner = forwardRef<HTMLDivElement, UserWalletAvatarProps>(
       adminOpenTarget = 'user',
       userId,
       enableAdminLookupButtons = true,
+      enableWalletImage = true,
       ...props
     }: UserWalletAvatarProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
-    if (enableAdminLookupButtons && address) {
-      return (
-        <AdminEnabledUserWalletAvatar
-          address={address}
-          fallback={fallback}
-          adminOpenTarget={adminOpenTarget}
-          userId={userId}
-          {...props}
-          ref={ref}
-        />
-      );
-    }
-
     return (
       <UserWalletAvatarFrame
         address={address}
         fallback={fallback}
         adminOpenTarget={adminOpenTarget}
         userId={userId}
-        canReadUsers={false}
+        enableWalletImage={enableWalletImage}
+        enableAdminLookupButtons={enableAdminLookupButtons}
         {...props}
         ref={ref}
       />
@@ -122,35 +115,17 @@ const UserWalletAvatarInner = forwardRef<HTMLDivElement, UserWalletAvatarProps>(
 );
 UserWalletAvatarInner.displayName = 'UserWalletAvatarInner';
 
-const AdminEnabledUserWalletAvatar = forwardRef<
-  HTMLDivElement,
-  Omit<UserWalletAvatarProps, 'enableAdminLookupButtons'>
->(function AdminEnabledUserWalletAvatar(
-  props: Omit<UserWalletAvatarProps, 'enableAdminLookupButtons'>,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  const { hasPermissions: canReadUsers } = useHasPermissions([
-    Permission.READ_USERS,
-  ]);
-
-  return (
-    <UserWalletAvatarFrame {...props} canReadUsers={canReadUsers} ref={ref} />
-  );
-});
-AdminEnabledUserWalletAvatar.displayName = 'AdminEnabledUserWalletAvatar';
-
 const UserWalletAvatarFrame = forwardRef<
   HTMLDivElement,
-  Omit<UserWalletAvatarProps, 'enableAdminLookupButtons'> & {
-    canReadUsers: boolean;
-  }
+  UserWalletAvatarFrameProps
 >(function UserWalletAvatarFrame(
   {
     address,
-    fallback,
+    fallback: _fallback,
     adminOpenTarget = 'user',
     userId,
-    canReadUsers,
+    enableWalletImage = true,
+    enableAdminLookupButtons = true,
     ...props
   },
   ref: ForwardedRef<HTMLDivElement>,
@@ -167,62 +142,95 @@ const UserWalletAvatarFrame = forwardRef<
       <Avatar
         {...props}
         className={cn(
-          'size-8 rounded-lg',
-          canReadUsers &&
+          'size-8 overflow-hidden',
+          enableAdminLookupButtons &&
             address &&
             'transition-opacity duration-150 group-hover/user-wallet-avatar:opacity-35 group-focus-within/user-wallet-avatar:opacity-35',
           props.className,
+          'rounded-full',
         )}
         ref={ref}
       >
-        {address ? (
-          <LazyWalletAvatarImage
-            address={address}
-            className={cn('bg-[#f26202] rounded-full', props.className)}
-          />
-        ) : null}
-        <AvatarFallback className="rounded-lg">{fallback ?? ''}</AvatarFallback>
-      </Avatar>
-      {canReadUsers && address ? (
-        adminOpenTarget === 'wallet' ? (
-          <LazyAdminWalletDetailsButton
-            walletAddress={address}
-            variant="outline"
-            size="icon-xs"
-            title="Open wallet details"
-            onMouseDown={stopInfoIconPropagation}
-            onMouseUp={stopInfoIconPropagation}
-            onPointerDown={stopInfoIconPropagation}
-            onPointerUp={stopInfoIconPropagation}
-            onClick={stopInfoIconPropagation}
-            className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
-          >
-            <Info className="h-3.5 w-3.5" />
-          </LazyAdminWalletDetailsButton>
+        {address && enableWalletImage ? (
+          <LazyWalletAvatarImage address={address} className="rounded-full" />
         ) : (
-          <LazyAdminUserLookupButton
-            reference={userId ? { userId } : { walletAddress: address }}
-            variant="outline"
-            size="icon-xs"
-            title="Open account details"
-            onMouseDown={stopInfoIconPropagation}
-            onMouseUp={stopInfoIconPropagation}
-            onPointerDown={stopInfoIconPropagation}
-            onPointerUp={stopInfoIconPropagation}
-            onClick={stopInfoIconPropagation}
-            className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
-          >
-            <Info className="h-3.5 w-3.5" />
-          </LazyAdminUserLookupButton>
-        )
+          <AvatarFallback
+            className={cn('rounded-full', walletAvatarFallbackClassName)}
+          />
+        )}
+      </Avatar>
+      {enableAdminLookupButtons && address ? (
+        <AdminWalletAvatarControls
+          address={address}
+          adminOpenTarget={adminOpenTarget}
+          userId={userId}
+          stopInfoIconPropagation={stopInfoIconPropagation}
+        />
       ) : null}
     </div>
   );
 });
 UserWalletAvatarFrame.displayName = 'UserWalletAvatarFrame';
 
+function AdminWalletAvatarControls({
+  address,
+  adminOpenTarget,
+  userId,
+  stopInfoIconPropagation,
+}: {
+  address: string;
+  adminOpenTarget: 'user' | 'wallet';
+  userId?: string;
+  stopInfoIconPropagation: (
+    event: MouseEvent<HTMLButtonElement> | PointerEvent<HTMLButtonElement>,
+  ) => void;
+}) {
+  const { hasPermissions: canReadUsers } = useHasPermissions([
+    Permission.READ_USERS,
+  ]);
+
+  if (!canReadUsers) return null;
+
+  return (
+    <>
+      {adminOpenTarget === 'wallet' ? (
+        <LazyAdminWalletDetailsButton
+          walletAddress={address}
+          variant="outline"
+          size="icon-xs"
+          title="Open wallet details"
+          onMouseDown={stopInfoIconPropagation}
+          onMouseUp={stopInfoIconPropagation}
+          onPointerDown={stopInfoIconPropagation}
+          onPointerUp={stopInfoIconPropagation}
+          onClick={stopInfoIconPropagation}
+          className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
+        >
+          <Info className="h-3.5 w-3.5" />
+        </LazyAdminWalletDetailsButton>
+      ) : (
+        <LazyAdminUserLookupButton
+          reference={userId ? { userId } : { walletAddress: address }}
+          variant="outline"
+          size="icon-xs"
+          title="Open account details"
+          onMouseDown={stopInfoIconPropagation}
+          onMouseUp={stopInfoIconPropagation}
+          onPointerDown={stopInfoIconPropagation}
+          onPointerUp={stopInfoIconPropagation}
+          onClick={stopInfoIconPropagation}
+          className="pointer-events-none absolute inset-0 z-10 m-auto rounded-full border bg-background/95 opacity-0 shadow-sm backdrop-blur transition-opacity duration-150 group-hover/user-wallet-avatar:pointer-events-auto group-hover/user-wallet-avatar:opacity-100 group-focus-within/user-wallet-avatar:pointer-events-auto group-focus-within/user-wallet-avatar:opacity-100"
+        >
+          <Info className="h-3.5 w-3.5" />
+        </LazyAdminUserLookupButton>
+      )}
+    </>
+  );
+}
+
 type CurrentUserAvatarProps = ComponentProps<typeof Avatar> & {
   enableAdminLookupButtons?: boolean;
+  enableWalletImage?: boolean;
 };
 
 export const CurrentUserAvatar = forwardRef<
@@ -230,7 +238,11 @@ export const CurrentUserAvatar = forwardRef<
   CurrentUserAvatarProps
 >(
   (
-    { enableAdminLookupButtons = true, ...props }: CurrentUserAvatarProps,
+    {
+      enableAdminLookupButtons = true,
+      enableWalletImage = true,
+      ...props
+    }: CurrentUserAvatarProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
     const { privyUser } = useAuth();
@@ -243,6 +255,7 @@ export const CurrentUserAvatar = forwardRef<
         address={privyUser?.wallet?.address}
         fallback={fallback}
         enableAdminLookupButtons={enableAdminLookupButtons}
+        enableWalletImage={enableWalletImage}
         {...props}
         ref={ref}
       />

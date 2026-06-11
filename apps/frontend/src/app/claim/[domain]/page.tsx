@@ -21,6 +21,7 @@ import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import confetti from 'canvas-confetti';
 import { PageShell } from '@/components/page-shell';
+import { WagmiProvider } from '@/components/providers/wagmi';
 
 export default function ClaimPage() {
   const router = useRouter();
@@ -293,14 +294,16 @@ export default function ClaimPage() {
 
         {/* Wallet selection */}
         {isAuthenticated ? (
-          <NftWalletCard
-            parentDomain={parentDomain}
-            onWalletAddressChange={setSelectedWalletAddress}
-            selectedWalletAddress={selectedWalletAddress}
-            disabled={isClaimPending}
-            isLinkedOrUserConfirmed={isLinkedOrUserConfirmed}
-            onIsLinkedOrUserConfirmationChange={setIsLinkedOrUserConfirmed}
-          />
+          <WagmiProvider>
+            <NftWalletCard
+              parentDomain={parentDomain}
+              onWalletAddressChange={setSelectedWalletAddress}
+              selectedWalletAddress={selectedWalletAddress}
+              disabled={isClaimPending}
+              isLinkedOrUserConfirmed={isLinkedOrUserConfirmed}
+              onIsLinkedOrUserConfirmationChange={setIsLinkedOrUserConfirmed}
+            />
+          </WagmiProvider>
         ) : null}
 
         {/* Login or Submit */}

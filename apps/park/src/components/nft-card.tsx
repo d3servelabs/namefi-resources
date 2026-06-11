@@ -1,20 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { generateAvatarURL } from '@cfx-kit/wallet-avatar';
 import { ExternalLink } from 'lucide-react';
 
 import { ParkShareMenu } from '@/components/share-menu';
+import { ParkWalletAvatarImage } from '@/components/wallet-avatar-image';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
   CardContent,
   CardHeader,
 } from '@namefi-astra/ui/components/shadcn/card';
+import { getEnsDataAvatarUrl } from '@namefi-astra/utils/wallet-avatar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { DomainDocument } from '@/lib/metadata';
 
 const LEADING_SLASHES_PATTERN = /^\/+/;
-const OWNER_HEX_PREFIX_PATTERN = /^0x/i;
 
 const CHAIN_BADGE_BY_NAME = {
   base: {
@@ -66,26 +66,6 @@ function formatOwner(address?: string | null): string {
     return `${address.slice(0, 6)}…${address.slice(-4)}`;
   }
   return address;
-}
-
-function getWalletAvatarFallback(address?: string | null): string {
-  if (!address) return '--';
-  const normalized = address.replace(OWNER_HEX_PREFIX_PATTERN, '').trim();
-  if (!normalized) return '--';
-  if (normalized.length === 1)
-    return `${normalized}${normalized}`.toUpperCase();
-  const first = normalized.slice(0, 1);
-  const last = normalized.slice(-1);
-  return `${first}${last}`.toUpperCase();
-}
-
-function getWalletAvatarSrc(address?: string | null): string | null {
-  if (!address) return null;
-  try {
-    return generateAvatarURL(address);
-  } catch {
-    return null;
-  }
 }
 
 function getChainBadge(chainName?: DomainDocument['chainName']) {
@@ -238,24 +218,16 @@ function ParkOwnerBlock({
   ownerLink,
   domainsCountByOwner,
 }: ParkOwnerBlockProps) {
-  const walletAvatarSrc = getWalletAvatarSrc(ownerAddress);
+  const walletAvatarSrc = getEnsDataAvatarUrl(ownerAddress);
 
   return (
     <div className="flex items-center gap-3 rounded-[1.15rem] border border-white/[0.05] bg-white/[0.035] px-3.5 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.035)]">
       <div className="relative size-10 shrink-0 overflow-hidden rounded-full ring-1 ring-white/25">
-        {walletAvatarSrc ? (
-          // biome-ignore lint/performance/noImgElement: wallet avatar lib returns data URI
-          <img
-            src={walletAvatarSrc}
-            alt=""
-            aria-hidden={true}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <span className="absolute inset-0 flex items-center justify-center bg-secondary text-[0.68rem] font-semibold tracking-[0.14em] text-white/95">
-            {getWalletAvatarFallback(ownerAddress)}
-          </span>
-        )}
+        <ParkWalletAvatarImage
+          src={walletAvatarSrc}
+          className="h-full w-full object-cover"
+          fallbackClassName="absolute inset-0"
+        />
       </div>
       <div className="min-w-0 flex-1 space-y-1">
         <p className="text-[0.68rem] uppercase tracking-[0.16em] text-muted-foreground">
