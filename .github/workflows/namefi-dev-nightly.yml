@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       domain:
-        description: "Domain override. Defaults to a unique namefi-e2e-*.pw domain."
+        description: "Domain override. Defaults to a unique namefi-e2e-*.gl domain."
         required: false
         type: string
   schedule:
@@ -51,7 +51,7 @@ jobs:
           else
             run_id="${GITHUB_RUN_ID:-$(date -u +%Y%m%d%H%M%S)}"
             run_attempt="${GITHUB_RUN_ATTEMPT:-1}"
-            domain="namefi-e2e-${run_id}-${run_attempt}.pw"
+            domain="namefi-e2e-${run_id}-${run_attempt}.gl"
           fi
 
           echo "domain=$domain" >> "$GITHUB_OUTPUT"
