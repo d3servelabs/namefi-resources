@@ -22,9 +22,7 @@ auth.get('/login', (c) => {
 auth.post('/login', async (c) => {
   console.log('[login][post]');
   const body = await c.req.parseBody();
-  console.log('[login][post] body', body);
   const email = body['email'] as string;
-  console.log('[login][post] email', email);
 
   if (!isValidOrgEmail(email)) {
     console.log('[login][post] email not valid');
@@ -56,11 +54,9 @@ auth.post('/login', async (c) => {
 auth.get('/callback', async (c) => {
   const token = decodeURIComponent(c.req.query('token') || '');
   if (!token) return c.html(<ErrorPage message="Missing token" />);
-  console.log('[callback] token', token);
 
   try {
     const payload = await verify(token, secrets.PONDER_JWT_SECRET);
-    console.log('[callback] payload', payload);
     const newToken = await sign(
       {
         email: payload.email,
@@ -81,7 +77,7 @@ auth.get('/callback', async (c) => {
         sameSite: 'strict',
       },
     );
-    console.log('[callback] setCookie', COOKIE_NAME, token);
+    console.log('[callback] session cookie set');
     return c.html(<LoginPage success="Login successful" redirect="/graphql" />);
   } catch (error) {
     console.log('[callback] error', error);
@@ -135,7 +131,6 @@ export const requireAuth = async (c: Context, next: Next) => {
 
   try {
     const payload = await verify(foundToken, secrets.PONDER_JWT_SECRET);
-    console.log('[requireAuth] payload', payload);
     c.set('user', payload);
     await next();
   } catch {
