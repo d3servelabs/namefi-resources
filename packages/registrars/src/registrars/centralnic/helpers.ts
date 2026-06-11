@@ -1,5 +1,6 @@
 /** biome-ignore-all lint/correctness/useParseIntRadix: x */
 /** biome-ignore-all lint/suspicious/noExplicitAny: x */
+import crypto from 'node:crypto';
 import type { z } from 'zod';
 import { toPunycodeFqdn, type PunycodeDomainName } from '#lib/data/validations';
 import {
@@ -153,12 +154,16 @@ const RADIX = 32;
 const ID_SEP = ':::';
 
 /**
- * Generate a random nonce of specified length.
+ * Generate a random numeric nonce of the specified length.
+ *
+ * Uses the Node.js CSPRNG (`crypto.randomInt`) so operation IDs are not
+ * predictable. `crypto.randomInt(0, 10)` also yields a uniform digit 0-9,
+ * unlike `Math.round(Math.random() * 9)` which biases the endpoints (0 and 9).
  */
 function getNonce(length: number): string {
   return new Array(length)
     .fill(0)
-    .map(() => Math.round(Math.random() * 9))
+    .map(() => crypto.randomInt(0, 10))
     .join('');
 }
 
@@ -830,14 +835,21 @@ export function parseFeeResponse(
 function _randomPick<S extends string | any[]>(
   source: S,
 ): S extends string ? string : any {
+  // crypto.randomInt(max) returns a uniform CSPRNG integer in [0, max).
   if (Array.isArray(source)) {
-    return source[Math.floor(Math.random() * source.length)];
+    return source[crypto.randomInt(source.length)];
   }
-  return source.charAt(Math.floor(Math.random() * source.length));
+  return source.charAt(crypto.randomInt(source.length));
 }
 
 /**
  * Generate a random auth code for domain creation/transfer.
+ *
+ * This value becomes the EPP domain `authInfo` — the secret that authorizes
+ * inter-registrar transfers — so it must be cryptographically unpredictable.
+ * All randomness is sourced from the Node.js CSPRNG via `_randomPick`, and the
+ * guaranteed character classes are shuffled (CSPRNG Fisher-Yates) so they are
+ * not in fixed, attacker-known positions.
  */
 export function generateAuthCode(): string {
   const length = 16;
@@ -856,7 +868,14 @@ export function generateAuthCode(): string {
   while (result.length < length) {
     result += _randomPick(chars);
   }
-  return result;
+
+  // Shuffle so the four guaranteed classes are not pinned to positions 0-3.
+  const out = result.split('');
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = crypto.randomInt(i + 1);
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out.join('');
 }
 
 function safePropAccess<P extends KeysOfUnion<O>, O>(
