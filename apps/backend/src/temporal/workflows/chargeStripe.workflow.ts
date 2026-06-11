@@ -14,6 +14,13 @@ export type ChargeStripeWorkflowInput = {
   totalAmountInUsdCents: number;
   confirmationTokenId?: string;
   paymentMethodId?: string;
+  /**
+   * Stripe idempotency key for the PaymentIntent creation. Must be
+   * deterministic per logical charge — e.g. derived from the payment ID or
+   * the charging workflow's ID, never from the current time or attempt — so
+   * a retried create-and-confirm call cannot double-charge.
+   */
+  idempotencyKey: string;
 };
 
 export type ChargeStripeWorkflowOutput = {
@@ -27,6 +34,7 @@ export async function chargeStripeWorkflow({
   totalAmountInUsdCents,
   confirmationTokenId,
   paymentMethodId,
+  idempotencyKey,
 }: ChargeStripeWorkflowInput): Promise<ChargeStripeWorkflowOutput> {
   const { createStripePaymentIntent } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
@@ -40,6 +48,7 @@ export async function chargeStripeWorkflow({
     userId,
     confirmationTokenId,
     paymentMethodId,
+    idempotencyKey,
   });
 
   let updatedPaymentMethod = stripePaymentIntent.payment_method ?? undefined;
@@ -69,7 +78,7 @@ export async function autoChargeStripeAndCreatePaymentWorkflow({
   totalAmountInUsdCents,
 }: Omit<
   ChargeStripeWorkflowInput,
-  'confirmationTokenId' | 'paymentMethodId'
+  'confirmationTokenId' | 'paymentMethodId' | 'idempotencyKey'
 >): Promise<AutoChargeStripeWorkflowOutput> {
   const {
     getPreferredPaymentMethodForNamefiUser,
@@ -111,6 +120,9 @@ export async function autoChargeStripeAndCreatePaymentWorkflow({
         totalAmountInUsdCents,
         confirmationTokenId: undefined,
         paymentMethodId: preferredPaymentMethod.id,
+        // Inline call: the workflow-ID default would key on this (parent)
+        // workflow, so key on the payment record created above instead.
+        idempotencyKey: `payment-intent-${paymentId}`,
       },
     );
     paymentStatus = stripePaymentIntentStatusToPaymentStatus({

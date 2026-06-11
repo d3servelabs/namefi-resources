@@ -102,6 +102,9 @@ export async function chargeUserWorkflow({
               totalAmountInUsdCents: amountInUSDCents,
               confirmationTokenId: metadata?.confirmationTokenId,
               paymentMethodId: stripePaymentDetails?.paymentMethodId,
+              // Deterministic per payment so Stripe dedupes any retried
+              // create-and-confirm call instead of double-charging.
+              idempotencyKey: `payment-intent-${paymentId}`,
             },
           ],
           workflowId: `charge-stripe-${paymentId}`,

@@ -49,9 +49,12 @@ export async function refundStripeWorkflow({
   }
 
   // MARK: Create Stripe Refund
+  // Keyed on the refund record so activity retries (and re-runs for the same
+  // refund) replay Stripe's original response instead of refunding twice.
   const { stripeRefund } = await createStripeRefund({
     amountToRefundInUsdCents,
     stripePaymentIntentId,
+    idempotencyKey: `refund-${refundId}`,
   });
 
   // MARK: Monitor Stripe Refund Status

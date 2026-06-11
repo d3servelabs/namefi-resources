@@ -429,8 +429,15 @@ export async function createStripePaymentIntent({
   userId,
   confirmationTokenId,
   paymentMethodId,
+  idempotencyKey,
 }: Omit<CreateStripePaymentIntentInput, 'stripeCustomerId'> & {
   userId: string;
+  /**
+   * Stripe idempotency key for the PaymentIntent creation. Must be
+   * deterministic per logical charge (not per attempt) so Temporal activity
+   * retries replay Stripe's original response instead of charging again.
+   */
+  idempotencyKey: string;
 }) {
   let { stripeCustomerId } = await usersService.getUserStripeCustomerId({
     userId,
@@ -438,7 +445,12 @@ export async function createStripePaymentIntent({
 
   if (!stripeCustomerId) {
     const customer: Stripe.Response<Stripe.Customer> =
-      await stripe.customers.create({ name: userId });
+      await stripe.customers.create(
+        { name: userId },
+        // Keyed per user so activity retries reuse the same Stripe customer
+        // instead of creating duplicates.
+        { idempotencyKey: `create-stripe-customer-${userId}` },
+      );
 
     const [userWithStripeCustomerId] = await db
       .update(usersTable)
@@ -468,19 +480,25 @@ export async function createStripePaymentIntent({
     }
   }
 
-  const stripePaymentIntent = await stripe.paymentIntents.create({
-    amount: totalAmountInUsdCents,
-    currency: 'usd',
-    capture_method: 'automatic',
-    customer: stripeCustomerId,
-    confirm: true,
-    automatic_payment_methods: {
-      allow_redirects: 'never',
-      enabled: true,
+  // This call both creates and confirms the charge, so it must be idempotent:
+  // a retry after Stripe accepted (e.g. activity timeout) would otherwise
+  // confirm a second charge.
+  const stripePaymentIntent = await stripe.paymentIntents.create(
+    {
+      amount: totalAmountInUsdCents,
+      currency: 'usd',
+      capture_method: 'automatic',
+      customer: stripeCustomerId,
+      confirm: true,
+      automatic_payment_methods: {
+        allow_redirects: 'never',
+        enabled: true,
+      },
+      payment_method: paymentMethodId,
+      confirmation_token: confirmationTokenId,
     },
-    payment_method: paymentMethodId,
-    confirmation_token: confirmationTokenId,
-  });
+    { idempotencyKey },
+  );
 
   return { stripePaymentIntent };
 }
@@ -488,9 +506,16 @@ export async function createStripePaymentIntent({
 export async function createStripeRefund({
   amountToRefundInUsdCents,
   stripePaymentIntentId,
+  idempotencyKey,
 }: {
   amountToRefundInUsdCents: number;
   stripePaymentIntentId: string;
+  /**
+   * Stripe idempotency key for the refund creation. Must be deterministic per
+   * logical refund (not per attempt) so Temporal activity retries replay
+   * Stripe's original response instead of refunding again.
+   */
+  idempotencyKey: string;
 }) {
   if (amountToRefundInUsdCents < 0) {
     throw new NegativeAmountInUsdCentsError({
@@ -498,10 +523,13 @@ export async function createStripeRefund({
     });
   }
 
-  const stripeRefund = await stripe.refunds.create({
-    amount: amountToRefundInUsdCents,
-    payment_intent: stripePaymentIntentId,
-  });
+  const stripeRefund = await stripe.refunds.create(
+    {
+      amount: amountToRefundInUsdCents,
+      payment_intent: stripePaymentIntentId,
+    },
+    { idempotencyKey },
+  );
 
   return { stripeRefund };
 }

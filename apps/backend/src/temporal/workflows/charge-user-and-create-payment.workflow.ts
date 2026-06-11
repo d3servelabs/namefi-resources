@@ -30,6 +30,10 @@ const {
   options: shortRunningOpts,
 });
 
+/**
+ *
+ * @deprecated
+ */
 export async function chargeUserAndCreatePaymentWorkflow({
   userId,
   totalAmountInUsd,
@@ -39,12 +43,13 @@ export async function chargeUserAndCreatePaymentWorkflow({
     availablePaymentMethods,
     stripePreferredPaymentMethodId,
   } = await determineAvailablePaymentMethods(totalAmountInUsd, userId);
-
+  const stripeIdempotencyKey = workflow.uuid4(); // This is not Ideal but this workflow is deprecated we are just trying to satisfy Typescript
   // Define all possible charge methods - only AutoRenewalPaymentProvider types (excludes X402)
   const allChargeMethods: {
     method: AutoRenewalPaymentProvider;
     workflow: (...args: any[]) => Promise<any>;
     args: any[];
+    taskQueue: TEMPORAL_QUEUES;
   }[] = [
     {
       method: paymentProviderSchema.enum.NFSC_ETHEREUM_SEPOLIA,
@@ -56,6 +61,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         'Domain auto-renewal charge',
         '0x0', // empty bytes
       ] as Parameters<typeof chargeNfsc>,
+      taskQueue: TEMPORAL_QUEUES.MINT,
     },
     {
       method: paymentProviderSchema.enum.NFSC_BASE,
@@ -67,6 +73,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         'Domain auto-renewal charge',
         '0x0', // empty bytes
       ] as Parameters<typeof chargeNfsc>,
+      taskQueue: TEMPORAL_QUEUES.MINT,
     },
     {
       method: paymentProviderSchema.enum.NFSC_ETHEREUM,
@@ -78,6 +85,7 @@ export async function chargeUserAndCreatePaymentWorkflow({
         'Domain auto-renewal charge',
         '0x0', // empty bytes
       ] as Parameters<typeof chargeNfsc>,
+      taskQueue: TEMPORAL_QUEUES.MINT,
     },
     {
       method: paymentProviderSchema.enum.STRIPE,
@@ -87,8 +95,10 @@ export async function chargeUserAndCreatePaymentWorkflow({
           userId,
           totalAmountInUsdCents: totalAmountInUsd * 100,
           paymentMethodId: stripePreferredPaymentMethodId,
+          idempotencyKey: stripeIdempotencyKey,
         },
       ] as Parameters<typeof chargeStripeWorkflow>,
+      taskQueue: TEMPORAL_QUEUES.DEFAULT,
     },
   ];
 
@@ -138,6 +148,27 @@ export async function chargeUserAndCreatePaymentWorkflow({
   };
 }
 
+function _withStripeIdempotencyKey({
+  chargeMethod,
+  childWorkflowId,
+}: {
+  chargeMethod: { method: AutoRenewalPaymentProvider; args: any[] };
+  childWorkflowId: string;
+}) {
+  if (chargeMethod.method !== paymentProviderSchema.enum.STRIPE) {
+    return chargeMethod.args;
+  }
+  return [
+    {
+      ...chargeMethod.args[0],
+      // No payment record exists yet at this point, so key the Stripe charge
+      // on the (deterministic) child workflow ID to keep activity retries
+      // from double-charging.
+      idempotencyKey: `payment-intent-${childWorkflowId}`,
+    },
+  ] as Parameters<typeof chargeStripeWorkflow>;
+}
+
 async function _tryChargingMethods({
   chargeMethods,
   walletAddressToBeCharged,
@@ -149,6 +180,7 @@ async function _tryChargingMethods({
     method: AutoRenewalPaymentProvider;
     workflow: (...args: any[]) => Promise<any>;
     args: any[];
+    taskQueue: TEMPORAL_QUEUES;
   }[];
   walletAddressToBeCharged?: ChecksumWalletAddress;
   totalAmountInUsd: number;
@@ -157,13 +189,11 @@ async function _tryChargingMethods({
 }) {
   for (const chargeMethod of chargeMethods) {
     try {
+      const childWorkflowId = `charge-user-${new Date().toISOString()}-${walletAddressToBeCharged}-${totalAmountInUsd}$USD`;
       const result = await workflow.executeChild(chargeMethod.workflow, {
         args: chargeMethod.args,
-        taskQueue:
-          chargeMethod.method === paymentProviderSchema.enum.STRIPE
-            ? TEMPORAL_QUEUES.DEFAULT
-            : TEMPORAL_QUEUES.MINT,
-        workflowId: `charge-user-${new Date().toISOString()}-${walletAddressToBeCharged}-${totalAmountInUsd}$USD`,
+        taskQueue: chargeMethod.taskQueue,
+        workflowId: childWorkflowId,
       });
 
       if (chargeMethod.method === paymentProviderSchema.enum.STRIPE) {
