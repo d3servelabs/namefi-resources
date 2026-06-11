@@ -47,11 +47,15 @@ const ReactQueryDevtoolsWrapper = __NAMEFI_REACT_QUERY_DEVTOOLS_BUNDLED__
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
+  display: 'swap',
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
+  display: 'swap',
+  preload: false,
 });
 
 export const viewport: Viewport = {

@@ -27,7 +27,7 @@ const OriginBackground = () => {
         sizes="100vw"
         className="object-cover"
         preload
-        quality={90}
+        quality={72}
       />
     </div>
   );

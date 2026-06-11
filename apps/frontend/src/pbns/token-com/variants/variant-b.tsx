@@ -23,7 +23,6 @@ import { useSearch } from '@/hooks/use-search';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { motion } from 'motion/react';
 import {
   ArrowUpRight,
   Coins,
@@ -187,12 +186,7 @@ function HeroSection({
       <div className="pointer-events-none absolute inset-0 opacity-[0.09] [background-image:linear-gradient(to_bottom,#000_1px,transparent_1px)] [background-size:100%_4px]" />
 
       <div className="relative z-10 mx-auto w-full max-w-4xl">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.36 }}
-          className="space-y-6 md:space-y-8"
-        >
+        <div className="space-y-6 md:space-y-8">
           <h1 className="text-[40px] leading-[0.92] tracking-[-0.02em] text-[#1A1A1A] md:text-[64px] font-semibold">
             Claim{' '}
             <span className="inline-flex flex-wrap items-baseline gap-2 md:gap-3">
@@ -227,7 +221,7 @@ function HeroSection({
               onSearchIntent={onSearchIntent}
             />
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

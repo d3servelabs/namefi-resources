@@ -15,7 +15,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { ArrowUpRight, Link2, ShieldCheck, FileText } from 'lucide-react';
-import { motion } from 'motion/react';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
@@ -39,12 +38,16 @@ const uiFont = Plus_Jakarta_Sans({
   subsets: ['latin'],
   variable: '--font-token-ui',
   weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+  preload: false,
 });
 
 const monoFont = JetBrains_Mono({
   subsets: ['latin'],
   variable: '--font-token-mono',
   weight: ['400', '500', '600'],
+  display: 'swap',
+  preload: false,
 });
 
 const liveTickerTape = [
@@ -498,7 +501,7 @@ function HeroSection({
           </span>
         </h1>
 
-        <p className="mt-6 mb-10 max-w-2xl text-xl font-medium leading-relaxed text-[#18181B]/80 md:text-2xl">
+        <p className="mt-6 mb-8 max-w-xl text-base font-medium leading-7 text-[#18181B]/80 md:mb-10 md:max-w-2xl md:text-2xl md:leading-relaxed">
           A canonical, DNS-controlled identity link for tokens. The official
           destination for contracts, links, and verified metadata.
         </p>
@@ -598,12 +601,7 @@ function VariantAContent({
 }: VariantAContentProps) {
   return (
     <div className="mx-auto w-full max-w-[1380px] space-y-10">
-      <motion.div
-        className="w-full"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.06 }}
-      >
+      <div className="w-full">
         <HeroSection
           query={query}
           setQuery={setQuery}
@@ -612,7 +610,7 @@ function VariantAContent({
           parentDomain={parentDomain}
           onSearchIntent={preloadTokenComSearchResults}
         />
-      </motion.div>
+      </div>
 
       {shouldShowResults ? (
         <SearchResultsPanel
@@ -749,7 +747,7 @@ export const TokenComVariantALanding: LandingComponent = ({ origin }) => {
       className={cn(
         uiFont.variable,
         monoFont.variable,
-        '[font-family:var(--font-token-ui)] relative flex flex-col gap-10 bg-[#111111] px-6 pb-0 pt-24 md:px-10 md:pt-28 lg:px-14',
+        'relative flex flex-col gap-10 bg-[#111111] px-6 pb-0 pt-24 [font-family:var(--font-token-ui)] md:px-10 md:pt-28 lg:px-14',
       )}
     >
       <VariantAContent

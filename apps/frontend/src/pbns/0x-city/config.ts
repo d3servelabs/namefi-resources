@@ -17,7 +17,7 @@ export const originConfig: OriginConfig = {
     monoImage: '/assets/0x-city/logos/0xcity-powered-by-namefi-mono.svg',
   },
   background: {
-    image: '/assets/0x-city/background.png',
+    image: '/assets/0x-city/background-hero.avif',
     alt: '0x.city Background',
   },
   landingPage: {

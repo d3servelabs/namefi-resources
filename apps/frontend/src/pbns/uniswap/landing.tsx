@@ -11,18 +11,24 @@ const displayFont = Sora({
   subsets: ['latin'],
   variable: '--font-uniswap-display',
   weight: ['400', '500', '600', '700'],
+  display: 'swap',
+  preload: false,
 });
 
 const bodyFont = Manrope({
   subsets: ['latin'],
   variable: '--font-uniswap-body',
   weight: ['400', '500', '600'],
+  display: 'swap',
+  preload: false,
 });
 
 const monoFont = IBM_Plex_Mono({
   subsets: ['latin'],
   variable: '--font-uniswap-mono',
   weight: ['400', '500'],
+  display: 'swap',
+  preload: false,
 });
 
 const accentFont = Fraunces({
@@ -30,6 +36,8 @@ const accentFont = Fraunces({
   variable: '--font-uniswap-accent',
   weight: ['400', '600'],
   style: ['italic'],
+  display: 'swap',
+  preload: false,
 });
 
 const HERO_TILES = [

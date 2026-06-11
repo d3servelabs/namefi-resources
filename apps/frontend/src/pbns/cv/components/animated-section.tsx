@@ -133,7 +133,7 @@ export const AnimatedSection = ({
     <motion.div
       ref={ref}
       className={className}
-      initial="hidden"
+      initial={triggerOnScroll ? 'hidden' : false}
       animate={shouldAnimate ? 'visible' : 'hidden'}
       variants={{
         hidden: variants[variant].hidden,

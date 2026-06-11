@@ -9,6 +9,10 @@ import { DomainHuntWidget } from '@/pbns/cv/components/domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
 import type { ReactNode } from 'react';
+import {
+  getResponsiveHeroSources,
+  PbnHeroPicture,
+} from '@/components/pbn-hero-picture';
 
 interface HeroProps {
   /** The main name/domain (e.g., "taylor") */
@@ -42,15 +46,7 @@ export const Hero = ({
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
       <section className="relative flex-1 py-12 sm:py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        {/* Full Screen Background Image */}
-        <Image
-          src={backgroundImage}
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover object-center"
-          preload
-        />
+        <PbnHeroPicture sources={getResponsiveHeroSources(backgroundImage)} />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900" />
         <AnimatedSection
           triggerOnScroll={false}

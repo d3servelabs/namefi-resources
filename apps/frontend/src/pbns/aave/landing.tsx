@@ -14,18 +14,24 @@ const displayFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-aave-display',
   weight: ['400', '500', '700'],
+  display: 'swap',
+  preload: false,
 });
 
 const bodyFont = Inter({
   subsets: ['latin'],
   variable: '--font-aave-body',
   weight: ['300', '400', '500'],
+  display: 'swap',
+  preload: false,
 });
 
 const monoFont = IBM_Plex_Mono({
   subsets: ['latin'],
   variable: '--font-aave-mono',
   weight: ['400', '500'],
+  display: 'swap',
+  preload: false,
 });
 
 const accentFont = Playfair_Display({
@@ -33,6 +39,8 @@ const accentFont = Playfair_Display({
   variable: '--font-aave-accent',
   style: ['italic'],
   weight: ['600'],
+  display: 'swap',
+  preload: false,
 });
 
 const FEATURES = [

@@ -83,10 +83,6 @@ export function generateCVConfig(input: CVConfigInput): CVConfigOutput {
       image: '/assets/cv/logos/cv-powered-by-namefi.png',
       monoImage: '/assets/cv/logos/cv-powered-by-namefi-mono.svg',
     },
-    background: {
-      image: input.backgroundImage,
-      alt: `${domainName} Background`,
-    },
   };
 
   return {

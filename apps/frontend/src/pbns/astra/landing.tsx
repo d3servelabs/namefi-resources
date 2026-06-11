@@ -9,6 +9,7 @@ import {
   type RefObject,
 } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import {
   motion,
   AnimatePresence,
@@ -42,13 +43,17 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { ArrowLeft, Loader2, SearchIcon, Sparkles } from 'lucide-react';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
-import { MarketingSections } from './landing-marketing';
+import type { MarketingSectionsProps } from './landing-marketing';
 import { FloatingCart } from '@/components/floating-cart';
 
 const HERO_HEADING =
   'Namefi: Next generation domain platform with blockchain and AI';
 const HERO_SUBTITLE =
   'Faster, cheaper and verifiable. The best way to own domains.';
+
+const MarketingSections = dynamic<MarketingSectionsProps>(() =>
+  import('./landing-marketing').then((module) => module.MarketingSections),
+);
 
 const HeroSection = ({
   searchMode,
@@ -674,11 +679,15 @@ export const Landing: LandingComponent = ({ origin }) => {
                 transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
                 className="-mt-32"
               >
-                <MarketingSections
-                  newsletterRef={newsletterRef}
-                  marketingRef={marketingSectionsRef}
-                  onStorylineEnter={handleStorylineEnter}
-                />
+                <div
+                  ref={marketingSectionsRef}
+                  className="min-h-screen [contain-intrinsic-size:1400px] [content-visibility:auto]"
+                >
+                  <MarketingSections
+                    newsletterRef={newsletterRef}
+                    onStorylineEnter={handleStorylineEnter}
+                  />
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
