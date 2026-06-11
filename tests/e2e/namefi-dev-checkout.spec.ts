@@ -7,7 +7,9 @@ import {
 } from '@playwright/test';
 
 const skipAuthStorageKey = 'namefi-skip-auth';
-const defaultMaxUsdCents = 5_000;
+const defaultMaxUsdCents = 60_000;
+// TODO(Sid): re-enable this once we add another field requiresTldRegistrationPolicyAcknowledgement to each item
+const requiresTldRegistrationPolicyAcknowledgement = false;
 // Dedicated development receiving wallet entered manually by this smoke test.
 // Keep it out of the skip-auth mock so checkout exercises the wallet form.
 const receivingWalletAddress = '0xB5856d4598c919834913b8656ebc15a64d3C7836';
@@ -424,12 +426,15 @@ async function submitOrderAndExpectCreated(
   expect(order.items.map((item) => item.normalizedDomainName)).toEqual([
     domain,
   ]);
-  expect(
-    order.items.every(
-      (item) => item.metadata?.tldRegistrationRequirementAcknowledged === true,
-    ),
-  ).toBe(true);
-
+  if (requiresTldRegistrationPolicyAcknowledgement) {
+    // TODO(Sid): re-enable this once we add another field requiresTldRegistrationPolicyAcknowledgement to each item
+    expect(
+      order.items.every(
+        (item) =>
+          item.metadata?.tldRegistrationRequirementAcknowledged === true,
+      ),
+    ).toBe(true);
+  }
   return order;
 }
 

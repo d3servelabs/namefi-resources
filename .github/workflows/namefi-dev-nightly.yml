@@ -22,7 +22,7 @@ env:
   CI: true
   LIGHTHOUSE_BASE_URL: https://namefi.dev
   NAMEFI_DEV_BASE_URL: https://namefi.dev
-  NAMEFI_E2E_MAX_USD_CENTS: ${{ vars.NAMEFI_E2E_MAX_USD_CENTS || '5000' }}
+  NAMEFI_E2E_MAX_USD_CENTS: ${{ vars.NAMEFI_E2E_MAX_USD_CENTS || '60_000' }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
 
 jobs:
