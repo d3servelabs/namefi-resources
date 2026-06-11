@@ -245,15 +245,22 @@ export const CurrentUserAvatar = forwardRef<
     }: CurrentUserAvatarProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) => {
-    const { privyUser } = useAuth();
+    const { privyUser, user } = useAuth();
     const fallback = useMemo(() => {
       const name = getUserDisplayName(privyUser);
       return abbreviation(name.replace('0x', ''), true);
     }, [privyUser]);
+    // Only use the direct user-id path when the visible Privy user matches the
+    // loaded app user; otherwise the wallet resolver is the safer source.
+    const userIdForVisibleAvatar =
+      user?.privyUserId && user.privyUserId === privyUser?.id
+        ? user.id
+        : undefined;
     return (
       <UserWalletAvatar
         address={privyUser?.wallet?.address}
         fallback={fallback}
+        userId={userIdForVisibleAvatar}
         enableAdminLookupButtons={enableAdminLookupButtons}
         enableWalletImage={enableWalletImage}
         {...props}

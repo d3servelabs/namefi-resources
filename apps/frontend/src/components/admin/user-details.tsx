@@ -101,12 +101,26 @@ export type AdminUserLookupReference =
       walletAddress: string;
     };
 
+type AdminUserLookupTarget =
+  | {
+      type: 'user';
+      userId: string;
+      matchedWalletAddress?: string | null;
+    }
+  | {
+      type: 'wallet';
+      walletAddress: string;
+    };
+
 const dialogLoadingCardKeys = [
   'dialog-loading-1',
   'dialog-loading-2',
   'dialog-loading-3',
   'dialog-loading-4',
 ] as const;
+
+const EMPTY_ADMIN_USER_ID = '00000000-0000-0000-0000-000000000000';
+const EMPTY_WALLET_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 const pageLoadingCardKeys = [
   'page-loading-1',
@@ -225,6 +239,20 @@ function UserActionButtons({
   );
 }
 
+function DialogLoadingSkeleton() {
+  return (
+    <div className="space-y-4 py-2">
+      <div className="grid gap-3 md:grid-cols-4">
+        {dialogLoadingCardKeys.map((key) => (
+          <Skeleton key={key} className="h-24 rounded-xl" />
+        ))}
+      </div>
+      <Skeleton className="h-48 rounded-xl" />
+      <Skeleton className="h-48 rounded-xl" />
+    </div>
+  );
+}
+
 function LoadingDialogBody({ title }: { title: string }) {
   return (
     <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
@@ -232,15 +260,7 @@ function LoadingDialogBody({ title }: { title: string }) {
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>Loading details...</DialogDescription>
       </DialogHeader>
-      <div className="space-y-4 py-2">
-        <div className="grid gap-3 md:grid-cols-4">
-          {dialogLoadingCardKeys.map((key) => (
-            <Skeleton key={key} className="h-24 rounded-xl" />
-          ))}
-        </div>
-        <Skeleton className="h-48 rounded-xl" />
-        <Skeleton className="h-48 rounded-xl" />
-      </div>
+      <DialogLoadingSkeleton />
     </DialogContent>
   );
 }
@@ -495,7 +515,30 @@ export function AdminUserLookupDialog({
   onOpenChange: (open: boolean) => void;
   reference: AdminUserLookupReference;
 }) {
+  if (!open) {
+    return null;
+  }
+
+  return (
+    <AdminUserLookupDialogContent
+      open={open}
+      onOpenChange={onOpenChange}
+      reference={reference}
+    />
+  );
+}
+
+function AdminUserLookupDialogContent({
+  open,
+  onOpenChange,
+  reference,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  reference: AdminUserLookupReference;
+}) {
   const trpc = useTRPC();
+  const shouldResolveReference = !reference.userId;
 
   useEffect(() => {
     if (!open) {
@@ -512,54 +555,164 @@ export function AdminUserLookupDialog({
 
   const resolverQuery = useQuery(
     trpc.admin.users.resolveUserReference.queryOptions(reference, {
-      enabled: open,
+      enabled: open && shouldResolveReference,
       trpc: { context: { skipBatch: true } },
     }),
   );
 
-  if (!open) {
-    return null;
-  }
-
-  if (resolverQuery.isLoading) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <LoadingDialogBody title="Resolving account" />
-      </Dialog>
-    );
-  }
-
-  if (resolverQuery.isError || !resolverQuery.data) {
-    return (
-      <Dialog open={open} onOpenChange={onOpenChange}>
-        <ErrorDialogBody
-          title="Unable to resolve account"
-          description={
-            resolverQuery.error?.message ??
-            'The user or wallet could not be resolved.'
+  const resolvedReference: AdminUserLookupTarget | null = reference.userId
+    ? {
+        type: 'user',
+        userId: reference.userId,
+        matchedWalletAddress: null,
+      }
+    : resolverQuery.data
+      ? resolverQuery.data.type === 'wallet'
+        ? {
+            type: 'wallet',
+            walletAddress: resolverQuery.data.walletAddress,
           }
-        />
-      </Dialog>
-    );
-  }
+        : {
+            type: 'user',
+            userId: resolverQuery.data.userId,
+            matchedWalletAddress: resolverQuery.data.matchedWalletAddress,
+          }
+      : null;
 
-  if (resolverQuery.data.type === 'wallet') {
-    return (
-      <AdminWalletDetailsDialog
-        open={open}
-        onOpenChange={onOpenChange}
-        walletAddress={resolverQuery.data.walletAddress}
-      />
+  const userDetailsInput =
+    resolvedReference?.type === 'user'
+      ? {
+          userId: resolvedReference.userId,
+          matchedWalletAddress:
+            resolvedReference.matchedWalletAddress ?? undefined,
+        }
+      : {
+          userId: EMPTY_ADMIN_USER_ID,
+          matchedWalletAddress: undefined,
+        };
+
+  const userDetailsQuery = useQuery(
+    trpc.admin.users.getUserDetails.queryOptions(userDetailsInput, {
+      enabled: open && resolvedReference?.type === 'user',
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+
+  const walletDetailsInput = {
+    walletAddress:
+      resolvedReference?.type === 'wallet'
+        ? resolvedReference.walletAddress
+        : EMPTY_WALLET_ADDRESS,
+  };
+
+  const walletDetailsQuery = useQuery(
+    trpc.admin.users.getWalletDetails.queryOptions(walletDetailsInput, {
+      enabled: open && resolvedReference?.type === 'wallet',
+      trpc: { context: { skipBatch: true } },
+    }),
+  );
+
+  let content: ReactNode;
+
+  if (shouldResolveReference && resolverQuery.isLoading) {
+    content = (
+      <>
+        <DialogHeader>
+          <DialogTitle>Account details</DialogTitle>
+          <DialogDescription>Resolving account...</DialogDescription>
+        </DialogHeader>
+        <DialogLoadingSkeleton />
+      </>
+    );
+  } else if (
+    shouldResolveReference &&
+    (resolverQuery.isError || !resolvedReference)
+  ) {
+    content = (
+      <DialogHeader>
+        <DialogTitle>Unable to resolve account</DialogTitle>
+        <DialogDescription>
+          {resolverQuery.error?.message ??
+            'The user or wallet could not be resolved.'}
+        </DialogDescription>
+      </DialogHeader>
+    );
+  } else if (resolvedReference?.type === 'wallet') {
+    if (walletDetailsQuery.isLoading) {
+      content = (
+        <>
+          <DialogHeader>
+            <DialogTitle>Account details</DialogTitle>
+            <DialogDescription>Loading wallet details...</DialogDescription>
+          </DialogHeader>
+          <DialogLoadingSkeleton />
+        </>
+      );
+    } else if (walletDetailsQuery.isError || !walletDetailsQuery.data) {
+      content = (
+        <DialogHeader>
+          <DialogTitle>Unable to load wallet details</DialogTitle>
+          <DialogDescription>
+            {walletDetailsQuery.error?.message ??
+              'The wallet details are unavailable.'}
+          </DialogDescription>
+        </DialogHeader>
+      );
+    } else {
+      content = (
+        <>
+          <DialogHeader>
+            <DialogTitle>
+              {getWalletLabel(walletDetailsQuery.data.wallet)}
+            </DialogTitle>
+            <DialogDescription>
+              {walletDetailsQuery.data.wallet.address}
+            </DialogDescription>
+          </DialogHeader>
+          <AdminWalletDetailsContent data={walletDetailsQuery.data} />
+        </>
+      );
+    }
+  } else if (userDetailsQuery.isLoading) {
+    content = (
+      <>
+        <DialogHeader>
+          <DialogTitle>Account details</DialogTitle>
+          <DialogDescription>Loading user details...</DialogDescription>
+        </DialogHeader>
+        <DialogLoadingSkeleton />
+      </>
+    );
+  } else if (userDetailsQuery.isError || !userDetailsQuery.data) {
+    content = (
+      <DialogHeader>
+        <DialogTitle>Unable to load user details</DialogTitle>
+        <DialogDescription>
+          {userDetailsQuery.error?.message ??
+            'The user details are unavailable.'}
+        </DialogDescription>
+      </DialogHeader>
+    );
+  } else {
+    content = (
+      <>
+        <DialogHeader>
+          <DialogTitle>{getUserLabel(userDetailsQuery.data.user)}</DialogTitle>
+          <DialogDescription>
+            {userDetailsQuery.data.user.primaryEmail ?? 'No primary email'}
+          </DialogDescription>
+        </DialogHeader>
+        <AdminUserCompactSummary data={userDetailsQuery.data} />
+      </>
     );
   }
 
   return (
-    <AdminUserDetailsDialog
-      open={open}
-      onOpenChange={onOpenChange}
-      userId={resolverQuery.data.userId}
-      matchedWalletAddress={resolverQuery.data.matchedWalletAddress}
-    />
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
+        {content}
+      </DialogContent>
+    </Dialog>
   );
 }
 

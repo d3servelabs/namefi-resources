@@ -43,6 +43,7 @@ import type { Route } from 'next';
 import Link from 'next/link';
 import React, {
   useCallback,
+  useEffect,
   useMemo,
   useState,
   type ComponentProps,
@@ -663,6 +664,19 @@ function FindUserDialog({
         setIsAdminLookupDialogLoading(false);
       });
   }, [AdminUserLookupDialog]);
+
+  useEffect(() => {
+    if (!open || AdminUserLookupDialog) return;
+
+    void loadAdminUserLookupDialog()
+      .then((Component) => {
+        setAdminUserLookupDialog(() => Component);
+      })
+      .catch(() => {
+        // Selection-time loading still reports errors. This preload is only
+        // a post-intent warmup so search result clicks avoid a cold chunk.
+      });
+  }, [open, AdminUserLookupDialog]);
 
   const openSelectedReference = useCallback(
     (reference: AdminUserLookupReference) => {
