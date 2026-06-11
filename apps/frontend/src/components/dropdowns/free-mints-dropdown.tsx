@@ -23,13 +23,6 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useRouter } from 'next/navigation';
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 
-const SHINY_TEXT_TRANSITION = {
-  repeat: Number.POSITIVE_INFINITY,
-  repeatType: 'loop' as const,
-  ease: 'linear' as const,
-  duration: 2.4,
-};
-
 export function FreeMintsDropdown({
   className,
   disableBackdropBlur = false,
@@ -87,32 +80,14 @@ export function FreeMintsDropdown({
             <DropdownMenuTrigger
               render={
                 <HeaderActionButton
-                  actionVariant="pill"
+                  actionVariant="icon"
                   disableBackdropBlur={disableBackdropBlur}
-                  className="pr-6"
+                  className="text-white/90"
                   aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
                 />
               }
             >
-              <Gift className="size-[18px]" />
-              <motion.span
-                className="relative whitespace-nowrap"
-                style={{
-                  ['--x' as unknown as string]: '125%',
-                  maskImage:
-                    'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
-                  WebkitMaskImage:
-                    'linear-gradient(-75deg,rgba(255,255,255,0.85) calc(var(--x) + 20%),transparent calc(var(--x) + 30%),rgba(255,255,255,0.85) calc(var(--x) + 100%))',
-                }}
-                animate={{
-                  ['--x' as unknown as string]: '-125%',
-                }}
-                transition={SHINY_TEXT_TRANSITION}
-              >
-                <span className="relative">
-                  Free {availableCount === 1 ? 'Mint' : 'Mints'}
-                </span>
-              </motion.span>
+              <Gift className="h-5 w-5" />
               <span className={HEADER_BADGE_CLASS}>
                 <NumberFlow value={availableCount} />
               </span>
