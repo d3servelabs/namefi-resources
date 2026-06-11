@@ -2,9 +2,11 @@
 
 import { useOrigin } from '@/components/providers/origin';
 import { config } from '@/lib/env';
+import { shouldBypassImageOptimization } from '@/lib/image-src';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { useEffect, useState, type FC, type PropsWithChildren } from 'react';
 import { toHex } from '@/lib/color';
+import Image from 'next/image';
 
 export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
   const origin = useOrigin();
@@ -19,6 +21,9 @@ export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
     }
   }, []);
 
+  const logoSrc = origin.config?.pbnLogo?.image ?? '/logotype.svg';
+  const logoAlt = origin.config?.logo.alt ?? 'Namefi';
+
   return (
     <PrivyProvider
       appId={config.PRIVY_APP_ID}
@@ -27,11 +32,16 @@ export const SessionsProvider: FC<PropsWithChildren> = ({ children }) => {
           theme: 'dark',
           accentColor: toHex(brandPrimary) as `#${string}`,
           logo: (
-            <img
-              src={origin.config?.pbnLogo?.image ?? '/logotype.svg'}
-              alt={origin.config?.logo.alt}
-              width={180}
-            />
+            <span className="relative block h-10 w-[180px]">
+              <Image
+                src={logoSrc}
+                alt={logoAlt}
+                fill
+                sizes="180px"
+                className="object-contain"
+                unoptimized={shouldBypassImageOptimization(logoSrc)}
+              />
+            </span>
           ),
         },
         embeddedWallets: {

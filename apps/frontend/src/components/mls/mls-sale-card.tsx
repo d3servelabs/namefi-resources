@@ -1,9 +1,9 @@
-/** biome-ignore-all lint/performance/noImgElement: remote logo URLs are dynamic Labs assets and sampled client-side for theming */
 'use client';
 
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
 import type { Route } from 'next';
+import NextImage from 'next/image';
 import Link from 'next/link';
 import { Playfair_Display } from 'next/font/google';
 import { type CSSProperties, useEffect, useState } from 'react';
@@ -240,17 +240,20 @@ function MlsSaleCardLogo({
               'radial-gradient(circle, var(--mls-accent-glow) 0%, transparent 74%)',
           }}
         />
-        <img
-          src={logoUrl}
-          alt={`${label || domain} logo`}
-          className="relative h-auto max-h-[3rem] w-auto max-w-[3rem] object-contain sm:max-h-[3.5rem] sm:max-w-[3.5rem]"
-          style={{
-            filter: 'drop-shadow(0 8px 18px var(--mls-accent-shadow))',
-          }}
-          loading="lazy"
-          decoding="async"
-          referrerPolicy="no-referrer"
-        />
+        <span className="relative z-10 block size-12 sm:size-14">
+          <NextImage
+            src={logoUrl}
+            alt={`${label || domain} logo`}
+            fill
+            sizes="56px"
+            className="object-contain"
+            style={{
+              filter: 'drop-shadow(0 8px 18px var(--mls-accent-shadow))',
+            }}
+            referrerPolicy="no-referrer"
+            unoptimized
+          />
+        </span>
       </div>
     );
   }

@@ -52,6 +52,7 @@ export const CampaignWhyVote = () => {
             src="/assets/hunt/gift-box.png"
             alt="Gift box"
             fill
+            sizes="96px"
             className="object-contain"
           />
         </div>

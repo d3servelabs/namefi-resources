@@ -203,7 +203,6 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                 width={logo.width}
                 height={logo.height}
                 className={cn('h-auto', logo.className)}
-                priority={false}
               />
             </div>
             <p className="max-w-md text-sm text-muted-foreground">

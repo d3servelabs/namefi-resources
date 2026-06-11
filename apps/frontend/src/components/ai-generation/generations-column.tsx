@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
@@ -1089,12 +1090,12 @@ function GalleryPreview({ item, className }: GalleryPreviewProps) {
 
   return (
     <>
-      {/** biome-ignore lint/performance/noImgElement: gallery tiles rely on native img for lightweight rendering */}
-      <img
+      <Image
         src={item.previewUrl}
         alt={item.domain}
+        fill
+        sizes="(max-width: 1024px) 50vw, 25vw"
         className={className}
-        loading="lazy"
       />
       {showPlayIndicator && <VideoPlayIndicator />}
     </>

@@ -3,6 +3,7 @@ import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { AlertTriangleIcon } from 'lucide-react';
 import BaseNetwork from '@/components/chains/base-network';
 import EthNetwork from '@/components/chains/eth-network';
+import Image from 'next/image';
 import type React from 'react';
 import { useMemo } from 'react';
 import {
@@ -58,10 +59,13 @@ export const NetworkLogo = ({
                 'flex items-center justify-center h-full w-full text-primary',
               )}
             >
-              <img
+              <Image
                 src="/chains/robinhood-testnet.svg"
                 alt="robinhood testnet"
+                width={48}
+                height={48}
                 className={'w-full h-full aspect-square rounded-2xl'}
+                unoptimized
               />
             </div>
           ) : (

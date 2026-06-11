@@ -1,6 +1,7 @@
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-flip';
 import { Sparkles, ArrowDown, Trophy } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { AnimatedSection, AnimatedChild } from './animated-section';
 import { motion } from 'motion/react';
@@ -42,9 +43,13 @@ export const Hero = ({
       {/* Hero Section */}
       <section className="relative flex-1 py-12 sm:py-24 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         {/* Full Screen Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat pt-16"
-          style={{ backgroundImage: `url('${backgroundImage}')` }}
+        <Image
+          src={backgroundImage}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+          preload
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900" />
         <AnimatedSection
@@ -228,9 +233,11 @@ export const Hero = ({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img
+                    <Image
                       src="/assets/cv/logos/cv-logo.png"
                       alt=".cv"
+                      width={28}
+                      height={30}
                       className="h-6 w-auto"
                     />
                   </Link>
@@ -253,10 +260,13 @@ export const Hero = ({
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img
+                    <Image
                       src="/logotype.svg"
                       alt="Namefi"
+                      width={90}
+                      height={28}
                       className="h-6 w-auto"
+                      unoptimized
                     />
                   </Link>
                 </motion.div>

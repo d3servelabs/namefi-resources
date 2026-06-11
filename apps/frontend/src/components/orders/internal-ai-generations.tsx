@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: remote AI assets are delivered via plain img */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -8,6 +7,7 @@ import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import Image from 'next/image';
 
 type InternalAIGenerations =
   AppRouterOutput['ai']['getInternalGenerationsByDomains'];
@@ -43,15 +43,15 @@ const LogoPreview = ({
     >
       {logoUrl ? (
         <>
-          <img
+          <Image
             src={logoUrl}
             alt={`${domain} logo`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
             className={cn(
               'h-full w-full object-contain transition-opacity duration-300',
               status === 'loaded' ? 'opacity-100' : 'opacity-0',
             )}
-            loading="lazy"
-            decoding="async"
             onLoad={() => setStatus('loaded')}
             onError={() => setStatus('error')}
           />

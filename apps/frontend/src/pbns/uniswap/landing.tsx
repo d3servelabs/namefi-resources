@@ -726,7 +726,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 width={256}
                 height={70}
                 className="mt-7 h-auto w-[170px] sm:w-[210px]"
-                priority={true}
+                preload
                 unoptimized={true}
               />
 

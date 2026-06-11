@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: using plain img for controlled rendering of remote URLs */
 'use client';
 
 import { EmptyPlaceholder } from '@/components/empty-placeholder';
@@ -44,6 +43,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { TwitterIcon } from 'react-share';
 import {
   TwitterShareDialog,
@@ -245,6 +245,39 @@ function resolveAnimationSheetReference(
     model:
       typeof metadata.sheetModel === 'string' ? metadata.sheetModel : undefined,
   };
+}
+
+function AnimationSheetDialogImage({ alt, src }: { alt: string; src: string }) {
+  const [dimensions, setDimensions] = useState<{
+    height: number;
+    width: number;
+  } | null>(null);
+
+  return (
+    <div
+      className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-lg"
+      style={{
+        aspectRatio: dimensions
+          ? `${dimensions.width} / ${dimensions.height}`
+          : '3 / 2',
+        maxWidth: dimensions ? Math.min(dimensions.width, 1024) : undefined,
+      }}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="(max-width: 1024px) 100vw, 1024px"
+        className="object-contain"
+        onLoad={(event) => {
+          const { naturalHeight, naturalWidth } = event.currentTarget;
+          if (naturalHeight > 0 && naturalWidth > 0) {
+            setDimensions({ height: naturalHeight, width: naturalWidth });
+          }
+        }}
+      />
+    </div>
+  );
 }
 
 const LoadingSkeleton = () => (
@@ -512,6 +545,8 @@ export function GenerationDetailsClient({
           : 'Ready';
 
   const previewUrl = generation?.thumbnailUrl ?? generation?.url;
+  const referenceGenerationPreviewUrl =
+    referenceGeneration?.thumbnailUrl ?? referenceGeneration?.url;
   const createdAtDisplay = generation
     ? formatGenerationCreatedAt(generation.createdAt)
     : null;
@@ -652,10 +687,14 @@ export function GenerationDetailsClient({
                       url={generation.url}
                     />
                   ) : previewUrl ? (
-                    <img
+                    <Image
                       src={previewUrl}
                       alt={`AI-generated ${generation.type} for ${domain}`}
-                      className="h-full w-full rounded-lg object-contain"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 67vw"
+                      loading="eager"
+                      fetchPriority="high"
+                      className="rounded-lg object-contain"
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center rounded-lg bg-muted/30 p-8 text-center">
@@ -990,17 +1029,15 @@ export function GenerationDetailsClient({
                         <Skeleton className="w-full aspect-square rounded-lg" />
                         <Skeleton className="h-4 w-32" />
                       </div>
-                    ) : referenceGeneration ? (
+                    ) : referenceGeneration && referenceGenerationPreviewUrl ? (
                       <>
                         <div className="relative w-full aspect-square bg-muted rounded-lg overflow-hidden">
-                          <img
-                            src={
-                              referenceGeneration.thumbnailUrl ??
-                              referenceGeneration.url ??
-                              ''
-                            }
+                          <Image
+                            src={referenceGenerationPreviewUrl}
                             alt="Logo used for derivative generation"
-                            className="w-full h-full object-contain"
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 320px"
+                            className="object-contain"
                           />
                         </div>
 
@@ -1019,6 +1056,10 @@ export function GenerationDetailsClient({
                           </Button>
                         </div>
                       </>
+                    ) : referenceGeneration ? (
+                      <div className="text-sm text-muted-foreground">
+                        Source logo preview is unavailable
+                      </div>
                     ) : referenceError ? (
                       <div className="text-sm text-muted-foreground">
                         Failed to load logo details
@@ -1047,10 +1088,12 @@ export function GenerationDetailsClient({
                     onClick={() => setIsSheetPreviewOpen(true)}
                     aria-label="Open animation sheet preview"
                   >
-                    <img
+                    <Image
                       src={animationSheetReference.url}
                       alt={`Generated animation sheet for ${domain}`}
-                      className="h-full w-full object-contain"
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 320px"
+                      className="object-contain"
                     />
                     <span className="absolute right-2 top-2 flex size-8 items-center justify-center rounded-full bg-black/70 text-white opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
                       <Maximize2 className="size-4" />
@@ -1101,10 +1144,9 @@ export function GenerationDetailsClient({
           </DialogHeader>
           {animationSheetReference && (
             <div className="max-h-[78vh] overflow-auto bg-muted/30 p-4">
-              <img
+              <AnimationSheetDialogImage
                 src={animationSheetReference.url}
                 alt={`Generated animation sheet for ${domain}`}
-                className="mx-auto h-auto max-w-full rounded-lg"
               />
             </div>
           )}

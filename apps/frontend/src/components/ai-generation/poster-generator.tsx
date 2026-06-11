@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noImgElement: using plain img for grid thumbnails and simplicity */
 'use client';
 
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
@@ -39,6 +38,7 @@ import type {
 } from '@namefi-astra/ai/types';
 import { MARKETING_COLLATERAL_TYPE_INPUT_IDS } from '@namefi-astra/ai/types';
 import { useAuth } from '@/hooks/use-auth';
+import Image from 'next/image';
 
 export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   billboard: 'Billboard',
@@ -202,47 +202,55 @@ export function PosterGenerator({
         );
         const logosForPanel: ReadyLogoSource[] = logosToShow;
 
-        const renderLogoCard = (logo: ReadyLogoSource) => (
-          <Card
-            key={logo.id}
-            className={cn(
-              'cursor-pointer transition-all hover:shadow-lg',
-              form.getValues('selectedLogoId') === logo.id &&
-                'ring-2 ring-orange-500',
-            )}
-            onClick={() => {
-              form.setValue('selectedLogoId', logo.id);
-              setOpenPanel(null);
-            }}
-          >
-            <CardContent className="p-4">
-              <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
-                <img
-                  src={logo.thumbnailUrl ?? logo.url ?? undefined}
-                  alt={logo.domain}
-                  className="w-full h-full object-cover"
-                />
-                {form.getValues('selectedLogoId') === logo.id && (
-                  <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
-                    <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
-                  </div>
-                )}
-              </div>
-              <div className="space-y-1">
-                {logo.output?.type === 'logo' && logo.output.logoType && (
-                  <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
-                    {logo.output.logoType}
-                  </span>
-                )}
-                {logo.output?.type === 'logo' && logo.output.logoStyle && (
-                  <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
-                    {logo.output.logoStyle}
-                  </span>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        );
+        const renderLogoCard = (logo: ReadyLogoSource) => {
+          const logoImageSrc = logo.thumbnailUrl ?? logo.url;
+
+          return (
+            <Card
+              key={logo.id}
+              className={cn(
+                'cursor-pointer transition-all hover:shadow-lg',
+                form.getValues('selectedLogoId') === logo.id &&
+                  'ring-2 ring-orange-500',
+              )}
+              onClick={() => {
+                form.setValue('selectedLogoId', logo.id);
+                setOpenPanel(null);
+              }}
+            >
+              <CardContent className="p-4">
+                <div className="relative aspect-square mb-3 overflow-hidden rounded-lg">
+                  {logoImageSrc ? (
+                    <Image
+                      src={logoImageSrc}
+                      alt={logo.domain}
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                      className="object-cover"
+                    />
+                  ) : null}
+                  {form.getValues('selectedLogoId') === logo.id && (
+                    <div className="absolute inset-0 bg-orange-500/20 flex items-center justify-center">
+                      <Check className="h-8 w-8 text-secondary-foreground bg-orange-500 rounded-full p-1" />
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  {logo.output?.type === 'logo' && logo.output.logoType && (
+                    <span className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded block text-center">
+                      {logo.output.logoType}
+                    </span>
+                  )}
+                  {logo.output?.type === 'logo' && logo.output.logoStyle && (
+                    <span className="text-xs px-2 py-1 bg-purple-100 text-purple-700 rounded block text-center">
+                      {logo.output.logoStyle}
+                    </span>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          );
+        };
 
         const controlButtons: Array<{
           key: string;

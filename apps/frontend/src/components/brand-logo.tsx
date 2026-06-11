@@ -2,6 +2,7 @@
 
 import { LazyLottie } from '@/components/lazy-lottie';
 import { useOrigin } from '@/components/providers/origin';
+import { shouldBypassImageOptimization } from '@/lib/image-src';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { LottieRefCurrentProps } from 'lottie-react';
 import Image from 'next/image';
@@ -33,10 +34,10 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   const { state: sidebarState, isMobile } = useSidebar();
   const lottieRef = useRef<LottieRefCurrentProps>(null);
   const logo = originInfo.config.logo;
-  const isSvgAsset =
+  const shouldBypassLogoOptimization =
     logo.type === 'image' &&
     typeof logo.image === 'string' &&
-    logo.image.endsWith('.svg');
+    shouldBypassImageOptimization(logo.image);
 
   useEffect(() => {
     if (lottieRef.current && logo?.type === 'lottie') {
@@ -83,8 +84,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
             width={28}
             height={28}
             className="size-full rounded-md object-contain"
-            unoptimized={isSvgAsset}
-            priority={true}
+            unoptimized={shouldBypassLogoOptimization}
           />
         ) : logo.type === 'lottie' ? (
           <LazyLottie

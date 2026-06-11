@@ -61,6 +61,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
               <NFTDomain
                 domainName={winnerDomainName}
                 origin={winnerDomainName ?? ''}
+                backgroundSizes="160px"
                 className="backdrop-blur-lg"
               />
             </div>

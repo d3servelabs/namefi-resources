@@ -8,6 +8,7 @@ import { ContainerTextFlip } from '@/components/ui/aceternity/container-text-fli
 import { DomainHuntWidget } from './domain-hunt-widget';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { HUNT_CAMPAIGN_KEYS } from '@/lib/hunt-campaign-keys';
+import Image from 'next/image';
 
 export interface ConversionNotification {
   id: number;
@@ -78,9 +79,13 @@ export default function ConversionHero({
   return (
     <section className="relative min-h-screen lg:h-screen overflow-hidden flex items-center py-12 lg:py-0">
       {/* Background image */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url('/assets/bespoke/background.jpg')` }}
+      <Image
+        src="/assets/bespoke/background.jpg"
+        alt=""
+        fill
+        sizes="100vw"
+        className="object-cover object-center"
+        preload
       />
 
       {/* Dark overlay for better text readability */}

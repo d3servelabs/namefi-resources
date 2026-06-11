@@ -24,9 +24,10 @@ const OriginBackground = () => {
         src={origin.config.background.image}
         alt={origin.config.background.alt}
         fill={true}
+        sizes="100vw"
         className="object-cover"
-        priority={true}
-        quality={100}
+        preload
+        quality={90}
       />
     </div>
   );

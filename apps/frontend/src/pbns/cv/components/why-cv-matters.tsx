@@ -1,6 +1,9 @@
 import { WobbleCard } from '@/components/ui/aceternity/wobble-card';
 import { OrbitingCircles } from '@/components/ui/magicui/orbiting-circles';
 import { Star, Briefcase, Globe, TrendingUp } from 'lucide-react';
+import Image from 'next/image';
+
+const orbitIconClassName = 'size-full object-contain';
 
 export const WhyCVMatters = () => {
   return (
@@ -53,17 +56,76 @@ export const WhyCVMatters = () => {
             </div>
             <div className="absolute inset-0 flex items-center justify-center transform-gpu translate-x-[40%] translate-y-[40%] scale-150">
               <OrbitingCircles iconSize={40} radius={160}>
-                <img src="/assets/social/whatsapp.svg" alt="WhatsApp" />
-                <img src="/assets/social/gmail.png" alt="Gmail" />
-                <img src="/assets/social/instagram.png" alt="Instagram" />
-                <img src="/assets/social/linkedin.svg" alt="LinkedIn" />
-                <img src="/assets/social/x.svg" alt="X" />
+                <Image
+                  src="/assets/social/whatsapp.svg"
+                  alt="WhatsApp"
+                  width={40}
+                  height={40}
+                  className={orbitIconClassName}
+                  unoptimized
+                />
+                <Image
+                  src="/assets/social/gmail.png"
+                  alt="Gmail"
+                  width={40}
+                  height={40}
+                  className={orbitIconClassName}
+                />
+                <Image
+                  src="/assets/social/instagram.png"
+                  alt="Instagram"
+                  width={40}
+                  height={40}
+                  className={orbitIconClassName}
+                />
+                <Image
+                  src="/assets/social/linkedin.svg"
+                  alt="LinkedIn"
+                  width={40}
+                  height={40}
+                  className={orbitIconClassName}
+                  unoptimized
+                />
+                <Image
+                  src="/assets/social/x.svg"
+                  alt="X"
+                  width={40}
+                  height={40}
+                  className={orbitIconClassName}
+                  unoptimized
+                />
               </OrbitingCircles>
               <OrbitingCircles iconSize={30} radius={80} reverse speed={2}>
-                <img src="/assets/social/whatsapp.svg" alt="WhatsApp" />
-                <img src="/assets/social/gmail.png" alt="Gmail" />
-                <img src="/assets/social/instagram.png" alt="Instagram" />
-                <img src="/assets/social/linkedin.svg" alt="LinkedIn" />
+                <Image
+                  src="/assets/social/whatsapp.svg"
+                  alt="WhatsApp"
+                  width={30}
+                  height={30}
+                  className={orbitIconClassName}
+                  unoptimized
+                />
+                <Image
+                  src="/assets/social/gmail.png"
+                  alt="Gmail"
+                  width={30}
+                  height={30}
+                  className={orbitIconClassName}
+                />
+                <Image
+                  src="/assets/social/instagram.png"
+                  alt="Instagram"
+                  width={30}
+                  height={30}
+                  className={orbitIconClassName}
+                />
+                <Image
+                  src="/assets/social/linkedin.svg"
+                  alt="LinkedIn"
+                  width={30}
+                  height={30}
+                  className={orbitIconClassName}
+                  unoptimized
+                />
               </OrbitingCircles>
             </div>
           </WobbleCard>

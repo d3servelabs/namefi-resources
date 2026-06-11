@@ -39,6 +39,85 @@ const resourcesProxyOrigin =
     ? 'https://r.namefi.io'
     : appConfig.RESOURCES_URL);
 
+const imageRemotePatternFromUrl = (
+  origin,
+  { pathname = '/**', search } = {},
+) => {
+  try {
+    const url = new URL(origin);
+    const protocol = url.protocol.replace(':', '');
+    if (protocol !== 'http' && protocol !== 'https') {
+      return null;
+    }
+
+    const configuredPathname =
+      url.pathname && url.pathname !== '/'
+        ? url.pathname.includes('*')
+          ? url.pathname
+          : `${url.pathname.replace(/\/$/, '')}/**`
+        : pathname;
+    const configuredSearch = search !== undefined ? search : url.search || null;
+
+    return {
+      protocol,
+      hostname: url.hostname,
+      port: url.port,
+      pathname: configuredPathname,
+      ...(configuredSearch !== null ? { search: configuredSearch } : {}),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const imageRemotePatterns = Array.from(
+  new Map(
+    [
+      // Backend endpoints can emit image assets and OG/static files referenced
+      // by API-driven UI. Restrict query strings for predictable cache keys.
+      imageRemotePatternFromUrl(appConfig.BACKEND_URL, { search: '' }),
+      // The active frontend deployment may reference its own absolute URLs,
+      // especially in preview environments and generated metadata.
+      imageRemotePatternFromUrl(appConfig.FIRST_PARTY_DEPLOYMENT_URL, {
+        search: '',
+      }),
+      // Production CloudFront distribution for generated AI assets returned by
+      // the backend.
+      imageRemotePatternFromUrl('https://d37hwq656n7huw.cloudfront.net', {
+        search: '',
+      }),
+      // Development/default CloudFront distribution for generated AI assets.
+      imageRemotePatternFromUrl('https://d3pajj40uywidf.cloudfront.net', {
+        search: '',
+      }),
+      // CV testimonial avatars. Components currently bypass optimization for
+      // these tiny generated avatars to avoid cache churn, but keep the host
+      // explicit if a future use does opt in.
+      imageRemotePatternFromUrl('https://avatar.vercel.sh', { search: '' }),
+      // Bespoke testimonial SVG avatars from DiceBear v7 endpoints.
+      imageRemotePatternFromUrl('https://api.dicebear.com', {
+        pathname: '/7.x/**',
+      }),
+      // Effigy wallet SVG avatars used in admin NFT known-issue cards.
+      imageRemotePatternFromUrl('https://effigy.im', {
+        pathname: '/a/**',
+        search: '',
+      }),
+    ]
+      .filter(Boolean)
+      .map((pattern) => [
+        [
+          pattern.protocol,
+          pattern.hostname,
+          pattern.port,
+          pattern.pathname,
+          pattern.search ?? '*',
+        ].join(':'),
+        pattern,
+      ]),
+  ).values(),
+);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Transpile workspace packages that export TypeScript sources directly.
@@ -104,6 +183,15 @@ const nextConfig = {
     ],
   },
   typedRoutes: true,
+  images: {
+    remotePatterns: imageRemotePatterns,
+    qualities: [75, 90],
+    minimumCacheTTL: 86_400,
+    maximumRedirects: 0,
+    maximumDiskCacheSize: 500_000_000,
+    maximumResponseBody: 20_000_000,
+    dangerouslyAllowLocalIP: appConfig.TYPE === 'local',
+  },
   env: {
     version: packageJson.version,
     name: packageJson.name,

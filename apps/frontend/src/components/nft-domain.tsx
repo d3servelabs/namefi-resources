@@ -8,6 +8,7 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 type NFTDomainProps = {
   origin: OriginInfo | string;
   className?: string;
+  backgroundSizes?: string;
 } & (
   | {
       domainName: string;
@@ -18,7 +19,12 @@ type NFTDomainProps = {
     }
 );
 
-export function NFTDomain({ origin, className, ...props }: NFTDomainProps) {
+export function NFTDomain({
+  origin,
+  className,
+  backgroundSizes = '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px',
+  ...props
+}: NFTDomainProps) {
   const rawSubdomain =
     'subdomain' in props
       ? props.subdomain
@@ -66,6 +72,7 @@ export function NFTDomain({ origin, className, ...props }: NFTDomainProps) {
           src={originInfo.config.background.image}
           alt={originInfo.config.background.alt}
           fill={true}
+          sizes={backgroundSizes}
           className="object-cover"
         />
       )}

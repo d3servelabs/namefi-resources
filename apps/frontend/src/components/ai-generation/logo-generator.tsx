@@ -45,8 +45,10 @@ import {
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
+import { shouldBypassImageOptimization } from '@/lib/image-src';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMemo, useState, type ReactNode } from 'react';
+import Image from 'next/image';
 import type { Generation } from './shared/types';
 import {
   Select,
@@ -648,10 +650,15 @@ export function LogoGenerator({
                                       tile={LOGO_STYLE_TILES['let-ai-choose']}
                                     />
                                   ) : (
-                                    <img
+                                    <Image
                                       src={treatment.image}
                                       alt={treatment.name}
-                                      className="w-full h-full object-cover"
+                                      fill
+                                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                                      className="object-cover"
+                                      unoptimized={shouldBypassImageOptimization(
+                                        treatment.image,
+                                      )}
                                     />
                                   )}
                                   {field.value === key &&
@@ -711,10 +718,15 @@ export function LogoGenerator({
                                       tile={LOGO_STYLE_TILES['let-ai-choose']}
                                     />
                                   ) : (
-                                    <img
+                                    <Image
                                       src={typography.image}
                                       alt={typography.name}
-                                      className="w-full h-full object-cover"
+                                      fill
+                                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                                      className="object-cover"
+                                      unoptimized={shouldBypassImageOptimization(
+                                        typography.image,
+                                      )}
                                     />
                                   )}
                                   {field.value === key &&

@@ -13,7 +13,7 @@ export default function NotFoundPage() {
         alt=""
         width={220}
         height={220}
-        priority
+        preload
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">404</h1>

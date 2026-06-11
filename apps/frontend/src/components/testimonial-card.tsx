@@ -1,4 +1,6 @@
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { shouldBypassImageOptimization } from '@/lib/image-src';
+import Image from 'next/image';
 
 interface TestimonialCardProps {
   img: string;
@@ -28,12 +30,13 @@ export function TestimonialCard({
       )}
     >
       <div className="flex flex-row items-center gap-3 mb-3">
-        <img
+        <Image
           className="rounded-full ring-2 ring-slate-600/50"
-          width="32"
-          height="32"
+          width={32}
+          height={32}
           alt=""
           src={img}
+          unoptimized={shouldBypassImageOptimization(img)}
         />
         <div className="flex flex-col">
           <figcaption className="text-sm font-semibold text-white">

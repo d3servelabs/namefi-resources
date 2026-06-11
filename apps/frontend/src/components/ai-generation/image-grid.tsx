@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Play } from 'lucide-react';
+import Image from 'next/image';
 import {
   buildDownloadFilename,
   copyGenerationLink,
@@ -193,13 +194,15 @@ export function ImageGrid({
                     <div className="mb-3 p-2 bg-gray-50 rounded-lg">
                       <p className="text-xs text-gray-600 mb-2">Based on:</p>
                       <div className="flex items-center gap-2">
-                        {/** biome-ignore lint/performance/noImgElement: referencing original logo image directly */}
-                        <img
-                          src={item.basedOnLogo.result}
-                          alt="Referenced logo"
-                          className="w-8 h-8 object-cover rounded"
-                          loading="lazy"
-                        />
+                        <div className="relative size-8 overflow-hidden rounded">
+                          <Image
+                            src={item.basedOnLogo.result}
+                            alt="Referenced logo"
+                            fill
+                            sizes="32px"
+                            className="object-cover"
+                          />
+                        </div>
                         <div className="flex gap-1">
                           {item.basedOnLogo.metadata?.logoType && (
                             <span className="text-xs px-1 py-0.5 bg-blue-100 text-blue-700 rounded">
@@ -311,12 +314,12 @@ function GeneratedItemPreview({
 
   return (
     <>
-      {/** biome-ignore lint/performance/noImgElement: using plain img keeps square thumbnail layout lightweight */}
-      <img
+      <Image
         src={previewUrl}
         alt={alt}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
         className="h-full w-full object-cover"
-        loading="lazy"
       />
       {showPlayIndicator && <VideoPlayIndicator />}
     </>

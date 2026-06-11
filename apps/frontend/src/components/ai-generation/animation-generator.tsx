@@ -1,7 +1,7 @@
-/** biome-ignore-all lint/performance/noImgElement: using plain img for grid thumbnails and simplicity */
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
 import type { UseFormReturn } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { Check } from 'lucide-react';
@@ -359,6 +359,7 @@ function AnimationLogoCard(props: {
   onSelect: (logoId: string) => void;
 }) {
   const { logo, isSelected, onSelect } = props;
+  const logoImageSrc = logo.thumbnailUrl ?? logo.url;
 
   return (
     <button
@@ -378,11 +379,15 @@ function AnimationLogoCard(props: {
       >
         <CardContent className="p-4">
           <div className="relative mb-3 aspect-square overflow-hidden rounded-lg">
-            <img
-              src={logo.thumbnailUrl ?? logo.url ?? ''}
-              alt={logo.domain}
-              className="h-full w-full object-cover"
-            />
+            {logoImageSrc ? (
+              <Image
+                src={logoImageSrc}
+                alt={logo.domain}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover"
+              />
+            ) : null}
             {isSelected && (
               <div className="absolute inset-0 flex items-center justify-center bg-orange-500/20">
                 <Check className="h-8 w-8 rounded-full bg-orange-500 p-1 text-secondary-foreground" />
