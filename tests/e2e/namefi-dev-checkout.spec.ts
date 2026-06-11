@@ -38,8 +38,8 @@ function getDefaultDomain() {
   const runId = process.env.GITHUB_RUN_ID?.trim();
   if (runId) {
     const runAttempt = process.env.GITHUB_RUN_ATTEMPT?.trim() || '1';
-    // .pw keeps the smoke item inexpensive and has explicit policy coverage.
-    return `namefi-e2e-${runId}-${runAttempt}.pw`;
+    // .gl keeps the smoke item inexpensive and has implicit policy coverage.
+    return `namefi-e2e-${runId}-${runAttempt}.gl`;
   }
 
   const now = new Date();
@@ -48,7 +48,7 @@ function getDefaultDomain() {
   const day = String(now.getUTCDate()).padStart(2, '0');
   // Base-36 keeps local fallback domains compact while staying unique enough.
   const timestamp = Math.floor(now.getTime() / 1000).toString(36);
-  return `namefi-e2e-${year}${month}${day}-${timestamp}.pw`;
+  return `namefi-e2e-${year}${month}${day}-${timestamp}.gl`;
 }
 
 function getDomainUnderTest() {
