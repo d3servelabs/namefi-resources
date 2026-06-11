@@ -85,3 +85,4 @@ export * from './sync-ponder-index.workflow';
 export * from './x402/transfer-usdc-x402.workflow';
 export * from './x402/process-x402-purchase.workflow';
 export * from './test-workflows/decision-gate-harness.workflow';
+export * from './test-workflows/mint-stress-test.workflow';

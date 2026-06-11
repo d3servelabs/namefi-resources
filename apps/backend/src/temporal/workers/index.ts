@@ -23,7 +23,15 @@ const workersExtraConfig: Partial<Record<TEMPORAL_ENUMS, ExtraWorkerOptions>> =
       Object.values(TEMPORAL_ENUMS).map((temporalEnum) => [temporalEnum, {}]),
     ), // default empty object for each worker
     [TEMPORAL_ENUMS.MINT]: {
-      maxConcurrentActivityTaskExecutions: 1,
+      // Cap concurrent MINT activity executions at 1 so two activities can't read
+      // the same 'pending' nonce and double-send. Kept ON by default in EVERY
+      // environment; set MINT_WORKER_UNLIMITED_CONCURRENCY=1 to lift it for the
+      // local concurrency stress test (`mintStressTestWorkflow`). Superseded by the
+      // distributed signer-nonce lock in the follow-up PR, after which this
+      // worker-level cap can be removed.
+      ...(process.env.MINT_WORKER_UNLIMITED_CONCURRENCY === '1'
+        ? {}
+        : { maxConcurrentActivityTaskExecutions: 1 }),
     },
   };
 
