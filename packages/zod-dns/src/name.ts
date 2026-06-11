@@ -1,6 +1,26 @@
 import { z } from 'zod';
 
+// Characters that the WHATWG URL parser treats as URL-grammar (userinfo '@',
+// path '/' and '\', port ':', query '?', fragment '#', whitespace). Any of
+// these would cause the parser to silently rewrite the hostname to something
+// different from the input, e.g. "legit.com@evil.com" → "evil.com".
+// We reject them upfront and return the raw input unchanged so that downstream
+// nameRegex validation rejects it — never silently accepting a rewritten host.
+const URL_GRAMMAR_CHARS = /[@/:?#\\\s]/;
+
+/**
+ * Converts an internationalized domain name to its ASCII/punycode form.
+ *
+ * Security note: if the input contains URL-grammar characters (`@`, `/`, `\`,
+ * `:`, `?`, `#`, or whitespace) it is returned **unchanged** — intentionally
+ * leaving it in a form that will fail the downstream `nameRegex` check.  This
+ * prevents the WHATWG URL parser from silently rewriting the hostname to a
+ * different domain (e.g. `"legit.com@evil.com"` → `"evil.com"`).
+ */
 export function toASCII(domain: string): string {
+  if (URL_GRAMMAR_CHARS.test(domain)) {
+    return domain;
+  }
   try {
     const url = new URL(`https://${domain}`);
     return url.hostname;
