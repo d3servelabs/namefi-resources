@@ -8,7 +8,7 @@
  *  - `sendPreparedTransaction` broadcasts with an EXPLICIT, caller-pinned nonce
  *    and returns the tx hash immediately — it never waits for a receipt.
  *  - `getTransactionConfirmation` is a read-only poll over candidate hashes.
- *  - `getSignerNonce` pins the nonce once per workflow.
+ *  - `getPendingSignerNonce` reads the next ('pending') nonce to pin per workflow.
  *
  * Reusing ONE nonce for every replacement is what makes minting idempotent:
  * Ethereum mines at most one transaction per (account, nonce), so broadcasting
@@ -80,7 +80,14 @@ export interface SignerClientBundle {
 }
 
 export interface EthTxPrimitives {
-  getSignerNonce: (chainId: number) => Promise<number>;
+  /**
+   * The signer's NEXT nonce to assign for a new send — `getTransactionCount`
+   * at `blockTag: 'pending'`, i.e. the confirmed count PLUS any in-flight
+   * mempool txs. This is deliberately the PENDING count, NOT the 'latest'
+   * (confirmed) count: the two diverge whenever the signer has unconfirmed txs
+   * in the pool, and pinning must reserve the next free slot including those.
+   */
+  getPendingSignerNonce: (chainId: number) => Promise<number>;
   sendPreparedTransaction: (
     preparedTx: PreparedTxOnlySerializableParams,
     chainId: number,
@@ -164,7 +171,7 @@ function isReceiptNotFound(error: Error): boolean {
 export function createEthTxPrimitives(
   clients: SignerClientBundle,
 ): EthTxPrimitives {
-  const getSignerNonce = async (chainId: number): Promise<number> => {
+  const getPendingSignerNonce = async (chainId: number): Promise<number> => {
     // ===================== DISTRIBUTED-LOCK SEAM (deferred) =================
     // TODO(NFI-xxxx): wrap nonce allocation in a cross-process critical
     // section. Today we rely on the MINT queue's
@@ -181,7 +188,7 @@ export function createEthTxPrimitives(
     //         }, { isolationLevel: 'serializable' });
     //   (b) Redis INCR on `signer-nonce:${chainId}` seeded from on-chain
     //       'pending' (lib/redis.ts client).
-    // Keeping getSignerNonce a SEPARATE activity (not folded into send) is what
+    // Keeping getPendingSignerNonce a SEPARATE activity (not folded into send) is what
     // makes this a single-function change.
     // =======================================================================
     const publicClient = clients.getPublicClient(chainId);
@@ -336,7 +343,7 @@ export function createEthTxPrimitives(
   };
 
   return {
-    getSignerNonce,
+    getPendingSignerNonce,
     sendPreparedTransaction,
     getTransactionConfirmation,
   };

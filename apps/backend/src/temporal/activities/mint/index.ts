@@ -8,9 +8,12 @@ import {
   signAndSendX402Transaction,
 } from '../x402-signer.activities';
 // Pinned-nonce staggered-race transaction primitives (send + nonce on MINT queue).
-import { getSignerNonce, sendPreparedTransaction } from './mint-tx.activities';
 import {
-  getX402SignerNonce,
+  getPendingSignerNonce,
+  sendPreparedTransaction,
+} from './mint-tx.activities';
+import {
+  getX402PendingSignerNonce,
   sendX402PreparedTransaction,
 } from '../x402-tx.activities';
 
@@ -24,8 +27,8 @@ export const mintTaskQueueActivities = {
   prepareTxToTransferUsdc,
   signAndSendX402Transaction,
   // Split send + nonce primitives (mint + x402) for the staggered-send race.
-  getSignerNonce,
+  getPendingSignerNonce,
   sendPreparedTransaction,
-  getX402SignerNonce,
+  getX402PendingSignerNonce,
   sendX402PreparedTransaction,
 };

@@ -210,6 +210,50 @@ async function gatherMintDoubleCommitEvidence(
   return evidence;
 }
 
+/**
+ * Tx-already-sent gate: the pinned nonce was consumed by a transaction matching
+ * our exact calldata. Surface the landed tx's on-chain receipt so the admin can
+ * confirm it succeeded before accepting it.
+ */
+async function gatherTxAlreadySentEvidence(
+  params: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const chainId = Number(params.chainId);
+  const landedTxHash =
+    typeof params.landedTxHash === 'string' ? params.landedTxHash : undefined;
+
+  const evidence: Record<string, unknown> = {
+    chainId,
+    landedTxHash,
+    account: params.account ?? params.chargee,
+    amountInUsd: params.amountInUsd,
+    reason: params.reason,
+  };
+
+  if (!Number.isFinite(chainId) || !landedTxHash) {
+    evidence.error = 'missing chainId or landedTxHash in evidenceParams';
+    return evidence;
+  }
+
+  try {
+    const publicClient = getViemPublicClient(chainId);
+    const receipt = await publicClient.getTransactionReceipt({
+      hash: landedTxHash as `0x${string}`,
+    });
+    evidence.receipt = {
+      status: receipt.status,
+      blockNumber: receipt.blockNumber.toString(),
+    };
+  } catch (error) {
+    evidence.receipt = {
+      status: 'not-found-or-pending',
+      error: errorMessage(error),
+    };
+  }
+
+  return evidence;
+}
+
 /** GateKind → gatherer. Add an entry when a new known gate needs evidence. */
 export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'register-or-import-poll': gatherDomainEvidence,
@@ -223,4 +267,6 @@ export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'nfsc-charge': gatherNfscChargeEvidence,
   // Mint double-commit: per-candidate on-chain receipt status.
   'mint-double-commit': gatherMintDoubleCommitEvidence,
+  // Tx-already-sent: the single landed tx's on-chain receipt.
+  'tx-already-sent': gatherTxAlreadySentEvidence,
 };

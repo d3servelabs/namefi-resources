@@ -12,6 +12,7 @@ import type {
 } from '../../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS } from '../../shared/enums';
 import { staggeredSendRace } from '../../shared/workflow-helpers/staggered-send-race';
+import { makeTxAlreadySentResolver } from '../../shared/workflow-helpers/tx-already-sent-gate';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { makeDoubleCommitReconciler } from '../mint-double-commit-reconciliation';
 
@@ -44,6 +45,12 @@ async function _signAndSendX402TransactionWithRetry(
       maxNonceRepins: 2,
       onDoubleCommit: makeDoubleCommitReconciler({
         policy: 'WAIT_FOR_ADMIN',
+        label: 'x402-usdc-transfer',
+        chainId,
+      }),
+      // USDC transfer has no idempotency key — a human accepts an already-sent tx.
+      alreadySentPolicy: 'WAIT_FOR_ADMIN',
+      onAlreadySentNeedsAdmin: makeTxAlreadySentResolver({
         label: 'x402-usdc-transfer',
         chainId,
       }),

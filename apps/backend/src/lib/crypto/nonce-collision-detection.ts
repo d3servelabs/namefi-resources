@@ -188,6 +188,10 @@ export async function checkNonceConsumed(
     address: signer,
     blockTag: 'latest',
   });
+  // Nonces are 0-indexed, so this COUNT is also the NEXT (unused) nonce: a count
+  // of N means nonces 0..N-1 are confirmed and N is still free. A nonce is
+  // therefore consumed only when STRICTLY below the count; `nonce ===
+  // confirmedCount` is exactly that next-free slot, so it is still 'unused'.
   if (nonce >= confirmedCount) {
     return { status: 'unused' };
   }

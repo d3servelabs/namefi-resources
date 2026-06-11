@@ -22,7 +22,7 @@ const mintTxPrimitives = createEthTxPrimitives({
   resolveMaxGasPriceMultiplier: getMaxGasPriceMultiplier,
 });
 
-export const getSignerNonce = mintTxPrimitives.getSignerNonce;
+export const getPendingSignerNonce = mintTxPrimitives.getPendingSignerNonce;
 export const sendPreparedTransaction = mintTxPrimitives.sendPreparedTransaction;
 export const getTransactionConfirmation =
   mintTxPrimitives.getTransactionConfirmation;

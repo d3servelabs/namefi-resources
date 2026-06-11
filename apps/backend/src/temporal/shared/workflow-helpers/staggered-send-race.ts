@@ -8,7 +8,7 @@
  * Each attempt is a `sendAndConfirmTxWorkflow` CHILD (send → poll-confirm →
  * typed result), so the Temporal UI shows ordered, grouped, collapsible attempts
  * instead of interleaved activities. This parent:
- *   1. Pins the nonce (`getSignerNonce`), then runs a round.
+ *   1. Pins the nonce (`getPendingSignerNonce`), then runs a round.
  *   2. A round starts up to `lanes` children, STAGGERED via `interruptibleSleep`;
  *      it stops starting new children the moment the nonce is provably consumed.
  *   3. The first child to report CONFIRMED wins (fast path). Otherwise it waits
@@ -31,7 +31,7 @@
  */
 
 import * as workflow from '@temporalio/workflow';
-import type { Hash } from 'viem';
+import type { Address, Hash, Hex } from 'viem';
 import type { PreparedTxOnlySerializableParams } from '../../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
 import {
@@ -40,15 +40,22 @@ import {
   type SignerKind,
   sendAndConfirmTxWorkflow,
 } from '../../workflows/send-and-confirm-tx.workflow';
+import { computeChainStaggerMs } from './chain-timing';
 import { criticalAlertWithTicket } from './critical-alert-with-ticket';
 import { interruptibleSleep } from './interruptible-sleep';
+import {
+  type AlreadySentPolicy,
+  decideNonceCollision,
+} from './nonce-collision-precheck';
 import { typedChildWorkflow } from './typed-child-workflow';
+
+export type { AlreadySentPolicy } from './nonce-collision-precheck';
 import { typedProxyActivities } from './typed-proxy-activities';
 
 export interface StaggeredRaceConfig {
   /** Number of replacement attempts/children (default 5). */
   lanes?: number;
-  /** Delay between successive child starts (default 8_000ms). */
+  /** Delay between successive child starts. Default: per-chain ≈3 block times + 3s (see `computeChainStaggerMs`). */
   staggerMs?: number;
   /** Required confirmations before a candidate counts as won (default 3). */
   confirmations?: number;
@@ -82,6 +89,19 @@ export interface StaggeredRaceRecovery {
    * canonical hash to return. Absent ⇒ critical alert + throw.
    */
   onDoubleCommit?: (winners: Hash[]) => Promise<Hash>;
+  /**
+   * Pre-re-pin idempotency stance. When set, before re-pinning on
+   * NONCE_EXHAUSTED the race asks `checkNonceAlreadySent` whether our calldata
+   * already landed at the pinned nonce, and acts per `decideNonceCollision`.
+   * Omitted ⇒ no pre-check (base re-pin behavior).
+   */
+  alreadySentPolicy?: AlreadySentPolicy;
+  /**
+   * For a non-idempotent op whose calldata already landed (WAIT_FOR_ADMIN):
+   * resolve the landed tx through the `tx-already-sent` admin gate — the admin
+   * accepts it (returns it) or cancels (throws). Absent ⇒ critical alert + throw.
+   */
+  onAlreadySentNeedsAdmin?: (landedTxHash: Hash) => Promise<Hash>;
 }
 
 export interface StaggeredSendRaceOptions {
@@ -97,7 +117,6 @@ export interface StaggeredSendRaceOptions {
 
 const DEFAULTS = {
   lanes: 5,
-  staggerMs: 8_000,
   confirmations: 3,
   pollIntervalMs: 6_000,
   alertThresholdMs: 90_000,
@@ -134,7 +153,12 @@ export async function staggeredSendRace(
 ): Promise<Hash> {
   const { preparedTx, chainId, label, signerKind, recovery } = options;
   const config = { ...DEFAULTS, ...options.config };
+  // Inter-lane stagger defaults to the chain's cadence (≈3 block times + 3s) so a
+  // lane doesn't fire just as the previous one is landing; an explicit
+  // `config.staggerMs` overrides. See `computeChainStaggerMs`.
+  const staggerMs = options.config.staggerMs ?? computeChainStaggerMs(chainId);
   const maxNonceRepins = recovery?.maxNonceRepins ?? 0;
+  const alreadySentPolicy = recovery?.alreadySentPolicy;
 
   // The parent only pins/reads the nonce (MINT) and runs the cross-round
   // re-confirm + slow-alert (DEFAULT). Sends + per-attempt confirms live in the
@@ -151,10 +175,20 @@ export async function staggeredSendRace(
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: { ...shortRunningOpts },
   });
+  // The pre-re-pin collision check can scan a bounded block range; give it a
+  // longer timeout than the short-running confirm pollers. Read-only ⇒ retryable.
+  const precheckActivities = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      startToCloseTimeout: '60 seconds',
+      retry: { maximumAttempts: 3 },
+      summary: 'pre-re-pin nonce-collision check',
+    },
+  });
   const readSignerNonce =
     signerKind === 'x402'
-      ? mintActivities.getX402SignerNonce
-      : mintActivities.getSignerNonce;
+      ? mintActivities.getX402PendingSignerNonce
+      : mintActivities.getPendingSignerNonce;
   const reconfirm =
     signerKind === 'x402'
       ? defaultActivities.getX402TransactionConfirmation
@@ -239,7 +273,7 @@ export async function staggeredSendRace(
       for (let attemptIndex = 0; attemptIndex < config.lanes; attemptIndex++) {
         if (stopStarting) break;
         if (attemptIndex > 0) {
-          await interruptibleSleep(config.staggerMs, () => stopStarting, {
+          await interruptibleSleep(staggerMs, () => stopStarting, {
             summary: `stagger attempt ${attemptIndex} (round ${roundIndex})`,
           });
           if (stopStarting) break;
@@ -256,7 +290,7 @@ export async function staggeredSendRace(
           // All attempts target one round-relative deadline (bounds the round to
           // ~failThresholdMs instead of stagger*(lanes-1)+timeout).
           timeoutMs: Math.max(
-            config.failThresholdMs - attemptIndex * config.staggerMs,
+            config.failThresholdMs - attemptIndex * staggerMs,
             config.minChildTimeoutMs,
           ),
           graceCycles: config.graceCycles,
@@ -394,6 +428,55 @@ export async function staggeredSendRace(
         }
         workflow.setCurrentDetails(`confirmed ${outcome.winner}`);
         return outcome.winner;
+      }
+
+      // NONCE_EXHAUSTED. Before abandoning the pinned nonce, verify our calldata
+      // was not already broadcast (a transport failure after node acceptance
+      // leaves no local hash — finding #1). Opt-in via `alreadySentPolicy`;
+      // `patched` keeps in-flight workflows on the old (no-precheck) path.
+      if (
+        alreadySentPolicy &&
+        workflow.patched('staggered-race/nonce-already-sent-precheck')
+      ) {
+        const collision = await precheckActivities.checkNonceAlreadySent({
+          signerKind,
+          chainId,
+          nonce: pinnedNonce,
+          expectedData: preparedTx.data as Hex,
+          contractAddress: preparedTx.to as Address,
+        });
+        const decision = decideNonceCollision(collision, alreadySentPolicy);
+        workflow.log.info(
+          `[${label}] pre-re-pin check: ${collision.status} → ${decision.kind}`,
+        );
+        switch (decision.kind) {
+          case 'PROCEED':
+            workflow.setCurrentDetails(
+              `already sent ${decision.winner} — proceeding`,
+            );
+            return decision.winner;
+          case 'WAIT_FOR_ADMIN':
+            if (recovery?.onAlreadySentNeedsAdmin) {
+              return await recovery.onAlreadySentNeedsAdmin(decision.winner);
+            }
+            throw new StaggeredRaceFailure(
+              'staggered-race/already-sent-needs-admin',
+              `[${label}] tx already sent (${decision.winner}); no admin gate wired`,
+            );
+          case 'REVERTED':
+            throw new StaggeredRaceFailure(
+              'staggered-race/reverted',
+              `[${label}] already-sent tx ${decision.txHash} reverted`,
+            );
+          case 'ESCALATE':
+            throw new StaggeredRaceFailure(
+              'staggered-race/already-sent-unidentified',
+              `[${label}] nonce consumed by an unidentified tx (on-chain nonce ${decision.onChainNonce}); cannot safely re-pin a non-idempotent op`,
+            );
+          default:
+            // REPIN — fall through to the re-pin logic below.
+            break;
+        }
       }
 
       // NONCE_EXHAUSTED — re-pin if budget remains, else give up.

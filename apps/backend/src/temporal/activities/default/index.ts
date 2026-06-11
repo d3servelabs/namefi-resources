@@ -26,6 +26,7 @@ import type { ExecutionContext } from '#lib/execution-context/types';
 // activity slot.
 import { getTransactionConfirmation } from '../mint/mint-tx.activities';
 import { getX402TransactionConfirmation } from '../x402-tx.activities';
+import { checkNonceAlreadySent } from './nonce-collision.activities';
 
 const SLACK_TEXT_LIMIT = 3000;
 const SLACK_FIELD_LIMIT = 1800;
@@ -111,6 +112,8 @@ export const defaultTaskQueueActivities = {
   // Read-only confirmation pollers for the pinned-nonce staggered-send race.
   getTransactionConfirmation,
   getX402TransactionConfirmation,
+  // Read-only pre-re-pin "did we already send this?" collision check.
+  checkNonceAlreadySent,
 };
 
 export interface SendTemporalAlertOptions {

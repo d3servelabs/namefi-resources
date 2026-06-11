@@ -24,7 +24,7 @@ const x402TxPrimitives = createEthTxPrimitives({
   resolveMaxGasPriceMultiplier: async () => X402_MAX_GAS_PRICE_MULTIPLIER,
 });
 
-export const getX402SignerNonce = x402TxPrimitives.getSignerNonce;
+export const getX402PendingSignerNonce = x402TxPrimitives.getPendingSignerNonce;
 export const sendX402PreparedTransaction =
   x402TxPrimitives.sendPreparedTransaction;
 export const getX402TransactionConfirmation =

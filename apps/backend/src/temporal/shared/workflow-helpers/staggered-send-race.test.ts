@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Hash } from 'viem';
+import type { NonceAlreadySentResult } from '../../activities/default/nonce-collision.activities';
 import type { TxConfirmationResult } from '../../activities/shared/eth-tx-primitives';
 import type {
   SendAndConfirmTxInput,
@@ -17,6 +18,7 @@ const workflowMocks = {
   // the (immediate) mocked sleep.
   condition: vi.fn(() => new Promise<void>(() => {})),
   setCurrentDetails: vi.fn(),
+  patched: vi.fn(() => true),
   workflowInfo: () => ({ workflowId: 'parent-wf', workflowType: 'mintNfsc' }),
   log: { debug: vi.fn(), error: vi.fn(), info: vi.fn(), warn: vi.fn() },
   ApplicationFailure: class ApplicationFailure extends Error {
@@ -39,8 +41,8 @@ const workflowMocks = {
   },
 };
 
-const getSignerNonce = vi.fn(async () => 100);
-const getX402SignerNonce = vi.fn(async () => 100);
+const getPendingSignerNonce = vi.fn(async () => 100);
+const getX402PendingSignerNonce = vi.fn(async () => 100);
 const getTransactionConfirmation = vi.fn(
   async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
 );
@@ -48,6 +50,9 @@ const getX402TransactionConfirmation = vi.fn(
   async (): Promise<TxConfirmationResult> => ({ kind: 'PENDING' }),
 );
 const generalAlertNamefi = vi.fn(async () => undefined);
+const checkNonceAlreadySent = vi.fn(
+  async (): Promise<NonceAlreadySentResult> => ({ status: 'unused' }),
+);
 const criticalAlertWithTicket = vi.fn(async () => ({
   taskId: 't',
   taskUrl: 'u',
@@ -61,11 +66,12 @@ const startChild = vi.fn(
 vi.mock('@temporalio/workflow', () => workflowMocks);
 vi.mock('./typed-proxy-activities', () => ({
   typedProxyActivities: () => ({
-    getSignerNonce,
-    getX402SignerNonce,
+    getPendingSignerNonce,
+    getX402PendingSignerNonce,
     getTransactionConfirmation,
     getX402TransactionConfirmation,
     generalAlertNamefi,
+    checkNonceAlreadySent,
   }),
 }));
 vi.mock('./typed-child-workflow', () => ({
@@ -162,11 +168,12 @@ function run(
 
 beforeEach(() => {
   vi.clearAllMocks();
-  getSignerNonce.mockResolvedValue(100);
-  getX402SignerNonce.mockResolvedValue(100);
+  getPendingSignerNonce.mockResolvedValue(100);
+  getX402PendingSignerNonce.mockResolvedValue(100);
   getTransactionConfirmation.mockResolvedValue({ kind: 'PENDING' });
   getX402TransactionConfirmation.mockResolvedValue({ kind: 'PENDING' });
   generalAlertNamefi.mockResolvedValue(undefined);
+  checkNonceAlreadySent.mockResolvedValue({ status: 'unused' });
   criticalAlertWithTicket.mockResolvedValue({ taskId: 't', taskUrl: 'u' });
   startChild.mockImplementation(async (...callArgs: unknown[]) => {
     const input = (callArgs[1] as [SendAndConfirmTxInput])[0];
@@ -179,7 +186,7 @@ describe('staggeredSendRace (child orchestrator)', () => {
     scriptChildren((i) => confirmed(`0xwin${i.attempt}`));
     const winner = await run();
     expect(winner).toBe('0xwin0');
-    expect(getSignerNonce).toHaveBeenCalledTimes(1);
+    expect(getPendingSignerNonce).toHaveBeenCalledTimes(1);
     expect(criticalAlertWithTicket).not.toHaveBeenCalled();
   });
 
@@ -197,7 +204,7 @@ describe('staggeredSendRace (child orchestrator)', () => {
       Array.from({ length: 5 }, (_, i) => Math.min(1 + i * 0.05, 2)),
     );
     expect(inputs.every((i) => i.nonce === NONCE)).toBe(true);
-    expect(getSignerNonce).toHaveBeenCalledTimes(1);
+    expect(getPendingSignerNonce).toHaveBeenCalledTimes(1);
   });
 
   it('throws (and critical-alerts) on a reverted child', async () => {
@@ -224,7 +231,7 @@ describe('staggeredSendRace (child orchestrator)', () => {
     );
     const winner = await run({}, { maxNonceRepins: 2 });
     expect(winner).toBe('0xwin');
-    expect(getSignerNonce).toHaveBeenCalledTimes(1);
+    expect(getPendingSignerNonce).toHaveBeenCalledTimes(1);
     expect(criticalAlertWithTicket).not.toHaveBeenCalled();
   });
 
@@ -235,12 +242,12 @@ describe('staggeredSendRace (child orchestrator)', () => {
     await expect(run({}, { maxNonceRepins: 5 })).rejects.toMatchObject({
       type: 'staggered-race/timeout',
     });
-    expect(getSignerNonce).toHaveBeenCalledTimes(1); // never re-pinned
+    expect(getPendingSignerNonce).toHaveBeenCalledTimes(1); // never re-pinned
   });
 
   it('re-pins a fresh nonce after a LOST round, then confirms', async () => {
     let nonceCall = 0;
-    getSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    getPendingSignerNonce.mockImplementation(async () => 100 + nonceCall++);
     scriptChildren((i) =>
       i.roundIndex === 0
         ? lost('0xr0', i.attempt, 101)
@@ -248,12 +255,12 @@ describe('staggeredSendRace (child orchestrator)', () => {
     );
     const winner = await run({}, { maxNonceRepins: 2 });
     expect(winner).toBe('0xr1');
-    expect(getSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(2);
+    expect(getPendingSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(2);
   });
 
   it('reconciles a cross-round double-commit via onDoubleCommit', async () => {
     let nonceCall = 0;
-    getSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    getPendingSignerNonce.mockImplementation(async () => 100 + nonceCall++);
     scriptChildren((i) =>
       i.roundIndex === 0
         ? lost('0xr0', i.attempt, 101)
@@ -273,7 +280,7 @@ describe('staggeredSendRace (child orchestrator)', () => {
   it('zero-candidate with an advanced nonce re-pins, then confirms', async () => {
     const nonces = [100, 150, 151]; // pin r0, zero-candidate re-read, pin r1
     let n = 0;
-    getSignerNonce.mockImplementation(
+    getPendingSignerNonce.mockImplementation(
       async () => nonces[Math.min(n++, nonces.length - 1)],
     );
     scriptChildren((i) =>
@@ -286,7 +293,7 @@ describe('staggeredSendRace (child orchestrator)', () => {
   });
 
   it('zero-candidate with an unchanged nonce is a terminal send failure', async () => {
-    getSignerNonce.mockResolvedValue(100); // pin AND re-read both 100
+    getPendingSignerNonce.mockResolvedValue(100); // pin AND re-read both 100
     scriptChildren((i) => notSent(true, i.attempt));
     await expect(run({}, { maxNonceRepins: 2 })).rejects.toMatchObject({
       type: 'staggered-race/send-failed',
@@ -298,8 +305,8 @@ describe('staggeredSendRace (child orchestrator)', () => {
     scriptChildren((i) => confirmed('0xx402', i.attempt));
     const winner = await run({}, undefined, 'x402');
     expect(winner).toBe('0xx402');
-    expect(getX402SignerNonce).toHaveBeenCalled();
-    expect(getSignerNonce).not.toHaveBeenCalled();
+    expect(getX402PendingSignerNonce).toHaveBeenCalled();
+    expect(getPendingSignerNonce).not.toHaveBeenCalled();
     const input = (startChild.mock.calls[0][1] as [SendAndConfirmTxInput])[0];
     expect(input.signerKind).toBe('x402');
   });
@@ -316,5 +323,108 @@ describe('staggeredSendRace (child orchestrator)', () => {
     });
     expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
     expect(generalAlertNamefi).not.toHaveBeenCalled();
+  });
+});
+
+describe('staggeredSendRace — pre-re-pin nonce-collision check', () => {
+  // All children LOST → NONCE_EXHAUSTED → the pre-check runs before re-pinning.
+  const allLost = () => scriptChildren((i) => lost('0xlost', i.attempt));
+  const matchedSent = (
+    receiptStatus: 'success' | 'reverted',
+  ): NonceAlreadySentResult => ({
+    status: 'matched',
+    txHash: '0xalready' as Hash,
+    receiptStatus,
+    blockNumber: '1',
+  });
+
+  it('PROCEEDs with the already-sent tx (idempotent op) without re-pinning', async () => {
+    allLost();
+    checkNonceAlreadySent.mockResolvedValue(matchedSent('success'));
+
+    const winner = await run(
+      {},
+      { maxNonceRepins: 2, alreadySentPolicy: 'PROCEED' },
+    );
+
+    expect(winner).toBe('0xalready');
+    expect(getPendingSignerNonce).toHaveBeenCalledTimes(1); // pinned once, never re-pinned
+    expect(criticalAlertWithTicket).not.toHaveBeenCalled();
+  });
+
+  it('routes a matched non-idempotent op to the admin gate', async () => {
+    allLost();
+    checkNonceAlreadySent.mockResolvedValue(matchedSent('success'));
+    const onAlreadySentNeedsAdmin = vi.fn(async (h: Hash) => h);
+
+    const winner = await run(
+      {},
+      {
+        maxNonceRepins: 2,
+        alreadySentPolicy: 'WAIT_FOR_ADMIN',
+        onAlreadySentNeedsAdmin,
+      },
+    );
+
+    expect(onAlreadySentNeedsAdmin).toHaveBeenCalledWith('0xalready');
+    expect(winner).toBe('0xalready');
+  });
+
+  it('re-pins when the check says a foreign tx took the nonce (conflict)', async () => {
+    let nonceCall = 0;
+    getPendingSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    scriptChildren((i) =>
+      i.roundIndex === 0
+        ? lost('0xr0', i.attempt, 101)
+        : confirmed('0xr1', i.attempt, 101),
+    );
+    checkNonceAlreadySent.mockResolvedValue({
+      status: 'conflict',
+      txHash: '0xforeign' as Hash,
+      to: null,
+      onChainData: '0xdead',
+    });
+
+    const winner = await run(
+      {},
+      { maxNonceRepins: 2, alreadySentPolicy: 'WAIT_FOR_ADMIN' },
+    );
+
+    expect(winner).toBe('0xr1');
+    expect(getPendingSignerNonce.mock.calls.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('escalates a non-idempotent op when the consuming tx is unidentifiable', async () => {
+    allLost();
+    checkNonceAlreadySent.mockResolvedValue({
+      status: 'consumed_unidentified',
+      nonce: 100,
+      onChainNonce: 101,
+    });
+
+    await expect(
+      run({}, { maxNonceRepins: 2, alreadySentPolicy: 'WAIT_FOR_ADMIN' }),
+    ).rejects.toMatchObject({
+      type: 'staggered-race/already-sent-unidentified',
+    });
+    expect(criticalAlertWithTicket).toHaveBeenCalledTimes(1);
+  });
+
+  it('is terminal when the already-sent tx reverted', async () => {
+    allLost();
+    checkNonceAlreadySent.mockResolvedValue(matchedSent('reverted'));
+
+    await expect(
+      run({}, { maxNonceRepins: 2, alreadySentPolicy: 'PROCEED' }),
+    ).rejects.toMatchObject({ type: 'staggered-race/reverted' });
+  });
+
+  it('skips the check entirely when no alreadySentPolicy is set (back-compat)', async () => {
+    allLost();
+
+    await expect(run({}, { maxNonceRepins: 0 })).rejects.toMatchObject({
+      type: 'staggered-race/nonce-stolen',
+    });
+    expect(checkNonceAlreadySent).not.toHaveBeenCalled();
   });
 });

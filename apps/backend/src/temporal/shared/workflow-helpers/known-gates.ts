@@ -24,7 +24,8 @@ export type GateKind =
   | 'register-or-import-submit'
   | 'process-order-item'
   | 'nfsc-charge'
-  | 'mint-double-commit';
+  | 'mint-double-commit'
+  | 'tx-already-sent';
 
 interface KnownGateDefaults {
   /** Auto-retry policy applied unless the caller overrides {@link RunWithDecisionGateOptions.autoRetry}. */

@@ -7,9 +7,11 @@ import type {
 } from '../activities/mint/mint.activities';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared/enums';
 import {
+  type AlreadySentPolicy,
   staggeredSendRace,
   type StaggeredRaceRecovery,
 } from '../shared/workflow-helpers/staggered-send-race';
+import { makeTxAlreadySentResolver } from '../shared/workflow-helpers/tx-already-sent-gate';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import {
   makeDoubleCommitReconciler,
@@ -28,6 +30,12 @@ interface SignAndSendOptions {
     autofix?: (extraWinners: Hash[]) => Promise<void>;
     evidenceParams?: Record<string, unknown>;
   };
+  /**
+   * Pre-re-pin "already sent?" policy. Idempotent ops (NFT mint/lock/burn/
+   * expiration; chargeNfsc, whose `reason` calldata is an idempotency key) pass
+   * 'PROCEED'. Non-idempotent ops use the default 'WAIT_FOR_ADMIN'.
+   */
+  alreadySentPolicy?: AlreadySentPolicy;
 }
 
 /**
@@ -42,7 +50,12 @@ async function _signAndSendTransactionWithRetry(
   chainId: number,
   options: SignAndSendOptions = {},
 ) {
-  const { maxAttempts = 5, maxNonceRepins = 2, reconciliation } = options;
+  const {
+    maxAttempts = 5,
+    maxNonceRepins = 2,
+    reconciliation,
+    alreadySentPolicy = 'WAIT_FOR_ADMIN',
+  } = options;
   const label = `mint:${workflow.workflowInfo().workflowType}`;
 
   // The race orchestrates per-attempt `sendAndConfirmTxWorkflow` children that
@@ -69,6 +82,15 @@ async function _signAndSendTransactionWithRetry(
       autofix: reconciliation?.autofix,
       evidenceParams: reconciliation?.evidenceParams,
     }),
+    alreadySentPolicy,
+    onAlreadySentNeedsAdmin:
+      alreadySentPolicy === 'WAIT_FOR_ADMIN'
+        ? makeTxAlreadySentResolver({
+            label,
+            chainId,
+            evidenceParams: reconciliation?.evidenceParams,
+          })
+        : undefined,
   };
 
   return staggeredSendRace({
@@ -151,6 +173,7 @@ export async function mintNamefiNFT({
     prepareResult.preparedTx,
     chainId,
     {
+      alreadySentPolicy: 'PROCEED',
       reconciliation: {
         policy: 'CRITICAL_ALERT',
         evidenceParams: { domain: normalizedDomainName, to: toAddress },
@@ -243,10 +266,12 @@ export async function chargeNfscWorkflow(
   }
 
   // Double charge over-deducts a user; a human decides (refund / accept / fail).
+  // The `reason` calldata makes an exact-match identity reliable → PROCEED.
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
     {
+      alreadySentPolicy: 'PROCEED',
       reconciliation: {
         policy: reconciliationPolicy,
         evidenceParams: { chargee, amountInUsd, reason },
@@ -286,6 +311,7 @@ export async function setExpirationForNamefiNft(
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
+    { alreadySentPolicy: 'PROCEED' },
   );
 }
 
@@ -320,6 +346,7 @@ export async function lockNamefiNftByName({
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
+    { alreadySentPolicy: 'PROCEED' },
   );
 }
 lockNamefiNftByName.generateId = (input: {
@@ -369,6 +396,7 @@ export async function burnNftByName({
   return await _signAndSendTransactionWithRetry(
     prepareResult.preparedTx,
     chainId,
+    { alreadySentPolicy: 'PROCEED' },
   );
 }
 burnNftByName.generateId = (input: {

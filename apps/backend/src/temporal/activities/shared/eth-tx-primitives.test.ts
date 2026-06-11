@@ -57,10 +57,10 @@ beforeEach(() => {
   primitives = createEthTxPrimitives(built.clients);
 });
 
-describe('getSignerNonce', () => {
+describe('getPendingSignerNonce', () => {
   it('reads the next nonce using the pending block tag', async () => {
     publicClient.getTransactionCount.mockResolvedValueOnce(9);
-    const nonce = await primitives.getSignerNonce(8453);
+    const nonce = await primitives.getPendingSignerNonce(8453);
     expect(nonce).toBe(9);
     expect(publicClient.getTransactionCount).toHaveBeenCalledWith({
       address: '0xSigner',
