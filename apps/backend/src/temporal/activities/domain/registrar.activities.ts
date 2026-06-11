@@ -31,6 +31,10 @@ import {
   CENTRALNIC_OTE_TLDS,
   getCentralnicRegistrar,
 } from '#lib/epp-registrars/centralnic';
+import {
+  isRegistrarError,
+  isRegistrarTransportError,
+} from '@namefi-astra/registrars/errors';
 
 /**
  * Poll the removal status of the DS record
@@ -106,35 +110,44 @@ export async function sendRegisterOrImportRequestToNamefiRegistrar(
     technicalContact: DEFAULT_CONTACT(_domainNameLdh, 'tech'),
     billingContact: DEFAULT_CONTACT(_domainNameLdh, 'tech'),
   };
-
-  let authCode: string | null = null;
-  if (isImport) {
-    if (!(encryptedEppAuthorizationCode && encryptionKeyId)) {
-      throw new Error(
-        'EPP authorization code is required for import operations',
+  try {
+    if (isImport) {
+      if (!(encryptedEppAuthorizationCode && encryptionKeyId)) {
+        throw new Error(
+          'EPP authorization code is required for import operations',
+        );
+      }
+      const authCode = await decryptEppAuthCode(
+        encryptedEppAuthorizationCode,
+        encryptionKeyId,
       );
+      return sldRegistrar.transferDomain({
+        domainName: _domainNameLdh as PunycodeDomainName,
+        contacts,
+        privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
+        registrarKey,
+        authCode,
+        nameservers: [],
+      });
     }
-    authCode = await decryptEppAuthCode(
-      encryptedEppAuthorizationCode,
-      encryptionKeyId,
-    );
-    return sldRegistrar.transferDomain({
-      domainName: _domainNameLdh as PunycodeDomainName,
+    const result = await sldRegistrar.registerDomain({
+      domainName: _domainNameLdh,
       contacts,
       privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
       registrarKey,
-      authCode,
-      nameservers: [],
+      durationInYears,
+      renewOption: RenewOption.MANUAL,
     });
+    return result;
+  } catch (error) {
+    if (isRegistrarError(error)) {
+      const nonRetryable = !isRegistrarTransportError(error);
+      throw workflow.ApplicationFailure.fromError(error, {
+        nonRetryable,
+      });
+    }
+    throw error;
   }
-  return sldRegistrar.registerDomain({
-    domainName: _domainNameLdh,
-    contacts,
-    privacy: DomainContactPrivacyEnum.PRIVATE_CONTACT_DATA,
-    registrarKey,
-    durationInYears,
-    renewOption: RenewOption.MANUAL,
-  });
 }
 
 export async function resubmitImportDomainRequestToNamefiRegistrar({
