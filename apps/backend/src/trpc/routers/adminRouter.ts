@@ -1,4 +1,5 @@
-import { protectedProcedure } from '../base';
+import { TRPCError } from '@trpc/server';
+import { adminProcedure, protectedProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { adminContract } from '@namefi-astra/common/contract/admin/admin-contract';
 import { aiCreditsRouter } from './admin/aiCreditsRouter';
@@ -36,6 +37,18 @@ export const adminRouter = createContractTRPCRouter<typeof adminContract>({
     .output(adminContract.isUserAdmin.output)
     .query(async ({ ctx }) => {
       return await canUserAccessAdminPanel(ctx.user);
+    }),
+
+  // Crash-testing endpoint: mirrors the Hono `/test-failure` route but on the
+  // tRPC surface, so the tRPC errorFormatter → HTTP alert path can be verified.
+  testFailure: adminProcedure
+    .input(adminContract.testFailure.input)
+    .output(adminContract.testFailure.output)
+    .mutation(async ({ input }) => {
+      throw new TRPCError({
+        code: input.code,
+        message: `Admin crash test: intentional ${input.code} from tRPC for HTTP alert verification.`,
+      });
     }),
 
   // Subrouters

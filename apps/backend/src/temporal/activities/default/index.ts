@@ -19,6 +19,8 @@ import { createClickUpTask, getClickUpTask } from '#lib/clickup/index';
 import { temporalClient } from '#temporal/client';
 import type { monitorIncidentTicketWorkflow } from '../../workflows/monitor-incident-ticket.workflow';
 import { parseDomainName } from '@namefi-astra/utils';
+import { getExecutionContext } from '#lib/execution-context/context';
+import type { ExecutionContext } from '#lib/execution-context/types';
 
 const SLACK_TEXT_LIMIT = 3000;
 const SLACK_FIELD_LIMIT = 1800;
@@ -629,5 +631,243 @@ async function sendIncidentEscalationToSlack(args: {
 
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+}
+
+/**
+ * Alert when a 400 or 5XX HTTP response is returned to a user from Hono or
+ * tRPC. Resolves the active execution context (user/session/request) and hands
+ * the error + context off to {@link sendHttpAlertToSlack}.
+ *
+ * Only 400 and 5XX codes are alerted; other codes (e.g. 401/403/404 from
+ * expected user actions) are ignored.
+ */
+export async function sendHttpAlert(
+  code: number,
+  error?: unknown,
+  message?: string,
+  extraData?: Record<string, unknown>,
+): Promise<void> {
+  if (code !== 400 && code < 500) {
+    return;
+  }
+
+  let executionContext: ExecutionContext | undefined;
+  try {
+    executionContext = getExecutionContext();
+  } catch {
+    // No execution context available outside the request lifecycle.
+  }
+
+  const user = executionContext?.user;
+  const userTxt = user?.userId ? `[User:${user.userId}]` : '';
+  const sessionTxt = user?.sessionId ? `[Session:${user.sessionId}]` : '';
+  const requestTxt = user?.requestId ? `[Request:${user.requestId}]` : '';
+
+  const resolvedMessage =
+    message ?? (error instanceof Error ? error.message : undefined);
+
+  await sendHttpAlertToSlack({
+    title: `${userTxt}${sessionTxt}${requestTxt} User received a ${code}`,
+    message: resolvedMessage,
+    error,
+    executionContext,
+    extraData,
+  });
+}
+
+export interface SendHttpAlertToSlackInput {
+  /** Short headline for the alert. */
+  title: string;
+  /** Human-readable message; falls back to the error message upstream. */
+  message?: string;
+  /** The raw error that produced the HTTP response, if any. */
+  error?: unknown;
+  /** Resolved execution context for the failing request, if available. */
+  executionContext?: ExecutionContext;
+  /** Any additional structured data to surface in the alert. */
+  extraData?: Record<string, unknown>;
+}
+
+/**
+ * Send an HTTP error alert to the API Slack channel.
+ *
+ * Unlike {@link sendTemporalAlertToSlack}, this runs from the Hono/tRPC server
+ * process — outside any Temporal worker — so it must NOT touch
+ * `Context.current()`, create ClickUp incidents, or start monitoring workflows.
+ * It surfaces the error details and execution context for debugging, plus a
+ * Datadog Logs link scoped to the request id.
+ */
+export async function sendHttpAlertToSlack(
+  input: SendHttpAlertToSlackInput,
+): Promise<void> {
+  const { title, message, error, executionContext, extraData } = input;
+
+  const webhookUrl = secrets.NAMEFI_API_HTTP_ALERT_SLACK_WEBHOOK_URL;
+  if (!webhookUrl) {
+    logger.warn('No API Slack webhook URL configured, skipping HTTP alert');
+    return;
+  }
+
+  const user = executionContext?.user;
+  const errorDetails = formatErrorForSlack(error);
+  const datadogUrl = user?.requestId
+    ? buildDatadogLogsUrlByRequestId(user.requestId)
+    : null;
+
+  const fields = [
+    { key: 'User', value: user?.userId },
+    { key: 'Privy User', value: user?.privyUserId },
+    { key: 'Session', value: user?.sessionId },
+    { key: 'Request', value: user?.requestId },
+    { key: 'Context Type', value: executionContext?.type },
+    ...Object.entries(extraData ?? {}).map(([key, value]) => ({ key, value })),
+  ].filter((field) => field.value != null);
+
+  const fieldSections = chunkArray(
+    fields.map(({ key, value }) => ({
+      type: 'mrkdwn',
+      text: `*${key}:*\n${formatSlackValue(value)}`,
+    })),
+    SLACK_SECTION_FIELD_LIMIT,
+  ).map((sectionFields) => ({
+    type: 'section',
+    fields: sectionFields,
+  }));
+
+  const slackMessage = {
+    blocks: [
+      {
+        type: 'header',
+        text: {
+          type: 'plain_text',
+          text: truncateSlackText(`[API] ${title}`, 150),
+          emoji: true,
+        },
+      },
+      ...(message
+        ? [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `*Message:*\n${truncateSlackText(message, SLACK_TEXT_LIMIT)}`,
+              },
+            },
+          ]
+        : []),
+      ...(errorDetails
+        ? [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: `*Error:*\n\`\`\`${truncateSlackText(errorDetails, SLACK_TEXT_LIMIT)}\`\`\``,
+              },
+            },
+          ]
+        : []),
+      ...fieldSections,
+      ...(datadogUrl
+        ? [
+            {
+              type: 'actions',
+              elements: [
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    text: 'View Datadog Logs',
+                  },
+                  url: datadogUrl,
+                  style: 'primary',
+                },
+              ],
+            },
+          ]
+        : []),
+    ],
+  };
+
+  try {
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(slackMessage),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+  } catch (err) {
+    logger.error({ error: err }, 'Failed to send HTTP alert to Slack');
+  }
+}
+
+const DATADOG_LOGS_WINDOW_MS = 5 * 60_000;
+
+/**
+ * Build a Datadog Logs deep link filtered to a single request id, with a
+ * ±5 minute window around now (when the alert is emitted).
+ */
+function buildDatadogLogsUrlByRequestId(requestId: string): string {
+  const now = Date.now();
+  const params = new URLSearchParams({
+    query: `@data.jsonPayload.requestId:${requestId}`,
+    agg_m: 'count',
+    agg_m_source: 'base',
+    agg_t: 'count',
+    clustering_pattern_field_path: 'message',
+    cols: 'host,service',
+    messageDisplay: 'inline',
+    refresh_mode: 'sliding',
+    storage: 'hot',
+    stream_sort: 'desc',
+    viz: 'stream',
+    from_ts: String(now - DATADOG_LOGS_WINDOW_MS),
+    to_ts: String(now + DATADOG_LOGS_WINDOW_MS),
+    live: 'true',
+  });
+  return `https://us5.datadoghq.com/logs?${params.toString()}`;
+}
+
+/**
+ * Render an unknown error into a readable string (name, message, stack, and
+ * nested cause) for inclusion in a Slack alert.
+ */
+function formatErrorForSlack(error: unknown): string | null {
+  if (error == null) {
+    return null;
+  }
+
+  if (error instanceof Error) {
+    const parts = [`${error.name}: ${error.message}`];
+    if (error.stack) {
+      parts.push(error.stack);
+    }
+    if (error.cause != null) {
+      const cause =
+        error.cause instanceof Error
+          ? `${error.cause.name}: ${error.cause.message}`
+          : safeStringify(error.cause);
+      parts.push(`Caused by: ${cause}`);
+    }
+    return parts.join('\n');
+  }
+
+  if (typeof error === 'string') {
+    return error;
+  }
+
+  return safeStringify(error);
+}
+
+function safeStringify(value: unknown): string {
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    return String(value);
   }
 }

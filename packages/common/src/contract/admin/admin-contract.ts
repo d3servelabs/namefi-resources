@@ -46,11 +46,33 @@ import { adminWorkflowSignalContract } from './admin-workflow-signal-contract';
 
 const isUserAdminOutputSchema = z.boolean();
 
+/**
+ * The tRPC error codes the crash-testing endpoint can deliberately throw.
+ * Mirrors the Hono `/test-failure` route: `BAD_REQUEST` maps to HTTP 400 and
+ * `INTERNAL_SERVER_ERROR` maps to HTTP 500 — the two cases the HTTP alert
+ * pipeline reacts to.
+ */
+export const ADMIN_TEST_FAILURE_CODES = [
+  'BAD_REQUEST',
+  'INTERNAL_SERVER_ERROR',
+] as const;
+
 export const adminContract = {
   isUserAdmin: {
     type: 'query',
     input: z.void(),
     output: isUserAdminOutputSchema,
+  },
+  /**
+   * Deliberately throws a `TRPCError` with the requested code so we can verify
+   * the tRPC → Slack/Datadog HTTP alert pipeline end to end. Never returns.
+   */
+  testFailure: {
+    type: 'mutation',
+    input: z.object({
+      code: z.enum(ADMIN_TEST_FAILURE_CODES).default('INTERNAL_SERVER_ERROR'),
+    }),
+    output: z.void(),
   },
   aiCredits: adminAiCreditsContract,
   schedules: adminSchedulesContract,

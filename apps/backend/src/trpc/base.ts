@@ -7,6 +7,7 @@ import {
 import { getSkipAuthTestUser } from './skip-auth';
 import { initTRPC } from '@trpc/server';
 import { TRPCError } from '@trpc/server';
+import { getHTTPStatusCodeFromError } from '@trpc/server/http';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import type { Context as HonoContext } from 'hono';
 import type { ConnInfo } from 'hono/conninfo';
@@ -29,6 +30,7 @@ import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
 import { requireUserAuth } from '#lib/auth';
+import { sendHttpAlert } from '../temporal/activities/default';
 import { triggerLoginNotification } from '#lib/login-notification';
 import type { RequestInfo } from '#lib/request-info';
 import { validateApiKey } from '#lib/validate-api-key';
@@ -387,6 +389,17 @@ export const t = initTRPC
   .create({
     transformer: superjson,
     errorFormatter({ shape, error, ctx }) {
+      // Alert on 400 / 5XX responses surfaced to users from tRPC. The helper
+      // ignores any other status code (e.g. 401/403/404 from expected user
+      // actions) and resolves the execution context internally.
+      const status = getHTTPStatusCodeFromError(error);
+      if (status === 400 || status >= 500) {
+        void sendHttpAlert(status, error, error.message, {
+          source: 'tRPC',
+          procedurePath: shape.data?.path,
+          trpcCode: error instanceof TRPCError ? error.code : undefined,
+        });
+      }
       return {
         ...shape,
         data: {
