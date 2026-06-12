@@ -21,8 +21,10 @@ export const reportReactBoundaryError = (
   info: ErrorInfo,
 ) => {
   try {
+    const userId =
+      (globalThis as any)?.userId ?? (globalThis as any)?.privyUserId;
     datadogLogs.logger.error(
-      'React ErrorBoundary caught an error',
+      `[${boundaryName}${info.digest ? `-${info.digest}` : ''}][${new Date()}] React ErrorBoundary caught an error, for User(${userId}).`,
       {
         source: 'react.error-boundary',
         boundaryName,
@@ -42,8 +44,10 @@ export const reportAppRouterError = (
   context: Record<string, unknown> = {},
 ) => {
   try {
+    const userId =
+      (globalThis as any)?.userId ?? (globalThis as any)?.privyUserId;
     datadogLogs.logger.error(
-      'App Router error boundary caught an error',
+      `[${boundaryName}${error.digest ? `-${error.digest}` : ''}][${new Date()}] App Router error boundary caught an error, for User(${userId}).`,
       {
         source: 'next.app-router.error-boundary',
         boundaryName,

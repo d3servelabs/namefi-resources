@@ -5,7 +5,7 @@ import {
   type User as PrivyUser,
 } from '@privy-io/react-auth';
 import { useQuery, type AnyUseQueryOptions } from '@tanstack/react-query';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { privyStorageToPrivyCustomMetadata } from '@namefi-astra/common/privy-custom-metadata';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useEmailPrompt } from './use-email-prompt';
@@ -103,6 +103,12 @@ export function useAuth() {
     authenticated,
     userId: userQuery.data?.id,
   });
+
+  useEffect(() => {
+    if (globalThis) {
+      (globalThis as any).userId = userQuery?.data?.id ?? privyUser?.id;
+    }
+  }, [privyUser?.id, userQuery?.data?.id]);
 
   if (isSkipAuthActive) {
     const mockUser = {
