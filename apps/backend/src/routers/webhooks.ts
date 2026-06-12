@@ -12,7 +12,7 @@ export const webhooksRouter = new Hono();
 
 webhooksRouter.post('/nft-activity', async (c) => {
   const signature = c.req.header('x-alchemy-signature');
-  const rawBody = c.req.raw.body?.toString() ?? '';
+  const rawBody = await c.req.raw.clone().text();
   const body = (await c.req.json()) as
     | NftActivityResponse
     | AddressActivityResponse;
@@ -147,8 +147,22 @@ function _isValidSignatureForStringBody(
   signature: string, // your "x-alchemy-signature" from header
   signingKey: string, // taken from dashboard for specific webhook
 ): boolean {
+  if (!signature || !signingKey) {
+    return false;
+  }
+  if (!/^[0-9a-f]{64}$/i.test(signature)) {
+    return false;
+  }
+
   const hmac = crypto.createHmac('sha256', signingKey); // Create a HMAC SHA256 hash using the signing key
   hmac.update(body, 'utf8'); // Update the token hash with the request body using utf8
   const digest = hmac.digest('hex');
-  return signature === digest;
+  const signatureBuffer = Buffer.from(signature, 'hex');
+  const digestBuffer = Buffer.from(digest, 'hex');
+
+  if (signatureBuffer.length !== digestBuffer.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(signatureBuffer, digestBuffer);
 }
