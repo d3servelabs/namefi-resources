@@ -228,6 +228,52 @@ export const apexSoaNsTestCases = [
   },
 ];
 
+export const apexCnameTestCases = [
+  {
+    zoneName: 'example.com',
+    records: [
+      {
+        type: 'CNAME',
+        name: '@',
+        ttl: 3600,
+        rdata: 'example.com.',
+      },
+    ],
+    description: 'Zone with a lone CNAME record at apex (@)',
+  },
+  {
+    zoneName: 'example.com',
+    records: [
+      {
+        type: 'CNAME',
+        name: '',
+        ttl: 3600,
+        rdata: 'example.com.',
+      },
+    ],
+    description: 'Zone with a lone CNAME record at apex (empty name)',
+  },
+  {
+    zoneName: 'example.com',
+    records: [
+      {
+        type: 'CNAME',
+        name: '@',
+        ttl: 3600,
+        rdata: 'target.example.net.',
+      },
+      {
+        type: 'A',
+        name: 'www',
+        ttl: 3600,
+        rdata: '192.168.1.1',
+      },
+    ],
+    description:
+      'Zone with a CNAME at apex (@) alongside other non-apex records',
+  },
+];
+
 export const nsConflictTestCases = [
   {
     zoneName: 'example.com',

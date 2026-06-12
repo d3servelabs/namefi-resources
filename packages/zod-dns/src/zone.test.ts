@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { zoneSchema } from './zone';
 import {
+  apexCnameTestCases,
   apexSoaNsTestCases,
   cnameConflictTestCases,
   duplicateRecordsTestCases,
@@ -106,6 +107,24 @@ describe('DNS Zone Validation', () => {
               issue.code === 'custom' &&
               issue.message ===
                 'SOA and NS records are not allowed at the zone apex (@ or empty name). These records are managed by the DNS provider.',
+          );
+          expect(hasError).toBe(true);
+        }
+      });
+    }
+  });
+
+  describe('Apex CNAME records check', () => {
+    for (const testCase of apexCnameTestCases) {
+      it(`should not validate ${testCase.description}`, () => {
+        const result = zoneSchema.safeParse(testCase);
+        expect(result.success).toBe(false);
+        if (!result.success) {
+          const hasError = result.error.issues.some(
+            (issue) =>
+              issue.code === 'custom' &&
+              issue.message ===
+                'CNAME records are not allowed at the zone apex (@ or empty name). The apex always has SOA and NS records, and a CNAME cannot coexist with other record types (RFC 1034 §3.6.2).',
           );
           expect(hasError).toBe(true);
         }

@@ -127,6 +127,25 @@ export const zoneSchema = zoneBasicSchema
         'SOA and NS records are not allowed at the zone apex (@ or empty name). These records are managed by the DNS provider.',
     },
   )
+  /**
+   * RFC 1034 §3.6.2 / RFC 2181 §10.1: a CNAME cannot coexist with any other
+   * data at the same node. The zone apex (@ or empty name) always carries the
+   * provider-managed SOA and NS records, so a CNAME there is always a conflict
+   * and would break the zone — even when it is the only user-supplied record at
+   * the apex (in which case the same-name coexistence check above cannot see it).
+   */
+  .refine(
+    (data) => {
+      const apexRecords = data.records.filter(
+        (record) => record.name === '@' || record.name === '',
+      );
+      return apexRecords.every((record) => record.type !== 'CNAME');
+    },
+    {
+      message:
+        'CNAME records are not allowed at the zone apex (@ or empty name). The apex always has SOA and NS records, and a CNAME cannot coexist with other record types (RFC 1034 §3.6.2).',
+    },
+  )
   // Check that no other records exist for names that have NS records
   .refine(
     (data) => {
