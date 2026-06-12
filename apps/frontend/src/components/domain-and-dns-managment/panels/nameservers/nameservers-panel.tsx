@@ -69,11 +69,9 @@ import {
   RequestWalletConnection,
   type RequestWalletConnectionRef,
 } from '@/components/dialogs/request-wallet-connection';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { useAccount } from 'wagmi';
-import {
-  CANCEL_DNS_WORKFLOW_FLAG,
-  useBooleanOpenFeatureFlag,
-} from '@/lib/openfeature-flags';
+import { CANCEL_DNS_WORKFLOW_FLAG } from '@/lib/openfeature-flags';
 
 /**
  * Unified EIP-712 types for domain actions.
@@ -756,7 +754,7 @@ function NameserversProgressModal({
   const [open, setOpen] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-  const canCancel = useBooleanOpenFeatureFlag(CANCEL_DNS_WORKFLOW_FLAG);
+  const [canCancel] = useAdminFeatureFlag(CANCEL_DNS_WORKFLOW_FLAG);
 
   const progress = useChangeNameserversProgress(domainName, {
     enabled: open,

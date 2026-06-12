@@ -20,13 +20,11 @@ import { AlertCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/hooks/use-auth';
-import {
-  FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
-  useBooleanOpenFeatureFlag,
-} from '@/lib/openfeature-flags';
+import { useAdminFeatureFlag } from './admin/feature-flags/use-flag';
+import { FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG } from '@/lib/openfeature-flags';
 
 export function HeaderMissingEmailWarning() {
-  const forceHeaderMissingEmailWarning = useBooleanOpenFeatureFlag(
+  const [forceHeaderMissingEmailWarning] = useAdminFeatureFlag(
     FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
   );
   const { privyUser, ready, isAuthenticated } = useAuth();

@@ -71,15 +71,13 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { useAdminFeatureFlagsSheet } from '@/components/admin/feature-flags/context';
+import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { ErrorBoundary } from '@suspensive/react';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import type { AdminUserLookupReference } from '@/components/admin/user-details';
 import { useDebounceValue } from 'usehooks-ts';
-import {
-  SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
-  useBooleanOpenFeatureFlag,
-} from '@/lib/openfeature-flags';
+import { SHOW_BALANCE_IN_USER_DROPDOWN_FLAG } from '@/lib/openfeature-flags';
 
 import {
   flatten,
@@ -137,7 +135,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
     ),
   },
   function UserDropdownMenu() {
-    const showBalanceInUserDropdown = useBooleanOpenFeatureFlag(
+    const [showBalanceInUserDropdown] = useAdminFeatureFlag(
       SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
     );
 
