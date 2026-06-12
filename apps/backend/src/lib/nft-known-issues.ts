@@ -21,7 +21,7 @@ export const nftKnownIssuesKeyv = new Keyv(keyvPostgres, {
 });
 
 nftKnownIssuesKeyv.on('error', (error) => {
-  logger.error({ error }, 'nftKnownIssuesKeyv error');
+  logger.warn({ error }, 'nftKnownIssuesKeyv error');
 });
 
 const INDEX_KEY = '__index';

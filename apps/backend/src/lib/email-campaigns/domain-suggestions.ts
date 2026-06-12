@@ -127,7 +127,7 @@ export async function getUserDomainSuggestions(
 
     return suggestions;
   } catch (error) {
-    logger.error({ userId, error }, 'Failed to fetch domain suggestions');
+    logger.debug({ userId, error }, 'Failed to fetch domain suggestions');
     return [];
   }
 }

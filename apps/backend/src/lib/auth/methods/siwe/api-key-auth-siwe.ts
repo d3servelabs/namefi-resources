@@ -72,7 +72,7 @@ export async function authenticateWithSiweTokenFromHeader(
       chainId: siweDetails.session.chainId,
     };
   } catch (error) {
-    logger.error({ error }, 'SIWE signature-header failed');
+    logger.debug({ error }, 'SIWE signature-header failed');
     return {
       success: false,
       error: 'Authentication failed',

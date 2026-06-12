@@ -246,7 +246,7 @@ export async function getSiweNonce({
       nonce,
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to consume SIWE signature nonce');
+    logger.debug({ error }, 'Failed to consume SIWE signature nonce');
     return {
       valid: false,
       error: 'Nonce validation failed',
@@ -278,7 +278,7 @@ export async function doesSiweNonceExist({
       valid: true,
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to check SIWE nonce');
+    logger.debug({ error }, 'Failed to check SIWE nonce');
     return {
       valid: false,
       error: 'Nonce validation failed',
@@ -354,7 +354,7 @@ export async function validateAndConsumeNonce({
       valid: true,
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to validate SIWE nonce');
+    logger.debug({ error }, 'Failed to validate SIWE nonce');
     return {
       valid: false,
       error: 'Nonce validation failed',
@@ -407,7 +407,7 @@ export async function getSiweDetailsFromToken(
       session: parsedSession.data,
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to read SIWE session token');
+    logger.debug({ error }, 'Failed to read SIWE session token');
     return null;
   }
 }

@@ -188,7 +188,7 @@ export async function authenticateRequest(
         return { ...result, methodId: method.id };
       }
     } catch (error) {
-      logger.error({ error, methodId: method.id }, 'Error in auth method');
+      logger.trace({ error, methodId: method.id }, 'Error in auth method');
       // Continue to next method on error
     }
   }

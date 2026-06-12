@@ -435,7 +435,7 @@ export const domainConfigRouter = createContractTRPCRouter<
 
         return activeNameserversChangeWorkflow;
       } catch (error: any) {
-        logger.error(error);
+        logger.debug(error);
         if (
           error &&
           'cause' in error &&
@@ -489,7 +489,7 @@ export const domainConfigRouter = createContractTRPCRouter<
           message: 'Invalid domain name',
         });
       } catch (error) {
-        logger.error(error);
+        logger.debug(error);
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Error checking domain supported features',
@@ -560,10 +560,7 @@ export const domainConfigRouter = createContractTRPCRouter<
           );
         }
       } catch (error) {
-        logger.error(
-          { error },
-          'Error updating domain preferences and config:',
-        );
+        logger.warn({ error }, 'Error updating domain preferences and config:');
         throw error;
       }
     }),
@@ -668,7 +665,7 @@ export const domainConfigRouter = createContractTRPCRouter<
           workflowStatus = (await workflow.describe()).status.name;
         }
       } catch (error) {
-        logger.error(error);
+        logger.trace(error);
       }
 
       const pendingRequestToEnableExport = workflowStatus === 'RUNNING';
@@ -907,7 +904,7 @@ export const domainConfigRouter = createContractTRPCRouter<
           },
         );
       } catch (error) {
-        logger.error(error, 'Failed to start workflow');
+        logger.debug(error, 'Failed to start workflow(');
       }
       return result;
     }),
@@ -987,7 +984,7 @@ export const domainConfigRouter = createContractTRPCRouter<
 
         return { success: true, workflowId: activeWorkflow.workflowId };
       } catch (error) {
-        logger.error(
+        logger.debug(
           { error, domainName, workflowId: activeWorkflow.workflowId },
           'Failed to cancel nameservers change workflow',
         );

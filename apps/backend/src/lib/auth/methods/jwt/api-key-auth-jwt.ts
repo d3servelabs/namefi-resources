@@ -60,7 +60,7 @@ export async function authenticateWithJwtBearer(
       user,
     };
   } catch (error) {
-    logger.error({ error }, 'JWT bearer authentication failed');
+    logger.debug({ error }, 'JWT bearer authentication failed');
     return {
       success: false,
       error: 'Authentication failed',

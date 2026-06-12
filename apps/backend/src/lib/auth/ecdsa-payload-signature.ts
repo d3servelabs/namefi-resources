@@ -100,7 +100,7 @@ export async function verifySignedPayload<
       recoveredAddress: getAddress(recoveredAddress),
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to verify EIP-712 signature');
+    logger.debug({ error }, 'Failed to verify EIP-712 signature');
     return {
       valid: false,
       error:

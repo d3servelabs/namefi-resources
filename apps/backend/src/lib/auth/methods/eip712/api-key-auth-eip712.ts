@@ -180,7 +180,7 @@ export async function authenticateWithEIP712SignatureHeader(
       chainId,
     };
   } catch (error) {
-    logger.error({ error }, 'EIP712 signature-header failed');
+    logger.debug({ error }, 'EIP712 signature-header failed');
     return {
       success: false,
       error: 'Authentication failed',

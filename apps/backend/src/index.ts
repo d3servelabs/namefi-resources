@@ -129,7 +129,7 @@ async function resolveCorsOrigin(origin: string | undefined, path: string) {
       return origin;
     }
   } catch (error) {
-    logger.error(error, 'Error parsing origin');
+    logger.trace(error, 'Error parsing origin');
     return null;
   }
 

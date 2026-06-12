@@ -130,7 +130,7 @@ export function ipMatchesCidr(clientIp: string, ipOrCidr: string): boolean {
     // For exact IP match, normalize and compare
     return normalizedClient === normalizedCidr;
   } catch (error) {
-    logger.error({ error, clientIp, ipOrCidr }, 'Error matching IP to CIDR');
+    logger.debug({ error, clientIp, ipOrCidr }, 'Error matching IP to CIDR');
     return false;
   }
 }
@@ -273,7 +273,7 @@ export function originMatchesPattern(origin: string, pattern: string): boolean {
       originUrl.port === patternUrl.port
     );
   } catch (error) {
-    logger.error(
+    logger.debug(
       { error, origin, pattern },
       'Error matching origin to pattern',
     );

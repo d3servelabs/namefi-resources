@@ -164,7 +164,7 @@ export async function verifyEIP712RawBodySignature({
       }),
     );
   } catch (error) {
-    logger.error({ error }, 'Failed to recover typed data signer address');
+    logger.debug({ error }, 'Failed to recover typed data signer address');
     return {
       valid: false,
       error: 'Failed to recover signer address from signature',
@@ -209,7 +209,7 @@ export async function verifyEIP712RawBodySignature({
         delegatorAddress: getAddress(eip1271Account),
       };
     } catch (error) {
-      logger.error({ error }, 'EIP-1271 typed data verification failed');
+      logger.debug({ error }, 'EIP-1271 typed data verification failed');
       return {
         valid: false,
         error: 'EIP-1271 signature verification failed',
@@ -255,7 +255,7 @@ export async function consumeEIP712SignatureNonce({
       valid: true,
     };
   } catch (error) {
-    logger.error({ error }, 'Failed to consume EIP712 signature nonce');
+    logger.debug({ error }, 'Failed to consume EIP712 signature nonce');
     return {
       valid: false,
       error: 'Nonce validation failed',
