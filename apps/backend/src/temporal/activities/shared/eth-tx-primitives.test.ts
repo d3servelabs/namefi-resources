@@ -186,6 +186,24 @@ describe('getTransactionConfirmation', () => {
     });
   });
 
+  it('dedupes identical candidate hashes so one confirmed tx is not MULTIPLE_CONFIRMED', async () => {
+    // Capped-gas lanes sign the SAME transaction, so the same hash can repeat in
+    // `txHashes`. A single confirmed tx must NOT surface as MULTIPLE_CONFIRMED.
+    publicClient.getBlockNumber.mockResolvedValueOnce(100n);
+    publicClient.getTransactionReceipt.mockResolvedValue({
+      status: 'success',
+      blockNumber: 95n, // 100 - 95 + 1 = 6 ≥ 3 confirmations
+    } as never);
+    expect(await confirm(['0xa' as Hash, '0xa' as Hash])).toEqual({
+      kind: 'CONFIRMED',
+      winner: '0xa',
+      blockNumber: '95',
+      confirmations: 6,
+    });
+    // Polled once for the unique hash, not once per duplicate.
+    expect(publicClient.getTransactionReceipt).toHaveBeenCalledTimes(1);
+  });
+
   it('returns PENDING when nothing is mined and the nonce has not advanced', async () => {
     publicClient.getTransactionCount.mockResolvedValueOnce(PINNED_NONCE);
     expect(await confirm(['0xa' as Hash])).toEqual({ kind: 'PENDING' });

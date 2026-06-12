@@ -269,7 +269,14 @@ export function createEthTxPrimitives(
     let revertedHash: { hash: Hash; blockNumber: bigint } | null = null;
     let anyReceiptFound = false;
 
-    for (const hash of txHashes) {
+    // Lanes that hit the gas-price cap sign an IDENTICAL transaction, so the same
+    // hash can appear in `txHashes` more than once (and `allCandidateHashes`
+    // accumulates across rounds). Dedupe before polling so one confirmed tx can't
+    // be counted as several and produce a spurious MULTIPLE_CONFIRMED — which
+    // would drive the double-commit autofix (e.g. a phantom NFSC charge-back).
+    const uniqueHashes = [...new Set(txHashes)];
+
+    for (const hash of uniqueHashes) {
       const [receiptError, receipt] = await resolve(
         publicClient.getTransactionReceipt({ hash }),
       );

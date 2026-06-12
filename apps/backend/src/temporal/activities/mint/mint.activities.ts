@@ -543,11 +543,11 @@ export async function getInitalGasPriceMultiplier(chainId: number) {
   switch (chainId) {
     case CHAINS.sepolia.id:
     case CHAINS.baseSepolia.id:
-      return 2;
+      return 1.5;
     case CHAINS.base.id:
-      return 1.125;
+      return 1.15;
     default:
-      return 1.05;
+      return 1.125;
   }
 }
 
@@ -557,7 +557,7 @@ export async function getMaxGasPriceMultiplier(chainId: number) {
     case CHAINS.baseSepolia.id:
       return 2;
     case CHAINS.base.id:
-      return 1.35;
+      return 1.5;
     case CHAINS.mainnet.id:
       return 1.25;
     default:
