@@ -14,11 +14,11 @@ import { AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 
 function AdminCrashTestingPage() {
-  const [shouldCrash, setShouldCrash] = useState(false);
+  const [shouldCrash, setShouldCrash] = useState<Date | boolean | null>(null);
 
   if (shouldCrash) {
     throw new Error(
-      'Admin crash test: intentional fatal client crash for observability verification.',
+      `${shouldCrash instanceof Date ? `[${shouldCrash}]` : ''}Admin crash test: intentional fatal client crash for observability verification.`,
     );
   }
 
@@ -50,6 +50,13 @@ function AdminCrashTestingPage() {
             onClick={() => setShouldCrash(true)}
           >
             Trigger Fatal Crash
+          </Button>
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={() => setShouldCrash(new Date())}
+          >
+            Trigger Fatal Crash With Timestamp in Title
           </Button>
         </CardContent>
       </Card>
