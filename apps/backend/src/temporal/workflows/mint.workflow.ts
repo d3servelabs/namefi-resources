@@ -104,6 +104,7 @@ async function _signAndSendTransactionWithRetry(
       maxGasPriceMultiplier,
     },
     recovery,
+    lock: { enabled: true },
   });
 }
 

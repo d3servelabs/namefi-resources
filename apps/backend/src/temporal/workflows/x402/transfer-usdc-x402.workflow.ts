@@ -55,6 +55,7 @@ async function _signAndSendX402TransactionWithRetry(
         chainId,
       }),
     },
+    lock: { enabled: true },
   });
 }
 

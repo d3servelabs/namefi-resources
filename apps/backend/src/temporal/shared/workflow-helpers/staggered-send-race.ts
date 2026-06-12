@@ -40,7 +40,6 @@ import {
   type SignerKind,
   sendAndConfirmTxWorkflow,
 } from '../../workflows/send-and-confirm-tx.workflow';
-import { computeChainStaggerMs } from './chain-timing';
 import { criticalAlertWithTicket } from './critical-alert-with-ticket';
 import { interruptibleSleep } from './interruptible-sleep';
 import {
@@ -50,6 +49,15 @@ import {
 import { typedChildWorkflow } from './typed-child-workflow';
 
 export type { AlreadySentPolicy } from './nonce-collision-precheck';
+import type { NonceLockToken } from '../../activities/default/nonce-lock.activities';
+import { catchAndAlertLocally } from './catch-and-alert-locally';
+import { runNonceLockHeartbeat } from './nonce-lock-heartbeat';
+import { computeChainStaggerMs, getChainBlockTimeMs } from './chain-timing';
+import {
+  NONCE_LOCK_HEARTBEAT_INTERVAL_MS,
+  computeNonceLockAbsoluteMaxMs,
+  computeNonceLockTtlMs,
+} from './nonce-lock-ttl';
 import { typedProxyActivities } from './typed-proxy-activities';
 
 export interface StaggeredRaceConfig {
@@ -113,6 +121,16 @@ export interface StaggeredSendRaceOptions {
   signerKind: SignerKind;
   config: StaggeredRaceConfig;
   recovery?: StaggeredRaceRecovery;
+  /**
+   * Opt-in distributed signer-nonce lock. When `enabled`, the race acquires a
+   * cross-process lock on `eip155:<chainId>:<signer>` before the first nonce pin,
+   * keeps it fresh with a heartbeat across all re-pins, and releases it at the
+   * end — so only one workflow at a time can read→send for this signer. Omitted
+   * ⇒ no lock (back-compat). `heartbeatIntervalMs` overrides the refresh cadence
+   * (default {@link NONCE_LOCK_HEARTBEAT_INTERVAL_MS}); the rolling redis TTL is
+   * three intervals, so the heartbeat refreshes at a third of the TTL.
+   */
+  lock?: { enabled: boolean; heartbeatIntervalMs?: number; leewayMs?: number };
 }
 
 const DEFAULTS = {
@@ -185,6 +203,33 @@ export async function staggeredSendRace(
       summary: 'pre-re-pin nonce-collision check',
     },
   });
+  // Distributed nonce-lock activities (DEFAULT queue — never occupy a MINT slot).
+  // acquire waits DURABLY (no maximumAttempts): Temporal retries until the lock
+  // frees — a crashed holder's short TTL auto-expires, and a redis outage
+  // resolves once redis recovers (the getRedisClient cache no longer poisons on
+  // failure). The trade-off: a redis outage PAUSES minting (serialization is
+  // preserved) rather than proceeding lock-less.
+  const lockAcquireActivities = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      startToCloseTimeout: '20 seconds',
+      retry: {
+        initialInterval: '1 second',
+        maximumInterval: '30 seconds',
+        backoffCoefficient: 2,
+      },
+      summary: 'acquire signer-nonce lock',
+    },
+  });
+  const lockReleaseActivities = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      startToCloseTimeout: '15 seconds',
+      retry: { maximumAttempts: 3 },
+      summary: 'release signer-nonce lock',
+    },
+  });
+
   const readSignerNonce =
     signerKind === 'x402'
       ? mintActivities.getX402PendingSignerNonce
@@ -267,7 +312,10 @@ export async function staggeredSendRace(
         } catch {
           // Alert failures must not affect the race.
         }
-      });
+      })
+      // Swallow a CancelledFailure (external cancellation) so the fire-and-forget
+      // watchdog promise is never left unhandled.
+      .catch(() => undefined);
 
     try {
       for (let attemptIndex = 0; attemptIndex < config.lanes; attemptIndex++) {
@@ -400,6 +448,48 @@ export async function staggeredSendRace(
     );
   };
 
+  // Acquire the distributed signer-nonce lock (if enabled) BEFORE the first nonce
+  // pin, and keep it fresh with a heartbeat across all re-pins. Released in the
+  // finally below. Correctness still rests on the pinned nonce; the lock removes
+  // the cross-workflow read→send collision window.
+  let lockToken: NonceLockToken | undefined;
+  let lockDone = false;
+  let heartbeat: Promise<void> | undefined;
+  if (options.lock?.enabled) {
+    // The heartbeat interval is primary; the rolling TTL is three intervals, so
+    // the heartbeat refreshes at a third of the TTL.
+    const heartbeatIntervalMs =
+      options.lock.heartbeatIntervalMs ?? NONCE_LOCK_HEARTBEAT_INTERVAL_MS;
+    const lockTtlMs = computeNonceLockTtlMs(heartbeatIntervalMs);
+    const absoluteMaxMs = computeNonceLockAbsoluteMaxMs({
+      triesPerPin: config.lanes,
+      maxRepins: maxNonceRepins,
+      maxTimeoutPerTryMs: config.failThresholdMs,
+      staggerMs,
+      minChildTimeoutMs: config.minChildTimeoutMs,
+      chainId,
+      chainBlockTimeMs: getChainBlockTimeMs(chainId),
+      leewayMs: options.lock.leewayMs,
+    });
+    lockToken = await lockAcquireActivities.acquireNonceLock({
+      chainId,
+      signerKind,
+      ttlMs: lockTtlMs,
+      absoluteMaxMs,
+    });
+    // Attach the handler at creation so the fire-and-forget promise is never
+    // momentarily unhandled (e.g. a CancelledFailure from interruptibleSleep on
+    // external cancellation); the finally still awaits it deterministically.
+    heartbeat = runNonceLockHeartbeat({
+      token: lockToken,
+      lockTtlMs,
+      intervalMs: heartbeatIntervalMs,
+      absoluteMaxMs,
+      isDone: () => lockDone,
+      label,
+    }).catch(() => undefined);
+  }
+
   try {
     for (let roundIndex = 0; ; roundIndex++) {
       const pinnedNonce = await readSignerNonce(chainId);
@@ -512,5 +602,17 @@ export async function staggeredSendRace(
       type,
       nonRetryable: true,
     });
+  } finally {
+    if (lockToken) {
+      // Stop the heartbeat (trips its interruptibleSleep), drain any in-flight
+      // extend, then release. Runs on every success/throw path.
+      lockDone = true;
+      await heartbeat?.catch(() => undefined);
+      const token = lockToken;
+      await catchAndAlertLocally(
+        () => lockReleaseActivities.releaseNonceLock({ token }),
+        { message: `[${label}] nonce-lock release failed` },
+      );
+    }
   }
 }

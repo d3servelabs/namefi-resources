@@ -172,25 +172,14 @@ export function createEthTxPrimitives(
   clients: SignerClientBundle,
 ): EthTxPrimitives {
   const getPendingSignerNonce = async (chainId: number): Promise<number> => {
-    // ===================== DISTRIBUTED-LOCK SEAM (deferred) =================
-    // TODO(NFI-xxxx): wrap nonce allocation in a cross-process critical
-    // section. Today we rely on the MINT queue's
-    // `maxConcurrentActivityTaskExecutions: 1` (workers/index.ts) to serialize
-    // SENDS, but two CONCURRENT mint workflows can still READ the same
-    // 'pending' nonce here and collide. Drop-in options (both keep this
-    // function's public signature unchanged):
-    //   (a) Postgres advisory lock + persisted counter, mirroring
-    //       grantClaimAtomic (campaign-grant-claims.activities.ts):
-    //         await $withTransaction(async (tx) => {
-    //           await tx.execute(sql.raw(
-    //             `SELECT pg_advisory_xact_lock(hashtext('signer:${chainId}'))`));
-    //           // read max(onchain 'pending', persisted_counter + 1), persist, return
-    //         }, { isolationLevel: 'serializable' });
-    //   (b) Redis INCR on `signer-nonce:${chainId}` seeded from on-chain
-    //       'pending' (lib/redis.ts client).
-    // Keeping getPendingSignerNonce a SEPARATE activity (not folded into send) is what
-    // makes this a single-function change.
-    // =======================================================================
+    // ===================== DISTRIBUTED-LOCK SEAM (satisfied) ================
+    // Cross-process nonce serialization is now handled ABOVE this read, at the
+    // orchestration layer: `staggeredSendRace` acquires a distributed Redis lock
+    // (`redlock-universal`) keyed `eip155:<chainId>:<signer>` before the first
+    // pin and holds it across all re-pins (heartbeat-refreshed, released at the
+    // end) — see `nonce-lock.activities.ts` / `nonce-lock-heartbeat.ts`. That is
+    // stronger than locking only this read: it covers read + all replacements,
+    // and works across worker processes/pods (unlike the old MINT single-slot).
     const publicClient = clients.getPublicClient(chainId);
     const walletClient = await clients.getWalletClient(chainId);
     return publicClient.getTransactionCount({

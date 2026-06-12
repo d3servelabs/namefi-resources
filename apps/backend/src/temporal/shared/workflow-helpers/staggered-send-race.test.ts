@@ -10,6 +10,10 @@ import type {
   StaggeredRaceConfig,
   StaggeredRaceRecovery,
 } from './staggered-send-race';
+// Mocked below; imported so tests can assert the heartbeat is started with the
+// acquired lock token (the extend/refresh loop itself is unit-tested in
+// nonce-lock-heartbeat.test.ts).
+import { runNonceLockHeartbeat } from './nonce-lock-heartbeat';
 
 const workflowMocks = {
   sleep: vi.fn(async () => undefined),
@@ -57,6 +61,12 @@ const criticalAlertWithTicket = vi.fn(async () => ({
   taskId: 't',
   taskUrl: 'u',
 }));
+const acquireNonceLock = vi.fn(async () => ({
+  handle: { id: 'i', key: 'k', value: 'v', ttl: 90_000 },
+  absoluteDeadlineMs: 0,
+}));
+const extendNonceLock = vi.fn(async () => true);
+const releaseNonceLock = vi.fn(async () => undefined);
 
 type ChildHandle = { result: () => Promise<SendAndConfirmTxResult> };
 const startChild = vi.fn(
@@ -72,10 +82,16 @@ vi.mock('./typed-proxy-activities', () => ({
     getX402TransactionConfirmation,
     generalAlertNamefi,
     checkNonceAlreadySent,
+    acquireNonceLock,
+    extendNonceLock,
+    releaseNonceLock,
   }),
 }));
 vi.mock('./typed-child-workflow', () => ({
   typedChildWorkflow: () => ({ startChild }),
+}));
+vi.mock('./nonce-lock-heartbeat', () => ({
+  runNonceLockHeartbeat: vi.fn(() => Promise.resolve()),
 }));
 vi.mock('./critical-alert-with-ticket', () => ({ criticalAlertWithTicket }));
 
@@ -146,6 +162,7 @@ function run(
   config: Partial<StaggeredRaceConfig> = {},
   recovery?: StaggeredRaceRecovery,
   signerKind: 'mint' | 'x402' = 'mint',
+  lock?: { enabled: boolean; heartbeatIntervalMs?: number; leewayMs?: number },
 ) {
   return staggeredSendRace({
     preparedTx: {} as never,
@@ -163,6 +180,7 @@ function run(
       ...config,
     },
     recovery,
+    lock,
   });
 }
 
@@ -175,6 +193,12 @@ beforeEach(() => {
   generalAlertNamefi.mockResolvedValue(undefined);
   checkNonceAlreadySent.mockResolvedValue({ status: 'unused' });
   criticalAlertWithTicket.mockResolvedValue({ taskId: 't', taskUrl: 'u' });
+  acquireNonceLock.mockResolvedValue({
+    handle: { id: 'i', key: 'k', value: 'v', ttl: 90_000 },
+    absoluteDeadlineMs: 0,
+  });
+  extendNonceLock.mockResolvedValue(true);
+  releaseNonceLock.mockResolvedValue(undefined);
   startChild.mockImplementation(async (...callArgs: unknown[]) => {
     const input = (callArgs[1] as [SendAndConfirmTxInput])[0];
     return makeHandle(timedOut(input.attempt));
@@ -426,5 +450,96 @@ describe('staggeredSendRace — pre-re-pin nonce-collision check', () => {
       type: 'staggered-race/nonce-stolen',
     });
     expect(checkNonceAlreadySent).not.toHaveBeenCalled();
+  });
+});
+
+describe('staggeredSendRace — distributed signer-nonce lock', () => {
+  it('does not touch the lock when not enabled (back-compat)', async () => {
+    scriptChildren((i) => confirmed(`0xwin${i.attempt}`));
+    await run(); // no lock arg
+    expect(acquireNonceLock).not.toHaveBeenCalled();
+    expect(releaseNonceLock).not.toHaveBeenCalled();
+  });
+
+  it('acquires before the first nonce pin and releases on success', async () => {
+    scriptChildren((i) => confirmed(`0xwin${i.attempt}`));
+    const winner = await run({}, undefined, 'mint', { enabled: true });
+
+    expect(winner).toBe('0xwin0');
+    expect(acquireNonceLock).toHaveBeenCalledTimes(1);
+    expect(acquireNonceLock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        chainId: CHAIN_ID,
+        signerKind: 'mint',
+        ttlMs: expect.any(Number),
+        absoluteMaxMs: expect.any(Number),
+      }),
+    );
+    expect(releaseNonceLock).toHaveBeenCalledTimes(1);
+    // Acquire happens BEFORE the nonce is pinned.
+    expect(acquireNonceLock.mock.invocationCallOrder[0]).toBeLessThan(
+      getPendingSignerNonce.mock.invocationCallOrder[0],
+    );
+  });
+
+  it('releases the lock even when the race throws (finally)', async () => {
+    scriptChildren(() => reverted('0xrev'));
+    await expect(
+      run({}, undefined, 'mint', { enabled: true }),
+    ).rejects.toMatchObject({ type: 'staggered-race/reverted' });
+    expect(acquireNonceLock).toHaveBeenCalledTimes(1);
+    expect(releaseNonceLock).toHaveBeenCalledTimes(1);
+  });
+
+  it('acquires once across a multi-round re-pin', async () => {
+    let nonceCall = 0;
+    getPendingSignerNonce.mockImplementation(async () => 100 + nonceCall++);
+    scriptChildren((i) =>
+      i.roundIndex === 0
+        ? lost('0xr0', i.attempt, 101)
+        : confirmed('0xr1', i.attempt, 101),
+    );
+    await run({}, { maxNonceRepins: 2 }, 'mint', { enabled: true });
+    expect(acquireNonceLock).toHaveBeenCalledTimes(1);
+    expect(releaseNonceLock).toHaveBeenCalledTimes(1);
+  });
+
+  it("propagates signerKind 'x402' to the lock", async () => {
+    scriptChildren((i) => confirmed('0xx402', i.attempt));
+    await run({}, undefined, 'x402', { enabled: true });
+    expect(acquireNonceLock).toHaveBeenCalledWith(
+      expect.objectContaining({ signerKind: 'x402' }),
+    );
+  });
+
+  it('runs the full lock lifecycle (acquire → heartbeat → release) for x402', async () => {
+    scriptChildren((i) => confirmed('0xx402', i.attempt));
+    await run({}, undefined, 'x402', { enabled: true });
+
+    // 1) acquire for the x402 signer
+    expect(acquireNonceLock).toHaveBeenCalledTimes(1);
+    expect(acquireNonceLock).toHaveBeenCalledWith(
+      expect.objectContaining({ signerKind: 'x402' }),
+    );
+    // 2) heartbeat started with the ACQUIRED token (the extend/refresh loop is
+    //    exercised in nonce-lock-heartbeat.test.ts).
+    expect(runNonceLockHeartbeat).toHaveBeenCalledTimes(1);
+    expect(runNonceLockHeartbeat).toHaveBeenCalledWith(
+      expect.objectContaining({
+        token: expect.objectContaining({
+          handle: expect.objectContaining({ key: 'k' }),
+        }),
+        label: 'test',
+        lockTtlMs: expect.any(Number),
+        intervalMs: expect.any(Number),
+        isDone: expect.any(Function),
+      }),
+    );
+    // 3) release at the end
+    expect(releaseNonceLock).toHaveBeenCalledTimes(1);
+    // Heartbeat is started AFTER acquire and BEFORE release.
+    expect(acquireNonceLock.mock.invocationCallOrder[0]).toBeLessThan(
+      releaseNonceLock.mock.invocationCallOrder[0],
+    );
   });
 });

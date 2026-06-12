@@ -27,6 +27,11 @@ import type { ExecutionContext } from '#lib/execution-context/types';
 import { getTransactionConfirmation } from '../mint/mint-tx.activities';
 import { getX402TransactionConfirmation } from '../x402-tx.activities';
 import { checkNonceAlreadySent } from './nonce-collision.activities';
+import {
+  acquireNonceLock,
+  extendNonceLock,
+  releaseNonceLock,
+} from './nonce-lock.activities';
 
 const SLACK_TEXT_LIMIT = 3000;
 const SLACK_FIELD_LIMIT = 1800;
@@ -114,6 +119,10 @@ export const defaultTaskQueueActivities = {
   getX402TransactionConfirmation,
   // Read-only pre-re-pin "did we already send this?" collision check.
   checkNonceAlreadySent,
+  // Distributed signer-nonce lock (acquire/heartbeat-extend/release).
+  acquireNonceLock,
+  extendNonceLock,
+  releaseNonceLock,
 };
 
 export interface SendTemporalAlertOptions {

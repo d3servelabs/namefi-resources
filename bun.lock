@@ -152,6 +152,7 @@
         "react-email": "^4.3.2",
         "react-markdown": "^10.1.0",
         "redis": "^5.11.0",
+        "redlock-universal": "^0.8.4",
         "rehype-external-links": "^3.0.0",
         "rehype-raw": "^7.0.0",
         "rehype-sanitize": "^6.0.0",
@@ -5898,6 +5899,8 @@
     "redis-errors": ["redis-errors@1.2.0", "", {}, "sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w=="],
 
     "redis-parser": ["redis-parser@3.0.0", "", { "dependencies": { "redis-errors": "^1.0.0" } }, "sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A=="],
+
+    "redlock-universal": ["redlock-universal@0.8.4", "", { "peerDependencies": { "@valkey/valkey-glide": ">=2.0.0", "ioredis": ">=5.0.0", "redis": ">=4.0.0" }, "optionalPeers": ["@valkey/valkey-glide", "ioredis", "redis"] }, "sha512-7OGWiK5YVU6Q+69GulClvKWOmJJ278Fx5hDvx3qBh7EwLoyTkt+vM5v4DClhrL8hdOUDnUs1N+fgEKEupj40Ew=="],
 
     "redux": ["redux@5.0.1", "", {}, "sha512-M9/ELqF6fy8FwmkpnF0S3YKOqMyoWJ4+CS5Efg2ct3oY9daQvd/Pc71FpGZsVsbl3Cpb+IIcjBDUnnyBdQbq4w=="],
 
