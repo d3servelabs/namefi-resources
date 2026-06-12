@@ -37,6 +37,9 @@ export type RecordType = z.infer<typeof recordTypeEnum>;
 // The TTL field is also used by recursive resolvers to prevent infinite loops.
 // The TTL field is also used by the name server to prevent cache poisoning.
 const ttlSchema = z.number().int().min(0).max(2147483647);
+const MAX_CHARACTER_STRING_OCTETS = 255;
+const MAX_TXT_RDATA_WIRE_OCTETS = 65535;
+const utf8Encoder = new TextEncoder();
 
 const recordBasicSchema = z.object({
   type: z.string().regex(/^[A-Z]+$/),
@@ -101,11 +104,17 @@ const mxRecordSchema = recordBasicSchema.extend({
 });
 
 // TXT Record
+//
+// RFC 1035 §3.3 / §3.3.14: a TXT RDATA is a sequence of <character-string>s,
+// each at most 255 octets. The 255-octet limit is therefore per character-string,
+// NOT a cap on the logical value — DKIM keys and flattened SPF records routinely
+// exceed 255 chars and are split across multiple character-strings on the wire
+// (see `sanitizeDnsRecord`). The overall cap is the 16-bit RDLENGTH limit (65535).
 const txtRecordSchema = recordBasicSchema.extend({
   type: z.literal(RecordType.TXT),
-  rdata: z.string().max(255, {
+  rdata: z.string().refine(isTxtRdataWithinWireSizeLimit, {
     message:
-      'The input is not a valid TXT value (rdata), it must be less than 255 characters',
+      'The input is not a valid TXT value (rdata), it must be at most 65535 octets on the wire',
   }),
 });
 
@@ -440,11 +449,14 @@ const naptrRecordSchema = recordBasicSchema.extend({
 });
 
 // SPF Record (deprecated - AWS recommends using TXT instead)
+//
+// Like TXT, the 255-octet limit is per character-string, not per logical value;
+// long SPF policies are split into multiple character-strings on the wire.
 const spfRecordSchema = recordBasicSchema.extend({
   type: z.literal(RecordType.SPF),
-  rdata: z.string().max(255, {
+  rdata: z.string().refine(isTxtRdataWithinWireSizeLimit, {
     message:
-      'The input is not a valid SPF value (rdata), it must be less than 255 characters (Note: AWS recommends using TXT records instead of SPF records)',
+      'The input is not a valid SPF value (rdata), it must be at most 65535 octets on the wire (Note: AWS recommends using TXT records instead of SPF records)',
   }),
 });
 
@@ -468,6 +480,81 @@ export const recordSchema = z.union([
   spfRecordSchema,
 ]);
 
+// RFC 1035 §3.3: a TXT/SPF RDATA is a sequence of <character-string>s, each at
+// most 255 octets. A logical value longer than 255 octets must be carried as
+// multiple consecutive character-strings (resolvers concatenate them).
+
+function getUtf8OctetLength(content: string): number {
+  return utf8Encoder.encode(content).length;
+}
+
+/**
+ * Split a single character-string's content into <=255-octet pieces, never
+ * splitting a multi-byte UTF-8 code point across a boundary. Always returns at
+ * least one piece (the empty string yields `['']`).
+ */
+function splitIntoCharacterStrings(content: string): string[] {
+  const chunks: string[] = [];
+  let current = '';
+  let currentOctets = 0;
+  for (const char of content) {
+    const charOctets = getUtf8OctetLength(char);
+    if (currentOctets + charOctets > MAX_CHARACTER_STRING_OCTETS) {
+      chunks.push(current);
+      current = char;
+      currentOctets = charOctets;
+    } else {
+      current += char;
+      currentOctets += charOctets;
+    }
+  }
+  chunks.push(current);
+  return chunks;
+}
+
+function getTxtCharacterStringSegments(rdata: string): string[] {
+  const isQuotedSequence = /^"[^"]*"(?:\s+"[^"]*")*$/.test(rdata);
+  return isQuotedSequence
+    ? (rdata.match(/"([^"]*)"/g) ?? []).map((quoted) => quoted.slice(1, -1))
+    : [rdata.replace(/^"|"$/g, '')];
+}
+
+function getNormalizedTxtCharacterStringChunks(rdata: string): string[] {
+  return getTxtCharacterStringSegments(rdata).flatMap((segment) =>
+    splitIntoCharacterStrings(segment),
+  );
+}
+
+function getTxtRdataWireSize(rdata: string): number {
+  return getNormalizedTxtCharacterStringChunks(rdata).reduce(
+    (total, chunk) => total + 1 + getUtf8OctetLength(chunk),
+    0,
+  );
+}
+
+function isTxtRdataWithinWireSizeLimit(rdata: string): boolean {
+  return getTxtRdataWireSize(rdata) <= MAX_TXT_RDATA_WIRE_OCTETS;
+}
+
+/**
+ * Normalize a cleaned TXT/SPF rdata value into one or more double-quoted
+ * character-strings, splitting any segment longer than 255 octets so the stored
+ * value is a valid sequence of RFC 1035 character-strings on the wire.
+ *
+ * - An already-quoted value (`"abc"` or `"abc" "def"`) keeps each quoted run as
+ *   its own character-string; only over-long runs are split.
+ * - Any other value is treated as a single character-string (after stripping a
+ *   stray surrounding quote pair, matching the previous wrap-in-quotes behavior).
+ *
+ * Short single-string values are returned unchanged in shape (e.g. `"hello"`),
+ * preserving the prior sanitizer output.
+ */
+function normalizeTxtCharacterStrings(cleanedRdata: string): string {
+  return getNormalizedTxtCharacterStringChunks(cleanedRdata)
+    .map((chunk) => `"${chunk}"`)
+    .join(' ');
+}
+
 /**
  * Sanitize and normalize a DNS record object before validation.
  * Returns a new object with sanitized fields, does not mutate the input.
@@ -478,6 +565,9 @@ export const recordSchema = z.union([
  * - Ensures CNAME/MX targets are FQDNs with trailing dot
  * - Ensures MX priority is an integer and target is normalized
  * - Removes non-printable/control characters
+ * - For TXT/SPF rdata, sanitizeDnsRecord may split and rewrap long values into
+ *   multiple quoted RFC 1035 character-strings, so returned TXT/SPF rdata may
+ *   be shaped differently than the input while remaining a string
  * - Applies best practices for each record type
  *
  * @param record The DNS record object to sanitize
@@ -576,15 +666,9 @@ export function sanitizeDnsRecord(
     case 'TXT':
     case 'SPF':
       if (typeof sanitized.rdata === 'string') {
-        const cleanedRdata = clean(sanitized.rdata);
-        // Ensure TXT/SPF records are wrapped in double quotes
-        if (!cleanedRdata.startsWith('"') || !cleanedRdata.endsWith('"')) {
-          // Remove existing quotes first to avoid double-quoting
-          const unquoted = cleanedRdata.replace(/^"|"$/g, '');
-          sanitized.rdata = `"${unquoted}"`;
-        } else {
-          sanitized.rdata = cleanedRdata;
-        }
+        // Rewrap into quoted RFC 1035 character-strings; long values become a
+        // space-separated sequence of <=255-octet strings.
+        sanitized.rdata = normalizeTxtCharacterStrings(clean(sanitized.rdata));
       }
       break;
     case 'CAA':

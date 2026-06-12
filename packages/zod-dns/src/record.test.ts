@@ -17,6 +17,7 @@ import {
   invalidSVCBRecordTestCases,
   invalidNAPTRRecordTestCases,
   invalidSPFRecordTestCases,
+  invalidTXTRecordTestCases,
   missingFieldsTestCases,
   validAAAARecordTestCases,
   validARecordTestCases,
@@ -36,6 +37,15 @@ import {
   validNAPTRRecordTestCases,
   validSPFRecordTestCases,
 } from './record.testing';
+
+const utf8ByteLength = (value: string) =>
+  new TextEncoder().encode(value).length;
+
+function getQuotedCharacterStrings(rdata: string): string[] {
+  return (rdata.match(/"([^"]*)"/g) ?? []).map((quoted: string) =>
+    quoted.slice(1, -1),
+  );
+}
 
 describe('DNS Record Validation', () => {
   describe('A Records', () => {
@@ -111,6 +121,13 @@ describe('DNS Record Validation', () => {
       it(`should validate ${testCase.description}`, () => {
         const result = recordSchema.safeParse(testCase);
         expect(result.success).toBe(true);
+      });
+    }
+
+    for (const testCase of invalidTXTRecordTestCases) {
+      it(`should not validate ${testCase.description}`, () => {
+        const result = recordSchema.safeParse(testCase);
+        expect(result.success).toBe(false);
       });
     }
   });
@@ -432,6 +449,82 @@ describe('Sanitize DNS Record', () => {
     expect(sanitizedRecord.ttl).toEqual(60);
     expect(sanitizedRecord.rdata).toEqual(
       '"v=spf1 include:_spf.example.com ~all"',
+    );
+  });
+
+  it('should split a long TXT value into multiple 255-octet character-strings', () => {
+    const longValue = 'A'.repeat(600);
+    const record = {
+      name: 'selector._domainkey.example.com',
+      type: 'TXT',
+      ttl: 60,
+      rdata: longValue,
+    };
+    const sanitizedRecord = sanitizeDnsRecord(record);
+    // 600 chars -> 255 + 255 + 90, each wrapped in its own quotes.
+    expect(sanitizedRecord.rdata).toEqual(
+      `"${'A'.repeat(255)}" "${'A'.repeat(255)}" "${'A'.repeat(90)}"`,
+    );
+    const segments = getQuotedCharacterStrings(sanitizedRecord.rdata);
+    for (const segment of segments) {
+      expect(utf8ByteLength(segment)).toBeLessThanOrEqual(255);
+    }
+    // Concatenating the character-strings reproduces the original value.
+    expect(segments.join('')).toEqual(longValue);
+    expect(utf8ByteLength(segments.join(''))).toEqual(
+      utf8ByteLength(longValue),
+    );
+  });
+
+  it('should split a multibyte TXT value on UTF-8 octet boundaries', () => {
+    const longValue = '界'.repeat(100);
+    const record = {
+      name: 'example.com',
+      type: 'TXT',
+      ttl: 60,
+      rdata: longValue,
+    };
+    const sanitizedRecord = sanitizeDnsRecord(record);
+    const segments = getQuotedCharacterStrings(sanitizedRecord.rdata);
+
+    expect(segments.length).toBeGreaterThan(1);
+    for (const segment of segments) {
+      expect(utf8ByteLength(segment)).toBeLessThanOrEqual(255);
+    }
+    expect(segments.join('')).toEqual(longValue);
+    expect(utf8ByteLength(segments.join(''))).toEqual(
+      utf8ByteLength(longValue),
+    );
+  });
+
+  it('should preserve an already multi-string TXT value', () => {
+    const record = {
+      name: 'example.com',
+      type: 'TXT',
+      ttl: 60,
+      rdata: '"part one" "part two"',
+    };
+    const sanitizedRecord = sanitizeDnsRecord(record);
+    expect(sanitizedRecord.rdata).toEqual('"part one" "part two"');
+  });
+
+  it('should split a long SPF value into multiple character-strings', () => {
+    const longValue = `v=spf1 ${'include:_spf.example.com '.repeat(20)}-all`;
+    const record = {
+      name: 'example.com',
+      type: 'SPF',
+      ttl: 60,
+      rdata: longValue,
+    };
+    const sanitizedRecord = sanitizeDnsRecord(record);
+    const segments = getQuotedCharacterStrings(sanitizedRecord.rdata);
+    expect(segments.length).toBeGreaterThan(1);
+    for (const segment of segments) {
+      expect(utf8ByteLength(segment)).toBeLessThanOrEqual(255);
+    }
+    expect(segments.join('')).toEqual(longValue);
+    expect(utf8ByteLength(segments.join(''))).toEqual(
+      utf8ByteLength(longValue),
     );
   });
 

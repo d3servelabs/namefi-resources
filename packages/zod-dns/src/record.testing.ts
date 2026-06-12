@@ -198,6 +198,30 @@ export const validTXTRecordTestCases = [
     rdata: 'google-site-verification=abcdefghijklmnopqrstuvwxyz',
     description: 'Valid TXT record with verification data',
   },
+  {
+    type: 'TXT',
+    name: 'selector1._domainkey',
+    ttl: 3600,
+    rdata: `v=DKIM1; k=rsa; p=${'A'.repeat(400)}`,
+    description: 'Valid long TXT record (DKIM public key over 255 chars)',
+  },
+  {
+    type: 'TXT',
+    name: 'txt-wire-boundary',
+    ttl: 3600,
+    rdata: 'x'.repeat(65279),
+    description: 'Valid TXT record at the 65535-octet wire-size limit',
+  },
+];
+
+export const invalidTXTRecordTestCases = [
+  {
+    type: 'TXT',
+    name: 'example',
+    ttl: 3600,
+    rdata: 'x'.repeat(65280),
+    description: 'Invalid TXT record exceeding the 65535-octet wire-size limit',
+  },
 ];
 
 export const missingFieldsTestCases = [
@@ -227,7 +251,8 @@ export const missingFieldsTestCases = [
   },
 ];
 
-// We don't have any invalid TXT records since the schema currently accepts any string
+// Invalid TXT records are enumerated in invalidTXTRecordTestCases above
+// (the only constraint is the 65535-octet RDLENGTH ceiling).
 
 // NS Records
 export const validNSRecordTestCases = [
@@ -634,6 +659,20 @@ export const validSPFRecordTestCases = [
     rdata: 'v=spf1 a mx -all',
     description: 'Valid SPF record with strict policy',
   },
+  {
+    type: 'SPF',
+    name: 'example',
+    ttl: 3600,
+    rdata: `v=spf1 ${'include:_spf.example.com '.repeat(20)}-all`,
+    description: 'Valid long SPF record over 255 chars (many includes)',
+  },
+  {
+    type: 'SPF',
+    name: 'spf-wire-boundary',
+    ttl: 3600,
+    rdata: 'x'.repeat(65279),
+    description: 'Valid SPF record at the 65535-octet wire-size limit',
+  },
 ];
 
 export const invalidSPFRecordTestCases = [
@@ -641,7 +680,7 @@ export const invalidSPFRecordTestCases = [
     type: 'SPF',
     name: 'example',
     ttl: 3600,
-    rdata: 'x'.repeat(256),
-    description: 'Invalid SPF record exceeding 255 characters',
+    rdata: 'x'.repeat(65280),
+    description: 'Invalid SPF record exceeding the 65535-octet wire-size limit',
   },
 ];
