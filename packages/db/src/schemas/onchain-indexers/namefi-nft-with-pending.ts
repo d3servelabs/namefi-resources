@@ -32,6 +32,46 @@ export type NamefiNftPendingState = 'IDLE' | InFlightNftChangeType;
 export const PENDING_NFT_TX_HASH_PLACEHOLDER = '0x0';
 
 /**
+ * Boolean SQL predicate: is an in-flight NFT tx row already SUPERSEDED by the real
+ * indexed NFT row for the same domain (i.e. the on-chain change has landed)?
+ *
+ * Centralizes the "the change is reflected in real state" logic so the overlay
+ * view ({@link namefiNftCte}) and the event-driven `reconcileInFlightNftTxRows`
+ * cleanup stay in lockstep — drift between them is exactly what let
+ * confirmed-but-already-indexed rows keep showing as pending ("Minting…" lingering
+ * after the mint finished). Encodes ONLY the change-type/field comparison; the
+ * caller supplies the table aliases and joins the appropriate real source (the
+ * overlay uses `${nftIndexSchema}."NamefiNft"`; the reconcile `DELETE … USING`
+ * uses `managedNamefiNftTable`). The caller is responsible for first asserting the
+ * real row exists (e.g. `<real>.normalized_domain_name IS NOT NULL` in a LEFT JOIN,
+ * or the JOIN itself in `DELETE … USING`).
+ *
+ * - MINTING: superseded as soon as ANY real row exists for the domain.
+ * - CHANGING_EXPIRATION: superseded once the real expiration caught up (>= pending).
+ * - CHANGING_LOCK: superseded once the real lock matches the pending value.
+ *
+ * @param ift  alias of the in-flight tx table (e.g. `'ift'`)
+ * @param real alias of the real indexed NamefiNft table (e.g. `'rnft'` / `'nft'`)
+ */
+export function inFlightNftSupersededExpr(ift: string, real: string) {
+  const i = sql.raw(ift);
+  const r = sql.raw(real);
+  return sql`(
+      ${i}.change_type = 'MINTING'
+      OR (
+        ${i}.change_type = 'CHANGING_EXPIRATION'
+        AND ${i}.expiration_time_in_seconds IS NOT NULL
+        AND ${r}.expiration_time_in_seconds >= ${i}.expiration_time_in_seconds
+      )
+      OR (
+        ${i}.change_type = 'CHANGING_LOCK'
+        AND ${i}.is_locked IS NOT NULL
+        AND ${r}.is_locked = ${i}.is_locked
+      )
+    )`;
+}
+
+/**
  * namefiNftCte / namefiNftView — the DEFAULT NFT read view: real on-chain NFT
  * state with an optimistic in-flight overlay applied, so user-facing surfaces
  * show deferred on-chain operations ("Minting…", "Updating expiration…",
@@ -127,29 +167,41 @@ export const namefiNftCte = qb.$with('namefi_nft_with_pending_cte').as((qb) => {
               dominant_state
             FROM (
               SELECT
-                chain_id,
-                normalized_domain_name,
-                (array_agg(token_id ORDER BY created_at, seq))[1] AS token_id,
-                array_agg(owner_address ORDER BY created_at, seq)
-                  FILTER (WHERE owner_address IS NOT NULL)                AS owner_arr,
-                array_agg(expiration_time_in_seconds ORDER BY created_at, seq)
-                  FILTER (WHERE expiration_time_in_seconds IS NOT NULL)  AS exp_arr,
-                array_agg(is_locked ORDER BY created_at, seq)
-                  FILTER (WHERE is_locked IS NOT NULL)                   AS lock_arr,
-                array_agg(DISTINCT change_type)                          AS pending_states,
+                ift.chain_id,
+                ift.normalized_domain_name,
+                (array_agg(ift.token_id ORDER BY ift.created_at, ift.seq))[1] AS token_id,
+                array_agg(ift.owner_address ORDER BY ift.created_at, ift.seq)
+                  FILTER (WHERE ift.owner_address IS NOT NULL)                AS owner_arr,
+                array_agg(ift.expiration_time_in_seconds ORDER BY ift.created_at, ift.seq)
+                  FILTER (WHERE ift.expiration_time_in_seconds IS NOT NULL)  AS exp_arr,
+                array_agg(ift.is_locked ORDER BY ift.created_at, ift.seq)
+                  FILTER (WHERE ift.is_locked IS NOT NULL)                   AS lock_arr,
+                array_agg(DISTINCT ift.change_type)                          AS pending_states,
                 CASE
-                  WHEN bool_or(change_type = 'MINTING')             THEN 'MINTING'
-                  WHEN bool_or(change_type = 'CHANGING_EXPIRATION') THEN 'CHANGING_EXPIRATION'
-                  WHEN bool_or(change_type = 'CHANGING_LOCK')       THEN 'CHANGING_LOCK'
+                  WHEN bool_or(ift.change_type = 'MINTING')             THEN 'MINTING'
+                  WHEN bool_or(ift.change_type = 'CHANGING_EXPIRATION') THEN 'CHANGING_EXPIRATION'
+                  WHEN bool_or(ift.change_type = 'CHANGING_LOCK')       THEN 'CHANGING_LOCK'
                 END                                                      AS dominant_state
-              FROM ${inFlightNftTxTable}
-              -- Include CONFIRMED rows too: a mint/expiration tx may be confirmed
-              -- on-chain before the Ponder indexer reflects it. Keeping the
-              -- overlay until reconciliation/TTL removes the row avoids the domain
-              -- briefly disappearing (MINTING) or flickering to a stale value
-              -- (CHANGING_*) in that window. Only FAILED and expired rows drop out.
-              WHERE status <> 'FAILED' AND expires_at > now()
-              GROUP BY chain_id, normalized_domain_name
+              FROM ${inFlightNftTxTable} ift
+              -- Drop rows whose change is ALREADY reflected in the real indexed NFT
+              -- (superseded): the optimistic overlay must vanish the instant the
+              -- on-chain mint/extend/lock lands in indexed data, not linger until
+              -- reconciliation or the 2-day TTL removes the row. Compared against
+              -- the SAME real source the overlay overlays on, via the shared
+              -- inFlightNftSupersededExpr (kept in lockstep with the
+              -- reconcileInFlightNftTxRows cleanup).
+              LEFT JOIN ${nftIndexSchema}."NamefiNft" rnft
+                ON rnft.chain_id = ift.chain_id
+               AND rnft.normalized_domain_name = ift.normalized_domain_name
+              -- Keep PENDING + CONFIRMED rows during the confirm -> index-sync gap;
+              -- only FAILED, expired, or already-superseded rows drop out.
+              WHERE ift.status <> 'FAILED'
+                AND ift.expires_at > now()
+                AND NOT (
+                  rnft.normalized_domain_name IS NOT NULL
+                  AND ${inFlightNftSupersededExpr('ift', 'rnft')}
+                )
+              GROUP BY ift.chain_id, ift.normalized_domain_name
             ) agg
           ) p
             ON r.chain_id = p.chain_id

@@ -10,7 +10,11 @@
  * the scheduled TTL sweep.
  */
 
-import { db } from '@namefi-astra/db';
+import {
+  db,
+  inFlightNftSupersededExpr,
+  nftIndexSchema,
+} from '@namefi-astra/db';
 import {
   inFlightNftTxTable,
   managedNamefiNftTable,
@@ -218,6 +222,41 @@ export async function deleteInFlightNftTxRow({
 }
 
 /**
+ * Has a single in-flight row (by id) become RESOLVED — i.e. it should no longer
+ * appear in the optimistic overlay? `true` when the row no longer exists (already
+ * reconciled / swept), is FAILED, is past its TTL, OR its change is already
+ * reflected in the real indexed NFT (superseded). Drives the per-op
+ * poll-until-indexed cleanup so a confirmed op's optimistic row is removed shortly
+ * after it lands in the index instead of after the full 2-day timer. Compared
+ * against the SAME real source the overlay reads (`nftIndexSchema."NamefiNft"`)
+ * via the shared {@link inFlightNftSupersededExpr}, so "resolved" matches exactly
+ * when the user-facing overlay stops showing the pending state.
+ */
+export async function isInFlightNftTxRowResolved({
+  id,
+}: {
+  id: string;
+}): Promise<{ resolved: boolean }> {
+  const result = await db.execute<{ resolved: boolean }>(sql`
+    SELECT NOT EXISTS (
+      SELECT 1
+      FROM ${inFlightNftTxTable} ift
+      LEFT JOIN ${nftIndexSchema}."NamefiNft" rnft
+        ON rnft.chain_id = ift.chain_id
+       AND rnft.normalized_domain_name = ift.normalized_domain_name
+      WHERE ift.id = ${id}
+        AND ift.status <> 'FAILED'
+        AND ift.expires_at > now()
+        AND NOT (
+          rnft.normalized_domain_name IS NOT NULL
+          AND ${inFlightNftSupersededExpr('ift', 'rnft')}
+        )
+    ) AS resolved
+  `);
+  return { resolved: result.rows[0]?.resolved === true };
+}
+
+/**
  * Event-driven reconciliation: remove in-flight rows whose expected change is
  * now reflected in the real {@link managedNamefiNftTable} state. Run right after
  * the Ponder upsert in `syncNamefiNftsFromPonder`. Set-based so multiple rows /
@@ -233,19 +272,7 @@ export async function reconcileInFlightNftTxRows(): Promise<{
     WHERE ift.chain_id = nft.chain_id
       AND ift.normalized_domain_name = nft.normalized_domain_name
       AND ift.status <> 'FAILED'
-      AND (
-        ift.change_type = 'MINTING'
-        OR (
-          ift.change_type = 'CHANGING_EXPIRATION'
-          AND ift.expiration_time_in_seconds IS NOT NULL
-          AND nft.expiration_time_in_seconds >= ift.expiration_time_in_seconds
-        )
-        OR (
-          ift.change_type = 'CHANGING_LOCK'
-          AND ift.is_locked IS NOT NULL
-          AND nft.is_locked = ift.is_locked
-        )
-      )
+      AND ${inFlightNftSupersededExpr('ift', 'nft')}
   `);
 
   const deleted = result.rowCount ?? 0;
@@ -301,6 +328,7 @@ export const InFlightNftTxActivities = {
   markInFlightNftTxConfirmed,
   markInFlightNftTxFailed,
   deleteInFlightNftTxRow,
+  isInFlightNftTxRowResolved,
   reconcileInFlightNftTxRows,
   sweepExpiredInFlightNftTxRows,
 };

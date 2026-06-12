@@ -20,6 +20,11 @@ export {
   committedNamefiNftOwnersCte,
   namefiNftWithAiAnalysisCte,
   PENDING_NFT_TX_HASH_PLACEHOLDER,
+  // Shared "is this in-flight overlay row already reflected in real state?"
+  // predicate + the env-swapped real NFT schema, reused by reconcile/cleanup so
+  // they stay in lockstep with the overlay view.
+  inFlightNftSupersededExpr,
+  nftIndexSchema,
   burnedNamefiNftCte,
   transferLogsCte,
   transferLogsView,
