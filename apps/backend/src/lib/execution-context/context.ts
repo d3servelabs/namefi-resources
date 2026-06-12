@@ -11,6 +11,16 @@ export function getExecutionContext(): ExecutionContext | undefined {
   return _executionContextStore.getStore();
 }
 
+export function extendCurrentExecutionContext(context: ExecutionContext) {
+  const currentContext = _executionContextStore.getStore();
+  const newContext = {
+    //TODO: mergeRight
+    ...(currentContext ?? {}),
+    ...context,
+  };
+  _executionContextStore.enterWith(newContext as ExecutionContext);
+}
+
 /**
  * Sets the execution context for the current async context
  */

@@ -22,6 +22,20 @@ export interface ExecutionContext {
     requestId?: string;
     privyUserId?: string;
   };
+  /**
+   * The HTTP route/procedure that produced this context. Populated for
+   * Hono routes and tRPC procedures so alerts can surface where a failure
+   * originated.
+   */
+  route?: {
+    source?: 'hono' | 'trpc';
+    method?: string;
+    path?: string;
+    url?: string;
+    requestId?: string;
+    procedureType?: string;
+    statusCode?: number;
+  };
   trace?: {
     depth: number;
     parentContext?: string;

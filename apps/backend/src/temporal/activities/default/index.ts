@@ -646,6 +646,7 @@ export async function sendHttpAlert(
   code: number,
   error?: unknown,
   message?: string,
+  routeInfo?: ExecutionContext['route'],
   extraData?: Record<string, unknown>,
 ): Promise<void> {
   if (code !== 400 && code < 500) {
@@ -659,7 +660,21 @@ export async function sendHttpAlert(
     // No execution context available outside the request lifecycle.
   }
 
-  const user = executionContext?.user;
+  // Merge the caller-provided route into the execution context so the alert
+  // renders a single coherent context object (userInfo + routeInfo).
+  const resolvedContext: ExecutionContext = {
+    type: executionContext?.type ?? 'unknown',
+    ...executionContext,
+    route: {
+      ...executionContext?.route,
+      ...routeInfo,
+      requestId: routeInfo?.requestId ?? executionContext?.user?.requestId,
+      statusCode: code,
+    },
+  };
+
+  const user = resolvedContext.user;
+  const requestId = user?.requestId ?? resolvedContext?.route;
   const userTxt = user?.userId ? `[User:${user.userId}]` : '';
   const sessionTxt = user?.sessionId ? `[Session:${user.sessionId}]` : '';
   const requestTxt = user?.requestId ? `[Request:${user.requestId}]` : '';
@@ -671,7 +686,7 @@ export async function sendHttpAlert(
     title: `${userTxt}${sessionTxt}${requestTxt} User received a ${code}`,
     message: resolvedMessage,
     error,
-    executionContext,
+    executionContext: resolvedContext,
     extraData,
   });
 }
@@ -710,25 +725,39 @@ export async function sendHttpAlertToSlack(
   }
 
   const user = executionContext?.user;
+  const route = executionContext?.route;
   const errorDetails = formatErrorForSlack(error);
   const datadogUrl = user?.requestId
     ? buildDatadogLogsUrlByRequestId(user.requestId)
     : null;
 
-  const fields = [
-    { key: 'User', value: user?.userId },
-    { key: 'Privy User', value: user?.privyUserId },
-    { key: 'Session', value: user?.sessionId },
-    { key: 'Request', value: user?.requestId },
-    { key: 'Context Type', value: executionContext?.type },
-    ...Object.entries(extraData ?? {}).map(([key, value]) => ({ key, value })),
-  ].filter((field) => field.value != null);
+  const userInfoSection = buildInfoSection('User Info', [
+    ['User ID', user?.userId],
+    ['Privy User ID', user?.privyUserId],
+    ['Session ID', user?.sessionId],
+    ['Request ID', user?.requestId],
+  ]);
 
-  const fieldSections = chunkArray(
-    fields.map(({ key, value }) => ({
+  const routeInfoSection = buildInfoSection('Route Info', [
+    ['Source', route?.source],
+    ['Method', route?.method],
+    ['Path', route?.path],
+    ['URL', route?.url],
+    ['Request ID', route?.requestId],
+    ['Procedure Type', route?.procedureType],
+    ['Status', route?.statusCode],
+    ['Context Type', executionContext?.type],
+  ]);
+
+  const extraFields = Object.entries(extraData ?? {})
+    .filter(([, value]) => value != null)
+    .map(([key, value]) => ({
       type: 'mrkdwn',
       text: `*${key}:*\n${formatSlackValue(value)}`,
-    })),
+    }));
+
+  const extraFieldSections = chunkArray(
+    extraFields,
     SLACK_SECTION_FIELD_LIMIT,
   ).map((sectionFields) => ({
     type: 'section',
@@ -767,7 +796,9 @@ export async function sendHttpAlertToSlack(
             },
           ]
         : []),
-      ...fieldSections,
+      ...(userInfoSection ? [userInfoSection] : []),
+      ...(routeInfoSection ? [routeInfoSection] : []),
+      ...extraFieldSections,
       ...(datadogUrl
         ? [
             {
@@ -804,6 +835,35 @@ export async function sendHttpAlertToSlack(
   } catch (err) {
     logger.error({ error: err }, 'Failed to send HTTP alert to Slack');
   }
+}
+
+/**
+ * Build a single Slack `section` block listing the non-empty entries under a
+ * bold title (e.g. "User Info", "Route Info"). Returns null when every value
+ * is empty so the caller can omit the block entirely.
+ */
+function buildInfoSection(
+  title: string,
+  entries: Array<[string, unknown]>,
+): { type: 'section'; text: { type: 'mrkdwn'; text: string } } | null {
+  const lines = entries
+    .filter(([, value]) => value != null && value !== '')
+    .map(([key, value]) => `*${key}:* ${formatSlackValue(value)}`);
+
+  if (lines.length === 0) {
+    return null;
+  }
+
+  return {
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: truncateSlackText(
+        `*${title}*\n${lines.join('\n')}`,
+        SLACK_TEXT_LIMIT,
+      ),
+    },
+  };
 }
 
 const DATADOG_LOGS_WINDOW_MS = 5 * 60_000;

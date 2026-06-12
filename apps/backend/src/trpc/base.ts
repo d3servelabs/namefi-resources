@@ -17,8 +17,8 @@ import { ZodError } from 'zod';
 import { config, secrets } from '#lib/env';
 import { logger } from '#lib/logger';
 import {
-  setExecutionContext,
   createUserContext,
+  extendCurrentExecutionContext,
 } from '#lib/execution-context/context';
 import {
   getPoweredByNamefi3PHostnames,
@@ -389,17 +389,9 @@ export const t = initTRPC
   .create({
     transformer: superjson,
     errorFormatter({ shape, error, ctx }) {
-      // Alert on 400 / 5XX responses surfaced to users from tRPC. The helper
-      // ignores any other status code (e.g. 401/403/404 from expected user
-      // actions) and resolves the execution context internally.
-      const status = getHTTPStatusCodeFromError(error);
-      if (status === 400 || status >= 500) {
-        void sendHttpAlert(status, error, error.message, {
-          source: 'tRPC',
-          procedurePath: shape.data?.path,
-          trpcCode: error instanceof TRPCError ? error.code : undefined,
-        });
-      }
+      // NOTE: HTTP 400/5XX alerting happens in `httpErrorAlertMiddleware`, not
+      // here — the errorFormatter runs outside the request's async execution
+      // context, so `getExecutionContext()` (user/session/request) is empty.
       return {
         ...shape,
         data: {
@@ -517,6 +509,38 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 /**
+ * Attaches the tRPC route to the execution context and alerts on 400 / 5XX
+ * responses surfaced to users.
+ *
+ * Implemented as a middleware (rather than in `errorFormatter`) so it runs
+ * inside the request's async execution context — i.e. after the auth
+ * middleware has populated the execution context via `setExecutionContext`.
+ * Before running the procedure it merges `route` (source/path/procedureType)
+ * onto the execution context so logs and alerts can see where a request is
+ * being handled; `sendHttpAlert` then reads the route straight off the
+ * resolved context. It inspects the `next()` result instead of throwing, and
+ * never alters the response.
+ *
+ * Only 400 and 5XX are alerted; other codes (401/403/404 from expected user
+ * actions) are ignored by `sendHttpAlert`.
+ */
+const httpErrorAlertMiddleware = t.middleware(
+  async ({ next, path, type, ctx }) => {
+    const result = await next();
+    if (!result.ok) {
+      const { error } = result;
+      const status = getHTTPStatusCodeFromError(error);
+      if (status === 400 || status >= 500) {
+        void sendHttpAlert(status, error, error.message, undefined, {
+          trpcCode: error.code,
+        });
+      }
+    }
+    return result;
+  },
+);
+
+/**
  * Public (unauthenticated) procedure
  *
  * This is the base piece we use to build new queries and mutations on our tRPC API. It does not
@@ -525,9 +549,18 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  */
 export const baseProcedure = t.procedure
   .use(timingMiddleware)
-  .use(async ({ ctx, next }) => {
+  .use(async ({ ctx, next, path, type }) => {
     logger.assign({
       procedureType: 'publicProcedure',
+    });
+    extendCurrentExecutionContext({
+      type: 'user',
+      route: {
+        source: 'trpc',
+        path,
+        procedureType: type, //todo should be publicProcedure protectedProcedure, ...
+        requestId: ctx.honoVars?.requestId,
+      },
     });
     return next({ ctx });
   });
@@ -632,7 +665,7 @@ async function processUserAuthContext(
   }
 
   // Set execution context using the effective user
-  setExecutionContext(
+  extendCurrentExecutionContext(
     createUserContext({
       userId: effectiveUser?.id,
       sessionId: sessionId ?? undefined,
@@ -848,6 +881,7 @@ export const maybeVerifyUserAuthAndCreation =
 export const authedOrPublicProcedure = baseProcedure
   .use(maybeVerifyUserAuthAndCreation)
   .use(impersonationMutationGuard)
+  .use(httpErrorAlertMiddleware)
   .use(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'authedOrPublicProcedure',
@@ -873,6 +907,7 @@ export const publicProcedure = authedOrPublicProcedure;
 export const protectedProcedure = baseProcedure
   .use(verifyUserAuthAndCreation)
   .use(impersonationMutationGuard)
+  .use(httpErrorAlertMiddleware)
   .use<TrpcContextWithUser>(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'protectedProcedure',
