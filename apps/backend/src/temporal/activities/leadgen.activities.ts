@@ -46,6 +46,7 @@ import { appendLeadgenTokenUsageFromResult } from '../../services/leadgen/token-
 const logger = createLogger({ module: 'leadgen-activities' });
 
 const LEADGEN_HEARTBEAT_INTERVAL_MS = 20_000;
+const LEADGEN_AI_ERROR_TEXT_PREVIEW_LIMIT = 600;
 const SEED_RECIPES: LeadgenDiscoveryRecipe[] = [
   'exact_near_name_search',
   'broad_sanity_search',
@@ -266,15 +267,28 @@ export async function generateLeadgenDomainProfileActivity({
   reasoningEffort,
   maxTheses,
 }: LeadgenDomainProfileActivityParams) {
-  const result = await heartbeatLeadgenWhile(
-    (abortSignal) =>
-      generateLeadgenDomainThesisProfile(domain, {
-        abortSignal,
-        reasoningEffort,
-        maxTheses,
-      }),
-    { stage: 'intent', runId, domain },
-  );
+  let result: Awaited<ReturnType<typeof generateLeadgenDomainThesisProfile>>;
+  try {
+    result = await heartbeatLeadgenWhile(
+      (abortSignal) =>
+        generateLeadgenDomainThesisProfile(domain, {
+          abortSignal,
+          reasoningEffort,
+          maxTheses,
+        }),
+      { stage: 'intent', runId, domain },
+    );
+  } catch (error) {
+    await recordLeadgenAiGenerationFailure({
+      runId,
+      stage: 'intent',
+      fallbackModel: getLeadgenDomainProfileModel(),
+      error,
+      payload: { domain },
+    });
+    throw error;
+  }
+
   await recordLeadgenTokenUsageFromResult({
     runId,
     result,
@@ -755,15 +769,31 @@ async function triageLeadgenCandidates(params: {
     );
   if (candidates.length === 0) return;
 
-  const result = await generateLeadgenOpportunityTriages({
-    sourceDomain: params.sourceDomain,
-    candidates,
-    options: {
-      abortSignal: params.abortSignal,
-      domainProfile: params.domainProfile,
-      reasoningEffort: params.reasoningEffort,
-    },
-  });
+  let result: Awaited<ReturnType<typeof generateLeadgenOpportunityTriages>>;
+  try {
+    result = await generateLeadgenOpportunityTriages({
+      sourceDomain: params.sourceDomain,
+      candidates,
+      options: {
+        abortSignal: params.abortSignal,
+        domainProfile: params.domainProfile,
+        reasoningEffort: params.reasoningEffort,
+      },
+    });
+  } catch (error) {
+    await recordLeadgenAiGenerationFailure({
+      runId: params.runId,
+      stage: 'triage',
+      fallbackModel: getLeadgenPrimaryResearchModel(params.reasoningEffort),
+      error,
+      payload: {
+        sourceDomain: params.sourceDomain,
+        candidateCount: candidates.length,
+      },
+    });
+    throw error;
+  }
+
   await recordLeadgenTokenUsageFromResult({
     runId: params.runId,
     result,
@@ -1331,6 +1361,141 @@ async function runWithConcurrency<T>(
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return Boolean(value && typeof value === 'object' && !Array.isArray(value));
+}
+
+async function recordLeadgenAiGenerationFailure(params: {
+  runId: string;
+  stage: string;
+  fallbackModel: string;
+  error: unknown;
+  payload?: Record<string, unknown>;
+}) {
+  if (getLeadgenErrorMessage(params.error) === 'activity-cancelled') {
+    return;
+  }
+
+  await recordLeadgenTokenUsageFromResult({
+    runId: params.runId,
+    result: params.error,
+    fallbackModel: params.fallbackModel,
+  });
+
+  const diagnostics = getLeadgenAiGenerationFailureDiagnostics(params.error);
+  const activityAttempt = getCurrentLeadgenActivityAttempt();
+  logger.warn(
+    {
+      error: params.error,
+      runId: params.runId,
+      stage: params.stage,
+      activityAttempt,
+      ...diagnostics,
+    },
+    'Leadgen AI structured output generation failed',
+  );
+
+  try {
+    await persistLeadgenEvent({
+      runId: params.runId,
+      eventType: 'error',
+      stage: params.stage,
+      message:
+        activityAttempt == null
+          ? 'AI structured output could not be parsed.'
+          : `AI structured output could not be parsed on activity attempt ${activityAttempt}.`,
+      payload: compactPayload({
+        ...(params.payload ?? {}),
+        activityAttempt,
+        error: getLeadgenErrorMessage(params.error),
+        ...diagnostics,
+      }),
+    });
+  } catch (eventError) {
+    logger.warn(
+      { error: eventError, runId: params.runId, stage: params.stage },
+      'Failed to persist leadgen AI generation failure event',
+    );
+  }
+}
+
+function getCurrentLeadgenActivityAttempt() {
+  try {
+    return Context.current().info.attempt;
+  } catch {
+    return undefined;
+  }
+}
+
+function getLeadgenAiGenerationFailureDiagnostics(error: unknown) {
+  const errorRecord = isRecord(error) ? error : {};
+  const response = isRecord(errorRecord.response)
+    ? errorRecord.response
+    : undefined;
+  const usage = isRecord(errorRecord.usage) ? errorRecord.usage : undefined;
+  const text =
+    typeof errorRecord.text === 'string' ? errorRecord.text : undefined;
+
+  return compactPayload({
+    errorName: error instanceof Error ? error.name : undefined,
+    isNoObjectGeneratedError: isNoObjectGeneratedErrorLike(error),
+    cause: getDiagnosticErrorMessage(errorRecord.cause),
+    finishReason:
+      typeof errorRecord.finishReason === 'string'
+        ? errorRecord.finishReason
+        : undefined,
+    responseId: typeof response?.id === 'string' ? response.id : undefined,
+    responseModelId:
+      typeof response?.modelId === 'string' ? response.modelId : undefined,
+    generatedTextLength: text?.length,
+    generatedTextPreview: text
+      ? clipDiagnosticText(text, LEADGEN_AI_ERROR_TEXT_PREVIEW_LIMIT)
+      : undefined,
+    usage: getDiagnosticUsage(usage),
+  });
+}
+
+function isNoObjectGeneratedErrorLike(error: unknown) {
+  if (!isRecord(error)) return false;
+
+  // Be tolerant across AI SDK error name variants and bundled builds; use the
+  // normalized message as a fallback after confirming the value is a record.
+  return (
+    error.name === 'AI_NoObjectGeneratedError' ||
+    error.name === 'NoObjectGeneratedError' ||
+    getLeadgenErrorMessage(error).startsWith('No object generated:')
+  );
+}
+
+function getDiagnosticUsage(usage: Record<string, unknown> | undefined) {
+  if (!usage) return undefined;
+
+  return compactPayload({
+    inputTokens: usage.inputTokens,
+    outputTokens: usage.outputTokens,
+    totalTokens: usage.totalTokens,
+    reasoningTokens: usage.reasoningTokens,
+  });
+}
+
+function getDiagnosticErrorMessage(error: unknown) {
+  if (error == null) return undefined;
+  return getLeadgenErrorMessage(error);
+}
+
+function clipDiagnosticText(value: string, maxLength: number) {
+  const compacted = value.replace(/\s+/g, ' ').trim();
+  if (compacted.length <= maxLength) return compacted;
+
+  return `${compacted.slice(0, Math.max(0, maxLength - 3)).trimEnd()}...`;
+}
+
+function compactPayload(record: Record<string, unknown>) {
+  return Object.fromEntries(
+    Object.entries(record).filter(([, value]) => {
+      if (value == null) return false;
+      if (isRecord(value) && Object.keys(value).length === 0) return false;
+      return true;
+    }),
+  );
 }
 
 async function recordLeadgenTokenUsageFromResult(params: {

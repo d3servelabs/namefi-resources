@@ -1,5 +1,11 @@
 import { type OpenAIResponsesProviderOptions, openai } from '@ai-sdk/openai';
-import { generateText, Output, ToolLoopAgent } from 'ai';
+import {
+  generateText,
+  type LanguageModelUsage,
+  Output,
+  stepCountIs,
+  ToolLoopAgent,
+} from 'ai';
 
 import { normalizeLeadgenDomain } from './domain';
 import {
@@ -67,6 +73,7 @@ const DOMAIN_URL_RE = /^[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
 const SENTENCE_BOUNDARY_RE = /^(.{1,220}?[.!?])(?:\s|$)/;
 const EMAIL_SIGNATURE_BLOCK_RE =
   /(?:\r?\n){1,2}Best,[ \t]*(?:(?:\r?\n[ \t]*[\p{L}\p{N}][\p{L}\p{N} .,'’&@:/+()#-]{0,119}[ \t]*){0,5})$/iu;
+const LEADGEN_DOMAIN_PROFILE_RESEARCH_LIMIT = 12_000;
 const RECIPE_SIGNAL_LABELS: Record<LeadgenDiscoveryRecipe, string> = {
   exact_near_name_search: 'Name match',
   category_operator_search: 'Category fit',
@@ -131,6 +138,16 @@ function getLeadgenContactMaxToolCalls(
   }
 }
 
+function normalizeMaxToolCalls(maxToolCalls: number) {
+  if (!Number.isFinite(maxToolCalls)) return 1;
+  return Math.max(1, Math.trunc(maxToolCalls));
+}
+
+function stopAfterToolCallsAndStructuredOutput(maxToolCalls: number) {
+  // AI SDK structured output is an additional step after tool use.
+  return stepCountIs(normalizeMaxToolCalls(maxToolCalls) + 1);
+}
+
 function getLeadgenTargetContactCount(reasoningEffort: LeadgenReasoningEffort) {
   switch (reasoningEffort) {
     case 'low':
@@ -157,14 +174,73 @@ function providerOptions(
   };
 }
 
+function addTokenCount(...values: Array<number | undefined>) {
+  const total = values.reduce<number>((sum, value) => sum + (value ?? 0), 0);
+  return total === 0 && values.every((value) => value == null)
+    ? undefined
+    : total;
+}
+
+function combineLanguageModelUsage(
+  first: LanguageModelUsage,
+  second: LanguageModelUsage,
+): LanguageModelUsage {
+  return {
+    inputTokens: addTokenCount(first.inputTokens, second.inputTokens),
+    inputTokenDetails: {
+      noCacheTokens: addTokenCount(
+        first.inputTokenDetails?.noCacheTokens,
+        second.inputTokenDetails?.noCacheTokens,
+      ),
+      cacheReadTokens: addTokenCount(
+        first.inputTokenDetails?.cacheReadTokens,
+        second.inputTokenDetails?.cacheReadTokens,
+      ),
+      cacheWriteTokens: addTokenCount(
+        first.inputTokenDetails?.cacheWriteTokens,
+        second.inputTokenDetails?.cacheWriteTokens,
+      ),
+    },
+    outputTokens: addTokenCount(first.outputTokens, second.outputTokens),
+    outputTokenDetails: {
+      textTokens: addTokenCount(
+        first.outputTokenDetails?.textTokens,
+        second.outputTokenDetails?.textTokens,
+      ),
+      reasoningTokens: addTokenCount(
+        first.outputTokenDetails?.reasoningTokens,
+        second.outputTokenDetails?.reasoningTokens,
+      ),
+    },
+    totalTokens: addTokenCount(first.totalTokens, second.totalTokens),
+    reasoningTokens: addTokenCount(
+      first.reasoningTokens,
+      second.reasoningTokens,
+    ),
+    cachedInputTokens: addTokenCount(
+      first.cachedInputTokens,
+      second.cachedInputTokens,
+    ),
+  };
+}
+
 const FIXED_RECIPE_LIST = leadgenDiscoveryRecipeValues.join(', ');
 
-function domainThesisInstructions(targetTheses: number) {
-  return `Role: You are "Domain Thesis Agent", a broker-grade domain outbound planner.
+function domainThesisResearchInstructions(targetTheses: number) {
+  return `Role: You are "Domain Thesis Research Agent", a broker-grade domain outbound researcher.
 Goal: For one seller-owned domain, produce a grounded opportunity frame and exactly ${targetTheses} buyer theses that can drive end-user outbound.
 Success criteria: Use a fast evidence pass to identify commercial meaning, exact or near-name usage, category/geo meaning, and buyer-specific evidence patterns. Deeper prospect validation happens later.
 Evidence rules: Use web search. Do not invent market demand or active companies. The opportunity frame must explain what kind of domain asset this is and what evidence standard makes a buyer real for this domain.
 Tool budget: Use the fewest precise searches needed to frame the angles, then stop.
+Constraints: Choose discovery recipes only from this fixed list: ${FIXED_RECIPE_LIST}. Always include seed queries that can find official company websites. For short/acronym/brandable domains, allow acronym, brand-upgrade, funded-company, and weak-domain evidence rather than requiring keyword usage. Do not expose internal reasoning.
+Output: Return a concise research brief in plain text. Include evidence-backed traits, thesis candidates, useful seed queries, cautions, and source URLs or source names when available. Do not return JSON.`;
+}
+
+function domainThesisInstructions(targetTheses: number) {
+  return `Role: You are "Domain Thesis Agent", a broker-grade domain outbound planner.
+Goal: Convert a supplied web-search research brief into a grounded opportunity frame and exactly ${targetTheses} buyer theses that can drive end-user outbound.
+Success criteria: Use only the supplied research brief and seller-owned domain. Deeper prospect validation happens later.
+Evidence rules: Do not browse, invent market demand, or invent active companies. The opportunity frame must explain what kind of domain asset this is and what evidence standard makes a buyer real for this domain.
 Constraints: Choose discovery recipes only from this fixed list: ${FIXED_RECIPE_LIST}. Always include seed queries that can find official company websites. For short/acronym/brandable domains, allow acronym, brand-upgrade, funded-company, and weak-domain evidence rather than requiring keyword usage. Do not expose internal reasoning.
 Output: Return the structured DomainThesisProfile only.`;
 }
@@ -193,13 +269,14 @@ export async function generateLeadgenDomainThesisProfile(
     options?.maxTheses ??
     (reasoningEffort === 'low' ? 2 : reasoningEffort === 'medium' ? 3 : 5);
   const targetTheses = getTargetThesisCount(reasoningEffort, maxTheses);
-  const maxToolCalls =
+  const maxToolCalls = normalizeMaxToolCalls(
     options?.maxToolCalls ??
-    getLeadgenDomainProfileMaxToolCalls(reasoningEffort);
+      getLeadgenDomainProfileMaxToolCalls(reasoningEffort),
+  );
 
-  const result = await generateText({
+  const researchResult = await generateText({
     model: openai(getLeadgenDomainProfileModel()),
-    system: domainThesisInstructions(targetTheses),
+    system: domainThesisResearchInstructions(targetTheses),
     messages: [
       {
         role: 'user',
@@ -219,15 +296,55 @@ export async function generateLeadgenDomainThesisProfile(
       maxToolCalls,
     ),
     abortSignal: options?.abortSignal,
-    output: Output.object({ schema: leadgenDomainProfileSchema }),
+  });
+
+  const result = await generateText({
+    model: openai(getLeadgenDomainProfileModel()),
+    system: domainThesisInstructions(targetTheses),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          `Seller-owned domain: ${domain}`,
+          `Return exactly ${targetTheses} buyer theses.`,
+          'Optimize for high-conviction outbound opportunities, not broad lead volume.',
+          'Use this web-search research brief as the only evidence base:',
+          clipPromptText(
+            researchResult.text,
+            LEADGEN_DOMAIN_PROFILE_RESEARCH_LIMIT,
+          ),
+        ].join('\n'),
+      },
+    ],
+    providerOptions: providerOptions(
+      getLeadgenDomainProfileReasoningEffort(reasoningEffort),
+    ),
+    abortSignal: options?.abortSignal,
+    output: Output.object({
+      name: 'LeadgenDomainThesisProfile',
+      description:
+        'Grounded buyer-thesis profile used to discover end-user domain acquisition prospects.',
+      schema: leadgenDomainProfileSchema,
+    }),
   });
 
   return {
     ...result,
+    totalUsage: combineLanguageModelUsage(
+      researchResult.totalUsage,
+      result.totalUsage,
+    ),
     output: sanitizeDomainProfile(result.output, {
       maxTheses,
     }),
   };
+}
+
+function clipPromptText(value: string, maxLength: number) {
+  const trimmed = value.trim();
+  if (trimmed.length <= maxLength) return trimmed;
+
+  return `${trimmed.slice(0, Math.max(0, maxLength - 3)).trimEnd()}...`;
 }
 
 function sanitizeDomainProfile(
@@ -318,9 +435,10 @@ function createDiscoveryAgent(
   options?: LeadgenDiscoveryOptions,
 ) {
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
-  const maxToolCalls =
+  const maxToolCalls = normalizeMaxToolCalls(
     options?.maxToolCalls ??
-    (reasoningEffort === 'low' ? 3 : reasoningEffort === 'medium' ? 5 : 8);
+      (reasoningEffort === 'low' ? 3 : reasoningEffort === 'medium' ? 5 : 8),
+  );
 
   return new ToolLoopAgent({
     model: openai(getLeadgenPrimaryResearchModel(reasoningEffort)),
@@ -550,8 +668,9 @@ export async function generateLeadgenContacts(
   const reasoningEffort = options?.reasoningEffort ?? DEFAULT_REASONING_EFFORT;
   const targetContacts =
     options?.targetContacts ?? getLeadgenTargetContactCount(reasoningEffort);
-  const maxToolCalls =
-    options?.maxToolCalls ?? getLeadgenContactMaxToolCalls(reasoningEffort);
+  const maxToolCalls = normalizeMaxToolCalls(
+    options?.maxToolCalls ?? getLeadgenContactMaxToolCalls(reasoningEffort),
+  );
   const prompt = [
     'Prospect domains:',
     ...prospects.map((prospect, index) => {
@@ -571,8 +690,12 @@ export async function generateLeadgenContacts(
     },
     toolChoice: { type: 'tool', toolName: 'webSearch' },
     providerOptions: providerOptions(reasoningEffort, maxToolCalls),
+    stopWhen: stopAfterToolCallsAndStructuredOutput(maxToolCalls),
     abortSignal: options?.abortSignal,
     output: Output.array({
+      name: 'LeadgenContactResults',
+      description:
+        'Public, source-backed outreach contacts grouped by prospect domain.',
       element: leadgenContactResultSchema,
     }),
   });
