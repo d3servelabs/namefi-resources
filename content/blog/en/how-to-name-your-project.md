@@ -21,7 +21,7 @@ This guide is a field manual for picking that name. It blends what the research 
 Strip away the romance and a name has to do exactly two things:
 
 1. **Be ownable** — legally defensible and technically available, so it can actually become *yours*.
-2. **Be repeatable** — easy to say, spell, remember, and pass along, so other people do your marketing for you.
+2. **Be easy to market** — easy to say, spell, remember, and pass along, so the name does your marketing for you, and so other people can spread it without effort.
 
 Most naming advice optimizes only the second. Founders who skip the first ship a beautiful name, build a brand on it, and then get a cease-and-desist or discover the `.com` is held by someone who wants five figures for it. Do the constraints first. They are cheaper to check than to fix.
 
