@@ -1,19 +1,12 @@
 'use client';
 
-import { ConsentManagerProvider } from '@c15t/nextjs';
-import dynamic from 'next/dynamic';
-import type { PropsWithChildren } from 'react';
+import { ConsentManagerProvider, useConsentManager } from '@c15t/nextjs';
+import { useEffect } from 'react';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
 import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { ConsentManagerClient } from './consent-manager-client';
-
-// The consent banner/dialog UI (and its ~64KB stylesheet) is loaded lazily and
-// client-only so it never blocks the article's first paint. The provider below
-// still wraps the tree synchronously, so consent context/state is unaffected.
-const ConsentUI = dynamic(
-  () => import('./consent-ui').then((m) => m.ConsentUI),
-  { ssr: false },
-);
+import { ConsentUI } from './consent-ui';
+import { OPEN_COOKIE_SETTINGS_EVENT } from './cookie-consent-event';
 
 const c15tTheme = {
   consentActions: {
@@ -30,7 +23,26 @@ const c15tTheme = {
   },
 } as const;
 
-export function ConsentProvider({ children }: PropsWithChildren) {
+// Bridges the footer's "Cookie Settings" button (a plain button that dispatches
+// a window event, with no c15t import) to the consent dialog. Lives inside the
+// provider so it has access to the c15t context.
+function CookieSettingsListener() {
+  const { setActiveUI } = useConsentManager();
+  useEffect(() => {
+    const handler = () => setActiveUI('dialog', { force: true });
+    window.addEventListener(OPEN_COOKIE_SETTINGS_EVENT, handler);
+    return () =>
+      window.removeEventListener(OPEN_COOKIE_SETTINGS_EVENT, handler);
+  }, [setActiveUI]);
+  return null;
+}
+
+// The consent runtime, mounted as a deferred, client-only island (see
+// consent-island.tsx). It intentionally does NOT wrap the app's children — only
+// the consent consumers (banner/dialog, GA gate, cookie-settings bridge) — so
+// the ~40-50KB c15t + zustand runtime stays out of the initial bundle and off
+// the article's first-paint critical path.
+export function ConsentIslandInner() {
   return (
     <ConsentManagerProvider
       options={{
@@ -43,7 +55,7 @@ export function ConsentProvider({ children }: PropsWithChildren) {
       <ConsentManagerClient>
         <ConsentUI />
         <GoogleAnalyticsCookieConsentGated />
-        {children}
+        <CookieSettingsListener />
       </ConsentManagerClient>
     </ConsentManagerProvider>
   );

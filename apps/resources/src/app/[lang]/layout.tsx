@@ -6,6 +6,7 @@ import { getDictionary } from '@/get-dictionary';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Providers } from '@/components/providers';
+import { ConsentIsland } from '@/components/providers/consent-island';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { resolveBaseUrl } from '@/lib/site-url';
@@ -72,6 +73,7 @@ export default async function RootLayout({
             <SiteFooter />
           </div>
         </Providers>
+        <ConsentIsland />
       </body>
     </html>
   );

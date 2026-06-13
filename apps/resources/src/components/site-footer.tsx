@@ -11,7 +11,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
-import { useConsentManager } from '@c15t/nextjs';
+import { OPEN_COOKIE_SETTINGS_EVENT } from './providers/cookie-consent-event';
 
 const SOCIAL_LINKS = [
   {
@@ -92,8 +92,6 @@ const FOOTER_SECTIONS: Array<{
 const YEAR = new Date().getFullYear();
 
 export function SiteFooter() {
-  const { setActiveUI } = useConsentManager();
-
   return (
     <footer className="border-t border-white/10 bg-background/90 py-16 md:py-24">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 sm:px-10 lg:px-12">
@@ -163,7 +161,9 @@ export function SiteFooter() {
               type="button"
               className="text-white/70 transition hover:text-white"
               aria-label="Open cookie settings dialog"
-              onClick={() => setActiveUI('dialog', { force: true })}
+              onClick={() =>
+                window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS_EVENT))
+              }
             >
               Cookie Settings
             </button>
