@@ -780,7 +780,9 @@ export async function sendHttpAlertToSlack(
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `*Message:*\n${truncateSlackText(message, SLACK_TEXT_LIMIT)}`,
+                // Reserve room for the `*Message:*\n` prefix so the composed
+                // section text stays within Slack's 3000-char section limit.
+                text: `*Message:*\n${truncateSlackText(message, SLACK_TEXT_LIMIT - 16)}`,
               },
             },
           ]
@@ -791,7 +793,12 @@ export async function sendHttpAlertToSlack(
               type: 'section',
               text: {
                 type: 'mrkdwn',
-                text: `*Error:*\n\`\`\`${truncateSlackText(errorDetails, SLACK_TEXT_LIMIT)}\`\`\``,
+                // Reserve room for the `*Error:*\n` prefix and the ``` code
+                // fences so the composed section text stays within Slack's
+                // 3000-char section limit (otherwise Slack returns 400
+                // invalid_blocks — long tRPC stacks hit this, short Hono ones
+                // don't).
+                text: `*Error:*\n\`\`\`${truncateSlackText(errorDetails, SLACK_TEXT_LIMIT - 24)}\`\`\``,
               },
             },
           ]
