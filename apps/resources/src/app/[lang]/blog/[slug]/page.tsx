@@ -261,7 +261,13 @@ export default async function BlogPostPage({
           alt={entry.frontmatter.title}
           width={1200}
           height={630}
-          loading="eager"
+          // The LCP element is the article body text below this hero, not the
+          // hero itself. Loading the hero eagerly made its ~47KB download and
+          // 1200x630 decode compete with the text paint on throttled mobile.
+          // Defer it (lazy + async decode) so the body text settles sooner;
+          // width/height are reserved above, so deferring causes no layout shift.
+          loading="lazy"
+          decoding="async"
           className="h-auto w-full rounded-3xl border border-border/60 shadow-lg shadow-black/5"
         />
       )}
