@@ -392,8 +392,10 @@ export const t = initTRPC
       // NOTE: HTTP 400/5XX alerting happens in `httpErrorAlertMiddleware`, not
       // here — the errorFormatter runs outside the request's async execution
       // context, so `getExecutionContext()` (user/session/request) is empty.
+      const isZodError = error.cause instanceof ZodError;
       return {
         ...shape,
+        code: isZodError ? 402 : shape.code,
         data: {
           ...shape.data,
           requestId: ctx?.honoVars?.requestId,
@@ -529,8 +531,12 @@ const httpErrorAlertMiddleware = t.middleware(
     const result = await next();
     if (!result.ok) {
       const { error } = result;
+      logger.trace({ error }, 'httpErrorAlertMiddleware');
+      const isZodError =
+        error instanceof ZodError || error.cause instanceof ZodError;
+
       const status = getHTTPStatusCodeFromError(error);
-      if (status === 400 || status >= 500) {
+      if ((status === 400 || status >= 500) && !isZodError) {
         void sendHttpAlert(status, error, error.message, undefined, {
           trpcCode: error.code,
         });
