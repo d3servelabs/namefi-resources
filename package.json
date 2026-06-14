@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "data:validate": "bun scripts/validate-data.ts",
-    "generate:tld": "bun scripts/generate-tld.ts",
     "translate:blog": "bun scripts/translate-blog.ts",
     "generate:blog": "bun scripts/generate-blog.ts",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""

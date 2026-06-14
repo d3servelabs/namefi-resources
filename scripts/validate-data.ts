@@ -379,7 +379,7 @@ async function main() {
       if (failedTlds.size > 0) {
         const localeTldsArg = Array.from(failedTlds).join(',');
         console.error(
-          `\n💡 Suggestion: Regenerate the failing TLD articles with:\n   bun scripts/generate-tld.ts --locale-tlds ${localeTldsArg} --overwrite`,
+          `\n💡 Suggestion: Rewrite the failing TLD articles (${localeTldsArg}) using the prompt template at prompts/tld-page.md`,
         );
       }
     }
