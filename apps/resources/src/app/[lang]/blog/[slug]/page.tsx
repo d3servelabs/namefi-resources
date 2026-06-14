@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
-import { getDictionary } from '@/get-dictionary';
+import { getDictionary, type Dictionary } from '@/get-dictionary';
 import {
   getAuthor,
   getPostCached,
@@ -16,6 +16,12 @@ import {
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
+import {
+  buildArticleJsonLd,
+  buildBreadcrumbJsonLd,
+  type ArticleAuthor,
+} from '@/lib/structured-data';
+import { JsonLd } from '@/components/json-ld';
 import { useMDXComponents } from '@/mdx-components';
 
 export async function generateStaticParams() {
@@ -107,6 +113,64 @@ export async function generateMetadata({
   };
 }
 
+type PostEntry = NonNullable<ReturnType<typeof getPostCached>>;
+
+// Builds the BlogPosting + BreadcrumbList structured data for a post. Kept as a
+// pure module-level helper so the page component stays readable and the
+// canonical/OG resolution stays in sync with generateMetadata above. The output
+// is rendered as inert <script type="application/ld+json"> tags — no client JS,
+// no impact on the LCP / above-the-fold path.
+function buildBlogPostStructuredData(args: {
+  entry: PostEntry;
+  locale: Locale;
+  slug: string;
+  dictionary: Dictionary;
+  authorEntries: readonly AuthorEntry[];
+  updatedAt: Date | undefined;
+}) {
+  const { entry, locale, slug, dictionary, authorEntries, updatedAt } = args;
+  const baseUrl = resolveBaseUrl();
+  const selfPath = `/r/${locale}/blog/${slug}`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  const canonicalUrl =
+    locale === 'en' || !getPostCached('en', slug)
+      ? selfUrl
+      : `${baseUrl}/r/en/blog/${slug}`;
+  const ogAsset = getPostOgAsset(slug);
+  const ogImageUrl = ogAsset
+    ? `${baseUrl}/r/blog-assets/${slug}-og${ogAsset.extension}`
+    : `${baseUrl}${selfPath}/opengraph-image`;
+  const articleAuthors: ArticleAuthor[] = authorEntries.map((author) => ({
+    name: author.frontmatter.name,
+    url: author.frontmatter.twitter ?? author.frontmatter.linkedin,
+  }));
+  const dateModified =
+    updatedAt && !Number.isNaN(updatedAt.getTime())
+      ? updatedAt.toISOString()
+      : undefined;
+
+  return {
+    articleJsonLd: buildArticleJsonLd({
+      headline: entry.frontmatter.title,
+      description: entry.frontmatter.summary,
+      url: selfUrl,
+      canonicalUrl,
+      imageUrl: ogImageUrl,
+      datePublished: entry.publishedAt.toISOString(),
+      dateModified,
+      authors: articleAuthors,
+      baseUrl,
+      locale,
+      keywords: entry.frontmatter.tags,
+    }),
+    breadcrumbJsonLd: buildBreadcrumbJsonLd([
+      { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+      { name: dictionary.nav.blog, url: `${baseUrl}/r/${locale}/blog` },
+      { name: entry.frontmatter.title, url: selfUrl },
+    ]),
+  };
+}
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -184,6 +248,17 @@ export default async function BlogPostPage({
   const heroImageUrl = heroOgAsset
     ? `/r/blog-assets/${slug}-og${heroOgAsset.extension}`
     : undefined;
+
+  // Structured data (BlogPosting + BreadcrumbList) for SEO rich results and LLM
+  // crawlers. Built off-component; rendered as inert <script> tags below.
+  const { articleJsonLd, breadcrumbJsonLd } = buildBlogPostStructuredData({
+    entry,
+    locale,
+    slug,
+    dictionary,
+    authorEntries,
+    updatedAt,
+  });
 
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
@@ -325,6 +400,9 @@ export default async function BlogPostPage({
           </div>
         </section>
       )}
+
+      <JsonLd data={articleJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
     </article>
   );
 }

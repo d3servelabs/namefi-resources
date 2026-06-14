@@ -4,10 +4,8 @@ import type { Locale } from '@/i18n-config';
 import { i18n, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getWatchData } from '@/lib/watch';
-import {
-  buildBreadcrumbJsonLd,
-  buildVideoCollectionJsonLd,
-} from '@/lib/watch/schema-org';
+import { buildVideoCollectionJsonLd } from '@/lib/watch/schema-org';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { ResourceIndexEmptyState } from '@/components/resource-index-card';

@@ -1,43 +1,6 @@
 import type { Locale } from '@/i18n-config';
+import { buildPublisher } from '@/lib/structured-data';
 import type { WatchVideo } from './types';
-
-// Shared Schema.org publisher payload referenced by every watch page so the
-// Organization is consistently described and de-duplicated by @id on the
-// Google side.
-function buildPublisher(baseUrl: string) {
-  return {
-    '@type': 'Organization',
-    '@id': `${baseUrl}/#organization`,
-    name: 'Namefi',
-    url: 'https://namefi.io',
-    logo: {
-      '@type': 'ImageObject',
-      url: `${baseUrl}/r/logotype.svg`,
-    },
-    sameAs: [
-      'https://x.com/namefi_io',
-      'https://www.youtube.com/@namefi',
-      'https://github.com/d3servelabs',
-    ],
-  };
-}
-
-type Breadcrumb = { name: string; url: string };
-
-export function buildBreadcrumbJsonLd(
-  items: readonly Breadcrumb[],
-): Record<string, unknown> {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: item.url,
-    })),
-  };
-}
 
 type VideoClip = {
   '@type': 'Clip';

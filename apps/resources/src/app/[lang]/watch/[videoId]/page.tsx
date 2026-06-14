@@ -6,10 +6,8 @@ import { i18n, localeDateLocales } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getWatchVideo, getWatchVideos } from '@/lib/watch';
 import { formatChapterTime } from '@/lib/watch/chapters';
-import {
-  buildBreadcrumbJsonLd,
-  buildVideoObjectJsonLd,
-} from '@/lib/watch/schema-org';
+import { buildVideoObjectJsonLd } from '@/lib/watch/schema-org';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { resolveTitle } from '@/lib/site-metadata';
 import { YouTubeLite } from '@/components/youtube-lite';
