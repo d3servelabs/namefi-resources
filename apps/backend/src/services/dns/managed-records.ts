@@ -10,6 +10,12 @@ import { RecordType, type recordSchema } from '@namefi-astra/zod-dns';
 import { eq } from 'drizzle-orm';
 import { createHash } from 'node:crypto';
 import type { z } from 'zod';
+import { config } from '#lib/env';
+import {
+  formatGateTxtRdata,
+  getOrIssueGateToken,
+  isParkGateEnabled,
+} from './park-gate/issuer';
 
 export const MANAGED_DNS_PARKING_CONFLICT_CODE = 'DNS_PARKING_CONFLICT';
 export const MANAGED_DNS_CNAME_CONFLICT_CODE = 'DNS_CNAME_CONFLICT';
@@ -26,7 +32,7 @@ export type ManagedDnsRecordPatch = {
 
 export type ManagedDnsRecordMetadata = {
   namefiManaged: true;
-  managedBy: 'autoPark' | 'forwarding' | 'autoEns';
+  managedBy: 'autoPark' | 'forwarding' | 'autoEns' | 'parkGate';
   disablePatch: ManagedDnsRecordPatch;
 };
 
@@ -208,9 +214,51 @@ export async function getDomainManagedDnsState(
   };
 }
 
+/**
+ * Build the park-gate TXT record (`<label>.<zone>`) carrying the signed
+ * authorization JWT. Returns `null` when the gate is disabled or the zone is
+ * not currently serving parking records. The token is Redis-cached by the
+ * issuer, so this re-signs at most once per cache window.
+ */
+async function buildParkGateManagedRecord(
+  zoneName: NamefiNormalizedDomain,
+  state: Pick<ManagedDnsState, 'shouldServeParkingRecords'>,
+): Promise<DnsRecordSelect | null> {
+  if (!isParkGateEnabled() || !state.shouldServeParkingRecords) {
+    return null;
+  }
+
+  const token = await getOrIssueGateToken(zoneName);
+  if (!token) {
+    return null;
+  }
+
+  return createManagedRecord(
+    zoneName,
+    {
+      type: RecordType.TXT,
+      name: config.NAMEFI_PARK_GATE_LABEL,
+      ttl: config.NAMEFI_PARK_GATE_RECORD_TTL_SECONDS,
+      rdata: formatGateTxtRdata(token),
+    },
+    {
+      namefiManaged: true,
+      managedBy: 'parkGate',
+      disablePatch: { autoParkEnabled: false, forwardTo: '' },
+    },
+  );
+}
+
 export async function getManagedRecordsForZone(
   zoneName: NamefiNormalizedDomain,
 ) {
   const state = await getDomainManagedDnsState(zoneName);
-  return buildManagedRecordsForState(zoneName, state);
+  const records = buildManagedRecordsForState(zoneName, state);
+
+  const gateRecord = await buildParkGateManagedRecord(zoneName, state);
+  if (gateRecord) {
+    records.push(gateRecord);
+  }
+
+  return records;
 }

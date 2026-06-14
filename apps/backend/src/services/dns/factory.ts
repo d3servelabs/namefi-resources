@@ -31,6 +31,7 @@ import {
 } from './links/unofficial-tld-relay-link';
 import { createRewriteRelayedLink } from './links/rewrite-relayed-link';
 import { createRelayZoneAuthorityLink } from './links/relay-zone-authority-link';
+import { createParkGateLink } from './links/park-gate-link';
 
 export interface DnsRequestLinkDependencies {
   getNsAndSoaRecords: DnsAnswerResolver;
@@ -67,6 +68,7 @@ export function createDefaultDnsRequestLinksV2(
     createLoggingLink(),
     wildcardTerminationLink,
     createResolvingLink(resolvedDependencies.getNsAndSoaRecords),
+    createParkGateLink(),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
     createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
     createGatedLink(
@@ -121,6 +123,7 @@ export function createDefaultDnsRequestLinksV2_1(
       ),
       createZoneNsAndSoaLink(),
     ),
+    createParkGateLink(),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
     createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
     createGatedLink(
@@ -154,6 +157,7 @@ export function createDefaultDnsRequestLinksV2_2(
         }),
     ),
     createZoneNsAndSoaLink(),
+    createParkGateLink(),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
     createResolvingLink(resolvedDependencies.getAnswerFromDnsRecords),
     createGatedLink(

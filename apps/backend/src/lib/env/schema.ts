@@ -185,6 +185,38 @@ export const secretsSchema = z.object({
    * Falls back to API_AUTH_KEY if not set
    */
   X402_JWT_SECRET: z.string().optional(),
+
+  /**
+   * EC P-256 (PKCS#8) private key used to sign the Caddy DNS-JWT park-gate
+   * authorization tokens served as `<NAMEFI_PARK_GATE_LABEL>.<host>` TXT
+   * records (see `caddy/namefi-park-gate/caddy-dns-jwt-gate-prd.md`). The
+   * Caddy plugin holds only the matching public key and verifies locally.
+   *
+   * Accepts either a raw PEM string or a base64-encoded PEM (to stay on a
+   * single env line). When unset the park gate is disabled and no gate TXT
+   * records are issued or served.
+   */
+  NAMEFI_PARK_GATE_SIGNING_PRIVATE_KEY: z
+    .string()
+    .optional()
+    .transform((val, ctx) => {
+      if (!val) return null;
+      const normalized = val.includes('BEGIN')
+        ? val
+        : Buffer.from(val, 'base64').toString('utf-8');
+      if (
+        !normalized.includes('-----BEGIN') ||
+        !normalized.includes('PRIVATE KEY-----')
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message:
+            'NAMEFI_PARK_GATE_SIGNING_PRIVATE_KEY must be a PEM private key (raw or base64-encoded PEM)',
+        });
+        return z.NEVER;
+      }
+      return normalized;
+    }),
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -201,279 +233,359 @@ const temporalApiUrlSchema = z
     return value;
   });
 
-export const configSchema = z.object({
-  PORT: z.number().default(3000),
-  TEMPORAL_WORKER_PORT: z.number().default(3000),
-  LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
-  PRIVY_APP_ID: z.string(),
-  TEMPORAL_API_URL: temporalApiUrlSchema,
-  TEMPORAL_NAMESPACE: z.string(),
-  SMTP_SECURE: z.boolean(),
-  SMTP_PORT: z.number().default(465),
-  SMTP_HOST: z.string(),
-  APP_URL: z.string(),
-  /**
-   * List of first-party domains that are owned by NameFI and allowed to interact with the API.
-   */
-  NAMEFI_FIRST_PARTY_HOSTNAMES: z.string().array().default([]),
-  // Google Analytics 4 Measurement Protocol configuration
-  GA_MEASUREMENT_ID: z.string().optional(),
-  ALLOW_HTTP: z.boolean().default(false),
-  ALLOWED_CHAINS: ALLOWED_CHAINS_SCHEMA,
-  /**
-   * Maps email addresses to the hostnames they own.
-   * Used to determine which parent domains a user owns based on their email.
-   * @example
-   * {
-   *   'dev-team@d3serve.xyz': ['0x.city'],
-   *   'another-owner@example.com': ['example.com', 'another-domain.com'],
-   * }
-   */
-  EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: z
-    .record(z.string(), z.string().array())
-    .default({}),
-  /**
-   * If true, all origins will be allowed.
-   * This is useful for local development.
-   */
-  ALLOW_ALL_ORIGINS: z.boolean().default(false),
-  API_AUTH_JWT_TTL_SECONDS: z
-    .number()
-    .int()
-    .positive()
-    .default(60 * 60 * 12),
-  /**
-   * The nameservers that NameFI will use for its own domains.
-   */
-  NAMEFI_ASTRA_NAMESERVERS: punycodeFqdnSchema
-    .array()
-    .default(() =>
-      ['ns3.namefi.dev.', 'ns4.namefi.dev.'].map((value) =>
-        punycodeFqdnSchema.parse(value),
+export const configSchema = z
+  .object({
+    PORT: z.number().default(3000),
+    TEMPORAL_WORKER_PORT: z.number().default(3000),
+    LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
+    PRIVY_APP_ID: z.string(),
+    TEMPORAL_API_URL: temporalApiUrlSchema,
+    TEMPORAL_NAMESPACE: z.string(),
+    SMTP_SECURE: z.boolean(),
+    SMTP_PORT: z.number().default(465),
+    SMTP_HOST: z.string(),
+    APP_URL: z.string(),
+    /**
+     * List of first-party domains that are owned by NameFI and allowed to interact with the API.
+     */
+    NAMEFI_FIRST_PARTY_HOSTNAMES: z.string().array().default([]),
+    // Google Analytics 4 Measurement Protocol configuration
+    GA_MEASUREMENT_ID: z.string().optional(),
+    ALLOW_HTTP: z.boolean().default(false),
+    ALLOWED_CHAINS: ALLOWED_CHAINS_SCHEMA,
+    /**
+     * Maps email addresses to the hostnames they own.
+     * Used to determine which parent domains a user owns based on their email.
+     * @example
+     * {
+     *   'dev-team@d3serve.xyz': ['0x.city'],
+     *   'another-owner@example.com': ['example.com', 'another-domain.com'],
+     * }
+     */
+    EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: z
+      .record(z.string(), z.string().array())
+      .default({}),
+    /**
+     * If true, all origins will be allowed.
+     * This is useful for local development.
+     */
+    ALLOW_ALL_ORIGINS: z.boolean().default(false),
+    API_AUTH_JWT_TTL_SECONDS: z
+      .number()
+      .int()
+      .positive()
+      .default(60 * 60 * 12),
+    /**
+     * The nameservers that NameFI will use for its own domains.
+     */
+    NAMEFI_ASTRA_NAMESERVERS: punycodeFqdnSchema
+      .array()
+      .default(() =>
+        ['ns3.namefi.dev.', 'ns4.namefi.dev.'].map((value) =>
+          punycodeFqdnSchema.parse(value),
+        ),
       ),
-    ),
 
-  /**
-   * Real DNS zone used to relay records for unofficial TLDs
-   * (see `NAMEFI_UNOFFICIAL_TLDS`). A query for
-   * `<name>.<unofficialTld>.<NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE>` resolves
-   * to the same records stored under the logical `<name>.<unofficialTld>`
-   * zone. Normalized form: lowercase, no trailing dot.
-   */
-  NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: z.string().default('gtld.namefi.dev'),
+    /**
+     * Real DNS zone used to relay records for unofficial TLDs
+     * (see `NAMEFI_UNOFFICIAL_TLDS`). A query for
+     * `<name>.<unofficialTld>.<NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE>` resolves
+     * to the same records stored under the logical `<name>.<unofficialTld>`
+     * zone. Normalized form: lowercase, no trailing dot.
+     */
+    NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: z.string().default('gtld.namefi.dev'),
 
-  AWS_REGION: z.string().default('us-east-1'),
-  DYNADOT_BASE_URL: z.string().optional(),
-  DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),
-  DNSSEC_DNSKEY_KEY_TAG: z.number(),
+    AWS_REGION: z.string().default('us-east-1'),
+    DYNADOT_BASE_URL: z.string().optional(),
+    DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),
+    DNSSEC_DNSKEY_KEY_TAG: z.number(),
 
-  STORAGE_BUCKET: z.string().default('namefi-astra-dev'),
-  CLOUD_FRONT_DOMAIN: z.string().default('d3pajj40uywidf.cloudfront.net'),
-  AI_BUCKET_FOLDERS: z
-    .object({
-      LOGOS: z.string(),
-      SOCIAL: z.string(),
-      ANIMATIONS: z.string(),
-    })
-    .default({
-      LOGOS: 'ai-logos',
-      SOCIAL: 'ai-social',
-      ANIMATIONS: 'ai-animations',
-    }),
-  DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
-  DEV_NFSC_ENABLED: z.boolean().default(false),
-  DEV_NFSC_SIGNUP_MINT_AMOUNT: z.number().default(0),
-  DEV_NFSC_FAUCET_AMOUNT: z.number().default(0),
-  DEV_NFSC_FAUCET_COOLDOWN_HOURS: z.number().default(6),
-  /**
-   * Maximum weighted AI generation credits allowed per user per month.
-   * Production uses 25 credits, which backs into a $5 planning budget at
-   * $0.20 per credit.
-   */
-  MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
-  /**
-   * Credit costs by generation type, mode, and primary model. Unknown models
-   * fall back to the type default, then the global default.
-   */
-  AI_GENERATION_CREDIT_COSTS: aiGenerationCreditCostsSchema.default(
-    defaultAiGenerationCreditCosts,
-  ),
-  /**
-   * Token-backed credit rates by model. These let variable-cost workflows
-   * such as leadgen back-calculate credits from persisted input/output usage.
-   */
-  AI_TOKEN_CREDIT_RATES: aiTokenCreditRatesSchema.default(
-    defaultAiTokenCreditRates,
-  ),
-
-  /**
-   * Default Listmonk list ID for new subscribers
-   */
-  LISTMONK_NAMEFI_LIST_ID: z.number().default(3), // z.literal(3) causes ts issues
-  /**
-   * Newsletter list ID for opted-in users
-   */
-  LISTMONK_NEWSLETTER_LIST_ID: z.number().default(2),
-  ADMIN_WALLET_ADDRESSES: z
-    .string()
-    .array()
-    .default([
-      '0x1b0f291c8fFebE891886351CDfF8A304a840C8Ad',
-      '0xB5856d4598c919834913b8656ebc15a64d3C7836',
-    ]),
-  AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES: z.boolean().default(false),
-  REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: z.boolean().default(false),
-
-  VISION_API_URL: z.string().url().default('https://api.vision.io'),
-
-  VERCEL_TEAM_SLUG: z.string().default('d3servelabs'),
-  VERCEL_PROJECT_SLUG: z.string().default('namefi-astra'),
-  VERCEL_PROJECT_ID: z.string().default('prj_s5UsB8zN2BL3tRhGZfwSIUKvyGfV'),
-  NAMEFI_IO_ZONE: z.string().default('namefi-io'),
-  NAMEFI_DEV_ZONE: z.string().default('namefi-dev'),
-  VERCEL_DEV_ENV_ID: z.string().default('env_zTZy6lGe9uNCkFYgd4FbfDETzoHO'),
-
-  BIGQUERY_AUDIT_SERVICE_NAMES: z
-    .string()
-    .array()
-    .optional()
-    .describe('List of service names to filter audit logs by environment')
-    .default([]),
-  CENTRALNIC_KEY: z
-    .enum([
-      Registrars.CentralNic_OTE_01,
-      Registrars.CentralNic_OTE_02,
-      Registrars.CentralNic,
-    ])
-    .optional(),
-  RDAP_ENABLE_DUMMY_OBJECTS: z.boolean().default(true),
-  /**
-   * Optional override for the upstream RDAP endpoint used by
-   * `@namefi-astra/registrars/rdap-whois/rdap_client`. When unset, the
-   * client falls back to its built-in default (`https://rdap.org`).
-   * Useful for dev/test pointing at a local mock server.
-   */
-  RDAP_BASE_URL: z.string().url().optional(),
-  /**
-   * Optional override for the upstream WHOIS JSON API endpoint used by
-   * `@namefi-astra/registrars/rdap-whois/whois_client`. When unset, the
-   * client falls back to its built-in default (`https://whoisjsonapi.com/v1`).
-   * Useful for dev/test pointing at a local mock server.
-   */
-  WHOIS_BASE_URL: z.string().url().optional(),
-  DNS_CACHE_SERVERS: z
-    .array(
-      z.object({
-        name: z.string(),
-        baseUrl: z.string().url(),
+    STORAGE_BUCKET: z.string().default('namefi-astra-dev'),
+    CLOUD_FRONT_DOMAIN: z.string().default('d3pajj40uywidf.cloudfront.net'),
+    AI_BUCKET_FOLDERS: z
+      .object({
+        LOGOS: z.string(),
+        SOCIAL: z.string(),
+        ANIMATIONS: z.string(),
+      })
+      .default({
+        LOGOS: 'ai-logos',
+        SOCIAL: 'ai-social',
+        ANIMATIONS: 'ai-animations',
       }),
-    )
-    .default([]),
-  ALLOW_LIVE_REGISTRARS: z.boolean().default(false),
-  CENTRALNIC_BALANCE_ENDPOINT: z.string().url().optional(),
-  /**
-   * User ID to use when skip_auth is enabled in local/development environments.
-   * The backend will look up this user from the database.
-   * Should be set for local/dev environments and left empty for production.
-   */
-  SKIP_AUTH_USER_ID: z.string().uuid().optional(),
-  USE_NEW_EPP_WORKFLOW: z
-    .string()
-    .default(process.env.USE_NEW_EPP_WORKFLOW ?? 'false')
-    .pipe(z.stringbool()),
-  EMAIL_ANALYTICS_URL: z.url().optional(),
-  EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS: z
-    .number()
-    .positive()
-    .default(1),
-  EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: z.number().default(1000),
-  EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS: z
-    .number()
-    .positive()
-    .default(90),
-  ALLOW_LOGIN_NOTIFICATIONS: z
-    .boolean()
-    .default(
-      z.stringbool().safeParse(process.env.ALLOW_LOGIN_NOTIFICATIONS).data ??
-        true,
+    DISALLOW_LIVE_PAYMENT_METHODS: z.boolean().optional().default(false),
+    DEV_NFSC_ENABLED: z.boolean().default(false),
+    DEV_NFSC_SIGNUP_MINT_AMOUNT: z.number().default(0),
+    DEV_NFSC_FAUCET_AMOUNT: z.number().default(0),
+    DEV_NFSC_FAUCET_COOLDOWN_HOURS: z.number().default(6),
+    /**
+     * Maximum weighted AI generation credits allowed per user per month.
+     * Production uses 25 credits, which backs into a $5 planning budget at
+     * $0.20 per credit.
+     */
+    MAX_AI_GENERATIONS_PER_USER_PER_MONTH: z.number().default(25),
+    /**
+     * Credit costs by generation type, mode, and primary model. Unknown models
+     * fall back to the type default, then the global default.
+     */
+    AI_GENERATION_CREDIT_COSTS: aiGenerationCreditCostsSchema.default(
+      defaultAiGenerationCreditCosts,
     ),
-  /**
-   * Gate for displaying the resolved `loginMethod` in user-visible
-   * surfaces (login-notification email + admin login-history page +
-   * profile Security card). The DB column keeps storing whatever
-   * `detectLoginMethod` resolves; this flag only controls the *render*.
-   *
-   * Default false: `detectLoginMethod` is heuristic (it walks Privy
-   * `linkedAccounts` types) and the team can't actually verify which
-   * method a user authenticated with, so showing it misleads more than
-   * it informs. Flip to true (`SHOW_LOGIN_METHOD=true`) once the
-   * detection is reliable enough to surface.
-   */
-  SHOW_LOGIN_METHOD: z
-    .boolean()
-    .default(
-      z.stringbool().safeParse(process.env.SHOW_LOGIN_METHOD).data ?? false,
+    /**
+     * Token-backed credit rates by model. These let variable-cost workflows
+     * such as leadgen back-calculate credits from persisted input/output usage.
+     */
+    AI_TOKEN_CREDIT_RATES: aiTokenCreditRatesSchema.default(
+      defaultAiTokenCreditRates,
     ),
 
-  /**
-   * URL of the Ponder indexer to sync from.
-   * When set, enables syncing on-chain data from a remote Ponder indexer
-   * instead of running a local Ponder instance.
-   */
-  PONDER_INDEXER_URL: z.string().url().optional(),
-  MPP_ENABLED: z.stringbool().default(true),
-  MPP_STRIPE_NETWORK_ID: z.string().default('internal'),
-  MPP_TEMPO_CURRENCY: z
-    .string()
-    .default('0x20c0000000000000000000000000000000000000'),
-  MPP_TEMPO_RECIPIENT: z.string().optional(),
-  MPP_TEMPO_TESTNET: z.stringbool().default(true),
-  // x402 Protocol Configuration
-  /**
-   * Enable/disable x402 payment protocol
-   */
-  X402_ENABLED: z.stringbool().default(true),
-  /**
-   * Network for x402 payments in CAIP-2 format
-   * - Base Mainnet: eip155:8453
-   * - Base Sepolia: eip155:84532
-   */
-  X402_NETWORK: z.enum(['eip155:8453', 'eip155:84532']).default('eip155:84532'),
-  /**
-   * Wallet address that signs x402 payments (receives USDC and signs refunds)
-   */
-  X402_SIGNER_ADDRESS: z.string().optional(),
-  /**
-   * x402 facilitator URL
-   * - Testnet: https://x402.org/facilitator
-   * - Production (CDP): https://api.cdp.coinbase.com/platform/v2/x402
-   */
-  X402_FACILITATOR_URL: z
-    .string()
-    .url()
-    .default('https://x402.org/facilitator'),
-  /**
-   * WalletConnect project ID for x402 paywall
-   * If not set, WalletConnect option will be hidden in the paywall UI
-   */
-  X402_WALLETCONNECT_PROJECT_ID: z.string().optional(),
-  /**
-   * Default chain ID for minting NFTs from x402 purchases
-   * Maps payment network to NFT chain:
-   * - Base Sepolia (84532) payment -> Sepolia (11155111) NFT
-   * - Base Mainnet (8453) payment -> Base (8453) NFT
-   * If not set, defaults based on X402_NETWORK:
-   * - eip155:84532 -> 11155111 (Sepolia)
-   * - eip155:8453 -> 8453 (Base)
-   */
-  X402_DEFAULT_NFT_CHAINID: z.coerce.number().optional(),
-  ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS: z
-    .string()
-    .optional()
-    .default('2')
-    .pipe(z.coerce.number()),
-  // Listmonk email service
-  LISTMONK_URL: z.string().url(),
-});
+    /**
+     * Default Listmonk list ID for new subscribers
+     */
+    LISTMONK_NAMEFI_LIST_ID: z.number().default(3), // z.literal(3) causes ts issues
+    /**
+     * Newsletter list ID for opted-in users
+     */
+    LISTMONK_NEWSLETTER_LIST_ID: z.number().default(2),
+    ADMIN_WALLET_ADDRESSES: z
+      .string()
+      .array()
+      .default([
+        '0x1b0f291c8fFebE891886351CDfF8A304a840C8Ad',
+        '0xB5856d4598c919834913b8656ebc15a64d3C7836',
+      ]),
+    AUTO_CREATE_TEMPORAL_SEARCH_ATTRIBUTES: z.boolean().default(false),
+    REQUIRE_TEMPORAL_SEARCH_ATTRIBUTES_VALIDATION: z.boolean().default(false),
+
+    VISION_API_URL: z.string().url().default('https://api.vision.io'),
+
+    VERCEL_TEAM_SLUG: z.string().default('d3servelabs'),
+    VERCEL_PROJECT_SLUG: z.string().default('namefi-astra'),
+    VERCEL_PROJECT_ID: z.string().default('prj_s5UsB8zN2BL3tRhGZfwSIUKvyGfV'),
+    NAMEFI_IO_ZONE: z.string().default('namefi-io'),
+    NAMEFI_DEV_ZONE: z.string().default('namefi-dev'),
+    VERCEL_DEV_ENV_ID: z.string().default('env_zTZy6lGe9uNCkFYgd4FbfDETzoHO'),
+
+    BIGQUERY_AUDIT_SERVICE_NAMES: z
+      .string()
+      .array()
+      .optional()
+      .describe('List of service names to filter audit logs by environment')
+      .default([]),
+    CENTRALNIC_KEY: z
+      .enum([
+        Registrars.CentralNic_OTE_01,
+        Registrars.CentralNic_OTE_02,
+        Registrars.CentralNic,
+      ])
+      .optional(),
+    RDAP_ENABLE_DUMMY_OBJECTS: z.boolean().default(true),
+    /**
+     * Optional override for the upstream RDAP endpoint used by
+     * `@namefi-astra/registrars/rdap-whois/rdap_client`. When unset, the
+     * client falls back to its built-in default (`https://rdap.org`).
+     * Useful for dev/test pointing at a local mock server.
+     */
+    RDAP_BASE_URL: z.string().url().optional(),
+    /**
+     * Optional override for the upstream WHOIS JSON API endpoint used by
+     * `@namefi-astra/registrars/rdap-whois/whois_client`. When unset, the
+     * client falls back to its built-in default (`https://whoisjsonapi.com/v1`).
+     * Useful for dev/test pointing at a local mock server.
+     */
+    WHOIS_BASE_URL: z.string().url().optional(),
+    DNS_CACHE_SERVERS: z
+      .array(
+        z.object({
+          name: z.string(),
+          baseUrl: z.string().url(),
+        }),
+      )
+      .default([]),
+    ALLOW_LIVE_REGISTRARS: z.boolean().default(false),
+    CENTRALNIC_BALANCE_ENDPOINT: z.string().url().optional(),
+    /**
+     * User ID to use when skip_auth is enabled in local/development environments.
+     * The backend will look up this user from the database.
+     * Should be set for local/dev environments and left empty for production.
+     */
+    SKIP_AUTH_USER_ID: z.string().uuid().optional(),
+    USE_NEW_EPP_WORKFLOW: z
+      .string()
+      .default(process.env.USE_NEW_EPP_WORKFLOW ?? 'false')
+      .pipe(z.stringbool()),
+    EMAIL_ANALYTICS_URL: z.url().optional(),
+    EMAIL_CART_DOMAINS_POPULAR_ITEM_MIN_AGE_DAYS: z
+      .number()
+      .positive()
+      .default(1),
+    EMAIL_DOMAIN_TRAFFIC_WEEKLY_THRESHOLD: z.number().default(1000),
+    EMAIL_DREAM_DOMAIN_AWAITS_ORDER_LOOKBACK_DAYS: z
+      .number()
+      .positive()
+      .default(90),
+    ALLOW_LOGIN_NOTIFICATIONS: z
+      .boolean()
+      .default(
+        z.stringbool().safeParse(process.env.ALLOW_LOGIN_NOTIFICATIONS).data ??
+          true,
+      ),
+    /**
+     * Gate for displaying the resolved `loginMethod` in user-visible
+     * surfaces (login-notification email + admin login-history page +
+     * profile Security card). The DB column keeps storing whatever
+     * `detectLoginMethod` resolves; this flag only controls the *render*.
+     *
+     * Default false: `detectLoginMethod` is heuristic (it walks Privy
+     * `linkedAccounts` types) and the team can't actually verify which
+     * method a user authenticated with, so showing it misleads more than
+     * it informs. Flip to true (`SHOW_LOGIN_METHOD=true`) once the
+     * detection is reliable enough to surface.
+     */
+    SHOW_LOGIN_METHOD: z
+      .boolean()
+      .default(
+        z.stringbool().safeParse(process.env.SHOW_LOGIN_METHOD).data ?? false,
+      ),
+
+    /**
+     * URL of the Ponder indexer to sync from.
+     * When set, enables syncing on-chain data from a remote Ponder indexer
+     * instead of running a local Ponder instance.
+     */
+    PONDER_INDEXER_URL: z.string().url().optional(),
+    MPP_ENABLED: z.stringbool().default(true),
+    MPP_STRIPE_NETWORK_ID: z.string().default('internal'),
+    MPP_TEMPO_CURRENCY: z
+      .string()
+      .default('0x20c0000000000000000000000000000000000000'),
+    MPP_TEMPO_RECIPIENT: z.string().optional(),
+    MPP_TEMPO_TESTNET: z.stringbool().default(true),
+    // x402 Protocol Configuration
+    /**
+     * Enable/disable x402 payment protocol
+     */
+    X402_ENABLED: z.stringbool().default(true),
+    /**
+     * Network for x402 payments in CAIP-2 format
+     * - Base Mainnet: eip155:8453
+     * - Base Sepolia: eip155:84532
+     */
+    X402_NETWORK: z
+      .enum(['eip155:8453', 'eip155:84532'])
+      .default('eip155:84532'),
+    /**
+     * Wallet address that signs x402 payments (receives USDC and signs refunds)
+     */
+    X402_SIGNER_ADDRESS: z.string().optional(),
+    /**
+     * x402 facilitator URL
+     * - Testnet: https://x402.org/facilitator
+     * - Production (CDP): https://api.cdp.coinbase.com/platform/v2/x402
+     */
+    X402_FACILITATOR_URL: z
+      .string()
+      .url()
+      .default('https://x402.org/facilitator'),
+    /**
+     * WalletConnect project ID for x402 paywall
+     * If not set, WalletConnect option will be hidden in the paywall UI
+     */
+    X402_WALLETCONNECT_PROJECT_ID: z.string().optional(),
+    /**
+     * Default chain ID for minting NFTs from x402 purchases
+     * Maps payment network to NFT chain:
+     * - Base Sepolia (84532) payment -> Sepolia (11155111) NFT
+     * - Base Mainnet (8453) payment -> Base (8453) NFT
+     * If not set, defaults based on X402_NETWORK:
+     * - eip155:84532 -> 11155111 (Sepolia)
+     * - eip155:8453 -> 8453 (Base)
+     */
+    X402_DEFAULT_NFT_CHAINID: z.coerce.number().optional(),
+    ZERO_PAYMENT_REGISTRATION_TRIAL_DAYS: z
+      .string()
+      .optional()
+      .default('2')
+      .pipe(z.coerce.number()),
+    // Listmonk email service
+    LISTMONK_URL: z.string().url(),
+
+    // #region Caddy DNS-JWT park gate
+    /**
+     * Fixed DNS label under which the signed park-gate JWT is published, i.e.
+     * the token for `example.com` lives at `<label>.example.com` TXT. Must
+     * match the `dns_label` configured in the Caddy plugin. See
+     * `caddy/namefi-park-gate/caddy-dns-jwt-gate-prd.md`.
+     */
+    NAMEFI_PARK_GATE_LABEL: z.string().default('_namefi-gate'),
+    /**
+     * Lifetime of the gate JWT (`exp = iat + this`). The acceptance window
+     * the Caddy plugin enforces. Defaults to 24h; combined with a 12h cache
+     * TTL this guarantees a ~12h current/previous overlap during rotation.
+     */
+    NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS: z
+      .number()
+      .int()
+      .positive()
+      .default(60 * 60 * 24),
+    /**
+     * How long an issued gate JWT is cached in Redis before it is re-signed.
+     * Doubles as the rotation cadence; keep it <= the DNS record TTL ceiling
+     * (per the PRD, record TTL must be <= 12h so the oldest served token is
+     * always within `exp`).
+     */
+    NAMEFI_PARK_GATE_CACHE_TTL_SECONDS: z
+      .number()
+      .int()
+      .positive()
+      .default(60 * 60 * 12),
+    /**
+     * TTL advertised on the served gate TXT record. Kept well under the 12h
+     * ceiling so resolvers refresh promptly after a rotation.
+     */
+    NAMEFI_PARK_GATE_RECORD_TTL_SECONDS: z
+      .number()
+      .int()
+      .positive()
+      .default(60 * 60),
+    /**
+     * Route patterns the gate authorizes for a parked host. Parked domains
+     * serve a single parking page across all paths, so the default is `/*`.
+     */
+    NAMEFI_PARK_GATE_ROUTES: z.string().array().default(['/*']),
+    /**
+     * Optional `kid` JWT header, surfaced so the Caddy plugin can select the
+     * right verification key during a key rotation.
+     */
+    NAMEFI_PARK_GATE_KEY_ID: z.string().optional(),
+    // #endregion
+  })
+  .superRefine((cfg, ctx) => {
+    // Park-gate rotation invariants (see the PRD §4.3): the cache window and the
+    // advertised record TTL must both stay within the token lifetime and the 12h
+    // ceiling, otherwise a resolver can serve a token past its `exp` and create
+    // an avoidable deny period.
+    const TwelveHours = 60 * 60 * 12;
+    const ceilingChecks = [
+      'NAMEFI_PARK_GATE_CACHE_TTL_SECONDS',
+      'NAMEFI_PARK_GATE_RECORD_TTL_SECONDS',
+    ] as const;
+    for (const key of ceilingChecks) {
+      if (cfg[key] > TwelveHours) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: `${key} must be <= 43200 (12h)`,
+        });
+      }
+      if (cfg[key] > cfg.NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: `${key} must be <= NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS`,
+        });
+      }
+    }
+  });
 
 export type ConfigInput = z.input<typeof configSchema>;
