@@ -1,0 +1,227 @@
+name: Build & Push ns-json-api
+
+# Builds the nameserver-json-api image (apps/ns-json-api, the HTTP DNS-over-JSON
+# record source CoreDNS forwards to) and, when a deploy dispatch URL is
+# configured, triggers a remote workflow_dispatch to roll it out.
+#
+# One image (`nameserver-json-api`) for every environment. Deploy targets are
+# decided by the trigger:
+#   dev  (ns-dev)      — every trigger (push to main, tag, manual dispatch).
+#   prod (ns3 + ns4)   — only on a release tag v* or a manual dispatch.
+#
+# Only builds when Turbo reports @namefi-astra/ns-json-api affected; tags and
+# manual runs always build.
+#
+# Required repo configuration:
+#   vars:    GCP_PROJECT_ID, GCP_REGION, REPOSITORY_NAME, GCP_WIF_PROVIDER,
+#            GCP_WIF_SERVICE_ACCOUNT
+#   vars (optional): NS_JSON_API_DEPLOY_DISPATCH_URL (enables the remote deploy
+#            dispatch), NS_JSON_API_DEPLOY_DISPATCH_REF (default: main)
+#   secrets (optional): NS_JSON_API_DEPLOY_DISPATCH_TOKEN (token the dispatch uses)
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+  workflow_dispatch:
+
+concurrency:
+  group: build-push-ns-json-api-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
+  REGION: ${{ vars.GCP_REGION }}
+  REPO_NAME: ${{ vars.REPOSITORY_NAME }}
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Gate: only build when Turbo reports @namefi-astra/ns-json-api affected, which
+  # transitively covers its @namefi-astra/dns-service dependency (and the rest of
+  # the workspace graph). Tags and manual runs always build.
+  # ---------------------------------------------------------------------------
+  changes:
+    name: Detect ns-json-api changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      should_build: ${{ steps.check.outputs.should_build }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          filter: blob:none
+      - name: Determine before commit
+        id: before
+        uses: ./.github/actions/determine-before-commit
+      - name: Detect Turbo changes
+        id: turbo-changes
+        uses: ./.github/actions/detect-turbo-changes
+        with:
+          base-ref: ${{ steps.before.outputs.before-commit }}
+          head-ref: ${{ github.sha }}
+          packages: '@namefi-astra/ns-json-api'
+          fallback-files: |
+            bun.lock
+            package.json
+            bunfig.toml
+            .bun-version
+            .github/workflows/build-push-ns-json-api.yml
+      - name: Compute should_build
+        id: check
+        run: |
+          # Tag / manual runs always build; branch pushes build only when Turbo
+          # reports the ns-json-api package (or a dependency) affected.
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" || "${{ github.ref_type }}" == "tag" ]]; then
+            echo "should_build=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should_build=${{ contains(fromJSON(steps.turbo-changes.outputs.changed-packages || '[]'), '@namefi-astra/ns-json-api') }}" >> "$GITHUB_OUTPUT"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Resolve deploy targets: dev (ns-dev) on every trigger; prod (ns3 + ns4) only
+  # on a release tag or a manual dispatch. Same image is deployed to all.
+  # ---------------------------------------------------------------------------
+  compute-targets:
+    name: Compute deploy targets
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      targets: ${{ steps.c.outputs.targets }}
+    steps:
+      - name: Compute targets
+        id: c
+        env:
+          EVENT: ${{ github.event_name }}
+          REF_TYPE: ${{ github.ref_type }}
+        run: |
+          set -euo pipefail
+          if [[ "$REF_TYPE" == "tag" || "$EVENT" == "workflow_dispatch" ]]; then
+            # Release tag / manual run: dev + prod nameservers.
+            echo 'targets=["ns-dev","ns3","ns4"]' >> "$GITHUB_OUTPUT"
+          else
+            # Regular push to main: dev only.
+            echo 'targets=["ns-dev"]' >> "$GITHUB_OUTPUT"
+          fi
+
+  # ---------------------------------------------------------------------------
+  # Build the image with the Bun Dockerfile and push it to Artifact Registry.
+  # Reuses the repo's Blacksmith build actions and the SHA-tag image-exists
+  # short-circuit (see deploy-backend-vercel.yml).
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build & push image
+    needs: changes
+    if: ${{ !cancelled() && needs.changes.outputs.should_build == 'true' }}
+    runs-on: blacksmith-8vcpu-ubuntu-2404
+    permissions:
+      contents: read
+      id-token: write # Required for GCP Workload Identity Federation
+    outputs:
+      image: ${{ steps.set-tag.outputs.image_tag }}
+      image_exists: ${{ steps.check-image.outputs.exists }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set Docker tag
+        id: set-tag
+        run: |
+          set -euo pipefail
+          IMAGE_BASE="${REGION}-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/${REPO_NAME}/nameserver-json-api"
+          echo "image_tag=${IMAGE_BASE}:${{ github.sha }}" >> "$GITHUB_OUTPUT"
+          echo "latest_image_tag=${IMAGE_BASE}:latest" >> "$GITHUB_OUTPUT"
+          echo "image_base=${IMAGE_BASE}" >> "$GITHUB_OUTPUT"
+          echo "Image: ${IMAGE_BASE}:${{ github.sha }}"
+
+      - name: Check if Docker image exists
+        id: check-image
+        run: |
+          IMAGE_TAG="${{ steps.set-tag.outputs.image_tag }}"
+          if gcloud artifacts docker images describe "$IMAGE_TAG" --format="json" >/dev/null 2>&1; then
+            echo "Image already exists: $IMAGE_TAG"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Image does not exist: $IMAGE_TAG"
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Docker Buildx
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/setup-docker-builder@v1
+
+      - name: Build and Push Container
+        if: steps.check-image.outputs.exists != 'true'
+        uses: useblacksmith/build-push-action@v2
+        with:
+          tags: ${{ steps.set-tag.outputs.latest_image_tag }},${{ steps.set-tag.outputs.image_tag }}
+          push: true
+          context: .
+          file: ./apps/ns-json-api/Dockerfile
+
+      - name: Tag release
+        if: steps.check-image.outputs.exists != 'true' && github.ref_type == 'tag'
+        run: |
+          gcloud artifacts docker tags add \
+            "${{ steps.set-tag.outputs.image_tag }}" \
+            "${{ steps.set-tag.outputs.image_base }}:${{ github.ref_name }}"
+
+      - name: Skip build
+        if: steps.check-image.outputs.exists == 'true'
+        run: |
+          echo "Skipping build - image already exists: ${{ steps.set-tag.outputs.image_tag }}"
+
+  # ---------------------------------------------------------------------------
+  # Trigger a remote workflow_dispatch to deploy the freshly built image to the
+  # resolved targets — only when NS_JSON_API_DEPLOY_DISPATCH_URL is configured.
+  # The URL can point at this repo's deploy-coredns workflow or an external infra
+  # repo's dispatch endpoint.
+  # ---------------------------------------------------------------------------
+  dispatch-deploy:
+    name: Trigger remote deploy
+    needs: [build, compute-targets]
+    if: ${{ !cancelled() && needs.build.result == 'success' && vars.NS_JSON_API_DEPLOY_DISPATCH_URL != '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        target: ${{ fromJSON(needs.compute-targets.outputs.targets) }}
+    steps:
+      - name: Dispatch deploy workflow
+        env:
+          DISPATCH_URL: ${{ vars.NS_JSON_API_DEPLOY_DISPATCH_URL }}
+          DISPATCH_REF: ${{ vars.NS_JSON_API_DEPLOY_DISPATCH_REF || 'main' }}
+          DISPATCH_TOKEN: ${{ secrets.NS_JSON_API_DEPLOY_DISPATCH_TOKEN }}
+          IMAGE: ${{ needs.build.outputs.image }}
+          TARGET: ${{ matrix.target }}
+        run: |
+          set -euo pipefail
+          echo "Dispatching deploy for ${IMAGE} (target=${TARGET}, ref=${DISPATCH_REF})"
+          PAYLOAD="$(jq -nc \
+            --arg ref "${DISPATCH_REF}" \
+            --arg img "${IMAGE}" \
+            --arg tgt "${TARGET}" \
+            '{ref: $ref, inputs: {target: $tgt, ns_json_api_image: $img}}')"
+          curl -X POST --fail-with-body \
+            -H "Authorization: Bearer ${DISPATCH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "${DISPATCH_URL}" \
+            -d "${PAYLOAD}"
