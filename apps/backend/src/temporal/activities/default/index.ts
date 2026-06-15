@@ -36,6 +36,9 @@ import {
 const SLACK_TEXT_LIMIT = 3000;
 const SLACK_FIELD_LIMIT = 1800;
 const SLACK_SECTION_FIELD_LIMIT = 10;
+// Slack messages allow at most 50 blocks; cap field sections well under that to
+// leave room for headers/message/actions blocks.
+const SLACK_MAX_FIELD_SECTIONS = 5;
 
 type AsyncReturningFunction<A extends any[], R> = (...args: A) => Promise<R>;
 type ReturningFunction<A extends any[], R> = (...args: A) => Promise<R> | R;
@@ -175,16 +178,12 @@ export async function sendOutboundWorkflowFailureAlertToSlack(
     })),
   ];
 
-  const fieldSections = chunkArray(
+  const fieldSections = buildFieldSections(
     fields.map(({ key, value }) => ({
       type: 'mrkdwn',
       text: `*${key}:*\n${formatSlackValue(value)}`,
     })),
-    SLACK_SECTION_FIELD_LIMIT,
-  ).map((sectionFields) => ({
-    type: 'section',
-    fields: sectionFields,
-  }));
+  );
 
   const slackMessage = {
     blocks: [
@@ -300,13 +299,39 @@ export async function sendTemporalAlertToSlack(
         });
       }
 
+      // Build the workflow-detail fields, bounding each value's length and
+      // chunking into Slack's 10-fields-per-section limit so large extraData
+      // payloads never trip a 400 invalid_blocks response.
+      const metaFields = [
+        {
+          type: 'mrkdwn',
+          text: `*Workflow:* ${formatSlackValue(workflowType)}`,
+        },
+        {
+          type: 'mrkdwn',
+          text: `*WorkflowId:* ${formatSlackValue(workflowId)}`,
+        },
+        { type: 'mrkdwn', text: `*Run:* ${formatSlackValue(runId)}` },
+        {
+          type: 'mrkdwn',
+          text: `*Task Queue:* ${formatSlackValue(taskQueue)}`,
+        },
+        ...(extraData && typeof extraData === 'object'
+          ? Object.entries(extraData).map(([key, value]) => ({
+              type: 'mrkdwn',
+              text: `*${key}:*\n${formatSlackValue(value)}`,
+            }))
+          : []),
+      ];
+      const metaFieldSections = buildFieldSections(metaFields);
+
       const slackMessage = {
         blocks: [
           {
             type: 'header',
             text: {
               type: 'plain_text',
-              text: `[Temporal] ${resolvedTitle}`,
+              text: truncateSlackText(`[Temporal] ${resolvedTitle}`, 150),
               emoji: true,
             },
           },
@@ -314,7 +339,10 @@ export async function sendTemporalAlertToSlack(
             type: 'header',
             text: {
               type: 'plain_text',
-              text: `🔴 Triggered, Workflow Failed (Type: ${workflowType}, Id: ${workflowId})`,
+              text: truncateSlackText(
+                `🔴 Triggered, Workflow Failed (Type: ${workflowType}, Id: ${workflowId})`,
+                150,
+              ),
               emoji: true,
             },
           },
@@ -322,7 +350,10 @@ export async function sendTemporalAlertToSlack(
             type: 'section',
             text: {
               type: 'mrkdwn',
-              text: `Message: ${message}`,
+              // Reserve room for the `Message: ` prefix so the composed section
+              // text stays within Slack's 3000-char section limit (long
+              // workflow failure messages otherwise return 400 invalid_blocks).
+              text: `Message: ${truncateSlackText(message, SLACK_TEXT_LIMIT - 16)}`,
             },
           },
           ...(ticket
@@ -336,34 +367,7 @@ export async function sendTemporalAlertToSlack(
                 },
               ]
             : []),
-          {
-            type: 'section',
-            fields: [
-              {
-                type: 'mrkdwn',
-                text: `*Workflow:* ${workflowType}`,
-              },
-
-              {
-                type: 'mrkdwn',
-                text: `*WorkflowId:* ${workflowId}`,
-              },
-              {
-                type: 'mrkdwn',
-                text: `*Run:* ${runId}`,
-              },
-              {
-                type: 'mrkdwn',
-                text: `*Task Queue:* ${taskQueue}`,
-              },
-              ...(extraData && typeof extraData === 'object'
-                ? Object.entries(extraData).map(([key, value]) => ({
-                    type: 'mrkdwn',
-                    text: `*${key}:*\n${value}`,
-                  }))
-                : []),
-            ],
-          },
+          ...metaFieldSections,
           {
             type: 'actions',
             elements: actionButtons,
@@ -430,7 +434,10 @@ function formatSlackValue(value: unknown) {
     return String(value);
   }
 
-  return truncateSlackText(JSON.stringify(value), SLACK_FIELD_LIMIT);
+  // safeStringify (not raw JSON.stringify) so non-serializable values
+  // (BigInt, circular refs) in extraData can't throw and silently drop the
+  // entire alert in the caller's catch block.
+  return truncateSlackText(safeStringify(value), SLACK_FIELD_LIMIT);
 }
 
 function truncateSlackText(value: string, limit: number) {
@@ -447,6 +454,35 @@ function chunkArray<T>(items: T[], size: number): T[][] {
     chunks.push(items.slice(index, index + size));
   }
   return chunks;
+}
+
+type SlackField = { type: string; text: string };
+
+/**
+ * Chunk mrkdwn fields into Slack `section` blocks (10 fields each) while
+ * capping the total section count. Slack messages allow at most 50 blocks, so
+ * an unbounded extraData payload would otherwise overflow that limit and return
+ * 400 invalid_blocks. When the fields exceed the cap, the overflow is dropped
+ * and an explicit "+N additional fields omitted" note is appended.
+ */
+function buildFieldSections(
+  fields: SlackField[],
+): Array<{ type: 'section'; fields: SlackField[] }> {
+  const maxFields = SLACK_MAX_FIELD_SECTIONS * SLACK_SECTION_FIELD_LIMIT;
+  let rendered = fields;
+  if (fields.length > maxFields) {
+    const omitted = fields.length - (maxFields - 1);
+    rendered = [
+      ...fields.slice(0, maxFields - 1),
+      { type: 'mrkdwn', text: `_… +${omitted} additional fields omitted_` },
+    ];
+  }
+  return chunkArray(rendered, SLACK_SECTION_FIELD_LIMIT).map(
+    (sectionFields) => ({
+      type: 'section',
+      fields: sectionFields,
+    }),
+  );
 }
 
 async function createIncidentTicket(args: {
@@ -776,13 +812,7 @@ export async function sendHttpAlertToSlack(
       text: `*${key}:*\n${formatSlackValue(value)}`,
     }));
 
-  const extraFieldSections = chunkArray(
-    extraFields,
-    SLACK_SECTION_FIELD_LIMIT,
-  ).map((sectionFields) => ({
-    type: 'section',
-    fields: sectionFields,
-  }));
+  const extraFieldSections = buildFieldSections(extraFields);
 
   const slackMessage = {
     blocks: [
