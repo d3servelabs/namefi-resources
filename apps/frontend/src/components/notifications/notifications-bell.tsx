@@ -16,7 +16,7 @@ import { Bell } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
-  type ReactNode,
+  type ReactElement,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -234,7 +234,7 @@ const NotificationsBellInner = forwardRef<
 NotificationsBell.displayName = 'NotificationsBell';
 NotificationsBellInner.displayName = 'NotificationsBellInner';
 
-function PermissionPromptTooltip({ children }: { children: ReactNode }) {
+function PermissionPromptTooltip({ children }: { children: ReactElement }) {
   const capability = useBrowserNotificationCapability();
   const [open, setOpen] = useState(false);
 
@@ -253,12 +253,7 @@ function PermissionPromptTooltip({ children }: { children: ReactNode }) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        nativeButton={false}
-        render={<span className="inline-block" />}
-      >
-        {children}
-      </PopoverTrigger>
+      <PopoverTrigger render={children} />
       <PopoverContent className="w-72 p-3" align="end" sideOffset={8}>
         <p className="text-sm text-foreground">
           Don't miss any notifications, enable notifications for Namefi Webapp.
