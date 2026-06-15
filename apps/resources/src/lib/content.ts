@@ -58,6 +58,13 @@ type AuthorEntry = {
   relativePath: string;
 };
 
+// A single FAQ entry. Sourced from the `faqs` frontmatter array, surfaced both
+// as the visible "Frequently asked questions" section and as FAQPage JSON-LD.
+export type TldFaq = {
+  question: string;
+  answer: string;
+};
+
 type TldFrontmatter = {
   title: string;
   summary?: string;
@@ -68,6 +75,7 @@ type TldFrontmatter = {
   draft: boolean;
   language: Locale;
   keywords: string[];
+  faqs: TldFaq[];
 };
 
 type TldEntry = {
@@ -241,6 +249,28 @@ function toBoolean(value: unknown): boolean {
   return false;
 }
 
+// Parses the `faqs` frontmatter array, keeping only entries that have both a
+// non-empty question and answer. Returns [] for missing/malformed input so the
+// FAQ section and FAQPage JSON-LD simply don't render when absent.
+function toFaqs(value: unknown): TldFaq[] {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map((item) => {
+      if (typeof item !== 'object' || item === null) return null;
+      const { question, answer } = item as Record<string, unknown>;
+      if (typeof question !== 'string' || typeof answer !== 'string') {
+        return null;
+      }
+      const trimmedQuestion = question.trim();
+      const trimmedAnswer = answer.trim();
+      if (trimmedQuestion.length === 0 || trimmedAnswer.length === 0) {
+        return null;
+      }
+      return { question: trimmedQuestion, answer: trimmedAnswer };
+    })
+    .filter((faq): faq is TldFaq => faq !== null);
+}
+
 function getDirectoryKey(collection: Collection, locale: Locale) {
   return `${collection}:${locale}`;
 }
@@ -389,6 +419,7 @@ function normaliseTldFrontmatter(
   const tags = toStringArray(data.tags);
   const authors = toStringArray(data.authors);
   const keywords = toStringArray(data.keywords);
+  const faqs = toFaqs(data.faqs);
 
   const language = sourceLanguage;
   const description =
@@ -411,6 +442,7 @@ function normaliseTldFrontmatter(
     draft: draftValue,
     language,
     keywords,
+    faqs,
   };
 }
 

@@ -16,6 +16,7 @@ import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { useMDXComponents } from '@/mdx-components';
+import { JsonLd } from '@/components/json-ld';
 
 export async function generateStaticParams() {
   return getTldParams();
@@ -143,6 +144,53 @@ export default async function TldDetailPage({
   const formattedDate = dateFormatter.format(entry.publishedAt);
   const showSourceLanguage = entry.requestedLanguage !== entry.sourceLanguage;
   const keywords = entry.frontmatter.keywords;
+  const { faqs } = entry.frontmatter;
+  // BreadcrumbList structured data (Resources > TLDs > .tld). Unlike FAQ/HowTo,
+  // breadcrumb rich results still render in Google search, so this is emitted on
+  // every TLD page. URLs use the canonical /r/<locale> public paths.
+  const baseUrl = resolveBaseUrl();
+  const tldBasePath = `/r/${locale}/tld`;
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: dictionary.nav.resources,
+        item: `${baseUrl}/r/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: dictionary.nav.tld,
+        item: `${baseUrl}${tldBasePath}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: entry.frontmatter.title,
+        item: `${baseUrl}${tldBasePath}/${slug}`,
+      },
+    ],
+  };
+  // FAQPage structured data. Mirrors the visible "Frequently asked questions"
+  // section authored in the page body, so the schema matches on-page content.
+  const faqJsonLd =
+    faqs.length > 0
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((faq) => ({
+            '@type': 'Question',
+            name: faq.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: faq.answer,
+            },
+          })),
+        }
+      : null;
   const { default: ArticleContent } = await loadMdxModule(entry.relativePath);
   const authorModules = await Promise.all(
     authorEntries.map(async (author) => {
@@ -153,6 +201,8 @@ export default async function TldDetailPage({
 
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
+      <JsonLd data={breadcrumbJsonLd} />
+      {faqJsonLd && <JsonLd data={faqJsonLd} />}
       <Link
         href={`/${locale}/tld`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
