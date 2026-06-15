@@ -655,7 +655,7 @@ export const domainConfigRouter = createContractTRPCRouter<
 
       let workflowStatus: WorkflowExecutionStatusName | undefined;
       try {
-        const workflow = await temporalClient.workflow.getHandle(
+        const workflow = temporalClient.workflow.getHandle(
           prepareDomainForExportWorkflow.generateId({
             domainName,
             userId: user.id,

@@ -85,6 +85,7 @@
     "@namefi-astra/common": "workspace:*",
     "@namefi-astra/coredns-client": "workspace:*",
     "@namefi-astra/db": "workspace:*",
+    "@namefi-astra/dns-service": "workspace:*",
     "@namefi-astra/dns-tools": "workspace:*",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/indexer": "workspace:*",

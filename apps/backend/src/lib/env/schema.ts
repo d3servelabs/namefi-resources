@@ -4,7 +4,11 @@ import {
   defaultAiGenerationCreditCosts,
   defaultAiTokenCreditRates,
 } from '@namefi-astra/common/ai-generation-credits';
-import { punycodeFqdnSchema } from '@namefi-astra/registrars/data/validations';
+import {
+  dnsConfigSchema,
+  dnsSecretsSchema,
+  refineParkGateTtls,
+} from '@namefi-astra/dns-service/lib/env/dns-config-schema';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 import { zJson } from '@namefi-astra/utils/zod-helpers';
 import { z } from 'zod';
@@ -186,37 +190,8 @@ export const secretsSchema = z.object({
    */
   X402_JWT_SECRET: z.string().optional(),
 
-  /**
-   * EC P-256 (PKCS#8) private key used to sign the Caddy DNS-JWT park-gate
-   * authorization tokens served as `<NAMEFI_PARK_GATE_LABEL>.<host>` TXT
-   * records (see `caddy/namefi-park-gate/caddy-dns-jwt-gate-prd.md`). The
-   * Caddy plugin holds only the matching public key and verifies locally.
-   *
-   * Accepts either a raw PEM string or a base64-encoded PEM (to stay on a
-   * single env line). When unset the park gate is disabled and no gate TXT
-   * records are issued or served.
-   */
-  NAMEFI_PARK_GATE_SIGNING_PRIVATE_KEY: z
-    .string()
-    .optional()
-    .transform((val, ctx) => {
-      if (!val) return null;
-      const normalized = val.includes('BEGIN')
-        ? val
-        : Buffer.from(val, 'base64').toString('utf-8');
-      if (
-        !normalized.includes('-----BEGIN') ||
-        !normalized.includes('PRIVATE KEY-----')
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message:
-            'NAMEFI_PARK_GATE_SIGNING_PRIVATE_KEY must be a PEM private key (raw or base64-encoded PEM)',
-        });
-        return z.NEVER;
-      }
-      return normalized;
-    }),
+  // Caddy DNS-JWT park-gate signing key, owned by @namefi-astra/dns-service.
+  ...dnsSecretsSchema.shape,
 });
 
 export type SecretsSchema = z.infer<typeof secretsSchema>;
@@ -275,26 +250,6 @@ export const configSchema = z
       .int()
       .positive()
       .default(60 * 60 * 12),
-    /**
-     * The nameservers that NameFI will use for its own domains.
-     */
-    NAMEFI_ASTRA_NAMESERVERS: punycodeFqdnSchema
-      .array()
-      .default(() =>
-        ['ns3.namefi.dev.', 'ns4.namefi.dev.'].map((value) =>
-          punycodeFqdnSchema.parse(value),
-        ),
-      ),
-
-    /**
-     * Real DNS zone used to relay records for unofficial TLDs
-     * (see `NAMEFI_UNOFFICIAL_TLDS`). A query for
-     * `<name>.<unofficialTld>.<NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE>` resolves
-     * to the same records stored under the logical `<name>.<unofficialTld>`
-     * zone. Normalized form: lowercase, no trailing dot.
-     */
-    NAMEFI_UNOFFICIAL_TLDS_RELAY_ZONE: z.string().default('gtld.namefi.dev'),
-
     AWS_REGION: z.string().default('us-east-1'),
     DYNADOT_BASE_URL: z.string().optional(),
     DNSSEC_DNSKEY_PUBLIC_RECORD: z.string(),
@@ -510,82 +465,10 @@ export const configSchema = z
     // Listmonk email service
     LISTMONK_URL: z.string().url(),
 
-    // #region Caddy DNS-JWT park gate
-    /**
-     * Fixed DNS label under which the signed park-gate JWT is published, i.e.
-     * the token for `example.com` lives at `<label>.example.com` TXT. Must
-     * match the `dns_label` configured in the Caddy plugin. See
-     * `caddy/namefi-park-gate/caddy-dns-jwt-gate-prd.md`.
-     */
-    NAMEFI_PARK_GATE_LABEL: z.string().default('_namefi-gate'),
-    /**
-     * Lifetime of the gate JWT (`exp = iat + this`). The acceptance window
-     * the Caddy plugin enforces. Defaults to 24h; combined with a 12h cache
-     * TTL this guarantees a ~12h current/previous overlap during rotation.
-     */
-    NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS: z
-      .number()
-      .int()
-      .positive()
-      .default(60 * 60 * 24),
-    /**
-     * How long an issued gate JWT is cached in Redis before it is re-signed.
-     * Doubles as the rotation cadence; keep it <= the DNS record TTL ceiling
-     * (per the PRD, record TTL must be <= 12h so the oldest served token is
-     * always within `exp`).
-     */
-    NAMEFI_PARK_GATE_CACHE_TTL_SECONDS: z
-      .number()
-      .int()
-      .positive()
-      .default(60 * 60 * 12),
-    /**
-     * TTL advertised on the served gate TXT record. Kept well under the 12h
-     * ceiling so resolvers refresh promptly after a rotation.
-     */
-    NAMEFI_PARK_GATE_RECORD_TTL_SECONDS: z
-      .number()
-      .int()
-      .positive()
-      .default(60 * 60),
-    /**
-     * Route patterns the gate authorizes for a parked host. Parked domains
-     * serve a single parking page across all paths, so the default is `/*`.
-     */
-    NAMEFI_PARK_GATE_ROUTES: z.string().array().default(['/*']),
-    /**
-     * Optional `kid` JWT header, surfaced so the Caddy plugin can select the
-     * right verification key during a key rotation.
-     */
-    NAMEFI_PARK_GATE_KEY_ID: z.string().optional(),
-    // #endregion
+    // DNS resolution config (nameservers, relay zone, Caddy DNS-JWT park gate)
+    // owned by @namefi-astra/dns-service so backend and ns-json-api agree.
+    ...dnsConfigSchema.shape,
   })
-  .superRefine((cfg, ctx) => {
-    // Park-gate rotation invariants (see the PRD §4.3): the cache window and the
-    // advertised record TTL must both stay within the token lifetime and the 12h
-    // ceiling, otherwise a resolver can serve a token past its `exp` and create
-    // an avoidable deny period.
-    const TwelveHours = 60 * 60 * 12;
-    const ceilingChecks = [
-      'NAMEFI_PARK_GATE_CACHE_TTL_SECONDS',
-      'NAMEFI_PARK_GATE_RECORD_TTL_SECONDS',
-    ] as const;
-    for (const key of ceilingChecks) {
-      if (cfg[key] > TwelveHours) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: `${key} must be <= 43200 (12h)`,
-        });
-      }
-      if (cfg[key] > cfg.NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: `${key} must be <= NAMEFI_PARK_GATE_TOKEN_TTL_SECONDS`,
-        });
-      }
-    }
-  });
+  .superRefine(refineParkGateTtls);
 
 export type ConfigInput = z.input<typeof configSchema>;

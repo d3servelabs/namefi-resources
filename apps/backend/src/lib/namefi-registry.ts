@@ -46,8 +46,18 @@ import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import { sldRegistrar } from './epp-registrars';
 import superjson from 'superjson';
 import { getRedisClient } from '#lib/redis';
+import {
+  getPoweredByNamefi3PDomains,
+  HARDCODED_3P_DOMAINS_NAMES,
+  POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
+} from '@namefi-astra/dns-service/lib/namefi-registry';
 
 export { sldRegistrar };
+// The DNS resolution names-only getter moved to @namefi-astra/dns-service;
+// re-exported so the backend's many `#lib/namefi-registry` importers keep
+// working. Backend keeps the richer details/single/invalidate helpers below,
+// sharing the same Redis cache key and hardcoded name list.
+export { getPoweredByNamefi3PDomains };
 
 const generateUnavailableDomainInfo = (
   domain: NamefiNormalizedDomain,
@@ -65,21 +75,6 @@ const generateUnavailableDomainInfo = (
   importable: false,
   supported: supported,
 });
-
-const HARDCODED_3P_DOMAINS_NAMES = [
-  '0x.city',
-  'taylor.cv',
-  'ali.cv',
-  'li.cv',
-  'muller.cv',
-  'kumar.cv',
-  'victor.cv',
-  'starts.today',
-  'ends.today',
-  'promos.today',
-  'available.today',
-  'discounts.today',
-] as NamefiNormalizedDomain[];
 
 /**
  * Derives the default `additionalAllowedHostnames` for a Powered-by-Namefi
@@ -149,13 +144,6 @@ const HARDCODED_ADDITIONAL_ALLOWED_HOSTNAMES_MAP = new Map(
 );
 
 /**
- * Redis key used to cache the full `poweredby_namefi_domains` row set.
- * Kept in a constant so the cache read/write and the invalidation helper
- * (`invalidatePoweredByNamefi3PDomainsCache`) can't drift.
- */
-const POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY = 'poweredbyNamefiDomains';
-
-/**
  * Drops the cached PBN-domains row set from Redis so the next
  * `getPoweredByNamefi3PDomainsDetails` / `getPoweredByNamefi3PDomains`
  * call rebuilds it from the database. Call this from every mutation that
@@ -223,16 +211,6 @@ export const getSinglePoweredByNamefi3PDomainsDetails = async (
     (domain) => domain.normalizedDomainName === normalizeDomainName,
   );
   return fromConfig ?? null;
-};
-
-export const getPoweredByNamefi3PDomains = async () => {
-  const poweredbyNamefiDomains = await getPoweredByNamefi3PDomainsDetails();
-  const fromDb: string[] = pluck(
-    'normalizedDomainName',
-    poweredbyNamefiDomains,
-  );
-
-  return Array.from(new Set(fromDb as NamefiNormalizedDomain[]));
 };
 
 export const getPoweredByNamefiDomainFromHostname = async (

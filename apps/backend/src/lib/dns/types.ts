@@ -1,27 +1,5 @@
-export interface DnsRecord {
-  [key: number]: string;
-}
-
-export interface DnsTable {
-  [domain: string]: DnsRecord;
-}
-
-export interface DnsResponse {
-  RCODE?: number;
-  Answer?: Array<{
-    name: string;
-    type: number;
-    TTL: number;
-    data: string;
-  }>;
-  Authority?: Array<{
-    name: string;
-    type: number;
-    TTL: number;
-    data: string;
-  }>;
-  Question?: Array<{
-    name: string;
-    type: number;
-  }>;
-}
+/**
+ * @deprecated Moved to `@namefi-astra/dns-service`. This re-export shim keeps
+ * existing `#lib/dns/types` importers working and will be dropped later.
+ */
+export * from '@namefi-astra/dns-service/lib/dns/types';

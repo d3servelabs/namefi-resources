@@ -1,3 +1,4 @@
+import { DNS_NAMESERVERS_PROD } from '@namefi-astra/dns-service/lib/env/dns-config-schema';
 import type { ConfigInput } from '../schema';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { Registrars } from '@namefi-astra/registrars/registrars-keys';
@@ -95,7 +96,7 @@ const productionConfig: ConfigInput = {
       'discounts.today',
     ],
   },
-  NAMEFI_ASTRA_NAMESERVERS: ['ns3.namefi.io.', 'ns4.namefi.io.'],
+  NAMEFI_ASTRA_NAMESERVERS: [...DNS_NAMESERVERS_PROD],
 
   DNSSEC_DNSKEY_PUBLIC_RECORD:
     '0x.city. 86400 IN DNSKEY 257 3 13 rsA8XQ32zr8KIj9iZc8uYvuh9+dozZi581+FiQQoCPw+WnAWumIbXqaOoWWgFQAetARJGTheCAAF4EIb/w6WMA==',
