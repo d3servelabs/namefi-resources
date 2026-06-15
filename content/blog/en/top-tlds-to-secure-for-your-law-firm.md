@@ -6,17 +6,17 @@ tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
-description: 'The top 10 TLDs to secure for your law firm, including which legal TLDs like .law and .esq are restricted to verified attorneys, plus a defensive strategy.'
-keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', '.esq domain restrictions', 'legal domain extensions', 'defensive domain registration', 'attorney domain names', 'law firm branding', 'restricted legal TLDs', 'register law firm domains']
+description: 'The top 10 TLDs to secure for your law firm, including why .law is the only legal TLD restricted to verified attorneys (while .esq, .legal, .attorney, and .lawyer are open), plus a defensive strategy.'
+keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', 'is .esq restricted', 'legal domain extensions', 'defensive domain registration', 'attorney domain names', 'law firm branding', 'restricted legal TLDs', 'register law firm domains']
 ---
 
 For a law firm, a domain name is more than an address — it is a trust signal. Clients judge credibility in seconds, and a clean, professional domain on a recognized extension does quiet work that a brochure cannot. Securing the right set of **TLDs for your law firm** protects the names that matter most: your firm, your partners, and the practice areas you want to rank for.
 
-There is also a defensive dimension. If you only register `.com`, nothing stops a competitor, a disgruntled party, or a typosquatter from grabbing the same name on `.net`, `.law`, or a misspelling. Buying a handful of relevant extensions up front is far cheaper than litigating a cybersquatting dispute later, and it keeps your brand consistent across the web.
+There is also a defensive dimension. If you only register [`.com`](/en/tld/com), nothing stops a competitor, a disgruntled party, or a typosquatter from grabbing the same name on [`.net`](/en/tld/net), [`.law`](/en/tld/law), or a misspelling. Buying a handful of relevant extensions up front is far cheaper than litigating a cybersquatting dispute later, and it keeps your brand consistent across the web.
 
 ## How to choose TLDs for your law firm
 
-Three criteria matter most. First, **trust signals**: extensions like `.com` and the verified legal TLDs carry instant professional weight. Second, **restricted "verified" TLDs**: some legal extensions (notably `.law` and `.esq`) require proof of legal credentials, which is a feature — it signals to clients that the registrant was vetted. Third, **defensive coverage**: register the obvious variants and partner names so no one else can. You do not need every extension on the internet; you need the few your clients and competitors would actually look for.
+Three criteria matter most. First, **trust signals**: extensions like `.com` and the legal-themed TLDs carry instant professional weight. Second, **restricted "verified" TLDs**: among the legal extensions, only `.law` actually gates registration behind proof of legal credentials, which is a feature — it signals to clients that the registrant was vetted. Despite being marketed to lawyers, [`.esq`](/en/tld/esq) is openly available with no registry-level credential check, as are [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney), and [`.lawyer`](/en/tld/lawyer). Third, **defensive coverage**: register the obvious variants and partner names so no one else can. You do not need every extension on the internet; you need the few your clients and competitors would actually look for.
 
 ## The top 10 TLDs to secure for your law firm
 
@@ -28,13 +28,13 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 `.law` signals an authenticated legal identity, but it is a **restricted TLD**. Registration is limited to qualified lawyers, law firms, and legal regulators who can be verified as licensed to practice, and the registry uses independent validation and may request proof of eligibility at any time, per the registry's [eligibility requirements](https://www.namecheap.com/support/knowledgebase/article.aspx/10378/35/law-domain-registration-requirements/). The TLD is operated by [Registry Services, LLC (GoDaddy Registry)](https://www.iana.org/domains/root/db/law.html). Do not assume just anyone can register one.
 
-### 3. .esq — a credentialed extension for attorneys (RESTRICTED)
+### 3. .esq — an attorney-branded extension (OPEN)
 
-`.esq` (for "Esquire") is aimed at individual attorneys and legal professionals, and it is **restricted** to registrants who can verify their legal status; registrars are required to confirm eligibility before registration. It is operated by [Charleston Road Registry (Google Registry)](https://www.iana.org/domains/root/db/esq.html); see [Google Registry's .esq page](https://www.registry.google/tlds/esq/) for the registry operator's positioning. As with `.law`, eligibility verification is a gating requirement.
+`.esq` (for "Esquire") is marketed to individual attorneys and legal professionals, but contrary to common belief it is **not** credential-gated — there is no registry-level verification of legal status, so anyone can register one. It is operated by [Charleston Road Registry (Google Registry)](https://www.iana.org/domains/root/db/esq.html) and, like Google's other TLDs, is served HTTPS-only via [HSTS preloading](https://hstspreload.org/); see [Google Registry's .esq page](https://www.registry.google/tlds/esq/) for the registry operator's positioning. Because it is open, register it defensively rather than assuming the credential bar protects your name.
 
 ### 4. .legal — a descriptive, openly available option
 
-`.legal` reads clearly and works for firms, legal-tech products, and resource sites. Unlike `.law` and `.esq`, `.legal` is **not** subject to verified-credential restrictions and is openly available to register, per its [IANA root entry](https://www.iana.org/domains/root/db/legal.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/legal). It is a strong, unrestricted alternative if you want a legal-themed name without the verification step.
+`.legal` reads clearly and works for firms, legal-tech products, and resource sites. Unlike `.law`, `.legal` is **not** subject to verified-credential restrictions and is openly available to register, per its [IANA root entry](https://www.iana.org/domains/root/db/legal.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/legal). It is a strong, unrestricted alternative if you want a legal-themed name without the verification step.
 
 ### 5. .attorney — practice-specific and unrestricted
 
@@ -46,7 +46,7 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 ### 7. [.abogado](/en/tld/abogado) — reach Spanish-speaking clients
 
-`.abogado` ("lawyer" in Spanish) is a smart pick for firms serving Hispanic and Latino communities or operating in Spanish-speaking markets. It is openly available; see its [IANA root entry](https://www.iana.org/domains/root/db/abogado.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/abogado). A focused way to signal language and cultural fit.
+[`.abogado`](/en/tld/abogado) ("lawyer" in Spanish) is a smart pick for firms serving Hispanic and Latino communities or operating in Spanish-speaking markets. It is openly available; see its [IANA root entry](https://www.iana.org/domains/root/db/abogado.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/abogado). A focused way to signal language and cultural fit.
 
 ### 8. [.net](/en/tld/net) — the classic defensive backup
 
@@ -54,11 +54,11 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 ### 9. [.org](/en/tld/org) — for nonprofits, clinics, and associations
 
-`.org` carries connotations of mission and public service — fitting for legal aid organizations, bar-adjacent groups, and pro bono initiatives, and worth securing defensively even for commercial firms. It is administered by [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). It rounds out the legacy trio alongside `.com` and `.net`.
+[`.org`](/en/tld/org) carries connotations of mission and public service — fitting for legal aid organizations, bar-adjacent groups, and pro bono initiatives, and worth securing defensively even for commercial firms. It is administered by [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). It rounds out the legacy trio alongside `.com` and `.net`.
 
 ### 10. [.info](/en/tld/info) — for client-facing resources
 
-`.info` suits FAQ hubs, practice-area explainers, and intake resources where the name should say "information." It is an inexpensive defensive registration and a flexible home for content. See its [IANA root entry](https://www.iana.org/domains/root/db/info.html) for delegation details.
+[`.info`](/en/tld/info) suits FAQ hubs, practice-area explainers, and intake resources where the name should say "information." It is an inexpensive defensive registration and a flexible home for content. See its [IANA root entry](https://www.iana.org/domains/root/db/info.html) for delegation details.
 
 ## Defensive registration strategy
 
@@ -76,7 +76,7 @@ Namefi also supports Web3 domain tokenization, letting you hold eligible domains
 
 ### Can any law firm register a .law domain?
 
-No. `.law` is a restricted TLD. Registration is limited to qualified lawyers, law firms, and legal regulators who can be verified as licensed to practice law, and the registry uses an independent validator and may request proof of eligibility at any time, per the registry's [eligibility requirements](https://www.namecheap.com/support/knowledgebase/article.aspx/10378/35/law-domain-registration-requirements/). `.esq` is similarly restricted to verified legal professionals. By contrast, `.legal`, `.attorney`, and `.lawyer` are open to anyone.
+No. `.law` is a restricted TLD. Registration is limited to qualified lawyers, law firms, and legal regulators who can be verified as licensed to practice law, and the registry uses an independent validator and may request proof of eligibility at any time, per the registry's [eligibility requirements](https://www.namecheap.com/support/knowledgebase/article.aspx/10378/35/law-domain-registration-requirements/). Among the legal-themed extensions, `.law` is the only one that gates registration this way. Despite being marketed to attorneys, `.esq` is **not** credential-gated, and `.legal`, `.attorney`, and `.lawyer` are likewise open to anyone.
 
 ### Does the TLD I choose affect my SEO?
 
@@ -88,4 +88,4 @@ There is no fixed number, but most firms are well served by their primary `.com`
 
 ### Should I register a legal TLD I am not yet eligible for?
 
-If you cannot pass eligibility verification for a restricted TLD like `.law` or `.esq`, you cannot register it — the [registry verifies credentials](https://www.iana.org/domains/root/db/law.html) before and after registration. Focus your defensive budget on the unrestricted extensions you can control today, such as `.legal`, `.attorney`, `.lawyer`, and `.com`.
+If you cannot pass eligibility verification for `.law` — the one restricted legal TLD — you cannot register it, because the [registry verifies credentials](https://www.iana.org/domains/root/db/law.html) before and after registration. The other legal-themed extensions have no such gate: focus your defensive budget on the unrestricted ones you can control today, such as `.esq`, `.legal`, `.attorney`, `.lawyer`, and `.com`.

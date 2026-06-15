@@ -12,11 +12,11 @@ keywords: ['top TLDs for e-commerce', 'best domain extensions for online store',
 
 For an online retailer, a domain name is not just an address — it is a storefront, a trust signal, and a brand asset all at once. Securing the right **top-level domains (TLDs) for your e-commerce store** is one of the cheapest forms of brand protection you can buy. When you own the extensions that customers and bad actors are most likely to type, you control where your traffic goes and you deny that real estate to anyone who might misuse it.
 
-That last point matters more than most merchants realize. Lookalike storefronts on alternate extensions are a common vector for phishing and counterfeit-goods scams: a fraudster registers your brand on a retail-flavored TLD you skipped, spins up a convincing checkout page, and harvests payment details from your shoppers. Securing a handful of high-intent extensions up front — alongside your primary `.com` — closes those gaps before someone else opens them.
+That last point matters more than most merchants realize. Lookalike storefronts on alternate extensions are a common vector for phishing and counterfeit-goods scams: a fraudster registers your brand on a retail-flavored TLD you skipped, spins up a convincing checkout page, and harvests payment details from your shoppers. Securing a handful of high-intent extensions up front — alongside your primary [`.com`](/en/tld/com) — closes those gaps before someone else opens them.
 
 ## How to choose TLDs for your online store
 
-Three criteria should drive the decision. First, **trust and conversion**: shoppers recognize and trust some extensions more than others, and a familiar TLD reduces hesitation at the moment of purchase. Second, **retail intent**: extensions like `.shop` and `.store` carry obvious commercial meaning, which can reinforce your positioning and make marketing copy read naturally. Third, **defensive coverage**: even extensions you never plan to launch on are worth holding if a competitor or impersonator could plausibly use them against your brand. The goal is a small, deliberate portfolio — not every TLD in existence, but the ones that protect your name and serve your customers.
+Three criteria should drive the decision. First, **trust and conversion**: shoppers recognize and trust some extensions more than others, and a familiar TLD reduces hesitation at the moment of purchase. Second, **retail intent**: extensions like [`.shop`](/en/tld/shop) and [`.store`](/en/tld/store) carry obvious commercial meaning, which can reinforce your positioning and make marketing copy read naturally. Third, **defensive coverage**: even extensions you never plan to launch on are worth holding if a competitor or impersonator could plausibly use them against your brand. The goal is a small, deliberate portfolio — not every TLD in existence, but the ones that protect your name and serve your customers.
 
 ## The top 10 TLDs to secure for your e-commerce store
 
@@ -34,31 +34,31 @@ Three criteria should drive the decision. First, **trust and conversion**: shopp
 
 ### 4. [.online](/en/tld/online) — broad and versatile
 
-`.online` is another open Radix extension, [introduced in 2015](https://en.wikipedia.org/wiki/.online) with no eligibility restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/online)). Its generic meaning makes it flexible: useful as a landing page, a regional store, or simply a defensive hold so impersonators cannot claim "yourbrand.online."
+[`.online`](/en/tld/online) is another open Radix extension, [introduced in 2015](https://en.wikipedia.org/wiki/.online) with no eligibility restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/online)). Its generic meaning makes it flexible: useful as a landing page, a regional store, or simply a defensive hold so impersonators cannot claim "yourbrand.online."
 
 ### 5. [.site](/en/tld/site) — a simple, recognizable alternative
 
-`.site` is an open Radix TLD ([delegated in 2015](https://en.wikipedia.org/wiki/.site)) with no registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/site)). It is short, easy to say, and widely understood, which makes it a sensible defensive register and a usable home for a microsite or a one-page promotion.
+[`.site`](/en/tld/site) is an open Radix TLD ([delegated in 2015](https://en.wikipedia.org/wiki/.site)) with no registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/site)). It is short, easy to say, and widely understood, which makes it a sensible defensive register and a usable home for a microsite or a one-page promotion.
 
 ### 6. .co — the short, startup-friendly option
 
-`.co` is technically Colombia's country-code TLD, but proof-of-presence restrictions were lifted in 2010, so anyone worldwide can register one ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). It is widely adopted by startups and brands that cannot get their `.com`, and notably it is one of the few ccTLDs that Google treats as a generic, non-geographic extension. Because `.co` is a single typo away from `.com`, holding your brand here is as much defensive as it is strategic. (Note: `.co` is not in Namefi's internal link allow-list, so it is unlinked here.)
+[`.co`](/en/tld/co) is technically Colombia's country-code TLD, but proof-of-presence restrictions were lifted in 2010, so anyone worldwide can register one ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). It is widely adopted by startups and brands that cannot get their `.com`, and notably it is one of the few ccTLDs that Google treats as a generic, non-geographic extension. Because `.co` is a single typo away from `.com`, holding your brand here is as much defensive as it is strategic.
 
 ### 7. .shopping — high commercial intent
 
-`.shopping` is a generic TLD operated by Identity Digital (formerly Donuts) and is open for registration ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shopping)). It carries explicit purchase intent and pairs well with comparison pages, deal hubs, or seasonal campaigns. It is unlinked here because `.shopping` is not in the allow-list.
+[`.shopping`](/en/tld/shopping) is a generic TLD operated by Identity Digital (formerly Donuts) and is open for registration ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shopping)). It carries explicit purchase intent and pairs well with comparison pages, deal hubs, or seasonal campaigns.
 
 ### 8. .deals — promotions and discounts
 
-`.deals` is also operated by Identity Digital and is open to all registrants ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/deals)). For an e-commerce brand that runs frequent sales, "yourbrand.deals" is a memorable home for clearance pages and coupon landing pages — and a useful one to hold so it cannot be weaponized in a fake-discount scam. It is unlinked here as `.deals` is not in the allow-list.
+[`.deals`](/en/tld/deals) is also operated by Identity Digital and is open to all registrants ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/deals)). For an e-commerce brand that runs frequent sales, "yourbrand.deals" is a memorable home for clearance pages and coupon landing pages — and a useful one to hold so it cannot be weaponized in a fake-discount scam.
 
 ### 9. [.club](/en/tld/club) — community and membership
 
-`.club` is a generic TLD that [launched to the public in 2014](https://en.wikipedia.org/wiki/.club) and is now operated by GoDaddy Registry, with no general registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/club)). If your store runs a loyalty program, subscription tier, or members-only drop, `.club` frames it perfectly.
+[`.club`](/en/tld/club) is a generic TLD that [launched to the public in 2014](https://en.wikipedia.org/wiki/.club) and is now operated by GoDaddy Registry, with no general registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/club)). If your store runs a loyalty program, subscription tier, or members-only drop, `.club` frames it perfectly.
 
 ### 10. [.vip](/en/tld/vip) — premium tiers and exclusivity
 
-`.vip` is a generic TLD that [launched in 2016](https://en.wikipedia.org/wiki/.vip) — originally under Minds + Machines and now part of GoDaddy Registry — and is open to all ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/vip)). It is a strong choice for premium product lines, early-access programs, or high-value customer portals where exclusivity is part of the pitch.
+[`.vip`](/en/tld/vip) is a generic TLD that [launched in 2016](https://en.wikipedia.org/wiki/.vip) — originally under Minds + Machines and now part of GoDaddy Registry — and is open to all ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/vip)). It is a strong choice for premium product lines, early-access programs, or high-value customer portals where exclusivity is part of the pitch.
 
 ## Defensive registration strategy
 

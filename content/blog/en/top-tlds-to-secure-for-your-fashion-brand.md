@@ -44,19 +44,19 @@ You do not need hundreds of domains. You need the canonical `.com`, a small clus
 
 ### 6. .co — the short, premium alternative
 
-`.co` is the country-code domain for Colombia, managed by Colombia's [Ministry of Information and Communications Technologies (MinTIC)](https://www.iana.org/domains/root/db/co.html) with technical operations by CentralNic, but it is marketed and used globally as a short stand-in for "company" or "commerce." Many fashion startups adopt `.co` when the `.com` is unavailable. Registration is open worldwide; because it is a ccTLD operated under a national authority, review the registry's terms before relying on it as your sole storefront.
+[.co](/en/tld/co) is the country-code domain for Colombia, managed by Colombia's [Ministry of Information and Communications Technologies (MinTIC)](https://www.iana.org/domains/root/db/co.html) with technical operations by CentralNic, but it is marketed and used globally as a short stand-in for "company" or "commerce." Many fashion startups adopt `.co` when the `.com` is unavailable. Registration is open worldwide; because it is a ccTLD operated under a national authority, review the registry's terms before relying on it as your sole storefront.
 
 ### 7. .fashion — category-defining relevance
 
-`.fashion` is operated by [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) and is the most on-the-nose extension for the industry. It instantly communicates your sector and is excellent for a brand statement, an editorial hub, or a designer portfolio. It is open to all registrants with no industry-membership restriction. (It is not on Namefi's internal directory, so it is referenced here without a link.)
+[.fashion](/en/tld/fashion) is operated by [Registry Services, LLC](https://www.iana.org/domains/root/db/fashion.html) (GoDaddy Registry) and is the most on-the-nose extension for the industry. It instantly communicates your sector and is excellent for a brand statement, an editorial hub, or a designer portfolio. It is open to all registrants with no industry-membership restriction.
 
 ### 8. .boutique — for curated, upscale labels
 
-`.boutique` is run by [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) under Identity Digital. The word itself connotes curated, small-batch, premium retail—exactly the positioning many independent fashion houses want. It suits a capsule collection or a high-touch concept store and has no special eligibility rules.
+[.boutique](/en/tld/boutique) is run by [Binky Moon, LLC](https://www.iana.org/domains/root/db/boutique.html) under Identity Digital. The word itself connotes curated, small-batch, premium retail—exactly the positioning many independent fashion houses want. It suits a capsule collection or a high-touch concept store and has no special eligibility rules.
 
 ### 9. .style — lifestyle and editorial angle
 
-`.style` is also a [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital extension. It leans editorial and aspirational, making it a natural fit for a styling service, a trend journal, or an influencer-led sub-brand. Open registration, no restrictions—useful both as an active property and a defensive hold.
+[.style](/en/tld/style) is also a [Binky Moon, LLC](https://www.iana.org/domains/root/db/style.html) / Identity Digital extension. It leans editorial and aspirational, making it a natural fit for a styling service, a trend journal, or an influencer-led sub-brand. Open registration, no restrictions—useful both as an active property and a defensive hold.
 
 ### 10. .vip — exclusivity and loyalty
 

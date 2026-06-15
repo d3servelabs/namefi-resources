@@ -12,11 +12,11 @@ keywords: ['tlds for realtors', 'real estate domain names', '.realtor domain', '
 
 Your name and your local brand are the two most valuable assets in real estate. When a buyer searches for "Jane Smith Realtor" or for the name of the neighborhood you farm, the domains tied to those terms should point to you — not to a competitor, a lookalike, or a parked page running ads. That is why securing more than one **TLD (top-level domain)** for your real estate business is one of the cheapest forms of brand insurance you can buy.
 
-A realtor who only owns the `.com` of their name leaves the door open for someone else to register the `.realty`, `.homes`, or `.house` version and trade on the reputation you built. Registering a small portfolio of the right top-level domains lets you protect your local brand, spin up clean subbrands for listings or farm areas, and shut down obvious impersonation before it starts. This guide walks through the best TLDs for realtors, the eligibility rules that matter, and a simple defensive strategy.
+A realtor who only owns the [`.com`](/en/tld/com) of their name leaves the door open for someone else to register the [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes), or [`.house`](/en/tld/house) version and trade on the reputation you built. Registering a small portfolio of the right top-level domains lets you protect your local brand, spin up clean subbrands for listings or farm areas, and shut down obvious impersonation before it starts. This guide walks through the best TLDs for realtors, the eligibility rules that matter, and a simple defensive strategy.
 
 ## How to choose TLDs for your real estate business
 
-A few criteria should drive every registration. **Trust** comes first: the extensions buyers recognize (`.com` above all) carry the least friction. **Geographic and industry relevance** comes next — real-estate-specific endings like `.realtor`, `.realty`, and `.homes` signal what you do at a glance. Some of the most credible options are **restricted "verified" TLDs**: `.realtor` requires a qualifying relationship with the National Association of REALTORS®, which is exactly what makes owning one a trust signal. Finally, **defensive coverage** means grabbing the obvious lookalikes of your primary name so no one else can. You do not need all of these — pick your anchor `.com`, add one or two industry endings, and round out with defensive picks.
+A few criteria should drive every registration. **Trust** comes first: the extensions buyers recognize (`.com` above all) carry the least friction. **Geographic and industry relevance** comes next — real-estate-specific endings like [`.realtor`](/en/tld/realtor), `.realty`, and `.homes` signal what you do at a glance. Some of the most credible options are **restricted "verified" TLDs**: `.realtor` requires a qualifying relationship with the National Association of REALTORS®, which is exactly what makes owning one a trust signal. Finally, **defensive coverage** means grabbing the obvious lookalikes of your primary name so no one else can. You do not need all of these — pick your anchor `.com`, add one or two industry endings, and round out with defensive picks.
 
 ## The top 10 TLDs to secure as a realtor
 
@@ -34,7 +34,7 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 ### 4. .estate — broad and brandable
 
-`.estate` works well for luxury, commercial, and estate-focused practices, and reads naturally in a brand like `harborview.estate`. It is an unrestricted generic TLD, so registration is open to anyone. See its delegation record in the [IANA root database](https://www.iana.org/domains/root/db/estate.html).
+[`.estate`](/en/tld/estate) works well for luxury, commercial, and estate-focused practices, and reads naturally in a brand like `harborview.estate`. It is an unrestricted generic TLD, so registration is open to anyone. See its delegation record in the [IANA root database](https://www.iana.org/domains/root/db/estate.html).
 
 ### 5. .homes — listing- and consumer-friendly
 
@@ -42,7 +42,7 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 ### 6. .properties — for portfolios and teams
 
-`.properties` suits agents and teams managing multiple listings or a property portfolio, and it reinforces a professional, inventory-driven brand. Like most new gTLDs it is unrestricted. The TLD is recorded in the [IANA root database](https://www.iana.org/domains/root/db/properties.html).
+[`.properties`](/en/tld/properties) suits agents and teams managing multiple listings or a property portfolio, and it reinforces a professional, inventory-driven brand. Like most new gTLDs it is unrestricted. The TLD is recorded in the [IANA root database](https://www.iana.org/domains/root/db/properties.html).
 
 ### 7. .house — short, memorable, flexible
 
@@ -50,15 +50,15 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 ### 8. [.net](/en/tld/net) — the classic defensive backup
 
-`.net` is one of the oldest and most recognized extensions, making it the natural defensive companion to your `.com`. Owning it prevents a competitor from picking up the obvious second choice on your name. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net).
+[`.net`](/en/tld/net) is one of the oldest and most recognized extensions, making it the natural defensive companion to your `.com`. Owning it prevents a competitor from picking up the obvious second choice on your name. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net).
 
 ### 9. [.org](/en/tld/org) — credibility for associations and community work
 
-`.org` carries a trustworthy, community-oriented tone that fits realtor associations, neighborhood resources, and non-commercial projects you run alongside your practice. Registering it also keeps it out of impersonators' hands. The `.org` TLD is documented in the [IANA root database](https://www.iana.org/domains/root/db/org.html).
+[`.org`](/en/tld/org) carries a trustworthy, community-oriented tone that fits realtor associations, neighborhood resources, and non-commercial projects you run alongside your practice. Registering it also keeps it out of impersonators' hands. The `.org` TLD is documented in the [IANA root database](https://www.iana.org/domains/root/db/org.html).
 
 ### 10. [.vip](/en/tld/vip) — premium positioning for top clients
 
-`.vip` signals exclusivity, which can fit a luxury practice or a private client portal like `clients.yourname.vip`. It is unrestricted and short, so it stands out on a business card. Its registry agreement is published by [ICANN](https://www.icann.org/en/registry-agreements/details/vip).
+[`.vip`](/en/tld/vip) signals exclusivity, which can fit a luxury practice or a private client portal like `clients.yourname.vip`. It is unrestricted and short, so it stands out on a business card. Its registry agreement is published by [ICANN](https://www.icann.org/en/registry-agreements/details/vip).
 
 ## Defensive registration strategy
 

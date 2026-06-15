@@ -26,11 +26,11 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 2. .co — the modern, brandable alternative
 
-.co reads as a clean shorthand for "company" and is a favorite for startups when the `.com` is taken. It is the country-code TLD for Colombia, now operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) following its acquisition of Neustar's registry business, and it is open for global, unrestricted registration. It is short, memorable, and a strong defensive pairing with `.com`.
+[.co](/en/tld/co) reads as a clean shorthand for "company" and is a favorite for startups when the `.com` is taken. It is the country-code TLD for Colombia, now operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) following its acquisition of Neustar's registry business, and it is open for global, unrestricted registration. It is short, memorable, and a strong defensive pairing with `.com`.
 
 ### 3. .net — the trusted classic
 
-.net was originally intended for network infrastructure providers and, like `.com`, is operated by [Verisign](https://www.iana.org/domains/root/db/net.html). It carries decades of credibility and remains a common fallback that customers recognize instantly. Securing it prevents a third party from fielding a near-identical address to your primary `.com`.
+[.net](/en/tld/net) was originally intended for network infrastructure providers and, like `.com`, is operated by [Verisign](https://www.iana.org/domains/root/db/net.html). It carries decades of credibility and remains a common fallback that customers recognize instantly. Securing it prevents a third party from fielding a near-identical address to your primary `.com`.
 
 ### 4. .org — credibility and trust
 
@@ -42,7 +42,7 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 6. .biz — the business-only suffix
 
-[.biz](https://www.iana.org/domains/root/db/biz.html) was created explicitly as a commercial alternative to `.com` and is restricted to bona fide business or commercial use under its registry policy. Now operated by GoDaddy Registry, it is a natural defensive pick precisely because its name screams "business," making it attractive to anyone trying to impersonate a commercial brand.
+[.biz](/en/tld/biz) was created explicitly as a commercial alternative to `.com` and is restricted to bona fide business or commercial use under its [registry policy](https://www.iana.org/domains/root/db/biz.html). Now operated by GoDaddy Registry, it is a natural defensive pick precisely because its name screams "business," making it attractive to anyone trying to impersonate a commercial brand.
 
 ### 7. .info — informational and approachable
 
@@ -50,11 +50,11 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 8. .online — broad, descriptive, global
 
-.online is a descriptive new gTLD that works for almost any business with a web presence. It is owned and operated by [Radix](https://www.iana.org/domains/root/db/online.html) and is open for unrestricted registration worldwide. Its plain-language meaning makes it an easy, intuitive address for landing pages and regional storefronts.
+[.online](/en/tld/online) is a descriptive new gTLD that works for almost any business with a web presence. It is owned and operated by [Radix](https://www.iana.org/domains/root/db/online.html) and is open for unrestricted registration worldwide. Its plain-language meaning makes it an easy, intuitive address for landing pages and regional storefronts.
 
 ### 9. .company — a literal fit for any firm
 
-[.company](https://www.iana.org/domains/root/db/company.html) is exactly what it says, operated by [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). It is unrestricted and reads naturally for established firms that want a self-explanatory address. It is also a sensible defensive registration, since the word maps so directly onto a business identity.
+[.company](/en/tld/company) is exactly what it says, operated by [Identity Digital](https://www.icann.org/en/registry-agreements/details/company). It is [unrestricted](https://www.iana.org/domains/root/db/company.html) and reads naturally for established firms that want a self-explanatory address. It is also a sensible defensive registration, since the word maps so directly onto a business identity.
 
 ### 10. .vip — premium positioning
 

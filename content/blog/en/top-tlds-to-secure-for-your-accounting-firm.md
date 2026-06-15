@@ -26,15 +26,15 @@ The [.com](/en/tld/com) extension remains the default expectation for any busine
 
 ### 2. .cpa — the gold-standard trust signal (restricted)
 
-The [.cpa](https://www.iana.org/domains/root/db/cpa.html) extension is the most credible domain an accounting firm can hold — and it is also the most restricted. It is administered in association with the American Institute of CPAs (AICPA), whose technology affiliate CPA.com runs the registry. Eligibility is limited to licensed CPA firms and individual CPAs: per [CPA.com's official .cpa program](https://register.domains.cpa/faqs/), you must hold a CPA firm license issued by a state board of accountancy or an individual CPA license, with availability currently limited to firms based in the United States, Canada, and Ireland. Because licensure is validated at purchase and at every renewal, a .cpa address proves to clients that your firm has been verified — a guarantee no open TLD can offer.
+The [.cpa](https://www.iana.org/domains/root/db/cpa.html) extension is the most credible domain an accounting firm can hold — and it is also the most restricted. It is administered in association with the American Institute of CPAs (AICPA), whose technology affiliate CPA.com runs the registry. Eligibility is limited to licensed CPA firms and individual CPAs: per [CPA.com's official .cpa program](https://register.domains.cpa/faqs/), you must hold a CPA firm license issued by a state board of accountancy or an individual CPA license, with availability currently limited to firms based in the United States, Canada, and Ireland. Because licensure is validated at purchase and at every renewal, a [.cpa](/en/tld/cpa) address proves to clients that your firm has been verified — a guarantee no open TLD can offer.
 
 ### 3. .tax — clear, descriptive, and topical
 
-The .tax extension immediately communicates a specialty in tax preparation, planning, or advisory work. It is operated by Identity Digital (through Binky Moon, LLC) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/tax), and unlike .cpa it is open to general registration. It pairs well with a service-focused landing page or a seasonal tax campaign.
+The [.tax](/en/tld/tax) extension immediately communicates a specialty in tax preparation, planning, or advisory work. It is operated by Identity Digital (through Binky Moon, LLC) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/tax), and unlike .cpa it is open to general registration. It pairs well with a service-focused landing page or a seasonal tax campaign.
 
 ### 4. .accountant — open and broadly available
 
-The .accountant extension is operated by dog beach, LLC (an Identity Digital registry) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/accountant). Importantly, .accountant is **open to the public** with no professional verification requirement — anyone can register it first-come, first-served. That makes it useful for marketing and defensive purposes, but it carries no built-in licensure signal the way .cpa does.
+The [.accountant](/en/tld/accountant) extension is operated by dog beach, LLC (an Identity Digital registry) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/accountant). Importantly, .accountant is **open to the public** with no professional verification requirement — anyone can register it first-come, first-served. That makes it useful for marketing and defensive purposes, but it carries no built-in licensure signal the way .cpa does.
 
 ### 5. .accountants — industry-focused, plural variant
 
@@ -42,7 +42,7 @@ The plural [.accountants](/en/tld/accountants) extension is operated by Binky Mo
 
 ### 6. .finance — for advisory and wealth services
 
-The .finance extension positions your firm in the broader financial-services landscape, which is ideal if you offer advisory, wealth, or CFO services beyond compliance work. It is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/finance) and is open for general registration. It reads as serious and professional, complementing a tax- or audit-focused brand.
+The [.finance](/en/tld/finance) extension positions your firm in the broader financial-services landscape, which is ideal if you offer advisory, wealth, or CFO services beyond compliance work. It is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/finance) and is open for general registration. It reads as serious and professional, complementing a tax- or audit-focused brand.
 
 ### 7. .net — the classic technical alternate
 
