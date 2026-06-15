@@ -1,11 +1,22 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import type { FC, PropsWithChildren } from 'react';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import { AdminFeatureFlagsSheet } from '@/components/admin/feature-flags/sheet';
 import { FeedbackProvider } from './feedback';
 import { FreeMintsGuidanceProvider } from './free-mints-guidance';
 import { OpenFeatureClientProvider } from './openfeature';
+
+// Non-critical "reload after new deployment" watcher. Lazily loaded so its
+// React Query poll, Sonner toast, and Button never enter the first-paint chunk.
+const DeploymentUpdateToast = dynamic(
+  () =>
+    import('@/components/deployment-update-toast').then(
+      (m) => m.DeploymentUpdateToast,
+    ),
+  { ssr: false },
+);
 
 /**
  * Deferred providers that are not critical for first paint.
@@ -20,6 +31,7 @@ export const DeferredProviders: FC<PropsWithChildren> = ({ children }) => {
           <OpenFeatureClientProvider>
             {children}
             <AdminFeatureFlagsSheet />
+            <DeploymentUpdateToast />
           </OpenFeatureClientProvider>
         </FeedbackProvider>
       </FreeMintsGuidanceProvider>
