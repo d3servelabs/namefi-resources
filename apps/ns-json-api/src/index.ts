@@ -43,6 +43,8 @@ app.post('/flush-cache', async (c) => {
 // DNS-over-JSON endpoints CoreDNS forwards to: /v1/json, /v2/json, /v2.1/json,
 // /v2.2/json, /v1/dnssec, /v1/tracking.
 app.route('/', dnsRouter);
+// to make it backwards compatible
+app.route('/dns', dnsRouter);
 
 logger.info(`ns-json-api listening on :${PORT}`);
 
