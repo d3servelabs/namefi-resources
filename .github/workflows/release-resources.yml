@@ -202,7 +202,7 @@ jobs:
                 run_id: run.id,
                 per_page: 100,
               },
-              (response) => response.data.jobs,
+              (response) => response.data.jobs ?? [],
             );
             const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
 
@@ -509,6 +509,7 @@ jobs:
             console.log(`🔍 Waiting for Deploy Resources dev deployment on main at ${targetSha}...`);
 
             while (Date.now() < deadline) {
+              try {
               const runs = await github.paginate(
                 github.rest.actions.listWorkflowRuns,
                 {
@@ -549,7 +550,7 @@ jobs:
                   run_id: run.id,
                   per_page: 100,
                 },
-                (response) => response.data.jobs,
+                (response) => response.data.jobs ?? [],
               );
               const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
 
@@ -566,6 +567,10 @@ jobs:
               core.setOutput('deployment_run_id', String(run.id));
               core.setOutput('deployment_sha', run.head_sha);
               return;
+              } catch (error) {
+                console.log(`Transient API error while polling for the dev deploy: ${error?.message || error}; retrying...`);
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+              }
             }
 
             core.setFailed(`❌ Timed out waiting for Deploy Resources dev deployment on main at ${targetSha}.`);
@@ -688,6 +693,7 @@ jobs:
             console.log(`🔍 Waiting for Deploy Resources production deployment for ${tagName} at ${targetSha}...`);
 
             while (Date.now() < deadline) {
+              try {
               const runs = await github.paginate(
                 github.rest.actions.listWorkflowRuns,
                 {
@@ -736,7 +742,7 @@ jobs:
                   run_id: run.id,
                   per_page: 100,
                 },
-                (response) => response.data.jobs,
+                (response) => response.data.jobs ?? [],
               );
               const deployJob = jobs.find((job) => job.name === 'Deploy Resources to Vercel');
 
@@ -760,6 +766,10 @@ jobs:
               core.setOutput('deployment_run_id', String(run.id));
               core.setOutput('deployment_sha', run.head_sha);
               return;
+              } catch (error) {
+                console.log(`Transient API error while polling for the production deploy: ${error?.message || error}; retrying...`);
+                await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+              }
             }
 
             core.setFailed(`❌ Timed out waiting for production Deploy Resources deployment for ${tagName}.`);
