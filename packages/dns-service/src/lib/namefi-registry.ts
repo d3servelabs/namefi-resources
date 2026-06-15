@@ -83,18 +83,22 @@ export const getPoweredByNamefi3PDomains = async (): Promise<
 
 /**
  * Drops the cached powered-by-namefi row set from Redis so the next read
- * rebuilds from the database. Best-effort: logs and swallows Redis errors.
- * Powers the ns-json-api `/flush-cache` endpoint.
+ * rebuilds from the database. Powers the ns-json-api `/flush-cache` endpoint.
+ * Returns `true` on success and `false` (logging the error) when Redis is
+ * unavailable, so the caller can report an accurate status instead of a
+ * misleading success.
  */
 export const invalidatePoweredByNamefi3PDomainsCache =
-  async (): Promise<void> => {
+  async (): Promise<boolean> => {
     try {
       const redis = await getRedisClient();
       await redis.del(POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY);
+      return true;
     } catch (error) {
       logger.warn(
         { error },
         'Failed to invalidate powered-by-namefi Redis cache',
       );
+      return false;
     }
   };

@@ -356,6 +356,20 @@
       "name": "@namefi-astra/listmonk",
       "version": "0.1.0",
     },
+    "apps/ns-json-api": {
+      "name": "@namefi-astra/ns-json-api",
+      "version": "0.0.0",
+      "dependencies": {
+        "@namefi-astra/db": "workspace:*",
+        "@namefi-astra/dns-service": "workspace:*",
+        "drizzle-orm": "^0.44.6",
+        "hono": "^4.12.8",
+      },
+      "devDependencies": {
+        "@namefi-astra/typescript": "workspace:*",
+        "@types/node": "^22.13.14",
+      },
+    },
     "apps/park": {
       "name": "@namefi-astra/park",
       "version": "0.1.0",
@@ -1902,6 +1916,8 @@
     "@namefi-astra/indexer": ["@namefi-astra/indexer@workspace:apps/indexer"],
 
     "@namefi-astra/listmonk": ["@namefi-astra/listmonk@workspace:apps/listmonk"],
+
+    "@namefi-astra/ns-json-api": ["@namefi-astra/ns-json-api@workspace:apps/ns-json-api"],
 
     "@namefi-astra/park": ["@namefi-astra/park@workspace:apps/park"],
 

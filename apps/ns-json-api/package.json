@@ -1,0 +1,26 @@
+{
+  "name": "@namefi-astra/ns-json-api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
+    "dev": "ENVIRONMENT=local LOG_LEVEL=${LOG_LEVEL:-debug} bun --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "typecheck": "tsgo --noEmit",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write .",
+    "check:unsafe": "biome check --write --unsafe ."
+  },
+  "dependencies": {
+    "@namefi-astra/db": "workspace:*",
+    "@namefi-astra/dns-service": "workspace:*",
+    "drizzle-orm": "^0.44.6",
+    "hono": "^4.12.8"
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "@types/node": "^22.13.14"
+  }
+}
