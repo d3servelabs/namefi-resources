@@ -42,7 +42,7 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 6. .tech — descriptive and broadly available
 
-.tech is a generic TLD operated by [Radix](https://radix.com/), one of the largest new-gTLD registries, with technical backend services provided by Tucows. It plainly labels your company as technology-focused and tends to have wider availability than the crowded .com space, which can help when your ideal exact-match .com is taken. There are no special eligibility restrictions for .tech.
+[.tech](/en/tld/tech) is a generic TLD operated by [Radix](https://radix.com/), one of the largest new-gTLD registries, with technical backend services provided by Tucows. It plainly labels your company as technology-focused and tends to have wider availability than the crowded .com space, which can help when your ideal exact-match .com is taken. There are no special eligibility restrictions for .tech.
 
 ### 7. .xyz — flexible and startup-friendly
 
@@ -50,7 +50,7 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 8. .co — the short stand-in for .com
 
-.co is widely read as shorthand for "company," "corporation," or "commerce," and it is short enough to be highly memorable. It is the country-code TLD for Colombia; in 2025 the operating contract [transferred to a new consortium](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) involving Team Internet, as shown in its [IANA record](https://www.iana.org/domains/root/db/co.html). Registration is open globally, making .co a popular fallback when the matching .com is unavailable.
+[.co](/en/tld/co) is widely read as shorthand for "company," "corporation," or "commerce," and it is short enough to be highly memorable. It is the country-code TLD for Colombia; in 2025 the operating contract [transferred to a new consortium](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) involving Team Internet, as shown in its [IANA record](https://www.iana.org/domains/root/db/co.html). Registration is open globally, making .co a popular fallback when the matching .com is unavailable.
 
 ### 9. .net — the classic backup
 

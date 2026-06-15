@@ -54,7 +54,7 @@ Pick TLDs against three filters: **brand fit** (does the extension reinforce wha
 
 ### 9. .co — the short, brandable alternate to .com
 
-.co is the ccTLD for Colombia, [delegated by IANA](https://www.iana.org/domains/root/db/co.html), but marketed and used globally as a short stand-in for "company" or ".com." Many startups adopt it when the `.com` is taken. It is brandable and memorable, though because of its visual similarity to `.com` you should secure both to avoid misdirected traffic.
+[.co](/en/tld/co) is the ccTLD for Colombia, [delegated by IANA](https://www.iana.org/domains/root/db/co.html), but marketed and used globally as a short stand-in for "company" or ".com." Many startups adopt it when the `.com` is taken. It is brandable and memorable, though because of its visual similarity to `.com` you should secure both to avoid misdirected traffic.
 
 ### 10. .xyz — flexible and widely adopted
 
