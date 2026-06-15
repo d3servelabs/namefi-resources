@@ -21,7 +21,8 @@
     "detailOriginallyOn": "Originally on",
     "detailBy": "By",
     "detailAuthorsHeading": "About the author(s)",
-    "detailSourceLanguage": "Original language"
+    "detailSourceLanguage": "Original language",
+    "relatedHeading": "Related guides"
   },
   "watch": {
     "indexEmpty": "No videos published yet. Check back soon.",
@@ -47,7 +48,8 @@
     "detailBack": "Back to all TLDs",
     "detailKeywordsHeading": "Related keywords",
     "indexTitle": "Top-Level Domain Guides",
-    "indexDescription": "Learn how each TLD fits into the Namefi ecosystem."
+    "indexDescription": "Learn how each TLD fits into the Namefi ecosystem.",
+    "relatedTldsHeading": "Explore other extensions"
   },
   "partners": {
     "indexEmpty": "No partner stories are available in this language yet. Check back soon.",

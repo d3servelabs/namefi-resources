@@ -21,7 +21,8 @@
     "detailOriginallyOn": "最初发布于",
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
-    "detailSourceLanguage": "原始语言"
+    "detailSourceLanguage": "原始语言",
+    "relatedHeading": "相关指南"
   },
   "watch": {
     "indexEmpty": "暂时没有视频，敬请期待。",
@@ -47,7 +48,8 @@
     "detailBack": "返回所有 TLD",
     "detailKeywordsHeading": "相关关键词",
     "indexTitle": "顶级域名指南",
-    "indexDescription": "了解每个 TLD 如何融入 Namefi 生态系统。"
+    "indexDescription": "了解每个 TLD 如何融入 Namefi 生态系统。",
+    "relatedTldsHeading": "探索其他域名后缀"
   },
   "partners": {
     "indexEmpty": "此语言暂时没有合作伙伴故事，敬请期待。",

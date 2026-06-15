@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
@@ -11,12 +10,15 @@ import {
   getAuthorNames,
   getTldCached,
   getTldParams,
+  getRelatedTlds,
 } from '@/lib/content';
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { useMDXComponents } from '@/mdx-components';
 import { JsonLd } from '@/components/json-ld';
+import { BreadcrumbNav } from '@/components/breadcrumb-nav';
+import { RelatedTldChips } from '@/components/related-tld-chips';
 
 export async function generateStaticParams() {
   return getTldParams();
@@ -169,7 +171,9 @@ export default async function TldDetailPage({
       {
         '@type': 'ListItem',
         position: 3,
-        name: entry.frontmatter.title,
+        // Mirror the visible BreadcrumbNav leaf (".io") so the structured data
+        // and on-page trail show the same final label.
+        name: `.${slug}`,
         item: `${baseUrl}${tldBasePath}/${slug}`,
       },
     ],
@@ -199,16 +203,19 @@ export default async function TldDetailPage({
     }),
   );
 
+  const relatedTlds = getRelatedTlds(locale, slug);
+
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
       <JsonLd data={breadcrumbJsonLd} />
       {faqJsonLd && <JsonLd data={faqJsonLd} />}
-      <Link
-        href={`/${locale}/tld`}
-        className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
-      >
-        {dictionary.tld.detailBack}
-      </Link>
+      <BreadcrumbNav
+        items={[
+          { name: dictionary.nav.resources, href: `/${locale}` },
+          { name: dictionary.nav.tld, href: `/${locale}/tld` },
+          { name: `.${slug}` },
+        ]}
+      />
 
       <header className="space-y-5">
         <div className="space-y-3">
@@ -323,6 +330,14 @@ export default async function TldDetailPage({
           </div>
         </section>
       )}
+
+      <RelatedTldChips
+        heading={dictionary.tld.relatedTldsHeading}
+        items={relatedTlds.map((tld) => ({
+          label: `.${tld.slug}`,
+          href: `/${locale}/tld/${tld.slug}`,
+        }))}
+      />
     </article>
   );
 }

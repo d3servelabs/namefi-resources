@@ -941,6 +941,33 @@ export const getPostCached = cache((locale: Locale, slug: string) =>
   getPost(locale, slug),
 );
 
+// Posts sharing at least one tag with the given post, ranked by tag overlap then
+// recency, excluding the post itself. Powers the "Related guides" block.
+export function getRelatedPosts(
+  locale: Locale,
+  slug: string,
+  limit = 4,
+): PostEntry[] {
+  const current = getPost(locale, slug);
+  if (!current) return [];
+  const tags = new Set(current.frontmatter.tags);
+  if (tags.size === 0) return [];
+  return getPostsForLocale(locale)
+    .filter((post) => post.slug !== slug)
+    .map((post) => ({
+      post,
+      overlap: post.frontmatter.tags.filter((tag) => tags.has(tag)).length,
+    }))
+    .filter(({ overlap }) => overlap > 0)
+    .sort(
+      (a, b) =>
+        b.overlap - a.overlap ||
+        b.post.publishedAt.getTime() - a.post.publishedAt.getTime(),
+    )
+    .slice(0, limit)
+    .map(({ post }) => post);
+}
+
 const ASSETS_ROOT = path.join(DATA_ROOT, 'assets');
 const POST_OG_ASSET_EXTENSIONS: readonly string[] = [
   '.jpg',
@@ -1154,6 +1181,38 @@ export function getTld(locale: Locale, slug: string): TldEntry | undefined {
 export const getTldCached = cache((locale: Locale, slug: string) =>
   getTld(locale, slug),
 );
+
+// A curated set of mainstream TLD pages to cross-link from any TLD page, kept to
+// ones that reliably exist, filtered to those present in this locale and
+// excluding the current slug. Powers the related-TLD chips.
+const RELATED_TLD_SLUGS: readonly string[] = [
+  'com',
+  'io',
+  'ai',
+  'xyz',
+  'app',
+  'dev',
+  'net',
+  'org',
+  'shop',
+  'store',
+];
+
+export function getRelatedTlds(
+  locale: Locale,
+  slug: string,
+  limit = 6,
+): TldEntry[] {
+  if (limit <= 0) return [];
+  const entries: TldEntry[] = [];
+  for (const candidate of RELATED_TLD_SLUGS) {
+    if (candidate === slug) continue;
+    const entry = getTld(locale, candidate);
+    if (entry) entries.push(entry);
+    if (entries.length >= limit) break;
+  }
+  return entries;
+}
 
 export function getAvailableLocalesForTld(slug: string): Locale[] {
   const locales: Locale[] = [];

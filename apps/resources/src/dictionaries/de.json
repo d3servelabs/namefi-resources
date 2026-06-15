@@ -21,7 +21,8 @@
     "detailOriginallyOn": "Ursprünglich auf",
     "detailBy": "Von",
     "detailAuthorsHeading": "Über die Autor*innen",
-    "detailSourceLanguage": "Originalsprache"
+    "detailSourceLanguage": "Originalsprache",
+    "relatedHeading": "Verwandte Leitfäden"
   },
   "watch": {
     "indexEmpty": "Noch keine Videos verfügbar. Schau bald wieder vorbei.",
@@ -47,7 +48,8 @@
     "detailBack": "Zurück zu allen TLDs",
     "detailKeywordsHeading": "Verwandte Schlüsselwörter",
     "indexTitle": "Top-Level-Domain-Leitfäden",
-    "indexDescription": "Erfahre, wie jede TLD in das Namefi-Ökosystem passt."
+    "indexDescription": "Erfahre, wie jede TLD in das Namefi-Ökosystem passt.",
+    "relatedTldsHeading": "Weitere Domain-Endungen"
   },
   "partners": {
     "indexEmpty": "Für diese Sprache sind noch keine Partner-Porträts verfügbar. Schau bald wieder vorbei.",

@@ -21,7 +21,8 @@
     "detailOriginallyOn": "نُشر أصلاً على",
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
-    "detailSourceLanguage": "اللغة الأصلية"
+    "detailSourceLanguage": "اللغة الأصلية",
+    "relatedHeading": "أدلة ذات صلة"
   },
   "watch": {
     "indexEmpty": "لا توجد فيديوهات بعد. عد لاحقًا.",
@@ -47,7 +48,8 @@
     "detailBack": "العودة إلى جميع نطاقات TLD",
     "detailKeywordsHeading": "الكلمات المفتاحية ذات الصلة",
     "indexTitle": "أدلة نطاقات المستوى الأعلى",
-    "indexDescription": "تعرّف على كيفية توافق كل نطاق TLD مع نظام Namefi البيئي."
+    "indexDescription": "تعرّف على كيفية توافق كل نطاق TLD مع نظام Namefi البيئي.",
+    "relatedTldsHeading": "استكشف امتدادات أخرى"
   },
   "partners": {
     "indexEmpty": "لا توجد قصص شركاء متاحة بهذه اللغة بعد. عد لاحقًا.",

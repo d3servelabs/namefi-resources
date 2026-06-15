@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
@@ -10,6 +9,7 @@ import {
   getPostCached,
   getPostOgAsset,
   getPostParams,
+  getRelatedPosts,
   type AuthorEntry,
   getAuthorNames,
 } from '@/lib/content';
@@ -22,6 +22,8 @@ import {
   type ArticleAuthor,
 } from '@/lib/structured-data';
 import { JsonLd } from '@/components/json-ld';
+import { BreadcrumbNav } from '@/components/breadcrumb-nav';
+import { RelatedGuides } from '@/components/related-guides';
 import { useMDXComponents } from '@/mdx-components';
 
 export async function generateStaticParams() {
@@ -260,14 +262,17 @@ export default async function BlogPostPage({
     updatedAt,
   });
 
+  const relatedPosts = getRelatedPosts(locale, slug);
+
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
-      <Link
-        href={`/${locale}/blog`}
-        className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"
-      >
-        {dictionary.blog.detailBack}
-      </Link>
+      <BreadcrumbNav
+        items={[
+          { name: dictionary.nav.resources, href: `/${locale}` },
+          { name: dictionary.nav.blog, href: `/${locale}/blog` },
+          { name: entry.frontmatter.title },
+        ]}
+      />
 
       <header className="space-y-5">
         <div className="space-y-3">
@@ -400,6 +405,15 @@ export default async function BlogPostPage({
           </div>
         </section>
       )}
+
+      <RelatedGuides
+        heading={dictionary.blog.relatedHeading}
+        items={relatedPosts.map((post) => ({
+          title: post.frontmatter.title,
+          href: `/${locale}/blog/${post.slug}`,
+          summary: post.frontmatter.summary,
+        }))}
+      />
 
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />

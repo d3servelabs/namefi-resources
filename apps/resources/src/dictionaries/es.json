@@ -21,7 +21,8 @@
     "detailOriginallyOn": "Publicado originalmente en",
     "detailBy": "Por",
     "detailAuthorsHeading": "Sobre quienes escriben",
-    "detailSourceLanguage": "Idioma original"
+    "detailSourceLanguage": "Idioma original",
+    "relatedHeading": "Guías relacionadas"
   },
   "watch": {
     "indexEmpty": "Todavía no hay videos. Vuelve pronto.",
@@ -47,7 +48,8 @@
     "detailBack": "Volver a todos los TLD",
     "detailKeywordsHeading": "Palabras clave relacionadas",
     "indexTitle": "Guías de dominios de nivel superior",
-    "indexDescription": "Descubre cómo cada TLD encaja en el ecosistema de Namefi."
+    "indexDescription": "Descubre cómo cada TLD encaja en el ecosistema de Namefi.",
+    "relatedTldsHeading": "Explora otras extensiones"
   },
   "partners": {
     "indexEmpty": "Todavía no hay historias de socios disponibles en este idioma. Vuelve pronto.",
