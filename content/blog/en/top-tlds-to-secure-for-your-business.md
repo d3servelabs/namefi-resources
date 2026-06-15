@@ -26,7 +26,7 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 2. .co — the modern, brandable alternative
 
-[.co](/r/en/tld/com) reads as a clean shorthand for "company" and is a favorite for startups when the `.com` is taken. It is the country-code TLD for Colombia, now operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) following its acquisition of Neustar's registry business, and it is open for global, unrestricted registration. It is short, memorable, and a strong defensive pairing with `.com`.
+.co reads as a clean shorthand for "company" and is a favorite for startups when the `.com` is taken. It is the country-code TLD for Colombia, now operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) following its acquisition of Neustar's registry business, and it is open for global, unrestricted registration. It is short, memorable, and a strong defensive pairing with `.com`.
 
 ### 3. .net — the trusted classic
 
