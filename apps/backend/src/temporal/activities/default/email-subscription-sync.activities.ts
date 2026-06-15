@@ -9,7 +9,7 @@ import {
 import pMap from 'p-map';
 import { eq } from 'drizzle-orm';
 import { LISTMONK_CONFIG } from '#lib/listmonk';
-import { ListmonkClient } from '#lib/listmonk';
+import { getListmonkClient } from '#lib/listmonk';
 import type { ListmonkSubscriber } from '#lib/listmonk';
 import type { EnrichedUser } from '#lib/listmonk';
 
@@ -109,7 +109,7 @@ export async function testListmonkConnectionActivity(): Promise<boolean> {
     throw new Error('LISTMONK_PASSWORD environment variable is required');
   }
 
-  const listmonk = new ListmonkClient(LISTMONK_CONFIG);
+  const listmonk = getListmonkClient();
   return await listmonk.testConnection();
 }
 
@@ -184,7 +184,7 @@ export async function syncUsersToListmonkActivity(
     throw new Error('LISTMONK_PASSWORD environment variable is required');
   }
 
-  const listmonk = new ListmonkClient(LISTMONK_CONFIG);
+  const listmonk = getListmonkClient();
 
   // Sync subscribers to Listmonk using the updated sync logic
   let successCount = 0;
@@ -269,7 +269,7 @@ export async function syncSingleUserToListmonkActivity(
     throw new Error('LISTMONK_PASSWORD environment variable is required');
   }
 
-  const listmonk = new ListmonkClient(LISTMONK_CONFIG);
+  const listmonk = getListmonkClient();
 
   // Get user from database
   const dbUser = await db

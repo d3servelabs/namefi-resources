@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import okxClient from './okx-client';
+import { getOkxClient } from './okx-client';
 
 /**
  * Live integration tests for the OKX NFT marketplace API client.
@@ -19,7 +19,7 @@ import okxClient from './okx-client';
  * available", OKX's NFT API is fully retired.
  */
 const runLive = process.env.RUN_LIVE_MARKETPLACE_TESTS === '1';
-const hasOkxCreds = okxClient.isConfigured();
+const hasOkxCreds = getOkxClient().isConfigured();
 
 /** A well-known NFT collection on Ethereum mainnet (Pudgy Penguins). */
 const SAMPLE = {
@@ -45,12 +45,12 @@ const TEST_WALLET = '0xb5856d4598c919834913b8656ebc15a64d3c7836';
 
 describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   it('fetches listings for an NFT', async () => {
-    const { orders } = await okxClient.getListings(SAMPLE);
+    const { orders } = await getOkxClient().getListings(SAMPLE);
     expect(Array.isArray(orders)).toBe(true);
   });
 
   it('fetches offers for an NFT', async () => {
-    const { orders } = await okxClient.getOffers(SAMPLE);
+    const { orders } = await getOkxClient().getOffers(SAMPLE);
     expect(Array.isArray(orders)).toBe(true);
   });
 
@@ -58,7 +58,7 @@ describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   //     field beyond the documented shape. ---
 
   it('probes NFT detail for nftId', async () => {
-    const data = await okxClient.getNftDetail({
+    const data = await getOkxClient().getNftDetail({
       chain: NAMEFI_BASE.chain,
       contractAddress: NAMEFI_BASE.collectionAddress,
       tokenId: NAMEFI_BASE.tokenId,
@@ -68,7 +68,7 @@ describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   });
 
   it('probes owner assets for nftId', async () => {
-    const data = await okxClient.getOwnerAssets({
+    const data = await getOkxClient().getOwnerAssets({
       chain: NAMEFI_BASE.chain,
       ownerAddress: TEST_WALLET,
       contractAddress: NAMEFI_BASE.collectionAddress,
@@ -79,7 +79,7 @@ describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   });
 
   it('probes Namefi listings on Base for nftId', async () => {
-    const { orders } = await okxClient.getListings({
+    const { orders } = await getOkxClient().getListings({
       chain: NAMEFI_BASE.chain,
       collectionAddress: NAMEFI_BASE.collectionAddress,
       tokenId: NAMEFI_BASE.tokenId,
@@ -89,7 +89,7 @@ describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   });
 
   it('fetches OKX trade fees via /priapi/v1/nft/order/tradeFees', async () => {
-    const fees = await okxClient.getTradeFees({ chain: 8453 });
+    const fees = await getOkxClient().getTradeFees({ chain: 8453 });
     console.log('OKX_TRADE_FEES:', fees);
     expect(typeof fees.tradeFees).toBe('number');
     expect(fees.tradeFees).toBeGreaterThanOrEqual(0);
@@ -100,7 +100,7 @@ describe.skipIf(!runLive || !hasOkxCreds)('OKX client (live)', () => {
   it('resolves nftId via /priapi/v1/nft/detail-info', async () => {
     // hqlm.org NFT on Base — unlisted; the SSR HTML doesn't expose nftId
     // for unlisted NFTs, so the `/priapi/` lookup is the only path.
-    const info = await okxClient.getNftDetailInfo({
+    const info = await getOkxClient().getNftDetailInfo({
       chain: 8453,
       contractAddress: NAMEFI_BASE.collectionAddress,
       tokenId:

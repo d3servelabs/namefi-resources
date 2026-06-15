@@ -49,7 +49,7 @@ import {
   type SQL,
 } from 'drizzle-orm';
 import { isNil, isNotNil, indexBy, omit, prop } from 'ramda';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import pMap from 'p-map';
 import { OrderNotFoundError } from './errors';
 import type {
@@ -58,7 +58,7 @@ import type {
   OrderNfscItemInsert,
 } from '@namefi-astra/db';
 import { logger } from '#lib/logger';
-import { secrets } from '#lib/env';
+import { getStripe } from '#lib/stripe';
 import { createPayment } from '../../temporal/activities/payment.activities';
 import { temporalClient } from '../../temporal/client';
 import { TEMPORAL_QUEUES } from '../../temporal/shared';
@@ -69,8 +69,6 @@ import {
   toGaEventTracking,
   type CheckoutTrackingContext,
 } from '#lib/tracking/checkout/context';
-
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 export type { OrderWithPayments, PaymentMethodDetails };
 
@@ -796,7 +794,7 @@ export async function buildPaymentMethodDetails(
       };
     }
 
-    const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+    const stripePaymentIntent = await getStripe().paymentIntents.retrieve(
       payment.paymentProviderReferenceId,
       { expand: ['payment_method'] },
     );
@@ -824,7 +822,7 @@ export async function buildPaymentMethodDetails(
     };
   }
 
-  const stripePaymentIntent = await stripe.paymentIntents.retrieve(
+  const stripePaymentIntent = await getStripe().paymentIntents.retrieve(
     payment.paymentProviderReferenceId,
     { expand: ['payment_method'] },
   );

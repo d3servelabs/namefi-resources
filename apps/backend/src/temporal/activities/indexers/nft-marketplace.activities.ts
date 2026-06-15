@@ -76,9 +76,10 @@ const openseaMarketplace: Marketplace = {
   supportedChains: [CHAINS.mainnet.id, CHAINS.base.id, CHAINS.sepolia.id],
   updateNft: async (tokenId: string, chainId: number) => {
     // Dynamic import to avoid issues with opensea module
-    const { default: opensea } = await import(
+    const { getOpenSeaClient } = await import(
       '../../../lib/external-api/opensea-client'
     );
+    const opensea = getOpenSeaClient();
 
     await opensea.refreshNft({
       chainId,

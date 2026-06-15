@@ -4,7 +4,7 @@ import { createContractTRPCRouter } from '../contract';
 import { TRPCError } from '@trpc/server';
 import { logger } from '#lib/logger';
 import { secrets, config } from '#lib/env';
-import { ListmonkClient } from '#lib/listmonk';
+import { getListmonkClient } from '#lib/listmonk';
 import { verifySolution } from 'altcha-lib';
 import { db, usersTable } from '@namefi-astra/db';
 import { eq } from 'drizzle-orm';
@@ -30,15 +30,7 @@ async function subscribeToNewsletter(
   const newsletterListId = config.LISTMONK_NEWSLETTER_LIST_ID;
   const defaultListId = config.LISTMONK_NAMEFI_LIST_ID;
 
-  const listmonkConfig = {
-    baseUrl: secrets.LISTMONK_BASE_URL || 'http://localhost:9000',
-    username: secrets.LISTMONK_USERNAME || 'listmonk',
-    password: secrets.LISTMONK_PASSWORD || '',
-    defaultListId: defaultListId,
-    newsletterListId: newsletterListId,
-  };
-
-  const listmonkClient = new ListmonkClient(listmonkConfig);
+  const listmonkClient = getListmonkClient();
 
   try {
     // Prepare attributes

@@ -1,12 +1,10 @@
 import { db, usersTable } from '@namefi-astra/db';
 import { paymentsContract } from '@namefi-astra/common/contract/payments-contract';
 import { eq } from 'drizzle-orm';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { protectedProcedure, withAudit } from '../base';
 import { createContractTRPCRouter } from '../contract';
-import { secrets } from '../../lib/env';
-
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
+import { getStripe } from '#lib/stripe';
 
 export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
   {
@@ -17,7 +15,9 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         let { stripeCustomerId } = ctx.user;
 
         if (!stripeCustomerId) {
-          const customer = await stripe.customers.create({ name: ctx.user.id });
+          const customer = await getStripe().customers.create({
+            name: ctx.user.id,
+          });
 
           const [userWithStripeCustomerId] = await db
             .update(usersTable)
@@ -33,7 +33,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         }
 
         const customerSession: Stripe.Response<Stripe.CustomerSession> =
-          await stripe.customerSessions.create({
+          await getStripe().customerSessions.create({
             customer: stripeCustomerId,
             components: {
               payment_element: {
@@ -63,7 +63,9 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         let { stripeCustomerId } = ctx.user;
 
         if (!stripeCustomerId) {
-          const customer = await stripe.customers.create({ name: ctx.user.id });
+          const customer = await getStripe().customers.create({
+            name: ctx.user.id,
+          });
 
           const [userWithStripeCustomerId] = await db
             .update(usersTable)
@@ -79,7 +81,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         }
 
         const customerSession: Stripe.Response<Stripe.CustomerSession> =
-          await stripe.customerSessions.create({
+          await getStripe().customerSessions.create({
             customer: stripeCustomerId,
             components: {
               payment_element: {
@@ -94,7 +96,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
           });
 
         const setupIntent: Stripe.Response<Stripe.SetupIntent> =
-          await stripe.setupIntents.create({
+          await getStripe().setupIntents.create({
             customer: stripeCustomerId,
             automatic_payment_methods: { enabled: true },
           });
@@ -127,7 +129,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         }
 
         const paymentMethods: Stripe.PaymentMethod[] = (
-          await stripe.customers.listPaymentMethods(stripeCustomerId, {
+          await getStripe().customers.listPaymentMethods(stripeCustomerId, {
             type: 'card',
           })
         ).data;
@@ -140,7 +142,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
           return { isSuccess: false };
         }
 
-        await stripe.paymentMethods.detach(input.paymentMethodId);
+        await getStripe().paymentMethods.detach(input.paymentMethodId);
         return { isSuccess: true };
       }),
 
@@ -155,7 +157,7 @@ export const paymentsRouter = createContractTRPCRouter<typeof paymentsContract>(
         }
 
         const paymentMethods: Stripe.PaymentMethod[] = (
-          await stripe.customers.listPaymentMethods(stripeCustomerId, {
+          await getStripe().customers.listPaymentMethods(stripeCustomerId, {
             type: 'card',
           })
         ).data;

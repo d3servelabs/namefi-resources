@@ -1,5 +1,5 @@
 import { nftMarketplacesContract } from '@namefi-astra/common/contract/nft-marketplaces-contract';
-import okxClient from '#lib/external-api/okx-client';
+import { getOkxClient } from '#lib/external-api/okx-client';
 import { protectedProcedure, publicProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
 
@@ -26,36 +26,39 @@ export const nftMarketplacesRouter = createContractTRPCRouter<
     getListings: publicProcedure
       .input(nftMarketplacesContract.okx.getListings.input)
       .output(nftMarketplacesContract.okx.getListings.output)
-      .query(({ input }) => okxClient.getListings(input)),
+      .query(({ input }) => getOkxClient().getListings(input)),
     getOffers: publicProcedure
       .input(nftMarketplacesContract.okx.getOffers.input)
       .output(nftMarketplacesContract.okx.getOffers.output)
-      .query(({ input }) => okxClient.getOffers(input)),
+      .query(({ input }) => getOkxClient().getOffers(input)),
     createListing: protectedProcedure
       .input(nftMarketplacesContract.okx.createListing.input)
       .output(nftMarketplacesContract.okx.createListing.output)
-      .mutation(({ input }) => okxClient.createListing(input)),
+      .mutation(({ input }) => getOkxClient().createListing(input)),
     submitListing: protectedProcedure
       .input(nftMarketplacesContract.okx.submitListing.input)
       .output(nftMarketplacesContract.okx.submitListing.output)
       .mutation(({ input }) =>
-        okxClient.submitListing({ endpoint: input.endpoint, body: input.body }),
+        getOkxClient().submitListing({
+          endpoint: input.endpoint,
+          body: input.body,
+        }),
       ),
     buy: protectedProcedure
       .input(nftMarketplacesContract.okx.buy.input)
       .output(nftMarketplacesContract.okx.buy.output)
-      .mutation(({ input }) => okxClient.buy(input)),
+      .mutation(({ input }) => getOkxClient().buy(input)),
     createListingPriapi: publicProcedure
       .input(nftMarketplacesContract.okx.createListingPriapi.input)
       .output(nftMarketplacesContract.okx.createListingPriapi.output)
-      .mutation(({ input }) => okxClient.createListingPriapi(input)),
+      .mutation(({ input }) => getOkxClient().createListingPriapi(input)),
     getNftDetailInfo: publicProcedure
       .input(nftMarketplacesContract.okx.getNftDetailInfo.input)
       .output(nftMarketplacesContract.okx.getNftDetailInfo.output)
-      .query(({ input }) => okxClient.getNftDetailInfo(input)),
+      .query(({ input }) => getOkxClient().getNftDetailInfo(input)),
     getTradeFees: publicProcedure
       .input(nftMarketplacesContract.okx.getTradeFees.input)
       .output(nftMarketplacesContract.okx.getTradeFees.output)
-      .query(({ input }) => okxClient.getTradeFees(input)),
+      .query(({ input }) => getOkxClient().getTradeFees(input)),
   },
 });

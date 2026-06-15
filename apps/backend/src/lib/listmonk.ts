@@ -8,6 +8,7 @@ import {
   type PrivyCustomMetadata,
 } from '../trpc/types';
 import Bottleneck from 'bottleneck';
+import { lazy } from '@namefi-astra/utils/lazy';
 import pMap from 'p-map';
 import { eq } from 'drizzle-orm';
 import { equals } from 'ramda';
@@ -933,3 +934,11 @@ export class ListmonkClient {
     }
   }
 }
+
+/**
+ * Shared, lazily-constructed Listmonk client backed by {@link LISTMONK_CONFIG}.
+ * Built once on first access and reused across all consumers.
+ */
+export const getListmonkClient = lazy(
+  () => new ListmonkClient(LISTMONK_CONFIG),
+);

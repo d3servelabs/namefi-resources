@@ -1,3 +1,4 @@
+import { lazy } from '@namefi-astra/utils/lazy';
 import nodemailer from 'nodemailer';
 import type Mail from 'nodemailer/lib/mailer';
 import type smtpTransport from 'nodemailer/lib/smtp-transport';
@@ -19,11 +20,14 @@ if (secrets.SMTP_USERNAME) {
   };
 }
 
-const transporter: Mail = nodemailer.createTransport({
-  host: config.SMTP_HOST,
-  port: config.SMTP_PORT,
-  ...transportOptions,
-});
+const getTransporter = lazy(
+  (): Mail =>
+    nodemailer.createTransport({
+      host: config.SMTP_HOST,
+      port: config.SMTP_PORT,
+      ...transportOptions,
+    }),
+);
 
 export interface SendMailAttachment {
   filename: string;
@@ -63,7 +67,7 @@ export async function sendMail({
   attachments = [],
 }: SendMailInput) {
   // send mail with defined transport object
-  const info = await transporter.sendMail({
+  const info = await getTransporter().sendMail({
     from: from, // sender address
     to: to, // list of receivers
     cc,

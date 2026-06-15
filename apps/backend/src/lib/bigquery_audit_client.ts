@@ -1,4 +1,5 @@
 import { BigQuery } from '@google-cloud/bigquery';
+import { lazy } from '@namefi-astra/utils/lazy';
 import { secrets } from './env';
 
 export interface BigQueryConfig {
@@ -444,11 +445,7 @@ const createBigQueryAuditClient = (
   return new BigQueryAuditClient(config);
 };
 
-let client: ReturnType<typeof createBigQueryAuditClient> | undefined;
-
-export function getBigQueryAuditClient() {
-  if (client) return client;
-
+export const getBigQueryAuditClient = lazy(() => {
   const projectId = secrets.BIGQUERY_PROJECT_ID;
   const datasetId = secrets.BIGQUERY_AUDIT_DATASET_ID;
   const tableId = secrets.BIGQUERY_AUDIT_TABLE_ID;
@@ -459,12 +456,11 @@ export function getBigQueryAuditClient() {
     );
   }
 
-  client = createBigQueryAuditClient({
+  return createBigQueryAuditClient({
     projectId,
     datasetId,
     tableId,
     useTableSuffix: secrets.BIGQUERY_AUDIT_USE_TABLE_SUFFIX,
     keyFilename: secrets.BIGQUERY_KEY_FILE_PATH,
   });
-  return client;
-}
+});

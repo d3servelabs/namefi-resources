@@ -1,13 +1,17 @@
 import { DecryptCommand, EncryptCommand, KMSClient } from '@aws-sdk/client-kms';
+import { lazy } from '@namefi-astra/utils/lazy';
 import { config, secrets } from './env';
 
-const kmsClient = new KMSClient({
-  region: config.AWS_REGION,
-  credentials: {
-    accessKeyId: secrets.AWS_ACCESS_KEY_ID,
-    secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
-  },
-});
+const getKmsClient = lazy(
+  () =>
+    new KMSClient({
+      region: config.AWS_REGION,
+      credentials: {
+        accessKeyId: secrets.AWS_ACCESS_KEY_ID,
+        secretAccessKey: secrets.AWS_SECRET_ACCESS_KEY,
+      },
+    }),
+);
 
 export async function decryptEppAuthCode(
   encryptedAuthorizationCode: string,
@@ -20,7 +24,7 @@ export async function decryptEppAuthCode(
     KeyId: encryptionKeyId,
   };
   const command = new DecryptCommand(input);
-  const response = await kmsClient.send(command);
+  const response = await getKmsClient().send(command);
   if (!response.Plaintext) {
     throw new Error('Failed to decrypt EPP authorization code');
   }
@@ -37,7 +41,7 @@ export async function encryptEppAuthCode(eppAuthorizationCode: string) {
     Plaintext: Uint8Array.from(Buffer.from(eppAuthorizationCode, 'utf-8')),
   };
   const command = new EncryptCommand(input);
-  const { CiphertextBlob, KeyId } = await kmsClient.send(command);
+  const { CiphertextBlob, KeyId } = await getKmsClient().send(command);
   if (!CiphertextBlob || !KeyId) {
     throw new Error('Failed to encrypt EPP authorization code');
   }

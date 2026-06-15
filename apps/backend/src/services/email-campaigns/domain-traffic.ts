@@ -2,6 +2,7 @@ import { subDays } from 'date-fns';
 import pMap from 'p-map';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { lazy } from '@namefi-astra/utils/lazy';
 import {
   db,
   emailCampaignSendsTable,
@@ -39,25 +40,16 @@ const logger = createLogger({ module: 'email-campaign-traffic' });
 const DOMAIN_CHUNK_SIZE = 100;
 const GA4_RETRY_ATTEMPTS = 3;
 
-let cachedGa4Client: ReturnType<typeof createGA4DnsAnalyticsClient> | null =
-  null;
-
-function getGa4Client() {
-  if (cachedGa4Client) {
-    return cachedGa4Client;
-  }
-
+const getGa4Client = lazy(() => {
   if (!secrets.GA4_DNS_PROPERTY_ID) {
     throw new Error('GA4_DNS_PROPERTY_ID is not configured');
   }
 
-  cachedGa4Client = createGA4DnsAnalyticsClient({
+  return createGA4DnsAnalyticsClient({
     propertyId: secrets.GA4_DNS_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   });
-
-  return cachedGa4Client;
-}
+});
 
 function formatGaDate(date: Date) {
   return date.toISOString().slice(0, 10);

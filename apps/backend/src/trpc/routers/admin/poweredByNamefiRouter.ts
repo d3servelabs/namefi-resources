@@ -23,7 +23,7 @@ import { createContractTRPCRouter } from '../../contract';
 import { adminPoweredByNamefiContract } from '@namefi-astra/common/contract/admin/admin-powered-by-namefi-contract';
 import { Permission } from '@namefi-astra/utils';
 import { logger } from '#lib/logger';
-import { createVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
+import { getVercelClientSDK } from '#lib/vercel/vercel-client-sdk';
 import {
   VercelNotApplicableError,
   isVercelProvisionable,
@@ -62,7 +62,7 @@ async function validateDomainsSetup(
     );
 
     const dnsClient = createGoogleCloudDnsClient();
-    const vercelClient = createVercelClientSDK();
+    const vercelClient = getVercelClientSDK();
     const allDomainNames = normalizedDomainNames.flatMap(
       (normalizedDomainName) => [
         normalizedDomainName,
@@ -708,7 +708,7 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
       }
 
       try {
-        const vercelClient = createVercelClientSDK();
+        const vercelClient = getVercelClientSDK();
 
         // Check if domain is already configured
         let [_err, vercelDomain] = await resolve(
@@ -821,7 +821,7 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           );
           const dnsClient = createGoogleCloudDnsClient();
 
-          const vercelClient = createVercelClientSDK();
+          const vercelClient = getVercelClientSDK();
 
           // Check if domain is already configured
           let [_err, vercelDomain] = await resolve(
@@ -915,7 +915,7 @@ export const poweredByNamefiRouter = createContractTRPCRouter<
           );
           const dnsClient = createGoogleCloudDnsClient();
 
-          const vercelClient = createVercelClientSDK();
+          const vercelClient = getVercelClientSDK();
 
           // Check if domain is already configured
           let [_err, vercelDomain] = await resolve(

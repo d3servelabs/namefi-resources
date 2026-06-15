@@ -1,3 +1,4 @@
+import { lazy } from '@namefi-astra/utils/lazy';
 import axios, { type AxiosInstance } from 'axios';
 import { createLogger } from '#lib/logger';
 import { secrets } from '#lib/env';
@@ -89,6 +90,7 @@ class OpenSeaClient {
   }
 }
 
-// Export singleton instance
-const opensea = new OpenSeaClient(secrets.OPENSEA_API_KEY);
-export default opensea;
+// Export lazy singleton instance
+export const getOpenSeaClient = lazy(
+  () => new OpenSeaClient(secrets.OPENSEA_API_KEY),
+);

@@ -2,13 +2,14 @@ import { CHAINS, checksumWalletAddressSchema } from '@namefi-astra/utils';
 import { Challenge, Credential, type Receipt } from 'mppx';
 import type * as Tempo from 'mppx/tempo';
 import { charge as createStripeCharge } from 'mppx/stripe/server';
-import Stripe from 'stripe';
 import {
   tempoModerato as tempoModeratoChain,
   tempo as tempoChain,
 } from 'viem/chains';
 import { db } from '@namefi-astra/db';
+import { lazy } from '@namefi-astra/utils/lazy';
 import { config, secrets } from '#lib/env';
+import { getStripe } from '#lib/stripe';
 import { createLogger } from '#lib/logger';
 import {
   validateDomainForInstantPurchase,
@@ -19,7 +20,6 @@ import { tempo } from 'mppx/server';
 import { getSignerAccount } from '#lib/crypto/viem-clients';
 
 const logger = createLogger({ context: 'MPP' });
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
 
 tempoModeratoChain.extend({
   feeToken: getMppTempoCurrency(),
@@ -34,16 +34,20 @@ const [tempoMethod, _tempoSessionMethod] = tempo({
   chainId: config.MPP_TEMPO_TESTNET ? tempoModeratoChain.id : tempoChain.id,
 });
 
-const stripeMethod = createStripeCharge({
-  client: stripe,
-  networkId: config.MPP_STRIPE_NETWORK_ID,
-  paymentMethodTypes: ['card'],
-});
+const getStripeMethod = lazy(() =>
+  createStripeCharge({
+    client: getStripe(),
+    networkId: config.MPP_STRIPE_NETWORK_ID,
+    paymentMethodTypes: ['card'],
+  }),
+);
+
+type StripeMethod = ReturnType<typeof getStripeMethod>;
 
 type TempoRequestInput = z.input<typeof Tempo.Methods.charge.schema.request>;
 type TempoRequest = z.output<typeof Tempo.Methods.charge.schema.request>;
-type StripeRequestInput = z.input<typeof stripeMethod.schema.request>;
-type StripeRequest = z.output<typeof stripeMethod.schema.request>;
+type StripeRequestInput = z.input<StripeMethod['schema']['request']>;
+type StripeRequest = z.output<StripeMethod['schema']['request']>;
 type PaymentChallenge = ReturnType<typeof Challenge.fromMethod>;
 
 type RegisterDomainMppPaymentBaseInput = {
@@ -339,7 +343,7 @@ async function tryStripeRegisterDomainMppPayment(input: {
     description: input.description,
   });
 
-  const challenge = Challenge.fromMethod(stripeMethod, {
+  const challenge = Challenge.fromMethod(getStripeMethod(), {
     description: input.description,
     expires: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     meta: input.meta,
@@ -353,16 +357,16 @@ async function tryStripeRegisterDomainMppPayment(input: {
     !credentialMatchesChallenge({
       challenge,
       credential: input.credential,
-      methodName: stripeMethod.name,
+      methodName: getStripeMethod().name,
     })
   ) {
     return { challenge, status: 'payment_required' };
   }
 
-  stripeMethod.schema.credential.payload.parse(input.credential.payload);
+  getStripeMethod().schema.credential.payload.parse(input.credential.payload);
 
   return {
-    receipt: await stripeMethod.verify({
+    receipt: await getStripeMethod().verify({
       credential: input.credential as any,
       request: requestInput,
     }),

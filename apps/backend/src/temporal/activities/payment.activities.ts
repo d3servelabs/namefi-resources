@@ -13,7 +13,7 @@ import {
 } from '@namefi-astra/db';
 import { and, eq, inArray, isNull, or } from 'drizzle-orm';
 import { isNil, indexBy, prop } from 'ramda';
-import Stripe from 'stripe';
+import type Stripe from 'stripe';
 import { usersService } from '#services/index';
 import {
   CreateNewPaymentFailure,
@@ -41,7 +41,7 @@ import {
   type ChecksumWalletAddress,
 } from '@namefi-astra/utils';
 import { getChain } from '@namefi-astra/utils';
-import { config, secrets } from '#lib/env';
+import { config } from '#lib/env';
 import { getAllowedChainsForNfscBalance } from '#lib/env/allowed-chains';
 import { isNotNil, isNotEmpty } from 'ramda';
 import { switchCaseOrDefault, resolve } from '@namefi-astra/utils';
@@ -55,8 +55,7 @@ import {
 import type { WalletWithMetadata } from '@privy-io/server-auth';
 import { $withTransaction } from '@namefi-astra/db';
 import { ApplicationFailure } from '@temporalio/common';
-
-const stripe = new Stripe(secrets.STRIPE_SECRET_KEY);
+import { getStripe } from '#lib/stripe';
 
 export async function captureStripePayment({
   amountToCaptureInUsdCents,
@@ -83,7 +82,7 @@ export async function captureStripePayment({
     });
   }
 
-  const capturedStripePaymentIntent = await stripe.paymentIntents.capture(
+  const capturedStripePaymentIntent = await getStripe().paymentIntents.capture(
     paymentProviderReferenceId,
     { amount_to_capture: amountToCaptureInUsdCents },
   );
@@ -445,7 +444,7 @@ export async function createStripePaymentIntent({
 
   if (!stripeCustomerId) {
     const customer: Stripe.Response<Stripe.Customer> =
-      await stripe.customers.create(
+      await getStripe().customers.create(
         { name: userId },
         // Keyed per user so activity retries reuse the same Stripe customer
         // instead of creating duplicates.
@@ -465,7 +464,7 @@ export async function createStripePaymentIntent({
 
   if (paymentMethodId) {
     const customerPaymentMethods: Stripe.PaymentMethod[] = (
-      await stripe.customers.listPaymentMethods(stripeCustomerId)
+      await getStripe().customers.listPaymentMethods(stripeCustomerId)
     ).data;
 
     const customerHasPaymentMethod = customerPaymentMethods.some(
@@ -483,7 +482,7 @@ export async function createStripePaymentIntent({
   // This call both creates and confirms the charge, so it must be idempotent:
   // a retry after Stripe accepted (e.g. activity timeout) would otherwise
   // confirm a second charge.
-  const stripePaymentIntent = await stripe.paymentIntents.create(
+  const stripePaymentIntent = await getStripe().paymentIntents.create(
     {
       amount: totalAmountInUsdCents,
       currency: 'usd',
@@ -523,7 +522,7 @@ export async function createStripeRefund({
     });
   }
 
-  const stripeRefund = await stripe.refunds.create(
+  const stripeRefund = await getStripe().refunds.create(
     {
       amount: amountToRefundInUsdCents,
       payment_intent: stripePaymentIntentId,
@@ -539,7 +538,7 @@ export async function getStripeRefundStatus({
 }: {
   stripeRefundId: string;
 }) {
-  const refund = await stripe.refunds.retrieve(stripeRefundId);
+  const refund = await getStripe().refunds.retrieve(stripeRefundId);
 
   return refund.status;
 }
@@ -1018,7 +1017,7 @@ export async function getDefaultStripePaymentMethodForNamefiUserOrThrow({
   const stripeCustomerId = stripeCustomerIdResponse.result;
 
   const customer: Stripe.Customer | Stripe.DeletedCustomer =
-    await stripe.customers.retrieve(stripeCustomerId, {
+    await getStripe().customers.retrieve(stripeCustomerId, {
       expand: ['invoice_settings.default_payment_method'],
     });
   logger.debug({ customer }, 'Retrieved Stripe Customer');
@@ -1116,7 +1115,7 @@ export async function getStripeCustomerPaymentMethods({
   stripeCustomerId: string;
 }): Promise<StripePaymentMethod[]> {
   const stripeCustomerPaymentMethods =
-    await stripe.customers.listPaymentMethods(stripeCustomerId);
+    await getStripe().customers.listPaymentMethods(stripeCustomerId);
   return stripeCustomerPaymentMethods.data.map((stripePaymentMethod) => {
     if (
       stripePaymentMethod.type === 'card' &&
@@ -1187,7 +1186,7 @@ export async function getStripePaymentMethodPublicIdentifier({
   paymentMethodId: string;
 }): Promise<string | null> {
   const stripePaymentMethod =
-    await stripe.paymentMethods.retrieve(paymentMethodId);
+    await getStripe().paymentMethods.retrieve(paymentMethodId);
 
   switch (stripePaymentMethod.type) {
     case 'card':

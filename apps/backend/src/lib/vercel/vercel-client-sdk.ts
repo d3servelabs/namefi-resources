@@ -1,4 +1,5 @@
 import { Vercel } from '@vercel/sdk';
+import { lazy } from '@namefi-astra/utils/lazy';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { logger } from '#lib/logger';
@@ -346,3 +347,5 @@ export function createVercelClientSDK(): VercelClientSDK {
 
   return new VercelClientSDK(apiToken, teamId);
 }
+
+export const getVercelClientSDK = lazy(createVercelClientSDK);

@@ -1,4 +1,5 @@
 import { createHmac } from 'node:crypto';
+import { lazy } from '@namefi-astra/utils/lazy';
 import axios, { type AxiosRequestConfig, isAxiosError } from 'axios';
 import { secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
@@ -524,13 +525,15 @@ class OkxClient {
   }
 }
 
-const okxClient = new OkxClient(
-  secrets.OKX_API_KEY,
-  secrets.OKX_API_SECRET,
-  secrets.OKX_API_PASSPHRASE,
+export const getOkxClient = lazy(
+  () =>
+    new OkxClient(
+      secrets.OKX_API_KEY,
+      secrets.OKX_API_SECRET,
+      secrets.OKX_API_PASSPHRASE,
+    ),
 );
 
-export default okxClient;
 export { OkxClient };
 const exampleCreateListing712 = {
   types: {

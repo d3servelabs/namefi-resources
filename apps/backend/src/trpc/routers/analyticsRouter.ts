@@ -10,6 +10,7 @@ import {
 } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { namefiNormalizedDomainSchema, Permission } from '@namefi-astra/utils';
+import { lazy } from '@namefi-astra/utils/lazy';
 import {
   createGA4DnsAnalyticsClient,
   type DateRange,
@@ -155,40 +156,35 @@ function mapDnssecStatus(data: any) {
   };
 }
 
-let client: ReturnType<typeof createGA4DnsAnalyticsClient>;
-let checkoutFlowClient: ReturnType<typeof createCheckoutFlowGA4Client>;
-// Create GA4 client
-function createClient() {
-  if (client) {
-    return client;
-  }
-
+const getClient = lazy(() => {
   if (!secrets.GA4_DNS_PROPERTY_ID) {
     throw new Error('GA4_PROPERTY_ID environment variable is required');
   }
 
-  client = createGA4DnsAnalyticsClient({
+  return createGA4DnsAnalyticsClient({
     propertyId: secrets.GA4_DNS_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   });
-  return client;
-}
+});
 
-function createCheckoutFlowClient() {
-  if (checkoutFlowClient) {
-    return checkoutFlowClient;
-  }
-
+const getCheckoutFlowClient = lazy(() => {
   if (!secrets.GA4_APP_PROPERTY_ID) {
     throw new Error('GA4_APP_PROPERTY_ID environment variable is required');
   }
 
-  checkoutFlowClient = createCheckoutFlowGA4Client({
+  return createCheckoutFlowGA4Client({
     propertyId: secrets.GA4_APP_PROPERTY_ID,
     keyFilename: secrets.GA4_KEY_FILE_PATH,
   });
+});
 
-  return checkoutFlowClient;
+// Create GA4 client
+function createClient() {
+  return getClient();
+}
+
+function createCheckoutFlowClient() {
+  return getCheckoutFlowClient();
 }
 
 const gaDateRegex = /^\d{4}-\d{2}-\d{2}$/;
