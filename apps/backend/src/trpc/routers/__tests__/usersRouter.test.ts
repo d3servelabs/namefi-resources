@@ -21,6 +21,7 @@ const mockDb = vi.hoisted(() => {
       },
     },
     select: vi.fn(),
+    $with: vi.fn().mockReturnValue({ as: vi.fn() }),
   };
 
   function reset() {
