@@ -1,6 +1,6 @@
 import { getUserCookieConsentState } from '#lib/consent';
 import { logger } from '#lib/logger';
-import { defaultKeyv } from '#lib/keyv';
+import { getDefaultKeyv } from '#lib/keyv';
 import { db, usersTable } from '@namefi-astra/db';
 import { privyUsersTableSchema } from '@namefi-astra/db/schemas/internal';
 import type { C15tMeasurementConsentState } from '@namefi-astra/common/google-analytics';
@@ -64,7 +64,7 @@ let teamMembersPromise: Promise<string[] | null> | null = null;
 
 async function getTeamMembersIds(): Promise<string[] | null> {
   try {
-    const cached = await defaultKeyv.get<string[]>('namefi-team-members');
+    const cached = await getDefaultKeyv().get<string[]>('namefi-team-members');
     if (cached) return cached;
 
     if (teamMembersPromise) return await teamMembersPromise;
@@ -82,7 +82,7 @@ async function getTeamMembersIds(): Promise<string[] | null> {
         const usersIds = users
           .map(({ userId }) => userId)
           .filter((userId): userId is string => Boolean(userId));
-        await defaultKeyv.set<string[]>('namefi-team-members', usersIds);
+        await getDefaultKeyv().set<string[]>('namefi-team-members', usersIds);
         return usersIds;
       } finally {
         teamMembersPromise = null;

@@ -69,7 +69,7 @@ import { resolveEnsNameToAddress } from '#lib/crypto/ens';
 import { requestNfscFaucet } from '#lib/faucet/nfsc-faucet';
 import { temporalClient } from '#temporal/client';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
-import { defaultKeyv } from '#lib/keyv';
+import { getDefaultKeyv } from '#lib/keyv';
 import { setTimeout } from 'node:timers/promises';
 
 if (!secrets.ALCHEMY_API_KEY) {
@@ -156,7 +156,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
     .output(usersContract.getImpersonationStatus.output)
     .query(async ({ ctx }) => {
       try {
-        const sleepMsRaw = await defaultKeyv.get<number | string>(
+        const sleepMsRaw = await getDefaultKeyv().get<number | string>(
           'IMPERSONATION_SLEEP_MS',
         );
         const sleepMs = z.coerce.number().optional().parse(sleepMsRaw);

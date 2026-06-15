@@ -1,5 +1,4 @@
-import Keyv from 'keyv';
-import { keyvPostgres } from './keyv';
+import { getKeyv } from './keyv';
 import { logger } from './logger';
 import type {
   KnownIssueExplanation,
@@ -16,29 +15,28 @@ import type {
  * This avoids depending on `@keyv/postgres` iterator behavior across
  * versions.
  */
-export const nftKnownIssuesKeyv = new Keyv(keyvPostgres, {
-  namespace: 'nft-known-issues',
-});
-
-nftKnownIssuesKeyv.on('error', (error) => {
-  logger.warn({ error }, 'nftKnownIssuesKeyv error');
-});
+const getNftKnownIssuesKeyv = () =>
+  getKeyv('nft-known-issues', {
+    onError: (error) => logger.warn({ error }, 'nftKnownIssuesKeyv error'),
+  });
 
 const INDEX_KEY = '__index';
 
 async function loadIndex(): Promise<string[]> {
-  const index = await nftKnownIssuesKeyv.get<string[]>(INDEX_KEY);
+  const index = await getNftKnownIssuesKeyv().get<string[]>(INDEX_KEY);
   return Array.isArray(index) ? index : [];
 }
 
 async function saveIndex(index: string[]): Promise<void> {
-  await nftKnownIssuesKeyv.set(INDEX_KEY, index);
+  await getNftKnownIssuesKeyv().set(INDEX_KEY, index);
 }
 
 export async function getKnownIssue(
   normalizedDomainName: string,
 ): Promise<KnownIssueExplanation | undefined> {
-  return nftKnownIssuesKeyv.get<KnownIssueExplanation>(normalizedDomainName);
+  return getNftKnownIssuesKeyv().get<KnownIssueExplanation>(
+    normalizedDomainName,
+  );
 }
 
 export async function listKnownIssues(): Promise<KnownIssueExplanation[]> {
@@ -47,7 +45,8 @@ export async function listKnownIssues(): Promise<KnownIssueExplanation[]> {
 
   const results = await Promise.all(
     index.map(async (domain) => {
-      const entry = await nftKnownIssuesKeyv.get<KnownIssueExplanation>(domain);
+      const entry =
+        await getNftKnownIssuesKeyv().get<KnownIssueExplanation>(domain);
       return entry;
     }),
   );
@@ -111,7 +110,7 @@ export async function upsertKnownIssue(
     updatedAt: nowIso,
   };
 
-  await nftKnownIssuesKeyv.set(input.normalizedDomainName, next);
+  await getNftKnownIssuesKeyv().set(input.normalizedDomainName, next);
 
   if (!existing) {
     const index = await loadIndex();
@@ -127,7 +126,7 @@ export async function upsertKnownIssue(
 export async function deleteKnownIssue(
   normalizedDomainName: string,
 ): Promise<boolean> {
-  const deleted = await nftKnownIssuesKeyv.delete(normalizedDomainName);
+  const deleted = await getNftKnownIssuesKeyv().delete(normalizedDomainName);
   const index = await loadIndex();
   const filtered = index.filter((name) => name !== normalizedDomainName);
   if (filtered.length !== index.length) {

@@ -5,7 +5,7 @@ import { createLogger } from '#lib/logger';
 import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { CENTRALNIC_OTE_TLDS } from './centralnic';
-import { defaultKeyv } from '#lib/keyv';
+import { getDefaultKeyv } from '#lib/keyv';
 import { z } from 'zod';
 
 let _dynadotRegistrars: ReturnType<typeof initDynadotRegistrars> | null = null;
@@ -37,7 +37,7 @@ export const initDynadotRegistrars = (connection: any) => {
     connection,
     hooks: {
       afterFetchAllowedTlds: async (gdgAllowedTlds: PunycodeDomainName[]) => {
-        const disabledTlds = await defaultKeyv.get<string[]>(
+        const disabledTlds = await getDefaultKeyv().get<string[]>(
           'dynadot-gdg-disabled-tlds',
         );
 
@@ -71,7 +71,7 @@ export const initDynadotRegistrars = (connection: any) => {
       afterFetchAllowedTlds: async (
         regularDynadotAllowedTlds: PunycodeDomainName[],
       ) => {
-        const disabledTlds = await defaultKeyv.get<string[]>(
+        const disabledTlds = await getDefaultKeyv().get<string[]>(
           'dynadot-regular-disabled-tlds',
         );
 

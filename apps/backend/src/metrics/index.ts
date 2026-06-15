@@ -1,7 +1,6 @@
 import { db } from '@namefi-astra/db';
 import { createLogger } from '#lib/logger';
-import { keyvPostgres } from '#lib/keyv';
-import Keyv from 'keyv';
+import { getKeyv } from '#lib/keyv';
 import { recordCollectorError, recordCollectorSuccess } from './common/errors';
 import type { MetricsContext } from './types';
 import {
@@ -80,7 +79,6 @@ import {
 } from './collectors/missingInRegistrar';
 
 const logger = createLogger({ context: 'METRICS' });
-const metricsCache = new Keyv(keyvPostgres, { namespace: 'metrics' });
 
 type CollectorEntry = {
   metric: string;
@@ -171,7 +169,7 @@ export function createMetricsContext(): MetricsContext {
     now: new Date(),
     db,
     log: logger,
-    cache: metricsCache,
+    cache: getKeyv('metrics'),
   };
 }
 

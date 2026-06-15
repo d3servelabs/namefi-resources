@@ -20,7 +20,7 @@ const mocks = {
 };
 
 vi.mock('#lib/keyv', () => ({
-  defaultKeyv: mocks.defaultKeyv,
+  getDefaultKeyv: () => mocks.defaultKeyv,
 }));
 
 vi.mock('#lib/consent', () => ({

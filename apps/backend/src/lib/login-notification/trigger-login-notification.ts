@@ -10,8 +10,7 @@ import { db } from '@namefi-astra/db';
 import type { LoginSessionInfo } from './types';
 import type { UserSelect } from '@namefi-astra/db';
 import type { RequestInfo } from '#lib/request-info';
-import { keyvPostgres } from '#lib/keyv';
-import Keyv from 'keyv';
+import { getKeyv } from '#lib/keyv';
 
 export interface LoginNotificationRequest {
   user: UserSelect;
@@ -35,10 +34,8 @@ const loginNotificationSubject = new Subject<LoginNotificationRequest>();
  */
 const SESSION_TTL_MS = 3600 * 1000; // keep session id in keyv for only one hour
 
-const recentlyProcessedSessions = new Keyv(keyvPostgres, {
-  namespace: 'login-notification',
-  ttl: SESSION_TTL_MS,
-});
+const getRecentlyProcessedSessions = () =>
+  getKeyv('login-notification', { ttl: SESSION_TTL_MS });
 
 loginNotificationSubject
   .pipe(
@@ -72,7 +69,7 @@ async function processLoginNotification(
   // session, skip the heavy Privy + geo work. The DB row's notificationSent
   // flag is still the source of truth and the atomic claim below handles
   // multi-pod correctness; Keyv just saves a round-trip on repeat hits.
-  if (await recentlyProcessedSessions.get(sessionId)) {
+  if (await getRecentlyProcessedSessions().get(sessionId)) {
     logger.trace(
       { sessionId, userId: user.id },
       'Notification recently processed (Keyv coalescing); skipping',
@@ -202,7 +199,7 @@ async function processLoginNotification(
   // Tx committed (any non-throwing outcome). Populate Keyv so subsequent
   // hits for this session short-circuit before doing the heavy work.
   if (outcome === 'sent' || outcome === 'already-claimed') {
-    await recentlyProcessedSessions.set(sessionId, true);
+    await getRecentlyProcessedSessions().set(sessionId, true);
   }
 }
 
