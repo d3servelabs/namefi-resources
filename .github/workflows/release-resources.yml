@@ -173,7 +173,7 @@ jobs:
                 workflow_id: 'deploy-resources.yml',
                 per_page: 100,
               },
-              (response) => response.data.workflow_runs,
+              (response) => response.data.workflow_runs ?? [],
             );
 
             const matchingRuns = runs
@@ -519,7 +519,7 @@ jobs:
                   event: 'push',
                   per_page: 100,
                 },
-                (response) => response.data.workflow_runs,
+                (response) => response.data.workflow_runs ?? [],
               );
 
               const matchingRuns = runs
@@ -696,7 +696,7 @@ jobs:
                   workflow_id: 'deploy-resources.yml',
                   per_page: 100,
                 },
-                (response) => response.data.workflow_runs,
+                (response) => response.data.workflow_runs ?? [],
               );
 
               const matchingRuns = runs
