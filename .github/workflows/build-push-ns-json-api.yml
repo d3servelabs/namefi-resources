@@ -4,13 +4,13 @@ name: Build & Push ns-json-api
 # record source CoreDNS forwards to) and, when a deploy dispatch URL is
 # configured, triggers a remote workflow_dispatch to roll it out.
 #
-# One image (`nameserver-json-api`) for every environment. Deploy targets are
+# One image (`nameserver-json-api`) for every environment. The deploy target is
 # decided by the trigger:
-#   dev  (ns-dev)      — every trigger (push to main, tag, manual dispatch).
-#   prod (ns3 + ns4)   — only on a release tag v* or a manual dispatch.
+#   dev  (ns-dev)    — a detected change on a push to main (continuous dev).
+#   prod (ns3 + ns4) — a release tag v* or a manual dispatch.
 #
-# Only builds when Turbo reports @namefi-astra/ns-json-api affected; tags and
-# manual runs always build.
+# So a push only builds/pushes (and deploys dev) when Turbo reports
+# @namefi-astra/ns-json-api affected; tags and manual runs always build (prod).
 #
 # Required repo configuration:
 #   vars:    GCP_PROJECT_ID, GCP_REGION, REPOSITORY_NAME, GCP_WIF_PROVIDER,
@@ -82,8 +82,9 @@ jobs:
           fi
 
   # ---------------------------------------------------------------------------
-  # Resolve deploy targets: dev (ns-dev) on every trigger; prod (ns3 + ns4) only
-  # on a release tag or a manual dispatch. Same image is deployed to all.
+  # Resolve the deploy target from the trigger: a release tag / manual dispatch
+  # is a prod rollout (ns3 + ns4); a change-driven push to main is a dev rollout
+  # (ns-dev). The same image is deployed either way.
   # ---------------------------------------------------------------------------
   compute-targets:
     name: Compute deploy targets
@@ -101,10 +102,10 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$REF_TYPE" == "tag" || "$EVENT" == "workflow_dispatch" ]]; then
-            # Release tag / manual run: dev + prod nameservers.
-            echo 'targets=["ns-dev","ns3","ns4"]' >> "$GITHUB_OUTPUT"
+            # Release tag / manual run -> prod nameservers.
+            echo 'targets=["ns3","ns4"]' >> "$GITHUB_OUTPUT"
           else
-            # Regular push to main: dev only.
+            # Change detected on a push to main -> dev.
             echo 'targets=["ns-dev"]' >> "$GITHUB_OUTPUT"
           fi
 
