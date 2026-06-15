@@ -20,7 +20,7 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 ## The top 10 TLDs to secure as a realtor
 
-### 1. [.com](/r/en/tld/com) — your non-negotiable anchor
+### 1. [.com](/en/tld/com) — your non-negotiable anchor
 
 `.com` is still the default extension buyers type and trust, and it remains the largest TLD in the world. Register the `.com` of your personal brand and your brokerage name first; everything else is secondary. If your exact `.com` is taken, a tight variation is worth more than a perfect match on an unfamiliar ending. Operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -48,15 +48,15 @@ A few criteria should drive every registration. **Trust** comes first: the exten
 
 `.house` is a compact, friendly ending that works for open-house campaigns, single-property sites, and casual personal brands alike. It is open to anyone and easy to say out loud, which helps on yard signs and radio. Its registry details are available from [ICANN](https://www.icann.org/en/registry-agreements/details/house).
 
-### 8. [.net](/r/en/tld/net) — the classic defensive backup
+### 8. [.net](/en/tld/net) — the classic defensive backup
 
 `.net` is one of the oldest and most recognized extensions, making it the natural defensive companion to your `.com`. Owning it prevents a competitor from picking up the obvious second choice on your name. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/r/en/tld/org) — credibility for associations and community work
+### 9. [.org](/en/tld/org) — credibility for associations and community work
 
 `.org` carries a trustworthy, community-oriented tone that fits realtor associations, neighborhood resources, and non-commercial projects you run alongside your practice. Registering it also keeps it out of impersonators' hands. The `.org` TLD is documented in the [IANA root database](https://www.iana.org/domains/root/db/org.html).
 
-### 10. [.vip](/r/en/tld/vip) — premium positioning for top clients
+### 10. [.vip](/en/tld/vip) — premium positioning for top clients
 
 `.vip` signals exclusivity, which can fit a luxury practice or a private client portal like `clients.yourname.vip`. It is unrestricted and short, so it stands out on a business card. Its registry agreement is published by [ICANN](https://www.icann.org/en/registry-agreements/details/vip).
 

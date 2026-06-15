@@ -24,23 +24,23 @@ You do not need hundreds of domains. You need the canonical `.com`, a small clus
 
 ### 1. .com — your non-negotiable anchor
 
-[.com](/r/en/tld/com) remains the default extension shoppers type and trust, operated by [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). For a fashion brand it is the primary storefront and email domain, full stop. Secure it first; everything else is built around it. There are no eligibility restrictions—any registrant can hold a `.com`.
+[.com](/en/tld/com) remains the default extension shoppers type and trust, operated by [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). For a fashion brand it is the primary storefront and email domain, full stop. Secure it first; everything else is built around it. There are no eligibility restrictions—any registrant can hold a `.com`.
 
 ### 2. .shop — retail intent in the name
 
-[.shop](/r/en/tld/shop) is operated by [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) of Tokyo and is purpose-built for commerce. For a label, `yourbrand.shop` reads as an unambiguous "buy here" signal, which is ideal for a dedicated e-commerce property or a seasonal drop. It is open to all registrants with no special restrictions.
+[.shop](/en/tld/shop) is operated by [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) of Tokyo and is purpose-built for commerce. For a label, `yourbrand.shop` reads as an unambiguous "buy here" signal, which is ideal for a dedicated e-commerce property or a seasonal drop. It is open to all registrants with no special restrictions.
 
 ### 3. .store — built for the storefront
 
-[.store](/r/en/tld/store) is run by [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) and, like `.shop`, signals retail directly. It pairs well with a flagship online boutique or a pop-up/limited-edition site, and it is a strong defensive companion to `.shop` so neither sits in someone else's hands. Open registration, no restrictions.
+[.store](/en/tld/store) is run by [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) and, like `.shop`, signals retail directly. It pairs well with a flagship online boutique or a pop-up/limited-edition site, and it is a strong defensive companion to `.shop` so neither sits in someone else's hands. Open registration, no restrictions.
 
 ### 4. .online — broad, flexible presence
 
-[.online](/r/en/tld/online) is also a [Radix](https://www.iana.org/domains/root/db/online.html) extension and works as a catch-all when `.com` is taken or as a campaign and lookbook domain. It is generic enough to point anywhere—a brand hub, a press kit, a seasonal teaser—and carries no eligibility restrictions.
+[.online](/en/tld/online) is also a [Radix](https://www.iana.org/domains/root/db/online.html) extension and works as a catch-all when `.com` is taken or as a campaign and lookbook domain. It is generic enough to point anywhere—a brand hub, a press kit, a seasonal teaser—and carries no eligibility restrictions.
 
 ### 5. .site — a versatile defensive pick
 
-[.site](/r/en/tld/site) (another [Radix](https://www.iana.org/domains/root/db/site.html) namespace) is inexpensive, widely recognized, and an easy defensive hold. Use it for a microsite or campaign landing page, or simply park it so it cannot be weaponized against your name. Open to all.
+[.site](/en/tld/site) (another [Radix](https://www.iana.org/domains/root/db/site.html) namespace) is inexpensive, widely recognized, and an easy defensive hold. Use it for a microsite or campaign landing page, or simply park it so it cannot be weaponized against your name. Open to all.
 
 ### 6. .co — the short, premium alternative
 
@@ -60,7 +60,7 @@ You do not need hundreds of domains. You need the canonical `.com`, a small clus
 
 ### 10. .vip — exclusivity and loyalty
 
-[.vip](/r/en/tld/vip) is operated by [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry). For fashion, it maps neatly to members-only drops, loyalty programs, and early-access events—`yourbrand.vip` frames a gated experience. It is open to any registrant with no membership requirement.
+[.vip](/en/tld/vip) is operated by [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry). For fashion, it maps neatly to members-only drops, loyalty programs, and early-access events—`yourbrand.vip` frames a gated experience. It is open to any registrant with no membership requirement.
 
 ## Defensive registration strategy
 

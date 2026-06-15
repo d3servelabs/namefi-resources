@@ -83,11 +83,11 @@ exist.** Dead links hurt SEO and trust, and slugs change over time.
 `content/tld/en/`, `content/blog/en/`, and `content/glossary/en/`. If you cannot verify it, do
 not link it.
 
-URL patterns (all live under `/r/en/...`):
+URL patterns (all live under `/en/...`):
 
-- TLD index: `/r/en/tld` — TLD page: `/r/en/tld/<tld>` (e.g. `/r/en/tld/com`, `/r/en/tld/io`)
-- Blog post: `/r/en/blog/<slug>`
-- Glossary term: `/r/en/glossary/<slug>`
+- TLD index: `/en/tld` — TLD page: `/en/tld/<tld>` (e.g. `/en/tld/com`, `/en/tld/io`)
+- Blog post: `/en/blog/<slug>`
+- Glossary term: `/en/glossary/<slug>`
 
 Examples of real pages you can link when relevant (verify they still exist; this list is not
 exhaustive and will grow):

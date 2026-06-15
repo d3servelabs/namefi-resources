@@ -20,7 +20,7 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 ## The top 10 TLDs to secure for your law firm
 
-### 1. [.com](/r/en/tld/com) — the non-negotiable anchor
+### 1. [.com](/en/tld/com) — the non-negotiable anchor
 
 `.com` remains the most recognized and trusted extension in the world, and most clients will type it by default. Secure your firm's primary `.com` first and point everything else to it. It is the one domain you should never let lapse. The registry is operated by [Verisign](https://www.iana.org/domains/root/db/com.html) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -44,19 +44,19 @@ Three criteria matter most. First, **trust signals**: extensions like `.com` and
 
 `.lawyer` pairs naturally with an individual practitioner's name and, like `.attorney`, is **not** restricted to verified credentials. You can confirm its delegation in the [IANA root database](https://www.iana.org/domains/root/db/lawyer.html) and its [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/lawyer). Grab it to protect your name and to support partner microsites.
 
-### 7. [.abogado](/r/en/tld/abogado) — reach Spanish-speaking clients
+### 7. [.abogado](/en/tld/abogado) — reach Spanish-speaking clients
 
 `.abogado` ("lawyer" in Spanish) is a smart pick for firms serving Hispanic and Latino communities or operating in Spanish-speaking markets. It is openly available; see its [IANA root entry](https://www.iana.org/domains/root/db/abogado.html) and [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/abogado). A focused way to signal language and cultural fit.
 
-### 8. [.net](/r/en/tld/net) — the classic defensive backup
+### 8. [.net](/en/tld/net) — the classic defensive backup
 
 `.net` is one of the oldest and most trusted generic extensions, making it the natural defensive companion to your `.com`. Registering it prevents confusion and blocks an easy impersonation vector. It is operated by [Verisign](https://www.iana.org/domains/root/db/net.html) under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/r/en/tld/org) — for nonprofits, clinics, and associations
+### 9. [.org](/en/tld/org) — for nonprofits, clinics, and associations
 
 `.org` carries connotations of mission and public service — fitting for legal aid organizations, bar-adjacent groups, and pro bono initiatives, and worth securing defensively even for commercial firms. It is administered by [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). It rounds out the legacy trio alongside `.com` and `.net`.
 
-### 10. [.info](/r/en/tld/info) — for client-facing resources
+### 10. [.info](/en/tld/info) — for client-facing resources
 
 `.info` suits FAQ hubs, practice-area explainers, and intake resources where the name should say "information." It is an inexpensive defensive registration and a flexible home for content. See its [IANA root entry](https://www.iana.org/domains/root/db/info.html) for delegation details.
 
