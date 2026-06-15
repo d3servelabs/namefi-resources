@@ -23,6 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { cn } from '@namefi-astra/ui/lib/cn';
@@ -66,10 +67,11 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
     handleLinkWalletClicked,
     handleUnlinkWalletClicked,
     isUnlinkWalletPending,
+    canUsePrivyActions,
   } = useControlLinkedWallets();
 
   const { privyUser: user } = useAuth();
-  const { linkedWallets } = useLinkedWallets();
+  const { linkedWallets, linkedWalletsReady } = useLinkedWallets();
 
   const isFirstConnectedWallet = useCallback(
     (wallet: WalletWithMetadata) => {
@@ -104,19 +106,23 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           size="sm"
           className="gap-1"
           onClick={handleLinkWalletClicked}
+          disabled={!canUsePrivyActions}
         >
           <Plus className="h-4 w-4" />
           Link
         </NamefiButton>
       </CardHeader>
       <CardContent>
-        {linkedWallets.length === 0 ? (
+        {!linkedWalletsReady ? (
+          <LinkedWalletsSkeleton />
+        ) : linkedWallets.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
             <p className="text-muted-foreground">No linked wallets</p>
             <Button
               variant="outline"
               className="mt-4"
               onClick={handleLinkWalletClicked}
+              disabled={!canUsePrivyActions}
             >
               Link Wallet
             </Button>
@@ -190,6 +196,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                       size="icon"
                       onClick={() => handleUnlinkWalletClicked(wallet.address)}
                       aria-label="Remove wallet"
+                      disabled={!canUsePrivyActions}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -212,10 +219,42 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
   );
 };
 
+function LinkedWalletsSkeleton() {
+  return (
+    <div className="space-y-4">
+      {Array.from({ length: 2 }).map((_, index) => (
+        <div
+          key={index}
+          className="flex items-center justify-between rounded-lg border p-4"
+        >
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-9 rounded-md" />
+            <Skeleton className="h-9 w-9 rounded-md" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export const useControlLinkedWallets = () => {
   const [isUnlinkWalletDialogOpen, setIsUnlinkWalletDialogOpen] =
     useState(false);
-  const { isImpersonating } = useAuth();
+  const {
+    isImpersonating,
+    privyRuntimeReady,
+    privyRuntimeAuthenticated,
+    privyUser,
+  } = useAuth();
+  const canUsePrivyActions =
+    privyRuntimeReady && privyRuntimeAuthenticated && Boolean(privyUser);
   const [walletToUnlink, setWalletToUnlink] = useState<string | null>(null);
   const [isUnlinkWalletPending, setIsUnlinkWalletPending] = useState(false);
 
@@ -223,15 +262,17 @@ export const useControlLinkedWallets = () => {
   const { linkedWallets } = useLinkedWallets();
 
   const handleLinkWalletClicked = useCallback(() => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert('You are impersonating a user, so you cannot link a wallet');
       return;
     }
     linkWallet();
-  }, [linkWallet, isImpersonating]);
+  }, [canUsePrivyActions, linkWallet, isImpersonating]);
 
   const handleUnlinkWalletClicked = useCallback(
     (walletAddress: string) => {
+      if (!canUsePrivyActions) return;
       if (isImpersonating) {
         alert('You are impersonating a user, so you cannot unlink a wallet');
         return;
@@ -239,11 +280,12 @@ export const useControlLinkedWallets = () => {
       setWalletToUnlink(walletAddress);
       setIsUnlinkWalletDialogOpen(true);
     },
-    [isImpersonating],
+    [canUsePrivyActions, isImpersonating],
   );
 
   const handleConfirmUnlinkWalletClicked = useCallback(
     async (walletAddress: string) => {
+      if (!canUsePrivyActions) return;
       if (!walletAddress) {
         setIsUnlinkWalletDialogOpen(false);
         setIsUnlinkWalletPending(false);
@@ -268,7 +310,7 @@ export const useControlLinkedWallets = () => {
         setIsUnlinkWalletPending(false);
       }
     },
-    [unlinkWallet],
+    [canUsePrivyActions, unlinkWallet],
   );
   return {
     isUnlinkWalletDialogOpen,
@@ -280,6 +322,7 @@ export const useControlLinkedWallets = () => {
     linkedWallets,
     handleConfirmUnlinkWalletClicked,
     isUnlinkWalletPending,
+    canUsePrivyActions,
   };
 };
 

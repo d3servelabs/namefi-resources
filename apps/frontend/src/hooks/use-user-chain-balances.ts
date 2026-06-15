@@ -1,9 +1,7 @@
-import { CHAINS } from '@namefi-astra/utils/chains';
+import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { useMemo } from 'react';
-import { formatUnits } from 'viem';
-import { multicall } from 'viem/actions';
-import { useClient, type UseClientReturnType, useConfig } from 'wagmi';
+import { createPublicClient, formatUnits, http } from 'viem';
 import {
   getPaymentProviderForChain,
   getChainName,
@@ -11,8 +9,13 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useAllowedChains } from './use-allowed-chains';
+import { getAlchemyHttpRpcUrl } from '@namefi-astra/utils/alchemy';
+import { clientSideEnv } from '@/lib/env';
 
-type MulticallClient = Parameters<typeof multicall>[0];
+const getConfiguredAlchemyRpcUrl =
+  clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY
+    ? getAlchemyHttpRpcUrl(clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY)
+    : null;
 
 const CHAIN_PRIORITY = [
   CHAINS.sepolia.id as number,
@@ -47,14 +50,47 @@ const sortChainsIdsByPriority = (chainIds: number[]) => {
   });
 };
 
+function getConfiguredRpcUrl(chainId: number) {
+  if (!getConfiguredAlchemyRpcUrl) return undefined;
+
+  try {
+    return getConfiguredAlchemyRpcUrl(chainId);
+  } catch {
+    return undefined;
+  }
+}
+
+function createBalancePublicClient(chainId: number) {
+  const chain = getChain(chainId);
+  if (!chain) {
+    throw new Error(`Chain not found for chain ${chainId}`);
+  }
+
+  const rpcUrl = getConfiguredRpcUrl(chainId);
+  return createPublicClient({
+    chain,
+    transport: rpcUrl ? http(rpcUrl) : http(),
+  });
+}
+
+type BalancePublicClient = ReturnType<typeof createBalancePublicClient>;
+
+const balanceClientCache = new Map<number, BalancePublicClient>();
+
+function getBalancePublicClient(chainId: number): BalancePublicClient {
+  const cached = balanceClientCache.get(chainId);
+  if (cached) return cached;
+
+  const client = createBalancePublicClient(chainId);
+
+  balanceClientCache.set(chainId, client);
+  return client;
+}
+
 const getWalletMultiChainNfscBalance = async (
-  clients: Record<number, UseClientReturnType>,
   _chainIds: number[],
   walletAddresses: `0x${string}`[],
 ) => {
-  if (!clients) {
-    throw new Error('Client not found');
-  }
   if (!walletAddresses) {
     throw new Error('Wallet addresses not found');
   }
@@ -70,10 +106,7 @@ const getWalletMultiChainNfscBalance = async (
   );
 
   for (const chainId of chainIds) {
-    if (!clients[chainId]) {
-      throw new Error(`Client not found for chain ${chainId}`);
-    }
-    const balance = await multicall(clients[chainId] as MulticallClient, {
+    const balance = await getBalancePublicClient(chainId).multicall({
       contracts: walletAddresses.map((walletAddress) => ({
         address: NFSC_CONTRACT_ADDRESS as `0x${string}`,
         abi: NfscAbi,
@@ -119,14 +152,6 @@ export function useUserChainBalances(
   options: UseUserChainBalancesOptions = {},
 ): UseUserChainBalancesReturn {
   const { enabled = true, walletAddresses = [], parentDomain } = options;
-  const config = useConfig();
-  const baseClient = useClient({ chainId: CHAINS.base.id, config });
-  const mainnetClient = useClient({ chainId: CHAINS.mainnet.id, config });
-  const sepoliaClient = useClient({ chainId: CHAINS.sepolia.id, config });
-  const robinhoodTestnetClient = useClient({
-    chainId: CHAINS.robinhoodTestnet.id,
-    config,
-  });
 
   // Simplify: just use the first wallet for balance queries
   const primaryWallet = walletAddresses[0];
@@ -137,17 +162,7 @@ export function useUserChainBalances(
 
   const q = useQuery({
     queryKey: ['wallet-multi-chain-nfsc-balance', walletAddresses, chainIds],
-    queryFn: () =>
-      getWalletMultiChainNfscBalance(
-        {
-          [CHAINS.base.id]: baseClient,
-          [CHAINS.mainnet.id]: mainnetClient,
-          [CHAINS.sepolia.id]: sepoliaClient,
-          [CHAINS.robinhoodTestnet.id]: robinhoodTestnetClient,
-        },
-        chainIds,
-        walletAddresses,
-      ),
+    queryFn: () => getWalletMultiChainNfscBalance(chainIds, walletAddresses),
     enabled: enabled && !!primaryWallet && !isLoading,
   });
 
@@ -186,6 +201,7 @@ export function useUserChainBalances(
     return JSON.stringify(
       _chainBalances.map((cb) => ({
         chainId: cb.chainId,
+        walletAddress: cb.walletAddress,
         balanceInUsdCents: cb.balanceInUsdCents,
       })),
     );

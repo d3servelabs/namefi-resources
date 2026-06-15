@@ -26,11 +26,14 @@ import { Account } from './account';
 import { useAuth } from '@/hooks/use-auth';
 
 export interface SocialAccountsProps {
-  user: User;
+  user: User | null | undefined;
 }
 
 export const SocialAccounts = ({ user }: SocialAccountsProps) => {
-  const { isImpersonating } = useAuth();
+  const { isImpersonating, privyRuntimeReady, privyRuntimeAuthenticated } =
+    useAuth();
+  const canUsePrivyActions =
+    privyRuntimeReady && privyRuntimeAuthenticated && Boolean(user);
   const [isUnlinkGitHubDialogOpen, setIsUnlinkGitHubDialogOpen] =
     useState(false);
 
@@ -39,6 +42,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
   const { linkGithub, linkTwitter, unlinkGithub, unlinkTwitter } = usePrivy();
 
   const handleLinkGitHub = useCallback(() => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot link a GitHub account',
@@ -52,10 +56,11 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkGithub, isImpersonating]);
+  }, [canUsePrivyActions, linkGithub, isImpersonating]);
 
   const handleUnlinkGitHub = useCallback(
     async (subject: string) => {
+      if (!canUsePrivyActions) return;
       if (isImpersonating) {
         alert(
           'You are impersonating a user, so you cannot unlink a GitHub account',
@@ -80,10 +85,11 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         });
       }
     },
-    [unlinkGithub, isImpersonating],
+    [canUsePrivyActions, unlinkGithub, isImpersonating],
   );
 
   const handleLinkTwitter = useCallback(() => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot link a Twitter account',
@@ -97,10 +103,11 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkTwitter, isImpersonating]);
+  }, [canUsePrivyActions, linkTwitter, isImpersonating]);
 
   const handleUnlinkTwitter = useCallback(
     async (subject: string) => {
+      if (!canUsePrivyActions) return;
       if (isImpersonating) {
         alert(
           'You are impersonating a user, so you cannot unlink a Twitter account',
@@ -125,7 +132,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         });
       }
     },
-    [unlinkTwitter, isImpersonating],
+    [canUsePrivyActions, unlinkTwitter, isImpersonating],
   );
 
   return (
@@ -145,25 +152,27 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
           <Account
             title="Twitter"
             icon={<TwitterIcon className="h-5 w-5" />}
-            isLinked={!!user.twitter?.username}
+            isLinked={!!user?.twitter?.username}
             linkedValue={
-              user.twitter?.username ? `@${user.twitter.username}` : undefined
+              user?.twitter?.username ? `@${user.twitter.username}` : undefined
             }
-            verified={!!user.twitter?.username}
+            verified={!!user?.twitter?.username}
             onLink={handleLinkTwitter}
             onUnlink={() => setIsUnlinkTwitterDialogOpen(true)}
+            disabled={!canUsePrivyActions}
           />
 
           <Account
             title="GitHub"
             icon={<GitHubBrandIcon className="h-5 w-5" />}
-            isLinked={!!user.github?.username}
+            isLinked={!!user?.github?.username}
             linkedValue={
-              user.github?.username ? `${user.github.username}` : undefined
+              user?.github?.username ? `${user.github.username}` : undefined
             }
-            verified={!!user.github?.username}
+            verified={!!user?.github?.username}
             onLink={handleLinkGitHub}
             onUnlink={() => setIsUnlinkGitHubDialogOpen(true)}
+            disabled={!canUsePrivyActions}
           />
         </div>
       </CardContent>
@@ -188,7 +197,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               Cancel
             </Button>
             <Button
-              onClick={() => handleUnlinkGitHub(user.github?.subject ?? '')}
+              onClick={() => handleUnlinkGitHub(user?.github?.subject ?? '')}
             >
               Unlink
             </Button>
@@ -216,7 +225,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               Cancel
             </Button>
             <Button
-              onClick={() => handleUnlinkTwitter(user.twitter?.subject ?? '')}
+              onClick={() => handleUnlinkTwitter(user?.twitter?.subject ?? '')}
             >
               Unlink
             </Button>

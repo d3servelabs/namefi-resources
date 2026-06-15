@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useCallback, useMemo } from 'react';
-import { useLogin } from '@/hooks/use-auth';
+import { useLogin } from '@/hooks/use-login';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { toast } from 'sonner';
 
 export interface HuntChoiceDialogOptions {
   onShare?: (domainName: NamefiNormalizedDomain) => void;
@@ -41,7 +42,12 @@ export function useHuntVoteChoice(options: HuntChoiceDialogOptions = {}) {
   const onChooseLogin = useCallback(() => {
     // Close dialog and trigger login
     closeDialog();
-    login();
+    void login().catch((error) => {
+      toast.error('Could not start sign in', {
+        description:
+          error instanceof Error ? error.message : 'Please try again.',
+      });
+    });
   }, [closeDialog, login]);
 
   const onChooseShare = useCallback(() => {

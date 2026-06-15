@@ -57,6 +57,10 @@ import {
   GA_CLIENT_ID_HEADER,
   GA_SESSION_ID_HEADER,
 } from '@namefi-astra/common/google-analytics';
+import {
+  AUTH_BOOTSTRAP_MODE_HEADER,
+  PRIVY_ID_TOKEN_HEADER,
+} from '@namefi-astra/common/auth-session';
 import { x402AnalyticsRouter } from './routers/x402-analytics';
 import { HTTPException } from 'hono/http-exception';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
@@ -167,6 +171,8 @@ app.use(async (...args) => {
       'x-c15t-region',
       'accept-language',
       'x-skip-auth',
+      AUTH_BOOTSTRAP_MODE_HEADER,
+      PRIVY_ID_TOKEN_HEADER,
       ...TRACKING_HEADERS,
       ...X402Headers,
     ],

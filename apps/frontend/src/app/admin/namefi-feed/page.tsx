@@ -1629,7 +1629,10 @@ function ListingsTable({
         header: 'Domain',
         cell: ({ row }) => (
           <Link
-            href={`/search?query=${encodeURIComponent(row.original.domain)}`}
+            href={{
+              pathname: '/',
+              query: { query: row.original.domain },
+            }}
             className="font-medium hover:underline"
           >
             {row.original.domain}

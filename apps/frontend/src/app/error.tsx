@@ -9,6 +9,8 @@ import { PageShell } from '@/components/page-shell';
 import { TRPCClientError } from '@trpc/client';
 import Link from 'next/link';
 import { ErrorHelpLinks } from '@/components/error-help-links';
+import { useLogin } from '@/hooks/use-login';
+import { toast } from 'sonner';
 
 function getStatusCode(error: Error): number {
   if (error instanceof TRPCClientError) {
@@ -41,9 +43,7 @@ function ErrorContent403({ requestId }: { requestId: string | undefined }) {
         This door is locked. Try your key.
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-        <Button render={<Link href="/login" />} nativeButton={false}>
-          Log In
-        </Button>
+        <LoginButton />
         <Button
           render={<Link href="/" />}
           nativeButton={false}
@@ -81,7 +81,7 @@ function ErrorContent404({ requestId }: { requestId: string | undefined }) {
           Go to Homepage
         </Button>
         <Button
-          render={<Link href="/search" />}
+          render={<Link href="/#domain-search" />}
           nativeButton={false}
           variant="outline"
         >
@@ -113,9 +113,7 @@ function ErrorContent400({ requestId }: { requestId: string | undefined }) {
         Something got lost in translation.
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-        <Button render={<Link href="/login" />} nativeButton={false}>
-          Log In
-        </Button>
+        <LoginButton />
         <Button
           render={<Link href="/" />}
           nativeButton={false}
@@ -167,6 +165,25 @@ function ErrorContent500({
         </p>
       )}
     </>
+  );
+}
+
+function LoginButton() {
+  const { login } = useLogin();
+
+  return (
+    <Button
+      onClick={() => {
+        void login().catch((error) => {
+          toast.error('Could not start sign in', {
+            description:
+              error instanceof Error ? error.message : 'Please try again.',
+          });
+        });
+      }}
+    >
+      Log In
+    </Button>
   );
 }
 

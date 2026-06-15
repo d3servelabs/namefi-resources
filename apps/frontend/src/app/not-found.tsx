@@ -26,7 +26,7 @@ export default function NotFoundPage() {
           Go to Homepage
         </Button>
         <Button
-          render={<Link href="/search" />}
+          render={<Link href="/#domain-search" />}
           nativeButton={false}
           variant="outline"
         >

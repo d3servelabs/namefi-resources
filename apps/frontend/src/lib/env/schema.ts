@@ -10,7 +10,7 @@ export const configSchema = z.object({
   DOCS_URL: z.url(),
   FIRST_PARTY_DEPLOYMENT_URL: z.url(),
   GA_MEASUREMENT_ID: z.string(),
-  PRIVY_APP_ID: z.string(),
+  PRIVY_APP_ID: z.string().min(1, 'PRIVY_APP_ID is required'),
   STRIPE_PUBLISHABLE_KEY: z.string(),
   /**
    * List of first-party domains that are owned by NameFI and allowed to interact with the API.

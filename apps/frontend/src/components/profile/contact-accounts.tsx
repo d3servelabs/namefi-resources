@@ -15,7 +15,14 @@ const ALLOW_UNLINK_EMAIL = true;
 const ALLOW_UNLINK_PHONE = true;
 export function ContactAccounts({ className = '' }: ContactAccountsProps) {
   const { linkEmail, linkPhone, unlinkEmail, unlinkPhone } = usePrivy();
-  const { privyUser, isImpersonating } = useAuth();
+  const {
+    privyUser,
+    isImpersonating,
+    privyRuntimeReady,
+    privyRuntimeAuthenticated,
+  } = useAuth();
+  const canUsePrivyActions =
+    privyRuntimeReady && privyRuntimeAuthenticated && Boolean(privyUser);
   const [highlightParam, setHighlightParam] = useQueryState(
     'highlight',
     parseAsStringLiteral(['email'] as const).withOptions({
@@ -44,6 +51,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
   }, [highlightParam, setHighlightParam]);
 
   const handleLinkEmail = useCallback(async () => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot link an email address',
@@ -57,9 +65,10 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkEmail, isImpersonating]);
+  }, [canUsePrivyActions, linkEmail, isImpersonating]);
 
   const handleUnlinkEmail = useCallback(async () => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot unlink an email address',
@@ -73,9 +82,10 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [unlinkEmail, isImpersonating, currentEmail]);
+  }, [canUsePrivyActions, unlinkEmail, isImpersonating, currentEmail]);
 
   const handleUnlinkPhone = useCallback(async () => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert(
         'You are impersonating a user, so you cannot unlink a phone number',
@@ -92,9 +102,10 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [unlinkPhone, isImpersonating, currentPhone]);
+  }, [canUsePrivyActions, unlinkPhone, isImpersonating, currentPhone]);
 
   const handleLinkPhone = useCallback(async () => {
+    if (!canUsePrivyActions) return;
     if (isImpersonating) {
       alert('You are impersonating a user, so you cannot link a phone number');
       return;
@@ -109,7 +120,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     }
-  }, [linkPhone, isImpersonating]);
+  }, [canUsePrivyActions, linkPhone, isImpersonating]);
 
   return (
     <div className={`grid gap-4 md:grid-cols-2 ${className}`}>
@@ -123,6 +134,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         onUnlink={ALLOW_UNLINK_EMAIL ? handleUnlinkEmail : undefined}
         showLabel={true}
         shouldHighlight={shouldHighlightEmail}
+        disabled={!canUsePrivyActions}
       />
 
       <Account
@@ -134,6 +146,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         onLink={handleLinkPhone}
         onUnlink={ALLOW_UNLINK_PHONE ? handleUnlinkPhone : undefined}
         showLabel={true}
+        disabled={!canUsePrivyActions}
       />
     </div>
   );

@@ -15,7 +15,6 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MoreHorizontal, X } from 'lucide-react';
 import { toast } from 'sonner';
-import { useEnsName } from 'wagmi';
 
 type ImpersonationStatus = AppRouterOutput['users']['getImpersonationStatus'];
 type ImpersonationTarget = NonNullable<
@@ -63,43 +62,21 @@ function ActiveImpersonationBannerInner({
     trpc.users.stopImpersonating.mutationOptions(),
   );
 
-  const actorWalletAddress = parseWalletAddress(actorUser?.mainWalletAddress);
-  const targetWalletAddress = parseWalletAddress(targetUser?.mainWalletAddress);
-
-  const actorEns = useEnsName({
-    address: actorWalletAddress,
-    chainId: 1,
-    query: { enabled: Boolean(actorWalletAddress) },
-  });
-  const targetEns = useEnsName({
-    address: targetWalletAddress,
-    chainId: 1,
-    query: { enabled: Boolean(targetWalletAddress) },
-  });
-
   const handleStopImpersonating = async () => {
     await stopMutation.mutateAsync();
     toast.success('Stopped impersonating');
 
     toast.info('Refreshing user data');
-    await Promise.all([
-      queryClient.invalidateQueries({
-        queryKey: trpc.users.getUser.queryKey(),
-      }),
-      queryClient.invalidateQueries({
-        queryKey: trpc.users.getMyPermissions.queryKey(),
-      }),
-      refetchStatus(),
-    ]);
+    await Promise.all([queryClient.invalidateQueries(), refetchStatus()]);
 
     toast.success('User data refreshed');
   };
 
-  const labelFor = (
-    u: ImpersonationParticipant | null | undefined,
-    ens?: string | null,
-  ) =>
-    u?.displayName || u?.primaryEmail || ens || u?.mainWalletAddress || u?.id;
+  const labelFor = (u: ImpersonationParticipant | null | undefined) =>
+    u?.displayName || u?.email || u?.mainWalletAddress || 'Unknown user';
+
+  const secondaryLabelFor = (u: ImpersonationParticipant | null | undefined) =>
+    u?.displayName ? (u.email ?? u.mainWalletAddress) : null;
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
@@ -110,9 +87,7 @@ function ActiveImpersonationBannerInner({
             address={targetUser.mainWalletAddress}
             className="size-6"
           />
-          <span className="text-sm">
-            {labelFor(targetUser, targetEns.data)}
-          </span>
+          <span className="text-sm">{labelFor(targetUser)}</span>
         </div>
         <Dialog>
           <DialogTrigger
@@ -138,28 +113,33 @@ function ActiveImpersonationBannerInner({
             </DialogHeader>
             <div className="space-y-4">
               {[
-                { title: 'Impersonator', u: actorUser, ens: actorEns.data },
-                { title: 'Impersonated', u: targetUser, ens: targetEns.data },
-              ].map((entry) => (
-                <div
-                  key={entry.title}
-                  className="rounded border p-3 bg-background flex items-center gap-3"
-                >
-                  <UserWalletAvatar
-                    address={entry.u?.mainWalletAddress}
-                    className="size-10"
-                  />
-                  <div className="space-y-1">
-                    <div className="text-sm font-semibold">{entry.title}</div>
-                    <div className="text-sm break-words">
-                      {labelFor(entry.u, entry.ens)}
-                    </div>
-                    <div className="text-xs text-muted-foreground break-words">
-                      {entry.u?.id}
+                { title: 'Impersonator', u: actorUser },
+                { title: 'Impersonated', u: targetUser },
+              ].map((entry) => {
+                const secondaryLabel = secondaryLabelFor(entry.u);
+                return (
+                  <div
+                    key={entry.title}
+                    className="rounded border p-3 bg-background flex items-center gap-3"
+                  >
+                    <UserWalletAvatar
+                      address={entry.u?.mainWalletAddress}
+                      className="size-10"
+                    />
+                    <div className="space-y-1">
+                      <div className="text-sm font-semibold">{entry.title}</div>
+                      <div className="text-sm break-words">
+                        {labelFor(entry.u)}
+                      </div>
+                      {secondaryLabel ? (
+                        <div className="text-xs text-muted-foreground break-words">
+                          {secondaryLabel}
+                        </div>
+                      ) : null}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <div className="flex justify-end mt-2">
               <AsyncButton
@@ -185,8 +165,4 @@ function ActiveImpersonationBannerInner({
       </div>
     </div>
   );
-}
-
-function parseWalletAddress(address: string | null | undefined) {
-  return address?.startsWith('0x') ? (address as `0x${string}`) : undefined;
 }

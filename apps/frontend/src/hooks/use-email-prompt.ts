@@ -3,6 +3,7 @@ import { addDays, isAfter } from 'date-fns';
 import { useCallback, useMemo } from 'react';
 import { toast } from 'sonner';
 import { useLocalStorage } from 'usehooks-ts';
+import { getAuthContactEmail } from '@/components/providers/auth-display-profile';
 import { useAuth } from './use-auth';
 
 export interface EmailPromptConfig {
@@ -15,7 +16,17 @@ export interface EmailPromptConfig {
 }
 
 export function useEmailPrompt(config: EmailPromptConfig = {}) {
-  const { privyUser, isAuthenticated } = useAuth();
+  const {
+    privyUser,
+    unsafeDisplayProfile,
+    isAuthenticated,
+    isPrivyUserLoading,
+  } = useAuth();
+  const contactEmail = getAuthContactEmail({
+    privyUser,
+    unsafeDisplayProfile,
+  });
+  const isEmailStateLoading = isPrivyUserLoading && !contactEmail;
 
   // Memoize the final config to avoid dependency issues
   const finalConfig = useMemo(
@@ -60,16 +71,16 @@ export function useEmailPrompt(config: EmailPromptConfig = {}) {
 
   const hasVerifiedEmail = useCallback(() => {
     // Use address as the primary indicator since Privy handles verification internally
-    return !!privyUser?.email?.address;
-  }, [privyUser]);
+    return Boolean(contactEmail);
+  }, [contactEmail]);
 
   const hasEmail = useCallback(() => {
-    return !!privyUser?.email?.address;
-  }, [privyUser]);
+    return Boolean(contactEmail);
+  }, [contactEmail]);
 
   const showEmailPrompt = useCallback(
     (force = false) => {
-      if (!isAuthenticated || hasEmail()) {
+      if (!isAuthenticated || isEmailStateLoading || hasEmail()) {
         return false;
       }
 
@@ -96,6 +107,7 @@ export function useEmailPrompt(config: EmailPromptConfig = {}) {
     },
     [
       isAuthenticated,
+      isEmailStateLoading,
       hasEmail,
       missingEmailToastDismissalExpired,
       finalConfig,
@@ -112,6 +124,6 @@ export function useEmailPrompt(config: EmailPromptConfig = {}) {
     hasVerifiedEmail: hasVerifiedEmail(),
     showEmailPrompt,
     showEmailPromptForced,
-    canShowPrompt: isAuthenticated && !hasEmail(),
+    canShowPrompt: isAuthenticated && !isEmailStateLoading && !hasEmail(),
   };
 }

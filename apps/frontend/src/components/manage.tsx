@@ -14,9 +14,9 @@ import { TableBody } from '@namefi-astra/ui/components/shadcn/table';
 import { useAuth } from '@/hooks/use-auth';
 import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
-import { type FC, Suspense, useMemo } from 'react';
+import { type FC, useMemo } from 'react';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -36,6 +36,14 @@ const LoadingSkeletons: FC = () => (
   </div>
 );
 
+function shouldRetrySoldDomainsQuery(failureCount: number, error: unknown) {
+  const status =
+    error && typeof error === 'object' && 'data' in error
+      ? (error as { data?: { httpStatus?: number } }).data?.httpStatus
+      : undefined;
+  return (status === undefined || status >= 500) && failureCount < 2;
+}
+
 // TODO(Luis): consider adding pagination to SoldDomainsTable
 function SoldDomainsContent() {
   type RegisteredSubdomain = inferOutput<
@@ -44,9 +52,15 @@ function SoldDomainsContent() {
 
   const trpc = useTRPC();
 
-  const { data } = useSuspenseQuery(
-    trpc.users.getRegisteredSubdomainsForParentDomainOwner.queryOptions(),
-  );
+  const { data, isLoading, isError, error, refetch } = useQuery({
+    ...trpc.users.getRegisteredSubdomainsForParentDomainOwner.queryOptions(
+      void 0,
+      {
+        trpc: { context: { skipBatch: true } },
+      },
+    ),
+    retry: shouldRetrySoldDomainsQuery,
+  });
 
   const subdomains: RegisteredSubdomain[] = useMemo(() => {
     return (
@@ -67,6 +81,42 @@ function SoldDomainsContent() {
   }, [subdomains]);
 
   const soldDomainsCount = useMemo(() => subdomains.length, [subdomains]);
+
+  if (isLoading) {
+    return <LoadingSkeletons />;
+  }
+
+  if (isError && !data) {
+    return (
+      <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg">
+        <CardContent className="p-6">
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold">
+                Unable to load sold domains
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {error?.message || 'Please try again.'}
+              </p>
+            </div>
+            <button
+              type="button"
+              className="inline-flex h-9 items-center rounded-md border border-white/10 px-3 text-sm font-medium hover:bg-white/10"
+              onClick={() => {
+                void refetch();
+              }}
+            >
+              Retry
+            </button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!data) {
+    return <LoadingSkeletons />;
+  }
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -145,13 +195,7 @@ export default function ManageDashboard() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">My Sold Domains</h2>
       </div>
-      {isLoading ? (
-        <LoadingSkeletons />
-      ) : (
-        <Suspense fallback={<LoadingSkeletons />}>
-          <SoldDomainsContent />
-        </Suspense>
-      )}
+      {isLoading ? <LoadingSkeletons /> : <SoldDomainsContent />}
     </PageShell>
   );
 }

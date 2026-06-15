@@ -29,7 +29,11 @@ import { canUserAccessAdminPanel, privyClient } from './utils';
 import { userPermissionsTable, db as appDb } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
 import { eq, sql } from 'drizzle-orm';
-import { requireUserAuth } from '#lib/auth';
+import {
+  requireUserAuth,
+  resolveAuthIdentityDisplayProfile,
+  type AuthIdentityDisplayProfile,
+} from '#lib/auth';
 import { sendHttpAlert } from '../temporal/activities/default';
 import { triggerLoginNotification } from '#lib/login-notification';
 import type { RequestInfo } from '#lib/request-info';
@@ -63,6 +67,10 @@ import {
   parseC15tMeasurementConsentHeader,
   type C15tMeasurementConsentState,
 } from '@namefi-astra/common/google-analytics';
+import {
+  PRIVY_ID_TOKEN_COOKIE_NAME,
+  PRIVY_ID_TOKEN_HEADER,
+} from '@namefi-astra/common/auth-session';
 
 /**
  * Get the powered by namefi (pbn) domain from the origin.
@@ -230,6 +238,27 @@ export const createContext = async (
     );
     return measurementConsentAutoGrantedPromise;
   };
+  const identityDisplayProfilePromises = new Map<
+    string,
+    Promise<AuthIdentityDisplayProfile | null>
+  >();
+  const getIdentityDisplayProfile = (privyUserId: string) => {
+    let promise = identityDisplayProfilePromises.get(privyUserId);
+    if (!promise) {
+      promise = (async () => {
+        const headerValue = c.req.header(PRIVY_ID_TOKEN_HEADER)?.trim();
+        const cookieValue = headerValue
+          ? null
+          : await getCookie(c, PRIVY_ID_TOKEN_COOKIE_NAME);
+        return resolveAuthIdentityDisplayProfile({
+          identityToken: headerValue || cookieValue?.trim() || null,
+          privyUserId,
+        });
+      })();
+      identityDisplayProfilePromises.set(privyUserId, promise);
+    }
+    return promise;
+  };
 
   let poweredByNamefiDomain: string | null = null;
   let result: ValidateApiKeyAndGetDetailsResult;
@@ -268,8 +297,9 @@ export const createContext = async (
     originBypassedByApiKey,
   });
 
-  // Check for skip auth header in local/development environments
-  // This allows frontend to bypass auth for local development testing
+  // Check for skip auth header in local/development environments.
+  // This preserves the existing dev-only testing bypass until the follow-up PR
+  // replaces it with real Privy test-account auth.
   const skipAuthHeader = c.req.header('X-Skip-Auth');
   const skipAuthTestUser = await getSkipAuthTestUser(
     skipAuthHeader,
@@ -295,7 +325,7 @@ export const createContext = async (
     poweredByNamefiDomain,
     /**
      * A test user we can provide to return when verifyUserAuthAndCreation is called from tests
-     * Also used for skip auth mode in dev/preview environments
+     * Also used for skip auth mode in local/development environments.
      */
     testUser: skipAuthTestUser,
     sessionId: null as string | null,
@@ -304,6 +334,7 @@ export const createContext = async (
     requestMeasurementConsentState,
     consentDomainName,
     getMeasurementConsentAutoGranted,
+    getIdentityDisplayProfile,
     honoVars: c.var as {
       requestId: string;
       connInfo: ConnInfo;
@@ -332,6 +363,9 @@ export type TrpcContext = {
   requestMeasurementConsentState?: C15tMeasurementConsentState;
   consentDomainName?: string | null;
   getMeasurementConsentAutoGranted?: () => Promise<boolean>;
+  getIdentityDisplayProfile?: (
+    privyUserId: string,
+  ) => Promise<AuthIdentityDisplayProfile | null>;
   honoVars?: {
     requestId: string;
     connInfo: ConnInfo;
@@ -345,6 +379,7 @@ export type TrpcContext = {
     targetUserId: string;
   };
   user?: UserSelect | null;
+  authSource?: PrivyAuthSource | null;
   apiAuthResult?: AuthMethodResult;
 };
 
@@ -390,8 +425,8 @@ export const t = initTRPC
     transformer: superjson,
     errorFormatter({ shape, error, ctx }) {
       // NOTE: HTTP 400/5XX alerting happens in `httpErrorAlertMiddleware`, not
-      // here — the errorFormatter runs outside the request's async execution
-      // context, so `getExecutionContext()` (user/session/request) is empty.
+      // here. The formatter runs outside the request's async execution context,
+      // so user/session/request context is not reliably populated here.
       const isZodError = error.cause instanceof ZodError;
       return {
         ...shape,
@@ -425,6 +460,8 @@ const IMPERSONATION_ALLOWED_MUTATIONS = new Set<string>([
   'users.stopImpersonating',
   'carts.addItems',
 ]);
+
+const PRIVY_TOKEN_COOKIE_NAME = 'privy-token';
 
 const impersonationMutationGuard = t.middleware<TrpcContextWithUser>(
   async ({ ctx, next, path, type }) => {
@@ -477,6 +514,45 @@ async function readImpersonationTargetUserId(
   }
 }
 
+export type PrivyAuthSource = 'authorization-header' | 'privy-cookie';
+
+type ResolvedPrivyAuthCredential = {
+  authHeader: string;
+  source: PrivyAuthSource;
+};
+
+async function resolvePrivyAuthCredential(
+  ctx: TrpcContext,
+  options: { allowCookieAuth: boolean },
+): Promise<ResolvedPrivyAuthCredential | null> {
+  const authHeader = ctx.req?.header?.('Authorization');
+  if (authHeader?.startsWith('Bearer ')) {
+    return {
+      authHeader,
+      source: 'authorization-header',
+    };
+  }
+
+  if (!options.allowCookieAuth || !ctx.honoCtx) {
+    return null;
+  }
+
+  try {
+    const token = await getCookie(
+      ctx.honoCtx as HonoContext,
+      PRIVY_TOKEN_COOKIE_NAME,
+    );
+    return token
+      ? {
+          authHeader: `Bearer ${token}`,
+          source: 'privy-cookie',
+        }
+      : null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Middleware for timing procedure execution and adding an artificial delay in development.
  *
@@ -511,20 +587,11 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 /**
- * Attaches the tRPC route to the execution context and alerts on 400 / 5XX
- * responses surfaced to users.
+ * Alerts on 400 / 5XX tRPC responses surfaced to users.
  *
- * Implemented as a middleware (rather than in `errorFormatter`) so it runs
- * inside the request's async execution context — i.e. after the auth
- * middleware has populated the execution context via `setExecutionContext`.
- * Before running the procedure it merges `route` (source/path/procedureType)
- * onto the execution context so logs and alerts can see where a request is
- * being handled; `sendHttpAlert` then reads the route straight off the
- * resolved context. It inspects the `next()` result instead of throwing, and
+ * Implemented as a middleware rather than in `errorFormatter` so it runs inside
+ * the request's async execution context. It inspects the `next()` result and
  * never alters the response.
- *
- * Only 400 and 5XX are alerted; other codes (401/403/404 from expected user
- * actions) are ignored by `sendHttpAlert`.
  */
 const httpErrorAlertMiddleware = t.middleware(
   async ({ next, path, type, ctx }) => {
@@ -555,24 +622,21 @@ const httpErrorAlertMiddleware = t.middleware(
 );
 
 /**
- * Public (unauthenticated) procedure
- *
- * This is the base piece we use to build new queries and mutations on our tRPC API. It does not
- * guarantee that a user querying is authorized, but we can still access user session data if they
- * are logged in.
+ * Base procedure with request timing and route context only. It intentionally
+ * does not attempt Privy auth, permission loading, or impersonation resolution.
  */
 export const baseProcedure = t.procedure
   .use(timingMiddleware)
   .use(async ({ ctx, next, path, type }) => {
     logger.assign({
-      procedureType: 'publicProcedure',
+      procedureType: 'baseProcedure',
     });
     extendCurrentExecutionContext({
       type: 'user',
       route: {
         source: 'trpc',
         path,
-        procedureType: type, //todo should be publicProcedure protectedProcedure, ...
+        procedureType: type,
         requestId: ctx.honoVars?.requestId,
       },
     });
@@ -613,6 +677,7 @@ async function processUserAuthContext(
     userId: user?.id,
     privyUserId: user?.privyUserId,
     sessionId,
+    authSource: ctx.authSource,
   });
 
   let userPermissions: Permission[] = ctx.userPermissions ?? [];
@@ -678,7 +743,7 @@ async function processUserAuthContext(
     }
   }
 
-  // Set execution context using the effective user
+  // Extend route context with the effective user.
   extendCurrentExecutionContext(
     createUserContext({
       userId: effectiveUser?.id,
@@ -705,12 +770,25 @@ function maybeNotifyLogin(params: {
   sessionId: string | null;
   tokenIssuedAt: Date | null;
   isNewUser: boolean;
+  authSource: PrivyAuthSource;
+  suppressLoginNotificationForCookieAuth: boolean;
   ctx: TrpcContext;
 }): void {
   if (!config.ALLOW_LOGIN_NOTIFICATIONS) {
     return;
   }
-  const { user, sessionId, tokenIssuedAt, isNewUser, ctx } = params;
+  const {
+    user,
+    sessionId,
+    tokenIssuedAt,
+    isNewUser,
+    authSource,
+    suppressLoginNotificationForCookieAuth,
+    ctx,
+  } = params;
+  if (authSource === 'privy-cookie' && suppressLoginNotificationForCookieAuth) {
+    return;
+  }
   if (sessionId && tokenIssuedAt) {
     const minutesSinceLogin = differenceInMinutes(new Date(), tokenIssuedAt);
     if (minutesSinceLogin > 5) {
@@ -742,6 +820,23 @@ interface ResolvedUser {
   sessionId: string | null;
   isNewUser: boolean;
   tokenIssuedAt: Date | null;
+  authSource: PrivyAuthSource | null;
+}
+
+type ResolveUserFromRequestOptions = {
+  required: boolean;
+  allowCookieAuth?: boolean;
+  suppressLoginNotificationForCookieAuth?: boolean;
+};
+
+function getResolveUserFromRequestOptions(
+  options: ResolveUserFromRequestOptions,
+) {
+  return {
+    allowCookieAuth: options.allowCookieAuth ?? false,
+    suppressLoginNotificationForCookieAuth:
+      options.suppressLoginNotificationForCookieAuth ?? false,
+  };
 }
 
 /**
@@ -752,16 +847,19 @@ interface ResolvedUser {
  */
 async function resolveUserFromRequest(
   ctx: TrpcContext,
-  options: { required: true },
+  options: ResolveUserFromRequestOptions & { required: true },
 ): Promise<ResolvedUser>;
 async function resolveUserFromRequest(
   ctx: TrpcContext,
-  options: { required: false },
+  options: ResolveUserFromRequestOptions & { required: false },
 ): Promise<ResolvedUser | null>;
 async function resolveUserFromRequest(
   ctx: TrpcContext,
-  options: { required: boolean },
+  options: ResolveUserFromRequestOptions,
 ): Promise<ResolvedUser | null> {
+  const { allowCookieAuth, suppressLoginNotificationForCookieAuth } =
+    getResolveUserFromRequestOptions(options);
+
   // If user is already resolved on context, return it directly
   if (ctx.user) {
     return {
@@ -769,22 +867,25 @@ async function resolveUserFromRequest(
       sessionId: ctx.sessionId ?? null,
       isNewUser: false,
       tokenIssuedAt: null,
+      authSource: ctx.authSource ?? null,
     };
   }
 
-  // Check for skip auth test user first (set in createContext when X-Skip-Auth header is present)
+  // Test callers can provide a test user directly in context.
   if (ctx.testUser) {
     return {
       user: ctx.testUser,
       sessionId: null,
       isNewUser: false,
       tokenIssuedAt: null,
+      authSource: null,
     };
   }
 
-  // Attempt Bearer token auth
-  const authHeader = ctx.req?.header?.('Authorization');
-  if (!authHeader?.startsWith('Bearer ')) {
+  const credential = await resolvePrivyAuthCredential(ctx, {
+    allowCookieAuth,
+  });
+  if (!credential?.authHeader.startsWith('Bearer ')) {
     if (options.required) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
@@ -794,13 +895,27 @@ async function resolveUserFromRequest(
     return null;
   }
 
-  const authResult = await requireUserAuth(authHeader, ctx.testUser);
+  let authResult: Awaited<ReturnType<typeof requireUserAuth>>;
+  try {
+    authResult = await requireUserAuth(credential.authHeader, ctx.testUser);
+  } catch (error) {
+    if (!options.required) {
+      logger.debug(
+        { error, authSource: credential.source },
+        'Ignoring invalid optional auth credential',
+      );
+      return null;
+    }
+    throw error;
+  }
 
   maybeNotifyLogin({
     user: authResult.user,
     sessionId: authResult.sessionId,
     tokenIssuedAt: authResult.tokenIssuedAt,
     isNewUser: authResult.isNewUser,
+    authSource: credential.source,
+    suppressLoginNotificationForCookieAuth,
     ctx,
   });
 
@@ -809,23 +924,31 @@ async function resolveUserFromRequest(
     sessionId: authResult.sessionId,
     isNewUser: authResult.isNewUser,
     tokenIssuedAt: authResult.tokenIssuedAt,
+    authSource: credential.source,
   };
 }
 
-/**
- * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
- *
- * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
- */
-export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
-  async ({ ctx, next }) => {
+function createUserAuthAndCreationMiddleware(options: {
+  cookieAuthPolicy: 'never' | 'query';
+  suppressLoginNotificationForCookieAuth: boolean;
+}) {
+  return t.middleware<TrpcContextWithUser>(async ({ ctx, next, type }) => {
     try {
-      const resolved = await resolveUserFromRequest(ctx, { required: true });
+      const resolved = await resolveUserFromRequest(ctx, {
+        required: true,
+        allowCookieAuth:
+          options.cookieAuthPolicy === 'query' && type === 'query',
+        suppressLoginNotificationForCookieAuth:
+          options.suppressLoginNotificationForCookieAuth,
+      });
 
       const result = await processUserAuthContext({
         user: resolved.user,
         sessionId: resolved.sessionId ?? 'unknown',
-        ctx,
+        ctx: {
+          ...ctx,
+          authSource: resolved.authSource,
+        },
         throwOnImpersonationFailure: true,
       });
 
@@ -836,6 +959,7 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
           sessionId: result.sessionId,
           userPermissions: result.userPermissions,
           impersonation: result.impersonation,
+          authSource: resolved.authSource,
         },
       });
     } catch (error) {
@@ -849,8 +973,24 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
         },
       });
     }
-  },
-);
+  });
+}
+
+/**
+ * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
+ *
+ * This middleware will verify the user's privy authentication token, fetch the user from the database, and add the user to the context.
+ */
+export const verifyUserAuthAndCreation = createUserAuthAndCreationMiddleware({
+  cookieAuthPolicy: 'query',
+  suppressLoginNotificationForCookieAuth: false,
+});
+
+const verifyCookieAuthBootstrapAndCreation =
+  createUserAuthAndCreationMiddleware({
+    cookieAuthPolicy: 'query',
+    suppressLoginNotificationForCookieAuth: true,
+  });
 
 /**
  * Middleware for verifying a user's privy authentication token and creating a user if they don't exist.
@@ -859,8 +999,11 @@ export const verifyUserAuthAndCreation = t.middleware<TrpcContextWithUser>(
  * If the user is not found, it will return a null user.
  */
 export const maybeVerifyUserAuthAndCreation =
-  t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next }) => {
-    const resolved = await resolveUserFromRequest(ctx, { required: false });
+  t.middleware<TrpcContextWithUserOrNull>(async ({ ctx, next, type }) => {
+    const resolved = await resolveUserFromRequest(ctx, {
+      required: false,
+      allowCookieAuth: type === 'query',
+    });
 
     if (!resolved) {
       return next({ ctx });
@@ -869,7 +1012,10 @@ export const maybeVerifyUserAuthAndCreation =
     const result = await processUserAuthContext({
       user: resolved.user,
       sessionId: resolved.sessionId ?? 'unknown',
-      ctx,
+      ctx: {
+        ...ctx,
+        authSource: resolved.authSource,
+      },
       throwOnImpersonationFailure: false,
     });
 
@@ -880,6 +1026,7 @@ export const maybeVerifyUserAuthAndCreation =
         sessionId: result.sessionId,
         userPermissions: result.userPermissions,
         impersonation: result.impersonation,
+        authSource: resolved.authSource,
       },
     });
   });
@@ -925,6 +1072,25 @@ export const protectedProcedure = baseProcedure
   .use<TrpcContextWithUser>(async ({ ctx, next }) => {
     logger.assign({
       procedureType: 'protectedProcedure',
+    });
+    return next({ ctx });
+  });
+
+/**
+ * Procedure for the first server-rendered auth snapshot. Privy's
+ * server-readable cookie is a valid access-token carrier for read/query
+ * traffic, but it is ambient browser state, so mutations stay on explicit
+ * bearer auth. This procedure is special because cookie-sourced snapshot
+ * reads also suppress login-notification work; bearer-authenticated calls do
+ * not get that suppression.
+ */
+export const cookieAuthBootstrapProcedure = baseProcedure
+  .use(verifyCookieAuthBootstrapAndCreation)
+  .use(impersonationMutationGuard)
+  .use(httpErrorAlertMiddleware)
+  .use<TrpcContextWithUser>(async ({ ctx, next }) => {
+    logger.assign({
+      procedureType: 'cookieAuthBootstrapProcedure',
     });
     return next({ ctx });
   });

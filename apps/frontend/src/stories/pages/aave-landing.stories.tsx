@@ -15,6 +15,7 @@ import { ConsentManagerProvider } from '@c15t/nextjs';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 import type { ReactNode } from 'react';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: false,
@@ -36,19 +37,21 @@ function StoryProviders({
         <TrpcProvider>
           <NuqsAdapter>
             <ConsentManagerProvider options={{ mode: 'offline' }}>
-              <PreAuthSignalsProvider>
-                <InteractionLoggersProvider>
-                  <WishlistProvider>
-                    <CartProvider>
-                      <SidebarProvider defaultOpen={true}>
-                        <FreeMintsGuidanceProvider>
-                          {children}
-                        </FreeMintsGuidanceProvider>
-                      </SidebarProvider>
-                    </CartProvider>
-                  </WishlistProvider>
-                </InteractionLoggersProvider>
-              </PreAuthSignalsProvider>
+              <StorybookAuthProvider isAuthenticated={false}>
+                <PreAuthSignalsProvider>
+                  <InteractionLoggersProvider>
+                    <WishlistProvider>
+                      <CartProvider>
+                        <SidebarProvider defaultOpen={true}>
+                          <FreeMintsGuidanceProvider>
+                            {children}
+                          </FreeMintsGuidanceProvider>
+                        </SidebarProvider>
+                      </CartProvider>
+                    </WishlistProvider>
+                  </InteractionLoggersProvider>
+                </PreAuthSignalsProvider>
+              </StorybookAuthProvider>
             </ConsentManagerProvider>
           </NuqsAdapter>
         </TrpcProvider>

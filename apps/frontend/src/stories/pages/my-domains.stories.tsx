@@ -30,6 +30,7 @@ import ReactQueryDevtoolsWrapper from '@/components/react-query-devtools-lazy';
 import { MockPrivyProvider } from '@/lib/mock/privy';
 import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/context';
 import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS = '0x1234567890abcdef1234567890abcdef12345678';
 
@@ -400,19 +401,23 @@ function StoryProviders({
             <MockTrpcProvider mockState={mockState}>
               <NuqsAdapter>
                 <ConsentManagerProvider options={{ mode: 'offline' }}>
-                  <PreAuthSignalsProvider>
-                    <InteractionLoggersProvider>
-                      <WishlistProvider>
-                        <CartProvider>
-                          <SidebarProvider defaultOpen={false}>
-                            <FreeMintsGuidanceProvider>
-                              {children}
-                            </FreeMintsGuidanceProvider>
-                          </SidebarProvider>
-                        </CartProvider>
-                      </WishlistProvider>
-                    </InteractionLoggersProvider>
-                  </PreAuthSignalsProvider>
+                  <StorybookAuthProvider
+                    isAuthenticated={mockState.isAuthenticated}
+                  >
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <SidebarProvider defaultOpen={false}>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </SidebarProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </StorybookAuthProvider>
                 </ConsentManagerProvider>
               </NuqsAdapter>
             </MockTrpcProvider>

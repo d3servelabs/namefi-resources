@@ -6,24 +6,43 @@ import type { PropsWithChildren, FC } from 'react';
 import { CartProvider } from './cart';
 import { ConsentProvider } from './consent-provider';
 import { ProgressProvider } from './progress';
-import { SessionsProvider } from './privy';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
 import { WishlistProvider } from './wishlist';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
 import { DeferredProviders } from './deferred-providers';
+import { AuthProvider } from './auth';
+import { cookies, headers } from 'next/headers';
+import { getInitialAuthSessionSnapshot } from '@/lib/trpc/server';
+import { serializeInitialAuthSessionSnapshot } from './auth-initial-snapshot';
 
 export const Providers: FC<PropsWithChildren> = async ({ children }) => {
   const originInfo = await getOriginRuntime();
+  const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);
+  const initialCookieSnapshot = {
+    hasPrivyToken: cookieStore.has('privy-token'),
+    hasPrivySession: cookieStore.has('privy-session'),
+  };
+  const hasServerReadableToken = initialCookieSnapshot.hasPrivyToken;
+  const initialAuthSessionSnapshot = serializeInitialAuthSessionSnapshot(
+    await getInitialAuthSessionSnapshot({
+      cookieHeader: headerStore.get('cookie'),
+      hasServerReadableToken,
+    }),
+  );
+
   return (
     <OriginProvider originInfo={originInfo}>
       <ThemeProvider>
-        <SessionsProvider>
-          <TrpcProvider>
-            <NuqsAdapter>
-              <ProgressProvider>
-                <ConsentProvider>
-                  <PreAuthSignalsProvider>
+        <TrpcProvider>
+          <NuqsAdapter>
+            <ProgressProvider>
+              <ConsentProvider>
+                <PreAuthSignalsProvider>
+                  <AuthProvider
+                    initialCookieSnapshot={initialCookieSnapshot}
+                    initialAuthSessionSnapshot={initialAuthSessionSnapshot}
+                  >
                     <InteractionLoggersProvider>
                       <WishlistProvider>
                         <CartProvider>
@@ -31,12 +50,12 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                         </CartProvider>
                       </WishlistProvider>
                     </InteractionLoggersProvider>
-                  </PreAuthSignalsProvider>
-                </ConsentProvider>
-              </ProgressProvider>
-            </NuqsAdapter>
-          </TrpcProvider>
-        </SessionsProvider>
+                  </AuthProvider>
+                </PreAuthSignalsProvider>
+              </ConsentProvider>
+            </ProgressProvider>
+          </NuqsAdapter>
+        </TrpcProvider>
       </ThemeProvider>
     </OriginProvider>
   );

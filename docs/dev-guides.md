@@ -6,6 +6,7 @@
 
 ## Frontend
 - [Frontend Benchmark (Next.js dev cold/hot)](./dev-guides/frontend-benchmark.md)
+- [Privy Auth Performance Running Doc](./dev-guides/privy-auth-performance.md)
 
 ## Marketplaces
 - [Marketplaces Development Guide](./dev-guides/marketplaces/README.md) — overview, mental model, golden rules

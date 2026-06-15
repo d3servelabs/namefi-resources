@@ -54,6 +54,7 @@ import {
   SWAP_DIALOG_CONTENT_CLASSNAME,
   SWAP_DIALOG_SCROLL_CLASSNAME,
 } from '@/components/dialogs/nfsc-swap-dialog-utils';
+import { WagmiProvider } from '@/components/providers/wagmi';
 
 const NfscCardTopUpTab = dynamic(
   () =>
@@ -86,6 +87,14 @@ const attemptGetChecksummedAddress = (address: string): string => {
 };
 
 export default function NFSCSwapDialog(props: Props) {
+  return (
+    <WagmiProvider>
+      <NFSCSwapDialogInner {...props} />
+    </WagmiProvider>
+  );
+}
+
+function NFSCSwapDialogInner(props: Props) {
   const { open, onOpenChange, walletAddress } = props;
   const { address: connectedAddress, chainId } = useAccount();
   const displayAddress = walletAddress || connectedAddress;

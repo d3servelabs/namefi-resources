@@ -221,7 +221,11 @@ const HeroSection = ({
                 ease: 'easeInOut',
               }}
             />
-            <div ref={searchAnchorRef} className="relative z-20 w-full">
+            <div
+              id="domain-search"
+              ref={searchAnchorRef}
+              className="relative z-20 w-full"
+            >
               <SearchInput
                 query={query}
                 setQuery={setQuery}

@@ -40,6 +40,9 @@ const shouldCopyStaticDirs = process.env.STORYBOOK_SKIP_STATIC_COPY !== '1';
 const mockPrivyLoginAdapter = fileURLToPath(
   new URL('../src/lib/mock/privy-login.ts', import.meta.url),
 );
+const mockWagmiProviderAdapter = fileURLToPath(
+  new URL('../src/stories/utils/storybook-auth-provider.tsx', import.meta.url),
+);
 
 const config: StorybookConfig = {
   stories: [
@@ -71,10 +74,15 @@ const config: StorybookConfig = {
               find: '@/lib/privy-login',
               replacement: mockPrivyLoginAdapter,
             },
+            {
+              find: '@/components/providers/wagmi',
+              replacement: mockWagmiProviderAdapter,
+            },
           ]
         : {
             ...(existingAlias ?? {}),
             '@/lib/privy-login': mockPrivyLoginAdapter,
+            '@/components/providers/wagmi': mockWagmiProviderAdapter,
           },
     };
     config.build = {

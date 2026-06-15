@@ -3,6 +3,7 @@
 import { WagmiProvider as PrivyWagmiProvider } from '@privy-io/wagmi';
 import { createContext, useContext, type PropsWithChildren } from 'react';
 import { getWagmiConfig } from '@/lib/wagmi-config';
+import { SessionsProvider } from './privy';
 
 let config: ReturnType<typeof getWagmiConfig> | null = null;
 const WagmiRuntimeContext = createContext(false);
@@ -27,11 +28,13 @@ export function WagmiProvider({ children }: PropsWithChildren) {
   }
 
   return (
-    <PrivyWagmiProvider config={getConfig()}>
-      <WagmiRuntimeContext.Provider value={true}>
-        {children}
-      </WagmiRuntimeContext.Provider>
-    </PrivyWagmiProvider>
+    <SessionsProvider>
+      <PrivyWagmiProvider config={getConfig()}>
+        <WagmiRuntimeContext.Provider value={true}>
+          {children}
+        </WagmiRuntimeContext.Provider>
+      </PrivyWagmiProvider>
+    </SessionsProvider>
   );
 }
 

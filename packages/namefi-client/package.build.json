@@ -27,7 +27,7 @@
     ".": "./src/index.ts"
   },
   "peerDependencies": {
-    "viem": "2.47.6",
+    "viem": "catalog:",
     "vitest": "^3.1.2",
     "zod": "^4.1.12"
   },

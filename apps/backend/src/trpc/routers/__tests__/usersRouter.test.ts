@@ -2,6 +2,20 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 process.env.DATABASE_URL ??= 'postgres://postgres:postgres@localhost:5432/test';
 
+const mockAuth = vi.hoisted(() => ({
+  requireUserAuth: vi.fn(),
+}));
+
+const mockLoginNotification = vi.hoisted(() => ({
+  triggerLoginNotification: vi.fn(),
+}));
+
+const mockCookie = vi.hoisted(() => ({
+  deleteCookie: vi.fn(),
+  getCookie: vi.fn(),
+  setCookie: vi.fn(),
+}));
+
 const { mockAllowedChains } = vi.hoisted(() => ({
   mockAllowedChains: {
     NFT_ALLOWED_CHAINS: [1, 11_155_111],
@@ -22,6 +36,7 @@ const mockDb = vi.hoisted(() => {
     },
     select: vi.fn(),
     $with: vi.fn().mockReturnValue({ as: vi.fn() }),
+    update: vi.fn(),
   };
 
   function reset() {
@@ -30,6 +45,13 @@ const mockDb = vi.hoisted(() => {
     db.select.mockReset().mockReturnValue({
       from: vi.fn().mockReturnValue({
         where: vi.fn().mockResolvedValue([]),
+      }),
+    });
+    db.update.mockReset().mockReturnValue({
+      set: vi.fn().mockReturnValue({
+        where: vi.fn().mockReturnValue({
+          returning: vi.fn().mockResolvedValue([]),
+        }),
       }),
     });
   }
@@ -50,8 +72,27 @@ vi.mock('@namefi-astra/db', async (importOriginal) => {
   };
 });
 
+vi.mock('#lib/auth', () => ({
+  requireUserAuth: mockAuth.requireUserAuth,
+}));
+
+vi.mock('#lib/login-notification', () => ({
+  triggerLoginNotification: mockLoginNotification.triggerLoginNotification,
+}));
+
+vi.mock('hono/cookie', () => ({
+  deleteCookie: mockCookie.deleteCookie,
+  getCookie: mockCookie.getCookie,
+  setCookie: mockCookie.setCookie,
+}));
+
+vi.mock('../../../temporal/activities/default', () => ({
+  sendHttpAlert: vi.fn(),
+}));
+
 vi.mock('#lib/env', () => ({
   config: {
+    ALLOW_LOGIN_NOTIFICATIONS: true,
     ALLOWED_CHAINS: mockAllowedChains,
     EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP: {},
   },
@@ -64,6 +105,11 @@ vi.mock('#lib/env', () => ({
 import type { HonoRequest } from 'hono';
 import type { RequestHeader } from 'hono/utils/headers';
 import { type Address, type BlockTag, zeroAddress } from 'viem';
+import {
+  AUTH_BOOTSTRAP_MODE_COOKIE,
+  AUTH_BOOTSTRAP_MODE_HEADER,
+} from '@namefi-astra/common/auth-session';
+import { Permission } from '@namefi-astra/utils';
 import testEnvConfig from '../../../lib/env/configs/test'; // Import the test config file directly
 import {
   getQualifyingDomainNameFromUserIdentifier,
@@ -85,6 +131,462 @@ type LocalTrpcContext = Omit<LocalTrpcContextWithReq, 'req'>;
 
 beforeEach(() => {
   mockDb.reset();
+  mockCookie.deleteCookie.mockReset();
+  mockCookie.getCookie.mockReset().mockResolvedValue(undefined);
+  mockCookie.setCookie.mockReset();
+});
+
+describe('getUser', () => {
+  const authenticatedUser = {
+    createdAt: new Date('2026-01-01T00:00:00.000Z'),
+    updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    id: 'test-user-id',
+    primaryEmail: null,
+    stripeCustomerId: null,
+    privyUserId: 'did:privy:test-user',
+    subscribeToEmails: true,
+    lastSignInAt: null,
+    lastAccessedSessionAt: null,
+    preferences: { defaultAutoEns: true, defaultAutoRenew: true },
+  };
+
+  function authUserResponse(
+    user: Pick<
+      typeof authenticatedUser,
+      | 'createdAt'
+      | 'updatedAt'
+      | 'id'
+      | 'stripeCustomerId'
+      | 'privyUserId'
+      | 'subscribeToEmails'
+      | 'lastSignInAt'
+      | 'lastAccessedSessionAt'
+      | 'preferences'
+    >,
+  ) {
+    return {
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      id: user.id,
+      stripeCustomerId: user.stripeCustomerId,
+      privyUserId: user.privyUserId,
+      subscribeToEmails: user.subscribeToEmails,
+      lastSignInAt: user.lastSignInAt,
+      lastAccessedSessionAt: user.lastAccessedSessionAt,
+      preferences: user.preferences,
+    };
+  }
+
+  function createAuthenticatedRequestContext(
+    options:
+      | string
+      | {
+          bootstrapMode?: string;
+          includeAuthorization?: boolean;
+          cookieToken?: string;
+          impersonateUserId?: string;
+        } = {},
+  ) {
+    const {
+      bootstrapMode,
+      includeAuthorization = true,
+      cookieToken,
+      impersonateUserId,
+    } = typeof options === 'string' ? { bootstrapMode: options } : options;
+    if (cookieToken || impersonateUserId) {
+      mockCookie.getCookie.mockImplementation(async (_ctx, name) =>
+        name === 'privy-token'
+          ? cookieToken
+          : name === 'impersonate-user-id'
+            ? impersonateUserId
+            : undefined,
+      );
+    }
+    const header = vi.fn((name?: RequestHeader | string) => {
+      if (!name) return {};
+      if (name === 'Authorization' && includeAuthorization) {
+        return 'Bearer test-token';
+      }
+      if (name === AUTH_BOOTSTRAP_MODE_HEADER) return bootstrapMode;
+      return undefined;
+    }) as unknown as HonoRequest['header'];
+
+    return {
+      poweredByNamefiDomain: null,
+      req: {
+        header,
+      },
+      honoCtx: cookieToken || impersonateUserId ? ({} as never) : undefined,
+      testUser: null,
+    } as unknown as TrpcContext;
+  }
+
+  function mockSelectRows({
+    permissions = [],
+    adminPanelPermissionCount = 0,
+  }: {
+    permissions?: Permission[];
+    adminPanelPermissionCount?: number;
+  }) {
+    mockDb.db.select.mockImplementation((fields?: Record<string, unknown>) => {
+      const isPermissionsQuery = fields && 'permission' in fields;
+      const isCountQuery = fields && 'count' in fields;
+      const where = vi
+        .fn()
+        .mockResolvedValue(
+          isPermissionsQuery
+            ? permissions.map((permission) => ({ permission }))
+            : isCountQuery
+              ? [{ count: adminPanelPermissionCount }]
+              : [],
+        );
+      const from = vi.fn().mockReturnValue({ where });
+      return { from };
+    });
+  }
+
+  beforeEach(() => {
+    mockAuth.requireUserAuth.mockResolvedValue({
+      user: authenticatedUser,
+      sessionId: 'test-session-id',
+      isNewUser: false,
+      tokenIssuedAt: new Date(),
+    });
+    vi.spyOn(privyClient, 'getUserById').mockResolvedValue({
+      id: authenticatedUser.privyUserId,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      isGuest: false,
+      customMetadata: {},
+      linkedAccounts: [],
+    } as never);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('returns the already resolved authenticated context user without a duplicate DB lookup', async () => {
+    const caller = usersRouter.createCaller(
+      {
+        poweredByNamefiDomain: null,
+        testUser: authenticatedUser,
+      } satisfies LocalTrpcContext as TrpcContext,
+      {},
+    );
+
+    const result = await caller.getUser();
+
+    expect(result).toEqual(authUserResponse(authenticatedUser));
+    expect(mockDb.db.query.usersTable.findFirst).not.toHaveBeenCalled();
+  });
+
+  it('does not fetch live Privy profile data for normal getUser requests', async () => {
+    const userMissingPrimaryEmail = {
+      ...authenticatedUser,
+      primaryEmail: null,
+    };
+    mockAuth.requireUserAuth.mockResolvedValue({
+      user: userMissingPrimaryEmail,
+      sessionId: 'test-session-id',
+      isNewUser: false,
+      tokenIssuedAt: new Date(),
+    });
+    const privyUserSpy = vi.spyOn(privyClient, 'getUserById');
+
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext(),
+      {},
+    );
+
+    const result = await caller.getUser();
+
+    expect(result).toEqual(authUserResponse(userMissingPrimaryEmail));
+    expect(privyUserSpy).not.toHaveBeenCalled();
+    expect(mockDb.db.update).not.toHaveBeenCalled();
+  });
+
+  it('does not attach display profile or write deprecated email without identity-token display data', async () => {
+    const userMissingPrimaryEmail = {
+      ...authenticatedUser,
+      primaryEmail: null,
+    };
+    mockAuth.requireUserAuth.mockResolvedValue({
+      user: userMissingPrimaryEmail,
+      sessionId: 'test-session-id',
+      isNewUser: false,
+      tokenIssuedAt: new Date(),
+    });
+    const privyUserSpy = vi
+      .spyOn(privyClient, 'getUserById')
+      .mockResolvedValue({} as never);
+
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext(),
+      {},
+    );
+
+    const result = await caller.getUser();
+
+    expect(result).toEqual(authUserResponse(userMissingPrimaryEmail));
+    expect(privyUserSpy).not.toHaveBeenCalled();
+    expect(mockDb.db.select).toHaveBeenCalled();
+    expect(mockDb.db.update).not.toHaveBeenCalled();
+  });
+
+  it('attaches opt-in identity-token display data without fetching Privy by id', async () => {
+    const userMissingPrimaryEmail = {
+      ...authenticatedUser,
+      primaryEmail: null,
+    };
+    mockAuth.requireUserAuth.mockResolvedValue({
+      user: userMissingPrimaryEmail,
+      sessionId: 'test-session-id',
+      isNewUser: false,
+      tokenIssuedAt: new Date(),
+    });
+    const getIdentityDisplayProfile = vi.fn(async () => ({
+      displayName: 'Fresh User',
+      email: 'fresh@example.com',
+      walletAddress: '0xfresh',
+    }));
+    const privyUserSpy = vi
+      .spyOn(privyClient, 'getUserById')
+      .mockResolvedValue({} as never);
+
+    const caller = usersRouter.createCaller(
+      {
+        ...createAuthenticatedRequestContext(),
+        getIdentityDisplayProfile,
+      },
+      {},
+    );
+
+    const result = await caller.getUser();
+
+    expect(result).toEqual({
+      ...authUserResponse(userMissingPrimaryEmail),
+      displayProfile: {
+        displayName: 'Fresh User',
+        email: 'fresh@example.com',
+        walletAddress: '0xfresh',
+      },
+    });
+    expect(getIdentityDisplayProfile).toHaveBeenCalledWith(
+      userMissingPrimaryEmail.privyUserId,
+    );
+    expect(privyUserSpy).not.toHaveBeenCalled();
+    expect(mockDb.db.update).not.toHaveBeenCalled();
+  });
+
+  it('does not let a bootstrap header suppress login-history signals for bearer-authenticated requests', async () => {
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext(AUTH_BOOTSTRAP_MODE_COOKIE),
+      {},
+    );
+
+    await caller.getUser();
+
+    expect(mockAuth.requireUserAuth).toHaveBeenCalledOnce();
+    expect(
+      mockLoginNotification.triggerLoginNotification,
+    ).toHaveBeenCalledOnce();
+  });
+
+  it('keeps login-history signal recording for enriched authenticated requests', async () => {
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext(),
+      {},
+    );
+
+    await caller.getUser();
+
+    expect(mockAuth.requireUserAuth).toHaveBeenCalledOnce();
+    expect(
+      mockLoginNotification.triggerLoginNotification,
+    ).toHaveBeenCalledOnce();
+  });
+
+  it('returns a cookie-bootstrap session snapshot with permissions without fetching Privy', async () => {
+    const userWithoutPrimaryEmail = {
+      ...authenticatedUser,
+      primaryEmail: null,
+    };
+    mockAuth.requireUserAuth.mockResolvedValue({
+      user: userWithoutPrimaryEmail,
+      sessionId: 'test-session-id',
+      isNewUser: false,
+      tokenIssuedAt: new Date(),
+    });
+    mockSelectRows({
+      permissions: [Permission.READ_USERS],
+    });
+    const privyUserSpy = vi
+      .spyOn(privyClient, 'getUserById')
+      .mockResolvedValue({} as never);
+
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext({
+        includeAuthorization: false,
+        cookieToken: 'cookie-token',
+      }),
+      {},
+    );
+
+    const result = await caller.getSessionSnapshot();
+
+    expect(result).toEqual({
+      user: authUserResponse(userWithoutPrimaryEmail),
+      permissions: [Permission.READ_USERS],
+      impersonationStatus: {
+        impersonating: false,
+        actorUserId: userWithoutPrimaryEmail.id,
+        targetUserId: null,
+        actor: null,
+        target: null,
+        targetPrivyUser: null,
+        effectiveUser: authUserResponse(userWithoutPrimaryEmail),
+      },
+    });
+    expect(mockAuth.requireUserAuth).toHaveBeenCalledWith(
+      'Bearer cookie-token',
+      null,
+    );
+    expect(privyUserSpy).not.toHaveBeenCalled();
+    expect(mockDb.db.update).not.toHaveBeenCalled();
+    expect(
+      mockLoginNotification.triggerLoginNotification,
+    ).not.toHaveBeenCalled();
+  });
+
+  it('returns a bearer-authenticated session snapshot with login-history signals', async () => {
+    mockSelectRows({
+      permissions: [Permission.READ_USERS],
+    });
+
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext(),
+      {},
+    );
+
+    const result = await caller.getSessionSnapshot();
+
+    expect(result).toEqual({
+      user: authUserResponse(authenticatedUser),
+      permissions: [Permission.READ_USERS],
+      impersonationStatus: {
+        impersonating: false,
+        actorUserId: authenticatedUser.id,
+        targetUserId: null,
+        actor: null,
+        target: null,
+        targetPrivyUser: null,
+        effectiveUser: authUserResponse(authenticatedUser),
+      },
+    });
+    expect(mockAuth.requireUserAuth).toHaveBeenCalledWith(
+      'Bearer test-token',
+      null,
+    );
+    expect(
+      mockLoginNotification.triggerLoginNotification,
+    ).toHaveBeenCalledOnce();
+  });
+
+  it('returns impersonation details in the session snapshot', async () => {
+    const targetUser = {
+      ...authenticatedUser,
+      id: 'target-user-id',
+      privyUserId: 'did:privy:target-user',
+      updatedAt: new Date('2026-01-02T00:00:00.000Z'),
+    };
+    mockSelectRows({
+      permissions: [Permission.IMPERSONATE_USERS, Permission.READ_USERS],
+      adminPanelPermissionCount: 0,
+    });
+    mockDb.db.query.usersTable.findFirst
+      .mockResolvedValueOnce(targetUser)
+      .mockResolvedValueOnce(targetUser)
+      .mockResolvedValueOnce(authenticatedUser)
+      .mockResolvedValueOnce(targetUser);
+    vi.spyOn(privyClient, 'getUserById').mockImplementation(
+      async (privyUserId: string) => {
+        const email =
+          privyUserId === targetUser.privyUserId
+            ? 'target@example.com'
+            : 'actor@example.com';
+        return {
+          id: privyUserId,
+          createdAt: new Date('2026-01-01T00:00:00.000Z'),
+          isGuest: false,
+          customMetadata: {},
+          linkedAccounts: [
+            {
+              type: 'email',
+              address: email,
+              latestVerifiedAt: new Date('2026-01-01T00:00:00.000Z'),
+            },
+          ],
+        } as never;
+      },
+    );
+
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext({
+        cookieToken: 'cookie-token',
+        includeAuthorization: false,
+        impersonateUserId: targetUser.id,
+      }),
+      {},
+    );
+
+    const result = await caller.getSessionSnapshot();
+
+    expect(result.user).toEqual(authUserResponse(targetUser));
+    expect(result.permissions).toEqual([
+      Permission.IMPERSONATE_USERS,
+      Permission.READ_USERS,
+    ]);
+    expect(result.impersonationStatus).toMatchObject({
+      impersonating: true,
+      actorUserId: authenticatedUser.id,
+      targetUserId: targetUser.id,
+      actor: {
+        id: authenticatedUser.id,
+        privyUserId: authenticatedUser.privyUserId,
+        email: 'actor@example.com',
+      },
+      target: {
+        id: targetUser.id,
+        privyUserId: targetUser.privyUserId,
+        email: 'target@example.com',
+      },
+      targetPrivyUser: {
+        id: targetUser.privyUserId,
+      },
+      effectiveUser: authUserResponse(targetUser),
+    });
+  });
+
+  it('keeps login-history signal recording for cookie-authenticated protected reads', async () => {
+    const caller = usersRouter.createCaller(
+      createAuthenticatedRequestContext({
+        includeAuthorization: false,
+        cookieToken: 'cookie-token',
+      }),
+      {},
+    );
+
+    await expect(caller.getUser()).resolves.toEqual(
+      authUserResponse(authenticatedUser),
+    );
+    expect(mockAuth.requireUserAuth).toHaveBeenCalledWith(
+      'Bearer cookie-token',
+      null,
+    );
+    expect(
+      mockLoginNotification.triggerLoginNotification,
+    ).toHaveBeenCalledOnce();
+  });
 });
 
 describe('getUserQualifiesForDomainNamePromo', () => {

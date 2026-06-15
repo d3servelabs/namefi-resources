@@ -2,8 +2,9 @@ import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import type { ConfigInput } from '../schema';
 import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
 
-// Dynamic port support: use environment variables if set by dev runner
-const backendPort = process.env.PORT || '3000';
+// Dynamic port support: use explicit environment variables if set by dev runner.
+// Next's dev server owns PORT, so do not use it as the backend default here.
+const backendPort = process.env.BACKEND_PORT || '3000';
 const frontendPort = process.env.FRONTEND_PORT || '5050';
 
 const localConfig: ConfigInput = {

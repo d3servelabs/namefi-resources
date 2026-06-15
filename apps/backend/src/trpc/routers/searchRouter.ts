@@ -8,8 +8,8 @@ import {
 } from '#lib/namefi-registry';
 import {
   authedOrPublicProcedure,
-  protectedProcedure,
   baseProcedure,
+  protectedProcedure,
 } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { generateDomainSuggestions } from '#lib/domain-suggestions';

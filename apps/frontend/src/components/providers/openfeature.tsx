@@ -48,8 +48,12 @@ export const OpenFeatureClientProvider: FC<PropsWithChildren> = ({
 
   const namefiUserId = user?.id;
   const privyUserId = privyUser?.id;
-  const email = user?.primaryEmail ?? privyUser?.email?.address ?? undefined;
-  const mainWalletAddress = user?.mainWalletAddress ?? undefined;
+  const email =
+    user?.displayProfile?.email ?? privyUser?.email?.address ?? undefined;
+  const userMainWalletAddress = (
+    user as { mainWalletAddress?: string | null } | undefined
+  )?.mainWalletAddress;
+  const mainWalletAddress = userMainWalletAddress ?? undefined;
   const isAdmin = (permissionsQuery.data?.length ?? 0) > 0;
 
   useEffect(() => {
@@ -60,10 +64,10 @@ export const OpenFeatureClientProvider: FC<PropsWithChildren> = ({
       targetingKey,
       kind: 'user',
       anonymous: !isAuthenticated,
-      namefiUserId,
-      privyUserId,
-      email,
-      mainWalletAddress,
+      ...(namefiUserId ? { namefiUserId } : {}),
+      ...(privyUserId ? { privyUserId } : {}),
+      ...(email ? { email } : {}),
+      ...(mainWalletAddress ? { mainWalletAddress } : {}),
       isAdmin,
       isImpersonating,
       isSkipAuth: isSkipAuthActive,

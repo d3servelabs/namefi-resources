@@ -21,6 +21,7 @@ import type { UnifiedCartItem, UseCart } from '@/hooks/use-cart';
 import { cartDomainKey } from '@/hooks/use-cart';
 import type { UnifiedWishlistItem, UseWishlist } from '@/hooks/use-wishlist';
 import { wishlistDomainKey } from '@/hooks/use-wishlist';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 type DomainCardProps = ComponentProps<typeof DomainCard>;
 type CartVisualState = 'default' | 'adding' | 'in-cart' | 'removing';
@@ -94,13 +95,15 @@ function StoryProviders({ children }: { children: ReactNode }) {
         <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
           <NuqsAdapter>
             <ConsentManagerProvider options={{ mode: 'offline' }}>
-              <AdminFeatureFlagsProvider>
-                <PreAuthSignalsProvider>
-                  <InteractionLoggersProvider>
-                    {children}
-                  </InteractionLoggersProvider>
-                </PreAuthSignalsProvider>
-              </AdminFeatureFlagsProvider>
+              <StorybookAuthProvider isAuthenticated={false}>
+                <AdminFeatureFlagsProvider>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      {children}
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </AdminFeatureFlagsProvider>
+              </StorybookAuthProvider>
             </ConsentManagerProvider>
           </NuqsAdapter>
         </TRPCProvider>

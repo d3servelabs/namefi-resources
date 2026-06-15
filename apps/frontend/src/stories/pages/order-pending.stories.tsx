@@ -33,6 +33,7 @@ import { WagmiProvider } from 'wagmi';
 import { createConfig, http } from 'wagmi';
 import { mainnet, sepolia, base } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS = '0x1234567890123456789012345678901234567890';
 
@@ -259,19 +260,23 @@ function StoryProviders({
             <MockTrpcProvider mockState={mockState}>
               <NuqsAdapter>
                 <ConsentManagerProvider options={{ mode: 'offline' }}>
-                  <PreAuthSignalsProvider>
-                    <InteractionLoggersProvider>
-                      <WishlistProvider>
-                        <CartProvider>
-                          <SidebarProvider defaultOpen={false}>
-                            <FreeMintsGuidanceProvider>
-                              <FeedbackProvider>{children}</FeedbackProvider>
-                            </FreeMintsGuidanceProvider>
-                          </SidebarProvider>
-                        </CartProvider>
-                      </WishlistProvider>
-                    </InteractionLoggersProvider>
-                  </PreAuthSignalsProvider>
+                  <StorybookAuthProvider
+                    isAuthenticated={mockState.isAuthenticated}
+                  >
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <SidebarProvider defaultOpen={false}>
+                              <FreeMintsGuidanceProvider>
+                                <FeedbackProvider>{children}</FeedbackProvider>
+                              </FreeMintsGuidanceProvider>
+                            </SidebarProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </StorybookAuthProvider>
                 </ConsentManagerProvider>
               </NuqsAdapter>
             </MockTrpcProvider>

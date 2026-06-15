@@ -1,4 +1,4 @@
-const ENSDATA_AVATAR_BASE_URL = 'https://ensdata.net/media/avatar/';
+const ENSDATA_AVATAR_BASE_URL = 'https://api.ensdata.net/media/avatar/';
 
 export function getEnsDataAvatarUrl(identity?: string | null): string | null {
   const normalizedIdentity = identity?.trim();

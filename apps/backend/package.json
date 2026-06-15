@@ -178,7 +178,7 @@
     "superjson": "^2.2.2",
     "tldts": "^7.0.8",
     "unique-names-generator": "^4.7.1",
-    "viem": "2.47.6",
+    "viem": "catalog:",
     "webpack": "5.99.9",
     "zod": "catalog:"
   },

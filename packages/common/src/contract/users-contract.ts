@@ -6,7 +6,6 @@ import {
 import { z } from 'zod';
 
 import { createContract } from './create-contract';
-import type { RouterContract } from './trpc-contract';
 
 /**
  * Contract for the users router.
@@ -73,7 +72,11 @@ type UserRowLike = {
   createdAt: Date;
   updatedAt: Date;
   id: string;
-  primaryEmail: string | null;
+  displayProfile?: {
+    displayName: string | null;
+    email: string | null;
+    walletAddress: string | null;
+  } | null;
   stripeCustomerId: string | null;
   privyUserId: string;
   subscribeToEmails: boolean;
@@ -87,8 +90,8 @@ const userRowSchema = z.custom<UserRowLike>(() => true);
 type ImpersonationProfileLike = {
   id: string;
   privyUserId: string;
-  primaryEmail: string | null;
   displayName: string | null;
+  email: string | null;
   walletAddresses: string[];
   mainWalletAddress: string | null;
 };
@@ -128,6 +131,14 @@ const impersonationStatusOutputSchema = z.discriminatedUnion('impersonating', [
 
 // TODO(contract): replace with a structural schema for Permission enum.
 const permissionSchema = z.custom<string>(() => true);
+
+type SessionSnapshotLike = {
+  user: UserRowLike;
+  permissions: string[];
+  impersonationStatus: z.infer<typeof impersonationStatusOutputSchema>;
+};
+
+const sessionSnapshotSchema = z.custom<SessionSnapshotLike>(() => true);
 
 const requestNfscFaucetOutputSchema = z.union([
   z.object({
@@ -360,6 +371,11 @@ export const usersContract = createContract(
       type: 'query',
       input: z.void(),
       output: userRowSchema,
+    },
+    getSessionSnapshot: {
+      type: 'query',
+      input: z.void(),
+      output: sessionSnapshotSchema,
     },
     getMyPermissions: {
       type: 'query',

@@ -13,11 +13,12 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { config } from '@/lib/env';
 import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
 import {
   type FC,
   type HTMLAttributes,
+  type ReactNode,
   useMemo,
   useState,
   useEffect,
@@ -34,6 +35,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   EmailRequiredModal,
   DNS_MANAGEMENT_EMAIL_REQUIRED,
@@ -69,6 +71,11 @@ export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
 
+type DomainManagementChromeOptions = {
+  domain: string;
+  marketplaceListingEnabled: boolean;
+};
+
 const DOMAIN_FLAG_DEFINITION: FeatureFlagDefinition[] = [
   {
     key: 'new_overview_page',
@@ -79,6 +86,109 @@ const DOMAIN_FLAG_DEFINITION: FeatureFlagDefinition[] = [
     defaultValue: true,
   },
 ];
+
+function getErrorHttpStatus(error: unknown) {
+  return error && typeof error === 'object' && 'data' in error
+    ? (error as { data?: { httpStatus?: number } }).data?.httpStatus
+    : undefined;
+}
+
+function shouldRetryDomainManagementQuery(
+  failureCount: number,
+  error: unknown,
+) {
+  const status = getErrorHttpStatus(error);
+  return (status === undefined || status >= 500) && failureCount < 2;
+}
+
+function useDomainManagementChromeQueries({
+  domain,
+  marketplaceListingEnabled,
+}: DomainManagementChromeOptions) {
+  const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const trpc = useTRPC();
+  const domainChromeQueriesEnabled = !isAuthLoading && isAuthenticated;
+
+  const isDomainOwnedByCurrentUserQuery = useQuery({
+    ...trpc.users.isDomainOwnedByCurrentUser.queryOptions(
+      {
+        normalizedDomainName: domain,
+      },
+      {
+        enabled: domainChromeQueriesEnabled,
+        trpc: { context: { skipBatch: true } },
+      },
+    ),
+    retry: shouldRetryDomainManagementQuery,
+  });
+  const domainOwnerWalletQuery = useQuery({
+    ...trpc.domainConfig.getDomainOwnerWallet.queryOptions(
+      {
+        domainName: domain,
+      },
+      {
+        enabled: domainChromeQueriesEnabled,
+        trpc: { context: { skipBatch: true } },
+      },
+    ),
+    retry: shouldRetryDomainManagementQuery,
+  });
+  const domainSupportedFeaturesQuery = useQuery({
+    ...trpc.domainConfig.getDomainSupportedFeatures.queryOptions(
+      {
+        normalizedDomainName: domain,
+      },
+      {
+        enabled: domainChromeQueriesEnabled,
+        refetchInterval: 10000,
+        trpc: { context: { skipBatch: true } },
+      },
+    ),
+    retry: shouldRetryDomainManagementQuery,
+  });
+  const domainExportDetailsQuery = useQuery({
+    ...trpc.domainConfig.getDomainExportDetails.queryOptions(
+      { domainName: domain },
+      {
+        enabled: domainChromeQueriesEnabled && marketplaceListingEnabled,
+        trpc: { context: { skipBatch: true } },
+      },
+    ),
+    retry: shouldRetryDomainManagementQuery,
+  });
+
+  const domainManagementError =
+    (isDomainOwnedByCurrentUserQuery.isError
+      ? isDomainOwnedByCurrentUserQuery.error
+      : null) ??
+    (domainOwnerWalletQuery.isError ? domainOwnerWalletQuery.error : null) ??
+    (domainSupportedFeaturesQuery.isError
+      ? domainSupportedFeaturesQuery.error
+      : null);
+  const hasDomainManagementData =
+    isDomainOwnedByCurrentUserQuery.data !== undefined &&
+    Boolean(domainOwnerWalletQuery.data) &&
+    Boolean(domainSupportedFeaturesQuery.data);
+
+  return {
+    domainExportDetailsQuery,
+    domainManagementError,
+    domainOwnerWalletData: domainOwnerWalletQuery.data,
+    domainSupportedFeatures: domainSupportedFeaturesQuery.data?.features,
+    hasDomainManagementData,
+    isAuthenticated,
+    isAuthLoading,
+    isDomainOwnedByCurrentUser: isDomainOwnedByCurrentUserQuery.data,
+    retryDomainManagementQueries: () => {
+      void isDomainOwnedByCurrentUserQuery.refetch();
+      void domainOwnerWalletQuery.refetch();
+      void domainSupportedFeaturesQuery.refetch();
+      if (marketplaceListingEnabled) {
+        void domainExportDetailsQuery.refetch();
+      }
+    },
+  };
+}
 
 export const DomainManagement: FC<DomainManagementProps> = ({
   domain,
@@ -120,57 +230,36 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   });
   const [showEmailModal, setShowEmailModal] = useState(false);
   const { hasEmail } = useEmailPrompt();
-  const { isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
-
-  const trpc = useTRPC();
-  const { data: isDomainOwnedByCurrentUser } = useSuspenseQuery(
-    trpc.users.isDomainOwnedByCurrentUser.queryOptions({
-      normalizedDomainName: domain,
-    }),
-  );
-  const {
-    data: { nft },
-  } = useSuspenseQuery(
-    trpc.domainConfig.getDomainOwnerWallet.queryOptions({
-      domainName: domain,
-    }),
-  );
 
   // A domain that's exportable to another registrar can't be listed on a
   // marketplace — its NFT may be burned when the export completes. Fetched
   // here (only when the Marketplace tab is enabled) so a direct
   // `?tab=marketplace` link renders the right state without a loading flash.
-  const domainExportDetailsQuery = useQuery(
-    trpc.domainConfig.getDomainExportDetails.queryOptions(
-      { domainName: domain },
-      { enabled: marketplaceListingEnabled },
-    ),
-  );
-
   const {
-    data: { features: domainSupportedFeatures },
-  } = useSuspenseQuery(
-    trpc.domainConfig.getDomainSupportedFeatures.queryOptions(
-      {
-        normalizedDomainName: domain,
-      },
-      {
-        refetchInterval: 10000,
-      },
-    ),
-  );
-
+    domainExportDetailsQuery,
+    domainManagementError,
+    domainOwnerWalletData,
+    domainSupportedFeatures,
+    hasDomainManagementData,
+    isAuthenticated,
+    isAuthLoading,
+    isDomainOwnedByCurrentUser,
+    retryDomainManagementQueries,
+  } = useDomainManagementChromeQueries({
+    domain,
+    marketplaceListingEnabled,
+  });
   useRecentDomains({
-    newlyVisitedDomain: domain,
+    newlyVisitedDomain: hasDomainManagementData ? domain : undefined,
   });
 
   // Show email modal only after auth is loaded and user doesn't have email
   useEffect(() => {
-    if (!isAuthLoading && !hasEmail) {
+    if (!isAuthLoading && !hasEmail && hasDomainManagementData) {
       setShowEmailModal(true);
     }
-  }, [hasEmail, isAuthLoading]);
+  }, [hasDomainManagementData, hasEmail, isAuthLoading]);
 
   useEffect(() => {
     if (
@@ -196,6 +285,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   const handleGoBack = () => {
     router.back();
   };
+
   const showDnsTable =
     domainSupportedFeatures?.dnsManagement?.enabled &&
     domainSupportedFeatures?.dnsManagement?.config.showPanel;
@@ -212,6 +302,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
   const showDnsManagement =
     showNameservers || showDnssec || showDomainPreferences;
+  const marketplaceExportError =
+    currentTab === 'marketplace' && domainExportDetailsQuery.isError
+      ? domainExportDetailsQuery.error
+      : null;
 
   useEffect(() => {
     if (requestedSection !== 'forward-to') {
@@ -230,6 +324,69 @@ export const DomainManagement: FC<DomainManagementProps> = ({
     });
     return () => cancelAnimationFrame(raf);
   }, [requestedSection, currentTab, showDomainPreferences]);
+
+  if (!isAuthLoading && !isAuthenticated) {
+    return (
+      <div className={cn('', className)} {...rest}>
+        <DomainManagementErrorState
+          domain={domain}
+          title="Sign in required"
+          message="Please sign in to manage this domain."
+        />
+      </div>
+    );
+  }
+
+  if (domainManagementError) {
+    return (
+      <div className={cn('', className)} {...rest}>
+        <DomainManagementErrorState
+          domain={domain}
+          title="Unable to load domain management"
+          message={
+            domainManagementError instanceof Error
+              ? domainManagementError.message
+              : 'Please try again.'
+          }
+          onRetry={retryDomainManagementQueries}
+        />
+      </div>
+    );
+  }
+
+  if (marketplaceExportError) {
+    return (
+      <div className={cn('', className)} {...rest}>
+        <DomainManagementErrorState
+          domain={domain}
+          title="Unable to load marketplace status"
+          message={
+            marketplaceExportError instanceof Error
+              ? marketplaceExportError.message
+              : 'Please try again.'
+          }
+          onRetry={() => {
+            void domainExportDetailsQuery.refetch();
+          }}
+        />
+      </div>
+    );
+  }
+
+  if (
+    !hasDomainManagementData ||
+    !domainOwnerWalletData ||
+    !domainSupportedFeatures
+  ) {
+    return (
+      <div className={cn('', className)} {...rest}>
+        <DomainManagementLoadingState domain={domain} />
+      </div>
+    );
+  }
+
+  const { nft } = domainOwnerWalletData;
+  const loadedDomainSupportedFeatures = domainSupportedFeatures;
 
   return (
     <div className={cn('', className)} {...rest}>
@@ -267,7 +424,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
         />
       </div>
 
-      {domainSupportedFeatures.domainManagement.enabled ? (
+      {loadedDomainSupportedFeatures.domainManagement.enabled ? (
         <Tabs defaultValue="dns-setting" className="w-full">
           <MainTabs />
 
@@ -351,19 +508,21 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           <div className="text-center py-2 flex flex-col gap-4 items-center">
             <p
               className="text-zinc-200 text-md font-medium"
-              // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
               dangerouslySetInnerHTML={{
                 __html:
-                  domainSupportedFeatures.domainManagement.config.message ?? '',
+                  loadedDomainSupportedFeatures.domainManagement.config
+                    .message ?? '',
               }}
             />
-            {domainSupportedFeatures.domainManagement.config.redirectTo ? (
+            {loadedDomainSupportedFeatures.domainManagement.config
+              .redirectTo ? (
               <Button
                 render={(props) => (
                   <a
                     {...props}
                     href={
-                      domainSupportedFeatures.domainManagement.config.redirectTo
+                      loadedDomainSupportedFeatures.domainManagement.config
+                        .redirectTo
                     }
                   >
                     {props.children}
@@ -403,6 +562,82 @@ export const ComingSoonCard = ({ title }: { title: string }) => {
     </Card>
   );
 };
+
+function DomainManagementLoadingState({ domain }: { domain: string }) {
+  return (
+    <div className="space-y-6">
+      <DomainManagementTitle domain={domain}>
+        <Skeleton className="h-8 w-8 rounded-full" />
+      </DomainManagementTitle>
+      <div className="flex flex-wrap gap-2">
+        <Skeleton className="h-10 w-36 rounded-md" />
+        <Skeleton className="h-10 w-28 rounded-md" />
+        <Skeleton className="h-10 w-40 rounded-md" />
+      </div>
+      <Card className="bg-zinc-900 border-zinc-800">
+        <CardHeader>
+          <Skeleton className="h-6 w-48" />
+        </CardHeader>
+        <div className="space-y-4 p-6 pt-0">
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-full" />
+          <Skeleton className="h-20 w-2/3" />
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function DomainManagementErrorState({
+  domain,
+  title,
+  message,
+  onRetry,
+  retryLabel = 'Retry',
+}: {
+  domain: string;
+  title: string;
+  message: string;
+  onRetry?: () => void;
+  retryLabel?: string;
+}) {
+  return (
+    <div className="space-y-6">
+      <DomainManagementTitle domain={domain} />
+      <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg">
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+        </CardHeader>
+        <div className="space-y-4 p-6 pt-0">
+          <p className="text-sm text-muted-foreground">{message}</p>
+          {onRetry ? (
+            <Button type="button" variant="outline" onClick={onRetry}>
+              {retryLabel}
+            </Button>
+          ) : null}
+        </div>
+      </Card>
+    </div>
+  );
+}
+
+function DomainManagementTitle({
+  domain,
+  children,
+}: {
+  domain: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="my-2 flex items-center gap-3">
+      <h1 className="text-4xl font-bold font-mono">
+        {capitalizeFirstLetter(domain)}
+      </h1>
+      {children}
+    </div>
+  );
+}
+
 function capitalizeFirstLetter(text: string) {
   return text.slice(0, 1).toUpperCase() + text.slice(1).toLowerCase();
 }

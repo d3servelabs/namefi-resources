@@ -15,6 +15,8 @@ import { OriginProvider } from '@/components/providers/origin';
 import { TRPCProvider, type AppRouter } from '@/lib/trpc';
 import { createMockLink } from '@/lib/mock/trpc';
 import { MockPrivyProvider } from '@/lib/mock/privy';
+import { ConsentManagerProvider } from '@c15t/nextjs';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS =
   '0x1234567890123456789012345678901234567890' as const;
@@ -118,7 +120,11 @@ function StoryProviders({ children }: { children: ReactNode }) {
         <OriginProvider originInfo={mockOriginRuntime}>
           <QueryClientProvider client={queryClient}>
             <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-              {children}
+              <ConsentManagerProvider options={{ mode: 'offline' }}>
+                <StorybookAuthProvider isAuthenticated={true}>
+                  {children}
+                </StorybookAuthProvider>
+              </ConsentManagerProvider>
             </TRPCProvider>
           </QueryClientProvider>
         </OriginProvider>
@@ -132,6 +138,12 @@ const meta: Meta<BalanceBreakdownDialogProps> = {
   component: BalanceBreakdownDialog,
   parameters: {
     layout: 'fullscreen',
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/profile',
+      },
+    },
   },
   args: {
     open: true,

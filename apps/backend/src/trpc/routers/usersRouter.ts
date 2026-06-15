@@ -16,11 +16,7 @@ import {
   orderItemsTable,
   mapper,
 } from '@namefi-astra/db';
-import {
-  checksumWalletAddressSchema,
-  namefiNormalizedDomainSchema,
-  type NamefiNormalizedDomain,
-} from '@namefi-astra/utils';
+import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import type {
   LinkedAccountWithMetadata,
   User as PrivyUser,
@@ -39,10 +35,12 @@ import { resolve } from '@namefi-astra/utils/promises/resolve';
 import { usersContract } from '@namefi-astra/common/contract/users-contract';
 import {
   authedOrPublicProcedure,
+  cookieAuthBootstrapProcedure,
   protectedProcedure,
   publicProcedure,
   auditedAdminProcedureWithPermissions,
   withAudit,
+  type TrpcContext,
 } from '../base';
 import { createContractTRPCRouter } from '../contract';
 import { Permission } from '@namefi-astra/utils';
@@ -52,14 +50,13 @@ import {
 } from '../utils';
 import { canUserAccessAdminPanel } from '../utils';
 import {
-  privyCustomMetadataSchema,
   privyCustomMetadataToPrivyStorage,
   privyStorageToPrivyCustomMetadata,
 } from '../types';
 
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
-
 import { logger } from '#lib/logger';
+import type { AuthIdentityDisplayProfile } from '#lib/auth';
 import { IsUserDomainOwner } from '../guards/assert-domain-owner';
 import { syncSingleUserToListmonkActivity } from '../../temporal/activities/default/email-subscription-sync.activities';
 import { audit, createAuditRecord } from '#lib/auditor';
@@ -105,11 +102,130 @@ type PreviouslyOwnedDomainEvent = {
 type ImpersonationProfile = {
   id: string;
   privyUserId: string;
-  primaryEmail: string | null;
   displayName: string | null;
+  email: string | null;
   walletAddresses: string[];
   mainWalletAddress: string | null;
 };
+
+type AuthenticatedUser = NonNullable<TrpcContext['user']>;
+type AuthUserForResponse = Pick<
+  AuthenticatedUser,
+  | 'createdAt'
+  | 'updatedAt'
+  | 'id'
+  | 'stripeCustomerId'
+  | 'privyUserId'
+  | 'subscribeToEmails'
+  | 'lastSignInAt'
+  | 'lastAccessedSessionAt'
+  | 'preferences'
+> & {
+  displayProfile?: AuthIdentityDisplayProfile | null;
+};
+
+function getPrivyEmailAddress(privyUser: PrivyUser | null | undefined) {
+  const directEmail = privyUser?.email?.address;
+  if (directEmail) {
+    return directEmail;
+  }
+
+  const emailAccount = privyUser?.linkedAccounts.find(
+    (account) => account.type === 'email',
+  );
+  return emailAccount && 'address' in emailAccount
+    ? (emailAccount.address ?? null)
+    : null;
+}
+
+function getProtectedContextUser(ctx: TrpcContext): AuthenticatedUser {
+  if (!ctx.user) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User not found',
+    });
+  }
+  return ctx.user;
+}
+
+function getAuthUserForResponse(user: AuthenticatedUser): AuthUserForResponse {
+  return {
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    id: user.id,
+    stripeCustomerId: user.stripeCustomerId,
+    privyUserId: user.privyUserId,
+    subscribeToEmails: user.subscribeToEmails,
+    lastSignInAt: user.lastSignInAt,
+    lastAccessedSessionAt: user.lastAccessedSessionAt,
+    preferences: user.preferences,
+  };
+}
+
+async function getCurrentUserForResponse(ctx: TrpcContext) {
+  const user = getProtectedContextUser(ctx);
+  const authUser = getAuthUserForResponse(user);
+  const displayProfile =
+    (await ctx.getIdentityDisplayProfile?.(user.privyUserId)) ?? null;
+  if (displayProfile) {
+    return {
+      ...authUser,
+      displayProfile,
+    };
+  }
+
+  return authUser;
+}
+
+async function getImpersonationStatusForResponse(ctx: TrpcContext) {
+  if (ctx.impersonation) {
+    const effectiveUser = getAuthUserForResponse(getProtectedContextUser(ctx));
+    const actor = await _buildProfileForImpersonation(
+      ctx.impersonation.actorUserId,
+    );
+    const target = await _buildProfileForImpersonation(
+      ctx.impersonation.targetUserId,
+    );
+    let targetPrivyUser: PrivyUser | null = null;
+    try {
+      if (target?.privyUserId) {
+        targetPrivyUser = await privyClient.getUserById(target.privyUserId);
+      }
+    } catch (error) {
+      logger.error(
+        {
+          error,
+          context: 'getImpersonationStatus:loadTargetPrivyUser',
+          actorUserId: ctx.impersonation.actorUserId,
+          targetUserId: ctx.impersonation.targetUserId,
+        },
+        'Failed to load/redact target Privy user for impersonation',
+      );
+    }
+    return {
+      impersonating: true as const,
+      actorUserId: ctx.impersonation.actorUserId,
+      targetUserId: ctx.impersonation.targetUserId,
+      actor,
+      target,
+      targetPrivyUser,
+      effectiveUser,
+    };
+  }
+
+  const user = getProtectedContextUser(ctx);
+  const effectiveUser = getAuthUserForResponse(user);
+  return {
+    impersonating: false as const,
+    actorUserId: user.id,
+    targetUserId: null as null,
+    actor: null as null,
+    target: null as null,
+    targetPrivyUser: null as null,
+    effectiveUser,
+  };
+}
+
 const _buildProfileForImpersonation = async (
   userId: string,
 ): Promise<ImpersonationProfile | null> => {
@@ -118,18 +234,17 @@ const _buildProfileForImpersonation = async (
   });
   if (!dbUser) return null;
   let displayName: string | null = null;
-  let primaryEmail: string | null = null;
+  let email: string | null = null;
   let walletAddresses: string[] = [];
   let mainWalletAddress: string | null = null;
   try {
     const privyUser = await privyClient.getUserById(dbUser.privyUserId);
-    primaryEmail = privyUser?.email?.address ?? null;
+    email = getPrivyEmailAddress(privyUser);
     const custom = privyStorageToPrivyCustomMetadata.parse(
       privyUser?.customMetadata,
     );
     const fullName = custom?.fullName;
-    displayName =
-      fullName || (primaryEmail ? primaryEmail.split('@')[0] : null) || null;
+    displayName = fullName || (email ? email.split('@')[0] : null) || null;
     walletAddresses = getPrivyUserLinkedEthereumChecksumWalletAddresses({
       privyUser,
     });
@@ -144,8 +259,8 @@ const _buildProfileForImpersonation = async (
   return {
     id: dbUser.id,
     privyUserId: dbUser.privyUserId,
-    primaryEmail,
     displayName,
+    email,
     walletAddresses,
     mainWalletAddress,
   };
@@ -169,48 +284,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
           'getImpersonationStatus: failed to get sleep ms',
         );
       }
-      if (ctx.impersonation) {
-        const actor = await _buildProfileForImpersonation(
-          ctx.impersonation.actorUserId,
-        );
-        const target = await _buildProfileForImpersonation(
-          ctx.impersonation.targetUserId,
-        );
-        let targetPrivyUser: PrivyUser | null = null;
-        try {
-          if (target?.privyUserId) {
-            targetPrivyUser = await privyClient.getUserById(target.privyUserId);
-          }
-        } catch (error) {
-          logger.error(
-            {
-              error,
-              context: 'getImpersonationStatus:loadTargetPrivyUser',
-              actorUserId: ctx.impersonation.actorUserId,
-              targetUserId: ctx.impersonation.targetUserId,
-            },
-            'Failed to load/redact target Privy user for impersonation',
-          );
-        }
-        return {
-          impersonating: true as const,
-          actorUserId: ctx.impersonation.actorUserId,
-          targetUserId: ctx.impersonation.targetUserId,
-          actor,
-          target,
-          targetPrivyUser,
-          effectiveUser: ctx.user,
-        };
-      }
-      return {
-        impersonating: false as const,
-        actorUserId: ctx.user.id,
-        targetUserId: null as null,
-        actor: null as null,
-        target: null as null,
-        targetPrivyUser: null as null,
-        effectiveUser: ctx.user,
-      };
+      return await getImpersonationStatusForResponse(ctx);
     }),
   impersonateUser: auditedAdminProcedureWithPermissions(
     Permission.IMPERSONATE_USERS,
@@ -354,20 +428,16 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
   getUser: protectedProcedure
     .input(usersContract.getUser.input)
     .output(usersContract.getUser.output)
-    .query(async ({ ctx }) => {
-      const user = await db.query.usersTable.findFirst({
-        where: eq(usersTable.id, ctx.user.id),
-      });
+    .query(async ({ ctx }) => await getCurrentUserForResponse(ctx)),
 
-      if (!user) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
-        });
-      }
-
-      return user;
-    }),
+  getSessionSnapshot: cookieAuthBootstrapProcedure
+    .input(usersContract.getSessionSnapshot.input)
+    .output(usersContract.getSessionSnapshot.output)
+    .query(async ({ ctx }) => ({
+      user: await getCurrentUserForResponse(ctx),
+      permissions: (ctx.userPermissions ?? []) as Permission[],
+      impersonationStatus: await getImpersonationStatusForResponse(ctx),
+    })),
 
   getMyPermissions: protectedProcedure
     .input(usersContract.getMyPermissions.input)
@@ -988,14 +1058,13 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         privyClient.getUserById(user.privyUserId),
       );
 
-      if (error || isNil(privyUser) || isNil(privyUser.email?.address)) {
+      const email = getPrivyEmailAddress(privyUser);
+      if (error || isNil(privyUser) || isNil(email)) {
         return { viewable: false };
       }
 
       const userOwnedParentDomains =
-        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[
-          privyUser.email.address
-        ]?.filter(
+        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[email]?.filter(
           (domain) =>
             isNil(poweredByNamefiDomain) || domain === poweredByNamefiDomain,
         ) ?? [];
@@ -1019,7 +1088,8 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
         });
       }
 
-      if (isNil(privyUser.email?.address)) {
+      const email = getPrivyEmailAddress(privyUser);
+      if (isNil(email)) {
         throw new TRPCError({
           code: 'UNAUTHORIZED',
           message: 'missing email',
@@ -1028,8 +1098,7 @@ export const usersRouter = createContractTRPCRouter<typeof usersContract>({
 
       // #region get all issued subdomains for parent domains owned by user
       const userOwnedParentDomains =
-        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[privyUser.email.address] ??
-        [];
+        config.EMAIL_ADDRESS_TO_OWNED_HOSTNAMES_MAP[email] ?? [];
 
       const parentDomains = poweredByNamefiDomain
         ? userOwnedParentDomains.filter(

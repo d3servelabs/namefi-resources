@@ -9,11 +9,13 @@ export function createMockLink({
   isAuthenticated,
   user: $user,
   impersonationData: $impersonationData,
+  permissionsData = [],
   getMockData = async () => [null, {}] as [null, any],
 }: {
   isAuthenticated: boolean;
   user?: AppRouterOutput['users']['getUser'];
   impersonationData?: AppRouterOutput['users']['getImpersonationStatus'];
+  permissionsData?: AppRouterOutput['users']['getMyPermissions'];
   getMockData: (
     opts: ControlledLinkHandlerOptions<unknown, unknown>,
   ) => Promise<
@@ -32,7 +34,6 @@ export function createMockLink({
 
   const user = $user ?? {
     id: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
-    primaryEmail: 'dev-team@d3serve.xyz',
     stripeCustomerId: 'cus_SEo212w712hXZm',
     privyUserId: 'did:privy:cmcjax6ya00123z0nch67ge9x',
     subscribeToEmails: true,
@@ -75,11 +76,28 @@ export function createMockLink({
           }
           return unAuthedRes(path);
 
+        case 'users.getSessionSnapshot':
+          if (isAuthenticated && user) {
+            return wrapResponse({
+              user,
+              permissions: permissionsData,
+              impersonationStatus: impersonationData,
+            });
+          }
+          return unAuthedRes(path);
+
         case 'users.getImpersonationStatus':
           if (isAuthenticated && impersonationData) {
             return wrapResponse(impersonationData);
           }
           return unAuthedRes(path);
+
+        case 'users.getMyPermissions':
+          if (isAuthenticated) {
+            return wrapResponse(permissionsData);
+          }
+          return unAuthedRes(path);
+
         default:
           return getMockData(opts)
             .then(([error, data]: any) => {

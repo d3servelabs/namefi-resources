@@ -12,6 +12,8 @@ import { TRPCProvider } from '@/lib/trpc';
 import { createMockLink } from '@/lib/mock/trpc';
 import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@/lib/trpc';
+import { ConsentManagerProvider } from '@c15t/nextjs';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const MOCK_WALLET_ADDRESS_2 = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
@@ -66,7 +68,11 @@ function StoryProviders({ children }: { children: ReactNode }) {
       <WagmiProvider config={mockWagmiConfig}>
         <QueryClientProvider client={queryClient}>
           <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
-            <TooltipProvider>{children}</TooltipProvider>
+            <ConsentManagerProvider options={{ mode: 'offline' }}>
+              <StorybookAuthProvider isAuthenticated={false}>
+                <TooltipProvider>{children}</TooltipProvider>
+              </StorybookAuthProvider>
+            </ConsentManagerProvider>
           </TRPCProvider>
         </QueryClientProvider>
       </WagmiProvider>

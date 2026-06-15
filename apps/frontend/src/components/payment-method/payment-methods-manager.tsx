@@ -27,10 +27,10 @@ import {
   normalizeCardBrand,
 } from '@/lib/utils/card-brand';
 import type { SetupIntent } from '@stripe/stripe-js';
-import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
-import { Suspense, useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
 import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-placeholder';
@@ -99,9 +99,9 @@ export default function PaymentMethodsManager() {
   const [showSavePaymentMethodDialog, setShowSavePaymentMethodDialog] =
     useState(false);
   const [paymentMethodsRefetchRequired, setPaymentMethodsRefetchRequired] =
-    useState(true);
+    useState(false);
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
 
   const handleSavePaymentMethodSuccess = useCallback(
     (_setupIntent: SetupIntent) => {
@@ -115,7 +115,7 @@ export default function PaymentMethodsManager() {
     toast('Failed to save your payment method', { description: error.message });
   }, []);
 
-  if (!isAuthenticated) {
+  if (!(isLoading || isAuthenticated)) {
     return <AuthRequired />;
   }
 
@@ -124,28 +124,30 @@ export default function PaymentMethodsManager() {
       <div className="flex flex-col">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Payment Methods</h2>
-          <SavePaymentMethodDialog
-            amountInUsdCents={1000}
-            dialogTrigger={<NamefiButton>Add Credit Card</NamefiButton>}
-            onSavePaymentMethodError={handleSavePaymentMethodError}
-            onSavePaymentMethodSuccess={handleSavePaymentMethodSuccess}
-            onOpenChange={setShowSavePaymentMethodDialog}
-            showSavePaymentMethodDialog={showSavePaymentMethodDialog}
-          />
+          {!isLoading ? (
+            <SavePaymentMethodDialog
+              amountInUsdCents={1000}
+              dialogTrigger={<NamefiButton>Add Credit Card</NamefiButton>}
+              onSavePaymentMethodError={handleSavePaymentMethodError}
+              onSavePaymentMethodSuccess={handleSavePaymentMethodSuccess}
+              onOpenChange={setShowSavePaymentMethodDialog}
+              showSavePaymentMethodDialog={showSavePaymentMethodDialog}
+            />
+          ) : null}
         </div>
-        <Suspense fallback={<LoadingSkeletons />}>
+        {isLoading ? (
+          <LoadingSkeletons />
+        ) : (
           <PaymentMethodsGrid
             paymentMethodsRefetchRequired={paymentMethodsRefetchRequired}
             onPaymentMethodsRefetch={() =>
               setPaymentMethodsRefetchRequired(false)
             }
           />
-        </Suspense>
+        )}
       </div>
 
-      <Suspense fallback={<LoadingSkeletons />}>
-        <UserWalletCardsGrid />
-      </Suspense>
+      {isLoading ? <LoadingSkeletons /> : <UserWalletCardsGrid />}
     </PageShell>
   );
 }
@@ -172,33 +174,38 @@ function PaymentMethodsGrid({
     brand: string;
   } | null>(null);
 
-  const { privyUser } = useAuth();
+  const { privyUser, unsafeDisplayProfile } = useAuth();
   const trpc = useTRPC();
 
   // Get ENS name for primary wallet
   const primaryWallet = privyUser?.wallet?.address;
+  const displayWallet = primaryWallet ?? unsafeDisplayProfile?.walletAddress;
   const { data: ensName } = useEnsName({
-    address: primaryWallet as `0x${string}` | undefined,
+    address: displayWallet as `0x${string}` | undefined,
     chainId: 1,
-    query: { enabled: Boolean(primaryWallet) },
+    query: { enabled: Boolean(displayWallet) },
   });
 
   // Determine card holder name with priority: fullName > ENS > email > wallet address
   const cardHolderName = useMemo(() => {
-    const fullName = privyUser?.customMetadata?.fullName;
-    const email = privyUser?.email?.address;
-    const wallet = primaryWallet;
+    const fullName =
+      privyUser?.customMetadata?.fullName ?? unsafeDisplayProfile?.displayName;
+    const email = privyUser?.email?.address ?? unsafeDisplayProfile?.email;
+    const wallet = displayWallet;
 
     const name = fullName || ensName || email || wallet || 'CARD HOLDER';
     return name.toUpperCase();
-  }, [privyUser, ensName, primaryWallet]);
+  }, [privyUser, unsafeDisplayProfile, ensName, displayWallet]);
 
   const {
     data: getPaymentMethodsData,
     refetch: refetchPaymentMethods,
+    isLoading: getPaymentMethodsLoading,
     isFetching: getPaymentMethodsFetching,
-  } = useSuspenseQuery({
-    ...trpc.payments.getPaymentMethods.queryOptions(),
+  } = useQuery({
+    ...trpc.payments.getPaymentMethods.queryOptions(void 0, {
+      trpc: { context: { skipBatch: true } },
+    }),
   });
 
   const {
@@ -272,7 +279,11 @@ function PaymentMethodsGrid({
     refetchPaymentMethods,
   ]);
 
-  if (getPaymentMethodsFetching) {
+  if (
+    getPaymentMethodsLoading ||
+    !getPaymentMethodsData ||
+    getPaymentMethodsFetching
+  ) {
     return <LoadingSkeletons />;
   }
 

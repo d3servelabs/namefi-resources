@@ -19,6 +19,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { AlertCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { getAuthContactEmail } from '@/components/providers/auth-display-profile';
 import { useAuth } from '@/hooks/use-auth';
 import { useAdminFeatureFlag } from './admin/feature-flags/use-flag';
 import { FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG } from '@/lib/openfeature-flags';
@@ -27,10 +28,25 @@ export function HeaderMissingEmailWarning() {
   const [forceHeaderMissingEmailWarning] = useAdminFeatureFlag(
     FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
   );
-  const { privyUser, ready, isAuthenticated } = useAuth();
+  const {
+    privyUser,
+    authReady,
+    isAuthenticated,
+    isPrivyUserLoading,
+    unsafeDisplayProfile,
+  } = useAuth();
+  const contactEmail = getAuthContactEmail({
+    privyUser,
+    unsafeDisplayProfile,
+  });
+  const hasEmailStateToCheck = Boolean(privyUser || unsafeDisplayProfile);
   const canShowPrompt =
     forceHeaderMissingEmailWarning ||
-    (ready && isAuthenticated && !privyUser?.email?.address);
+    (authReady &&
+      isAuthenticated &&
+      !isPrivyUserLoading &&
+      hasEmailStateToCheck &&
+      !contactEmail);
   const { isMobile } = useSidebar();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);

@@ -213,7 +213,7 @@ export const configSchema = z
     PORT: z.number().default(3000),
     TEMPORAL_WORKER_PORT: z.number().default(3000),
     LOG_LEVEL: z.enum(['debug', 'info', 'warn', 'error']),
-    PRIVY_APP_ID: z.string(),
+    PRIVY_APP_ID: z.string().min(1, 'PRIVY_APP_ID is required'),
     TEMPORAL_API_URL: temporalApiUrlSchema,
     TEMPORAL_NAMESPACE: z.string(),
     SMTP_SECURE: z.boolean(),

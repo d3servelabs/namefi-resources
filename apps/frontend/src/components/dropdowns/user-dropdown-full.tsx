@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
-import { useAuth, useLogout } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
+import { useLogout } from '@/hooks/use-logout';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import type { NavItem } from '@/lib/types/nav-item';
@@ -41,13 +42,15 @@ import {
 import { toast } from 'sonner';
 import type { Route } from 'next';
 import Link from 'next/link';
-import React, {
+import {
   useCallback,
   useEffect,
   useMemo,
   useState,
   type ComponentProps,
   type ErrorInfo,
+  type MouseEvent,
+  type ReactNode,
 } from 'react';
 import {
   AlertDialog,
@@ -89,7 +92,7 @@ import {
 } from 'ramda';
 
 type BalanceBreakdownDialogComponent =
-  typeof import('@/components/payment-method/nfsc-balance-dialog').BalanceBreakdownDialog;
+  typeof import('@/components/payment-method/nfsc-balance-dialog').BalanceBreakdownDialogRuntime;
 
 let balanceBreakdownDialogPromise: Promise<BalanceBreakdownDialogComponent> | null =
   null;
@@ -98,7 +101,7 @@ function loadBalanceBreakdownDialog(): Promise<BalanceBreakdownDialogComponent> 
   balanceBreakdownDialogPromise ??= import(
     '@/components/payment-method/nfsc-balance-dialog'
   )
-    .then((mod) => mod.BalanceBreakdownDialog)
+    .then((mod) => mod.BalanceBreakdownDialogRuntime)
     .catch((error) => {
       balanceBreakdownDialogPromise = null;
       throw error;
@@ -157,6 +160,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
     );
     const [isFindUserDialogOpen, setIsFindUserDialogOpen] = useState(false);
     const [isAdminQuickAccessOpen, setIsAdminQuickAccessOpen] = useState(false);
+    const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
     // Balance dialog state lives here (not inside the dropdown item) so the
     // dialog survives the dropdown closing on item-click. Otherwise the menu
     // item unmounts and takes the dialog down with it.
@@ -227,6 +231,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
           isLoadingBalance,
           hasWallets: nfscWalletAddresses.length > 0,
         },
+        onOpenLogout: () => setIsSignOutDialogOpen(true),
       });
     }, [
       showBalanceInUserDropdown,
@@ -265,6 +270,10 @@ export const UserDropdownMenu = ErrorBoundary.with(
         <AdminQuickAccessDialog
           open={isAdminQuickAccessOpen}
           onOpenChange={setIsAdminQuickAccessOpen}
+        />
+        <SignOutDialog
+          open={isSignOutDialogOpen}
+          onOpenChange={setIsSignOutDialogOpen}
         />
         {hasOpenedBalanceDialog && BalanceBreakdownDialog ? (
           <BalanceBreakdownDialog
@@ -308,10 +317,10 @@ function EmptyState({ message }: EmptyStateProps) {
 type DropdownMenuItemProps = ComponentProps<typeof DropdownMenuItem>;
 type UserDropdownItemProps =
   | (NavItem & { type: 'link'; customProps?: DropdownMenuItemProps })
-  | { custom: React.ReactNode; type: 'custom' }
+  | { custom: ReactNode; type: 'custom' }
   | { type: 'separator' }
   | (Omit<NavItem, 'href'> & {
-      onClick?: (e: React.MouseEvent<HTMLElement>) => void;
+      onClick?: (e: MouseEvent<HTMLElement>) => void;
       type: 'button';
       customProps?: DropdownMenuItemProps;
     });
@@ -352,6 +361,7 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
     case 'link':
       return (
         <DropdownMenuItem
+          nativeButton={false}
           render={<Link href={item.href as Route} />}
           {...item.customProps}
         >
@@ -394,8 +404,9 @@ type BalanceDropdownItemProps = {
 function getUserDropdownItems(options: {
   showBalanceInUserDropdown: boolean;
   balanceItem: BalanceDropdownItemProps;
+  onOpenLogout: () => void;
 }): UserDropdownItemProps[] {
-  const { showBalanceInUserDropdown, balanceItem } = options;
+  const { showBalanceInUserDropdown, balanceItem, onOpenLogout } = options;
 
   const items: (UserDropdownItemProps | boolean | undefined | null)[][] = [
     showBalanceInUserDropdown
@@ -412,7 +423,7 @@ function getUserDropdownItems(options: {
     [
       {
         type: 'custom',
-        custom: <LogoutDropdownItem key="logout" />,
+        custom: <LogoutDropdownItem key="logout" onOpen={onOpenLogout} />,
       },
     ],
   ];
@@ -442,20 +453,29 @@ function AdminDropdownSection({
         <AdminQuickAccessDropdownItem onOpen={onOpenAdminQuickAccess} />
       ) : null}
       {canViewAdminDashboard ? (
-        <DropdownMenuItem render={<Link href="/dev-tools" />}>
+        <DropdownMenuItem
+          nativeButton={false}
+          render={<Link href="/dev-tools" />}
+        >
           <SettingsIcon className="mr-2 h-4 w-4" />
           <span>Dev Tools</span>
         </DropdownMenuItem>
       ) : null}
       {canViewAdminDashboard ? (
-        <DropdownMenuItem render={<Link href="/customer-support" />}>
+        <DropdownMenuItem
+          nativeButton={false}
+          render={<Link href="/customer-support" />}
+        >
           <SettingsIcon className="mr-2 h-4 w-4" />
           <span>Customer Support</span>
         </DropdownMenuItem>
       ) : null}
       {canViewAdminDashboard ? <AdminFeatureFlagsDropdownItem /> : null}
       {isPbnOwner ? (
-        <DropdownMenuItem render={<Link href="/powered-by-namefi/admin" />}>
+        <DropdownMenuItem
+          nativeButton={false}
+          render={<Link href="/powered-by-namefi/admin" />}
+        >
           <WalletIcon className="mr-2 h-4 w-4" />
           <span>Powered Domains</span>
         </DropdownMenuItem>
@@ -711,45 +731,46 @@ function FindUserDialog({
                   <Skeleton key={key} className="h-24 w-full" />
                 ))
               ) : searchUsers.data && searchUsers.data.length > 0 ? (
-                searchUsers.data.map((user) => (
-                  <button
-                    key={user.id}
-                    type="button"
-                    className="w-full rounded-xl border border-border/60 p-4 text-left transition-colors hover:bg-muted/40"
-                    onClick={() => {
-                      onOpenChange(false);
-                      openSelectedReference({ userId: user.id });
-                    }}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="space-y-2">
-                        <div className="text-sm font-semibold">
-                          {user.displayName ??
-                            user.primaryEmail ??
-                            user.privyUserId}
-                        </div>
-                        <div className="space-y-1 text-xs text-muted-foreground">
-                          <div>{user.primaryEmail ?? 'No primary email'}</div>
-                          <div className="font-mono">{user.id}</div>
-                          <div className="font-mono">{user.privyUserId}</div>
-                        </div>
-                      </div>
+                searchUsers.data.map((user) => {
+                  const label =
+                    user.displayName ?? user.primaryEmail ?? user.privyUserId;
 
-                      <div className="max-w-[14rem] space-y-1 text-right text-xs text-muted-foreground">
-                        {user.twitterUsername ? (
-                          <div>@{user.twitterUsername}</div>
-                        ) : null}
-                        {user.walletAddresses
-                          .slice(0, 2)
-                          .map((walletAddress) => (
-                            <div key={walletAddress} className="font-mono">
-                              {getShortAddress(walletAddress)}
-                            </div>
-                          ))}
+                  return (
+                    <button
+                      key={user.id}
+                      type="button"
+                      className="w-full rounded-xl border border-border/60 p-4 text-left transition-colors hover:bg-muted/40"
+                      onClick={() => {
+                        onOpenChange(false);
+                        openSelectedReference({ userId: user.id });
+                      }}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="space-y-2">
+                          <div className="text-sm font-semibold">{label}</div>
+                          <div className="space-y-1 text-xs text-muted-foreground">
+                            <div>{user.primaryEmail ?? 'No primary email'}</div>
+                            <div className="font-mono">{user.id}</div>
+                            <div className="font-mono">{user.privyUserId}</div>
+                          </div>
+                        </div>
+
+                        <div className="max-w-[14rem] space-y-1 text-right text-xs text-muted-foreground">
+                          {user.twitterUsername ? (
+                            <div>@{user.twitterUsername}</div>
+                          ) : null}
+                          {user.walletAddresses
+                            .slice(0, 2)
+                            .map((walletAddress) => (
+                              <div key={walletAddress} className="font-mono">
+                                {getShortAddress(walletAddress)}
+                              </div>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  </button>
-                ))
+                    </button>
+                  );
+                })
               ) : (
                 <EmptyState message="No users matched that search." />
               )}
@@ -971,56 +992,67 @@ function UserBalanceDropdownItem({
   );
 }
 
-function LogoutDropdownItem() {
-  const [isSignOutDialogOpen, setIsSignOutDialogOpen] = useState(false);
-  const { logout } = useLogout();
-  const handleSignOut = useCallback(async () => {
-    await logout(); // Callbacks are already configured in the hook
-    setIsSignOutDialogOpen(false);
-  }, [logout]);
+function LogoutDropdownItem({ onOpen }: { onOpen: () => void }) {
+  const handleOpen = useCallback(
+    (event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+      onOpen();
+    },
+    [onOpen],
+  );
 
   return (
-    <>
-      <UserDropdownItem
-        item={{
-          type: 'button',
-          onClick: (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setIsSignOutDialogOpen(true);
-          },
-          title: 'Log Out',
-          icon: LogOutIcon,
-          customProps: {
-            className: 'text-red-500',
-            closeOnClick: false,
-          },
-        }}
-      />
-      {/* Sign Out Confirmation Dialog */}
-      <AlertDialog
-        open={isSignOutDialogOpen}
-        onOpenChange={setIsSignOutDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to sign out?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to sign out? Any unsaved changes will be
-              lost.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleSignOut} className="text-red-500">
-              Sign Out
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </>
+    <DropdownMenuItem
+      closeOnClick={false}
+      className="cursor-pointer text-red-500"
+      onClick={handleOpen}
+    >
+      <LogOutIcon className="mr-2 h-4 w-4" />
+      <span>Log Out</span>
+    </DropdownMenuItem>
+  );
+}
+
+function SignOutDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  const { logout } = useLogout();
+  const handleSignOut = useCallback(async () => {
+    try {
+      await logout(); // Callbacks are already configured in the hook
+      onOpenChange(false);
+    } catch (error) {
+      toast.error('Failed to sign out', {
+        description:
+          error instanceof Error ? error.message : 'Please try again.',
+      });
+    }
+  }, [logout, onOpenChange]);
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>
+            Are you sure you want to sign out?
+          </AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to sign out? Any unsaved changes will be lost.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleSignOut} className="text-red-500">
+            Sign Out
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

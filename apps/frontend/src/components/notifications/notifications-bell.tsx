@@ -253,7 +253,10 @@ function PermissionPromptTooltip({ children }: { children: ReactNode }) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger render={<span className="inline-block" />}>
+      <PopoverTrigger
+        nativeButton={false}
+        render={<span className="inline-block" />}
+      >
         {children}
       </PopoverTrigger>
       <PopoverContent className="w-72 p-3" align="end" sideOffset={8}>

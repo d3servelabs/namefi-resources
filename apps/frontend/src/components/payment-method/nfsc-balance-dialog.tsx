@@ -6,6 +6,7 @@ import type { ChainBalance } from '@/hooks/use-user-chain-balances';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress } from '@/lib/string';
 import { useTRPC } from '@/lib/trpc';
+import { WagmiProvider } from '@/components/providers/wagmi';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Dialog,
@@ -45,6 +46,16 @@ export type BalanceBreakdownDialogProps = {
   isLoadingBalances: boolean;
   walletAddresses: `0x${string}`[];
 };
+
+export function BalanceBreakdownDialogRuntime(
+  props: BalanceBreakdownDialogProps,
+) {
+  return (
+    <WagmiProvider>
+      <BalanceBreakdownDialog {...props} />
+    </WagmiProvider>
+  );
+}
 
 export function BalanceBreakdownDialog({
   open,

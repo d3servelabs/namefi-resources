@@ -1,10 +1,11 @@
 'use client';
 
 import { HeaderActionButton } from '@/components/header-action-button';
-import { CurrentUserAvatar } from '@/components/user-avatar';
-import { useAuth, useLogin } from '@/hooks/use-auth';
-import { shortage } from '@/lib/string';
-import { getUserDisplayName } from '@/lib/user';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import { useAuth } from '@/hooks/use-auth';
+import { abbreviation, shortage } from '@/lib/string';
+import { getUserDisplaySafeIdentifier } from '@/lib/user';
+import { getAuthDisplayProfileSafeIdentifier } from '@/components/providers/auth-display-profile';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,12 +19,15 @@ import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useMemo,
   useState,
   type ForwardedRef,
   type HTMLAttributes,
 } from 'react';
 import type { HeaderActionVariant } from '@/components/header-action-button';
+import { toast } from 'sonner';
+import { shouldShowUserDropdownLoading } from './user-dropdown-state';
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
   forceExpanded?: boolean;
@@ -54,6 +58,12 @@ type SignedOutButtonProps = {
   stretch: boolean;
 };
 
+type LoginButtonProps = SignedOutButtonProps & {
+  isLoginPending: boolean;
+  onLogin: () => void;
+  onLoginIntent: () => void;
+};
+
 export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
   function UserDropdown(
     {
@@ -65,12 +75,30 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     ref: ForwardedRef<HTMLDivElement>,
   ) {
     const { state: sidebarState, isMobile } = useSidebar();
-    const { isLoading, isAuthenticated, privyUser } = useAuth();
+    const {
+      isLoading,
+      isPrivyUserLoading,
+      isAuthenticated,
+      privyUser,
+      unsafeDisplayProfile,
+      preloadLoginRuntime,
+      requestLogin: requestAuthLogin,
+    } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
     const [hasRequestedMenu, setHasRequestedMenu] = useState(false);
     const [UserDropdownMenu, setUserDropdownMenu] =
       useState<UserDropdownFullComponent | null>(null);
+    const [isLoginPending, setIsLoginPending] = useState(false);
+
+    useEffect(() => {
+      if (isAuthenticated) return;
+
+      setIsMenuOpen(false);
+      setHasOpenedMenu(false);
+      setHasRequestedMenu(false);
+      setUserDropdownMenu(null);
+    }, [isAuthenticated]);
 
     const requestMenu = useCallback(() => {
       if (isLoading || !isAuthenticated || UserDropdownMenu) return;
@@ -95,6 +123,23 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       [requestMenu],
     );
 
+    const handleLoginRequest = useCallback(() => {
+      setIsLoginPending(true);
+      void requestAuthLogin({})
+        .catch((error) => {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'The sign in flow failed to load.';
+          toast.error('Failed to load sign in', {
+            description: message,
+          });
+        })
+        .finally(() => {
+          setIsLoginPending(false);
+        });
+    }, [requestAuthLogin]);
+
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
     }, [forceExpanded, sidebarState, isMobile]);
@@ -105,9 +150,25 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     );
 
     const actionVariant = isExpanded ? 'pill' : 'icon';
-    const name = getUserDisplayName(privyUser);
+    const name =
+      getUserDisplaySafeIdentifier(privyUser) ??
+      getAuthDisplayProfileSafeIdentifier(unsafeDisplayProfile);
+    const displayLabel = name ?? 'Account';
+    const avatarAddress =
+      privyUser?.wallet?.address ?? unsafeDisplayProfile?.walletAddress ?? null;
+    const avatarFallback = name
+      ? abbreviation(name.replace('0x', ''), true)
+      : undefined;
+    const isAvatarIdentityLoading =
+      isAuthenticated && isPrivyUserLoading && !avatarAddress;
     const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
-    const hasMenuRuntime = hasOpenedMenu && Boolean(UserDropdownMenu);
+    const hasDisplayName = Boolean(name);
+    const shouldShowLoading = shouldShowUserDropdownLoading({
+      hasDisplayName,
+      isAuthenticated,
+      isDbUserLoading: isLoading,
+      isPrivyUserLoading,
+    });
 
     return (
       <div
@@ -119,8 +180,8 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
         {...rest}
       >
         <AnimatePresence initial={false} mode="popLayout">
-          {isLoading || isAuthenticated ? (
-            isAuthenticated && !isLoading ? (
+          {shouldShowLoading || isAuthenticated ? (
+            isAuthenticated && !shouldShowLoading ? (
               <motion.div
                 key="user-authed"
                 initial={{ opacity: 0, y: -12 }}
@@ -160,10 +221,13 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                       className="shrink-0"
                       layout
                     >
-                      {/* The visible shell avatar stays eager; menu runtime only gates admin controls. */}
-                      <CurrentUserAvatar
-                        enableAdminLookupButtons={hasMenuRuntime}
+                      <UserWalletAvatar
+                        address={avatarAddress}
+                        fallback={avatarFallback}
                         enableWalletImage={true}
+                        eager={true}
+                        imageSizes="32px"
+                        isLoading={isAvatarIdentityLoading}
                       />
                     </motion.div>
                     {isExpanded && (
@@ -182,7 +246,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                           }}
                           layout
                         >
-                          {shortage(name, 11)}
+                          <UserDropdownLabel value={displayLabel} />
                         </motion.span>
                         <motion.span
                           className="ml-auto"
@@ -230,6 +294,9 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
               disableBackdropBlur={disableBackdropBlur}
               isExpanded={isExpanded}
               stretch={shouldStretch}
+              isLoginPending={isLoginPending}
+              onLogin={handleLoginRequest}
+              onLoginIntent={preloadLoginRuntime}
             />
           )}
         </AnimatePresence>
@@ -239,6 +306,14 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
 );
 
 UserDropdown.displayName = 'UserDropdown';
+
+function UserDropdownLabel({ value }: { value: string }) {
+  return (
+    <span className="inline-block overflow-hidden align-bottom">
+      <span className="inline-block">{shortage(value, 11)}</span>
+    </span>
+  );
+}
 
 function LoadingButton({
   actionVariant,
@@ -281,9 +356,10 @@ function SignedOutButton({
   disableBackdropBlur,
   isExpanded,
   stretch,
-}: SignedOutButtonProps) {
-  const { login: handleConnect } = useLogin();
-
+  isLoginPending,
+  onLogin,
+  onLoginIntent,
+}: LoginButtonProps) {
   return (
     <motion.div
       key="user-signedout"
@@ -304,12 +380,17 @@ function SignedOutButton({
         actionVariant={actionVariant}
         disableBackdropBlur={disableBackdropBlur}
         stretch={stretch}
-        onClick={() => {
-          void handleConnect();
-        }}
+        onClick={onLogin}
+        onFocus={onLoginIntent}
+        onMouseEnter={onLoginIntent}
+        disabled={isLoginPending}
       >
-        <WalletIcon className="size-5" />
-        {isExpanded && <span>Sign In</span>}
+        {isLoginPending ? (
+          <Loader2Icon className="size-5 animate-spin" />
+        ) : (
+          <WalletIcon className="size-5" />
+        )}
+        {isExpanded && <span>{isLoginPending ? 'Loading...' : 'Sign In'}</span>}
       </HeaderActionButton>
     </motion.div>
   );

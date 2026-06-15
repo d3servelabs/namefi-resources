@@ -44,6 +44,7 @@ export default function Profile() {
     ready,
     isAuthenticated: authenticated,
     isLoading,
+    unsafeDisplayProfile,
   } = useAuth();
 
   const handleTabChange = useCallback(
@@ -67,7 +68,7 @@ export default function Profile() {
 
   return (
     <PageShell padding="compact" className="gap-8 flex flex-col">
-      <Header user={user} />
+      <Header user={user} unsafeDisplayProfile={unsafeDisplayProfile} />
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
         <TabsList className="grid w-full grid-cols-4 lg:w-auto">

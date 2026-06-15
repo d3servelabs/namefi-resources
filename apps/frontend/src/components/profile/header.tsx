@@ -1,23 +1,32 @@
 'use client';
 
 import { Copy } from '@/components/copy';
-import { CurrentUserAvatar } from '@/components/user-avatar';
+import { CurrentUserAvatar } from '@/components/current-user-avatar';
+import {
+  getAuthDisplayProfileSafeIdentifier,
+  type RuntimeAuthDisplayProfile,
+} from '@/components/providers/auth-display-profile';
+import { getUserDisplaySafeIdentifierPair } from '@/lib/user';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { shortage } from '@/lib/string';
 import type { User } from '@privy-io/react-auth';
 import type { FC, HTMLAttributes } from 'react';
 
 export interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
-  user: User;
+  user: User | null | undefined;
+  unsafeDisplayProfile?: RuntimeAuthDisplayProfile | null;
 }
 
 export const Header: FC<HeaderProps> = ({
   user,
+  unsafeDisplayProfile,
   className,
   ...rest
 }: HeaderProps) => {
-  const wallet = user.wallet?.address;
-  const email = user.email?.address || user.google?.email;
+  const { primary, secondary } = getUserDisplaySafeIdentifierPair(user);
+  const primaryDisplay =
+    primary ?? getAuthDisplayProfileSafeIdentifier(unsafeDisplayProfile);
+  const secondaryDisplay = primary ? secondary : null;
 
   return (
     <div
@@ -28,37 +37,30 @@ export const Header: FC<HeaderProps> = ({
       {...rest}
     >
       <div className="flex items-center gap-4">
-        <CurrentUserAvatar className="h-20 w-20" />
+        <CurrentUserAvatar className="h-20 w-20" imageSizes="80px" />
         <div>
-          {wallet ? (
+          {primaryDisplay ? (
             <Copy
-              text={wallet}
+              text={primaryDisplay}
               className="text-2xl font-bold"
-              copiedTitle="User wallet copied"
-              copiedDescription="User wallet has been copied to clipboard"
+              copiedTitle="Account identifier copied"
+              copiedDescription="Account identifier has been copied to clipboard"
             >
-              {shortage(wallet, 11)}
-            </Copy>
-          ) : email ? (
-            <Copy
-              text={email}
-              className="text-2xl font-bold"
-              copiedTitle="User email copied"
-              copiedDescription="User email has been copied to clipboard"
-            >
-              {shortage(email, 11)}
+              {shortage(primaryDisplay, 11)}
             </Copy>
           ) : (
             ''
           )}
-          <Copy
-            text={user.id}
-            className="text-sm text-muted-foreground"
-            copiedTitle="User ID copied"
-            copiedDescription="User ID has been copied to clipboard"
-          >
-            {shortage(user.id, 11)}
-          </Copy>
+          {secondaryDisplay ? (
+            <Copy
+              text={secondaryDisplay}
+              className="text-sm text-muted-foreground"
+              copiedTitle="Account email copied"
+              copiedDescription="Account email has been copied to clipboard"
+            >
+              {shortage(secondaryDisplay, 11)}
+            </Copy>
+          ) : null}
         </div>
       </div>
     </div>

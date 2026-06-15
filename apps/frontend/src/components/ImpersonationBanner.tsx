@@ -4,7 +4,7 @@ import { useAuth } from '@/hooks/use-auth';
 import dynamic from 'next/dynamic';
 
 const ImpersonationBannerInner = dynamic(
-  () => import('@/components/ImpersonationBannerInnerRuntime'),
+  () => import('@/components/ImpersonationBannerInner'),
   {
     ssr: false,
   },

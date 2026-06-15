@@ -36,14 +36,13 @@ import { useAuth } from '@/hooks/use-auth';
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { CHAINS, getChain } from '@namefi-astra/utils/chains';
 import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { ChevronDown, ExternalLink, Flame } from 'lucide-react';
 import Link from 'next/link';
 import {
   type FC,
   type HTMLAttributes,
-  Suspense,
   useCallback,
   useMemo,
   useState,
@@ -160,9 +159,12 @@ const reasonFilterOptions: Array<{ value: RemovalType; label: string }> = [
 
 function MyPreviouslyOwnedDomainsTable() {
   const trpc = useTRPC();
-  const { data: domains } = useSuspenseQuery(
-    trpc.users.getCurrentUserBurnedDomains.queryOptions(),
-  );
+  const { data: _domains, isLoading } = useQuery({
+    ...trpc.users.getCurrentUserBurnedDomains.queryOptions(void 0, {
+      trpc: { context: { skipBatch: true } },
+    }),
+  });
+  const domains = _domains ?? [];
 
   const [domainSearch, setDomainSearch] = useState('');
   const [chainFilter, setChainFilter] = useState<number | undefined>(undefined);
@@ -380,6 +382,10 @@ function MyPreviouslyOwnedDomainsTable() {
   const reasonFilterSummary =
     reasonFilter.length === 0 ? 'All' : `${reasonFilter.length} selected`;
 
+  if (isLoading || !_domains) {
+    return <LoadingSkeletons />;
+  }
+
   if (domains.length === 0) {
     return <MyPreviouslyOwnedDomainsEmptyPlaceholder />;
   }
@@ -513,11 +519,7 @@ function MyPreviouslyOwnedDomainsTable() {
 }
 
 export function MyPreviouslyOwnedDomainsContent() {
-  return (
-    <Suspense fallback={<LoadingSkeletons />}>
-      <MyPreviouslyOwnedDomainsTable />
-    </Suspense>
-  );
+  return <MyPreviouslyOwnedDomainsTable />;
 }
 
 export default function MyBurnedDomains() {

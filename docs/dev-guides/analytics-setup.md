@@ -108,7 +108,8 @@ The frontend tRPC provider builds tracking headers for all tRPC links.
 
 Every request may include:
 
-- `Authorization`, unless skip-auth is active.
+- `Authorization`, when a Privy access token is available outside cookie auth
+  and skip-auth is not active.
 - `X-Skip-Auth`, in local/development/preview skip-auth mode.
 - `X-Browser-Fingerprint`, when FingerprintJS resolves a visitor id.
 - `X-C15T-Measurement-Consent`, when `window.namefiMeasurementConsent` is known.

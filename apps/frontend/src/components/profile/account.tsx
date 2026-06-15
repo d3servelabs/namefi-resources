@@ -16,6 +16,7 @@ export interface AccountProps extends HTMLAttributes<HTMLDivElement> {
   onUnlink?: () => void;
   showLabel?: boolean;
   shouldHighlight?: boolean;
+  disabled?: boolean;
 }
 
 export const Account = ({
@@ -29,6 +30,7 @@ export const Account = ({
   onUnlink,
   showLabel = false,
   shouldHighlight = false,
+  disabled = false,
   ...rest
 }: AccountProps) => {
   return (
@@ -67,6 +69,7 @@ export const Account = ({
                 variant="outline"
                 size="sm"
                 onClick={onUnlink}
+                disabled={disabled}
               >
                 Unlink
               </Button>
@@ -77,6 +80,7 @@ export const Account = ({
                 variant="outline"
                 size="sm"
                 onClick={onLink}
+                disabled={disabled}
               >
                 Link
               </Button>

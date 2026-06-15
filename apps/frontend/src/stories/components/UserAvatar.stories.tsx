@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { UserWalletAvatar, CurrentUserAvatar } from '@/components/user-avatar';
-import { MockPrivyProvider } from '@/lib/mock/privy';
+import { CurrentUserAvatar } from '@/components/current-user-avatar';
+import { UserWalletAvatar } from '@/components/user-avatar';
+import { MockPrivyProvider, privyMockUser } from '@/lib/mock/privy';
 import type { ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
@@ -12,6 +13,7 @@ import { createTRPCClient } from '@trpc/client';
 import type { AppRouter } from '@/lib/trpc';
 import { createMockLink } from '@/lib/mock/trpc';
 import { ConsentManagerProvider } from '@c15t/nextjs';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 const MOCK_WALLET_ADDRESS_2 = '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B';
@@ -88,7 +90,7 @@ function AuthenticatedStoryProviders({
           ready: true,
           authenticated: true,
           user: {
-            id: 'mock-user-id',
+            ...privyMockUser,
             wallet: { address: walletAddress },
             linkedAccounts: [{ type: 'wallet', address: walletAddress }],
           },
@@ -99,7 +101,9 @@ function AuthenticatedStoryProviders({
         <QueryClientProvider client={queryClient}>
           <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
             <ConsentManagerProvider options={{ mode: 'offline' }}>
-              {children}
+              <StorybookAuthProvider isAuthenticated={true}>
+                {children}
+              </StorybookAuthProvider>
             </ConsentManagerProvider>
           </TRPCProvider>
         </QueryClientProvider>

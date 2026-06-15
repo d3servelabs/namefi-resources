@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { ConsentManagerProvider } from '@c15t/nextjs';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import {
   QueryClient,
   QueryClientProvider,
   useQueryClient,
 } from '@tanstack/react-query';
+import { createTRPCClient } from '@trpc/client';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { base, mainnet, sepolia } from 'wagmi/chains';
 import { mock } from 'wagmi/connectors';
@@ -13,9 +14,12 @@ import { AdminFeatureFlagsProvider } from '@/components/admin/feature-flags/cont
 import { MarketplacePanel } from '@/components/domain-and-dns-managment/panels/marketplace/marketplace-panel';
 import { InteractionLoggersProvider } from '@/components/providers/analytics';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
+import { TRPCProvider, type AppRouter } from '@/lib/trpc';
+import { createMockLink } from '@/lib/mock/trpc';
 import { MockPrivyProvider } from '@/lib/mock/privy';
 import { ETHEREUM_MAINNET_CHAIN_ID } from '@/lib/marketplaces/chains';
 import type { Listing } from '@/lib/marketplaces/types';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const MOCK_WALLET_ADDRESS = '0x1234567890123456789012345678901234567890';
 const MOCK_TOKEN_ADDRESS = '0x0000000000cf80e7cf8fa4480907f692177f8e06';
@@ -142,7 +146,19 @@ function MarketplacePanelStory({
   isAuthenticated = true,
   isReadyForExport = false,
 }: StoryArgs) {
-  const queryClient = createStoryQueryClient();
+  const queryClient = useMemo(() => createStoryQueryClient(), []);
+  const trpcClient = useMemo(
+    () =>
+      createTRPCClient<AppRouter>({
+        links: [
+          createMockLink({
+            isAuthenticated,
+            getMockData: async () => [null, {}],
+          }),
+        ],
+      }),
+    [isAuthenticated],
+  );
   const tokenId = '12345';
   const listings =
     prefilledListings === 'with-listings'
@@ -153,28 +169,32 @@ function MarketplacePanelStory({
     <MockPrivyProvider value={{ ready: true, authenticated: isAuthenticated }}>
       <WagmiProvider config={mockWagmiConfig}>
         <QueryClientProvider client={queryClient}>
-          <AdminFeatureFlagsProvider>
-            <ConsentManagerProvider options={{ mode: 'offline' }}>
-              <PreAuthSignalsProvider>
-                <InteractionLoggersProvider>
-                  <ListingsCachePrimer
-                    tokenId={tokenId}
-                    chainId={nftChainId}
-                    data={listings}
-                  >
-                    <div className="max-w-4xl mx-auto p-6">
-                      <MarketplacePanel
-                        domain={MOCK_DOMAIN}
-                        nftChainId={nftChainId}
-                        ownerAddress={MOCK_WALLET_ADDRESS as `0x${string}`}
-                        isReadyForExport={isReadyForExport}
-                      />
-                    </div>
-                  </ListingsCachePrimer>
-                </InteractionLoggersProvider>
-              </PreAuthSignalsProvider>
-            </ConsentManagerProvider>
-          </AdminFeatureFlagsProvider>
+          <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+            <AdminFeatureFlagsProvider>
+              <ConsentManagerProvider options={{ mode: 'offline' }}>
+                <StorybookAuthProvider isAuthenticated={isAuthenticated}>
+                  <PreAuthSignalsProvider>
+                    <InteractionLoggersProvider>
+                      <ListingsCachePrimer
+                        tokenId={tokenId}
+                        chainId={nftChainId}
+                        data={listings}
+                      >
+                        <div className="max-w-4xl mx-auto p-6">
+                          <MarketplacePanel
+                            domain={MOCK_DOMAIN}
+                            nftChainId={nftChainId}
+                            ownerAddress={MOCK_WALLET_ADDRESS as `0x${string}`}
+                            isReadyForExport={isReadyForExport}
+                          />
+                        </div>
+                      </ListingsCachePrimer>
+                    </InteractionLoggersProvider>
+                  </PreAuthSignalsProvider>
+                </StorybookAuthProvider>
+              </ConsentManagerProvider>
+            </AdminFeatureFlagsProvider>
+          </TRPCProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </MockPrivyProvider>

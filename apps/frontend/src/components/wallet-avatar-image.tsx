@@ -1,82 +1,118 @@
 'use client';
 
 import { WalletAvatarFallback } from '@namefi-astra/ui/components/namefi/wallet-avatar-fallback';
+import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { getEnsDataAvatarUrl } from '@namefi-astra/utils/wallet-avatar';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import Image from 'next/image';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type WalletAvatarImageProps = {
   address?: string | null;
   className?: string;
+  eager?: boolean;
+  sizes?: string;
 };
 
 export type { WalletAvatarImageProps };
 
+type AvatarImageStatus = 'error' | 'loading' | 'loaded';
 type AvatarImageState = {
   src: string | null;
-  status: 'pending' | 'loaded' | 'failed';
+  status: AvatarImageStatus;
 };
 
 export function WalletAvatarImage({
   address,
   className,
+  eager = false,
+  sizes = '32px',
 }: WalletAvatarImageProps) {
   const walletAddress = address?.trim() || null;
-  const [avatarImageState, setAvatarImageState] = useState<AvatarImageState>({
-    src: null,
-    status: 'pending',
-  });
+  const ensAvatarSrc = getEnsDataAvatarUrl(walletAddress);
   const imageRef = useRef<HTMLImageElement>(null);
+  const currentSrcRef = useRef<string | null>(ensAvatarSrc);
+  currentSrcRef.current = ensAvatarSrc;
+  const [imageState, setImageState] = useState<AvatarImageState>(() => ({
+    src: ensAvatarSrc,
+    status: ensAvatarSrc ? 'loading' : 'error',
+  }));
+  const imageStatus =
+    imageState.src === ensAvatarSrc
+      ? imageState.status
+      : ensAvatarSrc
+        ? 'loading'
+        : 'error';
 
-  const ensAvatarSrc = useMemo(
-    () => getEnsDataAvatarUrl(walletAddress),
-    [walletAddress],
+  const setImageStatusForSource = useCallback(
+    (src: string | null, status: AvatarImageStatus) => {
+      setImageState((current) => {
+        if (currentSrcRef.current !== src) return current;
+        return { src, status };
+      });
+    },
+    [],
   );
-  const hasCurrentAvatarState = avatarImageState.src === ensAvatarSrc;
-  const hasLoadedEnsAvatar =
-    hasCurrentAvatarState && avatarImageState.status === 'loaded';
-  const hasFailedEnsAvatar =
-    hasCurrentAvatarState && avatarImageState.status === 'failed';
 
   useEffect(() => {
-    setAvatarImageState((current) =>
-      current.src === ensAvatarSrc
-        ? current
-        : { src: ensAvatarSrc, status: 'pending' },
-    );
-
-    const image = imageRef.current;
-    if (!ensAvatarSrc || !image?.complete) return;
-
-    if (image.naturalWidth > 0) {
-      setAvatarImageState({ src: ensAvatarSrc, status: 'loaded' });
-    } else {
-      setAvatarImageState({ src: ensAvatarSrc, status: 'failed' });
+    if (!ensAvatarSrc) {
+      setImageStatusForSource(null, 'error');
+      return;
     }
-  }, [ensAvatarSrc]);
 
-  if (!ensAvatarSrc || hasFailedEnsAvatar) {
-    return <WalletAvatarFallback className={className} />;
-  }
+    setImageStatusForSource(ensAvatarSrc, 'loading');
+
+    const updateFromElement = () => {
+      const image = imageRef.current;
+      if (!image?.complete) return;
+      setImageStatusForSource(
+        ensAvatarSrc,
+        image.naturalWidth > 0 ? 'loaded' : 'error',
+      );
+    };
+
+    updateFromElement();
+    const animationFrameId = requestAnimationFrame(updateFromElement);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [ensAvatarSrc, setImageStatusForSource]);
 
   return (
-    // biome-ignore lint/performance/noImgElement: ENSData serves already-sized remote avatar media outside Next image optimization
-    <img
-      ref={imageRef}
-      src={ensAvatarSrc}
+    <span
+      aria-hidden={true}
+      data-slot="wallet-avatar-image"
       className={cn(
-        'block size-full rounded-[inherit] object-cover transition-opacity duration-150',
-        hasLoadedEnsAvatar ? 'opacity-100' : 'opacity-0',
+        'relative block size-full overflow-hidden rounded-full',
         className,
       )}
-      alt="user-avatar"
-      referrerPolicy="no-referrer"
-      onLoad={() =>
-        setAvatarImageState({ src: ensAvatarSrc, status: 'loaded' })
-      }
-      onError={() =>
-        setAvatarImageState({ src: ensAvatarSrc, status: 'failed' })
-      }
-    />
+    >
+      {ensAvatarSrc && imageStatus !== 'error' ? (
+        <Image
+          ref={imageRef}
+          src={ensAvatarSrc}
+          alt=""
+          aria-hidden={true}
+          fill={true}
+          sizes={sizes}
+          quality={90}
+          loading={eager ? 'eager' : 'lazy'}
+          fetchPriority={eager ? 'high' : undefined}
+          className="z-10 rounded-full object-cover"
+          onLoad={(event) => {
+            setImageStatusForSource(
+              ensAvatarSrc,
+              event.currentTarget.naturalWidth > 0 ? 'loaded' : 'error',
+            );
+          }}
+          onError={() => setImageStatusForSource(ensAvatarSrc, 'error')}
+        />
+      ) : null}
+      {imageStatus === 'loading' ? (
+        <Skeleton className="absolute inset-0 rounded-full bg-muted-foreground/25 ring-1 ring-border/70 shadow-inner dark:bg-white/15 dark:ring-white/10" />
+      ) : null}
+      {imageStatus === 'error' ? (
+        <WalletAvatarFallback className="absolute inset-0 z-10 rounded-full" />
+      ) : null}
+    </span>
   );
 }

@@ -1,9 +1,9 @@
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import { z } from 'zod';
 import {
+  baseProcedure,
   createTRPCRouter,
   authedOrPublicProcedure,
-  baseProcedure,
 } from '../../base';
 import {
   getDomainListInfo,

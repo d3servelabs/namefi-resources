@@ -22,6 +22,7 @@ import { CENTRALNIC_OTE_TLDS } from '@namefi-astra/common/centralnic-test-tlds';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentManagerProvider } from '@c15t/nextjs';
 import { NuqsAdapter } from 'nuqs/adapters/react';
+import { StorybookAuthProvider } from '../utils/storybook-auth-provider';
 
 const mockOriginRuntime: OriginRuntime = {
   isFirstPartyOrigin: true,
@@ -55,19 +56,21 @@ function StoryProviders({
       <TrpcProvider>
         <NuqsAdapter>
           <ConsentManagerProvider options={{ mode: 'offline' }}>
-            <PreAuthSignalsProvider>
-              <InteractionLoggersProvider>
-                <WishlistProvider>
-                  <CartProvider>
-                    <SidebarProvider defaultOpen={false}>
-                      <FreeMintsGuidanceProvider>
-                        {children}
-                      </FreeMintsGuidanceProvider>
-                    </SidebarProvider>
-                  </CartProvider>
-                </WishlistProvider>
-              </InteractionLoggersProvider>
-            </PreAuthSignalsProvider>
+            <StorybookAuthProvider isAuthenticated={false}>
+              <PreAuthSignalsProvider>
+                <InteractionLoggersProvider>
+                  <WishlistProvider>
+                    <CartProvider>
+                      <SidebarProvider defaultOpen={false}>
+                        <FreeMintsGuidanceProvider>
+                          {children}
+                        </FreeMintsGuidanceProvider>
+                      </SidebarProvider>
+                    </CartProvider>
+                  </WishlistProvider>
+                </InteractionLoggersProvider>
+              </PreAuthSignalsProvider>
+            </StorybookAuthProvider>
           </ConsentManagerProvider>
         </NuqsAdapter>
       </TrpcProvider>
@@ -193,21 +196,23 @@ function MockSearchProviders({
           <OriginProvider originInfo={origin}>
             <NuqsAdapter>
               <ConsentManagerProvider options={{ mode: 'offline' }}>
-                <AdminFeatureFlagsProvider>
-                  <PreAuthSignalsProvider>
-                    <InteractionLoggersProvider>
-                      <WishlistProvider>
-                        <CartProvider>
-                          <SidebarProvider defaultOpen={false}>
-                            <FreeMintsGuidanceProvider>
-                              {children}
-                            </FreeMintsGuidanceProvider>
-                          </SidebarProvider>
-                        </CartProvider>
-                      </WishlistProvider>
-                    </InteractionLoggersProvider>
-                  </PreAuthSignalsProvider>
-                </AdminFeatureFlagsProvider>
+                <StorybookAuthProvider isAuthenticated={false}>
+                  <AdminFeatureFlagsProvider>
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <SidebarProvider defaultOpen={false}>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </SidebarProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </AdminFeatureFlagsProvider>
+                </StorybookAuthProvider>
               </ConsentManagerProvider>
             </NuqsAdapter>
           </OriginProvider>

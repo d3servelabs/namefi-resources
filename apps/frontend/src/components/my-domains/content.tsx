@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { differenceInDays } from 'date-fns';
 import { groupBy } from 'ramda';
 import {
@@ -22,6 +22,7 @@ import {
 } from '@/lib/openfeature-flags';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
 import { MyDomainsEmptyPlaceholder } from './empty-placeholder';
+import { LoadingSkeletons } from './loading-skeletons';
 import { MyDomainsTable } from './table';
 import { OtherWalletOrdersTable } from './other-wallet-orders-table';
 import { isDomainPossiblyRenewable } from './utils';
@@ -44,16 +45,17 @@ export const MyDomainsContent = () => {
   const trpc = useTRPC();
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
-  const { data: _domains } = useSuspenseQuery(
-    trpc.users.getCurrentUserDomains.queryOptions(void 0, {
+  const { data: _domains, isLoading: isDomainsLoading } = useQuery({
+    ...trpc.users.getCurrentUserDomains.queryOptions(void 0, {
       placeholderData: (prev) => prev,
       trpc: { context: { skipBatch: true } },
     }),
-  );
+  });
+  const domains = _domains ?? [];
 
-  const { data: orderItems } = useQuery(
-    trpc.orders.getOrderItems.queryOptions(),
-  );
+  const { data: orderItems } = useQuery({
+    ...trpc.orders.getOrderItems.queryOptions(),
+  });
 
   const processingOrderItems = useMemo(() => {
     if (!orderItems) return [];
@@ -63,8 +65,8 @@ export const MyDomainsContent = () => {
   }, [orderItems]);
 
   const ownedDomainNames = useMemo(
-    () => new Set(_domains.map((domain) => domain.normalizedDomainName)),
-    [_domains],
+    () => new Set(domains.map((domain) => domain.normalizedDomainName)),
+    [domains],
   );
 
   const otherWalletOrderItems = useMemo(() => {
@@ -113,13 +115,17 @@ export const MyDomainsContent = () => {
         }
         return 'otherDomains';
       },
-      _domains,
+      domains,
     );
     return {
       activeDomains: activeDomains ?? [],
       inactiveDomains: [...(expiredDomains ?? []), ...(otherDomains ?? [])],
     };
-  }, [_domains]);
+  }, [domains]);
+
+  if (isDomainsLoading || !_domains) {
+    return <LoadingSkeletons />;
+  }
 
   if (
     activeDomains.length === 0 &&

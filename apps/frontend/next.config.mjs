@@ -103,6 +103,13 @@ const imageRemotePatterns = Array.from(
         pathname: '/a/**',
         search: '',
       }),
+      // ENSData wallet avatars. Use the API host directly because the public
+      // ensdata.net media URL redirects and image optimization forbids
+      // redirects in this app config.
+      imageRemotePatternFromUrl('https://api.ensdata.net', {
+        pathname: '/media/avatar/**',
+        search: '',
+      }),
     ]
       .filter(Boolean)
       .map((pattern) => [

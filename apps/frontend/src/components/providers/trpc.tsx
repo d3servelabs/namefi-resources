@@ -3,7 +3,6 @@
 import { config } from '@/lib/env';
 import { datadogLogs } from '@datadog/browser-logs';
 import type { AppRouter } from '@/lib/trpc';
-import { getAccessToken } from '@privy-io/react-auth';
 import {
   QueryClient,
   QueryClientProvider,
@@ -19,22 +18,11 @@ import {
   splitLink,
 } from '@trpc/client';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import {
-  BROWSER_FINGERPRINT_HEADER,
-  C15T_MEASUREMENT_CONSENT_HEADER,
-  GA_CLIENT_ID_HEADER,
-  GA_SESSION_ID_HEADER,
-  normalizeGaClientId,
-  normalizeGaSessionId,
-  parseGaClientIdFromCookieValue,
-  parseGaSessionIdFromCookieValue,
-} from '@namefi-astra/common/google-analytics';
 import type React from 'react';
 import { useState } from 'react';
 import superjson from 'superjson';
 import { TRPCProvider } from '@/lib/trpc';
-
-const GA_MEASUREMENT_ID_PREFIX_REGEX = /^G-/;
+import { getTrpcRequestHeaders } from '@/lib/trpc-request-headers';
 
 function toDatadogError(error: unknown): Error {
   if (error instanceof Error) {
@@ -180,7 +168,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
                 // options to pass to the EventSourcePolyfill constructor
                 eventSourceOptions: async () => {
                   // Get fresh access token for each connection attempt
-                  const headers = await getHeaders();
+                  const headers = await getTrpcRequestHeaders();
                   return {
                     withCredentials: true,
                     headers,
@@ -191,7 +179,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
             false: httpLink({
               url: `${config.BACKEND_URL}/trpc`,
               transformer: superjson,
-              headers: getHeaders,
+              headers: getTrpcRequestHeaders,
               fetch(url, options) {
                 return fetch(url, { ...options, credentials: 'include' });
               },
@@ -201,7 +189,7 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
           false: httpBatchLink({
             url: `${config.BACKEND_URL}/trpc`,
             transformer: superjson,
-            headers: getHeaders,
+            headers: getTrpcRequestHeaders,
             fetch(url, options) {
               return fetch(url, { ...options, credentials: 'include' });
             },
@@ -217,261 +205,4 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
       </TRPCProvider>
     </QueryClientProvider>
   );
-}
-
-// Check if skip auth is active from localStorage
-// NOTE: This logic is intentionally duplicated from use-skip-auth.ts because
-// this file cannot use React hooks. Keep the environment check and storage key
-// in sync with useSkipAuth() in apps/frontend/src/hooks/use-skip-auth.ts
-function isSkipAuthActive(): boolean {
-  if (typeof window === 'undefined') return false;
-  const environment = config.TYPE;
-  const isDevEnvironment =
-    environment === 'local' ||
-    environment === 'development' ||
-    environment === 'preview';
-  if (!isDevEnvironment) return false;
-  try {
-    return window.localStorage.getItem('namefi-skip-auth') === '1';
-  } catch {
-    return false;
-  }
-}
-
-// Lazy-loaded, cached browser fingerprint. The visitorId is a stable hash of
-// hardware/software signals that lets the backend recognize a returning
-// browser even when the user is on a brand-new IP / location. We
-// dynamically import FingerprintJS so the ~30 KB lib stays out of the
-// first-paint bundle, and we cache the resolved id in a module-level
-// promise so every tRPC request after the first reuses the same value.
-// On any failure (privacy mode, ad-blocker, etc.) we resolve to null
-// silently — backend treats the missing header as "no signal."
-let fingerprintPromise: Promise<string | null> | null = null;
-async function getBrowserFingerprint(): Promise<string | null> {
-  if (typeof window === 'undefined') return null;
-  if (!fingerprintPromise) {
-    fingerprintPromise = (async () => {
-      try {
-        const FingerprintJs = await import('@fingerprintjs/fingerprintjs');
-        const fp = await FingerprintJs.load();
-        const result = await fp.get();
-        return result.visitorId;
-      } catch {
-        return null;
-      }
-    })();
-  }
-  return fingerprintPromise;
-}
-
-function getCookieValue(name: string): string | null {
-  if (typeof document === 'undefined') return null;
-
-  const cookie = document.cookie
-    .split(';')
-    .map((cookie) => cookie.trim())
-    .find((cookie) => cookie.startsWith(`${name}=`));
-
-  const cookieValue = cookie?.split('=').slice(1).join('=');
-  if (!cookieValue) return null;
-
-  try {
-    return decodeURIComponent(cookieValue);
-  } catch {
-    return null;
-  }
-}
-
-function parseGaClientIdFromCookie(): string | null {
-  return parseGaClientIdFromCookieValue(getCookieValue('_ga'));
-}
-
-function parseGaSessionIdFromCookie(): string | null {
-  if (!config.GA_MEASUREMENT_ID) return null;
-
-  const measurementIdSuffix = config.GA_MEASUREMENT_ID.replace(
-    GA_MEASUREMENT_ID_PREFIX_REGEX,
-    '',
-  );
-  return parseGaSessionIdFromCookieValue(
-    getCookieValue(`_ga_${measurementIdSuffix}`),
-  );
-}
-
-let cachedGaClientId: string | null = null;
-let gaClientIdPromise: Promise<string | null> | null = null;
-let cachedGaSessionId: string | null = null;
-let gaSessionIdPromise: Promise<string | null> | null = null;
-
-function hasGoogleAnalyticsMeasurementConsent(): boolean {
-  if (typeof window === 'undefined') return false;
-  return getGoogleAnalyticsMeasurementConsentHeaderValue() === 'granted';
-}
-
-function getGoogleAnalyticsMeasurementConsentHeaderValue():
-  | 'granted'
-  | 'denied'
-  | null {
-  if (typeof window === 'undefined') return null;
-  const measurementConsent = (
-    window as typeof window & { namefiMeasurementConsent?: boolean }
-  ).namefiMeasurementConsent;
-
-  if (measurementConsent === true) return 'granted';
-  if (measurementConsent === false) return 'denied';
-  return null;
-}
-
-async function getGoogleAnalyticsClientId(): Promise<string | null> {
-  if (typeof window === 'undefined' || !config.GA_MEASUREMENT_ID) return null;
-  if (!hasGoogleAnalyticsMeasurementConsent()) {
-    cachedGaClientId = null;
-    return null;
-  }
-  if (cachedGaClientId) return cachedGaClientId;
-
-  const cookieClientId = parseGaClientIdFromCookie();
-  if (cookieClientId) {
-    cachedGaClientId = cookieClientId;
-    return cookieClientId;
-  }
-
-  if (!gaClientIdPromise) {
-    gaClientIdPromise = new Promise<string | null>((resolve) => {
-      let settled = false;
-      const finish = (clientId: string | null) => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(fallbackTimer);
-        const resolvedClientId = hasGoogleAnalyticsMeasurementConsent()
-          ? clientId
-          : null;
-        cachedGaClientId = resolvedClientId;
-        resolve(resolvedClientId);
-      };
-
-      const fallbackTimer = window.setTimeout(() => {
-        finish(parseGaClientIdFromCookie());
-      }, 250);
-
-      const gtag = window.gtag;
-      if (!gtag) {
-        finish(parseGaClientIdFromCookie());
-        return;
-      }
-
-      gtag('get', config.GA_MEASUREMENT_ID, 'client_id', (clientId: unknown) =>
-        finish(
-          typeof clientId === 'string'
-            ? (normalizeGaClientId(clientId) ?? parseGaClientIdFromCookie())
-            : parseGaClientIdFromCookie(),
-        ),
-      );
-    }).finally(() => {
-      gaClientIdPromise = null;
-    });
-  }
-
-  return gaClientIdPromise;
-}
-
-async function getGoogleAnalyticsSessionId(): Promise<string | null> {
-  if (typeof window === 'undefined' || !config.GA_MEASUREMENT_ID) return null;
-  if (!hasGoogleAnalyticsMeasurementConsent()) {
-    cachedGaSessionId = null;
-    gaSessionIdPromise = null;
-    return null;
-  }
-
-  const cookieSessionId = parseGaSessionIdFromCookie();
-  if (cookieSessionId) {
-    cachedGaSessionId = cookieSessionId;
-    return cookieSessionId;
-  }
-  if (cachedGaSessionId) return cachedGaSessionId;
-
-  if (!gaSessionIdPromise) {
-    gaSessionIdPromise = new Promise<string | null>((resolve) => {
-      let settled = false;
-      const finish = (sessionId: string | null) => {
-        if (settled) return;
-        settled = true;
-        window.clearTimeout(fallbackTimer);
-        const resolvedSessionId = hasGoogleAnalyticsMeasurementConsent()
-          ? normalizeGaSessionId(sessionId)
-          : null;
-        cachedGaSessionId = resolvedSessionId;
-        resolve(resolvedSessionId);
-      };
-
-      const fallbackTimer = window.setTimeout(() => {
-        finish(parseGaSessionIdFromCookie());
-      }, 250);
-
-      const gtag = window.gtag;
-      if (!gtag) {
-        finish(parseGaSessionIdFromCookie());
-        return;
-      }
-
-      gtag(
-        'get',
-        config.GA_MEASUREMENT_ID,
-        'session_id',
-        (sessionId: unknown) =>
-          finish(
-            typeof sessionId === 'string' || typeof sessionId === 'number'
-              ? (normalizeGaSessionId(sessionId) ??
-                  parseGaSessionIdFromCookie())
-              : parseGaSessionIdFromCookie(),
-          ),
-      );
-    }).finally(() => {
-      gaSessionIdPromise = null;
-    });
-  }
-
-  return gaSessionIdPromise;
-}
-
-async function getHeaders(): Promise<Record<string, string>> {
-  const skipAuth = isSkipAuthActive();
-  const measurementConsentHeader =
-    getGoogleAnalyticsMeasurementConsentHeaderValue();
-  const [fingerprint, gaClientId, gaSessionId] = await Promise.all([
-    getBrowserFingerprint(),
-    getGoogleAnalyticsClientId(),
-    getGoogleAnalyticsSessionId(),
-  ]);
-
-  // If skip auth is active, send the skip auth header instead of the real token
-  if (skipAuth) {
-    console.log('[skip-auth] Adding X-Skip-Auth header to tRPC request');
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'X-Skip-Auth': '1',
-    };
-    if (measurementConsentHeader) {
-      headers[C15T_MEASUREMENT_CONSENT_HEADER] = measurementConsentHeader;
-    }
-    if (fingerprint) headers[BROWSER_FINGERPRINT_HEADER] = fingerprint;
-    if (gaClientId) headers[GA_CLIENT_ID_HEADER] = gaClientId;
-    if (gaSessionId) headers[GA_SESSION_ID_HEADER] = gaSessionId;
-    return headers;
-  }
-
-  const token = await getAccessToken();
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json',
-  };
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-  if (measurementConsentHeader) {
-    headers[C15T_MEASUREMENT_CONSENT_HEADER] = measurementConsentHeader;
-  }
-  if (fingerprint) headers[BROWSER_FINGERPRINT_HEADER] = fingerprint;
-  if (gaClientId) headers[GA_CLIENT_ID_HEADER] = gaClientId;
-  if (gaSessionId) headers[GA_SESSION_ID_HEADER] = gaSessionId;
-  return headers;
 }

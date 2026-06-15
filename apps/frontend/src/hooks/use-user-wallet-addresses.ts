@@ -63,13 +63,19 @@ export function useLinkedWalletAddresses() {
 export function useLinkedWallets() {
   const {
     privyUser,
-    ready: privyUserReady,
+    privyRuntimeReady,
+    privyRuntimeAuthenticated,
     isAuthenticated: authenticated,
   } = useAuth();
 
   const linkedWalletsReady = useMemo(() => {
-    return privyUserReady && authenticated && privyUser;
-  }, [authenticated, privyUser, privyUserReady]);
+    return (
+      privyRuntimeReady &&
+      privyRuntimeAuthenticated &&
+      authenticated &&
+      Boolean(privyUser)
+    );
+  }, [authenticated, privyRuntimeAuthenticated, privyRuntimeReady, privyUser]);
 
   const linkedWallets = useMemo((): WalletWithMetadata[] => {
     if (!linkedWalletsReady) {

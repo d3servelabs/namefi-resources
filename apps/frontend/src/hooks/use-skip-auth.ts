@@ -1,6 +1,12 @@
 'use client';
 
 import { config } from '@/lib/env';
+import {
+  SKIP_AUTH_CHANGE_EVENT,
+  getSkipAuthFromStorage,
+  isSkipAuthAllowedEnvironment,
+  setSkipAuthInStorage,
+} from '@/lib/skip-auth';
 import type { Route } from 'next';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import {
@@ -11,7 +17,6 @@ import {
   useSyncExternalStore,
 } from 'react';
 
-const SKIP_AUTH_STORAGE_KEY = 'namefi-skip-auth';
 const SKIP_AUTH_URL_PARAM = 'skip_auth';
 
 export const SKIP_AUTH_MOCK_USER = {
@@ -21,44 +26,16 @@ export const SKIP_AUTH_MOCK_USER = {
 } as const;
 
 function isDevEnvironment(): boolean {
-  const isDev =
-    config.TYPE === 'local' ||
-    config.TYPE === 'development' ||
-    config.TYPE === 'preview';
-  return isDev;
-}
-
-function getSkipAuthFromStorage(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return window.localStorage.getItem(SKIP_AUTH_STORAGE_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function setSkipAuthInStorage(enabled: boolean): void {
-  if (typeof window === 'undefined') return;
-  try {
-    if (enabled) {
-      window.localStorage.setItem(SKIP_AUTH_STORAGE_KEY, '1');
-    } else {
-      window.localStorage.removeItem(SKIP_AUTH_STORAGE_KEY);
-    }
-    // Dispatch a custom event so all hook instances can sync
-    window.dispatchEvent(new CustomEvent('skip-auth-change'));
-  } catch {
-    // Ignore storage errors
-  }
+  return isSkipAuthAllowedEnvironment(config.TYPE);
 }
 
 // Subscribe to storage changes for cross-instance synchronization
 function subscribeToSkipAuthChanges(callback: () => void): () => void {
   const handleChange = () => callback();
-  window.addEventListener('skip-auth-change', handleChange);
+  window.addEventListener(SKIP_AUTH_CHANGE_EVENT, handleChange);
   window.addEventListener('storage', handleChange);
   return () => {
-    window.removeEventListener('skip-auth-change', handleChange);
+    window.removeEventListener(SKIP_AUTH_CHANGE_EVENT, handleChange);
     window.removeEventListener('storage', handleChange);
   };
 }

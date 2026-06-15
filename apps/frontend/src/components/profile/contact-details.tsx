@@ -17,7 +17,14 @@ import { EmailSubscriptionSettings } from './email-subscription-settings';
 import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { Globe, Loader2, Save, MessageCircle, User } from 'lucide-react';
+import {
+  AlertCircle,
+  Globe,
+  Loader2,
+  Save,
+  MessageCircle,
+  User,
+} from 'lucide-react';
 import { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -64,8 +71,8 @@ type ContactDetailsFormData = z.infer<typeof contactDetailsFormSchema>;
 
 export function ContactDetails() {
   const trpc = useTRPC();
-  const { privyUser } = useAuth();
-  const [focus, setFocus] = useQueryState('focus', parseAsString);
+  const { privyUser, isPrivyUserLoading, privyRuntimeReady } = useAuth();
+  const [focus] = useQueryState('focus', parseAsString);
 
   // Mutation for updating custom metadata
   const { mutate: updateMetadata, isPending: isUpdatingMetadata } = useMutation(
@@ -97,7 +104,9 @@ export function ContactDetails() {
 
   // Load contact details from Privy user metadata
   useEffect(() => {
-    const address = privyUser.customMetadata.address
+    if (!privyUser) return;
+
+    const address = privyUser.customMetadata?.address
       ? {
           street: privyUser.customMetadata.address.street ?? undefined,
           city: privyUser.customMetadata.address.city ?? undefined,
@@ -107,7 +116,7 @@ export function ContactDetails() {
         }
       : undefined;
     const formData: ContactDetailsFormData = {
-      fullName: privyUser.customMetadata.fullName || '',
+      fullName: privyUser.customMetadata?.fullName || '',
       address,
     };
     reset(formData);
@@ -132,6 +141,49 @@ export function ContactDetails() {
       scrollToElement(emaiSubscriptionRef.current);
     }
   }, [focus]);
+
+  if (isPrivyUserLoading || !privyRuntimeReady) {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Globe className="h-5 w-5 text-primary" />
+            <CardTitle>Contact Details</CardTitle>
+          </div>
+          <CardDescription>
+            Your contact information for domain registration and account
+            management
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex min-h-48 items-center justify-center">
+          <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!privyUser) {
+    return (
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Globe className="h-5 w-5 text-primary" />
+            <CardTitle>Contact Details</CardTitle>
+          </div>
+          <CardDescription>
+            Your contact information for domain registration and account
+            management
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex min-h-48 flex-col items-center justify-center gap-3 text-center">
+          <AlertCircle className="h-5 w-5 text-muted-foreground" />
+          <p className="max-w-md text-sm text-muted-foreground">
+            Privy profile details are unavailable for this session.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-6">

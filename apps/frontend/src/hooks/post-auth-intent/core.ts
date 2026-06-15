@@ -1,6 +1,7 @@
 'use client';
 
-import { useAuth, useLogin } from '@/hooks/use-auth';
+import { useAuth } from '@/hooks/use-auth';
+import { useLogin } from '@/hooks/use-login';
 import type { Route } from 'next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
@@ -120,7 +121,12 @@ export function useRequireStoredPostAuthIntent<TStageInput>(
         });
         return false;
       }
-      login();
+      void login().catch((error) => {
+        toast.error('Could not start sign in', {
+          description:
+            error instanceof Error ? error.message : 'Please try again.',
+        });
+      });
       return false;
     },
     [isAuthenticated, login, stageIntent],

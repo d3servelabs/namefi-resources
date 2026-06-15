@@ -2,7 +2,7 @@
 
 import { useMemo, type ReactNode } from 'react';
 import { Permission } from '@namefi-astra/utils/permissions';
-import { useMyPermissions } from '@/hooks/use-auth';
+import { useAuth, useMyPermissions } from '@/hooks/use-auth';
 
 type PermissionGateMode = 'normal' | 'inverted';
 type PermissionsMode = 'some' | 'every';
@@ -26,9 +26,11 @@ export function useHasPermissions(
   permissions: Permission[],
   mode: PermissionsMode = 'every',
 ) {
+  const auth = useAuth();
   const { data, isLoading, isError } = useMyPermissions();
   const userPermissions = useMemo(() => new Set(data ?? []), [data]);
   const hasPermissions = useMemo(() => {
+    if (!auth.isAuthenticated) return false;
     if (userPermissions.has(Permission.SUPER_ADMIN)) return true;
 
     switch (mode) {
@@ -37,7 +39,7 @@ export function useHasPermissions(
       case 'every':
         return permissions.every((p) => userPermissions.has(p));
     }
-  }, [permissions, userPermissions, mode]);
+  }, [auth.isAuthenticated, permissions, userPermissions, mode]);
   return { hasPermissions, isLoading, isError, userPermissions };
 }
 
