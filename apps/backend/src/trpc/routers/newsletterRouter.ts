@@ -191,6 +191,9 @@ export const newsletterRouter = createContractTRPCRouter<
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Altcha is required',
+          cause: {
+            alert: false,
+          },
         });
       }
       const verified = await verifySolution(altcha, secrets.ALTCHA_HMAC_KEY);
@@ -198,6 +201,9 @@ export const newsletterRouter = createContractTRPCRouter<
         throw new TRPCError({
           code: 'BAD_REQUEST',
           message: 'Invalid Altcha payload',
+          cause: {
+            alert: false,
+          },
         });
       }
 

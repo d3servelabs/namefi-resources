@@ -529,18 +529,26 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 const httpErrorAlertMiddleware = t.middleware(
   async ({ next, path, type, ctx }) => {
     const result = await next();
-    if (!result.ok) {
-      const { error } = result;
-      logger.trace({ error }, 'httpErrorAlertMiddleware');
-      const isZodError =
-        error instanceof ZodError || error.cause instanceof ZodError;
+    try {
+      if (!result.ok) {
+        const { error } = result;
+        logger.trace({ error }, 'httpErrorAlertMiddleware');
+        const isZodError =
+          error instanceof ZodError || error.cause instanceof ZodError;
+        const shouldNotAlert =
+          isZodError ||
+          (error as any).alert === false ||
+          (error.cause as any)?.alert === false;
 
-      const status = getHTTPStatusCodeFromError(error);
-      if ((status === 400 || status >= 500) && !isZodError) {
-        void sendHttpAlert(status, error, error.message, undefined, {
-          trpcCode: error.code,
-        });
+        const status = getHTTPStatusCodeFromError(error);
+        if ((status === 400 || status >= 500) && !shouldNotAlert) {
+          void sendHttpAlert(status, error, error.message, undefined, {
+            trpcCode: error.code,
+          });
+        }
       }
+    } catch (error) {
+      logger.error({ error }, 'Failed to send alert');
     }
     return result;
   },
