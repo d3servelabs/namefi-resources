@@ -20,23 +20,23 @@ Three criteria should drive the decision. First, **trust and conversion**: shopp
 
 ## The top 10 TLDs to secure for your e-commerce store
 
-### 1. [.com](/r/en/tld/com) — the default you cannot skip
+### 1. [.com](/en/tld/com) — the default you cannot skip
 
 `.com` remains the most recognized and trusted extension in the world, and for most stores it is the canonical home of the brand. It is operated by Verisign under an [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/com) and is open to anyone. If your exact-match `.com` is available, secure it first; everything else in your portfolio should point customers back toward it.
 
-### 2. [.shop](/r/en/tld/shop) — built for retail
+### 2. [.shop](/en/tld/shop) — built for retail
 
 `.shop` is a generic TLD purpose-built for commerce, [delegated in 2016](https://www.iana.org/domains/root/db/shop.html) and operated by GMO Registry, which won the rights at an ICANN auction. It is open to all registrants with no special eligibility rules ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/shop)). The keyword-in-the-extension reads instantly as "this is a place to buy," which makes it a natural fit for a storefront or a campaign microsite.
 
-### 3. [.store](/r/en/tld/store) — a clear commercial signal
+### 3. [.store](/en/tld/store) — a clear commercial signal
 
 `.store` is operated by Radix and was [introduced in 2016](https://en.wikipedia.org/wiki/.store) with no registration restrictions for end users beyond ICANN's standard reserved-names rules ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/store)). It is interchangeable in spirit with `.shop` and is worth holding both to broaden your retail footprint and to keep a near-identical lookalike out of someone else's hands.
 
-### 4. [.online](/r/en/tld/online) — broad and versatile
+### 4. [.online](/en/tld/online) — broad and versatile
 
 `.online` is another open Radix extension, [introduced in 2015](https://en.wikipedia.org/wiki/.online) with no eligibility restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/online)). Its generic meaning makes it flexible: useful as a landing page, a regional store, or simply a defensive hold so impersonators cannot claim "yourbrand.online."
 
-### 5. [.site](/r/en/tld/site) — a simple, recognizable alternative
+### 5. [.site](/en/tld/site) — a simple, recognizable alternative
 
 `.site` is an open Radix TLD ([delegated in 2015](https://en.wikipedia.org/wiki/.site)) with no registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/site)). It is short, easy to say, and widely understood, which makes it a sensible defensive register and a usable home for a microsite or a one-page promotion.
 
@@ -52,11 +52,11 @@ Three criteria should drive the decision. First, **trust and conversion**: shopp
 
 `.deals` is also operated by Identity Digital and is open to all registrants ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/deals)). For an e-commerce brand that runs frequent sales, "yourbrand.deals" is a memorable home for clearance pages and coupon landing pages — and a useful one to hold so it cannot be weaponized in a fake-discount scam. It is unlinked here as `.deals` is not in the allow-list.
 
-### 9. [.club](/r/en/tld/club) — community and membership
+### 9. [.club](/en/tld/club) — community and membership
 
 `.club` is a generic TLD that [launched to the public in 2014](https://en.wikipedia.org/wiki/.club) and is now operated by GoDaddy Registry, with no general registration restrictions ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/club)). If your store runs a loyalty program, subscription tier, or members-only drop, `.club` frames it perfectly.
 
-### 10. [.vip](/r/en/tld/vip) — premium tiers and exclusivity
+### 10. [.vip](/en/tld/vip) — premium tiers and exclusivity
 
 `.vip` is a generic TLD that [launched in 2016](https://en.wikipedia.org/wiki/.vip) — originally under Minds + Machines and now part of GoDaddy Registry — and is open to all ([ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/vip)). It is a strong choice for premium product lines, early-access programs, or high-value customer portals where exclusivity is part of the pitch.
 

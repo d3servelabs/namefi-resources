@@ -22,7 +22,7 @@ When evaluating extensions, weigh three criteria. **Trust signals** matter most 
 
 ### 1. .com — your flagship and primary brand
 
-The [.com](/r/en/tld/com) extension remains the default expectation for any business website, and it is almost always where clients, partners, and search engines will look first. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com), and registration is open to anyone. Make this your canonical address and redirect your other domains to it.
+The [.com](/en/tld/com) extension remains the default expectation for any business website, and it is almost always where clients, partners, and search engines will look first. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com), and registration is open to anyone. Make this your canonical address and redirect your other domains to it.
 
 ### 2. .cpa — the gold-standard trust signal (restricted)
 
@@ -38,7 +38,7 @@ The .accountant extension is operated by dog beach, LLC (an Identity Digital reg
 
 ### 5. .accountants — industry-focused, plural variant
 
-The plural [.accountants](/r/en/tld/accountants) extension is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/accountants) and is well suited to multi-partner practices and firms. While registries can apply targeted policies, .accountants is generally available to accounting professionals and related businesses without the strict licensure vetting that governs .cpa. Securing it alongside .accountant prevents confusion between the singular and plural forms.
+The plural [.accountants](/en/tld/accountants) extension is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/accountants) and is well suited to multi-partner practices and firms. While registries can apply targeted policies, .accountants is generally available to accounting professionals and related businesses without the strict licensure vetting that governs .cpa. Securing it alongside .accountant prevents confusion between the singular and plural forms.
 
 ### 6. .finance — for advisory and wealth services
 
@@ -46,19 +46,19 @@ The .finance extension positions your firm in the broader financial-services lan
 
 ### 7. .net — the classic technical alternate
 
-The [.net](/r/en/tld/net) extension is one of the original generic TLDs, operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net). It is widely recognized and frequently registered defensively alongside .com so that no one can stand up a confusingly similar site. Redirect it to your flagship domain.
+The [.net](/en/tld/net) extension is one of the original generic TLDs, operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net). It is widely recognized and frequently registered defensively alongside .com so that no one can stand up a confusingly similar site. Redirect it to your flagship domain.
 
 ### 8. .org — credibility for associations and nonprofits
 
-The [.org](/r/en/tld/org) extension, operated by Public Interest Registry under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/org), conveys institutional trust. It is a smart defensive registration for any firm, and a natural primary choice if your practice runs an associated foundation, professional association, or community program.
+The [.org](/en/tld/org) extension, operated by Public Interest Registry under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/org), conveys institutional trust. It is a smart defensive registration for any firm, and a natural primary choice if your practice runs an associated foundation, professional association, or community program.
 
 ### 9. .agency — modern and service-oriented
 
-The [.agency](/r/en/tld/agency) extension suits firms that present themselves as full-service partners rather than transactional preparers. It is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/agency) and is open to general registration, giving you a contemporary, brandable option for campaigns or sub-brands.
+The [.agency](/en/tld/agency) extension suits firms that present themselves as full-service partners rather than transactional preparers. It is operated by Binky Moon, LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/agency) and is open to general registration, giving you a contemporary, brandable option for campaigns or sub-brands.
 
 ### 10. .info — informational and defensive
 
-The [.info](/r/en/tld/info) extension, operated by Identity Digital under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/info), is an open TLD well suited to resource hubs, client portals, and knowledge bases — or simply as an inexpensive defensive registration to round out your portfolio.
+The [.info](/en/tld/info) extension, operated by Identity Digital under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/info), is an open TLD well suited to resource hubs, client portals, and knowledge bases — or simply as an inexpensive defensive registration to round out your portfolio.
 
 ## Defensive registration strategy
 

@@ -22,7 +22,7 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 1. .com — the default of the web
 
-[.com](/r/en/tld/com) is the original commercial gTLD and remains the most recognized and trusted suffix in the world. It is operated by [Verisign](https://www.icann.org/en/registry-agreements/details/com) under contract with ICANN. For most businesses, the exact-match `.com` is the single most important name to own, because customers type it by reflex and competitors covet it most.
+[.com](/en/tld/com) is the original commercial gTLD and remains the most recognized and trusted suffix in the world. It is operated by [Verisign](https://www.icann.org/en/registry-agreements/details/com) under contract with ICANN. For most businesses, the exact-match `.com` is the single most important name to own, because customers type it by reflex and competitors covet it most.
 
 ### 2. .co — the modern, brandable alternative
 
@@ -34,11 +34,11 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 4. .org — credibility and trust
 
-[.org](/r/en/tld/org) signals an organization or mission-driven entity and is operated by the [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), a non-profit. Even purely commercial businesses often register `.org` defensively so that no one can spin up a critical or impostor "organization" using their brand. It is unrestricted and open to anyone.
+[.org](/en/tld/org) signals an organization or mission-driven entity and is operated by the [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), a non-profit. Even purely commercial businesses often register `.org` defensively so that no one can spin up a critical or impostor "organization" using their brand. It is unrestricted and open to anyone.
 
 ### 5. .io — the tech and startup favorite
 
-[.io](/r/en/tld/io) is technically the country-code TLD for the British Indian Ocean Territory, but the letters echo "input/output," which made it the darling of developers, SaaS, and startups. It is administered through [Identity Digital's subsidiary, the Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html), and registration is open globally without local presence requirements. If your business is tech-facing, owning the `.io` is worth the consideration.
+[.io](/en/tld/io) is technically the country-code TLD for the British Indian Ocean Territory, but the letters echo "input/output," which made it the darling of developers, SaaS, and startups. It is administered through [Identity Digital's subsidiary, the Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html), and registration is open globally without local presence requirements. If your business is tech-facing, owning the `.io` is worth the consideration.
 
 ### 6. .biz — the business-only suffix
 
@@ -46,7 +46,7 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 7. .info — informational and approachable
 
-[.info](/r/en/tld/info) is one of the original new gTLDs and is widely used for knowledge bases, documentation, and informational microsites. It is operated by [Identity Digital](https://www.iana.org/domains/root/db/info.html) with no registration restrictions. Owning it lets you host a help center or campaign page — and keeps a copycat from publishing "facts" under your name.
+[.info](/en/tld/info) is one of the original new gTLDs and is widely used for knowledge bases, documentation, and informational microsites. It is operated by [Identity Digital](https://www.iana.org/domains/root/db/info.html) with no registration restrictions. Owning it lets you host a help center or campaign page — and keeps a copycat from publishing "facts" under your name.
 
 ### 8. .online — broad, descriptive, global
 
@@ -58,9 +58,9 @@ Weigh four criteria. **Relevance**: does the suffix fit your industry, audience,
 
 ### 10. .vip — premium positioning
 
-[.vip](/r/en/tld/vip) stands for "very important person" and is used to signal exclusivity, membership, or premium tiers. It is operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html), which acquired it as part of the former Minds + Machines portfolio, and registration is open to everyone. For loyalty programs, members-only content, or a high-end product line, `.vip` is a memorable choice.
+[.vip](/en/tld/vip) stands for "very important person" and is used to signal exclusivity, membership, or premium tiers. It is operated by [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html), which acquired it as part of the former Minds + Machines portfolio, and registration is open to everyone. For loyalty programs, members-only content, or a high-end product line, `.vip` is a memorable choice.
 
-Two more worth a quick mention as you build out a portfolio: [.agency](https://www.icann.org/en/registry-agreements/details/agency) suits service firms, and [.com](/r/en/tld/com) variations in your category should always be your anchor.
+Two more worth a quick mention as you build out a portfolio: [.agency](https://www.icann.org/en/registry-agreements/details/agency) suits service firms, and [.com](/en/tld/com) variations in your category should always be your anchor.
 
 ## Defensive registration strategy
 

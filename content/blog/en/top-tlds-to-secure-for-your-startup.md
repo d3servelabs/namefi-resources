@@ -22,23 +22,23 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 1. .com — the default the world still types
 
-[.com](/r/en/tld/com) remains the most recognized and trusted extension on the internet, the one users type by reflex and the one most email clients and apps assume. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com), and you can review its delegation record in the [IANA root database](https://www.iana.org/domains/root/db/com.html). If you secure only one domain, make it your .com. There are no eligibility restrictions, so the main challenge is availability.
+[.com](/en/tld/com) remains the most recognized and trusted extension on the internet, the one users type by reflex and the one most email clients and apps assume. It is operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/com), and you can review its delegation record in the [IANA root database](https://www.iana.org/domains/root/db/com.html). If you secure only one domain, make it your .com. There are no eligibility restrictions, so the main challenge is availability.
 
 ### 2. .io — the tech and SaaS favorite
 
-[.io](/r/en/tld/io) became a darling of startups because "I/O" means input/output in software, giving it built-in technical resonance. It is the country-code TLD assigned to the British Indian Ocean Territory, with the registry now operated by Internet Computer Bureau under [Identity Digital](https://www.identity.digital/), per its [IANA delegation record](https://www.iana.org/domains/root/db/io.html). Registration is open to anyone worldwide. Note that the territory's long-term geopolitical status has been [discussed publicly](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/), so treat .io as a strong complement to, not a replacement for, your .com.
+[.io](/en/tld/io) became a darling of startups because "I/O" means input/output in software, giving it built-in technical resonance. It is the country-code TLD assigned to the British Indian Ocean Territory, with the registry now operated by Internet Computer Bureau under [Identity Digital](https://www.identity.digital/), per its [IANA delegation record](https://www.iana.org/domains/root/db/io.html). Registration is open to anyone worldwide. Note that the territory's long-term geopolitical status has been [discussed publicly](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/), so treat .io as a strong complement to, not a replacement for, your .com.
 
 ### 3. .ai — the obvious choice for AI startups
 
-[.ai](/r/en/tld/ai) has exploded alongside the artificial-intelligence boom, making it close to mandatory for any AI-focused company. It is the country-code TLD for Anguilla, administered by the government of Anguilla, which [announced a partnership with Identity Digital in 2024](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses) to manage its growth; see the [IANA record](https://www.iana.org/domains/root/db/ai.html). Registration is open with no AI-industry requirement, but pricing and renewal terms differ from typical gTLDs, so plan ahead.
+[.ai](/en/tld/ai) has exploded alongside the artificial-intelligence boom, making it close to mandatory for any AI-focused company. It is the country-code TLD for Anguilla, administered by the government of Anguilla, which [announced a partnership with Identity Digital in 2024](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses) to manage its growth; see the [IANA record](https://www.iana.org/domains/root/db/ai.html). Registration is open with no AI-industry requirement, but pricing and renewal terms differ from typical gTLDs, so plan ahead.
 
 ### 4. .app — secure by default
 
-[.app](/r/en/tld/app) is operated by Google Registry and is purpose-built for software, apps, and mobile products. Its standout feature: the entire .app namespace is on the [HSTS preload list](https://hstspreload.org/), meaning every .app site is required to load over HTTPS, as Google [documents in its policies](https://www.registry.google/policies/). That security-by-default makes it a credible home for a product or download page. You will need a valid TLS certificate for the site to load at all.
+[.app](/en/tld/app) is operated by Google Registry and is purpose-built for software, apps, and mobile products. Its standout feature: the entire .app namespace is on the [HSTS preload list](https://hstspreload.org/), meaning every .app site is required to load over HTTPS, as Google [documents in its policies](https://www.registry.google/policies/). That security-by-default makes it a credible home for a product or download page. You will need a valid TLS certificate for the site to load at all.
 
 ### 5. .dev — built for builders
 
-[.dev](/r/en/tld/dev), also run by Google Registry, is aimed squarely at developers, engineering teams, and technical documentation. Like .app, the whole .dev zone is on the [HSTS preload list](https://hstspreload.org/), so HTTPS is mandatory across the extension. It is a natural fit for developer-tooling startups, API docs, or an internal engineering portal. Confirm the requirements in [Google Registry's documentation](https://www.registry.google/policies/) before you build.
+[.dev](/en/tld/dev), also run by Google Registry, is aimed squarely at developers, engineering teams, and technical documentation. Like .app, the whole .dev zone is on the [HSTS preload list](https://hstspreload.org/), so HTTPS is mandatory across the extension. It is a natural fit for developer-tooling startups, API docs, or an internal engineering portal. Confirm the requirements in [Google Registry's documentation](https://www.registry.google/policies/) before you build.
 
 ### 6. .tech — descriptive and broadly available
 
@@ -46,7 +46,7 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 7. .xyz — flexible and startup-friendly
 
-[.xyz](/r/en/tld/xyz) is a deliberately generic, unrestricted extension operated by XYZ.COM LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/xyz). Its open, neutral branding has made it popular with startups and Web3 projects alike (Alphabet's abc.xyz is a well-known example). With no relevance constraints, it is a versatile pick for a landing page, campaign, or experimental product.
+[.xyz](/en/tld/xyz) is a deliberately generic, unrestricted extension operated by XYZ.COM LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/xyz). Its open, neutral branding has made it popular with startups and Web3 projects alike (Alphabet's abc.xyz is a well-known example). With no relevance constraints, it is a versatile pick for a landing page, campaign, or experimental product.
 
 ### 8. .co — the short stand-in for .com
 
@@ -54,11 +54,11 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 9. .net — the classic backup
 
-[.net](/r/en/tld/net) is one of the original generic TLDs, operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net) (see its [IANA record](https://www.iana.org/domains/root/db/net.html)). It carries an established, trustworthy reputation, especially for infrastructure, networking, and platform companies. Even if you do not build your primary brand on it, securing the .net of your exact name is a sensible defensive move.
+[.net](/en/tld/net) is one of the original generic TLDs, operated by Verisign under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/net) (see its [IANA record](https://www.iana.org/domains/root/db/net.html)). It carries an established, trustworthy reputation, especially for infrastructure, networking, and platform companies. Even if you do not build your primary brand on it, securing the .net of your exact name is a sensible defensive move.
 
 ### 10. .club — for community-driven startups
 
-[.club](/r/en/tld/club) is an unrestricted generic TLD operated by GoDaddy Registry's Registry Services, LLC, per its [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/club) and [IANA record](https://www.iana.org/domains/root/db/club.html). If your startup is built around membership, community, or a recurring audience, .club communicates belonging in a single word. It is a strong category extension for creator platforms, subscription products, and social ventures.
+[.club](/en/tld/club) is an unrestricted generic TLD operated by GoDaddy Registry's Registry Services, LLC, per its [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/club) and [IANA record](https://www.iana.org/domains/root/db/club.html). If your startup is built around membership, community, or a recurring audience, .club communicates belonging in a single word. It is a strong category extension for creator platforms, subscription products, and social ventures.
 
 ## Defensive registration strategy
 
