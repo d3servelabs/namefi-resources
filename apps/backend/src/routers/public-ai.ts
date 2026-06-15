@@ -12,6 +12,7 @@ import {
   uploadDigestAnimationSourceImage,
 } from '@namefi-astra/ai';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils';
+import { lazy } from '@namefi-astra/utils/lazy';
 import {
   createS3Client,
   deleteFileFromS3,
@@ -32,25 +33,27 @@ import { and, eq } from 'drizzle-orm';
 const logger = createLogger({ context: 'PUBLIC_AI_GENERATION' });
 const publicAiRouter = new Hono<{ Variables: { requestId: string } }>();
 
-const s3Client = createS3Client({
-  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
-  AWS_REGION: config.AWS_REGION,
-});
+const getS3Client = lazy(() =>
+  createS3Client({
+    AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
+    AWS_REGION: config.AWS_REGION,
+  }),
+);
 
-const logoStorageConfig = {
+const getLogoStorageConfig = lazy(() => ({
   bucketName: config.STORAGE_BUCKET,
   cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
-  s3Client,
+  s3Client: getS3Client(),
   baseFolder: config.AI_BUCKET_FOLDERS.LOGOS,
-};
+}));
 
-const animationStorageConfig = {
+const getAnimationStorageConfig = lazy(() => ({
   bucketName: config.STORAGE_BUCKET,
   cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
-  s3Client,
+  s3Client: getS3Client(),
   baseFolder: config.AI_BUCKET_FOLDERS.ANIMATIONS,
-};
+}));
 
 const DIGEST_ANIMATION_IMAGE_DATA_URL_PATTERN =
   /^data:image\/[a-zA-Z0-9.+-]+;base64,[A-Za-z0-9+/=\s]+$/;
@@ -237,7 +240,7 @@ async function deleteOrphanedDigestAnimationSourceImage(
 ) {
   try {
     await deleteFileFromS3({
-      s3Client,
+      s3Client: getS3Client(),
       bucketName: config.STORAGE_BUCKET,
       key: sourceImage.storagePath,
     });
@@ -299,7 +302,7 @@ publicAiRouter.post('/generate-logo', async (c) => {
       textTreatment,
       typography,
       imageModel: model,
-      storage: logoStorageConfig,
+      storage: getLogoStorageConfig(),
     });
 
     const tokenUsage = [
@@ -465,7 +468,7 @@ publicAiRouter.post('/generate-digest-animation', async (c) => {
 
     const sourceImage = await uploadDigestAnimationSourceImage({
       imageDataUrl,
-      storage: animationStorageConfig,
+      storage: getAnimationStorageConfig(),
     });
     const workflowInput: PublicDigestAnimationWorkflowInput = {
       jobId,

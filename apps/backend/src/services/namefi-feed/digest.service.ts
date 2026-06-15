@@ -20,6 +20,7 @@ import {
   salesDigestRunsTable,
 } from '@namefi-astra/db';
 import { createS3Client } from '@namefi-astra/storage';
+import { lazy } from '@namefi-astra/utils/lazy';
 import { and, asc, eq, gte, lt, sql } from 'drizzle-orm';
 import type { Json } from 'drizzle-zod';
 import { config, secrets } from '#lib/env';
@@ -152,18 +153,20 @@ export class NamefiFeedSalesDigestDeliveryError extends Error {
   }
 }
 
-const s3Client = createS3Client({
-  AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
-  AWS_REGION: config.AWS_REGION,
-});
+const getS3Client = lazy(() =>
+  createS3Client({
+    AWS_ACCESS_KEY_ID: secrets.AWS_ACCESS_KEY_ID,
+    AWS_SECRET_ACCESS_KEY: secrets.AWS_SECRET_ACCESS_KEY,
+    AWS_REGION: config.AWS_REGION,
+  }),
+);
 
-const animationStorageConfig = {
+const getAnimationStorageConfig = lazy(() => ({
   bucketName: config.STORAGE_BUCKET,
   cloudfrontDomain: config.CLOUD_FRONT_DOMAIN,
-  s3Client,
+  s3Client: getS3Client(),
   baseFolder: config.AI_BUCKET_FOLDERS.ANIMATIONS,
-};
+}));
 
 export function getRollingNamefiFeedSalesDigestBounds(
   at: Date = new Date(),
@@ -913,7 +916,7 @@ async function maybeGenerateDigestAnimation({
     const requestId = buildDigestAnimationRequestId(persistenceContext);
     const sourceImage = await uploadDigestAnimationSourceImage({
       imageDataUrl,
-      storage: animationStorageConfig,
+      storage: getAnimationStorageConfig(),
     });
     const workflowInput: PublicDigestAnimationWorkflowInput = {
       jobId: requestId,
