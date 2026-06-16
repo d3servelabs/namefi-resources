@@ -2,6 +2,7 @@ import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useMutation } from '@tanstack/react-query';
 import {
+  useAccount,
   useChainId,
   usePublicClient,
   useWaitForTransactionReceipt,
@@ -16,7 +17,12 @@ type Props = {
 export function useBuyNfsc(props: Props) {
   const { onSuccess, onError } = props;
   const chainId = useChainId();
-  const { data: signer } = useWalletClient();
+  const { isConnected } = useAccount();
+  const {
+    data: signer,
+    isLoading: isSignerLoading,
+    refetch: refetchWalletClient,
+  } = useWalletClient();
   const client = usePublicClient();
 
   const {
@@ -29,21 +35,35 @@ export function useBuyNfsc(props: Props) {
   } = useMutation({
     mutationFn: async (value: bigint) => {
       if (!client) {
-        throw new Error('Client not found');
+        throw new Error('Network client unavailable. Please try again.');
       }
-      if (!signer) {
-        throw new Error('Signer not found');
+
+      // The wallet client can lag behind the connection — especially now that
+      // the wallet runtime is mounted lazily (deferred wallet bundles), where
+      // the signer may not be hydrated at the moment of click. Try an on-demand
+      // refetch before giving up so a momentary gap doesn't surface as an
+      // instant no-op (the old "Signer not found" path that flickered the Swap
+      // button with no MetaMask prompt).
+      let activeSigner = signer;
+      if (!activeSigner) {
+        const refetched = await refetchWalletClient();
+        activeSigner = refetched.data ?? undefined;
+      }
+      if (!activeSigner) {
+        throw new Error(
+          'Wallet not connected. Please connect your wallet and try again.',
+        );
       }
 
       const { request } = await client.simulateContract({
         address: NFSC_CONTRACT_ADDRESS,
         abi: NfscAbi,
         functionName: 'buyWithEthers',
-        account: signer.account,
+        account: activeSigner.account,
         value: value,
       });
 
-      return signer.writeContract(request);
+      return activeSigner.writeContract(request);
     },
     onSuccess,
     onError,
@@ -63,5 +83,9 @@ export function useBuyNfsc(props: Props) {
     isPending,
     reset,
     result,
+    /** A wallet is connected and its signer is available to sign a swap. */
+    isWalletReady: isConnected && Boolean(signer),
+    /** Connected but the signer (wallet client) is still hydrating. */
+    isWalletConnecting: isConnected && !signer && isSignerLoading,
   };
 }

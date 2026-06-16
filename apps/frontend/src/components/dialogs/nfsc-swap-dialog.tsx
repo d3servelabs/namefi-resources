@@ -42,7 +42,15 @@ import {
 import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { useConnectWallet } from '@privy-io/react-auth';
 import dynamic from 'next/dynamic';
+import {
+  getSwapButtonLabel,
+  getSwapButtonState,
+  isConnectAction,
+  isSwapButtonBusy,
+  isSwapButtonDisabled,
+} from '@/components/dialogs/nfsc-swap-dialog-utils';
 
 const NfscCardTopUpTab = dynamic(
   () =>
@@ -88,9 +96,11 @@ export default function NFSCSwapDialog(props: Props) {
   const [insufficientBalance, setInsufficientBalance] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [paymentTab, setPaymentTab] = useState<'eth' | 'card'>('eth');
+  const [isConnectingWallet, setIsConnectingWallet] = useState(false);
 
   const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
+  const { connectWallet } = useConnectWallet();
 
   const { nfscBalance, nativeBalance, isLoading } = useNfscBalance();
   const { data: conversionRate, isLoading: isConversionRateLoading } =
@@ -113,7 +123,12 @@ export default function NFSCSwapDialog(props: Props) {
     enabled: open && Boolean(checksummedAddress),
     refetchInterval: open ? 5000 : false,
   });
-  const { writeContractAsync: exchangeNfsc, isPending } = useBuyNfsc({
+  const {
+    writeContractAsync: exchangeNfsc,
+    isPending,
+    isWalletReady,
+    isWalletConnecting,
+  } = useBuyNfsc({
     onSuccess: () => {
       toast.success('Successfully Swapped', {
         description: `You have successfully swapped ${amountPay} ETH to ${displayReceiveAmount()} NFSC`,
@@ -195,6 +210,25 @@ export default function NFSCSwapDialog(props: Props) {
     [switchChain, chainId, chains],
   );
 
+  const handleConnectWallet = useCallback(async () => {
+    setErrorMessage('');
+    setIsConnectingWallet(true);
+    try {
+      await connectWallet();
+    } catch (error) {
+      // A user dismissing the connect modal is expected — only surface real
+      // failures, not cancellations.
+      if (
+        error instanceof Error &&
+        !/cancel|reject|close/i.test(error.message)
+      ) {
+        setErrorMessage(error.message);
+      }
+    } finally {
+      setIsConnectingWallet(false);
+    }
+  }, [connectWallet]);
+
   const handleOnExchange = async () => {
     setErrorMessage('');
 
@@ -237,7 +271,15 @@ export default function NFSCSwapDialog(props: Props) {
 
   const isEthTabLoading = isLoading || isConversionRateLoading;
 
-  const isButtonDisabled = insufficientBalance || isPending || !isInputValid();
+  const swapButtonState = getSwapButtonState({
+    hasReadyWallet: isWalletReady,
+    isWalletConnecting: isWalletConnecting || isConnectingWallet,
+    insufficientBalance,
+    isPending,
+    isAmountValid: isInputValid(),
+  });
+  const isButtonDisabled = isSwapButtonDisabled(swapButtonState);
+  const isSwapButtonActionConnect = isConnectAction(swapButtonState);
   const formattedRate = conversionRate
     ? Number.parseFloat(conversionRate).toFixed(DISPLAY_DECIMALS)
     : '0';
@@ -443,17 +485,17 @@ export default function NFSCSwapDialog(props: Props) {
 
                   <Button
                     className="w-full mt-4 items-center bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground font-medium py-6 rounded-full flex justify-center gap-2"
-                    onClick={handleOnExchange}
+                    onClick={
+                      isSwapButtonActionConnect
+                        ? handleConnectWallet
+                        : handleOnExchange
+                    }
                     disabled={isButtonDisabled}
                   >
-                    {isPending && <Loader2 className="h-5 w-5 animate-spin" />}
-                    {isPending
-                      ? 'Processing...'
-                      : insufficientBalance
-                        ? 'Insufficient ETH Balance'
-                        : isInputValid()
-                          ? 'Swap Tokens'
-                          : 'Enter an amount'}
+                    {isSwapButtonBusy(swapButtonState) && (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    )}
+                    {getSwapButtonLabel(swapButtonState)}
                   </Button>
                 </div>
               </div>
