@@ -214,7 +214,14 @@ export default function NFSCSwapDialog(props: Props) {
     setErrorMessage('');
     setIsConnectingWallet(true);
     try {
-      await connectWallet();
+      // Suggest the charging wallet shown in the dialog so the user connects the
+      // wallet they intend to top up. `buyWithEthers` credits the connected
+      // signer, so connecting a different wallet would fund the wrong account.
+      await connectWallet(
+        checksummedAddress
+          ? { suggestedAddress: checksummedAddress }
+          : undefined,
+      );
     } catch (error) {
       // A user dismissing the connect modal is expected — only surface real
       // failures, not cancellations.
@@ -227,7 +234,7 @@ export default function NFSCSwapDialog(props: Props) {
     } finally {
       setIsConnectingWallet(false);
     }
-  }, [connectWallet]);
+  }, [connectWallet, checksummedAddress]);
 
   const handleOnExchange = async () => {
     setErrorMessage('');
