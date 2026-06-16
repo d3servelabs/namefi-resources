@@ -74,7 +74,12 @@ runs:
         # Isolated installs cause Bun to materialize the full workspace graph,
         # even when Vercel builds a single app. Prune the repo first so Vercel
         # only sees the target app and its transitive workspace deps.
-        bunx turbo prune "$TURBO_PRUNE_SCOPE" --docker --out-dir "$PRUNE_DIR"
+        TURBO_VERSION="$(bun pm pkg get devDependencies.turbo | tr -d '"')"
+        if [[ ! "$TURBO_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.+][0-9A-Za-z.-]+)?$ ]]; then
+          echo "Root devDependency turbo must be pinned to an exact version; found '$TURBO_VERSION'" >&2
+          exit 1
+        fi
+        bunx "turbo@$TURBO_VERSION" prune "$TURBO_PRUNE_SCOPE" --docker --out-dir "$PRUNE_DIR"
 
         PRUNED_ROOT="$PRUNE_DIR/full"
 

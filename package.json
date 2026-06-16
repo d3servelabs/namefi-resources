@@ -64,7 +64,7 @@
     "knip": "^5.64.2",
     "lefthook": "^1.11.6",
     "playwright": "^1.60.0",
-    "turbo": "^2.9.5",
+    "turbo": "2.9.5",
     "vitest": "^3.2.4",
     "wait-on": "^8.0.3",
     "webpack": "5.99.9"
