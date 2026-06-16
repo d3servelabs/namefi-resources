@@ -41,8 +41,13 @@ export async function generateMetadata({
   // SEO: when an English version of this slug exists, declare it as the
   // canonical so ranking signals consolidate on the English page. Non-English
   // variants remain accessible and continue to ship locale-specific OG/hreflang.
+  // Exception: a page flagged `selfCanonical` (a topic-relevant page authored
+  // natively for its market, e.g. a Spanish .abogado page) is self-canonical so
+  // it ranks in its own language instead of deferring to English.
   const canonicalUrl =
-    locale === 'en' || !getTldCached('en', slug)
+    locale === 'en' ||
+    !getTldCached('en', slug) ||
+    entry.frontmatter.selfCanonical
       ? selfUrl
       : `${baseUrl}/r/en/tld/${slug}`;
   const ogImagePath = `${selfPath}/opengraph-image`;

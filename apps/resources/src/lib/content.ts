@@ -76,6 +76,11 @@ type TldFrontmatter = {
   language: Locale;
   keywords: string[];
   faqs: TldFaq[];
+  // When true, a non-English variant declares ITSELF as canonical instead of
+  // deferring to the English page. Set on topic-relevant pages written natively
+  // for a market (e.g. a Spanish .abogado page) so they rank in their own
+  // language rather than consolidating ranking onto English.
+  selfCanonical: boolean;
 };
 
 type TldEntry = {
@@ -443,6 +448,7 @@ function normaliseTldFrontmatter(
     language,
     keywords,
     faqs,
+    selfCanonical: toBoolean(data.selfCanonical),
   };
 }
 
