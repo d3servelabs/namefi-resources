@@ -1,5 +1,6 @@
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
+import { resolveSwapSigner } from '@/hooks/use-buy-nfsc-utils';
 import { useMutation } from '@tanstack/react-query';
 import {
   useAccount,
@@ -34,25 +35,20 @@ export function useBuyNfsc(props: Props) {
     reset,
   } = useMutation({
     mutationFn: async (value: bigint) => {
-      if (!client) {
-        throw new Error('Network client unavailable. Please try again.');
-      }
-
       // The wallet client can lag behind the connection — especially now that
       // the wallet runtime is mounted lazily (deferred wallet bundles), where
-      // the signer may not be hydrated at the moment of click. Try an on-demand
-      // refetch before giving up so a momentary gap doesn't surface as an
-      // instant no-op (the old "Signer not found" path that flickered the Swap
-      // button with no MetaMask prompt).
-      let activeSigner = signer;
-      if (!activeSigner) {
-        const refetched = await refetchWalletClient();
-        activeSigner = refetched.data ?? undefined;
-      }
-      if (!activeSigner) {
-        throw new Error(
-          'Wallet not connected. Please connect your wallet and try again.',
-        );
+      // the signer may not be hydrated at the moment of click. resolveSwapSigner
+      // refetches on demand before giving up so a momentary gap doesn't surface
+      // as an instant no-op (the old "Signer not found" path that flickered the
+      // Swap button with no MetaMask prompt).
+      const activeSigner = await resolveSwapSigner({
+        client,
+        signer,
+        refetchWalletClient,
+      });
+
+      if (!client) {
+        throw new Error('Network client unavailable. Please try again.');
       }
 
       const { request } = await client.simulateContract({
