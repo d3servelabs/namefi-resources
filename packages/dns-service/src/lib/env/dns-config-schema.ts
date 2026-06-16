@@ -82,6 +82,51 @@ export const dnsConfigSchema = z.object({
    */
   NAMEFI_PARK_GATE_KEY_ID: z.string().optional(),
   // #endregion
+
+  // #region DNS response cache (LRU + Redis layers in front of the resolver)
+  /**
+   * Enable the in-memory LRU cache layer. Bounded and TTL-aware (honours the
+   * record TTL up to NAMEFI_DNS_CACHE_MAX_TTL_SECONDS), so it's safe on by
+   * default — it never serves a record past its own TTL.
+   */
+  NAMEFI_DNS_LRU_CACHE_ENABLED: z.boolean().default(true),
+  /** Max number of cached entries (count-based eviction). */
+  NAMEFI_DNS_LRU_CACHE_MAX_ENTRIES: z.number().int().positive().default(5000),
+  /**
+   * Optional total size cap in bytes for the LRU (size-based eviction). When
+   * set, entries are sized by serialized length; leave unset for count-only.
+   */
+  NAMEFI_DNS_LRU_CACHE_MAX_SIZE_BYTES: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .default(200 * 1024 * 1024), //200 MegaBytes
+  /**
+   * Enable the Redis cache layer (shared across pods, sits behind the LRU).
+   * Off by default since it needs MAIN_REDIS_URL; degrades gracefully if Redis
+   * is unavailable.
+   */
+  NAMEFI_DNS_REDIS_CACHE_ENABLED: z.boolean().default(false),
+  /**
+   * Max time (ms) a Redis cache read/write may take before the resolver gives
+   * up and resolves from origin. Bounds per-request latency when Redis is slow
+   * or unreachable (the shared client's connectTimeout is minutes).
+   */
+  NAMEFI_DNS_REDIS_CACHE_TIMEOUT_MS: z.number().int().positive().default(50),
+  /** TTL ceiling for positive answers; a record's smaller TTL wins. */
+  NAMEFI_DNS_CACHE_MAX_TTL_SECONDS: z
+    .number()
+    .int()
+    .positive()
+    .default(20 * 60), //20 Minutes
+  /** TTL for negative responses (NXDOMAIN / NODATA). */
+  NAMEFI_DNS_CACHE_NEGATIVE_TTL_SECONDS: z
+    .number()
+    .int()
+    .positive()
+    .default(30), //30 Seconds
+  // #endregion
 });
 
 /**

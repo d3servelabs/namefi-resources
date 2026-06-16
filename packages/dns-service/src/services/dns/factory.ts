@@ -32,6 +32,40 @@ import {
 import { createRewriteRelayedLink } from './links/rewrite-relayed-link';
 import { createRelayZoneAuthorityLink } from './links/relay-zone-authority-link';
 import { createParkGateLink } from './links/park-gate-link';
+import { createLruCacheLink } from './links/lru-cache-link';
+import { createRedisCacheLink } from './links/redis-cache-link';
+
+/**
+ * Build the cache layers that sit in front of the resolver chain, ordered
+ * fastest-first (LRU then Redis), gated by config. `namespace` keeps each
+ * resolver version's entries distinct in the shared Redis cache.
+ */
+function createDefaultCacheLinks(namespace: string): DnsRequestLink[] {
+  const links: DnsRequestLink[] = [];
+  const ttlOptions = {
+    namespace,
+    maxTtlSeconds: config.NAMEFI_DNS_CACHE_MAX_TTL_SECONDS,
+    negativeTtlSeconds: config.NAMEFI_DNS_CACHE_NEGATIVE_TTL_SECONDS,
+  };
+  if (config.NAMEFI_DNS_LRU_CACHE_ENABLED) {
+    links.push(
+      createLruCacheLink({
+        ...ttlOptions,
+        maxEntries: config.NAMEFI_DNS_LRU_CACHE_MAX_ENTRIES,
+        maxSizeBytes: config.NAMEFI_DNS_LRU_CACHE_MAX_SIZE_BYTES,
+      }),
+    );
+  }
+  if (config.NAMEFI_DNS_REDIS_CACHE_ENABLED) {
+    links.push(
+      createRedisCacheLink({
+        ...ttlOptions,
+        timeoutMs: config.NAMEFI_DNS_REDIS_CACHE_TIMEOUT_MS,
+      }),
+    );
+  }
+  return links;
+}
 
 export interface DnsRequestLinkDependencies {
   getNsAndSoaRecords: DnsAnswerResolver;
@@ -67,6 +101,7 @@ export function createDefaultDnsRequestLinksV2(
   return [
     createLoggingLink(),
     wildcardTerminationLink,
+    ...createDefaultCacheLinks('v2'),
     createResolvingLink(resolvedDependencies.getNsAndSoaRecords),
     createParkGateLink(),
     createResolvingLink(resolvedDependencies.getAnswerFromPreferences),
@@ -111,6 +146,7 @@ export function createDefaultDnsRequestLinksV2_1(
   return [
     createLoggingLink(),
     wildcardTerminationLink,
+    ...createDefaultCacheLinks('v2.1'),
     switchLink(
       (ctx) =>
         process.env.ENVIRONMENT !== 'production' &&
@@ -148,6 +184,7 @@ export function createDefaultDnsRequestLinksV2_2(
   return [
     createLoggingLink(),
     wildcardTerminationLink,
+    ...createDefaultCacheLinks('v2.2'),
     createGatedLink(
       createRewriteRelayedLink(),
       (ctx) =>
