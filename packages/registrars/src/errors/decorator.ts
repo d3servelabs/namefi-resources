@@ -16,6 +16,23 @@ type RegistrarErrorHandlingHost = {
   ): Promise<T>;
 };
 
+type Stage3MethodDecoratorContext = {
+  kind: 'method';
+  name: string | symbol;
+};
+
+type WithRegistrarErrorDecorator = {
+  <T extends AnyAsyncMethod>(
+    original: T,
+    context: Stage3MethodDecoratorContext,
+  ): T;
+  <T extends AnyAsyncMethod>(
+    target: object,
+    propertyKey: string | symbol,
+    descriptor: TypedPropertyDescriptor<T>,
+  ): TypedPropertyDescriptor<T>;
+};
+
 function getDefaultDomainName(...args: unknown[]): string | undefined {
   const first = args[0];
 
@@ -58,29 +75,26 @@ export interface WithRegistrarErrorOptions {
 }
 
 /**
- * Method decorator (legacy / `experimentalDecorators`) that routes a registrar
- * method through the host's `withErrorHandling`, converting thrown native errors
- * into `RegistrarError`s.
+ * Method decorator that routes a registrar method through the host's
+ * `withErrorHandling`, converting thrown native errors into `RegistrarError`s.
+ *
+ * The backend dev runner can invoke workspace-package decorators with the
+ * current TC39 method-decorator shape even though package tests and typecheck
+ * still exercise the legacy `experimentalDecorators` descriptor shape, so this
+ * intentionally supports both call protocols.
  *
  * It is generic over the method type `T` and returns a
  * `TypedPropertyDescriptor<T>`, so the decorated method's original signature
  * (parameters and return type) is preserved — no `<any>` annotation needed at
  * call sites, regardless of the method's argument shape.
  */
-export function withRegistrarError(options?: WithRegistrarErrorOptions) {
-  return <T extends AnyAsyncMethod>(
-    _target: object,
-    propertyKey: string | symbol,
-    descriptor: TypedPropertyDescriptor<T>,
-  ): TypedPropertyDescriptor<T> => {
-    const original = descriptor.value;
-    if (!original) {
-      return descriptor;
-    }
-    const methodName = String(propertyKey);
-
-    // Function expression (not a hoisted declaration) so the closure captures
-    // the narrowed, non-undefined `original`.
+export function withRegistrarError(
+  options?: WithRegistrarErrorOptions,
+): WithRegistrarErrorDecorator {
+  const wrap = <T extends AnyAsyncMethod>(
+    methodName: string,
+    original: T,
+  ): T => {
     const wrapped = function (
       this: RegistrarErrorHandlingHost,
       ...args: Parameters<T>
@@ -94,7 +108,27 @@ export function withRegistrarError(options?: WithRegistrarErrorOptions) {
       ) as ReturnType<T>;
     };
 
-    descriptor.value = wrapped as unknown as T;
-    return descriptor;
+    return wrapped as unknown as T;
   };
+
+  const decorator = <T extends AnyAsyncMethod>(
+    targetOrOriginal: object | T,
+    propertyKeyOrContext: string | symbol | Stage3MethodDecoratorContext,
+    descriptor?: TypedPropertyDescriptor<T>,
+  ): T | TypedPropertyDescriptor<T> => {
+    if (descriptor) {
+      const original = descriptor.value;
+      if (!original) {
+        return descriptor;
+      }
+
+      descriptor.value = wrap(String(propertyKeyOrContext), original);
+      return descriptor;
+    }
+
+    const context = propertyKeyOrContext as Stage3MethodDecoratorContext;
+    return wrap(String(context.name), targetOrOriginal as T);
+  };
+
+  return decorator as WithRegistrarErrorDecorator;
 }

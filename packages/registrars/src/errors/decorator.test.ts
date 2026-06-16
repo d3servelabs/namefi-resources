@@ -75,4 +75,26 @@ describe('@withRegistrarError', () => {
     });
     expect((error as RegistrarUnknownError).operation).toBe('customOp');
   });
+
+  it('supports the current method-decorator runtime shape', async () => {
+    const reg = new FakeRegistrar();
+    const original = async function (
+      this: FakeRegistrar,
+      domainName: string,
+    ): Promise<string> {
+      return `ok:${domainName}`;
+    };
+
+    const wrapped = withRegistrarError()(original, {
+      kind: 'method',
+      name: 'stage3Succeeds',
+    });
+
+    const result = await wrapped.call(reg, 'example.com');
+
+    expect(result).toBe('ok:example.com');
+    expect(reg.calls).toEqual([
+      { operation: 'stage3Succeeds', domainName: 'example.com' },
+    ]);
+  });
 });
