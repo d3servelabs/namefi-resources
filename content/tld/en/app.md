@@ -1,106 +1,155 @@
 ---
-title: "What is a .app Domain? The Secure TLD for Apps (HTTPS by Default)"
-date: '2025-12-10'
-updated: '2026-06-10'
+title: 'What Is a .app Domain? The HTTPS-Secure TLD Explained'
+date: '2026-06-15'
 language: 'en'
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: "What is a .app domain and what is it used for? Learn why Google's .app TLD requires HTTPS (HSTS preload), who should use it, and how to register a tokenized .app at Namefi."
-keywords: ['.app domain', '.app TLD', 'app domain', 'app tld', 'app tlds', '.app top level domain', 'what is .app domain used for', 'what is a .app domain', 'why choose .app', 'Google Registry .app', '.app HTTPS required', '.app HSTS preload', 'secure domains HSTS', 'mobile app landing page', 'SaaS domain names', 'developer domains', 'tokenized domains', 'blockchain domains', 'buy .app domain', 'dominio .app', 'dominios app', 'dominio app', 'qué es un dominio .app', 'registrar dominio .app', 'Namefi .app']
+description: 'The .app domain is Google Registry''s gTLD for software and apps, with HTTPS required on every site. Learn who it suits, how it ranks, and how to register one.'
+keywords: ['.app domain', 'what is .app', '.app TLD', '.app domains', 'app domain extension', 'Google Registry .app', '.app HTTPS required', 'register .app domain', 'developer domains']
+faqs:
+  - question: 'Can anyone register a .app domain?'
+    answer: 'Yes. The .app TLD is an open generic top-level domain with no eligibility restrictions, so anyone can register an available name. The one practical condition is technical, not legal: a .app site needs a valid HTTPS certificate to load in browsers.'
+  - question: 'Does a .app domain affect SEO?'
+    answer: 'Google treats .app as a standard generic gTLD with no inherent ranking advantage or penalty. Because .app forces HTTPS, you automatically meet Google''s secure-connection best practice, which is a lightweight positive signal.'
+  - question: 'Who should register a .app domain?'
+    answer: 'Mobile app makers, SaaS and web-app builders, and developers showcasing projects are the natural fit. The suffix reads as "this is a working application," making it ideal for product hubs, download pages, and login portals.'
+  - question: 'Why does a .app domain require HTTPS?'
+    answer: 'Google Registry added the entire .app zone to the browser HSTS preload list before launch. Browsers therefore upgrade every .app request to HTTPS automatically, so the domain will not load without a valid TLS certificate. You cannot opt out.'
+  - question: 'Does .app support WHOIS privacy?'
+    answer: 'Yes. As a generic gTLD, .app supports standard registrar WHOIS privacy or proxy services, and most personal registrant data is already redacted in public WHOIS output under current ICANN policy.'
 ---
 
-## **What is a .app Domain?**
+The **.app** domain is a generic top-level domain (gTLD) built for the one corner of the web everyone now lives in: software. Operated by Google Registry, it carries a clear, universally understood meaning, and it is best known for one defining rule: every .app site must be served over HTTPS. If you build mobile apps, web apps, or developer tools, a `.app` address tells visitors exactly what they are about to open before they click.
 
-The **.app** domain is a generic Top-Level Domain (gTLD) designed for applications, software developers, and technology products. It launched to the general public in **May 2018** and is operated by **Google Registry**, the same operator behind sibling extensions like [.dev](/en/tld/dev/) and .page.
+This page covers what makes .app different from generic extensions like .com, who actually uses it, how Google treats it for ranking, the registration rules, and how to register one at Namefi.
 
-Unlike legacy extensions such as .com or .net, the .app TLD was created with a clear purpose: to give the booming app economy a secure, instantly recognizable home on the internet. Whether your product is a mobile application, a web-based tool, or a backend service, a `.app` address tells users exactly what to expect before they even click the link.
+## .app at a glance
 
-The single most important thing to know about .app is its **security model**: it was the first TLD to require **HTTPS for every site**, enforced through the **HSTS preload list**. We explain exactly how that works—and what it means for you as an owner—further down this page.
+| Fact | Detail |
+| --- | --- |
+| TLD type | Generic top-level domain (gTLD) |
+| Registry operator | Charleston Road Registry Inc. (Google Registry) |
+| Year launched | Delegated 2015; general availability May 2018 |
+| IDN support | Yes |
+| DNSSEC | Supported |
+| Registration restrictions | Open to all — no eligibility gating; valid HTTPS certificate required for the site to load |
+| Best for | Mobile apps, SaaS/web apps, developer projects |
 
-For background on how new extensions like this are introduced and governed, see our glossary entries on [ICANN](/en/glossary/icann/) and what a [registrar](/en/glossary/registrar/) actually does.
+## What is .app?
 
-## **What is a .app Domain Used For?**
+The word "app" needs no translation: it is global shorthand for an application, whether on a phone, in a browser, or on a desktop. That makes .app one of the most self-explanatory new gTLDs available. A name like `getproduct.app` communicates "functional software" instantly, in a way `getproduct.com` cannot.
 
-Because "app" is a universally understood term, .app bridges the gap between developers and everyday users. Here is how it is most commonly used:
+.app is a generic gTLD, not a country-code TLD, so it carries no geographic association. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), new gTLDs like .app are treated as generic by default and are not tied to any single country for geo-targeting — your audience can be global. You can confirm its delegation and operator details on the [IANA root-zone entry for .app](https://www.iana.org/domains/root/db/app.html).
 
-*   **Mobile App Landing Pages:** Companies with apps on the Apple App Store or Google Play use a `.app` domain (e.g., `getproduct.app`) as a central hub for download links, release notes, and support.
-*   **Web Applications (SaaS):** Modern software lives in the browser, so SaaS providers use .app for the actual product interface and login, separating it from a marketing site that often sits on a .com.
-*   **Developer Portfolios:** Engineers use `lastname.app` or `projectname.app` to showcase coding projects, side projects, and résumés.
-*   **Documentation and Support Portals:** Tech companies spin up dedicated .app sites to host API docs, user guides, and status pages.
-*   **Product Launches:** On platforms like [Product Hunt](https://www.producthunt.com/), a growing share of new tech launches now use .app addresses, in part because the short, brandable .com market is so saturated.
+The defining technical fact about .app is its security model. It was the first TLD made available for general registration with **HTTPS enforced for every site**, baked in at the registry level via the HSTS preload list. We cover the practical consequences in the eligibility and reputation sections below.
 
-## **Why Does .app Require HTTPS? (HSTS Preload Explained)**
+## History of .app
 
-This is the defining feature of the .app TLD, and it is worth understanding properly because it directly affects how you set up your site.
+Charleston Road Registry Inc. applied for .app during ICANN's new-gTLD program. The string was contested by multiple applicants, and Google won it at a 2015 ICANN auction with a reported bid of around $25 million — at the time one of the highest amounts paid for a new gTLD. IANA records show the delegation completed in 2015.
 
-**Every .app domain is on the HSTS preload list at the registry level.** Google Registry submitted the entire `.app` zone to the **HSTS (HTTP Strict Transport Security) preload list** *before* the TLD launched. That list is honored by Chrome, Firefox, Safari, Edge, and most other modern browsers. The practical consequences:
+The namespace opened to the public in 2018. After a sunrise period for trademark holders and an early-access window with descending fees, .app reached general availability in May 2018, when anyone could register an available name at standard pricing. Google marketed it as the first TLD with built-in HTTPS security to launch for general registration. It has since become a recognizable home for app-related products, though it remains niche relative to legacy extensions.
 
-*   **HTTP is disabled, automatically.** When a browser sees any address ending in `.app`, it upgrades the connection to **HTTPS before the request is even sent**—the user never touches an insecure HTTP connection.
-*   **No certificate means no website.** If you register a .app domain but do not configure a valid **TLS/SSL certificate**, browsers will simply refuse to load it (you'll see an error like "HTTP is disabled for this domain"). The domain can be *bought* like any other, but it will not *resolve* in a browser until HTTPS is in place.
-*   **You cannot opt out.** Because the requirement is baked into the TLD via the preload list, it applies to every `.app` site, and individual domains cannot be removed from it.
+## How people use .app
 
-### **What This Means for You as an Owner**
+- **Mobile app landing pages** — a central hub for App Store and Google Play links, release notes, and support, e.g. `yourapp.app`.
+- **Web apps and SaaS** — the product interface and login surface, often kept separate from a marketing `.com`.
+- **Developer portfolios and side projects** — `name.app` or `project.app` to show working tools rather than a static résumé.
+- **Documentation, status, and API portals** — dedicated `.app` subsites for docs and uptime pages.
+- **Product launches** — concise, brandable names that are still findable, unlike the saturated short-`.com` market.
 
-*   **You need a TLS certificate before going live.** The good news: certificates are typically free and automatic. Most hosts (Vercel, Netlify, Cloudflare, GitHub Pages) and tools like [Let's Encrypt](https://letsencrypt.org/) provision and renew them for you with no manual work.
-*   **You are secure by default.** Mandatory HTTPS protects your visitors from man-in-the-middle attacks, content injection by ISPs, and credential interception on public Wi-Fi. There is no "I forgot to turn on SSL" failure mode on .app.
-*   **It builds trust.** Users see the secure-connection indicator on every visit, with no insecure-page warnings—valuable for any product handling logins, payments, or personal data.
-*   **It's good for SEO.** Google has confirmed that HTTPS is a positive ranking signal. Because .app enforces HTTPS by design, you meet that best practice automatically from day one.
+**Who it's not ideal for:** content-first sites (blogs, news, editorial), local brick-and-mortar businesses that benefit from a familiar `.com`, or any project unwilling or unable to serve over HTTPS — a `.app` site simply will not load without a valid certificate.
 
-## **Notable Entities Using .app**
+## Notable sites using .app
 
-Since launch, many high-profile companies have adopted the extension to signal security and relevance:
+- **cash.app** — Block's peer-to-peer payments service, the highest-profile .app brand, with name and URL perfectly aligned.
+- **google.app** — Google Registry, the operator itself, uses the namespace for projects and redirects.
+- **ohdear.app** — a well-known website-monitoring service that Google Registry has featured as a flagship .app site.
 
-1.  **Cash App (cash.app):** Perhaps the most famous example—Block's peer-to-peer payment service, with the brand name and URL perfectly aligned.
-2.  **Google (google.app):** As the registry operator, Google uses the extension for projects and redirects that showcase the namespace.
-3.  **Oh Dear (ohdear.app):** A well-known website monitoring service, featured by Google Registry as a flagship .app site.
-4.  **Sitata (sitata.app):** A travel safety application that hosts its web-based services on the extension.
+These are products that handle real users, logins, and payments — a reasonable signal that .app is trusted for serious applications, not just experiments.
 
-These examples show .app is trusted by products handling real users, payments, and sensitive data.
+## .app vs other domains
 
-## **Why Choose a .app Domain?**
+| | .app | [.com](/en/tld/com) | [.dev](/en/tld/dev) | [.io](/en/tld/io) |
+| --- | --- | --- | --- | --- |
+| Meaning | Application / software | Generic, universal | Developer / engineering | Tech / startup connotation |
+| Registry | Google Registry | Verisign | Google Registry | Identity Digital |
+| HTTPS enforced | Yes (HSTS preload) | No | Yes (HSTS preload) | No |
+| Availability of short names | Good | Very poor | Good | Moderate |
 
-Choosing the right extension shapes your brand's digital identity. Here's why .app is a strong choice for developers and tech businesses:
+Choose **.app** when the thing you are publishing is itself an application and you want the URL to say so. Choose **[.com](/en/tld/com)** when broad familiarity outweighs descriptiveness. Choose **[.dev](/en/tld/dev)** for developer tooling and engineering audiences, and **[.io](/en/tld/io)** when you want a general tech-startup feel. Both .app and [.dev](/en/tld/dev) share the same registry and the same mandatory-HTTPS model.
 
-*   **Built-in Security:** Enforced HTTPS via HSTS preload means your users are protected by default—and so is your reputation.
-*   **Instant Recognition:** The extension describes your product immediately. A `.app` address tells visitors they're heading to a functional tool or application.
-*   **SEO Advantage by Default:** Mandatory HTTPS aligns you with Google's ranking best practices from the start.
-*   **Availability:** Short, one-word .com names are nearly impossible to find or wildly expensive. The .app namespace still offers excellent availability for concise, memorable, brandable names.
-*   **Trust Factor:** In an era of phishing and spoofed sites, a guaranteed secure connection raises user confidence.
+## Why choose .app?
 
-If you're weighing .app against other developer-friendly extensions, compare it with our guides to [.dev](/en/tld/dev/) and [.tech](/en/tld/tech/) to find the best fit for your project.
+- **Built-in security.** Enforced HTTPS via HSTS preload means there is no "I forgot to enable SSL" failure mode, and visitors never hit an insecure-page warning.
+- **Instant meaning.** The suffix describes the product, which is rare among extensions and useful for click-through and recall.
+- **Availability.** Short, one-word names that are long gone in `.com` are still attainable in .app.
+- **Generic, global treatment.** No country lock-in, so it suits an international audience.
 
-## **Frequently Asked Questions About .app Domains**
+## Things to consider
 
-**What is a .app domain used for?**
-It's used for anything app-related: mobile app landing pages, web apps and SaaS products, developer portfolios, documentation portals, and product launch sites. The extension signals "this is a functional application" at a glance.
+- **HTTPS is mandatory, not optional.** You must configure a valid TLS certificate before the site will resolve in any modern browser. This is trivial on hosts like Vercel, Netlify, Cloudflare, or GitHub Pages, but it is a hard requirement.
+- **Lower baseline familiarity than .com.** Some non-technical users still default to typing `.com`, so a `.app` brand may want to defend the matching `.com` if it is available.
+- **Narrower meaning.** The suffix's strength — "this is an app" — is also a limit: it fits software and products, but reads oddly for a blog, a charity, or a local shop.
+- **Single-operator namespace.** Both .app and .dev are run by Google Registry, so policy and roadmap decisions sit with one operator.
 
-**Why does .app require HTTPS?**
-Because Google Registry placed the entire .app TLD on the browser HSTS preload list before launch. Browsers automatically upgrade every .app connection to HTTPS, so a valid TLS/SSL certificate is mandatory for the site to load.
+## Who can register a .app domain?
 
-**Can I buy a .app domain without an SSL certificate?**
-Yes—you can register and own a .app domain without one. But it will not display in a browser until you add a valid TLS certificate. Most modern hosting providers supply these for free and automatically.
+**Registration restrictions: open to all.** .app is an unrestricted generic gTLD. There is no credential, membership, industry, or local-presence requirement — anyone, anywhere can register an available name. The only real condition is technical: because the zone is on the HSTS preload list, a .app domain will not display in a browser until you attach a valid HTTPS certificate. You can buy and own the name without one, but it will not resolve as a website.
 
-**Is .app good for SEO?**
-Yes. Google treats HTTPS as a ranking signal, and .app enforces HTTPS by default, so you satisfy that requirement automatically. The extension itself is treated neutrally for ranking, just like other gTLDs.
+Standard gTLD policies apply otherwise: a sunrise phase ran at launch for trademark holders, IDN names and DNSSEC are supported, and registrars offer WHOIS privacy or proxy services (with most personal data already redacted under current ICANN policy). Transfers, renewals, and the redemption grace period follow ordinary gTLD rules. The authoritative governing document is the [ICANN Registry Agreement for .app](https://www.icann.org/en/registry-agreements/details/app); launch and policy details are published by [Google Registry](https://www.registry.google/).
 
-**Who operates the .app TLD?**
-Google Registry operates .app. It is a generic Top-Level Domain (gTLD) available to anyone, not restricted to a specific country or industry.
+## .app pricing and value
 
-**Can I tokenize a .app domain?**
-Yes. With Namefi you can register a .app domain and mint it as an on-chain asset (an NFT), making it easy to transfer, trade, or use in Web3 applications while keeping full ICANN-compliant ownership. Learn more in [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/)
+This static page lists no prices, but here is how .app pricing behaves. .app sits in the standard new-gTLD tier rather than the budget bracket, priced comparably to other premium-feel suffixes. Expect **first-year and renewal pricing to differ**, and remember that renewals recur for as long as you hold the name, so budget for the ongoing rate. A subset of short, dictionary, or otherwise desirable names are classified as **premium** and carry higher registry-set fees. The drivers of cost are name length, keyword desirability, and premium status — the extension itself, not any promotion, sets the floor.
 
-## **Register Your .app Domain at Namefi**
+## Reputation and email deliverability
 
-Ready to secure the perfect home for your application? At Namefi, registering your **.app** domain is simple, secure, and future-proof.
+.app is perceived as **modern, secure, and developer-credible** rather than cheap or spammy. Two factors help: it is run by Google, and its mandatory-HTTPS model means there is no such thing as an insecure .app site, which discourages some throwaway abuse patterns common to ultra-cheap TLDs.
 
-Namefi isn't just a standard registrar—we bridge Web2 and Web3. When you register with us, you don't just rent a name; you secure a digital asset that can be tokenized and easily managed or traded on the blockchain.
+That said, newer gTLDs sometimes draw slightly more cautious spam-filter treatment than long-established extensions, simply because they have a shorter track record. If you send email from a .app domain, the mitigation is the same as for any domain: publish correct **SPF, DKIM, and DMARC** records, warm up volume gradually, and keep your list clean. Done properly, .app deliverability is on par with mainstream extensions.
 
-**Why register with Namefi?**
-*   **ICANN Accredited:** Fully compliant, secure registration.
-*   **Seamless Web3 Integration:** Mint your domain as an NFT for easier transfer and liquidity.
-*   **Competitive Pricing:** Launch your project without breaking the budget.
+## Branding and naming tips
 
-Don't let your perfect app name get taken by a competitor. Secure your digital real estate today.
+The cleanest .app names are ones where "app" completes the brand, not just trails it — `cash.app` works because the result reads as a phrase. Use it when the suffix adds meaning (`tracker.app`, `notes.app`) rather than fighting it. Keep names short and easy to dictate aloud, since "dot app" is unambiguous to say. If your audience is non-technical, consider securing the matching `.com` as a safety net for direct-type traffic. Hyphens and tricky spellings hurt recall here just as anywhere.
 
-[**Register your .app domain at Namefi**](https://namefi.io)
+## How to register a .app domain at Namefi
+
+1. Search your desired name on [Namefi](https://namefi.io) to check .app availability.
+2. Choose the name and confirm whether it is a standard or premium registration.
+3. Register, then point the domain at your host and ensure HTTPS is configured so the site loads.
+
+Namefi is an ICANN-accredited registrar with transparent pricing, and it bridges Web2 and Web3: you can register a .app and optionally mint it as an on-chain asset (an NFT) for easier transfer and trading, while keeping full ICANN-compliant ownership and fast DNS. To understand tokenization first, see [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains)
+
+[Register your .app domain at Namefi](https://namefi.io)
+
+## Frequently asked questions
+
+### Can anyone register a .app domain?
+
+Yes. The .app TLD is an open generic top-level domain with no eligibility restrictions, so anyone can register an available name. The one practical condition is technical, not legal: a .app site needs a valid HTTPS certificate to load in browsers.
+
+### Does a .app domain affect SEO?
+
+Google treats .app as a standard generic gTLD with no inherent ranking advantage or penalty. Because .app forces HTTPS, you automatically meet Google's secure-connection best practice, which is a lightweight positive signal.
+
+### Who should register a .app domain?
+
+Mobile app makers, SaaS and web-app builders, and developers showcasing projects are the natural fit. The suffix reads as "this is a working application," making it ideal for product hubs, download pages, and login portals.
+
+### Why does a .app domain require HTTPS?
+
+Google Registry added the entire .app zone to the browser HSTS preload list before launch. Browsers therefore upgrade every .app request to HTTPS automatically, so the domain will not load without a valid TLS certificate. You cannot opt out.
+
+### Does .app support WHOIS privacy?
+
+Yes. As a generic gTLD, .app supports standard registrar WHOIS privacy or proxy services, and most personal registrant data is already redacted in public WHOIS output under current ICANN policy.
+
+## Related resources
+
+- [.dev domain](/en/tld/dev) — the sibling Google Registry gTLD with the same mandatory-HTTPS model.
+- [.com domain](/en/tld/com) — the universal default to compare against.
+- [.io domain](/en/tld/io) and [.tech domain](/en/tld/tech) — other tech-leaning extensions.
+- [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains) — how registering with Namefi lets you mint a domain on-chain.
+- [Domain Terminology Guide](/en/blog/domain-terminology-guide) — definitions for gTLD, DNSSEC, and more.
+- Glossary: [ICANN](/en/glossary/icann), [registrar](/en/glossary/registrar), [DNS](/en/glossary/dns), [DNSSEC](/en/glossary/dnssec).
