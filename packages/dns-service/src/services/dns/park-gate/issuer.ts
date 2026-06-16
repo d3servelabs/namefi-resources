@@ -22,7 +22,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { SignJWT, importPKCS8 } from 'jose';
 import { config, secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
-import { getRedisClient } from '#lib/redis';
+import { getRedisClient, fromCacheOrFallback } from '#lib/redis';
 
 const logger = createLogger({ context: 'park-gate-issuer' });
 
@@ -127,30 +127,19 @@ export async function getOrIssueGateToken(
     return null;
   }
 
-  const key = cacheKey(host);
-
-  try {
-    const redis = await getRedisClient();
-    const cached = await redis.get(key);
-    if (cached) {
-      return cached;
-    }
-  } catch (error) {
-    logger.warn({ error, host }, 'Failed to read gate token from cache');
-  }
-
-  const token = await signGateToken(host);
-
-  try {
-    const redis = await getRedisClient();
-    await redis.set(key, token, {
-      EX: config.NAMEFI_PARK_GATE_CACHE_TTL_SECONDS,
-    });
-  } catch (error) {
-    logger.warn({ error, host }, 'Failed to write gate token to cache');
-  }
-
-  return token;
+  // Redis is a non-critical accelerator here: a read-only/down Redis must
+  // still let us sign and serve a token. The cached value is the raw JWT
+  // string, so serialize/deserialize are identity (NOT JSON — that would
+  // quote-wrap it and break the contract / existing entries). Scope is stable
+  // (not the per-host key) to bound the throttled-fatal map.
+  return fromCacheOrFallback<string>({
+    key: cacheKey(host),
+    ttlSeconds: config.NAMEFI_PARK_GATE_CACHE_TTL_SECONDS,
+    scope: 'park-gate-token',
+    serialize: (token) => token,
+    deserialize: (raw) => raw,
+    fallback: () => signGateToken(host),
+  });
 }
 
 /**

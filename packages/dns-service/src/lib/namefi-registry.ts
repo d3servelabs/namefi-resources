@@ -3,7 +3,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { pluck } from 'ramda';
 import superjson from 'superjson';
 import { logger } from '#lib/logger';
-import { getRedisClient } from '#lib/redis';
+import { getRedisClient, fromCacheOrFallback } from '#lib/redis';
 
 /**
  * Hardcoded "powered by Namefi" parent domains. Exported so `apps/backend`
@@ -41,28 +41,15 @@ const POWERED_BY_NAMEFI_DOMAINS_CACHE_TTL_SECONDS = 12 * 60 * 60;
  * keeps working when Redis is unavailable (the standalone ns-json-api may run
  * without Redis provisioned).
  */
-async function readPoweredByNamefiDomainRows() {
-  try {
-    const redis = await getRedisClient();
-    const cachedString = await redis.get(POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY);
-    if (cachedString) {
-      return superjson.parse<PoweredByNamefiDomainSelect[]>(cachedString);
-    }
-    const rows = await db.query.poweredbyNamefiDomainsTable.findMany();
-    await redis.set(
-      POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
-      superjson.stringify(rows),
-      { EX: POWERED_BY_NAMEFI_DOMAINS_CACHE_TTL_SECONDS },
-    );
-    return rows;
-  } catch (error) {
-    logger.warn(
-      { error },
-      'powered-by-namefi Redis cache unavailable; reading from DB',
-    );
-    return db.query.poweredbyNamefiDomainsTable.findMany();
-  }
-}
+const readPoweredByNamefiDomainRows = () =>
+  fromCacheOrFallback({
+    key: POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
+    ttlSeconds: POWERED_BY_NAMEFI_DOMAINS_CACHE_TTL_SECONDS,
+    scope: 'pbn-domains',
+    serialize: superjson.stringify,
+    deserialize: (raw) => superjson.parse<PoweredByNamefiDomainSelect[]>(raw),
+    fallback: () => db.query.poweredbyNamefiDomainsTable.findMany(),
+  });
 
 /**
  * Returns the de-duplicated set of parent-domain names served by Namefi

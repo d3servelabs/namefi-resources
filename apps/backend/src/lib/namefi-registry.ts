@@ -45,7 +45,7 @@ import type { NamefiNftOwnersSelect } from '@namefi-astra/db';
 import { Registrars } from '@namefi-astra/registrars/registrars-keys';
 import { sldRegistrar } from './epp-registrars';
 import superjson from 'superjson';
-import { getRedisClient } from '#lib/redis';
+import { getRedisClient, fromCacheOrFallback } from '#lib/redis';
 import {
   getPoweredByNamefi3PDomains,
   HARDCODED_3P_DOMAINS_NAMES,
@@ -165,25 +165,30 @@ export const invalidatePoweredByNamefi3PDomainsCache =
     }
   };
 
+const POWERED_BY_NAMEFI_DOMAINS_CACHE_TTL_SECONDS = 12 * 60 * 60;
+
+/**
+ * Reads the `poweredby_namefi_domains` rows, preferring the shared Redis
+ * cache. Redis is a NON-CRITICAL accelerator on this path: it sits behind
+ * CORS origin resolution, which runs on EVERY request, so any Redis failure
+ * — unreachable, read-only failover, timeout — must degrade to a direct DB
+ * read instead of propagating and rejecting the request. (A read-only Redis
+ * failing the `set()` below was the cause of a full-service outage.) Failures
+ * page on-call via a throttled `fatal` log but never block the response.
+ * Mirrors the resilient read-through in `@namefi-astra/dns-service`.
+ */
+const readPoweredByNamefiDomainRows = () =>
+  fromCacheOrFallback({
+    key: POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
+    ttlSeconds: POWERED_BY_NAMEFI_DOMAINS_CACHE_TTL_SECONDS,
+    scope: 'pbn-domains',
+    serialize: superjson.stringify,
+    deserialize: (raw) => superjson.parse<PoweredByNamefiDomainSelect[]>(raw),
+    fallback: () => db.query.poweredbyNamefiDomainsTable.findMany(),
+  });
+
 export const getPoweredByNamefi3PDomainsDetails = async () => {
-  const redis = await getRedisClient();
-
-  const cachedDomainsString = await redis.get(
-    POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
-  );
-  const cachedDomains = cachedDomainsString
-    ? superjson.parse<PoweredByNamefiDomainSelect[]>(cachedDomainsString)
-    : undefined;
-
-  const poweredbyNamefiDomains =
-    cachedDomains ?? (await db.query.poweredbyNamefiDomainsTable.findMany());
-  if (!cachedDomains) {
-    await redis.set(
-      POWERED_BY_NAMEFI_DOMAINS_CACHE_KEY,
-      superjson.stringify(poweredbyNamefiDomains),
-      { EX: 12 * 60 * 60 /* 12 hours in seconds */ },
-    );
-  }
+  const poweredbyNamefiDomains = await readPoweredByNamefiDomainRows();
 
   const namesFromDb: string[] = pluck(
     'normalizedDomainName',

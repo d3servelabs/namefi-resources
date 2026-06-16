@@ -112,9 +112,23 @@ async function resolveCorsOrigin(origin: string | undefined, path: string) {
     return origin;
   }
 
+  // Resolving powered-by-namefi hostnames must NEVER block CORS for
+  // first-party origins. The underlying read already falls back to the DB on
+  // a Redis outage; this guards the residual case (e.g. DB also down) so the
+  // core app keeps working — degrade to first-party-only rather than
+  // rejecting every request.
+  const threePHostnames = await getPoweredByNamefi3PHostnames().catch(
+    (error) => {
+      logger.error(
+        { error },
+        'Failed to resolve powered-by-namefi hostnames for CORS; allowing first-party origins only',
+      );
+      return [] as string[];
+    },
+  );
   const allowedHostnames: string[] = [
     ...config.NAMEFI_FIRST_PARTY_HOSTNAMES,
-    ...(await getPoweredByNamefi3PHostnames()),
+    ...threePHostnames,
   ];
 
   if (!origin) {
