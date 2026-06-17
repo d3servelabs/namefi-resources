@@ -557,7 +557,13 @@ function NFSCSwapDialogInner(props: Props) {
             data-testid="nfsc-swap-action-bar"
           >
             <Button
-              className="pointer-events-auto w-full items-center bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground font-medium py-6 rounded-full flex justify-center gap-2"
+              // The button floats over the scrollable content, so it must stay
+              // opaque even when disabled — the base `disabled:opacity-50` would
+              // let the content behind bleed through. Override to opacity-100 and
+              // convey "disabled" by dimming the brand itself (`brightness-50`),
+              // which stays opaque and on-brand for every white-label origin
+              // (a muted green on the default brand) instead of a fixed color.
+              className="pointer-events-auto w-full items-center bg-brand-primary hover:bg-brand-primary/90 disabled:opacity-100 disabled:brightness-50 text-secondary-foreground font-medium py-6 rounded-full flex justify-center gap-2"
               onClick={
                 isSwapButtonActionConnect
                   ? handleConnectWallet
