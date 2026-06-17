@@ -35,7 +35,7 @@ Wikipedia's record of the incident lists [three consecutive distributed denial-o
 
 The waves are what made it feel relentless. The Register, covering it live, described the moment Dyn seemed to recover — and then didn't: [after two hours into the initial tidal wave of junk traffic, Dyn announced it had mitigated the assault and service was returning to normal. But the relief was short lived: just about an hour later, the attack resumed](https://www.theregister.com/2016/10/21/dns_devastation_as_dyn_dies_under_denialofservice_attack/#:~:text=After%20two%20hours%20into%20the%20initial%20tidal%20wave). What looked like the end was just the gap between rounds.
 
-In raw volume, the attack was enormous for its era — widely reported as peaking in the neighborhood of 1.2 Tbps, which The Register characterized as [more than 1TBps](https://www.theregister.com/2017/11/07/mirai_botnet_sitrep/#:~:text=more%20than%201TBps), among the largest DDoS events seen up to that point. (Dyn itself cautioned that a "retry storm" of legitimate traffic inflated some early estimates, a point we'll return to.)
+In raw volume, the attack was enormous for its era — among the largest DDoS events seen up to that point, with The Register characterizing the peak as [more than 1TBps](https://www.theregister.com/2017/11/07/mirai_botnet_sitrep/#:~:text=more%20than%201TBps). (Dyn itself cautioned that a "retry storm" of legitimate traffic inflated some early estimates, a point we'll return to.)
 
 ## Which sites went dark — and how it felt
 

@@ -25,7 +25,7 @@ In the beginning, "Juice" wasn't even the headline word — "Club" was.
 
 Kirk Perron was a cyclist who wanted to make healthy eating easy. He [started the popular juice company Jamba Juice in 1990 as a senior project in college](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder), opening the first location — then called **Juice Club** — in San Luis Obispo, California. Per the company's own history, [the first restaurant, named Juice Club, opened on March 31, 1990, in San Luis Obispo, California](https://en.wikipedia.org/wiki/Jamba_Juice).
 
-The "Jamba" name came five years later. In 1995, [the chain was renamed Jamba Juice, drawing from a West African word for 'celebration'](https://en.wikipedia.org/wiki/Jamba_Juice). The word itself, by most accounts, is [a nod to the Swahili word "jama," which means "to celebrate,"](https://www.mashed.com/677372/the-swahili-word-jambas-name-was-derived-from/) — a deliberate signal that the brand was about more than a beverage; it was about a feeling.
+The "Jamba" name came five years later. In 1995, [the chain was renamed Jamba Juice, drawing from an East African word for 'celebration'](https://en.wikipedia.org/wiki/Jamba_Juice). The word itself, by most accounts, is [a nod to the Swahili word "jama," which means "to celebrate,"](https://www.mashed.com/677372/the-swahili-word-jambas-name-was-derived-from/) — a deliberate signal that the brand was about more than a beverage; it was about a feeling.
 
 But notice the structure of that 1995 decision. The founders kept "Juice" on the marquee even after choosing a richer, more evocative word. "Jamba" carried the emotion; "Juice" carried the explanation. For a young chain still teaching America what a smoothie even was, the explanation had to stay. JambaJuice.com was the address that matched the storefront word for word.
 
@@ -135,5 +135,3 @@ Jamba.com looks obvious now because Jamba grew into it. But the lesson lands lon
 - Legacy.com — [Kirk Perron (1964–2020), Jamba Juice founder](https://www.legacy.com/news/kirk-perron-2020-jamba-juice-founder)
 - Wikipedia — [Jamba Juice](https://en.wikipedia.org/wiki/Jamba_Juice)
 - Internet Archive (Wayback Machine) — [jamba.com, archived January 25, 1999](http://web.archive.org/web/19990125090358/http://jamba.com:80/)
-</content>
-</invoke>

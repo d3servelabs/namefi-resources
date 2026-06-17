@@ -135,5 +135,3 @@ Discord.com looks inevitable now because Discord became enormous. But the lesson
 - ThreatDown by Malwarebytes — [New phishing campaign uses Discord for payload delivery](https://www.threatdown.com/blog/new-phishing-campaign-uses-discord-for-payload-delivery/#:~:text=Criminals%20abuse%20Discord%20to%20host%20malware%20because%20of%20its%20robust%20CDN%20infrastructure)
 - Remote Tools — [When was Discord made?](https://www.remote.tools/discord/when-was-discord-made#:~:text=Discordapp.com)
 - Discord Support — [Discordapp.com is now Discord.com](https://support.discord.com/hc/en-us/articles/360042987951-Discordapp-com-is-now-Discord-com)
-</content>
-</invoke>

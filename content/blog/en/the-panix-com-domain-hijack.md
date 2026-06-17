@@ -93,7 +93,7 @@ The Panix hijack is, at its heart, an *authority* problem. The question "who is 
 
 [Namefi](https://namefi.io) starts from the opposite premise: that control of a domain should be provable, not assumed. By representing domain ownership as a tokenized, on-chain asset that stays compatible with DNS, the act of "who holds this name" becomes cryptographically verifiable and auditable — a record that cannot be quietly overwritten by a registrar accepting bad paperwork. Transfers move when the holder's key authorizes them, not when a five-day clock runs out unattended. The default is *deny*, and consent has to be demonstrated, not merely un-objected-to.
 
-None of this would have un-founded Panix in 1989. But it points at the lesson the 2005 weekend taught the whole industry: a domain is too important to be governed by silence. Ownership should be something you can prove on demand — and something a stranger cannot take simply because you weren't watching the inbox over a long weekend.
+None of this existed in 1989 when Panix was founded — or even in 2005, when the hijack happened. But it points at the lesson that weekend taught the whole industry: a domain is too important to be governed by silence. Ownership should be something you can prove on demand — and something a stranger cannot take simply because you weren't watching the inbox over a long weekend.
 
 ## Sources and further reading
 

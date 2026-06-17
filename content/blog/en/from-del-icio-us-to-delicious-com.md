@@ -151,5 +151,3 @@ Delicious had two names: the witty one its founder loved and the plain one its u
 - Domain Name Wire — [Del.icio.us Rebrands as Delicious.com: A Lesson for Entrepreneurs](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=flipped%20the%20switch%20on%20its%20brand)
 - QuickOnlineTips — [Decoding the Domain Name del.icio.us](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name)
 - TechCrunch — [Delicious, Former Web 2.0 Darling, Is Now Managed By New Alliance](https://techcrunch.com/2016/01/12/delicious-former-web-2-0-darling-is-now-managed-by-new-alliance-rolls-back-most-recent-changes/#:~:text=the%20social%20bookmarking%20service%20Delicious%20was%20the%20hottest%20thing%20on%20the%20web)
-</content>
-</invoke>

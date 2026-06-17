@@ -15,7 +15,7 @@ The honorific made sense at the time. In 2011, two friends in their twenties wer
 
 But a name that reads like a mascot is a different thing from a name that reads like a category. As the company grew past its first audience, the "Mr." started to look less like warmth and more like training wheels. The founders dropped it. The store became simply **Chewy**, and the address became the exact-match **Chewy.com** — a one-word domain that had been hand-registered by one of the most famous domain investors in the world years before any pet startup existed.
 
-Six years after launch, [the owners of PetSmart paid $3.35 billion for Chewy.com](https://hbr.org/2020/01/the-founder-of-chewy-com-on-finding-the-financing-to-achieve-scale), in what was then the largest e-commerce acquisition on record. The domain was not the reason. But by then, the clean, one-word name was load-bearing — the address printed on every box, every receipt, and every "we got it from Chewy" recommendation passed from one pet owner to the next.
+Six years after launch, [PetSmart's owners paid $3.35 billion for Chewy](https://hbr.org/2020/01/the-founder-of-chewy-com-on-finding-the-financing-to-achieve-scale) — the company, not the domain — in what was then the largest e-commerce acquisition on record. The domain was not the reason. But by then, the clean, one-word name was load-bearing — the address printed on every box, every receipt, and every "we got it from Chewy" recommendation passed from one pet owner to the next.
 
 ## 2011: the "Mr." that made a new store feel safe
 
