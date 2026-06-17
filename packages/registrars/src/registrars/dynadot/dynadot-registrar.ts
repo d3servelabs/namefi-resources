@@ -330,6 +330,7 @@ export class DynadotRegistrarService extends AbstractRegistrarService {
       domain: domainName,
       currency: 'USD',
       auth: authCode,
+      premium: ['hypers.club'].includes(domainName) ? '1' : undefined, // temporary to allow for user
     });
 
     assertDynadotSuccess(

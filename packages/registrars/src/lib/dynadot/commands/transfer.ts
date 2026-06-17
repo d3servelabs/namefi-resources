@@ -40,6 +40,13 @@ export type DynadotTransferCommandParams = {
    * The billing contact that you want to use when transfer completed. (Not all tld supports this feature)
    */
   billing_contact?: DynadotContactInfo;
+  //If you want to transfer a premium domain, set it equal to "1" (optional)
+  premium?: '1';
+  /** The list of name servers to apply to the domain once
+   * the transfer is complete. You can use "," to split name servers.
+   *  Example: ns1.domain1.com,ns2.domain2.com
+   */
+  name_servers?: string;
 };
 
 export type DynadotTransferCommandOutput = {
