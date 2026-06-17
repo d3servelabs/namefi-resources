@@ -2,15 +2,16 @@ import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
 import { NfscAbi } from '@namefi-astra/utils/abis/nfsc';
 import { useMemo } from 'react';
 import { type Hex, formatUnits, parseUnits, zeroAddress } from 'viem';
-import { useReadContract } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
+import { useChainId, useReadContract } from 'wagmi';
 
 type Props = {
   paymentToken?: Hex;
+  chainId?: number;
 };
 
 export default function useGetNfscExchangeRate(props: Props = {}) {
   const { paymentToken = zeroAddress } = props;
+  const chainId = useChainId();
 
   const {
     data: rawPrice,
@@ -21,7 +22,7 @@ export default function useGetNfscExchangeRate(props: Props = {}) {
     abi: NfscAbi,
     functionName: 'price',
     args: [paymentToken],
-    chainId: mainnet.id, // estimation doesn't work on testnet
+    chainId: props.chainId ?? chainId,
   });
 
   const exchangeRate = useMemo(() => {

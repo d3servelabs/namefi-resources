@@ -1,3 +1,7 @@
+// Both contracts are deployed deterministically (salt-mined CREATE2, hence the
+// `0x0000000000` vanity prefix), so each lives at the SAME address on every
+// supported chain. A single hardcoded address is therefore chain-agnostic —
+// callers may pass any `chainId` without a per-chain address lookup.
 export const NAMEFI_NFT_CONTRACT_ADDRESS =
   '0x0000000000cf80E7Cf8Fa4480907f692177f8e06';
 

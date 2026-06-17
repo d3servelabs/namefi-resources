@@ -21,6 +21,7 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
 import { useAccount, useSwitchChain } from 'wagmi';
+import { useEstimateNamefiNfscCall } from '@/hooks/use-estimate-contract-call';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
@@ -290,6 +291,31 @@ function NFSCSwapDialogInner(props: Props) {
     }
   }, [amountReceive]);
 
+  // Gas estimate for the `buyWithEthers` swap. The fee depends on the ETH
+  // value being sent, so re-estimate as the pay amount changes; before a valid
+  // amount is entered there's nothing to estimate against.
+  const payValueWei = useMemo(() => {
+    if (!isInputValid()) return undefined;
+    try {
+      return parseEther(amountPay);
+    } catch {
+      return undefined;
+    }
+  }, [amountPay, isInputValid]);
+
+  const { feeFormatted: gasFeeEth, isLoading: isGasFeeLoading } =
+    useEstimateNamefiNfscCall({
+      functionName: 'buyWithEthers',
+      value: payValueWei,
+    });
+
+  const gasFee = useMemo(() => {
+    if (payValueWei === undefined) return '—';
+    if (isGasFeeLoading) return 'Estimating…';
+    if (gasFeeEth == null) return '—';
+    return `${Number.parseFloat(gasFeeEth).toFixed(CALCULATION_DECIMALS)} ETH`;
+  }, [payValueWei, isGasFeeLoading, gasFeeEth]);
+
   const isEthTabLoading = isLoading || isConversionRateLoading;
 
   const swapButtonState = getSwapButtonState({
@@ -528,7 +554,7 @@ function NFSCSwapDialogInner(props: Props) {
 
                     <div className="flex justify-between text-gray-400">
                       <span>Gas Fee</span>
-                      <span data-testid="nfsc-swap-gas-fee">ETH</span>
+                      <span data-testid="nfsc-swap-gas-fee">{gasFee}</span>
                     </div>
                   </div>
                 </div>
