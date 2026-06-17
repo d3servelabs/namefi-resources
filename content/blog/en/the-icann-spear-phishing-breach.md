@@ -11,7 +11,7 @@ keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone dat
 
 There is a special kind of headline that makes the whole security industry pause. Not "another retailer breached," not "another startup leaks a database" — but the day the institution everyone *else* trusts admits it got hacked the most ordinary way possible.
 
-In December 2014, that institution was ICANN. The Internet Corporation for Assigned Names and Numbers — the nonprofit that coordinates the entire domain name system, the keeper of the rules that let `namefi.io` and `google.com` and every other address on earth resolve to a server — disclosed that some of its own staff had clicked a link in a fake email, typed their passwords into a fake login page, and handed attackers the keys to internal systems including the master database of the world's top-level-domain zone files.
+In December 2014, that institution was ICANN. The Internet Corporation for Assigned Names and Numbers — the nonprofit that coordinates the entire domain name system, the keeper of the rules that let `namefi.io` and `google.com` and every other address on earth resolve to a server — disclosed that some of its own staff had clicked a link in a fake email, typed their passwords into a fake login page, and handed attackers the keys to internal systems — including the Centralized Zone Data System (CZDS), the repository through which the world's top-level-domain zone files are requested and accessed.
 
 The organization that defines how trust works on the internet got phished. With a spoofed email. Pretending to be ICANN.
 

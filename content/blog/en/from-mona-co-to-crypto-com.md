@@ -9,7 +9,7 @@ description: 'How the crypto-card startup Monaco rebranded to Crypto.com in 2018
 keywords: ['mona.co', 'crypto.com', 'crypto.com domain', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'domain upgrade', 'premium domain', 'category domain', 'domain acquisition', 'crypto rebrand', 'exact match domain', 'branding']
 ---
 
-For its first couple of years, one of the most aggressive brands in crypto lived at a quietly clever address: **Mona.co** — the company "Monaco," spelled out across a domain and a country-code TLD, the way bit.ly or goo.gl turned a `.co` or `.gl` into part of the word.
+For its first couple of years, one of the most aggressive brands in crypto lived at a quietly clever address: **Mona.co** — the company "Monaco," spelled out across a domain and a country-code TLD, the way bit.ly or goo.gl turned a `.ly` or `.gl` into part of the word.
 
 The name was a pun, and a good one. The startup, founded in Hong Kong in 2016, was building a Visa card and wallet for spending cryptocurrency. "Monaco" evoked wealth, luxury, the Riviera — and the `.co` let the brand sit on a short, memorable URL while the team waited to see how big the idea could get. Mona.co told you the company's name. It didn't tell you the category.
 
