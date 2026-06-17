@@ -23,8 +23,6 @@ This is the story of how a startup launched on a descriptive domain, fought a sq
 
 ## 2007: the descriptive domain that shipped a product
 
-![Editorial diagram of GetDropbox.com as a launch domain with a verb bolted onto the front of a taken exact-match brand](../../assets/from-getdropbox-com-to-dropbox-com-01-get-era.jpg)
-
 In the beginning, "Get" was a feature, not a bug.
 
 Dropbox was [founded in 2007 by MIT students Drew Houston and Arash Ferdowsi](https://en.wikipedia.org/wiki/Dropbox#:~:text=Dropbox%20was%20founded%20in%202007%20by%20MIT%20students%20Drew%20Houston%20and%20Arash%20Ferdowsi), with [initial funding from seed accelerator Y Combinator](https://en.wikipedia.org/wiki/Dropbox#:~:text=initial%20funding%20from%20seed%20accelerator%20Y%20Combinator). The corporate shell behind it wasn't even called Dropbox yet: [Houston founded Evenflow, Inc. in May 2007 as the company behind Dropbox](https://en.wikipedia.org/wiki/Dropbox#:~:text=Houston%20founded%20Evenflow%2C%20Inc.%20in%20May%202007%20as%20the%20company%20behind%20Dropbox).
@@ -39,8 +37,6 @@ And critically, the company couldn't have the clean version anyway. GetDropbox.c
 
 ## 2009: buying the domain everyone thought it had
 
-![Editorial diagram of the Dropbox.com acquisition as a premium-domain transaction with a parked page redirecting to the real product](../../assets/from-getdropbox-com-to-dropbox-com-02-acquisition.jpg)
-
 By 2009, GetDropbox.com had a problem only success creates: the *better* address was right there, and everyone assumed Dropbox already owned it.
 
 It didn't. As TechCrunch put it at the time, [Dropbox has been using the domain GetDropbox.com for years](https://techcrunch.com/2009/10/13/dropbox-acquires-the-domain-everyone-thought-it-had-dropbox-com/#:~:text=Dropbox%20has%20been%20using%20the%20domain), while Dropbox.com pointed somewhere else entirely. The exact-match domain was getting real, accidental traffic — [Dropbox.com had nearly 60,000 unique visitors last month](https://techcrunch.com/2009/10/13/dropbox-acquires-the-domain-everyone-thought-it-had-dropbox-com/#:~:text=Dropbox.com%20had%20nearly%2060%2C000%20unique%20visitors%20last%20month), according to Compete — people typing the obvious URL and landing on a page that wasn't Dropbox.
@@ -51,7 +47,7 @@ $300,000 was not a vanity URL. It was the price of finally owning the address us
 
 ## A champagne bottle and a parking page: the negotiation
 
-![Editorial illustration of two founders arriving at a domain owner's house with a bottle of champagne to negotiate a domain sale](../../assets/from-getdropbox-com-to-dropbox-com-03-champagne.jpg)
+![Warm illustration of two founders arriving at a domain owner front door with a champagne bottle to buy Dropbox.com](../../assets/from-getdropbox-com-to-dropbox-com-02-champagne.jpg)
 
 The reason it took years — and a lawsuit — is that the owner didn't have to sell, and at first he didn't want to.
 
@@ -65,8 +61,6 @@ The deal that champagne couldn't buy, a lawsuit did. And the closing detail is t
 
 ## The money looked different then
 
-![Editorial bar chart comparing the $300K Dropbox.com purchase against Dropbox's 2008 Series A funding and early user growth](../../assets/from-getdropbox-com-to-dropbox-com-04-money-context.jpg)
-
 It's tempting to call $300,000 a steal in hindsight. Dropbox became a public company worth billions, and Dropbox.com is one of its quietest, most permanent assets. Against that, $300,000 looks like a rounding error.
 
 But it should be judged at the moment it was spent.
@@ -77,7 +71,7 @@ In that context, $300,000 on a *domain name* — not engineers, not servers, not
 
 ## Why dropping "Get" mattered
 
-![Editorial illustration of GetDropbox.com losing the word Get to become the cleaner exact-match Dropbox.com brand](../../assets/from-getdropbox-com-to-dropbox-com-05-dropping-get.jpg)
+![Colorful illustration of GetDropbox.com dropping the word Get to become the bright blue Dropbox brand](../../assets/from-getdropbox-com-to-dropbox-com-01-dropping-get.jpg)
 
 The gap between GetDropbox.com and Dropbox.com is one short verb. Strategically, it's the difference between an instruction and an identity.
 
@@ -97,8 +91,6 @@ For Dropbox, "Get" was never the dream; Houston said they [obviously wanted to d
 
 ## The domain caught up to the company
 
-![Editorial diagram showing Evenflow Inc renamed to Dropbox Inc in October 2009 alongside the GetDropbox.com to Dropbox.com domain switch](../../assets/from-getdropbox-com-to-dropbox-com-06-rename-sequence.jpg)
-
 The sequence here is the tell. The domain and the corporate identity moved together, in the same month.
 
 Dropbox spent its first two years as **Evenflow, Inc.** operating a product called Dropbox at GetDropbox.com — a three-way mismatch between legal name, product name, and web address. The October 2009 acquisition resolved all three at once: the company secured Dropbox.com, pointed it at the live product, and [renamed Evenflow, Inc. to Dropbox, Inc.](https://en.wikipedia.org/wiki/Dropbox#:~:text=Evenflow%2C%20Inc.%20was%20renamed%20Dropbox%2C%20Inc)
@@ -108,8 +100,6 @@ Imagine the alternative: a company called Dropbox, Inc. whose canonical web addr
 That's why the upgrade wasn't cosmetic. It was the moment the product name, the company name, and the address finally became the same word.
 
 ## The domain became part of the operating system
-
-![Editorial diagram of Dropbox.com repeated across the desktop client, email, press, search results, and word of mouth](../../assets/from-getdropbox-com-to-dropbox-com-07-operating-system.jpg)
 
 Premium domains aren't about prestige. They're about repetition.
 
@@ -127,8 +117,6 @@ Multiply that across millions of users typing the obvious URL — the same users
 
 ## What founders should learn from Case 6
 
-![Editorial four-step diagram for founders moving from a workaround launch domain to a litigated exact-match brand acquisition](../../assets/from-getdropbox-com-to-dropbox-com-08-founders-lessons.jpg)
-
 The easy takeaway — "buy your exact-match .com on day one" — is the wrong one. Dropbox *couldn't*; the domain was taken and the owner wouldn't sell. The more useful lessons are about staging:
 
 1. **A workaround domain is fine to launch on.** GetDropbox.com carried a viral demo, a YC batch, a Series A, and three million users. A "Get," "The," or "App" modifier isn't a failure — it's a reasonable on-ramp when the clean match is unavailable.
@@ -140,7 +128,7 @@ The domain upgrade didn't make Dropbox win. Product, timing, the viral demo, and
 
 ## The Namefi angle
 
-![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-getdropbox-com-to-dropbox-com-09-namefi-angle.jpg)
+![Colorful illustration of the dropbox.com domain flowing through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-getdropbox-com-to-dropbox-com-03-namefi-angle.jpg)
 
 Dropbox's story is, at its core, a transfer problem.
 

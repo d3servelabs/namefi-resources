@@ -21,8 +21,6 @@ This is the story of a domain upgrade that worked exactly as intended, and one m
 
 ## 2013: the tool that needed a name it couldn't have
 
-![Editorial diagram of an internal team chat tool at Tiny Speck becoming the product called Slack](../../assets/from-slackhq-com-to-slack-com-01-internal-tool.jpg)
-
 Slack did not start as a product. It started as plumbing.
 
 The company behind it was Tiny Speck, the studio Butterfield founded after co-creating Flickr. Tiny Speck's actual product was an online game called Glitch, and Slack [had begun as an internal tool for Tiny Speck during the development of Glitch](https://www.frederick.ai/blog/stewart-butterfield-slack#:~:text=Slack%20had%20begun%20as%20an%20internal%20tool%20for%20Tiny%20Speck%20during%20the%20development%20of%20Glitch). Wikipedia describes the same origin: Slack [originated as an internal communication tool used within Stewart Butterfield's company Tiny Speck, during its work on the development of Glitch](https://en.wikipedia.org/wiki/Slack_%28software%29#:~:text=Slack%20originated%20as%20an%20internal%20communication%20tool%20used%20within%20Stewart%20Butterfield%27s%20company%20Tiny%20Speck%2C%20during%20its%20work%20on%20the%20development%20of%20Glitch).
@@ -35,8 +33,6 @@ So the brand was settled. The address was not. The product launched onto the web
 
 ## The acquisition moment: buying the bare word
 
-![Editorial diagram of the Slack.com exact-match domain being acquired from its previous owner for sixty thousand dollars](../../assets/from-slackhq-com-to-slack-com-02-acquisition.jpg)
-
 The fix was not a rebrand. The product never had to change its name. It just had to change its address — from SlackHQ.com to Slack.com.
 
 To do that, Slack had to buy the exact-match domain from whoever already held it. The founder later disclosed the price on Quora, and it propagated through the domain press: communications app [Slack paid $60,000 for the domain](https://www.thedomains.com/2018/04/12/slack-com-was-purchased-for-60000/#:~:text=Communications%20app%20Slack%20paid%20%2460%2C000%20for%20the%20domain%20slack). The founder had first disclosed that figure in his own Quora answer, and the domain press picked it up from there.
@@ -47,7 +43,7 @@ Co-founder and CTO Cal Henderson has explained why the word was worth chasing in
 
 ## The seller's side: a domain for cat pictures
 
-![Editorial diagram of a longtime personal domain owner who used Slack.com for photos of his cats before selling it](../../assets/from-slackhq-com-to-slack-com-03-cat-pictures.jpg)
+![Charming illustration of a personal website used for cat photos being sold for sixty thousand dollars to Slack](../../assets/from-slackhq-com-to-slack-com-02-cat-pictures.jpg)
 
 Most blockbuster domain stories involve a reluctant holder, a long stalemate, and an eventual capitulation. Slack's is gentler — and a little funnier.
 
@@ -59,8 +55,6 @@ The lesson is not "domains are cheap." It is that the price of an exact-match do
 
 ## The money looked different then
 
-![Editorial bar chart comparing the sixty-thousand-dollar Slack.com price against Slack's early funding and later valuation](../../assets/from-slackhq-com-to-slack-com-04-money-context.jpg)
-
 It is tempting to wave off $60,000 as a rounding error. Slack would later be valued in the billions and was acquired by Salesforce. Against that arc, the domain looks free.
 
 But a domain purchase should be judged at the moment of uncertainty, not from the far end of the story.
@@ -71,7 +65,7 @@ In that context, spending $60,000 on a domain — not on engineers, not on serve
 
 ## Why dropping "HQ" mattered
 
-![Editorial illustration of SlackHQ.com losing the HQ modifier to become the cleaner exact-match Slack.com brand](../../assets/from-slackhq-com-to-slack-com-05-dropping-hq.jpg)
+![Colorful illustration of SlackHQ dropping HQ to become the colorful Slack hashtag brand](../../assets/from-slackhq-com-to-slack-com-01-dropping-hq.jpg)
 
 The distance between SlackHQ.com and Slack.com is two letters. Strategically, it is the distance between *a place that belongs to a brand* and *the brand itself*.
 
@@ -91,8 +85,6 @@ Slack had the unusual luxury of fixing this fast. Because the seller was easy an
 
 ## Sequence: the word, then the address
 
-![Editorial diagram showing the order of events from internal tool to preview launch on SlackHQ.com to acquiring Slack.com](../../assets/from-slackhq-com-to-slack-com-06-sequence.jpg)
-
 The order of operations here is worth slowing down on, because it inverts the usual advice to "secure your .com before you launch."
 
 Slack couldn't. The sequence was:
@@ -106,8 +98,6 @@ The domain didn't have to come before the launch. But it did have to come before
 
 ## The domain became part of the operating system — except @SlackHQ
 
-![Editorial diagram of Slack.com repeated across links and email while @SlackHQ persists on social channels](../../assets/from-slackhq-com-to-slack-com-07-operating-system.jpg)
-
 Premium domains matter for one unglamorous reason: repetition.
 
 A core domain shows up everywhere a company can't fully control — in email addresses, press links, app stores, browser bars, search results, and every spoken recommendation. Each repetition either adds friction or removes it. SlackHQ.com asked everyone to carry two extra letters forever. Slack.com asked for nothing.
@@ -117,8 +107,6 @@ But here is the wrinkle that makes Slack's case distinctive: the domain upgrade 
 The "HQ" Slack paid to remove from its domain is still right there on its social channels — and on its [GitHub organization, github.com/slackhq](https://github.com/slackhq). And SlackHQ.com itself never disappeared; the company still owns it and quietly redirects it. (Old Slack-blog links at `slackhq.com` now [301-redirect to slack.com](https://slack.com/blog/slack-acquisition-connecting-employees).) The modifier didn't die. It just stopped being the front door.
 
 ## What founders should learn from Case 14
-
-![Editorial four-step diagram for founders launching on a modifier domain and upgrading to the exact-match brand domain](../../assets/from-slackhq-com-to-slack-com-08-founders-lessons.jpg)
 
 The easy takeaway — "always own your exact-match .com before launch" — is the wrong one, because Slack literally could not. The more useful lessons are about modifiers and timing:
 
@@ -131,7 +119,7 @@ The domain upgrade didn't make Slack win. Product, timing, distribution, and an 
 
 ## The Namefi angle
 
-![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-slackhq-com-to-slack-com-09-namefi-angle.jpg)
+![Colorful illustration of the slack.com domain flowing through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-slackhq-com-to-slack-com-03-namefi-angle.jpg)
 
 Slack's story is, underneath the jokes about cat photos, a transfer problem.
 
