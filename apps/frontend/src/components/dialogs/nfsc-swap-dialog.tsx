@@ -306,7 +306,7 @@ function NFSCSwapDialogInner(props: Props) {
   const { feeFormatted: gasFeeEth, isLoading: isGasFeeLoading } =
     useEstimateNamefiNfscCall({
       functionName: 'buyWithEthers',
-      value: payValueWei,
+      value: payValueWei || parseEther('0.0001'),
     });
 
   const gasFee = useMemo(() => {

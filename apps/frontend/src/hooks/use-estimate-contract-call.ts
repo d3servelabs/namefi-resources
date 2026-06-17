@@ -10,8 +10,12 @@ import {
   type ContractFunctionName,
   formatEther,
 } from 'viem';
-import { useAccount, useChainId, useConfig, useGasPrice } from 'wagmi';
-import { getPublicClient } from 'wagmi/actions';
+import {
+  useAccount,
+  useChainId,
+  useEstimateFeesPerGas,
+  usePublicClient,
+} from 'wagmi';
 
 /**
  * State mutabilities that actually consume gas. `view`/`pure` calls don't, so
@@ -37,9 +41,11 @@ type EstimateContractCallParams<
  * supplied ABI: `functionName` is constrained to the contract's gas-consuming
  * functions and `args` is inferred from that function's signature.
  *
- * The fee is `estimated gas units × current gas price`, both read from the
- * chain selected by the connected wallet (`useChainId`). Returns `null` for the
- * fee until both resolve, or when estimation reverts (e.g. value below the
+ * The fee is `estimated gas units × max fee-per-gas`, both read from the chain
+ * selected by the connected wallet (`useChainId`). `maxFeePerGas` (EIP-1559) is
+ * used — not the lower legacy `eth_gasPrice` — so the quote matches the *max
+ * network fee* a wallet shows in its confirmation prompt. Returns `null` for
+ * the fee until both resolve, or when estimation reverts (e.g. value below the
  * contract minimum, or insufficient balance) — those are expected user states.
  */
 export function useEstimateContractCall<
@@ -53,14 +59,17 @@ export function useEstimateContractCall<
   args,
   value,
 }: EstimateContractCallParams<abi, functionName, args>) {
-  const config = useConfig();
   const chainId = useChainId();
-  const publicClient = useMemo(
-    () => getPublicClient(config, { chainId }),
-    [chainId, config],
-  );
+  const publicClient = usePublicClient();
   const { address } = useAccount();
-  const { data: gasPrice, isLoading: gasPriceIsLoading } = useGasPrice();
+
+  // Match the fee basis a wallet uses for its *max network fee*: on EIP-1559
+  // chains that's `maxFeePerGas` (≈ 2×baseFee + priority), with a legacy
+  // `gasPrice` fallback. Pricing off `eth_gasPrice` instead made our quote read
+  // an order of magnitude below the wallet's confirmation prompt on busy chains.
+  const { data: feeData, isLoading: feeDataIsLoading } =
+    useEstimateFeesPerGas();
+  const feePerGas = feeData?.maxFeePerGas ?? feeData?.gasPrice ?? null;
 
   const serializedArgs = useMemo(
     () =>
@@ -105,11 +114,11 @@ export function useEstimateContractCall<
     retry: false,
   });
 
-  /** Estimated fee in wei: gas units × gas price. `null` until both resolve. */
+  /** Estimated fee in wei: gas units × fee-per-gas. `null` until both resolve. */
   const fee = useMemo(() => {
-    if (gas == null || gasPrice == null) return null;
-    return gas * gasPrice;
-  }, [gas, gasPrice]);
+    if (gas == null || feePerGas == null) return null;
+    return gas * feePerGas;
+  }, [gas, feePerGas]);
 
   /** Estimated fee as a decimal ETH string, or `null` when unavailable. */
   const feeFormatted = useMemo(
@@ -119,10 +128,10 @@ export function useEstimateContractCall<
 
   return {
     gas,
-    gasPrice,
+    feePerGas,
     fee,
     feeFormatted,
-    isLoading: gasIsLoading || gasPriceIsLoading,
+    isLoading: gasIsLoading || feeDataIsLoading,
     isFetching: gasIsFetching,
   };
 }
