@@ -353,6 +353,18 @@ function paymentChargeState(
   return 'not-charged';
 }
 
+/**
+ * Renewal gates compute a verdict + summary server-side (does the expiration
+ * show the renewal already landed?); surface that summary as the hint.
+ */
+function renewalVerdictHint(evidence: Record<string, unknown>): string {
+  const verdict = evidence.verdict as { summary?: string } | undefined;
+  return (
+    verdict?.summary ??
+    'Compare the domain’s expiration across sources to decide whether the renewal landed.'
+  );
+}
+
 /** Operator guidance per known gate kind — what each response means and when. */
 const GATE_GUIDANCE: Record<string, GateGuidance> = {
   'register-or-import-poll': {
@@ -433,6 +445,29 @@ const GATE_GUIDANCE: Record<string, GateGuidance> = {
       return 'Payment evidence is unavailable or incomplete — verify the DB + on-chain state manually before deciding.';
     },
   },
+  'extend-epp-status-poll': {
+    summary:
+      'The renewal (extend-registration) status poll exceeded its deadline. The renewal is usually still processing at the registrar — compare the domain’s expiration across sources against the expected post-renewal date to see whether it already landed.',
+    actions: {
+      RESPOND:
+        'You verified the registrar’s terminal status — supply it (SUCCESSFUL once the expiration reflects the renewal, FAILED if it was rejected) and the workflow continues.',
+      RETRY: 'Re-poll the registrar when the renewal may still be completing.',
+      CANCEL: 'Fail the renewal when it cannot recover.',
+    },
+    evidenceHint: renewalVerdictHint,
+  },
+  'extend-expiration-poll': {
+    summary:
+      'The renewal succeeded at the registrar but the post-renewal expiration-propagation poll timed out. Compare the expiration across sources; once you confirm the new date, RESPOND with it so the NFT expiry is updated.',
+    actions: {
+      RESPOND:
+        'Supply the verified new expiration (ISO-8601) — the workflow records it and updates the NFT expiry.',
+      RETRY: 'Re-poll for the new expiration to propagate.',
+      CANCEL:
+        'Fail the post-renewal step (the registrar renewal itself still stands).',
+    },
+    evidenceHint: renewalVerdictHint,
+  },
 };
 
 /**
@@ -499,6 +534,156 @@ function EvidenceJson({ label, value }: { label: string; value: unknown }) {
   );
 }
 
+/** One source's reported expiration + comparison fields (from the gatherer). */
+type RenewalSource = {
+  expiration?: string;
+  reflectsRenewal?: boolean | null;
+  matchesExpected?: boolean | null;
+  source?: string;
+  registrarKey?: string;
+  chainId?: number;
+  found?: boolean;
+  reason?: string;
+  error?: string;
+};
+
+const RENEWAL_SOURCE_ROWS: { key: string; label: string }[] = [
+  { key: 'registrar', label: 'Live registrar' },
+  { key: 'nft', label: 'Namefi NFT (on-chain)' },
+  { key: 'indexedDomain', label: 'Registrar index' },
+  { key: 'rdapWhois', label: 'RDAP / WHOIS' },
+];
+
+/** ISO timestamp → yyyy-MM-dd (the repo's preferred display date), or null. */
+function isoDate(value: unknown): string | null {
+  return typeof value === 'string' && value.length >= 10
+    ? value.slice(0, 10)
+    : null;
+}
+
+/** One source row: its as-of expiration date plus a renewal-status chip. */
+function RenewalSourceRow({
+  label,
+  source,
+}: {
+  label: string;
+  source: RenewalSource | undefined;
+}) {
+  const expiration = isoDate(source?.expiration);
+  let chip: ReactNode = null;
+  if (source?.error !== undefined) {
+    chip = <Badge variant="outline">lookup failed</Badge>;
+  } else if (!expiration) {
+    chip = <Badge variant="outline">no data</Badge>;
+  } else if (source?.reflectsRenewal === true) {
+    // Moved past the old date, but to an unexpected value (wrong duration / stale
+    // cache) is a warning, not a clean confirmation.
+    chip =
+      source?.matchesExpected === false ? (
+        <Badge className="border-transparent bg-amber-500/15 text-amber-400">
+          moved · unexpected date
+        </Badge>
+      ) : (
+        <Badge className="border-transparent bg-green-500/15 text-green-400">
+          renewal reflected
+        </Badge>
+      );
+  } else if (source?.reflectsRenewal === false) {
+    chip = <Badge variant="outline">still old date</Badge>;
+  }
+  return (
+    <div className="flex items-center justify-between gap-2 text-sm">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="flex items-center gap-2">
+        <span className="font-mono">{expiration ?? source?.reason ?? '—'}</span>
+        {chip}
+      </span>
+    </div>
+  );
+}
+
+/**
+ * Renewal gates: the verdict, the registrar operation status, and the domain's
+ * expiration across every source compared against the expected post-renewal
+ * date — so the operator can see at a glance whether the renewal already landed.
+ */
+function ExpirationComparisonView({
+  expiration,
+  verdict,
+  operation,
+}: {
+  expiration: Record<string, unknown>;
+  verdict?: {
+    state?: 'landed' | 'not-landed' | 'inconclusive';
+    sourcesReflectingRenewal?: number;
+    sourcesWithData?: number;
+  };
+  operation?: { found?: boolean; status?: string; error?: string };
+}) {
+  const previous = isoDate(expiration.previous);
+  const expected = isoDate(expiration.expectedAfterRenewal);
+  const state = verdict?.state;
+  const stateClass =
+    state === 'landed'
+      ? 'border-green-500/30 bg-green-500/10 text-green-300'
+      : state === 'not-landed'
+        ? 'border-red-500/30 bg-red-500/10 text-red-300'
+        : 'border-amber-500/30 bg-amber-500/10 text-amber-200';
+  const stateLabel =
+    state === 'landed'
+      ? 'Renewal landed'
+      : state === 'not-landed'
+        ? 'Renewal did not land'
+        : 'Inconclusive';
+  return (
+    <div className="space-y-3 rounded-lg border border-border bg-muted/30 p-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <span
+          className={`rounded-md border px-2 py-0.5 text-xs font-semibold ${stateClass}`}
+        >
+          {stateLabel}
+        </span>
+        {operation ? (
+          <Badge variant="outline">
+            Operation:{' '}
+            {operation.error !== undefined
+              ? 'lookup failed'
+              : operation.found === false
+                ? 'not found'
+                : (operation.status ?? 'unknown')}
+          </Badge>
+        ) : null}
+        {typeof verdict?.sourcesReflectingRenewal === 'number' &&
+        typeof verdict?.sourcesWithData === 'number' ? (
+          <Badge variant="outline">
+            {verdict.sourcesReflectingRenewal}/{verdict.sourcesWithData} sources
+            renewed
+          </Badge>
+        ) : null}
+      </div>
+      <div className="space-y-1">
+        <div className="flex items-center justify-between gap-2 text-sm">
+          <span className="text-muted-foreground">Before renewal</span>
+          <span className="font-mono">{previous ?? '—'}</span>
+        </div>
+        <div className="flex items-center justify-between gap-2 text-sm">
+          <span className="text-muted-foreground">Expected after renewal</span>
+          <span className="font-mono">{expected ?? '—'}</span>
+        </div>
+      </div>
+      <div className="space-y-1 border-t border-border pt-2">
+        {RENEWAL_SOURCE_ROWS.map((row) => (
+          <RenewalSourceRow
+            key={row.key}
+            label={row.label}
+            source={expiration[row.key] as RenewalSource | undefined}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /** Summary chips + per-source JSON for gathered decision-support evidence. */
 function GateEvidenceView({
   evidence,
@@ -559,6 +744,25 @@ function GateEvidenceView({
         <p className="rounded-md border border-amber-500/30 bg-amber-500/10 p-2 text-sm font-medium text-foreground/90">
           {hint}
         </p>
+      ) : null}
+      {evidence.expiration ? (
+        <ExpirationComparisonView
+          expiration={evidence.expiration as Record<string, unknown>}
+          verdict={
+            evidence.verdict as {
+              state?: 'landed' | 'not-landed' | 'inconclusive';
+              sourcesReflectingRenewal?: number;
+              sourcesWithData?: number;
+            }
+          }
+          operation={
+            evidence.operation as {
+              found?: boolean;
+              status?: string;
+              error?: string;
+            }
+          }
+        />
       ) : null}
       {hasSystemEvidence ? (
         <div className="flex flex-wrap items-center gap-2">
@@ -629,6 +833,11 @@ function GateEvidenceView({
           </Badge>
         ) : null}
       </div>
+      <EvidenceJson label="Registrar operation" value={evidence.operation} />
+      <EvidenceJson
+        label="Expiration (all sources)"
+        value={evidence.expiration}
+      />
       <EvidenceJson label="Payment" value={evidence.payment} />
       <EvidenceJson
         label="Registrar (sldRegistrar)"

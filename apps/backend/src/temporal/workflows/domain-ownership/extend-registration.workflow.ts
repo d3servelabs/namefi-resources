@@ -478,13 +478,29 @@ async function _extendSldDomainAndReturnNewExpirationTime({
     });
   }
 
+  // Surfaced to the admin gate-evidence gatherer (keyed by `gateKind`) so it can
+  // read the domain's expiration from every source (registrar / NFT / registrar
+  // index / RDAP-WHOIS), look up the registrar operation by id, and compare
+  // against the expected post-renewal date to tell whether the renewal already
+  // landed. All values are already-computed + serializable (no new activity
+  // calls), so attaching them stays replay-safe.
+  const extendGateEvidenceParams = {
+    normalizedDomainName,
+    externalOperationId,
+    durationInYears,
+    previousExpirationTimeIso: previousExpirationTime.toISOString(),
+    ...(chainId !== undefined ? { chainId } : {}),
+  };
+
   // `pollEppExtendRegistrationStatus` is a retry-bounded poll (20 attempts): it
   // keeps polling until the status is terminal, then throws if it exhausts the
   // budget. That throw opens the gate, so no extra action deadline is needed.
   const status = pollGateRegistry
     ? await runWithDecisionGate<{ status: OperationStatus }, OperationStatus>({
         registry: pollGateRegistry,
+        gateKind: 'extend-epp-status-poll',
         interactionId: 'extend-epp-status-poll',
+        evidenceParams: extendGateEvidenceParams,
         action: () =>
           pollEppExtendRegistrationStatus({
             normalizedDomainName,
@@ -533,7 +549,9 @@ async function _extendSldDomainAndReturnNewExpirationTime({
   const nextExpirationTime = pollGateRegistry
     ? await runWithDecisionGate<string, string>({
         registry: pollGateRegistry,
+        gateKind: 'extend-expiration-poll',
         interactionId: 'extend-expiration-poll',
+        evidenceParams: extendGateEvidenceParams,
         action: () =>
           pollAndExpectExpirationChange({
             normalizedDomainName,
