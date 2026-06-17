@@ -197,7 +197,7 @@
     "drizzle-kit": "^0.31.5",
     "neonctl": "^2.9.0",
     "tsdown": "^0.21.0-beta.2",
-    "tsx": "^4.19.3",
+    "tsx": "^4.22.4",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "peerDependencies": {
