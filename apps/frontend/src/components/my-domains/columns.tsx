@@ -6,12 +6,10 @@ import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { AddressWithChain } from '@/components/address-with-chain';
 import { DnsStatusCell } from '@/components/domain-and-dns-managment/cells/dns-status-cell';
-import { ActionsCell } from './cells/actions-cell';
 import { AutoEnsCell } from './cells/auto-ens-cell';
 import { DateTokenizedCell } from './cells/date-tokenized-cell';
 import { DomainNameCell } from './cells/domain-name-cell';
 import { RenewalCell } from './cells/renewal-cell';
-import { RenewPricingCell } from './cells/renew-pricing-cell';
 import type { DomainRow } from './types';
 import {
   getCustomRenewalPrice,
@@ -111,6 +109,7 @@ export function useMyDomainsColumns({
                 | undefined,
               chainId: row.original.chainId ?? null,
               tokenId: row.original.tokenId,
+              ownerAddress: row.original.ownerAddress ?? null,
               orderId: row.original.orderId ?? null,
               isMobile: isMobile,
               onListForSaleClick: onListForSaleClick,

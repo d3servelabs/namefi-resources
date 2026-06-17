@@ -260,9 +260,13 @@ function NFTOwnershipCard({
   const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
 
   const handleWatchNft = async () => {
-    if (!tokenId) return;
+    if (!tokenId || !ownerAddress) return;
     try {
-      const added = await watchNamefiNftInWallet(tokenId, chainId);
+      const added = await watchNamefiNftInWallet(
+        tokenId,
+        chainId,
+        ownerAddress,
+      );
       if (added) {
         toast.success('NFT added to your wallet');
       } else {
@@ -1080,6 +1084,11 @@ export const DomainExportCard = ({
   const handleRequestExportInner = async () => {
     try {
       setIsRequestingExport(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -1094,6 +1103,7 @@ export const DomainExportCard = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.requestDomainExport.mutate({
@@ -1135,6 +1145,12 @@ export const DomainExportCard = ({
     setAuthCode(null);
 
     try {
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
+
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
         domainName: domain,
@@ -1150,6 +1166,7 @@ export const DomainExportCard = ({
           primaryType: 'DomainAction',
           message: payload,
           chainId: nftChainId,
+          walletAddress: ownerWalletAddress,
         });
       } catch (error) {
         console.error(error);
@@ -1412,6 +1429,11 @@ export const PendingTransferCard = ({
   const handleApproveInner = async () => {
     try {
       setIsApproving(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -1426,6 +1448,7 @@ export const PendingTransferCard = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.approveTransfer.mutate({
@@ -1452,6 +1475,11 @@ export const PendingTransferCard = ({
   const handleRejectInner = async () => {
     try {
       setIsRejecting(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -1466,6 +1494,7 @@ export const PendingTransferCard = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.rejectTransfer.mutate({

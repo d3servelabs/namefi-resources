@@ -1,6 +1,7 @@
 'use client';
 
 import { useWatchAssets } from '@/hooks/use-watch-assets';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import type { ChainBalance } from '@/hooks/use-user-chain-balances';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress } from '@/lib/string';
@@ -26,6 +27,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { useAccount } from 'wagmi';
 import { NfscOrdersList } from './nfsc-orders-list';
 
 const NfscSwapDialog = dynamic(
@@ -54,6 +56,8 @@ export function BalanceBreakdownDialog({
 }: BalanceBreakdownDialogProps) {
   const trpc = useTRPC();
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
+  const { defaultNfscBalanceChainId } = useAllowedChains();
+  const { address: activeWalletAddress } = useAccount();
   // The swap dialog is opened from inside this dialog; rendered as a sibling
   // and keyed by wallet so closing the balance dialog doesn't unmount it.
   // `isSwapDialogOpen` is tracked separately from the target wallet so the
@@ -87,15 +91,26 @@ export function BalanceBreakdownDialog({
   });
 
   const handleWatchNfsc = useCallback(async () => {
+    if (!activeWalletAddress) {
+      toast.error('Connect a wallet to continue.');
+      return;
+    }
     try {
-      await watchNfscInWallet();
-      toast.success('NFSC token added to your wallet');
+      const added = await watchNfscInWallet(
+        activeWalletAddress,
+        defaultNfscBalanceChainId,
+      );
+      if (added) {
+        toast.success('NFSC token added to your wallet');
+      } else {
+        toast.error("Couldn't add NFSC token to your wallet");
+      }
     } catch (error) {
       toast.error('Failed to add NFSC to wallet', {
         description: error instanceof Error ? error.message : undefined,
       });
     }
-  }, [watchNfscInWallet]);
+  }, [activeWalletAddress, defaultNfscBalanceChainId, watchNfscInWallet]);
 
   const openSwapDialog = useCallback(
     (walletAddress: string | null) => {
@@ -149,7 +164,7 @@ export function BalanceBreakdownDialog({
                 Top Up
               </Button>
 
-              {isAnyWalletConnected && (
+              {isAnyWalletConnected && activeWalletAddress && (
                 <Button
                   variant="secondary"
                   size="sm"

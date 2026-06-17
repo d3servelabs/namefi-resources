@@ -177,6 +177,7 @@ export function EditApiKeyDialog({
           allowedOrigins: JSON.stringify(payload.allowedOrigins),
         },
         chainId: 1,
+        walletAddress: walletToUse,
       });
 
       await trpcClient.apiKeys.updateApiKeyRestrictions.mutate({

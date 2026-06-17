@@ -71,14 +71,6 @@ export function RevokeApiKeyDialog({
   const handleSubmit = async () => {
     if (!keyToRevoke) return;
 
-    if (signWithWallet) {
-      const walletToUse = selectedWallet || activeWalletAddress;
-      if (!walletToUse) {
-        toast.error('Please select a wallet to sign with');
-        return;
-      }
-    }
-
     try {
       setIsSubmitting(true);
 
@@ -92,6 +84,10 @@ export function RevokeApiKeyDialog({
 
       if (signWithWallet) {
         const walletToUse = selectedWallet || activeWalletAddress;
+        if (!walletToUse) {
+          toast.error('Please select a wallet to sign with');
+          return;
+        }
 
         // Request wallet connection
         await new Promise<void>((resolve, reject) => {
@@ -102,7 +98,7 @@ export function RevokeApiKeyDialog({
           }
 
           pendingWalletConnectionResolve.current = resolve;
-          currentRef.requestWalletConnection(walletToUse!);
+          currentRef.requestWalletConnection(walletToUse);
         });
 
         // Sign the payload
@@ -111,6 +107,7 @@ export function RevokeApiKeyDialog({
           primaryType: 'RevokeApiKey',
           message: payload,
           chainId: 1,
+          walletAddress: walletToUse,
         });
       }
 

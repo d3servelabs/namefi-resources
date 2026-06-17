@@ -52,7 +52,7 @@ import { useRegisterAdminFlags } from '../admin/feature-flags/register';
 import type { FeatureFlagDefinition } from '@/types/feature-flags';
 import { useAdminFeatureFlag } from '../admin/feature-flags/use-flag';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
-import { useActiveWallet } from '@/hooks/use-active-wallet';
+import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import {
   bind,
   RequestWalletConnectionDialog,
@@ -64,6 +64,16 @@ import dynamic from 'next/dynamic';
 const NfscSwapDialog = dynamic(() => import('../dialogs/nfsc-swap-dialog'), {
   ssr: false,
 });
+
+function isWalletRequestNoopError(error: unknown) {
+  return (
+    error &&
+    typeof error === 'object' &&
+    'code' in error &&
+    ((error as RequestCancelledError).code === 'cancelled' ||
+      (error as { code?: string }).code === 'blocked')
+  );
+}
 
 const LoadingSkeletons = () => {
   return (
@@ -405,31 +415,37 @@ function UserWalletCardsGrid() {
 
   const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
   const [isSwapDialogOpen, setIsSwapDialogOpen] = useState(false);
+  const [swapDialogWalletAddress, setSwapDialogWalletAddress] = useState<
+    string | null
+  >(null);
 
   const walletDialog = useRequestWalletConnection();
 
   const { privyUser } = useAuth();
-  const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
-  const { switchToWallet, activeWalletAddress } = useActiveWallet();
+  const { watchNfscInWallet } = useWatchAssets();
+  const { defaultNfscBalanceChainId } = useAllowedChains();
 
-  const handleAddAssets = useCallback(async () => {
-    try {
-      toast('Request sent to wallet', {
-        description: 'Please check your wallet to add the NFSC token',
-      });
-      const result = await watchNfscInWallet();
+  const handleAddAssets = useCallback(
+    async (walletAddress: string, chainId: number) => {
+      try {
+        toast('Request sent to wallet', {
+          description: 'Please check your wallet to add the NFSC token',
+        });
+        const result = await watchNfscInWallet(walletAddress, chainId);
 
-      if (result) {
-        toast('Successfully added NFSC token to your wallet');
-      } else {
-        toast('Failed to add NFSC token to your wallet');
+        if (result) {
+          toast('Successfully added NFSC token to your wallet');
+        } else {
+          toast('Failed to add NFSC token to your wallet');
+        }
+      } catch (error) {
+        toast('Failed to add token', {
+          description: error instanceof Error ? error.message : 'Unknown error',
+        });
       }
-    } catch (error) {
-      toast('Failed to add token', {
-        description: error instanceof Error ? error.message : 'Unknown error',
-      });
-    }
-  }, [watchNfscInWallet]);
+    },
+    [watchNfscInWallet],
+  );
 
   const handleChargeWallet = useCallback(async () => {
     setIsSwapDialogOpen(true);
@@ -444,18 +460,15 @@ function UserWalletCardsGrid() {
           actionDescription: 'to add NFSC token to your wallet',
         });
       } catch (err) {
-        console.log(err);
-        if (
-          err &&
-          typeof err === 'object' &&
-          'code' in err &&
-          (err as RequestCancelledError).code === 'cancelled'
-        ) {
+        if (isWalletRequestNoopError(err)) {
           return;
         }
-        throw err;
+        toast('Failed to prepare wallet action', {
+          description: err instanceof Error ? err.message : 'Unknown error',
+        });
+        return;
       }
-      await handleAddAssets();
+      await handleAddAssets(walletAddress, chainId);
     },
     [walletDialog, handleAddAssets],
   );
@@ -469,16 +482,15 @@ function UserWalletCardsGrid() {
           actionDescription: 'to charge your wallet',
         });
       } catch (err) {
-        if (
-          err &&
-          typeof err === 'object' &&
-          'code' in err &&
-          (err as RequestCancelledError).code === 'cancelled'
-        ) {
+        if (isWalletRequestNoopError(err)) {
           return;
         }
-        throw err;
+        toast('Failed to prepare wallet action', {
+          description: err instanceof Error ? err.message : 'Unknown error',
+        });
+        return;
       }
+      setSwapDialogWalletAddress(walletAddress);
       await handleChargeWallet();
     },
     [walletDialog, handleChargeWallet],
@@ -551,6 +563,9 @@ function UserWalletCardsGrid() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {cardItems.map((item: (typeof cardItems)[number]) => {
           const { key, walletAddress, balances, linkedWallet } = item;
+          const actionChainId = separateByChain
+            ? (balances[0]?.chainId ?? defaultNfscBalanceChainId)
+            : defaultNfscBalanceChainId;
           const isHovered = hoveredCardId === key;
           const provider = forceNfscVariant
             ? 'nfsc'
@@ -582,10 +597,7 @@ function UserWalletCardsGrid() {
                     <div className="flex gap-2">
                       <Button
                         onClick={() =>
-                          onShowInWalletClicked(
-                            walletAddress,
-                            balances[0]?.chainId ?? 1,
-                          )
+                          onShowInWalletClicked(walletAddress, actionChainId)
                         }
                         size="sm"
                         variant="secondary"
@@ -595,10 +607,7 @@ function UserWalletCardsGrid() {
                       </Button>
                       <Button
                         onClick={() =>
-                          onAddFundsClicked(
-                            walletAddress,
-                            balances[0]?.chainId ?? 1,
-                          )
+                          onAddFundsClicked(walletAddress, actionChainId)
                         }
                         size="sm"
                         variant="secondary"
@@ -658,6 +667,7 @@ function UserWalletCardsGrid() {
     handleUnlinkWalletClicked,
     onShowInWalletClicked,
     onAddFundsClicked,
+    defaultNfscBalanceChainId,
   ]);
 
   if (isLoadingBalance || !linkedWalletsReady) {
@@ -687,8 +697,13 @@ function UserWalletCardsGrid() {
       {isSwapDialogOpen ? (
         <NfscSwapDialog
           open={isSwapDialogOpen}
-          onOpenChange={setIsSwapDialogOpen}
-          walletAddress={activeWalletAddress}
+          onOpenChange={(open) => {
+            setIsSwapDialogOpen(open);
+            if (!open) {
+              setSwapDialogWalletAddress(null);
+            }
+          }}
+          walletAddress={swapDialogWalletAddress ?? undefined}
         />
       ) : null}
       <RequestWalletConnectionDialog {...bind(walletDialog)} />

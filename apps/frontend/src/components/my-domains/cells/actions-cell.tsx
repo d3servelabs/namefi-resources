@@ -38,6 +38,7 @@ export interface ActionsCellProps {
   expirationDate: Date | string | null | undefined;
   chainId: number | null;
   tokenId: bigint | number | null | undefined;
+  ownerAddress: string | null;
   /** ID of the earliest SUCCEEDED order item; null when there isn't one. */
   orderId: string | null;
   isMobile: boolean;
@@ -49,6 +50,7 @@ export function ActionsCell({
   expirationDate,
   chainId,
   tokenId,
+  ownerAddress,
   orderId,
   isMobile,
   onListForSaleClick,
@@ -159,6 +161,7 @@ export function ActionsCell({
             domainName={domainName}
             tokenId={tokenId}
             chainId={chainId}
+            ownerAddress={ownerAddress}
             isExpired={isExpired}
             isMobile
           />
@@ -181,6 +184,7 @@ export function ActionsCell({
         domainName={domainName}
         tokenId={tokenId}
         chainId={chainId}
+        ownerAddress={ownerAddress}
         isExpired={isExpired}
         isMobile={false}
       />
@@ -192,6 +196,7 @@ interface WatchNftButtonProps {
   domainName: string;
   tokenId: bigint | number | null | undefined;
   chainId: number | null;
+  ownerAddress: string | null;
   isExpired: boolean;
   isMobile: boolean;
 }
@@ -199,23 +204,28 @@ interface WatchNftButtonProps {
 /**
  * Adds the domain's Namefi NFT to the user's connected wallet via
  * `wallet_watchAsset`. Renders nothing when the domain is expired, has no
- * token id or chain id, or no wallet is connected.
+ * token id, chain id, owner address, or no wallet is connected.
  */
 function WatchNftButton({
   domainName,
   tokenId,
   chainId,
+  ownerAddress,
   isExpired,
   isMobile,
 }: WatchNftButtonProps) {
   const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
 
   const handleWatchNft = useCallback(async () => {
-    if (tokenId == null || chainId == null) {
+    if (tokenId == null || chainId == null || !ownerAddress) {
       return;
     }
     try {
-      const added = await watchNamefiNftInWallet(tokenId.toString(), chainId);
+      const added = await watchNamefiNftInWallet(
+        tokenId.toString(),
+        chainId,
+        ownerAddress,
+      );
       if (added) {
         toast.success(`${domainName} added to your wallet`);
       } else {
@@ -226,12 +236,13 @@ function WatchNftButton({
         description: error instanceof Error ? error.message : 'Unknown error',
       });
     }
-  }, [tokenId, chainId, domainName, watchNamefiNftInWallet]);
+  }, [tokenId, chainId, ownerAddress, domainName, watchNamefiNftInWallet]);
 
   if (
     isExpired ||
     tokenId == null ||
     chainId == null ||
+    !ownerAddress ||
     !isAnyWalletConnected
   ) {
     return null;
@@ -269,6 +280,7 @@ export function DropdownDomainActionsMenu({
   expirationDate,
   chainId,
   tokenId,
+  ownerAddress,
   orderId,
   onListForSaleClick,
 }: ActionsCellProps) {
@@ -387,6 +399,7 @@ export function DropdownDomainActionsMenu({
           domainName={domainName}
           tokenId={tokenId}
           chainId={chainId}
+          ownerAddress={ownerAddress}
           isExpired={isExpired}
           isMobile
         />

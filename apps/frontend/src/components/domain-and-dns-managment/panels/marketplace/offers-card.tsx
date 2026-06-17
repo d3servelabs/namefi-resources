@@ -33,14 +33,21 @@ interface Props {
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
+  ownerAddress: Address;
 }
 
-export function OffersCard({ chainId, tokenAddress, tokenId }: Props) {
+export function OffersCard({
+  chainId,
+  tokenAddress,
+  tokenId,
+  ownerAddress,
+}: Props) {
   const offersQuery = useOffers({ chainId, tokenAddress, tokenId });
   const acceptMutation = useAcceptOffer({
     chainId,
     tokenAddress,
     tokenId,
+    ownerAddress,
     onSuccess: (offer) =>
       toast.success(
         `Accepted offer for ${offer.price.decimal.toFixed(4)} ${offer.price.currency.symbol}`,

@@ -102,7 +102,8 @@ export default function NFSCSwapDialog(props: Props) {
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
   const { connectWallet } = useConnectWallet();
 
-  const { nfscBalance, nativeBalance, isLoading } = useNfscBalance();
+  const { nfscBalance, nativeBalance, isLoading } =
+    useNfscBalance(checksummedAddress);
   const { data: conversionRate, isLoading: isConversionRateLoading } =
     useGetNfscExchangeRate();
 
@@ -129,9 +130,10 @@ export default function NFSCSwapDialog(props: Props) {
     isWalletReady,
     isWalletConnecting,
   } = useBuyNfsc({
+    walletAddress: checksummedAddress ?? undefined,
     onSuccess: () => {
-      toast.success('Successfully Swapped', {
-        description: `You have successfully swapped ${amountPay} ETH to ${displayReceiveAmount()} NFSC`,
+      toast.success('Swap submitted', {
+        description: `Your ${amountPay} ETH to ${displayReceiveAmount()} NFSC swap was sent to the network.`,
       });
       onOpenChange(false);
     },

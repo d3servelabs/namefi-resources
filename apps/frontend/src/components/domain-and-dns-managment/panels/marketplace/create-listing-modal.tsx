@@ -206,6 +206,7 @@ export function CreateListingModal({
     chainId,
     tokenAddress,
     tokenId,
+    ownerAddress,
     onSuccess: (listing) => {
       logEventWithInteractionLoggers({
         name: InteractionLoggingEventName.MarketplaceListingCreated,

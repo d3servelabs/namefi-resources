@@ -1,16 +1,25 @@
 import { NFSC_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
+import { getAddress, isAddress, type Address } from 'viem';
 import { useAccount, useBalance, useChainId } from 'wagmi';
 
-export default function useConnectedWalletBalances() {
-  const { address } = useAccount();
+export default function useNfscBalance(walletAddress?: string | null) {
+  const { address: connectedAddress } = useAccount();
   const chainId = useChainId();
+  const targetAddress: Address | undefined = walletAddress
+    ? isAddress(walletAddress)
+      ? getAddress(walletAddress)
+      : undefined
+    : connectedAddress;
 
   const {
     data: balance,
     isLoading: isNativeLoading,
     refetch: refetchNativeBalance,
   } = useBalance({
-    address: address,
+    query: {
+      enabled: !!targetAddress,
+    },
+    address: targetAddress,
   });
 
   const {
@@ -19,14 +28,16 @@ export default function useConnectedWalletBalances() {
     refetch: refetchNfscBalance,
   } = useBalance({
     query: {
-      enabled: !!address,
+      enabled: !!targetAddress,
     },
-    address: address,
+    address: targetAddress,
     token: NFSC_CONTRACT_ADDRESS,
     chainId,
   });
 
   const refetchBalances = async () => {
+    if (!targetAddress) return;
+
     await Promise.all([refetchNativeBalance(), refetchNfscBalance()]);
   };
 

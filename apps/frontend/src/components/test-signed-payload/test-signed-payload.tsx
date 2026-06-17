@@ -103,6 +103,7 @@ export function TestSignedPayload() {
         primaryType: 'TestPayload',
         message: payload,
         chainId: 1,
+        walletAddress: walletToUse,
       });
 
       // Send to backend

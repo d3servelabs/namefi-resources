@@ -74,6 +74,7 @@ export function MarketplacePanel({
         chainId={chainId}
         tokenAddress={NAMEFI_NFT_CONTRACT_ADDRESS}
         tokenId={tokenId}
+        ownerAddress={ownerAddress}
       />
     </div>
   );

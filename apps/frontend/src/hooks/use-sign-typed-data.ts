@@ -1,6 +1,5 @@
-import { useWalletClient } from 'wagmi';
 import type { TypedDataDomain } from 'viem';
-import { useSwitchChain } from 'wagmi';
+import { useWalletActionClient } from './use-wallet-action-client';
 
 /**
  * EIP-712 domain for Namefi payload signing.
@@ -16,8 +15,7 @@ export const NAMEFI_EIP712_DOMAIN: TypedDataDomain = {
  * Used for dangerous operations that require wallet signature confirmation.
  */
 export function useSignTypedData() {
-  const { data: walletClient } = useWalletClient();
-  const { switchChainAsync } = useSwitchChain();
+  const resolveWalletClient = useWalletActionClient();
 
   /**
    * Sign an EIP-712 typed data payload.
@@ -25,6 +23,8 @@ export function useSignTypedData() {
    * @param types - The EIP-712 type definitions
    * @param primaryType - The primary type name being signed
    * @param message - The payload data to sign
+   * @param chainId - The chain ID used in the EIP-712 domain and wallet resolution
+   * @param walletAddress - The wallet address expected to sign the payload
    * @returns The signature hex string
    */
   const signTypedData = async ({
@@ -32,17 +32,17 @@ export function useSignTypedData() {
     primaryType,
     message,
     chainId,
+    walletAddress,
   }: {
     types: Record<string, Array<{ name: string; type: string }>>;
     primaryType: string;
     message: Record<string, unknown>;
     chainId: number | bigint;
+    walletAddress: string;
   }): Promise<string> => {
-    if (!walletClient) {
-      throw new Error('Wallet not connected');
-    }
-    await switchChainAsync({
+    const walletClient = await resolveWalletClient({
       chainId: Number(chainId),
+      expectedAddress: walletAddress,
     });
     const signature = await walletClient.signTypedData({
       domain: {
@@ -59,6 +59,5 @@ export function useSignTypedData() {
 
   return {
     signTypedData,
-    isWalletConnected: !!walletClient,
   };
 }

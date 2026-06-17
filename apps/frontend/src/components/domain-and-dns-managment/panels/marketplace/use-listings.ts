@@ -1,14 +1,10 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  formatUnits,
-  type Address,
-  type PublicClient,
-  type WalletClient,
-} from 'viem';
+import { formatUnits, type Address, type PublicClient } from 'viem';
 import { useConfig, usePublicClient } from 'wagmi';
-import { getPublicClient, getWalletClient } from 'wagmi/actions';
+import { getPublicClient } from 'wagmi/actions';
+import { useWalletActionClient } from '@/hooks/use-wallet-action-client';
 import { getMarketplacesSupportedOnChain } from '@/lib/marketplaces/chains';
 import { getMarketplace } from '@/lib/marketplaces/factory';
 import { marketplaceProxyClient } from '@/lib/marketplaces/proxy/trpc-client';
@@ -151,10 +147,12 @@ export function useCreateListing(args: {
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
+  ownerAddress: Address;
   onSuccess?: (listing: Listing) => void;
 }) {
   const queryClient = useQueryClient();
   const config = useConfig();
+  const resolveWalletClient = useWalletActionClient();
 
   return useMutation({
     mutationFn: async ({ marketplaceId, input }: CreateListingArgs) => {
@@ -162,10 +160,11 @@ export function useCreateListing(args: {
       // so a chain switch that just completed in the UI is already reflected —
       // no stale wallet/public client bound to the previous chain.
       const publicClient = getPublicClient(config, { chainId: args.chainId });
-      const walletClient = await getWalletClient(config, {
+      assertPublicClientReady(publicClient);
+      const walletClient = await resolveWalletClient({
         chainId: args.chainId,
-      }).catch(() => undefined);
-      assertReady(publicClient, walletClient);
+        expectedAddress: args.ownerAddress,
+      });
       const adapter = await getMarketplace({
         id: marketplaceId,
         chainId: args.chainId,
@@ -200,14 +199,16 @@ export function useCancelListing(args: {
 }) {
   const queryClient = useQueryClient();
   const config = useConfig();
+  const resolveWalletClient = useWalletActionClient();
 
   return useMutation({
     mutationFn: async ({ listing }: CancelListingArgs) => {
       const publicClient = getPublicClient(config, { chainId: args.chainId });
-      const walletClient = await getWalletClient(config, {
+      assertPublicClientReady(publicClient);
+      const walletClient = await resolveWalletClient({
         chainId: args.chainId,
-      }).catch(() => undefined);
-      assertReady(publicClient, walletClient);
+        expectedAddress: listing.seller,
+      });
       const adapter = await getMarketplace({
         id: listing.marketplace,
         chainId: args.chainId,
@@ -316,18 +317,21 @@ export function useAcceptOffer(args: {
   chainId: number;
   tokenAddress: Address;
   tokenId: string;
+  ownerAddress: Address;
   onSuccess?: (offer: Offer) => void;
 }) {
   const queryClient = useQueryClient();
   const config = useConfig();
+  const resolveWalletClient = useWalletActionClient();
 
   return useMutation({
     mutationFn: async ({ offer }: AcceptOfferArgs) => {
       const publicClient = getPublicClient(config, { chainId: args.chainId });
-      const walletClient = await getWalletClient(config, {
+      assertPublicClientReady(publicClient);
+      const walletClient = await resolveWalletClient({
         chainId: args.chainId,
-      }).catch(() => undefined);
-      assertReady(publicClient, walletClient);
+        expectedAddress: args.ownerAddress,
+      });
       const adapter = await getMarketplace({
         id: offer.marketplace,
         chainId: args.chainId,
@@ -371,15 +375,11 @@ function dedupeOffers(offers: Offer[]): Offer[] {
   return deduped;
 }
 
-function assertReady(
+function assertPublicClientReady(
   publicClient: PublicClient | undefined,
-  walletClient: WalletClient | undefined | null,
 ): asserts publicClient is PublicClient {
   if (!publicClient) {
     throw new Error('Public client is not ready — try again in a moment.');
-  }
-  if (!walletClient) {
-    throw new Error('Connect a wallet to continue.');
   }
 }
 

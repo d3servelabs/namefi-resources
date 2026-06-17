@@ -13,6 +13,7 @@ import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-ca
 import { NoPaymentMethodRequiredCard } from '@/components/payment-method/select-payment-method-card';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
+import { useWalletActionClient } from '@/hooks/use-wallet-action-client';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
 import { CART_REQUIREMENTS_VARIANT_FLAG } from '@/lib/cart-registration-requirements';
@@ -62,7 +63,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { useAccount, useSwitchChain, useWalletClient } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { getPaymentProviderForChain } from '@/components/payment-method/hybrid-payment-utils';
 import { normalizeCreateOrderV2PaymentsToSafeIntCents } from '@/lib/payment-normalization';
 
@@ -141,8 +142,7 @@ export default function CartPage() {
 
   const trpc = useTRPC();
   const { address: connectedWalletAddress } = useAccount();
-  const { data: walletClient } = useWalletClient();
-  const { switchChainAsync } = useSwitchChain();
+  const resolveWalletClient = useWalletActionClient();
 
   const { data: x402PaymentConfigResponse } = useQuery({
     ...trpc.config.x402Payment.queryOptions(),
@@ -384,7 +384,7 @@ export default function CartPage() {
             return;
           }
 
-          if (!connectedWalletAddress || !walletClient) {
+          if (!connectedWalletAddress) {
             setErrorMessage(
               'Connect an active wallet to sign your x402 payment',
             );
@@ -392,13 +392,13 @@ export default function CartPage() {
             return;
           }
 
-          const signerAddress = getAddress(connectedWalletAddress);
+          const walletClient = await resolveWalletClient({
+            chainId: x402PaymentConfig.chainId,
+            expectedAddress: connectedWalletAddress,
+          });
+          const signerAddress = getAddress(walletClient.account.address);
           const receiverWalletAddress = getAddress(x402PaymentConfig.payTo);
           const assetAddress = getAddress(x402PaymentConfig.asset);
-
-          await switchChainAsync({
-            chainId: x402PaymentConfig.chainId,
-          });
 
           preparedPayments = await Promise.all(
             preparedPayments.map(async (payment) => {
@@ -513,9 +513,8 @@ export default function CartPage() {
       items,
       selectedNftWalletAddress,
       selectedNftChainId,
-      switchChainAsync,
+      resolveWalletClient,
       totalAmountInUsdCents,
-      walletClient,
       x402CartPaymentEnabled,
       x402PaymentConfig,
     ],

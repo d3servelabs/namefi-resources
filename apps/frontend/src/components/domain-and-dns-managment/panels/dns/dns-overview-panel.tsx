@@ -461,6 +461,11 @@ export const DomainExportSection = ({
   const handleRequestExportInner = async () => {
     try {
       setIsRequestingExport(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
@@ -476,6 +481,7 @@ export const DomainExportSection = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.requestDomainExport.mutate({
@@ -516,6 +522,12 @@ export const DomainExportSection = ({
     setIsFetchingAuthCode(true);
 
     try {
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
+
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
       const payload = {
@@ -532,6 +544,7 @@ export const DomainExportSection = ({
           primaryType: 'DomainAction',
           message: payload,
           chainId: nftChainId,
+          walletAddress: ownerWalletAddress,
         });
       } catch (error) {
         console.error(error);
@@ -764,6 +777,11 @@ export const PendingTransferSection = ({
   const handleApproveInner = async () => {
     try {
       setIsApproving(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
@@ -779,6 +797,7 @@ export const PendingTransferSection = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.approveTransfer.mutate({
@@ -805,6 +824,11 @@ export const PendingTransferSection = ({
   const handleRejectInner = async () => {
     try {
       setIsRejecting(true);
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
 
       // Sign the payload with EIP-712 using unified domain action type
       const timestamp = Math.floor(Date.now() / 1000);
@@ -820,6 +844,7 @@ export const PendingTransferSection = ({
         primaryType: 'DomainAction',
         message: payload,
         chainId: nftChainId,
+        walletAddress: ownerWalletAddress,
       });
 
       await trpcClient.domainConfig.rejectTransfer.mutate({

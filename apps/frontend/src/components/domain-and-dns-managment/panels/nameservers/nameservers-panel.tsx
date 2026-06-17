@@ -236,6 +236,11 @@ const NameserversPanelForm = React.memo(
     }, [trpc, queryClient, domainName, refetchActiveNameserversChangeWorkflow]);
 
     const resetWithSignature = useCallback(async () => {
+      const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+      if (!ownerWalletAddress) {
+        toast.error('Unable to determine domain owner wallet');
+        return;
+      }
       setLoadingOperation('resetting');
 
       try {
@@ -253,6 +258,7 @@ const NameserversPanelForm = React.memo(
           primaryType: 'DomainAction',
           message: payload,
           chainId: nftChainId,
+          walletAddress: ownerWalletAddress,
         });
 
         await trpcClient.domainConfig.resetDomainNameservers.mutate({
@@ -270,7 +276,14 @@ const NameserversPanelForm = React.memo(
       }
       await invalidateQueries();
       setLoadingOperation(null);
-    }, [trpcClient, domainName, invalidateQueries, signTypedData, nftChainId]);
+    }, [
+      trpcClient,
+      domainName,
+      invalidateQueries,
+      signTypedData,
+      nftChainId,
+      ownerWalletData?.ownerWalletAddress,
+    ]);
 
     const handleResetToNamefi = useCallback(async () => {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
@@ -329,6 +342,11 @@ const NameserversPanelForm = React.memo(
     const submitWithSignature = async (values: DomainNameserversFormData) => {
       try {
         if (domainName) {
+          const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
+          if (!ownerWalletAddress) {
+            toast.error('Unable to determine domain owner wallet');
+            return;
+          }
           const nameserversList = values.nameservers.join(', ');
           const timestamp = Math.floor(Date.now() / 1000);
           // Create payload with nameservers as comma-separated string in payload field
@@ -346,6 +364,7 @@ const NameserversPanelForm = React.memo(
             primaryType: 'DomainAction',
             message: payload,
             chainId: nftChainId,
+            walletAddress: ownerWalletAddress,
           });
 
           await trpcClient.domainConfig.changeDomainNameservers.mutate({

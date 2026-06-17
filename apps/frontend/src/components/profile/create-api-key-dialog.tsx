@@ -323,6 +323,7 @@ export function CreateApiKeyDialog({
           primaryType: 'CreateApiKey',
           message: signPayload,
           chainId: 1,
+          walletAddress: walletToUse,
         });
       }
 
