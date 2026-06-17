@@ -50,13 +50,17 @@ export const PARKED_DOMAIN_RECORDS: z.infer<typeof recordSchema>[] = [
   {
     type: RecordType.A,
     name: '@',
-    rdata: '24.199.74.33',
+    rdata: process.env.USE_LEGACY_PARKING_PAGE
+      ? '24.199.74.33'
+      : '34.123.0.161',
     ttl: 60,
   },
   {
     type: RecordType.AAAA,
     name: '@',
-    rdata: '2604:a880:4:1d0::417:7000',
+    rdata: process.env.USE_LEGACY_PARKING_PAGE
+      ? '2604:a880:4:1d0::417:7000'
+      : '2600:1900:4000:1102:8000::',
     ttl: 60,
   },
   {
