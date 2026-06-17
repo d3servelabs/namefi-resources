@@ -1,0 +1,89 @@
+---
+title: 'डोमेन मेडे EP10: कैसे सीरियन इलेक्ट्रॉनिक आर्मी ने फिशिंग का शिकार हुए रिसेलर के जरिए NYTimes.com को डाउन किया'
+date: '2026-06-17'
+language: hi
+tags: ['domains', 'security', 'dns', 'domain-security']
+authors: ['namefiteam']
+draft: false
+description: '27 अगस्त 2013 को, सीरियन इलेक्ट्रॉनिक आर्मी ने मेलबर्न आईटी के एक रिसेलर को फिश किया, nytimes.com और ट्विटर के डोमेन के लिए DNS रिकॉर्ड्स को फिर से लिखा, और न्यूयॉर्क टाइम्स को घंटों के लिए ऑफ़लाइन कर दिया। एक विस्तृत जानकारी कि कैसे रजिस्ट्रार-चेन की एक कमजोर कड़ी एक अखबार के मुख्य द्वार की विफलता बन गई — और कैसे रजिस्ट्री लॉक इसे बदल सकते थे।'
+keywords: ['nytimes.com hack', 'सीरियन इलेक्ट्रॉनिक आर्मी', 'मेलबर्न आईटी', 'dns हाईजैक', 'डोमेन हाईजैकिंग', 'रजिस्ट्रार सिक्योरिटी', 'रिसेलर फिशिंग', 'रजिस्ट्री लॉक', 'dns रिकॉर्ड्स', 'डोमेन नेम सर्वर अटैक', 'twitter dns 2013', 'डोमेन सिक्योरिटी', 'serverupdateprohibited']
+---
+
+किसी अखबार का डोमेन नेम उसका मुख्य द्वार (front door) होता है। जब आप `nytimes.com` टाइप करते हैं, तो आप एक अदृश्य शृंखला — एक डोमेन रजिस्ट्री, एक रजिस्ट्रार, और कभी-कभी उस रजिस्ट्रार के नीचे काम करने वाले रिसेलर — पर भरोसा कर रहे होते हैं कि वह आपको असली न्यूज़रुम तक ले जाएगा और कहीं और नहीं। सामान्य दिनों में आप इस शृंखला के बारे में कभी नहीं सोचते। 27 अगस्त, 2013 को यह शृंखला टूट गई, और लाखों पाठक *The New York Times* के मुख्य द्वार तक पहुँचे, लेकिन उन्होंने पाया कि उसे किसी और के द्वार से बदल दिया गया था।
+
+वह 'कोई और' **सीरियन इलेक्ट्रॉनिक आर्मी** (SEA) थी, जो एक असद-समर्थक हैकर समूह था, जिसने 2013 का साल पश्चिमी मीडिया आउटलेट्स को निशाना बनाने में बिताया। इस बार उन्होंने किसी लेख के साथ छेड़छाड़ नहीं की या किसी कंटेंट मैनेजमेंट सिस्टम में सेंध नहीं लगाई। वे एक स्तर और गहराई में गए — **DNS रिकॉर्ड्स** में जो तय करते हैं कि कोई डोमेन कहाँ पॉइंट करेगा — और कुछ घंटों के लिए उन्होंने दुनिया के सबसे अधिक पढ़े जाने वाले समाचार साइटों में से एक के पते पर कब्ज़ा कर लिया।
+
+## एक डोमेन मुख्य द्वार है, और इस मुख्य द्वार पर एक ऐसा ताला है जिसे आप नियंत्रित नहीं करते
+
+जब *The New York Times* जैसी कंपनी कोई डोमेन रजिस्टर करती है, तो "यह किसका है और कहाँ पॉइंट करता है" इसका आधिकारिक रिकॉर्ड रजिस्ट्री (जैसे `.com` के लिए Verisign) के पास रहता है और इसे एक **रजिस्ट्रार** के माध्यम से प्रबंधित किया जाता है। बड़े रजिस्ट्रार **रिसेलर्स** (छोटे फर्म जो डोमेन सेवाओं को फिर से बेचते हैं और रजिस्ट्रार के सिस्टम में अपना स्वयं का लॉगिन रखते हैं) के माध्यम से भी बिक्री करते हैं।
+
+यह लेयरिंग सुविधाजनक है। लेकिन यह विश्वास की एक शृंखला भी है जहाँ सबसे कमजोर कड़ी पूरी व्यवस्था की सुरक्षा तय करती है। यदि कोई हमलावर उस शृंखला में *किसी के भी* (रजिस्ट्रेंट, रजिस्ट्रार कर्मचारी, या रिसेलर) रूप में प्रमाणित (authenticate) हो सकता है, तो रजिस्ट्रार के सिस्टम, अपने डिज़ाइन के अनुसार, उन्हें वैध स्वामी मानेंगे। मेलबर्न आईटी के मुख्य कार्यकारी अधिकारी ने इस विफलता को एक विनाशकारी वाक्य में बयां किया: ["वे मुख्य द्वार से अंदर आए,"](https://www.theregister.com/2013/08/27/twitter_ny_times_in_domain_hijack/#:~:text=They%20came%20in%20through%20the%20front%20door) उन्होंने AP को बताया। यदि आपके पास एक वैध यूज़रनेम और पासवर्ड है, तो सिस्टम मान लेता है कि आप अधिकृत स्वामी हैं। संक्षेप में यही पूरी समस्या है।
+
+## 27 अगस्त 2013: वह दिन जब nytimes.com कहीं और पॉइंट करने लगा
+
+![Vivid colorful concept art of a giant newspaper front-door sign being unbolted and re-hung over a different doorway, glowing red routing arrows pulling a crowd of readers off course into a dark side alley](../../assets/the-syrian-electronic-army-nyt-hijack-01-hijack.jpg)
+
+मंगलवार की देर दोपहर में, पाठकों की *टाइम्स* तक पहुँच बंद हो गई। एबीसी न्यूज़ ने रिपोर्ट किया कि [न्यूयॉर्क टाइम्स की वेबसाइट "कुछ उपयोगकर्ताओं के लिए बंद हो गई है,"](https://abcnews.com/Technology/york-times-website-suspects-malicious-hack/story?id=20087043#:~:text=gone%20dark%20for%20some%20users) और अखबार ने पुष्टि की कि उसके डोमेन रजिस्ट्रार पर हमले के बाद [उसकी साइट "मंगलवार दोपहर पाठकों के लिए अनुपलब्ध थी"](https://abcnews.com/Technology/york-times-website-suspects-malicious-hack/story?id=20087043#:~:text=unavailable%20to%20readers%20on%20Tuesday%20afternoon)। यह कोई छोटी रुकावट नहीं थी। क्रिश्चियन साइंस मॉनिटर ने बताया कि [विज़िटर्स का "मंगलवार को कई घंटों तक खाली ब्राउज़र स्क्रीन से स्वागत किया गया,"](https://www.csmonitor.com/USA/2013/0827/New-York-Times-hacked-Syrian-Electronic-Army-takes-credit#:~:text=greeted%20with%20blank%20browser%20screens%20for%20several%20hours) — और इसे और भी बदतर बनाते हुए, [यह "इस महीने दूसरी बार" था](https://abcnews.com/Technology/york-times-website-suspects-malicious-hack/story?id=20087043#:~:text=second%20time%20this%20month) जब साइट डाउन हुई थी।
+
+वास्तव में जो हुआ था वह रजिस्ट्रार स्तर पर एक **DNS हाईजैक** था। हमलावर उन रिकॉर्ड्स तक पहुँच गए जो `nytimes.com` को एक IP पते में अनुवादित करते हैं और उन्हें फिर से लिख दिया। इस घटना के विकिपीडिया विवरण के अनुसार, [`NYTimes.com` के "DNS को एक ऐसे पेज पर रीडायरेक्ट कर दिया गया था जो 'Hacked by SEA' संदेश प्रदर्शित कर रहा था"](https://en.wikipedia.org/wiki/Syrian_Electronic_Army#:~:text=had%20its%20DNS%20redirected%20to%20a%20page%20that%20displayed%20the%20message)। मुख्य द्वार को किसी दूसरे दरवाजे पर लटका दिया गया था।
+
+उस अकाउंट पर सिर्फ *टाइम्स* ही एकमात्र निशाना नहीं था। रियल-टाइम में रिपोर्ट करते हुए TechCrunch ने पाया कि ["न्यूयॉर्क टाइम्स और ट्विटर दोनों के नेम सर्वर मेलबर्न आईटी रजिस्ट्रार के माध्यम से पंजीकृत प्रतीत होते हैं,"](https://techcrunch.com/2013/08/27/syrian-electronic-army-apparently-hacks-dns-records-of-twitter-new-york-times-through-registrar-melboune-it/#:~:text=name%20servers%20appear%20to%20have%20been%20registered%20through%20the%20registrar%20Melbourne%20IT) और यह कि [`twimg.com` डोमेन, "जो ट्विटर इमेज और अवतार (avatars) प्रदान करता है, वह भी ऐसे परिवर्तन दिखाता है जो स्पष्ट रूप से SEA के स्वामित्व वाले सर्वर की ओर इशारा करते हैं।"](https://techcrunch.com/2013/08/27/syrian-electronic-army-apparently-hacks-dns-records-of-twitter-new-york-times-through-registrar-melboune-it/#:~:text=which%20serves%20up%20Twitter%20images%20and%20avatars) ट्विटर की मुख्य साइट काफी हद तक सुरक्षित रही, लेकिन इसका इमेज-और-अवतार डोमेन डगमगा गया — इतना कि कुछ उपयोगकर्ताओं को कुछ समय के लिए टूटी हुई छवियां (broken images) दिखाई दीं।
+
+## प्रभाव: घंटों का अंधेरा, और एक रीडायरेक्ट जिस पर आप भरोसा नहीं कर सकते थे
+
+किसी समाचार संगठन के लिए, हाईजैक की कीमत केवल खोए हुए पेजव्यू में नहीं मापी जाती है। इसे भरोसे में मापा जाता है। आउटेज की अवधि के दौरान, `nytimes.com` तक पहुँचने वाले किसी भी व्यक्ति को हमलावर द्वारा रूट किया जा रहा था। *टाइम्स* के खुद के मुख्य सूचना अधिकारी, मार्क फ्रोंस ने कर्मचारियों को बताया कि यह व्यवधान ["सीरियन इलेक्ट्रॉनिक आर्मी या उनकी तरह दिखने की बहुत कोशिश कर रहे किसी व्यक्ति द्वारा किए गए दुर्भावनापूर्ण बाहरी हमले का परिणाम था"](https://www.csmonitor.com/USA/2013/0827/New-York-Times-hacked-Syrian-Electronic-Army-takes-credit#:~:text=was%20the%20result%20of%20a%20malicious%20external%20attack) — और कर्मचारियों को चेतावनी दी कि जब तक डोमेन अखबार के हाथों से बाहर है, तब तक ईमेल के साथ सावधानी बरतें।
+
+सोचिए कि एक हाईजैक किया गया DNS रिकॉर्ड वास्तव में क्या-क्या सक्षम बनाता है। हमलावर नियंत्रित करता है कि नाम (डोमेन) कहाँ रिज़ॉल्व होगा, जिसका अर्थ है कि वे एक डिफेसमेंट पेज (जैसा कि उन्होंने किया) सर्व कर सकते हैं, लेकिन वे उतनी ही आसानी से एक विश्वसनीय फर्जी लॉगिन भी दिखा सकते हैं, क्रेडेंशियल्स चुरा सकते हैं, या ट्रैफ़िक को इंटरसेप्ट कर सकते हैं। डिफेसमेंट शोर मचाने वाला और स्पष्ट होता है। एक *शांत* DNS हाईजैक कहीं अधिक खतरनाक होता है — और समान कमजोरी दोनों को सक्षम बनाती है। हफिंगटन पोस्ट यूके का डोमेन भी इसी घटना में फँस गया था, जो यह रेखांकित करता है कि यह एक रजिस्ट्रार-अकाउंट समझौता (कॉम्प्रोमाइज) था, न कि किसी एक न्यूज़रुम के खिलाफ एक बार की गई शरारत।
+
+## यह कैसे हुआ: अखबार को नहीं, बल्कि रिसेलर को फिश करें
+
+![Vivid colorful concept art of a phished golden key sliding into a glowing control-room door labeled with abstract routing dials, a shadowy hand rewriting a luminous ledger of address arrows while a fake email envelope dissolves into the lock](../../assets/the-syrian-electronic-army-nyt-hijack-02-reseller-phish.jpg)
+
+यहाँ सोचने वाली बात यह है: SEA को कभी *The New York Times* के सिस्टम में सेंध नहीं लगानी पड़ी। उन्होंने कभी भी अखबार के सर्वर या इसके CMS को नहीं छुआ। उन्होंने रजिस्ट्रार के *नीचे* की शृंखला पर हमला किया।
+
+प्रवेश बिंदु मेलबर्न आईटी के अमेरिका-आधारित रिसेलर को भेजा गया एक **स्पियर-फिशिंग ईमेल** था। जैसा कि द नेक्स्ट वेब ने रिपोर्ट किया, [मेलबर्न आईटी ने "पुष्टि की कि SEA ने लॉग-इन विवरण प्राप्त करने के लिए फिशिंग रणनीति का इस्तेमाल किया"](http://thenextweb.com/news/this-is-how-the-syrian-electronic-army-hacked-the-new-york-times-and-twitter#:~:text=used%20phishing%20tactics%20to%20get%20hold%20of%20the%20log) — रिसेलर के कर्मचारियों को अपने ईमेल क्रेडेंशियल सौंपने के लिए धोखा दिया गया, और हमलावरों ने फिर रजिस्ट्रार लॉगिन के लिए उन मेलबॉक्सों को खंगाला। वहां से सब आसान था: [मेलबर्न आईटी सिस्टम पर रिसेलर अकाउंट को एक्सेस करने के लिए "एक मेलबर्न आईटी रिसेलर (यूज़रनेम और पासवर्ड) के क्रेडेंशियल" का इस्तेमाल किया गया,](https://techcrunch.com/2013/08/27/syrian-electronic-army-apparently-hacks-dns-records-of-twitter-new-york-times-through-registrar-melboune-it/#:~:text=credentials%20of%20a%20Melbourne%20IT%20reseller) और एक बार अंदर जाने के बाद, [हमलावरों ने "कई डोमेन नामों के DNS रिकॉर्ड बदल दिए ... जिनमें *The Times* के डोमेन भी शामिल थे।"](https://www.itnews.com.au/news/melbourne-it-compromise-redirects-ny-times-huffpo-readers-354935#:~:text=changed%20the%20DNS%20records%20of%20several%20domain%20names)
+
+TechCrunch का विवरण भी समान रूप से स्पष्ट है: ["उस रिसेलर अकाउंट पर मौजूद कई डोमेन नामों के DNS रिकॉर्ड बदल दिए गए थे – जिनमें `nytimes.com` भी शामिल था।"](https://techcrunch.com/2013/08/27/syrian-electronic-army-apparently-hacks-dns-records-of-twitter-new-york-times-through-registrar-melboune-it/#:~:text=DNS%20records%20of%20several%20domain%20names%20on%20that%20reseller%20account%20were%20changed)
+
+यही वह असमानता है जो रजिस्ट्रार-चेन हमलों को इतना आकर्षक बनाती है। *टाइम्स* अपने स्वयं के इन्फ्रास्ट्रक्चर को कितना भी मजबूत कर लेता, उससे कोई फर्क नहीं पड़ता, क्योंकि कमज़ोर अकाउंट न्यूज़रुम से कई कदम दूर एक थर्ड-पार्टी रिसेलर का था। एक छोटी कंपनी के कुछ कर्मचारियों के खिलाफ स्पियर-फिशिंग हमला लाखों लोगों द्वारा पढ़े जाने वाले अखबार को रीडायरेक्ट करने के लिए पर्याप्त था।
+
+## प्रतिक्रिया और परिणाम
+
+एक बार जब मेलबर्न आईटी समझ गया कि क्या हुआ है, तो सुधार (remediation) सीधा था — और यह दिखाता है कि ये हमले कितने प्रतिवर्ती (reversible) हैं *यदि आप रजिस्ट्रार को नियंत्रित करते हैं*। कंपनी ने सही सेटिंग्स को बहाल किया: उसने [बदले गए DNS रिकॉर्ड्स को वापस पहले जैसा कर दिया और आगे के बदलावों से बचाने के लिए उन्हें "लॉक" कर दिया](https://www.itnews.com.au/news/melbourne-it-compromise-redirects-ny-times-huffpo-readers-354935#:~:text=reverted%20the%20altered%20DNS%20records)। इसने हैक हुए रिसेलर अकाउंट का पासवर्ड बदल दिया और घुसपैठ का पता लगाने के लिए लॉग्स निकाले। *टाइम्स* ने बुधवार की शुरुआत तक अपनी सेवा बहाल कर दी।
+
+लेकिन पूरे प्रकरण में सबसे शिक्षाप्रद विवरण यह है कि *नुकसान जहाँ रुका, वहीं क्यों रुक गया*। उसी रिसेलर अकाउंट के कुछ डोमेन कभी प्रभावित ही नहीं हुए — क्योंकि उनके मालिकों ने एक मजबूत सुरक्षा व्यवस्था चालू कर रखी थी। खुद मेलबर्न आईटी के शब्दों में, ["मिशन-क्रिटिकल (अत्यंत महत्वपूर्ण) नामों के लिए हम अनुशंसा करते हैं कि डोमेन नेम के मालिक .com सहित डोमेन नेम रजिस्ट्रियों से उपलब्ध अतिरिक्त रजिस्ट्री लॉक सुविधाओं का लाभ उठाएं – रिसेलर अकाउंट पर लक्षित कुछ डोमेन नामों में ये लॉक सुविधाएं सक्रिय थीं और इस प्रकार वे प्रभावित नहीं हुए।"](https://www.theregister.com/2013/08/27/twitter_ny_times_in_domain_hijack/#:~:text=For%20mission%20critical%20names%20we%20recommend%20that%20domain%20name%20owners%20take%20advantage%20of%20additional%20registry%20lock)
+
+एक रजिस्ट्री लॉक डोमेन को ऐसी स्थिति में रखता है (आप इसे WHOIS में `serverUpdateProhibited` जैसे फ्लैग के रूप में देख सकते हैं) जहाँ रजिस्ट्री बदलावों को तब तक अस्वीकार कर देगी जब तक कि एक सख्त, आउट-ऑफ़-बैंड प्रक्रिया का पालन न किया जाए। जैसा कि डोमेन-उद्योग पर नज़र रखने वालों ने उस समय नोट किया था, ट्विटर के रिकॉर्ड में ठीक उसी प्रकार का [वेरिसाइन-लॉक स्टेटस](https://domainnamewire.com/2013/08/27/melbourneit-the-weak-link-as-twitter-and-ny-times-domain-names-compromised/#:~:text=serverUpdateProhibited) था। एक फिश किया गया रिसेलर पासवर्ड किसी रजिस्ट्री लॉक को हराने के लिए पर्याप्त नहीं है — और कॉन्फ़िगरेशन का वह एकल विकल्प "घंटों के लिए डाउन" और "कभी प्रभावित नहीं हुए" के बीच की रेखा है।
+
+## रजिस्ट्रार और रिसेलर चेन, और रजिस्ट्री लॉक के बारे में यह क्या सिखाता है
+
+27 अगस्त का हाईजैक एक लगभग परफेक्ट (आदर्श) सीखने का मामला है क्योंकि विफलता शृंखला की हर कड़ी इसमें दिखाई देती है।
+
+1. **आपका डोमेन केवल उतना ही सुरक्षित है जितना कि इसे बदलने में सक्षम सबसे कमज़ोर अकाउंट।** इसमें आपके रजिस्ट्रार के कर्मचारी और उनके नीचे कोई भी रिसेलर शामिल है — जिनमें से किसी को भी आप सीधे नियंत्रित नहीं करते हैं। *टाइम्स* ने अपने स्वयं के सर्वर पर कुछ भी गलत नहीं किया था; यह सेंधमारी कई कदम दूर की गई थी।
+2. **फिशिंग फ़ायरवॉल को मात देती है।** किसी अनोखे एक्सप्लॉइट का इस्तेमाल नहीं किया गया। कुछ रिसेलर कर्मचारियों को भेजे गए एक फर्जी ईमेल ने ऐसे क्रेडेंशियल पैदा कर दिए जिन्हें रजिस्ट्रार के सिस्टम ने पूरी तरह से अधिकृत (authorized) माना। ["वे मुख्य द्वार से अंदर आए।"](https://www.theregister.com/2013/08/27/twitter_ny_times_in_domain_hijack/#:~:text=They%20came%20in%20through%20the%20front%20door)
+3. **रजिस्ट्री लॉक वह नियंत्रण है जो वास्तव में मायने रखता है।** जिन डोमेन में [अतिरिक्त रजिस्ट्री लॉक सुविधाएं](https://www.theregister.com/2013/08/27/twitter_ny_times_in_domain_hijack/#:~:text=additional%20registry%20lock%20features) थीं, वे "इस प्रकार प्रभावित नहीं हुए।" किसी भी मिशन-क्रिटिकल डोमेन के लिए, रजिस्ट्री लॉक (साथ ही रजिस्ट्रार-लॉक और रजिस्ट्रार अकाउंट पर 2FA) कोई वैकल्पिक सुरक्षा नहीं है — यह आधारभूत आवश्यकता (baseline) है।
+4. **DNS परिवर्तन शक्तिशाली और तेज़ होते हैं।** नेम-सर्वर या ए (A) रिकॉर्ड को एक बार बदलने से पूरा ब्रांड तुरंत रीडायरेक्ट हो जाता है। एक कमज़ोर (कॉम्प्रोमाइज़्ड) अकाउंट का ब्लास्ट रेडियस (प्रभाव क्षेत्र) हर वह डोमेन होता है जिसे वह छू सकता है।
+5. **अपने स्वयं के रिकॉर्ड्स की निगरानी करें।** WHOIS और DNS मॉनिटरिंग ने मिनटों में अनधिकृत परिवर्तन को फ़्लैग कर दिया होता। आप जितने जल्दी किसी अनपेक्षित नेम-सर्वर बदलाव पर ध्यान देते हैं, आउटेज उतना ही छोटा होता है।
+
+## Namefi का नज़रिया (एंगल)
+
+![Colorful illustration of verifiable, tamper-resistant domain ownership — a domain card secured by a green shield, a green Namefi token, and DNS continuity](../../assets/the-syrian-electronic-army-nyt-hijack-03-namefi-angle.jpg)
+
+SEA हाईजैक, अपने मूल में, एक **अथॉरिटी (अधिकार)** की समस्या थी। रजिस्ट्रार का सिस्टम असली मालिक और फिश किए गए पासवर्ड को रखने वाले किसी व्यक्ति के बीच अंतर नहीं बता सका, इसलिए उसने वही किया जिसके लिए उसे बनाया गया था और बदलाव को स्वीकार कर लिया। काम करने वाला हर बचाव — रजिस्ट्री लॉक, आउट-ऑफ़-बैंड कन्फर्मेशन, सावधानीपूर्वक निगरानी — वास्तव में यह *साबित करने* के मापदंड को बढ़ाने का एक तरीका है कि परिवर्तन का अनुरोध वास्तव में मालिक की ओर से ही आता है।
+
+[Namefi](https://namefi.io) ठीक इसी आधार (premise) से शुरू होता है: डोमेन का स्वामित्व और नियंत्रण **सत्यापन योग्य (verifiable) और छेड़छाड़-प्रतिरोधी (tamper-resistant)** होना चाहिए, न कि किसी रिसेलर के इनबॉक्स में तैरता हुआ एक उपयोग-योग्य (reusable) पासवर्ड। डोमेन स्वामित्व को एक ऑन-चेन, क्रिप्टोग्राफिक रूप से सत्यापन योग्य एसेट (जो DNS के साथ संगत रहता है) के रूप में प्रस्तुत करके, Namefi "इस डोमेन को बदलने की अनुमति किसे है" को एक मजबूत, ऑडिट-योग्य उत्तर वाला प्रश्न बना देता है, न कि लॉग-इन करने वाले किसी भी व्यक्ति पर एक निहित (implicit) विश्वास। नियंत्रण में होने वाले बदलाव मालिक से जुड़े स्पष्ट, हस्ताक्षरित (signed) कार्यों में बदल जाते हैं — यह उस रजिस्ट्री लॉक के अधिक करीब है जिसकी चाबी आपके पास होती है, न कि उस मुख्य द्वार के जिसका ताला सही पासवर्ड वाला कोई भी व्यक्ति खोल सकता है।
+
+एक अखबार का डोमेन उसका मुख्य द्वार होता है। 27 अगस्त 2013 का सबक यह है कि सबसे मजबूत डेडबोल्ट (ताला) भी किसी काम का नहीं है अगर कई इमारतों दूर बैठे किसी अजनबी को धोखे से चाबी की कॉपी सौंपने के लिए मजबूर किया जा सके। इसका समाधान स्वामित्व को ही सिद्ध करने योग्य (provable) बनाना है — ताकि "मुख्य द्वार से अंदर आए" जैसी बात कोई अजनबी कभी कह ही न सके।
+
+## स्रोत और आगे पढ़ने के लिए
+
+- द रजिस्टर (The Register) — [New York Times, Twitter domain hijackers 'came in through front door'](https://www.theregister.com/2013/08/27/twitter_ny_times_in_domain_hijack/)
+- टेकक्रंच (TechCrunch) — [Syrian Electronic Army Apparently Hacks DNS Records Of Twitter, NYT Through Registrar Melbourne IT](https://techcrunch.com/2013/08/27/syrian-electronic-army-apparently-hacks-dns-records-of-twitter-new-york-times-through-registrar-melboune-it/)
+- एबीसी न्यूज़ (ABC News) — [New York Times Website Hacked, Syrian Electronic Army Appears to Take Credit](https://abcnews.com/Technology/york-times-website-suspects-malicious-hack/story?id=20087043)
+- क्रिश्चियन साइंस मॉनिटर (Christian Science Monitor) — [New York Times hacked, Syrian Electronic Army takes credit](https://www.csmonitor.com/USA/2013/0827/New-York-Times-hacked-Syrian-Electronic-Army-takes-credit)
+- आईटीन्यूज़ (iTnews) — [Melbourne IT compromise redirects NY Times, HuffPo readers](https://www.itnews.com.au/news/melbourne-it-compromise-redirects-ny-times-huffpo-readers-354935)
+- द नेक्स्ट वेब (The Next Web) — [Here's How the New York Times and Twitter Got Hacked](http://thenextweb.com/news/this-is-how-the-syrian-electronic-army-hacked-the-new-york-times-and-twitter)
+- डोमेन नेम वायर (Domain Name Wire) — [Melbourne IT the weak link as Twitter and NY Times domain names compromised](https://domainnamewire.com/2013/08/27/melbourneit-the-weak-link-as-twitter-and-ny-times-domain-names-compromised/)
+- विकिपीडिया (Wikipedia) — [Syrian Electronic Army](https://en.wikipedia.org/wiki/Syrian_Electronic_Army)
+- एनबीसी न्यूज़ (NBC News) — [Syrian group hacks Twitter, New York Times](https://www.nbcnews.com/id/wbna52864470)
+- अल जज़ीरा (Al Jazeera) — [Syria hackers target New York Times website](https://www.aljazeera.com/news/2013/8/28/syria-hackers-target-new-york-times-website)

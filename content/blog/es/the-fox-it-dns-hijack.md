@@ -1,0 +1,116 @@
+---
+title: "Domain Mayday EP14: Cuando una firma de seguridad sufrió un secuestro de DNS — El incidente de Fox-IT"
+date: '2026-06-17'
+language: es
+tags: ['domains', 'security', 'dns', 'domain-security']
+authors: ['namefiteam']
+draft: false
+description: "En septiembre de 2017, unos atacantes iniciaron sesión en el registrador de dominios de terceros de la firma de seguridad holandesa Fox-IT, cambiaron su DNS, obtuvieron de forma fraudulenta un certificado TLS y ejecutaron un ataque de intermediario (man-in-the-middle) durante 10 horas en el tráfico de los clientes, hasta que Fox-IT lo detectó y publicó uno de los análisis post mortem más transparentes de la industria."
+keywords: ['secuestro de dns fox-it', 'fox-it man in the middle', 'incidente fox-it 2017', 'secuestro de dns', 'compromiso de cuenta de registrador', 'certificado ssl fraudulento', 'ataque man-in-the-middle', 'seguridad de registrador de dominios', 'autenticación de dos factores dns', 'dnssec', 'bloqueo de registro', 'seguridad de dominios', 'ncc group fox-it']
+---
+
+Lo que ocurre con un ataque de intermediario (man-in-the-middle) es que, mientras sucede, todo parece normal.
+
+El sitio carga. La barra de direcciones muestra el dominio correcto. El candado está cerrado. El certificado es válido. Los archivos se suben, los inicios de sesión son exitosos, los correos llegan. No hay errores, advertencias ni imágenes rotas: solo un tercero silencioso en medio de la conversación, leyendo todo a medida que pasa y luego reenviándolo para que ninguna de las partes note el retraso.
+
+Ahora, imagina que eso le sucede a las personas cuyo trabajo es notar exactamente esto.
+
+En septiembre de 2017, la firma holandesa de ciberseguridad Fox-IT (una empresa que investiga brechas, crea sensores de detección de intercepciones y asesora a gobiernos sobre cómo se mueven los atacantes) descubrió que un atacante había secuestrado el DNS de su propio dominio, obtenido un certificado TLS a su nombre y pasado gran parte del día leyendo el tráfico hacia y desde su portal de clientes. La cerradura del propio cerrajero había sido forzada. Y luego, Fox-IT hizo lo que casi ninguna empresa vulnerada hace: [publicó un relato detallado de exactamente cómo sucedió](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=we%20limited%20the%20total%20effective%20MitM%20time%20to%2010%20hours%20and%2024%20minutes).
+
+## Incluso una firma de seguridad depende de su registrador
+
+Aquí está la incómoda verdad que este caso hace concreta: sin importar cuán buena sea tu seguridad interna, una gran parte de tu superficie de ataque reside en una empresa que no diriges.
+
+Tu dominio —el nombre que escriben tus clientes, la dirección para la que se emiten tus certificados, el destino al que apuntan tus correos electrónicos— está configurado en un registrador de dominios. Quien controla esa cuenta del registrador controla hacia dónde se resuelve tu nombre. Pueden redirigir tu sitio web, desviar tus correos y demostrar la "propiedad" de tu dominio ante una autoridad de certificación. Nada de eso requiere tocar tus servidores, tus firewalls o tu código. Solo requiere iniciar sesión en un panel web.
+
+Fox-IT era, desde cualquier punto de vista, una organización de seguridad seria. Ejecutaba captura completa de paquetes y sus propios sensores de red. Utilizaba autenticación de dos factores en su portal de clientes. Más tarde fue adquirida por NCC Group. Y aun así estuvo expuesta a través de la única cuenta en la que casi nunca iniciaban sesión, porque, como la propia empresa expresó, [la configuración de DNS en general cambia muy raramente](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=DNS%20settings%20in%20general%20change%20very%20rarely), por lo que las credenciales que la protegían se volvieron silenciosamente obsoletas.
+
+Como Fox-IT lo expuso al inicio de su propio informe: [si un ataque de este tipo puede afectar a una firma de seguridad, es muy probable que pueda afectar a muchos otros tipos de empresas](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=if%20such%20an%20attack%20can%20hit%20a%20security%20firm) que están menos enfocadas en la seguridad.
+
+## 19 de septiembre de 2017: el secuestro y el MITM
+
+![Vívido y colorido arte conceptual de una silenciosa figura espiando y leyendo dos flujos de correo que circulan entre dos torres distantes; los flujos pasan invisiblemente por sus manos mientras ambas torres brillan como si nada estuviera mal](../../assets/the-fox-it-dns-hijack-01-hijack.jpg)
+
+El relato de Fox-IT comienza con una línea que desde entonces se ha convertido en un pequeño clásico en la redacción de respuestas a incidentes: [Para Fox-IT el "si" se convirtió en "cuándo" el martes 19 de septiembre de 2017](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=became%20%E2%80%98when%E2%80%99%20on%20Tuesday%2C%20September%2019%202017), momento en el que la empresa fue víctima de un ataque man-in-the-middle.
+
+Lo que ocurrió no fue un exploit en un servidor. En la madrugada del 19 de septiembre, [un atacante accedió a los registros DNS del dominio Fox-IT.com en nuestro proveedor externo de registro de dominios](https://grahamcluley.com/fox-it-dns-hack/#:~:text=an%20attacker%20accessed%20the%20DNS%20records%20for%20the%20Fox%2DIT.com%20domain). Con el control de esos registros, el atacante [modificó un registro DNS de un servidor en particular para que apuntara a un servidor en su poder, interceptar y reenviar el tráfico](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=modified%20a%20DNS%20record%20for%20one%20particular%20server) de vuelta a la infraestructura real de Fox-IT.
+
+Ese último detalle, *reenviar el tráfico*, es lo que lo convirtió en un ataque de intermediario en lugar de una simple interrupción. Los visitantes seguían llegando a un portal que funcionaba. Solo que primero pasaban a través del atacante.
+
+El objetivo era específico. El ataque estaba [dirigido específicamente a ClientPortal, la aplicación web de intercambio de documentos de Fox-IT](https://grahamcluley.com/fox-it-dns-hack/#:~:text=specifically%20aimed%20at%20ClientPortal), el sistema que la empresa utilizaba para intercambiar archivos de forma segura con clientes, proveedores y otras organizaciones. En otras palabras, el atacante fue directamente al canal por donde fluían los documentos confidenciales de los clientes.
+
+Debido a que Fox-IT lo detectó y contuvo, la empresa [limitó el tiempo total efectivo de MitM a 10 horas y 24 minutos](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=we%20limited%20the%20total%20effective%20MitM%20time%20to%2010%20hours%20and%2024%20minutes). La cobertura independiente le asignó la misma cifra: [el incidente tuvo lugar el 19 de septiembre y duró 10 horas y 24 minutos](https://www.bleepingcomputer.com/news/security/top-security-firm-admits-to-mitm-security-incident/#:~:text=lasted%20for%2010%20hours%20and%2024%20minutes).
+
+## Qué fue lo que realmente se interceptó
+
+Diez horas de ataque man-in-the-middle en un portal de intercambio de documentos suenan catastróficas. El botín real fue pequeño, y esa pequeñez es, en sí misma, la historia.
+
+Durante ese lapso, [nueve usuarios individuales iniciaron sesión y sus credenciales fueron interceptadas](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=Nine%20individual%20users%20logged%20in). Pero esas credenciales fueron en gran parte inútiles: el portal de Fox-IT requería un segundo factor de autenticación que el atacante, situado en la ruta de red, no podía replicar. Help Net Security señaló que se capturaron las credenciales de inicio de sesión de nueve usuarios, pero [eran inútiles sin el segundo factor de autenticación](https://www.helpnetsecurity.com/2017/12/15/fox-it-security-breach/#:~:text=useless%20without%20the%20second%20authentication%20factor).
+
+En cuanto a archivos, [se transfirieron e interceptaron doce archivos (de los cuales diez eran únicos)](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=Twelve%20files%20%28of%20which%20ten%20were%20unique%29%20were%20transferred%20and%20intercepted). Un puñado contenía información confidencial de clientes. El atacante también capturó un subconjunto de nombres y direcciones de correo electrónico de los usuarios del ClientPortal, algunos nombres de cuenta y un número de teléfono móvil, tal como [resumió SecurityWeek](https://www.securityweek.com/hackers-target-security-firm-fox-it/#:~:text=mobile%20phone%20number).
+
+Dos hechos mantuvieron los daños controlados. En primer lugar, Fox-IT declaró claramente que [los archivos clasificados como secreto de Estado nunca se transfieren a través de nuestro ClientPortal](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=Files%20classified%20as%20state%20secret%20are%20never%20transferred): el material más sensible simplemente nunca residió en el canal expuesto. En segundo lugar, el propio segundo factor de la firma mitigó el robo de credenciales. La arquitectura limitó el radio de impacto incluso después de que el perímetro —el DNS— hubiera fallado.
+
+## Cómo sucedió: una contraseña obsoleta y sin segundo factor
+
+![Arte conceptual vívido y colorido de una llave ornamentada siendo extraída del bolsillo de un llavero dormido, utilizada para abrir un letrero gigante que desvía un río de luz hacia una cabina con espejos oculta, donde un sello de cera falsificado estampa un certificado brillante](../../assets/the-fox-it-dns-hijack-02-mitm.jpg)
+
+El mecanismo se lee como una lista de verificación de cómo se toma el control de un dominio sin una sola línea de malware en los servidores de la víctima.
+
+**Paso uno: entrar a la cuenta del registrador.** El atacante [inició sesión con éxito en el panel de control de DNS de nuestro proveedor de registro de dominios externo utilizando credenciales válidas](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=logged%20in%20to%20the%20DNS%20control%20panel). La investigación de Fox-IT concluyó que el atacante [probablemente obtuvo acceso a las credenciales del panel de control de DNS de su registrador de dominios mediante el compromiso de un proveedor externo](https://www.helpnetsecurity.com/2017/12/15/fox-it-security-breach/#:~:text=through%20the%20compromise%20of%20a%20third%20party%20provider). Dos debilidades combinadas consolidaron ese inicio de sesión: la [contraseña no se había cambiado desde 2013](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=the%20password%20had%20not%20been%20changed%20since%202013), y el registrador no ofrecía ningún segundo factor; al momento de escribir su informe, Fox-IT señaló que el [registrador aún no soporta 2FA](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=registrar%20still%20does%20not%20support%202FA).
+
+**Paso dos: cambiar el DNS y demostrar la "propiedad" a una AC.** Con el panel abierto, el atacante redirigió el DNS. Pero para ejecutar un ataque man-in-the-middle *creíble* en un sitio HTTPS, necesitaba un certificado válido para fox-it.com, y la forma moderna de obtener uno es demostrando que controlas el dominio. Así que el atacante hizo exactamente eso. En una estrecha ventana de tiempo alrededor de las 02:05–02:15, [redirigió e interceptó temporalmente el correo electrónico de Fox-IT con el propósito específico de demostrar que era dueño de nuestro dominio durante el proceso de registro fraudulento de un certificado SSL para nuestro ClientPortal](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=fraudulently%20registering%20an%20SSL%20certificate%20for%20our%20ClientPortal). Esta es la parte que debería hacer que todo lector se detenga: **el control del DNS es, en la práctica, el control de la validación del dominio.** Un certificado validado por dominio se otorga a quien pueda responder al desafío de la Autoridad de Certificación (AC); y en este caso, controlar el DNS le permitió al atacante redirigir el correo electrónico de validación y responderlo. El DNS decide dónde aterriza esa prueba de propiedad.
+
+**Paso tres: situarse en el medio.** Armado con un certificado emitido legítimamente (pero obtenido de forma fraudulenta), el atacante apuntó el dominio a un VPS en el extranjero e interceptó el tráfico. Tal como lo describió SecurityWeek, el [certificado SSL fraudulento se utilizó para un ataque MitM en el ClientPortal, enrutando el tráfico hacia el portal a través de un proveedor de servidores privados virtuales (VPS) en el extranjero](https://www.securityweek.com/hackers-target-security-firm-fox-it/#:~:text=rogue%20SSL%20certificate%20was%20used). Para un visitante, no pasaba nada raro. El candado era real. El certificado era válido. El intermediario tenía una clave en la que el navegador confiaba.
+
+Tres capas (el DNS, la autoridad de certificación y el propio TLS) funcionaban correctamente desde el punto de vista técnico. El atacante no rompió ninguna de ellas. Convenció a las tres de que él era Fox-IT, y lo único que le permitió hacerlo fue un inicio de sesión obsoleto y de un solo factor en un registrador.
+
+## La respuesta de Fox-IT: detectar, contener y luego contárselo a todos
+
+Lo que separa este incidente de otros cientos más silenciosos es la respuesta, tanto técnica como editorial.
+
+**La detección fue rápida.** Fox-IT determinó que los servidores de nombres de su dominio fox-it.com habían sido redirigidos, detectando la intrusión aproximadamente cinco horas después de que comenzara, [unas cinco horas tras el inicio del ataque](https://www.helpnetsecurity.com/2017/12/15/fox-it-security-breach/#:~:text=five%20hours%20after%20the%20attack%20started), según Help Net Security. La captura completa de paquetes y los sensores de red que la empresa ejecutaba sobre sí misma le proporcionaron el registro forense necesario para reconstruir exactamente qué se había tocado y qué no.
+
+**La contención fue deliberada.** En lugar de desconectar el portal y alertar al atacante, Fox-IT optó por una mitigación más silenciosa: [desactivó la autenticación de segundo factor para su sistema de inicio de sesión de ClientPortal](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=disabled%20the%20second%20factor%20authentication), una medida contraintuitiva, pero que le permitió manejar la situación mientras recuperaba el control de su DNS, todo ello sin revelar que había detectado la intrusión. Luego, [contactó de inmediato a los clientes afectados en relación con esos archivos](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=All%20affected%20clients%20in%20respect%20of%20these%20files%20were%20contacted%20immediately).
+
+**Luego vino la parte que lo convirtió en un caso de estudio.** Tres meses después, tras el análisis y con una investigación policial en curso, Fox-IT publicó un informe post mortem completo, con marcas de tiempo, bajo una simple premisa: [la transparencia genera más confianza que el secretismo y hay lecciones que aprender](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=transparency%20builds%20more%20trust%20than%20secrecy). Una empresa de seguridad había sido avergonzada de la manera más relacionada con su sector posible; y en lugar de ocultarlo, le entregó a la industria un análisis exhaustivo. El titular de BleepingComputer capturó el tono que el momento merecía: [Importante firma de seguridad admite un incidente de seguridad MitM](https://www.bleepingcomputer.com/news/security/top-security-firm-admits-to-mitm-security-incident/#:~:text=Top%20Security%20Firm%20Admits).
+
+## Lo que esto enseña sobre la seguridad de los registradores y los bloqueos de registro (registry locks)
+
+Si dejamos de lado los detalles específicos, el incidente de Fox-IT es una lección sobre dónde se encuentra el verdadero perímetro. Para la mayoría de las organizaciones, el perímetro no es solo el firewall. Es el inicio de sesión del registrador. Esto es lo que argumenta el caso:
+
+1. **Trata la cuenta del registrador como infraestructura de producción.** Rara vez cambia, por lo que es fácil de olvidar; que es exactamente el motivo por el que se deteriora. Una contraseña sin tocar [desde 2013](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=the%20password%20had%20not%20been%20changed%20since%202013) no es de "bajo riesgo por bajo tráfico"; es una credencial de alto valor sin ningún tipo de monitoreo.
+
+2. **Exige autenticación multifactor en el registrador, y vete si no la ofrece.** El registrador de Fox-IT [no soportaba 2FA en absoluto](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=registrar%20still%20does%20not%20support%202FA). La cuenta más importante en la cadena de seguridad de tu dominio estaba protegida únicamente por una contraseña. La presencia o ausencia de 2FA en un registrador es un criterio de contratación, no un "detalle extra".
+
+3. **Usa un bloqueo de registro (registry lock).** Más allá del propio inicio de sesión del registrador, muchos registros (registries) ofrecen un *bloqueo de registro*: una retención del lado del servidor que impide cambios en los servidores de nombres y registros de contacto a menos que se complete un paso de verificación manual fuera de banda. Un bloqueo de registro habría significado que incluso con una contraseña del registrador totalmente comprometida, no se podría redirigir el DNS de manera silenciosa. Convierte un "a un panel de distancia" en "a múltiples humanos y una llamada telefónica de distancia".
+
+4. **Implementa DNSSEC donde puedas.** DNSSEC firma criptográficamente las respuestas DNS para que los resolutores puedan detectar alteraciones en la ruta de resolución. No es una solución mágica en este caso (un atacante que controla los registros autoritativos puede volver a firmarlos), pero eleva el costo y bloquea categorías enteras de manipulación de DNS en tránsito. La defensa en profundidad en la capa DNS es importante precisamente porque, como demostró este caso, el DNS se sitúa *por encima* del TLS y la emisión de certificados en la pila de confianza.
+
+5. **Recuerda que el control del DNS equivale al control de los certificados.** El atacante obtuvo un certificado TLS válido al [demostrar la propiedad del dominio mediante correo electrónico redirigido](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/#:~:text=proving%20that%20they%20owned%20our%20domain). Monitorea los registros de Transparencia de Certificados (Certificate Transparency, CT) en busca de certificados inesperados emitidos para tus dominios. La aparición de un certificado fraudulento en CT es una de las pocas señales externas de que podría estar en marcha un secuestro de DNS.
+
+6. **Mantén un segundo factor en la propia aplicación.** El 2FA del portal de Fox-IT es la razón por la que nueve contraseñas robadas fueron [inútiles sin el segundo factor de autenticación](https://www.helpnetsecurity.com/2017/12/15/fox-it-security-breach/#:~:text=useless%20without%20the%20second%20authentication%20factor). Cuando la capa exterior (DNS) falló, la capa interior (MFA a nivel de aplicación) limitó los daños.
+
+La conclusión: tu dominio es un punto único de fallo que en parte subcontratas. Endurecer su seguridad no es glamuroso, y solo da frutos el día en que alguien intenta hacer exactamente lo que le sucedió a Fox-IT.
+
+## La perspectiva de Namefi
+
+![Colorida ilustración de una propiedad de dominios verificable y resistente a manipulaciones: una tarjeta de dominio protegida por un escudo verde, un token verde de Namefi y continuidad de DNS](../../assets/the-fox-it-dns-hijack-03-namefi-angle.jpg)
+
+El incidente de Fox-IT es, en su raíz, un problema de control y procedencia. El atacante nunca necesitó ser Fox-IT. Solo necesitó que un sistema, el panel del registrador, *creyera* que lo era, el tiempo suficiente para redirigir el DNS y emitir un certificado. Todo lo que venía después confió en esa creencia.
+
+[Namefi](https://namefi.io) está diseñado en torno a hacer que el control de dominios sea verificable y resistente a la manipulación, en lugar de depender de una única contraseña reutilizable en el panel web de un proveedor. Al representar la propiedad del dominio como un activo verificable on-chain (en cadena) que mantiene la compatibilidad con DNS, el control se convierte en algo que puedes auditar y probar, no solo una cuenta en la que alguien podría iniciar sesión silenciosamente y reconfigurar. Los cambios críticos pueden vincularse a la propiedad que realmente ostentas, en el espíritu de un bloqueo de registro, en lugar de a una credencial que no se ha rotado en años.
+
+Nada de esto haría imposible el ataque de alguien determinado. Pero la historia de Fox-IT trata en última instancia sobre cómo un inicio de sesión robado se traduce en el control total de un nombre. Cuanto más cerca esté el control de un dominio de una propiedad verificable, y cuanto más difícil sea cambiar un nombre silenciosamente con una sola contraseña obsoleta, menos margen habrá para que un momento como el de "el 'si' se convirtió en 'cuándo'" de Fox-IT se extienda antes de que alguien lo note.
+
+Una firma de seguridad detectó su propio secuestro en cinco horas y le contó al mundo cómo. La mayoría de las organizaciones no lograrían ninguna de las dos cosas. La lección más barata es la que pagó Fox-IT: asegura el registrador antes de que se convierta en una puerta abierta.
+
+## Fuentes y lecturas complementarias
+
+- Fox-IT (NCC Group) — [Lessons learned from a Man-in-the-Middle attack](https://blog.fox-it.com/2017/12/14/lessons-learned-from-a-man-in-the-middle-attack/) (informe post mortem principal)
+- BleepingComputer — [Top Security Firm Admits to MitM Security Incident](https://www.bleepingcomputer.com/news/security/top-security-firm-admits-to-mitm-security-incident/)
+- Help Net Security — [Security company Fox-IT reveals, details MitM attack they suffered in September](https://www.helpnetsecurity.com/2017/12/15/fox-it-security-breach/)
+- Graham Cluley — [Fox-IT reveals hackers hijacked its DNS records, spied on clients' files](https://grahamcluley.com/fox-it-dns-hack/)
+- SecurityWeek — [Hackers Target Security Firm Fox-IT](https://www.securityweek.com/hackers-target-security-firm-fox-it/)
+- GBHackers — [Leading IT Security Firm Fox-IT hit by Cyber Attack](https://gbhackers.com/cyber-attack/)
+- Krebs on Security — [A Deep Dive on the Recent Widespread DNS Hijacking Attacks](https://krebsonsecurity.com/2019/02/a-deep-dive-on-the-recent-widespread-dns-hijacking-attacks/) (relacionado: secuestro de DNS + técnica de certificados fraudulentos a escala)
