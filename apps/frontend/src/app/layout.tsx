@@ -62,6 +62,13 @@ export const viewport: Viewport = {
   themeColor: '#0a0a0a',
   width: 'device-width',
   initialScale: 1,
+  // NOTE: `viewportFit: 'cover'` is intentionally NOT set. It would make
+  // `env(safe-area-inset-*)` resolve on iOS (nice for the swap dialog's pinned
+  // action), but it also extends the layout viewport into the notch and would
+  // require safe-area handling on every fixed element (header, announcement
+  // strip, etc.) — out of scope here. The swap action falls back to a fixed
+  // 1.5rem floor, which clears the home indicator in practice. Enabling cover
+  // app-wide (with the matching safe-area work) is a separate follow-up.
 };
 
 export async function generateMetadata(): Promise<Metadata> {

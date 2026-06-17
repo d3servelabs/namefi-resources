@@ -184,3 +184,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide the scrollbar while keeping the region scrollable. Used by scroll
+ * containers (command list, sidebar, dialogs) where a default OS scrollbar
+ * would be visually jarring — especially light scrollbars over dark surfaces.
+ * (Referenced in several components but was previously undefined / a no-op.) */
+@utility no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome / Safari / Edge */
+  }
+}

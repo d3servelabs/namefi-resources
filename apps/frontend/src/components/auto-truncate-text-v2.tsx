@@ -14,6 +14,8 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@namefi-astra/ui/components/shadcn/hover-card';
+import { CheckIcon, CopyIcon } from 'lucide-react';
+import { toast } from 'sonner';
 
 /**
  * AutoTruncateText V2 - Standalone component that handles truncation without external dependencies
@@ -36,6 +38,7 @@ export const AutoTruncateTextV2 = ({
   children: text,
   ellipsis = '...',
   as = 'div',
+  copyable = false,
 }: {
   minCharactersToDisplay: number;
   initialCharactersCountToDisplay?: number;
@@ -43,8 +46,26 @@ export const AutoTruncateTextV2 = ({
   children: string;
   ellipsis?: string;
   as?: 'div' | 'span';
+  /**
+   * When true, the reveal popup includes a copy button for the full value.
+   * Opt-in because not every truncated string is a copyable value (and a
+   * tooltip/hovercard shouldn't gain a button it doesn't need).
+   */
+  copyable?: boolean;
 }) => {
   const id = useId();
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      toast.success('Copied');
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error('Failed to copy');
+    }
+  }, [text]);
   const containerRef = useRef<HTMLDivElement | HTMLSpanElement>(null);
   const measureFullRef = useRef<HTMLSpanElement>(null);
   const measureEllipsisRef = useRef<HTMLSpanElement>(null);
@@ -236,8 +257,27 @@ export const AutoTruncateTextV2 = ({
               {truncatedText}
             </span>
           </HoverCardTrigger>
-          <HoverCardContent align="center" className="w-full text-sm">
-            <div className="break-words">{text}</div>
+          <HoverCardContent align="center" className="text-sm">
+            <div className="flex items-start gap-2">
+              <span className="min-w-0 break-words">{text}</span>
+              {copyable && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCopy();
+                  }}
+                  aria-label="Copy"
+                  className="text-muted-foreground hover:text-foreground mt-0.5 shrink-0 cursor-pointer transition-colors"
+                >
+                  {copied ? (
+                    <CheckIcon className="size-4" />
+                  ) : (
+                    <CopyIcon className="size-4" />
+                  )}
+                </button>
+              )}
+            </div>
           </HoverCardContent>
         </HoverCard>
       ) : (
