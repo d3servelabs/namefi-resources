@@ -23,8 +23,6 @@ In a deal that now reads like one of the most lopsided trades in startup history
 
 ## 2009–2010: the cab in the name that did real work
 
-![Editorial diagram of UberCab.com as a literal black-car-hailing app with the word Cab anchoring it to taxis](../../assets/from-ubercab-com-to-uber-com-01-ubercab-era.jpg)
-
 In the beginning, "Cab" was a feature, not a bug.
 
 A brand-new company asking strangers to summon a stranger's car with a phone app needed every shortcut to comprehension it could find. "UberCab" did that work in one syllable. It said: this is like a taxi, but better — more *uber*. The product matched the name word for word. When the app launched, TechCrunch noted that [anyone in San Francisco could download the app to their iPhone or iPad and use it to call up a car at any time](https://techcrunch.com/2010/10/15/ubercab-closes-uber-angel-round#:~:text=anyone%20in%20San%20Francisco%20could%20download%20the%20app%20to%20their%20iPhone%20or%20iPad%20and%20use%20it%20to%20call%20up%20a%20car%20at%20any%20time).
@@ -36,8 +34,6 @@ But the ambition was already wider than the name. The founders weren't trying to
 UberCab.com was the right domain for the first stage. It was the wrong domain for the company underneath it.
 
 ## October 2010: the cease-and-desist that forced the issue
-
-![Editorial diagram of a cease-and-desist letter from San Francisco transit regulators objecting to the word Cab in UberCab](../../assets/from-ubercab-com-to-uber-com-02-the-rename.jpg)
 
 The trigger came from the government, not the marketing department.
 
@@ -51,8 +47,6 @@ The corporate rename was a forced move. But it pointed at a domain the company d
 
 ## The domain that belonged to a music label
 
-![Editorial diagram of Uber.com previously owned by Universal Music Group as a defunct media-sharing platform](../../assets/from-ubercab-com-to-uber-com-03-music-label-owner.jpg)
-
 Once the name became "Uber," the obvious address was Uber.com. But that domain was taken — and not by a competitor or a domain flipper.
 
 The story went back to a different startup. Universal Music Group had invested in an earlier company also called Uber. That venture [raised money from backers like Discovery Communications and Sterling Stamos Capital Management](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=raised%20money%20from%20backers%20like%20Discovery%20Communications), but it fizzled out quickly. When it collapsed, [UMG was left with one asset of value: the domain name](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=UMG%20was%20left%20with%20one%20asset%20of%20value).
@@ -63,7 +57,7 @@ The reluctant-owner problem that makes most premium-domain deals slow was, in th
 
 ## The trade: 2% of the company for one word
 
-![Editorial diagram of a domain-for-equity trade swapping 2 percent of Uber for the Uber.com domain](../../assets/from-ubercab-com-to-uber-com-04-equity-deal.jpg)
+![Colorful illustration of a domain-for-equity swap between Universal Music Group and Uber, trading 2 percent equity for the Uber.com domain](../../assets/from-ubercab-com-to-uber-com-02-equity-trade.jpg)
 
 This is the part that makes the case unusual. Uber didn't pay cash. It paid in itself.
 
@@ -75,8 +69,6 @@ Equity-for-domain deals are rare for a reason: they ask a seller to take a bet i
 
 ## The seller's exit — and the cost of cashing out early
 
-![Editorial diagram of Universal Music selling its 2 percent Uber stake back too early and missing a multibillion-dollar return](../../assets/from-ubercab-com-to-uber-com-05-sellers-exit.jpg)
-
 Here is where the story turns from clever deal into cautionary tale — for the *seller*.
 
 Universal didn't hold the equity. Somewhere along the way, [Universal Music decided to sell its 2% stake back to Uber — for just $863,000](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=Universal%20Music%20decided%20to%20sell%20its%202%25%20stake%20back%20to%20Uber%E2%80%94for%20just%20%24863%2C000). Vanity Fair's account describes the same buyback in round numbers: [Uber bought back the shares, which would now be worth hundreds of millions, for $1 million](https://domaininvesting.com/vanity-fair-reveals-cost-uber-com-domain-name/#:~:text=Uber%20bought%20back%20the%20shares%2C%20which%20would%20now%20be%20worth%20hundreds%20of%20millions%2C%20for%20%241%20million).
@@ -86,8 +78,6 @@ Writing years before Uber reached its peak valuation, domain-watchers already sa
 That is the unglamorous mirror image of every blockbuster domain story. The buyer had a strategic need and almost no cash, so it paid with the only thing it had in abundance: belief in itself. The seller had a dead startup's leftover asset and chose certainty over conviction. Uber got the domain *and* the equity back. Universal got a domain sale that, on a long enough timeline, cost it billions.
 
 ## The money looked different then
-
-![Editorial bar chart comparing the $107K stake at sale, the $863K-$1M buyback, and the multibillion-dollar value the stake would have reached](../../assets/from-ubercab-com-to-uber-com-06-money-context.jpg)
 
 It is tempting to judge this deal from the end of the story, where Uber is a global company and the missed stake is worth billions. But every party in 2010 was acting in a fog.
 
@@ -102,7 +92,7 @@ The lesson isn't "Universal was foolish." It's that a domain trade priced in equ
 
 ## Why dropping "Cab" mattered
 
-![Editorial illustration of UberCab.com losing the word Cab to become the cleaner category-defining Uber.com brand](../../assets/from-ubercab-com-to-uber-com-07-dropping-cab.jpg)
+![Colorful illustration of UberCab dropping the word Cab and a yellow taxi to become the clean black Uber brand](../../assets/from-ubercab-com-to-uber-com-01-dropping-cab.jpg)
 
 The gap between UberCab.com and Uber.com is one word. Strategically, it is the difference between a product and a category.
 
@@ -122,8 +112,6 @@ As Smart Branding observed, [Uber really wasn't a taxicab company in the traditi
 
 ## The sequence: rename first, then grow into the name
 
-![Editorial diagram showing the 2010 cease-and-desist, the immediate logo change to Uber, the Uber.com acquisition, and the formal 2011 rename](../../assets/from-ubercab-com-to-uber-com-08-rebrand-sequence.jpg)
-
 The order of events is what makes this case instructive.
 
 The cease-and-desist arrived in October 2010. The logo dropped "Cab" within a day. The Uber.com domain was acquired around the same window, via the equity trade. And the formal corporate identity followed: per Wikipedia, [in 2011, the company changed its name from UberCab to Uber](https://en.wikipedia.org/wiki/Uber#:~:text=the%20company%20changed%20its%20name%20from), and the public app rolled out from there.
@@ -133,8 +121,6 @@ Notice the dependency. Uber couldn't credibly *be* "Uber" while its website live
 Imagine the alternative: a company announcing it is now "Uber," telling regulators it is [more uber than cab](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=more%20uber%20than%20cab), while still sending customers to UberCab.com. The mismatch would have undercut the whole point of the rename. The domain wasn't decoration on top of the rebrand. It was the load-bearing piece.
 
 ## The domain became part of the operating system
-
-![Editorial diagram of Uber.com repeated across the app, receipts, signage, press, email, and word of mouth until it becomes a verb](../../assets/from-ubercab-com-to-uber-com-09-operating-system.jpg)
 
 Premium domains are not about prestige. They are about repetition.
 
@@ -152,8 +138,6 @@ The domain didn't build Uber's brand. But once Uber.com was the address, every f
 
 ## What founders should learn from Case 4
 
-![Editorial four-step diagram for founders moving from a descriptive launch domain to an exact-match brand domain, securing the name before the rename](../../assets/from-ubercab-com-to-uber-com-10-founders-lessons.jpg)
-
 The easy takeaway — "drop the descriptive word and buy your exact-match .com" — is too blunt. The more useful lessons are about sequence, leverage, and how you pay:
 
 1. **A descriptive domain is fine to start.** UberCab.com did real work: it made an alien idea — summon a car with your phone — instantly legible. A modifier like "Cab," "App," or "HQ" is a reasonable on-ramp, not a failure.
@@ -165,7 +149,7 @@ The domain upgrade did not make Uber win. Product, capital, aggression, timing, 
 
 ## The Namefi angle
 
-![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-ubercab-com-to-uber-com-11-namefi-angle.jpg)
+![Colorful illustration of the uber.com domain flowing through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-ubercab-com-to-uber-com-03-namefi-angle.jpg)
 
 This case is, at its core, a transfer problem wearing a branding costume.
 

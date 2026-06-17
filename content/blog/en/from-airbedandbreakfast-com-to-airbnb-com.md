@@ -21,7 +21,7 @@ That was not a cosmetic URL cleanup. It was a young startup deliberately sheddin
 
 ## 2007–2008: the company named after a mattress
 
-![Editorial diagram of AirBedAndBreakfast.com as a literal air-mattress-and-breakfast website becoming a broader lodging marketplace](../../assets/from-airbedandbreakfast-com-to-airbnb-com-01-mattress-era.jpg)
+![Playful illustration of an air mattress and breakfast tray growing into a global lodging network](../../assets/from-airbedandbreakfast-com-to-airbnb-com-02-air-mattress.jpg)
 
 In the beginning, literal was an asset.
 
@@ -33,8 +33,6 @@ TechCrunch covered the scrappy early company in 2008 as a [peer-to-peer pad cras
 
 ## March 2009: dropping the mattress from the name
 
-![Editorial diagram of the AirBed and Breakfast name collapsing into the single word Airbnb in March 2009](../../assets/from-airbedandbreakfast-com-to-airbnb-com-02-the-shortening.jpg)
-
 The early launches were rough. At the [SXSW 2008 Conference, the website only received two bookings, one of which was Chesky himself](https://www.hostaway.com/blog/airbnb-founders/#:~:text=the%20website%20only%20received%20two%20bookings%2C%20one%20of%20which%20was%20Chesky%20himself). The company kept iterating, kept relaunching, and slowly the product stopped being about air mattresses at all. People were listing real bedrooms and whole homes.
 
 That mismatch is what forced the rename. In March 2009, [the name of the company was shortened to Airbnb.com to eliminate confusion over air mattresses](https://en.wikipedia.org/wiki/Airbnb#:~:text=the%20name%20of%20the%20company%20was%20shortened%20to%20Airbnb.com%20to%20eliminate%20confusion%20over%20air%20mattresses). The literal name had become a liability: it told new hosts and guests that this was a service for sleeping on inflatable beds, exactly when the company needed them to believe it was a service for booking any kind of space.
@@ -42,8 +40,6 @@ That mismatch is what forced the rename. In March 2009, [the name of the company
 The new word kept the heritage without the baggage. "Airbnb" preserved the [Air... as a nod to the company's origin story and the initial air mattress concept](https://www.airroi.com/resources/tips-guides/why-is-it-called-airbnb#:~:text=Air%3A%20Retained%20as%20a%20nod%20to%20the%20company%27s%20origin%20story), while "bnb" carried the universally understood "bed & breakfast" idea — a name short enough to scale, type, and say out loud.
 
 ## The branding angle: a name that scales versus a name that explains
-
-![Editorial illustration of a long descriptive domain name competing with a short brandable one-word domain](../../assets/from-airbedandbreakfast-com-to-airbnb-com-03-scale-vs-explain.jpg)
 
 The case for the change was not aesthetic. It was structural.
 
@@ -55,8 +51,6 @@ This is the recurring pattern in domain upgrades. Early names *explain*. Great n
 
 ## The money looked different then
 
-![Editorial bar chart comparing Airbnb's tiny 2009 seed funding against the scale of the brand the domain would later carry](../../assets/from-airbedandbreakfast-com-to-airbnb-com-04-money-context.jpg)
-
 It is tempting to treat the rebrand as an obvious, costless decision. In hindsight, "of course they should be Airbnb." But in March 2009 the company had almost no money and no certainty it would survive at all.
 
 The founders were so broke that, after the 2008 Democratic National Convention left each of them roughly twenty thousand dollars in debt, they funded the company by selling election-themed cereal — repackaging commercial cereal into "Obama O's" and "Cap'n McCains," with [each box costing $39](https://techcrunch.com/2008/10/09/whats-for-breakfast-at-your-house-obama-os-or-capn-mccains/#:~:text=each%20box%20costs%20%2439). That cereal stunt, not the business model, helped them limp into Y Combinator in early 2009, where the course [provided US$20,000 in seed money and training from Paul Graham, among others, in exchange for a six-percent stake in the company](https://en.wikipedia.org/wiki/Brian_Chesky#:~:text=The%20course%20provided%20US%2420%2C000%20in%20seed%20money%20and%20training%20from%20Paul%20Graham).
@@ -67,7 +61,7 @@ That is exactly when the decision counted. The company was small enough that the
 
 ## Why shortening to "Airbnb" mattered
 
-![Editorial illustration of AirBedAndBreakfast.com losing the words bed and breakfast to become the single coined brand Airbnb.com](../../assets/from-airbedandbreakfast-com-to-airbnb-com-05-why-it-mattered.jpg)
+![Colorful illustration of the long AirBedAndBreakfast name shrinking to the coral Airbnb belo brand](../../assets/from-airbedandbreakfast-com-to-airbnb-com-01-shortening.jpg)
 
 The distance between AirBedAndBreakfast.com and Airbnb.com is a few syllables in speech. Strategically, it is the difference between a description and a brand.
 
@@ -86,8 +80,6 @@ By March 2009 the platform [had 10,000 users and 2,500 listings](https://en.wiki
 
 ## Timing: the domain that moved with the pivot
 
-![Editorial diagram showing a timeline from the 2007 air-mattress weekend to the 2008 launch to the 2009 Airbnb rebrand and Sequoia funding](../../assets/from-airbedandbreakfast-com-to-airbnb-com-06-timing.jpg)
-
 The sequence is the whole lesson.
 
 - **October 2007:** Chesky and Gebbia rent out air mattresses during a San Francisco design conference to make rent — the literal "AirBed & Breakfast."
@@ -99,8 +91,6 @@ The sequence is the whole lesson.
 The rename did not follow the company's success. It *preceded* the bulk of it. The clean domain was in place before the venture funding, before the global expansion, before the brand became a household word — which is precisely why the world only ever learned the short version.
 
 ## The domain became part of the operating system
-
-![Editorial diagram of Airbnb.com repeated across listings, emails, app stores, press headlines, and word of mouth](../../assets/from-airbedandbreakfast-com-to-airbnb-com-07-operating-system.jpg)
 
 Premium, brandable domains are not about prestige. They are about repetition.
 
@@ -118,8 +108,6 @@ The domain did not build Airbnb's marketplace. But once Airbnb.com was the addre
 
 ## What founders should learn from Case 15
 
-![Editorial four-step diagram for founders moving from a literal descriptive launch domain to a short coined brand domain](../../assets/from-airbedandbreakfast-com-to-airbnb-com-08-founders-lessons.jpg)
-
 The easy takeaway — "never pick a literal name" — is wrong. The literal name was the right call at the start. The better lesson is staged:
 
 1. **Use a literal, descriptive domain to launch if it makes the product instantly understandable.** AirBedAndBreakfast.com worked because nobody yet knew what "renting a stranger's floor" meant; the name explained the whole offer in four words.
@@ -131,7 +119,7 @@ The domain upgrade did not make Airbnb win. Product, design, relentless founder 
 
 ## The Namefi angle
 
-![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-airbedandbreakfast-com-to-airbnb-com-09-namefi-angle.jpg)
+![Colorful illustration of the airbnb.com domain flowing through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-airbedandbreakfast-com-to-airbnb-com-03-namefi-angle.jpg)
 
 Airbnb's rename was, at its core, an asset decision dressed up as a branding decision.
 

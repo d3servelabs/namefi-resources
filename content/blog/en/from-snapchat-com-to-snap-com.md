@@ -21,8 +21,6 @@ The reported price for that domain — discovered later in an SEC filing, never 
 
 ## 2011–2016: the app whose name was the product
 
-![Editorial diagram of Snapchat.com as a literal app name where the verb and the brand are the same word](../../assets/from-snapchat-com-to-snap-com-01-app-era.jpg)
-
 In the beginning, "Snapchat" was a feature, not a constraint.
 
 The whole pitch lived inside the word. A "snap" was the unit of content; "chat" was the mode. Snapchat.com matched the app word-for-word, which is exactly what an early consumer product wants: zero translation cost between hearing the name, finding the app, and understanding what it does. For a product spreading through high schools and colleges by word of mouth, the self-describing name was a growth feature.
@@ -33,7 +31,7 @@ By 2016, Snap was no longer only an app maker. It was about to ship its own hard
 
 ## September 2016: the rebrand and the Snap.com moment
 
-![Editorial diagram of the Snapchat to Snap Inc rebrand with Spectacles revealed and Snap.com as the new front door](../../assets/from-snapchat-com-to-snap-com-02-snap-inc-moment.jpg)
+![Playful illustration of Snapchat becoming Snap Inc a camera company with Spectacles and snap.com](../../assets/from-snapchat-com-to-snap-com-02-camera-company.jpg)
 
 On September 24, 2016, the company made the shift public. [The company was named Snapchat Inc. at its inception, but it was rebranded Snap Inc. on September 24, 2016, to include the Spectacles product under the company name.](https://en.wikipedia.org/wiki/Snap_Inc.#:~:text=The%20company%20was%20named%20Snapchat%20Inc.%20at%20its%20inception%2C%20but%20it%20was%20rebranded%20Snap%20Inc.%20on%20September%2024%2C%202016) The trigger was a product reveal: Snap unveiled **Spectacles**, [a pair of sunglasses that have a built-in video camera in them with a 115 degree view](https://m.gsmarena.com/snapchat_changes_company_name_to_snap_inc_announces_spectacles-blog-20696.php#:~:text=Spectacles%20are%20a%20pair%20of%20sunglasses%20that%20have%20a%20built-in%20video%20camera%20in%20them%20with%20a%20115%20degree%20view).
 
@@ -44,8 +42,6 @@ That is the entire thesis of a domain upgrade compressed into one sentence: *a n
 Crucially, the expensive, slow-to-acquire piece was already done. Snap had quietly secured Snap.com two years earlier. The rebrand could move at the speed of a press release because the domain wasn't a blocker.
 
 ## The seller's side: Idealab, an SEC filing, and a number nobody announced
-
-![Editorial diagram of a quiet domain transfer from Idealab to Snapchat surfacing later inside an SEC filing](../../assets/from-snapchat-com-to-snap-com-03-idealab-seller.jpg)
 
 Unlike the loud, decade-long Tesla.com saga, the Snap.com purchase was almost invisible at the time. There was no press release, no founder tweet, no confirmed price. The story had to be reverse-engineered.
 
@@ -59,8 +55,6 @@ That, too, is a pattern. Many of the most important domain deals are the ones th
 
 ## The money looked different then
 
-![Editorial bar chart comparing the reported $5M Snap.com purchase in 2014 against Snap as a pre-IPO app maker](../../assets/from-snapchat-com-to-snap-com-04-money-context.jpg)
-
 From here, $5 million for Snap.com looks small. Snap went public in 2017 at a valuation in the tens of billions of dollars. Against that, a single domain purchase is rounding error.
 
 But the deal should be judged at the moment it was made, not from the far side of an IPO.
@@ -71,7 +65,7 @@ That is what makes the purchase interesting. Snap bought the domain *before* it 
 
 ## Why shortening to "Snap" mattered
 
-![Editorial illustration of Snapchat.com dropping the chat to become the cleaner one-word Snap.com brand](../../assets/from-snapchat-com-to-snap-com-05-dropping-chat.jpg)
+![Colorful illustration of Snapchat dropping chat to become the yellow Snap ghost brand](../../assets/from-snapchat-com-to-snap-com-01-dropping-chat.jpg)
 
 The gap between Snapchat.com and Snap.com is a single syllable. Strategically, it is the difference between a behavior and a category.
 
@@ -89,8 +83,6 @@ This is the same pattern that recurs across domain upgrades: early names *explai
 
 ## 2014 then 2016: domain first, rename second
 
-![Editorial diagram showing Snap.com acquired quietly in 2014 ahead of the Snapchat to Snap Inc rename in 2016](../../assets/from-snapchat-com-to-snap-com-06-domain-first.jpg)
-
 The detail that makes Snap.com more than a vanity buy is the sequence: the domain came *first*, and the corporate rebrand followed two years later.
 
 In November 2014, Snap.com quietly changed hands. There was no announcement because there was nothing yet to announce — Snapchat the app was thriving and "Snap Inc." did not exist. The domain sat as a held asset.
@@ -100,8 +92,6 @@ Then in September 2016 the public story arrived. The reveal of Spectacles became
 Picture the alternative. Snap announces it's now "Snap Inc., a camera company," unveils a $130 pair of camera glasses — and the corporate site still lives at Snapchat.com, with someone else holding Snap.com and naming their price under pressure. The rebrand would have been awkward and incomplete, or hostage to a last-minute negotiation. Instead, because the slow, expensive, externally-owned piece was secured in 2014, the 2016 rename could happen cleanly. The domain led; the identity followed.
 
 ## The domain became part of the operating system
-
-![Editorial diagram of Snap.com repeated across the app, Spectacles packaging, press, investor decks, email, and search](../../assets/from-snapchat-com-to-snap-com-07-operating-system.jpg)
 
 Premium domains are not about prestige. They are about repetition.
 
@@ -119,8 +109,6 @@ The domain didn't build Snap's brand — the app, the camera, and the culture di
 
 ## What founders should learn from Case 12
 
-![Editorial four-step diagram for founders securing an exact-match company domain before a rebrand](../../assets/from-snapchat-com-to-snap-com-08-founders-lessons.jpg)
-
 The easy takeaway — "buy your short .com" — misses the more useful structure. Snap's lesson is about *sequence and quiet timing*:
 
 1. **A literal, self-describing domain is a great way to start.** Snapchat.com matched the app perfectly and made the product spread by word of mouth. A descriptive name is an on-ramp, not a failure.
@@ -132,7 +120,7 @@ The domain upgrade didn't make Snap win. Product, capital, culture, and timing m
 
 ## The Namefi angle
 
-![Editorial diagram of a premium domain moving through verified transfer, tokenized ownership, and DNS continuity](../../assets/from-snapchat-com-to-snap-com-09-namefi-angle.jpg)
+![Colorful illustration of the snap.com domain flowing through verified transfer, a green Namefi token, and DNS continuity](../../assets/from-snapchat-com-to-snap-com-03-namefi-angle.jpg)
 
 Snap's story is, at its core, a quiet transfer problem.
 
