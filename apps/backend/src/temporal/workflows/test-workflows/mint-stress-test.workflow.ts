@@ -183,12 +183,21 @@ export async function mintStressTestWorkflow(
         ]
       : undefined;
   const blockTimeMs = resolveBlockTimeMs(chainId, sepoliaOverrideRaw);
-  await logRaceTiming({
-    chainId,
-    blockTimeMs,
-    staggerMs: computeChainStaggerMs(chainId, blockTimeMs),
-    batchPollWindowMs: computeBatchPollWindowMs(chainId, 3, blockTimeMs),
-  });
+  // Diagnostic only — must NOT abort the stress run if the activity fails/times out.
+  try {
+    await logRaceTiming({
+      chainId,
+      blockTimeMs,
+      staggerMs: computeChainStaggerMs(chainId, blockTimeMs),
+      batchPollWindowMs: computeBatchPollWindowMs(chainId, 3, blockTimeMs),
+    });
+  } catch (error) {
+    workflow.log.warn(
+      `[stress] logRaceTiming failed (diagnostic only): ${
+        error instanceof Error ? error.message : String(error)
+      }`,
+    );
+  }
 
   const nonceBefore = await getPendingSignerNonce(chainId);
 

@@ -3,6 +3,7 @@ export * from './chargeStripe.workflow';
 export * from './hello-world.workflow';
 export * from './mint.workflow';
 export * from './send-and-confirm-tx.workflow';
+export * from './cross-candidate-confirm.workflow';
 export * from './optimistic-nft-tx.workflow';
 export * from './mint-dev-signup-nfsc.workflow';
 export * from './mint-nfsc-by-user-id.workflow';

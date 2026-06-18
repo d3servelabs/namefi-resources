@@ -19,8 +19,11 @@ import type {
   TxStuckPendingGateArgs,
 } from './tx-stuck-pending-gate';
 
+const marker = vi.fn(async () => undefined);
 const workflowMocks = {
   sleep: vi.fn(async () => undefined),
+  // The stage marker is a `marker` activity, proxied per call (summary per marker).
+  proxyActivities: () => ({ marker }),
   // Never resolves on its own: the watchdog stays dormant, and the fast-path
   // `Promise.race([condition, Promise.all(pending)])` resolves via Promise.all.
   condition: vi.fn(() => new Promise<void>(() => {})),
@@ -97,8 +100,16 @@ vi.mock('./typed-proxy-activities', () => ({
     getEnvVars,
   }),
 }));
+// The cross-candidate confirm is now a child workflow; the mocked `executeChild`
+// runs the real workflow fn in-process so it drives off the same mocked
+// `getTransactionConfirmation` (i.e. `scriptCross`) the inline poll used to.
+const executeChild = vi.fn(async (...callArgs: unknown[]): Promise<unknown> => {
+  const workflowFn = callArgs[0] as (input: unknown) => Promise<unknown>;
+  const input = (callArgs[1] as [unknown])[0];
+  return workflowFn(input);
+});
 vi.mock('./typed-child-workflow', () => ({
-  typedChildWorkflow: () => ({ startChild }),
+  typedChildWorkflow: () => ({ startChild, executeChild }),
 }));
 vi.mock('./nonce-lock-heartbeat', () => ({
   runNonceLockHeartbeat: vi.fn(() => Promise.resolve()),

@@ -60,11 +60,14 @@ export function makeTxStuckPendingResolver(
       `[${label}] tx stuck pending at nonce ${pinnedNonce} (gas maxed); awaiting admin decision`,
     );
     const registry = createDecisionGateRegistry();
+    // Spread caller-supplied evidence FIRST so the core gate fields always win —
+    // `evidenceParams` must never override chainId / pinnedNonce / candidateHashes,
+    // or the admin sees wrong evidence for this stuck-pending decision.
     const details = {
+      ...evidenceParams,
       chainId,
       pinnedNonce,
       candidateHashes,
-      ...evidenceParams,
     };
     return runWithKnownGate<never, StuckPendingDecision>({
       registry,

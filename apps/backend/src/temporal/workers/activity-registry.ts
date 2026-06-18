@@ -24,6 +24,7 @@ import { TEMPORAL_ENUMS } from '../shared';
 import { IndexersActivities } from '../activities/indexers';
 import { defaultTaskQueueActivities } from '../activities/default';
 import { mintTaskQueueActivities } from '../activities/mint';
+import { workflowMarkerActivities } from '../activities/shared/workflow-marker.activities';
 
 // Detect silent activity-name collisions in the merged NOTIFY namespace
 // at module load. Spreading two activity bundles into one queue can
@@ -37,6 +38,11 @@ if (duplicateNotifyActivityKeys.length > 0) {
   );
 }
 
+// `workflowMarkerActivities` (the `marker` stage-finish marker) is a
+// LOCAL activity: workflows proxy it via `proxyLocalActivities`, so it executes on
+// whichever worker runs the calling workflow. It must therefore be registered on
+// EVERY task queue (e.g. `staggeredSendRace` runs inline in workflows scheduled on
+// MINT and DEFAULT). Spread last; `marker` is a unique key.
 export const ACTIVITIES = {
   [TEMPORAL_ENUMS.DEFAULT]: {
     ...defaultTaskQueueActivities,
@@ -57,14 +63,25 @@ export const ACTIVITIES = {
     ...FreeClaimActivities,
     ...FreeClaimsCorrectionActivities,
     ...PbnIssuanceReservationsActivities,
+    ...workflowMarkerActivities,
   },
-  [TEMPORAL_ENUMS.MINT]: mintTaskQueueActivities,
-  [TEMPORAL_ENUMS.DOMAINS]: DomainsActivities,
+  [TEMPORAL_ENUMS.MINT]: {
+    ...mintTaskQueueActivities,
+    ...workflowMarkerActivities,
+  },
+  [TEMPORAL_ENUMS.DOMAINS]: {
+    ...DomainsActivities,
+    ...workflowMarkerActivities,
+  },
   [TEMPORAL_ENUMS.NOTIFY]: {
     ...NotifyActivities,
     ...InAppNotificationActivities,
+    ...workflowMarkerActivities,
   },
-  [TEMPORAL_ENUMS.INDEXERS]: IndexersActivities,
-  [TEMPORAL_ENUMS.HUNT]: HuntActivities,
+  [TEMPORAL_ENUMS.INDEXERS]: {
+    ...IndexersActivities,
+    ...workflowMarkerActivities,
+  },
+  [TEMPORAL_ENUMS.HUNT]: { ...HuntActivities, ...workflowMarkerActivities },
 };
 export type ACTIVITIES = typeof ACTIVITIES;

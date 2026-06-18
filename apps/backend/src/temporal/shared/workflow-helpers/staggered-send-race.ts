@@ -9,20 +9,29 @@
  * typed result), so the Temporal UI shows ordered, grouped, collapsible attempts.
  * But a child only polls ITS OWN hash, so its verdict is ADVISORY: a slow winner's
  * siblings each see "my hash didn't mine + nonce advanced" and report LOST. The
- * AUTHORITY is the parent's CROSS-CANDIDATE check (`getTransactionConfirmation`
- * over ALL hashes together) — that is what decides win / lost-foreign / pending.
+ * AUTHORITY is the CROSS-CANDIDATE check (`getTransactionConfirmation` over ALL
+ * hashes together) — that is what decides win / lost-foreign / pending. It too runs
+ * as a CHILD workflow (`crossCandidateConfirmWorkflow`), so its repeated confirm
+ * polls collapse into one UI node instead of cluttering this parent's timeline.
  *
- * Resolution at one pinned nonce (`resolvePinnedNonce`) — BATCHES, never giving up
- * while pending:
- *   1. Launch a BATCH of up to `lanes` children, STAGGERED, gas escalating via a
- *      MONOTONIC counter that continues across batches (capped at `maxGasMultiplier`).
- *   2. After the batch settles, run the authoritative cross-candidate check:
- *      CONFIRMED → win; MULTIPLE_CONFIRMED → reconcile; REVERTED → fail;
- *      NONCE_FILLED (×grace) → LOST-foreign → re-pin; PENDING → keep going.
- *   3. Still PENDING + gas headroom → launch ANOTHER batch. Gas MAXED + still
- *      pending → keep polling (no new lanes) up to `maxPendingWaitMs`, then hand
- *      off to the `tx-stuck-pending` admin gate. We NEVER fail or release the lock
- *      while the nonce is still pending (`latest == pinnedNonce`).
+ * Naming convention for class members: `*Activity` calls a Temporal activity,
+ * `*Stage` is an embedded sub-flow method of THIS workflow, and `*Workflow`
+ * invokes a child workflow. Each stage is BRACKETED by `marker()` calls (a
+ * `marker` LOCAL activity, NOT a timer): a `· init` marker on entry
+ * (inputs) and a `· done` marker on exit (outputs), so the UI timeline and worker
+ * logs show every phase's start and result. Structure (each stage is a method on
+ * `StaggeredSendRace`):
+ *   - `run`                        — acquire lock, loop re-pin ROUNDS, release lock.
+ *   - `runRoundStage`              — resolve ONE pinned nonce: loop BATCHES, never
+ *                                    giving up while pending; gas maxed + still
+ *                                    pending → wait, then the stuck-pending gate.
+ *   - `runBatchStage`              — launch up to `lanes` staggered children,
+ *                                    escalating gas via a MONOTONIC counter that
+ *                                    continues across batches (capped at max).
+ *   - `crossCandidateConfirmWorkflow` — the AUTHORITATIVE poll over ALL candidate
+ *                                    hashes, as a child workflow.
+ *   - `precheckAlreadySentStage`   — before re-pinning, confirm our calldata
+ *                                    didn't land.
  *
  * Recovery (opt-in via `recovery`):
  *   - re-pin a fresh nonce ONLY on LOST-foreign (bounded by `maxNonceRepins`), with
@@ -34,7 +43,7 @@
  * Cancellation: losers self-resolve once the nonce advances; a leftover child is
  * reaped at parent close via `parentClosePolicy: 'REQUEST_CANCEL'`. We do NOT
  * cancel children mid-batch, so a winner is never cancelled before it observes its
- * own receipt.
+ * own receipt. We NEVER fail or release the lock while the nonce is still pending.
  *
  * NOTE (rollout): this batched control-flow is replay-incompatible with the prior
  * single-round shape — deploy behind Worker Build ID versioning or a quiet window
@@ -44,6 +53,7 @@
 import * as workflow from '@temporalio/workflow';
 import type { Address, Hash, Hex } from 'viem';
 import type { PreparedTxOnlySerializableParams } from '../../activities/mint/mint.activities';
+import type { WorkflowMarkerActivities } from '../../activities/shared/workflow-marker.activities';
 import { TEMPORAL_ENUMS, shortRunningOpts } from '../../shared';
 import {
   type SendAndConfirmTxInput,
@@ -51,6 +61,10 @@ import {
   type SignerKind,
   sendAndConfirmTxWorkflow,
 } from '../../workflows/send-and-confirm-tx.workflow';
+import {
+  type CrossVerdict,
+  crossCandidateConfirmWorkflow as crossCandidateConfirmChildWorkflow,
+} from '../../workflows/cross-candidate-confirm.workflow';
 import { criticalAlertWithTicket } from './critical-alert-with-ticket';
 import { interruptibleSleep } from './interruptible-sleep';
 import {
@@ -181,6 +195,95 @@ const DEFAULTS = {
   graceCycles: 3,
 } as const;
 
+// ── Activity proxies — declared at MODULE level, OUTSIDE the workflow body.
+// A proxy's options don't depend on per-execution state, so they belong as module
+// constants: declared once, reviewable as a single list instead of buried in the
+// workflow. Each carries a STATIC `summary` explaining WHY it runs so a reviewer
+// can read the activity list top-to-bottom. Summaries are per-proxy in the SDK, so
+// an activity used for two purposes needs two proxies (e.g. cross-candidate vs
+// cross-round confirmation). The ONE reason to NOT declare a proxy here is DYNAMIC
+// options (e.g. a summary built from a runtime value) — for that, mint one on the
+// spot via a factory in this file (`pollingActivities` below). ──────────────────
+
+/**
+ * Factory for DEFAULT-queue proxies on the short-running base config with
+ * per-purpose option overrides (typically `summary`). The static proxies below use
+ * it for brevity, but its real purpose is DYNAMIC options: a caller needing a
+ * runtime-derived summary can `pollingActivities({ summary: ... })` inline instead
+ * of adding another module-level proxy.
+ */
+const pollingActivities = (
+  overrides: Omit<workflow.ActivityOptions, 'taskQueue'> = {},
+) =>
+  typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: { ...shortRunningOpts, ...overrides },
+  });
+
+const nonceActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.MINT,
+  options: {
+    startToCloseTimeout: '30 seconds',
+    retry: { maximumAttempts: 1 },
+    summary: 'pin signer nonce',
+  },
+});
+// The AUTHORITATIVE resolution — polling ALL candidate hashes together — runs as a
+// CHILD workflow (`crossCandidateConfirmWorkflow`), so its confirm-poll activities
+// collapse into one UI node instead of cluttering this parent's timeline. Hence no
+// cross-candidate proxy here; only the cross-round one-shot below stays in-parent.
+//
+// A one-shot re-check AFTER a re-pin confirmed, to catch a prior round's tx that
+// mined late (RPC lag) — that would be a cross-round double-commit.
+const crossRoundActivities = pollingActivities({
+  summary: 'cross-round double-commit re-check',
+});
+const { generalAlertNamefi } = pollingActivities({
+  summary: 'slow-confirmation alert',
+});
+const { getEnvVars } = pollingActivities({
+  summary: 'fetch SEPOLIA_BLOCK_TIME_MS override',
+});
+// The pre-re-pin collision check can scan a bounded block range; give it a longer
+// timeout than the short-running confirm pollers. Read-only ⇒ retryable.
+const precheckActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    startToCloseTimeout: '60 seconds',
+    retry: { maximumAttempts: 3 },
+    summary: 'pre-re-pin already-sent check',
+  },
+});
+// Distributed nonce-lock activities (DEFAULT queue — never occupy a MINT slot).
+// acquire waits DURABLY (no maximumAttempts): Temporal retries until the lock
+// frees — a crashed holder's short TTL auto-expires, and a redis outage resolves
+// once redis recovers (the getRedisClient cache no longer poisons on failure). The
+// trade-off: a redis outage PAUSES minting (serialization is preserved) rather
+// than proceeding lock-less.
+const lockAcquireActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    startToCloseTimeout: '20 seconds',
+    retry: {
+      initialInterval: '1 second',
+      maximumInterval: '30 seconds',
+      backoffCoefficient: 2,
+    },
+    summary: 'acquire signer-nonce lock',
+  },
+});
+const lockReleaseActivities = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+  options: {
+    startToCloseTimeout: '15 seconds',
+    retry: { maximumAttempts: 3 },
+    summary: 'release signer-nonce lock',
+  },
+});
+const childRunner = typedChildWorkflow({
+  temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+});
+
 class StaggeredRaceFailure extends Error {
   constructor(
     readonly type: string,
@@ -191,7 +294,7 @@ class StaggeredRaceFailure extends Error {
   }
 }
 
-/** Outcome of resolving one pinned nonce (`resolvePinnedNonce`). */
+/** Outcome of resolving one pinned nonce (`runRound`). */
 type PinnedNonceOutcome =
   | { kind: 'CONFIRMED'; winner: Hash }
   // A FOREIGN tx took the nonce (latest > pinned, none of ours mined) — safe to
@@ -201,177 +304,130 @@ type PinnedNonceOutcome =
   // foreign-steal budget (still passes the pre-re-pin already-sent precheck).
   | { kind: 'ADMIN_REPIN' };
 
-/** Authoritative verdict from the parent's cross-candidate confirmation poll. */
-type CrossVerdict =
-  | { kind: 'CONFIRMED'; winner: Hash }
-  | { kind: 'MULTIPLE'; winners: Hash[] }
-  | { kind: 'REVERTED'; reverted: Hash; blockNumber: string }
-  | { kind: 'LOST_FOREIGN'; onChainNonce: number }
-  | { kind: 'PENDING' };
+/** A child result that proves the pinned nonce is consumed on-chain. */
+const consumesNonce = (result: SendAndConfirmTxResult): boolean =>
+  result.status === 'CONFIRMED' ||
+  result.status === 'REVERTED' ||
+  result.status === 'LOST' ||
+  (result.status === 'NOT_SENT' && result.benign);
+
+// Factory for the stage-finish marker's LOCAL activity proxy. The marker runs as a
+// `marker` LOCAL activity (in-process, registered on every queue) rather
+// than a `workflow.sleep` timer, for two UI/observability wins: it shows a per-call
+// `summary` ON the activity in the Temporal timeline, AND logs the `message` with
+// structured `details` as a worker breadcrumb. `summary` is a per-PROXY option, so
+// — exactly the dynamic-options case `pollingActivities` exists for — a fresh proxy
+// is minted per call with `summary` set to the marker message. Single retry: a
+// marker is cosmetic.
+const markerActivities = (summary: string) =>
+  workflow.proxyActivities<WorkflowMarkerActivities>({
+    startToCloseTimeout: '5 seconds',
+    retry: { maximumAttempts: 1 },
+    summary,
+  });
 
 /**
- * Broadcasts a prepared transaction via a pinned-nonce staggered race of
- * per-attempt child workflows and returns the confirmed transaction hash.
- *
- * Never fails or releases the lock while the nonce is still pending — it keeps
- * batching, then waits, then hands off to the stuck-pending admin gate.
- *
- * @throws a non-retryable `ApplicationFailure` (after a critical alert) on
- *   revert, stolen-nonce (after re-pins), unresolved multi-confirm, a never-
- *   broadcast send failure, or the stuck-pending gate being cancelled/unwired.
+ * A stage FINISH marker, emitted AFTER a stage completes. The `message` both labels
+ * the activity (UI `summary`) and is logged with `details`, so the Temporal UI
+ * timeline and worker logs show each phase's completion. The activity swallows its
+ * own errors and we `.catch` here too, so a marker can NEVER fail the race.
  */
-export async function staggeredSendRace(
-  options: StaggeredSendRaceOptions,
-): Promise<Hash> {
-  const { preparedTx, chainId, label, signerKind, recovery } = options;
-  const config = { ...DEFAULTS, ...options.config };
-  // At least one lane — a `lanes: 0` misconfig would launch nothing and spin
-  // forever (never advancing `globalAttempt`, so `gasMaxed` never trips).
-  const lanes = Math.max(1, config.lanes);
-  const maxNonceRepins = recovery?.maxNonceRepins ?? 0;
-  const alreadySentPolicy = recovery?.alreadySentPolicy;
+const marker = (
+  message: string,
+  details?: Record<string, unknown>,
+): Promise<void> =>
+  markerActivities(message)
+    .marker({ message, details })
+    .catch(() => undefined);
 
-  // The parent pins/reads the nonce (MINT) and runs the AUTHORITATIVE
-  // cross-candidate confirmation poll + slow-alert (DEFAULT). Sends + the
-  // advisory per-attempt confirms live in the children. Each proxy below carries a
-  // distinct UI `summary` explaining WHY it runs — so a reviewer can read the
-  // workflow's activity list top-to-bottom (activity summaries are per-proxy in
-  // the SDK, so a single activity used for two purposes needs two proxies).
-  const nonceActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.MINT,
-    options: {
-      startToCloseTimeout: '30 seconds',
-      retry: { maximumAttempts: 1 },
-      summary: 'pin signer nonce',
-    },
-  });
-  // The AUTHORITATIVE resolution: polls ALL candidate hashes together (not a single
-  // hash) to decide whether our pinned nonce won, was taken by a foreign tx, or is
-  // still pending. This is what runs repeatedly "in the middle" of the race.
-  const crossCandidateActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      summary: 'cross-candidate confirm poll',
-    },
-  });
-  // A one-shot re-check AFTER a re-pin confirmed, to catch a prior round's tx that
-  // mined late (RPC lag) — that would be a cross-round double-commit.
-  const crossRoundActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      summary: 'cross-round double-commit re-check',
-    },
-  });
-  const alertActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      summary: 'slow-confirmation alert',
-    },
-  });
-  const envActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      ...shortRunningOpts,
-      summary: 'fetch SEPOLIA_BLOCK_TIME_MS override',
-    },
-  });
-  // The pre-re-pin collision check can scan a bounded block range; give it a
-  // longer timeout than the short-running confirm pollers. Read-only ⇒ retryable.
-  const precheckActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      startToCloseTimeout: '60 seconds',
-      retry: { maximumAttempts: 3 },
-      summary: 'pre-re-pin already-sent check',
-    },
-  });
-  // Distributed nonce-lock activities (DEFAULT queue — never occupy a MINT slot).
-  // acquire waits DURABLY (no maximumAttempts): Temporal retries until the lock
-  // frees — a crashed holder's short TTL auto-expires, and a redis outage
-  // resolves once redis recovers (the getRedisClient cache no longer poisons on
-  // failure). The trade-off: a redis outage PAUSES minting (serialization is
-  // preserved) rather than proceeding lock-less.
-  const lockAcquireActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      startToCloseTimeout: '20 seconds',
-      retry: {
-        initialInterval: '1 second',
-        maximumInterval: '30 seconds',
-        backoffCoefficient: 2,
-      },
-      summary: 'acquire signer-nonce lock',
-    },
-  });
-  const lockReleaseActivities = typedProxyActivities({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: {
-      startToCloseTimeout: '15 seconds',
-      retry: { maximumAttempts: 3 },
-      summary: 'release signer-nonce lock',
-    },
-  });
+/** Defaults merged over the caller's `config`. A helper (not inline) so the field
+ *  type can be `ReturnType<typeof resolveRaceConfig>` — the merged numbers — rather
+ *  than re-spelling every key. */
+const resolveRaceConfig = (options: StaggeredSendRaceOptions) => ({
+  ...DEFAULTS,
+  ...options.config,
+});
+type ResolvedRaceConfig = ReturnType<typeof resolveRaceConfig>;
 
-  const readSignerNonce =
-    signerKind === 'x402'
+/**
+ * One execution of the pinned-nonce staggered send race. Constructed per call so
+ * each stage is a method that shares context via `this` (config, resolved
+ * activities, the accumulating `allCandidateHashes`).
+ *
+ * Derived fields are assigned in the constructor (not via field initializers): a
+ * field initializer would run before the `options`/`blockTimeMs` parameter
+ * properties are assigned (TS2729), so the body computes them from the local
+ * params instead.
+ */
+class StaggeredSendRace {
+  private readonly config: ResolvedRaceConfig;
+  /** At least one lane — `lanes: 0` would launch nothing and spin forever. */
+  private readonly lanes: number;
+  private readonly maxNonceRepins: number;
+  private readonly alreadySentPolicy: AlreadySentPolicy | undefined;
+  private readonly maxPendingWaitMs: number;
+  /** Inter-lane stagger: the chain's cadence (≈3 block times + 3s) unless
+   *  `config.staggerMs` overrides. Uses the resolved (override-aware) block time. */
+  private readonly staggerMs: number;
+  /** One batch's confirmation poll window — the children AND the parent's
+   *  cross-candidate recheck share it. */
+  private readonly batchPollWindowMs: number;
+  /** After a batch the children already polled `batchPollWindowMs`; the parent only
+   *  needs a short authoritative recheck (long enough for the NONCE_FILLED grace). */
+  private readonly recheckWindowMs: number;
+
+  /** Every hash any child has broadcast, across all batches and re-pin rounds — the
+   *  input to the AUTHORITATIVE cross-candidate poll (and the cross-round
+   *  double-commit check). The parent decides from this UNION, never per-child. */
+  private readonly allCandidateHashes: Hash[] = [];
+
+  // Signer-specific activity functions: the proxies are module-level; the SELECTION
+  // (mint vs x402, same signatures) is per-signer. (The cross-candidate confirm is
+  // a child workflow now, not a `this`-held activity — see `crossCandidateConfirmWorkflow`.)
+  private readonly readSignerNonceActivity: typeof nonceActivities.getPendingSignerNonce;
+  private readonly crossRoundReconfirmActivity: typeof crossRoundActivities.getTransactionConfirmation;
+
+  constructor(
+    private readonly options: StaggeredSendRaceOptions,
+    /** Resolved (override-aware) per-chain block time — see `staggeredSendRace`. */
+    private readonly blockTimeMs: number,
+  ) {
+    const isX402 = options.signerKind === 'x402';
+    const config = resolveRaceConfig(options);
+    this.config = config;
+    this.lanes = Math.max(1, config.lanes);
+    this.maxNonceRepins = options.recovery?.maxNonceRepins ?? 0;
+    this.alreadySentPolicy = options.recovery?.alreadySentPolicy;
+    this.maxPendingWaitMs =
+      config.maxPendingWaitMs ?? DEFAULT_MAX_PENDING_WAIT_MS;
+    this.staggerMs =
+      options.config.staggerMs ??
+      computeChainStaggerMs(options.chainId, blockTimeMs);
+    this.batchPollWindowMs = computeBatchPollWindowMs(
+      options.chainId,
+      config.confirmations,
+      blockTimeMs,
+    );
+    this.recheckWindowMs = config.graceCycles * config.pollIntervalMs;
+    this.readSignerNonceActivity = isX402
       ? nonceActivities.getX402PendingSignerNonce
       : nonceActivities.getPendingSignerNonce;
-  const reconfirm =
-    signerKind === 'x402'
-      ? crossCandidateActivities.getX402TransactionConfirmation
-      : crossCandidateActivities.getTransactionConfirmation;
-  const crossRoundReconfirm =
-    signerKind === 'x402'
+    this.crossRoundReconfirmActivity = isX402
       ? crossRoundActivities.getX402TransactionConfirmation
       : crossRoundActivities.getTransactionConfirmation;
-  const { generalAlertNamefi } = alertActivities;
-  const { getEnvVars } = envActivities;
+  }
 
-  const childRunner = typedChildWorkflow({
-    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-  });
-
-  // Resolve the per-chain block time ONCE, honoring an optional
-  // `SEPOLIA_BLOCK_TIME_MS` override. Workflow code can't read `process.env`
-  // (sandbox-stubbed + non-deterministic), so we fetch it via an activity — the
-  // recorded result keeps replay deterministic. Only fetched for Sepolia (the one
-  // overridable chain), so other chains pay nothing.
-  const sepoliaOverrideRaw =
-    chainId === SEPOLIA_CHAIN_ID
-      ? (await getEnvVars([SEPOLIA_BLOCK_TIME_ENV_KEY]))[
-          SEPOLIA_BLOCK_TIME_ENV_KEY
-        ]
-      : undefined;
-  const blockTimeMs = resolveBlockTimeMs(chainId, sepoliaOverrideRaw);
-  // Inter-lane stagger defaults to the chain's cadence (≈3 block times + 3s) so a
-  // lane doesn't fire just as the previous one is landing; `config.staggerMs` wins.
-  const staggerMs =
-    options.config.staggerMs ?? computeChainStaggerMs(chainId, blockTimeMs);
-  // One batch's confirmation poll window — the children AND the parent's
-  // cross-candidate recheck share it.
-  const batchPollWindowMs = computeBatchPollWindowMs(
-    chainId,
-    config.confirmations,
-    blockTimeMs,
-  );
-
-  // Every hash any child has broadcast, across all batches and re-pin rounds —
-  // the input to the AUTHORITATIVE cross-candidate poll (and the cross-round
-  // double-commit check). The parent decides from this union, never per-child.
-  const allCandidateHashes: Hash[] = [];
-
-  const laneGasMultiplier = (attemptIndex: number): number =>
-    Math.min(
-      config.initialGasPriceMultiplier +
-        attemptIndex * config.gasIncrementPerLane,
-      config.maxGasPriceMultiplier,
+  private laneGasMultiplier(attemptIndex: number): number {
+    return Math.min(
+      this.config.initialGasPriceMultiplier +
+        attemptIndex * this.config.gasIncrementPerLane,
+      this.config.maxGasPriceMultiplier,
     );
+  }
 
   /** Reconcile a detected double-commit, or throw if no reconciler is wired. */
-  const resolveDoubleCommit = async (winners: Hash[]): Promise<Hash> => {
+  private async resolveDoubleCommitStage(winners: Hash[]): Promise<Hash> {
+    const { recovery, label } = this.options;
     if (recovery?.onDoubleCommit) {
       workflow.log.warn(
         `[${label}] double-commit detected (${winners.join(', ')}); reconciling`,
@@ -382,32 +438,72 @@ export async function staggeredSendRace(
       'staggered-race/multi-confirm',
       `[${label}] multiple transactions confirmed: ${winners.join(', ')}`,
     );
-  };
+  }
 
-  /** A child result that proves the pinned nonce is consumed on-chain. */
-  const consumesNonce = (result: SendAndConfirmTxResult): boolean =>
-    result.status === 'CONFIRMED' ||
-    result.status === 'REVERTED' ||
-    result.status === 'LOST' ||
-    (result.status === 'NOT_SENT' && result.benign);
+  /**
+   * The AUTHORITATIVE resolution at one nonce, run as a CHILD workflow so its
+   * confirm-poll activities collapse into a single UI node instead of cluttering
+   * this parent's timeline. The child polls `getTransactionConfirmation` over ALL
+   * candidate hashes TOGETHER (never a single hash — that is what made a slow
+   * winner's siblings report LOST), for up to `windowMs`; `PENDING` means the nonce
+   * is genuinely still open (`latest <= pinned`, nobody mined).
+   *
+   * The child gets a SNAPSHOT of `allCandidateHashes` — safe because it is started
+   * only after the batch's children have settled and pushed their hashes, and two
+   * siblings can never both mine the same nonce, so a late hash can't hide a double.
+   */
+  private async crossCandidateConfirmWorkflow(
+    roundIndex: number,
+    batchIndex: number,
+    pinnedNonce: number,
+    windowMs: number,
+  ): Promise<CrossVerdict> {
+    const { chainId, label, signerKind } = this.options;
+    const parentWfId = workflow.workflowInfo().workflowId;
+    return childRunner.executeChild(
+      crossCandidateConfirmChildWorkflow,
+      [
+        {
+          candidateHashes: [...this.allCandidateHashes],
+          chainId,
+          pinnedNonce,
+          confirmations: this.config.confirmations,
+          windowMs,
+          pollIntervalMs: this.config.pollIntervalMs,
+          graceCycles: this.config.graceCycles,
+          signerKind,
+          label,
+          roundIndex,
+          batchIndex,
+        },
+      ],
+      {
+        workflowId: `cross-candidate-confirm-${parentWfId}-r${roundIndex}-b${batchIndex}`,
+        workflowIdReusePolicy: 'ALLOW_DUPLICATE',
+        parentClosePolicy: 'REQUEST_CANCEL',
+        retry: { maximumAttempts: 1 },
+        staticSummary: `[${label}] cross-candidate confirm · round ${roundIndex} batch ${batchIndex} · nonce ${pinnedNonce}`,
+      },
+    );
+  }
 
   /**
    * Launch ONE batch of up to `lanes` children at `pinnedNonce`, staggered, with
    * monotonically escalating gas; await the batch to settle. Children push their
    * hashes into `allCandidateHashes`; their per-hash verdicts are ADVISORY — the
-   * authority is `pollCrossCandidate` after this returns. Returns the next
+   * authority is `crossCandidateConfirmWorkflow` after this returns. Returns the next
    * monotonic attempt index and `possiblyOrphaned`: whether any child could have
-   * broadcast a tx WITHOUT us capturing its hash (a crashed child, or a
-   * non-benign NOT_SENT where the node may have accepted the tx but the response
-   * was lost) — which means an empty `allCandidateHashes` does NOT prove "nothing
-   * was sent".
+   * broadcast a tx WITHOUT us capturing its hash (a crashed child, or a non-benign
+   * NOT_SENT where the node may have accepted the tx but the response was lost) —
+   * which means an empty `allCandidateHashes` does NOT prove "nothing was sent".
    */
-  const launchBatch = async (
+  private async runBatchStage(
     roundIndex: number,
     batchIndex: number,
     pinnedNonce: number,
     startAttempt: number,
-  ): Promise<{ nextAttempt: number; possiblyOrphaned: boolean }> => {
+  ): Promise<{ nextAttempt: number; possiblyOrphaned: boolean }> {
+    const { signerKind, preparedTx, chainId, label } = this.options;
     const parentWfId = workflow.workflowInfo().workflowId;
     const pending: Promise<void>[] = [];
     let stopStarting = false;
@@ -416,29 +512,29 @@ export async function staggeredSendRace(
     let possiblyOrphaned = false;
     let attempt = startAttempt;
 
-    for (let lane = 0; lane < lanes; lane++) {
+    for (let lane = 0; lane < this.lanes; lane++) {
       if (stopStarting) break;
       if (lane > 0) {
-        await interruptibleSleep(staggerMs, () => stopStarting, {
+        await interruptibleSleep(this.staggerMs, () => stopStarting, {
           summary: `stagger lane ${lane} (round ${roundIndex} batch ${batchIndex})`,
         });
         if (stopStarting) break;
       }
 
-      const gas = laneGasMultiplier(attempt);
+      const gas = this.laneGasMultiplier(attempt);
       const childInput: SendAndConfirmTxInput = {
         signerKind,
         preparedTx,
         chainId,
         nonce: pinnedNonce,
         gasPriceMultiplier: gas,
-        confirmations: config.confirmations,
-        pollIntervalMs: config.pollIntervalMs,
+        confirmations: this.config.confirmations,
+        pollIntervalMs: this.config.pollIntervalMs,
         // The child self-polls its own hash for this bounded, chain-aware window,
         // then returns the benign STILL_PENDING — the parent's cross-candidate
         // check (not the child's single-hash view) is the authority.
-        pollWindowMs: batchPollWindowMs,
-        graceCycles: config.graceCycles,
+        pollWindowMs: this.batchPollWindowMs,
+        graceCycles: this.config.graceCycles,
         label,
         attempt,
         roundIndex,
@@ -460,7 +556,7 @@ export async function staggeredSendRace(
       pending.push(
         childHandle.result().then(
           (result) => {
-            if ('txHash' in result) allCandidateHashes.push(result.txHash);
+            if ('txHash' in result) this.allCandidateHashes.push(result.txHash);
             if (result.status === 'CONFIRMED') confirmedSeen = true;
             // A non-benign NOT_SENT (e.g. FAILED_TO_SEND_TRANSACTION) may mean the
             // node accepted the broadcast but the response was lost → orphan tx
@@ -491,63 +587,7 @@ export async function staggeredSendRace(
     ]);
 
     return { nextAttempt: attempt, possiblyOrphaned };
-  };
-
-  /**
-   * The AUTHORITATIVE resolution at one nonce: poll `getTransactionConfirmation`
-   * over ALL candidate hashes TOGETHER (never a single hash — that is what made a
-   * slow winner's siblings report LOST), for up to `windowMs`. `PENDING` means the
-   * nonce is genuinely still open (`latest <= pinned`, nobody mined).
-   */
-  const pollCrossCandidate = async (
-    pinnedNonce: number,
-    windowMs: number,
-  ): Promise<CrossVerdict> => {
-    let elapsed = 0;
-    let nonceFilledStreak = 0;
-    while (true) {
-      const confirmation = await reconfirm(
-        [...allCandidateHashes],
-        chainId,
-        pinnedNonce,
-        config.confirmations,
-      );
-      switch (confirmation.kind) {
-        case 'CONFIRMED':
-          return { kind: 'CONFIRMED', winner: confirmation.winner };
-        case 'MULTIPLE_CONFIRMED':
-          return { kind: 'MULTIPLE', winners: confirmation.winners };
-        case 'REVERTED':
-          return {
-            kind: 'REVERTED',
-            reverted: confirmation.reverted,
-            blockNumber: confirmation.blockNumber,
-          };
-        case 'NONCE_FILLED_NO_CANDIDATE':
-          // latest > pinned AND none of OUR hashes have a receipt → a foreign tx
-          // took the nonce. Grace a couple cycles against transient RPC nonce-lag.
-          nonceFilledStreak += 1;
-          if (nonceFilledStreak >= config.graceCycles) {
-            return {
-              kind: 'LOST_FOREIGN',
-              onChainNonce: confirmation.onChainNonce,
-            };
-          }
-          break;
-        default:
-          nonceFilledStreak = 0; // PENDING — latest <= pinned, nobody mined yet.
-      }
-      if (elapsed >= windowMs) return { kind: 'PENDING' };
-      const sleepMs = Math.max(
-        1,
-        Math.min(config.pollIntervalMs, windowMs - elapsed),
-      );
-      await workflow.sleep(sleepMs, {
-        summary: `cross-candidate poll (nonce ${pinnedNonce})`,
-      });
-      elapsed += sleepMs;
-    }
-  };
+  }
 
   /**
    * Resolve ONE pinned nonce: launch batches of escalating-gas children and run
@@ -556,12 +596,13 @@ export async function staggeredSendRace(
    * (gas maxed) keeps polling up to `maxPendingWaitMs`, then opens the
    * `tx-stuck-pending` admin gate (the lock stays held throughout).
    */
-  const resolvePinnedNonce = async (
+  private async runRoundStage(
     roundIndex: number,
     pinnedNonce: number,
-  ): Promise<PinnedNonceOutcome> => {
+  ): Promise<PinnedNonceOutcome> {
+    const { chainId, label, recovery } = this.options;
     // Gas counter — MONOTONIC across batches at this nonce; RESETS per re-pin (a
-    // fresh `resolvePinnedNonce` call starts at 0).
+    // fresh `runRoundStage` call starts at 0).
     let globalAttempt = 0;
     let pendingElapsedMs = 0; // accumulated prolonged-pending wait (gas maxed)
     let waitCycle = 0; // stuck-pending gate openings
@@ -569,19 +610,13 @@ export async function staggeredSendRace(
     // captured a hash for (crash / non-benign NOT_SENT)? If so, an empty
     // `allCandidateHashes` must NOT be read as "nothing sent".
     let possiblyOrphaned = false;
-    // After a batch the children already polled `batchPollWindowMs`; the parent
-    // only needs a short authoritative recheck (long enough for the NONCE_FILLED
-    // grace).
-    const recheckWindowMs = config.graceCycles * config.pollIntervalMs;
-    const maxPendingWaitMs =
-      config.maxPendingWaitMs ?? DEFAULT_MAX_PENDING_WAIT_MS;
 
     // Single soft "slow" watchdog for the whole nonce. Fire-and-forget; resolved
     // by `nonceDone` so it can't fire after we've terminated.
     let nonceDone = false;
     let alerted = false;
     void workflow
-      .condition(() => nonceDone, config.alertThresholdMs, {
+      .condition(() => nonceDone, this.config.alertThresholdMs, {
         summary: `slow-confirmation alert (round ${roundIndex})`,
       })
       .then(async (finishedFirst) => {
@@ -594,7 +629,7 @@ export async function staggeredSendRace(
             extraData: {
               chainId,
               pinnedNonce,
-              candidates: allCandidateHashes.length,
+              candidates: this.allCandidateHashes.length,
             },
           });
         } catch {
@@ -607,25 +642,45 @@ export async function staggeredSendRace(
       for (let batchIndex = 0; ; batchIndex++) {
         // Stop launching NEW batches only once an attempt AT the gas cap has
         // already been LAUNCHED (`globalAttempt - 1` is the last launched index) —
-        // checking the next, un-launched attempt would stop one increment early
-        // and never broadcast the configured `maxGasPriceMultiplier`. Batch 0
-        // always launches (globalAttempt === 0).
+        // checking the next, un-launched attempt would stop one increment early and
+        // never broadcast the configured `maxGasPriceMultiplier`. Batch 0 always
+        // launches (globalAttempt === 0).
         const gasMaxed =
           globalAttempt > 0 &&
-          laneGasMultiplier(globalAttempt - 1) >= config.maxGasPriceMultiplier;
+          this.laneGasMultiplier(globalAttempt - 1) >=
+            this.config.maxGasPriceMultiplier;
 
         if (!gasMaxed) {
-          const launched = await launchBatch(
+          await marker(
+            `round ${roundIndex} · batch ${batchIndex} · launch · init`,
+            {
+              roundIndex,
+              batchIndex,
+              startAttempt: globalAttempt,
+              lanes: this.lanes,
+            },
+          );
+          const launched = await this.runBatchStage(
             roundIndex,
             batchIndex,
             pinnedNonce,
             globalAttempt,
           );
           globalAttempt = launched.nextAttempt;
+          await marker(
+            `round ${roundIndex} · batch ${batchIndex} · launch · done`,
+            {
+              roundIndex,
+              batchIndex,
+              nextAttempt: launched.nextAttempt,
+              possiblyOrphaned: launched.possiblyOrphaned,
+              candidates: this.allCandidateHashes.length,
+            },
+          );
           if (launched.possiblyOrphaned) {
             // A crashed child / non-benign send may have broadcast without us
-            // capturing the hash — resolve via the cross-candidate check, and
-            // never treat empty candidates as "nothing sent" (below).
+            // capturing the hash — resolve via the cross-candidate check, and never
+            // treat empty candidates as "nothing sent" (below).
             possiblyOrphaned = true;
             workflow.log.warn(
               `[${label}] a send-and-confirm child may have orphaned a tx; resolving via cross-candidate check`,
@@ -633,9 +688,22 @@ export async function staggeredSendRace(
           }
         }
 
-        const verdict = await pollCrossCandidate(
+        const crossWindowMs = gasMaxed
+          ? this.batchPollWindowMs
+          : this.recheckWindowMs;
+        await marker(
+          `round ${roundIndex} · batch ${batchIndex} · cross-candidate · init`,
+          { roundIndex, batchIndex, pinnedNonce, windowMs: crossWindowMs },
+        );
+        const verdict = await this.crossCandidateConfirmWorkflow(
+          roundIndex,
+          batchIndex,
           pinnedNonce,
-          gasMaxed ? batchPollWindowMs : recheckWindowMs,
+          crossWindowMs,
+        );
+        await marker(
+          `round ${roundIndex} · batch ${batchIndex} · cross-candidate · done`,
+          { roundIndex, batchIndex, pinnedNonce, verdict: verdict.kind },
         );
         switch (verdict.kind) {
           case 'CONFIRMED':
@@ -643,7 +711,7 @@ export async function staggeredSendRace(
           case 'MULTIPLE':
             return {
               kind: 'CONFIRMED',
-              winner: await resolveDoubleCommit(verdict.winners),
+              winner: await this.resolveDoubleCommitStage(verdict.winners),
             };
           case 'REVERTED':
             throw new StaggeredRaceFailure(
@@ -661,12 +729,12 @@ export async function staggeredSendRace(
           continue;
         }
 
-        // Gas maxed, still pending, and NOTHING was broadcast. Only fail fast if
-        // we are CERTAIN no tx escaped: no child crashed and no non-benign send
-        // failure (`!possiblyOrphaned`). If a send MIGHT have orphaned a tx, fall
-        // through to the stuck-pending wait/gate instead — releasing the lock here
-        // could strand a live tx and re-open the double-mint window on retry.
-        if (allCandidateHashes.length === 0 && !possiblyOrphaned) {
+        // Gas maxed, still pending, and NOTHING was broadcast. Only fail fast if we
+        // are CERTAIN no tx escaped: no child crashed and no non-benign send failure
+        // (`!possiblyOrphaned`). If a send MIGHT have orphaned a tx, fall through to
+        // the stuck-pending wait/gate instead — releasing the lock here could strand
+        // a live tx and re-open the double-mint window on retry.
+        if (this.allCandidateHashes.length === 0 && !possiblyOrphaned) {
           throw new StaggeredRaceFailure(
             'staggered-race/send-failed',
             `[${label}] no transaction broadcast at nonce ${pinnedNonce} (sends failing)`,
@@ -675,12 +743,12 @@ export async function staggeredSendRace(
 
         // Gas maxed and a real tx is still pending: keep polling (no new lanes)
         // toward the bound.
-        pendingElapsedMs += batchPollWindowMs;
-        if (pendingElapsedMs < maxPendingWaitMs) {
+        pendingElapsedMs += this.batchPollWindowMs;
+        if (pendingElapsedMs < this.maxPendingWaitMs) {
           workflow.setCurrentDetails(
             `nonce ${pinnedNonce} · still pending (gas maxed) · ${Math.round(
               pendingElapsedMs / 1000,
-            )}s/${Math.round(maxPendingWaitMs / 1000)}s`,
+            )}s/${Math.round(this.maxPendingWaitMs / 1000)}s`,
           );
           continue;
         }
@@ -693,10 +761,22 @@ export async function staggeredSendRace(
             `[${label}] tx stuck pending at nonce ${pinnedNonce} (gas maxed); no stuck-pending gate wired`,
           );
         }
+        await marker(`round ${roundIndex} · stuck-pending gate · init`, {
+          roundIndex,
+          pinnedNonce,
+          waitCycle,
+          candidates: this.allCandidateHashes.length,
+        });
         const decision = await recovery.onStuckPending({
           pinnedNonce,
-          candidateHashes: [...allCandidateHashes],
+          candidateHashes: [...this.allCandidateHashes],
           waitCycle: waitCycle++,
+        });
+        await marker(`round ${roundIndex} · stuck-pending gate · done`, {
+          roundIndex,
+          pinnedNonce,
+          waitCycle: waitCycle - 1,
+          decision: decision.kind,
         });
         switch (decision.kind) {
           case 'MARK_CONFIRMED':
@@ -711,7 +791,7 @@ export async function staggeredSendRace(
     } finally {
       nonceDone = true;
     }
-  };
+  }
 
   /**
    * Pre-re-pin guard: before abandoning the pinned nonce, verify our calldata was
@@ -720,11 +800,12 @@ export async function staggeredSendRace(
    * throws on REVERTED / ESCALATE. Opt-in via `alreadySentPolicy`; the `patched`
    * gate keeps in-flight workflows on the no-precheck path.
    */
-  const runPrecheck = async (
+  private async precheckAlreadySentStage(
     pinnedNonce: number,
-  ): Promise<{ kind: 'RETURN'; winner: Hash } | { kind: 'REPIN' }> => {
+  ): Promise<{ kind: 'RETURN'; winner: Hash } | { kind: 'REPIN' }> {
+    const { signerKind, chainId, label, preparedTx, recovery } = this.options;
     if (
-      !alreadySentPolicy ||
+      !this.alreadySentPolicy ||
       !workflow.patched('staggered-race/nonce-already-sent-precheck')
     ) {
       return { kind: 'REPIN' };
@@ -736,7 +817,7 @@ export async function staggeredSendRace(
       expectedData: preparedTx.data as Hex,
       contractAddress: preparedTx.to as Address,
     });
-    const decision = decideNonceCollision(collision, alreadySentPolicy);
+    const decision = decideNonceCollision(collision, this.alreadySentPolicy);
     workflow.log.info(
       `[${label}] pre-re-pin check: ${collision.status} → ${decision.kind}`,
     );
@@ -770,139 +851,214 @@ export async function staggeredSendRace(
       default:
         return { kind: 'REPIN' };
     }
-  };
-
-  // Acquire the distributed signer-nonce lock (if enabled) BEFORE the first nonce
-  // pin, and keep it fresh with a heartbeat across all re-pins. Released in the
-  // finally below. Correctness still rests on the pinned nonce; the lock removes
-  // the cross-workflow read→send collision window.
-  let lockToken: NonceLockToken | undefined;
-  let lockDone = false;
-  let heartbeat: Promise<void> | undefined;
-  if (options.lock?.enabled) {
-    // The heartbeat interval is primary; the rolling TTL is three intervals, so
-    // the heartbeat refreshes at a third of the TTL.
-    const heartbeatIntervalMs =
-      options.lock.heartbeatIntervalMs ?? NONCE_LOCK_HEARTBEAT_INTERVAL_MS;
-    const lockTtlMs = computeNonceLockTtlMs(heartbeatIntervalMs);
-    const absoluteMaxMs = computeNonceLockAbsoluteMaxMs({
-      triesPerPin: lanes,
-      maxRepins: maxNonceRepins,
-      maxTimeoutPerTryMs: config.failThresholdMs,
-      staggerMs,
-      minChildTimeoutMs: config.minChildTimeoutMs,
-      chainId,
-      chainBlockTimeMs: blockTimeMs,
-      leewayMs: options.lock.leewayMs,
-    });
-    lockToken = await lockAcquireActivities.acquireNonceLock({
-      chainId,
-      signerKind,
-      ttlMs: lockTtlMs,
-      absoluteMaxMs,
-    });
-    // Attach the handler at creation so the fire-and-forget promise is never
-    // momentarily unhandled (e.g. a CancelledFailure from interruptibleSleep on
-    // external cancellation); the finally still awaits it deterministically.
-    heartbeat = runNonceLockHeartbeat({
-      token: lockToken,
-      lockTtlMs,
-      intervalMs: heartbeatIntervalMs,
-      absoluteMaxMs,
-      isDone: () => lockDone,
-      label,
-    }).catch(() => undefined);
   }
 
-  try {
-    for (let roundIndex = 0; ; roundIndex++) {
-      const pinnedNonce = await readSignerNonce(chainId);
-      workflow.log.info(
-        `[${label}] round ${roundIndex} pinned nonce ${pinnedNonce}`,
-      );
-      workflow.setCurrentDetails(
-        `round ${roundIndex} · nonce ${pinnedNonce} · racing`,
-      );
+  /** Acquire the lock (if enabled) + heartbeat, then loop re-pin ROUNDS, releasing
+   *  the lock in `finally` on every success/throw path. */
+  async run(): Promise<Hash> {
+    const { chainId, label, signerKind } = this.options;
 
-      const outcome = await resolvePinnedNonce(roundIndex, pinnedNonce);
+    // Acquire the distributed signer-nonce lock (if enabled) BEFORE the first nonce
+    // pin, and keep it fresh with a heartbeat across all re-pins. Correctness still
+    // rests on the pinned nonce; the lock removes the cross-workflow read→send
+    // collision window.
+    let lockToken: NonceLockToken | undefined;
+    let lockDone = false;
+    let heartbeat: Promise<void> | undefined;
+    if (this.options.lock?.enabled) {
+      // The heartbeat interval is primary; the rolling TTL is three intervals, so
+      // the heartbeat refreshes at a third of the TTL.
+      const heartbeatIntervalMs =
+        this.options.lock.heartbeatIntervalMs ??
+        NONCE_LOCK_HEARTBEAT_INTERVAL_MS;
+      const lockTtlMs = computeNonceLockTtlMs(heartbeatIntervalMs);
+      const absoluteMaxMs = computeNonceLockAbsoluteMaxMs({
+        triesPerPin: this.lanes,
+        maxRepins: this.maxNonceRepins,
+        maxTimeoutPerTryMs: this.config.failThresholdMs,
+        staggerMs: this.staggerMs,
+        minChildTimeoutMs: this.config.minChildTimeoutMs,
+        chainId,
+        chainBlockTimeMs: this.blockTimeMs,
+        leewayMs: this.options.lock.leewayMs,
+      });
+      lockToken = await lockAcquireActivities.acquireNonceLock({
+        chainId,
+        signerKind,
+        ttlMs: lockTtlMs,
+        absoluteMaxMs,
+      });
+      // The heartbeat runs INLINE (its periodic `extendNonceLock` activities show
+      // on this parent's timeline) rather than as its own child workflow. That was
+      // a deliberate decision (2026-06-19): extracting it would add a workflow-task
+      // scheduling dependency on the lock's own safety mechanism, for only a
+      // timeline-declutter gain — a worse trade than the cross-candidate extraction.
+      // See `nonce-lock-heartbeat-workflow-decision.md` for the spec if revisited.
+      //
+      // Attach the handler at creation so the fire-and-forget promise is never
+      // momentarily unhandled (e.g. a CancelledFailure from interruptibleSleep on
+      // external cancellation); the finally still awaits it deterministically.
+      heartbeat = runNonceLockHeartbeat({
+        token: lockToken,
+        lockTtlMs,
+        intervalMs: heartbeatIntervalMs,
+        absoluteMaxMs,
+        isDone: () => lockDone,
+        label,
+      }).catch(() => undefined);
+    }
 
-      if (outcome.kind === 'CONFIRMED') {
-        // After a re-pin, a prior round's tx could have mined late (RPC lag):
-        // re-confirm ALL hashes (shallow) to catch a cross-round double.
-        if (roundIndex > 0) {
-          const crossRound = await crossRoundReconfirm(
-            [...allCandidateHashes],
-            chainId,
-            pinnedNonce,
-            1,
-          );
-          if (crossRound.kind === 'MULTIPLE_CONFIRMED') {
-            return await resolveDoubleCommit(crossRound.winners);
+    try {
+      for (let roundIndex = 0; ; roundIndex++) {
+        await marker(`round ${roundIndex} · init · pin-nonce`, { roundIndex });
+        const pinnedNonce = await this.readSignerNonceActivity(chainId);
+
+        workflow.log.info(
+          `[${label}] round ${roundIndex} pinned nonce ${pinnedNonce}`,
+        );
+        workflow.setCurrentDetails(
+          `round ${roundIndex} · nonce ${pinnedNonce} · racing`,
+        );
+
+        await marker(`round ${roundIndex} · round:launch`, {
+          roundIndex,
+          pinnedNonce,
+        });
+        const outcome = await this.runRoundStage(roundIndex, pinnedNonce);
+        await marker(`round ${roundIndex} · round:done`, {
+          roundIndex,
+          pinnedNonce,
+          outcome: outcome.kind,
+        });
+
+        if (outcome.kind === 'CONFIRMED') {
+          // After a re-pin, a prior round's tx could have mined late (RPC lag):
+          // re-confirm ALL hashes (shallow) to catch a cross-round double.
+          if (roundIndex > 0) {
+            const crossRound = await this.crossRoundReconfirmActivity(
+              [...this.allCandidateHashes],
+              chainId,
+              pinnedNonce,
+              1,
+            );
+            if (crossRound.kind === 'MULTIPLE_CONFIRMED') {
+              return await this.resolveDoubleCommitStage(crossRound.winners);
+            }
           }
+          workflow.setCurrentDetails(`confirmed ${outcome.winner}`);
+          return outcome.winner;
         }
-        workflow.setCurrentDetails(`confirmed ${outcome.winner}`);
-        return outcome.winner;
-      }
 
-      if (outcome.kind === 'ADMIN_REPIN') {
-        // The stuck-pending admin authorized a re-pin (they cleared/replaced the
-        // stuck tx). Re-pin REGARDLESS of the foreign-steal budget — the precheck
-        // below still guards a non-idempotent op (its calldata may have landed).
-        workflow.log.warn(
-          `[${label}] admin-authorized re-pin at nonce ${pinnedNonce}`,
-        );
-        const pre = await runPrecheck(pinnedNonce);
+        if (outcome.kind === 'ADMIN_REPIN') {
+          // The stuck-pending admin authorized a re-pin (they cleared/replaced the
+          // stuck tx). Re-pin REGARDLESS of the foreign-steal budget — the precheck
+          // below still guards a non-idempotent op (its calldata may have landed).
+          workflow.log.warn(
+            `[${label}] admin-authorized re-pin at nonce ${pinnedNonce}`,
+          );
+          await marker(`round ${roundIndex} · already-sent precheck · init`, {
+            roundIndex,
+            pinnedNonce,
+            trigger: 'ADMIN_REPIN',
+          });
+          const pre = await this.precheckAlreadySentStage(pinnedNonce);
+          await marker(`round ${roundIndex} · already-sent precheck · done`, {
+            roundIndex,
+            pinnedNonce,
+            decision: pre.kind,
+          });
+          if (pre.kind === 'RETURN') return pre.winner;
+          continue; // re-pin a fresh nonce
+        }
+
+        // LOST_FOREIGN: a foreign tx took the nonce. Verify our calldata was not
+        // already broadcast, then re-pin a fresh nonce if budget remains.
+        await marker(`round ${roundIndex} · already-sent precheck · init`, {
+          roundIndex,
+          pinnedNonce,
+          trigger: 'LOST_FOREIGN',
+        });
+        const pre = await this.precheckAlreadySentStage(pinnedNonce);
+        await marker(`round ${roundIndex} · already-sent precheck · done`, {
+          roundIndex,
+          pinnedNonce,
+          decision: pre.kind,
+        });
         if (pre.kind === 'RETURN') return pre.winner;
-        continue; // re-pin a fresh nonce
-      }
-
-      // LOST_FOREIGN: a foreign tx took the nonce. Verify our calldata was not
-      // already broadcast, then re-pin a fresh nonce if budget remains.
-      const pre = await runPrecheck(pinnedNonce);
-      if (pre.kind === 'RETURN') return pre.winner;
-      if (roundIndex >= maxNonceRepins) {
-        throw new StaggeredRaceFailure(
-          'staggered-race/nonce-stolen',
-          `[${label}] nonce repeatedly consumed by a foreign tx (last on-chain nonce ${outcome.onChainNonce}) after ${roundIndex} re-pin(s)`,
+        if (roundIndex >= this.maxNonceRepins) {
+          throw new StaggeredRaceFailure(
+            'staggered-race/nonce-stolen',
+            `[${label}] nonce repeatedly consumed by a foreign tx (last on-chain nonce ${outcome.onChainNonce}) after ${roundIndex} re-pin(s)`,
+          );
+        }
+        workflow.log.warn(
+          `[${label}] nonce consumed (on-chain ${outcome.onChainNonce}); re-pinning (${roundIndex + 1}/${this.maxNonceRepins})`,
         );
       }
-      workflow.log.warn(
-        `[${label}] nonce consumed (on-chain ${outcome.onChainNonce}); re-pinning (${roundIndex + 1}/${maxNonceRepins})`,
-      );
-    }
-  } catch (error) {
-    // A deliberate failure (e.g. the reconciler's CRITICAL_ALERT) is already
-    // alerted and shaped — propagate as-is, do not double-alert.
-    if (error instanceof workflow.ApplicationFailure) {
-      throw error;
-    }
-    const type =
-      error instanceof StaggeredRaceFailure
-        ? error.type
-        : 'staggered-race/failed';
-    const message = error instanceof Error ? error.message : String(error);
-    await criticalAlertWithTicket({
-      title: `[${label}] transaction race failed`,
-      message,
-      priority: 1,
-      extraData: { chainId, candidateHashes: allCandidateHashes, type },
-    });
-    throw workflow.ApplicationFailure.create({
-      message,
-      type,
-      nonRetryable: true,
-    });
-  } finally {
-    if (lockToken) {
-      // Stop the heartbeat (trips its interruptibleSleep), drain any in-flight
-      // extend, then release. Runs on every success/throw path.
-      lockDone = true;
-      await heartbeat?.catch(() => undefined);
-      const token = lockToken;
-      await catchAndAlertLocally(
-        () => lockReleaseActivities.releaseNonceLock({ token }),
-        { message: `[${label}] nonce-lock release failed` },
-      );
+    } catch (error) {
+      // A deliberate failure (e.g. the reconciler's CRITICAL_ALERT) is already
+      // alerted and shaped — propagate as-is, do not double-alert.
+      if (error instanceof workflow.ApplicationFailure) {
+        throw error;
+      }
+      const type =
+        error instanceof StaggeredRaceFailure
+          ? error.type
+          : 'staggered-race/failed';
+      const message = error instanceof Error ? error.message : String(error);
+      await criticalAlertWithTicket({
+        title: `[${label}] transaction race failed`,
+        message,
+        priority: 1,
+        extraData: { chainId, candidateHashes: this.allCandidateHashes, type },
+      });
+      throw workflow.ApplicationFailure.create({
+        message,
+        type,
+        nonRetryable: true,
+      });
+    } finally {
+      if (lockToken) {
+        // Stop the heartbeat (trips its interruptibleSleep), drain any in-flight
+        // extend, then release. Runs on every success/throw path.
+        lockDone = true;
+        await heartbeat?.catch(() => undefined);
+        const token = lockToken;
+        await catchAndAlertLocally(
+          () => lockReleaseActivities.releaseNonceLock({ token }),
+          { message: `[${label}] nonce-lock release failed` },
+        );
+      }
     }
   }
+}
+
+/**
+ * Broadcasts a prepared transaction via a pinned-nonce staggered race of
+ * per-attempt child workflows and returns the confirmed transaction hash.
+ *
+ * Never fails or releases the lock while the nonce is still pending — it keeps
+ * batching, then waits, then hands off to the stuck-pending admin gate.
+ *
+ * @throws a non-retryable `ApplicationFailure` (after a critical alert) on
+ *   revert, stolen-nonce (after re-pins), unresolved multi-confirm, a never-
+ *   broadcast send failure, or the stuck-pending gate being cancelled/unwired.
+ */
+export async function staggeredSendRace(
+  options: StaggeredSendRaceOptions,
+): Promise<Hash> {
+  const { chainId } = options;
+  // Resolve the per-chain block time ONCE, honoring an optional
+  // `SEPOLIA_BLOCK_TIME_MS` override. Workflow code can't read `process.env`
+  // (sandbox-stubbed + non-deterministic), so we fetch it via an activity — the
+  // recorded result keeps replay deterministic. Only fetched for Sepolia (the one
+  // overridable chain), so other chains pay nothing.
+  const sepoliaOverrideRaw =
+    chainId === SEPOLIA_CHAIN_ID
+      ? (await getEnvVars([SEPOLIA_BLOCK_TIME_ENV_KEY]))[
+          SEPOLIA_BLOCK_TIME_ENV_KEY
+        ]
+      : undefined;
+  const blockTimeMs = resolveBlockTimeMs(chainId, sepoliaOverrideRaw);
+  return new StaggeredSendRace(options, blockTimeMs).run();
 }
