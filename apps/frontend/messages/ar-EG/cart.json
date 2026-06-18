@@ -29,7 +29,7 @@
   },
   "disabledReason": {
     "cartUpdating": "سلتك لا تزال تُحدَّث.",
-    "acceptRequirements": "راجع متطلبات التسجيل الظاهرة على عناصر سلتك وافقبلها.",
+    "acceptRequirements": "راجع متطلبات التسجيل الظاهرة على عناصر سلتك ووافق عليها.",
     "finishSplittingPayment": "أكمل تقسيم الدفع للمتابعة.",
     "selectWallet": "اختر محفظة لاستلام نطاقاتك.",
     "confirmWallet": "أكّد المحفظة التي ستستلم نطاقاتك.",
