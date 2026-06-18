@@ -89,7 +89,7 @@
     "congratulations": "مبروك!",
     "couldNotComplete": "ماقدرناش نكمل طلبك",
     "successSubheading": "حصلت على {count, plural, one {نطاقك وده الـ NFT بتاعه} other {نطاقاتك وديه الـ NFTs بتاعتهم}}",
-    "failedSubheading": "حصل مشكلة وأنا بعالج الطلب ده. اتفرج على التفاصيل تحت.",
+    "failedSubheading": "حصلت مشكلة أثناء معالجة الطلب ده. راجع التفاصيل تحت.",
     "nftWallet": "محفظة NFT",
     "viewFullDetails": "اعرض كل التفاصيل",
     "backToHome": "ارجع للرئيسية",

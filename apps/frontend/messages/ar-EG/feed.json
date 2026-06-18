@@ -52,7 +52,7 @@
     "detailsPlaceholder": "ضيف أي تفاصيل تساعدنا نتأكد من المشكلة.",
     "detailsHelp": "ملاحظات اختيارية تدعم بلاغك.",
     "detailsCounter": "{count}/1000",
-    "detailsTooLong": "التفاصيل متعدّتش 1000 حرف.",
+    "detailsTooLong": "خلّي التفاصيل أقل من 1000 حرف.",
     "cancel": "إلغاء",
     "submit": "ابعت البلاغ",
     "submitting": "بيتبعت...",
