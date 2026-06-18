@@ -82,6 +82,17 @@ const DISPLAY_DECIMALS = 2;
 const CALCULATION_DECIMALS = 6;
 const DECIMAL_INPUT_PATTERN = /^\d*\.?\d*$/;
 
+// Funded admin/treasury wallet used ONLY to simulate a representative fee
+// estimate (eth_estimateGas + the OP-stack L1-fee oracle read — read-only, no
+// signing, no state change) when the user's own params can't run: wallet not
+// connected, no amount entered yet, or the user's balance can't cover the
+// simulated value. `0.0001 ETH` clears the contract's minimum so the simulation
+// doesn't revert. Surfaced in the UI as an approximate (≈) figure.
+const NFSC_FEE_ESTIMATE_FALLBACK = {
+  account: '0x1b0f291c8fFebE891886351CDfF8A304a840C8Ad',
+  value: parseEther('0.0001'),
+} as const;
+
 const attemptGetChecksummedAddress = (address: string): string => {
   const parsed = checksumWalletAddressSchema.safeParse(address);
   return parsed.success ? parsed.data : address;
@@ -291,9 +302,11 @@ function NFSCSwapDialogInner(props: Props) {
     }
   }, [amountReceive]);
 
-  // Gas estimate for the `buyWithEthers` swap. The fee depends on the ETH
-  // value being sent, so re-estimate as the pay amount changes; before a valid
-  // amount is entered there's nothing to estimate against.
+  // Total network fee for the `buyWithEthers` swap (L2 execution + Base's L1
+  // data fee). It depends on the ETH value being sent, so re-estimate as the
+  // pay amount changes. Before a valid amount is entered — or if the user's own
+  // params can't simulate — the hook falls back to a funded signer + a nominal
+  // value so a representative fee still shows (flagged `isFallback`).
   const payValueWei = useMemo(() => {
     if (!isInputValid()) return undefined;
     try {
@@ -303,18 +316,24 @@ function NFSCSwapDialogInner(props: Props) {
     }
   }, [amountPay, isInputValid]);
 
-  const { feeFormatted: gasFeeEth, isLoading: isGasFeeLoading } =
-    useEstimateNamefiNfscCall({
-      functionName: 'buyWithEthers',
-      value: payValueWei || parseEther('0.0001'),
-    });
+  const {
+    feeFormatted: gasFeeEth,
+    isLoading: isGasFeeLoading,
+    isFallback: isGasFeeFallback,
+  } = useEstimateNamefiNfscCall({
+    functionName: 'buyWithEthers',
+    value: payValueWei,
+    fallback: NFSC_FEE_ESTIMATE_FALLBACK,
+  });
 
   const gasFee = useMemo(() => {
-    if (payValueWei === undefined) return '—';
     if (isGasFeeLoading) return 'Estimating…';
     if (gasFeeEth == null) return '—';
-    return `${Number.parseFloat(gasFeeEth).toFixed(CALCULATION_DECIMALS)} ETH`;
-  }, [payValueWei, isGasFeeLoading, gasFeeEth]);
+    const formatted = `${Number.parseFloat(gasFeeEth).toFixed(CALCULATION_DECIMALS)} ETH`;
+    // A fallback estimate is a representative figure, not the user's exact tx —
+    // mark it approximate so the number isn't read as a precise quote.
+    return isGasFeeFallback ? `≈ ${formatted}` : formatted;
+  }, [isGasFeeLoading, gasFeeEth, isGasFeeFallback]);
 
   const isEthTabLoading = isLoading || isConversionRateLoading;
 
