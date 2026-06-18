@@ -7,13 +7,38 @@ import { ConsentBanner, ConsentDialog } from '@c15t/nextjs';
  *
  * This module is intentionally kept separate so it can be dynamically
  * imported later if needed. For now it remains a small, direct import.
+ *
+ * Banner design notes:
+ * - Analytics (`measurement`) is our only consent-requiring category, so the
+ *   Reject/Accept pair already expresses the full choice — no "Customize" step
+ *   is shown on the banner (`layout={[['reject', 'accept']]}`). Per-category
+ *   review and later changes stay available via the footer "Cookie Settings"
+ *   entry, which opens the <ConsentDialog /> below.
+ * - "Reject" here is necessary-only: essential cookies always run (GDPR exempt)
+ *   while `measurement` is declined. Both buttons stay equally prominent, as
+ *   GDPR requires.
+ * - The one-line description names the purpose and links to the policy so the
+ *   choice stays informed; `hideBranding` drops the vendor tag for a cleaner,
+ *   more compact bar.
  */
 export function ConsentUIComponents() {
   return (
     <>
       <ConsentBanner
-        layout={['customize', ['reject', 'accept']]}
+        layout={[['reject', 'accept']]}
         primaryButton="accept"
+        hideBranding
+        title=""
+        description={
+          <>
+            We use cookies for analytics.{' '}
+            <a href="/tos" className="underline">
+              Privacy
+            </a>
+          </>
+        }
+        rejectButtonText="Reject"
+        acceptButtonText="Accept"
       />
       <ConsentDialog />
     </>

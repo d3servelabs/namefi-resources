@@ -100,7 +100,7 @@ export function WalletEditableSelect({
   }, [activeChainId, chains]);
   return (
     <div className="flex flex-col gap-2 w-full">
-      <div className="flex items-center w-full">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-0 w-full">
         {allowChangeChain && (
           <Select
             value={selectedChainId?.toString() ?? defaultChainId.toString()}

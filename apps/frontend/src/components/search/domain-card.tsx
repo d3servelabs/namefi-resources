@@ -526,7 +526,7 @@ export const DomainCard: FC<{
                 <Skeleton className="h-5 w-16 bg-gray-600/50 sm:h-6 sm:w-20" />
               ) : isNotNil(priceInUsd) ? (
                 <div className="flex flex-col gap-0.5 text-left transition-opacity duration-200 ease-out">
-                  <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl">
+                  <p className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1">
                     {isNotNil(originalRegistrationPriceInUsd) ? (
                       <>
                         <span className="mr-2 text-muted-foreground line-through">

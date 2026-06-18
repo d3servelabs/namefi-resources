@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { OrderDetailsContent } from '@/components/orders/order-details-content';
+import { PageShell } from '@/components/page-shell';
 import type { OriginRuntime } from '@/lib/origin/types';
 import { FreeMintsGuidanceProvider } from '@/components/providers/free-mints-guidance';
 import { PreAuthSignalsProvider } from '@/components/providers/pre-auth-signals';
@@ -338,7 +339,9 @@ function OrderDetailsPageWrapper({ mockState }: StoryArgs) {
       mockState={mockState ?? defaultMockState}
     >
       <ReactQueryDevtoolsWrapper />
-      <OrderDetailsContent id="order-123456" />
+      <PageShell>
+        <OrderDetailsContent id="order-123456" />
+      </PageShell>
     </StoryProviders>
   );
 }
