@@ -22,6 +22,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import NumberFlow from '@number-flow/react';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { useEventListener } from 'usehooks-ts';
+import { useTranslations } from 'next-intl';
 
 const FLOATING_CART_BASE_BOTTOM = 24;
 
@@ -42,6 +43,7 @@ export const FloatingCart = ({
   importableDomains,
   onBusyChange,
 }: FloatingCartProps) => {
+  const t = useTranslations('cart');
   const { cartData: items } = useCartContext();
   const cart = useCart();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -243,12 +245,12 @@ export const FloatingCart = ({
                         }
                       />
                       <span className="ml-[3px] whitespace-nowrap">
-                        {itemCount === 1 ? 'item' : 'items'}
+                        {t('floatingCart.itemCount', { count: itemCount })}
                       </span>
                     </span>
                     <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
                       <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
-                        Cart total
+                        {t('floatingCart.cartTotal')}
                       </span>
                       <NumberFlow
                         value={roundedTotalAmount}
@@ -280,8 +282,9 @@ export const FloatingCart = ({
                         }
                       />
                       <span className="ml-1">
-                        {importableCount === 1 ? 'domain' : 'domains'} ready to
-                        import
+                        {t('floatingCart.domainsReadyToImport', {
+                          count: importableCount,
+                        })}
                       </span>
                     </span>
                   </div>
@@ -306,7 +309,9 @@ export const FloatingCart = ({
                         <Plus className="size-4" />
                       )}
                       <span className="flex items-center gap-1.5 pl-1.5">
-                        {hasItems ? 'Add all' : 'Add to Cart'}
+                        {hasItems
+                          ? t('floatingCart.addAll')
+                          : t('floatingCart.addToCart')}
                         <NumberFlow
                           value={importableCount}
                           className="text-sm font-semibold"
@@ -334,7 +339,7 @@ export const FloatingCart = ({
                       }}
                     >
                       <ShoppingCartIcon className="size-5" />
-                      Checkout
+                      {t('floatingCart.checkout')}
                     </Button>
                   )}
                 </div>

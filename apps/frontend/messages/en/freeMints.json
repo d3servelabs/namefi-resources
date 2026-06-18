@@ -1,0 +1,29 @@
+{
+  "title": "My Free Mints",
+  "historyHeading": "History",
+  "table": {
+    "item": "Item",
+    "issuedOn": "Issued On",
+    "validUntil": "Valid Until",
+    "status": "Status",
+    "claimedDomain": "Claimed Domain",
+    "claimedOn": "Claimed On"
+  },
+  "campaignItem": "Any <domain>{domain}</domain> subdomain",
+  "campaignLabel": "Any {domain} subdomain",
+  "statusBadge": {
+    "claimed": "Claimed",
+    "inProgress": "In Progress",
+    "expired": "Expired",
+    "available": "Available"
+  },
+  "noHistory": "No claim history yet.",
+  "emptyTitle": "No Free Mints Yet",
+  "emptyDescription": "When you receive free claim opportunities, they will appear here.",
+  "card": {
+    "issued": "Issued",
+    "validThru": "Valid Thru",
+    "claimNow": "Claim Now",
+    "poweredByNamefi": "Powered by Namefi"
+  }
+}

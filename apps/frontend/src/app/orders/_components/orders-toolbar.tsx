@@ -30,6 +30,7 @@ import {
   Filter,
   RotateCcw,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 
 export type OrdersSortState = {
@@ -66,52 +67,58 @@ interface OrdersToolbarProps {
  * backend, so `columnId` is essentially a label/mapping key here, not an SQL
  * column name. Keep them in sync if you add a field.
  */
-const ORDERS_FILTER_CONFIG: Record<string, DrizzlerFilterFieldConfig> = {
-  domainName: {
-    id: 'domainName',
-    columnId: 'domainName',
-    label: 'Domain name',
-    type: 'text',
-    allowedOperators: ['ilike', 'like', 'eq'],
-    maxConditions: 1,
-  },
-  orderId: {
-    id: 'orderId',
-    columnId: 'orderId',
-    label: 'Order ID',
-    type: 'text',
-    allowedOperators: ['eq'],
-    maxConditions: 1,
-  },
-  nftReceivingWalletAddress: {
-    id: 'nftReceivingWalletAddress',
-    columnId: 'nftReceivingWalletAddress',
-    label: 'NFT receiving wallet',
-    type: 'text',
-    allowedOperators: ['eq'],
-    maxConditions: 1,
-  },
-  nftReceivingChainId: {
-    id: 'nftReceivingChainId',
-    columnId: 'nftReceivingChainId',
-    label: 'NFT receiving chain id',
-    type: 'number',
-    allowedOperators: ['eq'],
-    maxConditions: 1,
-  },
-  orderStatuses: {
-    id: 'orderStatuses',
-    columnId: 'orderStatuses',
-    label: 'Order status',
-    type: 'select',
-    allowedOperators: ['eq', 'inArray'],
-    options: orderStatusValues.map((status) => ({
-      value: status,
-      label: status.replace(/_/g, ' '),
-    })),
-    defaultLogicalOperator: 'or',
-  },
-};
+function buildOrdersFilterConfig(
+  t: ReturnType<typeof useTranslations<'orders'>>,
+): Record<string, DrizzlerFilterFieldConfig> {
+  return {
+    domainName: {
+      id: 'domainName',
+      columnId: 'domainName',
+      label: t('toolbar.filterDomainName'),
+      type: 'text',
+      allowedOperators: ['ilike', 'like', 'eq'],
+      maxConditions: 1,
+    },
+    orderId: {
+      id: 'orderId',
+      columnId: 'orderId',
+      label: t('toolbar.filterOrderId'),
+      type: 'text',
+      allowedOperators: ['eq'],
+      maxConditions: 1,
+    },
+    nftReceivingWalletAddress: {
+      id: 'nftReceivingWalletAddress',
+      columnId: 'nftReceivingWalletAddress',
+      label: t('toolbar.filterNftReceivingWallet'),
+      type: 'text',
+      allowedOperators: ['eq'],
+      maxConditions: 1,
+    },
+    nftReceivingChainId: {
+      id: 'nftReceivingChainId',
+      columnId: 'nftReceivingChainId',
+      label: t('toolbar.filterNftReceivingChainId'),
+      type: 'number',
+      allowedOperators: ['eq'],
+      maxConditions: 1,
+    },
+    orderStatuses: {
+      id: 'orderStatuses',
+      columnId: 'orderStatuses',
+      label: t('toolbar.filterOrderStatus'),
+      type: 'select',
+      allowedOperators: ['eq', 'inArray'],
+      // Status enum values are kept verbatim; only the humanized whitespace
+      // form is shown (the underlying status code stays unchanged).
+      options: orderStatusValues.map((status) => ({
+        value: status,
+        label: status.replace(/_/g, ' '),
+      })),
+      defaultLogicalOperator: 'or',
+    },
+  };
+}
 
 /**
  * Project the Drizzler filter state down to the simple `getMyOrders` input
@@ -188,8 +195,10 @@ export function OrdersToolbar({
   onShowAllParentsChange,
   onReset,
 }: OrdersToolbarProps) {
+  const t = useTranslations('orders');
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
   const [sortPopoverOpen, setSortPopoverOpen] = useState(false);
+  const filterConfig = useMemo(() => buildOrdersFilterConfig(t), [t]);
   const pbn = useMemo(() => {
     if (typeof window !== 'undefined' && window !== undefined) {
       const url = new URL(window.location.href);
@@ -200,10 +209,14 @@ export function OrdersToolbar({
   }, []);
 
   const sortLabel = useMemo(() => {
-    const fieldLabel = sort.sortBy === 'date' ? 'Date' : 'Price';
-    const dirLabel = sort.sortDirection === 'asc' ? 'asc' : 'desc';
+    const fieldLabel =
+      sort.sortBy === 'date' ? t('toolbar.sortDate') : t('toolbar.sortPrice');
+    const dirLabel =
+      sort.sortDirection === 'asc'
+        ? t('toolbar.sortDirAsc')
+        : t('toolbar.sortDirDesc');
     return `${fieldLabel} · ${dirLabel}`;
-  }, [sort]);
+  }, [sort, t]);
 
   const flipDirection = () => {
     onSortChange({
@@ -221,7 +234,7 @@ export function OrdersToolbar({
         onClick={() => setFilterPanelOpen(true)}
       >
         <Filter className="h-4 w-4 mr-2" />
-        Filters
+        {t('toolbar.filters')}
         {activeFilterCount > 0 && (
           <Badge variant="secondary" className="ml-2">
             {activeFilterCount}
@@ -234,14 +247,16 @@ export function OrdersToolbar({
           render={
             <Button type="button" variant="outline" size="sm">
               <ArrowUpDown className="h-4 w-4 mr-2" />
-              Sort: {sortLabel}
+              {t('toolbar.sort', { label: sortLabel })}
             </Button>
           }
         />
         <PopoverContent align="start" className="w-64 p-3">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
-              <Label className="text-xs text-muted-foreground">Sort by</Label>
+              <Label className="text-xs text-muted-foreground">
+                {t('toolbar.sortBy')}
+              </Label>
               <Select
                 value={sort.sortBy}
                 onValueChange={(value) =>
@@ -255,13 +270,17 @@ export function OrdersToolbar({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="date">Date</SelectItem>
-                  <SelectItem value="price">Price</SelectItem>
+                  <SelectItem value="date">{t('toolbar.sortDate')}</SelectItem>
+                  <SelectItem value="price">
+                    {t('toolbar.sortPrice')}
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="flex flex-col gap-1">
-              <Label className="text-xs text-muted-foreground">Direction</Label>
+              <Label className="text-xs text-muted-foreground">
+                {t('toolbar.direction')}
+              </Label>
               <Button
                 type="button"
                 variant="outline"
@@ -271,12 +290,12 @@ export function OrdersToolbar({
                 {sort.sortDirection === 'asc' ? (
                   <>
                     <ArrowUp className="h-4 w-4 mr-2" />
-                    Ascending
+                    {t('toolbar.ascending')}
                   </>
                 ) : (
                   <>
                     <ArrowDown className="h-4 w-4 mr-2" />
-                    Descending
+                    {t('toolbar.descending')}
                   </>
                 )}
               </Button>
@@ -296,7 +315,10 @@ export function OrdersToolbar({
             htmlFor="orders-show-only-curret-pbn"
             className="cursor-pointer font-normal text-muted-foreground"
           >
-            Only <code>{pbn}</code> domains
+            {t.rich('toolbar.onlyCurrentPbn', {
+              domain: pbn,
+              code: (chunks) => <code>{chunks}</code>,
+            })}
           </Label>
         </div>
       )}
@@ -310,7 +332,7 @@ export function OrdersToolbar({
           className="ml-auto"
         >
           <RotateCcw className="h-3.5 w-3.5 mr-1" />
-          Reset
+          {t('toolbar.reset')}
         </Button>
       )}
 
@@ -318,7 +340,7 @@ export function OrdersToolbar({
         open={filterPanelOpen}
         onOpenChange={setFilterPanelOpen}
         filterState={drizzlerState}
-        filterConfig={ORDERS_FILTER_CONFIG}
+        filterConfig={filterConfig}
         onFilterStateChange={onDrizzlerStateChange}
         onClearAll={onReset}
       />

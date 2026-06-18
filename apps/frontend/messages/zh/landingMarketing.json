@@ -1,0 +1,107 @@
+{
+  "features": {
+    "heading": "Namefi 功能",
+    "eyebrow": "为未来而建",
+    "items": {
+      "ownership": {
+        "title": "更快、更安全的所有权",
+        "description": "将传统 DNS 域名代币化为 NFT，转移可在数秒内完成，并具备清晰的链上溯源。"
+      },
+      "ai": {
+        "title": "随手可用的 AI 潜能",
+        "description": "Namefi AI 发掘命名洞察、品牌切入点与设计灵感，让每一次注册都更聪明地开始。"
+      },
+      "marketplace": {
+        "title": "可直接上架的资产",
+        "description": "将域名直接迁入 NFT 交易市场，以链上安全进行交易。"
+      }
+    }
+  },
+  "story": {
+    "tokenization": {
+      "badge": "Namefi NFT",
+      "title": "Namefi NFT 在链上保障 DNS 所有权。",
+      "description": "导入时铸造、导出时销毁，每个 NFT 都是您对域名控制权的可验证凭证。",
+      "highlights": {
+        "mintedOnImport": "导入即铸造",
+        "autoEns": "支持 AutoENS",
+        "marketplaceReady": "可直接上架交易市场"
+      },
+      "media": {
+        "previewAlt": "Namefi NFT 预览",
+        "previewEyebrow": "Namefi NFT 预览",
+        "previewTitle": "随域名一同流转的所有权"
+      }
+    },
+    "intelligence": {
+      "badge": "Namefi 品牌工作室",
+      "title": "数分钟内生成品牌方向与域名创意。",
+      "description": "Namefi AI 将可注册性数据与创意产出结合，让您验证概念、预览海报，并直接进入注册流程。",
+      "highlights": {
+        "domainGuidedPrompts": "域名导向的提示词",
+        "logosPosters": "标志与海报",
+        "shareReady": "可直接分享的素材"
+      },
+      "media": {
+        "eyebrow": "AI 工作流",
+        "generateTitle": "生成品牌套件",
+        "generateDescription": "针对您的域名与受众量身打造的标志、海报与文案。",
+        "portfolioTitle": "基于您的资产组合",
+        "portfolioDescription": "选择您拥有的 Namefi 域名，并围绕它定制创意方向。",
+        "shareTitle": "即时分享",
+        "shareDescription": "通过一个链接即可将素材导出给团队成员或社交平台。"
+      }
+    },
+    "operations": {
+      "badge": "DNS 与续期管理",
+      "title": "让域名持续可解析、已签名并自动续期。",
+      "description": "管理 DNS 区域、安排续期，并维护 DNSSEC 与 ENS 关联，无需在多个注册商或脚本之间周旋。",
+      "highlights": {
+        "dnssecAutoEns": "DNSSEC + AutoENS",
+        "autoRenew": "自动续期保护",
+        "validatedZoneEditor": "带校验的区域编辑器"
+      },
+      "media": {
+        "eyebrow": "运维概览",
+        "dnssecTitle": "DNSSEC 与 AutoENS",
+        "dnssecDescription": "启用签名工作流与免 Gas 的 DNSSEC，让您的 DNS 域名通过 ENS 自动在链上解析。",
+        "autoRenewTitle": "自动续期防护",
+        "autoRenewDescription": "一次保存付款偏好，由 Namefi 自动重试续期，让关键域名不会意外过期。",
+        "dnsTitle": "点击式 DNS 管理",
+        "dnsDescription": "在每次变更上线前都会校验的界面中编辑记录，无需使用注册商后台。"
+      }
+    }
+  },
+  "smartContracts": {
+    "heading": "Namefi 智能合约",
+    "description": "在 Ethereum 与 Base 上开源，任何人都可验证每一个函数。",
+    "weLove": "我们",
+    "opensource": "开源"
+  },
+  "poweredBy": {
+    "heading": "技术支持",
+    "description": "我们每天依赖的基础设施。"
+  },
+  "supporting": {
+    "heading": "荣誉支持",
+    "description": "在整个生态中交易并融资 Namefi NFT。"
+  },
+  "backers": {
+    "heading": "由合作伙伴、投资人与资助计划支持",
+    "description": "Namefi 获得 Web3 领域众多领先基金、加速器与基础设施提供商的支持。",
+    "filters": {
+      "all": "全部",
+      "investor": "投资人",
+      "partner": "合作伙伴",
+      "grant": "资助"
+    }
+  },
+  "community": {
+    "heading": "加入 Namefi 社区",
+    "description": "由域名玩家、构建者、贡献者与链上爱好者组成的全球网络。",
+    "newsletter": {
+      "title": "订阅我们的邮件",
+      "description": "订阅以获取新版本、集成与社区精选内容。"
+    }
+  }
+}

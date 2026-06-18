@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { differenceInDays } from 'date-fns';
 import { groupBy } from 'ramda';
 import {
@@ -38,6 +39,7 @@ const MarketplaceOrdersTab = dynamic(
 );
 
 export const MyDomainsContent = () => {
+  const t = useTranslations('domains');
   const marketplaceOrdersEnabled = useBooleanOpenFeatureFlag(
     MARKETPLACE_LISTINGS_FLAG,
   );
@@ -144,33 +146,39 @@ export const MyDomainsContent = () => {
     <div className="space-y-4">
       {processingOrderItems.length > 0 && (
         <div className="bg-muted/50 border border-border rounded-lg p-4 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">
-            ⏳{' '}
-            {processingOrderItems
-              .map((item) => item.normalizedDomainName)
-              .join(', ')}
-          </span>{' '}
-          are being processed. Visit{' '}
-          <Link href="/orders" className="text-primary hover:underline">
-            Orders
-          </Link>{' '}
-          to see their status.
+          {t.rich('processingBanner', {
+            domains: () => (
+              <span className="font-medium text-foreground">
+                ⏳{' '}
+                {processingOrderItems
+                  .map((item) => item.normalizedDomainName)
+                  .join(', ')}
+              </span>
+            ),
+            ordersLink: (chunks) => (
+              <Link href="/orders" className="text-primary hover:underline">
+                {chunks}
+              </Link>
+            ),
+          })}
         </div>
       )}
 
       <Tabs defaultValue="active">
         <TabsList className="w-fit">
-          <TabsTrigger value="active">My Domains</TabsTrigger>
-          <TabsTrigger value="inactive">Inactive Domains</TabsTrigger>
+          <TabsTrigger value="active">{t('tabs.active')}</TabsTrigger>
+          <TabsTrigger value="inactive">{t('tabs.inactive')}</TabsTrigger>
           <TabsTrigger value="previously-owned">
-            Previously Owned Domains
+            {t('tabs.previouslyOwned')}
           </TabsTrigger>
           {hasOtherWalletOrders && (
-            <TabsTrigger value="other-wallets">On Other Wallets</TabsTrigger>
+            <TabsTrigger value="other-wallets">
+              {t('tabs.otherWallets')}
+            </TabsTrigger>
           )}
           {marketplaceOrdersEnabled && (
             <TabsTrigger value="marketplace-orders">
-              My Listings & Offers
+              {t('tabs.marketplaceOrders')}
             </TabsTrigger>
           )}
         </TabsList>
@@ -178,7 +186,9 @@ export const MyDomainsContent = () => {
         <TabsContent value="active" className="mt-4">
           {activeDomains.length === 0 ? (
             <EmptyPlaceholder>
-              <EmptyPlaceholder.Title>No active domains</EmptyPlaceholder.Title>
+              <EmptyPlaceholder.Title>
+                {t('emptyActive')}
+              </EmptyPlaceholder.Title>
             </EmptyPlaceholder>
           ) : (
             <MyDomainsTable kind="active" domains={activeDomains} />
@@ -189,7 +199,7 @@ export const MyDomainsContent = () => {
           {inactiveDomains.length === 0 ? (
             <EmptyPlaceholder>
               <EmptyPlaceholder.Title>
-                No inactive domains
+                {t('emptyInactive')}
               </EmptyPlaceholder.Title>
             </EmptyPlaceholder>
           ) : (

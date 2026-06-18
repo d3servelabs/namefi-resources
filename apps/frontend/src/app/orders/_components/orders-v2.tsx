@@ -15,6 +15,7 @@ import { useTRPC } from '@/lib/trpc';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { PackageX } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
 import { OrderCard, type OrderCardOrder } from './order-card';
@@ -38,6 +39,7 @@ const DEFAULT_SORT: OrdersSortState = {
 };
 
 export function OrdersPageV2() {
+  const t = useTranslations('orders');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -132,7 +134,7 @@ export function OrdersPageV2() {
     <PageShell padding="default">
       <div className="my-2 flex flex-row items-center justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-4xl font-bold font-mono">Order History</h1>
+          <h1 className="text-4xl font-bold font-mono">{t('orderHistory')}</h1>
         </div>
         <OrdersToolbar
           drizzlerState={drizzlerState}
@@ -149,8 +151,7 @@ export function OrdersPageV2() {
       <div className="flex flex-col gap-4">
         {totalCount > 0 && (
           <div className="text-xs text-muted-foreground">
-            Showing {orders.length} of {totalCount} order
-            {totalCount === 1 ? '' : 's'}
+            {t('showingCount', { shown: orders.length, total: totalCount })}
           </div>
         )}
 
@@ -159,11 +160,11 @@ export function OrdersPageV2() {
         ) : orders.length === 0 ? (
           <MobileTableEmpty
             icon={PackageX}
-            title="No Orders Yet"
+            title={t('emptyTitle')}
             description={
               currentPbnDomain && !showAllParents
-                ? `No orders with ${currentPbnDomain} domains. Toggle "Show all parents" to see other orders.`
-                : 'Your orders would appear here when placed.'
+                ? t('emptyPbnDescription', { domain: currentPbnDomain })
+                : t('emptyDescription')
             }
           />
         ) : (
@@ -187,7 +188,7 @@ export function OrdersPageV2() {
               onClick={() => void fetchNextPage()}
               disabled={isFetchingNextPage}
             >
-              {isFetchingNextPage ? 'Loading…' : 'Load more orders'}
+              {isFetchingNextPage ? t('loading') : t('loadMore')}
             </Button>
           </div>
         )}

@@ -1,0 +1,185 @@
+{
+  "inYourCart": {
+    "description": "Heading on the cart page indicating the items currently in the user's cart."
+  },
+  "yourCartIsEmpty": {
+    "description": "Empty-state title shown when the cart has no items."
+  },
+  "emptyCartHint": {
+    "description": "Empty-state body prompting the user to add domains to the cart to get started."
+  },
+  "browseDomains": {
+    "description": "Button on the empty cart that navigates to the domain browse/search page."
+  },
+  "clearCart": {
+    "description": "Button to remove all items from the cart."
+  },
+  "clearCartDialog.title": {
+    "description": "Title of the confirmation dialog shown before clearing the cart."
+  },
+  "clearCartDialog.description": {
+    "description": "Body of the clear-cart confirmation dialog explaining that all items will be removed."
+  },
+  "clearCartDialog.cancel": {
+    "description": "Cancel button in the clear-cart confirmation dialog."
+  },
+  "errorDialog.title": {
+    "description": "Title of the dialog shown when order submission fails unexpectedly."
+  },
+  "errorDialog.description": {
+    "description": "Body of the error dialog reassuring the user they won't be charged and inviting a retry."
+  },
+  "errorDialog.errorDetail": {
+    "description": "Technical error detail line shown in the error dialog. {message} is the raw error message — keep untranslated; keep the surrounding parentheses and 'Error -' prefix."
+  },
+  "errorDialog.close": {
+    "description": "Close button in the order-error dialog."
+  },
+  "errorDialog.tryAgain": {
+    "description": "Retry button in the order-error dialog."
+  },
+  "cartChanges.title": {
+    "description": "Title of the notice shown when the cart contents changed (e.g. price or availability updates)."
+  },
+  "cartChanges.description": {
+    "description": "Body of the cart-changes notice indicating some changes were made to the cart."
+  },
+  "cartChanges.dismiss": {
+    "description": "Dismiss button for the cart-changes notice."
+  },
+  "submitButton.selectNftWallet": {
+    "description": "Submit-button label prompting the user to select an NFT wallet before continuing."
+  },
+  "submitButton.selectPaymentMethod": {
+    "description": "Submit-button label prompting the user to select a payment method before continuing."
+  },
+  "submitButton.processing": {
+    "description": "Submit-button loading label while the order is being processed."
+  },
+  "submitButton.submitOrder": {
+    "description": "Primary submit button to place the order."
+  },
+  "disabledReason.cartUpdating": {
+    "description": "Reason text explaining the submit button is disabled because the cart is still updating."
+  },
+  "disabledReason.acceptRequirements": {
+    "description": "Reason text explaining the user must review and accept the registration requirements on their cart items."
+  },
+  "disabledReason.finishSplittingPayment": {
+    "description": "Reason text explaining the user must finish splitting their payment to continue."
+  },
+  "disabledReason.selectWallet": {
+    "description": "Reason text explaining the user must select a wallet to receive their domains."
+  },
+  "disabledReason.confirmWallet": {
+    "description": "Reason text explaining the user must confirm the wallet that will receive their domains."
+  },
+  "disabledReason.selectPaymentMethod": {
+    "description": "Reason text explaining the user must select a payment method."
+  },
+  "skeleton.selectNftWallet": {
+    "description": "Placeholder label shown in the loading skeleton for the NFT wallet selector."
+  },
+  "skeleton.paymentMethod": {
+    "description": "Placeholder label shown in the loading skeleton for the payment method selector."
+  },
+  "addFromUrl.cart": {
+    "description": "Breadcrumb/label for the cart on the add-domains-from-URL flow page."
+  },
+  "addFromUrl.heading": {
+    "description": "Heading on the add-domains-from-URL page while domains are added to the cart."
+  },
+  "addFromUrl.subheading": {
+    "description": "Subheading on the add-domains-from-URL page asking the user to wait while domains are validated and loaded."
+  },
+  "addFromUrl.domainsRequested": {
+    "description": "Label preceding the list/count of domains requested in the add-from-URL flow."
+  },
+  "addFromUrl.steps.parse": {
+    "description": "Progress step label for validating the requested domains."
+  },
+  "addFromUrl.steps.fetch": {
+    "description": "Progress step label for checking domain availability."
+  },
+  "addFromUrl.steps.add": {
+    "description": "Progress step label for adding domains to the cart."
+  },
+  "addFromUrl.steps.redirect": {
+    "description": "Progress step label for redirecting the user to their cart."
+  },
+  "addFromUrl.detail.added": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain was added to the cart."
+  },
+  "addFromUrl.detail.readyToAdd": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain is ready to be added."
+  },
+  "addFromUrl.detail.alreadyInCart": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain is already in the cart."
+  },
+  "addFromUrl.detail.requiresTransferCode": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain requires a transfer/auth code."
+  },
+  "addFromUrl.detail.unsupported": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain is unsupported or unavailable."
+  },
+  "addFromUrl.detail.invalid": {
+    "description": "Per-domain status badge in the add-from-URL flow: the domain entry is invalid."
+  },
+  "addFromUrl.confirm.addingToCart": {
+    "description": "Loading label on the confirm button while domains are being added to the cart."
+  },
+  "addFromUrl.confirm.tryAgain": {
+    "description": "Retry button in the add-from-URL confirm step."
+  },
+  "addFromUrl.confirm.addToCart": {
+    "description": "Confirm button to add the listed domains to the cart."
+  },
+  "addFromUrl.confirm.reviewHelper": {
+    "description": "Helper text prompting the user to review the details above before confirming."
+  },
+  "addFromUrl.confirm.noRegistrableHelper": {
+    "description": "Helper text shown when no registrable domains were found to add."
+  },
+  "addFromUrl.redirecting": {
+    "description": "Status text shown while redirecting the user to their cart."
+  },
+  "addFromUrl.errors.noDomains": {
+    "description": "Error message shown when no domains were provided in the add-from-URL flow."
+  },
+  "addFromUrl.errors.validationFailed": {
+    "description": "Error message shown when domain validation failed in the add-from-URL flow."
+  },
+  "addFromUrl.errors.addFailed": {
+    "description": "Error message shown when adding domains to the cart failed in the add-from-URL flow."
+  },
+  "floatingCart.itemCount": {
+    "description": "Item-count label in the floating cart. ICU plural on {count}: 'one' = 'item', 'other' = 'items' (the number is rendered separately)."
+  },
+  "floatingCart.cartTotal": {
+    "description": "Label for the cart total amount in the floating cart."
+  },
+  "floatingCart.domainsReadyToImport": {
+    "description": "Label in the floating cart noting domains ready to import. ICU plural on {count}: 'one' = 'domain', 'other' = 'domains' (the number is rendered separately)."
+  },
+  "floatingCart.addAll": {
+    "description": "Button in the floating cart to add all ready domains."
+  },
+  "floatingCart.addToCart": {
+    "description": "Button in the floating cart to add the item to the cart."
+  },
+  "floatingCart.checkout": {
+    "description": "Button in the floating cart to proceed to checkout."
+  },
+  "submitErrors.x402Disabled": {
+    "description": "Error message shown when x402 payment is currently disabled. 'x402' is a payment protocol name — keep as-is."
+  },
+  "submitErrors.x402Unavailable": {
+    "description": "Error message shown when x402 payment is not available right now. 'x402' is a payment protocol name — keep as-is."
+  },
+  "submitErrors.x402ConnectWallet": {
+    "description": "Error message prompting the user to connect an active wallet to sign their x402 payment. 'x402' is a payment protocol name — keep as-is."
+  },
+  "submitErrors.orderFailed": {
+    "description": "Generic error message shown when the order could not be submitted, inviting a retry."
+  }
+}

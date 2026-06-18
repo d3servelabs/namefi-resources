@@ -22,6 +22,7 @@ import { Loader2, AlertTriangle, ShieldCheck } from 'lucide-react';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { useTranslations } from 'next-intl';
 
 /**
  * EIP-712 types for revoking an API key
@@ -50,6 +51,7 @@ export function RevokeApiKeyDialog({
   keyToRevoke,
   onSuccess,
 }: RevokeApiKeyDialogProps) {
+  const t = useTranslations('profile');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -85,7 +87,7 @@ export function RevokeApiKeyDialog({
       if (signWithWallet) {
         const walletToUse = selectedWallet || activeWalletAddress;
         if (!walletToUse) {
-          toast.error('Please select a wallet to sign with');
+          toast.error(t('revokeApiKey.selectWalletError'));
           return;
         }
 
@@ -117,16 +119,16 @@ export function RevokeApiKeyDialog({
         payload,
       });
 
-      toast.success('API key revoked successfully');
+      toast.success(t('revokeApiKey.revokeSuccess'));
       onSuccess();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Unknown error';
 
       if (errorMessage.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('revokeApiKey.signatureRejected'));
       } else {
-        toast.error(`Failed to revoke API key: ${errorMessage}`);
+        toast.error(t('revokeApiKey.revokeFailure', { error: errorMessage }));
       }
     } finally {
       setIsSubmitting(false);
@@ -138,7 +140,7 @@ export function RevokeApiKeyDialog({
       <RequestWalletConnection
         ref={walletConnectionRef}
         onRequestedWalletConnected={handleWalletConnected}
-        actionDescription="to revoke the API key"
+        actionDescription={t('revokeApiKey.walletActionDescription')}
       />
 
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -146,18 +148,17 @@ export function RevokeApiKeyDialog({
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-destructive" />
-              Revoke API Key
+              {t('revokeApiKey.title')}
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to revoke this API key? This action cannot
-              be undone and any applications using this key will stop working.
+              {t('revokeApiKey.description')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             {keyToRevoke && (
               <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4">
-                <p className="font-medium">Key to revoke:</p>
+                <p className="font-medium">{t('revokeApiKey.keyToRevoke')}</p>
                 <p className="text-sm text-muted-foreground">
                   {keyToRevoke.name}
                 </p>
@@ -180,15 +181,17 @@ export function RevokeApiKeyDialog({
                 >
                   <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    Attest with wallet signature{' '}
-                    <span className="text-muted-foreground">(optional)</span>
+                    {t('revokeApiKey.attestWithSignature')}{' '}
+                    <span className="text-muted-foreground">
+                      {t('revokeApiKey.optional')}
+                    </span>
                   </span>
                 </Label>
               </div>
 
               {signWithWallet && (
                 <div className="space-y-2 ml-7">
-                  <Label>Signing Wallet</Label>
+                  <Label>{t('revokeApiKey.signingWallet')}</Label>
                   <div className="grid gap-2">
                     {connectedEthereumWallets.map((wallet) => (
                       <button
@@ -208,14 +211,14 @@ export function RevokeApiKeyDialog({
                         </span>
                         {activeWalletAddress === wallet.address && (
                           <span className="ml-auto text-xs text-muted-foreground">
-                            (active)
+                            {t('revokeApiKey.active')}
                           </span>
                         )}
                       </button>
                     ))}
                     {connectedEthereumWallets.length === 0 && (
                       <p className="text-sm text-muted-foreground">
-                        No wallets connected. Please connect a wallet first.
+                        {t('revokeApiKey.noWalletsConnected')}
                       </p>
                     )}
                   </div>
@@ -230,7 +233,7 @@ export function RevokeApiKeyDialog({
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('revokeApiKey.cancel')}
             </Button>
             <Button
               variant="destructive"
@@ -243,10 +246,10 @@ export function RevokeApiKeyDialog({
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Revoking...
+                  {t('revokeApiKey.revoking')}
                 </>
               ) : (
-                'Revoke Key'
+                t('revokeApiKey.revokeKey')
               )}
             </Button>
           </DialogFooter>

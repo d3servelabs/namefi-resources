@@ -35,6 +35,7 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Gift, User } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
@@ -239,6 +240,7 @@ export const DomainCard: FC<{
   isImportMode,
   freeClaimEligibility,
 }) => {
+  const t = useTranslations('search');
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const router = useRouter();
   const eppInputRef = useRef<HTMLInputElement>(null);
@@ -430,7 +432,7 @@ export const DomainCard: FC<{
     toSafeMlsListingUrl(mlsOfferSource?.url) ??
     toSafeMlsListingUrl(mlsOffer?.sourceTweetUrl) ??
     '';
-  const mlsOfferSourceLabel = mlsOfferSource?.label ?? 'marketplace';
+  const mlsOfferSourceLabel = mlsOfferSource?.label ?? t('card.marketplace');
   const shouldShowSourceIcon = mlsOfferSource?.id === 'x';
   const isUnavailableForDirectBuy = Boolean(
     availabilityInfo && !availabilityInfo.availability && !isUnsupported,
@@ -456,13 +458,16 @@ export const DomainCard: FC<{
       onClick={goToMlsOffer}
       aria-label={
         mlsSellerHandle
-          ? `Buy on ${mlsOfferSourceLabel} from ${mlsSellerHandle}`
-          : `Buy on ${mlsOfferSourceLabel}`
+          ? t('card.buyOnSourceFromSellerAriaLabel', {
+              source: mlsOfferSourceLabel,
+              seller: mlsSellerHandle,
+            })
+          : t('card.buyOnSourceAriaLabel', { source: mlsOfferSourceLabel })
       }
       className="h-8 max-w-full shrink-0 gap-1.5 border border-white/15 bg-black px-2.5 text-[11px] text-white shadow-sm hover:bg-zinc-900 hover:text-white sm:h-9 sm:px-3 sm:text-xs"
     >
-      <span className="sm:hidden">Buy</span>
-      <span className="hidden sm:inline">Buy on</span>
+      <span className="sm:hidden">{t('card.buyShort')}</span>
+      <span className="hidden sm:inline">{t('card.buyOn')}</span>
       {shouldShowSourceIcon ? (
         <Image
           src="/assets/social/x-logo.svg"
@@ -533,16 +538,22 @@ export const DomainCard: FC<{
                           {formatAmountInUSD(originalRegistrationPriceInUsd)}
                         </span>
                         <span className="font-semibold text-brand-primary">
-                          {`${formatAmountInUSD(priceInUsd)} USD`}
+                          {t('card.priceWithCurrency', {
+                            price: formatAmountInUSD(priceInUsd),
+                          })}
                         </span>
                       </>
                     ) : (
-                      `${formatAmountInUSD(priceInUsd)} USD`
+                      t('card.priceWithCurrency', {
+                        price: formatAmountInUSD(priceInUsd),
+                      })
                     )}
                   </p>
                   {isNotNil(renewalPriceInUsd) && (
                     <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm">
-                      renews at {formatAmountInUSD(renewalPriceInUsd)}
+                      {t('card.renewsAt', {
+                        price: formatAmountInUSD(renewalPriceInUsd),
+                      })}
                     </p>
                   )}
                 </div>
@@ -561,15 +572,16 @@ export const DomainCard: FC<{
               <div className="flex items-center text-[11px] text-muted-foreground sm:text-xs">
                 <User className="mr-1 h-3 w-3 shrink-0" />
                 <span className="line-clamp-1">
-                  Owner: {currentOwner.substring(0, 6)}...
-                  {currentOwner.substring(currentOwner.length - 4)}
+                  {t('card.owner', {
+                    owner: `${currentOwner.substring(0, 6)}...${currentOwner.substring(currentOwner.length - 4)}`,
+                  })}
                 </span>
               </div>
             )}
             {shouldShowImportHint && (
               <div className="mt-1 flex items-center gap-2">
                 <span className="text-[10px] italic text-muted-foreground sm:text-xs">
-                  Not registered
+                  {t('card.notRegistered')}
                 </span>
               </div>
             )}
@@ -580,7 +592,9 @@ export const DomainCard: FC<{
                 <AnimatedWishlistButton
                   state={wishlistState}
                   aria-label={
-                    inWishlist ? 'Remove from wishlist' : 'Add to wishlist'
+                    inWishlist
+                      ? t('card.removeFromWishlist')
+                      : t('card.addToWishlist')
                   }
                   onToggle={handleWishlistToggle}
                   disabled={wishlistBusy}
@@ -591,7 +605,7 @@ export const DomainCard: FC<{
                 <Skeleton className="h-8 w-16 rounded-full bg-gray-600/50 sm:h-9 sm:w-20 md:w-24" />
               ) : isUnsupported ? (
                 <Badge variant="destructive" className="text-[10px] sm:text-xs">
-                  Unsupported
+                  {t('card.unsupported')}
                 </Badge>
               ) : showImportUi && availabilityInfo?.availability ? (
                 <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
@@ -607,9 +621,9 @@ export const DomainCard: FC<{
                 </div>
               ) : showImportUi && !isImportable ? (
                 <Badge variant="secondary" className="text-[10px] sm:text-xs">
-                  <span className="sm:hidden">Locked</span>
+                  <span className="sm:hidden">{t('card.lockedShort')}</span>
                   <span className="hidden sm:inline">
-                    Temporarily unimportable
+                    {t('card.temporarilyUnimportable')}
                   </span>
                 </Badge>
               ) : showImportUi && isImportable ? (
@@ -636,7 +650,7 @@ export const DomainCard: FC<{
                     variant="destructive"
                     className="text-[10px] sm:text-xs"
                   >
-                    Taken
+                    {t('card.taken')}
                   </Badge>
                   {mlsOfferButton}
                 </div>
@@ -644,9 +658,11 @@ export const DomainCard: FC<{
                 !availabilityInfo.availability &&
                 !isImportable ? (
                 <Badge variant="secondary" className="text-[10px] sm:text-xs">
-                  <span className="sm:hidden">Unavailable</span>
+                  <span className="sm:hidden">
+                    {t('card.unavailableShort')}
+                  </span>
                   <span className="hidden sm:inline">
-                    Temporarily unavailable
+                    {t('card.temporarilyUnavailable')}
                   </span>
                 </Badge>
               ) : availabilityInfo.availability &&
@@ -658,7 +674,7 @@ export const DomainCard: FC<{
                   className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs disabled:opacity-100"
                 >
                   <Gift className="h-4 w-4" />
-                  Free Claim
+                  {t('card.freeClaim')}
                 </NamefiButton>
               ) : availabilityInfo.availability ? (
                 <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
@@ -688,10 +704,14 @@ export const DomainCard: FC<{
                 <PasswordInput
                   ref={eppInputRef}
                   aria-label={
-                    hasStoredEncryptedEppCode ? 'Saved EPP code' : 'EPP Code'
+                    hasStoredEncryptedEppCode
+                      ? t('card.savedEppCode')
+                      : t('card.eppCode')
                   }
                   placeholder={
-                    hasStoredEncryptedEppCode ? 'Saved EPP code' : 'EPP Code'
+                    hasStoredEncryptedEppCode
+                      ? t('card.savedEppCode')
+                      : t('card.eppCode')
                   }
                   value={activeEppAuthorizationCode ?? ''}
                   disabled={inCart}

@@ -1,0 +1,63 @@
+{
+  "disclaimer": "Namefi is an ICANN Accredited Registrar tokenizing internet domain names for trading, DeFi and future of Internet.",
+  "llmsTxt": "Use <link>llms.txt</link> if you are an LLM agent such as Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode and any other AI agent.",
+  "copyright": "© {year} D3SERVE LABS, Inc. All rights reserved.",
+  "cookieSettings": "Cookie Settings",
+  "cookieSettingsAriaLabel": "Open cookie settings dialog",
+  "termsAndConditions": "Terms & Conditions",
+  "sections": {
+    "explore": {
+      "title": "Explore",
+      "links": {
+        "discoverDomains": "Discover Domains",
+        "brandStudio": "Namefi Brand Studio",
+        "feed": "Namefi Feed",
+        "outbound": "Namefi Outbound",
+        "domainHunt": "Domain Hunt",
+        "newsletter": "Newsletter",
+        "flushDns": "Flush DNS",
+        "faucet": "NFSC Faucet (sandbox)"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "links": {
+        "myDomains": "My Domains",
+        "myWishlist": "My Wishlist",
+        "myOrders": "My Orders",
+        "paymentMethods": "Payment Methods"
+      }
+    },
+    "resources": {
+      "title": "Resources",
+      "links": {
+        "blog": "Blog",
+        "watch": "Watch",
+        "careers": "Careers",
+        "tlds": "TLDs",
+        "partners": "Partners",
+        "glossary": "Glossary",
+        "howWeHire": "How We Hire",
+        "abuseReporting": "Abuse Reporting",
+        "educationHub": "Education Hub",
+        "registrationAgreement": "Registration Agreement",
+        "apiDocs": "Namefi API Docs",
+        "llmApi": "API for LLM AI Agents",
+        "support": "Support"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "links": {
+        "aboutNamefi": "About Namefi",
+        "whatIsDomain": "What is a Domain?",
+        "whatAreTokenizedDomains": "What are Tokenized Domains?",
+        "whyTokenizeDomains": "Why Tokenize Domains?",
+        "dnsOnTokenizedDomains": "DNS on Tokenized Domains",
+        "dnsIsControlPlane": "DNS is the Control Plane",
+        "howToTokenizeCom": "How to Tokenize Your .com",
+        "tokenizedVsWeb3": "Tokenized Domain vs Web3 Domain"
+      }
+    }
+  }
+}

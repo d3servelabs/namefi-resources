@@ -1,0 +1,27 @@
+{
+  "hero.badge": {
+    "description": "Trust badge above the landing hero heading, stating Namefi is an ICANN-accredited registrar. Keep brand 'Namefi' and chain names 'Ethereum' & 'Base' untranslated."
+  },
+  "hero.heading": {
+    "description": "Main landing hero heading pitching Namefi as a blockchain + AI domain platform. Keep brand 'Namefi' untranslated."
+  },
+  "hero.subtitle": {
+    "description": "Landing hero subtitle/tagline beneath the heading, summarizing the value proposition."
+  },
+  "hero.tryV3Beta": {
+    "description": "Landing hero link inviting users to try the new v3 beta search experience."
+  },
+  "scrollIndicator.ariaLabel": {
+    "description": "Accessibility label (screen-reader only) for the landing scroll-down indicator that jumps to the 'Why Use Namefi' section. Keep brand 'Namefi' untranslated."
+  },
+  "scrollIndicator.label": {
+    "description": "Visible text on the landing scroll-down indicator. Keep brand 'Namefi' untranslated."
+  },
+  "floatingSearch.placeholder": {
+    "description": "Placeholder text inside the landing page's floating domain search input."
+  },
+  "floatingSearch.searchButton": {
+    "description": "Label and tooltip for the search button on the landing page's floating search box.",
+    "maxLength": 8
+  }
+}

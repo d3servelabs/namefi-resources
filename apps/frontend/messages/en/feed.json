@@ -1,0 +1,140 @@
+{
+  "title": "Namefi Feed",
+  "header": {
+    "usersLink": "Users",
+    "subscribeRss": "Subscribe via RSS",
+    "rss": "RSS",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing"
+  },
+  "controls": {
+    "searchLabel": "Search",
+    "searchPlaceholder": "Search domains or users",
+    "searchPlaceholderWithTld": "Search .{tld} domains or users",
+    "clearSearchAriaLabel": "Clear search",
+    "tldLabel": "TLD",
+    "allTlds": "All TLDs",
+    "tldPlaceholder": "Type a TLD",
+    "noTldMatch": "No TLD match.",
+    "selectedHeading": "Selected",
+    "customHeading": "Custom",
+    "useCustomTld": "Use .{tld}",
+    "commonHeading": "Common",
+    "clear": "Clear"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "No matching listings in this part of the feed.",
+    "empty": "No listings found.",
+    "loadMore": "Load more",
+    "endOfFeed": "End of feed",
+    "backToTopAriaLabel": "Back to top"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# other domain} other {# other domains}}",
+    "openDomainAriaLabel": "Open {domain}",
+    "openSourceAriaLabel": "Open {source} source for {domain}",
+    "noExcerpt": "No excerpt available",
+    "justNow": "just now",
+    "unknownDate": "Unknown",
+    "logoAlt": "{name} logo"
+  },
+  "report": {
+    "trigger": "Report",
+    "reported": "Reported",
+    "triggerAriaLabel": "Report listing for {domain}",
+    "dialogTitle": "Report listing",
+    "dialogDescription": "Flag issues with <highlight>{domain}</highlight>. Our team reviews reports before taking action.",
+    "reasonLabel": "Reason",
+    "reasonPlaceholder": "Select a reason",
+    "detailsLabel": "Details (optional)",
+    "detailsPlaceholder": "Add context that will help us verify the issue.",
+    "detailsHelp": "Optional notes to support your report.",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "Keep details under 1000 characters.",
+    "cancel": "Cancel",
+    "submit": "Submit report",
+    "submitting": "Submitting",
+    "submitSuccess": "Report submitted for {domain}.",
+    "submitErrorFallback": "Unable to submit report. Please try again.",
+    "unexpectedResponse": "Unexpected report response from server.",
+    "reasons": {
+      "alreadySold": {
+        "label": "Already sold",
+        "description": "The domain has already sold and should not stay in the feed."
+      },
+      "inaccuratePrice": {
+        "label": "Inaccurate price",
+        "description": "The listed asking price appears wrong or misleading."
+      },
+      "notForSale": {
+        "label": "Not for sale",
+        "description": "The post does not represent a real domain sale listing."
+      },
+      "duplicateListing": {
+        "label": "Duplicate listing",
+        "description": "This sale was already listed elsewhere in the feed."
+      },
+      "other": {
+        "label": "Other",
+        "description": "Use details to describe the issue clearly."
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "Back to feed",
+    "fallbackSeller": "@unknown",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing",
+    "invalidPath": "This feed user path is not valid.",
+    "loadErrorFallback": "Failed to load seller listings.",
+    "emptyListings": "No listings found for this seller.",
+    "endOfListings": "End of seller listings",
+    "loadMore": "Load more",
+    "subtitle": {
+      "invalidPath": "Invalid feed user path.",
+      "noDomains": "No domains listed by this seller yet.",
+      "feedAndNamefi": "{feedCount, plural, one {# feed domain} other {# feed domains}} and {namefiCount, plural, one {# Namefi-owned domain} other {# Namefi-owned domains}}.",
+      "feedOnly": "{feedCount, plural, one {# feed domain} other {# feed domains}} listed by this seller."
+    }
+  },
+  "users": {
+    "backToFeed": "Back to feed",
+    "title": "Users",
+    "loadingSubtitle": "Loading users who post domain sale listings.",
+    "subtitle": "{count, plural, one {# matching user} other {# matching users}}.",
+    "subtitleRefreshed": "{count, plural, one {# matching user} other {# matching users}}, refreshed {refreshedAt}.",
+    "refresh": "Refresh",
+    "exportCsv": "Export CSV",
+    "exportSuccess": "Users CSV exported",
+    "exportErrorTitle": "Could not export users CSV",
+    "exportErrorFallback": "Please try again.",
+    "searchPlaceholder": "Search handle, domain, or post text",
+    "clearSearchAriaLabel": "Clear search",
+    "minPostsAriaLabel": "Minimum posts",
+    "minPostsOption": "{count}+ posts",
+    "activeWithinAriaLabel": "Active within",
+    "anyTime": "Any time",
+    "activeWithinDays": "{count} days",
+    "lastDays": "Last {count}d",
+    "clear": "Clear",
+    "columns": {
+      "user": "User",
+      "domains": "Domains",
+      "cadence": "Cadence",
+      "lastPost": "Last post"
+    },
+    "domainsPerPost": "{count} / post",
+    "postsPerWeek": "posts / week",
+    "namefiOwned": "{count} Namefi-owned",
+    "today": "today",
+    "daysAgo": "{count}d",
+    "unknownDate": "unknown",
+    "emptyThreshold": "No users match this threshold.",
+    "loadingMore": "Loading more users",
+    "loadMore": "Load more",
+    "listings": "Listings",
+    "post": "Post"
+  }
+}

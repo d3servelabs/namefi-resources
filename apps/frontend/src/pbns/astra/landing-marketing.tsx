@@ -12,6 +12,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { motion, useInView } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
@@ -48,24 +49,9 @@ const NewsletterForm = dynamic(
 );
 
 const FEATURES = [
-  {
-    title: 'Faster, safer ownership',
-    description:
-      'Tokenize traditional DNS names into NFTs so transfers settle in seconds with clear, onchain provenance.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'AI potential on tap',
-    description:
-      'Namefi AI uncovers naming insights, brand hooks, and design inspirations so every registration starts smarter.',
-    icon: BrainCircuit,
-  },
-  {
-    title: 'Marketplace-ready assets',
-    description:
-      'Move your domains directly into NFT marketplaces and trade them with onchain security.',
-    icon: Coins,
-  },
+  { key: 'ownership', icon: ShieldCheck },
+  { key: 'ai', icon: BrainCircuit },
+  { key: 'marketplace', icon: Coins },
 ] as const;
 
 type LogoItem = {
@@ -296,12 +282,7 @@ const BACKERS_AND_PARTNERS: BackerItem[] = [
   },
 ];
 
-const BACKER_FILTERS: Array<{ label: string; value: BackerFilter }> = [
-  { label: 'All', value: 'all' },
-  { label: 'Investors', value: 'investor' },
-  { label: 'Partners', value: 'partner' },
-  { label: 'Grants', value: 'grant' },
-];
+const BACKER_FILTERS: BackerFilter[] = ['all', 'investor', 'partner', 'grant'];
 
 const COMMUNITY_LINKS = [
   {
@@ -367,26 +348,24 @@ const CONTRACTS = [
   },
 ] as const;
 
+type StoryTranslator = ReturnType<typeof useTranslations<'landingMarketing'>>;
+
 type StoryPanel = {
   id: string;
-  badge: string;
-  title: string;
-  description: string;
-  highlights: string[];
+  /** i18n key under `story.<key>` for badge/title/description/highlights. */
+  key: string;
+  highlightKeys: string[];
   accent: 'brand' | 'emerald' | 'violet';
-  renderMedia: () => ReactNode;
+  renderMedia: (t: StoryTranslator) => ReactNode;
 };
 
 const STORY_PANELS: StoryPanel[] = [
   {
     id: 'tokenization',
-    badge: 'Namefi NFTs',
-    title: 'Namefi NFTs secure DNS ownership onchain.',
-    description:
-      'Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.',
-    highlights: ['Minted on import', 'AutoENS support', 'Marketplace ready'],
+    key: 'tokenization',
+    highlightKeys: ['mintedOnImport', 'autoEns', 'marketplaceReady'],
     accent: 'brand',
-    renderMedia: () => (
+    renderMedia: (t) => (
       <Card className="relative overflow-hidden border-white/20 bg-white/[0.04] p-6 backdrop-blur sm:min-h-[360px]">
         <div className="absolute inset-4 rounded-[32px] bg-brand-primary/15 blur-3xl" />
         <div className="relative space-y-6 text-center">
@@ -395,7 +374,7 @@ const STORY_PANELS: StoryPanel[] = [
             <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-black/60 p-4">
               <Image
                 src="/assets/astra/NFTAssetPreview.png"
-                alt="Namefi NFT preview"
+                alt={t('story.tokenization.media.previewAlt')}
                 width={280}
                 height={280}
                 className="mx-auto w-full drop-shadow-[0_10px_40px_rgba(44,116,255,0.35)]"
@@ -404,10 +383,10 @@ const STORY_PANELS: StoryPanel[] = [
           </div>
           <div className="space-y-3">
             <span className="block text-xs uppercase tracking-[0.2em] text-white/60">
-              Namefi NFT preview
+              {t('story.tokenization.media.previewEyebrow')}
             </span>
             <h4 className="text-lg font-semibold text-white/70">
-              Ownership that travels with your domain
+              {t('story.tokenization.media.previewTitle')}
             </h4>
           </div>
         </div>
@@ -416,30 +395,25 @@ const STORY_PANELS: StoryPanel[] = [
   },
   {
     id: 'intelligence',
-    badge: 'Namefi Brand Studio',
-    title: 'Spin up brand directions and domain ideas in minutes.',
-    description:
-      'Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.',
-    highlights: [
-      'Domain-guided prompts',
-      'Logos & posters',
-      'Share-ready assets',
-    ],
+    key: 'intelligence',
+    highlightKeys: ['domainGuidedPrompts', 'logosPosters', 'shareReady'],
     accent: 'emerald',
-    renderMedia: () => (
+    renderMedia: (t) => (
       <Card className="relative overflow-hidden border-white/15 bg-white/[0.05] p-6 backdrop-blur">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-transparent to-cyan-400/20 opacity-70" />
         <div className="relative space-y-4 text-left">
           <span className="block text-xs uppercase tracking-[0.2em] text-white/60 mb-3">
-            AI workflow
+            {t('story.intelligence.media.eyebrow')}
           </span>
           <div className="space-y-3 text-sm text-white/80">
             <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/40 p-4">
               <Sparkles className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
               <div>
-                <p className="font-semibold text-white">Generate brand kits</p>
+                <p className="font-semibold text-white">
+                  {t('story.intelligence.media.generateTitle')}
+                </p>
                 <p className="text-white/70">
-                  Logos, posters, and copy tuned to your domain and audience.
+                  {t('story.intelligence.media.generateDescription')}
                 </p>
               </div>
             </div>
@@ -447,20 +421,21 @@ const STORY_PANELS: StoryPanel[] = [
               <SearchIcon className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
               <div>
                 <p className="font-semibold text-white">
-                  Work from your portfolio
+                  {t('story.intelligence.media.portfolioTitle')}
                 </p>
                 <p className="text-white/70">
-                  Select the Namefi domain you own and tailor creative direction
-                  around it.
+                  {t('story.intelligence.media.portfolioDescription')}
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-black/40 p-4">
               <Send className="mt-1 h-4 w-4 shrink-0 text-emerald-200" />
               <div>
-                <p className="font-semibold text-white">Share instantly</p>
+                <p className="font-semibold text-white">
+                  {t('story.intelligence.media.shareTitle')}
+                </p>
                 <p className="text-white/70">
-                  Export assets for teammates or socials with a single link.
+                  {t('story.intelligence.media.shareDescription')}
                 </p>
               </div>
             </div>
@@ -471,31 +446,25 @@ const STORY_PANELS: StoryPanel[] = [
   },
   {
     id: 'operations',
-    badge: 'DNS & Renewal Control',
-    title: 'Keep domains resolvable, signed, and renewed on autopilot.',
-    description:
-      'Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.',
-    highlights: [
-      'DNSSEC + AutoENS',
-      'Auto-renew protection',
-      'Validated zone editor',
-    ],
+    key: 'operations',
+    highlightKeys: ['dnssecAutoEns', 'autoRenew', 'validatedZoneEditor'],
     accent: 'violet',
-    renderMedia: () => (
+    renderMedia: (t) => (
       <Card className="relative overflow-hidden border-white/15 bg-white/[0.03] p-6 backdrop-blur">
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 via-transparent to-sky-500/20 opacity-70" />
         <div className="relative space-y-5 text-left">
           <div className="space-y-3">
             <span className="block text-xs uppercase tracking-[0.2em] text-white/60 mb-3">
-              Operations overview
+              {t('story.operations.media.eyebrow')}
             </span>
             <div className="flex items-start gap-3 rounded-3xl border border-white/15 bg-black/35 p-4">
               <ShieldCheck className="mt-1 h-4 w-4 shrink-0 text-indigo-200" />
               <div className="space-y-1">
-                <p className="font-semibold text-white">DNSSEC & AutoENS</p>
+                <p className="font-semibold text-white">
+                  {t('story.operations.media.dnssecTitle')}
+                </p>
                 <p className="text-sm text-white/70">
-                  Enable signing workflows and gasless DNSSEC so your DNS names
-                  resolve onchain through ENS automatically.
+                  {t('story.operations.media.dnssecDescription')}
                 </p>
               </div>
             </div>
@@ -503,21 +472,21 @@ const STORY_PANELS: StoryPanel[] = [
               <CalendarCheck className="mt-1 h-4 w-4 shrink-0 text-indigo-200" />
               <div className="space-y-1">
                 <p className="font-semibold text-white">
-                  Auto-renew guardrails
+                  {t('story.operations.media.autoRenewTitle')}
                 </p>
                 <p className="text-sm text-white/70">
-                  Save payment preferences once and let Namefi retry renewals so
-                  critical domains never lapse unexpectedly.
+                  {t('story.operations.media.autoRenewDescription')}
                 </p>
               </div>
             </div>
             <div className="flex items-start gap-3 rounded-3xl border border-white/15 bg-black/35 p-4">
               <Sparkles className="mt-1 h-4 w-4 shrink-0 text-indigo-200" />
               <div className="space-y-1">
-                <p className="font-semibold text-white">Point-and-click DNS</p>
+                <p className="font-semibold text-white">
+                  {t('story.operations.media.dnsTitle')}
+                </p>
                 <p className="text-sm text-white/70">
-                  Edit records in an interface that validates every change
-                  before it ships, no registrar dashboards required.
+                  {t('story.operations.media.dnsDescription')}
                 </p>
               </div>
             </div>
@@ -592,6 +561,7 @@ const StoryBlock = ({
   panel: StoryPanel;
   onVisible?: () => void;
 }) => {
+  const t = useTranslations('landingMarketing');
   const blockRef = useRef<HTMLDivElement>(null);
   const hasDispatchedRef = useRef(false);
   const isInView = useInView(blockRef, { amount: 0.3 });
@@ -632,7 +602,7 @@ const StoryBlock = ({
               className="h-1.5 w-1.5 rounded-full bg-white/80"
               aria-hidden
             />
-            {panel.badge}
+            {t(`story.${panel.key}.badge`)}
           </motion.span>
           <motion.h3
             initial={{ opacity: 0, y: 22 }}
@@ -641,7 +611,7 @@ const StoryBlock = ({
             transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
             className="text-2xl font-semibold leading-snug md:text-3xl"
           >
-            {panel.title}
+            {t(`story.${panel.key}.title`)}
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -650,7 +620,7 @@ const StoryBlock = ({
             transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
             className="max-w-xl text-base text-white/70 md:text-lg"
           >
-            {panel.description}
+            {t(`story.${panel.key}.description`)}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -663,12 +633,12 @@ const StoryBlock = ({
             }}
             className="flex flex-wrap gap-2.5"
           >
-            {panel.highlights.map((highlight) => (
+            {panel.highlightKeys.map((highlightKey) => (
               <span
-                key={highlight}
+                key={highlightKey}
                 className="rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-[11px] font-medium tracking-[0.08em] text-white/65"
               >
-                {highlight}
+                {t(`story.${panel.key}.highlights.${highlightKey}`)}
               </span>
             ))}
           </motion.div>
@@ -684,7 +654,7 @@ const StoryBlock = ({
           }}
           className="relative flex justify-end"
         >
-          <div className="w-full max-w-md">{panel.renderMedia()}</div>
+          <div className="w-full max-w-md">{panel.renderMedia(t)}</div>
         </motion.div>
       </div>
     </motion.section>
@@ -707,40 +677,56 @@ const StorylineSection = ({
   </div>
 );
 
-const FeaturesSection = () => (
-  <section className="space-y-10 pb-2">
-    <SectionHeading title="Namefi features" eyebrow="Built for the future" />
-    <div className="grid gap-6 md:grid-cols-3">
-      {FEATURES.map(({ title, description, icon: Icon }) => (
-        <div
-          key={title}
-          className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
-        >
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
-            <Icon className="h-6 w-6" />
-          </div>
-          <h3 className="text-xl font-semibold">{title}</h3>
-          <p className="text-muted-foreground">{description}</p>
-        </div>
-      ))}
-    </div>
-  </section>
-);
+const FeaturesSection = () => {
+  const t = useTranslations('landingMarketing');
 
-const SupportingSection = () => (
-  <section className="space-y-10">
-    <SectionHeading
-      title="Proudly supporting"
-      description="Trade and finance Namefi NFTs across the ecosystem."
-    />
-    <LogoGrid
-      items={SUPPORTING_PLATFORMS}
-      columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
-    />
-  </section>
-);
+  return (
+    <section className="space-y-10 pb-2">
+      <SectionHeading
+        title={t('features.heading')}
+        eyebrow={t('features.eyebrow')}
+      />
+      <div className="grid gap-6 md:grid-cols-3">
+        {FEATURES.map(({ key, icon: Icon }) => (
+          <div
+            key={key}
+            className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur"
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
+              <Icon className="h-6 w-6" />
+            </div>
+            <h3 className="text-xl font-semibold">
+              {t(`features.items.${key}.title`)}
+            </h3>
+            <p className="text-muted-foreground">
+              {t(`features.items.${key}.description`)}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+const SupportingSection = () => {
+  const t = useTranslations('landingMarketing');
+
+  return (
+    <section className="space-y-10">
+      <SectionHeading
+        title={t('supporting.heading')}
+        description={t('supporting.description')}
+      />
+      <LogoGrid
+        items={SUPPORTING_PLATFORMS}
+        columns="grid-cols-2 sm:grid-cols-3 lg:grid-cols-5"
+      />
+    </section>
+  );
+};
 
 const BackersSection = () => {
+  const t = useTranslations('landingMarketing');
   const [activeFilter, setActiveFilter] = useState<BackerFilter>('all');
 
   const filteredBackers = useMemo(() => {
@@ -756,11 +742,11 @@ const BackersSection = () => {
   return (
     <section className="space-y-10">
       <SectionHeading
-        title="Backed by partners, investors, and grant programs"
-        description="Namefi is supported by leading funds, accelerators, and infrastructure providers across web3."
+        title={t('backers.heading')}
+        description={t('backers.description')}
       />
       <div className="flex flex-wrap items-center justify-center gap-3">
-        {BACKER_FILTERS.map(({ label, value }) => (
+        {BACKER_FILTERS.map((value) => (
           <button
             key={value}
             type="button"
@@ -772,7 +758,7 @@ const BackersSection = () => {
                 : 'border-white/15 text-white/70 hover:border-white/40 hover:text-white/90',
             )}
           >
-            {label}
+            {t(`backers.filters.${value}`)}
           </button>
         ))}
       </div>
@@ -788,54 +774,58 @@ const CommunitySection = ({
   newsletterRef,
 }: {
   newsletterRef: RefObject<HTMLDivElement | null>;
-}) => (
-  <section
-    id="newsletter"
-    ref={newsletterRef}
-    className="scroll-mt-24 space-y-10"
-  >
-    <SectionHeading
-      title="Join the Namefi community"
-      description="A global network of domainers, builders, contributors, and onchain enthusiasts."
-    />
-    <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
-      <NewsletterForm
-        from="namefi-home"
-        title="Get our newsletter"
-        description="Subscribe for new releases, integrations, and community highlights."
-        showNameField
-        variant="default"
-        className="h-full max-w-none rounded-3xl border-white/10 bg-white/[0.02] py-0 backdrop-blur sm:mx-0"
-        headerClassName="px-8 pt-8"
-        contentClassName="px-8 pb-8"
+}) => {
+  const t = useTranslations('landingMarketing');
+
+  return (
+    <section
+      id="newsletter"
+      ref={newsletterRef}
+      className="scroll-mt-24 space-y-10"
+    >
+      <SectionHeading
+        title={t('community.heading')}
+        description={t('community.description')}
       />
-      <div className="grid gap-4 sm:grid-cols-2">
-        {COMMUNITY_LINKS.map(({ name, href, icon: Icon }) => (
-          <Link
-            key={name}
-            href={href}
-            target="_blank"
-            rel="noreferrer"
-            className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.03] p-4 text-sm font-medium text-white transition duration-300 hover:border-brand-primary/40 hover:bg-brand-primary/10"
-          >
-            <span className="absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
-              <span className="absolute inset-0 bg-gradient-to-r from-brand-primary/30 via-transparent to-emerald-400/30" />
-            </span>
-            <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-brand-primary transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
-              <Icon className="h-4 w-4" />
-            </span>
-            <span className="relative z-10 flex-1 text-base font-semibold tracking-tight">
-              {name}
-            </span>
-            <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
-              <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-            </span>
-          </Link>
-        ))}
+      <div className="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
+        <NewsletterForm
+          from="namefi-home"
+          title={t('community.newsletter.title')}
+          description={t('community.newsletter.description')}
+          showNameField
+          variant="default"
+          className="h-full max-w-none rounded-3xl border-white/10 bg-white/[0.02] py-0 backdrop-blur sm:mx-0"
+          headerClassName="px-8 pt-8"
+          contentClassName="px-8 pb-8"
+        />
+        <div className="grid gap-4 sm:grid-cols-2">
+          {COMMUNITY_LINKS.map(({ name, href, icon: Icon }) => (
+            <Link
+              key={name}
+              href={href}
+              target="_blank"
+              rel="noreferrer"
+              className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.03] p-4 text-sm font-medium text-white transition duration-300 hover:border-brand-primary/40 hover:bg-brand-primary/10"
+            >
+              <span className="absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
+                <span className="absolute inset-0 bg-gradient-to-r from-brand-primary/30 via-transparent to-emerald-400/30" />
+              </span>
+              <span className="relative z-10 flex h-9 w-9 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-brand-primary transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
+                <Icon className="h-4 w-4" />
+              </span>
+              <span className="relative z-10 flex-1 text-base font-semibold tracking-tight">
+                {name}
+              </span>
+              <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export type MarketingSectionsProps = {
   newsletterRef: RefObject<HTMLDivElement | null>;
@@ -847,134 +837,138 @@ export const MarketingSections = ({
   newsletterRef,
   marketingRef,
   onStorylineEnter,
-}: MarketingSectionsProps) => (
-  <div
-    ref={marketingRef}
-    className="mx-auto flex max-w-6xl flex-col gap-28 px-6 pb-32"
-  >
-    <motion.div
-      initial={{ opacity: 0, y: 48 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <StorylineSection onStorylineEnter={onStorylineEnter} />
-    </motion.div>
+}: MarketingSectionsProps) => {
+  const t = useTranslations('landingMarketing');
 
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+  return (
+    <div
+      ref={marketingRef}
+      className="mx-auto flex max-w-6xl flex-col gap-28 px-6 pb-32"
     >
-      <FeaturesSection />
-    </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 48 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <StorylineSection onStorylineEnter={onStorylineEnter} />
+      </motion.div>
 
-    <motion.section
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="space-y-10"
-    >
-      <SectionHeading
-        title="Namefi smart contracts"
-        description="Open source on Ethereum and Base so anyone can verify every function."
-      />
-      <Card className="flex flex-col gap-6 border-white/10 bg-white/[0.02] p-8 backdrop-blur">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <span>We</span>
-          <span className="text-red-400">♥</span>
-          <span>opensource</span>
-        </div>
-        <div className="space-y-6">
-          {CONTRACTS.map((contract) => (
-            <div
-              key={contract.address}
-              className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
-            >
-              <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
-                <span className="text-brand-primary font-semibold whitespace-nowrap">
-                  {contract.name}
-                </span>
-                <span className="text-muted-foreground break-all font-mono text-sm">
-                  {contract.address}
-                </span>
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <FeaturesSection />
+      </motion.div>
+
+      <motion.section
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="space-y-10"
+      >
+        <SectionHeading
+          title={t('smartContracts.heading')}
+          description={t('smartContracts.description')}
+        />
+        <Card className="flex flex-col gap-6 border-white/10 bg-white/[0.02] p-8 backdrop-blur">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <span>{t('smartContracts.weLove')}</span>
+            <span className="text-red-400">♥</span>
+            <span>{t('smartContracts.opensource')}</span>
+          </div>
+          <div className="space-y-6">
+            {CONTRACTS.map((contract) => (
+              <div
+                key={contract.address}
+                className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
+              >
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4">
+                  <span className="text-brand-primary font-semibold whitespace-nowrap">
+                    {contract.name}
+                  </span>
+                  <span className="text-muted-foreground break-all font-mono text-sm">
+                    {contract.address}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link
+                    href={contract.etherscanUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                  >
+                    <EthNetwork className="h-4 w-4" />
+                    <span>ETH</span>
+                  </Link>
+                  <Link
+                    href={contract.basescanUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                  >
+                    <BaseNetwork className="h-4 w-4" />
+                    <span>BASE</span>
+                  </Link>
+                  <Link
+                    href={contract.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
+                  >
+                    <GitHubBrandIcon className="h-4 w-4" />
+                    <span>GitHub</span>
+                  </Link>
+                </div>
               </div>
-              <div className="flex flex-wrap gap-2">
-                <Link
-                  href={contract.etherscanUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
-                >
-                  <EthNetwork className="h-4 w-4" />
-                  <span>ETH</span>
-                </Link>
-                <Link
-                  href={contract.basescanUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
-                >
-                  <BaseNetwork className="h-4 w-4" />
-                  <span>BASE</span>
-                </Link>
-                <Link
-                  href={contract.githubUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
-                >
-                  <GitHubBrandIcon className="h-4 w-4" />
-                  <span>GitHub</span>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
-    </motion.section>
+            ))}
+          </div>
+        </Card>
+      </motion.section>
 
-    <motion.section
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="space-y-10"
-    >
-      <SectionHeading
-        title="Powered by"
-        description="Infrastructure we rely on every day."
-      />
-      <LogoGrid items={POWERED_BY} />
-    </motion.section>
+      <motion.section
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="space-y-10"
+      >
+        <SectionHeading
+          title={t('poweredBy.heading')}
+          description={t('poweredBy.description')}
+        />
+        <LogoGrid items={POWERED_BY} />
+      </motion.section>
 
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <SupportingSection />
-    </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <SupportingSection />
+      </motion.div>
 
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <BackersSection />
-    </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <BackersSection />
+      </motion.div>
 
-    <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <CommunitySection newsletterRef={newsletterRef} />
-    </motion.div>
-  </div>
-);
+      <motion.div
+        initial={{ opacity: 0, y: 60 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <CommunitySection newsletterRef={newsletterRef} />
+      </motion.div>
+    </div>
+  );
+};

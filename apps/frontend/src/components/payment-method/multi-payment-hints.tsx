@@ -2,6 +2,7 @@
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { SelectedPaymentMethod } from './select-payment-method-card';
 
 export function MultiPaymentHints({
@@ -15,6 +16,7 @@ export function MultiPaymentHints({
   totalAmountInUsdCents: number;
   onUseMultiPayment: () => void;
 }) {
+  const t = useTranslations('payment');
   const showNfscToCardHint =
     selectedPaymentMethod === SelectedPaymentMethod.NFSC &&
     selectedWalletChainNfscBalanceInUsdCents !== null &&
@@ -36,11 +38,11 @@ export function MultiPaymentHints({
       >
         <span>
           {showNfscToCardHint
-            ? 'You can continue the remaining payment amount with credit cards'
-            : 'You can use existing balance to cover a portion of the payment amount'}
+            ? t('multiPaymentHints.nfscToCard')
+            : t('multiPaymentHints.cardToNfsc')}
         </span>
         <Button variant="outline" onClick={onUseMultiPayment}>
-          Use Multi-payment
+          {t('multiPaymentHints.useMultiPayment')}
         </Button>
       </div>
     </div>

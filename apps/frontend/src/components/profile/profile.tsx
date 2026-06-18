@@ -7,6 +7,7 @@ import {
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState, useCallback } from 'react';
 import { SocialAccounts } from './social-accounts';
 import { Footer } from './footer';
@@ -30,6 +31,7 @@ const defaultTab = TabValues.ACCOUNTS;
 
 export default function Profile() {
   const router = useRouter();
+  const t = useTranslations('profile');
   const [activeTab, setActiveTab] = useQueryState(
     'tab',
     parseAsStringEnum<TabValues>(Object.values(TabValues))
@@ -72,12 +74,18 @@ export default function Profile() {
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
         <TabsList className="grid w-full grid-cols-4 lg:w-auto">
-          <TabsTrigger value={TabValues.WALLETS}>Wallets</TabsTrigger>
-          <TabsTrigger value={TabValues.ACCOUNTS}>Accounts</TabsTrigger>
-          <TabsTrigger value={TabValues.CONTACT_DETAILS}>
-            Contact Details
+          <TabsTrigger value={TabValues.WALLETS}>
+            {t('tabs.wallets')}
           </TabsTrigger>
-          <TabsTrigger value={TabValues.SECURITY}>Security</TabsTrigger>
+          <TabsTrigger value={TabValues.ACCOUNTS}>
+            {t('tabs.accounts')}
+          </TabsTrigger>
+          <TabsTrigger value={TabValues.CONTACT_DETAILS}>
+            {t('tabs.contactDetails')}
+          </TabsTrigger>
+          <TabsTrigger value={TabValues.SECURITY}>
+            {t('tabs.security')}
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value={TabValues.WALLETS} className="mt-6">

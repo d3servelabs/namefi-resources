@@ -22,6 +22,7 @@ import { Users2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 import { TwitterIcon } from 'react-share';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { Account } from './account';
 import { useAuth } from '@/hooks/use-auth';
 
@@ -30,6 +31,7 @@ export interface SocialAccountsProps {
 }
 
 export const SocialAccounts = ({ user }: SocialAccountsProps) => {
+  const t = useTranslations('profile');
   const { isImpersonating, privyRuntimeReady, privyRuntimeAuthenticated } =
     useAuth();
   const canUsePrivyActions =
@@ -44,27 +46,25 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
   const handleLinkGitHub = useCallback(() => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert(
-        'You are impersonating a user, so you cannot link a GitHub account',
-      );
+      alert(t('socialAccounts.impersonateLinkGithubAlert'));
       return;
     }
     try {
       linkGithub();
     } catch (error) {
-      toast.error('Failed to link GitHub account', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('socialAccounts.linkGithubFailure'), {
+        description: t('socialAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, linkGithub, isImpersonating]);
+  }, [canUsePrivyActions, linkGithub, isImpersonating, t]);
 
   const handleUnlinkGitHub = useCallback(
     async (subject: string) => {
       if (!canUsePrivyActions) return;
       if (isImpersonating) {
-        alert(
-          'You are impersonating a user, so you cannot unlink a GitHub account',
-        );
+        alert(t('socialAccounts.impersonateUnlinkGithubAlert'));
         return;
       }
       if (!subject) {
@@ -75,43 +75,43 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
       try {
         await unlinkGithub(subject);
         setIsUnlinkGitHubDialogOpen(false);
-        toast.success('GitHub account unlinked', {
-          description: 'Your account has been successfully unlinked.',
+        toast.success(t('socialAccounts.unlinkGithubSuccess'), {
+          description: t('socialAccounts.unlinkGithubSuccessDescription'),
         });
       } catch (error) {
         setIsUnlinkGitHubDialogOpen(false);
-        toast.error('Failed to unlink GitHub account', {
-          description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+        toast.error(t('socialAccounts.unlinkGithubFailure'), {
+          description: t('socialAccounts.tryAgain', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+          }),
         });
       }
     },
-    [canUsePrivyActions, unlinkGithub, isImpersonating],
+    [canUsePrivyActions, unlinkGithub, isImpersonating, t],
   );
 
   const handleLinkTwitter = useCallback(() => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert(
-        'You are impersonating a user, so you cannot link a Twitter account',
-      );
+      alert(t('socialAccounts.impersonateLinkTwitterAlert'));
       return;
     }
     try {
       linkTwitter();
     } catch (error) {
-      toast.error('Failed to link Twitter account', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('socialAccounts.linkTwitterFailure'), {
+        description: t('socialAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, linkTwitter, isImpersonating]);
+  }, [canUsePrivyActions, linkTwitter, isImpersonating, t]);
 
   const handleUnlinkTwitter = useCallback(
     async (subject: string) => {
       if (!canUsePrivyActions) return;
       if (isImpersonating) {
-        alert(
-          'You are impersonating a user, so you cannot unlink a Twitter account',
-        );
+        alert(t('socialAccounts.impersonateUnlinkTwitterAlert'));
         return;
       }
       if (!subject) {
@@ -122,17 +122,19 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
       try {
         await unlinkTwitter(subject);
         setIsUnlinkTwitterDialogOpen(false);
-        toast.success('Twitter account unlinked', {
-          description: 'Your account has been successfully unlinked.',
+        toast.success(t('socialAccounts.unlinkTwitterSuccess'), {
+          description: t('socialAccounts.unlinkTwitterSuccessDescription'),
         });
       } catch (error) {
         setIsUnlinkTwitterDialogOpen(false);
-        toast.error('Failed to unlink Twitter account', {
-          description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+        toast.error(t('socialAccounts.unlinkTwitterFailure'), {
+          description: t('socialAccounts.tryAgain', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+          }),
         });
       }
     },
-    [canUsePrivyActions, unlinkTwitter, isImpersonating],
+    [canUsePrivyActions, unlinkTwitter, isImpersonating, t],
   );
 
   return (
@@ -141,16 +143,16 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Users2 className="h-5 w-5 text-primary" />
-            <CardTitle>Social Accounts</CardTitle>
+            <CardTitle>{t('socialAccounts.title')}</CardTitle>
           </div>
 
-          <CardDescription>Manage your social media accounts</CardDescription>
+          <CardDescription>{t('socialAccounts.description')}</CardDescription>
         </div>
       </CardHeader>
       <CardContent>
         <div className="grid gap-4 lg:grid-cols-2">
           <Account
-            title="Twitter"
+            title={t('socialAccounts.twitterTitle')}
             icon={<TwitterIcon className="h-5 w-5" />}
             isLinked={!!user?.twitter?.username}
             linkedValue={
@@ -163,7 +165,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
           />
 
           <Account
-            title="GitHub"
+            title={t('socialAccounts.githubTitle')}
             icon={<GitHubBrandIcon className="h-5 w-5" />}
             isLinked={!!user?.github?.username}
             linkedValue={
@@ -184,9 +186,11 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Unlink GitHub</DialogTitle>
+            <DialogTitle>
+              {t('socialAccounts.unlinkGithubDialogTitle')}
+            </DialogTitle>
             <DialogDescription>
-              Are you sure you want to continue?
+              {t('socialAccounts.confirmUnlink')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -194,12 +198,12 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               variant="outline"
               onClick={() => setIsUnlinkGitHubDialogOpen(false)}
             >
-              Cancel
+              {t('socialAccounts.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkGitHub(user?.github?.subject ?? '')}
             >
-              Unlink
+              {t('socialAccounts.unlink')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -212,9 +216,11 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Unlink Twitter</DialogTitle>
+            <DialogTitle>
+              {t('socialAccounts.unlinkTwitterDialogTitle')}
+            </DialogTitle>
             <DialogDescription>
-              Are you sure you want to continue?
+              {t('socialAccounts.confirmUnlink')}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -222,12 +228,12 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               variant="outline"
               onClick={() => setIsUnlinkTwitterDialogOpen(false)}
             >
-              Cancel
+              {t('socialAccounts.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkTwitter(user?.twitter?.subject ?? '')}
             >
-              Unlink
+              {t('socialAccounts.unlink')}
             </Button>
           </DialogFooter>
         </DialogContent>

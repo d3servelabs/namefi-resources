@@ -24,6 +24,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tabs';
 import { useQuery } from '@tanstack/react-query';
 import { CoinsIcon, Loader2Icon, PlusCircleIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
@@ -65,6 +66,7 @@ export function BalanceBreakdownDialog({
   isLoadingBalances,
   walletAddresses,
 }: BalanceBreakdownDialogProps) {
+  const t = useTranslations('payment');
   const trpc = useTRPC();
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
   const { defaultNfscBalanceChainId } = useAllowedChains();
@@ -103,7 +105,7 @@ export function BalanceBreakdownDialog({
 
   const handleWatchNfsc = useCallback(async () => {
     if (!activeWalletAddress) {
-      toast.error('Connect a wallet to continue.');
+      toast.error(t('nfscBalanceDialog.connectWalletToContinue'));
       return;
     }
     try {
@@ -112,16 +114,16 @@ export function BalanceBreakdownDialog({
         defaultNfscBalanceChainId,
       );
       if (added) {
-        toast.success('NFSC token added to your wallet');
+        toast.success(t('nfscBalanceDialog.nfscAdded'));
       } else {
-        toast.error("Couldn't add NFSC token to your wallet");
+        toast.error(t('nfscBalanceDialog.nfscAddFailed'));
       }
     } catch (error) {
-      toast.error('Failed to add NFSC to wallet', {
+      toast.error(t('nfscBalanceDialog.nfscAddError'), {
         description: error instanceof Error ? error.message : undefined,
       });
     }
-  }, [activeWalletAddress, defaultNfscBalanceChainId, watchNfscInWallet]);
+  }, [activeWalletAddress, defaultNfscBalanceChainId, watchNfscInWallet, t]);
 
   const openSwapDialog = useCallback(
     (walletAddress: string | null) => {
@@ -147,23 +149,26 @@ export function BalanceBreakdownDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>NFSC Balance</DialogTitle>
+            <DialogTitle>{t('nfscBalanceDialog.title')}</DialogTitle>
             <DialogDescription>
-              Review your available $NFSC across linked wallets and supported
-              chains.
+              {t('nfscBalanceDialog.description')}
             </DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue="balance" className="mt-2">
             <TabsList className="grid grid-cols-2 w-full">
-              <TabsTrigger value="balance">Balance</TabsTrigger>
-              <TabsTrigger value="orders">Recent NFSC orders</TabsTrigger>
+              <TabsTrigger value="balance">
+                {t('nfscBalanceDialog.tabBalance')}
+              </TabsTrigger>
+              <TabsTrigger value="orders">
+                {t('nfscBalanceDialog.tabOrders')}
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="balance" className="mt-4 space-y-4">
               <div className="rounded-lg border border-border/60 bg-muted/10 px-4 py-3">
                 <div className="text-xs uppercase tracking-wide text-muted-foreground">
-                  Total Available
+                  {t('nfscBalanceDialog.totalAvailable')}
                 </div>
                 <div className="text-2xl font-semibold">
                   {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
@@ -172,7 +177,7 @@ export function BalanceBreakdownDialog({
 
               <Button className="w-full" onClick={handleTopUp}>
                 <PlusCircleIcon className="mr-2 h-4 w-4" />
-                Top Up
+                {t('nfscBalanceDialog.topUp')}
               </Button>
 
               {isAnyWalletConnected && activeWalletAddress && (
@@ -183,19 +188,19 @@ export function BalanceBreakdownDialog({
                   onClick={handleWatchNfsc}
                 >
                   <CoinsIcon className="mr-2 h-4 w-4" />
-                  Show NFSC in wallet
+                  {t('nfscBalanceDialog.showNfscInWallet')}
                 </Button>
               )}
 
               {isLoadingBalances ? (
                 <div className="flex items-center justify-center gap-2 py-10 text-sm text-muted-foreground">
                   <Loader2Icon className="h-4 w-4 animate-spin" />
-                  Fetching balances...
+                  {t('nfscBalanceDialog.fetchingBalances')}
                 </div>
               ) : !hasWallets ? (
-                <EmptyState message="Link or connect a wallet to view your $NFSC balances." />
+                <EmptyState message={t('nfscBalanceDialog.emptyNoWallets')} />
               ) : !hasBalances ? (
-                <EmptyState message="No $NFSC detected across your wallets yet." />
+                <EmptyState message={t('nfscBalanceDialog.emptyNoBalances')} />
               ) : (
                 <div className="space-y-3">
                   {walletGroups.map(({ walletAddress, balances }) => {
@@ -237,7 +242,7 @@ export function BalanceBreakdownDialog({
                           className="w-full"
                           onClick={() => handleAddFunds(walletAddress)}
                         >
-                          Add funds
+                          {t('nfscBalanceDialog.addFunds')}
                         </Button>
                       </div>
                     );
@@ -248,13 +253,12 @@ export function BalanceBreakdownDialog({
 
             <TabsContent value="orders" className="mt-4 space-y-3">
               <p className="rounded-md border border-border/60 bg-muted/10 px-3 py-2 text-xs text-muted-foreground">
-                These are credit-card NFSC top-ups across all your wallets.
-                NFSC-paid domain orders appear in your full order history.
+                {t('nfscBalanceDialog.ordersDisclaimer')}
               </p>
               <NfscOrdersList
                 orders={nfscOrders}
                 isLoading={isLoadingOrders}
-                emptyMessage="No NFSC top-ups yet."
+                emptyMessage={t('nfscBalanceDialog.emptyOrders')}
               />
             </TabsContent>
           </Tabs>
@@ -267,13 +271,13 @@ export function BalanceBreakdownDialog({
               render={<Link href="/payment-methods" />}
               nativeButton={false}
             >
-              Go to Payment Methods
+              {t('nfscBalanceDialog.goToPaymentMethods')}
             </Button>
             <Button
               className="w-full sm:flex-1"
               onClick={() => onOpenChange(false)}
             >
-              Close
+              {t('nfscBalanceDialog.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -33,6 +33,7 @@ import {
   Info,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 
 export type OrderCardOrder =
@@ -71,6 +72,7 @@ export function OrderCard({
   currentPbnDomain,
   showAllParents,
 }: OrderCardProps) {
+  const t = useTranslations('orders');
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
   const [expanded, setExpanded] = useState(false);
@@ -140,7 +142,7 @@ export function OrderCard({
             }
             className="hover:underline text-foreground"
           >
-            Order #{order.rowNum}
+            {t('card.orderNumber', { rowNum: order.rowNum })}
           </Link>
           <span className="flex items-center gap-1 text-muted-foreground text-xs">
             <Calendar className="h-3.5 w-3.5" />
@@ -164,10 +166,7 @@ export function OrderCard({
                         <Info className="h-3.5 w-3.5 text-amber-500" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>
-                          This wallet is not linked to the current account, so
-                          you won&apos;t be able to see the domain in account
-                        </p>
+                        <p>{t('unlinkedWalletTooltip')}</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -190,20 +189,23 @@ export function OrderCard({
         <div className="mt-3 pt-3 border-t border-border">
           <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-2 flex justify-between px-5">
             <span>
-              Items ({visibleItems.length}
               {!includeAllItems && nonPbnItems.length > 0
-                ? ` of ${order.items.length}`
-                : ''}
-              )
+                ? t('card.itemsHeadingOfTotal', {
+                    visible: visibleItems.length,
+                    total: order.items.length,
+                  })
+                : t('card.itemsHeading', { visible: visibleItems.length })}
             </span>
             <span className="font-medium text-sm">
-              <span className="text-muted-foreground text-xs">Total: </span>
+              <span className="text-muted-foreground text-xs">
+                {t('card.totalLabel')}
+              </span>
               {formatUsdCents(order.amountInUSDCents)}
             </span>
           </div>
           {collapsedItems.length === 0 ? (
             <div className="text-sm text-muted-foreground">
-              No items match the current view.
+              {t('card.noItemsMatch')}
             </div>
           ) : (
             <ul className="flex flex-col gap-1">
@@ -233,8 +235,7 @@ export function OrderCard({
                 onClick={() => setExpanded(true)}
               >
                 <ChevronDown className="h-4 w-4 mr-1" />
-                Show {hiddenByCollapseCount} more item
-                {hiddenByCollapseCount === 1 ? '' : 's'}
+                {t('card.showMore', { count: hiddenByCollapseCount })}
               </Button>
             )}
             {expanded && visibleItems.length > ITEMS_BEFORE_COLLAPSE && (
@@ -244,7 +245,7 @@ export function OrderCard({
                 onClick={() => setExpanded(false)}
               >
                 <ChevronUp className="h-4 w-4 mr-1" />
-                Show less
+                {t('card.showLess')}
               </Button>
             )}
             {!includeAllItems && nonPbnItems.length > 0 && (
@@ -256,14 +257,16 @@ export function OrderCard({
                 {revealOtherParents ? (
                   <>
                     <EyeOff className="h-4 w-4 mr-1" />
-                    Hide {nonPbnItems.length} item
-                    {nonPbnItems.length === 1 ? '' : 's'} from other parents
+                    {t('card.hideFromOtherParents', {
+                      count: nonPbnItems.length,
+                    })}
                   </>
                 ) : (
                   <>
                     <Globe className="h-4 w-4 mr-1" />
-                    Show {nonPbnItems.length} item
-                    {nonPbnItems.length === 1 ? '' : 's'} from other parents
+                    {t('card.showFromOtherParents', {
+                      count: nonPbnItems.length,
+                    })}
                   </>
                 )}
               </Button>
@@ -281,6 +284,7 @@ interface OrderItemRowProps {
 }
 
 function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
+  const t = useTranslations('orders');
   return (
     <li className="flex items-center justify-between gap-3 text-sm px-5 hover:border-l-2 border-white/50 py-0.5">
       <div className="min-w-0 flex-1 flex flex-row gap-2">
@@ -289,7 +293,7 @@ function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
         </div>
         <div className="text-xs text-muted-foreground gap-2 flex">
           <span className="font-mono min-w-[calc(8ch+10px)] text-xs text-center px-2 py-0.5 rounded-lg border border-blue-400/30 bg-blue-500/10 text-blue-300">
-            {humanizeItemType(item.type)}
+            {humanizeItemType(t, item.type)}
           </span>
           {showStatus && item.status && (
             <StatusBadge
@@ -301,8 +305,7 @@ function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
       </div>
       <div className="flex flex-row justify-end gap-1 shrink-0">
         <span className="text-xs px-2 py-0.5 rounded-lg border border-secondary/30 text-muted-foreground">
-          {item.durationInYears} yr
-          {item.durationInYears === 1 ? '' : 's'}
+          {t('card.durationYears', { count: item.durationInYears })}
         </span>
         <span className="font-medium">
           {formatUsdCents(item.amountInUSDCents)}
@@ -311,15 +314,18 @@ function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
     </li>
   );
 }
-function humanizeItemType(t: string | null | undefined): string {
-  switch (t) {
+function humanizeItemType(
+  t: ReturnType<typeof useTranslations<'orders'>>,
+  type: string | null | undefined,
+): string {
+  switch (type) {
     case itemTypeSchema.enum.REGISTER:
-      return 'Register';
+      return t('itemType.register');
     case itemTypeSchema.enum.IMPORT:
-      return 'Import';
+      return t('itemType.import');
     case itemTypeSchema.enum.RENEW:
-      return 'Renew';
+      return t('itemType.renew');
     default:
-      return t ?? '-';
+      return type ?? '-';
   }
 }

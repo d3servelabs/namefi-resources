@@ -1,6 +1,7 @@
 'use client';
 
 import { isPast } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { AutoRenewToggle } from '../auto-renew-toggle';
 
 interface AutoEnsCellProps {
@@ -18,6 +19,7 @@ export function AutoEnsCell({
   isToggling,
   onToggleAutoEns,
 }: AutoEnsCellProps) {
+  const t = useTranslations('domains');
   const isExpired = expirationDate ? isPast(new Date(expirationDate)) : false;
 
   return (
@@ -27,7 +29,7 @@ export function AutoEnsCell({
         onCheckedChange={(checked) => onToggleAutoEns(domainName, checked)}
         disabled={isExpired}
         isLoading={isToggling}
-        ariaLabel={`Auto-ENS ${domainName}`}
+        ariaLabel={t('autoEnsCell.aria', { domain: domainName })}
       />
     </div>
   );

@@ -10,6 +10,7 @@ import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availab
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { AlertTriangle, ArrowLeft, Loader2 } from 'lucide-react';
 import { useRouter, useParams } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
@@ -24,6 +25,7 @@ import { PageShell } from '@/components/page-shell';
 import { WagmiProvider } from '@/components/providers/wagmi';
 
 export default function ClaimPage() {
+  const t = useTranslations('claim');
   const router = useRouter();
   const params = useParams<{ domain: string }>();
   const rawDomainParam = params?.domain ?? '';
@@ -94,7 +96,7 @@ export default function ClaimPage() {
   const { mutate: processClaim, isPending: isClaimPending } = useMutation({
     ...trpc.freeClaims.processClaimWithTransaction.mutationOptions({
       onSuccess: (result) => {
-        toast.success('Domain claimed successfully!');
+        toast.success(t('page.domainClaimedSuccess'));
         queryClient.invalidateQueries({
           queryKey: trpc.freeClaims.getUserClaims.queryKey(),
         });
@@ -103,7 +105,7 @@ export default function ClaimPage() {
         }
       },
       onError: (error) => {
-        toast.error(`Failed to claim domain: ${error.message}`);
+        toast.error(t('page.claimFailed', { message: error.message }));
       },
     }),
   });
@@ -226,19 +228,19 @@ export default function ClaimPage() {
     return (
       <PageShell size="narrow" padding="relaxed">
         <CartCard
-          title="Invalid domain"
-          description="The provided domain is not a valid normalized Namefi domain."
+          title={t('page.invalidDomain.title')}
+          description={t('page.invalidDomain.description')}
           footer={
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => router.back()}>
-                <ArrowLeft className="size-4" /> Go back
+                <ArrowLeft className="size-4" />{' '}
+                {t('page.invalidDomain.goBack')}
               </Button>
             </div>
           }
         >
           <div className="text-sm text-muted-foreground">
-            Make sure you are using a fully normalized domain, e.g.
-            "alice.0x.city".
+            {t('page.invalidDomain.hint')}
           </div>
         </CartCard>
       </PageShell>
@@ -248,7 +250,9 @@ export default function ClaimPage() {
   return (
     <PageShell padding="roomy">
       <div className="mb-6">
-        <h1 className="text-3xl font-semibold tracking-tight">Free Claim</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          {t('page.title')}
+        </h1>
       </div>
 
       {showIneligibleBanner && (
@@ -261,18 +265,19 @@ export default function ClaimPage() {
           <AlertTriangle className="size-5 text-amber-400 shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="font-medium text-amber-200">
-              This domain is not eligible for a free claim.
+              {t('page.ineligibleBanner.title')}
             </p>
             <p className="text-sm text-amber-200/80">
-              You can add it to your cart to purchase, or go back to search.
+              {t('page.ineligibleBanner.description')}
             </p>
           </div>
           <div className="flex gap-2">
             <Button variant="secondary" onClick={handleAddToCart}>
-              Add to cart
+              {t('page.ineligibleBanner.addToCart')}
             </Button>
             <Button variant="outline" onClick={() => router.back()}>
-              <ArrowLeft className="size-4" /> Go back
+              <ArrowLeft className="size-4" />{' '}
+              {t('page.ineligibleBanner.goBack')}
             </Button>
           </div>
         </div>
@@ -287,7 +292,7 @@ export default function ClaimPage() {
               {normalizedDomainName}
             </div>
             <div className="text-sm md:text-base text-muted-foreground">
-              Duration: {minDuration} year{minDuration > 1 ? 's' : ''} • Free
+              {t('page.summary.duration', { count: minDuration })}
             </div>
           </div>
         </CartCard>
@@ -329,7 +334,7 @@ export default function ClaimPage() {
             {isClaimPending && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Submit
+            {t('page.submit')}
           </NamefiButton>
         )}
       </div>

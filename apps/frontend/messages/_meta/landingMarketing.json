@@ -1,0 +1,189 @@
+{
+  "features.heading": {
+    "description": "Heading for the landing-page features section. Keep the brand name 'Namefi'."
+  },
+  "features.eyebrow": {
+    "description": "Small eyebrow label above the features section heading."
+  },
+  "features.items.ownership.title": {
+    "description": "Title of the 'ownership' feature card on the landing page."
+  },
+  "features.items.ownership.description": {
+    "description": "Body copy of the 'ownership' feature card describing tokenizing DNS names into NFTs. Keep 'DNS' and 'NFTs'."
+  },
+  "features.items.ai.title": {
+    "description": "Title of the 'AI' feature card on the landing page."
+  },
+  "features.items.ai.description": {
+    "description": "Body copy of the 'AI' feature card. Keep the product name 'Namefi AI'."
+  },
+  "features.items.marketplace.title": {
+    "description": "Title of the 'marketplace' feature card on the landing page."
+  },
+  "features.items.marketplace.description": {
+    "description": "Body copy of the 'marketplace' feature card about trading domains in NFT marketplaces. Keep 'NFT'."
+  },
+  "story.tokenization.badge": {
+    "description": "Badge label for the tokenization story panel. Product name — keep 'Namefi NFTs' verbatim."
+  },
+  "story.tokenization.title": {
+    "description": "Title of the tokenization story panel about securing DNS ownership onchain. Keep 'Namefi NFTs' and 'DNS'."
+  },
+  "story.tokenization.description": {
+    "description": "Body copy of the tokenization story panel explaining NFTs minted on import and burned on export. Keep 'NFT'."
+  },
+  "story.tokenization.highlights.mintedOnImport": {
+    "description": "Highlight bullet in the tokenization panel: NFT is minted when a domain is imported."
+  },
+  "story.tokenization.highlights.autoEns": {
+    "description": "Highlight bullet in the tokenization panel for AutoENS support. Keep 'AutoENS'."
+  },
+  "story.tokenization.highlights.marketplaceReady": {
+    "description": "Highlight bullet in the tokenization panel: assets are marketplace ready."
+  },
+  "story.tokenization.media.previewAlt": {
+    "description": "Alt text for the Namefi NFT preview image in the tokenization panel. Keep 'Namefi NFT'."
+  },
+  "story.tokenization.media.previewEyebrow": {
+    "description": "Eyebrow label on the Namefi NFT preview card in the tokenization panel. Keep 'Namefi NFT'."
+  },
+  "story.tokenization.media.previewTitle": {
+    "description": "Title on the Namefi NFT preview card in the tokenization panel."
+  },
+  "story.intelligence.badge": {
+    "description": "Badge label for the intelligence (AI branding) story panel. Product name — keep 'Namefi Brand Studio' verbatim."
+  },
+  "story.intelligence.title": {
+    "description": "Title of the intelligence story panel about generating brand directions and domain ideas."
+  },
+  "story.intelligence.description": {
+    "description": "Body copy of the intelligence story panel pairing availability data with creative output. Keep 'Namefi AI'."
+  },
+  "story.intelligence.highlights.domainGuidedPrompts": {
+    "description": "Highlight bullet in the intelligence panel: domain-guided AI prompts."
+  },
+  "story.intelligence.highlights.logosPosters": {
+    "description": "Highlight bullet in the intelligence panel: logos and posters output."
+  },
+  "story.intelligence.highlights.shareReady": {
+    "description": "Highlight bullet in the intelligence panel: share-ready assets."
+  },
+  "story.intelligence.media.eyebrow": {
+    "description": "Eyebrow label on the AI workflow media card in the intelligence panel."
+  },
+  "story.intelligence.media.generateTitle": {
+    "description": "Title of the 'generate brand kits' step in the intelligence panel media card."
+  },
+  "story.intelligence.media.generateDescription": {
+    "description": "Description of the 'generate brand kits' step in the intelligence panel media card."
+  },
+  "story.intelligence.media.portfolioTitle": {
+    "description": "Title of the 'work from your portfolio' step in the intelligence panel media card."
+  },
+  "story.intelligence.media.portfolioDescription": {
+    "description": "Description of the 'work from your portfolio' step in the intelligence panel media card. Keep 'Namefi'."
+  },
+  "story.intelligence.media.shareTitle": {
+    "description": "Title of the 'share instantly' step in the intelligence panel media card."
+  },
+  "story.intelligence.media.shareDescription": {
+    "description": "Description of the 'share instantly' step in the intelligence panel media card."
+  },
+  "story.operations.badge": {
+    "description": "Badge label for the operations story panel about DNS and renewals. Keep 'DNS'."
+  },
+  "story.operations.title": {
+    "description": "Title of the operations story panel about keeping domains resolvable, signed, and renewed."
+  },
+  "story.operations.description": {
+    "description": "Body copy of the operations story panel about managing DNS zones and renewals. Keep 'DNS', 'DNSSEC', and 'ENS'."
+  },
+  "story.operations.highlights.dnssecAutoEns": {
+    "description": "Highlight bullet in the operations panel for DNSSEC and AutoENS. Keep 'DNSSEC' and 'AutoENS'."
+  },
+  "story.operations.highlights.autoRenew": {
+    "description": "Highlight bullet in the operations panel: auto-renew protection."
+  },
+  "story.operations.highlights.validatedZoneEditor": {
+    "description": "Highlight bullet in the operations panel: validated DNS zone editor."
+  },
+  "story.operations.media.eyebrow": {
+    "description": "Eyebrow label on the operations overview media card."
+  },
+  "story.operations.media.dnssecTitle": {
+    "description": "Title of the DNSSEC & AutoENS step in the operations media card. Keep 'DNSSEC' and 'AutoENS'."
+  },
+  "story.operations.media.dnssecDescription": {
+    "description": "Description of the DNSSEC & AutoENS step in the operations media card about gasless signing. Keep 'DNSSEC', 'DNS', and 'ENS'."
+  },
+  "story.operations.media.autoRenewTitle": {
+    "description": "Title of the auto-renew guardrails step in the operations media card."
+  },
+  "story.operations.media.autoRenewDescription": {
+    "description": "Description of the auto-renew guardrails step in the operations media card. Keep 'Namefi'."
+  },
+  "story.operations.media.dnsTitle": {
+    "description": "Title of the point-and-click DNS step in the operations media card. Keep 'DNS'."
+  },
+  "story.operations.media.dnsDescription": {
+    "description": "Description of the point-and-click DNS step in the operations media card about validated record editing."
+  },
+  "smartContracts.heading": {
+    "description": "Heading for the open-source smart contracts section. Keep 'Namefi'."
+  },
+  "smartContracts.description": {
+    "description": "Body copy of the smart contracts section. Keep the chain names 'Ethereum' and 'Base'."
+  },
+  "smartContracts.weLove": {
+    "description": "Leading word of the 'We [heart] opensource' tagline (renders before a heart icon, followed by the 'opensource' key)."
+  },
+  "smartContracts.opensource": {
+    "description": "Trailing word of the 'We [heart] opensource' tagline (renders after the heart icon)."
+  },
+  "poweredBy.heading": {
+    "description": "Heading for the 'Powered by' section showcasing infrastructure logos."
+  },
+  "poweredBy.description": {
+    "description": "Body copy under the 'Powered by' section heading."
+  },
+  "supporting.heading": {
+    "description": "Heading for the 'Proudly supporting' section showcasing ecosystem partners."
+  },
+  "supporting.description": {
+    "description": "Body copy under the 'Proudly supporting' section heading. Keep 'Namefi NFTs'."
+  },
+  "backers.heading": {
+    "description": "Heading for the backers section (partners, investors, grant programs)."
+  },
+  "backers.description": {
+    "description": "Body copy under the backers section heading. Keep 'Namefi' and 'web3'."
+  },
+  "backers.filters.all": {
+    "description": "Filter tab in the backers section showing all backers.",
+    "maxLength": 8
+  },
+  "backers.filters.investor": {
+    "description": "Filter tab in the backers section showing investors.",
+    "maxLength": 12
+  },
+  "backers.filters.partner": {
+    "description": "Filter tab in the backers section showing partners.",
+    "maxLength": 12
+  },
+  "backers.filters.grant": {
+    "description": "Filter tab in the backers section showing grant programs.",
+    "maxLength": 10
+  },
+  "community.heading": {
+    "description": "Heading for the community section inviting users to join. Keep 'Namefi'."
+  },
+  "community.description": {
+    "description": "Body copy under the community section heading."
+  },
+  "community.newsletter.title": {
+    "description": "Title of the newsletter sign-up card in the community section."
+  },
+  "community.newsletter.description": {
+    "description": "Body copy of the newsletter sign-up card in the community section."
+  }
+}

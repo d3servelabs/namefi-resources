@@ -31,6 +31,7 @@ import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { Calendar, ExternalLink, Info, PackageX } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PageShell } from '@/components/page-shell';
@@ -68,6 +69,7 @@ export default function OrdersPage() {
 }
 
 function OrdersPageV1() {
+  const t = useTranslations('orders');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
@@ -83,9 +85,6 @@ function OrdersPageV1() {
     () => isAuthLoading || ordersQuery.isLoading,
     [isAuthLoading, ordersQuery.isLoading],
   );
-
-  const unlinkedWalletTooltip =
-    "This wallet is not linked to the current account, so you won't be able to see the domain in account";
 
   const isWalletLinked = useCallback(
     (walletAddress: string | null) => {
@@ -150,7 +149,7 @@ function OrdersPageV1() {
                   <Info className="h-3.5 w-3.5 text-amber-500" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{unlinkedWalletTooltip}</p>
+                  <p>{t('unlinkedWalletTooltip')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -158,7 +157,7 @@ function OrdersPageV1() {
         </div>
       );
     },
-    [isWalletLinked, linkedWalletsReady, primaryWalletAddress],
+    [isWalletLinked, linkedWalletsReady, primaryWalletAddress, t],
   );
 
   if (!(isAuthenticated || isLoading)) {
@@ -167,7 +166,7 @@ function OrdersPageV1() {
 
   return (
     <PageShell padding="compact">
-      <CartCard title="Order History">
+      <CartCard title={t('orderHistory')}>
         {isLoading ? (
           <MobileTable>
             <MobileTableMobile>
@@ -176,10 +175,10 @@ function OrdersPageV1() {
             <MobileTableDesktop>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Domain Name</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>NFT Wallet</TableHead>
+                  <TableHead>{t('list.domainName')}</TableHead>
+                  <TableHead>{t('list.createdAt')}</TableHead>
+                  <TableHead>{t('list.status')}</TableHead>
+                  <TableHead>{t('list.nftWallet')}</TableHead>
                   <TableHead />
                 </TableRow>
               </TableHeader>
@@ -239,7 +238,7 @@ function OrdersPageV1() {
                         label={
                           <span className="flex items-center gap-1">
                             <Calendar className="h-3.5 w-3.5" />
-                            <span>Created:</span>
+                            <span>{t('list.created')}</span>
                           </span>
                         }
                         value={format(
@@ -268,7 +267,7 @@ function OrdersPageV1() {
                         nativeButton={false}
                       >
                         <ExternalLink className="h-4 w-4 mr-2" />
-                        View Details
+                        {t('list.viewDetails')}
                       </Button>
                     </MobileTableItemActions>
                   </MobileTableItem>
@@ -278,10 +277,10 @@ function OrdersPageV1() {
             <MobileTableDesktop>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Domain Name</TableHead>
-                  <TableHead>Created At</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>NFT Wallet</TableHead>
+                  <TableHead>{t('list.domainName')}</TableHead>
+                  <TableHead>{t('list.createdAt')}</TableHead>
+                  <TableHead>{t('list.status')}</TableHead>
+                  <TableHead>{t('list.nftWallet')}</TableHead>
                   <TableHead />
                 </TableRow>
               </TableHeader>
@@ -326,7 +325,7 @@ function OrdersPageV1() {
                         className="font-mono text-sm hover:underline inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"
                       >
                         <ExternalLink className="h-3 w-3" />
-                        View Details
+                        {t('list.viewDetails')}
                       </Link>
                     </TableCell>
                   </TableRow>
@@ -337,8 +336,8 @@ function OrdersPageV1() {
         ) : (
           <MobileTableEmpty
             icon={PackageX}
-            title="No Orders Yet"
-            description="Your orders would appear here when placed."
+            title={t('emptyTitle')}
+            description={t('emptyDescription')}
           />
         )}
       </CartCard>

@@ -10,6 +10,7 @@ import { getUserDisplaySafeIdentifierPair } from '@/lib/user';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { shortage } from '@/lib/string';
 import type { User } from '@privy-io/react-auth';
+import { useTranslations } from 'next-intl';
 import type { FC, HTMLAttributes } from 'react';
 
 export interface HeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -23,6 +24,7 @@ export const Header: FC<HeaderProps> = ({
   className,
   ...rest
 }: HeaderProps) => {
+  const t = useTranslations('profile');
   const { primary, secondary } = getUserDisplaySafeIdentifierPair(user);
   const primaryDisplay =
     primary ?? getAuthDisplayProfileSafeIdentifier(unsafeDisplayProfile);
@@ -43,8 +45,8 @@ export const Header: FC<HeaderProps> = ({
             <Copy
               text={primaryDisplay}
               className="text-2xl font-bold"
-              copiedTitle="Account identifier copied"
-              copiedDescription="Account identifier has been copied to clipboard"
+              copiedTitle={t('header.accountIdentifierCopied')}
+              copiedDescription={t('header.accountIdentifierCopiedDescription')}
             >
               {shortage(primaryDisplay, 11)}
             </Copy>
@@ -55,8 +57,8 @@ export const Header: FC<HeaderProps> = ({
             <Copy
               text={secondaryDisplay}
               className="text-sm text-muted-foreground"
-              copiedTitle="Account email copied"
-              copiedDescription="Account email has been copied to clipboard"
+              copiedTitle={t('header.accountEmailCopied')}
+              copiedDescription={t('header.accountEmailCopiedDescription')}
             >
               {shortage(secondaryDisplay, 11)}
             </Copy>

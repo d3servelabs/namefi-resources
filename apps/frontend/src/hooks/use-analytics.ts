@@ -136,6 +136,17 @@ function transformEvent(event: InteractionLoggingEvent): TransformedEvent {
         },
       };
     }
+    case InteractionLoggingEventName.LanguageChanged: {
+      const { fromLocale, toLocale, source } = event.properties;
+      return {
+        name: event.name,
+        properties: {
+          from_locale: fromLocale,
+          to_locale: toLocale,
+          source,
+        },
+      };
+    }
     default: {
       return event;
     }

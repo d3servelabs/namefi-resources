@@ -1,0 +1,71 @@
+{
+  "title": {
+    "description": "Page heading for the My Free Mints page (the user's free-claim rewards)."
+  },
+  "historyHeading": {
+    "description": "Section heading above the table of past/inactive free mints (claim history)."
+  },
+  "table.item": {
+    "description": "Column header for the free-mint item (the domain or campaign offer)."
+  },
+  "table.issuedOn": {
+    "description": "Column header for the date the free mint was issued."
+  },
+  "table.validUntil": {
+    "description": "Column header for the free mint's expiration date."
+  },
+  "table.status": {
+    "description": "Column header for the free mint's status (claimed / in progress / expired / available)."
+  },
+  "table.claimedDomain": {
+    "description": "Column header for the domain that was claimed with the free mint."
+  },
+  "table.claimedOn": {
+    "description": "Column header for the date the free mint was claimed."
+  },
+  "campaignItem": {
+    "description": "Rich-text item label for a campaign free mint, e.g. 'Any example.com subdomain'. The <domain>…</domain> tag wraps {domain}, a parent domain name rendered as a styled chip — keep {domain} and the tags; do not translate the domain name."
+  },
+  "campaignLabel": {
+    "description": "Plain-text campaign label shown on the free-mint card, e.g. 'Any example.com subdomain'. {domain} is a parent domain name — keep untranslated."
+  },
+  "statusBadge.claimed": {
+    "description": "Status badge: the free mint has been claimed.",
+    "maxLength": 10
+  },
+  "statusBadge.inProgress": {
+    "description": "Status badge: the free mint is currently being claimed.",
+    "maxLength": 12
+  },
+  "statusBadge.expired": {
+    "description": "Status badge: the free mint has expired.",
+    "maxLength": 10
+  },
+  "statusBadge.available": {
+    "description": "Status badge: the free mint is available to claim.",
+    "maxLength": 10
+  },
+  "noHistory": {
+    "description": "Empty-state line shown in the history section when there are no past claims yet."
+  },
+  "emptyTitle": {
+    "description": "Empty-state title shown when the user has no free mints at all."
+  },
+  "emptyDescription": {
+    "description": "Empty-state body explaining that free-claim opportunities will appear here when received."
+  },
+  "card.issued": {
+    "description": "Small label on the free-mint card marking the issue date (date shown as MM/yy).",
+    "maxLength": 12
+  },
+  "card.validThru": {
+    "description": "Small label on the free-mint card marking the expiry date (date shown as MM/yy).",
+    "maxLength": 12
+  },
+  "card.claimNow": {
+    "description": "Primary action button on the free-mint card that starts claiming."
+  },
+  "card.poweredByNamefi": {
+    "description": "Accessibility label for the brand logo on the free-mint card. Keep 'Namefi' as the brand name."
+  }
+}

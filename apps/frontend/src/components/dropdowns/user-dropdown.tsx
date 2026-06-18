@@ -15,6 +15,7 @@ import {
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Loader2Icon, MoreHorizontalIcon, WalletIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
@@ -74,6 +75,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     }: UserDropdownProps,
     ref: ForwardedRef<HTMLDivElement>,
   ) {
+    const t = useTranslations('common');
     const { state: sidebarState, isMobile } = useSidebar();
     const {
       isLoading,
@@ -130,15 +132,15 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
           const message =
             error instanceof Error
               ? error.message
-              : 'The sign in flow failed to load.';
-          toast.error('Failed to load sign in', {
+              : t('signIn.loadFailedDescription');
+          toast.error(t('signIn.loadFailedTitle'), {
             description: message,
           });
         })
         .finally(() => {
           setIsLoginPending(false);
         });
-    }, [requestAuthLogin]);
+    }, [requestAuthLogin, t]);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -321,6 +323,7 @@ function LoadingButton({
   isExpanded,
   stretch,
 }: SignedOutButtonProps) {
+  const t = useTranslations('common');
   return (
     <motion.div
       key="user-loading"
@@ -345,7 +348,7 @@ function LoadingButton({
         disabled={true}
       >
         <Loader2Icon className="size-5 animate-spin" />
-        {isExpanded && <span>Loading...</span>}
+        {isExpanded && <span>{t('actions.loading')}</span>}
       </HeaderActionButton>
     </motion.div>
   );
@@ -360,6 +363,7 @@ function SignedOutButton({
   onLogin,
   onLoginIntent,
 }: LoginButtonProps) {
+  const t = useTranslations('common');
   return (
     <motion.div
       key="user-signedout"
@@ -390,7 +394,11 @@ function SignedOutButton({
         ) : (
           <WalletIcon className="size-5" />
         )}
-        {isExpanded && <span>{isLoginPending ? 'Loading...' : 'Sign In'}</span>}
+        {isExpanded && (
+          <span>
+            {isLoginPending ? t('actions.loading') : t('actions.signIn')}
+          </span>
+        )}
       </HeaderActionButton>
     </motion.div>
   );

@@ -12,6 +12,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import type { VisibilityState } from '@tanstack/react-table';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Wallet } from 'lucide-react';
 import { useAccount } from 'wagmi';
@@ -107,6 +108,7 @@ export function MyDomainsTable(props: {
 }) {
   const { title, domains, kind } = props;
 
+  const t = useTranslations('domains');
   const trpc = useTRPC();
   const preferencesMutation = useDomainPreferencesMutation();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -224,13 +226,18 @@ export function MyDomainsTable(props: {
           domainPreferencesAndConfig: { autoRenewEnabled: enabled },
         });
         toast.success(
-          `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
+          t('table.toasts.autoRenewToggled', {
+            enabled: String(enabled),
+            domain: domainName,
+          }),
         );
         if (enabled && position) {
           triggerCelebrationAtPosition(position.x, position.y);
         }
       } catch {
-        toast.error(`Failed to update auto-renew for ${domainName}`);
+        toast.error(
+          t('table.toasts.autoRenewToggleFailed', { domain: domainName }),
+        );
       } finally {
         setTogglingAutoRenew((prev) => {
           const next = new Set(prev);
@@ -239,7 +246,7 @@ export function MyDomainsTable(props: {
         });
       }
     },
-    [preferencesMutation],
+    [preferencesMutation, t],
   );
 
   const handleToggleAutoEns = useCallback(
@@ -255,10 +262,15 @@ export function MyDomainsTable(props: {
           domainPreferencesAndConfig: { autoEnsEnabled: enabled },
         });
         toast.success(
-          `AutoENS ${enabled ? 'enabled' : 'disabled'} for ${domainName}`,
+          t('table.toasts.autoEnsToggled', {
+            enabled: String(enabled),
+            domain: domainName,
+          }),
         );
       } catch {
-        toast.error(`Failed to update AutoENS for ${domainName}`);
+        toast.error(
+          t('table.toasts.autoEnsToggleFailed', { domain: domainName }),
+        );
       } finally {
         setTogglingAutoEns((prev) => {
           const next = new Set(prev);
@@ -267,7 +279,7 @@ export function MyDomainsTable(props: {
         });
       }
     },
-    [preferencesMutation],
+    [preferencesMutation, t],
   );
 
   // Batch toggle: fires the mutation per domain with a concurrency limit. Each
@@ -309,12 +321,18 @@ export function MyDomainsTable(props: {
 
       if (failed.length > 0) {
         toast.error(
-          `Failed to update ${failed.length} of ${domainsToUpdate.length} domains`,
+          t('table.toasts.bulkAutoRenewFailed', {
+            failed: failed.length,
+            total: domainsToUpdate.length,
+          }),
         );
       }
       if (succeeded.length > 0) {
         toast.success(
-          `Auto-renew ${enabled ? 'enabled' : 'disabled'} for ${succeeded.length} domain${succeeded.length > 1 ? 's' : ''}`,
+          t('table.toasts.bulkAutoRenewToggled', {
+            enabled: String(enabled),
+            count: succeeded.length,
+          }),
         );
       }
       if (enabled && succeeded.length > 0) {
@@ -332,7 +350,7 @@ export function MyDomainsTable(props: {
         return next;
       });
     },
-    [selectedDomainIds, preferencesMutation],
+    [selectedDomainIds, preferencesMutation, t],
   );
 
   const handleRenewNowWithYears = useCallback(
@@ -374,31 +392,31 @@ export function MyDomainsTable(props: {
     () => ({
       normalizedDomainName: {
         id: 'normalizedDomainName',
-        label: 'Domain Name',
+        label: t('table.filters.domainName'),
         type: 'text' as const,
         columnId: 'normalizedDomainName',
       },
       ownerAddress: {
         id: 'ownerAddress',
-        label: 'Wallet',
+        label: t('table.filters.wallet'),
         type: 'text' as const,
         columnId: 'ownerAddress',
       },
       expirationDate: {
         id: 'expirationDate',
-        label: 'Renewal',
+        label: t('table.filters.renewal'),
         type: 'date' as const,
         columnId: 'expirationDate',
       },
       dateTokenized: {
         id: 'dateTokenized',
-        label: 'Date Tokenized',
+        label: t('table.filters.dateTokenized'),
         type: 'date' as const,
         columnId: 'dateTokenized',
       },
       chainId: {
         id: 'chainId',
-        label: 'Chain',
+        label: t('table.filters.chain'),
         type: 'select' as const,
         columnId: 'chainId',
         options: [
@@ -408,7 +426,7 @@ export function MyDomainsTable(props: {
         ],
       },
     }),
-    [],
+    [t],
   );
 
   const getFieldSuggestions = useCallback(
@@ -779,7 +797,7 @@ export function MyDomainsTable(props: {
     async (domainsToWatch: DomainRow[]) => {
       const watchGroups = groupDomainsForWalletWatch(domainsToWatch);
       if (watchGroups.length === 0) {
-        toast.error('No NFTs available to add to your wallet');
+        toast.error(t('table.toasts.noNftsToWatch'));
         return;
       }
       setIsWatchingInWallet(true);
@@ -788,19 +806,13 @@ export function MyDomainsTable(props: {
         watchBulkNamefiNftInWallet,
       ).finally(() => setIsWatchingInWallet(false));
       if (addedCount > 0) {
-        toast.success(
-          `Added ${addedCount} NFT${addedCount === 1 ? '' : 's'} to your wallet`,
-        );
+        toast.success(t('table.toasts.nftsAdded', { count: addedCount }));
       }
       if (failedCount > 0) {
-        toast.error(
-          `Couldn't add ${failedCount} NFT${
-            failedCount === 1 ? '' : 's'
-          } to your wallet`,
-        );
+        toast.error(t('table.toasts.nftsAddFailed', { count: failedCount }));
       }
     },
-    [watchBulkNamefiNftInWallet],
+    [watchBulkNamefiNftInWallet, t],
   );
 
   // Domains in this table owned by the currently connected wallet — the basis
@@ -834,12 +846,12 @@ export function MyDomainsTable(props: {
         size="sm"
         onClick={() => handleWatchDomainsInWallet(connectedWalletDomains)}
         disabled={isWatchingInWallet}
-        aria-label={`Show ${watchableNftCount} NFT${
-          watchableNftCount === 1 ? '' : 's'
-        } in wallet`}
+        aria-label={t('table.showNftsInWalletAria', {
+          count: watchableNftCount,
+        })}
       >
         <Wallet className="h-3 w-3 mr-1" />
-        Show NFTs in Wallet
+        {t('table.showNftsInWallet')}
       </Button>
     ) : null;
 
@@ -882,14 +894,14 @@ export function MyDomainsTable(props: {
         onSortingChange={setSorting}
         searchTerm={domainSearch}
         onSearchChange={setDomainSearch}
-        searchPlaceholder="Filter domains..."
+        searchPlaceholder={t('table.searchPlaceholder')}
         filterStrategy={filterStrategy}
         columnVisibility={columnVisibility}
         onColumnVisibilityChange={isMobile ? undefined : setColumnVisibility}
         onResetPreferences={resetToDefaults}
         toolbarActions={watchInWalletToolbarAction}
-        emptyMessage="No domains match your filters"
-        loadingMessage="Loading domains..."
+        emptyMessage={t('table.emptyMessage')}
+        loadingMessage={t('table.loadingMessage')}
         paginationVisibility="auto"
         showPageSizeSelector={false}
       />

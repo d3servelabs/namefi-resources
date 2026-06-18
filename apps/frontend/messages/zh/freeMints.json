@@ -1,0 +1,29 @@
+{
+  "title": "我的免费铸造",
+  "historyHeading": "历史记录",
+  "table": {
+    "item": "项目",
+    "issuedOn": "发放时间",
+    "validUntil": "有效期至",
+    "status": "状态",
+    "claimedDomain": "已认领域名",
+    "claimedOn": "认领时间"
+  },
+  "campaignItem": "任意 <domain>{domain}</domain> 子域名",
+  "campaignLabel": "任意 {domain} 子域名",
+  "statusBadge": {
+    "claimed": "已认领",
+    "inProgress": "进行中",
+    "expired": "已过期",
+    "available": "可认领"
+  },
+  "noHistory": "暂无认领记录。",
+  "emptyTitle": "暂无免费铸造",
+  "emptyDescription": "当您获得免费认领机会时，将在此处显示。",
+  "card": {
+    "issued": "发放",
+    "validThru": "有效期至",
+    "claimNow": "立即认领",
+    "poweredByNamefi": "Powered by Namefi"
+  }
+}

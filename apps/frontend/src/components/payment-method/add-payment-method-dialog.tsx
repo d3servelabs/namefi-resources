@@ -10,6 +10,7 @@ import { useTRPC } from '@/lib/trpc';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
 import { AddPaymentMethodForm } from './add-payment-method-form';
@@ -33,6 +34,7 @@ export function AddPaymentMethodDialog({
   onOpenChange,
   showAddPaymentMethodDialog,
 }: AddPaymentMethodDialogProps) {
+  const t = useTranslations('payment');
   const [customerSessionClientSecret, setCustomerSessionClientSecret] =
     useState<string | undefined>(undefined);
   const trpc = useTRPC();
@@ -70,10 +72,9 @@ export function AddPaymentMethodDialog({
       />
       <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%]">
         <DialogHeader>
-          <DialogTitle>Payment Method Details</DialogTitle>
+          <DialogTitle>{t('addPaymentMethodDialog.title')}</DialogTitle>
           <DialogDescription>
-            Enter your payment method details. We won't charge you until you
-            confirm your order.
+            {t('addPaymentMethodDialog.description')}
           </DialogDescription>
         </DialogHeader>
         {customerSessionClientSecret ? (
@@ -93,8 +94,8 @@ export function AddPaymentMethodDialog({
             )}
             <span>
               {isCustomerSessionError
-                ? 'Unable to load payment form'
-                : 'Loading payment form...'}
+                ? t('addPaymentMethodDialog.unableToLoad')
+                : t('addPaymentMethodDialog.loading')}
             </span>
           </div>
         )}

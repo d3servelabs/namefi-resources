@@ -19,6 +19,7 @@ import {
   BulkAutoRenewToggle,
   type BulkAutoRenewState,
 } from '@/components/my-domains/bulk-auto-renew-toggle';
+import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence, MotionConfig } from 'motion/react';
 import NumberFlow, { useCanAnimate } from '@number-flow/react';
 import {
@@ -72,6 +73,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
   isWatchingInWallet,
   onBatchAction,
 }) => {
+  const t = useTranslations('domains');
   const canAnimate = useCanAnimate();
 
   const handleRenewNow = () => {
@@ -140,14 +142,14 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                       />
                     </div>
                     <span className="font-semibold text-foreground text-sm">
-                      selected
+                      {t('floatingPanel.selected')}
                     </span>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={onClearSelection}
                       className="h-6 w-6 rounded-full hover:bg-muted"
-                      aria-label="Clear selection"
+                      aria-label={t('floatingPanel.clearSelection')}
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -168,22 +170,24 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                         }
                       >
                         <span className="text-xs text-muted-foreground">
-                          Auto
+                          {t('floatingPanel.auto')}
                         </span>
                         <BulkAutoRenewToggle
                           state={bulkAutoRenewState}
                           onStateChange={onBulkAutoRenewToggle}
                           disabled={selectedDomainCount === 0}
                           isLoading={isTogglingAutoRenew}
-                          ariaLabel={`Bulk auto-renew for ${selectedDomainCount} domain${selectedDomainCount !== 1 ? 's' : ''}`}
+                          ariaLabel={t('floatingPanel.bulkAutoRenewAria', {
+                            count: selectedDomainCount,
+                          })}
                         />
                       </TooltipTrigger>
                       <TooltipContent>
                         {bulkAutoRenewState === 'mixed'
-                          ? 'Mixed states — click left to disable all, right to enable all'
+                          ? t('floatingPanel.bulkAutoRenewMixed')
                           : bulkAutoRenewState === 'on'
-                            ? 'Auto-renew enabled — click to disable all'
-                            : 'Auto-renew disabled — click to enable all'}
+                            ? t('floatingPanel.bulkAutoRenewOn')
+                            : t('floatingPanel.bulkAutoRenewOff')}
                       </TooltipContent>
                     </Tooltip>
 
@@ -202,15 +206,18 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             onClick={handleRenewNow}
                             className="h-8 w-8 hover:bg-muted"
                             disabled={renewableDomainsCount === 0}
-                            aria-label={`Renew ${renewableDomainsCount} domain${renewableDomainsCount !== 1 ? 's' : ''}`}
+                            aria-label={t('floatingPanel.renewAria', {
+                              count: renewableDomainsCount,
+                            })}
                           />
                         }
                       >
                         <CalendarPlus className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        Renew {renewableDomainsCount} domain
-                        {renewableDomainsCount !== 1 ? 's' : ''}
+                        {t('floatingPanel.renewTooltip', {
+                          count: renewableDomainsCount,
+                        })}
                       </TooltipContent>
                     </Tooltip>
 
@@ -227,13 +234,15 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             size="icon"
                             onClick={() => onBatchAction('web')}
                             className="h-8 w-8"
-                            aria-label="Set Web Records"
+                            aria-label={t('floatingPanel.setWebRecords')}
                           />
                         }
                       >
                         <Globe className="w-4 h-4" />
                       </TooltipTrigger>
-                      <TooltipContent>Set Web Records</TooltipContent>
+                      <TooltipContent>
+                        {t('floatingPanel.setWebRecords')}
+                      </TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
@@ -244,13 +253,15 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             size="icon"
                             onClick={() => onBatchAction('forward')}
                             className="h-8 w-8"
-                            aria-label="Set URL Forwarding"
+                            aria-label={t('floatingPanel.setUrlForwarding')}
                           />
                         }
                       >
                         <LinkIcon className="w-4 h-4" />
                       </TooltipTrigger>
-                      <TooltipContent>Set URL Forwarding</TooltipContent>
+                      <TooltipContent>
+                        {t('floatingPanel.setUrlForwarding')}
+                      </TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
@@ -261,13 +272,15 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             size="icon"
                             onClick={() => onBatchAction('ens')}
                             className="h-8 w-8"
-                            aria-label="Set ENS Record"
+                            aria-label={t('floatingPanel.setEnsRecord')}
                           />
                         }
                       >
                         <Hexagon className="w-4 h-4" />
                       </TooltipTrigger>
-                      <TooltipContent>Set ENS Record</TooltipContent>
+                      <TooltipContent>
+                        {t('floatingPanel.setEnsRecord')}
+                      </TooltipContent>
                     </Tooltip>
 
                     <Separator
@@ -284,17 +297,18 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             onClick={onWatchSelectedInWallet}
                             className="h-8 w-8"
                             disabled={isWatchingInWallet}
-                            aria-label={`Show ${selectedDomainCount} NFT${
-                              selectedDomainCount !== 1 ? 's' : ''
-                            } in wallet`}
+                            aria-label={t('floatingPanel.showInWalletAria', {
+                              count: selectedDomainCount,
+                            })}
                           />
                         }
                       >
                         <Wallet className="w-4 h-4" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        Show {selectedDomainCount} NFT
-                        {selectedDomainCount !== 1 ? 's' : ''} in wallet
+                        {t('floatingPanel.showInWalletTooltip', {
+                          count: selectedDomainCount,
+                        })}
                       </TooltipContent>
                     </Tooltip>
                   </div>

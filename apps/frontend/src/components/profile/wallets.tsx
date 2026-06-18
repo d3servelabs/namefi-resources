@@ -39,6 +39,7 @@ import {
 } from 'lucide-react';
 import { type HTMLAttributes, useCallback, useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/use-auth';
 
 const getWalletIcon = (type: string) => {
@@ -59,6 +60,7 @@ const getWalletIcon = (type: string) => {
 interface WalletsProps extends HTMLAttributes<HTMLDivElement> {}
 
 export const Wallets = ({ className, ...rest }: WalletsProps) => {
+  const t = useTranslations('profile');
   const {
     isUnlinkWalletDialogOpen,
     setIsUnlinkWalletDialogOpen,
@@ -84,12 +86,15 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
     [user],
   );
 
-  const handleCopyAddress = useCallback(async (address: string) => {
-    await navigator.clipboard.writeText(address);
-    toast('Address copied', {
-      description: 'Wallet address copied to clipboard',
-    });
-  }, []);
+  const handleCopyAddress = useCallback(
+    async (address: string) => {
+      await navigator.clipboard.writeText(address);
+      toast(t('wallets.addressCopied'), {
+        description: t('wallets.addressCopiedDescription'),
+      });
+    },
+    [t],
+  );
 
   return (
     <Card className={cn('', className)} {...rest}>
@@ -97,9 +102,9 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Wallet2 className="h-5 w-5 text-primary" />
-            <CardTitle>Linked Wallets</CardTitle>
+            <CardTitle>{t('wallets.title')}</CardTitle>
           </div>
-          <CardDescription>Manage your wallets</CardDescription>
+          <CardDescription>{t('wallets.description')}</CardDescription>
         </div>
 
         <NamefiButton
@@ -109,7 +114,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           disabled={!canUsePrivyActions}
         >
           <Plus className="h-4 w-4" />
-          Link
+          {t('wallets.link')}
         </NamefiButton>
       </CardHeader>
       <CardContent>
@@ -117,14 +122,14 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           <LinkedWalletsSkeleton />
         ) : linkedWallets.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">No linked wallets</p>
+            <p className="text-muted-foreground">{t('wallets.empty')}</p>
             <Button
               variant="outline"
               className="mt-4"
               onClick={handleLinkWalletClicked}
               disabled={!canUsePrivyActions}
             >
-              Link Wallet
+              {t('wallets.linkWallet')}
             </Button>
           </div>
         ) : (
@@ -146,7 +151,9 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                       {shortage(wallet.address, 11)}
                     </div>
                     <div className="text-sm text-muted-foreground">
-                      {isFirstConnectedWallet(wallet) ? '(Primary)' : ''}
+                      {isFirstConnectedWallet(wallet)
+                        ? t('wallets.primary')
+                        : ''}
                     </div>
                   </div>
                 </div>
@@ -155,7 +162,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     variant="outline"
                     size="icon"
                     onClick={() => handleCopyAddress(wallet.address)}
-                    aria-label="Copy wallet address"
+                    aria-label={t('wallets.copyAddressAriaLabel')}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
@@ -168,7 +175,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                         '_blank',
                       )
                     }
-                    aria-label="View on Etherscan"
+                    aria-label={t('wallets.viewOnExplorerAriaLabel')}
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
@@ -179,14 +186,14 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                           <Button
                             variant="outline"
                             size="icon"
-                            aria-label="Remove wallet"
+                            aria-label={t('wallets.removeWalletAriaLabel')}
                             disabled={true}
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          Primary wallet cannot be unlinked
+                          {t('wallets.primaryCannotUnlink')}
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
@@ -195,7 +202,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                       variant="outline"
                       size="icon"
                       onClick={() => handleUnlinkWalletClicked(wallet.address)}
-                      aria-label="Remove wallet"
+                      aria-label={t('wallets.removeWalletAriaLabel')}
                       disabled={!canUsePrivyActions}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
@@ -245,6 +252,7 @@ function LinkedWalletsSkeleton() {
 }
 
 export const useControlLinkedWallets = () => {
+  const t = useTranslations('profile');
   const [isUnlinkWalletDialogOpen, setIsUnlinkWalletDialogOpen] =
     useState(false);
   const {
@@ -264,23 +272,23 @@ export const useControlLinkedWallets = () => {
   const handleLinkWalletClicked = useCallback(() => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert('You are impersonating a user, so you cannot link a wallet');
+      alert(t('wallets.impersonateLinkAlert'));
       return;
     }
     linkWallet();
-  }, [canUsePrivyActions, linkWallet, isImpersonating]);
+  }, [canUsePrivyActions, linkWallet, isImpersonating, t]);
 
   const handleUnlinkWalletClicked = useCallback(
     (walletAddress: string) => {
       if (!canUsePrivyActions) return;
       if (isImpersonating) {
-        alert('You are impersonating a user, so you cannot unlink a wallet');
+        alert(t('wallets.impersonateUnlinkAlert'));
         return;
       }
       setWalletToUnlink(walletAddress);
       setIsUnlinkWalletDialogOpen(true);
     },
-    [canUsePrivyActions, isImpersonating],
+    [canUsePrivyActions, isImpersonating, t],
   );
 
   const handleConfirmUnlinkWalletClicked = useCallback(
@@ -296,12 +304,12 @@ export const useControlLinkedWallets = () => {
       try {
         await unlinkWallet(walletAddress);
         setIsUnlinkWalletDialogOpen(false);
-        toast.success('Wallet unlinked', {
+        toast.success(t('wallets.unlinkSuccess'), {
           id: `wallet-unlink-success-${walletAddress}`,
-          description: 'Wallet has been successfully unlinked.',
+          description: t('wallets.unlinkSuccessDescription'),
         });
       } catch (error) {
-        toast.error('Failed to unlink wallet', {
+        toast.error(t('wallets.unlinkFailure'), {
           id: `wallet-unlink-failure-${walletAddress}`,
           description: `${error instanceof Error ? error.message : 'Unknown error'}`,
         });
@@ -310,7 +318,7 @@ export const useControlLinkedWallets = () => {
         setIsUnlinkWalletPending(false);
       }
     },
-    [canUsePrivyActions, unlinkWallet],
+    [canUsePrivyActions, unlinkWallet, t],
   );
   return {
     isUnlinkWalletDialogOpen,
@@ -341,6 +349,7 @@ export const UnlinkWalletDialog = ({
   handleUnlinkWalletConfirm,
   isUnlinkWalletPending,
 }: UnlinkWalletDialogProps) => {
+  const t = useTranslations('profile');
   const isMobile = useIsMobile();
   return (
     <Dialog
@@ -349,9 +358,13 @@ export const UnlinkWalletDialog = ({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Unlink Wallet</DialogTitle>
+          <DialogTitle>{t('wallets.unlinkDialogTitle')}</DialogTitle>
           <DialogDescription>
-            {`Are you sure you want to continue unlinking wallet with address ${isMobile ? getShortAddress(walletToUnlink ?? '') : walletToUnlink}?`}
+            {t('wallets.unlinkDialogDescription', {
+              address: isMobile
+                ? getShortAddress(walletToUnlink ?? '')
+                : (walletToUnlink ?? ''),
+            })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -360,7 +373,7 @@ export const UnlinkWalletDialog = ({
             onClick={() => setIsUnlinkWalletDialogOpen(false)}
             disabled={isUnlinkWalletPending}
           >
-            Cancel
+            {t('wallets.cancel')}
           </Button>
           <Button
             onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}
@@ -369,10 +382,10 @@ export const UnlinkWalletDialog = ({
             {isUnlinkWalletPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Unlinking...
+                {t('wallets.unlinking')}
               </>
             ) : (
-              'Unlink'
+              t('wallets.unlink')
             )}
           </Button>
         </DialogFooter>

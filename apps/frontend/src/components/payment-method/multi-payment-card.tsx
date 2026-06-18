@@ -12,6 +12,7 @@ import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { NetworkLogo } from '@/components/network-logo';
 import { getShortAddress } from '@/lib/string';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 
 export type CreateOrderV2Input = AppRouterInput['orders']['createOrderV2'];
 
@@ -56,6 +57,7 @@ export function MultiPaymentCard({
   onSelectionChange,
   onSubmit,
 }: MultiPaymentCardProps) {
+  const t = useTranslations('payment');
   const [includeNfsc, setIncludeNfsc] = useState<boolean>(initialIncludeNfsc);
   const [includeStripe, setIncludeStripe] =
     useState<boolean>(initialIncludeStripe);
@@ -178,7 +180,7 @@ export function MultiPaymentCard({
 
   return (
     <CartCard
-      title="Multi-payment"
+      title={t('multiPaymentCard.title')}
       footer={
         <DisabledReasonTooltip
           reason={
@@ -205,7 +207,7 @@ export function MultiPaymentCard({
           <div className="flex items-center justify-between p-3 rounded-md bg-[#18181B]">
             <div className="text-sm">
               <div className="font-medium flex items-center gap-2">
-                NFSC Balance{' '}
+                {t('multiPaymentCard.nfscBalance')}{' '}
                 {!!initialNfscChainId && (
                   <NetworkLogo
                     className="size-4 inline-block"
@@ -216,8 +218,9 @@ export function MultiPaymentCard({
                   getShortAddress(initialNfscWalletAddress)}
               </div>
               <div className="text-xs text-muted-foreground">
-                Using {formatAmountInUSD(nfscAmountInUsdCents)} USD of NFSC
-                Balance
+                {t('multiPaymentCard.usingNfsc', {
+                  amount: formatAmountInUSD(nfscAmountInUsdCents),
+                })}
               </div>
             </div>
             {/* <Button variant="ghost" onClick={() => setIncludeNfsc(false)}>
@@ -230,14 +233,16 @@ export function MultiPaymentCard({
             className="w-full"
             onClick={() => setIncludeNfsc(true)}
           >
-            Add NFSC Balance
+            {t('multiPaymentCard.addNfscBalance')}
           </Button>
         )}
 
         {includeStripe ? (
           <div className="p-3 rounded-md bg-[#18181B]">
             <div className="flex items-center justify-between">
-              <div className="text-sm font-medium">Credit Card</div>
+              <div className="text-sm font-medium">
+                {t('multiPaymentCard.creditCard')}
+              </div>
               <Button
                 variant="ghost"
                 onClick={() => {
@@ -245,12 +250,13 @@ export function MultiPaymentCard({
                   setStripeConfirmationTokenId(null);
                 }}
               >
-                Remove
+                {t('multiPaymentCard.remove')}
               </Button>
             </div>
             <div className="text-xs text-muted-foreground">
-              Using {formatAmountInUSD(stripeAmountInUsdCents)} USD from Credit
-              Card
+              {t('multiPaymentCard.usingCreditCard', {
+                amount: formatAmountInUSD(stripeAmountInUsdCents),
+              })}
             </div>
             <div className="mt-2">
               <AddPaymentMethodDialog
@@ -268,8 +274,8 @@ export function MultiPaymentCard({
                 dialogTrigger={
                   <Button variant="outline" className="w-full">
                     {stripeConfirmationTokenId
-                      ? 'Change Card'
-                      : 'Add or Select Card'}
+                      ? t('multiPaymentCard.changeCard')
+                      : t('multiPaymentCard.addOrSelectCard')}
                   </Button>
                 }
               />
@@ -281,13 +287,13 @@ export function MultiPaymentCard({
             className="w-full"
             onClick={() => setIncludeStripe(true)}
           >
-            Add Credit Card
+            {t('multiPaymentCard.addCreditCard')}
           </Button>
         )}
 
         <Separator />
         <div className="flex items-center justify-between text-sm">
-          <span>Total</span>
+          <span>{t('multiPaymentCard.total')}</span>
           <span>
             <span
               className={cn(

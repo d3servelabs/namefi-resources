@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 import { use, useEffect, useMemo, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
@@ -120,80 +121,83 @@ function getOrderItemCounts(items: OrderItemSelect[]): OrderItemCounts {
   };
 }
 
-function getProcessingTitle(counts: OrderItemCounts): string {
+type OrdersTranslator = ReturnType<typeof useTranslations<'orders'>>;
+
+function getProcessingTitle(
+  t: OrdersTranslator,
+  counts: OrderItemCounts,
+): string {
   const { importCount, registerCount, renewCount, total } = counts;
 
-  if (total === 0) return 'Processing your order';
+  if (total === 0) return t('processing.processingYourOrder');
 
   const parts: string[] = [];
 
   if (importCount > 0) {
-    parts.push(
-      `importing ${importCount} ${importCount === 1 ? 'domain' : 'domains'}`,
-    );
+    parts.push(t('processing.importing', { count: importCount }));
   }
   if (registerCount > 0) {
-    parts.push(
-      `registering ${registerCount} ${registerCount === 1 ? 'domain' : 'domains'}`,
-    );
+    parts.push(t('processing.registering', { count: registerCount }));
   }
   if (renewCount > 0) {
-    parts.push(
-      `renewing ${renewCount} ${renewCount === 1 ? 'domain' : 'domains'}`,
-    );
+    parts.push(t('processing.renewing', { count: renewCount }));
   }
 
   if (parts.length === 0) {
-    return `Processing ${total} ${total === 1 ? 'domain' : 'domains'}`;
+    return t('processing.processingDomains', { count: total });
   }
 
-  // Capitalize the first letter of the first part for proper sentence case
-  const firstPart = parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
-
   if (parts.length === 1) {
-    return firstPart;
+    return parts[0];
   }
 
   const remainingParts = parts.slice(1);
-  const lastPart = remainingParts.pop();
+  const lastPart = remainingParts.pop() as string;
   if (remainingParts.length === 0) {
-    return `${firstPart} and ${lastPart}`;
+    return t('processing.joinTwo', { first: parts[0], last: lastPart });
   }
-  return `${firstPart}, ${remainingParts.join(', ')} and ${lastPart}`;
+  // With only import/register/renew item types, `remainingParts` is at most a
+  // single element here, so the join separator is never actually rendered.
+  return t('processing.joinMany', {
+    first: parts[0],
+    middle: remainingParts.join(', '),
+    last: lastPart,
+  });
 }
 
 function getProcessingDescription(
+  t: OrdersTranslator,
   counts: OrderItemCounts,
   stepId: OrderProgressStepId | undefined,
 ): string {
-  const { importCount, registerCount, total } = counts;
+  const { importCount, registerCount } = counts;
 
   if (stepId === 'items') {
     if (importCount > 0 && registerCount === 0) {
-      return 'We are submitting the import request. This typically takes 5-7 days. You can contact your old registrar to expedite. If the domain is locked, you may need to unlock it first.';
+      return t('processing.descItemsImportOnly');
     }
     if (importCount > 0 && registerCount > 0) {
-      return 'We are registering your domains and submitting import requests. Imports typically take 5-7 days. You can contact your old registrar to expedite. If a domain is locked, you may need to unlock it first.';
+      return t('processing.descItemsImportAndRegister');
     }
-    return 'Each domain is being submitted to the registrar.';
+    return t('processing.descItemsDefault');
   }
 
   if (stepId === 'post-processing') {
     if (importCount > 0) {
-      return 'Your old registrar will contact you to confirm the import. This typically takes 5-7 days.';
+      return t('processing.descPostProcessingImport');
     }
-    return 'We are refreshing indexes and preparing your on-chain records.';
+    return t('processing.descPostProcessingDefault');
   }
 
   if (importCount > 0 && registerCount === 0) {
-    return 'We are initiating the import. This typically takes 5-7 days. You can contact your old registrar to expedite.';
+    return t('processing.descImportOnly');
   }
 
   if (importCount > 0 && registerCount > 0) {
-    return 'We are processing your domains. Imports typically take 5-7 days.';
+    return t('processing.descImportAndRegister');
   }
 
-  return 'Hang on tight while we wrap things up.';
+  return t('processing.descDefault');
 }
 
 function hasLogoPreviewsForAllDomains(
@@ -212,6 +216,7 @@ function hasLogoPreviewsForAllDomains(
 }
 
 export default function OrderPage({ params }: OrderPageProps) {
+  const t = useTranslations('orders');
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
@@ -343,10 +348,10 @@ export default function OrderPage({ params }: OrderPageProps) {
   const activeProgressCopy = useMemo(() => {
     const stepId = orderProgress.activeStep?.id;
     return {
-      title: getProcessingTitle(itemCounts),
-      description: getProcessingDescription(itemCounts, stepId),
+      title: getProcessingTitle(t, itemCounts),
+      description: getProcessingDescription(t, itemCounts, stepId),
     };
-  }, [itemCounts, orderProgress.activeStep?.id]);
+  }, [t, itemCounts, orderProgress.activeStep?.id]);
 
   const orderItems = useMemo(() => {
     if (!items) {
@@ -450,14 +455,16 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const shareManageMessage = useMemo(() => {
     if (!orderItems?.length) {
-      return 'Begin managing your domain on Namefi.';
+      return t('detail.shareManageDefault');
     }
 
     const domainList = orderItems.map((item) => item.fullDomain).join(', ');
-    const domainLabel = orderItems.length > 1 ? 'your domains' : 'your domain';
 
-    return `I've registered ${domainList} for you on Namefi. Begin managing ${domainLabel} here:`;
-  }, [orderItems]);
+    return t('detail.shareManageMessage', {
+      domains: domainList,
+      count: orderItems.length,
+    });
+  }, [t, orderItems]);
 
   const shareManageUrl = useMemo(() => {
     if (!manageShareUrl) return '';
@@ -476,17 +483,15 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const heading =
     viewState === 'success'
-      ? 'Congratulations!'
+      ? t('detail.congratulations')
       : viewState === 'failed'
-        ? "We couldn't complete your order"
+        ? t('detail.couldNotComplete')
         : activeProgressCopy.title;
   const subheading =
     viewState === 'success'
-      ? `You've got your ${
-          orderItems.length > 1 ? 'domains' : 'domain'
-        } and here ${orderItems.length > 1 ? 'are the NFTs' : 'is the NFT'}`
+      ? t('detail.successSubheading', { count: orderItems.length })
       : viewState === 'failed'
-        ? 'Something went wrong while processing this order. Review the details below.'
+        ? t('detail.failedSubheading')
         : activeProgressCopy.description;
   const timelinePhase: WorkflowProgressPhase =
     viewState === 'loading'
@@ -498,9 +503,7 @@ export default function OrderPage({ params }: OrderPageProps) {
         : 'processing';
 
   if (!(isAuthLoading || isAuthenticated)) {
-    return (
-      <AuthRequired description="Please sign in to view your order details" />
-    );
+    return <AuthRequired description={t('detail.authRequired')} />;
   }
 
   if (
@@ -508,9 +511,7 @@ export default function OrderPage({ params }: OrderPageProps) {
     orderDetailsError instanceof TRPCClientError &&
     orderDetailsError.data?.code === 'UNAUTHORIZED'
   ) {
-    return (
-      <Unauthorized description="You are not authorized to view this order." />
-    );
+    return <Unauthorized description={t('detail.unauthorized')} />;
   }
 
   if (!isLoading && !hasOrderDetails) {
@@ -539,7 +540,9 @@ export default function OrderPage({ params }: OrderPageProps) {
               {recipientWalletAddress && (
                 <div className="mt-4 flex flex-col items-center gap-2 text-sm">
                   <div className="inline-flex items-center gap-2 rounded-full border border-border bg-muted/40 px-3 py-1">
-                    <span className="text-muted-foreground">NFT Wallet</span>
+                    <span className="text-muted-foreground">
+                      {t('detail.nftWallet')}
+                    </span>
                     <AddressWithChain
                       address={recipientWalletAddress}
                       chainId={recipientChainId}
@@ -548,7 +551,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                   {!isRecipientLinked && (
                     <div className="flex items-center gap-2 text-amber-600">
                       <Info className="h-4 w-4" />
-                      <span>This wallet isn't linked to your account.</span>
+                      <span>{t('detail.walletNotLinked')}</span>
                     </div>
                   )}
                 </div>
@@ -603,14 +606,14 @@ export default function OrderPage({ params }: OrderPageProps) {
             render={<Link href={`/orders/${id}/details`} />}
             nativeButton={false}
           >
-            View full details
+            {t('detail.viewFullDetails')}
           </NamefiButton>
           <NamefiButton
             className="flex-1"
             render={<Link href="/" />}
             nativeButton={false}
           >
-            Back to home
+            {t('detail.backToHome')}
           </NamefiButton>
         </div>
       </div>
@@ -618,15 +621,14 @@ export default function OrderPage({ params }: OrderPageProps) {
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
         <DialogContent className="sm:max-w-[560px]">
           <DialogHeader>
-            <DialogTitle>Share domain access</DialogTitle>
+            <DialogTitle>{t('detail.shareDialogTitle')}</DialogTitle>
             <DialogDescription>
-              Send this message to the recipient so they can begin managing
-              their domain.
+              {t('detail.shareDialogDescription')}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label>Message</Label>
+              <Label>{t('detail.message')}</Label>
               <div className="flex items-start gap-2">
                 <Textarea
                   value={
@@ -659,7 +661,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
-              Close
+              {t('detail.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

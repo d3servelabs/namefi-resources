@@ -29,6 +29,7 @@ import {
   CollapsibleTrigger,
 } from '@namefi-astra/ui/components/shadcn/collapsible';
 import type { Route } from 'next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -71,9 +72,11 @@ const CollapsedSidebarSubmenuItem: FC<{
   item: NavItem;
   pathname: string;
 }> = ({ item, pathname }) => {
+  const t = useTranslations('nav');
   const [open, setOpen] = useState(false);
   const [suppressTooltip, setSuppressTooltip] = useState(false);
   const Icon = item.icon;
+  const label = t(item.title);
   const submenuItems = item.submenu ?? [];
   const isActive = isRouteActive(item, pathname);
 
@@ -94,7 +97,7 @@ const CollapsedSidebarSubmenuItem: FC<{
               <TooltipTrigger
                 render={
                   <SidebarMenuButton
-                    aria-label={item.title}
+                    aria-label={label}
                     isActive={isActive}
                     onPointerDown={() => {
                       setSuppressTooltip(true);
@@ -113,14 +116,14 @@ const CollapsedSidebarSubmenuItem: FC<{
             }
           >
             {Icon && <Icon />}
-            <span className="whitespace-nowrap">{item.title}</span>
+            <span className="whitespace-nowrap">{label}</span>
           </DropdownMenuTrigger>
           <TooltipContent
             side="right"
             align="center"
             hidden={open || suppressTooltip}
           >
-            {item.title}
+            {label}
           </TooltipContent>
         </Tooltip>
         <DropdownMenuContent
@@ -130,7 +133,7 @@ const CollapsedSidebarSubmenuItem: FC<{
           className="w-52"
         >
           <DropdownMenuGroup>
-            <DropdownMenuLabel>{item.title}</DropdownMenuLabel>
+            <DropdownMenuLabel>{label}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {submenuItems.map((subItem) => {
               const SubIcon = subItem.icon;
@@ -151,7 +154,7 @@ const CollapsedSidebarSubmenuItem: FC<{
                   }
                 >
                   {SubIcon && <SubIcon />}
-                  <span>{subItem.title}</span>
+                  <span>{t(subItem.title)}</span>
                 </DropdownMenuItem>
               );
             })}
@@ -166,6 +169,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
   items,
   ...rest
 }: SidebarItemsProps) => {
+  const t = useTranslations('nav');
   const pathname = usePathname();
   const { isMobile, setOpenMobile, state } = useSidebar();
   const isDesktopCollapsed = state === 'collapsed' && !isMobile;
@@ -176,6 +180,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
         <SidebarMenu>
           {items.map((item) => {
             const Icon = item.icon;
+            const label = t(item.title);
             const hasSubmenu = (item.submenu?.length ?? 0) > 0;
             const isActive = isRouteActive(item, pathname);
             const submenuItems = item.submenu ?? [];
@@ -205,7 +210,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                       }
                     >
                       {Icon && <Icon />}
-                      <span className="whitespace-nowrap">{item.title}</span>
+                      <span className="whitespace-nowrap">{label}</span>
                       <ChevronRight className="ml-auto transition-transform duration-200 group-data-panel-open/collapsible-trigger:rotate-90 group-data-[collapsible=icon]:hidden" />
                     </CollapsibleTrigger>
                     <CollapsibleContent>
@@ -229,7 +234,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                                 }
                               >
                                 {SubIcon && <SubIcon />}
-                                <span>{subItem.title}</span>
+                                <span>{t(subItem.title)}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           );
@@ -241,7 +246,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                   <SidebarMenuItem>
                     <SidebarMenuButton
                       isActive={isActive}
-                      tooltip={item.title}
+                      tooltip={label}
                       render={
                         <Link
                           href={item.href as Route}
@@ -256,7 +261,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                       }
                     >
                       {Icon && <Icon />}
-                      <span className="whitespace-nowrap">{item.title}</span>
+                      <span className="whitespace-nowrap">{label}</span>
                       {item.badge &&
                         item.badge.content != null &&
                         item.badge.content !== 0 &&

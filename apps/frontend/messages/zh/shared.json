@@ -1,0 +1,84 @@
+{
+  "authRequired": {
+    "title": "需要登录",
+    "description": "请登录后继续"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "以完成此操作",
+    "title": {
+      "wrongWallet": "连接了错误的钱包",
+      "settingActive": "正在设置当前钱包",
+      "connect": "连接您的钱包"
+    },
+    "description": {
+      "wrongWallet": "请连接正确的钱包以继续。",
+      "settingActive": "正在将您的钱包设为当前钱包，请稍候……",
+      "connect": "请连接您的钱包{actionDescription}。"
+    },
+    "checkingStatus": "正在检查钱包状态……",
+    "settingAsActive": "正在将钱包设为当前钱包……",
+    "requiredWallet": "所需钱包",
+    "waitingForConnection": "正在等待钱包连接……",
+    "differentWalletConnected": "您连接了另一个钱包",
+    "youConnected": "您连接的是",
+    "butWeNeed": "但我们需要",
+    "connectedSuccessfully": "钱包连接成功",
+    "cancel": "取消",
+    "connecting": "连接中……",
+    "connectWallet": "连接钱包",
+    "tryAgain": "重试",
+    "next": "下一步",
+    "toast": {
+      "setActiveFailed": "设置当前钱包失败",
+      "connectFailed": "连接钱包失败",
+      "unknownError": "未知错误"
+    }
+  },
+  "countryInput": {
+    "placeholder": "选择国家/地区",
+    "searchPlaceholder": "搜索国家/地区……",
+    "noResults": "未找到国家/地区。",
+    "clearSelection": "清除选择"
+  },
+  "myDomains": {
+    "heading": "我的域名"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "尚未索引",
+    "emptyIdentifier": "请提供钱包地址或 ENS 名称以查看 NFT。",
+    "invalidIdentifier": "这看起来不像是有效的钱包地址或 ENS 名称。",
+    "invalidIdentifierHint": "钱包地址须以 0x 开头，ENS 名称须至少包含一个点。",
+    "ensResolveFailed": "我们无法解析该 ENS 名称。",
+    "ensResolveFailedHint": "请检查拼写，或稍后重试。",
+    "noWalletResolved": "我们无法根据该输入解析出钱包。",
+    "nftCount": "{count} 个 NFT",
+    "loadDomainsFailed": "我们无法加载此钱包的域名。",
+    "loadDomainsFailedHint": "请刷新页面后重试。",
+    "noNftsFound": "未找到此钱包的 Namefi NFT。",
+    "noNftsFoundHint": "请检查钱包地址或 ENS 名称，或在索引完成后稍后重试。",
+    "unknownNetwork": "未知网络",
+    "explorer": "区块浏览器",
+    "viewOnExplorer": "在区块浏览器中查看",
+    "viewOn": "在 {explorer} 中查看",
+    "network": "网络",
+    "expiration": "到期时间",
+    "wallet": "钱包",
+    "ens": "ENS：{name}",
+    "copiedToClipboard": "已复制到剪贴板",
+    "copyFailed": "复制失败",
+    "copyFailedDescription": "我们无法复制该内容。请重试。"
+  },
+  "instantBuyModal": {
+    "title": "购买 {domain}",
+    "description": "完成 1 年注册的购买",
+    "domain": "域名",
+    "pricePerYear": "{price} USD / 年",
+    "selectNftWallet": "请选择 NFT 钱包以继续",
+    "processing": "处理中……",
+    "buyNow": "立即购买",
+    "errorTitle": "糟糕！出了点问题。",
+    "errorDescription": "请放心，您不会被扣款。欢迎重试。",
+    "errorDetail": "（错误 - {error}）",
+    "close": "关闭"
+  }
+}

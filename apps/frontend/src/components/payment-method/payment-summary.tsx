@@ -1,5 +1,6 @@
 import { NetworkLogo } from '@/components/network-logo';
 import { formatAmountInUSD } from '@/lib/number';
+import { useTranslations } from 'next-intl';
 import { useState, useMemo } from 'react';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { AppRouterInput } from '@/lib/trpc';
@@ -29,6 +30,7 @@ function getNfscPaymentDetails(payment: CreateOrderV2Input['payments'][0]) {
 }
 
 export function PaymentSummary({ calculation }: PaymentSummaryProps) {
+  const t = useTranslations('payment');
   const [showDetailedChainBalances, setShowDetailedChainBalances] =
     useState(false);
   const totalBalancePaymentsInUsdCents = useMemo(
@@ -43,7 +45,9 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
 
   return (
     <div className="space-y-2 p-3 rounded-md bg-[#18181B]">
-      <div className="text-sm font-medium mb-2">Payment Summary</div>
+      <div className="text-sm font-medium mb-2">
+        {t('paymentSummary.title')}
+      </div>
 
       {/* Balance Payments */}
 
@@ -60,7 +64,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
               onClick={() => setShowDetailedChainBalances(false)}
             />
           )}
-          $NFSC Balance
+          {t('paymentSummary.nfscBalance')}
         </span>
         {!showDetailedChainBalances ? (
           <span>
@@ -107,7 +111,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
         <div className="flex justify-between text-xs">
           <span className="flex items-center gap-1">
             <CreditCard className="size-4" />
-            Credit Card
+            {t('paymentSummary.creditCard')}
           </span>
           <span>
             {formatAmountInUSD(
@@ -133,7 +137,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
 
       {/* Total */}
       <div className="flex justify-between text-sm font-medium">
-        <span>Total</span>
+        <span>{t('paymentSummary.total')}</span>
         <span
           className={cn(
             calculation.isValid ? 'text-green-500' : 'text-red-500',
@@ -152,9 +156,9 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
       </div>
 
       {/* Error Message */}
-      {!calculation.isValid && calculation.errorMessage && (
+      {!calculation.isValid && calculation.errorMessageKey && (
         <div className="text-xs text-red-500 mt-2">
-          {calculation.errorMessage}
+          {t(`hybridPaymentUtils.${calculation.errorMessageKey}`)}
         </div>
       )}
     </div>

@@ -1,0 +1,48 @@
+{
+  "language": "语言",
+  "languageSelector": {
+    "label": "语言",
+    "ariaLabel": "切换语言"
+  },
+  "actions": {
+    "signIn": "登录",
+    "loading": "加载中…",
+    "tryAgain": "重试",
+    "dismiss": "关闭",
+    "contactSupport": "联系客服",
+    "cancel": "取消",
+    "close": "关闭",
+    "save": "保存",
+    "edit": "编辑",
+    "delete": "删除",
+    "remove": "移除",
+    "view": "查看",
+    "refresh": "刷新",
+    "submit": "提交",
+    "processing": "处理中…",
+    "loadMore": "加载更多",
+    "connectWallet": "连接钱包",
+    "goBack": "返回",
+    "approve": "批准",
+    "reject": "拒绝",
+    "disable": "禁用"
+  },
+  "status": {
+    "created": "已创建",
+    "processing": "处理中",
+    "succeeded": "成功",
+    "completed": "已完成",
+    "failed": "失败",
+    "cancelled": "已取消",
+    "partiallyCompleted": "部分完成",
+    "waitingForUser": "等待用户操作",
+    "pending": "待处理",
+    "refunded": "已退款",
+    "requiresCapture": "待请款",
+    "unknown": "未知"
+  },
+  "signIn": {
+    "loadFailedTitle": "登录加载失败",
+    "loadFailedDescription": "登录流程加载失败。"
+  }
+}

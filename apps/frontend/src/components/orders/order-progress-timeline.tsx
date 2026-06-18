@@ -9,6 +9,7 @@ import type { WorkflowProgressPhase } from '@/hooks/use-order-progress';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { isNotNil } from 'ramda';
 import { matchAny } from '@namefi-astra/utils/match';
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 
 type OrderProgress = AppRouterOutput['orders']['getOrderProgress'];
@@ -62,8 +63,44 @@ export function OrderProgressTimeline({
   progress,
   workflowPhase,
 }: OrderProgressTimelineProps) {
+  const t = useTranslations('orders');
   const effectiveLoading = workflowPhase === 'loading' || !progress?.state;
   const steps = progress?.state?.steps ?? [];
+  const localizedStepDisplayInfo = useMemo<
+    Record<OrderStepId, StepDisplayInfo>
+  >(
+    () => ({
+      'order-details': {
+        label: t('timeline.orderDetails.label'),
+        helper: t('timeline.orderDetails.helper'),
+      },
+      payments: {
+        label: t('timeline.payments.label'),
+        helper: t('timeline.payments.helper'),
+      },
+      items: {
+        label: t('timeline.items.label'),
+        helper: t('timeline.items.helper'),
+      },
+      'post-processing': {
+        label: t('timeline.postProcessing.label'),
+        helper: t('timeline.postProcessing.helper'),
+      },
+      'final-status': {
+        label: t('timeline.finalStatus.label'),
+        helper: t('timeline.finalStatus.helper'),
+      },
+      refund: {
+        label: t('timeline.refund.label'),
+        helper: t('timeline.refund.helper'),
+      },
+      notification: {
+        label: t('timeline.notification.label'),
+        helper: t('timeline.notification.helper'),
+      },
+    }),
+    [t],
+  );
   const displayedSteps = useMemo(() => {
     return steps.filter((step) => {
       if (step.id === 'refund') {
@@ -80,8 +117,8 @@ export function OrderProgressTimeline({
     <ProgressTimeline<OrderStepId>
       loading={effectiveLoading}
       steps={displayedSteps}
-      stepDisplayInfo={orderStepDisplayInfo}
-      subtitle="Live order updates"
+      stepDisplayInfo={localizedStepDisplayInfo}
+      subtitle={t('timeline.subtitle')}
       badge={
         <StatusBadge
           status={progress?.orderStatus ?? 'PROCESSING'}

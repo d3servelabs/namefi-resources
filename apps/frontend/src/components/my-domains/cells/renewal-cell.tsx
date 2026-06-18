@@ -1,17 +1,46 @@
 'use client';
 
 import { isPast } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { AutoRenewToggle } from '../auto-renew-toggle';
 import type { RenewModalDomain } from '../columns';
 import {
   formatExpirationDateISO,
-  formatTimeLeft,
+  getTimeLeft,
   isDomainPossiblyRenewable,
+  type TimeLeft,
 } from '../utils';
 import {
   RenewPricingCell,
   type RenewPricingCellProps,
 } from './renew-pricing-cell';
+
+/**
+ * Map a {@link TimeLeft} descriptor to its translated, locale-formatted label.
+ * `none` collapses to "-"; every other kind is keyed under the `timeLeft`
+ * namespace with its numeric count as an ICU argument.
+ */
+function useTimeLeftLabel() {
+  const t = useTranslations('domains');
+  return (timeLeft: TimeLeft): string => {
+    switch (timeLeft.kind) {
+      case 'none':
+        return '-';
+      case 'expired':
+        return t('timeLeft.expired');
+      case 'days':
+        return t('timeLeft.days', { days: timeLeft.count });
+      case 'months':
+        return t('timeLeft.monthsExact', { months: timeLeft.count });
+      case 'monthsPlus':
+        return t('timeLeft.monthsPlus', { months: timeLeft.count });
+      case 'years':
+        return t('timeLeft.yearsExact', { years: timeLeft.count });
+      case 'yearsPlus':
+        return t('timeLeft.yearsPlus', { years: timeLeft.count });
+    }
+  };
+}
 
 interface RenewalCellProps {
   domainName: string;
@@ -36,6 +65,8 @@ export function RenewalCell({
   onOpenRenewModal,
   renewPricingCellProps,
 }: RenewalCellProps) {
+  const t = useTranslations('domains');
+  const timeLeftLabel = useTimeLeftLabel();
   const isExpired = expirationDate ? isPast(new Date(expirationDate)) : false;
   const canRenew = isDomainPossiblyRenewable(expirationDate);
 
@@ -43,7 +74,9 @@ export function RenewalCell({
     <div className="flex flex-row flex-wrap gap-x-2 gap-y-1">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-foreground">Auto</span>
+          <span className="text-sm font-medium text-foreground">
+            {t('renewalCell.auto')}
+          </span>
           <AutoRenewToggle
             checked={autoRenewEnabled}
             onCheckedChange={(checked, position) =>
@@ -51,7 +84,7 @@ export function RenewalCell({
             }
             disabled={isExpired}
             isLoading={isToggling}
-            ariaLabel={`Auto-renew ${domainName}`}
+            ariaLabel={t('renewalCell.autoRenewAria', { domain: domainName })}
           />
         </div>
 
@@ -67,12 +100,15 @@ export function RenewalCell({
             className="text-left text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
           >
             {formatExpirationDateISO(expirationDate)} (
-            {formatTimeLeft(expirationDate)})
+            {timeLeftLabel(getTimeLeft(expirationDate))})
           </button>
         ) : (
           <span className="text-[11px] text-muted-foreground">
             {formatExpirationDateISO(expirationDate)} (
-            {isExpired ? 'Expired' : formatTimeLeft(expirationDate)})
+            {isExpired
+              ? t('renewalCell.expired')
+              : timeLeftLabel(getTimeLeft(expirationDate))}
+            )
           </span>
         )}
       </div>
@@ -80,7 +116,7 @@ export function RenewalCell({
       {renewPricingCellProps ? (
         <RenewPricingCell
           className={'items-end'}
-          unit={'USD/year'}
+          unit={t('renewalCell.usdPerYear')}
           {...renewPricingCellProps}
         />
       ) : (

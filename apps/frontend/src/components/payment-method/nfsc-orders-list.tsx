@@ -6,6 +6,7 @@ import { NetworkLogo } from '@/components/network-logo';
 import { StatusBadge } from '@/components/status-badge';
 import { getChain } from '@namefi-astra/utils';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 
 type NfscOrderRow = AppRouterOutput['orders']['getMyNfscOrders'][number];
@@ -21,8 +22,10 @@ interface NfscOrdersListProps {
 export function NfscOrdersList({
   orders,
   isLoading,
-  emptyMessage = 'No NFSC orders yet.',
+  emptyMessage,
 }: NfscOrdersListProps) {
+  const t = useTranslations('payment');
+  const resolvedEmptyMessage = emptyMessage ?? t('nfscOrdersList.emptyMessage');
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">
@@ -33,7 +36,7 @@ export function NfscOrdersList({
     );
   }
   if (!orders || orders.length === 0) {
-    return <p className="text-sm text-gray-400">{emptyMessage}</p>;
+    return <p className="text-sm text-gray-400">{resolvedEmptyMessage}</p>;
   }
   return (
     <ul className="flex flex-col gap-2">
@@ -45,6 +48,7 @@ export function NfscOrdersList({
 }
 
 function NfscOrderItem({ order }: { order: NfscOrderRow }) {
+  const t = useTranslations('payment');
   const chain = getChain(order.chainId);
   // amountInUsdCents is USD cents; 1 USD = 1 NFSC.
   const amountInNfsc = (order.amountInUSDCents / 100).toFixed(DISPLAY_DECIMALS);
@@ -61,8 +65,11 @@ function NfscOrderItem({ order }: { order: NfscOrderRow }) {
               {amountInNfsc} NFSC
             </span>
             <span className="text-xs text-gray-500">
-              {chain?.name ?? `Chain ${order.chainId}`} ·{' '}
-              {format(new Date(order.orderCreatedAt), 'yyyy-MM-dd HH:mm')}
+              {chain?.name ??
+                t('nfscOrdersList.chainFallback', {
+                  chainId: order.chainId,
+                })}{' '}
+              · {format(new Date(order.orderCreatedAt), 'yyyy-MM-dd HH:mm')}
             </span>
           </div>
         </div>

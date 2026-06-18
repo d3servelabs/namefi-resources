@@ -5,6 +5,8 @@ import {
   isIndexableHost,
 } from '@namefi-astra/common/host-policy';
 import { config as configEnv } from './lib/env';
+import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE, isLocale } from './i18n/config';
+import { negotiateLocaleFromAcceptLanguage } from './i18n/negotiate';
 import {
   isThirdPartyOriginKey,
   getThirdPartyOriginRouteSegment,
@@ -142,9 +144,37 @@ const redirectRoutes = [
 ];
 
 /**
+ * Locale auto-detection (cookie-mode i18n — no URL rewriting).
+ *
+ * On the first visit (no valid `NEXT_LOCALE` cookie), negotiate the locale from
+ * the browser's `Accept-Language` and persist it as a cookie on the response.
+ * We never redirect or rewrite for locale, so there is zero SEO impact: a
+ * cookie-less crawler sees the same English HTML as before. Once the cookie
+ * exists — set here or by the language selector — this is a no-op.
+ */
+function ensureLocaleCookie(
+  request: NextRequest,
+  response: NextResponse,
+): NextResponse {
+  const existing = request.cookies.get(LOCALE_COOKIE)?.value;
+  if (!isLocale(existing)) {
+    const locale = negotiateLocaleFromAcceptLanguage(
+      request.headers.get('accept-language'),
+    );
+    response.cookies.set(LOCALE_COOKIE, locale, {
+      path: '/',
+      maxAge: LOCALE_COOKIE_MAX_AGE,
+      sameSite: 'lax',
+    });
+  }
+  return response;
+}
+
+/**
  * Apply host-indexing policy to a response: stamp X-Robots-Tag when the
  * incoming host is not on the public-indexable allowlist. Pairs with
- * the robots.ts allowlist for belt-and-suspenders coverage.
+ * the robots.ts allowlist for belt-and-suspenders coverage. Also seeds the
+ * locale cookie on first visit (see {@link ensureLocaleCookie}).
  */
 function withHostPolicyHeader(
   request: NextRequest,
@@ -153,7 +183,7 @@ function withHostPolicyHeader(
   if (!isIndexableHost(request.headers.get('host'))) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   }
-  return response;
+  return ensureLocaleCookie(request, response);
 }
 
 export function proxy(request: NextRequest) {

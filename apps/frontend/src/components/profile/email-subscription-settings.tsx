@@ -7,6 +7,7 @@ import { useTRPC } from '@/lib/trpc';
 import { Bell } from 'lucide-react';
 import { useCallback } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { useMutation } from '@tanstack/react-query';
 
@@ -17,6 +18,7 @@ interface EmailSubscriptionSettingsProps {
 export const EmailSubscriptionSettings = ({
   hasEmail,
 }: EmailSubscriptionSettingsProps) => {
+  const t = useTranslations('profile');
   const trpc = useTRPC();
   const {
     data: isOptedIn,
@@ -28,20 +30,22 @@ export const EmailSubscriptionSettings = ({
       onSuccess: (data) => {
         toast.success(
           data.optIn
-            ? 'Subscribed to email updates'
-            : 'Unsubscribed from email updates',
+            ? t('emailSubscription.subscribedTitle')
+            : t('emailSubscription.unsubscribedTitle'),
           {
             description: data.optIn
-              ? 'You will now receive our newsletter and important updates.'
-              : 'You have been removed from our mailing list.',
+              ? t('emailSubscription.subscribedDescription')
+              : t('emailSubscription.unsubscribedDescription'),
           },
         );
         // Invalidate and refetch the opt-in status
         refetch();
       },
       onError: (error) => {
-        toast.error('Failed to update email preferences', {
-          description: `Please try again. ${error.message}`,
+        toast.error(t('emailSubscription.updateFailure'), {
+          description: t('emailSubscription.tryAgain', {
+            error: error.message,
+          }),
         });
       },
     }),
@@ -60,7 +64,7 @@ export const EmailSubscriptionSettings = ({
         <div className="absolute -top-3 left-4 flex items-center gap-2 bg-card px-2 z-10">
           <Bell className="h-4 w-4 text-primary" />
           <span className="text-sm font-medium text-foreground">
-            Email Preferences
+            {t('emailSubscription.emailPreferences')}
           </span>
         </div>
         <CardContent className="pt-2 pb-6">
@@ -70,12 +74,12 @@ export const EmailSubscriptionSettings = ({
                 htmlFor="email-subscription-opt-in"
                 className={`text-sm font-medium ${!hasEmail ? 'text-muted-foreground' : ''}`}
               >
-                Newsletter & Updates
+                {t('emailSubscription.newsletterAndUpdates')}
               </Label>
               <div className="text-sm text-muted-foreground">
                 {hasEmail
-                  ? 'Receive our newsletter and important product updates'
-                  : 'Link an email account to subscribe to updates'}
+                  ? t('emailSubscription.newsletterDescriptionWithEmail')
+                  : t('emailSubscription.newsletterDescriptionNoEmail')}
               </div>
             </div>
             <Switch

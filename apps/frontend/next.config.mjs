@@ -5,11 +5,16 @@
  */
 import createMdx from '@next/mdx';
 import { createJiti } from 'jiti';
+import createNextIntlPlugin from 'next-intl/plugin';
 import {
   resolveDeployCommitSha,
   withDatadogConfig,
 } from './build/with-datadog-config.mjs';
 import packageJson from './package.json' with { type: 'json' };
+
+// next-intl in "without i18n routing" mode: the locale comes from the
+// `NEXT_LOCALE` cookie (see src/i18n/request.ts), not the URL.
+const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 /** @type {import('jiti').Jiti} */
 const jiti = createJiti(import.meta.url, { tryNative: false });
@@ -316,4 +321,4 @@ const nextConfig = {
   pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'md', 'mdx'],
 };
 
-export default withDatadogConfig(withMDX(nextConfig));
+export default withNextIntl(withDatadogConfig(withMDX(nextConfig)));

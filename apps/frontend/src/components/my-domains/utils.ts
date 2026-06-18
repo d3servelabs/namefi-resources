@@ -32,36 +32,58 @@ export function getRenewalPriceUsdPerYearForDomain(
 }
 
 /**
- * Format remaining time until expiration.
- * Returns: "Xd" if less than 30 days, "Xm+" if less than 12 months,
- * "Xy+" if more than a year.
+ * Locale-agnostic descriptor of the remaining time until expiration. The
+ * consuming component maps this to a translated, locale-formatted label (see
+ * the `timeLeft` namespace in `messages/<locale>/domains.json`):
+ *   - `none`         → no/invalid date (render "-")
+ *   - `expired`      → already past
+ *   - `days`         → less than a month left ("Xd")
+ *   - `months`/`monthsPlus` → less than a year left ("Xm" / "Xm+")
+ *   - `years`/`yearsPlus`   → a year or more left ("Xy" / "Xy+")
  */
-export function formatTimeLeft(
+export type TimeLeft =
+  | { kind: 'none' }
+  | { kind: 'expired' }
+  | { kind: 'days'; count: number }
+  | { kind: 'months'; count: number }
+  | { kind: 'monthsPlus'; count: number }
+  | { kind: 'years'; count: number }
+  | { kind: 'yearsPlus'; count: number };
+
+/**
+ * Compute remaining time until expiration as a {@link TimeLeft} descriptor.
+ * Presentation (translation + locale formatting) is deferred to the caller.
+ */
+export function getTimeLeft(
   expirationDate: string | Date | null | undefined,
-): string {
-  if (!expirationDate) return '-';
+): TimeLeft {
+  if (!expirationDate) return { kind: 'none' };
 
   const expiry = new Date(expirationDate);
-  if (Number.isNaN(expiry.getTime())) return '-';
+  if (Number.isNaN(expiry.getTime())) return { kind: 'none' };
 
   const now = new Date();
-  if (isPast(expiry)) return 'Expired';
+  if (isPast(expiry)) return { kind: 'expired' };
 
   const daysLeft = differenceInDays(expiry, now);
   const monthsLeft = differenceInMonths(expiry, now);
   const yearsLeft = differenceInYears(expiry, now);
 
   if (monthsLeft < 1) {
-    return `${daysLeft}d`;
+    return { kind: 'days', count: daysLeft };
   }
 
   if (monthsLeft < 12) {
     const extraDays = daysLeft - monthsLeft * 30;
-    return extraDays > 0 ? `${monthsLeft}m+` : `${monthsLeft}m`;
+    return extraDays > 0
+      ? { kind: 'monthsPlus', count: monthsLeft }
+      : { kind: 'months', count: monthsLeft };
   }
 
   const extraMonths = monthsLeft - yearsLeft * 12;
-  return extraMonths > 0 ? `${yearsLeft}y+` : `${yearsLeft}y`;
+  return extraMonths > 0
+    ? { kind: 'yearsPlus', count: yearsLeft }
+    : { kind: 'years', count: yearsLeft };
 }
 
 /**

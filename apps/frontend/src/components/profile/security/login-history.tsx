@@ -27,22 +27,27 @@ import { UTCDate } from '@date-fns/utc';
 import type { HTMLAttributes } from 'react';
 import { toast } from 'sonner';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import type { MyLoginHistoryRow } from '@namefi-astra/common/contract/users-contract';
 
 type LoginHistoryProps = HTMLAttributes<HTMLDivElement>;
 
-function formatLocation(row: {
-  geoCity: string | null;
-  geoSubdivision: string | null;
-  geoRegionCode: string | null;
-}): string {
+function formatLocation(
+  row: {
+    geoCity: string | null;
+    geoSubdivision: string | null;
+    geoRegionCode: string | null;
+  },
+  unknownLabel: string,
+): string {
   const parts = [row.geoCity, row.geoSubdivision, row.geoRegionCode].filter(
     (part): part is string => Boolean(part),
   );
-  return parts.length > 0 ? parts.join(', ') : 'Unknown location';
+  return parts.length > 0 ? parts.join(', ') : unknownLabel;
 }
 
 export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
+  const t = useTranslations('profile');
   const trpc = useTRPC();
 
   const { data, isLoading, isError, error, isFetching, refetch } = useQuery(
@@ -63,21 +68,18 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
       <CardHeader>
         <div className="flex items-center gap-2">
           <History className="h-5 w-5 text-primary" />
-          <CardTitle>Login History</CardTitle>
+          <CardTitle>{t('loginHistory.title')}</CardTitle>
         </div>
-        <CardDescription>
-          Recent sign-ins to your Namefi account. If anything here looks
-          unfamiliar, contact support right away.
-        </CardDescription>
+        <CardDescription>{t('loginHistory.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         {isError ? (
           <div className="flex h-40 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-destructive/40 bg-destructive/5">
             <AlertTriangle className="h-6 w-6 text-destructive" />
             <div className="text-center">
-              <p className="font-medium">Couldn't load your login history</p>
+              <p className="font-medium">{t('loginHistory.loadError')}</p>
               <p className="mt-1 text-xs text-muted-foreground">
-                {error?.message ?? 'Please try again in a moment.'}
+                {error?.message ?? t('loginHistory.loadErrorFallback')}
               </p>
             </div>
             <Button
@@ -89,7 +91,7 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
               <RefreshCw
                 className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`}
               />
-              Retry
+              {t('loginHistory.retry')}
             </Button>
           </div>
         ) : isLoading ? (
@@ -98,9 +100,9 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
           </div>
         ) : items.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">No sign-ins recorded yet</p>
+            <p className="text-muted-foreground">{t('loginHistory.empty')}</p>
             <p className="mt-1 text-xs text-muted-foreground">
-              New sessions appear here the next time you sign in.
+              {t('loginHistory.emptyHelp')}
             </p>
           </div>
         ) : (
@@ -129,6 +131,7 @@ interface LoginHistoryItemProps {
  * own mutation `isPending` state without sharing it across the list.
  */
 const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
+  const t = useTranslations('profile');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -140,7 +143,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
         });
       },
       onError: (err) => {
-        toast.error("Couldn't update your decision", {
+        toast.error(t('loginHistory.decisionUpdateFailure'), {
           description: err.message,
         });
       },
@@ -169,32 +172,37 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
         <div className="space-y-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-medium">
-              {row.browser ?? 'Unknown browser'}
-              {row.os ? ` on ${row.os}` : ''}
+              {row.os
+                ? t('loginHistory.onOs', {
+                    browser: row.browser ?? t('loginHistory.unknownBrowser'),
+                    os: row.os,
+                  })
+                : (row.browser ?? t('loginHistory.unknownBrowser'))}
             </span>
             {row.device ? <Badge variant="outline">{row.device}</Badge> : null}
             {row.isNewIp && !row.isFirstSession ? (
               <Badge variant="outline" className="gap-1">
-                New IP
+                {t('loginHistory.newIp')}
               </Badge>
             ) : null}
             {row.isNewLocation && !row.isFirstSession ? (
               <Badge variant="outline" className="gap-1">
-                New location
+                {t('loginHistory.newLocation')}
               </Badge>
             ) : null}
             {row.isNewFingerprint && !row.isFirstSession ? (
               <Badge variant="outline" className="gap-1">
-                New browser
+                {t('loginHistory.newBrowser')}
               </Badge>
             ) : null}
             {row.isFirstSession ? (
-              <Badge variant="secondary">First sign-in</Badge>
+              <Badge variant="secondary">{t('loginHistory.firstSignIn')}</Badge>
             ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1">
-              <MapPin className="h-3 w-3" /> {formatLocation(row)}
+              <MapPin className="h-3 w-3" />{' '}
+              {formatLocation(row, t('loginHistory.unknownLocation'))}
             </span>
             {row.ipAddress ? (
               <span className="inline-flex items-center gap-1">
@@ -205,20 +213,27 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               </span>
             ) : null}
             {showLoginMethod && row.loginMethod ? (
-              <span>Method: {row.loginMethod}</span>
+              <span>
+                {t('loginHistory.method', { method: row.loginMethod })}
+              </span>
             ) : null}
           </div>
           <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
             <span>
-              Signed in{' '}
-              {format(new UTCDate(row.signedInAt), "yyyy-MM-dd HH:mm 'UTC'")}
+              {t('loginHistory.signedInAt', {
+                time: format(
+                  new UTCDate(row.signedInAt),
+                  "yyyy-MM-dd HH:mm 'UTC'",
+                ),
+              })}
             </span>
             <span>
-              Last accessed{' '}
-              {format(
-                new UTCDate(row.lastAccessedAt),
-                "yyyy-MM-dd HH:mm 'UTC'",
-              )}
+              {t('loginHistory.lastAccessedAt', {
+                time: format(
+                  new UTCDate(row.lastAccessedAt),
+                  "yyyy-MM-dd HH:mm 'UTC'",
+                ),
+              })}
             </span>
           </div>
         </div>
@@ -232,14 +247,14 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
                 variant="outline"
                 className="gap-1 border-green-400/60 text-green-700"
               >
-                <Check className="h-3 w-3" /> Recognized
+                <Check className="h-3 w-3" /> {t('loginHistory.recognized')}
               </Badge>
             ) : (
               <Badge
                 variant="outline"
                 className="gap-1 border-red-400/60 text-red-700"
               >
-                <X className="h-3 w-3" /> Rejected
+                <X className="h-3 w-3" /> {t('loginHistory.rejected')}
               </Badge>
             )}
             <Button
@@ -248,7 +263,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               onClick={() => onAcknowledge(null)}
               disabled={acknowledge.isPending}
             >
-              Undo
+              {t('loginHistory.undo')}
             </Button>
           </>
         ) : flagged ? (
@@ -261,7 +276,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               disabled={acknowledge.isPending}
             >
               <Check className="h-4 w-4 mr-1" />
-              That was me
+              {t('loginHistory.thatWasMe')}
             </Button>
             <Button
               variant="outline"
@@ -271,7 +286,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               disabled={acknowledge.isPending}
             >
               <X className="h-4 w-4 mr-1" />
-              Not me
+              {t('loginHistory.notMe')}
             </Button>
           </>
         ) : null}

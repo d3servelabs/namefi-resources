@@ -1,0 +1,89 @@
+{
+  "inYourCart": "In your cart",
+  "yourCartIsEmpty": "Your cart is empty",
+  "emptyCartHint": "Add some domains to your cart to get started",
+  "browseDomains": "Browse Domains",
+  "clearCart": "Clear Cart",
+  "clearCartDialog": {
+    "title": "Clear cart?",
+    "description": "This will remove all items from your cart. You can add them back later if needed.",
+    "cancel": "Cancel"
+  },
+  "errorDialog": {
+    "title": "Oops! Something went wrong.",
+    "description": "Don't worry, you won't be charged. Feel free to try again or head back to your cart.",
+    "errorDetail": "(Error - {message})",
+    "close": "Close",
+    "tryAgain": "Try Again"
+  },
+  "cartChanges": {
+    "title": "Cart Changes",
+    "description": "Some changes were made to your cart.",
+    "dismiss": "Dismiss"
+  },
+  "submitButton": {
+    "selectNftWallet": "Select NFT Wallet to Continue",
+    "selectPaymentMethod": "Select Payment Method to Continue",
+    "processing": "Processing...",
+    "submitOrder": "Submit Order"
+  },
+  "disabledReason": {
+    "cartUpdating": "Your cart is still updating.",
+    "acceptRequirements": "Review and accept the registration requirements shown on your cart items.",
+    "finishSplittingPayment": "Finish splitting your payment to continue.",
+    "selectWallet": "Select a wallet to receive your domains.",
+    "confirmWallet": "Confirm the wallet that will receive your domains.",
+    "selectPaymentMethod": "Select a payment method."
+  },
+  "skeleton": {
+    "selectNftWallet": "Select NFT Wallet",
+    "paymentMethod": "Payment Method"
+  },
+  "addFromUrl": {
+    "cart": "Cart",
+    "heading": "Adding domains to your cart",
+    "subheading": "Sit tight while we validate, check availability, and load everything into your cart.",
+    "domainsRequested": "Domains requested",
+    "steps": {
+      "parse": "Validating domains",
+      "fetch": "Checking availability",
+      "add": "Adding to cart",
+      "redirect": "Sending you to your cart"
+    },
+    "detail": {
+      "added": "Added",
+      "readyToAdd": "Ready to add",
+      "alreadyInCart": "Already in cart",
+      "requiresTransferCode": "Requires transfer code",
+      "unsupported": "Unsupported/unavailable",
+      "invalid": "Invalid"
+    },
+    "confirm": {
+      "addingToCart": "Adding to cart...",
+      "tryAgain": "Try again",
+      "addToCart": "Add to cart",
+      "reviewHelper": "Review the details above, then confirm.",
+      "noRegistrableHelper": "No registrable domains found to add."
+    },
+    "redirecting": "Redirecting to your cart…",
+    "errors": {
+      "noDomains": "No domains were provided.",
+      "validationFailed": "Something went wrong while validating your domains.",
+      "addFailed": "Something went wrong while adding to cart."
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, one {item} other {items}}",
+    "cartTotal": "Cart total",
+    "domainsReadyToImport": "{count, plural, one {domain} other {domains}} ready to import",
+    "addAll": "Add all",
+    "addToCart": "Add to Cart",
+    "checkout": "Checkout"
+  },
+  "submitErrors": {
+    "x402Disabled": "x402 payment is currently disabled",
+    "x402Unavailable": "x402 payment is not available right now",
+    "x402ConnectWallet": "Connect an active wallet to sign your x402 payment",
+    "orderFailed": "Could not submit your order. Please try again."
+  }
+}

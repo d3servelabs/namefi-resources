@@ -14,6 +14,8 @@ import {
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata, Viewport } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale } from 'next-intl/server';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
 import DatadogObservability from '@/components/datadog-observability';
@@ -85,9 +87,11 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({ children }: PropsWithChildren) {
+export default async function RootLayout({ children }: PropsWithChildren) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en" className="dark h-full" suppressHydrationWarning={true}>
+    <html lang={locale} className="dark h-full" suppressHydrationWarning={true}>
       <head>
         <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
         <link
@@ -123,7 +127,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
 }
 function RootLayoutInner({ children }: PropsWithChildren) {
   return (
-    <>
+    <NextIntlClientProvider>
       <GoogleAnalyticsBootstrap />
       <DatadogObservability />
       <Suspense>
@@ -143,6 +147,6 @@ function RootLayoutInner({ children }: PropsWithChildren) {
           <SkipAuthBanner />
         </Providers>
       </Suspense>
-    </>
+    </NextIntlClientProvider>
   );
 }

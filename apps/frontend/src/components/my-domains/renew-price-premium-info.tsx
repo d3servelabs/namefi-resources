@@ -1,6 +1,7 @@
 'use client';
 
 import { type FC, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   Tooltip,
   TooltipContent,
@@ -10,6 +11,7 @@ import {
 export const RenewPricePremiumInfo: FC<{ domainName: string }> = ({
   domainName,
 }) => {
+  const t = useTranslations('domains');
   const [open, setOpen] = useState(false);
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
@@ -17,7 +19,7 @@ export const RenewPricePremiumInfo: FC<{ domainName: string }> = ({
         render={
           <button
             type="button"
-            aria-label={`Renewal price info for ${domainName}`}
+            aria-label={t('renewPremiumInfo.aria', { domain: domainName })}
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
@@ -30,7 +32,7 @@ export const RenewPricePremiumInfo: FC<{ domainName: string }> = ({
         !
       </TooltipTrigger>
       <TooltipContent sideOffset={6}>
-        Premium domains may have a different renewal price.
+        {t('renewPremiumInfo.tooltip')}
       </TooltipContent>
     </Tooltip>
   );

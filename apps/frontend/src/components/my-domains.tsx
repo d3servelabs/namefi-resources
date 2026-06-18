@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
+import { useTranslations } from 'next-intl';
 import { AuthRequired } from '@/components/auth-required';
 import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
@@ -8,6 +9,7 @@ import { LoadingSkeletons } from '@/components/my-domains/loading-skeletons';
 import { MyDomainsContent } from '@/components/my-domains/content';
 
 export default function MyDomains() {
+  const t = useTranslations('shared');
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
@@ -17,7 +19,7 @@ export default function MyDomains() {
   return (
     <PageShell>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">My Domains</h2>
+        <h2 className="text-2xl font-bold">{t('myDomains.heading')}</h2>
       </div>
       {isLoading ? (
         <LoadingSkeletons />

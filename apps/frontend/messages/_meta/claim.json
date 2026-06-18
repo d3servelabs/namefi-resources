@@ -1,0 +1,107 @@
+{
+  "page.title": {
+    "description": "Page heading for the free-claim flow at /claim/[domain]."
+  },
+  "page.domainClaimedSuccess": {
+    "description": "Success toast shown after a domain is claimed for free."
+  },
+  "page.claimFailed": {
+    "description": "Error toast shown when a free claim fails. {message} is the raw backend error text — keep as-is."
+  },
+  "page.invalidDomain.title": {
+    "description": "Title of the error card shown when the URL domain is not a valid normalized Namefi domain."
+  },
+  "page.invalidDomain.description": {
+    "description": "Body of the invalid-domain error card explaining the domain isn't a valid normalized Namefi domain."
+  },
+  "page.invalidDomain.hint": {
+    "description": "Hint under the invalid-domain card. Keep the literal example domain \"alice.0x.city\" untranslated."
+  },
+  "page.invalidDomain.goBack": {
+    "description": "Button on the invalid-domain card that navigates back to the previous page."
+  },
+  "page.ineligibleBanner.title": {
+    "description": "Title of the warning banner shown when the domain isn't eligible for a free claim."
+  },
+  "page.ineligibleBanner.description": {
+    "description": "Body of the ineligible warning banner offering to buy instead or go back to search."
+  },
+  "page.ineligibleBanner.addToCart": {
+    "description": "Button on the ineligible banner that adds the domain to the cart for purchase."
+  },
+  "page.ineligibleBanner.goBack": {
+    "description": "Button on the ineligible banner that navigates back to the previous page."
+  },
+  "page.summary.duration": {
+    "description": "Domain summary line showing claim term and that it's free. ICU plural on {count} (number of years); '• Free' marks the zero cost."
+  },
+  "page.submit": {
+    "description": "Primary button that submits the free claim."
+  },
+  "widget.defaultTitle": {
+    "description": "Default heading of the DomainClaim widget (promo claim entry); '0x' is a literal product term — keep verbatim."
+  },
+  "widget.defaultSubtitle": {
+    "description": "Default subtitle of the DomainClaim widget. 'Web3' is a technical term — keep verbatim."
+  },
+  "widget.qualifyPrompt": {
+    "description": "Instruction above the qualification steps in the DomainClaim widget."
+  },
+  "widget.steps.signIn.trigger": {
+    "description": "Accordion header for the sign-in qualification step in the claim widget."
+  },
+  "widget.steps.signIn.signedIn": {
+    "description": "Message inside the sign-in step when the user is already signed in."
+  },
+  "widget.steps.signIn.signedOut": {
+    "description": "Message inside the sign-in step prompting a signed-out user to sign in or create an account."
+  },
+  "widget.steps.linkSocial.trigger": {
+    "description": "Accordion header for the link-social-media qualification step in the claim widget."
+  },
+  "widget.steps.linkSocial.description": {
+    "description": "Explanation in the link-social step that usernames starting with \"0x\" qualify for the promo. Keep the literal \"0x\" untranslated."
+  },
+  "widget.steps.linkSocial.visitProfile": {
+    "description": "Button in the link-social step that navigates to the user's profile page."
+  },
+  "widget.steps.enterDomain.trigger": {
+    "description": "Accordion header for the enter-domain qualification step in the claim widget."
+  },
+  "widget.steps.enterDomain.description": {
+    "description": "Instruction in the enter-domain step telling the user to enter a qualifying domain name to claim free."
+  },
+  "widget.qualifying.checking": {
+    "description": "Status text while checking the user's linked social accounts for qualifying domains."
+  },
+  "widget.qualifying.error": {
+    "description": "Status text when checking for qualifying domains based on linked social accounts errored out."
+  },
+  "widget.qualifying.none": {
+    "description": "Status text when the user's linked social accounts don't qualify them for any free domain."
+  },
+  "widget.qualifying.list": {
+    "description": "Lists the user's qualifying domain names. {domains} is a pre-joined, quoted list of domain names — keep the domain names untranslated."
+  },
+  "widget.input.placeholderMobile": {
+    "description": "Placeholder for the subdomain input on mobile (short form)."
+  },
+  "widget.input.placeholderDesktop": {
+    "description": "Placeholder for the subdomain input on desktop."
+  },
+  "widget.button.loginToClaim": {
+    "description": "Claim-button label shown when the user is not signed in."
+  },
+  "widget.button.checking": {
+    "description": "Claim-button label while checking promo eligibility / domain availability."
+  },
+  "widget.button.inCart": {
+    "description": "Claim-button label when the domain is already in the cart."
+  },
+  "widget.button.claiming": {
+    "description": "Claim-button label while the claim is being processed."
+  },
+  "widget.button.claimNow": {
+    "description": "Default claim-button label inviting the user to claim now."
+  }
+}

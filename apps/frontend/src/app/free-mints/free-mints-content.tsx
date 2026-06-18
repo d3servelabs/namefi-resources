@@ -22,6 +22,7 @@ import {
 import { format } from 'date-fns';
 import { Loader2 } from 'lucide-react';
 import { useMemo, type FC } from 'react';
+import { useTranslations } from 'next-intl';
 import { FreeMintCard } from '@/components/free-mint-card';
 
 /**
@@ -29,6 +30,7 @@ import { FreeMintCard } from '@/components/free-mint-card';
  * This is dynamically imported to reduce first-hit compile time.
  */
 export const FreeMintsContent: FC = () => {
+  const t = useTranslations('freeMints');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { freeMints: rows, isLoading: isFreeMintsLoading } = useFreeMints();
 
@@ -57,7 +59,7 @@ export const FreeMintsContent: FC = () => {
       // Item
       {
         id: 'item',
-        header: 'Item',
+        header: t('table.item'),
         cell: ({ row }) => {
           const { type, domain } = row.original;
           if (type === 'single') {
@@ -70,11 +72,13 @@ export const FreeMintsContent: FC = () => {
           if (type === 'campaign') {
             return (
               <span>
-                Any{' '}
-                <span className="font-medium bg-muted px-2 py-1 rounded">
-                  {domain}
-                </span>{' '}
-                subdomain
+                {t.rich('campaignItem', {
+                  domain: () => (
+                    <span className="font-medium bg-muted px-2 py-1 rounded">
+                      {domain}
+                    </span>
+                  ),
+                })}
               </span>
             );
           }
@@ -85,7 +89,7 @@ export const FreeMintsContent: FC = () => {
       // Issued On
       {
         id: 'createdAt',
-        header: 'Issued On',
+        header: t('table.issuedOn'),
         accessorFn: (row) => new Date(row.createdAt),
         cell: ({ getValue }) => (
           <span>{format(getValue<Date>(), 'yyyy-MM-dd')}</span>
@@ -95,7 +99,7 @@ export const FreeMintsContent: FC = () => {
       // Valid Until
       {
         id: 'expires',
-        header: 'Valid Until',
+        header: t('table.validUntil'),
         cell: ({ row }) =>
           row.original.expirationDate ? (
             <span>
@@ -108,7 +112,7 @@ export const FreeMintsContent: FC = () => {
       // Status
       {
         id: 'status',
-        header: 'Status',
+        header: t('table.status'),
         cell: ({ row }) => {
           const { claimingStatus, isExpired } = row.original;
           if (claimingStatus === 'CLAIMED') {
@@ -117,27 +121,32 @@ export const FreeMintsContent: FC = () => {
                 variant="outline"
                 className="text-green-500 border-green-500/40"
               >
-                Claimed
+                {t('statusBadge.claimed')}
               </Badge>
             );
           }
           if (claimingStatus === 'CLAIMING') {
             return (
               <Badge variant="default">
-                <Loader2 className="h-3 w-3 mr-1 animate-spin" /> In Progress
+                <Loader2 className="h-3 w-3 mr-1 animate-spin" />{' '}
+                {t('statusBadge.inProgress')}
               </Badge>
             );
           }
           if (isExpired) {
-            return <Badge variant="destructive">Expired</Badge>;
+            return (
+              <Badge variant="destructive">{t('statusBadge.expired')}</Badge>
+            );
           }
-          return <Badge variant="secondary">Available</Badge>;
+          return (
+            <Badge variant="secondary">{t('statusBadge.available')}</Badge>
+          );
         },
       },
       // Claimed Domain
       {
         id: 'claimedDomain',
-        header: 'Claimed Domain',
+        header: t('table.claimedDomain'),
         cell: ({ row }) =>
           row.original.claimedDomainName ? (
             <span className="font-medium bg-muted px-2 py-1 rounded">
@@ -150,7 +159,7 @@ export const FreeMintsContent: FC = () => {
       // Claimed On
       {
         id: 'claimedAt',
-        header: 'Claimed On',
+        header: t('table.claimedOn'),
         cell: ({ row }) =>
           row.original.claimedAt ? (
             <span>
@@ -161,7 +170,7 @@ export const FreeMintsContent: FC = () => {
           ),
       },
     ],
-    [],
+    [t],
   );
 
   const table = useReactTable({
@@ -192,7 +201,9 @@ export const FreeMintsContent: FC = () => {
 
       {/* Inactive Claims Table Section */}
       <div className="space-y-6">
-        <h2 className="text-xl md:text-2xl font-semibold">History</h2>
+        <h2 className="text-xl md:text-2xl font-semibold">
+          {t('historyHeading')}
+        </h2>
         {inactiveClaims.length > 0 ? (
           <div className="rounded-md border">
             <Table>
@@ -230,7 +241,7 @@ export const FreeMintsContent: FC = () => {
           </div>
         ) : (
           <p className="text-muted-foreground text-center py-8">
-            No claim history yet.
+            {t('noHistory')}
           </p>
         )}
       </div>
@@ -239,9 +250,9 @@ export const FreeMintsContent: FC = () => {
       {activeClaims.length === 0 && inactiveClaims.length === 0 && (
         <EmptyPlaceholder>
           <div className="bg-muted rounded-full p-4 mb-4" />
-          <EmptyPlaceholder.Title>No Free Mints Yet</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Title>{t('emptyTitle')}</EmptyPlaceholder.Title>
           <EmptyPlaceholder.Description>
-            When you receive free claim opportunities, they will appear here.
+            {t('emptyDescription')}
           </EmptyPlaceholder.Description>
         </EmptyPlaceholder>
       )}

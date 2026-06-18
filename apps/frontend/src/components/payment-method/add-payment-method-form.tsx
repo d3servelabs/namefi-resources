@@ -7,6 +7,7 @@ import {
 } from '@stripe/react-stripe-js';
 import type { ConfirmationToken } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
@@ -20,6 +21,7 @@ export function AddPaymentMethodForm({
   onSuccess,
   onError,
 }: AddPaymentMethodFormProps) {
+  const t = useTranslations('payment');
   const stripe = useStripe();
   const elements = useElements();
   const [isFormReady, setIsFormReady] = useState(false);
@@ -54,19 +56,22 @@ export function AddPaymentMethodForm({
           });
 
         if (confirmationTokenError) {
-          setError(confirmationTokenError.message ?? 'An error occurred');
+          setError(
+            confirmationTokenError.message ??
+              t('addPaymentMethodForm.genericError'),
+          );
           onError?.(new Error(confirmationTokenError.message));
         } else {
           onSuccess?.(confirmationToken);
         }
       } catch (err) {
-        setError('An unexpected error occurred');
+        setError(t('addPaymentMethodForm.unexpectedError'));
         onError?.(err as Error);
       } finally {
         setIsProcessing(false);
       }
     },
-    [elements, onError, onSuccess, stripe],
+    [elements, onError, onSuccess, stripe, t],
   );
 
   return (
@@ -82,10 +87,10 @@ export function AddPaymentMethodForm({
           {isProcessing ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
+              {t('addPaymentMethodForm.processing')}
             </>
           ) : (
-            'Use this Payment Method'
+            t('addPaymentMethodForm.submit')
           )}
         </NamefiButton>
       )}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
@@ -58,6 +59,7 @@ export function InstantBuyModal({
   onOpenChange,
   domainAvailabilityInfo,
 }: InstantBuyModalProps) {
+  const t = useTranslations('shared');
   const router = useRouter();
   const { requestFeedback } = useFeedback();
   const parentDomain = useMemo(() => {
@@ -147,15 +149,15 @@ export function InstantBuyModal({
 
   const submitButtonText = useMemo(() => {
     if (!selectedNftWalletAddress) {
-      return 'Select NFT Wallet to Continue';
+      return t('instantBuyModal.selectNftWallet');
     }
 
     if (isInstantBuyPending || isRedirecting) {
-      return 'Processing...';
+      return t('instantBuyModal.processing');
     }
 
-    return 'Buy Now';
-  }, [isInstantBuyPending, isRedirecting, selectedNftWalletAddress]);
+    return t('instantBuyModal.buyNow');
+  }, [isInstantBuyPending, isRedirecting, selectedNftWalletAddress, t]);
 
   const submitOrderDisabled = useMemo(() => {
     return !selectedNftWalletAddress || !isLinkedOrUserConfirmed;
@@ -234,10 +236,12 @@ export function InstantBuyModal({
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-2xl">
-              Buy {domainAvailabilityInfo.domain}
+              {t('instantBuyModal.title', {
+                domain: domainAvailabilityInfo.domain,
+              })}
             </DialogTitle>
             <DialogDescription>
-              Complete your purchase for 1 year registration
+              {t('instantBuyModal.description')}
             </DialogDescription>
           </DialogHeader>
 
@@ -247,13 +251,15 @@ export function InstantBuyModal({
             </div>
           ) : !isAuthenticated ? (
             <div className="space-y-4">
-              <CartCard title="Domain">
+              <CartCard title={t('instantBuyModal.domain')}>
                 <div className="flex items-center justify-between py-2">
                   <span className="text-lg font-medium">
                     {domainAvailabilityInfo.domain}
                   </span>
                   <span className="text-lg">
-                    {formatAmountInUSD(priceInUsdCents, true)} USD / year
+                    {t('instantBuyModal.pricePerYear', {
+                      price: formatAmountInUSD(priceInUsdCents, true),
+                    })}
                   </span>
                 </div>
               </CartCard>
@@ -265,13 +271,15 @@ export function InstantBuyModal({
           ) : (
             <div className="space-y-4">
               {/* Domain Info */}
-              <CartCard title="Domain">
+              <CartCard title={t('instantBuyModal.domain')}>
                 <div className="flex items-center justify-between py-2">
                   <span className="text-lg font-medium">
                     {domainAvailabilityInfo.domain}
                   </span>
                   <span className="text-lg">
-                    {formatAmountInUSD(priceInUsdCents, true)} USD / year
+                    {t('instantBuyModal.pricePerYear', {
+                      price: formatAmountInUSD(priceInUsdCents, true),
+                    })}
                   </span>
                 </div>
               </CartCard>
@@ -327,17 +335,20 @@ export function InstantBuyModal({
       <AlertDialog open={isErrorDialogOpen} onOpenChange={setIsErrorDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Oops! Something went wrong.</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t('instantBuyModal.errorTitle')}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Don&apos;t worry, you won&apos;t be charged. Feel free to try
-              again.{' '}
+              {t('instantBuyModal.errorDescription')}{' '}
               <p className="italic">
-                {errorMessage ? `(Error - ${errorMessage})` : ''}
+                {errorMessage
+                  ? t('instantBuyModal.errorDetail', { error: errorMessage })
+                  : ''}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Close</AlertDialogCancel>
+            <AlertDialogCancel>{t('instantBuyModal.close')}</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

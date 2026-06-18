@@ -9,6 +9,7 @@ import {
   FacebookShareButton,
 } from 'react-share';
 import type { OriginInfo } from '@/lib/origin';
+import { useTranslations } from 'next-intl';
 
 export const ShareOrder = ({
   origin,
@@ -17,10 +18,11 @@ export const ShareOrder = ({
   origin: OriginInfo;
   shareMessage: string;
 }) => {
+  const t = useTranslations('orders');
   return (
     <CartCard className="mb-6 bg-black/[0.03] border-white/10">
       <div className="flex justify-between items-center">
-        <span className="text-muted-foreground">Share on</span>
+        <span className="text-muted-foreground">{t('share.shareOn')}</span>
         <div className="flex gap-4">
           <TwitterShareButton
             url={`https://${origin.thirdPartyHostname}`}

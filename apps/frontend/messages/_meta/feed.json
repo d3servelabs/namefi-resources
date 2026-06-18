@@ -1,0 +1,329 @@
+{
+  "title": {
+    "description": "Page title for the Namefi Feed (marketplace domain-sale activity). Keep 'Namefi' verbatim."
+  },
+  "header.usersLink": {
+    "description": "Feed header link to the directory of users who post domain sale listings."
+  },
+  "header.subscribeRss": {
+    "description": "Feed header link/tooltip to subscribe to the feed via RSS. Keep 'RSS' (technical term)."
+  },
+  "header.rss": {
+    "description": "Short RSS button label in the feed header. Keep 'RSS' verbatim.",
+    "maxLength": 6
+  },
+  "header.refresh": {
+    "description": "Feed header button to reload the feed listings."
+  },
+  "header.refreshing": {
+    "description": "Feed header button label shown while the feed is reloading."
+  },
+  "controls.searchLabel": {
+    "description": "Accessibility label for the feed search input in the filter controls."
+  },
+  "controls.searchPlaceholder": {
+    "description": "Placeholder in the feed search input when no TLD is selected."
+  },
+  "controls.searchPlaceholderWithTld": {
+    "description": "Placeholder in the feed search input when a TLD filter is active. {tld} is a TLD without the dot, e.g. 'com' — keep untranslated; the literal leading dot is part of the string."
+  },
+  "controls.clearSearchAriaLabel": {
+    "description": "Accessibility label for the button that clears the feed search input."
+  },
+  "controls.tldLabel": {
+    "description": "Label for the TLD filter selector in the feed controls. Keep 'TLD' (technical term)."
+  },
+  "controls.allTlds": {
+    "description": "Feed TLD filter option meaning every TLD (no filter). Keep 'TLDs'."
+  },
+  "controls.tldPlaceholder": {
+    "description": "Placeholder in the TLD filter search box prompting the user to type a TLD."
+  },
+  "controls.noTldMatch": {
+    "description": "Empty-state text in the TLD filter dropdown when the typed TLD matches nothing."
+  },
+  "controls.selectedHeading": {
+    "description": "Group heading in the TLD filter dropdown for the currently selected TLD."
+  },
+  "controls.customHeading": {
+    "description": "Group heading in the TLD filter dropdown for a custom user-typed TLD."
+  },
+  "controls.useCustomTld": {
+    "description": "Option in the TLD filter dropdown to apply a custom TLD. {tld} is the typed TLD without the dot — keep untranslated; the literal leading dot is part of the string."
+  },
+  "controls.commonHeading": {
+    "description": "Group heading in the TLD filter dropdown for the list of common TLDs."
+  },
+  "controls.clear": {
+    "description": "Button in the feed controls to clear the active TLD filter."
+  },
+  "list.errorTitle": {
+    "description": "Feed list error message. {message} is a server-provided error string passed through verbatim."
+  },
+  "list.emptyFiltered": {
+    "description": "Empty-state message shown when active feed filters match no listings."
+  },
+  "list.empty": {
+    "description": "Empty-state message shown when the feed has no listings at all."
+  },
+  "list.loadMore": {
+    "description": "Button at the bottom of the feed list to load more listings."
+  },
+  "list.endOfFeed": {
+    "description": "Marker shown at the bottom of the feed when all listings have loaded."
+  },
+  "list.backToTopAriaLabel": {
+    "description": "Accessibility label for the feed button that scrolls back to the top."
+  },
+  "card.unknownSeller": {
+    "description": "Fallback seller handle on a feed sale card when the seller is unknown. Keep the literal '@unknown' handle untranslated."
+  },
+  "card.otherDomains": {
+    "description": "Feed sale card text for additional domains beyond the one shown. ICU plural on {count}; # is the count of other domains."
+  },
+  "card.openDomainAriaLabel": {
+    "description": "Accessibility label for the feed sale card link opening a domain. {domain} is the domain name — keep untranslated."
+  },
+  "card.openSourceAriaLabel": {
+    "description": "Accessibility label for the feed sale card link opening the original source listing. {source} is the source/marketplace name and {domain} is the domain name — keep both untranslated."
+  },
+  "card.noExcerpt": {
+    "description": "Feed sale card placeholder shown when the listing has no excerpt text."
+  },
+  "card.justNow": {
+    "description": "Relative timestamp on a feed sale card meaning the listing was posted moments ago."
+  },
+  "card.unknownDate": {
+    "description": "Feed sale card fallback shown when the listing date is unknown."
+  },
+  "card.logoAlt": {
+    "description": "Alt text for a source/marketplace logo on a feed sale card. {name} is the source name — keep untranslated."
+  },
+  "report.trigger": {
+    "description": "Button on a feed sale card that opens the report-listing dialog."
+  },
+  "report.reported": {
+    "description": "Button label on a feed sale card after the listing has already been reported."
+  },
+  "report.triggerAriaLabel": {
+    "description": "Accessibility label for the report button on a feed sale card. {domain} is the domain name — keep untranslated."
+  },
+  "report.dialogTitle": {
+    "description": "Title of the report-listing dialog in the feed."
+  },
+  "report.dialogDescription": {
+    "description": "Body text of the report-listing dialog. {domain} is the domain name (rendered emphasized via the <highlight> tag) — keep {domain} and the <highlight></highlight> tag intact."
+  },
+  "report.reasonLabel": {
+    "description": "Field label for the reason selector in the report-listing dialog."
+  },
+  "report.reasonPlaceholder": {
+    "description": "Placeholder in the reason selector of the report-listing dialog."
+  },
+  "report.detailsLabel": {
+    "description": "Field label for the optional details textarea in the report-listing dialog."
+  },
+  "report.detailsPlaceholder": {
+    "description": "Placeholder in the optional details textarea of the report-listing dialog."
+  },
+  "report.detailsHelp": {
+    "description": "Helper text under the optional details textarea in the report-listing dialog."
+  },
+  "report.detailsCounter": {
+    "description": "Character counter under the report-listing details textarea. {count} is the current character count; '/1000' is the literal limit."
+  },
+  "report.detailsTooLong": {
+    "description": "Validation error in the report-listing dialog when details exceed the 1000-character limit."
+  },
+  "report.cancel": {
+    "description": "Cancel button in the report-listing dialog."
+  },
+  "report.submit": {
+    "description": "Submit button in the report-listing dialog."
+  },
+  "report.submitting": {
+    "description": "Submit button label shown while the report is being submitted."
+  },
+  "report.submitSuccess": {
+    "description": "Success toast after submitting a report. {domain} is the domain name — keep untranslated."
+  },
+  "report.submitErrorFallback": {
+    "description": "Generic error toast shown when submitting a report fails."
+  },
+  "report.unexpectedResponse": {
+    "description": "Error toast shown when the report submission returns an unexpected server response."
+  },
+  "report.reasons.alreadySold.label": {
+    "description": "Report-reason option label: the domain has already been sold."
+  },
+  "report.reasons.alreadySold.description": {
+    "description": "Report-reason option description explaining the 'already sold' reason."
+  },
+  "report.reasons.inaccuratePrice.label": {
+    "description": "Report-reason option label: the listed price is inaccurate."
+  },
+  "report.reasons.inaccuratePrice.description": {
+    "description": "Report-reason option description explaining the 'inaccurate price' reason."
+  },
+  "report.reasons.notForSale.label": {
+    "description": "Report-reason option label: the listing is not a real domain for sale."
+  },
+  "report.reasons.notForSale.description": {
+    "description": "Report-reason option description explaining the 'not for sale' reason."
+  },
+  "report.reasons.duplicateListing.label": {
+    "description": "Report-reason option label: this listing is a duplicate."
+  },
+  "report.reasons.duplicateListing.description": {
+    "description": "Report-reason option description explaining the 'duplicate listing' reason."
+  },
+  "report.reasons.other.label": {
+    "description": "Report-reason option label: any other issue."
+  },
+  "report.reasons.other.description": {
+    "description": "Report-reason option description prompting the user to describe the issue in the details field."
+  },
+  "handle.backToFeed": {
+    "description": "Link on a seller's feed page to return to the main feed."
+  },
+  "handle.fallbackSeller": {
+    "description": "Fallback seller handle on a seller feed page when unknown. Keep the literal '@unknown' handle untranslated."
+  },
+  "handle.refresh": {
+    "description": "Button on a seller feed page to reload the seller's listings."
+  },
+  "handle.refreshing": {
+    "description": "Button label shown while a seller's listings are reloading."
+  },
+  "handle.invalidPath": {
+    "description": "Error message shown when the seller feed URL path is invalid."
+  },
+  "handle.loadErrorFallback": {
+    "description": "Error message shown when loading a seller's listings fails."
+  },
+  "handle.emptyListings": {
+    "description": "Empty-state message when a seller has no listings."
+  },
+  "handle.endOfListings": {
+    "description": "Marker at the bottom of a seller's listings when all have loaded."
+  },
+  "handle.loadMore": {
+    "description": "Button to load more of a seller's listings."
+  },
+  "handle.subtitle.invalidPath": {
+    "description": "Seller feed page subtitle shown when the URL path is invalid."
+  },
+  "handle.subtitle.noDomains": {
+    "description": "Seller feed page subtitle shown when the seller has listed no domains yet."
+  },
+  "handle.subtitle.feedAndNamefi": {
+    "description": "Seller feed page subtitle counting both feed and Namefi-owned domains. ICU plurals on {feedCount} and {namefiCount}; # is each count. Keep 'Namefi' verbatim."
+  },
+  "handle.subtitle.feedOnly": {
+    "description": "Seller feed page subtitle counting only feed-listed domains. ICU plural on {feedCount}; # is the count."
+  },
+  "users.backToFeed": {
+    "description": "Link on the feed users directory to return to the main feed."
+  },
+  "users.title": {
+    "description": "Title of the feed users directory page."
+  },
+  "users.loadingSubtitle": {
+    "description": "Subtitle shown while the feed users directory is loading."
+  },
+  "users.subtitle": {
+    "description": "Feed users directory subtitle counting matching users. ICU plural on {count}; # is the count."
+  },
+  "users.subtitleRefreshed": {
+    "description": "Feed users directory subtitle with refresh time. ICU plural on {count} (# is the count); {refreshedAt} is a pre-formatted timestamp."
+  },
+  "users.refresh": {
+    "description": "Button on the feed users directory to reload the user list."
+  },
+  "users.exportCsv": {
+    "description": "Button on the feed users directory to export the user list as CSV. Keep 'CSV' (technical term)."
+  },
+  "users.exportSuccess": {
+    "description": "Success toast after exporting the users list as CSV. Keep 'CSV'."
+  },
+  "users.exportErrorTitle": {
+    "description": "Error toast title when exporting the users CSV fails. Keep 'CSV'."
+  },
+  "users.exportErrorFallback": {
+    "description": "Error toast body shown when exporting the users CSV fails."
+  },
+  "users.searchPlaceholder": {
+    "description": "Placeholder in the feed users directory search input."
+  },
+  "users.clearSearchAriaLabel": {
+    "description": "Accessibility label for the button that clears the feed users directory search input."
+  },
+  "users.minPostsAriaLabel": {
+    "description": "Accessibility label for the minimum-posts filter in the feed users directory."
+  },
+  "users.minPostsOption": {
+    "description": "Minimum-posts filter option in the feed users directory. {count} is the minimum post count; '+' is literal."
+  },
+  "users.activeWithinAriaLabel": {
+    "description": "Accessibility label for the active-within (recency) filter in the feed users directory."
+  },
+  "users.anyTime": {
+    "description": "Active-within filter option meaning no recency limit, in the feed users directory."
+  },
+  "users.activeWithinDays": {
+    "description": "Active-within filter option by number of days in the feed users directory. {count} is the number of days."
+  },
+  "users.lastDays": {
+    "description": "Compact active-within filter label in the feed users directory. {count} is the number of days; the trailing 'd' abbreviates days.",
+    "maxLength": 8
+  },
+  "users.clear": {
+    "description": "Button to clear filters in the feed users directory."
+  },
+  "users.columns.user": {
+    "description": "Column header in the feed users directory table: the user/handle."
+  },
+  "users.columns.domains": {
+    "description": "Column header in the feed users directory table: number of domains."
+  },
+  "users.columns.cadence": {
+    "description": "Column header in the feed users directory table: posting cadence/frequency."
+  },
+  "users.columns.lastPost": {
+    "description": "Column header in the feed users directory table: time of the user's last post."
+  },
+  "users.domainsPerPost": {
+    "description": "Cadence cell in the feed users directory: domains per post. {count} is the average; '/ post' is literal."
+  },
+  "users.postsPerWeek": {
+    "description": "Cadence cell unit label in the feed users directory: posts per week."
+  },
+  "users.namefiOwned": {
+    "description": "Feed users directory cell noting Namefi-owned domains. {count} is the number. Keep 'Namefi' verbatim."
+  },
+  "users.today": {
+    "description": "Last-post cell value in the feed users directory meaning the user posted today."
+  },
+  "users.daysAgo": {
+    "description": "Last-post cell value in the feed users directory. {count} is the number of days ago; the trailing 'd' abbreviates days.",
+    "maxLength": 8
+  },
+  "users.unknownDate": {
+    "description": "Last-post cell fallback in the feed users directory when the date is unknown."
+  },
+  "users.emptyThreshold": {
+    "description": "Empty-state message in the feed users directory when no users meet the selected filter threshold."
+  },
+  "users.loadingMore": {
+    "description": "Label shown while loading more users in the feed users directory."
+  },
+  "users.loadMore": {
+    "description": "Button to load more users in the feed users directory."
+  },
+  "users.listings": {
+    "description": "Label/link in the feed users directory pointing to a user's listings."
+  },
+  "users.post": {
+    "description": "Label/link in the feed users directory for a user's individual post."
+  }
+}

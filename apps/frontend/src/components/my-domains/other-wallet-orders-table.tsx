@@ -1,5 +1,8 @@
+'use client';
+
 import type { FC } from 'react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { ExternalLink } from 'lucide-react';
 import {
   Table,
@@ -18,50 +21,57 @@ type OtherWalletOrderItem = AppRouterOutput['orders']['getOrderItems'][number];
 
 export const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
   items,
-}) => (
-  <div className="rounded-md border">
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Domain ({items.length})</TableHead>
-          <TableHead>NFT Wallet</TableHead>
-          <TableHead className="w-[160px]">Order</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {items.map((item) => (
-          <TableRow key={item.id}>
-            <TableCell className="font-medium">
-              <div>
-                {safeToUnicode(item.normalizedDomainName)}
-                {safeToUnicode(item.normalizedDomainName) !==
-                  item.normalizedDomainName && (
-                  <span className="block text-xs text-muted-foreground font-normal">
-                    {item.normalizedDomainName}
-                  </span>
-                )}
-              </div>
-            </TableCell>
-            <TableCell>
-              <AddressWithChain
-                address={item.nftWalletAddress}
-                chainId={item.nftChainId}
-              />
-            </TableCell>
-            <TableCell>
-              <Button
-                variant="outline"
-                size="sm"
-                render={<Link href={`/orders/${item.orderId}/details`} />}
-                nativeButton={false}
-              >
-                <ExternalLink className="h-4 w-4 mr-1" />
-                View order
-              </Button>
-            </TableCell>
+}) => {
+  const t = useTranslations('domains');
+  return (
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
+              {t('otherWallets.domain', { count: items.length })}
+            </TableHead>
+            <TableHead>{t('otherWallets.nftWallet')}</TableHead>
+            <TableHead className="w-[160px]">
+              {t('otherWallets.order')}
+            </TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </div>
-);
+        </TableHeader>
+        <TableBody>
+          {items.map((item) => (
+            <TableRow key={item.id}>
+              <TableCell className="font-medium">
+                <div>
+                  {safeToUnicode(item.normalizedDomainName)}
+                  {safeToUnicode(item.normalizedDomainName) !==
+                    item.normalizedDomainName && (
+                    <span className="block text-xs text-muted-foreground font-normal">
+                      {item.normalizedDomainName}
+                    </span>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <AddressWithChain
+                  address={item.nftWalletAddress}
+                  chainId={item.nftChainId}
+                />
+              </TableCell>
+              <TableCell>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  render={<Link href={`/orders/${item.orderId}/details`} />}
+                  nativeButton={false}
+                >
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  {t('otherWallets.viewOrder')}
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};

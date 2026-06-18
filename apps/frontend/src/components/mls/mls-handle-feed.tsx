@@ -2,6 +2,7 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ArrowLeft, Loader2, RefreshCcw } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { type RefObject, useEffect, useMemo, useRef } from 'react';
 import { MlsSaleCard } from '@/components/mls/mls-sale-card';
@@ -39,13 +40,14 @@ interface MlsHandleFeedProps {
 }
 
 export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
+  const t = useTranslations('feed');
   const trpcClient = useTRPCClient();
   const normalizedSource = normalizeMlsFeedSource(source);
   const normalizedHandleSlug = normalizeMlsHandleSlug(username);
   const hasValidHandle = Boolean(normalizedSource && normalizedHandleSlug);
   const fallbackHandle = normalizedHandleSlug
     ? `@${normalizedHandleSlug}`
-    : '@unknown';
+    : t('handle.fallbackSeller');
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -121,11 +123,11 @@ export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
         sellerLabel={sellerLabel}
         sourceLabel={sourceLabel}
         sellerTier={sellerTier}
-        subtitle={getSellerSubtitle(
+        subtitle={getSellerSubtitle(t, {
           hasValidHandle,
           totalDomains,
           namefiDomainsCount,
-        )}
+        })}
         hasValidHandle={hasValidHandle}
         isLoading={isLoading}
         isRefetching={isRefetching}
@@ -138,7 +140,7 @@ export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
         hasValidHandle={hasValidHandle}
         isLoading={isLoading}
         isError={isError}
-        errorMessage={error?.message ?? 'Failed to load seller listings.'}
+        errorMessage={error?.message ?? t('handle.loadErrorFallback')}
         listings={listings}
         hasNextPage={Boolean(hasNextPage)}
         isFetchingNextPage={isFetchingNextPage}
@@ -172,6 +174,8 @@ function MlsHandleHeader({
   isRefetching,
   onRefresh,
 }: MlsHandleHeaderProps) {
+  const t = useTranslations('feed');
+
   return (
     <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
       <div className="space-y-3">
@@ -180,7 +184,7 @@ function MlsHandleHeader({
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="size-4" />
-          Back to feed
+          {t('handle.backToFeed')}
         </Link>
 
         <div className="flex flex-wrap items-center justify-between gap-4">
@@ -215,12 +219,12 @@ function MlsHandleHeader({
             {isRefetching ? (
               <span className="inline-flex items-center gap-2">
                 <Loader2 className="size-4 animate-spin" />
-                Refreshing
+                {t('handle.refreshing')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-2">
                 <RefreshCcw className="size-4" />
-                Refresh
+                {t('handle.refresh')}
               </span>
             )}
           </Button>
@@ -298,9 +302,11 @@ function MlsHandleListingsSection({
 }
 
 function MlsHandleInvalidHandleBanner() {
+  const t = useTranslations('feed');
+
   return (
     <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
-      This feed user path is not valid.
+      {t('handle.invalidPath')}
     </div>
   );
 }
@@ -344,6 +350,8 @@ function MlsHandlePagination({
   sentinelRef,
   onLoadMore,
 }: MlsHandlePaginationProps) {
+  const t = useTranslations('feed');
+
   return (
     <>
       {isFetchingNextPage ? <MlsHandleFeedSkeleton compact={true} /> : null}
@@ -353,7 +361,7 @@ function MlsHandlePagination({
       {hasNextPage && !isFetchingNextPage ? (
         <div className="flex justify-center pt-2">
           <Button variant="ghost" onClick={onLoadMore}>
-            Load more
+            {t('handle.loadMore')}
           </Button>
         </div>
       ) : null}
@@ -370,10 +378,12 @@ function MlsHandleCompletionState({
   showEmptyState,
   showEndOfFeed,
 }: MlsHandleCompletionStateProps) {
+  const t = useTranslations('feed');
+
   if (showEmptyState) {
     return (
       <p className="py-6 text-center text-sm text-muted-foreground">
-        No listings found for this seller.
+        {t('handle.emptyListings')}
       </p>
     );
   }
@@ -381,7 +391,7 @@ function MlsHandleCompletionState({
   if (showEndOfFeed) {
     return (
       <p className="py-6 text-center text-xs tracking-wide text-muted-foreground uppercase">
-        End of seller listings
+        {t('handle.endOfListings')}
       </p>
     );
   }
@@ -390,23 +400,33 @@ function MlsHandleCompletionState({
 }
 
 function getSellerSubtitle(
-  hasValidHandle: boolean,
-  totalDomains: number,
-  namefiDomainsCount: number,
+  t: ReturnType<typeof useTranslations<'feed'>>,
+  {
+    hasValidHandle,
+    totalDomains,
+    namefiDomainsCount,
+  }: {
+    hasValidHandle: boolean;
+    totalDomains: number;
+    namefiDomainsCount: number;
+  },
 ) {
   if (!hasValidHandle) {
-    return 'Invalid feed user path.';
+    return t('handle.subtitle.invalidPath');
   }
 
   if (totalDomains === 0 && namefiDomainsCount === 0) {
-    return 'No domains listed by this seller yet.';
+    return t('handle.subtitle.noDomains');
   }
 
   if (namefiDomainsCount > 0) {
-    return `${totalDomains.toLocaleString()} feed ${totalDomains === 1 ? 'domain' : 'domains'} and ${namefiDomainsCount.toLocaleString()} Namefi-owned ${namefiDomainsCount === 1 ? 'domain' : 'domains'}.`;
+    return t('handle.subtitle.feedAndNamefi', {
+      feedCount: totalDomains,
+      namefiCount: namefiDomainsCount,
+    });
   }
 
-  return `${totalDomains.toLocaleString()} feed ${totalDomains === 1 ? 'domain' : 'domains'} listed by this seller.`;
+  return t('handle.subtitle.feedOnly', { feedCount: totalDomains });
 }
 
 interface MlsHandleFeedSkeletonProps {

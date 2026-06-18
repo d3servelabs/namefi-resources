@@ -2,6 +2,7 @@ import { CartCard } from '@/components/cart-card';
 import { formatDate } from '@/lib/string';
 import { PaymentMethodsDetails } from '@/components/orders/payment-method-details';
 import type { AppRouterOutput } from '@/lib/trpc';
+import { useTranslations } from 'next-intl';
 
 type OrderWithPayments = AppRouterOutput['orders']['getOrder'];
 
@@ -10,24 +11,28 @@ export const PaymentDetailsSummary = ({
 }: {
   orderWithPayments: OrderWithPayments;
 }) => {
+  const t = useTranslations('orders');
   return (
     <CartCard
-      title="Order Details"
+      title={t('summary.orderDetails')}
       className="mb-6 bg-black/[0.03] border-white/10"
     >
       <div className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Date</span>
+          <span className="text-muted-foreground">{t('summary.date')}</span>
           <span>{formatDate(new Date(orderWithPayments.order.createdAt))}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Grand total</span>
+          <span className="text-muted-foreground">
+            {t('summary.grandTotal')}
+          </span>
           <span>${orderWithPayments.order.amountInUSDCents / 100} USD</span>
         </div>
         <div className="flex justify-between items-start">
           <span className="text-muted-foreground">
-            Payments (
-            {orderWithPayments.payments.length === 1 ? 'Single' : 'Multiple'})
+            {orderWithPayments.payments.length === 1
+              ? t('summary.paymentsSingle')
+              : t('summary.paymentsMultiple')}
           </span>
           <PaymentMethodsDetails
             orderId={orderWithPayments.order.id}

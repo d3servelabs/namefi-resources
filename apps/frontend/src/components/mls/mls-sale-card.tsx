@@ -2,6 +2,7 @@
 
 import { formatDistanceToNowStrict } from 'date-fns';
 import { ExternalLink } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { Route } from 'next';
 import NextImage from 'next/image';
 import Link from 'next/link';
@@ -51,9 +52,11 @@ export function MlsSaleCard({
   showOtherDomainsCount = true,
   showSellerTierBadge = true,
 }: MlsSaleCardProps) {
+  const t = useTranslations('feed');
   const sellerHandle = normalizeMlsHandle(listing.seller.username);
   const sellerDisplayName = listing.seller.displayName?.trim() || null;
-  const sellerLabel = sellerHandle ?? sellerDisplayName ?? '@unknown';
+  const sellerLabel =
+    sellerHandle ?? sellerDisplayName ?? t('card.unknownSeller');
   const source = resolveMlsListingSource(listing);
   const sellerDetailsPath = sellerHandle
     ? getMlsHandlePath(source.id, sellerHandle)
@@ -65,8 +68,11 @@ export function MlsSaleCard({
     listing.askingPrice,
     askingCurrency,
   );
-  const postedLabel = formatPostedLabel(listing.postedAt);
-  const excerpt = formatExcerpt(listing.messageText);
+  const postedLabel = formatPostedLabel(listing.postedAt, {
+    justNow: t('card.justNow'),
+    unknown: t('card.unknownDate'),
+  });
+  const excerpt = formatExcerpt(listing.messageText, t('card.noExcerpt'));
   const domainParts = getMlsDomainDisplayParts(listing.domain);
   const otherDomainsCount = Math.max(0, listing.otherDomainsCount);
   const sellerTier = getListingSellerTier({
@@ -128,13 +134,11 @@ export function MlsSaleCard({
                   href={sellerDetailsPath as Route}
                   className="transition-colors hover:text-white/55 hover:underline"
                 >
-                  {otherDomainsCount.toLocaleString()} other{' '}
-                  {otherDomainsCount === 1 ? 'domain' : 'domains'}
+                  {t('card.otherDomains', { count: otherDomainsCount })}
                 </Link>
               ) : (
                 <span>
-                  {otherDomainsCount.toLocaleString()} other{' '}
-                  {otherDomainsCount === 1 ? 'domain' : 'domains'}
+                  {t('card.otherDomains', { count: otherDomainsCount })}
                 </span>
               )}
             </>
@@ -155,7 +159,9 @@ export function MlsSaleCard({
               target="_blank"
               rel="noopener noreferrer"
               className="min-w-0 flex flex-wrap items-baseline gap-1.5 no-underline"
-              aria-label={`Open ${domainParts.full}`}
+              aria-label={t('card.openDomainAriaLabel', {
+                domain: domainParts.full,
+              })}
               title={domainParts.full}
             >
               <h2
@@ -195,7 +201,10 @@ export function MlsSaleCard({
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-w-0 max-w-full items-center gap-2 text-sm text-white/40 transition-colors hover:text-white/60 sm:max-w-[58%]"
-            aria-label={`Open ${source.label} source for ${domainParts.full}`}
+            aria-label={t('card.openSourceAriaLabel', {
+              source: source.label,
+              domain: domainParts.full,
+            })}
           >
             <span className="shrink-0 text-white/55">{source.label}</span>
             <span className="truncate">{excerpt}</span>
@@ -227,6 +236,7 @@ function MlsSaleCardLogo({
   logoUrl,
   theme,
 }: MlsSaleCardLogoProps) {
+  const t = useTranslations('feed');
   const domainMark = getMlsDomainMark(label);
 
   if (logoUrl) {
@@ -243,7 +253,7 @@ function MlsSaleCardLogo({
         <span className="relative z-10 block size-12 sm:size-14">
           <NextImage
             src={logoUrl}
-            alt={`${label || domain} logo`}
+            alt={t('card.logoAlt', { name: label || domain })}
             fill
             sizes="56px"
             className="object-contain"
@@ -424,10 +434,13 @@ function formatAskingPrice(
   }
 }
 
-function formatPostedLabel(value: string) {
+function formatPostedLabel(
+  value: string,
+  labels: { justNow: string; unknown: string },
+) {
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) {
-    return 'Unknown';
+    return labels.unknown;
   }
 
   const now = new Date();
@@ -437,7 +450,7 @@ function formatPostedLabel(value: string) {
   }
 
   if (diffMs < 60 * 1000) {
-    return 'just now';
+    return labels.justNow;
   }
 
   if (diffMs <= THREE_DAYS_IN_MS) {
@@ -450,10 +463,10 @@ function formatPostedLabel(value: string) {
   return dateFormatter.format(parsed);
 }
 
-function formatExcerpt(value: string | null) {
+function formatExcerpt(value: string | null, noExcerptLabel: string) {
   const normalized = value?.replace(/\s+/g, ' ').trim();
   if (!normalized) {
-    return 'No excerpt available';
+    return noExcerptLabel;
   }
   return normalized;
 }

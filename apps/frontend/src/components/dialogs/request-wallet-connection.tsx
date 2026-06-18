@@ -13,6 +13,7 @@ import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Wallet2, AlertCircle, CheckCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   useCallback,
   useEffect,
@@ -61,10 +62,10 @@ export const RequestWalletConnection = forwardRef<
   RequestWalletConnectionRef,
   RequestWalletConnectionProps
 >(function RequestWalletConnection(props, ref) {
-  const {
-    onRequestedWalletConnected,
-    actionDescription = 'to complete this action',
-  } = props;
+  const t = useTranslations('shared');
+  const { onRequestedWalletConnected, actionDescription } = props;
+  const resolvedActionDescription =
+    actionDescription ?? t('requestWalletConnection.defaultActionDescription');
   const [open, setOpen] = useState(false);
   const onOpenChange = useCallback((open: boolean) => {
     setOpen(open);
@@ -158,8 +159,11 @@ export const RequestWalletConnection = forwardRef<
         onOpenChange(false);
       } catch (error) {
         console.error('Failed to set active wallet', error);
-        toast('Failed to set active wallet', {
-          description: error instanceof Error ? error.message : 'Unknown error',
+        toast(t('requestWalletConnection.toast.setActiveFailed'), {
+          description:
+            error instanceof Error
+              ? error.message
+              : t('requestWalletConnection.toast.unknownError'),
         });
         setConnectionState('waiting');
       }
@@ -169,6 +173,7 @@ export const RequestWalletConnection = forwardRef<
       setActiveWallet,
       onRequestedWalletConnected,
       onOpenChange,
+      t,
     ],
   );
 
@@ -204,8 +209,11 @@ export const RequestWalletConnection = forwardRef<
           handleSetAsActiveWallet(requestedWalletAddress);
         }
       } catch (error) {
-        toast('Failed to connect wallet', {
-          description: error instanceof Error ? error.message : 'Unknown error',
+        toast(t('requestWalletConnection.toast.connectFailed'), {
+          description:
+            error instanceof Error
+              ? error.message
+              : t('requestWalletConnection.toast.unknownError'),
         });
         setConnectionState('waiting');
       }
@@ -216,6 +224,7 @@ export const RequestWalletConnection = forwardRef<
       config,
       onRequestedWalletConnected,
       onOpenChange,
+      t,
     ],
   );
 
@@ -291,17 +300,19 @@ export const RequestWalletConnection = forwardRef<
         <DialogHeader>
           <DialogTitle>
             {connectionState === 'wrong-wallet'
-              ? 'Wrong Wallet Connected'
+              ? t('requestWalletConnection.title.wrongWallet')
               : connectionState === 'setting-active'
-                ? 'Setting Active Wallet'
-                : 'Connect Your Wallet'}
+                ? t('requestWalletConnection.title.settingActive')
+                : t('requestWalletConnection.title.connect')}
           </DialogTitle>
           <DialogDescription>
             {connectionState === 'wrong-wallet'
-              ? 'Please connect the correct wallet to continue.'
+              ? t('requestWalletConnection.description.wrongWallet')
               : connectionState === 'setting-active'
-                ? 'Please wait while we set your wallet as active...'
-                : `Please connect your wallet ${actionDescription}.`}
+                ? t('requestWalletConnection.description.settingActive')
+                : t('requestWalletConnection.description.connect', {
+                    actionDescription: resolvedActionDescription,
+                  })}
           </DialogDescription>
         </DialogHeader>
 
@@ -313,8 +324,8 @@ export const RequestWalletConnection = forwardRef<
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
               <p className="text-sm text-muted-foreground">
                 {connectionState === 'checking'
-                  ? 'Checking wallet status...'
-                  : 'Setting wallet as active...'}
+                  ? t('requestWalletConnection.checkingStatus')
+                  : t('requestWalletConnection.settingAsActive')}
               </p>
             </div>
           )}
@@ -325,7 +336,7 @@ export const RequestWalletConnection = forwardRef<
             <>
               <div className="flex flex-col gap-2">
                 <span className="text-xs text-gray-500 uppercase tracking-wide">
-                  Required Wallet
+                  {t('requestWalletConnection.requiredWallet')}
                 </span>
                 <div className="flex items-center gap-2 px-2 py-2 bg-muted rounded-xl">
                   <UserWalletAvatar
@@ -349,7 +360,7 @@ export const RequestWalletConnection = forwardRef<
                 <div className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg">
                   <Loader2 className="h-4 w-4 animate-spin text-blue-600 dark:text-blue-400" />
                   <p className="text-sm text-blue-600 dark:text-blue-400">
-                    Waiting for wallet connection...
+                    {t('requestWalletConnection.waitingForConnection')}
                   </p>
                 </div>
               )}
@@ -362,14 +373,14 @@ export const RequestWalletConnection = forwardRef<
               <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
                 <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                 <p className="text-sm text-amber-600 dark:text-amber-400">
-                  You connected a different wallet
+                  {t('requestWalletConnection.differentWalletConnected')}
                 </p>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-2">
                   <span className="text-xs text-gray-500 uppercase tracking-wide">
-                    You Connected
+                    {t('requestWalletConnection.youConnected')}
                   </span>
                   <div className="flex items-center gap-2 px-2 py-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl">
                     <UserWalletAvatar
@@ -390,7 +401,7 @@ export const RequestWalletConnection = forwardRef<
 
                 <div className="flex flex-col gap-2">
                   <span className="text-xs text-gray-500 uppercase tracking-wide">
-                    But We Need
+                    {t('requestWalletConnection.butWeNeed')}
                   </span>
                   <div className="flex items-center gap-2 px-2 py-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl">
                     <UserWalletAvatar
@@ -416,7 +427,7 @@ export const RequestWalletConnection = forwardRef<
               <div className="flex items-center gap-2 px-3 py-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
                 <p className="text-sm text-green-600 dark:text-green-400">
-                  Wallet connected successfully
+                  {t('requestWalletConnection.connectedSuccessfully')}
                 </p>
               </div>
             </>
@@ -432,7 +443,7 @@ export const RequestWalletConnection = forwardRef<
                 onClick={() => onOpenChange(false)}
                 disabled={connectionState === 'connecting'}
               >
-                Cancel
+                {t('requestWalletConnection.cancel')}
               </Button>
               <Button
                 onClick={() =>
@@ -444,10 +455,10 @@ export const RequestWalletConnection = forwardRef<
                 {connectionState === 'connecting' ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Connecting...
+                    {t('requestWalletConnection.connecting')}
                   </>
                 ) : (
-                  'Connect Wallet'
+                  t('requestWalletConnection.connectWallet')
                 )}
               </Button>
             </>
@@ -456,9 +467,11 @@ export const RequestWalletConnection = forwardRef<
           {connectionState === 'wrong-wallet' && (
             <>
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t('requestWalletConnection.cancel')}
               </Button>
-              <Button onClick={handleTryAgain}>Try Again</Button>
+              <Button onClick={handleTryAgain}>
+                {t('requestWalletConnection.tryAgain')}
+              </Button>
             </>
           )}
           {connectionState === 'success' && (
@@ -471,7 +484,7 @@ export const RequestWalletConnection = forwardRef<
                   onOpenChange(false);
                 }}
               >
-                Next
+                {t('requestWalletConnection.next')}
               </Button>
             </>
           )}

@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "badge": "ICANN Accredited Registrar on Ethereum & Base",
+    "heading": "Namefi: Next generation domain platform with blockchain and AI",
+    "subtitle": "Faster, cheaper and verifiable. The best way to own domains.",
+    "tryV3Beta": "Or try our new search experience (v3 beta)"
+  },
+  "scrollIndicator": {
+    "ariaLabel": "Scroll to Why Use Namefi section",
+    "label": "Why Choose Namefi?"
+  },
+  "floatingSearch": {
+    "placeholder": "Search for a domain...",
+    "searchButton": "Search"
+  }
+}

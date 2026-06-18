@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -60,6 +61,7 @@ export function useMyDomainsColumns({
   onOpenRenewModal,
   onListForSaleClick,
 }: UseMyDomainsColumnsArgs): ColumnDef<DomainRow>[] {
+  const t = useTranslations('domains');
   return useMemo<ColumnDef<DomainRow>[]>(
     () => [
       {
@@ -71,7 +73,7 @@ export function useMyDomainsColumns({
               pageSelectionState.someSelected && !pageSelectionState.allSelected
             }
             onCheckedChange={(value) => onToggleAllCurrentPage(value === true)}
-            aria-label="Select all"
+            aria-label={t('columns.selectAll')}
           />
         ),
         cell: ({ row }) => {
@@ -84,7 +86,7 @@ export function useMyDomainsColumns({
               onCheckedChange={(value) =>
                 onRowSelectionChange(domainName, value === true)
               }
-              aria-label="Select row"
+              aria-label={t('columns.selectRow')}
             />
           );
         },
@@ -94,7 +96,7 @@ export function useMyDomainsColumns({
       },
       {
         accessorKey: 'normalizedDomainName',
-        header: `Domain Name (${domainCount})`,
+        header: t('columns.domainName', { count: domainCount }),
         cell: ({ row }) => (
           <DomainNameCell
             domainName={row.getValue('normalizedDomainName') as string}
@@ -119,7 +121,7 @@ export function useMyDomainsColumns({
       },
       {
         id: 'account',
-        header: 'Account',
+        header: t('columns.account'),
         cell: ({ row }) => (
           <AddressWithChain
             address={row.original.ownerAddress ?? null}
@@ -130,7 +132,7 @@ export function useMyDomainsColumns({
       },
       {
         accessorKey: 'expirationDate',
-        header: 'Renewal',
+        header: t('columns.renewal'),
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
           const customPrice = getCustomRenewalPrice(domainName ?? '');
@@ -165,7 +167,7 @@ export function useMyDomainsColumns({
       },
       {
         id: 'autoEns',
-        header: 'AutoENS',
+        header: t('columns.autoEns'),
         cell: ({ row }) => {
           const domainName = row.getValue('normalizedDomainName') as string;
           return (
@@ -188,7 +190,7 @@ export function useMyDomainsColumns({
       },
       {
         accessorKey: 'dateTokenized',
-        header: 'Date Tokenized',
+        header: t('columns.dateTokenized'),
         cell: ({ row }) => (
           <DateTokenizedCell
             dateTokenized={
@@ -223,7 +225,7 @@ export function useMyDomainsColumns({
       // },
       {
         id: 'dnsStatus',
-        header: 'DNS Records',
+        header: t('columns.dnsRecords'),
         cell: ({ row }) => {
           const domainName = row.getValue(
             'normalizedDomainName',
@@ -266,6 +268,7 @@ export function useMyDomainsColumns({
       // },
     ],
     [
+      t,
       pageSelectionState,
       selectedDomainIds,
       togglingAutoRenew,

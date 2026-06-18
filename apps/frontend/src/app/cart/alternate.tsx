@@ -52,6 +52,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { CHAINS } from '@namefi-astra/utils/chains';
 import { ArchiveX, Loader2, Trash2 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { getAddress, toHex } from 'viem';
 import {
@@ -102,6 +103,8 @@ function isX402PaymentDraft(
 }
 
 export default function CartPage() {
+  const t = useTranslations('cart');
+  const tc = useTranslations('common');
   useRegisterAdminFlags(X402_CART_PAYMENT_FLAG_DEFINITION);
   const [x402CartPaymentEnabled] = useAdminFeatureFlag(
     X402_CART_PAYMENT_FLAG_DEFINITION[0],
@@ -256,7 +259,7 @@ export default function CartPage() {
 
   const submitButtonText = useMemo(() => {
     if (!selectedNftWalletAddress) {
-      return 'Select NFT Wallet to Continue';
+      return t('submitButton.selectNftWallet');
     }
 
     if (
@@ -264,15 +267,16 @@ export default function CartPage() {
       isRedirecting ||
       isExplicitlyCheckingCartItemsForUpdates
     ) {
-      return 'Processing...';
+      return t('submitButton.processing');
     }
 
-    return 'Submit Order';
+    return t('submitButton.submitOrder');
   }, [
     isExplicitlyCheckingCartItemsForUpdates,
     isCreateOrderPending,
     isRedirecting,
     selectedNftWalletAddress,
+    t,
   ]);
 
   const submitOrderDisabled = useMemo(() => {
@@ -295,16 +299,16 @@ export default function CartPage() {
   // most actionable blocker wins.
   const submitDisabledReason = useMemo(() => {
     if (isCartUpdating || isCartLoading) {
-      return 'Your cart is still updating.';
+      return t('disabledReason.cartUpdating');
     }
     if (!selectedNftWalletAddress) {
-      return 'Select a wallet to receive your domains.';
+      return t('disabledReason.selectWallet');
     }
     if (!isLinkedOrUserConfirmed) {
-      return 'Confirm the wallet that will receive your domains.';
+      return t('disabledReason.confirmWallet');
     }
     if (hasUnacknowledgedRegistrationRequirements) {
-      return 'Review and accept the registration requirements shown on your cart items.';
+      return t('disabledReason.acceptRequirements');
     }
     return undefined;
   }, [
@@ -313,6 +317,7 @@ export default function CartPage() {
     selectedNftWalletAddress,
     isLinkedOrUserConfirmed,
     hasUnacknowledgedRegistrationRequirements,
+    t,
   ]);
 
   const logSubmitOrderFailure = useCallback(
@@ -373,21 +378,19 @@ export default function CartPage() {
 
         if (hasX402Payment) {
           if (!x402CartPaymentEnabled) {
-            setErrorMessage('x402 payment is currently disabled');
+            setErrorMessage(t('submitErrors.x402Disabled'));
             setIsErrorDialogOpen(true);
             return;
           }
 
           if (!x402PaymentConfig) {
-            setErrorMessage('x402 payment is not available right now');
+            setErrorMessage(t('submitErrors.x402Unavailable'));
             setIsErrorDialogOpen(true);
             return;
           }
 
           if (!connectedWalletAddress) {
-            setErrorMessage(
-              'Connect an active wallet to sign your x402 payment',
-            );
+            setErrorMessage(t('submitErrors.x402ConnectWallet'));
             setIsErrorDialogOpen(true);
             return;
           }
@@ -499,7 +502,7 @@ export default function CartPage() {
         setErrorMessage(
           error instanceof Error
             ? error.message
-            : 'Could not submit your order. Please try again.',
+            : t('submitErrors.orderFailed'),
         );
         setIsErrorDialogOpen(true);
       } finally {
@@ -517,6 +520,7 @@ export default function CartPage() {
       totalAmountInUsdCents,
       x402CartPaymentEnabled,
       x402PaymentConfig,
+      t,
     ],
   );
 
@@ -580,17 +584,18 @@ export default function CartPage() {
       <AlertDialog open={isErrorDialogOpen} onOpenChange={setIsErrorDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Oops! Something went wrong.</AlertDialogTitle>
+            <AlertDialogTitle>{t('errorDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Don&apos;t worry, you won&apos;t be charged. Feel free to try
-              again or head back to your cart.{' '}
+              {t('errorDialog.description')}{' '}
               <p className="italic">
-                {errorMessage ? `(Error - ${errorMessage})` : ''}
+                {errorMessage
+                  ? t('errorDialog.errorDetail', { message: errorMessage })
+                  : ''}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Close</AlertDialogCancel>
+            <AlertDialogCancel>{tc('actions.close')}</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -605,15 +610,14 @@ export default function CartPage() {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Clear cart?</AlertDialogTitle>
+            <AlertDialogTitle>{t('clearCartDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will remove all items from your cart. You can add them back
-              later if needed.
+              {t('clearCartDialog.description')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={isClearingCart}>
-              Cancel
+              {tc('actions.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90 gap-2"
@@ -623,7 +627,7 @@ export default function CartPage() {
               {isClearingCart && (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               )}
-              Clear Cart
+              {t('clearCart')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -657,7 +661,7 @@ export default function CartPage() {
 
             {/* Cart Items Card */}
             <CartCard
-              title="In your cart"
+              title={t('inYourCart')}
               headerAction={
                 <Button
                   variant="destructive"
@@ -674,7 +678,7 @@ export default function CartPage() {
                   ) : (
                     <Trash2 className="h-4 w-4" aria-hidden="true" />
                   )}
-                  Clear Cart
+                  {t('clearCart')}
                 </Button>
               }
             >
@@ -772,13 +776,13 @@ export default function CartPage() {
           </div>
         </div>
       ) : (
-        <CartCard title="Your cart is empty">
+        <CartCard title={t('yourCartIsEmpty')}>
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <p className="text-muted-foreground text-center">
-              Add some domains to your cart to get started
+              {t('emptyCartHint')}
             </p>
             <NamefiButton variant="outline" onClick={() => router.push('/')}>
-              Browse Domains
+              {t('browseDomains')}
             </NamefiButton>
           </div>
         </CartCard>
@@ -787,62 +791,65 @@ export default function CartPage() {
   );
 }
 
-const LoadingSkeletons = () => (
-  <PageShell>
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {/* Left Column */}
-      <div className="space-y-4">
-        {/* NFT Wallet Card Skeleton */}
-        <CartCard title="Select NFT Wallet">
-          <div className="flex flex-col gap-4 mt-6">
-            <Skeleton className="h-10 w-full" />
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-6 w-[200px]" />
-              <Skeleton className="h-6 w-6 rounded-full" />
-            </div>
-          </div>
-        </CartCard>
-
-        {/* Cart Items Skeleton */}
-        <CartCard title="In your cart">
-          <div className="flex flex-col gap-6 mt-6">
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div key={`cart-item-${index + 1}`}>
-                <div className="flex flex-col gap-4">
-                  <Skeleton className="h-7 w-[250px]" />
-                  <div className="flex items-center justify-between">
-                    <Skeleton className="h-8 w-8 rounded-lg" />
-                    <Skeleton className="h-7 w-[100px]" />
-                  </div>
-                </div>
-                {index < 1 && (
-                  <div className="my-6">
-                    <Separator />
-                  </div>
-                )}
+const LoadingSkeletons = () => {
+  const t = useTranslations('cart');
+  return (
+    <PageShell>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Left Column */}
+        <div className="space-y-4">
+          {/* NFT Wallet Card Skeleton */}
+          <CartCard title={t('skeleton.selectNftWallet')}>
+            <div className="flex flex-col gap-4 mt-6">
+              <Skeleton className="h-10 w-full" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-6 w-[200px]" />
+                <Skeleton className="h-6 w-6 rounded-full" />
               </div>
-            ))}
-          </div>
-        </CartCard>
-      </div>
-
-      {/* Right Column */}
-      <div>
-        <CartCard title="Payment Method">
-          <div className="flex flex-col gap-4 mt-6">
-            <div className="flex items-center justify-between">
-              <Skeleton className="h-6 w-[150px]" />
-              <Skeleton className="h-6 w-[100px]" />
             </div>
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </CartCard>
+          </CartCard>
+
+          {/* Cart Items Skeleton */}
+          <CartCard title={t('inYourCart')}>
+            <div className="flex flex-col gap-6 mt-6">
+              {Array.from({ length: 2 }).map((_, index) => (
+                <div key={`cart-item-${index + 1}`}>
+                  <div className="flex flex-col gap-4">
+                    <Skeleton className="h-7 w-[250px]" />
+                    <div className="flex items-center justify-between">
+                      <Skeleton className="h-8 w-8 rounded-lg" />
+                      <Skeleton className="h-7 w-[100px]" />
+                    </div>
+                  </div>
+                  {index < 1 && (
+                    <div className="my-6">
+                      <Separator />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </CartCard>
+        </div>
+
+        {/* Right Column */}
+        <div>
+          <CartCard title={t('skeleton.paymentMethod')}>
+            <div className="flex flex-col gap-4 mt-6">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-6 w-[150px]" />
+                <Skeleton className="h-6 w-[100px]" />
+              </div>
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </CartCard>
+        </div>
       </div>
-    </div>
-  </PageShell>
-);
+    </PageShell>
+  );
+};
 
 type CartChangesSummaryCardRef = {
   checkCartItemsForUpdates: () => Promise<string[] | undefined>;
@@ -855,6 +862,7 @@ const CartChangesSummaryCard = forwardRef<
   CartChangesSummaryCardRef,
   CartChangesSummaryCardProps
 >((props, ref) => {
+  const t = useTranslations('cart');
   const { cartData: items, refetchCart } = useCartContext();
 
   const { onSettled } = props;
@@ -907,17 +915,15 @@ const CartChangesSummaryCard = forwardRef<
           <div className="flex flex-row justify-between pb-2">
             <CardHeader className="p-0 flex-1">
               <CardTitle className="text-xl font-semibold">
-                Cart Changes
+                {t('cartChanges.title')}
               </CardTitle>
-              <CardDescription>
-                Some changes were made to your cart.
-              </CardDescription>
+              <CardDescription>{t('cartChanges.description')}</CardDescription>
             </CardHeader>
             <Button
               variant="outline"
               onClick={() => setCartItemsChangesSummary(undefined)}
             >
-              <ArchiveX className="size-4" /> Dismiss
+              <ArchiveX className="size-4" /> {t('cartChanges.dismiss')}
             </Button>
           </div>
 

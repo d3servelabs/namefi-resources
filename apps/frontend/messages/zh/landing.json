@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "badge": "在 Ethereum 与 Base 上的 ICANN 认证注册商",
+    "heading": "Namefi：融合区块链与 AI 的新一代域名平台",
+    "subtitle": "更快、更省、可验证。拥有域名的最佳方式。",
+    "tryV3Beta": "或试用我们全新的搜索体验（v3 测试版）"
+  },
+  "scrollIndicator": {
+    "ariaLabel": "滚动至「为何使用 Namefi」部分",
+    "label": "为何选择 Namefi？"
+  },
+  "floatingSearch": {
+    "placeholder": "搜索域名…",
+    "searchButton": "搜索"
+  }
+}

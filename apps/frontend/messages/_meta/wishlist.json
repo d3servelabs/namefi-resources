@@ -1,0 +1,8 @@
+{
+  "title": {
+    "description": "Page heading for the user's saved-domains wishlist page."
+  },
+  "empty": {
+    "description": "Empty-state message shown on the wishlist page when the user has no saved domains."
+  }
+}

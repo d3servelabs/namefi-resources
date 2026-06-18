@@ -1,0 +1,165 @@
+{
+  "tabs": {
+    "active": "我的域名",
+    "inactive": "失效域名",
+    "previouslyOwned": "曾持有的域名",
+    "otherWallets": "在其他钱包",
+    "marketplaceOrders": "我的挂牌与出价"
+  },
+  "processingBanner": "<domains></domains> 正在处理中。请前往<ordersLink>订单</ordersLink>查看其状态。",
+  "emptyActive": "没有有效域名",
+  "emptyInactive": "没有失效域名",
+  "emptyPlaceholder": {
+    "title": "未找到域名",
+    "description": "点击下方按钮，开始搜索您的下一个域名",
+    "action": "搜索页面"
+  },
+  "columns": {
+    "selectAll": "全选",
+    "selectRow": "选择此行",
+    "domainName": "域名（{count}）",
+    "domainNamePlain": "域名",
+    "account": "账户",
+    "renewal": "续费",
+    "autoEns": "AutoENS",
+    "dateTokenized": "通证化日期",
+    "dnsRecords": "DNS 记录",
+    "actions": "操作",
+    "renewUsdPerYear": "续费（美元/年）"
+  },
+  "table": {
+    "searchPlaceholder": "筛选域名…",
+    "emptyMessage": "没有符合筛选条件的域名",
+    "loadingMessage": "加载中…",
+    "showNftsInWallet": "在钱包中显示 NFT",
+    "showNftsInWalletAria": "在钱包中显示 {count} 个 NFT",
+    "filters": {
+      "domainName": "域名",
+      "wallet": "钱包",
+      "renewal": "续费",
+      "dateTokenized": "通证化日期",
+      "chain": "链"
+    },
+    "toasts": {
+      "autoRenewToggled": "已为 {domain} {enabled, select, true {开启} other {关闭}}自动续费",
+      "autoRenewToggleFailed": "更新 {domain} 的自动续费失败",
+      "autoEnsToggled": "已为 {domain} {enabled, select, true {开启} other {关闭}} AutoENS",
+      "autoEnsToggleFailed": "更新 {domain} 的 AutoENS 失败",
+      "bulkAutoRenewFailed": "更新 {total} 个域名中的 {failed} 个失败",
+      "bulkAutoRenewToggled": "已为 {count} 个域名{enabled, select, true {开启} other {关闭}}自动续费",
+      "noNftsToWatch": "没有可添加到您钱包的 NFT",
+      "nftsAdded": "已将 {count} 个 NFT 添加到您的钱包",
+      "nftsAddFailed": "无法将 {count} 个 NFT 添加到您的钱包"
+    }
+  },
+  "otherWallets": {
+    "domain": "域名（{count}）",
+    "nftWallet": "NFT 钱包",
+    "order": "订单",
+    "viewOrder": "查看订单"
+  },
+  "renewModal": {
+    "title": "续费域名",
+    "descriptionSingle": "续费 {domain}",
+    "descriptionMultiple": "续费 {count} 个域名",
+    "renewalPeriod": "续费期限",
+    "selectYears": "选择年数",
+    "yearOption": "{years} 年",
+    "pricePerYear": "每年价格",
+    "total": "总计（{years} 年）",
+    "cancel": "取消",
+    "addingToCart": "正在加入购物车…",
+    "addToCart": "加入购物车",
+    "addToCartFailed": "无法将域名加入购物车。请重试。"
+  },
+  "renewPremiumInfo": {
+    "aria": "{domain} 的续费价格说明",
+    "tooltip": "溢价域名的续费价格可能有所不同。"
+  },
+  "renewalCell": {
+    "auto": "自动",
+    "autoRenewAria": "{domain} 自动续费",
+    "expired": "已到期",
+    "usdPerYear": "美元/年"
+  },
+  "autoEnsCell": {
+    "aria": "{domain} 的 AutoENS"
+  },
+  "timeLeft": {
+    "expired": "已到期",
+    "days": "{days} 天",
+    "monthsExact": "{months} 个月",
+    "monthsPlus": "{months} 个月以上",
+    "yearsExact": "{years} 年",
+    "yearsPlus": "{years} 年以上"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "永不到期",
+    "expired": "已到期",
+    "expires": "{datetime} 到期"
+  },
+  "nftPendingBadge": {
+    "minting": "铸造中…",
+    "changingExpiration": "更新到期时间…",
+    "changingLock": "更新锁定状态…",
+    "pending": "处理中…"
+  },
+  "actions": {
+    "listForSale": "挂牌出售",
+    "findBuyers": "寻找买家",
+    "viewOrder": "查看订单",
+    "viewOrderMenu": "查看订单",
+    "viewNft": "查看 NFT",
+    "viewNftOn": "在 {explorer} 上查看 NFT",
+    "scan": "Scan",
+    "visitDomain": "访问域名",
+    "showNftInWallet": "在钱包中显示 NFT",
+    "listForSaleAria": "挂牌出售 {domain}",
+    "viewOrderAria": "查看 {domain} 的订单",
+    "findBuyersAria": "为 {domain} 寻找买家",
+    "viewNftAria": "查看 {domain} 的 NFT",
+    "visitDomainAria": "访问 {domain}",
+    "actionsAria": "{domain} 的操作",
+    "showNftInWalletAria": "在钱包中显示 {domain} 的 NFT",
+    "nftAddedToast": "已将 {domain} 添加到您的钱包",
+    "nftAddFailedToast": "无法将 {domain} 添加到您的钱包",
+    "nftAddErrorToast": "无法将 NFT 添加到钱包",
+    "unknownError": "未知错误"
+  },
+  "floatingPanel": {
+    "selected": "已选择",
+    "clearSelection": "清除选择",
+    "auto": "自动",
+    "bulkAutoRenewAria": "为 {count} 个域名批量自动续费",
+    "bulkAutoRenewMixed": "状态不一致 — 点击左侧全部关闭，右侧全部开启",
+    "bulkAutoRenewOn": "自动续费已开启 — 点击全部关闭",
+    "bulkAutoRenewOff": "自动续费已关闭 — 点击全部开启",
+    "renewAria": "续费 {count} 个域名",
+    "renewTooltip": "续费 {count} 个域名",
+    "setWebRecords": "设置网页记录",
+    "setUrlForwarding": "设置 URL 转发",
+    "setEnsRecord": "设置 ENS 记录",
+    "showInWalletAria": "在钱包中显示 {count} 个 NFT",
+    "showInWalletTooltip": "在钱包中显示 {count} 个 NFT"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "部分挂牌可能因其所在交易市场繁忙而未显示。",
+    "noLinkedWalletsTitle": "没有已关联的钱包",
+    "noLinkedWalletsDescription": "请将钱包关联到您的账户，以查看您的交易市场订单。",
+    "listingsTitle": "我的挂牌",
+    "listingsDescription": "您在 OpenSea 和 Rarible 上发布的有效出售挂牌。每张卡片下方显示收到的出价。",
+    "noListingsTitle": "没有有效挂牌",
+    "noListingsDescription": "您在域名详情页创建的挂牌将显示在这里。",
+    "offersTitle": "我对其他域名的出价",
+    "offersDescription": "您对未持有域名所提交的出价。按价格从高到低排序。",
+    "noOffersTitle": "没有进行中的出价",
+    "noOffersDescription": "您对其他域名提交的出价将显示在这里。",
+    "view": "查看",
+    "incomingBids": "收到的出价",
+    "loadBidsFailed": "无法加载出价：{error}",
+    "noBidsYet": "暂无出价。",
+    "viewBidAria": "查看在 {domain} 上的 {source} 出价",
+    "nftAlt": "NFT",
+    "offerWaiting": "您的出价已提交，正在等待卖家接受。"
+  }
+}

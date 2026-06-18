@@ -47,6 +47,7 @@ import {
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import { getPublicKey, utils as secp256k1Utils } from '@noble/secp256k1';
+import { useTranslations } from 'next-intl';
 
 /**
  * Convert Uint8Array to hex string
@@ -87,11 +88,11 @@ interface CreateApiKeyDialogProps {
 type KeyType = 'PLAIN' | 'PUBLIC_PRIVATE';
 
 const EXPIRATION_OPTIONS = [
-  { label: 'Never', value: '0' },
-  { label: '30 days', value: String(30 * 24 * 60 * 60) },
-  { label: '90 days', value: String(90 * 24 * 60 * 60) },
-  { label: '1 year', value: String(365 * 24 * 60 * 60) },
-];
+  { labelKey: 'expirationNever', value: '0' },
+  { labelKey: 'expiration30Days', value: String(30 * 24 * 60 * 60) },
+  { labelKey: 'expiration90Days', value: String(90 * 24 * 60 * 60) },
+  { labelKey: 'expiration1Year', value: String(365 * 24 * 60 * 60) },
+] as const;
 
 /**
  * Feature flag for enabling Public/Private key pair API keys.
@@ -125,6 +126,7 @@ export function CreateApiKeyDialog({
   onOpenChange,
   onSuccess,
 }: CreateApiKeyDialogProps) {
+  const t = useTranslations('profile');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -207,27 +209,27 @@ export function CreateApiKeyDialog({
       setPublicKey(publicKeyHex);
       setGeneratedPrivateKey(privateKeyHex);
 
-      toast.success('Keypair generated! Make sure to save your private key.');
+      toast.success(t('createApiKey.keypairGenerated'));
     } catch {
-      toast.error('Failed to generate keypair');
+      toast.error(t('createApiKey.keypairGenerateFailure'));
     } finally {
       setIsGeneratingKeypair(false);
     }
-  }, []);
+  }, [t]);
 
   const handleCopyPrivateKey = useCallback(async () => {
     if (generatedPrivateKey) {
       await navigator.clipboard.writeText(generatedPrivateKey);
-      toast.success('Private key copied to clipboard');
+      toast.success(t('createApiKey.privateKeyCopied'));
     }
-  }, [generatedPrivateKey]);
+  }, [generatedPrivateKey, t]);
 
   const handleCopyPublicKey = useCallback(async () => {
     if (publicKey) {
       await navigator.clipboard.writeText(publicKey);
-      toast.success('Public key copied to clipboard');
+      toast.success(t('createApiKey.publicKeyCopied'));
     }
-  }, [publicKey]);
+  }, [publicKey, t]);
 
   const handleOpenChange = useCallback(
     (open: boolean) => {
@@ -241,19 +243,19 @@ export function CreateApiKeyDialog({
 
   const handleSubmit = async () => {
     if (!keyName.trim()) {
-      toast.error('Please enter a name for the API key');
+      toast.error(t('createApiKey.enterKeyNameError'));
       return;
     }
 
     if (keyType === 'PUBLIC_PRIVATE' && !publicKey.trim()) {
-      toast.error('Please enter a public key');
+      toast.error(t('createApiKey.enterPublicKeyError'));
       return;
     }
 
     if (signWithWallet) {
       const walletToUse = selectedWallet || activeWalletAddress;
       if (!walletToUse) {
-        toast.error('Please select a wallet to sign with');
+        toast.error(t('createApiKey.selectWalletError'));
         return;
       }
     }
@@ -301,7 +303,7 @@ export function CreateApiKeyDialog({
       if (signWithWallet) {
         const walletToUse = selectedWallet || activeWalletAddress;
         if (!walletToUse) {
-          toast.error('Please select a wallet to sign with');
+          toast.error(t('createApiKey.selectWalletError'));
           return;
         }
 
@@ -353,7 +355,7 @@ export function CreateApiKeyDialog({
         // For PUBLIC_PRIVATE keys with generated keypair, show success with private key reminder
         setStep('success');
       } else {
-        toast.success('API key created successfully');
+        toast.success(t('createApiKey.createSuccess'));
         handleOpenChange(false);
         onSuccess();
       }
@@ -362,9 +364,9 @@ export function CreateApiKeyDialog({
         error instanceof Error ? error.message : 'Unknown error';
 
       if (errorMessage.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('createApiKey.signatureRejected'));
       } else {
-        toast.error(`Failed to create API key: ${errorMessage}`);
+        toast.error(t('createApiKey.createFailure', { error: errorMessage }));
       }
     } finally {
       setIsSubmitting(false);
@@ -374,7 +376,7 @@ export function CreateApiKeyDialog({
   const handleCopyKey = async () => {
     if (createdKey) {
       await navigator.clipboard.writeText(createdKey);
-      toast.success('API key copied to clipboard');
+      toast.success(t('createApiKey.apiKeyCopied'));
     }
   };
 
@@ -388,7 +390,7 @@ export function CreateApiKeyDialog({
       <RequestWalletConnection
         ref={walletConnectionRef}
         onRequestedWalletConnected={handleWalletConnected}
-        actionDescription="to create the API key"
+        actionDescription={t('createApiKey.walletActionDescription')}
       />
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
@@ -396,27 +398,27 @@ export function CreateApiKeyDialog({
           {step === 'form' ? (
             <>
               <DialogHeader>
-                <DialogTitle>Create API Key</DialogTitle>
+                <DialogTitle>{t('createApiKey.title')}</DialogTitle>
                 <DialogDescription>
-                  Create a new API key for programmatic access to your account.
+                  {t('createApiKey.description')}
                 </DialogDescription>
               </DialogHeader>
 
               <div className="space-y-4 py-4">
                 {/* Key Name */}
                 <div className="space-y-2">
-                  <Label htmlFor="keyName">Key Name</Label>
+                  <Label htmlFor="keyName">{t('createApiKey.keyName')}</Label>
                   <Input
                     id="keyName"
                     value={keyName}
                     onChange={(e) => setKeyName(e.target.value)}
-                    placeholder="e.g., Production API Key"
+                    placeholder={t('createApiKey.keyNamePlaceholder')}
                   />
                 </div>
 
                 {/* Key Type */}
                 <div className="space-y-2">
-                  <Label htmlFor="keyType">Key Type</Label>
+                  <Label htmlFor="keyType">{t('createApiKey.keyType')}</Label>
                   <Select
                     value={keyType}
                     onValueChange={(value) => {
@@ -431,14 +433,16 @@ export function CreateApiKeyDialog({
                       <SelectItem value="PLAIN">
                         <div className="flex items-center gap-2">
                           <Key className="h-4 w-4" />
-                          <span>Plain API Key</span>
+                          <span>{t('createApiKey.keyTypePlain')}</span>
                         </div>
                       </SelectItem>
                       {enablePublicPrivateKeys && (
                         <SelectItem value="PUBLIC_PRIVATE">
                           <div className="flex items-center gap-2">
                             <Shield className="h-4 w-4" />
-                            <span>Public/Private Key Pair</span>
+                            <span>
+                              {t('createApiKey.keyTypePublicPrivate')}
+                            </span>
                           </div>
                         </SelectItem>
                       )}
@@ -446,8 +450,8 @@ export function CreateApiKeyDialog({
                   </Select>
                   <p className="text-xs text-muted-foreground">
                     {keyType === 'PLAIN'
-                      ? 'A random API key will be generated. You must save it securely.'
-                      : 'Provide your public key. Sign requests with your private key.'}
+                      ? t('createApiKey.keyTypeHelpPlain')
+                      : t('createApiKey.keyTypeHelpPublicPrivate')}
                   </p>
                 </div>
 
@@ -456,11 +460,10 @@ export function CreateApiKeyDialog({
                   <div className="space-y-4 rounded-lg border border-zinc-700 p-4">
                     <div className="space-y-3">
                       <Label className="text-sm font-medium">
-                        Request Types
+                        {t('createApiKey.requestTypes')}
                       </Label>
                       <p className="text-xs text-muted-foreground">
-                        Select which types of requests this API key can make. At
-                        least one must be enabled.
+                        {t('createApiKey.requestTypesHelp')}
                       </p>
 
                       {/* Allow Browser Requests */}
@@ -478,11 +481,10 @@ export function CreateApiKeyDialog({
                             className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
                           >
                             <Globe className="h-4 w-4" />
-                            Allow browser requests
+                            {t('createApiKey.allowBrowserRequests')}
                           </label>
                           <p className="text-xs text-muted-foreground">
-                            Requests with an Origin header (e.g., from web
-                            browsers)
+                            {t('createApiKey.allowBrowserRequestsHelp')}
                           </p>
                         </div>
                       </div>
@@ -502,11 +504,10 @@ export function CreateApiKeyDialog({
                             className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
                           >
                             <Server className="h-4 w-4" />
-                            Allow server requests
+                            {t('createApiKey.allowServerRequests')}
                           </label>
                           <p className="text-xs text-muted-foreground">
-                            Requests without an Origin header (e.g., from
-                            backend servers)
+                            {t('createApiKey.allowServerRequestsHelp')}
                           </p>
                         </div>
                       </div>
@@ -515,10 +516,7 @@ export function CreateApiKeyDialog({
                       {!allowBrowserRequests && !allowServerRequests && (
                         <div className="flex items-center gap-2 text-yellow-500 text-xs">
                           <AlertTriangle className="h-3 w-3" />
-                          <span>
-                            No request types enabled. The key will reject all
-                            requests.
-                          </span>
+                          <span>{t('createApiKey.noRequestTypesWarning')}</span>
                         </div>
                       )}
                     </div>
@@ -536,7 +534,7 @@ export function CreateApiKeyDialog({
                       ) : (
                         <ChevronDown className="h-4 w-4" />
                       )}
-                      Advanced restrictions (IP & Origin)
+                      {t('createApiKey.advancedRestrictions')}
                     </button>
 
                     {showAdvancedRestrictions && (
@@ -544,7 +542,7 @@ export function CreateApiKeyDialog({
                         {/* Allowed IPs */}
                         <div className="space-y-2">
                           <Label htmlFor="allowedIps">
-                            Allowed IP Addresses / CIDR Ranges
+                            {t('createApiKey.allowedIps')}
                           </Label>
                           <Textarea
                             id="allowedIps"
@@ -555,8 +553,7 @@ export function CreateApiKeyDialog({
                             rows={3}
                           />
                           <p className="text-xs text-muted-foreground">
-                            One IP or CIDR per line. Supports IPv4 and IPv6.
-                            Leave empty to allow all IPs.
+                            {t('createApiKey.allowedIpsHelp')}
                           </p>
                         </div>
 
@@ -564,7 +561,7 @@ export function CreateApiKeyDialog({
                         {allowBrowserRequests && (
                           <div className="space-y-2">
                             <Label htmlFor="allowedOrigins">
-                              Allowed Origins
+                              {t('createApiKey.allowedOrigins')}
                             </Label>
                             <Textarea
                               id="allowedOrigins"
@@ -577,9 +574,7 @@ export function CreateApiKeyDialog({
                               rows={3}
                             />
                             <p className="text-xs text-muted-foreground">
-                              One origin per line. Supports wildcards (e.g.,
-                              https://*.example.com). Leave empty to allow all
-                              origins.
+                              {t('createApiKey.allowedOriginsHelp')}
                             </p>
                           </div>
                         )}
@@ -593,7 +588,7 @@ export function CreateApiKeyDialog({
                   <div className="space-y-4">
                     {/* Generate Keypair Button */}
                     <div className="flex items-center justify-between">
-                      <Label>Keypair</Label>
+                      <Label>{t('createApiKey.keypair')}</Label>
                       <Button
                         type="button"
                         variant="outline"
@@ -607,7 +602,7 @@ export function CreateApiKeyDialog({
                         ) : (
                           <RefreshCw className="h-4 w-4" />
                         )}
-                        Generate New Keypair
+                        {t('createApiKey.generateKeypair')}
                       </Button>
                     </div>
 
@@ -619,17 +614,16 @@ export function CreateApiKeyDialog({
                             <AlertTriangle className="h-4 w-4 text-yellow-500 flex-shrink-0 mt-0.5" />
                             <div className="space-y-1 flex-1 min-w-0">
                               <p className="font-medium text-yellow-500 text-sm">
-                                Save your Private Key now!
+                                {t('createApiKey.savePrivateKeyNow')}
                               </p>
                               <p className="text-xs text-yellow-500/80">
-                                This private key will not be stored. Copy and
-                                save it securely.
+                                {t('createApiKey.privateKeyNotStored')}
                               </p>
                             </div>
                           </div>
                         </div>
                         <Label htmlFor="privateKey">
-                          Private Key (save this!)
+                          {t('createApiKey.privateKeyLabel')}
                         </Label>
                         <div className="flex gap-2">
                           <Textarea
@@ -655,7 +649,9 @@ export function CreateApiKeyDialog({
                     {/* Public Key */}
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="publicKey">Public Key</Label>
+                        <Label htmlFor="publicKey">
+                          {t('createApiKey.publicKey')}
+                        </Label>
                         {publicKey && (
                           <Button
                             type="button"
@@ -665,7 +661,7 @@ export function CreateApiKeyDialog({
                             className="h-6 gap-1 text-xs"
                           >
                             <Copy className="h-3 w-3" />
-                            Copy
+                            {t('createApiKey.copy')}
                           </Button>
                         )}
                       </div>
@@ -679,14 +675,14 @@ export function CreateApiKeyDialog({
                             setGeneratedPrivateKey(null);
                           }
                         }}
-                        placeholder="04abc123... (uncompressed secp256k1 public key)"
+                        placeholder={t('createApiKey.publicKeyPlaceholder')}
                         className="font-mono text-xs break-all"
                         rows={3}
                       />
                       <p className="text-xs text-muted-foreground">
                         {generatedPrivateKey
-                          ? 'This public key was generated from your private key above.'
-                          : 'Enter your uncompressed secp256k1 public key (65 bytes, 130 hex characters starting with 04), or click "Generate New Keypair" to create one.'}
+                          ? t('createApiKey.publicKeyHelpGenerated')
+                          : t('createApiKey.publicKeyHelpManual')}
                       </p>
                     </div>
                   </div>
@@ -694,7 +690,9 @@ export function CreateApiKeyDialog({
 
                 {/* Expiration */}
                 <div className="space-y-2">
-                  <Label htmlFor="expiration">Expiration</Label>
+                  <Label htmlFor="expiration">
+                    {t('createApiKey.expiration')}
+                  </Label>
                   <Select
                     value={expiresIn}
                     onValueChange={(value) => {
@@ -708,7 +706,7 @@ export function CreateApiKeyDialog({
                     <SelectContent>
                       {EXPIRATION_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                          {t(`createApiKey.${option.labelKey}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -731,9 +729,9 @@ export function CreateApiKeyDialog({
                     >
                       <ShieldCheck className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">
-                        Attest with wallet signature{' '}
+                        {t('createApiKey.attestWithSignature')}{' '}
                         <span className="text-muted-foreground">
-                          (optional)
+                          {t('createApiKey.optional')}
                         </span>
                       </span>
                     </Label>
@@ -741,7 +739,7 @@ export function CreateApiKeyDialog({
 
                   {signWithWallet && (
                     <div className="space-y-2 ml-7">
-                      <Label>Signing Wallet</Label>
+                      <Label>{t('createApiKey.signingWallet')}</Label>
                       <div className="grid gap-2">
                         {connectedEthereumWallets.map((wallet) => (
                           <button
@@ -761,14 +759,14 @@ export function CreateApiKeyDialog({
                             </span>
                             {activeWalletAddress === wallet.address && (
                               <span className="ml-auto text-xs text-muted-foreground">
-                                (active)
+                                {t('createApiKey.active')}
                               </span>
                             )}
                           </button>
                         ))}
                         {connectedEthereumWallets.length === 0 && (
                           <p className="text-sm text-muted-foreground">
-                            No wallets connected. Please connect a wallet first.
+                            {t('createApiKey.noWalletsConnected')}
                           </p>
                         )}
                       </div>
@@ -783,7 +781,7 @@ export function CreateApiKeyDialog({
                   onClick={() => handleOpenChange(false)}
                   disabled={isSubmitting}
                 >
-                  Cancel
+                  {t('createApiKey.cancel')}
                 </Button>
                 <Button
                   onClick={handleSubmit}
@@ -797,10 +795,10 @@ export function CreateApiKeyDialog({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Creating...
+                      {t('createApiKey.creating')}
                     </>
                   ) : (
-                    'Create Key'
+                    t('createApiKey.createKey')
                   )}
                 </Button>
               </DialogFooter>
@@ -810,12 +808,12 @@ export function CreateApiKeyDialog({
               <DialogHeader>
                 <DialogTitle className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5 text-green-500" />
-                  API Key Created
+                  {t('createApiKey.createdTitle')}
                 </DialogTitle>
                 <DialogDescription>
                   {createdKey
-                    ? "Your API key has been created. Copy it now - you won't be able to see it again!"
-                    : 'Your API key has been created. Make sure you have saved your private key!'}
+                    ? t('createApiKey.createdDescriptionPlain')
+                    : t('createApiKey.createdDescriptionKeypair')}
                 </DialogDescription>
               </DialogHeader>
 
@@ -826,13 +824,13 @@ export function CreateApiKeyDialog({
                     <div className="space-y-1">
                       <p className="font-medium text-yellow-500">
                         {createdKey
-                          ? 'Save your API key'
-                          : 'Save your Private Key'}
+                          ? t('createApiKey.saveApiKey')
+                          : t('createApiKey.savePrivateKey')}
                       </p>
                       <p className="text-sm text-yellow-500/80">
                         {createdKey
-                          ? 'This is the only time you will see your API key. Please copy it and store it securely.'
-                          : 'Make sure you have copied and saved your private key. You will need it to sign API requests.'}
+                          ? t('createApiKey.saveApiKeyHelp')
+                          : t('createApiKey.savePrivateKeyHelp')}
                       </p>
                     </div>
                   </div>
@@ -841,7 +839,7 @@ export function CreateApiKeyDialog({
                 {/* Show PLAIN API Key */}
                 {createdKey && (
                   <div className="space-y-2">
-                    <Label>Your API Key</Label>
+                    <Label>{t('createApiKey.yourApiKey')}</Label>
                     <div className="flex gap-2">
                       <Textarea
                         value={createdKey}
@@ -865,7 +863,7 @@ export function CreateApiKeyDialog({
                 {!createdKey && generatedPrivateKey && (
                   <>
                     <div className="space-y-2">
-                      <Label>Your Private Key (save this!)</Label>
+                      <Label>{t('createApiKey.yourPrivateKeyLabel')}</Label>
                       <div className="flex gap-2">
                         <Textarea
                           value={generatedPrivateKey}
@@ -885,7 +883,7 @@ export function CreateApiKeyDialog({
                     </div>
 
                     <div className="space-y-2">
-                      <Label>Your Public Key (registered)</Label>
+                      <Label>{t('createApiKey.yourPublicKeyLabel')}</Label>
                       <div className="flex gap-2">
                         <Textarea
                           value={publicKey}
@@ -903,8 +901,7 @@ export function CreateApiKeyDialog({
                         </Button>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        This public key has been registered. Use the private key
-                        above to sign your API requests.
+                        {t('createApiKey.publicKeyRegisteredHelp')}
                       </p>
                     </div>
                   </>
@@ -912,7 +909,7 @@ export function CreateApiKeyDialog({
               </div>
 
               <DialogFooter>
-                <Button onClick={handleDone}>Done</Button>
+                <Button onClick={handleDone}>{t('createApiKey.done')}</Button>
               </DialogFooter>
             </>
           )}

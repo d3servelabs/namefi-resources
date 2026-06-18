@@ -1,0 +1,240 @@
+{
+  "addPaymentMethodDialog.title": {
+    "description": "Title of the dialog for adding a new payment method (card details)."
+  },
+  "addPaymentMethodDialog.description": {
+    "description": "Body text of the add-payment-method dialog reassuring the user no charge happens until they confirm the order."
+  },
+  "addPaymentMethodDialog.loading": {
+    "description": "Loading text shown while the add-payment-method form (Stripe Elements) is initializing."
+  },
+  "addPaymentMethodDialog.unableToLoad": {
+    "description": "Error text shown when the add-payment-method form fails to load."
+  },
+  "addPaymentMethodForm.processing": {
+    "description": "Submit button label on the add-payment-method form shown while processing."
+  },
+  "addPaymentMethodForm.submit": {
+    "description": "Submit button on the add-payment-method form confirming use of the entered payment method."
+  },
+  "addPaymentMethodForm.genericError": {
+    "description": "Generic error message shown when submitting the add-payment-method form fails."
+  },
+  "addPaymentMethodForm.unexpectedError": {
+    "description": "Fallback error message shown for an unexpected failure submitting the add-payment-method form."
+  },
+  "hybridPaymentCard.title": {
+    "description": "Title of the hybrid (balance + credit card) payment method card."
+  },
+  "hybridPaymentCard.total": {
+    "description": "Label for the total amount row in the hybrid payment card."
+  },
+  "hybridPaymentCard.useAvailableBalance": {
+    "description": "Toggle/label in the hybrid payment card to apply the user's available balance."
+  },
+  "hybridPaymentCard.nfscAvailable": {
+    "description": "Hybrid payment card text showing available NFSC balance. {amount} is a pre-formatted amount; keep the 'NFSC' token name untranslated."
+  },
+  "hybridPaymentCard.noNfscBalance": {
+    "description": "Hybrid payment card message when the user has no NFSC balance. Keep the literal '$NFSC' token name untranslated."
+  },
+  "hybridPaymentCard.balanceBreakdown": {
+    "description": "Heading in the hybrid payment card for the per-wallet/chain balance breakdown."
+  },
+  "hybridPaymentCard.creditCard": {
+    "description": "Label for the credit card section in the hybrid payment card."
+  },
+  "hybridPaymentCard.x402SignAuthorization": {
+    "description": "Hybrid payment card note that the user will sign a TransferWithAuthorization for an x402 payment. {amount} is a pre-formatted amount; keep 'TransferWithAuthorization', the 'USD' currency code, and the 'x402' protocol name untranslated."
+  },
+  "hybridPaymentCard.network": {
+    "description": "Label for the blockchain network selector in the hybrid payment card."
+  },
+  "hybridPaymentCard.required": {
+    "description": "Inline badge in the hybrid payment card marking a field as required.",
+    "maxLength": 10
+  },
+  "hybridPaymentCard.yourWalletBalance": {
+    "description": "Label in the hybrid payment card for the connected wallet's balance."
+  },
+  "hybridPaymentCard.connectWallet": {
+    "description": "Button in the hybrid payment card to connect a crypto wallet."
+  },
+  "hybridPaymentCard.loading": {
+    "description": "Loading placeholder shown in the hybrid payment card while balances load."
+  },
+  "hybridPaymentCard.unavailable": {
+    "description": "Status text in the hybrid payment card when a balance/payment option is unavailable."
+  },
+  "hybridPaymentCard.insufficientUsdcBalance": {
+    "description": "Warning in the hybrid payment card that the wallet's USDC balance may be insufficient for the x402 payment. Keep the 'USDC' currency code and 'x402' protocol name untranslated."
+  },
+  "hybridPaymentCard.changeCard": {
+    "description": "Button in the hybrid payment card to change the selected credit card."
+  },
+  "hybridPaymentCard.addOrSelectCard": {
+    "description": "Button in the hybrid payment card to add or select a saved credit card."
+  },
+  "hybridPaymentCard.creditCardOptional": {
+    "description": "Hybrid payment card note that a credit card is optional because the balance covers the order."
+  },
+  "hybridPaymentCard.creditCardRequiredForRemaining": {
+    "description": "Hybrid payment card note that a credit card is required for the remaining amount. {amount} is a pre-formatted amount; keep the 'USD' currency code untranslated."
+  },
+  "hybridPaymentCard.creditCardRequiredForFull": {
+    "description": "Hybrid payment card note that a credit card is required for the full amount."
+  },
+  "hybridPaymentCard.paymentCoveredByBalance": {
+    "description": "Hybrid payment card status indicating the full payment is covered by the user's balance."
+  },
+  "hybridPaymentUtils.x402Unavailable": {
+    "description": "Error message when x402 payment is temporarily unavailable. Keep the 'x402' protocol name untranslated."
+  },
+  "hybridPaymentUtils.addCreditCard": {
+    "description": "Validation message prompting the user to add a credit card before continuing the payment."
+  },
+  "hybridPaymentUtils.calculationError": {
+    "description": "Error message shown when the payment amount calculation fails, asking the user to check their balance and payment method."
+  },
+  "multiPaymentCard.title": {
+    "description": "Title of the multi-payment method card (split between NFSC balance and credit card)."
+  },
+  "multiPaymentCard.nfscBalance": {
+    "description": "Label for the NFSC balance row in the multi-payment card. Keep 'NFSC' token name untranslated."
+  },
+  "multiPaymentCard.usingNfsc": {
+    "description": "Multi-payment card text for the portion paid from NFSC balance. {amount} is a pre-formatted amount; keep the 'USD' currency code and 'NFSC' token name untranslated."
+  },
+  "multiPaymentCard.addNfscBalance": {
+    "description": "Button in the multi-payment card to add/top up NFSC balance. Keep 'NFSC' token name untranslated."
+  },
+  "multiPaymentCard.creditCard": {
+    "description": "Label for the credit card row in the multi-payment card."
+  },
+  "multiPaymentCard.remove": {
+    "description": "Button in the multi-payment card to remove the selected credit card."
+  },
+  "multiPaymentCard.usingCreditCard": {
+    "description": "Multi-payment card text for the portion paid by credit card. {amount} is a pre-formatted amount; keep the 'USD' currency code untranslated."
+  },
+  "multiPaymentCard.changeCard": {
+    "description": "Button in the multi-payment card to change the selected credit card."
+  },
+  "multiPaymentCard.addOrSelectCard": {
+    "description": "Button in the multi-payment card to add or select a saved credit card."
+  },
+  "multiPaymentCard.addCreditCard": {
+    "description": "Button in the multi-payment card to add a credit card."
+  },
+  "multiPaymentCard.total": {
+    "description": "Label for the total amount row in the multi-payment card."
+  },
+  "multiPaymentHints.nfscToCard": {
+    "description": "Hint encouraging the user to cover the remaining payment with a credit card after using balance."
+  },
+  "multiPaymentHints.cardToNfsc": {
+    "description": "Hint encouraging the user to apply existing balance toward part of the payment."
+  },
+  "multiPaymentHints.useMultiPayment": {
+    "description": "Button/link to switch to multi-payment (splitting payment across methods)."
+  },
+  "selectPaymentMethodCard.title": {
+    "description": "Title of the select-payment-method card."
+  },
+  "selectPaymentMethodCard.total": {
+    "description": "Label for the total amount row in the select-payment-method card."
+  },
+  "selectPaymentMethodCard.useBalance": {
+    "description": "Toggle/label in the select-payment-method card to pay using available balance."
+  },
+  "selectPaymentMethodCard.available": {
+    "description": "Select-payment-method card text showing the available balance. {amount} is a pre-formatted amount including currency — keep untranslated."
+  },
+  "selectPaymentMethodCard.useCreditCard": {
+    "description": "Toggle/label in the select-payment-method card to pay using a credit card."
+  },
+  "selectPaymentMethodCard.addOrSelectSavedCard": {
+    "description": "Button in the select-payment-method card to add or select a saved credit card."
+  },
+  "selectPaymentMethodCard.noPaymentRequired": {
+    "description": "Message in the select-payment-method card shown when no payment is required (e.g. free order)."
+  },
+  "selectPaymentMethodCard.summary": {
+    "description": "Heading for the order/payment summary section in the select-payment-method card."
+  },
+  "paymentSummary.title": {
+    "description": "Title of the payment summary panel."
+  },
+  "paymentSummary.nfscBalance": {
+    "description": "Payment summary line label for the amount paid from NFSC balance. Keep the literal '$NFSC' token name untranslated."
+  },
+  "paymentSummary.creditCard": {
+    "description": "Payment summary line label for the amount paid by credit card."
+  },
+  "paymentSummary.total": {
+    "description": "Payment summary line label for the total amount."
+  },
+  "nfscBalanceDialog.title": {
+    "description": "Title of the NFSC balance dialog. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.description": {
+    "description": "Body text of the NFSC balance dialog describing the available balance across wallets and chains. Keep the literal '$NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.tabBalance": {
+    "description": "Tab label in the NFSC balance dialog for the current balance view."
+  },
+  "nfscBalanceDialog.tabOrders": {
+    "description": "Tab label in the NFSC balance dialog for recent NFSC orders. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.totalAvailable": {
+    "description": "Label in the NFSC balance dialog for the total available balance."
+  },
+  "nfscBalanceDialog.topUp": {
+    "description": "Button in the NFSC balance dialog to top up (add) NFSC balance."
+  },
+  "nfscBalanceDialog.showNfscInWallet": {
+    "description": "Button in the NFSC balance dialog to add the NFSC token to the user's wallet so it displays there. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.fetchingBalances": {
+    "description": "Loading text shown in the NFSC balance dialog while balances are being fetched."
+  },
+  "nfscBalanceDialog.emptyNoWallets": {
+    "description": "Empty-state message in the NFSC balance dialog when no wallet is linked/connected. Keep the literal '$NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.emptyNoBalances": {
+    "description": "Empty-state message in the NFSC balance dialog when no balances are detected across wallets. Keep the literal '$NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.addFunds": {
+    "description": "Button in the NFSC balance dialog empty state to add funds."
+  },
+  "nfscBalanceDialog.ordersDisclaimer": {
+    "description": "Disclaimer in the NFSC balance dialog orders tab explaining these are credit-card NFSC top-ups, not domain orders. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.emptyOrders": {
+    "description": "Empty-state message in the NFSC balance dialog orders tab when there are no top-ups. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.goToPaymentMethods": {
+    "description": "Button/link in the NFSC balance dialog to navigate to the Payment Methods page."
+  },
+  "nfscBalanceDialog.close": {
+    "description": "Button to close the NFSC balance dialog."
+  },
+  "nfscBalanceDialog.connectWalletToContinue": {
+    "description": "Prompt in the NFSC balance dialog asking the user to connect a wallet to proceed."
+  },
+  "nfscBalanceDialog.nfscAdded": {
+    "description": "Success toast after adding the NFSC token to the user's wallet. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.nfscAddFailed": {
+    "description": "Error toast when adding the NFSC token to the wallet fails. Keep 'NFSC' token name untranslated."
+  },
+  "nfscBalanceDialog.nfscAddError": {
+    "description": "Error toast for a failure adding NFSC to the wallet. Keep 'NFSC' token name untranslated."
+  },
+  "nfscOrdersList.emptyMessage": {
+    "description": "Empty-state message in the NFSC orders list when there are no NFSC orders. Keep 'NFSC' token name untranslated."
+  },
+  "nfscOrdersList.chainFallback": {
+    "description": "Fallback chain name in the NFSC orders list when the chain name is unknown. {chainId} is the numeric chain ID — keep untranslated."
+  }
+}

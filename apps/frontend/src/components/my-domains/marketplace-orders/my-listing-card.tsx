@@ -2,6 +2,7 @@
 
 import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Card,
@@ -15,7 +16,7 @@ import { toSafeExternalUrl } from '@/components/domain-and-dns-managment/panels/
 import { NetworkLogo } from '@/components/network-logo';
 import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { Listing, MarketplaceId } from '@/lib/marketplaces/types';
-import { formatExpiry, shortAddress, shortToken } from './format';
+import { shortAddress, shortToken, useExpiryLabel } from './format';
 import type { DomainDetails } from './use-domain-details';
 
 interface Props {
@@ -43,6 +44,8 @@ export function MyListingCard({
   listing,
   details,
 }: Props) {
+  const t = useTranslations('domains');
+  const expiryLabel = useExpiryLabel();
   const offersQuery = useOffers({
     chainId,
     tokenAddress: listing.tokenAddress,
@@ -62,7 +65,9 @@ export function MyListingCard({
             {safeImage ? (
               <Image
                 src={safeImage}
-                alt={details?.normalizedDomainName ?? 'NFT'}
+                alt={
+                  details?.normalizedDomainName ?? t('marketplaceOrders.nftAlt')
+                }
                 width={48}
                 height={48}
                 unoptimized
@@ -95,7 +100,7 @@ export function MyListingCard({
                   {listing.price.currency.symbol}
                 </span>
                 <span title={listing.expirationTime}>
-                  {formatExpiry(listing.expirationTime)}
+                  {expiryLabel(listing.expirationTime)}
                 </span>
               </div>
             </div>
@@ -107,7 +112,7 @@ export function MyListingCard({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
             >
-              View
+              {t('marketplaceOrders.view')}
               <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           ) : null}
@@ -115,23 +120,30 @@ export function MyListingCard({
       </CardHeader>
       <CardContent>
         <h4 className="text-xs uppercase tracking-wide text-zinc-500 mb-2">
-          Incoming bids
+          {t('marketplaceOrders.incomingBids')}
         </h4>
         {offersQuery.isLoading ? (
           <Skeleton className="h-8 w-full" />
         ) : offersQuery.error ? (
           <p className="text-sm text-red-400">
-            Couldn't load bids: {errorToMessage(offersQuery.error)}
+            {t('marketplaceOrders.loadBidsFailed', {
+              error: errorToMessage(offersQuery.error),
+            })}
           </p>
         ) : !offersQuery.data || offersQuery.data.length === 0 ? (
-          <p className="text-sm text-zinc-500">No bids yet.</p>
+          <p className="text-sm text-zinc-500">
+            {t('marketplaceOrders.noBidsYet')}
+          </p>
         ) : (
           <ul className="space-y-1.5">
             {offersQuery.data.map((offer) => {
               const offerUrl = toSafeExternalUrl(offer.externalUrl);
               // The bid link in this row is icon-only; an explicit
               // `aria-label` gives screen readers a useful announcement.
-              const bidLinkLabel = `View ${offer.source} bid on ${displayName}`;
+              const bidLinkLabel = t('marketplaceOrders.viewBidAria', {
+                source: offer.source,
+                domain: displayName,
+              });
               return (
                 <li
                   key={`${offer.marketplace}:${offer.id}`}
@@ -155,7 +167,7 @@ export function MyListingCard({
                     className="text-zinc-500 ml-auto"
                     title={offer.expirationTime}
                   >
-                    {formatExpiry(offer.expirationTime)}
+                    {expiryLabel(offer.expirationTime)}
                   </span>
                   {offerUrl ? (
                     <a

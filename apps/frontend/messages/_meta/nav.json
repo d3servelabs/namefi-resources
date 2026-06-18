@@ -1,0 +1,41 @@
+{
+  "items.discover": {
+    "description": "Sidebar nav link to the domain discovery / search home page."
+  },
+  "items.myDomains": {
+    "description": "Sidebar nav link to the list of domains the signed-in user owns."
+  },
+  "items.myWishlist": {
+    "description": "Sidebar nav link to the user's saved/wishlisted domains."
+  },
+  "items.myOrders": {
+    "description": "Sidebar nav link to the user's order history."
+  },
+  "items.myFreeMints": {
+    "description": "Sidebar nav link to the user's free-claim / free-mint rewards."
+  },
+  "items.myPaymentMethods": {
+    "description": "Sidebar nav link to the user's saved payment methods."
+  },
+  "items.manage": {
+    "description": "Sidebar nav link to the domain & DNS management area (DNS records, DNSSEC, nameservers)."
+  },
+  "items.justAing": {
+    "description": "Brand/product name for the AI naming tool. Trademarked — keep verbatim, do not translate."
+  },
+  "items.brandStudio": {
+    "description": "Nav link to Namefi Brand Studio (AI branding). Keep 'Namefi'; translate the descriptor."
+  },
+  "items.outbound": {
+    "description": "Nav link to the Namefi Outbound feature. Keep 'Namefi'; translate the descriptor."
+  },
+  "items.feed": {
+    "description": "Nav link to the Namefi Feed (marketplace activity). Keep 'Namefi'; translate the descriptor."
+  },
+  "items.hunt": {
+    "description": "Sidebar nav link to the Domain Hunt feature (community voting on domains)."
+  },
+  "recentDomains": {
+    "description": "Sidebar section label above the list of domains the user recently viewed."
+  }
+}

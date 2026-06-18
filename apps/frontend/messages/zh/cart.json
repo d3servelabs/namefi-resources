@@ -1,0 +1,89 @@
+{
+  "inYourCart": "购物车中的商品",
+  "yourCartIsEmpty": "购物车为空",
+  "emptyCartHint": "添加一些域名到购物车即可开始。",
+  "browseDomains": "浏览域名",
+  "clearCart": "清空购物车",
+  "clearCartDialog": {
+    "title": "清空购物车？",
+    "description": "这将移除购物车中的所有商品。如有需要，您可以稍后重新添加。",
+    "cancel": "取消"
+  },
+  "errorDialog": {
+    "title": "出错了。",
+    "description": "请放心，不会向您收费。您可以重试或返回购物车。",
+    "errorDetail": "（错误 - {message}）",
+    "close": "关闭",
+    "tryAgain": "重试"
+  },
+  "cartChanges": {
+    "title": "购物车变更",
+    "description": "您的购物车发生了一些变更。",
+    "dismiss": "忽略"
+  },
+  "submitButton": {
+    "selectNftWallet": "请选择 NFT 钱包以继续",
+    "selectPaymentMethod": "请选择支付方式以继续",
+    "processing": "处理中…",
+    "submitOrder": "提交订单"
+  },
+  "disabledReason": {
+    "cartUpdating": "您的购物车仍在更新。",
+    "acceptRequirements": "请查看并接受购物车商品上显示的注册要求。",
+    "finishSplittingPayment": "请完成支付拆分以继续。",
+    "selectWallet": "请选择用于接收域名的钱包。",
+    "confirmWallet": "请确认用于接收域名的钱包。",
+    "selectPaymentMethod": "请选择支付方式。"
+  },
+  "skeleton": {
+    "selectNftWallet": "选择 NFT 钱包",
+    "paymentMethod": "支付方式"
+  },
+  "addFromUrl": {
+    "cart": "购物车",
+    "heading": "正在将域名添加到购物车",
+    "subheading": "请稍候，我们正在验证、检查可用性并将全部内容加载到您的购物车。",
+    "domainsRequested": "请求的域名",
+    "steps": {
+      "parse": "验证域名中",
+      "fetch": "检查可用性中",
+      "add": "添加到购物车中",
+      "redirect": "正在前往您的购物车"
+    },
+    "detail": {
+      "added": "已添加",
+      "readyToAdd": "可添加",
+      "alreadyInCart": "已在购物车中",
+      "requiresTransferCode": "需要转移码",
+      "unsupported": "不支持／不可用",
+      "invalid": "无效"
+    },
+    "confirm": {
+      "addingToCart": "添加到购物车中…",
+      "tryAgain": "重试",
+      "addToCart": "加入购物车",
+      "reviewHelper": "请查看以上详情，然后确认。",
+      "noRegistrableHelper": "未找到可添加的可注册域名。"
+    },
+    "redirecting": "正在跳转到您的购物车…",
+    "errors": {
+      "noDomains": "未提供任何域名。",
+      "validationFailed": "验证您的域名时出错。",
+      "addFailed": "加入购物车时出错。"
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, other {项}}",
+    "cartTotal": "购物车总计",
+    "domainsReadyToImport": "{count, plural, other {个域名}}可导入",
+    "addAll": "全部添加",
+    "addToCart": "加入购物车",
+    "checkout": "结算"
+  },
+  "submitErrors": {
+    "x402Disabled": "x402 支付当前已停用。",
+    "x402Unavailable": "x402 支付当前不可用。",
+    "x402ConnectWallet": "请连接一个活跃钱包以签署您的 x402 支付。",
+    "orderFailed": "无法提交您的订单，请重试。"
+  }
+}

@@ -31,6 +31,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
 import { CreditCardIcon, Loader2, TrashIcon, Wallet2 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { useEnsName } from 'wagmi';
 import { PaymentMethodsManagerPlaceholder } from './payment-methods-manager-placeholder';
@@ -87,15 +88,19 @@ const LoadingSkeletons = () => {
   );
 };
 
-const EmptyPlaceholder = () => (
-  <PaymentMethodsManagerPlaceholder
-    title="No payment methods found"
-    description="Consider adding a new payment method"
-    icon={<CreditCardIcon className="size-10 text-muted-foreground" />}
-  />
-);
+const EmptyPlaceholder = () => {
+  const t = useTranslations('paymentMethods');
+  return (
+    <PaymentMethodsManagerPlaceholder
+      title={t('creditCards.empty.title')}
+      description={t('creditCards.empty.description')}
+      icon={<CreditCardIcon className="size-10 text-muted-foreground" />}
+    />
+  );
+};
 
 export default function PaymentMethodsManager() {
+  const t = useTranslations('paymentMethods');
   const [showSavePaymentMethodDialog, setShowSavePaymentMethodDialog] =
     useState(false);
   const [paymentMethodsRefetchRequired, setPaymentMethodsRefetchRequired] =
@@ -111,9 +116,14 @@ export default function PaymentMethodsManager() {
     [],
   );
 
-  const handleSavePaymentMethodError = useCallback((error: Error) => {
-    toast('Failed to save your payment method', { description: error.message });
-  }, []);
+  const handleSavePaymentMethodError = useCallback(
+    (error: Error) => {
+      toast(t('creditCards.toast.saveError'), {
+        description: error.message,
+      });
+    },
+    [t],
+  );
 
   if (!(isLoading || isAuthenticated)) {
     return <AuthRequired />;
@@ -123,11 +133,13 @@ export default function PaymentMethodsManager() {
     <PageShell className="gap-6 flex flex-col">
       <div className="flex flex-col">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Payment Methods</h2>
+          <h2 className="text-2xl font-bold">{t('creditCards.heading')}</h2>
           {!isLoading ? (
             <SavePaymentMethodDialog
               amountInUsdCents={1000}
-              dialogTrigger={<NamefiButton>Add Credit Card</NamefiButton>}
+              dialogTrigger={
+                <NamefiButton>{t('creditCards.addButton')}</NamefiButton>
+              }
               onSavePaymentMethodError={handleSavePaymentMethodError}
               onSavePaymentMethodSuccess={handleSavePaymentMethodSuccess}
               onOpenChange={setShowSavePaymentMethodDialog}
@@ -174,6 +186,7 @@ function PaymentMethodsGrid({
     brand: string;
   } | null>(null);
 
+  const t = useTranslations('paymentMethods');
   const { privyUser, unsafeDisplayProfile } = useAuth();
   const trpc = useTRPC();
 
@@ -193,9 +206,14 @@ function PaymentMethodsGrid({
     const email = privyUser?.email?.address ?? unsafeDisplayProfile?.email;
     const wallet = displayWallet;
 
-    const name = fullName || ensName || email || wallet || 'CARD HOLDER';
+    const name =
+      fullName ||
+      ensName ||
+      email ||
+      wallet ||
+      t('creditCards.cardHolderFallback');
     return name.toUpperCase();
-  }, [privyUser, unsafeDisplayProfile, ensName, displayWallet]);
+  }, [privyUser, unsafeDisplayProfile, ensName, displayWallet, t]);
 
   const {
     data: getPaymentMethodsData,
@@ -222,7 +240,7 @@ function PaymentMethodsGrid({
             ...deletedPaymentMethodIds,
             deletePaymentMethodVariables.paymentMethodId,
           ]);
-          toast('Successfully deleted your payment method');
+          toast(t('creditCards.toast.deleteSuccess'));
         }
       },
       onError: (error) => {
@@ -232,7 +250,7 @@ function PaymentMethodsGrid({
           ),
         );
 
-        toast('Failed to delete your payment method', {
+        toast(t('creditCards.toast.deleteError'), {
           description: error.message,
         });
       },
@@ -365,21 +383,25 @@ function PaymentMethodsGrid({
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Payment Method</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t('creditCards.deleteDialog.title')}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete your {cardToDelete?.brand} card
-              ending in {cardToDelete?.last4}? This action cannot be undone.
+              {t('creditCards.deleteDialog.description', {
+                brand: cardToDelete?.brand ?? '',
+                last4: cardToDelete?.last4 ?? '',
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancelDelete}>
-              Cancel
+              {t('creditCards.deleteDialog.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              Delete
+              {t('creditCards.deleteDialog.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -406,6 +428,7 @@ const _userWalletCardsGridFlags = [
 ] as FeatureFlagDefinition[];
 
 function UserWalletCardsGrid() {
+  const t = useTranslations('paymentMethods');
   const {
     isUnlinkWalletDialogOpen,
     setIsUnlinkWalletDialogOpen,
@@ -439,23 +462,26 @@ function UserWalletCardsGrid() {
   const handleAddAssets = useCallback(
     async (walletAddress: string, chainId: number) => {
       try {
-        toast('Request sent to wallet', {
-          description: 'Please check your wallet to add the NFSC token',
+        toast(t('wallets.toast.requestSentTitle'), {
+          description: t('wallets.toast.requestSentDescription'),
         });
         const result = await watchNfscInWallet(walletAddress, chainId);
 
         if (result) {
-          toast('Successfully added NFSC token to your wallet');
+          toast(t('wallets.toast.addTokenSuccess'));
         } else {
-          toast('Failed to add NFSC token to your wallet');
+          toast(t('wallets.toast.addTokenError'));
         }
       } catch (error) {
-        toast('Failed to add token', {
-          description: error instanceof Error ? error.message : 'Unknown error',
+        toast(t('wallets.toast.addTokenFailedTitle'), {
+          description:
+            error instanceof Error
+              ? error.message
+              : t('wallets.toast.unknownError'),
         });
       }
     },
-    [watchNfscInWallet],
+    [watchNfscInWallet, t],
   );
 
   const handleChargeWallet = useCallback(async () => {
@@ -468,20 +494,23 @@ function UserWalletCardsGrid() {
         await walletDialog.request({
           chainId,
           walletAddress,
-          actionDescription: 'to add NFSC token to your wallet',
+          actionDescription: t('wallets.actionDescription.addToken'),
         });
       } catch (err) {
         if (isWalletRequestNoopError(err)) {
           return;
         }
-        toast('Failed to prepare wallet action', {
-          description: err instanceof Error ? err.message : 'Unknown error',
+        toast(t('wallets.toast.prepareActionError'), {
+          description:
+            err instanceof Error
+              ? err.message
+              : t('wallets.toast.unknownError'),
         });
         return;
       }
       await handleAddAssets(walletAddress, chainId);
     },
-    [walletDialog, handleAddAssets],
+    [walletDialog, handleAddAssets, t],
   );
 
   const onAddFundsClicked = useCallback(
@@ -490,21 +519,24 @@ function UserWalletCardsGrid() {
         await walletDialog.request({
           chainId,
           walletAddress,
-          actionDescription: 'to charge your wallet',
+          actionDescription: t('wallets.actionDescription.charge'),
         });
       } catch (err) {
         if (isWalletRequestNoopError(err)) {
           return;
         }
-        toast('Failed to prepare wallet action', {
-          description: err instanceof Error ? err.message : 'Unknown error',
+        toast(t('wallets.toast.prepareActionError'), {
+          description:
+            err instanceof Error
+              ? err.message
+              : t('wallets.toast.unknownError'),
         });
         return;
       }
       setSwapDialogWalletAddress(walletAddress);
       await handleChargeWallet();
     },
-    [walletDialog, handleChargeWallet],
+    [walletDialog, handleChargeWallet, t],
   );
 
   const { chainBalances, isLoadingBalance } = useUserChainBalances({
@@ -563,8 +595,8 @@ function UserWalletCardsGrid() {
     if (linkedWallets.length === 0) {
       return (
         <PaymentMethodsManagerPlaceholder
-          title="No linked wallets found"
-          description="Consider adding a new wallet"
+          title={t('wallets.empty.title')}
+          description={t('wallets.empty.description')}
           icon={<Wallet2 className="size-10 text-muted-foreground" />}
         />
       );
@@ -614,7 +646,7 @@ function UserWalletCardsGrid() {
                         variant="secondary"
                         className="flex-1 text-xs"
                       >
-                        Show in Wallet
+                        {t('wallets.showInWallet')}
                       </Button>
                       <Button
                         onClick={() =>
@@ -624,7 +656,7 @@ function UserWalletCardsGrid() {
                         variant="secondary"
                         className="flex-1 text-xs"
                       >
-                        Add Funds
+                        {t('wallets.addFunds')}
                       </Button>
                     </div>
                   }
@@ -679,6 +711,7 @@ function UserWalletCardsGrid() {
     onShowInWalletClicked,
     onAddFundsClicked,
     defaultNfscBalanceChainId,
+    t,
   ]);
 
   if (isLoadingBalance || !linkedWalletsReady) {
@@ -688,13 +721,13 @@ function UserWalletCardsGrid() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Linked Wallets</h2>
+        <h2 className="text-2xl font-bold">{t('wallets.heading')}</h2>
         <NamefiButton
           onClick={handleLinkWalletClicked}
           className="font-bold"
           size="sm"
         >
-          Link Wallet
+          {t('wallets.linkButton')}
         </NamefiButton>
       </div>
       {content}

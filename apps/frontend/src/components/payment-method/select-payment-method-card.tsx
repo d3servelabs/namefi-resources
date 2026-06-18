@@ -1,4 +1,5 @@
 import { Loader2, PencilIcon, PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 
 import { CartCard } from '@/components/cart-card';
@@ -57,6 +58,7 @@ export function SelectPaymentMethodCard({
   onPaymentMethodDetailsChanged,
   onSelectedPaymentMethodChanged,
 }: SelectPaymentMethodCardProps) {
+  const t = useTranslations('payment');
   const { defaultNfscBalanceChainId: defaultPaymentChainId } =
     useAllowedChains(parentDomain);
 
@@ -253,11 +255,11 @@ export function SelectPaymentMethodCard({
 
   return (
     <CartCard
-      title="Payment Method"
+      title={t('selectPaymentMethodCard.title')}
       footer={
         <div className="flex flex-col gap-4 w-full">
           <div className="flex items-center justify-between text-xl">
-            <span>Total</span>
+            <span>{t('selectPaymentMethodCard.total')}</span>
             <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
           </div>
           {footerButton}
@@ -271,7 +273,7 @@ export function SelectPaymentMethodCard({
       >
         {/* NFSC Balance Option */}
         <div className="space-y-2">
-          <p className="text-xl">Use balance</p>
+          <p className="text-xl">{t('selectPaymentMethodCard.useBalance')}</p>
           <div className="flex items-center gap-2">
             <RadioGroupItem
               value={SelectedPaymentMethod.NFSC}
@@ -317,11 +319,12 @@ export function SelectPaymentMethodCard({
                     ) : null
                   ) : (
                     <span className="text-secondary-foreground/50 text-sm">
-                      {formatAmountInUSD(
-                        selectedWalletChainNfscBalanceInUsdCents,
-                        true,
-                      )}{' '}
-                      available
+                      {t('selectPaymentMethodCard.available', {
+                        amount: formatAmountInUSD(
+                          selectedWalletChainNfscBalanceInUsdCents,
+                          true,
+                        ),
+                      })}
                     </span>
                   )}
                 </div>
@@ -332,7 +335,9 @@ export function SelectPaymentMethodCard({
 
         {/* Credit Card Option */}
         <div className="space-y-2">
-          <p className="text-xl">Use credit card</p>
+          <p className="text-xl">
+            {t('selectPaymentMethodCard.useCreditCard')}
+          </p>
           <div className="flex items-center gap-2">
             <RadioGroupItem
               value={SelectedPaymentMethod.CREDIT_CARD}
@@ -364,7 +369,8 @@ export function SelectPaymentMethodCard({
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-base">
-                      {newCardPreview ?? 'Add or Select A Saved Card'}
+                      {newCardPreview ??
+                        t('selectPaymentMethodCard.addOrSelectSavedCard')}
                     </span>
                   </div>
                   {newCardPreview === null ? (
@@ -392,15 +398,15 @@ export type NoPaymentMethodRequiredCardProps = {
 export function NoPaymentMethodRequiredCard({
   footerButton,
 }: NoPaymentMethodRequiredCardProps) {
+  const t = useTranslations('payment');
   return (
     <CartCard
-      title="Payment Method"
+      title={t('selectPaymentMethodCard.title')}
       footer={<div className="flex flex-col gap-4 w-full">{footerButton}</div>}
     >
       <div className="flex flex-col items-center justify-center">
         <p className="text-muted-foreground text-center">
-          We hope you'll enjoy your new domains! We'll send them to the wallet
-          address you've provided.
+          {t('selectPaymentMethodCard.noPaymentRequired')}
         </p>
       </div>
       <Separator className="my-6" />
@@ -417,13 +423,14 @@ export function AuthRequiredCard({
   footerButton,
   cartTotalInUsdCents,
 }: AuthRequiredCardProps) {
+  const t = useTranslations('payment');
   return (
     <CartCard
-      title="Summary"
+      title={t('selectPaymentMethodCard.summary')}
       footer={
         <div className="flex flex-col gap-4 w-full">
           <div className="flex items-center justify-between text-xl">
-            <span>Total</span>
+            <span>{t('selectPaymentMethodCard.total')}</span>
             <span>{formatAmountInUSD(cartTotalInUsdCents, true)} USD</span>
           </div>
           {footerButton}

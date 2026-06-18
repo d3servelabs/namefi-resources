@@ -1,0 +1,131 @@
+{
+  "disclaimer": {
+    "description": "Footer disclaimer paragraph stating Namefi is an ICANN Accredited Registrar. Keep 'Namefi', 'ICANN', 'DeFi'."
+  },
+  "llmsTxt": {
+    "description": "Footer line pointing AI agents to the llms.txt file. The <link> tag wraps 'llms.txt' and must be kept verbatim (it is a markup tag, not text); keep 'llms.txt' and the agent names (Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode) untranslated."
+  },
+  "copyright": {
+    "description": "Footer copyright line. {year} is the current year (a number); keep the company name 'D3SERVE LABS, Inc.' untranslated."
+  },
+  "cookieSettings": {
+    "description": "Footer button label that opens the cookie settings dialog."
+  },
+  "cookieSettingsAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the footer cookie settings button."
+  },
+  "termsAndConditions": {
+    "description": "Footer link label to the Terms & Conditions page."
+  },
+  "sections.explore.title": {
+    "description": "Title of the footer 'Explore' link column."
+  },
+  "sections.explore.links.discoverDomains": {
+    "description": "Footer 'Explore' link to the domain discovery/search page."
+  },
+  "sections.explore.links.brandStudio": {
+    "description": "Footer 'Explore' link to Namefi Brand Studio. Keep 'Namefi'; translate the descriptor."
+  },
+  "sections.explore.links.feed": {
+    "description": "Footer 'Explore' link to Namefi Feed. Keep 'Namefi'; translate the descriptor."
+  },
+  "sections.explore.links.outbound": {
+    "description": "Footer 'Explore' link to Namefi Outbound. Keep 'Namefi'; translate the descriptor."
+  },
+  "sections.explore.links.domainHunt": {
+    "description": "Footer 'Explore' link to the Domain Hunt feature."
+  },
+  "sections.explore.links.newsletter": {
+    "description": "Footer 'Explore' link to the newsletter sign-up."
+  },
+  "sections.explore.links.flushDns": {
+    "description": "Footer 'Explore' link to the Flush DNS tool. Keep 'DNS'."
+  },
+  "sections.explore.links.faucet": {
+    "description": "Footer 'Explore' link to the NFSC sandbox faucet. Keep 'NFSC'; '(sandbox)' marks the test network."
+  },
+  "sections.account.title": {
+    "description": "Title of the footer 'Account' link column."
+  },
+  "sections.account.links.myDomains": {
+    "description": "Footer 'Account' link to the user's owned domains."
+  },
+  "sections.account.links.myWishlist": {
+    "description": "Footer 'Account' link to the user's wishlisted domains."
+  },
+  "sections.account.links.myOrders": {
+    "description": "Footer 'Account' link to the user's order history."
+  },
+  "sections.account.links.paymentMethods": {
+    "description": "Footer 'Account' link to the user's saved payment methods."
+  },
+  "sections.resources.title": {
+    "description": "Title of the footer 'Resources' link column."
+  },
+  "sections.resources.links.blog": {
+    "description": "Footer 'Resources' link to the blog."
+  },
+  "sections.resources.links.watch": {
+    "description": "Footer 'Resources' link to video content."
+  },
+  "sections.resources.links.careers": {
+    "description": "Footer 'Resources' link to the careers page."
+  },
+  "sections.resources.links.tlds": {
+    "description": "Footer 'Resources' link to supported TLDs. Keep 'TLDs'."
+  },
+  "sections.resources.links.partners": {
+    "description": "Footer 'Resources' link to the partners page."
+  },
+  "sections.resources.links.glossary": {
+    "description": "Footer 'Resources' link to the glossary."
+  },
+  "sections.resources.links.howWeHire": {
+    "description": "Footer 'Resources' link to the 'How We Hire' page."
+  },
+  "sections.resources.links.abuseReporting": {
+    "description": "Footer 'Resources' link to the abuse reporting page."
+  },
+  "sections.resources.links.educationHub": {
+    "description": "Footer 'Resources' link to the education hub."
+  },
+  "sections.resources.links.registrationAgreement": {
+    "description": "Footer 'Resources' link to the registration agreement."
+  },
+  "sections.resources.links.apiDocs": {
+    "description": "Footer 'Resources' link to the Namefi API docs. Keep 'Namefi' and 'API'."
+  },
+  "sections.resources.links.llmApi": {
+    "description": "Footer 'Resources' link to the API for LLM AI agents. Keep 'API', 'LLM', 'AI'."
+  },
+  "sections.resources.links.support": {
+    "description": "Footer 'Resources' link to the support page."
+  },
+  "sections.faq.title": {
+    "description": "Title of the footer 'FAQ' link column."
+  },
+  "sections.faq.links.aboutNamefi": {
+    "description": "Footer 'FAQ' link to the 'About Namefi' page. Keep 'Namefi'."
+  },
+  "sections.faq.links.whatIsDomain": {
+    "description": "Footer 'FAQ' link explaining what a domain is."
+  },
+  "sections.faq.links.whatAreTokenizedDomains": {
+    "description": "Footer 'FAQ' link explaining tokenized domains."
+  },
+  "sections.faq.links.whyTokenizeDomains": {
+    "description": "Footer 'FAQ' link explaining why to tokenize domains."
+  },
+  "sections.faq.links.dnsOnTokenizedDomains": {
+    "description": "Footer 'FAQ' link about DNS on tokenized domains. Keep 'DNS'."
+  },
+  "sections.faq.links.dnsIsControlPlane": {
+    "description": "Footer 'FAQ' link explaining that DNS is the control plane. Keep 'DNS'."
+  },
+  "sections.faq.links.howToTokenizeCom": {
+    "description": "Footer 'FAQ' link on how to tokenize a .com domain. Keep '.com'."
+  },
+  "sections.faq.links.tokenizedVsWeb3": {
+    "description": "Footer 'FAQ' link comparing tokenized domains vs web3 domains. Keep 'Web3'."
+  }
+}

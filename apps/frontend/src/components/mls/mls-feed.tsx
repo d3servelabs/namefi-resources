@@ -12,6 +12,7 @@ import {
   X,
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Permission } from '@namefi-astra/utils/permissions';
@@ -60,6 +61,7 @@ const TLD_FILTER_PATTERN =
   /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*$/i;
 
 export function MlsFeed() {
+  const t = useTranslations('feed');
   const trpcClient = useTRPCClient();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const filters = useMlsFeedFilters();
@@ -155,8 +157,8 @@ export function MlsFeed() {
         {!isLoading && !isError && listings.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
             {filters.hasAppliedFilters
-              ? 'No matching listings in this part of the feed.'
-              : 'No listings found.'}
+              ? t('list.emptyFiltered')
+              : t('list.empty')}
           </p>
         ) : null}
 
@@ -172,14 +174,14 @@ export function MlsFeed() {
                 void fetchNextPage();
               }}
             >
-              Load more
+              {t('list.loadMore')}
             </Button>
           </div>
         ) : null}
 
         {!hasNextPage && listings.length > 0 ? (
           <p className="py-6 text-center text-xs tracking-wide text-muted-foreground uppercase">
-            End of feed
+            {t('list.endOfFeed')}
           </p>
         ) : null}
       </section>
@@ -275,12 +277,14 @@ function MlsFeedHeader({
   isRefetching,
   onRefresh,
 }: MlsFeedHeaderProps) {
+  const t = useTranslations('feed');
+
   return (
     <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Namefi Feed
+            {t('title')}
           </h1>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -290,7 +294,7 @@ function MlsFeedHeader({
               className={buttonVariants({ variant: 'secondary' })}
             >
               <Users data-icon="inline-start" />
-              Users
+              {t('header.usersLink')}
             </Link>
           </PermissionGate>
 
@@ -301,7 +305,7 @@ function MlsFeedHeader({
             className={buttonVariants({ variant: 'secondary' })}
           >
             <Rss data-icon="inline-start" />
-            Subscribe via RSS
+            {t('header.subscribeRss')}
           </a>
 
           <Button
@@ -312,12 +316,12 @@ function MlsFeedHeader({
             {isRefetching ? (
               <span className="inline-flex items-center gap-2">
                 <Loader2 data-icon="inline-start" className="animate-spin" />
-                Refreshing
+                {t('header.refreshing')}
               </span>
             ) : (
               <span className="inline-flex items-center gap-2">
                 <RefreshCcw data-icon="inline-start" />
-                Refresh
+                {t('header.refresh')}
               </span>
             )}
           </Button>
@@ -352,7 +356,11 @@ function MlsFeedControls({
   onClearFilters,
   onRefresh,
 }: MlsFeedControlsProps) {
-  const searchPlaceholder = getMlsSearchPlaceholder(tldInput);
+  const t = useTranslations('feed');
+  const placeholderTld = normalizeTldFilter(tldInput);
+  const searchPlaceholder = placeholderTld
+    ? t('controls.searchPlaceholderWithTld', { tld: placeholderTld })
+    : t('controls.searchPlaceholder');
 
   return (
     <motion.section
@@ -374,7 +382,7 @@ function MlsFeedControls({
             transition={{ duration: 0.2, ease: 'easeOut' }}
           >
             <p className="min-w-0 truncate text-sm font-semibold">
-              Namefi Feed
+              {t('title')}
             </p>
             <div className="flex shrink-0 items-center gap-2">
               <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
@@ -386,7 +394,7 @@ function MlsFeedControls({
                   })}
                 >
                   <Users data-icon="inline-start" />
-                  Users
+                  {t('header.usersLink')}
                 </Link>
               </PermissionGate>
               <a
@@ -396,7 +404,7 @@ function MlsFeedControls({
                 className={buttonVariants({ variant: 'secondary', size: 'sm' })}
               >
                 <Rss data-icon="inline-start" />
-                RSS
+                {t('header.rss')}
               </a>
               <Button
                 type="button"
@@ -410,7 +418,7 @@ function MlsFeedControls({
                 ) : (
                   <RefreshCcw data-icon="inline-start" />
                 )}
-                Refresh
+                {t('header.refresh')}
               </Button>
             </div>
           </motion.div>
@@ -429,7 +437,7 @@ function MlsFeedControls({
       >
         <label className="grid min-w-0 gap-1.5" htmlFor="mls-feed-search">
           <span className="text-xs font-medium text-muted-foreground">
-            Search
+            {t('controls.searchLabel')}
           </span>
           <div className="relative min-w-0">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -449,7 +457,7 @@ function MlsFeedControls({
                 variant="ghost"
                 size="icon-xs"
                 className="absolute top-1/2 right-2 -translate-y-1/2"
-                aria-label="Clear search"
+                aria-label={t('controls.clearSearchAriaLabel')}
                 onClick={() => onSearchInputChange('')}
               >
                 <X />
@@ -459,7 +467,9 @@ function MlsFeedControls({
         </label>
 
         <div className="grid min-w-0 gap-1.5">
-          <span className="text-xs font-medium text-muted-foreground">TLD</span>
+          <span className="text-xs font-medium text-muted-foreground">
+            {t('controls.tldLabel')}
+          </span>
           <MlsTldFilterCombobox
             value={tldInput}
             onValueChange={onTldInputChange}
@@ -474,7 +484,7 @@ function MlsFeedControls({
             onClick={onClearFilters}
           >
             <X data-icon="inline-start" />
-            Clear
+            {t('controls.clear')}
           </Button>
         ) : null}
       </motion.div>
@@ -491,6 +501,7 @@ function MlsTldFilterCombobox({
   value,
   onValueChange,
 }: MlsTldFilterComboboxProps) {
+  const t = useTranslations('feed');
   const [open, setOpen] = useState(false);
   const [commandValue, setCommandValue] = useState('');
   const selectedTld = normalizeTldFilter(value);
@@ -528,7 +539,7 @@ function MlsTldFilterCombobox({
         }
       >
         <span className="min-w-0 truncate">
-          {selectedTld ? `.${selectedTld}` : 'All TLDs'}
+          {selectedTld ? `.${selectedTld}` : t('controls.allTlds')}
         </span>
         <ChevronDown data-icon="inline-end" className="opacity-60" />
       </PopoverTrigger>
@@ -537,21 +548,21 @@ function MlsTldFilterCombobox({
           <CommandInput
             value={commandValue}
             onValueChange={setCommandValue}
-            placeholder="Type a TLD"
+            placeholder={t('controls.tldPlaceholder')}
           />
           <CommandList>
-            <CommandEmpty>No TLD match.</CommandEmpty>
+            <CommandEmpty>{t('controls.noTldMatch')}</CommandEmpty>
             <CommandGroup>
               <CommandItem
                 value="all tlds"
                 data-checked={!selectedTld}
                 onSelect={() => selectTld(null)}
               >
-                All TLDs
+                {t('controls.allTlds')}
               </CommandItem>
             </CommandGroup>
             {hasSelectedCustomTld ? (
-              <CommandGroup heading="Selected">
+              <CommandGroup heading={t('controls.selectedHeading')}>
                 <CommandItem
                   value={`.${selectedTld} ${selectedTld}`}
                   data-checked={true}
@@ -562,16 +573,16 @@ function MlsTldFilterCombobox({
               </CommandGroup>
             ) : null}
             {canUseCustomTld ? (
-              <CommandGroup heading="Custom">
+              <CommandGroup heading={t('controls.customHeading')}>
                 <CommandItem
                   value={`.${customTld} ${customTld}`}
                   onSelect={() => selectTld(customTld)}
                 >
-                  Use .{customTld}
+                  {t('controls.useCustomTld', { tld: customTld ?? '' })}
                 </CommandItem>
               </CommandGroup>
             ) : null}
-            <CommandGroup heading="Common">
+            <CommandGroup heading={t('controls.commonHeading')}>
               {COMMON_MLS_TLDS.map((tld) => (
                 <CommandItem
                   key={tld}
@@ -591,6 +602,8 @@ function MlsTldFilterCombobox({
 }
 
 function MlsBackToTopButton({ isVisible }: { isVisible: boolean }) {
+  const t = useTranslations('feed');
+
   return (
     <AnimatePresence>
       {isVisible ? (
@@ -607,7 +620,7 @@ function MlsBackToTopButton({ isVisible }: { isVisible: boolean }) {
             size="icon"
             className="size-10 rounded-full border-border/70 bg-background/85 shadow-lg backdrop-blur-md"
             onClick={scrollMlsFeedToTop}
-            aria-label="Back to top"
+            aria-label={t('list.backToTopAriaLabel')}
           >
             <ArrowUp />
           </Button>
@@ -675,11 +688,6 @@ function useDebouncedValue(value: string, delayMs: number) {
 function normalizeFeedSearchQuery(value: string) {
   const normalized = value.trim().replace(/\s+/g, ' ');
   return normalized ? normalized : null;
-}
-
-function getMlsSearchPlaceholder(tldInput: string) {
-  const tld = normalizeTldFilter(tldInput);
-  return tld ? `Search .${tld} domains or users` : 'Search domains or users';
 }
 
 type MlsScrollContainer = HTMLElement | Window;

@@ -1,0 +1,101 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "Payment Method Details",
+    "description": "Enter your payment method details. We won't charge you until you confirm your order.",
+    "loading": "Loading payment form...",
+    "unableToLoad": "Unable to load payment form"
+  },
+  "addPaymentMethodForm": {
+    "processing": "Processing...",
+    "submit": "Use this Payment Method",
+    "genericError": "An error occurred",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "hybridPaymentCard": {
+    "title": "Payment Method",
+    "total": "Total",
+    "useAvailableBalance": "Use Available Balance",
+    "nfscAvailable": "{amount} NFSC available",
+    "noNfscBalance": "No $NFSC balance available",
+    "balanceBreakdown": "Balance Breakdown",
+    "creditCard": "Credit Card",
+    "x402SignAuthorization": "You will sign a TransferWithAuthorization for {amount} USD when you submit this order.",
+    "network": "Network",
+    "required": "Required",
+    "yourWalletBalance": "Your wallet balance",
+    "connectWallet": "Connect wallet",
+    "loading": "Loading...",
+    "unavailable": "Unavailable",
+    "insufficientUsdcBalance": "Your USDC balance may be insufficient for this x402 payment amount.",
+    "changeCard": "Change Card",
+    "addOrSelectCard": "Add or Select Card",
+    "creditCardOptional": "Credit card optional - you have sufficient balance",
+    "creditCardRequiredForRemaining": "Credit card required for {amount} USD remaining amount",
+    "creditCardRequiredForFull": "Credit card required for full amount",
+    "paymentCoveredByBalance": "Payment Covered by Balance"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "x402 payment is temporarily unavailable",
+    "addCreditCard": "Please add a credit card to continue",
+    "calculationError": "Payment calculation error. Please check your balance and payment method."
+  },
+  "multiPaymentCard": {
+    "title": "Multi-payment",
+    "nfscBalance": "NFSC Balance",
+    "usingNfsc": "Using {amount} USD of NFSC Balance",
+    "addNfscBalance": "Add NFSC Balance",
+    "creditCard": "Credit Card",
+    "remove": "Remove",
+    "usingCreditCard": "Using {amount} USD from Credit Card",
+    "changeCard": "Change Card",
+    "addOrSelectCard": "Add or Select Card",
+    "addCreditCard": "Add Credit Card",
+    "total": "Total"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "You can continue the remaining payment amount with credit cards",
+    "cardToNfsc": "You can use existing balance to cover a portion of the payment amount",
+    "useMultiPayment": "Use Multi-payment"
+  },
+  "selectPaymentMethodCard": {
+    "title": "Payment Method",
+    "total": "Total",
+    "useBalance": "Use balance",
+    "available": "{amount} available",
+    "useCreditCard": "Use credit card",
+    "addOrSelectSavedCard": "Add or Select A Saved Card",
+    "noPaymentRequired": "We hope you'll enjoy your new domains! We'll send them to the wallet address you've provided.",
+    "summary": "Summary"
+  },
+  "paymentSummary": {
+    "title": "Payment Summary",
+    "nfscBalance": "$NFSC Balance",
+    "creditCard": "Credit Card",
+    "total": "Total"
+  },
+  "nfscBalanceDialog": {
+    "title": "NFSC Balance",
+    "description": "Review your available $NFSC across linked wallets and supported chains.",
+    "tabBalance": "Balance",
+    "tabOrders": "Recent NFSC orders",
+    "totalAvailable": "Total Available",
+    "topUp": "Top Up",
+    "showNfscInWallet": "Show NFSC in wallet",
+    "fetchingBalances": "Fetching balances...",
+    "emptyNoWallets": "Link or connect a wallet to view your $NFSC balances.",
+    "emptyNoBalances": "No $NFSC detected across your wallets yet.",
+    "addFunds": "Add funds",
+    "ordersDisclaimer": "These are credit-card NFSC top-ups across all your wallets. NFSC-paid domain orders appear in your full order history.",
+    "emptyOrders": "No NFSC top-ups yet.",
+    "goToPaymentMethods": "Go to Payment Methods",
+    "close": "Close",
+    "connectWalletToContinue": "Connect a wallet to continue.",
+    "nfscAdded": "NFSC token added to your wallet",
+    "nfscAddFailed": "Couldn't add NFSC token to your wallet",
+    "nfscAddError": "Failed to add NFSC to wallet"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "No NFSC orders yet.",
+    "chainFallback": "Chain {chainId}"
+  }
+}

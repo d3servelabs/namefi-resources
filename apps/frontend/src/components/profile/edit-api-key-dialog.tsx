@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAccount } from 'wagmi';
+import { useTranslations } from 'next-intl';
 
 const UPDATE_API_KEY_RESTRICTIONS_EIP712_TYPES: Record<
   string,
@@ -75,6 +76,7 @@ export function EditApiKeyDialog({
   apiKey,
   onSuccess,
 }: EditApiKeyDialogProps) {
+  const t = useTranslations('profile');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -137,7 +139,7 @@ export function EditApiKeyDialog({
 
     const walletToUse = selectedWallet || activeWalletAddress;
     if (!walletToUse) {
-      toast.error('Select a wallet to sign with');
+      toast.error(t('editApiKey.selectWalletError'));
       return;
     }
 
@@ -185,7 +187,7 @@ export function EditApiKeyDialog({
         payload,
       });
 
-      toast.success('API key restrictions updated');
+      toast.success(t('editApiKey.updateSuccess'));
       onSuccess();
       handleOpenChange(false);
     } catch (error) {
@@ -193,9 +195,9 @@ export function EditApiKeyDialog({
         error instanceof Error ? error.message : 'Unknown error';
 
       if (errorMessage.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('editApiKey.signatureRejected'));
       } else {
-        toast.error(`Failed to update API key: ${errorMessage}`);
+        toast.error(t('editApiKey.updateFailure', { error: errorMessage }));
       }
     } finally {
       setIsSubmitting(false);
@@ -210,25 +212,28 @@ export function EditApiKeyDialog({
       <RequestWalletConnection
         ref={walletConnectionRef}
         onRequestedWalletConnected={handleWalletConnected}
-        actionDescription="to update the API key"
+        actionDescription={t('editApiKey.walletActionDescription')}
       />
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
         <DialogContent className="sm:max-w-[550px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Edit API Key</DialogTitle>
+            <DialogTitle>{t('editApiKey.title')}</DialogTitle>
             <DialogDescription>
-              Update request restrictions for {apiKey?.name ?? 'this API key'}.
-              You will sign this change with a linked wallet.
+              {t('editApiKey.description', {
+                name: apiKey?.name ?? t('editApiKey.thisApiKey'),
+              })}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
             <div className="space-y-3 rounded-lg border border-zinc-700 p-4">
               <div className="space-y-2">
-                <Label className="text-sm font-medium">Request Types</Label>
+                <Label className="text-sm font-medium">
+                  {t('editApiKey.requestTypes')}
+                </Label>
                 <p className="text-xs text-muted-foreground">
-                  Select which request types this API key can make.
+                  {t('editApiKey.requestTypesHelp')}
                 </p>
               </div>
 
@@ -246,10 +251,10 @@ export function EditApiKeyDialog({
                     className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
                   >
                     <Globe className="h-4 w-4" />
-                    Allow browser requests
+                    {t('editApiKey.allowBrowserRequests')}
                   </label>
                   <p className="text-xs text-muted-foreground">
-                    Requests with an Origin header, such as web browser calls.
+                    {t('editApiKey.allowBrowserRequestsHelp')}
                   </p>
                 </div>
               </div>
@@ -268,10 +273,10 @@ export function EditApiKeyDialog({
                     className="text-sm font-medium leading-none cursor-pointer flex items-center gap-2"
                   >
                     <Server className="h-4 w-4" />
-                    Allow server requests
+                    {t('editApiKey.allowServerRequests')}
                   </label>
                   <p className="text-xs text-muted-foreground">
-                    Requests without an Origin header, such as backend calls.
+                    {t('editApiKey.allowServerRequestsHelp')}
                   </p>
                 </div>
               </div>
@@ -279,10 +284,7 @@ export function EditApiKeyDialog({
               {!allowBrowserRequests && !allowServerRequests && (
                 <div className="flex items-center gap-2 text-yellow-500 text-xs">
                   <AlertTriangle className="h-3 w-3" />
-                  <span>
-                    No request types are enabled. This key will reject all
-                    requests.
-                  </span>
+                  <span>{t('editApiKey.noRequestTypesWarning')}</span>
                 </div>
               )}
 
@@ -298,14 +300,14 @@ export function EditApiKeyDialog({
                 ) : (
                   <ChevronDown className="h-4 w-4" />
                 )}
-                Advanced restrictions (IP & Origin)
+                {t('editApiKey.advancedRestrictions')}
               </button>
 
               {showAdvancedRestrictions && (
                 <div className="space-y-4 pt-2">
                   <div className="space-y-2">
                     <Label htmlFor="editAllowedIps">
-                      Allowed IP Addresses / CIDR Ranges
+                      {t('editApiKey.allowedIps')}
                     </Label>
                     <Textarea
                       id="editAllowedIps"
@@ -316,14 +318,14 @@ export function EditApiKeyDialog({
                       rows={3}
                     />
                     <p className="text-xs text-muted-foreground">
-                      One IP or CIDR per line. Leave empty to allow all IPs.
+                      {t('editApiKey.allowedIpsHelp')}
                     </p>
                   </div>
 
                   {showOriginsField && (
                     <div className="space-y-2">
                       <Label htmlFor="editAllowedOrigins">
-                        Allowed Origins
+                        {t('editApiKey.allowedOrigins')}
                       </Label>
                       <Textarea
                         id="editAllowedOrigins"
@@ -334,7 +336,7 @@ export function EditApiKeyDialog({
                         rows={3}
                       />
                       <p className="text-xs text-muted-foreground">
-                        One origin per line. Leave empty to allow all origins.
+                        {t('editApiKey.allowedOriginsHelp')}
                       </p>
                     </div>
                   )}
@@ -343,7 +345,7 @@ export function EditApiKeyDialog({
             </div>
 
             <div className="space-y-2">
-              <Label>Signing Wallet</Label>
+              <Label>{t('editApiKey.signingWallet')}</Label>
               <div className="grid gap-2">
                 {connectedEthereumWallets.map((wallet) => (
                   <button
@@ -362,14 +364,14 @@ export function EditApiKeyDialog({
                     </span>
                     {activeWalletAddress === wallet.address && (
                       <span className="ml-auto text-xs text-muted-foreground">
-                        (active)
+                        {t('editApiKey.active')}
                       </span>
                     )}
                   </button>
                 ))}
                 {connectedEthereumWallets.length === 0 && (
                   <p className="text-sm text-muted-foreground">
-                    No wallets connected. Connect a wallet before saving.
+                    {t('editApiKey.noWalletsConnected')}
                   </p>
                 )}
               </div>
@@ -382,7 +384,7 @@ export function EditApiKeyDialog({
               onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
             >
-              Cancel
+              {t('editApiKey.cancel')}
             </Button>
             <Button
               onClick={handleSubmit}
@@ -391,10 +393,10 @@ export function EditApiKeyDialog({
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Saving...
+                  {t('editApiKey.saving')}
                 </>
               ) : (
-                'Save Changes'
+                t('editApiKey.saveChanges')
               )}
             </Button>
           </DialogFooter>

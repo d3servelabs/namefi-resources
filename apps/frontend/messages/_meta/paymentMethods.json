@@ -1,0 +1,107 @@
+{
+  "loading.title": {
+    "description": "Title of the full-page loading state while payment methods are being fetched."
+  },
+  "loading.description": {
+    "description": "Subtitle under the payment-methods loading state."
+  },
+  "creditCards.heading": {
+    "description": "Section heading above the saved credit-card grid on the payment methods page."
+  },
+  "creditCards.addButton": {
+    "description": "Button that opens the dialog to add a new credit card."
+  },
+  "creditCards.cardHolderFallback": {
+    "description": "Fallback card-holder name shown on a card when no name/email/wallet is available."
+  },
+  "creditCards.empty.title": {
+    "description": "Empty-state title shown when the user has no saved payment methods."
+  },
+  "creditCards.empty.description": {
+    "description": "Empty-state body inviting the user to add a payment method."
+  },
+  "creditCards.toast.saveError": {
+    "description": "Toast shown when saving a new payment method fails."
+  },
+  "creditCards.toast.deleteSuccess": {
+    "description": "Toast confirming a payment method was deleted."
+  },
+  "creditCards.toast.deleteError": {
+    "description": "Toast shown when deleting a payment method fails."
+  },
+  "creditCards.deleteDialog.title": {
+    "description": "Title of the confirm-delete dialog for a saved card."
+  },
+  "creditCards.deleteDialog.description": {
+    "description": "Confirm-delete dialog body. {brand} is the card brand (e.g. Visa, Mastercard) and {last4} is the last four card digits — keep both untranslated."
+  },
+  "creditCards.deleteDialog.cancel": {
+    "description": "Cancel button in the confirm-delete card dialog."
+  },
+  "creditCards.deleteDialog.confirm": {
+    "description": "Confirm button (destructive) in the confirm-delete card dialog."
+  },
+  "wallets.heading": {
+    "description": "Section heading above the linked-wallets grid on the payment methods page."
+  },
+  "wallets.linkButton": {
+    "description": "Button that starts the flow to link a new wallet."
+  },
+  "wallets.showInWallet": {
+    "description": "Wallet card action button that adds/shows the NFSC token in the user's wallet. 'NFSC' is a token symbol — keep untranslated."
+  },
+  "wallets.addFunds": {
+    "description": "Wallet card action button that opens the flow to add funds / charge the wallet."
+  },
+  "wallets.empty.title": {
+    "description": "Empty-state title shown when the user has no linked wallets."
+  },
+  "wallets.empty.description": {
+    "description": "Empty-state body inviting the user to add a wallet."
+  },
+  "wallets.actionDescription.addToken": {
+    "description": "Phrase describing the requested wallet action: adding the NFSC token to the wallet. Shown inside a wallet-connection request prompt. 'NFSC' is a token symbol — keep untranslated."
+  },
+  "wallets.actionDescription.charge": {
+    "description": "Phrase describing the requested wallet action: charging the wallet. Shown inside a wallet-connection request prompt."
+  },
+  "wallets.toast.requestSentTitle": {
+    "description": "Toast title confirming a request was sent to the user's wallet."
+  },
+  "wallets.toast.requestSentDescription": {
+    "description": "Toast body asking the user to check their wallet to add the NFSC token. 'NFSC' is a token symbol — keep untranslated."
+  },
+  "wallets.toast.addTokenSuccess": {
+    "description": "Toast confirming the NFSC token was added to the wallet. 'NFSC' is a token symbol — keep untranslated."
+  },
+  "wallets.toast.addTokenError": {
+    "description": "Toast shown when adding the NFSC token to the wallet failed. 'NFSC' is a token symbol — keep untranslated."
+  },
+  "wallets.toast.addTokenFailedTitle": {
+    "description": "Toast title shown when adding a token to the wallet failed (paired with the error detail)."
+  },
+  "wallets.toast.unknownError": {
+    "description": "Fallback error detail used as a toast description when no specific error message is available."
+  },
+  "wallets.toast.prepareActionError": {
+    "description": "Toast shown when preparing a wallet action (connection request) failed."
+  },
+  "saveDialog.title": {
+    "description": "Title of the dialog for entering new payment-method (card) details."
+  },
+  "saveDialog.description": {
+    "description": "Subtitle of the save-payment-method dialog prompting the user to enter details."
+  },
+  "saveDialog.submit": {
+    "description": "Submit button that saves the entered payment method."
+  },
+  "saveDialog.processing": {
+    "description": "Submit-button label while the payment method is being saved/processed."
+  },
+  "saveDialog.genericError": {
+    "description": "Generic fallback error shown when Stripe setup fails without a specific message."
+  },
+  "saveDialog.unexpectedError": {
+    "description": "Error shown when an unexpected exception occurs while saving the payment method."
+  }
+}

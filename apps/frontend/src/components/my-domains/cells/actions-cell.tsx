@@ -13,6 +13,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -55,6 +56,7 @@ export function ActionsCell({
   isMobile,
   onListForSaleClick,
 }: ActionsCellProps) {
+  const t = useTranslations('domains');
   const expiry = expirationDate ? new Date(expirationDate) : null;
   const isExpired =
     expiry !== null ? differenceInDays(expiry, new Date()) < 0 : false;
@@ -69,7 +71,7 @@ export function ActionsCell({
       size="sm"
       className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-orange-400')}
       onClick={() => onListForSaleClick(domainName)}
-      aria-label={`List ${domainName} for sale`}
+      aria-label={t('actions.listForSaleAria', { domain: domainName })}
     >
       <BadgeDollarSign className="w-4 h-4" />
     </Button>
@@ -83,7 +85,7 @@ export function ActionsCell({
       render={
         <Link
           href={`/orders/${orderId}/details`}
-          aria-label={`View order for ${domainName}`}
+          aria-label={t('actions.viewOrderAria', { domain: domainName })}
           className="flex justify-start items-center"
         />
       }
@@ -101,7 +103,7 @@ export function ActionsCell({
       render={
         <Link
           href={getLeadgenStartHref(domainName)}
-          aria-label={`Find buyers for ${domainName}`}
+          aria-label={t('actions.findBuyersAria', { domain: domainName })}
           className="flex justify-start items-center"
         />
       }
@@ -121,7 +123,7 @@ export function ActionsCell({
           <a
             {...props}
             href={explorerUrl}
-            aria-label={`View NFT for ${domainName}`}
+            aria-label={t('actions.viewNftAria', { domain: domainName })}
             target="_blank"
             rel="noopener noreferrer"
             className={cn('flex justify-start items-center', props.className)}
@@ -144,7 +146,7 @@ export function ActionsCell({
               variant="outline"
               size="sm"
               className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
-              aria-label={`Actions for ${domainName}`}
+              aria-label={t('actions.actionsAria', { domain: domainName })}
             />
           }
         >
@@ -172,13 +174,21 @@ export function ActionsCell({
 
   return (
     <div className="flex gap-2">
-      <ActionTooltip label="List for sale">{listForSaleButton}</ActionTooltip>
-      <ActionTooltip label="Find buyers">{leadgenButton}</ActionTooltip>
+      <ActionTooltip label={t('actions.listForSale')}>
+        {listForSaleButton}
+      </ActionTooltip>
+      <ActionTooltip label={t('actions.findBuyers')}>
+        {leadgenButton}
+      </ActionTooltip>
       {orderButton ? (
-        <ActionTooltip label="View order">{orderButton}</ActionTooltip>
+        <ActionTooltip label={t('actions.viewOrder')}>
+          {orderButton}
+        </ActionTooltip>
       ) : null}
       {explorerButton ? (
-        <ActionTooltip label="View NFT">{explorerButton}</ActionTooltip>
+        <ActionTooltip label={t('actions.viewNft')}>
+          {explorerButton}
+        </ActionTooltip>
       ) : null}
       <WatchNftButton
         domainName={domainName}
@@ -214,6 +224,7 @@ function WatchNftButton({
   isExpired,
   isMobile,
 }: WatchNftButtonProps) {
+  const t = useTranslations('domains');
   const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
 
   const handleWatchNft = useCallback(async () => {
@@ -227,16 +238,17 @@ function WatchNftButton({
         ownerAddress,
       );
       if (added) {
-        toast.success(`${domainName} added to your wallet`);
+        toast.success(t('actions.nftAddedToast', { domain: domainName }));
       } else {
-        toast.error(`Couldn't add ${domainName} to your wallet`);
+        toast.error(t('actions.nftAddFailedToast', { domain: domainName }));
       }
     } catch (error) {
-      toast.error('Failed to add NFT to wallet', {
-        description: error instanceof Error ? error.message : 'Unknown error',
+      toast.error(t('actions.nftAddErrorToast'), {
+        description:
+          error instanceof Error ? error.message : t('actions.unknownError'),
       });
     }
-  }, [tokenId, chainId, ownerAddress, domainName, watchNamefiNftInWallet]);
+  }, [tokenId, chainId, ownerAddress, domainName, watchNamefiNftInWallet, t]);
 
   if (
     isExpired ||
@@ -254,7 +266,7 @@ function WatchNftButton({
       size="sm"
       className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-violet-400')}
       onClick={handleWatchNft}
-      aria-label={`Show ${domainName} NFT in wallet`}
+      aria-label={t('actions.showNftInWalletAria', { domain: domainName })}
     >
       <Wallet className="w-4 h-4" />
     </Button>
@@ -264,15 +276,17 @@ function WatchNftButton({
     return (
       <DropdownMenuItem
         onClick={handleWatchNft}
-        aria-label={`Show ${domainName} NFT in wallet`}
+        aria-label={t('actions.showNftInWalletAria', { domain: domainName })}
         className={'hover:!text-violet-400'}
       >
-        <Wallet className="w-4 h-4" /> Show NFT in wallet
+        <Wallet className="w-4 h-4" /> {t('actions.showNftInWallet')}
       </DropdownMenuItem>
     );
   }
 
-  return <ActionTooltip label="Show NFT in wallet">{button}</ActionTooltip>;
+  return (
+    <ActionTooltip label={t('actions.showNftInWallet')}>{button}</ActionTooltip>
+  );
 }
 
 export function DropdownDomainActionsMenu({
@@ -284,6 +298,7 @@ export function DropdownDomainActionsMenu({
   orderId,
   onListForSaleClick,
 }: ActionsCellProps) {
+  const t = useTranslations('domains');
   const expiry = expirationDate ? new Date(expirationDate) : null;
   const isExpired =
     expiry !== null ? differenceInDays(expiry, new Date()) < 0 : false;
@@ -296,9 +311,9 @@ export function DropdownDomainActionsMenu({
     <DropdownMenuItem
       className={cn('hover:!text-orange-400')}
       onClick={() => onListForSaleClick(domainName)}
-      aria-label={`List ${domainName} for sale`}
+      aria-label={t('actions.listForSaleAria', { domain: domainName })}
     >
-      <BadgeDollarSign className="w-4 h-4" /> List for sale
+      <BadgeDollarSign className="w-4 h-4" /> {t('actions.listForSale')}
     </DropdownMenuItem>
   );
 
@@ -309,12 +324,12 @@ export function DropdownDomainActionsMenu({
         <Link
           {...props}
           href={`/orders/${orderId}/details`}
-          aria-label={`View order for ${domainName}`}
+          aria-label={t('actions.viewOrderAria', { domain: domainName })}
           className={cn('flex justify-start items-center', props.className)}
         />
       )}
     >
-      <ReceiptText className="w-4 h-4" /> View Order
+      <ReceiptText className="w-4 h-4" /> {t('actions.viewOrderMenu')}
     </DropdownMenuItem>
   ) : null;
 
@@ -325,12 +340,12 @@ export function DropdownDomainActionsMenu({
         <Link
           {...props}
           href={getLeadgenStartHref(domainName)}
-          aria-label={`Find buyers for ${domainName}`}
+          aria-label={t('actions.findBuyersAria', { domain: domainName })}
           className={cn('flex justify-start items-center', props.className)}
         />
       )}
     >
-      <UserRoundSearch className="w-4 h-4" /> Find buyers
+      <UserRoundSearch className="w-4 h-4" /> {t('actions.findBuyers')}
     </DropdownMenuItem>
   );
 
@@ -342,7 +357,7 @@ export function DropdownDomainActionsMenu({
           <a
             {...props}
             href={nftUrl}
-            aria-label={`View NFT for ${domainName}`}
+            aria-label={t('actions.viewNftAria', { domain: domainName })}
             target="_blank"
             rel="noopener noreferrer"
             className={cn('flex justify-start items-center', props.className)}
@@ -351,7 +366,10 @@ export function DropdownDomainActionsMenu({
           </a>
         )}
       >
-        <Compass className="w-4 h-4" /> View NFT on {explorerName ?? 'Scan'}
+        <Compass className="w-4 h-4" />{' '}
+        {t('actions.viewNftOn', {
+          explorer: explorerName ?? t('actions.scan'),
+        })}
       </DropdownMenuItem>
     ) : null;
 
@@ -362,7 +380,7 @@ export function DropdownDomainActionsMenu({
         <a
           {...props}
           href={`https://${domainName}`}
-          aria-label={`Visit ${domainName}`}
+          aria-label={t('actions.visitDomainAria', { domain: domainName })}
           target="_blank"
           rel="noopener noreferrer"
           className={cn('flex justify-start items-center', props.className)}
@@ -371,7 +389,7 @@ export function DropdownDomainActionsMenu({
         </a>
       )}
     >
-      <ExternalLinkIcon className="w-4 h-4" /> Visit Domain
+      <ExternalLinkIcon className="w-4 h-4" /> {t('actions.visitDomain')}
     </DropdownMenuItem>
   );
 
@@ -383,7 +401,7 @@ export function DropdownDomainActionsMenu({
             variant="ghost"
             size="sm"
             className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
-            aria-label={`Actions for ${domainName}`}
+            aria-label={t('actions.actionsAria', { domain: domainName })}
           />
         }
       >

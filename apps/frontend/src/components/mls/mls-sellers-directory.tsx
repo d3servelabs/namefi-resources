@@ -24,6 +24,7 @@ import {
   X,
 } from 'lucide-react';
 import type { Route } from 'next';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -108,10 +109,10 @@ interface AppliedMlsSellerDirectoryFilters {
   sortOrder: MlsSellerDirectorySortOrder;
 }
 const ACTIVE_WITHIN_OPTIONS = [
-  { label: 'Any time', value: ACTIVE_ANY_VALUE },
-  { label: '7 days', value: '7' },
-  { label: '30 days', value: '30' },
-  { label: '90 days', value: '90' },
+  { days: null, value: ACTIVE_ANY_VALUE },
+  { days: 7, value: '7' },
+  { days: 30, value: '30' },
+  { days: 90, value: '90' },
 ] as const;
 const SELLER_SORT_COLUMN_BY_API_SORT: Record<MlsSellerDirectorySortBy, string> =
   {
@@ -129,6 +130,7 @@ const API_SORT_BY_SELLER_SORT_COLUMN: Record<string, MlsSellerDirectorySortBy> =
   };
 
 export function MlsSellersDirectory() {
+  const t = useTranslations('feed');
   const trpcClient = useTRPCClient();
   const filters = useMlsSellerDirectoryFilters();
   const [isExportingCsv, setIsExportingCsv] = useState(false);
@@ -185,16 +187,18 @@ export function MlsSellersDirectory() {
     try {
       const rows = await fetchAllMatchingSellerRows(trpcClient, filters);
       downloadMlsSellerDirectoryCsv(rows, filters);
-      toast.success('Users CSV exported');
+      toast.success(t('users.exportSuccess'));
     } catch (csvError) {
-      toast.error('Could not export users CSV', {
+      toast.error(t('users.exportErrorTitle'), {
         description:
-          csvError instanceof Error ? csvError.message : 'Please try again.',
+          csvError instanceof Error
+            ? csvError.message
+            : t('users.exportErrorFallback'),
       });
     } finally {
       setIsExportingCsv(false);
     }
-  }, [filters, isExportingCsv, trpcClient]);
+  }, [filters, isExportingCsv, trpcClient, t]);
 
   return (
     <main className="mx-auto flex w-full max-w-[82rem] flex-col gap-4 px-4 py-6 sm:px-6 lg:px-8">
@@ -343,6 +347,8 @@ function MlsSellersHeader({
   onRefresh,
   onExportCsv,
 }: MlsSellersHeaderProps) {
+  const t = useTranslations('feed');
+
   return (
     <section className="border-border/70 border-b pb-4">
       <Link
@@ -350,19 +356,26 @@ function MlsSellersHeader({
         className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" />
-        Back to feed
+        {t('users.backToFeed')}
       </Link>
 
       <div className="mt-4 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <Users className="size-5 text-primary" />
-            <h1 className="text-2xl font-semibold tracking-tight">Users</h1>
+            <h1 className="text-2xl font-semibold tracking-tight">
+              {t('users.title')}
+            </h1>
           </div>
           <p className="text-sm text-muted-foreground">
             {isLoading
-              ? 'Loading users who post domain sale listings.'
-              : `${total.toLocaleString()} matching users${generatedAt ? `, refreshed ${formatGeneratedAt(generatedAt)}` : ''}.`}
+              ? t('users.loadingSubtitle')
+              : generatedAt
+                ? t('users.subtitleRefreshed', {
+                    count: total,
+                    refreshedAt: formatGeneratedAt(generatedAt),
+                  })
+                : t('users.subtitle', { count: total })}
           </p>
         </div>
 
@@ -378,7 +391,7 @@ function MlsSellersHeader({
             ) : (
               <RefreshCcw data-icon="inline-start" />
             )}
-            Refresh
+            {t('users.refresh')}
           </Button>
 
           <Button
@@ -392,7 +405,7 @@ function MlsSellersHeader({
             ) : (
               <Download data-icon="inline-start" />
             )}
-            Export CSV
+            {t('users.exportCsv')}
           </Button>
         </div>
       </div>
@@ -421,6 +434,8 @@ function MlsSellersControls({
   onActiveWithinDaysChange,
   onClearFilters,
 }: MlsSellersControlsProps) {
+  const t = useTranslations('feed');
+
   return (
     <section className="rounded-lg border border-border/70 bg-background">
       <div className="flex flex-col gap-3 p-3 md:flex-row md:items-center md:justify-between">
@@ -433,7 +448,7 @@ function MlsSellersControls({
             spellCheck={false}
             value={searchInput}
             onChange={(event) => onSearchInputChange(event.target.value)}
-            placeholder="Search handle, domain, or post text"
+            placeholder={t('users.searchPlaceholder')}
             className="h-9 bg-background pr-9 pl-9"
           />
           {searchInput ? (
@@ -442,7 +457,7 @@ function MlsSellersControls({
               variant="ghost"
               size="icon-xs"
               className="absolute top-1/2 right-2 -translate-y-1/2"
-              aria-label="Clear search"
+              aria-label={t('users.clearSearchAriaLabel')}
               onClick={() => onSearchInputChange('')}
             >
               <X />
@@ -464,15 +479,17 @@ function MlsSellersControls({
             <SelectTrigger
               size="sm"
               className="w-[8.75rem] bg-background"
-              aria-label="Minimum posts"
+              aria-label={t('users.minPostsAriaLabel')}
             >
-              <SelectValue>{getMinPostsLabel(minSalePosts)}</SelectValue>
+              <SelectValue>
+                {t('users.minPostsOption', { count: minSalePosts })}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {MIN_POST_OPTIONS.map((option) => (
                   <SelectItem key={option} value={String(option)}>
-                    {getMinPostsLabel(option)}
+                    {t('users.minPostsOption', { count: option })}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -494,17 +511,19 @@ function MlsSellersControls({
             <SelectTrigger
               size="sm"
               className="w-[8.75rem] bg-background"
-              aria-label="Active within"
+              aria-label={t('users.activeWithinAriaLabel')}
             >
               <SelectValue>
-                {getActiveWithinLabel(activeWithinDays)}
+                {getActiveWithinLabel(t, activeWithinDays)}
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {ACTIVE_WITHIN_OPTIONS.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
-                    {option.label}
+                    {option.days === null
+                      ? t('users.anyTime')
+                      : t('users.activeWithinDays', { count: option.days })}
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -519,7 +538,7 @@ function MlsSellersControls({
               onClick={onClearFilters}
             >
               <X data-icon="inline-start" />
-              Clear
+              {t('users.clear')}
             </Button>
           ) : null}
         </div>
@@ -528,12 +547,11 @@ function MlsSellersControls({
   );
 }
 
-function getMinPostsLabel(value: number) {
-  return `${value}+ posts`;
-}
-
-function getActiveWithinLabel(value: number | null) {
-  return value ? `Last ${value}d` : 'Any time';
+function getActiveWithinLabel(
+  t: ReturnType<typeof useTranslations<'feed'>>,
+  value: number | null,
+) {
+  return value ? t('users.lastDays', { count: value }) : t('users.anyTime');
 }
 
 interface MlsSellersTableProps {
@@ -559,6 +577,7 @@ function MlsSellersTable({
   isFetchingNextPage,
   onLoadMore,
 }: MlsSellersTableProps) {
+  const t = useTranslations('feed');
   const columns = useMlsSellerColumns();
   const table = useReactTable({
     data: sellers,
@@ -634,7 +653,7 @@ function MlsSellersTable({
                   colSpan={columnCount}
                   className="h-28 text-center text-muted-foreground"
                 >
-                  No users match this threshold.
+                  {t('users.emptyThreshold')}
                 </TableCell>
               </TableRow>
             ) : null}
@@ -694,7 +713,7 @@ function MlsSellersTable({
                   className="h-14 text-center text-muted-foreground"
                 >
                   <Loader2 className="mr-2 inline size-4 animate-spin" />
-                  Loading more users
+                  {t('users.loadingMore')}
                 </TableCell>
               </TableRow>
             ) : null}
@@ -703,7 +722,7 @@ function MlsSellersTable({
               <TableRow>
                 <TableCell colSpan={columnCount} className="h-14 text-center">
                   <Button type="button" variant="ghost" onClick={onLoadMore}>
-                    Load more
+                    {t('users.loadMore')}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -716,11 +735,13 @@ function MlsSellersTable({
 }
 
 function useMlsSellerColumns() {
+  const t = useTranslations('feed');
+
   return useMemo<ColumnDef<MlsSellerDirectoryRow>[]>(
     () => [
       {
         id: 'seller',
-        header: 'User',
+        header: t('users.columns.user'),
         cell: ({ row }) => <SellerIdentityCell seller={row.original} />,
         enableSorting: false,
       },
@@ -728,12 +749,17 @@ function useMlsSellerColumns() {
         id: 'domains',
         accessorFn: (seller) => seller.domainCount,
         header: ({ column }) => (
-          <SellerSortableHeader column={column} label="Domains" />
+          <SellerSortableHeader
+            column={column}
+            label={t('users.columns.domains')}
+          />
         ),
         cell: ({ row }) => (
           <SellerMetricCell
             value={row.original.domainCount}
-            detail={`${formatDecimal(row.original.domainsPerPost)} / post`}
+            detail={t('users.domainsPerPost', {
+              count: formatDecimal(row.original.domainsPerPost),
+            })}
           />
         ),
       },
@@ -741,12 +767,15 @@ function useMlsSellerColumns() {
         id: 'cadence',
         accessorFn: (seller) => seller.postsPerWeek,
         header: ({ column }) => (
-          <SellerSortableHeader column={column} label="Cadence" />
+          <SellerSortableHeader
+            column={column}
+            label={t('users.columns.cadence')}
+          />
         ),
         cell: ({ row }) => (
           <SellerMetricCell
             value={formatDecimal(row.original.postsPerWeek)}
-            detail="posts / week"
+            detail={t('users.postsPerWeek')}
           />
         ),
       },
@@ -754,12 +783,15 @@ function useMlsSellerColumns() {
         id: 'recent',
         accessorFn: (seller) => seller.lastPostedAt,
         header: ({ column }) => (
-          <SellerSortableHeader column={column} label="Last post" />
+          <SellerSortableHeader
+            column={column}
+            label={t('users.columns.lastPost')}
+          />
         ),
         cell: ({ row }) => (
           <SellerMetricCell
-            value={formatDaysAgo(row.original.daysSinceLastPost)}
-            detail={formatShortDate(row.original.lastPostedAt)}
+            value={formatDaysAgo(t, row.original.daysSinceLastPost)}
+            detail={formatShortDate(t, row.original.lastPostedAt)}
           />
         ),
       },
@@ -770,7 +802,7 @@ function useMlsSellerColumns() {
         enableSorting: false,
       },
     ],
-    [],
+    [t],
   );
 }
 
@@ -803,6 +835,7 @@ function SellerSortableHeader({
 }
 
 function SellerIdentityCell({ seller }: { seller: MlsSellerDirectoryRow }) {
+  const t = useTranslations('feed');
   const namefiDomainsCount = seller.namefiDomainsCount ?? 0;
   const sellerTier = getMlsSellerTier(
     seller.tierDomainCount ?? seller.domainCount,
@@ -827,7 +860,7 @@ function SellerIdentityCell({ seller }: { seller: MlsSellerDirectoryRow }) {
           {[
             seller.displayName,
             namefiDomainsCount > 0
-              ? `${namefiDomainsCount.toLocaleString()} Namefi-owned`
+              ? t('users.namefiOwned', { count: namefiDomainsCount })
               : null,
           ]
             .filter(Boolean)
@@ -856,13 +889,15 @@ function SellerMetricCell({
 }
 
 function SellerActionsCell({ seller }: { seller: MlsSellerDirectoryRow }) {
+  const t = useTranslations('feed');
+
   return (
     <div className="flex items-center justify-end gap-2">
       <Link
         href={seller.listingUrl as Route}
         className={buttonVariants({ variant: 'secondary', size: 'xs' })}
       >
-        Listings
+        {t('users.listings')}
       </Link>
       <a
         href={seller.latestSourceTweetUrl}
@@ -871,7 +906,7 @@ function SellerActionsCell({ seller }: { seller: MlsSellerDirectoryRow }) {
         className={buttonVariants({ variant: 'outline', size: 'xs' })}
       >
         <ExternalLink data-icon="inline-start" />
-        Post
+        {t('users.post')}
       </a>
       <a
         href={seller.profileUrl}
@@ -1169,12 +1204,15 @@ function toFilenamePart(value: string | number) {
     .slice(0, 48);
 }
 
-function formatDaysAgo(daysSinceLastPost: number) {
+function formatDaysAgo(
+  t: ReturnType<typeof useTranslations<'feed'>>,
+  daysSinceLastPost: number,
+) {
   if (daysSinceLastPost === 0) {
-    return 'today';
+    return t('users.today');
   }
 
-  return `${daysSinceLastPost}d`;
+  return t('users.daysAgo', { count: daysSinceLastPost });
 }
 
 function formatDecimal(value: number) {
@@ -1183,10 +1221,13 @@ function formatDecimal(value: number) {
   });
 }
 
-function formatShortDate(value: string) {
+function formatShortDate(
+  t: ReturnType<typeof useTranslations<'feed'>>,
+  value: string,
+) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return 'unknown';
+    return t('users.unknownDate');
   }
 
   return date.toLocaleDateString([], {

@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "免费认领",
+    "domainClaimedSuccess": "域名认领成功！",
+    "claimFailed": "认领域名失败：{message}",
+    "invalidDomain": {
+      "title": "无效的域名",
+      "description": "所提供的域名不是有效的标准化 Namefi 域名。",
+      "hint": "请确保您使用的是完全标准化的域名，例如“alice.0x.city”。",
+      "goBack": "返回"
+    },
+    "ineligibleBanner": {
+      "title": "该域名不符合免费认领的条件。",
+      "description": "您可以将其加入购物车进行购买，或返回搜索。",
+      "addToCart": "加入购物车",
+      "goBack": "返回"
+    },
+    "summary": {
+      "duration": "时长：{count, plural, other {# 年}} • 免费"
+    },
+    "submit": "提交"
+  },
+  "widget": {
+    "defaultTitle": "Your 0x Identity",
+    "defaultSubtitle": "成为 Web3 公民网络的一员",
+    "qualifyPrompt": "请按照以下步骤查看您是否符合条件",
+    "steps": {
+      "signIn": {
+        "trigger": "登录",
+        "signedIn": "感谢您的登录！您可以继续下一步。",
+        "signedOut": "登录或创建账户即可开始。"
+      },
+      "linkSocial": {
+        "trigger": "关联社交媒体",
+        "description": "前往您的个人资料页面，关联一个用户名符合条件的社交媒体账户。目前，以“0x”开头的用户名可使您符合优惠条件。",
+        "visitProfile": "前往个人资料页面"
+      },
+      "enterDomain": {
+        "trigger": "输入域名",
+        "description": "在下方输入您符合条件的域名。如果该域名可用，您即可免费认领！"
+      }
+    },
+    "qualifying": {
+      "checking": "正在根据您关联的社交媒体账户检查符合条件的域名……",
+      "error": "根据您关联的社交媒体账户检查符合条件的域名时出错。",
+      "none": "您关联的社交媒体账户似乎不符合免费认领域名的条件。",
+      "list": "您符合条件的域名：{domains}"
+    },
+    "input": {
+      "placeholderMobile": "name",
+      "placeholderDesktop": "yourname"
+    },
+    "button": {
+      "loginToClaim": "登录以认领",
+      "checking": "检查中…",
+      "inCart": "已在购物车中",
+      "claiming": "认领中…",
+      "claimNow": "立即认领"
+    }
+  }
+}

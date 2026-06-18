@@ -1,0 +1,121 @@
+{
+  "header.taglineWithNetwork": {
+    "description": "Search box tagline when scoped to one parent domain (subdomain search). {parentDomain} is the parent domain name, e.g. 'example.com' — keep untranslated."
+  },
+  "header.taglineAllNetworks": {
+    "description": "Search box tagline when searching across all networks/TLDs."
+  },
+  "header.networkLabel": {
+    "description": "Inline label preceding the selected network/chain name. Ends with a colon."
+  },
+  "header.allNetworks": {
+    "description": "Option meaning every network; shown in the network selector.",
+    "maxLength": 6
+  },
+  "modeTabs.register": {
+    "description": "Tab label: switch search into 'register a new domain' mode."
+  },
+  "modeTabs.import": {
+    "description": "Tab label: switch search into 'import an existing domain' mode."
+  },
+  "input.placeholder": {
+    "description": "Placeholder text inside the domain search input."
+  },
+  "input.importPlaceholder": {
+    "description": "Multi-line placeholder explaining the two accepted paste formats for importing domains. Keep the literal example lines (example.com, authcode123, domain1.com…) and the newlines intact; translate only the instructional prose."
+  },
+  "input.searchButton": {
+    "description": "Button that runs the domain search."
+  },
+  "input.importButton": {
+    "description": "Button that submits domains for import."
+  },
+  "input.clearParentDomainAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that clears the selected parent domain."
+  },
+  "input.freeMintTooltipWithParent": {
+    "description": "Tooltip promoting free subdomain claims under a specific parent domain. {parentDomain} is the parent domain name — keep untranslated."
+  },
+  "input.freeMintTooltipAllDomains": {
+    "description": "Tooltip promoting free domain claims when no parent is selected."
+  },
+  "card.priceWithCurrency": {
+    "description": "Price shown on a domain result card. {price} is a pre-formatted numeric amount (e.g. '18'); keep the 'USD' currency code."
+  },
+  "card.renewsAt": {
+    "description": "Secondary price line on a result card showing the yearly renewal price. {price} is a formatted price including currency."
+  },
+  "card.owner": {
+    "description": "Label on a result card showing who owns a taken domain. {owner} is a truncated wallet address or name — keep untranslated."
+  },
+  "card.notRegistered": {
+    "description": "Status badge: the domain is not registered (available to register)."
+  },
+  "card.unsupported": {
+    "description": "Status badge: this TLD/domain is not supported by Namefi."
+  },
+  "card.lockedShort": {
+    "description": "Status badge: the domain is locked (transfer/registrar lock). Short form.",
+    "maxLength": 6
+  },
+  "card.temporarilyUnimportable": {
+    "description": "Status badge: the domain cannot be imported right now (temporary)."
+  },
+  "card.taken": {
+    "description": "Status badge: the domain is already registered/owned by someone.",
+    "maxLength": 6
+  },
+  "card.unavailableShort": {
+    "description": "Status badge: the domain is unavailable. Short form.",
+    "maxLength": 6
+  },
+  "card.temporarilyUnavailable": {
+    "description": "Status badge: the domain is temporarily unavailable."
+  },
+  "card.freeClaim": {
+    "description": "Badge/button indicating the domain can be claimed for free."
+  },
+  "card.addToWishlist": {
+    "description": "Accessibility/tooltip label for the button that adds the domain to the wishlist."
+  },
+  "card.removeFromWishlist": {
+    "description": "Accessibility/tooltip label for the button that removes the domain from the wishlist."
+  },
+  "card.eppCode": {
+    "description": "Field label for the EPP / domain transfer auth code. 'EPP' is a technical term — keep it."
+  },
+  "card.savedEppCode": {
+    "description": "Label indicating a previously saved EPP auth code is on file."
+  },
+  "card.marketplace": {
+    "description": "Generic fallback name for an external marketplace source (lowercase, used inline)."
+  },
+  "card.buyShort": {
+    "description": "Short buy button on a result card.",
+    "maxLength": 6
+  },
+  "card.buyOn": {
+    "description": "Buy button prefix, followed by a marketplace name/logo, e.g. 'Buy on [OpenSea]'."
+  },
+  "card.buyOnSourceAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the buy button. {source} is a marketplace name, e.g. 'OpenSea' — keep untranslated."
+  },
+  "card.buyOnSourceFromSellerAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the buy button when a seller is known. {source} = marketplace name, {seller} = seller name/address — keep both untranslated."
+  },
+  "results.errorTitle": {
+    "description": "Title shown when the domain search fails."
+  },
+  "results.errorDescription": {
+    "description": "Body text shown when the domain search fails, inviting a retry."
+  },
+  "results.loadMore": {
+    "description": "Button to load more search results."
+  },
+  "results.noResultsTitle": {
+    "description": "Title shown when a search returns no domains."
+  },
+  "results.noResultsDescription": {
+    "description": "Body text shown when a search returns no domains, suggesting a different term. {query} is the user's search term, echoed back inside quotes."
+  }
+}

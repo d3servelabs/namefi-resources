@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { useQuery } from '@tanstack/react-query';
 import { useEnsAddress } from 'wagmi';
 import { Copy } from 'lucide-react';
@@ -35,9 +36,9 @@ const isLikelyEnsName = (value: string) => {
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-const formatExpiration = (value?: OwnerDomain) => {
+const formatExpiration = (value: OwnerDomain | undefined, fallback: string) => {
   if (!value?.expirationTime) {
-    return 'Not indexed yet';
+    return fallback;
   }
 
   return format(new Date(value.expirationTime), 'PPP');
@@ -55,6 +56,7 @@ export function WalletNftGrid({
   walletIdentifier,
   origin,
 }: WalletNftGridProps) {
+  const t = useTranslations('shared');
   const trpc = useTRPC();
   const sanitizedIdentifier = useMemo(
     () => walletIdentifier.trim(),
@@ -121,13 +123,13 @@ export function WalletNftGrid({
     navigator.clipboard
       .writeText(value)
       .then(() =>
-        toast.success('Copied to clipboard', {
+        toast.success(t('walletNftGrid.copiedToClipboard'), {
           description: value,
         }),
       )
       .catch(() =>
-        toast.error('Copy failed', {
-          description: 'We could not copy that value. Please try again.',
+        toast.error(t('walletNftGrid.copyFailed'), {
+          description: t('walletNftGrid.copyFailedDescription'),
         }),
       );
   };
@@ -136,7 +138,7 @@ export function WalletNftGrid({
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
         <p className="text-base font-medium text-foreground">
-          Provide a wallet address or ENS name to view NFTs.
+          {t('walletNftGrid.emptyIdentifier')}
         </p>
       </div>
     );
@@ -146,10 +148,10 @@ export function WalletNftGrid({
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
         <p className="text-base font-medium text-foreground">
-          That doesn&apos;t look like a valid wallet address or ENS name.
+          {t('walletNftGrid.invalidIdentifier')}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Wallets must be 0x-prefixed and ENS names need at least one dot.
+          {t('walletNftGrid.invalidIdentifierHint')}
         </p>
       </div>
     );
@@ -159,10 +161,10 @@ export function WalletNftGrid({
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
         <p className="text-base font-medium text-foreground">
-          We couldn&apos;t resolve that ENS name.
+          {t('walletNftGrid.ensResolveFailed')}
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Double-check the spelling or try again in a moment.
+          {t('walletNftGrid.ensResolveFailedHint')}
         </p>
       </div>
     );
@@ -176,7 +178,7 @@ export function WalletNftGrid({
     return (
       <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
         <p className="text-base font-medium text-foreground">
-          We couldn&apos;t resolve a wallet for that input.
+          {t('walletNftGrid.noWalletResolved')}
         </p>
       </div>
     );
@@ -192,27 +194,26 @@ export function WalletNftGrid({
           onCopy={handleCopy}
         />
         <Badge variant="secondary" className="rounded-full">
-          {ownedDomains.length} NFT{ownedDomains.length === 1 ? '' : 's'}
+          {t('walletNftGrid.nftCount', { count: ownedDomains.length })}
         </Badge>
       </div>
 
       {domainsQuery.isError ? (
         <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
           <p className="text-base font-medium text-foreground">
-            We couldn&apos;t load domains for this wallet.
+            {t('walletNftGrid.loadDomainsFailed')}
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Please refresh the page and try again.
+            {t('walletNftGrid.loadDomainsFailedHint')}
           </p>
         </div>
       ) : ownedDomains.length === 0 && !isLoadingDomains ? (
         <div className="rounded-lg border border-dashed border-border/60 bg-muted/20 p-8 text-center">
           <p className="text-base font-medium text-foreground">
-            No Namefi NFTs found for this wallet.
+            {t('walletNftGrid.noNftsFound')}
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Double-check the wallet address or ENS name, or try again later
-            while indexing catches up.
+            {t('walletNftGrid.noNftsFoundHint')}
           </p>
         </div>
       ) : (
@@ -222,8 +223,10 @@ export function WalletNftGrid({
               nft.normalizedDomainName,
             );
             const chain = getChain(nft.chainId);
-            const chainLabel = chain?.name ?? 'Unknown network';
-            const scanName = chain?.blockExplorers?.default?.name ?? 'Explorer';
+            const chainLabel = chain?.name ?? t('walletNftGrid.unknownNetwork');
+            const scanName =
+              chain?.blockExplorers?.default?.name ??
+              t('walletNftGrid.explorer');
 
             return (
               <ControlledGlareCard
@@ -252,12 +255,14 @@ export function WalletNftGrid({
                     className="flex h-full flex-col"
                     showViewDomainButton={false}
                     viewNftButtonText={
-                      scanName ? `View on ${scanName}` : 'View on Explorer'
+                      scanName
+                        ? t('walletNftGrid.viewOn', { explorer: scanName })
+                        : t('walletNftGrid.viewOnExplorer')
                     }
                   />
                   <div className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-2 text-sm">
                     <div className="flex items-center justify-between text-muted-foreground">
-                      <span>Network</span>
+                      <span>{t('walletNftGrid.network')}</span>
                       <span className="flex items-center gap-2 font-medium text-foreground">
                         {nft.chainId ? (
                           <NetworkLogo
@@ -269,9 +274,12 @@ export function WalletNftGrid({
                       </span>
                     </div>
                     <div className="mt-1 flex items-center justify-between text-muted-foreground">
-                      <span>Expiration</span>
+                      <span>{t('walletNftGrid.expiration')}</span>
                       <span className="font-medium text-foreground">
-                        {formatExpiration(nft)}
+                        {formatExpiration(
+                          nft,
+                          t('walletNftGrid.notIndexedYet'),
+                        )}
                       </span>
                     </div>
                   </div>
@@ -317,6 +325,7 @@ function WalletIdentityBadge({
   lookupValue,
   onCopy,
 }: WalletIdentityBadgeProps) {
+  const t = useTranslations('shared');
   const formattedAddress = useMemo(() => {
     const parsed = checksumWalletAddressSchema.safeParse(walletAddress);
     return parsed.success ? parsed.data : walletAddress;
@@ -327,7 +336,7 @@ function WalletIdentityBadge({
       <UserWalletAvatar address={formattedAddress} className="size-10" />
       <div className="min-w-0 flex-1">
         <p className="text-xs uppercase tracking-wide text-muted-foreground">
-          Wallet
+          {t('walletNftGrid.wallet')}
         </p>
         <AutoTruncateTextV2
           className="font-mono text-sm"
@@ -337,7 +346,9 @@ function WalletIdentityBadge({
           {formattedAddress}
         </AutoTruncateTextV2>
         {ensName ? (
-          <p className="text-xs text-muted-foreground">ENS: {ensName}</p>
+          <p className="text-xs text-muted-foreground">
+            {t('walletNftGrid.ens', { name: ensName })}
+          </p>
         ) : null}
       </div>
       <button

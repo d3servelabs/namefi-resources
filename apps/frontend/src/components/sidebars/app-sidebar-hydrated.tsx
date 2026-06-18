@@ -13,6 +13,7 @@ import { config } from '@/lib/env';
 import type { NavItem } from '@/lib/types/nav-item';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useMemo, type FC } from 'react';
 
 export type AppSidebarHydratedContentProps = {
@@ -69,6 +70,7 @@ const withSidebarBadge = (
 export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
   items,
 }) => {
+  const t = useTranslations('nav');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -109,7 +111,7 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
 
     return filterSidebarItemsByAuth(items, isAuthenticated)
       .filter((item) => {
-        if (item.title.toLowerCase() === 'manage') {
+        if (item.title === 'items.manage') {
           return showManageEntrypoint;
         }
         return true;
@@ -136,7 +138,7 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
     <>
       <SidebarItems items={computedItems} />
       {domains.length > 0 && (
-        <SidebarDomains name="Recent domains" domains={domains} />
+        <SidebarDomains name={t('recentDomains')} domains={domains} />
       )}
     </>
   );

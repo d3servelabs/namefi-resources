@@ -11,6 +11,8 @@ import {
   forwardRef,
 } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { LanguageSelector } from '@/components/i18n/language-selector';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
 import {
@@ -61,96 +63,102 @@ const SOCIAL_LINKS = [
   },
 ] as const;
 
+/**
+ * Footer navigation structure. Routes/hrefs and external/description hints stay
+ * here as stable data; user-visible section titles and link labels are resolved
+ * at render time via `t('sections.<sectionKey>.title' | '...links.<labelKey>')`
+ * so they can be localized. `sectionKey`/`labelKey` are i18n keys, not copy.
+ */
 const FOOTER_SECTIONS: Array<{
-  title: string;
+  sectionKey: string;
   links: Array<{
-    label: string;
+    labelKey: string;
     href: Route | string;
     external?: boolean;
     description?: string;
   }>;
 }> = [
   {
-    title: 'Explore',
+    sectionKey: 'explore',
     links: [
-      { label: 'Discover Domains', href: '/' },
-      { label: 'Namefi Brand Studio', href: '/features/brand-studio' },
-      { label: 'Namefi Feed', href: '/features/feed' },
-      { label: 'Namefi Outbound', href: '/features/outbound' },
-      { label: 'Domain Hunt', href: '/hunt' },
-      { label: 'Newsletter', href: '/newsletter' },
-      { label: 'Flush DNS', href: '/dns-cache' },
-      { label: 'NFSC Faucet (sandbox)', href: '/faucet' },
+      { labelKey: 'discoverDomains', href: '/' },
+      { labelKey: 'brandStudio', href: '/features/brand-studio' },
+      { labelKey: 'feed', href: '/features/feed' },
+      { labelKey: 'outbound', href: '/features/outbound' },
+      { labelKey: 'domainHunt', href: '/hunt' },
+      { labelKey: 'newsletter', href: '/newsletter' },
+      { labelKey: 'flushDns', href: '/dns-cache' },
+      { labelKey: 'faucet', href: '/faucet' },
     ],
   },
   {
-    title: 'Account',
+    sectionKey: 'account',
     links: [
-      { label: 'My Domains', href: '/domains' },
-      { label: 'My Wishlist', href: '/wishlist' },
-      { label: 'My Orders', href: '/orders' },
-      { label: 'Payment Methods', href: '/payment-methods' },
+      { labelKey: 'myDomains', href: '/domains' },
+      { labelKey: 'myWishlist', href: '/wishlist' },
+      { labelKey: 'myOrders', href: '/orders' },
+      { labelKey: 'paymentMethods', href: '/payment-methods' },
     ],
   },
   {
-    title: 'Resources',
+    sectionKey: 'resources',
     links: [
-      { label: 'Blog', href: '/r/en/blog' },
-      { label: 'Watch', href: '/r/en/watch' },
-      { label: 'Careers', href: '/r/en/careers' },
-      { label: 'TLDs', href: '/r/en/tld' },
-      { label: 'Partners', href: '/r/en/partners' },
-      { label: 'Glossary', href: '/r/en/glossary' },
-      { label: 'How We Hire', href: '/r/en/careers/how-we-hire' },
-      { label: 'Abuse Reporting', href: '/abuse' },
-      { label: 'Education Hub', href: '/education' },
-      { label: 'Registration Agreement', href: '/registration-agreement' },
+      { labelKey: 'blog', href: '/r/en/blog' },
+      { labelKey: 'watch', href: '/r/en/watch' },
+      { labelKey: 'careers', href: '/r/en/careers' },
+      { labelKey: 'tlds', href: '/r/en/tld' },
+      { labelKey: 'partners', href: '/r/en/partners' },
+      { labelKey: 'glossary', href: '/r/en/glossary' },
+      { labelKey: 'howWeHire', href: '/r/en/careers/how-we-hire' },
+      { labelKey: 'abuseReporting', href: '/abuse' },
+      { labelKey: 'educationHub', href: '/education' },
+      { labelKey: 'registrationAgreement', href: '/registration-agreement' },
       {
-        label: 'Namefi API Docs',
+        labelKey: 'apiDocs',
         href: NAMEFI_API_DOCS_URL,
         external: true,
         description: `Namefi API reference ${NAMEFI_API_DOCS_URL}`,
       },
       {
-        label: 'API for LLM AI Agents',
+        labelKey: 'llmApi',
         href: LLMS_TXT_URL,
         external: true,
         description: `For LLM AI agents visit ${LLMS_TXT_URL}`,
       },
       {
-        label: 'Support',
+        labelKey: 'support',
         href: 'mailto:support@namefi.io',
         external: true,
       },
     ],
   },
   {
-    title: 'FAQ',
+    sectionKey: 'faq',
     links: [
-      { label: 'About Namefi', href: '/r/en' },
-      { label: 'What is a Domain?', href: '/r/en/blog/what-is-domain' },
+      { labelKey: 'aboutNamefi', href: '/r/en' },
+      { labelKey: 'whatIsDomain', href: '/r/en/blog/what-is-domain' },
       {
-        label: 'What are Tokenized Domains?',
+        labelKey: 'whatAreTokenizedDomains',
         href: '/r/en/blog/what-are-tokenized-domains',
       },
       {
-        label: 'Why Tokenize Domains?',
+        labelKey: 'whyTokenizeDomains',
         href: '/r/en/blog/why-tokenize-domains',
       },
       {
-        label: 'DNS on Tokenized Domains',
+        labelKey: 'dnsOnTokenizedDomains',
         href: '/r/en/blog/dns-on-tokenized-domains',
       },
       {
-        label: 'DNS is the Control Plane',
+        labelKey: 'dnsIsControlPlane',
         href: '/r/en/blog/dns-is-the-control-plane',
       },
       {
-        label: 'How to Tokenize Your .com',
+        labelKey: 'howToTokenizeCom',
         href: '/r/en/blog/how-to-tokenize-your-com',
       },
       {
-        label: 'Tokenized Domain vs Web3 Domain',
+        labelKey: 'tokenizedVsWeb3',
         href: '/r/en/blog/tokenized-domain-vs-web3-domain',
       },
     ],
@@ -164,6 +172,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   { className, ...rest }: FooterProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const t = useTranslations('footer');
   const { setActiveUI } = useConsentManager();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
@@ -206,8 +215,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               />
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              Namefi is an ICANN Accredited Registrar tokenizing internet domain
-              names for trading, DeFi and future of Internet.
+              {t('disclaimer')}
             </p>
             <div className="flex flex-wrap items-center gap-3">
               {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (
@@ -226,36 +234,43 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           </div>
 
           {FOOTER_SECTIONS.map((section) => (
-            <div key={section.title} className="space-y-4">
+            <div key={section.sectionKey} className="space-y-4">
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                {section.title}
+                {t(`sections.${section.sectionKey}.title`)}
               </h3>
               <ul className="space-y-3 text-sm">
-                {section.links.map(({ label, href, external, description }) => (
-                  <li key={label}>
-                    {external ? (
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noreferrer noopener"
-                        className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
-                        {...(description
-                          ? { 'aria-description': description }
-                          : {})}
-                      >
-                        <span>{label}</span>
-                        <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
-                      </a>
-                    ) : (
-                      <Link
-                        href={href as Route}
-                        className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
-                      >
-                        <span>{label}</span>
-                      </Link>
-                    )}
-                  </li>
-                ))}
+                {section.links.map(
+                  ({ labelKey, href, external, description }) => {
+                    const label = t(
+                      `sections.${section.sectionKey}.links.${labelKey}`,
+                    );
+                    return (
+                      <li key={labelKey}>
+                        {external ? (
+                          <a
+                            href={href}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                            {...(description
+                              ? { 'aria-description': description }
+                              : {})}
+                          >
+                            <span>{label}</span>
+                            <ArrowUpRight className="h-3.5 w-3.5 opacity-60 transition group-hover:opacity-100" />
+                          </a>
+                        ) : (
+                          <Link
+                            href={href as Route}
+                            className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
+                          >
+                            <span>{label}</span>
+                          </Link>
+                        )}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </div>
           ))}
@@ -263,36 +278,38 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
 
         <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60">
           <p className="text-white/70">
-            Use{' '}
-            <a
-              href={LLMS_TXT_URL}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="font-medium text-white underline underline-offset-4 transition hover:text-white/80"
-            >
-              llms.txt
-            </a>{' '}
-            if you are an LLM agent such as Claude Code, Codex, OpenClaw,
-            Hermes, Cursor, OpenCode and any other AI agent.
+            {t.rich('llmsTxt', {
+              link: (chunks) => (
+                <a
+                  href={LLMS_TXT_URL}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="font-medium text-white underline underline-offset-4 transition hover:text-white/80"
+                >
+                  {chunks}
+                </a>
+              ),
+            })}
           </p>
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
-              <span>© {YEAR} D3SERVE LABS, Inc. All rights reserved.</span>
+              <span>{t('copyright', { year: YEAR })}</span>
             </div>
             <div className="flex flex-wrap items-center gap-4">
+              <LanguageSelector />
               <button
                 type="button"
                 className="text-white/70 transition hover:text-white"
-                aria-label="Open cookie settings dialog"
+                aria-label={t('cookieSettingsAriaLabel')}
                 onClick={() => setActiveUI('dialog', { force: true })}
               >
-                Cookie Settings
+                {t('cookieSettings')}
               </button>
               <Link
                 href="/tos"
                 className="text-white/70 transition hover:text-white"
               >
-                Terms &amp; Conditions
+                {t('termsAndConditions')}
               </Link>
             </div>
           </div>

@@ -1,0 +1,57 @@
+{
+  "loading": {
+    "title": "Loading payment methods",
+    "description": "Getting things ready…"
+  },
+  "creditCards": {
+    "heading": "Payment Methods",
+    "addButton": "Add Credit Card",
+    "cardHolderFallback": "Card Holder",
+    "empty": {
+      "title": "No payment methods found",
+      "description": "Consider adding a new payment method"
+    },
+    "toast": {
+      "saveError": "Failed to save your payment method",
+      "deleteSuccess": "Successfully deleted your payment method",
+      "deleteError": "Failed to delete your payment method"
+    },
+    "deleteDialog": {
+      "title": "Delete Payment Method",
+      "description": "Are you sure you want to delete your {brand} card ending in {last4}? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+  },
+  "wallets": {
+    "heading": "Linked Wallets",
+    "linkButton": "Link Wallet",
+    "showInWallet": "Show in Wallet",
+    "addFunds": "Add Funds",
+    "empty": {
+      "title": "No linked wallets found",
+      "description": "Consider adding a new wallet"
+    },
+    "actionDescription": {
+      "addToken": "to add NFSC token to your wallet",
+      "charge": "to charge your wallet"
+    },
+    "toast": {
+      "requestSentTitle": "Request sent to wallet",
+      "requestSentDescription": "Please check your wallet to add the NFSC token",
+      "addTokenSuccess": "Successfully added NFSC token to your wallet",
+      "addTokenError": "Failed to add NFSC token to your wallet",
+      "addTokenFailedTitle": "Failed to add token",
+      "unknownError": "Unknown error",
+      "prepareActionError": "Failed to prepare wallet action"
+    }
+  },
+  "saveDialog": {
+    "title": "Payment Method Details",
+    "description": "Enter your payment method details",
+    "submit": "Save this Payment Method",
+    "processing": "Processing…",
+    "genericError": "An error occurred",
+    "unexpectedError": "An unexpected error occurred"
+  }
+}

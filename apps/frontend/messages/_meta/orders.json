@@ -1,0 +1,626 @@
+{
+  "orderHistory": {
+    "description": "Page heading / title for the order history list page."
+  },
+  "loading": {
+    "description": "Generic loading indicator text shown while the order list or order detail is being fetched."
+  },
+  "loadMore": {
+    "description": "Button at the bottom of the order list that fetches more orders."
+  },
+  "showingCount": {
+    "description": "Pagination summary above the order list. {shown} = number of orders currently displayed; {total} = total order count (ICU plural selects 'order'/'orders')."
+  },
+  "emptyTitle": {
+    "description": "Title of the empty state shown when the user has no orders."
+  },
+  "emptyDescription": {
+    "description": "Body text of the empty state shown when the user has no orders yet."
+  },
+  "emptyPbnDescription": {
+    "description": "Empty state shown when filtering by a parent domain returns no orders. {domain} = the parent domain name — keep untranslated. Keep the quoted \"Show all parents\" label matching the toggle wording."
+  },
+  "list.domainName": {
+    "description": "Column header for the domain name in the order list table view."
+  },
+  "list.createdAt": {
+    "description": "Column header for the order creation date in the order list table view."
+  },
+  "list.status": {
+    "description": "Column header for the order status in the order list table view."
+  },
+  "list.nftWallet": {
+    "description": "Column header for the NFT receiving wallet in the order list table view."
+  },
+  "list.created": {
+    "description": "Inline label preceding an order's creation date in the order list. Ends with a colon."
+  },
+  "list.viewDetails": {
+    "description": "Link/button in an order list row that opens the order detail page."
+  },
+  "card.orderNumber": {
+    "description": "Heading on an order card showing the order's sequential number. {rowNum} = the order's display number — keep untranslated."
+  },
+  "card.itemsHeading": {
+    "description": "Items section heading on an order card. {visible} = number of items shown — keep untranslated."
+  },
+  "card.itemsHeadingOfTotal": {
+    "description": "Items section heading on an order card when some items are hidden. {visible} = items shown, {total} = total items — keep both untranslated."
+  },
+  "card.totalLabel": {
+    "description": "Inline label preceding the order's total amount on an order card. Ends with a colon."
+  },
+  "card.noItemsMatch": {
+    "description": "Message on an order card when the active filter/view hides all of its items."
+  },
+  "card.showMore": {
+    "description": "Toggle on an order card to reveal hidden items. {count} = number of additional items (ICU plural selects 'item'/'items')."
+  },
+  "card.showLess": {
+    "description": "Toggle on an order card to collapse the expanded item list."
+  },
+  "card.showFromOtherParents": {
+    "description": "Toggle on an order card to reveal items belonging to other parent domains. {count} = number of such items (ICU plural)."
+  },
+  "card.hideFromOtherParents": {
+    "description": "Toggle on an order card to hide items belonging to other parent domains. {count} = number of such items (ICU plural)."
+  },
+  "card.durationYears": {
+    "description": "Compact duration badge on an order item showing registration length in years. {count} = number of years (ICU plural selects 'yr'/'yrs'); keep abbreviated.",
+    "maxLength": 6
+  },
+  "toolbar.filters": {
+    "description": "Order list toolbar button that opens the filters panel."
+  },
+  "toolbar.sort": {
+    "description": "Order list toolbar button showing the current sort. {label} = the active sort option name."
+  },
+  "toolbar.sortBy": {
+    "description": "Label/heading for the sort-field selector in the order list toolbar."
+  },
+  "toolbar.direction": {
+    "description": "Label/heading for the sort-direction selector in the order list toolbar."
+  },
+  "toolbar.ascending": {
+    "description": "Sort direction option: ascending order."
+  },
+  "toolbar.descending": {
+    "description": "Sort direction option: descending order."
+  },
+  "toolbar.sortDate": {
+    "description": "Sort-field option: sort orders by date."
+  },
+  "toolbar.sortPrice": {
+    "description": "Sort-field option: sort orders by price."
+  },
+  "toolbar.sortDirAsc": {
+    "description": "Compact ascending-direction label shown in the sort summary.",
+    "maxLength": 6
+  },
+  "toolbar.sortDirDesc": {
+    "description": "Compact descending-direction label shown in the sort summary.",
+    "maxLength": 6
+  },
+  "toolbar.reset": {
+    "description": "Button that clears all order list filters and sort settings back to defaults."
+  },
+  "toolbar.onlyCurrentPbn": {
+    "description": "Filter toggle label limiting the order list to one parent domain. {domain} = the parent domain name wrapped in a <code> tag — keep the domain and tag untranslated."
+  },
+  "toolbar.filterDomainName": {
+    "description": "Filter field label: filter orders by domain name."
+  },
+  "toolbar.filterOrderId": {
+    "description": "Filter field label: filter orders by order ID."
+  },
+  "toolbar.filterNftReceivingWallet": {
+    "description": "Filter field label: filter orders by NFT receiving wallet address."
+  },
+  "toolbar.filterNftReceivingChainId": {
+    "description": "Filter field label: filter orders by NFT receiving chain ID. 'chain id' is a blockchain identifier."
+  },
+  "toolbar.filterOrderStatus": {
+    "description": "Filter field label: filter orders by order status."
+  },
+  "itemType.register": {
+    "description": "Order item type badge: a new domain registration."
+  },
+  "itemType.import": {
+    "description": "Order item type badge: importing an existing domain."
+  },
+  "itemType.renew": {
+    "description": "Order item type badge: renewing a domain."
+  },
+  "unlinkedWalletTooltip": {
+    "description": "Tooltip explaining that the NFT receiving wallet is not linked to the current account, so the domain won't appear in the account."
+  },
+  "walletNotLinked": {
+    "description": "Short inline notice that the displayed wallet isn't linked to the user's account."
+  },
+  "timeline.subtitle": {
+    "description": "Subtitle under the order progress timeline indicating it shows live updates."
+  },
+  "timeline.orderDetails.label": {
+    "description": "Progress timeline step label: order is being prepared/validated."
+  },
+  "timeline.orderDetails.helper": {
+    "description": "Progress timeline step helper text for the order-preparation stage (validating domains and wallet config)."
+  },
+  "timeline.payments.label": {
+    "description": "Progress timeline step label: collecting/confirming payment."
+  },
+  "timeline.payments.helper": {
+    "description": "Progress timeline step helper text for the payment stage, noting blockchain confirmations may take 30+ seconds."
+  },
+  "timeline.items.label": {
+    "description": "Progress timeline step label: registering domains."
+  },
+  "timeline.items.helper": {
+    "description": "Progress timeline step helper text for the domain registration stage (securing each domain on the blockchain)."
+  },
+  "timeline.postProcessing.label": {
+    "description": "Progress timeline step label: final post-processing touches."
+  },
+  "timeline.postProcessing.helper": {
+    "description": "Progress timeline step helper text for the post-processing stage. 'Namefi' is the brand name — keep untranslated."
+  },
+  "timeline.finalStatus.label": {
+    "description": "Progress timeline step label: finalizing the overall order status."
+  },
+  "timeline.finalStatus.helper": {
+    "description": "Progress timeline step helper text for applying the final status to the order."
+  },
+  "timeline.refund.label": {
+    "description": "Progress timeline step label: handling refunds for unfulfilled items."
+  },
+  "timeline.refund.helper": {
+    "description": "Progress timeline step helper text for the refund stage (returning funds for items that could not be secured)."
+  },
+  "timeline.notification.label": {
+    "description": "Progress timeline step label: sending the confirmation/receipt email."
+  },
+  "timeline.notification.helper": {
+    "description": "Progress timeline step helper text for preparing the receipt and order summary email."
+  },
+  "detail.authRequired": {
+    "description": "Message on the order detail page prompting the user to sign in to view order details."
+  },
+  "detail.unauthorized": {
+    "description": "Message shown on the order detail page when the signed-in user is not authorized to view this order."
+  },
+  "detail.congratulations": {
+    "description": "Celebratory heading on a successfully completed order's detail page."
+  },
+  "detail.couldNotComplete": {
+    "description": "Heading on the order detail page when the order failed to complete."
+  },
+  "detail.successSubheading": {
+    "description": "Subheading on a successful order confirming the domain(s) and NFT(s) were delivered. {count} = number of domains (ICU plural switches 'domain'/'domains' and 'is the NFT'/'are the NFTs')."
+  },
+  "detail.failedSubheading": {
+    "description": "Subheading on the order detail page when processing failed, inviting the user to review details below."
+  },
+  "detail.nftWallet": {
+    "description": "Label for the NFT receiving wallet on the order detail page."
+  },
+  "detail.viewFullDetails": {
+    "description": "Button/link on the order detail page opening the full order details."
+  },
+  "detail.backToHome": {
+    "description": "Button/link on the order detail page returning the user to the home page."
+  },
+  "detail.shareDialogTitle": {
+    "description": "Title of the dialog for sharing domain access with a recipient."
+  },
+  "detail.shareDialogDescription": {
+    "description": "Description in the share-access dialog explaining to send the message to the recipient."
+  },
+  "detail.message": {
+    "description": "Label for the editable share message field in the share-access dialog."
+  },
+  "detail.close": {
+    "description": "Button that closes the share-access dialog."
+  },
+  "detail.shareManageDefault": {
+    "description": "Default share message text inviting the recipient to manage their domain. 'Namefi' is the brand name — keep untranslated."
+  },
+  "detail.shareManageMessage": {
+    "description": "Share message template sent to a recipient. {domains} = list of domain names — keep untranslated; {count} = number of domains (ICU plural switches 'your domain'/'your domains'). 'Namefi' is the brand name — keep untranslated."
+  },
+  "processing.processingYourOrder": {
+    "description": "Heading shown on the order processing/progress screen while the order is in progress."
+  },
+  "processing.processingDomains": {
+    "description": "Processing status line. {count} = number of domains being processed (ICU plural)."
+  },
+  "processing.importing": {
+    "description": "Processing status line for imports. {count} = number of domains importing (ICU plural). Keep the lowercase 'importing' wording consistent with sibling strings."
+  },
+  "processing.registering": {
+    "description": "Processing status line for registrations. {count} = number of domains registering (ICU plural). Keep lowercase 'registering'."
+  },
+  "processing.renewing": {
+    "description": "Processing status line for renewals. {count} = number of domains renewing (ICU plural). Keep lowercase 'renewing'."
+  },
+  "processing.joinTwo": {
+    "description": "Grammar helper to join exactly two domain names in a sentence. {first} and {last} are domain names — keep untranslated; translate only the connecting word."
+  },
+  "processing.joinMany": {
+    "description": "Grammar helper to join three or more domain names in a sentence. {first}, {middle}, {last} are domain name fragments — keep untranslated; translate only the connecting punctuation/word."
+  },
+  "processing.descItemsImportOnly": {
+    "description": "Processing description when the order contains only imports, explaining the 5-7 day timeline and registrar/unlock caveats."
+  },
+  "processing.descItemsImportAndRegister": {
+    "description": "Processing description when the order mixes registrations and imports, explaining the 5-7 day import timeline and unlock caveats."
+  },
+  "processing.descItemsDefault": {
+    "description": "Default processing description for the items stage (each domain is being submitted to the registrar)."
+  },
+  "processing.descPostProcessingImport": {
+    "description": "Processing description for the post-processing stage of an import (the old registrar will contact the user; typically 5-7 days)."
+  },
+  "processing.descPostProcessingDefault": {
+    "description": "Default processing description for the post-processing stage (refreshing indexes and preparing on-chain records)."
+  },
+  "processing.descImportOnly": {
+    "description": "Top-level processing description when the order is import-only (initiating import; typically 5-7 days)."
+  },
+  "processing.descImportAndRegister": {
+    "description": "Top-level processing description when the order mixes registrations and imports (imports typically 5-7 days)."
+  },
+  "processing.descDefault": {
+    "description": "Generic fallback processing description while the order is wrapping up."
+  },
+  "notFound.title": {
+    "description": "Title of the order-not-found page."
+  },
+  "notFound.description": {
+    "description": "Body text of the order-not-found page, asking the user to check the order ID and retry."
+  },
+  "notFound.backToOrders": {
+    "description": "Button on the order-not-found page returning the user to the orders list."
+  },
+  "share.shareOn": {
+    "description": "Label preceding social share targets, e.g. 'Share on [X]'."
+  },
+  "summary.orderDetails": {
+    "description": "Title of the order summary card shown on the order detail page."
+  },
+  "summary.date": {
+    "description": "Label for the order date row in the order summary card."
+  },
+  "summary.grandTotal": {
+    "description": "Label for the grand total row in the order summary card."
+  },
+  "summary.paymentsSingle": {
+    "description": "Section label in the order summary when the order has a single payment."
+  },
+  "summary.paymentsMultiple": {
+    "description": "Section label in the order summary when the order has multiple payments."
+  },
+  "aiGenerations.title": {
+    "description": "Title of the AI logo preview section on the order detail page. 'Just AIng by Namefi™' is a trademarked product name — keep verbatim, do not translate."
+  },
+  "aiGenerations.description": {
+    "description": "Description of the AI logo preview section, inviting the user to explore more styles. 'Just AIng' is a trademarked product name — keep untranslated."
+  },
+  "aiGenerations.noPreview": {
+    "description": "Placeholder shown when no AI logo preview was generated for a domain."
+  },
+  "aiGenerations.previewUnavailable": {
+    "description": "Placeholder shown when an AI logo preview failed to load / is unavailable."
+  },
+  "aiGenerations.logoAlt": {
+    "description": "Alt text for a generated logo image. {domain} = the domain name — keep untranslated."
+  },
+  "details.heading": {
+    "description": "Heading of the order details section/page."
+  },
+  "details.orderItems": {
+    "description": "Sub-heading for the list of order items on the order details page."
+  },
+  "details.payments": {
+    "description": "Sub-heading for the payments list on the order details page."
+  },
+  "details.unauthorized": {
+    "description": "Message shown when the user is not authorized to view this order's details."
+  },
+  "details.actionRequiredTitle": {
+    "description": "Title of the action-required banner on the order details page."
+  },
+  "details.actionRequiredAll": {
+    "description": "Action-required banner text when every item in the order needs user action."
+  },
+  "details.actionRequiredSingle": {
+    "description": "Action-required banner text when one specific item needs user action. {domain} = the domain name wrapped in a <highlight> tag — keep the domain and tag untranslated."
+  },
+  "details.actionRequiredSome": {
+    "description": "Action-required banner text when some items need user action. {count} = items needing action, {total} = total items — keep both untranslated."
+  },
+  "details.actionRequiredDialogTitle": {
+    "description": "Title of the action-required dialog on the order details page."
+  },
+  "details.actionRequiredDialogDescription": {
+    "description": "Description in the action-required dialog asking the user to review and take necessary actions."
+  },
+  "details.cancel": {
+    "description": "Generic cancel/dismiss button in the order details dialogs."
+  },
+  "details.viewOrderDetails": {
+    "description": "Button/link that opens the order details view."
+  },
+  "details.viewTechnicalDetails": {
+    "description": "Button/link that opens the technical (raw) order details dialog."
+  },
+  "details.status": {
+    "description": "Field label for the order status on the order details page."
+  },
+  "details.placedAt": {
+    "description": "Field label for when the order was placed on the order details page."
+  },
+  "details.nftWallet": {
+    "description": "Field label for the NFT receiving wallet on the order details page."
+  },
+  "details.walletNotLinked": {
+    "description": "Inline notice that the NFT receiving wallet isn't linked to the user's account."
+  },
+  "details.walletAddressCopied": {
+    "description": "Toast confirming the wallet address was copied to the clipboard."
+  },
+  "details.copyWalletAddress": {
+    "description": "Accessibility/tooltip label for the copy-wallet-address button."
+  },
+  "details.copyWalletAddressTooltip": {
+    "description": "Tooltip text for the copy-wallet-address button."
+  },
+  "details.copied": {
+    "description": "Short confirmation shown after copying a value to the clipboard."
+  },
+  "details.amount": {
+    "description": "Field label for a payment amount on the order details page."
+  },
+  "details.mintedNft": {
+    "description": "Field label for a minted NFT on an order item."
+  },
+  "details.nft": {
+    "description": "Short label for an NFT. 'NFT' is a technical term — keep it."
+  },
+  "details.minting": {
+    "description": "Inline status shown while an NFT is being minted."
+  },
+  "details.renewalTx": {
+    "description": "Field label for the renewal transaction. 'tx' = blockchain transaction — keep abbreviated."
+  },
+  "details.updatingExpiration": {
+    "description": "Inline status shown while a domain's expiration date is being updated."
+  },
+  "details.total": {
+    "description": "Field label for the total amount on the order details page."
+  },
+  "details.noPayments": {
+    "description": "Message shown when an order has no payments yet."
+  },
+  "details.techDialogTitle": {
+    "description": "Title of the technical order details dialog."
+  },
+  "details.techDialogDescription": {
+    "description": "Description in the technical order details dialog explaining each field can be copied via the copy icon."
+  },
+  "details.orderId": {
+    "description": "Field label for the order ID in the technical details dialog."
+  },
+  "details.totalAmount": {
+    "description": "Field label for the total amount in the technical details dialog."
+  },
+  "details.network": {
+    "description": "Field label for the blockchain network in the technical details dialog."
+  },
+  "details.paymentsCount": {
+    "description": "Field label for the number of payments in the technical details dialog ('#' = count)."
+  },
+  "details.itemsCount": {
+    "description": "Field label for the number of items in the technical details dialog ('#' = count)."
+  },
+  "details.mintedNfts": {
+    "description": "Field label for the list of minted NFTs in the technical details dialog."
+  },
+  "details.close": {
+    "description": "Button that closes the technical / payment / item details dialog."
+  },
+  "details.copyExplorerUrl": {
+    "description": "Tooltip/label for the button that copies a blockchain explorer URL."
+  },
+  "details.chainIdLabel": {
+    "description": "Label showing a blockchain chain ID. {chainId} = the numeric chain ID — keep untranslated."
+  },
+  "details.paymentLabel": {
+    "description": "Label for a payment entry in the payments list. {index} = the payment's sequence number — keep untranslated."
+  },
+  "details.payment": {
+    "description": "Generic 'Payment' label/heading in the payment details view."
+  },
+  "details.method": {
+    "description": "Field label for the payment method."
+  },
+  "details.creditCard": {
+    "description": "Payment method value: credit card."
+  },
+  "details.charged": {
+    "description": "Payment status: the amount was charged."
+  },
+  "details.refunded": {
+    "description": "Payment status: the amount was refunded."
+  },
+  "details.refundPending": {
+    "description": "Payment status: a refund is pending."
+  },
+  "details.card": {
+    "description": "Short label for a card payment method."
+  },
+  "details.wallet": {
+    "description": "Short label for a wallet payment method."
+  },
+  "details.paymentDetailsTitle": {
+    "description": "Title of the payment details dialog."
+  },
+  "details.paymentId": {
+    "description": "Field label for the payment ID in the payment details dialog. The value is an identifier — keep untranslated."
+  },
+  "details.type": {
+    "description": "Field label for the payment type in the payment details dialog."
+  },
+  "details.typeX402": {
+    "description": "Payment type value: x402 (USDC). 'x402' and 'USDC' are technical names — keep untranslated."
+  },
+  "details.typeOnChain": {
+    "description": "Payment type value: on-chain (NFSC). 'NFSC' is a technical token name — keep untranslated."
+  },
+  "details.typeCard": {
+    "description": "Payment type value: card."
+  },
+  "details.buyerWallet": {
+    "description": "Field label for the buyer's wallet address in the payment details dialog."
+  },
+  "details.receiverWallet": {
+    "description": "Field label for the receiver's wallet address in the payment details dialog."
+  },
+  "details.settlementTx": {
+    "description": "Field label for the settlement transaction. 'Tx' = blockchain transaction — keep abbreviated."
+  },
+  "details.txHash": {
+    "description": "Field label for a transaction hash. 'Tx Hash' is a technical term — keep it; the value is a hash — keep untranslated."
+  },
+  "details.brand": {
+    "description": "Field label for the card brand (e.g. Visa, Mastercard) in the payment details dialog."
+  },
+  "details.last4": {
+    "description": "Field label for the last 4 digits of a payment card."
+  },
+  "details.refunds": {
+    "description": "Section heading for refunds in the payment details dialog."
+  },
+  "details.loadingRefunds": {
+    "description": "Inline status shown while refund records are being loaded."
+  },
+  "details.noRefunds": {
+    "description": "Message shown when a payment has no refunds."
+  },
+  "details.refundLabel": {
+    "description": "Label for a refund entry in the refunds list. {index} = the refund's sequence number — keep untranslated."
+  },
+  "details.refundTxHash": {
+    "description": "Field label for a refund transaction hash. The value is a hash — keep untranslated."
+  },
+  "details.itemDetailsTitle": {
+    "description": "Title of the order item details dialog."
+  },
+  "details.domain": {
+    "description": "Field label for the domain name on an order item. The value is a domain name — keep untranslated."
+  },
+  "details.duration": {
+    "description": "Registration duration value on an order item. {count} = number of years (ICU plural selects 'year'/'years')."
+  },
+  "details.durationLabel": {
+    "description": "Field label for the registration duration on an order item."
+  },
+  "details.requiredAction": {
+    "description": "Field label/heading for a required action on an order item."
+  },
+  "details.domainUnlockRequiredTitle": {
+    "description": "Title of the required-action prompt when a domain must be unlocked at the registrar."
+  },
+  "details.domainUnlockRequiredDescription": {
+    "description": "Instructions for the domain-unlock required action (unlock at the registrar, then confirm here)."
+  },
+  "details.confirming": {
+    "description": "Inline status shown while the unlock confirmation is being submitted."
+  },
+  "details.iUnlockedDomain": {
+    "description": "Button the user clicks to confirm they unlocked the domain at their registrar."
+  },
+  "details.authCodeRequiredTitle": {
+    "description": "Title of the required-action prompt when a new auth code is needed for an import."
+  },
+  "details.authCodeRequiredDescription": {
+    "description": "Instructions for the auth-code required action (enter the new auth code from your registrar to continue the import)."
+  },
+  "details.authCode": {
+    "description": "Field label for the domain transfer auth code input. 'Auth code' is a technical term — keep it."
+  },
+  "details.authCodePlaceholder": {
+    "description": "Placeholder text inside the auth code input field."
+  },
+  "details.updating": {
+    "description": "Inline status shown while the auth code is being updated."
+  },
+  "details.updateAuthCode": {
+    "description": "Button that submits the updated auth code."
+  },
+  "details.cancelThisItem": {
+    "description": "Title/label for the cancel-item required action."
+  },
+  "details.cancelThisItemDescription": {
+    "description": "Explanation that canceling will stop processing this order item if the user no longer wants to proceed."
+  },
+  "details.canceling": {
+    "description": "Inline status shown while an order item is being canceled."
+  },
+  "details.cancelItem": {
+    "description": "Button that cancels the order item."
+  },
+  "details.loading": {
+    "description": "Generic loading indicator within the order item / payment details views."
+  },
+  "details.requiredActionAuthCode": {
+    "description": "Short required-action summary: a new auth code is needed to continue the import."
+  },
+  "details.requiredActionUnlock": {
+    "description": "Short required-action summary: confirm the domain is unlocked at the current registrar."
+  },
+  "details.toastAuthCodeUpdated": {
+    "description": "Toast confirming the auth code was updated and the import is resuming."
+  },
+  "details.toastAuthCodeFailed": {
+    "description": "Toast shown when updating the auth code failed."
+  },
+  "details.toastUnlockConfirmed": {
+    "description": "Toast confirming the unlock was acknowledged and the request is resuming."
+  },
+  "details.toastUnlockFailed": {
+    "description": "Toast shown when confirming the unlock failed."
+  },
+  "details.toastItemCancelled": {
+    "description": "Toast confirming the order item was cancelled and the request is stopping."
+  },
+  "details.toastCancelFailed": {
+    "description": "Toast shown when canceling the order item failed."
+  },
+  "details.toastEnterAuthCode": {
+    "description": "Validation toast prompting the user to enter the auth code before continuing."
+  },
+  "details.failureTimeoutAuthCodeDuration": {
+    "description": "Failure reason: the auth code wasn't updated in time, so the item was canceled. {duration} = the elapsed lock/timeout period (a formatted duration)."
+  },
+  "details.failureTimeoutLockedDuration": {
+    "description": "Failure reason: the domain stayed locked too long, so the item was canceled. {duration} = the elapsed locked period (a formatted duration)."
+  },
+  "details.failureTimeoutAuthCode": {
+    "description": "Failure reason: the auth code update timed out, so the order item was canceled."
+  },
+  "details.failureTimeoutLocked": {
+    "description": "Failure reason: the domain stayed locked too long, so the order item was canceled."
+  },
+  "details.failureAdminAuthCode": {
+    "description": "Failure reason: an auth code update was required and support canceled the request."
+  },
+  "details.failureAdminLocked": {
+    "description": "Failure reason: the domain was locked and support canceled the request."
+  },
+  "details.failureUserAuthCode": {
+    "description": "Failure reason: an auth code update was required and the user canceled the request."
+  },
+  "details.failureUserLocked": {
+    "description": "Failure reason: the domain was locked and the user canceled the request."
+  }
+}

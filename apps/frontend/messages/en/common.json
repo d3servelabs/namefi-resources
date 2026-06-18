@@ -1,0 +1,48 @@
+{
+  "language": "Language",
+  "languageSelector": {
+    "label": "Language",
+    "ariaLabel": "Change language"
+  },
+  "actions": {
+    "signIn": "Sign In",
+    "loading": "Loading...",
+    "tryAgain": "Try Again",
+    "dismiss": "Dismiss",
+    "contactSupport": "Contact Support",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "remove": "Remove",
+    "view": "View",
+    "refresh": "Refresh",
+    "submit": "Submit",
+    "processing": "Processing...",
+    "loadMore": "Load more",
+    "connectWallet": "Connect wallet",
+    "goBack": "Go back",
+    "approve": "Approve",
+    "reject": "Reject",
+    "disable": "Disable"
+  },
+  "status": {
+    "created": "Created",
+    "processing": "Processing",
+    "succeeded": "Succeeded",
+    "completed": "Completed",
+    "failed": "Failed",
+    "cancelled": "Cancelled",
+    "partiallyCompleted": "Partially Completed",
+    "waitingForUser": "Waiting For User",
+    "pending": "Pending",
+    "refunded": "Refunded",
+    "requiresCapture": "Requires Capture",
+    "unknown": "Unknown"
+  },
+  "signIn": {
+    "loadFailedTitle": "Failed to load sign in",
+    "loadFailedDescription": "The sign in flow failed to load."
+  }
+}

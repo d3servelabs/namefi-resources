@@ -39,9 +39,9 @@ import {
   Info,
   ExternalLink,
   InfoIcon,
-  XCircleIcon,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { type FormEvent, useMemo, useState } from 'react';
 import {
   AlertDialog,
@@ -65,6 +65,8 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { PasswordInput } from '@/components/password-input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { toast } from 'sonner';
+
+type OrdersTranslator = ReturnType<typeof useTranslations<'orders'>>;
 
 type MintTransactionsByItemId = Record<string, OrderMintTransactionMetadata>;
 
@@ -90,6 +92,7 @@ function safeToUnicode(domain: string): string {
 }
 
 export function OrderDetailsContent({ id }: { id: string }) {
+  const t = useTranslations('orders');
   const router = useRouter();
 
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
@@ -183,23 +186,25 @@ export function OrderDetailsContent({ id }: { id: string }) {
     }, []);
   }, [order, orderMintTransactions, items]);
 
-  function humanizeItemType(t: string | null | undefined): string {
-    switch (t) {
+  function humanizeItemType(type: string | null | undefined): string {
+    switch (type) {
       case itemTypeSchema.enum.REGISTER:
-        return 'Register';
+        return t('itemType.register');
       case itemTypeSchema.enum.IMPORT:
-        return 'Import';
+        return t('itemType.import');
       case itemTypeSchema.enum.RENEW:
-        return 'Renew';
+        return t('itemType.renew');
       default:
-        return t ?? '-';
+        return type ?? '-';
     }
   }
 
   if (isLoading) {
     return (
       <>
-        <h1 className="text-4xl font-bold my-2 font-mono">Order Details</h1>
+        <h1 className="text-4xl font-bold my-2 font-mono">
+          {t('details.heading')}
+        </h1>
         <CartCard className="mb-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center justify-between h-8">
@@ -222,7 +227,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Order Items Skeleton */}
-          <CartCard title="Order Items">
+          <CartCard title={t('details.orderItems')}>
             <div className="flex flex-col gap-3 mt-2">
               {[1, 2].map((_, index) => (
                 <div
@@ -253,7 +258,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
           </CartCard>
 
           {/* Payments Skeleton */}
-          <CartCard title="Payments">
+          <CartCard title={t('details.payments')}>
             <div className="flex flex-col gap-3 mt-2">
               {[1].map((_, index) => (
                 <div
@@ -287,17 +292,17 @@ export function OrderDetailsContent({ id }: { id: string }) {
     error instanceof TRPCClientError &&
     error.data?.code === 'UNAUTHORIZED'
   ) {
-    return (
-      <Unauthorized description="You are not authorized to view this order." />
-    );
+    return <Unauthorized description={t('details.unauthorized')} />;
   }
   if (!order) {
     return (
       <CartCard
-        title="Order not found"
-        description="The order you are looking for could not be found. Please check the order ID and try again."
+        title={t('notFound.title')}
+        description={t('notFound.description')}
         footer={
-          <Button onClick={() => router.push('/orders')}>Back to Orders</Button>
+          <Button onClick={() => router.push('/orders')}>
+            {t('notFound.backToOrders')}
+          </Button>
         }
       />
     );
@@ -311,7 +316,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
           variant="default"
           className="w-full border border-amber-500/30 bg-amber-800/20 mb-4"
         >
-          <AlertTitle className="font-semibold"> Action required</AlertTitle>
+          <AlertTitle className="font-semibold">
+            {' '}
+            {t('details.actionRequiredTitle')}
+          </AlertTitle>
           <AlertDescription>
             <div className="w-full flex flex-row flex-wrap justify-between items-start ">
               <div>
@@ -319,28 +327,33 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   requiredActionItems.length === 1 ? (
                     <p>
                       <span>
-                        The domain{' '}
-                        <span className="font-semibold">
-                          {safeToUnicode(
+                        {t.rich('details.actionRequiredSingle', {
+                          domain: safeToUnicode(
                             requiredActionItems[0].normalizedDomainName,
-                          )}
-                        </span>{' '}
-                        requires further action from your side.
+                          ),
+                          highlight: (chunks) => (
+                            <span className="font-semibold">{chunks}</span>
+                          ),
+                        })}
                       </span>
                       <br />
                       <span className="mt-2">
                         {requiredActionItems[0].metadata?.requiredAction
                           ? getRequiredActionText(
+                              t,
                               requiredActionItems[0].metadata.requiredAction,
                             )
                           : ''}
                       </span>
                     </p>
                   ) : (
-                    'All items in this order require further action from your side.'
+                    t('details.actionRequiredAll')
                   )
                 ) : (
-                  `${requiredActionItems.length} of ${items?.length} items in this order require further action from your side.`
+                  t('details.actionRequiredSome', {
+                    count: requiredActionItems.length,
+                    total: items?.length ?? 0,
+                  })
                 )}
               </div>
 
@@ -361,10 +374,11 @@ export function OrderDetailsContent({ id }: { id: string }) {
                 </AlertDialogTrigger>
                 <AlertDialogContent className="max-w-2xl">
                   <AlertDialogHeader>
-                    <AlertDialogTitle>Action Required</AlertDialogTitle>
+                    <AlertDialogTitle>
+                      {t('details.actionRequiredDialogTitle')}
+                    </AlertDialogTitle>
                     <AlertDialogDescription>
-                      Some items in this order require action. Please review the
-                      details and take necessary actions.
+                      {t('details.actionRequiredDialogDescription')}
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogDescription>
@@ -396,7 +410,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       })}
                     </div>
                     <div className="flex flex-row justify-end w-full">
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>
+                        {t('details.cancel')}
+                      </AlertDialogCancel>
                     </div>
                   </AlertDialogDescription>
                 </AlertDialogContent>
@@ -407,21 +423,23 @@ export function OrderDetailsContent({ id }: { id: string }) {
       ) : null}
 
       {/* Top - Order Details header */}
-      <h1 className="text-4xl font-bold my-2 font-mono">Order Details</h1>
+      <h1 className="text-4xl font-bold my-2 font-mono">
+        {t('details.heading')}
+      </h1>
       <CartCard className="relative mb-8" gradient="minimal">
         <Button
           variant="ghost"
           size="icon"
           className="absolute top-1 right-6 z-10 h-8 w-8"
           onClick={() => setIsTechModalOpen(true)}
-          title="View order details"
-          aria-label="View technical order details"
+          title={t('details.viewOrderDetails')}
+          aria-label={t('details.viewTechnicalDetails')}
         >
           <Info size={16} />
         </Button>
         <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
           <div className="flex items-center justify-between h-8">
-            <span className="font-medium">Status</span>
+            <span className="font-medium">{t('details.status')}</span>
             <div className="flex items-center">
               {order.status ? (
                 <StatusBadge status={order.status} type="order" />
@@ -431,14 +449,14 @@ export function OrderDetailsContent({ id }: { id: string }) {
             </div>
           </div>
           <div className="flex items-center justify-between h-8">
-            <span className="font-medium">Placed At</span>
+            <span className="font-medium">{t('details.placedAt')}</span>
             <span className="text-sm text-gray-500">
               {format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
             </span>
           </div>
 
           <div className="flex items-center justify-between h-8">
-            <span className="font-medium">NFT Wallet</span>
+            <span className="font-medium">{t('details.nftWallet')}</span>
 
             <div className="flex items-center gap-2">
               {recipientWalletAddress && !isRecipientLinked && (
@@ -452,7 +470,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       <Info className="h-3.5 w-3.5" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>This wallet isn't linked to your account.</p>
+                      <p>{t('details.walletNotLinked')}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -477,8 +495,8 @@ export function OrderDetailsContent({ id }: { id: string }) {
                           className="h-8 w-8"
                           aria-label={
                             copiedFields.recipientWalletAddress
-                              ? 'Wallet address copied'
-                              : 'Copy wallet address'
+                              ? t('details.walletAddressCopied')
+                              : t('details.copyWalletAddress')
                           }
                           onClick={() => {
                             if (!recipientWalletAddress) return;
@@ -499,8 +517,8 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     <TooltipContent>
                       <p>
                         {copiedFields.recipientWalletAddress
-                          ? 'Copied!'
-                          : 'Copy Wallet Address'}
+                          ? t('details.copied')
+                          : t('details.copyWalletAddressTooltip')}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -514,7 +532,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
       {/* Two-column - Order Items left, Payments right */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8">
         <CartCard
-          title="Order Items"
+          title={t('details.orderItems')}
           className="h-fit lg:col-span-2"
           gradient="default"
         >
@@ -538,7 +556,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
               const requiredAction = item.metadata?.requiredAction;
               const failureDetailsText =
                 item.status === 'FAILED'
-                  ? getFailureDetailsText(item.metadata?.failureDetails)
+                  ? getFailureDetailsText(t, item.metadata?.failureDetails)
                   : null;
               const chainId = order.nftChainId ?? null;
               return (
@@ -575,7 +593,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   </div>
                   <div className="mt-2 text-sm">
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Amount</span>
+                      <span className="text-muted-foreground">
+                        {t('details.amount')}
+                      </span>
                       <span className="font-medium">
                         {formatAmountInUSD(item.amountInUSDCents, true)}
                       </span>
@@ -587,7 +607,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     ) : null}
                     {mintTransaction && tokenId ? (
                       <MintTokenRow
-                        label="Minted NFT"
+                        label={t('details.mintedNft')}
                         chainId={chainId}
                         tokenId={tokenId}
                       />
@@ -599,17 +619,17 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       // in-flight tx show nothing until their tx is backfilled.)
                       <div className="flex items-center justify-between gap-3 py-1">
                         <span className="text-sm text-muted-foreground">
-                          NFT
+                          {t('details.nft')}
                         </span>
                         <span className="inline-flex items-center gap-2 text-xs text-amber-300">
                           <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
-                          Minting…
+                          {t('details.minting')}
                         </span>
                       </div>
                     ) : null}
                     {item.type === 'RENEW' && extendTransaction && tokenId ? (
                       <MintTokenRow
-                        label="Renewal tx"
+                        label={t('details.renewalTx')}
                         chainId={chainId}
                         tokenId={tokenId}
                       />
@@ -621,11 +641,11 @@ export function OrderDetailsContent({ id }: { id: string }) {
                       // their tx is backfilled.)
                       <div className="flex items-center justify-between gap-3 py-1">
                         <span className="text-sm text-muted-foreground">
-                          NFT
+                          {t('details.nft')}
                         </span>
                         <span className="inline-flex items-center gap-2 text-xs text-amber-300">
                           <span className="inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
-                          Updating expiration…
+                          {t('details.updatingExpiration')}
                         </span>
                       </div>
                     ) : null}
@@ -638,18 +658,22 @@ export function OrderDetailsContent({ id }: { id: string }) {
             <Separator />
           </div>
           <div className="flex items-center justify-between pt-4">
-            <span className="text-xl font-medium">Total</span>
+            <span className="text-xl font-medium">{t('details.total')}</span>
             <span className="text-xl font-bold">
               {formatAmountInUSD(order.amountInUSDCents, true)}
             </span>
           </div>
         </CartCard>
 
-        <CartCard title="Payments" className="h-fit" gradient="minimal-reverse">
+        <CartCard
+          title={t('details.payments')}
+          className="h-fit"
+          gradient="minimal-reverse"
+        >
           <div className="flex flex-col gap-3 mt-2">
             {payments.length === 0 ? (
               <div className="text-sm text-muted-foreground">
-                No payments yet.
+                {t('details.noPayments')}
               </div>
             ) : (
               payments.map((payment, index) => (
@@ -670,33 +694,33 @@ export function OrderDetailsContent({ id }: { id: string }) {
       <AlertDialog open={isTechModalOpen} onOpenChange={setIsTechModalOpen}>
         <AlertDialogContent className="max-w-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle>Order details</AlertDialogTitle>
+            <AlertDialogTitle>{t('details.techDialogTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Copy any field by clicking the copy icon.
+              {t('details.techDialogDescription')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           {order ? (
             <div className="mt-2">
               <InfoRow
-                label="Order ID"
+                label={t('details.orderId')}
                 value={order.id}
                 field="orderId-full"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
+                onCopy={(text) => navigator.clipboard.writeText(text)}
               />
               <InfoRow
-                label="Status"
+                label={t('details.status')}
                 value={order.status}
                 field="orderStatus"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
+                onCopy={(text) => navigator.clipboard.writeText(text)}
               />
               <InfoRow
-                label="Placed At"
+                label={t('details.placedAt')}
                 value={format(new Date(order.createdAt), 'MMM d, yyyy h:mm a')}
                 field="orderPlacedAt"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
+                onCopy={(text) => navigator.clipboard.writeText(text)}
               />
               <InfoRow
-                label="Total Amount"
+                label={t('details.totalAmount')}
                 value={formatAmountInUSD(order.amountInUSDCents, true)}
                 field="orderAmount"
                 onCopy={() =>
@@ -704,13 +728,15 @@ export function OrderDetailsContent({ id }: { id: string }) {
                 }
               />
               <InfoRow
-                label="NFT Wallet"
+                label={t('details.nftWallet')}
                 value={order.nftWalletAddress}
                 field="orderWallet"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
+                onCopy={(text) => navigator.clipboard.writeText(text)}
               />
               <div className="flex items-center justify-between gap-3 py-1">
-                <span className="text-sm text-muted-foreground">Network</span>
+                <span className="text-sm text-muted-foreground">
+                  {t('details.network')}
+                </span>
                 <div className="flex items-center gap-2">
                   {!!order.nftChainId && (
                     <NetworkLogo
@@ -721,7 +747,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   <span className="text-sm break-all">
                     {order.nftChainId
                       ? getChain(order.nftChainId)?.name ||
-                        `Chain ID ${order.nftChainId}`
+                        t('details.chainIdLabel', { chainId: order.nftChainId })
                       : '-'}
                   </span>
                   <Button
@@ -738,7 +764,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                 </div>
               </div>
               <InfoRow
-                label="# Payments"
+                label={t('details.paymentsCount')}
                 value={payments.length}
                 field="orderPaymentsCount"
                 onCopy={() =>
@@ -746,7 +772,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                 }
               />
               <InfoRow
-                label="# Items"
+                label={t('details.itemsCount')}
                 value={items?.length ?? 0}
                 field="orderItemsCount"
                 onCopy={() =>
@@ -758,7 +784,9 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   <div className="my-2">
                     <Separator className="opacity-50" />
                   </div>
-                  <div className="font-medium mb-2">Minted NFTs</div>
+                  <div className="font-medium mb-2">
+                    {t('details.mintedNfts')}
+                  </div>
                   <div className="flex flex-col gap-2">
                     {mintTransactionsList.map(
                       ({ itemId, label, tokenId, chainId }) => (
@@ -779,7 +807,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
             </div>
           ) : null}
           <AlertDialogFooter>
-            <AlertDialogCancel>Close</AlertDialogCancel>
+            <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -815,6 +843,7 @@ function MintTokenRow({
   tokenId: string;
   onCopyUrl?: (url: string) => void;
 }) {
+  const t = useTranslations('orders');
   const explorerUrl = getNftExplorerUrl(chainId ?? null, tokenId);
 
   return (
@@ -837,7 +866,7 @@ function MintTokenRow({
               >
                 <ClipboardCopy size={14} />
               </TooltipTrigger>
-              <TooltipContent>Copy Explorer URL</TooltipContent>
+              <TooltipContent>{t('details.copyExplorerUrl')}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : null}
@@ -855,6 +884,7 @@ function MintTokenLink({
   tokenId: string;
   className?: string;
 }) {
+  const t = useTranslations('orders');
   const explorerUrl = getNftExplorerUrl(chainId, tokenId);
   const shortTokenId = getShortId(tokenId, 6, 6);
   if (!chainId) {
@@ -867,7 +897,8 @@ function MintTokenLink({
     );
   }
 
-  const chainName = getChain(chainId)?.name ?? `Chain ID ${chainId}`;
+  const chainName =
+    getChain(chainId)?.name ?? t('details.chainIdLabel', { chainId });
   const content = (
     <>
       <NetworkLogo className="size-4" network={chainId} />
@@ -911,6 +942,7 @@ function PaymentSummaryCard({
   singlePayment: boolean;
   onClick: () => void;
 }) {
+  const t = useTranslations('orders');
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
   const { data: method = { isOnChainPayment: false as const }, isLoading } =
@@ -965,11 +997,11 @@ function PaymentSummaryCard({
     }
     return 'last4' in method && method.last4
       ? `•••• ${method.last4}`
-      : 'Credit Card';
-  }, [isLoading, method]);
+      : t('details.creditCard');
+  }, [isLoading, method, t]);
   const paymentMethodDisplay = useMemo(() => {
     if (payment.paymentProvider === 'STRIPE') {
-      return <>Credit Card</>;
+      return <>{t('details.creditCard')}</>;
     }
     if (isX402Payment && payment.x402PaymentDetails) {
       const networkName = getNetworkName(payment.x402PaymentDetails.network);
@@ -994,13 +1026,13 @@ function PaymentSummaryCard({
         NFSC
       </>
     );
-  }, [payment, isX402Payment]);
+  }, [payment, isX402Payment, t]);
   const walletLabel = useMemo(() => {
     if (payment.paymentProvider === 'STRIPE') {
-      return 'Card';
+      return t('details.card');
     }
-    return 'Wallet';
-  }, [payment.paymentProvider]);
+    return t('details.wallet');
+  }, [payment.paymentProvider, t]);
 
   return (
     <button
@@ -1010,13 +1042,15 @@ function PaymentSummaryCard({
     >
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
-          {!singlePayment ? `Payment ${index + 1}` : 'Payment'}
+          {!singlePayment
+            ? t('details.paymentLabel', { index: index + 1 })
+            : t('details.payment')}
         </div>
         <StatusBadge status={payment.status} type="payment" />
       </div>
       <div className="mt-2 text-sm">
         <div className="flex items-center justify-between gap-3">
-          <span className="text-muted-foreground">Method</span>
+          <span className="text-muted-foreground">{t('details.method')}</span>
           <span className="font-medium flex items-center gap-2">
             {paymentMethodDisplay}
           </span>
@@ -1024,14 +1058,18 @@ function PaymentSummaryCard({
         {hasRefund ? (
           <>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Charged</span>
+              <span className="text-muted-foreground">
+                {t('details.charged')}
+              </span>
               <span className="font-medium">
                 {formatAmountInUSD(payment.amountInUSDCents, true)}
               </span>
             </div>
             {refundedAmountCents > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Refunded</span>
+                <span className="text-muted-foreground">
+                  {t('details.refunded')}
+                </span>
                 <span className="font-medium text-amber-400">
                   -{formatAmountInUSD(refundedAmountCents, true)}
                 </span>
@@ -1039,14 +1077,18 @@ function PaymentSummaryCard({
             )}
             {pendingRefundCents > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-muted-foreground">Refund pending</span>
+                <span className="text-muted-foreground">
+                  {t('details.refundPending')}
+                </span>
                 <span className="text-xs text-amber-300">
                   {formatAmountInUSD(pendingRefundCents, true)}
                 </span>
               </div>
             )}
             <div className="flex items-center justify-between border-t border-white/10 mt-2 pt-2">
-              <span className="text-muted-foreground">Total</span>
+              <span className="text-muted-foreground">
+                {t('details.total')}
+              </span>
               <span className="font-semibold">
                 {formatAmountInUSD(totalAmountCents, true)}
               </span>
@@ -1054,7 +1096,7 @@ function PaymentSummaryCard({
           </>
         ) : (
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Amount</span>
+            <span className="text-muted-foreground">{t('details.amount')}</span>
             <span className="font-medium">
               {formatAmountInUSD(payment.amountInUSDCents, true)}
             </span>
@@ -1110,6 +1152,7 @@ function PaymentDetailsModal({
   paymentId: string | null;
   onOpenChange: (id: string | null) => void;
 }) {
+  const t = useTranslations('orders');
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
   const { data: payment, isLoading } = useQuery({
@@ -1131,53 +1174,57 @@ function PaymentDetailsModal({
     <AlertDialog open={!!paymentId} onOpenChange={() => onOpenChange(null)}>
       <AlertDialogContent className="!max-w-2xl !w-full">
         <AlertDialogHeader>
-          <AlertDialogTitle>Payment details</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t('details.paymentDetailsTitle')}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            Copy any field by clicking the copy icon.
+            {t('details.techDialogDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         {isLoading ? (
           <div className="flex items-center gap-2 text-sm">
-            <Loader2 className="animate-spin" /> Loading…
+            <Loader2 className="animate-spin" /> {t('details.loading')}
           </div>
         ) : payment ? (
           <div className="mt-2 !w-full">
             <InfoRow
-              label="Payment ID"
+              label={t('details.paymentId')}
               value={paymentId ?? ''}
               field="modalPaymentId"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             <InfoRow
-              label="Type"
+              label={t('details.type')}
               value={
                 'isX402Payment' in payment && payment.isX402Payment
-                  ? 'x402 (USDC)'
+                  ? t('details.typeX402')
                   : payment.isOnChainPayment
-                    ? 'On-chain (NFSC)'
-                    : 'Card'
+                    ? t('details.typeOnChain')
+                    : t('details.typeCard')
               }
               field="modalPaymentType"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             {'isX402Payment' in payment && payment.isX402Payment ? (
               <>
                 <InfoRow
-                  label="Buyer Wallet"
+                  label={t('details.buyerWallet')}
                   value={payment.buyerWalletAddress}
                   field="buyerWalletAddress"
-                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                  onCopy={(text) => navigator.clipboard.writeText(text)}
                 />
                 {payment.receiverWalletAddress && (
                   <InfoRow
-                    label="Receiver Wallet"
+                    label={t('details.receiverWallet')}
                     value={payment.receiverWalletAddress}
                     field="receiverWalletAddress"
-                    onCopy={(t) => navigator.clipboard.writeText(t)}
+                    onCopy={(text) => navigator.clipboard.writeText(text)}
                   />
                 )}
                 <div className="flex items-center justify-between gap-3 py-1">
-                  <span className="text-sm text-muted-foreground">Network</span>
+                  <span className="text-sm text-muted-foreground">
+                    {t('details.network')}
+                  </span>
                   <div className="flex items-center gap-2">
                     <span className="text-sm break-all">
                       {getNetworkName(payment.network)}
@@ -1197,7 +1244,7 @@ function PaymentDetailsModal({
                 {payment.settlementTxHash && (
                   <div className="flex items-center justify-between gap-3 py-1">
                     <span className="text-sm text-muted-foreground">
-                      Settlement Tx
+                      {t('details.settlementTx')}
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="text-sm break-all font-mono">
@@ -1240,13 +1287,15 @@ function PaymentDetailsModal({
               'chainId' in payment ? (
               <>
                 <InfoRow
-                  label="Wallet"
+                  label={t('details.wallet')}
                   value={payment.walletAddress}
                   field="walletAddress"
-                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                  onCopy={(text) => navigator.clipboard.writeText(text)}
                 />
                 <div className="flex items-center justify-between gap-3 py-1">
-                  <span className="text-sm text-muted-foreground">Network</span>
+                  <span className="text-sm text-muted-foreground">
+                    {t('details.network')}
+                  </span>
                   <div className="flex items-center gap-2">
                     {!!payment.chainId && (
                       <NetworkLogo
@@ -1256,7 +1305,7 @@ function PaymentDetailsModal({
                     )}
                     <span className="text-sm break-all">
                       {getChain(payment.chainId as number)?.name ||
-                        `Chain ID ${payment.chainId}`}
+                        t('details.chainIdLabel', { chainId: payment.chainId })}
                     </span>
                     <Button
                       variant="ghost"
@@ -1272,7 +1321,7 @@ function PaymentDetailsModal({
                 </div>
                 {'txHash' in payment && (
                   <InfoRow
-                    label="Tx Hash"
+                    label={t('details.txHash')}
                     value={
                       payment.txHash ? getShortId(payment.txHash, 20, 20) : '-'
                     }
@@ -1286,16 +1335,16 @@ function PaymentDetailsModal({
             ) : 'brand' in payment ? (
               <>
                 <InfoRow
-                  label="Brand"
+                  label={t('details.brand')}
                   value={payment.brand ?? '-'}
                   field="brand"
-                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                  onCopy={(text) => navigator.clipboard.writeText(text)}
                 />
                 <InfoRow
-                  label="Last4"
+                  label={t('details.last4')}
                   value={payment.last4 ?? '-'}
                   field="last4"
-                  onCopy={(t) => navigator.clipboard.writeText(t)}
+                  onCopy={(text) => navigator.clipboard.writeText(text)}
                 />
               </>
             ) : null}
@@ -1304,13 +1353,16 @@ function PaymentDetailsModal({
             <div className="my-2">
               <Separator className="opacity-50" />
             </div>
-            <div className="font-medium mb-2">Refunds</div>
+            <div className="font-medium mb-2">{t('details.refunds')}</div>
             {refundsLoading ? (
               <div className="flex items-center gap-2 text-sm">
-                <Loader2 className="animate-spin" /> Loading refunds…
+                <Loader2 className="animate-spin" />{' '}
+                {t('details.loadingRefunds')}
               </div>
             ) : refunds.length === 0 ? (
-              <div className="text-sm text-muted-foreground">No refunds</div>
+              <div className="text-sm text-muted-foreground">
+                {t('details.noRefunds')}
+              </div>
             ) : (
               <div className="flex flex-col gap-2">
                 {refunds.map((r, idx) => (
@@ -1320,13 +1372,13 @@ function PaymentDetailsModal({
                   >
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-muted-foreground">
-                        Refund {idx + 1}
+                        {t('details.refundLabel', { index: idx + 1 })}
                       </span>
                       <StatusBadge status={r.status} type="payment" />
                     </div>
                     <div className="mt-2">
                       <InfoRow
-                        label="Amount"
+                        label={t('details.amount')}
                         value={formatAmountInUSD(r.amountInUSDCents, true)}
                         field={`refundAmount-${idx}`}
                         onCopy={() =>
@@ -1337,7 +1389,7 @@ function PaymentDetailsModal({
                       />
                       <div className="flex items-center justify-between gap-3 py-1">
                         <span className="text-sm text-muted-foreground">
-                          Network
+                          {t('details.network')}
                         </span>
                         <div className="flex items-center gap-2">
                           {!!r.chainId && (
@@ -1349,7 +1401,9 @@ function PaymentDetailsModal({
                           <span className="text-sm break-all">
                             {r.chainId
                               ? getChain(r.chainId)?.name ||
-                                `Chain ID ${r.chainId}`
+                                t('details.chainIdLabel', {
+                                  chainId: r.chainId,
+                                })
                               : '-'}
                           </span>
                           {r.chainId && (
@@ -1367,7 +1421,7 @@ function PaymentDetailsModal({
                         </div>
                       </div>
                       <InfoRow
-                        label="Refund Tx Hash"
+                        label={t('details.refundTxHash')}
                         value={r.txHash ? getShortId(r.txHash, 20, 20) : '-'}
                         field={`refundTxHash-${idx}`}
                         onCopy={() =>
@@ -1376,10 +1430,10 @@ function PaymentDetailsModal({
                       />
                       {r.walletAddress && (
                         <InfoRow
-                          label="Wallet"
+                          label={t('details.wallet')}
                           value={r.walletAddress}
                           field={`refundWallet-${idx}`}
-                          onCopy={(t) => navigator.clipboard.writeText(t)}
+                          onCopy={(text) => navigator.clipboard.writeText(text)}
                         />
                       )}
                     </div>
@@ -1390,7 +1444,7 @@ function PaymentDetailsModal({
           </div>
         ) : null}
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -1412,6 +1466,7 @@ function ItemDetailsModal({
   onOpenChange: (id: string | null) => void;
   orderId: string;
 }) {
+  const t = useTranslations('orders');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [authCode, setAuthCode] = useState('');
@@ -1433,13 +1488,13 @@ function ItemDetailsModal({
     trpc.orders.updateImportAuthCode.mutationOptions({
       onSuccess: async () => {
         setAuthCode('');
-        toast.success('Auth code updated. We are resuming your import.');
+        toast.success(t('details.toastAuthCodeUpdated'));
         await queryClient.invalidateQueries({
           queryKey: trpc.orders.getOrder.queryKey({ orderId }),
         });
       },
       onError: (error) => {
-        toast.error(error.message || 'Failed to update auth code');
+        toast.error(error.message || t('details.toastAuthCodeFailed'));
       },
     }),
   );
@@ -1447,13 +1502,13 @@ function ItemDetailsModal({
   const confirmUnlockMutation = useMutation(
     trpc.orders.confirmDomainUnlocked.mutationOptions({
       onSuccess: async () => {
-        toast.success('Unlock confirmed. We are resuming the request.');
+        toast.success(t('details.toastUnlockConfirmed'));
         await queryClient.invalidateQueries({
           queryKey: trpc.orders.getOrder.queryKey({ orderId }),
         });
       },
       onError: (error) => {
-        toast.error(error.message || 'Failed to confirm unlock');
+        toast.error(error.message || t('details.toastUnlockFailed'));
       },
     }),
   );
@@ -1461,13 +1516,13 @@ function ItemDetailsModal({
   const cancelRequiredActionMutation = useMutation(
     trpc.orders.cancelRequiredActionOrderItem.mutationOptions({
       onSuccess: async () => {
-        toast.success('Item cancelled. We are stopping the request.');
+        toast.success(t('details.toastItemCancelled'));
         await queryClient.invalidateQueries({
           queryKey: trpc.orders.getOrder.queryKey({ orderId }),
         });
       },
       onError: (error) => {
-        toast.error(error.message || 'Failed to cancel item');
+        toast.error(error.message || t('details.toastCancelFailed'));
       },
     }),
   );
@@ -1482,7 +1537,7 @@ function ItemDetailsModal({
     if (!item) return;
     const trimmedAuthCode = authCode.trim();
     if (!trimmedAuthCode) {
-      toast.error('Enter the auth code to continue.');
+      toast.error(t('details.toastEnterAuthCode'));
       return;
     }
     updateAuthCodeMutation.mutate({
@@ -1512,51 +1567,49 @@ function ItemDetailsModal({
     <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
       <AlertDialogContent className="!max-w-xl">
         <AlertDialogHeader>
-          <AlertDialogTitle>Item details</AlertDialogTitle>
+          <AlertDialogTitle>{t('details.itemDetailsTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            Copy any field by clicking the copy icon.
+            {t('details.techDialogDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         {item ? (
           <div className="mt-2">
             <InfoRow
-              label="Domain"
+              label={t('details.domain')}
               value={item.normalizedDomainName}
               field="domain"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             <InfoRow
-              label="Type"
+              label={t('details.type')}
               value={item.type}
               field="type"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             <InfoRow
-              label="Amount"
+              label={t('details.amount')}
               value={formatAmountInUSD(item.amountInUSDCents, true)}
               field="amount"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             <InfoRow
-              label="Duration"
-              value={`${item.durationInYears} year${
-                item.durationInYears > 1 ? 's' : ''
-              }`}
+              label={t('details.durationLabel')}
+              value={t('details.duration', { count: item.durationInYears })}
               field="duration"
-              onCopy={(t) => navigator.clipboard.writeText(t)}
+              onCopy={(text) => navigator.clipboard.writeText(text)}
             />
             {item.metadata?.requiredAction && (
               <InfoRow
-                label="Required Action"
+                label={t('details.requiredAction')}
                 labelClassName="font-semibold text-amber-700"
-                value={getRequiredActionText(item.metadata?.requiredAction)}
+                value={getRequiredActionText(t, item.metadata?.requiredAction)}
                 field="requiredAction"
-                onCopy={(t) => navigator.clipboard.writeText(t)}
+                onCopy={(text) => navigator.clipboard.writeText(text)}
               />
             )}
             {mintTransaction && tokenId ? (
               <MintTokenRow
-                label="Minted NFT"
+                label={t('details.mintedNft')}
                 chainId={chainId}
                 tokenId={tokenId}
                 onCopyUrl={(text) => navigator.clipboard.writeText(text)}
@@ -1570,11 +1623,10 @@ function ItemDetailsModal({
                   className="border border-amber-500/30 bg-amber-800/20"
                 >
                   <AlertTitle className="font-semibold">
-                    Domain unlock required
+                    {t('details.domainUnlockRequiredTitle')}
                   </AlertTitle>
                   <AlertDescription>
-                    Unlock the domain at your registrar, then confirm here so we
-                    can continue.
+                    {t('details.domainUnlockRequiredDescription')}
                   </AlertDescription>
                 </Alert>
                 <Button
@@ -1585,10 +1637,10 @@ function ItemDetailsModal({
                   {confirmUnlockMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Confirming…
+                      {t('details.confirming')}
                     </>
                   ) : (
-                    'I unlocked the domain'
+                    t('details.iUnlockedDomain')
                   )}
                 </Button>
               </div>
@@ -1600,21 +1652,22 @@ function ItemDetailsModal({
                   className="border border-amber-500/30 bg-amber-800/20"
                 >
                   <AlertTitle className="font-semibold">
-                    Auth code required
+                    {t('details.authCodeRequiredTitle')}
                   </AlertTitle>
                   <AlertDescription>
-                    Enter the new auth code from your registrar to continue the
-                    import.
+                    {t('details.authCodeRequiredDescription')}
                   </AlertDescription>
                 </Alert>
                 <form className="space-y-3" onSubmit={handleAuthCodeSubmit}>
                   <div className="space-y-2">
-                    <Label htmlFor="order-auth-code">Auth code</Label>
+                    <Label htmlFor="order-auth-code">
+                      {t('details.authCode')}
+                    </Label>
                     <PasswordInput
                       id="order-auth-code"
                       value={authCode}
                       onChange={(event) => setAuthCode(event.target.value)}
-                      placeholder="Enter auth code"
+                      placeholder={t('details.authCodePlaceholder')}
                       autoComplete="off"
                       disabled={isActionPending}
                     />
@@ -1626,10 +1679,10 @@ function ItemDetailsModal({
                     {updateAuthCodeMutation.isPending ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Updating…
+                        {t('details.updating')}
                       </>
                     ) : (
-                      'Update auth code'
+                      t('details.updateAuthCode')
                     )}
                   </Button>
                 </form>
@@ -1637,10 +1690,11 @@ function ItemDetailsModal({
             ) : null}
             {hasRequiredAction ? (
               <div className="mt-4 rounded-lg border border-destructive/30 bg-destructive/10 p-3 space-y-2">
-                <div className="text-sm font-semibold">Cancel this item</div>
+                <div className="text-sm font-semibold">
+                  {t('details.cancelThisItem')}
+                </div>
                 <p className="text-sm text-muted-foreground">
-                  If you no longer want to proceed, canceling will stop
-                  processing this item.
+                  {t('details.cancelThisItemDescription')}
                 </p>
                 <Button
                   type="button"
@@ -1652,10 +1706,10 @@ function ItemDetailsModal({
                   {cancelRequiredActionMutation.isPending ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Canceling…
+                      {t('details.canceling')}
                     </>
                   ) : (
-                    'Cancel item'
+                    t('details.cancelItem')
                   )}
                 </Button>
               </div>
@@ -1663,18 +1717,21 @@ function ItemDetailsModal({
           </div>
         ) : null}
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
-function getRequiredActionText(requiredAction?: string | null) {
+function getRequiredActionText(
+  t: OrdersTranslator,
+  requiredAction?: string | null,
+) {
   switch (requiredAction) {
     case 'EPP_AUTH_CODE_UPDATE_REQUIRED':
-      return 'Provide a new auth code to continue the import.';
+      return t('details.requiredActionAuthCode');
     case 'EPP_UNLOCK_REQUIRED':
-      return 'Confirm the domain is unlocked at your current registrar.';
+      return t('details.requiredActionUnlock');
     default:
       return null;
   }
@@ -1692,6 +1749,7 @@ function formatFailureDuration(timeoutMs?: number | null) {
 }
 
 function getFailureDetailsText(
+  t: OrdersTranslator,
   failureDetails?: OrderItemMetadata['failureDetails'] | null,
 ) {
   if (!failureDetails) return null;
@@ -1703,23 +1761,23 @@ function getFailureDetailsText(
   if (resolution === 'TIMEOUT') {
     if (duration) {
       return isAuthCodeRequired
-        ? `Auth code was not updated for ${duration}, so the order item was canceled.`
-        : `Domain stayed locked for ${duration}, so the order item was canceled.`;
+        ? t('details.failureTimeoutAuthCodeDuration', { duration })
+        : t('details.failureTimeoutLockedDuration', { duration });
     }
     return isAuthCodeRequired
-      ? 'Auth code update timed out, so the order item was canceled.'
-      : 'Domain stayed locked too long, so the order item was canceled.';
+      ? t('details.failureTimeoutAuthCode')
+      : t('details.failureTimeoutLocked');
   }
 
   if (actor === 'ADMIN') {
     return isAuthCodeRequired
-      ? 'Auth code update required and support canceled the request.'
-      : 'Domain was locked and support canceled the request.';
+      ? t('details.failureAdminAuthCode')
+      : t('details.failureAdminLocked');
   }
 
   return isAuthCodeRequired
-    ? 'Auth code update required and you canceled the request.'
-    : 'Domain was locked and you canceled the request.';
+    ? t('details.failureUserAuthCode')
+    : t('details.failureUserLocked');
 }
 
 /**

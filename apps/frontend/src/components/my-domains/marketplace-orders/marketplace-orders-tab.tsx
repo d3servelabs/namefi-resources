@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
@@ -12,15 +13,6 @@ import {
   useDomainDetailsByTokenIds,
 } from './use-domain-details';
 import { useMyMakerListings, useMyMakerOffers } from './use-maker-orders';
-
-/**
- * Copy used for the "some upstream marketplaces failed" footnote in both
- * sections. Neutral phrasing — the panel still surfaces every listing /
- * offer it could load; this just acknowledges that the result may be
- * incomplete during marketplace outages or rate-limit windows.
- */
-const PARTIAL_LOAD_NOTE =
-  'Some listings may not appear as their markets maybe busy.';
 
 /**
  * Cross-marketplace view of the user's open orders:
@@ -35,6 +27,7 @@ const PARTIAL_LOAD_NOTE =
  * entry by `(chainId, tokenAddress, tokenId)` in the resulting map.
  */
 export function MarketplaceOrdersTab() {
+  const t = useTranslations('domains');
   const { linkedWalletAddresses, linkedWalletsReady } =
     useLinkedWalletAddresses();
   const walletAddresses = linkedWalletAddresses as Address[];
@@ -94,9 +87,11 @@ export function MarketplaceOrdersTab() {
   if (walletAddresses.length === 0) {
     return (
       <EmptyPlaceholder>
-        <EmptyPlaceholder.Title>No linked wallets</EmptyPlaceholder.Title>
+        <EmptyPlaceholder.Title>
+          {t('marketplaceOrders.noLinkedWalletsTitle')}
+        </EmptyPlaceholder.Title>
         <EmptyPlaceholder.Description>
-          Link a wallet to your account to see your marketplace orders.
+          {t('marketplaceOrders.noLinkedWalletsDescription')}
         </EmptyPlaceholder.Description>
       </EmptyPlaceholder>
     );
@@ -106,10 +101,11 @@ export function MarketplaceOrdersTab() {
     <div className="space-y-8">
       <section className="space-y-3">
         <header>
-          <h3 className="text-base font-semibold text-zinc-100">My listings</h3>
+          <h3 className="text-base font-semibold text-zinc-100">
+            {t('marketplaceOrders.listingsTitle')}
+          </h3>
           <p className="text-sm text-zinc-400">
-            Active sale listings you've posted across OpenSea and Rarible. Each
-            card shows incoming bids underneath.
+            {t('marketplaceOrders.listingsDescription')}
           </p>
         </header>
         {listingsQuery.isLoading && listingsQuery.data.length === 0 ? (
@@ -119,9 +115,11 @@ export function MarketplaceOrdersTab() {
           </div>
         ) : listingsQuery.data.length === 0 ? (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Title>No active listings</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>
+              {t('marketplaceOrders.noListingsTitle')}
+            </EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              Listings you create on a domain detail page will show up here.
+              {t('marketplaceOrders.noListingsDescription')}
             </EmptyPlaceholder.Description>
           </EmptyPlaceholder>
         ) : (
@@ -144,18 +142,19 @@ export function MarketplaceOrdersTab() {
           </div>
         )}
         {listingsQuery.errors.length > 0 ? (
-          <p className="text-xs text-muted-foreground">{PARTIAL_LOAD_NOTE}</p>
+          <p className="text-xs text-muted-foreground">
+            {t('marketplaceOrders.partialLoadNote')}
+          </p>
         ) : null}
       </section>
 
       <section className="space-y-3">
         <header>
           <h3 className="text-base font-semibold text-zinc-100">
-            My offers on other domains
+            {t('marketplaceOrders.offersTitle')}
           </h3>
           <p className="text-sm text-zinc-400">
-            Bids you've placed on domains you don't own. Sorted by highest price
-            first.
+            {t('marketplaceOrders.offersDescription')}
           </p>
         </header>
         {offersQuery.isLoading && offersQuery.data.length === 0 ? (
@@ -165,9 +164,11 @@ export function MarketplaceOrdersTab() {
           </div>
         ) : offersQuery.data.length === 0 ? (
           <EmptyPlaceholder>
-            <EmptyPlaceholder.Title>No outgoing offers</EmptyPlaceholder.Title>
+            <EmptyPlaceholder.Title>
+              {t('marketplaceOrders.noOffersTitle')}
+            </EmptyPlaceholder.Title>
             <EmptyPlaceholder.Description>
-              Offers you place on other domains will show up here.
+              {t('marketplaceOrders.noOffersDescription')}
             </EmptyPlaceholder.Description>
           </EmptyPlaceholder>
         ) : (
@@ -190,7 +191,9 @@ export function MarketplaceOrdersTab() {
           </div>
         )}
         {offersQuery.errors.length > 0 ? (
-          <p className="text-xs text-muted-foreground">{PARTIAL_LOAD_NOTE}</p>
+          <p className="text-xs text-muted-foreground">
+            {t('marketplaceOrders.partialLoadNote')}
+          </p>
         ) : null}
       </section>
     </div>

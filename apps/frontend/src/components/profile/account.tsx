@@ -4,6 +4,7 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { HTMLAttributes, ReactNode } from 'react';
 
 export interface AccountProps extends HTMLAttributes<HTMLDivElement> {
@@ -33,6 +34,7 @@ export const Account = ({
   disabled = false,
   ...rest
 }: AccountProps) => {
+  const t = useTranslations('profile');
   return (
     <div className={cn('space-y-2', className)} {...rest}>
       {showLabel && <Label>{title}</Label>}
@@ -57,7 +59,9 @@ export const Account = ({
                 )}
               </div>
             ) : (
-              <div className="text-sm text-muted-foreground">Not connected</div>
+              <div className="text-sm text-muted-foreground">
+                {t('account.notConnected')}
+              </div>
             )}
           </div>
         </div>
@@ -71,7 +75,7 @@ export const Account = ({
                 onClick={onUnlink}
                 disabled={disabled}
               >
-                Unlink
+                {t('account.unlink')}
               </Button>
             )
           : onLink && (
@@ -82,7 +86,7 @@ export const Account = ({
                 onClick={onLink}
                 disabled={disabled}
               >
-                Link
+                {t('account.link')}
               </Button>
             )}
       </div>

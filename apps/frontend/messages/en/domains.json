@@ -1,0 +1,165 @@
+{
+  "tabs": {
+    "active": "My Domains",
+    "inactive": "Inactive Domains",
+    "previouslyOwned": "Previously Owned Domains",
+    "otherWallets": "On Other Wallets",
+    "marketplaceOrders": "My Listings & Offers"
+  },
+  "processingBanner": "<domains></domains> are being processed. Visit <ordersLink>Orders</ordersLink> to see their status.",
+  "emptyActive": "No active domains",
+  "emptyInactive": "No inactive domains",
+  "emptyPlaceholder": {
+    "title": "No domains found",
+    "description": "Start the search for your next domain by clicking the button below",
+    "action": "Search Page"
+  },
+  "columns": {
+    "selectAll": "Select all",
+    "selectRow": "Select row",
+    "domainName": "Domain Name ({count})",
+    "domainNamePlain": "Domain Name",
+    "account": "Account",
+    "renewal": "Renewal",
+    "autoEns": "AutoENS",
+    "dateTokenized": "Date Tokenized",
+    "dnsRecords": "DNS Records",
+    "actions": "Actions",
+    "renewUsdPerYear": "Renew (USD/yr)"
+  },
+  "table": {
+    "searchPlaceholder": "Filter domains...",
+    "emptyMessage": "No domains match your filters",
+    "loadingMessage": "Loading domains…",
+    "showNftsInWallet": "Show NFTs in Wallet",
+    "showNftsInWalletAria": "Show {count, plural, one {# NFT} other {# NFTs}} in wallet",
+    "filters": {
+      "domainName": "Domain Name",
+      "wallet": "Wallet",
+      "renewal": "Renewal",
+      "dateTokenized": "Date Tokenized",
+      "chain": "Chain"
+    },
+    "toasts": {
+      "autoRenewToggled": "Auto-renew {enabled, select, true {enabled} other {disabled}} for {domain}",
+      "autoRenewToggleFailed": "Failed to update auto-renew for {domain}",
+      "autoEnsToggled": "AutoENS {enabled, select, true {enabled} other {disabled}} for {domain}",
+      "autoEnsToggleFailed": "Failed to update AutoENS for {domain}",
+      "bulkAutoRenewFailed": "Failed to update {failed} of {total} domains",
+      "bulkAutoRenewToggled": "Auto-renew {enabled, select, true {enabled} other {disabled}} for {count, plural, one {# domain} other {# domains}}",
+      "noNftsToWatch": "No NFTs available to add to your wallet",
+      "nftsAdded": "Added {count, plural, one {# NFT} other {# NFTs}} to your wallet",
+      "nftsAddFailed": "Couldn't add {count, plural, one {# NFT} other {# NFTs}} to your wallet"
+    }
+  },
+  "otherWallets": {
+    "domain": "Domain ({count})",
+    "nftWallet": "NFT Wallet",
+    "order": "Order",
+    "viewOrder": "View order"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {Renew Domain} other {Renew Domains}}",
+    "descriptionSingle": "Renew {domain}",
+    "descriptionMultiple": "Renew {count} domains",
+    "renewalPeriod": "Renewal Period",
+    "selectYears": "Select years",
+    "yearOption": "{years, plural, one {# year} other {# years}}",
+    "pricePerYear": "Price per year",
+    "total": "Total ({years, plural, one {# year} other {# years}})",
+    "cancel": "Cancel",
+    "addingToCart": "Adding to Cart...",
+    "addToCart": "Add to Cart",
+    "addToCartFailed": "Failed to add domains to cart. Please try again."
+  },
+  "renewPremiumInfo": {
+    "aria": "Renewal price info for {domain}",
+    "tooltip": "Premium domains may have a different renewal price."
+  },
+  "renewalCell": {
+    "auto": "Auto",
+    "autoRenewAria": "Auto-renew {domain}",
+    "expired": "Expired",
+    "usdPerYear": "USD/year"
+  },
+  "autoEnsCell": {
+    "aria": "Auto-ENS {domain}"
+  },
+  "timeLeft": {
+    "expired": "Expired",
+    "days": "{days}d",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}y",
+    "yearsPlus": "{years}y+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "Never expires",
+    "expired": "Expired",
+    "expires": "Expires {datetime}"
+  },
+  "nftPendingBadge": {
+    "minting": "Minting…",
+    "changingExpiration": "Updating expiration…",
+    "changingLock": "Updating lock…",
+    "pending": "Pending…"
+  },
+  "actions": {
+    "listForSale": "List for sale",
+    "findBuyers": "Find buyers",
+    "viewOrder": "View order",
+    "viewOrderMenu": "View Order",
+    "viewNft": "View NFT",
+    "viewNftOn": "View NFT on {explorer}",
+    "scan": "Scan",
+    "visitDomain": "Visit Domain",
+    "showNftInWallet": "Show NFT in wallet",
+    "listForSaleAria": "List {domain} for sale",
+    "viewOrderAria": "View order for {domain}",
+    "findBuyersAria": "Find buyers for {domain}",
+    "viewNftAria": "View NFT for {domain}",
+    "visitDomainAria": "Visit {domain}",
+    "actionsAria": "Actions for {domain}",
+    "showNftInWalletAria": "Show {domain} NFT in wallet",
+    "nftAddedToast": "{domain} added to your wallet",
+    "nftAddFailedToast": "Couldn't add {domain} to your wallet",
+    "nftAddErrorToast": "Failed to add NFT to wallet",
+    "unknownError": "Unknown error"
+  },
+  "floatingPanel": {
+    "selected": "selected",
+    "clearSelection": "Clear selection",
+    "auto": "Auto",
+    "bulkAutoRenewAria": "Bulk auto-renew for {count, plural, one {# domain} other {# domains}}",
+    "bulkAutoRenewMixed": "Mixed states — click left to disable all, right to enable all",
+    "bulkAutoRenewOn": "Auto-renew enabled — click to disable all",
+    "bulkAutoRenewOff": "Auto-renew disabled — click to enable all",
+    "renewAria": "Renew {count, plural, one {# domain} other {# domains}}",
+    "renewTooltip": "Renew {count, plural, one {# domain} other {# domains}}",
+    "setWebRecords": "Set Web Records",
+    "setUrlForwarding": "Set URL Forwarding",
+    "setEnsRecord": "Set ENS Record",
+    "showInWalletAria": "Show {count, plural, one {# NFT} other {# NFTs}} in wallet",
+    "showInWalletTooltip": "Show {count, plural, one {# NFT} other {# NFTs}} in wallet"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "Some listings may not appear as their markets maybe busy.",
+    "noLinkedWalletsTitle": "No linked wallets",
+    "noLinkedWalletsDescription": "Link a wallet to your account to see your marketplace orders.",
+    "listingsTitle": "My listings",
+    "listingsDescription": "Active sale listings you've posted across OpenSea and Rarible. Each card shows incoming bids underneath.",
+    "noListingsTitle": "No active listings",
+    "noListingsDescription": "Listings you create on a domain detail page will show up here.",
+    "offersTitle": "My offers on other domains",
+    "offersDescription": "Bids you've placed on domains you don't own. Sorted by highest price first.",
+    "noOffersTitle": "No outgoing offers",
+    "noOffersDescription": "Offers you place on other domains will show up here.",
+    "view": "View",
+    "incomingBids": "Incoming bids",
+    "loadBidsFailed": "Couldn't load bids: {error}",
+    "noBidsYet": "No bids yet.",
+    "viewBidAria": "View {source} bid on {domain}",
+    "nftAlt": "NFT",
+    "offerWaiting": "Your offer is open and waiting for the seller to accept."
+  }
+}

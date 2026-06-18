@@ -14,6 +14,7 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints } from '@/hooks/use-free-mints';
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { PageShell } from '@/components/page-shell';
 
 // Dynamically import the heavy content (table with @tanstack/react-table, FreeMintCard)
@@ -23,6 +24,7 @@ const FreeMintsContent = dynamic(
 );
 
 function FreeMintsLoadingSkeleton() {
+  const t = useTranslations('freeMints');
   return (
     <div className="space-y-8">
       {/* Loading state for active claims section */}
@@ -39,17 +41,19 @@ function FreeMintsLoadingSkeleton() {
 
       {/* Loading state for table section */}
       <div className="space-y-6">
-        <h2 className="text-xl md:text-2xl font-semibold">History</h2>
+        <h2 className="text-xl md:text-2xl font-semibold">
+          {t('historyHeading')}
+        </h2>
         <div className="rounded-md border">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Item</TableHead>
-                <TableHead>Issued On</TableHead>
-                <TableHead>Valid Until</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Claimed Domain</TableHead>
-                <TableHead>Claimed On</TableHead>
+                <TableHead>{t('table.item')}</TableHead>
+                <TableHead>{t('table.issuedOn')}</TableHead>
+                <TableHead>{t('table.validUntil')}</TableHead>
+                <TableHead>{t('table.status')}</TableHead>
+                <TableHead>{t('table.claimedDomain')}</TableHead>
+                <TableHead>{t('table.claimedOn')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -71,6 +75,7 @@ function FreeMintsLoadingSkeleton() {
 }
 
 export default function FreeClaimsPage() {
+  const t = useTranslations('freeMints');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { isLoading: isFreeMintsLoading } = useFreeMints();
 
@@ -87,7 +92,7 @@ export default function FreeClaimsPage() {
     <PageShell>
       {/* Page Header */}
       <h1 className="mb-10 text-3xl md:text-4xl font-bold tracking-tight">
-        My Free Mints
+        {t('title')}
       </h1>
 
       {isLoading ? <FreeMintsLoadingSkeleton /> : <FreeMintsContent />}

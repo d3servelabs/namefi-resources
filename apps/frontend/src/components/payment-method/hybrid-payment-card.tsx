@@ -16,6 +16,7 @@ import {
   CheckCircle,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useUserChainBalances } from '@/hooks/use-user-chain-balances';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -85,6 +86,7 @@ export function HybridPaymentCard({
   submitDisabledReason,
   onSubmit,
 }: HybridPaymentCardProps) {
+  const t = useTranslations('payment');
   const [shouldUseBalance, setShouldUseBalance] = useState(true);
   const [showBalanceDetails, setShowBalanceDetails] = useState(false);
   const [stripeConfirmationTokenId, setStripeConfirmationTokenId] = useState<
@@ -213,11 +215,11 @@ export function HybridPaymentCard({
 
   return (
     <CartCard
-      title="Payment Method"
+      title={t('hybridPaymentCard.title')}
       footer={
         <div className="space-y-4 w-full">
           <div className="flex items-center justify-end text-xl gap-4">
-            <span>Total</span>
+            <span>{t('hybridPaymentCard.total')}</span>
             <span>{formatAmountInUSD(totalAmountInUsdCents, true)} USD</span>
           </div>
           <DisabledReasonTooltip
@@ -251,15 +253,18 @@ export function HybridPaymentCard({
           <div className="flex items-center gap-3">
             <Wallet className="h-5 w-5 text-brand-primary" />
             <div>
-              <div className="font-medium">Use Available Balance</div>
+              <div className="font-medium">
+                {t('hybridPaymentCard.useAvailableBalance')}
+              </div>
               {canUseBalance && totalBalanceInUsdCents > 0 ? (
                 <div className="text-sm text-muted-foreground">
-                  {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
-                  available
+                  {t('hybridPaymentCard.nfscAvailable', {
+                    amount: formatAmountInUSD(totalBalanceInUsdCents, true),
+                  })}
                 </div>
               ) : (
                 <div className="text-sm text-muted-foreground">
-                  No $NFSC balance available
+                  {t('hybridPaymentCard.noNfscBalance')}
                 </div>
               )}
             </div>
@@ -293,7 +298,9 @@ export function HybridPaymentCard({
                   onClick={() => setShowBalanceDetails(!showBalanceDetails)}
                   className="w-full justify-between h-8"
                 >
-                  <span className="text-sm">Balance Breakdown</span>
+                  <span className="text-sm">
+                    {t('hybridPaymentCard.balanceBreakdown')}
+                  </span>
                   {showBalanceDetails ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
@@ -360,7 +367,7 @@ export function HybridPaymentCard({
                   className="w-full"
                   onClick={() => setRemainderPaymentProvider('STRIPE')}
                 >
-                  Credit Card
+                  {t('hybridPaymentCard.creditCard')}
                 </Button>
               </div>
             )}
@@ -369,40 +376,39 @@ export function HybridPaymentCard({
               <div className="space-y-2 rounded-lg border border-white/10 bg-[#18181B] p-4">
                 <p className="text-sm font-medium">x402 (USDC)</p>
                 <p className="text-xs text-muted-foreground">
-                  You will sign a TransferWithAuthorization for{' '}
-                  {formatAmountInUSD(
-                    calculation?.x402Payment?.amountInUsdCents || 0,
-                    true,
-                  )}{' '}
-                  USD when you submit this order.
+                  {t('hybridPaymentCard.x402SignAuthorization', {
+                    amount: formatAmountInUSD(
+                      calculation?.x402Payment?.amountInUsdCents || 0,
+                      true,
+                    ),
+                  })}
                 </p>
                 <div className="mt-3 space-y-1 text-xs text-muted-foreground">
                   <div className="flex items-center justify-between">
-                    <span>Network</span>
+                    <span>{t('hybridPaymentCard.network')}</span>
                     <span>
                       {getX402NetworkLabel(x402PaymentConfig.network)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Required</span>
+                    <span>{t('hybridPaymentCard.required')}</span>
                     <span>{x402RequiredUsdc} USDC</span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span>Your wallet balance</span>
+                    <span>{t('hybridPaymentCard.yourWalletBalance')}</span>
                     <span>
                       {!x402BuyerWalletAddress
-                        ? 'Connect wallet'
+                        ? t('hybridPaymentCard.connectWallet')
                         : isX402UsdcBalanceLoading
-                          ? 'Loading...'
+                          ? t('hybridPaymentCard.loading')
                           : isX402UsdcBalanceError
-                            ? 'Unavailable'
+                            ? t('hybridPaymentCard.unavailable')
                             : x402UsdcBalanceLabel || '0.00 USDC'}
                     </span>
                   </div>
                   {hasSufficientX402UsdcBalance === false && (
                     <p className="pt-1 text-amber-400">
-                      Your USDC balance may be insufficient for this x402
-                      payment amount.
+                      {t('hybridPaymentCard.insufficientUsdcBalance')}
                     </p>
                   )}
                 </div>
@@ -411,7 +417,9 @@ export function HybridPaymentCard({
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
                   <CreditCard className="h-5 w-5" />
-                  <span className="font-medium">Credit Card</span>
+                  <span className="font-medium">
+                    {t('hybridPaymentCard.creditCard')}
+                  </span>
                   {calculation?.stripePayment && (
                     <span className="text-sm font-medium text-green-400">
                       {formatAmountInUSD(
@@ -436,8 +444,8 @@ export function HybridPaymentCard({
                   dialogTrigger={
                     <Button variant="outline" className="w-full">
                       {stripeConfirmationTokenId
-                        ? 'Change Card'
-                        : 'Add or Select Card'}
+                        ? t('hybridPaymentCard.changeCard')
+                        : t('hybridPaymentCard.addOrSelectCard')}
                     </Button>
                   }
                 />
@@ -446,12 +454,21 @@ export function HybridPaymentCard({
                   <p className="text-xs text-muted-foreground">
                     {shouldUseBalance &&
                     totalBalanceInUsdCents >= totalAmountInUsdCents
-                      ? 'Credit card optional - you have sufficient balance'
+                      ? t('hybridPaymentCard.creditCardOptional')
                       : shouldUseBalance &&
                           totalBalanceInUsdCents > 0 &&
                           totalBalanceInUsdCents < totalAmountInUsdCents
-                        ? `Credit card required for ${formatAmountInUSD(calculation?.stripePayment?.amountInUsdCents || 0, true)} USD remaining amount`
-                        : 'Credit card required for full amount'}
+                        ? t(
+                            'hybridPaymentCard.creditCardRequiredForRemaining',
+                            {
+                              amount: formatAmountInUSD(
+                                calculation?.stripePayment?.amountInUsdCents ||
+                                  0,
+                                true,
+                              ),
+                            },
+                          )
+                        : t('hybridPaymentCard.creditCardRequiredForFull')}
                   </p>
                 )}
               </div>
@@ -466,7 +483,7 @@ export function HybridPaymentCard({
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-green-500/80" />
                 <span className="font-medium text-green-500/80">
-                  Payment Covered by Balance
+                  {t('hybridPaymentCard.paymentCoveredByBalance')}
                 </span>
               </div>
               {/* <p className="text-xs text-muted-foreground">

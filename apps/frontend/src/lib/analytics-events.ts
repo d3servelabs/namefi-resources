@@ -23,7 +23,16 @@ export enum InteractionLoggingEventName {
   // Marketplace Events
   MarketplaceListingCreated = 'marketplace_listing_created',
   MarketplaceListingCancelled = 'marketplace_listing_cancelled',
+
+  // i18n Events
+  LanguageChanged = 'language_changed',
 }
+
+/** Which language selector instance fired a `language_changed` event. */
+export type LanguageChangeSource =
+  | 'footer'
+  | 'sidebar_user_dropdown'
+  | 'header';
 
 export type InteractionLoggingCartItem = Pick<
   CartItemSelect,
@@ -132,6 +141,14 @@ export type InteractionLoggingEvent =
       {
         id: string;
         target_url: string;
+      }
+    >
+  | BaseEvent<
+      InteractionLoggingEventName.LanguageChanged,
+      {
+        fromLocale: string;
+        toLocale: string;
+        source: LanguageChangeSource;
       }
     >;
 

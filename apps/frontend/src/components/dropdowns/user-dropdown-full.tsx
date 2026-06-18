@@ -4,6 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
+import { LanguageMenuSub } from '@/components/i18n/language-menu-sub';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Card,
@@ -262,6 +263,9 @@ export const UserDropdownMenu = ErrorBoundary.with(
               item={item}
             />
           ))}
+
+          <DropdownMenuSeparator />
+          <LanguageMenuSub />
         </DropdownMenuContent>
         <FindUserDialog
           open={isFindUserDialogOpen}

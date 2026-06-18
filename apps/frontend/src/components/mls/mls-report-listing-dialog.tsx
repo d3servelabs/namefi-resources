@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AlertTriangle, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -40,46 +41,25 @@ import { useTRPCClient } from '@/lib/trpc';
 
 const REPORT_REASON_OPTIONS: Array<{
   value: MlsListingReportReason;
-  label: string;
-  description: string;
+  messageKey: string;
 }> = [
-  {
-    value: 'already_sold',
-    label: 'Already sold',
-    description: 'The domain has already sold and should not stay in the feed.',
-  },
-  {
-    value: 'inaccurate_price',
-    label: 'Inaccurate price',
-    description: 'The listed asking price appears wrong or misleading.',
-  },
-  {
-    value: 'not_for_sale',
-    label: 'Not for sale',
-    description: 'The post does not represent a real domain sale listing.',
-  },
-  {
-    value: 'duplicate_listing',
-    label: 'Duplicate listing',
-    description: 'This sale was already listed elsewhere in the feed.',
-  },
-  {
-    value: 'other',
-    label: 'Other',
-    description: 'Use details to describe the issue clearly.',
-  },
+  { value: 'already_sold', messageKey: 'alreadySold' },
+  { value: 'inaccurate_price', messageKey: 'inaccuratePrice' },
+  { value: 'not_for_sale', messageKey: 'notForSale' },
+  { value: 'duplicate_listing', messageKey: 'duplicateListing' },
+  { value: 'other', messageKey: 'other' },
 ] as const;
 
-const reportListingSchema = z.object({
-  reason: z.enum(MLS_LISTING_REPORT_REASONS),
-  details: z
-    .string()
-    .trim()
-    .max(1_000, 'Keep details under 1000 characters.')
-    .optional(),
-});
+function buildReportListingSchema(detailsTooLongMessage: string) {
+  return z.object({
+    reason: z.enum(MLS_LISTING_REPORT_REASONS),
+    details: z.string().trim().max(1_000, detailsTooLongMessage).optional(),
+  });
+}
 
-type ReportListingFormValues = z.infer<typeof reportListingSchema>;
+type ReportListingFormValues = z.infer<
+  ReturnType<typeof buildReportListingSchema>
+>;
 
 interface MlsReportListingDialogProps {
   listingId: string;
@@ -90,10 +70,16 @@ export function MlsReportListingDialog({
   listingId,
   domain,
 }: MlsReportListingDialogProps) {
+  const t = useTranslations('feed');
   const trpcClient = useTRPCClient();
   const [isOpen, setIsOpen] = useState(false);
   const [isReported, setIsReported] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const reportListingSchema = useMemo(
+    () => buildReportListingSchema(t('report.detailsTooLong')),
+    [t],
+  );
 
   const form = useForm<ReportListingFormValues>({
     resolver: zodResolver(reportListingSchema),
@@ -126,7 +112,7 @@ export function MlsReportListingDialog({
       const responsePayload =
         await trpcClient.mls.reportListing.mutate(payload);
       if (!responsePayload?.id) {
-        throw new Error('Unexpected report response from server.');
+        throw new Error(t('report.unexpectedResponse'));
       }
 
       setIsReported(true);
@@ -135,12 +121,12 @@ export function MlsReportListingDialog({
         reason: REPORT_REASON_OPTIONS[0].value,
         details: '',
       });
-      toast.success(`Report submitted for ${domain}.`);
+      toast.success(t('report.submitSuccess', { domain }));
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Unable to submit report. Please try again.';
+          : t('report.submitErrorFallback');
       setSubmitError(message);
       toast.error(message);
     }
@@ -166,20 +152,24 @@ export function MlsReportListingDialog({
             size="sm"
             className="text-white/35 hover:text-white/55"
             disabled={isReported}
-            aria-label={`Report listing for ${domain}`}
+            aria-label={t('report.triggerAriaLabel', { domain })}
           >
             <AlertTriangle className="size-4" />
-            {isReported ? 'Reported' : 'Report'}
+            {isReported ? t('report.reported') : t('report.trigger')}
           </Button>
         }
       />
 
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>Report listing</DialogTitle>
+          <DialogTitle>{t('report.dialogTitle')}</DialogTitle>
           <DialogDescription>
-            Flag issues with <span className="font-medium">{domain}</span>. Our
-            team reviews reports before taking action.
+            {t.rich('report.dialogDescription', {
+              domain,
+              highlight: (chunks) => (
+                <span className="font-medium">{chunks}</span>
+              ),
+            })}
           </DialogDescription>
         </DialogHeader>
 
@@ -190,7 +180,7 @@ export function MlsReportListingDialog({
               name="reason"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Reason</FormLabel>
+                  <FormLabel>{t('report.reasonLabel')}</FormLabel>
                   <Select
                     value={field.value}
                     onValueChange={field.onChange}
@@ -198,22 +188,30 @@ export function MlsReportListingDialog({
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a reason">
-                          {selectedReasonOption?.label}
+                        <SelectValue
+                          placeholder={t('report.reasonPlaceholder')}
+                        >
+                          {selectedReasonOption
+                            ? t(
+                                `report.reasons.${selectedReasonOption.messageKey}.label`,
+                              )
+                            : null}
                         </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent align="start">
                       {REPORT_REASON_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                          {t(`report.reasons.${option.messageKey}.label`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  {selectedReasonOption?.description ? (
+                  {selectedReasonOption ? (
                     <p className="text-xs text-muted-foreground">
-                      {selectedReasonOption.description}
+                      {t(
+                        `report.reasons.${selectedReasonOption.messageKey}.description`,
+                      )}
                     </p>
                   ) : null}
                   <FormMessage />
@@ -226,7 +224,7 @@ export function MlsReportListingDialog({
               name="details"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Details (optional)</FormLabel>
+                  <FormLabel>{t('report.detailsLabel')}</FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
@@ -234,12 +232,16 @@ export function MlsReportListingDialog({
                       rows={4}
                       maxLength={1_000}
                       disabled={isSubmitting}
-                      placeholder="Add context that will help us verify the issue."
+                      placeholder={t('report.detailsPlaceholder')}
                     />
                   </FormControl>
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>Optional notes to support your report.</span>
-                    <span>{detailsValue.length}/1000</span>
+                    <span>{t('report.detailsHelp')}</span>
+                    <span>
+                      {t('report.detailsCounter', {
+                        count: detailsValue.length,
+                      })}
+                    </span>
                   </div>
                   <FormMessage />
                 </FormItem>
@@ -259,16 +261,16 @@ export function MlsReportListingDialog({
                 disabled={isSubmitting}
                 onClick={() => setIsOpen(false)}
               >
-                Cancel
+                {t('report.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting || isReported}>
                 {isSubmitting ? (
                   <span className="inline-flex items-center gap-2">
                     <Loader2 className="size-4 animate-spin" />
-                    Submitting
+                    {t('report.submitting')}
                   </span>
                 ) : (
-                  'Submit report'
+                  t('report.submit')
                 )}
               </Button>
             </div>

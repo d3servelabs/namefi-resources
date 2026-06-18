@@ -1,0 +1,17 @@
+{
+  "items": {
+    "discover": "Discover",
+    "myDomains": "My Domains",
+    "myWishlist": "My Wishlist",
+    "myOrders": "My Orders",
+    "myFreeMints": "My Free Mints",
+    "myPaymentMethods": "My Payment Methods",
+    "manage": "Manage",
+    "justAing": "Just AI'ng™",
+    "brandStudio": "Namefi Brand Studio",
+    "outbound": "Namefi Outbound",
+    "feed": "Namefi Feed",
+    "hunt": "Hunt"
+  },
+  "recentDomains": "Recent domains"
+}

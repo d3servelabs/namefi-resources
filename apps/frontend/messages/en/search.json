@@ -1,0 +1,50 @@
+{
+  "header": {
+    "taglineWithNetwork": "Search for a domain on {parentDomain}",
+    "taglineAllNetworks": "Search for a domain on all networks",
+    "networkLabel": "Network:",
+    "allNetworks": "All"
+  },
+  "modeTabs": {
+    "register": "Register",
+    "import": "Import"
+  },
+  "input": {
+    "placeholder": "Search for a domain...",
+    "importPlaceholder": "You can paste in two formats:\n\nFormat 1: Domain with auth code\nexample.com, authcode123\n\nFormat 2: Multiple domains (comma or newline separated)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "Search",
+    "importButton": "Import",
+    "clearParentDomainAriaLabel": "Clear parent domain",
+    "freeMintTooltipWithParent": "Search for available subdomains under {parentDomain} and claim them for free!",
+    "freeMintTooltipAllDomains": "Search for available domains and claim them for free!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "renews at {price}",
+    "owner": "Owner: {owner}",
+    "notRegistered": "Not registered",
+    "unsupported": "Unsupported",
+    "lockedShort": "Locked",
+    "temporarilyUnimportable": "Temporarily unimportable",
+    "taken": "Taken",
+    "unavailableShort": "Unavailable",
+    "temporarilyUnavailable": "Temporarily unavailable",
+    "freeClaim": "Free Claim",
+    "addToWishlist": "Add to wishlist",
+    "removeFromWishlist": "Remove from wishlist",
+    "eppCode": "EPP Code",
+    "savedEppCode": "Saved EPP code",
+    "marketplace": "marketplace",
+    "buyShort": "Buy",
+    "buyOn": "Buy on",
+    "buyOnSourceAriaLabel": "Buy on {source}",
+    "buyOnSourceFromSellerAriaLabel": "Buy on {source} from {seller}"
+  },
+  "results": {
+    "errorTitle": "Search Error",
+    "errorDescription": "An error occurred while searching. Please try again.",
+    "loadMore": "Load more",
+    "noResultsTitle": "No domains found",
+    "noResultsDescription": "No domains matching \"{query}\" were found. Try a different search term."
+  }
+}

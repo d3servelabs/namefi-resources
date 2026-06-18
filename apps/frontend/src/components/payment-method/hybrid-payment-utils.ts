@@ -28,7 +28,12 @@ export type HybridPaymentCalculation = {
   totalPayments: CreateOrderV2Input['payments'];
   remainderPaymentProvider: HybridRemainderPaymentProvider;
   isValid: boolean;
-  errorMessage?: string;
+  /**
+   * i18n key (under the `payment.hybridPaymentUtils` namespace) describing why
+   * the calculation is invalid, resolved to localized copy at the display site
+   * (see `PaymentSummary`). Not user-facing text itself.
+   */
+  errorMessageKey?: 'x402Unavailable' | 'addCreditCard' | 'calculationError';
 };
 
 // Chain priority: [Sepolia, Robinhood Testnet, Base, Ethereum]
@@ -211,13 +216,13 @@ export function calculateHybridPayments({
     totalPayments,
     remainderPaymentProvider,
     isValid,
-    errorMessage: isValid
+    errorMessageKey: isValid
       ? undefined
       : remainderPaymentProvider === 'X402' && !x402PaymentDetails
-        ? 'x402 payment is temporarily unavailable'
+        ? 'x402Unavailable'
         : !stripeConfirmationTokenId && stripePayment
-          ? 'Please add a credit card to continue'
-          : 'Payment calculation error. Please check your balance and payment method.',
+          ? 'addCreditCard'
+          : 'calculationError',
   };
 }
 

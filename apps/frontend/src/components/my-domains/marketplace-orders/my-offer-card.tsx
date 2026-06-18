@@ -2,6 +2,7 @@
 
 import { ExternalLink } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
   Card,
@@ -13,7 +14,7 @@ import { toSafeExternalUrl } from '@/components/domain-and-dns-managment/panels/
 import { NetworkLogo } from '@/components/network-logo';
 import { MARKETPLACE_ICONS } from '@/lib/marketplaces/factory';
 import type { MarketplaceId, Offer } from '@/lib/marketplaces/types';
-import { formatExpiry, shortToken } from './format';
+import { shortToken, useExpiryLabel } from './format';
 import type { DomainDetails } from './use-domain-details';
 
 interface Props {
@@ -30,6 +31,8 @@ interface Props {
  * happens on the marketplace UI itself; we just deep-link to it.
  */
 export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
+  const t = useTranslations('domains');
+  const expiryLabel = useExpiryLabel();
   const safeUrl = toSafeExternalUrl(offer.externalUrl);
   const safeImage = toSafeExternalUrl(details?.imageUrl ?? null);
 
@@ -41,7 +44,9 @@ export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
             {safeImage ? (
               <Image
                 src={safeImage}
-                alt={details?.normalizedDomainName ?? 'NFT'}
+                alt={
+                  details?.normalizedDomainName ?? t('marketplaceOrders.nftAlt')
+                }
                 width={48}
                 height={48}
                 unoptimized
@@ -76,7 +81,7 @@ export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
                   {offer.price.decimal.toFixed(4)} {offer.price.currency.symbol}
                 </span>
                 <span title={offer.expirationTime}>
-                  {formatExpiry(offer.expirationTime)}
+                  {expiryLabel(offer.expirationTime)}
                 </span>
               </div>
             </div>
@@ -88,14 +93,14 @@ export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
             >
-              View
+              {t('marketplaceOrders.view')}
               <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           ) : null}
         </div>
       </CardHeader>
       <CardContent className="pt-0 text-xs text-zinc-500">
-        Your offer is open and waiting for the seller to accept.
+        {t('marketplaceOrders.offerWaiting')}
       </CardContent>
     </Card>
   );

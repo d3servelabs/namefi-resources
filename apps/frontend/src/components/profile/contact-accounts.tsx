@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { usePrivy } from '@privy-io/react-auth';
 import { useAuth } from '@/hooks/use-auth';
 import { useQueryState, parseAsStringLiteral } from 'nuqs';
+import { useTranslations } from 'next-intl';
 import { Account } from './account';
 
 interface ContactAccountsProps {
@@ -14,6 +15,7 @@ interface ContactAccountsProps {
 const ALLOW_UNLINK_EMAIL = true;
 const ALLOW_UNLINK_PHONE = true;
 export function ContactAccounts({ className = '' }: ContactAccountsProps) {
+  const t = useTranslations('profile');
   const { linkEmail, linkPhone, unlinkEmail, unlinkPhone } = usePrivy();
   const {
     privyUser,
@@ -53,79 +55,81 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
   const handleLinkEmail = useCallback(async () => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert(
-        'You are impersonating a user, so you cannot link an email address',
-      );
+      alert(t('contactAccounts.impersonateLinkEmailAlert'));
       return;
     }
     try {
       await linkEmail();
     } catch (error) {
-      toast.error('Failed to link email', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('contactAccounts.linkEmailFailure'), {
+        description: t('contactAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, linkEmail, isImpersonating]);
+  }, [canUsePrivyActions, linkEmail, isImpersonating, t]);
 
   const handleUnlinkEmail = useCallback(async () => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert(
-        'You are impersonating a user, so you cannot unlink an email address',
-      );
+      alert(t('contactAccounts.impersonateUnlinkEmailAlert'));
       return;
     }
     try {
       await unlinkEmail(currentEmail);
     } catch (error) {
-      toast.error('Failed to unlink email', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('contactAccounts.unlinkEmailFailure'), {
+        description: t('contactAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, unlinkEmail, isImpersonating, currentEmail]);
+  }, [canUsePrivyActions, unlinkEmail, isImpersonating, currentEmail, t]);
 
   const handleUnlinkPhone = useCallback(async () => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert(
-        'You are impersonating a user, so you cannot unlink a phone number',
-      );
+      alert(t('contactAccounts.impersonateUnlinkPhoneAlert'));
       return;
     }
     try {
       await unlinkPhone(currentPhone);
-      toast.success('Phone number unlinked', {
-        description: 'Your phone number has been successfully unlinked.',
+      toast.success(t('contactAccounts.unlinkPhoneSuccess'), {
+        description: t('contactAccounts.unlinkPhoneSuccessDescription'),
       });
     } catch (error) {
-      toast.error('Failed to unlink phone', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('contactAccounts.unlinkPhoneFailure'), {
+        description: t('contactAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, unlinkPhone, isImpersonating, currentPhone]);
+  }, [canUsePrivyActions, unlinkPhone, isImpersonating, currentPhone, t]);
 
   const handleLinkPhone = useCallback(async () => {
     if (!canUsePrivyActions) return;
     if (isImpersonating) {
-      alert('You are impersonating a user, so you cannot link a phone number');
+      alert(t('contactAccounts.impersonateLinkPhoneAlert'));
       return;
     }
     try {
       await linkPhone();
-      toast.success('Phone number linked', {
-        description: 'Your phone number has been successfully linked.',
+      toast.success(t('contactAccounts.linkPhoneSuccess'), {
+        description: t('contactAccounts.linkPhoneSuccessDescription'),
       });
     } catch (error) {
-      toast.error('Failed to link phone', {
-        description: `Please try again. ${error instanceof Error ? error.message : 'Unknown error'}`,
+      toast.error(t('contactAccounts.linkPhoneFailure'), {
+        description: t('contactAccounts.tryAgain', {
+          error: error instanceof Error ? error.message : 'Unknown error',
+        }),
       });
     }
-  }, [canUsePrivyActions, linkPhone, isImpersonating]);
+  }, [canUsePrivyActions, linkPhone, isImpersonating, t]);
 
   return (
     <div className={`grid gap-4 md:grid-cols-2 ${className}`}>
       <Account
-        title="Email Address"
+        title={t('contactAccounts.emailTitle')}
         icon={<Mail className="h-5 w-5" />}
         isLinked={!!currentEmail}
         linkedValue={currentEmail}
@@ -138,7 +142,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
       />
 
       <Account
-        title="Phone Number"
+        title={t('contactAccounts.phoneTitle')}
         icon={<Phone className="h-5 w-5" />}
         isLinked={!!currentPhone}
         linkedValue={currentPhone}

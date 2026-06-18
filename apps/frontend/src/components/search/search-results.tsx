@@ -10,6 +10,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 
 const MLS_DOMAIN_OFFERS_BATCH_SIZE = 200;
@@ -61,6 +62,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   onLoadMore,
   isLoadingMore = false,
 }) => {
+  const t = useTranslations('search');
   const trpcClient = useTRPCClient();
   const { data: mlsOffersByDomain } = useQuery<Record<string, MlsSaleListing>>({
     queryKey: ['search.mlsDomainOffers', domains],
@@ -109,10 +111,8 @@ export const SearchResults: FC<SearchResultsProps> = ({
     return (
       <div>
         <Placeholder
-          title="Search Error"
-          description={
-            error || 'An error occurred while searching. Please try again.'
-          }
+          title={t('results.errorTitle')}
+          description={error || t('results.errorDescription')}
         />
       </div>
     );
@@ -167,7 +167,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
               {isLoadingMore && (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Load more
+              {t('results.loadMore')}
             </Button>
           </div>
         )}
@@ -180,8 +180,8 @@ export const SearchResults: FC<SearchResultsProps> = ({
     return (
       <div>
         <Placeholder
-          title="No domains found"
-          description={`No domains matching "${query}" were found. Try a different search term.`}
+          title={t('results.noResultsTitle')}
+          description={t('results.noResultsDescription', { query })}
         />
       </div>
     );

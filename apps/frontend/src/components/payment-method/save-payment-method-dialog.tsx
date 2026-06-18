@@ -9,6 +9,7 @@ import {
 import { useTRPC } from '@/lib/trpc';
 import type { SetupIntent } from '@stripe/stripe-js';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { type ReactElement, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
 import { SavePaymentMethodForm } from './save-payment-method-form';
@@ -32,6 +33,7 @@ export function SavePaymentMethodDialog({
   showSavePaymentMethodDialog,
   returnUrl,
 }: SavePaymentMethodDialogProps) {
+  const t = useTranslations('paymentMethods');
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [customerSessionClientSecret, setCustomerSessionClientSecret] =
     useState<string | null>(null);
@@ -61,10 +63,8 @@ export function SavePaymentMethodDialog({
       <DialogTrigger render={dialogTrigger} />
       <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%] overflow-auto">
         <DialogHeader>
-          <DialogTitle>Payment Method Details</DialogTitle>
-          <DialogDescription>
-            Enter your payment method details
-          </DialogDescription>
+          <DialogTitle>{t('saveDialog.title')}</DialogTitle>
+          <DialogDescription>{t('saveDialog.description')}</DialogDescription>
         </DialogHeader>
         <StripeProvider
           amount={amountInUsdCents}

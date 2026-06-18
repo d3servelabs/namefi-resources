@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { type HTMLAttributes, useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useRegisterAdminFlags } from '@/components/admin/feature-flags/register';
 import { useAdminFeatureFlag } from '@/components/admin/feature-flags/use-flag';
@@ -56,6 +57,7 @@ const API_KEY_ADMIN_FLAGS = [
 export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
   useRegisterAdminFlags(API_KEY_ADMIN_FLAGS);
 
+  const t = useTranslations('profile');
   const trpc = useTRPC();
   const [enableApiKeyRestrictions] = useAdminFeatureFlag(
     API_KEY_RESTRICTIONS_FLAG,
@@ -77,12 +79,15 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
     refetch,
   } = useQuery(trpc.apiKeys.list.queryOptions());
 
-  const handleCopyKeyPrefix = useCallback(async (keyPrefix: string) => {
-    await navigator.clipboard.writeText(keyPrefix);
-    toast('Key prefix copied', {
-      description: 'API key prefix copied to clipboard',
-    });
-  }, []);
+  const handleCopyKeyPrefix = useCallback(
+    async (keyPrefix: string) => {
+      await navigator.clipboard.writeText(keyPrefix);
+      toast(t('apiKeys.keyPrefixCopied'), {
+        description: t('apiKeys.keyPrefixCopiedDescription'),
+      });
+    },
+    [t],
+  );
 
   const handleRevokeClick = useCallback((keyId: string, keyName: string) => {
     setKeyToRevoke({ id: keyId, name: keyName });
@@ -146,9 +151,11 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
   const getKeyTypeBadge = (type: string) => {
     switch (type) {
       case 'PLAIN':
-        return <Badge variant="secondary">Plain</Badge>;
+        return <Badge variant="secondary">{t('apiKeys.badgePlain')}</Badge>;
       case 'PUBLIC_PRIVATE':
-        return <Badge variant="outline">Public/Private</Badge>;
+        return (
+          <Badge variant="outline">{t('apiKeys.badgePublicPrivate')}</Badge>
+        );
       default:
         return <Badge variant="secondary">{type}</Badge>;
     }
@@ -163,7 +170,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
       return (
         <Badge variant="destructive" className="gap-1">
           <ShieldOff className="h-3 w-3" />
-          Revoked
+          {t('apiKeys.statusRevoked')}
         </Badge>
       );
     }
@@ -171,14 +178,14 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
       return (
         <Badge variant="secondary" className="gap-1">
           <Clock className="h-3 w-3" />
-          Expired
+          {t('apiKeys.statusExpired')}
         </Badge>
       );
     }
     return (
       <Badge variant="default" className="gap-1 bg-green-300/80">
         <Shield className="h-3 w-3" />
-        Active
+        {t('apiKeys.statusActive')}
       </Badge>
     );
   };
@@ -189,11 +196,9 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Key className="h-5 w-5 text-primary" />
-            <CardTitle>API Keys</CardTitle>
+            <CardTitle>{t('apiKeys.title')}</CardTitle>
           </div>
-          <CardDescription>
-            Manage your API keys for programmatic access
-          </CardDescription>
+          <CardDescription>{t('apiKeys.description')}</CardDescription>
         </div>
 
         <NamefiButton
@@ -202,7 +207,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
           onClick={() => setIsCreateDialogOpen(true)}
         >
           <Plus className="h-4 w-4" />
-          Create
+          {t('apiKeys.create')}
         </NamefiButton>
       </CardHeader>
       <CardContent>
@@ -212,13 +217,13 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
           </div>
         ) : !apiKeys || apiKeys.length === 0 ? (
           <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">No API keys</p>
+            <p className="text-muted-foreground">{t('apiKeys.empty')}</p>
             <Button
               variant="outline"
               className="mt-4"
               onClick={() => setIsCreateDialogOpen(true)}
             >
-              Create API Key
+              {t('apiKeys.createApiKey')}
             </Button>
           </div>
         ) : (
@@ -248,24 +253,39 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                     </div>
                     <div className="flex gap-4 text-xs text-muted-foreground">
                       <span>
-                        Created{' '}
-                        {formatDistanceToNow(new Date(key.createdAt), {
-                          addSuffix: true,
+                        {t('apiKeys.createdAgo', {
+                          time: formatDistanceToNow(new Date(key.createdAt), {
+                            addSuffix: true,
+                          }),
                         })}
                       </span>
                       {key.lastUsedAt && (
                         <span>
-                          Last used{' '}
-                          {formatDistanceToNow(new Date(key.lastUsedAt), {
-                            addSuffix: true,
+                          {t('apiKeys.lastUsedAgo', {
+                            time: formatDistanceToNow(
+                              new Date(key.lastUsedAt),
+                              {
+                                addSuffix: true,
+                              },
+                            ),
                           })}
                         </span>
                       )}
                       {key.expiresAt && (
                         <span>
                           {new Date(key.expiresAt) > new Date()
-                            ? `Expires ${formatDistanceToNow(new Date(key.expiresAt), { addSuffix: true })}`
-                            : `Expired ${formatDistanceToNow(new Date(key.expiresAt), { addSuffix: true })}`}
+                            ? t('apiKeys.expiresAgo', {
+                                time: formatDistanceToNow(
+                                  new Date(key.expiresAt),
+                                  { addSuffix: true },
+                                ),
+                              })
+                            : t('apiKeys.expiredAgo', {
+                                time: formatDistanceToNow(
+                                  new Date(key.expiresAt),
+                                  { addSuffix: true },
+                                ),
+                              })}
                         </span>
                       )}
                     </div>
@@ -281,13 +301,15 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                               variant="outline"
                               size="icon"
                               onClick={() => handleCopyKeyPrefix(key.keyPrefix)}
-                              aria-label="Copy key prefix"
+                              aria-label={t('apiKeys.copyKeyPrefixAriaLabel')}
                             />
                           }
                         >
                           <Copy className="h-4 w-4" />
                         </TooltipTrigger>
-                        <TooltipContent>Copy key prefix</TooltipContent>
+                        <TooltipContent>
+                          {t('apiKeys.copyKeyPrefixTooltip')}
+                        </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   )}
@@ -303,13 +325,17 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                                 variant="outline"
                                 size="icon"
                                 onClick={() => handleEditClick(key)}
-                                aria-label="Edit API key restrictions"
+                                aria-label={t(
+                                  'apiKeys.editRestrictionsAriaLabel',
+                                )}
                               />
                             }
                           >
                             <Settings2 className="h-4 w-4" />
                           </TooltipTrigger>
-                          <TooltipContent>Edit restrictions</TooltipContent>
+                          <TooltipContent>
+                            {t('apiKeys.editRestrictionsTooltip')}
+                          </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     )}
@@ -325,13 +351,15 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                               onClick={() =>
                                 handleRevokeClick(key.id, key.name)
                               }
-                              aria-label="Revoke API key"
+                              aria-label={t('apiKeys.revokeKeyAriaLabel')}
                             />
                           }
                         >
                           <Trash2 className="h-4 w-4 text-destructive" />
                         </TooltipTrigger>
-                        <TooltipContent>Revoke API key</TooltipContent>
+                        <TooltipContent>
+                          {t('apiKeys.revokeKeyTooltip')}
+                        </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
                   )}

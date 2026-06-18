@@ -1,0 +1,151 @@
+{
+  "language": {
+    "description": "Generic label meaning 'Language'; reused app-wide wherever the UI language is named (menus, settings, footer).",
+    "maxLength": 12
+  },
+  "languageSelector.label": {
+    "description": "Global label for the language-selector control (footer and user dropdown). Means 'Language'.",
+    "maxLength": 12
+  },
+  "languageSelector.ariaLabel": {
+    "description": "Accessibility label (screen-reader only) for the global language-selector button; means 'Change language'."
+  },
+  "actions.signIn": {
+    "description": "Global action atom: sign in / log in. Reused across the whole app.",
+    "maxLength": 12
+  },
+  "actions.loading": {
+    "description": "Global busy state shown on buttons/areas while loading. Includes a trailing ellipsis.",
+    "maxLength": 14
+  },
+  "actions.tryAgain": {
+    "description": "Global action atom: retry a failed operation.",
+    "maxLength": 12
+  },
+  "actions.dismiss": {
+    "description": "Global action atom: dismiss/close a message or banner without taking action.",
+    "maxLength": 10
+  },
+  "actions.contactSupport": {
+    "description": "Global action atom linking to support/help.",
+    "maxLength": 18
+  },
+  "actions.cancel": {
+    "description": "Global action atom: cancel the current action or dialog.",
+    "maxLength": 10
+  },
+  "actions.close": {
+    "description": "Global action atom: close a dialog/modal.",
+    "maxLength": 10
+  },
+  "actions.save": {
+    "description": "Global action atom: save changes.",
+    "maxLength": 10
+  },
+  "actions.edit": {
+    "description": "Global action atom: edit an item.",
+    "maxLength": 10
+  },
+  "actions.delete": {
+    "description": "Global action atom: delete an item.",
+    "maxLength": 10
+  },
+  "actions.remove": {
+    "description": "Global action atom: remove an item (e.g. from a list/cart), softer than delete.",
+    "maxLength": 10
+  },
+  "actions.view": {
+    "description": "Global action atom: view/open an item's details.",
+    "maxLength": 10
+  },
+  "actions.refresh": {
+    "description": "Global action atom: refresh/reload data.",
+    "maxLength": 10
+  },
+  "actions.submit": {
+    "description": "Global action atom: submit a form.",
+    "maxLength": 10
+  },
+  "actions.processing": {
+    "description": "Global busy state shown while an action is being processed. Includes a trailing ellipsis.",
+    "maxLength": 14
+  },
+  "actions.loadMore": {
+    "description": "Global action atom: load more items in a paginated list.",
+    "maxLength": 12
+  },
+  "actions.connectWallet": {
+    "description": "Global action atom: connect a crypto wallet.",
+    "maxLength": 16
+  },
+  "actions.goBack": {
+    "description": "Global action atom: navigate back to the previous step/page.",
+    "maxLength": 12
+  },
+  "actions.approve": {
+    "description": "Global action atom: approve a request or transaction.",
+    "maxLength": 10
+  },
+  "actions.reject": {
+    "description": "Global action atom: reject a request or transaction.",
+    "maxLength": 10
+  },
+  "actions.disable": {
+    "description": "Global action atom: disable a feature/setting.",
+    "maxLength": 10
+  },
+  "status.created": {
+    "description": "Global order/payment status label: the order or payment has been created. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.processing": {
+    "description": "Global order/payment status label: in progress. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.succeeded": {
+    "description": "Global order/payment status label: completed successfully. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.completed": {
+    "description": "Global order/payment status label: finished/done. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.failed": {
+    "description": "Global order/payment status label: the operation failed. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.cancelled": {
+    "description": "Global order/payment status label: cancelled. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.partiallyCompleted": {
+    "description": "Global order status label: some items completed and others did not. Shown in status badges.",
+    "maxLength": 20
+  },
+  "status.waitingForUser": {
+    "description": "Global order/payment status label: blocked pending a user action. Shown in status badges.",
+    "maxLength": 18
+  },
+  "status.pending": {
+    "description": "Global order/payment status label: awaiting processing. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.refunded": {
+    "description": "Global payment status label: the payment was refunded. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "status.requiresCapture": {
+    "description": "Global payment status label: authorized but funds not yet captured. Shown in status badges.",
+    "maxLength": 18
+  },
+  "status.unknown": {
+    "description": "Global fallback status label for an unrecognized order/payment state. Shown in status badges; keep short.",
+    "maxLength": 12
+  },
+  "signIn.loadFailedTitle": {
+    "description": "Error toast title shown when the sign-in flow fails to load (header/sidebar account button)."
+  },
+  "signIn.loadFailedDescription": {
+    "description": "Default error toast description when the sign-in flow fails to load, used when no specific error message is available."
+  }
+}

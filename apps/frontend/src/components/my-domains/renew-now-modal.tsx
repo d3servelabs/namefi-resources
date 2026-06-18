@@ -1,6 +1,7 @@
 'use client';
 
 import { type FC, useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Loader2, ShoppingCart } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -54,6 +55,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
   onRenew,
   onSuccess,
 }) => {
+  const t = useTranslations('domains');
   const [selectedYears, setSelectedYears] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -102,7 +104,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
       // All-failure path: keep the modal open so the user can adjust — the
       // renewDomains hook already surfaces toasts for each failed row.
     } catch (error) {
-      toast.error('Failed to add domains to cart. Please try again.');
+      toast.error(t('renewModal.addToCartFailed'));
       console.error('Renewal error:', error);
     } finally {
       setIsProcessing(false);
@@ -114,12 +116,16 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            Renew {domains.length === 1 ? 'Domain' : 'Domains'}
+            {t('renewModal.title', { count: domains.length })}
           </DialogTitle>
           <DialogDescription>
             {domains.length === 1
-              ? `Renew ${safeToUnicode(domains[0].normalizedDomainName)}`
-              : `Renew ${domains.length} domains`}
+              ? t('renewModal.descriptionSingle', {
+                  domain: safeToUnicode(domains[0].normalizedDomainName),
+                })
+              : t('renewModal.descriptionMultiple', {
+                  count: domains.length,
+                })}
           </DialogDescription>
         </DialogHeader>
 
@@ -140,7 +146,9 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
           )}
 
           <div className="flex items-center justify-between">
-            <Label htmlFor="renewal-years">Renewal Period</Label>
+            <Label htmlFor="renewal-years">
+              {t('renewModal.renewalPeriod')}
+            </Label>
             <Select
               value={selectedYears.toString()}
               onValueChange={(value) => {
@@ -149,12 +157,12 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
               }}
             >
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="Select years" />
+                <SelectValue placeholder={t('renewModal.selectYears')} />
               </SelectTrigger>
               <SelectContent>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((year) => (
                   <SelectItem key={year} value={year.toString()}>
-                    {year} {year === 1 ? 'year' : 'years'}
+                    {t('renewModal.yearOption', { years: year })}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -163,14 +171,14 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
 
           <div className="rounded-lg bg-muted/50 p-4 space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Price per year</span>
+              <span className="text-muted-foreground">
+                {t('renewModal.pricePerYear')}
+              </span>
               <span>{formatAmountInUSD(totalPricePerYear)}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between font-medium">
-              <span>
-                Total ({selectedYears} {selectedYears === 1 ? 'year' : 'years'})
-              </span>
+              <span>{t('renewModal.total', { years: selectedYears })}</span>
               <span className="text-lg">
                 {formatAmountInUSD(totalPricePerYear * selectedYears)}
               </span>
@@ -184,7 +192,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
             onClick={() => onOpenChange(false)}
             disabled={isProcessing}
           >
-            Cancel
+            {t('renewModal.cancel')}
           </Button>
           {/* Disabled when pricing is unavailable so the user sees the cost
               before checkout — backend can calculate, but explicit upfront
@@ -196,12 +204,12 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
             {isProcessing ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Adding to Cart...
+                {t('renewModal.addingToCart')}
               </>
             ) : (
               <>
                 <ShoppingCart className="w-4 h-4 mr-2" />
-                Add to Cart
+                {t('renewModal.addToCart')}
               </>
             )}
           </Button>

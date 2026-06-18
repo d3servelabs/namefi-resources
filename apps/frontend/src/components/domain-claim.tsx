@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useCallback, useMemo, useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 import { useDebounceValue } from 'usehooks-ts';
+import { useTranslations } from 'next-intl';
 import { UserDropdown } from './dropdowns/user-dropdown';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import {
@@ -47,9 +48,12 @@ interface DomainClaimProps {
 export const DomainClaim: FC<DomainClaimProps> = ({
   domain,
   onClaim,
-  title = 'Your 0x Identity',
-  subtitle = 'Become part of the Web3 citizen network',
+  title,
+  subtitle,
 }) => {
+  const t = useTranslations('claim');
+  const resolvedTitle = title ?? t('widget.defaultTitle');
+  const resolvedSubtitle = subtitle ?? t('widget.defaultSubtitle');
   const [subdomainValue, setSubdomainValue] = useState('');
   const [debouncedSubdomainValue, setDebouncedSubdomainValue] =
     useDebounceValue(subdomainValue, 500);
@@ -109,19 +113,27 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
   const qualifyingDomainNamesText = useMemo(() => {
     if (isQualifyingDomainNamesForPromoFetching) {
-      return 'Checking for qualifying domains based on your linked social media accounts...';
+      return t('widget.qualifying.checking');
     }
 
     if (qualifyingDomainNamesForPromo === undefined) {
-      return 'Error while checking for qualifying domains based on your linked social media accounts.';
+      return t('widget.qualifying.error');
     }
 
     if (qualifyingDomainNamesForPromo?.length === 0) {
-      return `It looks like your linked social media accounts don't qualify you to claim a free domain name.`;
+      return t('widget.qualifying.none');
     }
 
-    return `Your qualifying domain names: ${qualifyingDomainNamesForPromo.map((domainName) => `"${domainName}"`).join(', ')}`;
-  }, [isQualifyingDomainNamesForPromoFetching, qualifyingDomainNamesForPromo]);
+    return t('widget.qualifying.list', {
+      domains: qualifyingDomainNamesForPromo
+        .map((domainName) => `"${domainName}"`)
+        .join(', '),
+    });
+  }, [
+    isQualifyingDomainNamesForPromoFetching,
+    qualifyingDomainNamesForPromo,
+    t,
+  ]);
 
   const canClaim = useMemo(() => {
     return (
@@ -139,36 +151,39 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
   const buttonText = useMemo(() => {
     if (!isAuthenticated) {
-      return 'Login to Claim';
+      return t('widget.button.loginToClaim');
     }
     if (isQualifiesForPromoFetching || isDomainAvailableFetching) {
       return (
         <>
-          <Loader2 className="w-4 h-4 animate-spin" /> Checking...
+          <Loader2 className="w-4 h-4 animate-spin" />{' '}
+          {t('widget.button.checking')}
         </>
       );
     }
     if (inCart) {
       return (
         <>
-          <CheckIcon className="w-4 h-4" /> In Cart
+          <CheckIcon className="w-4 h-4" /> {t('widget.button.inCart')}
         </>
       );
     }
     if (isProcessing) {
       return (
         <>
-          <Loader2 className="w-4 h-4 animate-spin" /> Claiming...
+          <Loader2 className="w-4 h-4 animate-spin" />{' '}
+          {t('widget.button.claiming')}
         </>
       );
     }
-    return 'Claim Now';
+    return t('widget.button.claimNow');
   }, [
     isQualifiesForPromoFetching,
     isDomainAvailableFetching,
     isProcessing,
     isAuthenticated,
     inCart,
+    t,
   ]);
 
   const onInputChange = useCallback(
@@ -199,31 +214,31 @@ export const DomainClaim: FC<DomainClaimProps> = ({
     <div className="w-full max-w-4xl mx-auto p-16 justify-center items-center">
       <div className="flex flex-col items-center justify-center text-center mb-12">
         <h2 className="text-4xl font-bold text-secondary-foreground mb-2">
-          {title}
+          {resolvedTitle}
         </h2>
-        <p className="text-lg text-gray-300">{subtitle}</p>
-        <p className="text-gray-300 mb-2">
-          Follow the steps below to see if you qualify
-        </p>
+        <p className="text-lg text-gray-300">{resolvedSubtitle}</p>
+        <p className="text-gray-300 mb-2">{t('widget.qualifyPrompt')}</p>
         <Accordion className="w-full rounded-lg p-4 border ">
           <AccordionItem value="item-1">
-            <AccordionTrigger>Sign In</AccordionTrigger>
+            <AccordionTrigger>
+              {t('widget.steps.signIn.trigger')}
+            </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               <p className="text-start">
                 {isAuthenticated
-                  ? 'Thanks for signing in! You can proceed to the next step.'
-                  : 'Sign in or create an account to get started.'}
+                  ? t('widget.steps.signIn.signedIn')
+                  : t('widget.steps.signIn.signedOut')}
               </p>
               {!isAuthenticated && <UserDropdown className="w-fit" />}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>Link Social Media</AccordionTrigger>
+            <AccordionTrigger>
+              {t('widget.steps.linkSocial.trigger')}
+            </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               <p className="text-start">
-                Link a social media account with a qualifying username by
-                visiting your profile page. For now, usernames that start with
-                "0x" qualify you for the promo.
+                {t('widget.steps.linkSocial.description')}
               </p>
               <Button
                 render={<Link href="/profile" />}
@@ -231,16 +246,17 @@ export const DomainClaim: FC<DomainClaimProps> = ({
                 size="sm"
                 className="w-fit"
               >
-                Visit Profile Page
+                {t('widget.steps.linkSocial.visitProfile')}
               </Button>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>Enter Domain Name</AccordionTrigger>
+            <AccordionTrigger>
+              {t('widget.steps.enterDomain.trigger')}
+            </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               <p className="text-start">
-                Enter your qualifying domain name below. If it's available,
-                you'll be able to claim it for free!
+                {t('widget.steps.enterDomain.description')}
               </p>
               <p className="text-start">{qualifyingDomainNamesText}</p>
             </AccordionContent>
@@ -253,7 +269,11 @@ export const DomainClaim: FC<DomainClaimProps> = ({
           <div className="flex items-center justify-center w-full pl-2 gap-1 md:gap-2 h-14">
             <SearchIcon className="h-5 w-5 text-gray-400" />
             <Input
-              placeholder={isMobile ? 'name' : 'yourname'}
+              placeholder={
+                isMobile
+                  ? t('widget.input.placeholderMobile')
+                  : t('widget.input.placeholderDesktop')
+              }
               value={subdomainValue}
               onChange={onInputChange}
               className="w-full px-0 border-0 dark:bg-transparent h-full shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-gray-500 text-lg"

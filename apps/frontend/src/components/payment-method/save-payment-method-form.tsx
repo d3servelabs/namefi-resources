@@ -11,6 +11,7 @@ import type {
   StripeElements,
 } from '@stripe/stripe-js';
 import { Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type React from 'react';
 import { useCallback, useState } from 'react';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
@@ -26,6 +27,7 @@ export function SavePaymentMethodForm({
   onError,
   returnUrl,
 }: SavePaymentMethodFormProps) {
+  const t = useTranslations('paymentMethods');
   const stripe = useStripe();
   const elements = useElements();
   const [isFormReady, setIsFormReady] = useState(false);
@@ -70,19 +72,19 @@ export function SavePaymentMethodForm({
           await stripe.confirmSetup(paymentOptions);
 
         if (setupIntentError) {
-          setError(setupIntentError.message ?? 'An error occurred');
+          setError(setupIntentError.message ?? t('saveDialog.genericError'));
           onError?.(new Error(setupIntentError.message));
         } else {
           onSuccess?.(setupIntent);
         }
       } catch (err) {
-        setError('An unexpected error occurred');
+        setError(t('saveDialog.unexpectedError'));
         onError?.(err as Error);
       } finally {
         setIsProcessing(false);
       }
     },
-    [elements, onError, onSuccess, stripe, returnUrl],
+    [elements, onError, onSuccess, stripe, returnUrl, t],
   );
 
   return (
@@ -98,10 +100,10 @@ export function SavePaymentMethodForm({
           {isProcessing ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Processing...
+              {t('saveDialog.processing')}
             </>
           ) : (
-            'Save this Payment Method'
+            t('saveDialog.submit')
           )}
         </NamefiButton>
       )}

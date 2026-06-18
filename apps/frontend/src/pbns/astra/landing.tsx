@@ -41,15 +41,11 @@ import {
 import { isDomainImportable } from '@namefi-astra/common/domain-availability';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { ArrowLeft, Loader2, SearchIcon, Sparkles } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import type { MarketingSectionsProps } from './landing-marketing';
 import { FloatingCart } from '@/components/floating-cart';
-
-const HERO_HEADING =
-  'Namefi: Next generation domain platform with blockchain and AI';
-const HERO_SUBTITLE =
-  'Faster, cheaper and verifiable. The best way to own domains.';
 
 const MarketingSections = dynamic<MarketingSectionsProps>(() =>
   import('./landing-marketing').then((module) => module.MarketingSections),
@@ -97,6 +93,7 @@ const HeroSection = ({
   searchAnchorRef?: RefObject<HTMLDivElement | null>;
   onSearchIntent?: () => void;
 }) => {
+  const t = useTranslations('landing');
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -159,13 +156,13 @@ const HeroSection = ({
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center">
         <span className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur">
-          ICANN Accredited Registrar on Ethereum & Base
+          {t('hero.badge')}
         </span>
         <h1 className="mt-6 text-balance text-2xl font-semibold leading-tight md:mt-8 md:text-6xl">
-          {HERO_HEADING}
+          {t('hero.heading')}
         </h1>
         <p className="mt-3 max-w-2xl text-pretty text-sm text-muted-foreground md:mt-4 md:text-xl">
-          {HERO_SUBTITLE}
+          {t('hero.subtitle')}
         </p>
 
         <div className="mt-8 md:mt-12 flex w-full max-w-3xl flex-col items-center gap-6">
@@ -261,7 +258,7 @@ const HeroSection = ({
                     }}
                   >
                     <Sparkles className="h-3.5 w-3.5" />
-                    <span>Or try our new search experience (v3 beta)</span>
+                    <span>{t('hero.tryV3Beta')}</span>
                     <ArrowLeft className="h-3.5 w-3.5" />
                   </motion.div>
                 </Link>
@@ -287,47 +284,50 @@ const ScrollIndicator = ({
 }: {
   visible?: boolean;
   onClick?: () => void;
-}) => (
-  <div className="mt-8 flex h-16 items-center justify-center">
-    <AnimatePresence initial={true}>
-      {visible ? (
-        <motion.button
-          key="scroll-indicator"
-          type="button"
-          onClick={onClick}
-          aria-label="Scroll to Why Use Namefi section"
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 0.75, y: 0 }}
-          exit={{ opacity: 0, y: 12 }}
-          transition={{ delay: 0.4, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-2 text-[11px] font-medium text-white/65 transition hover:text-white focus:outline-none"
-        >
-          <motion.div
-            animate={{ y: [0, 5, 0] }}
-            transition={{
-              duration: 2.6,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: 'easeInOut',
-            }}
-            className="flex h-10 w-6 items-center justify-center rounded-full border border-white/25 bg-white/12 backdrop-blur-sm"
+}) => {
+  const t = useTranslations('landing');
+  return (
+    <div className="mt-8 flex h-16 items-center justify-center">
+      <AnimatePresence initial={true}>
+        {visible ? (
+          <motion.button
+            key="scroll-indicator"
+            type="button"
+            onClick={onClick}
+            aria-label={t('scrollIndicator.ariaLabel')}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 0.75, y: 0 }}
+            exit={{ opacity: 0, y: 12 }}
+            transition={{ delay: 0.4, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center gap-2 text-[11px] font-medium text-white/65 transition hover:text-white focus:outline-none"
           >
-            <motion.span
-              animate={{ y: [0, 4, 0] }}
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
               transition={{
                 duration: 2.6,
                 repeat: Number.POSITIVE_INFINITY,
                 ease: 'easeInOut',
-                delay: 0.25,
               }}
-              className="block h-2 w-0.5 rounded-full bg-white"
-            />
-          </motion.div>
-          <span>Why Choose Namefi?</span>
-        </motion.button>
-      ) : null}
-    </AnimatePresence>
-  </div>
-);
+              className="flex h-10 w-6 items-center justify-center rounded-full border border-white/25 bg-white/12 backdrop-blur-sm"
+            >
+              <motion.span
+                animate={{ y: [0, 4, 0] }}
+                transition={{
+                  duration: 2.6,
+                  repeat: Number.POSITIVE_INFINITY,
+                  ease: 'easeInOut',
+                  delay: 0.25,
+                }}
+                className="block h-2 w-0.5 rounded-full bg-white"
+              />
+            </motion.div>
+            <span>{t('scrollIndicator.label')}</span>
+          </motion.button>
+        ) : null}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 /**
  * Compact search bar that floats at the top of the viewport while results are
@@ -353,45 +353,48 @@ const FloatingSearchBar = ({
   setQuery: (value: string) => void;
   onSearch: () => void;
   isLoading: boolean;
-}) => (
-  <motion.div
-    initial={{ y: -72, opacity: 0 }}
-    animate={{ y: 0, opacity: 1 }}
-    exit={{ y: -72, opacity: 0 }}
-    transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-    className="fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0"
-  >
-    <div className="mx-auto flex w-full max-w-3xl items-center px-4 py-2.5">
-      <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 pl-4 pr-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
-        {isLoading ? (
-          <Loader2 className="h-4 w-4 shrink-0 animate-spin text-white/70" />
-        ) : (
-          <SearchIcon className="h-4 w-4 shrink-0 text-white/60" />
-        )}
-        <Input
-          name="floating-search-input"
-          placeholder="Search for a domain..."
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              onSearch();
-            }
-          }}
-          className="h-9 min-w-0 flex-1 border-0 bg-transparent! px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0"
-        />
-        <NamefiButton
-          onClick={onSearch}
-          className="h-9 shrink-0 rounded-full px-5 text-sm font-semibold text-primary-foreground shadow-none"
-          title="Search"
-        >
-          Search
-        </NamefiButton>
+}) => {
+  const t = useTranslations('landing');
+  return (
+    <motion.div
+      initial={{ y: -72, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: -72, opacity: 0 }}
+      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+      className="fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0"
+    >
+      <div className="mx-auto flex w-full max-w-3xl items-center px-4 py-2.5">
+        <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 pl-4 pr-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
+          {isLoading ? (
+            <Loader2 className="h-4 w-4 shrink-0 animate-spin text-white/70" />
+          ) : (
+            <SearchIcon className="h-4 w-4 shrink-0 text-white/60" />
+          )}
+          <Input
+            name="floating-search-input"
+            placeholder={t('floatingSearch.placeholder')}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                onSearch();
+              }
+            }}
+            className="h-9 min-w-0 flex-1 border-0 bg-transparent! px-0 text-base text-white placeholder:text-white/55 focus-visible:ring-0 focus-visible:ring-offset-0"
+          />
+          <NamefiButton
+            onClick={onSearch}
+            className="h-9 shrink-0 rounded-full px-5 text-sm font-semibold text-primary-foreground shadow-none"
+            title={t('floatingSearch.searchButton')}
+          >
+            {t('floatingSearch.searchButton')}
+          </NamefiButton>
+        </div>
       </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 export const Landing: LandingComponent = ({ origin }) => {
   const [parentDomain, setParentDomain] = useState<string | undefined>(

@@ -1,4 +1,5 @@
 import { LogIn } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { UserDropdown } from './dropdowns/user-dropdown';
 import { PageShell } from '@/components/page-shell';
 
@@ -7,10 +8,11 @@ interface AuthRequiredProps {
   description?: string;
 }
 
-export function AuthRequired({
-  title = 'Sign in required',
-  description = 'Please sign in to continue',
-}: AuthRequiredProps) {
+export function AuthRequired({ title, description }: AuthRequiredProps) {
+  const t = useTranslations('shared');
+  const resolvedTitle = title ?? t('authRequired.title');
+  const resolvedDescription = description ?? t('authRequired.description');
+
   return (
     <PageShell
       padding="none"
@@ -22,8 +24,10 @@ export function AuthRequired({
           <div className="bg-muted rounded-full p-4 mb-6">
             <LogIn className="h-8 w-8 text-muted-foreground" />
           </div>
-          <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-          <p className="text-muted-foreground max-w-sm mb-6">{description}</p>
+          <h2 className="text-2xl font-semibold mb-2">{resolvedTitle}</h2>
+          <p className="text-muted-foreground max-w-sm mb-6">
+            {resolvedDescription}
+          </p>
           <UserDropdown className="w-fit" />
         </div>
       </div>

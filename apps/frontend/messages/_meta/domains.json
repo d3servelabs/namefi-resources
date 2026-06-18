@@ -1,0 +1,396 @@
+{
+  "tabs.active": {
+    "description": "Tab label for the user's active (owned, live) domains on the My Domains page."
+  },
+  "tabs.inactive": {
+    "description": "Tab label for the user's inactive domains on the My Domains page."
+  },
+  "tabs.previouslyOwned": {
+    "description": "Tab label for domains the user used to own but no longer holds."
+  },
+  "tabs.otherWallets": {
+    "description": "Tab label for domains held in the user's other linked wallets."
+  },
+  "tabs.marketplaceOrders": {
+    "description": "Tab label for the user's marketplace listings and offers."
+  },
+  "processingBanner": {
+    "description": "Banner shown while some domains are being processed. Uses rich tags: <domains> wraps a count/list of affected domains and <ordersLink> wraps the link to the Orders page — keep both tag pairs intact; 'Orders' is the destination page name."
+  },
+  "emptyActive": {
+    "description": "Empty-state message shown when the user has no active domains."
+  },
+  "emptyInactive": {
+    "description": "Empty-state message shown when the user has no inactive domains."
+  },
+  "emptyPlaceholder.title": {
+    "description": "Title of the empty-state placeholder shown when the user owns no domains at all."
+  },
+  "emptyPlaceholder.description": {
+    "description": "Body text of the empty-state placeholder, prompting the user to search for a domain via the button below."
+  },
+  "emptyPlaceholder.action": {
+    "description": "Button on the empty-state placeholder that navigates to the domain search page."
+  },
+  "columns.selectAll": {
+    "description": "Accessibility label for the header checkbox that selects all rows in the domains table."
+  },
+  "columns.selectRow": {
+    "description": "Accessibility label for the per-row checkbox that selects a single domain row."
+  },
+  "columns.domainName": {
+    "description": "Table column header for the domain name, with a live count. {count} is the number of domains."
+  },
+  "columns.domainNamePlain": {
+    "description": "Table column header for the domain name, without a count."
+  },
+  "columns.account": {
+    "description": "Table column header for the account/wallet that holds the domain."
+  },
+  "columns.renewal": {
+    "description": "Table column header for the domain renewal date/info."
+  },
+  "columns.autoEns": {
+    "description": "Table column header for the AutoENS toggle. 'AutoENS' is a feature name — keep as-is."
+  },
+  "columns.dateTokenized": {
+    "description": "Table column header for the date the domain was tokenized (minted as an NFT)."
+  },
+  "columns.dnsRecords": {
+    "description": "Table column header for the domain's DNS records."
+  },
+  "columns.actions": {
+    "description": "Table column header for the per-row actions menu."
+  },
+  "columns.renewUsdPerYear": {
+    "description": "Table column header for the renewal price. Keep the 'USD/yr' unit as-is."
+  },
+  "table.searchPlaceholder": {
+    "description": "Placeholder text in the filter input above the domains table."
+  },
+  "table.emptyMessage": {
+    "description": "Message shown inside the domains table when no rows match the active filters."
+  },
+  "table.loadingMessage": {
+    "description": "Message shown inside the domains table while domains are loading."
+  },
+  "table.showNftsInWallet": {
+    "description": "Button/label to add the user's domain NFTs to their connected wallet."
+  },
+  "table.showNftsInWalletAria": {
+    "description": "Accessibility label for the show-NFTs-in-wallet button. ICU plural on {count}: 'one' = single NFT, 'other' = multiple NFTs; # is the count."
+  },
+  "table.filters.domainName": {
+    "description": "Filter option label for filtering the table by domain name."
+  },
+  "table.filters.wallet": {
+    "description": "Filter option label for filtering the table by wallet."
+  },
+  "table.filters.renewal": {
+    "description": "Filter option label for filtering the table by renewal."
+  },
+  "table.filters.dateTokenized": {
+    "description": "Filter option label for filtering the table by tokenized date."
+  },
+  "table.filters.chain": {
+    "description": "Filter option label for filtering the table by blockchain chain."
+  },
+  "table.toasts.autoRenewToggled": {
+    "description": "Toast confirming auto-renew was toggled for one domain. {enabled} is select true/other -> 'enabled'/'disabled'; {domain} is the domain name — keep untranslated."
+  },
+  "table.toasts.autoRenewToggleFailed": {
+    "description": "Toast shown when toggling auto-renew failed for one domain. {domain} is the domain name — keep untranslated."
+  },
+  "table.toasts.autoEnsToggled": {
+    "description": "Toast confirming AutoENS was toggled for one domain. {enabled} is select true/other -> 'enabled'/'disabled'; {domain} is the domain name — keep untranslated. 'AutoENS' is a feature name."
+  },
+  "table.toasts.autoEnsToggleFailed": {
+    "description": "Toast shown when toggling AutoENS failed for one domain. {domain} is the domain name — keep untranslated. 'AutoENS' is a feature name."
+  },
+  "table.toasts.bulkAutoRenewFailed": {
+    "description": "Toast shown when a bulk auto-renew update partially failed. {failed} is the count that failed, {total} is the total attempted."
+  },
+  "table.toasts.bulkAutoRenewToggled": {
+    "description": "Toast confirming a bulk auto-renew toggle. {enabled} select true/other -> 'enabled'/'disabled'; ICU plural on {count}: 'one' = single domain, 'other' = multiple; # is the count."
+  },
+  "table.toasts.noNftsToWatch": {
+    "description": "Toast shown when there are no NFTs available to add to the user's wallet."
+  },
+  "table.toasts.nftsAdded": {
+    "description": "Toast confirming NFTs were added to the wallet. ICU plural on {count}: 'one' = single NFT, 'other' = multiple; # is the count."
+  },
+  "table.toasts.nftsAddFailed": {
+    "description": "Toast shown when adding NFTs to the wallet failed. ICU plural on {count}: 'one' = single NFT, 'other' = multiple; # is the count."
+  },
+  "otherWallets.domain": {
+    "description": "Column header for the domain in the 'other wallets' table, with a count. {count} is the number of domains."
+  },
+  "otherWallets.nftWallet": {
+    "description": "Column header for the NFT wallet holding the domain in the 'other wallets' table."
+  },
+  "otherWallets.order": {
+    "description": "Column header for the related order in the 'other wallets' table."
+  },
+  "otherWallets.viewOrder": {
+    "description": "Link/button text to view the order associated with a domain in the 'other wallets' table."
+  },
+  "renewModal.title": {
+    "description": "Title of the renew-domains modal. ICU plural on {count}: 'one' = 'Renew Domain', 'other' = 'Renew Domains'."
+  },
+  "renewModal.descriptionSingle": {
+    "description": "Renew modal description when renewing a single domain. {domain} is the domain name — keep untranslated."
+  },
+  "renewModal.descriptionMultiple": {
+    "description": "Renew modal description when renewing multiple domains. {count} is the number of domains."
+  },
+  "renewModal.renewalPeriod": {
+    "description": "Label for the renewal-period selector in the renew modal."
+  },
+  "renewModal.selectYears": {
+    "description": "Placeholder for the years dropdown in the renew modal."
+  },
+  "renewModal.yearOption": {
+    "description": "An option in the years dropdown. ICU plural on {years}: 'one' = '# year', 'other' = '# years'; # is the year count."
+  },
+  "renewModal.pricePerYear": {
+    "description": "Label for the per-year price line in the renew modal."
+  },
+  "renewModal.total": {
+    "description": "Label for the total price line in the renew modal. ICU plural on {years} shown in parentheses: 'one' = '# year', 'other' = '# years'."
+  },
+  "renewModal.cancel": {
+    "description": "Cancel button in the renew modal."
+  },
+  "renewModal.addingToCart": {
+    "description": "Loading label on the renew modal's add-to-cart button while the request is in progress."
+  },
+  "renewModal.addToCart": {
+    "description": "Add-to-cart button in the renew modal."
+  },
+  "renewModal.addToCartFailed": {
+    "description": "Error message shown when adding the renewal to the cart failed."
+  },
+  "renewPremiumInfo.aria": {
+    "description": "Accessibility label for the renewal-price info tooltip trigger. {domain} is the domain name — keep untranslated."
+  },
+  "renewPremiumInfo.tooltip": {
+    "description": "Tooltip text explaining that premium domains may have a different renewal price."
+  },
+  "renewalCell.auto": {
+    "description": "Short label in the renewal table cell indicating auto-renew is on.",
+    "maxLength": 6
+  },
+  "renewalCell.autoRenewAria": {
+    "description": "Accessibility label for the auto-renew toggle in the renewal table cell. {domain} is the domain name — keep untranslated."
+  },
+  "renewalCell.expired": {
+    "description": "Status text in the renewal table cell when the domain has expired."
+  },
+  "renewalCell.usdPerYear": {
+    "description": "Unit suffix shown in the renewal table cell. Keep the 'USD/year' unit as-is."
+  },
+  "autoEnsCell.aria": {
+    "description": "Accessibility label for the AutoENS toggle in its table cell. {domain} is the domain name — keep untranslated. 'Auto-ENS' is a feature name."
+  },
+  "timeLeft.expired": {
+    "description": "Compact time-left badge text when the domain has expired."
+  },
+  "timeLeft.days": {
+    "description": "Compact time-left badge showing days remaining. {days} is a number; 'd' is the day suffix — keep the format compact.",
+    "maxLength": 6
+  },
+  "timeLeft.monthsExact": {
+    "description": "Compact time-left badge showing an exact number of months. {months} is a number; 'm' is the month suffix.",
+    "maxLength": 6
+  },
+  "timeLeft.monthsPlus": {
+    "description": "Compact time-left badge showing months-or-more. {months} is a number; 'm+' is the suffix.",
+    "maxLength": 6
+  },
+  "timeLeft.yearsExact": {
+    "description": "Compact time-left badge showing an exact number of years. {years} is a number; 'y' is the year suffix.",
+    "maxLength": 6
+  },
+  "timeLeft.yearsPlus": {
+    "description": "Compact time-left badge showing years-or-more. {years} is a number; 'y+' is the suffix.",
+    "maxLength": 6
+  },
+  "marketplaceExpiry.neverExpires": {
+    "description": "Marketplace listing expiry label indicating the listing never expires."
+  },
+  "marketplaceExpiry.expired": {
+    "description": "Marketplace listing expiry label indicating the listing has expired."
+  },
+  "marketplaceExpiry.expires": {
+    "description": "Marketplace listing expiry label showing when it expires. {datetime} is a pre-formatted date/time — keep as-is."
+  },
+  "nftPendingBadge.minting": {
+    "description": "Pending badge on a domain NFT while it is being minted."
+  },
+  "nftPendingBadge.changingExpiration": {
+    "description": "Pending badge on a domain NFT while its expiration is being updated."
+  },
+  "nftPendingBadge.changingLock": {
+    "description": "Pending badge on a domain NFT while its lock state is being updated."
+  },
+  "nftPendingBadge.pending": {
+    "description": "Generic pending badge on a domain NFT for an in-progress operation."
+  },
+  "actions.listForSale": {
+    "description": "Row action menu item to list the domain for sale."
+  },
+  "actions.findBuyers": {
+    "description": "Row action menu item to find buyers for the domain."
+  },
+  "actions.viewOrder": {
+    "description": "Row action to view the related order (inline/button form)."
+  },
+  "actions.viewOrderMenu": {
+    "description": "Row action menu item to view the related order (menu form)."
+  },
+  "actions.viewNft": {
+    "description": "Row action menu item to view the domain's NFT."
+  },
+  "actions.viewNftOn": {
+    "description": "Row action menu item to view the domain's NFT on a block explorer. {explorer} is the explorer name, e.g. 'Etherscan' — keep untranslated."
+  },
+  "actions.scan": {
+    "description": "Row action menu item to scan the domain."
+  },
+  "actions.visitDomain": {
+    "description": "Row action menu item to open/visit the domain in a browser."
+  },
+  "actions.showNftInWallet": {
+    "description": "Row action menu item to add the domain's NFT to the connected wallet."
+  },
+  "actions.listForSaleAria": {
+    "description": "Accessibility label for the list-for-sale action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.viewOrderAria": {
+    "description": "Accessibility label for the view-order action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.findBuyersAria": {
+    "description": "Accessibility label for the find-buyers action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.viewNftAria": {
+    "description": "Accessibility label for the view-NFT action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.visitDomainAria": {
+    "description": "Accessibility label for the visit-domain action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.actionsAria": {
+    "description": "Accessibility label for the row actions menu trigger. {domain} is the domain name — keep untranslated."
+  },
+  "actions.showNftInWalletAria": {
+    "description": "Accessibility label for the show-NFT-in-wallet action. {domain} is the domain name — keep untranslated."
+  },
+  "actions.nftAddedToast": {
+    "description": "Toast confirming the domain's NFT was added to the wallet. {domain} is the domain name — keep untranslated."
+  },
+  "actions.nftAddFailedToast": {
+    "description": "Toast shown when adding the domain's NFT to the wallet failed. {domain} is the domain name — keep untranslated."
+  },
+  "actions.nftAddErrorToast": {
+    "description": "Generic toast shown when adding the NFT to the wallet failed."
+  },
+  "actions.unknownError": {
+    "description": "Fallback error text used when no specific error message is available."
+  },
+  "floatingPanel.selected": {
+    "description": "Label in the bulk-selection floating panel indicating how many rows are selected (follows a count)."
+  },
+  "floatingPanel.clearSelection": {
+    "description": "Button in the floating panel to clear the current row selection."
+  },
+  "floatingPanel.auto": {
+    "description": "Short label in the floating panel for the auto-renew control.",
+    "maxLength": 6
+  },
+  "floatingPanel.bulkAutoRenewAria": {
+    "description": "Accessibility label for the bulk auto-renew control. ICU plural on {count}: 'one' = single domain, 'other' = multiple; # is the count."
+  },
+  "floatingPanel.bulkAutoRenewMixed": {
+    "description": "Tooltip for the bulk auto-renew control when selected domains have mixed states."
+  },
+  "floatingPanel.bulkAutoRenewOn": {
+    "description": "Tooltip for the bulk auto-renew control when auto-renew is enabled for all selected domains."
+  },
+  "floatingPanel.bulkAutoRenewOff": {
+    "description": "Tooltip for the bulk auto-renew control when auto-renew is disabled for all selected domains."
+  },
+  "floatingPanel.renewAria": {
+    "description": "Accessibility label for the bulk renew button. ICU plural on {count}: 'one' = single domain, 'other' = multiple; # is the count."
+  },
+  "floatingPanel.renewTooltip": {
+    "description": "Tooltip for the bulk renew button. ICU plural on {count}: 'one' = single domain, 'other' = multiple; # is the count."
+  },
+  "floatingPanel.setWebRecords": {
+    "description": "Bulk-action button in the floating panel to set web records for the selected domains."
+  },
+  "floatingPanel.setUrlForwarding": {
+    "description": "Bulk-action button in the floating panel to set URL forwarding for the selected domains."
+  },
+  "floatingPanel.setEnsRecord": {
+    "description": "Bulk-action button in the floating panel to set the ENS record for the selected domains. 'ENS' is a protocol name — keep as-is."
+  },
+  "floatingPanel.showInWalletAria": {
+    "description": "Accessibility label for the bulk show-in-wallet action. ICU plural on {count}: 'one' = single NFT, 'other' = multiple; # is the count."
+  },
+  "floatingPanel.showInWalletTooltip": {
+    "description": "Tooltip for the bulk show-in-wallet action. ICU plural on {count}: 'one' = single NFT, 'other' = multiple; # is the count."
+  },
+  "marketplaceOrders.partialLoadNote": {
+    "description": "Note shown when some marketplace listings may not load because their markets are busy."
+  },
+  "marketplaceOrders.noLinkedWalletsTitle": {
+    "description": "Empty-state title shown when the user has no linked wallets in the marketplace orders tab."
+  },
+  "marketplaceOrders.noLinkedWalletsDescription": {
+    "description": "Empty-state body prompting the user to link a wallet to see their marketplace orders."
+  },
+  "marketplaceOrders.listingsTitle": {
+    "description": "Section heading for the user's active marketplace listings."
+  },
+  "marketplaceOrders.listingsDescription": {
+    "description": "Section description for the user's active listings. 'OpenSea' and 'Rarible' are marketplace names — keep untranslated."
+  },
+  "marketplaceOrders.noListingsTitle": {
+    "description": "Empty-state title shown when the user has no active marketplace listings."
+  },
+  "marketplaceOrders.noListingsDescription": {
+    "description": "Empty-state body explaining that listings created on a domain detail page will appear here."
+  },
+  "marketplaceOrders.offersTitle": {
+    "description": "Section heading for the user's offers placed on domains they don't own."
+  },
+  "marketplaceOrders.offersDescription": {
+    "description": "Section description for the user's outgoing offers, noting they are sorted by highest price first."
+  },
+  "marketplaceOrders.noOffersTitle": {
+    "description": "Empty-state title shown when the user has no outgoing offers."
+  },
+  "marketplaceOrders.noOffersDescription": {
+    "description": "Empty-state body explaining that offers placed on other domains will appear here."
+  },
+  "marketplaceOrders.view": {
+    "description": "Button/link to view a marketplace listing or offer."
+  },
+  "marketplaceOrders.incomingBids": {
+    "description": "Label above the list of incoming bids on a listing card."
+  },
+  "marketplaceOrders.loadBidsFailed": {
+    "description": "Error text shown when loading bids for a listing failed. {error} is the error message — keep untranslated."
+  },
+  "marketplaceOrders.noBidsYet": {
+    "description": "Text shown on a listing card when there are no bids yet."
+  },
+  "marketplaceOrders.viewBidAria": {
+    "description": "Accessibility label for the view-bid link. {source} is the marketplace name and {domain} is the domain name — keep both untranslated."
+  },
+  "marketplaceOrders.nftAlt": {
+    "description": "Alt text for the NFT image thumbnail on a marketplace card."
+  },
+  "marketplaceOrders.offerWaiting": {
+    "description": "Status text on an offer card indicating the offer is open and waiting for the seller to accept."
+  }
+}

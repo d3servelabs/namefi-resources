@@ -28,6 +28,7 @@ import {
 import { useCallback, useEffect, useRef } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 import { privyCustomMetadataSchema } from '@namefi-astra/common/privy-custom-metadata';
 import { useAuth } from '@/hooks/use-auth';
@@ -70,6 +71,7 @@ const contactDetailsFormSchema = privyCustomMetadataSchema
 type ContactDetailsFormData = z.infer<typeof contactDetailsFormSchema>;
 
 export function ContactDetails() {
+  const t = useTranslations('profile');
   const trpc = useTRPC();
   const { privyUser, isPrivyUserLoading, privyRuntimeReady } = useAuth();
   const [focus] = useQueryState('focus', parseAsString);
@@ -78,10 +80,10 @@ export function ContactDetails() {
   const { mutate: updateMetadata, isPending: isUpdatingMetadata } = useMutation(
     trpc.users.updatePrivyCustomMetadata.mutationOptions({
       onSuccess: () => {
-        toast.success('Contact details updated successfully');
+        toast.success(t('contactDetails.updateSuccess'));
       },
       onError: (error: any) => {
-        toast.error('Failed to update contact details', {
+        toast.error(t('contactDetails.updateFailure'), {
           description: error.message,
         });
       },
@@ -128,10 +130,10 @@ export function ContactDetails() {
         updateMetadata(data);
       } catch (error) {
         console.error('Failed to update contact details:', error);
-        toast.error('Failed to update contact details');
+        toast.error(t('contactDetails.updateFailure'));
       }
     },
-    [updateMetadata],
+    [updateMetadata, t],
   );
 
   const emaiSubscriptionRef = useRef<HTMLDivElement>(null);
@@ -148,12 +150,9 @@ export function ContactDetails() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            <CardTitle>Contact Details</CardTitle>
+            <CardTitle>{t('contactDetails.title')}</CardTitle>
           </div>
-          <CardDescription>
-            Your contact information for domain registration and account
-            management
-          </CardDescription>
+          <CardDescription>{t('contactDetails.description')}</CardDescription>
         </CardHeader>
         <CardContent className="flex min-h-48 items-center justify-center">
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
@@ -168,17 +167,14 @@ export function ContactDetails() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            <CardTitle>Contact Details</CardTitle>
+            <CardTitle>{t('contactDetails.title')}</CardTitle>
           </div>
-          <CardDescription>
-            Your contact information for domain registration and account
-            management
-          </CardDescription>
+          <CardDescription>{t('contactDetails.description')}</CardDescription>
         </CardHeader>
         <CardContent className="flex min-h-48 flex-col items-center justify-center gap-3 text-center">
           <AlertCircle className="h-5 w-5 text-muted-foreground" />
           <p className="max-w-md text-sm text-muted-foreground">
-            Privy profile details are unavailable for this session.
+            {t('contactDetails.unavailable')}
           </p>
         </CardContent>
       </Card>
@@ -191,12 +187,9 @@ export function ContactDetails() {
         <CardHeader>
           <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-primary" />
-            <CardTitle>Contact Details</CardTitle>
+            <CardTitle>{t('contactDetails.title')}</CardTitle>
           </div>
-          <CardDescription>
-            Your contact information for domain registration and account
-            management
-          </CardDescription>
+          <CardDescription>{t('contactDetails.description')}</CardDescription>
         </CardHeader>
 
         <CardContent className="space-y-12 mt-6">
@@ -206,7 +199,7 @@ export function ContactDetails() {
               <div className="absolute -top-3 left-4 flex items-center gap-2 bg-card px-2 z-10">
                 <MessageCircle className="h-4 w-4 text-primary" />
                 <span className="text-sm font-medium text-foreground">
-                  Contact Methods
+                  {t('contactDetails.contactMethods')}
                 </span>
               </div>
               <CardContent className="pt-2 pb-6">
@@ -230,17 +223,19 @@ export function ContactDetails() {
                 <div className="absolute -top-3 left-4 flex items-center gap-2 bg-card px-2 z-10">
                   <User className="h-4 w-4 text-primary" />
                   <span className="text-sm font-medium text-foreground">
-                    Profile Information
+                    {t('contactDetails.profileInformation')}
                   </span>
                 </div>
                 <CardContent className="pt-2 pb-6 space-y-6">
                   {/* Full Name */}
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
+                    <Label htmlFor="fullName">
+                      {t('contactDetails.fullName')}
+                    </Label>
                     <Input
                       id="fullName"
                       {...register('fullName')}
-                      placeholder="John Doe"
+                      placeholder={t('contactDetails.fullNamePlaceholder')}
                       className="max-w-md"
                     />
                     {errors.fullName && (
@@ -258,7 +253,9 @@ export function ContactDetails() {
                       render={({ field }) => (
                         <div className="space-y-4">
                           <div className="space-y-2">
-                            <Label htmlFor="street">Street Address</Label>
+                            <Label htmlFor="street">
+                              {t('contactDetails.streetAddress')}
+                            </Label>
                             <Input
                               id="street"
                               value={field.value?.street || ''}
@@ -268,13 +265,17 @@ export function ContactDetails() {
                                   street: e.target.value,
                                 })
                               }
-                              placeholder="123 Main Street, Apartment 4B"
+                              placeholder={t(
+                                'contactDetails.streetAddressPlaceholder',
+                              )}
                             />
                           </div>
 
                           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                             <div className="space-y-2">
-                              <Label htmlFor="city">City</Label>
+                              <Label htmlFor="city">
+                                {t('contactDetails.city')}
+                              </Label>
                               <Input
                                 id="city"
                                 value={field.value?.city || ''}
@@ -284,12 +285,16 @@ export function ContactDetails() {
                                     city: e.target.value,
                                   })
                                 }
-                                placeholder="New York"
+                                placeholder={t(
+                                  'contactDetails.cityPlaceholder',
+                                )}
                               />
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="state">State/Province</Label>
+                              <Label htmlFor="state">
+                                {t('contactDetails.stateProvince')}
+                              </Label>
                               <Input
                                 id="state"
                                 value={field.value?.state || ''}
@@ -299,12 +304,16 @@ export function ContactDetails() {
                                     state: e.target.value,
                                   })
                                 }
-                                placeholder="NY"
+                                placeholder={t(
+                                  'contactDetails.stateProvincePlaceholder',
+                                )}
                               />
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="zipCode">ZIP/Postal Code</Label>
+                              <Label htmlFor="zipCode">
+                                {t('contactDetails.zipPostalCode')}
+                              </Label>
                               <Input
                                 id="zipCode"
                                 value={field.value?.zipCode || ''}
@@ -314,12 +323,16 @@ export function ContactDetails() {
                                     zipCode: e.target.value,
                                   })
                                 }
-                                placeholder="10001"
+                                placeholder={t(
+                                  'contactDetails.zipPostalCodePlaceholder',
+                                )}
                               />
                             </div>
 
                             <div className="space-y-2">
-                              <Label htmlFor="country">Country/Region</Label>
+                              <Label htmlFor="country">
+                                {t('contactDetails.countryRegion')}
+                              </Label>
                               <CountryDropdown
                                 defaultValue={field.value?.country}
                                 onChange={(country?: Country) => {
@@ -328,7 +341,9 @@ export function ContactDetails() {
                                     country: country?.alpha2,
                                   });
                                 }}
-                                placeholder="Select country/region"
+                                placeholder={t(
+                                  'contactDetails.countryRegionPlaceholder',
+                                )}
                               />
                             </div>
                           </div>
@@ -354,7 +369,7 @@ export function ContactDetails() {
                     ) : (
                       <Save className="h-4 w-4" />
                     )}
-                    Save Profile
+                    {t('contactDetails.saveProfile')}
                   </Button>
                 </CardFooter>
               </Card>

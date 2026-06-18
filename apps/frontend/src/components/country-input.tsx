@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
 } from '@namefi-astra/ui/components/shadcn/popover';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { ChevronDown, CheckIcon, Globe } from 'lucide-react';
 import { CircleFlag } from 'react-circle-flags';
 import { countries } from 'country-data-list';
@@ -48,11 +49,13 @@ const CountryDropdownComponent = (
     onChange,
     defaultValue,
     disabled = false,
-    placeholder = 'Select country',
+    placeholder,
     ...props
   }: CountryDropdownProps,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
+  const t = useTranslations('shared');
+  const resolvedPlaceholder = placeholder ?? t('countryInput.placeholder');
   const [open, setOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState<Country | undefined>(
     undefined,
@@ -113,7 +116,7 @@ const CountryDropdownComponent = (
             </span>
           </div>
         ) : (
-          <span className="text-muted-foreground">{placeholder}</span>
+          <span className="text-muted-foreground">{resolvedPlaceholder}</span>
         )}
         <ChevronDown size={16} />
       </PopoverTrigger>
@@ -122,11 +125,11 @@ const CountryDropdownComponent = (
           <CommandList ref={commandListRef}>
             <div className="sticky top-0 z-10 bg-popover">
               <CommandInput
-                placeholder="Search countries..."
+                placeholder={t('countryInput.searchPlaceholder')}
                 onValueChange={handleInputValueChange}
               />
             </div>
-            <CommandEmpty>No country found.</CommandEmpty>
+            <CommandEmpty>{t('countryInput.noResults')}</CommandEmpty>
             {selectedCountry && (
               <CommandGroup>
                 <CommandItem
@@ -142,7 +145,7 @@ const CountryDropdownComponent = (
                       <Globe size={16} />
                     </div>
                     <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-                      Clear selection
+                      {t('countryInput.clearSelection')}
                     </span>
                   </div>
                 </CommandItem>

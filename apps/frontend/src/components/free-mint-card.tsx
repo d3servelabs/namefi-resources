@@ -2,6 +2,7 @@
 
 import { useMemo, useCallback } from 'react';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useFreeMintsGuidance } from '@/components/providers/free-mints-guidance';
 import { CometCard } from '@/components/ui/aceternity/comet-card';
@@ -15,6 +16,7 @@ export interface FreeMintCardProps {
 
 export function FreeMintCard({ data }: FreeMintCardProps) {
   const { type, domain, expirationDate, createdAt } = data;
+  const t = useTranslations('freeMints');
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
 
@@ -110,7 +112,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                 WebkitMaskPosition: 'center',
               }}
               role="img"
-              aria-label="Powered by Namefi"
+              aria-label={t('card.poweredByNamefi')}
             />
 
             <div className="space-y-3 sm:space-y-2 lg:space-y-6 self-end">
@@ -118,7 +120,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                 className="font-mono uppercase leading-none text-[19px] md:text-[21px] text-wrap"
                 style={raised}
               >
-                {type === 'campaign' ? `Any ${domain} subdomain` : domain}
+                {type === 'campaign' ? t('campaignLabel', { domain }) : domain}
               </div>
               <div className="flex justify-start gap-x-4">
                 <div className="min-w-[92px]">
@@ -126,7 +128,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                     className="text-[10px] uppercase tracking-[.28em] text-white/70"
                     style={deboss}
                   >
-                    Issued
+                    {t('card.issued')}
                   </div>
                   <time
                     className="font-mono text-sm tracking-widest"
@@ -140,7 +142,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                     className="text-[10px] uppercase tracking-[.28em] text-white/70"
                     style={deboss}
                   >
-                    Valid Thru
+                    {t('card.validThru')}
                   </div>
                   <time
                     className="font-mono text-sm tracking-widest"
@@ -165,7 +167,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
                            transition-[transform,background] duration-150
                            hover:scale-[1.005] active:scale-[0.995]"
               >
-                Claim Now
+                {t('card.claimNow')}
               </Button>
             </div>
           </div>

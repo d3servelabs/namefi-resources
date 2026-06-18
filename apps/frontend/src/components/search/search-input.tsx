@@ -22,6 +22,7 @@ import {
   type FormEvent,
 } from 'react';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
+import { useTranslations } from 'next-intl';
 import { SearchMode } from './types';
 import {
   Tabs,
@@ -50,14 +51,18 @@ export const SearchHeader: FC<{
   hideNetworkSelection = false,
   className,
 }) => {
+  const t = useTranslations('search');
   return (
     <div className={cn('flex flex-col items-center mt-40 gap-3', className)}>
       <p className="text-4xl text-center text-secondary-foreground font-semibold drop-shadow-xl">
-        {tagline || `Search for a domain on ${parentDomain ?? 'all networks'}`}
+        {tagline ||
+          (parentDomain
+            ? t('header.taglineWithNetwork', { parentDomain })
+            : t('header.taglineAllNetworks'))}
       </p>
       {isFirstPartyOrigin && !hideNetworkSelection && (
         <div className="flex gap-2 p-3 pr-0 items-center bg-neutral-900 backdrop-blur-md rounded-lg">
-          Network:
+          {t('header.networkLabel')}
           <div className="flex items-center gap-2 mx-auto w-full max-w-md overflow-x-auto">
             <Button
               key="main"
@@ -66,7 +71,7 @@ export const SearchHeader: FC<{
               onClick={() => setParentDomain(undefined)}
               className="h-8 px-3"
             >
-              All
+              {t('header.allNetworks')}
             </Button>
             {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
               <Button
@@ -90,6 +95,7 @@ export const SearchModeTabs: FC<{
   searchMode: SearchMode;
   onSearchModeChange: (mode: SearchMode) => void;
 }> = ({ searchMode, onSearchModeChange }) => {
+  const t = useTranslations('search');
   const handleValueChange = (value: string) => {
     onSearchModeChange(value as SearchMode);
   };
@@ -105,13 +111,13 @@ export const SearchModeTabs: FC<{
           value={SearchMode.REGISTER}
           className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
-          Register
+          {t('modeTabs.register')}
         </TabsTrigger>
         <TabsTrigger
           value={SearchMode.IMPORT}
           className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
-          Import
+          {t('modeTabs.import')}
         </TabsTrigger>
       </TabsList>
     </Tabs>
@@ -141,6 +147,7 @@ export const SearchInput: FC<{
   ctaClassName,
   onSearchIntent,
 }) => {
+  const t = useTranslations('search');
   const inputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const textareaWrapperRef = useRef<HTMLDivElement>(null);
@@ -274,14 +281,7 @@ export const SearchInput: FC<{
   const isMobile = useIsMobile();
 
   const isImportMode = searchMode === SearchMode.IMPORT;
-  const importPlaceholder = `You can paste in two formats:
-
-Format 1: Domain with auth code
-example.com, authcode123
-
-Format 2: Multiple domains (comma or newline separated)
-domain1.com, domain2.com
-domain3.com`;
+  const importPlaceholder = t('input.importPlaceholder');
 
   return (
     <>
@@ -397,7 +397,7 @@ domain3.com`;
                 <Input
                   ref={inputRef}
                   name="search-input"
-                  placeholder="Search for a domain..."
+                  placeholder={t('input.placeholder')}
                   value={query}
                   onFocus={onSearchIntent}
                   onChange={(event) => handleQueryChange(event.target.value)}
@@ -484,7 +484,7 @@ domain3.com`;
                             <Button
                               variant="ghost"
                               size="icon"
-                              aria-label="Clear parent domain"
+                              aria-label={t('input.clearParentDomainAriaLabel')}
                               onClick={
                                 clearParentDomainAndDismissFreeMintGuidance
                               }
@@ -518,7 +518,11 @@ domain3.com`;
                 isMobile ? 'w-10' : '',
                 ctaClassName,
               )}
-              title={searchMode === SearchMode.IMPORT ? 'Import' : 'Search'}
+              title={
+                searchMode === SearchMode.IMPORT
+                  ? t('input.importButton')
+                  : t('input.searchButton')
+              }
             >
               {isMobile ? (
                 isLoading ? (
@@ -529,9 +533,9 @@ domain3.com`;
                   <SearchIcon />
                 )
               ) : searchMode === SearchMode.IMPORT ? (
-                'Import'
+                t('input.importButton')
               ) : (
-                'Search'
+                t('input.searchButton')
               )}
             </NamefiButton>
           </motion.div>
@@ -543,9 +547,9 @@ domain3.com`;
           className="max-w-xs text-wrap text-center text-sm p-2 z-[10000]"
         >
           <p>
-            Search for available{' '}
-            {parentDomain ? `subdomains under ${parentDomain}` : 'domains'} and
-            claim them for free!
+            {parentDomain
+              ? t('input.freeMintTooltipWithParent', { parentDomain })
+              : t('input.freeMintTooltipAllDomains')}
           </p>
         </TooltipContent>
       </Tooltip>

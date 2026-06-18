@@ -1,0 +1,207 @@
+{
+  "authRequired.title": {
+    "description": "Title of the auth-required prompt shown when a signed-out user tries a gated action; means 'Sign in required'."
+  },
+  "authRequired.description": {
+    "description": "Body of the auth-required prompt asking the user to sign in to continue."
+  },
+  "requestWalletConnection.defaultActionDescription": {
+    "description": "Default value substituted into the {actionDescription} placeholder of the 'connect' description, e.g. 'to complete this action'. A short purpose clause."
+  },
+  "requestWalletConnection.title.wrongWallet": {
+    "description": "Wallet-connection dialog title when the connected wallet is not the required one."
+  },
+  "requestWalletConnection.title.settingActive": {
+    "description": "Wallet-connection dialog title shown while the app sets the chosen wallet as active."
+  },
+  "requestWalletConnection.title.connect": {
+    "description": "Wallet-connection dialog title prompting the user to connect their wallet."
+  },
+  "requestWalletConnection.description.wrongWallet": {
+    "description": "Wallet-connection dialog body when the wrong wallet is connected, asking the user to connect the correct one."
+  },
+  "requestWalletConnection.description.settingActive": {
+    "description": "Wallet-connection dialog body shown while the active wallet is being set; asks the user to wait."
+  },
+  "requestWalletConnection.description.connect": {
+    "description": "Wallet-connection dialog body prompting connection. {actionDescription} is a short purpose clause (e.g. 'to complete this action') inserted inline."
+  },
+  "requestWalletConnection.checkingStatus": {
+    "description": "Status line while the dialog checks the current wallet connection status. Includes a trailing ellipsis."
+  },
+  "requestWalletConnection.settingAsActive": {
+    "description": "Status line while the chosen wallet is being set as active. Includes a trailing ellipsis."
+  },
+  "requestWalletConnection.requiredWallet": {
+    "description": "Label for the wallet address the user must connect (the required wallet)."
+  },
+  "requestWalletConnection.waitingForConnection": {
+    "description": "Status line while waiting for the user to complete the wallet connection. Includes a trailing ellipsis."
+  },
+  "requestWalletConnection.differentWalletConnected": {
+    "description": "Message noting the user connected a wallet other than the required one."
+  },
+  "requestWalletConnection.youConnected": {
+    "description": "Label preceding the wallet address the user actually connected."
+  },
+  "requestWalletConnection.butWeNeed": {
+    "description": "Label preceding the wallet address the app actually requires (contrast with what the user connected)."
+  },
+  "requestWalletConnection.connectedSuccessfully": {
+    "description": "Confirmation message that the wallet connected successfully."
+  },
+  "requestWalletConnection.cancel": {
+    "description": "Cancel button in the wallet-connection dialog.",
+    "maxLength": 10
+  },
+  "requestWalletConnection.connecting": {
+    "description": "Busy label on the connect button while connecting. Includes a trailing ellipsis.",
+    "maxLength": 14
+  },
+  "requestWalletConnection.connectWallet": {
+    "description": "Button that initiates the wallet connection.",
+    "maxLength": 16
+  },
+  "requestWalletConnection.tryAgain": {
+    "description": "Button to retry connecting after a failure.",
+    "maxLength": 12
+  },
+  "requestWalletConnection.next": {
+    "description": "Button to advance to the next step in the wallet-connection flow.",
+    "maxLength": 10
+  },
+  "requestWalletConnection.toast.setActiveFailed": {
+    "description": "Toast error shown when setting the active wallet fails."
+  },
+  "requestWalletConnection.toast.connectFailed": {
+    "description": "Toast error shown when connecting the wallet fails."
+  },
+  "requestWalletConnection.toast.unknownError": {
+    "description": "Fallback toast text for an unspecified wallet error."
+  },
+  "countryInput.placeholder": {
+    "description": "Placeholder for the country selector before a country is chosen; means 'Select country'."
+  },
+  "countryInput.searchPlaceholder": {
+    "description": "Placeholder in the country search box. Includes a trailing ellipsis."
+  },
+  "countryInput.noResults": {
+    "description": "Message shown when the country search matches no countries. Note: country names themselves are not translated here."
+  },
+  "countryInput.clearSelection": {
+    "description": "Action to clear the currently selected country."
+  },
+  "myDomains.heading": {
+    "description": "Page/section heading for the list of domains the signed-in user owns; means 'My Domains'."
+  },
+  "walletNftGrid.notIndexedYet": {
+    "description": "Badge on an NFT card indicating the domain has not been indexed yet."
+  },
+  "walletNftGrid.emptyIdentifier": {
+    "description": "Empty-state prompt asking for a wallet address or ENS name to view NFTs. Keep 'ENS' (technical term) untranslated."
+  },
+  "walletNftGrid.invalidIdentifier": {
+    "description": "Error shown when the entered value is not a valid wallet address or ENS name. Keep 'ENS' untranslated."
+  },
+  "walletNftGrid.invalidIdentifierHint": {
+    "description": "Hint explaining valid formats: wallet must be 0x-prefixed; ENS names need a dot. Keep '0x' and 'ENS' untranslated."
+  },
+  "walletNftGrid.ensResolveFailed": {
+    "description": "Error shown when an ENS name could not be resolved to an address. Keep 'ENS' untranslated."
+  },
+  "walletNftGrid.ensResolveFailedHint": {
+    "description": "Hint suggesting the user re-check spelling or retry after an ENS resolution failure."
+  },
+  "walletNftGrid.noWalletResolved": {
+    "description": "Error shown when no wallet could be resolved from the entered input."
+  },
+  "walletNftGrid.nftCount": {
+    "description": "Pluralized NFT count using ICU plural. {count} is the number; keep the ICU syntax and the term 'NFT' intact."
+  },
+  "walletNftGrid.loadDomainsFailed": {
+    "description": "Error shown when domains for the wallet could not be loaded."
+  },
+  "walletNftGrid.loadDomainsFailedHint": {
+    "description": "Hint asking the user to refresh and try again after a load failure."
+  },
+  "walletNftGrid.noNftsFound": {
+    "description": "Empty-state message: no Namefi NFTs found for this wallet. Keep 'Namefi' and 'NFT' untranslated."
+  },
+  "walletNftGrid.noNftsFoundHint": {
+    "description": "Hint suggesting the user re-check the wallet/ENS name or wait for indexing to catch up."
+  },
+  "walletNftGrid.unknownNetwork": {
+    "description": "Fallback label for a blockchain network whose name is unknown."
+  },
+  "walletNftGrid.explorer": {
+    "description": "Short label for a block explorer link.",
+    "maxLength": 12
+  },
+  "walletNftGrid.viewOnExplorer": {
+    "description": "Link/button to open the item on a block explorer (generic, no explorer named)."
+  },
+  "walletNftGrid.viewOn": {
+    "description": "Link/button to open the item on a specific block explorer. {explorer} is the explorer's name (e.g. 'Etherscan') — keep untranslated."
+  },
+  "walletNftGrid.network": {
+    "description": "Field label for the blockchain network of an NFT.",
+    "maxLength": 14
+  },
+  "walletNftGrid.expiration": {
+    "description": "Field label for a domain's expiration date.",
+    "maxLength": 14
+  },
+  "walletNftGrid.wallet": {
+    "description": "Field label for a wallet address.",
+    "maxLength": 14
+  },
+  "walletNftGrid.ens": {
+    "description": "Inline label showing a resolved ENS name. {name} is the ENS name — keep untranslated. Keep 'ENS' untranslated."
+  },
+  "walletNftGrid.copiedToClipboard": {
+    "description": "Toast confirming a value was copied to the clipboard."
+  },
+  "walletNftGrid.copyFailed": {
+    "description": "Toast title shown when copying to the clipboard fails."
+  },
+  "walletNftGrid.copyFailedDescription": {
+    "description": "Toast body shown when copying fails, asking the user to try again."
+  },
+  "instantBuyModal.title": {
+    "description": "Instant-buy modal title. {domain} is the domain name being purchased — keep untranslated."
+  },
+  "instantBuyModal.description": {
+    "description": "Instant-buy modal subtitle stating the purchase covers 1 year of registration."
+  },
+  "instantBuyModal.domain": {
+    "description": "Field label for the domain being purchased in the instant-buy modal.",
+    "maxLength": 14
+  },
+  "instantBuyModal.pricePerYear": {
+    "description": "Per-year price line in the instant-buy modal. {price} is a formatted number; keep the 'USD' currency code and '/ year' unit."
+  },
+  "instantBuyModal.selectNftWallet": {
+    "description": "Prompt to select which NFT wallet to use before continuing the purchase. Keep 'NFT' untranslated."
+  },
+  "instantBuyModal.processing": {
+    "description": "Busy label while the purchase is processing. Includes a trailing ellipsis.",
+    "maxLength": 14
+  },
+  "instantBuyModal.buyNow": {
+    "description": "Primary button to confirm the instant purchase.",
+    "maxLength": 12
+  },
+  "instantBuyModal.errorTitle": {
+    "description": "Error title shown when the instant purchase fails."
+  },
+  "instantBuyModal.errorDescription": {
+    "description": "Reassuring error body telling the user they were not charged and can retry."
+  },
+  "instantBuyModal.errorDetail": {
+    "description": "Technical error detail line. {error} is the raw error message/code — keep untranslated."
+  },
+  "instantBuyModal.close": {
+    "description": "Button to close the instant-buy modal.",
+    "maxLength": 10
+  }
+}

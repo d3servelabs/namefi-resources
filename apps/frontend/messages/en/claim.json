@@ -1,0 +1,61 @@
+{
+  "page": {
+    "title": "Free Claim",
+    "domainClaimedSuccess": "Domain claimed successfully!",
+    "claimFailed": "Failed to claim domain: {message}",
+    "invalidDomain": {
+      "title": "Invalid domain",
+      "description": "The provided domain is not a valid normalized Namefi domain.",
+      "hint": "Make sure you are using a fully normalized domain, e.g. \"alice.0x.city\".",
+      "goBack": "Go back"
+    },
+    "ineligibleBanner": {
+      "title": "This domain is not eligible for a free claim.",
+      "description": "You can add it to your cart to purchase, or go back to search.",
+      "addToCart": "Add to cart",
+      "goBack": "Go back"
+    },
+    "summary": {
+      "duration": "Duration: {count, plural, one {# year} other {# years}} • Free"
+    },
+    "submit": "Submit"
+  },
+  "widget": {
+    "defaultTitle": "Your 0x Identity",
+    "defaultSubtitle": "Become part of the Web3 citizen network",
+    "qualifyPrompt": "Follow the steps below to see if you qualify",
+    "steps": {
+      "signIn": {
+        "trigger": "Sign In",
+        "signedIn": "Thanks for signing in! You can proceed to the next step.",
+        "signedOut": "Sign in or create an account to get started."
+      },
+      "linkSocial": {
+        "trigger": "Link Social Media",
+        "description": "Link a social media account with a qualifying username by visiting your profile page. For now, usernames that start with \"0x\" qualify you for the promo.",
+        "visitProfile": "Visit Profile Page"
+      },
+      "enterDomain": {
+        "trigger": "Enter Domain Name",
+        "description": "Enter your qualifying domain name below. If it's available, you'll be able to claim it for free!"
+      }
+    },
+    "qualifying": {
+      "checking": "Checking for qualifying domains based on your linked social media accounts...",
+      "error": "Error while checking for qualifying domains based on your linked social media accounts.",
+      "none": "It looks like your linked social media accounts don't qualify you to claim a free domain name.",
+      "list": "Your qualifying domain names: {domains}"
+    },
+    "input": {
+      "placeholderMobile": "name",
+      "placeholderDesktop": "yourname"
+    },
+    "button": {
+      "loginToClaim": "Login to Claim",
+      "checking": "Checking…",
+      "inCart": "In Cart",
+      "claiming": "Claiming…",
+      "claimNow": "Claim Now"
+    }
+  }
+}

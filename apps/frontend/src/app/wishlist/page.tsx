@@ -10,8 +10,10 @@ import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availab
 import { useAuth } from '@/hooks/use-auth';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { PageShell } from '@/components/page-shell';
+import { useTranslations } from 'next-intl';
 
 export default function WishlistPage() {
+  const t = useTranslations('wishlist');
   const { isLoading: isUserLoading } = useAuth();
   const { wishlistData, isWishlistLoading } = useWishlist();
   const trpc = useTRPC();
@@ -56,7 +58,7 @@ export default function WishlistPage() {
   return (
     <PageShell>
       <h1 className="text-3xl font-bold mb-6 flex items-center gap-3">
-        My Wishlist
+        {t('title')}
         {isWishlistLoading || isUserLoading ? (
           <Skeleton className="h-7 w-8 rounded-full" />
         ) : (
@@ -73,7 +75,7 @@ export default function WishlistPage() {
         </div>
       ) : wishlistedDomains.length === 0 ? (
         <div className="text-center text-muted-foreground mt-12">
-          <p className="text-lg">Your wishlist is empty.</p>
+          <p className="text-lg">{t('empty')}</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4">

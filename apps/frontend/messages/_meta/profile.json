@@ -1,0 +1,772 @@
+{
+  "tabs.wallets": {
+    "description": "Profile page tab label for the linked-wallets section."
+  },
+  "tabs.accounts": {
+    "description": "Profile page tab label for the connected accounts (social/contact) section."
+  },
+  "tabs.contactDetails": {
+    "description": "Profile page tab label for the contact-details / registration-info section."
+  },
+  "tabs.security": {
+    "description": "Profile page tab label for the security section (API keys, login history)."
+  },
+  "header.accountIdentifierCopied": {
+    "description": "Toast title shown after copying the account identifier from the profile header."
+  },
+  "header.accountIdentifierCopiedDescription": {
+    "description": "Toast body confirming the account identifier was copied to the clipboard."
+  },
+  "header.accountEmailCopied": {
+    "description": "Toast title shown after copying the account email from the profile header."
+  },
+  "header.accountEmailCopiedDescription": {
+    "description": "Toast body confirming the account email was copied to the clipboard."
+  },
+  "account.notConnected": {
+    "description": "Status text on an account row indicating no account of this type is linked yet."
+  },
+  "account.link": {
+    "description": "Button to link/connect an account."
+  },
+  "account.unlink": {
+    "description": "Button to unlink/disconnect an account."
+  },
+  "wallets.title": {
+    "description": "Section heading for the list of wallets linked to the user's account."
+  },
+  "wallets.description": {
+    "description": "Subheading under the Linked Wallets section describing its purpose."
+  },
+  "wallets.link": {
+    "description": "Button to link a new wallet."
+  },
+  "wallets.empty": {
+    "description": "Empty-state text shown when the user has no linked wallets."
+  },
+  "wallets.linkWallet": {
+    "description": "Button/label to link a wallet (full form)."
+  },
+  "wallets.primary": {
+    "description": "Suffix badge marking the user's primary wallet, shown after its address. Includes the surrounding parentheses."
+  },
+  "wallets.copyAddressAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that copies a wallet address."
+  },
+  "wallets.viewOnExplorerAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button opening the wallet on a block explorer. Keep the explorer name 'Etherscan' untranslated."
+  },
+  "wallets.removeWalletAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that removes/unlinks a wallet."
+  },
+  "wallets.primaryCannotUnlink": {
+    "description": "Tooltip/disabled-state message explaining the primary wallet cannot be unlinked."
+  },
+  "wallets.addressCopied": {
+    "description": "Toast title shown after copying a wallet address."
+  },
+  "wallets.addressCopiedDescription": {
+    "description": "Toast body confirming the wallet address was copied to the clipboard."
+  },
+  "wallets.impersonateLinkAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to link a wallet (not allowed)."
+  },
+  "wallets.impersonateUnlinkAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to unlink a wallet (not allowed)."
+  },
+  "wallets.unlinkSuccess": {
+    "description": "Toast title shown after a wallet is successfully unlinked."
+  },
+  "wallets.unlinkSuccessDescription": {
+    "description": "Toast body confirming the wallet was successfully unlinked."
+  },
+  "wallets.unlinkFailure": {
+    "description": "Toast title shown when unlinking a wallet fails."
+  },
+  "wallets.unlinkDialogTitle": {
+    "description": "Title of the confirmation dialog for unlinking a wallet."
+  },
+  "wallets.unlinkDialogDescription": {
+    "description": "Confirmation-dialog body asking the user to confirm unlinking. {address} is the wallet address — keep untranslated."
+  },
+  "wallets.cancel": {
+    "description": "Cancel button in the unlink-wallet confirmation dialog."
+  },
+  "wallets.unlinking": {
+    "description": "Button label shown while the wallet is being unlinked (in-progress state)."
+  },
+  "wallets.unlink": {
+    "description": "Confirm button to unlink the wallet in the confirmation dialog."
+  },
+  "socialAccounts.title": {
+    "description": "Section heading for linking social media accounts."
+  },
+  "socialAccounts.description": {
+    "description": "Subheading under the Social Accounts section describing its purpose."
+  },
+  "socialAccounts.twitterTitle": {
+    "description": "Row label for the Twitter account. Brand name — keep 'Twitter' untranslated."
+  },
+  "socialAccounts.githubTitle": {
+    "description": "Row label for the GitHub account. Brand name — keep 'GitHub' untranslated."
+  },
+  "socialAccounts.impersonateLinkGithubAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to link a GitHub account (not allowed). Keep 'GitHub'."
+  },
+  "socialAccounts.impersonateUnlinkGithubAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to unlink a GitHub account (not allowed). Keep 'GitHub'."
+  },
+  "socialAccounts.impersonateLinkTwitterAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to link a Twitter account (not allowed). Keep 'Twitter'."
+  },
+  "socialAccounts.impersonateUnlinkTwitterAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to unlink a Twitter account (not allowed). Keep 'Twitter'."
+  },
+  "socialAccounts.linkGithubFailure": {
+    "description": "Toast title shown when linking a GitHub account fails. Keep 'GitHub'."
+  },
+  "socialAccounts.unlinkGithubSuccess": {
+    "description": "Toast title shown after a GitHub account is unlinked. Keep 'GitHub'."
+  },
+  "socialAccounts.unlinkGithubSuccessDescription": {
+    "description": "Toast body confirming the GitHub account was successfully unlinked."
+  },
+  "socialAccounts.unlinkGithubFailure": {
+    "description": "Toast title shown when unlinking a GitHub account fails. Keep 'GitHub'."
+  },
+  "socialAccounts.linkTwitterFailure": {
+    "description": "Toast title shown when linking a Twitter account fails. Keep 'Twitter'."
+  },
+  "socialAccounts.unlinkTwitterSuccess": {
+    "description": "Toast title shown after a Twitter account is unlinked. Keep 'Twitter'."
+  },
+  "socialAccounts.unlinkTwitterSuccessDescription": {
+    "description": "Toast body confirming the Twitter account was successfully unlinked."
+  },
+  "socialAccounts.unlinkTwitterFailure": {
+    "description": "Toast title shown when unlinking a Twitter account fails. Keep 'Twitter'."
+  },
+  "socialAccounts.tryAgain": {
+    "description": "Toast body inviting a retry after a social-account action fails. {error} is a raw error message — keep untranslated."
+  },
+  "socialAccounts.unlinkGithubDialogTitle": {
+    "description": "Title of the confirmation dialog for unlinking a GitHub account. Keep 'GitHub'."
+  },
+  "socialAccounts.unlinkTwitterDialogTitle": {
+    "description": "Title of the confirmation dialog for unlinking a Twitter account. Keep 'Twitter'."
+  },
+  "socialAccounts.confirmUnlink": {
+    "description": "Confirmation-dialog body asking the user to confirm unlinking a social account."
+  },
+  "socialAccounts.cancel": {
+    "description": "Cancel button in the unlink-social-account confirmation dialog."
+  },
+  "socialAccounts.unlink": {
+    "description": "Confirm button to unlink the social account in the confirmation dialog."
+  },
+  "contactAccounts.emailTitle": {
+    "description": "Row label for the linked email address contact method."
+  },
+  "contactAccounts.phoneTitle": {
+    "description": "Row label for the linked phone number contact method."
+  },
+  "contactAccounts.impersonateLinkEmailAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to link an email address (not allowed)."
+  },
+  "contactAccounts.impersonateUnlinkEmailAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to unlink an email address (not allowed)."
+  },
+  "contactAccounts.impersonateUnlinkPhoneAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to unlink a phone number (not allowed)."
+  },
+  "contactAccounts.impersonateLinkPhoneAlert": {
+    "description": "Alert shown when an admin impersonating a user tries to link a phone number (not allowed)."
+  },
+  "contactAccounts.linkEmailFailure": {
+    "description": "Toast title shown when linking an email address fails."
+  },
+  "contactAccounts.unlinkEmailFailure": {
+    "description": "Toast title shown when unlinking an email address fails."
+  },
+  "contactAccounts.unlinkPhoneSuccess": {
+    "description": "Toast title shown after a phone number is unlinked."
+  },
+  "contactAccounts.unlinkPhoneSuccessDescription": {
+    "description": "Toast body confirming the phone number was successfully unlinked."
+  },
+  "contactAccounts.unlinkPhoneFailure": {
+    "description": "Toast title shown when unlinking a phone number fails."
+  },
+  "contactAccounts.linkPhoneSuccess": {
+    "description": "Toast title shown after a phone number is linked."
+  },
+  "contactAccounts.linkPhoneSuccessDescription": {
+    "description": "Toast body confirming the phone number was successfully linked."
+  },
+  "contactAccounts.linkPhoneFailure": {
+    "description": "Toast title shown when linking a phone number fails."
+  },
+  "contactAccounts.tryAgain": {
+    "description": "Toast body inviting a retry after a contact-account action fails. {error} is a raw error message — keep untranslated."
+  },
+  "contactDetails.title": {
+    "description": "Heading of the Contact Details form (registration / account-management info)."
+  },
+  "contactDetails.description": {
+    "description": "Subheading under Contact Details explaining the info is used for domain registration and account management."
+  },
+  "contactDetails.updateSuccess": {
+    "description": "Toast shown after contact details are saved successfully."
+  },
+  "contactDetails.updateFailure": {
+    "description": "Toast shown when saving contact details fails."
+  },
+  "contactDetails.unavailable": {
+    "description": "Notice shown when Privy profile details cannot be loaded for the session. Keep the brand name 'Privy' untranslated."
+  },
+  "contactDetails.contactMethods": {
+    "description": "Subsection heading grouping the user's contact methods (email/phone) within Contact Details."
+  },
+  "contactDetails.profileInformation": {
+    "description": "Subsection heading grouping the profile/name/address fields within Contact Details."
+  },
+  "contactDetails.fullName": {
+    "description": "Field label for the user's full name."
+  },
+  "contactDetails.fullNamePlaceholder": {
+    "description": "Placeholder example for the full-name field. A sample name — may be localized to a culturally typical name."
+  },
+  "contactDetails.streetAddress": {
+    "description": "Field label for the street address."
+  },
+  "contactDetails.streetAddressPlaceholder": {
+    "description": "Placeholder example for the street-address field (sample address)."
+  },
+  "contactDetails.city": {
+    "description": "Field label for the city."
+  },
+  "contactDetails.cityPlaceholder": {
+    "description": "Placeholder example for the city field (sample city)."
+  },
+  "contactDetails.stateProvince": {
+    "description": "Field label for the state or province."
+  },
+  "contactDetails.stateProvincePlaceholder": {
+    "description": "Placeholder example for the state/province field (sample state abbreviation)."
+  },
+  "contactDetails.zipPostalCode": {
+    "description": "Field label for the ZIP or postal code."
+  },
+  "contactDetails.zipPostalCodePlaceholder": {
+    "description": "Placeholder example for the ZIP/postal-code field (sample code)."
+  },
+  "contactDetails.countryRegion": {
+    "description": "Field label for the country or region."
+  },
+  "contactDetails.countryRegionPlaceholder": {
+    "description": "Placeholder text for the country/region selector prompting a choice."
+  },
+  "contactDetails.saveProfile": {
+    "description": "Button to save the contact-details / profile form."
+  },
+  "emailSubscription.emailPreferences": {
+    "description": "Section heading for email subscription preferences."
+  },
+  "emailSubscription.newsletterAndUpdates": {
+    "description": "Label for the newsletter-and-product-updates subscription toggle."
+  },
+  "emailSubscription.newsletterDescriptionWithEmail": {
+    "description": "Helper text under the newsletter toggle when an email is linked, describing what the subscription delivers."
+  },
+  "emailSubscription.newsletterDescriptionNoEmail": {
+    "description": "Helper text under the newsletter toggle when no email is linked, prompting the user to link one first."
+  },
+  "emailSubscription.subscribedTitle": {
+    "description": "Toast title shown after the user subscribes to email updates."
+  },
+  "emailSubscription.subscribedDescription": {
+    "description": "Toast body confirming the user is now subscribed to the newsletter and updates."
+  },
+  "emailSubscription.unsubscribedTitle": {
+    "description": "Toast title shown after the user unsubscribes from email updates."
+  },
+  "emailSubscription.unsubscribedDescription": {
+    "description": "Toast body confirming the user was removed from the mailing list."
+  },
+  "emailSubscription.updateFailure": {
+    "description": "Toast title shown when updating email preferences fails."
+  },
+  "emailSubscription.tryAgain": {
+    "description": "Toast body inviting a retry after an email-preferences update fails. {error} is a raw error message — keep untranslated."
+  },
+  "apiKeys.title": {
+    "description": "Section heading for the user's API keys list (in the Security area)."
+  },
+  "apiKeys.description": {
+    "description": "Subheading under API Keys describing their purpose (programmatic access)."
+  },
+  "apiKeys.create": {
+    "description": "Button to start creating a new API key."
+  },
+  "apiKeys.empty": {
+    "description": "Empty-state text shown when the user has no API keys."
+  },
+  "apiKeys.createApiKey": {
+    "description": "Button/label to create an API key (full form)."
+  },
+  "apiKeys.badgePlain": {
+    "description": "Badge on an API key row indicating it is a plain (random secret) key type.",
+    "maxLength": 8
+  },
+  "apiKeys.badgePublicPrivate": {
+    "description": "Badge on an API key row indicating it is a public/private key-pair type.",
+    "maxLength": 14
+  },
+  "apiKeys.statusRevoked": {
+    "description": "Status badge: the API key has been revoked.",
+    "maxLength": 8
+  },
+  "apiKeys.statusExpired": {
+    "description": "Status badge: the API key has expired.",
+    "maxLength": 8
+  },
+  "apiKeys.statusActive": {
+    "description": "Status badge: the API key is active.",
+    "maxLength": 8
+  },
+  "apiKeys.keyPrefixCopied": {
+    "description": "Toast title shown after copying an API key prefix."
+  },
+  "apiKeys.keyPrefixCopiedDescription": {
+    "description": "Toast body confirming the API key prefix was copied to the clipboard."
+  },
+  "apiKeys.createdAgo": {
+    "description": "Metadata line on an API key row showing when it was created. {time} is a relative timestamp, e.g. '3 days ago'."
+  },
+  "apiKeys.lastUsedAgo": {
+    "description": "Metadata line showing when the API key was last used. {time} is a relative timestamp, e.g. '2 hours ago'."
+  },
+  "apiKeys.expiresAgo": {
+    "description": "Metadata line showing when the API key will expire. {time} is a relative timestamp, e.g. 'in 30 days'."
+  },
+  "apiKeys.expiredAgo": {
+    "description": "Metadata line showing when the API key expired. {time} is a relative timestamp, e.g. '5 days ago'."
+  },
+  "apiKeys.copyKeyPrefixAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that copies an API key prefix."
+  },
+  "apiKeys.copyKeyPrefixTooltip": {
+    "description": "Tooltip for the button that copies an API key prefix."
+  },
+  "apiKeys.editRestrictionsAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that edits an API key's restrictions."
+  },
+  "apiKeys.editRestrictionsTooltip": {
+    "description": "Tooltip for the button that edits an API key's restrictions."
+  },
+  "apiKeys.revokeKeyAriaLabel": {
+    "description": "Accessibility label (screen-reader only) for the button that revokes an API key."
+  },
+  "apiKeys.revokeKeyTooltip": {
+    "description": "Tooltip for the button that revokes an API key."
+  },
+  "createApiKey.walletActionDescription": {
+    "description": "Phrase appended to a wallet-signature prompt describing the action, e.g. 'Sign … to create the API key'."
+  },
+  "createApiKey.title": {
+    "description": "Title of the Create API Key dialog."
+  },
+  "createApiKey.description": {
+    "description": "Subtitle of the Create API Key dialog explaining its purpose."
+  },
+  "createApiKey.keyName": {
+    "description": "Field label for the API key's name."
+  },
+  "createApiKey.keyNamePlaceholder": {
+    "description": "Placeholder example for the key-name field, e.g. a name like 'Production API Key'."
+  },
+  "createApiKey.keyType": {
+    "description": "Field label for choosing the API key type."
+  },
+  "createApiKey.keyTypePlain": {
+    "description": "Option label for the plain (random secret) API key type."
+  },
+  "createApiKey.keyTypePublicPrivate": {
+    "description": "Option label for the public/private key-pair API key type."
+  },
+  "createApiKey.keyTypeHelpPlain": {
+    "description": "Helper text for the plain key type explaining a random key is generated and must be saved."
+  },
+  "createApiKey.keyTypeHelpPublicPrivate": {
+    "description": "Helper text for the key-pair type explaining the user provides a public key and signs requests with the private key."
+  },
+  "createApiKey.requestTypes": {
+    "description": "Field label for selecting which request types the key may make."
+  },
+  "createApiKey.requestTypesHelp": {
+    "description": "Helper text explaining the user must enable at least one request type."
+  },
+  "createApiKey.allowBrowserRequests": {
+    "description": "Checkbox label allowing requests originating from web browsers."
+  },
+  "createApiKey.allowBrowserRequestsHelp": {
+    "description": "Helper text describing browser requests as those carrying an Origin header. Keep the technical term 'Origin'."
+  },
+  "createApiKey.allowServerRequests": {
+    "description": "Checkbox label allowing requests originating from backend servers."
+  },
+  "createApiKey.allowServerRequestsHelp": {
+    "description": "Helper text describing server requests as those without an Origin header. Keep the technical term 'Origin'."
+  },
+  "createApiKey.noRequestTypesWarning": {
+    "description": "Warning shown when no request types are enabled, noting the key will reject all requests."
+  },
+  "createApiKey.advancedRestrictions": {
+    "description": "Toggle/heading for the advanced IP and Origin restrictions section. Keep 'IP' and 'Origin'."
+  },
+  "createApiKey.allowedIps": {
+    "description": "Field label for the allowed IP addresses / CIDR ranges. Keep the technical terms 'IP' and 'CIDR'."
+  },
+  "createApiKey.allowedIpsHelp": {
+    "description": "Helper text explaining the allowed-IPs input format (one IP/CIDR per line, IPv4/IPv6, empty allows all). Keep IP/CIDR/IPv4/IPv6."
+  },
+  "createApiKey.allowedOrigins": {
+    "description": "Field label for the allowed Origins. Keep the technical term 'Origins'."
+  },
+  "createApiKey.allowedOriginsHelp": {
+    "description": "Helper text explaining the allowed-Origins input format (one per line, wildcards, empty allows all). Keep the example 'https://*.example.com' untranslated."
+  },
+  "createApiKey.keypair": {
+    "description": "Label for the generated keypair subsection."
+  },
+  "createApiKey.generateKeypair": {
+    "description": "Button to generate a new public/private keypair."
+  },
+  "createApiKey.savePrivateKeyNow": {
+    "description": "Emphasized warning prompting the user to save their private key immediately."
+  },
+  "createApiKey.privateKeyNotStored": {
+    "description": "Warning text explaining the private key is not stored and must be copied and saved."
+  },
+  "createApiKey.privateKeyLabel": {
+    "description": "Field label for the generated private key, reminding the user to save it."
+  },
+  "createApiKey.publicKey": {
+    "description": "Field label for the public key."
+  },
+  "createApiKey.copy": {
+    "description": "Copy button next to a key value."
+  },
+  "createApiKey.publicKeyPlaceholder": {
+    "description": "Placeholder example for the public-key input. Keep the literal hex example and the term 'secp256k1' untranslated."
+  },
+  "createApiKey.publicKeyHelpGenerated": {
+    "description": "Helper text noting the public key was derived from the generated private key above."
+  },
+  "createApiKey.publicKeyHelpManual": {
+    "description": "Helper text instructing how to enter a public key manually. Keep technical details (secp256k1, 65 bytes, 130 hex characters, '04') and the button name 'Generate New Keypair'."
+  },
+  "createApiKey.expiration": {
+    "description": "Field label for the API key expiration selector."
+  },
+  "createApiKey.expirationNever": {
+    "description": "Expiration option meaning the key never expires."
+  },
+  "createApiKey.expiration30Days": {
+    "description": "Expiration option for 30 days."
+  },
+  "createApiKey.expiration90Days": {
+    "description": "Expiration option for 90 days."
+  },
+  "createApiKey.expiration1Year": {
+    "description": "Expiration option for 1 year."
+  },
+  "createApiKey.attestWithSignature": {
+    "description": "Checkbox label to optionally attest the key creation with a wallet signature."
+  },
+  "createApiKey.optional": {
+    "description": "Inline '(optional)' marker shown next to a non-required field. Includes the parentheses."
+  },
+  "createApiKey.signingWallet": {
+    "description": "Field label for selecting which wallet will sign the request."
+  },
+  "createApiKey.active": {
+    "description": "Inline '(active)' marker shown next to the currently active wallet in the signing-wallet selector. Includes the parentheses."
+  },
+  "createApiKey.noWalletsConnected": {
+    "description": "Message shown when no wallets are connected, prompting the user to connect one first."
+  },
+  "createApiKey.cancel": {
+    "description": "Cancel button in the Create API Key dialog."
+  },
+  "createApiKey.creating": {
+    "description": "Button label shown while the API key is being created (in-progress state)."
+  },
+  "createApiKey.createKey": {
+    "description": "Confirm button to create the API key."
+  },
+  "createApiKey.createdTitle": {
+    "description": "Success-step title shown after the API key is created."
+  },
+  "createApiKey.createdDescriptionPlain": {
+    "description": "Success-step body for a plain key, warning the user to copy it now as it won't be shown again."
+  },
+  "createApiKey.createdDescriptionKeypair": {
+    "description": "Success-step body for a key pair, reminding the user to have saved their private key."
+  },
+  "createApiKey.saveApiKey": {
+    "description": "Heading prompting the user to save their newly created API key."
+  },
+  "createApiKey.savePrivateKey": {
+    "description": "Heading prompting the user to save their private key."
+  },
+  "createApiKey.saveApiKeyHelp": {
+    "description": "Helper text stressing this is the only time the API key is shown and it must be stored securely."
+  },
+  "createApiKey.savePrivateKeyHelp": {
+    "description": "Helper text reminding the user to copy and save the private key needed to sign API requests."
+  },
+  "createApiKey.yourApiKey": {
+    "description": "Label above the newly created API key value."
+  },
+  "createApiKey.yourPrivateKeyLabel": {
+    "description": "Label above the user's private key value, reminding them to save it."
+  },
+  "createApiKey.yourPublicKeyLabel": {
+    "description": "Label above the user's registered public key value."
+  },
+  "createApiKey.publicKeyRegisteredHelp": {
+    "description": "Helper text confirming the public key was registered and the private key is used to sign requests."
+  },
+  "createApiKey.done": {
+    "description": "Button to close/finish the Create API Key flow."
+  },
+  "createApiKey.enterKeyNameError": {
+    "description": "Validation error shown when the API key name field is empty."
+  },
+  "createApiKey.enterPublicKeyError": {
+    "description": "Validation error shown when the public key field is empty."
+  },
+  "createApiKey.selectWalletError": {
+    "description": "Validation error shown when no signing wallet has been selected."
+  },
+  "createApiKey.keypairGenerated": {
+    "description": "Toast shown after a keypair is generated, reminding the user to save the private key."
+  },
+  "createApiKey.keypairGenerateFailure": {
+    "description": "Toast shown when keypair generation fails."
+  },
+  "createApiKey.privateKeyCopied": {
+    "description": "Toast confirming the private key was copied to the clipboard."
+  },
+  "createApiKey.publicKeyCopied": {
+    "description": "Toast confirming the public key was copied to the clipboard."
+  },
+  "createApiKey.apiKeyCopied": {
+    "description": "Toast confirming the API key was copied to the clipboard."
+  },
+  "createApiKey.createSuccess": {
+    "description": "Toast shown after the API key is created successfully."
+  },
+  "createApiKey.signatureRejected": {
+    "description": "Toast shown when the user rejects the wallet signature request."
+  },
+  "createApiKey.createFailure": {
+    "description": "Toast shown when API key creation fails. {error} is a raw error message — keep untranslated."
+  },
+  "editApiKey.walletActionDescription": {
+    "description": "Phrase appended to a wallet-signature prompt describing the action, e.g. 'Sign … to update the API key'."
+  },
+  "editApiKey.title": {
+    "description": "Title of the Edit API Key dialog."
+  },
+  "editApiKey.description": {
+    "description": "Subtitle of the Edit API Key dialog. {name} is the API key's name — keep untranslated. Mentions signing the change with a linked wallet."
+  },
+  "editApiKey.thisApiKey": {
+    "description": "Fallback phrase used in place of a key name (e.g. when unnamed), substituted into the dialog subtitle."
+  },
+  "editApiKey.requestTypes": {
+    "description": "Field label for the request types this key may make (edit dialog)."
+  },
+  "editApiKey.requestTypesHelp": {
+    "description": "Helper text prompting selection of which request types the key may make (edit dialog)."
+  },
+  "editApiKey.allowBrowserRequests": {
+    "description": "Checkbox label allowing browser-originated requests (edit dialog)."
+  },
+  "editApiKey.allowBrowserRequestsHelp": {
+    "description": "Helper text describing browser requests as those with an Origin header (edit dialog). Keep 'Origin'."
+  },
+  "editApiKey.allowServerRequests": {
+    "description": "Checkbox label allowing server-originated requests (edit dialog)."
+  },
+  "editApiKey.allowServerRequestsHelp": {
+    "description": "Helper text describing server requests as those without an Origin header (edit dialog). Keep 'Origin'."
+  },
+  "editApiKey.noRequestTypesWarning": {
+    "description": "Warning shown when no request types are enabled (edit dialog), noting the key will reject all requests."
+  },
+  "editApiKey.advancedRestrictions": {
+    "description": "Toggle/heading for advanced IP and Origin restrictions (edit dialog). Keep 'IP' and 'Origin'."
+  },
+  "editApiKey.allowedIps": {
+    "description": "Field label for allowed IP addresses / CIDR ranges (edit dialog). Keep 'IP' and 'CIDR'."
+  },
+  "editApiKey.allowedIpsHelp": {
+    "description": "Helper text for the allowed-IPs input (one IP/CIDR per line, empty allows all). Keep 'IP' and 'CIDR'."
+  },
+  "editApiKey.allowedOrigins": {
+    "description": "Field label for allowed Origins (edit dialog). Keep 'Origins'."
+  },
+  "editApiKey.allowedOriginsHelp": {
+    "description": "Helper text for the allowed-Origins input (one per line, empty allows all). Keep 'origin'."
+  },
+  "editApiKey.signingWallet": {
+    "description": "Field label for selecting which wallet will sign the change (edit dialog)."
+  },
+  "editApiKey.active": {
+    "description": "Inline '(active)' marker next to the active wallet in the signing-wallet selector. Includes the parentheses."
+  },
+  "editApiKey.noWalletsConnected": {
+    "description": "Message shown when no wallets are connected, prompting the user to connect one before saving (edit dialog)."
+  },
+  "editApiKey.cancel": {
+    "description": "Cancel button in the Edit API Key dialog."
+  },
+  "editApiKey.saving": {
+    "description": "Button label shown while changes are being saved (in-progress state)."
+  },
+  "editApiKey.saveChanges": {
+    "description": "Confirm button to save the edited API key restrictions."
+  },
+  "editApiKey.selectWalletError": {
+    "description": "Validation error shown when no signing wallet has been selected (edit dialog)."
+  },
+  "editApiKey.updateSuccess": {
+    "description": "Toast shown after the API key restrictions are updated."
+  },
+  "editApiKey.signatureRejected": {
+    "description": "Toast shown when the user rejects the wallet signature request (edit dialog)."
+  },
+  "editApiKey.updateFailure": {
+    "description": "Toast shown when updating the API key fails. {error} is a raw error message — keep untranslated."
+  },
+  "revokeApiKey.walletActionDescription": {
+    "description": "Phrase appended to a wallet-signature prompt describing the action, e.g. 'Sign … to revoke the API key'."
+  },
+  "revokeApiKey.title": {
+    "description": "Title of the Revoke API Key confirmation dialog."
+  },
+  "revokeApiKey.description": {
+    "description": "Confirmation-dialog body warning that revoking is permanent and will break apps using the key."
+  },
+  "revokeApiKey.keyToRevoke": {
+    "description": "Label preceding the name/prefix of the key being revoked. Ends with a colon."
+  },
+  "revokeApiKey.attestWithSignature": {
+    "description": "Checkbox label to optionally attest the revocation with a wallet signature."
+  },
+  "revokeApiKey.optional": {
+    "description": "Inline '(optional)' marker shown next to a non-required field. Includes the parentheses."
+  },
+  "revokeApiKey.signingWallet": {
+    "description": "Field label for selecting which wallet will sign the revocation."
+  },
+  "revokeApiKey.active": {
+    "description": "Inline '(active)' marker next to the active wallet in the signing-wallet selector. Includes the parentheses."
+  },
+  "revokeApiKey.noWalletsConnected": {
+    "description": "Message shown when no wallets are connected, prompting the user to connect one first (revoke dialog)."
+  },
+  "revokeApiKey.cancel": {
+    "description": "Cancel button in the Revoke API Key dialog."
+  },
+  "revokeApiKey.revoking": {
+    "description": "Button label shown while the API key is being revoked (in-progress state)."
+  },
+  "revokeApiKey.revokeKey": {
+    "description": "Confirm button to revoke the API key."
+  },
+  "revokeApiKey.selectWalletError": {
+    "description": "Validation error shown when no signing wallet has been selected (revoke dialog)."
+  },
+  "revokeApiKey.revokeSuccess": {
+    "description": "Toast shown after the API key is revoked successfully."
+  },
+  "revokeApiKey.signatureRejected": {
+    "description": "Toast shown when the user rejects the wallet signature request (revoke dialog)."
+  },
+  "revokeApiKey.revokeFailure": {
+    "description": "Toast shown when revoking the API key fails. {error} is a raw error message — keep untranslated."
+  },
+  "loginHistory.title": {
+    "description": "Heading of the login-history section in the security area."
+  },
+  "loginHistory.description": {
+    "description": "Subheading under Login History describing recent sign-ins and advising to contact support if anything looks unfamiliar. Keep the brand name 'Namefi' untranslated."
+  },
+  "loginHistory.loadError": {
+    "description": "Error title shown when the login history fails to load."
+  },
+  "loginHistory.loadErrorFallback": {
+    "description": "Error body inviting the user to retry loading the login history shortly."
+  },
+  "loginHistory.retry": {
+    "description": "Button to retry loading the login history."
+  },
+  "loginHistory.empty": {
+    "description": "Empty-state title shown when there are no recorded sign-ins yet."
+  },
+  "loginHistory.emptyHelp": {
+    "description": "Empty-state helper text explaining new sessions appear after the next sign-in."
+  },
+  "loginHistory.unknownLocation": {
+    "description": "Fallback text for a sign-in whose geographic location could not be determined."
+  },
+  "loginHistory.unknownBrowser": {
+    "description": "Fallback text for a sign-in whose browser could not be determined."
+  },
+  "loginHistory.onOs": {
+    "description": "Sign-in descriptor combining browser and OS, e.g. 'Chrome on macOS'. {browser} and {os} are detected names — keep untranslated."
+  },
+  "loginHistory.newIp": {
+    "description": "Badge flagging a sign-in from a new IP address. Keep the technical term 'IP'."
+  },
+  "loginHistory.newLocation": {
+    "description": "Badge flagging a sign-in from a new geographic location."
+  },
+  "loginHistory.newBrowser": {
+    "description": "Badge flagging a sign-in from a new browser."
+  },
+  "loginHistory.firstSignIn": {
+    "description": "Badge marking the user's first recorded sign-in."
+  },
+  "loginHistory.method": {
+    "description": "Line showing the authentication method used for a sign-in. {method} is the method name (e.g. 'email', 'wallet') — keep untranslated."
+  },
+  "loginHistory.signedInAt": {
+    "description": "Line showing when a session was started. {time} is a relative timestamp, e.g. '3 hours ago'."
+  },
+  "loginHistory.lastAccessedAt": {
+    "description": "Line showing when a session was last active. {time} is a relative timestamp, e.g. '5 minutes ago'."
+  },
+  "loginHistory.recognized": {
+    "description": "Status badge indicating the user marked this sign-in as recognized (theirs)."
+  },
+  "loginHistory.rejected": {
+    "description": "Status badge indicating the user marked this sign-in as not theirs."
+  },
+  "loginHistory.undo": {
+    "description": "Button to undo a recognized/rejected decision on a sign-in."
+  },
+  "loginHistory.thatWasMe": {
+    "description": "Button to mark a flagged sign-in as recognized (the user's own)."
+  },
+  "loginHistory.notMe": {
+    "description": "Button to mark a flagged sign-in as not the user's own (suspicious)."
+  },
+  "loginHistory.decisionUpdateFailure": {
+    "description": "Toast shown when saving the user's recognized/not-me decision fails."
+  }
+}

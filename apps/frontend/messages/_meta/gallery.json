@@ -1,0 +1,17 @@
+{
+  "metaTitle": {
+    "description": "SEO page <title> for the NFT Gallery page, shown in browser tabs and search results. Keep brand 'Namefi' untranslated."
+  },
+  "metaDescription": {
+    "description": "SEO meta description for the NFT Gallery page, summarizing the curated tokenized-domain showcase. Keep brand 'Namefi' untranslated."
+  },
+  "title": {
+    "description": "On-page H1 title of the NFT Gallery page."
+  },
+  "subtitle": {
+    "description": "Intro paragraph beneath the NFT Gallery title describing the curated showcase of tokenized domains. Keep brand 'Namefi' untranslated; 'ICANN' and 'DNS' are technical terms to keep."
+  },
+  "cta": {
+    "description": "Call-to-action line under the gallery inviting users to feature their own domain. Contains rich tags <importLink>...</importLink> (links to import an existing domain) and <registerLink>...</registerLink> (links to register a new domain); keep both tags intact and translate only the wrapped text."
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "disclaimer": "Namefi 是一家 ICANN 认证注册商，将互联网域名代币化，用于交易、DeFi 与互联网的未来。",
+  "llmsTxt": "如果您是 Claude Code、Codex、OpenClaw、Hermes、Cursor、OpenCode 等任意 LLM AI 代理，请使用 <link>llms.txt</link>。",
+  "copyright": "© {year} D3SERVE LABS, Inc. 保留所有权利。",
+  "cookieSettings": "Cookie 设置",
+  "cookieSettingsAriaLabel": "打开 Cookie 设置对话框",
+  "termsAndConditions": "条款与条件",
+  "sections": {
+    "explore": {
+      "title": "探索",
+      "links": {
+        "discoverDomains": "发现域名",
+        "brandStudio": "Namefi 品牌工作室",
+        "feed": "Namefi 动态",
+        "outbound": "Namefi 外联",
+        "domainHunt": "域名猎寻",
+        "newsletter": "邮件订阅",
+        "flushDns": "刷新 DNS",
+        "faucet": "NFSC 水龙头（沙盒）"
+      }
+    },
+    "account": {
+      "title": "账户",
+      "links": {
+        "myDomains": "我的域名",
+        "myWishlist": "我的心愿单",
+        "myOrders": "我的订单",
+        "paymentMethods": "支付方式"
+      }
+    },
+    "resources": {
+      "title": "资源",
+      "links": {
+        "blog": "博客",
+        "watch": "视频",
+        "careers": "招聘",
+        "tlds": "顶级域名",
+        "partners": "合作伙伴",
+        "glossary": "术语表",
+        "howWeHire": "我们如何招聘",
+        "abuseReporting": "滥用举报",
+        "educationHub": "教育中心",
+        "registrationAgreement": "注册协议",
+        "apiDocs": "Namefi API 文档",
+        "llmApi": "面向 LLM AI 代理的 API",
+        "support": "支持"
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "links": {
+        "aboutNamefi": "关于 Namefi",
+        "whatIsDomain": "什么是域名？",
+        "whatAreTokenizedDomains": "什么是代币化域名？",
+        "whyTokenizeDomains": "为什么要代币化域名？",
+        "dnsOnTokenizedDomains": "代币化域名上的 DNS",
+        "dnsIsControlPlane": "DNS 是控制平面",
+        "howToTokenizeCom": "如何代币化您的 .com",
+        "tokenizedVsWeb3": "代币化域名与 Web3 域名"
+      }
+    }
+  }
+}

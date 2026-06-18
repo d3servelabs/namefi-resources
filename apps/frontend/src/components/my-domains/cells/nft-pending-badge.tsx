@@ -1,12 +1,14 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import type { DomainRow } from '../types';
 
-const PENDING_LABELS: Record<string, string> = {
-  MINTING: 'Minting…',
-  CHANGING_EXPIRATION: 'Updating expiration…',
-  CHANGING_LOCK: 'Updating lock…',
+/** Maps an `nftState` enum value to its `nftPendingBadge` translation key. */
+const PENDING_LABEL_KEYS: Record<string, string> = {
+  MINTING: 'nftPendingBadge.minting',
+  CHANGING_EXPIRATION: 'nftPendingBadge.changingExpiration',
+  CHANGING_LOCK: 'nftPendingBadge.changingLock',
 };
 
 /**
@@ -23,13 +25,20 @@ export function NftPendingBadge({
   nftState: DomainRow['nftState'];
   pendingNftStates?: DomainRow['pendingNftStates'];
 }) {
+  const t = useTranslations('domains');
+
   if (!nftState || nftState === 'IDLE') return null;
 
-  const label = PENDING_LABELS[nftState] ?? 'Pending…';
+  const label = PENDING_LABEL_KEYS[nftState]
+    ? t(PENDING_LABEL_KEYS[nftState])
+    : t('nftPendingBadge.pending');
   // When several ops are in flight at once, surface them all in the tooltip.
+  // Unknown states fall back to their raw enum value (matching prior behavior).
   const title =
     pendingNftStates && pendingNftStates.length > 1
-      ? pendingNftStates.map((s) => PENDING_LABELS[s] ?? s).join(', ')
+      ? pendingNftStates
+          .map((s) => (PENDING_LABEL_KEYS[s] ? t(PENDING_LABEL_KEYS[s]) : s))
+          .join(', ')
       : label;
 
   return (

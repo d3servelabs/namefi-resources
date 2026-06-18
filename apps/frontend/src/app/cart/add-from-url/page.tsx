@@ -16,6 +16,7 @@ import {
   type NamefiNormalizedDomain,
 } from '@namefi-astra/utils/namefi-flavor';
 import { AlertTriangle, CheckCircle2, Circle, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   useCallback,
@@ -31,12 +32,7 @@ const PARAM_KEY = 'add_to_cart';
 type StepKey = 'parse' | 'fetch' | 'add' | 'redirect';
 type StepStatus = 'pending' | 'active' | 'done' | 'error';
 
-const STEP_LABEL: Record<StepKey, string> = {
-  parse: 'Validating domains',
-  fetch: 'Checking availability',
-  add: 'Adding to cart',
-  redirect: 'Sending you to your cart',
-};
+const STEP_KEYS: StepKey[] = ['parse', 'fetch', 'add', 'redirect'];
 
 const DEFAULT_STATUS: Record<StepKey, StepStatus> = {
   parse: 'pending',
@@ -64,6 +60,7 @@ type Summary = {
 };
 
 export default function AddFromUrlPage() {
+  const t = useTranslations('cart');
   const searchParams = useSearchParams();
   const router = useRouter();
   const trpcClient = useTRPCClient();
@@ -94,7 +91,7 @@ export default function AddFromUrlPage() {
     const run = async () => {
       const raw = searchParams.get(PARAM_KEY);
       if (!raw) {
-        setError('No domains were provided.');
+        setError(t('addFromUrl.errors.noDomains'));
         setStepStatus((prev) => ({ ...prev, parse: 'error' }));
         setStepStatus((prev) => ({ ...prev, redirect: 'active' }));
         router.replace('/cart');
@@ -181,14 +178,14 @@ export default function AddFromUrlPage() {
         setError(
           err instanceof Error
             ? err.message
-            : 'Something went wrong while validating your domains.',
+            : t('addFromUrl.errors.validationFailed'),
         );
         setStepStatus((prev) => ({ ...prev, fetch: 'error' }));
       }
     };
 
     void run();
-  }, [isDomainInCart, router, searchParams, trpcClient]);
+  }, [isDomainInCart, router, searchParams, trpcClient, t]);
 
   const handleConfirmAdd = useCallback(async () => {
     if (!payload.length || stepStatus.add === 'active') return;
@@ -222,24 +219,31 @@ export default function AddFromUrlPage() {
     } catch (err) {
       console.error('Failed to add to cart', err);
       setError(
-        err instanceof Error
-          ? err.message
-          : 'Something went wrong while adding to cart.',
+        err instanceof Error ? err.message : t('addFromUrl.errors.addFailed'),
       );
       setStepStatus((prev) => ({ ...prev, add: 'error' }));
     }
-  }, [addItem, payload, router, stepStatus.add]);
+  }, [addItem, payload, router, stepStatus.add, t]);
 
-  const readyLabel = stepStatus.add === 'done' ? 'Added' : 'Ready to add';
+  const readyLabel =
+    stepStatus.add === 'done'
+      ? t('addFromUrl.detail.added')
+      : t('addFromUrl.detail.readyToAdd');
   const readyData =
     stepStatus.add === 'done' ? summary.added : summary.readyToAdd;
 
   const detailItems = [
     { label: readyLabel, data: readyData },
-    { label: 'Already in cart', data: summary.alreadyInCart },
-    { label: 'Requires transfer code', data: summary.importOnly },
-    { label: 'Unsupported/unavailable', data: summary.unsupported },
-    { label: 'Invalid', data: summary.invalid },
+    {
+      label: t('addFromUrl.detail.alreadyInCart'),
+      data: summary.alreadyInCart,
+    },
+    {
+      label: t('addFromUrl.detail.requiresTransferCode'),
+      data: summary.importOnly,
+    },
+    { label: t('addFromUrl.detail.unsupported'), data: summary.unsupported },
+    { label: t('addFromUrl.detail.invalid'), data: summary.invalid },
   ].filter((item) => item.data.length > 0);
 
   const showConfirm =
@@ -251,41 +255,38 @@ export default function AddFromUrlPage() {
     stepStatus.redirect !== 'active';
   const confirmLabel =
     stepStatus.add === 'active'
-      ? 'Adding to cart...'
+      ? t('addFromUrl.confirm.addingToCart')
       : stepStatus.add === 'error'
-        ? 'Try again'
-        : 'Add to cart';
+        ? t('addFromUrl.confirm.tryAgain')
+        : t('addFromUrl.confirm.addToCart');
   const confirmHelper = payload.length
-    ? 'Review the details above, then confirm.'
-    : 'No registrable domains found to add.';
+    ? t('addFromUrl.confirm.reviewHelper')
+    : t('addFromUrl.confirm.noRegistrableHelper');
 
   return (
     <PageShell size="narrow" padding="relaxed">
       <div className="space-y-6">
         <div>
           <p className="text-sm uppercase tracking-wide text-muted-foreground">
-            Cart
+            {t('addFromUrl.cart')}
           </p>
-          <h1 className="text-3xl font-semibold">
-            Adding domains to your cart
-          </h1>
-          <p className="text-muted-foreground">
-            Sit tight while we validate, check availability, and load everything
-            into your cart.
-          </p>
+          <h1 className="text-3xl font-semibold">{t('addFromUrl.heading')}</h1>
+          <p className="text-muted-foreground">{t('addFromUrl.subheading')}</p>
         </div>
 
         <CartCard>
           <div className="space-y-4">
             <div>
-              <p className="text-sm text-muted-foreground">Domains requested</p>
+              <p className="text-sm text-muted-foreground">
+                {t('addFromUrl.domainsRequested')}
+              </p>
               <p className="text-base font-medium break-words">
                 {joinedRequested || '—'}
               </p>
             </div>
 
             <div className="space-y-3">
-              {(Object.keys(STEP_LABEL) as StepKey[]).map((key) => {
+              {STEP_KEYS.map((key) => {
                 const status = stepStatus[key];
                 return (
                   <div
@@ -302,7 +303,7 @@ export default function AddFromUrlPage() {
                         status === 'error' && 'text-destructive',
                       )}
                     >
-                      {STEP_LABEL[key]}
+                      {t(`addFromUrl.steps.${key}`)}
                     </span>
                   </div>
                 );
@@ -341,7 +342,7 @@ export default function AddFromUrlPage() {
             {stepStatus.redirect === 'active' && !error && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Redirecting to your cart…
+                {t('addFromUrl.redirecting')}
               </div>
             )}
           </div>

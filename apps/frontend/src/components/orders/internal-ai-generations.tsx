@@ -8,6 +8,7 @@ import { ExternalLink } from 'lucide-react';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 type InternalAIGenerations =
   AppRouterOutput['ai']['getInternalGenerationsByDomains'];
@@ -23,6 +24,7 @@ const LogoPreview = ({
   logoUrl,
   isLoading = false,
 }: LogoPreviewProps) => {
+  const t = useTranslations('orders');
   const [status, setStatus] = useState<'loading' | 'loaded' | 'error'>(
     logoUrl ? 'loading' : 'error',
   );
@@ -45,7 +47,7 @@ const LogoPreview = ({
         <>
           <Image
             src={logoUrl}
-            alt={`${domain} logo`}
+            alt={t('aiGenerations.logoAlt', { domain })}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
             className={cn(
@@ -65,12 +67,12 @@ const LogoPreview = ({
       ) : null}
       {showNoPreview ? (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
-          No preview
+          {t('aiGenerations.noPreview')}
         </div>
       ) : null}
       {showPreviewUnavailable ? (
         <div className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
-          Preview unavailable
+          {t('aiGenerations.previewUnavailable')}
         </div>
       ) : null}
     </div>
@@ -86,6 +88,7 @@ export const InternalAIGenerations = ({
   internalAIGenerations?: InternalAIGenerations;
   isLoading?: boolean;
 }) => {
+  const t = useTranslations('orders');
   if (domains.length === 0) {
     return null;
   }
@@ -97,12 +100,11 @@ export const InternalAIGenerations = ({
         className="inline-flex items-center gap-2 text-white underline underline-offset-4 text-xl font-semibold"
       >
         <ExternalLink className="h-5 w-5" />
-        Just AIng by Namefi™
+        {t('aiGenerations.title')}
       </Link>
 
       <p className="text-sm text-muted-foreground mt-2">
-        While your order was processing, we prepared a logo preview for your
-        brand(s). Explore more styles and marketing images in Just AIng.
+        {t('aiGenerations.description')}
       </p>
 
       <div className="mt-4 mb-2 flex flex-wrap justify-center gap-4">

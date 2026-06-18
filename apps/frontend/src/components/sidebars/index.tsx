@@ -34,41 +34,58 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+/**
+ * Sidebar navigation structure. Routes/hrefs, icons and auth/pattern hints stay
+ * here as stable data; the `title` field holds an i18n key (under the `nav`
+ * namespace's `items.*`) that is resolved to user-visible copy at render time
+ * via `t(item.title)` in `SidebarItems`. Keys are also used for the `manage`
+ * visibility check, so they double as stable identifiers, not copy.
+ */
 const ITEMS: NavItem[] = [
-  { title: 'Discover', href: '/', icon: Compass },
-  { title: 'My Domains', href: '/domains', icon: Globe, requiresAuth: true },
-  { title: 'My Wishlist', href: '/wishlist', icon: Heart },
+  { title: 'items.discover', href: '/', icon: Compass },
   {
-    title: 'My Orders',
+    title: 'items.myDomains',
+    href: '/domains',
+    icon: Globe,
+    requiresAuth: true,
+  },
+  { title: 'items.myWishlist', href: '/wishlist', icon: Heart },
+  {
+    title: 'items.myOrders',
     href: '/orders',
     icon: ClipboardList,
     requiresAuth: true,
   },
   {
-    title: 'My Free Mints',
+    title: 'items.myFreeMints',
     href: '/free-mints',
     icon: Gift,
     requiresAuth: true,
   },
   {
-    title: 'My Payment Methods',
+    title: 'items.myPaymentMethods',
     href: '/payment-methods',
     icon: CreditCard,
     requiresAuth: true,
   },
-  { title: 'Manage', href: '/manage', icon: PenToolIcon, requiresAuth: true },
   {
-    title: "Just AI'ng™",
+    title: 'items.manage',
+    href: '/manage',
+    icon: PenToolIcon,
+    requiresAuth: true,
+  },
+  {
+    title: 'items.justAing',
     href: '/studio',
     icon: Sparkles,
     pattern: /^\/(studio|outbound)/,
     submenu: [
-      { title: 'Namefi Brand Studio', href: '/studio', icon: Palette },
-      { title: 'Namefi Outbound', href: '/outbound', icon: Search },
+      { title: 'items.brandStudio', href: '/studio', icon: Palette },
+      { title: 'items.outbound', href: '/outbound', icon: Search },
     ],
   },
-  { title: 'Namefi Feed', href: '/feed', icon: Rss },
-  { title: 'Hunt', href: '/hunt', icon: TrendingUp },
+  { title: 'items.feed', href: '/feed', icon: Rss },
+  { title: 'items.hunt', href: '/hunt', icon: TrendingUp },
 ];
 const PUBLIC_ITEMS = filterSidebarItemsByAuth(ITEMS, false);
 

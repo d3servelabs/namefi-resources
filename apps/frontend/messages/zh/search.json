@@ -1,0 +1,50 @@
+{
+  "header": {
+    "taglineWithNetwork": "在 {parentDomain} 上搜索域名",
+    "taglineAllNetworks": "在所有网络上搜索域名",
+    "networkLabel": "网络：",
+    "allNetworks": "全部"
+  },
+  "modeTabs": {
+    "register": "注册",
+    "import": "导入"
+  },
+  "input": {
+    "placeholder": "搜索域名…",
+    "importPlaceholder": "您可以粘贴以下两种格式：\n\n格式 1：域名加授权码\nexample.com, authcode123\n\n格式 2：多个域名（用逗号或换行分隔）\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "搜索",
+    "importButton": "导入",
+    "clearParentDomainAriaLabel": "清除父域名",
+    "freeMintTooltipWithParent": "搜索 {parentDomain} 下可注册的子域名，免费认领！",
+    "freeMintTooltipAllDomains": "搜索可注册的域名，免费认领！"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "续费价 {price}",
+    "owner": "持有者：{owner}",
+    "notRegistered": "未注册",
+    "unsupported": "不支持",
+    "lockedShort": "已锁定",
+    "temporarilyUnimportable": "暂时无法导入",
+    "taken": "已被注册",
+    "unavailableShort": "不可用",
+    "temporarilyUnavailable": "暂时不可用",
+    "freeClaim": "免费认领",
+    "addToWishlist": "加入心愿单",
+    "removeFromWishlist": "从心愿单移除",
+    "eppCode": "EPP 授权码",
+    "savedEppCode": "已保存的 EPP 授权码",
+    "marketplace": "交易市场",
+    "buyShort": "购买",
+    "buyOn": "前往购买",
+    "buyOnSourceAriaLabel": "在 {source} 上购买",
+    "buyOnSourceFromSellerAriaLabel": "在 {source} 上向 {seller} 购买"
+  },
+  "results": {
+    "errorTitle": "搜索出错",
+    "errorDescription": "搜索时发生错误，请重试。",
+    "loadMore": "加载更多",
+    "noResultsTitle": "未找到域名",
+    "noResultsDescription": "未找到与「{query}」匹配的域名。请尝试其他搜索词。"
+  }
+}
