@@ -45,7 +45,7 @@
     "reported": "புகாரளிக்கப்பட்டது",
     "triggerAriaLabel": "{domain} பட்டியலை புகாரளி",
     "dialogTitle": "பட்டியலை புகாரளி",
-    "dialogDescription": "<highlight>{domain}</highlight> பற்றிய சிக்கல்களை கொடியிடுங்கள். எங்கள் குழு நடவடிக்கை எடுப்பதற்கு முன் புகார்களை மதிப்பாய்வு செய்கிறது.",
+    "dialogDescription": "<highlight>{domain}</highlight> பற்றிய சிக்கல்களை புகாரளியுங்கள். எங்கள் குழு நடவடிக்கை எடுப்பதற்கு முன் புகார்களை மதிப்பாய்வு செய்கிறது.",
     "reasonLabel": "காரணம்",
     "reasonPlaceholder": "ஒரு காரணம் தேர்ந்தெடுக்கவும்",
     "detailsLabel": "விவரங்கள் (விரும்பினால்)",

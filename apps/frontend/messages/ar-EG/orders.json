@@ -5,7 +5,7 @@
   "showingCount": "بيتعرض {shown} من {total, plural, zero {# طلب} one {# طلب} two {# طلبين} few {# طلبات} many {# طلب} other {# طلبات}}",
   "emptyTitle": "مفيش طلبات لسه",
   "emptyDescription": "لما تعمل طلب هيظهر هنا.",
-  "emptyPbnDescription": "مفيش طلبات بنطاقات {domain}. فعّل \"اعرض كل النطاقات\" عشان تشوف الطلبات التانية.",
+  "emptyPbnDescription": "مفيش طلبات بنطاقات {domain}. فعّل \"اعرض كل النطاقات الأصلية\" عشان تشوف الطلبات التانية.",
   "list": {
     "domainName": "اسم النطاق",
     "createdAt": "تاريخ الإنشاء",
@@ -134,7 +134,7 @@
   },
   "aiGenerations": {
     "title": "Just AI'ng™ by Namefi",
-    "description": "وأنا بعالج طلبك، جهّزنالك معاينة لوجو لعلامتك التجارية. استكشف أكتر من ستايل وصور تسويقية في Just AI'ng.",
+    "description": "أثناء معالجة طلبك، جهّزنالك معاينة لوجو لعلامتك التجارية. استكشف أكتر من ستايل وصور تسويقية في Just AI'ng.",
     "noPreview": "مفيش معاينة",
     "previewUnavailable": "المعاينة مش متاحة",
     "logoAlt": "لوجو {domain}"
