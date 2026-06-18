@@ -78,7 +78,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
             disabled={!domain}
             className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
           >
-            <Plus className="mr-1 h-4 w-4" /> Add record
+            <Plus className="me-1 h-4 w-4" /> Add record
           </Button>
         </AddRecordDropdownMenu>
       </CardHeader>
@@ -124,7 +124,7 @@ const AddRecordDropdownMenu = React.memo(
                     key={type}
                     onClick={() => onAddRecordClicked(type)}
                   >
-                    <Icon className="mr-2 h-4 w-4" />
+                    <Icon className="me-2 h-4 w-4" />
                     <span>{type} Record</span>
                   </DropdownMenuItem>
 

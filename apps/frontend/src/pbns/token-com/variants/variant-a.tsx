@@ -275,7 +275,7 @@ function HumanMachineSection() {
             <div className="h-3 w-3 rounded-full bg-red-500" />
             <div className="h-3 w-3 rounded-full bg-yellow-500" />
             <div className="h-3 w-3 rounded-full bg-green-500" />
-            <span className="ml-2 text-xs text-gray-500">
+            <span className="ms-2 text-xs text-gray-500">
               .well-known/token.json
             </span>
           </div>
@@ -288,11 +288,11 @@ function HumanMachineSection() {
             <p>
               <span className="text-purple-400">"contracts"</span>: {'{'}
             </p>
-            <p className="pl-4">
+            <p className="ps-4">
               <span className="text-purple-400">"ethereum"</span>:{' '}
               <span className="text-green-400">"0xa0b8..."</span>,
             </p>
-            <p className="pl-4">
+            <p className="ps-4">
               <span className="text-purple-400">"solana"</span>:{' '}
               <span className="text-green-400">"EPjF..."</span>
             </p>
@@ -300,7 +300,7 @@ function HumanMachineSection() {
             <p>
               <span className="text-purple-400">"links"</span>: {'{'}
             </p>
-            <p className="pl-4">
+            <p className="ps-4">
               <span className="text-purple-400">"governance"</span>:{' '}
               <span className="text-green-400">"..."</span>
             </p>
@@ -398,7 +398,7 @@ function CTASection() {
           )}
         >
           Check Availability
-          <ArrowUpRight className="ml-2 h-5 w-5" />
+          <ArrowUpRight className="ms-2 h-5 w-5" />
         </Link>
       </div>
     </section>

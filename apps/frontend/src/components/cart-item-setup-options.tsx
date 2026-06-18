@@ -189,7 +189,7 @@ export function CartItemSetupOptionsSummary({
       onClick={onExpand}
       aria-label="Show domain setup options"
       className={cn(
-        'flex max-w-[15rem] flex-wrap items-center gap-1 text-left',
+        'flex max-w-[15rem] flex-wrap items-center gap-1 text-start',
         className,
       )}
     >

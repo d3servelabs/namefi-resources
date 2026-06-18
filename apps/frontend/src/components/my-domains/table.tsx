@@ -850,7 +850,7 @@ export function MyDomainsTable(props: {
           count: watchableNftCount,
         })}
       >
-        <Wallet className="h-3 w-3 mr-1" />
+        <Wallet className="h-3 w-3 me-1" />
         {t('table.showNftsInWallet')}
       </Button>
     ) : null;

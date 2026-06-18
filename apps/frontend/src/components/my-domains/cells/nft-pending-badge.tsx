@@ -47,7 +47,7 @@ export function NftPendingBadge({
       title={title}
       className="whitespace-nowrap border-amber-500/40 bg-amber-400/10 text-amber-300"
     >
-      <span className="mr-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
+      <span className="me-1 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-amber-400" />
       {label}
     </Badge>
   );

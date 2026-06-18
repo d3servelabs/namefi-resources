@@ -109,7 +109,7 @@ export function WalletEditableSelect({
               onChainIdChange?.(Number.parseInt(value));
             }}
           >
-            <SelectTrigger className="h-12 py-5.5 mr-1">
+            <SelectTrigger className="h-12 py-5.5 me-1">
               <SelectValue placeholder="Select a Chain">
                 {selectedChain ? (
                   <span className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export function WalletEditableSelect({
         )}
         <div className="relative flex-1" ref={inputContainerRef}>
           {icon ? (
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+            <div className="absolute start-3 top-1/2 -translate-y-1/2 flex items-center">
               {icon}
             </div>
           ) : null}
@@ -151,8 +151,8 @@ export function WalletEditableSelect({
             ref={inputRef}
             className={cn(
               'h-12 rounded-md px-3 py-1',
-              icon && 'pl-9',
-              options.length > 0 && 'pr-9',
+              icon && 'ps-9',
+              options.length > 0 && 'pe-9',
               className,
             )}
             disabled={disabled}
@@ -162,7 +162,7 @@ export function WalletEditableSelect({
               value={localValue.selected}
               onValueChange={handleSelectChange}
             >
-              <SelectTrigger className="absolute right-3 top-1/2 -translate-y-1/2 border-none dark:bg-transparent" />
+              <SelectTrigger className="absolute end-3 top-1/2 -translate-y-1/2 border-none dark:bg-transparent" />
               <SelectContent
                 align="end"
                 alignOffset={-12}

@@ -312,7 +312,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
           <CardTitle>Protected Words Management</CardTitle>
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger render={<Button />}>
-              <Plus className="w-4 h-4 mr-2" />
+              <Plus className="w-4 h-4 me-2" />
               Add Words
             </DialogTrigger>
             <DialogContent>
@@ -383,12 +383,12 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
                         document.getElementById('file-upload')?.click()
                       }
                     >
-                      <Upload className="w-4 h-4 mr-2" />
+                      <Upload className="w-4 h-4 me-2" />
                       Choose File
                     </Button>
                     {newWords && (
                       <Badge variant="secondary">
-                        <FileText className="w-3 h-3 mr-1" />
+                        <FileText className="w-3 h-3 me-1" />
                         File loaded
                       </Badge>
                     )}
@@ -438,7 +438,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
                 <AlertDialogTrigger
                   render={<Button variant="destructive" size="sm" />}
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                  <Trash2 className="w-4 h-4 me-2" />
                   Remove Selected ({wordsToRemove.length})
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -467,18 +467,18 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
           {/* Search and Filter Controls */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
             <div className="relative flex-1 max-w-sm w-full sm:w-auto">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
                 placeholder="Search words..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-10"
+                className="ps-10 pe-10"
               />
               {searchTerm && (
                 <Button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute end-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -657,7 +657,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
               {filteredAndSortedWords.some(
                 (item) => item.type === 'custom',
               ) && (
-                <span className="ml-2">
+                <span className="ms-2">
                   ({wordsToRemove.length} selected for removal)
                 </span>
               )}

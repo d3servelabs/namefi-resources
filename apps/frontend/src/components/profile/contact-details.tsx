@@ -362,7 +362,7 @@ export function ContactDetails() {
                   <Button
                     type="submit"
                     disabled={!isDirty || isUpdatingMetadata}
-                    className="ml-auto gap-2"
+                    className="ms-auto gap-2"
                   >
                     {isUpdatingMetadata ? (
                       <Loader2 className="h-4 w-4 animate-spin" />

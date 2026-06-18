@@ -486,7 +486,7 @@ export function MultiGiftDialog({
                 Entries ({tableRows.length})
               </div>
               <Button variant="secondary" size="sm" onClick={addEmptyRow}>
-                <Plus className="h-3.5 w-3.5 mr-1" /> Add Row
+                <Plus className="h-3.5 w-3.5 me-1" /> Add Row
               </Button>
             </div>
             <div className="border rounded">
@@ -632,7 +632,7 @@ export function MultiGiftDialog({
               disabled={disabled || bulkMutation.isPending}
             >
               {bulkMutation.isPending && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}
               Create{' '}
               {mode === 'parent'

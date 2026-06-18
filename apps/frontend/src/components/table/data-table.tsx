@@ -279,10 +279,10 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                   ],
                 )}
               >
-                <FilterIcon className="h-3 w-3 mr-1" />
+                <FilterIcon className="h-3 w-3 me-1" />
                 Filters
                 {activeFilterCount > 0 && (
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge variant="secondary" className="ms-2">
                     {activeFilterCount}
                   </Badge>
                 )}
@@ -294,7 +294,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             <DropdownMenuTrigger
               render={<Button variant="outline" size="sm" />}
             >
-              <ColumnsIcon className="h-3 w-3 mr-1" />
+              <ColumnsIcon className="h-3 w-3 me-1" />
               Columns
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[180px]">
@@ -332,7 +332,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             >
               {isLoading ? (
                 <>
-                  <Loader2Icon className="h-3 w-3 mr-1 animate-spin" />
+                  <Loader2Icon className="h-3 w-3 me-1 animate-spin" />
                   Loading...
                 </>
               ) : nextPageToken ? (
@@ -379,7 +379,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     <th
                       key={header.id}
                       className={cn(
-                        'px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider',
+                        'px-4 py-3 text-start text-xs font-semibold text-muted-foreground uppercase tracking-wider',
                         header.column.getCanSort() &&
                           'cursor-pointer select-none hover:text-foreground transition-colors',
                       )}

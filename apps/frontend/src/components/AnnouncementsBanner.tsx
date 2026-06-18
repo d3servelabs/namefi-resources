@@ -132,7 +132,7 @@ function AnnouncementStrip({
               {current.title ? (
                 <strong
                   data-testid="announcement-title"
-                  className="mr-1 font-semibold"
+                  className="me-1 font-semibold"
                 >
                   {current.title}
                 </strong>
@@ -148,7 +148,7 @@ function AnnouncementStrip({
                   {...(external
                     ? { target: '_blank', rel: 'noopener noreferrer' }
                     : {})}
-                  className="ml-2 font-semibold underline underline-offset-2 hover:opacity-80"
+                  className="ms-2 font-semibold underline underline-offset-2 hover:opacity-80"
                 >
                   {current.linkLabel ?? 'Learn more'}
                 </a>

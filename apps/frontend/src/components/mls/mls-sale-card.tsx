@@ -184,7 +184,7 @@ export function MlsSaleCard({
           </div>
 
           {askingPriceLabel ? (
-            <div className="shrink-0 text-left sm:text-right">
+            <div className="shrink-0 text-start sm:text-end">
               <p
                 className="text-lg font-semibold tracking-tight sm:text-xl"
                 style={{ color: theme.accent }}

@@ -333,7 +333,7 @@ function VideoPlayIndicator() {
       className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
     >
       <div className="flex size-12 items-center justify-center rounded-full border border-white/45 bg-black/55 text-white shadow-lg backdrop-blur-sm">
-        <Play className="ml-0.5 size-5 fill-current" />
+        <Play className="ms-0.5 size-5 fill-current" />
       </div>
     </div>
   );

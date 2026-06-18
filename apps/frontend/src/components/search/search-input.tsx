@@ -61,7 +61,7 @@ export const SearchHeader: FC<{
             : t('header.taglineAllNetworks'))}
       </p>
       {isFirstPartyOrigin && !hideNetworkSelection && (
-        <div className="flex gap-2 p-3 pr-0 items-center bg-neutral-900 backdrop-blur-md rounded-lg">
+        <div className="flex gap-2 p-3 pe-0 items-center bg-neutral-900 backdrop-blur-md rounded-lg">
           {t('header.networkLabel')}
           <div className="flex items-center gap-2 mx-auto w-full max-w-md overflow-x-auto">
             <Button
@@ -293,8 +293,8 @@ export const SearchInput: FC<{
               className={cn(
                 'mx-auto flex w-full max-w-3xl gap-3 border border-white/14 bg-[#14161D] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] transition-[border-color,box-shadow,background-color] duration-200 focus-within:border-brand-primary/60 focus-within:bg-[#171A24] focus-within:ring-2 focus-within:ring-brand-primary/35 focus-within:ring-offset-2 focus-within:ring-offset-[#0B0F16] focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_32px_color-mix(in_srgb,_var(--brand-primary)_35%,_transparent)]',
                 isImportMode
-                  ? 'flex-col rounded-2xl pl-4 pr-4 pt-4 pb-2'
-                  : 'items-center rounded-full pl-4 pr-2 py-2',
+                  ? 'flex-col rounded-2xl ps-4 pe-4 pt-4 pb-2'
+                  : 'items-center rounded-full ps-4 pe-2 py-2',
               )}
               layout
               transition={{
@@ -370,7 +370,7 @@ export const SearchInput: FC<{
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="absolute top-2 right-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
+                        className="absolute top-2 end-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
                         onClick={() => handleQueryChange('')}
                       >
                         <X className="h-4 w-4" />
@@ -455,7 +455,7 @@ export const SearchInput: FC<{
                         />
                         <Badge
                           variant="secondary"
-                          className="flex h-8 items-center gap-1.5 rounded-full bg-white/14 pl-3 pr-1.5 text-sm text-white"
+                          className="flex h-8 items-center gap-1.5 rounded-full bg-white/14 ps-3 pe-1.5 text-sm text-white"
                         >
                           <AnimatePresence initial={false} mode="wait">
                             <motion.span

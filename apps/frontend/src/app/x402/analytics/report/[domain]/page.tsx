@@ -86,7 +86,7 @@ function ErrorCard({
             <Button variant="outline">
               <a href={REDIRECT_URL}>
                 Get Access Token
-                <ExternalLinkIcon className="h-4 w-4 ml-2" />
+                <ExternalLinkIcon className="h-4 w-4 ms-2" />
               </a>
             </Button>
           )}
@@ -298,7 +298,7 @@ function AnalyticsReportContent({
             disabled={isFetching}
           >
             {isFetching ? (
-              <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2Icon className="h-4 w-4 me-2 animate-spin" />
             ) : null}
             {isFetching ? 'Refreshing...' : 'Refresh'}
           </Button>

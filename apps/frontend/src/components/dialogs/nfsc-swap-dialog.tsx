@@ -373,7 +373,7 @@ function NFSCSwapDialogInner(props: Props) {
               {/* Reserve space for the absolutely-positioned close button
                   (top-4 right-4, size-8) so a long/localized title never runs
                   under the X. */}
-              <DialogTitle className="pr-10 text-2xl font-bold">
+              <DialogTitle className="pe-10 text-2xl font-bold">
                 Add funds to your NFSC
               </DialogTitle>
               {checksummedAddress && (
@@ -487,7 +487,7 @@ function NFSCSwapDialogInner(props: Props) {
                           value={amountPay}
                           onChange={(e) => handlePayChange(e.target.value)}
                           data-testid="nfsc-swap-pay-input"
-                          className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                          className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
                         />
                         <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
                           <Image
@@ -506,7 +506,7 @@ function NFSCSwapDialogInner(props: Props) {
                         >
                           Balance: {formattedEthBalance} ETH
                           {insufficientBalance && (
-                            <span className="ml-2">• Insufficient balance</span>
+                            <span className="ms-2">• Insufficient balance</span>
                           )}
                         </p>
                       </div>
@@ -527,7 +527,7 @@ function NFSCSwapDialogInner(props: Props) {
                           readOnly={true}
                           value={displayReceiveAmount()}
                           data-testid="nfsc-swap-receive-output"
-                          className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                          className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
                         />
                         <div className="flex items-center bg-zinc-700 gap-2 p-2 px-4 rounded-md">
                           <Image

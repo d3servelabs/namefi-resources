@@ -448,7 +448,7 @@ function DnsvizAnalysesPanel() {
             >
               {n}
               {ignored > 0 ? (
-                <span className="ml-1 text-muted-foreground">
+                <span className="ms-1 text-muted-foreground">
                   ({ignored} ignored)
                 </span>
               ) : null}
@@ -542,7 +542,7 @@ function DnsvizAnalysesPanel() {
             disabled={query.isFetching}
           >
             <RefreshCw
-              className={`h-4 w-4 mr-2 ${query.isFetching ? 'animate-spin' : ''}`}
+              className={`h-4 w-4 me-2 ${query.isFetching ? 'animate-spin' : ''}`}
             />
             Refresh
           </Button>
@@ -561,7 +561,7 @@ function DnsvizAnalysesPanel() {
                 onClick={clearSelection}
                 disabled={selectedRows.size === 0}
               >
-                <XIcon className="h-3 w-3 mr-1" />
+                <XIcon className="h-3 w-3 me-1" />
                 Clear
               </Button>
               <Button
@@ -569,7 +569,7 @@ function DnsvizAnalysesPanel() {
                 onClick={() => setSubmitOpen(true)}
                 disabled={selectedRows.size === 0}
               >
-                <Play className="h-3 w-3 mr-1" />
+                <Play className="h-3 w-3 me-1" />
                 Run on-demand analysis
               </Button>
             </div>
@@ -693,9 +693,9 @@ function RunOnDemandDialog({
             disabled={runMutation.isPending || domains.length === 0}
           >
             {runMutation.isPending ? (
-              <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
+              <Loader2 className="h-3 w-3 me-1.5 animate-spin" />
             ) : (
-              <Play className="h-3 w-3 mr-1.5" />
+              <Play className="h-3 w-3 me-1.5" />
             )}
             Submit
           </Button>
@@ -1034,11 +1034,11 @@ function RowActions({
   return (
     <div className="flex items-center gap-1">
       <Button variant="outline" size="sm" onClick={onView}>
-        <Eye className="h-3 w-3 mr-1.5" />
+        <Eye className="h-3 w-3 me-1.5" />
         Graph
       </Button>
       <Button variant="outline" size="sm" onClick={onShowDetails}>
-        <ListTree className="h-3 w-3 mr-1.5" />
+        <ListTree className="h-3 w-3 me-1.5" />
         Details
       </Button>
       {/*
@@ -1052,9 +1052,9 @@ function RowActions({
           render={<Button variant="outline" size="sm" disabled={isPending} />}
         >
           {isPending ? (
-            <Loader2 className="h-3 w-3 mr-1.5 animate-spin" />
+            <Loader2 className="h-3 w-3 me-1.5 animate-spin" />
           ) : (
-            <Download className="h-3 w-3 mr-1.5" />
+            <Download className="h-3 w-3 me-1.5" />
           )}
           Download
         </DropdownMenuTrigger>
@@ -1081,7 +1081,7 @@ function RowActions({
                 })
               }
             >
-              <ExternalLink className="h-3 w-3 mr-1.5" />
+              <ExternalLink className="h-3 w-3 me-1.5" />
               Open HTML in new tab
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -1373,7 +1373,7 @@ function MessagesTable({
     <div>
       <h3 className="text-sm font-semibold">{title}</h3>
       <div className="mt-2 overflow-x-auto rounded border">
-        <table className="min-w-full text-left text-xs">
+        <table className="min-w-full text-start text-xs">
           <thead className="bg-muted/50 font-mono text-muted-foreground">
             <tr>
               <th className="p-2">Zone</th>
@@ -1392,7 +1392,7 @@ function MessagesTable({
                 <td className="border-t p-2 font-mono">
                   {m.code ?? '—'}
                   {m.ignored ? (
-                    <Badge variant="outline" className="ml-1 text-[10px]">
+                    <Badge variant="outline" className="ms-1 text-[10px]">
                       ignored
                     </Badge>
                   ) : null}

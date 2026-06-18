@@ -474,11 +474,11 @@ function SendPanel({
           >
             {isPending ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> Sending…
+                <Loader2 className="h-4 w-4 animate-spin me-1.5" /> Sending…
               </>
             ) : (
               <>
-                <Send className="h-4 w-4 mr-1.5" /> Confirm send
+                <Send className="h-4 w-4 me-1.5" /> Confirm send
               </>
             )}
           </Button>
@@ -497,7 +497,7 @@ function SendPanel({
           onClick={() => setConfirming(true)}
           disabled={sendDisabled}
         >
-          <Send className="h-4 w-4 mr-1.5" />
+          <Send className="h-4 w-4 me-1.5" />
           Send to {targetLabel}
         </Button>
       )}
@@ -520,7 +520,7 @@ function PreviewCard({
   return (
     <div className="dark rounded-xl border bg-[#0a0a0a] p-4">
       {hasContent ? (
-        <div className="flex gap-3 rounded-lg border border-l-2 border-white/5 border-l-brand-primary bg-white/[0.04] p-3">
+        <div className="flex gap-3 rounded-lg border border-s-2 border-white/5 border-s-brand-primary bg-white/[0.04] p-3">
           <div className="min-w-0 flex-1">
             <h3 className="truncate text-sm font-semibold text-foreground">
               {title || 'Notification title'}

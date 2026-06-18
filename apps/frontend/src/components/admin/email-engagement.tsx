@@ -106,9 +106,9 @@ export function EmailEngagementDashboard() {
           disabled={query.isFetching}
         >
           {query.isFetching ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            <Loader2 className="h-4 w-4 animate-spin me-2" />
           ) : (
-            <RefreshCw className="h-4 w-4 mr-2" />
+            <RefreshCw className="h-4 w-4 me-2" />
           )}
           Refresh
         </Button>
@@ -305,13 +305,13 @@ function CampaignsTable({
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="text-left text-xs uppercase tracking-wide text-muted-foreground border-b">
+        <thead className="text-start text-xs uppercase tracking-wide text-muted-foreground border-b">
           <tr>
             <th className="px-2 py-2 w-8" aria-label="Expand" />
             <th className="px-2 py-2">Campaign key</th>
-            <th className="px-2 py-2 text-right">Opens</th>
-            <th className="px-2 py-2 text-right">Clicks</th>
-            <th className="px-2 py-2 text-right">Links</th>
+            <th className="px-2 py-2 text-end">Opens</th>
+            <th className="px-2 py-2 text-end">Clicks</th>
+            <th className="px-2 py-2 text-end">Links</th>
             <th className="px-2 py-2">Last activity</th>
           </tr>
         </thead>
@@ -378,13 +378,13 @@ function CampaignRow({
         <td className="px-2 py-2 align-middle font-mono text-xs">
           {row.campaignKey}
         </td>
-        <td className="px-2 py-2 align-middle text-right tabular-nums">
+        <td className="px-2 py-2 align-middle text-end tabular-nums">
           {row.openCount.toLocaleString()}
         </td>
-        <td className="px-2 py-2 align-middle text-right tabular-nums">
+        <td className="px-2 py-2 align-middle text-end tabular-nums">
           {row.totalClickCount.toLocaleString()}
         </td>
-        <td className="px-2 py-2 align-middle text-right tabular-nums">
+        <td className="px-2 py-2 align-middle text-end tabular-nums">
           {row.distinctLinkCount.toLocaleString()}
         </td>
         <td className="px-2 py-2 align-middle text-muted-foreground">
@@ -401,10 +401,10 @@ function CampaignRow({
                 Per-link clicks ({row.links.length})
               </div>
               <table className="w-full text-xs">
-                <thead className="text-left text-muted-foreground">
+                <thead className="text-start text-muted-foreground">
                   <tr>
                     <th className="px-2 py-1">Group identifier</th>
-                    <th className="px-2 py-1 text-right">Clicks</th>
+                    <th className="px-2 py-1 text-end">Clicks</th>
                     <th className="px-2 py-1">First seen</th>
                     <th className="px-2 py-1">Last seen</th>
                   </tr>
@@ -427,7 +427,7 @@ function CampaignRow({
                           </Badge>
                         )}
                       </td>
-                      <td className="px-2 py-1 text-right tabular-nums">
+                      <td className="px-2 py-1 text-end tabular-nums">
                         {link.clickCount.toLocaleString()}
                       </td>
                       <td className="px-2 py-1 text-muted-foreground">
@@ -464,7 +464,7 @@ function SummaryCard({ label, value }: { label: string; value: number }) {
 function LoadingState() {
   return (
     <div className="py-12 flex items-center justify-center text-muted-foreground text-sm">
-      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+      <Loader2 className="h-4 w-4 animate-spin me-2" />
       Loading engagement…
     </div>
   );

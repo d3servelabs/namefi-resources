@@ -56,9 +56,9 @@ export function FinancialTableCard({
               disabled={isFetching}
             >
               {isFetching ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />
               ) : (
-                <RefreshCw className="h-4 w-4 mr-2" />
+                <RefreshCw className="h-4 w-4 me-2" />
               )}
               Refresh
             </Button>
@@ -103,9 +103,9 @@ function ExportMenu({
     <DropdownMenu>
       <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
         {isExporting ? (
-          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          <Loader2 className="h-4 w-4 me-2 animate-spin" />
         ) : (
-          <Download className="h-4 w-4 mr-2" />
+          <Download className="h-4 w-4 me-2" />
         )}
         Export
       </DropdownMenuTrigger>
@@ -114,14 +114,14 @@ function ExportMenu({
           onClick={() => onExport('csv')}
           disabled={isExporting}
         >
-          <FileText className="h-4 w-4 mr-2" />
+          <FileText className="h-4 w-4 me-2" />
           Download CSV
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => onExport('json')}
           disabled={isExporting}
         >
-          <FileJson className="h-4 w-4 mr-2" />
+          <FileJson className="h-4 w-4 me-2" />
           Download JSON
         </DropdownMenuItem>
       </DropdownMenuContent>

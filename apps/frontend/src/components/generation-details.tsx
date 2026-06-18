@@ -344,7 +344,7 @@ const ErrorPlaceholder = ({
         {error || 'The generation you are looking for could not be found.'}
       </EmptyPlaceholder.Description>
       <Button variant="outline" onClick={onGoBack} className="mt-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
+        <ArrowLeft className="me-2 h-4 w-4" />
         Go back
       </Button>
     </EmptyPlaceholder>
@@ -981,20 +981,20 @@ export function GenerationDetailsClient({
                 <CardContent className="space-y-3">
                   <div>
                     <span className="text-sm font-medium">Style:</span>
-                    <Badge variant="outline" className="ml-2 capitalize">
+                    <Badge variant="outline" className="ms-2 capitalize">
                       {logoStyleValue ? getLogoStyleLabel(logoStyleValue) : ''}
                     </Badge>
                   </div>
                   <div>
                     <span className="text-sm font-medium">Type:</span>
-                    <Badge variant="outline" className="ml-2 capitalize">
+                    <Badge variant="outline" className="ms-2 capitalize">
                       {logoTypeValue ? getLogoTypeLabel(logoTypeValue) : ''}
                     </Badge>
                   </div>
                   {textTreatmentValue && (
                     <div>
                       <span className="text-sm font-medium">TLD:</span>
-                      <Badge variant="outline" className="ml-2 capitalize">
+                      <Badge variant="outline" className="ms-2 capitalize">
                         {getTextTreatmentLabel(textTreatmentValue)}
                       </Badge>
                     </div>
@@ -1002,7 +1002,7 @@ export function GenerationDetailsClient({
                   {typographyValue && (
                     <div>
                       <span className="text-sm font-medium">Typography:</span>
-                      <Badge variant="outline" className="ml-2 capitalize">
+                      <Badge variant="outline" className="ms-2 capitalize">
                         {getTypographyLabel(typographyValue)}
                       </Badge>
                     </div>
@@ -1103,7 +1103,7 @@ export function GenerationDetailsClient({
                   {animationSheetReference.model && (
                     <div>
                       <span className="text-sm font-medium">Sheet model:</span>
-                      <Badge variant="outline" className="ml-2">
+                      <Badge variant="outline" className="ms-2">
                         {animationSheetReference.model}
                       </Badge>
                     </div>

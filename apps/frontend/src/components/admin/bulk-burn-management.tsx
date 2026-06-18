@@ -562,7 +562,7 @@ function BulkBurnManagementContent({
                 variant="outline"
                 className="mt-4"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 Refresh
               </Button>
             </div>
@@ -789,12 +789,12 @@ function BulkBurnManagementContent({
             >
               {approveMutation.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 me-2 animate-spin" />
                   Approving...
                 </>
               ) : (
                 <>
-                  <Flame className="w-4 h-4 mr-2" />
+                  <Flame className="w-4 h-4 me-2" />
                   Approve Burn
                 </>
               )}
@@ -827,7 +827,7 @@ function BulkBurnManagementContent({
             >
               {cancelMutation.isPending ? (
                 <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <Loader2 className="w-4 h-4 me-2 animate-spin" />
                   Cancelling...
                 </>
               ) : (

@@ -496,7 +496,7 @@ export const DomainCard: FC<{
     >
       <CardContent className="flex flex-1 items-center px-3 py-3.5 sm:px-4 sm:py-4 md:px-6 md:py-4">
         <div className="grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 sm:gap-4 md:gap-5">
-          <div className="flex min-w-0 flex-col items-start justify-center gap-1.5 text-left">
+          <div className="flex min-w-0 flex-col items-start justify-center gap-1.5 text-start">
             <div className="font-semibold tracking-tight w-full">
               <div className="min-w-0">
                 {domain ? (
@@ -530,11 +530,11 @@ export const DomainCard: FC<{
               {shouldShowPricingSkeleton ? (
                 <Skeleton className="h-5 w-16 bg-gray-600/50 sm:h-6 sm:w-20" />
               ) : isNotNil(priceInUsd) ? (
-                <div className="flex flex-col gap-0.5 text-left transition-opacity duration-200 ease-out">
+                <div className="flex flex-col gap-0.5 text-start transition-opacity duration-200 ease-out">
                   <p className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1">
                     {isNotNil(originalRegistrationPriceInUsd) ? (
                       <>
-                        <span className="mr-2 text-muted-foreground line-through">
+                        <span className="me-2 text-muted-foreground line-through">
                           {formatAmountInUSD(originalRegistrationPriceInUsd)}
                         </span>
                         <span className="font-semibold text-brand-primary">
@@ -558,7 +558,7 @@ export const DomainCard: FC<{
                   )}
                 </div>
               ) : isUnsupported ? null : (
-                <div className="flex flex-col gap-0.5 text-left invisible">
+                <div className="flex flex-col gap-0.5 text-start invisible">
                   <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl invisible">
                     {'N/A'}
                   </p>
@@ -570,7 +570,7 @@ export const DomainCard: FC<{
             </div>
             {hasOwnerInfo && (
               <div className="flex items-center text-[11px] text-muted-foreground sm:text-xs">
-                <User className="mr-1 h-3 w-3 shrink-0" />
+                <User className="me-1 h-3 w-3 shrink-0" />
                 <span className="line-clamp-1">
                   {t('card.owner', {
                     owner: `${currentOwner.substring(0, 6)}...${currentOwner.substring(currentOwner.length - 4)}`,

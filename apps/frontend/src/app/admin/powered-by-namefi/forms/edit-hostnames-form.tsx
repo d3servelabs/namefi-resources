@@ -67,7 +67,7 @@ export function EditHostnamesDialog({
     >
       <DialogContent className="sm:max-w-xl w-full max-h-[min(90vh,720px)] overflow-hidden grid-rows-[auto_1fr_auto]">
         <DialogHeader>
-          <DialogTitle className="flex flex-wrap items-baseline gap-x-2 pr-8 break-words">
+          <DialogTitle className="flex flex-wrap items-baseline gap-x-2 pe-8 break-words">
             <span>Additional Hostnames</span>
             {domain ? (
               <span className="font-mono text-sm text-muted-foreground break-all">
@@ -76,7 +76,7 @@ export function EditHostnamesDialog({
             ) : null}
           </DialogTitle>
         </DialogHeader>
-        <div className="min-h-0 space-y-3 overflow-y-auto pr-1">
+        <div className="min-h-0 space-y-3 overflow-y-auto pe-1">
           <p className="text-sm text-muted-foreground">
             Hostnames that are accepted as aliases for this Powered-by-Namefi
             parent — for example the <code>*.astra.namefi.io</code> and{' '}

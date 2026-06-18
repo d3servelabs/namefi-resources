@@ -72,7 +72,7 @@ export function GlobalFiltersCard({
             onClick={onReset}
             disabled={activeFilterCount === 0 && searchTerm.length === 0}
           >
-            <RotateCcw className="h-4 w-4 mr-2" />
+            <RotateCcw className="h-4 w-4 me-2" />
             Reset Global Filters
           </Button>
         </div>
@@ -101,10 +101,10 @@ export function GlobalFiltersCard({
                 className="w-full justify-start"
                 onClick={() => setFilterPanelOpen(true)}
               >
-                <Filter className="h-4 w-4 mr-2" />
+                <Filter className="h-4 w-4 me-2" />
                 Configure Filters
                 {advancedFilterCount > 0 && (
-                  <Badge variant="secondary" className="ml-2">
+                  <Badge variant="secondary" className="ms-2">
                     {advancedFilterCount}
                   </Badge>
                 )}

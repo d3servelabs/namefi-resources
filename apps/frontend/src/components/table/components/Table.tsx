@@ -17,8 +17,8 @@ const defaults: Classes = {
   thead: '[&_tr]:border-b',
   tfoot: 'bg-muted/50 border-t font-medium [&>tr]:last:border-b-0',
   tbody: '[&_tr:last-child]:border-0',
-  th: 'text-muted-foreground h-10 px-2 text-left align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
-  td: 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]',
+  th: 'text-muted-foreground h-10 px-2 text-start align-middle font-medium whitespace-nowrap [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]',
+  td: 'p-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pe-0 [&>[role=checkbox]]:translate-y-[2px]',
   tr: 'hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors',
 
   pivot: '',

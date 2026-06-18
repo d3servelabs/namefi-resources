@@ -176,7 +176,7 @@ export function BalanceBreakdownDialog({
               </div>
 
               <Button className="w-full" onClick={handleTopUp}>
-                <PlusCircleIcon className="mr-2 h-4 w-4" />
+                <PlusCircleIcon className="me-2 h-4 w-4" />
                 {t('nfscBalanceDialog.topUp')}
               </Button>
 
@@ -187,7 +187,7 @@ export function BalanceBreakdownDialog({
                   className="w-full"
                   onClick={handleWatchNfsc}
                 >
-                  <CoinsIcon className="mr-2 h-4 w-4" />
+                  <CoinsIcon className="me-2 h-4 w-4" />
                   {t('nfscBalanceDialog.showNfscInWallet')}
                 </Button>
               )}

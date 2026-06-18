@@ -351,7 +351,7 @@ function NFTOwnershipCard({
             variant="outline"
             className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
           >
-            <Lock className="h-3 w-3 mr-1" />
+            <Lock className="h-3 w-3 me-1" />
             Verified
           </Badge>
         </div>
@@ -426,9 +426,9 @@ function NFTOwnershipCard({
             className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
             render={
               <a href={explorerUrl} target="_blank" rel="noopener noreferrer">
-                <FileCheck className="h-4 w-4 mr-2" />
+                <FileCheck className="h-4 w-4 me-2" />
                 Verify on Block Explorer
-                <ExternalLink className="h-3.5 w-3.5 ml-auto" />
+                <ExternalLink className="h-3.5 w-3.5 ms-auto" />
               </a>
             }
             nativeButton={false}
@@ -442,7 +442,7 @@ function NFTOwnershipCard({
             onClick={handleWatchNft}
             loadingText="Adding to wallet..."
           >
-            <Wallet className="h-4 w-4 mr-2" />
+            <Wallet className="h-4 w-4 me-2" />
             Show NFT in Wallet
           </AsyncButton>
         )}
@@ -486,7 +486,7 @@ function Web3ConceptsCard() {
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
-          className="flex items-center justify-between w-full text-left"
+          className="flex items-center justify-between w-full text-start"
         >
           <div className="flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-muted-foreground" />
@@ -726,7 +726,7 @@ function ExpirationBadge({
         config.className,
       )}
     >
-      <Icon className="h-3.5 w-3.5 mr-1.5" />
+      <Icon className="h-3.5 w-3.5 me-1.5" />
       {formatExpirationDate(date)}
     </Badge>
   );
@@ -1041,7 +1041,7 @@ export const RenewDomainButton = ({
       size="sm"
       className="bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary border border-brand-primary/30 hover:border-brand-primary/50 transition-all"
     >
-      <Sparkles className="h-3.5 w-3.5 mr-1.5" />
+      <Sparkles className="h-3.5 w-3.5 me-1.5" />
       Renew now
     </AsyncButton>
   );
@@ -1294,7 +1294,7 @@ export const DomainExportCard = ({
                   variant="secondary"
                   className="pointer-events-none opacity-50"
                 >
-                  <Info className="h-3.5 w-3.5 mr-1.5" />
+                  <Info className="h-3.5 w-3.5 me-1.5" />
                   Request Export
                 </Button>
               </TooltipTrigger>
@@ -1317,7 +1317,7 @@ export const DomainExportCard = ({
                     variant="secondary"
                     className="opacity-50"
                   >
-                    <Info className="h-3.5 w-3.5 mr-1.5" />
+                    <Info className="h-3.5 w-3.5 me-1.5" />
                     Unavailable
                   </Button>
                 }
@@ -1329,7 +1329,7 @@ export const DomainExportCard = ({
           </TooltipProvider>
         ) : domainExportDetails.pendingRequestToEnableExport ? (
           <Button disabled size="sm" className="animate-pulse">
-            <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
             Pending...
           </Button>
         ) : domainExportDetails.readyToExport ? (
@@ -1355,9 +1355,9 @@ export const DomainExportCard = ({
               className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/50"
             >
               {isFetchingAuthCode ? (
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
               ) : (
-                <Shield className="h-3.5 w-3.5 mr-1.5" />
+                <Shield className="h-3.5 w-3.5 me-1.5" />
               )}
               Get Auth Code
             </Button>
@@ -1369,12 +1369,12 @@ export const DomainExportCard = ({
               disabled={disabled || isRequestingExport}
               loadingText="Requesting..."
               loadingIcon={
-                <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
               }
               size="sm"
               className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 text-zinc-100"
             >
-              <ExternalLink className="h-3.5 w-3.5 mr-1.5" />
+              <ExternalLink className="h-3.5 w-3.5 me-1.5" />
               Request Export
             </AsyncButton>
           </TransferLockGuard>
@@ -1594,9 +1594,9 @@ export const PendingTransferCard = ({
           className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/50"
         >
           {isApproving ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
           ) : (
-            <Check className="h-3.5 w-3.5 mr-1.5" />
+            <Check className="h-3.5 w-3.5 me-1.5" />
           )}
           Approve
         </AsyncButton>
@@ -1608,9 +1608,9 @@ export const PendingTransferCard = ({
           className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 hover:border-red-500/50"
         >
           {isRejecting ? (
-            <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+            <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
           ) : (
-            <X className="h-3.5 w-3.5 mr-1.5" />
+            <X className="h-3.5 w-3.5 me-1.5" />
           )}
           Reject
         </AsyncButton>

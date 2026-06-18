@@ -671,7 +671,7 @@ export const DomainExportSection = ({
               variant="secondary"
               className="w-full sm:w-auto"
             >
-              <ExternalLink className="h-4 w-4 mr-2" />
+              <ExternalLink className="h-4 w-4 me-2" />
               Export Unavailable
             </Button>
           ) : domainExportDetails.pendingRequestToEnableExport ? (
@@ -701,9 +701,9 @@ export const DomainExportSection = ({
                   className="w-full sm:w-auto"
                 >
                   {isFetchingAuthCode ? (
-                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    <Loader2 className="h-4 w-4 animate-spin me-2" />
                   ) : (
-                    <ExternalLink className="h-4 w-4 mr-2" />
+                    <ExternalLink className="h-4 w-4 me-2" />
                   )}
                   Get Auth Code
                 </Button>
@@ -715,11 +715,11 @@ export const DomainExportSection = ({
                 onClick={handleRequestExport}
                 disabled={disabled || isRequestingExport}
                 loadingText="Requesting Export..."
-                loadingIcon={<Loader2 className="h-4 w-4 animate-spin mr-2" />}
+                loadingIcon={<Loader2 className="h-4 w-4 animate-spin me-2" />}
                 size="sm"
                 className="w-full sm:w-auto"
               >
-                <ExternalLink className="h-4 w-4 mr-2" />
+                <ExternalLink className="h-4 w-4 me-2" />
                 Request Export
               </AsyncButton>
             </TransferLockGuard>
@@ -946,9 +946,9 @@ export const PendingTransferSection = ({
             className="w-full sm:w-auto"
           >
             {isApproving ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <Loader2 className="h-4 w-4 animate-spin me-2" />
             ) : (
-              <Check className="h-4 w-4 mr-2" />
+              <Check className="h-4 w-4 me-2" />
             )}
             Approve
           </AsyncButton>
@@ -960,9 +960,9 @@ export const PendingTransferSection = ({
             className="w-full sm:w-auto"
           >
             {isRejecting ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <Loader2 className="h-4 w-4 animate-spin me-2" />
             ) : (
-              <X className="h-4 w-4 mr-2" />
+              <X className="h-4 w-4 me-2" />
             )}
             Reject
           </AsyncButton>

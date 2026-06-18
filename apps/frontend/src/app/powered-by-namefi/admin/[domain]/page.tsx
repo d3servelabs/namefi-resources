@@ -287,7 +287,7 @@ function Overview({ domain }: { domain: NamefiNormalizedDomain }) {
           variant="outline"
           size="sm"
         >
-          <GiftIcon className="w-4 h-4 mr-2" /> Manage Gifts & Reservations
+          <GiftIcon className="w-4 h-4 me-2" /> Manage Gifts & Reservations
         </Button>
       </div>
 
@@ -483,9 +483,9 @@ function DomainAnalytics({ domain }: { domain: NamefiNormalizedDomain }) {
             disabled={isFetching}
           >
             {isFetching ? (
-              <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2Icon className="h-4 w-4 me-2 animate-spin" />
             ) : (
-              <RefreshCwIcon className="h-4 w-4 mr-2" />
+              <RefreshCwIcon className="h-4 w-4 me-2" />
             )}
             {isFetching ? 'Refreshing...' : 'Refresh'}
           </Button>

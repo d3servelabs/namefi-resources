@@ -910,7 +910,7 @@ export default function CartPage() {
                         {(isCreateOrderPending ||
                           isRedirecting ||
                           isExplicitlyCheckingCartItemsForUpdates) && (
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          <Loader2 className="me-2 h-4 w-4 animate-spin" />
                         )}
                         {submitButtonText}
                       </NamefiButton>
@@ -947,7 +947,7 @@ export default function CartPage() {
                             isCreateOrderV2Pending ||
                             isRedirecting ||
                             isExplicitlyCheckingCartItemsForUpdates) && (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="me-2 h-4 w-4 animate-spin" />
                           )}
                           {submitButtonText}
                         </NamefiButton>

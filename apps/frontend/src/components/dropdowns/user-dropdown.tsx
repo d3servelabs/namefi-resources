@@ -163,7 +163,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       : undefined;
     const isAvatarIdentityLoading =
       isAuthenticated && isPrivyUserLoading && !avatarAddress;
-    const expandedAvatarPaddingClass = isExpanded ? 'pl-1 pr-4' : undefined;
+    const expandedAvatarPaddingClass = isExpanded ? 'ps-1 pe-4' : undefined;
     const hasDisplayName = Boolean(name);
     const shouldShowLoading = shouldShowUserDropdownLoading({
       hasDisplayName,
@@ -251,7 +251,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                           <UserDropdownLabel value={displayLabel} />
                         </motion.span>
                         <motion.span
-                          className="ml-auto"
+                          className="ms-auto"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{
                             opacity: 1,
@@ -275,7 +275,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
                   ) : isMenuOpen && hasRequestedMenu ? (
                     <DropdownMenuContent align="end" className="w-56">
                       <DropdownMenuItem disabled>
-                        <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />
+                        <Loader2Icon className="me-2 h-4 w-4 animate-spin" />
                         <span>Loading...</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>

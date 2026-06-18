@@ -288,7 +288,7 @@ export function EmailTemplateManager() {
       {/* Editor and Preview Layout */}
       <div className="xl:block hidden">
         <PanelGroup direction="horizontal" className="min-h-[600px]">
-          <Panel defaultSize={50} minSize={30} className="pr-3">
+          <Panel defaultSize={50} minSize={30} className="pe-3">
             {/* Left Column: Editor */}
             <div className="space-y-4">
               <Card>
@@ -354,7 +354,7 @@ export function EmailTemplateManager() {
                     </div>
 
                     {templateData.useContainer && (
-                      <div className="ml-6 space-y-2">
+                      <div className="ms-6 space-y-2">
                         <div className="flex items-center space-x-2">
                           <Checkbox
                             id="use-header"
@@ -393,7 +393,7 @@ export function EmailTemplateManager() {
                     )}
 
                     {!templateData.useContainer && (
-                      <div className="ml-6 text-sm text-muted-foreground">
+                      <div className="ms-6 text-sm text-muted-foreground">
                         Raw markdown mode - no container, header, footer, or
                         dashboard button
                       </div>
@@ -413,7 +413,7 @@ export function EmailTemplateManager() {
                       >
                         {createTemplate.isPending ? (
                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            <Loader2 className="me-2 h-4 w-4 animate-spin" />
                             Creating Template...
                           </>
                         ) : (
@@ -431,7 +431,7 @@ export function EmailTemplateManager() {
             <div className="w-px h-4 bg-gray-200 opacity-40" />
           </PanelResizeHandle>
 
-          <Panel defaultSize={50} minSize={30} className="pl-3">
+          <Panel defaultSize={50} minSize={30} className="ps-3">
             {/* Right Column: Preview */}
             <div className="space-y-4">
               <Card>
@@ -448,7 +448,7 @@ export function EmailTemplateManager() {
                           className="h-8 px-2"
                           title="Auto refresh"
                         >
-                          <Play className="h-3 w-3 mr-1" />
+                          <Play className="h-3 w-3 me-1" />
                           Auto
                         </Button>
                         <Button
@@ -458,7 +458,7 @@ export function EmailTemplateManager() {
                           className="h-8 px-2"
                           title="Manual refresh"
                         >
-                          <RotateCcw className="h-3 w-3 mr-1" />
+                          <RotateCcw className="h-3 w-3 me-1" />
                           Manual
                         </Button>
                       </div>
@@ -510,7 +510,7 @@ export function EmailTemplateManager() {
                           !templateData.content
                         }
                       >
-                        <RefreshCw className="h-4 w-4 mr-1" />
+                        <RefreshCw className="h-4 w-4 me-1" />
                         Refresh Now
                       </Button>
                     </div>
@@ -557,7 +557,7 @@ export function EmailTemplateManager() {
                           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded-lg">
                             <div className="flex items-center bg-white shadow-lg rounded-lg px-4 py-2 border">
                               <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-                              <span className="ml-2 text-sm text-gray-700">
+                              <span className="ms-2 text-sm text-gray-700">
                                 Updating preview...
                               </span>
                             </div>
@@ -593,7 +593,7 @@ export function EmailTemplateManager() {
                           !templateData.content
                         }
                       >
-                        <RefreshCw className="h-4 w-4 mr-1" />
+                        <RefreshCw className="h-4 w-4 me-1" />
                         Refresh Now
                       </Button>
                     </div>
@@ -638,7 +638,7 @@ export function EmailTemplateManager() {
                         <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center rounded-lg">
                           <div className="flex items-center bg-white shadow-lg rounded-lg px-4 py-2 border">
                             <Loader2 className="h-4 w-4 animate-spin text-blue-600" />
-                            <span className="ml-2 text-sm text-gray-700">
+                            <span className="ms-2 text-sm text-gray-700">
                               Updating HTML...
                             </span>
                           </div>
@@ -722,7 +722,7 @@ export function EmailTemplateManager() {
                 </div>
 
                 {templateData.useContainer && (
-                  <div className="ml-6 space-y-2">
+                  <div className="ms-6 space-y-2">
                     <div className="flex items-center space-x-2">
                       <Checkbox
                         id="use-header-mobile"
@@ -761,7 +761,7 @@ export function EmailTemplateManager() {
                 )}
 
                 {!templateData.useContainer && (
-                  <div className="ml-6 text-sm text-muted-foreground">
+                  <div className="ms-6 text-sm text-muted-foreground">
                     Raw markdown mode - no container, header, footer, or
                     dashboard button
                   </div>
@@ -779,7 +779,7 @@ export function EmailTemplateManager() {
                   >
                     {createTemplate.isPending ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <Loader2 className="me-2 h-4 w-4 animate-spin" />
                         Creating Template...
                       </>
                     ) : (
@@ -852,7 +852,7 @@ export function EmailTemplateManager() {
                       !templateData.content
                     }
                   >
-                    <RefreshCw className="h-4 w-4 mr-1" />
+                    <RefreshCw className="h-4 w-4 me-1" />
                     Refresh Now
                   </Button>
                 </div>
@@ -861,7 +861,7 @@ export function EmailTemplateManager() {
                 {previewTemplate.isLoading ? (
                   <div className="flex items-center justify-center p-8">
                     <Loader2 className="h-6 w-6 animate-spin" />
-                    <span className="ml-2">Generating preview...</span>
+                    <span className="ms-2">Generating preview...</span>
                   </div>
                 ) : isPreviewReady ? (
                   <div className="flex justify-center">
@@ -909,7 +909,7 @@ export function EmailTemplateManager() {
                       !templateData.content
                     }
                   >
-                    <RefreshCw className="h-4 w-4 mr-1" />
+                    <RefreshCw className="h-4 w-4 me-1" />
                     Refresh Now
                   </Button>
                 </div>
@@ -918,7 +918,7 @@ export function EmailTemplateManager() {
                 {previewTemplate.isLoading ? (
                   <div className="flex items-center justify-center p-8">
                     <Loader2 className="h-6 w-6 animate-spin" />
-                    <span className="ml-2">Generating HTML...</span>
+                    <span className="ms-2">Generating HTML...</span>
                   </div>
                 ) : isPreviewReady ? (
                   <div className="relative">

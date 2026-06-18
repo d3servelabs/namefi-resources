@@ -161,7 +161,7 @@ function BulkBurnWorkflowsListContent() {
                 variant="outline"
                 className="mt-4"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 Refresh
               </Button>
             </div>
@@ -206,7 +206,7 @@ function BulkBurnWorkflowsListContent() {
                   <Th>Started</Th>
                   <Th>Domains</Th>
                   <Th>Completed</Th>
-                  <Th className="text-right">Actions</Th>
+                  <Th className="text-end">Actions</Th>
                 </Tr>
               </Thead>
               <TableBody>
@@ -233,7 +233,7 @@ function BulkBurnWorkflowsListContent() {
                         ? format(new Date(workflow.closeTime), 'MMM dd, yyyy')
                         : '-'}
                     </Td>
-                    <Td className="text-right">
+                    <Td className="text-end">
                       <Link href={`/admin/bulk-burn/${workflow.workflowId}`}>
                         <Button variant="outline" size="sm" className="gap-2">
                           <ExternalLink className="w-4 h-4" />

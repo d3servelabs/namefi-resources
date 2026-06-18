@@ -234,7 +234,7 @@ function ExplicitPolicyList({
                 <DialogDescription>{openPolicy.summary}</DialogDescription>
               </DialogHeader>
               <div className="space-y-4 text-sm">
-                <ul className="list-disc space-y-1.5 pl-5 text-muted-foreground">
+                <ul className="list-disc space-y-1.5 ps-5 text-muted-foreground">
                   {openPolicy.outline.map((point) => (
                     <li key={point}>{point}</li>
                   ))}

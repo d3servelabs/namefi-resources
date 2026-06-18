@@ -257,12 +257,12 @@ export default function FaucetPage() {
             <Button type="submit" className="w-full" disabled={isSubmitting}>
               {isSubmitting ? (
                 <>
-                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  <Loader2 className="me-2 size-4 animate-spin" />
                   Submitting request...
                 </>
               ) : (
                 <>
-                  <Droplet className="mr-2 size-4" />
+                  <Droplet className="me-2 size-4" />
                   Request NFSC
                 </>
               )}

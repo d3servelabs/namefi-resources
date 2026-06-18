@@ -281,7 +281,7 @@ export function DomainSearchCombobox({
         aria-expanded={open}
         aria-label={searchPlaceholder}
         className={cn(
-          'h-10 w-full bg-background pr-10 font-normal',
+          'h-10 w-full bg-background pe-10 font-normal',
           triggerClassName,
         )}
       />
@@ -301,7 +301,7 @@ export function DomainSearchCombobox({
           });
           inputRef.current?.focus();
         }}
-        className="absolute top-1/2 right-1 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+        className="absolute top-1/2 end-1 -translate-y-1/2 text-muted-foreground hover:text-foreground"
       >
         <ChevronDown
           data-icon="inline-end"
@@ -463,7 +463,7 @@ function DomainOptionButton({
       onMouseEnter={onActive}
       onClick={() => onSelect(value)}
       className={cn(
-        'relative flex w-full min-w-0 cursor-pointer select-none items-center justify-start gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none',
+        'relative flex w-full min-w-0 cursor-pointer select-none items-center justify-start gap-2 rounded-sm px-2 py-1.5 text-start text-sm outline-none',
         'hover:bg-muted hover:text-foreground focus:bg-muted focus:text-foreground',
         active && 'bg-muted text-foreground',
       )}

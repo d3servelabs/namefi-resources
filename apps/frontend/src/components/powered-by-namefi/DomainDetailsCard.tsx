@@ -74,9 +74,9 @@ export function DomainDetailsCard({
                 }
               >
                 {domain.enabled ? (
-                  <PauseIcon className="h-4 w-4 mr-1" />
+                  <PauseIcon className="h-4 w-4 me-1" />
                 ) : (
-                  <CheckIcon className="h-4 w-4 mr-1" />
+                  <CheckIcon className="h-4 w-4 me-1" />
                 )}
                 {domain.enabled ? 'Disable' : 'Enable'}
               </AlertDialogTrigger>

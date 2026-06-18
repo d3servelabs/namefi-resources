@@ -164,7 +164,7 @@ export function MyListingCard({
                     {shortAddress(offer.bidder)}
                   </span>
                   <span
-                    className="text-zinc-500 ml-auto"
+                    className="text-zinc-500 ms-auto"
                     title={offer.expirationTime}
                   >
                     {expiryLabel(offer.expirationTime)}

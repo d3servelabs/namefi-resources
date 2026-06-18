@@ -937,7 +937,7 @@ function AnnouncementsAdmin() {
                 <TableHead>Condition</TableHead>
                 <TableHead>Rule met?</TableHead>
                 <TableHead>Schedule</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-end">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1014,7 +1014,7 @@ function AnnouncementsAdmin() {
                     <TableCell className="text-muted-foreground text-xs">
                       {scheduleSummary(row)}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       <PermissionGate
                         permissions={[Permission.WRITE_ANNOUNCEMENTS]}
                       >

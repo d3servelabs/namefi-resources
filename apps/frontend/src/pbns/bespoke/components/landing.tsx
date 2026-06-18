@@ -78,9 +78,9 @@ function BespokeHuntSectionFallback({
                   {HUNT_SECTION_SKELETON_ITEMS.map((item) => (
                     <div
                       key={`${section}-${item}`}
-                      className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 animate-pulse"
+                      className="flex items-center gap-4 sm:gap-6 pe-4 sm:pe-6 py-6 sm:py-8 animate-pulse"
                     >
-                      <div className="w-20 sm:w-24 flex justify-center border-r border-border px-4 sm:px-6">
+                      <div className="w-20 sm:w-24 flex justify-center border-e border-border px-4 sm:px-6">
                         <div className="w-8 h-8 bg-slate-700/50 rounded" />
                       </div>
                       <div className="flex-1 space-y-2">

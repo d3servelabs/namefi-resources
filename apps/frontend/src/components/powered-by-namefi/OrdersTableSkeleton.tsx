@@ -5,7 +5,7 @@ export function OrdersTableSkeleton() {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
-        <thead className="text-left text-muted-foreground">
+        <thead className="text-start text-muted-foreground">
           <tr>
             <th className="py-2">Chain</th>
             <th className="py-2">Domain</th>

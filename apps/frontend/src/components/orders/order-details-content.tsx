@@ -389,7 +389,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                             type="button"
                             key={item.id}
                             onClick={() => setSelectedItemId(item.id)}
-                            className="w-full text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                            className="w-full text-start rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
                           >
                             <div className="flex items-center justify-between">
                               <span className="text-base font-medium break-all">
@@ -564,7 +564,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   type="button"
                   key={item.id}
                   onClick={() => setSelectedItemId(item.id)}
-                  className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                  className="text-start rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
                 >
                   <div className="flex items-center justify-between">
                     <div className="min-w-0">
@@ -1038,7 +1038,7 @@ function PaymentSummaryCard({
     <button
       type="button"
       onClick={onClick}
-      className="text-left rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+      className="text-start rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
     >
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
@@ -1636,7 +1636,7 @@ function ItemDetailsModal({
                 >
                   {confirmUnlockMutation.isPending ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="me-2 h-4 w-4 animate-spin" />
                       {t('details.confirming')}
                     </>
                   ) : (
@@ -1678,7 +1678,7 @@ function ItemDetailsModal({
                   >
                     {updateAuthCodeMutation.isPending ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        <Loader2 className="me-2 h-4 w-4 animate-spin" />
                         {t('details.updating')}
                       </>
                     ) : (
@@ -1705,7 +1705,7 @@ function ItemDetailsModal({
                 >
                   {cancelRequiredActionMutation.isPending ? (
                     <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      <Loader2 className="me-2 h-4 w-4 animate-spin" />
                       {t('details.canceling')}
                     </>
                   ) : (

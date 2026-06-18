@@ -254,7 +254,7 @@ const runListScrollAreaStyle: CSSProperties & {
 };
 const runListScrollAreaClassName = cn(
   '[&_[data-slot=scroll-area-viewport]]:max-h-[24rem]',
-  '[&_[data-slot=scroll-area-viewport]]:pr-3',
+  '[&_[data-slot=scroll-area-viewport]]:pe-3',
   '[&_[data-slot=scroll-area-viewport]]:[-webkit-mask-image:var(--leadgen-run-list-edge-fade-mask)]',
   '[&_[data-slot=scroll-area-viewport]]:[-webkit-mask-repeat:no-repeat]',
   '[&_[data-slot=scroll-area-viewport]]:[mask-image:var(--leadgen-run-list-edge-fade-mask)]',
@@ -878,7 +878,7 @@ export function LeadgenApp({
                       type="button"
                       onClick={() => setReasoningEffort(option.value)}
                       className={cn(
-                        'rounded-sm px-2 py-2 text-left transition-colors',
+                        'rounded-sm px-2 py-2 text-start transition-colors',
                         reasoningEffort === option.value
                           ? 'bg-background text-foreground shadow-sm'
                           : 'text-muted-foreground hover:text-foreground',
@@ -1764,7 +1764,7 @@ function RunWorkspace({
           />
         </section>
 
-        <aside className="min-h-0 border-t border-border/70 p-5 lg:border-l lg:border-t-0">
+        <aside className="min-h-0 border-t border-border/70 p-5 lg:border-s lg:border-t-0">
           <Timeline
             run={run}
             presentation={presentation}
@@ -2685,7 +2685,7 @@ function LeadOrganizationSection({
           render={
             <button
               type="button"
-              className="group flex min-h-11 w-full items-center gap-2 px-3 text-left transition-colors hover:bg-muted/40"
+              className="group flex min-h-11 w-full items-center gap-2 px-3 text-start transition-colors hover:bg-muted/40"
               aria-label={`${open ? 'Collapse' : 'Expand'} ${title}`}
             />
           }
@@ -3028,7 +3028,7 @@ function LeadEmailDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="min-h-0 min-w-0 overflow-y-auto pr-1">
+        <div className="min-h-0 min-w-0 overflow-y-auto pe-1">
           {recipients.length > 0 && selectedRecipient && selectedDraft ? (
             <div className="flex min-w-0 flex-col gap-4">
               <RadioGroup
@@ -3163,7 +3163,7 @@ function Timeline({
         </p>
         {activePhase && <WorkingStatus />}
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+      <div className="min-h-0 flex-1 overflow-y-auto pe-1">
         <div className="flex flex-col">
           {phases.map((phase, index) => (
             <TimelinePhaseRow
@@ -3767,7 +3767,7 @@ function LeadgenStartSuggestionButton({
       onClick={() => onSelect(suggestion)}
       className={cn(
         emptyStateCardClassName,
-        'group w-full items-center text-left transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
+        'group w-full items-center text-start transition-colors hover:border-cyan-300/45 hover:bg-cyan-300/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/50',
       )}
     >
       <div className="flex size-10 shrink-0 items-center justify-center rounded-md bg-cyan-500/10 text-cyan-300 transition-colors group-hover:bg-cyan-500/15">
@@ -4005,7 +4005,7 @@ function RunWorkspaceSkeleton() {
           </div>
         </section>
 
-        <aside className="border-t border-border/70 p-5 lg:border-l lg:border-t-0">
+        <aside className="border-t border-border/70 p-5 lg:border-s lg:border-t-0">
           <div className="mb-3 flex items-center justify-between">
             <Skeleton className="h-3 w-28" />
             <Skeleton className="h-5 w-16 rounded-full" />

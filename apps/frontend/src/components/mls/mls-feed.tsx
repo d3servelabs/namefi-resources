@@ -440,7 +440,7 @@ function MlsFeedControls({
             {t('controls.searchLabel')}
           </span>
           <div className="relative min-w-0">
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               id="mls-feed-search"
               autoCapitalize="none"
@@ -449,14 +449,14 @@ function MlsFeedControls({
               value={searchInput}
               onChange={(event) => onSearchInputChange(event.target.value)}
               placeholder={searchPlaceholder}
-              className="h-10 bg-background/80 pr-9 pl-9"
+              className="h-10 bg-background/80 pe-9 ps-9"
             />
             {searchInput ? (
               <Button
                 type="button"
                 variant="ghost"
                 size="icon-xs"
-                className="absolute top-1/2 right-2 -translate-y-1/2"
+                className="absolute top-1/2 end-2 -translate-y-1/2"
                 aria-label={t('controls.clearSearchAriaLabel')}
                 onClick={() => onSearchInputChange('')}
               >

@@ -83,7 +83,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
               return (
                 <div
                   key={`${payment.paymentProviderDetails.paymentProvider}-${index}`}
-                  className="flex justify-between text-xs pl-5"
+                  className="flex justify-between text-xs ps-5"
                 >
                   <span className="flex items-center gap-1">
                     <NetworkLogo className="size-4" network={chainId} />(

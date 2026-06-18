@@ -161,7 +161,7 @@ function AutoRenewalWorkflowsListContent() {
                 variant="outline"
                 className="mt-4"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 Retry
               </Button>
             </div>
@@ -204,7 +204,7 @@ function AutoRenewalWorkflowsListContent() {
                 variant="outline"
                 className="mt-4"
               >
-                <RefreshCw className="w-4 h-4 mr-2" />
+                <RefreshCw className="w-4 h-4 me-2" />
                 Refresh
               </Button>
             </div>
@@ -254,7 +254,7 @@ function AutoRenewalWorkflowsListContent() {
                   <Th>Failed</Th>
                   <Th>Revenue</Th>
                   <Th>Duration</Th>
-                  <Th className="text-right">Actions</Th>
+                  <Th className="text-end">Actions</Th>
                 </Tr>
               </Thead>
               <TableBody>
@@ -305,7 +305,7 @@ function AutoRenewalWorkflowsListContent() {
                     <Td className="text-sm">
                       {formatDuration(wf.summary?.executionTimeMs)}
                     </Td>
-                    <Td className="text-right">
+                    <Td className="text-end">
                       <Link
                         href={`/admin/auto-renewal/${encodeURIComponent(wf.workflowId)}?runId=${encodeURIComponent(wf.runId)}`}
                       >

@@ -234,7 +234,7 @@ export function OrderCard({
                 size="sm"
                 onClick={() => setExpanded(true)}
               >
-                <ChevronDown className="h-4 w-4 mr-1" />
+                <ChevronDown className="h-4 w-4 me-1" />
                 {t('card.showMore', { count: hiddenByCollapseCount })}
               </Button>
             )}
@@ -244,7 +244,7 @@ export function OrderCard({
                 size="sm"
                 onClick={() => setExpanded(false)}
               >
-                <ChevronUp className="h-4 w-4 mr-1" />
+                <ChevronUp className="h-4 w-4 me-1" />
                 {t('card.showLess')}
               </Button>
             )}
@@ -256,14 +256,14 @@ export function OrderCard({
               >
                 {revealOtherParents ? (
                   <>
-                    <EyeOff className="h-4 w-4 mr-1" />
+                    <EyeOff className="h-4 w-4 me-1" />
                     {t('card.hideFromOtherParents', {
                       count: nonPbnItems.length,
                     })}
                   </>
                 ) : (
                   <>
-                    <Globe className="h-4 w-4 mr-1" />
+                    <Globe className="h-4 w-4 me-1" />
                     {t('card.showFromOtherParents', {
                       count: nonPbnItems.length,
                     })}
@@ -286,7 +286,7 @@ interface OrderItemRowProps {
 function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
   const t = useTranslations('orders');
   return (
-    <li className="flex items-center justify-between gap-3 text-sm px-5 hover:border-l-2 border-white/50 py-0.5">
+    <li className="flex items-center justify-between gap-3 text-sm px-5 hover:border-s-2 border-white/50 py-0.5">
       <div className="min-w-0 flex-1 flex flex-row gap-2">
         <div className="font-medium truncate min-w-[18ch] max-w-[18ch]">
           {item.normalizedDomainName}

@@ -437,7 +437,7 @@ export function ExportTrackingTable() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-6 px-2 text-xs -ml-2"
+                        className="h-6 px-2 text-xs -ms-2"
                       />
                     }
                   >
@@ -489,7 +489,7 @@ export function ExportTrackingTable() {
             }
             disabled={triggerExportTrackingMutation.isPending}
           >
-            <Play className="h-4 w-4 mr-1" />
+            <Play className="h-4 w-4 me-1" />
             {triggerExportTrackingMutation.isPending
               ? 'Triggering...'
               : 'Run Export Tracking'}

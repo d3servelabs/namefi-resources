@@ -196,7 +196,7 @@ export function MultiPaymentCard({
             onClick={onSubmit}
             size="lg"
           >
-            {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isProcessing && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
             {submitButtonText}
           </NamefiButton>
         </DisabledReasonTooltip>

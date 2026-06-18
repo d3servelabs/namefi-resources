@@ -3,10 +3,10 @@ export const DomainItemSkeleton = ({ count = 1 }: { count?: number }) => (
     {Array.from({ length: count }).map((_, i) => (
       <div
         key={i}
-        className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl animate-pulse"
+        className="flex items-center gap-4 sm:gap-6 pe-4 sm:pe-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl animate-pulse"
       >
         {/* Rank section */}
-        <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-r border-border px-4 sm:px-6">
+        <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-e border-border px-4 sm:px-6">
           <div className="w-8 h-8 bg-slate-700/50 rounded" />
         </div>
         {/* Content section with wrapper */}

@@ -110,7 +110,7 @@ export function GenerationActionButtons({
         disabled={disabled?.copy}
       >
         <CopyIcon
-          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
+          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
         {appearance === 'grid' ? 'Copy Link' : 'Copy'}
       </Button>
@@ -122,7 +122,7 @@ export function GenerationActionButtons({
         disabled={disabled?.share}
       >
         <XBrandIcon
-          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
+          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
         {appearance === 'grid' ? 'Tweet' : 'Tweet'}
       </Button>
@@ -134,7 +134,7 @@ export function GenerationActionButtons({
         disabled={disabled?.download}
       >
         <DownloadIcon
-          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
+          className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
         {appearance === 'grid' ? 'Download' : 'Download'}
       </Button>
@@ -147,7 +147,7 @@ export function GenerationActionButtons({
           disabled={deleteAction.disabled}
         >
           <Trash2
-            className={cn('h-4 w-4', appearance === 'grid' ? '' : 'mr-1')}
+            className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
           />
           {deleteAction.label ?? 'Delete'}
         </Button>

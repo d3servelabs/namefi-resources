@@ -198,7 +198,7 @@ export function TestSignedPayload() {
                     {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
                   </span>
                   {activeWalletAddress === wallet.address && (
-                    <span className="ml-auto text-xs text-muted-foreground">
+                    <span className="ms-auto text-xs text-muted-foreground">
                       (active)
                     </span>
                   )}
@@ -239,7 +239,7 @@ export function TestSignedPayload() {
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />
                 Signing & Verifying...
               </>
             ) : (

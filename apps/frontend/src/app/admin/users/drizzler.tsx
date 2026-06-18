@@ -236,7 +236,7 @@ function UsersTableV2() {
               {row.original.primaryEmail ?? '-'}
             </AutoTruncateTextV2>
             {!!row.original.primaryEmail && (
-              <div className="ml-1 flex items-center">
+              <div className="ms-1 flex items-center">
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger

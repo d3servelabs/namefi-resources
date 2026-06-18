@@ -271,7 +271,7 @@ export function ActiveWorkflowBanner({
       <LoadingButton
         variant="destructive"
         size="sm"
-        className="ml-auto"
+        className="ms-auto"
         isLoading={cancelDnssec.isPending || cancelNs.isPending}
         loadingText="Cancelling..."
         onClick={handleCancel}

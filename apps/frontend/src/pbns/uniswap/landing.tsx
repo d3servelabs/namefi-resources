@@ -313,11 +313,11 @@ function FrameCorners() {
     <>
       <span
         aria-hidden={true}
-        className="absolute -left-2 -top-2 h-4 w-4 border-l border-t border-[#F7BEDF]/35"
+        className="absolute -left-2 -top-2 h-4 w-4 border-s border-t border-[#F7BEDF]/35"
       />
       <span
         aria-hidden={true}
-        className="absolute -bottom-2 -right-2 h-4 w-4 border-b border-r border-[#F7BEDF]/35"
+        className="absolute -bottom-2 -right-2 h-4 w-4 border-b border-e border-[#F7BEDF]/35"
       />
     </>
   );
@@ -722,7 +722,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
       <div className="relative z-10">
         <section className="border-b border-white/[0.06] px-5 pb-20 pt-24 sm:px-8 md:pb-24 md:pt-32 xl:px-10 xl:pt-40">
           <div className="mx-auto grid max-w-[1400px] gap-14 lg:grid-cols-[minmax(0,1.04fr)_minmax(420px,0.96fr)] lg:items-center lg:gap-16">
-            <div className="relative max-w-[700px] pl-6 md:pl-10">
+            <div className="relative max-w-[700px] ps-6 md:ps-10">
               <div className="absolute bottom-0 left-0 top-0 w-px bg-[linear-gradient(180deg,#F50DB4,#FF8DD8)] opacity-65" />
               <FrameCorners />
 
@@ -757,7 +757,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 too.
               </h1>
 
-              <p className="mt-8 max-w-[600px] border-l border-white/12 pl-5 text-lg leading-8 text-[#a8a1b7] md:text-xl">
+              <p className="mt-8 max-w-[600px] border-s border-white/12 ps-5 text-lg leading-8 text-[#a8a1b7] md:text-xl">
                 Bring DNS, subdomains, and official web surfaces under the same
                 onchain controls that already protect upgrades, incentives, and
                 deployments.
@@ -1167,7 +1167,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                   key={incident.title}
                   className={cn(
                     'rounded-[28px] border border-white/[0.06] bg-white/[0.03] p-6 shadow-[0_18px_50px_rgba(0,0,0,0.24)]',
-                    'border-l-2 border-l-[#F50DB4]',
+                    'border-s-2 border-s-[#F50DB4]',
                     incident.className,
                   )}
                 >
@@ -1268,7 +1268,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 {STEPS.map((step) => (
                   <article
                     key={step.numeral}
-                    className="relative pl-[4.5rem] md:pl-0 md:pr-4"
+                    className="relative ps-[4.5rem] md:ps-0 md:pe-4"
                   >
                     <div
                       className={cn(

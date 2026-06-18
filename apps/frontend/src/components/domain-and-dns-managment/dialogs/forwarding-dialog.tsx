@@ -114,7 +114,7 @@ export function ForwardingDialog({
           {!readOnly && (
             <Button onClick={handleSave} disabled={updateConfig.isPending}>
               {updateConfig.isPending && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}
               Save
             </Button>

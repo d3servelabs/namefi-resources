@@ -360,7 +360,7 @@ function CampaignSection({
                 variant="outline"
                 onClick={() => onSetupSchedule(scheduleStatus?.scheduleId)}
               >
-                <Settings2 className="h-4 w-4 mr-2" />
+                <Settings2 className="h-4 w-4 me-2" />
                 Set up schedule
               </Button>
             ) : onToggleSchedule ? (
@@ -371,11 +371,11 @@ function CampaignSection({
                 disabled={scheduleDisabled}
               >
                 {isTogglingSchedule || isScheduleLoading ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-4 w-4 me-2 animate-spin" />
                 ) : paused ? (
-                  <Play className="h-4 w-4 mr-2" />
+                  <Play className="h-4 w-4 me-2" />
                 ) : (
-                  <Pause className="h-4 w-4 mr-2" />
+                  <Pause className="h-4 w-4 me-2" />
                 )}
                 {scheduleLabel}
               </Button>
@@ -797,9 +797,9 @@ export default function AdminEmailCampaigns() {
               disabled={isSending}
             >
               {isSending ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />
               ) : (
-                <Send className="h-4 w-4 mr-2" />
+                <Send className="h-4 w-4 me-2" />
               )}
               Send
             </Button>
@@ -935,9 +935,9 @@ export default function AdminEmailCampaigns() {
               disabled={isSending}
             >
               {isSending ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />
               ) : (
-                <Send className="h-4 w-4 mr-2" />
+                <Send className="h-4 w-4 me-2" />
               )}
               Send
             </Button>
@@ -1062,9 +1062,9 @@ export default function AdminEmailCampaigns() {
               aria-label={`Send traffic surge email to ${recipient} for ${trafficDomains.length} heating ${trafficDomains.length === 1 ? 'domain' : 'domains'}`}
             >
               {isSending ? (
-                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                <Loader2 className="h-4 w-4 me-2 animate-spin" />
               ) : (
-                <Send className="h-4 w-4 mr-2" />
+                <Send className="h-4 w-4 me-2" />
               )}
               Send
             </Button>
@@ -1089,18 +1089,18 @@ export default function AdminEmailCampaigns() {
           </div>
           <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center lg:w-auto">
             <div className="relative w-full sm:w-[360px]">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search by email, display name, or user ID..."
-                className="pl-9 pr-9"
+                className="ps-9 pe-9"
               />
               {searchTerm.length > 0 ? (
                 <button
                   type="button"
                   onClick={() => setSearchTerm('')}
-                  className="absolute right-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  className="absolute end-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   aria-label="Clear search"
                 >
                   <X className="h-4 w-4" />
@@ -1117,7 +1117,7 @@ export default function AdminEmailCampaigns() {
                 trafficQuery.isFetching
               }
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-4 w-4 me-2" />
               Refresh
             </Button>
           </div>
@@ -1234,17 +1234,15 @@ export default function AdminEmailCampaigns() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>User</TableHead>
-                    <TableHead className="w-[110px] text-right">
-                      Owned
-                    </TableHead>
-                    <TableHead className="w-[130px] text-right">
+                    <TableHead className="w-[110px] text-end">Owned</TableHead>
+                    <TableHead className="w-[130px] text-end">
                       Namefi NS
                     </TableHead>
-                    <TableHead className="w-[120px] text-right">
+                    <TableHead className="w-[120px] text-end">
                       Over threshold
                     </TableHead>
                     <TableHead className="w-[200px]">Top domain</TableHead>
-                    <TableHead className="w-[140px] text-right">
+                    <TableHead className="w-[140px] text-end">
                       Top lookups
                     </TableHead>
                     <TableHead className="w-[120px]">Cycle status</TableHead>
@@ -1274,19 +1272,19 @@ export default function AdminEmailCampaigns() {
                           </button>
                         </div>
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-end">
                         {formatInteger(user.ownedDomainCount)}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-end">
                         {formatInteger(user.namefiNameserverDomainCount)}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-end">
                         {formatInteger(user.thresholdDomainCount)}
                       </TableCell>
                       <TableCell className="text-xs">
                         {user.thresholdTopDomain ?? '-'}
                       </TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-end">
                         {formatInteger(user.thresholdTopWeeklyQueries)}
                       </TableCell>
                       <TableCell>

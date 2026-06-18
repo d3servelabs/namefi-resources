@@ -64,6 +64,31 @@ export const localeDateLocales: Record<Locale, string> = {
   'ar-EG': 'ar-EG',
 };
 
+/** Text direction — drives the `dir` attribute on `<html>` and Tailwind's
+ * logical-property / `rtl:` variants. Kept in the same registry style as the
+ * maps above so adding a locale forces a deliberate direction choice (the
+ * `Record<Locale, …>` type makes an omission a compile error). */
+export type Direction = 'ltr' | 'rtl';
+
+export const localeDirections: Record<Locale, Direction> = {
+  en: 'ltr',
+  zh: 'ltr',
+  ta: 'ltr',
+  'ar-EG': 'rtl',
+};
+
+/** Default direction for unknown/unset locales (matches `defaultLocale`). */
+export const defaultDirection: Direction = localeDirections[defaultLocale];
+
+/**
+ * Text direction for a locale. Accepts an arbitrary string (the active locale
+ * from `getLocale()` is typed as `string`) and falls back to `defaultDirection`
+ * for anything unrecognized, so callers never need to pre-validate.
+ */
+export function getDirection(value: string | undefined | null): Direction {
+  return isLocale(value) ? localeDirections[value] : defaultDirection;
+}
+
 export function isLocale(value: string | undefined | null): value is Locale {
   return value != null && (locales as readonly string[]).includes(value);
 }

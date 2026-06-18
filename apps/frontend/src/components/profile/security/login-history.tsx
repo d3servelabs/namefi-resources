@@ -89,7 +89,7 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
               disabled={isFetching}
             >
               <RefreshCw
-                className={`h-4 w-4 mr-2 ${isFetching ? 'animate-spin' : ''}`}
+                className={`h-4 w-4 me-2 ${isFetching ? 'animate-spin' : ''}`}
               />
               {t('loginHistory.retry')}
             </Button>
@@ -275,7 +275,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               onClick={() => onAcknowledge(true)}
               disabled={acknowledge.isPending}
             >
-              <Check className="h-4 w-4 mr-1" />
+              <Check className="h-4 w-4 me-1" />
               {t('loginHistory.thatWasMe')}
             </Button>
             <Button
@@ -285,7 +285,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               onClick={() => onAcknowledge(false)}
               disabled={acknowledge.isPending}
             >
-              <X className="h-4 w-4 mr-1" />
+              <X className="h-4 w-4 me-1" />
               {t('loginHistory.notMe')}
             </Button>
           </>

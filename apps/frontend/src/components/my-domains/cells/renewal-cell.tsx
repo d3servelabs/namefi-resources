@@ -97,7 +97,7 @@ export function RenewalCell({
                 expirationDate,
               })
             }
-            className="text-left text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
+            className="text-start text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
           >
             {formatExpirationDateISO(expirationDate)} (
             {timeLeftLabel(getTimeLeft(expirationDate))})

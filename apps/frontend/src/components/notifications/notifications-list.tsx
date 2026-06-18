@@ -241,7 +241,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           aria-expanded={filtersOpen}
           aria-controls="notifications-filters"
         >
-          <FilterIcon className="mr-1 size-3.5" />
+          <FilterIcon className="me-1 size-3.5" />
           Filters
         </Button>
         <Button
@@ -254,7 +254,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           aria-label="Refresh notifications"
         >
           <RefreshCw
-            className={cn('mr-1 size-3.5', isFetching && 'animate-spin')}
+            className={cn('me-1 size-3.5', isFetching && 'animate-spin')}
           />
           Refresh
         </Button>
@@ -364,7 +364,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={markAsSeenMutation.isPending}
               onClick={() => markAsSeenMutation.mutate({ ids: selectedArray })}
             >
-              <Eye className="mr-1 size-3.5" /> Seen
+              <Eye className="me-1 size-3.5" /> Seen
             </Button>
             <Button
               type="button"
@@ -376,7 +376,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                 markAsUnseenMutation.mutate({ ids: selectedArray })
               }
             >
-              <EyeOff className="mr-1 size-3.5" /> Unseen
+              <EyeOff className="me-1 size-3.5" /> Unseen
             </Button>
             <Button
               type="button"
@@ -386,7 +386,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={archiveMutation.isPending}
               onClick={() => archiveMutation.mutate({ ids: selectedArray })}
             >
-              <Archive className="mr-1 size-3.5" /> Archive
+              <Archive className="me-1 size-3.5" /> Archive
             </Button>
             <Button
               type="button"
@@ -396,7 +396,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={unarchiveMutation.isPending}
               onClick={() => unarchiveMutation.mutate({ ids: selectedArray })}
             >
-              <ArchiveRestore className="mr-1 size-3.5" /> Restore
+              <ArchiveRestore className="me-1 size-3.5" /> Restore
             </Button>
             <Button
               type="button"
@@ -427,7 +427,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
       <div className="-mx-2 flex-1 overflow-y-auto px-2">
         {isLoading ? (
           <div className="flex items-center justify-center py-10 text-sm text-muted-foreground">
-            <Loader2 className="mr-2 size-4 animate-spin" /> Loading…
+            <Loader2 className="me-2 size-4 animate-spin" /> Loading…
           </div>
         ) : items.length === 0 ? (
           <div className="py-10 text-center text-sm text-muted-foreground">

@@ -244,11 +244,11 @@ export const FloatingCart = ({
                           } as CSSProperties
                         }
                       />
-                      <span className="ml-[3px] whitespace-nowrap">
+                      <span className="ms-[3px] whitespace-nowrap">
                         {t('floatingCart.itemCount', { count: itemCount })}
                       </span>
                     </span>
-                    <div className="ml-auto flex min-w-0 flex-col items-end text-right text-white/80 sm:ml-0 sm:items-start sm:text-left sm:gap-0">
+                    <div className="ms-auto flex min-w-0 flex-col items-end text-end text-white/80 sm:ms-0 sm:items-start sm:text-start sm:gap-0">
                       <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
                         {t('floatingCart.cartTotal')}
                       </span>
@@ -281,7 +281,7 @@ export const FloatingCart = ({
                           } as CSSProperties
                         }
                       />
-                      <span className="ml-1">
+                      <span className="ms-1">
                         {t('floatingCart.domainsReadyToImport', {
                           count: importableCount,
                         })}
@@ -290,7 +290,7 @@ export const FloatingCart = ({
                   </div>
                 )}
 
-                <div className="flex w-full flex-col gap-2 sm:ml-auto sm:w-auto sm:flex-row sm:items-center sm:gap-2">
+                <div className="flex w-full flex-col gap-2 sm:ms-auto sm:w-auto sm:flex-row sm:items-center sm:gap-2">
                   {shouldShowAddAllButton && (
                     <Button
                       type="button"
@@ -308,7 +308,7 @@ export const FloatingCart = ({
                       ) : (
                         <Plus className="size-4" />
                       )}
-                      <span className="flex items-center gap-1.5 pl-1.5">
+                      <span className="flex items-center gap-1.5 ps-1.5">
                         {hasItems
                           ? t('floatingCart.addAll')
                           : t('floatingCart.addToCart')}

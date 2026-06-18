@@ -534,19 +534,19 @@ export function RequestWalletConnectionDialog(
           )}
           {state === 'connecting-wallet' && (
             <Button disabled>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 me-2 animate-spin" />
               Connecting…
             </Button>
           )}
           {state === 'setting-active' && (
             <Button disabled>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 me-2 animate-spin" />
               Activating…
             </Button>
           )}
           {state === 'switching-chain' && (
             <Button disabled>
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-4 w-4 me-2 animate-spin" />
               Switching network…
             </Button>
           )}

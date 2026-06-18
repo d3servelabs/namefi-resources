@@ -187,7 +187,7 @@ export function ControlPanel({ buttons, className }: ControlPanelProps) {
         >
           {button.label}
           {button.badge && (
-            <Badge variant="secondary" className="ml-1">
+            <Badge variant="secondary" className="ms-1">
               {button.badge}
             </Badge>
           )}

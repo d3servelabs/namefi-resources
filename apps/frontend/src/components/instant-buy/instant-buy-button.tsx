@@ -98,9 +98,9 @@ export function InstantBuyButtonInner({
           disabled={disabled || isOpeningModal}
         >
           {isOpeningModal ? (
-            <Loader2 className="h-4 w-4 ml-1 animate-spin group-hover:ml-0" />
+            <Loader2 className="h-4 w-4 ms-1 animate-spin group-hover:ms-0" />
           ) : (
-            <Zap className="h-4 w-4 ml-1 group-hover:ml-0" />
+            <Zap className="h-4 w-4 ms-1 group-hover:ms-0" />
           )}
           <span
             className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"

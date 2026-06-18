@@ -62,7 +62,7 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
         />
       )}
       <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
-        <motion.div className="ml-auto flex items-center gap-3 sm:gap-4" layout>
+        <motion.div className="ms-auto flex items-center gap-3 sm:gap-4" layout>
           <HeaderMissingEmailWarning />
           <LanguageSelector source="header" className="hidden sm:inline-flex" />
           {isMobile && <NotificationsBell variant="topbar" />}

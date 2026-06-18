@@ -48,7 +48,7 @@ export function MobileTableItem({
         'p-4',
         'transition-colors',
         onClick && 'cursor-pointer hover:bg-accent/50 active:bg-accent',
-        'text-left w-full',
+        'text-start w-full',
         className,
       )}
     >

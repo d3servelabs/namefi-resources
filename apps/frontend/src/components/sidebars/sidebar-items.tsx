@@ -211,7 +211,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                     >
                       {Icon && <Icon />}
                       <span className="whitespace-nowrap">{label}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-panel-open/collapsible-trigger:rotate-90 group-data-[collapsible=icon]:hidden" />
+                      <ChevronRight className="ms-auto transition-transform duration-200 group-data-panel-open/collapsible-trigger:rotate-90 group-data-[collapsible=icon]:hidden" />
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <SidebarMenuSub>

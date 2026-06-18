@@ -214,7 +214,7 @@ export function DurationStepper({
             min={min}
             max={max}
             step={normalizedAllowedValues ? 'any' : 1}
-            className="w-20 pl-2 pr-12 text-right rounded-l-md rounded-r-none border-r-0 h-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:z-10"
+            className="w-20 ps-2 pe-12 text-end rounded-s-md rounded-e-none border-e-0 h-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none focus:z-10"
           />
           <span className="absolute right-2 text-xs font-light text-muted-foreground pointer-events-none select-none">
             {suffix}
@@ -227,7 +227,7 @@ export function DurationStepper({
             size="icon"
             onClick={increment}
             disabled={disabled || value >= maxSelectableValue}
-            className="h-1/2 w-8 rounded-none rounded-tr-md border-l-0 border-b border-border focus:z-10"
+            className="h-1/2 w-8 rounded-none rounded-se-md border-s-0 border-b border-border focus:z-10"
             tabIndex={-1}
           >
             <Plus className="h-4 w-4" />
@@ -238,7 +238,7 @@ export function DurationStepper({
             size="icon"
             onClick={decrement}
             disabled={disabled || value <= minSelectableValue}
-            className="h-1/2 w-8 rounded-none rounded-br-md border-l-0 border-t-0 border-border focus:z-10"
+            className="h-1/2 w-8 rounded-none rounded-ee-md border-s-0 border-t-0 border-border focus:z-10"
             tabIndex={-1}
           >
             <Minus className="h-4 w-4" />

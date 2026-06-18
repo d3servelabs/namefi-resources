@@ -462,7 +462,7 @@ const NameserversPanelForm = React.memo(
           isLoading={loadingOperation === 'resetting'}
           disabled={disableAllButtons}
         >
-          <RotateCw className="mr-2 h-4 w-4" />
+          <RotateCw className="me-2 h-4 w-4" />
           Reset to Namefi Nameservers
         </LoadingButton>
       );

@@ -440,7 +440,7 @@ function MlsSellersControls({
     <section className="rounded-lg border border-border/70 bg-background">
       <div className="flex flex-col gap-3 p-3 md:flex-row md:items-center md:justify-between">
         <div className="relative min-w-0 md:max-w-md md:flex-1">
-          <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             id="mls-seller-search"
             autoCapitalize="none"
@@ -449,14 +449,14 @@ function MlsSellersControls({
             value={searchInput}
             onChange={(event) => onSearchInputChange(event.target.value)}
             placeholder={t('users.searchPlaceholder')}
-            className="h-9 bg-background pr-9 pl-9"
+            className="h-9 bg-background pe-9 ps-9"
           />
           {searchInput ? (
             <Button
               type="button"
               variant="ghost"
               size="icon-xs"
-              className="absolute top-1/2 right-2 -translate-y-1/2"
+              className="absolute top-1/2 end-2 -translate-y-1/2"
               aria-label={t('users.clearSearchAriaLabel')}
               onClick={() => onSearchInputChange('')}
             >
@@ -712,7 +712,7 @@ function MlsSellersTable({
                   colSpan={columnCount}
                   className="h-14 text-center text-muted-foreground"
                 >
-                  <Loader2 className="mr-2 inline size-4 animate-spin" />
+                  <Loader2 className="me-2 inline size-4 animate-spin" />
                   {t('users.loadingMore')}
                 </TableCell>
               </TableRow>
@@ -822,7 +822,7 @@ function SellerSortableHeader({
       type="button"
       variant="ghost"
       size="sm"
-      className="ml-auto h-8 px-2 text-xs font-medium tracking-wide text-muted-foreground uppercase hover:text-foreground"
+      className="ms-auto h-8 px-2 text-xs font-medium tracking-wide text-muted-foreground uppercase hover:text-foreground"
       onClick={column.getToggleSortingHandler()}
     >
       {label}
@@ -923,19 +923,19 @@ function SellerActionsCell({ seller }: { seller: MlsSellerDirectoryRow }) {
 function getSellerTableHeadClassName(columnId: string) {
   return cn(
     'bg-background px-3 text-xs text-muted-foreground uppercase',
-    columnId === 'seller' && 'min-w-[22rem] pl-4',
+    columnId === 'seller' && 'min-w-[22rem] ps-4',
     ['domains', 'cadence', 'recent'].includes(columnId) &&
-      'w-[8.5rem] text-right',
-    columnId === 'actions' && 'w-[13rem] pr-4 text-right',
+      'w-[8.5rem] text-end',
+    columnId === 'actions' && 'w-[13rem] pe-4 text-end',
   );
 }
 
 function getSellerTableCellClassName(columnId: string) {
   return cn(
     'h-[72px] px-3 py-2',
-    columnId === 'seller' && 'max-w-[24rem] pl-4',
-    ['domains', 'cadence', 'recent'].includes(columnId) && 'text-right',
-    columnId === 'actions' && 'pr-4 text-right',
+    columnId === 'seller' && 'max-w-[24rem] ps-4',
+    ['domains', 'cadence', 'recent'].includes(columnId) && 'text-end',
+    columnId === 'actions' && 'pe-4 text-end',
   );
 }
 

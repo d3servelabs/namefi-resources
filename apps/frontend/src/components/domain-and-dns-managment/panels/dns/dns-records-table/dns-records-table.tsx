@@ -298,12 +298,12 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   const searchInput = useMemo(
     () => (
       <div className="relative w-64">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-zinc-500" />
+        <Search className="absolute start-2 top-2.5 h-4 w-4 text-zinc-500" />
         <Input
           placeholder="Search records..."
           value={globalFilter ?? ''}
           onChange={handleGlobalFilterChange}
-          className="pl-8"
+          className="ps-8"
         />
       </div>
     ),
@@ -316,9 +316,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => (
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" className="ml-2" />}
+          render={<Button variant="outline" className="ms-2" />}
         >
-          <SlidersHorizontal className="mr-2 h-4 w-4" />
+          <SlidersHorizontal className="me-2 h-4 w-4" />
           Columns
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -354,9 +354,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => (
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" className="ml-2" />}
+          render={<Button variant="outline" className="ms-2" />}
         >
-          <Filter className="mr-2 h-4 w-4" />
+          <Filter className="me-2 h-4 w-4" />
           Filter
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -395,9 +395,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => (
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" className="ml-2 hidden" />}
+          render={<Button variant="outline" className="ms-2 hidden" />}
         >
-          <Settings className="mr-2 h-4 w-4" />
+          <Settings className="me-2 h-4 w-4" />
           Actions
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
@@ -405,16 +405,16 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             <DropdownMenuLabel>Table Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Download className="mr-2 h-4 w-4" />
+              <Download className="me-2 h-4 w-4" />
               Export Records
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Upload className="mr-2 h-4 w-4" />
+              <Upload className="me-2 h-4 w-4" />
               Import Records
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Clipboard className="mr-2 h-4 w-4" />
+              <Clipboard className="me-2 h-4 w-4" />
               Copy as Zone File
             </DropdownMenuItem>
           </DropdownMenuGroup>
@@ -438,8 +438,8 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             mode="edit"
             onOpenChange={setIsEditDialogOpen}
           >
-            <Button variant="outline" size="sm" className="ml-2">
-              <Edit className="mr-2 h-4 w-4" />
+            <Button variant="outline" size="sm" className="ms-2">
+              <Edit className="me-2 h-4 w-4" />
               Edit Selected ({selectedRecords.length})
             </Button>
           </AddEditRecordsDialog>
@@ -449,8 +449,8 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             isOpen={isDeleteDialogOpen}
             onOpenChange={setIsDeleteDialogOpen}
           >
-            <Button variant="destructive" size="sm" className="ml-2">
-              <Trash2 className="mr-2 h-4 w-4" />
+            <Button variant="destructive" size="sm" className="ms-2">
+              <Trash2 className="me-2 h-4 w-4" />
               Delete Selected ({selectedRecords.length})
             </Button>
           </DeleteRecordDialog>

@@ -1274,7 +1274,7 @@ function OutboundSignalVisual() {
               <span className="outbound-signal__typed text-[0.8125rem] tracking-[0.04em] text-[#eeeeee]">
                 luma.market
               </span>
-              <span className="outbound-signal__cursor ml-0.5 h-3.5 w-1.5 shrink-0" />
+              <span className="outbound-signal__cursor ms-0.5 h-3.5 w-1.5 shrink-0" />
             </div>
           </section>
 
@@ -1628,7 +1628,7 @@ function BrandAssetGeneratorVisual() {
               <span className="brand-generator__typed text-[0.8125rem] tracking-[0.04em] text-[#eeeeee]">
                 orbit.io
               </span>
-              <span className="brand-generator__cursor ml-0.5 h-3.5 w-1.5 shrink-0" />
+              <span className="brand-generator__cursor ms-0.5 h-3.5 w-1.5 shrink-0" />
             </div>
           </div>
 
@@ -1861,7 +1861,7 @@ function FeatureWorkflow({
         {feature.workflow.map((step, index) => (
           <article
             key={step.label}
-            className="group relative min-h-64 cursor-default overflow-hidden border-[#333333] border-b px-5 py-12 md:border-b-0 md:border-r md:last:border-r-0 sm:px-8 lg:px-8 lg:py-16"
+            className="group relative min-h-64 cursor-default overflow-hidden border-[#333333] border-b px-5 py-12 md:border-b-0 md:border-e md:last:border-e-0 sm:px-8 lg:px-8 lg:py-16"
           >
             <div
               className={cn(
@@ -1944,7 +1944,7 @@ function FeatureBeats({
         {feature.useCases.map((useCase) => (
           <div
             key={useCase}
-            className="grid min-h-24 grid-cols-[1rem_minmax(0,1fr)] items-start gap-3 border-[#333333] border-b bg-[#050505] px-5 py-6 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-r lg:last:border-r-0 lg:[&:nth-last-child(-n+4)]:border-b-0"
+            className="grid min-h-24 grid-cols-[1rem_minmax(0,1fr)] items-start gap-3 border-[#333333] border-b bg-[#050505] px-5 py-6 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0 lg:border-e lg:last:border-e-0 lg:[&:nth-last-child(-n+4)]:border-b-0"
           >
             <CheckCircle2
               className={cn('mt-0.5 size-4 shrink-0', tone.accent)}
@@ -1977,8 +1977,8 @@ function CapabilityPane({
   return (
     <article
       className={cn(
-        'grid min-h-[42rem] grid-rows-[auto_1fr] border-[#333333] border-b lg:border-b-0 lg:border-r',
-        isLast ? 'lg:border-r-0' : '',
+        'grid min-h-[42rem] grid-rows-[auto_1fr] border-[#333333] border-b lg:border-b-0 lg:border-e',
+        isLast ? 'lg:border-e-0' : '',
       )}
     >
       <div className="border-[#333333] border-b px-5 py-12 sm:px-8 lg:px-8 lg:py-16">

@@ -41,7 +41,7 @@ function CartDropdownContentFallback() {
       <DropdownMenuLabel>My Cart</DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem className="justify-start font-medium italic">
-        <Loader2 className="mr-2 size-4 animate-spin" />
+        <Loader2 className="me-2 size-4 animate-spin" />
         <span>Loading cart...</span>
       </DropdownMenuItem>
     </DropdownMenuGroup>

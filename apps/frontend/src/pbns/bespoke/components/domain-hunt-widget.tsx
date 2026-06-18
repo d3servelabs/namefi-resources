@@ -150,7 +150,7 @@ function DomainHuntWidgetActions({
 
         {shouldShowVoteCount ? (
           <motion.div
-            className="ml-0.5 md:ml-1"
+            className="ms-0.5 md:ms-1"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
@@ -281,7 +281,7 @@ export const DomainHuntWidget = ({
           <div className="flex flex-col gap-2 md:gap-3 flex-1 min-w-0">
             <div className="flex items-center gap-2 min-w-0">
               <Globe className="h-4 md:h-5 w-4 md:w-5 text-cyan-400 flex-shrink-0" />
-              <h3 className="text-lg md:text-xl font-bold text-white text-left truncate">
+              <h3 className="text-lg md:text-xl font-bold text-white text-start truncate">
                 {domainName}
               </h3>
             </div>

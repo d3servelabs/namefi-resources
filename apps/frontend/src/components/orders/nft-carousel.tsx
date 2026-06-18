@@ -59,11 +59,11 @@ export const NftCarousel = ({
 
   return (
     <Carousel className="mb-6">
-      <CarouselContent className="-ml-2 md:-ml-4">
+      <CarouselContent className="-ms-2 md:-ms-4">
         {items.map((item, index) => (
           <CarouselItem
             key={index}
-            className="md:basis-1/2 lg:basis-1/3 pl-2 md:pl-4"
+            className="md:basis-1/2 lg:basis-1/3 ps-2 md:ps-4"
           >
             <NftDomainCard
               item={item}

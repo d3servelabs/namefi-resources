@@ -1022,7 +1022,7 @@ function UserSnapshotDialog({
           <DialogDescription className="text-xs font-mono break-all">
             {user.userId}
             {snapshotTakenAt && !Number.isNaN(snapshotTakenAt.getTime()) && (
-              <span className="ml-2 text-muted-foreground">
+              <span className="ms-2 text-muted-foreground">
                 · Snapshot {snapshotTakenAt.toLocaleString()}
               </span>
             )}
@@ -1148,7 +1148,7 @@ function UserSnapshotDialog({
                   className="grid grid-cols-[1fr_auto_auto] gap-3 items-center px-3 py-2"
                 >
                   <span className="font-mono truncate">{r.domain}</span>
-                  <span className="font-mono text-right whitespace-nowrap">
+                  <span className="font-mono text-end whitespace-nowrap">
                     {typeof r.chargeAmountUsd === 'number'
                       ? `$${r.chargeAmountUsd.toFixed(2)}`
                       : '—'}
@@ -1540,7 +1540,7 @@ function DomainsTable({
           </div>
 
           {/* Col 3: amounts */}
-          <span className="text-xs text-muted-foreground text-right whitespace-nowrap">
+          <span className="text-xs text-muted-foreground text-end whitespace-nowrap">
             {allPaymentFailed ? (
               <>
                 ${(info?.totalAmountInUsd ?? 0).toFixed(2)}{' '}
@@ -1557,7 +1557,7 @@ function DomainsTable({
           </span>
 
           {/* Col 4: net */}
-          <span className="text-xs text-right whitespace-nowrap w-[80px]">
+          <span className="text-xs text-end whitespace-nowrap w-[80px]">
             {allPaymentFailed ? (
               <span className="text-red-300">$0.00 net</span>
             ) : netAmount > 0 ? (

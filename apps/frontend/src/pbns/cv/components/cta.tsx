@@ -40,7 +40,7 @@ export const CTA = ({ name, huntUrl }: CTAProps) => {
               size="lg"
               className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-black font-semibold text-xl px-12 py-5 rounded-2xl shadow-2xl shadow-yellow-500/25 tracking-tight"
             >
-              <Trophy className="w-6 h-6 mr-3" />
+              <Trophy className="w-6 h-6 me-3" />
               Upvote on NamefiHunt
             </Button>
           </Link>

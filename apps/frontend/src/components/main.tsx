@@ -25,7 +25,7 @@ const AnnouncementsBanner = dynamic(
 export const Main = ({ children }: { children: ReactNode }) => {
   const pathname = usePathname();
   const { state } = useSidebar();
-  const triggerLeft =
+  const triggerInset =
     state === 'collapsed'
       ? 'calc(var(--sidebar-width-icon) + 1.25rem)'
       : 'calc(var(--sidebar-width) + 1.25rem)';
@@ -53,15 +53,17 @@ export const Main = ({ children }: { children: ReactNode }) => {
         <Header className="row-start-1 col-start-1 z-40 pointer-events-auto" />
         <div
           className={cn(
-            'fixed z-[60] hidden md:block pointer-events-none transition-[left] duration-200 ease-linear',
+            'fixed z-[60] hidden md:block pointer-events-none transition-[inset-inline-start] duration-200 ease-linear',
           )}
           style={{
-            left: triggerLeft,
+            // Logical inset so the floating trigger tracks the sidebar's inner
+            // edge in both directions (left in LTR, right in RTL).
+            insetInlineStart: triggerInset,
             top: 'calc(1rem + var(--announcement-strip-height, 0px))',
           }}
         >
           <div className="pointer-events-auto">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ms-1" />
           </div>
         </div>
         <div

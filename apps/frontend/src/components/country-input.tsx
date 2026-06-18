@@ -173,7 +173,7 @@ const CountryDropdownComponent = (
                     </div>
                     <CheckIcon
                       className={cn(
-                        'ml-auto h-4 w-4 shrink-0',
+                        'ms-auto h-4 w-4 shrink-0',
                         option.alpha2 === selectedCountry?.alpha2
                           ? 'opacity-100'
                           : 'opacity-0',

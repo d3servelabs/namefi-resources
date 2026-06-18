@@ -539,7 +539,7 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
                     <TableHead>Acknowledged By</TableHead>
                     <TableHead>Updated</TableHead>
                     <PermissionGate permissions={[Permission.WRITE_NFT]}>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="text-end">Actions</TableHead>
                     </PermissionGate>
                   </TableRow>
                 </TableHeader>

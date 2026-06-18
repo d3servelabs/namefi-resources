@@ -73,7 +73,7 @@ export function NftDomainCard({
             disabled={!isCompleted || !onShare}
             onClick={onShare}
           >
-            <Share2 className="mr-1 h-4 w-4" />
+            <Share2 className="me-1 h-4 w-4" />
             {shareLabel}
           </NamefiButton>
         ) : (
@@ -104,7 +104,7 @@ export function NftDomainCard({
           >
             {domainAction === 'manage' ? (
               <>
-                <Settings className="mr-1 h-4 w-4" />
+                <Settings className="me-1 h-4 w-4" />
                 {manageLabel}
               </>
             ) : (

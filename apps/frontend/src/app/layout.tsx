@@ -14,6 +14,7 @@ import {
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata, Viewport } from 'next';
+import { getDirection } from '@/i18n/config';
 import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -91,7 +92,12 @@ export default async function RootLayout({ children }: PropsWithChildren) {
   const locale = await getLocale();
 
   return (
-    <html lang={locale} className="dark h-full" suppressHydrationWarning={true}>
+    <html
+      lang={locale}
+      dir={getDirection(locale)}
+      className="dark h-full"
+      suppressHydrationWarning={true}
+    >
       <head>
         <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
         <link

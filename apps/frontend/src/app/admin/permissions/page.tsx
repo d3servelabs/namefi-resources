@@ -254,7 +254,7 @@ function AddUser({
               <li key={u.id}>
                 <button
                   type="button"
-                  className={`w-full text-left p-3 hover:bg-accent/40 transition ${selectedUserId === u.id ? 'bg-accent/30' : ''}`}
+                  className={`w-full text-start p-3 hover:bg-accent/40 transition ${selectedUserId === u.id ? 'bg-accent/30' : ''}`}
                   onClick={() => {
                     setSelectedUserId(u.id);
                   }}
@@ -526,7 +526,7 @@ function UserIdentityRow({
 
   const title = ens.data || primaryEmail || privyUserId || userId;
   return (
-    <div className="text-left">
+    <div className="text-start">
       <div className="font-medium">{title}</div>
       <div className="text-xs text-muted-foreground">{userId}</div>
     </div>

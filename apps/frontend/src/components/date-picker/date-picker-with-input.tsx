@@ -131,7 +131,7 @@ export function DatePickerWithInput({
           id={id}
           value={onChange ? formatDate(controlledValue) : inputValue}
           placeholder={placeholder}
-          className="bg-background pr-10"
+          className="bg-background pe-10"
           onChange={handleInputChange}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown') {
@@ -146,7 +146,7 @@ export function DatePickerWithInput({
               <Button
                 id={`${id}-picker`}
                 variant="ghost"
-                className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
+                className="absolute top-1/2 end-2 size-6 -translate-y-1/2"
               />
             }
           >

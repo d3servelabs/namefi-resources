@@ -684,7 +684,7 @@ export function CustomDelegationSignerForm({
               </label>
             </div>
             {validationFailed ? (
-              <p className="text-xs text-zinc-500 ml-6">
+              <p className="text-xs text-zinc-500 ms-6">
                 We'll run this as a background workflow that polls validation
                 and only submits when both lanes pass. You'll get an email when
                 it lands or times out.
@@ -963,18 +963,18 @@ function ValidationLane({
                 <table className="w-full font-mono">
                   <thead className="text-zinc-500">
                     <tr>
-                      <th className="text-left pr-3">Flags</th>
-                      <th className="text-left pr-3">Alg</th>
-                      <th className="text-left pr-3">Computed key tag</th>
-                      <th className="text-left">Computed digest</th>
+                      <th className="text-start pe-3">Flags</th>
+                      <th className="text-start pe-3">Alg</th>
+                      <th className="text-start pe-3">Computed key tag</th>
+                      <th className="text-start">Computed digest</th>
                     </tr>
                   </thead>
                   <tbody>
                     {lane.publishedDnskeys.map((d) => (
                       <tr key={d.publicKey}>
-                        <td className="pr-3">{d.flags}</td>
-                        <td className="pr-3">{d.algorithm}</td>
-                        <td className="pr-3">{d.computedKeyTag}</td>
+                        <td className="pe-3">{d.flags}</td>
+                        <td className="pe-3">{d.algorithm}</td>
+                        <td className="pe-3">{d.computedKeyTag}</td>
                         <td
                           className="truncate max-w-[20ch]"
                           title={d.computedDigest}

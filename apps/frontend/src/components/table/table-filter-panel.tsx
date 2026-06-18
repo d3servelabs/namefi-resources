@@ -493,7 +493,7 @@ export function TableFilterPanel({
                           isActive && 'bg-primary/5',
                         )}
                       >
-                        <div className="flex items-center justify-between w-full pr-2">
+                        <div className="flex items-center justify-between w-full pe-2">
                           <span
                             className={cn(
                               'text-sm font-medium',
@@ -505,7 +505,7 @@ export function TableFilterPanel({
                           {isActive && (
                             <Badge
                               variant="default"
-                              className="ml-2 text-xs bg-primary"
+                              className="ms-2 text-xs bg-primary"
                             >
                               Active
                             </Badge>
@@ -549,7 +549,7 @@ export function TableFilterPanel({
                           isActive && 'bg-primary/5',
                         )}
                       >
-                        <div className="flex items-center justify-between w-full pr-2">
+                        <div className="flex items-center justify-between w-full pe-2">
                           <span
                             className={cn(
                               'text-sm font-medium',
@@ -561,7 +561,7 @@ export function TableFilterPanel({
                           {isActive && (
                             <Badge
                               variant="default"
-                              className="ml-2 text-xs bg-primary"
+                              className="ms-2 text-xs bg-primary"
                             >
                               Active
                             </Badge>

@@ -90,11 +90,11 @@ export const TypeColumnHeader = ({
     >
       Type
       {context.column.getIsSorted() === 'asc' ? (
-        <ChevronUp className="ml-1 h-4 w-4" />
+        <ChevronUp className="ms-1 h-4 w-4" />
       ) : context.column.getIsSorted() === 'desc' ? (
-        <ChevronDown className="ml-1 h-4 w-4" />
+        <ChevronDown className="ms-1 h-4 w-4" />
       ) : (
-        <ArrowUpDown className="ml-1 h-4 w-4" />
+        <ArrowUpDown className="ms-1 h-4 w-4" />
       )}
     </Button>
   </div>
@@ -156,11 +156,11 @@ export const NameColumnHeader = ({
       >
         Name
         {context.column.getIsSorted() === 'asc' ? (
-          <ChevronUp className="ml-1 h-4 w-4" />
+          <ChevronUp className="ms-1 h-4 w-4" />
         ) : context.column.getIsSorted() === 'desc' ? (
-          <ChevronDown className="ml-1 h-4 w-4" />
+          <ChevronDown className="ms-1 h-4 w-4" />
         ) : (
-          <ArrowUpDown className="ml-1 h-4 w-4" />
+          <ArrowUpDown className="ms-1 h-4 w-4" />
         )}
       </Button>
     </div>
@@ -235,11 +235,11 @@ export const TTLColumnHeader = ({
       >
         TTL
         {context.column.getIsSorted() === 'asc' ? (
-          <ChevronUp className="ml-1 h-4 w-4" />
+          <ChevronUp className="ms-1 h-4 w-4" />
         ) : context.column.getIsSorted() === 'desc' ? (
-          <ChevronDown className="ml-1 h-4 w-4" />
+          <ChevronDown className="ms-1 h-4 w-4" />
         ) : (
-          <ArrowUpDown className="ml-1 h-4 w-4" />
+          <ArrowUpDown className="ms-1 h-4 w-4" />
         )}
       </Button>
     </div>

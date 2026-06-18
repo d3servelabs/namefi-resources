@@ -76,7 +76,7 @@ export function HostnamesChipInput({
             <Badge
               key={hostname}
               variant="secondary"
-              className="inline-flex max-w-full items-center gap-1 pr-1.5"
+              className="inline-flex max-w-full items-center gap-1 pe-1.5"
               title={hostname}
             >
               <span className="truncate font-mono text-xs max-w-[20rem]">

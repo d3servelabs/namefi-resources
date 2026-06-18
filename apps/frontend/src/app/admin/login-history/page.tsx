@@ -412,7 +412,7 @@ function LoginHistoryTable() {
               disabled={query.isFetching}
             >
               <RefreshCw
-                className={`h-4 w-4 mr-2 ${query.isFetching ? 'animate-spin' : ''}`}
+                className={`h-4 w-4 me-2 ${query.isFetching ? 'animate-spin' : ''}`}
               />
               Retry
             </Button>

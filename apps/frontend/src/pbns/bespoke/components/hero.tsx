@@ -103,7 +103,7 @@ export default function ConversionHero({
       <div className="relative z-10 container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-[6fr_3fr] gap-8 lg:gap-12 max-w-5xl mx-auto items-center">
           {/* Left content section */}
-          <div className="text-center lg:text-left">
+          <div className="text-center lg:text-start">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-teal-500/20 border border-cyan-500/30 rounded-full px-4 py-1.5 mb-8 backdrop-blur-sm">
               <Sparkles className="w-3 h-3 text-cyan-400" />
@@ -164,7 +164,7 @@ export default function ConversionHero({
                   });
                 }}
               >
-                <ArrowDown className="w-5 h-5 mr-2" />
+                <ArrowDown className="w-5 h-5 me-2" />
                 Learn More
               </Button>
               <Button
@@ -174,7 +174,7 @@ export default function ConversionHero({
                   window.location.href = `/hunt/domains/${normalizedDomainName}`;
                 }}
               >
-                <Trophy className="w-5 h-5 mr-2" />
+                <Trophy className="w-5 h-5 me-2" />
                 View on Namefi Hunt™
               </Button>
             </div>

@@ -13,8 +13,8 @@ const c15tTheme = {
     customize: { variant: 'neutral', mode: 'ghost' },
   },
   slots: {
-    consentBannerFooterSubGroup: 'order-1 sm:order-2 sm:ml-auto',
-    consentWidgetFooterSubGroup: 'sm:ml-auto',
+    consentBannerFooterSubGroup: 'order-1 sm:order-2 sm:ms-auto',
+    consentWidgetFooterSubGroup: 'sm:ms-auto',
     buttonPrimary:
       '!bg-brand-primary !text-primary-foreground hover:!bg-brand-primary/90 !shadow-none',
     buttonSecondary: 'c15t-customize-like-reject',

@@ -559,7 +559,7 @@ function GalleryHeader({
                   ? `${selectedBrands.length} selected`
                   : 'Brands'}
               </span>
-              <ChevronDown className="ml-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
+              <ChevronDown className="ms-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="end" sideOffset={8}>
               <Command className="rounded-lg bg-popover text-popover-foreground">
@@ -582,7 +582,7 @@ function GalleryHeader({
                         >
                           <Check
                             className={cn(
-                              'mr-2 h-4 w-4',
+                              'me-2 h-4 w-4',
                               isSelected ? 'opacity-100' : 'opacity-0',
                             )}
                           />
@@ -1109,7 +1109,7 @@ function VideoPlayIndicator() {
       className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center"
     >
       <div className="flex size-12 items-center justify-center rounded-full border border-white/45 bg-black/55 text-white shadow-lg backdrop-blur-sm">
-        <Play className="ml-0.5 size-5 fill-current" />
+        <Play className="ms-0.5 size-5 fill-current" />
       </div>
     </div>
   );

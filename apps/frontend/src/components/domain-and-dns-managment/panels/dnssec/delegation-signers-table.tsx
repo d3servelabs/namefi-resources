@@ -80,11 +80,11 @@ export function DelegationSignersTable({
       <table className="w-full text-xs">
         <thead className="bg-zinc-900/60 text-zinc-400">
           <tr>
-            <th className="text-left p-2">Key tag</th>
-            <th className="text-left p-2">Algorithm</th>
-            <th className="text-left p-2">Digest type</th>
-            <th className="text-left p-2">Digest</th>
-            <th className="text-right p-2 w-10" aria-label="Actions" />
+            <th className="text-start p-2">Key tag</th>
+            <th className="text-start p-2">Algorithm</th>
+            <th className="text-start p-2">Digest type</th>
+            <th className="text-start p-2">Digest</th>
+            <th className="text-end p-2 w-10" aria-label="Actions" />
           </tr>
         </thead>
         <tbody className="font-mono">
@@ -128,7 +128,7 @@ function ActiveSignerRow({
       <td className="p-2 truncate max-w-[28ch]" title={signer.digest ?? ''}>
         {signer.digest ?? '—'}
       </td>
-      <td className="p-2 text-right">
+      <td className="p-2 text-end">
         <DisassociateButton
           domainName={domainName}
           signer={signer}
@@ -170,7 +170,7 @@ function PendingSignerRow({
       >
         {pending.signingConfig.digest}
       </td>
-      <td className="p-2 text-right">
+      <td className="p-2 text-end">
         <CancelDeferredButton
           domainName={domainName}
           pending={pending}

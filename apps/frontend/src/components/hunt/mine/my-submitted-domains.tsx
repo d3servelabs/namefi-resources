@@ -28,7 +28,7 @@ const MySubmittedDomainItem = ({ domain }: { domain: MyDomain }) => (
       <div className="flex-1 flex flex-col gap-1 sm:gap-2 w-full">
         <Link
           href={`/hunt/domains/${encodeURIComponent(domain.domainName)}`}
-          className="text-base sm:text-lg text-left font-semibold text-foreground font-sans hover:text-primary transition-colors"
+          className="text-base sm:text-lg text-start font-semibold text-foreground font-sans hover:text-primary transition-colors"
         >
           {domain.domainName}
         </Link>

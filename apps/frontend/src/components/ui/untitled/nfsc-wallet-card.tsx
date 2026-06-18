@@ -139,7 +139,7 @@ export function NFSCWalletCard({
         disabled={showSingleChain}
       >
         <div className="flex justify-between items-center">
-          <div className="text-left flex items-center gap-3">
+          <div className="text-start flex items-center gap-3">
             {showSingleChain && singleChainBalance && (
               <NetworkLogo
                 network={singleChainBalance.chainId}

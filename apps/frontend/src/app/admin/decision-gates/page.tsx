@@ -976,7 +976,7 @@ function GateEvidencePanel({
         className="mt-1.5 h-7 px-2 text-sm"
         onClick={() => setEnabled(true)}
       >
-        <Search className="h-3.5 w-3.5 mr-1" />
+        <Search className="h-3.5 w-3.5 me-1" />
         Gather evidence
       </Button>
     );
@@ -1041,7 +1041,7 @@ function GateDetailsDialog({
       <DialogTrigger
         render={<Button size="sm" variant="outline" className="h-8" />}
       >
-        <Info className="mr-1.5 h-3.5 w-3.5" />
+        <Info className="me-1.5 h-3.5 w-3.5" />
         Details
       </DialogTrigger>
       <DialogContent className="!max-w-2xl max-h-[85vh] overflow-y-auto text-base">
@@ -1272,7 +1272,7 @@ function GateCard({
                   href={workflow.temporalUiUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="ml-2 inline-flex items-center gap-1 text-sm text-blue-500 hover:underline"
+                  className="ms-2 inline-flex items-center gap-1 text-sm text-blue-500 hover:underline"
                 >
                   <ExternalLink className="h-3.5 w-3.5" />
                   View in Temporal
@@ -1344,7 +1344,7 @@ function GateCard({
                 })
               }
             >
-              <Icon className="h-3.5 w-3.5 mr-1.5" />
+              <Icon className="h-3.5 w-3.5 me-1.5" />
               {action}
             </AsyncButton>
           );
@@ -1413,7 +1413,7 @@ export default withAdminGuard(function DecisionGatesPage() {
           disabled={listQuery.isFetching}
         >
           <RefreshCw
-            className={`h-4 w-4 mr-2 ${listQuery.isFetching ? 'animate-spin' : ''}`}
+            className={`h-4 w-4 me-2 ${listQuery.isFetching ? 'animate-spin' : ''}`}
           />
           Refresh
         </Button>
@@ -1545,7 +1545,7 @@ function RespondDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button size="sm" variant="outline" />}>
-        <Reply className="h-3.5 w-3.5 mr-1.5" />
+        <Reply className="h-3.5 w-3.5 me-1.5" />
         RESPOND
       </DialogTrigger>
       <DialogContent>
@@ -1618,7 +1618,7 @@ function CancelDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button size="sm" variant="destructive" />}>
-        <Ban className="h-3.5 w-3.5 mr-1.5" />
+        <Ban className="h-3.5 w-3.5 me-1.5" />
         FAIL
       </DialogTrigger>
       <DialogContent>

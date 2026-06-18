@@ -251,12 +251,12 @@ function AdminDnsCachePage() {
               >
                 {flushMutation.isPending ? (
                   <>
-                    <BrushCleaningIcon className="w-4 h-4 mr-2 animate-brush-scrub" />
+                    <BrushCleaningIcon className="w-4 h-4 me-2 animate-brush-scrub" />
                     Flushing Cache...
                   </>
                 ) : (
                   <>
-                    <BrushCleaningIcon className="w-4 h-4 mr-2" />
+                    <BrushCleaningIcon className="w-4 h-4 me-2" />
                     Flush DNS Cache on Selected Servers
                   </>
                 )}
@@ -384,7 +384,7 @@ function AdminDnsCachePage() {
                 onClick={() => setCombinedStatsOpen(true)}
                 disabled={selectedServers.length === 0}
               >
-                <BarChart3 className="h-4 w-4 mr-2" />
+                <BarChart3 className="h-4 w-4 me-2" />
                 View Combined Stats
               </Button>
               <Button
@@ -392,7 +392,7 @@ function AdminDnsCachePage() {
                 onClick={() => setConnectivityTestOpen(true)}
                 disabled={selectedServers.length === 0}
               >
-                <Activity className="h-4 w-4 mr-2" />
+                <Activity className="h-4 w-4 me-2" />
                 Test Connectivity
               </Button>
               <Button
@@ -403,7 +403,7 @@ function AdminDnsCachePage() {
                   flushAllServersMutation.isPending
                 }
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 w-4 me-2" />
                 {flushAllServersMutation.isPending
                   ? 'Flushing...'
                   : 'Flush All Cache on Selected Servers'}

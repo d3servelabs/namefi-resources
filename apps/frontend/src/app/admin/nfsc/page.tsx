@@ -56,7 +56,7 @@ function NfscManagement() {
           </div>
         </div>
         <Button onClick={() => setBulkMintDialogOpen(true)}>
-          <Coins className="h-4 w-4 mr-2" />
+          <Coins className="h-4 w-4 me-2" />
           Bulk Mint NFSC
         </Button>
       </div>

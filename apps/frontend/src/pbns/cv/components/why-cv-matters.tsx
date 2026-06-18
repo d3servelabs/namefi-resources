@@ -18,10 +18,10 @@ export const WhyCVMatters = () => {
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
               <Star className="w-8 h-8" />
             </div>
-            <h2 className="max-w-80 text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+            <h2 className="max-w-80 text-start text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
               Short & Memorable
             </h2>
-            <p className="mt-4 max-w-[26rem] text-left text-base/6 text-neutral-200">
+            <p className="mt-4 max-w-[26rem] text-start text-base/6 text-neutral-200">
               Easy to remember and share. No more long, complicated URLs.
             </p>
           </WobbleCard>
@@ -30,10 +30,10 @@ export const WhyCVMatters = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
                 <Briefcase className="w-8 h-8" />
               </div>
-              <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+              <h2 className="text-start text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                 Professional Edge
               </h2>
-              <p className="mt-4 text-left text-base/6 text-neutral-200">
+              <p className="mt-4 text-start text-base/6 text-neutral-200">
                 Instantly suggests 'profile / credentials' — perfect for your
                 digital CV.
               </p>
@@ -46,10 +46,10 @@ export const WhyCVMatters = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
                 <Globe className="w-8 h-8" />
               </div>
-              <h2 className="max-w-sm md:max-w-lg text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+              <h2 className="max-w-sm md:max-w-lg text-start text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
                 Portable Identity
               </h2>
-              <p className="mt-4 max-w-[26rem] text-left text-base/6 text-neutral-200">
+              <p className="mt-4 max-w-[26rem] text-start text-base/6 text-neutral-200">
                 Drop it anywhere: email signature, LinkedIn, socials, business
                 card.
               </p>
@@ -133,10 +133,10 @@ export const WhyCVMatters = () => {
             <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center mb-6 text-white shadow-lg">
               <TrendingUp className="w-8 h-8" />
             </div>
-            <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+            <h2 className="text-start text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
               Investment Potential
             </h2>
-            <p className="mt-4 text-left text-base/6 text-neutral-200">
+            <p className="mt-4 text-start text-base/6 text-neutral-200">
               Premium domains appreciate in value over time.
             </p>
           </WobbleCard>

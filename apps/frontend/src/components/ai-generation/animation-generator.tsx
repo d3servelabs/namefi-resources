@@ -366,7 +366,7 @@ function AnimationLogoCard(props: {
       type="button"
       aria-pressed={isSelected}
       aria-label={`Use ${logo.domain} logo`}
-      className="w-full rounded-xl bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="w-full rounded-xl bg-transparent p-0 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       onClick={() => {
         onSelect(logo.id);
       }}

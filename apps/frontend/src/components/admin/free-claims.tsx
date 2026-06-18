@@ -374,7 +374,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                   className="w-full justify-start"
                   onClick={() => setShowUserSearch(true)}
                 >
-                  <Search className="h-4 w-4 mr-2" />
+                  <Search className="h-4 w-4 me-2" />
                   Search for user by email, wallet, or name...
                 </Button>
               )}
@@ -498,7 +498,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
               </Label>
             </div>
             {form.hasExpiration && (
-              <div className="ml-6 space-y-2">
+              <div className="ms-6 space-y-2">
                 <Label htmlFor="expirationDate">Expires At</Label>
                 <Input
                   id="expirationDate"
@@ -532,7 +532,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
             >
               {createMutation.isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <Loader2 className="h-4 w-4 animate-spin me-2" />
                   Creating...
                 </>
               ) : (
@@ -611,7 +611,7 @@ function DeleteClaimDialog({
           >
             {deleteMutation.isPending ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                <Loader2 className="h-4 w-4 animate-spin me-2" />
                 Deleting...
               </>
             ) : (

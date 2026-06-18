@@ -339,7 +339,7 @@ function EppTestingDashboard() {
               onClick={handleAvailabilityRefetch}
               disabled={!domainName || isLoading}
             >
-              <Search className="h-4 w-4 mr-2" />
+              <Search className="h-4 w-4 me-2" />
               Check Availability
             </Button>
             <Button
@@ -347,7 +347,7 @@ function EppTestingDashboard() {
               onClick={handleDomainInfoRefetch}
               disabled={!domainName || isLoading}
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-4 w-4 me-2" />
               Get Info
             </Button>
             <Button
@@ -355,7 +355,7 @@ function EppTestingDashboard() {
               onClick={handleTransferQueryRefetch}
               disabled={!domainName || isLoading}
             >
-              <Search className="h-4 w-4 mr-2" />
+              <Search className="h-4 w-4 me-2" />
               Query Transfer
             </Button>
           </div>
@@ -416,7 +416,7 @@ function EppTestingDashboard() {
                   }
                   disabled={!domainName || isLoading}
                 >
-                  <Globe className="h-4 w-4 mr-2" />
+                  <Globe className="h-4 w-4 me-2" />
                   Create Domain
                 </Button>
               </div>
@@ -441,7 +441,7 @@ function EppTestingDashboard() {
                 onClick={() => changeAuthCodeMutation.mutate({ domainName })}
                 disabled={!domainName || isLoading}
               >
-                <Key className="h-4 w-4 mr-2" />
+                <Key className="h-4 w-4 me-2" />
                 Generate New Auth Code
               </Button>
 
@@ -494,7 +494,7 @@ function EppTestingDashboard() {
                   }
                   disabled={!domainName || !authCode || isLoading}
                 >
-                  <Send className="h-4 w-4 mr-2" />
+                  <Send className="h-4 w-4 me-2" />
                   Request Import
                 </Button>
               </div>
@@ -522,7 +522,7 @@ function EppTestingDashboard() {
                   onClick={handleTransferQueryRefetch}
                   disabled={!domainName || isLoading}
                 >
-                  <Search className="h-4 w-4 mr-2" />
+                  <Search className="h-4 w-4 me-2" />
                   Check Pending Transfer
                 </Button>
                 {transferQuery.isFetching && (
@@ -556,7 +556,7 @@ function EppTestingDashboard() {
                           }
                           disabled={!domainName || isLoading}
                         >
-                          <CheckCircle className="h-4 w-4 mr-2" />
+                          <CheckCircle className="h-4 w-4 me-2" />
                           Approve Export
                         </Button>
                         <Button
@@ -566,7 +566,7 @@ function EppTestingDashboard() {
                           }
                           disabled={!domainName || isLoading}
                         >
-                          <XCircle className="h-4 w-4 mr-2" />
+                          <XCircle className="h-4 w-4 me-2" />
                           Reject Export
                         </Button>
                       </div>
@@ -620,7 +620,7 @@ function EppTestingDashboard() {
                   onClick={() => lockDomainMutation.mutate({ domainName })}
                   disabled={!domainName || isLoading}
                 >
-                  <Lock className="h-4 w-4 mr-2" />
+                  <Lock className="h-4 w-4 me-2" />
                   Lock Domain
                 </Button>
                 <Button
@@ -628,7 +628,7 @@ function EppTestingDashboard() {
                   onClick={() => unlockDomainMutation.mutate({ domainName })}
                   disabled={!domainName || isLoading}
                 >
-                  <LockOpen className="h-4 w-4 mr-2" />
+                  <LockOpen className="h-4 w-4 me-2" />
                   Unlock Domain
                 </Button>
               </div>
@@ -854,7 +854,7 @@ function OperationResultDisplay({ result }: { result: OperationResult }) {
       <div className="flex items-center gap-2 mb-2">
         <StatusIcon status={result.status} />
         <span className="font-medium">{getStatusMessage(result.status)}</span>
-        <Badge variant="outline" className="ml-2">
+        <Badge variant="outline" className="ms-2">
           {result.status}
         </Badge>
       </div>

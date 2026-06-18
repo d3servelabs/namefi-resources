@@ -48,7 +48,7 @@ export function VoteOrShareChoiceDialog({
 
           <div className="space-y-3">
             <Button onClick={onChooseLogin} className="w-full" size="lg">
-              <LogIn className="w-4 h-4 mr-2" />
+              <LogIn className="w-4 h-4 me-2" />
               Sign in to Vote
             </Button>
 
@@ -58,7 +58,7 @@ export function VoteOrShareChoiceDialog({
               className="w-full"
               size="lg"
             >
-              <Share2 className="w-4 h-4 mr-2" />
+              <Share2 className="w-4 h-4 me-2" />
               Share Domain Instead
             </Button>
           </div>

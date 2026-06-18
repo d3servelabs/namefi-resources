@@ -79,7 +79,7 @@ export default function DateRangePicker({
   return (
     <Popover>
       <PopoverTrigger render={<Button variant="outline" size="sm" />}>
-        <CalendarIcon className="h-4 w-4 mr-2" />
+        <CalendarIcon className="h-4 w-4 me-2" />
         {currentPreset ? currentPreset.label : 'Custom Range'}
       </PopoverTrigger>
       <PopoverContent className="w-80" align="end">

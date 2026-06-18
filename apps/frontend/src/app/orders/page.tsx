@@ -266,7 +266,7 @@ function OrdersPageV1() {
                         render={<Link href={`/orders/${item.orderId}`} />}
                         nativeButton={false}
                       >
-                        <ExternalLink className="h-4 w-4 mr-2" />
+                        <ExternalLink className="h-4 w-4 me-2" />
                         {t('list.viewDetails')}
                       </Button>
                     </MobileTableItemActions>

@@ -210,7 +210,7 @@ export function ServerDetailModal({
                     onClick={handleDownloadStats}
                     disabled={!statsQuery.data?.stats}
                   >
-                    <Download className="h-4 w-4 mr-2" />
+                    <Download className="h-4 w-4 me-2" />
                     JSON
                   </Button>
                 </div>
@@ -233,9 +233,9 @@ export function ServerDetailModal({
                       <DropdownMenuTrigger
                         render={<Button variant="outline" size="sm" />}
                       >
-                        <Download className="h-4 w-4 mr-2" />
+                        <Download className="h-4 w-4 me-2" />
                         Download
-                        <ChevronDown className="h-4 w-4 ml-2" />
+                        <ChevronDown className="h-4 w-4 ms-2" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         <DropdownMenuItem onClick={handleDownloadDump}>
@@ -279,7 +279,7 @@ export function ServerDetailModal({
                 onClick={() => setConfirmFlushOpen(true)}
                 disabled={flushAllMutation.isPending}
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <Trash2 className="h-4 w-4 me-2" />
                 {flushAllMutation.isPending
                   ? 'Flushing...'
                   : 'Flush All Cache on This Server'}

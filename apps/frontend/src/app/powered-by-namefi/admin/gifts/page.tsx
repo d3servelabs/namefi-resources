@@ -149,11 +149,11 @@ export function GiftsManagementPage({
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => setCreateDialogOpen(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-4 w-4 me-2" />
             Create Gift/Reservation
           </Button>
           <Button variant="outline" onClick={() => setMultiDialogOpen(true)}>
-            <Users className="h-4 w-4 mr-2" />
+            <Users className="h-4 w-4 me-2" />
             Bulk Gifts/Reservations
           </Button>
         </div>

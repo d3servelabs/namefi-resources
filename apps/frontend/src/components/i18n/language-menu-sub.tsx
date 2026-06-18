@@ -26,9 +26,9 @@ export function LanguageMenuSub() {
   return (
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
-        <Languages className="mr-2 h-4 w-4" aria-hidden="true" />
+        <Languages className="me-2 h-4 w-4" aria-hidden="true" />
         <span>{t('label')}</span>
-        <span className="ml-auto pl-2 text-muted-foreground">
+        <span className="ms-auto ps-2 text-muted-foreground">
           {localeLabels[activeLocale]}
         </span>
       </DropdownMenuSubTrigger>

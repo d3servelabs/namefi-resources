@@ -264,9 +264,9 @@ export function RecentWorkflowsTable() {
           disabled={isFetching}
         >
           {isFetching ? (
-            <Loader2Icon className="h-4 w-4 animate-spin mr-2" />
+            <Loader2Icon className="h-4 w-4 animate-spin me-2" />
           ) : (
-            <RefreshCwIcon className="h-4 w-4 mr-2" />
+            <RefreshCwIcon className="h-4 w-4 me-2" />
           )}
           Refresh
         </Button>

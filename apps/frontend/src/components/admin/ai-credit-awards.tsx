@@ -209,9 +209,9 @@ export function AdminAiCreditAwards() {
               </div>
               <Button disabled={!canSubmit} onClick={handleSubmit}>
                 {awardMutation.isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Coins className="mr-2 h-4 w-4" />
+                  <Coins className="me-2 h-4 w-4" />
                 )}
                 Award AI Credits
               </Button>
@@ -224,7 +224,7 @@ export function AdminAiCreditAwards() {
         <CardHeader className="gap-3 md:flex-row md:items-center md:justify-between">
           <CardTitle>Award Ledger</CardTitle>
           <div className="relative w-full md:w-80">
-            <Search className="text-muted-foreground absolute left-2.5 top-2.5 h-4 w-4" />
+            <Search className="text-muted-foreground absolute start-2.5 top-2.5 h-4 w-4" />
             <Input
               aria-label="Search award ledger"
               value={searchTerm}
@@ -233,7 +233,7 @@ export function AdminAiCreditAwards() {
                 setPage(1);
               }}
               placeholder="Search user, wallet, or reason"
-              className="pl-8"
+              className="ps-8"
             />
           </div>
         </CardHeader>
@@ -299,7 +299,7 @@ function AwardsTable({
   if (isLoading) {
     return (
       <div className="border-border text-muted-foreground flex h-40 items-center justify-center rounded-md border text-sm">
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <Loader2 className="me-2 h-4 w-4 animate-spin" />
         Loading awards...
       </div>
     );

@@ -207,7 +207,7 @@ export function NfscCardTopUpTab(props: Props) {
                 placeholder={'0'}
                 value={amountUsd}
                 onChange={(e) => handleAmountChange(e.target.value)}
-                className="shadow-none pl-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
+                className="shadow-none ps-0 bg-transparent dark:bg-transparent border-0 text-secondary-foreground text-xl dark:text-xl focus-visible:ring-0 w-1/2"
               />
               <div className="flex items-center gap-2 bg-zinc-700 p-2 px-4 rounded-lg">
                 <span className="font-medium">USD</span>

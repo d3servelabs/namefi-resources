@@ -102,7 +102,7 @@ export function OffersCard({
                 <TableHead>Bidder</TableHead>
                 <TableHead>Offer</TableHead>
                 <TableHead>Expires</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-end">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -133,7 +133,7 @@ export function OffersCard({
                   <TableCell title={offer.expirationTime}>
                     {formatExpiration(offer.expirationTime)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-end">
                     <div className="flex justify-end gap-2">
                       {(() => {
                         const safeUrl = toSafeExternalUrl(offer.externalUrl);
@@ -154,7 +154,7 @@ export function OffersCard({
                         onClick={() => handleAccept(offer)}
                         className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
                       >
-                        <Check className="h-3 w-3 mr-1" />
+                        <Check className="h-3 w-3 me-1" />
                         Accept
                       </AsyncButton>
                     </div>

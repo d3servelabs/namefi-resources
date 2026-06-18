@@ -175,13 +175,13 @@ export function DnsRecordForm({
                 <FormControl>
                   <Input
                     placeholder="www or @"
-                    className="bg-zinc-900 border-zinc-800 rounded-r-none"
+                    className="bg-zinc-900 border-zinc-800 rounded-e-none"
                     {...field}
                     disabled={disabled}
                   />
                 </FormControl>
                 <Input
-                  className="w-fit bg-zinc-900 border-zinc-800 border-l-0 rounded-l-none text-zinc-500"
+                  className="w-fit bg-zinc-900 border-zinc-800 border-s-0 rounded-s-none text-zinc-500"
                   style={{
                     width: `clamp(12ch, ${Math.max(zoneName.length + 2, 12)}ch, 100%)`,
                   }}

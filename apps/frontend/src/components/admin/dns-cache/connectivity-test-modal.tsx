@@ -100,7 +100,7 @@ export function ConnectivityTestModal({
                         )}
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       {result.healthy && result.responseTime !== null && (
                         <p className="text-sm text-muted-foreground">
                           {result.responseTime}ms
@@ -125,7 +125,7 @@ export function ConnectivityTestModal({
                   size="sm"
                   onClick={() => connectivityQuery.refetch()}
                 >
-                  <RefreshCw className="h-4 w-4 mr-2" />
+                  <RefreshCw className="h-4 w-4 me-2" />
                   Retry
                 </Button>
               </div>

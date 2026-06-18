@@ -74,7 +74,7 @@ export function NotificationItem({
       className={cn(
         'group relative flex gap-3 rounded-lg border border-white/5 bg-white/[0.02] p-3 transition-colors',
         !notification.isSeen &&
-          'border-l-2 border-l-brand-primary bg-white/[0.04]',
+          'border-s-2 border-s-brand-primary bg-white/[0.04]',
         notification.isArchived && 'opacity-60',
       )}
     >

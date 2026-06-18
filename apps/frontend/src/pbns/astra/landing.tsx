@@ -364,7 +364,7 @@ const FloatingSearchBar = ({
       className="fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0"
     >
       <div className="mx-auto flex w-full max-w-3xl items-center px-4 py-2.5">
-        <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 pl-4 pr-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
+        <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 ps-4 pe-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
           {isLoading ? (
             <Loader2 className="h-4 w-4 shrink-0 animate-spin text-white/70" />
           ) : (

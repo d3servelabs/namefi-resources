@@ -129,7 +129,7 @@ export const BespokeHuntSection = ({
                     <Trophy className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white text-left">
+                    <h3 className="text-2xl font-bold text-white text-start">
                       Official .{domainExtension} Campaign
                     </h3>
                     <p className="text-slate-400">
@@ -160,10 +160,10 @@ export const BespokeHuntSection = ({
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white text-left">
+                    <h3 className="text-2xl font-bold text-white text-start">
                       Trending .{domainExtension} Domains
                     </h3>
-                    <p className="text-slate-400 text-left">
+                    <p className="text-slate-400 text-start">
                       All-time community favorites
                     </p>
                   </div>
@@ -207,7 +207,7 @@ export const BespokeHuntSection = ({
                   redirectOnSuccess={false}
                 >
                   <Button className="px-8 py-6 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white border-0 font-semibold shadow-lg shadow-cyan-500/25">
-                    <Plus className="w-5 h-5 mr-1" />
+                    <Plus className="w-5 h-5 me-1" />
                     Submit Your .{domainExtension} Domain
                   </Button>
                 </SubmitDomainDialog>
@@ -216,7 +216,7 @@ export const BespokeHuntSection = ({
                   className="px-8 py-6 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-600 hover:to-emerald-600 text-white border-0 font-semibold shadow-lg shadow-cyan-500/25"
                   onClick={() => setAuthDialogOpen(true)}
                 >
-                  <Plus className="w-5 h-5 mr-1" />
+                  <Plus className="w-5 h-5 me-1" />
                   Submit Your .{domainExtension} Domain
                 </Button>
               )}

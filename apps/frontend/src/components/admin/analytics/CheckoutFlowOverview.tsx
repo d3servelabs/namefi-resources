@@ -360,7 +360,7 @@ export function CheckoutFlowOverview({
                 }}
                 className="w-36 accent-primary"
               />
-              <span className="text-xs text-muted-foreground tabular-nums w-14 text-right">
+              <span className="text-xs text-muted-foreground tabular-nums w-14 text-end">
                 {sankeyHeight}px
               </span>
             </div>

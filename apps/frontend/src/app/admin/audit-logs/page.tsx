@@ -299,7 +299,7 @@ function AuditLogsPageInner() {
               setDetailsModalOpen(true);
             }}
           >
-            <EyeIcon className="h-3 w-3 mr-1" />
+            <EyeIcon className="h-3 w-3 me-1" />
             View
           </Button>
         ),
@@ -348,9 +348,9 @@ function AuditLogsPageInner() {
             disabled={isFetching}
           >
             {isFetching ? (
-              <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2Icon className="h-4 w-4 me-2 animate-spin" />
             ) : (
-              <RefreshCwIcon className="h-4 w-4 mr-2" />
+              <RefreshCwIcon className="h-4 w-4 me-2" />
             )}
             {isFetching ? 'Refreshing...' : 'Refresh'}
           </Button>
@@ -568,10 +568,10 @@ export function FilterPanel({
   return (
     <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
       <SheetTrigger render={<Button variant="outline" size="sm" />}>
-        <FilterIcon className="h-4 w-4 mr-2" />
+        <FilterIcon className="h-4 w-4 me-2" />
         Filters
         {appliedFilterCount > 0 && (
-          <span className="ml-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
+          <span className="ms-2 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-blue-600 rounded-full">
             {appliedFilterCount}
           </span>
         )}
@@ -667,13 +667,13 @@ export function FilterPanel({
                       <Button
                         variant="outline"
                         className={cn(
-                          'w-full justify-start text-left font-normal',
+                          'w-full justify-start text-start font-normal',
                           !startDate && 'text-muted-foreground',
                         )}
                       />
                     }
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="me-2 h-4 w-4" />
                     {startDate ? (
                       format(startDate, 'yyyy-MM-dd')
                     ) : (
@@ -699,13 +699,13 @@ export function FilterPanel({
                       <Button
                         variant="outline"
                         className={cn(
-                          'w-full justify-start text-left font-normal',
+                          'w-full justify-start text-start font-normal',
                           !endDate && 'text-muted-foreground',
                         )}
                       />
                     }
                   >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    <CalendarIcon className="me-2 h-4 w-4" />
                     {endDate ? (
                       format(endDate, 'yyyy-MM-dd')
                     ) : (

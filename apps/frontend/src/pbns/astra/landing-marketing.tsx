@@ -401,7 +401,7 @@ const STORY_PANELS: StoryPanel[] = [
     renderMedia: (t) => (
       <Card className="relative overflow-hidden border-white/15 bg-white/[0.05] p-6 backdrop-blur">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 via-transparent to-cyan-400/20 opacity-70" />
-        <div className="relative space-y-4 text-left">
+        <div className="relative space-y-4 text-start">
           <span className="block text-xs uppercase tracking-[0.2em] text-white/60 mb-3">
             {t('story.intelligence.media.eyebrow')}
           </span>
@@ -452,7 +452,7 @@ const STORY_PANELS: StoryPanel[] = [
     renderMedia: (t) => (
       <Card className="relative overflow-hidden border-white/15 bg-white/[0.03] p-6 backdrop-blur">
         <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/20 via-transparent to-sky-500/20 opacity-70" />
-        <div className="relative space-y-5 text-left">
+        <div className="relative space-y-5 text-start">
           <div className="space-y-3">
             <span className="block text-xs uppercase tracking-[0.2em] text-white/60 mb-3">
               {t('story.operations.media.eyebrow')}
@@ -590,7 +590,7 @@ const StoryBlock = ({
         )}
       />
       <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-        <div className="space-y-5 text-left">
+        <div className="space-y-5 text-start">
           <motion.span
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}

@@ -251,7 +251,7 @@ export function FinancialCharts({
     return (
       <Card>
         <CardContent className="flex h-64 items-center justify-center text-muted-foreground">
-          <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+          <Loader2 className="h-5 w-5 me-2 animate-spin" />
           Loading financial charts...
         </CardContent>
       </Card>

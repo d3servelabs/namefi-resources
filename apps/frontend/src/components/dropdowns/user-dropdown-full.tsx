@@ -369,7 +369,7 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
           render={<Link href={item.href as Route} />}
           {...item.customProps}
         >
-          {Icon && <Icon className="mr-2 h-4 w-4" />}
+          {Icon && <Icon className="me-2 h-4 w-4" />}
           <span>{item.title}</span>
         </DropdownMenuItem>
       );
@@ -384,7 +384,7 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
           onClick={item.onClick}
           {...item.customProps}
         >
-          {Icon && <Icon className="mr-2 h-4 w-4" />}
+          {Icon && <Icon className="me-2 h-4 w-4" />}
           <span>{item.title}</span>
         </DropdownMenuItem>
       );
@@ -461,7 +461,7 @@ function AdminDropdownSection({
           nativeButton={false}
           render={<Link href="/dev-tools" />}
         >
-          <SettingsIcon className="mr-2 h-4 w-4" />
+          <SettingsIcon className="me-2 h-4 w-4" />
           <span>Dev Tools</span>
         </DropdownMenuItem>
       ) : null}
@@ -470,7 +470,7 @@ function AdminDropdownSection({
           nativeButton={false}
           render={<Link href="/customer-support" />}
         >
-          <SettingsIcon className="mr-2 h-4 w-4" />
+          <SettingsIcon className="me-2 h-4 w-4" />
           <span>Customer Support</span>
         </DropdownMenuItem>
       ) : null}
@@ -480,7 +480,7 @@ function AdminDropdownSection({
           nativeButton={false}
           render={<Link href="/powered-by-namefi/admin" />}
         >
-          <WalletIcon className="mr-2 h-4 w-4" />
+          <WalletIcon className="me-2 h-4 w-4" />
           <span>Powered Domains</span>
         </DropdownMenuItem>
       ) : null}
@@ -563,7 +563,7 @@ function FindUserDropdownItem({ onOpen }: { onOpen: () => void }) {
       }}
       className="cursor-pointer"
     >
-      <SearchIcon className="mr-2 h-4 w-4" />
+      <SearchIcon className="me-2 h-4 w-4" />
       <span>Find User</span>
     </DropdownMenuItem>
   );
@@ -580,7 +580,7 @@ function AdminQuickAccessDropdownItem({ onOpen }: { onOpen: () => void }) {
       }}
       className="cursor-pointer"
     >
-      <SparklesIcon className="mr-2 h-4 w-4" />
+      <SparklesIcon className="me-2 h-4 w-4" />
       <span>Admin Quick Access</span>
     </DropdownMenuItem>
   );
@@ -727,7 +727,7 @@ function FindUserDialog({
               onChange={(event) => setSearchTerm(event.target.value)}
             />
 
-            <div className="max-h-[24rem] space-y-3 overflow-y-auto pr-1">
+            <div className="max-h-[24rem] space-y-3 overflow-y-auto pe-1">
               {normalizedSearchTerm.length <= 1 ? (
                 <EmptyState message="Type at least 2 characters to search for an account." />
               ) : searchUsers.isLoading ? (
@@ -743,7 +743,7 @@ function FindUserDialog({
                     <button
                       key={user.id}
                       type="button"
-                      className="w-full rounded-xl border border-border/60 p-4 text-left transition-colors hover:bg-muted/40"
+                      className="w-full rounded-xl border border-border/60 p-4 text-start transition-colors hover:bg-muted/40"
                       onClick={() => {
                         onOpenChange(false);
                         openSelectedReference({ userId: user.id });
@@ -759,7 +759,7 @@ function FindUserDialog({
                           </div>
                         </div>
 
-                        <div className="max-w-[14rem] space-y-1 text-right text-xs text-muted-foreground">
+                        <div className="max-w-[14rem] space-y-1 text-end text-xs text-muted-foreground">
                           {user.twitterUsername ? (
                             <div>@{user.twitterUsername}</div>
                           ) : null}
@@ -930,7 +930,7 @@ function SyncPonderIndexQuickAccessCard({ onDone }: { onDone: () => void }) {
   return (
     <button
       type="button"
-      className="group text-left disabled:opacity-60 disabled:cursor-not-allowed"
+      className="group text-start disabled:opacity-60 disabled:cursor-not-allowed"
       onClick={handleClick}
       disabled={isPending}
     >
@@ -1012,7 +1012,7 @@ function LogoutDropdownItem({ onOpen }: { onOpen: () => void }) {
       className="cursor-pointer text-red-500"
       onClick={handleOpen}
     >
-      <LogOutIcon className="mr-2 h-4 w-4" />
+      <LogOutIcon className="me-2 h-4 w-4" />
       <span>Log Out</span>
     </DropdownMenuItem>
   );

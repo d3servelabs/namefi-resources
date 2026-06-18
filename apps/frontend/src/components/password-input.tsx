@@ -21,7 +21,7 @@ const PasswordInput = React.forwardRef<
       <Input
         type={showPassword ? 'text' : 'password'}
         className={cn(
-          'hide-password-toggle pr-10 focus-visible:ring-0 focus-visible:ring-offset-0',
+          'hide-password-toggle pe-10 focus-visible:ring-0 focus-visible:ring-offset-0',
           className,
         )}
         ref={ref}
@@ -31,7 +31,7 @@ const PasswordInput = React.forwardRef<
         type="button"
         variant="ghost"
         size="sm"
-        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+        className="absolute end-0 top-0 h-full px-3 py-2 hover:bg-transparent"
         onClick={() => setShowPassword((prev) => !prev)}
         disabled={disabled}
       >

@@ -181,7 +181,7 @@ export function DrizzlerFilterPanel({
                           isActive && 'bg-primary/5',
                         )}
                       >
-                        <div className="flex items-center justify-between w-full pr-2">
+                        <div className="flex items-center justify-between w-full pe-2">
                           <span
                             className={cn(
                               'text-sm font-medium',
@@ -193,7 +193,7 @@ export function DrizzlerFilterPanel({
                           {isActive && (
                             <Badge
                               variant="default"
-                              className="ml-2 text-xs bg-primary"
+                              className="ms-2 text-xs bg-primary"
                             >
                               {filterForField.conditions.length} condition
                               {filterForField.conditions.length > 1 ? 's' : ''}
@@ -261,7 +261,7 @@ export function DrizzlerFilterPanel({
                           isActive && 'bg-primary/5',
                         )}
                       >
-                        <div className="flex items-center justify-between w-full pr-2">
+                        <div className="flex items-center justify-between w-full pe-2">
                           <span
                             className={cn(
                               'text-sm font-medium',
@@ -273,7 +273,7 @@ export function DrizzlerFilterPanel({
                           {isActive && (
                             <Badge
                               variant="default"
-                              className="ml-2 text-xs bg-primary"
+                              className="ms-2 text-xs bg-primary"
                             >
                               {filterForField.conditions.length} condition
                               {filterForField.conditions.length > 1 ? 's' : ''}

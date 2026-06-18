@@ -303,7 +303,7 @@ function MyPreviouslyOwnedDomainsTable() {
                   variant="outline"
                   size="sm"
                 >
-                  <ExternalLink className="w-4 h-4 mr-1" /> View NFT
+                  <ExternalLink className="w-4 h-4 me-1" /> View NFT
                 </Button>
               ) : null}
             </div>
@@ -449,7 +449,7 @@ function MyPreviouslyOwnedDomainsTable() {
           render={
             <Button
               variant="outline"
-              className="min-w-[220px] justify-between text-left"
+              className="min-w-[220px] justify-between text-start"
             />
           }
         >

@@ -64,7 +64,7 @@ export const OtherWalletOrdersTable: FC<{ items: OtherWalletOrderItem[] }> = ({
                   render={<Link href={`/orders/${item.orderId}/details`} />}
                   nativeButton={false}
                 >
-                  <ExternalLink className="h-4 w-4 mr-1" />
+                  <ExternalLink className="h-4 w-4 me-1" />
                   {t('otherWallets.viewOrder')}
                 </Button>
               </TableCell>

@@ -41,7 +41,7 @@ export function ConfirmFlushDialog({
                 ? 'This will flush ALL cached entries on the following servers:'
                 : 'This will flush cached entries on the following servers:'}
             </p>
-            <ul className="list-disc list-inside pl-2">
+            <ul className="list-disc list-inside ps-2">
               {serverNames.map((name) => (
                 <li key={name} className="font-medium">
                   {name}

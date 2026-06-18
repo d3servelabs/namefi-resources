@@ -190,35 +190,35 @@ function WorkflowHistoryContent() {
       case 'COMPLETED':
         return (
           <Badge variant="default" className="bg-green-100 text-green-800">
-            <CheckCircle className="h-3 w-3 mr-1" />
+            <CheckCircle className="h-3 w-3 me-1" />
             Completed
           </Badge>
         );
       case 'RUNNING':
         return (
           <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-            <PlayCircle className="h-3 w-3 mr-1" />
+            <PlayCircle className="h-3 w-3 me-1" />
             Running
           </Badge>
         );
       case 'FAILED':
         return (
           <Badge variant="destructive">
-            <XCircle className="h-3 w-3 mr-1" />
+            <XCircle className="h-3 w-3 me-1" />
             Failed
           </Badge>
         );
       case 'TERMINATED':
         return (
           <Badge variant="destructive">
-            <AlertCircle className="h-3 w-3 mr-1" />
+            <AlertCircle className="h-3 w-3 me-1" />
             Terminated
           </Badge>
         );
       case 'CANCELLED':
         return (
           <Badge variant="secondary">
-            <XCircle className="h-3 w-3 mr-1" />
+            <XCircle className="h-3 w-3 me-1" />
             Cancelled
           </Badge>
         );
@@ -373,13 +373,13 @@ function WorkflowHistoryContent() {
                   ) : (
                     <>
                       Showing {data.data.length} workflows on page {page}
-                      <span className="text-xs ml-1 text-amber-600">
+                      <span className="text-xs ms-1 text-amber-600">
                         (total count unavailable)
                       </span>
                     </>
                   )}
                   {isFetching && (
-                    <span className="inline-flex items-center gap-1 ml-2">
+                    <span className="inline-flex items-center gap-1 ms-2">
                       <Loader2 className="h-3 w-3 animate-spin" />
                       <span className="text-xs">Updating...</span>
                     </span>
@@ -516,7 +516,7 @@ function WorkflowHistoryContent() {
                                     />
                                   }
                                 >
-                                  <AlertCircle className="h-3 w-3 mr-1" />
+                                  <AlertCircle className="h-3 w-3 me-1" />
                                   Error
                                 </TooltipTrigger>
                                 <TooltipContent className="max-w-xs">
@@ -576,7 +576,7 @@ function WorkflowHistoryContent() {
                     ? `Page ${page} of ${totalPages}`
                     : `Page ${page}`}
                   {isFetching && (
-                    <span className="ml-2 text-xs text-muted-foreground">
+                    <span className="ms-2 text-xs text-muted-foreground">
                       (loading)
                     </span>
                   )}

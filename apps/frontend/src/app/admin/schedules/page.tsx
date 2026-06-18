@@ -196,7 +196,7 @@ export default function SchedulesPage() {
             disabled={isLoading}
           >
             <RefreshCw
-              className={cn('h-4 w-4 mr-2', isLoading && 'animate-spin')}
+              className={cn('h-4 w-4 me-2', isLoading && 'animate-spin')}
             />
             Refresh
           </Button>
@@ -419,7 +419,7 @@ function ScheduleActions({
               disabled={isLoading}
               className="flex-1"
             >
-              <ArchiveRestoreIcon className="h-3 w-3 mr-1" />
+              <ArchiveRestoreIcon className="h-3 w-3 me-1" />
               Setup Schedule
             </Button>
           </TooltipTrigger>
@@ -435,7 +435,7 @@ function ScheduleActions({
             onClick={onTrigger}
             disabled={isLoading}
           >
-            <Play className="h-3 w-3 mr-1" />
+            <Play className="h-3 w-3 me-1" />
             Trigger
           </Button>
 
@@ -446,7 +446,7 @@ function ScheduleActions({
               onClick={onUnpause}
               disabled={isLoading}
             >
-              <Play className="h-3 w-3 mr-1" />
+              <Play className="h-3 w-3 me-1" />
               Resume
             </Button>
           ) : (
@@ -456,7 +456,7 @@ function ScheduleActions({
               onClick={onPause}
               disabled={isLoading}
             >
-              <Pause className="h-3 w-3 mr-1" />
+              <Pause className="h-3 w-3 me-1" />
               Pause
             </Button>
           )}
@@ -586,7 +586,7 @@ function ScheduleCard({
                       <span className="text-gray-600">
                         {new Date(action.scheduledAt).toLocaleString()}
                       </span>
-                      <div className="text-right">
+                      <div className="text-end">
                         <div className="text-xs font-mono text-gray-500">
                           {action.workflow.workflowId}
                         </div>

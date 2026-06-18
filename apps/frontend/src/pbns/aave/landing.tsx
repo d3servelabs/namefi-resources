@@ -185,11 +185,11 @@ function FrameCorners() {
     <>
       <span
         aria-hidden={true}
-        className="absolute -left-2 -top-2 h-4 w-4 border-l border-t border-[#8A8A9B]/40"
+        className="absolute -left-2 -top-2 h-4 w-4 border-s border-t border-[#8A8A9B]/40"
       />
       <span
         aria-hidden={true}
-        className="absolute -bottom-2 -right-2 h-4 w-4 border-b border-r border-[#8A8A9B]/40"
+        className="absolute -bottom-2 -right-2 h-4 w-4 border-b border-e border-[#8A8A9B]/40"
       />
     </>
   );
@@ -329,7 +329,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
       <div className="relative z-10">
         <section className="relative border-b border-white/[0.06] px-5 pb-20 pt-28 sm:px-8 md:pb-28 md:pt-36 xl:px-10 xl:pt-44">
           <div className="mx-auto max-w-[1400px]">
-            <div className="relative max-w-[1040px] pl-6 md:pl-10">
+            <div className="relative max-w-[1040px] ps-6 md:ps-10">
               <div className="absolute bottom-0 left-0 top-0 w-px bg-[linear-gradient(180deg,#E51E56,#7B22AB)] opacity-50" />
               <FrameCorners />
               <h1
@@ -355,7 +355,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 </span>
               </h1>
 
-              <p className="mt-10 max-w-[640px] border-l border-white/15 pl-6 text-lg leading-8 text-[#8A8A9B] md:ml-auto md:text-xl">
+              <p className="mt-10 max-w-[640px] border-s border-white/15 ps-6 text-lg leading-8 text-[#8A8A9B] md:ms-auto md:text-xl">
                 Aave already governs deployments, upgrades, treasury decisions,
                 and risk onchain. Namefi brings that same sovereignty to
                 aave.com, so DNS, subdomains, and official web entry points are
@@ -598,7 +598,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                 {STEPS.map((step) => (
                   <article
                     key={step.numeral}
-                    className="relative pl-[4.5rem] md:pl-0 md:pr-10"
+                    className="relative ps-[4.5rem] md:ps-0 md:pe-10"
                   >
                     <div
                       className={cn(
@@ -660,7 +660,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
 
           <div
             className={cn(
-              'pointer-events-none absolute bottom-5 left-5 text-left text-[0.65rem] uppercase tracking-[0.14em] text-white/25 sm:left-10',
+              'pointer-events-none absolute bottom-5 left-5 text-start text-[0.65rem] uppercase tracking-[0.14em] text-white/25 sm:left-10',
               '[font-family:var(--font-aave-mono)]',
             )}
           >

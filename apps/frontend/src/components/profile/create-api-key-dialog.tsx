@@ -738,7 +738,7 @@ export function CreateApiKeyDialog({
                   </div>
 
                   {signWithWallet && (
-                    <div className="space-y-2 ml-7">
+                    <div className="space-y-2 ms-7">
                       <Label>{t('createApiKey.signingWallet')}</Label>
                       <div className="grid gap-2">
                         {connectedEthereumWallets.map((wallet) => (
@@ -758,7 +758,7 @@ export function CreateApiKeyDialog({
                               {wallet.address.slice(-4)}
                             </span>
                             {activeWalletAddress === wallet.address && (
-                              <span className="ml-auto text-xs text-muted-foreground">
+                              <span className="ms-auto text-xs text-muted-foreground">
                                 {t('createApiKey.active')}
                               </span>
                             )}
@@ -794,7 +794,7 @@ export function CreateApiKeyDialog({
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      <Loader2 className="h-4 w-4 me-2 animate-spin" />
                       {t('createApiKey.creating')}
                     </>
                   ) : (

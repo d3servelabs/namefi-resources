@@ -100,7 +100,7 @@ export default async function Image({
         </div>
 
         {/* Right side - QR Code and text */}
-        <div tw="flex flex-col items-center justify-center w-1/4 pr-8">
+        <div tw="flex flex-col items-center justify-center w-1/4 pe-8">
           <div tw="flex flex-col items-center text-center">
             <div tw="text-white text-lg font-medium mb-6">Scan to visit</div>
             <img

@@ -302,12 +302,12 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
 
     return (
       <div className="relative w-64">
-        <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute start-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder={searchPlaceholder}
           value={searchTerm ?? ''}
           onChange={handleSearchChange}
-          className="pl-8"
+          className="ps-8"
         />
       </div>
     );
@@ -348,10 +348,10 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                   size="sm"
                   onClick={() => setFilterPanelOpen(true)}
                 >
-                  <FilterIcon className="h-3 w-3 mr-1" />
+                  <FilterIcon className="h-3 w-3 me-1" />
                   Filters
                   {activeFilterCount > 0 && (
-                    <Badge variant="outline" className="ml-1">
+                    <Badge variant="outline" className="ms-1">
                       {activeFilterCount}
                     </Badge>
                   )}
@@ -364,9 +364,9 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
             <DropdownMenuTrigger
               render={<Button variant="outline" size="sm" />}
             >
-              <ColumnsIcon className="h-3 w-3 mr-1" />
+              <ColumnsIcon className="h-3 w-3 me-1" />
               Columns
-              <Badge variant="outline" className="ml-1">
+              <Badge variant="outline" className="ms-1">
                 {table.getVisibleFlatColumns().length}/
                 {table.getAllColumns().length}
               </Badge>
@@ -395,7 +395,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                       className="w-full justify-start text-xs font-normal"
                       onSelect={() => onResetPreferences()}
                     >
-                      <RotateCcwIcon className="h-3 w-3 mr-2" />
+                      <RotateCcwIcon className="h-3 w-3 me-2" />
                       Reset to defaults
                     </DropdownMenuItem>
                   </>
@@ -445,7 +445,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                       onDragOver={handleDragOver}
                       onDrop={() => handleDrop(header.column.id)}
                       className={cn(
-                        'px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider',
+                        'px-4 py-3 text-start text-xs font-semibold text-muted-foreground uppercase tracking-wider',
                         header.column.getCanSort() &&
                           'cursor-pointer select-none hover:text-foreground transition-colors',
                         draggedColumn === header.column.id &&

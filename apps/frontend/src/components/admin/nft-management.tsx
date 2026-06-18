@@ -434,7 +434,7 @@ function WorkflowTableSection(props: {
   return (
     <AccordionItem value={value}>
       <AccordionTrigger>
-        <div className="flex items-center gap-2 text-left">
+        <div className="flex items-center gap-2 text-start">
           <span>{title}</span>
           <Badge variant="secondary">{count}</Badge>
         </div>

@@ -242,7 +242,7 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         </Select>
       </div>
       <table className="w-full text-sm">
-        <thead className="text-left text-muted-foreground">
+        <thead className="text-start text-muted-foreground">
           {table.getHeaderGroups().map((hg) => (
             <tr key={hg.id} className="[&>th]:py-3">
               {hg.headers.map((header) => (

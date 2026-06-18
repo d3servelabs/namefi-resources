@@ -1535,7 +1535,7 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
               <TableRow>
                 <TableHead>Chain</TableHead>
                 <TableHead>Provider</TableHead>
-                <TableHead className="text-right">Balance</TableHead>
+                <TableHead className="text-end">Balance</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1551,7 +1551,7 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
                       />
                     </TableCell>
                     <TableCell>{balance.paymentProvider}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       {formatUsdCents(balance.balanceInUsdCents)}
                     </TableCell>
                   </TableRow>
@@ -1705,7 +1705,7 @@ function UserBalancesTable({ data }: { data: AdminUserDetails }) {
                 <TableHead>Wallet</TableHead>
                 <TableHead>Primary</TableHead>
                 <TableHead>Domains</TableHead>
-                <TableHead className="text-right">NFSC Total</TableHead>
+                <TableHead className="text-end">NFSC Total</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -1722,7 +1722,7 @@ function UserBalancesTable({ data }: { data: AdminUserDetails }) {
                     </TableCell>
                     <TableCell>{wallet.isPrimary ? 'Yes' : 'No'}</TableCell>
                     <TableCell>{wallet.domainCount}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-end">
                       {formatUsdCents(wallet.totalBalanceInUsdCents)}
                     </TableCell>
                   </TableRow>

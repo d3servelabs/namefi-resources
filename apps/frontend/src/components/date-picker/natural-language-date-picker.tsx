@@ -65,7 +65,7 @@ export function NaturalLanguageDatePicker({
           id="date"
           value={value.display}
           placeholder="Tomorrow or next week"
-          className="bg-background pr-10"
+          className="bg-background pe-10"
           onChange={(e) => {
             const date = parseDate(e.target.value);
             onChange({ display: e.target.value, date: date ?? undefined });
@@ -86,7 +86,7 @@ export function NaturalLanguageDatePicker({
               <Button
                 id="date-picker"
                 variant="ghost"
-                className="absolute top-1/2 right-2 size-6 -translate-y-1/2"
+                className="absolute top-1/2 end-2 size-6 -translate-y-1/2"
               />
             }
           >

@@ -128,7 +128,7 @@ export const FreeMintsContent: FC = () => {
           if (claimingStatus === 'CLAIMING') {
             return (
               <Badge variant="default">
-                <Loader2 className="h-3 w-3 mr-1 animate-spin" />{' '}
+                <Loader2 className="h-3 w-3 me-1 animate-spin" />{' '}
                 {t('statusBadge.inProgress')}
               </Badge>
             );

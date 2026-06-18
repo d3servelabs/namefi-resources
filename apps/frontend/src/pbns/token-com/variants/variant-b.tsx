@@ -278,7 +278,7 @@ function MarketingSections() {
         {identityProblems.map((item) => (
           <div
             key={item.title}
-            className="border-l-[8px] border-[#1A1A1A] pl-6"
+            className="border-s-[8px] border-[#1A1A1A] ps-6"
           >
             <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-sm border-2 border-[#1A1A1A] bg-[#FFC47A]">
               {item.icon}
@@ -398,7 +398,7 @@ function MarketingSections() {
               value={item.value}
               className="border-b-2 border-[#1A1A1A]/35"
             >
-              <AccordionTrigger className="text-left text-2xl text-[#1A1A1A] hover:no-underline md:text-3xl font-semibold">
+              <AccordionTrigger className="text-start text-2xl text-[#1A1A1A] hover:no-underline md:text-3xl font-semibold">
                 {item.question}
               </AccordionTrigger>
               <AccordionContent className="pb-4 text-2xl leading-[1.2] text-[#1A1A1A]/88 md:text-[28px]">

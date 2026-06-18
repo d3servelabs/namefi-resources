@@ -168,7 +168,7 @@ export function VerifyButton({ record }: VerifyButtonProps) {
     if (record.status === 'NOTIFIED' || record.adminVerifiedAt) {
       return (
         <Badge variant="outline" className="text-green-600 border-green-600">
-          <CheckIcon className="h-3 w-3 mr-1" />
+          <CheckIcon className="h-3 w-3 me-1" />
           Verified
         </Badge>
       );
@@ -183,7 +183,7 @@ export function VerifyButton({ record }: VerifyButtonProps) {
         {canApprove && (
           <AlertDialog>
             <AlertDialogTrigger render={<Button size="sm" variant="outline" />}>
-              <CheckIcon className="h-4 w-4 mr-1" />
+              <CheckIcon className="h-4 w-4 me-1" />
               Approve
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -248,7 +248,7 @@ export function VerifyButton({ record }: VerifyButtonProps) {
             <AlertDialogTrigger
               render={<Button size="sm" variant="outline" className="px-2" />}
             >
-              <MailIcon className="h-4 w-4 mr-1" />
+              <MailIcon className="h-4 w-4 me-1" />
               {emailAlreadySent ? 'Resend' : 'Send Email'}
             </AlertDialogTrigger>
             <AlertDialogContent>

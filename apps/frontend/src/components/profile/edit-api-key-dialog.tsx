@@ -363,7 +363,7 @@ export function EditApiKeyDialog({
                       {wallet.address.slice(-4)}
                     </span>
                     {activeWalletAddress === wallet.address && (
-                      <span className="ml-auto text-xs text-muted-foreground">
+                      <span className="ms-auto text-xs text-muted-foreground">
                         {t('editApiKey.active')}
                       </span>
                     )}
@@ -392,7 +392,7 @@ export function EditApiKeyDialog({
             >
               {isSubmitting ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-4 w-4 me-2 animate-spin" />
                   {t('editApiKey.saving')}
                 </>
               ) : (

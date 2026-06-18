@@ -110,8 +110,8 @@ export const DomainsListItem = memo(function DomainsListItem({
   );
 
   return (
-    <div className="flex items-center gap-4 sm:gap-6 pr-4 sm:pr-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
-      <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-r border-border px-4 sm:px-6">
+    <div className="flex items-center gap-4 sm:gap-6 pe-4 sm:pe-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
+      <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-e border-border px-4 sm:px-6">
         <span
           className={cn(
             'text-lg/8 font-bold text-foreground/40 font-mono italic',
@@ -128,7 +128,7 @@ export const DomainsListItem = memo(function DomainsListItem({
         <div className="flex-1 flex flex-col gap-1 sm:gap-2 w-full">
           <Link
             href={`/hunt/domains/${encodeURIComponent(domain.domainName)}`}
-            className="text-base sm:text-lg text-left font-semibold text-foreground font-sans hover:text-primary transition-colors"
+            className="text-base sm:text-lg text-start font-semibold text-foreground font-sans hover:text-primary transition-colors"
           >
             {domain.domainName}
           </Link>

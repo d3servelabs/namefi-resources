@@ -606,12 +606,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 >
                   {domain.enabled ? (
                     <>
-                      <Pause className="h-4 w-4 mr-2" />
+                      <Pause className="h-4 w-4 me-2" />
                       Disable
                     </>
                   ) : (
                     <>
-                      <Play className="h-4 w-4 mr-2" />
+                      <Play className="h-4 w-4 me-2" />
                       Enable
                     </>
                   )}
@@ -627,7 +627,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                     }
                     disabled={startRolloutPending}
                   >
-                    <Play className="h-4 w-4 mr-2" />
+                    <Play className="h-4 w-4 me-2" />
                     Start Rollout
                   </DropdownMenuItem>
                 )}
@@ -641,7 +641,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                     setIsEditCostDialogOpen(true);
                   }}
                 >
-                  <Edit className="h-4 w-4 mr-2" />
+                  <Edit className="h-4 w-4 me-2" />
                   Edit Cost & Duration
                 </DropdownMenuItem>
 
@@ -649,7 +649,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <DropdownMenuItem
                   onClick={() => setEditingHostnamesDomain(domain)}
                 >
-                  <Edit className="h-4 w-4 mr-2" />
+                  <Edit className="h-4 w-4 me-2" />
                   Edit Additional Hostnames
                 </DropdownMenuItem>
 
@@ -659,7 +659,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <DropdownMenuItem
                   onClick={() => setSelectedDomain(domain.normalizedDomainName)}
                 >
-                  <Settings className="h-4 w-4 mr-2" />
+                  <Settings className="h-4 w-4 me-2" />
                   DNS Configuration
                 </DropdownMenuItem>
 
@@ -672,7 +672,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                     )
                   }
                 >
-                  <ExternalLink className="h-4 w-4 mr-2" />
+                  <ExternalLink className="h-4 w-4 me-2" />
                   Visit Domain
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -709,7 +709,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
               onOpenChange={setIsCreateDialogOpen}
             >
               <DialogTrigger render={<Button />}>
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 me-2" />
                 Add Domain
               </DialogTrigger>
               {/*
@@ -724,7 +724,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 <DialogHeader>
                   <DialogTitle>Add New Powered by Namefi Domain</DialogTitle>
                 </DialogHeader>
-                <div className="min-h-0 overflow-y-auto pr-1">
+                <div className="min-h-0 overflow-y-auto pe-1">
                   <CreateDomainForm
                     onSubmit={async (data) => {
                       await createDomainMutation.mutateAsync(data);
@@ -789,10 +789,10 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       >
         <DialogContent className="sm:max-w-lg w-full">
           <DialogHeader>
-            <DialogTitle className="break-words pr-8">
+            <DialogTitle className="break-words pe-8">
               Edit Cost &amp; Duration
               {editingDomain ? (
-                <span className="ml-2 font-mono text-sm text-muted-foreground">
+                <span className="ms-2 font-mono text-sm text-muted-foreground">
                   {editingDomain.normalizedDomainName}
                 </span>
               ) : null}
@@ -845,12 +845,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
       >
         <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
           <DialogHeader>
-            <DialogTitle className="break-words pr-8">
+            <DialogTitle className="break-words pe-8">
               Configuration Status:{' '}
               <span className="font-mono text-base">{selectedDomain}</span>
             </DialogTitle>
           </DialogHeader>
-          <div className="w-full min-h-0 overflow-y-auto pr-1">
+          <div className="w-full min-h-0 overflow-y-auto pe-1">
             {isLoadingStatus ? (
               <div className="text-center py-8">Loading setup status...</div>
             ) : domainStatus?.setupStatus &&
@@ -1051,7 +1051,7 @@ function CreateDomainForm({
                                 <button
                                   type="button"
                                   key={user.id}
-                                  className="w-full p-3 hover:bg-muted cursor-pointer border-b last:border-b-0 text-left"
+                                  className="w-full p-3 hover:bg-muted cursor-pointer border-b last:border-b-0 text-start"
                                   onClick={() => handleUserSelect(user)}
                                 >
                                   <div className="space-y-1">
@@ -1096,7 +1096,7 @@ function CreateDomainForm({
                         className="w-full justify-start"
                         onClick={() => setShowUserSearch(true)}
                       >
-                        <Search className="h-4 w-4 mr-2" />
+                        <Search className="h-4 w-4 me-2" />
                         Search for domain owner...
                       </Button>
                     )}
@@ -1244,7 +1244,7 @@ function CreateDomainForm({
               control={form.control}
               name="vercelIpAddress"
               render={({ field }) => (
-                <FormItem className="ml-6">
+                <FormItem className="ms-6">
                   <FormLabel>Vercel IP Address (Optional)</FormLabel>
                   <FormControl>
                     <Input placeholder="192.168.1.1" {...field} />

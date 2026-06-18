@@ -329,7 +329,7 @@ export function CreateListingModal({
             />
           }
         >
-          <Plus className="h-4 w-4 mr-1.5" />
+          <Plus className="h-4 w-4 me-1.5" />
           {triggerLabel}
         </DialogTrigger>
       ) : null}
@@ -466,7 +466,7 @@ export function CreateListingModal({
               }
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             >
-              <ShoppingBag className="h-4 w-4 mr-2" />
+              <ShoppingBag className="h-4 w-4 me-2" />
               List on {selectedMarketplace?.label ?? marketplaceId}
             </AsyncButton>
           ) : (
@@ -479,7 +479,7 @@ export function CreateListingModal({
               }
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             >
-              <Wallet2 className="h-4 w-4 mr-2" />
+              <Wallet2 className="h-4 w-4 me-2" />
               Connect wallet
             </AsyncButton>
           )}
@@ -522,7 +522,7 @@ function FeePreview({
                 <TooltipTrigger>
                   <Badge
                     variant="outline"
-                    className="ml-1 text-[10px] border-amber-500/40 text-amber-300"
+                    className="ms-1 text-[10px] border-amber-500/40 text-amber-300"
                   >
                     estimate
                   </Badge>

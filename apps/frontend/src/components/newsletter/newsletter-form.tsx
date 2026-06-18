@@ -268,7 +268,7 @@ function NewsletterFormInner({
             'Subscribing...'
           ) : (
             <>
-              <Mail className="w-4 h-4 mr-2" />
+              <Mail className="w-4 h-4 me-2" />
               Subscribe
             </>
           )}
@@ -336,7 +336,7 @@ function NewsletterFormInner({
               'Subscribing...'
             ) : (
               <>
-                <Mail className="w-4 h-4 mr-2" />
+                <Mail className="w-4 h-4 me-2" />
                 Subscribe to Newsletter
               </>
             )}

@@ -377,9 +377,9 @@ export function TwitterShareDialog({
               disabled={!twitterIntentUrl}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              <XBrandIcon className="mr-2 h-4 w-4" />
+              <XBrandIcon className="me-2 h-4 w-4" />
               Share on Twitter/X
-              <ExternalLink className="h-4 w-4 ml-2" />
+              <ExternalLink className="h-4 w-4 ms-2" />
             </Button>
             <p className="text-xs text-muted-foreground">
               Opens Twitter/X with a pre-filled post for {shareTarget}
@@ -393,7 +393,7 @@ export function TwitterShareDialog({
                 variant="secondary"
                 className="text-green-600 bg-green-50 border-green-200"
               >
-                <CheckCircle className="h-3 w-3 mr-1" />
+                <CheckCircle className="h-3 w-3 me-1" />
                 Already shared
               </Badge>
             </div>

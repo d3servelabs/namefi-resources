@@ -252,7 +252,7 @@ function SingleConditionEditor({
         }
       >
         {localValue || 'Enter value...'}
-        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0" align="start" side="bottom">
         <Command>
@@ -300,7 +300,7 @@ function SingleConditionEditor({
                 >
                   <Check
                     className={cn(
-                      'mr-2 h-4 w-4',
+                      'me-2 h-4 w-4',
                       localValue === suggestion.value
                         ? 'opacity-100'
                         : 'opacity-0',
@@ -579,7 +579,7 @@ export function DrizzlerFilterField({
               : undefined
           }
         >
-          <Plus className="h-4 w-4 mr-1" />
+          <Plus className="h-4 w-4 me-1" />
           Add Condition
           {field.maxConditions !== undefined &&
             ` (${conditions.length}/${field.maxConditions})`}

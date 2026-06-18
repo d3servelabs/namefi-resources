@@ -142,7 +142,7 @@ export function CurrentListingsCard({
                 <TableHead>Marketplace</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Expires</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-end">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -170,7 +170,7 @@ export function CurrentListingsCard({
                   <TableCell title={listing.expirationTime}>
                     {formatExpiration(listing.expirationTime)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-end">
                     <div className="flex justify-end gap-2">
                       {(() => {
                         const safeUrl = toSafeExternalUrl(listing.externalUrl);
@@ -191,7 +191,7 @@ export function CurrentListingsCard({
                         onClick={() => handleCancel(listing)}
                         className="bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30"
                       >
-                        <X className="h-3 w-3 mr-1" />
+                        <X className="h-3 w-3 me-1" />
                         Cancel
                       </AsyncButton>
                     </div>

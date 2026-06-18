@@ -66,7 +66,7 @@ export function SidebarDomains({ name, domains }: RecentDomainsProps) {
           <CollapsibleTrigger render={<SidebarMenuButton />}>
             <History className="size-4" />
             <span className="whitespace-nowrap">{name}</span>
-            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+            <ChevronRight className="ms-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
           </CollapsibleTrigger>
           <CollapsibleContent>
             <SidebarGroupContent>

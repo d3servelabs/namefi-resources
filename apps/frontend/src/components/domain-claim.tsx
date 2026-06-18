@@ -266,7 +266,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
 
       <div className="flex md:flex-row flex-col items-center justify-between gap-2 border border-white/10 rounded-lg p-2">
         <div className="relative shrink-0 bg-black/40 h-14 flex items-center flex-1 rounded-md">
-          <div className="flex items-center justify-center w-full pl-2 gap-1 md:gap-2 h-14">
+          <div className="flex items-center justify-center w-full ps-2 gap-1 md:gap-2 h-14">
             <SearchIcon className="h-5 w-5 text-gray-400" />
             <Input
               placeholder={
@@ -280,7 +280,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
             />
           </div>
           <Separator orientation="vertical" className="mx-0.5 md:mx-4 h-3" />
-          <div className="mr-4 text-gray-400 text-lg">.{domain}</div>
+          <div className="me-4 text-gray-400 text-lg">.{domain}</div>
         </div>
         <NamefiButton
           className="w-40 md:w-44 h-14"

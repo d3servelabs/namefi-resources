@@ -46,10 +46,10 @@ const WhatIsSection: FC = () => {
   return (
     <section className="px-14 py-20 flex flex-col lg:flex-row items-center justify-evenly gap-10 gradient-border-top gradient-border-bottom overflow-hidden">
       <div className="md:w-1/2 text-secondary-foreground flex flex-col gap-6 justify-center">
-        <h2 className="text-5xl text-center lg:text-left font-bold">
+        <h2 className="text-5xl text-center lg:text-start font-bold">
           What Is 0x.City
         </h2>
-        <p className="text-lg leading-relaxed text-center lg:text-left text-muted-foreground">
+        <p className="text-lg leading-relaxed text-center lg:text-start text-muted-foreground">
           0x.City is a community belonging to "0x Citizens." We are a group of
           people who deeply believe in the future of blockchain and
           decentralization. Using "0x" in addresses, social accounts, and

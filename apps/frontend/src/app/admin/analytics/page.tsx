@@ -225,9 +225,9 @@ function AnalyticsPageContent() {
             disabled={isAnyFetching}
           >
             {isAnyFetching ? (
-              <Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2Icon className="h-4 w-4 me-2 animate-spin" />
             ) : (
-              <RefreshCwIcon className="h-4 w-4 mr-2" />
+              <RefreshCwIcon className="h-4 w-4 me-2" />
             )}
             {isAnyFetching ? 'Refreshing...' : 'Refresh'}
           </Button>
@@ -269,7 +269,7 @@ function AnalyticsPageContent() {
                     size="sm"
                     disabled={isFetching}
                   >
-                    <XIcon className="h-4 w-4 mr-2" />
+                    <XIcon className="h-4 w-4 me-2" />
                     Clear Filters
                   </Button>
                 )}

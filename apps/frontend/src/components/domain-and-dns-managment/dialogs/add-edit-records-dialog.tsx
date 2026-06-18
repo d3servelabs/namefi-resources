@@ -523,7 +523,7 @@ export function AddEditRecordsDialog({
           </div>
         )}
 
-        <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-2">
+        <div className="space-y-6 max-h-[60vh] overflow-y-auto pe-2">
           {forms.map((form, index) => (
             <div key={index} className="mb-6">
               {index > 0 && <div className="border-t border-zinc-800 my-4" />}
@@ -548,7 +548,7 @@ export function AddEditRecordsDialog({
             type="button"
             className="w-full h-11 border border-dashed border-zinc-700 text-zinc-300 hover:bg-zinc-900 hover:text-zinc-100"
           >
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="me-2 h-4 w-4" />
             Add more record
           </Button>
         )}
@@ -579,9 +579,9 @@ export function AddEditRecordsDialog({
                 {createRecords.isPending ||
                 updateRecords.isPending ||
                 updateDomainPreferencesAndConfig.isPending ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 className="me-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Plus className="mr-2 h-4 w-4" />
+                  <Plus className="me-2 h-4 w-4" />
                 )}
                 {mode === 'add' ? 'Add' : 'Save'} record
               </Button>

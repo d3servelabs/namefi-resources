@@ -123,7 +123,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                     <Trophy className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white text-left">
+                    <h3 className="text-2xl font-bold text-white text-start">
                       Official .cv Campaign
                     </h3>
                     <p className="text-slate-400">
@@ -151,10 +151,10 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                     <TrendingUp className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white text-left">
+                    <h3 className="text-2xl font-bold text-white text-start">
                       Trending .cv Domains
                     </h3>
-                    <p className="text-slate-400 text-left">
+                    <p className="text-slate-400 text-start">
                       All-time community favorites
                     </p>
                   </div>
@@ -195,7 +195,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
               {isAuthenticated ? (
                 <SubmitDomainDialog extension="cv" redirectOnSuccess={false}>
                   <Button className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25">
-                    <Plus className="w-5 h-5 mr-1" />
+                    <Plus className="w-5 h-5 me-1" />
                     Submit Your .cv Domain
                   </Button>
                 </SubmitDomainDialog>
@@ -204,7 +204,7 @@ export const CVHuntSection = ({ name: _name }: CVHuntSectionProps) => {
                   className="px-8 py-6 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white border-0 font-semibold shadow-lg shadow-purple-500/25"
                   onClick={() => setAuthDialogOpen(true)}
                 >
-                  <Plus className="w-5 h-5 mr-1" />
+                  <Plus className="w-5 h-5 me-1" />
                   Submit Your .cv Domain
                 </Button>
               )}

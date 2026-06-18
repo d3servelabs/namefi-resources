@@ -273,7 +273,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="!max-w-[95vw] w-[95vw] !p-0 max-h-[95vh] h-[95vh] flex flex-col gap-0 overflow-hidden">
-          <DialogHeader className="p-4 pr-14 border-b flex-row items-center justify-between gap-3 space-y-0">
+          <DialogHeader className="p-4 pe-14 border-b flex-row items-center justify-between gap-3 space-y-0">
             <div>
               <DialogTitle>Bulk one-off email</DialogTitle>
               <DialogDescription>
@@ -289,7 +289,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                 variant="ghost"
                 onClick={() => setHelpOpen(true)}
               >
-                <HelpCircle className="h-4 w-4 mr-1.5" />
+                <HelpCircle className="h-4 w-4 me-1.5" />
                 Help
               </Button>
               <Button
@@ -305,7 +305,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                   toast('Template cleared');
                 }}
               >
-                <Eraser className="h-4 w-4 mr-1.5" />
+                <Eraser className="h-4 w-4 me-1.5" />
                 Clear template
               </Button>
               <Button
@@ -317,14 +317,14 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                   toast('Recipients cleared');
                 }}
               >
-                <Trash2 className="h-4 w-4 mr-1.5" />
+                <Trash2 className="h-4 w-4 me-1.5" />
                 Clear recipients
               </Button>
             </div>
           </DialogHeader>
 
           <div className="flex-1 overflow-hidden grid grid-rows-[1fr_1fr] xl:grid-rows-1 xl:grid-cols-2 gap-0">
-            <div className="overflow-y-auto p-4 border-b xl:border-b-0 xl:border-r">
+            <div className="overflow-y-auto p-4 border-b xl:border-b-0 xl:border-e">
               <div className="space-y-4">
                 <RecipientsPanel
                   recipients={recipients}
@@ -533,7 +533,7 @@ function RecipientsPanel({
             onClick={onClearAll}
             className="h-7 px-2"
           >
-            <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear all
+            <Trash2 className="h-3.5 w-3.5 me-1" /> Clear all
           </Button>
         )}
       </div>
@@ -837,11 +837,11 @@ function SendPanel({
           >
             {isPending ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin mr-1.5" /> Sending…
+                <Loader2 className="h-4 w-4 animate-spin me-1.5" /> Sending…
               </>
             ) : (
               <>
-                <Send className="h-4 w-4 mr-1.5" /> Confirm send
+                <Send className="h-4 w-4 me-1.5" /> Confirm send
               </>
             )}
           </Button>
@@ -860,7 +860,7 @@ function SendPanel({
           onClick={() => setConfirming(true)}
           disabled={sendDisabled}
         >
-          <Send className="h-4 w-4 mr-1.5" />
+          <Send className="h-4 w-4 me-1.5" />
           Send to {recipientCount}{' '}
           {recipientCount === 1 ? 'recipient' : 'recipients'}
         </Button>

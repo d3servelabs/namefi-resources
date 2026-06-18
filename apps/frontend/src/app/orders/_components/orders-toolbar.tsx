@@ -233,10 +233,10 @@ export function OrdersToolbar({
         size="sm"
         onClick={() => setFilterPanelOpen(true)}
       >
-        <Filter className="h-4 w-4 mr-2" />
+        <Filter className="h-4 w-4 me-2" />
         {t('toolbar.filters')}
         {activeFilterCount > 0 && (
-          <Badge variant="secondary" className="ml-2">
+          <Badge variant="secondary" className="ms-2">
             {activeFilterCount}
           </Badge>
         )}
@@ -246,7 +246,7 @@ export function OrdersToolbar({
         <PopoverTrigger
           render={
             <Button type="button" variant="outline" size="sm">
-              <ArrowUpDown className="h-4 w-4 mr-2" />
+              <ArrowUpDown className="h-4 w-4 me-2" />
               {t('toolbar.sort', { label: sortLabel })}
             </Button>
           }
@@ -289,12 +289,12 @@ export function OrdersToolbar({
               >
                 {sort.sortDirection === 'asc' ? (
                   <>
-                    <ArrowUp className="h-4 w-4 mr-2" />
+                    <ArrowUp className="h-4 w-4 me-2" />
                     {t('toolbar.ascending')}
                   </>
                 ) : (
                   <>
-                    <ArrowDown className="h-4 w-4 mr-2" />
+                    <ArrowDown className="h-4 w-4 me-2" />
                     {t('toolbar.descending')}
                   </>
                 )}
@@ -305,7 +305,7 @@ export function OrdersToolbar({
       </Popover>
 
       {showPbnToggle && (
-        <div className="flex items-center gap-2 text-sm text-muted-foreground ml-1">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground ms-1">
           <Switch
             id="orders-show-only-curret-pbn"
             checked={!showAllParents}
@@ -329,9 +329,9 @@ export function OrdersToolbar({
           variant="ghost"
           size="sm"
           onClick={onReset}
-          className="ml-auto"
+          className="ms-auto"
         >
-          <RotateCcw className="h-3.5 w-3.5 mr-1" />
+          <RotateCcw className="h-3.5 w-3.5 me-1" />
           {t('toolbar.reset')}
         </Button>
       )}

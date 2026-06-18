@@ -399,12 +399,12 @@ function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
             <tr>
-              <th className="px-3 py-2 text-left">Domain</th>
-              <th className="px-3 py-2 text-left">Type</th>
-              <th className="px-3 py-2 text-left">Registrar</th>
-              <th className="px-3 py-2 text-left">Status</th>
-              <th className="px-3 py-2 text-right">Amount (USD)</th>
-              <th className="px-3 py-2 text-left">Created</th>
+              <th className="px-3 py-2 text-start">Domain</th>
+              <th className="px-3 py-2 text-start">Type</th>
+              <th className="px-3 py-2 text-start">Registrar</th>
+              <th className="px-3 py-2 text-start">Status</th>
+              <th className="px-3 py-2 text-end">Amount (USD)</th>
+              <th className="px-3 py-2 text-start">Created</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -413,7 +413,7 @@ function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
                 <td className="px-3 py-2 font-medium">
                   {item.normalizedDomainName}
                   {item.metadataAutoRenew && (
-                    <Badge variant="outline" className="ml-2">
+                    <Badge variant="outline" className="ms-2">
                       Auto-renew
                     </Badge>
                   )}
@@ -423,7 +423,7 @@ function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
                 <td className="px-3 py-2">
                   <StatusBadge status={item.status} />
                 </td>
-                <td className="px-3 py-2 text-right font-medium">
+                <td className="px-3 py-2 text-end font-medium">
                   {formatUsdCents(item.amountInUsdCents)}
                 </td>
                 <td className="px-3 py-2">{formatDateTime(item.createdAt)}</td>
@@ -447,15 +447,15 @@ function PaymentsSubTable({ payments }: { payments: FinancialPaymentRow[] }) {
         <table className="w-full text-sm">
           <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
             <tr>
-              <th className="px-3 py-2 text-left">Payment ID</th>
-              <th className="px-3 py-2 text-left">Provider</th>
-              <th className="px-3 py-2 text-left">Status</th>
-              <th className="px-3 py-2 text-left">Chain</th>
-              <th className="px-3 py-2 text-right">Gross (USD)</th>
-              <th className="px-3 py-2 text-right">Refunds (USD)</th>
-              <th className="px-3 py-2 text-right">Net (USD)</th>
-              <th className="px-3 py-2 text-left">Refund IDs</th>
-              <th className="px-3 py-2 text-left">Created</th>
+              <th className="px-3 py-2 text-start">Payment ID</th>
+              <th className="px-3 py-2 text-start">Provider</th>
+              <th className="px-3 py-2 text-start">Status</th>
+              <th className="px-3 py-2 text-start">Chain</th>
+              <th className="px-3 py-2 text-end">Gross (USD)</th>
+              <th className="px-3 py-2 text-end">Refunds (USD)</th>
+              <th className="px-3 py-2 text-end">Net (USD)</th>
+              <th className="px-3 py-2 text-start">Refund IDs</th>
+              <th className="px-3 py-2 text-start">Created</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -471,13 +471,13 @@ function PaymentsSubTable({ payments }: { payments: FinancialPaymentRow[] }) {
                 <td className="px-3 py-2">
                   {formatPaymentChain(payment.chain)}
                 </td>
-                <td className="px-3 py-2 text-right font-medium">
+                <td className="px-3 py-2 text-end font-medium">
                   {formatUsdCents(payment.grossAmountInUsdCents)}
                 </td>
-                <td className="px-3 py-2 text-right">
+                <td className="px-3 py-2 text-end">
                   {formatUsdCents(payment.refundAmountInUsdCents)}
                 </td>
-                <td className="px-3 py-2 text-right font-medium">
+                <td className="px-3 py-2 text-end font-medium">
                   {formatUsdCents(payment.netAmountInUsdCents)}
                 </td>
                 <td className="px-3 py-2 text-xs">
