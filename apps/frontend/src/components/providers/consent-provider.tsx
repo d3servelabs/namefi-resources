@@ -29,6 +29,21 @@ export function ConsentProvider({ children }: PropsWithChildren) {
         backendURL: C15T_BROWSER_BACKEND_URL,
         consentCategories: ['necessary', 'measurement'],
         theme: c15tTheme,
+        // Relabel the reject button to "Essential Only": it already performs
+        // the same action (reject all non-essential cookies; strictly-necessary
+        // always stay), and "Essential Only" reads more clearly than the
+        // default "Reject All". The label is jurisdiction-agnostic — it conveys
+        // rejection of non-essential cookies, which satisfies both GDPR
+        // ("reject" parity with accept) and CCPA opt-out. Deep-merged, so every
+        // other string keeps the c15t default. Only the English copy is
+        // overridden; other languages keep their own translations.
+        translations: {
+          translations: {
+            en: {
+              common: { rejectAll: 'Essential Only' },
+            },
+          },
+        },
       }}
     >
       <ConsentManagerClient>
