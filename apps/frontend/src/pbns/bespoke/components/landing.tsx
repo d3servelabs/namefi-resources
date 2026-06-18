@@ -19,6 +19,7 @@ import { useInView, motion, AnimatePresence } from 'motion/react';
 import { useQueryState, parseAsBoolean } from 'nuqs';
 import dynamic from 'next/dynamic';
 import { useDeferredSectionLoad } from '@/hooks/use-deferred-section-load';
+import type { LandingComponent } from '@/components/search/types';
 
 const NewsletterForm = dynamic(
   () =>
@@ -239,3 +240,13 @@ export const BespokeLanding = ({ config }: BespokeLandingProps) => {
     </div>
   );
 };
+
+/**
+ * Builds a {@link LandingComponent} bound to a specific bespoke landing config,
+ * so each `pbns/bespoke/domains/<slug>/landing.tsx` is a one-liner instead of
+ * an identical hand-rolled wrapper. The `origin` prop is accepted (to satisfy
+ * the route contract) but unused — bespoke landings are configured by config.
+ */
+export const createBespokeLanding =
+  (config: BespokeLandingConfig): LandingComponent =>
+  () => <BespokeLanding config={config} />;

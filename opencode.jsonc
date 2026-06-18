@@ -1,0 +1,21 @@
+{
+  "instructions": [
+    ".opencode/memories/clickup-bugs.md",
+    ".opencode/memories/code-gen.md",
+    ".opencode/memories/date-formatting.md",
+    ".opencode/memories/default.md",
+    ".opencode/memories/drafting-cursor-rules.md",
+    ".opencode/memories/git.md",
+    ".opencode/memories/local-testing-skip-auth.md",
+    ".opencode/memories/logging-levels.md",
+    ".opencode/memories/performance-compile.md",
+    ".opencode/memories/permissions-ux.md",
+    ".opencode/memories/pr-description.md",
+    ".opencode/memories/resolve-reviews.md",
+    ".opencode/memories/storybook.md",
+    ".opencode/memories/ui-component-development.md",
+    ".opencode/memories/ui-prototype.md",
+    ".opencode/memories/ux-copywriting.md",
+    ".opencode/memories/ux-minimal-chrome.md"
+  ]
+}

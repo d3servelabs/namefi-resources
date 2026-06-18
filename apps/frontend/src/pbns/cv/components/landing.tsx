@@ -14,6 +14,7 @@ import { useQueryState, parseAsBoolean } from 'nuqs';
 import { useDeferredSectionLoad } from '@/hooks/use-deferred-section-load';
 import { useCartContext } from '@/components/providers/cart';
 import dynamic from 'next/dynamic';
+import type { LandingComponent } from '@/components/search/types';
 
 const NewsletterForm = dynamic(
   () =>
@@ -270,3 +271,13 @@ export const CVLanding = ({ config }: { config: CVLandingConfig }) => {
     </>
   );
 };
+
+/**
+ * Builds a {@link LandingComponent} bound to a specific CV landing config, so
+ * each `pbns/cv/names/<name>/landing.tsx` is a one-liner instead of an
+ * identical hand-rolled wrapper. The `origin` prop is accepted (to satisfy the
+ * route contract) but unused — CV landings are configured entirely by config.
+ */
+export const createCVLanding =
+  (config: CVLandingConfig): LandingComponent =>
+  () => <CVLanding config={config} />;
