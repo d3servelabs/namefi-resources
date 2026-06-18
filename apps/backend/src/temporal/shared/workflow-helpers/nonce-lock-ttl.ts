@@ -24,6 +24,23 @@ export function computeNonceLockTtlMs(heartbeatIntervalMs: number): number {
  */
 export const DEFAULT_PER_ROUND_OVERHEAD_MS = 200_000;
 
+/**
+ * Default window the race keeps RE-trying a still-pending tx (escalating gas in
+ * batches, then polling once gas is maxed) before it hands off to the
+ * `tx-stuck-pending` admin gate. The lock is held throughout — a pending tx must
+ * never be abandoned by releasing the signer.
+ */
+export const DEFAULT_MAX_PENDING_WAIT_MS = 30 * 60_000; // 30 min
+
+/**
+ * Default BOUNDED extra time the lock is kept (heartbeat-extended) while the
+ * `tx-stuck-pending` admin gate is open. Beyond it the heartbeat stops and the
+ * lock may lapse — but the PINNED NONCE remains the safety net (any other
+ * workflow reads `pending` = pinnedNonce+1, a different slot), so this only
+ * bounds the signer-block and the Temporal history, not correctness.
+ */
+export const DEFAULT_GATE_LOCK_HOLD_MS = 1 * 60 * 60_000; // 1 h
+
 export interface NonceLockBudgetParams {
   /** Attempts per nonce pin (config.lanes) — run CONCURRENTLY, staggered. */
   triesPerPin: number;
@@ -41,6 +58,10 @@ export interface NonceLockBudgetParams {
   chainBlockTimeMs?: number;
   /** Per-round nonce-read + precheck overhead (default {@link DEFAULT_PER_ROUND_OVERHEAD_MS}). */
   perRoundOverheadMs?: number;
+  /** Still-pending re-try window before the stuck-pending gate (default {@link DEFAULT_MAX_PENDING_WAIT_MS}). */
+  maxPendingWaitMs?: number;
+  /** Bounded lock-hold while the stuck-pending gate is open (default {@link DEFAULT_GATE_LOCK_HOLD_MS}). */
+  gateLockHoldMs?: number;
   /** Extra slack added to the cap (default 3000). */
   leewayMs?: number;
 }
@@ -54,8 +75,11 @@ export interface NonceLockBudgetParams {
  * a round, so a round is the LATER of its confirm budget and the last staggered
  * lane's finish — NOT lanes × budget. The race is `(maxRepins + 1)` SEQUENTIAL
  * rounds, each plus per-round overhead (a nonce read and, on re-pin, the
- * already-sent precheck). Generously budgeted so the cap never cuts a legit slow
- * race short, while staying far below the old `× lanes` over-inflation.
+ * already-sent precheck). On top of that we add the still-pending re-try window
+ * ({@link DEFAULT_MAX_PENDING_WAIT_MS}) and the bounded gate lock-hold
+ * ({@link DEFAULT_GATE_LOCK_HOLD_MS}) — a tx may legitimately stay pending well
+ * past the active racing, and the lock must survive that whole window. Generously
+ * budgeted so the cap never cuts a legit slow race short.
  *
  * TODO: scale by `chainBlockTimeMs` / `chainId` once per-chain block times are
  * wired (the signature already accepts them); uniform today.
@@ -70,11 +94,15 @@ export function computeNonceLockAbsoluteMaxMs(
     staggerMs,
     minChildTimeoutMs,
     perRoundOverheadMs = DEFAULT_PER_ROUND_OVERHEAD_MS,
+    maxPendingWaitMs = DEFAULT_MAX_PENDING_WAIT_MS,
+    gateLockHoldMs = DEFAULT_GATE_LOCK_HOLD_MS,
     leewayMs = 3000,
   } = params;
   const roundWallClockMs = Math.max(
     maxTimeoutPerTryMs,
     Math.max(0, triesPerPin - 1) * staggerMs + minChildTimeoutMs,
   );
-  return (maxRepins + 1) * (roundWallClockMs + perRoundOverheadMs) + leewayMs;
+  const raceBudgetMs =
+    (maxRepins + 1) * (roundWallClockMs + perRoundOverheadMs);
+  return raceBudgetMs + maxPendingWaitMs + gateLockHoldMs + leewayMs;
 }

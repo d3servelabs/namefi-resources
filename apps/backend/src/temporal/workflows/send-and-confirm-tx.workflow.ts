@@ -5,13 +5,18 @@
  * all sharing the same pinned `nonce`. Each child broadcasts ONCE at its
  * escalating gas price, then polls for ITS OWN hash until a verdict:
  *
- *   - CONFIRMED       — my tx mined (this attempt won the nonce).
- *   - REVERTED        — my tx mined but reverted (terminal for the round).
- *   - LOST            — the nonce was consumed on-chain and my receipt never
- *                       appeared (after `graceCycles`) → a sibling/foreign tx won.
- *   - PENDING_TIMEOUT — still pending at the deadline with the nonce slot open →
- *                       my tx MAY still mine (terminal; the parent never re-pins).
- *   - NOT_SENT        — never broadcast (benign nonce-race loss, or a real failure).
+ *   - CONFIRMED     — my tx mined (this attempt won the nonce).
+ *   - REVERTED      — my tx mined but reverted (terminal for the round).
+ *   - LOST          — the nonce was consumed on-chain and my receipt never
+ *                     appeared (after `graceCycles`) → a sibling/foreign tx won.
+ *   - STILL_PENDING — still pending when this child's bounded poll window elapsed.
+ *                     BENIGN, NOT a failure: the child just stops polling its own
+ *                     hash and hands the verdict to the parent, which polls ALL
+ *                     candidate hashes together (the authority) and decides whether
+ *                     to keep batching, re-pin, or finish. A child must NEVER turn
+ *                     "still pending" into a workflow failure — that is exactly the
+ *                     bug that made a slow winner's siblings fail the whole race.
+ *   - NOT_SENT      — never broadcast (benign nonce-race loss, or a real failure).
  *
  * Making each attempt a child workflow gives the Temporal UI an ordered, grouped,
  * collapsible view (instead of interleaved activities). `staticSummary` (set by
@@ -37,8 +42,12 @@ export interface SendAndConfirmTxInput {
   gasPriceMultiplier: number;
   confirmations: number;
   pollIntervalMs: number;
-  /** This attempt's confirmation budget. */
-  timeoutMs: number;
+  /**
+   * This child's BOUNDED poll window. When it elapses with the tx still pending,
+   * the child returns the benign `STILL_PENDING` (NOT a failure) and the parent's
+   * cross-candidate check takes over. Chain-aware (see `computeBatchPollWindowMs`).
+   */
+  pollWindowMs: number;
   /** Consecutive NONCE_FILLED polls tolerated before concluding LOST (RPC-lag guard). */
   graceCycles: number;
   /** Context label, e.g. 'mint:mintNfsc'. */
@@ -70,7 +79,7 @@ export type SendAndConfirmTxResult =
       nonce: number;
       attempt: number;
     }
-  | { status: 'PENDING_TIMEOUT'; txHash: Hash; nonce: number; attempt: number }
+  | { status: 'STILL_PENDING'; txHash: Hash; nonce: number; attempt: number }
   | {
       status: 'NOT_SENT';
       sendStatus: TxSendOnlyResult['status'];
@@ -92,7 +101,7 @@ export async function sendAndConfirmTxWorkflow(
     gasPriceMultiplier,
     confirmations,
     pollIntervalMs,
-    timeoutMs,
+    pollWindowMs,
     graceCycles,
     label,
     attempt,
@@ -104,7 +113,7 @@ export async function sendAndConfirmTxWorkflow(
     options: {
       startToCloseTimeout: '30 seconds',
       retry: { maximumAttempts: 1 },
-      summary: `send tx (attempt ${attempt})`,
+      summary: `send tx · attempt ${attempt}`,
     },
   });
   // Confirm routes to DEFAULT (read-only poll; unblocked by the single MINT slot).
@@ -112,7 +121,7 @@ export async function sendAndConfirmTxWorkflow(
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
       ...shortRunningOpts,
-      summary: `confirm poll (attempt ${attempt})`,
+      summary: `confirm poll · attempt ${attempt}`,
     },
   });
 
@@ -223,14 +232,19 @@ export async function sendAndConfirmTxWorkflow(
         nonceFilledStreak = 0; // PENDING
     }
 
-    if (elapsedMs >= timeoutMs) {
+    if (elapsedMs >= pollWindowMs) {
+      // Window elapsed with the tx still pending. BENIGN: stop polling my own
+      // hash and hand off to the parent's cross-candidate check — never fail.
       workflow.setCurrentDetails(
-        `attempt ${attempt} · PENDING_TIMEOUT ${txHash}`,
+        `attempt ${attempt} · STILL_PENDING ${txHash}`,
       );
-      return { status: 'PENDING_TIMEOUT', txHash, nonce, attempt };
+      return { status: 'STILL_PENDING', txHash, nonce, attempt };
     }
 
-    const sleepMs = Math.min(pollIntervalMs, timeoutMs - elapsedMs);
+    const sleepMs = Math.max(
+      1,
+      Math.min(pollIntervalMs, pollWindowMs - elapsedMs),
+    );
     workflow.setCurrentDetails(
       `attempt ${attempt} · poll ${pollCount} · ${Math.round(elapsedMs / 1000)}s · ${txHash}`,
     );

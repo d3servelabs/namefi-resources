@@ -13,6 +13,7 @@ import type {
 import { TEMPORAL_ENUMS } from '../../shared/enums';
 import { staggeredSendRace } from '../../shared/workflow-helpers/staggered-send-race';
 import { makeTxAlreadySentResolver } from '../../shared/workflow-helpers/tx-already-sent-gate';
+import { makeTxStuckPendingResolver } from '../../shared/workflow-helpers/tx-stuck-pending-gate';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { makeDoubleCommitReconciler } from '../mint-double-commit-reconciliation';
 
@@ -51,6 +52,11 @@ async function _signAndSendX402TransactionWithRetry(
       // USDC transfer has no idempotency key — a human accepts an already-sent tx.
       alreadySentPolicy: 'WAIT_FOR_ADMIN',
       onAlreadySentNeedsAdmin: makeTxAlreadySentResolver({
+        label: 'x402-usdc-transfer',
+        chainId,
+      }),
+      // A stuck-pending transfer hands off to a human (lock held), never fails.
+      onStuckPending: makeTxStuckPendingResolver({
         label: 'x402-usdc-transfer',
         chainId,
       }),

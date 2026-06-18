@@ -264,6 +264,62 @@ async function gatherTxAlreadySentEvidence(
   return evidence;
 }
 
+/**
+ * Tx-stuck-pending gate: a tx is stuck pending at the pinned nonce after gas was
+ * maxed. Surface every candidate hash's on-chain receipt status so the admin can
+ * tell whether one actually mined (→ MARK_CONFIRMED), the slot was taken by
+ * something else (→ REPIN), or it is genuinely still pending (→ KEEP_WAITING).
+ */
+async function gatherTxStuckPendingEvidence(
+  params: Record<string, unknown>,
+): Promise<Record<string, unknown>> {
+  const chainId = Number(params.chainId);
+  const candidateHashes = Array.isArray(params.candidateHashes)
+    ? (params.candidateHashes as string[])
+    : [];
+
+  const evidence: Record<string, unknown> = {
+    chainId,
+    pinnedNonce: params.pinnedNonce,
+    account: params.account ?? params.chargee,
+    amountInUsd: params.amountInUsd,
+    reason: params.reason,
+  };
+
+  if (!Number.isFinite(chainId) || candidateHashes.length === 0) {
+    evidence.error = 'missing chainId or candidateHashes in evidenceParams';
+    return evidence;
+  }
+
+  try {
+    const publicClient = getViemPublicClient(chainId);
+    evidence.receipts = await Promise.all(
+      candidateHashes.map(async (hash) => {
+        try {
+          const receipt = await publicClient.getTransactionReceipt({
+            hash: hash as `0x${string}`,
+          });
+          return {
+            hash,
+            status: receipt.status,
+            blockNumber: receipt.blockNumber.toString(),
+          };
+        } catch (error) {
+          return {
+            hash,
+            status: 'not-found-or-pending',
+            error: errorMessage(error),
+          };
+        }
+      }),
+    );
+  } catch (error) {
+    evidence.error = errorMessage(error);
+  }
+
+  return evidence;
+}
+
 /** RDAP first, WHOIS fallback — the registration expiration + its comparison. */
 async function gatherExpirationFromRdapWhois(
   domain: string,
@@ -519,6 +575,9 @@ export const GATE_EVIDENCE_GATHERERS: Record<string, GateEvidenceGatherer> = {
   'mint-double-commit': gatherMintDoubleCommitEvidence,
   // Tx-already-sent: the single landed tx's on-chain receipt.
   'tx-already-sent': gatherTxAlreadySentEvidence,
+  // Tx-stuck-pending: per-candidate on-chain receipt status so the admin can tell
+  // whether one mined, the slot was taken, or it is genuinely still pending.
+  'tx-stuck-pending': gatherTxStuckPendingEvidence,
   // Renewal (extend-registration) gates: the registrar operation status plus the
   // domain's expiration across every source, compared to the expected
   // post-renewal date, so the admin can tell whether the renewal already landed.

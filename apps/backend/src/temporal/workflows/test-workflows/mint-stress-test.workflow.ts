@@ -30,6 +30,13 @@ import { CHAINS, namefiNormalizedDomainSchema } from '@namefi-astra/utils';
 import type { Duration } from '@temporalio/common';
 import * as workflow from '@temporalio/workflow';
 import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../../shared/enums';
+import {
+  SEPOLIA_BLOCK_TIME_ENV_KEY,
+  SEPOLIA_CHAIN_ID,
+  computeBatchPollWindowMs,
+  computeChainStaggerMs,
+  resolveBlockTimeMs,
+} from '../../shared/workflow-helpers/chain-timing';
 import { typedProxyActivities } from '../../shared/workflow-helpers/typed-proxy-activities';
 import { chargeNfscWorkflow, mintNamefiNFT, mintNfsc } from '../mint.workflow';
 
@@ -110,6 +117,17 @@ export async function mintStressTestWorkflow(
       summary: 'read mint signer nonce',
     },
   });
+  // Diagnostics (DEFAULT queue): fetch the optional env override and log the
+  // resolved race timings via an activity (info-level pino) — workflow logs may
+  // not surface.
+  const { logRaceTiming, getEnvVars } = typedProxyActivities({
+    temporalEnum: TEMPORAL_ENUMS.DEFAULT,
+    options: {
+      startToCloseTimeout: '10 seconds',
+      retry: { maximumAttempts: 2 },
+      summary: 'race-timing diagnostic',
+    },
+  });
 
   const { runId } = workflow.workflowInfo();
   // Date.now() is deterministic inside the Temporal workflow sandbox.
@@ -153,6 +171,24 @@ export async function mintStressTestWorkflow(
       ),
     );
   };
+
+  // Surface the per-chain timings the mint children will use — confirms the
+  // optional `SEPOLIA_BLOCK_TIME_MS` override took effect (e.g. blockTime=500
+  // instead of the 12s Sepolia default), using the SAME activity-fetched value
+  // the children resolve.
+  const sepoliaOverrideRaw =
+    chainId === SEPOLIA_CHAIN_ID
+      ? (await getEnvVars([SEPOLIA_BLOCK_TIME_ENV_KEY]))[
+          SEPOLIA_BLOCK_TIME_ENV_KEY
+        ]
+      : undefined;
+  const blockTimeMs = resolveBlockTimeMs(chainId, sepoliaOverrideRaw);
+  await logRaceTiming({
+    chainId,
+    blockTimeMs,
+    staggerMs: computeChainStaggerMs(chainId, blockTimeMs),
+    batchPollWindowMs: computeBatchPollWindowMs(chainId, 3, blockTimeMs),
+  });
 
   const nonceBefore = await getPendingSignerNonce(chainId);
 

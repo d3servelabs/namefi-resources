@@ -41,7 +41,10 @@ export async function runNonceLockHeartbeat(params: {
   });
   const { generalAlertNamefi } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
-    options: { ...shortRunningOpts },
+    options: {
+      ...shortRunningOpts,
+      summary: `nonce-lock lost alert (${label})`,
+    },
   });
 
   // Fire ONE escalation alert, only on a TERMINAL exit (lock genuinely lost /

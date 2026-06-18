@@ -79,6 +79,39 @@ export const defaultTaskQueueActivities = {
       'generalAlertNamefi',
     );
   },
+  /**
+   * Read selected env vars in plain Node (the LIVE worker env) and return them.
+   * Workflow code can't (and mustn't) read `process.env` directly — the sandbox
+   * stubs it and a direct read is non-deterministic. Routing through an activity
+   * records the result in workflow history → replay-safe. Used e.g. to fetch the
+   * `SEPOLIA_BLOCK_TIME_MS` stress-test override.
+   */
+  getEnvVars: async (
+    keys: string[],
+  ): Promise<Record<string, string | undefined>> => {
+    const out: Record<string, string | undefined> = {};
+    for (const key of keys) out[key] = process.env[key];
+    return out;
+  },
+  /**
+   * Diagnostic: surface the WORKFLOW-resolved race timings (info-level, visible in
+   * worker logs) so a stress-test run can confirm an env override took effect.
+   */
+  logRaceTiming: async (args: {
+    chainId: number;
+    blockTimeMs: number;
+    staggerMs: number;
+    batchPollWindowMs: number;
+  }) => {
+    logger.info(
+      { context: '[Temporal] race-timing', ...args },
+      'race timing · chain %d · blockTime=%dms stagger=%dms batchPollWindow=%dms',
+      args.chainId,
+      args.blockTimeMs,
+      args.staggerMs,
+      args.batchPollWindowMs,
+    );
+  },
   criticalAlertNamefi: async (
     args: { title: string; extraData: any; message: string } & any,
     options?: SendTemporalAlertOptions,

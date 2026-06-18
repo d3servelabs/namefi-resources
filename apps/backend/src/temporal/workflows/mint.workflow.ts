@@ -12,6 +12,7 @@ import {
   type StaggeredRaceRecovery,
 } from '../shared/workflow-helpers/staggered-send-race';
 import { makeTxAlreadySentResolver } from '../shared/workflow-helpers/tx-already-sent-gate';
+import { makeTxStuckPendingResolver } from '../shared/workflow-helpers/tx-stuck-pending-gate';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import {
   makeDoubleCommitReconciler,
@@ -91,6 +92,13 @@ async function _signAndSendTransactionWithRetry(
             evidenceParams: reconciliation?.evidenceParams,
           })
         : undefined,
+    // A tx stuck pending (gas maxed, never mines) hands off to a human rather than
+    // failing — the lock stays held so the pending tx is never abandoned.
+    onStuckPending: makeTxStuckPendingResolver({
+      label,
+      chainId,
+      evidenceParams: reconciliation?.evidenceParams,
+    }),
   };
 
   return staggeredSendRace({

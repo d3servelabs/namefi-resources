@@ -53,7 +53,7 @@ const BASE: SendAndConfirmTxInput = {
   gasPriceMultiplier: 1,
   confirmations: 3,
   pollIntervalMs: 1,
-  timeoutMs: 10_000,
+  pollWindowMs: 10_000,
   graceCycles: 2,
   label: 'test',
   attempt: 0,
@@ -108,12 +108,30 @@ describe('sendAndConfirmTxWorkflow', () => {
     expect(getTransactionConfirmation).toHaveBeenCalledTimes(2);
   });
 
-  it('returns PENDING_TIMEOUT when the confirm budget elapses while pending', async () => {
+  it('returns benign STILL_PENDING when the poll window elapses while pending', async () => {
     getTransactionConfirmation.mockResolvedValue({ kind: 'PENDING' });
-    expect(await run({ timeoutMs: 1, pollIntervalMs: 1 })).toMatchObject({
-      status: 'PENDING_TIMEOUT',
+    expect(await run({ pollWindowMs: 1, pollIntervalMs: 1 })).toMatchObject({
+      status: 'STILL_PENDING',
       txHash: '0xmint',
     });
+  });
+
+  it('polls across many PENDING cycles, then CONFIRMS (window not a failure)', async () => {
+    // Stay pending for several polls, then confirm — the child must keep polling
+    // within its window and return CONFIRMED, not give up.
+    getTransactionConfirmation
+      .mockResolvedValueOnce({ kind: 'PENDING' })
+      .mockResolvedValueOnce({ kind: 'PENDING' })
+      .mockResolvedValueOnce({ kind: 'PENDING' })
+      .mockResolvedValueOnce({
+        kind: 'CONFIRMED',
+        winner: '0xmint' as Hash,
+        blockNumber: '9',
+        confirmations: 3,
+      });
+    const result = await run({ pollWindowMs: 10_000, pollIntervalMs: 1 });
+    expect(result).toMatchObject({ status: 'CONFIRMED', txHash: '0xmint' });
+    expect(getTransactionConfirmation).toHaveBeenCalledTimes(4);
   });
 
   it('benign send result returns NOT_SENT{benign:true} without polling', async () => {

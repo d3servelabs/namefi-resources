@@ -25,7 +25,8 @@ export type GateKind =
   | 'process-order-item'
   | 'nfsc-charge'
   | 'mint-double-commit'
-  | 'tx-already-sent';
+  | 'tx-already-sent'
+  | 'tx-stuck-pending';
 
 interface KnownGateDefaults {
   /** Auto-retry policy applied unless the caller overrides {@link RunWithDecisionGateOptions.autoRetry}. */
