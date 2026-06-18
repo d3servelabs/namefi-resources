@@ -5,7 +5,7 @@
     "claimFailed": "مش قدرنا نحجز الدومين: {message}",
     "invalidDomain": {
       "title": "الدومين مش صح",
-      "description": "الدومين اللي دخلته مش دومين Namefi معتمد.",
+      "description": "الدومين اللي دخلته مش دومين Namefi صالح.",
       "hint": "تأكد إنك بتستخدم دومين مكتمل الصيغة، زي: \"alice.0x.city\".",
       "goBack": "ارجع"
     },
