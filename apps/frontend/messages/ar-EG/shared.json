@@ -1,83 +1,83 @@
 {
   "authRequired": {
-    "title": "تسجيل الدخول مطلوب",
-    "description": "يرجى تسجيل الدخول للمتابعة"
+    "title": "محتاج تسجّل دخول",
+    "description": "سجّل دخولك الأول عشان تكمّل"
   },
   "requestWalletConnection": {
-    "defaultActionDescription": "لإتمام هذا الإجراء",
+    "defaultActionDescription": "عشان تكمّل العملية دي",
     "title": {
-      "wrongWallet": "المحفظة المتصلة خاطئة",
-      "settingActive": "تعيين المحفظة النشطة",
-      "connect": "ربط محفظتك"
+      "wrongWallet": "المحفظة المتصلة مش صح",
+      "settingActive": "بنظبط المحفظة النشطة",
+      "connect": "وصّل محفظتك"
     },
     "description": {
-      "wrongWallet": "يرجى توصيل المحفظة الصحيحة للمتابعة.",
-      "settingActive": "يرجى الانتظار بينما نُعيّن محفظتك كنشطة...",
-      "connect": "يرجى توصيل محفظتك {actionDescription}."
+      "wrongWallet": "وصّل المحفظة الصح عشان تكمّل.",
+      "settingActive": "استنّى شوية وإحنا بنظبط محفظتك...",
+      "connect": "وصّل محفظتك {actionDescription}."
     },
-    "checkingStatus": "جارٍ التحقق من حالة المحفظة...",
-    "settingAsActive": "جارٍ تعيين المحفظة كنشطة...",
+    "checkingStatus": "بنتحقق من حالة المحفظة...",
+    "settingAsActive": "بنظبط المحفظة كنشطة...",
     "requiredWallet": "المحفظة المطلوبة",
-    "waitingForConnection": "في انتظار توصيل المحفظة...",
-    "differentWalletConnected": "لقد وصّلت محفظة مختلفة",
-    "youConnected": "وصّلت",
-    "butWeNeed": "لكنّنا نحتاج",
-    "connectedSuccessfully": "تمّ توصيل المحفظة بنجاح",
+    "waitingForConnection": "مستنيين توصيل المحفظة...",
+    "differentWalletConnected": "وصّلت محفظة تانية",
+    "youConnected": "اللي وصّلته",
+    "butWeNeed": "اللي محتاجينه",
+    "connectedSuccessfully": "اتوصلت المحفظة بنجاح",
     "cancel": "إلغاء",
-    "connecting": "جارٍ التوصيل...",
-    "connectWallet": "توصيل المحفظة",
-    "tryAgain": "حاول مجدداً",
+    "connecting": "بيتوصل...",
+    "connectWallet": "وصّل المحفظة",
+    "tryAgain": "حاول تاني",
     "next": "التالي",
     "toast": {
-      "setActiveFailed": "فشل تعيين المحفظة النشطة",
-      "connectFailed": "فشل توصيل المحفظة",
-      "unknownError": "خطأ غير معروف"
+      "setActiveFailed": "مش قدرنا نظبط المحفظة النشطة",
+      "connectFailed": "مش قدرنا نوصّل المحفظة",
+      "unknownError": "حصل خطأ مش معروف"
     }
   },
   "countryInput": {
-    "placeholder": "اختر الدولة",
+    "placeholder": "اختار الدولة",
     "searchPlaceholder": "ابحث عن دولة...",
-    "noResults": "لم يُعثر على دولة.",
-    "clearSelection": "مسح الاختيار"
+    "noResults": "مفيش دولة بالاسم ده.",
+    "clearSelection": "امسح الاختيار"
   },
   "myDomains": {
-    "heading": "نطاقاتي"
+    "heading": "دوماياتي"
   },
   "walletNftGrid": {
-    "notIndexedYet": "لم يُفهرَس بعد",
-    "emptyIdentifier": "أدخل عنوان محفظة أو اسم ENS لعرض الـ NFTs.",
-    "invalidIdentifier": "هذا لا يبدو عنوان محفظة أو اسم ENS صحيحاً.",
-    "invalidIdentifierHint": "يجب أن تبدأ المحافظ بـ 0x وأن تحتوي أسماء ENS على نقطة على الأقل.",
-    "ensResolveFailed": "تعذّر تحليل اسم ENS هذا.",
-    "ensResolveFailedHint": "تحقّق من الهجاء أو أعد المحاولة بعد لحظة.",
-    "noWalletResolved": "تعذّر تحديد محفظة من هذا الإدخال.",
+    "notIndexedYet": "لسه متفهرسش",
+    "emptyIdentifier": "حط عنوان المحفظة أو اسم ENS عشان تشوف الـ NFTs.",
+    "invalidIdentifier": "ده مش عنوان محفظة أو اسم ENS صح.",
+    "invalidIdentifierHint": "المحافظ لازم تبدأ بـ 0x وأسماء ENS لازم يكون فيها نقطة على الأقل.",
+    "ensResolveFailed": "مش قدرنا نحل اسم ENS ده.",
+    "ensResolveFailedHint": "تأكد من الإملاء أو حاول تاني بعد شوية.",
+    "noWalletResolved": "مش قدرنا نلاقي محفظة من الإدخال ده.",
     "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
-    "loadDomainsFailed": "تعذّر تحميل النطاقات لهذه المحفظة.",
-    "loadDomainsFailedHint": "يرجى تحديث الصفحة والمحاولة مرة أخرى.",
-    "noNftsFound": "لا توجد Namefi NFTs لهذه المحفظة.",
-    "noNftsFoundHint": "تحقّق من عنوان المحفظة أو اسم ENS، أو أعد المحاولة لاحقاً بعد اكتمال الفهرسة.",
-    "unknownNetwork": "شبكة غير معروفة",
+    "loadDomainsFailed": "مش قدرنا نحمّل الدومينات للمحفظة دي.",
+    "loadDomainsFailedHint": "جدّد الصفحة وحاول تاني.",
+    "noNftsFound": "مفيش Namefi NFTs للمحفظة دي.",
+    "noNftsFoundHint": "تأكد من عنوان المحفظة أو اسم ENS، أو حاول تاني بعد شوية لما الفهرسة تخلص.",
+    "unknownNetwork": "شبكة مش معروفة",
     "explorer": "المستكشف",
-    "viewOnExplorer": "عرض في المستكشف",
-    "viewOn": "عرض في {explorer}",
+    "viewOnExplorer": "اعرض في المستكشف",
+    "viewOn": "اعرض في {explorer}",
     "network": "الشبكة",
     "expiration": "تاريخ الانتهاء",
     "wallet": "المحفظة",
     "ens": "ENS: {name}",
-    "copiedToClipboard": "تمّ النسخ إلى الحافظة",
-    "copyFailed": "فشل النسخ",
-    "copyFailedDescription": "تعذّر نسخ هذه القيمة. يرجى المحاولة مرة أخرى."
+    "copiedToClipboard": "اتنسخ في الحافظة",
+    "copyFailed": "النسخ فشل",
+    "copyFailedDescription": "مش قدرنا ننسخ القيمة دي. حاول تاني."
   },
   "instantBuyModal": {
-    "title": "شراء {domain}",
-    "description": "أتمم عملية الشراء لتسجيل لمدة سنة",
-    "domain": "النطاق",
+    "title": "اشتري {domain}",
+    "description": "كمّل عملية الشراء لتسجيل لمدة سنة",
+    "domain": "الدومين",
     "pricePerYear": "{price} USD / سنة",
-    "selectNftWallet": "اختر محفظة NFT للمتابعة",
-    "processing": "معالجة...",
-    "buyNow": "اشترِ الآن",
-    "errorTitle": "عذراً! حدث خطأ ما.",
-    "errorDescription": "لا تقلق، لن يُخصم منك شيء. يمكنك المحاولة مجدداً.",
+    "selectNftWallet": "اختار محفظة NFT عشان تكمّل",
+    "processing": "بيتعالج...",
+    "buyNow": "اشتري دلوقتي",
+    "errorTitle": "يا عم حصل غلطة!",
+    "errorDescription": "متقلقش، مش هيتخصم منك حاجة. حاول تاني.",
     "errorDetail": "(خطأ - {error})",
     "close": "إغلاق"
   }

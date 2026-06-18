@@ -1,17 +1,17 @@
 {
   "items": {
-    "discover": "استكشف",
-    "myDomains": "نطاقاتي",
-    "myWishlist": "قائمة أمنياتي",
+    "discover": "اكتشف",
+    "myDomains": "دوماناتي",
+    "myWishlist": "قائمة الرغبات",
     "myOrders": "طلباتي",
-    "myFreeMints": "سكّي المجاني",
-    "myPaymentMethods": "وسائل الدفع",
+    "myFreeMints": "السك المجاني",
+    "myPaymentMethods": "طرق الدفع",
     "manage": "إدارة",
     "justAing": "Just AI'ng™",
     "brandStudio": "Namefi Brand Studio",
     "outbound": "Namefi Outbound",
     "feed": "Namefi Feed",
-    "hunt": "بحث"
+    "hunt": "صيد الدومانات"
   },
-  "recentDomains": "النطاقات الأخيرة"
+  "recentDomains": "آخر دومانات شفتها"
 }

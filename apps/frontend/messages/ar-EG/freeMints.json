@@ -1,29 +1,29 @@
 {
-  "title": "سكّاتي المجانية",
+  "title": "الـ Mints المجانية بتاعتي",
   "historyHeading": "السجل",
   "table": {
-    "item": "العنصر",
+    "item": "العرض",
     "issuedOn": "تاريخ الإصدار",
-    "validUntil": "صالح حتى",
+    "validUntil": "صالح لغاية",
     "status": "الحالة",
-    "claimedDomain": "النطاق المطالب به",
-    "claimedOn": "تاريخ المطالبة"
+    "claimedDomain": "الدومين اللي اتحجز",
+    "claimedOn": "تاريخ الحجز"
   },
-  "campaignItem": "أي نطاق فرعي من <domain>{domain}</domain>",
-  "campaignLabel": "أي نطاق فرعي من {domain}",
+  "campaignItem": "أي سابدومين من <domain>{domain}</domain>",
+  "campaignLabel": "أي سابدومين من {domain}",
   "statusBadge": {
-    "claimed": "مُطالَب به",
-    "inProgress": "قيد التنفيذ",
-    "expired": "منتهي",
+    "claimed": "متحجز",
+    "inProgress": "جاري التنفيذ",
+    "expired": "انتهت",
     "available": "متاح"
   },
-  "noHistory": "لا يوجد سجل مطالبات حتى الآن.",
-  "emptyTitle": "لا توجد سكّات مجانية بعد",
-  "emptyDescription": "عندما تتلقى فرص مطالبة مجانية، ستظهر هنا.",
+  "noHistory": "مفيش حجوزات لحد دلوقتي.",
+  "emptyTitle": "مفيش Mints مجانية لسه",
+  "emptyDescription": "لما تيجي ليك فرص حجز مجاني، هتلاقيها هنا.",
   "card": {
-    "issued": "الإصدار",
-    "validThru": "صالح حتى",
-    "claimNow": "اطلب الآن",
-    "poweredByNamefi": "مدعوم من Namefi"
+    "issued": "تاريخ الإصدار",
+    "validThru": "صالح لغاية",
+    "claimNow": "احجز دلوقتي",
+    "poweredByNamefi": "Powered by Namefi"
   }
 }

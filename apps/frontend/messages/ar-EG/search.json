@@ -1,7 +1,7 @@
 {
   "header": {
-    "taglineWithNetwork": "ابحث عن نطاق في {parentDomain}",
-    "taglineAllNetworks": "ابحث عن نطاق في جميع الشبكات",
+    "taglineWithNetwork": "دوّر على دومين في {parentDomain}",
+    "taglineAllNetworks": "دوّر على دومين في كل الشبكات",
     "networkLabel": "الشبكة:",
     "allNetworks": "الكل"
   },
@@ -10,41 +10,41 @@
     "import": "استيراد"
   },
   "input": {
-    "placeholder": "ابحث عن نطاق...",
-    "importPlaceholder": "يمكنك اللصق بأحد التنسيقين:\n\nالتنسيق الأول: نطاق مع رمز التفويض\nexample.com, authcode123\n\nالتنسيق الثاني: نطاقات متعددة (مفصولة بفاصلة أو سطر جديد)\ndomain1.com, domain2.com\ndomain3.com",
+    "placeholder": "دوّر على دومين...",
+    "importPlaceholder": "تقدر تلصق بأي من الصيغتين:\n\nالصيغة الأولى: دومين مع كود التفويض\nexample.com, authcode123\n\nالصيغة الثانية: دومينات متعددة (مفصولة بفاصلة أو سطر جديد)\ndomain1.com, domain2.com\ndomain3.com",
     "searchButton": "بحث",
     "importButton": "استيراد",
-    "clearParentDomainAriaLabel": "مسح النطاق الأصلي",
-    "freeMintTooltipWithParent": "ابحث عن نطاقات فرعية متاحة ضمن {parentDomain} واحصل عليها مجاناً!",
-    "freeMintTooltipAllDomains": "ابحث عن النطاقات المتاحة واحصل عليها مجاناً!"
+    "clearParentDomainAriaLabel": "امسح الدومين الأساسي",
+    "freeMintTooltipWithParent": "دوّر على سب-دومينات متاحة تحت {parentDomain} واحجزها مجاناً!",
+    "freeMintTooltipAllDomains": "دوّر على دومينات متاحة واحجزها مجاناً!"
   },
   "card": {
     "priceWithCurrency": "{price} USD",
-    "renewsAt": "يتجدد بـ {price}",
+    "renewsAt": "التجديد بـ {price}",
     "owner": "المالك: {owner}",
-    "notRegistered": "غير مسجل",
-    "unsupported": "غير مدعوم",
-    "lockedShort": "مقفل",
-    "temporarilyUnimportable": "لا يمكن استيراده مؤقتاً",
-    "taken": "مأخوذ",
-    "unavailableShort": "محجوز",
-    "temporarilyUnavailable": "غير متاح مؤقتاً",
-    "freeClaim": "احصل عليه مجاناً",
-    "addToWishlist": "إضافة إلى قائمة الرغبات",
-    "removeFromWishlist": "إزالة من قائمة الرغبات",
+    "notRegistered": "مش مسجل",
+    "unsupported": "مش مدعوم",
+    "lockedShort": "مقفول",
+    "temporarilyUnimportable": "مش قابل للاستيراد دلوقتي",
+    "taken": "محجوز",
+    "unavailableShort": "مش متاح",
+    "temporarilyUnavailable": "مش متاح مؤقتاً",
+    "freeClaim": "احجزه مجاناً",
+    "addToWishlist": "أضف للمفضلة",
+    "removeFromWishlist": "شيل من المفضلة",
     "eppCode": "كود EPP",
     "savedEppCode": "كود EPP المحفوظ",
-    "marketplace": "السوق",
-    "buyShort": "شراء",
-    "buyOn": "اشترِ من",
-    "buyOnSourceAriaLabel": "اشترِ من {source}",
-    "buyOnSourceFromSellerAriaLabel": "اشترِ من {source} عبر {seller}"
+    "marketplace": "ماركت بليس",
+    "buyShort": "اشتري",
+    "buyOn": "اشتري من",
+    "buyOnSourceAriaLabel": "اشتري من {source}",
+    "buyOnSourceFromSellerAriaLabel": "اشتري من {source} عند {seller}"
   },
   "results": {
-    "errorTitle": "خطأ في البحث",
-    "errorDescription": "حدث خطأ أثناء البحث. يرجى المحاولة مجدداً.",
-    "loadMore": "تحميل المزيد",
-    "noResultsTitle": "لم يُعثر على نطاقات",
-    "noResultsDescription": "لم يُعثر على نطاقات تطابق \"{query}\". جرّب مصطلح بحث مختلفاً."
+    "errorTitle": "فيه مشكلة في البحث",
+    "errorDescription": "حصل خطأ أثناء البحث. حاول تاني.",
+    "loadMore": "حمّل أكتر",
+    "noResultsTitle": "مفيش دومينات",
+    "noResultsDescription": "مفيش دومينات بتطابق \"{query}\". جرب كلمة تانية."
   }
 }

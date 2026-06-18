@@ -1,16 +1,16 @@
 {
   "hero": {
     "badge": "مسجِّل معتمد من ICANN على Ethereum و Base",
-    "heading": "Namefi: منصة النطاقات من الجيل التالي بتقنية البلوكشين والذكاء الاصطناعي",
-    "subtitle": "أسرع وأرخص وقابل للتحقق. أفضل طريقة لامتلاك النطاقات.",
+    "heading": "Namefi: منصة الدومينات من الجيل الجديد بالبلوكتشين والذكاء الاصطناعي",
+    "subtitle": "أسرع، أرخص، وموثوق. أفضل طريقة تمتلك بيها دومين.",
     "tryV3Beta": "أو جرّب تجربة البحث الجديدة (v3 beta)"
   },
   "scrollIndicator": {
-    "ariaLabel": "التمرير إلى قسم لماذا تستخدم Namefi",
-    "label": "لماذا تختار Namefi؟"
+    "ariaLabel": "انتقل لقسم ليه تستخدم Namefi",
+    "label": "ليه Namefi؟"
   },
   "floatingSearch": {
-    "placeholder": "ابحث عن نطاق...",
+    "placeholder": "ابحث عن دومين...",
     "searchButton": "بحث"
   }
 }
