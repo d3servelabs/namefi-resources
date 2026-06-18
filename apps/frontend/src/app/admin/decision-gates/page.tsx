@@ -42,6 +42,7 @@ import {
   RefreshCw,
   RotateCw,
   Search,
+  Sparkles,
 } from 'lucide-react';
 import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
@@ -851,9 +852,96 @@ function GateEvidenceView({
 }
 
 /**
+ * AI decision brief (DeepSeek-R1), generated on demand once evidence is gathered.
+ * Runs in its own query so the (slower) model call never blocks the evidence
+ * display — and is cached per evidence snapshot so it fires at most once.
+ */
+function GateAiSummary({
+  workflowId,
+  interactionId,
+  armedQueryName,
+  evidence,
+}: {
+  workflowId: string;
+  interactionId: string;
+  armedQueryName: string;
+  evidence: Record<string, unknown> | null;
+}) {
+  const trpc = useTRPC();
+  const summaryQuery = useQuery({
+    ...trpc.admin.workflowDecision.summarizeGateEvidence.queryOptions({
+      workflowId,
+      interactionId,
+      armedQueryName,
+      evidence,
+    }),
+    staleTime: Number.POSITIVE_INFINITY,
+    retry: false,
+  });
+
+  return (
+    <div className="space-y-2 rounded-lg border border-blue-500/30 bg-blue-500/5 p-3">
+      <div className="flex items-center gap-2">
+        <Sparkles className="h-4 w-4 text-blue-400" />
+        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          AI summary
+        </h3>
+        {summaryQuery.data?.model ? (
+          <Badge variant="outline" className="text-xs">
+            {summaryQuery.data.model}
+          </Badge>
+        ) : null}
+      </div>
+      {summaryQuery.isLoading ? (
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+          <RefreshCw className="h-3.5 w-3.5 animate-spin" />
+          Generating AI summary… (the model reasons before answering, so this
+          can take a moment)
+        </p>
+      ) : summaryQuery.isError ? (
+        <p className="text-sm text-red-500">
+          Failed: {summaryQuery.error.message}{' '}
+          <button
+            type="button"
+            className="underline"
+            onClick={() => summaryQuery.refetch()}
+          >
+            retry
+          </button>
+        </p>
+      ) : summaryQuery.data?.summary != null ? (
+        // `null` summary means DeepSeek is not configured; an empty string is a
+        // valid (if unhelpful) model response, not the not-configured state.
+        <>
+          <p className="whitespace-pre-wrap text-sm text-foreground/90">
+            {summaryQuery.data.summary ||
+              'No summary text returned by the model.'}
+          </p>
+          {summaryQuery.data.reasoning ? (
+            <details className="text-sm">
+              <summary className="cursor-pointer text-muted-foreground">
+                Show reasoning
+              </summary>
+              <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">
+                {summaryQuery.data.reasoning}
+              </p>
+            </details>
+          ) : null}
+        </>
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          AI summary unavailable — DeepSeek is not configured
+          (`DEEPSEEK_API_KEY`).
+        </p>
+      )}
+    </div>
+  );
+}
+
+/**
  * Lazy decision-support panel: gathers evidence (registrar / in-system / RDAP-
  * WHOIS) on demand, server-side, only when an operator asks — so a slow lookup
- * never blocks the gate list.
+ * never blocks the gate list. Once evidence is in, an AI brief is generated.
  */
 function GateEvidencePanel({
   workflowId,
@@ -895,7 +983,7 @@ function GateEvidencePanel({
   }
 
   return (
-    <div className="mt-1.5">
+    <div className="mt-1.5 space-y-3">
       {evidenceQuery.isLoading ? (
         <p className="text-sm text-muted-foreground">Gathering evidence…</p>
       ) : evidenceQuery.isError ? (
@@ -910,10 +998,18 @@ function GateEvidencePanel({
           </button>
         </p>
       ) : (
-        <GateEvidenceView
-          evidence={evidenceQuery.data?.evidence}
-          gateKind={gateKind}
-        />
+        <>
+          <GateEvidenceView
+            evidence={evidenceQuery.data?.evidence}
+            gateKind={gateKind}
+          />
+          <GateAiSummary
+            workflowId={workflowId}
+            interactionId={interactionId}
+            armedQueryName={armedQueryName}
+            evidence={evidenceQuery.data?.evidence ?? null}
+          />
+        </>
       )}
     </div>
   );

@@ -174,6 +174,30 @@ const gatherGateEvidenceOutputSchema = z.object({
   evidence: z.record(z.string(), z.unknown()).nullable(),
 });
 
+const summarizeGateEvidenceInputSchema = z.object({
+  /** Workflow whose armed gate we summarise. */
+  workflowId: z.string().min(1),
+  /** Which armed gate (matches the `interactionId` in the armed-gates snapshot). */
+  interactionId: z.string(),
+  /** Armed-gates query name. Defaults to the unprefixed `decisionGateArmed`. */
+  armedQueryName: z.string().min(1).default('decisionGateArmed'),
+  /**
+   * The evidence already gathered via `gatherGateEvidence`, passed back so the
+   * summary doesn't re-run the (slow) registrar/RDAP/on-chain lookups. The gate's
+   * own context (kind, error, allowed actions) is re-read server-side.
+   */
+  evidence: z.record(z.string(), z.unknown()).nullable(),
+});
+
+const summarizeGateEvidenceOutputSchema = z.object({
+  /** AI decision brief, or `null` when DeepSeek is not configured. */
+  summary: z.string().nullable(),
+  /** DeepSeek-R1 chain-of-thought, when the API returns it. */
+  reasoning: z.string().nullable(),
+  /** Model used, for display / provenance. */
+  model: z.string(),
+});
+
 export const adminWorkflowDecisionContract = createContract(
   {},
   {
@@ -191,6 +215,11 @@ export const adminWorkflowDecisionContract = createContract(
       type: 'query',
       input: gatherGateEvidenceInputSchema,
       output: gatherGateEvidenceOutputSchema,
+    },
+    summarizeGateEvidence: {
+      type: 'query',
+      input: summarizeGateEvidenceInputSchema,
+      output: summarizeGateEvidenceOutputSchema,
     },
     sendDecision: {
       type: 'mutation',

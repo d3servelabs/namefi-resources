@@ -12,6 +12,8 @@ import {
 } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
 import { GATE_EVIDENCE_GATHERERS } from './gate-evidence/registry';
+import { summarizeGateDecision } from './gate-evidence/summarize';
+import { DEEPSEEK_V4_FLASH_MODEL } from '#lib/ai/deepseek';
 
 /**
  * Generic operator path for resolving a Temporal decision gate
@@ -213,6 +215,81 @@ export const workflowDecisionRouter = createContractTRPCRouter<
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Failed to gather decision-support evidence for this gate.',
+          cause: error,
+        });
+      }
+    }),
+
+  /**
+   * Generates an AI decision brief (DeepSeek-R1) for an armed gate: re-reads the
+   * gate's context (kind, error, allowed actions) server-side, combines it with
+   * the already-gathered `evidence` passed in, and asks the model to summarise
+   * and recommend an action. On-demand and best-effort — returns `summary: null`
+   * when DeepSeek is not configured; a real API failure surfaces as a retryable
+   * error. Read-only (no workflow state changes), so it requires only READ.
+   */
+  summarizeGateEvidence: adminProcedureWithPermissions(
+    Permission.READ_WORKFLOWS,
+  )
+    .input(adminWorkflowDecisionContract.summarizeGateEvidence.input)
+    .output(adminWorkflowDecisionContract.summarizeGateEvidence.output)
+    .query(async ({ input }) => {
+      const { workflowId, interactionId, armedQueryName, evidence } = input;
+      let armed: ArmedSnapshot;
+      try {
+        await temporalClient.connection.ensureConnected();
+        const handle = temporalClient.workflow.getHandle(workflowId);
+        armed = (await handle.query(armedQueryName)) as ArmedSnapshot;
+      } catch (error) {
+        logger.error(
+          { workflowId, armedQueryName, interactionId, error },
+          'Failed to read armed gate for AI summary on %s',
+          workflowId,
+        );
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'Could not read the decision gate — the workflow may have finished or has no decision gate.',
+          cause: error,
+        });
+      }
+
+      const gate = armed?.gates.find((g) => g.interactionId === interactionId);
+      if (!gate) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message:
+            'This decision gate is no longer armed on the queried registry.',
+        });
+      }
+
+      try {
+        const result = await summarizeGateDecision({
+          gateKind: gate.context?.gateKind,
+          interactionId,
+          alertTitle: gate.context?.alertTitle,
+          alertMessage: gate.context?.alertMessage,
+          error: gate.context?.error,
+          alertDetails: gate.context?.alertDetails,
+          allowedActions: gate.allowedActions,
+          evidence: evidence ?? null,
+        });
+        return (
+          result ?? {
+            summary: null,
+            reasoning: null,
+            model: DEEPSEEK_V4_FLASH_MODEL,
+          }
+        );
+      } catch (error) {
+        logger.error(
+          { workflowId, interactionId, error },
+          'Failed to generate AI gate summary for %s',
+          workflowId,
+        );
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to generate the AI decision summary for this gate.',
           cause: error,
         });
       }
