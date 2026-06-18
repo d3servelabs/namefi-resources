@@ -45,7 +45,7 @@
     "reported": "اتبلّغ عنه",
     "triggerAriaLabel": "بلّغ عن عرض {domain}",
     "dialogTitle": "بلّغ عن عرض",
-    "dialogDescription": "بلّغنا عن مشكلة في <highlight>{domain}</highlight>. الفريق بيراجع البلاغات قبل ما ياخد أي إجراء.",
+    "dialogDescription": "بلّغ عن أي مشكلة في <highlight>{domain}</highlight>. الفريق بيراجع البلاغات قبل ما ياخد أي إجراء.",
     "reasonLabel": "السبب",
     "reasonPlaceholder": "اختار سبب",
     "detailsLabel": "تفاصيل إضافية (اختياري)",
