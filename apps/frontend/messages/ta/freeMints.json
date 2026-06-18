@@ -13,7 +13,7 @@
   "campaignLabel": "எந்த {domain} சப்டொமைனும்",
   "statusBadge": {
     "claimed": "கோரியது",
-    "inProgress": "நடந்துள்ளது",
+    "inProgress": "நடப்பில்",
     "expired": "காலாவதி",
     "available": "உள்ளது"
   },

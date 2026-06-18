@@ -38,7 +38,7 @@
     "sortDirAsc": "ஏறு",
     "sortDirDesc": "இறங்கு",
     "reset": "மீட்டமை",
-    "onlyCurrentPbn": "Only <code>{domain}</code> டொமைன்கள்",
+    "onlyCurrentPbn": "<code>{domain}</code> டொமைன்கள் மட்டும்",
     "filterDomainName": "டொமைன் பெயர்",
     "filterOrderId": "ஆர்டர் ID",
     "filterNftReceivingWallet": "NFT பெறும் வாலட்",
