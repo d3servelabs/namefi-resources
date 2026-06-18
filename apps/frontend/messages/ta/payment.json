@@ -1,0 +1,101 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "கட்டண முறை விவரங்கள்",
+    "description": "உங்கள் கட்டண முறை விவரங்களை உள்ளிடுங்கள். நீங்கள் ஆர்டரை உறுதிப்படுத்தும் வரை நாங்கள் வசூலிக்க மாட்டோம்.",
+    "loading": "கட்டண படிவம் ஏற்றுகிறது...",
+    "unableToLoad": "கட்டண படிவத்தை ஏற்ற முடியவில்லை"
+  },
+  "addPaymentMethodForm": {
+    "processing": "செயலாக்குகிறது...",
+    "submit": "இந்த கட்டண முறையை பயன்படுத்து",
+    "genericError": "பிழை ஏற்பட்டது",
+    "unexpectedError": "எதிர்பாராத பிழை ஏற்பட்டது"
+  },
+  "hybridPaymentCard": {
+    "title": "கட்டண முறை",
+    "total": "மொத்தம்",
+    "useAvailableBalance": "கிடைக்கும் இருப்பை பயன்படுத்து",
+    "nfscAvailable": "{amount} NFSC கிடைக்கிறது",
+    "noNfscBalance": "$NFSC இருப்பு இல்லை",
+    "balanceBreakdown": "இருப்பு விவரம்",
+    "creditCard": "கிரெடிட் கார்டு",
+    "x402SignAuthorization": "இந்த ஆர்டரை சமர்ப்பிக்கும்போது {amount} USD க்கான TransferWithAuthorization ஐ நீங்கள் கையெழுத்திடுவீர்கள்.",
+    "network": "நெட்வொர்க்",
+    "required": "கட்டாயம்",
+    "yourWalletBalance": "உங்கள் வாலட் இருப்பு",
+    "connectWallet": "வாலட் இணை",
+    "loading": "ஏற்றுகிறது...",
+    "unavailable": "கிடைக்கவில்லை",
+    "insufficientUsdcBalance": "இந்த x402 கட்டணத்திற்கு உங்கள் USDC இருப்பு போதுமானதாக இல்லாமல் இருக்கலாம்.",
+    "changeCard": "கார்டு மாற்று",
+    "addOrSelectCard": "கார்டு சேர் அல்லது தேர்வு செய்",
+    "creditCardOptional": "கிரெடிட் கார்டு தேவையில்லை - உங்கள் இருப்பு போதுமானது",
+    "creditCardRequiredForRemaining": "மீதமுள்ள {amount} USD க்கு கிரெடிட் கார்டு தேவை",
+    "creditCardRequiredForFull": "முழு தொகைக்கும் கிரெடிட் கார்டு தேவை",
+    "paymentCoveredByBalance": "கட்டணம் இருப்பால் ஈடுகட்டப்பட்டது"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "x402 கட்டணம் தற்காலிகமாக கிடைக்கவில்லை",
+    "addCreditCard": "தொடர கிரெடிட் கார்டு சேர்க்கவும்",
+    "calculationError": "கட்டண கணக்கீட்டு பிழை. உங்கள் இருப்பு மற்றும் கட்டண முறையை சரிபார்க்கவும்."
+  },
+  "multiPaymentCard": {
+    "title": "பல-கட்டண முறை",
+    "nfscBalance": "NFSC இருப்பு",
+    "usingNfsc": "NFSC இருப்பிலிருந்து {amount} USD பயன்படுத்துகிறது",
+    "addNfscBalance": "NFSC இருப்பு சேர்",
+    "creditCard": "கிரெடிட் கார்டு",
+    "remove": "நீக்கு",
+    "usingCreditCard": "கிரெடிட் கார்டிலிருந்து {amount} USD பயன்படுத்துகிறது",
+    "changeCard": "கார்டு மாற்று",
+    "addOrSelectCard": "கார்டு சேர் அல்லது தேர்வு செய்",
+    "addCreditCard": "கிரெடிட் கார்டு சேர்",
+    "total": "மொத்தம்"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "மீதமுள்ள தொகையை கிரெடிட் கார்டு மூலம் தொடரலாம்",
+    "cardToNfsc": "கட்டணத்தின் ஒரு பகுதியை இருப்பு மூலம் செலுத்தலாம்",
+    "useMultiPayment": "பல-கட்டண முறை பயன்படுத்து"
+  },
+  "selectPaymentMethodCard": {
+    "title": "கட்டண முறை",
+    "total": "மொத்தம்",
+    "useBalance": "இருப்பை பயன்படுத்து",
+    "available": "{amount} கிடைக்கிறது",
+    "useCreditCard": "கிரெடிட் கார்டு பயன்படுத்து",
+    "addOrSelectSavedCard": "சேமித்த கார்டு சேர் அல்லது தேர்வு செய்",
+    "noPaymentRequired": "உங்கள் புதிய டொமைன்களை மகிழ்வோடு பயன்படுத்துங்கள்! நீங்கள் வழங்கிய வாலட் முகவரிக்கு அனுப்புவோம்.",
+    "summary": "சுருக்கம்"
+  },
+  "paymentSummary": {
+    "title": "கட்டண சுருக்கம்",
+    "nfscBalance": "$NFSC இருப்பு",
+    "creditCard": "கிரெடிட் கார்டு",
+    "total": "மொத்தம்"
+  },
+  "nfscBalanceDialog": {
+    "title": "NFSC இருப்பு",
+    "description": "இணைக்கப்பட்ட வாலட்கள் மற்றும் ஆதரிக்கப்படும் சங்கிலிகளில் உங்கள் $NFSC இருப்பை பார்க்கவும்.",
+    "tabBalance": "இருப்பு",
+    "tabOrders": "சமீபத்திய NFSC ஆர்டர்கள்",
+    "totalAvailable": "மொத்த கிடைக்கும் தொகை",
+    "topUp": "டாப் அப்",
+    "showNfscInWallet": "வாலட்டில் NFSC காட்டு",
+    "fetchingBalances": "இருப்புகள் பெறுகிறது...",
+    "emptyNoWallets": "உங்கள் $NFSC இருப்பை பார்க்க வாலட் இணை அல்லது இணைக்கவும்.",
+    "emptyNoBalances": "உங்கள் வாலட்களில் $NFSC இன்னும் கண்டறியப்படவில்லை.",
+    "addFunds": "நிதி சேர்",
+    "ordersDisclaimer": "இவை உங்கள் அனைத்து வாலட்களிலும் கிரெடிட் கார்டு மூலம் NFSC டாப்-அப்கள். NFSC மூலம் செய்யப்பட்ட டொமைன் ஆர்டர்கள் உங்கள் முழு ஆர்டர் வரலாற்றில் தெரியும்.",
+    "emptyOrders": "இன்னும் NFSC டாப்-அப்கள் இல்லை.",
+    "goToPaymentMethods": "கட்டண முறைகளுக்கு செல்",
+    "close": "மூடு",
+    "connectWalletToContinue": "தொடர வாலட் இணைக்கவும்.",
+    "nfscAdded": "NFSC டோக்கன் உங்கள் வாலட்டில் சேர்க்கப்பட்டது",
+    "nfscAddFailed": "NFSC டோக்கனை வாலட்டில் சேர்க்க முடியவில்லை",
+    "nfscAddError": "வாலட்டில் NFSC சேர்க்கத் தோல்வி"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "இன்னும் NFSC ஆர்டர்கள் இல்லை.",
+    "chainFallback": "சங்கிலி {chainId}"
+  }
+}

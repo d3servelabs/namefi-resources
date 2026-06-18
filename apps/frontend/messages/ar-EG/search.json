@@ -1,0 +1,50 @@
+{
+  "header": {
+    "taglineWithNetwork": "ابحث عن نطاق في {parentDomain}",
+    "taglineAllNetworks": "ابحث عن نطاق في جميع الشبكات",
+    "networkLabel": "الشبكة:",
+    "allNetworks": "الكل"
+  },
+  "modeTabs": {
+    "register": "تسجيل",
+    "import": "استيراد"
+  },
+  "input": {
+    "placeholder": "ابحث عن نطاق...",
+    "importPlaceholder": "يمكنك اللصق بأحد التنسيقين:\n\nالتنسيق الأول: نطاق مع رمز التفويض\nexample.com, authcode123\n\nالتنسيق الثاني: نطاقات متعددة (مفصولة بفاصلة أو سطر جديد)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "بحث",
+    "importButton": "استيراد",
+    "clearParentDomainAriaLabel": "مسح النطاق الأصلي",
+    "freeMintTooltipWithParent": "ابحث عن نطاقات فرعية متاحة ضمن {parentDomain} واحصل عليها مجاناً!",
+    "freeMintTooltipAllDomains": "ابحث عن النطاقات المتاحة واحصل عليها مجاناً!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "يتجدد بـ {price}",
+    "owner": "المالك: {owner}",
+    "notRegistered": "غير مسجل",
+    "unsupported": "غير مدعوم",
+    "lockedShort": "مقفل",
+    "temporarilyUnimportable": "لا يمكن استيراده مؤقتاً",
+    "taken": "مأخوذ",
+    "unavailableShort": "محجوز",
+    "temporarilyUnavailable": "غير متاح مؤقتاً",
+    "freeClaim": "احصل عليه مجاناً",
+    "addToWishlist": "إضافة إلى قائمة الرغبات",
+    "removeFromWishlist": "إزالة من قائمة الرغبات",
+    "eppCode": "كود EPP",
+    "savedEppCode": "كود EPP المحفوظ",
+    "marketplace": "السوق",
+    "buyShort": "شراء",
+    "buyOn": "اشترِ من",
+    "buyOnSourceAriaLabel": "اشترِ من {source}",
+    "buyOnSourceFromSellerAriaLabel": "اشترِ من {source} عبر {seller}"
+  },
+  "results": {
+    "errorTitle": "خطأ في البحث",
+    "errorDescription": "حدث خطأ أثناء البحث. يرجى المحاولة مجدداً.",
+    "loadMore": "تحميل المزيد",
+    "noResultsTitle": "لم يُعثر على نطاقات",
+    "noResultsDescription": "لم يُعثر على نطاقات تطابق \"{query}\". جرّب مصطلح بحث مختلفاً."
+  }
+}

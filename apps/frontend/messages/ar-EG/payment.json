@@ -1,0 +1,101 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "تفاصيل طريقة الدفع",
+    "description": "أدخل تفاصيل طريقة الدفع. لن نقوم بأي خصم حتى تؤكد طلبك.",
+    "loading": "جارٍ تحميل نموذج الدفع...",
+    "unableToLoad": "تعذّر تحميل نموذج الدفع"
+  },
+  "addPaymentMethodForm": {
+    "processing": "جارٍ المعالجة...",
+    "submit": "استخدام طريقة الدفع هذه",
+    "genericError": "حدث خطأ",
+    "unexpectedError": "حدث خطأ غير متوقع"
+  },
+  "hybridPaymentCard": {
+    "title": "طريقة الدفع",
+    "total": "الإجمالي",
+    "useAvailableBalance": "استخدام الرصيد المتاح",
+    "nfscAvailable": "{amount} NFSC متاح",
+    "noNfscBalance": "لا يوجد رصيد $NFSC",
+    "balanceBreakdown": "تفاصيل الرصيد",
+    "creditCard": "بطاقة ائتمان",
+    "x402SignAuthorization": "ستوقّع TransferWithAuthorization بقيمة {amount} USD عند إرسال الطلب.",
+    "network": "الشبكة",
+    "required": "مطلوب",
+    "yourWalletBalance": "رصيد محفظتك",
+    "connectWallet": "ربط المحفظة",
+    "loading": "جارٍ التحميل...",
+    "unavailable": "غير متاح",
+    "insufficientUsdcBalance": "قد يكون رصيد USDC لديك غير كافٍ لهذه المدفوعة عبر x402.",
+    "changeCard": "تغيير البطاقة",
+    "addOrSelectCard": "إضافة أو اختيار بطاقة",
+    "creditCardOptional": "البطاقة الائتمانية اختيارية - رصيدك كافٍ",
+    "creditCardRequiredForRemaining": "بطاقة ائتمان مطلوبة للمبلغ المتبقي {amount} USD",
+    "creditCardRequiredForFull": "بطاقة ائتمان مطلوبة للمبلغ الكامل",
+    "paymentCoveredByBalance": "الدفع مغطى بالرصيد"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "الدفع عبر x402 غير متاح مؤقتاً",
+    "addCreditCard": "يرجى إضافة بطاقة ائتمان للمتابعة",
+    "calculationError": "خطأ في حساب الدفع. يرجى التحقق من رصيدك وطريقة الدفع."
+  },
+  "multiPaymentCard": {
+    "title": "دفع متعدد",
+    "nfscBalance": "رصيد NFSC",
+    "usingNfsc": "استخدام {amount} USD من رصيد NFSC",
+    "addNfscBalance": "إضافة رصيد NFSC",
+    "creditCard": "بطاقة ائتمان",
+    "remove": "إزالة",
+    "usingCreditCard": "استخدام {amount} USD من البطاقة الائتمانية",
+    "changeCard": "تغيير البطاقة",
+    "addOrSelectCard": "إضافة أو اختيار بطاقة",
+    "addCreditCard": "إضافة بطاقة ائتمان",
+    "total": "الإجمالي"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "يمكنك إكمال المبلغ المتبقي ببطاقة ائتمان",
+    "cardToNfsc": "يمكنك استخدام رصيدك الحالي لتغطية جزء من المبلغ",
+    "useMultiPayment": "استخدام الدفع المتعدد"
+  },
+  "selectPaymentMethodCard": {
+    "title": "طريقة الدفع",
+    "total": "الإجمالي",
+    "useBalance": "استخدام الرصيد",
+    "available": "{amount} متاح",
+    "useCreditCard": "استخدام البطاقة الائتمانية",
+    "addOrSelectSavedCard": "إضافة أو اختيار بطاقة محفوظة",
+    "noPaymentRequired": "نتمنى أن تستمتع بنطاقاتك الجديدة! سنرسلها إلى عنوان المحفظة الذي أدخلته.",
+    "summary": "ملخص"
+  },
+  "paymentSummary": {
+    "title": "ملخص الدفع",
+    "nfscBalance": "رصيد $NFSC",
+    "creditCard": "بطاقة ائتمان",
+    "total": "الإجمالي"
+  },
+  "nfscBalanceDialog": {
+    "title": "رصيد NFSC",
+    "description": "استعرض رصيد $NFSC المتاح عبر محافظك المرتبطة والشبكات المدعومة.",
+    "tabBalance": "الرصيد",
+    "tabOrders": "طلبات NFSC الأخيرة",
+    "totalAvailable": "إجمالي المتاح",
+    "topUp": "شحن الرصيد",
+    "showNfscInWallet": "إظهار NFSC في المحفظة",
+    "fetchingBalances": "جارٍ جلب الأرصدة...",
+    "emptyNoWallets": "اربط محفظة أو اتصل بها لعرض أرصدة $NFSC.",
+    "emptyNoBalances": "لم يُرصد أي رصيد $NFSC في محافظك بعد.",
+    "addFunds": "إضافة أموال",
+    "ordersDisclaimer": "هذه عمليات شحن NFSC بالبطاقة الائتمانية عبر جميع محافظك. طلبات النطاقات المدفوعة بـ NFSC تظهر في سجل طلباتك الكامل.",
+    "emptyOrders": "لا توجد عمليات شحن NFSC بعد.",
+    "goToPaymentMethods": "الانتقال إلى طرق الدفع",
+    "close": "إغلاق",
+    "connectWalletToContinue": "اتصل بمحفظة للمتابعة.",
+    "nfscAdded": "تمت إضافة رمز NFSC إلى محفظتك",
+    "nfscAddFailed": "تعذّرت إضافة رمز NFSC إلى محفظتك",
+    "nfscAddError": "فشل إضافة NFSC إلى المحفظة"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "لا توجد طلبات NFSC بعد.",
+    "chainFallback": "الشبكة {chainId}"
+  }
+}

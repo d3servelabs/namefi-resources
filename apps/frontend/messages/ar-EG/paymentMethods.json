@@ -1,0 +1,57 @@
+{
+  "loading": {
+    "title": "جارٍ تحميل طرق الدفع",
+    "description": "يُرجى الانتظار…"
+  },
+  "creditCards": {
+    "heading": "طرق الدفع",
+    "addButton": "إضافة بطاقة ائتمان",
+    "cardHolderFallback": "حامل البطاقة",
+    "empty": {
+      "title": "لا توجد طرق دفع",
+      "description": "يمكنك إضافة طريقة دفع جديدة"
+    },
+    "toast": {
+      "saveError": "تعذّر حفظ طريقة الدفع",
+      "deleteSuccess": "تم حذف طريقة الدفع بنجاح",
+      "deleteError": "تعذّر حذف طريقة الدفع"
+    },
+    "deleteDialog": {
+      "title": "حذف طريقة الدفع",
+      "description": "هل أنت متأكد من حذف بطاقة {brand} المنتهية بـ {last4}؟ لا يمكن التراجع عن هذا الإجراء.",
+      "cancel": "إلغاء",
+      "confirm": "حذف"
+    }
+  },
+  "wallets": {
+    "heading": "المحافظ المرتبطة",
+    "linkButton": "ربط محفظة",
+    "showInWallet": "عرض في المحفظة",
+    "addFunds": "إضافة رصيد",
+    "empty": {
+      "title": "لا توجد محافظ مرتبطة",
+      "description": "يمكنك إضافة محفظة جديدة"
+    },
+    "actionDescription": {
+      "addToken": "لإضافة رمز NFSC إلى محفظتك",
+      "charge": "لشحن محفظتك"
+    },
+    "toast": {
+      "requestSentTitle": "تم إرسال الطلب إلى المحفظة",
+      "requestSentDescription": "يُرجى التحقق من محفظتك لإضافة رمز NFSC",
+      "addTokenSuccess": "تمت إضافة رمز NFSC إلى محفظتك بنجاح",
+      "addTokenError": "تعذّرت إضافة رمز NFSC إلى محفظتك",
+      "addTokenFailedTitle": "تعذّرت إضافة الرمز",
+      "unknownError": "خطأ غير معروف",
+      "prepareActionError": "تعذّر تجهيز إجراء المحفظة"
+    }
+  },
+  "saveDialog": {
+    "title": "تفاصيل طريقة الدفع",
+    "description": "أدخل تفاصيل طريقة الدفع",
+    "submit": "حفظ طريقة الدفع",
+    "processing": "جارٍ المعالجة…",
+    "genericError": "حدث خطأ",
+    "unexpectedError": "حدث خطأ غير متوقع"
+  }
+}

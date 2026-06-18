@@ -1,0 +1,29 @@
+{
+  "title": "سكّاتي المجانية",
+  "historyHeading": "السجل",
+  "table": {
+    "item": "العنصر",
+    "issuedOn": "تاريخ الإصدار",
+    "validUntil": "صالح حتى",
+    "status": "الحالة",
+    "claimedDomain": "النطاق المطالب به",
+    "claimedOn": "تاريخ المطالبة"
+  },
+  "campaignItem": "أي نطاق فرعي من <domain>{domain}</domain>",
+  "campaignLabel": "أي نطاق فرعي من {domain}",
+  "statusBadge": {
+    "claimed": "مُطالَب به",
+    "inProgress": "قيد التنفيذ",
+    "expired": "منتهي",
+    "available": "متاح"
+  },
+  "noHistory": "لا يوجد سجل مطالبات حتى الآن.",
+  "emptyTitle": "لا توجد سكّات مجانية بعد",
+  "emptyDescription": "عندما تتلقى فرص مطالبة مجانية، ستظهر هنا.",
+  "card": {
+    "issued": "الإصدار",
+    "validThru": "صالح حتى",
+    "claimNow": "اطلب الآن",
+    "poweredByNamefi": "مدعوم من Namefi"
+  }
+}

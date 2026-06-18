@@ -1,0 +1,165 @@
+{
+  "tabs": {
+    "active": "என் டொமைன்கள்",
+    "inactive": "செயலற்ற டொமைன்கள்",
+    "previouslyOwned": "முன்பு வைத்திருந்த டொமைன்கள்",
+    "otherWallets": "மற்ற வாலட்களில்",
+    "marketplaceOrders": "என் பட்டியல்கள் & சலுகைகள்"
+  },
+  "processingBanner": "<domains></domains> செயலாக்கப்படுகின்றன. நிலையைக் காண <ordersLink>ஆர்டர்கள்</ordersLink> பக்கத்தைப் பார்க்கவும்.",
+  "emptyActive": "செயலில் உள்ள டொமைன்கள் இல்லை",
+  "emptyInactive": "செயலற்ற டொமைன்கள் இல்லை",
+  "emptyPlaceholder": {
+    "title": "டொமைன்கள் எதுவும் இல்லை",
+    "description": "கீழே உள்ள பட்டனை அழுத்தி உங்கள் அடுத்த டொமைனை தேடத் தொடங்குங்கள்",
+    "action": "தேடல் பக்கம்"
+  },
+  "columns": {
+    "selectAll": "அனைத்தும் தேர்ந்தெடு",
+    "selectRow": "வரிசை தேர்ந்தெடு",
+    "domainName": "டொமைன் பெயர் ({count})",
+    "domainNamePlain": "டொமைன் பெயர்",
+    "account": "கணக்கு",
+    "renewal": "புதுப்பித்தல்",
+    "autoEns": "AutoENS",
+    "dateTokenized": "டோக்கனாக்கிய தேதி",
+    "dnsRecords": "DNS பதிவுகள்",
+    "actions": "செயல்கள்",
+    "renewUsdPerYear": "புதுப்பி (USD/yr)"
+  },
+  "table": {
+    "searchPlaceholder": "டொமைன்களை வடிகட்டு...",
+    "emptyMessage": "வடிகட்டிகளுக்கு பொருந்தும் டொமைன்கள் இல்லை",
+    "loadingMessage": "டொமைன்கள் ஏற்றப்படுகின்றன…",
+    "showNftsInWallet": "வாலட்டில் NFT காட்டு",
+    "showNftsInWalletAria": "வாலட்டில் {count, plural, one {# NFT} other {# NFTs}} காட்டு",
+    "filters": {
+      "domainName": "டொமைன் பெயர்",
+      "wallet": "வாலட்",
+      "renewal": "புதுப்பித்தல்",
+      "dateTokenized": "டோக்கனாக்கிய தேதி",
+      "chain": "சங்கிலி"
+    },
+    "toasts": {
+      "autoRenewToggled": "{domain}-க்கு தானியங்கி புதுப்பித்தல் {enabled, select, true {இயக்கப்பட்டது} other {முடக்கப்பட்டது}}",
+      "autoRenewToggleFailed": "{domain}-க்கு தானியங்கி புதுப்பித்தல் மாற்றம் தோல்வியடைந்தது",
+      "autoEnsToggled": "{domain}-க்கு AutoENS {enabled, select, true {இயக்கப்பட்டது} other {முடக்கப்பட்டது}}",
+      "autoEnsToggleFailed": "{domain}-க்கு AutoENS மாற்றம் தோல்வியடைந்தது",
+      "bulkAutoRenewFailed": "{total} டொமைன்களில் {failed} மாற்றம் தோல்வியடைந்தது",
+      "bulkAutoRenewToggled": "{count, plural, one {# டொமைனுக்கு} other {# டொமைன்களுக்கு}} தானியங்கி புதுப்பித்தல் {enabled, select, true {இயக்கப்பட்டது} other {முடக்கப்பட்டது}}",
+      "noNftsToWatch": "வாலட்டில் சேர்க்க NFT எதுவும் இல்லை",
+      "nftsAdded": "வாலட்டில் {count, plural, one {# NFT} other {# NFTs}} சேர்க்கப்பட்டது",
+      "nftsAddFailed": "வாலட்டில் {count, plural, one {# NFT} other {# NFTs}} சேர்க்க முடியவில்லை"
+    }
+  },
+  "otherWallets": {
+    "domain": "டொமைன் ({count})",
+    "nftWallet": "NFT வாலட்",
+    "order": "ஆர்டர்",
+    "viewOrder": "ஆர்டர் பார்"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {டொமைன் புதுப்பி} other {டொமைன்கள் புதுப்பி}}",
+    "descriptionSingle": "{domain} புதுப்பி",
+    "descriptionMultiple": "{count} டொமைன்கள் புதுப்பி",
+    "renewalPeriod": "புதுப்பிப்பு காலம்",
+    "selectYears": "ஆண்டுகள் தேர்ந்தெடு",
+    "yearOption": "{years, plural, one {# ஆண்டு} other {# ஆண்டுகள்}}",
+    "pricePerYear": "ஆண்டுக்கு விலை",
+    "total": "மொத்தம் ({years, plural, one {# ஆண்டு} other {# ஆண்டுகள்}})",
+    "cancel": "ரத்துசெய்",
+    "addingToCart": "கார்ட்டில் சேர்க்கிறோம்...",
+    "addToCart": "கார்ட்டில் சேர்",
+    "addToCartFailed": "டொமைன்களை கார்ட்டில் சேர்க்கத் தோல்வி. மீண்டும் முயற்சிக்கவும்."
+  },
+  "renewPremiumInfo": {
+    "aria": "{domain}-க்கான புதுப்பிப்பு விலை தகவல்",
+    "tooltip": "பிரீமியம் டொமைன்களுக்கு வேறு புதுப்பிப்பு விலை இருக்கலாம்."
+  },
+  "renewalCell": {
+    "auto": "தானி",
+    "autoRenewAria": "{domain} தானியங்கி புதுப்பித்தல்",
+    "expired": "காலாவதி",
+    "usdPerYear": "USD/year"
+  },
+  "autoEnsCell": {
+    "aria": "{domain} Auto-ENS"
+  },
+  "timeLeft": {
+    "expired": "காலாவதி",
+    "days": "{days}d",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}y",
+    "yearsPlus": "{years}y+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "காலாவதியாகாது",
+    "expired": "காலாவதி",
+    "expires": "{datetime} அன்று முடியும்"
+  },
+  "nftPendingBadge": {
+    "minting": "மிண்டிங்…",
+    "changingExpiration": "காலாவதி மாற்றம்…",
+    "changingLock": "லாக் மாற்றம்…",
+    "pending": "நிலுவை…"
+  },
+  "actions": {
+    "listForSale": "விற்பனைக்கு பட்டியலிடு",
+    "findBuyers": "வாங்குபவரை தேடு",
+    "viewOrder": "ஆர்டர் பார்",
+    "viewOrderMenu": "ஆர்டர் பார்",
+    "viewNft": "NFT பார்",
+    "viewNftOn": "{explorer}-ல் NFT பார்",
+    "scan": "ஸ்கேன்",
+    "visitDomain": "டொமைன் திற",
+    "showNftInWallet": "வாலட்டில் NFT காட்டு",
+    "listForSaleAria": "{domain}-ஐ விற்பனைக்கு பட்டியலிடு",
+    "viewOrderAria": "{domain}-க்கான ஆர்டர் பார்",
+    "findBuyersAria": "{domain}-க்கான வாங்குபவரை தேடு",
+    "viewNftAria": "{domain}-க்கான NFT பார்",
+    "visitDomainAria": "{domain} திற",
+    "actionsAria": "{domain}-க்கான செயல்கள்",
+    "showNftInWalletAria": "{domain} NFT வாலட்டில் காட்டு",
+    "nftAddedToast": "{domain} உங்கள் வாலட்டில் சேர்க்கப்பட்டது",
+    "nftAddFailedToast": "{domain}-ஐ வாலட்டில் சேர்க்க முடியவில்லை",
+    "nftAddErrorToast": "NFT வாலட்டில் சேர்க்கத் தோல்வி",
+    "unknownError": "தெரியாத பிழை"
+  },
+  "floatingPanel": {
+    "selected": "தேர்ந்தெடுக்கப்பட்டது",
+    "clearSelection": "தேர்வு நீக்கு",
+    "auto": "தானி",
+    "bulkAutoRenewAria": "{count, plural, one {# டொமைனுக்கு} other {# டொமைன்களுக்கு}} தொகுதி தானியங்கி புதுப்பித்தல்",
+    "bulkAutoRenewMixed": "கலந்த நிலைகள் — இடது: அனைத்தும் முடக்கு, வலது: அனைத்தும் இயக்கு",
+    "bulkAutoRenewOn": "தானியங்கி புதுப்பித்தல் இயக்கத்தில் — அனைத்தும் முடக்க அழுத்துங்கள்",
+    "bulkAutoRenewOff": "தானியங்கி புதுப்பித்தல் முடக்கத்தில் — அனைத்தும் இயக்க அழுத்துங்கள்",
+    "renewAria": "{count, plural, one {# டொமைன்} other {# டொமைன்கள்}} புதுப்பி",
+    "renewTooltip": "{count, plural, one {# டொமைன்} other {# டொமைன்கள்}} புதுப்பி",
+    "setWebRecords": "Web பதிவுகள் அமை",
+    "setUrlForwarding": "URL திருப்புதல் அமை",
+    "setEnsRecord": "ENS பதிவு அமை",
+    "showInWalletAria": "வாலட்டில் {count, plural, one {# NFT} other {# NFTs}} காட்டு",
+    "showInWalletTooltip": "வாலட்டில் {count, plural, one {# NFT} other {# NFTs}} காட்டு"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "சில பட்டியல்கள் தோன்றாமல் போகலாம், அவற்றின் சந்தைகள் பிஸியாக இருக்கலாம்.",
+    "noLinkedWalletsTitle": "இணைக்கப்பட்ட வாலட் இல்லை",
+    "noLinkedWalletsDescription": "மார்க்கெட்பிளேஸ் ஆர்டர்களைக் காண உங்கள் கணக்கில் வாலட் இணைக்கவும்.",
+    "listingsTitle": "என் பட்டியல்கள்",
+    "listingsDescription": "OpenSea மற்றும் Rarible-ல் நீங்கள் போட்ட செயலில் உள்ள விற்பனை பட்டியல்கள். ஒவ்வொரு கார்டிலும் வரும் ஏலங்கள் கீழே காட்டப்படும்.",
+    "noListingsTitle": "செயலில் உள்ள பட்டியல்கள் இல்லை",
+    "noListingsDescription": "டொமைன் விவர பக்கத்தில் உருவாக்கும் பட்டியல்கள் இங்கு தோன்றும்.",
+    "offersTitle": "மற்ற டொமைன்களில் என் சலுகைகள்",
+    "offersDescription": "நீங்கள் வைத்திருக்காத டொமைன்களில் வைத்த ஏலங்கள். அதிக விலை முதலில் வரிசைப்படுத்தப்பட்டது.",
+    "noOffersTitle": "வெளிச்செல்லும் சலுகைகள் இல்லை",
+    "noOffersDescription": "மற்ற டொமைன்களில் வைக்கும் சலுகைகள் இங்கு தோன்றும்.",
+    "view": "பார்",
+    "incomingBids": "வரும் ஏலங்கள்",
+    "loadBidsFailed": "ஏலங்கள் ஏற்றத் தோல்வி: {error}",
+    "noBidsYet": "இன்னும் ஏலங்கள் இல்லை.",
+    "viewBidAria": "{domain}-ல் {source} ஏலம் பார்",
+    "nftAlt": "NFT",
+    "offerWaiting": "உங்கள் சலுகை திறந்திருக்கிறது, விற்பனையாளர் ஏற்கக் காத்திருக்கிறது."
+  }
+}

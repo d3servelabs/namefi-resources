@@ -1,0 +1,89 @@
+{
+  "inYourCart": "في سلة التسوق",
+  "yourCartIsEmpty": "سلة التسوق فارغة",
+  "emptyCartHint": "أضف نطاقات إلى سلتك للبدء",
+  "browseDomains": "تصفح النطاقات",
+  "clearCart": "إفراغ السلة",
+  "clearCartDialog": {
+    "title": "إفراغ السلة؟",
+    "description": "سيؤدي هذا إلى إزالة جميع العناصر من سلتك. يمكنك إضافتها مرة أخرى لاحقاً.",
+    "cancel": "إلغاء"
+  },
+  "errorDialog": {
+    "title": "حدث خطأ ما.",
+    "description": "لا تقلق، لن يتم خصم أي مبلغ. يمكنك المحاولة مجدداً أو العودة إلى سلتك.",
+    "errorDetail": "(Error - {message})",
+    "close": "إغلاق",
+    "tryAgain": "حاول مجدداً"
+  },
+  "cartChanges": {
+    "title": "تغييرات على السلة",
+    "description": "تم إجراء بعض التغييرات على سلتك.",
+    "dismiss": "إغلاق"
+  },
+  "submitButton": {
+    "selectNftWallet": "اختر محفظة NFT للمتابعة",
+    "selectPaymentMethod": "اختر طريقة الدفع للمتابعة",
+    "processing": "جارٍ المعالجة...",
+    "submitOrder": "تأكيد الطلب"
+  },
+  "disabledReason": {
+    "cartUpdating": "سلتك لا تزال تُحدَّث.",
+    "acceptRequirements": "راجع متطلبات التسجيل الظاهرة على عناصر سلتك وافقبلها.",
+    "finishSplittingPayment": "أكمل تقسيم الدفع للمتابعة.",
+    "selectWallet": "اختر محفظة لاستلام نطاقاتك.",
+    "confirmWallet": "أكّد المحفظة التي ستستلم نطاقاتك.",
+    "selectPaymentMethod": "اختر طريقة دفع."
+  },
+  "skeleton": {
+    "selectNftWallet": "اختر محفظة NFT",
+    "paymentMethod": "طريقة الدفع"
+  },
+  "addFromUrl": {
+    "cart": "السلة",
+    "heading": "جارٍ إضافة النطاقات إلى سلتك",
+    "subheading": "انتظر قليلاً بينما نتحقق من النطاقات وتوافرها ونضيفها إلى سلتك.",
+    "domainsRequested": "النطاقات المطلوبة",
+    "steps": {
+      "parse": "التحقق من النطاقات",
+      "fetch": "التحقق من التوافر",
+      "add": "الإضافة إلى السلة",
+      "redirect": "الانتقال إلى سلتك"
+    },
+    "detail": {
+      "added": "أُضيف",
+      "readyToAdd": "جاهز للإضافة",
+      "alreadyInCart": "موجود في السلة",
+      "requiresTransferCode": "يتطلب رمز نقل",
+      "unsupported": "غير مدعوم/غير متاح",
+      "invalid": "غير صالح"
+    },
+    "confirm": {
+      "addingToCart": "جارٍ الإضافة إلى السلة...",
+      "tryAgain": "حاول مجدداً",
+      "addToCart": "أضف إلى السلة",
+      "reviewHelper": "راجع التفاصيل أعلاه ثم أكّد.",
+      "noRegistrableHelper": "لم يُعثر على نطاقات قابلة للتسجيل."
+    },
+    "redirecting": "جارٍ التحويل إلى سلتك…",
+    "errors": {
+      "noDomains": "لم يتم تقديم أي نطاقات.",
+      "validationFailed": "حدث خطأ أثناء التحقق من نطاقاتك.",
+      "addFailed": "حدث خطأ أثناء الإضافة إلى السلة."
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, one {عنصر} other {عناصر}}",
+    "cartTotal": "إجمالي السلة",
+    "domainsReadyToImport": "{count, plural, one {نطاق} other {نطاقات}} جاهز للاستيراد",
+    "addAll": "إضافة الكل",
+    "addToCart": "أضف إلى السلة",
+    "checkout": "الدفع"
+  },
+  "submitErrors": {
+    "x402Disabled": "دفع x402 معطّل حالياً",
+    "x402Unavailable": "دفع x402 غير متاح الآن",
+    "x402ConnectWallet": "صِل محفظة نشطة لتوقيع دفع x402",
+    "orderFailed": "تعذّر إرسال طلبك. يرجى المحاولة مجدداً."
+  }
+}

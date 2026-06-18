@@ -6,7 +6,7 @@
  * Add a new language by extending `locales` + the label/date-locale maps and
  * dropping a `messages/<locale>.json` file.
  */
-export const locales = ['en', 'zh'] as const;
+export const locales = ['en', 'zh', 'ta', 'ar-EG'] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -52,12 +52,16 @@ export const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 export const localeLabels: Record<Locale, string> = {
   en: 'English',
   zh: '中文',
+  ta: 'தமிழ்',
+  'ar-EG': 'العربية',
 };
 
 /** BCP-47 tags for `Intl`/`date-fns` formatting per locale. */
 export const localeDateLocales: Record<Locale, string> = {
   en: 'en-US',
   zh: 'zh-CN',
+  ta: 'ta-IN',
+  'ar-EG': 'ar-EG',
 };
 
 export function isLocale(value: string | undefined | null): value is Locale {

@@ -1,0 +1,140 @@
+{
+  "title": "Namefi Feed",
+  "header": {
+    "usersLink": "பயனர்கள்",
+    "subscribeRss": "RSS மூலம் குழுசேரவும்",
+    "rss": "RSS",
+    "refresh": "புதுப்பி",
+    "refreshing": "புதுப்பிக்கிறது"
+  },
+  "controls": {
+    "searchLabel": "தேடு",
+    "searchPlaceholder": "டொமைன்கள் அல்லது பயனர்களை தேடுங்கள்",
+    "searchPlaceholderWithTld": ".{tld} டொமைன்கள் அல்லது பயனர்களை தேடுங்கள்",
+    "clearSearchAriaLabel": "தேடலை அழி",
+    "tldLabel": "TLD",
+    "allTlds": "அனைத்து TLDs",
+    "tldPlaceholder": "ஒரு TLD தட்டச்சு செய்யவும்",
+    "noTldMatch": "TLD பொருந்தவில்லை.",
+    "selectedHeading": "தேர்ந்தெடுத்தது",
+    "customHeading": "தனிப்பயன்",
+    "useCustomTld": ".{tld} பயன்படுத்து",
+    "commonHeading": "பொதுவான",
+    "clear": "அழி"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "இந்த பகுதியில் பொருந்தும் பட்டியல்கள் இல்லை.",
+    "empty": "பட்டியல்கள் எதுவும் இல்லை.",
+    "loadMore": "மேலும் ஏற்று",
+    "endOfFeed": "Feed முடிந்தது",
+    "backToTopAriaLabel": "மேலே செல்"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# மற்ற டொமைன்} other {# மற்ற டொமைன்கள்}}",
+    "openDomainAriaLabel": "{domain} திற",
+    "openSourceAriaLabel": "{domain} க்கான {source} மூலத்தை திற",
+    "noExcerpt": "சுருக்கம் இல்லை",
+    "justNow": "இப்போதே",
+    "unknownDate": "தெரியவில்லை",
+    "logoAlt": "{name} லோகோ"
+  },
+  "report": {
+    "trigger": "புகாரளி",
+    "reported": "புகாரளிக்கப்பட்டது",
+    "triggerAriaLabel": "{domain} பட்டியலை புகாரளி",
+    "dialogTitle": "பட்டியலை புகாரளி",
+    "dialogDescription": "<highlight>{domain}</highlight> பற்றிய சிக்கல்களை கொடியிடுங்கள். எங்கள் குழு நடவடிக்கை எடுப்பதற்கு முன் புகார்களை மதிப்பாய்வு செய்கிறது.",
+    "reasonLabel": "காரணம்",
+    "reasonPlaceholder": "ஒரு காரணம் தேர்ந்தெடுக்கவும்",
+    "detailsLabel": "விவரங்கள் (விரும்பினால்)",
+    "detailsPlaceholder": "சிக்கலை சரிபார்க்க உதவும் சூழலை சேர்க்கவும்.",
+    "detailsHelp": "உங்கள் புகாரை ஆதரிக்க விருப்ப குறிப்புகள்.",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "விவரங்களை 1000 எழுத்துகளுக்குள் வைக்கவும்.",
+    "cancel": "ரத்து செய்",
+    "submit": "புகாரை சமர்ப்பி",
+    "submitting": "சமர்ப்பிக்கிறது",
+    "submitSuccess": "{domain} க்கான புகார் சமர்ப்பிக்கப்பட்டது.",
+    "submitErrorFallback": "புகாரை சமர்ப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+    "unexpectedResponse": "சேவையகத்திலிருந்து எதிர்பாராத பதில்.",
+    "reasons": {
+      "alreadySold": {
+        "label": "ஏற்கனவே விற்கப்பட்டது",
+        "description": "டொமைன் ஏற்கனவே விற்கப்பட்டுவிட்டது, feed இல் இருக்கக் கூடாது."
+      },
+      "inaccuratePrice": {
+        "label": "தவறான விலை",
+        "description": "பட்டியலிடப்பட்ட விலை தவறாக அல்லது தவறாக வழிநடத்துவதாக தெரிகிறது."
+      },
+      "notForSale": {
+        "label": "விற்பனைக்கு இல்லை",
+        "description": "இந்த பதிவு உண்மையான டொமைன் விற்பனை பட்டியலை குறிக்கவில்லை."
+      },
+      "duplicateListing": {
+        "label": "நகல் பட்டியல்",
+        "description": "இந்த விற்பனை feed இல் ஏற்கனவே பட்டியலிடப்பட்டது."
+      },
+      "other": {
+        "label": "மற்றவை",
+        "description": "சிக்கலை தெளிவாக விவரிக்க விவரங்களை பயன்படுத்தவும்."
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "Feed க்கு திரும்பு",
+    "fallbackSeller": "@unknown",
+    "refresh": "புதுப்பி",
+    "refreshing": "புதுப்பிக்கிறது",
+    "invalidPath": "இந்த feed பயனர் பாதை செல்லுபடியாகாது.",
+    "loadErrorFallback": "விற்பனையாளர் பட்டியல்களை ஏற்றுவதில் தோல்வி.",
+    "emptyListings": "இந்த விற்பனையாளருக்கு பட்டியல்கள் இல்லை.",
+    "endOfListings": "விற்பனையாளர் பட்டியல்கள் முடிந்தன",
+    "loadMore": "மேலும் ஏற்று",
+    "subtitle": {
+      "invalidPath": "செல்லுபடியாகாத feed பயனர் பாதை.",
+      "noDomains": "இந்த விற்பனையாளர் இன்னும் டொமைன்கள் பட்டியலிடவில்லை.",
+      "feedAndNamefi": "{feedCount, plural, one {# feed டொமைன்} other {# feed டொமைன்கள்}} மற்றும் {namefiCount, plural, one {# Namefi-owned டொமைன்} other {# Namefi-owned டொமைன்கள்}}.",
+      "feedOnly": "{feedCount, plural, one {# feed டொமைன்} other {# feed டொமைன்கள்}} இந்த விற்பனையாளரால் பட்டியலிடப்பட்டது."
+    }
+  },
+  "users": {
+    "backToFeed": "Feed க்கு திரும்பு",
+    "title": "பயனர்கள்",
+    "loadingSubtitle": "டொமைன் விற்பனை பட்டியல்களை இடுகையிடும் பயனர்களை ஏற்றுகிறது.",
+    "subtitle": "{count, plural, one {# பொருந்தும் பயனர்} other {# பொருந்தும் பயனர்கள்}}.",
+    "subtitleRefreshed": "{count, plural, one {# பொருந்தும் பயனர்} other {# பொருந்தும் பயனர்கள்}}, {refreshedAt} புதுப்பிக்கப்பட்டது.",
+    "refresh": "புதுப்பி",
+    "exportCsv": "CSV ஏற்றுமதி",
+    "exportSuccess": "பயனர்கள் CSV ஏற்றுமதி செய்யப்பட்டது",
+    "exportErrorTitle": "பயனர்கள் CSV ஏற்றுமதி செய்ய முடியவில்லை",
+    "exportErrorFallback": "மீண்டும் முயற்சிக்கவும்.",
+    "searchPlaceholder": "கைபிடி, டொமைன் அல்லது பதிவு உரையை தேடுங்கள்",
+    "clearSearchAriaLabel": "தேடலை அழி",
+    "minPostsAriaLabel": "குறைந்தபட்ச பதிவுகள்",
+    "minPostsOption": "{count}+ பதிவுகள்",
+    "activeWithinAriaLabel": "இதற்குள் செயலில்",
+    "anyTime": "எந்த நேரமும்",
+    "activeWithinDays": "{count} நாட்கள்",
+    "lastDays": "கடைசி{count}நா",
+    "clear": "அழி",
+    "columns": {
+      "user": "பயனர்",
+      "domains": "டொமைன்கள்",
+      "cadence": "வழக்கம்",
+      "lastPost": "கடைசி பதிவு"
+    },
+    "domainsPerPost": "{count} / பதிவு",
+    "postsPerWeek": "பதிவுகள் / வாரம்",
+    "namefiOwned": "{count} Namefi-owned",
+    "today": "இன்று",
+    "daysAgo": "{count}நா",
+    "unknownDate": "தெரியவில்லை",
+    "emptyThreshold": "இந்த வரம்பில் பயனர்கள் இல்லை.",
+    "loadingMore": "மேலும் பயனர்களை ஏற்றுகிறது",
+    "loadMore": "மேலும் ஏற்று",
+    "listings": "பட்டியல்கள்",
+    "post": "பதிவு"
+  }
+}

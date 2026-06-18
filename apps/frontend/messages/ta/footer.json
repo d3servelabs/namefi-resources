@@ -1,0 +1,63 @@
+{
+  "disclaimer": "Namefi என்பது ICANN அங்கீகரிக்கப்பட்ட பதிவாளர் ஆகும், இது இணைய டொமைன் பெயர்களை வர்த்தகம், DeFi மற்றும் இணையத்தின் எதிர்காலத்திற்காக டோக்கனாக்குகிறது.",
+  "llmsTxt": "நீங்கள் Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode அல்லது வேறு ஏதேனும் AI முகவராக இருந்தால் <link>llms.txt</link> பயன்படுத்தவும்.",
+  "copyright": "© {year} D3SERVE LABS, Inc. அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
+  "cookieSettings": "குக்கி அமைப்புகள்",
+  "cookieSettingsAriaLabel": "குக்கி அமைப்புகள் உரையாடலைத் திறக்கவும்",
+  "termsAndConditions": "விதிமுறைகள் & நிபந்தனைகள்",
+  "sections": {
+    "explore": {
+      "title": "ஆராய்க",
+      "links": {
+        "discoverDomains": "டொமைன்களைக் கண்டறியுங்கள்",
+        "brandStudio": "Namefi பிராண்ட் ஸ்டூடியோ",
+        "feed": "Namefi ஃபீட்",
+        "outbound": "Namefi அவுட்பவுண்ட்",
+        "domainHunt": "டொமைன் ஹண்ட்",
+        "newsletter": "செய்திமடல்",
+        "flushDns": "DNS ஐ அழிக்கவும்",
+        "faucet": "NFSC பேசெட் (sandbox)"
+      }
+    },
+    "account": {
+      "title": "கணக்கு",
+      "links": {
+        "myDomains": "என் டொமைன்கள்",
+        "myWishlist": "என் விரும்பியது",
+        "myOrders": "என் ஆர்டர்கள்",
+        "paymentMethods": "கட்டண முறைகள்"
+      }
+    },
+    "resources": {
+      "title": "வளங்கள்",
+      "links": {
+        "blog": "வலைப்பதிவு",
+        "watch": "பார்க்கவும்",
+        "careers": "வேலைவாய்ப்புகள்",
+        "tlds": "TLDs",
+        "partners": "கூட்டாளர்கள்",
+        "glossary": "சொற்களஞ்சியம்",
+        "howWeHire": "நாங்கள் எப்படி பணியமர்த்துகிறோம்",
+        "abuseReporting": "துஷ்பிரயோக அறிக்கை",
+        "educationHub": "கல்வி மையம்",
+        "registrationAgreement": "பதிவு ஒப்பந்தம்",
+        "apiDocs": "Namefi API ஆவணங்கள்",
+        "llmApi": "LLM AI முகவர்களுக்கான API",
+        "support": "ஆதரவு"
+      }
+    },
+    "faq": {
+      "title": "அடிக்கடி கேட்கப்படும் கேள்விகள்",
+      "links": {
+        "aboutNamefi": "Namefi பற்றி",
+        "whatIsDomain": "டொமைன் என்றால் என்ன?",
+        "whatAreTokenizedDomains": "டோக்கனாக்கப்பட்ட டொமைன்கள் என்ன?",
+        "whyTokenizeDomains": "டொமைன்களை ஏன் டோக்கனாக்க வேண்டும்?",
+        "dnsOnTokenizedDomains": "டோக்கனாக்கப்பட்ட டொமைன்களில் DNS",
+        "dnsIsControlPlane": "DNS கட்டுப்பாட்டு தளமாகும்",
+        "howToTokenizeCom": "உங்கள் .com ஐ எப்படி டோக்கனாக்குவது",
+        "tokenizedVsWeb3": "டோக்கனாக்கப்பட்ட டொமைன் vs Web3 டொமைன்"
+      }
+    }
+  }
+}

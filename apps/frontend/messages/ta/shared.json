@@ -1,0 +1,84 @@
+{
+  "authRequired": {
+    "title": "உள்நுழைவு தேவை",
+    "description": "தொடர உள்நுழையவும்"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "இந்தச் செயலை முடிக்க",
+    "title": {
+      "wrongWallet": "தவறான வாலட் இணைக்கப்பட்டுள்ளது",
+      "settingActive": "செயலில் வாலட் அமைக்கிறது",
+      "connect": "உங்கள் வாலட்டை இணைக்கவும்"
+    },
+    "description": {
+      "wrongWallet": "தொடர சரியான வாலட்டை இணைக்கவும்.",
+      "settingActive": "உங்கள் வாலட்டை செயலில் அமைக்கும் வரை காத்திருக்கவும்...",
+      "connect": "உங்கள் வாலட்டை {actionDescription} இணைக்கவும்."
+    },
+    "checkingStatus": "வாலட் நிலை சரிபார்க்கிறது...",
+    "settingAsActive": "வாலட்டை செயலில் அமைக்கிறது...",
+    "requiredWallet": "தேவையான வாலட்",
+    "waitingForConnection": "வாலட் இணைப்பிற்காக காத்திருக்கிறது...",
+    "differentWalletConnected": "வேறு வாலட் இணைக்கப்பட்டது",
+    "youConnected": "நீங்கள் இணைத்தது",
+    "butWeNeed": "எங்களுக்கு தேவையது",
+    "connectedSuccessfully": "வாலட் வெற்றிகரமாக இணைக்கப்பட்டது",
+    "cancel": "ரத்துசெய்",
+    "connecting": "இணைக்கிறது...",
+    "connectWallet": "வாலட் இணை",
+    "tryAgain": "மீண்டும்",
+    "next": "அடுத்து",
+    "toast": {
+      "setActiveFailed": "செயலில் வாலட் அமைக்க தவறியது",
+      "connectFailed": "வாலட் இணைக்க தவறியது",
+      "unknownError": "தெரியாத பிழை"
+    }
+  },
+  "countryInput": {
+    "placeholder": "நாட்டைத் தேர்ந்தெடுக்கவும்",
+    "searchPlaceholder": "நாடுகளை தேடவும்...",
+    "noResults": "நாடு கிடைக்கவில்லை.",
+    "clearSelection": "தேர்வை நீக்கவும்"
+  },
+  "myDomains": {
+    "heading": "என் டொமைன்கள்"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "இன்னும் குறியிடப்படவில்லை",
+    "emptyIdentifier": "NFT களைக் காண வாலட் முகவரி அல்லது ENS பெயரை உள்ளிடவும்.",
+    "invalidIdentifier": "இது சரியான வாலட் முகவரி அல்லது ENS பெயராக தெரியவில்லை.",
+    "invalidIdentifierHint": "வாலட்கள் 0x-முன்னொட்டு கொண்டிருக்க வேண்டும்; ENS பெயர்களில் குறைந்தது ஒரு புள்ளி தேவை.",
+    "ensResolveFailed": "அந்த ENS பெயரை தீர்க்க முடியவில்லை.",
+    "ensResolveFailedHint": "எழுத்துப்பிழை சரிபார்க்கவும் அல்லது சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்.",
+    "noWalletResolved": "உள்ளீட்டிலிருந்து வாலட்டை தீர்க்க முடியவில்லை.",
+    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "இந்த வாலட்டிற்கான டொமைன்களை ஏற்ற முடியவில்லை.",
+    "loadDomainsFailedHint": "பக்கத்தை புதுப்பித்து மீண்டும் முயற்சிக்கவும்.",
+    "noNftsFound": "இந்த வாலட்டில் Namefi NFT கள் எதுவும் இல்லை.",
+    "noNftsFoundHint": "வாலட் முகவரி அல்லது ENS பெயரை சரிபார்க்கவும், அல்லது குறியீட்டு முடியும் வரை காத்திருக்கவும்.",
+    "unknownNetwork": "தெரியாத நெட்வொர்க்",
+    "explorer": "Explorer",
+    "viewOnExplorer": "எக்ஸ்ப்ளோரர்இல் பார்க்கவும்",
+    "viewOn": "{explorer}இல் பார்க்கவும்",
+    "network": "நெட்வொர்க்",
+    "expiration": "காலாவதி",
+    "wallet": "வாலட்",
+    "ens": "ENS: {name}",
+    "copiedToClipboard": "கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது",
+    "copyFailed": "நகலெடுக்கல் தவறியது",
+    "copyFailedDescription": "அந்த மதிப்பை நகலெடுக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
+  },
+  "instantBuyModal": {
+    "title": "{domain} வாங்கவும்",
+    "description": "1 வருட பதிவிற்கான கொள்முதலை முடிக்கவும்",
+    "domain": "டொமைன்",
+    "pricePerYear": "{price} USD / ஆண்டு",
+    "selectNftWallet": "தொடர NFT வாலட்டைத் தேர்ந்தெடுக்கவும்",
+    "processing": "செயலாக்கிறது...",
+    "buyNow": "வாங்கவும்",
+    "errorTitle": "ஐயோ! ஏதோ தவறு நடந்தது.",
+    "errorDescription": "கவலைப்படாதீர்கள், கட்டணம் வசூலிக்கப்படாது. மீண்டும் முயற்சிக்கலாம்.",
+    "errorDetail": "(பிழை - {error})",
+    "close": "மூடவும்"
+  }
+}

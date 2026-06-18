@@ -1,0 +1,165 @@
+{
+  "tabs": {
+    "active": "نطاقاتي",
+    "inactive": "النطاقات غير النشطة",
+    "previouslyOwned": "النطاقات السابقة",
+    "otherWallets": "في محافظ أخرى",
+    "marketplaceOrders": "قوائمي وعروضي"
+  },
+  "processingBanner": "<domains></domains> قيد المعالجة. تفضّل بزيارة <ordersLink>الطلبات</ordersLink> لمتابعة حالتها.",
+  "emptyActive": "لا توجد نطاقات نشطة",
+  "emptyInactive": "لا توجد نطاقات غير نشطة",
+  "emptyPlaceholder": {
+    "title": "لم يُعثر على نطاقات",
+    "description": "ابدأ البحث عن نطاقك التالي بالنقر على الزر أدناه",
+    "action": "صفحة البحث"
+  },
+  "columns": {
+    "selectAll": "تحديد الكل",
+    "selectRow": "تحديد الصف",
+    "domainName": "اسم النطاق ({count})",
+    "domainNamePlain": "اسم النطاق",
+    "account": "الحساب",
+    "renewal": "التجديد",
+    "autoEns": "AutoENS",
+    "dateTokenized": "تاريخ الترميز",
+    "dnsRecords": "سجلات DNS",
+    "actions": "الإجراءات",
+    "renewUsdPerYear": "التجديد (USD/yr)"
+  },
+  "table": {
+    "searchPlaceholder": "تصفية النطاقات...",
+    "emptyMessage": "لا توجد نطاقات تطابق الفلاتر",
+    "loadingMessage": "جارٍ تحميل النطاقات…",
+    "showNftsInWallet": "عرض NFTs في المحفظة",
+    "showNftsInWalletAria": "عرض {count, plural, one {# NFT} other {# NFTs}} في المحفظة",
+    "filters": {
+      "domainName": "اسم النطاق",
+      "wallet": "المحفظة",
+      "renewal": "التجديد",
+      "dateTokenized": "تاريخ الترميز",
+      "chain": "السلسلة"
+    },
+    "toasts": {
+      "autoRenewToggled": "التجديد التلقائي {enabled, select, true {مُفعَّل} other {مُعطَّل}} لـ {domain}",
+      "autoRenewToggleFailed": "فشل تحديث التجديد التلقائي لـ {domain}",
+      "autoEnsToggled": "AutoENS {enabled, select, true {مُفعَّل} other {مُعطَّل}} لـ {domain}",
+      "autoEnsToggleFailed": "فشل تحديث AutoENS لـ {domain}",
+      "bulkAutoRenewFailed": "فشل تحديث {failed} من أصل {total} نطاق",
+      "bulkAutoRenewToggled": "التجديد التلقائي {enabled, select, true {مُفعَّل} other {مُعطَّل}} لـ {count, plural, one {# نطاق} other {# نطاقات}}",
+      "noNftsToWatch": "لا توجد NFTs متاحة لإضافتها إلى محفظتك",
+      "nftsAdded": "تمت إضافة {count, plural, one {# NFT} other {# NFTs}} إلى محفظتك",
+      "nftsAddFailed": "تعذّر إضافة {count, plural, one {# NFT} other {# NFTs}} إلى محفظتك"
+    }
+  },
+  "otherWallets": {
+    "domain": "النطاق ({count})",
+    "nftWallet": "محفظة NFT",
+    "order": "الطلب",
+    "viewOrder": "عرض الطلب"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {تجديد نطاق} other {تجديد نطاقات}}",
+    "descriptionSingle": "تجديد {domain}",
+    "descriptionMultiple": "تجديد {count} نطاقات",
+    "renewalPeriod": "فترة التجديد",
+    "selectYears": "اختر السنوات",
+    "yearOption": "{years, plural, one {# سنة} other {# سنوات}}",
+    "pricePerYear": "السعر سنوياً",
+    "total": "الإجمالي ({years, plural, one {# سنة} other {# سنوات}})",
+    "cancel": "إلغاء",
+    "addingToCart": "جارٍ الإضافة إلى السلة...",
+    "addToCart": "أضف إلى السلة",
+    "addToCartFailed": "فشلت إضافة النطاقات إلى السلة. حاول مجدداً."
+  },
+  "renewPremiumInfo": {
+    "aria": "معلومات سعر تجديد {domain}",
+    "tooltip": "قد يكون لنطاقات بريميوم سعر تجديد مختلف."
+  },
+  "renewalCell": {
+    "auto": "آلي",
+    "autoRenewAria": "التجديد التلقائي لـ {domain}",
+    "expired": "منتهي",
+    "usdPerYear": "USD/year"
+  },
+  "autoEnsCell": {
+    "aria": "Auto-ENS لـ {domain}"
+  },
+  "timeLeft": {
+    "expired": "منتهي",
+    "days": "{days}د",
+    "monthsExact": "{months}ش",
+    "monthsPlus": "{months}ش+",
+    "yearsExact": "{years}س",
+    "yearsPlus": "{years}س+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "لا تنتهي",
+    "expired": "منتهية",
+    "expires": "تنتهي {datetime}"
+  },
+  "nftPendingBadge": {
+    "minting": "جارٍ السك…",
+    "changingExpiration": "جارٍ تحديث الانتهاء…",
+    "changingLock": "جارٍ تحديث القفل…",
+    "pending": "قيد المعالجة…"
+  },
+  "actions": {
+    "listForSale": "عرض للبيع",
+    "findBuyers": "البحث عن مشترين",
+    "viewOrder": "عرض الطلب",
+    "viewOrderMenu": "عرض الطلب",
+    "viewNft": "عرض NFT",
+    "viewNftOn": "عرض NFT على {explorer}",
+    "scan": "فحص",
+    "visitDomain": "زيارة النطاق",
+    "showNftInWallet": "عرض NFT في المحفظة",
+    "listForSaleAria": "عرض {domain} للبيع",
+    "viewOrderAria": "عرض الطلب الخاص بـ {domain}",
+    "findBuyersAria": "البحث عن مشترين لـ {domain}",
+    "viewNftAria": "عرض NFT الخاص بـ {domain}",
+    "visitDomainAria": "زيارة {domain}",
+    "actionsAria": "إجراءات لـ {domain}",
+    "showNftInWalletAria": "عرض NFT الخاص بـ {domain} في المحفظة",
+    "nftAddedToast": "تمت إضافة {domain} إلى محفظتك",
+    "nftAddFailedToast": "تعذّر إضافة {domain} إلى محفظتك",
+    "nftAddErrorToast": "فشلت إضافة NFT إلى المحفظة",
+    "unknownError": "خطأ غير معروف"
+  },
+  "floatingPanel": {
+    "selected": "محدد",
+    "clearSelection": "مسح التحديد",
+    "auto": "آلي",
+    "bulkAutoRenewAria": "التجديد التلقائي الجماعي لـ {count, plural, one {# نطاق} other {# نطاقات}}",
+    "bulkAutoRenewMixed": "حالات مختلطة — انقر يساراً لتعطيل الكل، يميناً لتفعيل الكل",
+    "bulkAutoRenewOn": "التجديد التلقائي مُفعَّل — انقر لتعطيل الكل",
+    "bulkAutoRenewOff": "التجديد التلقائي مُعطَّل — انقر لتفعيل الكل",
+    "renewAria": "تجديد {count, plural, one {# نطاق} other {# نطاقات}}",
+    "renewTooltip": "تجديد {count, plural, one {# نطاق} other {# نطاقات}}",
+    "setWebRecords": "تعيين سجلات الويب",
+    "setUrlForwarding": "تعيين إعادة توجيه URL",
+    "setEnsRecord": "تعيين سجل ENS",
+    "showInWalletAria": "عرض {count, plural, one {# NFT} other {# NFTs}} في المحفظة",
+    "showInWalletTooltip": "عرض {count, plural, one {# NFT} other {# NFTs}} في المحفظة"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "قد لا تظهر بعض القوائم لأن أسواقها مشغولة.",
+    "noLinkedWalletsTitle": "لا توجد محافظ مرتبطة",
+    "noLinkedWalletsDescription": "اربط محفظة بحسابك لعرض طلبات السوق.",
+    "listingsTitle": "قوائمي",
+    "listingsDescription": "قوائم البيع النشطة التي نشرتها على OpenSea وRarible. يعرض كل بطاقة العروض الواردة في الأسفل.",
+    "noListingsTitle": "لا توجد قوائم نشطة",
+    "noListingsDescription": "القوائم التي تنشئها على صفحة تفاصيل النطاق ستظهر هنا.",
+    "offersTitle": "عروضي على نطاقات أخرى",
+    "offersDescription": "العروض التي قدّمتها على نطاقات لا تمتلكها. مرتبة من الأعلى سعراً.",
+    "noOffersTitle": "لا توجد عروض صادرة",
+    "noOffersDescription": "العروض التي تقدّمها على نطاقات أخرى ستظهر هنا.",
+    "view": "عرض",
+    "incomingBids": "العروض الواردة",
+    "loadBidsFailed": "تعذّر تحميل العروض: {error}",
+    "noBidsYet": "لا توجد عروض بعد.",
+    "viewBidAria": "عرض عرض {source} على {domain}",
+    "nftAlt": "NFT",
+    "offerWaiting": "عرضك مفتوح وفي انتظار موافقة البائع."
+  }
+}

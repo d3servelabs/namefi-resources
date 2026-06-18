@@ -1,0 +1,107 @@
+{
+  "features": {
+    "heading": "مميزات Namefi",
+    "eyebrow": "مبني للمستقبل",
+    "items": {
+      "ownership": {
+        "title": "تملّك أسرع وأكثر أمانًا",
+        "description": "حوّل أسماء DNS التقليدية إلى NFTs لتتم عمليات النقل في ثوانٍ مع سجل ملكية واضح على البلوكتشين."
+      },
+      "ai": {
+        "title": "إمكانات الذكاء الاصطناعي بين يديك",
+        "description": "يكشف Namefi AI عن رؤى التسمية وأفكار العلامة التجارية والإلهام التصميمي لتبدأ كل تسجيل بذكاء أكبر."
+      },
+      "marketplace": {
+        "title": "أصول جاهزة للسوق",
+        "description": "انقل نطاقاتك مباشرةً إلى أسواق NFT وتداولها بأمان على البلوكتشين."
+      }
+    }
+  },
+  "story": {
+    "tokenization": {
+      "badge": "Namefi NFTs",
+      "title": "Namefi NFTs تحمي ملكية DNS على البلوكتشين.",
+      "description": "يُسكّ كل NFT عند الاستيراد ويُحرق عند التصدير، وهو دليل قابل للتحقق على السيطرة على نطاقك.",
+      "highlights": {
+        "mintedOnImport": "يُسكّ عند الاستيراد",
+        "autoEns": "دعم AutoENS",
+        "marketplaceReady": "جاهز للسوق"
+      },
+      "media": {
+        "previewAlt": "معاينة Namefi NFT",
+        "previewEyebrow": "معاينة Namefi NFT",
+        "previewTitle": "ملكية ترافق نطاقك أينما ذهب"
+      }
+    },
+    "intelligence": {
+      "badge": "Namefi Brand Studio",
+      "title": "أطلق توجهات العلامة التجارية وأفكار النطاقات في دقائق.",
+      "description": "يجمع Namefi AI بيانات التوفر مع المخرجات الإبداعية لتتحقق من فكرتك وتعاين الملصقات وتنتقل مباشرةً إلى التسجيل.",
+      "highlights": {
+        "domainGuidedPrompts": "توجيهات مستندة إلى النطاق",
+        "logosPosters": "شعارات وملصقات",
+        "shareReady": "أصول جاهزة للمشاركة"
+      },
+      "media": {
+        "eyebrow": "سير عمل الذكاء الاصطناعي",
+        "generateTitle": "توليد حزم العلامة التجارية",
+        "generateDescription": "شعارات وملصقات ونصوص مضبوطة على نطاقك وجمهورك.",
+        "portfolioTitle": "اعمل من محفظتك",
+        "portfolioDescription": "اختر نطاق Namefi الذي تملكه وخصّص التوجه الإبداعي حوله.",
+        "shareTitle": "شارك فورًا",
+        "shareDescription": "صدّر الأصول للزملاء أو منصات التواصل الاجتماعي برابط واحد."
+      }
+    },
+    "operations": {
+      "badge": "التحكم في DNS والتجديد",
+      "title": "أبقِ نطاقاتك قابلة للحل وموقّعة ومجدَّدة تلقائيًا.",
+      "description": "أدر مناطق DNS وجدوِل التجديدات وحافظ على روابط DNSSEC + ENS دون الحاجة إلى التنقل بين مزودي التسجيل أو السكريبتات.",
+      "highlights": {
+        "dnssecAutoEns": "DNSSEC + AutoENS",
+        "autoRenew": "حماية التجديد التلقائي",
+        "validatedZoneEditor": "محرر المناطق المتحقق منه"
+      },
+      "media": {
+        "eyebrow": "نظرة عامة على العمليات",
+        "dnssecTitle": "DNSSEC & AutoENS",
+        "dnssecDescription": "فعّل سير عمل التوقيع و DNSSEC بدون رسوم غاز لتحليل أسماء DNS على البلوكتشين عبر ENS تلقائيًا.",
+        "autoRenewTitle": "ضمانات التجديد التلقائي",
+        "autoRenewDescription": "احفظ تفضيلات الدفع مرة واحدة ودع Namefi يعيد محاولة التجديد حتى لا تنتهي النطاقات الحيوية بشكل غير متوقع.",
+        "dnsTitle": "إدارة DNS بنقرة واحدة",
+        "dnsDescription": "عدّل السجلات في واجهة تتحقق من كل تغيير قبل تطبيقه، دون الحاجة إلى لوحات تحكم مزودي التسجيل."
+      }
+    }
+  },
+  "smartContracts": {
+    "heading": "عقود Namefi الذكية",
+    "description": "مفتوحة المصدر على Ethereum و Base ليتمكن أي شخص من التحقق من كل وظيفة.",
+    "weLove": "نحن",
+    "opensource": "مفتوح المصدر"
+  },
+  "poweredBy": {
+    "heading": "مدعوم من",
+    "description": "بنية تحتية نعتمد عليها كل يوم."
+  },
+  "supporting": {
+    "heading": "ندعم بفخر",
+    "description": "تداول وموّل Namefi NFTs عبر المنظومة البيئية."
+  },
+  "backers": {
+    "heading": "بدعم الشركاء والمستثمرين وبرامج المنح",
+    "description": "تحظى Namefi بدعم كبرى الصناديق والمسرّعات ومزودي البنية التحتية في web3.",
+    "filters": {
+      "all": "الكل",
+      "investor": "المستثمرون",
+      "partner": "الشركاء",
+      "grant": "المنح"
+    }
+  },
+  "community": {
+    "heading": "انضم إلى مجتمع Namefi",
+    "description": "شبكة عالمية من مالكي النطاقات والمطورين والمساهمين وعشاق البلوكتشين.",
+    "newsletter": {
+      "title": "اشترك في نشرتنا البريدية",
+      "description": "اشترك للحصول على الإصدارات الجديدة والتكاملات وأبرز أخبار المجتمع."
+    }
+  }
+}

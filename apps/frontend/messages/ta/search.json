@@ -1,0 +1,50 @@
+{
+  "header": {
+    "taglineWithNetwork": "{parentDomain} இல் டொமைன் தேடுங்கள்",
+    "taglineAllNetworks": "அனைத்து நெட்வொர்க்குகளிலும் டொமைன் தேடுங்கள்",
+    "networkLabel": "நெட்வொர்க்:",
+    "allNetworks": "எல்லாம்"
+  },
+  "modeTabs": {
+    "register": "பதிவு செய்",
+    "import": "இறக்குமதி"
+  },
+  "input": {
+    "placeholder": "டொமைன் தேடுங்கள்...",
+    "importPlaceholder": "இரண்டு வடிவங்களில் ஒட்டலாம்:\n\nவடிவம் 1: auth code உடன் டொமைன்\nexample.com, authcode123\n\nவடிவம் 2: பல டொமைன்கள் (கமா அல்லது வரி இடைவெளியில்)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "தேடு",
+    "importButton": "இறக்குமதி",
+    "clearParentDomainAriaLabel": "பேரன்ட் டொமைனை அழி",
+    "freeMintTooltipWithParent": "{parentDomain} கீழ் கிடைக்கும் சப்டொமைன்களை இலவசமாக பெறுங்கள்!",
+    "freeMintTooltipAllDomains": "கிடைக்கும் டொமைன்களை இலவசமாக பெறுங்கள்!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "{price} இல் புதுப்பிக்கும்",
+    "owner": "உரிமையாளர்: {owner}",
+    "notRegistered": "பதிவு செய்யப்படவில்லை",
+    "unsupported": "ஆதரிக்கப்படவில்லை",
+    "lockedShort": "பூட்டல்",
+    "temporarilyUnimportable": "தற்காலிகமாக இறக்குமதி செய்ய இயலாது",
+    "taken": "பதிந்த",
+    "unavailableShort": "இல்லை",
+    "temporarilyUnavailable": "தற்காலிகமாக கிடைக்கவில்லை",
+    "freeClaim": "இலவச கோரிக்கை",
+    "addToWishlist": "விருப்பப்பட்டியலில் சேர்",
+    "removeFromWishlist": "விருப்பப்பட்டியலில் இருந்து நீக்கு",
+    "eppCode": "EPP குறியீடு",
+    "savedEppCode": "சேமிக்கப்பட்ட EPP குறியீடு",
+    "marketplace": "மார்க்கெட்பிளேஸ்",
+    "buyShort": "வாங்கு",
+    "buyOn": "இதில் வாங்கு",
+    "buyOnSourceAriaLabel": "{source} இல் வாங்கு",
+    "buyOnSourceFromSellerAriaLabel": "{source} இல் {seller} இடமிருந்து வாங்கு"
+  },
+  "results": {
+    "errorTitle": "தேடல் பிழை",
+    "errorDescription": "தேடும்போது பிழை ஏற்பட்டது. மீண்டும் முயற்சிக்கவும்.",
+    "loadMore": "மேலும் ஏற்று",
+    "noResultsTitle": "டொமைன்கள் எதுவும் இல்லை",
+    "noResultsDescription": "\"{query}\" க்கு பொருந்தும் டொமைன்கள் இல்லை. வேறு வார்த்தையில் தேடுங்கள்."
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "language": "மொழி",
+  "languageSelector": {
+    "label": "மொழி",
+    "ariaLabel": "மொழியை மாற்று"
+  },
+  "actions": {
+    "signIn": "உள்நுழை",
+    "loading": "ஏற்றுகிறது...",
+    "tryAgain": "மறுமுயல்",
+    "dismiss": "மூடு",
+    "contactSupport": "ஆதரவை தொடர்பு",
+    "cancel": "ரத்துசெய்",
+    "close": "மூடு",
+    "save": "சேமி",
+    "edit": "திருத்து",
+    "delete": "நீக்கு",
+    "remove": "அகற்று",
+    "view": "காண்",
+    "refresh": "புதுப்பி",
+    "submit": "சமர்ப்பி",
+    "processing": "செயலாக்கம்...",
+    "loadMore": "மேலும் காண்",
+    "connectWallet": "வாலட் இணை",
+    "goBack": "திரும்பு",
+    "approve": "அனுமதி",
+    "reject": "நிராகரி",
+    "disable": "முடக்கு"
+  },
+  "status": {
+    "created": "உருவானது",
+    "processing": "செயலாக்கம்",
+    "succeeded": "வெற்றி",
+    "completed": "முடிந்தது",
+    "failed": "தோல்வி",
+    "cancelled": "ரத்துசெய்தது",
+    "partiallyCompleted": "பகுதியாக முடிந்தது",
+    "waitingForUser": "பயனர் தேவை",
+    "pending": "நிலுவையில்",
+    "refunded": "மீளடைவு",
+    "requiresCapture": "கைப்பற்றல் தேவை",
+    "unknown": "தெரியாத"
+  },
+  "signIn": {
+    "loadFailedTitle": "உள்நுழைவு ஏற்றல் தோல்வி",
+    "loadFailedDescription": "உள்நுழைவு செயல்முறை ஏற்றுவதில் தோல்வி ஏற்பட்டது."
+  }
+}

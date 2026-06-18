@@ -1,0 +1,48 @@
+{
+  "language": "اللغة",
+  "languageSelector": {
+    "label": "اللغة",
+    "ariaLabel": "تغيير اللغة"
+  },
+  "actions": {
+    "signIn": "تسجيل دخول",
+    "loading": "يتم التحميل...",
+    "tryAgain": "حاول مجدداً",
+    "dismiss": "تجاهل",
+    "contactSupport": "التواصل مع الدعم",
+    "cancel": "إلغاء",
+    "close": "إغلاق",
+    "save": "حفظ",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "remove": "إزالة",
+    "view": "عرض",
+    "refresh": "تحديث",
+    "submit": "إرسال",
+    "processing": "معالجة...",
+    "loadMore": "تحميل أكثر",
+    "connectWallet": "ربط المحفظة",
+    "goBack": "العودة",
+    "approve": "موافقة",
+    "reject": "رفض",
+    "disable": "تعطيل"
+  },
+  "status": {
+    "created": "تم الإنشاء",
+    "processing": "معالجة",
+    "succeeded": "ناجح",
+    "completed": "مكتمل",
+    "failed": "فشل",
+    "cancelled": "ملغى",
+    "partiallyCompleted": "مكتمل جزئياً",
+    "waitingForUser": "بانتظار المستخدم",
+    "pending": "معلق",
+    "refunded": "مُسترد",
+    "requiresCapture": "يتطلب التقاطاً",
+    "unknown": "غير معروف"
+  },
+  "signIn": {
+    "loadFailedTitle": "فشل تحميل تسجيل الدخول",
+    "loadFailedDescription": "فشل تحميل تدفق تسجيل الدخول."
+  }
+}

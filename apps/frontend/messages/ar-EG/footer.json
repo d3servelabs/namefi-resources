@@ -1,0 +1,63 @@
+{
+  "disclaimer": "Namefi مسجِّل معتمد من ICANN يحوّل أسماء النطاقات إلى رموز رقمية للتداول والتمويل اللامركزي DeFi ومستقبل الإنترنت.",
+  "llmsTxt": "استخدم <link>llms.txt</link> إذا كنت وكيل ذكاء اصطناعي مثل Claude Code أو Codex أو OpenClaw أو Hermes أو Cursor أو OpenCode أو أي وكيل آخر.",
+  "copyright": "© {year} D3SERVE LABS, Inc. جميع الحقوق محفوظة.",
+  "cookieSettings": "إعدادات ملفات تعريف الارتباط",
+  "cookieSettingsAriaLabel": "فتح مربع حوار إعدادات ملفات تعريف الارتباط",
+  "termsAndConditions": "الشروط والأحكام",
+  "sections": {
+    "explore": {
+      "title": "استكشف",
+      "links": {
+        "discoverDomains": "اكتشف النطاقات",
+        "brandStudio": "Namefi Brand Studio",
+        "feed": "Namefi Feed",
+        "outbound": "Namefi Outbound",
+        "domainHunt": "Domain Hunt",
+        "newsletter": "النشرة البريدية",
+        "flushDns": "مسح DNS",
+        "faucet": "NFSC Faucet (sandbox)"
+      }
+    },
+    "account": {
+      "title": "الحساب",
+      "links": {
+        "myDomains": "نطاقاتي",
+        "myWishlist": "قائمة رغباتي",
+        "myOrders": "طلباتي",
+        "paymentMethods": "طرق الدفع"
+      }
+    },
+    "resources": {
+      "title": "الموارد",
+      "links": {
+        "blog": "المدونة",
+        "watch": "مشاهدة",
+        "careers": "وظائف",
+        "tlds": "TLDs",
+        "partners": "الشركاء",
+        "glossary": "المسرد",
+        "howWeHire": "كيف نوظّف",
+        "abuseReporting": "الإبلاغ عن إساءة",
+        "educationHub": "مركز التعليم",
+        "registrationAgreement": "اتفاقية التسجيل",
+        "apiDocs": "Namefi API Docs",
+        "llmApi": "API لوكلاء LLM AI",
+        "support": "الدعم"
+      }
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "links": {
+        "aboutNamefi": "عن Namefi",
+        "whatIsDomain": "ما هو النطاق؟",
+        "whatAreTokenizedDomains": "ما هي النطاقات المُرمَّزة؟",
+        "whyTokenizeDomains": "لماذا نُرمِّز النطاقات؟",
+        "dnsOnTokenizedDomains": "DNS على النطاقات المُرمَّزة",
+        "dnsIsControlPlane": "DNS هو مستوى التحكم",
+        "howToTokenizeCom": "كيف تُرمِّز نطاق .com",
+        "tokenizedVsWeb3": "النطاق المُرمَّز مقابل نطاق Web3"
+      }
+    }
+  }
+}

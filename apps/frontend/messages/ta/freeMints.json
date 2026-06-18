@@ -1,0 +1,29 @@
+{
+  "title": "என் இலவச மின்ட்கள்",
+  "historyHeading": "வரலாறு",
+  "table": {
+    "item": "பொருள்",
+    "issuedOn": "வழங்கிய தேதி",
+    "validUntil": "செல்லுபடியாகும் வரை",
+    "status": "நிலை",
+    "claimedDomain": "கோரிய டொமைன்",
+    "claimedOn": "கோரிய தேதி"
+  },
+  "campaignItem": "எந்த <domain>{domain}</domain> சப்டொமைனும்",
+  "campaignLabel": "எந்த {domain} சப்டொமைனும்",
+  "statusBadge": {
+    "claimed": "கோரியது",
+    "inProgress": "நடந்துள்ளது",
+    "expired": "காலாவதி",
+    "available": "உள்ளது"
+  },
+  "noHistory": "இதுவரை கோரல் வரலாறு இல்லை.",
+  "emptyTitle": "இன்னும் இலவச மின்ட்கள் இல்லை",
+  "emptyDescription": "இலவச கோரல் வாய்ப்புகள் கிடைக்கும்போது இங்கே தோன்றும்.",
+  "card": {
+    "issued": "வழங்கியது",
+    "validThru": "காலம் வரை",
+    "claimNow": "இப்போது கோரு",
+    "poweredByNamefi": "Namefi ஆல் இயக்கப்படுகிறது"
+  }
+}
