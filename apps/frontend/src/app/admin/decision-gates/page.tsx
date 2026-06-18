@@ -580,11 +580,11 @@ function RenewalSourceRow({
     // cache) is a warning, not a clean confirmation.
     chip =
       source?.matchesExpected === false ? (
-        <Badge className="border-transparent bg-amber-500/15 text-amber-400">
+        <Badge className="border-transparent bg-amber-500/15 text-amber-700 dark:text-amber-400">
           moved · unexpected date
         </Badge>
       ) : (
-        <Badge className="border-transparent bg-green-500/15 text-green-400">
+        <Badge className="border-transparent bg-green-500/15 text-green-700 dark:text-green-400">
           renewal reflected
         </Badge>
       );
@@ -625,10 +625,10 @@ function ExpirationComparisonView({
   const state = verdict?.state;
   const stateClass =
     state === 'landed'
-      ? 'border-green-500/30 bg-green-500/10 text-green-300'
+      ? 'border-green-500/30 bg-green-500/10 text-green-700 dark:text-green-300'
       : state === 'not-landed'
-        ? 'border-red-500/30 bg-red-500/10 text-red-300'
-        : 'border-amber-500/30 bg-amber-500/10 text-amber-200';
+        ? 'border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300'
+        : 'border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-200';
   const stateLabel =
     state === 'landed'
       ? 'Renewal landed'

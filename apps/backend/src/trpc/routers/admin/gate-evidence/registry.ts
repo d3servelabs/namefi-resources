@@ -9,13 +9,19 @@ import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations'
 import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { addYears, differenceInCalendarDays } from 'date-fns';
+import { addYears } from 'date-fns';
 import { eq } from 'drizzle-orm';
 import { sldRegistrar } from '#lib/namefi-registry';
 import { getViemPublicClient } from '#lib/crypto/viem-clients';
 // Plain in-process on-chain reader (viem `getExpiration` read) — not a Temporal
 // activity dependency, safe to call directly from the API process.
 import { getNftExpirationTimeInSeconds } from '../../../../temporal/activities/mint/namefi-nft';
+import {
+  type ExpirationComparison,
+  EXPIRATION_MATCH_TOLERANCE_DAYS,
+  compareExpiration,
+  computeRenewalVerdict,
+} from './renewal-verdict';
 
 /**
  * Admin-side decision-support evidence gatherers, keyed by a gate's `gateKind`
@@ -258,39 +264,6 @@ async function gatherTxAlreadySentEvidence(
   return evidence;
 }
 
-/**
- * A renewal-status gate compares the domain's expiration BEFORE the renewal
- * against the value at each source. A successful renewal is the only thing that
- * pushes the expiration later, so a source whose expiration moved past
- * `previous` is strong evidence the renewal landed there. The bump should also
- * be ~`durationInYears`; registrar/registry expiration math can differ from a
- * naive `addYears` by a day or two, so `matchesExpected` allows a small slop.
- */
-const EXPIRATION_MATCH_TOLERANCE_DAYS = 2;
-
-type ExpirationComparison = {
-  expiration: string;
-  /** Later than the pre-renewal expiration → the renewal landed at this source. */
-  reflectsRenewal: boolean | null;
-  /** Within tolerance of `previous + durationInYears` → the bump is the expected size. */
-  matchesExpected: boolean | null;
-};
-
-function compareExpiration(
-  current: Date,
-  previous: Date | null,
-  expected: Date | null,
-): ExpirationComparison {
-  return {
-    expiration: current.toISOString(),
-    reflectsRenewal: previous ? current.getTime() > previous.getTime() : null,
-    matchesExpected: expected
-      ? Math.abs(differenceInCalendarDays(current, expected)) <=
-        EXPIRATION_MATCH_TOLERANCE_DAYS
-      : null,
-  };
-}
-
 /** RDAP first, WHOIS fallback — the registration expiration + its comparison. */
 async function gatherExpirationFromRdapWhois(
   domain: string,
@@ -494,14 +467,10 @@ async function gatherRenewalStatusEvidence(
     expected,
   );
 
-  // (3) Verdict. A successful renewal pushes the expiration past the pre-renewal
-  // value by ~`durationInYears`, so a source only counts as positive evidence
-  // when it BOTH moved past the old date (`reflectsRenewal`) AND landed near the
-  // expected new date (`matchesExpected !== false`). A move to an unexpected date
-  // (stale cache from a prior renewal, or the wrong duration) is tracked
-  // separately and never on its own implies the renewal landed. The registrar
-  // operation's own terminal status is authoritative: a FAILED/ERROR operation is
-  // never overridden to "landed" by source movements (which may be stale).
+  // (3) Verdict — the decision tree lives in `computeRenewalVerdict` (pure +
+  // unit-tested). Only a source that BOTH moved past the old date AND landed near
+  // the expected date counts as positive evidence, and a FAILED/ERROR registrar
+  // operation is never overridden to "landed" by (possibly stale) source moves.
   const comparisons = Object.values(sources).filter(
     (s): s is ExpirationComparison =>
       !!s &&
@@ -509,69 +478,14 @@ async function gatherRenewalStatusEvidence(
       'expiration' in (s as object) &&
       !('error' in (s as object)),
   );
-  const sourcesWithData = comparisons.length;
-  const sourcesReflectingRenewal = comparisons.filter(
-    (s) => s.reflectsRenewal === true && s.matchesExpected !== false,
-  ).length;
-  const sourcesMovedUnexpectedAmount = comparisons.filter(
-    (s) => s.reflectsRenewal === true && s.matchesExpected === false,
-  ).length;
   const opStatus = (evidence.operation as { status?: string } | undefined)
     ?.status;
-  const opTerminalFailure = opStatus === 'FAILED' || opStatus === 'ERROR';
-
-  let state: 'landed' | 'not-landed' | 'inconclusive';
-  let summary: string;
-  if (opTerminalFailure) {
-    // Registrar explicitly failed — never claim "landed" off source movement.
-    if (sourcesReflectingRenewal > 0 || sourcesMovedUnexpectedAmount > 0) {
-      state = 'inconclusive';
-      summary = `Conflicting signals: the registrar operation reports ${opStatus}, but ${
-        sourcesReflectingRenewal + sourcesMovedUnexpectedAmount
-      }/${sourcesWithData} expiration source(s) show a later date — possibly stale/cached from a prior renewal${
-        sourcesMovedUnexpectedAmount > 0
-          ? ', or a different duration than requested'
-          : ''
-      }. Verify the registrar directly before deciding.`;
-    } else {
-      state = 'not-landed';
-      summary = `The registrar operation reports ${opStatus} and no expiration source moved to the expected new date. The renewal likely did not land — RETRY to re-poll, or CANCEL to fail.`;
-    }
-  } else if (opStatus === 'SUCCESSFUL') {
-    state = 'landed';
-    summary = `The registrar operation reports SUCCESSFUL${
-      sourcesReflectingRenewal > 0
-        ? ` and ${sourcesReflectingRenewal}/${sourcesWithData} expiration sources match the expected new date`
-        : ' (the new expiration may still be propagating to other sources)'
-    }. RESPOND SUCCESSFUL so the NFT expiry is updated.`;
-  } else if (sourcesReflectingRenewal > 0) {
-    state = 'landed';
-    summary = `The renewal appears to have landed — ${sourcesReflectingRenewal}/${sourcesWithData} expiration sources match the expected post-renewal date${
-      opStatus ? ` (operation status ${opStatus})` : ''
-    }.${
-      sourcesMovedUnexpectedAmount > 0
-        ? ` Note: ${sourcesMovedUnexpectedAmount} other source(s) moved but to an unexpected date — confirm the duration.`
-        : ''
-    } RESPOND SUCCESSFUL so the NFT expiry is updated.`;
-  } else if (!previousValid) {
-    // No pre-renewal baseline → reflectsRenewal/matchesExpected are unavailable.
-    state = 'inconclusive';
-    summary =
-      'No pre-renewal expiration baseline was supplied, so the renewal could not be confirmed by comparison. Check the registrar operation status and the raw expirations below.';
-  } else if (sourcesMovedUnexpectedAmount > 0) {
-    state = 'inconclusive';
-    summary = `${sourcesMovedUnexpectedAmount}/${sourcesWithData} expiration source(s) moved but to an unexpected date (not ~${
-      Number.isFinite(durationInYears) ? durationInYears : '?'
-    } year(s) past the old expiry). Verify the registrar before deciding.`;
-  } else {
-    state = 'inconclusive';
-    summary =
-      sourcesWithData === 0
-        ? 'Could not read any expiration source. Verify the registrar state manually before deciding.'
-        : `Expiration sources still show the old date${
-            opStatus ? ` and the operation status is ${opStatus}` : ''
-          }. RETRY to keep polling, or verify at the registrar before deciding.`;
-  }
+  const verdict = computeRenewalVerdict({
+    comparisons,
+    opStatus,
+    previousValid: Boolean(previousValid),
+    durationInYears,
+  });
 
   evidence.expiration = {
     durationInYears: Number.isFinite(durationInYears) ? durationInYears : null,
@@ -585,13 +499,7 @@ async function gatherRenewalStatusEvidence(
         }),
     ...sources,
   };
-  evidence.verdict = {
-    state,
-    sourcesWithData,
-    sourcesReflectingRenewal,
-    sourcesMovedUnexpectedAmount,
-    summary,
-  };
+  evidence.verdict = verdict;
 
   return evidence;
 }
