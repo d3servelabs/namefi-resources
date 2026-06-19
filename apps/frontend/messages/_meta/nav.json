@@ -37,5 +37,9 @@
   },
   "recentDomains": {
     "description": "Sidebar section label above the list of domains the user recently viewed."
+  },
+  "items.profile": {
+    "description": "Account-menu / sidebar nav label linking to the user's profile page. Means 'Profile'.",
+    "maxLength": 16
   }
 }

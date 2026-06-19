@@ -20,55 +20,55 @@
   "story": {
     "tokenization": {
       "badge": "Namefi NFTs",
-      "title": "Namefi NFTs secure DNS ownership onchain.",
-      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "title": "Namefi NFTs بتحمي ملكية DNS على البلوكتشين.",
+      "description": "بتتعمل لما تستورد وبتتحرق لما تصدر، كل NFT دليل قابل للتحقق على إنك أنت اللي بتتحكم في الدومين بتاعك.",
       "highlights": {
-        "mintedOnImport": "Minted on import",
-        "autoEns": "AutoENS support",
-        "marketplaceReady": "Marketplace ready"
+        "mintedOnImport": "تصك عند الاستيراد",
+        "autoEns": "دعم AutoENS",
+        "marketplaceReady": "جاهز للمارستبليس"
       },
       "media": {
-        "previewAlt": "Namefi NFT preview",
-        "previewEyebrow": "Namefi NFT preview",
-        "previewTitle": "Ownership that travels with your domain"
+        "previewAlt": "معاينة Namefi NFT",
+        "previewEyebrow": "معاينة Namefi NFT",
+        "previewTitle": "ملكية بتيجي معاك أينما ما رحت"
       }
     },
     "intelligence": {
       "badge": "Namefi Brand Studio",
-      "title": "Spin up brand directions and domain ideas in minutes.",
-      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "title": "ابني هوية براند وأفكار دومين في دقايق.",
+      "description": "Namefi AI بيجمع بيانات التوافر مع مخرجات إبداعية عشان تتحقق من الفكرة وتشوف التصاميم وتبدأ التسجيل على طول.",
       "highlights": {
-        "domainGuidedPrompts": "Domain-guided prompts",
-        "logosPosters": "Logos & posters",
-        "shareReady": "Share-ready assets"
+        "domainGuidedPrompts": "بروميتس مبنية على الدومين",
+        "logosPosters": "لوجوهات وبوسترات",
+        "shareReady": "أصول جاهزة للمشاركة"
       },
       "media": {
-        "eyebrow": "AI workflow",
-        "generateTitle": "Generate brand kits",
-        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
-        "portfolioTitle": "Work from your portfolio",
-        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
-        "shareTitle": "Share instantly",
-        "shareDescription": "Export assets for teammates or socials with a single link."
+        "eyebrow": "سير عمل الذكاء الاصطناعي",
+        "generateTitle": "اعمل كيتات براند",
+        "generateDescription": "لوجوهات وبوسترات وكوبي متصمم خصيصاً للدومين والجمهور بتاعك.",
+        "portfolioTitle": "اشتغل من محفظتك",
+        "portfolioDescription": "اختار الدومين اللي عندك على Namefi وصمم التوجه الإبداعي حواليه.",
+        "shareTitle": "شارك على طول",
+        "shareDescription": "صدر الأصول للفريق أو السوشيال ميديا برابط واحد."
       }
     },
     "operations": {
-      "badge": "DNS & Renewal Control",
-      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
-      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "badge": "DNS والتجديد التلقائي",
+      "title": "خلي الدومينات شغالة وموقعة ومجددة أوتوماتيك.",
+      "description": "إدارة مناطق DNS وجدولة التجديدات والحفاظ على روابط DNSSEC + ENS من غير ما تتعامل مع مزودين مختلفين أو سكريبتات.",
       "highlights": {
         "dnssecAutoEns": "DNSSEC + AutoENS",
-        "autoRenew": "Auto-renew protection",
-        "validatedZoneEditor": "Validated zone editor"
+        "autoRenew": "حماية التجديد التلقائي",
+        "validatedZoneEditor": "محرر مناطق متحقق منه"
       },
       "media": {
-        "eyebrow": "Operations overview",
-        "dnssecTitle": "DNSSEC & AutoENS",
-        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
-        "autoRenewTitle": "Auto-renew guardrails",
-        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
-        "dnsTitle": "Point-and-click DNS",
-        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+        "eyebrow": "نظرة عامة على العمليات",
+        "dnssecTitle": "DNSSEC وAutoENS",
+        "dnssecDescription": "فعّل سير عمل التوقيع وDNSSEC بدون جاز عشان أسماء DNS بتاعتك تتحل على البلوكتشين عبر ENS أوتوماتيك.",
+        "autoRenewTitle": "ضمانات التجديد التلقائي",
+        "autoRenewDescription": "احفظ بيانات الدفع مرة واحدة وسيب Namefi يجدد عشان الدومينات المهمة ما توقفش فجأة.",
+        "dnsTitle": "DNS بنقرة واحدة",
+        "dnsDescription": "عدّل السجلات في واجهة بتتحقق من كل تغيير قبل ما يتطبق من غير ما تحتاج داشبورد المسجل."
       }
     }
   },

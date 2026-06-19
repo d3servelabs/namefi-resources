@@ -141,6 +141,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
   },
   function UserDropdownMenu() {
     const t = useTranslations('common');
+    const tNav = useTranslations('nav');
     const [showBalanceInUserDropdown] = useAdminFeatureFlag(
       SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
     );
@@ -235,6 +236,10 @@ export const UserDropdownMenu = ErrorBoundary.with(
           hasWallets: nfscWalletAddresses.length > 0,
         },
         onOpenLogout: () => setIsSignOutDialogOpen(true),
+        navLabels: {
+          myDomains: tNav('items.myDomains'),
+          profile: tNav('items.profile'),
+        },
       });
     }, [
       showBalanceInUserDropdown,
@@ -242,6 +247,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
       isLoadingBalance,
       nfscWalletAddresses.length,
       requestBalanceBreakdownDialog,
+      tNav,
     ]);
 
     return (
@@ -395,9 +401,17 @@ const UserDropdownItemInner = ({ item }: { item: UserDropdownItemProps }) => {
   }
 };
 
-const BASE_ITEMS: UserDropdownItemProps[] = [
-  { type: 'link', title: 'My Domains', href: '/my-domains', icon: Globe },
-  { type: 'link', title: 'Profile', href: '/profile', icon: UserIcon },
+const buildBaseItems = (navLabels: {
+  myDomains: string;
+  profile: string;
+}): UserDropdownItemProps[] => [
+  {
+    type: 'link',
+    title: navLabels.myDomains,
+    href: '/my-domains',
+    icon: Globe,
+  },
+  { type: 'link', title: navLabels.profile, href: '/profile', icon: UserIcon },
 ];
 
 type BalanceDropdownItemProps = {
@@ -411,8 +425,10 @@ function getUserDropdownItems(options: {
   showBalanceInUserDropdown: boolean;
   balanceItem: BalanceDropdownItemProps;
   onOpenLogout: () => void;
+  navLabels: { myDomains: string; profile: string };
 }): UserDropdownItemProps[] {
-  const { showBalanceInUserDropdown, balanceItem, onOpenLogout } = options;
+  const { showBalanceInUserDropdown, balanceItem, onOpenLogout, navLabels } =
+    options;
 
   const items: (UserDropdownItemProps | boolean | undefined | null)[][] = [
     showBalanceInUserDropdown
@@ -425,7 +441,7 @@ function getUserDropdownItems(options: {
           },
         ]
       : [],
-    BASE_ITEMS,
+    buildBaseItems(navLabels),
     [
       {
         type: 'custom',

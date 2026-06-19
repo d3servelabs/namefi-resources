@@ -20,55 +20,55 @@
   "story": {
     "tokenization": {
       "badge": "Namefi NFTs",
-      "title": "Namefi NFTs secure DNS ownership onchain.",
-      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "title": "Namefi NFTs மூலம் DNS உரிமையை onchain-இல் பாதுகாக்கலாம்.",
+      "description": "இறக்குமதி செய்யும்போது உருவாகி, ஏற்றுமதி செய்யும்போது நீக்கப்படும் இந்த NFT, உங்கள் டொமைனின் மீதான கட்டுப்பாட்டை நிரூபிக்கும் சரிபார்க்கக்கூடிய சான்றாகும்.",
       "highlights": {
-        "mintedOnImport": "Minted on import",
-        "autoEns": "AutoENS support",
-        "marketplaceReady": "Marketplace ready"
+        "mintedOnImport": "இறக்குமதியில் mint செய்யப்படுகிறது",
+        "autoEns": "AutoENS ஆதரவு",
+        "marketplaceReady": "Marketplace-க்கு தயார்"
       },
       "media": {
-        "previewAlt": "Namefi NFT preview",
-        "previewEyebrow": "Namefi NFT preview",
-        "previewTitle": "Ownership that travels with your domain"
+        "previewAlt": "Namefi NFT முன்னோட்டம்",
+        "previewEyebrow": "Namefi NFT முன்னோட்டம்",
+        "previewTitle": "உங்கள் டொமைனுடன் எங்கும் செல்லும் உரிமை"
       }
     },
     "intelligence": {
       "badge": "Namefi Brand Studio",
-      "title": "Spin up brand directions and domain ideas in minutes.",
-      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "title": "சில நிமிடங்களில் பிராண்ட் திசைகளையும் டொமைன் யோசனைகளையும் உருவாக்குங்கள்.",
+      "description": "Namefi AI, கிடைக்கும் டொமைன் தகவல்களை படைப்பாற்றல் வெளியீடுகளுடன் இணைக்கிறது, இதனால் ஒரு கருத்தை சரிபார்த்து, போஸ்டர்களை முன்னோட்டமிட்டு, நேரடியாக பதிவுக்குச் செல்லலாம்.",
       "highlights": {
-        "domainGuidedPrompts": "Domain-guided prompts",
-        "logosPosters": "Logos & posters",
-        "shareReady": "Share-ready assets"
+        "domainGuidedPrompts": "டொமைன் வழிகாட்டும் prompts",
+        "logosPosters": "லோகோக்கள் மற்றும் போஸ்டர்கள்",
+        "shareReady": "பகிர்வுக்கு தயாரான assets"
       },
       "media": {
-        "eyebrow": "AI workflow",
-        "generateTitle": "Generate brand kits",
-        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
-        "portfolioTitle": "Work from your portfolio",
-        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
-        "shareTitle": "Share instantly",
-        "shareDescription": "Export assets for teammates or socials with a single link."
+        "eyebrow": "AI பணிச்சூழல்",
+        "generateTitle": "பிராண்ட் kits உருவாக்குங்கள்",
+        "generateDescription": "உங்கள் டொமைன் மற்றும் பார்வையாளர்களுக்கு ஏற்ப வடிவமைக்கப்பட்ட லோகோக்கள், போஸ்டர்கள் மற்றும் copy.",
+        "portfolioTitle": "உங்கள் portfolio-இல் இருந்து தொடங்குங்கள்",
+        "portfolioDescription": "நீங்கள் சொந்தமாக வைத்திருக்கும் Namefi டொமைனைத் தேர்ந்தெடுத்து அதைச் சுற்றி படைப்பு திசையை வடிவமைக்கலாம்.",
+        "shareTitle": "உடனடியாக பகிருங்கள்",
+        "shareDescription": "ஒரே link மூலம் அணி உறுப்பினர்களுக்கோ சமூக வலைதளங்களுக்கோ assets ஏற்றுமதி செய்யுங்கள்."
       }
     },
     "operations": {
-      "badge": "DNS & Renewal Control",
-      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
-      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "badge": "DNS மற்றும் புதுப்பிப்பு கட்டுப்பாடு",
+      "title": "டொமைன்கள் தீர்க்கப்படும்படியாகவும், கையொப்பமிடப்படும்படியாகவும், தானாகவே புதுப்பிக்கப்படும்படியாகவும் வைத்திருங்கள்.",
+      "description": "பல registrar-களையோ script-களையோ சமாளிக்காமல், DNS zones நிர்வகிக்கவும், புதுப்பிப்புகளைத் திட்டமிடவும், DNSSEC மற்றும் ENS இணைப்புகளை பராமரிக்கவும் முடியும்.",
       "highlights": {
         "dnssecAutoEns": "DNSSEC + AutoENS",
-        "autoRenew": "Auto-renew protection",
-        "validatedZoneEditor": "Validated zone editor"
+        "autoRenew": "தானியங்கி புதுப்பிப்பு பாதுகாப்பு",
+        "validatedZoneEditor": "சரிபார்க்கப்பட்ட zone editor"
       },
       "media": {
-        "eyebrow": "Operations overview",
-        "dnssecTitle": "DNSSEC & AutoENS",
-        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
-        "autoRenewTitle": "Auto-renew guardrails",
-        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
-        "dnsTitle": "Point-and-click DNS",
-        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+        "eyebrow": "செயல்பாடுகள் மேலோட்டம்",
+        "dnssecTitle": "DNSSEC மற்றும் AutoENS",
+        "dnssecDescription": "கையொப்பிடும் workflows-ஐயும் gasless DNSSEC-ஐயும் இயக்குங்கள், இதனால் உங்கள் DNS பெயர்கள் ENS வழியாக onchain-இல் தானாகவே தீர்க்கப்படும்.",
+        "autoRenewTitle": "தானியங்கி புதுப்பிப்பு பாதுகாப்புகள்",
+        "autoRenewDescription": "கட்டண விருப்பத்தேர்வுகளை ஒருமுறை சேமித்தால் போதும், Namefi புதுப்பிப்புகளை மீண்டும் முயற்சிக்கும், எனவே முக்கியமான டொமைன்கள் எதிர்பாராத விதத்தில் காலாவதியாவதில்லை.",
+        "dnsTitle": "சுட்டி கிளிக்கில் DNS",
+        "dnsDescription": "ஒவ்வொரு மாற்றத்தையும் அனுப்பும் முன் சரிபார்க்கும் interface-இல் records திருத்துங்கள், registrar dashboards தேவையில்லை."
       }
     }
   },

@@ -20,55 +20,55 @@
   "story": {
     "tokenization": {
       "badge": "Namefi NFTs",
-      "title": "Namefi NFTs secure DNS ownership onchain.",
-      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "title": "Namefi NFTs के जरिए DNS स्वामित्व onchain सुरक्षित होता है।",
+      "description": "आयात पर Mint होते हैं और निर्यात पर Burn — हर NFT आपके domain पर नियंत्रण का सत्यापन योग्य प्रमाण है।",
       "highlights": {
-        "mintedOnImport": "Minted on import",
-        "autoEns": "AutoENS support",
-        "marketplaceReady": "Marketplace ready"
+        "mintedOnImport": "आयात पर Mint",
+        "autoEns": "AutoENS सपोर्ट",
+        "marketplaceReady": "Marketplace के लिए तैयार"
       },
       "media": {
-        "previewAlt": "Namefi NFT preview",
-        "previewEyebrow": "Namefi NFT preview",
-        "previewTitle": "Ownership that travels with your domain"
+        "previewAlt": "Namefi NFT का पूर्वावलोकन",
+        "previewEyebrow": "Namefi NFT का पूर्वावलोकन",
+        "previewTitle": "स्वामित्व जो आपके domain के साथ चलता है"
       }
     },
     "intelligence": {
       "badge": "Namefi Brand Studio",
-      "title": "Spin up brand directions and domain ideas in minutes.",
-      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "title": "मिनटों में ब्रांड दिशाएं और domain विचार तैयार करें।",
+      "description": "Namefi AI उपलब्धता डेटा को रचनात्मक आउटपुट के साथ जोड़ता है, ताकि आप किसी अवधारणा को परखें, पोस्टर देखें, और सीधे पंजीकरण की ओर बढ़ें।",
       "highlights": {
-        "domainGuidedPrompts": "Domain-guided prompts",
-        "logosPosters": "Logos & posters",
-        "shareReady": "Share-ready assets"
+        "domainGuidedPrompts": "Domain-आधारित prompts",
+        "logosPosters": "Logos और posters",
+        "shareReady": "Share के लिए तैयार assets"
       },
       "media": {
-        "eyebrow": "AI workflow",
-        "generateTitle": "Generate brand kits",
-        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
-        "portfolioTitle": "Work from your portfolio",
-        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
-        "shareTitle": "Share instantly",
-        "shareDescription": "Export assets for teammates or socials with a single link."
+        "eyebrow": "AI वर्कफ़्लो",
+        "generateTitle": "Brand kits बनाएं",
+        "generateDescription": "आपके domain और दर्शकों के अनुसार Logos, posters, और कॉपी तैयार।",
+        "portfolioTitle": "अपने portfolio से काम करें",
+        "portfolioDescription": "अपना Namefi domain चुनें और उसके इर्द-गिर्द रचनात्मक दिशा तय करें।",
+        "shareTitle": "तुरंत शेयर करें",
+        "shareDescription": "एक ही लिंक से teammates या सोशल मीडिया के लिए assets निर्यात करें।"
       }
     },
     "operations": {
-      "badge": "DNS & Renewal Control",
-      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
-      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "badge": "DNS और नवीनीकरण नियंत्रण",
+      "title": "domains को हल करने योग्य, हस्ताक्षरित, और स्वचालित रूप से नवीनीकृत रखें।",
+      "description": "DNS zones प्रबंधित करें, नवीनीकरण शेड्यूल करें, और रजिस्ट्रारों या स्क्रिप्ट की उलझन के बिना DNSSEC और ENS लिंक बनाए रखें।",
       "highlights": {
         "dnssecAutoEns": "DNSSEC + AutoENS",
-        "autoRenew": "Auto-renew protection",
-        "validatedZoneEditor": "Validated zone editor"
+        "autoRenew": "स्वचालित नवीनीकरण सुरक्षा",
+        "validatedZoneEditor": "सत्यापित zone संपादक"
       },
       "media": {
-        "eyebrow": "Operations overview",
-        "dnssecTitle": "DNSSEC & AutoENS",
-        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
-        "autoRenewTitle": "Auto-renew guardrails",
-        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
+        "eyebrow": "संचालन अवलोकन",
+        "dnssecTitle": "DNSSEC और AutoENS",
+        "dnssecDescription": "Signing वर्कफ़्लो और gasless DNSSEC सक्षम करें, ताकि आपके DNS नाम ENS के जरिए स्वचालित रूप से onchain resolve हों।",
+        "autoRenewTitle": "स्वचालित नवीनीकरण सुरक्षा",
+        "autoRenewDescription": "भुगतान प्राथमिकताएं एक बार सेव करें और Namefi को नवीनीकरण पुनः प्रयास करने दें, ताकि महत्वपूर्ण domains कभी अनायास समाप्त न हों।",
         "dnsTitle": "Point-and-click DNS",
-        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+        "dnsDescription": "एक ऐसे इंटरफेस में रिकॉर्ड संपादित करें जो हर बदलाव भेजने से पहले सत्यापित करता है — किसी रजिस्ट्रार डैशबोर्ड की जरूरत नहीं।"
       }
     }
   },

@@ -20,55 +20,55 @@
   "story": {
     "tokenization": {
       "badge": "Namefi NFTs",
-      "title": "Namefi NFTs secure DNS ownership onchain.",
-      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "title": "Namefi NFTsがDNSの所有権をオンチェーンで保護します。",
+      "description": "インポート時にミントされ、エクスポート時にバーンされるNFTは、ドメインの管理権を証明する検証可能なオンチェーンの証拠です。",
       "highlights": {
-        "mintedOnImport": "Minted on import",
-        "autoEns": "AutoENS support",
-        "marketplaceReady": "Marketplace ready"
+        "mintedOnImport": "インポート時にミント",
+        "autoEns": "AutoENS対応",
+        "marketplaceReady": "マーケットプレイス対応"
       },
       "media": {
-        "previewAlt": "Namefi NFT preview",
-        "previewEyebrow": "Namefi NFT preview",
-        "previewTitle": "Ownership that travels with your domain"
+        "previewAlt": "Namefi NFTプレビュー",
+        "previewEyebrow": "Namefi NFTプレビュー",
+        "previewTitle": "ドメインとともに移動する所有権"
       }
     },
     "intelligence": {
       "badge": "Namefi Brand Studio",
-      "title": "Spin up brand directions and domain ideas in minutes.",
-      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "title": "ブランドの方向性とドメインアイデアを、数分で展開しましょう。",
+      "description": "Namefi AIが空き状況データとクリエイティブなアウトプットを組み合わせ、コンセプトの検証からポスターのプレビュー、そのままの登録まで、スムーズに進められます。",
       "highlights": {
-        "domainGuidedPrompts": "Domain-guided prompts",
-        "logosPosters": "Logos & posters",
-        "shareReady": "Share-ready assets"
+        "domainGuidedPrompts": "ドメイン起点のプロンプト",
+        "logosPosters": "ロゴ & ポスター",
+        "shareReady": "すぐに共有できるアセット"
       },
       "media": {
-        "eyebrow": "AI workflow",
-        "generateTitle": "Generate brand kits",
-        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
-        "portfolioTitle": "Work from your portfolio",
-        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
-        "shareTitle": "Share instantly",
-        "shareDescription": "Export assets for teammates or socials with a single link."
+        "eyebrow": "AIワークフロー",
+        "generateTitle": "ブランドキットを生成",
+        "generateDescription": "ドメインとターゲットに合わせたロゴ、ポスター、コピーを作成します。",
+        "portfolioTitle": "自分のポートフォリオから始める",
+        "portfolioDescription": "所有するNamefiドメインを選んで、クリエイティブの方向性をそのドメインに合わせてカスタマイズできます。",
+        "shareTitle": "即座にシェア",
+        "shareDescription": "ひとつのリンクでアセットをチームメンバーやSNSに共有できます。"
       }
     },
     "operations": {
-      "badge": "DNS & Renewal Control",
-      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
-      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "badge": "DNS & 更新管理",
+      "title": "ドメインの名前解決・署名・更新を、自動で維持しましょう。",
+      "description": "DNSゾーンの管理、更新のスケジューリング、DNSSEC + ENSリンクの維持を、複数のレジストラやスクリプトを使い分けることなく一元管理できます。",
       "highlights": {
         "dnssecAutoEns": "DNSSEC + AutoENS",
-        "autoRenew": "Auto-renew protection",
-        "validatedZoneEditor": "Validated zone editor"
+        "autoRenew": "自動更新による保護",
+        "validatedZoneEditor": "検証済みゾーンエディター"
       },
       "media": {
-        "eyebrow": "Operations overview",
+        "eyebrow": "運用機能の概要",
         "dnssecTitle": "DNSSEC & AutoENS",
-        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
-        "autoRenewTitle": "Auto-renew guardrails",
-        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
-        "dnsTitle": "Point-and-click DNS",
-        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+        "dnssecDescription": "署名ワークフローとガス不要のDNSSECを有効にして、DNSネームをENSを通じてオンチェーンで自動解決します。",
+        "autoRenewTitle": "自動更新のガードレール",
+        "autoRenewDescription": "支払い設定を一度登録すれば、Namefiが自動で更新を試み、重要なドメインが予期せず失効することを防ぎます。",
+        "dnsTitle": "クリックひとつのDNS操作",
+        "dnsDescription": "すべての変更を反映前に検証するインターフェイスでレコードを編集できます。レジストラのダッシュボードは不要です。"
       }
     }
   },
