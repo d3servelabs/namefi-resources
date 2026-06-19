@@ -53,6 +53,9 @@ export const announcementsTable = namefiAnnouncementsSchema.table(
     // Optional call-to-action link rendered in the banner.
     linkUrl: text('link_url'),
     linkLabel: text('link_label'),
+    // How the CTA link opens. Null = auto (external opens a new tab, internal
+    // opens in the same tab via Next.js client navigation).
+    linkTarget: text('link_target').$type<'_self' | '_blank'>(),
     dismissible: boolean('dismissible').notNull().default(true),
     isActive: boolean('is_active').notNull().default(true),
     // Optional scheduling window; null endpoints mean "open-ended" on that side.

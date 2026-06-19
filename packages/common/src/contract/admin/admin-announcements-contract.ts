@@ -1,22 +1,20 @@
 import { z } from 'zod';
 import { announcementConditionSchema } from '../../announcements-condition';
+import { isAllowedLinkUrl, linkTargetSchema } from '../announcements-contract';
 import { createContract } from '../create-contract';
 
 /** Optional CSS color override (e.g. "#6d28d9"); null clears it. */
 const colorSchema = z.string().max(64).nullable().optional();
 
 /**
- * CTA link: a valid absolute http(s) or mailto URL. `z.string().url()` alone
- * still accepts dangerous schemes like `javascript:`, so the scheme is
- * allowlisted here (defense-in-depth; the renderer also re-checks).
+ * CTA link: an http(s) URL, a `mailto:` link, or a same-origin `/path`.
+ * Dangerous schemes like `javascript:` are rejected (the renderer re-checks).
  */
-const SAFE_LINK_SCHEME_REGEX = /^(https?:|mailto:)/i;
 const linkUrlSchema = z
   .string()
-  .url()
   .max(2000)
-  .refine((v) => SAFE_LINK_SCHEME_REGEX.test(v), {
-    message: 'Link must be an http(s) or mailto URL',
+  .refine(isAllowedLinkUrl, {
+    message: 'Enter an http(s) URL, a mailto: link, or a /path',
   })
   .nullable()
   .optional();
@@ -40,6 +38,7 @@ const composeFields = {
   backgroundOpacity: z.number().int().min(0).max(100).nullable().optional(),
   linkUrl: linkUrlSchema,
   linkLabel: z.string().max(120).nullable().optional(),
+  linkTarget: linkTargetSchema.nullable().optional(),
   dismissible: z.boolean().default(true),
   isActive: z.boolean().default(true),
   // Sites to show on: 'namefi' (main) and/or PBN `normalizedDomainName`s.
@@ -74,6 +73,7 @@ const updateInputSchema = z
     backgroundOpacity: composeFields.backgroundOpacity,
     linkUrl: composeFields.linkUrl,
     linkLabel: composeFields.linkLabel,
+    linkTarget: composeFields.linkTarget,
     dismissible: z.boolean().optional(),
     isActive: z.boolean().optional(),
     targetSites: composeFields.targetSites.optional(),
@@ -95,6 +95,7 @@ export const adminAnnouncementRowSchema = z.object({
   backgroundOpacity: z.number().nullable(),
   linkUrl: z.string().nullable(),
   linkLabel: z.string().nullable(),
+  linkTarget: linkTargetSchema.nullable(),
   dismissible: z.boolean(),
   isActive: z.boolean(),
   targetSites: z.array(z.string()).nullable(),

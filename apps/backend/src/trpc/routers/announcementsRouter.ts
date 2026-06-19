@@ -31,6 +31,12 @@ function toDto(row: AnnouncementRow): AnnouncementDto {
     backgroundOpacity: row.backgroundOpacity,
     linkUrl: row.linkUrl,
     linkLabel: row.linkLabel,
+    // Normalize to the known set — the column has no DB-level CHECK, so guard
+    // against any unexpected stored value before it reaches the client.
+    linkTarget:
+      row.linkTarget === '_self' || row.linkTarget === '_blank'
+        ? row.linkTarget
+        : null,
     dismissible: row.dismissible,
     priority: row.priority,
     updatedAt: row.updatedAt,

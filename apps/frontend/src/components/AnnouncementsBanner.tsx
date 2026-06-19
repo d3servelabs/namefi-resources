@@ -6,6 +6,8 @@ import { isSafeHref, renderInlineMarkdown } from '@/lib/inline-markdown';
 import type { AnnouncementDto } from '@namefi-astra/common/contract/announcements-contract';
 import { useQuery } from '@tanstack/react-query';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import type { Route } from 'next';
+import Link from 'next/link';
 import {
   type CSSProperties,
   useCallback,
@@ -19,9 +21,60 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 const AUTO_ROTATE_MS = 7000;
 const STRIP_HEIGHT_VAR = '--announcement-strip-height';
 const EXTERNAL_LINK_REGEX = /^https?:\/\//i;
+const CTA_CLASS =
+  'ms-2 font-semibold underline underline-offset-2 hover:opacity-80';
 
 function isExternalLink(url: string): boolean {
   return EXTERNAL_LINK_REGEX.test(url);
+}
+
+// A single leading slash (not `//`, which is protocol-relative / external).
+function isInternalPath(url: string): boolean {
+  return /^\/(?!\/)/.test(url);
+}
+
+/**
+ * CTA link. Same-origin `/path` links use Next.js client navigation
+ * (`<Link>`); external/mailto links use a plain anchor. The open behavior
+ * comes from `target` (admin choice) or auto-resolves: external → new tab,
+ * internal → same tab.
+ */
+function AnnouncementCta({
+  url,
+  label,
+  target,
+}: {
+  url: string;
+  label: string;
+  target: AnnouncementDto['linkTarget'];
+}) {
+  const resolvedTarget = target ?? (isExternalLink(url) ? '_blank' : '_self');
+  const rel = resolvedTarget === '_blank' ? 'noopener noreferrer' : undefined;
+
+  if (isInternalPath(url)) {
+    return (
+      <Link
+        href={url as Route}
+        data-testid="announcement-link"
+        target={resolvedTarget}
+        rel={rel}
+        className={CTA_CLASS}
+      >
+        {label}
+      </Link>
+    );
+  }
+  return (
+    <a
+      href={url}
+      data-testid="announcement-link"
+      target={resolvedTarget}
+      rel={rel}
+      className={CTA_CLASS}
+    >
+      {label}
+    </a>
+  );
 }
 
 /** Presentational strip for a single announcement. */
@@ -65,8 +118,6 @@ function AnnouncementStrip({
       root.style.setProperty(STRIP_HEIGHT_VAR, '0px');
     };
   }, [current.id]);
-
-  const external = safeLinkUrl ? isExternalLink(safeLinkUrl) : false;
 
   // Default to the brand-primary strip; per-announcement overrides win.
   // `backgroundOpacity` (0–100) applies to the background layer only — via
@@ -142,16 +193,11 @@ function AnnouncementStrip({
                 codeClassName: 'bg-white/15',
               })}
               {safeLinkUrl ? (
-                <a
-                  href={safeLinkUrl}
-                  data-testid="announcement-link"
-                  {...(external
-                    ? { target: '_blank', rel: 'noopener noreferrer' }
-                    : {})}
-                  className="ms-2 font-semibold underline underline-offset-2 hover:opacity-80"
-                >
-                  {current.linkLabel ?? 'Learn more'}
-                </a>
+                <AnnouncementCta
+                  url={safeLinkUrl}
+                  label={current.linkLabel ?? 'Learn more'}
+                  target={current.linkTarget}
+                />
               ) : null}
             </p>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useForm, type UseFormReturn } from 'react-hook-form';
+import { type FieldErrors, useForm, type UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { withAdminGuard } from '@/components/admin/admin-guard';
@@ -13,6 +13,7 @@ import {
   tldPriceKindSchema,
 } from '@namefi-astra/common/announcements-condition';
 import type { PriceOperand } from '@namefi-astra/common/announcements-condition';
+import { isAllowedLinkUrl } from '@namefi-astra/common/contract/announcements-contract';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -130,11 +131,14 @@ const formSchema = z
     backgroundOpacity: z.number().min(0).max(100).optional(),
     linkUrl: z
       .string()
-      .url('Must be a valid URL')
       .max(2000)
-      .or(z.literal(''))
+      .refine((v) => v === '' || isAllowedLinkUrl(v), {
+        message: 'Enter an http(s) URL, a mailto: link, or a /path',
+      })
       .optional(),
     linkLabel: z.string().max(120).optional(),
+    // 'auto' maps to a null target (external → new tab, internal → same tab).
+    linkTarget: z.enum(['auto', '_self', '_blank']),
     dismissible: z.boolean(),
     isActive: z.boolean(),
     // Each entry is "namefi" (main site) or a PBN normalizedDomainName.
@@ -198,6 +202,7 @@ function defaultsFor(row: AnnouncementRow | null): FormValues {
     backgroundOpacity: row?.backgroundOpacity ?? undefined,
     linkUrl: row?.linkUrl ?? '',
     linkLabel: row?.linkLabel ?? '',
+    linkTarget: row?.linkTarget ?? 'auto',
     dismissible: row?.dismissible ?? true,
     isActive: row?.isActive ?? true,
     targetSites: row?.targetSites?.length ? row.targetSites : [MAIN_SITE_VALUE],
@@ -475,6 +480,7 @@ function AnnouncementFormDialog({
           : values.backgroundOpacity,
       linkUrl: values.linkUrl ? values.linkUrl : null,
       linkLabel: values.linkLabel ? values.linkLabel : null,
+      linkTarget: values.linkTarget === 'auto' ? null : values.linkTarget,
       dismissible: values.dismissible,
       isActive: values.isActive,
       targetSites: values.targetSites,
@@ -492,6 +498,15 @@ function AnnouncementFormDialog({
     }
   };
 
+  // Surface validation failures: toast, and reveal the Advanced section when
+  // the invalid fields live inside it (otherwise their errors stay hidden).
+  const onInvalid = (errors: FieldErrors<FormValues>) => {
+    if (errors.left || errors.right || errors.operator) {
+      setAdvancedOpen(true);
+    }
+    toast.error('Please fix the highlighted fields.');
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
@@ -505,7 +520,10 @@ function AnnouncementFormDialog({
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="title"
@@ -660,8 +678,14 @@ function AnnouncementFormDialog({
                   <FormItem>
                     <FormLabel>Link URL (optional)</FormLabel>
                     <FormControl>
-                      <Input placeholder="https://…" {...field} />
+                      <Input
+                        placeholder="https://…  or  /my-domains"
+                        {...field}
+                      />
                     </FormControl>
+                    <FormDescription>
+                      An http(s) URL, a mailto: link, or a /path on this site.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -680,6 +704,33 @@ function AnnouncementFormDialog({
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="linkTarget"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link behavior</FormLabel>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="auto">
+                        Auto (new tab for external links)
+                      </SelectItem>
+                      <SelectItem value="_self">Same tab</SelectItem>
+                      <SelectItem value="_blank">New window/tab</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Internal /paths open via in-app navigation.
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <FormField

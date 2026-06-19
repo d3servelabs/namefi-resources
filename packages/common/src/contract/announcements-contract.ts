@@ -7,6 +7,28 @@ import { createContract } from './create-contract';
  */
 export const MAIN_SITE_TARGET = 'namefi';
 
+/** How the CTA link opens. Null = auto (external → new tab, internal → same tab). */
+export const linkTargetSchema = z.enum(['_self', '_blank']);
+export type AnnouncementLinkTarget = z.infer<typeof linkTargetSchema>;
+
+/**
+ * Accepts a same-origin path (`/foo`), an absolute http(s) URL, or a `mailto:`
+ * link — and rejects everything else (e.g. `javascript:`, or protocol-relative
+ * `//host` which is really external). Shared by the admin contract and form so
+ * validation matches the renderer's allowlist.
+ */
+export function isAllowedLinkUrl(value: string): boolean {
+  // Single leading slash only — `//host` is protocol-relative (external).
+  if (value.startsWith('/')) return !value.startsWith('//');
+  if (/^mailto:/i.test(value)) return true;
+  try {
+    const protocol = new URL(value).protocol;
+    return protocol === 'http:' || protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Public contract for the announcements banner.
  *
@@ -28,10 +50,12 @@ export const announcementDtoSchema = z.object({
   textColor: z.string().nullable(),
   // Background opacity as a percent (0–100); null means fully opaque.
   backgroundOpacity: z.number().nullable(),
-  // CTA link. Validated to a safe scheme (http(s)/mailto) at the admin write
-  // boundary; the renderer re-checks via `isSafeHref` before using it as href.
+  // CTA link: an http(s) URL, mailto:, or a same-origin /path. Validated at
+  // the admin write boundary; the renderer re-checks via `isSafeHref`.
   linkUrl: z.string().nullable(),
   linkLabel: z.string().nullable(),
+  // How the link opens; null = auto (external → new tab, internal → same tab).
+  linkTarget: linkTargetSchema.nullable(),
   dismissible: z.boolean(),
   priority: z.number().int(),
   // Used by the client to key dismissals — editing bumps this so a dismissed

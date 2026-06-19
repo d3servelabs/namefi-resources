@@ -137,6 +137,7 @@ export const adminAnnouncementsRouter = createContractTRPCRouter<
           backgroundOpacity: input.backgroundOpacity ?? null,
           linkUrl: input.linkUrl ?? null,
           linkLabel: input.linkLabel ?? null,
+          linkTarget: input.linkTarget ?? null,
           dismissible: input.dismissible,
           isActive: input.isActive,
           targetSites: input.targetSites,
@@ -179,6 +180,7 @@ export const adminAnnouncementsRouter = createContractTRPCRouter<
         patch.backgroundOpacity = rest.backgroundOpacity;
       if (rest.linkUrl !== undefined) patch.linkUrl = rest.linkUrl;
       if (rest.linkLabel !== undefined) patch.linkLabel = rest.linkLabel;
+      if (rest.linkTarget !== undefined) patch.linkTarget = rest.linkTarget;
       if (rest.dismissible !== undefined) patch.dismissible = rest.dismissible;
       if (rest.isActive !== undefined) patch.isActive = rest.isActive;
       if (rest.targetSites !== undefined) patch.targetSites = rest.targetSites;
