@@ -48,8 +48,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from '@namefi-astra/ui/components/shadcn/radio-group';
-import { ScrollAreaContent } from '@namefi-astra/ui/components/namefi/scroll-area-content';
-import { ScrollArea } from '@namefi-astra/ui/components/shadcn/scroll-area';
+import { EdgeFadeScrollArea } from '@namefi-astra/ui/components/namefi/edge-fade-scroll-area';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import {
@@ -247,21 +246,7 @@ const negativeTimelineMessageRe =
   /\b(?:no|not|failed|failure|error|without|couldn['\u2019]?t|could not|didn['\u2019]?t|did not|unable|invalid|canceled|cancelled)\b/i;
 const skeletonRows = ['first', 'second', 'third'];
 const recentRunsQueryInput = { limit: 12 };
-const runListEdgeFadeMask =
-  'linear-gradient(to bottom, transparent 0, black min(24px, var(--scroll-area-overflow-y-start)), black calc(100% - min(24px, var(--scroll-area-overflow-y-end, 24px))), transparent 100%)';
-const runListScrollAreaStyle: CSSProperties & {
-  '--leadgen-run-list-edge-fade-mask': string;
-} = {
-  '--leadgen-run-list-edge-fade-mask': runListEdgeFadeMask,
-};
-const runListScrollAreaClassName = cn(
-  '[&_[data-slot=scroll-area-viewport]]:max-h-[24rem]',
-  '[&_[data-slot=scroll-area-viewport]]:pe-3',
-  '[&_[data-slot=scroll-area-viewport]]:[-webkit-mask-image:var(--leadgen-run-list-edge-fade-mask)]',
-  '[&_[data-slot=scroll-area-viewport]]:[-webkit-mask-repeat:no-repeat]',
-  '[&_[data-slot=scroll-area-viewport]]:[mask-image:var(--leadgen-run-list-edge-fade-mask)]',
-  '[&_[data-slot=scroll-area-viewport]]:[mask-repeat:no-repeat]',
-);
+const runListViewportClassName = 'max-h-[24rem] pe-3';
 const RUN_LIST_VIEWPORT_SELECTOR = '[data-slot="scroll-area-viewport"]';
 const leadLayoutTransition = {
   type: 'spring',
@@ -3439,101 +3424,98 @@ function PastRuns({
           Your buyer searches will stay here.
         </p>
       ) : (
-        <div ref={runListRootRef} style={runListScrollAreaStyle}>
-          <ScrollArea
+        <div ref={runListRootRef}>
+          <EdgeFadeScrollArea
             overflowEdgeThreshold={1}
-            className={runListScrollAreaClassName}
+            viewportClassName={runListViewportClassName}
+            contentClassName="flex flex-col gap-2 pb-1"
           >
-            <ScrollAreaContent>
-              <div className="flex flex-col gap-2 pb-1">
-                {runs.map((run) => {
-                  const canExport = isLeadgenCrmCsvExportAvailable(run);
-                  const isExporting = exportingRunId === run.id;
-                  const canRetry = run.status === 'FAILED';
-                  const isRetrying = retryingRunIds.includes(run.id);
-                  const retryLabel = isRetrying
-                    ? `Retrying buyer search for ${run.domain}`
-                    : `Retry buyer search for ${run.domain}`;
+            {runs.map((run) => {
+              const canExport = isLeadgenCrmCsvExportAvailable(run);
+              const isExporting = exportingRunId === run.id;
+              const canRetry = run.status === 'FAILED';
+              const isRetrying = retryingRunIds.includes(run.id);
+              const retryLabel = isRetrying
+                ? `Retrying buyer search for ${run.domain}`
+                : `Retry buyer search for ${run.domain}`;
 
-                  return (
-                    <div
-                      key={run.id}
-                      ref={run.id === activeRunId ? selectedRunRef : undefined}
-                      className={cn(
-                        'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
-                        run.id === activeRunId
-                          ? 'border-primary/60 bg-primary/5'
-                          : 'border-border/70',
-                      )}
+              return (
+                <div
+                  key={run.id}
+                  ref={run.id === activeRunId ? selectedRunRef : undefined}
+                  className={cn(
+                    'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
+                    run.id === activeRunId
+                      ? 'border-primary/60 bg-primary/5'
+                      : 'border-border/70',
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={getLeadgenRunHref(run.id)}
+                      className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
                     >
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={getLeadgenRunHref(run.id)}
-                          className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                      <p className="truncate text-sm font-medium">
+                        {run.domain}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {isTerminalLeadgenStatus(run.status)
+                          ? `${run.leadCount} leads - ${run.draftCount} drafts`
+                          : 'Searching...'}
+                      </p>
+                    </Link>
+                    {canRetry && (
+                      <Tooltip>
+                        <TooltipTrigger
+                          render={
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon-sm"
+                              disabled={isRetrying}
+                              aria-busy={isRetrying}
+                              aria-label={retryLabel}
+                              onClick={() => onRetryRun(run.id)}
+                            />
+                          }
                         >
-                          <p className="truncate text-sm font-medium">
-                            {run.domain}
-                          </p>
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {isTerminalLeadgenStatus(run.status)
-                              ? `${run.leadCount} leads - ${run.draftCount} drafts`
-                              : 'Searching...'}
-                          </p>
-                        </Link>
-                        {canRetry && (
-                          <Tooltip>
-                            <TooltipTrigger
-                              render={
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="icon-sm"
-                                  disabled={isRetrying}
-                                  aria-busy={isRetrying}
-                                  aria-label={retryLabel}
-                                  onClick={() => onRetryRun(run.id)}
-                                />
-                              }
-                            >
-                              {isRetrying ? (
-                                <Loader2 className="animate-spin" />
-                              ) : (
-                                <RefreshCw />
-                              )}
-                            </TooltipTrigger>
-                            <TooltipContent sideOffset={6}>
-                              {isRetrying ? 'Retrying search' : 'Retry search'}
-                            </TooltipContent>
-                          </Tooltip>
+                          {isRetrying ? (
+                            <Loader2 className="animate-spin" />
+                          ) : (
+                            <RefreshCw />
+                          )}
+                        </TooltipTrigger>
+                        <TooltipContent sideOffset={6}>
+                          {isRetrying ? 'Retrying search' : 'Retry search'}
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
+                    {canExport && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon-sm"
+                        disabled={isExporting}
+                        aria-label={`Download CRM CSV for ${run.domain}`}
+                        onClick={() => {
+                          void onExportRun(run.id);
+                        }}
+                      >
+                        {isExporting ? (
+                          <Loader2 className="animate-spin" />
+                        ) : (
+                          <Download />
                         )}
-                        {canExport && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="icon-sm"
-                            disabled={isExporting}
-                            aria-label={`Download CRM CSV for ${run.domain}`}
-                            onClick={() => {
-                              void onExportRun(run.id);
-                            }}
-                          >
-                            {isExporting ? (
-                              <Loader2 className="animate-spin" />
-                            ) : (
-                              <Download />
-                            )}
-                          </Button>
-                        )}
-                        <span className="flex w-4 shrink-0 items-center justify-center">
-                          <RunStatusIcon status={run.status} />
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </ScrollAreaContent>
-          </ScrollArea>
+                      </Button>
+                    )}
+                    <span className="flex w-4 shrink-0 items-center justify-center">
+                      <RunStatusIcon status={run.status} />
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </EdgeFadeScrollArea>
         </div>
       )}
     </section>
