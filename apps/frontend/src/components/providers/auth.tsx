@@ -21,7 +21,8 @@ import {
   type PropsWithChildren,
 } from 'react';
 import { useConsentIdentify } from '@/hooks/use-consent-identify';
-import { useSkipAuth } from '@/hooks/use-skip-auth';
+import { useSkipAuth, SKIP_AUTH_MOCK_USER } from '@/hooks/use-skip-auth';
+import { withFallbackContactEmail } from './auth-display-profile';
 import type { LoginModalOptions, PrivyEvents } from '@privy-io/react-auth';
 import { TRPC_INCLUDE_PRIVY_ID_TOKEN_CONTEXT_KEY } from '@/lib/trpc-request-headers';
 import {
@@ -762,8 +763,18 @@ export function AuthProvider({
           )
         ? undefined
         : userData;
-  const unsafeDisplayProfile =
-    userDataForCurrentSubject?.displayProfile ?? null;
+  // Under `?skip_auth=1` there is no runtime Privy user, so the contact email
+  // can only come from the backend display profile. Surface the simulated
+  // user's email when it is missing so email-gated surfaces (e.g. DNS
+  // management) don't fire for the simulated account that is defined to have one.
+  const unsafeDisplayProfile = useMemo(
+    () =>
+      withFallbackContactEmail(
+        userDataForCurrentSubject?.displayProfile ?? null,
+        isSkipAuthActive ? SKIP_AUTH_MOCK_USER.email : null,
+      ),
+    [userDataForCurrentSubject?.displayProfile, isSkipAuthActive],
+  );
 
   useEffect(() => {
     if (!userQuery.isSuccess || !userDataForCurrentSubject?.privyUserId) return;

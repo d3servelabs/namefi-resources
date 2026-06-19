@@ -75,6 +75,35 @@ export function getAuthContactEmail({
   );
 }
 
+/**
+ * Ensure a display profile carries a contact email, filling in `fallbackEmail`
+ * only when the profile is missing one.
+ *
+ * Used for the `skip_auth` simulated user: under `?skip_auth=1` there is no
+ * runtime Privy user, so the contact email can only come from the backend
+ * `displayProfile`. When that profile lacks an email, email-gated surfaces
+ * (e.g. the DNS management gate) fire even though the simulated account is
+ * defined to have an email. Surfacing the known simulated email keeps every
+ * consumer of the display profile consistent.
+ *
+ * Returns the original profile reference untouched when no fallback is needed,
+ * so it stays referentially stable for memoization.
+ */
+export function withFallbackContactEmail(
+  profile: RuntimeAuthDisplayProfile | null,
+  fallbackEmail: string | null | undefined,
+): RuntimeAuthDisplayProfile | null {
+  const email = cleanDisplayValue(fallbackEmail);
+  if (!email) return profile;
+  if (cleanDisplayValue(profile?.email)) return profile;
+
+  return {
+    displayName: profile?.displayName ?? null,
+    email,
+    walletAddress: profile?.walletAddress ?? null,
+  };
+}
+
 export function getAuthDisplayProfileFromRuntimeUser(
   user: unknown | null | undefined,
 ): RuntimeAuthDisplayProfile | null {

@@ -7,6 +7,7 @@ import {
   getAuthDisplayProfileFromRuntimeUser,
   isUsefulAuthDisplayProfile,
   mergeAuthDisplayProfiles,
+  withFallbackContactEmail,
 } from './auth-display-profile';
 
 describe('auth display profile helpers', () => {
@@ -127,5 +128,62 @@ describe('auth display profile helpers', () => {
         { displayName: null, email: 'grace@example.com', walletAddress: null },
       ),
     ).toBe(false);
+  });
+
+  describe('withFallbackContactEmail', () => {
+    it('fills the contact email when the profile has none', () => {
+      expect(
+        withFallbackContactEmail(
+          { displayName: 'Tester', email: null, walletAddress: '0xabc' },
+          'tester+alice@d3serve.xyz',
+        ),
+      ).toEqual({
+        displayName: 'Tester',
+        email: 'tester+alice@d3serve.xyz',
+        walletAddress: '0xabc',
+      });
+    });
+
+    it('creates a profile from the fallback when none exists', () => {
+      expect(
+        withFallbackContactEmail(null, 'tester+alice@d3serve.xyz'),
+      ).toEqual({
+        displayName: null,
+        email: 'tester+alice@d3serve.xyz',
+        walletAddress: null,
+      });
+    });
+
+    it('keeps the existing email and the same reference when one is present', () => {
+      const profile = {
+        displayName: null,
+        email: 'real@example.com',
+        walletAddress: null,
+      };
+
+      expect(
+        withFallbackContactEmail(profile, 'tester+alice@d3serve.xyz'),
+      ).toBe(profile);
+    });
+
+    it('treats whitespace-only emails as missing on both sides', () => {
+      const profile = {
+        displayName: null,
+        email: '   ',
+        walletAddress: null,
+      };
+
+      expect(withFallbackContactEmail(profile, ' tester@d3serve.xyz ')).toEqual(
+        {
+          displayName: null,
+          email: 'tester@d3serve.xyz',
+          walletAddress: null,
+        },
+      );
+
+      // No usable fallback -> return the original reference untouched.
+      expect(withFallbackContactEmail(profile, '   ')).toBe(profile);
+      expect(withFallbackContactEmail(null, null)).toBeNull();
+    });
   });
 });
