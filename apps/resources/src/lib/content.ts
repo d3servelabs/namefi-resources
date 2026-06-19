@@ -6,6 +6,17 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { cache } from 'react';
 import { i18n, type Locale } from '@/i18n-config';
+import {
+  CLUSTER_SLUGS,
+  CONTENT_FORMATS,
+  type ClusterSlug,
+  type ContentFormat,
+  isClusterSlug,
+  isContentFormat,
+  isSeriesSlug,
+  SERIES_SLUGS,
+  type SeriesSlug,
+} from '@/lib/taxonomy';
 
 type Collection =
   | 'blog'
@@ -29,6 +40,19 @@ type PostFrontmatter = {
   originalUrl?: string;
   draft: boolean;
   language: Locale;
+  // --- Topic-cluster / series information architecture (additive). ---
+  // See lib/taxonomy.ts for the controlled vocabularies. These are optional so
+  // existing posts parse unchanged; they are surfaced through new hub pages
+  // (/topics, /series) and cross-links, never by moving a post's URL.
+  //
+  // Primary topic cluster; drives the post's breadcrumb and pillar membership.
+  cluster?: ClusterSlug;
+  // Editorial series this post is an episode of, if any.
+  series?: SeriesSlug;
+  // 1-based position within `series` (required when `series` is set).
+  seriesOrder?: number;
+  // Article type (guide/faq/comparison/...), separated from topical `tags`.
+  format?: ContentFormat;
 };
 
 type PostEntry = {
@@ -306,6 +330,67 @@ function listSlugs(collection: Collection, locale: Locale): string[] {
   return slugs;
 }
 
+type PostTaxonomyFields = Pick<
+  PostFrontmatter,
+  'cluster' | 'series' | 'seriesOrder' | 'format'
+>;
+
+/**
+ * Parse the optional topic-cluster / series frontmatter fields. Each is
+ * optional, but when present it must be a known value from the controlled
+ * vocabulary (lib/taxonomy.ts), so a typo fails the build rather than silently
+ * dropping a post out of its hub or series.
+ */
+function parsePostTaxonomyFields(
+  data: Record<string, unknown>,
+  slug: string,
+): PostTaxonomyFields {
+  const cluster = isClusterSlug(data.cluster) ? data.cluster : undefined;
+  if (data.cluster !== undefined && cluster === undefined) {
+    throw new Error(
+      `Post "${slug}" has an unknown "cluster": ${JSON.stringify(data.cluster)}. Expected one of: ${CLUSTER_SLUGS.join(', ')}.`,
+    );
+  }
+
+  const series = isSeriesSlug(data.series) ? data.series : undefined;
+  if (data.series !== undefined && series === undefined) {
+    throw new Error(
+      `Post "${slug}" has an unknown "series": ${JSON.stringify(data.series)}. Expected one of: ${SERIES_SLUGS.join(', ')}.`,
+    );
+  }
+
+  // `seriesOrder` is the 1-based episode position within `series`, so it must be
+  // a positive integer. Distinguish "present but invalid" (wrong type/range)
+  // from "absent" so a build failure points at the real fix — mirroring how the
+  // cluster/series/format checks above report unknown values.
+  const seriesOrderProvided = data.seriesOrder !== undefined;
+  const seriesOrder =
+    typeof data.seriesOrder === 'number' &&
+    Number.isInteger(data.seriesOrder) &&
+    data.seriesOrder >= 1
+      ? data.seriesOrder
+      : undefined;
+  if (seriesOrderProvided && seriesOrder === undefined) {
+    throw new Error(
+      `Post "${slug}" has an invalid "seriesOrder": ${JSON.stringify(data.seriesOrder)}. Expected a positive integer (1-based position within the series).`,
+    );
+  }
+  if (series !== undefined && seriesOrder === undefined) {
+    throw new Error(
+      `Post "${slug}" is in series "${series}" but is missing a numeric "seriesOrder".`,
+    );
+  }
+
+  const format = isContentFormat(data.format) ? data.format : undefined;
+  if (data.format !== undefined && format === undefined) {
+    throw new Error(
+      `Post "${slug}" has an unknown "format": ${JSON.stringify(data.format)}. Expected one of: ${CONTENT_FORMATS.join(', ')}.`,
+    );
+  }
+
+  return { cluster, series, seriesOrder, format };
+}
+
 function normalisePostFrontmatter(
   data: Record<string, unknown>,
   slug: string,
@@ -351,6 +436,8 @@ function normalisePostFrontmatter(
       ? data.originalUrl.trim()
       : undefined;
 
+  const taxonomy = parsePostTaxonomyFields(data, slug);
+
   return {
     title: data.title,
     summary,
@@ -361,6 +448,7 @@ function normalisePostFrontmatter(
     originalUrl,
     draft: draftValue,
     language,
+    ...taxonomy,
   };
 }
 
