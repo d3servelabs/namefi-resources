@@ -5,13 +5,17 @@ import {
 } from '../shared/public-digest-animation';
 import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 
+const PUBLIC_DIGEST_ANIMATION_ACTIVITY_TIMEOUT = '15 minutes';
+
 export async function generatePublicDigestAnimationWorkflow(
   input: PublicDigestAnimationWorkflowInput,
 ) {
   const { generatePublicDigestAnimation } = typedProxyActivities({
     temporalEnum: TEMPORAL_ENUMS.DEFAULT,
     options: {
-      startToCloseTimeout: '35 minutes',
+      // Digest callers enforce their own 10-minute cap at the parent workflow.
+      scheduleToCloseTimeout: PUBLIC_DIGEST_ANIMATION_ACTIVITY_TIMEOUT,
+      startToCloseTimeout: PUBLIC_DIGEST_ANIMATION_ACTIVITY_TIMEOUT,
       heartbeatTimeout: '30 seconds',
       retry: {
         maximumAttempts: 1,

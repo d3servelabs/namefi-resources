@@ -5,7 +5,6 @@ import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-act
 export type NamefiFeedSalesDigestWorkflowInput = {
   trigger: 'scheduled' | 'manual';
   requestedByUserId?: string | null;
-  digestRunId?: string | null;
   at?: string;
   includeImage?: boolean;
   includeAnimation?: boolean;
@@ -40,7 +39,6 @@ export async function namefiFeedSalesDigestWorkflow(
   return runNamefiFeedSalesDigestActivity({
     at: input.at,
     createdByUserId: input.requestedByUserId ?? null,
-    digestRunId: input.digestRunId ?? null,
     trigger: input.trigger,
     ...(shouldRecordTemporalRunId ? { temporalRunId: workflowRun.runId } : {}),
     workflowId,

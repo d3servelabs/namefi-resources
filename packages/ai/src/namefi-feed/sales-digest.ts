@@ -131,6 +131,10 @@ export interface NamefiFeedSalesDigestWordCloudResult {
   prompt: string;
 }
 
+export interface NamefiFeedSalesDigestWordCloudImageOptions {
+  abortSignal?: AbortSignal;
+}
+
 interface DomainFeatures {
   tld: string;
   sldLength: number;
@@ -236,6 +240,7 @@ You may add abstract, non-branded visual motifs inspired by the provided domains
 type WordCloudAgent = ReturnType<typeof createWordCloudAgent>;
 
 let wordCloudAgent: WordCloudAgent | null = null;
+let logotypeSvg: string | null = null;
 let logotypeSvgPromise: Promise<string> | null = null;
 
 export async function generateNamefiFeedSalesDigestInsight({
@@ -519,6 +524,7 @@ export function buildNamefiFeedSalesDigestAnimationSummary({
 
 export async function generateNamefiFeedSalesDigestWordCloudImage(
   picks: ReadonlyArray<NamefiFeedSalesDigestWordCloudPick>,
+  options: NamefiFeedSalesDigestWordCloudImageOptions = {},
 ): Promise<NamefiFeedSalesDigestWordCloudResult | null> {
   const normalizedPicks = picks
     .map((pick) => ({
@@ -536,6 +542,7 @@ export async function generateNamefiFeedSalesDigestWordCloudImage(
 
   const prompt = buildNamefiFeedSalesDigestWordCloudPrompt(normalizedPicks);
   const result = await getWordCloudAgent().generate({
+    abortSignal: options.abortSignal,
     messages: [
       {
         role: 'user',
@@ -561,6 +568,7 @@ export async function generateNamefiFeedSalesDigestWordCloudImage(
     : `data:image/png;base64,${imageBase64}`;
   const imageDataUrl = await overlayDigestLogoOnImageDataUrl(
     generatedImageDataUrl,
+    options,
   );
 
   return {
@@ -571,6 +579,7 @@ export async function generateNamefiFeedSalesDigestWordCloudImage(
 
 export async function overlayDigestLogoOnImageDataUrl(
   imageDataUrl: string,
+  options: NamefiFeedSalesDigestWordCloudImageOptions = {},
 ): Promise<string> {
   const parsed = parseImageDataUrl(imageDataUrl);
   if (!parsed) {
@@ -584,7 +593,7 @@ export async function overlayDigestLogoOnImageDataUrl(
   const width = metadata.width ?? DIGEST_IMAGE_WIDTH;
   const height = metadata.height ?? DIGEST_IMAGE_HEIGHT;
   const layout = computeDigestLogoOverlayLayout(width, height);
-  const logoPng = await buildDigestLogoPng(layout);
+  const logoPng = await buildDigestLogoPng(layout, options);
 
   const composited = await image
     .composite([
@@ -932,8 +941,9 @@ function createWordCloudAgent() {
 
 async function buildDigestLogoPng(
   layout: DigestLogoOverlayLayout,
+  options: NamefiFeedSalesDigestWordCloudImageOptions = {},
 ): Promise<Buffer> {
-  const logoSvg = await getNamefiLogotypeSvg();
+  const logoSvg = await getNamefiLogotypeSvg(options);
   return sharp(Buffer.from(logoSvg), {
     density: 240,
     failOn: 'none',
@@ -947,23 +957,67 @@ async function buildDigestLogoPng(
     .toBuffer();
 }
 
-async function getNamefiLogotypeSvg(): Promise<string> {
+async function getNamefiLogotypeSvg(
+  options: NamefiFeedSalesDigestWordCloudImageOptions = {},
+): Promise<string> {
+  if (logotypeSvg) {
+    return logotypeSvg;
+  }
+
   if (!logotypeSvgPromise) {
     logotypeSvgPromise = fetchTextFile(NAMEFI_LOGOTYPE_URL)
-      .then((svg) =>
-        svg.replace(LOGOTYPE_FILL_PATTERN, `fill="${DIGEST_LOGO_FILL}"`),
-      )
+      .then((svg) => {
+        logotypeSvg = svg.replace(
+          LOGOTYPE_FILL_PATTERN,
+          `fill="${DIGEST_LOGO_FILL}"`,
+        );
+        return logotypeSvg;
+      })
       .catch((error) => {
         logotypeSvgPromise = null;
         throw error;
       });
   }
 
-  return logotypeSvgPromise;
+  return waitForLogotypeSvg(logotypeSvgPromise, options.abortSignal);
 }
 
-async function fetchTextFile(url: string): Promise<string> {
-  const response = await fetch(url);
+async function waitForLogotypeSvg(
+  svgPromise: Promise<string>,
+  abortSignal?: AbortSignal,
+): Promise<string> {
+  if (!abortSignal) {
+    return svgPromise;
+  }
+
+  if (abortSignal.aborted) {
+    throw new Error('Namefi logotype SVG fetch aborted.');
+  }
+
+  let onAbort: (() => void) | null = null;
+
+  try {
+    return await Promise.race([
+      svgPromise,
+      new Promise<never>((_, reject) => {
+        onAbort = () => {
+          reject(new Error('Namefi logotype SVG fetch aborted.'));
+        };
+        abortSignal.addEventListener('abort', onAbort, { once: true });
+      }),
+    ]);
+  } finally {
+    if (onAbort) {
+      abortSignal.removeEventListener('abort', onAbort);
+    }
+  }
+}
+
+async function fetchTextFile(
+  url: string,
+  abortSignal?: AbortSignal,
+): Promise<string> {
+  const response = await fetch(url, { signal: abortSignal });
   if (!response.ok) {
     throw new Error(`GET ${url} failed with ${response.status}.`);
   }

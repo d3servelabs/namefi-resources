@@ -18,10 +18,7 @@ import {
   listNamefiFeedAdminRuns,
   updateNamefiFeedSettings,
 } from '../../../services/namefi-feed/admin.service';
-import {
-  createPendingNamefiFeedSalesDigestRun,
-  failNamefiFeedSalesDigestRun,
-} from '../../../services/namefi-feed/digest.service';
+import { resolveNamefiFeedSalesDigestRunAt } from '../../../services/namefi-feed/digest.service';
 import {
   createNamefiFeedSalesDigestTarget,
   deleteNamefiFeedSalesDigestTarget,
@@ -172,24 +169,14 @@ export const namefiFeedRouter = createContractTRPCRouter<
     .output(adminNamefiFeedContract.runDigest.output)
     .mutation(async ({ ctx, input }) => {
       const workflowId = `namefi-feed-digest-${Date.now()}-${randomUUID()}`;
-      const pendingRun = await createPendingNamefiFeedSalesDigestRun({
-        createdByUserId: ctx.user.id,
-        trigger: 'manual',
-        workflowId,
-        includeImage: input.includeImage,
-        includeAnimation: input.includeAnimation,
-        enabledOnly: input.enabledOnly,
-        dryRun: input.dryRun,
-        targetIds: input.targetIds,
-      });
+      const runAt = resolveNamefiFeedSalesDigestRunAt();
       try {
         await temporalClient.workflow.start(namefiFeedSalesDigestWorkflow, {
           args: [
             {
               trigger: 'manual',
               requestedByUserId: ctx.user.id,
-              digestRunId: pendingRun.digestRunId,
-              at: pendingRun.generatedAt,
+              at: runAt.toISOString(),
               includeImage: input.includeImage,
               includeAnimation: input.includeAnimation,
               enabledOnly: input.enabledOnly,
@@ -201,16 +188,18 @@ export const namefiFeedRouter = createContractTRPCRouter<
           workflowId,
           workflowIdReusePolicy: 'ALLOW_DUPLICATE',
           workflowIdConflictPolicy: 'USE_EXISTING',
+          memo: {
+            at: runAt.toISOString(),
+            dryRun: input.dryRun,
+            enabledOnly: input.enabledOnly,
+            includeAnimation: input.includeAnimation,
+            includeImage: input.includeImage,
+            requestedByUserId: ctx.user.id,
+            targetIds: input.targetIds ?? null,
+            trigger: 'manual',
+          },
         });
       } catch (error) {
-        await failNamefiFeedSalesDigestRun({
-          digestRunId: pendingRun.digestRunId,
-          errorMessage:
-            error instanceof Error
-              ? error.message
-              : 'Failed to start Namefi feed digest workflow.',
-          failedCount: 0,
-        });
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message:
@@ -220,7 +209,7 @@ export const namefiFeedRouter = createContractTRPCRouter<
         });
       }
 
-      return { digestRunId: pendingRun.digestRunId, workflowId };
+      return { workflowId };
     }),
 
   createDigestTarget: auditedAdminProcedureWithPermissions(

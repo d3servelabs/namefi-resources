@@ -7,11 +7,6 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { recordTypeValues } from '@namefi-astra/zod-dns';
 import {
-  cartItemMetadataSchema,
-  orderItemMetadataSchema,
-  orderMetadataSchema,
-  orderNfscItemMetadataSchema,
-  paymentMetadataSchema,
   DEFAULT_USER_PREFERENCES,
   type CartItemMetadata,
   type OrderItemMetadata,
@@ -25,7 +20,6 @@ import {
   freeClaimClaimingStatusValues,
   notificationBodyTypeValues,
   notificationPriorityValues,
-  notificationResourceTypeValues,
   orderStatusValues,
   paymentProviderValues,
   paymentStatusValues,
@@ -2048,20 +2042,6 @@ export const salesDigestTargetDeliveryStatusEnum = pgEnum(
   ['pending', 'sent', 'failed', 'skipped', 'partial'],
 );
 
-export const salesDigestRunTriggerEnum = pgEnum('sales_digest_run_trigger', [
-  'scheduled',
-  'manual',
-]);
-
-export const salesDigestRunStatusEnum = pgEnum('sales_digest_run_status', [
-  'running',
-  'dry_run',
-  'sent',
-  'skipped',
-  'failed',
-  'partial',
-]);
-
 export type SalesDigestTargetConfig = {
   channelId?: string;
   guildId?: string | null;
@@ -2105,90 +2085,10 @@ export const salesDigestTargetsTable = pgTable(
   ],
 );
 
-export const salesDigestRunsTable = pgTable(
-  'sales_digest_runs',
-  {
-    ...randomUuid,
-    workflowId: text('workflow_id'),
-    trigger: salesDigestRunTriggerEnum('trigger').notNull(),
-    status: salesDigestRunStatusEnum('status').notNull().default('running'),
-    createdByUserId: uuid('created_by_user_id').references(
-      () => usersTable.id,
-      { onDelete: 'set null' },
-    ),
-    windowStart: timestamp('window_start').notNull(),
-    windowEnd: timestamp('window_end').notNull(),
-    generatedAt: timestamp('generated_at').notNull().defaultNow(),
-    finishedAt: timestamp('finished_at'),
-    entriesCount: integer('entries_count').notNull().default(0),
-    targetCount: integer('target_count').notNull().default(0),
-    sentCount: integer('sent_count').notNull().default(0),
-    skippedCount: integer('skipped_count').notNull().default(0),
-    failedCount: integer('failed_count').notNull().default(0),
-    includeImage: boolean('include_image').notNull().default(true),
-    includeAnimation: boolean('include_animation').notNull().default(true),
-    enabledOnly: boolean('enabled_only').notNull().default(true),
-    dryRun: boolean('dry_run').notNull().default(false),
-    usedFallback: boolean('used_fallback').notNull().default(false),
-    fallbackReason: text('fallback_reason'),
-    skipReason: text('skip_reason'),
-    errorMessage: text('error_message'),
-    digestTextHash: text('digest_text_hash'),
-    imageGenerated: boolean('image_generated').notNull().default(false),
-    animationGenerated: boolean('animation_generated').notNull().default(false),
-    targetIds: jsonb('target_ids').$type<string[] | null>().default(sql`NULL`),
-    metadata: jsonb('metadata')
-      .$type<Record<string, Json>>()
-      .notNull()
-      .default(sql`'{}'::jsonb`),
-    ...timestamps,
-  },
-  (table) => [
-    check(
-      'sales_digest_runs_window_bounds_check',
-      sql`${table.windowEnd} >= ${table.windowStart}`,
-    ),
-    check(
-      'sales_digest_runs_entries_count_nonnegative',
-      sql`${table.entriesCount} >= 0`,
-    ),
-    check(
-      'sales_digest_runs_target_count_nonnegative',
-      sql`${table.targetCount} >= 0`,
-    ),
-    check(
-      'sales_digest_runs_sent_count_nonnegative',
-      sql`${table.sentCount} >= 0`,
-    ),
-    check(
-      'sales_digest_runs_skipped_count_nonnegative',
-      sql`${table.skippedCount} >= 0`,
-    ),
-    check(
-      'sales_digest_runs_failed_count_nonnegative',
-      sql`${table.failedCount} >= 0`,
-    ),
-    index('sales_digest_runs_status_generated_idx').on(
-      table.status,
-      table.generatedAt.desc(),
-    ),
-    index('sales_digest_runs_window_idx').on(
-      table.windowStart,
-      table.windowEnd,
-    ),
-    index('sales_digest_runs_workflow_idx').on(table.workflowId),
-    index('sales_digest_runs_created_by_idx').on(table.createdByUserId),
-  ],
-);
-
 export const salesDigestTargetDeliveriesTable = pgTable(
   'sales_digest_target_deliveries',
   {
     ...randomUuid,
-    digestRunId: uuid('digest_run_id').references(
-      () => salesDigestRunsTable.id,
-      { onDelete: 'set null' },
-    ),
     targetId: uuid('target_id').references(() => salesDigestTargetsTable.id, {
       onDelete: 'set null',
     }),
@@ -2222,10 +2122,6 @@ export const salesDigestTargetDeliveriesTable = pgTable(
     ),
     index('sales_digest_deliveries_target_created_idx').on(
       table.targetId,
-      table.createdAt.desc(),
-    ),
-    index('sales_digest_deliveries_run_created_idx').on(
-      table.digestRunId,
       table.createdAt.desc(),
     ),
     index('sales_digest_deliveries_status_created_idx').on(

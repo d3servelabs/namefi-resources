@@ -13,7 +13,6 @@ import {
   namefiFeedListingReportsTable,
   namefiFeedListingsTable,
   namefiFeedPostsTable,
-  salesDigestRunsTable,
   salesDigestTargetDeliveriesTable,
   salesDigestTargetsTable,
   linkSharesTable,
@@ -232,24 +231,9 @@ export const salesDigestTargetsRelations = relations(
   }),
 );
 
-export const salesDigestRunsRelations = relations(
-  salesDigestRunsTable,
-  ({ one, many }) => ({
-    createdByUser: one(usersTable, {
-      fields: [salesDigestRunsTable.createdByUserId],
-      references: [usersTable.id],
-    }),
-    deliveries: many(salesDigestTargetDeliveriesTable),
-  }),
-);
-
 export const salesDigestTargetDeliveriesRelations = relations(
   salesDigestTargetDeliveriesTable,
   ({ one }) => ({
-    digestRun: one(salesDigestRunsTable, {
-      fields: [salesDigestTargetDeliveriesTable.digestRunId],
-      references: [salesDigestRunsTable.id],
-    }),
     target: one(salesDigestTargetsTable, {
       fields: [salesDigestTargetDeliveriesTable.targetId],
       references: [salesDigestTargetsTable.id],

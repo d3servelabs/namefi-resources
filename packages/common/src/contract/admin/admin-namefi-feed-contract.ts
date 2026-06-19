@@ -206,7 +206,6 @@ export const adminNamefiFeedDigestTargetSchema = z.discriminatedUnion(
 
 export const adminNamefiFeedDigestDeliverySchema = z.object({
   id: z.string().uuid(),
-  digestRunId: z.string().uuid().nullable(),
   targetId: z.string().uuid().nullable(),
   targetKey: z.string(),
   targetLabel: z.string().nullable(),
@@ -222,7 +221,7 @@ export const adminNamefiFeedDigestDeliverySchema = z.object({
 });
 
 export const adminNamefiFeedDigestRunSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string(),
   workflowId: z.string().nullable(),
   temporalRunId: z.string().nullable(),
   temporalUiUrl: z.string().url().nullable(),
@@ -503,7 +502,6 @@ export const adminNamefiFeedContract = createContract(
       type: 'mutation',
       input: runDigestInputSchema,
       output: z.object({
-        digestRunId: z.string().uuid(),
         workflowId: z.string(),
       }),
     },

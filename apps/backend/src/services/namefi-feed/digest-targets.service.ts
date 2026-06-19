@@ -114,7 +114,6 @@ export interface SalesDigestTargetDeliverySummary {
 
 export interface SalesDigestTargetDeliveryAdminSummary {
   id: string;
-  digestRunId: string | null;
   targetId: string | null;
   targetKey: string;
   targetLabel: string | null;
@@ -202,7 +201,6 @@ export async function listRecentNamefiFeedSalesDigestDeliveries(
   const rows = await db
     .select({
       id: salesDigestTargetDeliveriesTable.id,
-      digestRunId: salesDigestTargetDeliveriesTable.digestRunId,
       targetId: salesDigestTargetDeliveriesTable.targetId,
       targetKey: salesDigestTargetDeliveriesTable.targetKey,
       status: salesDigestTargetDeliveriesTable.status,
@@ -226,7 +224,6 @@ export async function listRecentNamefiFeedSalesDigestDeliveries(
 
   return rows.map((row) => ({
     id: row.id,
-    digestRunId: row.digestRunId,
     targetId: row.targetId,
     targetKey: row.targetKey,
     targetLabel: row.targetLabel,
@@ -358,7 +355,6 @@ export async function publishNamefiFeedSalesDigestToTargets(params: {
   bounds: NamefiFeedSalesDigestBounds;
   createdByUserId?: string | null;
   digestRender: NamefiFeedSalesDigestRenderResult;
-  digestRunId?: string | null;
   enabledOnly?: boolean;
   entriesCount?: number;
   targetIds?: string[];
@@ -382,7 +378,6 @@ export async function publishNamefiFeedSalesDigestToTargets(params: {
           createdByUserId: params.createdByUserId ?? null,
           digestRender: params.digestRender,
           digestTextHash,
-          digestRunId: params.digestRunId ?? null,
           target,
         }),
       );
@@ -693,7 +688,6 @@ async function deliverSalesDigestToTarget({
   createdByUserId,
   digestRender,
   digestTextHash,
-  digestRunId,
   target,
 }: {
   at: Date;
@@ -701,7 +695,6 @@ async function deliverSalesDigestToTarget({
   createdByUserId: string | null;
   digestRender: NamefiFeedSalesDigestRenderResult;
   digestTextHash: string;
-  digestRunId: string | null;
   target: SalesDigestDeliveryTarget;
 }): Promise<SalesDigestTargetDeliveryResult> {
   const existing = await findTargetDelivery({
@@ -772,7 +765,6 @@ async function deliverSalesDigestToTarget({
             externalMessageId: null,
             externalMessageUrl: null,
             generatedAt: at,
-            digestRunId,
             response: null,
             status: 'pending',
             updatedAt: new Date(),
@@ -786,7 +778,6 @@ async function deliverSalesDigestToTarget({
           .insert(salesDigestTargetDeliveriesTable)
           .values({
             createdByUserId,
-            digestRunId,
             digestTextHash,
             generatedAt: at,
             status: 'pending',

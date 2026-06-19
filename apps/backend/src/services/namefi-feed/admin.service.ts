@@ -7,10 +7,13 @@ import {
   namefiFeedListingsTable,
   namefiFeedPostsTable,
   namefiFeedSettingsTable,
-  salesDigestRunsTable,
   salesDigestTargetDeliveriesTable,
   salesDigestTargetsTable,
 } from '@namefi-astra/db';
+import type {
+  WorkflowExecutionInfo,
+  WorkflowExecutionStatusName,
+} from '@temporalio/client';
 import {
   and,
   asc,
@@ -25,6 +28,7 @@ import {
 } from 'drizzle-orm';
 import type { Json } from 'drizzle-zod';
 import { getTemporalWorkflowUrl } from '#temporal/activities/default/get-workflow-url';
+import { temporalClient } from '#temporal/client';
 import { getActiveNamefiFeedListingWhereClauses } from './listing-visibility';
 import { DEFAULT_NAMEFI_FEED_SEARCH_QUERIES } from './normalization';
 import {
@@ -39,6 +43,12 @@ import {
   listNamefiFeedSalesDigestTargets,
   listRecentNamefiFeedSalesDigestDeliveries,
 } from './digest-targets.service';
+import {
+  getRollingNamefiFeedSalesDigestBounds,
+  resolveNamefiFeedSalesDigestRunAt,
+  type NamefiFeedSalesDigestBounds,
+  type RunNamefiFeedSalesDigestResult,
+} from './digest.service';
 
 type AdminNamefiFeedOutputs = InferContractOutputs<AdminNamefiFeedContract>;
 export type AdminNamefiFeedSettings = AdminNamefiFeedOutputs['updateSettings'];
@@ -615,7 +625,6 @@ export async function listNamefiFeedAdminDigestDeliveries(
     db
       .select({
         id: salesDigestTargetDeliveriesTable.id,
-        digestRunId: salesDigestTargetDeliveriesTable.digestRunId,
         targetId: salesDigestTargetDeliveriesTable.targetId,
         targetKey: salesDigestTargetDeliveriesTable.targetKey,
         status: salesDigestTargetDeliveriesTable.status,
@@ -653,63 +662,18 @@ export async function listNamefiFeedAdminDigestDeliveries(
 export async function listNamefiFeedAdminDigestRuns(
   input: AdminNamefiFeedTableInput,
 ): Promise<AdminNamefiFeedOutputs['listDigestRuns']> {
-  const where = combineWhereClauses(
-    buildDigestRunsSearchWhere(input.searchTerm),
-    buildColumnFiltersWhere(input.columnFilters, {
-      status: { column: salesDigestRunsTable.status, type: 'select' },
-      trigger: { column: salesDigestRunsTable.trigger, type: 'select' },
-      generatedAt: { column: salesDigestRunsTable.generatedAt, type: 'date' },
-      entriesCount: {
-        column: salesDigestRunsTable.entriesCount,
-        type: 'number',
-      },
-      targetCount: { column: salesDigestRunsTable.targetCount, type: 'number' },
-      sentCount: { column: salesDigestRunsTable.sentCount, type: 'number' },
-      skippedCount: {
-        column: salesDigestRunsTable.skippedCount,
-        type: 'number',
-      },
-      failedCount: { column: salesDigestRunsTable.failedCount, type: 'number' },
-      window: { column: salesDigestRunsTable.windowStart, type: 'date' },
-      reason: {
-        column: sql`coalesce(${salesDigestRunsTable.errorMessage}, ${salesDigestRunsTable.skipReason}, ${salesDigestRunsTable.fallbackReason})`,
-        type: 'text',
-      },
-    }),
+  const allRows = await listTemporalNamefiFeedDigestRunRows();
+  const filteredRows = filterDigestRunRows(allRows, input);
+  const sortedRows = sortDigestRunRows(filteredRows, input.sorting);
+  const rows = sortedRows.slice(
+    getOffset(input),
+    getOffset(input) + input.pageSize,
   );
-  const orderBy = resolveTableSorting(
-    input.sorting,
-    {
-      workflow: salesDigestRunsTable.workflowId,
-      status: salesDigestRunsTable.status,
-      trigger: salesDigestRunsTable.trigger,
-      generatedAt: salesDigestRunsTable.generatedAt,
-      window: salesDigestRunsTable.windowStart,
-      entriesCount: salesDigestRunsTable.entriesCount,
-      targetCount: salesDigestRunsTable.targetCount,
-      sentCount: salesDigestRunsTable.sentCount,
-      skippedCount: salesDigestRunsTable.skippedCount,
-      failedCount: salesDigestRunsTable.failedCount,
-      skipReason: salesDigestRunsTable.skipReason,
-      errorMessage: salesDigestRunsTable.errorMessage,
-    },
-    [desc(salesDigestRunsTable.generatedAt)],
-  );
-  const [total, rows] = await Promise.all([
-    countRows(salesDigestRunsTable, where),
-    db
-      .select()
-      .from(salesDigestRunsTable)
-      .where(where)
-      .orderBy(...orderBy)
-      .limit(input.pageSize)
-      .offset(getOffset(input)),
-  ]);
 
   return paginatedTableResult({
     input,
-    rows: rows.map(serializeDigestRunRow),
-    totalCount: total,
+    rows,
+    totalCount: filteredRows.length,
   });
 }
 
@@ -864,13 +828,495 @@ async function listRecentReports(): Promise<
 async function listRecentDigestRuns(): Promise<
   AdminNamefiFeedOverview['recentDigestRuns']
 > {
-  const rows = await db
-    .select()
-    .from(salesDigestRunsTable)
-    .orderBy(desc(salesDigestRunsTable.generatedAt))
-    .limit(10);
+  return listTemporalNamefiFeedDigestRunRows(10);
+}
 
-  return rows.map(serializeDigestRunRow);
+type AdminDigestRunRow =
+  AdminNamefiFeedOutputs['listDigestRuns']['rows'][number];
+type AdminDigestRunStatus = AdminDigestRunRow['status'];
+type DigestRunTemporalResult = {
+  errorMessage: string | null;
+  result: RunNamefiFeedSalesDigestResult | null;
+};
+
+const DIGEST_WORKFLOW_TYPE = 'namefiFeedSalesDigestWorkflow';
+
+// Admin-only convenience view: digest workflow volume is low enough to filter
+// Temporal executions in memory; switch to advanced visibility if that changes.
+async function listTemporalNamefiFeedDigestRunRows(
+  limit?: number,
+): Promise<AdminDigestRunRow[]> {
+  const rows: AdminDigestRunRow[] = [];
+  const workflows = temporalClient.workflow.list({
+    query: `WorkflowType = "${DIGEST_WORKFLOW_TYPE}"`,
+  });
+
+  for await (const workflow of workflows) {
+    rows.push(await serializeTemporalDigestRunRow(workflow));
+    if (typeof limit === 'number' && rows.length >= limit) {
+      break;
+    }
+  }
+
+  return rows;
+}
+
+async function serializeTemporalDigestRunRow(
+  workflow: WorkflowExecutionInfo,
+): Promise<AdminDigestRunRow> {
+  const memo = asRecord(workflow.memo);
+  const temporalResult = await readDigestWorkflowResult(workflow);
+  const result = temporalResult.result;
+  const timing = readDigestRunTiming({ memo, result, workflow });
+  const deliveryCounts = readDigestRunDeliveryCounts(result);
+  const renderDetails = readDigestRunRenderDetails(result);
+  const options = readDigestRunOptions(memo, result);
+  const workflowId = workflow.workflowId;
+  const temporalRunId = workflow.runId;
+
+  return {
+    id: workflowId,
+    workflowId,
+    temporalRunId,
+    temporalUiUrl: buildTemporalWorkflowUrl({ temporalRunId, workflowId }),
+    trigger: readDigestTrigger(memo.trigger, workflowId),
+    status: readDigestStatus(workflow.status.name, result),
+    createdByUserId: readOptionalString(memo.requestedByUserId),
+    windowStart: timing.bounds.start.toISOString(),
+    windowEnd: timing.bounds.end.toISOString(),
+    generatedAt: timing.runAt.toISOString(),
+    finishedAt: workflow.closeTime?.toISOString() ?? null,
+    entriesCount: result?.entriesCount ?? 0,
+    ...deliveryCounts,
+    ...options,
+    ...renderDetails,
+    skipReason: result?.skipReason ?? null,
+    errorMessage: temporalResult.errorMessage,
+    digestTextHash: null,
+    createdAt: workflow.startTime.toISOString(),
+  };
+}
+
+function readDigestRunTiming({
+  memo,
+  result,
+  workflow,
+}: {
+  memo: Record<string, unknown>;
+  result: RunNamefiFeedSalesDigestResult | null;
+  workflow: WorkflowExecutionInfo;
+}) {
+  const runAt =
+    readDateValue(memo.at) ??
+    readDateValue(result?.bounds.end) ??
+    workflow.startTime;
+  const bounds =
+    readDigestResultBounds(result) ??
+    getRollingNamefiFeedSalesDigestBounds(
+      resolveNamefiFeedSalesDigestRunAt(runAt),
+    );
+
+  return { bounds, runAt };
+}
+
+function readDigestRunDeliveryCounts(
+  result: RunNamefiFeedSalesDigestResult | null,
+) {
+  const deliverySummary = result?.deliverySummary;
+  return {
+    targetCount: deliverySummary?.targetCount ?? 0,
+    sentCount: deliverySummary?.sent ?? 0,
+    skippedCount: deliverySummary?.skipped ?? 0,
+    failedCount: deliverySummary?.failed ?? 0,
+  };
+}
+
+function readDigestRunRenderDetails(
+  result: RunNamefiFeedSalesDigestResult | null,
+) {
+  const render = result?.render;
+  return {
+    usedFallback: render?.usedFallback ?? false,
+    fallbackReason: render?.fallbackReason ?? null,
+    imageGenerated: render?.imageGenerated ?? false,
+    animationGenerated: render?.animationGenerated ?? false,
+  };
+}
+
+function readDigestRunOptions(
+  memo: Record<string, unknown>,
+  result: RunNamefiFeedSalesDigestResult | null,
+) {
+  return {
+    includeImage: readOptionalBoolean(memo.includeImage) ?? true,
+    includeAnimation: readOptionalBoolean(memo.includeAnimation) ?? true,
+    enabledOnly: readOptionalBoolean(memo.enabledOnly) ?? true,
+    dryRun: readOptionalBoolean(memo.dryRun) ?? result?.status === 'dry_run',
+  };
+}
+
+async function readDigestWorkflowResult(
+  workflow: WorkflowExecutionInfo,
+): Promise<DigestRunTemporalResult> {
+  if (workflow.status.name === 'RUNNING') {
+    return { errorMessage: null, result: null };
+  }
+
+  try {
+    const result = (await temporalClient.workflow
+      .getHandle(workflow.workflowId, workflow.runId)
+      .result()) as RunNamefiFeedSalesDigestResult;
+    return { errorMessage: null, result };
+  } catch (error) {
+    return {
+      errorMessage: describeAdminError(error, 'Temporal workflow failed.'),
+      result: readDigestResultFromFailure(error),
+    };
+  }
+}
+
+function readDigestResultFromFailure(
+  error: unknown,
+): RunNamefiFeedSalesDigestResult | null {
+  const seen = new Set<unknown>();
+  const stack: unknown[] = [error];
+
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (!current || seen.has(current)) {
+      continue;
+    }
+    seen.add(current);
+
+    const record = asRecord(current);
+    const result = readDigestResultFromDetails(record.details);
+    if (result) {
+      return result;
+    }
+
+    const cause = record.cause;
+    if (cause) {
+      stack.push(cause);
+    }
+  }
+
+  return null;
+}
+
+function readDigestResultFromDetails(
+  details: unknown,
+): RunNamefiFeedSalesDigestResult | null {
+  if (!Array.isArray(details)) {
+    return null;
+  }
+
+  for (const detail of details) {
+    const result = parseDigestRunResult(detail);
+    if (result) {
+      return result;
+    }
+  }
+
+  return null;
+}
+
+function parseDigestRunResult(
+  value: unknown,
+): RunNamefiFeedSalesDigestResult | null {
+  const record = asRecord(value);
+  const bounds = asRecord(record.bounds);
+  const status = record.status;
+
+  if (
+    typeof record.workflowId !== 'string' ||
+    !isDigestRunResultStatus(status) ||
+    typeof bounds.start !== 'string' ||
+    typeof bounds.end !== 'string' ||
+    typeof record.entriesCount !== 'number'
+  ) {
+    return null;
+  }
+
+  return value as RunNamefiFeedSalesDigestResult;
+}
+
+function isDigestRunResultStatus(
+  status: unknown,
+): status is RunNamefiFeedSalesDigestResult['status'] {
+  return (
+    status === 'dry_run' ||
+    status === 'failed' ||
+    status === 'partial' ||
+    status === 'sent' ||
+    status === 'skipped'
+  );
+}
+
+function readDigestResultBounds(
+  result: RunNamefiFeedSalesDigestResult | null,
+): NamefiFeedSalesDigestBounds | null {
+  const start = readDateValue(result?.bounds.start);
+  const end = readDateValue(result?.bounds.end);
+  return start && end ? { start, end } : null;
+}
+
+function readDigestTrigger(
+  value: unknown,
+  workflowId: string,
+): AdminDigestRunRow['trigger'] {
+  if (value === 'scheduled' || value === 'manual') {
+    return value;
+  }
+  return workflowId === 'namefi-feed-digest' ? 'scheduled' : 'manual';
+}
+
+function readDigestStatus(
+  temporalStatus: WorkflowExecutionStatusName,
+  result: RunNamefiFeedSalesDigestResult | null,
+): AdminDigestRunStatus {
+  if (result?.status) {
+    return result.status;
+  }
+
+  switch (temporalStatus) {
+    case 'RUNNING':
+      return 'running';
+    case 'COMPLETED':
+      return 'sent';
+    case 'CONTINUED_AS_NEW':
+      return 'running';
+    default:
+      return 'failed';
+  }
+}
+
+function filterDigestRunRows(
+  rows: AdminDigestRunRow[],
+  input: AdminNamefiFeedTableInput,
+) {
+  return rows.filter(
+    (row) =>
+      digestRunMatchesSearch(row, input.searchTerm) &&
+      digestRunMatchesColumnFilters(row, input.columnFilters),
+  );
+}
+
+function digestRunMatchesSearch(row: AdminDigestRunRow, searchTerm?: string) {
+  const term = searchTerm?.trim().toLowerCase();
+  if (!term) {
+    return true;
+  }
+
+  return [
+    row.workflowId,
+    row.temporalRunId,
+    row.status,
+    row.trigger,
+    row.skipReason,
+    row.fallbackReason,
+    row.errorMessage,
+  ].some((value) => value?.toLowerCase().includes(term));
+}
+
+function digestRunMatchesColumnFilters(
+  row: AdminDigestRunRow,
+  filters: AdminNamefiFeedTableInput['columnFilters'],
+) {
+  if (!filters?.length) {
+    return true;
+  }
+
+  return filters.every((filter) => {
+    const config = DIGEST_RUN_FILTERS[filter.id];
+    if (!config) {
+      return true;
+    }
+    const parsed = parseColumnFilterValue(filter.value, config.type);
+    return parsed
+      ? matchesDigestRunFilter(config.value(row), config.type, parsed)
+      : true;
+  });
+}
+
+function sortDigestRunRows(
+  rows: AdminDigestRunRow[],
+  sorting: AdminNamefiFeedTableInput['sorting'],
+) {
+  const sort = sorting?.find((candidate) => DIGEST_RUN_SORTS[candidate.id]);
+  const sortConfig = sort
+    ? DIGEST_RUN_SORTS[sort.id]
+    : DIGEST_RUN_SORTS.generatedAt;
+  const descSort = sort?.desc ?? true;
+
+  return [...rows].sort((left, right) => {
+    const comparison = compareDigestRunSortValues(
+      sortConfig.value(left),
+      sortConfig.value(right),
+    );
+    return descSort ? -comparison : comparison;
+  });
+}
+
+type DigestRunFilterConfig = {
+  type: FilterColumnType;
+  value: (row: AdminDigestRunRow) => unknown;
+};
+type DigestRunSortConfig = {
+  value: (row: AdminDigestRunRow) => string | number | null;
+};
+
+const DIGEST_RUN_FILTERS: Record<string, DigestRunFilterConfig> = {
+  status: { type: 'select', value: (row) => row.status },
+  trigger: { type: 'select', value: (row) => row.trigger },
+  generatedAt: { type: 'date', value: (row) => row.generatedAt },
+  entriesCount: { type: 'number', value: (row) => row.entriesCount },
+  targetCount: { type: 'number', value: (row) => row.targetCount },
+  sentCount: { type: 'number', value: (row) => row.sentCount },
+  skippedCount: { type: 'number', value: (row) => row.skippedCount },
+  failedCount: { type: 'number', value: (row) => row.failedCount },
+  window: { type: 'date', value: (row) => row.windowStart },
+  reason: {
+    type: 'text',
+    value: (row) =>
+      row.errorMessage ?? row.skipReason ?? row.fallbackReason ?? '',
+  },
+};
+
+const DIGEST_RUN_SORTS: Record<string, DigestRunSortConfig> = {
+  workflow: { value: (row) => row.workflowId ?? '' },
+  status: { value: (row) => row.status },
+  trigger: { value: (row) => row.trigger },
+  generatedAt: { value: (row) => row.generatedAt },
+  window: { value: (row) => row.windowStart },
+  entriesCount: { value: (row) => row.entriesCount },
+  targetCount: { value: (row) => row.targetCount },
+  sentCount: { value: (row) => row.sentCount },
+  skippedCount: { value: (row) => row.skippedCount },
+  failedCount: { value: (row) => row.failedCount },
+  skipReason: { value: (row) => row.skipReason ?? '' },
+  errorMessage: { value: (row) => row.errorMessage ?? '' },
+};
+
+function matchesDigestRunFilter(
+  rowValue: unknown,
+  type: FilterColumnType,
+  filter: { operator: FilterOperator; value: unknown },
+) {
+  if (type === 'number') {
+    return matchesNumericDigestRunFilter(rowValue, filter);
+  }
+
+  if (type === 'date') {
+    return matchesDateDigestRunFilter(rowValue, filter);
+  }
+
+  return matchesTextDigestRunFilter(rowValue, filter);
+}
+
+function matchesNumericDigestRunFilter(
+  rowValue: unknown,
+  filter: { operator: FilterOperator; value: unknown },
+) {
+  const left = typeof rowValue === 'number' ? rowValue : Number(rowValue);
+  const right =
+    typeof filter.value === 'number'
+      ? filter.value
+      : Number(String(filter.value ?? '').trim());
+  return Number.isFinite(left) && Number.isFinite(right)
+    ? compareFilterValues(left, filter.operator, right)
+    : true;
+}
+
+function matchesDateDigestRunFilter(
+  rowValue: unknown,
+  filter: { operator: FilterOperator; value: unknown },
+) {
+  const left = readDateValue(rowValue);
+  const selectedDate = parseFilterDate(filter.value);
+  if (!left || !selectedDate) {
+    return true;
+  }
+  const dayStart = new Date(
+    Date.UTC(
+      selectedDate.getUTCFullYear(),
+      selectedDate.getUTCMonth(),
+      selectedDate.getUTCDate(),
+    ),
+  );
+  const nextDay = new Date(dayStart);
+  nextDay.setUTCDate(nextDay.getUTCDate() + 1);
+  return compareDateFilterValues(left, filter.operator, dayStart, nextDay);
+}
+
+function matchesTextDigestRunFilter(
+  rowValue: unknown,
+  filter: { operator: FilterOperator; value: unknown },
+) {
+  const left = String(rowValue ?? '');
+  const right = String(filter.value ?? '').trim();
+  if (!right) {
+    return true;
+  }
+  if (filter.operator === 'neq') {
+    return left !== right;
+  }
+  if (filter.operator === 'eq') {
+    return left === right;
+  }
+  return left.toLowerCase().includes(right.toLowerCase());
+}
+
+function compareDateFilterValues(
+  left: Date,
+  operator: FilterOperator,
+  dayStart: Date,
+  nextDay: Date,
+) {
+  switch (operator) {
+    case 'neq':
+      return left < dayStart || left >= nextDay;
+    case 'gt':
+      return left >= nextDay;
+    case 'gte':
+      return left >= dayStart;
+    case 'lt':
+      return left < dayStart;
+    case 'lte':
+      return left < nextDay;
+    default:
+      return left >= dayStart && left < nextDay;
+  }
+}
+
+function compareFilterValues(
+  left: number,
+  operator: FilterOperator,
+  right: number,
+) {
+  switch (operator) {
+    case 'neq':
+      return left !== right;
+    case 'gt':
+      return left > right;
+    case 'gte':
+      return left >= right;
+    case 'lt':
+      return left < right;
+    case 'lte':
+      return left <= right;
+    default:
+      return left === right;
+  }
+}
+
+function compareDigestRunSortValues(
+  left: string | number | null,
+  right: string | number | null,
+) {
+  if (typeof left === 'number' && typeof right === 'number') {
+    return left - right;
+  }
+  return String(left ?? '').localeCompare(String(right ?? ''));
 }
 
 function serializeRunRow(
@@ -943,6 +1389,16 @@ function buildTemporalWorkflowUrl({
         runId: normalizedTemporalRunId || null,
       })
     : null;
+}
+
+function describeAdminError(error: unknown, fallback: string) {
+  if (error instanceof Error && error.message.trim().length > 0) {
+    return error.message;
+  }
+  if (typeof error === 'string' && error.trim().length > 0) {
+    return error;
+  }
+  return fallback;
 }
 
 function serializePostRow(
@@ -1021,7 +1477,6 @@ function serializeReportRow(row: {
 
 function serializeDigestDeliveryRow(row: {
   id: string;
-  digestRunId: string | null;
   targetId: string | null;
   targetKey: string;
   targetLabel: string | null;
@@ -1037,7 +1492,6 @@ function serializeDigestDeliveryRow(row: {
 }): AdminNamefiFeedOutputs['listDigestDeliveries']['rows'][number] {
   return {
     id: row.id,
-    digestRunId: row.digestRunId,
     targetId: row.targetId,
     targetKey: row.targetKey,
     targetLabel: row.targetLabel,
@@ -1053,46 +1507,6 @@ function serializeDigestDeliveryRow(row: {
   };
 }
 
-function serializeDigestRunRow(
-  row: typeof salesDigestRunsTable.$inferSelect,
-): AdminNamefiFeedOutputs['listDigestRuns']['rows'][number] {
-  const metadata = asRecord(row.metadata);
-  const temporalRunId = readOptionalString(metadata.temporalRunId);
-  return {
-    id: row.id,
-    workflowId: row.workflowId,
-    temporalRunId,
-    temporalUiUrl: buildTemporalWorkflowUrl({
-      temporalRunId,
-      workflowId: row.workflowId,
-    }),
-    trigger: row.trigger,
-    status: row.status,
-    createdByUserId: row.createdByUserId,
-    windowStart: row.windowStart.toISOString(),
-    windowEnd: row.windowEnd.toISOString(),
-    generatedAt: row.generatedAt.toISOString(),
-    finishedAt: row.finishedAt?.toISOString() ?? null,
-    entriesCount: row.entriesCount,
-    targetCount: row.targetCount,
-    sentCount: row.sentCount,
-    skippedCount: row.skippedCount,
-    failedCount: row.failedCount,
-    includeImage: row.includeImage,
-    includeAnimation: row.includeAnimation,
-    enabledOnly: row.enabledOnly,
-    dryRun: row.dryRun,
-    usedFallback: row.usedFallback,
-    fallbackReason: row.fallbackReason,
-    skipReason: row.skipReason,
-    errorMessage: row.errorMessage,
-    digestTextHash: row.digestTextHash,
-    imageGenerated: row.imageGenerated,
-    animationGenerated: row.animationGenerated,
-    createdAt: row.createdAt.toISOString(),
-  };
-}
-
 type SortableColumn = Parameters<typeof asc>[0];
 type FilterColumnType = 'text' | 'number' | 'date' | 'select';
 type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
@@ -1104,8 +1518,7 @@ type FilterableColumn = {
 type CountableNamefiFeedTable =
   | typeof namefiFeedIngestionRunsTable
   | typeof namefiFeedPostsTable
-  | typeof namefiFeedListingsTable
-  | typeof salesDigestRunsTable;
+  | typeof namefiFeedListingsTable;
 
 function resolveTableSorting(
   sorting: AdminNamefiFeedTableInput['sorting'],
@@ -1452,24 +1865,6 @@ function buildDigestDeliveriesSearchWhere(
   );
 }
 
-function buildDigestRunsSearchWhere(searchTerm?: string): SQL | undefined {
-  const pattern = searchPattern(searchTerm);
-  if (!pattern) {
-    return undefined;
-  }
-
-  return or(
-    textMatches(salesDigestRunsTable.workflowId, pattern),
-    textMatches(salesDigestRunsTable.status, pattern),
-    textMatches(salesDigestRunsTable.trigger, pattern),
-    textMatches(salesDigestRunsTable.skipReason, pattern),
-    textMatches(salesDigestRunsTable.fallbackReason, pattern),
-    textMatches(salesDigestRunsTable.errorMessage, pattern),
-    textMatches(salesDigestRunsTable.digestTextHash, pattern),
-    textMatches(salesDigestRunsTable.metadata, pattern),
-  );
-}
-
 function parseRunSourceResults(
   value: unknown,
 ): AdminNamefiFeedOverview['recentRuns'][number]['sourceResults'] {
@@ -1511,6 +1906,20 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function readOptionalString(value: unknown): string | null {
   return typeof value === 'string' && value.trim().length > 0 ? value : null;
+}
+
+function readOptionalBoolean(value: unknown): boolean | null {
+  return typeof value === 'boolean' ? value : null;
+}
+
+function readDateValue(value: unknown): Date | null {
+  const date =
+    value instanceof Date
+      ? value
+      : typeof value === 'string' || typeof value === 'number'
+        ? new Date(value)
+        : null;
+  return date && Number.isFinite(date.getTime()) ? date : null;
 }
 
 function readNonnegativeInteger(value: unknown): number | null {

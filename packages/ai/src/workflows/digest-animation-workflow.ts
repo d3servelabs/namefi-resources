@@ -14,7 +14,7 @@ import { createRunId } from '../utils/files';
 const IMAGE_GENERATION_TOOL = 'image_generation' as const;
 const DIGEST_ANIMATION_DURATION_SECONDS = 8;
 const DIGEST_ANIMATION_ASPECT_RATIO = '16:9';
-const DIGEST_ANIMATION_VIDEO_POLL_TIMEOUT_MS = 15 * 60 * 1000;
+const DIGEST_ANIMATION_VIDEO_POLL_TIMEOUT_MS = 7 * 60 * 1000;
 const DATA_URL_PATTERN =
   /^data:(image\/[a-zA-Z0-9.+-]+);base64,([A-Za-z0-9+/=\s]+)$/;
 
@@ -266,6 +266,7 @@ async function generateDigestAnimationSheet(input: {
 }
 
 async function uploadBufferToStorage(params: {
+  abortSignal?: AbortSignal;
   buffer: Buffer;
   contentType: string;
   label: string;
@@ -279,6 +280,7 @@ async function uploadBufferToStorage(params: {
     contentType: params.contentType,
     folder,
     fileName: params.label,
+    abortSignal: params.abortSignal,
   });
 
   return {
@@ -329,9 +331,11 @@ function getImageExtensionFromMimeType(mimeType: string): string {
 }
 
 export async function uploadDigestAnimationSourceImage({
+  abortSignal,
   imageDataUrl,
   storage,
 }: {
+  abortSignal?: AbortSignal;
   imageDataUrl: string;
   storage: StorageConfig;
 }): Promise<DigestAnimationUploadedSourceImage> {
@@ -341,6 +345,7 @@ export async function uploadDigestAnimationSourceImage({
     contentType: sourceImage.mimeType,
     label: `${createRunId('digest-animation-source')}.${getImageExtensionFromMimeType(sourceImage.mimeType)}`,
     storage,
+    abortSignal,
   });
 
   return uploadedDigestAnimationSourceImageSchema.parse({
@@ -436,6 +441,7 @@ async function runDigestAnimationWorkflowWithSource({
     referenceImage: sourceImage,
     abortSignal: options.abortSignal,
   });
+  throwIfDigestAnimationAborted(options.abortSignal);
   const uploadedSheet = await uploadBufferToStorage({
     buffer: Buffer.from(
       normalizeImageBase64(generatedSheet.imageBase64),
@@ -444,7 +450,9 @@ async function runDigestAnimationWorkflowWithSource({
     contentType: 'image/png',
     label: `${createRunId('digest-animation-sheet')}.png`,
     storage: input.storage,
+    abortSignal: options.abortSignal,
   });
+  throwIfDigestAnimationAborted(options.abortSignal);
 
   const prompt = buildDigestAnimationVideoPrompt({
     title: input.title,
@@ -462,18 +470,24 @@ async function runDigestAnimationWorkflowWithSource({
     },
     abortSignal: options.abortSignal,
   }).catch((error) => {
+    if (isDigestAnimationAbortError(error, options.abortSignal)) {
+      throw createDigestAnimationAbortedError(error);
+    }
+
     const generationError = new Error(
       `Digest animation video generation failed for model ${input.model} (${DIGEST_ANIMATION_ASPECT_RATIO}, ${DIGEST_ANIMATION_DURATION_SECONDS}s, references: ${referenceImages.join(', ')}).`,
     ) as Error & { cause?: unknown };
     generationError.cause = error;
     throw generationError;
   });
+  throwIfDigestAnimationAborted(options.abortSignal);
 
   const uploadedVideo = await uploadBufferToStorage({
     buffer: Buffer.from(generated.video.uint8Array),
     contentType: 'video/mp4',
     label: `${createRunId('digest-animation')}.mp4`,
     storage: input.storage,
+    abortSignal: options.abortSignal,
   });
 
   return digestAnimationWorkflowOutputSchema.parse({
@@ -497,6 +511,39 @@ async function runDigestAnimationWorkflowWithSource({
   });
 }
 
+function throwIfDigestAnimationAborted(abortSignal?: AbortSignal) {
+  if (abortSignal?.aborted) {
+    throw createDigestAnimationAbortedError(abortSignal.reason);
+  }
+}
+
+function isDigestAnimationAbortError(
+  error: unknown,
+  abortSignal?: AbortSignal,
+) {
+  if (abortSignal?.aborted) {
+    return true;
+  }
+
+  if (!error || typeof error !== 'object') {
+    return false;
+  }
+
+  const record = error as { message?: unknown; name?: unknown };
+  return (
+    record.name === 'AbortError' ||
+    record.message === 'Digest animation workflow was aborted.'
+  );
+}
+
+function createDigestAnimationAbortedError(cause?: unknown) {
+  const error = new Error('Digest animation workflow was aborted.') as Error & {
+    cause?: unknown;
+  };
+  error.cause = cause;
+  return error;
+}
+
 export async function runDigestAnimationWorkflow(
   rawInput: DigestAnimationWorkflowInput,
   options: DigestAnimationWorkflowOptions = {},
@@ -506,6 +553,7 @@ export async function runDigestAnimationWorkflow(
   const uploadedSource = await uploadDigestAnimationSourceImage({
     imageDataUrl: input.imageDataUrl,
     storage: input.storage,
+    abortSignal: options.abortSignal,
   });
 
   return runDigestAnimationWorkflowWithSource({
