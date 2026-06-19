@@ -3,22 +3,27 @@
  * admin router (list / list-all) and the weekly sweep activity so they stay in
  * lockstep.
  *
- * "Active parked" means:
- *  - served by Namefi park infra: auto-park is on (defaults to true) OR a
- *    forward is configured, AND
- *  - the NFT has not expired (`namefiNftView.expirationTime > now()`), AND
- *  - the registrar domain has not expired (`indexedDomainsTable.expirationTime > now()`).
+ * "Active parked" means ALL of:
+ *  1. served by Namefi park infra: auto-park is on (defaults to true) OR a
+ *     forward is configured;
+ *  2. active: the NFT has not expired (`namefiNftView.expirationTime > now()`)
+ *     AND the registrar domain has not expired
+ *     (`indexedDomainsTable.expirationTime > now()`);
+ *  3. on Namefi nameservers (`indexedDomainsTable.isUsingNamefiNameservers`).
  *
  * NULL/unknown expirations (e.g. a domain with no live `indexed_domains` row, or
  * an unset NFT expiration) are treated as NOT active and excluded — we only keep
- * domains we can positively confirm are still live, so verification isn't run
- * against expired domains (which would fail SSL/serving and create noise).
+ * domains we can positively confirm are still live + Namefi-served, so
+ * verification isn't run against expired or off-Namefi domains (which would fail
+ * SSL/serving and create noise).
  *
- * The registrar-expiry check is a correlated `EXISTS` subquery (rather than a
- * join) because `indexed_domains` is unique on `(registrar_key, domain)` — a
- * domain can have multiple registrar rows, so a join would multiply rows and
- * inflate counts. Any query using `ACTIVE_PARKED_CONDITION` MUST still LEFT JOIN
- * `domainConfigTable` (via `parkedDomainConfigJoinOn`) onto `namefiNftView`.
+ * The registrar-side checks (expiry + nameservers) are a single correlated
+ * `EXISTS` subquery (rather than a join) because `indexed_domains` is unique on
+ * `(registrar_key, domain)` — a domain can have multiple registrar rows, so a
+ * join would multiply rows and inflate counts. Both registrar predicates are on
+ * the SAME row (the active registrar record must itself be on Namefi NS). Any
+ * query using `ACTIVE_PARKED_CONDITION` MUST still LEFT JOIN `domainConfigTable`
+ * (via `parkedDomainConfigJoinOn`) onto `namefiNftView`.
  */
 
 import {
@@ -34,7 +39,7 @@ export const parkedDomainConfigJoinOn = eq(
   namefiNftView.normalizedDomainName,
 );
 
-/** Parked + NFT-active + registrar-active. See module docstring. */
+/** Parked + active (NFT & registrar) + on Namefi NS. See module docstring. */
 export const ACTIVE_PARKED_CONDITION: SQL = sql`(
   (COALESCE(${domainConfigTable.autoParkEnabled}, true) = true OR ${domainConfigTable.forwardTo} IS NOT NULL)
   AND ${namefiNftView.expirationTime} > now()
@@ -42,5 +47,6 @@ export const ACTIVE_PARKED_CONDITION: SQL = sql`(
     SELECT 1 FROM ${indexedDomainsTable}
     WHERE ${indexedDomainsTable.normalizedDomainName} = ${namefiNftView.normalizedDomainName}
       AND ${indexedDomainsTable.expirationTime} > now()
+      AND ${indexedDomainsTable.isUsingNamefiNameservers} = true
   )
 )`;
