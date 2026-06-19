@@ -22,7 +22,7 @@ env:
   CI: true
   LIGHTHOUSE_BASE_URL: https://namefi.dev
   NAMEFI_DEV_BASE_URL: https://namefi.dev
-  NAMEFI_E2E_MAX_USD_CENTS: ${{ vars.NAMEFI_E2E_MAX_USD_CENTS || '60_000' }}
+  NAMEFI_E2E_MAX_USD_CENTS: ${{ vars.NAMEFI_E2E_MAX_USD_CENTS || '60000' }}
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
 
 jobs:
@@ -56,6 +56,24 @@ jobs:
 
           echo "domain=$domain" >> "$GITHUB_OUTPUT"
           echo "NAMEFI_E2E_DOMAIN=$domain" >> "$GITHUB_ENV"
+
+      - name: Validate Playwright test account
+        shell: bash
+        env:
+          NAMEFI_E2E_TEST_ACCOUNT_EMAIL: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_EMAIL }}
+          NAMEFI_E2E_TEST_ACCOUNT_OTP: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_OTP }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${NAMEFI_E2E_TEST_ACCOUNT_EMAIL:-}" ]]; then
+            echo "::error::NAMEFI_E2E_TEST_ACCOUNT_EMAIL secret is required for the namefi.dev checkout smoke."
+            exit 1
+          fi
+
+          if [[ -z "${NAMEFI_E2E_TEST_ACCOUNT_OTP:-}" ]]; then
+            echo "::error::NAMEFI_E2E_TEST_ACCOUNT_OTP secret is required for the namefi.dev checkout smoke."
+            exit 1
+          fi
 
       - name: Cache bun dependencies
         uses: actions/cache@v5
@@ -108,6 +126,9 @@ jobs:
       - name: Run Playwright checkout smoke
         id: e2e
         continue-on-error: true
+        env:
+          NAMEFI_E2E_TEST_ACCOUNT_EMAIL: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_EMAIL }}
+          NAMEFI_E2E_TEST_ACCOUNT_OTP: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_OTP }}
         run: bun run test:e2e:namefi-dev
 
       - name: Run Lighthouse

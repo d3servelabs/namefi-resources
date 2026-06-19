@@ -8,10 +8,43 @@ import {
 
 const skipAuthStorageKey = 'namefi-skip-auth';
 const defaultMaxUsdCents = 60_000;
+const totalUsdPattern =
+  /Total\s*(?:\n|\s)+(?:\$[\d,.]+\s*\/\s*)?\$([\d,.]+)\s+USD/gi;
+const receivingWalletPlaceholderPattern = /Paste a wallet address or ENS name/i;
+const signInButtonPattern = /^Sign In$/i;
+const continueWithEmailButtonPattern = /continue with email/i;
+const emailButtonPattern = /^email$/i;
+const continueButtonPattern = /^Continue$/i;
+const sendCodeButtonPattern = /send code/i;
+const emailControlPattern = /email/i;
+const signInOrLogInButtonPattern = /sign in|log in/i;
+const verifyButtonPattern = /verify/i;
+const clearCartButtonPattern = /^Clear Cart$/;
+const acceptAllButtonPattern = /^Accept All$/i;
+const rejectAllButtonPattern = /^Reject All$/i;
+const cartSectionPattern =
+  /In your cart(?<cartSection>[\s\S]*?)Payment Method/i;
+const domainLikePattern = /\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9-]+)+\b/gi;
+const alphabeticTldPattern = /[a-z]/i;
+const nonDigitPattern = /\D/g;
+const tldRequirementsPattern = /I understand and agree to the .* requirements/i;
+const unlinkedWalletWarningPattern =
+  /I'm purchasing for a wallet not linked to this account/i;
+const changeCardButtonPattern = /^Change Card$/i;
+const addOrSelectCardButtonPattern = /^Add or Select Card$/i;
+const paymentMethodDetailsPattern = /Payment Method Details/i;
+const usePaymentMethodButtonPattern = /^Use this Payment Method$/i;
+const submitOrderButtonPattern = /^Submit Order$/i;
+// createOrderV2 returns UUID order IDs today; keep this assertion in sync
+// with backend ID generation if that contract changes.
+const orderIdPattern =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const searchButtonPattern = /^Search$/;
+const addToCartButtonPattern = /^Add to cart$/i;
+const viewCartButtonPattern = /^View cart$/i;
 // TODO(Sid): re-enable this once we add another field requiresTldRegistrationPolicyAcknowledgement to each item
 const requiresTldRegistrationPolicyAcknowledgement = false;
 // Dedicated development receiving wallet entered manually by this smoke test.
-// Keep it out of the skip-auth mock so checkout exercises the wallet form.
 const receivingWalletAddress = '0xB5856d4598c919834913b8656ebc15a64d3C7836';
 const stripeTestCard = {
   number:
@@ -59,11 +92,18 @@ function getDomainUnderTest() {
   ).toLowerCase();
 }
 
-function withSkipAuth(pathname: string) {
+function withAppBase(pathname: string) {
   const baseUrl = process.env.NAMEFI_DEV_BASE_URL ?? 'https://namefi.dev';
   const url = new URL(pathname, baseUrl);
-  url.searchParams.set('skip_auth', '1');
   return url.toString();
+}
+
+function getRequiredEnv(name: string) {
+  const value = process.env[name]?.trim();
+  if (!value) {
+    throw new Error(`${name} is required for the namefi.dev checkout smoke.`);
+  }
+  return value;
 }
 
 function getMaxUsdCents() {
@@ -85,11 +125,7 @@ function parseUsdCents(value: string) {
 async function expectCartTotalUnderCap(page: Page) {
   const maxUsdCents = getMaxUsdCents();
   const bodyText = await page.locator('body').innerText();
-  const totalMatches = [
-    ...bodyText.matchAll(
-      /Total\s*(?:\n|\s)+(?:\$[\d,.]+\s*\/\s*)?\$([\d,.]+)\s+USD/gi,
-    ),
-  ];
+  const totalMatches = [...bodyText.matchAll(totalUsdPattern)];
   const totalMatch = totalMatches.at(-1);
 
   if (!totalMatch?.[1]) {
@@ -102,13 +138,145 @@ async function expectCartTotalUnderCap(page: Page) {
 
 async function enterReceivingWallet(page: Page) {
   const walletInput = page
-    .getByPlaceholder(/Paste a wallet address or ENS name/i)
+    .getByPlaceholder(receivingWalletPlaceholderPattern)
     .first();
 
   await expect(walletInput).toBeVisible({ timeout: 30_000 });
+  await expect(walletInput).toBeEnabled({ timeout: 60_000 });
   await walletInput.fill(receivingWalletAddress);
   await expect(walletInput).toHaveValue(receivingWalletAddress);
   await acknowledgeUnlinkedWalletIfNeeded(page);
+}
+
+async function isVisibleWithin(locator: Locator, timeoutMs: number) {
+  return locator
+    .waitFor({ state: 'visible', timeout: timeoutMs })
+    .then(() => true)
+    .catch(() => false);
+}
+
+async function clickFirstVisible(candidates: Locator[], timeoutMs: number) {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    for (const candidate of candidates) {
+      if (await isVisibleWithin(candidate, 500)) {
+        await candidate.click();
+        return;
+      }
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+
+  throw new Error('Timed out waiting for a visible login control.');
+}
+
+async function fillPrivyOtp(page: Page, otp: string) {
+  const singleCodeInput = page
+    .locator(
+      [
+        'input[autocomplete="one-time-code"]',
+        'input[name*="code" i]',
+        'input[id*="code" i]',
+        'input[aria-label*="code" i]',
+      ].join(', '),
+    )
+    .first();
+  const digitInputs = page.locator(
+    [
+      'input[inputmode="numeric"]',
+      'input[type="tel"]',
+      'input[pattern*="0-9"]',
+    ].join(', '),
+  );
+
+  const otpInputMode = await waitForFirstVisible(
+    [
+      ['single OTP input', singleCodeInput],
+      ['digit OTP inputs', digitInputs.first()],
+    ],
+    30_000,
+  );
+
+  if (otpInputMode === 'single OTP input') {
+    await singleCodeInput.fill(otp);
+    return;
+  }
+
+  const count = await digitInputs.count();
+  if (count >= otp.length) {
+    for (let index = 0; index < otp.length; index += 1) {
+      await digitInputs.nth(index).fill(otp[index] ?? '');
+    }
+    return;
+  }
+
+  await digitInputs.first().fill(otp);
+}
+
+async function signInWithTestAccount(page: Page) {
+  const email = getRequiredEnv('NAMEFI_E2E_TEST_ACCOUNT_EMAIL');
+  const otp = getRequiredEnv('NAMEFI_E2E_TEST_ACCOUNT_OTP');
+
+  await page.goto(withAppBase('/'), { waitUntil: 'domcontentloaded' });
+  await dismissCookieBanner(page);
+
+  const signInButton = page
+    .getByRole('button', { name: signInButtonPattern })
+    .first();
+
+  if (!(await isVisibleWithin(signInButton, 20_000))) {
+    return;
+  }
+
+  await signInButton.click();
+
+  const emailInput = page
+    .locator(
+      'input[type="email"], input[name="email"], input[autocomplete="email"]',
+    )
+    .first();
+  if (!(await isVisibleWithin(emailInput, 5_000))) {
+    await clickFirstVisible(
+      [
+        page
+          .getByRole('button', { name: continueWithEmailButtonPattern })
+          .first(),
+        page.getByRole('button', { name: emailButtonPattern }).first(),
+      ],
+      15_000,
+    );
+  }
+
+  await expect(emailInput).toBeVisible({ timeout: 30_000 });
+  await emailInput.fill(email);
+
+  await clickFirstVisible(
+    [
+      page.getByRole('button', { name: continueButtonPattern }).first(),
+      page.getByRole('button', { name: sendCodeButtonPattern }).first(),
+      page.getByRole('button', { name: emailControlPattern }).first(),
+      page.getByRole('button', { name: signInOrLogInButtonPattern }).first(),
+    ],
+    30_000,
+  );
+
+  await fillPrivyOtp(page, otp);
+
+  const verifyButtons = [
+    page.getByRole('button', { name: verifyButtonPattern }).first(),
+    page.getByRole('button', { name: continueButtonPattern }).first(),
+    page.getByRole('button', { name: signInOrLogInButtonPattern }).first(),
+  ];
+  for (const button of verifyButtons) {
+    if (await isVisibleWithin(button, 1_000)) {
+      await button.click();
+      break;
+    }
+  }
+
+  await expect(signInButton).toBeHidden({ timeout: 90_000 });
 }
 
 async function waitForFirstVisible(
@@ -119,7 +287,7 @@ async function waitForFirstVisible(
 
   while (Date.now() - startedAt < timeoutMs) {
     for (const [name, locator] of candidates) {
-      if (await locator.isVisible({ timeout: 500 }).catch(() => false)) {
+      if (await isVisibleWithin(locator, 500)) {
         return name;
       }
     }
@@ -135,13 +303,12 @@ async function waitForFirstVisible(
 }
 
 async function clearCartBeforeCheckout(page: Page) {
-  await page.goto(withSkipAuth('/cart'), { waitUntil: 'domcontentloaded' });
-  await expect(page.getByText('Auth Skipped')).toBeVisible({ timeout: 20_000 });
+  await page.goto(withAppBase('/cart'), { waitUntil: 'domcontentloaded' });
   await dismissCookieBanner(page);
 
   const emptyCart = page.getByText('Your cart is empty');
   const clearCartButton = page
-    .getByRole('button', { name: /^Clear Cart$/ })
+    .getByRole('button', { name: clearCartButtonPattern })
     .first();
   const cartState = await waitForFirstVisible(
     [
@@ -159,18 +326,18 @@ async function clearCartBeforeCheckout(page: Page) {
 
   const dialog = page.getByRole('alertdialog');
   await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: /^Clear Cart$/ }).click();
+  await dialog.getByRole('button', { name: clearCartButtonPattern }).click();
   await expect(emptyCart).toBeVisible({ timeout: 30_000 });
 }
 
 async function dismissCookieBanner(page: Page) {
   const cookieButtons = [
-    page.getByRole('button', { name: /^Accept All$/i }),
-    page.getByRole('button', { name: /^Reject All$/i }),
+    page.getByRole('button', { name: acceptAllButtonPattern }),
+    page.getByRole('button', { name: rejectAllButtonPattern }),
   ];
 
   for (const button of cookieButtons) {
-    if (await button.isVisible({ timeout: 1_000 }).catch(() => false)) {
+    if (await isVisibleWithin(button, 1_000)) {
       await button.click();
       return;
     }
@@ -183,9 +350,7 @@ async function expectOnlyCartDomain(page: Page, domain: string) {
   });
 
   const bodyText = await page.locator('body').innerText();
-  const cartSection = bodyText.match(
-    /In your cart(?<cartSection>[\s\S]*?)Payment Method/i,
-  )?.groups?.cartSection;
+  const cartSection = bodyText.match(cartSectionPattern)?.groups?.cartSection;
 
   if (!cartSection) {
     throw new Error('Unable to find cart contents before checkout.');
@@ -193,11 +358,11 @@ async function expectOnlyCartDomain(page: Page, domain: string) {
 
   const cartDomains = Array.from(
     new Set(
-      [...cartSection.matchAll(/\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9-]+)+\b/gi)]
+      [...cartSection.matchAll(domainLikePattern)]
         .map((match) => match[0]?.toLowerCase())
         .filter((candidate) => {
           const tld = candidate.split('.').at(-1);
-          return Boolean(tld && /[a-z]/i.test(tld));
+          return Boolean(tld && alphabeticTldPattern.test(tld));
         }),
     ),
   );
@@ -210,7 +375,7 @@ async function expectOnlyCartDomain(page: Page, domain: string) {
 
 async function acknowledgeTldRequirements(page: Page) {
   const requirementLabels = page.locator('label').filter({
-    hasText: /I understand and agree to the .* requirements/i,
+    hasText: tldRequirementsPattern,
   });
   const count = await requirementLabels.count();
 
@@ -230,7 +395,7 @@ async function acknowledgeTldRequirements(page: Page) {
 
 async function assertTldRequirementsAcknowledged(page: Page) {
   const requirementLabels = page.locator('label').filter({
-    hasText: /I understand and agree to the .* requirements/i,
+    hasText: tldRequirementsPattern,
   });
   const count = await requirementLabels.count();
 
@@ -253,7 +418,7 @@ async function acknowledgeVisibleCheckboxLabel(
   labelText: RegExp,
 ) {
   const label = page.locator(labelSelector).filter({ hasText: labelText });
-  if (!(await label.isVisible({ timeout: 5_000 }).catch(() => false))) {
+  if (!(await isVisibleWithin(label, 5_000))) {
     return;
   }
 
@@ -268,7 +433,7 @@ async function acknowledgeUnlinkedWalletIfNeeded(page: Page) {
   await acknowledgeVisibleCheckboxLabel(
     page,
     'label[for="unlinked-wallet-confirm-checkbox"]',
-    /I'm purchasing for a wallet not linked to this account/i,
+    unlinkedWalletWarningPattern,
   );
 }
 
@@ -276,7 +441,7 @@ async function selectStripeCardTab(
   stripeFrame: FrameLocator,
   cardNumber: Locator,
 ) {
-  if (await cardNumber.isVisible({ timeout: 1_000 }).catch(() => false)) {
+  if (await isVisibleWithin(cardNumber, 1_000)) {
     return;
   }
 
@@ -292,12 +457,44 @@ async function selectStripeCardTab(
   await expect(cardNumber).toBeVisible({ timeout: 30_000 });
 }
 
+function getStripeTestCardLast4() {
+  const cardDigits = stripeTestCard.number.replaceAll(nonDigitPattern, '');
+  const last4 = cardDigits.slice(-4);
+  if (last4.length !== 4) {
+    throw new Error(
+      'NAMEFI_E2E_STRIPE_CARD_NUMBER must contain at least 4 digits.',
+    );
+  }
+  return last4;
+}
+
+function getStripeTestCardLast4Pattern() {
+  return new RegExp(`\\b${getStripeTestCardLast4()}\\b`);
+}
+
 async function addStripeTestCard(page: Page) {
   await dismissCookieBanner(page);
-  await page.getByRole('button', { name: /^Add or Select Card$/i }).click();
+  const changeCardButton = page.getByRole('button', {
+    name: changeCardButtonPattern,
+  });
+  if (await isVisibleWithin(changeCardButton, 2_000)) {
+    if (
+      await isVisibleWithin(
+        page.getByText(getStripeTestCardLast4Pattern()),
+        1_000,
+      )
+    ) {
+      return;
+    }
+    await changeCardButton.click();
+  } else {
+    await page
+      .getByRole('button', { name: addOrSelectCardButtonPattern })
+      .click();
+  }
 
   const dialog = page.getByRole('dialog', {
-    name: /Payment Method Details/i,
+    name: paymentMethodDetailsPattern,
   });
   await expect(dialog).toBeVisible({ timeout: 30_000 });
 
@@ -324,16 +521,20 @@ async function addStripeTestCard(page: Page) {
       'input[autocomplete="postal-code"], input[placeholder*="ZIP"], input[placeholder*="Postal"]',
     )
     .first();
-  if (await postalCode.isVisible({ timeout: 3_000 }).catch(() => false)) {
+  if (await isVisibleWithin(postalCode, 3_000)) {
     await postalCode.fill(stripeTestCard.postalCode);
   }
 
   await page
-    .getByRole('button', { name: /^Use this Payment Method$/i })
+    .getByRole('button', { name: usePaymentMethodButtonPattern })
     .click();
   await expect(dialog).toBeHidden({ timeout: 45_000 });
   await expect(
-    page.getByRole('button', { name: /^Change Card$/i }),
+    page.getByRole('button', { name: changeCardButtonPattern }),
+  ).toBeVisible({ timeout: 10_000 });
+  await expect(
+    page.getByText(getStripeTestCardLast4Pattern()),
+    'Selected payment method should be the configured Stripe test card.',
   ).toBeVisible({ timeout: 10_000 });
 }
 
@@ -417,9 +618,7 @@ async function submitOrderAndExpectCreated(
   expect(response.ok()).toBe(true);
 
   const order = parseCreatedOrder(await response.json());
-  expect(order.id).toMatch(
-    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
-  );
+  expect(order.id).toMatch(orderIdPattern);
   expect(order.nftWalletAddress.toLowerCase()).toBe(
     receivingWalletAddress.toLowerCase(),
   );
@@ -440,7 +639,7 @@ async function submitOrderAndExpectCreated(
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript((storageKey) => {
-    window.localStorage.setItem(storageKey, '1');
+    window.localStorage.removeItem(storageKey);
   }, skipAuthStorageKey);
 });
 
@@ -451,30 +650,30 @@ test('searches, adds to cart, adds a Stripe test card, and checks out @nightly',
 }) => {
   const domain = getDomainUnderTest();
 
+  await signInWithTestAccount(page);
   await clearCartBeforeCheckout(page);
 
-  await page.goto(withSkipAuth('/'), { waitUntil: 'domcontentloaded' });
-  await expect(page.getByText('Auth Skipped')).toBeVisible({ timeout: 20_000 });
+  await page.goto(withAppBase('/'), { waitUntil: 'domcontentloaded' });
 
   const searchInput = page.locator('input[name="search-input"]').first();
   await expect(searchInput).toBeVisible();
   await searchInput.fill(domain);
-  await page.getByRole('button', { name: /^Search$/ }).click();
+  await page.getByRole('button', { name: searchButtonPattern }).click();
 
   const addToCart = page
-    .getByRole('button', { name: /^Add to cart$/i })
+    .getByRole('button', { name: addToCartButtonPattern })
     .first();
   await expect(addToCart).toBeVisible({ timeout: 60_000 });
   await expect(addToCart).toBeEnabled({ timeout: 60_000 });
   await addToCart.click();
 
   await expect(
-    page.getByRole('button', { name: /^View cart$/i }).first(),
+    page.getByRole('button', { name: viewCartButtonPattern }).first(),
   ).toBeVisible({
     timeout: 30_000,
   });
 
-  await page.goto(withSkipAuth('/cart'), { waitUntil: 'domcontentloaded' });
+  await page.goto(withAppBase('/cart'), { waitUntil: 'domcontentloaded' });
   await expect(page.getByText('In your cart')).toBeVisible({ timeout: 60_000 });
   await expectOnlyCartDomain(page, domain);
   await acknowledgeTldRequirements(page);
@@ -485,7 +684,9 @@ test('searches, adds to cart, adds a Stripe test card, and checks out @nightly',
   await assertTldRequirementsAcknowledged(page);
   await acknowledgeUnlinkedWalletIfNeeded(page);
 
-  const submitOrder = page.getByRole('button', { name: /^Submit Order$/i });
+  const submitOrder = page.getByRole('button', {
+    name: submitOrderButtonPattern,
+  });
   await expect(submitOrder).toBeVisible({ timeout: 30_000 });
   await expect(submitOrder).toBeEnabled({ timeout: 60_000 });
 
