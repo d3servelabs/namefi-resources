@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 9
+format: case-study
 description: 'How Buffer launched in 2010 on BufferApp.com because Buffer.com was taken, then spent 624 days acquiring the exact-match domain — even showing the seller its bank balance — and why a company famous for radical transparency stayed quiet on the one number everyone wanted: the price.'
 keywords: ['bufferapp.com', 'buffer.com', 'buffer domain name', 'domain upgrade', 'joel gascoigne', 'buffer transparency', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'buffer history', 'domain acquisition', 'category-defining domain']
 ---

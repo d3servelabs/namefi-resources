@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 12
+format: case-study
 description: 'How Discord launched in 2015 on DiscordApp.com because Discord.com was taken, quietly bought the bare word, and in 2020 made discord.com its primary home — partly for brand cleanliness, partly because the "discordapp.com" vs "discord.com" split was a gift to phishers and malware crews.'
 keywords: ['discordapp.com', 'discord.com', 'discord domain name', 'domain upgrade', 'jason citron', 'discord history', 'cdn.discordapp.com', 'discord phishing', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'domain migration']
 ---

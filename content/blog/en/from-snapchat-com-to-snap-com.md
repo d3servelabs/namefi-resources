@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 6
+format: case-study
 description: 'How Snapchat quietly bought Snap.com from Idealab for a reported $5M in 2014, then in September 2016 renamed itself Snap Inc., "a camera company," and let the short exact-match domain carry an identity bigger than any single app.'
 keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap domain name', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'snapchat rebrand', 'camera company', 'idealab snap.com', 'domain acquisition', 'category-defining domain']
 ---

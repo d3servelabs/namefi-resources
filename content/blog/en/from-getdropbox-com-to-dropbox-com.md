@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 4
+format: case-study
 description: 'How Dropbox launched on GetDropbox.com because Dropbox.com was taken, fought a trademark and squatting battle, and finally bought the exact-match Dropbox.com for a reported $300,000 in cash.'
 keywords: ['getdropbox.com', 'dropbox.com', 'dropbox domain name', 'drew houston', 'y combinator dropbox', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'domain acquisition', 'evenflow dropbox']
 ---

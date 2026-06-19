@@ -5,6 +5,8 @@ language: en
 tags: ['cryptography', 'zero-knowledge', 'zk-snark', 'theory']
 authors: ['namefiteam']
 draft: false
+cluster: web3-foundations
+format: explainer
 description: Zero-knowledge proofs come in three flavors—perfect, statistical, and computational—and the difference matters more than most engineering discussions admit. This post explains each in plain language, why nearly every production ZK system in 2026 is computational, and what that buys and costs.
 ogImage: ../../assets/perfect-vs-computational-zero-knowledge-og.jpg
 keywords: ['zero knowledge proof', 'perfect zero knowledge', 'computational zero knowledge', 'zk snark', 'zk stark', 'cryptography', 'simulator', 'commitment scheme', 'namefi']

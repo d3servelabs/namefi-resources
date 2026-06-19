@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 10
+format: case-study
 description: 'How Ctrip, China''s largest online travel agency, acquired the premium Trip.com domain in 2017 from a startup called Gogobot, relaunched its global brand around it, and in 2019 renamed the entire parent company Trip.com Group to expand internationally.'
 keywords: ['ctrip.com', 'trip.com', 'ctrip rebrand', 'trip.com group', 'trip.com domain', 'domain upgrade', 'chinese brand global expansion', 'gogobot trip.com', 'james liang ctrip', 'premium travel domain', 'startup naming', 'brand naming', 'domain acquisition']
 ---

@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 19
+format: case-study
 description: 'How Elon Musk built X.com in 1999, lost it when PayPal took his old name, bought it back in 2017 for sentimental value, and finally moved a $44B social network onto it — making Twitter.com redirect to X.com.'
 keywords: ['twitter.com', 'x.com', 'twitter rebrand x', 'elon musk x.com', 'x.com history', 'paypal x.com domain', 'twitter to x name change', 'domain redirect', 'domain upgrade', 'single letter domain', 'everything app', 'brand naming', 'premium domain']
 ---

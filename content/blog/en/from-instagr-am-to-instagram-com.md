@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 14
+format: case-study
 description: 'How Instagram launched in 2010 on the instagr.am domain hack — borrowing Armenia''s .am ccTLD to spell its own name — then paid $100,000 to consolidate on Instagram.com, and what the tradeoffs of a clever ccTLD hack teach founders.'
 keywords: ['instagr.am', 'instagram.com', 'instagram domain name', 'domain hack', 'ccTLD domain hack', '.am armenia domain', 'kevin systrom', 'mike krieger', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'instagram history']
 ---

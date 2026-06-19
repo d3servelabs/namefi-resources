@@ -5,6 +5,8 @@ language: en
 tags: ['Infrastructure', 'AI Agents', 'Digital Commerce']
 authors: ['namefiteam']
 draft: false
+cluster: web3-foundations
+format: news
 description: UCP is Google’s bid to power agent-native commerce, letting AI assistants shop and check out across the open web.
 keywords: [‘Universal Commerce Protocol’, ‘UCP’, ‘Google UCP’, ‘AI shopping agents’, ‘AI-powered commerce’, ‘agentic commerce’, ‘AI ecommerce protocol’, ‘conversational commerce’, ‘AI checkout’, ‘future of ecommerce’, ‘agent-based shopping’, ‘open commerce standards’, ‘Google AI’, ‘Gemini AI’, ‘Agent Engine Optimization’]
 ---

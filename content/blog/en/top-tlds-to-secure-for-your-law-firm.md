@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 6
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-law-firm-og.jpg
 description: 'The top 10 TLDs to secure for your law firm, including why .law is the only legal TLD restricted to verified attorneys (while .esq, .legal, .attorney, and .lawyer are open), plus a defensive strategy.'
 keywords: ['tlds for law firms', 'best domains for lawyers', '.law domain', 'is .esq restricted', 'legal domain extensions', 'defensive domain registration', 'attorney domain names', 'law firm branding', 'restricted legal TLDs', 'register law firm domains']

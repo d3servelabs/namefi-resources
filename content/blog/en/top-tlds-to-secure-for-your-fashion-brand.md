@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 8
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-fashion-brand-og.jpg
 description: 'A practical guide to the top 10 TLDs to secure for your fashion brand, covering brand protection, retail intent, and defensive domain registration strategy.'
 keywords: ['TLDs for fashion brand', 'fashion brand domain names', 'best TLDs for retail', 'defensive domain registration', 'brand protection domains', '.fashion domain', '.boutique domain', '.shop domain', '.store domain', 'fashion ecommerce domains', 'typosquatting protection', 'trademark domain protection']

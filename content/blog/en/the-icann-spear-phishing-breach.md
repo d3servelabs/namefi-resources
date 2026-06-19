@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 14
+format: case-study
 description: 'In late 2014, ICANN — the body that coordinates the internet domain name system — admitted that a spear-phishing email spoofing its own domain had harvested staff credentials and handed attackers administrative access to the Centralized Zone Data System. A Domain Mayday deep-dive into how the DNS authority itself got phished, what was exposed, and why it still matters.'
 keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone data system', 'dns security', 'domain security', 'spear phishing attack', 'credential phishing', 'zone files', 'iana', 'salted password hashes', 'domain name system breach', 'icann 2014 hack']
 ---

@@ -5,6 +5,8 @@ language: en
 tags: ['comparison']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+format: comparison
 description: An honest, side-by-side look at the major domain tokenization platforms — what each one is actually good at, where they overlap, where they don't, and how to pick the one that fits how you intend to use your domains.
 keywords: ['domain tokenization platforms', 'Doma alternative', 'D3 Global Inc alternative', '3DNS alternative', 'compare domain tokenization', 'Namefi vs Doma', 'Namefi vs D3 Global Inc', 'Namefi vs 3DNS', 'best domain tokenization', 'Namefi review', 'Doma Protocol review', 'D3 Global Inc review', '3DNS review', 'choose domain tokenization', 'domain tokenization comparison']
 ---

@@ -5,6 +5,8 @@ language: en
 tags: ['comparison']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+format: comparison
 description: A clear, practical comparison of tokenized ICANN domains (like a tokenized .com) and Web3-native names (like name.eth, name.crypto). When does each one work? Where do they overlap? Why do many people hold both?
 keywords: ['tokenized domain vs web3 domain', 'tokenized domain vs ENS', 'ICANN domain vs ENS', '.com vs .eth', 'tokenized .com vs .crypto', 'tokenized domain vs unstoppable', 'web3 domain comparison', 'ENS vs tokenized domain', 'NFT domain vs ENS', 'web3 naming', 'on-chain naming difference', 'browser support web3 domain', 'web3 domain resolution']
 ---

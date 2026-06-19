@@ -5,6 +5,8 @@ language: 'en'
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+format: comparison
 description: ".ai vs .io for your startup? Compare origins, Google SEO treatment, pricing, branding signals, and the .io Chagos question, plus a clear decision guide and FAQ."
 keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domain extension", "ai vs io domain extension", ".ai vs .io", "ai or io tld", "ai vs io domain", "io or ai domain", ".ai vs .io domain", "ai domain vs io domain", "best domain for ai startup", "best domain for tech startup", "ai tld", "io tld", "domain extension for startup", "ccTLD for tech", "gccTLD seo", "io domain chagos", "io domain future", "ai domain pricing", "io domain pricing", "domain branding", "choosing a domain extension", "tokenized domain"]
 ---

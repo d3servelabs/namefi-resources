@@ -5,6 +5,8 @@ language: en
 tags: ['faq']
 authors: ['namefiteam']
 draft: false
+cluster: domain-basics
+format: explainer
 description: A domain name is the foundation of your online presence.
 keywords: ['domain name', 'DNS', 'Domain Name System', 'IP address', 'web address', 'internet basics', 'domain registration', 'website address', 'URL', 'namefi']
 ---

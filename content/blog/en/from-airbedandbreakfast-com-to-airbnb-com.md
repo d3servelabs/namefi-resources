@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 3
+format: case-study
 description: 'How Airbnb launched in 2008 as AirBed & Breakfast on AirBedAndBreakfast.com, then shortened to Airbnb.com in 2009 to escape the literal air-mattress name and become a scalable global brand.'
 keywords: ['airbedandbreakfast.com', 'airbnb.com', 'airbnb domain name', 'airbnb rebrand', 'airbed and breakfast', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'airbnb history', 'y combinator airbnb', 'company rebrand']
 ---

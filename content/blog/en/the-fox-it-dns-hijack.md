@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 12
+format: case-study
 description: 'In September 2017, attackers logged into Dutch security firm Fox-IT''s third-party domain registrar, changed its DNS, fraudulently obtained a TLS certificate, and ran a 10-hour man-in-the-middle on client traffic — until Fox-IT caught it and published one of the most transparent post-mortems in the industry.'
 keywords: ['fox-it dns hijack', 'fox-it man in the middle', 'fox-it incident 2017', 'dns hijacking', 'registrar account compromise', 'fraudulent ssl certificate', 'man-in-the-middle attack', 'domain registrar security', 'two-factor authentication dns', 'dnssec', 'registry lock', 'domain security', 'ncc group fox-it']
 ---

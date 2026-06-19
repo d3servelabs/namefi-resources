@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 11
+format: case-study
 description: 'How the pioneering social-bookmarking site launched in 2003 as the famous domain hack "del.icio.us," why those dots became a permanent tax on every mention, and how Yahoo moved it to the cleaner Delicious.com in 2008.'
 keywords: ['del.icio.us', 'delicious.com', 'delicious domain name', 'domain hack', 'joshua schachter', 'social bookmarking', 'yahoo delicious', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'ccTLD domain hack', 'category-defining domain']
 ---

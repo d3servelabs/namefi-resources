@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 2
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-saas-og.jpg
 description: 'The top 10 TLDs to secure for your SaaS — from .com and .io to .app and .ai — with defensive registration tips and authoritative registry facts.'
 keywords: ['top TLDs for SaaS', 'best domain extensions for SaaS', 'TLDs to secure for startup', 'defensive domain registration', '.io for SaaS', '.ai domain', '.app domain HTTPS', '.dev domain', 'SaaS domain strategy', 'brand protection domains', 'which TLD to choose', 'register SaaS domains']

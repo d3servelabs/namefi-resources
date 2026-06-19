@@ -7,6 +7,7 @@ language: en
 tags: ['vision', 'digital-trust']
 authors: ['namefiteam']
 draft: false
+format: opinion
 description: A vision statement of D3Serve — why digitizing trust, much like the digitization of information before it, promises a leap in productivity, loss-less precision, lower cost, and automation.
 keywords: ['digital trust', 'D3Serve', 'blockchain', 'web3', 'smart contracts', 'cryptography', 'consensus', 'manifesto', 'vision', 'trust digitization', 'group trust', 'automation']
 ---

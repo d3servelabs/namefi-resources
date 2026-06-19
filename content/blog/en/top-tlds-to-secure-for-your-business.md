@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 4
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-business-og.jpg
 description: 'Discover the top TLDs to secure for your business, why defensive domain registration protects your brand, and how to register them the smart way.'
 keywords: ['top TLDs to secure for your business', 'best domain extensions for business', 'defensive domain registration', 'brand protection domains', 'business TLDs', 'register a domain for business', 'typosquatting protection', 'domain extensions for companies', 'choose a TLD', 'gTLD vs ccTLD']

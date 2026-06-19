@@ -5,6 +5,10 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+series: tokenize-your-com
+seriesOrder: 4
+format: faq
 description: A non-advice, plain-language survey of the tax and accounting questions tokenized domain owners commonly ask — cost basis, sales, holding period, business vs personal, gifting, estates. Bring these questions to a real professional.
 keywords: ['NFT domain tax', 'tokenized domain cost basis', 'tokenized domain accounting', 'tokenized domain capital gains', 'sell tokenized domain tax', 'NFT domain capital gains', 'domain NFT accounting', 'domain as asset tax', 'gift tokenized domain tax', 'estate tokenized domain', 'tokenized domain business expense', 'domain tokenization tax questions', 'tax NFT domain US', 'crypto domain tax']
 ---

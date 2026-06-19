@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 18
+format: case-study
 description: 'In January 2005, panix.com — the domain of New York''s oldest commercial ISP — was fraudulently transferred to a registrar in Australia using stolen credit cards, knocking web and email offline for days. The auto-approve inter-registrar transfer rules of the era made it possible, and the cleanup reshaped domain-transfer policy.'
 keywords: ['panix.com', 'panix domain hijack', 'domain hijacking', 'inter-registrar transfer', 'Melbourne IT', 'Dotster', 'Fibranet', 'ICANN transfer policy', 'registrar lock', 'clientTransferProhibited', 'domain security', 'DNS hijacking', 'EPP auth code']
 ---

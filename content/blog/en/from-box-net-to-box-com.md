@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 8
+format: case-study
 description: 'How Box launched in 2005 on Box.net because Box.com was taken, pivoted from consumer storage to the enterprise, and in 2011 paid Digimedia close to $1 million for the exact-match Box.com — a .net-to-.com upgrade that landed right as the company became simply "Box."'
 keywords: ['box.net', 'box.com', 'box domain name', 'aaron levie', 'dylan smith', 'digimedia', 'scott day', 'domain upgrade', 'startup naming', 'brand naming', 'premium domain', 'exact match domain', 'net to com']
 ---

@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'community', 'domain-investing', 'forums']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: domain-investor-field-guide
+seriesOrder: 4
+format: roundup
 description: A practical guide to the English-language forums and communities where domain investors actually congregate in 2026 — from NamePros and DNForum to the Twitter/X and Telegram channels that have quietly replaced them.
 ogImage: ../../assets/top-domain-trader-forums-og.jpg
 keywords: ['domain forums', 'namepros', 'dnforum', 'domain investing community', 'domain trader forum', 'domaining', 'domain investor twitter', 'domain telegram groups']

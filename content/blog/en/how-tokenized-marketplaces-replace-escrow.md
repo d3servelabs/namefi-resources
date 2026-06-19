@@ -5,6 +5,10 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+series: tokenize-your-com
+seriesOrder: 3
+format: explainer
 description: How tokenized-domain marketplaces let buyers and sellers settle atomically on-chain — no escrow service, no auth codes, no five-day registrar lock. What replaces each piece of the traditional flow, and what risks shift to other layers.
 keywords: ['domain marketplace blockchain', 'atomic domain transfer', 'tokenized domain marketplace', 'replace domain escrow', 'no escrow domain sale', 'domain sale crypto', 'tokenized domain sale process', 'sell tokenized domain', 'buy tokenized domain', 'on-chain domain sale', 'domain NFT settlement', 'domain marketplace 2026', 'tokenized domain liquidity']
 ---

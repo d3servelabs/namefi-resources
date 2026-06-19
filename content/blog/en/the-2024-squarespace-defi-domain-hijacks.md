@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 6
+format: case-study
 description: 'In July 2024, a registrar migration from Google Domains to Squarespace turned weak default authentication into a mass attack surface. Attackers hijacked the domains of crypto and DeFi projects — Compound Finance, Celer Network, Pendle, Unstoppable Domains — and pointed them at wallet-drainer phishing sites. Here is how a "seamless" migration created hundreds of unlocked front doors, and what it teaches about registrar security and MFA.'
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
 ---

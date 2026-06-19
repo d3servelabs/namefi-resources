@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 23
+format: case-study
 description: 'On August 27, 2013, the Syrian Electronic Army phished a Melbourne IT reseller, rewrote the DNS records for nytimes.com and Twitter''s domains, and took the New York Times offline for hours. A deep dive into how a registrar-chain weak link became a newspaper''s front-door failure — and what registry locks would have changed.'
 keywords: ['nytimes.com hack', 'syrian electronic army', 'melbourne it', 'dns hijack', 'domain hijacking', 'registrar security', 'reseller phishing', 'registry lock', 'dns records', 'domain name server attack', 'twitter dns 2013', 'domain security', 'serverupdateprohibited']
 ---

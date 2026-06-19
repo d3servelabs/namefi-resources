@@ -5,6 +5,8 @@ language: 'en'
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+format: explainer
 description: "Why are .io domains so expensive? A clear breakdown of registry wholesale pricing, startup and tech demand, short-name scarcity, renewals, and the new Chagos sovereignty question."
 keywords: ['why are io domains expensive', 'why are .io domains expensive', 'io domain expensive', 'why io domains expensive', 'why are .io domains so expensive', 'why use .io domain', 'io domain for startups', 'io domain price', 'io domain cost', 'io domain renewal cost', 'are io domains worth it', 'io vs com', 'io vs ai domain', 'cost of io domain', 'why io domains cost more', 'io domain pricing explained', 'should I buy an io domain', 'io ccTLD', 'Chagos io domain', 'buy io domain']
 ---

@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 13
+format: case-study
 description: 'Between 2020 and 2022, a single threat actor group lived inside GoDaddy''s infrastructure — stealing source code, exposing 1.2 million Managed WordPress customers, and intermittently redirecting customer websites to malicious sites. A deep-dive on registrar concentration risk and what it teaches about single points of failure.'
 keywords: ['godaddy breach', 'godaddy data breach', 'managed wordpress breach', 'registrar security', 'domain security', 'multi-year breach', 'cpanel malware', 'website redirect attack', 'ssl private key exposure', 'sftp password breach', 'sec 10-k cybersecurity', 'registrar concentration risk', 'single point of failure']
 ---
