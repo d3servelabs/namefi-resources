@@ -129,5 +129,13 @@
     "loadingMore": "Cargando más usuarios",
     "listings": "Listados",
     "post": "Publicación"
-  }
+  },
+  "metaTitle": "Namefi | Feed",
+  "domainTitle": "Publicaciones de venta de {domain}",
+  "domainSubtitle": "Publicaciones de venta públicas de {domain} indexadas por Namefi, con cuentas de vendedores y enlaces de origen.",
+  "domainEmptyTitle": "No se encontraron publicaciones de venta",
+  "domainEmptyDescription": "{domain} aún no está en el feed de Namefi.",
+  "backToFeed": "Volver al feed",
+  "domainErrorTitle": "No se pudieron cargar las publicaciones de venta",
+  "domainErrorDescription": "Algo salió mal. Inténtalo de nuevo."
 }

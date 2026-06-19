@@ -79,5 +79,6 @@
     "x402Unavailable": "x402 支付当前不可用。",
     "x402ConnectWallet": "请连接一个活跃钱包以签署您的 x402 支付。",
     "orderFailed": "无法提交您的订单，请重试。"
-  }
+  },
+  "metaTitle": "Namefi | 购物车"
 }

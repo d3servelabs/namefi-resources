@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "उपलब्ध डोमेन खोजें और उन्हें निःशुल्क क्लेम करें!"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "{price} पर नवीनीकरण",
     "owner": "स्वामी: {owner}",
     "notRegistered": "अपंजीकृत",
@@ -38,7 +38,19 @@
     "buyShort": "खरीदें",
     "buyOn": "यहाँ खरीदें:",
     "buyOnSourceAriaLabel": "{source} पर खरीदें",
-    "buyOnSourceFromSellerAriaLabel": "{seller} से {source} पर खरीदें"
+    "buyOnSourceFromSellerAriaLabel": "{seller} से {source} पर खरीदें",
+    "makeOffer": "ऑफ़र दें",
+    "makeOfferTitle": "ऑफ़र दें",
+    "makeOfferDescription": "यह डोमेन ले लिया गया है। किसी ब्रोकर के ज़रिए मालिक से संपर्क करें।",
+    "makeOfferVia": "{broker} के ज़रिए {domain} के लिए ऑफ़र दें",
+    "import": "इंपोर्ट करें",
+    "importAriaLabel": "इस डोमेन को Namefi में इंपोर्ट करें",
+    "onNamefi": "पर",
+    "onNamefiOwnerAriaLabel": "Namefi पर, स्वामी {owner}",
+    "onFeedPrefix": "",
+    "onFeedSuffix": "फ़ीड",
+    "onFeedAriaLabel": "Namefi फ़ीड पर {domain} देखें",
+    "makeOfferOnOpenSea": "OpenSea पर ऑफ़र दें"
   },
   "results": {
     "errorTitle": "खोज त्रुटि",

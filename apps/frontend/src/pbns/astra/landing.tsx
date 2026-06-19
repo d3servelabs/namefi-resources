@@ -446,6 +446,7 @@ export const Landing: LandingComponent = ({ origin }) => {
     runSearch,
     searchMode,
     onSearchModeChange,
+    startImportForDomain,
     importQuery,
     isLoading,
     isError,
@@ -670,6 +671,7 @@ export const Landing: LandingComponent = ({ origin }) => {
                     eppAuthorizationCodes={eppAuthorizationCodes}
                     onEppCodeChange={handleEppCodeChange}
                     searchMode={searchMode}
+                    onRequestImportForDomain={startImportForDomain}
                     freeClaimEligibility={freeClaimEligibility}
                     canLoadMore={canLoadMore}
                     onLoadMore={loadMore}

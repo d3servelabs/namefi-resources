@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "搜索可注册的域名，免费认领！"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "续费价 {price}",
     "owner": "持有者：{owner}",
     "notRegistered": "未注册",
@@ -38,7 +38,19 @@
     "buyShort": "购买",
     "buyOn": "前往购买",
     "buyOnSourceAriaLabel": "在 {source} 上购买",
-    "buyOnSourceFromSellerAriaLabel": "在 {source} 上向 {seller} 购买"
+    "buyOnSourceFromSellerAriaLabel": "在 {source} 上向 {seller} 购买",
+    "makeOffer": "出价",
+    "makeOfferTitle": "提交报价",
+    "makeOfferDescription": "该域名已被注册。可通过经纪商联系所有者。",
+    "makeOfferVia": "通过 {broker} 为 {domain} 提交报价",
+    "import": "导入",
+    "importAriaLabel": "将此域名导入 Namefi",
+    "onNamefi": "在",
+    "onNamefiOwnerAriaLabel": "在 Namefi 上，所有者 {owner}",
+    "onFeedPrefix": "在",
+    "onFeedSuffix": "动态",
+    "onFeedAriaLabel": "在 Namefi 动态中查看 {domain}",
+    "makeOfferOnOpenSea": "在 OpenSea 上出价"
   },
   "results": {
     "errorTitle": "搜索出错",

@@ -129,5 +129,13 @@
     "loadingMore": "Weitere Nutzer werden geladen",
     "listings": "Angebote",
     "post": "Beitrag"
-  }
+  },
+  "metaTitle": "Namefi | Feed",
+  "domainTitle": "Verkaufsbeiträge für {domain}",
+  "domainSubtitle": "Öffentliche Verkaufsbeiträge für {domain}, von Namefi indexiert, mit Verkäufer-Handles und Quelllinks.",
+  "domainEmptyTitle": "Keine Verkaufsbeiträge gefunden",
+  "domainEmptyDescription": "{domain} ist noch nicht im Namefi-Feed.",
+  "backToFeed": "Zurück zum Feed",
+  "domainErrorTitle": "Verkaufsbeiträge konnten nicht geladen werden",
+  "domainErrorDescription": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
 }

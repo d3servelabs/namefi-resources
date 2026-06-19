@@ -79,5 +79,6 @@
     "x402Unavailable": "El pago x402 no está disponible en este momento",
     "x402ConnectWallet": "Conecta una billetera activa para firmar tu pago x402",
     "orderFailed": "No se pudo enviar tu pedido. Por favor, intenta de nuevo."
-  }
+  },
+  "metaTitle": "Namefi | Carrito"
 }

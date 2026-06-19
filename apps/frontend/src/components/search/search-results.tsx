@@ -30,6 +30,11 @@ export type SearchResultsProps = {
   eppAuthorizationCodes: Record<string, string | undefined>;
   onEppCodeChange: (domain: NamefiNormalizedDomain, eppCode: string) => void;
   searchMode: SearchMode;
+  // Start an Import for a specific taken-but-importable domain (seeds the query
+  // and flips to Import mode). Wire it from landings that support import; omit
+  // on register-only landings and the Import action is hidden instead of being
+  // a dead button.
+  onRequestImportForDomain?: (domain: NamefiNormalizedDomain) => void;
   freeClaimEligibility?: Array<{
     domain: string;
     eligible: boolean;
@@ -57,6 +62,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   eppAuthorizationCodes,
   onEppCodeChange,
   searchMode,
+  onRequestImportForDomain,
   freeClaimEligibility,
   canLoadMore = false,
   onLoadMore,
@@ -153,6 +159,11 @@ export const SearchResults: FC<SearchResultsProps> = ({
               eppAuthorizationCode={eppAuthorizationCodes[domain]}
               onEppCodeChange={(eppCode) => onEppCodeChange(domain, eppCode)}
               isImportMode={isImportMode}
+              onRequestImportMode={
+                onRequestImportForDomain
+                  ? () => onRequestImportForDomain(domain)
+                  : undefined
+              }
               freeClaimEligibility={claimEligibility}
             />
           );

@@ -50,7 +50,7 @@ export const useSearch = (
 ) => {
   const [query, setQuery] = useState('');
   const [searchMode, setSearchMode] = useState<SearchMode>(SearchMode.REGISTER);
-  const [debounced] = useDebounceValue(query, 100);
+  const [debounced, setDebouncedQuery] = useDebounceValue(query, 100);
   const sanitized = debounced.trim();
   const [clientSuggestionPagination, setClientSuggestionPagination] = useState({
     key: '',
@@ -62,6 +62,26 @@ export const useSearch = (
     setSearchMode(mode);
     setQuery('');
   }, []);
+
+  // Switch into Import mode for a specific domain (e.g. the "Import" action on a
+  // taken search result). Unlike onSearchModeChange — which clears the query so
+  // the user starts a fresh import search — this seeds the query with the
+  // domain so it stays in the results list with import UI. Import availability
+  // is derived reactively from the query (importQuery -> domains), so no
+  // explicit runSearch is needed.
+  const startImportForDomain = useCallback(
+    (domain: string) => {
+      setSearchMode(SearchMode.IMPORT);
+      setQuery(domain);
+      // The query is debounced (~100ms) and import `domains` derive from the
+      // debounced value, so without flushing, the results list would briefly go
+      // empty before catching up. Flush so the seeded domain is reflected in the
+      // same render and the card stays visible with no flicker.
+      setDebouncedQuery(domain);
+      setDebouncedQuery.flush();
+    },
+    [setDebouncedQuery],
+  );
 
   const trpc = useTRPC();
   const trpcClient = useTRPCClient();
@@ -403,6 +423,7 @@ export const useSearch = (
     runSearch,
     searchMode,
     onSearchModeChange,
+    startImportForDomain,
     importQuery,
     isLoading,
     isError:

@@ -1,4 +1,6 @@
 import { Chain } from '@opensea/sdk/viem';
+import { NAMEFI_NFT_CONTRACT_ADDRESS } from '@namefi-astra/utils/contract-addresses';
+import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import {
   BASE_MAINNET_CHAIN_ID,
   BASE_SEPOLIA_CHAIN_ID,
@@ -44,6 +46,27 @@ export function getOpenSeaApiBaseUrl(chainId: number): string {
   return TESTNET_CHAIN_IDS.has(chainId)
     ? OPENSEA_API_BASE_TESTNET
     : OPENSEA_API_BASE_MAINNET;
+}
+
+/**
+ * Build the OpenSea asset (item) page URL for a Namefi domain NFT, e.g.
+ * `https://opensea.io/assets/base/0x..../<tokenId>`. The tokenId is derived
+ * deterministically from the domain name (keccak256), and the contract address
+ * is constant across chains. Buyers can place an offer from that page.
+ *
+ * `chainId` selects the OpenSea chain slug + mainnet/testnet host; callers that
+ * don't know a domain's chain should pass the default Namefi NFT chain
+ * (Base mainnet).
+ */
+export function buildOpenSeaAssetUrl(domain: string, chainId: number): string {
+  const slug =
+    CHAIN_ID_TO_OPENSEA_SLUG[chainId] ??
+    CHAIN_ID_TO_OPENSEA_SLUG[BASE_MAINNET_CHAIN_ID];
+  const siteBase = TESTNET_CHAIN_IDS.has(chainId)
+    ? OPENSEA_SITE_BASE_TESTNET
+    : OPENSEA_SITE_BASE_MAINNET;
+  const tokenId = nftIdFromDomainName(domain).toString();
+  return `${siteBase}/assets/${slug}/${NAMEFI_NFT_CONTRACT_ADDRESS}/${tokenId}`;
 }
 
 /**

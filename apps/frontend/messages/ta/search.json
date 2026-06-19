@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "கிடைக்கும் டொமைன்களை இலவசமாக பெறுங்கள்!"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "{price} இல் புதுப்பிக்கும்",
     "owner": "உரிமையாளர்: {owner}",
     "notRegistered": "பதிவு செய்யப்படவில்லை",
@@ -38,7 +38,19 @@
     "buyShort": "வாங்கு",
     "buyOn": "இதில் வாங்கு",
     "buyOnSourceAriaLabel": "{source} இல் வாங்கு",
-    "buyOnSourceFromSellerAriaLabel": "{source} இல் {seller} இடமிருந்து வாங்கு"
+    "buyOnSourceFromSellerAriaLabel": "{source} இல் {seller} இடமிருந்து வாங்கு",
+    "makeOffer": "விலை சொல்லுங்கள்",
+    "makeOfferTitle": "ஒரு விலை சொல்லுங்கள்",
+    "makeOfferDescription": "இந்த டொமைன் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது. ஒரு தரகர் மூலம் உரிமையாளரைத் தொடர்பு கொள்ளுங்கள்.",
+    "makeOfferVia": "{broker} வழியாக {domain}-க்கு விலை சொல்லுங்கள்",
+    "import": "இறக்குமதி",
+    "importAriaLabel": "இந்த டொமைனை Namefi-க்கு இறக்குமதி செய்க",
+    "onNamefi": "இதில்",
+    "onNamefiOwnerAriaLabel": "Namefi இல் உள்ளது, உரிமையாளர் {owner}",
+    "onFeedPrefix": "",
+    "onFeedSuffix": "ஃபீட்",
+    "onFeedAriaLabel": "Namefi ஃபீடில் {domain} ஐக் காண்க",
+    "makeOfferOnOpenSea": "OpenSea இல் விலை சொல்லுங்கள்"
   },
   "results": {
     "errorTitle": "தேடல் பிழை",

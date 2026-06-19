@@ -79,5 +79,6 @@
     "x402Unavailable": "Le paiement x402 n'est pas disponible pour le moment",
     "x402ConnectWallet": "Connectez un portefeuille actif pour signer votre paiement x402",
     "orderFailed": "Impossible de soumettre votre commande. Veuillez réessayer."
-  }
+  },
+  "metaTitle": "Namefi | Panier"
 }

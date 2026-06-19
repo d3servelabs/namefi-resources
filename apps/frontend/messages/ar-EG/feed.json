@@ -129,5 +129,13 @@
     "loadingMore": "بيتحمل مستخدمين أكتر",
     "listings": "العروض",
     "post": "منشور"
-  }
+  },
+  "metaTitle": "Namefi | الموجز",
+  "domainTitle": "منشورات بيع {domain}",
+  "domainSubtitle": "منشورات بيع عامة لـ {domain} مفهرسة بواسطة Namefi، مع حسابات البائعين وروابط المصدر.",
+  "domainEmptyTitle": "لا توجد منشورات بيع",
+  "domainEmptyDescription": "{domain} ليس في موجز Namefi بعد.",
+  "backToFeed": "العودة إلى الموجز",
+  "domainErrorTitle": "تعذّر تحميل منشورات البيع",
+  "domainErrorDescription": "حدث خطأ ما. حاول مرة أخرى."
 }

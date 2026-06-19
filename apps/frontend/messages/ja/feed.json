@@ -129,5 +129,13 @@
     "loadingMore": "ユーザーをさらに読み込んでいます",
     "listings": "リスト",
     "post": "投稿"
-  }
+  },
+  "metaTitle": "Namefi | フィード",
+  "domainTitle": "{domain} の販売投稿",
+  "domainSubtitle": "Namefi がインデックスした {domain} の公開販売投稿。販売者アカウントと出典リンク付き。",
+  "domainEmptyTitle": "販売投稿が見つかりません",
+  "domainEmptyDescription": "{domain} はまだ Namefi フィードにありません。",
+  "backToFeed": "フィードに戻る",
+  "domainErrorTitle": "販売投稿を読み込めませんでした",
+  "domainErrorDescription": "エラーが発生しました。もう一度お試しください。"
 }

@@ -374,12 +374,40 @@ const loadingScenarios: Scenario[] = [
 
 const availabilityScenarios: Scenario[] = [
   {
-    title: 'Available',
-    description: 'Default registration state with add-to-cart and wishlist.',
+    title: 'Available (promo price)',
+    description:
+      'First-year registration is cheaper than renewal, so the price shows with the renewal price struck out in small grey.',
     props: {
       domain: 'aurora.club' as NamefiNormalizedDomain,
       availabilityInfo: createAvailabilityInfo(
         'aurora.club' as NamefiNormalizedDomain,
+      ),
+    },
+  },
+  {
+    title: 'Available (flat price)',
+    description:
+      'When registration and renewal cost the same, only the single price renders — no struck-out price.',
+    props: {
+      domain: 'flat.club' as NamefiNormalizedDomain,
+      availabilityInfo: createAvailabilityInfo(
+        'flat.club' as NamefiNormalizedDomain,
+        {
+          pricingDetails: {
+            registrationPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 22, currency: 'USD' },
+            },
+            renewalPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 22, currency: 'USD' },
+            },
+            importPrice: {
+              type: 'PER_YEAR',
+              price: { amount: 35, currency: 'USD' },
+            },
+          },
+        },
       ),
     },
   },
@@ -420,7 +448,7 @@ const availabilityScenarios: Scenario[] = [
   {
     title: 'Unsupported',
     description:
-      'Unsupported domains replace actions with a destructive badge.',
+      'Unsupported domains replace actions with a neutral grey badge (same style as Temporarily unavailable).',
     props: {
       domain: 'legacy.chain' as NamefiNormalizedDomain,
       availabilityInfo: createAvailabilityInfo(
@@ -435,32 +463,49 @@ const availabilityScenarios: Scenario[] = [
     },
   },
   {
-    title: 'Taken',
+    title: 'On Namefi (tokenized)',
     description:
-      'Importable but already registered domains show the taken state.',
+      'A domain already tokenized on Namefi (on-chain wallet owner) shows the "On Namefi" badge with the owner avatar (links to their gallery) and a Make offer that opens OpenSea.',
     props: {
       domain: 'orbit.club' as NamefiNormalizedDomain,
       availabilityInfo: createAvailabilityInfo(
         'orbit.club' as NamefiNormalizedDomain,
         {
           availability: false,
-          importable: true,
+          importable: false,
           currentOwner: '0x1234567890abcdef1234567890abcdef12345678',
         },
       ),
     },
   },
   {
-    title: 'Buy On X',
+    title: 'Importable (registered elsewhere)',
     description:
-      'Feed listings add the external social CTA next to the taken badge.',
+      'A domain registered at another registrar (no on-chain owner) shows the Make offer broker popover (Saw.com / DomainAgents.com) plus an Import action.',
+    props: {
+      domain: 'transfer.club' as NamefiNormalizedDomain,
+      availabilityInfo: createAvailabilityInfo(
+        'transfer.club' as NamefiNormalizedDomain,
+        {
+          availability: false,
+          importable: true,
+          currentOwner: undefined,
+        },
+      ),
+      onRequestImportMode: noop,
+    },
+  },
+  {
+    title: 'On Namefi + Feed listing',
+    description:
+      'A tokenized domain also listed on the Namefi feed: owner badge + OpenSea offer, plus the asking price and a small "on Namefi feed" link to the per-domain feed page.',
     props: {
       domain: 'signal.club' as NamefiNormalizedDomain,
       availabilityInfo: createAvailabilityInfo(
         'signal.club' as NamefiNormalizedDomain,
         {
           availability: false,
-          importable: true,
+          importable: false,
           currentOwner: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
         },
       ),
@@ -646,6 +691,68 @@ const interactionScenarios: Scenario[] = [
   },
 ];
 
+// A representative subset rendered in a single column for the mobile preview.
+const MOBILE_SCENARIO_TITLES = new Set([
+  'Available (promo price)',
+  'Available (flat price)',
+  'On Namefi (tokenized)',
+  'Importable (registered elsewhere)',
+  'On Namefi + Feed listing',
+  'Long Domain',
+]);
+const mobileScenarios: Scenario[] = [
+  ...availabilityScenarios.filter((scenario) =>
+    MOBILE_SCENARIO_TITLES.has(scenario.title),
+  ),
+  ...importScenarios.filter((scenario) => scenario.title === 'Importable'),
+];
+
+// Story id for the iframe embed below. Storybook slugifies
+// `Components/DomainCard` + `MobileCards` to this id.
+const MOBILE_STORY_ID = 'components-domaincard--mobile-cards';
+
+function MobileCardsStory() {
+  return (
+    <StoryProviders>
+      <div className="min-h-screen bg-zinc-950 p-4 text-white">
+        <div className="mx-auto flex max-w-md flex-col gap-4">
+          {mobileScenarios.map((scenario) => (
+            <ScenarioCard key={scenario.title} {...scenario} />
+          ))}
+        </div>
+      </div>
+    </StoryProviders>
+  );
+}
+
+// Renders the mobile story inside a narrow iframe. Tailwind's responsive
+// breakpoints key off the iframe's own width, so at ~390px the cards render in
+// their true mobile layout inline — no Storybook viewport toggling needed.
+function MobileViewSection() {
+  return (
+    <section className="space-y-5">
+      <div className="space-y-1">
+        <h2 className="text-lg font-semibold text-white">Mobile view</h2>
+        <p className="text-sm text-zinc-400">
+          A live 390px-wide render of the same cards as they appear on a phone.
+          Breakpoints resolve against the embedded frame, so this is the real
+          mobile layout — no need to switch the Storybook viewport.
+        </p>
+      </div>
+      <div
+        className="overflow-hidden rounded-[2rem] border-4 border-zinc-800 bg-black shadow-xl"
+        style={{ width: 390 }}
+      >
+        <iframe
+          title="DomainCard mobile preview"
+          src={`iframe.html?id=${MOBILE_STORY_ID}&viewMode=story`}
+          style={{ width: 390, height: 760, border: 0, display: 'block' }}
+        />
+      </div>
+    </section>
+  );
+}
+
 function AllStatesStory() {
   return (
     <StoryProviders>
@@ -681,6 +788,7 @@ function AllStatesStory() {
             description="Visual feedback for cart and wishlist mutations."
             scenarios={interactionScenarios}
           />
+          <MobileViewSection />
         </div>
       </div>
     </StoryProviders>
@@ -689,4 +797,11 @@ function AllStatesStory() {
 
 export const AllStates: Story = {
   render: () => <AllStatesStory />,
+};
+
+export const MobileCards: Story = {
+  render: () => <MobileCardsStory />,
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
 };

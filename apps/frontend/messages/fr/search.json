@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "Recherchez les domaines disponibles et réclamez-les gratuitement !"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "renouvellement à {price}",
     "owner": "Propriétaire : {owner}",
     "notRegistered": "Non enregistré",
@@ -38,7 +38,19 @@
     "buyShort": "Acheter",
     "buyOn": "Acheter sur",
     "buyOnSourceAriaLabel": "Acheter sur {source}",
-    "buyOnSourceFromSellerAriaLabel": "Acheter sur {source} auprès de {seller}"
+    "buyOnSourceFromSellerAriaLabel": "Acheter sur {source} auprès de {seller}",
+    "makeOffer": "Faire une offre",
+    "makeOfferTitle": "Faire une offre",
+    "makeOfferDescription": "Ce domaine est pris. Contactez le propriétaire via un courtier.",
+    "makeOfferVia": "Faire une offre pour {domain} via {broker}",
+    "import": "Importer",
+    "importAriaLabel": "Importer ce domaine sur Namefi",
+    "onNamefi": "Sur",
+    "onNamefiOwnerAriaLabel": "Sur Namefi, détenu par {owner}",
+    "onFeedPrefix": "sur",
+    "onFeedSuffix": "fil",
+    "onFeedAriaLabel": "Voir {domain} dans le fil Namefi",
+    "makeOfferOnOpenSea": "Faire une offre sur OpenSea"
   },
   "results": {
     "errorTitle": "Erreur de recherche",

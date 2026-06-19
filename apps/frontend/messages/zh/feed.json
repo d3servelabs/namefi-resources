@@ -129,5 +129,13 @@
     "loadingMore": "正在加载更多用户",
     "listings": "挂牌",
     "post": "帖子"
-  }
+  },
+  "metaTitle": "Namefi | 动态",
+  "domainTitle": "{domain} 的出售动态",
+  "domainSubtitle": "Namefi 收录的 {domain} 公开出售动态，含卖家账号与来源链接。",
+  "domainEmptyTitle": "未找到出售动态",
+  "domainEmptyDescription": "{domain} 尚未出现在 Namefi 动态中。",
+  "backToFeed": "返回动态",
+  "domainErrorTitle": "无法加载出售动态",
+  "domainErrorDescription": "出现错误，请重试。"
 }

@@ -6,18 +6,20 @@ import {
   type WishlistButtonState,
 } from '@/components/buttons/animated-wishlist-button';
 import { InstantBuyButton } from '@/components/instant-buy/instant-buy-button';
+import {
+  MakeOfferButton,
+  OpenSeaOfferButton,
+} from '@/components/search/make-offer-popover';
+import { UserWalletAvatar } from '@/components/user-avatar';
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { PasswordInput } from '@/components/password-input';
 import { useCartRow } from '@/hooks/use-cart-row';
 import { useWishlistRow } from '@/hooks/use-wishlist-row';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
-import {
-  resolveMlsListingSource,
-  toSafeMlsListingUrl,
-  type MlsSaleListing,
-} from '@/lib/mls/feed';
-import { normalizeMlsHandle } from '@/lib/mls/handles';
+import type { MlsSaleListing } from '@/lib/mls/feed';
+import { BASE_MAINNET_CHAIN_ID } from '@/lib/marketplaces/chains';
+import { buildOpenSeaAssetUrl } from '@/lib/marketplaces/opensea/constants';
 import { formatAmountInUSD } from '@/lib/number';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
@@ -34,9 +36,10 @@ import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
-import { Gift, User } from 'lucide-react';
+import { Gift } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { isNotNil } from 'ramda';
 import {
@@ -47,6 +50,23 @@ import {
   useState,
   type FC,
 } from 'react';
+
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+// Format an MLS feed listing's asking price for inline display, e.g. "$350.00".
+// Returns undefined for missing or non-numeric values (e.g. "make offer").
+function formatMlsAskingPrice(
+  listing: MlsSaleListing | undefined,
+): string | undefined {
+  const raw = listing?.askingPrice?.trim();
+  if (!raw) return undefined;
+  const numeric = Number(raw.replace(/[^0-9.]/g, ''));
+  if (!Number.isFinite(numeric) || numeric <= 0) return undefined;
+  const currency = listing?.askingCurrency?.trim() || 'USD';
+  return currency.toUpperCase() === 'USD'
+    ? formatAmountInUSD(numeric)
+    : `${numeric.toLocaleString('en-US')} ${currency}`;
+}
 
 // Progressive DomainCard that shows skeleton states for missing data
 function truncateMiddle(value: string, maxChars: number) {
@@ -220,6 +240,11 @@ export const DomainCard: FC<{
   eppAuthorizationCode?: string;
   onEppCodeChange?: (eppCode: string) => void;
   isImportMode?: boolean;
+  // Switches the surrounding search into Import mode for this taken-but-
+  // importable domain. Wired by landings that support import; when omitted the
+  // Import action is hidden (e.g. register-only PBN landings) so it is never a
+  // dead button.
+  onRequestImportMode?: () => void;
   freeClaimEligibility?: {
     domain: string;
     eligible: boolean;
@@ -238,6 +263,7 @@ export const DomainCard: FC<{
   eppAuthorizationCode,
   onEppCodeChange,
   isImportMode,
+  onRequestImportMode,
   freeClaimEligibility,
 }) => {
   const t = useTranslations('search');
@@ -425,21 +451,38 @@ export const DomainCard: FC<{
     hasOwnerInfo && availabilityInfo?.currentOwner
       ? availabilityInfo.currentOwner
       : '';
-  const mlsOfferSource = mlsOffer ? resolveMlsListingSource(mlsOffer) : null;
-  const mlsSellerHandle = normalizeMlsHandle(mlsOffer?.seller.username ?? null);
-  const mlsOfferUrl =
-    toSafeMlsListingUrl(mlsOffer?.purchaseUrl) ??
-    toSafeMlsListingUrl(mlsOfferSource?.url) ??
-    toSafeMlsListingUrl(mlsOffer?.sourceTweetUrl) ??
-    '';
-  const mlsOfferSourceLabel = mlsOfferSource?.label ?? t('card.marketplace');
-  const shouldShowSourceIcon = mlsOfferSource?.id === 'x';
-  const isUnavailableForDirectBuy = Boolean(
-    availabilityInfo && !availabilityInfo.availability && !isUnsupported,
+
+  // A taken domain with an on-chain wallet owner is tokenized on Namefi (only
+  // on-chain NFTs have a wallet owner). Such domains get the "On Namefi" owner
+  // badge + an OpenSea make-offer, rather than the off-Namefi broker path.
+  const ownerWallet =
+    currentOwner && currentOwner.toLowerCase() !== ZERO_ADDRESS
+      ? currentOwner
+      : undefined;
+  const isOnNamefi = Boolean(ownerWallet);
+  const shortOwner = ownerWallet
+    ? `${ownerWallet.substring(0, 6)}...${ownerWallet.substring(ownerWallet.length - 4)}`
+    : '';
+  const ownerGalleryHref = ownerWallet
+    ? `/owner/${encodeURIComponent(ownerWallet)}`
+    : undefined;
+  // Default to Base mainnet — the canonical Namefi NFT chain — since the search
+  // card doesn't carry a per-domain chain id.
+  const openSeaOfferUrl = useMemo(
+    () =>
+      isOnNamefi && domain
+        ? buildOpenSeaAssetUrl(domain, BASE_MAINNET_CHAIN_ID)
+        : undefined,
+    [isOnNamefi, domain],
   );
-  const shouldShowMlsOfferCta = Boolean(
-    isUnavailableForDirectBuy && mlsOfferUrl.length,
-  );
+
+  // A domain present in the Namefi Feed (an aggregated sale post) shows its
+  // asking price plus an "on Namefi feed" link to the per-domain feed page,
+  // where the original source(s) can be found.
+  const hasFeedListing = Boolean(mlsOffer && domain);
+  const feedListingHref = hasFeedListing ? `/feed/${domain}` : undefined;
+  const feedAskingPrice = formatMlsAskingPrice(mlsOffer);
+
   const shouldShowImportHint = Boolean(
     showImportUi && availabilityInfo?.availability,
   );
@@ -449,47 +492,35 @@ export const DomainCard: FC<{
   const domainLength = Array.from(displayDomain).length;
   const isLongDomain = domainLength > 28;
   const isVeryLongDomain = domainLength > 42;
-  const goToMlsOffer = useCallback(() => {
-    if (!mlsOfferUrl) return;
-    window.open(mlsOfferUrl, '_blank', 'noopener,noreferrer');
-  }, [mlsOfferUrl]);
-  const mlsOfferButton = shouldShowMlsOfferCta ? (
-    <Button
-      onClick={goToMlsOffer}
-      aria-label={
-        mlsSellerHandle
-          ? t('card.buyOnSourceFromSellerAriaLabel', {
-              source: mlsOfferSourceLabel,
-              seller: mlsSellerHandle,
-            })
-          : t('card.buyOnSourceAriaLabel', { source: mlsOfferSourceLabel })
-      }
-      className="h-8 max-w-full shrink-0 gap-1.5 border border-white/15 bg-black px-2.5 text-[11px] text-white shadow-sm hover:bg-zinc-900 hover:text-white sm:h-9 sm:px-3 sm:text-xs"
+
+  const namefiFeedLink = feedListingHref ? (
+    <Link
+      href={feedListingHref}
+      aria-label={t('card.onFeedAriaLabel', { domain: displayDomain })}
+      className="inline-flex items-center gap-1 text-[10px] text-muted-foreground transition-colors hover:text-foreground sm:text-[11px]"
     >
-      <span className="sm:hidden">{t('card.buyShort')}</span>
-      <span className="hidden sm:inline">{t('card.buyOn')}</span>
-      {shouldShowSourceIcon ? (
-        <Image
-          src="/assets/social/x-logo.svg"
-          alt="X"
-          width={12}
-          height={12}
-          className="size-3 shrink-0"
-        />
-      ) : (
-        <span className="max-w-16 truncate sm:max-w-24">
-          {mlsOfferSourceLabel}
-        </span>
-      )}
-    </Button>
+      <span>{t('card.onFeedPrefix')}</span>
+      <Image
+        src="/logotype-mono.svg"
+        alt="Namefi"
+        width={48}
+        height={13}
+        className="h-2.5 w-auto opacity-80 sm:h-3"
+      />
+      <span>{t('card.onFeedSuffix')}</span>
+    </Link>
   ) : null;
 
   return (
     <Card
       className={cn(
         'flex min-h-[116px] w-full items-stretch border-[1px] border-white/10 bg-white/5 p-0 backdrop-blur-lg transition-all duration-150 sm:min-h-[126px] md:min-h-[136px]',
-        // Only reduce opacity if we know the domain is unavailable and not importable
-        hasAvailabilityInfo && !availabilityInfo.availability && !isImportable
+        // Only dim domains we know are unavailable and not actionable (not
+        // importable and not tokenized on Namefi).
+        hasAvailabilityInfo &&
+          !availabilityInfo.availability &&
+          !isImportable &&
+          !isOnNamefi
           ? 'opacity-60'
           : 'opacity-100',
       )}
@@ -529,54 +560,71 @@ export const DomainCard: FC<{
             <div className="flex items-center gap-2">
               {shouldShowPricingSkeleton ? (
                 <Skeleton className="h-5 w-16 bg-gray-600/50 sm:h-6 sm:w-20" />
-              ) : isNotNil(priceInUsd) ? (
-                <div className="flex flex-col gap-0.5 text-start transition-opacity duration-200 ease-out">
-                  <p className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1">
-                    {isNotNil(originalRegistrationPriceInUsd) ? (
-                      <>
-                        <span className="me-2 text-muted-foreground line-through">
-                          {formatAmountInUSD(originalRegistrationPriceInUsd)}
-                        </span>
-                        <span className="font-semibold text-brand-primary">
-                          {t('card.priceWithCurrency', {
-                            price: formatAmountInUSD(priceInUsd),
-                          })}
-                        </span>
-                      </>
-                    ) : (
-                      t('card.priceWithCurrency', {
-                        price: formatAmountInUSD(priceInUsd),
-                      })
-                    )}
-                  </p>
-                  {isNotNil(renewalPriceInUsd) && (
-                    <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm">
-                      {t('card.renewsAt', {
-                        price: formatAmountInUSD(renewalPriceInUsd),
-                      })}
+              ) : !showImportUi && hasFeedListing ? (
+                // Browse mode: a feed-listed domain shows the seller's asking
+                // price + a link to the per-domain feed page. In Import mode the
+                // import price takes precedence (handled below).
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 text-start">
+                  {feedAskingPrice && (
+                    <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl">
+                      {feedAskingPrice}
                     </p>
                   )}
+                  {namefiFeedLink}
+                </div>
+              ) : !showImportUi &&
+                isOnNamefi ? // Already owned on Namefi — no acquire price in browse mode.
+              null : isNotNil(priceInUsd) ? (
+                <div className="flex flex-col gap-0.5 text-start transition-opacity duration-200 ease-out">
+                  <p className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1">
+                    <span
+                      className={cn(
+                        'font-semibold',
+                        isNotNil(originalRegistrationPriceInUsd) &&
+                          'text-brand-primary',
+                      )}
+                    >
+                      {t('card.priceWithCurrency', {
+                        price: formatAmountInUSD(priceInUsd),
+                      })}
+                    </span>
+                    {isNotNil(originalRegistrationPriceInUsd) && (
+                      <span className="ms-1.5 align-middle text-[10px] font-normal text-muted-foreground line-through sm:text-[11px] md:text-sm">
+                        {formatAmountInUSD(originalRegistrationPriceInUsd)}
+                      </span>
+                    )}
+                  </p>
                 </div>
               ) : isUnsupported ? null : (
                 <div className="flex flex-col gap-0.5 text-start invisible">
                   <p className="line-clamp-1 text-sm font-medium sm:text-base md:text-xl invisible">
                     {'N/A'}
                   </p>
-                  <p className="text-[10px] text-muted-foreground sm:text-[11px] md:text-sm invisible">
-                    {'N/A'}
-                  </p>
                 </div>
               )}
             </div>
-            {hasOwnerInfo && (
-              <div className="flex items-center text-[11px] text-muted-foreground sm:text-xs">
-                <User className="me-1 h-3 w-3 shrink-0" />
-                <span className="line-clamp-1">
-                  {t('card.owner', {
-                    owner: `${currentOwner.substring(0, 6)}...${currentOwner.substring(currentOwner.length - 4)}`,
-                  })}
-                </span>
-              </div>
+            {isOnNamefi && ownerWallet && ownerGalleryHref && (
+              <Link
+                href={ownerGalleryHref}
+                aria-label={t('card.onNamefiOwnerAriaLabel', {
+                  owner: shortOwner,
+                })}
+                className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground sm:text-xs"
+              >
+                <span>{t('card.onNamefi')}</span>
+                <Image
+                  src="/logotype-mono.svg"
+                  alt="Namefi"
+                  width={48}
+                  height={13}
+                  className="h-3 w-auto opacity-90"
+                />
+                <UserWalletAvatar
+                  address={ownerWallet}
+                  className="size-4 ms-0.5"
+                  imageSizes="16px"
+                />
+              </Link>
             )}
             {shouldShowImportHint && (
               <div className="mt-1 flex items-center gap-2">
@@ -604,7 +652,7 @@ export const DomainCard: FC<{
               {shouldShowActionSkeleton ? (
                 <Skeleton className="h-8 w-16 rounded-full bg-gray-600/50 sm:h-9 sm:w-20 md:w-24" />
               ) : isUnsupported ? (
-                <Badge variant="destructive" className="text-[10px] sm:text-xs">
+                <Badge variant="secondary" className="text-[10px] sm:text-xs">
                   {t('card.unsupported')}
                 </Badge>
               ) : showImportUi && availabilityInfo?.availability ? (
@@ -642,17 +690,33 @@ export const DomainCard: FC<{
                       addingBusy || removingBusy || isImportButtonDisabled
                     }
                   />
-                  {mlsOfferButton}
                 </div>
+              ) : !showImportUi &&
+                hasAvailabilityInfo &&
+                !availabilityInfo.availability &&
+                !isAvailabilityAuthoritative ? (
+                // The taken sub-state (On Namefi / importable / unavailable)
+                // isn't reliable until the authoritative availability stream
+                // arrives: preliminary lookup marks every taken name importable
+                // and omits on-chain ownership. Skeleton instead of showing
+                // premature broker / Import / OpenSea actions on a guess.
+                <Skeleton className="h-8 w-16 rounded-full bg-gray-600/50 sm:h-9 sm:w-20 md:w-24" />
+              ) : isOnNamefi && !showImportUi ? (
+                openSeaOfferUrl ? (
+                  <OpenSeaOfferButton href={openSeaOfferUrl} />
+                ) : null
               ) : isImportable && !showImportUi ? (
-                <div className="flex flex-nowrap items-center justify-end gap-1.5 sm:gap-2">
-                  <Badge
-                    variant="destructive"
-                    className="text-[10px] sm:text-xs"
-                  >
-                    {t('card.taken')}
-                  </Badge>
-                  {mlsOfferButton}
+                <div className="flex flex-wrap items-center justify-end gap-1.5 sm:gap-2">
+                  {domain && <MakeOfferButton domain={domain} />}
+                  {onRequestImportMode && (
+                    <Button
+                      onClick={onRequestImportMode}
+                      aria-label={t('card.importAriaLabel')}
+                      className="h-8 max-w-full shrink-0 border border-white/15 bg-white/5 px-2.5 text-[11px] text-white hover:bg-white/10 sm:h-9 sm:px-3 sm:text-xs"
+                    >
+                      {t('card.import')}
+                    </Button>
+                  )}
                 </div>
               ) : hasAvailabilityInfo &&
                 !availabilityInfo.availability &&

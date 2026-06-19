@@ -129,5 +129,13 @@
     "loadingMore": "மேலும் பயனர்களை ஏற்றுகிறது",
     "listings": "பட்டியல்கள்",
     "post": "பதிவு"
-  }
+  },
+  "metaTitle": "Namefi | ஃபீட்",
+  "domainTitle": "{domain} க்கான விற்பனை இடுகைகள்",
+  "domainSubtitle": "Namefi குறியீட்டிட்ட {domain} இன் பொது விற்பனை இடுகைகள், விற்பனையாளர் கணக்குகள் மற்றும் மூல இணைப்புகளுடன்.",
+  "domainEmptyTitle": "விற்பனை இடுகைகள் எதுவும் இல்லை",
+  "domainEmptyDescription": "{domain} இன்னும் Namefi ஃபீடில் இல்லை.",
+  "backToFeed": "ஃபீட்டுக்குத் திரும்பு",
+  "domainErrorTitle": "விற்பனை இடுகைகளை ஏற்ற முடியவில்லை",
+  "domainErrorDescription": "ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்."
 }

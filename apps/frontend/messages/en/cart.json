@@ -79,5 +79,6 @@
     "x402Unavailable": "x402 payment is not available right now",
     "x402ConnectWallet": "Connect an active wallet to sign your x402 payment",
     "orderFailed": "Could not submit your order. Please try again."
-  }
+  },
+  "metaTitle": "Namefi | Cart"
 }

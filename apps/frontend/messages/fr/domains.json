@@ -158,5 +158,6 @@
     "viewBidAria": "Voir l'offre {source} sur {domain}",
     "nftAlt": "NFT",
     "offerWaiting": "Votre offre est ouverte et en attente d'acceptation par le vendeur."
-  }
+  },
+  "metaTitle": "Namefi | Gérer les domaines"
 }

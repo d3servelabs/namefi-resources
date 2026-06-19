@@ -129,5 +129,13 @@
     "loadingMore": "Chargement d'autres utilisateurs",
     "listings": "Annonces",
     "post": "Publication"
-  }
+  },
+  "metaTitle": "Namefi | Fil",
+  "domainTitle": "Annonces de vente pour {domain}",
+  "domainSubtitle": "Annonces de vente publiques pour {domain} indexées par Namefi, avec les comptes vendeurs et les liens sources.",
+  "domainEmptyTitle": "Aucune annonce de vente trouvée",
+  "domainEmptyDescription": "{domain} n'est pas encore dans le fil Namefi.",
+  "backToFeed": "Retour au fil",
+  "domainErrorTitle": "Impossible de charger les annonces de vente",
+  "domainErrorDescription": "Une erreur s'est produite. Veuillez réessayer."
 }

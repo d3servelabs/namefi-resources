@@ -79,5 +79,6 @@
     "x402Unavailable": "x402-Zahlung ist zurzeit nicht verfügbar",
     "x402ConnectWallet": "Verbinden Sie eine aktive Wallet, um Ihre x402-Zahlung zu signieren",
     "orderFailed": "Ihre Bestellung konnte nicht übermittelt werden. Bitte versuchen Sie es erneut."
-  }
+  },
+  "metaTitle": "Namefi | Warenkorb"
 }

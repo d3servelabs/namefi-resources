@@ -129,5 +129,13 @@
     "loadingMore": "Loading more users",
     "listings": "Listings",
     "post": "Post"
-  }
+  },
+  "metaTitle": "Namefi | Feed",
+  "domainTitle": "Sale posts for {domain}",
+  "domainSubtitle": "Public sale posts for {domain} indexed by Namefi, with seller handles and source links.",
+  "domainEmptyTitle": "No sale posts found",
+  "domainEmptyDescription": "{domain} isn't in the Namefi feed yet.",
+  "backToFeed": "Back to feed",
+  "domainErrorTitle": "Couldn't load sale posts",
+  "domainErrorDescription": "Something went wrong. Please try again."
 }

@@ -158,5 +158,6 @@
     "viewBidAria": "{domain} への {source} の入札を表示",
     "nftAlt": "NFT",
     "offerWaiting": "オファーは有効です。出品者の承認をお待ちください。"
-  }
+  },
+  "metaTitle": "Namefi | ドメイン管理"
 }

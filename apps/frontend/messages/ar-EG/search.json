@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "دوّر على دومينات متاحة واحجزها مجاناً!"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "التجديد بـ {price}",
     "owner": "المالك: {owner}",
     "notRegistered": "مش مسجل",
@@ -38,7 +38,19 @@
     "buyShort": "اشتري",
     "buyOn": "اشتري من",
     "buyOnSourceAriaLabel": "اشتري من {source}",
-    "buyOnSourceFromSellerAriaLabel": "اشتري من {source} عند {seller}"
+    "buyOnSourceFromSellerAriaLabel": "اشتري من {source} عند {seller}",
+    "makeOffer": "قدّم عرضًا",
+    "makeOfferTitle": "قدّم عرض سعر",
+    "makeOfferDescription": "هذا النطاق محجوز. تواصل مع المالك عبر وسيط.",
+    "makeOfferVia": "قدّم عرضًا على {domain} عبر {broker}",
+    "import": "استيراد",
+    "importAriaLabel": "استيراد هذا النطاق إلى Namefi",
+    "onNamefi": "على",
+    "onNamefiOwnerAriaLabel": "على Namefi، المالك {owner}",
+    "onFeedPrefix": "في",
+    "onFeedSuffix": "الموجز",
+    "onFeedAriaLabel": "عرض {domain} في موجز Namefi",
+    "makeOfferOnOpenSea": "قدّم عرضًا على OpenSea"
   },
   "results": {
     "errorTitle": "فيه مشكلة في البحث",

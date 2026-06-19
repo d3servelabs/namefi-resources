@@ -129,5 +129,13 @@
     "loadingMore": "और उपयोगकर्ता लोड हो रहे हैं",
     "listings": "लिस्टिंग",
     "post": "पोस्ट"
-  }
+  },
+  "metaTitle": "Namefi | फ़ीड",
+  "domainTitle": "{domain} के लिए बिक्री पोस्ट",
+  "domainSubtitle": "Namefi द्वारा अनुक्रमित {domain} के लिए सार्वजनिक बिक्री पोस्ट, विक्रेता हैंडल और स्रोत लिंक के साथ।",
+  "domainEmptyTitle": "कोई बिक्री पोस्ट नहीं मिली",
+  "domainEmptyDescription": "{domain} अभी Namefi फ़ीड में नहीं है।",
+  "backToFeed": "फ़ीड पर वापस",
+  "domainErrorTitle": "बिक्री पोस्ट लोड नहीं हो सकीं",
+  "domainErrorDescription": "कुछ गलत हो गया। कृपया पुनः प्रयास करें।"
 }

@@ -35,6 +35,7 @@ export function CVSearchExperience({
     setQuery,
     runSearch,
     searchMode,
+    startImportForDomain,
     importQuery,
     isLoading,
     isError,
@@ -162,6 +163,7 @@ export function CVSearchExperience({
                 eppAuthorizationCodes={eppAuthorizationCodes}
                 onEppCodeChange={handleEppCodeChange}
                 searchMode={searchMode}
+                onRequestImportForDomain={startImportForDomain}
                 freeClaimEligibility={freeClaimEligibility}
               />
             </div>

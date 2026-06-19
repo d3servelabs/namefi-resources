@@ -19,7 +19,7 @@
     "freeMintTooltipAllDomains": "利用可能なドメインを検索して、無料で取得しましょう！"
   },
   "card": {
-    "priceWithCurrency": "{price} USD",
+    "priceWithCurrency": "{price}",
     "renewsAt": "{price} で更新",
     "owner": "所有者: {owner}",
     "notRegistered": "未登録",
@@ -38,7 +38,19 @@
     "buyShort": "購入",
     "buyOn": "購入先:",
     "buyOnSourceAriaLabel": "{source} で購入",
-    "buyOnSourceFromSellerAriaLabel": "{source} で {seller} から購入"
+    "buyOnSourceFromSellerAriaLabel": "{source} で {seller} から購入",
+    "makeOffer": "オファーを出す",
+    "makeOfferTitle": "オファーを出す",
+    "makeOfferDescription": "このドメインは取得済みです。ブローカーを通じて所有者に連絡できます。",
+    "makeOfferVia": "{broker} を通じて {domain} にオファーを出す",
+    "import": "インポート",
+    "importAriaLabel": "このドメインを Namefi にインポート",
+    "onNamefi": "",
+    "onNamefiOwnerAriaLabel": "Namefi にあり、所有者 {owner}",
+    "onFeedPrefix": "",
+    "onFeedSuffix": "フィード",
+    "onFeedAriaLabel": "Namefi フィードで {domain} を表示",
+    "makeOfferOnOpenSea": "OpenSea でオファーを出す"
   },
   "results": {
     "errorTitle": "検索エラー",
