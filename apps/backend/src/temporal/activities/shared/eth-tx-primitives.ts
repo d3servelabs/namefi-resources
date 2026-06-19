@@ -22,8 +22,8 @@
 import { Context } from '@temporalio/activity';
 import { BigNumber } from 'bignumber.js';
 import type {
+  EstimateFeesPerGasErrorType,
   EstimateGasErrorType,
-  GetGasPriceErrorType,
   Hash,
   PrepareTransactionRequestReturnType,
   SendTransactionErrorType,
@@ -204,9 +204,14 @@ export function createEthTxPrimitives(
       nonce,
     } as PrepareTransactionRequestReturnType;
 
-    const [gasLimitError, gasLimit] = await resolve(
-      publicClient.estimateGas(tx),
-    );
+    const [
+      [gasLimitError, gasLimit],
+      [estimateFeesPerGasError, estimateFeesPerGas],
+    ] = await Promise.all([
+      resolve(publicClient.estimateGas(tx)),
+      resolve(publicClient.estimateFeesPerGas()),
+    ]);
+
     if (gasLimitError) {
       const error = gasLimitError as EstimateGasErrorType;
       ctx.log.error(`Failed to estimate gas - error: ${error.message}`);
@@ -214,17 +219,31 @@ export function createEthTxPrimitives(
     }
     tx.gas = gasLimit;
 
-    const [gasPriceError, gasPrice] = await resolve(publicClient.getGasPrice());
-    if (gasPriceError) {
-      const error = gasPriceError as GetGasPriceErrorType;
-      ctx.log.error(`Failed to get gas price - error: ${error.message}`);
-      return { status: 'FAILED_TO_GET_GAS_PRICE', error: error.message };
+    if (estimateFeesPerGasError || !estimateFeesPerGas) {
+      // estimateFeesPerGas can resolve empty with a null error; don't deref null.
+      const error =
+        estimateFeesPerGasError as EstimateFeesPerGasErrorType | null;
+      const message =
+        error?.message ?? 'estimateFeesPerGas returned empty fee data';
+      ctx.log.error(`Failed to estimate fees per gas - error: ${message}`);
+      return { status: 'FAILED_TO_GET_GAS_PRICE', error: message };
     }
     const maxGasPriceMultiplier =
       await clients.resolveMaxGasPriceMultiplier(chainId);
+
+    // Scale BOTH EIP-1559 caps by the same (capped) multiplier — all values in wei
+    // (as returned by viem's estimateFeesPerGas). Geth's replacement-validation
+    // checks the fee cap AND the tip cap against the bump threshold; bumping only
+    // the tip and deriving maxFeePerGas additively under-bumps the fee cap when the
+    // base fee dominates, so a replacement gets rejected as underpriced.
+    const multiplier = Math.min(gasPriceMultiplier, maxGasPriceMultiplier);
+    tx.maxPriorityFeePerGas = multiplyBigIntByFraction(
+      estimateFeesPerGas.maxPriorityFeePerGas,
+      multiplier,
+    );
     tx.maxFeePerGas = multiplyBigIntByFraction(
-      gasPrice,
-      Math.min(gasPriceMultiplier, maxGasPriceMultiplier),
+      estimateFeesPerGas.maxFeePerGas,
+      multiplier,
     );
 
     const [sendError, txHash] = await resolve(

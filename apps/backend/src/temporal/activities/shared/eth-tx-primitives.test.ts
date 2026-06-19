@@ -26,7 +26,12 @@ function makeReceiptNotFoundError(): Error {
 function makeClients() {
   const publicClient = {
     estimateGas: vi.fn(async () => 21_000n),
-    getGasPrice: vi.fn(async () => 1_000_000_000n),
+    // Fee values are in wei (as viem's estimateFeesPerGas returns): 1 gwei fee cap,
+    // 0.1 gwei priority tip.
+    estimateFeesPerGas: vi.fn(async () => ({
+      maxFeePerGas: 1_000_000_000n, // 1 gwei (wei)
+      maxPriorityFeePerGas: 100_000_000n, // 0.1 gwei (wei)
+    })),
     getBlockNumber: vi.fn(async () => 100n),
     getTransactionReceipt: vi.fn(async () => {
       throw makeReceiptNotFoundError();
@@ -78,18 +83,23 @@ describe('sendPreparedTransaction', () => {
       gasMultiplier,
     );
 
-  it('sends with the explicit pinned nonce and a capped maxFeePerGas', async () => {
+  it('sends with the explicit pinned nonce and both fee caps scaled by the capped multiplier', async () => {
     const result = await send(2); // above the 1.25 cap
     expect(result).toEqual({ status: 'SENT', txHash: '0xsent' });
 
     const sentTx = walletClient.sendTransaction.mock.calls[0][0] as {
       nonce: number;
       maxFeePerGas: bigint;
+      maxPriorityFeePerGas: bigint;
       gas: bigint;
     };
     expect(sentTx.nonce).toBe(PINNED_NONCE);
     expect(sentTx.gas).toBe(21_000n);
-    // 1_000_000_000 * min(2, 1.25) = 1_250_000_000
+    // Both caps scale by min(2, 1.25) = 1.25 (values in wei) so Geth's replacement
+    // validation sees the fee cap AND the tip cap bumped by the same percentage.
+    // priority tip: 100_000_000 * 1.25 = 125_000_000 wei
+    expect(sentTx.maxPriorityFeePerGas).toBe(125_000_000n);
+    // fee cap: 1_000_000_000 * 1.25 = 1_250_000_000 wei
     expect(sentTx.maxFeePerGas).toBe(1_250_000_000n);
   });
 
@@ -122,8 +132,10 @@ describe('sendPreparedTransaction', () => {
     expect(walletClient.sendTransaction).not.toHaveBeenCalled();
   });
 
-  it('returns FAILED_TO_GET_GAS_PRICE when gas price lookup fails', async () => {
-    publicClient.getGasPrice.mockRejectedValueOnce(new Error('no gas price'));
+  it('returns FAILED_TO_GET_GAS_PRICE when the fee estimate fails', async () => {
+    publicClient.estimateFeesPerGas.mockRejectedValueOnce(
+      new Error('no fee estimate'),
+    );
     expect(await send()).toMatchObject({ status: 'FAILED_TO_GET_GAS_PRICE' });
   });
 
