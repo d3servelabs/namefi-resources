@@ -18,6 +18,12 @@ export type AddressWithChainProps = Omit<ComponentProps<'div'>, 'children'> & {
   address?: string | null;
   chainId?: number | null;
   showChainBadge?: boolean;
+  /**
+   * Always render the condensed `0x1234…5678` address, even on small screens.
+   * Default keeps the responsive behavior (address hidden below `md`, where the
+   * avatar alone has to stand in). Card layouts have room for the short address.
+   */
+  showShortAddress?: boolean;
 };
 
 function formatMobileAddress(address: string) {
@@ -31,6 +37,7 @@ export function AddressWithChain({
   address,
   chainId,
   showChainBadge = true,
+  showShortAddress = false,
   className,
   ...props
 }: AddressWithChainProps) {
@@ -71,10 +78,18 @@ export function AddressWithChain({
               </span>
             ) : null}
           </span>
-          <span className="hidden lg:inline font-mono text-sm">{short}</span>
-          <span className="hidden md:inline lg:hidden font-mono text-sm">
-            {mobileShort}
-          </span>
+          {showShortAddress ? (
+            <span className="font-mono text-sm">{short}</span>
+          ) : (
+            <>
+              <span className="hidden lg:inline font-mono text-sm">
+                {short}
+              </span>
+              <span className="hidden md:inline lg:hidden font-mono text-sm">
+                {mobileShort}
+              </span>
+            </>
+          )}
         </TooltipTrigger>
         <TooltipContent sideOffset={6}>
           <span className="font-mono">{address}</span>

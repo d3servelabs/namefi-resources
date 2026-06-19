@@ -11,12 +11,25 @@ import {
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import type { VisibilityState } from '@tanstack/react-table';
+import type { Row, VisibilityState } from '@tanstack/react-table';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
-import { Wallet } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowDownUp,
+  ArrowUp,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  Wallet,
+} from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -38,6 +51,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { useTRPC } from '@/lib/trpc';
 import { useMyDomainsColumns } from './columns';
+import { DomainCard } from './domain-card';
 import { triggerCelebrationAtPosition } from './confetti-celebration';
 import { RenewNowModal } from './renew-now-modal';
 import type { BulkAutoRenewState, DomainRow } from './types';
@@ -141,6 +155,12 @@ export function MyDomainsTable(props: {
   const [page, setPage] = useState(1);
   const [domainSearch, setDomainSearch] = useState('');
   const [isWatchingInWallet, setIsWatchingInWallet] = useState(false);
+  // Which domain cards are expanded in the mobile card layout. Cards start
+  // collapsed so the list stays scannable; the user expands the ones they want
+  // to edit (or all at once via the list header).
+  const [expandedDomains, setExpandedDomains] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   const defaultColumnVisibility: VisibilityState = {
     select: true,
@@ -839,6 +859,167 @@ export function MyDomainsTable(props: {
     [connectedWalletDomains],
   );
 
+  // Mobile card renderer. Mirrors the column cells so a phone-sized viewport gets
+  // a readable stacked card per domain instead of a horizontally-scrolling table.
+  const handleToggleCardExpanded = useCallback((domainName: string) => {
+    setExpandedDomains((prev) => {
+      const next = new Set(prev);
+      if (next.has(domainName)) {
+        next.delete(domainName);
+      } else {
+        next.add(domainName);
+      }
+      return next;
+    });
+  }, []);
+
+  // "Expand/collapse all" operates on the current page's cards.
+  const allCardsExpanded = useMemo(
+    () =>
+      currentPageIds.length > 0 &&
+      currentPageIds.every((id) => expandedDomains.has(id)),
+    [currentPageIds, expandedDomains],
+  );
+
+  const handleToggleExpandAll = useCallback(() => {
+    setExpandedDomains((prev) => {
+      const everyExpanded =
+        currentPageIds.length > 0 && currentPageIds.every((id) => prev.has(id));
+      const next = new Set(prev);
+      for (const id of currentPageIds) {
+        if (everyExpanded) {
+          next.delete(id);
+        } else {
+          next.add(id);
+        }
+      }
+      return next;
+    });
+  }, [currentPageIds]);
+
+  // The card layout has no sortable column headers, so expose sorting here.
+  // Each option maps to a `comparators` entry in `sortedDomains`.
+  const sortOptions = useMemo(
+    () => [
+      { id: 'normalizedDomainName', label: t('columns.domainNamePlain') },
+      { id: 'expirationDate', label: t('columns.renewal') },
+      { id: 'dateTokenized', label: t('columns.dateTokenized') },
+    ],
+    [t],
+  );
+  const activeSort = sorting[0];
+  const handleSortChange = useCallback(
+    (id: string) => {
+      // Re-selecting the active field flips direction; a new field starts asc.
+      setSorting(
+        activeSort?.id === id
+          ? [{ id, desc: !activeSort.desc }]
+          : [{ id, desc: false }],
+      );
+    },
+    [activeSort, setSorting],
+  );
+  const activeSortLabel =
+    sortOptions.find((o) => o.id === activeSort?.id)?.label ??
+    sortOptions[0].label;
+
+  const cardListHeader = (
+    <div className="flex items-center justify-between gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 gap-1.5 text-muted-foreground"
+            />
+          }
+        >
+          <ArrowDownUp className="size-3.5" />
+          {t('card.sort')}: {activeSortLabel}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {sortOptions.map((opt) => (
+            <DropdownMenuItem
+              key={opt.id}
+              onClick={() => handleSortChange(opt.id)}
+              className="gap-2"
+            >
+              <span className="flex-1">{opt.label}</span>
+              {activeSort?.id === opt.id ? (
+                activeSort.desc ? (
+                  <ArrowDown className="size-3.5" />
+                ) : (
+                  <ArrowUp className="size-3.5" />
+                )
+              ) : null}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Button
+        variant="ghost"
+        size="sm"
+        onClick={handleToggleExpandAll}
+        className="h-8 gap-1.5 text-muted-foreground"
+      >
+        {allCardsExpanded ? (
+          <ChevronsDownUp className="size-3.5" />
+        ) : (
+          <ChevronsUpDown className="size-3.5" />
+        )}
+        {t(allCardsExpanded ? 'card.collapseAll' : 'card.expandAll')}
+      </Button>
+    </div>
+  );
+
+  const renderMobileCard = useCallback(
+    (row: Row<DomainRow>) => {
+      const domain = row.original;
+      const domainName = domain.normalizedDomainName as string;
+      const customPrice = getCustomRenewalPrice(domainName ?? '');
+      const resolvedPrice =
+        customPrice ??
+        getRenewalPriceUsdPerYearForDomain(
+          domainName,
+          renewalPriceUsdPerYearByTld,
+        );
+      return (
+        <DomainCard
+          domain={domain}
+          isSelected={selectedDomainIds.has(
+            domainName as NamefiNormalizedDomain,
+          )}
+          isExpanded={expandedDomains.has(domainName)}
+          onToggleExpanded={() => handleToggleCardExpanded(domainName)}
+          isTogglingAutoRenew={togglingAutoRenew.has(domainName)}
+          isTogglingAutoEns={togglingAutoEns.has(domainName)}
+          resolvedRenewalPrice={resolvedPrice}
+          isMobile={isMobile}
+          onRowSelectionChange={handleRowSelectionChange}
+          onToggleAutoRenew={handleToggleAutoRenew}
+          onToggleAutoEns={handleToggleAutoEns}
+          onOpenRenewModal={handleOpenRenewModal}
+          onListForSaleClick={handleListForSaleClick}
+        />
+      );
+    },
+    [
+      selectedDomainIds,
+      expandedDomains,
+      handleToggleCardExpanded,
+      togglingAutoRenew,
+      togglingAutoEns,
+      renewalPriceUsdPerYearByTld,
+      isMobile,
+      handleRowSelectionChange,
+      handleToggleAutoRenew,
+      handleToggleAutoEns,
+      handleOpenRenewModal,
+      handleListForSaleClick,
+    ],
+  );
+
   const watchInWalletToolbarAction =
     isAnyWalletConnected && watchableNftCount > 0 ? (
       <Button
@@ -900,6 +1081,8 @@ export function MyDomainsTable(props: {
         onColumnVisibilityChange={isMobile ? undefined : setColumnVisibility}
         onResetPreferences={resetToDefaults}
         toolbarActions={watchInWalletToolbarAction}
+        renderMobileCard={renderMobileCard}
+        cardListHeader={cardListHeader}
         emptyMessage={t('table.emptyMessage')}
         loadingMessage={t('table.loadingMessage')}
         paginationVisibility="auto"

@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useConnectedWallets } from './use-user-wallet-addresses';
+import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
 import {
   NAMEFI_NFT_CONTRACT_ADDRESS,
   NFSC_CONTRACT_ADDRESS,

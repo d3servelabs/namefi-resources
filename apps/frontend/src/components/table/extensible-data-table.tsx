@@ -41,6 +41,7 @@ import {
   ChevronDownIcon,
 } from 'lucide-react';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -119,6 +120,21 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
 
   /** Extra controls rendered in the toolbar, immediately before the Filters button. */
   toolbarActions?: ReactNode;
+
+  /**
+   * Opt-in mobile card renderer. When provided and the viewport is mobile, rows
+   * are rendered as a vertical stack of cards instead of a horizontally-scrolling
+   * table. Sorting, filtering and pagination still apply (cards render the same
+   * `table.getRowModel()` rows). Tables that don't pass this keep the table on
+   * every breakpoint.
+   */
+  renderMobileCard?: (row: Row<TData>) => ReactNode;
+
+  /**
+   * Optional control rendered above the mobile card stack (card layout only) —
+   * e.g. an "Expand all / Collapse all" toggle. Ignored in the table layout.
+   */
+  cardListHeader?: ReactNode;
 };
 
 export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
@@ -161,7 +177,12 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     onColumnOrderChange,
     onResetPreferences,
     toolbarActions,
+    renderMobileCard,
+    cardListHeader,
   } = props;
+
+  const isMobile = useIsMobile();
+  const useCardLayout = isMobile && !!renderMobileCard;
   const {
     filterState: controlledFilterState,
     filterConfig,
@@ -302,7 +323,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     if (!onSearchChange) return null;
 
     return (
-      <div className="relative w-64">
+      <div className="relative w-full sm:w-64">
         <Search className="absolute start-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
           placeholder={searchPlaceholder}
@@ -332,7 +353,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3 px-1">
+      <div className="flex flex-col gap-3 px-1 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">{searchInput}</div>
         <div className="flex items-center gap-2">
           {toolbarActions}
@@ -363,297 +384,322 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
               </div>
             )}
 
-          {/* Column Visibility Toggle */}
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={<Button variant="outline" size="sm" />}
-            >
-              <ColumnsIcon className="h-3 w-3 me-1" />
-              Columns
-              <Badge variant="outline" className="ms-1">
-                {table.getVisibleFlatColumns().length}/
-                {table.getAllColumns().length}
-              </Badge>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[180px]">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {visibilityColumns.map((column) => (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                    onSelect={(e) => e.preventDefault()}
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                ))}
-                {onResetPreferences && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="w-full justify-start text-xs font-normal"
-                      onClick={onResetPreferences}
+          {/* Column Visibility Toggle — irrelevant in the mobile card layout */}
+          {!useCardLayout && (
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button variant="outline" size="sm" />}
+              >
+                <ColumnsIcon className="h-3 w-3 me-1" />
+                Columns
+                <Badge variant="outline" className="ms-1">
+                  {table.getVisibleFlatColumns().length}/
+                  {table.getAllColumns().length}
+                </Badge>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-[180px]">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {visibilityColumns.map((column) => (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                      onSelect={(e) => e.preventDefault()}
                     >
-                      <RotateCcwIcon className="h-3 w-3 me-2" />
-                      Reset to defaults
-                    </Button>
-                  </>
-                )}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  ))}
+                  {onResetPreferences && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full justify-start text-xs font-normal"
+                        onClick={onResetPreferences}
+                      >
+                        <RotateCcwIcon className="h-3 w-3 me-2" />
+                        Reset to defaults
+                      </Button>
+                    </>
+                  )}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
 
-      <div className="rounded-lg border border-border overflow-visible relative">
-        {isFetching && !isLoading && <TableLoadingBar />}
-        <div className="overflow-x-auto relative">
-          <table
-            className="w-full text-sm"
-            style={
-              hasResizedColumns
-                ? {
-                    width: `${totalTableWidth}px`,
-                    minWidth: 'calc(100% - 5px)',
-                  }
-                : undefined
-            }
-          >
-            <colgroup>
-              {table.getVisibleFlatColumns().map((column) => (
-                <col
-                  key={column.id}
-                  style={
-                    hasResizedColumns
-                      ? {
-                          width: `${column.getSize()}px`,
-                        }
-                      : undefined
-                  }
-                />
+      {useCardLayout ? (
+        <div className="relative">
+          {isFetching && !isLoading && <TableLoadingBar />}
+          {isLoading && data.length === 0 ? (
+            <div className="py-12 text-center text-muted-foreground">
+              <Loader2Icon className="mx-auto mb-2 h-6 w-6 animate-spin" />
+              <p>{loadingMessage}</p>
+            </div>
+          ) : table.getRowModel().rows.length === 0 ? (
+            <div className="rounded-lg border border-border py-12 text-center text-muted-foreground">
+              {emptyMessage}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2.5">
+              {cardListHeader}
+              {table.getRowModel().rows.map((row) => (
+                <Fragment key={row.id}>{renderMobileCard?.(row)}</Fragment>
               ))}
-            </colgroup>
-            <thead className="bg-muted/50">
-              {table.getHeaderGroups().map((hg) => (
-                <tr key={hg.id} className="border-b border-border">
-                  {hg.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      draggable
-                      onDragStart={() => handleDragStart(header.column.id)}
-                      onDragOver={handleDragOver}
-                      onDrop={() => handleDrop(header.column.id)}
-                      className={cn(
-                        'px-4 py-3 text-start text-xs font-semibold text-muted-foreground uppercase tracking-wider',
-                        header.column.getCanSort() &&
-                          'cursor-pointer select-none hover:text-foreground transition-colors',
-                        draggedColumn === header.column.id &&
-                          'opacity-50 bg-muted',
-                        draggedColumn &&
-                          draggedColumn !== header.column.id &&
-                          'cursor-move',
-                      )}
-                      onClick={header.column.getToggleSortingHandler()}
-                      style={{
-                        position: 'relative',
-                        ...(hasResizedColumns && {
-                          width: `${header.getSize()}px`,
-                        }),
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="rounded-lg border border-border overflow-visible relative">
+          {isFetching && !isLoading && <TableLoadingBar />}
+          <div className="overflow-x-auto relative">
+            <table
+              className="w-full text-sm"
+              style={
+                hasResizedColumns
+                  ? {
+                      width: `${totalTableWidth}px`,
+                      minWidth: 'calc(100% - 5px)',
+                    }
+                  : undefined
+              }
+            >
+              <colgroup>
+                {table.getVisibleFlatColumns().map((column) => (
+                  <col
+                    key={column.id}
+                    style={
+                      hasResizedColumns
+                        ? {
+                            width: `${column.getSize()}px`,
+                          }
+                        : undefined
+                    }
+                  />
+                ))}
+              </colgroup>
+              <thead className="bg-muted/50">
+                {table.getHeaderGroups().map((hg) => (
+                  <tr key={hg.id} className="border-b border-border">
+                    {hg.headers.map((header) => (
+                      <th
+                        key={header.id}
+                        draggable
+                        onDragStart={() => handleDragStart(header.column.id)}
+                        onDragOver={handleDragOver}
+                        onDrop={() => handleDrop(header.column.id)}
+                        className={cn(
+                          'px-4 py-3 text-start text-xs font-semibold text-muted-foreground uppercase tracking-wider',
+                          header.column.getCanSort() &&
+                            'cursor-pointer select-none hover:text-foreground transition-colors',
+                          draggedColumn === header.column.id &&
+                            'opacity-50 bg-muted',
+                          draggedColumn &&
+                            draggedColumn !== header.column.id &&
+                            'cursor-move',
                         )}
-                        {header.column.getCanSort() && (
-                          <div className="flex flex-col">
-                            {header.column.getIsSorted() === 'asc' ? (
-                              <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
-                            ) : header.column.getIsSorted() === 'desc' ? (
-                              <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
-                            ) : (
-                              <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
-                            )}
-                          </div>
-                        )}
-                        {filterConfig?.[header.column.id] &&
-                          filterStrategy?.onFilterStateChange &&
-                          filterDisplayOptions?.showInHeader !== false && (
-                            // biome-ignore lint/a11y/useKeyWithClickEvents: not needed, this just to catch the event to stop event bubbling up
-                            // biome-ignore lint/a11y/noStaticElementInteractions: needed to stop event bubbling up
-                            <div onClick={(e) => e.stopPropagation()}>
-                              {filterStrategy.renderFilter?.({
-                                columnId: header.column.id,
-                                columns,
-                                filterStrategy,
-                              })}
+                        onClick={header.column.getToggleSortingHandler()}
+                        style={{
+                          position: 'relative',
+                          ...(hasResizedColumns && {
+                            width: `${header.getSize()}px`,
+                          }),
+                        }}
+                      >
+                        <div className="flex items-center gap-2">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                          {header.column.getCanSort() && (
+                            <div className="flex flex-col">
+                              {header.column.getIsSorted() === 'asc' ? (
+                                <ArrowUpNarrowWideIcon className="h-3 w-3 text-primary" />
+                              ) : header.column.getIsSorted() === 'desc' ? (
+                                <ArrowDownWideNarrowIcon className="h-3 w-3 text-primary" />
+                              ) : (
+                                <ArrowUpDownIcon className="h-3 w-3 opacity-50" />
+                              )}
                             </div>
                           )}
-                      </div>
-                      {/* Resize handle */}
-                      {header.column.getCanResize() && (
-                        <button
-                          type="button"
-                          onMouseDown={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            header.getResizeHandler()(e);
-                          }}
-                          onTouchStart={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                            header.getResizeHandler()(e);
-                          }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.preventDefault();
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
+                          {filterConfig?.[header.column.id] &&
+                            filterStrategy?.onFilterStateChange &&
+                            filterDisplayOptions?.showInHeader !== false && (
+                              // biome-ignore lint/a11y/useKeyWithClickEvents: not needed, this just to catch the event to stop event bubbling up
+                              // biome-ignore lint/a11y/noStaticElementInteractions: needed to stop event bubbling up
+                              <div onClick={(e) => e.stopPropagation()}>
+                                {filterStrategy.renderFilter?.({
+                                  columnId: header.column.id,
+                                  columns,
+                                  filterStrategy,
+                                })}
+                              </div>
+                            )}
+                        </div>
+                        {/* Resize handle */}
+                        {header.column.getCanResize() && (
+                          <button
+                            type="button"
+                            onMouseDown={(e) => {
+                              e.stopPropagation();
                               e.preventDefault();
-                            }
-                          }}
-                          className={cn(
-                            'absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none z-10',
-                            'hover:bg-primary/50 active:bg-primary border-0 bg-transparent p-0',
-                            header.column.getIsResizing() && 'bg-primary',
-                          )}
-                          style={{
-                            transform: 'translateX(50%)',
-                          }}
-                          aria-label="Resize column"
-                          tabIndex={-1}
-                        />
-                      )}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody className="bg-background divide-y divide-border">
-              {isLoading && data.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={table.getVisibleLeafColumns().length}
-                    className="px-4 py-12 text-center text-muted-foreground"
-                  >
-                    <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
-                    <p>{loadingMessage}</p>
-                  </td>
-                </tr>
-              ) : table.getRowModel().rows.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={table.getVisibleLeafColumns().length}
-                    className="px-4 py-12 text-center text-muted-foreground"
-                  >
-                    {emptyMessage}
-                  </td>
-                </tr>
-              ) : (
-                table.getRowModel().rows.map((row) => (
-                  <Fragment key={row.id}>
-                    {row.getIsGrouped() ? (
-                      // Group header row
-                      <tr
-                        className={cn(
-                          'bg-muted/40 hover:bg-muted/60 transition-colors cursor-pointer',
-                          groupHeaderRowClassName,
+                              header.getResizeHandler()(e);
+                            }}
+                            onTouchStart={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              header.getResizeHandler()(e);
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                              }
+                            }}
+                            className={cn(
+                              'absolute right-0 top-0 h-full w-2 cursor-col-resize select-none touch-none z-10',
+                              'hover:bg-primary/50 active:bg-primary border-0 bg-transparent p-0',
+                              header.column.getIsResizing() && 'bg-primary',
+                            )}
+                            style={{
+                              transform: 'translateX(50%)',
+                            }}
+                            aria-label="Resize column"
+                            tabIndex={-1}
+                          />
                         )}
-                        onClick={row.getToggleExpandedHandler()}
-                      >
-                        <td
-                          colSpan={row.getVisibleCells().length}
+                      </th>
+                    ))}
+                  </tr>
+                ))}
+              </thead>
+              <tbody className="bg-background divide-y divide-border">
+                {isLoading && data.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={table.getVisibleLeafColumns().length}
+                      className="px-4 py-12 text-center text-muted-foreground"
+                    >
+                      <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
+                      <p>{loadingMessage}</p>
+                    </td>
+                  </tr>
+                ) : table.getRowModel().rows.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={table.getVisibleLeafColumns().length}
+                      className="px-4 py-12 text-center text-muted-foreground"
+                    >
+                      {emptyMessage}
+                    </td>
+                  </tr>
+                ) : (
+                  table.getRowModel().rows.map((row) => (
+                    <Fragment key={row.id}>
+                      {row.getIsGrouped() ? (
+                        // Group header row
+                        <tr
                           className={cn(
-                            'px-4 py-2.5',
-                            groupHeaderCellClassName,
+                            'bg-muted/40 hover:bg-muted/60 transition-colors cursor-pointer',
+                            groupHeaderRowClassName,
                           )}
+                          onClick={row.getToggleExpandedHandler()}
                         >
-                          <div className="flex items-center gap-2">
-                            {row.getIsExpanded() ? (
-                              <ChevronDownIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-                            ) : (
-                              <ChevronRightIcon className="h-4 w-4 text-muted-foreground flex-shrink-0 rtl:-scale-x-100" />
-                            )}
-                            {renderGroupHeader ? (
-                              renderGroupHeader(row)
-                            ) : (
-                              <span className="text-sm font-medium">
-                                {String(
-                                  row.getGroupingValue(row.groupingColumnId!),
-                                )}
-                                <span className="ms-2 text-xs text-muted-foreground">
-                                  ({row.getLeafRows().length})
-                                </span>
-                              </span>
-                            )}
-                          </div>
-                        </td>
-                      </tr>
-                    ) : (
-                      // Normal data row
-                      <tr
-                        className={cn(
-                          'hover:bg-muted/50 transition-colors',
-                          row.depth > 0 && 'bg-background',
-                        )}
-                      >
-                        {row.getVisibleCells().map((cell) => (
                           <td
-                            key={cell.id}
-                            className="px-4 py-3 overflow-hidden"
-                            style={
-                              hasResizedColumns
-                                ? {
-                                    width: `${cell.column.getSize()}px`,
-                                    maxWidth: `${cell.column.getSize()}px`,
-                                  }
-                                : undefined
-                            }
+                            colSpan={row.getVisibleCells().length}
+                            className={cn(
+                              'px-4 py-2.5',
+                              groupHeaderCellClassName,
+                            )}
                           >
-                            <div className="break-words overflow-wrap-anywhere">
-                              {cell.getIsAggregated()
-                                ? flexRender(
-                                    cell.column.columnDef.aggregatedCell ??
-                                      cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                  )
-                                : flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
+                            <div className="flex items-center gap-2">
+                              {row.getIsExpanded() ? (
+                                <ChevronDownIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                              ) : (
+                                <ChevronRightIcon className="h-4 w-4 text-muted-foreground flex-shrink-0 rtl:-scale-x-100" />
+                              )}
+                              {renderGroupHeader ? (
+                                renderGroupHeader(row)
+                              ) : (
+                                <span className="text-sm font-medium">
+                                  {String(
+                                    row.getGroupingValue(row.groupingColumnId!),
                                   )}
+                                  <span className="ms-2 text-xs text-muted-foreground">
+                                    ({row.getLeafRows().length})
+                                  </span>
+                                </span>
+                              )}
                             </div>
-                          </td>
-                        ))}
-                      </tr>
-                    )}
-                    {row.getIsExpanded() &&
-                      !row.getIsGrouped() &&
-                      renderSubRow && (
-                        <tr key={`${row.id}-expanded`}>
-                          <td
-                            colSpan={table.getVisibleLeafColumns().length}
-                            className="px-4 py-2 bg-muted/30"
-                          >
-                            {renderSubRow(row)}
                           </td>
                         </tr>
+                      ) : (
+                        // Normal data row
+                        <tr
+                          className={cn(
+                            'hover:bg-muted/50 transition-colors',
+                            row.depth > 0 && 'bg-background',
+                          )}
+                        >
+                          {row.getVisibleCells().map((cell) => (
+                            <td
+                              key={cell.id}
+                              className="px-4 py-3 overflow-hidden"
+                              style={
+                                hasResizedColumns
+                                  ? {
+                                      width: `${cell.column.getSize()}px`,
+                                      maxWidth: `${cell.column.getSize()}px`,
+                                    }
+                                  : undefined
+                              }
+                            >
+                              <div className="break-words overflow-wrap-anywhere">
+                                {cell.getIsAggregated()
+                                  ? flexRender(
+                                      cell.column.columnDef.aggregatedCell ??
+                                        cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )
+                                  : flexRender(
+                                      cell.column.columnDef.cell,
+                                      cell.getContext(),
+                                    )}
+                              </div>
+                            </td>
+                          ))}
+                        </tr>
                       )}
-                  </Fragment>
-                ))
-              )}
-            </tbody>
-          </table>
+                      {row.getIsExpanded() &&
+                        !row.getIsGrouped() &&
+                        renderSubRow && (
+                          <tr key={`${row.id}-expanded`}>
+                            <td
+                              colSpan={table.getVisibleLeafColumns().length}
+                              className="px-4 py-2 bg-muted/30"
+                            >
+                              {renderSubRow(row)}
+                            </td>
+                          </tr>
+                        )}
+                    </Fragment>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Pagination Controls */}
       {shouldShowPagination && (

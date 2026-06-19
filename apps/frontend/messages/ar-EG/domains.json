@@ -158,5 +158,13 @@
     "viewBidAria": "اعرض عرض {source} على {domain}",
     "nftAlt": "NFT",
     "offerWaiting": "عرضك مفتوح وبيستنى البائع يوافق."
+  },
+  "card": {
+    "account": "الحساب",
+    "expand": "توسيع",
+    "collapse": "طي",
+    "expandAll": "توسيع الكل",
+    "collapseAll": "طي الكل",
+    "sort": "ترتيب"
   }
 }

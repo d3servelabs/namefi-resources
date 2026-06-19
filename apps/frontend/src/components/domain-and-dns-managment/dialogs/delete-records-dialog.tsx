@@ -14,6 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { ScrollArea } from '@namefi-astra/ui/components/shadcn/scroll-area';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
@@ -105,7 +107,12 @@ export const DeleteRecordDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       {children ? <DialogTrigger render={children as ReactElement} /> : false}
-      <DialogContent className="sm:max-w-[500px] bg-zinc-950 border-zinc-800">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'sm:max-w-[500px] bg-zinc-950 border-zinc-800',
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="text-xl">Delete records?</DialogTitle>
           <DialogDescription className="text-zinc-400">

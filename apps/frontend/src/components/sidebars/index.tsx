@@ -109,14 +109,17 @@ const AppSidebarHydratedFooter = dynamic(
 );
 
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const { state, isMobile } = useSidebar();
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
     setHasHydrated(true);
   }, []);
 
-  const isCollapsed = state === 'collapsed';
+  // On mobile the sidebar is an off-canvas sheet, not an icon-collapsed rail, so
+  // the desktop `collapsed` state must not hide the footer there — otherwise the
+  // version info stays hidden in the mobile drawer.
+  const isCollapsed = state === 'collapsed' && !isMobile;
 
   return (
     <Sidebar
@@ -138,8 +141,8 @@ export function AppSidebar() {
       <SidebarFooter>
         <div className="flex flex-col gap-2 w-full">
           <NotificationsBell variant="sidebar" className="hidden md:block" />
-          <UserDropdown forceExpanded={false} />
           <AppSidebarHydratedFooter isCollapsed={isCollapsed} />
+          <UserDropdown forceExpanded={false} />
         </div>
       </SidebarFooter>
       <SidebarRail />

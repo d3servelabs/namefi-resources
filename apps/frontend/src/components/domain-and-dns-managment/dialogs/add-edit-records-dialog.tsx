@@ -18,6 +18,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useTRPC } from '@/lib/trpc';
 import type { DnsRecordSelect } from '@namefi-astra/common/contract/entity-schemas';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -504,7 +506,12 @@ export function AddEditRecordsDialog({
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       {children ? <DialogTrigger render={children as ReactElement} /> : false}
-      <DialogContent className="sm:max-w-[900px] bg-zinc-950 border-zinc-800">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'sm:max-w-[900px] bg-zinc-950 border-zinc-800',
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="text-xl">
             {mode === 'add' ? 'Add DNS Record' : 'Edit DNS Record'}

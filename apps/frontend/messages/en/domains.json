@@ -158,5 +158,13 @@
     "viewBidAria": "View {source} bid on {domain}",
     "nftAlt": "NFT",
     "offerWaiting": "Your offer is open and waiting for the seller to accept."
+  },
+  "card": {
+    "account": "Account",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "sort": "Sort"
   }
 }

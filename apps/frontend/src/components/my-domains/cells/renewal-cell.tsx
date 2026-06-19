@@ -20,7 +20,7 @@ import {
  * `none` collapses to "-"; every other kind is keyed under the `timeLeft`
  * namespace with its numeric count as an ICU argument.
  */
-function useTimeLeftLabel() {
+export function useTimeLeftLabel() {
   const t = useTranslations('domains');
   return (timeLeft: TimeLeft): string => {
     switch (timeLeft.kind) {

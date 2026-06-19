@@ -158,5 +158,13 @@
     "viewBidAria": "查看在 {domain} 上的 {source} 出价",
     "nftAlt": "NFT",
     "offerWaiting": "您的出价已提交，正在等待卖家接受。"
+  },
+  "card": {
+    "account": "账户",
+    "expand": "展开",
+    "collapse": "收起",
+    "expandAll": "全部展开",
+    "collapseAll": "全部收起",
+    "sort": "排序"
   }
 }

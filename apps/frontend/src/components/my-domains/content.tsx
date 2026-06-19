@@ -165,7 +165,10 @@ export const MyDomainsContent = () => {
       )}
 
       <Tabs defaultValue="active">
-        <TabsList className="w-fit">
+        {/* On a phone the tab labels don't fit on one line, so let the strip
+            wrap to a second row instead of overflowing the viewport. Desktop
+            (sm+) keeps the single-row segmented control. */}
+        <TabsList className="w-fit max-sm:h-auto! max-sm:w-full max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
           <TabsTrigger value="active">{t('tabs.active')}</TabsTrigger>
           <TabsTrigger value="inactive">{t('tabs.inactive')}</TabsTrigger>
           <TabsTrigger value="previously-owned">

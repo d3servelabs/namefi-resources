@@ -6,6 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { NameserversPanelInner } from '../panels/nameservers/nameservers-panel';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 
@@ -22,7 +24,12 @@ export function NameserversDialog({
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl bg-zinc-950 border-zinc-800">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-w-2xl bg-zinc-950 border-zinc-800',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Manage Nameservers</DialogTitle>
         </DialogHeader>

@@ -564,7 +564,7 @@ const NameserversPanelForm = React.memo(
                 </motion.div>
               ))}
 
-              <div className="flex items-center gap-2 justify-between mt-4">
+              <div className="flex flex-wrap items-center gap-2 justify-between mt-4">
                 {values.nameservers.length < 4 && (
                   <Button
                     variant="outline"
