@@ -10,7 +10,8 @@
     "tld": "TLDs",
     "partners": "Partners",
     "careers": "Careers",
-    "topics": "Topics"
+    "topics": "Topics",
+    "series": "Series"
   },
   "blog": {
     "homeEmpty": "No posts are available in this language yet. Check back soon.",
@@ -67,5 +68,16 @@
     "emptyCluster": "No guides in this topic yet.",
     "cornerstoneLabel": "Start here",
     "guidesCountLabel": "guides"
+  },
+  "series": {
+    "indexTitle": "Series",
+    "indexDescription": "Follow our editorial series, episode by episode — branded story arcs on domain disasters, brand renames, tokenizing your .com, and more.",
+    "indexEmpty": "No series available yet.",
+    "episodesCountLabel": "episodes",
+    "partOfLabel": "Part of the series",
+    "allEpisodes": "All episodes",
+    "previous": "Previous",
+    "next": "Next",
+    "episodesEmpty": "No episodes in this series yet."
   }
 }

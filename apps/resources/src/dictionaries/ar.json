@@ -10,7 +10,8 @@
     "tld": "نطاقات TLD",
     "partners": "الشركاء",
     "careers": "وظائف",
-    "topics": "المواضيع"
+    "topics": "المواضيع",
+    "series": "السلاسل"
   },
   "blog": {
     "homeEmpty": "لا توجد مقالات متاحة بهذه اللغة بعد. عد لاحقًا.",
@@ -67,5 +68,16 @@
     "emptyCluster": "لا توجد أدلّة في هذا الموضوع بعد.",
     "cornerstoneLabel": "ابدأ من هنا",
     "guidesCountLabel": "دليل"
+  },
+  "series": {
+    "indexTitle": "السلاسل",
+    "indexDescription": "تابِع سلاسلنا التحريرية حلقةً تلو الأخرى — قصص حول كوارث النطاقات وتغيير العلامات التجارية وترميز نطاق .com الخاص بك والمزيد.",
+    "indexEmpty": "لا توجد سلاسل متاحة بعد.",
+    "episodesCountLabel": "حلقة",
+    "partOfLabel": "ضمن سلسلة",
+    "allEpisodes": "كل الحلقات",
+    "previous": "السابق",
+    "next": "التالي",
+    "episodesEmpty": "لا توجد حلقات في هذه السلسلة بعد."
   }
 }

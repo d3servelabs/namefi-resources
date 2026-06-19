@@ -9,6 +9,7 @@ import {
   getPostCached,
   getPostOgAsset,
   getPostParams,
+  getPostsInSeries,
   getRelatedPosts,
   type AuthorEntry,
   getAuthorNames,
@@ -21,9 +22,11 @@ import {
   buildBreadcrumbJsonLd,
   type ArticleAuthor,
 } from '@/lib/structured-data';
+import { SERIES, localizeText } from '@/lib/taxonomy';
 import { JsonLd } from '@/components/json-ld';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
 import { RelatedGuides } from '@/components/related-guides';
+import { SeriesStrip } from '@/components/series-strip';
 import { useMDXComponents } from '@/mdx-components';
 
 export async function generateStaticParams() {
@@ -263,6 +266,43 @@ export default async function BlogPostPage({
 
   const relatedPosts = getRelatedPosts(locale, slug);
 
+  // Episode (prev/next) navigation when this post is part of a series.
+  const seriesSlug = entry.frontmatter.series;
+  const seriesEpisodes = seriesSlug ? getPostsInSeries(locale, seriesSlug) : [];
+  const seriesIndex = seriesEpisodes.findIndex(
+    (post) => post.slug === entry.slug,
+  );
+  const previousEpisode =
+    seriesIndex > 0 ? seriesEpisodes[seriesIndex - 1] : undefined;
+  const nextEpisode =
+    seriesIndex !== -1 && seriesIndex < seriesEpisodes.length - 1
+      ? seriesEpisodes[seriesIndex + 1]
+      : undefined;
+  const seriesNav =
+    seriesSlug && seriesIndex !== -1
+      ? {
+          title: localizeText(SERIES[seriesSlug].title, locale),
+          href: `/${locale}/series/${seriesSlug}`,
+          // Position within the ordered, visible episode list (the same list the
+          // landing page numbers its cards from), so the strip's "N/M" stays
+          // consistent with the landing badges and N never exceeds M.
+          position: seriesIndex + 1,
+          total: seriesEpisodes.length,
+          previous: previousEpisode
+            ? {
+                title: previousEpisode.frontmatter.title,
+                href: `/${locale}/blog/${previousEpisode.slug}`,
+              }
+            : undefined,
+          next: nextEpisode
+            ? {
+                title: nextEpisode.frontmatter.title,
+                href: `/${locale}/blog/${nextEpisode.slug}`,
+              }
+            : undefined,
+        }
+      : undefined;
+
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
       <BreadcrumbNav
@@ -403,6 +443,23 @@ export default async function BlogPostPage({
             ))}
           </div>
         </section>
+      )}
+
+      {seriesNav && (
+        <SeriesStrip
+          seriesTitle={seriesNav.title}
+          seriesHref={seriesNav.href}
+          position={seriesNav.position}
+          total={seriesNav.total}
+          labels={{
+            partOf: dictionary.series.partOfLabel,
+            allEpisodes: dictionary.series.allEpisodes,
+            previous: dictionary.series.previous,
+            next: dictionary.series.next,
+          }}
+          previous={seriesNav.previous}
+          next={seriesNav.next}
+        />
       )}
 
       <RelatedGuides

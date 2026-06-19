@@ -10,7 +10,8 @@
     "tld": "TLD",
     "partners": "Partenaires",
     "careers": "Carrières",
-    "topics": "Thèmes"
+    "topics": "Thèmes",
+    "series": "Séries"
   },
   "blog": {
     "homeEmpty": "Aucun article n’est encore disponible dans cette langue. Revenez bientôt.",
@@ -67,5 +68,16 @@
     "emptyCluster": "Aucun guide dans ce thème pour le moment.",
     "cornerstoneLabel": "Commencez ici",
     "guidesCountLabel": "guides"
+  },
+  "series": {
+    "indexTitle": "Séries",
+    "indexDescription": "Suivez nos séries éditoriales épisode par épisode — des arcs narratifs sur les catastrophes de domaines, les changements de marque, la tokenisation de votre .com et plus encore.",
+    "indexEmpty": "Aucune série disponible pour le moment.",
+    "episodesCountLabel": "épisodes",
+    "partOfLabel": "Fait partie de la série",
+    "allEpisodes": "Tous les épisodes",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "episodesEmpty": "Aucun épisode dans cette série pour le moment."
   }
 }

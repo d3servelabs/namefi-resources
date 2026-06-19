@@ -10,7 +10,8 @@
     "tld": "TLDs",
     "partners": "Partner",
     "careers": "Karriere",
-    "topics": "Themen"
+    "topics": "Themen",
+    "series": "Serien"
   },
   "blog": {
     "homeEmpty": "In dieser Sprache sind noch keine Beiträge verfügbar. Schau bald wieder vorbei.",
@@ -67,5 +68,16 @@
     "emptyCluster": "Noch keine Leitfäden zu diesem Thema.",
     "cornerstoneLabel": "Hier starten",
     "guidesCountLabel": "Leitfäden"
+  },
+  "series": {
+    "indexTitle": "Serien",
+    "indexDescription": "Verfolgen Sie unsere redaktionellen Serien Folge für Folge – Story-Reihen zu Domain-Katastrophen, Markenumbenennungen, der Tokenisierung Ihrer .com und mehr.",
+    "indexEmpty": "Noch keine Serien verfügbar.",
+    "episodesCountLabel": "Folgen",
+    "partOfLabel": "Teil der Serie",
+    "allEpisodes": "Alle Folgen",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "episodesEmpty": "Noch keine Folgen in dieser Serie."
   }
 }

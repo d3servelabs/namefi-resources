@@ -10,7 +10,8 @@
     "tld": "TLD 指南",
     "partners": "合作伙伴",
     "careers": "招聘",
-    "topics": "专题"
+    "topics": "专题",
+    "series": "系列"
   },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
@@ -67,5 +68,16 @@
     "emptyCluster": "该专题暂无指南。",
     "cornerstoneLabel": "从这里开始",
     "guidesCountLabel": "篇指南"
+  },
+  "series": {
+    "indexTitle": "系列",
+    "indexDescription": "一集一集地追看我们的编辑系列——围绕域名灾难、品牌改名、通证化你的 .com 等主题的品牌化故事线。",
+    "indexEmpty": "暂无系列。",
+    "episodesCountLabel": "集",
+    "partOfLabel": "属于系列",
+    "allEpisodes": "全部剧集",
+    "previous": "上一集",
+    "next": "下一集",
+    "episodesEmpty": "该系列暂无剧集。"
   }
 }

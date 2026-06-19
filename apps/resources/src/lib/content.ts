@@ -1111,6 +1111,21 @@ export function getPostsInCluster(
   );
 }
 
+// All non-draft posts in `series`, ordered by their 1-based seriesOrder (ties
+// fall back to recency from getPostsForLocale). Powers the /series/[series]
+// landing pages and the on-post episode (prev/next) navigation.
+export function getPostsInSeries(
+  locale: Locale,
+  series: SeriesSlug,
+): PostEntry[] {
+  return getPostsForLocale(locale)
+    .filter((post) => post.frontmatter.series === series)
+    .sort(
+      (a, b) =>
+        (a.frontmatter.seriesOrder ?? 0) - (b.frontmatter.seriesOrder ?? 0),
+    );
+}
+
 const ASSETS_ROOT = path.join(DATA_ROOT, 'assets');
 const POST_OG_ASSET_EXTENSIONS: readonly string[] = [
   '.jpg',
