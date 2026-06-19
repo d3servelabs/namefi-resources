@@ -5,6 +5,10 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+series: tokenize-your-com
+seriesOrder: 1
+format: guide
 description: A practical, step-by-step walkthrough for tokenizing a domain you already own — eligibility, wallets, fees, time, and what to expect on each screen. Written for owners, not protocol nerds.
 keywords: ['how to tokenize a domain', 'how to tokenize a .com', 'tokenize my domain', 'tokenize an existing domain', 'tokenize a domain step by step', 'domain tokenization tutorial', 'tokenize .com guide', 'tokenize .xyz', 'tokenize .io', 'namefi tokenize', 'NFT domain how to', 'transfer domain to NFT', 'domain to NFT', 'domain tokenization process', 'tokenized domain setup', 'tokenize ICANN domain']
 ---

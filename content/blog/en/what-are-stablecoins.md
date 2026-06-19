@@ -5,6 +5,8 @@ language: 'en'
 tags: ['web3', 'cryptocurrency', 'defi', 'blockchain', 'finance']
 authors: ['namefiteam']
 draft: false
+cluster: web3-foundations
+format: explainer
 description: 'Discover how stablecoins bridge the gap between traditional fiat and cryptocurrency, offering stability for Web3 transactions and domain investing.'
 keywords: ['what are stablecoins', 'stablecoin definition', 'USDT vs USDC', 'crypto volatility', 'web3 payments', 'blockchain domains', 'decentralized finance', 'fiat-collateralized', 'buy domains with crypto', 'namefi']
 ---

@@ -5,6 +5,8 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+format: explainer
 description: A TLD is the part of a domain after the last dot, like .com or .io. Learn what a TLD is, the types (gTLD, ccTLD, sponsored, new gTLD, IDN), and how to choose one.
 keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 'top-level domain', 'tld def', 'tld definition', 'que es un tld', "qu'est-ce qu'un tld", 'types of tld', 'gtld vs cctld', 'tld examples', 'what is a domain extension', 'domain extension', 'gTLD', 'ccTLD', 'sponsored TLD', 'new gTLD', 'IDN TLD', 'ICANN', 'IANA', 'domain registry', 'domain registrar', 'choosing a TLD', 'popular TLDs', 'namefi']
 ---

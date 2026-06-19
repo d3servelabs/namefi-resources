@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 10
+format: case-study
 description: 'In late 2018, Cisco Talos disclosed DNSpionage — a campaign later tied to Iranian interests that rewrote government DNS records, rerouted email and VPN traffic to attacker servers, and minted valid TLS certificates to stay invisible. It helped trigger the first emergency directive of its kind from the US government.'
 keywords: ['dnspionage', 'dns hijacking', 'dns redirection', 'cisco talos', 'cisa emergency directive 19-01', 'sea turtle dns', 'iran dns hijacking', 'fireeye dns hijacking', 'lets encrypt certificate abuse', 'dns security', 'domain security', 'nation state cyber espionage', 'mitigate dns infrastructure tampering']
 ---

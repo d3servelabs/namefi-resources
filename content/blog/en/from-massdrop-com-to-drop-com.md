@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 16
+format: case-study
 description: 'How Massdrop spent seven years building an enthusiast group-buying community, then rebranded to Drop in 2019 — quietly acquiring the premium Drop.com domain (asking price once $800,000) before the rename, and why dropping "Mass" mattered.'
 keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', 'domain upgrade', 'group buying', 'mechanical keyboards', 'audiophile community', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'exact match domain', 'community commerce']
 ---

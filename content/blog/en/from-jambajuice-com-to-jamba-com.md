@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 15
+format: case-study
 description: 'How Jamba Juice spent 29 years explaining itself with the word "Juice," why it dropped that word in 2019 to become simply "Jamba," and the quiet advantage almost no one noticed: the company had owned the exact-match Jamba.com since the 1990s.'
 keywords: ['jambajuice.com', 'jamba.com', 'jamba juice domain name', 'jamba rebrand', 'domain upgrade', 'jamba juice name change', 'kirk perron', 'focus brands jamba', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'category-defining domain']
 ---

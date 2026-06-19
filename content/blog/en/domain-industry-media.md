@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'media', 'news', 'community', 'domain-investing']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: domain-investor-field-guide
+seriesOrder: 2
+format: roundup
 description: A guide to the news outlets, sales-data sites, and podcasts that cover the domain name industry as journalism — DomainNameWire, DNJournal, TheDomains, NameBio, DomainSherpa, CircleID, and more.
 ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['domain industry news', 'domain name media', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']

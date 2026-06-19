@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 20
+format: case-study
 description: 'How "Sea Turtle," a state-sponsored campaign disclosed by Cisco Talos in 2019, hijacked DNS by compromising registrars, registries, and DNS providers — redirecting governments, ministries, and energy firms to attacker servers, forging valid certificates, and even breaching a national TLD registry.'
 keywords: ['sea turtle dns hijacking', 'cisco talos sea turtle', 'dns hijacking attack', 'state-sponsored dns attack', 'registry compromise', 'registrar compromise', 'dns espionage campaign', 'lets encrypt mitm certificate', 'netnod compromise', 'ics-forth greece ccTLD', 'cisa emergency directive 19-01', 'dns security', 'domain ownership security', 'nation state cyberattack']
 ---

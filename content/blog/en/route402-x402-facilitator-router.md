@@ -5,6 +5,8 @@ language: en
 tags: ['infrastructure', 'payments', 'x402']
 authors: ['namefiteam']
 draft: false
+cluster: web3-foundations
+format: explainer
 description: A multi-tenant router that lets you integrate x402 once and route requests by policy and live signals, without pushing routing logic into your app.
 keywords: ['Route402', 'x402', 'payments routing', 'facilitator router', 'multi-tenant payments', 'RBAC', 'credential encryption', 'capability routing', 'sticky settlement', 'payments infrastructure', 'YAML routing rules']
 ---

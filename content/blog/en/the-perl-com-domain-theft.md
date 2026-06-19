@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 19
+format: case-study
 description: 'In late January 2021, perl.com — a decades-old home of the Perl programming community — was stolen via a registrar-level account compromise, transferred through China, pointed at a malware-linked IP, and listed for $190,000. Here is how it happened, how it was recovered, and what it teaches about registrar account security.'
 keywords: ['perl.com', 'perl.com domain theft', 'domain hijacking', 'domain theft', 'registrar account compromise', 'social engineering', 'Network Solutions', 'Tom Christiansen', 'brian d foy', 'DNS hijack', 'domain security', 'account takeover', 'BizCN']
 ---

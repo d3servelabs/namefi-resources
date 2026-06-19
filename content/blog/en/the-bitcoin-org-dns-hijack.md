@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 8
+format: case-study
 description: 'In September 2021, Bitcoin.org — the long-time informational home of Bitcoin run by the pseudonymous operator Cobra — was hijacked at the DNS layer and turned into a fake "double your Bitcoin" giveaway, netting scammers around $17,000 before the site was pulled offline. A Domain Mayday deep-dive into what happened, how, and what it teaches about even crypto-native sites depending on DNS.'
 keywords: ['bitcoin.org', 'bitcoin.org hack', 'dns hijack', 'domain hijacking', 'double your bitcoin scam', 'crypto giveaway scam', 'cobra bitcoin.org', 'cloudflare dns', 'namecheap', 'dns security', 'domain security', 'nameserver hijack', 'whois change attack']
 ---

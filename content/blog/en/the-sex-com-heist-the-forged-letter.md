@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 21
+format: case-study
 description: 'In 1995 a con man named Stephen Cohen stole sex.com from rightful owner Gary Kremen with a single forged letter to Network Solutions. The years-long fight to win it back ended in a $65 million judgment, a fugitive in Mexico, and a landmark ruling that domains are property.'
 keywords: ['sex.com', 'domain theft', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'forged letter', 'domain hijacking', 'Sharon Dimmick letter', 'domain security', 'domain as property', '$65 million judgment', 'domain transfer fraud', 'Domain Mayday']
 ---

@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 5
+format: case-study
 description: 'On July 15, 2020, attackers phoned their way into Twitter, hijacked the verified accounts of Obama, Biden, Musk, Gates, Apple and Uber, and ran a Bitcoin doubling scam — netting about $118,000. A deep-dive on how control of an online identity was stolen, and what it teaches about owning a name.'
 keywords: ['2020 twitter hack', 'twitter bitcoin scam', 'graham ivan clark', 'vishing', 'phone spear phishing', 'social engineering', 'account takeover', 'online identity security', 'verified account hijacking', 'twitter admin tool', 'agent tool', 'insider risk', 'domain security', 'ny dfs twitter report']
 ---

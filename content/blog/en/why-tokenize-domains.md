@@ -5,6 +5,8 @@ language: en
 tags: ['faq']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+format: opinion
 description: This article explains why traditional domains should be tokenized on-chain and highlights the benefits such as clearer ownership, financial composability, and freer, faster trading.
 keywords: ['domain tokenization', 'blockchain domains', 'NFT domains', 'on-chain domains', 'domain ownership', 'decentralized domains', 'domain trading', 'web3 domains', 'smart contracts', 'domain composability', 'DNS tokenization', 'digital assets']
 ---

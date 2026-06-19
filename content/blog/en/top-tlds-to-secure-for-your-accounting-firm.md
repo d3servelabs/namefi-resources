@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 5
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-accounting-firm-og.jpg
 description: 'The best TLDs to secure for your accounting firm — from restricted .cpa to defensive .com, .net, and .org registrations that protect your brand and build client trust.'
 keywords: ['TLDs for accounting firm', 'accounting firm domain names', '.cpa domain eligibility', 'best domains for accountants', 'defensive domain registration', 'accounting firm brand protection', '.accountant domain', '.tax domain', 'register accounting domains', 'accountant TLD options']

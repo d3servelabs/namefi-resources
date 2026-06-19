@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 15
+format: case-study
 description: 'On February 25, 2015, Lizard Squad hijacked Lenovo.com by compromising the registrar Webnic, rerouting the world''s largest PC maker''s domain to a webcam slideshow and intercepting its email — days after the Superfish scandal. A Domain Mayday deep-dive on why the registrar is your real perimeter.'
 keywords: ['lenovo.com dns hijack', 'lizard squad', 'webnic registrar', 'web commerce communications', 'dns hijacking', 'superfish', 'domain registrar security', 'registrar compromise', 'epp auth code', 'email interception', 'google vietnam hijack', 'domain security', 'registrar lock']
 ---

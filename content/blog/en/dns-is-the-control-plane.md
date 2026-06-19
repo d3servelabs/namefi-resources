@@ -5,6 +5,10 @@ language: en
 tags: ['dns', 'aws', 'resilience', 'incident-explainer']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 2
+format: case-study
 description: A registrar/DNS‑operations perspective on the October 20, 2025 AWS incident, how DNS actually works, why this failure propagated so widely, and what resilient internet teams can do about it.
 keywords: ['dns', 'aws outage', 'control plane', 'dynamodb', 'us-east-1', 'dns caching', 'cloud resilience', 'multi-signer dns', 'incident response']
 ---

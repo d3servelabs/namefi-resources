@@ -6,6 +6,8 @@ language: en
 tags: ['faq', 'domains', 'tokenization']
 authors: ['namefiteam']
 draft: false
+cluster: web3-foundations
+format: explainer
 description: A clear explainer on xStocks—tokenized stocks (tokenized equities) on Solana, issued by Backed Finance. Learn what xStocks are, how they work, how they differ from traditional stocks, the risks, and how they fit the broader real-world-asset (RWA) tokenization trend that tokenized domains are part of.
 keywords: ['xStocks', 'what are xStocks', 'what is xStocks', 'xStocks crypto', 'tokenized stocks', 'tokenized equities', 'was sind xStocks', 'xStocks是什么', '什么是xstocks', 'que son los xStocks', 'unterschied xStocks traditionelle Aktien', 'Backed Finance', 'Kraken xStocks', 'Bybit xStocks', 'Solana tokenized stocks', 'on-chain equities', 'tokenization of real-world assets', 'RWA tokenization', 'tokenized domains', 'domain tokenization', 'Namefi']
 ---

@@ -5,6 +5,8 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+format: roundup
 description: A clear 2026 guide to premium Web3 TLDs—what "Web3 TLD" really means, why tokenized ICANN extensions like .com, .ai, and .io beat blockchain-only names, and which domain extensions hold the most value.
 keywords: ['premium web3 tld', 'premium web3 tlds', 'web3 tld', 'web3 tlds', 'premium web3 domains', 'best web3 domains', 'web3 domain extensions', 'web3 domain', 'web3 domains', 'tokenized domain extensions', 'premium domain extensions', 'most valuable domain extensions', 'tokenized tld', 'tokenized domains', 'ICANN tld', 'blockchain tld', 'NFT domain', 'premium .com', 'premium .ai', 'premium .io', 'premium .xyz', 'best domain extensions 2026', 'crypto tld', 'web3 naming', 'domain tld investment', 'namefi']
 ---

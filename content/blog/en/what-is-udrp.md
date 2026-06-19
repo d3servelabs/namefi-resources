@@ -5,6 +5,8 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: domain-basics
+format: explainer
 description: "UDRP explained for domain owners and investors: the three elements a complainant must prove, the process and timeline, outcomes, UDRP vs URS vs court, and how to respond."
 keywords: ['udrp', 'what is udrp', 'udrp process', 'udrp policy', 'udrp complaint', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain dispute', 'domain name dispute', 'cybersquatting', 'reverse domain name hijacking', 'bad faith registration', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'trademark domain dispute', 'domain investor legal', 'respond to udrp complaint']
 ---

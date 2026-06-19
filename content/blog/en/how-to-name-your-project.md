@@ -5,6 +5,8 @@ language: en
 tags: ['branding', 'startups', 'guide', 'naming', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: domain-basics
+format: guide
 description: "A practical, research-backed guide for founders naming a project, product, or company: clear it legally, make it easy to say, generate strong candidates, check it across cultures, and run the searches that matter before you commit."
 ogImage: ../../assets/how-to-name-your-project-og.jpg
 keywords: ['how to name your startup', 'how to name your project', 'how to name a company', 'naming a product', 'brand name ideas', 'choosing a business name', 'domain name selection', 'trademark search', 'brandable domain', 'startup branding', 'pronounceable brand name', 'processing fluency', 'brand naming guide', 'pick a name for your project', 'check domain availability']

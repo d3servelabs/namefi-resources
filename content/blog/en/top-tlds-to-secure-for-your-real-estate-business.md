@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 7
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-real-estate-business-og.jpg
 description: 'The top 10 TLDs every realtor should secure for brand protection, including .realtor eligibility rules, defensive registration tips, and where to register.'
 keywords: ['tlds for realtors', 'real estate domain names', '.realtor domain', 'best domain extensions for real estate', 'defensive domain registration', 'realtor brand protection', 'real estate TLDs', '.realty domain', 'register real estate domains', 'domain extensions for agents']

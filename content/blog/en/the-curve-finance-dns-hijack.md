@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 9
+format: case-study
 description: 'In August 2022, Curve Finance''s smart contracts were untouched — but attackers hijacked the curve.fi domain at its registrar, cloned the site, and drained roughly $570K from users. A deep-dive into the DNS attack on a DeFi front-end, and what it teaches about domain security.'
 keywords: ['curve finance dns hijack', 'curve.fi hijack', 'dns hijacking defi', 'iwantmyname compromise', 'nameserver compromise', 'wallet drainer', 'defi front-end attack', 'domain security', 'dns security', 'crypto phishing', 'cloned website attack', 'registrar account compromise', 'domain mayday']
 ---

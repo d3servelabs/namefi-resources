@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'domain-investing', 'blogs', 'newsletters', 'community']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: domain-investor-field-guide
+seriesOrder: 3
+format: roundup
 description: A curated list of the individual domainers, brokers, and traders whose blogs, newsletters, and Substacks are worth reading in 2026 — what each one is known for, and how they fit together.
 ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['domainer blogs', 'domain investing blogs', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'domain newsletter', 'domain substack']

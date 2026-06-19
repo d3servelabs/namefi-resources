@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 1
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-startup-og.jpg
 description: 'Discover the top TLDs to secure for your startup, from .com to .ai, plus a defensive registration strategy to protect your brand from typosquatters.'
 keywords: ['top TLDs for startups', 'best domain extensions for startups', 'startup domain names', 'defensive domain registration', 'TLDs to secure', '.com vs .io', '.ai domain for startups', 'brand protection domains', 'tech startup domains', 'how to choose a TLD']

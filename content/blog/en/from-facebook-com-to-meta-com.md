@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 13
+format: case-study
 description: 'How Facebook, Inc. became Meta in October 2021, why Meta.com was already a Zuckerberg-related asset forwarding from a science search engine, and how a separate $60M deal bought the "Meta" name from a Sioux Falls bank — while the Facebook app kept Facebook.com.'
 keywords: ['facebook.com', 'meta.com', 'meta rebrand', 'facebook meta name change', 'meta.org', 'chan zuckerberg initiative meta', 'meta financial group', 'beige key llc', 'metaverse pivot', 'domain acquisition', 'company rebrand', 'premium domain', 'domain strategy', 'parent company rename']
 ---

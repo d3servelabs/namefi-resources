@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 22
+format: case-study
 description: 'In September 2021 an anonymous contractor slipped their own wallet address into SushiSwap''s MISO launchpad front-end via a malicious commit, diverting 864.8 ETH (~$3M) from the Jay Pegs Auto Mart auction. A Domain Mayday deep-dive on code supply chains, front-end trust, and what it teaches about verifiable ownership.'
 keywords: ['sushiswap miso hack', 'miso supply chain attack', 'aristok3', 'jay pegs auto mart', 'defi front-end attack', '864.8 eth', 'software supply chain', 'malicious commit', 'insider threat', 'auctionwallet', 'joseph delong', 'web supply chain security', 'domain security']
 ---

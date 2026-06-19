@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 5
+format: case-study
 description: 'How Slack launched on SlackHQ.com because someone else had Slack.com, paid a reported $60,000 to buy the exact-match domain, dropped the "HQ" — and why @SlackHQ still survives on social to this day.'
 keywords: ['slackhq.com', 'slack.com', 'slack domain name', 'domain upgrade', 'stewart butterfield', 'tiny speck', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'slack history', 'domain acquisition', 'category-defining domain']
 ---

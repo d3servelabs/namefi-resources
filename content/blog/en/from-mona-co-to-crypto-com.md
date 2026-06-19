@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 17
+format: case-study
 description: 'How the crypto-card startup Monaco rebranded to Crypto.com in 2018 by buying the ultra-premium Crypto.com domain — registered in 1993 by cryptographer Matt Blaze, who refused to sell for 25 years — in a deal experts valued at up to $10 million.'
 keywords: ['mona.co', 'crypto.com', 'crypto.com domain', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'domain upgrade', 'premium domain', 'category domain', 'domain acquisition', 'crypto rebrand', 'exact match domain', 'branding']
 ---

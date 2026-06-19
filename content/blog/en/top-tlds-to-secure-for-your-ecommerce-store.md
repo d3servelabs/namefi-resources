@@ -5,6 +5,10 @@ language: en
 tags: ['tld', 'domains']
 authors: ['namefiteam']
 draft: false
+cluster: choosing-a-tld
+series: best-tlds-by-industry
+seriesOrder: 3
+format: guide
 ogImage: ../../assets/top-tlds-to-secure-for-your-ecommerce-store-og.jpg
 description: 'The top 10 TLDs to secure for your e-commerce store, from .com to .shop and .store, plus a defensive registration strategy to protect your retail brand.'
 keywords: ['top TLDs for e-commerce', 'best domain extensions for online store', 'ecommerce domain names', '.shop domain', '.store domain', 'defensive domain registration', 'retail TLDs', 'brand protection domains', 'typosquatting protection', 'domain extensions for retail', 'register ecommerce domains']

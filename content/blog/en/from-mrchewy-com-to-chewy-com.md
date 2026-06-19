@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 18
+format: case-study
 description: 'How a 2011 pet startup launched as "Mr. Chewy" on MrChewy.com, dropped the "Mr." to become Chewy on the exact-match Chewy.com, and why that one-word domain upgrade quietly became part of a brand PetSmart bought for $3.35 billion.'
 keywords: ['mrchewy.com', 'chewy.com', 'chewy domain name', 'mr chewy', 'domain upgrade', 'ryan cohen', 'michael day', 'frank schilling', 'exact match domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'pet ecommerce']
 ---

@@ -5,6 +5,10 @@ language: en
 tags: ['guide', 'security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+series: domain-apocalypse
+seriesOrder: 3
+format: case-study
 description: What actually happens if you lose access to the wallet that holds your tokenized domain — and the operational steps to reduce the chance of getting there in the first place. Backups, multisig, hardware wallets, social recovery, and the limits of what any platform can do.
 keywords: ['recover NFT domain', 'lost wallet domain', 'tokenized domain wallet lost', 'wallet recovery domain', 'NFT domain backup', 'tokenized domain hardware wallet', 'multisig tokenized domain', 'tokenized domain key recovery', 'lost seed phrase domain', 'NFT domain security', 'tokenized domain backup', 'domain key management', 'wallet loss recovery']
 ---

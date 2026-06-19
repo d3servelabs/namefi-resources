@@ -5,6 +5,8 @@ language: en
 tags: ['guide']
 authors: ['namefiteam']
 draft: false
+cluster: domain-basics
+format: explainer
 description: A plain-English guide to escrow and domain escrow — what an escrow account is, how escrow works step by step in a domain sale, why it matters for avoiding fraud, traditional escrow services vs. the modern tokenized approach, and how smart contracts can replace escrow with atomic on-chain settlement.
 keywords: ['domain escrow', 'what is escrow', 'escrow account', 'escrow meaning', 'how does escrow work', 'domain escrow service', 'escrow.com alternative', 'buy a domain safely', 'sell a domain safely', 'auth code', 'EPP code', 'registrar transfer', 'escrow fees', 'safe domain transaction', 'domain sale fraud', 'tokenized domain escrow', 'smart contract escrow', 'atomic settlement', 'on-chain domain sale', 'how to avoid domain fraud']
 ---

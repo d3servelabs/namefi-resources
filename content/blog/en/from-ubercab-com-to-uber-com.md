@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'branding', 'startups', 'domain-upgrades']
 authors: ['namefiteam']
 draft: false
+cluster: domain-investing
+series: name-change-game-change
+seriesOrder: 7
+format: case-study
 description: 'How a 2010 cease-and-desist forced UberCab to drop "Cab," how Uber bought Uber.com from Universal Music for 2% equity worth $107K, and why that domain upgrade became one of the most consequential trades in startup history.'
 keywords: ['ubercab.com', 'uber.com', 'uber domain name', 'domain upgrade', 'ubercab cease and desist', 'universal music uber domain', 'startup naming', 'brand naming', 'premium domain', 'domain strategy', 'uber history', 'equity for domain', 'domain acquisition', 'category-defining domain']
 ---

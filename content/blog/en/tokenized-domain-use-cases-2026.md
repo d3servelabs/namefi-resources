@@ -5,6 +5,8 @@ language: en
 tags: ['thesis']
 authors: ['namefiteam']
 draft: false
+cluster: domain-tokenization
+format: opinion
 description: A platform-neutral tour of what tokenized domains are actually being used for in 2026 — DeFi lending, leasing, fractional ownership, AI agent identity, and the use cases that haven't quite landed yet.
 keywords: ['tokenized domain use cases', 'DomainFi', 'tokenized domain lending', 'tokenized domain collateral', 'lease tokenized domain', 'fractional domain ownership', 'AI agent domain', 'domain DeFi', 'tokenized domain marketplace', 'tokenized domain applications', 'NFT domain use cases', 'why tokenize domain 2026', 'domain on-chain use', 'tokenized domain examples']
 ---

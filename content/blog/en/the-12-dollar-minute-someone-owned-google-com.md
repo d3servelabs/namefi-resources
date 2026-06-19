@@ -5,6 +5,10 @@ language: en
 tags: ['domains', 'security', 'dns', 'domain-security']
 authors: ['namefiteam']
 draft: false
+cluster: domain-security
+series: domain-apocalypse
+seriesOrder: 4
+format: case-study
 description: 'In September 2015, a former Google employee bought google.com through Google Domains for $12 and held administrative control of the world''s most valuable domain for about a minute. The story of Sanmay Ved, the $6,006.13 bounty, and what one minute of ownership reveals about who really controls a domain.'
 keywords: ['google.com domain', 'sanmay ved', 'google domains bug', 'domain security', 'who owns google.com', 'domain hijacking', 'webmaster tools access', 'google bug bounty', '6006.13 reward', 'domain registration vulnerability', 'domain control', 'dns security', 'domain ownership verification']
 ---
