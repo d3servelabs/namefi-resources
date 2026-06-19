@@ -1,0 +1,55 @@
+{
+  "loading": {
+    "title": "お支払い方法を読み込み中",
+    "description": "準備しています…"
+  },
+  "creditCards": {
+    "heading": "お支払い方法",
+    "addButton": "クレジットカードを追加",
+    "cardHolderFallback": "カード名義人",
+    "empty": {
+      "title": "お支払い方法が見つかりません",
+      "description": "新しいお支払い方法を追加してください"
+    },
+    "toast": {
+      "saveError": "お支払い方法の保存に失敗しました",
+      "deleteSuccess": "お支払い方法を削除しました",
+      "deleteError": "お支払い方法の削除に失敗しました"
+    },
+    "deleteDialog": {
+      "title": "お支払い方法を削除",
+      "description": "末尾が {last4} の {brand} カードを削除しますか？この操作は取り消せません。"
+    }
+  },
+  "wallets": {
+    "heading": "連携済みウォレット",
+    "linkButton": "ウォレットを連携",
+    "showInWallet": "ウォレットで表示",
+    "addFunds": "資金を追加",
+    "empty": {
+      "title": "連携済みウォレットが見つかりません",
+      "description": "新しいウォレットを追加してください"
+    },
+    "actionDescription": {
+      "addToken": "NFSC トークンをウォレットに追加するには",
+      "charge": "ウォレットにチャージするには"
+    },
+    "toast": {
+      "requestSentTitle": "ウォレットにリクエストを送信しました",
+      "requestSentDescription": "ウォレットを確認して NFSC トークンを追加してください",
+      "addTokenSuccess": "NFSC トークンをウォレットに追加しました",
+      "addTokenError": "NFSC トークンのウォレットへの追加に失敗しました",
+      "addTokenFailedTitle": "トークンの追加に失敗しました",
+      "unknownError": "不明なエラー",
+      "prepareActionError": "ウォレット操作の準備に失敗しました"
+    }
+  },
+  "saveDialog": {
+    "title": "お支払い方法の詳細",
+    "description": "お支払い方法の情報を入力してください",
+    "submit": "このお支払い方法を保存",
+    "processing": "処理中…",
+    "genericError": "エラーが発生しました",
+    "unexpectedError": "予期しないエラーが発生しました"
+  }
+}

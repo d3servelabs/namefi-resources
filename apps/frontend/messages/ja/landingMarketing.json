@@ -1,0 +1,107 @@
+{
+  "features": {
+    "heading": "Namefi の機能",
+    "eyebrow": "未来のために設計された",
+    "items": {
+      "ownership": {
+        "title": "より速く、より安全な所有権",
+        "description": "従来の DNS ネームを NFTs にトークン化し、オンチェーンの明確な来歴とともに数秒で移転を完了させます。"
+      },
+      "ai": {
+        "title": "AI の可能性をいつでも",
+        "description": "Namefi AI がネーミングのインサイト、ブランドのフック、デザインのインスピレーションを発掘し、すべての登録をよりスマートに始められるようにします。"
+      },
+      "marketplace": {
+        "title": "マーケットプレイス対応アセット",
+        "description": "ドメインを NFT マーケットプレイスに直接移動させ、オンチェーンのセキュリティで取引できます。"
+      }
+    }
+  },
+  "story": {
+    "tokenization": {
+      "badge": "Namefi NFTs",
+      "title": "Namefi NFTs secure DNS ownership onchain.",
+      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "highlights": {
+        "mintedOnImport": "Minted on import",
+        "autoEns": "AutoENS support",
+        "marketplaceReady": "Marketplace ready"
+      },
+      "media": {
+        "previewAlt": "Namefi NFT preview",
+        "previewEyebrow": "Namefi NFT preview",
+        "previewTitle": "Ownership that travels with your domain"
+      }
+    },
+    "intelligence": {
+      "badge": "Namefi Brand Studio",
+      "title": "Spin up brand directions and domain ideas in minutes.",
+      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "highlights": {
+        "domainGuidedPrompts": "Domain-guided prompts",
+        "logosPosters": "Logos & posters",
+        "shareReady": "Share-ready assets"
+      },
+      "media": {
+        "eyebrow": "AI workflow",
+        "generateTitle": "Generate brand kits",
+        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
+        "portfolioTitle": "Work from your portfolio",
+        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
+        "shareTitle": "Share instantly",
+        "shareDescription": "Export assets for teammates or socials with a single link."
+      }
+    },
+    "operations": {
+      "badge": "DNS & Renewal Control",
+      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
+      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "highlights": {
+        "dnssecAutoEns": "DNSSEC + AutoENS",
+        "autoRenew": "Auto-renew protection",
+        "validatedZoneEditor": "Validated zone editor"
+      },
+      "media": {
+        "eyebrow": "Operations overview",
+        "dnssecTitle": "DNSSEC & AutoENS",
+        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
+        "autoRenewTitle": "Auto-renew guardrails",
+        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
+        "dnsTitle": "Point-and-click DNS",
+        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+      }
+    }
+  },
+  "smartContracts": {
+    "heading": "Namefi スマートコントラクト",
+    "description": "Ethereum と Base 上でオープンソース公開されており、誰でもすべての機能を検証できます。",
+    "weLove": "私たちは",
+    "opensource": "オープンソース"
+  },
+  "poweredBy": {
+    "heading": "採用技術",
+    "description": "毎日支えてくれるインフラストラクチャ。"
+  },
+  "supporting": {
+    "heading": "サポートするエコシステム",
+    "description": "エコシステム全体で Namefi NFTs を取引・運用できます。"
+  },
+  "backers": {
+    "heading": "パートナー・投資家・助成プログラムからの支援",
+    "description": "Namefi は、web3 全体をリードするファンド、アクセラレーター、インフラプロバイダーによって支援されています。",
+    "filters": {
+      "all": "すべて",
+      "investor": "投資家",
+      "partner": "パートナー",
+      "grant": "助成金"
+    }
+  },
+  "community": {
+    "heading": "Namefi コミュニティに参加する",
+    "description": "ドメイナー、ビルダー、コントリビューター、オンチェーン愛好家のグローバルネットワーク。",
+    "newsletter": {
+      "title": "ニュースレターを受け取る",
+      "description": "新リリース、インテグレーション、コミュニティのハイライトをお届けします。"
+    }
+  }
+}

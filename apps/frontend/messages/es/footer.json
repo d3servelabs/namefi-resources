@@ -1,0 +1,62 @@
+{
+  "disclaimer": "Namefi es un Registrador Acreditado por ICANN que tokeniza nombres de dominio de internet para comercio, DeFi y el futuro de Internet.",
+  "llmsTxt": "Usa <link>llms.txt</link> si eres un agente LLM como Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode u otro agente de AI.",
+  "copyright": "© {year} D3SERVE LABS, Inc. Todos los derechos reservados.",
+  "cookieSettings": "Configuración de cookies",
+  "cookieSettingsAriaLabel": "Abrir el diálogo de configuración de cookies",
+  "termsAndConditions": "Términos y condiciones",
+  "sections": {
+    "explore": {
+      "title": "Explorar",
+      "links": {
+        "discoverDomains": "Descubrir dominios",
+        "brandStudio": "Namefi Brand Studio",
+        "feed": "Namefi Feed",
+        "outbound": "Namefi Outbound",
+        "domainHunt": "Domain Hunt",
+        "newsletter": "Boletín informativo",
+        "flushDns": "Vaciar DNS",
+        "faucet": "NFSC Faucet (sandbox)"
+      }
+    },
+    "account": {
+      "links": {
+        "myDomains": "Mis dominios",
+        "myWishlist": "Mi lista de deseos",
+        "myOrders": "Mis pedidos",
+        "paymentMethods": "Métodos de pago"
+      }
+    },
+    "resources": {
+      "title": "Recursos",
+      "links": {
+        "blog": "Blog",
+        "watch": "Videos",
+        "careers": "Empleos",
+        "tlds": "TLDs",
+        "partners": "Socios",
+        "glossary": "Glosario",
+        "howWeHire": "Cómo contratamos",
+        "abuseReporting": "Reporte de abuso",
+        "educationHub": "Centro educativo",
+        "registrationAgreement": "Acuerdo de registro",
+        "apiDocs": "Documentación API de Namefi",
+        "llmApi": "API para agentes LLM AI",
+        "support": "Soporte"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "links": {
+        "aboutNamefi": "Acerca de Namefi",
+        "whatIsDomain": "¿Qué es un dominio?",
+        "whatAreTokenizedDomains": "¿Qué son los dominios tokenizados?",
+        "whyTokenizeDomains": "¿Por qué tokenizar dominios?",
+        "dnsOnTokenizedDomains": "DNS en dominios tokenizados",
+        "dnsIsControlPlane": "DNS es el plano de control",
+        "howToTokenizeCom": "Cómo tokenizar tu .com",
+        "tokenizedVsWeb3": "Dominio tokenizado vs dominio Web3"
+      }
+    }
+  }
+}

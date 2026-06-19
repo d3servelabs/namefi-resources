@@ -40,6 +40,11 @@ const RESOURCES_LOCALE: Record<Locale, string> = {
   zh: 'zh',
   ta: 'en',
   'ar-EG': 'ar',
+  de: 'de',
+  es: 'es',
+  fr: 'fr',
+  ja: 'en',
+  hi: 'hi',
 };
 
 /**

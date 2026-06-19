@@ -1,0 +1,79 @@
+{
+  "authRequired": {
+    "title": "साइन इन आवश्यक है",
+    "description": "जारी रखने के लिए कृपया साइन इन करें"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "इस कार्य को पूरा करने के लिए",
+    "title": {
+      "wrongWallet": "गलत वॉलेट कनेक्ट है",
+      "settingActive": "सक्रिय वॉलेट सेट हो रहा है",
+      "connect": "अपना वॉलेट कनेक्ट करें"
+    },
+    "description": {
+      "wrongWallet": "जारी रखने के लिए कृपया सही वॉलेट कनेक्ट करें।",
+      "settingActive": "कृपया प्रतीक्षा करें, आपका वॉलेट सक्रिय किया जा रहा है...",
+      "connect": "कृपया अपना वॉलेट {actionDescription} कनेक्ट करें।"
+    },
+    "checkingStatus": "वॉलेट स्थिति जाँची जा रही है...",
+    "settingAsActive": "वॉलेट सक्रिय किया जा रहा है...",
+    "requiredWallet": "आवश्यक वॉलेट",
+    "waitingForConnection": "वॉलेट कनेक्शन की प्रतीक्षा है...",
+    "differentWalletConnected": "आपने एक अलग वॉलेट कनेक्ट किया",
+    "youConnected": "आपने कनेक्ट किया",
+    "butWeNeed": "लेकिन हमें चाहिए",
+    "connectedSuccessfully": "वॉलेट सफलतापूर्वक कनेक्ट हुआ",
+    "connecting": "कनेक्टिंग...",
+    "next": "आगे",
+    "toast": {
+      "setActiveFailed": "सक्रिय वॉलेट सेट करने में विफल",
+      "connectFailed": "वॉलेट कनेक्ट करने में विफल",
+      "unknownError": "अज्ञात त्रुटि"
+    }
+  },
+  "countryInput": {
+    "placeholder": "देश चुनें",
+    "searchPlaceholder": "देश खोजें...",
+    "noResults": "कोई देश नहीं मिला।",
+    "clearSelection": "चयन हटाएं"
+  },
+  "myDomains": {
+    "heading": "मेरे डोमेन"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "अभी तक इंडेक्स नहीं हुआ",
+    "emptyIdentifier": "NFT देखने के लिए वॉलेट पता या ENS नाम दर्ज करें।",
+    "invalidIdentifier": "यह एक वैध वॉलेट पता या ENS नाम नहीं लगता।",
+    "invalidIdentifierHint": "वॉलेट 0x से शुरू होना चाहिए और ENS नाम में कम से कम एक डॉट होना चाहिए।",
+    "ensResolveFailed": "हम उस ENS नाम को रिज़ॉल्व नहीं कर सके।",
+    "ensResolveFailedHint": "वर्तनी दोबारा जाँचें या थोड़ी देर बाद पुनः प्रयास करें।",
+    "noWalletResolved": "हम इस इनपुट से कोई वॉलेट रिज़ॉल्व नहीं कर सके।",
+    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "इस वॉलेट के डोमेन लोड नहीं हो सके।",
+    "loadDomainsFailedHint": "कृपया पृष्ठ रीफ़्रेश करें और पुनः प्रयास करें।",
+    "noNftsFound": "इस वॉलेट में कोई Namefi NFT नहीं मिला।",
+    "noNftsFoundHint": "वॉलेट पता या ENS नाम दोबारा जाँचें, या इंडेक्सिंग पूरी होने तक प्रतीक्षा करें।",
+    "unknownNetwork": "अज्ञात नेटवर्क",
+    "explorer": "एक्सप्लोरर",
+    "viewOnExplorer": "एक्सप्लोरर पर देखें",
+    "viewOn": "{explorer} पर देखें",
+    "network": "नेटवर्क",
+    "expiration": "समाप्ति",
+    "wallet": "वॉलेट",
+    "ens": "ENS: {name}",
+    "copiedToClipboard": "क्लिपबोर्ड पर कॉपी हुआ",
+    "copyFailed": "कॉपी विफल",
+    "copyFailedDescription": "यह मान कॉपी नहीं हो सका। कृपया पुनः प्रयास करें।"
+  },
+  "instantBuyModal": {
+    "title": "{domain} खरीदें",
+    "description": "1 वर्ष के पंजीकरण के लिए खरीद पूरी करें",
+    "domain": "डोमेन",
+    "pricePerYear": "{price} USD / वर्ष",
+    "selectNftWallet": "जारी रखने के लिए NFT वॉलेट चुनें",
+    "buyNow": "अभी खरीदें",
+    "errorTitle": "कुछ गलत हो गया।",
+    "errorDescription": "चिंता न करें, आपसे कोई शुल्क नहीं लिया गया। पुनः प्रयास करें।",
+    "errorDetail": "(त्रुटि - {error})"
+  }
+}

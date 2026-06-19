@@ -1,0 +1,57 @@
+{
+  "page": {
+    "title": "Réclamation gratuite",
+    "domainClaimedSuccess": "Domaine réclamé avec succès !",
+    "claimFailed": "Échec de la réclamation du domaine : {message}",
+    "invalidDomain": {
+      "title": "Domaine invalide",
+      "description": "Le domaine fourni n'est pas un domaine Namefi normalisé valide.",
+      "hint": "Assurez-vous d'utiliser un domaine entièrement normalisé, par ex. « alice.0x.city »."
+    },
+    "ineligibleBanner": {
+      "title": "Ce domaine n'est pas éligible à une réclamation gratuite.",
+      "description": "Vous pouvez l'ajouter à votre panier pour l'acheter, ou revenir à la recherche.",
+      "addToCart": "Ajouter au panier"
+    },
+    "summary": {
+      "duration": "Durée : {count, plural, one {# an} other {# ans}} • Gratuit"
+    }
+  },
+  "widget": {
+    "defaultTitle": "Votre identité 0x",
+    "defaultSubtitle": "Rejoignez le réseau de citoyens Web3",
+    "qualifyPrompt": "Suivez les étapes ci-dessous pour vérifier votre éligibilité",
+    "steps": {
+      "signIn": {
+        "signedIn": "Merci de vous être connecté ! Vous pouvez passer à l'étape suivante.",
+        "signedOut": "Connectez-vous ou créez un compte pour commencer."
+      },
+      "linkSocial": {
+        "trigger": "Lier un réseau social",
+        "description": "Liez un compte de réseau social avec un nom d'utilisateur éligible depuis votre page de profil. Actuellement, les noms d'utilisateur commençant par « 0x » donnent accès à la promotion.",
+        "visitProfile": "Visiter la page de profil"
+      },
+      "enterDomain": {
+        "trigger": "Saisir le nom de domaine",
+        "description": "Saisissez votre nom de domaine éligible ci-dessous. S'il est disponible, vous pourrez le réclamer gratuitement !"
+      }
+    },
+    "qualifying": {
+      "checking": "Vérification des domaines éligibles en fonction de vos comptes sociaux liés…",
+      "error": "Erreur lors de la vérification des domaines éligibles en fonction de vos comptes sociaux liés.",
+      "none": "Il semble que vos comptes sociaux liés ne vous permettent pas de réclamer un nom de domaine gratuit.",
+      "list": "Vos noms de domaine éligibles : {domains}"
+    },
+    "input": {
+      "placeholderMobile": "nom",
+      "placeholderDesktop": "votrenom"
+    },
+    "button": {
+      "loginToClaim": "Se connecter pour réclamer",
+      "checking": "Vérification…",
+      "inCart": "Dans le panier",
+      "claiming": "Réclamation…",
+      "claimNow": "Réclamer maintenant"
+    }
+  }
+}

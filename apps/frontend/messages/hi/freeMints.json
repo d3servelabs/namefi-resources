@@ -1,0 +1,29 @@
+{
+  "title": "मेरे Free Mints",
+  "historyHeading": "इतिहास",
+  "table": {
+    "item": "आइटम",
+    "issuedOn": "जारी तिथि",
+    "validUntil": "वैध तक",
+    "status": "स्थिति",
+    "claimedDomain": "क्लेम किया डोमेन",
+    "claimedOn": "क्लेम तिथि"
+  },
+  "campaignItem": "कोई भी <domain>{domain}</domain> सबडोमेन",
+  "campaignLabel": "कोई भी {domain} सबडोमेन",
+  "statusBadge": {
+    "claimed": "क्लेम किया",
+    "inProgress": "जारी है",
+    "expired": "समाप्त",
+    "available": "उपलब्ध"
+  },
+  "noHistory": "अभी तक कोई क्लेम इतिहास नहीं है।",
+  "emptyTitle": "अभी कोई Free Mints नहीं",
+  "emptyDescription": "जब आपको निःशुल्क क्लेम के अवसर मिलेंगे, वे यहाँ दिखाई देंगे।",
+  "card": {
+    "issued": "जारी",
+    "validThru": "वैध तक",
+    "claimNow": "अभी क्लेम करें",
+    "poweredByNamefi": "Namefi द्वारा संचालित"
+  }
+}

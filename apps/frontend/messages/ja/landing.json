@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "badge": "EthereumおよびBase上のICANN認定レジストラ",
+    "heading": "Namefi：ブロックチェーンとAIを活用した次世代ドメインプラットフォーム",
+    "subtitle": "より速く、より安く、検証可能。ドメインを所有する最善の方法。",
+    "tryV3Beta": "または新しい検索体験をお試しください（v3ベータ）"
+  },
+  "scrollIndicator": {
+    "ariaLabel": "Namefiを選ぶ理由セクションへスクロール",
+    "label": "Namefiを選ぶ理由"
+  },
+  "floatingSearch": {
+    "placeholder": "ドメインを検索...",
+    "searchButton": "検索"
+  }
+}

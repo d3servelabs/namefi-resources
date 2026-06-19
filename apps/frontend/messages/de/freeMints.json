@@ -1,0 +1,29 @@
+{
+  "title": "Meine Free Mints",
+  "historyHeading": "Verlauf",
+  "table": {
+    "item": "Artikel",
+    "issuedOn": "Ausgestellt am",
+    "validUntil": "Gültig bis",
+    "status": "Status",
+    "claimedDomain": "Beanspruchte Domain",
+    "claimedOn": "Beansprucht am"
+  },
+  "campaignItem": "Jede <domain>{domain}</domain>-Subdomain",
+  "campaignLabel": "Jede {domain}-Subdomain",
+  "statusBadge": {
+    "claimed": "Eingelöst",
+    "inProgress": "Ausstehend",
+    "expired": "Abgelaufen",
+    "available": "Verfügbar"
+  },
+  "noHistory": "Noch kein Beanspruchungsverlauf.",
+  "emptyTitle": "Noch keine Free Mints",
+  "emptyDescription": "Wenn Sie kostenlose Beanspruchungsangebote erhalten, werden diese hier angezeigt.",
+  "card": {
+    "issued": "Ausgestellt",
+    "validThru": "Gültig bis",
+    "claimNow": "Jetzt beanspruchen",
+    "poweredByNamefi": "Unterstützt von Namefi"
+  }
+}

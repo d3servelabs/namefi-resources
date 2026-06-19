@@ -1,0 +1,55 @@
+{
+  "loading": {
+    "title": "Zahlungsmethoden werden geladen",
+    "description": "Einen Moment bitte…"
+  },
+  "creditCards": {
+    "heading": "Zahlungsmethoden",
+    "addButton": "Kreditkarte hinzufügen",
+    "cardHolderFallback": "Karteninhaber",
+    "empty": {
+      "title": "Keine Zahlungsmethoden gefunden",
+      "description": "Fügen Sie eine neue Zahlungsmethode hinzu"
+    },
+    "toast": {
+      "saveError": "Zahlungsmethode konnte nicht gespeichert werden",
+      "deleteSuccess": "Zahlungsmethode erfolgreich gelöscht",
+      "deleteError": "Zahlungsmethode konnte nicht gelöscht werden"
+    },
+    "deleteDialog": {
+      "title": "Zahlungsmethode löschen",
+      "description": "Möchten Sie Ihre {brand}-Karte mit den letzten vier Ziffern {last4} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden."
+    }
+  },
+  "wallets": {
+    "heading": "Verknüpfte Wallets",
+    "linkButton": "Wallet verknüpfen",
+    "showInWallet": "In Wallet anzeigen",
+    "addFunds": "Guthaben aufladen",
+    "empty": {
+      "title": "Keine verknüpften Wallets gefunden",
+      "description": "Fügen Sie eine neue Wallet hinzu"
+    },
+    "actionDescription": {
+      "addToken": "um den NFSC-Token zu Ihrer Wallet hinzuzufügen",
+      "charge": "um Ihre Wallet aufzuladen"
+    },
+    "toast": {
+      "requestSentTitle": "Anfrage an Wallet gesendet",
+      "requestSentDescription": "Bitte prüfen Sie Ihre Wallet, um den NFSC-Token hinzuzufügen",
+      "addTokenSuccess": "NFSC-Token erfolgreich zur Wallet hinzugefügt",
+      "addTokenError": "NFSC-Token konnte nicht zur Wallet hinzugefügt werden",
+      "addTokenFailedTitle": "Token konnte nicht hinzugefügt werden",
+      "unknownError": "Unbekannter Fehler",
+      "prepareActionError": "Wallet-Aktion konnte nicht vorbereitet werden"
+    }
+  },
+  "saveDialog": {
+    "title": "Zahlungsmethode – Details",
+    "description": "Geben Sie Ihre Zahlungsdaten ein",
+    "submit": "Zahlungsmethode speichern",
+    "processing": "Wird verarbeitet…",
+    "genericError": "Ein Fehler ist aufgetreten",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten"
+  }
+}

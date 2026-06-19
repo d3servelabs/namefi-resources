@@ -1,0 +1,162 @@
+{
+  "tabs": {
+    "active": "マイドメイン",
+    "inactive": "非アクティブなドメイン",
+    "previouslyOwned": "過去に所有したドメイン",
+    "otherWallets": "他のウォレット",
+    "marketplaceOrders": "出品・オファー一覧"
+  },
+  "processingBanner": "<domains></domains> を処理中です。ステータスは<ordersLink>注文</ordersLink>からご確認ください。",
+  "emptyActive": "アクティブなドメインはありません",
+  "emptyInactive": "非アクティブなドメインはありません",
+  "emptyPlaceholder": {
+    "title": "ドメインが見つかりません",
+    "description": "下のボタンをクリックして、次のドメインを検索しましょう",
+    "action": "検索ページ"
+  },
+  "columns": {
+    "selectAll": "すべて選択",
+    "selectRow": "行を選択",
+    "domainName": "ドメイン名 ({count})",
+    "domainNamePlain": "ドメイン名",
+    "renewal": "更新",
+    "autoEns": "AutoENS",
+    "dateTokenized": "トークン化日",
+    "dnsRecords": "DNS レコード",
+    "actions": "操作",
+    "renewUsdPerYear": "更新 (USD/年)"
+  },
+  "table": {
+    "searchPlaceholder": "ドメインを絞り込む...",
+    "emptyMessage": "フィルターに一致するドメインはありません",
+    "loadingMessage": "ドメインを読み込み中…",
+    "showNftsInWallet": "ウォレットに NFT を表示",
+    "showNftsInWalletAria": "ウォレット内の {count, plural, other {# 件の NFT}} を表示",
+    "filters": {
+      "domainName": "ドメイン名",
+      "wallet": "ウォレット",
+      "renewal": "更新",
+      "dateTokenized": "トークン化日",
+      "chain": "チェーン"
+    },
+    "toasts": {
+      "autoRenewToggled": "{domain} の自動更新を{enabled, select, true {有効} other {無効}}にしました",
+      "autoRenewToggleFailed": "{domain} の自動更新の変更に失敗しました",
+      "autoEnsToggled": "{domain} の AutoENS を{enabled, select, true {有効} other {無効}}にしました",
+      "autoEnsToggleFailed": "{domain} の AutoENS の変更に失敗しました",
+      "bulkAutoRenewFailed": "{total} 件中 {failed} 件のドメインの更新に失敗しました",
+      "bulkAutoRenewToggled": "{count, plural, other {# 件のドメイン}}の自動更新を{enabled, select, true {有効} other {無効}}にしました",
+      "noNftsToWatch": "ウォレットに追加できる NFT はありません",
+      "nftsAdded": "{count, plural, other {# 件の NFT}}をウォレットに追加しました",
+      "nftsAddFailed": "{count, plural, other {# 件の NFT}}をウォレットに追加できませんでした"
+    }
+  },
+  "otherWallets": {
+    "domain": "ドメイン ({count})",
+    "nftWallet": "NFT ウォレット",
+    "order": "注文",
+    "viewOrder": "注文を表示"
+  },
+  "renewModal": {
+    "title": "{count, plural, other {ドメインを更新}}",
+    "descriptionSingle": "{domain} を更新",
+    "descriptionMultiple": "{count} 件のドメインを更新",
+    "renewalPeriod": "更新期間",
+    "selectYears": "年数を選択",
+    "yearOption": "{years, plural, other {# 年}}",
+    "pricePerYear": "年間価格",
+    "total": "合計 ({years, plural, other {# 年}})",
+    "addingToCart": "カートに追加中...",
+    "addToCart": "カートに追加",
+    "addToCartFailed": "ドメインをカートに追加できませんでした。もう一度お試しください。"
+  },
+  "renewPremiumInfo": {
+    "aria": "{domain} の更新価格情報",
+    "tooltip": "プレミアムドメインは更新価格が異なる場合があります。"
+  },
+  "renewalCell": {
+    "auto": "自動",
+    "autoRenewAria": "{domain} の自動更新",
+    "expired": "期限切れ",
+    "usdPerYear": "USD/年"
+  },
+  "autoEnsCell": {
+    "aria": "{domain} の Auto-ENS"
+  },
+  "timeLeft": {
+    "expired": "期限切れ",
+    "days": "{days}d",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}y",
+    "yearsPlus": "{years}y+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "無期限",
+    "expired": "期限切れ",
+    "expires": "{datetime} に期限切れ"
+  },
+  "nftPendingBadge": {
+    "minting": "ミント中…",
+    "changingExpiration": "有効期限を更新中…",
+    "changingLock": "ロックを更新中…",
+    "pending": "保留中…"
+  },
+  "actions": {
+    "listForSale": "出品する",
+    "findBuyers": "購入者を探す",
+    "viewOrder": "注文を表示",
+    "viewOrderMenu": "注文を表示",
+    "viewNft": "NFT を表示",
+    "viewNftOn": "{explorer} で NFT を表示",
+    "scan": "スキャン",
+    "visitDomain": "ドメインを開く",
+    "showNftInWallet": "ウォレットに NFT を表示",
+    "listForSaleAria": "{domain} を出品する",
+    "viewOrderAria": "{domain} の注文を表示",
+    "findBuyersAria": "{domain} の購入者を探す",
+    "viewNftAria": "{domain} の NFT を表示",
+    "visitDomainAria": "{domain} を開く",
+    "actionsAria": "{domain} の操作",
+    "showNftInWalletAria": "{domain} の NFT をウォレットに表示",
+    "nftAddedToast": "{domain} をウォレットに追加しました",
+    "nftAddFailedToast": "{domain} をウォレットに追加できませんでした",
+    "nftAddErrorToast": "NFT をウォレットに追加できませんでした",
+    "unknownError": "不明なエラー"
+  },
+  "floatingPanel": {
+    "selected": "件選択中",
+    "clearSelection": "選択を解除",
+    "auto": "自動",
+    "bulkAutoRenewAria": "{count, plural, other {# 件のドメイン}}の一括自動更新",
+    "bulkAutoRenewMixed": "状態が混在しています — 左で全て無効、右で全て有効にします",
+    "bulkAutoRenewOn": "自動更新が有効です — クリックで全て無効にします",
+    "bulkAutoRenewOff": "自動更新が無効です — クリックで全て有効にします",
+    "renewAria": "{count, plural, other {# 件のドメイン}}を更新",
+    "renewTooltip": "{count, plural, other {# 件のドメイン}}を更新",
+    "setWebRecords": "Web レコードを設定",
+    "setUrlForwarding": "URL 転送を設定",
+    "setEnsRecord": "ENS レコードを設定",
+    "showInWalletAria": "{count, plural, other {# 件の NFT}}をウォレットに表示",
+    "showInWalletTooltip": "{count, plural, other {# 件の NFT}}をウォレットに表示"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "マーケットが混雑しているため、一部の出品が表示されない場合があります。",
+    "noLinkedWalletsTitle": "ウォレットが未連携",
+    "noLinkedWalletsDescription": "マーケットプレイスの注文を確認するには、ウォレットをアカウントに連携してください。",
+    "listingsTitle": "マイ出品",
+    "listingsDescription": "OpenSea と Rarible に掲載中の出品一覧です。各カードには受け取った入札が表示されます。",
+    "noListingsTitle": "出品中のアイテムはありません",
+    "noListingsDescription": "ドメイン詳細ページで作成した出品がここに表示されます。",
+    "offersTitle": "他ドメインへのオファー",
+    "offersDescription": "所有していないドメインへのオファー一覧です。高額順に並んでいます。",
+    "noOffersTitle": "送信済みオファーはありません",
+    "noOffersDescription": "他のドメインに送ったオファーがここに表示されます。",
+    "incomingBids": "受け取った入札",
+    "loadBidsFailed": "入札を読み込めませんでした: {error}",
+    "noBidsYet": "まだ入札はありません。",
+    "viewBidAria": "{domain} への {source} の入札を表示",
+    "nftAlt": "NFT",
+    "offerWaiting": "オファーは有効です。出品者の承認をお待ちください。"
+  }
+}

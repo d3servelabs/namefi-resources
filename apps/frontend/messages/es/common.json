@@ -1,0 +1,56 @@
+{
+  "language": "Idioma",
+  "languageSelector": {
+    "label": "Idioma",
+    "ariaLabel": "Cambiar idioma"
+  },
+  "actions": {
+    "signIn": "Acceder",
+    "loading": "Cargando...",
+    "tryAgain": "Reintentar",
+    "dismiss": "Descartar",
+    "contactSupport": "Contactar soporte",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "remove": "Quitar",
+    "view": "Ver",
+    "refresh": "Actualizar",
+    "submit": "Enviar",
+    "processing": "Procesando...",
+    "loadMore": "Cargar más",
+    "connectWallet": "Conectar cartera",
+    "goBack": "Volver",
+    "approve": "Aprobar",
+    "reject": "Rechazar",
+    "disable": "Desactivar",
+    "logOut": "Cerrar sesión"
+  },
+  "account": {
+    "label": "Cuenta",
+    "balance": "Saldo",
+    "loadingBalanceDetails": "Cargando detalles del saldo...",
+    "balanceLoadFailed": "Error al cargar el saldo",
+    "balanceLoadFailedDescription": "No se pudieron cargar los detalles del saldo."
+  },
+  "status": {
+    "created": "Creado",
+    "processing": "Procesando",
+    "succeeded": "Exitoso",
+    "completed": "Finalizado",
+    "failed": "Fallido",
+    "cancelled": "Cancelado",
+    "partiallyCompleted": "Completado parcial",
+    "waitingForUser": "Esperando usuario",
+    "pending": "Pendiente",
+    "refunded": "Reembolsado",
+    "requiresCapture": "Requiere captura",
+    "unknown": "Desconocido"
+  },
+  "signIn": {
+    "loadFailedTitle": "Error al cargar el inicio de sesión",
+    "loadFailedDescription": "El flujo de inicio de sesión no se pudo cargar."
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "authRequired": {
+    "title": "Anmeldung erforderlich",
+    "description": "Bitte melden Sie sich an, um fortzufahren"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "um diese Aktion abzuschließen",
+    "title": {
+      "wrongWallet": "Falsches Wallet verbunden",
+      "settingActive": "Aktives Wallet wird gesetzt",
+      "connect": "Wallet verbinden"
+    },
+    "description": {
+      "wrongWallet": "Bitte verbinden Sie das richtige Wallet, um fortzufahren.",
+      "settingActive": "Bitte warten Sie, während wir Ihr Wallet als aktiv setzen...",
+      "connect": "Bitte verbinden Sie Ihr Wallet {actionDescription}."
+    },
+    "checkingStatus": "Wallet-Status wird geprüft...",
+    "settingAsActive": "Wallet wird als aktiv gesetzt...",
+    "requiredWallet": "Erforderliches Wallet",
+    "waitingForConnection": "Warte auf Wallet-Verbindung...",
+    "differentWalletConnected": "Sie haben ein anderes Wallet verbunden",
+    "youConnected": "Verbunden",
+    "butWeNeed": "Benötigt wird",
+    "connectedSuccessfully": "Wallet erfolgreich verbunden",
+    "connecting": "Verbinden...",
+    "next": "Weiter",
+    "toast": {
+      "setActiveFailed": "Aktives Wallet konnte nicht gesetzt werden",
+      "connectFailed": "Wallet-Verbindung fehlgeschlagen",
+      "unknownError": "Unbekannter Fehler"
+    }
+  },
+  "countryInput": {
+    "placeholder": "Land auswählen",
+    "searchPlaceholder": "Länder suchen...",
+    "noResults": "Kein Land gefunden.",
+    "clearSelection": "Auswahl löschen"
+  },
+  "myDomains": {
+    "heading": "Meine Domains"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "Noch nicht indiziert",
+    "emptyIdentifier": "Geben Sie eine Wallet-Adresse oder einen ENS-Namen ein, um NFTs anzuzeigen.",
+    "invalidIdentifier": "Dies ist keine gültige Wallet-Adresse oder kein gültiger ENS-Name.",
+    "invalidIdentifierHint": "Wallets müssen mit 0x beginnen; ENS-Namen benötigen mindestens einen Punkt.",
+    "ensResolveFailed": "Der ENS-Name konnte nicht aufgelöst werden.",
+    "ensResolveFailedHint": "Überprüfen Sie die Schreibweise oder versuchen Sie es in einem Moment erneut.",
+    "noWalletResolved": "Für diese Eingabe konnte kein Wallet aufgelöst werden.",
+    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "Domains für dieses Wallet konnten nicht geladen werden.",
+    "loadDomainsFailedHint": "Bitte aktualisieren Sie die Seite und versuchen Sie es erneut.",
+    "noNftsFound": "Keine Namefi NFTs für dieses Wallet gefunden.",
+    "noNftsFoundHint": "Überprüfen Sie die Wallet-Adresse oder den ENS-Namen, oder warten Sie, bis die Indizierung abgeschlossen ist.",
+    "unknownNetwork": "Unbekanntes Netzwerk",
+    "explorer": "Explorer",
+    "viewOnExplorer": "Im Explorer ansehen",
+    "viewOn": "Ansehen auf {explorer}",
+    "network": "Netzwerk",
+    "expiration": "Ablauf",
+    "wallet": "Wallet",
+    "ens": "ENS: {name}",
+    "copiedToClipboard": "In Zwischenablage kopiert",
+    "copyFailed": "Kopieren fehlgeschlagen",
+    "copyFailedDescription": "Der Wert konnte nicht kopiert werden. Bitte versuchen Sie es erneut."
+  },
+  "instantBuyModal": {
+    "title": "{domain} kaufen",
+    "description": "Kauf für 1 Jahr Registrierung abschließen",
+    "domain": "Domain",
+    "pricePerYear": "{price} USD / Jahr",
+    "selectNftWallet": "NFT-Wallet für den Kauf auswählen",
+    "buyNow": "Jetzt kaufen",
+    "errorTitle": "Etwas ist schiefgelaufen.",
+    "errorDescription": "Keine Sorge, es wird nichts berechnet. Sie können es erneut versuchen. ",
+    "errorDetail": "(Fehler – {error})"
+  }
+}

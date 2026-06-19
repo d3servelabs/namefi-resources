@@ -1,0 +1,162 @@
+{
+  "tabs": {
+    "active": "Mes domaines",
+    "inactive": "Domaines inactifs",
+    "previouslyOwned": "Domaines précédemment détenus",
+    "otherWallets": "Autres portefeuilles",
+    "marketplaceOrders": "Mes annonces & offres"
+  },
+  "processingBanner": "<domains></domains> sont en cours de traitement. Consultez <ordersLink>Commandes</ordersLink> pour suivre leur statut.",
+  "emptyActive": "Aucun domaine actif",
+  "emptyInactive": "Aucun domaine inactif",
+  "emptyPlaceholder": {
+    "title": "Aucun domaine trouvé",
+    "description": "Lancez la recherche de votre prochain domaine en cliquant sur le bouton ci-dessous",
+    "action": "Page de recherche"
+  },
+  "columns": {
+    "selectAll": "Tout sélectionner",
+    "selectRow": "Sélectionner la ligne",
+    "domainName": "Nom de domaine ({count})",
+    "domainNamePlain": "Nom de domaine",
+    "renewal": "Renouvellement",
+    "autoEns": "AutoENS",
+    "dateTokenized": "Date de tokenisation",
+    "dnsRecords": "Enregistrements DNS",
+    "actions": "Actions",
+    "renewUsdPerYear": "Renouveler (USD/an)"
+  },
+  "table": {
+    "searchPlaceholder": "Filtrer les domaines…",
+    "emptyMessage": "Aucun domaine ne correspond à vos filtres",
+    "loadingMessage": "Chargement des domaines…",
+    "showNftsInWallet": "Afficher les NFT dans le portefeuille",
+    "showNftsInWalletAria": "Afficher {count, plural, one {# NFT} other {# NFT}} dans le portefeuille",
+    "filters": {
+      "domainName": "Nom de domaine",
+      "wallet": "Portefeuille",
+      "renewal": "Renouvellement",
+      "dateTokenized": "Date de tokenisation",
+      "chain": "Chaîne"
+    },
+    "toasts": {
+      "autoRenewToggled": "Renouvellement automatique {enabled, select, true {activé} other {désactivé}} pour {domain}",
+      "autoRenewToggleFailed": "Échec de la mise à jour du renouvellement automatique pour {domain}",
+      "autoEnsToggled": "AutoENS {enabled, select, true {activé} other {désactivé}} pour {domain}",
+      "autoEnsToggleFailed": "Échec de la mise à jour d'AutoENS pour {domain}",
+      "bulkAutoRenewFailed": "Échec de la mise à jour pour {failed, plural, one {# domaine} other {# domaines}} sur {total}",
+      "bulkAutoRenewToggled": "Renouvellement automatique {enabled, select, true {activé} other {désactivé}} pour {count, plural, one {# domaine} other {# domaines}}",
+      "noNftsToWatch": "Aucun NFT disponible à ajouter à votre portefeuille",
+      "nftsAdded": "{count, plural, one {# NFT ajouté} other {# NFT ajoutés}} à votre portefeuille",
+      "nftsAddFailed": "Impossible d'ajouter {count, plural, one {# NFT} other {# NFT}} à votre portefeuille"
+    }
+  },
+  "otherWallets": {
+    "domain": "Domaine ({count})",
+    "nftWallet": "Portefeuille NFT",
+    "order": "Commande",
+    "viewOrder": "Voir la commande"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {Renouveler le domaine} other {Renouveler les domaines}}",
+    "descriptionSingle": "Renouveler {domain}",
+    "descriptionMultiple": "Renouveler {count} domaines",
+    "renewalPeriod": "Période de renouvellement",
+    "selectYears": "Sélectionner les années",
+    "yearOption": "{years, plural, one {# an} other {# ans}}",
+    "pricePerYear": "Prix par an",
+    "total": "Total ({years, plural, one {# an} other {# ans}})",
+    "addingToCart": "Ajout au panier…",
+    "addToCart": "Ajouter au panier",
+    "addToCartFailed": "Échec de l'ajout des domaines au panier. Veuillez réessayer."
+  },
+  "renewPremiumInfo": {
+    "aria": "Informations sur le prix de renouvellement pour {domain}",
+    "tooltip": "Les domaines premium peuvent avoir un prix de renouvellement différent."
+  },
+  "renewalCell": {
+    "auto": "Auto",
+    "autoRenewAria": "Renouvellement automatique de {domain}",
+    "expired": "Expiré",
+    "usdPerYear": "USD/an"
+  },
+  "autoEnsCell": {
+    "aria": "Auto-ENS {domain}"
+  },
+  "timeLeft": {
+    "expired": "Expiré",
+    "days": "{days}j",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}a",
+    "yearsPlus": "{years}a+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "N'expire jamais",
+    "expired": "Expiré",
+    "expires": "Expire le {datetime}"
+  },
+  "nftPendingBadge": {
+    "minting": "Création…",
+    "changingExpiration": "Mise à jour de l'expiration…",
+    "changingLock": "Mise à jour du verrou…",
+    "pending": "En attente…"
+  },
+  "actions": {
+    "listForSale": "Mettre en vente",
+    "findBuyers": "Trouver des acheteurs",
+    "viewOrder": "Voir la commande",
+    "viewOrderMenu": "Voir la commande",
+    "viewNft": "Voir le NFT",
+    "viewNftOn": "Voir le NFT sur {explorer}",
+    "scan": "Scanner",
+    "visitDomain": "Visiter le domaine",
+    "showNftInWallet": "Afficher le NFT dans le portefeuille",
+    "listForSaleAria": "Mettre {domain} en vente",
+    "viewOrderAria": "Voir la commande pour {domain}",
+    "findBuyersAria": "Trouver des acheteurs pour {domain}",
+    "viewNftAria": "Voir le NFT pour {domain}",
+    "visitDomainAria": "Visiter {domain}",
+    "actionsAria": "Actions pour {domain}",
+    "showNftInWalletAria": "Afficher le NFT de {domain} dans le portefeuille",
+    "nftAddedToast": "{domain} ajouté à votre portefeuille",
+    "nftAddFailedToast": "Impossible d'ajouter {domain} à votre portefeuille",
+    "nftAddErrorToast": "Échec de l'ajout du NFT au portefeuille",
+    "unknownError": "Erreur inconnue"
+  },
+  "floatingPanel": {
+    "selected": "sélectionné(s)",
+    "clearSelection": "Effacer la sélection",
+    "auto": "Auto",
+    "bulkAutoRenewAria": "Renouvellement automatique groupé pour {count, plural, one {# domaine} other {# domaines}}",
+    "bulkAutoRenewMixed": "États mixtes — cliquez à gauche pour tout désactiver, à droite pour tout activer",
+    "bulkAutoRenewOn": "Renouvellement automatique activé — cliquez pour tout désactiver",
+    "bulkAutoRenewOff": "Renouvellement automatique désactivé — cliquez pour tout activer",
+    "renewAria": "Renouveler {count, plural, one {# domaine} other {# domaines}}",
+    "renewTooltip": "Renouveler {count, plural, one {# domaine} other {# domaines}}",
+    "setWebRecords": "Définir les enregistrements web",
+    "setUrlForwarding": "Configurer la redirection URL",
+    "setEnsRecord": "Définir l'enregistrement ENS",
+    "showInWalletAria": "Afficher {count, plural, one {# NFT} other {# NFT}} dans le portefeuille",
+    "showInWalletTooltip": "Afficher {count, plural, one {# NFT} other {# NFT}} dans le portefeuille"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "Certaines annonces peuvent ne pas apparaître, leurs marchés étant peut-être occupés.",
+    "noLinkedWalletsTitle": "Aucun portefeuille lié",
+    "noLinkedWalletsDescription": "Liez un portefeuille à votre compte pour consulter vos commandes sur la marketplace.",
+    "listingsTitle": "Mes annonces",
+    "listingsDescription": "Annonces de vente actives que vous avez publiées sur OpenSea et Rarible. Chaque carte affiche les offres entrantes en dessous.",
+    "noListingsTitle": "Aucune annonce active",
+    "noListingsDescription": "Les annonces créées sur la page de détail d'un domaine apparaîtront ici.",
+    "offersTitle": "Mes offres sur d'autres domaines",
+    "offersDescription": "Offres que vous avez placées sur des domaines dont vous n'êtes pas propriétaire. Triées par prix décroissant.",
+    "noOffersTitle": "Aucune offre sortante",
+    "noOffersDescription": "Les offres placées sur d'autres domaines apparaîtront ici.",
+    "incomingBids": "Offres entrantes",
+    "loadBidsFailed": "Impossible de charger les offres : {error}",
+    "noBidsYet": "Aucune offre pour l'instant.",
+    "viewBidAria": "Voir l'offre {source} sur {domain}",
+    "nftAlt": "NFT",
+    "offerWaiting": "Votre offre est ouverte et en attente d'acceptation par le vendeur."
+  }
+}

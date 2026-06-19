@@ -1,0 +1,133 @@
+{
+  "title": "Fil Namefi",
+  "header": {
+    "usersLink": "Utilisateurs",
+    "subscribeRss": "S'abonner via RSS",
+    "rss": "RSS",
+    "refreshing": "Actualisation"
+  },
+  "controls": {
+    "searchLabel": "Rechercher",
+    "searchPlaceholder": "Rechercher des domaines ou des utilisateurs",
+    "searchPlaceholderWithTld": "Rechercher des domaines .{tld} ou des utilisateurs",
+    "clearSearchAriaLabel": "Effacer la recherche",
+    "tldLabel": "TLD",
+    "allTlds": "Tous les TLDs",
+    "tldPlaceholder": "Saisir un TLD",
+    "noTldMatch": "Aucun TLD correspondant.",
+    "selectedHeading": "Sélectionné",
+    "customHeading": "Personnalisé",
+    "useCustomTld": "Utiliser .{tld}",
+    "commonHeading": "Courants",
+    "clear": "Effacer"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "Aucune annonce correspondante dans cette partie du fil.",
+    "empty": "Aucune annonce trouvée.",
+    "endOfFeed": "Fin du fil",
+    "backToTopAriaLabel": "Retour en haut"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# autre domaine} other {# autres domaines}}",
+    "openDomainAriaLabel": "Ouvrir {domain}",
+    "openSourceAriaLabel": "Ouvrir la source {source} pour {domain}",
+    "noExcerpt": "Aucun extrait disponible",
+    "justNow": "à l'instant",
+    "unknownDate": "Inconnu",
+    "logoAlt": "Logo {name}"
+  },
+  "report": {
+    "trigger": "Signaler",
+    "reported": "Signalé",
+    "triggerAriaLabel": "Signaler l'annonce pour {domain}",
+    "dialogTitle": "Signaler une annonce",
+    "dialogDescription": "Signalez un problème avec <highlight>{domain}</highlight>. Notre équipe examine les signalements avant toute action.",
+    "reasonLabel": "Motif",
+    "reasonPlaceholder": "Sélectionner un motif",
+    "detailsLabel": "Détails (facultatif)",
+    "detailsPlaceholder": "Ajoutez des informations pour nous aider à vérifier le problème.",
+    "detailsHelp": "Notes facultatives pour appuyer votre signalement.",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "Limitez les détails à 1000 caractères.",
+    "submit": "Soumettre le signalement",
+    "submitting": "Envoi en cours",
+    "submitSuccess": "Signalement soumis pour {domain}.",
+    "submitErrorFallback": "Impossible de soumettre le signalement. Veuillez réessayer.",
+    "unexpectedResponse": "Réponse inattendue du serveur.",
+    "reasons": {
+      "alreadySold": {
+        "label": "Déjà vendu",
+        "description": "Le domaine a déjà été vendu et ne devrait plus figurer dans le fil."
+      },
+      "inaccuratePrice": {
+        "label": "Prix incorrect",
+        "description": "Le prix demandé semble erroné ou trompeur."
+      },
+      "notForSale": {
+        "label": "Non à vendre",
+        "description": "Cette annonce ne représente pas une vente de domaine réelle."
+      },
+      "duplicateListing": {
+        "label": "Annonce en double",
+        "description": "Cette vente a déjà été publiée ailleurs dans le fil."
+      },
+      "other": {
+        "label": "Autre",
+        "description": "Utilisez les détails pour décrire clairement le problème."
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "Retour au fil",
+    "fallbackSeller": "@unknown",
+    "refreshing": "Actualisation",
+    "invalidPath": "Ce chemin d'utilisateur n'est pas valide.",
+    "loadErrorFallback": "Échec du chargement des annonces du vendeur.",
+    "emptyListings": "Aucune annonce trouvée pour ce vendeur.",
+    "endOfListings": "Fin des annonces du vendeur",
+    "subtitle": {
+      "invalidPath": "Chemin d'utilisateur non valide.",
+      "noDomains": "Aucun domaine publié par ce vendeur pour l'instant.",
+      "feedAndNamefi": "{feedCount, plural, one {# domaine du fil} other {# domaines du fil}} et {namefiCount, plural, one {# domaine Namefi} other {# domaines Namefi}}.",
+      "feedOnly": "{feedCount, plural, one {# domaine du fil publié} other {# domaines du fil publiés}} par ce vendeur."
+    }
+  },
+  "users": {
+    "backToFeed": "Retour au fil",
+    "title": "Utilisateurs",
+    "loadingSubtitle": "Chargement des utilisateurs qui publient des annonces de vente de domaines.",
+    "subtitle": "{count, plural, one {# utilisateur correspondant} other {# utilisateurs correspondants}}.",
+    "subtitleRefreshed": "{count, plural, one {# utilisateur correspondant} other {# utilisateurs correspondants}}, actualisé {refreshedAt}.",
+    "exportCsv": "Exporter CSV",
+    "exportSuccess": "CSV des utilisateurs exporté",
+    "exportErrorTitle": "Impossible d'exporter le CSV des utilisateurs",
+    "exportErrorFallback": "Veuillez réessayer.",
+    "searchPlaceholder": "Rechercher un pseudo, un domaine ou un texte de publication",
+    "clearSearchAriaLabel": "Effacer la recherche",
+    "minPostsAriaLabel": "Publications minimum",
+    "minPostsOption": "{count}+ publications",
+    "activeWithinAriaLabel": "Actif dans les",
+    "anyTime": "Toujours",
+    "activeWithinDays": "{count} jours",
+    "lastDays": "{count}d",
+    "clear": "Effacer",
+    "columns": {
+      "user": "Utilisateur",
+      "domains": "Domaines",
+      "cadence": "Cadence",
+      "lastPost": "Dernière publication"
+    },
+    "domainsPerPost": "{count} / publication",
+    "postsPerWeek": "publications / semaine",
+    "namefiOwned": "{count} Namefi",
+    "today": "aujourd'hui",
+    "daysAgo": "{count}j",
+    "unknownDate": "inconnu",
+    "emptyThreshold": "Aucun utilisateur ne correspond à ce seuil.",
+    "loadingMore": "Chargement d'autres utilisateurs",
+    "listings": "Annonces",
+    "post": "Publication"
+  }
+}

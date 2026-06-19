@@ -1,0 +1,62 @@
+{
+  "disclaimer": "NamefiはICANN認定レジストラとして、インターネットドメイン名をトークン化し、取引・DeFi・インターネットの未来に活用できるようにしています。",
+  "llmsTxt": "Claude Code、Codex、OpenClaw、Hermes、Cursor、OpenCodeなどのLLMエージェントの方は、<link>llms.txt</link>をご利用ください。",
+  "copyright": "© {year} D3SERVE LABS, Inc. All rights reserved.",
+  "cookieSettings": "Cookieの設定",
+  "cookieSettingsAriaLabel": "Cookieの設定ダイアログを開く",
+  "termsAndConditions": "利用規約",
+  "sections": {
+    "explore": {
+      "title": "探索",
+      "links": {
+        "discoverDomains": "ドメインを探す",
+        "brandStudio": "Namefi ブランドスタジオ",
+        "feed": "Namefi フィード",
+        "outbound": "Namefi アウトバウンド",
+        "domainHunt": "ドメインハント",
+        "newsletter": "ニュースレター",
+        "flushDns": "DNS フラッシュ",
+        "faucet": "NFSC フォーセット（サンドボックス）"
+      }
+    },
+    "account": {
+      "links": {
+        "myDomains": "マイドメイン",
+        "myWishlist": "ウィッシュリスト",
+        "myOrders": "注文履歴",
+        "paymentMethods": "お支払い方法"
+      }
+    },
+    "resources": {
+      "title": "リソース",
+      "links": {
+        "blog": "ブログ",
+        "watch": "動画",
+        "careers": "採用情報",
+        "tlds": "TLDs",
+        "partners": "パートナー",
+        "glossary": "用語集",
+        "howWeHire": "採用プロセス",
+        "abuseReporting": "不正報告",
+        "educationHub": "学習センター",
+        "registrationAgreement": "登録規約",
+        "apiDocs": "Namefi API ドキュメント",
+        "llmApi": "LLM AI エージェント向け API",
+        "support": "サポート"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "links": {
+        "aboutNamefi": "Namefi について",
+        "whatIsDomain": "ドメインとは？",
+        "whatAreTokenizedDomains": "トークン化ドメインとは？",
+        "whyTokenizeDomains": "なぜドメインをトークン化するのか？",
+        "dnsOnTokenizedDomains": "トークン化ドメインの DNS",
+        "dnsIsControlPlane": "DNS はコントロールプレーン",
+        "howToTokenizeCom": ".com ドメインのトークン化方法",
+        "tokenizedVsWeb3": "トークン化ドメイン vs Web3 ドメイン"
+      }
+    }
+  }
+}

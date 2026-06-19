@@ -1,0 +1,56 @@
+{
+  "language": "भाषा",
+  "languageSelector": {
+    "label": "भाषा",
+    "ariaLabel": "भाषा बदलें"
+  },
+  "actions": {
+    "signIn": "साइन इन",
+    "loading": "लोड हो रहा...",
+    "tryAgain": "पुनः प्रयास",
+    "dismiss": "बंद करें",
+    "contactSupport": "सहायता से संपर्क",
+    "cancel": "रद्द करें",
+    "close": "बंद करें",
+    "save": "सहेजें",
+    "edit": "एडिट करें",
+    "delete": "हटाएँ",
+    "remove": "निकालें",
+    "view": "देखें",
+    "refresh": "रीफ्रेश",
+    "submit": "सबमिट",
+    "processing": "हो रहा है...",
+    "loadMore": "और लोड करें",
+    "connectWallet": "Wallet जोड़ें",
+    "goBack": "वापस जाएँ",
+    "approve": "स्वीकार",
+    "reject": "अस्वीकार",
+    "disable": "अक्षम करें",
+    "logOut": "लॉग आउट"
+  },
+  "account": {
+    "label": "खाता",
+    "balance": "बैलेंस",
+    "loadingBalanceDetails": "बैलेंस विवरण लोड हो रहा है...",
+    "balanceLoadFailed": "बैलेंस विवरण लोड नहीं हुआ",
+    "balanceLoadFailedDescription": "बैलेंस विवरण लोड करने में समस्या आई।"
+  },
+  "status": {
+    "created": "बनाया गया",
+    "processing": "प्रक्रियारत",
+    "succeeded": "सफल",
+    "completed": "पूर्ण",
+    "failed": "विफल",
+    "cancelled": "रद्द",
+    "partiallyCompleted": "आंशिक रूप से पूर्ण",
+    "waitingForUser": "प्रतीक्षारत",
+    "pending": "लंबित",
+    "refunded": "वापस हुआ",
+    "requiresCapture": "कैप्चर आवश्यक",
+    "unknown": "अज्ञात"
+  },
+  "signIn": {
+    "loadFailedTitle": "साइन इन लोड नहीं हो सका",
+    "loadFailedDescription": "साइन इन प्रक्रिया लोड करने में समस्या आई।"
+  }
+}

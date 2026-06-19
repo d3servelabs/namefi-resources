@@ -1,0 +1,56 @@
+{
+  "language": "Langue",
+  "languageSelector": {
+    "label": "Langue",
+    "ariaLabel": "Changer de langue"
+  },
+  "actions": {
+    "signIn": "Connexion",
+    "loading": "Chargement...",
+    "tryAgain": "Réessayer",
+    "dismiss": "Ignorer",
+    "contactSupport": "Aide et support",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "save": "Sauver",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "remove": "Retirer",
+    "view": "Voir",
+    "refresh": "Actualiser",
+    "submit": "Soumettre",
+    "processing": "Traitement...",
+    "loadMore": "Charger plus",
+    "connectWallet": "Relier wallet",
+    "goBack": "Retour",
+    "approve": "Approuver",
+    "reject": "Rejeter",
+    "disable": "Désactiver",
+    "logOut": "Déconnexion"
+  },
+  "account": {
+    "label": "Compte",
+    "balance": "Solde",
+    "loadingBalanceDetails": "Chargement du solde...",
+    "balanceLoadFailed": "Échec du chargement du solde",
+    "balanceLoadFailedDescription": "Le détail du solde n'a pas pu être chargé."
+  },
+  "status": {
+    "created": "Créé",
+    "processing": "En cours",
+    "succeeded": "Réussi",
+    "completed": "Terminé",
+    "failed": "Échoué",
+    "cancelled": "Annulé",
+    "partiallyCompleted": "Partiellement fait",
+    "waitingForUser": "En attente",
+    "pending": "En attente",
+    "refunded": "Remboursé",
+    "requiresCapture": "Capture requise",
+    "unknown": "Inconnu"
+  },
+  "signIn": {
+    "loadFailedTitle": "Échec du chargement de la connexion",
+    "loadFailedDescription": "Le processus de connexion n'a pas pu être chargé."
+  }
+}

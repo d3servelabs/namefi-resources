@@ -1,0 +1,49 @@
+{
+  "header": {
+    "taglineWithNetwork": "{parentDomain} पर डोमेन खोजें",
+    "taglineAllNetworks": "सभी नेटवर्क पर डोमेन खोजें",
+    "networkLabel": "नेटवर्क:",
+    "allNetworks": "सभी"
+  },
+  "modeTabs": {
+    "register": "रजिस्टर",
+    "import": "आयात"
+  },
+  "input": {
+    "placeholder": "डोमेन खोजें...",
+    "importPlaceholder": "आप दो प्रारूपों में पेस्ट कर सकते हैं:\n\nप्रारूप 1: ऑथ कोड के साथ डोमेन\nexample.com, authcode123\n\nप्रारूप 2: एकाधिक डोमेन (कॉमा या नई पंक्ति से अलग)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "खोजें",
+    "importButton": "आयात करें",
+    "clearParentDomainAriaLabel": "पैरेंट डोमेन साफ़ करें",
+    "freeMintTooltipWithParent": "{parentDomain} के अंतर्गत उपलब्ध सबडोमेन खोजें और उन्हें निःशुल्क क्लेम करें!",
+    "freeMintTooltipAllDomains": "उपलब्ध डोमेन खोजें और उन्हें निःशुल्क क्लेम करें!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "{price} पर नवीनीकरण",
+    "owner": "स्वामी: {owner}",
+    "notRegistered": "अपंजीकृत",
+    "unsupported": "असमर्थित",
+    "lockedShort": "लॉक्ड",
+    "temporarilyUnimportable": "अस्थायी रूप से आयात योग्य नहीं",
+    "taken": "अनुपलब्ध",
+    "unavailableShort": "उपलब्ध नहीं",
+    "temporarilyUnavailable": "अस्थायी रूप से अनुपलब्ध",
+    "freeClaim": "निःशुल्क क्लेम",
+    "addToWishlist": "विशलिस्ट में जोड़ें",
+    "removeFromWishlist": "विशलिस्ट से हटाएं",
+    "eppCode": "EPP Code",
+    "savedEppCode": "सहेजा गया EPP Code",
+    "marketplace": "मार्केटप्लेस",
+    "buyShort": "खरीदें",
+    "buyOn": "यहाँ खरीदें:",
+    "buyOnSourceAriaLabel": "{source} पर खरीदें",
+    "buyOnSourceFromSellerAriaLabel": "{seller} से {source} पर खरीदें"
+  },
+  "results": {
+    "errorTitle": "खोज त्रुटि",
+    "errorDescription": "खोज के दौरान कोई त्रुटि हुई। कृपया पुनः प्रयास करें।",
+    "noResultsTitle": "कोई डोमेन नहीं मिला",
+    "noResultsDescription": "\"{query}\" से मेल खाता कोई डोमेन नहीं मिला। कोई अन्य खोज शब्द आज़माएं।"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "title": "無料Mints",
+  "historyHeading": "履歴",
+  "table": {
+    "item": "アイテム",
+    "issuedOn": "発行日",
+    "validUntil": "有効期限",
+    "status": "ステータス",
+    "claimedDomain": "取得済みドメイン",
+    "claimedOn": "取得日"
+  },
+  "campaignItem": "<domain>{domain}</domain> のサブドメイン（任意）",
+  "campaignLabel": "{domain} のサブドメイン（任意）",
+  "statusBadge": {
+    "claimed": "取得済み",
+    "inProgress": "処理中",
+    "expired": "期限切れ",
+    "available": "利用可能"
+  },
+  "noHistory": "取得履歴はまだありません。",
+  "emptyTitle": "無料Mintsなし",
+  "emptyDescription": "無料取得の機会が付与されると、こちらに表示されます。",
+  "card": {
+    "issued": "発行日",
+    "validThru": "有効期限",
+    "claimNow": "今すぐ取得",
+    "poweredByNamefi": "Powered by Namefi"
+  }
+}

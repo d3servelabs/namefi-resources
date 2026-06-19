@@ -1,0 +1,56 @@
+{
+  "language": "言語",
+  "languageSelector": {
+    "label": "言語",
+    "ariaLabel": "言語を変更"
+  },
+  "actions": {
+    "signIn": "ログイン",
+    "loading": "読み込み中...",
+    "tryAgain": "再試行",
+    "dismiss": "閉じる",
+    "contactSupport": "サポートに連絡",
+    "cancel": "キャンセル",
+    "close": "閉じる",
+    "save": "保存",
+    "edit": "編集",
+    "delete": "削除",
+    "remove": "削除",
+    "view": "表示",
+    "refresh": "更新",
+    "submit": "送信",
+    "processing": "処理中...",
+    "loadMore": "さらに表示",
+    "connectWallet": "ウォレット接続",
+    "goBack": "戻る",
+    "approve": "承認",
+    "reject": "拒否",
+    "disable": "無効化",
+    "logOut": "ログアウト"
+  },
+  "account": {
+    "label": "アカウント",
+    "balance": "残高",
+    "loadingBalanceDetails": "残高情報を読み込み中...",
+    "balanceLoadFailed": "残高情報の読み込みに失敗",
+    "balanceLoadFailedDescription": "残高情報を読み込めませんでした。"
+  },
+  "status": {
+    "created": "作成済み",
+    "processing": "処理中",
+    "succeeded": "成功",
+    "completed": "完了",
+    "failed": "失敗",
+    "cancelled": "キャンセル済み",
+    "partiallyCompleted": "一部完了",
+    "waitingForUser": "ユーザー操作待ち",
+    "pending": "保留中",
+    "refunded": "返金済み",
+    "requiresCapture": "キャプチャ待ち",
+    "unknown": "不明"
+  },
+  "signIn": {
+    "loadFailedTitle": "ログイン読み込み失敗",
+    "loadFailedDescription": "ログインフローを読み込めませんでした。"
+  }
+}

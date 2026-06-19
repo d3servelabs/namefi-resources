@@ -1,0 +1,133 @@
+{
+  "title": "Namefi Feed",
+  "header": {
+    "usersLink": "Nutzer",
+    "subscribeRss": "Via RSS abonnieren",
+    "rss": "RSS",
+    "refreshing": "Wird aktualisiert"
+  },
+  "controls": {
+    "searchLabel": "Suche",
+    "searchPlaceholder": "Domains oder Nutzer suchen",
+    "searchPlaceholderWithTld": ".{tld}-Domains oder Nutzer suchen",
+    "clearSearchAriaLabel": "Suche löschen",
+    "tldLabel": "TLD",
+    "allTlds": "Alle TLDs",
+    "tldPlaceholder": "TLD eingeben",
+    "noTldMatch": "Keine TLD gefunden.",
+    "selectedHeading": "Ausgewählt",
+    "customHeading": "Benutzerdefiniert",
+    "useCustomTld": ".{tld} verwenden",
+    "commonHeading": "Häufig",
+    "clear": "Löschen"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "Keine passenden Einträge in diesem Feed-Abschnitt.",
+    "empty": "Keine Einträge gefunden.",
+    "endOfFeed": "Ende des Feeds",
+    "backToTopAriaLabel": "Nach oben"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# weitere Domain} other {# weitere Domains}}",
+    "openDomainAriaLabel": "{domain} öffnen",
+    "openSourceAriaLabel": "{source}-Quelle für {domain} öffnen",
+    "noExcerpt": "Kein Auszug verfügbar",
+    "justNow": "gerade eben",
+    "unknownDate": "Unbekannt",
+    "logoAlt": "{name}-Logo"
+  },
+  "report": {
+    "trigger": "Melden",
+    "reported": "Gemeldet",
+    "triggerAriaLabel": "Eintrag für {domain} melden",
+    "dialogTitle": "Eintrag melden",
+    "dialogDescription": "Problem mit <highlight>{domain}</highlight> melden. Unser Team prüft Meldungen vor der Bearbeitung.",
+    "reasonLabel": "Grund",
+    "reasonPlaceholder": "Grund auswählen",
+    "detailsLabel": "Details (optional)",
+    "detailsPlaceholder": "Kontext hinzufügen, der bei der Überprüfung hilft.",
+    "detailsHelp": "Optionale Hinweise zur Unterstützung Ihrer Meldung.",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "Details auf 1000 Zeichen begrenzen.",
+    "submit": "Meldung einreichen",
+    "submitting": "Wird eingereicht",
+    "submitSuccess": "Meldung für {domain} eingereicht.",
+    "submitErrorFallback": "Meldung konnte nicht eingereicht werden. Bitte erneut versuchen.",
+    "unexpectedResponse": "Unerwartete Serverantwort bei der Meldung.",
+    "reasons": {
+      "alreadySold": {
+        "label": "Bereits verkauft",
+        "description": "Die Domain wurde bereits verkauft und sollte nicht mehr im Feed erscheinen."
+      },
+      "inaccuratePrice": {
+        "label": "Falscher Preis",
+        "description": "Der angegebene Preis erscheint falsch oder irreführend."
+      },
+      "notForSale": {
+        "label": "Nicht zum Verkauf",
+        "description": "Dieser Beitrag repräsentiert kein echtes Domain-Verkaufsangebot."
+      },
+      "duplicateListing": {
+        "label": "Doppelter Eintrag",
+        "description": "Dieser Verkauf wurde bereits anderswo im Feed eingetragen."
+      },
+      "other": {
+        "label": "Sonstiges",
+        "description": "Das Problem bitte in den Details beschreiben."
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "Zurück zum Feed",
+    "fallbackSeller": "@unknown",
+    "refreshing": "Wird aktualisiert",
+    "invalidPath": "Dieser Feed-Nutzerpfad ist ungültig.",
+    "loadErrorFallback": "Angebote des Verkäufers konnten nicht geladen werden.",
+    "emptyListings": "Keine Angebote für diesen Verkäufer gefunden.",
+    "endOfListings": "Ende der Verkäufer-Angebote",
+    "subtitle": {
+      "invalidPath": "Ungültiger Feed-Nutzerpfad.",
+      "noDomains": "Dieser Verkäufer hat noch keine Domains eingestellt.",
+      "feedAndNamefi": "{feedCount, plural, one {# Feed-Domain} other {# Feed-Domains}} und {namefiCount, plural, one {# Namefi-eigene Domain} other {# Namefi-eigene Domains}}.",
+      "feedOnly": "{feedCount, plural, one {# Feed-Domain} other {# Feed-Domains}} von diesem Verkäufer eingestellt."
+    }
+  },
+  "users": {
+    "backToFeed": "Zurück zum Feed",
+    "title": "Nutzer",
+    "loadingSubtitle": "Nutzer werden geladen, die Domain-Verkaufsangebote veröffentlichen.",
+    "subtitle": "{count, plural, one {# passender Nutzer} other {# passende Nutzer}}.",
+    "subtitleRefreshed": "{count, plural, one {# passender Nutzer} other {# passende Nutzer}}, aktualisiert {refreshedAt}.",
+    "exportCsv": "CSV exportieren",
+    "exportSuccess": "Nutzer-CSV exportiert",
+    "exportErrorTitle": "CSV-Export fehlgeschlagen",
+    "exportErrorFallback": "Bitte erneut versuchen.",
+    "searchPlaceholder": "Handle, Domain oder Beitragstext suchen",
+    "clearSearchAriaLabel": "Suche löschen",
+    "minPostsAriaLabel": "Mindestanzahl Beiträge",
+    "minPostsOption": "{count}+ Beiträge",
+    "activeWithinAriaLabel": "Aktiv innerhalb",
+    "anyTime": "Jederzeit",
+    "activeWithinDays": "{count} Tage",
+    "lastDays": "Letzte {count}T",
+    "clear": "Löschen",
+    "columns": {
+      "user": "Nutzer",
+      "domains": "Domains",
+      "cadence": "Häufigkeit",
+      "lastPost": "Letzter Beitrag"
+    },
+    "domainsPerPost": "{count} / Beitrag",
+    "postsPerWeek": "Beiträge / Woche",
+    "namefiOwned": "{count} Namefi-eigene",
+    "today": "heute",
+    "daysAgo": "{count}T",
+    "unknownDate": "unbekannt",
+    "emptyThreshold": "Kein Nutzer erfüllt diesen Schwellenwert.",
+    "loadingMore": "Weitere Nutzer werden geladen",
+    "listings": "Angebote",
+    "post": "Beitrag"
+  }
+}

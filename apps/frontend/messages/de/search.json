@@ -1,0 +1,49 @@
+{
+  "header": {
+    "taglineWithNetwork": "Domain auf {parentDomain} suchen",
+    "taglineAllNetworks": "Domain in allen Netzwerken suchen",
+    "networkLabel": "Netzwerk:",
+    "allNetworks": "Alle"
+  },
+  "modeTabs": {
+    "register": "Registrieren",
+    "import": "Importieren"
+  },
+  "input": {
+    "placeholder": "Domain suchen...",
+    "importPlaceholder": "Sie können in zwei Formaten einfügen:\n\nFormat 1: Domain mit Auth-Code\nexample.com, authcode123\n\nFormat 2: Mehrere Domains (komma- oder zeilengetrennt)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "Suchen",
+    "importButton": "Importieren",
+    "clearParentDomainAriaLabel": "Übergeordnete Domain löschen",
+    "freeMintTooltipWithParent": "Suchen Sie verfügbare Subdomains unter {parentDomain} und sichern Sie sie kostenlos!",
+    "freeMintTooltipAllDomains": "Suchen Sie verfügbare Domains und sichern Sie sie kostenlos!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "Verlängerung für {price}",
+    "owner": "Inhaber: {owner}",
+    "notRegistered": "Nicht registriert",
+    "unsupported": "Nicht unterstützt",
+    "lockedShort": "Gesperrt",
+    "temporarilyUnimportable": "Vorübergehend nicht importierbar",
+    "taken": "Belegt",
+    "unavailableShort": "Nicht verf.",
+    "temporarilyUnavailable": "Vorübergehend nicht verfügbar",
+    "freeClaim": "Kostenlos sichern",
+    "addToWishlist": "Zur Wunschliste hinzufügen",
+    "removeFromWishlist": "Von der Wunschliste entfernen",
+    "eppCode": "EPP-Code",
+    "savedEppCode": "Gespeicherter EPP-Code",
+    "marketplace": "Marktplatz",
+    "buyShort": "Kaufen",
+    "buyOn": "Kaufen bei",
+    "buyOnSourceAriaLabel": "Kaufen bei {source}",
+    "buyOnSourceFromSellerAriaLabel": "Kaufen bei {source} von {seller}"
+  },
+  "results": {
+    "errorTitle": "Suchfehler",
+    "errorDescription": "Bei der Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "noResultsTitle": "Keine Domains gefunden",
+    "noResultsDescription": "Es wurden keine Domains für „{query}“ gefunden. Bitte versuchen Sie einen anderen Suchbegriff."
+  }
+}

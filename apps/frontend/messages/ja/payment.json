@@ -1,0 +1,95 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "お支払い方法の詳細",
+    "description": "お支払い方法の詳細を入力してください。ご注文を確定するまで請求は発生しません。",
+    "loading": "支払いフォームを読み込み中...",
+    "unableToLoad": "支払いフォームを読み込めません"
+  },
+  "addPaymentMethodForm": {
+    "submit": "この支払い方法を使用する",
+    "genericError": "エラーが発生しました",
+    "unexpectedError": "予期しないエラーが発生しました"
+  },
+  "hybridPaymentCard": {
+    "title": "お支払い方法",
+    "total": "合計",
+    "useAvailableBalance": "利用可能残高を使用",
+    "nfscAvailable": "{amount} NFSC 利用可能",
+    "noNfscBalance": "$NFSC 残高がありません",
+    "balanceBreakdown": "残高内訳",
+    "creditCard": "クレジットカード",
+    "x402SignAuthorization": "注文送信時に {amount} USD の TransferWithAuthorization に署名します（x402 決済）。",
+    "network": "ネットワーク",
+    "required": "必須",
+    "yourWalletBalance": "ウォレット残高",
+    "unavailable": "利用不可",
+    "insufficientUsdcBalance": "x402 支払い金額に対して USDC 残高が不足している可能性があります。",
+    "changeCard": "カードを変更",
+    "addOrSelectCard": "カードを追加または選択",
+    "creditCardOptional": "残高で全額カバーされるため、クレジットカードは任意です",
+    "creditCardRequiredForRemaining": "残り {amount} USD にクレジットカードが必要です",
+    "creditCardRequiredForFull": "全額にクレジットカードが必要です",
+    "paymentCoveredByBalance": "残高で全額カバー済み"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "x402 支払いは一時的に利用できません",
+    "addCreditCard": "続行するにはクレジットカードを追加してください",
+    "calculationError": "支払い金額の計算エラーです。残高とお支払い方法をご確認ください。"
+  },
+  "multiPaymentCard": {
+    "title": "複数支払い",
+    "nfscBalance": "NFSC 残高",
+    "usingNfsc": "NFSC 残高から {amount} USD を使用",
+    "addNfscBalance": "NFSC 残高を追加",
+    "creditCard": "クレジットカード",
+    "usingCreditCard": "クレジットカードから {amount} USD を使用",
+    "changeCard": "カードを変更",
+    "addOrSelectCard": "カードを追加または選択",
+    "addCreditCard": "クレジットカードを追加",
+    "total": "合計"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "残りの支払いをクレジットカードで続けることができます",
+    "cardToNfsc": "既存の残高で支払いの一部を充当できます",
+    "useMultiPayment": "複数支払いを使用"
+  },
+  "selectPaymentMethodCard": {
+    "title": "お支払い方法",
+    "total": "合計",
+    "useBalance": "残高を使用",
+    "available": "{amount} 利用可能",
+    "useCreditCard": "クレジットカードを使用",
+    "addOrSelectSavedCard": "保存済みカードを追加または選択",
+    "noPaymentRequired": "新しいドメインをお楽しみください。ご指定のウォレットアドレスにお送りします。",
+    "summary": "概要"
+  },
+  "paymentSummary": {
+    "title": "支払い概要",
+    "nfscBalance": "$NFSC 残高",
+    "creditCard": "クレジットカード",
+    "total": "合計"
+  },
+  "nfscBalanceDialog": {
+    "title": "NFSC 残高",
+    "description": "連携ウォレットおよびサポート対象チェーン全体の $NFSC 残高を確認できます。",
+    "tabOrders": "最近の NFSC 注文",
+    "totalAvailable": "合計利用可能額",
+    "topUp": "チャージ",
+    "showNfscInWallet": "NFSC をウォレットに表示",
+    "fetchingBalances": "残高を取得中...",
+    "emptyNoWallets": "$NFSC 残高を確認するにはウォレットを連携または接続してください。",
+    "emptyNoBalances": "ウォレット全体でまだ $NFSC が検出されていません。",
+    "addFunds": "資金を追加",
+    "ordersDisclaimer": "これはすべてのウォレットにおけるクレジットカードによる NFSC チャージ履歴です。NFSC で支払ったドメイン注文は完全な注文履歴に表示されます。",
+    "emptyOrders": "まだ NFSC チャージ履歴がありません。",
+    "goToPaymentMethods": "お支払い方法へ",
+    "connectWalletToContinue": "続行するにはウォレットを接続してください。",
+    "nfscAdded": "NFSC トークンがウォレットに追加されました",
+    "nfscAddFailed": "NFSC トークンをウォレットに追加できませんでした",
+    "nfscAddError": "ウォレットへの NFSC 追加に失敗しました"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "まだ NFSC 注文がありません。",
+    "chainFallback": "チェーン {chainId}"
+  }
+}

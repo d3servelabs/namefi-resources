@@ -1,0 +1,133 @@
+{
+  "title": "Feed de Namefi",
+  "header": {
+    "usersLink": "Usuarios",
+    "subscribeRss": "Suscribirse vía RSS",
+    "rss": "RSS",
+    "refreshing": "Actualizando"
+  },
+  "controls": {
+    "searchLabel": "Buscar",
+    "searchPlaceholder": "Buscar dominios o usuarios",
+    "searchPlaceholderWithTld": "Buscar dominios .{tld} o usuarios",
+    "clearSearchAriaLabel": "Borrar búsqueda",
+    "tldLabel": "TLD",
+    "allTlds": "Todos los TLDs",
+    "tldPlaceholder": "Escribe un TLD",
+    "noTldMatch": "Sin coincidencias de TLD.",
+    "selectedHeading": "Seleccionado",
+    "customHeading": "Personalizado",
+    "useCustomTld": "Usar .{tld}",
+    "commonHeading": "Comunes",
+    "clear": "Limpiar"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "No hay listados que coincidan con los filtros actuales.",
+    "empty": "No se encontraron listados.",
+    "endOfFeed": "Fin del feed",
+    "backToTopAriaLabel": "Volver arriba"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# dominio más} other {# dominios más}}",
+    "openDomainAriaLabel": "Abrir {domain}",
+    "openSourceAriaLabel": "Abrir fuente {source} para {domain}",
+    "noExcerpt": "Sin extracto disponible",
+    "justNow": "ahora mismo",
+    "unknownDate": "Desconocido",
+    "logoAlt": "Logo de {name}"
+  },
+  "report": {
+    "trigger": "Reportar",
+    "reported": "Reportado",
+    "triggerAriaLabel": "Reportar listado de {domain}",
+    "dialogTitle": "Reportar listado",
+    "dialogDescription": "Indica un problema con <highlight>{domain}</highlight>. Nuestro equipo revisa los reportes antes de tomar medidas.",
+    "reasonLabel": "Motivo",
+    "reasonPlaceholder": "Selecciona un motivo",
+    "detailsLabel": "Detalles (opcional)",
+    "detailsPlaceholder": "Añade contexto que nos ayude a verificar el problema.",
+    "detailsHelp": "Notas opcionales para respaldar tu reporte.",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "Mantén los detalles en menos de 1000 caracteres.",
+    "submit": "Enviar reporte",
+    "submitting": "Enviando",
+    "submitSuccess": "Reporte enviado para {domain}.",
+    "submitErrorFallback": "No se pudo enviar el reporte. Inténtalo de nuevo.",
+    "unexpectedResponse": "Respuesta inesperada del servidor al reportar.",
+    "reasons": {
+      "alreadySold": {
+        "label": "Ya vendido",
+        "description": "El dominio ya fue vendido y no debería permanecer en el feed."
+      },
+      "inaccuratePrice": {
+        "label": "Precio incorrecto",
+        "description": "El precio de venta indicado parece erróneo o engañoso."
+      },
+      "notForSale": {
+        "label": "No está en venta",
+        "description": "La publicación no representa una venta real de dominio."
+      },
+      "duplicateListing": {
+        "label": "Listado duplicado",
+        "description": "Esta venta ya fue publicada en otro lugar del feed."
+      },
+      "other": {
+        "label": "Otro",
+        "description": "Usa los detalles para describir el problema con claridad."
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "Volver al feed",
+    "fallbackSeller": "@unknown",
+    "refreshing": "Actualizando",
+    "invalidPath": "Esta ruta de usuario del feed no es válida.",
+    "loadErrorFallback": "Error al cargar los listados del vendedor.",
+    "emptyListings": "No se encontraron listados para este vendedor.",
+    "endOfListings": "Fin de los listados del vendedor",
+    "subtitle": {
+      "invalidPath": "Ruta de usuario del feed no válida.",
+      "noDomains": "Este vendedor aún no tiene dominios listados.",
+      "feedAndNamefi": "{feedCount, plural, one {# dominio en el feed} other {# dominios en el feed}} y {namefiCount, plural, one {# dominio en Namefi} other {# dominios en Namefi}}.",
+      "feedOnly": "{feedCount, plural, one {# dominio en el feed listado} other {# dominios en el feed listados}} por este vendedor."
+    }
+  },
+  "users": {
+    "backToFeed": "Volver al feed",
+    "title": "Usuarios",
+    "loadingSubtitle": "Cargando usuarios que publican listados de venta de dominios.",
+    "subtitle": "{count, plural, one {# usuario coincidente} other {# usuarios coincidentes}}.",
+    "subtitleRefreshed": "{count, plural, one {# usuario coincidente} other {# usuarios coincidentes}}, actualizado {refreshedAt}.",
+    "exportCsv": "Exportar CSV",
+    "exportSuccess": "CSV de usuarios exportado",
+    "exportErrorTitle": "No se pudo exportar el CSV de usuarios",
+    "exportErrorFallback": "Inténtalo de nuevo.",
+    "searchPlaceholder": "Buscar usuario, dominio o texto de publicación",
+    "clearSearchAriaLabel": "Borrar búsqueda",
+    "minPostsAriaLabel": "Publicaciones mínimas",
+    "minPostsOption": "{count}+ publicaciones",
+    "activeWithinAriaLabel": "Activo en los últimos",
+    "anyTime": "Cualquier momento",
+    "activeWithinDays": "{count} días",
+    "lastDays": "Últ. {count}d",
+    "clear": "Limpiar",
+    "columns": {
+      "user": "Usuario",
+      "domains": "Dominios",
+      "cadence": "Cadencia",
+      "lastPost": "Última publicación"
+    },
+    "domainsPerPost": "{count} / publicación",
+    "postsPerWeek": "publicaciones / semana",
+    "namefiOwned": "{count} en Namefi",
+    "today": "hoy",
+    "daysAgo": "{count}d",
+    "unknownDate": "desconocido",
+    "emptyThreshold": "Ningún usuario cumple este criterio.",
+    "loadingMore": "Cargando más usuarios",
+    "listings": "Listados",
+    "post": "Publicación"
+  }
+}

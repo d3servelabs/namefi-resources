@@ -1,0 +1,83 @@
+{
+  "inYourCart": "Votre panier",
+  "yourCartIsEmpty": "Votre panier est vide",
+  "emptyCartHint": "Ajoutez des domaines à votre panier pour commencer",
+  "browseDomains": "Parcourir les domaines",
+  "clearCart": "Vider le panier",
+  "clearCartDialog": {
+    "title": "Vider le panier ?",
+    "description": "Tous les articles seront supprimés de votre panier. Vous pourrez les rajouter ultérieurement si nécessaire."
+  },
+  "errorDialog": {
+    "title": "Une erreur est survenue.",
+    "description": "Rassurez-vous, aucun montant ne vous sera débité. Veuillez réessayer ou retourner à votre panier.",
+    "errorDetail": "(Error - {message})"
+  },
+  "cartChanges": {
+    "title": "Modifications du panier",
+    "description": "Des modifications ont été apportées à votre panier."
+  },
+  "submitButton": {
+    "selectNftWallet": "Sélectionner un portefeuille NFT pour continuer",
+    "selectPaymentMethod": "Sélectionner un mode de paiement pour continuer",
+    "submitOrder": "Passer la commande"
+  },
+  "disabledReason": {
+    "cartUpdating": "Votre panier est en cours de mise à jour.",
+    "acceptRequirements": "Veuillez consulter et accepter les conditions d'enregistrement affichées sur vos articles.",
+    "finishSplittingPayment": "Finalisez la répartition de votre paiement pour continuer.",
+    "selectWallet": "Sélectionnez un portefeuille pour recevoir vos domaines.",
+    "confirmWallet": "Confirmez le portefeuille qui recevra vos domaines.",
+    "selectPaymentMethod": "Sélectionnez un mode de paiement."
+  },
+  "skeleton": {
+    "selectNftWallet": "Portefeuille NFT",
+    "paymentMethod": "Mode de paiement"
+  },
+  "addFromUrl": {
+    "cart": "Panier",
+    "heading": "Ajout de domaines à votre panier",
+    "subheading": "Veuillez patienter pendant la validation, la vérification de disponibilité et le chargement dans votre panier.",
+    "domainsRequested": "Domaines demandés",
+    "steps": {
+      "parse": "Validation des domaines",
+      "fetch": "Vérification de la disponibilité",
+      "add": "Ajout au panier",
+      "redirect": "Redirection vers votre panier"
+    },
+    "detail": {
+      "added": "Ajouté",
+      "readyToAdd": "Prêt à ajouter",
+      "alreadyInCart": "Déjà dans le panier",
+      "requiresTransferCode": "Code de transfert requis",
+      "unsupported": "Non pris en charge/indisponible",
+      "invalid": "Invalide"
+    },
+    "confirm": {
+      "addingToCart": "Ajout au panier…",
+      "addToCart": "Ajouter au panier",
+      "reviewHelper": "Vérifiez les informations ci-dessus, puis confirmez.",
+      "noRegistrableHelper": "Aucun domaine enregistrable trouvé à ajouter."
+    },
+    "redirecting": "Redirection vers votre panier…",
+    "errors": {
+      "noDomains": "Aucun domaine n'a été fourni.",
+      "validationFailed": "Une erreur est survenue lors de la validation de vos domaines.",
+      "addFailed": "Une erreur est survenue lors de l'ajout au panier."
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, one {article} other {articles}}",
+    "cartTotal": "Total du panier",
+    "domainsReadyToImport": "{count, plural, one {domaine prêt} other {domaines prêts}} à importer",
+    "addAll": "Tout ajouter",
+    "addToCart": "Ajouter au panier",
+    "checkout": "Commander"
+  },
+  "submitErrors": {
+    "x402Disabled": "Le paiement x402 est actuellement désactivé",
+    "x402Unavailable": "Le paiement x402 n'est pas disponible pour le moment",
+    "x402ConnectWallet": "Connectez un portefeuille actif pour signer votre paiement x402",
+    "orderFailed": "Impossible de soumettre votre commande. Veuillez réessayer."
+  }
+}

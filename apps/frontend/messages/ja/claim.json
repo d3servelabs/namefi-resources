@@ -1,0 +1,57 @@
+{
+  "page": {
+    "title": "無料クレーム",
+    "domainClaimedSuccess": "ドメインのクレームに成功しました！",
+    "claimFailed": "ドメインのクレームに失敗しました：{message}",
+    "invalidDomain": {
+      "title": "無効なドメイン",
+      "description": "指定されたドメインは、正規化された有効な Namefi ドメインではありません。",
+      "hint": "完全に正規化されたドメインをご使用ください（例：「alice.0x.city」）。"
+    },
+    "ineligibleBanner": {
+      "title": "このドメインは無料クレームの対象外です。",
+      "description": "カートに追加して購入するか、検索に戻ることができます。",
+      "addToCart": "カートに追加"
+    },
+    "summary": {
+      "duration": "期間：{count, plural, one {# 年} other {# 年}} • 無料"
+    }
+  },
+  "widget": {
+    "defaultTitle": "あなたの 0x アイデンティティ",
+    "defaultSubtitle": "Web3 市民ネットワークの一員になろう",
+    "qualifyPrompt": "以下のステップに従って、資格があるか確認してください",
+    "steps": {
+      "signIn": {
+        "signedIn": "サインインありがとうございます！次のステップに進めます。",
+        "signedOut": "始めるには、サインインまたはアカウントを作成してください。"
+      },
+      "linkSocial": {
+        "trigger": "ソーシャルメディアを連携",
+        "description": "プロフィールページにアクセスして、対象となるユーザー名のソーシャルメディアアカウントを連携してください。現在、「0x」で始まるユーザー名がプロモーションの対象となります。",
+        "visitProfile": "プロフィールページへ"
+      },
+      "enterDomain": {
+        "trigger": "ドメイン名を入力",
+        "description": "以下に対象となるドメイン名を入力してください。利用可能な場合、無料でクレームできます！"
+      }
+    },
+    "qualifying": {
+      "checking": "連携済みソーシャルメディアアカウントを基に対象ドメインを確認中...",
+      "error": "連携済みソーシャルメディアアカウントを基にした対象ドメインの確認中にエラーが発生しました。",
+      "none": "連携済みのソーシャルメディアアカウントは、無料ドメイン名のクレーム資格を満たしていないようです。",
+      "list": "対象ドメイン名：{domains}"
+    },
+    "input": {
+      "placeholderMobile": "名前",
+      "placeholderDesktop": "あなたの名前"
+    },
+    "button": {
+      "loginToClaim": "ログインしてクレーム",
+      "checking": "確認中…",
+      "inCart": "カート内",
+      "claiming": "クレーム中…",
+      "claimNow": "今すぐクレーム"
+    }
+  }
+}

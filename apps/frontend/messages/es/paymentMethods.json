@@ -1,0 +1,55 @@
+{
+  "loading": {
+    "title": "Cargando métodos de pago",
+    "description": "Preparando todo…"
+  },
+  "creditCards": {
+    "heading": "Métodos de pago",
+    "addButton": "Agregar tarjeta de crédito",
+    "cardHolderFallback": "Titular de la tarjeta",
+    "empty": {
+      "title": "No se encontraron métodos de pago",
+      "description": "Considera agregar un nuevo método de pago"
+    },
+    "toast": {
+      "saveError": "No se pudo guardar el método de pago",
+      "deleteSuccess": "Método de pago eliminado correctamente",
+      "deleteError": "No se pudo eliminar el método de pago"
+    },
+    "deleteDialog": {
+      "title": "Eliminar método de pago",
+      "description": "¿Seguro que deseas eliminar tu tarjeta {brand} terminada en {last4}? Esta acción no se puede deshacer."
+    }
+  },
+  "wallets": {
+    "heading": "Carteras vinculadas",
+    "linkButton": "Vincular cartera",
+    "showInWallet": "Mostrar en cartera",
+    "addFunds": "Agregar fondos",
+    "empty": {
+      "title": "No se encontraron carteras vinculadas",
+      "description": "Considera agregar una nueva cartera"
+    },
+    "actionDescription": {
+      "addToken": "para agregar el token NFSC a tu cartera",
+      "charge": "para recargar tu cartera"
+    },
+    "toast": {
+      "requestSentTitle": "Solicitud enviada a la cartera",
+      "requestSentDescription": "Revisa tu cartera para agregar el token NFSC",
+      "addTokenSuccess": "Token NFSC agregado correctamente a tu cartera",
+      "addTokenError": "No se pudo agregar el token NFSC a tu cartera",
+      "addTokenFailedTitle": "Error al agregar el token",
+      "unknownError": "Error desconocido",
+      "prepareActionError": "No se pudo preparar la acción de cartera"
+    }
+  },
+  "saveDialog": {
+    "title": "Detalles del método de pago",
+    "description": "Ingresa los datos de tu método de pago",
+    "submit": "Guardar método de pago",
+    "processing": "Procesando…",
+    "genericError": "Ocurrió un error",
+    "unexpectedError": "Ocurrió un error inesperado"
+  }
+}

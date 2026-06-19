@@ -1,0 +1,29 @@
+{
+  "title": "Mes Mints Gratuits",
+  "historyHeading": "Historique",
+  "table": {
+    "item": "Élément",
+    "issuedOn": "Émis le",
+    "validUntil": "Valide jusqu'au",
+    "status": "Statut",
+    "claimedDomain": "Domaine réclamé",
+    "claimedOn": "Réclamé le"
+  },
+  "campaignItem": "N'importe quel sous-domaine <domain>{domain}</domain>",
+  "campaignLabel": "N'importe quel sous-domaine {domain}",
+  "statusBadge": {
+    "claimed": "Réclamé",
+    "inProgress": "En cours",
+    "expired": "Expiré",
+    "available": "Disponible"
+  },
+  "noHistory": "Aucun historique de réclamation.",
+  "emptyTitle": "Aucun Mint Gratuit",
+  "emptyDescription": "Vos opportunités de réclamation gratuites apparaîtront ici.",
+  "card": {
+    "issued": "Émis",
+    "validThru": "Valide jusqu'au",
+    "claimNow": "Réclamer",
+    "poweredByNamefi": "Propulsé par Namefi"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "भुगतान विधि विवरण",
+    "description": "अपनी भुगतान विधि का विवरण दर्ज करें। आपका ऑर्डर कन्फ़र्म होने तक हम कोई शुल्क नहीं लेंगे।",
+    "loading": "भुगतान फ़ॉर्म लोड हो रहा है...",
+    "unableToLoad": "भुगतान फ़ॉर्म लोड नहीं हो सका"
+  },
+  "addPaymentMethodForm": {
+    "submit": "इस भुगतान विधि का उपयोग करें",
+    "genericError": "एक त्रुटि हुई",
+    "unexpectedError": "एक अप्रत्याशित त्रुटि हुई"
+  },
+  "hybridPaymentCard": {
+    "title": "भुगतान विधि",
+    "total": "कुल",
+    "useAvailableBalance": "उपलब्ध बैलेंस का उपयोग करें",
+    "nfscAvailable": "{amount} NFSC उपलब्ध",
+    "noNfscBalance": "कोई $NFSC बैलेंस उपलब्ध नहीं",
+    "balanceBreakdown": "बैलेंस विवरण",
+    "creditCard": "क्रेडिट कार्ड",
+    "x402SignAuthorization": "ऑर्डर सबमिट करने पर आप {amount} USD के लिए TransferWithAuthorization पर हस्ताक्षर करेंगे।",
+    "network": "नेटवर्क",
+    "required": "आवश्यक",
+    "yourWalletBalance": "आपका वॉलेट बैलेंस",
+    "unavailable": "अनुपलब्ध",
+    "insufficientUsdcBalance": "इस x402 भुगतान के लिए आपका USDC बैलेंस अपर्याप्त हो सकता है।",
+    "changeCard": "कार्ड बदलें",
+    "addOrSelectCard": "कार्ड जोड़ें या चुनें",
+    "creditCardOptional": "क्रेडिट कार्ड वैकल्पिक है — आपके पास पर्याप्त बैलेंस है",
+    "creditCardRequiredForRemaining": "शेष {amount} USD के लिए क्रेडिट कार्ड आवश्यक है",
+    "creditCardRequiredForFull": "पूरी राशि के लिए क्रेडिट कार्ड आवश्यक है",
+    "paymentCoveredByBalance": "बैलेंस से भुगतान पूर्ण"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "x402 भुगतान अस्थायी रूप से अनुपलब्ध है",
+    "addCreditCard": "जारी रखने के लिए कृपया क्रेडिट कार्ड जोड़ें",
+    "calculationError": "भुगतान गणना में त्रुटि। कृपया अपना बैलेंस और भुगतान विधि जांचें।"
+  },
+  "multiPaymentCard": {
+    "title": "मल्टी-पेमेंट",
+    "nfscBalance": "NFSC बैलेंस",
+    "usingNfsc": "NFSC बैलेंस से {amount} USD उपयोग हो रहा है",
+    "addNfscBalance": "NFSC बैलेंस जोड़ें",
+    "creditCard": "क्रेडिट कार्ड",
+    "usingCreditCard": "क्रेडिट कार्ड से {amount} USD उपयोग हो रहा है",
+    "changeCard": "कार्ड बदलें",
+    "addOrSelectCard": "कार्ड जोड़ें या चुनें",
+    "addCreditCard": "क्रेडिट कार्ड जोड़ें",
+    "total": "कुल"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "शेष भुगतान राशि क्रेडिट कार्ड से जारी रख सकते हैं",
+    "cardToNfsc": "भुगतान राशि का एक हिस्सा मौजूदा बैलेंस से कवर कर सकते हैं",
+    "useMultiPayment": "मल्टी-पेमेंट का उपयोग करें"
+  },
+  "selectPaymentMethodCard": {
+    "title": "भुगतान विधि",
+    "total": "कुल",
+    "useBalance": "बैलेंस उपयोग करें",
+    "available": "{amount} उपलब्ध",
+    "useCreditCard": "क्रेडिट कार्ड उपयोग करें",
+    "addOrSelectSavedCard": "सहेजा गया कार्ड जोड़ें या चुनें",
+    "noPaymentRequired": "हमें आशा है कि आप अपने नए डोमेन का आनंद लेंगे! हम इन्हें आपके दिए गए वॉलेट पते पर भेज देंगे।",
+    "summary": "सारांश"
+  },
+  "paymentSummary": {
+    "title": "भुगतान सारांश",
+    "nfscBalance": "$NFSC बैलेंस",
+    "creditCard": "क्रेडिट कार्ड",
+    "total": "कुल"
+  },
+  "nfscBalanceDialog": {
+    "title": "NFSC बैलेंस",
+    "description": "लिंक किए गए वॉलेट और समर्थित चेन में उपलब्ध अपना $NFSC देखें।",
+    "tabOrders": "हाल के NFSC ऑर्डर",
+    "totalAvailable": "कुल उपलब्ध",
+    "topUp": "टॉप अप करें",
+    "showNfscInWallet": "वॉलेट में NFSC दिखाएं",
+    "fetchingBalances": "बैलेंस प्राप्त हो रहा है...",
+    "emptyNoWallets": "अपना $NFSC बैलेंस देखने के लिए कोई वॉलेट लिंक या कनेक्ट करें।",
+    "emptyNoBalances": "आपके किसी भी वॉलेट में अभी तक कोई $NFSC नहीं मिला।",
+    "addFunds": "फंड जोड़ें",
+    "ordersDisclaimer": "ये आपके सभी वॉलेट में क्रेडिट-कार्ड से NFSC टॉप-अप हैं। NFSC से भुगतान किए गए डोमेन ऑर्डर आपके पूर्ण ऑर्डर इतिहास में दिखेंगे।",
+    "emptyOrders": "अभी तक कोई NFSC टॉप-अप नहीं।",
+    "goToPaymentMethods": "भुगतान विधियों पर जाएं",
+    "connectWalletToContinue": "जारी रखने के लिए वॉलेट कनेक्ट करें।",
+    "nfscAdded": "NFSC टोकन आपके वॉलेट में जोड़ा गया",
+    "nfscAddFailed": "NFSC टोकन वॉलेट में नहीं जोड़ा जा सका",
+    "nfscAddError": "वॉलेट में NFSC जोड़ने में विफल"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "अभी तक कोई NFSC ऑर्डर नहीं।",
+    "chainFallback": "चेन {chainId}"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "badge": "ICANN-akkreditierter Registrar auf Ethereum & Base",
+    "heading": "Namefi: Die nächste Generation der Domain-Plattform mit Blockchain und KI",
+    "subtitle": "Schneller, günstiger und nachprüfbar. Die beste Art, Domains zu besitzen.",
+    "tryV3Beta": "Oder testen Sie unsere neue Sucherfahrung (v3 Beta)"
+  },
+  "scrollIndicator": {
+    "ariaLabel": "Zum Abschnitt „Warum Namefi nutzen?“ scrollen",
+    "label": "Warum Namefi wählen?"
+  },
+  "floatingSearch": {
+    "placeholder": "Domain suchen...",
+    "searchButton": "Suchen"
+  }
+}

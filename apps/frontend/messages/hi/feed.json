@@ -1,0 +1,133 @@
+{
+  "title": "Namefi फ़ीड",
+  "header": {
+    "usersLink": "उपयोगकर्ता",
+    "subscribeRss": "RSS के माध्यम से सदस्यता लें",
+    "rss": "RSS",
+    "refreshing": "रीफ्रेश हो रहा है"
+  },
+  "controls": {
+    "searchLabel": "खोजें",
+    "searchPlaceholder": "डोमेन या उपयोगकर्ता खोजें",
+    "searchPlaceholderWithTld": ".{tld} डोमेन या उपयोगकर्ता खोजें",
+    "clearSearchAriaLabel": "खोज साफ़ करें",
+    "tldLabel": "TLD",
+    "allTlds": "सभी TLDs",
+    "tldPlaceholder": "TLD टाइप करें",
+    "noTldMatch": "कोई TLD मेल नहीं खाया।",
+    "selectedHeading": "चयनित",
+    "customHeading": "कस्टम",
+    "useCustomTld": ".{tld} उपयोग करें",
+    "commonHeading": "सामान्य",
+    "clear": "साफ़ करें"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "फ़ीड के इस भाग में कोई मिलती-जुलती लिस्टिंग नहीं है।",
+    "empty": "कोई लिस्टिंग नहीं मिली।",
+    "endOfFeed": "फ़ीड का अंत",
+    "backToTopAriaLabel": "शीर्ष पर वापस जाएं"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, one {# अन्य डोमेन} other {# अन्य डोमेन}}",
+    "openDomainAriaLabel": "{domain} खोलें",
+    "openSourceAriaLabel": "{domain} के लिए {source} स्रोत खोलें",
+    "noExcerpt": "कोई अंश उपलब्ध नहीं",
+    "justNow": "अभी-अभी",
+    "unknownDate": "अज्ञात",
+    "logoAlt": "{name} लोगो"
+  },
+  "report": {
+    "trigger": "रिपोर्ट करें",
+    "reported": "रिपोर्ट किया गया",
+    "triggerAriaLabel": "{domain} की लिस्टिंग रिपोर्ट करें",
+    "dialogTitle": "लिस्टिंग रिपोर्ट करें",
+    "dialogDescription": "<highlight>{domain}</highlight> से जुड़ी समस्याएं फ़्लैग करें। हमारी टीम कोई कार्रवाई करने से पहले रिपोर्ट की समीक्षा करती है।",
+    "reasonLabel": "कारण",
+    "reasonPlaceholder": "कारण चुनें",
+    "detailsLabel": "विवरण (वैकल्पिक)",
+    "detailsPlaceholder": "ऐसा संदर्भ जोड़ें जो समस्या सत्यापित करने में सहायक हो।",
+    "detailsHelp": "आपकी रिपोर्ट को समर्थन देने के लिए वैकल्पिक नोट्स।",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "विवरण 1000 वर्णों से कम रखें।",
+    "submit": "रिपोर्ट सबमिट करें",
+    "submitting": "सबमिट हो रहा है",
+    "submitSuccess": "{domain} के लिए रिपोर्ट सबमिट की गई।",
+    "submitErrorFallback": "रिपोर्ट सबमिट नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "unexpectedResponse": "सर्वर से अप्रत्याशित रिपोर्ट प्रतिक्रिया।",
+    "reasons": {
+      "alreadySold": {
+        "label": "पहले ही बिक चुका है",
+        "description": "डोमेन पहले ही बिक चुका है और फ़ीड में नहीं रहना चाहिए।"
+      },
+      "inaccuratePrice": {
+        "label": "गलत मूल्य",
+        "description": "सूचीबद्ध मांग मूल्य गलत या भ्रामक प्रतीत होता है।"
+      },
+      "notForSale": {
+        "label": "बिक्री के लिए नहीं",
+        "description": "यह पोस्ट वास्तविक डोमेन बिक्री लिस्टिंग का प्रतिनिधित्व नहीं करती।"
+      },
+      "duplicateListing": {
+        "label": "डुप्लीकेट लिस्टिंग",
+        "description": "यह बिक्री फ़ीड में पहले से कहीं और सूचीबद्ध है।"
+      },
+      "other": {
+        "label": "अन्य",
+        "description": "समस्या स्पष्ट रूप से वर्णन करने के लिए विवरण का उपयोग करें।"
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "फ़ीड पर वापस जाएं",
+    "fallbackSeller": "@unknown",
+    "refreshing": "रीफ्रेश हो रहा है",
+    "invalidPath": "यह फ़ीड उपयोगकर्ता पथ मान्य नहीं है।",
+    "loadErrorFallback": "विक्रेता की लिस्टिंग लोड नहीं हो सकी।",
+    "emptyListings": "इस विक्रेता के लिए कोई लिस्टिंग नहीं मिली।",
+    "endOfListings": "विक्रेता की लिस्टिंग का अंत",
+    "subtitle": {
+      "invalidPath": "अमान्य फ़ीड उपयोगकर्ता पथ।",
+      "noDomains": "इस विक्रेता ने अभी तक कोई डोमेन सूचीबद्ध नहीं किया है।",
+      "feedAndNamefi": "{feedCount, plural, one {# फ़ीड डोमेन} other {# फ़ीड डोमेन}} और {namefiCount, plural, one {# Namefi-owned डोमेन} other {# Namefi-owned डोमेन}}।",
+      "feedOnly": "{feedCount, plural, one {# फ़ीड डोमेन} other {# फ़ीड डोमेन}} इस विक्रेता द्वारा सूचीबद्ध।"
+    }
+  },
+  "users": {
+    "backToFeed": "फ़ीड पर वापस जाएं",
+    "title": "उपयोगकर्ता",
+    "loadingSubtitle": "डोमेन बिक्री लिस्टिंग पोस्ट करने वाले उपयोगकर्ता लोड हो रहे हैं।",
+    "subtitle": "{count, plural, one {# मिलता-जुलता उपयोगकर्ता} other {# मिलते-जुलते उपयोगकर्ता}}।",
+    "subtitleRefreshed": "{count, plural, one {# मिलता-जुलता उपयोगकर्ता} other {# मिलते-जुलते उपयोगकर्ता}}, {refreshedAt} को रीफ्रेश किया गया।",
+    "exportCsv": "CSV निर्यात करें",
+    "exportSuccess": "उपयोगकर्ता CSV निर्यात किया गया",
+    "exportErrorTitle": "उपयोगकर्ता CSV निर्यात नहीं हो सका",
+    "exportErrorFallback": "कृपया पुनः प्रयास करें।",
+    "searchPlaceholder": "हैंडल, डोमेन या पोस्ट टेक्स्ट खोजें",
+    "clearSearchAriaLabel": "खोज साफ़ करें",
+    "minPostsAriaLabel": "न्यूनतम पोस्ट",
+    "minPostsOption": "{count}+ पोस्ट",
+    "activeWithinAriaLabel": "इस अवधि में सक्रिय",
+    "anyTime": "कभी भी",
+    "activeWithinDays": "{count} दिन",
+    "lastDays": "पिछले {count}d",
+    "clear": "साफ़ करें",
+    "columns": {
+      "user": "उपयोगकर्ता",
+      "domains": "डोमेन",
+      "cadence": "आवृत्ति",
+      "lastPost": "अंतिम पोस्ट"
+    },
+    "domainsPerPost": "{count} / पोस्ट",
+    "postsPerWeek": "पोस्ट / सप्ताह",
+    "namefiOwned": "{count} Namefi-owned",
+    "today": "आज",
+    "daysAgo": "{count}d",
+    "unknownDate": "अज्ञात",
+    "emptyThreshold": "इस सीमा से कोई उपयोगकर्ता मेल नहीं खाता।",
+    "loadingMore": "और उपयोगकर्ता लोड हो रहे हैं",
+    "listings": "लिस्टिंग",
+    "post": "पोस्ट"
+  }
+}

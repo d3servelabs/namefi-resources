@@ -1,0 +1,62 @@
+{
+  "disclaimer": "Namefi एक ICANN मान्यता प्राप्त रजिस्ट्रार है जो ट्रेडिंग, DeFi और इंटरनेट के भविष्य के लिए इंटरनेट डोमेन नामों को टोकनाइज़ करता है।",
+  "llmsTxt": "यदि आप Claude Code, Codex, OpenClaw, Hermes, Cursor, OpenCode या किसी अन्य AI एजेंट जैसे LLM एजेंट हैं, तो <link>llms.txt</link> का उपयोग करें।",
+  "copyright": "© {year} D3SERVE LABS, Inc. सर्वाधिकार सुरक्षित।",
+  "cookieSettings": "कुकी सेटिंग्स",
+  "cookieSettingsAriaLabel": "कुकी सेटिंग्स डायलॉग खोलें",
+  "termsAndConditions": "नियम एवं शर्तें",
+  "sections": {
+    "explore": {
+      "title": "एक्सप्लोर करें",
+      "links": {
+        "discoverDomains": "डोमेन खोजें",
+        "brandStudio": "Namefi ब्रांड स्टूडियो",
+        "feed": "Namefi फ़ीड",
+        "outbound": "Namefi आउटबाउंड",
+        "domainHunt": "डोमेन हंट",
+        "newsletter": "न्यूज़लेटर",
+        "flushDns": "DNS फ्लश करें",
+        "faucet": "NFSC फ़ॉसेट (sandbox)"
+      }
+    },
+    "account": {
+      "links": {
+        "myDomains": "मेरे डोमेन",
+        "myWishlist": "मेरी विशलिस्ट",
+        "myOrders": "मेरे ऑर्डर",
+        "paymentMethods": "भुगतान विधियाँ"
+      }
+    },
+    "resources": {
+      "title": "संसाधन",
+      "links": {
+        "blog": "ब्लॉग",
+        "watch": "वीडियो देखें",
+        "careers": "करियर",
+        "tlds": "TLDs",
+        "partners": "पार्टनर",
+        "glossary": "शब्दावली",
+        "howWeHire": "हम कैसे नियुक्त करते हैं",
+        "abuseReporting": "दुरुपयोग रिपोर्ट",
+        "educationHub": "शिक्षा केंद्र",
+        "registrationAgreement": "पंजीकरण अनुबंध",
+        "apiDocs": "Namefi API दस्तावेज़",
+        "llmApi": "LLM AI एजेंटों के लिए API",
+        "support": "सहायता"
+      }
+    },
+    "faq": {
+      "title": "FAQ",
+      "links": {
+        "aboutNamefi": "Namefi के बारे में",
+        "whatIsDomain": "डोमेन क्या है?",
+        "whatAreTokenizedDomains": "टोकनाइज़्ड डोमेन क्या हैं?",
+        "whyTokenizeDomains": "डोमेन टोकनाइज़ क्यों करें?",
+        "dnsOnTokenizedDomains": "टोकनाइज़्ड डोमेन पर DNS",
+        "dnsIsControlPlane": "DNS कंट्रोल प्लेन है",
+        "howToTokenizeCom": "अपना .com टोकनाइज़ कैसे करें",
+        "tokenizedVsWeb3": "टोकनाइज़्ड डोमेन बनाम Web3 डोमेन"
+      }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "inYourCart": "カートの中身",
+  "yourCartIsEmpty": "カートは空です",
+  "emptyCartHint": "ドメインをカートに追加して始めましょう",
+  "browseDomains": "ドメインを探す",
+  "clearCart": "カートをクリア",
+  "clearCartDialog": {
+    "title": "カートをクリアしますか？",
+    "description": "カート内のすべてのアイテムが削除されます。後から再度追加できます。"
+  },
+  "errorDialog": {
+    "title": "エラーが発生しました。",
+    "description": "ご安心ください、請求は発生しません。もう一度お試しいただくか、カートに戻ってください。",
+    "errorDetail": "(Error - {message})"
+  },
+  "cartChanges": {
+    "title": "カートの変更",
+    "description": "カートの内容が一部変更されました。"
+  },
+  "submitButton": {
+    "selectNftWallet": "続行するにはNFTウォレットを選択してください",
+    "selectPaymentMethod": "続行するにはお支払い方法を選択してください",
+    "submitOrder": "注文を確定する"
+  },
+  "disabledReason": {
+    "cartUpdating": "カートを更新中です。",
+    "acceptRequirements": "カートのアイテムに表示されている登録要件を確認して同意してください。",
+    "finishSplittingPayment": "続行するには支払いの分割設定を完了してください。",
+    "selectWallet": "ドメインを受け取るウォレットを選択してください。",
+    "confirmWallet": "ドメインを受け取るウォレットを確認してください。",
+    "selectPaymentMethod": "お支払い方法を選択してください。"
+  },
+  "skeleton": {
+    "selectNftWallet": "NFTウォレットを選択",
+    "paymentMethod": "お支払い方法"
+  },
+  "addFromUrl": {
+    "cart": "カート",
+    "heading": "ドメインをカートに追加中",
+    "subheading": "検証、空き確認、カートへの読み込みを行っています。しばらくお待ちください。",
+    "domainsRequested": "リクエストされたドメイン",
+    "steps": {
+      "parse": "ドメインを検証中",
+      "fetch": "空き状況を確認中",
+      "add": "カートに追加中",
+      "redirect": "カートへ移動中"
+    },
+    "detail": {
+      "added": "追加済み",
+      "readyToAdd": "追加準備完了",
+      "alreadyInCart": "カート内に既にあります",
+      "requiresTransferCode": "転送コードが必要",
+      "unsupported": "未対応/利用不可",
+      "invalid": "無効"
+    },
+    "confirm": {
+      "addingToCart": "カートに追加中...",
+      "addToCart": "カートに追加する",
+      "reviewHelper": "上記の内容を確認して、確定してください。",
+      "noRegistrableHelper": "追加できる登録可能なドメインが見つかりませんでした。"
+    },
+    "redirecting": "カートへリダイレクト中…",
+    "errors": {
+      "noDomains": "ドメインが指定されていません。",
+      "validationFailed": "ドメインの検証中にエラーが発生しました。",
+      "addFailed": "カートへの追加中にエラーが発生しました。"
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, other {件}}",
+    "cartTotal": "カート合計",
+    "domainsReadyToImport": "{count, plural, other {個のドメイン}}がインポート準備完了",
+    "addAll": "すべて追加",
+    "addToCart": "カートに追加",
+    "checkout": "チェックアウト"
+  },
+  "submitErrors": {
+    "x402Disabled": "x402支払いは現在無効です",
+    "x402Unavailable": "x402支払いは現在利用できません",
+    "x402ConnectWallet": "x402支払いに署名するためにアクティブなウォレットを接続してください",
+    "orderFailed": "注文を送信できませんでした。もう一度お試しください。"
+  }
+}

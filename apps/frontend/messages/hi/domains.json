@@ -1,0 +1,162 @@
+{
+  "tabs": {
+    "active": "मेरे डोमेन",
+    "inactive": "निष्क्रिय डोमेन",
+    "previouslyOwned": "पहले के स्वामित्व वाले डोमेन",
+    "otherWallets": "अन्य वॉलेट पर",
+    "marketplaceOrders": "मेरी लिस्टिंग और ऑफ़र"
+  },
+  "processingBanner": "<domains></domains> प्रोसेस हो रहे हैं। स्थिति देखने के लिए <ordersLink>ऑर्डर</ordersLink> पर जाएं।",
+  "emptyActive": "कोई सक्रिय डोमेन नहीं",
+  "emptyInactive": "कोई निष्क्रिय डोमेन नहीं",
+  "emptyPlaceholder": {
+    "title": "कोई डोमेन नहीं मिला",
+    "description": "नीचे दिए बटन पर क्लिक करके अपना अगला डोमेन खोजें",
+    "action": "खोज पृष्ठ"
+  },
+  "columns": {
+    "selectAll": "सभी चुनें",
+    "selectRow": "पंक्ति चुनें",
+    "domainName": "डोमेन नाम ({count})",
+    "domainNamePlain": "डोमेन नाम",
+    "renewal": "नवीनीकरण",
+    "autoEns": "AutoENS",
+    "dateTokenized": "टोकनीकरण तिथि",
+    "dnsRecords": "DNS रिकॉर्ड",
+    "actions": "कार्रवाइयाँ",
+    "renewUsdPerYear": "नवीनीकरण (USD/yr)"
+  },
+  "table": {
+    "searchPlaceholder": "डोमेन फ़िल्टर करें...",
+    "emptyMessage": "कोई डोमेन आपके फ़िल्टर से मेल नहीं खाता",
+    "loadingMessage": "डोमेन लोड हो रहे हैं…",
+    "showNftsInWallet": "वॉलेट में NFT दिखाएं",
+    "showNftsInWalletAria": "वॉलेट में {count, plural, one {# NFT} other {# NFTs}} दिखाएं",
+    "filters": {
+      "domainName": "डोमेन नाम",
+      "wallet": "वॉलेट",
+      "renewal": "नवीनीकरण",
+      "dateTokenized": "टोकनीकरण तिथि",
+      "chain": "चेन"
+    },
+    "toasts": {
+      "autoRenewToggled": "{domain} के लिए ऑटो-नवीनीकरण {enabled, select, true {सक्षम} other {अक्षम}} किया गया",
+      "autoRenewToggleFailed": "{domain} के लिए ऑटो-नवीनीकरण अपडेट करना विफल रहा",
+      "autoEnsToggled": "{domain} के लिए AutoENS {enabled, select, true {सक्षम} other {अक्षम}} किया गया",
+      "autoEnsToggleFailed": "{domain} के लिए AutoENS अपडेट करना विफल रहा",
+      "bulkAutoRenewFailed": "{total} में से {failed} डोमेन अपडेट करना विफल रहा",
+      "bulkAutoRenewToggled": "{count, plural, one {# डोमेन} other {# डोमेन}} के लिए ऑटो-नवीनीकरण {enabled, select, true {सक्षम} other {अक्षम}} किया गया",
+      "noNftsToWatch": "आपके वॉलेट में जोड़ने के लिए कोई NFT उपलब्ध नहीं है",
+      "nftsAdded": "आपके वॉलेट में {count, plural, one {# NFT जोड़ा गया} other {# NFTs जोड़े गए}}",
+      "nftsAddFailed": "आपके वॉलेट में {count, plural, one {# NFT जोड़ा नहीं जा सका} other {# NFTs जोड़े नहीं जा सके}}"
+    }
+  },
+  "otherWallets": {
+    "domain": "डोमेन ({count})",
+    "nftWallet": "NFT वॉलेट",
+    "order": "ऑर्डर",
+    "viewOrder": "ऑर्डर देखें"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {डोमेन नवीनीकृत करें} other {डोमेन नवीनीकृत करें}}",
+    "descriptionSingle": "{domain} नवीनीकृत करें",
+    "descriptionMultiple": "{count} डोमेन नवीनीकृत करें",
+    "renewalPeriod": "नवीनीकरण अवधि",
+    "selectYears": "वर्ष चुनें",
+    "yearOption": "{years, plural, one {# वर्ष} other {# वर्ष}}",
+    "pricePerYear": "प्रति वर्ष मूल्य",
+    "total": "कुल ({years, plural, one {# वर्ष} other {# वर्ष}})",
+    "addingToCart": "कार्ट में जोड़ा जा रहा है...",
+    "addToCart": "कार्ट में जोड़ें",
+    "addToCartFailed": "डोमेन कार्ट में जोड़ना विफल रहा। कृपया पुनः प्रयास करें।"
+  },
+  "renewPremiumInfo": {
+    "aria": "{domain} के नवीनीकरण मूल्य की जानकारी",
+    "tooltip": "प्रीमियम डोमेन का नवीनीकरण मूल्य भिन्न हो सकता है।"
+  },
+  "renewalCell": {
+    "auto": "ऑटो",
+    "autoRenewAria": "{domain} ऑटो-नवीनीकरण",
+    "expired": "समाप्त",
+    "usdPerYear": "USD/year"
+  },
+  "autoEnsCell": {
+    "aria": "{domain} Auto-ENS"
+  },
+  "timeLeft": {
+    "expired": "समाप्त",
+    "days": "{days}d",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}y",
+    "yearsPlus": "{years}y+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "कभी समाप्त नहीं होता",
+    "expired": "समाप्त",
+    "expires": "{datetime} को समाप्त होगा"
+  },
+  "nftPendingBadge": {
+    "minting": "मिंटिंग…",
+    "changingExpiration": "समाप्ति अपडेट हो रही है…",
+    "changingLock": "लॉक अपडेट हो रहा है…",
+    "pending": "प्रतीक्षारत…"
+  },
+  "actions": {
+    "listForSale": "बिक्री के लिए सूचीबद्ध करें",
+    "findBuyers": "खरीदार खोजें",
+    "viewOrder": "ऑर्डर देखें",
+    "viewOrderMenu": "ऑर्डर देखें",
+    "viewNft": "NFT देखें",
+    "viewNftOn": "{explorer} पर NFT देखें",
+    "scan": "स्कैन करें",
+    "visitDomain": "डोमेन पर जाएं",
+    "showNftInWallet": "वॉलेट में NFT दिखाएं",
+    "listForSaleAria": "{domain} को बिक्री के लिए सूचीबद्ध करें",
+    "viewOrderAria": "{domain} का ऑर्डर देखें",
+    "findBuyersAria": "{domain} के लिए खरीदार खोजें",
+    "viewNftAria": "{domain} का NFT देखें",
+    "visitDomainAria": "{domain} पर जाएं",
+    "actionsAria": "{domain} के लिए कार्रवाइयाँ",
+    "showNftInWalletAria": "{domain} NFT वॉलेट में दिखाएं",
+    "nftAddedToast": "{domain} आपके वॉलेट में जोड़ा गया",
+    "nftAddFailedToast": "{domain} आपके वॉलेट में जोड़ना संभव नहीं हुआ",
+    "nftAddErrorToast": "NFT वॉलेट में जोड़ना विफल रहा",
+    "unknownError": "अज्ञात त्रुटि"
+  },
+  "floatingPanel": {
+    "selected": "चुने गए",
+    "clearSelection": "चयन साफ़ करें",
+    "auto": "ऑटो",
+    "bulkAutoRenewAria": "{count, plural, one {# डोमेन} other {# डोमेन}} के लिए बल्क ऑटो-नवीनीकरण",
+    "bulkAutoRenewMixed": "मिश्रित स्थिति — सभी अक्षम करने के लिए बाएं, सभी सक्षम करने के लिए दाएं क्लिक करें",
+    "bulkAutoRenewOn": "ऑटो-नवीनीकरण सक्षम — सभी अक्षम करने के लिए क्लिक करें",
+    "bulkAutoRenewOff": "ऑटो-नवीनीकरण अक्षम — सभी सक्षम करने के लिए क्लिक करें",
+    "renewAria": "{count, plural, one {# डोमेन} other {# डोमेन}} नवीनीकृत करें",
+    "renewTooltip": "{count, plural, one {# डोमेन} other {# डोमेन}} नवीनीकृत करें",
+    "setWebRecords": "Web रिकॉर्ड सेट करें",
+    "setUrlForwarding": "URL फ़ॉरवर्डिंग सेट करें",
+    "setEnsRecord": "ENS रिकॉर्ड सेट करें",
+    "showInWalletAria": "वॉलेट में {count, plural, one {# NFT} other {# NFTs}} दिखाएं",
+    "showInWalletTooltip": "वॉलेट में {count, plural, one {# NFT} other {# NFTs}} दिखाएं"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "कुछ लिस्टिंग नहीं दिख सकती क्योंकि उनके मार्केटप्लेस व्यस्त हो सकते हैं।",
+    "noLinkedWalletsTitle": "कोई लिंक किया वॉलेट नहीं",
+    "noLinkedWalletsDescription": "अपने मार्केटप्लेस ऑर्डर देखने के लिए अपने खाते से एक वॉलेट लिंक करें।",
+    "listingsTitle": "मेरी लिस्टिंग",
+    "listingsDescription": "OpenSea और Rarible पर आपकी सक्रिय बिक्री लिस्टिंग। प्रत्येक कार्ड के नीचे आने वाली बोलियाँ दिखती हैं।",
+    "noListingsTitle": "कोई सक्रिय लिस्टिंग नहीं",
+    "noListingsDescription": "किसी डोमेन विवरण पृष्ठ पर बनाई गई लिस्टिंग यहाँ दिखेंगी।",
+    "offersTitle": "अन्य डोमेन पर मेरे ऑफ़र",
+    "offersDescription": "आपके द्वारा उन डोमेन पर लगाई गई बोलियाँ जो आपके स्वामित्व में नहीं हैं। सर्वोच्च मूल्य के क्रम में।",
+    "noOffersTitle": "कोई आउटगोइंग ऑफ़र नहीं",
+    "noOffersDescription": "अन्य डोमेन पर लगाए गए ऑफ़र यहाँ दिखेंगे।",
+    "incomingBids": "आने वाली बोलियाँ",
+    "loadBidsFailed": "बोलियाँ लोड नहीं हो सकीं: {error}",
+    "noBidsYet": "अभी कोई बोली नहीं।",
+    "viewBidAria": "{domain} पर {source} बोली देखें",
+    "nftAlt": "NFT",
+    "offerWaiting": "आपका ऑफ़र खुला है और विक्रेता की स्वीकृति की प्रतीक्षा में है।"
+  }
+}

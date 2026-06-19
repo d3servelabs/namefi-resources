@@ -1,0 +1,133 @@
+{
+  "title": "Namefi フィード",
+  "header": {
+    "usersLink": "ユーザー",
+    "subscribeRss": "RSS で購読",
+    "rss": "RSS",
+    "refreshing": "更新中"
+  },
+  "controls": {
+    "searchLabel": "検索",
+    "searchPlaceholder": "ドメインまたはユーザーを検索",
+    "searchPlaceholderWithTld": ".{tld} ドメインまたはユーザーを検索",
+    "clearSearchAriaLabel": "検索をクリア",
+    "tldLabel": "TLD",
+    "allTlds": "すべての TLD",
+    "tldPlaceholder": "TLD を入力",
+    "noTldMatch": "一致する TLD がありません。",
+    "selectedHeading": "選択済み",
+    "customHeading": "カスタム",
+    "useCustomTld": ".{tld} を使用",
+    "commonHeading": "一般的な TLD",
+    "clear": "クリア"
+  },
+  "list": {
+    "errorTitle": "{message}",
+    "emptyFiltered": "この条件に一致するリストがありません。",
+    "empty": "リストが見つかりません。",
+    "endOfFeed": "フィードの末尾",
+    "backToTopAriaLabel": "先頭に戻る"
+  },
+  "card": {
+    "unknownSeller": "@unknown",
+    "otherDomains": "{count, plural, other {他 # 件のドメイン}}",
+    "openDomainAriaLabel": "{domain} を開く",
+    "openSourceAriaLabel": "{domain} の {source} ソースを開く",
+    "noExcerpt": "概要なし",
+    "justNow": "たった今",
+    "unknownDate": "不明",
+    "logoAlt": "{name} ロゴ"
+  },
+  "report": {
+    "trigger": "報告",
+    "reported": "報告済み",
+    "triggerAriaLabel": "{domain} のリストを報告",
+    "dialogTitle": "リストを報告",
+    "dialogDescription": "<highlight>{domain}</highlight> の問題を報告します。チームが対応前に内容を確認します。",
+    "reasonLabel": "理由",
+    "reasonPlaceholder": "理由を選択",
+    "detailsLabel": "詳細（任意）",
+    "detailsPlaceholder": "問題の確認に役立つ情報を追加してください。",
+    "detailsHelp": "報告を補足する任意のメモ。",
+    "detailsCounter": "{count}/1000",
+    "detailsTooLong": "詳細は 1000 文字以内にしてください。",
+    "submit": "報告を送信",
+    "submitting": "送信中",
+    "submitSuccess": "{domain} の報告を送信しました。",
+    "submitErrorFallback": "報告を送信できませんでした。再度お試しください。",
+    "unexpectedResponse": "サーバーから予期しない応答がありました。",
+    "reasons": {
+      "alreadySold": {
+        "label": "売却済み",
+        "description": "このドメインはすでに売却済みのため、フィードに掲載すべきではありません。"
+      },
+      "inaccuratePrice": {
+        "label": "価格が不正確",
+        "description": "掲載されている希望価格が誤っているか、誤解を招く可能性があります。"
+      },
+      "notForSale": {
+        "label": "売り出し中でない",
+        "description": "この投稿は実際のドメイン販売リストではありません。"
+      },
+      "duplicateListing": {
+        "label": "重複リスト",
+        "description": "この売り出しはすでにフィードの別の場所に掲載されています。"
+      },
+      "other": {
+        "label": "その他",
+        "description": "詳細欄に問題を具体的に記載してください。"
+      }
+    }
+  },
+  "handle": {
+    "backToFeed": "フィードに戻る",
+    "fallbackSeller": "@unknown",
+    "refreshing": "更新中",
+    "invalidPath": "このフィードユーザーパスは無効です。",
+    "loadErrorFallback": "出品者のリストを読み込めませんでした。",
+    "emptyListings": "この出品者のリストが見つかりません。",
+    "endOfListings": "出品者リストの末尾",
+    "subtitle": {
+      "invalidPath": "フィードユーザーパスが無効です。",
+      "noDomains": "この出品者はまだドメインを掲載していません。",
+      "feedAndNamefi": "{feedCount, plural, other {フィードドメイン # 件}} と {namefiCount, plural, other {Namefi 所有ドメイン # 件}}。",
+      "feedOnly": "{feedCount, plural, other {フィードドメイン # 件}} がこの出品者によって掲載されています。"
+    }
+  },
+  "users": {
+    "backToFeed": "フィードに戻る",
+    "title": "ユーザー",
+    "loadingSubtitle": "ドメイン売り出しを投稿するユーザーを読み込んでいます。",
+    "subtitle": "{count, plural, other {# 件の一致するユーザー}}。",
+    "subtitleRefreshed": "{count, plural, other {# 件の一致するユーザー}}、{refreshedAt} に更新。",
+    "exportCsv": "CSV エクスポート",
+    "exportSuccess": "ユーザー CSV をエクスポートしました",
+    "exportErrorTitle": "ユーザー CSV をエクスポートできませんでした",
+    "exportErrorFallback": "再度お試しください。",
+    "searchPlaceholder": "ハンドル、ドメイン、または投稿テキストで検索",
+    "clearSearchAriaLabel": "検索をクリア",
+    "minPostsAriaLabel": "最低投稿数",
+    "minPostsOption": "{count}+ 件の投稿",
+    "activeWithinAriaLabel": "アクティブ期間",
+    "anyTime": "いつでも",
+    "activeWithinDays": "{count} 日以内",
+    "lastDays": "過去 {count}d",
+    "clear": "クリア",
+    "columns": {
+      "user": "ユーザー",
+      "domains": "ドメイン",
+      "cadence": "投稿頻度",
+      "lastPost": "最終投稿"
+    },
+    "domainsPerPost": "{count} / 投稿",
+    "postsPerWeek": "投稿 / 週",
+    "namefiOwned": "Namefi 所有 {count} 件",
+    "today": "今日",
+    "daysAgo": "{count}d",
+    "unknownDate": "不明",
+    "emptyThreshold": "この条件に一致するユーザーがいません。",
+    "loadingMore": "ユーザーをさらに読み込んでいます",
+    "listings": "リスト",
+    "post": "投稿"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "Zahlungsmethode hinzufügen",
+    "description": "Geben Sie Ihre Zahlungsdetails ein. Es wird keine Belastung vorgenommen, bis Sie Ihre Bestellung bestätigen.",
+    "loading": "Zahlungsformular wird geladen...",
+    "unableToLoad": "Zahlungsformular konnte nicht geladen werden"
+  },
+  "addPaymentMethodForm": {
+    "submit": "Diese Zahlungsmethode verwenden",
+    "genericError": "Ein Fehler ist aufgetreten",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten"
+  },
+  "hybridPaymentCard": {
+    "title": "Zahlungsmethode",
+    "total": "Gesamt",
+    "useAvailableBalance": "Verfügbares Guthaben verwenden",
+    "nfscAvailable": "{amount} NFSC verfügbar",
+    "noNfscBalance": "Kein $NFSC-Guthaben verfügbar",
+    "balanceBreakdown": "Guthabenübersicht",
+    "creditCard": "Kreditkarte",
+    "x402SignAuthorization": "Sie unterzeichnen eine TransferWithAuthorization über {amount} USD, wenn Sie diese Bestellung absenden.",
+    "network": "Netzwerk",
+    "required": "Erforderlich",
+    "yourWalletBalance": "Ihr Wallet-Guthaben",
+    "unavailable": "Nicht verfügbar",
+    "insufficientUsdcBalance": "Ihr USDC-Guthaben reicht möglicherweise nicht für diesen x402-Zahlungsbetrag aus.",
+    "changeCard": "Karte ändern",
+    "addOrSelectCard": "Karte hinzufügen oder auswählen",
+    "creditCardOptional": "Kreditkarte optional – Ihr Guthaben reicht aus",
+    "creditCardRequiredForRemaining": "Kreditkarte erforderlich für verbleibende {amount} USD",
+    "creditCardRequiredForFull": "Kreditkarte für den Gesamtbetrag erforderlich",
+    "paymentCoveredByBalance": "Zahlung durch Guthaben gedeckt"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "x402-Zahlung ist vorübergehend nicht verfügbar",
+    "addCreditCard": "Bitte fügen Sie eine Kreditkarte hinzu, um fortzufahren",
+    "calculationError": "Fehler bei der Zahlungsberechnung. Bitte überprüfen Sie Ihr Guthaben und Ihre Zahlungsmethode."
+  },
+  "multiPaymentCard": {
+    "title": "Kombinierte Zahlung",
+    "nfscBalance": "NFSC-Guthaben",
+    "usingNfsc": "{amount} USD aus NFSC-Guthaben",
+    "addNfscBalance": "NFSC-Guthaben aufladen",
+    "creditCard": "Kreditkarte",
+    "usingCreditCard": "{amount} USD per Kreditkarte",
+    "changeCard": "Karte ändern",
+    "addOrSelectCard": "Karte hinzufügen oder auswählen",
+    "addCreditCard": "Kreditkarte hinzufügen",
+    "total": "Gesamt"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "Den verbleibenden Betrag können Sie mit einer Kreditkarte bezahlen",
+    "cardToNfsc": "Sie können vorhandenes Guthaben für einen Teil der Zahlung nutzen",
+    "useMultiPayment": "Kombinierte Zahlung verwenden"
+  },
+  "selectPaymentMethodCard": {
+    "title": "Zahlungsmethode",
+    "total": "Gesamt",
+    "useBalance": "Guthaben verwenden",
+    "available": "{amount} verfügbar",
+    "useCreditCard": "Kreditkarte verwenden",
+    "addOrSelectSavedCard": "Gespeicherte Karte hinzufügen oder auswählen",
+    "noPaymentRequired": "Wir wünschen Ihnen viel Freude mit Ihren neuen Domains! Diese werden an die angegebene Wallet-Adresse gesendet.",
+    "summary": "Zusammenfassung"
+  },
+  "paymentSummary": {
+    "title": "Zahlungsübersicht",
+    "nfscBalance": "$NFSC-Guthaben",
+    "creditCard": "Kreditkarte",
+    "total": "Gesamt"
+  },
+  "nfscBalanceDialog": {
+    "title": "NFSC-Guthaben",
+    "description": "Überblick über Ihr verfügbares $NFSC in verknüpften Wallets und unterstützten Chains.",
+    "tabOrders": "Aktuelle NFSC-Aufträge",
+    "totalAvailable": "Gesamt verfügbar",
+    "topUp": "Aufladen",
+    "showNfscInWallet": "NFSC im Wallet anzeigen",
+    "fetchingBalances": "Guthaben wird abgerufen...",
+    "emptyNoWallets": "Verknüpfen oder verbinden Sie ein Wallet, um Ihr $NFSC-Guthaben anzuzeigen.",
+    "emptyNoBalances": "In Ihren Wallets wurde noch kein $NFSC gefunden.",
+    "addFunds": "Guthaben hinzufügen",
+    "ordersDisclaimer": "Dies sind NFSC-Aufladungen per Kreditkarte für alle Ihre Wallets. Mit NFSC bezahlte Domain-Bestellungen erscheinen in Ihrer vollständigen Bestellhistorie.",
+    "emptyOrders": "Noch keine NFSC-Aufladungen.",
+    "goToPaymentMethods": "Zu den Zahlungsmethoden",
+    "connectWalletToContinue": "Verbinden Sie ein Wallet, um fortzufahren.",
+    "nfscAdded": "NFSC-Token wurde Ihrem Wallet hinzugefügt",
+    "nfscAddFailed": "NFSC-Token konnte Ihrem Wallet nicht hinzugefügt werden",
+    "nfscAddError": "Fehler beim Hinzufügen von NFSC zum Wallet"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "Noch keine NFSC-Bestellungen.",
+    "chainFallback": "Chain {chainId}"
+  }
+}

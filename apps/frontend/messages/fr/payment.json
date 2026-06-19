@@ -1,0 +1,95 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "Détails du moyen de paiement",
+    "description": "Saisissez les détails de votre moyen de paiement. Aucun débit ne sera effectué avant que vous confirmiez votre commande.",
+    "loading": "Chargement du formulaire de paiement...",
+    "unableToLoad": "Impossible de charger le formulaire de paiement"
+  },
+  "addPaymentMethodForm": {
+    "submit": "Utiliser ce moyen de paiement",
+    "genericError": "Une erreur est survenue",
+    "unexpectedError": "Une erreur inattendue est survenue"
+  },
+  "hybridPaymentCard": {
+    "title": "Moyen de paiement",
+    "total": "Total",
+    "useAvailableBalance": "Utiliser le solde disponible",
+    "nfscAvailable": "{amount} NFSC disponible",
+    "noNfscBalance": "Aucun solde $NFSC disponible",
+    "balanceBreakdown": "Détail du solde",
+    "creditCard": "Carte de crédit",
+    "x402SignAuthorization": "Vous signerez un TransferWithAuthorization de {amount} USD lors de la soumission de cette commande.",
+    "network": "Réseau",
+    "required": "Requis",
+    "yourWalletBalance": "Solde de votre portefeuille",
+    "unavailable": "Indisponible",
+    "insufficientUsdcBalance": "Votre solde USDC pourrait être insuffisant pour ce paiement x402.",
+    "changeCard": "Changer de carte",
+    "addOrSelectCard": "Ajouter ou sélectionner une carte",
+    "creditCardOptional": "Carte de crédit facultative - votre solde est suffisant",
+    "creditCardRequiredForRemaining": "Carte de crédit requise pour le montant restant de {amount} USD",
+    "creditCardRequiredForFull": "Carte de crédit requise pour le montant total",
+    "paymentCoveredByBalance": "Paiement couvert par le solde"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "Le paiement x402 est temporairement indisponible",
+    "addCreditCard": "Veuillez ajouter une carte de crédit pour continuer",
+    "calculationError": "Erreur de calcul du paiement. Vérifiez votre solde et votre moyen de paiement."
+  },
+  "multiPaymentCard": {
+    "title": "Paiement mixte",
+    "nfscBalance": "Solde NFSC",
+    "usingNfsc": "Utilisation de {amount} USD du solde NFSC",
+    "addNfscBalance": "Ajouter du solde NFSC",
+    "creditCard": "Carte de crédit",
+    "usingCreditCard": "Utilisation de {amount} USD par carte de crédit",
+    "changeCard": "Changer de carte",
+    "addOrSelectCard": "Ajouter ou sélectionner une carte",
+    "addCreditCard": "Ajouter une carte de crédit",
+    "total": "Total"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "Vous pouvez régler le montant restant par carte de crédit",
+    "cardToNfsc": "Vous pouvez utiliser votre solde pour couvrir une partie du paiement",
+    "useMultiPayment": "Utiliser le paiement mixte"
+  },
+  "selectPaymentMethodCard": {
+    "title": "Moyen de paiement",
+    "total": "Total",
+    "useBalance": "Utiliser le solde",
+    "available": "{amount} disponible",
+    "useCreditCard": "Utiliser une carte de crédit",
+    "addOrSelectSavedCard": "Ajouter ou sélectionner une carte enregistrée",
+    "noPaymentRequired": "Nous espérons que vous apprécierez vos nouveaux domaines ! Nous les enverrons à l'adresse de portefeuille que vous avez indiquée.",
+    "summary": "Récapitulatif"
+  },
+  "paymentSummary": {
+    "title": "Récapitulatif du paiement",
+    "nfscBalance": "Solde $NFSC",
+    "creditCard": "Carte de crédit",
+    "total": "Total"
+  },
+  "nfscBalanceDialog": {
+    "title": "Solde NFSC",
+    "description": "Consultez votre $NFSC disponible sur vos portefeuilles liés et les chaînes prises en charge.",
+    "tabOrders": "Commandes NFSC récentes",
+    "totalAvailable": "Total disponible",
+    "topUp": "Recharger",
+    "showNfscInWallet": "Afficher NFSC dans le portefeuille",
+    "fetchingBalances": "Récupération des soldes...",
+    "emptyNoWallets": "Liez ou connectez un portefeuille pour voir vos soldes $NFSC.",
+    "emptyNoBalances": "Aucun $NFSC détecté sur vos portefeuilles pour l'instant.",
+    "addFunds": "Ajouter des fonds",
+    "ordersDisclaimer": "Il s'agit des recharges NFSC par carte de crédit sur l'ensemble de vos portefeuilles. Les commandes de domaines payées en NFSC apparaissent dans votre historique de commandes complet.",
+    "emptyOrders": "Aucune recharge NFSC pour l'instant.",
+    "goToPaymentMethods": "Accéder aux moyens de paiement",
+    "connectWalletToContinue": "Connectez un portefeuille pour continuer.",
+    "nfscAdded": "Token NFSC ajouté à votre portefeuille",
+    "nfscAddFailed": "Impossible d'ajouter le token NFSC à votre portefeuille",
+    "nfscAddError": "Échec de l'ajout de NFSC au portefeuille"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "Aucune commande NFSC pour l'instant.",
+    "chainFallback": "Chaîne {chainId}"
+  }
+}

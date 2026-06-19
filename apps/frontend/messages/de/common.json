@@ -1,0 +1,56 @@
+{
+  "language": "Sprache",
+  "languageSelector": {
+    "label": "Sprache",
+    "ariaLabel": "Sprache ändern"
+  },
+  "actions": {
+    "signIn": "Anmelden",
+    "loading": "Laden...",
+    "tryAgain": "Nochmal",
+    "dismiss": "Schließen",
+    "contactSupport": "Hilfe kontaktieren",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "save": "Speichern",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "remove": "Entfernen",
+    "view": "Ansehen",
+    "refresh": "Neu laden",
+    "submit": "Absenden",
+    "processing": "Verarbeite...",
+    "loadMore": "Mehr laden",
+    "connectWallet": "Wallet verbinden",
+    "goBack": "Zurück",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "disable": "Abschalten",
+    "logOut": "Abmelden"
+  },
+  "account": {
+    "label": "Konto",
+    "balance": "Guthaben",
+    "loadingBalanceDetails": "Kontodetails werden geladen...",
+    "balanceLoadFailed": "Guthaben konnte nicht geladen werden",
+    "balanceLoadFailedDescription": "Die Guthabendetails konnten nicht geladen werden."
+  },
+  "status": {
+    "created": "Erstellt",
+    "processing": "Verarbeitung",
+    "succeeded": "Erfolgreich",
+    "completed": "Abgeschlossen",
+    "failed": "Gescheitert",
+    "cancelled": "Storniert",
+    "partiallyCompleted": "Teilabgeschlossen",
+    "waitingForUser": "Wartet auf Nutzer",
+    "pending": "Ausstehend",
+    "refunded": "Erstattet",
+    "requiresCapture": "Buchung ausstehend",
+    "unknown": "Unbekannt"
+  },
+  "signIn": {
+    "loadFailedTitle": "Anmeldung konnte nicht geladen werden",
+    "loadFailedDescription": "Der Anmeldevorgang konnte nicht geladen werden."
+  }
+}

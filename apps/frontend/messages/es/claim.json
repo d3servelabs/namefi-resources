@@ -1,0 +1,57 @@
+{
+  "page": {
+    "title": "Reclamación gratuita",
+    "domainClaimedSuccess": "¡Dominio reclamado con éxito!",
+    "claimFailed": "Error al reclamar el dominio: {message}",
+    "invalidDomain": {
+      "title": "Dominio no válido",
+      "description": "El dominio proporcionado no es un dominio Namefi normalizado válido.",
+      "hint": "Asegúrate de usar un dominio completamente normalizado, p. ej. alice.0x.city."
+    },
+    "ineligibleBanner": {
+      "title": "Este dominio no es elegible para una reclamación gratuita.",
+      "description": "Puedes añadirlo al carrito para comprarlo o volver a la búsqueda.",
+      "addToCart": "Añadir al carrito"
+    },
+    "summary": {
+      "duration": "Duración: {count, plural, one {# año} other {# años}} • Gratis"
+    }
+  },
+  "widget": {
+    "defaultTitle": "Tu identidad 0x",
+    "defaultSubtitle": "Únete a la red de ciudadanos Web3",
+    "qualifyPrompt": "Sigue los pasos a continuación para ver si calificas",
+    "steps": {
+      "signIn": {
+        "signedIn": "¡Gracias por iniciar sesión! Puedes continuar al siguiente paso.",
+        "signedOut": "Inicia sesión o crea una cuenta para empezar."
+      },
+      "linkSocial": {
+        "trigger": "Vincular redes sociales",
+        "description": "Vincula una cuenta de redes sociales con un nombre de usuario que califique desde tu página de perfil. Por ahora, los nombres de usuario que comienzan con 0x califican para la promoción.",
+        "visitProfile": "Visitar página de perfil"
+      },
+      "enterDomain": {
+        "trigger": "Ingresar nombre de dominio",
+        "description": "Ingresa tu nombre de dominio que califique a continuación. Si está disponible, ¡podrás reclamarlo gratis!"
+      }
+    },
+    "qualifying": {
+      "checking": "Buscando dominios que califiquen según tus cuentas de redes sociales vinculadas...",
+      "error": "Error al buscar dominios que califiquen según tus cuentas de redes sociales vinculadas.",
+      "none": "Parece que tus cuentas de redes sociales vinculadas no te califican para reclamar un dominio gratuito.",
+      "list": "Tus dominios que califican: {domains}"
+    },
+    "input": {
+      "placeholderMobile": "nombre",
+      "placeholderDesktop": "tunombre"
+    },
+    "button": {
+      "loginToClaim": "Iniciar sesión para reclamar",
+      "checking": "Verificando…",
+      "inCart": "En el carrito",
+      "claiming": "Reclamando…",
+      "claimNow": "Reclamar ahora"
+    }
+  }
+}

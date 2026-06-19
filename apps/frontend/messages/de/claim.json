@@ -1,0 +1,57 @@
+{
+  "page": {
+    "title": "Kostenlos beanspruchen",
+    "domainClaimedSuccess": "Domain erfolgreich beansprucht!",
+    "claimFailed": "Fehler beim Beanspruchen der Domain: {message}",
+    "invalidDomain": {
+      "title": "Ungültige Domain",
+      "description": "Die angegebene Domain ist keine gültige normalisierte Namefi-Domain.",
+      "hint": "Bitte verwenden Sie eine vollständig normalisierte Domain, z. B. „alice.0x.city“."
+    },
+    "ineligibleBanner": {
+      "title": "Diese Domain ist nicht für einen kostenlosen Anspruch berechtigt.",
+      "description": "Sie können sie in den Warenkorb legen oder zur Suche zurückkehren.",
+      "addToCart": "In den Warenkorb"
+    },
+    "summary": {
+      "duration": "Laufzeit: {count, plural, one {# Jahr} other {# Jahre}} • Kostenlos"
+    }
+  },
+  "widget": {
+    "defaultTitle": "Ihre 0x-Identität",
+    "defaultSubtitle": "Werden Sie Teil des Web3-Bürgernetzwerks",
+    "qualifyPrompt": "Folgen Sie den Schritten, um Ihre Berechtigung zu prüfen",
+    "steps": {
+      "signIn": {
+        "signedIn": "Danke für Ihre Anmeldung! Sie können mit dem nächsten Schritt fortfahren.",
+        "signedOut": "Melden Sie sich an oder erstellen Sie ein Konto, um zu beginnen."
+      },
+      "linkSocial": {
+        "trigger": "Social Media verknüpfen",
+        "description": "Verknüpfen Sie ein Social-Media-Konto mit einem berechtigten Nutzernamen über Ihre Profilseite. Aktuell qualifizieren sich Nutzernamen, die mit „0x“ beginnen, für die Aktion.",
+        "visitProfile": "Zur Profilseite"
+      },
+      "enterDomain": {
+        "trigger": "Domainnamen eingeben",
+        "description": "Geben Sie Ihren berechtigten Domainnamen ein. Falls er verfügbar ist, können Sie ihn kostenlos beanspruchen!"
+      }
+    },
+    "qualifying": {
+      "checking": "Berechtigte Domains werden anhand Ihrer verknüpften Social-Media-Konten geprüft …",
+      "error": "Fehler beim Prüfen berechtigter Domains anhand Ihrer verknüpften Social-Media-Konten.",
+      "none": "Ihre verknüpften Social-Media-Konten berechtigen Sie leider nicht zur kostenlosen Domain.",
+      "list": "Ihre berechtigten Domainnamen: {domains}"
+    },
+    "input": {
+      "placeholderMobile": "name",
+      "placeholderDesktop": "ihrname"
+    },
+    "button": {
+      "loginToClaim": "Anmelden und beanspruchen",
+      "checking": "Wird geprüft …",
+      "inCart": "Im Warenkorb",
+      "claiming": "Wird beansprucht …",
+      "claimNow": "Jetzt beanspruchen"
+    }
+  }
+}

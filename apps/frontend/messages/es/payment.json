@@ -1,0 +1,95 @@
+{
+  "addPaymentMethodDialog": {
+    "title": "Datos del método de pago",
+    "description": "Ingresa los datos de tu método de pago. No realizaremos ningún cargo hasta que confirmes tu pedido.",
+    "loading": "Cargando formulario de pago...",
+    "unableToLoad": "No se pudo cargar el formulario de pago"
+  },
+  "addPaymentMethodForm": {
+    "submit": "Usar este método de pago",
+    "genericError": "Ocurrió un error",
+    "unexpectedError": "Ocurrió un error inesperado"
+  },
+  "hybridPaymentCard": {
+    "title": "Método de pago",
+    "total": "Total",
+    "useAvailableBalance": "Usar saldo disponible",
+    "nfscAvailable": "{amount} NFSC disponible",
+    "noNfscBalance": "Sin saldo $NFSC disponible",
+    "balanceBreakdown": "Desglose de saldo",
+    "creditCard": "Tarjeta de crédito",
+    "x402SignAuthorization": "Firmarás un TransferWithAuthorization por {amount} USD al enviar este pedido.",
+    "network": "Red",
+    "required": "Requerido",
+    "yourWalletBalance": "Saldo de tu billetera",
+    "unavailable": "No disponible",
+    "insufficientUsdcBalance": "Tu saldo de USDC podría ser insuficiente para este pago x402.",
+    "changeCard": "Cambiar tarjeta",
+    "addOrSelectCard": "Agregar o seleccionar tarjeta",
+    "creditCardOptional": "Tarjeta de crédito opcional: tienes saldo suficiente",
+    "creditCardRequiredForRemaining": "Se requiere tarjeta de crédito para el monto restante de {amount} USD",
+    "creditCardRequiredForFull": "Se requiere tarjeta de crédito para el monto total",
+    "paymentCoveredByBalance": "Pago cubierto por el saldo"
+  },
+  "hybridPaymentUtils": {
+    "x402Unavailable": "El pago x402 no está disponible temporalmente",
+    "addCreditCard": "Agrega una tarjeta de crédito para continuar",
+    "calculationError": "Error al calcular el pago. Verifica tu saldo y método de pago."
+  },
+  "multiPaymentCard": {
+    "title": "Pago múltiple",
+    "nfscBalance": "Saldo NFSC",
+    "usingNfsc": "Usando {amount} USD del saldo NFSC",
+    "addNfscBalance": "Agregar saldo NFSC",
+    "creditCard": "Tarjeta de crédito",
+    "usingCreditCard": "Usando {amount} USD con tarjeta de crédito",
+    "changeCard": "Cambiar tarjeta",
+    "addOrSelectCard": "Agregar o seleccionar tarjeta",
+    "addCreditCard": "Agregar tarjeta de crédito",
+    "total": "Total"
+  },
+  "multiPaymentHints": {
+    "nfscToCard": "Puedes completar el pago restante con tarjeta de crédito",
+    "cardToNfsc": "Puedes usar tu saldo disponible para cubrir parte del pago",
+    "useMultiPayment": "Usar pago múltiple"
+  },
+  "selectPaymentMethodCard": {
+    "title": "Método de pago",
+    "total": "Total",
+    "useBalance": "Usar saldo",
+    "available": "{amount} disponible",
+    "useCreditCard": "Usar tarjeta de crédito",
+    "addOrSelectSavedCard": "Agregar o seleccionar una tarjeta guardada",
+    "noPaymentRequired": "¡Esperamos que disfrutes tus nuevos dominios! Los enviaremos a la dirección de billetera que proporcionaste.",
+    "summary": "Resumen"
+  },
+  "paymentSummary": {
+    "title": "Resumen de pago",
+    "nfscBalance": "Saldo $NFSC",
+    "creditCard": "Tarjeta de crédito",
+    "total": "Total"
+  },
+  "nfscBalanceDialog": {
+    "title": "Saldo NFSC",
+    "description": "Revisa tu $NFSC disponible en las billeteras vinculadas y cadenas compatibles.",
+    "tabOrders": "Pedidos NFSC recientes",
+    "totalAvailable": "Total disponible",
+    "topUp": "Recargar",
+    "showNfscInWallet": "Mostrar NFSC en billetera",
+    "fetchingBalances": "Obteniendo saldos...",
+    "emptyNoWallets": "Vincula o conecta una billetera para ver tus saldos $NFSC.",
+    "emptyNoBalances": "Aún no se detectó $NFSC en tus billeteras.",
+    "addFunds": "Agregar fondos",
+    "ordersDisclaimer": "Estas son recargas de NFSC con tarjeta de crédito en todas tus billeteras. Los pedidos de dominios pagados con NFSC aparecen en tu historial completo de pedidos.",
+    "emptyOrders": "Aún no hay recargas de NFSC.",
+    "goToPaymentMethods": "Ir a métodos de pago",
+    "connectWalletToContinue": "Conecta una billetera para continuar.",
+    "nfscAdded": "Token NFSC agregado a tu billetera",
+    "nfscAddFailed": "No se pudo agregar el token NFSC a tu billetera",
+    "nfscAddError": "Error al agregar NFSC a la billetera"
+  },
+  "nfscOrdersList": {
+    "emptyMessage": "Aún no hay pedidos de NFSC.",
+    "chainFallback": "Cadena {chainId}"
+  }
+}

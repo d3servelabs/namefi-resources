@@ -1,0 +1,83 @@
+{
+  "inYourCart": "In Ihrem Warenkorb",
+  "yourCartIsEmpty": "Ihr Warenkorb ist leer",
+  "emptyCartHint": "Fügen Sie Domains zu Ihrem Warenkorb hinzu, um zu beginnen",
+  "browseDomains": "Domains durchsuchen",
+  "clearCart": "Warenkorb leeren",
+  "clearCartDialog": {
+    "title": "Warenkorb leeren?",
+    "description": "Alle Artikel werden aus Ihrem Warenkorb entfernt. Sie können sie bei Bedarf später wieder hinzufügen."
+  },
+  "errorDialog": {
+    "title": "Oops! Etwas ist schiefgelaufen.",
+    "description": "Keine Sorge, es wird nichts berechnet. Versuchen Sie es erneut oder kehren Sie zu Ihrem Warenkorb zurück.",
+    "errorDetail": "(Error - {message})"
+  },
+  "cartChanges": {
+    "title": "Warenkorbänderungen",
+    "description": "An Ihrem Warenkorb wurden einige Änderungen vorgenommen."
+  },
+  "submitButton": {
+    "selectNftWallet": "NFT Wallet auswählen, um fortzufahren",
+    "selectPaymentMethod": "Zahlungsmethode auswählen, um fortzufahren",
+    "submitOrder": "Bestellung aufgeben"
+  },
+  "disabledReason": {
+    "cartUpdating": "Ihr Warenkorb wird noch aktualisiert.",
+    "acceptRequirements": "Überprüfen und akzeptieren Sie die Registrierungsanforderungen Ihrer Warenkorbeinträge.",
+    "finishSplittingPayment": "Schließen Sie die Zahlungsaufteilung ab, um fortzufahren.",
+    "selectWallet": "Wählen Sie eine Wallet aus, die Ihre Domains erhalten soll.",
+    "confirmWallet": "Bestätigen Sie die Wallet, die Ihre Domains erhalten soll.",
+    "selectPaymentMethod": "Wählen Sie eine Zahlungsmethode aus."
+  },
+  "skeleton": {
+    "selectNftWallet": "NFT Wallet auswählen",
+    "paymentMethod": "Zahlungsmethode"
+  },
+  "addFromUrl": {
+    "cart": "Warenkorb",
+    "heading": "Domains werden zu Ihrem Warenkorb hinzugefügt",
+    "subheading": "Bitte warten, während wir die Domains prüfen, die Verfügbarkeit überprüfen und alles in Ihren Warenkorb laden.",
+    "domainsRequested": "Angeforderte Domains",
+    "steps": {
+      "parse": "Domains werden validiert",
+      "fetch": "Verfügbarkeit wird geprüft",
+      "add": "Zum Warenkorb hinzufügen",
+      "redirect": "Weiterleitung zu Ihrem Warenkorb"
+    },
+    "detail": {
+      "added": "Hinzugefügt",
+      "readyToAdd": "Bereit zum Hinzufügen",
+      "alreadyInCart": "Bereits im Warenkorb",
+      "requiresTransferCode": "Transfercode erforderlich",
+      "unsupported": "Nicht unterstützt/nicht verfügbar",
+      "invalid": "Ungültig"
+    },
+    "confirm": {
+      "addingToCart": "Wird zum Warenkorb hinzugefügt...",
+      "addToCart": "Zum Warenkorb hinzufügen",
+      "reviewHelper": "Überprüfen Sie die obigen Details und bestätigen Sie.",
+      "noRegistrableHelper": "Keine registrierbaren Domains zum Hinzufügen gefunden."
+    },
+    "redirecting": "Weiterleitung zu Ihrem Warenkorb…",
+    "errors": {
+      "noDomains": "Es wurden keine Domains angegeben.",
+      "validationFailed": "Bei der Validierung Ihrer Domains ist ein Fehler aufgetreten.",
+      "addFailed": "Beim Hinzufügen zum Warenkorb ist ein Fehler aufgetreten."
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, one {Artikel} other {Artikel}}",
+    "cartTotal": "Warenkorb-Gesamt",
+    "domainsReadyToImport": "{count, plural, one {Domain} other {Domains}} bereit zum Import",
+    "addAll": "Alle hinzufügen",
+    "addToCart": "In den Warenkorb",
+    "checkout": "Zur Kasse"
+  },
+  "submitErrors": {
+    "x402Disabled": "x402-Zahlung ist derzeit deaktiviert",
+    "x402Unavailable": "x402-Zahlung ist zurzeit nicht verfügbar",
+    "x402ConnectWallet": "Verbinden Sie eine aktive Wallet, um Ihre x402-Zahlung zu signieren",
+    "orderFailed": "Ihre Bestellung konnte nicht übermittelt werden. Bitte versuchen Sie es erneut."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "features": {
+    "heading": "Les fonctionnalités Namefi",
+    "eyebrow": "Conçu pour l'avenir",
+    "items": {
+      "ownership": {
+        "title": "Propriété rapide et sécurisée",
+        "description": "Transformez vos noms DNS traditionnels en NFTs pour des transferts réglés en quelques secondes, avec une traçabilité transparente et onchain."
+      },
+      "ai": {
+        "title": "L'IA au service de votre marque",
+        "description": "Namefi AI révèle des insights de nommage, des accroches de marque et des inspirations créatives pour que chaque enregistrement soit plus pertinent dès le départ."
+      },
+      "marketplace": {
+        "title": "Des actifs prêts pour le marché",
+        "description": "Transférez vos domaines directement sur les marketplaces NFT et échangez-les en toute sécurité grâce à la technologie onchain."
+      }
+    }
+  },
+  "story": {
+    "tokenization": {
+      "badge": "Namefi NFTs",
+      "title": "Namefi NFTs secure DNS ownership onchain.",
+      "description": "Minted when you import and burned when you export, each NFT is verifiable proof of control over your domain.",
+      "highlights": {
+        "mintedOnImport": "Minted on import",
+        "autoEns": "AutoENS support",
+        "marketplaceReady": "Marketplace ready"
+      },
+      "media": {
+        "previewAlt": "Namefi NFT preview",
+        "previewEyebrow": "Namefi NFT preview",
+        "previewTitle": "Ownership that travels with your domain"
+      }
+    },
+    "intelligence": {
+      "badge": "Namefi Brand Studio",
+      "title": "Spin up brand directions and domain ideas in minutes.",
+      "description": "Namefi AI pairs availability data with creative outputs so you can validate a concept, preview posters, and move straight into registration.",
+      "highlights": {
+        "domainGuidedPrompts": "Domain-guided prompts",
+        "logosPosters": "Logos & posters",
+        "shareReady": "Share-ready assets"
+      },
+      "media": {
+        "eyebrow": "AI workflow",
+        "generateTitle": "Generate brand kits",
+        "generateDescription": "Logos, posters, and copy tuned to your domain and audience.",
+        "portfolioTitle": "Work from your portfolio",
+        "portfolioDescription": "Select the Namefi domain you own and tailor creative direction around it.",
+        "shareTitle": "Share instantly",
+        "shareDescription": "Export assets for teammates or socials with a single link."
+      }
+    },
+    "operations": {
+      "badge": "DNS & Renewal Control",
+      "title": "Keep domains resolvable, signed, and renewed on autopilot.",
+      "description": "Manage DNS zones, schedule renewals, and maintain DNSSEC + ENS links without juggling registrars or scripts.",
+      "highlights": {
+        "dnssecAutoEns": "DNSSEC + AutoENS",
+        "autoRenew": "Auto-renew protection",
+        "validatedZoneEditor": "Validated zone editor"
+      },
+      "media": {
+        "eyebrow": "Operations overview",
+        "dnssecTitle": "DNSSEC & AutoENS",
+        "dnssecDescription": "Enable signing workflows and gasless DNSSEC so your DNS names resolve onchain through ENS automatically.",
+        "autoRenewTitle": "Auto-renew guardrails",
+        "autoRenewDescription": "Save payment preferences once and let Namefi retry renewals so critical domains never lapse unexpectedly.",
+        "dnsTitle": "Point-and-click DNS",
+        "dnsDescription": "Edit records in an interface that validates every change before it ships, no registrar dashboards required."
+      }
+    }
+  },
+  "smartContracts": {
+    "heading": "Les smart contracts Namefi",
+    "description": "Open source sur Ethereum et Base, pour que chacun puisse vérifier chaque fonction.",
+    "weLove": "Nous",
+    "opensource": "l'open source"
+  },
+  "poweredBy": {
+    "heading": "Propulsé par",
+    "description": "L'infrastructure sur laquelle nous comptons chaque jour."
+  },
+  "supporting": {
+    "heading": "Fièrement partenaire de",
+    "description": "Échangez et financez vos Namefi NFTs à travers tout l'écosystème."
+  },
+  "backers": {
+    "heading": "Soutenu par des partenaires, investisseurs et programmes de subventions",
+    "description": "Namefi bénéficie du soutien de fonds leaders, d'accélérateurs et de fournisseurs d'infrastructure dans l'univers web3.",
+    "filters": {
+      "all": "Tous",
+      "investor": "Investisseurs",
+      "partner": "Partenaires",
+      "grant": "Subvention"
+    }
+  },
+  "community": {
+    "heading": "Rejoignez la communauté Namefi",
+    "description": "Un réseau mondial de domainers, développeurs, contributeurs et passionnés de l'onchain.",
+    "newsletter": {
+      "title": "Recevez notre newsletter",
+      "description": "Abonnez-vous pour suivre les nouvelles versions, intégrations et temps forts de la communauté."
+    }
+  }
+}

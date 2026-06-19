@@ -6,7 +6,17 @@
  * Add a new language by extending `locales` + the label/date-locale maps and
  * dropping a `messages/<locale>.json` file.
  */
-export const locales = ['en', 'zh', 'ta', 'ar-EG'] as const;
+export const locales = [
+  'en',
+  'zh',
+  'ta',
+  'ar-EG',
+  'de',
+  'es',
+  'fr',
+  'ja',
+  'hi',
+] as const;
 
 export type Locale = (typeof locales)[number];
 
@@ -55,6 +65,11 @@ export const localeLabels: Record<Locale, string> = {
   zh: '中文',
   ta: 'தமிழ்',
   'ar-EG': 'العربية',
+  de: 'Deutsch',
+  es: 'Español',
+  fr: 'Français',
+  ja: '日本語',
+  hi: 'हिन्दी',
 };
 
 /** BCP-47 tags for `Intl`/`date-fns` formatting per locale. */
@@ -63,6 +78,11 @@ export const localeDateLocales: Record<Locale, string> = {
   zh: 'zh-CN',
   ta: 'ta-IN',
   'ar-EG': 'ar-EG',
+  de: 'de-DE',
+  es: 'es-ES',
+  fr: 'fr-FR',
+  ja: 'ja-JP',
+  hi: 'hi-IN',
 };
 
 /** Text direction — drives the `dir` attribute on `<html>` and Tailwind's
@@ -76,6 +96,11 @@ export const localeDirections: Record<Locale, Direction> = {
   zh: 'ltr',
   ta: 'ltr',
   'ar-EG': 'rtl',
+  de: 'ltr',
+  es: 'ltr',
+  fr: 'ltr',
+  ja: 'ltr',
+  hi: 'ltr',
 };
 
 /** Default direction for unknown/unset locales (matches `defaultLocale`). */

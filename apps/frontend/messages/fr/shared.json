@@ -1,0 +1,79 @@
+{
+  "authRequired": {
+    "title": "Connexion requise",
+    "description": "Veuillez vous connecter pour continuer"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "pour effectuer cette action",
+    "title": {
+      "wrongWallet": "Mauvais portefeuille connecté",
+      "settingActive": "Activation du portefeuille",
+      "connect": "Connectez votre portefeuille"
+    },
+    "description": {
+      "wrongWallet": "Veuillez connecter le bon portefeuille pour continuer.",
+      "settingActive": "Veuillez patienter pendant l'activation de votre portefeuille...",
+      "connect": "Veuillez connecter votre portefeuille {actionDescription}."
+    },
+    "checkingStatus": "Vérification du statut du portefeuille...",
+    "settingAsActive": "Activation du portefeuille en cours...",
+    "requiredWallet": "Portefeuille requis",
+    "waitingForConnection": "En attente de la connexion du portefeuille...",
+    "differentWalletConnected": "Vous avez connecté un autre portefeuille",
+    "youConnected": "Vous avez connecté",
+    "butWeNeed": "Mais nous avons besoin de",
+    "connectedSuccessfully": "Portefeuille connecté avec succès",
+    "connecting": "Connexion...",
+    "next": "Suivant",
+    "toast": {
+      "setActiveFailed": "Échec de l'activation du portefeuille",
+      "connectFailed": "Échec de la connexion du portefeuille",
+      "unknownError": "Erreur inconnue"
+    }
+  },
+  "countryInput": {
+    "placeholder": "Sélectionner un pays",
+    "searchPlaceholder": "Rechercher un pays...",
+    "noResults": "Aucun pays trouvé.",
+    "clearSelection": "Effacer la sélection"
+  },
+  "myDomains": {
+    "heading": "Mes domaines"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "Pas encore indexé",
+    "emptyIdentifier": "Saisissez une adresse de portefeuille ou un nom ENS pour voir vos NFTs.",
+    "invalidIdentifier": "Cela ne ressemble pas à une adresse de portefeuille ou un nom ENS valide.",
+    "invalidIdentifierHint": "Les adresses de portefeuille doivent commencer par 0x et les noms ENS nécessitent au moins un point.",
+    "ensResolveFailed": "Nous n'avons pas pu résoudre ce nom ENS.",
+    "ensResolveFailedHint": "Vérifiez l'orthographe ou réessayez dans un moment.",
+    "noWalletResolved": "Nous n'avons pas pu résoudre un portefeuille pour cette saisie.",
+    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "Nous n'avons pas pu charger les domaines de ce portefeuille.",
+    "loadDomainsFailedHint": "Veuillez actualiser la page et réessayer.",
+    "noNftsFound": "Aucun NFT Namefi trouvé pour ce portefeuille.",
+    "noNftsFoundHint": "Vérifiez l'adresse du portefeuille ou le nom ENS, ou réessayez plus tard pendant que l'indexation se met à jour.",
+    "unknownNetwork": "Réseau inconnu",
+    "explorer": "Explorateur",
+    "viewOnExplorer": "Voir sur l'explorateur",
+    "viewOn": "Voir sur {explorer}",
+    "network": "Réseau",
+    "expiration": "Expiration",
+    "wallet": "Portefeuille",
+    "ens": "ENS : {name}",
+    "copiedToClipboard": "Copié dans le presse-papiers",
+    "copyFailed": "Échec de la copie",
+    "copyFailedDescription": "Nous n'avons pas pu copier cette valeur. Veuillez réessayer."
+  },
+  "instantBuyModal": {
+    "title": "Acheter {domain}",
+    "description": "Finalisez votre achat pour 1 an d'enregistrement",
+    "domain": "Domaine",
+    "pricePerYear": "{price} USD / an",
+    "selectNftWallet": "Sélectionnez un portefeuille NFT pour continuer",
+    "buyNow": "Acheter",
+    "errorTitle": "Une erreur est survenue.",
+    "errorDescription": "Vous ne serez pas débité. Vous pouvez réessayer. ",
+    "errorDetail": "(Erreur - {error})"
+  }
+}

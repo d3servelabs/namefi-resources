@@ -1,0 +1,83 @@
+{
+  "inYourCart": "En tu carrito",
+  "yourCartIsEmpty": "Tu carrito está vacío",
+  "emptyCartHint": "Agrega dominios a tu carrito para comenzar",
+  "browseDomains": "Explorar dominios",
+  "clearCart": "Vaciar carrito",
+  "clearCartDialog": {
+    "title": "¿Vaciar carrito?",
+    "description": "Se eliminarán todos los artículos de tu carrito. Puedes volver a agregarlos cuando lo necesites."
+  },
+  "errorDialog": {
+    "title": "Algo salió mal.",
+    "description": "No te preocupes, no se realizará ningún cargo. Puedes intentarlo de nuevo o regresar a tu carrito.",
+    "errorDetail": "(Error - {message})"
+  },
+  "cartChanges": {
+    "title": "Cambios en el carrito",
+    "description": "Se realizaron algunos cambios en tu carrito."
+  },
+  "submitButton": {
+    "selectNftWallet": "Selecciona una billetera NFT para continuar",
+    "selectPaymentMethod": "Selecciona un método de pago para continuar",
+    "submitOrder": "Enviar pedido"
+  },
+  "disabledReason": {
+    "cartUpdating": "Tu carrito aún se está actualizando.",
+    "acceptRequirements": "Revisa y acepta los requisitos de registro que aparecen en los artículos de tu carrito.",
+    "finishSplittingPayment": "Completa la división del pago para continuar.",
+    "selectWallet": "Selecciona una billetera para recibir tus dominios.",
+    "confirmWallet": "Confirma la billetera que recibirá tus dominios.",
+    "selectPaymentMethod": "Selecciona un método de pago."
+  },
+  "skeleton": {
+    "selectNftWallet": "Seleccionar billetera NFT",
+    "paymentMethod": "Método de pago"
+  },
+  "addFromUrl": {
+    "cart": "Carrito",
+    "heading": "Agregando dominios a tu carrito",
+    "subheading": "Espera mientras validamos, verificamos disponibilidad y cargamos todo en tu carrito.",
+    "domainsRequested": "Dominios solicitados",
+    "steps": {
+      "parse": "Validando dominios",
+      "fetch": "Verificando disponibilidad",
+      "add": "Agregando al carrito",
+      "redirect": "Llevándote a tu carrito"
+    },
+    "detail": {
+      "added": "Agregado",
+      "readyToAdd": "Listo para agregar",
+      "alreadyInCart": "Ya está en el carrito",
+      "requiresTransferCode": "Requiere código de transferencia",
+      "unsupported": "No compatible/disponible",
+      "invalid": "No válido"
+    },
+    "confirm": {
+      "addingToCart": "Agregando al carrito...",
+      "addToCart": "Agregar al carrito",
+      "reviewHelper": "Revisa los detalles anteriores y confirma.",
+      "noRegistrableHelper": "No se encontraron dominios registrables para agregar."
+    },
+    "redirecting": "Redirigiendo a tu carrito…",
+    "errors": {
+      "noDomains": "No se proporcionaron dominios.",
+      "validationFailed": "Algo salió mal al validar tus dominios.",
+      "addFailed": "Algo salió mal al agregar al carrito."
+    }
+  },
+  "floatingCart": {
+    "itemCount": "{count, plural, one {artículo} other {artículos}}",
+    "cartTotal": "Total del carrito",
+    "domainsReadyToImport": "{count, plural, one {dominio listo} other {dominios listos}} para importar",
+    "addAll": "Agregar todos",
+    "addToCart": "Agregar al carrito",
+    "checkout": "Pagar"
+  },
+  "submitErrors": {
+    "x402Disabled": "El pago x402 está desactivado actualmente",
+    "x402Unavailable": "El pago x402 no está disponible en este momento",
+    "x402ConnectWallet": "Conecta una billetera activa para firmar tu pago x402",
+    "orderFailed": "No se pudo enviar tu pedido. Por favor, intenta de nuevo."
+  }
+}

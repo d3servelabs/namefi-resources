@@ -1,0 +1,55 @@
+{
+  "loading": {
+    "title": "Chargement des moyens de paiement",
+    "description": "Préparation en cours…"
+  },
+  "creditCards": {
+    "heading": "Moyens de paiement",
+    "addButton": "Ajouter une carte",
+    "cardHolderFallback": "Titulaire",
+    "empty": {
+      "title": "Aucun moyen de paiement",
+      "description": "Ajoutez un nouveau moyen de paiement"
+    },
+    "toast": {
+      "saveError": "Échec de l'enregistrement du moyen de paiement",
+      "deleteSuccess": "Moyen de paiement supprimé",
+      "deleteError": "Échec de la suppression du moyen de paiement"
+    },
+    "deleteDialog": {
+      "title": "Supprimer le moyen de paiement",
+      "description": "Voulez-vous supprimer votre carte {brand} se terminant par {last4} ? Cette action est irréversible."
+    }
+  },
+  "wallets": {
+    "heading": "Portefeuilles associés",
+    "linkButton": "Associer un portefeuille",
+    "showInWallet": "Afficher dans le portefeuille",
+    "addFunds": "Ajouter des fonds",
+    "empty": {
+      "title": "Aucun portefeuille associé",
+      "description": "Ajoutez un nouveau portefeuille"
+    },
+    "actionDescription": {
+      "addToken": "pour ajouter le jeton NFSC à votre portefeuille",
+      "charge": "pour approvisionner votre portefeuille"
+    },
+    "toast": {
+      "requestSentTitle": "Demande envoyée au portefeuille",
+      "requestSentDescription": "Vérifiez votre portefeuille pour ajouter le jeton NFSC",
+      "addTokenSuccess": "Jeton NFSC ajouté avec succès",
+      "addTokenError": "Échec de l'ajout du jeton NFSC",
+      "addTokenFailedTitle": "Échec de l'ajout du jeton",
+      "unknownError": "Erreur inconnue",
+      "prepareActionError": "Échec de la préparation de l'action"
+    }
+  },
+  "saveDialog": {
+    "title": "Détails du moyen de paiement",
+    "description": "Saisissez vos informations de paiement",
+    "submit": "Enregistrer ce moyen de paiement",
+    "processing": "Traitement en cours…",
+    "genericError": "Une erreur s'est produite",
+    "unexpectedError": "Une erreur inattendue s'est produite"
+  }
+}

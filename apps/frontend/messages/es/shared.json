@@ -1,0 +1,79 @@
+{
+  "authRequired": {
+    "title": "Inicio de sesión requerido",
+    "description": "Por favor, inicia sesión para continuar"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "para completar esta acción",
+    "title": {
+      "wrongWallet": "Billetera incorrecta conectada",
+      "settingActive": "Configurando billetera activa",
+      "connect": "Conecta tu billetera"
+    },
+    "description": {
+      "wrongWallet": "Conecta la billetera correcta para continuar.",
+      "settingActive": "Espera mientras configuramos tu billetera como activa...",
+      "connect": "Conecta tu billetera {actionDescription}."
+    },
+    "checkingStatus": "Verificando estado de la billetera...",
+    "settingAsActive": "Configurando billetera como activa...",
+    "requiredWallet": "Billetera requerida",
+    "waitingForConnection": "Esperando conexión de billetera...",
+    "differentWalletConnected": "Conectaste una billetera diferente",
+    "youConnected": "Conectaste",
+    "butWeNeed": "Pero necesitamos",
+    "connectedSuccessfully": "Billetera conectada correctamente",
+    "connecting": "Conectando...",
+    "next": "Siguiente",
+    "toast": {
+      "setActiveFailed": "Error al configurar la billetera activa",
+      "connectFailed": "Error al conectar la billetera",
+      "unknownError": "Error desconocido"
+    }
+  },
+  "countryInput": {
+    "placeholder": "Seleccionar país",
+    "searchPlaceholder": "Buscar países...",
+    "noResults": "No se encontró ningún país.",
+    "clearSelection": "Borrar selección"
+  },
+  "myDomains": {
+    "heading": "Mis dominios"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "Aún no indexado",
+    "emptyIdentifier": "Ingresa una dirección de billetera o nombre ENS para ver NFTs.",
+    "invalidIdentifier": "Esto no parece una dirección de billetera o nombre ENS válido.",
+    "invalidIdentifierHint": "Las billeteras deben tener prefijo 0x y los nombres ENS necesitan al menos un punto.",
+    "ensResolveFailed": "No pudimos resolver ese nombre ENS.",
+    "ensResolveFailedHint": "Verifica la ortografía o intenta de nuevo en un momento.",
+    "noWalletResolved": "No pudimos resolver una billetera para ese valor.",
+    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "No pudimos cargar los dominios de esta billetera.",
+    "loadDomainsFailedHint": "Actualiza la página e intenta de nuevo.",
+    "noNftsFound": "No se encontraron NFTs de Namefi en esta billetera.",
+    "noNftsFoundHint": "Verifica la dirección de billetera o nombre ENS, o intenta más tarde mientras la indexación se pone al día.",
+    "unknownNetwork": "Red desconocida",
+    "explorer": "Explorador",
+    "viewOnExplorer": "Ver en explorador",
+    "viewOn": "Ver en {explorer}",
+    "network": "Red",
+    "expiration": "Vencimiento",
+    "wallet": "Billetera",
+    "ens": "ENS: {name}",
+    "copiedToClipboard": "Copiado al portapapeles",
+    "copyFailed": "Error al copiar",
+    "copyFailedDescription": "No pudimos copiar ese valor. Intenta de nuevo."
+  },
+  "instantBuyModal": {
+    "title": "Comprar {domain}",
+    "description": "Completa tu compra por 1 año de registro",
+    "domain": "Dominio",
+    "pricePerYear": "{price} USD / año",
+    "selectNftWallet": "Selecciona una billetera NFT para continuar",
+    "buyNow": "Comprar",
+    "errorTitle": "Algo salió mal.",
+    "errorDescription": "No te preocupes, no se te cobrará. Puedes intentarlo de nuevo. ",
+    "errorDetail": "(Error - {error})"
+  }
+}

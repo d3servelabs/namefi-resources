@@ -1,0 +1,79 @@
+{
+  "authRequired": {
+    "title": "サインインが必要です",
+    "description": "続行するにはサインインしてください"
+  },
+  "requestWalletConnection": {
+    "defaultActionDescription": "この操作を完了するため",
+    "title": {
+      "wrongWallet": "別のウォレットが接続されています",
+      "settingActive": "アクティブウォレットを設定中",
+      "connect": "ウォレットを接続してください"
+    },
+    "description": {
+      "wrongWallet": "続行するには正しいウォレットを接続してください。",
+      "settingActive": "ウォレットをアクティブに設定しています。しばらくお待ちください...",
+      "connect": "{actionDescription}ウォレットを接続してください。"
+    },
+    "checkingStatus": "ウォレットの状態を確認中...",
+    "settingAsActive": "ウォレットをアクティブに設定中...",
+    "requiredWallet": "必要なウォレット",
+    "waitingForConnection": "ウォレット接続を待機中...",
+    "differentWalletConnected": "別のウォレットが接続されました",
+    "youConnected": "接続されたウォレット",
+    "butWeNeed": "必要なウォレット",
+    "connectedSuccessfully": "ウォレットの接続に成功しました",
+    "connecting": "接続中...",
+    "next": "次へ",
+    "toast": {
+      "setActiveFailed": "アクティブウォレットの設定に失敗しました",
+      "connectFailed": "ウォレットの接続に失敗しました",
+      "unknownError": "不明なエラー"
+    }
+  },
+  "countryInput": {
+    "placeholder": "国を選択",
+    "searchPlaceholder": "国を検索...",
+    "noResults": "該当する国が見つかりません。",
+    "clearSelection": "選択をクリア"
+  },
+  "myDomains": {
+    "heading": "マイドメイン"
+  },
+  "walletNftGrid": {
+    "notIndexedYet": "未インデックス",
+    "emptyIdentifier": "NFTを表示するにはウォレットアドレスまたはENS名を入力してください。",
+    "invalidIdentifier": "有効なウォレットアドレスまたはENS名ではありません。",
+    "invalidIdentifierHint": "ウォレットは0xで始まる必要があり、ENS名にはドットが必要です。",
+    "ensResolveFailed": "ENS名を解決できませんでした。",
+    "ensResolveFailedHint": "スペルを確認するか、しばらくしてから再試行してください。",
+    "noWalletResolved": "入力からウォレットを解決できませんでした。",
+    "nftCount": "{count, plural, other {# NFT}}",
+    "loadDomainsFailed": "このウォレットのドメインを読み込めませんでした。",
+    "loadDomainsFailedHint": "ページを更新して再試行してください。",
+    "noNftsFound": "このウォレットにNamefi NFTが見つかりません。",
+    "noNftsFoundHint": "ウォレットアドレスまたはENS名を確認するか、インデックスが追いつくまでしばらくお待ちください。",
+    "unknownNetwork": "不明なネットワーク",
+    "explorer": "エクスプローラー",
+    "viewOnExplorer": "エクスプローラーで表示",
+    "viewOn": "{explorer}で表示",
+    "network": "ネットワーク",
+    "expiration": "有効期限",
+    "wallet": "ウォレット",
+    "ens": "ENS: {name}",
+    "copiedToClipboard": "クリップボードにコピーしました",
+    "copyFailed": "コピーに失敗しました",
+    "copyFailedDescription": "値をコピーできませんでした。再試行してください。"
+  },
+  "instantBuyModal": {
+    "title": "{domain}を購入",
+    "description": "1年間の登録購入を完了してください",
+    "domain": "ドメイン",
+    "pricePerYear": "{price} USD / 年",
+    "selectNftWallet": "続行するNFTウォレットを選択",
+    "buyNow": "今すぐ購入",
+    "errorTitle": "問題が発生しました。",
+    "errorDescription": "ご安心ください。請求は発生していません。再試行してください。",
+    "errorDetail": "(エラー - {error})"
+  }
+}

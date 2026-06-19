@@ -1,0 +1,49 @@
+{
+  "header": {
+    "taglineWithNetwork": "{parentDomain} でドメインを検索",
+    "taglineAllNetworks": "すべてのネットワークでドメインを検索",
+    "networkLabel": "ネットワーク:",
+    "allNetworks": "すべて"
+  },
+  "modeTabs": {
+    "register": "登録",
+    "import": "インポート"
+  },
+  "input": {
+    "placeholder": "ドメインを検索...",
+    "importPlaceholder": "2つの形式で貼り付けできます:\n\n形式1: 認証コード付きドメイン\nexample.com, authcode123\n\n形式2: 複数ドメイン（カンマまたは改行で区切り）\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "検索",
+    "importButton": "インポート",
+    "clearParentDomainAriaLabel": "親ドメインをクリア",
+    "freeMintTooltipWithParent": "{parentDomain} 配下の利用可能なサブドメインを検索して、無料で取得しましょう！",
+    "freeMintTooltipAllDomains": "利用可能なドメインを検索して、無料で取得しましょう！"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "{price} で更新",
+    "owner": "所有者: {owner}",
+    "notRegistered": "未登録",
+    "unsupported": "非対応",
+    "lockedShort": "ロック中",
+    "temporarilyUnimportable": "一時的にインポート不可",
+    "taken": "取得済み",
+    "unavailableShort": "利用不可",
+    "temporarilyUnavailable": "一時的に利用不可",
+    "freeClaim": "無料取得",
+    "addToWishlist": "ウィッシュリストに追加",
+    "removeFromWishlist": "ウィッシュリストから削除",
+    "eppCode": "EPP コード",
+    "savedEppCode": "保存済み EPP コード",
+    "marketplace": "マーケットプレイス",
+    "buyShort": "購入",
+    "buyOn": "購入先:",
+    "buyOnSourceAriaLabel": "{source} で購入",
+    "buyOnSourceFromSellerAriaLabel": "{source} で {seller} から購入"
+  },
+  "results": {
+    "errorTitle": "検索エラー",
+    "errorDescription": "検索中にエラーが発生しました。もう一度お試しください。",
+    "noResultsTitle": "ドメインが見つかりません",
+    "noResultsDescription": "\"{query}\" に一致するドメインは見つかりませんでした。別の検索ワードをお試しください。"
+  }
+}

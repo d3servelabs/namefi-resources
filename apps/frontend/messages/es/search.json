@@ -1,0 +1,49 @@
+{
+  "header": {
+    "taglineWithNetwork": "Busca un dominio en {parentDomain}",
+    "taglineAllNetworks": "Busca un dominio en todas las redes",
+    "networkLabel": "Red:",
+    "allNetworks": "Todas"
+  },
+  "modeTabs": {
+    "register": "Registrar",
+    "import": "Importar"
+  },
+  "input": {
+    "placeholder": "Buscar un dominio...",
+    "importPlaceholder": "Puedes pegar en dos formatos:\n\nFormato 1: Dominio con código de autorización\nexample.com, authcode123\n\nFormato 2: Múltiples dominios (separados por coma o línea nueva)\ndomain1.com, domain2.com\ndomain3.com",
+    "searchButton": "Buscar",
+    "importButton": "Importar",
+    "clearParentDomainAriaLabel": "Borrar dominio principal",
+    "freeMintTooltipWithParent": "¡Busca subdominios disponibles en {parentDomain} y reclámalos gratis!",
+    "freeMintTooltipAllDomains": "¡Busca dominios disponibles y reclámalos gratis!"
+  },
+  "card": {
+    "priceWithCurrency": "{price} USD",
+    "renewsAt": "se renueva a {price}",
+    "owner": "Propietario: {owner}",
+    "notRegistered": "No registrado",
+    "unsupported": "No admitido",
+    "lockedShort": "Bloq.",
+    "temporarilyUnimportable": "Importación no disponible temporalmente",
+    "taken": "Tomado",
+    "unavailableShort": "No disp.",
+    "temporarilyUnavailable": "Temporalmente no disponible",
+    "freeClaim": "Reclamar gratis",
+    "addToWishlist": "Añadir a favoritos",
+    "removeFromWishlist": "Quitar de favoritos",
+    "eppCode": "Código EPP",
+    "savedEppCode": "Código EPP guardado",
+    "marketplace": "marketplace",
+    "buyShort": "Comprar",
+    "buyOn": "Comprar en",
+    "buyOnSourceAriaLabel": "Comprar en {source}",
+    "buyOnSourceFromSellerAriaLabel": "Comprar en {source} de {seller}"
+  },
+  "results": {
+    "errorTitle": "Error de búsqueda",
+    "errorDescription": "Ocurrió un error al buscar. Por favor, inténtalo de nuevo.",
+    "noResultsTitle": "No se encontraron dominios",
+    "noResultsDescription": "No se encontraron dominios que coincidan con \"{query}\". Prueba con otro término."
+  }
+}

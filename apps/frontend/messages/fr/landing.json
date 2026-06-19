@@ -1,0 +1,16 @@
+{
+  "hero": {
+    "badge": "Registrar accrédité ICANN sur Ethereum & Base",
+    "heading": "Namefi : la plateforme de domaines nouvelle génération avec blockchain et IA",
+    "subtitle": "Plus rapide, moins cher et vérifiable. La meilleure façon de posséder des domaines.",
+    "tryV3Beta": "Ou essayez notre nouvelle expérience de recherche (v3 bêta)"
+  },
+  "scrollIndicator": {
+    "ariaLabel": "Faire défiler vers la section Pourquoi utiliser Namefi",
+    "label": "Pourquoi choisir Namefi ?"
+  },
+  "floatingSearch": {
+    "placeholder": "Rechercher un domaine...",
+    "searchButton": "Chercher"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "tabs": {
+    "active": "Mis dominios",
+    "inactive": "Dominios inactivos",
+    "previouslyOwned": "Dominios anteriores",
+    "otherWallets": "En otras billeteras",
+    "marketplaceOrders": "Mis anuncios y ofertas"
+  },
+  "processingBanner": "<domains></domains> están siendo procesados. Visita <ordersLink>Pedidos</ordersLink> para ver su estado.",
+  "emptyActive": "Sin dominios activos",
+  "emptyInactive": "Sin dominios inactivos",
+  "emptyPlaceholder": {
+    "title": "No se encontraron dominios",
+    "description": "Comienza la búsqueda de tu próximo dominio haciendo clic en el botón de abajo",
+    "action": "Página de búsqueda"
+  },
+  "columns": {
+    "selectAll": "Seleccionar todo",
+    "selectRow": "Seleccionar fila",
+    "domainName": "Nombre de dominio ({count})",
+    "domainNamePlain": "Nombre de dominio",
+    "renewal": "Renovación",
+    "autoEns": "AutoENS",
+    "dateTokenized": "Fecha de tokenización",
+    "dnsRecords": "Registros DNS",
+    "actions": "Acciones",
+    "renewUsdPerYear": "Renovar (USD/año)"
+  },
+  "table": {
+    "searchPlaceholder": "Filtrar dominios...",
+    "emptyMessage": "Ningún dominio coincide con los filtros",
+    "loadingMessage": "Cargando dominios…",
+    "showNftsInWallet": "Mostrar NFTs en la billetera",
+    "showNftsInWalletAria": "Mostrar {count, plural, one {# NFT} other {# NFTs}} en la billetera",
+    "filters": {
+      "domainName": "Nombre de dominio",
+      "wallet": "Billetera",
+      "renewal": "Renovación",
+      "dateTokenized": "Fecha de tokenización",
+      "chain": "Red"
+    },
+    "toasts": {
+      "autoRenewToggled": "Renovación automática {enabled, select, true {activada} other {desactivada}} para {domain}",
+      "autoRenewToggleFailed": "Error al actualizar la renovación automática para {domain}",
+      "autoEnsToggled": "AutoENS {enabled, select, true {activado} other {desactivado}} para {domain}",
+      "autoEnsToggleFailed": "Error al actualizar AutoENS para {domain}",
+      "bulkAutoRenewFailed": "Error al actualizar {failed} de {total} dominios",
+      "bulkAutoRenewToggled": "Renovación automática {enabled, select, true {activada} other {desactivada}} para {count, plural, one {# dominio} other {# dominios}}",
+      "noNftsToWatch": "No hay NFTs disponibles para agregar a tu billetera",
+      "nftsAdded": "Se {count, plural, one {agregó # NFT} other {agregaron # NFTs}} a tu billetera",
+      "nftsAddFailed": "No se {count, plural, one {pudo agregar # NFT} other {pudieron agregar # NFTs}} a tu billetera"
+    }
+  },
+  "otherWallets": {
+    "domain": "Dominio ({count})",
+    "nftWallet": "Billetera NFT",
+    "order": "Pedido",
+    "viewOrder": "Ver pedido"
+  },
+  "renewModal": {
+    "title": "{count, plural, one {Renovar dominio} other {Renovar dominios}}",
+    "descriptionSingle": "Renovar {domain}",
+    "descriptionMultiple": "Renovar {count} dominios",
+    "renewalPeriod": "Período de renovación",
+    "selectYears": "Seleccionar años",
+    "yearOption": "{years, plural, one {# año} other {# años}}",
+    "pricePerYear": "Precio por año",
+    "total": "Total ({years, plural, one {# año} other {# años}})",
+    "addingToCart": "Agregando al carrito...",
+    "addToCart": "Agregar al carrito",
+    "addToCartFailed": "Error al agregar los dominios al carrito. Inténtalo de nuevo."
+  },
+  "renewPremiumInfo": {
+    "aria": "Información de precio de renovación para {domain}",
+    "tooltip": "Los dominios premium pueden tener un precio de renovación diferente."
+  },
+  "renewalCell": {
+    "auto": "Auto",
+    "autoRenewAria": "Renovación automática de {domain}",
+    "expired": "Vencido",
+    "usdPerYear": "USD/año"
+  },
+  "autoEnsCell": {
+    "aria": "Auto-ENS para {domain}"
+  },
+  "timeLeft": {
+    "expired": "Vencido",
+    "days": "{days}d",
+    "monthsExact": "{months}m",
+    "monthsPlus": "{months}m+",
+    "yearsExact": "{years}a",
+    "yearsPlus": "{years}a+"
+  },
+  "marketplaceExpiry": {
+    "neverExpires": "Sin vencimiento",
+    "expired": "Vencido",
+    "expires": "Vence el {datetime}"
+  },
+  "nftPendingBadge": {
+    "minting": "Minteando…",
+    "changingExpiration": "Actualizando vencimiento…",
+    "changingLock": "Actualizando bloqueo…",
+    "pending": "Pendiente…"
+  },
+  "actions": {
+    "listForSale": "Publicar en venta",
+    "findBuyers": "Buscar compradores",
+    "viewOrder": "Ver pedido",
+    "viewOrderMenu": "Ver pedido",
+    "viewNft": "Ver NFT",
+    "viewNftOn": "Ver NFT en {explorer}",
+    "scan": "Explorar",
+    "visitDomain": "Visitar dominio",
+    "showNftInWallet": "Mostrar NFT en la billetera",
+    "listForSaleAria": "Publicar {domain} en venta",
+    "viewOrderAria": "Ver pedido de {domain}",
+    "findBuyersAria": "Buscar compradores para {domain}",
+    "viewNftAria": "Ver NFT de {domain}",
+    "visitDomainAria": "Visitar {domain}",
+    "actionsAria": "Acciones para {domain}",
+    "showNftInWalletAria": "Mostrar NFT de {domain} en la billetera",
+    "nftAddedToast": "{domain} agregado a tu billetera",
+    "nftAddFailedToast": "No se pudo agregar {domain} a tu billetera",
+    "nftAddErrorToast": "Error al agregar el NFT a la billetera",
+    "unknownError": "Error desconocido"
+  },
+  "floatingPanel": {
+    "selected": "seleccionados",
+    "clearSelection": "Limpiar selección",
+    "auto": "Auto",
+    "bulkAutoRenewAria": "Renovación automática masiva para {count, plural, one {# dominio} other {# dominios}}",
+    "bulkAutoRenewMixed": "Estados mixtos — haz clic a la izquierda para desactivar todo, a la derecha para activar todo",
+    "bulkAutoRenewOn": "Renovación automática activada — haz clic para desactivar todo",
+    "bulkAutoRenewOff": "Renovación automática desactivada — haz clic para activar todo",
+    "renewAria": "Renovar {count, plural, one {# dominio} other {# dominios}}",
+    "renewTooltip": "Renovar {count, plural, one {# dominio} other {# dominios}}",
+    "setWebRecords": "Configurar registros web",
+    "setUrlForwarding": "Configurar redireccionamiento de URL",
+    "setEnsRecord": "Configurar registro ENS",
+    "showInWalletAria": "Mostrar {count, plural, one {# NFT} other {# NFTs}} en la billetera",
+    "showInWalletTooltip": "Mostrar {count, plural, one {# NFT} other {# NFTs}} en la billetera"
+  },
+  "marketplaceOrders": {
+    "partialLoadNote": "Algunos anuncios pueden no aparecer porque sus mercados pueden estar ocupados.",
+    "noLinkedWalletsTitle": "Sin billeteras vinculadas",
+    "noLinkedWalletsDescription": "Vincula una billetera a tu cuenta para ver tus pedidos del mercado.",
+    "listingsTitle": "Mis anuncios",
+    "listingsDescription": "Anuncios de venta activos publicados en OpenSea y Rarible. Cada tarjeta muestra las ofertas entrantes.",
+    "noListingsTitle": "Sin anuncios activos",
+    "noListingsDescription": "Los anuncios que crees en la página de detalle de un dominio aparecerán aquí.",
+    "offersTitle": "Mis ofertas en otros dominios",
+    "offersDescription": "Ofertas realizadas en dominios que no son de tu propiedad. Ordenadas por precio más alto primero.",
+    "noOffersTitle": "Sin ofertas enviadas",
+    "noOffersDescription": "Las ofertas que hagas en otros dominios aparecerán aquí.",
+    "incomingBids": "Ofertas entrantes",
+    "loadBidsFailed": "No se pudieron cargar las ofertas: {error}",
+    "noBidsYet": "Aún no hay ofertas.",
+    "viewBidAria": "Ver oferta de {source} sobre {domain}",
+    "nftAlt": "NFT",
+    "offerWaiting": "Tu oferta está abierta y a la espera de que el vendedor la acepte."
+  }
+}
