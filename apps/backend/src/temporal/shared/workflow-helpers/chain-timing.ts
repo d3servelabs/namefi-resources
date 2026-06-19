@@ -11,9 +11,9 @@
  * module dependency-free and safe to import from workflow code.
  */
 const BLOCK_TIME_MS_BY_CHAIN: Record<number, number> = {
-  1: 12_000 * 3, // Ethereum mainnet //TODO remove *3 temp
+  1: 12_000, // Ethereum mainnet
   11155111: 12_000, // Sepolia (Ethereum L1 testnet)
-  8453: 3_000 * 3, // Base //TODO remove *3 temp
+  8453: 2_000, // Base
   84532: 2_000, // Base Sepolia
 };
 
