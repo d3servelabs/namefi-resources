@@ -38,18 +38,11 @@ export async function generateMetadata({
   const baseUrl = resolveBaseUrl();
   const selfPath = `/r/${locale}/tld/${slug}`;
   const selfUrl = `${baseUrl}${selfPath}`;
-  // SEO: when an English version of this slug exists, declare it as the
-  // canonical so ranking signals consolidate on the English page. Non-English
-  // variants remain accessible and continue to ship locale-specific OG/hreflang.
-  // Exception: a page flagged `selfCanonical` (a topic-relevant page authored
-  // natively for its market, e.g. a Spanish .abogado page) is self-canonical so
-  // it ranks in its own language instead of deferring to English.
-  const canonicalUrl =
-    locale === 'en' ||
-    !getTldCached('en', slug) ||
-    entry.frontmatter.selfCanonical
-      ? selfUrl
-      : `${baseUrl}/r/en/tld/${slug}`;
+  // SEO: each locale is self-canonical so it can rank in its own language —
+  // e.g. the Spanish .ai page ranks for Spanish ".ai" queries instead of
+  // deferring to English. The hreflang `languages` map + `x-default` (below)
+  // tell crawlers these are alternate-language versions of one another.
+  const canonicalUrl = selfUrl;
   const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
   const authorNames = getAuthorNames(locale, entry.frontmatter.authors);
@@ -59,13 +52,15 @@ export async function generateMetadata({
   const summary =
     entry.frontmatter.summary ?? entry.frontmatter.description ?? undefined;
 
-  const languageAlternates: Partial<Record<Locale, string>> = {};
+  const languageAlternates: Partial<Record<Locale | 'x-default', string>> = {};
   for (const localeOption of i18n.locales) {
     if (getTldCached(localeOption, slug)) {
       languageAlternates[localeOption] =
         `${baseUrl}/r/${localeOption}/tld/${slug}`;
     }
   }
+  // x-default points crawlers to the English version when it exists, else self.
+  languageAlternates['x-default'] = languageAlternates.en ?? selfUrl;
 
   return {
     alternates: {

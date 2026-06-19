@@ -15,20 +15,21 @@ export async function generateMetadata({
     ? (lang as Locale)
     : i18n.defaultLocale;
   const baseUrl = resolveBaseUrl();
-  // SEO: declare the English home as canonical so ranking signals
-  // consolidate on the English page across locales.
-  const canonicalUrl = new URL('/r/en', baseUrl);
+  // SEO: each locale home is self-canonical so it can rank in its own
+  // language; hreflang `languages` + `x-default` (below) map the cluster.
+  const canonicalUrl = new URL(`/r/${locale}`, baseUrl);
   const rssFeedUrl = new URL(`/r/${locale}/rss.xml`, baseUrl);
   const title = resolveTitle(locale);
   const description = 'Blog posts about Namefi';
 
-  const languageAlternates: Partial<Record<Locale, string>> = {};
+  const languageAlternates: Partial<Record<Locale | 'x-default', string>> = {};
   for (const localeOption of i18n.locales) {
     languageAlternates[localeOption] = new URL(
       `/r/${localeOption}`,
       baseUrl,
     ).toString();
   }
+  languageAlternates['x-default'] = new URL('/r/en', baseUrl).toString();
 
   return {
     title,

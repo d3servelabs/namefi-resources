@@ -30,19 +30,20 @@ export async function generateMetadata({
   const baseUrl = resolveBaseUrl();
   const selfPath = `/r/${locale}/tld`;
   const selfUrl = `${baseUrl}${selfPath}`;
-  // SEO: declare the English index as canonical so ranking signals
-  // consolidate on the English page across locales.
-  const canonicalUrl = `${baseUrl}/r/en/tld`;
+  // SEO: each locale index is self-canonical so it can rank in its own
+  // language; hreflang `languages` + `x-default` (below) map the cluster.
+  const canonicalUrl = selfUrl;
   const ogImagePath = `${selfPath}/opengraph-image`;
   const ogImageUrl = `${baseUrl}${ogImagePath}`;
   const pageTitle = `${baseTitle} – ${sectionTitle}`;
   const description = sectionDescription;
   const twitterHandle = '@namefi_io';
 
-  const languageAlternates: Partial<Record<Locale, string>> = {};
+  const languageAlternates: Partial<Record<Locale | 'x-default', string>> = {};
   for (const localeOption of i18n.locales) {
     languageAlternates[localeOption] = `${baseUrl}/r/${localeOption}/tld`;
   }
+  languageAlternates['x-default'] = `${baseUrl}/r/en/tld`;
 
   return {
     alternates: {

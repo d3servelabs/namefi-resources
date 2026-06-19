@@ -19,7 +19,8 @@ function toAbsoluteUrl(baseUrl: string, path: string): string {
   return `${baseUrl}${path}`;
 }
 
-function createLanguageAlternates(
+// Exported for unit testing the hreflang + x-default behavior.
+export function createLanguageAlternates(
   baseUrl: string,
   locales: readonly Locale[],
   pathBuilder: (locale: Locale) => string,
@@ -28,6 +29,11 @@ function createLanguageAlternates(
   const alternates: Record<string, string> = {};
   for (const locale of locales) {
     alternates[locale] = toAbsoluteUrl(baseUrl, pathBuilder(locale));
+  }
+  // Mirror the page-level x-default: point it at English when available so
+  // crawlers have a declared fallback for unmatched languages.
+  if (alternates[i18n.defaultLocale]) {
+    alternates['x-default'] = alternates[i18n.defaultLocale];
   }
   return Object.keys(alternates).length === 0 ? undefined : alternates;
 }

@@ -44,13 +44,10 @@ export async function generateMetadata({
   const baseUrl = resolveBaseUrl();
   const selfPath = `/r/${locale}/blog/${slug}`;
   const selfUrl = `${baseUrl}${selfPath}`;
-  // SEO: declare the English version (when it exists) as the canonical so
-  // ranking signals consolidate on the English page. See [lang]/tld/[slug] for
-  // the same pattern.
-  const canonicalUrl =
-    locale === 'en' || !getPostCached('en', slug)
-      ? selfUrl
-      : `${baseUrl}/r/en/blog/${slug}`;
+  // SEO: each locale is self-canonical so it can rank in its own language;
+  // the hreflang `languages` map + `x-default` (below) tell crawlers these are
+  // alternate-language versions of one another. See [lang]/tld/[slug] too.
+  const canonicalUrl = selfUrl;
   // Prefer the hand-made asset when one is committed under
   // data/content/assets — the sync-blog-assets prebuild step copies it into
   // public/blog-assets so Vercel's CDN serves it directly with no Function
@@ -66,13 +63,15 @@ export async function generateMetadata({
   const publishedTime = entry.publishedAt.toISOString();
   const twitterHandle = '@namefi_io';
 
-  const languageAlternates: Partial<Record<Locale, string>> = {};
+  const languageAlternates: Partial<Record<Locale | 'x-default', string>> = {};
   for (const localeOption of i18n.locales) {
     if (getPostCached(localeOption, slug)) {
       languageAlternates[localeOption] =
         `${baseUrl}/r/${localeOption}/blog/${slug}`;
     }
   }
+  // x-default points crawlers to the English version when it exists, else self.
+  languageAlternates['x-default'] = languageAlternates.en ?? selfUrl;
 
   return {
     alternates: {
