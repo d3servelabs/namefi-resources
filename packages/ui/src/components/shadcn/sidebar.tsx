@@ -22,6 +22,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { useDirection } from '@namefi-astra/ui/hooks/use-direction';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { PanelLeftIcon } from 'lucide-react';
 
@@ -162,6 +163,12 @@ function Sidebar({
   collapsible?: 'offcanvas' | 'icon' | 'none';
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
+  const direction = useDirection();
+  // `side` is a logical intent (the sidebar's inline edge). The desktop rail
+  // expresses that with CSS logical properties, but the mobile Sheet slides
+  // from a *physical* side, so mirror it in RTL to open from the same edge.
+  const mobileSide =
+    direction === 'rtl' ? (side === 'left' ? 'right' : 'left') : side;
 
   if (collapsible === 'none') {
     return (
@@ -191,7 +198,7 @@ function Sidebar({
               '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
             } as React.CSSProperties
           }
-          side={side}
+          side={mobileSide}
         >
           <SheetHeader className="sr-only">
             <SheetTitle>Sidebar</SheetTitle>
