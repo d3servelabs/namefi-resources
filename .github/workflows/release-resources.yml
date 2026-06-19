@@ -502,7 +502,7 @@ jobs:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const targetSha = process.env.TARGET_SHA;
-            const timeoutMs = 20 * 60 * 1000;
+            const timeoutMs = 30 * 60 * 1000;
             const pollIntervalMs = 15 * 1000;
             const deadline = Date.now() + timeoutMs;
 
@@ -510,21 +510,29 @@ jobs:
 
             while (Date.now() < deadline) {
               try {
+              // Filter server-side by head_sha (a reliable first-class filter).
+              // The previous `branch: 'main'` + `event: 'push'` server filters
+              // intermittently returned an empty set even when a matching run
+              // existed, stalling this gate until timeout and silently blocking
+              // the release tag (so prod went stale). We narrow to the main-push
+              // dev deploy in code below — distinguishing it from the later
+              // tag-push prod deploy that shares the same head_sha.
               const runs = await github.paginate(
                 github.rest.actions.listWorkflowRuns,
                 {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   workflow_id: 'deploy-resources.yml',
-                  branch: 'main',
-                  event: 'push',
+                  head_sha: targetSha,
                   per_page: 100,
                 },
                 (response) => response.data.workflow_runs ?? [],
               );
 
               const matchingRuns = runs
-                .filter((run) => run.head_sha === targetSha)
+                .filter(
+                  (run) => run.event === 'push' && run.head_branch === 'main',
+                )
                 .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
               const run = matchingRuns[0];
 
