@@ -73,10 +73,40 @@ type StudioGenerationWorkflowType = 'animation' | 'logo' | 'marketing';
 type StudioGenerationWorkflowStartResult =
   | { state: 'started' }
   | { state: 'not-found' | 'unknown'; error: unknown };
+type MappedAiGenerationRecord<T extends AiGenerationRow> = T & {
+  mimeType: string;
+  thumbnailUrl: string | null;
+  url: string | null;
+};
+type PublicAiGenerationMetadataKey =
+  | 'animationSheetUrl'
+  | 'resolvedMotionPreset'
+  | 'sheetModel';
+type PublicAiGenerationMetadata = Partial<
+  Record<PublicAiGenerationMetadataKey, string>
+>;
+type PublicAiGenerationRecord<T extends AiGenerationRow> = Omit<
+  MappedAiGenerationRecord<T>,
+  'input' | 'isDeleted' | 'metadata' | 'tokenUsage' | 'userId'
+> & {
+  input?: undefined;
+  isDeleted?: undefined;
+  metadata: PublicAiGenerationMetadata;
+  tokenUsage?: undefined;
+  userId?: undefined;
+};
+type ViewerAiGenerationRecord<T extends AiGenerationRow> =
+  | MappedAiGenerationRecord<T>
+  | PublicAiGenerationRecord<T>;
 
 const GENERATION_WORKFLOW_START_STATE_UNCONFIRMED = 'UNCONFIRMED';
 const GENERATION_WORKFLOW_START_STATE_CONFIRMED = 'CONFIRMED';
 const GENERATION_WORKFLOW_START_RECONCILIATION_INTERVAL_MS = 30_000;
+const PUBLIC_AI_GENERATION_METADATA_KEYS = [
+  'animationSheetUrl',
+  'resolvedMotionPreset',
+  'sheetModel',
+] as const satisfies readonly PublicAiGenerationMetadataKey[];
 
 function createInsufficientGenerationCreditsError(params: {
   maxCredits: number;
@@ -508,7 +538,9 @@ function getGenerationMimeType(output: AssetOutput) {
   return output.type === 'animation' ? output.mimeType : 'image/png';
 }
 
-function mapAiGenerationRecord<T extends AiGenerationRow>(generation: T) {
+function mapAiGenerationRecord<T extends AiGenerationRow>(
+  generation: T,
+): MappedAiGenerationRecord<T> {
   return {
     ...generation,
     url: getGenerationUrl(generation.output),
@@ -517,6 +549,58 @@ function mapAiGenerationRecord<T extends AiGenerationRow>(generation: T) {
       generation.metadata,
     ),
     mimeType: getGenerationMimeType(generation.output),
+  };
+}
+
+function mapPublicAiGenerationMetadata(metadata: unknown) {
+  const metadataRecord = asMetadataRecord(metadata);
+  const publicMetadata: PublicAiGenerationMetadata = {};
+
+  for (const key of PUBLIC_AI_GENERATION_METADATA_KEYS) {
+    const value = metadataRecord[key];
+    if (typeof value === 'string') {
+      publicMetadata[key] = value;
+    }
+  }
+
+  return publicMetadata;
+}
+
+export function canViewFullAiGenerationRecord(
+  generation: Pick<AiGenerationRow, 'userId'>,
+  viewerUserId: string | null | undefined,
+) {
+  return Boolean(viewerUserId && viewerUserId === generation.userId);
+}
+
+export function isPublicAiGenerationVisible(
+  generation: Pick<AiGenerationRow, 'isDeleted' | 'status'>,
+) {
+  return !generation.isDeleted && generation.status === 'SUCCEEDED';
+}
+
+export function mapAiGenerationRecordForViewer<T extends AiGenerationRow>(
+  generation: T,
+  viewerUserId: string | null | undefined,
+): ViewerAiGenerationRecord<T> {
+  const mappedGeneration = mapAiGenerationRecord(generation);
+
+  if (canViewFullAiGenerationRecord(generation, viewerUserId)) {
+    return mappedGeneration;
+  }
+
+  const {
+    input: _input,
+    isDeleted: _isDeleted,
+    metadata,
+    tokenUsage: _tokenUsage,
+    userId: _userId,
+    ...publicGeneration
+  } = mappedGeneration;
+
+  return {
+    ...publicGeneration,
+    metadata: mapPublicAiGenerationMetadata(metadata),
   };
 }
 
@@ -1345,7 +1429,7 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
   getGenerationById: publicProcedure
     .input(aiContract.getGenerationById.input)
     .output(aiContract.getGenerationById.output)
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const [generation] = await db
         .select()
         .from(aiGenerationsTable)
@@ -1363,10 +1447,24 @@ export const aiRouter = createContractTRPCRouter<typeof aiContract>({
         });
       }
 
-      const reconciledGeneration =
-        await reconcileUnconfirmedGenerationStart(generation);
+      const viewerUserId = ctx.user?.id;
+      const canViewFullRecord = canViewFullAiGenerationRecord(
+        generation,
+        viewerUserId,
+      );
 
-      return mapAiGenerationRecord(reconciledGeneration);
+      if (!canViewFullRecord && !isPublicAiGenerationVisible(generation)) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Generation not found',
+        });
+      }
+
+      const visibleGeneration = canViewFullRecord
+        ? await reconcileUnconfirmedGenerationStart(generation)
+        : generation;
+
+      return mapAiGenerationRecordForViewer(visibleGeneration, viewerUserId);
     }),
 
   deleteGeneration: protectedProcedure

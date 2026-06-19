@@ -310,18 +310,23 @@ vi.mock('../../base', () => ({
 }));
 
 const {
+  canViewFullAiGenerationRecord,
   generateAnimationInputSchema,
   getAiGenerationCreditCost,
   getAiGenerationCreditCostForRow,
   getAnimationStartStateAfterError,
   getActiveAiCreditAwardCredits,
   getUserGenerationCreditUsage,
+  isPublicAiGenerationVisible,
+  mapAiGenerationRecordForViewer,
   startAiGenerationWorkflowWithRecovery,
   startLogoAnimationWorkflowWithRecovery,
 } = await import('../aiRouter');
 const { resolveLogoReferenceDetails } = await import(
   '../ai-generation-references'
 );
+
+type TestAiGenerationRow = Parameters<typeof mapAiGenerationRecordForViewer>[0];
 
 type SelectResult = unknown[] | Promise<unknown[]>;
 
@@ -358,6 +363,59 @@ function createLogoGenerationRows(count: number) {
     output: { storagePath: `logos/${index}.png`, type: 'logo' },
     type: 'logo',
   }));
+}
+
+function createAiGenerationRow(
+  overrides: Partial<TestAiGenerationRow> = {},
+): TestAiGenerationRow {
+  const now = new Date('2026-01-02T03:04:05.000Z');
+
+  return {
+    createdAt: now,
+    domain: 'example.com',
+    errorMessage: null,
+    featured: false,
+    finishedAt: now,
+    id: 'generation-1',
+    input: {
+      type: 'animation',
+      mode: 'sheet-guided',
+      description: 'private customer animation prompt',
+      model: 'bytedance/seedance-2.0',
+    },
+    isDeleted: false,
+    metadata: {
+      animationSheetPrompt: 'private sheet prompt',
+      animationSheetUrl: 'https://cdn.test/animations/sheet.png',
+      providerMetadata: { requestId: 'provider-secret' },
+      prompt: 'private rendered video prompt',
+      resolvedMotionPreset: 'light-sweep',
+      sheetModel: 'gpt-image-2',
+      videoPrompt: 'private video prompt',
+      workflowStartState: 'CONFIRMED',
+    },
+    output: {
+      type: 'animation',
+      storagePath: 'animations/output.mp4',
+      thumbnailStoragePath: 'animations/thumb.png',
+      mimeType: 'video/mp4',
+      model: 'bytedance/seedance-2.0',
+    },
+    referenceGenerationId: 'logo-generation-1',
+    startedAt: now,
+    status: 'SUCCEEDED',
+    tokenUsage: [
+      {
+        inputTokens: 123,
+        model: 'secret-token-model',
+        outputTokens: 456,
+      },
+    ],
+    type: 'animation',
+    updatedAt: now,
+    userId: 'user-1',
+    ...overrides,
+  } as TestAiGenerationRow;
 }
 
 function expectTRPCErrorCode(action: () => unknown, code: string) {
@@ -781,6 +839,73 @@ describe('resolveLogoReferenceDetails', () => {
         }),
       'NOT_FOUND',
     );
+  });
+});
+
+describe('AI generation detail visibility', () => {
+  beforeEach(() => {
+    generateUrlFromStoragePathMock.mockClear();
+  });
+
+  it('returns full generation records to the owning user', () => {
+    const generation = createAiGenerationRow();
+
+    const result = mapAiGenerationRecordForViewer(generation, 'user-1');
+
+    expect(canViewFullAiGenerationRecord(generation, 'user-1')).toBe(true);
+    expect(result.userId).toBe('user-1');
+    expect(result.input).toEqual(generation.input);
+    expect(result.tokenUsage).toEqual(generation.tokenUsage);
+    expect(result.metadata).toMatchObject({
+      prompt: 'private rendered video prompt',
+      providerMetadata: { requestId: 'provider-secret' },
+      videoPrompt: 'private video prompt',
+    });
+    expect(result.thumbnailUrl).toBe('https://cdn.test/animations/thumb.png');
+  });
+
+  it('redacts owner, prompt, token, and internal metadata fields for public and non-owner callers', () => {
+    const generation = createAiGenerationRow();
+
+    for (const viewerUserId of [null, 'user-2']) {
+      const result = mapAiGenerationRecordForViewer(generation, viewerUserId);
+
+      expect(canViewFullAiGenerationRecord(generation, viewerUserId)).toBe(
+        false,
+      );
+      expect(result).not.toHaveProperty('input');
+      expect(result).not.toHaveProperty('isDeleted');
+      expect(result).not.toHaveProperty('tokenUsage');
+      expect(result).not.toHaveProperty('userId');
+      expect(result.metadata).toEqual({
+        animationSheetUrl: 'https://cdn.test/animations/sheet.png',
+        resolvedMotionPreset: 'light-sweep',
+        sheetModel: 'gpt-image-2',
+      });
+      expect(result.url).toBe('https://cdn.test/animations/output.mp4');
+      expect(result.thumbnailUrl).toBe('https://cdn.test/animations/thumb.png');
+      expect(JSON.stringify(result)).not.toContain('private');
+      expect(JSON.stringify(result)).not.toContain('provider-secret');
+      expect(JSON.stringify(result)).not.toContain('user-1');
+    }
+  });
+
+  it('only exposes non-deleted successful generations publicly', () => {
+    expect(isPublicAiGenerationVisible(createAiGenerationRow())).toBe(true);
+    expect(
+      isPublicAiGenerationVisible(createAiGenerationRow({ status: 'PENDING' })),
+    ).toBe(false);
+    expect(
+      isPublicAiGenerationVisible(
+        createAiGenerationRow({ status: 'PROCESSING' }),
+      ),
+    ).toBe(false);
+    expect(
+      isPublicAiGenerationVisible(createAiGenerationRow({ status: 'FAILED' })),
+    ).toBe(false);
+    expect(
+      isPublicAiGenerationVisible(createAiGenerationRow({ isDeleted: true })),
+    ).toBe(false);
   });
 });
 

@@ -386,7 +386,7 @@ export function GenerationDetailsClient({
   error: initialError,
 }: GenerationDetailsClientProps) {
   const router = useRouter();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading, user } = useAuth();
   const trpc = useTRPC();
   const [currentUrl, setCurrentUrl] = useState('');
   const [localCreatedAtDisplay, setLocalCreatedAtDisplay] = useState<
@@ -408,6 +408,11 @@ export function GenerationDetailsClient({
   const shouldLiveRefresh =
     initialGeneration?.status === 'PENDING' ||
     initialGeneration?.status === 'PROCESSING';
+  // The SSR getGenerationById query uses a public client, so a missing
+  // initialGeneration?.userId means useQuery should refetch after auth to
+  // hydrate owner-only fields.
+  const shouldRefetchPrivateGenerationFields =
+    isAuthenticated && !isAuthLoading && !initialGeneration?.userId;
 
   // Hydrate from the server result, but keep pending jobs live until they settle.
   const {
@@ -416,7 +421,10 @@ export function GenerationDetailsClient({
     error: fetchError,
   } = useQuery({
     ...trpc.ai.getGenerationById.queryOptions({ id: generationId }),
-    enabled: !initialGeneration || shouldLiveRefresh,
+    enabled:
+      !initialGeneration ||
+      shouldLiveRefresh ||
+      shouldRefetchPrivateGenerationFields,
     initialData: initialGeneration,
     refetchInterval: (query) => {
       const data = query.state.data as GenerationData | undefined;

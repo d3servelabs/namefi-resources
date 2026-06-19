@@ -343,6 +343,39 @@ const aiGenerationRecordSchema = z.object({
   mimeType: z.string(),
 });
 
+const publicAiGenerationMetadataSchema = z
+  .object({
+    animationSheetUrl: z.string().optional(),
+    resolvedMotionPreset: z.string().optional(),
+    sheetModel: z.string().optional(),
+  })
+  .strict();
+
+/**
+ * Public generation detail rows keep the share/gallery display fields but
+ * omit owner-private data from `getGenerationById` for anonymous or non-owner
+ * callers.
+ */
+const publicAiGenerationRecordSchema = aiGenerationRecordSchema
+  .omit({
+    input: true,
+    isDeleted: true,
+    tokenUsage: true,
+    userId: true,
+  })
+  .extend({
+    input: z.undefined().optional(),
+    isDeleted: z.undefined().optional(),
+    metadata: publicAiGenerationMetadataSchema,
+    tokenUsage: z.undefined().optional(),
+    userId: z.undefined().optional(),
+  });
+
+const aiGenerationDetailRecordSchema = z.union([
+  aiGenerationRecordSchema,
+  publicAiGenerationRecordSchema,
+]);
+
 /**
  * Featured / recent carousel entry. Mirrors the shape produced by
  * `mapRows(...)` in `getFeaturedAndRecentGenerations` (a subset of the
@@ -459,7 +492,7 @@ export const aiContract = createContract(
     getGenerationById: {
       type: 'query',
       input: idInputSchema,
-      output: aiGenerationRecordSchema,
+      output: aiGenerationDetailRecordSchema,
     },
     deleteGeneration: {
       type: 'mutation',
