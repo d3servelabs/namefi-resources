@@ -13,6 +13,12 @@ const c15tTheme = {
     customize: { variant: 'neutral', mode: 'ghost' },
   },
   slots: {
+    consentBanner: {
+      style: {
+        left: 'auto',
+        right: 0,
+      },
+    },
     consentBannerFooterSubGroup: 'order-1 sm:order-2 sm:ms-auto',
     consentWidgetFooterSubGroup: 'sm:ms-auto',
     buttonPrimary:
