@@ -87,7 +87,7 @@ export default function MyDomainsPage() {
               size="sm"
               className="flex items-center gap-2 cursor-pointer"
             >
-              <ArrowLeft className="h-4 w-4" />
+              <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
             </Button>
           </Link>
           <h2 className="text-2xl font-bold">My Activity</h2>

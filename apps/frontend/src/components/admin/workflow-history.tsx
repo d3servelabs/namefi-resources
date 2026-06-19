@@ -555,7 +555,7 @@ function WorkflowHistoryContent() {
                   disabled={!hasPreviousPage || isFetching}
                   title="Go to first page"
                 >
-                  <ChevronsLeft className="h-4 w-4" />
+                  <ChevronsLeft className="h-4 w-4 rtl:-scale-x-100" />
                 </Button>
                 <Button
                   variant="outline"
@@ -567,7 +567,7 @@ function WorkflowHistoryContent() {
                   {isFetching && hasPreviousPage ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <ChevronLeft className="h-4 w-4" />
+                    <ChevronLeft className="h-4 w-4 rtl:-scale-x-100" />
                   )}
                   Previous
                 </Button>
@@ -600,7 +600,7 @@ function WorkflowHistoryContent() {
                   {isFetching && hasNextPage ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <ChevronRight className="h-4 w-4" />
+                    <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
                   )}
                 </Button>
               </div>

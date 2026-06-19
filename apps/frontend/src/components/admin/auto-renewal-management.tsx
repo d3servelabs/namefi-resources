@@ -511,7 +511,7 @@ export default function AutoRenewalManagement({
             <p className="text-muted-foreground">Workflow not found.</p>
             <Link href="/admin/auto-renewal">
               <Button variant="outline" className="mt-4 gap-2">
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" />
                 Back to List
               </Button>
             </Link>
@@ -561,7 +561,7 @@ export default function AutoRenewalManagement({
           <div className="flex items-center gap-3">
             <Link href="/admin/auto-renewal">
               <Button variant="ghost" size="sm">
-                <ArrowLeft className="w-4 h-4" />
+                <ArrowLeft className="w-4 h-4 rtl:-scale-x-100" />
               </Button>
             </Link>
             <div>

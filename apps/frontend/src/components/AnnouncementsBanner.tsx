@@ -175,7 +175,7 @@ function AnnouncementStrip({
                 onClick={onPrev}
                 className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
               >
-                <ChevronLeft className="size-4" />
+                <ChevronLeft className="size-4 rtl:-scale-x-100" />
               </button>
             ) : null}
 
@@ -209,7 +209,7 @@ function AnnouncementStrip({
                 onClick={onNext}
                 className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
               >
-                <ChevronRight className="size-4" />
+                <ChevronRight className="size-4 rtl:-scale-x-100" />
               </button>
             ) : null}
           </div>

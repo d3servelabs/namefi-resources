@@ -826,7 +826,7 @@ const CommunitySection = ({
                 {name}
               </span>
               <span className="relative z-10 flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition group-hover:border-transparent group-hover:bg-white group-hover:text-black">
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1 rtl:-scale-x-100" />
               </span>
             </Link>
           ))}

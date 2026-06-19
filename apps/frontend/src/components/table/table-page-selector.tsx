@@ -38,7 +38,7 @@ export const TablePageSelector: FC<TablePageSelectorProps> = ({
         onClick={() => setPageIndex(Math.max(0, pageIndex - 1))}
         disabled={pageIndex === 0}
       >
-        <ChevronLeft className="h-4 w-4" />
+        <ChevronLeft className="h-4 w-4 rtl:-scale-x-100" />
       </Button>
       <Button
         variant="outline"
@@ -46,7 +46,7 @@ export const TablePageSelector: FC<TablePageSelectorProps> = ({
         onClick={() => setPageIndex(Math.min(pageCount - 1, pageIndex + 1))}
         disabled={pageIndex >= pageCount - 1}
       >
-        <ChevronRight className="h-4 w-4" />
+        <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
       </Button>
       <Button
         variant="outline"

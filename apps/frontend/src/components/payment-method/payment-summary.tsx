@@ -55,7 +55,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
         <span className="flex items-center gap-1">
           {!showDetailedChainBalances ? (
             <ChevronRight
-              className="size-4"
+              className="size-4 rtl:-scale-x-100"
               onClick={() => setShowDetailedChainBalances(true)}
             />
           ) : (

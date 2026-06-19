@@ -943,7 +943,7 @@ function FreeClaimsContent() {
                       onClick={() => handlePageChange(page - 1)}
                       disabled={page === 1 || isFetching}
                     >
-                      <ChevronLeft className="h-4 w-4" />
+                      <ChevronLeft className="h-4 w-4 rtl:-scale-x-100" />
                       Previous
                     </Button>
                   </div>
@@ -960,7 +960,7 @@ function FreeClaimsContent() {
                       disabled={page === totalPages || isFetching}
                     >
                       Next
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
                     </Button>
                     <Button
                       variant="outline"

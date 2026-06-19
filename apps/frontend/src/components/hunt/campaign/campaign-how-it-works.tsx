@@ -32,7 +32,7 @@ export const CampaignHowItWorks = () => {
               </div>
               {index < STEPS.length - 1 && (
                 <>
-                  <ChevronRight className="w-6 h-6 text-white/30 hidden lg:block" />
+                  <ChevronRight className="w-6 h-6 text-white/30 hidden lg:block rtl:-scale-x-100" />
                   <ChevronDown className="w-6 h-6 text-white/30 block lg:hidden" />
                 </>
               )}

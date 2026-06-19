@@ -370,7 +370,7 @@ function CampaignRow({
       >
         <td className="px-2 py-2 align-middle">
           {canExpand ? (
-            <Chevron className="h-4 w-4 text-muted-foreground" />
+            <Chevron className="h-4 w-4 text-muted-foreground rtl:-scale-x-100" />
           ) : (
             <span className="block h-4 w-4" aria-hidden />
           )}

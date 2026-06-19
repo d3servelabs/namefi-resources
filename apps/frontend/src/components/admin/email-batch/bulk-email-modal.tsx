@@ -1096,7 +1096,7 @@ function EmailListField({
         {open ? (
           <ChevronDown className="h-3 w-3" />
         ) : (
-          <ChevronRight className="h-3 w-3" />
+          <ChevronRight className="h-3 w-3 rtl:-scale-x-100" />
         )}
         {values.length > 0 ? `${label} (${values.length})` : `Add ${label}`}
       </button>

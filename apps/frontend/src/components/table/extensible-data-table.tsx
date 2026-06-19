@@ -581,7 +581,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
                             {row.getIsExpanded() ? (
                               <ChevronDownIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                             ) : (
-                              <ChevronRightIcon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                              <ChevronRightIcon className="h-4 w-4 text-muted-foreground flex-shrink-0 rtl:-scale-x-100" />
                             )}
                             {renderGroupHeader ? (
                               renderGroupHeader(row)

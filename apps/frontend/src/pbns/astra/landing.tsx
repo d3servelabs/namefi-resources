@@ -259,7 +259,7 @@ const HeroSection = ({
                   >
                     <Sparkles className="h-3.5 w-3.5" />
                     <span>{t('hero.tryV3Beta')}</span>
-                    <ArrowLeft className="h-3.5 w-3.5" />
+                    <ArrowLeft className="h-3.5 w-3.5 rtl:-scale-x-100" />
                   </motion.div>
                 </Link>
               </div>

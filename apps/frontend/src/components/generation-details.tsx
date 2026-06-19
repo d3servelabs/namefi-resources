@@ -344,7 +344,7 @@ const ErrorPlaceholder = ({
         {error || 'The generation you are looking for could not be found.'}
       </EmptyPlaceholder.Description>
       <Button variant="outline" onClick={onGoBack} className="mt-4">
-        <ArrowLeft className="me-2 h-4 w-4" />
+        <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
         Go back
       </Button>
     </EmptyPlaceholder>
@@ -660,7 +660,7 @@ export function GenerationDetailsClient({
             aria-label="Back to Namefi Brand Studio"
             className="flex items-center gap-2 cursor-pointer self-start"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
             Back to Namefi Brand Studio
           </Button>
           <div>

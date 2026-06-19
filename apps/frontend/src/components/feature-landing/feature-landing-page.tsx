@@ -1155,7 +1155,7 @@ function Hero({
             )}
           >
             <span>{feature.primaryCta.label}</span>
-            <ArrowRight data-icon="inline-end" />
+            <ArrowRight data-icon="inline-end" className="rtl:-scale-x-100" />
           </Link>
           {feature.secondaryCta ? (
             <FeatureCtaLink
@@ -1204,7 +1204,7 @@ function FeatureCtaLink({
   return (
     <Link href={href as Route} className={className}>
       <span>{label}</span>
-      <ArrowRight data-icon="inline-end" />
+      <ArrowRight data-icon="inline-end" className="rtl:-scale-x-100" />
     </Link>
   );
 }
@@ -2300,7 +2300,7 @@ function ClosingCta({
           className={cn('mt-10 px-6', linkButtonClassName, tone.button)}
         >
           <span>{feature.primaryCta.label}</span>
-          <ArrowRight data-icon="inline-end" />
+          <ArrowRight data-icon="inline-end" className="rtl:-scale-x-100" />
         </Link>
       </div>
     </section>

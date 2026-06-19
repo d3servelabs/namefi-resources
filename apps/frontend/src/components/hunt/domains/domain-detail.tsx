@@ -107,7 +107,7 @@ export const DomainDetail = ({
             onClick={() => router.back()}
             className="flex items-center gap-2 cursor-pointer"
           >
-            <ArrowLeftIcon className="h-4 w-4" />
+            <ArrowLeftIcon className="h-4 w-4 rtl:-scale-x-100" />
             Back
           </Button>
         </div>

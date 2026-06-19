@@ -234,7 +234,8 @@ export default function ClaimPage() {
           footer={
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => router.back()}>
-                <ArrowLeft className="size-4" /> {tCommon('actions.goBack')}
+                <ArrowLeft className="size-4 rtl:-scale-x-100" />{' '}
+                {tCommon('actions.goBack')}
               </Button>
             </div>
           }
@@ -276,7 +277,8 @@ export default function ClaimPage() {
               {t('page.ineligibleBanner.addToCart')}
             </Button>
             <Button variant="outline" onClick={() => router.back()}>
-              <ArrowLeft className="size-4" /> {tCommon('actions.goBack')}
+              <ArrowLeft className="size-4 rtl:-scale-x-100" />{' '}
+              {tCommon('actions.goBack')}
             </Button>
           </div>
         </div>

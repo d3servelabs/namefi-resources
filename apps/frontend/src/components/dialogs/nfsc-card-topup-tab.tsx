@@ -249,7 +249,7 @@ export function NfscCardTopUpTab(props: Props) {
             }}
             className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-200 self-start"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
             Change amount
           </button>
           <div className="bg-zinc-900 rounded-lg p-4 flex justify-between items-center">

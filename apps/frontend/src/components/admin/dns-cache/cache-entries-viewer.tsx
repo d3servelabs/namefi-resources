@@ -180,7 +180,7 @@ export function CacheEntriesViewer({
             onClick={() => onPageChange(data.page - 1)}
             disabled={data.page === 1}
           >
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4 rtl:-scale-x-100" />
             Previous
           </Button>
           <Button
@@ -190,7 +190,7 @@ export function CacheEntriesViewer({
             disabled={data.page >= data.total_pages}
           >
             Next
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
           </Button>
         </div>
       </div>

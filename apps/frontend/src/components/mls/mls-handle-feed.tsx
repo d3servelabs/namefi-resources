@@ -184,7 +184,7 @@ function MlsHandleHeader({
           href="/feed"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          <ArrowLeft className="size-4" />
+          <ArrowLeft className="size-4 rtl:-scale-x-100" />
           {t('handle.backToFeed')}
         </Link>
 

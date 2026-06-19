@@ -772,7 +772,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
                   )}
                 >
                   <span>Bring DNS onchain</span>
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4 rtl:-scale-x-100" />
                 </a>
                 <a
                   href="#execution-path"
@@ -1330,7 +1330,7 @@ export const Landing: LandingComponent = ({ origin: _origin }) => {
               )}
             >
               <span>Bring Uniswap DNS onchain</span>
-              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5 rtl:-scale-x-100" />
             </a>
 
             <div

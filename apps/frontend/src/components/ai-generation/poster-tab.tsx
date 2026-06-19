@@ -103,7 +103,7 @@ export function PosterTab({
             onClick={onDismiss}
             className="gap-2"
           >
-            <ArrowLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
             Back to logos
           </Button>
         )}
