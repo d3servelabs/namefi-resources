@@ -1055,7 +1055,10 @@ function SignOutDialog({
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSignOut} className="text-red-500">
+          <AlertDialogAction
+            onClick={handleSignOut}
+            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
             Sign Out
           </AlertDialogAction>
         </AlertDialogFooter>
