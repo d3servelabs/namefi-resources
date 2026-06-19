@@ -40,6 +40,12 @@ export type ClusterMeta = {
   description: LocalizedText;
   /** Slug of the cornerstone (pillar) post that anchors the hub page. */
   cornerstoneSlug: string;
+  /**
+   * Ordered steps for the pillar's concept diagram on the hub page — a compact
+   * "structural visual" of how the topic works/progresses. 3-5 short labels;
+   * rendered as a responsive labeled flow (see components/pillar-diagram).
+   */
+  diagram?: LocalizedText[];
 };
 
 export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
@@ -51,6 +57,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '什么是通证化域名、为什么以及如何通证化,以及链上所有权在实践中如何运作。',
     },
     cornerstoneSlug: 'what-are-tokenized-domains',
+    diagram: [
+      { en: 'Traditional domain', zh: '传统域名' },
+      { en: 'Tokenize', zh: '通证化' },
+      { en: 'On-chain NFT', zh: '链上 NFT' },
+      { en: 'Trade & control', zh: '交易与掌控' },
+    ],
   },
   'domain-basics': {
     slug: 'domain-basics',
@@ -60,6 +72,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '从这里开始:什么是域名、TLD 如何运作、核心术语、起名与争议处理。',
     },
     cornerstoneSlug: 'what-is-domain',
+    diagram: [
+      { en: 'Root .', zh: '根域 .' },
+      { en: 'TLD (.com)', zh: '顶级域 (.com)' },
+      { en: 'Domain (example)', zh: '主域名 (example)' },
+      { en: 'Subdomain (www)', zh: '子域名 (www)' },
+    ],
   },
   'domain-security': {
     slug: 'domain-security',
@@ -69,6 +87,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '真实世界的域名灾难以及阻止它们的控制手段——劫持、DNS 接管、密钥管理与恢复。',
     },
     cornerstoneSlug: 'how-domain-hijacking-actually-happens',
+    diagram: [
+      { en: 'Registrar lock', zh: '注册商锁' },
+      { en: 'DNS hardening', zh: 'DNS 加固' },
+      { en: 'Key custody', zh: '密钥保管' },
+      { en: 'Recovery plan', zh: '恢复预案' },
+    ],
   },
   'choosing-a-tld': {
     slug: 'choosing-a-tld',
@@ -78,6 +102,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '为你的项目挑选并保护合适的后缀——按行业、按价格、按每个 TLD 传递的信号。',
     },
     cornerstoneSlug: 'what-is-a-tld',
+    diagram: [
+      { en: 'Industry fit', zh: '行业契合' },
+      { en: 'Price', zh: '价格' },
+      { en: 'Signal & trust', zh: '信号与信任' },
+      { en: 'Secure it', zh: '保护它' },
+    ],
   },
   'domain-investing': {
     slug: 'domain-investing',
@@ -87,6 +117,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '域名的出售、估值与市场追踪——以及塑造这一行业的媒体、社区与案例研究。',
     },
     cornerstoneSlug: 'how-to-sell-a-domain-name-you-own',
+    diagram: [
+      { en: 'Acquire', zh: '收购' },
+      { en: 'Value', zh: '估值' },
+      { en: 'List', zh: '挂牌' },
+      { en: 'Sell & settle', zh: '出售与结算' },
+    ],
   },
   'web3-foundations': {
     slug: 'web3-foundations',
@@ -96,6 +132,12 @@ export const CLUSTERS: Record<ClusterSlug, ClusterMeta> = {
       zh: '相邻的基础构件——稳定币、通证化资产、零知识证明,以及链上商务背后的支付通道。',
     },
     cornerstoneSlug: 'what-are-stablecoins',
+    diagram: [
+      { en: 'Stablecoins', zh: '稳定币' },
+      { en: 'Tokenized assets', zh: '通证化资产' },
+      { en: 'Zero-knowledge', zh: '零知识' },
+      { en: 'Payment rails', zh: '支付通道' },
+    ],
   },
 };
 

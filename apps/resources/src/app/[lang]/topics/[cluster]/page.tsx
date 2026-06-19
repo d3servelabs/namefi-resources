@@ -13,6 +13,7 @@ import { resolveBaseUrl } from '@/lib/site-url';
 import { ResourceIndexCard } from '@/components/resource-index-card';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
 import { JsonLd } from '@/components/json-ld';
+import { PillarDiagram } from '@/components/pillar-diagram';
 import {
   CLUSTER_SLUGS,
   CLUSTERS,
@@ -82,6 +83,9 @@ export default async function ClusterHub({
   const meta = CLUSTERS[cluster];
   const baseUrl = resolveBaseUrl();
   const selfUrl = `${baseUrl}/r/${locale}/topics/${cluster}`;
+  const diagramSteps = (meta.diagram ?? []).map((step) =>
+    localizeText(step, locale),
+  );
 
   const posts = getPostsInCluster(locale, cluster);
   const cornerstone = getPost(locale, meta.cornerstoneSlug);
@@ -140,6 +144,13 @@ export default async function ClusterHub({
           {localizeText(meta.description, locale)}
         </p>
       </header>
+
+      {diagramSteps.length > 0 && (
+        <PillarDiagram
+          steps={diagramSteps}
+          label={localizeText(meta.title, locale)}
+        />
+      )}
 
       {ordered.length === 0 ? (
         <p className="text-sm text-muted-foreground">
