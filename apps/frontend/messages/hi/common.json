@@ -26,7 +26,7 @@
     "approve": "स्वीकार",
     "reject": "अस्वीकार",
     "disable": "अक्षम करें",
-    "logOut": "लॉग आउट"
+    "signOut": "लॉग आउट"
   },
   "account": {
     "label": "खाता",

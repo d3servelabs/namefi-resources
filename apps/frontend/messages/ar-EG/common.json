@@ -26,7 +26,7 @@
     "approve": "وافق",
     "reject": "ارفض",
     "disable": "عطّل",
-    "logOut": "تسجيل الخروج"
+    "signOut": "تسجيل الخروج"
   },
   "account": {
     "label": "الحساب",

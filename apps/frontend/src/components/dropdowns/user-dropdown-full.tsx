@@ -1017,7 +1017,7 @@ function LogoutDropdownItem({ onOpen }: { onOpen: () => void }) {
       onClick={handleOpen}
     >
       <LogOutIcon className="me-2 h-4 w-4" />
-      <span>{t('actions.logOut')}</span>
+      <span>{t('actions.signOut')}</span>
     </DropdownMenuItem>
   );
 }

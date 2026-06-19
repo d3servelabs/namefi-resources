@@ -148,8 +148,8 @@
   "signIn.loadFailedDescription": {
     "description": "Default error toast description when the sign-in flow fails to load, used when no specific error message is available."
   },
-  "actions.logOut": {
-    "description": "Global action atom: log the user out / sign out. Used in the account dropdown.",
+  "actions.signOut": {
+    "description": "Global action atom: sign the user out. Used in the account dropdown.",
     "maxLength": 14
   },
   "account.label": {

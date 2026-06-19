@@ -26,7 +26,7 @@
     "approve": "Aprobar",
     "reject": "Rechazar",
     "disable": "Desactivar",
-    "logOut": "Cerrar sesión"
+    "signOut": "Cerrar sesión"
   },
   "account": {
     "label": "Cuenta",

@@ -26,7 +26,7 @@
     "approve": "Approuver",
     "reject": "Rejeter",
     "disable": "Désactiver",
-    "logOut": "Déconnexion"
+    "signOut": "Déconnexion"
   },
   "account": {
     "label": "Compte",

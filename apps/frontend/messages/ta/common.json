@@ -26,7 +26,7 @@
     "approve": "அனுமதி",
     "reject": "நிராகரி",
     "disable": "முடக்கு",
-    "logOut": "வெளியேறு"
+    "signOut": "வெளியேறு"
   },
   "account": {
     "label": "கணக்கு",
