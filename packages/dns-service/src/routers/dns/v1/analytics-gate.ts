@@ -18,6 +18,7 @@ import { createLogger } from '#lib/logger';
 import { getPoweredByNamefi3PDomains } from '#lib/namefi-registry';
 import { parseDomainName } from '@namefi-astra/utils/parse-domain-name';
 import {
+  isPunycodeFqdn,
   toPunycodeFqdn,
   type PunycodeFqdn,
 } from '@namefi-astra/registrars/data/validations';
@@ -31,6 +32,10 @@ const fqdnLowercaseFromPunycodeSchema =
 const requestQuerySchema = z.object({
   name: z
     .string()
+    .refine((value) => isPunycodeFqdn(value), {
+      message:
+        ' `name` must be a fully qualified domain name (ie; `example.com.` ) ',
+    })
     .transform((name) => toPunycodeFqdn(name))
     .pipe(fqdnLowercaseFromPunycodeSchema),
 });
