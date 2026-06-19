@@ -130,6 +130,12 @@ describe('isPrivateOrReservedIp', () => {
     expect(isPrivateOrReservedIp('fe80::1')).toBe(true);
     expect(isPrivateOrReservedIp('::ffff:10.0.0.1')).toBe(true);
   });
+
+  it('flags hex-form IPv4-mapped private/loopback and allows mapped public', () => {
+    expect(isPrivateOrReservedIp('::ffff:a00:1')).toBe(true); // 10.0.0.1
+    expect(isPrivateOrReservedIp('::ffff:7f00:1')).toBe(true); // 127.0.0.1
+    expect(isPrivateOrReservedIp('::ffff:808:808')).toBe(false); // 8.8.8.8
+  });
 });
 
 describe('evaluateServing', () => {

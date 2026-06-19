@@ -276,13 +276,12 @@ export function isPubliclyVerifiable(
 }
 
 function isPrivateIpv4(ip: string): boolean {
-  const parts = ip.split('.').map((p) => Number(p));
-  if (
-    parts.length !== 4 ||
-    parts.some((p) => !Number.isInteger(p) || p < 0 || p > 255)
-  ) {
-    return true; // unparseable → treat as unsafe
-  }
+  const octets = ip.split('.');
+  if (octets.length !== 4) return true; // malformed → unsafe
+  const parts = octets.map((o) =>
+    /^\d{1,3}$/.test(o) ? Number(o) : Number.NaN,
+  );
+  if (parts.some((p) => Number.isNaN(p) || p > 255)) return true; // unparseable → unsafe
   const [a, b] = parts;
   if (a === 0 || a === 10 || a === 127) return true; // this-host / private / loopback
   if (a === 169 && b === 254) return true; // link-local
@@ -295,9 +294,24 @@ function isPrivateIpv4(ip: string): boolean {
 
 function isPrivateIpv6(ip: string): boolean {
   if (ip === '::1' || ip === '::') return true; // loopback / unspecified
-  const mapped = ip.match(/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
-  if (mapped) return isPrivateIpv4(mapped[1]); // IPv4-mapped
-  const first = canonicalizeIp(ip).split(':')[0];
+  const dottedMapped = ip.match(
+    /^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/,
+  );
+  if (dottedMapped) return isPrivateIpv4(dottedMapped[1]); // ::ffff:1.2.3.4
+  const groups = canonicalizeIp(ip).split(':');
+  // IPv4-mapped (::ffff:a.b.c.d) in hex form, e.g. ::ffff:0a00:0001 → 10.0.0.1.
+  if (
+    groups.length === 8 &&
+    groups.slice(0, 5).every((g) => g === '0000') &&
+    groups[5] === 'ffff'
+  ) {
+    const a = Number.parseInt(groups[6].slice(0, 2), 16);
+    const b = Number.parseInt(groups[6].slice(2, 4), 16);
+    const c = Number.parseInt(groups[7].slice(0, 2), 16);
+    const d = Number.parseInt(groups[7].slice(2, 4), 16);
+    return isPrivateIpv4(`${a}.${b}.${c}.${d}`);
+  }
+  const first = groups[0];
   if (first.startsWith('fc') || first.startsWith('fd')) return true; // ULA fc00::/7
   if (/^fe[89ab]/.test(first)) return true; // link-local fe80::/10
   if (first.startsWith('ff')) return true; // multicast ff00::/8

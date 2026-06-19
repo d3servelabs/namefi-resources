@@ -75,6 +75,11 @@ export const secretsSchema = z.object({
   LISTMONK_PASSWORD: z.string(),
   NAMEFI_ASSET_REPORT_SLACK_WEBHOOK_URL: z.string().optional(),
 
+  // Vercel firewall protection-bypass token for the park app, sent as the
+  // `x-vercel-protection-bypass` header when probing parked domains so the
+  // verification/propagation requests are not blocked by the firewall.
+  NAMEFI_PARK_VERCEL_FIREWALL_BYPASS: z.string().optional(),
+
   // Google Analytics 4 configuration
   GA4_DNS_PROPERTY_ID: z.string().optional(),
   GA4_APP_PROPERTY_ID: z.string().optional(),

@@ -18,6 +18,7 @@ import {
   ShieldCheck,
   BarChart3,
   Bell,
+  GlobeIcon,
 } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -28,6 +29,17 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
   {
     title: 'General',
     items: [
+      {
+        title: 'Send Notification',
+        description:
+          'Compose and send an in-app notification to specific users or to everyone.',
+        href: '/admin/notifications',
+        icon: Bell,
+        iconBgColor: 'bg-sky-100',
+        iconTextColor: 'text-sky-600',
+        permissions: [Permission.WRITE_NOTIFICATIONS],
+        permissionsMode: 'some',
+      },
       {
         title: 'Announcements',
         description:
@@ -111,17 +123,6 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         permissions: [Permission.READ_USERS],
       },
       {
-        title: 'Send Notification',
-        description:
-          'Compose and send an in-app notification to specific users or to everyone.',
-        href: '/admin/notifications',
-        icon: Bell,
-        iconBgColor: 'bg-sky-100',
-        iconTextColor: 'text-sky-600',
-        permissions: [Permission.WRITE_NOTIFICATIONS],
-        permissionsMode: 'some',
-      },
-      {
         title: 'Free Claims',
         description:
           'Manage free domain claims for campaigns and special promotions.',
@@ -182,15 +183,14 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         permissions: [Permission.WRITE_NFT],
       },
       {
-        title: 'Export Tracking',
+        title: 'Parked Domains',
         description:
-          'Monitor domain export requests and verify transfers for NFT burning.',
-        href: '/admin/export-tracking',
-        icon: ArrowRightLeft,
-        iconBgColor: 'bg-cyan-100',
-        iconTextColor: 'text-cyan-600',
-        permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
-        permissionsMode: 'some',
+          'Verify parked domains: DNS propagation, SSL, parking page, and redirects.',
+        href: '/admin/parked-domains',
+        icon: GlobeIcon,
+        iconBgColor: 'bg-emerald-100',
+        iconTextColor: 'text-emerald-600',
+        permissions: [Permission.READ_PARKED_DOMAINS],
       },
       {
         title: 'NFSC Tokens',
@@ -227,6 +227,17 @@ const CUSTOMER_SUPPORT_SECTIONS: AdminSection[] = [
         iconBgColor: 'bg-green-100',
         iconTextColor: 'text-green-600',
         permissions: [Permission.READ_ORDERS],
+      },
+      {
+        title: 'Export Tracking',
+        description:
+          'Monitor domain export requests and verify transfers for NFT burning.',
+        href: '/admin/export-tracking',
+        icon: ArrowRightLeft,
+        iconBgColor: 'bg-cyan-100',
+        iconTextColor: 'text-cyan-600',
+        permissions: [Permission.READ_NFT, Permission.WRITE_NFT],
+        permissionsMode: 'some',
       },
     ],
   },

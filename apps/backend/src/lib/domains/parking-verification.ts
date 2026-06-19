@@ -41,6 +41,7 @@ import {
 } from '@namefi-astra/registrars/data/validations';
 import { RecordType } from '@namefi-astra/zod-dns';
 import { eq } from 'drizzle-orm';
+import { secrets } from '#lib/env';
 import { createLogger } from '#lib/logger';
 import {
   type CheckStatus,
@@ -304,12 +305,17 @@ async function checkDnsPropagation(
     );
   }
 
+  // Build the success detail from what we actually confirmed — only mention the
+  // gate TXT when the gate is enabled and its presence was verified.
+  const okBits = ['A/AAAA point to the parking IPs.'];
+  if (gateEnabled && gateTxtResolved && gateTxtPresent) {
+    okBits.push('Gate TXT present.');
+  }
+
   return {
     ...base,
     status,
-    detail: issues.length
-      ? issues.join(' ')
-      : 'A/AAAA point to the parking IPs; gate TXT present.',
+    detail: issues.length ? issues.join(' ') : okBits.join(' '),
   };
 }
 
@@ -457,10 +463,8 @@ async function bodyContainsMarker(
   markers: string[],
   maxBytes: number,
 ): Promise<boolean> {
-  if (!res.body) {
-    const text = (await res.text()).slice(0, maxBytes);
-    return markers.some((m) => text.includes(m));
-  }
+  // No stream → nothing to sniff safely (don't buffer a full body).
+  if (!res.body) return false;
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
   // Retain enough trailing text to catch a marker split across chunk reads.
@@ -471,8 +475,13 @@ async function bodyContainsMarker(
     while (read < maxBytes) {
       const { done, value } = await reader.read();
       if (done) break;
-      read += value.byteLength;
-      buffer += decoder.decode(value, { stream: true });
+      // Decode only up to the remaining byte budget so one oversized chunk
+      // can't blow past `maxBytes`.
+      const remaining = maxBytes - read;
+      const chunk =
+        value.byteLength > remaining ? value.subarray(0, remaining) : value;
+      read += chunk.byteLength;
+      buffer += decoder.decode(chunk, { stream: true });
       if (markers.some((m) => buffer.includes(m))) return true;
       if (buffer.length > keep) buffer = buffer.slice(-keep);
     }
@@ -480,6 +489,22 @@ async function bodyContainsMarker(
   } finally {
     await reader.cancel().catch(() => {});
   }
+}
+
+/**
+ * Headers for outbound probes to parked domains. Includes the Vercel firewall
+ * protection-bypass token (when configured) so the park app doesn't block our
+ * verification requests.
+ */
+function parkProbeHeaders(): Record<string, string> {
+  const headers: Record<string, string> = {
+    'User-Agent': 'namefi-parking-verifier/1.0',
+  };
+  if (secrets.NAMEFI_PARK_VERCEL_FIREWALL_BYPASS) {
+    headers['x-vercel-protection-bypass'] =
+      secrets.NAMEFI_PARK_VERCEL_FIREWALL_BYPASS;
+  }
+  return headers;
 }
 
 /**
@@ -492,7 +517,7 @@ async function probeHttp(host: PunycodeDomainName): Promise<HttpProbe> {
     const res = await fetch(`https://${host}/`, {
       redirect: 'manual',
       signal: AbortSignal.timeout(HTTP_TIMEOUT_MS),
-      headers: { 'User-Agent': 'namefi-parking-verifier/1.0' },
+      headers: parkProbeHeaders(),
     });
     const status = res.status;
     if (status >= 300 && status < 400) {
@@ -611,14 +636,18 @@ export async function verifyParkedDomain(
     );
   }
 
-  // DNS first, then gate the outbound TLS/HTTP probes: if the domain resolves to
-  // a private/reserved IP, skip them (best-effort SSRF guard — a publicly-named
-  // domain must not coerce backend workers into probing internal hosts).
+  // DNS first, then gate the outbound TLS/HTTP probes (best-effort SSRF guard —
+  // a publicly-named domain must not coerce backend workers into probing
+  // internal hosts via the worker resolver). Skip the live probes when public
+  // DNS shows a private/reserved IP OR shows no A/AAAA at all (the worker
+  // resolver could still resolve a split-horizon / internal name).
   const dns = await checkDnsPropagation(punycode, mode, gateEnabled);
   const resolvedIps = [...dns.observed.a, ...dns.observed.aaaa];
-  if (resolvedIps.length > 0 && resolvedIps.some(isPrivateOrReservedIp)) {
-    const reason =
-      'Domain resolves to a private/reserved IP — live TLS/HTTP probes skipped (SSRF guard).';
+  const hasPrivateIp = resolvedIps.some(isPrivateOrReservedIp);
+  if (resolvedIps.length === 0 || hasPrivateIp) {
+    const reason = hasPrivateIp
+      ? 'Domain resolves to a private/reserved IP — live TLS/HTTP probes skipped (SSRF guard).'
+      : 'Public DNS returned no A/AAAA records — live TLS/HTTP probes skipped (cannot safely resolve).';
     return {
       domain,
       punycode,
@@ -635,9 +664,10 @@ export async function verifyParkedDomain(
         observedTarget: null,
         redirectChain: [],
       },
-      // Resolving to an internal IP is abnormal for a parked domain — surface at
-      // least a warning even if the parking IP also happens to be present.
-      overall: worstStatus([dns.status, 'warn']),
+      // A private IP is abnormal for a parked domain — surface at least a warning
+      // even if the parking IP also happens to be present. No IPs at all leaves
+      // the result driven by the DNS check (typically a fail).
+      overall: hasPrivateIp ? worstStatus([dns.status, 'warn']) : dns.status,
       checkedAt: new Date().toISOString(),
     };
   }
