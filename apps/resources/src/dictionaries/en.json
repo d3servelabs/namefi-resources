@@ -24,7 +24,8 @@
     "detailBy": "By",
     "detailAuthorsHeading": "About the author(s)",
     "detailSourceLanguage": "Original language",
-    "relatedHeading": "Related guides"
+    "relatedHeading": "Related guides",
+    "tocHeading": "On this page"
   },
   "watch": {
     "indexEmpty": "No videos published yet. Check back soon.",

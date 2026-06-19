@@ -24,7 +24,8 @@
     "detailBy": "作者",
     "detailAuthorsHeading": "关于作者",
     "detailSourceLanguage": "原始语言",
-    "relatedHeading": "相关指南"
+    "relatedHeading": "相关指南",
+    "tocHeading": "本页目录"
   },
   "watch": {
     "indexEmpty": "暂时没有视频，敬请期待。",

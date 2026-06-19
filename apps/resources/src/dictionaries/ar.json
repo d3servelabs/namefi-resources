@@ -24,7 +24,8 @@
     "detailBy": "بقلم",
     "detailAuthorsHeading": "عن الكاتب/الكاتبة",
     "detailSourceLanguage": "اللغة الأصلية",
-    "relatedHeading": "أدلة ذات صلة"
+    "relatedHeading": "أدلة ذات صلة",
+    "tocHeading": "في هذه الصفحة"
   },
   "watch": {
     "indexEmpty": "لا توجد فيديوهات بعد. عد لاحقًا.",

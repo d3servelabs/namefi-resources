@@ -24,7 +24,8 @@
     "detailBy": "Por",
     "detailAuthorsHeading": "Sobre quienes escriben",
     "detailSourceLanguage": "Idioma original",
-    "relatedHeading": "Guías relacionadas"
+    "relatedHeading": "Guías relacionadas",
+    "tocHeading": "En esta página"
   },
   "watch": {
     "indexEmpty": "Todavía no hay videos. Vuelve pronto.",

@@ -6,6 +6,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import { cache } from 'react';
 import { i18n, type Locale } from '@/i18n-config';
+import { slugify } from '@/lib/slugify';
 import {
   CLUSTER_SLUGS,
   CONTENT_FORMATS,
@@ -1109,6 +1110,78 @@ export function getPostsInCluster(
   return getPostsForLocale(locale).filter(
     (post) => post.frontmatter.cluster === cluster,
   );
+}
+
+// A heading in a post's Table of Contents. `id` matches the slug the MDX heading
+// renderer (mdx-components) stamps on the rendered heading, so an anchor link to
+// `#id` jumps to the section.
+export type TocEntry = { id: string; text: string; depth: 2 | 3 };
+
+const CODE_FENCE_PATTERN = /^\s*(```|~~~)/;
+const HEADING_PATTERN = /^(#{2,3})\s+(.+?)\s*#*\s*$/;
+
+// Reduce an MDX heading line to the plain text the heading renderer sees (so the
+// slug matches): drop images, unwrap links, strip inline code / emphasis markers
+// and stray tags.
+function stripInlineMarkdown(text: string): string {
+  return text
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/[*_]{1,3}([^*_]+)[*_]{1,3}/g, '$1')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
+// De-dup heading ids exactly like github-slugger (and the remark-heading-ids
+// plugin): track every EMITTED id, not just base-slug counts, so a heading whose
+// slug is literally `foo-1` can't collide with the suffix minted for a duplicate
+// `foo`. KEEP IN SYNC with createDeduper in mdx-plugins/remark-heading-ids.js.
+function createHeadingIdDeduper(): (base: string) => string {
+  const occurrences = new Map<string, number>();
+  return (base) => {
+    let result = base;
+    while (occurrences.has(result)) {
+      const count = (occurrences.get(base) ?? 0) + 1;
+      occurrences.set(base, count);
+      result = `${base}-${count}`;
+    }
+    occurrences.set(result, occurrences.get(result) ?? 0);
+    return result;
+  };
+}
+
+// Build the Table of Contents for a post by scanning the same source file the
+// MDX renderer renders (so heading text/order match), slugging each heading with
+// the same `slugify` the remark-heading-ids plugin uses, then applying the same
+// id de-dup. Pass the post's sourceLanguage so EN-fallback posts get the EN
+// headings that are actually rendered. h2/h3 only.
+export function getPostToc(locale: Locale, slug: string): TocEntry[] {
+  const filePath = resolvePostFilePath(locale, slug);
+  if (!filePath) return [];
+  const { content } = matter(fs.readFileSync(filePath, 'utf8'));
+  const entries: TocEntry[] = [];
+  const uniqueId = createHeadingIdDeduper();
+  let inCodeFence = false;
+  for (const line of content.split('\n')) {
+    if (CODE_FENCE_PATTERN.test(line)) {
+      inCodeFence = !inCodeFence;
+      continue;
+    }
+    if (inCodeFence) continue;
+    const match = HEADING_PATTERN.exec(line);
+    if (!match) continue;
+    const text = stripInlineMarkdown(match[2]);
+    if (!text) continue;
+    const base = slugify(text);
+    if (!base) continue;
+    entries.push({
+      id: uniqueId(base),
+      text,
+      depth: match[1].length as 2 | 3,
+    });
+  }
+  return entries;
 }
 
 // All non-draft posts in `series`, ordered by their 1-based seriesOrder (ties

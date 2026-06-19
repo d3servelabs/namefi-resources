@@ -24,7 +24,8 @@
     "detailBy": "Von",
     "detailAuthorsHeading": "Über die Autor*innen",
     "detailSourceLanguage": "Originalsprache",
-    "relatedHeading": "Verwandte Leitfäden"
+    "relatedHeading": "Verwandte Leitfäden",
+    "tocHeading": "Auf dieser Seite"
   },
   "watch": {
     "indexEmpty": "Noch keine Videos verfügbar. Schau bald wieder vorbei.",

@@ -24,7 +24,8 @@
     "detailBy": "Par",
     "detailAuthorsHeading": "À propos de l’auteur·rice",
     "detailSourceLanguage": "Langue d’origine",
-    "relatedHeading": "Guides connexes"
+    "relatedHeading": "Guides connexes",
+    "tocHeading": "Sur cette page"
   },
   "watch": {
     "indexEmpty": "Aucune vidéo pour le moment. Revenez bientôt.",

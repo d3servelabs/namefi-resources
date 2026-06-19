@@ -10,6 +10,7 @@ import {
   getPostOgAsset,
   getPostParams,
   getPostsInSeries,
+  getPostToc,
   getRelatedPosts,
   type AuthorEntry,
   getAuthorNames,
@@ -22,11 +23,12 @@ import {
   buildBreadcrumbJsonLd,
   type ArticleAuthor,
 } from '@/lib/structured-data';
-import { SERIES, localizeText } from '@/lib/taxonomy';
+import { CLUSTERS, SERIES, localizeText } from '@/lib/taxonomy';
 import { JsonLd } from '@/components/json-ld';
 import { BreadcrumbNav } from '@/components/breadcrumb-nav';
 import { RelatedGuides } from '@/components/related-guides';
 import { SeriesStrip } from '@/components/series-strip';
+import { ArticleAside } from '@/components/article-aside';
 import { useMDXComponents } from '@/mdx-components';
 
 export async function generateStaticParams() {
@@ -193,7 +195,7 @@ export default async function BlogPostPage({
   const postComponents = {
     ...components,
     wrapper: ({ children }: { children: ReactNode }) => (
-      <article className="prose prose-invert md:prose-lg max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-strong:text-foreground prose-em:text-foreground prose-a:font-semibold prose-a:no-underline prose-hr:border-border/60 prose-table:border-border/60 prose-table:text-foreground prose-img:rounded-3xl prose-pre:rounded-2xl prose-pre:border prose-pre:border-border/60 prose-pre:text-sm prose-code:text-foreground/90">
+      <article className="prose prose-invert md:prose-lg max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-strong:text-foreground prose-em:text-foreground prose-a:font-semibold prose-a:no-underline prose-hr:border-border/60 prose-table:border-border/60 prose-table:text-foreground prose-img:rounded-3xl prose-pre:rounded-2xl prose-pre:border prose-pre:border-border/60 prose-pre:text-sm prose-code:text-foreground/90 [&_h2]:scroll-mt-24 [&_h3]:scroll-mt-24">
         {children}
       </article>
     ),
@@ -266,6 +268,17 @@ export default async function BlogPostPage({
 
   const relatedPosts = getRelatedPosts(locale, slug);
 
+  // Left-rail Table of Contents (derived from the same source the MDX renders,
+  // ids matching rehype-slug) plus this post's Topic/Series context.
+  const toc = getPostToc(entry.sourceLanguage, slug);
+  const clusterSlug = entry.frontmatter.cluster;
+  const asideTopic = clusterSlug
+    ? {
+        name: localizeText(CLUSTERS[clusterSlug].title, locale),
+        href: `/${locale}/topics/${clusterSlug}`,
+      }
+    : undefined;
+
   // Episode (prev/next) navigation when this post is part of a series.
   const seriesSlug = entry.frontmatter.series;
   const seriesEpisodes = seriesSlug ? getPostsInSeries(locale, seriesSlug) : [];
@@ -303,8 +316,19 @@ export default async function BlogPostPage({
         }
       : undefined;
 
+  const asideSeries = seriesSlug
+    ? {
+        name: localizeText(SERIES[seriesSlug].title, locale),
+        href: `/${locale}/series/${seriesSlug}`,
+      }
+    : undefined;
+  // Only switch to the two-column layout when the rail has something to show, so
+  // a post with no ToC/topic/series doesn't leave an empty sidebar column.
+  const hasAside =
+    toc.length > 0 || Boolean(asideTopic) || Boolean(asideSeries);
+
   return (
-    <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
+    <div className="mx-auto w-full max-w-6xl px-6 py-12 md:px-10 lg:px-12">
       <BreadcrumbNav
         items={[
           { name: dictionary.nav.resources, href: `/${locale}` },
@@ -313,166 +337,195 @@ export default async function BlogPostPage({
         ]}
       />
 
-      <header className="space-y-5">
-        <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            {entry.frontmatter.title}
-          </h1>
-          {entry.frontmatter.summary && (
-            <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
-              {entry.frontmatter.summary}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-          <span>
-            {dictionary.blog.detailPublishedOn} {formattedDate}
-          </span>
-          {formattedUpdated && (
-            <span>
-              {dictionary.blog.detailUpdatedOn} {formattedUpdated}
-            </span>
-          )}
-          {authorNames.length > 0 && (
-            <span>
-              {dictionary.blog.detailBy} {authorNames.join(', ')}
-            </span>
-          )}
-          {entry.frontmatter.originalUrl && originalUrlHost && (
-            <span>
-              {dictionary.blog.detailOriginallyOn}{' '}
-              <a
-                href={entry.frontmatter.originalUrl}
-                className="font-semibold text-brand-primary underline-offset-4 transition hover:underline"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {originalUrlHost}
-              </a>
-            </span>
-          )}
-        </div>
-        {entry.frontmatter.tags.length > 0 && (
-          <ul className="flex flex-wrap gap-2 text-xs uppercase tracking-wide text-muted-foreground">
-            {entry.frontmatter.tags.map((tag) => (
-              <li
-                key={tag}
-                className="rounded-full border border-border/60 px-3 py-1"
-              >
-                {tag}
-              </li>
-            ))}
-          </ul>
+      <div
+        className={
+          hasAside
+            ? 'mt-8 flex flex-col gap-10 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12'
+            : 'mt-8'
+        }
+      >
+        {hasAside && (
+          <aside className="hidden lg:block">
+            <ArticleAside
+              toc={toc}
+              labels={{
+                onThisPage: dictionary.blog.tocHeading,
+                topic: dictionary.nav.topics,
+                series: dictionary.nav.series,
+              }}
+              topic={asideTopic}
+              series={asideSeries}
+            />
+          </aside>
         )}
-        {showSourceLanguage && (
-          <p className="text-xs text-muted-foreground">
-            {dictionary.blog.detailSourceLanguage}:{' '}
-            {localeLabels[entry.sourceLanguage] ??
-              entry.sourceLanguage.toUpperCase()}
-          </p>
-        )}
-      </header>
 
-      {heroImageUrl && (
-        // biome-ignore lint/performance/noImgElement: hero is served via a Next route handler, not the image optimizer.
-        <img
-          src={heroImageUrl}
-          alt={entry.frontmatter.title}
-          width={1200}
-          height={630}
-          // The LCP element is the article body text below this hero, not the
-          // hero itself. Loading the hero eagerly made its ~47KB download and
-          // 1200x630 decode compete with the text paint on throttled mobile.
-          // Defer it (lazy + async decode) so the body text settles sooner;
-          // width/height are reserved above, so deferring causes no layout shift.
-          loading="lazy"
-          decoding="async"
-          className="h-auto w-full rounded-3xl border border-border/60 shadow-lg shadow-black/5"
-        />
-      )}
+        <article className="flex min-w-0 flex-col gap-10 text-start">
+          <header className="space-y-5">
+            <div className="space-y-3">
+              <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+                {entry.frontmatter.title}
+              </h1>
+              {entry.frontmatter.summary && (
+                <p className="text-base leading-relaxed text-muted-foreground md:text-lg">
+                  {entry.frontmatter.summary}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+              <span>
+                {dictionary.blog.detailPublishedOn} {formattedDate}
+              </span>
+              {formattedUpdated && (
+                <span>
+                  {dictionary.blog.detailUpdatedOn} {formattedUpdated}
+                </span>
+              )}
+              {authorNames.length > 0 && (
+                <span>
+                  {dictionary.blog.detailBy} {authorNames.join(', ')}
+                </span>
+              )}
+              {entry.frontmatter.originalUrl && originalUrlHost && (
+                <span>
+                  {dictionary.blog.detailOriginallyOn}{' '}
+                  <a
+                    href={entry.frontmatter.originalUrl}
+                    className="font-semibold text-brand-primary underline-offset-4 transition hover:underline"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {originalUrlHost}
+                  </a>
+                </span>
+              )}
+            </div>
+            {entry.frontmatter.tags.length > 0 && (
+              <ul className="flex flex-wrap gap-2 text-xs uppercase tracking-wide text-muted-foreground">
+                {entry.frontmatter.tags.map((tag) => (
+                  <li
+                    key={tag}
+                    className="rounded-full border border-border/60 px-3 py-1"
+                  >
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {showSourceLanguage && (
+              <p className="text-xs text-muted-foreground">
+                {dictionary.blog.detailSourceLanguage}:{' '}
+                {localeLabels[entry.sourceLanguage] ??
+                  entry.sourceLanguage.toUpperCase()}
+              </p>
+            )}
+          </header>
 
-      <PostContent components={postComponents} />
+          {heroImageUrl && (
+            // biome-ignore lint/performance/noImgElement: hero is served via a Next route handler, not the image optimizer.
+            <img
+              src={heroImageUrl}
+              alt={entry.frontmatter.title}
+              width={1200}
+              height={630}
+              // The LCP element is the article body text below this hero, not the
+              // hero itself. Loading the hero eagerly made its ~47KB download and
+              // 1200x630 decode compete with the text paint on throttled mobile.
+              // Defer it (lazy + async decode) so the body text settles sooner;
+              // width/height are reserved above, so deferring causes no layout shift.
+              loading="lazy"
+              decoding="async"
+              className="h-auto w-full rounded-3xl border border-border/60 shadow-lg shadow-black/5"
+            />
+          )}
 
-      {authorModules.length > 0 && (
-        <section className="surface-card space-y-6">
-          <h2 className="text-xl font-semibold">
-            {dictionary.blog.detailAuthorsHeading}
-          </h2>
-          <div className="space-y-6">
-            {authorModules.map(({ author, Module }) => (
-              <div
-                key={`${author.slug}-${author.sourceLanguage}`}
-                className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-6 shadow-lg shadow-black/5"
-              >
-                <div className="flex flex-col gap-1">
-                  <span className="text-base font-semibold text-foreground">
-                    {author.frontmatter.name}
-                  </span>
-                  <div className="text-xs text-muted-foreground">
-                    {[author.frontmatter.occupation, author.frontmatter.company]
-                      .filter(Boolean)
-                      .join(' • ')}
+          <PostContent components={postComponents} />
+
+          {authorModules.length > 0 && (
+            <section className="surface-card space-y-6">
+              <h2 className="text-xl font-semibold">
+                {dictionary.blog.detailAuthorsHeading}
+              </h2>
+              <div className="space-y-6">
+                {authorModules.map(({ author, Module }) => (
+                  <div
+                    key={`${author.slug}-${author.sourceLanguage}`}
+                    className="flex flex-col gap-4 rounded-2xl border border-border/60 bg-card p-6 shadow-lg shadow-black/5"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <span className="text-base font-semibold text-foreground">
+                        {author.frontmatter.name}
+                      </span>
+                      <div className="text-xs text-muted-foreground">
+                        {[
+                          author.frontmatter.occupation,
+                          author.frontmatter.company,
+                        ]
+                          .filter(Boolean)
+                          .join(' • ')}
+                      </div>
+                    </div>
+                    {author.frontmatter.twitter ||
+                    author.frontmatter.linkedin ? (
+                      <div className="flex flex-wrap gap-3 text-sm">
+                        {author.frontmatter.twitter && (
+                          <a
+                            href={author.frontmatter.twitter}
+                            className="text-brand-primary underline-offset-4 transition hover:underline"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Twitter
+                          </a>
+                        )}
+                        {author.frontmatter.linkedin && (
+                          <a
+                            href={author.frontmatter.linkedin}
+                            className="text-brand-primary underline-offset-4 transition hover:underline"
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            LinkedIn
+                          </a>
+                        )}
+                      </div>
+                    ) : null}
+                    <Module components={authorComponents} />
                   </div>
-                </div>
-                {author.frontmatter.twitter || author.frontmatter.linkedin ? (
-                  <div className="flex flex-wrap gap-3 text-sm">
-                    {author.frontmatter.twitter && (
-                      <a
-                        href={author.frontmatter.twitter}
-                        className="text-brand-primary underline-offset-4 transition hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Twitter
-                      </a>
-                    )}
-                    {author.frontmatter.linkedin && (
-                      <a
-                        href={author.frontmatter.linkedin}
-                        className="text-brand-primary underline-offset-4 transition hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        LinkedIn
-                      </a>
-                    )}
-                  </div>
-                ) : null}
-                <Module components={authorComponents} />
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-      )}
+            </section>
+          )}
 
-      {seriesNav && (
-        <SeriesStrip
-          seriesTitle={seriesNav.title}
-          seriesHref={seriesNav.href}
-          position={seriesNav.position}
-          total={seriesNav.total}
-          labels={{
-            partOf: dictionary.series.partOfLabel,
-            allEpisodes: dictionary.series.allEpisodes,
-            previous: dictionary.series.previous,
-            next: dictionary.series.next,
-          }}
-          previous={seriesNav.previous}
-          next={seriesNav.next}
-        />
-      )}
+          {seriesNav && (
+            <SeriesStrip
+              seriesTitle={seriesNav.title}
+              seriesHref={seriesNav.href}
+              position={seriesNav.position}
+              total={seriesNav.total}
+              labels={{
+                partOf: dictionary.series.partOfLabel,
+                allEpisodes: dictionary.series.allEpisodes,
+                previous: dictionary.series.previous,
+                next: dictionary.series.next,
+              }}
+              previous={seriesNav.previous}
+              next={seriesNav.next}
+            />
+          )}
 
-      <RelatedGuides
-        heading={dictionary.blog.relatedHeading}
-        items={relatedPosts.map((post) => ({
-          title: post.frontmatter.title,
-          href: `/${locale}/blog/${post.slug}`,
-          summary: post.frontmatter.summary,
-        }))}
-      />
+          <RelatedGuides
+            heading={dictionary.blog.relatedHeading}
+            items={relatedPosts.map((post) => ({
+              title: post.frontmatter.title,
+              href: `/${locale}/blog/${post.slug}`,
+              summary: post.frontmatter.summary,
+            }))}
+          />
 
-      <JsonLd data={articleJsonLd} />
-      <JsonLd data={breadcrumbJsonLd} />
-    </article>
+          <JsonLd data={articleJsonLd} />
+          <JsonLd data={breadcrumbJsonLd} />
+        </article>
+      </div>
+    </div>
   );
 }

@@ -9,6 +9,9 @@ const require = createRequire(import.meta.url);
 const remarkStaticImageImportsPath = require.resolve(
   './mdx-plugins/remark-static-image-imports',
 );
+const remarkHeadingIdsPath = require.resolve(
+  './mdx-plugins/remark-heading-ids',
+);
 
 const withMDX = createMdx({
   extension: /\.mdx?$/,
@@ -20,6 +23,7 @@ const withMDX = createMdx({
       'remark-reading-time',
       'remark-reading-time/mdx',
       remarkStaticImageImportsPath,
+      remarkHeadingIdsPath,
     ],
   },
 });
