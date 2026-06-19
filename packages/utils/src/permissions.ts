@@ -33,6 +33,13 @@ export enum Permission {
   READ_DOMAIN_PREFERENCES = 'DOMAIN_PREFERENCES;;READ',
   WRITE_DOMAIN_PREFERENCES = 'DOMAIN_PREFERENCES;;WRITE',
 
+  /**
+   * View the parked-domain verification admin page and run on-demand
+   * verification. Verification is read-only (live network probes, no
+   * persistence), so a single READ permission gates both list and verify.
+   */
+  READ_PARKED_DOMAINS = 'PARKED_DOMAINS;;READ',
+
   READ_NS_DNSSEC = 'NS_DNSSEC;;READ',
   WRITE_NS_DNSSEC = 'NS_DNSSEC;;WRITE',
 

@@ -136,6 +136,16 @@ const ADMIN_SECTIONS: AdminSection[] = [
         permissions: [Permission.READ_DOMAIN_PREFERENCES],
       },
       {
+        title: 'Parked Domains',
+        description:
+          'Verify parked domains: DNS propagation, SSL, parking page, and redirects.',
+        href: '/admin/parked-domains',
+        icon: Globe,
+        iconBgColor: 'bg-emerald-100',
+        iconTextColor: 'text-emerald-600',
+        permissions: [Permission.READ_PARKED_DOMAINS],
+      },
+      {
         title: 'Bulk Burn',
         description:
           'Manage bulk burning of expired domain NFTs with approval workflow.',

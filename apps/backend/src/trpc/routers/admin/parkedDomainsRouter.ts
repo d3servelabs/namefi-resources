@@ -1,0 +1,150 @@
+import {
+  db,
+  domainConfigTable,
+  namefiNftCte,
+  namefiNftView,
+} from '@namefi-astra/db';
+import { Permission } from '@namefi-astra/utils';
+import { TRPCError } from '@trpc/server';
+import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
+import {
+  buildSortClause,
+  buildWhereClause,
+  type FilterOptions,
+  type SortOptions,
+} from '@samyx/drizzler-filters-sorters';
+import { adminParkedDomainsContract } from '@namefi-astra/common/contract/admin/admin-parked-domains-contract';
+import { adminProcedureWithPermissions } from '../../base';
+import { createContractTRPCRouter } from '../../contract';
+import { verifyParkedDomains } from '#lib/domains/parking-verification';
+import { logger } from '#lib/logger';
+
+/**
+ * A domain is "parked" (served by Namefi's park infra) when auto-park is on
+ * (default true) OR a forward is configured. This drives both the list filter
+ * and the verification mode (`forwardTo` set → forward mode).
+ */
+const PARK_CONDITION = sql`COALESCE(${domainConfigTable.autoParkEnabled}, true) = true OR ${domainConfigTable.forwardTo} IS NOT NULL`;
+
+export const parkedDomainsRouter = createContractTRPCRouter<
+  typeof adminParkedDomainsContract
+>({
+  listParkedDomains: adminProcedureWithPermissions(
+    Permission.READ_PARKED_DOMAINS,
+  )
+    .input(adminParkedDomainsContract.listParkedDomains.input)
+    .output(adminParkedDomainsContract.listParkedDomains.output)
+    .query(async ({ input }) => {
+      const { page, pageSize, filters, sorting } = input;
+      const offset = (page - 1) * pageSize;
+
+      // Columns exposed to the drizzler filter/sort builder.
+      const tableStructure = {
+        normalizedDomainName: namefiNftView.normalizedDomainName,
+        ownerAddress: namefiNftView.ownerAddress,
+        chainId: namefiNftView.chainId,
+        forwardTo: domainConfigTable.forwardTo,
+        autoParkEnabled: sql<
+          string | null
+        >`${domainConfigTable.autoParkEnabled}::text`,
+      };
+
+      const buildBase = () =>
+        db
+          .with(namefiNftCte)
+          .select({
+            normalizedDomainName: namefiNftView.normalizedDomainName,
+            ownerAddress: namefiNftView.ownerAddress,
+            chainId: namefiNftView.chainId,
+            forwardTo: domainConfigTable.forwardTo,
+            autoParkEnabled: domainConfigTable.autoParkEnabled,
+          })
+          .from(namefiNftView)
+          .leftJoin(
+            domainConfigTable,
+            eq(
+              domainConfigTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+          )
+          .$dynamic();
+
+      const whereClauses: SQL[] = [PARK_CONDITION];
+      if (filters) {
+        const drizzlerWhere = buildWhereClause(
+          tableStructure,
+          filters as FilterOptions<any>,
+        );
+        if (drizzlerWhere) whereClauses.push(drizzlerWhere);
+      }
+      const where = and(...whereClauses);
+
+      const orderByClauses = sorting
+        ? buildSortClause(tableStructure, sorting as SortOptions<any>)
+        : [asc(namefiNftView.normalizedDomainName)];
+
+      try {
+        const countQuery = db
+          .with(namefiNftCte)
+          .select({ count: sql<number>`COUNT(*)::int` })
+          .from(namefiNftView)
+          .leftJoin(
+            domainConfigTable,
+            eq(
+              domainConfigTable.normalizedDomainName,
+              namefiNftView.normalizedDomainName,
+            ),
+          )
+          .where(where);
+
+        const [rows, countRow] = await Promise.all([
+          buildBase()
+            .where(where)
+            .orderBy(...orderByClauses)
+            .limit(pageSize)
+            .offset(offset),
+          countQuery,
+        ]);
+
+        const total = countRow[0]?.count ?? 0;
+
+        return {
+          // Keep `normalizedDomainName` as the key so the frontend table's
+          // sort/filter column ids line up with this query's `tableStructure`.
+          data: rows.map((row) => ({
+            normalizedDomainName: row.normalizedDomainName,
+            ownerAddress: row.ownerAddress,
+            chainId: row.chainId,
+            forwardTo: row.forwardTo ?? null,
+            mode: row.forwardTo?.trim()
+              ? ('forward' as const)
+              : ('park' as const),
+          })),
+          pagination: {
+            page,
+            pageSize,
+            totalCount: total,
+            totalPages: Math.ceil(total / pageSize),
+          },
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list parked domains');
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to list parked domains',
+        });
+      }
+    }),
+
+  verifyParkedDomains: adminProcedureWithPermissions(
+    Permission.READ_PARKED_DOMAINS,
+  )
+    .input(adminParkedDomainsContract.verifyParkedDomains.input)
+    .output(adminParkedDomainsContract.verifyParkedDomains.output)
+    .mutation(async ({ input }) => {
+      const results = await verifyParkedDomains(input.domains, {
+        concurrency: 8,
+      });
+      return { results };
+    }),
+});

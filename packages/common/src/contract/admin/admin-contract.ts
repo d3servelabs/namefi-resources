@@ -18,6 +18,7 @@ import { adminNfscContract } from './admin-nfsc-contract';
 import { adminNftContract } from './admin-nft-contract';
 import { adminNsAndDnssecContract } from './admin-ns-and-dnssec-contract';
 import { adminOrdersContract } from './admin-orders-contract';
+import { adminParkedDomainsContract } from './admin-parked-domains-contract';
 import { adminPermissionsContract } from './admin-permissions-contract';
 import { adminPoweredByNamefiContract } from './admin-powered-by-namefi-contract';
 import { adminSchedulesContract } from './admin-schedules-contract';
@@ -88,6 +89,7 @@ export const adminContract = {
   users: adminUsersContract,
   domainPreferences: adminDomainPreferencesContract,
   domainDetails: adminDomainDetailsContract,
+  parkedDomains: adminParkedDomainsContract,
   orders: adminOrdersContract,
   financials: adminFinancialAnalyticsContract,
   exportTracking: adminExportTrackingContract,

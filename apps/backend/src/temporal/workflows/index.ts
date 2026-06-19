@@ -41,6 +41,7 @@ export * from './domain-ownership/prepare-domain-for-export.workflow';
 export * from './test-workflows/test-charge-and-refund.workflow';
 export * from './fix-nft-expiration.workflow';
 export * from './nft-management-daily-report.workflow';
+export * from './weekly-parked-domain-verification.workflow';
 export * from './hunt/campaign-award.workflow';
 export * from './hunt/campaign-status.workflow';
 export * from './hunt/period-award.workflow';
