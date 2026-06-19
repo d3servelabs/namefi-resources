@@ -67,7 +67,9 @@
     "indexEmpty": "Aún no hay temas disponibles.",
     "emptyCluster": "Aún no hay guías en este tema.",
     "cornerstoneLabel": "Empieza aquí",
-    "guidesCountLabel": "guías"
+    "guidesCountLabel": "guías",
+    "moreTopics": "Más temas",
+    "perspectivesTitle": "Perspectivas"
   },
   "series": {
     "indexTitle": "Series",

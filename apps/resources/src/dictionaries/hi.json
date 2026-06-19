@@ -67,7 +67,9 @@
     "indexEmpty": "अभी कोई विषय उपलब्ध नहीं है।",
     "emptyCluster": "इस विषय में अभी कोई गाइड नहीं है।",
     "cornerstoneLabel": "यहाँ से शुरू करें",
-    "guidesCountLabel": "गाइड"
+    "guidesCountLabel": "गाइड",
+    "moreTopics": "और विषय",
+    "perspectivesTitle": "नज़रिए"
   },
   "series": {
     "indexTitle": "सीरीज़",

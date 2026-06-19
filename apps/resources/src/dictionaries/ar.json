@@ -67,7 +67,9 @@
     "indexEmpty": "لا توجد مواضيع متاحة بعد.",
     "emptyCluster": "لا توجد أدلّة في هذا الموضوع بعد.",
     "cornerstoneLabel": "ابدأ من هنا",
-    "guidesCountLabel": "دليل"
+    "guidesCountLabel": "دليل",
+    "moreTopics": "مواضيع أخرى",
+    "perspectivesTitle": "وجهات نظر"
   },
   "series": {
     "indexTitle": "السلاسل",

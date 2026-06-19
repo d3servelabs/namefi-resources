@@ -67,7 +67,9 @@
     "indexEmpty": "暂无专题。",
     "emptyCluster": "该专题暂无指南。",
     "cornerstoneLabel": "从这里开始",
-    "guidesCountLabel": "篇指南"
+    "guidesCountLabel": "篇指南",
+    "moreTopics": "更多专题",
+    "perspectivesTitle": "观点"
   },
   "series": {
     "indexTitle": "系列",

@@ -90,6 +90,8 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
   const { switcher, nav } = dictionary;
   const navItems: NavItem[] = [
     { label: nav.blog, href: `/${locale}/blog` },
+    { label: nav.topics, href: `/${locale}/topics` },
+    { label: nav.series, href: `/${locale}/series` },
     { label: nav.watch, href: `/${locale}/watch` },
     { label: nav.glossary, href: `/${locale}/glossary` },
     { label: nav.tld, href: `/${locale}/tld` },

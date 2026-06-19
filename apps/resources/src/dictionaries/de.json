@@ -67,7 +67,9 @@
     "indexEmpty": "Noch keine Themen verfügbar.",
     "emptyCluster": "Noch keine Leitfäden zu diesem Thema.",
     "cornerstoneLabel": "Hier starten",
-    "guidesCountLabel": "Leitfäden"
+    "guidesCountLabel": "Leitfäden",
+    "moreTopics": "Weitere Themen",
+    "perspectivesTitle": "Perspektiven"
   },
   "series": {
     "indexTitle": "Serien",

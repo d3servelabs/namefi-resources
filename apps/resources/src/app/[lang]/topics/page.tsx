@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
-import { getPostsInCluster } from '@/lib/content';
+import { getPost, getPostsInCluster } from '@/lib/content';
 import {
   buildBreadcrumbJsonLd,
   buildCollectionJsonLd,
@@ -75,6 +75,16 @@ export default async function TopicsIndex({
     count: getPostsInCluster(locale, slug).length,
   })).filter((cluster) => cluster.count > 0);
 
+  // Brand-POV ("Our thesis") posts intentionally carry no cluster, so they never
+  // appear in a pillar hub — surface them here as a Perspectives rail.
+  const BrandPovSlugs = [
+    'the-manifesto-of-digital-trust',
+    'building-for-people-not-wallets',
+  ];
+  const perspectives = BrandPovSlugs.map((slug) =>
+    getPost(locale, slug),
+  ).filter((post): post is NonNullable<typeof post> => post !== undefined);
+
   const collectionJsonLd = buildCollectionJsonLd({
     name: dictionary.topics.indexTitle,
     description: dictionary.topics.indexDescription,
@@ -122,6 +132,26 @@ export default async function TopicsIndex({
             />
           ))}
         </div>
+      )}
+
+      {perspectives.length > 0 && (
+        <section className="flex flex-col gap-4">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-brand-primary">
+            {dictionary.topics.perspectivesTitle}
+          </h2>
+          <div className="grid gap-6 md:grid-cols-2">
+            {perspectives.map((post) => (
+              <ResourceIndexCard
+                key={post.slug}
+                title={post.frontmatter.title}
+                href={`/${locale}/blog/${post.slug}`}
+                summary={post.frontmatter.summary}
+                tags={[]}
+                metaItems={[]}
+              />
+            ))}
+          </div>
+        </section>
       )}
     </section>
   );

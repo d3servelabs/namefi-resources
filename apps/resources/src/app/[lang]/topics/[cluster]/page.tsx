@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n } from '@/i18n-config';
@@ -164,6 +165,26 @@ export default async function ClusterHub({
           })}
         </div>
       )}
+
+      <nav
+        aria-label={dictionary.topics.moreTopics}
+        className="flex flex-col gap-3"
+      >
+        <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+          {dictionary.topics.moreTopics}
+        </h2>
+        <div className="flex flex-wrap gap-3">
+          {CLUSTER_SLUGS.filter((slug) => slug !== cluster).map((slug) => (
+            <Link
+              key={slug}
+              href={`/${locale}/topics/${slug}`}
+              className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-sm text-white/70 transition hover:border-brand-primary/40 hover:text-brand-primary"
+            >
+              {localizeText(CLUSTERS[slug].title, locale)}
+            </Link>
+          ))}
+        </div>
+      </nav>
     </section>
   );
 }
