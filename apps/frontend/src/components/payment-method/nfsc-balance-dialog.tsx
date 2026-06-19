@@ -67,6 +67,7 @@ export function BalanceBreakdownDialog({
   walletAddresses,
 }: BalanceBreakdownDialogProps) {
   const t = useTranslations('payment');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const { watchNfscInWallet, isAnyWalletConnected } = useWatchAssets();
   const { defaultNfscBalanceChainId } = useAllowedChains();
@@ -158,7 +159,7 @@ export function BalanceBreakdownDialog({
           <Tabs defaultValue="balance" className="mt-2">
             <TabsList className="grid grid-cols-2 w-full">
               <TabsTrigger value="balance">
-                {t('nfscBalanceDialog.tabBalance')}
+                {tCommon('account.balance')}
               </TabsTrigger>
               <TabsTrigger value="orders">
                 {t('nfscBalanceDialog.tabOrders')}
@@ -277,7 +278,7 @@ export function BalanceBreakdownDialog({
               className="w-full sm:flex-1"
               onClick={() => onOpenChange(false)}
             >
-              {t('nfscBalanceDialog.close')}
+              {tCommon('actions.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

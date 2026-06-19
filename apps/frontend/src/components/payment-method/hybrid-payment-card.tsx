@@ -87,6 +87,7 @@ export function HybridPaymentCard({
   onSubmit,
 }: HybridPaymentCardProps) {
   const t = useTranslations('payment');
+  const tCommon = useTranslations('common');
   const [shouldUseBalance, setShouldUseBalance] = useState(true);
   const [showBalanceDetails, setShowBalanceDetails] = useState(false);
   const [stripeConfirmationTokenId, setStripeConfirmationTokenId] = useState<
@@ -398,9 +399,9 @@ export function HybridPaymentCard({
                     <span>{t('hybridPaymentCard.yourWalletBalance')}</span>
                     <span>
                       {!x402BuyerWalletAddress
-                        ? t('hybridPaymentCard.connectWallet')
+                        ? tCommon('actions.connectWallet')
                         : isX402UsdcBalanceLoading
-                          ? t('hybridPaymentCard.loading')
+                          ? tCommon('actions.loading')
                           : isX402UsdcBalanceError
                             ? t('hybridPaymentCard.unavailable')
                             : x402UsdcBalanceLabel || '0.00 USDC'}

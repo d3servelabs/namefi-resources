@@ -71,6 +71,7 @@ export function MlsReportListingDialog({
   domain,
 }: MlsReportListingDialogProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
   // next-intl's typed keys can't verify data-driven keys; this alias keeps
   // the static t() calls type-checked while allowing the dynamic ones.
   const tDynamic = t as (key: string) => string;
@@ -266,7 +267,7 @@ export function MlsReportListingDialog({
                 disabled={isSubmitting}
                 onClick={() => setIsOpen(false)}
               >
-                {t('report.cancel')}
+                {tCommon('actions.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting || isReported}>
                 {isSubmitting ? (

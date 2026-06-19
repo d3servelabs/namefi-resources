@@ -35,12 +35,6 @@
   "creditCards.deleteDialog.description": {
     "description": "Confirm-delete dialog body. {brand} is the card brand (e.g. Visa, Mastercard) and {last4} is the last four card digits — keep both untranslated."
   },
-  "creditCards.deleteDialog.cancel": {
-    "description": "Cancel button in the confirm-delete card dialog."
-  },
-  "creditCards.deleteDialog.confirm": {
-    "description": "Confirm button (destructive) in the confirm-delete card dialog."
-  },
   "wallets.heading": {
     "description": "Section heading above the linked-wallets grid on the payment methods page."
   },

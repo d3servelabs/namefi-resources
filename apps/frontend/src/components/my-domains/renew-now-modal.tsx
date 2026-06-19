@@ -56,6 +56,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
   onSuccess,
 }) => {
   const t = useTranslations('domains');
+  const tCommon = useTranslations('common');
   const [selectedYears, setSelectedYears] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
 
@@ -192,7 +193,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
             onClick={() => onOpenChange(false)}
             disabled={isProcessing}
           >
-            {t('renewModal.cancel')}
+            {tCommon('actions.cancel')}
           </Button>
           {/* Disabled when pricing is unavailable so the user sees the cost
               before checkout — backend can calculate, but explicit upfront

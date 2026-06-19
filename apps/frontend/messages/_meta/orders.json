@@ -218,9 +218,6 @@
   "detail.message": {
     "description": "Label for the editable share message field in the share-access dialog."
   },
-  "detail.close": {
-    "description": "Button that closes the share-access dialog."
-  },
   "detail.shareManageDefault": {
     "description": "Default share message text inviting the recipient to manage their domain. 'Namefi' is the brand name — keep untranslated."
   },
@@ -344,9 +341,6 @@
   "details.actionRequiredDialogDescription": {
     "description": "Description in the action-required dialog asking the user to review and take necessary actions."
   },
-  "details.cancel": {
-    "description": "Generic cancel/dismiss button in the order details dialogs."
-  },
   "details.viewOrderDetails": {
     "description": "Button/link that opens the order details view."
   },
@@ -425,9 +419,6 @@
   "details.mintedNfts": {
     "description": "Field label for the list of minted NFTs in the technical details dialog."
   },
-  "details.close": {
-    "description": "Button that closes the technical / payment / item details dialog."
-  },
   "details.copyExplorerUrl": {
     "description": "Tooltip/label for the button that copies a blockchain explorer URL."
   },
@@ -448,9 +439,6 @@
   },
   "details.charged": {
     "description": "Payment status: the amount was charged."
-  },
-  "details.refunded": {
-    "description": "Payment status: the amount was refunded."
   },
   "details.refundPending": {
     "description": "Payment status: a refund is pending."

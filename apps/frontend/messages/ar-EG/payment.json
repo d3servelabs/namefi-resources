@@ -6,7 +6,6 @@
     "unableToLoad": "مش قادر يحمّل نموذج الدفع"
   },
   "addPaymentMethodForm": {
-    "processing": "بيتعالج...",
     "submit": "استخدم طريقة الدفع دي",
     "genericError": "حصل خطأ",
     "unexpectedError": "حصل خطأ غير متوقع"
@@ -23,8 +22,6 @@
     "network": "الشبكة",
     "required": "مطلوب",
     "yourWalletBalance": "رصيد محفظتك",
-    "connectWallet": "وصّل المحفظة",
-    "loading": "بيتحمل...",
     "unavailable": "مش متاح",
     "insufficientUsdcBalance": "رصيد USDC بتاعك ممكن يكون مش كفاية لدفع x402 ده.",
     "changeCard": "غيّر البطاقة",
@@ -45,7 +42,6 @@
     "usingNfsc": "هيتخصم {amount} USD من رصيد NFSC",
     "addNfscBalance": "شحن رصيد NFSC",
     "creditCard": "بطاقة بنكية",
-    "remove": "إزالة",
     "usingCreditCard": "هيتخصم {amount} USD من البطاقة البنكية",
     "changeCard": "غيّر البطاقة",
     "addOrSelectCard": "أضف أو اختار بطاقة",
@@ -76,7 +72,6 @@
   "nfscBalanceDialog": {
     "title": "رصيد NFSC",
     "description": "شوف رصيد $NFSC المتاح في محافظك المرتبطة والشبكات المدعومة.",
-    "tabBalance": "الرصيد",
     "tabOrders": "طلبات NFSC الأخيرة",
     "totalAvailable": "إجمالي المتاح",
     "topUp": "شحن الرصيد",
@@ -88,7 +83,6 @@
     "ordersDisclaimer": "دي عمليات شحن NFSC بالبطاقة البنكية على كل محافظك. طلبات النطاقات اللي اتدفعت بـ NFSC بتظهر في سجل طلباتك الكامل.",
     "emptyOrders": "مفيش عمليات شحن NFSC لحد دلوقتي.",
     "goToPaymentMethods": "روح لطرق الدفع",
-    "close": "إغلاق",
     "connectWalletToContinue": "وصّل محفظة عشان تكمل.",
     "nfscAdded": "اتضاف رمز NFSC لمحفظتك",
     "nfscAddFailed": "مقدرناش نضيف رمز NFSC لمحفظتك",

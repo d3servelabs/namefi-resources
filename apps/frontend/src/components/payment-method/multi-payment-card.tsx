@@ -58,6 +58,7 @@ export function MultiPaymentCard({
   onSubmit,
 }: MultiPaymentCardProps) {
   const t = useTranslations('payment');
+  const tCommon = useTranslations('common');
   const [includeNfsc, setIncludeNfsc] = useState<boolean>(initialIncludeNfsc);
   const [includeStripe, setIncludeStripe] =
     useState<boolean>(initialIncludeStripe);
@@ -250,7 +251,7 @@ export function MultiPaymentCard({
                   setStripeConfirmationTokenId(null);
                 }}
               >
-                {t('multiPaymentCard.remove')}
+                {tCommon('actions.remove')}
               </Button>
             </div>
             <div className="text-xs text-muted-foreground">

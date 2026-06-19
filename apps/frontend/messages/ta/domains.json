@@ -19,7 +19,6 @@
     "selectRow": "வரிசை தேர்ந்தெடு",
     "domainName": "டொமைன் பெயர் ({count})",
     "domainNamePlain": "டொமைன் பெயர்",
-    "account": "கணக்கு",
     "renewal": "புதுப்பித்தல்",
     "autoEns": "AutoENS",
     "dateTokenized": "டோக்கனாக்கிய தேதி",
@@ -67,7 +66,6 @@
     "yearOption": "{years, plural, one {# ஆண்டு} other {# ஆண்டுகள்}}",
     "pricePerYear": "ஆண்டுக்கு விலை",
     "total": "மொத்தம் ({years, plural, one {# ஆண்டு} other {# ஆண்டுகள்}})",
-    "cancel": "ரத்துசெய்",
     "addingToCart": "கார்ட்டில் சேர்க்கிறோம்...",
     "addToCart": "கார்ட்டில் சேர்",
     "addToCartFailed": "டொமைன்களை கார்ட்டில் சேர்க்கத் தோல்வி. மீண்டும் முயற்சிக்கவும்."
@@ -154,7 +152,6 @@
     "offersDescription": "நீங்கள் வைத்திருக்காத டொமைன்களில் வைத்த ஏலங்கள். அதிக விலை முதலில் வரிசைப்படுத்தப்பட்டது.",
     "noOffersTitle": "வெளிச்செல்லும் சலுகைகள் இல்லை",
     "noOffersDescription": "மற்ற டொமைன்களில் வைக்கும் சலுகைகள் இங்கு தோன்றும்.",
-    "view": "பார்",
     "incomingBids": "வரும் ஏலங்கள்",
     "loadBidsFailed": "ஏலங்கள் ஏற்றத் தோல்வி: {error}",
     "noBidsYet": "இன்னும் ஏலங்கள் இல்லை.",

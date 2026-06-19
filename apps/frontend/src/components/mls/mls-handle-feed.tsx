@@ -175,6 +175,7 @@ function MlsHandleHeader({
   onRefresh,
 }: MlsHandleHeaderProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
 
   return (
     <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
@@ -224,7 +225,7 @@ function MlsHandleHeader({
             ) : (
               <span className="inline-flex items-center gap-2">
                 <RefreshCcw className="size-4" />
-                {t('handle.refresh')}
+                {tCommon('actions.refresh')}
               </span>
             )}
           </Button>
@@ -350,7 +351,7 @@ function MlsHandlePagination({
   sentinelRef,
   onLoadMore,
 }: MlsHandlePaginationProps) {
-  const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
 
   return (
     <>
@@ -361,7 +362,7 @@ function MlsHandlePagination({
       {hasNextPage && !isFetchingNextPage ? (
         <div className="flex justify-center pt-2">
           <Button variant="ghost" onClick={onLoadMore}>
-            {t('handle.loadMore')}
+            {tCommon('actions.loadMore')}
           </Button>
         </div>
       ) : null}

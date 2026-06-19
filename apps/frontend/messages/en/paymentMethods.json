@@ -18,9 +18,7 @@
     },
     "deleteDialog": {
       "title": "Delete Payment Method",
-      "description": "Are you sure you want to delete your {brand} card ending in {last4}? This action cannot be undone.",
-      "cancel": "Cancel",
-      "confirm": "Delete"
+      "description": "Are you sure you want to delete your {brand} card ending in {last4}? This action cannot be undone."
     }
   },
   "wallets": {

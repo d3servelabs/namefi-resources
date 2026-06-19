@@ -63,6 +63,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   isLoadingMore = false,
 }) => {
   const t = useTranslations('search');
+  const tCommon = useTranslations('common');
   const trpcClient = useTRPCClient();
   const { data: mlsOffersByDomain } = useQuery<Record<string, MlsSaleListing>>({
     queryKey: ['search.mlsDomainOffers', domains],
@@ -167,7 +168,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
               {isLoadingMore && (
                 <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}
-              {t('results.loadMore')}
+              {tCommon('actions.loadMore')}
             </Button>
           </div>
         )}

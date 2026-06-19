@@ -6,19 +6,16 @@
     "invalidDomain": {
       "title": "Invalid domain",
       "description": "The provided domain is not a valid normalized Namefi domain.",
-      "hint": "Make sure you are using a fully normalized domain, e.g. \"alice.0x.city\".",
-      "goBack": "Go back"
+      "hint": "Make sure you are using a fully normalized domain, e.g. \"alice.0x.city\"."
     },
     "ineligibleBanner": {
       "title": "This domain is not eligible for a free claim.",
       "description": "You can add it to your cart to purchase, or go back to search.",
-      "addToCart": "Add to cart",
-      "goBack": "Go back"
+      "addToCart": "Add to cart"
     },
     "summary": {
       "duration": "Duration: {count, plural, one {# year} other {# years}} • Free"
-    },
-    "submit": "Submit"
+    }
   },
   "widget": {
     "defaultTitle": "Your 0x Identity",
@@ -26,7 +23,6 @@
     "qualifyPrompt": "Follow the steps below to see if you qualify",
     "steps": {
       "signIn": {
-        "trigger": "Sign In",
         "signedIn": "Thanks for signing in! You can proceed to the next step.",
         "signedOut": "Sign in or create an account to get started."
       },

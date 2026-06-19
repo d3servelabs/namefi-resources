@@ -19,7 +19,6 @@
     "selectRow": "选择此行",
     "domainName": "域名（{count}）",
     "domainNamePlain": "域名",
-    "account": "账户",
     "renewal": "续费",
     "autoEns": "AutoENS",
     "dateTokenized": "通证化日期",
@@ -67,7 +66,6 @@
     "yearOption": "{years} 年",
     "pricePerYear": "每年价格",
     "total": "总计（{years} 年）",
-    "cancel": "取消",
     "addingToCart": "正在加入购物车…",
     "addToCart": "加入购物车",
     "addToCartFailed": "无法将域名加入购物车。请重试。"
@@ -154,7 +152,6 @@
     "offersDescription": "您对未持有域名所提交的出价。按价格从高到低排序。",
     "noOffersTitle": "没有进行中的出价",
     "noOffersDescription": "您对其他域名提交的出价将显示在这里。",
-    "view": "查看",
     "incomingBids": "收到的出价",
     "loadBidsFailed": "无法加载出价：{error}",
     "noBidsYet": "暂无出价。",

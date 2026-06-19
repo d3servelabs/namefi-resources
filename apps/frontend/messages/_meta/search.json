@@ -109,9 +109,6 @@
   "results.errorDescription": {
     "description": "Body text shown when the domain search fails, inviting a retry."
   },
-  "results.loadMore": {
-    "description": "Button to load more search results."
-  },
   "results.noResultsTitle": {
     "description": "Title shown when a search returns no domains."
   },

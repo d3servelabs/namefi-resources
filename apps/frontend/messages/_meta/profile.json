@@ -89,9 +89,6 @@
   "wallets.unlinkDialogDescription": {
     "description": "Confirmation-dialog body asking the user to confirm unlinking. {address} is the wallet address — keep untranslated."
   },
-  "wallets.cancel": {
-    "description": "Cancel button in the unlink-wallet confirmation dialog."
-  },
   "wallets.unlinking": {
     "description": "Button label shown while the wallet is being unlinked (in-progress state)."
   },
@@ -157,9 +154,6 @@
   },
   "socialAccounts.confirmUnlink": {
     "description": "Confirmation-dialog body asking the user to confirm unlinking a social account."
-  },
-  "socialAccounts.cancel": {
-    "description": "Cancel button in the unlink-social-account confirmation dialog."
   },
   "socialAccounts.unlink": {
     "description": "Confirm button to unlink the social account in the confirmation dialog."
@@ -496,9 +490,6 @@
   "createApiKey.noWalletsConnected": {
     "description": "Message shown when no wallets are connected, prompting the user to connect one first."
   },
-  "createApiKey.cancel": {
-    "description": "Cancel button in the Create API Key dialog."
-  },
   "createApiKey.creating": {
     "description": "Button label shown while the API key is being created (in-progress state)."
   },
@@ -631,9 +622,6 @@
   "editApiKey.noWalletsConnected": {
     "description": "Message shown when no wallets are connected, prompting the user to connect one before saving (edit dialog)."
   },
-  "editApiKey.cancel": {
-    "description": "Cancel button in the Edit API Key dialog."
-  },
   "editApiKey.saving": {
     "description": "Button label shown while changes are being saved (in-progress state)."
   },
@@ -678,9 +666,6 @@
   },
   "revokeApiKey.noWalletsConnected": {
     "description": "Message shown when no wallets are connected, prompting the user to connect one first (revoke dialog)."
-  },
-  "revokeApiKey.cancel": {
-    "description": "Cancel button in the Revoke API Key dialog."
   },
   "revokeApiKey.revoking": {
     "description": "Button label shown while the API key is being revoked (in-progress state)."

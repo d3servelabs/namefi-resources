@@ -43,7 +43,6 @@
   "results": {
     "errorTitle": "Search Error",
     "errorDescription": "An error occurred while searching. Please try again.",
-    "loadMore": "Load more",
     "noResultsTitle": "No domains found",
     "noResultsDescription": "No domains matching \"{query}\" were found. Try a different search term."
   }

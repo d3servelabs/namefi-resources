@@ -6,7 +6,6 @@
     "unableToLoad": "Unable to load payment form"
   },
   "addPaymentMethodForm": {
-    "processing": "Processing...",
     "submit": "Use this Payment Method",
     "genericError": "An error occurred",
     "unexpectedError": "An unexpected error occurred"
@@ -23,8 +22,6 @@
     "network": "Network",
     "required": "Required",
     "yourWalletBalance": "Your wallet balance",
-    "connectWallet": "Connect wallet",
-    "loading": "Loading...",
     "unavailable": "Unavailable",
     "insufficientUsdcBalance": "Your USDC balance may be insufficient for this x402 payment amount.",
     "changeCard": "Change Card",
@@ -45,7 +42,6 @@
     "usingNfsc": "Using {amount} USD of NFSC Balance",
     "addNfscBalance": "Add NFSC Balance",
     "creditCard": "Credit Card",
-    "remove": "Remove",
     "usingCreditCard": "Using {amount} USD from Credit Card",
     "changeCard": "Change Card",
     "addOrSelectCard": "Add or Select Card",
@@ -76,7 +72,6 @@
   "nfscBalanceDialog": {
     "title": "NFSC Balance",
     "description": "Review your available $NFSC across linked wallets and supported chains.",
-    "tabBalance": "Balance",
     "tabOrders": "Recent NFSC orders",
     "totalAvailable": "Total Available",
     "topUp": "Top Up",
@@ -88,7 +83,6 @@
     "ordersDisclaimer": "These are credit-card NFSC top-ups across all your wallets. NFSC-paid domain orders appear in your full order history.",
     "emptyOrders": "No NFSC top-ups yet.",
     "goToPaymentMethods": "Go to Payment Methods",
-    "close": "Close",
     "connectWalletToContinue": "Connect a wallet to continue.",
     "nfscAdded": "NFSC token added to your wallet",
     "nfscAddFailed": "Couldn't add NFSC token to your wallet",

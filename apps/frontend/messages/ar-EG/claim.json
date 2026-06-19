@@ -6,19 +6,16 @@
     "invalidDomain": {
       "title": "الدومين مش صح",
       "description": "الدومين اللي دخلته مش دومين Namefi صالح.",
-      "hint": "تأكد إنك بتستخدم دومين مكتمل الصيغة، زي: \"alice.0x.city\".",
-      "goBack": "ارجع"
+      "hint": "تأكد إنك بتستخدم دومين مكتمل الصيغة، زي: \"alice.0x.city\"."
     },
     "ineligibleBanner": {
       "title": "الدومين ده مش متاح للحجز المجاني.",
       "description": "تقدر تضيفه للسلة وتشتريه، أو ارجع للبحث.",
-      "addToCart": "أضف للسلة",
-      "goBack": "ارجع"
+      "addToCart": "أضف للسلة"
     },
     "summary": {
       "duration": "المدة: {count, plural, one {# سنة} other {# سنين}} • مجاناً"
-    },
-    "submit": "تأكيد"
+    }
   },
   "widget": {
     "defaultTitle": "هويتك 0x",
@@ -26,7 +23,6 @@
     "qualifyPrompt": "اتبع الخطوات دي عشان تعرف لو إنت مؤهل",
     "steps": {
       "signIn": {
-        "trigger": "سجّل دخول",
         "signedIn": "تمام! سجّلت دخولك، تقدر تكمل للخطوة الجاية.",
         "signedOut": "سجّل دخول أو أنشئ حساب عشان تبدأ."
       },

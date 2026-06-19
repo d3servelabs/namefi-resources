@@ -36,7 +36,6 @@
     "unlinkFailure": "வாலட் துண்டிக்க தோல்வியடைந்தது",
     "unlinkDialogTitle": "வாலட் துண்டி",
     "unlinkDialogDescription": "{address} முகவரி கொண்ட வாலட்டை துண்டிக்க நிச்சயமாக விரும்புகிறீர்களா?",
-    "cancel": "ரத்துசெய்",
     "unlinking": "துண்டிக்கிறது…",
     "unlink": "துண்டி"
   },
@@ -61,7 +60,6 @@
     "unlinkGithubDialogTitle": "GitHub துண்டி",
     "unlinkTwitterDialogTitle": "Twitter துண்டி",
     "confirmUnlink": "தொடர நிச்சயமாக விரும்புகிறீர்களா?",
-    "cancel": "ரத்துசெய்",
     "unlink": "துண்டி"
   },
   "contactAccounts": {
@@ -182,7 +180,6 @@
     "signingWallet": "கையொப்பமிடும் வாலட்",
     "active": "(செயலில்)",
     "noWalletsConnected": "வாலட்கள் இணைக்கப்படவில்லை. முதலில் ஒரு வாலட் இணைக்கவும்.",
-    "cancel": "ரத்துசெய்",
     "creating": "உருவாக்குகிறது…",
     "createKey": "விசை உருவாக்கு",
     "createdTitle": "API விசை உருவாக்கப்பட்டது",
@@ -229,7 +226,6 @@
     "signingWallet": "கையொப்பமிடும் வாலட்",
     "active": "(செயலில்)",
     "noWalletsConnected": "வாலட்கள் இணைக்கப்படவில்லை. சேமிக்கும் முன் ஒரு வாலட் இணைக்கவும்.",
-    "cancel": "ரத்துசெய்",
     "saving": "சேமிக்கிறது…",
     "saveChanges": "மாற்றங்களை சேமி",
     "selectWalletError": "கையெழுத்திட ஒரு வாலட்டை தேர்வு செய்யவும்",
@@ -247,7 +243,6 @@
     "signingWallet": "கையொப்பமிடும் வாலட்",
     "active": "(செயலில்)",
     "noWalletsConnected": "வாலட்கள் இணைக்கப்படவில்லை. முதலில் ஒரு வாலட் இணைக்கவும்.",
-    "cancel": "ரத்துசெய்",
     "revoking": "திரும்பப்பெறுகிறது…",
     "revokeKey": "விசையை திரும்பப்பெறு",
     "selectWalletError": "கையெழுத்திட ஒரு வாலட்டை தேர்வு செய்யவும்",

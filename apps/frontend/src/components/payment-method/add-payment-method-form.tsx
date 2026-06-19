@@ -22,6 +22,7 @@ export function AddPaymentMethodForm({
   onError,
 }: AddPaymentMethodFormProps) {
   const t = useTranslations('payment');
+  const tCommon = useTranslations('common');
   const stripe = useStripe();
   const elements = useElements();
   const [isFormReady, setIsFormReady] = useState(false);
@@ -87,7 +88,7 @@ export function AddPaymentMethodForm({
           {isProcessing ? (
             <>
               <Loader2 className="me-2 h-4 w-4 animate-spin" />
-              {t('addPaymentMethodForm.processing')}
+              {tCommon('actions.processing')}
             </>
           ) : (
             t('addPaymentMethodForm.submit')

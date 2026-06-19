@@ -6,7 +6,6 @@
     "unableToLoad": "கட்டண படிவத்தை ஏற்ற முடியவில்லை"
   },
   "addPaymentMethodForm": {
-    "processing": "செயலாக்குகிறது...",
     "submit": "இந்த கட்டண முறையை பயன்படுத்து",
     "genericError": "பிழை ஏற்பட்டது",
     "unexpectedError": "எதிர்பாராத பிழை ஏற்பட்டது"
@@ -23,8 +22,6 @@
     "network": "நெட்வொர்க்",
     "required": "கட்டாயம்",
     "yourWalletBalance": "உங்கள் வாலட் இருப்பு",
-    "connectWallet": "வாலட் இணை",
-    "loading": "ஏற்றுகிறது...",
     "unavailable": "கிடைக்கவில்லை",
     "insufficientUsdcBalance": "இந்த x402 கட்டணத்திற்கு உங்கள் USDC இருப்பு போதுமானதாக இல்லாமல் இருக்கலாம்.",
     "changeCard": "கார்டு மாற்று",
@@ -45,7 +42,6 @@
     "usingNfsc": "NFSC இருப்பிலிருந்து {amount} USD பயன்படுத்துகிறது",
     "addNfscBalance": "NFSC இருப்பு சேர்",
     "creditCard": "கிரெடிட் கார்டு",
-    "remove": "நீக்கு",
     "usingCreditCard": "கிரெடிட் கார்டிலிருந்து {amount} USD பயன்படுத்துகிறது",
     "changeCard": "கார்டு மாற்று",
     "addOrSelectCard": "கார்டு சேர் அல்லது தேர்வு செய்",
@@ -76,7 +72,6 @@
   "nfscBalanceDialog": {
     "title": "NFSC இருப்பு",
     "description": "இணைக்கப்பட்ட வாலட்கள் மற்றும் ஆதரிக்கப்படும் சங்கிலிகளில் உங்கள் $NFSC இருப்பை பார்க்கவும்.",
-    "tabBalance": "இருப்பு",
     "tabOrders": "சமீபத்திய NFSC ஆர்டர்கள்",
     "totalAvailable": "மொத்த கிடைக்கும் தொகை",
     "topUp": "டாப் அப்",
@@ -88,7 +83,6 @@
     "ordersDisclaimer": "இவை உங்கள் அனைத்து வாலட்களிலும் கிரெடிட் கார்டு மூலம் NFSC டாப்-அப்கள். NFSC மூலம் செய்யப்பட்ட டொமைன் ஆர்டர்கள் உங்கள் முழு ஆர்டர் வரலாற்றில் தெரியும்.",
     "emptyOrders": "இன்னும் NFSC டாப்-அப்கள் இல்லை.",
     "goToPaymentMethods": "கட்டண முறைகளுக்கு செல்",
-    "close": "மூடு",
     "connectWalletToContinue": "தொடர வாலட் இணைக்கவும்.",
     "nfscAdded": "NFSC டோக்கன் உங்கள் வாலட்டில் சேர்க்கப்பட்டது",
     "nfscAddFailed": "NFSC டோக்கனை வாலட்டில் சேர்க்க முடியவில்லை",

@@ -77,6 +77,7 @@ export function EditApiKeyDialog({
   onSuccess,
 }: EditApiKeyDialogProps) {
   const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -384,7 +385,7 @@ export function EditApiKeyDialog({
               onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
             >
-              {t('editApiKey.cancel')}
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={handleSubmit}

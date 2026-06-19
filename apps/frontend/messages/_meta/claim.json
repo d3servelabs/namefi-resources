@@ -17,9 +17,6 @@
   "page.invalidDomain.hint": {
     "description": "Hint under the invalid-domain card. Keep the literal example domain \"alice.0x.city\" untranslated."
   },
-  "page.invalidDomain.goBack": {
-    "description": "Button on the invalid-domain card that navigates back to the previous page."
-  },
   "page.ineligibleBanner.title": {
     "description": "Title of the warning banner shown when the domain isn't eligible for a free claim."
   },
@@ -29,14 +26,8 @@
   "page.ineligibleBanner.addToCart": {
     "description": "Button on the ineligible banner that adds the domain to the cart for purchase."
   },
-  "page.ineligibleBanner.goBack": {
-    "description": "Button on the ineligible banner that navigates back to the previous page."
-  },
   "page.summary.duration": {
     "description": "Domain summary line showing claim term and that it's free. ICU plural on {count} (number of years); '• Free' marks the zero cost."
-  },
-  "page.submit": {
-    "description": "Primary button that submits the free claim."
   },
   "widget.defaultTitle": {
     "description": "Default heading of the DomainClaim widget (promo claim entry); '0x' is a literal product term — keep verbatim."
@@ -46,9 +37,6 @@
   },
   "widget.qualifyPrompt": {
     "description": "Instruction above the qualification steps in the DomainClaim widget."
-  },
-  "widget.steps.signIn.trigger": {
-    "description": "Accordion header for the sign-in qualification step in the claim widget."
   },
   "widget.steps.signIn.signedIn": {
     "description": "Message inside the sign-in step when the user is already signed in."

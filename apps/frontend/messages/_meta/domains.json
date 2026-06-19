@@ -44,9 +44,6 @@
   "columns.domainNamePlain": {
     "description": "Table column header for the domain name, without a count."
   },
-  "columns.account": {
-    "description": "Table column header for the account/wallet that holds the domain."
-  },
   "columns.renewal": {
     "description": "Table column header for the domain renewal date/info."
   },
@@ -157,9 +154,6 @@
   },
   "renewModal.total": {
     "description": "Label for the total price line in the renew modal. ICU plural on {years} shown in parentheses: 'one' = '# year', 'other' = '# years'."
-  },
-  "renewModal.cancel": {
-    "description": "Cancel button in the renew modal."
   },
   "renewModal.addingToCart": {
     "description": "Loading label on the renew modal's add-to-cart button while the request is in progress."
@@ -371,9 +365,6 @@
   },
   "marketplaceOrders.noOffersDescription": {
     "description": "Empty-state body explaining that offers placed on other domains will appear here."
-  },
-  "marketplaceOrders.view": {
-    "description": "Button/link to view a marketplace listing or offer."
   },
   "marketplaceOrders.incomingBids": {
     "description": "Label above the list of incoming bids on a listing card."

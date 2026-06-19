@@ -4,7 +4,6 @@
     "usersLink": "Users",
     "subscribeRss": "Subscribe via RSS",
     "rss": "RSS",
-    "refresh": "Refresh",
     "refreshing": "Refreshing"
   },
   "controls": {
@@ -26,7 +25,6 @@
     "errorTitle": "{message}",
     "emptyFiltered": "No matching listings in this part of the feed.",
     "empty": "No listings found.",
-    "loadMore": "Load more",
     "endOfFeed": "End of feed",
     "backToTopAriaLabel": "Back to top"
   },
@@ -53,7 +51,6 @@
     "detailsHelp": "Optional notes to support your report.",
     "detailsCounter": "{count}/1000",
     "detailsTooLong": "Keep details under 1000 characters.",
-    "cancel": "Cancel",
     "submit": "Submit report",
     "submitting": "Submitting",
     "submitSuccess": "Report submitted for {domain}.",
@@ -85,13 +82,11 @@
   "handle": {
     "backToFeed": "Back to feed",
     "fallbackSeller": "@unknown",
-    "refresh": "Refresh",
     "refreshing": "Refreshing",
     "invalidPath": "This feed user path is not valid.",
     "loadErrorFallback": "Failed to load seller listings.",
     "emptyListings": "No listings found for this seller.",
     "endOfListings": "End of seller listings",
-    "loadMore": "Load more",
     "subtitle": {
       "invalidPath": "Invalid feed user path.",
       "noDomains": "No domains listed by this seller yet.",
@@ -105,7 +100,6 @@
     "loadingSubtitle": "Loading users who post domain sale listings.",
     "subtitle": "{count, plural, one {# matching user} other {# matching users}}.",
     "subtitleRefreshed": "{count, plural, one {# matching user} other {# matching users}}, refreshed {refreshedAt}.",
-    "refresh": "Refresh",
     "exportCsv": "Export CSV",
     "exportSuccess": "Users CSV exported",
     "exportErrorTitle": "Could not export users CSV",
@@ -133,7 +127,6 @@
     "unknownDate": "unknown",
     "emptyThreshold": "No users match this threshold.",
     "loadingMore": "Loading more users",
-    "loadMore": "Load more",
     "listings": "Listings",
     "post": "Post"
   }

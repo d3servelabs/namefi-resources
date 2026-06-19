@@ -62,6 +62,7 @@ const TLD_FILTER_PATTERN =
 
 export function MlsFeed() {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
   const trpcClient = useTRPCClient();
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const filters = useMlsFeedFilters();
@@ -174,7 +175,7 @@ export function MlsFeed() {
                 void fetchNextPage();
               }}
             >
-              {t('list.loadMore')}
+              {tCommon('actions.loadMore')}
             </Button>
           </div>
         ) : null}
@@ -278,6 +279,7 @@ function MlsFeedHeader({
   onRefresh,
 }: MlsFeedHeaderProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
 
   return (
     <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
@@ -321,7 +323,7 @@ function MlsFeedHeader({
             ) : (
               <span className="inline-flex items-center gap-2">
                 <RefreshCcw data-icon="inline-start" />
-                {t('header.refresh')}
+                {tCommon('actions.refresh')}
               </span>
             )}
           </Button>
@@ -357,6 +359,7 @@ function MlsFeedControls({
   onRefresh,
 }: MlsFeedControlsProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
   const placeholderTld = normalizeTldFilter(tldInput);
   const searchPlaceholder = placeholderTld
     ? t('controls.searchPlaceholderWithTld', { tld: placeholderTld })
@@ -418,7 +421,7 @@ function MlsFeedControls({
                 ) : (
                   <RefreshCcw data-icon="inline-start" />
                 )}
-                {t('header.refresh')}
+                {tCommon('actions.refresh')}
               </Button>
             </div>
           </motion.div>

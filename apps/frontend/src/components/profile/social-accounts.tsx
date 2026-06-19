@@ -32,6 +32,7 @@ export interface SocialAccountsProps {
 
 export const SocialAccounts = ({ user }: SocialAccountsProps) => {
   const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const { isImpersonating, privyRuntimeReady, privyRuntimeAuthenticated } =
     useAuth();
   const canUsePrivyActions =
@@ -198,7 +199,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               variant="outline"
               onClick={() => setIsUnlinkGitHubDialogOpen(false)}
             >
-              {t('socialAccounts.cancel')}
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkGitHub(user?.github?.subject ?? '')}
@@ -228,7 +229,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
               variant="outline"
               onClick={() => setIsUnlinkTwitterDialogOpen(false)}
             >
-              {t('socialAccounts.cancel')}
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkTwitter(user?.twitter?.subject ?? '')}

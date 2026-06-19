@@ -4,7 +4,6 @@
     "usersLink": "பயனர்கள்",
     "subscribeRss": "RSS மூலம் குழுசேரவும்",
     "rss": "RSS",
-    "refresh": "புதுப்பி",
     "refreshing": "புதுப்பிக்கிறது"
   },
   "controls": {
@@ -26,7 +25,6 @@
     "errorTitle": "{message}",
     "emptyFiltered": "இந்த பகுதியில் பொருந்தும் பட்டியல்கள் இல்லை.",
     "empty": "பட்டியல்கள் எதுவும் இல்லை.",
-    "loadMore": "மேலும் ஏற்று",
     "endOfFeed": "Feed முடிந்தது",
     "backToTopAriaLabel": "மேலே செல்"
   },
@@ -53,7 +51,6 @@
     "detailsHelp": "உங்கள் புகாரை ஆதரிக்க விருப்ப குறிப்புகள்.",
     "detailsCounter": "{count}/1000",
     "detailsTooLong": "விவரங்களை 1000 எழுத்துகளுக்குள் வைக்கவும்.",
-    "cancel": "ரத்து செய்",
     "submit": "புகாரை சமர்ப்பி",
     "submitting": "சமர்ப்பிக்கிறது",
     "submitSuccess": "{domain} க்கான புகார் சமர்ப்பிக்கப்பட்டது.",
@@ -85,13 +82,11 @@
   "handle": {
     "backToFeed": "Feed க்கு திரும்பு",
     "fallbackSeller": "@unknown",
-    "refresh": "புதுப்பி",
     "refreshing": "புதுப்பிக்கிறது",
     "invalidPath": "இந்த feed பயனர் பாதை செல்லுபடியாகாது.",
     "loadErrorFallback": "விற்பனையாளர் பட்டியல்களை ஏற்றுவதில் தோல்வி.",
     "emptyListings": "இந்த விற்பனையாளருக்கு பட்டியல்கள் இல்லை.",
     "endOfListings": "விற்பனையாளர் பட்டியல்கள் முடிந்தன",
-    "loadMore": "மேலும் ஏற்று",
     "subtitle": {
       "invalidPath": "செல்லுபடியாகாத feed பயனர் பாதை.",
       "noDomains": "இந்த விற்பனையாளர் இன்னும் டொமைன்கள் பட்டியலிடவில்லை.",
@@ -105,7 +100,6 @@
     "loadingSubtitle": "டொமைன் விற்பனை பட்டியல்களை இடுகையிடும் பயனர்களை ஏற்றுகிறது.",
     "subtitle": "{count, plural, one {# பொருந்தும் பயனர்} other {# பொருந்தும் பயனர்கள்}}.",
     "subtitleRefreshed": "{count, plural, one {# பொருந்தும் பயனர்} other {# பொருந்தும் பயனர்கள்}}, {refreshedAt} புதுப்பிக்கப்பட்டது.",
-    "refresh": "புதுப்பி",
     "exportCsv": "CSV ஏற்றுமதி",
     "exportSuccess": "பயனர்கள் CSV ஏற்றுமதி செய்யப்பட்டது",
     "exportErrorTitle": "பயனர்கள் CSV ஏற்றுமதி செய்ய முடியவில்லை",
@@ -133,7 +127,6 @@
     "unknownDate": "தெரியவில்லை",
     "emptyThreshold": "இந்த வரம்பில் பயனர்கள் இல்லை.",
     "loadingMore": "மேலும் பயனர்களை ஏற்றுகிறது",
-    "loadMore": "மேலும் ஏற்று",
     "listings": "பட்டியல்கள்",
     "post": "பதிவு"
   }

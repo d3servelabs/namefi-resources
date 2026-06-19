@@ -60,6 +60,7 @@ export function InstantBuyModal({
   domainAvailabilityInfo,
 }: InstantBuyModalProps) {
   const t = useTranslations('shared');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const { requestFeedback } = useFeedback();
   const parentDomain = useMemo(() => {
@@ -153,11 +154,17 @@ export function InstantBuyModal({
     }
 
     if (isInstantBuyPending || isRedirecting) {
-      return t('instantBuyModal.processing');
+      return tCommon('actions.processing');
     }
 
     return t('instantBuyModal.buyNow');
-  }, [isInstantBuyPending, isRedirecting, selectedNftWalletAddress, t]);
+  }, [
+    isInstantBuyPending,
+    isRedirecting,
+    selectedNftWalletAddress,
+    t,
+    tCommon,
+  ]);
 
   const submitOrderDisabled = useMemo(() => {
     return !selectedNftWalletAddress || !isLinkedOrUserConfirmed;
@@ -348,7 +355,7 @@ export function InstantBuyModal({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{t('instantBuyModal.close')}</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon('actions.close')}</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

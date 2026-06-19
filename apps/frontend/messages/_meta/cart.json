@@ -20,9 +20,6 @@
   "clearCartDialog.description": {
     "description": "Body of the clear-cart confirmation dialog explaining that all items will be removed."
   },
-  "clearCartDialog.cancel": {
-    "description": "Cancel button in the clear-cart confirmation dialog."
-  },
   "errorDialog.title": {
     "description": "Title of the dialog shown when order submission fails unexpectedly."
   },
@@ -32,29 +29,17 @@
   "errorDialog.errorDetail": {
     "description": "Technical error detail line shown in the error dialog. {message} is the raw error message — keep untranslated; keep the surrounding parentheses and 'Error -' prefix."
   },
-  "errorDialog.close": {
-    "description": "Close button in the order-error dialog."
-  },
-  "errorDialog.tryAgain": {
-    "description": "Retry button in the order-error dialog."
-  },
   "cartChanges.title": {
     "description": "Title of the notice shown when the cart contents changed (e.g. price or availability updates)."
   },
   "cartChanges.description": {
     "description": "Body of the cart-changes notice indicating some changes were made to the cart."
   },
-  "cartChanges.dismiss": {
-    "description": "Dismiss button for the cart-changes notice."
-  },
   "submitButton.selectNftWallet": {
     "description": "Submit-button label prompting the user to select an NFT wallet before continuing."
   },
   "submitButton.selectPaymentMethod": {
     "description": "Submit-button label prompting the user to select a payment method before continuing."
-  },
-  "submitButton.processing": {
-    "description": "Submit-button loading label while the order is being processed."
   },
   "submitButton.submitOrder": {
     "description": "Primary submit button to place the order."
@@ -127,9 +112,6 @@
   },
   "addFromUrl.confirm.addingToCart": {
     "description": "Loading label on the confirm button while domains are being added to the cart."
-  },
-  "addFromUrl.confirm.tryAgain": {
-    "description": "Retry button in the add-from-URL confirm step."
   },
   "addFromUrl.confirm.addToCart": {
     "description": "Confirm button to add the listed domains to the cart."

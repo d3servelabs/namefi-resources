@@ -45,6 +45,7 @@ export function MyListingCard({
   details,
 }: Props) {
   const t = useTranslations('domains');
+  const tCommon = useTranslations('common');
   const expiryLabel = useExpiryLabel();
   const offersQuery = useOffers({
     chainId,
@@ -112,7 +113,7 @@ export function MyListingCard({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
             >
-              {t('marketplaceOrders.view')}
+              {tCommon('actions.view')}
               <ExternalLink className="h-3 w-3" aria-hidden="true" />
             </a>
           ) : null}

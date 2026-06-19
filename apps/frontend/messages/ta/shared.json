@@ -23,10 +23,7 @@
     "youConnected": "நீங்கள் இணைத்தது",
     "butWeNeed": "எங்களுக்கு தேவையது",
     "connectedSuccessfully": "வாலட் வெற்றிகரமாக இணைக்கப்பட்டது",
-    "cancel": "ரத்துசெய்",
     "connecting": "இணைக்கிறது...",
-    "connectWallet": "வாலட் இணை",
-    "tryAgain": "மீண்டும்",
     "next": "அடுத்து",
     "toast": {
       "setActiveFailed": "செயலில் வாலட் அமைக்க தவறியது",
@@ -74,11 +71,9 @@
     "domain": "டொமைன்",
     "pricePerYear": "{price} USD / ஆண்டு",
     "selectNftWallet": "தொடர NFT வாலட்டைத் தேர்ந்தெடுக்கவும்",
-    "processing": "செயலாக்கிறது...",
     "buyNow": "வாங்கவும்",
     "errorTitle": "ஐயோ! ஏதோ தவறு நடந்தது.",
     "errorDescription": "கவலைப்படாதீர்கள், கட்டணம் வசூலிக்கப்படாது. மீண்டும் முயற்சிக்கலாம்.",
-    "errorDetail": "(பிழை - {error})",
-    "close": "மூடவும்"
+    "errorDetail": "(பிழை - {error})"
   }
 }

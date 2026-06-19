@@ -488,7 +488,7 @@ export default function CartPage() {
       isRedirecting ||
       isExplicitlyCheckingCartItemsForUpdates
     ) {
-      return t('submitButton.processing');
+      return tc('actions.processing');
     }
 
     return t('submitButton.submitOrder');
@@ -500,6 +500,7 @@ export default function CartPage() {
     paymentMethodSelected,
     selectedNftWalletAddress,
     t,
+    tc,
   ]);
 
   const submitOrderDisabled = useMemo(() => {
@@ -812,7 +813,7 @@ export default function CartPage() {
                     variant="outline"
                     onClick={() => setCartItemsChangesSummary(undefined)}
                   >
-                    <ArchiveX className="size-4" /> {t('cartChanges.dismiss')}
+                    <ArchiveX className="size-4" /> {tc('actions.dismiss')}
                   </Button>
                 </div>
 

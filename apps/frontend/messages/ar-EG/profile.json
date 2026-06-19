@@ -36,7 +36,6 @@
     "unlinkFailure": "فشل فك ربط المحفظة",
     "unlinkDialogTitle": "فك ربط المحفظة",
     "unlinkDialogDescription": "متأكد إنك عايز تفك ربط المحفظة بالعنوان {address}؟",
-    "cancel": "إلغاء",
     "unlinking": "بيتفك الربط…",
     "unlink": "فك الربط"
   },
@@ -61,7 +60,6 @@
     "unlinkGithubDialogTitle": "فك ربط GitHub",
     "unlinkTwitterDialogTitle": "فك ربط Twitter",
     "confirmUnlink": "متأكد إنك عايز تكمّل؟",
-    "cancel": "إلغاء",
     "unlink": "فك الربط"
   },
   "contactAccounts": {
@@ -182,7 +180,6 @@
     "signingWallet": "محفظة التوقيع",
     "active": "(نشطة)",
     "noWalletsConnected": "مفيش محافظ متصلة. ارتبط بمحفظة الأول.",
-    "cancel": "إلغاء",
     "creating": "بيتنشأ…",
     "createKey": "إنشاء المفتاح",
     "createdTitle": "اتنشأ مفتاح API",
@@ -229,7 +226,6 @@
     "signingWallet": "محفظة التوقيع",
     "active": "(نشطة)",
     "noWalletsConnected": "مفيش محافظ متصلة. ارتبط بمحفظة قبل ما تحفظ.",
-    "cancel": "إلغاء",
     "saving": "بيتحفظ…",
     "saveChanges": "حفظ التغييرات",
     "selectWalletError": "اختار محفظة للتوقيع",
@@ -247,7 +243,6 @@
     "signingWallet": "محفظة التوقيع",
     "active": "(نشطة)",
     "noWalletsConnected": "مفيش محافظ متصلة. ارتبط بمحفظة الأول.",
-    "cancel": "إلغاء",
     "revoking": "بيتلغى…",
     "revokeKey": "إلغاء المفتاح",
     "selectWalletError": "اختار محفظة للتوقيع",

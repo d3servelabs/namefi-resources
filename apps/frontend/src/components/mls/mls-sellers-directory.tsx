@@ -348,6 +348,7 @@ function MlsSellersHeader({
   onExportCsv,
 }: MlsSellersHeaderProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
 
   return (
     <section className="border-border/70 border-b pb-4">
@@ -391,7 +392,7 @@ function MlsSellersHeader({
             ) : (
               <RefreshCcw data-icon="inline-start" />
             )}
-            {t('users.refresh')}
+            {tCommon('actions.refresh')}
           </Button>
 
           <Button
@@ -578,6 +579,7 @@ function MlsSellersTable({
   onLoadMore,
 }: MlsSellersTableProps) {
   const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
   const columns = useMlsSellerColumns();
   const table = useReactTable({
     data: sellers,
@@ -722,7 +724,7 @@ function MlsSellersTable({
               <TableRow>
                 <TableCell colSpan={columnCount} className="h-14 text-center">
                   <Button type="button" variant="ghost" onClick={onLoadMore}>
-                    {t('users.loadMore')}
+                    {tCommon('actions.loadMore')}
                   </Button>
                 </TableCell>
               </TableRow>

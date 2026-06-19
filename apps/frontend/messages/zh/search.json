@@ -43,7 +43,6 @@
   "results": {
     "errorTitle": "搜索出错",
     "errorDescription": "搜索时发生错误，请重试。",
-    "loadMore": "加载更多",
     "noResultsTitle": "未找到域名",
     "noResultsDescription": "未找到与「{query}」匹配的域名。请尝试其他搜索词。"
   }

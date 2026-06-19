@@ -93,6 +93,7 @@ function safeToUnicode(domain: string): string {
 
 export function OrderDetailsContent({ id }: { id: string }) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const router = useRouter();
 
   const [copiedFields, setCopiedFields] = useState<Record<string, boolean>>({});
@@ -411,7 +412,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                     </div>
                     <div className="flex flex-row justify-end w-full">
                       <AlertDialogCancel>
-                        {t('details.cancel')}
+                        {tCommon('actions.cancel')}
                       </AlertDialogCancel>
                     </div>
                   </AlertDialogDescription>
@@ -807,7 +808,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
             </div>
           ) : null}
           <AlertDialogFooter>
-            <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
+            <AlertDialogCancel>{tCommon('actions.close')}</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -943,6 +944,7 @@ function PaymentSummaryCard({
   onClick: () => void;
 }) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const { isAuthenticated } = useAuth();
   const { data: method = { isOnChainPayment: false as const }, isLoading } =
@@ -1068,7 +1070,7 @@ function PaymentSummaryCard({
             {refundedAmountCents > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-muted-foreground">
-                  {t('details.refunded')}
+                  {tCommon('status.refunded')}
                 </span>
                 <span className="font-medium text-amber-400">
                   -{formatAmountInUSD(refundedAmountCents, true)}
@@ -1153,6 +1155,7 @@ function PaymentDetailsModal({
   onOpenChange: (id: string | null) => void;
 }) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const { isAuthenticated } = useAuth();
   const trpc = useTRPC();
   const { data: payment, isLoading } = useQuery({
@@ -1444,7 +1447,7 @@ function PaymentDetailsModal({
           </div>
         ) : null}
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon('actions.close')}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -1467,6 +1470,7 @@ function ItemDetailsModal({
   orderId: string;
 }) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [authCode, setAuthCode] = useState('');
@@ -1717,7 +1721,7 @@ function ItemDetailsModal({
           </div>
         ) : null}
         <AlertDialogFooter>
-          <AlertDialogCancel>{t('details.close')}</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon('actions.close')}</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

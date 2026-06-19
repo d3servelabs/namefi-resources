@@ -6,25 +6,20 @@
   "clearCart": "Clear Cart",
   "clearCartDialog": {
     "title": "Clear cart?",
-    "description": "This will remove all items from your cart. You can add them back later if needed.",
-    "cancel": "Cancel"
+    "description": "This will remove all items from your cart. You can add them back later if needed."
   },
   "errorDialog": {
     "title": "Oops! Something went wrong.",
     "description": "Don't worry, you won't be charged. Feel free to try again or head back to your cart.",
-    "errorDetail": "(Error - {message})",
-    "close": "Close",
-    "tryAgain": "Try Again"
+    "errorDetail": "(Error - {message})"
   },
   "cartChanges": {
     "title": "Cart Changes",
-    "description": "Some changes were made to your cart.",
-    "dismiss": "Dismiss"
+    "description": "Some changes were made to your cart."
   },
   "submitButton": {
     "selectNftWallet": "Select NFT Wallet to Continue",
     "selectPaymentMethod": "Select Payment Method to Continue",
-    "processing": "Processing...",
     "submitOrder": "Submit Order"
   },
   "disabledReason": {
@@ -60,7 +55,6 @@
     },
     "confirm": {
       "addingToCart": "Adding to cart...",
-      "tryAgain": "Try again",
       "addToCart": "Add to cart",
       "reviewHelper": "Review the details above, then confirm.",
       "noRegistrableHelper": "No registrable domains found to add."

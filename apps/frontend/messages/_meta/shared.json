@@ -50,21 +50,9 @@
   "requestWalletConnection.connectedSuccessfully": {
     "description": "Confirmation message that the wallet connected successfully."
   },
-  "requestWalletConnection.cancel": {
-    "description": "Cancel button in the wallet-connection dialog.",
-    "maxLength": 10
-  },
   "requestWalletConnection.connecting": {
     "description": "Busy label on the connect button while connecting. Includes a trailing ellipsis.",
     "maxLength": 14
-  },
-  "requestWalletConnection.connectWallet": {
-    "description": "Button that initiates the wallet connection.",
-    "maxLength": 16
-  },
-  "requestWalletConnection.tryAgain": {
-    "description": "Button to retry connecting after a failure.",
-    "maxLength": 12
   },
   "requestWalletConnection.next": {
     "description": "Button to advance to the next step in the wallet-connection flow.",
@@ -183,10 +171,6 @@
   "instantBuyModal.selectNftWallet": {
     "description": "Prompt to select which NFT wallet to use before continuing the purchase. Keep 'NFT' untranslated."
   },
-  "instantBuyModal.processing": {
-    "description": "Busy label while the purchase is processing. Includes a trailing ellipsis.",
-    "maxLength": 14
-  },
   "instantBuyModal.buyNow": {
     "description": "Primary button to confirm the instant purchase.",
     "maxLength": 12
@@ -199,9 +183,5 @@
   },
   "instantBuyModal.errorDetail": {
     "description": "Technical error detail line. {error} is the raw error message/code — keep untranslated."
-  },
-  "instantBuyModal.close": {
-    "description": "Button to close the instant-buy modal.",
-    "maxLength": 10
   }
 }

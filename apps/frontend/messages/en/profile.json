@@ -36,7 +36,6 @@
     "unlinkFailure": "Failed to unlink wallet",
     "unlinkDialogTitle": "Unlink Wallet",
     "unlinkDialogDescription": "Are you sure you want to continue unlinking wallet with address {address}?",
-    "cancel": "Cancel",
     "unlinking": "Unlinking…",
     "unlink": "Unlink"
   },
@@ -61,7 +60,6 @@
     "unlinkGithubDialogTitle": "Unlink GitHub",
     "unlinkTwitterDialogTitle": "Unlink Twitter",
     "confirmUnlink": "Are you sure you want to continue?",
-    "cancel": "Cancel",
     "unlink": "Unlink"
   },
   "contactAccounts": {
@@ -182,7 +180,6 @@
     "signingWallet": "Signing Wallet",
     "active": "(active)",
     "noWalletsConnected": "No wallets connected. Please connect a wallet first.",
-    "cancel": "Cancel",
     "creating": "Creating…",
     "createKey": "Create Key",
     "createdTitle": "API Key Created",
@@ -229,7 +226,6 @@
     "signingWallet": "Signing Wallet",
     "active": "(active)",
     "noWalletsConnected": "No wallets connected. Connect a wallet before saving.",
-    "cancel": "Cancel",
     "saving": "Saving…",
     "saveChanges": "Save Changes",
     "selectWalletError": "Select a wallet to sign with",
@@ -247,7 +243,6 @@
     "signingWallet": "Signing Wallet",
     "active": "(active)",
     "noWalletsConnected": "No wallets connected. Please connect a wallet first.",
-    "cancel": "Cancel",
     "revoking": "Revoking…",
     "revokeKey": "Revoke Key",
     "selectWalletError": "Please select a wallet to sign with",

@@ -6,25 +6,20 @@
   "clearCart": "افضي السلة",
   "clearCartDialog": {
     "title": "تفضية السلة؟",
-    "description": "هيتم مسح كل العناصر من سلتك. تقدر تضيفهم تاني بعدين لو محتاج.",
-    "cancel": "إلغاء"
+    "description": "هيتم مسح كل العناصر من سلتك. تقدر تضيفهم تاني بعدين لو محتاج."
   },
   "errorDialog": {
     "title": "حصل مشكلة!",
     "description": "متقلقش، مش هيتخصم منك حاجة. جرب تاني أو ارجع لسلتك.",
-    "errorDetail": "(Error - {message})",
-    "close": "إغلاق",
-    "tryAgain": "حاول تاني"
+    "errorDetail": "(Error - {message})"
   },
   "cartChanges": {
     "title": "في تغييرات على السلة",
-    "description": "اتعملت بعض التعديلات على سلتك.",
-    "dismiss": "تمام"
+    "description": "اتعملت بعض التعديلات على سلتك."
   },
   "submitButton": {
     "selectNftWallet": "اختار محفظة NFT عشان تكمل",
     "selectPaymentMethod": "اختار طريقة الدفع عشان تكمل",
-    "processing": "بيتم المعالجة...",
     "submitOrder": "تأكيد الطلب"
   },
   "disabledReason": {
@@ -60,7 +55,6 @@
     },
     "confirm": {
       "addingToCart": "بيتم الإضافة للسلة...",
-      "tryAgain": "حاول تاني",
       "addToCart": "ضيف للسلة",
       "reviewHelper": "راجع التفاصيل فوق وبعدين أكد.",
       "noRegistrableHelper": "مفيش نطاقات قابلة للتسجيل."

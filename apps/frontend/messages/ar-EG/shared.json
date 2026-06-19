@@ -23,10 +23,7 @@
     "youConnected": "اللي وصّلته",
     "butWeNeed": "اللي محتاجينه",
     "connectedSuccessfully": "اتوصلت المحفظة بنجاح",
-    "cancel": "إلغاء",
     "connecting": "بيتوصل...",
-    "connectWallet": "وصّل المحفظة",
-    "tryAgain": "حاول تاني",
     "next": "التالي",
     "toast": {
       "setActiveFailed": "مش قدرنا نظبط المحفظة النشطة",
@@ -74,11 +71,9 @@
     "domain": "الدومين",
     "pricePerYear": "{price} USD / سنة",
     "selectNftWallet": "اختار محفظة NFT عشان تكمّل",
-    "processing": "بيتعالج...",
     "buyNow": "اشتري دلوقتي",
     "errorTitle": "يا عم حصل غلطة!",
     "errorDescription": "متقلقش، مش هيتخصم منك حاجة. حاول تاني.",
-    "errorDetail": "(خطأ - {error})",
-    "close": "إغلاق"
+    "errorDetail": "(خطأ - {error})"
   }
 }

@@ -217,6 +217,7 @@ function hasLogoPreviewsForAllDomains(
 
 export default function OrderPage({ params }: OrderPageProps) {
   const t = useTranslations('orders');
+  const tCommon = useTranslations('common');
   const { id } = use(params);
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const { userWalletAddresses, userWalletsReady } = useUserWalletAddresses();
@@ -661,7 +662,7 @@ export default function OrderPage({ params }: OrderPageProps) {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
-              {t('detail.close')}
+              {tCommon('actions.close')}
             </Button>
           </DialogFooter>
         </DialogContent>

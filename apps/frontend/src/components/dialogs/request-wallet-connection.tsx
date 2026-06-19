@@ -63,6 +63,7 @@ export const RequestWalletConnection = forwardRef<
   RequestWalletConnectionProps
 >(function RequestWalletConnection(props, ref) {
   const t = useTranslations('shared');
+  const tCommon = useTranslations('common');
   const { onRequestedWalletConnected, actionDescription } = props;
   const resolvedActionDescription =
     actionDescription ?? t('requestWalletConnection.defaultActionDescription');
@@ -443,7 +444,7 @@ export const RequestWalletConnection = forwardRef<
                 onClick={() => onOpenChange(false)}
                 disabled={connectionState === 'connecting'}
               >
-                {t('requestWalletConnection.cancel')}
+                {tCommon('actions.cancel')}
               </Button>
               <Button
                 onClick={() =>
@@ -458,7 +459,7 @@ export const RequestWalletConnection = forwardRef<
                     {t('requestWalletConnection.connecting')}
                   </>
                 ) : (
-                  t('requestWalletConnection.connectWallet')
+                  tCommon('actions.connectWallet')
                 )}
               </Button>
             </>
@@ -467,10 +468,10 @@ export const RequestWalletConnection = forwardRef<
           {connectionState === 'wrong-wallet' && (
             <>
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                {t('requestWalletConnection.cancel')}
+                {tCommon('actions.cancel')}
               </Button>
               <Button onClick={handleTryAgain}>
-                {t('requestWalletConnection.tryAgain')}
+                {tCommon('actions.tryAgain')}
               </Button>
             </>
           )}

@@ -43,7 +43,6 @@
   "results": {
     "errorTitle": "فيه مشكلة في البحث",
     "errorDescription": "حصل خطأ أثناء البحث. حاول تاني.",
-    "loadMore": "حمّل أكتر",
     "noResultsTitle": "مفيش دومينات",
     "noResultsDescription": "مفيش دومينات بتطابق \"{query}\". جرب كلمة تانية."
   }

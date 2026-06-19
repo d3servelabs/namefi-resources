@@ -19,7 +19,6 @@
     "selectRow": "Select row",
     "domainName": "Domain Name ({count})",
     "domainNamePlain": "Domain Name",
-    "account": "Account",
     "renewal": "Renewal",
     "autoEns": "AutoENS",
     "dateTokenized": "Date Tokenized",
@@ -67,7 +66,6 @@
     "yearOption": "{years, plural, one {# year} other {# years}}",
     "pricePerYear": "Price per year",
     "total": "Total ({years, plural, one {# year} other {# years}})",
-    "cancel": "Cancel",
     "addingToCart": "Adding to Cart...",
     "addToCart": "Add to Cart",
     "addToCartFailed": "Failed to add domains to cart. Please try again."
@@ -154,7 +152,6 @@
     "offersDescription": "Bids you've placed on domains you don't own. Sorted by highest price first.",
     "noOffersTitle": "No outgoing offers",
     "noOffersDescription": "Offers you place on other domains will show up here.",
-    "view": "View",
     "incomingBids": "Incoming bids",
     "loadBidsFailed": "Couldn't load bids: {error}",
     "noBidsYet": "No bids yet.",

@@ -267,7 +267,7 @@ export default function CartPage() {
       isRedirecting ||
       isExplicitlyCheckingCartItemsForUpdates
     ) {
-      return t('submitButton.processing');
+      return tc('actions.processing');
     }
 
     return t('submitButton.submitOrder');
@@ -277,6 +277,7 @@ export default function CartPage() {
     isRedirecting,
     selectedNftWalletAddress,
     t,
+    tc,
   ]);
 
   const submitOrderDisabled = useMemo(() => {
@@ -863,6 +864,7 @@ const CartChangesSummaryCard = forwardRef<
   CartChangesSummaryCardProps
 >((props, ref) => {
   const t = useTranslations('cart');
+  const tCommon = useTranslations('common');
   const { cartData: items, refetchCart } = useCartContext();
 
   const { onSettled } = props;
@@ -923,7 +925,7 @@ const CartChangesSummaryCard = forwardRef<
               variant="outline"
               onClick={() => setCartItemsChangesSummary(undefined)}
             >
-              <ArchiveX className="size-4" /> {t('cartChanges.dismiss')}
+              <ArchiveX className="size-4" /> {tCommon('actions.dismiss')}
             </Button>
           </div>
 

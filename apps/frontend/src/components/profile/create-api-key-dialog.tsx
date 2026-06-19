@@ -127,6 +127,7 @@ export function CreateApiKeyDialog({
   onSuccess,
 }: CreateApiKeyDialogProps) {
   const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -781,7 +782,7 @@ export function CreateApiKeyDialog({
                   onClick={() => handleOpenChange(false)}
                   disabled={isSubmitting}
                 >
-                  {t('createApiKey.cancel')}
+                  {tCommon('actions.cancel')}
                 </Button>
                 <Button
                   onClick={handleSubmit}

@@ -23,10 +23,7 @@
     "youConnected": "You Connected",
     "butWeNeed": "But We Need",
     "connectedSuccessfully": "Wallet connected successfully",
-    "cancel": "Cancel",
     "connecting": "Connecting...",
-    "connectWallet": "Connect Wallet",
-    "tryAgain": "Try Again",
     "next": "Next",
     "toast": {
       "setActiveFailed": "Failed to set active wallet",
@@ -74,11 +71,9 @@
     "domain": "Domain",
     "pricePerYear": "{price} USD / year",
     "selectNftWallet": "Select NFT Wallet to Continue",
-    "processing": "Processing...",
     "buyNow": "Buy Now",
     "errorTitle": "Oops! Something went wrong.",
     "errorDescription": "Don't worry, you won't be charged. Feel free to try again. ",
-    "errorDetail": "(Error - {error})",
-    "close": "Close"
+    "errorDetail": "(Error - {error})"
   }
 }

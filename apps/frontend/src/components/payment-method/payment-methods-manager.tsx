@@ -187,6 +187,7 @@ function PaymentMethodsGrid({
   } | null>(null);
 
   const t = useTranslations('paymentMethods');
+  const tCommon = useTranslations('common');
   const { privyUser, unsafeDisplayProfile } = useAuth();
   const trpc = useTRPC();
 
@@ -395,13 +396,13 @@ function PaymentMethodsGrid({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={handleCancelDelete}>
-              {t('creditCards.deleteDialog.cancel')}
+              {tCommon('actions.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {t('creditCards.deleteDialog.confirm')}
+              {tCommon('actions.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

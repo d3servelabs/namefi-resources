@@ -6,19 +6,16 @@
     "invalidDomain": {
       "title": "无效的域名",
       "description": "所提供的域名不是有效的标准化 Namefi 域名。",
-      "hint": "请确保您使用的是完全标准化的域名，例如“alice.0x.city”。",
-      "goBack": "返回"
+      "hint": "请确保您使用的是完全标准化的域名，例如“alice.0x.city”。"
     },
     "ineligibleBanner": {
       "title": "该域名不符合免费认领的条件。",
       "description": "您可以将其加入购物车进行购买，或返回搜索。",
-      "addToCart": "加入购物车",
-      "goBack": "返回"
+      "addToCart": "加入购物车"
     },
     "summary": {
       "duration": "时长：{count, plural, other {# 年}} • 免费"
-    },
-    "submit": "提交"
+    }
   },
   "widget": {
     "defaultTitle": "Your 0x Identity",
@@ -26,7 +23,6 @@
     "qualifyPrompt": "请按照以下步骤查看您是否符合条件",
     "steps": {
       "signIn": {
-        "trigger": "登录",
         "signedIn": "感谢您的登录！您可以继续下一步。",
         "signedOut": "登录或创建账户即可开始。"
       },

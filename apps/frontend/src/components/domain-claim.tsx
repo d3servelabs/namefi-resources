@@ -52,6 +52,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
   subtitle,
 }) => {
   const t = useTranslations('claim');
+  const tCommon = useTranslations('common');
   const resolvedTitle = title ?? t('widget.defaultTitle');
   const resolvedSubtitle = subtitle ?? t('widget.defaultSubtitle');
   const [subdomainValue, setSubdomainValue] = useState('');
@@ -220,9 +221,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
         <p className="text-gray-300 mb-2">{t('widget.qualifyPrompt')}</p>
         <Accordion className="w-full rounded-lg p-4 border ">
           <AccordionItem value="item-1">
-            <AccordionTrigger>
-              {t('widget.steps.signIn.trigger')}
-            </AccordionTrigger>
+            <AccordionTrigger>{tCommon('actions.signIn')}</AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               <p className="text-start">
                 {isAuthenticated

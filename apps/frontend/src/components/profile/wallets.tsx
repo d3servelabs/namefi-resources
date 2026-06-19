@@ -350,6 +350,7 @@ export const UnlinkWalletDialog = ({
   isUnlinkWalletPending,
 }: UnlinkWalletDialogProps) => {
   const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const isMobile = useIsMobile();
   return (
     <Dialog
@@ -373,7 +374,7 @@ export const UnlinkWalletDialog = ({
             onClick={() => setIsUnlinkWalletDialogOpen(false)}
             disabled={isUnlinkWalletPending}
           >
-            {t('wallets.cancel')}
+            {tCommon('actions.cancel')}
           </Button>
           <Button
             onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}

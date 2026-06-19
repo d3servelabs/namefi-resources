@@ -62,6 +62,7 @@ export function useMyDomainsColumns({
   onListForSaleClick,
 }: UseMyDomainsColumnsArgs): ColumnDef<DomainRow>[] {
   const t = useTranslations('domains');
+  const tCommon = useTranslations('common');
   return useMemo<ColumnDef<DomainRow>[]>(
     () => [
       {
@@ -121,7 +122,7 @@ export function useMyDomainsColumns({
       },
       {
         id: 'account',
-        header: t('columns.account'),
+        header: tCommon('account.label'),
         cell: ({ row }) => (
           <AddressWithChain
             address={row.original.ownerAddress ?? null}
@@ -269,6 +270,7 @@ export function useMyDomainsColumns({
     ],
     [
       t,
+      tCommon,
       pageSelectionState,
       selectedDomainIds,
       togglingAutoRenew,

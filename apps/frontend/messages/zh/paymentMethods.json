@@ -18,9 +18,7 @@
     },
     "deleteDialog": {
       "title": "删除支付方式",
-      "description": "确定要删除您尾号为 {last4} 的 {brand} 卡吗？此操作无法撤销。",
-      "cancel": "取消",
-      "confirm": "删除"
+      "description": "确定要删除您尾号为 {last4} 的 {brand} 卡吗？此操作无法撤销。"
     }
   },
   "wallets": {

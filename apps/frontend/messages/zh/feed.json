@@ -4,7 +4,6 @@
     "usersLink": "用户",
     "subscribeRss": "通过 RSS 订阅",
     "rss": "RSS",
-    "refresh": "刷新",
     "refreshing": "刷新中…"
   },
   "controls": {
@@ -26,7 +25,6 @@
     "errorTitle": "{message}",
     "emptyFiltered": "动态的这一部分没有匹配的挂牌。",
     "empty": "未找到挂牌。",
-    "loadMore": "加载更多",
     "endOfFeed": "已到动态末尾",
     "backToTopAriaLabel": "返回顶部"
   },
@@ -53,7 +51,6 @@
     "detailsHelp": "用于支持您举报的可选备注。",
     "detailsCounter": "{count}/1000",
     "detailsTooLong": "详情请控制在 1000 个字符以内。",
-    "cancel": "取消",
     "submit": "提交举报",
     "submitting": "提交中…",
     "submitSuccess": "已提交针对 {domain} 的举报。",
@@ -85,13 +82,11 @@
   "handle": {
     "backToFeed": "返回动态",
     "fallbackSeller": "@unknown",
-    "refresh": "刷新",
     "refreshing": "刷新中…",
     "invalidPath": "此动态用户路径无效。",
     "loadErrorFallback": "加载卖家挂牌失败。",
     "emptyListings": "该卖家暂无挂牌。",
     "endOfListings": "已到卖家挂牌末尾",
-    "loadMore": "加载更多",
     "subtitle": {
       "invalidPath": "动态用户路径无效。",
       "noDomains": "该卖家尚未挂牌任何域名。",
@@ -105,7 +100,6 @@
     "loadingSubtitle": "正在加载发布域名出售挂牌的用户。",
     "subtitle": "{count, plural, other {# 个匹配用户}}。",
     "subtitleRefreshed": "{count, plural, other {# 个匹配用户}}，已于 {refreshedAt} 刷新。",
-    "refresh": "刷新",
     "exportCsv": "导出 CSV",
     "exportSuccess": "用户 CSV 已导出",
     "exportErrorTitle": "无法导出用户 CSV",
@@ -133,7 +127,6 @@
     "unknownDate": "未知",
     "emptyThreshold": "没有用户达到此阈值。",
     "loadingMore": "正在加载更多用户",
-    "loadMore": "加载更多",
     "listings": "挂牌",
     "post": "帖子"
   }

@@ -26,6 +26,7 @@ import { WagmiProvider } from '@/components/providers/wagmi';
 
 export default function ClaimPage() {
   const t = useTranslations('claim');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const params = useParams<{ domain: string }>();
   const rawDomainParam = params?.domain ?? '';
@@ -233,8 +234,7 @@ export default function ClaimPage() {
           footer={
             <div className="flex gap-2">
               <Button variant="outline" onClick={() => router.back()}>
-                <ArrowLeft className="size-4" />{' '}
-                {t('page.invalidDomain.goBack')}
+                <ArrowLeft className="size-4" /> {tCommon('actions.goBack')}
               </Button>
             </div>
           }
@@ -276,8 +276,7 @@ export default function ClaimPage() {
               {t('page.ineligibleBanner.addToCart')}
             </Button>
             <Button variant="outline" onClick={() => router.back()}>
-              <ArrowLeft className="size-4" />{' '}
-              {t('page.ineligibleBanner.goBack')}
+              <ArrowLeft className="size-4" /> {tCommon('actions.goBack')}
             </Button>
           </div>
         </div>
@@ -334,7 +333,7 @@ export default function ClaimPage() {
             {isClaimPending && (
               <Loader2 className="me-2 h-4 w-4 animate-spin" />
             )}
-            {t('page.submit')}
+            {tCommon('actions.submit')}
           </NamefiButton>
         )}
       </div>

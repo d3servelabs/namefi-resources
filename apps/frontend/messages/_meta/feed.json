@@ -12,9 +12,6 @@
     "description": "Short RSS button label in the feed header. Keep 'RSS' verbatim.",
     "maxLength": 6
   },
-  "header.refresh": {
-    "description": "Feed header button to reload the feed listings."
-  },
   "header.refreshing": {
     "description": "Feed header button label shown while the feed is reloading."
   },
@@ -65,9 +62,6 @@
   },
   "list.empty": {
     "description": "Empty-state message shown when the feed has no listings at all."
-  },
-  "list.loadMore": {
-    "description": "Button at the bottom of the feed list to load more listings."
   },
   "list.endOfFeed": {
     "description": "Marker shown at the bottom of the feed when all listings have loaded."
@@ -135,9 +129,6 @@
   "report.detailsTooLong": {
     "description": "Validation error in the report-listing dialog when details exceed the 1000-character limit."
   },
-  "report.cancel": {
-    "description": "Cancel button in the report-listing dialog."
-  },
   "report.submit": {
     "description": "Submit button in the report-listing dialog."
   },
@@ -189,9 +180,6 @@
   "handle.fallbackSeller": {
     "description": "Fallback seller handle on a seller feed page when unknown. Keep the literal '@unknown' handle untranslated."
   },
-  "handle.refresh": {
-    "description": "Button on a seller feed page to reload the seller's listings."
-  },
   "handle.refreshing": {
     "description": "Button label shown while a seller's listings are reloading."
   },
@@ -206,9 +194,6 @@
   },
   "handle.endOfListings": {
     "description": "Marker at the bottom of a seller's listings when all have loaded."
-  },
-  "handle.loadMore": {
-    "description": "Button to load more of a seller's listings."
   },
   "handle.subtitle.invalidPath": {
     "description": "Seller feed page subtitle shown when the URL path is invalid."
@@ -236,9 +221,6 @@
   },
   "users.subtitleRefreshed": {
     "description": "Feed users directory subtitle with refresh time. ICU plural on {count} (# is the count); {refreshedAt} is a pre-formatted timestamp."
-  },
-  "users.refresh": {
-    "description": "Button on the feed users directory to reload the user list."
   },
   "users.exportCsv": {
     "description": "Button on the feed users directory to export the user list as CSV. Keep 'CSV' (technical term)."
@@ -316,9 +298,6 @@
   },
   "users.loadingMore": {
     "description": "Label shown while loading more users in the feed users directory."
-  },
-  "users.loadMore": {
-    "description": "Button to load more users in the feed users directory."
   },
   "users.listings": {
     "description": "Label/link in the feed users directory pointing to a user's listings."

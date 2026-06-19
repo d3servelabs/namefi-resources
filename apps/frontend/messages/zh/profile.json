@@ -36,7 +36,6 @@
     "unlinkFailure": "取消关联钱包失败",
     "unlinkDialogTitle": "取消关联钱包",
     "unlinkDialogDescription": "您确定要继续取消关联地址为 {address} 的钱包吗？",
-    "cancel": "取消",
     "unlinking": "取消关联中…",
     "unlink": "取消关联"
   },
@@ -61,7 +60,6 @@
     "unlinkGithubDialogTitle": "取消关联 GitHub",
     "unlinkTwitterDialogTitle": "取消关联 Twitter",
     "confirmUnlink": "您确定要继续吗？",
-    "cancel": "取消",
     "unlink": "取消关联"
   },
   "contactAccounts": {
@@ -182,7 +180,6 @@
     "signingWallet": "签名钱包",
     "active": "（当前）",
     "noWalletsConnected": "未连接钱包。请先连接一个钱包。",
-    "cancel": "取消",
     "creating": "创建中…",
     "createKey": "创建密钥",
     "createdTitle": "API 密钥已创建",
@@ -229,7 +226,6 @@
     "signingWallet": "签名钱包",
     "active": "（当前）",
     "noWalletsConnected": "未连接钱包。请在保存前先连接一个钱包。",
-    "cancel": "取消",
     "saving": "保存中…",
     "saveChanges": "保存更改",
     "selectWalletError": "请选择用于签名的钱包",
@@ -247,7 +243,6 @@
     "signingWallet": "签名钱包",
     "active": "（当前）",
     "noWalletsConnected": "未连接钱包。请先连接一个钱包。",
-    "cancel": "取消",
     "revoking": "吊销中…",
     "revokeKey": "吊销密钥",
     "selectWalletError": "请选择用于签名的钱包",

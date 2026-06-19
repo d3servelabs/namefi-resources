@@ -6,7 +6,6 @@
     "unableToLoad": "无法加载支付表单"
   },
   "addPaymentMethodForm": {
-    "processing": "处理中…",
     "submit": "使用此支付方式",
     "genericError": "发生错误",
     "unexpectedError": "发生意外错误"
@@ -23,8 +22,6 @@
     "network": "网络",
     "required": "所需金额",
     "yourWalletBalance": "您的钱包余额",
-    "connectWallet": "连接钱包",
-    "loading": "加载中…",
     "unavailable": "不可用",
     "insufficientUsdcBalance": "您的 USDC 余额可能不足以支付此 x402 付款金额。",
     "changeCard": "更换卡片",
@@ -45,7 +42,6 @@
     "usingNfsc": "使用 NFSC 余额中的 {amount} USD",
     "addNfscBalance": "添加 NFSC 余额",
     "creditCard": "信用卡",
-    "remove": "移除",
     "usingCreditCard": "使用信用卡支付 {amount} USD",
     "changeCard": "更换卡片",
     "addOrSelectCard": "添加或选择卡片",
@@ -76,7 +72,6 @@
   "nfscBalanceDialog": {
     "title": "NFSC 余额",
     "description": "查看您在已关联钱包和受支持链上的可用 $NFSC。",
-    "tabBalance": "余额",
     "tabOrders": "近期 NFSC 订单",
     "totalAvailable": "可用总额",
     "topUp": "充值",
@@ -88,7 +83,6 @@
     "ordersDisclaimer": "这些是您所有钱包中通过信用卡进行的 NFSC 充值。以 NFSC 支付的域名订单会显示在您的完整订单历史中。",
     "emptyOrders": "暂无 NFSC 充值。",
     "goToPaymentMethods": "前往支付方式",
-    "close": "关闭",
     "connectWalletToContinue": "请连接钱包以继续。",
     "nfscAdded": "NFSC 代币已添加至您的钱包",
     "nfscAddFailed": "无法将 NFSC 代币添加至您的钱包",

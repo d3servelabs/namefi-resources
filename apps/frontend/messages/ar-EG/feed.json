@@ -4,7 +4,6 @@
     "usersLink": "المستخدمين",
     "subscribeRss": "اشترك عبر RSS",
     "rss": "RSS",
-    "refresh": "تحديث",
     "refreshing": "بيتحدث..."
   },
   "controls": {
@@ -26,7 +25,6 @@
     "errorTitle": "{message}",
     "emptyFiltered": "مفيش عروض بيطابق الفلتر الحالي.",
     "empty": "مفيش عروض لحد دلوقتي.",
-    "loadMore": "حمّل أكتر",
     "endOfFeed": "خلصت العروض",
     "backToTopAriaLabel": "ارجع للأعلى"
   },
@@ -53,7 +51,6 @@
     "detailsHelp": "ملاحظات اختيارية تدعم بلاغك.",
     "detailsCounter": "{count}/1000",
     "detailsTooLong": "خلّي التفاصيل أقل من 1000 حرف.",
-    "cancel": "إلغاء",
     "submit": "ابعت البلاغ",
     "submitting": "بيتبعت...",
     "submitSuccess": "اتبعت البلاغ عن {domain}.",
@@ -85,13 +82,11 @@
   "handle": {
     "backToFeed": "ارجع للفيد",
     "fallbackSeller": "@unknown",
-    "refresh": "تحديث",
     "refreshing": "بيتحدث...",
     "invalidPath": "الرابط ده مش صح.",
     "loadErrorFallback": "فشل في تحميل عروض البائع.",
     "emptyListings": "البائع ده معندوش عروض لحد دلوقتي.",
     "endOfListings": "خلصت عروض البائع",
-    "loadMore": "حمّل أكتر",
     "subtitle": {
       "invalidPath": "الرابط ده مش صح.",
       "noDomains": "البائع ده معندوش دومينات مضافة لحد دلوقتي.",
@@ -105,7 +100,6 @@
     "loadingSubtitle": "بيتحمل المستخدمين اللي بينشروا عروض بيع دومينات.",
     "subtitle": "{count, plural, one {# مستخدم مطابق} other {# مستخدمين مطابقين}}.",
     "subtitleRefreshed": "{count, plural, one {# مستخدم مطابق} other {# مستخدمين مطابقين}}، آخر تحديث {refreshedAt}.",
-    "refresh": "تحديث",
     "exportCsv": "صدّر CSV",
     "exportSuccess": "اتصدّر CSV المستخدمين",
     "exportErrorTitle": "مش قادر يصدّر CSV",
@@ -133,7 +127,6 @@
     "unknownDate": "مش معروف",
     "emptyThreshold": "مفيش مستخدمين بيطابقوا الفلتر ده.",
     "loadingMore": "بيتحمل مستخدمين أكتر",
-    "loadMore": "حمّل أكتر",
     "listings": "العروض",
     "post": "منشور"
   }

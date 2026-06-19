@@ -61,6 +61,7 @@ type Summary = {
 
 export default function AddFromUrlPage() {
   const t = useTranslations('cart');
+  const tCommon = useTranslations('common');
   const searchParams = useSearchParams();
   const router = useRouter();
   const trpcClient = useTRPCClient();
@@ -257,7 +258,7 @@ export default function AddFromUrlPage() {
     stepStatus.add === 'active'
       ? t('addFromUrl.confirm.addingToCart')
       : stepStatus.add === 'error'
-        ? t('addFromUrl.confirm.tryAgain')
+        ? tCommon('actions.tryAgain')
         : t('addFromUrl.confirm.addToCart');
   const confirmHelper = payload.length
     ? t('addFromUrl.confirm.reviewHelper')

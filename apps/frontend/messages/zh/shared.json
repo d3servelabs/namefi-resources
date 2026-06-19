@@ -23,10 +23,7 @@
     "youConnected": "您连接的是",
     "butWeNeed": "但我们需要",
     "connectedSuccessfully": "钱包连接成功",
-    "cancel": "取消",
     "connecting": "连接中……",
-    "connectWallet": "连接钱包",
-    "tryAgain": "重试",
     "next": "下一步",
     "toast": {
       "setActiveFailed": "设置当前钱包失败",
@@ -74,11 +71,9 @@
     "domain": "域名",
     "pricePerYear": "{price} USD / 年",
     "selectNftWallet": "请选择 NFT 钱包以继续",
-    "processing": "处理中……",
     "buyNow": "立即购买",
     "errorTitle": "糟糕！出了点问题。",
     "errorDescription": "请放心，您不会被扣款。欢迎重试。",
-    "errorDetail": "（错误 - {error}）",
-    "close": "关闭"
+    "errorDetail": "（错误 - {error}）"
   }
 }

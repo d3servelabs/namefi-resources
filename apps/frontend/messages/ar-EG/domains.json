@@ -19,7 +19,6 @@
     "selectRow": "تحديد الصف",
     "domainName": "اسم النطاق ({count})",
     "domainNamePlain": "اسم النطاق",
-    "account": "الحساب",
     "renewal": "التجديد",
     "autoEns": "AutoENS",
     "dateTokenized": "تاريخ التحويل لـ NFT",
@@ -67,7 +66,6 @@
     "yearOption": "{years, plural, one {# سنة} two {# سنتين} few {# سنين} other {# سنة}}",
     "pricePerYear": "السعر في السنة",
     "total": "الإجمالي ({years, plural, one {# سنة} two {# سنتين} few {# سنين} other {# سنة}})",
-    "cancel": "إلغاء",
     "addingToCart": "بيتضاف للسلة...",
     "addToCart": "أضف للسلة",
     "addToCartFailed": "فشلت إضافة النطاقات للسلة. حاول تاني."
@@ -154,7 +152,6 @@
     "offersDescription": "العروض اللي قدّمتها على نطاقات مش بتاعتك. مرتبة من الأعلى سعراً.",
     "noOffersTitle": "مفيش عروض صادرة",
     "noOffersDescription": "العروض اللي بتقدّمها على نطاقات تانية هتظهر هنا.",
-    "view": "اعرض",
     "incomingBids": "العروض الواردة",
     "loadBidsFailed": "فشل تحميل العروض: {error}",
     "noBidsYet": "مفيش عروض لسه.",

@@ -11,9 +11,6 @@
   "addPaymentMethodDialog.unableToLoad": {
     "description": "Error text shown when the add-payment-method form fails to load."
   },
-  "addPaymentMethodForm.processing": {
-    "description": "Submit button label on the add-payment-method form shown while processing."
-  },
   "addPaymentMethodForm.submit": {
     "description": "Submit button on the add-payment-method form confirming use of the entered payment method."
   },
@@ -56,12 +53,6 @@
   },
   "hybridPaymentCard.yourWalletBalance": {
     "description": "Label in the hybrid payment card for the connected wallet's balance."
-  },
-  "hybridPaymentCard.connectWallet": {
-    "description": "Button in the hybrid payment card to connect a crypto wallet."
-  },
-  "hybridPaymentCard.loading": {
-    "description": "Loading placeholder shown in the hybrid payment card while balances load."
   },
   "hybridPaymentCard.unavailable": {
     "description": "Status text in the hybrid payment card when a balance/payment option is unavailable."
@@ -110,9 +101,6 @@
   },
   "multiPaymentCard.creditCard": {
     "description": "Label for the credit card row in the multi-payment card."
-  },
-  "multiPaymentCard.remove": {
-    "description": "Button in the multi-payment card to remove the selected credit card."
   },
   "multiPaymentCard.usingCreditCard": {
     "description": "Multi-payment card text for the portion paid by credit card. {amount} is a pre-formatted amount; keep the 'USD' currency code untranslated."
@@ -180,9 +168,6 @@
   "nfscBalanceDialog.description": {
     "description": "Body text of the NFSC balance dialog describing the available balance across wallets and chains. Keep the literal '$NFSC' token name untranslated."
   },
-  "nfscBalanceDialog.tabBalance": {
-    "description": "Tab label in the NFSC balance dialog for the current balance view."
-  },
   "nfscBalanceDialog.tabOrders": {
     "description": "Tab label in the NFSC balance dialog for recent NFSC orders. Keep 'NFSC' token name untranslated."
   },
@@ -215,9 +200,6 @@
   },
   "nfscBalanceDialog.goToPaymentMethods": {
     "description": "Button/link in the NFSC balance dialog to navigate to the Payment Methods page."
-  },
-  "nfscBalanceDialog.close": {
-    "description": "Button to close the NFSC balance dialog."
   },
   "nfscBalanceDialog.connectWalletToContinue": {
     "description": "Prompt in the NFSC balance dialog asking the user to connect a wallet to proceed."

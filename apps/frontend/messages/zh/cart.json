@@ -6,25 +6,20 @@
   "clearCart": "清空购物车",
   "clearCartDialog": {
     "title": "清空购物车？",
-    "description": "这将移除购物车中的所有商品。如有需要，您可以稍后重新添加。",
-    "cancel": "取消"
+    "description": "这将移除购物车中的所有商品。如有需要，您可以稍后重新添加。"
   },
   "errorDialog": {
     "title": "出错了。",
     "description": "请放心，不会向您收费。您可以重试或返回购物车。",
-    "errorDetail": "（错误 - {message}）",
-    "close": "关闭",
-    "tryAgain": "重试"
+    "errorDetail": "（错误 - {message}）"
   },
   "cartChanges": {
     "title": "购物车变更",
-    "description": "您的购物车发生了一些变更。",
-    "dismiss": "忽略"
+    "description": "您的购物车发生了一些变更。"
   },
   "submitButton": {
     "selectNftWallet": "请选择 NFT 钱包以继续",
     "selectPaymentMethod": "请选择支付方式以继续",
-    "processing": "处理中…",
     "submitOrder": "提交订单"
   },
   "disabledReason": {
@@ -60,7 +55,6 @@
     },
     "confirm": {
       "addingToCart": "添加到购物车中…",
-      "tryAgain": "重试",
       "addToCart": "加入购物车",
       "reviewHelper": "请查看以上详情，然后确认。",
       "noRegistrableHelper": "未找到可添加的可注册域名。"

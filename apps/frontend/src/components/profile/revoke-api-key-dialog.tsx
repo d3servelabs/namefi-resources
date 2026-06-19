@@ -52,6 +52,7 @@ export function RevokeApiKeyDialog({
   onSuccess,
 }: RevokeApiKeyDialogProps) {
   const t = useTranslations('profile');
+  const tCommon = useTranslations('common');
   const trpcClient = useTRPCClient();
   const { signTypedData } = useSignTypedData();
   const { connectedEthereumWallets } = useConnectedWallets();
@@ -233,7 +234,7 @@ export function RevokeApiKeyDialog({
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
             >
-              {t('revokeApiKey.cancel')}
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               variant="destructive"

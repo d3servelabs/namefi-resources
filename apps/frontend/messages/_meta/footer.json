@@ -44,9 +44,6 @@
   "sections.explore.links.faucet": {
     "description": "Footer 'Explore' link to the NFSC sandbox faucet. Keep 'NFSC'; '(sandbox)' marks the test network."
   },
-  "sections.account.title": {
-    "description": "Title of the footer 'Account' link column."
-  },
   "sections.account.links.myDomains": {
     "description": "Footer 'Account' link to the user's owned domains."
   },
