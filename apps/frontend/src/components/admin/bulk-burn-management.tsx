@@ -73,7 +73,7 @@ const LoadingSkeletons: FC = () => (
     {Array.from({ length: 5 }).map((_, index) => (
       <div
         key={index}
-        className="flex items-center space-x-4 p-4 border rounded-lg"
+        className="flex items-center gap-x-4 p-4 border rounded-lg"
       >
         <Skeleton className="h-4 w-4" />
         <Skeleton className="h-4 w-[250px]" />

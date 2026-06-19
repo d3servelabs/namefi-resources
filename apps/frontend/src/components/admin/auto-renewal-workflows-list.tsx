@@ -30,10 +30,7 @@ import { PageShell } from '@/components/page-shell';
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
     {Array.from({ length: 5 }).map((_, i) => (
-      <div
-        key={i}
-        className="flex items-center space-x-4 p-4 border rounded-lg"
-      >
+      <div key={i} className="flex items-center gap-x-4 p-4 border rounded-lg">
         <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[100px]" />
         <Skeleton className="h-4 w-[150px]" />

@@ -41,7 +41,7 @@ export function AdminTileCard({ card }: { card: AdminCardConfig }) {
       }`}
     >
       <CardHeader className="pb-3">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-x-3">
           <div
             className={`p-2 rounded-lg ${card.iconBgColor} ${card.iconTextColor} ${!isDisabled ? 'group-hover:bg-opacity-80 transition-colors' : ''}`}
           >

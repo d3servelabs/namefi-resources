@@ -94,7 +94,7 @@ const LoadingSkeletons: FC = () => (
     {Array.from({ length: 5 }).map((_, index) => (
       <div
         key={index}
-        className="flex items-center space-x-4 p-4 border rounded-lg"
+        className="flex items-center gap-x-4 p-4 border rounded-lg"
       >
         <Skeleton className="h-4 w-[200px]" />
         <Skeleton className="h-4 w-[150px]" />
@@ -423,7 +423,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                 })
               }
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-x-2">
                 <RadioGroupItem value="exactDomain" id="exactDomain" />
                 <Label
                   htmlFor="exactDomain"
@@ -433,7 +433,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                   Exact Domain (e.g., example.com)
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-x-2">
                 <RadioGroupItem value="parentDomain" id="parentDomain" />
                 <Label
                   htmlFor="parentDomain"
@@ -481,7 +481,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
             <Label>Optional Settings</Label>
 
             {/* Expiration */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-x-2">
               <Switch
                 id="hasExpiration"
                 checked={form.hasExpiration}

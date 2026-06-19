@@ -340,7 +340,7 @@ export function EmailTemplateManager() {
                   </div>
 
                   <div className="space-y-3">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <Checkbox
                         id="use-container"
                         checked={templateData.useContainer}
@@ -355,7 +355,7 @@ export function EmailTemplateManager() {
 
                     {templateData.useContainer && (
                       <div className="ms-6 space-y-2">
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-x-2">
                           <Checkbox
                             id="use-header"
                             checked={templateData.useHeader}
@@ -366,7 +366,7 @@ export function EmailTemplateManager() {
                           <Label htmlFor="use-header">Show header</Label>
                         </div>
 
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-x-2">
                           <Checkbox
                             id="use-footer"
                             checked={templateData.useFooter}
@@ -377,7 +377,7 @@ export function EmailTemplateManager() {
                           <Label htmlFor="use-footer">Show footer</Label>
                         </div>
 
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center gap-x-2">
                           <Checkbox
                             id="show-dashboard"
                             checked={templateData.showGoToDashboard}
@@ -438,9 +438,9 @@ export function EmailTemplateManager() {
                 <CardHeader className="space-y-2 pb-2">
                   <div className="flex flex-row items-center justify-between">
                     <CardTitle>Email Preview</CardTitle>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       {/* Auto/Manual Refresh Toggle */}
-                      <div className="flex items-center space-x-1 border rounded-md p-1">
+                      <div className="flex items-center gap-x-1 border rounded-md p-1">
                         <Button
                           onClick={() => setAutoRefresh(true)}
                           size="sm"
@@ -464,7 +464,7 @@ export function EmailTemplateManager() {
                       </div>
 
                       {/* Screen Size Controls */}
-                      <div className="flex items-center space-x-1 border rounded-md p-1">
+                      <div className="flex items-center gap-x-1 border rounded-md p-1">
                         <Button
                           onClick={() => setPreviewSize('desktop')}
                           size="sm"
@@ -582,7 +582,7 @@ export function EmailTemplateManager() {
                 <CardHeader className="space-y-2 pb-2">
                   <div className="flex flex-row items-center justify-between">
                     <CardTitle>HTML Source</CardTitle>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <Button
                         onClick={handleManualRefresh}
                         size="sm"
@@ -708,7 +708,7 @@ export function EmailTemplateManager() {
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <Checkbox
                     id="use-container-mobile"
                     checked={templateData.useContainer}
@@ -723,7 +723,7 @@ export function EmailTemplateManager() {
 
                 {templateData.useContainer && (
                   <div className="ms-6 space-y-2">
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <Checkbox
                         id="use-header-mobile"
                         checked={templateData.useHeader}
@@ -734,7 +734,7 @@ export function EmailTemplateManager() {
                       <Label htmlFor="use-header-mobile">Show header</Label>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <Checkbox
                         id="use-footer-mobile"
                         checked={templateData.useFooter}
@@ -745,7 +745,7 @@ export function EmailTemplateManager() {
                       <Label htmlFor="use-footer-mobile">Show footer</Label>
                     </div>
 
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center gap-x-2">
                       <Checkbox
                         id="show-dashboard-mobile"
                         checked={templateData.showGoToDashboard}
@@ -805,9 +805,9 @@ export function EmailTemplateManager() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle>Email Preview</CardTitle>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   {/* Screen Size Controls */}
-                  <div className="flex items-center space-x-1 border rounded-md p-1">
+                  <div className="flex items-center gap-x-1 border rounded-md p-1">
                     <Button
                       onClick={() => setPreviewSize('desktop')}
                       size="sm"
@@ -893,7 +893,7 @@ export function EmailTemplateManager() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle>HTML Source</CardTitle>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   {isPreviewOutdated && (
                     <span className="text-sm text-amber-600">
                       HTML updating in {countdown}s

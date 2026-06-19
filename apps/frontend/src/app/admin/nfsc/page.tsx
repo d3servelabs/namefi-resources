@@ -46,7 +46,7 @@ function NfscManagement() {
   return (
     <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-x-3">
           <Coins className="h-8 w-8 text-primary" />
           <div>
             <h1 className="text-2xl font-semibold">NFSC Management</h1>
@@ -64,7 +64,7 @@ function NfscManagement() {
       {/* Recent Workflows */}
       <Card>
         <CardHeader>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-x-2">
             <History className="h-5 w-5 text-primary" />
             <CardTitle>Recent Mint Workflows</CardTitle>
           </div>

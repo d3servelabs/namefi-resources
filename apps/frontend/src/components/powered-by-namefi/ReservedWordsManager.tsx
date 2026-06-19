@@ -349,7 +349,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
                 )}
 
                 {/* Ignore Existing Words Checkbox */}
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <Checkbox
                     id="ignore-existing"
                     checked={ignoreExistingWords}

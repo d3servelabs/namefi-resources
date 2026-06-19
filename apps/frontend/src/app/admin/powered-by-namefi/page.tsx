@@ -1221,7 +1221,7 @@ function CreateDomainForm({
             control={form.control}
             name="setupVercelAndDns"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex flex-row items-start gap-x-3 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -1262,7 +1262,7 @@ function CreateDomainForm({
             control={form.control}
             name="setupNamefiIo"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex flex-row items-start gap-x-3 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -1286,7 +1286,7 @@ function CreateDomainForm({
             control={form.control}
             name="setupNamefiDev"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+              <FormItem className="flex flex-row items-start gap-x-3 space-y-0">
                 <FormControl>
                   <Checkbox
                     checked={field.value}
@@ -1307,7 +1307,7 @@ function CreateDomainForm({
           />
         </div>
 
-        <div className="flex justify-end space-x-2 pt-4 border-t">
+        <div className="flex justify-end gap-x-2 pt-4 border-t">
           <Button type="submit" disabled={isLoading} className="min-w-[120px]">
             {isLoading ? 'Creating...' : 'Create Domain'}
           </Button>
@@ -1424,7 +1424,7 @@ function EditCostAndDurationForm({
           />
         </div>
 
-        <div className="flex justify-end space-x-2 pt-4">
+        <div className="flex justify-end gap-x-2 pt-4">
           <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Updating...' : 'Update'}
           </Button>
@@ -1552,7 +1552,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
           <div className="space-y-4">
             <div className="space-y-2">
               <h4 className="text-sm font-medium">Overall Status</h4>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-x-2">
                 <StatusIcon
                   isSetup={
                     setupStatus.summary.overallStatus === 'fully_configured'
@@ -1614,7 +1614,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               <h4 className="text-sm font-medium">Vercel Project</h4>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Status:</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <StatusIcon
                     isSetup={apexVercel === 'verified'}
                     isPending={apexVercel === 'pending'}
@@ -1656,7 +1656,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               <h4 className="text-sm font-medium">DNS Records</h4>
               <div className="flex items-center justify-between">
                 <span className="text-sm">Status:</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <StatusIcon
                     isSetup={apexRecords === 'verified'}
                     isPending={apexRecords === 'pending'}
@@ -1735,7 +1735,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Status:</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <StatusIcon
                     isSetup={ioOverall === 'verified'}
                     isPending={ioOverall === 'pending'}
@@ -1805,7 +1805,7 @@ function SetupStatusDisplay({ setupStatus }: { setupStatus: SetupStatus }) {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Status:</span>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-x-2">
                   <StatusIcon
                     isSetup={devOverall === 'verified'}
                     isPending={devOverall === 'pending'}

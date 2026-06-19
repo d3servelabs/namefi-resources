@@ -140,7 +140,7 @@ const CountryDropdownComponent = (
                     setOpen(false);
                   }}
                 >
-                  <div className="flex flex-grow w-0 space-x-2 overflow-hidden">
+                  <div className="flex flex-grow w-0 gap-x-2 overflow-hidden">
                     <div className="inline-flex items-center justify-center w-5 h-5 shrink-0 overflow-hidden rounded-full">
                       <Globe size={16} />
                     </div>
@@ -160,7 +160,7 @@ const CountryDropdownComponent = (
                     key={option.alpha2}
                     onSelect={() => handleSelect(option)}
                   >
-                    <div className="flex flex-grow w-0 space-x-2 overflow-hidden">
+                    <div className="flex flex-grow w-0 gap-x-2 overflow-hidden">
                       <div className="inline-flex items-center justify-center w-5 h-5 shrink-0 overflow-hidden rounded-full">
                         <CircleFlag
                           countryCode={option.alpha2.toLowerCase()}

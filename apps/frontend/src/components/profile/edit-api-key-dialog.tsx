@@ -238,7 +238,7 @@ export function EditApiKeyDialog({
                 </p>
               </div>
 
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start gap-x-3">
                 <Checkbox
                   id="editAllowBrowserRequests"
                   checked={allowBrowserRequests}
@@ -260,7 +260,7 @@ export function EditApiKeyDialog({
                 </div>
               </div>
 
-              <div className="flex items-start space-x-3">
+              <div className="flex items-start gap-x-3">
                 <Checkbox
                   id="editAllowServerRequests"
                   checked={allowServerRequests}

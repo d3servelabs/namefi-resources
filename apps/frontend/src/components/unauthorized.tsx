@@ -39,7 +39,7 @@ export function Unauthorized({
           <CardDescription className="mt-2">{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col space-y-2 sm:space-x-2 sm:space-y-0 gap-2">
+          <div className="flex flex-col space-y-2 sm:gap-x-2 sm:space-y-0 gap-2">
             {!isAuthenticated && !isAuthLoading && (
               <Button
                 render={<Link href={authUrl} />}

@@ -137,7 +137,7 @@ export function GiftsManagementPage({
   return (
     <PageShell padding="admin" className="space-y-6">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-x-3">
           <Gift className="h-8 w-8 text-primary" />
           <div>
             <h1 className="text-2xl font-semibold">Gift And Reservations</h1>
@@ -265,7 +265,7 @@ export function GiftsManagementPage({
                       )}
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <Mail className="h-3 w-3" />
                         <span className="text-sm">
                           {r.recipientEmail ?? '—'}
@@ -279,7 +279,7 @@ export function GiftsManagementPage({
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <Calendar className="h-3 w-3" />
                         <span className="text-sm">
                           {r.freeClaimExpirationDate
@@ -292,7 +292,7 @@ export function GiftsManagementPage({
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         <Calendar className="h-3 w-3" />
                         <span className="text-sm">
                           {r.reservationExpirationDate
@@ -308,7 +308,7 @@ export function GiftsManagementPage({
                       {format(new Date(r.createdAt), 'MMM dd, yyyy')}
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-center gap-x-2">
                         {r.uiStatus === 'SENT' && (
                           <Button
                             variant="ghost"

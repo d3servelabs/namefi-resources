@@ -119,7 +119,7 @@ export const AnimatedCartButton = forwardRef<
       props['aria-label'] ?? (isInCart ? 'View cart' : config.text);
 
     return (
-      <div className="flex space-x-2 shrink-0">
+      <div className="flex gap-x-2 shrink-0">
         {/* Remove button - only shown when in cart and showRemoveButton is true */}
         <AnimatePresence>
           {shouldShowRemove && (

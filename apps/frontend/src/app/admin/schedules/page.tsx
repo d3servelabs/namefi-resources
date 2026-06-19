@@ -244,7 +244,7 @@ export default function SchedulesPage() {
                     );
                     return (
                       <div key={group.groupId} className="space-y-4">
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center gap-x-4">
                           <h2 className="text-xl font-semibold">
                             {group.name}
                           </h2>
@@ -310,7 +310,7 @@ export default function SchedulesPage() {
                       );
                       return (
                         <div key={groupId} className="space-y-4">
-                          <div className="flex items-center space-x-4">
+                          <div className="flex items-center gap-x-4">
                             <h2 className="text-xl font-semibold">
                               {group?.name || groupId}
                             </h2>
@@ -409,7 +409,7 @@ function ScheduleActions({
   onDelete,
 }: ScheduleActionsProps) {
   return (
-    <div className="flex items-center space-x-2 pt-4 border-t">
+    <div className="flex items-center gap-x-2 pt-4 border-t">
       {needsSetup ? (
         <Tooltip>
           <TooltipTrigger>
@@ -517,7 +517,7 @@ function ScheduleCard({
               {scheduleConfig.description}
             </CardDescription>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-x-2">
             <Badge variant="secondary" className="text-xs">
               {scheduleConfig.category}
             </Badge>
@@ -529,7 +529,7 @@ function ScheduleCard({
                 Not Setup
               </Badge>
             ) : hasStatus ? (
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center gap-x-1">
                 <div
                   className={cn(
                     'w-2 h-2 rounded-full',

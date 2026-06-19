@@ -150,7 +150,7 @@ function QuickActions() {
       <Link href="/powered-by-namefi/admin/gifts">
         <Card className="hover:shadow-md transition-shadow cursor-pointer">
           <CardContent className="p-4">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-x-3">
               <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
                 <Gift className="h-5 w-5" />
               </div>
@@ -167,7 +167,7 @@ function QuickActions() {
 
       <Card className="hover:shadow-md transition-shadow cursor-pointer">
         <CardContent className="p-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-x-3">
             <div className="p-2 rounded-lg bg-green-100 text-green-600">
               <BarChart3 className="h-5 w-5" />
             </div>
@@ -183,7 +183,7 @@ function QuickActions() {
 
       <Card className="hover:shadow-md transition-shadow cursor-pointer">
         <CardContent className="p-4">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-x-3">
             <div className="p-2 rounded-lg bg-purple-100 text-purple-600">
               <Settings className="h-5 w-5" />
             </div>

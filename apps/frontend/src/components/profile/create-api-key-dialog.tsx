@@ -468,7 +468,7 @@ export function CreateApiKeyDialog({
                       </p>
 
                       {/* Allow Browser Requests */}
-                      <div className="flex items-start space-x-3">
+                      <div className="flex items-start gap-x-3">
                         <Checkbox
                           id="allowBrowserRequests"
                           checked={allowBrowserRequests}
@@ -491,7 +491,7 @@ export function CreateApiKeyDialog({
                       </div>
 
                       {/* Allow Server Requests */}
-                      <div className="flex items-start space-x-3">
+                      <div className="flex items-start gap-x-3">
                         <Checkbox
                           id="allowServerRequests"
                           checked={allowServerRequests}

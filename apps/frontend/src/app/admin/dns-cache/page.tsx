@@ -317,7 +317,7 @@ function AdminDnsCachePage() {
             {serversQuery.data && serversQuery.data.length > 0 && (
               <div className="space-y-3">
                 {/* Master checkbox */}
-                <div className="flex items-center space-x-2 pb-2 border-b">
+                <div className="flex items-center gap-x-2 pb-2 border-b">
                   <Checkbox
                     id="select-all"
                     checked={isAllSelected}

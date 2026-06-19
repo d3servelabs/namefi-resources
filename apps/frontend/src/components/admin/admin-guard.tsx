@@ -37,7 +37,7 @@ export function AdminGuard({
   if (isAuthLoading || isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-x-3">
           <Loader2 className="h-6 w-6 animate-spin text-primary" />
           <span className="text-lg">{loadingMessage}</span>
         </div>
