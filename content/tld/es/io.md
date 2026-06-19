@@ -1,59 +1,164 @@
 ---
-title: "¿Qué es el dominio .io y por qué debería elegirlo?"
-date: '2025-12-10'
+title: '¿Qué es el dominio .io? La extensión tecnológica y de Web3 explicada'
+date: '2026-06-15'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: "Descubre por qué el dominio .io es el estándar de oro para startups y tecnología. Conoce su significado, ventajas SEO y regístralo hoy en Namefi."
-keywords: [".io domains", "dominio .io", ".io TLD", "top-level domain .io", "qué es .io", "what is .io", "por qué elegir .io", "why choose .io", "comprar dominio .io", "inversión en dominios", "blockchain domains", "dominios tokenizados", "tech startup domains", "ventajas dominio .io", "registro de dominios"]
+description: 'El dominio .io es el estándar de facto para startups, desarrolladores y proyectos Web3. Conoce su origen, quién puede registrarlo, la dinámica de precios y su reputación.'
+keywords: ['dominios .io', 'qué es .io', '.io TLD', 'extensión de dominio .io', 'registrar dominio .io', 'significado dominio io', '.io vs .ai', 'dominios para startups tecnológicas']
+faqs:
+  - question: '¿Puede cualquiera registrar un dominio .io?'
+    answer: 'Sí. El espacio de nombres .io está abierto a cualquier persona en el mundo sin requisitos de presencia local, empresariales o de credenciales. No necesitas ninguna conexión con el Territorio Británico del Océano Índico para registrar uno.'
+  - question: '¿Afecta el dominio .io al SEO?'
+    answer: 'No negativamente. Google trata .io como un dominio de nivel superior genérico en lugar de uno orientado a un país, por lo que un sitio .io puede posicionarse globalmente y no está restringido geográficamente a ninguna región.'
+  - question: '¿Quién debería registrar un dominio .io?'
+    answer: 'Startups de software, productos SaaS, herramientas para desarrolladores, proyectos de código abierto, servicios de API, estudios de juegos de navegador, y equipos de Web3 o blockchain que quieran un nombre que se lea como Entrada/Salida y señale un enfoque tecnológico.'
+  - question: '¿Va a desaparecer el dominio .io por el acuerdo de soberanía sobre las Chagos?'
+    answer: 'No es un hecho establecido. A partir de 2026, .io está completamente operativo. Cualquier retirada requeriría primero que cambiara el código de país ISO, y luego seguiría una transición de varios años en la IANA, por lo que es una situación a seguir de cerca antes que motivo de pánico.'
 ---
 
-## **¿Qué es .io?**
+El **dominio .io** es técnicamente una extensión de código de país para un remoto territorio del Océano Índico, pero en la práctica se ha convertido en el hogar no oficial de las startups de software, las herramientas para desarrolladores y los proyectos Web3. Para la mayoría de los compradores, el **significado del dominio .io** no tiene nada que ver con la geografía, sino con la lectura que los ingenieros hacen de "io": como **Entrada/Salida (Input/Output)**, uno de los conceptos más fundamentales de la informática.
 
-Técnicamente, el dominio **.io** es un dominio de nivel superior de código de país (ccTLD) asignado al **Territorio Británico del Océano Índico** (British Indian Ocean Territory). Sin embargo, en el mundo digital actual, su identidad geográfica ha pasado a un segundo plano.
+Si estás lanzando un producto SaaS, una API, un proyecto de código abierto o una iniciativa blockchain, .io es una de las señales más reconocidas que puedes colocar después del nombre de tu marca. Esta página explica su origen, quién puede registrarlo, cómo funcionan los precios y cómo se compara con las alternativas.
 
-La inmensa popularidad de esta extensión no se debe a la ubicación del territorio, sino a lo que representa en el mundo de la informática. En la ingeniería de software y la tecnología, **"I/O"** es la abreviatura universal de **Input/Output** (Entrada/Salida). Debido a esto, el dominio .io se ha convertido en un símbolo de identidad para ingenieros, desarrolladores de software y startups tecnológicas.
+## .io de un vistazo
 
-Es importante destacar que, debido a su uso generalizado, motores de búsqueda como Google tratan al .io como un **gccTLD (generic country code Top-Level Domain)**. Esto significa que Google entiende que el sitio no está dirigido específicamente a los residentes del Océano Índico, sino a una audiencia global, lo cual es vital para el SEO internacional. Puedes leer más sobre cómo Google maneja estos dominios en su [documentación oficial de la Búsqueda de Google](https://developers.google.com/search/docs/crawling-indexing/manage-multiregional-sites?hl=es).
+| Dato | Detalle |
+| --- | --- |
+| Tipo de TLD | TLD de código de país (ccTLD), tratado como genérico por Google |
+| Operador del registro | Internet Computer Bureau Ltd (subsidiaria de Identity Digital) |
+| Año de delegación | 1997 |
+| Asignado a | Territorio Británico del Océano Índico (BIOT) |
+| Soporte IDN | Sí |
+| DNSSEC | Sí |
+| Restricciones de registro | Abierto a todos — sin requisito de presencia local, credenciales o empresa |
+| Ideal para | Startups tecnológicas, SaaS, herramientas para desarrolladores, APIs, juegos de navegador, Web3 |
 
-## **Cómo se utiliza el dominio .io actualmente**
+## ¿Qué es .io?
 
-El dominio .io ha trascendido su propósito original y se ha convertido en una de las extensiones más codiciadas en la web moderna. Su uso es versátil y denota innovación:
+El **dominio de nivel superior .io** es un [ccTLD (TLD de código de país)](/en/blog/cctld-market-share-by-registration-volume/) asignado al **Territorio Británico del Océano Índico** en el Archipiélago Chagos. Fue delegado en 1997 bajo el estándar ISO 3166-1, como se documenta en la [entrada de la zona raíz de la IANA para .io](https://www.iana.org/domains/root/db/io.html). El gestor del ccTLD es **Internet Computer Bureau Ltd**, actualmente una subsidiaria del proveedor de servicios de registro [Identity Digital](https://www.identity.digital/).
 
-*   **Startups Tecnológicas y SaaS:** Es casi el estándar de facto para nuevas empresas de "Software as a Service". Tener un .io indica inmediatamente que la empresa es moderna y está enfocada en la tecnología.
-*   **Proyectos Blockchain y Web3:** Dado que la comunidad cripto y Web3 está profundamente arraigada en la codificación, una gran cantidad de proyectos de finanzas descentralizadas (DeFi), exchanges y plataformas NFT eligen .io para transmitir confianza técnica.
-*   **Desarrolladores y Portafolios:** Muchos programadores utilizan esta extensión para sus blogs personales o portafolios, jugando con el significado de "Input/Output" para mostrar sus habilidades.
-*   **Videojuegos (Browser Games):** La tendencia de los juegos `.io` (juegos multijugador sencillos en navegador) popularizó masivamente esta extensión entre el público más joven.
+A pesar de ser un ccTLD en papel, .io se comporta como una extensión genérica en todos los aspectos que importan a un comprador. Google clasifica explícitamente .io como un **dominio de nivel superior genérico** para las búsquedas, señalando que los usuarios y propietarios de sitios lo perciben como más genérico que orientado a un país. Por ello, a diferencia de `.fr` o `.jp`, un sitio .io **no está orientado geográficamente** a una región y es una opción sólida para audiencias globales.
 
-## **Entidades notables que usan .io**
+## Historia de .io
 
-El prestigio del .io se ha solidificado gracias a gigantes de la industria y plataformas esenciales que han adoptado esta extensión. Algunos ejemplos destacados incluyen:
+.io fue delegado en 1997, lo que lo convierte en uno de los ccTLD más antiguos en uso comercial activo. Durante su primera década fue un oscuro código de isla. Dos cosas lo cambiaron. Primero, los desarrolladores se dieron cuenta de que "io" se lee como **E/S (Entrada/Salida)** — una coincidencia que le dio al sufijo un significado inmediato para el público técnico. Segundo, en la década de 2010, una oleada de startups bien financiadas y plataformas para desarrolladores lo adoptaron, convirtiendo .io en un marcador de estatus para las empresas de software.
 
-1.  **Etherscan (etherscan.io):** El explorador de bloques más popular para la red Ethereum. Es una herramienta fundamental en el ecosistema blockchain.
-2.  **GitHub Pages (github.io):** Cuando los desarrolladores alojan sitios web estáticos a través de GitHub, la plataforma asigna automáticamente subdominios bajo `github.io`, lo que ha familiarizado a millones de desarrolladores con la extensión.
-3.  **Itch.io:** Una plataforma abierta para creadores y entusiastas de los videojuegos independientes, famosa por su apoyo a la comunidad indie.
-4.  **Greenhouse (greenhouse.io):** Una de las plataformas de software de reclutamiento y contratación más grandes del mundo, demostrando que el .io también es perfecto para el sector corporativo B2B.
+El sufijo también prestó su nombre a todo un género: los **"juegos io"** — títulos multijugador en navegador como Agar.io y Slither.io que no requerían descargas y atrajeron a decenas de millones de jugadores. En el lado del registro, el operador original fue eventualmente integrado en el portafolio de Identity Digital, que ahora proporciona servicios de registro para el espacio de nombres.
 
-Para ver más estadísticas sobre el crecimiento de este dominio, puedes consultar fuentes de la industria como [DomainNameStat](https://domainnamestat.com/).
+## Cómo se usa .io
 
-## **¿Por qué elegir .io?**
+El sufijo se agrupa fuertemente en torno a nichos tecnológicos:
 
-Si estás dudando entre un .com tradicional y un .io, aquí tienes las razones clave por las que el .io puede ser la mejor opción para tu proyecto:
+- **SaaS y startups tecnológicas** que establecen credibilidad instantánea con un público nativo de la tecnología
+- **Herramientas para desarrolladores, APIs e infraestructura** donde "E/S" encaja de forma literal
+- **Proyectos de código abierto, sitios de documentación y portfolios de desarrolladores**
+- **Equipos de Web3, blockchain y aplicaciones descentralizadas** que señalan profundidad técnica
+- **"Juegos io" en navegador** y mercados de juegos indie
 
-*   **Disponibilidad de Nombres:** El mercado de dominios .com está extremadamente saturado. Con .io, tienes muchas más posibilidades de encontrar un nombre **corto, memorable y de una sola palabra** que aún esté disponible.
-*   **Reconocimiento de Marca:** En el sector tecnológico, un dominio .io se percibe como "premium". Inmediatamente le dice a tu audiencia que eres una empresa digital, ágil y experta en tecnología.
-*   **Juegos de Palabras (Domain Hacks):** Al ser una terminación de dos letras que coincide con el final de muchas palabras en inglés e italiano (como *stud.io*, *rad.io*, *aud.io*), permite una creatividad de marca única.
-*   **Beneficios SEO:** Como mencionamos anteriormente, al ser tratado como un dominio genérico por los buscadores, tienes la misma capacidad de posicionamiento global que un .com o un .net.
+**Para quién no es ideal:** negocios locales físicos que quieren posicionarse en un país específico, marcas de consumo no técnicas, o compradores con presupuesto ajustado que necesitan el registro más económico — .io tiene un precio premium y una connotación tecnológica que puede resultar fuera de lugar fuera del software.
 
-## **Registra tu dominio .io en Namefi**
+## Sitios destacados que usan .io
 
-Elegir el dominio correcto es el primer paso hacia el éxito digital. En **Namefi**, no solo te ofrecemos el registro de tu dominio .io, sino que llevamos la propiedad de dominios al siguiente nivel.
+- **GitHub Pages** (`github.io`) — millones de sitios de desarrolladores alojados desde repositorios
+- **Etherscan** (`etherscan.io`) — el principal explorador de blockchain de Ethereum
+- **itch.io** — un popular mercado abierto para creadores de juegos indie
+- **Agar.io** y **Slither.io** — los juegos de navegador que definieron el género de los "juegos io"
 
-Como registrador acreditado por la ICANN, Namefi combina la seguridad tradicional con la innovación de la Web3. Ofrecemos **dominios tokenizados**, lo que te permite gestionar, transferir y utilizar tu dominio con la facilidad y transparencia de la tecnología blockchain, sin sacrificar la compatibilidad con la web tradicional (DNS).
+Estos abarcan infraestructura para desarrolladores, Web3, publicación indie y videojuegos, ilustrando por qué .io resulta creíble para un público técnico.
 
-¿Listo para lanzar tu próxima gran idea?
+## .io frente a otros dominios
 
-[Registra tu dominio en Namefi](https://namefi.io)
+| Característica | .io | .com | .ai | .dev |
+| --- | --- | --- | --- | --- |
+| Tipo | ccTLD (genérico) | gTLD | ccTLD (genérico) | gTLD |
+| Señal principal | Tecnología / Entrada-Salida | Universal / estándar | Inteligencia artificial | Desarrolladores / código |
+| Disponibilidad de nombres cortos | Buena | Muy escasa | Buena | Buena |
+| Nivel de precio típico | Premium | Estándar | Premium+ | Estándar+ |
 
-No dejes que alguien más tome el nombre perfecto para tu proyecto. ¡Asegura tu identidad digital hoy mismo!
+Elige [.com](/en/tld/com/) como la opción universal por defecto cuando puedas encontrar o permitirte el nombre. Elige [.ai](/en/tld/ai/) cuando tu producto trate explícitamente sobre inteligencia artificial, o [.dev](/en/tld/dev/) para herramientas de desarrolladores y documentación. Elige **.io** para tecnología general, SaaS, infraestructura, gaming y Web3 donde la asociación con Entrada/Salida encaje y los nombres cortos todavía sean accesibles.
+
+## ¿Por qué elegir .io?
+
+- **Reconocimiento en la industria.** Entre fundadores, ingenieros e inversores, .io se lee inmediatamente como "empresa tecnológica".
+- **Mayor disponibilidad de nombres cortos.** El espacio de nombres es más joven y pequeño que [.com](/en/tld/com/), por lo que los nombres concisos y con potencial de marca son mucho más fáciles de encontrar.
+- **Potencial para domain hacks.** El sufijo de dos letras encaja perfectamente en palabras (`rad.io`, `stud.io`), permitiendo nombres ingeniosos y memorables.
+- **SEO global.** Los motores de búsqueda lo tratan como genérico, por lo que tu sitio puede posicionarse en todo el mundo sin estar encasillado en una región.
+
+## Aspectos a considerar
+
+- **Precio premium.** El registro establece un precio mayorista relativamente alto, que los registradores trasladan al cliente. Incluso un .io sin registrar típicamente cuesta varias veces un .com básico.
+- **Connotación de nicho.** El significado tecnológico es un activo en el software y una desventaja para las marcas de consumo convencionales.
+- **Incertidumbre sobre la soberanía.** El Archipiélago Chagos es objeto de un acuerdo de soberanía en curso entre el Reino Unido y Mauricio, lo que ha generado especulación sobre el futuro a largo plazo del sufijo (tratado más adelante).
+- **Riesgo de TLD único.** Como con cualquier extensión, apostar toda una marca a un solo sufijo sin una copia de seguridad es un riesgo que vale la pena considerar.
+
+## ¿Quién puede registrar un dominio .io?
+
+**Restricciones de registro: abierto a todos.** Cualquier persona en el mundo puede registrar un dominio .io. No existe **ningún requisito de presencia local**, ninguna verificación de elegibilidad empresarial ni restricción de credenciales — no necesitas ninguna conexión con el Territorio Británico del Océano Índico. Los nombres tienen entre **3 y 63 caracteres**, admiten letras, dígitos y guiones (no al inicio ni al final), y se admiten los **nombres de dominio internacionalizados (IDN)**.
+
+El registro admite **DNSSEC**, y se aplica el comportamiento estándar de transferencia, renovación y período de gracia de redención. La única restricción de contenido destacada es una antigua norma de uso aceptable que prohíbe el contenido sexual o pornográfico y el uso que infrinja la legislación aplicable. Dado que .io es un ccTLD y no un gTLD de ICANN, las normas vinculantes provienen del operador, no de un acuerdo de registro de ICANN — la política vinculante está publicada por el [registro NIC.IO (normas para nombres de dominio)](https://nic.io/rules.htm).
+
+### La cuestión de la soberanía de las Chagos
+
+En 2024, el Reino Unido anunció planes para transferir la soberanía del Archipiélago Chagos a Mauricio, y se firmó un acuerdo el 22 de mayo de 2025. Dado que .io descansa en el código ISO 3166-1 "IO", esto generó especulaciones sobre su posible retirada. A partir de 2026, **.io está completamente operativo** — los registros y renovaciones continúan con normalidad. Cualquier retirada requeriría primero que el código ISO cambiara y luego desencadenaría una transición de varios años en la IANA (a menudo citada como aproximadamente cinco años), por lo que es una situación a seguir de cerca, no un motivo para evitar el sufijo.
+
+## Precios y valor de .io
+
+Esta página no cita precios actualizados, pero las **dinámicas** de precios merecen ser comprendidas:
+
+- **Precio mayorista mínimo premium.** El registro .io establece un precio base relativamente alto, que los registradores repercuten. Incluso un .io ordinario sin registrar suele costar varias veces un .com básico.
+- **Los precios del primer año y de renovación difieren.** Una tarifa introductoria del primer año puede estar por debajo de la tarifa de renovación recurrente, así que presupuesta para la renovación, no solo para el precio de alta.
+- **Existen nombres de nivel premium.** Los nombres .io cortos, de diccionario o con gran potencial de marca pueden estar reservados como premium por el registro, y el mercado secundario para ellos es activo. Explicamos los factores en [por qué los dominios .io son caros](/en/blog/why-are-io-domains-expensive/).
+
+## Reputación y entregabilidad de correo electrónico
+
+.io tiene una **reputación premium y técnica**. Para fundadores, desarrolladores e inversores se lee como serio y moderno — más cercano a una señal de estatus que a una extensión de descuento, todo lo contrario de los nuevos gTLD baratos y propensos al spam que algunos filtros de correo agresivos tratan con sospecha.
+
+Dado que .io es ampliamente utilizado por startups reputadas y grandes plataformas para desarrolladores, no sufre los problemas generalizados de filtrado de spam que afectan a algunas extensiones de bajo coste. Como siempre, la entregabilidad depende mucho más de tus propias prácticas de envío — registros SPF, DKIM y DMARC correctamente configurados, un dominio de envío con historial adecuado y listas limpias — que del sufijo en sí.
+
+## Consejos de marca y nomenclatura
+
+El sufijo de dos letras está hecho para los **domain hacks** — nombres en los que el TLD forma parte de la palabra, integrando ".io" en un término (`stud.io`, `rad.io`, `scenar.io`). Mantén los nombres cortos y pronunciables; la fortaleza de .io es la concisión.
+
+Ten en cuenta dos escollos. Primero, al pronunciarse en voz alta, "io" puede escucharse mal, así que prueba cómo suena tu nombre completo en una llamada telefónica. Segundo, dado que .io está tan estrechamente ligado al software, un nombre en una categoría no técnica puede parecer desencajado.
+
+## Cómo registrar un dominio .io en Namefi
+
+1. **Busca** el nombre que deseas en [Namefi](https://namefi.io) para comprobar su disponibilidad.
+2. **Elige** el resultado .io (y cualquier alternativa que valga la pena asegurar).
+3. **Registra** y configura el DNS.
+
+Como [registrador](/en/glossary/registrar/) [acreditado por ICANN](/en/glossary/icann/), Namefi conecta Web2 y Web3: precios transparentes, gestión de [DNS](/en/glossary/dns/) rápida, y la opción de mantener tu nombre como [dominio tokenizado](/en/blog/what-are-tokenized-domains/) para una [propiedad de dominio](/en/glossary/domain-ownership/) verificable y una transferibilidad sencilla. Comienza en [Namefi](https://namefi.io).
+
+## Preguntas frecuentes
+
+### ¿Puede cualquiera registrar un dominio .io?
+
+Sí. El espacio de nombres .io está abierto a cualquier persona en el mundo sin requisitos de presencia local, empresariales o de credenciales. No necesitas ninguna conexión con el Territorio Británico del Océano Índico para registrar uno.
+
+### ¿Afecta el dominio .io al SEO?
+
+No negativamente. Google trata .io como un dominio de nivel superior genérico en lugar de uno orientado a un país, por lo que un sitio .io puede posicionarse globalmente y no está restringido geográficamente a ninguna región.
+
+### ¿Quién debería registrar un dominio .io?
+
+Startups de software, productos SaaS, herramientas para desarrolladores, proyectos de código abierto, servicios de API, estudios de juegos de navegador y equipos de Web3 o blockchain. La lectura "Entrada/Salida" encaja donde un enfoque tecnológico forme parte de la marca.
+
+### ¿Va a desaparecer el dominio .io por el acuerdo de soberanía sobre las Chagos?
+
+No es un hecho establecido. A partir de 2026, .io está completamente operativo, con registros y renovaciones que continúan con normalidad. Cualquier retirada requeriría primero que el código de país ISO cambiara y luego seguiría una transición de varios años en la IANA, así que síguelo de cerca en lugar de alarmarte.
+
+### ¿Admite .io privacidad de WHOIS y DNSSEC?
+
+DNSSEC está soportado por el registro .io. La disponibilidad de privacidad de WHOIS depende de tu registrador; la mayoría de los registradores modernos, incluido Namefi, ofrecen protección de privacidad en los registros elegibles.
+
+## Recursos relacionados
+
+- [¿Qué es un dominio?](/en/blog/what-is-domain/)
+- [Guía de terminología de dominios](/en/blog/domain-terminology-guide/)
+- [¿Por qué los dominios .io son caros?](/en/blog/why-are-io-domains-expensive/)
+- [Dominio .ai vs .io](/en/blog/ai-vs-io-domain/)
+- [Casos de uso de dominios tokenizados (2026)](/en/blog/tokenized-domain-use-cases-2026/)
+- Guías de TLD: [.com](/en/tld/com/), [.ai](/en/tld/ai/), [.dev](/en/tld/dev/), [.app](/en/tld/app/), [.tech](/en/tld/tech/)
+- Glosario: [ICANN](/en/glossary/icann/), [registrador](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
