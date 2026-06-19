@@ -17,9 +17,13 @@ import {
   namefiNftView,
 } from '@namefi-astra/db';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
-import { and, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { createElement } from 'react';
 import { render } from '@react-email/components';
+import {
+  ACTIVE_PARKED_CONDITION,
+  parkedDomainConfigJoinOn,
+} from '#lib/domains/parked-domain-query';
 import { verifyParkedDomains } from '#lib/domains/parking-verification';
 import { createLogger } from '#lib/logger';
 import { sendMail, type SendMailInput } from '../../../../mail/mail-client';
@@ -50,13 +54,6 @@ const REPORT_FROM = 'Namefi Parking Verification <noreply@d3serve.xyz>';
 /** Upper bound on parked domains enumerated per run (logged when exceeded). */
 const MAX_DOMAINS_PER_RUN = 10_000;
 
-/**
- * A domain is parked (served by Namefi park infra) when auto-park is on
- * (default true) OR a forward is configured. Mirrors `PARK_CONDITION` in
- * `apps/backend/src/trpc/routers/admin/parkedDomainsRouter.ts`.
- */
-const PARK_CONDITION = sql`COALESCE(${domainConfigTable.autoParkEnabled}, true) = true OR ${domainConfigTable.forwardTo} IS NOT NULL`;
-
 export interface CollectParkedDomainsResult {
   domains: NamefiNormalizedDomain[];
   /** Total distinct parked domains (may exceed `domains.length` if capped). */
@@ -86,10 +83,8 @@ export interface SendParkedDomainVerificationReportInput {
   problemsTruncated: boolean;
 }
 
-/** Enumerate distinct parked domains for the weekly sweep. */
+/** Enumerate distinct ACTIVE parked domains for the weekly sweep. */
 export async function collectParkedDomains(): Promise<CollectParkedDomainsResult> {
-  const leftJoinOn = sql`${domainConfigTable.normalizedDomainName} = ${namefiNftView.normalizedDomainName}`;
-
   const [rows, countRows] = await Promise.all([
     db
       .with(namefiNftCte)
@@ -97,8 +92,8 @@ export async function collectParkedDomains(): Promise<CollectParkedDomainsResult
         normalizedDomainName: namefiNftView.normalizedDomainName,
       })
       .from(namefiNftView)
-      .leftJoin(domainConfigTable, leftJoinOn)
-      .where(and(PARK_CONDITION))
+      .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+      .where(ACTIVE_PARKED_CONDITION)
       // Stable order so the capped subset is deterministic across runs.
       .orderBy(namefiNftView.normalizedDomainName)
       .limit(MAX_DOMAINS_PER_RUN),
@@ -108,8 +103,8 @@ export async function collectParkedDomains(): Promise<CollectParkedDomainsResult
         count: sql<number>`COUNT(DISTINCT ${namefiNftView.normalizedDomainName})::int`,
       })
       .from(namefiNftView)
-      .leftJoin(domainConfigTable, leftJoinOn)
-      .where(and(PARK_CONDITION)),
+      .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+      .where(ACTIVE_PARKED_CONDITION),
   ]);
 
   const totalParked = countRows[0]?.count ?? rows.length;

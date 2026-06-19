@@ -5,7 +5,7 @@ import {
   namefiNftView,
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
-import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
+import { and, asc, sql, type SQL } from 'drizzle-orm';
 import {
   buildSortClause,
   buildWhereClause,
@@ -15,15 +15,12 @@ import {
 import { adminParkedDomainsContract } from '@namefi-astra/common/contract/admin/admin-parked-domains-contract';
 import { adminProcedureWithPermissions } from '../../base';
 import { createContractTRPCRouter } from '../../contract';
+import {
+  ACTIVE_PARKED_CONDITION,
+  parkedDomainConfigJoinOn,
+} from '#lib/domains/parked-domain-query';
 import { verifyParkedDomains } from '#lib/domains/parking-verification';
 import { logger } from '#lib/logger';
-
-/**
- * A domain is "parked" (served by Namefi's park infra) when auto-park is on
- * (default true) OR a forward is configured. This drives both the list filter
- * and the verification mode (`forwardTo` set → forward mode).
- */
-const PARK_CONDITION = sql`COALESCE(${domainConfigTable.autoParkEnabled}, true) = true OR ${domainConfigTable.forwardTo} IS NOT NULL`;
 
 export const parkedDomainsRouter = createContractTRPCRouter<
   typeof adminParkedDomainsContract
@@ -59,16 +56,10 @@ export const parkedDomainsRouter = createContractTRPCRouter<
             autoParkEnabled: domainConfigTable.autoParkEnabled,
           })
           .from(namefiNftView)
-          .leftJoin(
-            domainConfigTable,
-            eq(
-              domainConfigTable.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
-            ),
-          )
+          .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
           .$dynamic();
 
-      const whereClauses: SQL[] = [PARK_CONDITION];
+      const whereClauses: SQL[] = [ACTIVE_PARKED_CONDITION];
       if (filters) {
         const drizzlerWhere = buildWhereClause(
           tableStructure,
@@ -87,13 +78,7 @@ export const parkedDomainsRouter = createContractTRPCRouter<
           .with(namefiNftCte)
           .select({ count: sql<number>`COUNT(*)::int` })
           .from(namefiNftView)
-          .leftJoin(
-            domainConfigTable,
-            eq(
-              domainConfigTable.normalizedDomainName,
-              namefiNftView.normalizedDomainName,
-            ),
-          )
+          .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
           .where(where);
 
         const [rows, countRow] = await Promise.all([
@@ -144,10 +129,6 @@ export const parkedDomainsRouter = createContractTRPCRouter<
     .output(adminParkedDomainsContract.listAllParkedDomainNames.output)
     .query(async ({ input }) => {
       try {
-        const joinOn = eq(
-          domainConfigTable.normalizedDomainName,
-          namefiNftView.normalizedDomainName,
-        );
         const [rows, countRow] = await Promise.all([
           db
             .with(namefiNftCte)
@@ -155,8 +136,8 @@ export const parkedDomainsRouter = createContractTRPCRouter<
               normalizedDomainName: namefiNftView.normalizedDomainName,
             })
             .from(namefiNftView)
-            .leftJoin(domainConfigTable, joinOn)
-            .where(PARK_CONDITION)
+            .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+            .where(ACTIVE_PARKED_CONDITION)
             // Stable order so the capped subset is deterministic.
             .orderBy(asc(namefiNftView.normalizedDomainName))
             .limit(input.limit),
@@ -166,8 +147,8 @@ export const parkedDomainsRouter = createContractTRPCRouter<
               count: sql<number>`COUNT(DISTINCT ${namefiNftView.normalizedDomainName})::int`,
             })
             .from(namefiNftView)
-            .leftJoin(domainConfigTable, joinOn)
-            .where(PARK_CONDITION),
+            .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+            .where(ACTIVE_PARKED_CONDITION),
         ]);
         const total = countRow[0]?.count ?? rows.length;
         return {

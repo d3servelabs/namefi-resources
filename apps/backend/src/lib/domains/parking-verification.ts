@@ -25,6 +25,7 @@
  */
 
 import { connect as tlsConnect, type PeerCertificate } from 'node:tls';
+import Bottleneck from 'bottleneck';
 import { db, domainConfigTable } from '@namefi-astra/db';
 import {
   FORWARDING_TXT_PREFIX,
@@ -75,6 +76,15 @@ const PARKING_PAGE_MARKERS = [
 ];
 /** Cap how much of an (untrusted) response body we sniff for the marker. */
 const PARKING_PAGE_SNIFF_BYTES = 64 * 1024;
+
+/**
+ * Global rate limiters so concurrent verifications (admin batch + weekly sweep,
+ * each running its own pool of workers) don't burst the shared public DoH
+ * resolvers or the park app (all parked domains resolve to the same host). These
+ * are module singletons, so the cap is process-wide regardless of caller.
+ */
+const dohLimiter = new Bottleneck({ maxConcurrent: 8, minTime: 25 }); // ≲ 40 req/s
+const probeLimiter = new Bottleneck({ maxConcurrent: 8, minTime: 50 }); // ≲ 20 req/s
 
 /** DoH numeric RR type codes (IANA); DoH JSON `Answer[].type` is numeric. */
 const DOH_TYPE = { A: 1, AAAA: 28, TXT: 16 } as const;
@@ -173,30 +183,33 @@ interface DohResponse {
  * matching answers. Never throws — returns `null` on failure so the caller can
  * distinguish "resolver errored" from "no records".
  */
-async function queryDoh(
+function queryDoh(
   resolver: DohResolver,
   name: string,
   type: keyof typeof DOH_TYPE,
 ): Promise<string[] | null> {
-  try {
-    const res = await fetch(resolver.url(name, type), {
-      headers: { Accept: 'application/dns-json' },
-      signal: AbortSignal.timeout(DOH_TIMEOUT_MS),
-    });
-    if (!res.ok) return null;
-    const json = (await res.json()) as DohResponse;
-    // Status 0 = NOERROR, 3 = NXDOMAIN. Both mean "resolver answered".
-    if (json.Status !== 0 && json.Status !== 3) return null;
-    return (json.Answer ?? [])
-      .filter((a) => a.type === DOH_TYPE[type])
-      .map((a) => a.data);
-  } catch (error) {
-    _logger.debug(
-      { error, resolver: resolver.label, name, type },
-      'DoH query failed',
-    );
-    return null;
-  }
+  // Rate-limited so a large sweep doesn't 429 the public resolvers.
+  return dohLimiter.schedule(async () => {
+    try {
+      const res = await fetch(resolver.url(name, type), {
+        headers: { Accept: 'application/dns-json' },
+        signal: AbortSignal.timeout(DOH_TIMEOUT_MS),
+      });
+      if (!res.ok) return null;
+      const json = (await res.json()) as DohResponse;
+      // Status 0 = NOERROR, 3 = NXDOMAIN. Both mean "resolver answered".
+      if (json.Status !== 0 && json.Status !== 3) return null;
+      return (json.Answer ?? [])
+        .filter((a) => a.type === DOH_TYPE[type])
+        .map((a) => a.data);
+    } catch (error) {
+      _logger.debug(
+        { error, resolver: resolver.label, name, type },
+        'DoH query failed',
+      );
+      return null;
+    }
+  });
 }
 
 // #endregion
@@ -672,9 +685,11 @@ export async function verifyParkedDomain(
     };
   }
 
+  // Rate-limited: all parked domains hit the same park app host, so cap the
+  // concurrent TLS/HTTP load process-wide.
   const [ssl, http] = await Promise.all([
-    checkSsl(punycode),
-    probeHttp(punycode),
+    probeLimiter.schedule(() => checkSsl(punycode)),
+    probeLimiter.schedule(() => probeHttp(punycode)),
   ]);
 
   const serving = evaluateServing(mode, http);
