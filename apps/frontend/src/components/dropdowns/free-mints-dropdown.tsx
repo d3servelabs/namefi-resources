@@ -116,7 +116,7 @@ export function FreeMintsDropdown({
                     <Button
                       size="sm"
                       data-testid={`freeMints.dropdown.claim.${freeMint.id}`}
-                      className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+                      className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-black"
                       onClick={() => handleClaimAction(freeMint)}
                     >
                       {t('dropdown.claim')}

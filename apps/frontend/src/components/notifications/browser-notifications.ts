@@ -12,12 +12,10 @@ import { useSyncExternalStore } from 'react';
  * notification arrives while the page is open, we ALSO fire an OS
  * banner so the user sees it even when the tab is in the background.
  *
- * Permission is requested exactly once per user, on their first bell
- * click (a real user gesture per the API contract). A localStorage
- * flag prevents us from spamming the prompt after a dismissal.
+ * Permission is requested only from the explicit in-app "Enable" CTA,
+ * keeping the browser prompt behind a clear user opt-in gesture.
  */
 
-const PROMPTED_FLAG_KEY = 'namefi-browser-notifs-prompted-v1';
 const TOOLTIP_DISMISSED_FLAG_KEY = 'namefi-browser-notifs-tooltip-dismissed-v1';
 
 export type BrowserNotificationCapability =
@@ -34,24 +32,6 @@ export function getBrowserNotificationCapability(): BrowserNotificationCapabilit
   if (typeof window === 'undefined') return 'unsupported';
   if (!('Notification' in window)) return 'unsupported';
   return window.Notification.permission;
-}
-
-function hasUserBeenPrompted(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return window.localStorage.getItem(PROMPTED_FLAG_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-function markUserPrompted(): void {
-  if (typeof window === 'undefined') return;
-  try {
-    window.localStorage.setItem(PROMPTED_FLAG_KEY, '1');
-  } catch {
-    // Storage disabled — accept that we may re-prompt next session.
-  }
 }
 
 export function isPermissionTooltipDismissed(): boolean {
@@ -73,28 +53,8 @@ export function dismissPermissionTooltip(): void {
 }
 
 /**
- * Self-guarded permission request. Safe to call on every bell click —
- * only the very first call ever triggers the browser dialog.
+ * Request browser notification permission from an explicit in-app CTA.
  * Returns the resolved capability so callers can update their UI.
- */
-export async function requestBrowserNotificationPermissionOnce(): Promise<BrowserNotificationCapability> {
-  const current = getBrowserNotificationCapability();
-  if (current !== 'default') return current;
-  if (hasUserBeenPrompted()) return current;
-  markUserPrompted();
-  try {
-    const result = await window.Notification.requestPermission();
-    notifyCapabilityListeners();
-    return result;
-  } catch {
-    return getBrowserNotificationCapability();
-  }
-}
-
-/**
- * Force a permission request even if we already prompted. Used by the
- * explicit in-modal CTA so the user can recover from an accidental
- * dismissal without clearing storage.
  */
 export async function requestBrowserNotificationPermissionForce(): Promise<BrowserNotificationCapability> {
   const current = getBrowserNotificationCapability();
@@ -104,7 +64,6 @@ export async function requestBrowserNotificationPermissionForce(): Promise<Brows
     current === 'denied'
   )
     return current;
-  markUserPrompted();
   try {
     const result = await window.Notification.requestPermission();
     notifyCapabilityListeners();

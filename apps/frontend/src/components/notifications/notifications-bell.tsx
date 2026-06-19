@@ -29,7 +29,6 @@ import {
   dismissPermissionTooltip,
   isPermissionTooltipDismissed,
   requestBrowserNotificationPermissionForce,
-  requestBrowserNotificationPermissionOnce,
   useBrowserNotificationCapability,
 } from './browser-notifications';
 import { openNotificationsModal } from './store';
@@ -106,8 +105,6 @@ const NotificationsBellInner = forwardRef<
   }));
 
   const handleClick = useCallback(() => {
-    // Self-guarded — only the very first ever click triggers a prompt.
-    void requestBrowserNotificationPermissionOnce();
     openNotificationsModal(filter ?? null);
   }, [filter]);
 
@@ -137,7 +134,12 @@ const NotificationsBellInner = forwardRef<
         <motion.div
           key="notif-badge"
           data-testid="notifications.bell.unread-badge"
-          className={cn(HEADER_BADGE_CLASS, justIncreased && 'animate-bounce')}
+          className={cn(
+            HEADER_BADGE_CLASS,
+            variant === 'sidebar' &&
+              'right-1 top-1 group-data-[collapsible=icon]:-right-1.5 group-data-[collapsible=icon]:-top-1.5',
+            justIncreased && 'animate-bounce',
+          )}
           initial={{ opacity: 0, scale: 0.9, y: -6 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: -6 }}
@@ -187,13 +189,13 @@ const NotificationsBellInner = forwardRef<
             justIncreased && 'animate-bounce',
           )}
         >
-          <span className="relative inline-flex">
+          <span className="inline-flex">
             <Bell className="h-4 w-4" />
-            {badge}
           </span>
           <span className="group-data-[collapsible=icon]:hidden">
             {t('bell.label')}
           </span>
+          {badge}
         </button>
       );
     }
