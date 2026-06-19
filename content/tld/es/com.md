@@ -1,63 +1,160 @@
 ---
-title: '¿Qué es el TLD .com y por qué debería elegirlo?'
-date: '2025-12-10'
+title: '¿Qué es el dominio .com? El predeterminado de internet explicado'
+date: '2026-06-15'
 language: 'es'
 tags: ['tld']
 authors: ['namefiteam']
 draft: false
-description: 'Descubre la historia, ventajas y el valor del dominio .com. Aprende por qué sigue siendo el estándar de oro en internet y cómo registrar el tuyo en Namefi.'
-keywords: ['.com domains', '.com TLD', 'top-level domain', 'dominio de nivel superior', 'qué es .com', 'por qué elegir .com', 'what is the .com domain', 'why choose the .com domain', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'comprar dominio .com', 'registrar dominio', 'valor del dominio .com', 'gTLD']
+description: 'El dominio .com es la dirección predeterminada del internet comercial. Conoce su historia, quién puede registrarlo, cómo funciona el precio y por qué sigue liderando.'
+keywords: ['dominios .com', 'qué es .com', 'TLD .com', 'extensión de dominio .com', 'registrar dominio .com', 'significado dominio com', '.com vs .net', 'dominios para negocios']
+faqs:
+  - question: '¿Puede cualquiera registrar un dominio .com?'
+    answer: 'Sí. El espacio de nombres .com está abierto a todo el mundo sin requisitos de presencia local, empresarial, credencial o comunitaria. La intención comercial original nunca se ha aplicado estrictamente, por lo que particulares, organizaciones sin fines de lucro y empresas por igual pueden registrar uno.'
+  - question: '¿Afecta el dominio .com al SEO?'
+    answer: 'Google trata .com como un dominio genérico de nivel superior sin ventaja ni penalización de posicionamiento inherente. El beneficio práctico es humano: los usuarios confían en los resultados .com y hacen clic en ellos con mayor facilidad, lo que puede mejorar las tasas de clics en el mundo real.'
+  - question: '¿Quién debería registrar un dominio .com?'
+    answer: 'Prácticamente cualquier negocio, marca o proyecto que quiera la dirección más reconocida y confiable a nivel universal, especialmente empresas que sirven a un público global o general, y cualquier persona que desee proteger una marca a largo plazo.'
+  - question: '¿Por qué es tan difícil encontrar buenos dominios .com?'
+    answer: 'Con más de 160 millones de nombres .com registrados, la disponibilidad de nombres cortos, de diccionario y de coincidencia exacta con marcas está prácticamente agotada. La mayoría de los nombres .com premium ya tienen dueño, por lo que muchos solo están disponibles en el mercado secundario.'
 ---
 
-## **¿Qué es .com?**
+El **dominio .com** es lo más parecido que tiene internet a un estándar predeterminado. Abreviatura de "commercial" (comercial en inglés), es el dominio genérico de nivel superior original que, gracias a décadas de uso ubicuo, se convirtió en el sufijo que las personas asumen cuando escuchan el nombre de un sitio web. Para la mayoría de las empresas y marcas, **qué es .com** se reduce a una sola cosa: es la dirección que los usuarios esperan, escriben y en la que confían sin pensarlo.
 
-El dominio **.com** es un Dominio de Nivel Superior Genérico (gTLD) y es, sin lugar a dudas, la extensión de dominio más reconocida y popular en la historia de internet. Su nombre se deriva de la palabra **"comercial"**, lo que indica su propósito original: servir a organizaciones comerciales.
+Si estás lanzando una empresa, protegiendo una marca o construyendo algo destinado a un público general o global, .com sigue siendo el punto de referencia con el que se mide cualquier otra extensión. Esta página explica su origen, quién puede registrarlo, cómo funciona el precio y cómo se compara con las alternativas más cercanas.
 
-Introducido en 1985 como uno de los primeros TLDs junto con .net, .org y .edu, el .com ha evolucionado mucho más allá de su intención original. Aunque al principio estaba destinado a empresas, hoy en día no existen restricciones para su registro. Es gestionado por [Verisign](https://www.verisign.com/), una autoridad global en seguridad de internet y telecomunicaciones, bajo la supervisión de la [ICANN](https://www.icann.org/).
+## .com de un vistazo
 
-Actualmente, el .com no es solo una dirección web; es sinónimo de internet para la gran mayoría de los usuarios a nivel mundial.
+| Dato | Detalle |
+| --- | --- |
+| Tipo de TLD | TLD genérico (gTLD), tratado como genérico por Google |
+| Operador del registro | Verisign (VeriSign Global Registry Services) |
+| Año de delegación | 1985 |
+| Soporte IDN | Sí |
+| DNSSEC | Sí |
+| Restricciones de registro | Abierto a todos — sin requisito de presencia local, credencial o empresa |
+| Ideal para | Negocios, marcas globales, comercio electrónico, cualquiera que quiera la extensión predeterminada |
 
-## **¿Cómo se utiliza el dominio .com?**
+## ¿Qué es .com?
 
-Debido a su estatus de "estándar de oro", el uso del .com es increíblemente diverso y abarca prácticamente todos los sectores de la economía digital.
+El **dominio de nivel superior .com** es un [gTLD (TLD genérico)](/en/blog/what-is-a-tld/) concebido originalmente para organizaciones comerciales. Fue uno de los primeros TLD creados en 1985, junto con `.net`, `.org`, `.edu`, `.gov` y `.mil`, tal como se documenta en la [entrada de la zona raíz de la IANA para .com](https://www.iana.org/domains/root/db/com.html). El operador del registro es **Verisign**, que gestiona la infraestructura autoritativa de .com desde hace décadas.
 
-*   **Empresas y Startups:** Es la primera opción para cualquier negocio que busque legitimidad instantánea y presencia global.
-*   **Proyectos Web3 y Blockchain:** A pesar de la aparición de dominios específicos para cripto, los proyectos serios de Web3 a menudo aseguran su variante .com para proteger su marca y facilitar la adopción masiva.
-*   **Comercio Electrónico:** La inmensa mayoría de las tiendas online exitosas operan bajo un .com debido a la confianza que inspira en los consumidores al momento de realizar pagos.
-*   **Inversores de Dominios:** Los dominios .com cortos y con palabras clave relevantes son activos digitales de alto valor, a menudo utilizados como vehículos de inversión y [activos tokenizados](https://namefi.io).
-*   **Portafolios Personales:** Profesionales que desean destacar su marca personal a menudo optan por *nombreapellido.com*.
+La etiqueta "com" remite a un propósito comercial, pero esa restricción nunca se aplicó de manera significativa, y el sufijo lo usa desde empresas de Fortune 500 hasta blogs personales y organizaciones sin fines de lucro. Para búsquedas, Google clasifica .com como una extensión **genérica** en lugar de orientada a un país, por lo que un sitio .com **no está orientado geográficamente** a ningún mercado específico y es una opción sólida para audiencias globales.
 
-## **Entidades notables que usan .com**
+## Historia de .com
 
-Es difícil listar entidades notables sin mencionar prácticamente a todas las grandes corporaciones del mundo. El dominio .com es el hogar de los gigantes tecnológicos y financieros.
+.com fue delegado el **1 de enero de 1985**, convirtiéndolo en uno de los TLD fundadores del Sistema de Nombres de Dominio moderno. El primer .com registrado fue **symbolics.com**, inscrito el 15 de marzo de 1985 por el fabricante de computadoras Symbolics — un dominio que aún resuelve hoy y que a menudo se cita como un fragmento de la historia de internet.
 
-*   **Google (google.com):** El motor de búsqueda más utilizado del mundo.
-*   **Amazon (amazon.com):** El gigante del comercio electrónico y la nube.
-*   **Apple (apple.com):** Líder en innovación tecnológica.
-*   **OpenAI (openai.com):** Pioneros en inteligencia artificial.
+El auge de la web comercial a finales de los años noventa convirtió a .com en el escaparate predeterminado de internet. Verisign reporta actualmente más de **160 millones de registros .com** en todo el mundo, con diferencia el mayor TLD individual. Esa escala también ha convertido al mercado secundario de .com en el más activo del sector: nombres que definen categorías como voice.com y cars.com han cambiado de manos por sumas de ocho cifras, entre las ventas de dominios más altas registradas públicamente.
 
-Incluso en el mundo emergente de la tecnología descentralizada, plataformas líderes como **Binance** o **Coinbase** utilizan dominios .com como su base principal de operaciones, demostrando que esta extensión es vital para conectar la tecnología tradicional con la innovación futura.
+## Cómo se usa .com
 
-## **¿Por qué elegir .com?**
+El sufijo abarca prácticamente todos los sectores, pero se concentra donde más importan la confianza y el reconocimiento:
 
-Elegir un dominio .com sigue siendo la decisión más estratégica para la mayoría de los proyectos digitales. Aquí te explicamos por qué:
+- **Empresas consolidadas y marcas globales** que señalan permanencia y autoridad
+- **Tiendas de comercio electrónico** donde la confianza del consumidor en el pago es crítica
+- **Startups** que quieren su marca principal en la extensión más reconocida
+- **Inversores en dominios** que tratan los nombres .com premium como activos digitales de primer nivel
+- **Marcas personales y portafolios** que quieren proyectar solidez y credibilidad
 
-*   **Credibilidad y Confianza:** Los usuarios tienden a confiar más en una dirección web que termina en .com. Se percibe como una marca establecida y profesional.
-*   **Memorabilidad:** Es la extensión "por defecto" en la mente del consumidor. Si alguien recuerda el nombre de tu marca pero olvida la extensión, casi siempre intentará escribir ".com" primero.
-*   **Ventajas SEO:** Aunque los motores de búsqueda tratan técnicamente a la mayoría de los TLD por igual, la alta tasa de clics (CTR) que suelen tener los dominios .com debido a la confianza del usuario puede influir indirectamente en un mejor posicionamiento.
-*   **Valor de Reventa y Activo:** Los dominios .com mantienen su valor mejor que cualquier otra extensión. Son activos líquidos en el mercado secundario, lo que es crucial si ves tu dominio como una inversión a largo plazo.
-*   **Compatibilidad Móvil:** Muchos teclados de smartphones tienen una tecla dedicada exclusivamente para ".com", lo que facilita el acceso a tu sitio.
+**Para quién no es ideal:** compradores con presupuesto limitado que solo necesitan un marcador de posición, proyectos que deliberadamente buscan una señal de nicho o técnica (donde [.io](/en/tld/io/) o [.ai](/en/tld/ai/) encajan mejor), o cualquiera que no pueda encontrar un nombre disponible aceptable y no esté dispuesto a considerar el mercado secundario.
 
-## **Registra tu dominio .com en Namefi**
+## Sitios destacados que usan .com
 
-Asegurar el dominio .com perfecto es el primer paso hacia el éxito digital. En **Namefi**, no solo te ofrecemos un registro sencillo y seguro, sino que llevamos tu dominio al siguiente nivel.
+- **google.com** — el sitio web más visitado del mundo
+- **amazon.com** — el gigante del comercio electrónico que demostró la web comercial a escala
+- **apple.com** — un .com corto, de diccionario, con una enorme autoridad de marca
+- **symbolics.com** — el primer .com registrado jamás, ahora preservado como un fragmento de la historia de internet
 
-Como registrador acreditado por la ICANN, Namefi combina la fiabilidad tradicional con la innovación de la tecnología Web3. Al registrar tu dominio con nosotros, puedes disfrutar de la tokenización de tus activos digitales, facilitando transferencias instantáneas y una gestión optimizada.
+Estos abarcan búsqueda, comercio minorista, hardware e historia misma, ilustrando por qué .com se percibe como el predeterminado para marcas serias y orientadas al público.
 
-*   **Gestión simplificada:** Control total sobre tus registros DNS.
-*   **Integración Web3:** Convierte tu dominio en un activo digital líquido.
-*   **Seguridad:** Protección de nivel empresarial para tu marca.
+## .com frente a otros dominios
 
-No dejes que tu idea se quede sin nombre. Verifica la disponibilidad de tu dominio hoy mismo.
+| Característica | .com | .net | .org | .io |
+| --- | --- | --- | --- | --- |
+| Tipo | gTLD | gTLD | gTLD | ccTLD (genérico) |
+| Señal principal | Universal / predeterminado | Red / tecnología (legado) | Sin fines de lucro / comunidad | Tecnología / Entrada-Salida |
+| Disponibilidad de nombres cortos | Muy escasa | Escasa | Moderada | Buena |
+| Nivel de precio típico | Estándar | Estándar | Estándar | Premium |
 
-[Registra tu .com en Namefi ahora](https://namefi.io) y asegura tu lugar en internet.
+Elige **.com** como el predeterminado universal siempre que puedas encontrar o pagar el nombre. Elige [.net](/en/tld/net/) como alternativa clásica cuando el .com equivalente está tomado, [.org](/en/tld/org/) cuando quieres una connotación de comunidad, sin fines de lucro o proyecto abierto, o [.io](/en/tld/io/) cuando una señal técnica con sabor a startup y la disponibilidad de nombres cortos importan más que la familiaridad general.
+
+## ¿Por qué elegir .com?
+
+- **Reconocimiento sin igual.** .com es el sufijo que las personas asumen por defecto — el ganador de la "prueba de radio". Di el nombre de una marca en voz alta y los oyentes añaden mentalmente ".com", por lo que ser su dueño capta tráfico que de otro modo se perdería.
+- **Confianza y credibilidad.** Décadas de uso ubicuo hacen que .com se perciba como legítimo y consolidado, lo que es especialmente valioso para el comercio electrónico y cualquier sitio que solicite datos de pago.
+- **Integración en interfaces.** Muchos teclados de móvil aún incluyen una tecla dedicada ".com", un nivel de conveniencia integrada que ningún otro sufijo comparte.
+- **SEO global.** Google lo trata como genérico, por lo que tu sitio puede posicionarse a nivel mundial sin quedar limitado a un solo país.
+- **Valor de reventa.** Los nombres .com premium mantienen su valor de forma más fiable que casi cualquier otra extensión y anclan el segmento más líquido del [mercado secundario](/en/blog/how-to-sell-a-domain-name-you-own/) de dominios.
+
+## Aspectos a considerar
+
+- **Escasez.** Con más de 160 millones de nombres registrados, los nombres .com cortos, de marca y de coincidencia exacta han desaparecido en gran medida; es posible que debas aceptar una ortografía alternativa, un nombre más largo o una compra en el mercado secundario.
+- **Coste en el mercado secundario.** Los nombres .com más deseados son de propiedad ajena y se revenden, a veces por sumas importantes, en lugar de estar disponibles al precio de registro estándar.
+- **Sin señal de nicho.** .com dice "todo", lo que es una fortaleza para las marcas generalistas, pero no ofrece ninguno de los significados incorporados que proporciona un sufijo específico de categoría.
+- **Riesgo de TLD único.** Construir una marca sobre un solo sufijo sin asegurar las principales alternativas deja espacio para imitadores.
+
+## ¿Quién puede registrar un dominio .com?
+
+**Restricciones de registro: abierto a todos.** Cualquier persona en el mundo puede registrar un dominio .com. **No hay requisito de presencia local**, ni verificación de elegibilidad empresarial, ni puerta de credencial o comunidad. La intención "comercial" original nunca se ha aplicado, por lo que particulares, organizaciones sin fines de lucro y empresas registran nombres .com libremente.
+
+Los nombres tienen entre **1 y 63 caracteres**, permiten letras, dígitos y guiones (no al principio ni al final), y se admiten **nombres de dominio internacionalizados (IDN)** para escrituras no latinas. El registro admite **DNSSEC**, y se aplica el comportamiento estándar de transferencia, renovación y período de gracia de redención, incluido el proceso habitual de transferencia con código de autorización y un bloqueo de 60 días tras la transferencia. Dado que .com es un gTLD de la ICANN, las reglas vinculantes se establecen en el [Acuerdo de Registro .com entre la ICANN y Verisign](https://www.icann.org/en/registry-agreements/details/com), y los titulares de marcas pueden utilizar los mecanismos de resolución de disputas de la ICANN, como la [UDRP](/en/blog/what-is-udrp/), contra registros infractores.
+
+## Precios y valor de .com
+
+Esta página nunca cita precios en tiempo real, pero las **dinámicas** de precios merecen entenderse:
+
+- **Un precio mayorista mínimo regulado.** El precio mayorista de .com de Verisign se establece en su acuerdo de registro con la ICANN, que permite aumentos periódicos, por lo que los precios de los registradores tienden a moverse dentro de una banda predecible en lugar de fluctuar libremente.
+- **El precio del primer año difiere del de renovación.** Una tarifa introductoria del primer año puede ser inferior a la tarifa de renovación recurrente, así que presupuesta la renovación, no solo el precio de alta.
+- **El verdadero premium está en el mercado secundario.** El registro estándar cubre cualquier .com disponible, pero la mayoría de los nombres cortos, de diccionario y de marca ya tienen dueño. Su coste lo determina la demanda del mercado secundario y puede superar con creces el precio base.
+
+## Reputación y entregabilidad del correo electrónico
+
+.com tiene la **reputación más neutral y confiable** de cualquier TLD. Para usuarios, socios y filtros de spam por igual, se percibe como el predeterminado consolidado — lo opuesto a los nuevos gTLD baratos y propensos al spam que algunos filtros de correo agresivos tratan con sospecha.
+
+Dado que .com es el hogar de innumerables negocios legítimos, no activa la sospecha generalizada que atraen algunas extensiones económicas, lo que lo convierte en una base sólida para el correo empresarial. Dicho esto, la entregabilidad depende mucho más de tus propias prácticas de envío — registros SPF, DKIM y DMARC correctamente configurados, un dominio de envío calentado y una higiene de lista impecable — que del propio sufijo.
+
+## Consejos de marca y nomenclatura
+
+Dado que los mejores nombres .com de una sola palabra están tomados, el branding moderno en .com suele implicar **acuñar un nombre** en lugar de encontrar una palabra de diccionario: nombres inventados (palabras inventadas pero pronunciables), compuestos de dos palabras, y prefijos o sufijos añadidos (`get-`, `try-`, `-app`, `-hq`). Mantén el resultado corto, fácil de escribir y sin ambigüedades cuando se pronuncia en voz alta.
+
+Atención a dos errores frecuentes. Primero, evita hifenaciones incómodas o sustituciones de números que resulten difíciles de dictar por teléfono. Segundo, verifica que el .com elegido no sea una coincidencia confusa con una marca existente, lo que puede acarrear problemas de marca registrada y pérdida de tráfico.
+
+## Cómo registrar un dominio .com en Namefi
+
+1. **Busca** el nombre que deseas en [Namefi](https://namefi.io) para comprobar la disponibilidad.
+2. **Elige** el resultado .com (y cualquier alternativa que valga la pena asegurar).
+3. **Registra** y configura el DNS.
+
+Como [registrador](/en/glossary/registrar/) [acreditado por la ICANN](/en/glossary/icann/), Namefi conecta Web2 y Web3: precios transparentes, gestión rápida de [DNS](/en/glossary/dns/) y la opción de mantener tu nombre como un [dominio tokenizado](/en/blog/what-are-tokenized-domains/) para una [propiedad de dominio](/en/glossary/domain-ownership/) verificable y una transferibilidad sencilla. Incluso puedes [tokenizar un .com existente](/en/blog/how-to-tokenize-your-com/) que ya poseas. Comienza en [Namefi](https://namefi.io).
+
+## Preguntas frecuentes
+
+### ¿Puede cualquiera registrar un dominio .com?
+
+Sí. El espacio de nombres .com está abierto a todo el mundo sin requisitos de presencia local, empresarial, credencial o comunitaria. La intención comercial original ya no se aplica, por lo que particulares, organizaciones sin fines de lucro y empresas por igual pueden registrar uno, sujeto únicamente a la disponibilidad estándar.
+
+### ¿Afecta el dominio .com al SEO?
+
+Google trata .com como un dominio genérico de nivel superior sin ventaja ni penalización de posicionamiento inherente. El beneficio práctico es humano más que algorítmico: los usuarios confían en los resultados .com y hacen clic en ellos con mayor facilidad, lo que puede mejorar las tasas de clics en el mundo real.
+
+### ¿Quién debería registrar un dominio .com?
+
+Prácticamente cualquier negocio, marca o proyecto que quiera la dirección más reconocida y confiable a nivel universal. Es especialmente valioso para empresas que sirven a un público global o general y para cualquiera que proteja una marca a largo plazo.
+
+### ¿Por qué es tan difícil encontrar buenos dominios .com?
+
+Con más de 160 millones de nombres .com registrados, la disponibilidad de nombres cortos, de diccionario y de coincidencia exacta con marcas está prácticamente agotada. La mayoría de los nombres .com premium ya tienen dueño, por lo que generalmente solo están disponibles a través del mercado secundario y no al precio de registro estándar.
+
+### ¿Admite .com privacidad WHOIS y DNSSEC?
+
+El registro de .com admite DNSSEC. La disponibilidad de privacidad WHOIS depende de tu registrador; la mayoría de los registradores modernos, incluido Namefi, ofrecen protección de privacidad en los registros elegibles.
+
+## Recursos relacionados
+
+- [¿Qué es un dominio?](/en/blog/what-is-domain/)
+- [¿Qué es un TLD?](/en/blog/what-is-a-tld/)
+- [Guía de terminología de dominios](/en/blog/domain-terminology-guide/)
+- [Cómo tokenizar tu .com](/en/blog/how-to-tokenize-your-com/)
+- [Cómo vender un nombre de dominio que posees](/en/blog/how-to-sell-a-domain-name-you-own/)
+- Guías de TLD: [.net](/en/tld/net/), [.org](/en/tld/org/), [.io](/en/tld/io/), [.ai](/en/tld/ai/), [.xyz](/en/tld/xyz/)
+- Glosario: [ICANN](/en/glossary/icann/), [registrador](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)

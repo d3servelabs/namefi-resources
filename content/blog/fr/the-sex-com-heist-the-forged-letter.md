@@ -1,0 +1,112 @@
+---
+title: "Le Vol de Sex.com : La Lettre Falsifiée qui a Dérobé le Domaine le Plus Précieux d'Internet"
+date: '2026-06-17'
+language: fr
+tags: ['domains', 'security', 'dns', 'domain-security']
+authors: ['namefiteam']
+draft: false
+description: "En 1995, un escroc nommé Stephen Cohen a volé sex.com à son propriétaire légitime Gary Kremen grâce à une seule lettre falsifiée envoyée à Network Solutions. La longue bataille pour le récupérer s'est soldée par un jugement de 65 millions de dollars, un fugitif au Mexique, et une décision historique établissant que les domaines sont une propriété."
+keywords: ['sex.com', 'vol de domaine', 'Stephen Cohen', 'Gary Kremen', 'Kremen v. Cohen', 'Network Solutions', 'lettre falsifiée', 'détournement de domaine', 'lettre Sharon Dimmick', 'sécurité des domaines', 'domaine en tant que propriété', 'jugement de 65 millions de dollars', 'fraude au transfert de domaine', 'Domain Mayday']
+---
+
+En 1995, l'adresse la plus précieuse d'internet a changé de mains à cause d'une seule feuille de papier.
+
+Il n'y a pas eu d'effraction, pas de rançon, pas d'exploit informatique exotique. Un escroc a tapé une lettre, l'a signée d'un nom qui n'était pas le sien, et l'a envoyée par fax à un registrar de noms de domaine en Virginie. Le registrar l'a lue, y a cru, et a remis **sex.com** — un domaine qui allait générer une entreprise rapportant selon certaines estimations un quart de milliard de dollars — à un homme qui n'y avait aucun droit. Le propriétaire légitime ne l'a appris qu'après coup, puis a passé près d'une décennie à tenter de le récupérer.
+
+Voici le premier grand vol de domaine de l'histoire, et il reste la réponse la plus claire à une question que tout propriétaire de domaine devrait se poser : *qu'est-ce qui empêche concrètement quelqu'un de simplement s'approprier mon nom ?* En 1995, la réponse s'est avérée être : presque rien.
+
+Bienvenue dans **Domain Mayday / 域名浩劫** — des analyses approfondies des incidents de sécurité qui ont façonné notre façon de concevoir la propriété d'un nom en ligne. Épisode 02 : la lettre falsifiée qui a volé sex.com.
+
+## Ce que valait sex.com
+
+Au début de l'année 1994, l'entrepreneur [Gary Kremen — qui a également fondé Match.com](https://en.wikipedia.org/wiki/Sex.com#:~:text=In%20early%201994%2C%20entrepreneur%20Gary%20Kremen%20%28who%20also%20founded%20Match.com) — observait l'internet commercial tout neuf et en voyait l'évidence. Les archives judiciaires fixent la date d'enregistrement avec précision : [Gary Kremen a enregistré le nom de domaine sex.com auprès de Network Solutions, Inc. le 9 mai 1994](https://www.morelaw.com/verdicts/case.asp?n=98-cv-20718&s=CA&d=11424). À l'époque, les domaines étaient gratuits, enregistrés par un simple e-mail, et presque personne ne comprenait ce qu'ils vaudraient un jour. La Neuvième Cour d'appel fédérale a ouvert plus tard son opinion sur l'affaire avec la blague qui a plané sur toute cette saga : [« Du sexe sur Internet ? » disaient-ils tous. « Ça ne rapportera jamais rien. »](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf)
+
+Ça a rapporté. Après le vol du domaine, le voleur en a fait une machine à profits : [un site à forte densité publicitaire qui recevait jusqu'à 25 millions de visites par jour](https://en.wikipedia.org/wiki/Sex.com#:~:text=an%20advertising%2Dheavy%20site%20that%20received%20up%20to%2025%20million%20hits%20a%20day), rapportant selon certaines sources [entre 50 000 et 500 000 dollars par mois](https://en.wikipedia.org/wiki/Sex.com#:~:text=making%20%2450%2C000%20to%20%24500%2C000%20per%20month) grâce aux clics et à d'autres formes de publicité. Selon certaines estimations, le domaine volé est devenu la base d'[une entreprise de 250 000 000 dollars pendant les années où il en avait le contrôle illicite](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/#:~:text=may%20have%20created%20a%20%24250%2C000%2C000%20business%20during%20the%20years%20he%20had%20illicit%20control%20of%20the%20sex.com%20domain%20name). C'était un domaine qui, selon les mots d'un observateur du secteur, [pourrait selon certains comptes valoir plus que tout domaine jamais vendu à ce jour](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/#:~:text=by%20some%20accounts%20could%20be%20worth%20more%20than%20any%20domain%20name%20sold%20to%20date).
+
+Un nom d'une telle valeur, protégé par la sécurité d'un registrar des années 1990, était un coffre-fort fermé par un verrou en papier.
+
+## Le vol : une seule lettre falsifiée
+
+![Illustration artistique colorée et vibrante d'une lettre en papier falsifiée scellée avec un cachet de cire rouge, faisant glisser une clé de domaine dorée et lumineuse hors d'un coffre-fort verrouillé](../../assets/the-sex-com-heist-the-forged-letter-01-the-theft.jpg)
+
+L'homme qui a crocheté cette serrure s'appelait Stephen Michael Cohen, et ce n'était pas un délinquant à son premier méfait. La Neuvième Cour d'appel fédérale et Wikipedia notent tous deux qu'il est arrivé sur sex.com en sortant de prison : [Stephen M. Cohen, qui venait de purger une peine de prison après avoir été condamné pour fraude](https://en.wikipedia.org/wiki/Kremen_v._Cohen#:~:text=who%20had%20recently%20completed%20a%20prison%20sentence%20after%20being%20convicted%20of%20fraud). Il a regardé sex.com et a vu exactement ce que voyait Kremen — une fortune — et il a décidé de la prendre.
+
+Le mécanisme était d'une simplicité presque insultante. Cohen [a berné Network Solutions avec une fausse lettre émanant soi-disant d'un cadre inexistant de la société de Kremen, Online Classifieds, autorisant le transfert de Sex.com à Cohen](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/#:~:text=hoodwinked%20Network%20Solutions%20with%20a%20phony%20letter). Dit clairement par la même source, Cohen [a volé le nom de domaine sex.com de Gary Kremen simplement en soumettant une fausse lettre de transfert au registrar Network Solutions avec une signature falsifiée](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/#:~:text=stole%20Gary%20Kremen%27s%20domain%20name%2C%20sex.com%2C%20simply%20by%20submitting%20a%20fake%20transfer%20letter).
+
+Le [18 octobre 1995, Network Solutions a transféré, sans autorisation, le domaine à Stephen M. Cohen](https://en.wikipedia.org/wiki/Sex.com#:~:text=On%20October%2018%2C%201995%2C%20Network%20Solutions%20transferred%2C%20without%20permission%2C%20the%20domain%20to%20Stephen%20M.%20Cohen), un homme qui, selon Wikipedia, [cherchait depuis un certain temps à prendre le contrôle du domaine par des manœuvres frauduleuses, en utilisant des appels téléphoniques, des e-mails et des lettres falsifiées](https://en.wikipedia.org/wiki/Sex.com#:~:text=had%20been%20trying%20to%20gain%20control%20of%20the%20domain%20for%20some%20time%20by%20misrepresentation%2C%20using%20phone%20calls%2C%20e%2Dmails%20and%20forged%20letters). Le nom le plus précieux d'internet avait désormais un nouveau « propriétaire », et le véritable n'en savait rien.
+
+## La « lettre Dimmick » falsifiée
+
+![Illustration artistique colorée et vibrante d'une lettre tapée à la machine de manière maladroite, avec une signature grossièrement falsifiée et un en-tête incohérent, brillant sous une loupe qui révèle qu'elle est fausse](../../assets/the-sex-com-heist-the-forged-letter-02-forged-letter.jpg)
+
+Il vaut la peine de s'arrêter sur le faux lui-même, car ce n'était pas un chef-d'œuvre. C'était un fax, et un fax bâclé.
+
+Selon le dossier du tribunal de district, [dans une lettre datée du 15 octobre 1995, Sharon Dimmick, soi-disant au nom d'Online Classified, informait Stephen Cohen qu'Online Classified avait « décidé d'abandonner le nom de domaine sex.com ».](https://www.morelaw.com/verdicts/case.asp?n=98-cv-20718&s=CA&d=11424) L'auteur de la lettre avait un vrai problème à résoudre : comment une société « abandonne »-t-elle un domaine pour qu'un inconnu puisse le récupérer ? La réponse de Cohen, citée dans l'opinion d'appel, consistait à faire expliquer par la lettre que [n'ayant pas de connexion directe à internet, nous vous demandons de notifier l'organisme d'enregistrement internet en notre nom, afin de supprimer notre nom de domaine sex.com](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf). Une société dont le métier était d'exploiter des sites web, prétendant ne pas avoir accès à internet — et Network Solutions n'a pas cillé.
+
+La « Sharon Dimmick » dont le nom figurait sur la lettre était une vraie personne, mais elle n'avait rien à voir avec un quelconque abandon. Comme l'a rapporté The Globe and Mail, Network Solutions a reçu [une lettre fin 1995 apparemment signée par Sharyn Dimmick, alors colocataire de M. Kremen](https://www.theglobeandmail.com/technology/the-fugitive-the-cupid-and-sexcom/article25701429/). Cohen avait emprunté le nom de la colocataire de Kremen pour se faire passer pour la propre société de ce dernier.
+
+Et il a mal orthographié le nom. Comme le note platement un résumé de l'affaire, [Cohen a mal orthographié la signature de Dimmick sur la lettre falsifiée](https://www.studicata.com/case-briefs/case/kremen-v-cohen). La journaliste qui a écrit plus tard un livre sur l'affaire était encore plus cinglante, décrivant le document comme un texte où [la personne supposée l'avoir envoyé ne savait pas épeler son propre nom ; l'en-tête ressemble à quelque chose fabriqué avec une imprimante jouet par un élève de maternelle analphabète](https://www.theregister.com/2007/05/31/sex_dot_com_review/).
+
+C'est le détail qui fait mal dans cette histoire. La serrure qui protégeait le domaine le plus précieux d'internet était si fragile qu'elle pouvait être crochetée par un faux dont l'« auteure » elle-même ne savait pas épeler son nom — et le registrar [l'a pris pour argent comptant et a cédé le contrôle](https://www.theglobeandmail.com/technology/the-fugitive-the-cupid-and-sexcom/article25701429/).
+
+## Les années de combat pour le récupérer
+
+Faire voler sex.com n'a nécessité qu'une seule lettre. Le récupérer a nécessité des années de procédure judiciaire, et Kremen a dû se battre sur deux fronts à la fois : contre Cohen, et contre le registrar qui avait cédé son domaine.
+
+Face à Cohen, les faits étaient accablants, et Cohen le savait. Il a réagi comme le font les escrocs — en fabriquant davantage de documents. Il [a forgé des documents pour prouver qu'il avait toujours été propriétaire du domaine et qu'il détenait une marque déposée pour sex.com](https://en.wikipedia.org/wiki/Kremen_v._Cohen), construisant une histoire fictive pour défendre le vol. Le tribunal n'a pas été dupe. Le juge James Ware a déclaré le transfert nul : [le tribunal de district a statué que Cohen avait commis une fraude, et a déclaré nulle sa propriété de sex.com car il avait acquis le nom de domaine par le biais d'une lettre frauduleuse](https://en.wikipedia.org/wiki/Kremen_v._Cohen). Le dossier de jugement chez morelaw l'énonce simplement — [jugement en faveur du demandeur avec ordonnance de restituer sex.com au demandeur](https://www.morelaw.com/verdicts/case.asp?n=98-cv-20718&s=CA&d=11424). Kremen, [que le juge a reconnu comme le véritable propriétaire de sex.com](https://www.theglobeandmail.com/technology/the-fugitive-the-cupid-and-sexcom/article25701429/), avait enfin récupéré son nom.
+
+Le combat le plus difficile concernait Network Solutions, et c'est celui qui importait pour tout le monde. Kremen soutenait que le registrar devait être tenu responsable d'avoir *converti* sa propriété — c'est-à-dire de l'avoir cédée. Network Solutions arguait qu'un domaine n'était pas une « propriété » en soi, juste un service qu'il fournissait, et un tribunal inférieur avait initialement accepté cette thèse. En appel, le juge Kozinski n'était pas d'accord et a pleinement intégré les domaines dans le droit de la propriété : [le nom de domaine de Kremen est protégé par la loi californienne sur la conversion](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf). Son analogie était tranchante — remettre un domaine à la mauvaise personne sur la foi d'une lettre falsifiée, a-t-il écrit, [n'est pas différent de tenir une société responsable lorsqu'elle cède les actions de quelqu'un dans les mêmes circonstances](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf). L'affaire a été réglée par la suite, mais le principe est resté : un nom de domaine est une propriété qu'on peut posséder, perdre et sur laquelle on peut engager des poursuites.
+
+## Le jugement à 65 millions de dollars — et la fuite de Cohen
+
+Le montant attaché au vol était énorme pour l'époque. Le tribunal a reconnu Cohen coupable de [fraude et de falsification pour un total de 40 millions de dollars en compensation des profits perdus et de 25 millions de dollars en dommages punitifs](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/#:~:text=the%20sum%20of%20%2440%20million%20in%20compensation%20for%20lost%20profits%20and%20%2425%20million%20in%20punitive%20damages) — un total que la Neuvième Cour d'appel a résumé comme un jugement accordant [40 millions de dollars de dommages compensatoires et 25 millions supplémentaires de dommages punitifs](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf). The Register a synthétisé la conclusion : la bataille [s'est finalement terminée en avril 2001 lorsque Kremen s'est vu restituer le domaine et accorder 65 millions de dollars](https://www.theregister.com/2007/05/31/sex_dot_com_review/).
+
+Le recouvrement de cette somme était une autre affaire. Cohen n'avait aucune intention de payer. Il [a ignoré l'ordonnance et viré d'importantes sommes d'argent sur des comptes offshore](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf), incitant le juge à, selon les propres termes de l'opinion, enlever les gants : il [a déclaré Cohen fugitif de la justice, a signé un mandat d'arrêt et a lancé les U.S. Marshals à sa poursuite](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf). À ce moment-là, Cohen avait déjà disparu. [Lorsqu'un mandat d'arrêt a été émis, Cohen a fui au Mexique](https://en.wikipedia.org/wiki/Sex.com#:~:text=When%20an%20arrest%20warrant%20was%20issued%2C%20Cohen%20fled%20to%20Mexico), devenant ce que The Globe and Mail a appelé [le premier fugitif d'internet pour un nom de domaine, recherché par les polices américaine et mexicaine](https://www.theglobeandmail.com/technology/the-fugitive-the-cupid-and-sexcom/article25701429/). Il [a déclaré faillite personnelle et s'est enfui au Mexique, où il a échappé à la capture pendant plusieurs années avant d'être expulsé par les autorités mexicaines pour infractions à la législation sur l'immigration en 2005](https://en.wikipedia.org/wiki/Kremen_v._Cohen).
+
+Kremen a obtenu le domaine et le jugement. Il n'est jamais parvenu à recouvrer l'intégralité des 65 millions de dollars. La leçon est sombre mais importante : un verdict sur le papier ne vaut que ce que vaut votre capacité à l'exécuter contre quelqu'un prêt à prendre la fuite.
+
+## Comment les registrars ont laissé cela se produire dans les années 1990
+
+On pourrait être tenté de voir dans cela un registrar négligent et un événement isolé. Ce n'était pas le cas. C'était le résultat prévisible du fonctionnement réel de la propriété des domaines en 1995.
+
+À cette époque, la « preuve » que vous possédiez un domaine était un enregistrement dans la base de données d'un registrar et un contact administratif — et la façon de le modifier était d'en *faire la demande*, généralement par lettre ou fax. Il n'y avait pas de signature cryptographique, pas de confirmation à double facteur, pas de notification automatique au propriétaire existant avant qu'un transfert soit effectué. Le système fonctionnait sur la confiance et sur l'hypothèse que personne ne mentirait simplement. Face à la lettre de Cohen, Network Solutions [n'a fait aucun effort pour contacter Kremen](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/) et, comme le résume Wikipedia, [a pris la lettre frauduleuse de Cohen pour argent comptant, et n'a effectué aucune vérification préalable pour déceler les incohérences dans le raisonnement de Cohen ou pour contacter Kremen afin de vérifier qu'il avait bien abandonné le nom de domaine](https://en.wikipedia.org/wiki/Kremen_v._Cohen#:~:text=took%20Cohen%27s%20fraudulent%20letter%20at%20face%20value).
+
+Deux défaillances structurelles se cumulent ici :
+
+- **Autorisation par usurpation d'identité.** Le registrar a authentifié un *document*, pas une *personne*. Quiconque pouvait produire une lettre d'apparence plausible sur le papier à en-tête de la bonne « société » pouvait déplacer un domaine. L'identité n'était qu'un déguisement.
+- **Aucune notification au véritable propriétaire.** Le seul contrôle qui aurait stoppé net cette situation — informer Kremen que « quelqu'un tente de transférer votre domaine » avant d'agir — n'existait tout simplement pas. La victime était la dernière à l'apprendre.
+
+Ce ne sont pas les fautes de Cohen. Ce sont les défaillances d'un système qui traitait les noms les plus précieux du monde comme des cartes de bibliothèque.
+
+## Ce que cela nous apprend sur la propriété des domaines
+
+Le vol de sex.com a trente ans, mais ses leçons restent intemporelles, car l'architecture sous-jacente de la propriété des domaines a moins changé qu'on ne le penserait.
+
+1. **Votre domaine est une propriété — et la propriété se vole.** L'héritage le plus durable de *Kremen v. Cohen* est la décision selon laquelle un domaine est une propriété protégée par la loi sur la conversion. C'est une bonne nouvelle (vous avez des droits) et un avertissement (quelque chose qui a de la valeur et un propriétaire mérite d'être volé).
+2. **Le maillon faible est le processus de transfert, pas le mot de passe.** Cohen n'a jamais deviné un mot de passe. Il a attaqué le chemin *administratif* — le processus humain pour changer de propriétaire d'un nom. La plupart des détournements de domaine ciblent encore cette faille : le support du registrar, les autorisations de transfert, les modifications des coordonnées de contact.
+3. **La confiance documentaire n'est pas une sécurité.** « Ça avait l'air officiel » — voilà comment le domaine le plus précieux de la planète a changé de mains. Une signature, un en-tête, une histoire plausible — rien de tout cela ne prouve quoi que ce soit sur l'identité de la personne réellement autorisée.
+4. **La notification et la vérification ne sont pas négociables.** L'unique contrôle qui aurait empêché toute la fraude était de confirmer la demande auprès du véritable propriétaire avant d'agir. Tout système capable de déplacer votre domaine sans impliquer *vous* de manière prouvable est un système qui peut faire perdre votre domaine.
+5. **Un jugement n'est pas un recouvrement.** Kremen a obtenu 65 millions de dollars et en a récupéré bien moins. La prévention bat toujours le contentieux, car on ne peut pas plaider pour récupérer un domaine qu'un fugitif a déjà monétisé et qu'un tribunal ne peut pas retrouver.
+
+## L'angle Namefi
+
+![Illustration colorée d'une propriété de domaine vérifiable et infalsifiable — une carte de domaine sécurisée par un bouclier vert, un token Namefi vert et une continuité DNS](../../assets/the-sex-com-heist-the-forged-letter-03-namefi-angle.jpg)
+
+Mettez de côté la fuite au Mexique et les revenus d'un empire pornographique, et le vol de sex.com est l'histoire d'une seule chose : il n'existait aucun enregistrement infalsifiable et contrôlé par son propriétaire de qui possédait le nom. La propriété résidait dans une base de données privée, et elle pouvait être réécrite par quiconque pouvait tromper le greffier avec une lettre falsifiée signée d'un nom mal orthographié.
+
+[Namefi](https://namefi.io) part du postulat inverse. Lorsqu'un domaine est tokenisé, la propriété est ancrée à des clés cryptographiques que *vous* contrôlez, et chaque transfert est une action on-chain qui est autorisée, visible et traçable — pas un fax que quelqu'un « prend pour argent comptant ». Il n'y a pas de greffier à tromper, pas de canal administratif secondaire où une lettre convaincante l'emporte sur le véritable propriétaire, et pas de transfert silencieux dont le propriétaire apprend l'existence des mois plus tard. Le contrôle est prouvable, les transferts sont signés par le propriétaire, et la piste d'audit est publique par construction — tout en restant compatible avec le DNS sur lequel repose l'ensemble d'internet.
+
+La lettre falsifiée de Cohen a fonctionné parce que la seule chose qui se dressait entre lui et sex.com était la disposition de quelqu'un d'autre à croire un bout de papier. L'objectif d'une propriété vérifiable et infalsifiable est de rendre cette attaque impossible à même tenter : on ne peut pas usurper une clé privée comme on peut usurper une signature. La leçon la plus précieuse du premier grand vol de domaine d'internet est que *qui possède ce nom* devrait être un fait que l'on peut prouver — et non une histoire qu'un inconnu peut raconter.
+
+## Sources et lectures complémentaires
+
+- Wikipedia — [Sex.com](https://en.wikipedia.org/wiki/Sex.com)
+- Wikipedia — [Kremen v. Cohen](https://en.wikipedia.org/wiki/Kremen_v._Cohen)
+- U.S. Court of Appeals, Ninth Circuit — [Kremen v. Cohen / Online Classifieds v. Network Solutions, 325 F.3d 1035 (opinion complète, PDF)](https://www.internetlibrary.com/pdf/kremen-cohen-9th-cir.pdf)
+- MoreLaw — [Gary Kremen v. Stephen Michael Cohen, et al. (dossier de l'affaire)](https://www.morelaw.com/verdicts/case.asp?n=98-cv-20718&s=CA&d=11424)
+- CircleID — [Domain Name Theft, Fraud And Regulations](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/)
+- The Globe and Mail — [The fugitive, the Cupid and sex.com](https://www.theglobeandmail.com/technology/the-fugitive-the-cupid-and-sexcom/article25701429/)
+- The Register — [Sex.com: read it if you dare (critique du livre de Kieren McCarthy)](https://www.theregister.com/2007/05/31/sex_dot_com_review/)
+- Studicata — [Kremen v. Cohen — Résumé de l'affaire](https://www.studicata.com/case-briefs/case/kremen-v-cohen)
+- Kieren McCarthy — [The lowdown on the Sex.com case](https://www.kierenmccarthy.co.uk/2006/12/09/the-lowdown-on-the-sexcom-case/)
+- CircleID — [Book Review: Sex.com by Kieren McCarthy](https://circleid.com/posts/book_sex_com_by_kieren_mccarthy)
