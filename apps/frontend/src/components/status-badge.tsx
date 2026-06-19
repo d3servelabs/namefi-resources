@@ -87,6 +87,9 @@ const STATUS_STYLES: Record<
 
 export function StatusBadge({ status }: StatusBadgeProps) {
   const t = useTranslations('common.status');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const style = STATUS_STYLES[status];
 
   if (!style) {
@@ -102,7 +105,7 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   return (
     <Badge variant={style.variant} className={style.className}>
-      {t(style.labelKey)}
+      {tDynamic(style.labelKey)}
     </Badge>
   );
 }

@@ -155,7 +155,7 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     const name =
       getUserDisplaySafeIdentifier(privyUser) ??
       getAuthDisplayProfileSafeIdentifier(unsafeDisplayProfile);
-    const displayLabel = name ?? 'Account';
+    const displayLabel = name ?? t('account.label');
     const avatarAddress =
       privyUser?.wallet?.address ?? unsafeDisplayProfile?.walletAddress ?? null;
     const avatarFallback = name

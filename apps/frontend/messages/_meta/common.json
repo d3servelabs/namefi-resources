@@ -147,5 +147,26 @@
   },
   "signIn.loadFailedDescription": {
     "description": "Default error toast description when the sign-in flow fails to load, used when no specific error message is available."
+  },
+  "actions.logOut": {
+    "description": "Global action atom: log the user out / sign out. Used in the account dropdown.",
+    "maxLength": 14
+  },
+  "account.label": {
+    "description": "Fallback label for the user-account menu button when no name/identifier is available. Means 'Account'.",
+    "maxLength": 16
+  },
+  "account.balance": {
+    "description": "Label for the NFSC balance row in the account dropdown, and the title of the balance-breakdown dialog. Means 'Balance'.",
+    "maxLength": 14
+  },
+  "account.loadingBalanceDetails": {
+    "description": "Loading label shown while the balance-breakdown dialog fetches details. Includes a trailing ellipsis."
+  },
+  "account.balanceLoadFailed": {
+    "description": "Error toast title shown when the balance-breakdown dialog fails to load."
+  },
+  "account.balanceLoadFailedDescription": {
+    "description": "Default error toast description when balance details fail to load, used when no specific error message is available."
   }
 }

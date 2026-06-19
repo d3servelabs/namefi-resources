@@ -25,7 +25,15 @@
     "goBack": "திரும்பு",
     "approve": "அனுமதி",
     "reject": "நிராகரி",
-    "disable": "முடக்கு"
+    "disable": "முடக்கு",
+    "logOut": "வெளியேறு"
+  },
+  "account": {
+    "label": "கணக்கு",
+    "balance": "இருப்பு",
+    "loadingBalanceDetails": "இருப்பு விவரங்களை ஏற்றுகிறது…",
+    "balanceLoadFailed": "இருப்பு விவரங்களை ஏற்ற முடியவில்லை",
+    "balanceLoadFailedDescription": "இருப்பு விவரங்களை ஏற்ற முடியவில்லை."
   },
   "status": {
     "created": "உருவானது",

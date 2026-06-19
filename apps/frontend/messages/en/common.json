@@ -25,7 +25,15 @@
     "goBack": "Go back",
     "approve": "Approve",
     "reject": "Reject",
-    "disable": "Disable"
+    "disable": "Disable",
+    "logOut": "Log Out"
+  },
+  "account": {
+    "label": "Account",
+    "balance": "Balance",
+    "loadingBalanceDetails": "Loading balance details...",
+    "balanceLoadFailed": "Failed to load balance details",
+    "balanceLoadFailedDescription": "The balance details failed to load."
   },
   "status": {
     "created": "Created",

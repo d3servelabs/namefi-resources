@@ -551,7 +551,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                   {!isRecipientLinked && (
                     <div className="flex items-center gap-2 text-amber-600">
                       <Info className="h-4 w-4" />
-                      <span>{t('detail.walletNotLinked')}</span>
+                      <span>{t('details.walletNotLinked')}</span>
                     </div>
                   )}
                 </div>

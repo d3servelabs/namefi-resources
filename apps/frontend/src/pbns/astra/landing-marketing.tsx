@@ -562,6 +562,9 @@ const StoryBlock = ({
   onVisible?: () => void;
 }) => {
   const t = useTranslations('landingMarketing');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const blockRef = useRef<HTMLDivElement>(null);
   const hasDispatchedRef = useRef(false);
   const isInView = useInView(blockRef, { amount: 0.3 });
@@ -602,7 +605,7 @@ const StoryBlock = ({
               className="h-1.5 w-1.5 rounded-full bg-white/80"
               aria-hidden
             />
-            {t(`story.${panel.key}.badge`)}
+            {tDynamic(`story.${panel.key}.badge`)}
           </motion.span>
           <motion.h3
             initial={{ opacity: 0, y: 22 }}
@@ -611,7 +614,7 @@ const StoryBlock = ({
             transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
             className="text-2xl font-semibold leading-snug md:text-3xl"
           >
-            {t(`story.${panel.key}.title`)}
+            {tDynamic(`story.${panel.key}.title`)}
           </motion.h3>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -620,7 +623,7 @@ const StoryBlock = ({
             transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
             className="max-w-xl text-base text-white/70 md:text-lg"
           >
-            {t(`story.${panel.key}.description`)}
+            {tDynamic(`story.${panel.key}.description`)}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -638,7 +641,7 @@ const StoryBlock = ({
                 key={highlightKey}
                 className="rounded-full border border-white/15 bg-black/40 px-3 py-1.5 text-[11px] font-medium tracking-[0.08em] text-white/65"
               >
-                {t(`story.${panel.key}.highlights.${highlightKey}`)}
+                {tDynamic(`story.${panel.key}.highlights.${highlightKey}`)}
               </span>
             ))}
           </motion.div>
@@ -679,6 +682,9 @@ const StorylineSection = ({
 
 const FeaturesSection = () => {
   const t = useTranslations('landingMarketing');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
 
   return (
     <section className="space-y-10 pb-2">
@@ -696,10 +702,10 @@ const FeaturesSection = () => {
               <Icon className="h-6 w-6" />
             </div>
             <h3 className="text-xl font-semibold">
-              {t(`features.items.${key}.title`)}
+              {tDynamic(`features.items.${key}.title`)}
             </h3>
             <p className="text-muted-foreground">
-              {t(`features.items.${key}.description`)}
+              {tDynamic(`features.items.${key}.description`)}
             </p>
           </div>
         ))}
@@ -727,6 +733,9 @@ const SupportingSection = () => {
 
 const BackersSection = () => {
   const t = useTranslations('landingMarketing');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const [activeFilter, setActiveFilter] = useState<BackerFilter>('all');
 
   const filteredBackers = useMemo(() => {
@@ -758,7 +767,7 @@ const BackersSection = () => {
                 : 'border-white/15 text-white/70 hover:border-white/40 hover:text-white/90',
             )}
           >
-            {t(`backers.filters.${value}`)}
+            {tDynamic(`backers.filters.${value}`)}
           </button>
         ))}
       </div>

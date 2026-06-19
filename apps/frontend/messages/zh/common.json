@@ -25,7 +25,15 @@
     "goBack": "返回",
     "approve": "批准",
     "reject": "拒绝",
-    "disable": "禁用"
+    "disable": "禁用",
+    "logOut": "退出登录"
+  },
+  "account": {
+    "label": "账户",
+    "balance": "余额",
+    "loadingBalanceDetails": "正在加载余额明细…",
+    "balanceLoadFailed": "加载余额明细失败",
+    "balanceLoadFailedDescription": "余额明细加载失败。"
   },
   "status": {
     "created": "已创建",

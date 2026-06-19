@@ -1,6 +1,7 @@
 'use client';
 
 import { ConsentBanner, ConsentDialog } from '@c15t/nextjs';
+import { useTranslations } from 'next-intl';
 
 /**
  * Client-only consent UI components.
@@ -22,6 +23,7 @@ import { ConsentBanner, ConsentDialog } from '@c15t/nextjs';
  *   more compact bar.
  */
 export function ConsentUIComponents() {
+  const t = useTranslations('consent');
   return (
     <>
       <ConsentBanner
@@ -31,14 +33,14 @@ export function ConsentUIComponents() {
         title=""
         description={
           <>
-            We use cookies for analytics.{' '}
+            {t('description')}{' '}
             <a href="/tos" className="underline">
-              Privacy
+              {t('privacy')}
             </a>
           </>
         }
-        rejectButtonText="Reject"
-        acceptButtonText="Accept"
+        rejectButtonText={t('reject')}
+        acceptButtonText={t('accept')}
       />
       <ConsentDialog />
     </>

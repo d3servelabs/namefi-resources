@@ -71,6 +71,9 @@ export function MlsReportListingDialog({
   domain,
 }: MlsReportListingDialogProps) {
   const t = useTranslations('feed');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const trpcClient = useTRPCClient();
   const [isOpen, setIsOpen] = useState(false);
   const [isReported, setIsReported] = useState(false);
@@ -192,7 +195,7 @@ export function MlsReportListingDialog({
                           placeholder={t('report.reasonPlaceholder')}
                         >
                           {selectedReasonOption
-                            ? t(
+                            ? tDynamic(
                                 `report.reasons.${selectedReasonOption.messageKey}.label`,
                               )
                             : null}
@@ -202,14 +205,16 @@ export function MlsReportListingDialog({
                     <SelectContent align="start">
                       {REPORT_REASON_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
-                          {t(`report.reasons.${option.messageKey}.label`)}
+                          {tDynamic(
+                            `report.reasons.${option.messageKey}.label`,
+                          )}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                   {selectedReasonOption ? (
                     <p className="text-xs text-muted-foreground">
-                      {t(
+                      {tDynamic(
                         `report.reasons.${selectedReasonOption.messageKey}.description`,
                       )}
                     </p>

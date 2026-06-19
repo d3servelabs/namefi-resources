@@ -38,6 +38,7 @@ export const NAMESPACES = [
   'feed',
   'payment',
   'shared',
+  'consent',
 ] as const;
 
 export type MessageNamespace = (typeof NAMESPACES)[number];

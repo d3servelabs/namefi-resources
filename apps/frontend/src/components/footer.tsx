@@ -11,7 +11,8 @@ import {
   forwardRef,
 } from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import type { Locale } from '@/i18n/config';
 import { LanguageSelector } from '@/components/i18n/language-selector';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
@@ -28,6 +29,30 @@ export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
 const YEAR = new Date().getFullYear();
 const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
+
+/**
+ * Maps an app locale to the resources app's locale (`/r/<lang>/…`). The
+ * resources site supports `en, es, de, fr, zh, ar, hi`; locales without a
+ * resources translation fall back to English so links never 404.
+ */
+const RESOURCES_LOCALE: Record<Locale, string> = {
+  en: 'en',
+  zh: 'zh',
+  ta: 'en',
+  'ar-EG': 'ar',
+};
+
+/**
+ * Point a resources **blog** link at the reader's language. Only `/r/en/blog…`
+ * links are localized (blog content is translated per-language in the resources
+ * app); other resource pages stay on `/r/en` to avoid 404s on untranslated
+ * routes. A no-op for non-blog hrefs.
+ */
+function localizeBlogHref(href: string, locale: Locale): string {
+  if (!href.startsWith('/r/en/blog')) return href;
+  const resourcesLocale = RESOURCES_LOCALE[locale] ?? 'en';
+  return `/r/${resourcesLocale}${href.slice('/r/en'.length)}`;
+}
 const NAMEFI_API_DOCS_URL = 'https://api.namefi.io/v-next/openapi/doc';
 
 const SOCIAL_LINKS = [
@@ -173,6 +198,10 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const t = useTranslations('footer');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
+  const locale = useLocale();
   const { setActiveUI } = useConsentManager();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
@@ -236,12 +265,12 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           {FOOTER_SECTIONS.map((section) => (
             <div key={section.sectionKey} className="space-y-4">
               <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                {t(`sections.${section.sectionKey}.title`)}
+                {tDynamic(`sections.${section.sectionKey}.title`)}
               </h3>
               <ul className="space-y-3 text-sm">
                 {section.links.map(
                   ({ labelKey, href, external, description }) => {
-                    const label = t(
+                    const label = tDynamic(
                       `sections.${section.sectionKey}.links.${labelKey}`,
                     );
                     return (
@@ -261,7 +290,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                           </a>
                         ) : (
                           <Link
-                            href={href as Route}
+                            href={localizeBlogHref(href, locale) as Route}
                             className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
                           >
                             <span>{label}</span>

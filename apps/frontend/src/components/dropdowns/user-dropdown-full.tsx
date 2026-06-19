@@ -53,6 +53,7 @@ import {
   type MouseEvent,
   type ReactNode,
 } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -139,6 +140,7 @@ export const UserDropdownMenu = ErrorBoundary.with(
     ),
   },
   function UserDropdownMenu() {
+    const t = useTranslations('common');
     const [showBalanceInUserDropdown] = useAdminFeatureFlag(
       SHOW_BALANCE_IN_USER_DROPDOWN_FLAG,
     );
@@ -186,16 +188,16 @@ export const UserDropdownMenu = ErrorBoundary.with(
           const message =
             error instanceof Error
               ? error.message
-              : 'The balance details failed to load.';
+              : t('account.balanceLoadFailedDescription');
           setBalanceDialogError(message);
-          toast.error('Failed to load balance details', {
+          toast.error(t('account.balanceLoadFailed'), {
             description: message,
           });
         })
         .finally(() => {
           setIsBalanceDialogLoading(false);
         });
-    }, [BalanceBreakdownDialog]);
+    }, [BalanceBreakdownDialog, t]);
 
     // Data fetched once at the parent and shared between the dropdown preview
     // and the dialog content; react-query dedupes the underlying request.
@@ -293,8 +295,8 @@ export const UserDropdownMenu = ErrorBoundary.with(
           <LazyDialogStatus
             open={isBalanceDialogOpen}
             onOpenChange={setIsBalanceDialogOpen}
-            title="Balance"
-            loadingLabel="Loading balance details..."
+            title={t('account.balance')}
+            loadingLabel={t('account.loadingBalanceDetails')}
             errorMessage={balanceDialogError}
             isLoading={isBalanceDialogLoading}
             onRetry={requestBalanceBreakdownDialog}
@@ -964,6 +966,7 @@ function UserBalanceDropdownItem({
   isLoadingBalance,
   hasWallets,
 }: BalanceDropdownItemProps) {
+  const t = useTranslations('common');
   const formattedBalance = formatAmountInUSD(totalBalanceInUsdCents, true);
 
   return (
@@ -980,7 +983,7 @@ function UserBalanceDropdownItem({
       <div className="flex w-full items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-sm">
           <CoinsIcon className="h-4 w-4" />
-          <span>Balance</span>
+          <span>{t('account.balance')}</span>
         </div>
         <div className="flex flex-col items-end leading-tight font-mono">
           {isLoadingBalance ? (
@@ -997,6 +1000,7 @@ function UserBalanceDropdownItem({
 }
 
 function LogoutDropdownItem({ onOpen }: { onOpen: () => void }) {
+  const t = useTranslations('common');
   const handleOpen = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       event.preventDefault();
@@ -1013,7 +1017,7 @@ function LogoutDropdownItem({ onOpen }: { onOpen: () => void }) {
       onClick={handleOpen}
     >
       <LogOutIcon className="me-2 h-4 w-4" />
-      <span>Log Out</span>
+      <span>{t('actions.logOut')}</span>
     </DropdownMenuItem>
   );
 }

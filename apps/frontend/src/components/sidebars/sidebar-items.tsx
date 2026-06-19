@@ -73,10 +73,13 @@ const CollapsedSidebarSubmenuItem: FC<{
   pathname: string;
 }> = ({ item, pathname }) => {
   const t = useTranslations('nav');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const [open, setOpen] = useState(false);
   const [suppressTooltip, setSuppressTooltip] = useState(false);
   const Icon = item.icon;
-  const label = t(item.title);
+  const label = tDynamic(item.title);
   const submenuItems = item.submenu ?? [];
   const isActive = isRouteActive(item, pathname);
 
@@ -154,7 +157,7 @@ const CollapsedSidebarSubmenuItem: FC<{
                   }
                 >
                   {SubIcon && <SubIcon />}
-                  <span>{t(subItem.title)}</span>
+                  <span>{tDynamic(subItem.title)}</span>
                 </DropdownMenuItem>
               );
             })}
@@ -170,6 +173,9 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
   ...rest
 }: SidebarItemsProps) => {
   const t = useTranslations('nav');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
   const pathname = usePathname();
   const { isMobile, setOpenMobile, state } = useSidebar();
   const isDesktopCollapsed = state === 'collapsed' && !isMobile;
@@ -180,7 +186,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
         <SidebarMenu>
           {items.map((item) => {
             const Icon = item.icon;
-            const label = t(item.title);
+            const label = tDynamic(item.title);
             const hasSubmenu = (item.submenu?.length ?? 0) > 0;
             const isActive = isRouteActive(item, pathname);
             const submenuItems = item.submenu ?? [];
@@ -234,7 +240,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                                 }
                               >
                                 {SubIcon && <SubIcon />}
-                                <span>{t(subItem.title)}</span>
+                                <span>{tDynamic(subItem.title)}</span>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           );

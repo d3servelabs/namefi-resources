@@ -26,18 +26,23 @@ export function NftPendingBadge({
   pendingNftStates?: DomainRow['pendingNftStates'];
 }) {
   const t = useTranslations('domains');
+  // next-intl's typed keys can't verify data-driven keys; this alias keeps
+  // the static t() calls type-checked while allowing the dynamic ones.
+  const tDynamic = t as (key: string) => string;
 
   if (!nftState || nftState === 'IDLE') return null;
 
   const label = PENDING_LABEL_KEYS[nftState]
-    ? t(PENDING_LABEL_KEYS[nftState])
+    ? tDynamic(PENDING_LABEL_KEYS[nftState])
     : t('nftPendingBadge.pending');
   // When several ops are in flight at once, surface them all in the tooltip.
   // Unknown states fall back to their raw enum value (matching prior behavior).
   const title =
     pendingNftStates && pendingNftStates.length > 1
       ? pendingNftStates
-          .map((s) => (PENDING_LABEL_KEYS[s] ? t(PENDING_LABEL_KEYS[s]) : s))
+          .map((s) =>
+            PENDING_LABEL_KEYS[s] ? tDynamic(PENDING_LABEL_KEYS[s]) : s,
+          )
           .join(', ')
       : label;
 

@@ -1,0 +1,17 @@
+{
+  "description": {
+    "description": "Cookie-consent banner body. States that the site uses cookies for analytics; followed by a 'Privacy' link to the policy. Keep it to one short sentence."
+  },
+  "privacy": {
+    "description": "Link text in the consent banner pointing to the privacy/terms policy. Means 'Privacy'.",
+    "maxLength": 16
+  },
+  "reject": {
+    "description": "Consent banner button: decline non-essential (analytics) cookies. Essential cookies still run.",
+    "maxLength": 12
+  },
+  "accept": {
+    "description": "Consent banner button: accept analytics cookies.",
+    "maxLength": 12
+  }
+}
