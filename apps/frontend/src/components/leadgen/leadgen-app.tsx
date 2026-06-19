@@ -48,6 +48,7 @@ import {
   RadioGroup,
   RadioGroupItem,
 } from '@namefi-astra/ui/components/shadcn/radio-group';
+import { ScrollAreaContent } from '@namefi-astra/ui/components/namefi/scroll-area-content';
 import { ScrollArea } from '@namefi-astra/ui/components/shadcn/scroll-area';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
@@ -3443,93 +3444,95 @@ function PastRuns({
             overflowEdgeThreshold={1}
             className={runListScrollAreaClassName}
           >
-            <div className="flex flex-col gap-2 pb-1">
-              {runs.map((run) => {
-                const canExport = isLeadgenCrmCsvExportAvailable(run);
-                const isExporting = exportingRunId === run.id;
-                const canRetry = run.status === 'FAILED';
-                const isRetrying = retryingRunIds.includes(run.id);
-                const retryLabel = isRetrying
-                  ? `Retrying buyer search for ${run.domain}`
-                  : `Retry buyer search for ${run.domain}`;
+            <ScrollAreaContent>
+              <div className="flex flex-col gap-2 pb-1">
+                {runs.map((run) => {
+                  const canExport = isLeadgenCrmCsvExportAvailable(run);
+                  const isExporting = exportingRunId === run.id;
+                  const canRetry = run.status === 'FAILED';
+                  const isRetrying = retryingRunIds.includes(run.id);
+                  const retryLabel = isRetrying
+                    ? `Retrying buyer search for ${run.domain}`
+                    : `Retry buyer search for ${run.domain}`;
 
-                return (
-                  <div
-                    key={run.id}
-                    ref={run.id === activeRunId ? selectedRunRef : undefined}
-                    className={cn(
-                      'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
-                      run.id === activeRunId
-                        ? 'border-primary/60 bg-primary/5'
-                        : 'border-border/70',
-                    )}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={getLeadgenRunHref(run.id)}
-                        className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                      >
-                        <p className="truncate text-sm font-medium">
-                          {run.domain}
-                        </p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {isTerminalLeadgenStatus(run.status)
-                            ? `${run.leadCount} leads - ${run.draftCount} drafts`
-                            : 'Searching...'}
-                        </p>
-                      </Link>
-                      {canRetry && (
-                        <Tooltip>
-                          <TooltipTrigger
-                            render={
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="icon-sm"
-                                disabled={isRetrying}
-                                aria-busy={isRetrying}
-                                aria-label={retryLabel}
-                                onClick={() => onRetryRun(run.id)}
-                              />
-                            }
+                  return (
+                    <div
+                      key={run.id}
+                      ref={run.id === activeRunId ? selectedRunRef : undefined}
+                      className={cn(
+                        'rounded-md border bg-background/40 p-3 transition-colors hover:bg-muted/40',
+                        run.id === activeRunId
+                          ? 'border-primary/60 bg-primary/5'
+                          : 'border-border/70',
+                      )}
+                    >
+                      <div className="flex items-center gap-2">
+                        <Link
+                          href={getLeadgenRunHref(run.id)}
+                          className="min-w-0 flex-1 rounded-sm outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        >
+                          <p className="truncate text-sm font-medium">
+                            {run.domain}
+                          </p>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {isTerminalLeadgenStatus(run.status)
+                              ? `${run.leadCount} leads - ${run.draftCount} drafts`
+                              : 'Searching...'}
+                          </p>
+                        </Link>
+                        {canRetry && (
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="icon-sm"
+                                  disabled={isRetrying}
+                                  aria-busy={isRetrying}
+                                  aria-label={retryLabel}
+                                  onClick={() => onRetryRun(run.id)}
+                                />
+                              }
+                            >
+                              {isRetrying ? (
+                                <Loader2 className="animate-spin" />
+                              ) : (
+                                <RefreshCw />
+                              )}
+                            </TooltipTrigger>
+                            <TooltipContent sideOffset={6}>
+                              {isRetrying ? 'Retrying search' : 'Retry search'}
+                            </TooltipContent>
+                          </Tooltip>
+                        )}
+                        {canExport && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="icon-sm"
+                            disabled={isExporting}
+                            aria-label={`Download CRM CSV for ${run.domain}`}
+                            onClick={() => {
+                              void onExportRun(run.id);
+                            }}
                           >
-                            {isRetrying ? (
+                            {isExporting ? (
                               <Loader2 className="animate-spin" />
                             ) : (
-                              <RefreshCw />
+                              <Download />
                             )}
-                          </TooltipTrigger>
-                          <TooltipContent sideOffset={6}>
-                            {isRetrying ? 'Retrying search' : 'Retry search'}
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                      {canExport && (
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="icon-sm"
-                          disabled={isExporting}
-                          aria-label={`Download CRM CSV for ${run.domain}`}
-                          onClick={() => {
-                            void onExportRun(run.id);
-                          }}
-                        >
-                          {isExporting ? (
-                            <Loader2 className="animate-spin" />
-                          ) : (
-                            <Download />
-                          )}
-                        </Button>
-                      )}
-                      <span className="flex w-4 shrink-0 items-center justify-center">
-                        <RunStatusIcon status={run.status} />
-                      </span>
+                          </Button>
+                        )}
+                        <span className="flex w-4 shrink-0 items-center justify-center">
+                          <RunStatusIcon status={run.status} />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            </ScrollAreaContent>
           </ScrollArea>
         </div>
       )}
