@@ -9,7 +9,8 @@
     "glossary": "Glossary",
     "tld": "TLDs",
     "partners": "Partners",
-    "careers": "Careers"
+    "careers": "Careers",
+    "topics": "Topics"
   },
   "blog": {
     "homeEmpty": "No posts are available in this language yet. Check back soon.",
@@ -58,5 +59,13 @@
     "detailKeywordsHeading": "Focus areas",
     "indexTitle": "Partner Spotlights",
     "indexDescription": "Discover the teams collaborating with Namefi to grow the ecosystem."
+  },
+  "topics": {
+    "indexTitle": "Topics",
+    "indexDescription": "Browse every guide by topic — six pillars spanning domain tokenization, the basics, security, choosing a TLD, investing, and the Web3 foundations behind them.",
+    "indexEmpty": "No topics available yet.",
+    "emptyCluster": "No guides in this topic yet.",
+    "cornerstoneLabel": "Start here",
+    "guidesCountLabel": "guides"
   }
 }

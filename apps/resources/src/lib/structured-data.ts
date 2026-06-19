@@ -38,6 +38,42 @@ export function buildBreadcrumbJsonLd(
   };
 }
 
+export type CollectionItem = { name: string; url: string };
+
+// Emits a CollectionPage whose mainEntity is an ordered ItemList. Used by the
+// topic-cluster and series hub pages so Google/LLM crawlers see the hub as a
+// curated collection of its member articles (the same shape /watch uses for its
+// video index), which is what surfaces cluster-style sitelinks/rich results.
+export function buildCollectionJsonLd(options: {
+  name: string;
+  description: string;
+  canonicalUrl: string;
+  baseUrl: string;
+  locale: Locale;
+  items: readonly CollectionItem[];
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${options.canonicalUrl}#collection`,
+    name: options.name,
+    description: options.description,
+    url: options.canonicalUrl,
+    inLanguage: options.locale,
+    publisher: buildPublisher(options.baseUrl),
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: options.items.length,
+      itemListElement: options.items.map((item, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: item.url,
+        name: item.name,
+      })),
+    },
+  };
+}
+
 export type ArticleAuthor = {
   name: string;
   // Optional canonical profile (twitter/linkedin/site) so the author resolves

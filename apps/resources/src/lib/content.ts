@@ -824,6 +824,41 @@ function parseGlossaryEntry({
   };
 }
 
+// Topic-cluster / series taxonomy (cluster/series/seriesOrder/format) is
+// language-independent and is authored only on the English source post. A
+// translated post that exists as its own file would otherwise parse with these
+// unset and silently drop out of its hub/series, so when a translation declares
+// no taxonomy of its own, inherit the full set from the English entry — keeping
+// a single source of truth while letting a translation override wholesale if it
+// ever does set its own.
+function inheritTaxonomyFromDefaultLocale(
+  entry: PostEntry,
+  slug: string,
+): PostEntry {
+  if (entry.sourceLanguage === i18n.defaultLocale) return entry;
+  const { cluster, series, seriesOrder, format } = entry.frontmatter;
+  if (
+    cluster !== undefined ||
+    series !== undefined ||
+    seriesOrder !== undefined ||
+    format !== undefined
+  ) {
+    return entry;
+  }
+  const source = loadPostEntry(i18n.defaultLocale, slug);
+  if (!source) return entry;
+  return {
+    ...entry,
+    frontmatter: {
+      ...entry.frontmatter,
+      cluster: source.frontmatter.cluster,
+      series: source.frontmatter.series,
+      seriesOrder: source.frontmatter.seriesOrder,
+      format: source.frontmatter.format,
+    },
+  };
+}
+
 function loadPostEntry(locale: Locale, slug: string): PostEntry | undefined {
   const cacheKey = `${locale}:${slug}`;
   if (postEntryCache.has(cacheKey)) {
@@ -832,7 +867,10 @@ function loadPostEntry(locale: Locale, slug: string): PostEntry | undefined {
 
   const filePath = resolvePostFilePath(locale, slug);
   if (filePath) {
-    const entry = parsePostEntry({ slug, locale, filePath });
+    const entry = inheritTaxonomyFromDefaultLocale(
+      parsePostEntry({ slug, locale, filePath }),
+      slug,
+    );
     postEntryCache.set(cacheKey, entry);
     return entry;
   }
@@ -1060,6 +1098,17 @@ export function getRelatedPosts(
     )
     .slice(0, limit)
     .map(({ post }) => post);
+}
+
+// All non-draft posts whose primary cluster is `cluster`, newest first (the
+// shared sort from getPostsForLocale). Powers the /topics/[cluster] pillar hubs.
+export function getPostsInCluster(
+  locale: Locale,
+  cluster: ClusterSlug,
+): PostEntry[] {
+  return getPostsForLocale(locale).filter(
+    (post) => post.frontmatter.cluster === cluster,
+  );
 }
 
 const ASSETS_ROOT = path.join(DATA_ROOT, 'assets');

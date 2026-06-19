@@ -9,7 +9,8 @@
     "glossary": "术语表",
     "tld": "TLD 指南",
     "partners": "合作伙伴",
-    "careers": "招聘"
+    "careers": "招聘",
+    "topics": "专题"
   },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
@@ -58,5 +59,13 @@
     "detailKeywordsHeading": "重点领域",
     "indexTitle": "合作伙伴故事",
     "indexDescription": "了解与 Namefi 合作、共同建设生态的团队。"
+  },
+  "topics": {
+    "indexTitle": "专题",
+    "indexDescription": "按专题浏览全部指南——六大支柱,涵盖域名通证化、基础知识、安全、如何选择 TLD、投资,以及背后的 Web3 基础。",
+    "indexEmpty": "暂无专题。",
+    "emptyCluster": "该专题暂无指南。",
+    "cornerstoneLabel": "从这里开始",
+    "guidesCountLabel": "篇指南"
   }
 }
