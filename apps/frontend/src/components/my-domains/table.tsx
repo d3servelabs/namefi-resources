@@ -51,6 +51,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useWatchAssets } from '@/hooks/use-watch-assets';
 import { useTRPC } from '@/lib/trpc';
 import { useMyDomainsColumns } from './columns';
+import type { MakerListingRow } from './marketplace-orders/use-maker-orders';
 import { DomainCard } from './domain-card';
 import { triggerCelebrationAtPosition } from './confetti-celebration';
 import { RenewNowModal } from './renew-now-modal';
@@ -119,8 +120,13 @@ export function MyDomainsTable(props: {
   title?: string;
   domains: DomainRow[];
   kind: 'active' | 'inactive';
+  /**
+   * Active listings keyed by `makerListingKey(chainId, tokenId)`; when set, a
+   * "Marketplace" column shows.
+   */
+  listingByChainToken?: Map<string, MakerListingRow>;
 }) {
-  const { title, domains, kind } = props;
+  const { title, domains, kind, listingByChainToken } = props;
 
   const t = useTranslations('domains');
   const trpc = useTRPC();
@@ -802,6 +808,7 @@ export function MyDomainsTable(props: {
     renewalPriceUsdPerYearByTld,
     isMobile,
     domainCount: domains.length,
+    listingByChainToken,
     onToggleAllCurrentPage: handleToggleAllCurrentPage,
     onRowSelectionChange: handleRowSelectionChange,
     onToggleAutoRenew: handleToggleAutoRenew,

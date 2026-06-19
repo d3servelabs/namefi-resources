@@ -67,6 +67,13 @@ const MarketplacePanel = dynamic(
   },
 );
 
+// Heavy: pulls the marketplace listing read + wagmi. Keep it lazy so the detail
+// header doesn't add that weight for every domain.
+const DomainListingBadge = dynamic(
+  () => import('./domain-listing-badge').then((m) => m.DomainListingBadge),
+  { ssr: false },
+);
+
 export type DomainManagementProps = HTMLAttributes<HTMLDivElement> & {
   domain: string;
 };
@@ -422,6 +429,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           filter={{ type: 'domain', identifier: domain }}
           autoSurfaceOnIncrease
         />
+        {marketplaceListingEnabled && (
+          <DomainListingBadge domain={domain} chainId={nft.chainId} />
+        )}
       </div>
 
       {loadedDomainSupportedFeatures.domainManagement.enabled ? (

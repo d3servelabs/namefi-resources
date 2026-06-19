@@ -35,6 +35,98 @@ body {
   scrollbar-gutter: stable both-edges;
 }
 
+/* Radiating brand-green 光芒 around a neutral icon while its task is in progress
+ * (the finishing-up chips). The icon keeps its own color; the radiance comes
+ * from layered drop-shadows on the icon plus a soft pulsing aura behind it, so
+ * progress reads as shining light without recoloring the icon. */
+@keyframes icon-glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 2px oklch(0.72 0.17 162 / 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 5px oklch(0.72 0.17 162 / 1))
+      drop-shadow(0 0 11px oklch(0.72 0.17 162 / 0.85));
+  }
+}
+
+.animate-icon-glow {
+  animation: icon-glow 1.6s ease-in-out infinite;
+}
+
+/* Soft halo of light radiating outward behind the icon. */
+@keyframes icon-radiance {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.35);
+  }
+}
+
+.icon-glow-aura {
+  position: absolute;
+  inset: -7px;
+  z-index: 0;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    oklch(0.74 0.17 162 / 0.65) 0%,
+    oklch(0.74 0.17 162 / 0.25) 45%,
+    transparent 72%
+  );
+  filter: blur(3px);
+  pointer-events: none;
+  animation: icon-radiance 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-icon-glow {
+    animation: none;
+    filter: drop-shadow(0 0 5px oklch(0.72 0.17 162 / 0.85));
+  }
+  .icon-glow-aura {
+    animation: none;
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Dark, minimal scrollbars for our dark theme (spaceship.com-style): a thin,
+ * rounded, translucent thumb on a transparent track instead of the bright OS
+ * default that reads as a light bar over our near-black surfaces. Inherited
+ * Firefox props + global WebKit pseudo-elements cover nested scroll regions
+ * too. The `.no-scrollbar` utility still wins (higher specificity), so opted-out
+ * containers stay hidden. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(1 0 0 / 18%) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: oklch(1 0 0 / 16%);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(1 0 0 / 28%);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;

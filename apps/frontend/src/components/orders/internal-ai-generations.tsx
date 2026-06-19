@@ -5,8 +5,16 @@ import { CartCard } from '@/components/cart-card';
 import type { AppRouterOutput } from '@/lib/trpc';
 import Link from 'next/link';
 import { ExternalLink } from 'lucide-react';
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from '@namefi-astra/ui/components/shadcn/carousel';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { DomainName } from '@/components/domain-name';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -19,7 +27,7 @@ type LogoPreviewProps = {
   isLoading?: boolean;
 };
 
-const LogoPreview = ({
+export const LogoPreview = ({
   domain,
   logoUrl,
   isLoading = false,
@@ -121,11 +129,76 @@ export const InternalAIGenerations = ({
                 logoUrl={logo?.url ?? undefined}
                 isLoading={isLoading}
               />
-              <div className="mt-3 text-center text-sm truncate">{domain}</div>
+              <DomainName
+                domain={domain}
+                className="mt-3 items-center text-center text-sm"
+              />
             </div>
           );
         })}
       </div>
     </CartCard>
+  );
+};
+
+/**
+ * Lean carousel of the AI logo previews — used inside the "Just AIng" detail
+ * popup on the order completion page (the heading/close come from the
+ * Dialog/Sheet around it). Standard shadcn carousel: swipe/drag + arrows.
+ */
+export const AiLogoCarousel = ({
+  domains,
+  internalAIGenerations,
+  isLoading = false,
+}: {
+  domains: string[];
+  internalAIGenerations?: InternalAIGenerations;
+  isLoading?: boolean;
+}) => {
+  if (domains.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <Carousel className="px-1" opts={{ align: 'start' }}>
+        <CarouselContent className="-ml-2">
+          {domains.map((domain) => {
+            const gens = internalAIGenerations?.[domain] ?? [];
+            const logo = gens.find((g) => g.type === 'logo');
+            return (
+              <CarouselItem
+                key={`ai-logo-${domain}`}
+                className="basis-3/4 pl-2 sm:basis-1/2"
+              >
+                <LogoPreview
+                  domain={domain}
+                  logoUrl={logo?.url ?? undefined}
+                  isLoading={isLoading}
+                />
+                <DomainName
+                  domain={domain}
+                  className="mt-2 items-center text-center text-sm"
+                />
+              </CarouselItem>
+            );
+          })}
+        </CarouselContent>
+        {domains.length > 1 ? (
+          <>
+            <CarouselPrevious className="left-1 size-7 border-white/10 bg-black/40 text-zinc-200 hover:bg-black/70" />
+            <CarouselNext className="right-1 size-7 border-white/10 bg-black/40 text-zinc-200 hover:bg-black/70" />
+          </>
+        ) : null}
+      </Carousel>
+
+      <Link
+        href="/studio"
+        className="inline-flex items-center gap-2 text-emerald-300 text-sm underline underline-offset-4 hover:text-emerald-200"
+      >
+        <ExternalLink className="h-4 w-4" />
+        Explore in Just AIng
+      </Link>
+    </div>
   );
 };

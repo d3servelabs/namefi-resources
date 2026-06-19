@@ -30,6 +30,16 @@ export interface MakerOfferRow {
   offer: Offer;
 }
 
+/**
+ * Key for matching a listing to a domain. A domain's tokenId is derived from
+ * its name and is identical across chains, so the tokenId alone is ambiguous
+ * once listings span chains — the chainId must be part of the key, or a listing
+ * on one chain would surface on a domain whose NFT lives on another.
+ */
+export function makerListingKey(chainId: number, tokenId: string): string {
+  return `${chainId}:${tokenId}`;
+}
+
 interface QueryArgs {
   walletAddresses: readonly Address[];
   enabled?: boolean;

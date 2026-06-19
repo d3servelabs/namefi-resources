@@ -21,6 +21,11 @@ import {
   useOrderProgress,
 } from '@/hooks/use-order-progress';
 import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
+import {
+  MARKETPLACE_LISTINGS_FLAG,
+  useBooleanOpenFeatureFlag,
+} from '@/lib/openfeature-flags';
+import { MARKETPLACE_SUPPORTED_CHAINS } from '@/lib/marketplaces/chains';
 import { getSubDomainAndParentDomainFromNormalizedDomainName } from '@namefi-astra/utils/domain-names';
 import { getTokenIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { AuthRequired } from '@/components/auth-required';
@@ -30,6 +35,9 @@ import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { Unauthorized } from '@/components/unauthorized';
 import { useCartContext } from '@/components/providers/cart';
 import { OrderNotFound } from '@/components/orders/order-not-found';
+import { CompletionActions } from '@/components/orders/completion-actions';
+import { FinishingUpInline } from '@/components/orders/finishing-up-inline';
+import { usePostRegistrationTasks } from '@/components/orders/use-post-registration-tasks';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { PageShell } from '@/components/page-shell';
@@ -61,24 +69,18 @@ const NftCarousel = dynamic(
   { ssr: false, loading: () => <Skeleton className="h-64 w-full" /> },
 );
 
-const PaymentDetailsSummary = dynamic(
+// Heavy: pulls the marketplace modal + wagmi/adapter weight. Keep it off the
+// order-page shell — it only loads when a self-recipient success renders it.
+const ListOnMarketplaceEntry = dynamic(
   () =>
-    import('@/components/orders/payment-details-summary').then(
-      (mod) => mod.PaymentDetailsSummary,
+    import('@/components/orders/list-on-marketplace-entry-runtime').then(
+      (mod) => mod.ListOnMarketplaceEntryRuntime,
     ),
   { ssr: false },
 );
 
 const ShareOrder = dynamic(
   () => import('@/components/orders/share-order').then((mod) => mod.ShareOrder),
-  { ssr: false },
-);
-
-const InternalAIGenerations = dynamic(
-  () =>
-    import('@/components/orders/internal-ai-generations').then(
-      (mod) => mod.InternalAIGenerations,
-    ),
   { ssr: false },
 );
 
@@ -227,6 +229,10 @@ export default function OrderPage({ params }: OrderPageProps) {
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [copiedField, setCopiedField] = useState<'message' | null>(null);
   const [manageShareUrl, setManageShareUrl] = useState('');
+  // Redesigned success view (Option C): Share / List reveal their panels on
+  // demand so the celebration + actions stay the hero.
+  const [showShareSection, setShowShareSection] = useState(false);
+  const [showListSection, setShowListSection] = useState(false);
 
   // This sets the cart count to 0 after the order is created
   const { refetchCart } = useCartContext();
@@ -454,6 +460,117 @@ export default function OrderPage({ params }: OrderPageProps) {
     );
   }, [linkedWalletAddresses, linkedWalletsReady, recipientWalletAddress]);
 
+  const marketplaceListingEnabled = useBooleanOpenFeatureFlag(
+    MARKETPLACE_LISTINGS_FLAG,
+  );
+
+  // NFT minting is async and decoupled from registration, so an order item
+  // being SUCCEEDED does NOT mean the token exists on-chain yet. Gate listing on
+  // the indexer instead: a domain is listable only once it shows up as owned by
+  // the recipient wallet (i.e. minted AND visible on-chain) — which is also what
+  // the marketplace needs to find the token.
+  const ownedDomainsQuery = useQuery(
+    trpc.registry.getDomainsByOwner.queryOptions(
+      { identifier: recipientWalletAddress ?? '' },
+      {
+        // Mint status is order-level (drives the minting indicator + copy), so
+        // this runs for any self-recipient — the listing CTA stays flag-gated.
+        enabled:
+          isAuthenticated &&
+          userWalletsReady &&
+          isRecipientSelf &&
+          Boolean(recipientWalletAddress),
+        // Poll while a registered domain hasn't been indexed yet, so the minting
+        // indicator clears and the "List" entry auto-unlocks the moment minting
+        // + indexing completes.
+        refetchInterval: (query) => {
+          if (viewState !== 'success' || orderItems.length === 0) return false;
+          // Stop only once every order domain is minted *and tokenized* — name
+          // presence alone isn't enough, since listability + the minting hint
+          // both key off a non-null tokenId. Polling on name-only would strand
+          // a name-without-tokenId in a perpetual "minting" state.
+          const mintedNames = new Set(
+            (query.state.data?.domains ?? [])
+              .filter((d) => d.tokenId)
+              .map((d) => d.normalizedDomainName),
+          );
+          return orderItems.every((i) => mintedNames.has(i.fullDomain))
+            ? false
+            : 8000;
+        },
+      },
+    ),
+  );
+
+  // Indexer truth: domain -> on-chain { chainId, tokenId } for the recipient.
+  const indexedByName = useMemo(() => {
+    const map = new Map<string, { chainId: number; tokenId: string }>();
+    for (const d of ownedDomainsQuery.data?.domains ?? []) {
+      if (d.tokenId) {
+        map.set(d.normalizedDomainName, {
+          chainId: d.chainId,
+          tokenId: d.tokenId,
+        });
+      }
+    }
+    return map;
+  }, [ownedDomainsQuery.data]);
+
+  const listableDomains = useMemo(
+    () =>
+      orderItems.flatMap((item) => {
+        const indexed = indexedByName.get(item.fullDomain);
+        // Only domains on a marketplace-supported chain are actually listable —
+        // keep `canList` in lockstep with what ListOnMarketplaceEntry renders,
+        // so the CTA never opens an empty panel.
+        return indexed && MARKETPLACE_SUPPORTED_CHAINS.includes(indexed.chainId)
+          ? [
+              {
+                fullDomain: item.fullDomain,
+                tokenId: indexed.tokenId,
+                chainId: indexed.chainId,
+              },
+            ]
+          : [];
+      }),
+    [orderItems, indexedByName],
+  );
+
+  // Domains the order registered that aren't minted+indexed yet (still minting).
+  // `mintPending` requires the indexer query to have actually resolved, so we
+  // never claim "minting" when the query is disabled or still loading.
+  const pendingDomains = useMemo(
+    () =>
+      orderItems
+        .filter((item) => !indexedByName.has(item.fullDomain))
+        .map((item) => item.fullDomain),
+    [orderItems, indexedByName],
+  );
+  const mintPending = useMemo(
+    () =>
+      ownedDomainsQuery.isSuccess &&
+      viewState === 'success' &&
+      orderItems.length > 0 &&
+      pendingDomains.length > 0,
+    [ownedDomainsQuery.isSuccess, viewState, orderItems.length, pendingDomains],
+  );
+
+  // Background "what's still running" tasks (mint, DNS, DNSSEC, parking). Shares
+  // the getDomainsByOwner cache with the listing gate above (same query key).
+  const orderDomainNames = useMemo(
+    () => orderItems.map((item) => item.fullDomain),
+    [orderItems],
+  );
+  const { tasks: postRegistrationTasks } = usePostRegistrationTasks({
+    domains: orderDomainNames,
+    walletAddress: recipientWalletAddress,
+    enabled:
+      viewState === 'success' &&
+      userWalletsReady &&
+      isRecipientSelf &&
+      Boolean(recipientWalletAddress),
+  });
+
   const shareManageMessage = useMemo(() => {
     if (!orderItems?.length) {
       return t('detail.shareManageDefault');
@@ -490,7 +607,12 @@ export default function OrderPage({ params }: OrderPageProps) {
         : activeProgressCopy.title;
   const subheading =
     viewState === 'success'
-      ? t('detail.successSubheading', { count: orderItems.length })
+      ? mintPending
+        ? // Registration is done but the NFT isn't on-chain yet — don't claim
+          // "here is the NFT". Say what's true and what's still happening.
+          // TODO(i18n): add an order translation key for this mint-pending copy.
+          `Your ${orderItems.length > 1 ? 'domains are' : 'domain is'} registered. We're minting your ${orderItems.length > 1 ? 'NFTs' : 'NFT'} now — you can manage ${orderItems.length > 1 ? 'them' : 'it'} right away.`
+        : t('detail.successSubheading', { count: orderItems.length })
       : viewState === 'failed'
         ? t('detail.failedSubheading')
         : activeProgressCopy.description;
@@ -534,7 +656,9 @@ export default function OrderPage({ params }: OrderPageProps) {
             </>
           ) : (
             <>
-              <h1 className="text-4xl font-bold mb-3">{heading}</h1>
+              <h1 className="mb-3 text-balance break-words font-bold text-2xl sm:text-4xl">
+                {heading}
+              </h1>
               <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
                 {subheading}
               </p>
@@ -575,48 +699,101 @@ export default function OrderPage({ params }: OrderPageProps) {
               items={orderItems}
               origin={origin}
               isCompletedOrder={isCompletedOrder}
-              domainAction={isRecipientSelf ? 'manage' : 'share'}
-              onShare={
-                isRecipientSelf ? undefined : () => setShareDialogOpen(true)
-              }
             />
-          </div>
-        )}
-        {(viewState === 'success' || viewState === 'failed') && (
-          <div>
-            {orderDetails && (
-              <PaymentDetailsSummary orderWithPayments={orderDetails} />
-            )}
           </div>
         )}
         {viewState === 'success' && !isFailedOrder && (
-          <div>
-            <ShareOrder origin={origin} shareMessage={shareMessage} />
-            <InternalAIGenerations
-              domains={uniqueDomains}
-              internalAIGenerations={internalAiGenerations}
-              isLoading={isInternalAiGenerationsLoading}
-            />
-          </div>
+          <>
+            {/* PRIMARY ACTIONS — Manage · Share · List for Sale */}
+            <div className="mt-8 flex justify-center">
+              <CompletionActions
+                manageHref={
+                  orderItems.length === 1
+                    ? `/domains/${orderItems[0].fullDomain}`
+                    : '/domains'
+                }
+                onShare={
+                  // Recipient is self → reveal the social-share block. Sent to
+                  // someone else (a gift) → open the manage-access handoff
+                  // dialog so the buyer can pass the manage link along.
+                  isRecipientSelf
+                    ? () => setShowShareSection((s) => !s)
+                    : () => setShareDialogOpen(true)
+                }
+                onList={() => setShowListSection((s) => !s)}
+                canList={
+                  userWalletsReady &&
+                  isRecipientSelf &&
+                  marketplaceListingEnabled &&
+                  Boolean(recipientWalletAddress) &&
+                  listableDomains.length > 0
+                }
+                multiple={orderItems.length > 1}
+              />
+            </div>
+
+            {showShareSection && (
+              <div className="mt-6">
+                <ShareOrder origin={origin} shareMessage={shareMessage} />
+              </div>
+            )}
+
+            {showListSection &&
+              userWalletsReady &&
+              isRecipientSelf &&
+              marketplaceListingEnabled &&
+              recipientWalletAddress &&
+              listableDomains.length > 0 && (
+                <div className="mt-6">
+                  <ListOnMarketplaceEntry
+                    domains={listableDomains}
+                    ownerAddress={recipientWalletAddress}
+                  />
+                </div>
+              )}
+
+            {/* DEMOTED — what's still finishing (Minting / DNSSEC / Just AIng,
+                each tappable for details) + the path to everything else. */}
+            <div className="mt-9 flex flex-col items-center gap-2">
+              {userWalletsReady &&
+                isRecipientSelf &&
+                recipientWalletAddress && (
+                  <FinishingUpInline
+                    tasks={postRegistrationTasks}
+                    aiDomains={uniqueDomains}
+                    aiGenerations={internalAiGenerations}
+                    aiLoading={isInternalAiGenerationsLoading}
+                  />
+                )}
+              <Link
+                href={`/orders/${id}/details`}
+                className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+              >
+                View full details →
+              </Link>
+            </div>
+          </>
         )}
 
-        <div className="flex gap-4 mb-8">
-          <NamefiButton
-            variant="outline"
-            className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
-            render={<Link href={`/orders/${id}/details`} />}
-            nativeButton={false}
-          >
-            {t('detail.viewFullDetails')}
-          </NamefiButton>
-          <NamefiButton
-            className="flex-1"
-            render={<Link href="/" />}
-            nativeButton={false}
-          >
-            {t('detail.backToHome')}
-          </NamefiButton>
-        </div>
+        {viewState !== 'success' && (
+          <div className="mb-8 flex gap-4">
+            <NamefiButton
+              variant="outline"
+              className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
+              render={<Link href={`/orders/${id}/details`} />}
+              nativeButton={false}
+            >
+              {t('detail.viewFullDetails')}
+            </NamefiButton>
+            <NamefiButton
+              className="flex-1"
+              render={<Link href="/" />}
+              nativeButton={false}
+            >
+              {t('detail.backToHome')}
+            </NamefiButton>
+          </div>
+        )}
       </div>
 
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>

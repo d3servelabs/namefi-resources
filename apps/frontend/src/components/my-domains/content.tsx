@@ -25,8 +25,14 @@ import { orderStatusSchema } from '@namefi-astra/common/shared-schemas';
 import { MyDomainsEmptyPlaceholder } from './empty-placeholder';
 import { LoadingSkeletons } from './loading-skeletons';
 import { MyDomainsTable } from './table';
+import {
+  type MakerListingRow,
+  makerListingKey,
+  useMyMakerListings,
+} from './marketplace-orders/use-maker-orders';
 import { OtherWalletOrdersTable } from './other-wallet-orders-table';
 import { isDomainPossiblyRenewable } from './utils';
+import type { Address } from 'viem';
 
 // Heavy: pulls the marketplace adapter factory + every adapter via dynamic
 // imports. Keep it out of the /domains app-shell bundle.
@@ -70,6 +76,28 @@ export const MyDomainsContent = () => {
     () => new Set(domains.map((domain) => domain.normalizedDomainName)),
     [domains],
   );
+
+  // Active marketplace listings for the user's wallets, keyed by chain+tokenId
+  // so the domains table can show a per-row listing badge (tokenId alone is
+  // ambiguous across chains). Gated on the marketplace flag — when off, the
+  // query never runs and the column is hidden. Note: this
+  // fans out across chains/wallets on /domains load (the cost of showing listing
+  // status inline rather than behind the "My Listings & Offers" tab).
+  const makerListings = useMyMakerListings({
+    walletAddresses: linkedWalletAddresses as Address[],
+    enabled: marketplaceOrdersEnabled && linkedWalletsReady,
+  });
+  const listingByChainToken = useMemo(() => {
+    if (!marketplaceOrdersEnabled) return undefined;
+    const map = new Map<string, MakerListingRow>();
+    for (const row of makerListings.data) {
+      const key = makerListingKey(row.chainId, row.listing.tokenId);
+      if (!map.has(key)) {
+        map.set(key, row);
+      }
+    }
+    return map;
+  }, [makerListings.data, marketplaceOrdersEnabled]);
 
   const otherWalletOrderItems = useMemo(() => {
     if (!orderItems) {
@@ -194,7 +222,11 @@ export const MyDomainsContent = () => {
               </EmptyPlaceholder.Title>
             </EmptyPlaceholder>
           ) : (
-            <MyDomainsTable kind="active" domains={activeDomains} />
+            <MyDomainsTable
+              kind="active"
+              domains={activeDomains}
+              listingByChainToken={listingByChainToken}
+            />
           )}
         </TabsContent>
 
@@ -206,7 +238,11 @@ export const MyDomainsContent = () => {
               </EmptyPlaceholder.Title>
             </EmptyPlaceholder>
           ) : (
-            <MyDomainsTable kind="inactive" domains={inactiveDomains} />
+            <MyDomainsTable
+              kind="inactive"
+              domains={inactiveDomains}
+              listingByChainToken={listingByChainToken}
+            />
           )}
         </TabsContent>
 

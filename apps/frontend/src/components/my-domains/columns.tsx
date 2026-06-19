@@ -11,6 +11,11 @@ import { AutoEnsCell } from './cells/auto-ens-cell';
 import { DateTokenizedCell } from './cells/date-tokenized-cell';
 import { DomainNameCell } from './cells/domain-name-cell';
 import { RenewalCell } from './cells/renewal-cell';
+import { ListingBadge } from '@/components/marketplace/listing-badge';
+import {
+  type MakerListingRow,
+  makerListingKey,
+} from './marketplace-orders/use-maker-orders';
 import type { DomainRow } from './types';
 import {
   getCustomRenewalPrice,
@@ -31,6 +36,14 @@ export interface UseMyDomainsColumnsArgs {
   isMobile: boolean;
   /** Total number of domains in this table, shown in the "Domain Name" header. */
   domainCount: number;
+  /**
+   * Active marketplace listings keyed by `makerListingKey(chainId, tokenId)`.
+   * When provided (marketplace flag on), a "Marketplace" column renders a
+   * listing badge per row. Omitted when the flag is off, so the column doesn't
+   * appear. Keyed by chain+tokenId because a domain's tokenId is identical
+   * across chains.
+   */
+  listingByChainToken?: Map<string, MakerListingRow>;
   onToggleAllCurrentPage: (selectAll: boolean) => void;
   onRowSelectionChange: (
     domainName: NamefiNormalizedDomain,
@@ -54,6 +67,7 @@ export function useMyDomainsColumns({
   renewalPriceUsdPerYearByTld,
   isMobile,
   domainCount,
+  listingByChainToken,
   onToggleAllCurrentPage,
   onRowSelectionChange,
   onToggleAutoRenew,
@@ -131,6 +145,30 @@ export function useMyDomainsColumns({
         ),
         size: 200,
       },
+      ...(listingByChainToken
+        ? [
+            {
+              id: 'marketplace',
+              header: 'Marketplace',
+              cell: ({ row }) => {
+                const { tokenId, chainId } = row.original;
+                const listing =
+                  tokenId != null && chainId != null
+                    ? listingByChainToken.get(
+                        makerListingKey(Number(chainId), String(tokenId)),
+                      )?.listing
+                    : undefined;
+                return listing ? (
+                  <ListingBadge listing={listing} />
+                ) : (
+                  <span className="text-muted-foreground">—</span>
+                );
+              },
+              size: 160,
+              enableSorting: false,
+            } satisfies ColumnDef<DomainRow>,
+          ]
+        : []),
       {
         accessorKey: 'expirationDate',
         header: t('columns.renewal'),
@@ -278,6 +316,7 @@ export function useMyDomainsColumns({
       renewalPriceUsdPerYearByTld,
       isMobile,
       domainCount,
+      listingByChainToken,
       onToggleAllCurrentPage,
       onRowSelectionChange,
       onToggleAutoRenew,
