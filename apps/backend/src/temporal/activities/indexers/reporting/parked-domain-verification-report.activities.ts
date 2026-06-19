@@ -20,16 +20,17 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils';
 import { and, sql } from 'drizzle-orm';
 import { createElement } from 'react';
 import { render } from '@react-email/components';
-import {
-  type ParkedDomainVerification,
-  verifyParkedDomains,
-} from '#lib/domains/parking-verification';
+import { verifyParkedDomains } from '#lib/domains/parking-verification';
 import { createLogger } from '#lib/logger';
 import { sendMail, type SendMailInput } from '../../../../mail/mail-client';
 import {
   ParkedDomainVerificationReport,
   type ParkedDomainProblem,
 } from '../../../../mail/templates/parked-domain-verification-report';
+import {
+  buildProblemsCsv,
+  toProblem,
+} from './parking-verification-report-helpers';
 
 const _logger = createLogger({ module: 'parked-domain-verification-report' });
 
@@ -98,6 +99,8 @@ export async function collectParkedDomains(): Promise<CollectParkedDomainsResult
       .from(namefiNftView)
       .leftJoin(domainConfigTable, leftJoinOn)
       .where(and(PARK_CONDITION))
+      // Stable order so the capped subset is deterministic across runs.
+      .orderBy(namefiNftView.normalizedDomainName)
       .limit(MAX_DOMAINS_PER_RUN),
     db
       .with(namefiNftCte)
@@ -120,34 +123,6 @@ export async function collectParkedDomains(): Promise<CollectParkedDomainsResult
   return {
     domains: rows.map((r) => r.normalizedDomainName),
     totalParked,
-  };
-}
-
-function toProblem(
-  result: ParkedDomainVerification,
-): ParkedDomainProblem | null {
-  if (result.overall !== 'warn' && result.overall !== 'fail') return null;
-  const issues: string[] = [];
-  const checks = [
-    ['DNS', result.dns],
-    ['SSL', result.ssl],
-    ['Serving', result.serving],
-    ['Redirect', result.redirect],
-  ] as const;
-  for (const [label, check] of checks) {
-    if (check.status === 'warn' || check.status === 'fail') {
-      issues.push(`${label}: ${check.detail}`);
-    }
-  }
-  return {
-    domain: result.domain,
-    mode: result.mode,
-    overall: result.overall,
-    dns: result.dns.status,
-    ssl: result.ssl.status,
-    serving: result.serving.status,
-    redirect: result.redirect.status,
-    issues,
   };
 }
 
@@ -174,38 +149,6 @@ export async function verifyParkedDomainsChunk(input: {
   }
 
   return { total: results.length, counts, problems };
-}
-
-function csvEscape(value: string | number): string {
-  return `"${String(value).replace(/"/g, '""')}"`;
-}
-
-function buildProblemsCsv(problems: ParkedDomainProblem[]): string {
-  const headers = [
-    'Domain',
-    'Mode',
-    'Overall',
-    'DNS',
-    'SSL',
-    'Serving',
-    'Redirect',
-    'Issues',
-  ];
-  const rows = problems.map((p) =>
-    [
-      p.domain,
-      p.mode,
-      p.overall,
-      p.dns,
-      p.ssl,
-      p.serving,
-      p.redirect,
-      p.issues.join(' | '),
-    ]
-      .map(csvEscape)
-      .join(','),
-  );
-  return [headers.map(csvEscape).join(','), ...rows].join('\n');
 }
 
 /** Render and email the weekly parked-domain verification report. */

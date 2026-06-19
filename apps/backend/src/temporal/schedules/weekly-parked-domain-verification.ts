@@ -38,19 +38,6 @@ const config: ScheduleConfig<typeof weeklyParkedDomainVerificationWorkflow> = {
 export const weeklyParkedDomainVerificationSchedule =
   new WeeklyParkedDomainVerificationSchedule(config);
 
-// Dry-run variant for manual testing (run more frequently). It performs the
-// same live verification + email; trigger it on demand from /admin/schedules.
-const dryRunConfig: ScheduleConfig<
-  typeof weeklyParkedDomainVerificationWorkflow
-> = {
-  ...config,
-  scheduleId: 'weekly-parked-domain-verification-dry-run',
-  workflowId: 'weekly-parked-domain-verification-dry-run',
-  name: 'Weekly Parked-Domain Verification (Dry Run)',
-  description:
-    'Dry-run of the weekly parked-domain verification report for manual testing',
-  cronExpressions: ['0 */6 * * *'], // every 6 hours
-};
-
-export const weeklyParkedDomainVerificationDryRunSchedule =
-  new WeeklyParkedDomainVerificationSchedule(dryRunConfig);
+// No separate dry-run variant: registering an every-N-hours schedule would make
+// it active by default (probe load + report email noise). For manual testing,
+// trigger this schedule on demand from /admin/schedules.

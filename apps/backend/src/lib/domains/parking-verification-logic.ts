@@ -109,12 +109,22 @@ export function hostnameCoveredByNames(names: string[], host: string): boolean {
   return names.some((n) => certNameCoversHost(n, host));
 }
 
-/** Parse a forward target (possibly scheme-less) into a lowercase host. */
+/**
+ * Parse a forward target (possibly scheme-less) into a lowercase host, dropping
+ * a default port so `shop.example.com` and `https://shop.example.com:443/`
+ * compare equal.
+ */
 export function targetHost(value: string | null): string | null {
   if (!value) return null;
   const hasScheme = /^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(value);
   try {
-    return new URL(hasScheme ? value : `https://${value}`).host.toLowerCase();
+    const url = new URL(hasScheme ? value : `https://${value}`);
+    const hostname = url.hostname.toLowerCase();
+    const isDefaultPort =
+      !url.port ||
+      (url.protocol === 'https:' && url.port === '443') ||
+      (url.protocol === 'http:' && url.port === '80');
+    return isDefaultPort ? hostname : `${hostname}:${url.port}`;
   } catch {
     return null;
   }
@@ -263,4 +273,45 @@ export function isPubliclyVerifiable(
   return !unofficialTlds
     .map((t) => t.toLowerCase())
     .some((tld) => normalized === tld || normalized.endsWith(`.${tld}`));
+}
+
+function isPrivateIpv4(ip: string): boolean {
+  const parts = ip.split('.').map((p) => Number(p));
+  if (
+    parts.length !== 4 ||
+    parts.some((p) => !Number.isInteger(p) || p < 0 || p > 255)
+  ) {
+    return true; // unparseable → treat as unsafe
+  }
+  const [a, b] = parts;
+  if (a === 0 || a === 10 || a === 127) return true; // this-host / private / loopback
+  if (a === 169 && b === 254) return true; // link-local
+  if (a === 172 && b >= 16 && b <= 31) return true; // private
+  if (a === 192 && b === 168) return true; // private
+  if (a === 100 && b >= 64 && b <= 127) return true; // CGNAT
+  if (a >= 224) return true; // multicast + reserved
+  return false;
+}
+
+function isPrivateIpv6(ip: string): boolean {
+  if (ip === '::1' || ip === '::') return true; // loopback / unspecified
+  const mapped = ip.match(/^::ffff:(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})$/);
+  if (mapped) return isPrivateIpv4(mapped[1]); // IPv4-mapped
+  const first = canonicalizeIp(ip).split(':')[0];
+  if (first.startsWith('fc') || first.startsWith('fd')) return true; // ULA fc00::/7
+  if (/^fe[89ab]/.test(first)) return true; // link-local fe80::/10
+  if (first.startsWith('ff')) return true; // multicast ff00::/8
+  return false;
+}
+
+/**
+ * Best-effort check that an IP is private / reserved / loopback / link-local.
+ * Used to gate outbound TLS/HTTP probes (SSRF guard) — unparseable input is
+ * treated as unsafe. Not rebinding-proof, but blocks the common case of a
+ * publicly-named domain pointing at an internal address.
+ */
+export function isPrivateOrReservedIp(ip: string): boolean {
+  const addr = ip.trim().toLowerCase();
+  if (!addr) return true;
+  return addr.includes(':') ? isPrivateIpv6(addr) : isPrivateIpv4(addr);
 }

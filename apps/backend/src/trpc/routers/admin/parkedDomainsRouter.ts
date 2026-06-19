@@ -5,7 +5,6 @@ import {
   namefiNftView,
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
-import { TRPCError } from '@trpc/server';
 import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
 import {
   buildSortClause,
@@ -128,11 +127,57 @@ export const parkedDomainsRouter = createContractTRPCRouter<
           },
         };
       } catch (error) {
+        // List endpoints in this admin router family degrade to an empty result
+        // so the UI renders empty-state predictably instead of erroring.
         logger.error({ error }, 'Failed to list parked domains');
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to list parked domains',
-        });
+        return {
+          data: [],
+          pagination: { page, pageSize, totalCount: 0, totalPages: 0 },
+        };
+      }
+    }),
+
+  listAllParkedDomainNames: adminProcedureWithPermissions(
+    Permission.READ_PARKED_DOMAINS,
+  )
+    .input(adminParkedDomainsContract.listAllParkedDomainNames.input)
+    .output(adminParkedDomainsContract.listAllParkedDomainNames.output)
+    .query(async ({ input }) => {
+      try {
+        const joinOn = eq(
+          domainConfigTable.normalizedDomainName,
+          namefiNftView.normalizedDomainName,
+        );
+        const [rows, countRow] = await Promise.all([
+          db
+            .with(namefiNftCte)
+            .selectDistinct({
+              normalizedDomainName: namefiNftView.normalizedDomainName,
+            })
+            .from(namefiNftView)
+            .leftJoin(domainConfigTable, joinOn)
+            .where(PARK_CONDITION)
+            // Stable order so the capped subset is deterministic.
+            .orderBy(asc(namefiNftView.normalizedDomainName))
+            .limit(input.limit),
+          db
+            .with(namefiNftCte)
+            .select({
+              count: sql<number>`COUNT(DISTINCT ${namefiNftView.normalizedDomainName})::int`,
+            })
+            .from(namefiNftView)
+            .leftJoin(domainConfigTable, joinOn)
+            .where(PARK_CONDITION),
+        ]);
+        const total = countRow[0]?.count ?? rows.length;
+        return {
+          domains: rows.map((r) => r.normalizedDomainName),
+          total,
+          truncated: total > rows.length,
+        };
+      } catch (error) {
+        logger.error({ error }, 'Failed to list all parked domain names');
+        return { domains: [], total: 0, truncated: false };
       }
     }),
 

@@ -35,34 +35,36 @@ describe('ParkedDomainVerificationReport', () => {
   });
 
   it('renders a problems table with per-check statuses', async () => {
-    const html = await render(
-      createElement(ParkedDomainVerificationReport, {
-        ...baseProps,
-        counts: { pass: 1200, warn: 0, fail: 2, skipped: 7 },
-        problems: [
-          {
-            domain: 'expired.com',
-            mode: 'park',
-            overall: 'fail',
-            dns: 'pass',
-            ssl: 'fail',
-            serving: 'fail',
-            redirect: 'pass',
-            issues: ['SSL: Certificate expired.', 'Serving: unreachable.'],
-          },
-          {
-            domain: 'badforward.com',
-            mode: 'forward',
-            overall: 'fail',
-            dns: 'pass',
-            ssl: 'pass',
-            serving: 'skipped',
-            redirect: 'fail',
-            issues: ['Redirect: wrong target.'],
-          },
-        ],
-      }),
-      { pretty: false },
+    const html = stripComments(
+      await render(
+        createElement(ParkedDomainVerificationReport, {
+          ...baseProps,
+          counts: { pass: 1200, warn: 0, fail: 2, skipped: 7 },
+          problems: [
+            {
+              domain: 'expired.com',
+              mode: 'park',
+              overall: 'fail',
+              dns: 'pass',
+              ssl: 'fail',
+              serving: 'fail',
+              redirect: 'pass',
+              issues: ['SSL: Certificate expired.', 'Serving: unreachable.'],
+            },
+            {
+              domain: 'badforward.com',
+              mode: 'forward',
+              overall: 'fail',
+              dns: 'pass',
+              ssl: 'pass',
+              serving: 'skipped',
+              redirect: 'fail',
+              issues: ['Redirect: wrong target.'],
+            },
+          ],
+        }),
+        { pretty: false },
+      ),
     );
     expect(html).toContain('domain(s) need attention');
     expect(html).toContain('expired.com');
@@ -72,14 +74,16 @@ describe('ParkedDomainVerificationReport', () => {
   });
 
   it('notes truncation when the discovery cap was hit', async () => {
-    const html = await render(
-      createElement(ParkedDomainVerificationReport, {
-        ...baseProps,
-        totalParked: 12000,
-        totalChecked: 10000,
-        truncatedDomains: 2000,
-      }),
-      { pretty: false },
+    const html = stripComments(
+      await render(
+        createElement(ParkedDomainVerificationReport, {
+          ...baseProps,
+          totalParked: 12000,
+          totalChecked: 10000,
+          truncatedDomains: 2000,
+        }),
+        { pretty: false },
+      ),
     );
     expect(html).toContain('2000 not checked');
   });

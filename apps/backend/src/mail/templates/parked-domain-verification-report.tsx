@@ -80,6 +80,12 @@ function StatusText({ status }: { status: ReportCheckStatus }) {
   );
 }
 
+/**
+ * Internal ops/admin report — intentionally exempt from the user-facing
+ * email-template contract (no recipientName/recipientEmail, personalized
+ * greeting, or <GoToDashboard/>). It is sent to a fixed ops distribution list,
+ * not to end users, so those personalization fields do not apply.
+ */
 export const ParkedDomainVerificationReport =
   buildTemplate<ParkedDomainVerificationReportProps>(
     ({
@@ -93,6 +99,13 @@ export const ParkedDomainVerificationReport =
       problemsTruncated,
       adminUrl,
     }) => {
+      const totalFailures = counts.warn + counts.fail;
+      const csvNote =
+        problems.length === 0
+          ? ''
+          : problemsTruncated
+            ? ` The attached CSV lists the first ${problems.length} of ${totalFailures} failing domains.`
+            : ` The attached CSV lists all ${problems.length} failing domains.`;
       return (
         <NamefiEmailContainer title={title} footer={false}>
           <Text style={heading}>{title}</Text>
@@ -188,9 +201,8 @@ export const ParkedDomainVerificationReport =
           )}
 
           <Text style={caption}>
-            Generated automatically at {generatedAt}. Full failure list is
-            attached as CSV. Reply to this email or open the admin page to
-            re-verify a domain.
+            Generated automatically at {generatedAt}.{csvNote} Reply to this
+            email or open the admin page to re-verify a domain.
           </Text>
         </NamefiEmailContainer>
       );

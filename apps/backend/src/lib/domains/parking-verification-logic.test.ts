@@ -7,6 +7,7 @@ import {
   evaluateServing,
   hostnameCoveredByNames,
   ipMatches,
+  isPrivateOrReservedIp,
   isPubliclyVerifiable,
   targetHost,
   worstStatus,
@@ -86,6 +87,48 @@ describe('targetHost', () => {
     expect(targetHost('example.com/path')).toBe('example.com');
     expect(targetHost('https://www.example.com')).toBe('www.example.com');
     expect(targetHost(null)).toBeNull();
+  });
+
+  it('drops default ports but keeps explicit non-default ports', () => {
+    expect(targetHost('https://shop.example.com:443/')).toBe(
+      'shop.example.com',
+    );
+    expect(targetHost('http://shop.example.com:80')).toBe('shop.example.com');
+    expect(targetHost('shop.example.com')).toBe('shop.example.com');
+    expect(targetHost('https://shop.example.com:8443')).toBe(
+      'shop.example.com:8443',
+    );
+  });
+});
+
+describe('isPrivateOrReservedIp', () => {
+  it('flags private / reserved / loopback / link-local IPv4', () => {
+    for (const ip of [
+      '10.0.0.1',
+      '172.16.5.4',
+      '192.168.1.1',
+      '127.0.0.1',
+      '169.254.1.1',
+      '100.64.0.1',
+      '0.0.0.0',
+      '224.0.0.1',
+      'not-an-ip',
+    ]) {
+      expect(isPrivateOrReservedIp(ip)).toBe(true);
+    }
+  });
+
+  it('treats public IPs (incl. the parking IPs) as safe', () => {
+    expect(isPrivateOrReservedIp('34.123.0.161')).toBe(false);
+    expect(isPrivateOrReservedIp('8.8.8.8')).toBe(false);
+    expect(isPrivateOrReservedIp('2600:1900:4000:1102:8000::')).toBe(false);
+  });
+
+  it('flags loopback / ULA / link-local IPv6 and IPv4-mapped private', () => {
+    expect(isPrivateOrReservedIp('::1')).toBe(true);
+    expect(isPrivateOrReservedIp('fd00::1')).toBe(true);
+    expect(isPrivateOrReservedIp('fe80::1')).toBe(true);
+    expect(isPrivateOrReservedIp('::ffff:10.0.0.1')).toBe(true);
   });
 });
 

@@ -21,7 +21,7 @@ export interface WeeklyParkedDomainVerificationInput {
   concurrency?: number;
   /** Domains per verification activity. */
   chunkSize?: number;
-  /** Max warn/fail domains embedded in the email body (CSV is unaffected). */
+  /** Max warn/fail domains included in the report — caps the email table AND the CSV attachment. */
   maxProblemsInReport?: number;
 }
 
@@ -47,6 +47,20 @@ export async function weeklyParkedDomainVerificationWorkflow({
   chunkSize = 100,
   maxProblemsInReport = 200,
 }: WeeklyParkedDomainVerificationInput = {}): Promise<WeeklyParkedDomainVerificationOutput> {
+  if (!Number.isInteger(chunkSize) || chunkSize <= 0) {
+    throw new Error(`Invalid chunkSize: ${chunkSize}. Expected integer >= 1.`);
+  }
+  if (!Number.isInteger(concurrency) || concurrency <= 0) {
+    throw new Error(
+      `Invalid concurrency: ${concurrency}. Expected integer >= 1.`,
+    );
+  }
+  if (!Number.isInteger(maxProblemsInReport) || maxProblemsInReport < 0) {
+    throw new Error(
+      `Invalid maxProblemsInReport: ${maxProblemsInReport}. Expected integer >= 0.`,
+    );
+  }
+
   const startTime = Date.now();
   workflow.log.info('Starting weekly parked-domain verification', {
     concurrency,

@@ -16,10 +16,7 @@ import { createLogger } from '#lib/logger';
 
 import { emailSubscriptionSyncSchedule } from './email-subscription-sync';
 import { nftManagementDailyReportSchedule } from './nft-management-daily-report';
-import {
-  weeklyParkedDomainVerificationSchedule,
-  weeklyParkedDomainVerificationDryRunSchedule,
-} from './weekly-parked-domain-verification';
+import { weeklyParkedDomainVerificationSchedule } from './weekly-parked-domain-verification';
 import { exportExpirationDailyReportSchedule } from './export-expiration-daily-report';
 import { domainExportTrackingSchedule } from './domain-export-tracking';
 import { updateNamefiNftIndexSchedule } from './update-namefi-nft-index';
@@ -153,8 +150,6 @@ export const SCHEDULE_REGISTRY: Record<string, NamefiSchedule<any>> = {
     nftManagementDailyReportSchedule,
   [weeklyParkedDomainVerificationSchedule.config.scheduleId]:
     weeklyParkedDomainVerificationSchedule,
-  [weeklyParkedDomainVerificationDryRunSchedule.config.scheduleId]:
-    weeklyParkedDomainVerificationDryRunSchedule,
   [exportExpirationDailyReportSchedule.config.scheduleId]:
     exportExpirationDailyReportSchedule,
   [domainExportTrackingSchedule.config.scheduleId]:
@@ -354,10 +349,7 @@ export { updatePrivyCacheSchedule };
 export { backfillNftWalletUsersSchedule };
 export { emailSubscriptionSyncSchedule };
 export { nftManagementDailyReportSchedule };
-export {
-  weeklyParkedDomainVerificationSchedule,
-  weeklyParkedDomainVerificationDryRunSchedule,
-};
+export { weeklyParkedDomainVerificationSchedule };
 export { exportExpirationDailyReportSchedule };
 export { domainExportTrackingSchedule };
 export { updateNamefiNftIndexSchedule };

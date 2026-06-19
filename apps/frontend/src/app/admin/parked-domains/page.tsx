@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { toast } from 'sonner';
 import {
@@ -29,6 +29,7 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -145,7 +146,7 @@ function VerificationDetailDialog({ result }: { result: VerificationResult }) {
       <DialogTrigger render={<Button variant="ghost" size="sm" />}>
         Details
       </DialogTrigger>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="!max-w-2xl">
         <DialogHeader>
           <DialogTitle className="break-all">{result.domain}</DialogTitle>
           <DialogDescription>
@@ -170,12 +171,14 @@ function VerificationDetailDialog({ result }: { result: VerificationResult }) {
               Observed A {result.dns.observed.a.join(', ') || '—'} · AAAA{' '}
               {result.dns.observed.aaaa.join(', ') || '—'}
             </div>
-            <div>
-              Gate TXT {result.dns.gateTxtPresent ? 'present' : 'missing'}
-              {result.dns.redirectTxt
-                ? ` · redirect TXT → ${result.dns.redirectTxt}`
-                : ''}
-            </div>
+            {result.dns.gateEnabled ? (
+              <div>
+                Gate TXT {result.dns.gateTxtPresent ? 'present' : 'missing'}
+              </div>
+            ) : null}
+            {result.dns.redirectTxt ? (
+              <div>Redirect TXT → {result.dns.redirectTxt}</div>
+            ) : null}
           </div>
           <CheckRow
             label="SSL"
@@ -246,9 +249,9 @@ function ParkedDomainsPage() {
           are serving the parking page, and (for forwards) redirect correctly.
         </p>
         <p className="mt-2 text-sm text-muted-foreground">
-          Verification runs live network probes on demand — click "Verify
-          visible page" or a row's "Verify" button. A weekly job emails the full
-          report.
+          Verification runs live network probes on demand — verify a single row,
+          a checkbox selection, the visible page, or all parked domains. A
+          weekly job emails the full report.
         </p>
       </div>
       <ParkedDomainsTable />
@@ -258,6 +261,7 @@ function ParkedDomainsPage() {
 
 function ParkedDomainsTable() {
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
   const {
     preferences: { sorting, pageSize, columnVisibility },
@@ -277,6 +281,7 @@ function ParkedDomainsTable() {
   const [results, setResults] = useState<Record<string, VerificationResult>>(
     {},
   );
+  const [selected, setSelected] = useState<Set<string>>(new Set());
 
   const [drizzlerFilterState, setDrizzlerFilterState] =
     useState<DrizzlerFilterState>({ columnFilters: {}, customFilters: {} });
@@ -317,7 +322,7 @@ function ParkedDomainsTable() {
         });
       },
       onError: (error) => {
-        toast('Verification failed', { description: error.message });
+        toast.error('Verification failed', { description: error.message });
       },
     }),
   );
@@ -340,6 +345,46 @@ function ParkedDomainsTable() {
     [rows],
   );
   const verifiedCount = visibleDomains.filter((d) => results[d]).length;
+  const selectedCount = selected.size;
+  const allVisibleSelected =
+    visibleDomains.length > 0 && visibleDomains.every((d) => selected.has(d));
+
+  const toggleRow = useCallback((domain: string, checked: boolean) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (checked) next.add(domain);
+      else next.delete(domain);
+      return next;
+    });
+  }, []);
+
+  const toggleAllVisible = useCallback(
+    (checked: boolean) => {
+      setSelected((prev) => {
+        const next = new Set(prev);
+        for (const d of visibleDomains) {
+          if (checked) next.add(d);
+          else next.delete(d);
+        }
+        return next;
+      });
+    },
+    [visibleDomains],
+  );
+
+  const verifyAll = useCallback(async () => {
+    const res = await queryClient.fetchQuery(
+      trpc.admin.parkedDomains.listAllParkedDomainNames.queryOptions({
+        limit: 500,
+      }),
+    );
+    if (res.truncated) {
+      toast.info(
+        `Verifying the first ${res.domains.length} of ${res.total} parked domains. The weekly report covers the full set.`,
+      );
+    }
+    await verifyDomains(res.domains);
+  }, [queryClient, trpc, verifyDomains]);
 
   const filterStrategy = useDrizzlerServerFilterStrategy({
     filterConfig: {
@@ -387,6 +432,27 @@ function ParkedDomainsTable() {
     });
 
     return [
+      {
+        id: 'select',
+        enableSorting: false,
+        header: () => (
+          <Checkbox
+            checked={allVisibleSelected}
+            onCheckedChange={(checked) => toggleAllVisible(checked === true)}
+            aria-label="Select all visible parked domains"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={selected.has(row.original.normalizedDomainName)}
+            onCheckedChange={(checked) =>
+              toggleRow(row.original.normalizedDomainName, checked === true)
+            }
+            aria-label={`Select ${row.original.normalizedDomainName}`}
+          />
+        ),
+        size: 40,
+      },
       {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
@@ -500,21 +566,40 @@ function ParkedDomainsTable() {
         size: 200,
       },
     ];
-  }, [results, verifyDomains]);
+  }, [
+    results,
+    verifyDomains,
+    selected,
+    allVisibleSelected,
+    toggleRow,
+    toggleAllVisible,
+  ]);
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="text-sm text-muted-foreground">
           {verifiedCount} of {visibleDomains.length} visible verified
+          {selectedCount ? ` · ${selectedCount} selected` : ''}
         </div>
-        <AsyncButton
-          onClick={async () => verifyDomains(visibleDomains)}
-          disabled={visibleDomains.length === 0}
-        >
-          <ShieldCheck className="mr-2 h-4 w-4" />
-          Verify visible page
-        </AsyncButton>
+        <div className="flex flex-wrap items-center gap-2">
+          <AsyncButton
+            variant="outline"
+            onClick={async () => verifyDomains([...selected])}
+            disabled={selectedCount === 0}
+          >
+            Verify selected{selectedCount ? ` (${selectedCount})` : ''}
+          </AsyncButton>
+          <AsyncButton
+            variant="outline"
+            onClick={async () => verifyDomains(visibleDomains)}
+            disabled={visibleDomains.length === 0}
+          >
+            <ShieldCheck className="mr-2 h-4 w-4" />
+            Verify visible page
+          </AsyncButton>
+          <AsyncButton onClick={verifyAll}>Verify all</AsyncButton>
+        </div>
       </div>
       <ExtensibleDataTable<ParkedDomainRow, typeof filterStrategy>
         filterStrategy={filterStrategy}

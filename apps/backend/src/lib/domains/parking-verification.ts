@@ -30,6 +30,7 @@ import {
   FORWARDING_TXT_PREFIX,
   PARKED_DOMAIN_RECORDS,
 } from '@namefi-astra/dns-service/services/dns/managed-records';
+import { isParkGateEnabled } from '@namefi-astra/dns-service/services/dns/park-gate/issuer';
 import {
   getUnofficialTlds,
   type NamefiNormalizedDomain,
@@ -51,6 +52,7 @@ import {
   evaluateServing,
   hostnameCoveredByNames,
   ipMatches,
+  isPrivateOrReservedIp,
   isPubliclyVerifiable,
   stripQuotations,
   worstStatus,
@@ -70,6 +72,8 @@ const PARKING_PAGE_MARKERS = [
   'Namefi Park',
   'This domain is parked free courtesy of',
 ];
+/** Cap how much of an (untrusted) response body we sniff for the marker. */
+const PARKING_PAGE_SNIFF_BYTES = 64 * 1024;
 
 /** DoH numeric RR type codes (IANA); DoH JSON `Answer[].type` is numeric. */
 const DOH_TYPE = { A: 1, AAAA: 28, TXT: 16 } as const;
@@ -89,6 +93,12 @@ export interface DnsCheckResult {
   detail: string;
   expected: { a: string; aaaa: string };
   observed: { a: string[]; aaaa: string[] };
+  /**
+   * Whether the Caddy DNS-JWT park gate is enabled at all (signing key
+   * configured). When false, `gateTxtPresent` is not meaningful and the UI
+   * should not surface gate state.
+   */
+  gateEnabled: boolean;
   /** Whether the `_namefi-gate.<domain>` JWT TXT (which authorizes Caddy) is published. */
   gateTxtPresent: boolean;
   /** The `--nfi-redirect=` target observed in the apex TXT, if any. */
@@ -200,6 +210,7 @@ async function queryDoh(
 async function checkDnsPropagation(
   punycode: PunycodeDomainName,
   mode: ParkingMode,
+  gateEnabled: boolean,
 ): Promise<DnsCheckResult> {
   const observedA = new Set<string>();
   const observedAaaa = new Set<string>();
@@ -217,11 +228,18 @@ async function checkDnsPropagation(
     }),
   );
 
-  // Gate TXT + apex TXT (redirect marker) via Google only — presence is enough.
+  // Gate TXT (only when the park gate is enabled) + apex TXT (redirect marker),
+  // via Google only — presence is enough. `null` means the resolver failed (vs
+  // `[]` = answered, no record); we only warn about a *missing* TXT when the
+  // resolver actually answered.
   const [gateTxt, apexTxt] = await Promise.all([
-    queryDoh(DOH_RESOLVERS[0], `_namefi-gate.${punycode}`, 'TXT'),
+    gateEnabled
+      ? queryDoh(DOH_RESOLVERS[0], `_namefi-gate.${punycode}`, 'TXT')
+      : Promise.resolve(null),
     queryDoh(DOH_RESOLVERS[0], punycode, 'TXT'),
   ]);
+  const gateTxtResolved = gateEnabled && gateTxt !== null;
+  const apexTxtResolved = apexTxt !== null;
   const gateTxtPresent = (gateTxt ?? []).some(
     (r) => stripQuotations(r).length > 0,
   );
@@ -235,6 +253,7 @@ async function checkDnsPropagation(
   const base = {
     expected: { a: EXPECTED_A, aaaa: EXPECTED_AAAA },
     observed,
+    gateEnabled,
     gateTxtPresent,
     redirectTxt,
   };
@@ -267,16 +286,18 @@ async function checkDnsPropagation(
     );
   }
 
-  if (!gateTxtPresent) {
+  if (gateTxtResolved && !gateTxtPresent) {
     // The Caddy gate won't serve without this; surface as a warning so the
     // serving/SSL checks (which depend on it) explain the downstream failure.
+    // Only warn when the resolver answered — a TXT lookup failure isn't proof
+    // the record is missing.
     if (status === 'pass') status = 'warn';
     issues.push(
       '`_namefi-gate` JWT TXT not found — Caddy may refuse to serve.',
     );
   }
 
-  if (mode === 'forward' && !redirectTxt) {
+  if (mode === 'forward' && apexTxtResolved && !redirectTxt) {
     if (status === 'pass') status = 'warn';
     issues.push(
       'Forward configured but `--nfi-redirect=` TXT not propagated yet.',
@@ -427,6 +448,41 @@ function emptySslResult(status: CheckStatus, detail: string): SslCheckResult {
 }
 
 /**
+ * Stream the response body up to `maxBytes`, returning true as soon as any
+ * marker appears. Bounds memory on untrusted hosts (no full-body buffering) and
+ * stops early once a marker is found.
+ */
+async function bodyContainsMarker(
+  res: Response,
+  markers: string[],
+  maxBytes: number,
+): Promise<boolean> {
+  if (!res.body) {
+    const text = (await res.text()).slice(0, maxBytes);
+    return markers.some((m) => text.includes(m));
+  }
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  // Retain enough trailing text to catch a marker split across chunk reads.
+  const keep = Math.max(...markers.map((m) => m.length));
+  let buffer = '';
+  let read = 0;
+  try {
+    while (read < maxBytes) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      read += value.byteLength;
+      buffer += decoder.decode(value, { stream: true });
+      if (markers.some((m) => buffer.includes(m))) return true;
+      if (buffer.length > keep) buffer = buffer.slice(-keep);
+    }
+    return false;
+  } finally {
+    await reader.cancel().catch(() => {});
+  }
+}
+
+/**
  * HTTP probe: GET the apex over HTTPS without following redirects, so we can
  * tell a parking-page 200 from a forward 30x and capture the Location. Never
  * throws.
@@ -450,8 +506,11 @@ async function probeHttp(host: PunycodeDomainName): Promise<HttpProbe> {
     }
     let isParkingPage = false;
     if (status === 200) {
-      const body = await res.text();
-      isParkingPage = PARKING_PAGE_MARKERS.some((m) => body.includes(m));
+      isParkingPage = await bodyContainsMarker(
+        res,
+        PARKING_PAGE_MARKERS,
+        PARKING_PAGE_SNIFF_BYTES,
+      );
     }
     return {
       reachable: true,
@@ -484,6 +543,7 @@ function notVerifiableResult(
   punycode: string,
   mode: ParkingMode,
   forwardTo: string | null,
+  gateEnabled: boolean,
   reason: string,
 ): ParkedDomainVerification {
   return {
@@ -497,6 +557,7 @@ function notVerifiableResult(
       detail: reason,
       expected: { a: EXPECTED_A, aaaa: EXPECTED_AAAA },
       observed: { a: [], aaaa: [] },
+      gateEnabled,
       gateTxtPresent: false,
       redirectTxt: null,
     },
@@ -537,6 +598,7 @@ export async function verifyParkedDomain(
     );
   }
   const mode: ParkingMode = forwardTo ? 'forward' : 'park';
+  const gateEnabled = isParkGateEnabled();
 
   if (!isPubliclyVerifiable(domain, getUnofficialTlds())) {
     return notVerifiableResult(
@@ -544,12 +606,43 @@ export async function verifyParkedDomain(
       punycode,
       mode,
       forwardTo,
+      gateEnabled,
       'Domain is not publicly resolvable (unofficial TLD / relay zone) — not verifiable from public DNS.',
     );
   }
 
-  const [dns, ssl, http] = await Promise.all([
-    checkDnsPropagation(punycode, mode),
+  // DNS first, then gate the outbound TLS/HTTP probes: if the domain resolves to
+  // a private/reserved IP, skip them (best-effort SSRF guard — a publicly-named
+  // domain must not coerce backend workers into probing internal hosts).
+  const dns = await checkDnsPropagation(punycode, mode, gateEnabled);
+  const resolvedIps = [...dns.observed.a, ...dns.observed.aaaa];
+  if (resolvedIps.length > 0 && resolvedIps.some(isPrivateOrReservedIp)) {
+    const reason =
+      'Domain resolves to a private/reserved IP — live TLS/HTTP probes skipped (SSRF guard).';
+    return {
+      domain,
+      punycode,
+      mode,
+      forwardTo,
+      publiclyVerifiable: true,
+      dns,
+      ssl: emptySslResult('skipped', reason),
+      serving: { status: 'skipped', detail: reason, httpStatus: null },
+      redirect: {
+        status: 'skipped',
+        detail: reason,
+        expectedTarget: null,
+        observedTarget: null,
+        redirectChain: [],
+      },
+      // Resolving to an internal IP is abnormal for a parked domain — surface at
+      // least a warning even if the parking IP also happens to be present.
+      overall: worstStatus([dns.status, 'warn']),
+      checkedAt: new Date().toISOString(),
+    };
+  }
+
+  const [ssl, http] = await Promise.all([
     checkSsl(punycode),
     probeHttp(punycode),
   ]);

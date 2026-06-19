@@ -19,8 +19,8 @@ import { createContract } from '../create-contract';
  */
 
 const listInputSchema = z.object({
-  page: z.number().min(1).default(1),
-  pageSize: z.number().min(1).max(100).default(25),
+  page: z.number().int().min(1).default(1),
+  pageSize: z.number().int().min(1).max(100).default(25),
   filters: z.any().optional(),
   sorting: z.any().optional(),
 });
@@ -47,6 +47,7 @@ const dnsCheckSchema = z.object({
   detail: z.string(),
   expected: z.object({ a: z.string(), aaaa: z.string() }),
   observed: z.object({ a: z.array(z.string()), aaaa: z.array(z.string()) }),
+  gateEnabled: z.boolean(),
   gateTxtPresent: z.boolean(),
   redirectTxt: z.string().nullable(),
 });
@@ -96,12 +97,24 @@ export const parkedDomainVerificationSchema = z.object({
 });
 
 const verifyInputSchema = z.object({
-  /** Domains to verify in one call — typically the admin table's visible page. */
+  /** Domains to verify in one call — a page, a selection, or a batch of "all". */
   domains: z.array(namefiNormalizedDomainSchema).min(1).max(50),
 });
 
 const verifyOutputSchema = z.object({
   results: z.array(parkedDomainVerificationSchema),
+});
+
+/** Bare list of parked domain names, for the "verify all" UI action. */
+const listAllNamesInputSchema = z.object({
+  limit: z.number().int().min(1).max(2000).default(500),
+});
+
+const listAllNamesOutputSchema = z.object({
+  domains: z.array(z.string()),
+  total: z.number(),
+  /** True when more parked domains exist than the returned `domains` (capped). */
+  truncated: z.boolean(),
 });
 
 export const adminParkedDomainsContract = createContract(
@@ -111,6 +124,11 @@ export const adminParkedDomainsContract = createContract(
       type: 'query',
       input: listInputSchema,
       output: listOutputSchema,
+    },
+    listAllParkedDomainNames: {
+      type: 'query',
+      input: listAllNamesInputSchema,
+      output: listAllNamesOutputSchema,
     },
     verifyParkedDomains: {
       type: 'mutation',
