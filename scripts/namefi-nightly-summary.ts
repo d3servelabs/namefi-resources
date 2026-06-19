@@ -351,7 +351,15 @@ function lighthouseSlackText(
   ].join('\n');
 }
 
-const e2eOutcome = process.env.E2E_OUTCOME || 'unknown';
+const rawE2eOutcome = process.env.E2E_OUTCOME || 'unknown';
+const e2ePrerequisiteOutcome = process.env.E2E_PREREQUISITE_OUTCOME;
+const e2ePrerequisiteSummary = process.env.E2E_PREREQUISITE_SUMMARY;
+const e2ePrerequisiteFailed = Boolean(
+  e2ePrerequisiteOutcome && e2ePrerequisiteOutcome !== 'success',
+);
+const e2eOutcome = e2ePrerequisiteFailed
+  ? e2ePrerequisiteOutcome
+  : rawE2eOutcome;
 const lighthouseOutcome = process.env.LIGHTHOUSE_OUTCOME || 'unknown';
 const domain = process.env.NAMEFI_E2E_DOMAIN || 'unknown';
 const baseUrl = process.env.NAMEFI_DEV_BASE_URL || 'https://namefi.dev';
@@ -380,13 +388,16 @@ const lighthouseReports = shouldReadLighthouseReport
   ? readLighthouseReports(lighthouseManifest)
   : [];
 
-const e2eSummary = playwright?.stats
-  ? `${playwright.stats.expected ?? 0} passed, ${
-      playwright.stats.unexpected ?? 0
-    } failed, ${playwright.stats.flaky ?? 0} flaky, ${
-      playwright.stats.skipped ?? 0
-    } skipped in ${formatDuration(playwright.stats.duration)}`
-  : fallbackSummary(e2eOutcome, 'Playwright');
+const e2eSummary =
+  e2ePrerequisiteFailed && e2ePrerequisiteSummary
+    ? e2ePrerequisiteSummary
+    : playwright?.stats
+      ? `${playwright.stats.expected ?? 0} passed, ${
+          playwright.stats.unexpected ?? 0
+        } failed, ${playwright.stats.flaky ?? 0} flaky, ${
+          playwright.stats.skipped ?? 0
+        } skipped in ${formatDuration(playwright.stats.duration)}`
+      : fallbackSummary(e2eOutcome, 'Playwright');
 
 const lighthouseSummary = lighthouse?.summary
   ? metrics.map((metric) => metricText(lighthouse.summary, metric)).join(' / ')

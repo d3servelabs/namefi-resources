@@ -57,24 +57,6 @@ jobs:
           echo "domain=$domain" >> "$GITHUB_OUTPUT"
           echo "NAMEFI_E2E_DOMAIN=$domain" >> "$GITHUB_ENV"
 
-      - name: Validate Playwright test account
-        shell: bash
-        env:
-          NAMEFI_E2E_TEST_ACCOUNT_EMAIL: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_EMAIL }}
-          NAMEFI_E2E_TEST_ACCOUNT_OTP: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_OTP }}
-        run: |
-          set -euo pipefail
-
-          if [[ -z "${NAMEFI_E2E_TEST_ACCOUNT_EMAIL:-}" ]]; then
-            echo "::error::NAMEFI_E2E_TEST_ACCOUNT_EMAIL secret is required for the namefi.dev checkout smoke."
-            exit 1
-          fi
-
-          if [[ -z "${NAMEFI_E2E_TEST_ACCOUNT_OTP:-}" ]]; then
-            echo "::error::NAMEFI_E2E_TEST_ACCOUNT_OTP secret is required for the namefi.dev checkout smoke."
-            exit 1
-          fi
-
       - name: Cache bun dependencies
         uses: actions/cache@v5
         with:
@@ -89,7 +71,68 @@ jobs:
           key: ${{ runner.os }}-playwright-${{ hashFiles('package.json', 'bun.lock') }}
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: |
+          # required because infisical binary is not linked on the first run
+          bun install --frozen-lockfile
+          bun install --frozen-lockfile
+
+      - name: Validate Playwright test account
+        id: e2e_prerequisites
+        shell: bash
+        env:
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${INFISICAL_SERVICE_TOKEN:-}" ]]; then
+            summary="Missing INFISICAL_DEV_SERVICE_TOKEN GitHub secret needed to read Infisical dev secrets."
+            echo "::error::$summary"
+            {
+              echo "outcome=failure"
+              echo "should_run=false"
+              echo "summary=$summary"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if ! ./node_modules/.bin/infisical run --silent --log-level error --token="$INFISICAL_SERVICE_TOKEN" --env=dev -- bash -s <<'BASH'
+          set -euo pipefail
+
+          missing=()
+          for name in NAMEFI_E2E_TEST_ACCOUNT_EMAIL NAMEFI_E2E_TEST_ACCOUNT_OTP; do
+            if [[ -z "${!name:-}" ]]; then
+              missing+=("$name")
+            fi
+          done
+
+          if (( ${#missing[@]} > 0 )); then
+            joined="$(printf "%s, " "${missing[@]}")"
+            joined="${joined%, }"
+            summary="Missing required Infisical dev secrets: $joined"
+            echo "::error::$summary"
+            {
+              echo "outcome=failure"
+              echo "should_run=false"
+              echo "summary=$summary"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          {
+            echo "outcome=success"
+            echo "should_run=true"
+            echo "summary=Playwright prerequisites satisfied from Infisical dev"
+          } >> "$GITHUB_OUTPUT"
+          BASH
+          then
+            summary="Unable to load E2E secrets from Infisical dev."
+            echo "::error::$summary"
+            {
+              echo "outcome=failure"
+              echo "should_run=false"
+              echo "summary=$summary"
+            } >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Install Chromium
         id: install-chromium
@@ -125,11 +168,11 @@ jobs:
 
       - name: Run Playwright checkout smoke
         id: e2e
+        if: steps.e2e_prerequisites.outputs.should_run == 'true'
         continue-on-error: true
         env:
-          NAMEFI_E2E_TEST_ACCOUNT_EMAIL: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_EMAIL }}
-          NAMEFI_E2E_TEST_ACCOUNT_OTP: ${{ secrets.NAMEFI_E2E_TEST_ACCOUNT_OTP }}
-        run: bun run test:e2e:namefi-dev
+          INFISICAL_SERVICE_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+        run: ./node_modules/.bin/infisical run --silent --log-level error --token="$INFISICAL_SERVICE_TOKEN" --env=dev -- bun run test:e2e:namefi-dev
 
       - name: Run Lighthouse
         id: lighthouse
@@ -140,6 +183,8 @@ jobs:
         if: always()
         env:
           E2E_OUTCOME: ${{ steps.e2e.outcome }}
+          E2E_PREREQUISITE_OUTCOME: ${{ steps.e2e_prerequisites.outputs.outcome }}
+          E2E_PREREQUISITE_SUMMARY: ${{ steps.e2e_prerequisites.outputs.summary }}
           LIGHTHOUSE_OUTCOME: ${{ steps.lighthouse.outcome }}
           NAMEFI_E2E_DOMAIN: ${{ steps.domain.outputs.domain }}
         run: bun run scripts/namefi-nightly-summary.ts
@@ -175,9 +220,11 @@ jobs:
           retries: RAPID
 
       - name: Fail workflow if checks failed
-        if: steps.e2e.outcome != 'success' || steps.lighthouse.outcome != 'success'
+        if: always() && (steps.e2e_prerequisites.outputs.outcome != 'success' || steps.e2e.outcome != 'success' || steps.lighthouse.outcome != 'success')
         shell: bash
         run: |
+          echo "Playwright prerequisites outcome: ${{ steps.e2e_prerequisites.outputs.outcome }}"
+          echo "Playwright prerequisites summary: ${{ steps.e2e_prerequisites.outputs.summary }}"
           echo "Playwright outcome: ${{ steps.e2e.outcome }}"
           echo "Lighthouse outcome: ${{ steps.lighthouse.outcome }}"
           exit 1
