@@ -20,6 +20,7 @@
       }
     },
     "account": {
+      "title": "الحساب",
       "links": {
         "myDomains": "دوماناتي",
         "myWishlist": "قايمة المفضلة",

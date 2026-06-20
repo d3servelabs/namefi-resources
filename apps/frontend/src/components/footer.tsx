@@ -237,8 +237,8 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
       {...rest}
     >
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 sm:px-10 lg:px-12">
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[1.6fr_repeat(4,minmax(0,1fr))]">
-          <div className="space-y-6">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:gap-12 lg:grid-cols-[1.6fr_repeat(4,minmax(0,1fr))]">
+          <div className="col-span-2 space-y-6 sm:col-span-1">
             <div className="flex items-center gap-3">
               <Image
                 src={logo.src}

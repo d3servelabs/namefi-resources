@@ -5,8 +5,16 @@ import {
   isIndexableHost,
 } from '@namefi-astra/common/host-policy';
 import { config as configEnv } from './lib/env';
-import { LOCALE_COOKIE, LOCALE_COOKIE_MAX_AGE, isLocale } from './i18n/config';
-import { negotiateLocaleFromAcceptLanguage } from './i18n/negotiate';
+import {
+  LOCALE_COOKIE,
+  LOCALE_COOKIE_MAX_AGE,
+  type Locale,
+  isLocale,
+} from './i18n/config';
+import {
+  negotiateLocaleFromAcceptLanguage,
+  resolveLocaleFromParam,
+} from './i18n/negotiate';
 import {
   isThirdPartyOriginKey,
   getThirdPartyOriginRouteSegment,
@@ -58,7 +66,10 @@ function getRequestHostname(request: NextRequest): string {
 function rewritePath(request: NextRequest, pathname: string): NextResponse {
   const destination = request.nextUrl.clone();
   destination.pathname = pathname;
-  return NextResponse.rewrite(destination);
+  // Forward (possibly `?hl=`-mutated) request cookies to the rewritten render.
+  return NextResponse.rewrite(destination, {
+    request: { headers: request.headers },
+  });
 }
 
 /**
@@ -143,19 +154,52 @@ const redirectRoutes = [
   },
 ];
 
+/** Google-style locale override query param (e.g. `?hl=zh`, `?hl=ar-EG`). */
+const LOCALE_PARAM = 'hl';
+
+/**
+ * Apply a Google-style `?hl=<locale>` override onto the *request* so this very
+ * render already resolves to it — next-intl reads the `NEXT_LOCALE` cookie in
+ * src/i18n/request.ts, so pinning it on `request.cookies` and forwarding the
+ * request downstream avoids a first-paint language flash on a shared link. The
+ * matching *response* cookie is set separately (see {@link ensureLocaleCookie})
+ * so the choice persists for later navigations. Returns the override locale, or
+ * `null` when there is no valid `?hl=` or it already matches the active cookie.
+ */
+function applyLocaleOverrideToRequest(request: NextRequest): Locale | null {
+  const override = resolveLocaleFromParam(
+    request.nextUrl.searchParams.get(LOCALE_PARAM),
+  );
+  if (!override) return null;
+  if (request.cookies.get(LOCALE_COOKIE)?.value === override) return null;
+  request.cookies.set(LOCALE_COOKIE, override);
+  return override;
+}
+
 /**
  * Locale auto-detection (cookie-mode i18n — no URL rewriting).
  *
- * On the first visit (no valid `NEXT_LOCALE` cookie), negotiate the locale from
- * the browser's `Accept-Language` and persist it as a cookie on the response.
- * We never redirect or rewrite for locale, so there is zero SEO impact: a
- * cookie-less crawler sees the same English HTML as before. Once the cookie
- * exists — set here or by the language selector — this is a no-op.
+ * A Google-style `?hl=` override (when present, resolved upstream) wins and is
+ * persisted to the cookie. Otherwise, on the first visit (no valid
+ * `NEXT_LOCALE` cookie), negotiate the locale from the browser's
+ * `Accept-Language` and persist it. We never redirect or rewrite for locale, so
+ * there is zero SEO impact: a cookie-less crawler sees the same English HTML as
+ * before. Once the cookie exists — set here, by the `?hl=` override, or by the
+ * language selector — the Accept-Language path is a no-op.
  */
 function ensureLocaleCookie(
   request: NextRequest,
   response: NextResponse,
+  overrideLocale: Locale | null,
 ): NextResponse {
+  if (overrideLocale) {
+    response.cookies.set(LOCALE_COOKIE, overrideLocale, {
+      path: '/',
+      maxAge: LOCALE_COOKIE_MAX_AGE,
+      sameSite: 'lax',
+    });
+    return response;
+  }
   const existing = request.cookies.get(LOCALE_COOKIE)?.value;
   if (!isLocale(existing)) {
     const locale = negotiateLocaleFromAcceptLanguage(
@@ -174,16 +218,17 @@ function ensureLocaleCookie(
  * Apply host-indexing policy to a response: stamp X-Robots-Tag when the
  * incoming host is not on the public-indexable allowlist. Pairs with
  * the robots.ts allowlist for belt-and-suspenders coverage. Also seeds the
- * locale cookie on first visit (see {@link ensureLocaleCookie}).
+ * locale cookie (see {@link ensureLocaleCookie}).
  */
 function withHostPolicyHeader(
   request: NextRequest,
   response: NextResponse,
+  overrideLocale: Locale | null = null,
 ): NextResponse {
   if (!isIndexableHost(request.headers.get('host'))) {
     response.headers.set('X-Robots-Tag', 'noindex, nofollow');
   }
-  return ensureLocaleCookie(request, response);
+  return ensureLocaleCookie(request, response, overrideLocale);
 }
 
 export function proxy(request: NextRequest) {
@@ -206,8 +251,19 @@ export function proxy(request: NextRequest) {
     const redirectTo = new URL(canonicalOrigin);
     redirectTo.pathname = pathname;
     redirectTo.search = request.nextUrl.search;
+    // `?hl=` is preserved in the query, so the canonical host handles it.
     return NextResponse.redirect(redirectTo, 308);
   }
+
+  // Resolve a Google-style `?hl=` override once (mutates request cookies so the
+  // render below already sees it); persisted onto each response further down.
+  // Skip `/r` and `/r/*`: those are proxied to the resources app, which owns
+  // its locale via the URL path — applying the override there would mutate the
+  // shared main-site cookie while resources content stays on the path locale.
+  const isResourcesPath = pathname === '/r' || pathname.startsWith('/r/');
+  const localeOverride = isResourcesPath
+    ? null
+    : applyLocaleOverrideToRequest(request);
 
   if (pathname === '/') {
     const hostname = getRequestHostname(request);
@@ -218,6 +274,7 @@ export function proxy(request: NextRequest) {
       return withHostPolicyHeader(
         request,
         rewritePath(request, `/site/${routeSegment}/landing/${routeSegment}`),
+        localeOverride,
       );
     }
   }
@@ -225,7 +282,12 @@ export function proxy(request: NextRequest) {
   // Only process /m/* paths for further redirect handling; everything else
   // passes through with the host-policy header applied.
   if (!pathname.startsWith('/m/')) {
-    return withHostPolicyHeader(request, NextResponse.next());
+    return withHostPolicyHeader(
+      request,
+      // Forward the (possibly `?hl=`-mutated) request cookies to the render.
+      NextResponse.next({ request: { headers: request.headers } }),
+      localeOverride,
+    );
   }
 
   // Find matching route
@@ -234,7 +296,11 @@ export function proxy(request: NextRequest) {
   );
 
   if (!matchedRoute) {
-    return withHostPolicyHeader(request, NextResponse.next());
+    return withHostPolicyHeader(
+      request,
+      NextResponse.next({ request: { headers: request.headers } }),
+      localeOverride,
+    );
   }
 
   // Get default hostname from environment
@@ -283,6 +349,7 @@ export function proxy(request: NextRequest) {
   return withHostPolicyHeader(
     request,
     NextResponse.redirect(destination, { status: 307 }),
+    localeOverride,
   );
 }
 

@@ -31,10 +31,12 @@ function deepMerge(base: MessageTree, override: MessageTree): MessageTree {
 /**
  * Resolves the active locale on the server for every request.
  *
- * Priority: `NEXT_LOCALE` cookie (explicit user choice, normally set by the
- * middleware on first visit) → `Accept-Language` negotiation → `en`. Reading the
- * header server-side (not `navigator.language`) keeps SSR and the client in
- * agreement, avoiding a first-paint language flash.
+ * Priority: `NEXT_LOCALE` cookie → `Accept-Language` negotiation → `en`. The
+ * cookie is set by the language selector (explicit user choice) and by the
+ * edge proxy when a link carries a Google-style `?hl=<locale>` override (see
+ * src/proxy.ts), so both flows funnel through the same cookie read here.
+ * Reading the header server-side (not `navigator.language`) keeps SSR and the
+ * client in agreement, avoiding a first-paint language flash.
  */
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();

@@ -20,6 +20,7 @@
       }
     },
     "account": {
+      "title": "Cuenta",
       "links": {
         "myDomains": "Mis dominios",
         "myWishlist": "Mi lista de deseos",

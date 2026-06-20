@@ -20,6 +20,7 @@
       }
     },
     "account": {
+      "title": "खाता",
       "links": {
         "myDomains": "मेरे डोमेन",
         "myWishlist": "मेरी विशलिस्ट",
