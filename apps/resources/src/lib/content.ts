@@ -183,6 +183,10 @@ type CareerEntry = {
   requestedLanguage: Locale;
   relativePath: string;
   publishedAt: Date;
+  // Raw markdown body (frontmatter stripped). Used to build the full,
+  // HTML-formatted JobPosting `description` that Google requires to match the
+  // visible page content.
+  body: string;
 };
 
 // Content lives inside the data submodule under /data/content.
@@ -1621,6 +1625,7 @@ function parseCareerEntry({
     requestedLanguage: locale,
     relativePath: toRelativeDataPath(filePath),
     publishedAt,
+    body: parsed.content,
   };
 }
 

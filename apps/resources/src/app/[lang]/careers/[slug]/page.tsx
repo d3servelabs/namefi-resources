@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { getCareerCached, getCareerParams } from '@/lib/content';
 import { loadMdxModule } from '@/lib/load-mdx-module';
+import { markdownToJobDescriptionHtml } from '@/lib/job-description-html';
 import { resolveBaseUrl } from '@/lib/site-url';
 import { useMDXComponents } from '@/mdx-components';
 import { JobPostingJsonLd } from '@/components/careers/job-posting-jsonld';
@@ -98,9 +99,10 @@ export default async function CareerSlugPage({
       {isJob && (
         <JobPostingJsonLd
           title={entry.frontmatter.title}
-          description={
-            entry.frontmatter.description ?? entry.frontmatter.summary ?? ''
-          }
+          // Google requires the full job description in HTML, matching what's
+          // visible on the page — so emit the rendered body, not the short
+          // meta summary.
+          description={markdownToJobDescriptionHtml(entry.body)}
           datePosted={entry.frontmatter.date}
           validThrough={entry.frontmatter.validThrough}
           employmentType={entry.frontmatter.employmentType ?? 'FULL_TIME'}

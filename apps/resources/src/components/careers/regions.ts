@@ -270,3 +270,15 @@ const US_SANCTIONED_COUNTRIES_AND_REGIONS = new Set([
 export const HIRING_REGIONS = ALL_COUNTRIES_AND_REGIONS.filter(
   (code) => !US_SANCTIONED_COUNTRIES_AND_REGIONS.has(code),
 );
+
+const regionDisplayNames = new Intl.DisplayNames(['en'], { type: 'region' });
+
+/**
+ * Maps an ISO 3166-1 alpha-2 code to its English country/region name
+ * (e.g. "US" -> "United States"). Google's JobPosting guidance expects
+ * `applicantLocationRequirements` country *names*, not codes; falls back to the
+ * raw code if Intl can't resolve it.
+ */
+export function getRegionName(code: string): string {
+  return regionDisplayNames.of(code) ?? code;
+}
