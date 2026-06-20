@@ -5,10 +5,12 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getGlossaryEntriesForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
+import { JsonLd } from '@/components/json-ld';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
 
 export async function generateMetadata({
@@ -91,8 +93,15 @@ export default async function GlossaryIndex({
     dateStyle: 'long',
   });
 
+  const baseUrl = resolveBaseUrl();
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+    { name: dictionary.nav.glossary, url: `${baseUrl}/r/${locale}/glossary` },
+  ]);
+
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+      <JsonLd data={breadcrumbJsonLd} />
       {entries.length === 0 ? (
         <ResourceIndexEmptyState>
           {dictionary.glossary.indexEmpty}

@@ -3,11 +3,14 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 import { getCareerCached, getCareerParams } from '@/lib/content';
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { markdownToJobDescriptionHtml } from '@/lib/job-description-html';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import { useMDXComponents } from '@/mdx-components';
+import { JsonLd } from '@/components/json-ld';
 import { JobPostingJsonLd } from '@/components/careers/job-posting-jsonld';
 import { HowWeHireFooter } from '@/components/careers/how-we-hire-footer';
 
@@ -70,6 +73,7 @@ export default async function CareerSlugPage({
 }) {
   const { lang, slug } = await params;
   const locale = lang as Locale;
+  const dictionary = await getDictionary(locale);
   const entry = getCareerCached(locale, slug);
 
   if (!entry) {
@@ -94,8 +98,18 @@ export default async function CareerSlugPage({
     ? (await loadMdxModule(ABOUT_NAMEFI_PATH)).default
     : null;
 
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+    { name: dictionary.nav.careers, url: `${baseUrl}/r/${locale}/careers` },
+    {
+      name: entry.frontmatter.title,
+      url: `${baseUrl}/r/${locale}/careers/${slug}`,
+    },
+  ]);
+
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-10 px-6 py-12 md:px-10">
+      <JsonLd data={breadcrumbJsonLd} />
       {isJob && (
         <JobPostingJsonLd
           title={entry.frontmatter.title}

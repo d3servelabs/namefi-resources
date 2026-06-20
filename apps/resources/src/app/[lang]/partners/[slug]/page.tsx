@@ -15,6 +15,12 @@ import {
 import { loadMdxModule } from '@/lib/load-mdx-module';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
+import {
+  type ArticleAuthor,
+  buildArticleJsonLd,
+  buildBreadcrumbJsonLd,
+} from '@/lib/structured-data';
+import { JsonLd } from '@/components/json-ld';
 import { useMDXComponents } from '@/mdx-components';
 
 export async function generateStaticParams() {
@@ -150,8 +156,41 @@ export default async function PartnerDetailPage({
     }),
   );
 
+  const baseUrl = resolveBaseUrl();
+  const selfPath = `/r/${locale}/partners/${slug}`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  // Match the canonical chosen in generateMetadata: English consolidates
+  // ranking signals when a translated page points back to its English source.
+  const canonicalUrl =
+    locale === 'en' || !getPartnerCached('en', slug)
+      ? selfUrl
+      : `${baseUrl}/r/en/partners/${slug}`;
+  const articleAuthors: ArticleAuthor[] = authorEntries.map((author) => ({
+    name: author.frontmatter.name,
+    url: author.frontmatter.twitter ?? author.frontmatter.linkedin,
+  }));
+  const articleJsonLd = buildArticleJsonLd({
+    headline: entry.frontmatter.title,
+    description: entry.frontmatter.summary ?? entry.frontmatter.description,
+    url: selfUrl,
+    canonicalUrl,
+    imageUrl: `${baseUrl}${selfPath}/opengraph-image`,
+    datePublished: entry.publishedAt.toISOString(),
+    authors: articleAuthors,
+    baseUrl,
+    locale,
+    keywords: entry.frontmatter.keywords,
+  });
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+    { name: dictionary.nav.partners, url: `${baseUrl}/r/${locale}/partners` },
+    { name: entry.frontmatter.title, url: selfUrl },
+  ]);
+
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-left md:px-10 lg:px-12">
+      <JsonLd data={articleJsonLd} />
+      <JsonLd data={breadcrumbJsonLd} />
       <Link
         href={`/${locale}/partners`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"

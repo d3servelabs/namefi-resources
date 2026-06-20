@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import type { Locale } from '@/i18n-config';
+import { getDictionary } from '@/get-dictionary';
 import { getCareerEntriesForLocale, type CareerEntry } from '@/lib/content';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
+import { JsonLd } from '@/components/json-ld';
 import { HowWeHireFooter } from '@/components/careers/how-we-hire-footer';
 
 export async function generateMetadata({
@@ -43,11 +46,19 @@ export default async function CareerIndexPage({
 }) {
   const { lang } = await params;
   const locale = lang as Locale;
+  const dictionary = await getDictionary(locale);
   const entries = getCareerEntriesForLocale(locale);
   const jobEntries = entries.filter((e) => e.frontmatter.type === 'job');
 
+  const baseUrl = resolveBaseUrl();
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+    { name: dictionary.nav.careers, url: `${baseUrl}/r/${locale}/careers` },
+  ]);
+
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-20 sm:py-24">
+      <JsonLd data={breadcrumbJsonLd} />
       <header className="mb-12">
         <h1 className="mb-4 text-4xl font-bold text-foreground">
           Careers at Namefi

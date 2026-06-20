@@ -5,10 +5,12 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
 } from '@/components/resource-index-card';
+import { JsonLd } from '@/components/json-ld';
 import { createResourceMetaItems } from '@/lib/resource-meta-items';
 import { loadMdxReadingTime } from '@/lib/load-mdx-module';
 
@@ -98,8 +100,15 @@ export default async function BlogIndex({
     dateStyle: 'long',
   });
 
+  const baseUrl = resolveBaseUrl();
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
+    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+    { name: dictionary.nav.blog, url: `${baseUrl}/r/${locale}/blog` },
+  ]);
+
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+      <JsonLd data={breadcrumbJsonLd} />
       {posts.length === 0 ? (
         <ResourceIndexEmptyState>
           {dictionary.blog.indexEmpty}
