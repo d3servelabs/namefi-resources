@@ -11,6 +11,14 @@ import { applyClientSideSorting } from '@/components/table/filters';
 import { ServerDataTable } from '@/components/table/server-data-table';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useTRPC } from '@/lib/trpc';
+import {
+  channelLabel,
+  formatDate,
+  getTargetDestination,
+  TargetActionsCell,
+  TargetEnabledCell,
+} from './namefi-feed-cells';
+import { NamefiFeedTargetCard } from './namefi-feed-target-card';
 import type { adminNamefiFeedContract } from '@namefi-astra/common/contract/admin/admin-namefi-feed-contract';
 import type { InferContractOutputs } from '@namefi-astra/common/contract/trpc-contract';
 import {
@@ -58,16 +66,15 @@ import { Permission } from '@namefi-astra/utils/permissions';
 import type {
   ColumnDef,
   ColumnFiltersState,
+  Row,
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { format } from 'date-fns';
 import {
   AlertTriangle,
   BellRing,
   ExternalLink,
-  Pencil,
   Play,
   RefreshCw,
   Save,
@@ -75,7 +82,13 @@ import {
   X,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from 'react';
 import { toast } from 'sonner';
 
 type NamefiFeedOverview = InferContractOutputs<
@@ -2150,19 +2163,11 @@ function TargetsTable({
         accessorKey: 'enabled',
         header: 'Enabled',
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <Badge variant={row.original.enabled ? 'outline' : 'secondary'}>
-              {row.original.enabled ? 'Enabled' : 'Disabled'}
-            </Badge>
-            <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-              <Switch
-                checked={row.original.enabled}
-                disabled={isMutating}
-                onCheckedChange={(checked) => onToggle(row.original, checked)}
-                aria-label={`Toggle ${row.original.label}`}
-              />
-            </PermissionGate>
-          </div>
+          <TargetEnabledCell
+            target={row.original}
+            isMutating={isMutating}
+            onToggle={onToggle}
+          />
         ),
       },
       {
@@ -2180,32 +2185,33 @@ function TargetsTable({
         header: '',
         enableSorting: false,
         cell: ({ row }) => (
-          <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
-            <RowActions>
-              <Button
-                variant="outline"
-                size="icon"
-                aria-label={`Edit ${row.original.label}`}
-                disabled={isMutating}
-                onClick={() => onEdit(row.original)}
-              >
-                <Pencil className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="destructive"
-                size="icon"
-                aria-label={`Delete ${row.original.label}`}
-                disabled={isMutating}
-                onClick={() => onDelete(row.original)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </RowActions>
-          </PermissionGate>
+          <TargetActionsCell
+            target={row.original}
+            isMutating={isMutating}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
         ),
       },
     ],
     [isMutating, onDelete, onEdit, onToggle],
+  );
+
+  // Mobile card renderer. Reuses the same shared cell components and pure
+  // helpers the desktop columns use, so a phone-sized viewport gets a readable
+  // stacked card per target instead of a horizontally-scrolling table (switch
+  // layout, reuse logic).
+  const renderMobileCard = useCallback(
+    (row: Row<DigestTarget>) => (
+      <NamefiFeedTargetCard
+        target={row.original}
+        isMutating={isMutating}
+        onEdit={onEdit}
+        onToggle={onToggle}
+        onDelete={onDelete}
+      />
+    ),
+    [isMutating, onEdit, onToggle, onDelete],
   );
 
   return (
@@ -2228,6 +2234,7 @@ function TargetsTable({
       isFetching={isFetching}
       emptyMessage="No digest targets yet"
       searchPlaceholder="Search targets..."
+      renderMobileCard={renderMobileCard}
     />
   );
 }
@@ -2678,6 +2685,7 @@ function ClientDataTable<T>({
   isFetching,
   emptyMessage,
   searchPlaceholder,
+  renderMobileCard,
 }: {
   tableId: string;
   columns: ColumnDef<T>[];
@@ -2690,6 +2698,12 @@ function ClientDataTable<T>({
   isFetching: boolean;
   emptyMessage: string;
   searchPlaceholder: string;
+  /**
+   * Optional mobile card renderer. When provided, `ExtensibleDataTable` renders
+   * cards on phone viewports and the table on desktop (it gates internally on
+   * `useIsMobile`), so callers switch layout while reusing the same row data.
+   */
+  renderMobileCard?: (row: Row<T>) => ReactNode;
 }) {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -2762,6 +2776,7 @@ function ClientDataTable<T>({
       onColumnVisibilityChange={setColumnVisibility}
       onResetPreferences={resetToDefaults}
       paginationVisibility="auto"
+      renderMobileCard={renderMobileCard}
     />
   );
 }
@@ -2858,34 +2873,6 @@ function toTargetDraft(target: DigestTarget): TargetDraft {
   };
 }
 
-function getTargetDestination(target: DigestTarget) {
-  const config = target.config as Record<string, unknown>;
-  if (target.targetType === 'telegram_group') {
-    const thread =
-      typeof config.messageThreadId === 'number'
-        ? ` / thread ${config.messageThreadId}`
-        : '';
-    return `${config.chatId ?? '-'}${thread}`;
-  }
-  if (target.targetType === 'discord_channel') {
-    const guild =
-      typeof config.guildId === 'string' ? ` / ${config.guildId}` : '';
-    return `${config.channelId ?? '-'}${guild}`;
-  }
-  return String(config.channelId ?? '-');
-}
-
-function channelLabel(value: DigestTargetType) {
-  switch (value) {
-    case 'slack':
-      return 'Slack';
-    case 'telegram_group':
-      return 'Telegram';
-    case 'discord_channel':
-      return 'Discord';
-  }
-}
-
 function isDraftChannelConfigured(
   targetType: DigestTargetType,
   configured?: NamefiFeedOverview['digestPublisherConfigured'],
@@ -2930,17 +2917,6 @@ function getMissingDigestTokenLabels(overview?: NamefiFeedOverview) {
     missing.push('Discord');
   }
   return missing;
-}
-
-function formatDate(value: string | null) {
-  if (!value) {
-    return '-';
-  }
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return '-';
-  }
-  return format(date, 'yyyy-MM-dd HH:mm');
 }
 
 function getListingLifecycleStatus(
