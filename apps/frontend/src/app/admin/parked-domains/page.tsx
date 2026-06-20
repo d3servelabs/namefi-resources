@@ -1,19 +1,11 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { toast } from 'sonner';
-import {
-  AlertTriangle,
-  CheckCircle2,
-  MinusCircle,
-  ShieldCheck,
-  XCircle,
-} from 'lucide-react';
-import type { z } from 'zod';
-import type { parkedDomainVerificationSchema } from '@namefi-astra/common/contract/admin/admin-parked-domains-contract';
+import { ShieldCheck } from 'lucide-react';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -27,195 +19,22 @@ import {
 } from '@/components/table/filters';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { AsyncButton } from '@/components/buttons/async-button';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@namefi-astra/ui/components/shadcn/dialog';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
-import { cn } from '@namefi-astra/ui/lib/cn';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { AddressWithChain as AddressWithChainId } from '@/components/address-with-chain';
-import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
-
-type VerificationResult = z.infer<typeof parkedDomainVerificationSchema>;
-type CheckStatus = VerificationResult['overall'];
-
-type ParkedDomainRow = {
-  normalizedDomainName: string;
-  ownerAddress: string | null;
-  chainId: number;
-  forwardTo: string | null;
-  mode: 'park' | 'forward';
-};
+import {
+  type CheckStatus,
+  DomainNameCell,
+  ForwardToValue,
+  ModeBadge,
+  type ParkedDomainRow,
+  StatusBadge,
+  type VerificationResult,
+  VerificationDetailDialog,
+} from './parked-domains-cells';
+import { ParkedDomainCard } from './parked-domain-card';
 
 /** Verify domains in batches that respect the contract's per-call cap. */
 const VERIFY_BATCH_SIZE = 50;
-
-const STATUS_META: Record<
-  CheckStatus,
-  { label: string; className: string; Icon: typeof CheckCircle2 }
-> = {
-  pass: {
-    label: 'Pass',
-    className: 'bg-green-100 text-green-800 border-green-300',
-    Icon: CheckCircle2,
-  },
-  warn: {
-    label: 'Warn',
-    className: 'bg-amber-100 text-amber-800 border-amber-300',
-    Icon: AlertTriangle,
-  },
-  fail: {
-    label: 'Fail',
-    className: 'bg-red-100 text-red-800 border-red-300',
-    Icon: XCircle,
-  },
-  skipped: {
-    label: 'N/A',
-    className: 'bg-muted text-muted-foreground border-border',
-    Icon: MinusCircle,
-  },
-};
-
-function StatusBadge({
-  status,
-  detail,
-}: {
-  status?: CheckStatus;
-  detail?: string;
-}) {
-  if (!status) {
-    return <span className="text-xs text-muted-foreground">—</span>;
-  }
-  const meta = STATUS_META[status];
-  const Icon = meta.Icon;
-  const badge = (
-    <Badge variant="outline" className={cn('w-fit gap-1', meta.className)}>
-      <Icon className="h-3 w-3" />
-      {meta.label}
-    </Badge>
-  );
-  if (!detail) return badge;
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger render={<span className="cursor-help" />}>
-          {badge}
-        </TooltipTrigger>
-        <TooltipContent className="max-w-xs">
-          <p>{detail}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-}
-
-function CheckRow({
-  label,
-  status,
-  detail,
-}: {
-  label: string;
-  status: CheckStatus;
-  detail: string;
-}) {
-  return (
-    <div className="flex items-start gap-2">
-      <span className="w-16 shrink-0 font-medium">{label}</span>
-      <StatusBadge status={status} />
-      <span className="flex-1 text-muted-foreground">{detail}</span>
-    </div>
-  );
-}
-
-function VerificationDetailDialog({ result }: { result: VerificationResult }) {
-  return (
-    <Dialog>
-      <DialogTrigger render={<Button variant="ghost" size="sm" />}>
-        Details
-      </DialogTrigger>
-      <DialogContent className="!max-w-2xl">
-        <DialogHeader>
-          <DialogTitle className="break-all">{result.domain}</DialogTitle>
-          <DialogDescription>
-            {result.mode === 'forward'
-              ? `Forward → ${result.forwardTo}`
-              : 'Parking page'}{' '}
-            · checked {new Date(result.checkedAt).toLocaleString()}
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-3 text-sm">
-          <CheckRow
-            label="DNS"
-            status={result.dns.status}
-            detail={result.dns.detail}
-          />
-          <div className="space-y-0.5 pl-4 text-xs text-muted-foreground">
-            <div>
-              Expected A {result.dns.expected.a} · AAAA{' '}
-              {result.dns.expected.aaaa}
-            </div>
-            <div>
-              Observed A {result.dns.observed.a.join(', ') || '—'} · AAAA{' '}
-              {result.dns.observed.aaaa.join(', ') || '—'}
-            </div>
-            {result.dns.gateEnabled ? (
-              <div>
-                Gate TXT {result.dns.gateTxtPresent ? 'present' : 'missing'}
-              </div>
-            ) : null}
-            {result.dns.redirectTxt ? (
-              <div>Redirect TXT → {result.dns.redirectTxt}</div>
-            ) : null}
-          </div>
-          <CheckRow
-            label="SSL"
-            status={result.ssl.status}
-            detail={result.ssl.detail}
-          />
-          {result.ssl.validTo ? (
-            <div className="pl-4 text-xs text-muted-foreground">
-              Issuer {result.ssl.issuer ?? '—'} · expires{' '}
-              {new Date(result.ssl.validTo).toLocaleDateString()} (
-              {result.ssl.daysUntilExpiry} days)
-            </div>
-          ) : null}
-          <CheckRow
-            label="Serving"
-            status={result.serving.status}
-            detail={result.serving.detail}
-          />
-          <CheckRow
-            label="Redirect"
-            status={result.redirect.status}
-            detail={result.redirect.detail}
-          />
-          {result.redirect.redirectChain.length > 0 ? (
-            <div className="space-y-0.5 pl-4 text-xs text-muted-foreground">
-              {result.redirect.redirectChain.map((hop) => (
-                <div key={`${hop.status}-${hop.location}`}>
-                  {hop.status} → {hop.location}
-                </div>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
 export default function ParkedDomainsAdminPage() {
   return (
@@ -457,19 +276,7 @@ function ParkedDomainsTable() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <div className="flex items-center gap-1">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={32}
-              minCharactersToDisplay={16}
-              className="font-medium"
-            >
-              {row.original.normalizedDomainName}
-            </AutoTruncateTextV2>
-            <AdminDomainDetailsButton
-              domainName={row.original.normalizedDomainName}
-              size="icon-xs"
-            />
-          </div>
+          <DomainNameCell domainName={row.original.normalizedDomainName} />
         ),
         size: 240,
       },
@@ -492,35 +299,16 @@ function ParkedDomainsTable() {
         accessorKey: 'mode',
         header: 'Mode',
         enableSorting: false,
-        cell: ({ row }) => (
-          <Badge
-            variant="outline"
-            className={
-              row.original.mode === 'forward'
-                ? 'bg-blue-100 text-blue-800 border-blue-300'
-                : 'bg-emerald-100 text-emerald-800 border-emerald-300'
-            }
-          >
-            {row.original.mode === 'forward' ? 'Forward' : 'Park'}
-          </Badge>
-        ),
+        cell: ({ row }) => <ModeBadge mode={row.original.mode} />,
         size: 100,
       },
       {
         accessorKey: 'forwardTo',
         header: 'Forward To',
         enableSorting: false,
-        cell: ({ row }) =>
-          row.original.forwardTo ? (
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={28}
-              minCharactersToDisplay={14}
-            >
-              {row.original.forwardTo}
-            </AutoTruncateTextV2>
-          ) : (
-            <span className="text-xs text-muted-foreground">—</span>
-          ),
+        cell: ({ row }) => (
+          <ForwardToValue forwardTo={row.original.forwardTo} />
+        ),
         size: 200,
       },
       statusColumn('dns', 'DNS', (r) => r.dns),
@@ -575,6 +363,23 @@ function ParkedDomainsTable() {
     toggleAllVisible,
   ]);
 
+  // Mobile card renderer. Reuses the same shared cell components the desktop
+  // columns use, so a phone-sized viewport gets a readable stacked card per
+  // domain instead of a horizontally-scrolling table (switch layout, reuse
+  // logic).
+  const renderMobileCard = useCallback(
+    (row: Row<ParkedDomainRow>) => (
+      <ParkedDomainCard
+        row={row.original}
+        result={results[row.original.normalizedDomainName]}
+        isSelected={selected.has(row.original.normalizedDomainName)}
+        onSelectedChange={toggleRow}
+        onVerify={verifyDomains}
+      />
+    ),
+    [results, selected, toggleRow, verifyDomains],
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -623,6 +428,7 @@ function ParkedDomainsTable() {
         columnVisibility={columnVisibility}
         onColumnVisibilityChange={setColumnVisibility}
         onResetPreferences={resetToDefaults}
+        renderMobileCard={renderMobileCard}
       />
     </div>
   );
