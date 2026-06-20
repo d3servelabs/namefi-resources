@@ -405,7 +405,7 @@
     },
     "apps/resources": {
       "name": "@namefi-astra/resources",
-      "version": "3.4.3",
+      "version": "3.4.4",
       "dependencies": {
         "@bprogress/next": "catalog:",
         "@c15t/nextjs": "catalog:",
