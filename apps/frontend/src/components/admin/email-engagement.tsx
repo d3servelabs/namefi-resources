@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { type ReactNode, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { format } from 'date-fns';
@@ -16,6 +16,7 @@ import {
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { PageShell } from '@/components/page-shell';
 import { useTRPC } from '@/lib/trpc';
 
@@ -293,6 +294,63 @@ function maxDate(a: Date | null, b: Date | null): Date | null {
   return a.getTime() >= b.getTime() ? a : b;
 }
 
+// ---------------------------------------------------------------------------
+// Shared per-cell rendering / formatters. Both the desktop table rows and the
+// mobile cards render from these helpers so the two layouts can never drift —
+// one source of truth for campaign key, counts, the last-activity timestamp,
+// and the per-link click breakdown.
+// ---------------------------------------------------------------------------
+
+const formatCount = (value: number) => value.toLocaleString();
+
+const formatTimestamp = (value: Date | null) =>
+  value ? format(value, 'yyyy-MM-dd HH:mm') : '—';
+
+function CampaignKeyCell({ campaignKey }: { campaignKey: string }) {
+  return <span className="font-mono text-xs break-all">{campaignKey}</span>;
+}
+
+function GroupIdentifierCell({ groupIdentifier }: { groupIdentifier: string }) {
+  if (groupIdentifier) {
+    return <span className="font-mono break-all">{groupIdentifier}</span>;
+  }
+  return (
+    <Badge variant="outline" className="font-normal text-[10px]">
+      untagged
+    </Badge>
+  );
+}
+
+/** Per-link click breakdown — shared by the desktop expanded row and the card. */
+function PerLinkBreakdown({ row }: { row: CampaignAggregate }) {
+  return (
+    <div className="space-y-1.5">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
+        Per-link clicks ({row.links.length})
+      </div>
+      <div className="flex flex-col gap-2">
+        {row.links.map((link) => (
+          <div
+            key={`${link.campaignKey}::${link.groupIdentifier}`}
+            className="rounded-md border border-border/50 px-3 py-2 text-xs"
+          >
+            <div className="flex items-center justify-between gap-3">
+              <GroupIdentifierCell groupIdentifier={link.groupIdentifier} />
+              <span className="tabular-nums font-medium">
+                {formatCount(link.clickCount)}
+              </span>
+            </div>
+            <div className="mt-1 text-[11px] text-muted-foreground">
+              First {formatTimestamp(link.createdAt)} · Last{' '}
+              {formatTimestamp(link.updatedAt)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function CampaignsTable({
   rows,
   expanded,
@@ -302,9 +360,30 @@ function CampaignsTable({
   expanded: Set<string>;
   onToggle: (key: string) => void;
 }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    // Mobile: a vertical stack of cards built from the SAME aggregated rows as
+    // the desktop table, reusing the shared cell helpers/formatters above.
+    return (
+      <div className="flex flex-col gap-3">
+        {rows.map((row) => (
+          <CampaignCard
+            key={row.campaignKey}
+            row={row}
+            expanded={expanded.has(row.campaignKey)}
+            canExpand={row.links.length > 0}
+            onToggle={() => row.links.length > 0 && onToggle(row.campaignKey)}
+          />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      {/* desktop-only table; mobile renders cards via useIsMobile above */}
+      <table className="w-full text-sm" /* mobile-ok */>
         <thead className="text-start text-xs uppercase tracking-wide text-muted-foreground border-b">
           <tr>
             <th className="px-2 py-2 w-8" aria-label="Expand" />
@@ -375,76 +454,104 @@ function CampaignRow({
             <span className="block h-4 w-4" aria-hidden />
           )}
         </td>
-        <td className="px-2 py-2 align-middle font-mono text-xs">
-          {row.campaignKey}
+        <td className="px-2 py-2 align-middle">
+          <CampaignKeyCell campaignKey={row.campaignKey} />
         </td>
         <td className="px-2 py-2 align-middle text-end tabular-nums">
-          {row.openCount.toLocaleString()}
+          {formatCount(row.openCount)}
         </td>
         <td className="px-2 py-2 align-middle text-end tabular-nums">
-          {row.totalClickCount.toLocaleString()}
+          {formatCount(row.totalClickCount)}
         </td>
         <td className="px-2 py-2 align-middle text-end tabular-nums">
-          {row.distinctLinkCount.toLocaleString()}
+          {formatCount(row.distinctLinkCount)}
         </td>
         <td className="px-2 py-2 align-middle text-muted-foreground">
-          {row.lastActivityAt
-            ? format(row.lastActivityAt, 'yyyy-MM-dd HH:mm')
-            : '—'}
+          {formatTimestamp(row.lastActivityAt)}
         </td>
       </tr>
       {expanded && canExpand ? (
         <tr className="border-b last:border-b-0 bg-muted/20">
           <td colSpan={6} className="px-4 py-3">
-            <div className="space-y-1.5">
-              <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
-                Per-link clicks ({row.links.length})
-              </div>
-              <table className="w-full text-xs">
-                <thead className="text-start text-muted-foreground">
-                  <tr>
-                    <th className="px-2 py-1">Group identifier</th>
-                    <th className="px-2 py-1 text-end">Clicks</th>
-                    <th className="px-2 py-1">First seen</th>
-                    <th className="px-2 py-1">Last seen</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {row.links.map((link) => (
-                    <tr
-                      key={`${link.campaignKey}::${link.groupIdentifier}`}
-                      className="border-t border-border/50"
-                    >
-                      <td className="px-2 py-1 font-mono">
-                        {link.groupIdentifier ? (
-                          link.groupIdentifier
-                        ) : (
-                          <Badge
-                            variant="outline"
-                            className="font-normal text-[10px]"
-                          >
-                            untagged
-                          </Badge>
-                        )}
-                      </td>
-                      <td className="px-2 py-1 text-end tabular-nums">
-                        {link.clickCount.toLocaleString()}
-                      </td>
-                      <td className="px-2 py-1 text-muted-foreground">
-                        {format(link.createdAt, 'yyyy-MM-dd HH:mm')}
-                      </td>
-                      <td className="px-2 py-1 text-muted-foreground">
-                        {format(link.updatedAt, 'yyyy-MM-dd HH:mm')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <PerLinkBreakdown row={row} />
           </td>
         </tr>
       ) : null}
     </>
+  );
+}
+
+/**
+ * One labeled detail row of a mobile card: label pinned to the start, value to
+ * the end (the iOS grouped-list convention), mirroring the merged reference
+ * tables (DomainTable / OrdersDataTable).
+ */
+function CardRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3 px-3.5 py-2.5">
+      <dt className="shrink-0 pt-0.5 text-[13px] text-muted-foreground">
+        {label}
+      </dt>
+      <dd className="flex min-w-0 flex-col items-end gap-0.5 text-right tabular-nums">
+        {children}
+      </dd>
+    </div>
+  );
+}
+
+/**
+ * Mobile card for a single campaign row. Reuses the SAME shared cell helpers and
+ * formatters as the desktop table row so values stay identical — only the layout
+ * differs (a compact grouped list, with the per-link breakdown revealed inline
+ * by the same expand toggle as the desktop chevron).
+ */
+function CampaignCard({
+  row,
+  expanded,
+  canExpand,
+  onToggle,
+}: {
+  row: CampaignAggregate;
+  expanded: boolean;
+  canExpand: boolean;
+  onToggle: () => void;
+}) {
+  const Chevron = expanded ? ChevronDown : ChevronRight;
+  return (
+    <Card className="gap-0 overflow-hidden px-0 py-0">
+      <button
+        type="button"
+        onClick={canExpand ? onToggle : undefined}
+        disabled={!canExpand}
+        aria-expanded={canExpand ? expanded : undefined}
+        className={cn(
+          'flex w-full items-center justify-between gap-2 px-3.5 py-3 text-start',
+          canExpand && 'cursor-pointer hover:bg-muted/50',
+        )}
+      >
+        <CampaignKeyCell campaignKey={row.campaignKey} />
+        {canExpand ? (
+          <Chevron className="h-4 w-4 shrink-0 text-muted-foreground rtl:-scale-x-100" />
+        ) : (
+          <span className="block h-4 w-4 shrink-0" aria-hidden />
+        )}
+      </button>
+      <dl className="divide-y divide-border/50 border-t border-border/50">
+        <CardRow label="Opens">{formatCount(row.openCount)}</CardRow>
+        <CardRow label="Clicks">{formatCount(row.totalClickCount)}</CardRow>
+        <CardRow label="Links">{formatCount(row.distinctLinkCount)}</CardRow>
+        <CardRow label="Last activity">
+          <span className="text-muted-foreground">
+            {formatTimestamp(row.lastActivityAt)}
+          </span>
+        </CardRow>
+      </dl>
+      {expanded && canExpand ? (
+        <div className="border-t border-border/50 bg-muted/20 px-3.5 py-3">
+          <PerLinkBreakdown row={row} />
+        </div>
+      ) : null}
+    </Card>
   );
 }
 
