@@ -1,0 +1,15 @@
+{
+  "metaTitle": "市场——购买代币化域名 | Namefi",
+  "metaDescription": "浏览当前在 OpenSea 上挂牌出售的 Namefi 域名 NFT。每个挂牌都是真实的链上、经 ICANN 认证的域名，您可以购买并拥有。",
+  "title": "市场",
+  "subtitle": "现在正在 OpenSea 上挂牌出售的 Namefi 域名 NFT。每张卡片都是真实的链上域名——选择一个并在市场上完成购买。",
+  "nftAlt": "域名 NFT 图样",
+  "resultCount": "{count, plural, other {# 个挂牌}}",
+  "buyOn": "在 {marketplace} 购买",
+  "buyAria": "在 {marketplace} 购买 {domain}",
+  "partialLoadNote": "部分挂牌可能缺失——一个或多个市场无法访问。",
+  "emptyTitle": "暂无在售挂牌",
+  "emptyDescription": "目前没有 Namefi 域名在 OpenSea 上挂牌。请稍后再来查看。",
+  "loadFailedTitle": "无法加载挂牌",
+  "loadFailedDescription": "我们无法连接 OpenSea 获取挂牌。请稍后再试。"
+}

@@ -28,6 +28,7 @@ import {
   Rss,
   Search,
   Sparkles,
+  Store,
   TrendingUp,
   Heart,
   Gift,
@@ -84,6 +85,7 @@ const ITEMS: NavItem[] = [
       { title: 'items.outbound', href: '/outbound', icon: Search },
     ],
   },
+  { title: 'items.marketplace', href: '/mart', icon: Store },
   { title: 'items.feed', href: '/feed', icon: Rss },
   { title: 'items.hunt', href: '/hunt', icon: TrendingUp },
 ];

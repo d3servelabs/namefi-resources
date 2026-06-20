@@ -42,6 +42,7 @@ export const NAMESPACES = [
   'wishlist',
   'paymentMethods',
   'gallery',
+  'mart',
   'domains',
   'claim',
   'freeMints',

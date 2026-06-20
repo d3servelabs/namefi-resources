@@ -18,6 +18,7 @@ import type freeMints from '../../messages/en/freeMints.json';
 import type gallery from '../../messages/en/gallery.json';
 import type landing from '../../messages/en/landing.json';
 import type landingMarketing from '../../messages/en/landingMarketing.json';
+import type mart from '../../messages/en/mart.json';
 import type nav from '../../messages/en/nav.json';
 import type orders from '../../messages/en/orders.json';
 import type payment from '../../messages/en/payment.json';
@@ -40,6 +41,7 @@ type Messages = {
   gallery: typeof gallery;
   landing: typeof landing;
   landingMarketing: typeof landingMarketing;
+  mart: typeof mart;
   nav: typeof nav;
   orders: typeof orders;
   payment: typeof payment;

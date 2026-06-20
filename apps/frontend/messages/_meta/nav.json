@@ -41,5 +41,8 @@
   "items.profile": {
     "description": "Account-menu / sidebar nav label linking to the user's profile page. Means 'Profile'.",
     "maxLength": 16
+  },
+  "items.marketplace": {
+    "description": "Sidebar nav link to the Marketplace page where users browse Namefi domain NFTs listed for sale on OpenSea."
   }
 }

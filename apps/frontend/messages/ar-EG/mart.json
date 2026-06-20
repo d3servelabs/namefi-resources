@@ -1,0 +1,15 @@
+{
+  "metaTitle": "السوق — اشتري دومينات مُحوَّلة لـ NFT | Namefi",
+  "metaDescription": "اتفرج على دومينات Namefi المُحوَّلة لـ NFT المعروضة للبيع دلوقتي على OpenSea. كل عرض ده دومين حقيقي على البلوكشين ومعتمد من ICANN تقدر تشتريه وتمتلكه.",
+  "title": "السوق",
+  "subtitle": "دومينات Namefi المُحوَّلة لـ NFT المعروضة للبيع دلوقتي على OpenSea. كل كارت ده دومين حقيقي على البلوكشين — اختار واحد وكمّل عملية الشرا في السوق.",
+  "nftAlt": "تصميم دومين NFT",
+  "resultCount": "{count, plural, zero {مفيش عروض} one {عرض واحد} two {عرضين} few {# عروض} many {# عرض} other {# عرض}}",
+  "buyOn": "اشتري على {marketplace}",
+  "buyAria": "اشتري {domain} على {marketplace}",
+  "partialLoadNote": "يمكن بعض العروض تكون ناقصة — سوق أو أكتر معرفناش نوصله.",
+  "emptyTitle": "مفيش عروض نشطة",
+  "emptyDescription": "مفيش دومينات Namefi معروضة على OpenSea دلوقتي. ارجع تاني قريب.",
+  "loadFailedTitle": "معرفناش نحمّل العروض",
+  "loadFailedDescription": "معرفناش نوصل لـ OpenSea عشان نجيب العروض. من فضلك جرّب تاني بعد شوية."
+}

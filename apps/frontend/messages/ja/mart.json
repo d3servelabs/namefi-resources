@@ -1,0 +1,15 @@
+{
+  "metaTitle": "マーケットプレイス — トークン化ドメインを購入 | Namefi",
+  "metaDescription": "現在 OpenSea に出品中の Namefi ドメイン NFT をご覧ください。各出品は、購入して所有できる実際のオンチェーン・ICANN認定ドメインです。",
+  "title": "マーケットプレイス",
+  "subtitle": "今 OpenSea に出品中の Namefi ドメイン NFT。各カードは実際のオンチェーンドメインです。1つ選んでマーケットプレイスで購入を完了してください。",
+  "nftAlt": "ドメイン NFT のアートワーク",
+  "resultCount": "{count, plural, other {# 件の出品}}",
+  "buyOn": "{marketplace} で購入",
+  "buyAria": "{marketplace} で {domain} を購入",
+  "partialLoadNote": "一部の出品が表示されていない可能性があります。1つ以上のマーケットプレイスに接続できませんでした。",
+  "emptyTitle": "出品中の商品はありません",
+  "emptyDescription": "現在 OpenSea に出品中の Namefi ドメインはありません。しばらくしてから再度ご確認ください。",
+  "loadFailedTitle": "出品を読み込めませんでした",
+  "loadFailedDescription": "出品を取得するため OpenSea に接続できませんでした。しばらくしてからもう一度お試しください。"
+}

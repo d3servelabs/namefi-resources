@@ -1,0 +1,41 @@
+{
+  "metaTitle": {
+    "description": "SEO page <title> for the Marketplace page where users browse Namefi domain NFTs listed on OpenSea. Keep brand 'Namefi' untranslated."
+  },
+  "metaDescription": {
+    "description": "SEO meta description for the Marketplace page summarizing the browse-and-buy experience for Namefi domain listings on OpenSea. Keep brand names 'Namefi', 'OpenSea', and 'ICANN' untranslated."
+  },
+  "title": {
+    "description": "On-page H1 title of the Marketplace page. A short noun for a place to buy/sell domains."
+  },
+  "subtitle": {
+    "description": "Intro paragraph beneath the Marketplace title describing the live OpenSea listings of Namefi domains. Keep brand names 'Namefi' and 'OpenSea' untranslated."
+  },
+  "nftAlt": {
+    "description": "Alt text for a domain NFT's artwork image shown on a listing card."
+  },
+  "resultCount": {
+    "description": "Count of listings shown above the grid. ICU plural on {count}; '#' renders the number. Keep the ICU syntax intact."
+  },
+  "buyOn": {
+    "description": "Link/button label on a listing card to complete the purchase on a marketplace. {marketplace} is the marketplace name, e.g. 'OpenSea' — do not translate the value."
+  },
+  "buyAria": {
+    "description": "Accessible label for the whole listing card link. {domain} is the domain name (e.g. 'alice.com'); {marketplace} is the marketplace name (e.g. 'OpenSea'). Keep both placeholders; don't translate their values."
+  },
+  "partialLoadNote": {
+    "description": "Small non-blocking notice shown below the grid when listings from one or more marketplaces/chains failed to load."
+  },
+  "emptyTitle": {
+    "description": "Title of the empty state shown when there are no active Namefi listings on OpenSea."
+  },
+  "emptyDescription": {
+    "description": "Body text of the empty state shown when there are no active Namefi listings on OpenSea. Keep 'OpenSea' untranslated."
+  },
+  "loadFailedTitle": {
+    "description": "Title of the error state shown when listings could not be fetched at all."
+  },
+  "loadFailedDescription": {
+    "description": "Body text of the error state shown when listings could not be fetched from OpenSea. Keep 'OpenSea' untranslated."
+  }
+}

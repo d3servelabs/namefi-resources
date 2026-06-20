@@ -1,0 +1,15 @@
+{
+  "metaTitle": "Mercado — Compra dominios tokenizados | Namefi",
+  "metaDescription": "Explora los dominios NFT de Namefi actualmente en venta en OpenSea. Cada anuncio es un dominio real en cadena y acreditado por ICANN que puedes comprar y poseer.",
+  "title": "Mercado",
+  "subtitle": "Dominios NFT de Namefi en venta ahora mismo en OpenSea. Cada tarjeta es un dominio real en cadena: elige uno y completa la compra en el mercado.",
+  "nftAlt": "Arte del dominio NFT",
+  "resultCount": "{count, plural, one {# anuncio} other {# anuncios}}",
+  "buyOn": "Comprar en {marketplace}",
+  "buyAria": "Comprar {domain} en {marketplace}",
+  "partialLoadNote": "Es posible que falten algunos anuncios: no se pudo acceder a uno o más mercados.",
+  "emptyTitle": "No hay anuncios activos",
+  "emptyDescription": "Ahora mismo no hay dominios de Namefi en venta en OpenSea. Vuelve pronto.",
+  "loadFailedTitle": "No se pudieron cargar los anuncios",
+  "loadFailedDescription": "No pudimos conectarnos a OpenSea para obtener los anuncios. Inténtalo de nuevo en un momento."
+}
