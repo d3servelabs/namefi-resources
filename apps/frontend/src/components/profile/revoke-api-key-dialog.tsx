@@ -149,6 +149,7 @@ export function RevokeApiKeyDialog({
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
         <DialogContent
           className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[450px]')}
+          data-testid="profile.revoke-api-key.dialog"
         >
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
@@ -179,6 +180,7 @@ export function RevokeApiKeyDialog({
                   onCheckedChange={(checked) =>
                     setSignWithWallet(checked === true)
                   }
+                  data-testid="profile.revoke-api-key.sign-with-wallet"
                 />
                 <Label
                   htmlFor="sign-with-wallet-revoke"
@@ -209,6 +211,7 @@ export function RevokeApiKeyDialog({
                             ? 'border-primary bg-primary/10'
                             : 'border-zinc-700 hover:border-zinc-500'
                         }`}
+                        data-testid={`profile.revoke-api-key.wallet.${wallet.address}`}
                       >
                         <span className="font-mono text-sm">
                           {wallet.address.slice(0, 6)}...
@@ -237,6 +240,7 @@ export function RevokeApiKeyDialog({
               variant="outline"
               onClick={() => onOpenChange(false)}
               disabled={isSubmitting}
+              data-testid="profile.revoke-api-key.cancel"
             >
               {tCommon('actions.cancel')}
             </Button>
@@ -247,6 +251,7 @@ export function RevokeApiKeyDialog({
                 isSubmitting ||
                 (signWithWallet && connectedEthereumWallets.length === 0)
               }
+              data-testid="profile.revoke-api-key.confirm"
             >
               {isSubmitting ? (
                 <>

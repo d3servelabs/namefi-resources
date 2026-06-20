@@ -113,6 +113,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
           className="gap-1"
           onClick={handleLinkWalletClicked}
           disabled={!canUsePrivyActions}
+          data-testid="profile.wallets.link-button"
         >
           <Plus className="h-4 w-4" />
           {t('wallets.link')}
@@ -122,13 +123,17 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
         {!linkedWalletsReady ? (
           <LinkedWalletsSkeleton />
         ) : linkedWallets.length === 0 ? (
-          <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
+          <div
+            className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed"
+            data-testid="profile.wallets.empty"
+          >
             <p className="text-muted-foreground">{t('wallets.empty')}</p>
             <Button
               variant="outline"
               className="mt-4"
               onClick={handleLinkWalletClicked}
               disabled={!canUsePrivyActions}
+              data-testid="profile.wallets.empty-link-button"
             >
               {t('wallets.linkWallet')}
             </Button>
@@ -139,6 +144,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
               <div
                 key={wallet.address}
                 className="flex items-center justify-between rounded-lg border p-4"
+                data-testid={`profile.wallets.row.${wallet.address}`}
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -148,7 +154,10 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     <div className="font-medium capitalize">
                       {wallet.walletClientType}
                     </div>
-                    <div className="text-sm text-muted-foreground">
+                    <div
+                      className="text-sm text-muted-foreground"
+                      data-testid={`profile.wallets.row.${wallet.address}.address`}
+                    >
                       {shortage(wallet.address, 11)}
                     </div>
                     <div className="text-sm text-muted-foreground">
@@ -164,6 +173,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                     size="icon"
                     onClick={() => handleCopyAddress(wallet.address)}
                     aria-label={t('wallets.copyAddressAriaLabel')}
+                    data-testid={`profile.wallets.row.${wallet.address}.copy`}
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
@@ -177,6 +187,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                       )
                     }
                     aria-label={t('wallets.viewOnExplorerAriaLabel')}
+                    data-testid={`profile.wallets.row.${wallet.address}.explorer`}
                   >
                     <ExternalLink className="h-4 w-4" />
                   </Button>
@@ -189,6 +200,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                             size="icon"
                             aria-label={t('wallets.removeWalletAriaLabel')}
                             disabled={true}
+                            data-testid={`profile.wallets.row.${wallet.address}.remove`}
                           >
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
@@ -205,6 +217,7 @@ export const Wallets = ({ className, ...rest }: WalletsProps) => {
                       onClick={() => handleUnlinkWalletClicked(wallet.address)}
                       aria-label={t('wallets.removeWalletAriaLabel')}
                       disabled={!canUsePrivyActions}
+                      data-testid={`profile.wallets.row.${wallet.address}.remove`}
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>
@@ -358,7 +371,10 @@ export const UnlinkWalletDialog = ({
       open={isUnlinkWalletDialogOpen}
       onOpenChange={setIsUnlinkWalletDialogOpen}
     >
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+        data-testid="profile.wallets.unlink-dialog"
+      >
         <DialogHeader>
           <DialogTitle>{t('wallets.unlinkDialogTitle')}</DialogTitle>
           <DialogDescription>
@@ -374,12 +390,14 @@ export const UnlinkWalletDialog = ({
             variant="outline"
             onClick={() => setIsUnlinkWalletDialogOpen(false)}
             disabled={isUnlinkWalletPending}
+            data-testid="profile.wallets.unlink-cancel"
           >
             {tCommon('actions.cancel')}
           </Button>
           <Button
             onClick={() => handleUnlinkWalletConfirm(walletToUnlink ?? '')}
             disabled={isUnlinkWalletPending}
+            data-testid="profile.wallets.unlink-confirm"
           >
             {isUnlinkWalletPending ? (
               <>

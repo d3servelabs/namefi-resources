@@ -224,6 +224,7 @@ export function EditApiKeyDialog({
             MOBILE_BOTTOM_SHEET_DIALOG,
             'sm:max-w-[550px] max-h-[90vh] overflow-y-auto',
           )}
+          data-testid="profile.edit-api-key.dialog"
         >
           <DialogHeader>
             <DialogTitle>{t('editApiKey.title')}</DialogTitle>
@@ -252,6 +253,7 @@ export function EditApiKeyDialog({
                   onCheckedChange={(checked) =>
                     setAllowBrowserRequests(checked === true)
                   }
+                  data-testid="profile.edit-api-key.allow-browser"
                 />
                 <div className="space-y-1">
                   <label
@@ -274,6 +276,7 @@ export function EditApiKeyDialog({
                   onCheckedChange={(checked) =>
                     setAllowServerRequests(checked === true)
                   }
+                  data-testid="profile.edit-api-key.allow-server"
                 />
                 <div className="space-y-1">
                   <label
@@ -302,6 +305,7 @@ export function EditApiKeyDialog({
                   setShowAdvancedRestrictions(!showAdvancedRestrictions)
                 }
                 className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                data-testid="profile.edit-api-key.advanced-toggle"
               >
                 {showAdvancedRestrictions ? (
                   <ChevronUp className="h-4 w-4" />
@@ -324,6 +328,7 @@ export function EditApiKeyDialog({
                       placeholder="192.168.1.1&#10;10.0.0.0/8&#10;2001:db8::/32"
                       className="font-mono text-xs"
                       rows={3}
+                      data-testid="profile.edit-api-key.allowed-ips"
                     />
                     <p className="text-xs text-muted-foreground">
                       {t('editApiKey.allowedIpsHelp')}
@@ -342,6 +347,7 @@ export function EditApiKeyDialog({
                         placeholder="https://example.com&#10;https://*.example.com"
                         className="font-mono text-xs"
                         rows={3}
+                        data-testid="profile.edit-api-key.allowed-origins"
                       />
                       <p className="text-xs text-muted-foreground">
                         {t('editApiKey.allowedOriginsHelp')}
@@ -365,6 +371,7 @@ export function EditApiKeyDialog({
                         ? 'border-primary bg-primary/10'
                         : 'border-zinc-700 hover:border-zinc-500'
                     }`}
+                    data-testid={`profile.edit-api-key.wallet.${wallet.address}`}
                   >
                     <span className="font-mono text-sm">
                       {wallet.address.slice(0, 6)}...
@@ -391,12 +398,14 @@ export function EditApiKeyDialog({
               variant="outline"
               onClick={() => handleOpenChange(false)}
               disabled={isSubmitting}
+              data-testid="profile.edit-api-key.cancel"
             >
               {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting || connectedEthereumWallets.length === 0}
+              data-testid="profile.edit-api-key.submit"
             >
               {isSubmitting ? (
                 <>

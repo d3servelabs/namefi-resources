@@ -402,6 +402,7 @@ export function CreateApiKeyDialog({
             MOBILE_BOTTOM_SHEET_DIALOG,
             'sm:max-w-[500px] max-h-[90vh] overflow-y-auto',
           )}
+          data-testid="profile.create-api-key.dialog"
         >
           {step === 'form' ? (
             <>
@@ -421,6 +422,7 @@ export function CreateApiKeyDialog({
                     value={keyName}
                     onChange={(e) => setKeyName(e.target.value)}
                     placeholder={t('createApiKey.keyNamePlaceholder')}
+                    data-testid="profile.create-api-key.name-input"
                   />
                 </div>
 
@@ -434,7 +436,10 @@ export function CreateApiKeyDialog({
                       setKeyType(value as KeyType);
                     }}
                   >
-                    <SelectTrigger id="keyType">
+                    <SelectTrigger
+                      id="keyType"
+                      data-testid="profile.create-api-key.key-type-trigger"
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -604,6 +609,7 @@ export function CreateApiKeyDialog({
                         onClick={handleGenerateKeypair}
                         disabled={isGeneratingKeypair}
                         className="gap-2"
+                        data-testid="profile.create-api-key.generate-keypair"
                       >
                         {isGeneratingKeypair ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -708,7 +714,10 @@ export function CreateApiKeyDialog({
                       setExpiresIn(value);
                     }}
                   >
-                    <SelectTrigger id="expiration">
+                    <SelectTrigger
+                      id="expiration"
+                      data-testid="profile.create-api-key.expiration-trigger"
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -730,6 +739,7 @@ export function CreateApiKeyDialog({
                       onCheckedChange={(checked) =>
                         setSignWithWallet(checked === true)
                       }
+                      data-testid="profile.create-api-key.sign-with-wallet"
                     />
                     <Label
                       htmlFor="sign-with-wallet-create"
@@ -760,6 +770,7 @@ export function CreateApiKeyDialog({
                                 ? 'border-primary bg-primary/10'
                                 : 'border-zinc-700 hover:border-zinc-500'
                             }`}
+                            data-testid={`profile.create-api-key.wallet.${wallet.address}`}
                           >
                             <span className="font-mono text-sm">
                               {wallet.address.slice(0, 6)}...
@@ -788,6 +799,7 @@ export function CreateApiKeyDialog({
                   variant="outline"
                   onClick={() => handleOpenChange(false)}
                   disabled={isSubmitting}
+                  data-testid="profile.create-api-key.cancel"
                 >
                   {tCommon('actions.cancel')}
                 </Button>
@@ -799,6 +811,7 @@ export function CreateApiKeyDialog({
                     (signWithWallet && connectedEthereumWallets.length === 0) ||
                     (keyType === 'PUBLIC_PRIVATE' && !publicKey.trim())
                   }
+                  data-testid="profile.create-api-key.submit"
                 >
                   {isSubmitting ? (
                     <>
@@ -854,12 +867,14 @@ export function CreateApiKeyDialog({
                         readOnly
                         className="font-mono text-xs break-all resize-none"
                         rows={2}
+                        data-testid="profile.create-api-key.created-key"
                       />
                       <Button
                         variant="outline"
                         size="icon"
                         onClick={handleCopyKey}
                         className="flex-shrink-0 self-start"
+                        data-testid="profile.create-api-key.copy-created-key"
                       >
                         <Copy className="h-4 w-4" />
                       </Button>
@@ -917,7 +932,12 @@ export function CreateApiKeyDialog({
               </div>
 
               <DialogFooter>
-                <Button onClick={handleDone}>{t('createApiKey.done')}</Button>
+                <Button
+                  onClick={handleDone}
+                  data-testid="profile.create-api-key.done"
+                >
+                  {t('createApiKey.done')}
+                </Button>
               </DialogFooter>
             </>
           )}

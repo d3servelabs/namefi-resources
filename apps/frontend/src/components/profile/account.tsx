@@ -18,6 +18,13 @@ export interface AccountProps extends HTMLAttributes<HTMLDivElement> {
   showLabel?: boolean;
   shouldHighlight?: boolean;
   disabled?: boolean;
+  /**
+   * Root `data-testid` for this row. `Account` is rendered many times at once
+   * (contact + social), so its inner controls derive their ids from this root
+   * (`${root}.link`, `.unlink`, `.linked-value`) to stay collision-free. Each
+   * call site must pass a distinct root. Defaults to `profile.account`.
+   */
+  'data-testid'?: string;
 }
 
 export const Account = ({
@@ -32,11 +39,13 @@ export const Account = ({
   showLabel = false,
   shouldHighlight = false,
   disabled = false,
+  'data-testid': testId,
   ...rest
 }: AccountProps) => {
   const t = useTranslations('profile');
+  const root = testId || 'profile.account';
   return (
-    <div className={cn('space-y-2', className)} {...rest}>
+    <div className={cn('space-y-2', className)} data-testid={root} {...rest}>
       {showLabel && <Label>{title}</Label>}
       <div
         className={cn(
@@ -51,7 +60,12 @@ export const Account = ({
           <div>
             {isLinked && linkedValue ? (
               <div className="flex items-center gap-2">
-                <div className="text-sm font-medium">{linkedValue}</div>
+                <div
+                  className="text-sm font-medium"
+                  data-testid={`${root}.linked-value`}
+                >
+                  {linkedValue}
+                </div>
                 {verified && (
                   <span className="flex h-4 w-4 items-center justify-center rounded-full bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400">
                     <Check className="h-3 w-3" />
@@ -74,6 +88,7 @@ export const Account = ({
                 size="sm"
                 onClick={onUnlink}
                 disabled={disabled}
+                data-testid={`${root}.unlink`}
               >
                 {t('account.unlink')}
               </Button>
@@ -85,6 +100,7 @@ export const Account = ({
                 size="sm"
                 onClick={onLink}
                 disabled={disabled}
+                data-testid={`${root}.link`}
               >
                 {t('account.link')}
               </Button>

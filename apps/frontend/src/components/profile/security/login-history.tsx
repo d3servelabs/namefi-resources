@@ -74,7 +74,10 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
       </CardHeader>
       <CardContent>
         {isError ? (
-          <div className="flex h-40 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-destructive/40 bg-destructive/5">
+          <div
+            className="flex h-40 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-destructive/40 bg-destructive/5"
+            data-testid="profile.login-history.error"
+          >
             <AlertTriangle className="h-6 w-6 text-destructive" />
             <div className="text-center">
               <p className="font-medium">{t('loginHistory.loadError')}</p>
@@ -87,6 +90,7 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
               size="sm"
               onClick={() => refetch()}
               disabled={isFetching}
+              data-testid="profile.login-history.retry"
             >
               <RefreshCw
                 className={`h-4 w-4 me-2 ${isFetching ? 'animate-spin' : ''}`}
@@ -95,11 +99,17 @@ export const LoginHistory = ({ className, ...rest }: LoginHistoryProps) => {
             </Button>
           </div>
         ) : isLoading ? (
-          <div className="flex h-40 items-center justify-center">
+          <div
+            className="flex h-40 items-center justify-center"
+            data-testid="profile.login-history.loading"
+          >
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : items.length === 0 ? (
-          <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
+          <div
+            className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed"
+            data-testid="profile.login-history.empty"
+          >
             <p className="text-muted-foreground">{t('loginHistory.empty')}</p>
             <p className="mt-1 text-xs text-muted-foreground">
               {t('loginHistory.emptyHelp')}
@@ -164,7 +174,10 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
   };
 
   return (
-    <div className="flex items-start justify-between gap-3 rounded-lg border p-4">
+    <div
+      className="flex items-start justify-between gap-3 rounded-lg border p-4"
+      data-testid={`profile.login-history.row.${row.id}`}
+    >
       <div className="flex items-start gap-3 min-w-0">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 shrink-0">
           <Monitor className="h-4 w-4" />
@@ -207,7 +220,10 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
             {row.ipAddress ? (
               <span className="inline-flex items-center gap-1">
                 <Globe2 className="h-3 w-3" />{' '}
-                <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+                <code
+                  className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs"
+                  data-testid={`profile.login-history.row.${row.id}.ip`}
+                >
                   {row.ipAddress}
                 </code>
               </span>
@@ -262,6 +278,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               size="sm"
               onClick={() => onAcknowledge(null)}
               disabled={acknowledge.isPending}
+              data-testid={`profile.login-history.row.${row.id}.undo`}
             >
               {t('loginHistory.undo')}
             </Button>
@@ -274,6 +291,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               className="border-green-400/60 text-green-700 hover:bg-green-50 dark:hover:bg-green-950"
               onClick={() => onAcknowledge(true)}
               disabled={acknowledge.isPending}
+              data-testid={`profile.login-history.row.${row.id}.recognize`}
             >
               <Check className="h-4 w-4 me-1" />
               {t('loginHistory.thatWasMe')}
@@ -284,6 +302,7 @@ const LoginHistoryItem = ({ row, showLoginMethod }: LoginHistoryItemProps) => {
               className="border-red-400/60 text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
               onClick={() => onAcknowledge(false)}
               disabled={acknowledge.isPending}
+              data-testid={`profile.login-history.row.${row.id}.reject`}
             >
               <X className="h-4 w-4 me-1" />
               {t('loginHistory.notMe')}

@@ -164,6 +164,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
             onLink={handleLinkTwitter}
             onUnlink={() => setIsUnlinkTwitterDialogOpen(true)}
             disabled={!canUsePrivyActions}
+            data-testid="profile.social.twitter"
           />
 
           <Account
@@ -177,6 +178,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
             onLink={handleLinkGitHub}
             onUnlink={() => setIsUnlinkGitHubDialogOpen(true)}
             disabled={!canUsePrivyActions}
+            data-testid="profile.social.github"
           />
         </div>
       </CardContent>
@@ -186,7 +188,10 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         open={isUnlinkGitHubDialogOpen}
         onOpenChange={setIsUnlinkGitHubDialogOpen}
       >
-        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+        <DialogContent
+          className={MOBILE_BOTTOM_SHEET_DIALOG}
+          data-testid="profile.social.github-unlink-dialog"
+        >
           <DialogHeader>
             <DialogTitle>
               {t('socialAccounts.unlinkGithubDialogTitle')}
@@ -199,11 +204,13 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
             <Button
               variant="outline"
               onClick={() => setIsUnlinkGitHubDialogOpen(false)}
+              data-testid="profile.social.github-unlink-cancel"
             >
               {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkGitHub(user?.github?.subject ?? '')}
+              data-testid="profile.social.github-unlink-confirm"
             >
               {t('socialAccounts.unlink')}
             </Button>
@@ -216,7 +223,10 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         open={isUnlinkTwitterDialogOpen}
         onOpenChange={setIsUnlinkTwitterDialogOpen}
       >
-        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+        <DialogContent
+          className={MOBILE_BOTTOM_SHEET_DIALOG}
+          data-testid="profile.social.twitter-unlink-dialog"
+        >
           <DialogHeader>
             <DialogTitle>
               {t('socialAccounts.unlinkTwitterDialogTitle')}
@@ -229,11 +239,13 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
             <Button
               variant="outline"
               onClick={() => setIsUnlinkTwitterDialogOpen(false)}
+              data-testid="profile.social.twitter-unlink-cancel"
             >
               {tCommon('actions.cancel')}
             </Button>
             <Button
               onClick={() => handleUnlinkTwitter(user?.twitter?.subject ?? '')}
+              data-testid="profile.social.twitter-unlink-confirm"
             >
               {t('socialAccounts.unlink')}
             </Button>

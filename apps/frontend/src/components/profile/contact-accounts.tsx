@@ -139,6 +139,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         showLabel={true}
         shouldHighlight={shouldHighlightEmail}
         disabled={!canUsePrivyActions}
+        data-testid="profile.account.email"
       />
 
       <Account
@@ -151,6 +152,7 @@ export function ContactAccounts({ className = '' }: ContactAccountsProps) {
         onUnlink={ALLOW_UNLINK_PHONE ? handleUnlinkPhone : undefined}
         showLabel={true}
         disabled={!canUsePrivyActions}
+        data-testid="profile.account.phone"
       />
     </div>
   );

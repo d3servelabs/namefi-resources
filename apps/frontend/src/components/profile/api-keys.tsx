@@ -205,6 +205,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
           size="default"
           className="gap-1 py-1"
           onClick={() => setIsCreateDialogOpen(true)}
+          data-testid="profile.api-keys.create-button"
         >
           <Plus className="h-4 w-4" />
           {t('apiKeys.create')}
@@ -212,16 +213,23 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="flex h-40 items-center justify-center">
+          <div
+            className="flex h-40 items-center justify-center"
+            data-testid="profile.api-keys.loading"
+          >
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : !apiKeys || apiKeys.length === 0 ? (
-          <div className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed">
+          <div
+            className="flex h-40 flex-col items-center justify-center rounded-lg border border-dashed"
+            data-testid="profile.api-keys.empty"
+          >
             <p className="text-muted-foreground">{t('apiKeys.empty')}</p>
             <Button
               variant="outline"
               className="mt-4"
               onClick={() => setIsCreateDialogOpen(true)}
+              data-testid="profile.api-keys.empty-create-button"
             >
               {t('apiKeys.createApiKey')}
             </Button>
@@ -235,6 +243,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                   'flex items-center justify-between rounded-lg border p-4',
                   !key.isActive && 'opacity-60',
                 )}
+                data-testid={`profile.api-keys.row.${key.id}`}
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
@@ -242,12 +251,20 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium">{key.name}</span>
+                      <span
+                        className="font-medium"
+                        data-testid={`profile.api-keys.row.${key.id}.name`}
+                      >
+                        {key.name}
+                      </span>
                       {getKeyTypeBadge(key.type)}
                       {getStatusBadge(key)}
                     </div>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+                      <code
+                        className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs"
+                        data-testid={`profile.api-keys.row.${key.id}.key-prefix`}
+                      >
                         {key.keyPrefix}...
                       </code>
                     </div>
@@ -302,6 +319,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                               size="icon"
                               onClick={() => handleCopyKeyPrefix(key.keyPrefix)}
                               aria-label={t('apiKeys.copyKeyPrefixAriaLabel')}
+                              data-testid={`profile.api-keys.row.${key.id}.copy`}
                             />
                           }
                         >
@@ -328,6 +346,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                                 aria-label={t(
                                   'apiKeys.editRestrictionsAriaLabel',
                                 )}
+                                data-testid={`profile.api-keys.row.${key.id}.edit`}
                               />
                             }
                           >
@@ -352,6 +371,7 @@ export const ApiKeys = ({ className, ...rest }: ApiKeysProps) => {
                                 handleRevokeClick(key.id, key.name)
                               }
                               aria-label={t('apiKeys.revokeKeyAriaLabel')}
+                              data-testid={`profile.api-keys.row.${key.id}.revoke`}
                             />
                           }
                         >
