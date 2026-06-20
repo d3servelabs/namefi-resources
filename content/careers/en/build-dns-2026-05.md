@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Lead technical depth in DNS and EPP domains while contributing broadly as a full-stack engineer, amplified by AI-assisted development workflows.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

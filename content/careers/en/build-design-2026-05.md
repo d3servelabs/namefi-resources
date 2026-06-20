@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Drive product decisions, user experience, and design quality with AI agents as core collaborators in your daily workflow.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Product
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
