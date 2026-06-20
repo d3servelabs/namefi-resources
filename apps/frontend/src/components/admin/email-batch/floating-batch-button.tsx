@@ -58,7 +58,7 @@ export function FloatingBatchButton() {
                 type="button"
                 onClick={() => setOpen(true)}
                 aria-label={label}
-                className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full shadow-lg p-0"
+                className="fixed bottom-[calc(1.5rem_+_env(safe-area-inset-bottom,0px))] right-6 z-50 h-12 w-12 rounded-full shadow-lg p-0"
                 size="icon"
               >
                 <Mail className="h-5 w-5" />

@@ -16,7 +16,7 @@ export default function SkipAuthBanner() {
   if (!isSkipAuthActive || isBannerDismissed) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] right-4 z-50">
       <div className="rounded-md bg-amber-500 text-amber-950 shadow-lg border border-amber-600 px-3 py-2 flex items-center gap-2">
         <Unlock className="h-4 w-4" />
         <span className="text-sm font-medium">Auth Skipped (Dev Mode)</span>

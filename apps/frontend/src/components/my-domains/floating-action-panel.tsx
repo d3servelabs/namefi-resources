@@ -104,7 +104,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
             duration: 0.4,
           }}
           layout
-          className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50"
+          className="fixed bottom-[calc(1.5rem_+_env(safe-area-inset-bottom,0px))] left-1/2 transform -translate-x-1/2 z-50"
         >
           <motion.div
             initial={{ opacity: 0 }}

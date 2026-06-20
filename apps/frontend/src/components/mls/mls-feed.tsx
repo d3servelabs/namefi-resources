@@ -611,7 +611,7 @@ function MlsBackToTopButton({ isVisible }: { isVisible: boolean }) {
     <AnimatePresence>
       {isVisible ? (
         <motion.div
-          className="fixed right-4 bottom-5 z-30 sm:right-6 lg:right-[max(1.5rem,calc((100vw-45rem)/2+1.5rem))]"
+          className="fixed right-4 bottom-[calc(1.25rem_+_env(safe-area-inset-bottom,0px))] z-30 sm:right-6 lg:right-[max(1.5rem,calc((100vw-45rem)/2+1.5rem))]"
           initial={{ opacity: 0, y: 8, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 8, scale: 0.96 }}

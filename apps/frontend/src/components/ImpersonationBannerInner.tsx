@@ -79,7 +79,7 @@ function ActiveImpersonationBannerInner({
     u?.displayName ? (u.email ?? u.mainWalletAddress) : null;
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50">
+    <div className="fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 z-50">
       <div className="rounded-md bg-foreground text-background shadow-lg border px-3 py-2 flex items-center gap-2">
         <span className="text-xs opacity-90">Impersonating </span>
         <div className="flex items-center gap-2 ring-1 ring-background/20 rounded-md p-1">
