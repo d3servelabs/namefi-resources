@@ -12,6 +12,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
@@ -333,7 +335,7 @@ export function CreateListingModal({
           {triggerLabel}
         </DialogTrigger>
       ) : null}
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-zinc-100">
             <ShoppingBag className="h-4 w-4 text-brand-primary" />

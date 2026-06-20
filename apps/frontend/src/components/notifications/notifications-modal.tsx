@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { BellRing } from 'lucide-react';
 import { useTheme } from 'next-themes';
 
@@ -42,7 +44,10 @@ export function NotificationsModal() {
       onOpenChange={(next) => setNotificationsModalOpen(next)}
     >
       <DialogContent
-        className="dark bg-background text-foreground sm:max-w-5xl"
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'dark bg-background text-foreground sm:max-w-5xl',
+        )}
         data-theme={activeTheme}
       >
         <DialogHeader>

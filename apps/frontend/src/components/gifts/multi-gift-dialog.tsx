@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
@@ -295,7 +297,12 @@ export function MultiGiftDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-[900px] !w-full overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-[900px] !w-full overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Bulk Gift Reservations</DialogTitle>
         </DialogHeader>

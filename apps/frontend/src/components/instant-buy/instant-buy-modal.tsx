@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { NftWalletCard } from '@/components/nft-wallet-card';
 import { HybridPaymentCard } from '@/components/payment-method/hybrid-payment-card';
 import {
@@ -240,7 +242,12 @@ export function InstantBuyModal({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            'max-w-2xl max-h-[90vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle className="text-2xl">
               {t('instantBuyModal.title', {

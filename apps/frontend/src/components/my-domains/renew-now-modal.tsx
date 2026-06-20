@@ -12,6 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
@@ -114,7 +116,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}>
         <DialogHeader>
           <DialogTitle>
             {t('renewModal.title', { count: domains.length })}
