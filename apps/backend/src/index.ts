@@ -46,6 +46,7 @@ import { dnsvizRouter } from './routers/dnsviz';
 import { x402Router } from './routers/x402';
 import { mppRouter } from './routers/mpp';
 import { mlsRssProxyRouter } from './routers/mls-rss-proxy';
+import { mcpRouter } from './routers/mcp';
 import {
   rawGithubProxyRouter,
   RAW_GITHUB_PROXY_MOUNT,
@@ -262,6 +263,7 @@ app.route('/client-events', browserLogsProxyRouter);
 app.route('x402', x402Router);
 app.route('/x402/analytics', x402AnalyticsRouter);
 app.route('mpp', mppRouter);
+app.route('/mcp', mcpRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route(RAW_GITHUB_PROXY_MOUNT, rawGithubProxyRouter);
