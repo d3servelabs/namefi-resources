@@ -1,10 +1,9 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
+import { useCallback, useMemo, useState } from 'react';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
-import { Loader2 } from 'lucide-react';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import {
   PermissionGate,
@@ -20,34 +19,19 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { UserWalletAvatar } from '@/components/user-avatar';
-import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
 import {
-  AdminEditNameserversDialog,
-  AdminToggleDnssecDialog,
   DnssecCell,
   NameserversCell,
-  WorkflowLink,
-  operationLabel,
-  type ActiveWorkflow,
-  type DomainWorkflows,
-  type NsDnssecDialogRow,
   type TemporalConfig,
 } from '@/components/admin/ns-dnssec-dialogs';
-
-/**
- * Page-level row shape. Extends the dialog row with everything the
- * table cells display (`userId`, `ownerAddress`, `chainId`,
- * `dnssecLastUpdatedAt`).
- */
-type NsAndDnssecRow = NsDnssecDialogRow & {
-  userId: string | null;
-  ownerAddress: string | null;
-  chainId: number;
-  dnssecLastUpdatedAt: Date | null;
-};
+import {
+  DomainNameCell,
+  PendingWorkflowsCell,
+  RowActions,
+  UserCell,
+  type NsAndDnssecRow,
+} from './ns-and-dnssec-cells';
+import { NsAndDnssecCard } from './ns-and-dnssec-card';
 
 const DEFAULT_COLUMN_VISIBILITY = {
   user: true,
@@ -250,19 +234,7 @@ function NsAndDnssecTable() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <div className="flex items-center gap-1">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={32}
-              minCharactersToDisplay={16}
-              className="font-medium"
-            >
-              {row.original.normalizedDomainName}
-            </AutoTruncateTextV2>
-            <AdminDomainDetailsButton
-              domainName={row.original.normalizedDomainName}
-              size="icon-xs"
-            />
-          </div>
+          <DomainNameCell domainName={row.original.normalizedDomainName} />
         ),
         size: 240,
       },
@@ -324,6 +296,27 @@ function NsAndDnssecTable() {
     [canWrite, isWorkflowsLoading, temporal, workflowsByDomain],
   );
 
+  // Mobile card renderer. Composes the SAME shared cells the desktop columns
+  // use (DomainNameCell, UserCell, NameserversCell, DnssecCell,
+  // PendingWorkflowsCell, RowActions) so a phone gets a stacked, readable card
+  // per domain instead of a horizontally-scrolling table — one source of
+  // formatting/behavior, only the layout differs.
+  const renderMobileCard = useCallback(
+    (row: Row<NsAndDnssecRow>) => {
+      const wf = workflowsByDomain?.[row.original.normalizedDomainName];
+      return (
+        <NsAndDnssecCard
+          row={row.original}
+          workflows={wf}
+          temporal={temporal}
+          canWrite={canWrite}
+          isWorkflowsLoading={isWorkflowsLoading}
+        />
+      );
+    },
+    [canWrite, isWorkflowsLoading, temporal, workflowsByDomain],
+  );
+
   return (
     <ExtensibleDataTable<NsAndDnssecRow, typeof filterStrategy>
       filterStrategy={filterStrategy}
@@ -347,128 +340,7 @@ function NsAndDnssecTable() {
       columnVisibility={columnVisibility}
       onColumnVisibilityChange={setColumnVisibility}
       onResetPreferences={resetToDefaults}
+      renderMobileCard={renderMobileCard}
     />
-  );
-}
-
-function UserCell({ row }: { row: NsAndDnssecRow }) {
-  const userId = row.userId;
-  const ownerAddress = row.ownerAddress;
-  const tail = ownerAddress
-    ? `${ownerAddress.slice(0, 6)}…${ownerAddress.slice(-4)}`
-    : null;
-  return (
-    <div className="flex items-center gap-2">
-      <UserWalletAvatar
-        address={ownerAddress ?? undefined}
-        userId={userId ?? undefined}
-        className="size-6 rounded-md"
-      />
-      <div className="flex flex-col leading-tight">
-        {userId ? (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={14}
-            minCharactersToDisplay={10}
-            className="text-xs"
-          >
-            {userId}
-          </AutoTruncateTextV2>
-        ) : (
-          <span className="text-xs text-amber-600">No user</span>
-        )}
-        {tail ? (
-          <span className="font-mono text-[10px] text-muted-foreground">
-            {tail}
-          </span>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
-function PendingWorkflowsCell({
-  workflows,
-  temporal,
-  isLoading,
-}: {
-  workflows: DomainWorkflows | undefined;
-  temporal: TemporalConfig | undefined;
-  isLoading: boolean;
-}) {
-  if (isLoading || !workflows) {
-    return (
-      <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-        <Loader2 className="w-3 h-3 animate-spin" />
-        Checking…
-      </span>
-    );
-  }
-  const list = [workflows.dnssec, workflows.ns].filter(
-    (w): w is ActiveWorkflow => !!w,
-  );
-  if (list.length === 0) {
-    return <span className="text-xs text-muted-foreground">—</span>;
-  }
-  return (
-    <div className="flex flex-col gap-1">
-      {list.map((w) => (
-        <div key={w.workflowId} className="flex items-center gap-2 text-xs">
-          <Loader2 className="w-3 h-3 animate-spin" />
-          <span>{operationLabel(w.operation)}</span>
-          <WorkflowLink workflow={w} temporal={temporal} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function RowActions({
-  row,
-  workflows,
-  canWrite,
-  isWorkflowsLoading,
-}: {
-  row: NsAndDnssecRow;
-  workflows: DomainWorkflows | undefined;
-  canWrite: boolean;
-  isWorkflowsLoading: boolean;
-}) {
-  const [nsOpen, setNsOpen] = useState(false);
-  const [dnssecOpen, setDnssecOpen] = useState(false);
-  // Disable while we don't yet know whether a workflow is running for
-  // this domain — otherwise an admin could fire a mutation on top of a
-  // pending workflow during the load window.
-  const blocked = !canWrite || isWorkflowsLoading || !workflows;
-  return (
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={blocked}
-        onClick={() => setNsOpen(true)}
-      >
-        Edit Nameservers
-      </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={blocked}
-        onClick={() => setDnssecOpen(true)}
-      >
-        Toggle DNSSEC
-      </Button>
-      <AdminEditNameserversDialog
-        open={nsOpen}
-        onOpenChange={setNsOpen}
-        row={row}
-        activeWorkflow={workflows?.ns ?? null}
-      />
-      <AdminToggleDnssecDialog
-        open={dnssecOpen}
-        onOpenChange={setDnssecOpen}
-        row={row}
-        activeWorkflow={workflows?.dnssec ?? null}
-      />
-    </div>
   );
 }
