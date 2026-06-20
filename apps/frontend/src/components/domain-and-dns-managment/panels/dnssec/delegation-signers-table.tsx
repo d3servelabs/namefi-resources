@@ -21,12 +21,15 @@ import {
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
+import type { ReactNode } from 'react';
 
 export type ActiveSigner = {
   id?: string;
@@ -66,6 +69,8 @@ export function DelegationSignersTable({
   disableAllButtons,
   emptyMessage = 'No delegation signers associated yet.',
 }: DelegationSignersTableProps) {
+  const isMobile = useIsMobile();
+
   const rows: DisplayRow[] = [
     ...activeSigners.map((signer) => ({ kind: 'active' as const, signer })),
     ...pendingSigners.map((p) => ({ kind: 'pending' as const, pending: p })),
@@ -75,9 +80,37 @@ export function DelegationSignersTable({
     return <p className="text-xs text-zinc-500 italic">{emptyMessage}</p>;
   }
 
+  if (isMobile) {
+    // Mobile: a vertical stack of cards built from the SAME rows and SAME
+    // action buttons as the desktop table — only the layout differs (a
+    // labeled grouped list instead of a wide table row).
+    return (
+      <div className="flex flex-col gap-3">
+        {rows.map((row, idx) =>
+          row.kind === 'active' ? (
+            <ActiveSignerCard
+              key={`active-${row.signer.keyTag ?? idx}-${row.signer.digest ?? idx}`}
+              domainName={domainName}
+              signer={row.signer}
+              disabled={disableAllButtons}
+            />
+          ) : (
+            <PendingSignerCard
+              key={`pending-${row.pending.workflowId}`}
+              domainName={domainName}
+              pending={row.pending}
+              disabled={disableAllButtons}
+            />
+          ),
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto rounded-md border border-zinc-800">
-      <table className="w-full text-xs">
+      {/* desktop-only table; mobile renders cards via useIsMobile above */}
+      <table className="w-full text-xs" /* mobile-ok */>
         <thead className="bg-zinc-900/60 text-zinc-400">
           <tr>
             <th className="text-start p-2">Key tag</th>
@@ -108,6 +141,110 @@ export function DelegationSignersTable({
         </tbody>
       </table>
     </div>
+  );
+}
+
+/**
+ * One labeled detail row of a mobile DS card: label pinned to the start, value
+ * to the end (the iOS grouped-list convention), mirroring DomainTable's card.
+ */
+function CardRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3 px-3 py-2">
+      <dt className="shrink-0 pt-0.5 text-[13px] text-zinc-400">{label}</dt>
+      <dd className="flex min-w-0 flex-col items-end gap-0.5 text-end font-mono">
+        {children}
+      </dd>
+    </div>
+  );
+}
+
+/**
+ * Mobile card for an active DS row. Renders the SAME key-tag/algorithm/
+ * digest-type/digest values and the SAME DisassociateButton as the desktop
+ * ActiveSignerRow — only the layout differs.
+ */
+function ActiveSignerCard({
+  domainName,
+  signer,
+  disabled,
+}: {
+  domainName: PunycodeDomainName;
+  signer: ActiveSigner;
+  disabled: boolean;
+}) {
+  return (
+    <Card className="gap-0 overflow-hidden px-0 py-0">
+      <div className="flex items-center justify-between gap-2 px-3 py-2">
+        <span className="font-mono text-sm font-medium text-zinc-200">
+          {signer.keyTag ?? '—'}
+        </span>
+        <DisassociateButton
+          domainName={domainName}
+          signer={signer}
+          disabled={disabled}
+        />
+      </div>
+      <dl className="divide-y divide-zinc-800 border-t border-zinc-800 text-xs">
+        <CardRow label="Algorithm">{signer.algorithm ?? '—'}</CardRow>
+        <CardRow label="Digest type">{signer.digestType ?? '—'}</CardRow>
+        <CardRow label="Digest">
+          <span className="break-all" title={signer.digest ?? ''}>
+            {signer.digest ?? '—'}
+          </span>
+        </CardRow>
+      </dl>
+    </Card>
+  );
+}
+
+/**
+ * Mobile card for a pending (deferred) DS row. Reuses the SAME pending badge,
+ * phase tooltip, signing-config values and CancelDeferredButton as the desktop
+ * PendingSignerRow.
+ */
+function PendingSignerCard({
+  domainName,
+  pending,
+  disabled,
+}: {
+  domainName: PunycodeDomainName;
+  pending: PendingSigner;
+  disabled: boolean;
+}) {
+  return (
+    <Card className="gap-0 overflow-hidden px-0 py-0">
+      <div className="flex items-center justify-between gap-2 px-3 py-2">
+        <div className="flex min-w-0 items-center gap-1.5">
+          <span className="font-mono text-sm font-medium text-zinc-200">
+            {pending.signingConfig.keyTag}
+          </span>
+          <Badge
+            variant="outline"
+            className="bg-amber-500/15 text-amber-300 border-amber-500/30"
+          >
+            Pending
+          </Badge>
+          <PendingPhaseTooltip pending={pending} />
+        </div>
+        <CancelDeferredButton
+          domainName={domainName}
+          pending={pending}
+          disabled={disabled}
+        />
+      </div>
+      <dl className="divide-y divide-zinc-800 border-t border-zinc-800 text-xs">
+        <CardRow label="Algorithm">{pending.signingConfig.algorithm}</CardRow>
+        <CardRow label="Digest type">
+          {pending.signingConfig.digestType}
+        </CardRow>
+        <CardRow label="Digest">
+          <span className="break-all" title={pending.signingConfig.digest}>
+            {pending.signingConfig.digest}
+          </span>
+        </CardRow>
+      </dl>
+    </Card>
   );
 }
 

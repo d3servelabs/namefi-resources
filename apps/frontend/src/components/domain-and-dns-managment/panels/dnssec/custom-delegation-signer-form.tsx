@@ -35,7 +35,9 @@ import {
   AccordionTrigger,
 } from '@namefi-astra/ui/components/shadcn/accordion';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import {
   Form,
@@ -727,8 +729,14 @@ export function CustomDelegationSignerForm({
   );
 }
 
-function DsSummaryTable({ form }: { form: UseFormReturn<FormValues> }) {
-  const values = form.watch();
+/**
+ * The DS summary fields, computed once from the form values. Both the desktop
+ * table rows and the mobile card rows render off this single list so the two
+ * layouts can never drift.
+ */
+function summaryEntries(
+  values: FormValues,
+): Array<{ label: string; value: React.ReactNode }> {
   const algorithmLabel =
     SUPPORTED_ALGORITHMS.find((opt) => opt.value === values.algorithm)?.label ??
     String(values.algorithm);
@@ -739,38 +747,77 @@ function DsSummaryTable({ form }: { form: UseFormReturn<FormValues> }) {
     DIGEST_TYPE_OPTIONS.find((opt) => opt.value === values.digestType)?.label ??
     String(values.digestType);
 
+  return [
+    { label: 'Key tag', value: values.keyTag },
+    { label: 'Algorithm', value: algorithmLabel },
+    { label: 'Flags', value: flagsLabel },
+    { label: 'Digest type', value: digestTypeLabel },
+    {
+      label: 'Public key',
+      value: values.publicKey ? (
+        <span
+          className="font-mono break-all text-zinc-200"
+          title={values.publicKey}
+        >
+          {truncateMiddle(values.publicKey, 64)}
+        </span>
+      ) : (
+        <span className="italic text-amber-400">not set</span>
+      ),
+    },
+    {
+      label: 'Digest',
+      value: values.digest ? (
+        <span
+          className="font-mono break-all text-zinc-200"
+          title={values.digest}
+        >
+          {values.digest}
+        </span>
+      ) : (
+        <span className="italic text-zinc-500">—</span>
+      ),
+    },
+  ];
+}
+
+function DsSummaryTable({ form }: { form: UseFormReturn<FormValues> }) {
+  const isMobile = useIsMobile();
+  const values = form.watch();
+  const entries = summaryEntries(values);
+
+  if (isMobile) {
+    // Mobile: a labeled grouped list rendered from the SAME summary entries as
+    // the desktop table — only the layout differs.
+    return (
+      <Card className="gap-0 overflow-hidden px-0 py-0 min-w-0">
+        <dl className="divide-y divide-zinc-800 text-xs">
+          {entries.map((entry) => (
+            <div
+              key={entry.label}
+              className="flex items-start justify-between gap-3 p-2 min-w-0"
+            >
+              <dt className="shrink-0 pt-0.5 text-zinc-400">{entry.label}</dt>
+              <dd className="flex min-w-0 flex-col items-end gap-0.5 text-end break-words">
+                {entry.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Card>
+    );
+  }
+
   return (
     <div className="rounded-md border border-zinc-800 overflow-hidden min-w-0">
-      <table className="w-full text-xs">
+      {/* desktop-only table; mobile renders cards via useIsMobile above */}
+      <table className="w-full text-xs" /* mobile-ok */>
         <tbody>
-          <SummaryRow label="Key tag">{values.keyTag}</SummaryRow>
-          <SummaryRow label="Algorithm">{algorithmLabel}</SummaryRow>
-          <SummaryRow label="Flags">{flagsLabel}</SummaryRow>
-          <SummaryRow label="Digest type">{digestTypeLabel}</SummaryRow>
-          <SummaryRow label="Public key">
-            {values.publicKey ? (
-              <span
-                className="font-mono break-all text-zinc-200"
-                title={values.publicKey}
-              >
-                {truncateMiddle(values.publicKey, 64)}
-              </span>
-            ) : (
-              <span className="italic text-amber-400">not set</span>
-            )}
-          </SummaryRow>
-          <SummaryRow label="Digest">
-            {values.digest ? (
-              <span
-                className="font-mono break-all text-zinc-200"
-                title={values.digest}
-              >
-                {values.digest}
-              </span>
-            ) : (
-              <span className="italic text-zinc-500">—</span>
-            )}
-          </SummaryRow>
+          {entries.map((entry) => (
+            <SummaryRow key={entry.label} label={entry.label}>
+              {entry.value}
+            </SummaryRow>
+          ))}
         </tbody>
       </table>
     </div>
@@ -959,38 +1006,86 @@ function ValidationLane({
               you entered.
             </p>
             {lane.publishedDnskeys.length > 0 ? (
-              <div className="text-xs text-zinc-300 overflow-x-auto">
-                <table className="w-full font-mono">
-                  <thead className="text-zinc-500">
-                    <tr>
-                      <th className="text-start pe-3">Flags</th>
-                      <th className="text-start pe-3">Alg</th>
-                      <th className="text-start pe-3">Computed key tag</th>
-                      <th className="text-start">Computed digest</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lane.publishedDnskeys.map((d) => (
-                      <tr key={d.publicKey}>
-                        <td className="pe-3">{d.flags}</td>
-                        <td className="pe-3">{d.algorithm}</td>
-                        <td className="pe-3">{d.computedKeyTag}</td>
-                        <td
-                          className="truncate max-w-[20ch]"
-                          title={d.computedDigest}
-                        >
-                          {d.computedDigest}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <PublishedDnskeysList dnskeys={lane.publishedDnskeys} />
             ) : null}
           </div>
         )}
       </AccordionContent>
     </AccordionItem>
+  );
+}
+
+type PublishedDnskey =
+  ValidateResult['authoritative']['publishedDnskeys'][number];
+
+/**
+ * The diagnostic list of published DNSKEYs whose digest didn't match. Desktop
+ * keeps the compact table; mobile renders the SAME rows as a labeled card stack
+ * (the wide computed-digest column overflows a phone otherwise).
+ */
+function PublishedDnskeysList({ dnskeys }: { dnskeys: PublishedDnskey[] }) {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return (
+      <div className="flex flex-col gap-2">
+        {dnskeys.map((d) => (
+          <div
+            key={d.publicKey}
+            className="rounded-md border border-zinc-800 bg-zinc-900/40 p-2 text-xs text-zinc-300 font-mono"
+          >
+            <dl className="flex flex-col gap-1">
+              <div className="flex items-start justify-between gap-3">
+                <dt className="shrink-0 text-zinc-500">Flags</dt>
+                <dd className="text-end">{d.flags}</dd>
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <dt className="shrink-0 text-zinc-500">Alg</dt>
+                <dd className="text-end">{d.algorithm}</dd>
+              </div>
+              <div className="flex items-start justify-between gap-3">
+                <dt className="shrink-0 text-zinc-500">Computed key tag</dt>
+                <dd className="text-end">{d.computedKeyTag}</dd>
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <dt className="text-zinc-500">Computed digest</dt>
+                <dd className="break-all" title={d.computedDigest}>
+                  {d.computedDigest}
+                </dd>
+              </div>
+            </dl>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-xs text-zinc-300 overflow-x-auto">
+      {/* desktop-only table; mobile renders cards via useIsMobile above */}
+      <table className="w-full font-mono" /* mobile-ok */>
+        <thead className="text-zinc-500">
+          <tr>
+            <th className="text-start pe-3">Flags</th>
+            <th className="text-start pe-3">Alg</th>
+            <th className="text-start pe-3">Computed key tag</th>
+            <th className="text-start">Computed digest</th>
+          </tr>
+        </thead>
+        <tbody>
+          {dnskeys.map((d) => (
+            <tr key={d.publicKey}>
+              <td className="pe-3">{d.flags}</td>
+              <td className="pe-3">{d.algorithm}</td>
+              <td className="pe-3">{d.computedKeyTag}</td>
+              <td className="truncate max-w-[20ch]" title={d.computedDigest}>
+                {d.computedDigest}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
