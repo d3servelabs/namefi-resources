@@ -1,0 +1,16 @@
+{
+  "heading": "我已售出的域名",
+  "loadErrorTitle": "无法加载已售域名",
+  "loadErrorFallback": "请重试。",
+  "retry": "重试",
+  "totalDomainsSold": "域名售出总数",
+  "proceeds": "收益",
+  "domainsSold": "已售域名",
+  "emptyState": "暂无已售域名。",
+  "columns": {
+    "domainName": "域名",
+    "wallet": "钱包",
+    "date": "日期",
+    "price": "价格"
+  }
+}

@@ -167,5 +167,107 @@
     "collapseAll": "Collapse all",
     "sort": "Sort"
   },
-  "metaTitle": "Namefi | Manage domain"
+  "metaTitle": "Namefi | Manage domain",
+  "previouslyOwned": {
+    "title": "Previously Owned Domains",
+    "columnAccount": "Account",
+    "columnRemovalDate": "Removal Date",
+    "columnReason": "Reason",
+    "columnReceivingWallet": "Receiving Wallet",
+    "empty": "No previously owned domains found",
+    "emptyDescription": "You haven't burned or transferred any domains away from your linked wallets yet",
+    "selectChainPlaceholder": "Select chain",
+    "allChains": "All chains",
+    "clearFilters": "Clear filters"
+  },
+  "dnsRecords": {
+    "selectAll": "Select all",
+    "selectRow": "Select row"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "Actions"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "Marketplace listings aren't supported on {chain} yet",
+      "supportedNetworks": "Supported networks: {networks}."
+    },
+    "exportBlocked": {
+      "title": "Marketplace listing unavailable",
+      "description": "Listing on Web3 marketplaces isn't allowed while this domain is exportable to other registrars. <link>Contact support</link> to disable export."
+    },
+    "listings": {
+      "title": "Current listings",
+      "description": "Active sale listings across supported marketplaces.",
+      "findBuyers": "Find buyers",
+      "findBuyersAria": "Find buyers for {domain}",
+      "columnMarketplace": "Marketplace",
+      "columnPrice": "Price",
+      "columnExpires": "Expires",
+      "columnActions": "Actions",
+      "loadFailed": "Couldn't load listings: {error}",
+      "empty": "No active listings. Use “Create listing” to put this domain up for sale.",
+      "view": "View",
+      "cancel": "Cancel",
+      "cancelled": "Listing cancelled",
+      "cancelledDescription": "It will disappear from marketplaces within a moment.",
+      "cancelFailed": "Failed to cancel listing"
+    },
+    "offers": {
+      "title": "Incoming offers",
+      "description": "Bids placed on this domain across supported marketplaces. Accepting an offer transfers the NFT to the bidder and credits you the bid amount.",
+      "columnMarketplace": "Marketplace",
+      "columnBidder": "Bidder",
+      "columnOffer": "Offer",
+      "columnExpires": "Expires",
+      "columnActions": "Actions",
+      "loadFailed": "Couldn't load offers: {error}",
+      "empty": "No active offers. When a buyer places a bid it will appear here.",
+      "view": "View",
+      "accept": "Accept",
+      "accepted": "Accepted offer for {price}",
+      "acceptedDescription": "NFT transferred to the bidder.",
+      "acceptFailed": "Failed to accept offer"
+    },
+    "createListing": {
+      "trigger": "Create listing",
+      "title": "Create listing",
+      "description": "Sell this domain on OpenSea. The listing is signed by your wallet and posted to OpenSea's Seaport orderbook.",
+      "noMarketplaces": "No marketplaces support this network yet.",
+      "marketplaceLabel": "Marketplace",
+      "alreadyListedSuffix": " — already listed",
+      "checkingListings": "Checking active listings...",
+      "allListed": "This domain is already listed on every supported marketplace. Cancel an existing listing to relist.",
+      "priceLabel": "Price ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "Currency",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "Duration",
+      "duration1Day": "1 day",
+      "duration7Days": "7 days",
+      "duration30Days": "30 days",
+      "listOn": "List on {marketplace}",
+      "connectWallet": "Connect wallet",
+      "feeMarketplace": "Marketplace fee",
+      "feeRoyalty": "Creator royalty",
+      "feeYouReceive": "You receive",
+      "feeEstimate": "estimate",
+      "feeEstimateTooltip": "Final fees are computed by the marketplace at signing time.",
+      "listedToast": "Listed for {price}",
+      "listedToastDescription": "It may take a moment to appear on the marketplace.",
+      "connectWalletError": "Connect a wallet to list this domain.",
+      "stillChecking": "Still checking active listings",
+      "alreadyListedError": "This domain already has an active listing there.",
+      "alreadyListedErrorDescription": "Cancel the existing listing before creating a new one.",
+      "pickCurrency": "Pick a payment currency.",
+      "invalidPrice": "Enter a valid price greater than 0.",
+      "switchNetwork": "Switch to the correct network to continue.",
+      "createFailed": "Failed to create listing",
+      "errorSignatureCancelled": "Signature cancelled in your wallet.",
+      "errorInsufficientFunds": "Wallet does not have enough native ETH for the approval transaction.",
+      "errorNotConfigured": "The marketplace integration is not configured for this environment.",
+      "errorRateLimited": "The marketplace is rate-limiting requests right now. Wait a minute and try again.",
+      "errorSeaportUnavailable": "Couldn't reach OpenSea's Seaport contract on this network. Make sure your wallet is connected to the same chain as the domain NFT, then try again."
+    }
+  }
 }

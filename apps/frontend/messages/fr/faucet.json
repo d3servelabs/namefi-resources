@@ -1,0 +1,18 @@
+{
+  "title": "Robinet NFSC",
+  "description": "Demandez 20 $NFSC sur les réseaux de test pour une utilisation dans les environnements sandbox.",
+  "chainLabel": "Chaîne",
+  "receivingWalletLabel": "Portefeuille destinataire",
+  "walletPlaceholder": "Collez une adresse de portefeuille ou sélectionnez parmi les portefeuilles liés",
+  "walletHelpText": "Les jetons sont émis vers le portefeuille sélectionné sur Sepolia.",
+  "submitting": "Envoi de la demande…",
+  "requestNfsc": "Demander des NFSC",
+  "rateLimitedTitle": "Vous venez d'effectuer une émission récemment.",
+  "rateLimitedDescription": "Réessayez après {time}.",
+  "rateLimitedFallback": "plus tard",
+  "mintInProgressTitle": "Émission en cours",
+  "mintInProgressDescription": "En attente de confirmation de la transaction sur Sepolia.",
+  "mintCompleteTitle": "Émission terminée",
+  "viewTransaction": "Voir la transaction",
+  "requestFailedTitle": "Échec de la demande"
+}

@@ -80,5 +80,30 @@
     "x402ConnectWallet": "Connectez un portefeuille actif pour signer votre paiement x402",
     "orderFailed": "Impossible de soumettre votre commande. Veuillez réessayer."
   },
-  "metaTitle": "Namefi | Panier"
+  "metaTitle": "Namefi | Panier",
+  "cartFootnote": {
+    "learnMore": "en savoir plus",
+    "agree": "Accepter"
+  },
+  "cartItemRegistration": {
+    "learnMore": "En savoir plus",
+    "gotIt": "Compris"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "Afficher les options de configuration du domaine",
+    "noSetupOptions": "Aucune option de configuration"
+  },
+  "cartItem": {
+    "setupOptionsAria": "Options de configuration du domaine"
+  },
+  "cartDropdown": {
+    "myCart": "Mon panier",
+    "yourCartIsEmpty": "Votre panier est vide",
+    "total": "Total",
+    "checkout": "Passer à la caisse",
+    "loadingCart": "Chargement du panier…"
+  },
+  "cartButton": {
+    "removeAria": "Retirer du panier"
+  }
 }

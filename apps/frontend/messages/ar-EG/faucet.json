@@ -1,0 +1,18 @@
+{
+  "title": "صنبور NFSC",
+  "description": "اطلب 20 NFSC$ على شبكات الاختبار للاستخدام في بيئات الاختبار.",
+  "chainLabel": "الشبكة",
+  "receivingWalletLabel": "المحفظة المستقبِلة",
+  "walletPlaceholder": "الصق عنوان محفظة أو اختر من المحافظ المرتبطة",
+  "walletHelpText": "يتم سك الرموز في المحفظة المختارة على Sepolia.",
+  "submitting": "جارٍ إرسال الطلب...",
+  "requestNfsc": "اطلب NFSC",
+  "rateLimitedTitle": "لقد سككت مؤخراً.",
+  "rateLimitedDescription": "حاول مرة أخرى بعد {time}.",
+  "rateLimitedFallback": "لاحقاً",
+  "mintInProgressTitle": "السك قيد التنفيذ",
+  "mintInProgressDescription": "في انتظار تأكيد المعاملة على Sepolia.",
+  "mintCompleteTitle": "اكتمل السك",
+  "viewTransaction": "عرض المعاملة",
+  "requestFailedTitle": "فشل الطلب"
+}

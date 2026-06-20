@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "Domain Hunt",
+    "submitDomain": "डोमेन सबमिट करें",
+    "trendingTitle": "ट्रेंडिंग डोमेन",
+    "signInToSubmitTitle": "डोमेन सबमिट करने के लिए साइन इन करें",
+    "signInToSubmitDescription": "Hunt में डोमेन सबमिट करने के लिए आपको साइन इन करना होगा। समुदाय से जुड़ें और अपने पसंदीदा डोमेन साझा करें!"
+  },
+  "timeRange": {
+    "last7Days": "पिछले 7 दिन",
+    "last30Days": "पिछले 30 दिन",
+    "anytime": "कभी भी"
+  },
+  "tabs": {
+    "allHunt": "सभी Hunt"
+  },
+  "mine": {
+    "title": "मेरी गतिविधि",
+    "upvotedTab": "Upvote किए डोमेन",
+    "submittedTab": "सबमिट किए डोमेन",
+    "signInTitle": "गतिविधि देखने के लिए साइन इन करें",
+    "signInDescription": "आपके सबमिट किए डोमेन और वोटिंग इतिहास देखने के लिए साइन इन करें"
+  },
+  "list": {
+    "loadError": "डोमेन लोड नहीं हो सके",
+    "empty": "और डोमेन नहीं हैं, कृपया बाद में पुनः प्रयास करें।"
+  },
+  "submitDialog": {
+    "title": "नया डोमेन सबमिट करें",
+    "domainNameLabel": "डोमेन नाम",
+    "submitting": "सबमिट हो रहा है...",
+    "validation": {
+      "singleLevel": "डोमेन नाम एकल-स्तरीय होना चाहिए (जैसे example.com) या उच्च स्तर (जैसे sub.example.com)",
+      "invalidDomain": "अमान्य डोमेन नाम",
+      "mustEndWith": "डोमेन .{extension} से समाप्त होना चाहिए",
+      "invalidExtension": "अमान्य डोमेन एक्सटेंशन",
+      "required": "कृपया डोमेन नाम दर्ज करें"
+    },
+    "toast": {
+      "submitting": "डोमेन सबमिट हो रहा है...",
+      "alreadyExists": "डोमेन पहले से मौजूद है।",
+      "success": "डोमेन सफलतापूर्वक सबमिट और upvote हो गया!",
+      "error": "डोमेन सबमिट नहीं हो सका"
+    }
+  },
+  "vote": {
+    "ariaLabel": "Upvote",
+    "voting": "वोट हो रहा है...",
+    "voted": "वोट दिया",
+    "vote": "वोट",
+    "processing": "वोट संसाधित हो रहा है...",
+    "removing": "हटाया जा रहा है...",
+    "unvote": "वोट हटाएं",
+    "removeSuccess": "वोट सफलतापूर्वक हटाया गया",
+    "removeError": "वोट हटाने में विफल। कृपया पुनः प्रयास करें।",
+    "confirmRemove": "क्या आप \"{domainName}\" से अपना वोट हटाना चाहते हैं?"
+  },
+  "detail": {
+    "back": "वापस",
+    "quickActions": "त्वरित क्रियाएं",
+    "visitDomain": "डोमेन देखें",
+    "deleteSuccess": "डोमेन सफलतापूर्वक हटाया गया",
+    "deleteError": "डोमेन हटाने में विफल",
+    "deleting": "डोमेन हटाया जा रहा है..."
+  },
+  "awards": {
+    "title": "पुरस्कार",
+    "loadError": "पुरस्कार लोड नहीं हो सके",
+    "empty": "अभी कोई पुरस्कार नहीं। इस डोमेन को जिताने के लिए वोट देते रहें!",
+    "medalLabel": "पदक"
+  },
+  "submitted": {
+    "loadError": "आपके डोमेन लोड नहीं हो सके",
+    "empty": "आपने अभी तक कोई डोमेन सबमिट नहीं किया है।",
+    "youUpvoted": "✓ आपने upvote किया",
+    "submittedOn": "{date} को सबमिट किया"
+  },
+  "upvoted": {
+    "loadError": "आपके upvote किए डोमेन लोड नहीं हो सके",
+    "empty": "आपने अभी तक कोई डोमेन upvote नहीं किया है।",
+    "upvotedOn": "{date} को upvote किया"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "जारी है!",
+      "ended": "समाप्त",
+      "notStarted": "अभी शुरू नहीं हुआ"
+    },
+    "loadErrorTitle": "डोमेन लोड करने में त्रुटि",
+    "loadErrorDescription": "Campaign के डोमेन लोड नहीं हो सके। कृपया बाद में पुनः प्रयास करें।",
+    "emptyTitle": "कोई डोमेन नहीं मिला",
+    "emptyDescription": "इस Campaign के लिए कोई डोमेन उपलब्ध नहीं है।",
+    "nominatePrompt": "मेरा पसंदीदा डोमेन यहाँ क्यों नहीं है?",
+    "nominateAction": "नामांकित करें!",
+    "congratulations": "बधाई हो!",
+    "winnerCampaignIcon": "Campaign आइकन",
+    "isTheWinner": "विजेता है",
+    "votingClosedThanks": "वोट देने के लिए धन्यवाद — विजेताओं को subdomain क्लेम विवरण के साथ ईमेल भेजा जाएगा।"
+  },
+  "howItWorks": {
+    "voteTitle": "वोट करें",
+    "voteDescription": "अपना पसंदीदा चुनें",
+    "winTitle": "जीतें",
+    "winDescription": "विजेता डोमेन जारी होने लगता है",
+    "celebrateTitle": "जश्न मनाएं",
+    "celebrateDescription": "मुफ़्त subdomain क्लेम करें"
+  },
+  "whyVote": {
+    "title": "वोट क्यों करें?",
+    "priorityClaimTitle": "प्राथमिकता दावा",
+    "priorityClaimDescription": "नए subdomains पर पहला अधिकार (सीमित उपलब्धता)",
+    "weeklyNfscTitle": "साप्ताहिक $NFSC",
+    "weeklyNfscDescription": "Upvoters के लिए $NFSC कमाने का साप्ताहिक raffle",
+    "launchTitle": "[name].cv लॉन्च करने में मदद करें",
+    "launchDescription": "सबसे अधिक वोट वाला [name].cv subdomain जारी करना शुरू करता है"
+  },
+  "community": {
+    "joinTitle": "समुदाय से जुड़ें",
+    "joinDescription": "साथी hunters से जुड़ें — आगामी डोमेन पर मिलकर वोट करें।",
+    "shareTitle": "Hunt साझा करें",
+    "shareDescription": "दोस्तों को आमंत्रित करें — हर वोट पर एक raffle entry मिलती है।",
+    "inviteFriends": "मित्रों को आमंत्रित करें",
+    "invited": "कॉपी हो गया!",
+    "copySuccess": "लिंक क्लिपबोर्ड पर कॉपी हो गया!",
+    "copyError": "लिंक कॉपी नहीं हो सका"
+  },
+  "countdown": {
+    "votingEndsIn": "वोटिंग समाप्त होगी",
+    "days": "दिन",
+    "hours": "घंटे",
+    "minutes": "मिनट",
+    "seconds": "सेकंड"
+  },
+  "share": {
+    "titleDomain": "{domainName} साझा करें",
+    "titleSubject": "{domainName} के लिए {subject} साझा करें",
+    "descriptionDomainTracked": "इस डोमेन को Twitter/X पर साझा करें, दूसरों को खोजने में मदद करें और पुरस्कार अर्जित करें।",
+    "descriptionDomain": "इस डोमेन को Twitter/X पर साझा करें, दूसरों को खोजने में मदद करें।",
+    "descriptionSubject": "इस {subject} को Twitter/X पर साझा करें।",
+    "shareUrlLabel": "साझा URL",
+    "quickShareLabel": "त्वरित साझा",
+    "shareOnTwitter": "Twitter/X पर साझा करें",
+    "prefilledHint": "{target} के लिए Twitter/X पर पूर्व-भरी पोस्ट खोलता है",
+    "alreadyShared": "पहले से साझा किया",
+    "postUrlLabel": "Twitter/X पोस्ट URL",
+    "postUrlHint": "पुरस्कार अर्जित करने के लिए साझा करने के बाद अपने tweet का URL यहाँ पेस्ट करें",
+    "recording": "रिकॉर्ड हो रहा है...",
+    "recordShare": "Share रिकॉर्ड करें",
+    "invalidPostUrl": "कृपया एक वैध Twitter/X पोस्ट URL दर्ज करें",
+    "recordError": "आपका share रिकॉर्ड नहीं हो सका। कृपया पुनः प्रयास करें।",
+    "checkPostUrl": "कृपया पोस्ट URL जाँचें और पुनः प्रयास करें।",
+    "copySuccess": "साझा URL कॉपी हो गया।",
+    "copyError": "URL कॉपी नहीं हो सका",
+    "recordingShare": "आपका share रिकॉर्ड हो रहा है..."
+  }
+}

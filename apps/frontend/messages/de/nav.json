@@ -15,5 +15,12 @@
     "hunt": "Hunt",
     "marketplace": "Marktplatz"
   },
-  "recentDomains": "Zuletzt angesehen"
+  "recentDomains": "Zuletzt angesehen",
+  "userDropdown": {
+    "unableToLoadMenu": "Menü konnte nicht geladen werden.",
+    "signOutConfirmTitle": "Möchten Sie sich wirklich abmelden?",
+    "signOutConfirmDescription": "Möchten Sie sich wirklich abmelden? Nicht gespeicherte Änderungen gehen verloren.",
+    "signOutFailedTitle": "Abmeldung fehlgeschlagen",
+    "signOutFailedFallback": "Bitte versuchen Sie es erneut."
+  }
 }

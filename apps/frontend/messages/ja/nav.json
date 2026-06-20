@@ -15,5 +15,12 @@
     "hunt": "ハント",
     "marketplace": "マーケットプレイス"
   },
-  "recentDomains": "最近のドメイン"
+  "recentDomains": "最近のドメイン",
+  "userDropdown": {
+    "unableToLoadMenu": "メニューを読み込めません。",
+    "signOutConfirmTitle": "サインアウトしますか？",
+    "signOutConfirmDescription": "サインアウトしますか？保存されていない変更は失われます。",
+    "signOutFailedTitle": "サインアウトに失敗しました",
+    "signOutFailedFallback": "再試行してください。"
+  }
 }

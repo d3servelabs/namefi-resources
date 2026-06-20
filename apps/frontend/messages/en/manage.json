@@ -1,0 +1,16 @@
+{
+  "heading": "My Sold Domains",
+  "loadErrorTitle": "Unable to load sold domains",
+  "loadErrorFallback": "Please try again.",
+  "retry": "Retry",
+  "totalDomainsSold": "Total Domains Sold",
+  "proceeds": "Proceeds",
+  "domainsSold": "Domains Sold",
+  "emptyState": "No domains sold yet.",
+  "columns": {
+    "domainName": "Domain Name",
+    "wallet": "Wallet",
+    "date": "Date",
+    "price": "Price"
+  }
+}

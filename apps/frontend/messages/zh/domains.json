@@ -167,5 +167,107 @@
     "collapseAll": "全部收起",
     "sort": "排序"
   },
-  "metaTitle": "Namefi | 管理域名"
+  "metaTitle": "Namefi | 管理域名",
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "市场上架暂不支持 {chain} 网络",
+      "supportedNetworks": "支持的网络：{networks}。"
+    },
+    "exportBlocked": {
+      "title": "市场上架不可用",
+      "description": "当此域名可导出至其他注册商时，不允许在 Web3 市场上架。<link>联系客服</link>以禁用导出。"
+    },
+    "listings": {
+      "title": "当前上架",
+      "description": "在所有支持市场上的有效出售清单。",
+      "findBuyers": "寻找买家",
+      "findBuyersAria": "为 {domain} 寻找买家",
+      "columnMarketplace": "市场",
+      "columnPrice": "价格",
+      "columnExpires": "到期时间",
+      "columnActions": "操作",
+      "loadFailed": "无法加载上架信息：{error}",
+      "empty": "暂无有效上架。使用「创建上架」将此域名挂牌出售。",
+      "view": "查看",
+      "cancel": "取消",
+      "cancelled": "上架已取消",
+      "cancelledDescription": "稍后将从市场中消失。",
+      "cancelFailed": "取消上架失败"
+    },
+    "offers": {
+      "title": "收到的报价",
+      "description": "买家在所有支持市场上对此域名的出价。接受报价后，NFT 将转让给出价方，您将收到对应金额。",
+      "columnMarketplace": "市场",
+      "columnBidder": "出价方",
+      "columnOffer": "报价",
+      "columnExpires": "到期时间",
+      "columnActions": "操作",
+      "loadFailed": "无法加载报价：{error}",
+      "empty": "暂无有效报价。买家出价后将显示在这里。",
+      "view": "查看",
+      "accept": "接受",
+      "accepted": "已接受 {price} 的报价",
+      "acceptedDescription": "NFT 已转让给出价方。",
+      "acceptFailed": "接受报价失败"
+    },
+    "createListing": {
+      "trigger": "创建上架",
+      "title": "创建上架",
+      "description": "在 OpenSea 上出售此域名。上架单由您的钱包签名，并发布至 OpenSea 的 Seaport 订单簿。",
+      "noMarketplaces": "暂无市场支持此网络。",
+      "marketplaceLabel": "市场",
+      "alreadyListedSuffix": " — 已上架",
+      "checkingListings": "正在检查有效上架...",
+      "allListed": "此域名已在所有支持的市场上架。请取消现有上架后重新挂牌。",
+      "priceLabel": "价格（{currency}）",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "货币",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "时长",
+      "duration1Day": "1 天",
+      "duration7Days": "7 天",
+      "duration30Days": "30 天",
+      "listOn": "上架至 {marketplace}",
+      "connectWallet": "连接钱包",
+      "feeMarketplace": "市场手续费",
+      "feeRoyalty": "创作者版税",
+      "feeYouReceive": "您将收到",
+      "feeEstimate": "估算",
+      "feeEstimateTooltip": "最终费用由市场在签名时计算。",
+      "listedToast": "已以 {price} 挂牌",
+      "listedToastDescription": "稍后将显示在市场上。",
+      "connectWalletError": "请连接钱包以上架此域名。",
+      "stillChecking": "仍在检查有效上架",
+      "alreadyListedError": "此域名在该市场已有有效上架。",
+      "alreadyListedErrorDescription": "请先取消现有上架，再创建新的上架。",
+      "pickCurrency": "请选择付款货币。",
+      "invalidPrice": "请输入大于 0 的有效价格。",
+      "switchNetwork": "请切换至正确的网络以继续。",
+      "createFailed": "创建上架失败",
+      "errorSignatureCancelled": "钱包中的签名已取消。",
+      "errorInsufficientFunds": "钱包中没有足够的原生 ETH 用于授权交易。",
+      "errorNotConfigured": "市场集成未针对此环境进行配置。",
+      "errorRateLimited": "市场当前正在限制请求频率，请稍候片刻后重试。",
+      "errorSeaportUnavailable": "无法连接此网络上的 OpenSea Seaport 合约。请确认钱包连接的链与域名 NFT 所在链相同，然后重试。"
+    }
+  },
+  "previouslyOwned": {
+    "title": "曾拥有的域名",
+    "columnAccount": "账户",
+    "columnRemovalDate": "移除日期",
+    "columnReason": "原因",
+    "columnReceivingWallet": "接收钱包",
+    "empty": "未找到曾拥有的域名",
+    "emptyDescription": "您尚未销毁或转移任何与已关联钱包相关的域名",
+    "selectChainPlaceholder": "选择链",
+    "allChains": "所有链",
+    "clearFilters": "清除筛选"
+  },
+  "dnsRecords": {
+    "selectAll": "全选",
+    "selectRow": "选择行"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "操作"
+  }
 }

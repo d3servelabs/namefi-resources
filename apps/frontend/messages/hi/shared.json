@@ -1,7 +1,8 @@
 {
   "authRequired": {
     "title": "साइन इन आवश्यक है",
-    "description": "जारी रखने के लिए कृपया साइन इन करें"
+    "description": "जारी रखने के लिए कृपया साइन इन करें",
+    "communityDescription": "जारी रखने के लिए आपको साइन इन करना होगा। सर्वश्रेष्ठ डोमेन खोजने और उन्हें वोट देने के लिए समुदाय में शामिल हों!"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "इस कार्य को पूरा करने के लिए",
@@ -35,7 +36,7 @@
     "placeholder": "देश चुनें",
     "searchPlaceholder": "देश खोजें...",
     "noResults": "कोई देश नहीं मिला।",
-    "clearSelection": "चयन हटाएं"
+    "clearSelection": "चयन हटाएँ"
   },
   "myDomains": {
     "heading": "मेरे डोमेन"
@@ -74,6 +75,173 @@
     "buyNow": "अभी खरीदें",
     "errorTitle": "कुछ गलत हो गया।",
     "errorDescription": "चिंता न करें, आपसे कोई शुल्क नहीं लिया गया। पुनः प्रयास करें।",
-    "errorDetail": "(त्रुटि - {error})"
+    "errorDetail": "(त्रुटि - {error})",
+    "tooltip": "इस डोमेन को तुरंत खरीदें"
+  },
+  "table": {
+    "searchPlaceholder": "खोजें...",
+    "empty": "कोई डेटा नहीं",
+    "emptyDefault": "कोई डेटा नहीं मिला",
+    "emptyAuditLogs": "कोई ऑडिट लॉग नहीं मिला",
+    "loadingAuditLogs": "ऑडिट लॉग लोड हो रहे हैं...",
+    "noMoreRows": "और पंक्तियाँ नहीं",
+    "showing": "{count, plural, one {# पंक्ति} other {# पंक्तियाँ}} दिखाई जा रही हैं",
+    "pagination": {
+      "rowsPerPage": "प्रति पृष्ठ पंक्तियाँ:",
+      "pageOf": "पृष्ठ {page} / {total}",
+      "pageOfTotal": "पृष्ठ {page} / {total} — कुल {count, plural, one {# पंक्ति} other {# पंक्तियाँ}}",
+      "totalShort": "कुल: {count, plural, one {# पंक्ति} other {# पंक्तियाँ}}",
+      "previous": "पिछला",
+      "next": "अगला"
+    },
+    "columns": {
+      "label": "कॉलम",
+      "toggle": "कॉलम टॉगल करें",
+      "resetToDefaults": "डिफ़ॉल्ट पर रीसेट करें",
+      "resizeColumn": "कॉलम का आकार बदलें"
+    },
+    "filters": {
+      "label": "फ़िल्टर"
+    },
+    "filterPanel": {
+      "title": "तालिका फ़िल्टर",
+      "titleAdvanced": "उन्नत फ़िल्टर",
+      "description": "तालिका परिणाम सीमित करने के लिए फ़िल्टर लागू करें",
+      "descriptionAdvanced": "AND/OR तर्क के साथ अनेक शर्तों वाले जटिल फ़िल्टर बनाएँ",
+      "activeCount": "{count} सक्रिय",
+      "clearAll": "सभी हटाएँ",
+      "generalFilters": "सामान्य फ़िल्टर",
+      "columnFilters": "कॉलम फ़िल्टर",
+      "noFiltersAvailable": "कोई फ़िल्टर उपलब्ध नहीं",
+      "active": "सक्रिय",
+      "conditionCount": "{count, plural, one {# शर्त} other {# शर्तें}}"
+    },
+    "filter": {
+      "label": "फ़िल्टर",
+      "filterColumn": "{column} फ़िल्टर करें",
+      "filterActive": "फ़िल्टर सक्रिय है",
+      "operator": "ऑपरेटर",
+      "value": "मान",
+      "apply": "लागू करें",
+      "clear": "हटाएँ",
+      "addCondition": "शर्त जोड़ें",
+      "clearAllConditions": "सभी हटाएँ",
+      "maxConditionsReached": "{count, plural, one {अधिकतम # शर्त पहुँच गई} other {अधिकतम # शर्तें पहुँच गईं}}",
+      "selectPlaceholder": "चुनें...",
+      "selectDatePlaceholder": "तारीख़ चुनें...",
+      "enterValuePlaceholder": "मान दर्ज करें...",
+      "typeValuePlaceholder": "मान टाइप करें...",
+      "enterFieldPlaceholder": "{field} दर्ज करें...",
+      "noSuggestions": "कोई मेल खाते सुझाव नहीं। आप टाइप किया मान फिर भी उपयोग कर सकते हैं।",
+      "suggestions": "सुझाव",
+      "invalidNumber": "अमान्य संख्या",
+      "invalidDate": "अमान्य तारीख़",
+      "operators": {
+        "contains": "शामिल है",
+        "containsCaseInsensitive": "शामिल है (केस-असंवेदनशील)",
+        "equals": "बराबर है",
+        "notEquals": "बराबर नहीं है",
+        "greaterThan": "से अधिक",
+        "greaterOrEqual": "से अधिक या बराबर",
+        "lessThan": "से कम",
+        "lessOrEqual": "से कम या बराबर",
+        "after": "के बाद",
+        "onOrAfter": "उस तारीख़ को या उसके बाद",
+        "before": "से पहले",
+        "onOrBefore": "उस तारीख़ को या उससे पहले",
+        "isNull": "खाली है",
+        "isNotNull": "खाली नहीं है",
+        "inList": "सूची में है",
+        "notInList": "सूची में नहीं है",
+        "allElementsEquals": "सभी तत्व बराबर हैं",
+        "allElementsNotEquals": "सभी तत्व बराबर नहीं हैं",
+        "anyElementEquals": "कोई एक तत्व बराबर है",
+        "anyElementNotEquals": "कोई एक तत्व बराबर नहीं है",
+        "allElementsContain": "सभी तत्व शामिल करते हैं",
+        "allElementsNotContain": "सभी तत्व शामिल नहीं करते",
+        "anyElementContains": "कोई एक तत्व शामिल करता है",
+        "anyElementNotContain": "कोई एक तत्व शामिल नहीं करता"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "वॉलेट और नेटवर्क तैयार है",
+    "preparing": "तैयारी हो रही है...",
+    "connectWallet": "वॉलेट कनेक्ट करें",
+    "useThisWallet": "यह वॉलेट उपयोग करें",
+    "switchWallet": "वॉलेट बदलें",
+    "switchNetwork": "नेटवर्क बदलें",
+    "connecting": "कनेक्ट हो रहा है…",
+    "activating": "सक्रिय हो रहा है…",
+    "switchingNetwork": "नेटवर्क बदला जा रहा है…",
+    "walletStep": "वॉलेट",
+    "networkStep": "नेटवर्क",
+    "requiredWallet": "आवश्यक वॉलेट",
+    "differentWalletConnected": "आपने एक अलग वॉलेट कनेक्ट किया है",
+    "youConnected": "आपने कनेक्ट किया",
+    "butWeNeed": "लेकिन हमें चाहिए",
+    "switchNetworkPrompt": "जारी रखने के लिए अपना वॉलेट नेटवर्क बदलें।",
+    "current": "वर्तमान",
+    "required": "आवश्यक",
+    "chainLabel": "Chain {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "एक डोमेन चुनें या दर्ज करें",
+    "loadingDomains": "डोमेन लोड हो रहे हैं",
+    "useTypedDomain": "टाइप किया हुआ डोमेन उपयोग करें",
+    "domains": "डोमेन"
+  },
+  "previewGate": {
+    "title": "प्रीव्यू एक्सेस",
+    "description": "इस प्रीव्यू परिवेश तक पहुंचने के लिए एक्सेस कोड दर्ज करें।",
+    "accessCode": "एक्सेस कोड",
+    "unlock": "अनलॉक करें"
+  },
+  "missingEmail": {
+    "noContactEmail": "कोई संपर्क ईमेल नहीं",
+    "later": "बाद में",
+    "addEmailToProfile": "प्रोफ़ाइल में ईमेल जोड़ें",
+    "addEmail": "ईमेल जोड़ें"
+  },
+  "announcements": {
+    "previous": "पिछली घोषणा",
+    "next": "अगली घोषणा",
+    "dismiss": "घोषणा खारिज करें"
+  },
+  "emailRequired": {
+    "title": "ईमेल आवश्यक है",
+    "description": "जारी रखने के लिए आपको अपनी प्रोफ़ाइल में एक मान्य ईमेल जोड़नी होगी।"
+  },
+  "voteOrShare": {
+    "signInToVote": "वोट करने के लिए साइन इन करें",
+    "shareDomainInstead": "इसके बजाय डोमेन शेयर करें"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "कल या अगले सप्ताह",
+    "selectDate": "तारीख चुनें"
+  },
+  "selectWalletAndChain": {
+    "linked": "लिंक किया गया",
+    "selectChainPlaceholder": "एक चेन चुनें"
+  },
+  "feedback": {
+    "close": "फीडबैक बंद करें",
+    "skip": "छोड़ें"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "रिज़ॉल्व किया गया पता कॉपी करें",
+    "title": "प्राप्तकर्ता वॉलेट या ENS"
+  },
+  "creditCard": {
+    "cardHolder": "कार्डधारक",
+    "expires": "समाप्ति"
+  },
+  "walletCard": {
+    "ethereumWallet": "Ethereum वॉलेट",
+    "connected": "कनेक्टेड",
+    "connectedNetworks": "कनेक्टेड नेटवर्क"
+  },
+  "ownerPage": {
+    "heading": "इस वॉलेट के स्वामित्व वाले डोमेन"
   }
 }

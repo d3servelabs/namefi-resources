@@ -159,5 +159,115 @@
     "nftAlt": "NFT",
     "offerWaiting": "Ihr Gebot ist offen und wartet auf die Annahme durch den Verkäufer."
   },
-  "metaTitle": "Namefi | Domains verwalten"
+  "metaTitle": "Namefi | Domains verwalten",
+  "card": {
+    "account": "Konto",
+    "expand": "Erweitern",
+    "collapse": "Reduzieren",
+    "expandAll": "Alle erweitern",
+    "collapseAll": "Alle reduzieren",
+    "sort": "Sortieren"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "Marktplatz-Listings werden auf {chain} noch nicht unterstützt",
+      "supportedNetworks": "Unterstützte Netzwerke: {networks}."
+    },
+    "exportBlocked": {
+      "title": "Marktplatz-Listing nicht verfügbar",
+      "description": "Ein Listing auf Web3-Marktplätzen ist nicht möglich, solange diese Domain zu anderen Registraren exportiert werden kann. <link>Support kontaktieren</link>, um den Export zu deaktivieren."
+    },
+    "listings": {
+      "title": "Aktuelle Listings",
+      "description": "Aktive Verkaufs-Listings auf unterstützten Marktplätzen.",
+      "findBuyers": "Käufer finden",
+      "findBuyersAria": "Käufer für {domain} finden",
+      "columnMarketplace": "Marktplatz",
+      "columnPrice": "Preis",
+      "columnExpires": "Läuft ab",
+      "columnActions": "Aktionen",
+      "loadFailed": "Listings konnten nicht geladen werden: {error}",
+      "empty": "Keine aktiven Listings. Verwenden Sie „Listing erstellen“, um diese Domain zum Verkauf anzubieten.",
+      "view": "Anzeigen",
+      "cancel": "Abbrechen",
+      "cancelled": "Listing abgebrochen",
+      "cancelledDescription": "Es wird in Kürze von den Marktplätzen verschwinden.",
+      "cancelFailed": "Listing konnte nicht abgebrochen werden"
+    },
+    "offers": {
+      "title": "Eingehende Angebote",
+      "description": "Gebote für diese Domain auf unterstützten Marktplätzen. Wenn Sie ein Angebot annehmen, wird das NFT an den Bieter übertragen und der Gebotsbetrag wird Ihrem Konto gutgeschrieben.",
+      "columnMarketplace": "Marktplatz",
+      "columnBidder": "Bieter",
+      "columnOffer": "Angebot",
+      "columnExpires": "Läuft ab",
+      "columnActions": "Aktionen",
+      "loadFailed": "Angebote konnten nicht geladen werden: {error}",
+      "empty": "Keine aktiven Angebote. Sobald ein Käufer ein Gebot abgibt, wird es hier angezeigt.",
+      "view": "Anzeigen",
+      "accept": "Annehmen",
+      "accepted": "Angebot für {price} angenommen",
+      "acceptedDescription": "NFT wurde an den Bieter übertragen.",
+      "acceptFailed": "Angebot konnte nicht angenommen werden"
+    },
+    "createListing": {
+      "trigger": "Listing erstellen",
+      "title": "Listing erstellen",
+      "description": "Verkaufen Sie diese Domain auf OpenSea. Das Listing wird von Ihrer Wallet signiert und im Seaport-Orderbuch von OpenSea veröffentlicht.",
+      "noMarketplaces": "Noch kein Marktplatz unterstützt dieses Netzwerk.",
+      "marketplaceLabel": "Marktplatz",
+      "alreadyListedSuffix": " — bereits gelistet",
+      "checkingListings": "Aktive Listings werden geprüft…",
+      "allListed": "Diese Domain ist bereits auf jedem unterstützten Marktplatz gelistet. Brechen Sie ein bestehendes Listing ab, um es neu zu listen.",
+      "priceLabel": "Preis ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "Währung",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "Laufzeit",
+      "duration1Day": "1 Tag",
+      "duration7Days": "7 Tage",
+      "duration30Days": "30 Tage",
+      "listOn": "Auf {marketplace} listen",
+      "connectWallet": "Wallet verbinden",
+      "feeMarketplace": "Marktplatzgebühr",
+      "feeRoyalty": "Creator-Royalty",
+      "feeYouReceive": "Sie erhalten",
+      "feeEstimate": "Schätzung",
+      "feeEstimateTooltip": "Die endgültigen Gebühren werden vom Marktplatz zum Zeitpunkt der Signierung berechnet.",
+      "listedToast": "Für {price} gelistet",
+      "listedToastDescription": "Es kann einen Moment dauern, bis das Listing auf dem Marktplatz erscheint.",
+      "connectWalletError": "Verbinden Sie eine Wallet, um diese Domain zu listen.",
+      "stillChecking": "Aktive Listings werden noch geprüft",
+      "alreadyListedError": "Diese Domain hat dort bereits ein aktives Listing.",
+      "alreadyListedErrorDescription": "Brechen Sie das bestehende Listing ab, bevor Sie ein neues erstellen.",
+      "pickCurrency": "Wählen Sie eine Zahlungswährung aus.",
+      "invalidPrice": "Geben Sie einen gültigen Preis größer als 0 ein.",
+      "switchNetwork": "Wechseln Sie zum richtigen Netzwerk, um fortzufahren.",
+      "createFailed": "Listing konnte nicht erstellt werden",
+      "errorSignatureCancelled": "Signierung in Ihrer Wallet abgebrochen.",
+      "errorInsufficientFunds": "Die Wallet verfügt nicht über genügend natives ETH für die Genehmigungstransaktion.",
+      "errorNotConfigured": "Die Marktplatz-Integration ist für diese Umgebung nicht konfiguriert.",
+      "errorRateLimited": "Der Marktplatz begrenzt derzeit die Anfragen. Warten Sie einen Moment und versuchen Sie es erneut.",
+      "errorSeaportUnavailable": "Der Seaport-Vertrag von OpenSea konnte in diesem Netzwerk nicht erreicht werden. Stellen Sie sicher, dass Ihre Wallet mit derselben Chain wie das Domain-NFT verbunden ist, und versuchen Sie es erneut."
+    }
+  },
+  "previouslyOwned": {
+    "title": "Früher besessene Domains",
+    "columnAccount": "Konto",
+    "columnRemovalDate": "Entfernungsdatum",
+    "columnReason": "Grund",
+    "columnReceivingWallet": "Empfangs-Wallet",
+    "empty": "Keine früher besessenen Domains gefunden",
+    "emptyDescription": "Sie haben noch keine Domains aus Ihren verknüpften Wallets gebrannt oder übertragen",
+    "selectChainPlaceholder": "Chain auswählen",
+    "allChains": "Alle Chains",
+    "clearFilters": "Filter zurücksetzen"
+  },
+  "dnsRecords": {
+    "selectAll": "Alle auswählen",
+    "selectRow": "Zeile auswählen"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "Aktionen"
+  }
 }

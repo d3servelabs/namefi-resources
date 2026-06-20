@@ -18,6 +18,7 @@ import type {
   TldRegistrationRequirement,
 } from '@namefi-astra/common/domain-availability';
 import { ExternalLink } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useCartContext } from '@/components/providers/cart';
 import {
@@ -145,6 +146,8 @@ function ExplicitPolicyList({
   explicit: AggregatedRequirement[];
 }) {
   const cart = useCartContext();
+  const t = useTranslations('cart');
+  const tCommon = useTranslations('common');
   const [openPolicy, setOpenPolicy] =
     useState<TldRegistrationRequirement | null>(null);
 
@@ -211,7 +214,7 @@ function ExplicitPolicyList({
                   onClick={() => setOpenPolicy(entry.requirement)}
                   className="font-medium text-zinc-400 underline-offset-2 hover:text-zinc-200 hover:underline"
                 >
-                  learn more
+                  {t('cartFootnote.learnMore')}
                 </button>
               </span>
             </div>
@@ -259,9 +262,9 @@ function ExplicitPolicyList({
               </div>
               <DialogFooter>
                 <DialogClose render={<Button variant="outline" />}>
-                  Close
+                  {tCommon('actions.close')}
                 </DialogClose>
-                <Button onClick={handleAgree}>Agree</Button>
+                <Button onClick={handleAgree}>{t('cartFootnote.agree')}</Button>
               </DialogFooter>
             </>
           )}

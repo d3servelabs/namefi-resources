@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "Crea logos, carteles y animaciones personalizados para tu marca",
+    "poweredByAlt": "Funciona con Namefi"
+  },
+  "tabs": {
+    "logo": "Logo",
+    "poster": "Cartel",
+    "animation": "Animación"
+  },
+  "prerequisite": {
+    "title": "Crea primero un logo",
+    "posterDescription": "Los carteles necesitan uno de tus logos generados como referencia de marca.",
+    "animationDescription": "Las animaciones necesitan uno de tus logos generados como arte base."
+  },
+  "usage": {
+    "credits": "Créditos de IA",
+    "usedThisMonth": "{current} de {max} usados este mes",
+    "limitReached": "Límite de créditos alcanzado",
+    "creditsLeft": "{count, plural, one {# crédito restante} other {# créditos restantes}}",
+    "refreshAria": "Tiempo de renovación de créditos de IA",
+    "refreshAt": "Créditos se renuevan {time}",
+    "refreshMonthly": "Los créditos se renuevan mensualmente",
+    "balanceCheckError": "No se pudo verificar el saldo de créditos",
+    "balanceCheckErrorDescription": "No pudimos verificar tus créditos restantes, pero igual puedes intentar generar recursos.",
+    "checkingBalance": "Verificando saldo de créditos de IA...",
+    "willCheckBalance": "Verificaremos tu saldo de créditos antes de iniciar la generación.",
+    "creditAmount": "{count, plural, one {# crédito de IA} other {# créditos de IA}}",
+    "costInsufficient": "Esta generación requiere {cost}. Te quedan {remaining} este mes.",
+    "costPreview": "Esta generación cuesta {cost}. Te quedarán {remaining} este mes."
+  },
+  "domainField": {
+    "fixedLabel": "Ingresa tu dominio (ej., ejemplo.com)",
+    "logoPlaceholder": "Selecciona o ingresa tu dominio de marca",
+    "brandPlaceholder": "Selecciona tu dominio de marca (requerido)",
+    "searchBrands": "Buscar dominios de marca...",
+    "searchOrEnter": "Buscar o ingresar un dominio",
+    "emptyStudioLogos": "No se encontraron dominios con logo en Studio.",
+    "emptyMatching": "No hay dominios que coincidan."
+  },
+  "description": {
+    "label": "Describe tu marca (opcional)",
+    "placeholder": "Cuéntanos más sobre la visión de tu marca"
+  },
+  "logo": {
+    "gridTitle": "Logos generados",
+    "chooseType": "Elige un tipo",
+    "chooseStyle": "Elige un estilo",
+    "chooseTldTreatment": "Elige un tratamiento de TLD",
+    "chooseTypography": "Elige tipografía",
+    "chooseModel": "Elige un modelo",
+    "controls": {
+      "type": "Tipo",
+      "style": "Estilo",
+      "tld": "TLD",
+      "typography": "Tipografía",
+      "model": "Modelo",
+      "brandVision": "Visión de marca",
+      "advanced": "Avanzado"
+    },
+    "actions": {
+      "createPoster": "Crear cartel",
+      "animateLogo": "Animar logo"
+    }
+  },
+  "poster": {
+    "title": "Generador de carteles",
+    "gridTitle": "Carteles generados",
+    "usingBrand": "Usando la marca {domain}",
+    "backToLogos": "Volver a logos",
+    "chooseLogo": "Elige un logo como base para tu cartel",
+    "chooseModel": "Elige un modelo",
+    "chooseCollateral": "Elige el tipo de material",
+    "selectCollateral": "Seleccionar material",
+    "controls": {
+      "useLogo": "Usar logo",
+      "selected": "Seleccionado",
+      "description": "Descripción",
+      "model": "Modelo",
+      "collateral": "Material",
+      "advanced": "Avanzado"
+    },
+    "collateral": {
+      "letAiChoose": "Dejar elegir a la IA",
+      "billboard": "Cartelera",
+      "apparel": "Ropa",
+      "vehicle": "Vehículo",
+      "product": "Producto"
+    }
+  },
+  "animation": {
+    "title": "Animación de logo",
+    "gridTitle": "Animaciones generadas",
+    "usingBrand": "Usando la marca {domain}",
+    "backToLogos": "Volver a logos",
+    "chooseMode": "Elige el modo de animación",
+    "chooseLogo": "Elige un logo para animar",
+    "chooseOpening": "Elige el estilo de apertura",
+    "chooseMotion": "Elige la dirección del movimiento",
+    "chooseIntensity": "Elige la intensidad del movimiento",
+    "chooseModel": "Elige un modelo",
+    "selectOpening": "Seleccionar estilo de apertura",
+    "selectMotion": "Seleccionar movimiento",
+    "selectIntensity": "Seleccionar intensidad",
+    "useLogoAria": "Usar el logo de {domain}",
+    "controls": {
+      "mode": "Modo",
+      "useLogo": "Usar logo",
+      "selected": "Seleccionado",
+      "description": "Descripción",
+      "opening": "Apertura",
+      "motion": "Movimiento",
+      "intensity": "Intensidad",
+      "model": "Modelo"
+    },
+    "validation": {
+      "openingRequired": "La apertura es requerida para la animación cinematográfica",
+      "chooseCinematicModel": "Elige un modelo cinematográfico",
+      "chooseCinematicMotion": "Elige un preset de movimiento cinematográfico",
+      "chooseSeedanceModel": "Elige un modelo Seedance",
+      "intensityRequired": "La intensidad es requerida para la animación en bucle",
+      "chooseLoopedModel": "Elige un modelo en bucle",
+      "chooseLoopedMotion": "Elige un preset de movimiento en bucle"
+    }
+  },
+  "model": {
+    "select": "Seleccionar un modelo"
+  },
+  "submit": {
+    "generate": "Generar",
+    "generating": "Generando",
+    "animate": "Animar",
+    "selectBrand": "Seleccionar una marca"
+  },
+  "gallery": {
+    "yours": "Tus generaciones",
+    "featured": "Destacados",
+    "brands": "Marcas",
+    "brandsSelected": "{count} seleccionadas",
+    "searchBrand": "Buscar marca...",
+    "noBrands": "No se encontraron marcas.",
+    "filterAll": "Todos",
+    "filterLogo": "Logo",
+    "filterPoster": "Cartel",
+    "filterAnimation": "Animación",
+    "emptyYours": "Genera un logo o cartel para verlo aparecer aquí.",
+    "openAria": "Abrir generación para {domain}",
+    "openFeaturedAria": "Abrir generación destacada para {domain}",
+    "viewAria": "Ver generación {index}",
+    "animationPreviewAria": "Vista previa de animación para {domain}",
+    "previewUnavailable": "Vista previa no disponible",
+    "basedOnLogo": "Basado en logo",
+    "basedOn": "Basado en:",
+    "referencedLogoAlt": "Logo de referencia"
+  },
+  "kind": {
+    "logo": "Logo",
+    "poster": "Cartel",
+    "animation": "Animación"
+  },
+  "progress": {
+    "generatingLogo": "Generando logo",
+    "generatingPoster": "Generando cartel",
+    "preparingAnimation": "Preparando animación",
+    "messages": {
+      "gathering": "Reuniendo inspiración para tu marca...",
+      "sketching": "Esbozando los primeros trazos y siluetas...",
+      "blending": "Combinando colores, estilos y fuentes...",
+      "character": "Añadiendo carácter y detalles únicos...",
+      "lighting": "Refinando la iluminación y el equilibrio...",
+      "polishing": "Perfeccionando luces y texturas...",
+      "framing": "Encuadrando la revelación final...",
+      "almost": "¡Casi listo, aguarda un momento!"
+    }
+  },
+  "status": {
+    "pending": "Pendiente",
+    "processing": "Procesando",
+    "failed": "Fallido",
+    "ready": "Listo"
+  },
+  "asyncTile": {
+    "genericError": "No pudimos completar esta generación. Por favor intenta de nuevo.",
+    "stillRunning": "Tu generación sigue en proceso.",
+    "queued": "Tu generación está en cola y aparecerá aquí en breve."
+  },
+  "actions": {
+    "copy": "Copiar",
+    "copyLink": "Copiar enlace",
+    "tweet": "Tuitear",
+    "download": "Descargar"
+  },
+  "delete": {
+    "title": "¿Eliminar generación?",
+    "titleSingle": "¿Eliminar esta generación?",
+    "descriptionLogo": "Esto eliminará el logo de {domain} de tu galería. Esta acción no se puede deshacer.",
+    "descriptionPoster": "Esto eliminará el cartel de {domain} de tu galería. Esta acción no se puede deshacer.",
+    "descriptionAnimation": "Esto eliminará la animación de {domain} de tu galería. Esta acción no se puede deshacer.",
+    "deleting": "Eliminando..."
+  },
+  "share": {
+    "unableTitle": "No se puede compartir",
+    "unableMissingLink": "No hay un enlace para compartir disponible para esta generación.",
+    "unableMissingLinkOrDomain": "No se encontró un enlace para compartir ni un dominio para esta generación."
+  },
+  "imageGrid": {
+    "previewUnavailable": "Vista previa no disponible"
+  },
+  "details": {
+    "backToStudio": "Volver a Namefi Brand Studio",
+    "headingLogo": "Logo de {brand}",
+    "headingPoster": "Cartel de {brand}",
+    "headingAnimation": "Animación de {brand}",
+    "notFoundTitle": "Generación no encontrada",
+    "notFoundDescription": "La generación que buscas no pudo encontrarse.",
+    "assetUnavailable": "El recurso aún no está disponible.",
+    "sectionTitle": "Detalles",
+    "type": "Tipo:",
+    "status": "Estado:",
+    "collateral": "Material:",
+    "motion": "Movimiento:",
+    "mode": "Modo:",
+    "opening": "Apertura:",
+    "intensity": "Intensidad:",
+    "model": "Modelo:",
+    "created": "Creado:",
+    "createdUnknown": "Desconocido",
+    "collateralUnknown": "Desconocido",
+    "logoProperties": "Propiedades del logo",
+    "logoStyle": "Estilo:",
+    "logoType": "Tipo:",
+    "logoTld": "TLD:",
+    "logoTypography": "Tipografía:",
+    "sourceLogo": "Logo fuente",
+    "sourceLogoAlt": "Logo usado para la generación derivada",
+    "viewLogoDetails": "Ver detalles del logo",
+    "sourcePreviewUnavailable": "La vista previa del logo fuente no está disponible",
+    "sourceLoadFailed": "Error al cargar los detalles del logo",
+    "sourceNotFound": "No se encontró referencia de logo",
+    "animationSheet": "Hoja de animación",
+    "animationSheetAlt": "Hoja de animación generada para {domain}",
+    "openSheetAria": "Abrir vista previa de la hoja de animación",
+    "sheetModel": "Modelo de hoja:",
+    "sheetDialogTitle": "Hoja de animación",
+    "sheetDialogDescription": "El storyboard generado usado para guiar esta animación.",
+    "shareTwitterTitle": "Compartir en Twitter",
+    "copyLinkTitle": "Copiar enlace",
+    "twitter": "Twitter",
+    "linkCopied": "Enlace copiado al portapapeles",
+    "linkCopiedDescription": "Ahora puedes compartir esta generación con otros",
+    "linkCopyFailed": "Error al copiar el enlace",
+    "linkCopyFailedDescription": "Por favor intenta de nuevo",
+    "animationLabelAria": "Animación {mode} generada por IA para {domain}",
+    "imageAlt": "{type} generado por IA para {domain}"
+  }
+}

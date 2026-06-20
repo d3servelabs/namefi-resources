@@ -29,11 +29,12 @@ import {
   RotateCw,
   Trash2,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { AddEditRecordsDialog } from '../../../dialogs/add-edit-records-dialog';
 import { DeleteRecordDialog } from '../../../dialogs/delete-records-dialog';
-import { DNS_RECORD_TYPES, TTL_OPTIONS } from '../../../schemas';
+import { DNS_RECORD_TYPES, getTtlOptions } from '../../../schemas';
 import { EditableCell } from './editable-cell';
 import {
   getManagedDnsRecordMetadata,
@@ -47,6 +48,7 @@ export const SelectColumnHeader = ({
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
 }) => {
+  const t = useTranslations('domains');
   const isAllSelected = context.table.getIsAllPageRowsSelected();
   const isSomeSelected = context.table.getIsSomePageRowsSelected();
 
@@ -57,7 +59,7 @@ export const SelectColumnHeader = ({
       onCheckedChange={(value) =>
         context.table.toggleAllPageRowsSelected(!!value)
       }
-      aria-label="Select all"
+      aria-label={t('dnsRecords.selectAll')}
     />
   );
 };
@@ -66,39 +68,45 @@ export const SelectColumnCell = ({
   context,
 }: {
   context: CellContext<DnsRecordSelect, any>;
-}) => (
-  <Checkbox
-    checked={context.row.getIsSelected()}
-    onCheckedChange={(value) => context.row.toggleSelected(!!value)}
-    aria-label="Select row"
-    disabled={!context.row.getCanSelect()}
-  />
-);
+}) => {
+  const t = useTranslations('domains');
+  return (
+    <Checkbox
+      checked={context.row.getIsSelected()}
+      onCheckedChange={(value) => context.row.toggleSelected(!!value)}
+      aria-label={t('dnsRecords.selectRow')}
+      disabled={!context.row.getCanSelect()}
+    />
+  );
+};
 
 export const TypeColumnHeader = ({
   context,
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
-}) => (
-  <div className="flex items-center">
-    <Button
-      variant="ghost"
-      onClick={() =>
-        context.column.toggleSorting(context.column.getIsSorted() === 'asc')
-      }
-      className="p-0 hover:bg-transparent"
-    >
-      Type
-      {context.column.getIsSorted() === 'asc' ? (
-        <ChevronUp className="ms-1 h-4 w-4" />
-      ) : context.column.getIsSorted() === 'desc' ? (
-        <ChevronDown className="ms-1 h-4 w-4" />
-      ) : (
-        <ArrowUpDown className="ms-1 h-4 w-4" />
-      )}
-    </Button>
-  </div>
-);
+}) => {
+  const t = useTranslations('dnsManagement');
+  return (
+    <div className="flex items-center">
+      <Button
+        variant="ghost"
+        onClick={() =>
+          context.column.toggleSorting(context.column.getIsSorted() === 'asc')
+        }
+        className="p-0 hover:bg-transparent"
+      >
+        {t('records.table.columnType')}
+        {context.column.getIsSorted() === 'asc' ? (
+          <ChevronUp className="ms-1 h-4 w-4" />
+        ) : context.column.getIsSorted() === 'desc' ? (
+          <ChevronDown className="ms-1 h-4 w-4" />
+        ) : (
+          <ArrowUpDown className="ms-1 h-4 w-4" />
+        )}
+      </Button>
+    </div>
+  );
+};
 
 export const TypeColumnCell = ({
   context,
@@ -143,6 +151,7 @@ export const NameColumnHeader = ({
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
 }) => {
+  const t = useTranslations('dnsManagement');
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
   };
@@ -154,7 +163,7 @@ export const NameColumnHeader = ({
         onClick={handleSort}
         className="p-0 hover:bg-transparent"
       >
-        Name
+        {t('records.table.columnName')}
         {context.column.getIsSorted() === 'asc' ? (
           <ChevronUp className="ms-1 h-4 w-4" />
         ) : context.column.getIsSorted() === 'desc' ? (
@@ -222,6 +231,7 @@ export const TTLColumnHeader = ({
 }: {
   context: HeaderContext<DnsRecordSelect, any>;
 }) => {
+  const t = useTranslations('dnsManagement');
   const handleSort = () => {
     context.column.toggleSorting(context.column.getIsSorted() === 'asc');
   };
@@ -233,7 +243,7 @@ export const TTLColumnHeader = ({
         onClick={handleSort}
         className="p-0 hover:bg-transparent"
       >
-        TTL
+        {t('records.table.columnTtl')}
         {context.column.getIsSorted() === 'asc' ? (
           <ChevronUp className="ms-1 h-4 w-4" />
         ) : context.column.getIsSorted() === 'desc' ? (
@@ -254,10 +264,12 @@ export const TTLColumnCell = ({
   onCellUpdate: (rowId: string, columnId: string, value: string) => void;
 }) => {
   const ttl = context.row.getValue('ttl');
+  const t = useTranslations('dnsManagement');
+  const ttlOptions = getTtlOptions();
 
   const formatTtl = (ttlValue: string) => {
-    const option = TTL_OPTIONS.find((opt) => opt.value.toString() === ttlValue);
-    return option ? option.label : ttlValue;
+    const option = ttlOptions.find((opt) => opt.value.toString() === ttlValue);
+    return option ? t(option.labelKey) : ttlValue;
   };
 
   return isManagedDnsRecord(context.row.original) ? (
@@ -269,9 +281,9 @@ export const TTLColumnCell = ({
       row={context.row}
       column={context.column}
       onSave={(value) => onCellUpdate(context.row.id, 'ttl', value)}
-      options={TTL_OPTIONS.map(({ value, label }) => ({
+      options={ttlOptions.map(({ value, labelKey }) => ({
         value: value.toString(),
-        label,
+        label: t(labelKey),
       }))}
       isSelectInput={true}
     />
@@ -284,6 +296,8 @@ export const ActionsColumnCell = ({
   context: CellContext<DnsRecordSelect, any>;
 }) => {
   const record = context.row.original;
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const managedMetadata = getManagedDnsRecordMetadata(record);
@@ -317,8 +331,8 @@ export const ActionsColumnCell = ({
   const handleCopy = () => {
     const text = `${record.type} ${record.name} ${record.rdata} ${record.ttl}`;
     navigator.clipboard.writeText(text);
-    toast('Copied to clipboard', {
-      description: 'Record details copied to clipboard',
+    toast(t('records.toasts.copiedToClipboard'), {
+      description: t('records.toasts.copiedToClipboardDescription'),
     });
   };
 
@@ -351,10 +365,10 @@ export const ActionsColumnCell = ({
 
       const successMessage =
         managedMetadata?.managedBy === 'autoPark'
-          ? 'Parking and forwarding disabled'
+          ? t('records.toasts.parkingForwardingDisabled')
           : managedMetadata?.managedBy === 'autoEns'
-            ? 'AutoENS disabled'
-            : 'Forwarding disabled';
+            ? t('records.toasts.autoEnsDisabled')
+            : t('records.toasts.forwardingDisabled');
 
       toast.success(successMessage);
       setIsManagedDeleteDialogOpen(false);
@@ -362,24 +376,24 @@ export const ActionsColumnCell = ({
       toast.error(
         error instanceof Error
           ? error.message
-          : 'Failed to update managed DNS settings',
+          : t('records.toasts.managedUpdateFailed'),
       );
     }
   };
 
   const managedDeleteTitle =
     managedMetadata?.managedBy === 'autoPark'
-      ? 'Disable parking records?'
+      ? t('records.managedDelete.disableParkingTitle')
       : managedMetadata?.managedBy === 'autoEns'
-        ? 'Disable AutoENS record?'
-        : 'Disable forwarding record?';
+        ? t('records.managedDelete.disableAutoEnsTitle')
+        : t('records.managedDelete.disableForwardingTitle');
 
   const managedDeleteDescription =
     managedMetadata?.managedBy === 'autoPark'
-      ? 'This row is managed by Domain Preferences. Disabling it turns off parking.'
+      ? t('records.managedDelete.disableParkingDescription')
       : managedMetadata?.managedBy === 'autoEns'
-        ? 'This row is managed by Domain Preferences. Disabling it turns off AutoENS.'
-        : 'This row is managed by Domain Preferences. Disabling it clears forwarding.';
+        ? t('records.managedDelete.disableAutoEnsDescription')
+        : t('records.managedDelete.disableForwardingDescription');
 
   return (
     <div className="flex items-center gap-2">
@@ -414,7 +428,7 @@ export const ActionsColumnCell = ({
                 {managedMetadata?.managedBy === 'autoPark' &&
                   isForwardingEnabled && (
                     <p className="text-amber-500">
-                      Disabling parking records also disables forwarding.
+                      {t('records.managedDelete.parkingDisablesForwarding')}
                     </p>
                   )}
               </AlertDialogDescription>
@@ -423,7 +437,7 @@ export const ActionsColumnCell = ({
               <AlertDialogCancel
                 disabled={updateDomainPreferencesAndConfig.isPending}
               >
-                Cancel
+                {tCommon('actions.cancel')}
               </AlertDialogCancel>
               <AlertDialogAction
                 variant="destructive"
@@ -435,10 +449,11 @@ export const ActionsColumnCell = ({
               >
                 {updateDomainPreferencesAndConfig.isPending ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" /> Disabling...
+                    <Loader2 className="h-4 w-4 animate-spin" />{' '}
+                    {t('records.managedDelete.disabling')}
                   </>
                 ) : (
-                  'Disable'
+                  tCommon('actions.disable')
                 )}
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -458,7 +473,7 @@ export const ActionsColumnCell = ({
               <Edit className="h-4 w-4" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Edit record</p>
+              <p>{t('records.table.editRecordTooltip')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -481,7 +496,9 @@ export const ActionsColumnCell = ({
           </TooltipTrigger>
           <TooltipContent>
             <p>
-              {isManagedRecord ? 'Disable managed record' : 'Delete record'}
+              {isManagedRecord
+                ? t('records.table.disableManagedRecordTooltip')
+                : t('records.table.deleteRecordTooltip')}
             </p>
           </TooltipContent>
         </Tooltip>
@@ -498,7 +515,7 @@ export const ActionsColumnCell = ({
             <Copy className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Copy record</p>
+            <p>{t('records.table.copyRecordTooltip')}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -513,7 +530,7 @@ export const ActionsColumnCell = ({
             <RotateCw className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Refresh record</p>
+            <p>{t('records.table.refreshRecordTooltip')}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

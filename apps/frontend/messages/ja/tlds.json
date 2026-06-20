@@ -1,0 +1,23 @@
+{
+  "title": "TLD 料金",
+  "description": "サポートされている非プレミアム TLD の基本 USD 料金をご確認ください。",
+  "loadError": "現在 TLD 料金を読み込めません。しばらくしてから再試行してください。",
+  "loadingMessage": "TLD 料金を読み込み中...",
+  "emptyMessage": "フィルターに一致する TLD がありません",
+  "nonPremiumNote": "** この料金は非プレミアムドメインにのみ適用されます",
+  "columns": {
+    "tld": "TLD",
+    "registration": "登録",
+    "renewal": "更新",
+    "transfer": "移管",
+    "registrar": "レジストラ"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "レジストラ"
+  },
+  "variablePrice": "変動価格",
+  "variablePriceTooltip": "料金はドメイン名によって異なります",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / 年"
+}

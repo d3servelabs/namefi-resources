@@ -10,6 +10,7 @@ import {
   Sparkles,
   Trash2,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { MouseEvent } from 'react';
 
 interface GenerationCtaAction {
@@ -83,6 +84,7 @@ export function GenerationActionButtons({
   disabled,
 }: GenerationActionButtonsProps) {
   const config = appearanceConfig[appearance];
+  const t = useTranslations('aiGeneration');
 
   return (
     <div className="flex flex-wrap items-center justify-end gap-2">
@@ -112,7 +114,7 @@ export function GenerationActionButtons({
         <CopyIcon
           className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
-        {appearance === 'grid' ? 'Copy Link' : 'Copy'}
+        {appearance === 'grid' ? t('actions.copyLink') : t('actions.copy')}
       </Button>
       <Button
         size={config.size}
@@ -124,7 +126,7 @@ export function GenerationActionButtons({
         <XBrandIcon
           className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
-        {appearance === 'grid' ? 'Tweet' : 'Tweet'}
+        {t('actions.tweet')}
       </Button>
       <Button
         size={config.size}
@@ -136,7 +138,7 @@ export function GenerationActionButtons({
         <DownloadIcon
           className={cn('h-4 w-4', appearance === 'grid' ? '' : 'me-1')}
         />
-        {appearance === 'grid' ? 'Download' : 'Download'}
+        {t('actions.download')}
       </Button>
       {deleteAction && (
         <Button

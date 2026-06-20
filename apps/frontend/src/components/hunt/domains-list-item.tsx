@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { formatNumberWithAbbreviations } from '@/lib/number';
 import Link from 'next/link';
 import { type MouseEvent, memo, useCallback, useMemo } from 'react';
@@ -35,6 +36,7 @@ const VoteButton = ({
   onUpvote?: () => void;
   onUnvote?: () => void;
 }) => {
+  const t = useTranslations('hunt');
   const handleClick = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
@@ -48,7 +50,7 @@ const VoteButton = ({
     [voted, onUpvote, onUnvote],
   );
 
-  usePendingToast(pending, 'Voting...');
+  usePendingToast(pending, t('vote.voting'));
   return (
     <button
       type="button"
@@ -57,7 +59,7 @@ const VoteButton = ({
         voted &&
           'bg-[rgba(72,229,155,0.08)] text-brand-primary border-brand-primary',
       )}
-      aria-label="Upvote"
+      aria-label={t('vote.ariaLabel')}
       onClick={handleClick}
     >
       <UpvoteIcon className="text-2xl" />

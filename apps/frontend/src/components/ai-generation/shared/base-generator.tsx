@@ -17,6 +17,7 @@ import {
   type Resolver,
 } from 'react-hook-form';
 import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 import { DomainField, DescriptionField } from './form-fields';
 import { GenerateSubmitButton } from './submit-button';
 import { useTRPC } from '@/lib/trpc';
@@ -99,8 +100,8 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   formSchema,
   defaultValues,
   children,
-  submitButtonText = 'Generate',
-  submitLoadingText = 'Generating',
+  submitButtonText,
+  submitLoadingText,
   className = 'max-w-6xl mx-auto flex flex-col',
   domainPlaceholder,
   domainSelectOnly = false,
@@ -112,6 +113,7 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
   type FormInput = BaseGeneratorInput<TSchema>;
   type FormOutput = BaseGeneratorOutput<TSchema>;
   const [openPanel, setOpenPanel] = useState<string | null>(null);
+  const t = useTranslations('aiGeneration');
   const { isAuthenticated } = useAuth();
 
   const trpc = useTRPC();
@@ -147,12 +149,11 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
 
     if (isUsageError && !usageErrorNotifiedRef.current) {
       usageErrorNotifiedRef.current = true;
-      toast.error('Unable to check AI credit balance', {
-        description:
-          'We could not verify your remaining credits, but you can still try generating assets.',
+      toast.error(t('usage.balanceCheckError'), {
+        description: t('usage.balanceCheckErrorDescription'),
       });
     }
-  }, [isAuthenticated, isUsageError]);
+  }, [isAuthenticated, isUsageError, t]);
 
   useEffect(() => {
     if (onFormReady) onFormReady(form);
@@ -247,16 +248,12 @@ export function BaseGenerator<TSchema extends BaseGeneratorSchema>({
         <GenerateSubmitButton
           isLoading={isLoading}
           disabled={isDisabled}
-          buttonText={submitButtonText}
-          loadingText={submitLoadingText}
+          buttonText={submitButtonText ?? t('submit.generate')}
+          loadingText={submitLoadingText ?? t('submit.generating')}
         />
       </form>
     </Form>
   );
-}
-
-function formatAiCredits(credits: number) {
-  return `${credits} AI ${credits === 1 ? 'credit' : 'credits'}`;
 }
 
 function GenerationCreditCostPreview({
@@ -270,10 +267,14 @@ function GenerationCreditCostPreview({
   requestedCredits?: number;
   remainingCredits?: number;
 }) {
+  const t = useTranslations('aiGeneration');
+  const formatAiCredits = (credits: number) =>
+    t('usage.creditAmount', { count: credits });
+
   if (isLoading) {
     return (
       <p className="mt-5 text-center text-sm text-muted-foreground">
-        Checking AI credit balance...
+        {t('usage.checkingBalance')}
       </p>
     );
   }
@@ -285,7 +286,7 @@ function GenerationCreditCostPreview({
   ) {
     return (
       <p className="mt-5 text-center text-sm text-muted-foreground">
-        We will check your AI credit balance before generation starts.
+        {t('usage.willCheckBalance')}
       </p>
     );
   }
@@ -295,16 +296,20 @@ function GenerationCreditCostPreview({
   if (remainingAfterGeneration < 0) {
     return (
       <p className="mt-5 text-center text-sm text-destructive">
-        This generation needs {formatAiCredits(requestedCredits)}. You have{' '}
-        {formatAiCredits(remainingCredits)} left this month.
+        {t('usage.costInsufficient', {
+          cost: formatAiCredits(requestedCredits),
+          remaining: formatAiCredits(remainingCredits),
+        })}
       </p>
     );
   }
 
   return (
     <p className="mt-5 text-center text-sm text-muted-foreground">
-      This generation costs {formatAiCredits(requestedCredits)}. You will have{' '}
-      {formatAiCredits(remainingAfterGeneration)} left this month.
+      {t('usage.costPreview', {
+        cost: formatAiCredits(requestedCredits),
+        remaining: formatAiCredits(remainingAfterGeneration),
+      })}
     </p>
   );
 }

@@ -1,40 +1,41 @@
 {
   "authRequired": {
     "title": "需要登录",
-    "description": "请登录后继续"
+    "description": "请登录后继续操作",
+    "communityDescription": "您需要登录后才能继续。加入社区，发现并投票支持最佳域名！"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "以完成此操作",
     "title": {
-      "wrongWallet": "连接了错误的钱包",
-      "settingActive": "正在设置当前钱包",
+      "wrongWallet": "连接的钱包不正确",
+      "settingActive": "正在设置活跃钱包",
       "connect": "连接您的钱包"
     },
     "description": {
-      "wrongWallet": "请连接正确的钱包以继续。",
-      "settingActive": "正在将您的钱包设为当前钱包，请稍候……",
+      "wrongWallet": "请连接正确的钱包以继续操作。",
+      "settingActive": "正在将您的钱包设为活跃状态，请稍候…",
       "connect": "请连接您的钱包{actionDescription}。"
     },
-    "checkingStatus": "正在检查钱包状态……",
-    "settingAsActive": "正在将钱包设为当前钱包……",
+    "checkingStatus": "正在检查钱包状态…",
+    "settingAsActive": "正在设置活跃钱包…",
     "requiredWallet": "所需钱包",
-    "waitingForConnection": "正在等待钱包连接……",
-    "differentWalletConnected": "您连接了另一个钱包",
-    "youConnected": "您连接的是",
+    "waitingForConnection": "等待钱包连接…",
+    "differentWalletConnected": "您连接了其他钱包",
+    "youConnected": "您已连接",
     "butWeNeed": "但我们需要",
     "connectedSuccessfully": "钱包连接成功",
-    "connecting": "连接中……",
+    "connecting": "连接中…",
     "next": "下一步",
     "toast": {
-      "setActiveFailed": "设置当前钱包失败",
-      "connectFailed": "连接钱包失败",
+      "setActiveFailed": "设置活跃钱包失败",
+      "connectFailed": "钱包连接失败",
       "unknownError": "未知错误"
     }
   },
   "countryInput": {
     "placeholder": "选择国家/地区",
-    "searchPlaceholder": "搜索国家/地区……",
-    "noResults": "未找到国家/地区。",
+    "searchPlaceholder": "搜索国家/地区…",
+    "noResults": "未找到相关国家/地区。",
     "clearSelection": "清除选择"
   },
   "myDomains": {
@@ -42,38 +43,205 @@
   },
   "walletNftGrid": {
     "notIndexedYet": "尚未索引",
-    "emptyIdentifier": "请提供钱包地址或 ENS 名称以查看 NFT。",
-    "invalidIdentifier": "这看起来不像是有效的钱包地址或 ENS 名称。",
-    "invalidIdentifierHint": "钱包地址须以 0x 开头，ENS 名称须至少包含一个点。",
-    "ensResolveFailed": "我们无法解析该 ENS 名称。",
-    "ensResolveFailedHint": "请检查拼写，或稍后重试。",
-    "noWalletResolved": "我们无法根据该输入解析出钱包。",
-    "nftCount": "{count} 个 NFT",
-    "loadDomainsFailed": "我们无法加载此钱包的域名。",
+    "emptyIdentifier": "请输入钱包地址或 ENS 名称以查看 NFT。",
+    "invalidIdentifier": "输入内容似乎不是有效的钱包地址或 ENS 名称。",
+    "invalidIdentifierHint": "钱包地址须以 0x 开头，ENS 名称须包含至少一个点。",
+    "ensResolveFailed": "无法解析该 ENS 名称。",
+    "ensResolveFailedHint": "请检查拼写是否正确，或稍后重试。",
+    "noWalletResolved": "无法从该输入解析出钱包地址。",
+    "nftCount": "{count, plural, one {# 个 NFT} other {# 个 NFT}}",
+    "loadDomainsFailed": "无法加载该钱包的域名。",
     "loadDomainsFailedHint": "请刷新页面后重试。",
-    "noNftsFound": "未找到此钱包的 Namefi NFT。",
-    "noNftsFoundHint": "请检查钱包地址或 ENS 名称，或在索引完成后稍后重试。",
+    "noNftsFound": "该钱包未找到任何 Namefi NFT。",
+    "noNftsFoundHint": "请核实钱包地址或 ENS 名称是否正确，或等待索引完成后再试。",
     "unknownNetwork": "未知网络",
     "explorer": "区块浏览器",
     "viewOnExplorer": "在区块浏览器中查看",
     "viewOn": "在 {explorer} 中查看",
     "network": "网络",
-    "expiration": "到期时间",
+    "expiration": "到期日期",
     "wallet": "钱包",
     "ens": "ENS：{name}",
     "copiedToClipboard": "已复制到剪贴板",
     "copyFailed": "复制失败",
-    "copyFailedDescription": "我们无法复制该内容。请重试。"
+    "copyFailedDescription": "无法复制该内容，请重试。"
   },
   "instantBuyModal": {
     "title": "购买 {domain}",
-    "description": "完成 1 年注册的购买",
+    "description": "完成 1 年注册期的购买",
     "domain": "域名",
     "pricePerYear": "{price} USD / 年",
-    "selectNftWallet": "请选择 NFT 钱包以继续",
+    "selectNftWallet": "选择 NFT 钱包以继续",
     "buyNow": "立即购买",
-    "errorTitle": "糟糕！出了点问题。",
-    "errorDescription": "请放心，您不会被扣款。欢迎重试。",
-    "errorDetail": "（错误 - {error}）"
+    "errorTitle": "出错了，请重试。",
+    "errorDescription": "您未被扣款，请放心重试。",
+    "errorDetail": "（错误 - {error}）",
+    "tooltip": "立即购买此域名"
+  },
+  "table": {
+    "searchPlaceholder": "搜索…",
+    "empty": "暂无数据",
+    "emptyDefault": "未找到数据",
+    "emptyAuditLogs": "未找到审计日志",
+    "loadingAuditLogs": "正在加载审计日志…",
+    "noMoreRows": "没有更多行",
+    "showing": "共显示 {count, plural, one {# 行} other {# 行}}",
+    "pagination": {
+      "rowsPerPage": "每页行数：",
+      "pageOf": "第 {page} 页，共 {total} 页",
+      "pageOfTotal": "第 {page} 页，共 {total} 页 — 合计 {count, plural, one {# 行} other {# 行}}",
+      "totalShort": "合计：{count, plural, one {# 行} other {# 行}}",
+      "previous": "上一页",
+      "next": "下一页"
+    },
+    "columns": {
+      "label": "列",
+      "toggle": "切换列显示",
+      "resetToDefaults": "恢复默认",
+      "resizeColumn": "调整列宽"
+    },
+    "filters": {
+      "label": "筛选"
+    },
+    "filterPanel": {
+      "title": "表格筛选",
+      "titleAdvanced": "高级筛选",
+      "description": "应用筛选条件以缩小表格结果范围",
+      "descriptionAdvanced": "使用多个条件及 AND/OR 逻辑构建复杂筛选",
+      "activeCount": "{count} 个已激活",
+      "clearAll": "清除全部",
+      "generalFilters": "常规筛选",
+      "columnFilters": "列筛选",
+      "noFiltersAvailable": "暂无可用筛选",
+      "active": "已激活",
+      "conditionCount": "{count, plural, one {# 个条件} other {# 个条件}}"
+    },
+    "filter": {
+      "label": "筛选",
+      "filterColumn": "筛选 {column}",
+      "filterActive": "筛选已激活",
+      "operator": "运算符",
+      "value": "值",
+      "apply": "应用",
+      "clear": "清除",
+      "addCondition": "添加条件",
+      "clearAllConditions": "清除全部",
+      "maxConditionsReached": "{count, plural, one {已达最多 # 个条件} other {已达最多 # 个条件}}",
+      "selectPlaceholder": "请选择…",
+      "selectDatePlaceholder": "选择日期…",
+      "enterValuePlaceholder": "请输入值…",
+      "typeValuePlaceholder": "请输入值…",
+      "enterFieldPlaceholder": "请输入 {field}…",
+      "noSuggestions": "无匹配建议，您仍可使用已输入的值。",
+      "suggestions": "建议",
+      "invalidNumber": "数字无效",
+      "invalidDate": "日期无效",
+      "operators": {
+        "contains": "包含",
+        "containsCaseInsensitive": "包含（不区分大小写）",
+        "equals": "等于",
+        "notEquals": "不等于",
+        "greaterThan": "大于",
+        "greaterOrEqual": "大于或等于",
+        "lessThan": "小于",
+        "lessOrEqual": "小于或等于",
+        "after": "晚于",
+        "onOrAfter": "等于或晚于",
+        "before": "早于",
+        "onOrBefore": "等于或早于",
+        "isNull": "为空",
+        "isNotNull": "不为空",
+        "inList": "在列表中",
+        "notInList": "不在列表中",
+        "allElementsEquals": "所有元素等于",
+        "allElementsNotEquals": "所有元素不等于",
+        "anyElementEquals": "任意元素等于",
+        "anyElementNotEquals": "任意元素不等于",
+        "allElementsContain": "所有元素包含",
+        "allElementsNotContain": "所有元素不包含",
+        "anyElementContains": "任意元素包含",
+        "anyElementNotContain": "任意元素不包含"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "钱包和网络已就绪",
+    "preparing": "准备中...",
+    "connectWallet": "连接钱包",
+    "useThisWallet": "使用此钱包",
+    "switchWallet": "切换钱包",
+    "switchNetwork": "切换网络",
+    "connecting": "连接中…",
+    "activating": "激活中…",
+    "switchingNetwork": "切换网络中…",
+    "walletStep": "钱包",
+    "networkStep": "网络",
+    "requiredWallet": "所需钱包",
+    "differentWalletConnected": "您连接了其他钱包",
+    "youConnected": "您已连接",
+    "butWeNeed": "但我们需要",
+    "switchNetworkPrompt": "请切换钱包网络以继续。",
+    "current": "当前",
+    "required": "所需",
+    "chainLabel": "Chain {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "选择或输入域名",
+    "loadingDomains": "正在加载域名",
+    "useTypedDomain": "使用输入的域名",
+    "domains": "域名"
+  },
+  "previewGate": {
+    "title": "预览访问",
+    "description": "输入访问码以进入此预览环境。",
+    "accessCode": "访问码",
+    "unlock": "解锁"
+  },
+  "missingEmail": {
+    "noContactEmail": "无联系邮箱",
+    "later": "稍后",
+    "addEmailToProfile": "在个人资料中添加邮箱",
+    "addEmail": "添加邮箱"
+  },
+  "announcements": {
+    "previous": "上一条公告",
+    "next": "下一条公告",
+    "dismiss": "关闭公告"
+  },
+  "emailRequired": {
+    "title": "需要邮箱",
+    "description": "您需要在个人资料中添加有效邮箱才能继续。"
+  },
+  "voteOrShare": {
+    "signInToVote": "登录以投票",
+    "shareDomainInstead": "改为分享域名"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "明天或下周",
+    "selectDate": "选择日期"
+  },
+  "selectWalletAndChain": {
+    "linked": "已关联",
+    "selectChainPlaceholder": "选择链"
+  },
+  "feedback": {
+    "close": "关闭反馈",
+    "skip": "跳过"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "复制解析地址",
+    "title": "接收钱包或 ENS"
+  },
+  "creditCard": {
+    "cardHolder": "持卡人",
+    "expires": "有效期至"
+  },
+  "walletCard": {
+    "ethereumWallet": "以太坊钱包",
+    "connected": "已连接",
+    "connectedNetworks": "已连接网络"
+  },
+  "ownerPage": {
+    "heading": "此钱包拥有的域名"
   }
 }

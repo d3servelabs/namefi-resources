@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, forwardRef } from 'react';
 import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Droplet, ExternalLink, Loader2, TriangleAlert } from 'lucide-react';
 import { CHAINS as chains } from '@namefi-astra/utils/chains';
@@ -61,6 +62,7 @@ type RequestStatus =
   | 'error';
 
 export default function FaucetPage() {
+  const t = useTranslations('faucet');
   const isClient = useIsClient();
   const trpc = useTRPC();
   const altchaRef = useRef<AltchaVerifierRef>(null);
@@ -214,16 +216,14 @@ export default function FaucetPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Droplet className="size-5" />
-            NFSC Faucet
+            {t('title')}
           </CardTitle>
-          <CardDescription>
-            Request 20$NFSC on testnets for usage in sandbox environments.
-          </CardDescription>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="chain">Chain</Label>
+              <Label htmlFor="chain">{t('chainLabel')}</Label>
               <Select value={SEPOLIA.id.toString()} disabled>
                 <SelectTrigger id="chain">
                   <SelectValue />
@@ -240,15 +240,15 @@ export default function FaucetPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Receiving wallet</Label>
+              <Label>{t('receivingWalletLabel')}</Label>
               <WalletEditableSelect
                 value={walletAddress}
                 onValueChange={setWalletAddress}
                 options={options}
-                placeholder="Paste a wallet address or select from linked wallets"
+                placeholder={t('walletPlaceholder')}
                 disabled={isSubmitting}
                 selectedChainId={SEPOLIA.id}
-                helpText="Tokens are minted to the selected wallet on Sepolia."
+                helpText={t('walletHelpText')}
               />
             </div>
 
@@ -258,12 +258,12 @@ export default function FaucetPage() {
               {isSubmitting ? (
                 <>
                   <Loader2 className="me-2 size-4 animate-spin" />
-                  Submitting request...
+                  {t('submitting')}
                 </>
               ) : (
                 <>
                   <Droplet className="me-2 size-4" />
-                  Request NFSC
+                  {t('requestNfsc')}
                 </>
               )}
             </Button>
@@ -275,11 +275,12 @@ export default function FaucetPage() {
                 <div className="flex items-start gap-3">
                   <TriangleAlert className="mt-0.5 size-5 text-amber-500" />
                   <div>
-                    <p className="font-medium">
-                      You have just minted recently.
-                    </p>
+                    <p className="font-medium">{t('rateLimitedTitle')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Try again after {formattedNextEligibleAt ?? 'later'}.
+                      {t('rateLimitedDescription', {
+                        time:
+                          formattedNextEligibleAt ?? t('rateLimitedFallback'),
+                      })}
                     </p>
                   </div>
                 </div>
@@ -289,9 +290,9 @@ export default function FaucetPage() {
                 <div className="flex items-start gap-3">
                   <Loader2 className="mt-0.5 size-5 animate-spin text-primary" />
                   <div>
-                    <p className="font-medium">Mint in progress</p>
+                    <p className="font-medium">{t('mintInProgressTitle')}</p>
                     <p className="text-sm text-muted-foreground">
-                      Waiting to confirm the transaction on Sepolia.
+                      {t('mintInProgressDescription')}
                     </p>
                   </div>
                 </div>
@@ -299,14 +300,14 @@ export default function FaucetPage() {
 
               {status === 'completed' && txHash && (
                 <div className="space-y-2">
-                  <p className="font-medium">Mint complete</p>
+                  <p className="font-medium">{t('mintCompleteTitle')}</p>
                   <a
                     className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
                     href={`https://sepolia.etherscan.io/tx/${txHash}`}
                     target="_blank"
                     rel="noreferrer"
                   >
-                    View transaction
+                    {t('viewTransaction')}
                     <ExternalLink className="size-4" />
                   </a>
                   <p className="text-xs text-muted-foreground break-all">
@@ -319,7 +320,7 @@ export default function FaucetPage() {
                 <div className="flex items-start gap-3">
                   <TriangleAlert className="mt-0.5 size-5 text-destructive" />
                   <div>
-                    <p className="font-medium">Request failed</p>
+                    <p className="font-medium">{t('requestFailedTitle')}</p>
                     <p className="text-sm text-muted-foreground">
                       {errorMessage}
                     </p>

@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "Bleiben Sie informiert",
+  "defaultDescription": "Abonnieren Sie unseren Newsletter für die neuesten Updates und Ankündigungen.",
+  "closeAriaLabel": "Newsletter-Formular schließen",
+  "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "successTitle": "Danke für Ihr Abonnement!",
+  "successDescription": "Bitte prüfen Sie Ihre E-Mails, um Ihr Abonnement zu bestätigen.",
+  "subscribeAnother": "Mit einer anderen E-Mail-Adresse abonnieren",
+  "emailPlaceholder": "E-Mail-Adresse eingeben",
+  "subscribing": "Wird abonniert...",
+  "subscribe": "Abonnieren",
+  "subscribeToNewsletter": "Newsletter abonnieren",
+  "nameLabel": "Name (optional)",
+  "namePlaceholder": "Ihr Name",
+  "emailLabel": "E-Mail",
+  "emailExamplePlaceholder": "ihre@email.de",
+  "toast": {
+    "subscribedTitle": "Abonniert!",
+    "alreadySubscribedTitle": "Bereits abonniert",
+    "alreadySubscribedDescription": "Sie befinden sich bereits auf unserer Mailing-Liste!",
+    "failedTitle": "Abonnement fehlgeschlagen",
+    "failedFallback": "Bitte versuchen Sie es später erneut."
+  }
+}

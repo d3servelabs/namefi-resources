@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "无法检查 DNSSEC 状态",
+    "pendingTitle": "DNSSEC 设置中",
+    "activeTitle": "DNSSEC 已启用",
+    "misconfiguredTitle": "DNSSEC 配置错误"
+  },
+  "actions": {
+    "enable": "启用 DNSSEC",
+    "disable": "禁用 DNSSEC",
+    "cancelSetup": "取消设置",
+    "keepWaiting": "继续等待"
+  },
+  "disableDialog": {
+    "title": "禁用 DNSSEC？"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "自动检测",
+      "manual": "手动"
+    },
+    "manual": {
+      "description": "粘贴一条 DNSKEY 或 DS 记录（完整 zone 文件行或仅 rdata），系统将自动识别格式。",
+      "enterFieldsManually": "或手动输入各字段",
+      "derive": "推导 DS 字段",
+      "deriving": "推导中..."
+    },
+    "autoDetect": {
+      "description": "查询域名委派名称服务器并自动检测",
+      "detect": "从委派名称服务器检测",
+      "detecting": "检测中...",
+      "kskCandidate": "KSK 候选",
+      "candidateOption": "key tag {keyTag} — alg {algorithm}"
+    },
+    "dsValuesTitle": "DS 值",
+    "viewSummary": "查看摘要",
+    "fields": {
+      "keyTag": "Key tag",
+      "algorithm": "算法",
+      "flags": "Flags",
+      "digestType": "摘要类型",
+      "publicKey": "公钥（base64）",
+      "digest": "摘要（hex）"
+    },
+    "placeholders": {
+      "algorithm": "选择算法",
+      "flags": "选择 flag",
+      "digestType": "选择摘要类型"
+    },
+    "publicKeyMissingNotice": "粘贴的 DS 记录中不含公钥。请使用自动检测，或粘贴 DNSKEY 记录，以便我们向注册商提交。",
+    "summary": {
+      "notSet": "未设置"
+    },
+    "deferredNotice": "系统将以后台工作流运行，轮询验证状态，两个通道均通过后才提交。完成或超时时您将收到电子邮件通知。",
+    "validate": "验证",
+    "validating": "验证中...",
+    "scheduleDs": "计划提交 DS",
+    "submitDs": "提交 DS",
+    "scheduling": "计划中...",
+    "submitting": "提交中...",
+    "validation": {
+      "pending": "正在查询权威名称服务器和公共 DNS 上的 DNSKEY 记录...",
+      "laneAuthoritative": "权威名称服务器",
+      "lanePublicDns": "公共 DNS（Google）",
+      "statusCouldNotValidate": "无法验证",
+      "statusMatch": "匹配",
+      "statusNoMatchingDnskey": "无匹配 DNSKEY",
+      "queried": "已查询：{source}",
+      "matched": "已计算 key tag {keyTag}。来源：{source}。",
+      "noMatch": "{source} 上发布的任何 DNSKEY 均无法生成您输入的摘要。",
+      "tableFlags": "Flags",
+      "tableAlg": "Alg",
+      "tableComputedKeyTag": "计算 key tag",
+      "tableComputedDigest": "计算摘要"
+    },
+    "ack": {
+      "validationDidNotPass": "我了解验证未通过，但仍希望关联此 DS（例如，在切换名称服务器前的预发布阶段）。",
+      "sure": "我确认，关联此 DS。",
+      "notFullyReflected": "我了解 DNSKEY 尚未在所有区域完全生效，此更改后部分区域可能会短暂中断。我仍希望关联此 DS。"
+    }
+  },
+  "prefs": {
+    "panelTitle": "域名偏好设置",
+    "loadFailed": "出错了！请稍后重试。",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "自动为域名启用 ENS",
+      "unavailableTooltip": "此域名不支持 AutoENS。ENS 需要 DNSSEC。",
+      "enableDnssecFirst": "请先启用 DNSSEC。",
+      "dnssecUnsupported": "此域名不支持 DNSSEC。"
+    },
+    "autoPark": {
+      "label": "Auto Park",
+      "description": "自动停放域名"
+    },
+    "forwardTo": {
+      "label": "转发至",
+      "description": "将域名转发到其他地址"
+    },
+    "notManagingNameservers": "Namefi 未管理此域名的名称服务器",
+    "propagationNotice": "DNSSEC 更改不会立即生效，全球传播可能需要 24–48 小时。",
+    "conflictDialog": {
+      "title": "移除冲突的顶级记录？",
+      "description": "此偏好设置更改需要移除该域名上冲突的根记录。",
+      "apexCname": "所有顶级 CNAME（`@`）记录将被优先移除。",
+      "apexAddress": "所有顶级 A/AAAA（`@`）记录将被优先移除。",
+      "keepRecords": "保留记录",
+      "removeAndContinue": "移除并继续",
+      "applying": "应用中..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNS 记录",
+      "description": "管理您的域名 DNS 记录",
+      "addRecord": "添加记录",
+      "recordTypes": "记录类型",
+      "recordTypeOption": "{type} 记录"
+    },
+    "table": {
+      "searchPlaceholder": "搜索记录...",
+      "columns": "列",
+      "toggleColumns": "切换列",
+      "filter": "筛选",
+      "filterByType": "按类型筛选",
+      "clearFilters": "清除筛选",
+      "actionsLabel": "操作",
+      "tableActions": "表格操作",
+      "exportRecords": "导出记录",
+      "importRecords": "导入记录",
+      "copyAsZoneFile": "复制为 Zone 文件",
+      "editSelected": "编辑所选（{count}）",
+      "deleteSelected": "删除所选（{count}）",
+      "empty": "未找到记录。",
+      "rowsSelected": "已选 {selected} / {total} 行。",
+      "columnType": "类型",
+      "columnName": "名称",
+      "columnValue": "值",
+      "columnTtl": "TTL",
+      "columnActions": "操作",
+      "editRecordTooltip": "编辑记录",
+      "deleteRecordTooltip": "删除记录",
+      "disableManagedRecordTooltip": "禁用托管记录",
+      "copyRecordTooltip": "复制记录",
+      "refreshRecordTooltip": "刷新记录"
+    },
+    "toasts": {
+      "recordUpdated": "记录已更新",
+      "recordUpdatedDescription": "{field} 已成功更新。",
+      "copiedToClipboard": "已复制到剪贴板",
+      "copiedToClipboardDescription": "记录详情已复制到剪贴板",
+      "saved": "已成功保存 {count, plural, one {# 条记录} other {# 条记录}}",
+      "updated": "已成功更新 {count, plural, one {# 条记录} other {# 条记录}}",
+      "deleted": "已成功删除 {count, plural, one {# 条记录} other {# 条记录}}",
+      "deleteFailed": "删除记录失败：{error}",
+      "recordPrefix": "记录 {index}：{message}",
+      "undeterminedError": "未知错误，请联系客服",
+      "genericError": "出错了，请重试。",
+      "parkingForwardingDisabled": "停放和转发已禁用",
+      "autoEnsDisabled": "AutoENS 已禁用",
+      "forwardingDisabled": "转发已禁用",
+      "managedUpdateFailed": "更新 DNS 托管设置失败"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "禁用停放记录？",
+      "disableAutoEnsTitle": "禁用 AutoENS 记录？",
+      "disableForwardingTitle": "禁用转发记录？",
+      "disableParkingDescription": "此行由域名偏好设置管理。禁用后将关闭停放。",
+      "disableAutoEnsDescription": "此行由域名偏好设置管理。禁用后将关闭 AutoENS。",
+      "disableForwardingDescription": "此行由域名偏好设置管理。禁用后将清除转发设置。",
+      "parkingDisablesForwarding": "禁用停放记录同时也会禁用转发。",
+      "disabling": "禁用中..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "名称服务器管理",
+    "tooltip": "名称服务器将流量引导至您的域名",
+    "resetToNamefi": "重置为 Namefi 名称服务器",
+    "addNameserver": "添加名称服务器",
+    "nameserverLabel": "名称服务器 {index}",
+    "nameserverPlaceholder": "例如：ns1.example.com",
+    "saveChanges": "保存更改",
+    "saving": "保存中...",
+    "propagationNotice": "名称服务器更改可能需要 24–48 小时才能在全球生效。",
+    "manageDialogTitle": "管理名称服务器",
+    "workflow": {
+      "resetInProgress": "正在执行将名称服务器重置为 Namefi 默认值的操作...",
+      "changeInProgress": "正在执行更新名称服务器的操作...",
+      "resettingTitle": "正在重置 {domain} 的名称服务器",
+      "changingTitle": "正在更改 {domain} 的名称服务器",
+      "viewProgress": "查看进度详情",
+      "cancelWorkflow": "取消工作流",
+      "cancelling": "取消中...",
+      "cancellationRequested": "取消请求已发送",
+      "cancelFailed": "取消失败：{error}"
+    },
+    "toasts": {
+      "resetSuccess": "名称服务器已重置为 Namefi 默认值",
+      "changeSuccess": "名称服务器已成功更新",
+      "resetFailed": "重置名称服务器失败",
+      "changeFailed": "更新名称服务器失败",
+      "signatureRejected": "签名请求已被拒绝",
+      "ownerWalletUnavailable": "无法确定域名所有者钱包"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC 管理",
+    "tooltip": "DNSSEC 是一项安全功能，可帮助保护您的域名免受网络钓鱼攻击。",
+    "refreshAria": "刷新 DNSSEC 状态",
+    "refresh": "刷新",
+    "modeToggle": {
+      "legend": "DNSSEC 面板模式",
+      "simple": "简单",
+      "advanced": "高级",
+      "simpleHint": "一键启用，适用于常见情形。",
+      "advancedHint": "完全控制：粘贴 DNSKEY/DS、验证并管理多个密钥。"
+    },
+    "noDetails": "未找到 DNSSEC 详情",
+    "notSupported": "此域名不支持 DNSSEC",
+    "zoneSigning": "Zone 正在签署记录",
+    "zoneNotSigning": "Zone 未签署记录",
+    "namefiAutoHandling": "Namefi 正在自动处理此域名的 DNSSEC。",
+    "namefiSigningRecords": "Namefi 正在为此域名签署记录",
+    "zoneSigningRecords": "Zone 正在为此域名签署记录",
+    "allSecure": "全部安全",
+    "namefiOnlySigner": "Namefi 是此域名的唯一委派签署者",
+    "customSigners": "自定义委派签署者",
+    "notEnabled": "DNSSEC 未启用",
+    "noSigners": "无委派签署者",
+    "propagationNotice": "DNSSEC 更改不会立即生效，全球传播可能需要 24–48 小时。",
+    "requestInProgress": "已有一个{operation, select, disable {禁用} other {启用}} DNSSEC 的请求正在处理中",
+    "operationInProgress": "已有操作正在进行中",
+    "enableNamefiSigning": "启用 Namefi 签名",
+    "disableNamefiSigning": "禁用 Namefi 签名",
+    "enabling": "启用中...",
+    "disabling": "禁用中...",
+    "disableConfirmDescription": "确定要禁用 Namefi 签名吗？",
+    "disableConfirmDetail": "这将降低您的域名安全性，并影响依赖它的服务（如 AutoENS）。",
+    "confirmAndDisable": "确认并禁用",
+    "progress": {
+      "enablingTitle": "正在为 {domain} 启用",
+      "disablingTitle": "正在为 {domain} 禁用",
+      "viewProgress": "查看进度详情",
+      "cancelWorkflow": "取消工作流",
+      "cancelling": "取消中...",
+      "cancellationRequested": "取消请求已发送",
+      "cancelFailed": "取消失败：{error}"
+    },
+    "toasts": {
+      "enableSent": "启用 DNSSEC 的请求已发送",
+      "enableFailed": "启用 DNSSEC 的请求失败",
+      "disableSent": "禁用 DNSSEC 的请求已发送",
+      "disableFailed": "禁用 DNSSEC 的请求失败"
+    },
+    "signersTable": {
+      "empty": "尚未关联任何委派签署者。",
+      "keyTag": "Key tag",
+      "algorithm": "算法",
+      "digestType": "摘要类型",
+      "digest": "摘要",
+      "pending": "待处理",
+      "removeAria": "移除委派签署者",
+      "cancelDeferredAria": "取消延迟 DS 提交",
+      "removeTitle": "移除委派签署者？",
+      "removeDescription": "这将在注册商处解除 DS 关联。{keyTagSuffix}如果这是该域名的唯一 DS，DNSSEC 验证将在数小时内在全球失效。请确保您已在父级发布替换记录，或确实打算关闭 DNSSEC。",
+      "removeKeyTagSuffix": "Key tag {keyTag}。",
+      "remove": "移除",
+      "removing": "移除中...",
+      "cancelDeferredTitle": "取消延迟 DS 提交？",
+      "cancelDeferredDescription": "这将停止对 key tag {keyTag} 的验证轮询，不会关联任何 DS。您可以稍后点击「启用 DNSSEC」或从「添加委派签署者」对话框重新提交。",
+      "cancelSubmission": "取消提交",
+      "cancelling": "取消中...",
+      "removeSuccess": "已移除委派签署者{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": "（key tag {keyTag}）",
+      "removeFailed": "移除委派签署者失败：{error}",
+      "noKeyId": "无法确定要移除的密钥（缺少 id、publicKey 或 keyTag）。",
+      "cancelSuccess": "已取消延迟提交（key tag {keyTag}）",
+      "cancelFailed": "取消失败：{error}",
+      "phaseAuthoritative": "等待权威 NS 验证，约 {remaining} 后超时。",
+      "phasePublicDns": "等待公共 DNS 传播，约 {remaining} 后超时。",
+      "phaseSubmit": "验证通过，正在向注册商提交 DS。",
+      "remainingNow": "即刻",
+      "remainingHoursMinutes": "{hours} 小时 {minutes} 分钟",
+      "remainingMinutes": "{minutes} 分钟"
+    },
+    "advancedPanel": {
+      "title": "自定义委派签署者",
+      "description": "当此域名使用自有权威名称服务器时需要配置。提交与您的 DNS 提供商发布的 DNSKEY 相匹配的 DS。",
+      "addSigner": "添加委派签署者",
+      "dialogTitle": "添加自定义委派签署者",
+      "dialogDescription": "粘贴您的 DNSKEY/DS，或从名称服务器自动检测，然后在提交前进行验证。"
+    }
+  },
+  "overview": {
+    "panelTitle": "域名概览",
+    "panelSubtitle": "管理您的域名设置和续期",
+    "expired": {
+      "title": "域名已过期",
+      "canRenew": "您的域名已过期。您仍可提交续期请求，能否成功取决于 TLD（.com、.org 等）。",
+      "cannotRenew": "您的域名已过期。请联系客服确认是否可以恢复（并非所有 TLD（.com、.org 等）均支持）。",
+      "cannotRenewShort": "您的域名已过期。请联系客服确认是否可以恢复（并非所有 TLD 均支持）。"
+    },
+    "autoRenew": {
+      "label": "自动续期",
+      "description": "自动续期域名",
+      "expires": "到期：{date}"
+    },
+    "manualRenew": {
+      "label": "手动续期",
+      "description": "手动续期域名"
+    },
+    "renewNow": "立即续期",
+    "renewExpirationUnavailable": "域名到期信息暂不可用",
+    "autoRenewalCard": {
+      "title": "自动续期",
+      "description": "在域名到期前自动完成续期",
+      "auto": "自动"
+    },
+    "manualRenewalCard": {
+      "title": "手动续期",
+      "descriptionWithDate": "{expiration} — 立即续期以恢复域名",
+      "description": "手动续期您的域名"
+    },
+    "preferencesUpdated": "偏好设置已更新",
+    "preferencesUpdateFailed": "更新偏好设置失败",
+    "export": {
+      "label": "域名导出",
+      "description": "将域名导出至其他注册商",
+      "descriptionCard": "将域名转移至其他注册商",
+      "unavailableCard": "此域名不支持导出",
+      "requestExport": "申请导出",
+      "exportUnavailable": "导出不可用",
+      "unavailable": "不可用",
+      "enableRequestPending": "启用导出请求处理中...",
+      "pending": "处理中...",
+      "getAuthCode": "获取授权码",
+      "requestingExport": "申请导出中...",
+      "requesting": "申请中...",
+      "nftNotMinted": "NFT 尚未铸造。铸造完成后即可导出。",
+      "loadDetailsFailed": "获取域名导出详情时出错！请稍后重试。",
+      "loadDetailsFailedShort": "加载导出详情失败，请稍后重试。"
+    },
+    "exportToasts": {
+      "requestSubmitted": "导出请求已成功提交",
+      "requestFailed": "申请域名导出失败",
+      "authCodeCopied": "授权码已复制到剪贴板",
+      "authCodeCopyFailed": "复制授权码失败",
+      "authCodeFailed": "获取授权码失败",
+      "signatureRejected": "签名请求已被拒绝",
+      "signatureFailed": "签名请求失败，可能是浏览器错误或钱包问题。",
+      "ownerWalletUnavailable": "无法确定域名所有者钱包"
+    },
+    "pendingTransfer": {
+      "label": "待处理导出",
+      "cardTitle": "待处理导出请求",
+      "requestedBy": "导出申请方：{registrar}",
+      "actionRequiredBy": "请在以下时间前处理：{date}",
+      "cardDescription": "申请方：{registrar} — 请在 {date} 前处理",
+      "approve": "批准",
+      "reject": "拒绝",
+      "approveSuccess": "导出已成功批准",
+      "approveFailed": "批准导出失败",
+      "rejectSuccess": "导出已成功拒绝",
+      "rejectFailed": "拒绝导出失败"
+    },
+    "nftOwnership": {
+      "title": "区块链所有权",
+      "tooltip": "您的域名以 NFT（非同质化代币）形式存储在区块链上。这份数字证书通过密码学验证您对此域名的所有权。",
+      "securedOn": "受保护于",
+      "verified": "已验证",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "链 {chainId}",
+      "ownerWallet": "所有者钱包",
+      "ownerWalletTooltip": "这是持有此域名 NFT 的钱包地址。只有该钱包才能管理或转移域名。",
+      "tokenId": "Token ID",
+      "tokenIdTooltip": "您的域名 NFT 在区块链上的唯一标识符，类似于数字资产的序列号。",
+      "verifyOnExplorer": "在区块浏览器上验证",
+      "showNftInWallet": "在钱包中查看 NFT",
+      "addingToWallet": "正在添加到钱包...",
+      "nftAdded": "NFT 已添加到您的钱包",
+      "nftAddFailed": "无法将 NFT 添加到钱包",
+      "nftAddError": "将 NFT 添加到钱包失败",
+      "unknownError": "未知错误",
+      "walletAddressCopied": "钱包地址已复制",
+      "walletAddressCopyFailed": "复制钱包地址失败",
+      "tokenIdCopied": "Token ID 已复制",
+      "tokenIdCopyFailed": "复制 Token ID 失败"
+    },
+    "educationalBanner": {
+      "title": "您的域名已受区块链保护",
+      "description": "与传统注册商不同，您的域名以 NFT 形式存储在您的钱包中。这意味着域名真正属于您——未经您的许可，任何公司都无法将其夺走。",
+      "dismissAria": "关闭横幅"
+    },
+    "moreInfoAria": "更多信息",
+    "learnMore": "了解更多",
+    "web3Concepts": {
+      "title": "了解您的域名",
+      "footer": "Namefi 将传统域名与区块链所有权连接起来",
+      "nftTerm": "NFT",
+      "nftDescription": "存储在您钱包中的数字所有权证书——类似于房产证书",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "永久记录您所有权的安全数字账本",
+      "walletTerm": "Wallet",
+      "walletDescription": "您的个人数字保险库——只有您能访问",
+      "icannTerm": "ICANN",
+      "icannDescription": "管理 .com、.io、.xyz 域名的全球权威机构"
+    },
+    "transferLock": {
+      "title": "导出可用时间：{date}",
+      "description": "根据 ICANN 政策，域名导入后 60 天内处于锁定状态。",
+      "importedOn": " 此域名于 {date} 导入。",
+      "gotIt": "知道了"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "需要登录",
+    "signInRequiredMessage": "请登录后管理此域名。",
+    "loadErrorTitle": "无法加载域名管理",
+    "loadErrorFallback": "请重试。",
+    "marketplaceErrorTitle": "无法加载市场状态",
+    "retry": "重试",
+    "publicViewTitle": "提示",
+    "publicViewMessage": "此域名属于其他用户，您正在查看公开信息。",
+    "tabDomainOverview": "域名概览",
+    "tabDnsRecords": "DNS 记录",
+    "tabDnsManagement": "DNS 管理",
+    "tabMarketplace": "市场",
+    "tabDnsSetting": "DNS 设置",
+    "notMigratedTitle": "域名尚未迁移",
+    "redirectToRegistrar": "跳转至注册商",
+    "comingSoon": "即将推出..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "添加 DNS 记录",
+      "editTitle": "编辑 DNS 记录",
+      "requiredFieldsError": "请填写所有带 * 的必填字段",
+      "addMoreRecord": "继续添加记录",
+      "addRecord": "添加记录",
+      "saveRecord": "保存记录",
+      "cnameConflictTitle": "CNAME 与其他记录冲突",
+      "cnameConflictBody1": "CNAME 记录不能与其他类型记录共用同一名称。",
+      "cnameConflictBody2": "请先删除冲突记录，再重新添加此 CNAME。",
+      "understood": "知道了",
+      "disableManagedTitle": "禁用托管记录并继续？",
+      "disableManagedBody1": "此 CNAME 仅与此域名上的托管记录冲突。",
+      "disableManagedBodyWithForwarding": "继续将禁用停放、转发和 AutoENS，然后添加此 CNAME。",
+      "disableManagedBody": "继续将禁用停放和 AutoENS，然后添加此 CNAME。",
+      "keepManagedRecords": "保留托管记录",
+      "disableAndContinue": "禁用并继续",
+      "disabling": "禁用中...",
+      "disableParkingTitle": "禁用停放并继续？",
+      "disableParkingBody": "此记录与托管停放记录冲突，继续前需先禁用停放。",
+      "disableParkingForwardingNotice": "在此禁用停放也会同时禁用转发。",
+      "keepParkingEnabled": "保持停放启用",
+      "loadRecordsFailed": "加载 DNS 记录失败"
+    },
+    "delete": {
+      "title": "删除记录？",
+      "description": "此更改可能影响您的域名功能，并需要一段时间在各网络中生效。",
+      "summary": "删除 {count, plural, one {# 条记录} other {# 条记录}}",
+      "toggle": "切换",
+      "columnName": "名称",
+      "columnType": "类型",
+      "columnValue": "值",
+      "columnTtl": "TTL",
+      "deleting": "删除中...",
+      "confirmSingle": "确认删除",
+      "confirmMultiple": "全部删除"
+    },
+    "form": {
+      "typeLabel": "类型",
+      "typePlaceholder": "选择类型",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "选择 TTL",
+      "nameLabel": "名称",
+      "namePlaceholder": "www 或 @",
+      "valueLabel": "值",
+      "removeRecordAria": "移除记录 {index}",
+      "ttlOption1Minute": "1 分钟",
+      "ttlOption5Minutes": "5 分钟",
+      "ttlOption20Minutes": "20 分钟",
+      "ttlOption1Hour": "1 小时",
+      "ttlOption1Day": "1 天",
+      "ttlOption1Week": "1 周",
+      "errorRecordTypeRequired": "记录类型为必填项",
+      "errorValueRequired": "值为必填项",
+      "errorTtlRequired": "TTL 为必填项"
+    },
+    "forwarding": {
+      "title": "编辑 URL 转发",
+      "description": "输入您希望 {domain} 转发到的 URL。",
+      "fieldLabel": "转发目标 URL",
+      "placeholder": "https://example.com",
+      "updated": "转发 URL 已更新",
+      "updateFailed": "更新转发 URL 失败"
+    },
+    "batch": {
+      "setNameservers": "设置名称服务器",
+      "setUrlForwarding": "设置 URL 转发",
+      "setWebRecords": "设置 Web 记录",
+      "setMxRecords": "设置 MX 记录",
+      "setEnsRecord": "设置 ENS 记录",
+      "batchAction": "批量操作",
+      "applyingToDomains": "正在应用到已选的 {count} 个域名。",
+      "forwardUrlLabel": "转发 URL",
+      "webRecordNotice": "此操作将为所有已选域名添加指定记录。",
+      "comingSoon": "{action} 的批量编辑功能即将推出。",
+      "forwardingUpdated": "已为 {count} 个域名更新转发",
+      "webRecordsUpdated": "已为 {count} 个域名更新 Web 记录",
+      "nameserverComingSoon": "批量更新名称服务器功能即将推出",
+      "recordComingSoon": "批量更新 DNS 记录功能即将推出",
+      "updateFailed": "更新域名失败"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS 操作",
+    "notEditableExternal": "使用外部名称服务器时不可编辑",
+    "nameservers": "名称服务器：{value}",
+    "nameserversNone": "无",
+    "parkedOnNamefi": "已停放于 Namefi",
+    "webRecordsConfigured": "Web 记录已配置",
+    "noWebRecords": "无 Web 记录",
+    "enableParkingForForwarding": "启用停放以使用转发",
+    "forwardsTo": "转发至：{url}",
+    "noForwarding": "无 URL 转发",
+    "mxConfigured": "MX 记录已配置",
+    "noMxRecords": "无 MX 记录",
+    "autoEnsEnabled": "Auto-ENS 已启用",
+    "noEnsRecord": "无 ENS 记录",
+    "manageMore": "管理更多 DNS 记录"
+  },
+  "cacheFlush": {
+    "title": "DNS 缓存刷新",
+    "description": "针对特定区域和记录类型，在已配置的服务器上刷新 DNS 缓存",
+    "zoneLabel": "区域/域名",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "记录类型",
+    "recordTypeAll": "ALL",
+    "flushing": "正在刷新缓存...",
+    "submit": "刷新 DNS 缓存",
+    "resultsHeading": "结果：",
+    "resultSuccess": "成功",
+    "resultFailed": "失败",
+    "zoneRequired": "区域为必填项",
+    "flushCompleteTitle": "缓存刷新完成",
+    "flushFailedTitle": "缓存刷新失败"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "title": "通知",
+  "bell": {
+    "label": "通知",
+    "labelWithUnread": "通知、{count}件未読",
+    "relatedLabel": "関連する通知",
+    "relatedLabelWithUnread": "関連する通知、{count}件未読"
+  },
+  "permission": {
+    "tooltip": "Namefi Webアプリの通知を有効にして、お知らせを見逃さないようにしましょう。",
+    "enable": "有効にする",
+    "ctaText": "新しい通知が届いたとき、OSのバナーでお知らせします。"
+  },
+  "modal": {
+    "description": "アプリ内通知の一覧です。既読にしたり、アーカイブしたり、関連リソースで絞り込んだりできます。"
+  },
+  "list": {
+    "filters": "フィルター",
+    "refresh": "通知を更新",
+    "relatedTo": "関連先",
+    "any": "すべて",
+    "nameOrKey": "名前またはキー",
+    "nameOrKeyPlaceholder": "名前またはキー",
+    "includeSeen": "既読を含む",
+    "includeSeenAria": "既読の通知を含める",
+    "includeArchived": "アーカイブを含む",
+    "includeArchivedAria": "アーカイブ済みの通知を含める",
+    "selectAllAria": "表示中の通知をすべて選択",
+    "selectedCount": "{count}件選択中",
+    "markSeen": "既読",
+    "markUnseen": "未読",
+    "archive": "アーカイブ",
+    "restore": "復元",
+    "markAllSeen": "すべて既読にする",
+    "loading": "読み込み中…",
+    "empty": "通知はありません。",
+    "loadingMore": "さらに読み込み中…"
+  },
+  "item": {
+    "selectAria": "{title}を選択",
+    "markSeenAria": "既読にする",
+    "markUnseenAria": "未読にする",
+    "archiveAria": "アーカイブ",
+    "restoreAria": "アーカイブから復元"
+  },
+  "errors": {
+    "markSeen": "既読への変更に失敗しました",
+    "markUnseen": "未読への変更に失敗しました",
+    "archive": "アーカイブに失敗しました",
+    "restore": "復元に失敗しました",
+    "markAllSeen": "すべて既読にする操作に失敗しました"
+  },
+  "resourceTypes": {
+    "user": "ユーザー",
+    "domain": "ドメイン",
+    "wallet": "ウォレット",
+    "order": "注文",
+    "order_item": "注文アイテム",
+    "payment": "支払い",
+    "cart": "カート",
+    "dns_record": "DNSレコード"
+  }
+}

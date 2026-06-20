@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "保持最新资讯",
+  "defaultDescription": "订阅我们的通讯，获取最新动态和公告。",
+  "closeAriaLabel": "关闭通讯订阅表单",
+  "invalidEmail": "请输入有效的电子邮件地址",
+  "successTitle": "感谢订阅！",
+  "successDescription": "请查收邮件以确认您的订阅。",
+  "subscribeAnother": "使用其他邮箱订阅",
+  "emailPlaceholder": "输入您的邮箱",
+  "subscribing": "订阅中...",
+  "subscribe": "订阅",
+  "subscribeToNewsletter": "订阅通讯",
+  "nameLabel": "姓名（可选）",
+  "namePlaceholder": "您的姓名",
+  "emailLabel": "邮箱",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "订阅成功！",
+    "alreadySubscribedTitle": "已订阅",
+    "alreadySubscribedDescription": "您已在我们的邮件列表中！",
+    "failedTitle": "订阅失败",
+    "failedFallback": "请稍后再试。"
+  }
+}

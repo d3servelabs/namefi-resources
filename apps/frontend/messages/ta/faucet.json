@@ -1,0 +1,18 @@
+{
+  "title": "NFSC குழாய்",
+  "description": "சோதனை சூழல்களில் பயன்படுத்துவதற்காக testnets இல் 20$NFSC கோருங்கள்.",
+  "chainLabel": "சங்கிலி",
+  "receivingWalletLabel": "பெறும் வாலட்",
+  "walletPlaceholder": "வாலட் முகவரியை ஒட்டவும் அல்லது இணைக்கப்பட்ட வாலட்களிலிருந்து தேர்ந்தெடுக்கவும்",
+  "walletHelpText": "தேர்ந்தெடுக்கப்பட்ட வாலட்டில் Sepolia இல் டோக்கன்கள் mint செய்யப்படுகின்றன.",
+  "submitting": "கோரிக்கை சமர்ப்பிக்கப்படுகிறது...",
+  "requestNfsc": "NFSC கோருங்கள்",
+  "rateLimitedTitle": "நீங்கள் சமீபத்தில் mint செய்தீர்கள்.",
+  "rateLimitedDescription": "{time} க்கு பிறகு மீண்டும் முயற்சிக்கவும்.",
+  "rateLimitedFallback": "பின்னர்",
+  "mintInProgressTitle": "Mint நடைபெறுகிறது",
+  "mintInProgressDescription": "Sepolia இல் பரிவர்த்தனையை உறுதிப்படுத்த காத்திருக்கிறது.",
+  "mintCompleteTitle": "Mint முடிந்தது",
+  "viewTransaction": "பரிவர்த்தனையை காண்க",
+  "requestFailedTitle": "கோரிக்கை தோல்வியடைந்தது"
+}

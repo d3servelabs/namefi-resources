@@ -13,11 +13,14 @@ import { TagsDisplay } from '../tags-display';
 import { UpvoteIcon } from '../upvote-icon';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useFormatter, useTranslations } from 'next-intl';
 
 type MyUpvotedDomainsResponse = AppRouterOutput['hunt']['getMyUpvotedDomains'];
 type MyUpvotedDomain = MyUpvotedDomainsResponse['items'][number];
 
 const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
+  const t = useTranslations('hunt');
+  const format = useFormatter();
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -31,7 +34,7 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
         queryClient.invalidateQueries({
           queryKey: trpc.hunt.getTrendingDomains.queryKey(),
         });
-        toast.success('Vote removed successfully');
+        toast.success(t('vote.removeSuccess'));
         logEventWithInteractionLoggers({
           name: InteractionLoggingEventName.Vote,
           properties: {
@@ -41,20 +44,16 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
         });
       },
       onError: () => {
-        toast.error('Failed to remove vote. Please try again.');
+        toast.error(t('vote.removeError'));
       },
     }),
   );
 
   const handleUnvote = useCallback(() => {
-    if (
-      confirm(
-        `Are you sure you want to remove your vote for "${domain.domainName}"?`,
-      )
-    ) {
+    if (confirm(t('vote.confirmRemove', { domainName: domain.domainName }))) {
       unvoteMutation.mutate({ domainName: domain.domainName });
     }
-  }, [domain.domainName, unvoteMutation]);
+  }, [domain.domainName, unvoteMutation, t]);
 
   return (
     <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 py-6 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition">
@@ -80,7 +79,11 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
           <div className="flex flex-wrap items-center gap-2">
             <TagsDisplay tags={domain.tags || []} limit={4} />
             <span className="text-xs text-muted-foreground">
-              Upvoted {new Date(domain.upvotedAt).toLocaleDateString()}
+              {t('upvoted.upvotedOn', {
+                date: format.dateTime(new Date(domain.upvotedAt), {
+                  dateStyle: 'medium',
+                }),
+              })}
             </span>
           </div>
         </div>
@@ -95,7 +98,7 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
             className="text-muted-foreground hover:text-foreground"
           >
             <TrendingDownIcon className="h-4 w-4" />
-            {unvoteMutation.isPending ? 'Removing...' : 'Unvote'}
+            {unvoteMutation.isPending ? t('vote.removing') : t('vote.unvote')}
           </Button>
         </div>
       </div>
@@ -114,6 +117,7 @@ export const MyUpvotedDomains = ({
   isLoading,
   isError,
 }: MyUpvotedDomainsProps) => {
+  const t = useTranslations('hunt');
   if (isLoading) {
     return <DomainItemSkeleton />;
   }
@@ -121,7 +125,7 @@ export const MyUpvotedDomains = ({
   if (isError) {
     return (
       <div className="p-8 text-center text-red-500">
-        Failed to load your upvoted domains
+        {t('upvoted.loadError')}
       </div>
     );
   }
@@ -129,7 +133,7 @@ export const MyUpvotedDomains = ({
   if (domains.length === 0) {
     return (
       <div className="p-8 text-center text-muted-foreground">
-        You haven't upvoted any domains yet.
+        {t('upvoted.empty')}
       </div>
     );
   }

@@ -1,5 +1,4 @@
 {
-  "language": "اللغة",
   "languageSelector": {
     "label": "اللغة",
     "ariaLabel": "غيّر اللغة"
@@ -9,7 +8,6 @@
     "loading": "جاري التحميل...",
     "tryAgain": "جرّب تاني",
     "dismiss": "مش محتاج",
-    "contactSupport": "كلّم الدعم",
     "cancel": "إلغاء",
     "close": "إغلاق",
     "save": "حفظ",
@@ -23,10 +21,11 @@
     "loadMore": "حمّل أكتر",
     "connectWallet": "وصّل المحفظة",
     "goBack": "ارجع",
-    "approve": "وافق",
-    "reject": "ارفض",
     "disable": "عطّل",
-    "signOut": "تسجيل الخروج"
+    "signOut": "تسجيل الخروج",
+    "copy": "نسخ",
+    "copyAddress": "نسخ العنوان",
+    "toggleSidebar": "إظهار/إخفاء الشريط الجانبي"
   },
   "account": {
     "label": "الحساب",

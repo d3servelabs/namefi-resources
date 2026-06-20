@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { WalletCard, type WalletCardProps } from './wallet-card';
 import type { ChainBalance } from '@/hooks/use-user-chain-balances';
 import {
@@ -38,6 +39,7 @@ function formatBalanceInUsdCents(balanceInUsdCents: number): string {
 }
 
 function BalanceBreakdown({ balances }: { balances: ChainBalance[] }) {
+  const t = useTranslations('nfsc');
   return (
     <div className="space-y-4">
       {balances.map((balance) => (
@@ -50,7 +52,9 @@ function BalanceBreakdown({ balances }: { balances: ChainBalance[] }) {
           <div className="space-y-2">
             {/* NFSC balance in USD */}
             <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">NFSC Balance</span>
+              <span className="text-muted-foreground">
+                {t('wallet.balanceLabel')}
+              </span>
               <span className="font-mono">
                 ${formatBalanceInUsdCents(balance.balanceInUsdCents)}
               </span>
@@ -73,6 +77,8 @@ export function NFSCWalletCard({
   showSingleChain = false,
   bottomActions,
 }: NFSCWalletCardProps) {
+  const t = useTranslations('nfsc');
+  const tCommon = useTranslations('common');
   const [showBalanceModal, setShowBalanceModal] = useState(false);
   const { nfscBalanceChains: chains } = useAllowedChains();
 
@@ -149,8 +155,10 @@ export function NFSCWalletCard({
             <div>
               <div className="text-xs opacity-70 uppercase tracking-wider">
                 {showSingleChain && singleChainBalance
-                  ? `${singleChainBalance.chainName} Balance`
-                  : 'NFSC Balance'}
+                  ? t('wallet.chainBalanceLabel', {
+                      chainName: singleChainBalance.chainName,
+                    })
+                  : t('wallet.balanceLabel')}
               </div>
               <div className="text-lg font-semibold font-mono">
                 {isLoadingBalance ? (
@@ -162,7 +170,9 @@ export function NFSCWalletCard({
             </div>
           </div>
           {!showSingleChain && (
-            <div className="text-xs opacity-70">Click for details →</div>
+            <div className="text-xs opacity-70">
+              {t('wallet.clickForDetails')}
+            </div>
           )}
         </div>
       </button>
@@ -186,20 +196,22 @@ export function NFSCWalletCard({
       <Dialog open={showBalanceModal} onOpenChange={setShowBalanceModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Wallet details</DialogTitle>
+            <DialogTitle>{t('wallet.detailsTitle')}</DialogTitle>
           </DialogHeader>
 
           <Tabs defaultValue="balance" className="mt-4">
             <TabsList className="grid grid-cols-2 w-full">
-              <TabsTrigger value="balance">Balance</TabsTrigger>
-              <TabsTrigger value="orders">Recent NFSC orders</TabsTrigger>
+              <TabsTrigger value="balance">
+                {tCommon('account.balance')}
+              </TabsTrigger>
+              <TabsTrigger value="orders">{t('wallet.ordersTab')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="balance" className="mt-4">
               {/* Total NFSC */}
               <div className="bg-muted rounded-lg p-4 mb-4">
                 <div className="text-sm text-muted-foreground mb-1">
-                  Total NFSC Balance
+                  {t('wallet.totalBalance')}
                 </div>
                 <div className="text-2xl font-bold font-mono">
                   ${formatBalanceInUsdCents(currentWalletTotal)}
@@ -234,6 +246,7 @@ function RecentNfscOrdersTab({
   walletAddress: string;
   enabled: boolean;
 }) {
+  const t = useTranslations('nfsc');
   const trpc = useTRPC();
   const { data: orders, isLoading } = useQuery({
     ...trpc.orders.getMyNfscOrders.queryOptions({
@@ -246,13 +259,12 @@ function RecentNfscOrdersTab({
   return (
     <div className="space-y-3">
       <p className="rounded-md border border-border/60 bg-muted/10 px-3 py-2 text-xs text-muted-foreground">
-        These are credit-card NFSC top-ups for this wallet. NFSC-paid domain
-        orders appear in your full order history.
+        {t('wallet.ordersDescription')}
       </p>
       <NfscOrdersList
         orders={orders}
         isLoading={isLoading}
-        emptyMessage="No NFSC top-ups yet for this wallet."
+        emptyMessage={t('wallet.noOrders')}
       />
     </div>
   );

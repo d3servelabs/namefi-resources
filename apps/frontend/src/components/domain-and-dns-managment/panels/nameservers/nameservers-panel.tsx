@@ -59,6 +59,7 @@ import {
 } from '@tanstack/react-query';
 import { Info, Loader2, RotateCw, SaveIcon, XCircleIcon } from 'lucide-react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import React from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -101,11 +102,12 @@ const DOMAIN_ACTIONS = {
 } as const;
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const t = useTranslations('dnsManagement');
   return (
     <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          Nameservers Management
+          {t('nameservers.panelTitle')}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger
@@ -116,7 +118,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <Info className="h-4 w-4" />
               </TooltipTrigger>
               <TooltipContent>
-                <p>Nameservers direct traffic to your domain</p>
+                <p>{t('nameservers.tooltip')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -142,6 +144,8 @@ const NameserversPanelForm = React.memo(
     nameservers,
     nftChainId,
   }: DomainNameserversFormProps) {
+    const t = useTranslations('dnsManagement');
+    const tCommon = useTranslations('common');
     const trpc = useTRPC();
     const [loadingOperation, setLoadingOperation] = useState<string | null>(
       null,
@@ -239,7 +243,7 @@ const NameserversPanelForm = React.memo(
     const resetWithSignature = useCallback(async () => {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('nameservers.toasts.ownerWalletUnavailable'));
         return;
       }
       setLoadingOperation('resetting');
@@ -266,13 +270,13 @@ const NameserversPanelForm = React.memo(
           signature,
           payload,
         });
-        toast.success('Nameservers reset to Namefi defaults');
+        toast.success(t('nameservers.toasts.resetSuccess'));
         setSubmittedChanges(true);
       } catch (error: any) {
         if (error.message?.includes('rejected')) {
-          toast.error('Signature request was rejected');
+          toast.error(t('nameservers.toasts.signatureRejected'));
         } else {
-          toast.error(error.message ?? 'Failed to reset nameservers');
+          toast.error(error.message ?? t('nameservers.toasts.resetFailed'));
         }
       }
       await invalidateQueries();
@@ -284,12 +288,13 @@ const NameserversPanelForm = React.memo(
       signTypedData,
       nftChainId,
       ownerWalletData?.ownerWalletAddress,
+      t,
     ]);
 
     const handleResetToNamefi = useCallback(async () => {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('nameservers.toasts.ownerWalletUnavailable'));
         return;
       }
       if (activeWalletAddress !== ownerWalletAddress) {
@@ -301,7 +306,7 @@ const NameserversPanelForm = React.memo(
         return;
       }
       await resetWithSignature();
-    }, [ownerWalletData, activeWalletAddress, resetWithSignature]);
+    }, [ownerWalletData, activeWalletAddress, resetWithSignature, t]);
 
     const validationSchema = useMemo(
       () =>
@@ -345,7 +350,7 @@ const NameserversPanelForm = React.memo(
         if (domainName) {
           const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
           if (!ownerWalletAddress) {
-            toast.error('Unable to determine domain owner wallet');
+            toast.error(t('nameservers.toasts.ownerWalletUnavailable'));
             return;
           }
           const nameserversList = values.nameservers.join(', ');
@@ -372,14 +377,14 @@ const NameserversPanelForm = React.memo(
             signature,
             payload,
           });
-          toast.success('Nameservers Updated Successfully');
+          toast.success(t('nameservers.toasts.changeSuccess'));
           setSubmittedChanges(true);
         }
       } catch (error: any) {
         if (error.message?.includes('rejected')) {
-          toast.error('Signature request was rejected');
+          toast.error(t('nameservers.toasts.signatureRejected'));
         } else {
-          toast.error(error.message ?? 'Failed to update Nameservers');
+          toast.error(error.message ?? t('nameservers.toasts.changeFailed'));
         }
       }
 
@@ -391,7 +396,7 @@ const NameserversPanelForm = React.memo(
     ) => {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('nameservers.toasts.ownerWalletUnavailable'));
         return;
       }
       if (activeWalletAddress !== ownerWalletAddress) {
@@ -464,7 +469,7 @@ const NameserversPanelForm = React.memo(
           disabled={disableAllButtons}
         >
           <RotateCw className="me-2 h-4 w-4" />
-          Reset to Namefi Nameservers
+          {t('nameservers.resetToNamefi')}
         </LoadingButton>
       );
     }, [
@@ -473,6 +478,7 @@ const NameserversPanelForm = React.memo(
       domainDnssecDetails,
       isDnssecLoading,
       disableAllButtons,
+      t,
     ]);
 
     const areChanged = useMemo(() => {
@@ -532,7 +538,9 @@ const NameserversPanelForm = React.memo(
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormLabel className="text-sm text-zinc-400">
-                          Nameserver {index + 1}{' '}
+                          {t('nameservers.nameserverLabel', {
+                            index: index + 1,
+                          })}{' '}
                           {index < 2 && <span className="text-red-500">*</span>}
                         </FormLabel>
                         <div className="flex items-center gap-2">
@@ -543,7 +551,9 @@ const NameserversPanelForm = React.memo(
                                 handleUpdateNameserver(index, e.target.value)
                               }
                               className="bg-zinc-950 border-zinc-800"
-                              placeholder="e.g., ns1.example.com"
+                              placeholder={t(
+                                'nameservers.nameserverPlaceholder',
+                              )}
                             />
                           </FormControl>
                           {values.nameservers.length > 2 && (
@@ -554,7 +564,7 @@ const NameserversPanelForm = React.memo(
                               className="text-zinc-400 hover:text-red-500"
                               disabled={disableAllButtons}
                             >
-                              Remove
+                              {tCommon('actions.remove')}
                             </Button>
                           )}
                         </div>
@@ -573,7 +583,7 @@ const NameserversPanelForm = React.memo(
                     className="w-auto py-1.25 px-5 "
                     disabled={disableAllButtons}
                   >
-                    Add nameserver
+                    {t('nameservers.addNameserver')}
                   </Button>
                 )}
                 <div className="flex items-center gap-2">
@@ -583,14 +593,14 @@ const NameserversPanelForm = React.memo(
                       onClick={cancelChanges}
                       disabled={disableAllButtons}
                     >
-                      Cancel
+                      {tCommon('actions.cancel')}
                     </Button>
                   ) : (
                     false
                   )}
                   <LoadingButton
                     isLoading={isSubmitting}
-                    loadingText="Saving..."
+                    loadingText={t('nameservers.saving')}
                     className={cn('w-auto py-1.25 px-5')}
                     onClick={handleSubmit(onSubmit)}
                     disabled={
@@ -601,17 +611,15 @@ const NameserversPanelForm = React.memo(
                     }
                     variant={'default'}
                   >
-                    <SaveIcon width={20} height={20} /> Save Changes
+                    <SaveIcon width={20} height={20} />{' '}
+                    {t('nameservers.saveChanges')}
                   </LoadingButton>
                 </div>
               </div>
             </AnimatePresence>
 
             <div className="text-sm text-zinc-500 mt-4">
-              <p>
-                Changes to nameservers can take 24-48 hours to propagate
-                globally.
-              </p>
+              <p>{t('nameservers.propagationNotice')}</p>
             </div>
           </div>
         </Form>
@@ -771,6 +779,7 @@ function NameserversProgressModal({
   operation: 'CHANGE_NAMESERVERS' | 'RESET_NAMESERVERS';
   onClose?: () => void;
 }) {
+  const t = useTranslations('dnsManagement');
   const [open, setOpen] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -783,7 +792,7 @@ function NameserversProgressModal({
   const cancelMutation = useMutation(
     trpc.domainConfig.cancelNameserversWorkflow.mutationOptions({
       onSuccess() {
-        toast.success('Cancellation requested');
+        toast.success(t('nameservers.workflow.cancellationRequested'));
         queryClient.invalidateQueries({
           queryKey:
             trpc.domainConfig.queryActiveNameserversChangeWorkflow.queryKey({
@@ -792,7 +801,9 @@ function NameserversProgressModal({
         });
       },
       onError(error) {
-        toast.error(`Failed to cancel: ${error.message}`);
+        toast.error(
+          t('nameservers.workflow.cancelFailed', { error: error.message }),
+        );
       },
     }),
   );
@@ -810,8 +821,8 @@ function NameserversProgressModal({
 
   const title =
     operation === 'RESET_NAMESERVERS'
-      ? `Resetting nameservers for ${domainName}`
-      : `Changing nameservers for ${domainName}`;
+      ? t('nameservers.workflow.resettingTitle', { domain: domainName })
+      : t('nameservers.workflow.changingTitle', { domain: domainName });
 
   // Determine which step display info to use based on actual workflow type
   const isResetWorkflow = progress.workflowType === 'reset-nameservers';
@@ -842,7 +853,7 @@ function NameserversProgressModal({
             <Info className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>View progress details</p>
+            <p>{t('nameservers.workflow.viewProgress')}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -864,11 +875,11 @@ function NameserversProgressModal({
               variant="destructive"
               size="sm"
               isLoading={cancelMutation.isPending}
-              loadingText="Cancelling..."
+              loadingText={t('nameservers.workflow.cancelling')}
               onClick={() => cancelMutation.mutate({ domainName })}
             >
               <XCircleIcon className="w-4 h-4" />
-              Cancel Workflow
+              {t('nameservers.workflow.cancelWorkflow')}
             </LoadingButton>
           </div>
         )}
@@ -884,6 +895,7 @@ export const ActiveNameserversChangeWorkflowBanner = ({
   activeNameserversChangeWorkflow?: AppRouterOutput['domainConfig']['queryActiveNameserversChangeWorkflow'];
   domainName: string;
 }) => {
+  const t = useTranslations('dnsManagement');
   // Track the last known operation so modal can stay open after workflow completes
   const [lastOperation, setLastOperation] = useState<
     'CHANGE_NAMESERVERS' | 'RESET_NAMESERVERS' | null
@@ -923,8 +935,8 @@ export const ActiveNameserversChangeWorkflowBanner = ({
       <Loader2 className="h-4 w-4 animate-spin" />
       <p>
         {operation === 'RESET_NAMESERVERS'
-          ? 'An operation to reset nameservers to Namefi defaults is in progress...'
-          : 'An operation to update nameservers is in progress...'}
+          ? t('nameservers.workflow.resetInProgress')
+          : t('nameservers.workflow.changeInProgress')}
       </p>
       {operation && (
         <NameserversProgressModal

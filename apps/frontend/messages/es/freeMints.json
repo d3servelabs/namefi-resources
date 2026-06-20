@@ -25,5 +25,10 @@
     "validThru": "Válido hasta",
     "claimNow": "Reclamar ahora",
     "poweredByNamefi": "Con tecnología de Namefi"
+  },
+  "dropdown": {
+    "title": "Acuñaciones gratuitas",
+    "claim": "Reclamar",
+    "viewAll": "Ver todas las acuñaciones gratuitas"
   }
 }

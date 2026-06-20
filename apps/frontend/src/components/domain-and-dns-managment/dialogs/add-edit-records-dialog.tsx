@@ -27,6 +27,7 @@ import type { RecordType } from '@namefi-astra/zod-dns';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { CircleCheck, CircleX, Loader2, Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   type ReactElement,
   type ReactNode,
@@ -76,6 +77,8 @@ export function AddEditRecordsDialog({
   readOnly,
   warningMessage,
 }: AddEditRecordsDialogProps) {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   // Memoize the default form values
   const defaultFormValues = useMemo(
     () => ({
@@ -211,17 +214,12 @@ export function AddEditRecordsDialog({
         records: newRecords,
       });
 
-      toast.success(
-        `${newRecords.length} ${
-          newRecords.length === 1 ? 'Record' : 'Records'
-        } saved successfully`,
-        {
-          duration: 10_000,
-          dismissible: true,
-          icon: <CircleCheck className="h-4 w-4" />,
-          richColors: true,
-        },
-      );
+      toast.success(t('records.toasts.saved', { count: newRecords.length }), {
+        duration: 10_000,
+        dismissible: true,
+        icon: <CircleCheck className="h-4 w-4" />,
+        richColors: true,
+      });
 
       await invalidateDnsRecordsQuery();
       requestFeedback(feedbackTriggerSchema.enum.MILESTONE_DNS_UPDATED);
@@ -233,65 +231,73 @@ export function AddEditRecordsDialog({
       invalidateDnsRecordsQuery,
       onOpenChange,
       requestFeedback,
+      t,
     ],
   );
 
-  const handleError = useCallback((error: unknown) => {
-    if (error instanceof TRPCClientError) {
-      const zodFlattenedError = error.data?.zodError;
-      if (zodFlattenedError) {
-        if (
-          zodFlattenedError.formErrors &&
-          zodFlattenedError.formErrors.length > 0
-        ) {
-          toast.error(
-            <MultipleLinesArrayErrorMessage
-              lines={zodFlattenedError.formErrors}
-            />,
-            {
-              duration: 10_000,
-              dismissible: true,
-              icon: <CircleX className="h-4 w-4" />,
-              richColors: true,
-            },
-          );
-          return;
-        }
-        if (
-          zodFlattenedError.fieldErrors?.records &&
-          zodFlattenedError.fieldErrors.records.length > 0
-        ) {
-          toast.error(
-            <MultipleLinesArrayErrorMessage
-              lines={zodFlattenedError.fieldErrors.records.map(
-                (e: string, i: number) => `Record ${i + 1}: ${e}`,
-              )}
-            />,
-            {
-              duration: 10_000,
-              dismissible: true,
-              icon: <CircleX className="h-4 w-4" />,
-              richColors: true,
-            },
-          );
+  const handleError = useCallback(
+    (error: unknown) => {
+      if (error instanceof TRPCClientError) {
+        const zodFlattenedError = error.data?.zodError;
+        if (zodFlattenedError) {
+          if (
+            zodFlattenedError.formErrors &&
+            zodFlattenedError.formErrors.length > 0
+          ) {
+            toast.error(
+              <MultipleLinesArrayErrorMessage
+                lines={zodFlattenedError.formErrors}
+              />,
+              {
+                duration: 10_000,
+                dismissible: true,
+                icon: <CircleX className="h-4 w-4" />,
+                richColors: true,
+              },
+            );
+            return;
+          }
+          if (
+            zodFlattenedError.fieldErrors?.records &&
+            zodFlattenedError.fieldErrors.records.length > 0
+          ) {
+            toast.error(
+              <MultipleLinesArrayErrorMessage
+                lines={zodFlattenedError.fieldErrors.records.map(
+                  (e: string, i: number) =>
+                    t('records.toasts.recordPrefix', {
+                      index: i + 1,
+                      message: e,
+                    }),
+                )}
+              />,
+              {
+                duration: 10_000,
+                dismissible: true,
+                icon: <CircleX className="h-4 w-4" />,
+                richColors: true,
+              },
+            );
+            return;
+          }
+
+          toast.error(t('records.toasts.undeterminedError'), {
+            duration: 10_000,
+            dismissible: true,
+            icon: <CircleX className="h-4 w-4" />,
+            richColors: true,
+          });
           return;
         }
 
-        toast.error('Undetermined Error, please contact support', {
-          duration: 10_000,
-          dismissible: true,
-          icon: <CircleX className="h-4 w-4" />,
-          richColors: true,
-        });
+        toast.error(error.message);
         return;
       }
 
-      toast.error(error.message);
-      return;
-    }
-
-    toast.error('Something went wrong. Please try again.');
-  }, []);
+      toast.error(t('records.toasts.genericError'));
+    },
+    [t],
+  );
 
   const isParkingConflictError = useCallback((error: unknown) => {
     return (
@@ -343,9 +349,7 @@ export function AddEditRecordsDialog({
         });
 
         toast.success(
-          `${updatedRecords.length} ${
-            updatedRecords.length === 1 ? 'Record' : 'Records'
-          } updated successfully`,
+          t('records.toasts.updated', { count: updatedRecords.length }),
           {
             duration: 10_000,
             dismissible: true,
@@ -393,6 +397,7 @@ export function AddEditRecordsDialog({
     isParkingConflictError,
     handleError,
     onSubmitSettled,
+    t,
   ]);
 
   const handleDisableParkingAndContinue = useCallback(async () => {
@@ -514,7 +519,9 @@ export function AddEditRecordsDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-xl">
-            {mode === 'add' ? 'Add DNS Record' : 'Edit DNS Record'}
+            {mode === 'add'
+              ? t('dialogs.addEdit.addTitle')
+              : t('dialogs.addEdit.editTitle')}
           </DialogTitle>
         </DialogHeader>
 
@@ -526,7 +533,7 @@ export function AddEditRecordsDialog({
 
         {formErrors && (
           <div className="text-red-500 text-sm mb-4">
-            Please complete all required fields marked with *
+            {t('dialogs.addEdit.requiredFieldsError')}
           </div>
         )}
 
@@ -556,7 +563,7 @@ export function AddEditRecordsDialog({
             className="w-full h-11 border border-dashed border-zinc-700 text-zinc-300 hover:bg-zinc-900 hover:text-zinc-100"
           >
             <Plus className="me-2 h-4 w-4" />
-            Add more record
+            {t('dialogs.addEdit.addMoreRecord')}
           </Button>
         )}
 
@@ -570,7 +577,7 @@ export function AddEditRecordsDialog({
               }}
               type="button"
             >
-              {readOnly ? 'Close' : 'Cancel'}
+              {readOnly ? tCommon('actions.close') : tCommon('actions.cancel')}
             </Button>
             {!readOnly && (
               <Button
@@ -590,7 +597,9 @@ export function AddEditRecordsDialog({
                 ) : (
                   <Plus className="me-2 h-4 w-4" />
                 )}
-                {mode === 'add' ? 'Add' : 'Save'} record
+                {mode === 'add'
+                  ? t('dialogs.addEdit.addRecord')
+                  : t('dialogs.addEdit.saveRecord')}
               </Button>
             )}
           </div>
@@ -604,23 +613,18 @@ export function AddEditRecordsDialog({
         <AlertDialogContent className="bg-zinc-950 border-zinc-800">
           <AlertDialogHeader>
             <AlertDialogTitle>
-              CNAME conflicts with other records
+              {t('dialogs.addEdit.cnameConflictTitle')}
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2 text-zinc-400">
-              <p>
-                CNAME records cannot share the same name with other record
-                types.
-              </p>
-              <p>
-                Delete the conflicting records first, then add this CNAME again.
-              </p>
+              <p>{t('dialogs.addEdit.cnameConflictBody1')}</p>
+              <p>{t('dialogs.addEdit.cnameConflictBody2')}</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction
               onClick={() => setIsCnameConflictDialogOpen(false)}
             >
-              Understood
+              {t('dialogs.addEdit.understood')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -637,16 +641,14 @@ export function AddEditRecordsDialog({
         <AlertDialogContent className="bg-zinc-950 border-zinc-800">
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Disable managed records and continue?
+              {t('dialogs.addEdit.disableManagedTitle')}
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2 text-zinc-400">
+              <p>{t('dialogs.addEdit.disableManagedBody1')}</p>
               <p>
-                This CNAME conflicts only with managed records on this domain.
-              </p>
-              <p>
-                Continue to disable Parking
-                {isForwardingEnabled ? ', Forwarding,' : ''} and AutoENS, then
-                add this CNAME.
+                {isForwardingEnabled
+                  ? t('dialogs.addEdit.disableManagedBodyWithForwarding')
+                  : t('dialogs.addEdit.disableManagedBody')}
               </p>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -655,7 +657,7 @@ export function AddEditRecordsDialog({
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={() => setPendingManagedCnameConflictRecords(null)}
             >
-              Keep managed records
+              {t('dialogs.addEdit.keepManagedRecords')}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -667,10 +669,11 @@ export function AddEditRecordsDialog({
             >
               {updateDomainPreferencesAndConfig.isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Disabling...
+                  <Loader2 className="h-4 w-4 animate-spin" />{' '}
+                  {t('dialogs.addEdit.disabling')}
                 </>
               ) : (
-                'Disable and continue'
+                t('dialogs.addEdit.disableAndContinue')
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -687,15 +690,14 @@ export function AddEditRecordsDialog({
       >
         <AlertDialogContent className="bg-zinc-950 border-zinc-800">
           <AlertDialogHeader>
-            <AlertDialogTitle>Disable parking and continue?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t('dialogs.addEdit.disableParkingTitle')}
+            </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2 text-zinc-400">
-              <p>
-                This record conflicts with managed parking records. To continue,
-                parking must be disabled first.
-              </p>
+              <p>{t('dialogs.addEdit.disableParkingBody')}</p>
               {isForwardingEnabled && (
                 <p className="text-amber-500">
-                  Disabling parking here also disables forwarding.
+                  {t('dialogs.addEdit.disableParkingForwardingNotice')}
                 </p>
               )}
             </AlertDialogDescription>
@@ -705,7 +707,7 @@ export function AddEditRecordsDialog({
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={() => setPendingParkingConflictRecords(null)}
             >
-              Keep parking enabled
+              {t('dialogs.addEdit.keepParkingEnabled')}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -717,10 +719,11 @@ export function AddEditRecordsDialog({
             >
               {updateDomainPreferencesAndConfig.isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Disabling...
+                  <Loader2 className="h-4 w-4 animate-spin" />{' '}
+                  {t('dialogs.addEdit.disabling')}
                 </>
               ) : (
-                'Disable and continue'
+                t('dialogs.addEdit.disableAndContinue')
               )}
             </AlertDialogAction>
           </AlertDialogFooter>

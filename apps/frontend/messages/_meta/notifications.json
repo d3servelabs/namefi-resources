@@ -1,0 +1,182 @@
+{
+  "title": {
+    "description": "Heading of the notifications modal/dialog; also the accessible name of the notification bell.",
+    "maxLength": 20
+  },
+  "bell.label": {
+    "description": "Accessible label for the notification bell when there are no unread notifications.",
+    "maxLength": 24
+  },
+  "bell.labelWithUnread": {
+    "description": "Accessible label for the notification bell with unread items. {count} = number of unread notifications.",
+    "maxLength": 40
+  },
+  "bell.relatedLabel": {
+    "description": "Accessible label for an inline notification bell (next to a resource title) with no unread items.",
+    "maxLength": 30
+  },
+  "bell.relatedLabelWithUnread": {
+    "description": "Accessible label for an inline notification bell with unread items. {count} = number of unread notifications.",
+    "maxLength": 48
+  },
+  "permission.tooltip": {
+    "description": "Popover prompt encouraging the user to grant browser-notification permission. 'Namefi Webapp' is the product name."
+  },
+  "permission.enable": {
+    "description": "Button that requests browser-notification permission (enables OS banners).",
+    "maxLength": 12
+  },
+  "permission.ctaText": {
+    "description": "Inline banner inside the notifications modal explaining the benefit of enabling browser notifications (OS banners)."
+  },
+  "modal.description": {
+    "description": "Screen-reader-only description of the notifications dialog, explaining the available controls."
+  },
+  "list.filters": {
+    "description": "Toggle button that shows/hides the notification filter controls.",
+    "maxLength": 12
+  },
+  "list.refresh": {
+    "description": "Accessible label for the button that refetches the notification list.",
+    "maxLength": 28
+  },
+  "list.relatedTo": {
+    "description": "Label for the filter selecting which resource type notifications relate to.",
+    "maxLength": 14
+  },
+  "list.any": {
+    "description": "Filter option meaning no resource-type restriction (any resource type).",
+    "maxLength": 10
+  },
+  "list.nameOrKey": {
+    "description": "Label for the filter input matching a related resource by its name or identifier key.",
+    "maxLength": 14
+  },
+  "list.nameOrKeyPlaceholder": {
+    "description": "Placeholder for the related-resource name/key filter input.",
+    "maxLength": 14
+  },
+  "list.includeSeen": {
+    "description": "Checkbox label to include already-seen notifications in the list.",
+    "maxLength": 16
+  },
+  "list.includeSeenAria": {
+    "description": "Accessible label for the 'include seen notifications' checkbox.",
+    "maxLength": 32
+  },
+  "list.includeArchived": {
+    "description": "Checkbox label to include archived notifications in the list.",
+    "maxLength": 18
+  },
+  "list.includeArchivedAria": {
+    "description": "Accessible label for the 'include archived notifications' checkbox.",
+    "maxLength": 36
+  },
+  "list.selectAllAria": {
+    "description": "Accessible label for the checkbox that selects/deselects all visible notifications.",
+    "maxLength": 36
+  },
+  "list.selectedCount": {
+    "description": "Count of currently selected notifications in the bulk-action toolbar. {count} = number selected.",
+    "maxLength": 16
+  },
+  "list.markSeen": {
+    "description": "Bulk-action button label to mark the selected notifications as seen.",
+    "maxLength": 10
+  },
+  "list.markUnseen": {
+    "description": "Bulk-action button label to mark the selected notifications as unseen.",
+    "maxLength": 10
+  },
+  "list.archive": {
+    "description": "Bulk-action button label to archive the selected notifications.",
+    "maxLength": 12
+  },
+  "list.restore": {
+    "description": "Bulk-action button label to restore the selected notifications from archive.",
+    "maxLength": 12
+  },
+  "list.markAllSeen": {
+    "description": "Button that marks all notifications (matching the current filter) as seen.",
+    "maxLength": 20
+  },
+  "list.loading": {
+    "description": "Loading indicator shown while the notification list is being fetched. Includes a trailing ellipsis.",
+    "maxLength": 14
+  },
+  "list.empty": {
+    "description": "Empty-state message shown when there are no notifications to display.",
+    "maxLength": 28
+  },
+  "list.loadingMore": {
+    "description": "Text shown at the bottom of the list while fetching the next page of notifications. Includes a trailing ellipsis.",
+    "maxLength": 18
+  },
+  "item.selectAria": {
+    "description": "Accessible label for the checkbox selecting a single notification row. {title} = the notification's title.",
+    "maxLength": 40
+  },
+  "item.markSeenAria": {
+    "description": "Accessible label for the per-row button that marks a notification as seen.",
+    "maxLength": 20
+  },
+  "item.markUnseenAria": {
+    "description": "Accessible label for the per-row button that marks a notification as unseen.",
+    "maxLength": 20
+  },
+  "item.archiveAria": {
+    "description": "Accessible label for the per-row button that archives a notification.",
+    "maxLength": 14
+  },
+  "item.restoreAria": {
+    "description": "Accessible label for the per-row button that restores a notification from archive.",
+    "maxLength": 24
+  },
+  "errors.markSeen": {
+    "description": "Error toast title when marking a notification as seen fails."
+  },
+  "errors.markUnseen": {
+    "description": "Error toast title when marking a notification as unseen fails."
+  },
+  "errors.archive": {
+    "description": "Error toast title when archiving a notification fails."
+  },
+  "errors.restore": {
+    "description": "Error toast title when restoring a notification from archive fails."
+  },
+  "errors.markAllSeen": {
+    "description": "Error toast title when marking all notifications as seen fails."
+  },
+  "resourceTypes.user": {
+    "description": "Label for the 'user' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.domain": {
+    "description": "Label for the 'domain' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.wallet": {
+    "description": "Label for the 'wallet' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.order": {
+    "description": "Label for the 'order' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.order_item": {
+    "description": "Label for the 'order item' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 16
+  },
+  "resourceTypes.payment": {
+    "description": "Label for the 'payment' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.cart": {
+    "description": "Label for the 'cart' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 14
+  },
+  "resourceTypes.dns_record": {
+    "description": "Label for the 'DNS record' related-resource type (filter dropdown + notification footer badge).",
+    "maxLength": 16
+  }
+}

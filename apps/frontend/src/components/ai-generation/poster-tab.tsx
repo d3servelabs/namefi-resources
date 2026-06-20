@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PosterGenerator, type PosterFormData } from './poster-generator';
@@ -31,6 +32,7 @@ export function PosterTab({
   focusedLogo,
   onDismiss,
 }: PosterTabProps) {
+  const t = useTranslations('aiGeneration');
   const {
     effectiveDomain,
     focusedLogoId,
@@ -89,10 +91,10 @@ export function PosterTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Poster Generator</h2>
+          <h2 className="text-xl font-semibold">{t('poster.title')}</h2>
           {focusedLogo?.domain && (
             <p className="text-sm text-muted-foreground">
-              Using brand {focusedLogo.domain}
+              {t('poster.usingBrand', { domain: focusedLogo.domain })}
             </p>
           )}
         </div>
@@ -104,7 +106,7 @@ export function PosterTab({
             className="gap-2"
           >
             <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
-            Back to logos
+            {t('poster.backToLogos')}
           </Button>
         )}
       </div>
@@ -123,7 +125,7 @@ export function PosterTab({
             initialSelectedLogoId={focusedLogoId ?? undefined}
           />
         }
-        title="Generated Posters"
+        title={t('poster.gridTitle')}
         convertToGeneratedItems={convertPosterGenerations}
         availableLogos={logosWithFocus}
       />

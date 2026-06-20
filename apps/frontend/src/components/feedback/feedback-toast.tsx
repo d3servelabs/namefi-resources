@@ -13,6 +13,7 @@ import { useTRPC } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { Loader2, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -68,6 +69,7 @@ export function FeedbackToastContent({
   onDismissAction,
   onShownAction,
 }: FeedbackToastContentProps) {
+  const t = useTranslations('shared');
   const pathname = usePathname();
   const trpc = useTRPC();
   const [rating, setRating] = useState<number | null>(initialRating);
@@ -189,7 +191,7 @@ export function FeedbackToastContent({
             onDismissAction();
             toast.dismiss(toastId);
           }}
-          aria-label="Close feedback"
+          aria-label={t('feedback.close')}
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </Button>
@@ -255,7 +257,7 @@ export function FeedbackToastContent({
                   }}
                   disabled={submitFeedback.isPending}
                 >
-                  Skip
+                  {t('feedback.skip')}
                 </Button>
                 <Button type="submit" disabled={!canSubmit}>
                   {submitFeedback.isPending ? (

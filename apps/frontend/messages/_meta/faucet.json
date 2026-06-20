@@ -1,0 +1,57 @@
+{
+  "title": {
+    "description": "Heading of the NFSC testnet faucet page. NFSC is a brand token name; keep verbatim.",
+    "maxLength": 24
+  },
+  "description": {
+    "description": "Subheading explaining the faucet dispenses 20 NFSC test tokens on testnets. Keep the '20$NFSC' token amount verbatim."
+  },
+  "chainLabel": {
+    "description": "Field label for the blockchain network selector.",
+    "maxLength": 16
+  },
+  "receivingWalletLabel": {
+    "description": "Field label for the wallet that will receive the minted tokens.",
+    "maxLength": 24
+  },
+  "walletPlaceholder": {
+    "description": "Placeholder in the receiving-wallet input prompting the user to paste an address or pick a linked wallet."
+  },
+  "walletHelpText": {
+    "description": "Helper text under the wallet field clarifying tokens mint to the selected wallet on the Sepolia testnet. Keep 'Sepolia' verbatim."
+  },
+  "submitting": {
+    "description": "Button label shown while the faucet request is being submitted.",
+    "maxLength": 28
+  },
+  "requestNfsc": {
+    "description": "Primary button to request NFSC tokens. Keep 'NFSC' verbatim.",
+    "maxLength": 20
+  },
+  "rateLimitedTitle": {
+    "description": "Status title shown when the user requested tokens too recently and is rate-limited."
+  },
+  "rateLimitedDescription": {
+    "description": "Status body telling the user when they can try again. Keep the {time} placeholder verbatim."
+  },
+  "rateLimitedFallback": {
+    "description": "Fallback word used in place of a timestamp when the next-eligible time is unknown (e.g. 'Try again after later').",
+    "maxLength": 12
+  },
+  "mintInProgressTitle": {
+    "description": "Status title shown while the mint transaction is being confirmed."
+  },
+  "mintInProgressDescription": {
+    "description": "Status body shown while waiting for the Sepolia transaction to confirm. Keep 'Sepolia' verbatim."
+  },
+  "mintCompleteTitle": {
+    "description": "Status title shown when the token mint has completed successfully."
+  },
+  "viewTransaction": {
+    "description": "Link to view the completed transaction on a block explorer.",
+    "maxLength": 20
+  },
+  "requestFailedTitle": {
+    "description": "Status title shown when the faucet request failed."
+  }
+}

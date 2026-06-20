@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "DNSSECのステータスを確認できませんでした",
+    "pendingTitle": "DNSSECの設定を進めています",
+    "activeTitle": "DNSSECが有効です",
+    "misconfiguredTitle": "DNSSECの設定に問題があります"
+  },
+  "actions": {
+    "enable": "DNSSECを有効にする",
+    "disable": "DNSSECを無効にする",
+    "cancelSetup": "設定をキャンセル",
+    "keepWaiting": "このまま待つ"
+  },
+  "disableDialog": {
+    "title": "DNSSECを無効にしますか？"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "自動検出",
+      "manual": "手動"
+    },
+    "manual": {
+      "description": "DNSKEYまたはDSレコード（ゾーンファイルの行全体、またはrdataのみ）を貼り付けてください。フォーマットは自動で判別します。",
+      "enterFieldsManually": "または手動でフィールドを入力する",
+      "derive": "DSフィールドを導出",
+      "deriving": "導出中..."
+    },
+    "autoDetect": {
+      "description": "ドメインの委任ネームサーバーに問い合わせて検出します",
+      "detect": "委任ネームサーバーから検出",
+      "detecting": "検出中...",
+      "kskCandidate": "KSK候補",
+      "candidateOption": "キータグ {keyTag} — アルゴリズム {algorithm}"
+    },
+    "dsValuesTitle": "DSの値",
+    "viewSummary": "サマリーを見る",
+    "fields": {
+      "keyTag": "キータグ",
+      "algorithm": "アルゴリズム",
+      "flags": "フラグ",
+      "digestType": "ダイジェストタイプ",
+      "publicKey": "公開鍵（base64）",
+      "digest": "ダイジェスト（hex）"
+    },
+    "placeholders": {
+      "algorithm": "アルゴリズムを選択",
+      "flags": "フラグを選択",
+      "digestType": "ダイジェストタイプを選択"
+    },
+    "publicKeyMissingNotice": "貼り付けたDSレコードに公開鍵が含まれていません。自動検出を使用するか、DNSKEYレコードを貼り付けてください。レジストラへの提出に必要です。",
+    "summary": {
+      "notSet": "未設定"
+    },
+    "deferredNotice": "バックグラウンドワークフローとして実行され、検証をポーリングしながら両方のレーンが通過した時点で送信されます。完了またはタイムアウト時にメールでお知らせします。",
+    "validate": "検証する",
+    "validating": "検証中...",
+    "scheduleDs": "DSをスケジュール",
+    "submitDs": "DSを送信",
+    "scheduling": "スケジュール中...",
+    "submitting": "送信中...",
+    "validation": {
+      "pending": "権威ネームサーバーとパブリックDNSでDNSKEYレコードを照会しています...",
+      "laneAuthoritative": "権威ネームサーバー",
+      "lanePublicDns": "パブリックDNS（Google）",
+      "statusCouldNotValidate": "検証できませんでした",
+      "statusMatch": "一致",
+      "statusNoMatchingDnskey": "一致するDNSKEYなし",
+      "queried": "照会先: {source}",
+      "matched": "キータグ {keyTag} を算出しました。照会元: {source}。",
+      "noMatch": "{source} に公開されているDNSKEYの中に、入力したダイジェストと一致するものがありませんでした。",
+      "tableFlags": "フラグ",
+      "tableAlg": "アルゴリズム",
+      "tableComputedKeyTag": "算出キータグ",
+      "tableComputedDigest": "算出ダイジェスト"
+    },
+    "ack": {
+      "validationDidNotPass": "検証が通過しなかったことを理解した上で、このDSを関連付けます（例: ネームサーバー切り替え前のステージング）。",
+      "sure": "承知しました。このDSを関連付けます。",
+      "notFullyReflected": "DNSKEYがすべてのリージョンに完全に反映されておらず、変更後に一部のリージョンで短時間のダウンタイムが発生する可能性があることを理解した上で、このDSを関連付けます。"
+    }
+  },
+  "prefs": {
+    "panelTitle": "ドメイン設定",
+    "loadFailed": "エラーが発生しました。しばらくしてから再度お試しください。",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "ドメインのENSを自動的に有効にします",
+      "unavailableTooltip": "このドメインではAutoENSをご利用いただけません。ENSにはDNSSECが必要です。",
+      "enableDnssecFirst": "まずDNSSECを有効にする必要があります。",
+      "dnssecUnsupported": "このドメインはDNSSECに対応していません。"
+    },
+    "autoPark": {
+      "label": "Auto Park",
+      "description": "ドメインを自動的にパークします"
+    },
+    "forwardTo": {
+      "label": "転送先",
+      "description": "ドメインを別のアドレスに転送します"
+    },
+    "notManagingNameservers": "Namefiはこのドメインのネームサーバーを管理していません",
+    "propagationNotice": "DNSSECの変更は即時反映されません。グローバルへの伝播には最大24〜48時間かかる場合があります。",
+    "conflictDialog": {
+      "title": "競合するトップレベルレコードを削除しますか？",
+      "description": "この設定変更には、ドメインの競合するルートレコードの削除が必要です。",
+      "apexCname": "トップレベルのCNAME（`@`）レコードは最初に削除されます。",
+      "apexAddress": "トップレベルのA/AAAA（`@`）レコードは最初に削除されます。",
+      "keepRecords": "レコードを保持",
+      "removeAndContinue": "削除して続行",
+      "applying": "適用中..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNSレコード",
+      "description": "ドメインのDNSレコードを管理します",
+      "addRecord": "レコードを追加",
+      "recordTypes": "レコードタイプ",
+      "recordTypeOption": "{type} レコード"
+    },
+    "table": {
+      "searchPlaceholder": "レコードを検索...",
+      "columns": "列",
+      "toggleColumns": "列の表示切替",
+      "filter": "フィルター",
+      "filterByType": "タイプでフィルター",
+      "clearFilters": "フィルターをクリア",
+      "actionsLabel": "操作",
+      "tableActions": "テーブル操作",
+      "exportRecords": "レコードをエクスポート",
+      "importRecords": "レコードをインポート",
+      "copyAsZoneFile": "ゾーンファイルとしてコピー",
+      "editSelected": "選択中を編集（{count}件）",
+      "deleteSelected": "選択中を削除（{count}件）",
+      "empty": "レコードが見つかりません。",
+      "rowsSelected": "{total}件中{selected}行を選択中。",
+      "columnType": "タイプ",
+      "columnName": "名前",
+      "columnValue": "値",
+      "columnTtl": "TTL",
+      "columnActions": "操作",
+      "editRecordTooltip": "レコードを編集",
+      "deleteRecordTooltip": "レコードを削除",
+      "disableManagedRecordTooltip": "管理レコードを無効にする",
+      "copyRecordTooltip": "レコードをコピー",
+      "refreshRecordTooltip": "レコードを更新"
+    },
+    "toasts": {
+      "recordUpdated": "レコードを更新しました",
+      "recordUpdatedDescription": "{field} を正常に更新しました。",
+      "copiedToClipboard": "クリップボードにコピーしました",
+      "copiedToClipboardDescription": "レコードの詳細をクリップボードにコピーしました",
+      "saved": "{count, plural, one {# 件のレコード} other {# 件のレコード}}を保存しました",
+      "updated": "{count, plural, one {# 件のレコード} other {# 件のレコード}}を更新しました",
+      "deleted": "{count, plural, one {# 件のレコード} other {# 件のレコード}}を削除しました",
+      "deleteFailed": "レコードの削除に失敗しました: {error}",
+      "recordPrefix": "レコード {index}: {message}",
+      "undeterminedError": "原因不明のエラーが発生しました。サポートへお問い合わせください",
+      "genericError": "エラーが発生しました。再度お試しください。",
+      "parkingForwardingDisabled": "パーキングと転送を無効にしました",
+      "autoEnsDisabled": "AutoENSを無効にしました",
+      "forwardingDisabled": "転送を無効にしました",
+      "managedUpdateFailed": "DNS管理設定の更新に失敗しました"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "パーキングレコードを無効にしますか？",
+      "disableAutoEnsTitle": "AutoENSレコードを無効にしますか？",
+      "disableForwardingTitle": "転送レコードを無効にしますか？",
+      "disableParkingDescription": "この行はドメイン設定によって管理されています。無効にするとパーキングがオフになります。",
+      "disableAutoEnsDescription": "この行はドメイン設定によって管理されています。無効にするとAutoENSがオフになります。",
+      "disableForwardingDescription": "この行はドメイン設定によって管理されています。無効にすると転送設定がクリアされます。",
+      "parkingDisablesForwarding": "パーキングレコードを無効にすると、転送も無効になります。",
+      "disabling": "無効化中..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "ネームサーバー管理",
+    "tooltip": "ネームサーバーはトラフィックをドメインへ誘導します",
+    "resetToNamefi": "Namefiのネームサーバーにリセット",
+    "addNameserver": "ネームサーバーを追加",
+    "nameserverLabel": "ネームサーバー {index}",
+    "nameserverPlaceholder": "例: ns1.example.com",
+    "saveChanges": "変更を保存",
+    "saving": "保存中...",
+    "propagationNotice": "ネームサーバーの変更がグローバルに伝播するまで、24〜48時間かかる場合があります。",
+    "manageDialogTitle": "ネームサーバーの管理",
+    "workflow": {
+      "resetInProgress": "ネームサーバーをNamefiのデフォルトにリセットする操作が進行中です...",
+      "changeInProgress": "ネームサーバーの更新操作が進行中です...",
+      "resettingTitle": "{domain} のネームサーバーをリセット中",
+      "changingTitle": "{domain} のネームサーバーを変更中",
+      "viewProgress": "進行状況の詳細を見る",
+      "cancelWorkflow": "ワークフローをキャンセル",
+      "cancelling": "キャンセル中...",
+      "cancellationRequested": "キャンセルをリクエストしました",
+      "cancelFailed": "キャンセルに失敗しました: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "ネームサーバーをNamefiのデフォルトにリセットしました",
+      "changeSuccess": "ネームサーバーを正常に更新しました",
+      "resetFailed": "ネームサーバーのリセットに失敗しました",
+      "changeFailed": "ネームサーバーの更新に失敗しました",
+      "signatureRejected": "署名リクエストが拒否されました",
+      "ownerWalletUnavailable": "ドメインオーナーのウォレットを特定できませんでした"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC管理",
+    "tooltip": "DNSSECはフィッシング攻撃からドメインを守るセキュリティ機能です。",
+    "refreshAria": "DNSSECのステータスを更新",
+    "refresh": "更新",
+    "modeToggle": {
+      "legend": "DNSSECパネルのモード",
+      "simple": "シンプル",
+      "advanced": "詳細",
+      "simpleHint": "一般的なケースはワンクリックで有効化できます。",
+      "advancedHint": "DNSKEY/DSの貼り付け・検証・複数キーの管理が可能です。"
+    },
+    "noDetails": "DNSSECの詳細が見つかりません",
+    "notSupported": "このドメインはDNSSECに対応していません",
+    "zoneSigning": "ゾーンはレコードに署名しています",
+    "zoneNotSigning": "ゾーンはレコードに署名していません",
+    "namefiAutoHandling": "Namefiがこのドメインのために自動的にDNSSECを処理しています。",
+    "namefiSigningRecords": "Namefiがこのドメインのレコードに署名しています",
+    "zoneSigningRecords": "ゾーンがこのドメインのレコードに署名しています",
+    "allSecure": "すべて安全",
+    "namefiOnlySigner": "Namefiはこのドメインの唯一の委任署名者です",
+    "customSigners": "カスタム委任署名者",
+    "notEnabled": "DNSSECは無効です",
+    "noSigners": "委任署名者がありません",
+    "propagationNotice": "DNSSECの変更は即時反映されません。グローバルへの伝播には最大24〜48時間かかる場合があります。",
+    "requestInProgress": "DNSSECを{operation, select, disable {無効化} other {有効化}}するリクエストが既に進行中です",
+    "operationInProgress": "操作が既に進行中です",
+    "enableNamefiSigning": "Namefi署名を有効にする",
+    "disableNamefiSigning": "Namefi署名を無効にする",
+    "enabling": "有効化中...",
+    "disabling": "無効化中...",
+    "disableConfirmDescription": "Namefi署名を無効にしてよろしいですか？",
+    "disableConfirmDetail": "これによりドメインのセキュリティが低下し、AutoENSなど依存するサービスに影響が生じます。",
+    "confirmAndDisable": "確認して無効にする",
+    "progress": {
+      "enablingTitle": "{domain} の有効化中",
+      "disablingTitle": "{domain} の無効化中",
+      "viewProgress": "進行状況の詳細を見る",
+      "cancelWorkflow": "ワークフローをキャンセル",
+      "cancelling": "キャンセル中...",
+      "cancellationRequested": "キャンセルをリクエストしました",
+      "cancelFailed": "キャンセルに失敗しました: {error}"
+    },
+    "toasts": {
+      "enableSent": "DNSSEC有効化のリクエストを送信しました",
+      "enableFailed": "DNSSEC有効化のリクエストに失敗しました",
+      "disableSent": "DNSSEC無効化のリクエストを送信しました",
+      "disableFailed": "DNSSEC無効化のリクエストに失敗しました"
+    },
+    "signersTable": {
+      "empty": "まだ委任署名者が関連付けられていません。",
+      "keyTag": "キータグ",
+      "algorithm": "アルゴリズム",
+      "digestType": "ダイジェストタイプ",
+      "digest": "ダイジェスト",
+      "pending": "保留中",
+      "removeAria": "委任署名者を削除",
+      "cancelDeferredAria": "遅延DS提出をキャンセル",
+      "removeTitle": "委任署名者を削除しますか？",
+      "removeDescription": "これによりレジストラのDSが解除されます。{keyTagSuffix}このDSがドメインで唯一のものである場合、数時間以内にグローバルなDNSSEC検証が機能しなくなります。親ゾーンに代替DSを公開済みか、意図的にDNSSECをオフにする場合にのみ実行してください。",
+      "removeKeyTagSuffix": "キータグ {keyTag}。",
+      "remove": "削除",
+      "removing": "削除中...",
+      "cancelDeferredTitle": "遅延DS提出をキャンセルしますか？",
+      "cancelDeferredDescription": "キータグ {keyTag} の検証ポーリングを停止します。DSは関連付けられません。後からDNSSECの有効化ボタンを押すか、委任署名者追加ダイアログから再試行できます。",
+      "cancelSubmission": "提出をキャンセル",
+      "cancelling": "キャンセル中...",
+      "removeSuccess": "委任署名者を削除しました{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": "（キータグ {keyTag}）",
+      "removeFailed": "委任署名者の削除に失敗しました: {error}",
+      "noKeyId": "削除するキーを特定できません（id・publicKey・keyTagがありません）。",
+      "cancelSuccess": "遅延提出をキャンセルしました（キータグ {keyTag}）",
+      "cancelFailed": "キャンセルに失敗しました: {error}",
+      "phaseAuthoritative": "権威NSの検証を待機中。残り約{remaining}でタイムアウトします。",
+      "phasePublicDns": "パブリックDNSへの伝播を待機中。残り約{remaining}でタイムアウトします。",
+      "phaseSubmit": "検証に合格しました。レジストラへDSを送信しています。",
+      "remainingNow": "まもなく",
+      "remainingHoursMinutes": "{hours}時間{minutes}分",
+      "remainingMinutes": "{minutes}分"
+    },
+    "advancedPanel": {
+      "title": "カスタム委任署名者",
+      "description": "このドメインが独自の権威ネームサーバーで運用されている場合に必要です。DNSプロバイダーが公開しているDNSKEYに対応するDSを送信してください。",
+      "addSigner": "委任署名者を追加",
+      "dialogTitle": "カスタム委任署名者を追加",
+      "dialogDescription": "DNSKEY/DSを貼り付けるか、ネームサーバーから自動検出し、送信前に検証してください。"
+    }
+  },
+  "overview": {
+    "panelTitle": "ドメイン概要",
+    "panelSubtitle": "ドメインの設定と更新を管理します",
+    "expired": {
+      "title": "ドメインが失効しました",
+      "canRenew": "ドメインが失効しています。更新リクエストを送信することは可能ですが、TLD（.com、.orgなど）によっては承認されない場合があります。",
+      "cannotRenew": "ドメインが失効しています。復元できるかどうかはサポートにお問い合わせください（すべてのTLD（.com、.orgなど）で可能とは限りません）。",
+      "cannotRenewShort": "ドメインが失効しています。復元可否についてはサポートへお問い合わせください（すべてのTLDで対応できるわけではありません）。"
+    },
+    "autoRenew": {
+      "label": "自動更新",
+      "description": "ドメインを自動的に更新します",
+      "expires": "有効期限: {date}"
+    },
+    "manualRenew": {
+      "label": "手動更新",
+      "description": "ドメインを手動で更新します"
+    },
+    "renewNow": "今すぐ更新",
+    "renewExpirationUnavailable": "ドメインの有効期限情報を取得できません",
+    "autoRenewalCard": {
+      "title": "自動更新",
+      "description": "有効期限前にドメインを自動更新します",
+      "auto": "自動"
+    },
+    "manualRenewalCard": {
+      "title": "手動更新",
+      "descriptionWithDate": "{expiration} — 今すぐ更新してドメインを復元してください",
+      "description": "ドメインを手動で更新します"
+    },
+    "preferencesUpdated": "設定を更新しました",
+    "preferencesUpdateFailed": "設定の更新に失敗しました",
+    "export": {
+      "label": "ドメインエクスポート",
+      "description": "ドメインを別のレジストラに移管します",
+      "descriptionCard": "ドメインを別のレジストラに移管します",
+      "unavailableCard": "このドメインはエクスポートできません",
+      "requestExport": "エクスポートを申請",
+      "exportUnavailable": "エクスポート不可",
+      "unavailable": "利用不可",
+      "enableRequestPending": "エクスポート有効化リクエストを処理中...",
+      "pending": "処理中...",
+      "getAuthCode": "認証コードを取得",
+      "requestingExport": "エクスポートを申請中...",
+      "requesting": "申請中...",
+      "nftNotMinted": "NFTがまだ発行されていません。発行完了後にエクスポートが可能になります。",
+      "loadDetailsFailed": "ドメインエクスポートの詳細取得中にエラーが発生しました。しばらくしてから再度お試しください。",
+      "loadDetailsFailedShort": "エクスポートの詳細を読み込めませんでした。再度お試しください。"
+    },
+    "exportToasts": {
+      "requestSubmitted": "エクスポートリクエストを正常に送信しました",
+      "requestFailed": "ドメインエクスポートの申請に失敗しました",
+      "authCodeCopied": "認証コードをクリップボードにコピーしました",
+      "authCodeCopyFailed": "認証コードのコピーに失敗しました",
+      "authCodeFailed": "認証コードの取得に失敗しました",
+      "signatureRejected": "署名リクエストが拒否されました",
+      "signatureFailed": "署名リクエストに失敗しました。ブラウザのエラーまたはウォレットの問題が考えられます。",
+      "ownerWalletUnavailable": "ドメインオーナーのウォレットを特定できませんでした"
+    },
+    "pendingTransfer": {
+      "label": "エクスポート待ち",
+      "cardTitle": "エクスポートリクエスト保留中",
+      "requestedBy": "申請レジストラ: {registrar}",
+      "actionRequiredBy": "対応期限: {date}",
+      "cardDescription": "申請元: {registrar} — 対応期限: {date}",
+      "approve": "承認",
+      "reject": "拒否",
+      "approveSuccess": "エクスポートを承認しました",
+      "approveFailed": "エクスポートの承認に失敗しました",
+      "rejectSuccess": "エクスポートを拒否しました",
+      "rejectFailed": "エクスポートの拒否に失敗しました"
+    },
+    "nftOwnership": {
+      "title": "ブロックチェーン所有権",
+      "tooltip": "ドメインはブロックチェーン上のNFT（Non-Fungible Token）として保管されています。このデジタル証明書は所有権を証明し、暗号技術によって保護されています。",
+      "securedOn": "保護チェーン",
+      "verified": "確認済み",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "チェーン {chainId}",
+      "ownerWallet": "オーナーウォレット",
+      "ownerWalletTooltip": "このドメインNFTを所有するウォレットアドレスです。このウォレットのみがドメインの管理や移管を行えます。",
+      "tokenId": "トークンID",
+      "tokenIdTooltip": "ブロックチェーン上のドメインNFTに付与された一意の識別子です。デジタル資産のシリアルナンバーのようなものです。",
+      "verifyOnExplorer": "ブロックエクスプローラーで確認",
+      "showNftInWallet": "ウォレットでNFTを確認",
+      "addingToWallet": "ウォレットに追加中...",
+      "nftAdded": "NFTをウォレットに追加しました",
+      "nftAddFailed": "NFTをウォレットに追加できませんでした",
+      "nftAddError": "NFTのウォレット追加に失敗しました",
+      "unknownError": "不明なエラー",
+      "walletAddressCopied": "ウォレットアドレスをコピーしました",
+      "walletAddressCopyFailed": "ウォレットアドレスのコピーに失敗しました",
+      "tokenIdCopied": "トークンIDをコピーしました",
+      "tokenIdCopyFailed": "トークンIDのコピーに失敗しました"
+    },
+    "educationalBanner": {
+      "title": "ドメインはブロックチェーン上で保護されています",
+      "description": "従来のレジストラとは異なり、ドメインはウォレット内のNFTとして保管されています。これにより、ドメインは真にあなたのものとなり、許可なく第三者が奪うことはできません。",
+      "dismissAria": "バナーを閉じる"
+    },
+    "moreInfoAria": "詳細情報",
+    "learnMore": "詳しく見る",
+    "web3Concepts": {
+      "title": "ドメインについて理解する",
+      "footer": "NameFiは従来のドメインとブロックチェーン所有権を繋ぎます",
+      "nftTerm": "NFT",
+      "nftDescription": "ウォレットに保管されたデジタル所有証明書。家の権利書のようなものです",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "所有権を永続的に記録する安全なデジタル台帳",
+      "walletTerm": "Wallet",
+      "walletDescription": "あなただけがアクセスできる個人のデジタル金庫",
+      "icannTerm": "ICANN",
+      "icannDescription": ".com・.io・.xyz ドメインを管理するグローバル機関"
+    },
+    "transferLock": {
+      "title": "エクスポート可能日: {date}",
+      "description": "ICANNポリシーにより、インポート後60日間はドメインがロックされます。",
+      "importedOn": "このドメインは {date} にインポートされました。",
+      "gotIt": "了解"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "サインインが必要です",
+    "signInRequiredMessage": "このドメインを管理するにはサインインしてください。",
+    "loadErrorTitle": "ドメイン管理を読み込めませんでした",
+    "loadErrorFallback": "再度お試しください。",
+    "marketplaceErrorTitle": "マーケットプレイスのステータスを読み込めませんでした",
+    "retry": "再試行",
+    "publicViewTitle": "ご注意ください",
+    "publicViewMessage": "このドメインは別のユーザーが所有しています。公開情報のみを表示しています",
+    "tabDomainOverview": "ドメイン概要",
+    "tabDnsRecords": "DNSレコード",
+    "tabDnsManagement": "DNS管理",
+    "tabMarketplace": "マーケットプレイス",
+    "tabDnsSetting": "DNS設定",
+    "notMigratedTitle": "ドメインはまだ移行されていません",
+    "redirectToRegistrar": "レジストラへ移動",
+    "comingSoon": "近日公開予定..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "DNSレコードを追加",
+      "editTitle": "DNSレコードを編集",
+      "requiredFieldsError": "＊の付いた必須項目をすべて入力してください",
+      "addMoreRecord": "レコードをさらに追加",
+      "addRecord": "レコードを追加",
+      "saveRecord": "レコードを保存",
+      "cnameConflictTitle": "CNAMEが他のレコードと競合しています",
+      "cnameConflictBody1": "CNAMEレコードは他のレコードタイプと同じ名前を持つことができません。",
+      "cnameConflictBody2": "競合するレコードを先に削除してから、このCNAMEを再度追加してください。",
+      "understood": "了解しました",
+      "disableManagedTitle": "管理レコードを無効にして続行しますか？",
+      "disableManagedBody1": "このCNAMEはこのドメインの管理レコードとのみ競合しています。",
+      "disableManagedBodyWithForwarding": "続行するとParking・Forwarding・AutoENSが無効になり、このCNAMEが追加されます。",
+      "disableManagedBody": "続行するとParkingとAutoENSが無効になり、このCNAMEが追加されます。",
+      "keepManagedRecords": "管理レコードを保持",
+      "disableAndContinue": "無効にして続行",
+      "disabling": "無効化中...",
+      "disableParkingTitle": "パーキングを無効にして続行しますか？",
+      "disableParkingBody": "このレコードは管理されているパーキングレコードと競合しています。続行するには、まずパーキングを無効にする必要があります。",
+      "disableParkingForwardingNotice": "ここでパーキングを無効にすると、転送も無効になります。",
+      "keepParkingEnabled": "パーキングを有効のままにする",
+      "loadRecordsFailed": "DNSレコードの読み込みに失敗しました"
+    },
+    "delete": {
+      "title": "レコードを削除しますか？",
+      "description": "この変更はドメインの機能に影響し、ネットワーク全体への反映に時間がかかる場合があります。",
+      "summary": "{count, plural, one {# 件のレコード} other {# 件のレコード}}を削除",
+      "toggle": "切り替え",
+      "columnName": "名前",
+      "columnType": "タイプ",
+      "columnValue": "値",
+      "columnTtl": "TTL",
+      "deleting": "削除中...",
+      "confirmSingle": "はい、削除します",
+      "confirmMultiple": "はい、すべて削除します"
+    },
+    "form": {
+      "typeLabel": "タイプ",
+      "typePlaceholder": "タイプを選択",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "TTLを選択",
+      "nameLabel": "名前",
+      "namePlaceholder": "www または @",
+      "valueLabel": "値",
+      "removeRecordAria": "レコード {index} を削除",
+      "ttlOption1Minute": "1分",
+      "ttlOption5Minutes": "5分",
+      "ttlOption20Minutes": "20分",
+      "ttlOption1Hour": "1時間",
+      "ttlOption1Day": "1日",
+      "ttlOption1Week": "1週間",
+      "errorRecordTypeRequired": "レコードタイプは必須です",
+      "errorValueRequired": "値は必須です",
+      "errorTtlRequired": "TTLは必須です"
+    },
+    "forwarding": {
+      "title": "URL転送を編集",
+      "description": "{domain} の転送先URLを入力してください。",
+      "fieldLabel": "転送先URL",
+      "placeholder": "https://example.com",
+      "updated": "転送URLを更新しました",
+      "updateFailed": "転送URLの更新に失敗しました"
+    },
+    "batch": {
+      "setNameservers": "ネームサーバーを設定",
+      "setUrlForwarding": "URL転送を設定",
+      "setWebRecords": "Webレコードを設定",
+      "setMxRecords": "MXレコードを設定",
+      "setEnsRecord": "ENSレコードを設定",
+      "batchAction": "一括操作",
+      "applyingToDomains": "選択した {count} 件のドメインに適用します。",
+      "forwardUrlLabel": "転送URL",
+      "webRecordNotice": "選択したすべてのドメインに指定のレコードが追加されます。",
+      "comingSoon": "{action} の一括編集は近日公開予定です。",
+      "forwardingUpdated": "{count} 件のドメインの転送設定を更新しました",
+      "webRecordsUpdated": "{count} 件のドメインのWebレコードを更新しました",
+      "nameserverComingSoon": "ネームサーバーの一括更新は近日公開予定です",
+      "recordComingSoon": "DNSレコードの一括更新は近日公開予定です",
+      "updateFailed": "ドメインの更新に失敗しました"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS操作",
+    "notEditableExternal": "外部ネームサーバー使用時は編集できません",
+    "nameservers": "ネームサーバー: {value}",
+    "nameserversNone": "なし",
+    "parkedOnNamefi": "Namefiでパーク中",
+    "webRecordsConfigured": "Webレコード設定済み",
+    "noWebRecords": "Webレコードなし",
+    "enableParkingForForwarding": "転送を使用するにはパーキングを有効にしてください",
+    "forwardsTo": "転送先: {url}",
+    "noForwarding": "URL転送なし",
+    "mxConfigured": "MXレコード設定済み",
+    "noMxRecords": "MXレコードなし",
+    "autoEnsEnabled": "Auto-ENS有効",
+    "noEnsRecord": "ENSレコードなし",
+    "manageMore": "DNSレコードをさらに管理する"
+  },
+  "cacheFlush": {
+    "title": "DNS キャッシュフラッシュ",
+    "description": "特定のゾーンとレコードタイプについて、設定済みサーバー全体の DNS キャッシュをフラッシュします",
+    "zoneLabel": "ゾーン / ドメイン",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "レコードタイプ",
+    "recordTypeAll": "すべて",
+    "flushing": "キャッシュをフラッシュ中...",
+    "submit": "DNS キャッシュをフラッシュ",
+    "resultsHeading": "結果：",
+    "resultSuccess": "成功",
+    "resultFailed": "失敗",
+    "zoneRequired": "ゾーンは必須です",
+    "flushCompleteTitle": "キャッシュフラッシュ完了",
+    "flushFailedTitle": "キャッシュフラッシュに失敗しました"
+  }
+}

@@ -51,7 +51,6 @@
     "renew": "Verlängern"
   },
   "unlinkedWalletTooltip": "Diese Wallet ist nicht mit dem aktuellen Konto verknüpft. Die Domain wird daher nicht im Konto angezeigt.",
-  "walletNotLinked": "Diese Wallet ist nicht mit Ihrem Konto verknüpft.",
   "timeline": {
     "subtitle": "Live-Bestellupdates",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "Die Domain war gesperrt und der Support hat die Anfrage storniert.",
     "failureUserAuthCode": "Ein Auth-Code war erforderlich und Sie haben die Anfrage storniert.",
     "failureUserLocked": "Die Domain war gesperrt und Sie haben die Anfrage storniert."
-  }
+  },
+  "nftWalletLabel": "NFT-Wallet",
+  "viewTransactionTitle": "Transaktion anzeigen"
 }

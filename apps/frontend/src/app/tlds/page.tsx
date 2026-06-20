@@ -1,7 +1,8 @@
 'use client';
 
-import { useTRPC } from '@/lib/trpc';
+import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import {
   Card,
   CardContent,
@@ -10,6 +11,7 @@ import {
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
@@ -21,16 +23,35 @@ import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/ex
 import type { ColumnDef, Row, VisibilityState } from '@tanstack/react-table';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { PageShell } from '@/components/page-shell';
+import { both, complement, isNil, isNotNil } from 'ramda';
 import {
-  PriceCell,
-  RegistrarCell,
-  TldNameCell,
-  type TldPricingRow,
-} from './cells';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { PageShell } from '@/components/page-shell';
 import { TldPricingCard } from './tld-pricing-card';
 
+type TldPricingRow =
+  AppRouterOutput['registry']['getTldPricingTable']['tldPricing'][number];
+
+type TldsTranslator = ReturnType<typeof useTranslations<'tlds'>>;
+
+const formatRegistrarKey = (key: string | null, notAvailable: string) => {
+  if (!key) {
+    return notAvailable;
+  }
+  if (key === 'dynadot') {
+    return 'Dynadot GDG';
+  }
+  return key
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 export default function TldPricingPage() {
+  const t = useTranslations('tlds');
   const trpc = useTRPC();
   const { hasPermissions: isAdmin } = useHasPermissions(
     [Permission.VIEW_ADMIN_DASHBOARD],
@@ -71,18 +92,18 @@ export default function TldPricingPage() {
     () => ({
       tld: {
         id: 'tld',
-        label: 'TLD',
+        label: t('filters.tld'),
         type: 'text' as const,
         columnId: 'tld',
       },
       registrarKey: {
         id: 'registrarKey',
-        label: 'Registrar',
+        label: t('filters.registrar'),
         type: 'text' as const,
         columnId: 'registrarKey',
       },
     }),
-    [],
+    [t],
   );
 
   const filterStrategy = useDrizzlerServerFilterStrategy<TldPricingRow>({
@@ -187,38 +208,43 @@ export default function TldPricingPage() {
     const baseColumns: ColumnDef<TldPricingRow>[] = [
       {
         accessorKey: 'tld',
-        header: 'TLD',
-        cell: ({ row }) => <TldNameCell tld={row.getValue('tld')} />,
+        header: t('columns.tld'),
+        cell: ({ row }) => (
+          <code className="font-medium uppercase ring-1 ring-inset ring-ring/50 rounded-md px-2 py-1">{`.${row.getValue('tld')}`}</code>
+        ),
         size: 120,
       },
       {
         accessorKey: 'registrationPriceUsdPerYear',
-        header: 'Registration',
-        cell: ({ row }) => (
-          <PriceCell
-            value={row.getValue('registrationPriceUsdPerYear')}
-            row={row}
-          />
-        ),
+        header: t('columns.registration'),
+        cell: ({ row }) =>
+          priceCell({
+            value: row.getValue('registrationPriceUsdPerYear'),
+            row,
+            t,
+          }),
         size: 160,
       },
       {
         accessorKey: 'renewalPriceUsdPerYear',
-        header: 'Renewal',
-        cell: ({ row }) => (
-          <PriceCell value={row.getValue('renewalPriceUsdPerYear')} row={row} />
-        ),
+        header: t('columns.renewal'),
+        cell: ({ row }) =>
+          priceCell({
+            value: row.getValue('renewalPriceUsdPerYear'),
+            row,
+            t,
+          }),
         size: 160,
       },
       {
         accessorKey: 'transferPriceUsdPerYear',
-        header: 'Transfer',
-        cell: ({ row }) => (
-          <PriceCell
-            value={row.getValue('transferPriceUsdPerYear')}
-            row={row}
-          />
-        ),
+        header: t('columns.transfer'),
+        cell: ({ row }) =>
+          priceCell({
+            value: row.getValue('transferPriceUsdPerYear'),
+            row,
+            t,
+          }),
         size: 160,
       },
     ];
@@ -226,16 +252,21 @@ export default function TldPricingPage() {
     if (isAdmin) {
       baseColumns.push({
         accessorKey: 'registrarKey',
-        header: 'Registrar',
-        cell: ({ row }) => (
-          <RegistrarCell registrarKey={row.getValue('registrarKey')} />
-        ),
+        header: t('columns.registrar'),
+        cell: ({ row }) => {
+          const registrarKey = row.getValue('registrarKey') as string | null;
+          return (
+            <Badge variant="secondary">
+              {formatRegistrarKey(registrarKey, t('notAvailable'))}
+            </Badge>
+          );
+        },
         size: 140,
       });
     }
 
     return baseColumns;
-  }, [isAdmin]);
+  }, [isAdmin, t]);
 
   // Mobile card renderer. Mirrors the column cells so a phone-sized viewport gets
   // a readable stacked card per TLD instead of a horizontally-scrolling table.
@@ -251,10 +282,8 @@ export default function TldPricingPage() {
       <PageShell padding="compact">
         <Card>
           <CardHeader>
-            <CardTitle>TLD Pricing</CardTitle>
-            <CardDescription>
-              Review the base USD pricing for supported non-premium TLDs.
-            </CardDescription>
+            <CardTitle>{t('title')}</CardTitle>
+            <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -263,7 +292,7 @@ export default function TldPricingPage() {
               ))}
             </div>
             <p className="text-sm text-muted-foreground">
-              ** These prices apply only to non premium domains
+              {t('nonPremiumNote')}
             </p>
           </CardContent>
         </Card>
@@ -276,15 +305,11 @@ export default function TldPricingPage() {
       <PageShell padding="compact">
         <Card>
           <CardHeader>
-            <CardTitle>TLD Pricing</CardTitle>
-            <CardDescription>
-              Review the base USD pricing for supported non-premium TLDs.
-            </CardDescription>
+            <CardTitle>{t('title')}</CardTitle>
+            <CardDescription>{t('description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="text-sm text-destructive">
-              Unable to load TLD pricing right now. Please try again shortly.
-            </div>
+            <div className="text-sm text-destructive">{t('loadError')}</div>
           </CardContent>
         </Card>
       </PageShell>
@@ -295,10 +320,8 @@ export default function TldPricingPage() {
     <PageShell padding="compact">
       <Card>
         <CardHeader>
-          <CardTitle>TLD Pricing</CardTitle>
-          <CardDescription>
-            Review the base USD pricing for supported non-premium TLDs.
-          </CardDescription>
+          <CardTitle>{t('title')}</CardTitle>
+          <CardDescription>{t('description')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <ExtensibleDataTable<TldPricingRow, typeof filterStrategy>
@@ -317,14 +340,56 @@ export default function TldPricingPage() {
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
             renderMobileCard={renderMobileCard}
-            emptyMessage="No TLDs match your filters"
-            loadingMessage="Loading TLD pricing..."
+            emptyMessage={t('emptyMessage')}
+            loadingMessage={t('loadingMessage')}
           />
-          <p className="text-sm text-muted-foreground">
-            ** These prices apply only to non premium domains
-          </p>
+          <p className="text-sm text-muted-foreground">{t('nonPremiumNote')}</p>
         </CardContent>
       </Card>
     </PageShell>
+  );
+}
+
+function priceCell({
+  value,
+  row,
+  t,
+}: {
+  value: number | null;
+  row: Row<TldPricingRow>;
+  t: TldsTranslator;
+}) {
+  const all = [
+    row.getValue('registrationPriceUsdPerYear'),
+    row.getValue('renewalPriceUsdPerYear'),
+    row.getValue('transferPriceUsdPerYear'),
+  ].filter(both(complement(Number.isNaN), isNotNil));
+
+  if (all.length === 0) {
+    return (
+      <Tooltip>
+        <TooltipTrigger>
+          <span className="text-muted-foreground">{t('variablePrice')}</span>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{t('variablePriceTooltip')}</p>
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
+  if (isNil(value) || Number.isNaN(value)) {
+    return <span className="text-muted-foreground">{t('notAvailable')}</span>;
+  }
+  return (
+    <span className="text-muted-foreground">
+      {t.rich('perYear', {
+        value: value.toFixed(2),
+        price: (chunks) => (
+          <span className="font-medium font-mono text-foreground">
+            {chunks}$
+          </span>
+        ),
+      })}
+    </span>
   );
 }

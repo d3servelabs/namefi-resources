@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { Gift } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints, type FreeMint } from '@/hooks/use-free-mints';
@@ -30,6 +31,7 @@ export function FreeMintsDropdown({
   className?: string;
   disableBackdropBlur?: boolean;
 }) {
+  const t = useTranslations('freeMints');
   const { isAuthenticated } = useAuth();
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
@@ -94,7 +96,7 @@ export function FreeMintsDropdown({
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Free Mints</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('dropdown.title')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {availableFreeMints.map((freeMint) => (
                   <DropdownMenuItem
@@ -114,7 +116,7 @@ export function FreeMintsDropdown({
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
                       onClick={() => handleClaimAction(freeMint)}
                     >
-                      Claim
+                      {t('dropdown.claim')}
                     </Button>
                   </DropdownMenuItem>
                 ))}
@@ -124,7 +126,7 @@ export function FreeMintsDropdown({
                 render={<Link href="/free-mints" />}
                 className="bg-primary text-primary-foreground justify-center hover:bg-primary/80 focus:bg-primary/80"
               >
-                View All Free Mints
+                {t('dropdown.viewAll')}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

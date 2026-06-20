@@ -80,5 +80,30 @@
     "x402ConnectWallet": "Conecta una billetera activa para firmar tu pago x402",
     "orderFailed": "No se pudo enviar tu pedido. Por favor, intenta de nuevo."
   },
-  "metaTitle": "Namefi | Carrito"
+  "metaTitle": "Namefi | Carrito",
+  "cartFootnote": {
+    "learnMore": "saber más",
+    "agree": "Aceptar"
+  },
+  "cartItemRegistration": {
+    "learnMore": "Saber más",
+    "gotIt": "Entendido"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "Mostrar opciones de configuración del dominio",
+    "noSetupOptions": "Sin opciones de configuración"
+  },
+  "cartItem": {
+    "setupOptionsAria": "Opciones de configuración del dominio"
+  },
+  "cartDropdown": {
+    "myCart": "Mi carrito",
+    "yourCartIsEmpty": "Tu carrito está vacío",
+    "total": "Total",
+    "checkout": "Pagar",
+    "loadingCart": "Cargando carrito..."
+  },
+  "cartButton": {
+    "removeAria": "Eliminar del carrito"
+  }
 }

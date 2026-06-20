@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface CampaignCountdownProps {
   endDate?: Date;
@@ -29,6 +30,7 @@ const TimeDivider = () => (
 );
 
 export const CampaignCountdown = ({ endDate }: CampaignCountdownProps) => {
+  const t = useTranslations('hunt');
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({
     days: 0,
     hours: 0,
@@ -62,15 +64,17 @@ export const CampaignCountdown = ({ endDate }: CampaignCountdownProps) => {
 
   return (
     <div className="flex flex-col items-center gap-2 px-8">
-      <p className="text-xs text-white/50 my-2">Voting ends in</p>
+      <p className="text-xs text-white/50 my-2">
+        {t('countdown.votingEndsIn')}
+      </p>
       <div className="flex items-center gap-1 px-4">
-        <TimeUnit value={timeLeft.days} label="days" />
+        <TimeUnit value={timeLeft.days} label={t('countdown.days')} />
         <TimeDivider />
-        <TimeUnit value={timeLeft.hours} label="hours" />
+        <TimeUnit value={timeLeft.hours} label={t('countdown.hours')} />
         <TimeDivider />
-        <TimeUnit value={timeLeft.minutes} label="minutes" />
+        <TimeUnit value={timeLeft.minutes} label={t('countdown.minutes')} />
         <TimeDivider />
-        <TimeUnit value={timeLeft.seconds} label="seconds" />
+        <TimeUnit value={timeLeft.seconds} label={t('countdown.seconds')} />
       </div>
     </div>
   );

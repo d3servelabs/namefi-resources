@@ -80,5 +80,30 @@
     "x402ConnectWallet": "Verbinden Sie eine aktive Wallet, um Ihre x402-Zahlung zu signieren",
     "orderFailed": "Ihre Bestellung konnte nicht übermittelt werden. Bitte versuchen Sie es erneut."
   },
-  "metaTitle": "Namefi | Warenkorb"
+  "metaTitle": "Namefi | Warenkorb",
+  "cartFootnote": {
+    "learnMore": "mehr erfahren",
+    "agree": "Zustimmen"
+  },
+  "cartItemRegistration": {
+    "learnMore": "Mehr erfahren",
+    "gotIt": "Verstanden"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "Domain-Einrichtungsoptionen anzeigen",
+    "noSetupOptions": "Keine Einrichtungsoptionen"
+  },
+  "cartItem": {
+    "setupOptionsAria": "Domain-Einrichtungsoptionen"
+  },
+  "cartDropdown": {
+    "myCart": "Mein Warenkorb",
+    "yourCartIsEmpty": "Ihr Warenkorb ist leer",
+    "total": "Gesamt",
+    "checkout": "Zur Kasse",
+    "loadingCart": "Warenkorb wird geladen..."
+  },
+  "cartButton": {
+    "removeAria": "Aus dem Warenkorb entfernen"
+  }
 }

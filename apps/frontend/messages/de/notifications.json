@@ -1,0 +1,63 @@
+{
+  "title": "Benachrichtigungen",
+  "bell": {
+    "label": "Benachrichtigungen",
+    "labelWithUnread": "Benachrichtigungen, {count} ungelesen",
+    "relatedLabel": "Zugehörige Benachrichtigungen",
+    "relatedLabelWithUnread": "Zugehörige Benachrichtigungen, {count} ungelesen"
+  },
+  "permission": {
+    "tooltip": "Verpassen Sie keine Benachrichtigungen – aktivieren Sie Benachrichtigungen für die Namefi Web-App.",
+    "enable": "Aktivieren",
+    "ctaText": "Erhalten Sie Desktop-Benachrichtigungen, sobald neue Meldungen eingehen."
+  },
+  "modal": {
+    "description": "Ihre In-App-Benachrichtigungen. Markieren Sie Einträge als gesehen, archivieren Sie sie oder filtern Sie nach zugehöriger Ressource."
+  },
+  "list": {
+    "filters": "Filter",
+    "refresh": "Benachrichtigungen aktualisieren",
+    "relatedTo": "Gehört zu",
+    "any": "Alle",
+    "nameOrKey": "Name oder Key",
+    "nameOrKeyPlaceholder": "Name oder Key",
+    "includeSeen": "Gesehene anzeigen",
+    "includeSeenAria": "Gesehene Benachrichtigungen anzeigen",
+    "includeArchived": "Archivierte anzeigen",
+    "includeArchivedAria": "Archivierte Benachrichtigungen anzeigen",
+    "selectAllAria": "Alle sichtbaren Benachrichtigungen auswählen",
+    "selectedCount": "{count} ausgewählt",
+    "markSeen": "Gesehen",
+    "markUnseen": "Ungesehen",
+    "archive": "Archivieren",
+    "restore": "Wiederherstellen",
+    "markAllSeen": "Alle als gesehen markieren",
+    "loading": "Wird geladen…",
+    "empty": "Keine Benachrichtigungen.",
+    "loadingMore": "Weitere laden…"
+  },
+  "item": {
+    "selectAria": "{title} auswählen",
+    "markSeenAria": "Als gesehen markieren",
+    "markUnseenAria": "Als ungesehen markieren",
+    "archiveAria": "Archivieren",
+    "restoreAria": "Aus Archiv wiederherstellen"
+  },
+  "errors": {
+    "markSeen": "Als gesehen markieren fehlgeschlagen",
+    "markUnseen": "Als ungesehen markieren fehlgeschlagen",
+    "archive": "Archivieren fehlgeschlagen",
+    "restore": "Wiederherstellen fehlgeschlagen",
+    "markAllSeen": "Alle als gesehen markieren fehlgeschlagen"
+  },
+  "resourceTypes": {
+    "user": "Benutzer",
+    "domain": "Domain",
+    "wallet": "Wallet",
+    "order": "Bestellung",
+    "order_item": "Bestellposition",
+    "payment": "Zahlung",
+    "cart": "Warenkorb",
+    "dns_record": "DNS-Eintrag"
+  }
+}

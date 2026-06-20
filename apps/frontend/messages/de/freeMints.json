@@ -25,5 +25,10 @@
     "validThru": "Gültig bis",
     "claimNow": "Jetzt beanspruchen",
     "poweredByNamefi": "Unterstützt von Namefi"
+  },
+  "dropdown": {
+    "title": "Kostenlose Mints",
+    "claim": "Einlösen",
+    "viewAll": "Alle kostenlosen Mints anzeigen"
   }
 }

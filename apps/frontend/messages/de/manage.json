@@ -1,0 +1,16 @@
+{
+  "heading": "Meine verkauften Domains",
+  "loadErrorTitle": "Verkaufte Domains konnten nicht geladen werden",
+  "loadErrorFallback": "Bitte versuchen Sie es erneut.",
+  "retry": "Erneut versuchen",
+  "totalDomainsSold": "Verkaufte Domains gesamt",
+  "proceeds": "Erlöse",
+  "domainsSold": "Verkaufte Domains",
+  "emptyState": "Noch keine Domains verkauft.",
+  "columns": {
+    "domainName": "Domainname",
+    "wallet": "Wallet",
+    "date": "Datum",
+    "price": "Preis"
+  }
+}

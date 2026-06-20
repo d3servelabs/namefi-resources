@@ -1,7 +1,14 @@
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { recordSchema } from '@namefi-astra/zod-dns';
+import type { useTranslations } from 'next-intl';
 import { z } from 'zod';
+
+/**
+ * The subset of the next-intl `dnsManagement` translator used by these
+ * factories: a function from a known translation key to its localized string.
+ */
+type TranslateFn = ReturnType<typeof useTranslations<'dnsManagement'>>;
 
 // DNS record types
 export const DNS_RECORD_TYPES = [
@@ -14,48 +21,68 @@ export const DNS_RECORD_TYPES = [
   'SRV',
 ] as const;
 
-// TTL options in seconds with human-readable labels
-export const TTL_OPTIONS = [
-  { value: 60, label: '1 minutes' },
-  { value: 300, label: '5 minutes' },
-  { value: 1200, label: '20 minutes' },
-  { value: 3600, label: '1 hour' },
-  { value: 86400, label: '1 day' },
-  { value: 604800, label: '1 week' },
-];
+// TTL options in seconds, paired with the translation key for their label.
+// The label is resolved at the (translation-bound) call site via `t(labelKey)`.
+const TTL_OPTION_VALUES = [
+  { value: 60, labelKey: 'dialogs.form.ttlOption1Minute' },
+  { value: 300, labelKey: 'dialogs.form.ttlOption5Minutes' },
+  { value: 1200, labelKey: 'dialogs.form.ttlOption20Minutes' },
+  { value: 3600, labelKey: 'dialogs.form.ttlOption1Hour' },
+  { value: 86400, labelKey: 'dialogs.form.ttlOption1Day' },
+  { value: 604800, labelKey: 'dialogs.form.ttlOption1Week' },
+] as const;
 
-// Schema for DNS record form
-export const dnsRecordSchema = z
-  .object({
-    type: z.string().min(1, { error: 'Record type is required' }),
-    name: z
-      .string()
-      .optional()
-      .transform((val) => val || '@'),
-    domain: z.string(),
-    rdata: z.string().min(1, { message: 'Value is required' }),
-    ttl: z.number().min(1, { message: 'TTL is required' }),
-  })
-  .superRefine((value, ctx) => {
-    const recordValidation = recordSchema.safeParse({
-      type: value.type,
-      name: value.name,
-      rdata: value.rdata,
-      ttl: value.ttl,
-    });
+export type TtlOption = {
+  value: number;
+  labelKey: Parameters<TranslateFn>[0];
+};
 
-    if (!recordValidation.success) {
-      for (const issue of recordValidation.error.issues) {
-        ctx.addIssue({
-          code: 'custom',
-          path: issue.path,
-          message: issue.message,
-        });
+// TTL options with the translation key for each label. Resolve the label with
+// `t(option.labelKey)` where a `useTranslations('dnsManagement')` binding exists.
+export function getTtlOptions(): readonly TtlOption[] {
+  return TTL_OPTION_VALUES;
+}
+
+// Schema for DNS record form (factory so error messages can be translated)
+export function getDnsRecordSchema(t: TranslateFn) {
+  return z
+    .object({
+      type: z
+        .string()
+        .min(1, { error: t('dialogs.form.errorRecordTypeRequired') }),
+      name: z
+        .string()
+        .optional()
+        .transform((val) => val || '@'),
+      domain: z.string(),
+      rdata: z
+        .string()
+        .min(1, { message: t('dialogs.form.errorValueRequired') }),
+      ttl: z.number().min(1, { message: t('dialogs.form.errorTtlRequired') }),
+    })
+    .superRefine((value, ctx) => {
+      const recordValidation = recordSchema.safeParse({
+        type: value.type,
+        name: value.name,
+        rdata: value.rdata,
+        ttl: value.ttl,
+      });
+
+      if (!recordValidation.success) {
+        for (const issue of recordValidation.error.issues) {
+          ctx.addIssue({
+            code: 'custom',
+            path: issue.path,
+            message: issue.message,
+          });
+        }
       }
-    }
-  });
+    });
+}
 
-export type DnsRecordFormValues = (typeof dnsRecordSchema)['_input'];
+export type DnsRecordFormValues = z.input<
+  ReturnType<typeof getDnsRecordSchema>
+>;
 
 // Helper function to convert form values to DnsRecord
 export function formValuesToDnsRecord(

@@ -15,6 +15,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/card';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
 interface DomainAwardsProps {
@@ -22,12 +23,13 @@ interface DomainAwardsProps {
 }
 
 const DomainAwardsCard = ({ children }: { children: React.ReactNode }) => {
+  const t = useTranslations('hunt');
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <AwardIcon className="h-5 w-5" />
-          Awards
+          {t('awards.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
@@ -36,6 +38,7 @@ const DomainAwardsCard = ({ children }: { children: React.ReactNode }) => {
 };
 
 export const DomainAwards = ({ domainName }: DomainAwardsProps) => {
+  const t = useTranslations('hunt');
   const trpc = useTRPC();
 
   const awardsQuery = useQuery({
@@ -57,7 +60,7 @@ export const DomainAwards = ({ domainName }: DomainAwardsProps) => {
   if (awardsQuery.isError) {
     return (
       <DomainAwardsCard>
-        <p className="text-muted-foreground">Failed to load awards</p>
+        <p className="text-muted-foreground">{t('awards.loadError')}</p>
       </DomainAwardsCard>
     );
   }
@@ -67,9 +70,7 @@ export const DomainAwards = ({ domainName }: DomainAwardsProps) => {
   if (awards.length === 0) {
     return (
       <DomainAwardsCard>
-        <p className="text-muted-foreground">
-          No awards yet. Keep voting to help this domain win!
-        </p>
+        <p className="text-muted-foreground">{t('awards.empty')}</p>
       </DomainAwardsCard>
     );
   }

@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi ブランドスタジオ",
+    "subtitle": "ブランド用のロゴ・ポスター・アニメーションを作成できます",
+    "poweredByAlt": "Powered by Namefi"
+  },
+  "tabs": {
+    "logo": "ロゴ",
+    "poster": "ポスター",
+    "animation": "アニメーション"
+  },
+  "prerequisite": {
+    "title": "まずロゴを作成してください",
+    "posterDescription": "ポスターを作成するには、生成済みのロゴをブランド参照として使用します。",
+    "animationDescription": "アニメーションを作成するには、生成済みのロゴを素材として使用します。"
+  },
+  "usage": {
+    "credits": "AIクレジット",
+    "usedThisMonth": "今月の使用量: {current} / {max}",
+    "limitReached": "クレジット上限に達しました",
+    "creditsLeft": "{count, plural, other {# クレジット残り}}",
+    "refreshAria": "AIクレジットのリフレッシュ時刻",
+    "refreshAt": "クレジットのリフレッシュ: {time}",
+    "refreshMonthly": "クレジットは毎月リフレッシュされます",
+    "balanceCheckError": "AIクレジット残高を確認できません",
+    "balanceCheckErrorDescription": "残高を確認できませんでしたが、引き続きアセットの生成をお試しいただけます。",
+    "checkingBalance": "AIクレジット残高を確認中...",
+    "willCheckBalance": "生成開始前にAIクレジット残高を確認します。",
+    "creditAmount": "{count, plural, other {# AIクレジット}}",
+    "costInsufficient": "この生成には {cost} 必要です。今月の残りは {remaining} です。",
+    "costPreview": "この生成には {cost} かかります。生成後の残りは {remaining} になります。"
+  },
+  "domainField": {
+    "fixedLabel": "ドメインを入力してください（例: example.com）",
+    "logoPlaceholder": "ブランドドメインを選択または入力",
+    "brandPlaceholder": "ブランドドメインを選択（必須）",
+    "searchBrands": "ブランドドメインを検索...",
+    "searchOrEnter": "ドメインを検索または入力",
+    "emptyStudioLogos": "スタジオのロゴドメインが見つかりません。",
+    "emptyMatching": "一致するドメインが見つかりません。"
+  },
+  "description": {
+    "label": "ブランドの説明（任意）",
+    "placeholder": "ブランドのビジョンをお聞かせください"
+  },
+  "logo": {
+    "gridTitle": "生成済みロゴ",
+    "chooseType": "タイプを選択",
+    "chooseStyle": "スタイルを選択",
+    "chooseTldTreatment": "TLD処理を選択",
+    "chooseTypography": "タイポグラフィを選択",
+    "chooseModel": "モデルを選択",
+    "controls": {
+      "type": "タイプ",
+      "style": "スタイル",
+      "tld": "TLD",
+      "typography": "フォント",
+      "model": "モデル",
+      "brandVision": "ブランドビジョン",
+      "advanced": "詳細設定"
+    },
+    "actions": {
+      "createPoster": "ポスターを作成",
+      "animateLogo": "ロゴをアニメ化"
+    }
+  },
+  "poster": {
+    "title": "ポスタージェネレーター",
+    "gridTitle": "生成済みポスター",
+    "usingBrand": "ブランド {domain} を使用中",
+    "backToLogos": "ロゴに戻る",
+    "chooseLogo": "ポスターのベースとなるロゴを選択してください",
+    "chooseModel": "モデルを選択",
+    "chooseCollateral": "コラテラルの種類を選択",
+    "selectCollateral": "コラテラルを選択",
+    "controls": {
+      "useLogo": "ロゴを使用",
+      "selected": "選択済み",
+      "description": "説明",
+      "model": "モデル",
+      "collateral": "コラテラル",
+      "advanced": "詳細設定"
+    },
+    "collateral": {
+      "letAiChoose": "AIに任せる",
+      "billboard": "ビルボード",
+      "apparel": "アパレル",
+      "vehicle": "ビークル",
+      "product": "プロダクト"
+    }
+  },
+  "animation": {
+    "title": "ロゴアニメーション",
+    "gridTitle": "生成済みアニメーション",
+    "usingBrand": "ブランド {domain} を使用中",
+    "backToLogos": "ロゴに戻る",
+    "chooseMode": "アニメーションモードを選択",
+    "chooseLogo": "アニメーション化するロゴを選択",
+    "chooseOpening": "オープニングスタイルを選択",
+    "chooseMotion": "モーション方向を選択",
+    "chooseIntensity": "モーション強度を選択",
+    "chooseModel": "モデルを選択",
+    "selectOpening": "オープニングスタイルを選択",
+    "selectMotion": "モーションを選択",
+    "selectIntensity": "強度を選択",
+    "useLogoAria": "{domain} のロゴを使用",
+    "controls": {
+      "mode": "モード",
+      "useLogo": "ロゴを使用",
+      "selected": "選択済み",
+      "description": "説明",
+      "opening": "オープニング",
+      "motion": "モーション",
+      "intensity": "強度",
+      "model": "モデル"
+    },
+    "validation": {
+      "openingRequired": "シネマティックアニメーションにはオープニングが必要です",
+      "chooseCinematicModel": "シネマティックモデルを選択してください",
+      "chooseCinematicMotion": "シネマティックモーションプリセットを選択してください",
+      "chooseSeedanceModel": "Seedanceモデルを選択してください",
+      "intensityRequired": "ループアニメーションには強度の設定が必要です",
+      "chooseLoopedModel": "ループモデルを選択してください",
+      "chooseLoopedMotion": "ループモーションプリセットを選択してください"
+    }
+  },
+  "model": {
+    "select": "モデルを選択してください"
+  },
+  "submit": {
+    "generate": "生成する",
+    "generating": "生成中",
+    "animate": "アニメーション化",
+    "selectBrand": "ブランドを選択"
+  },
+  "gallery": {
+    "yours": "マイ生成",
+    "featured": "注目",
+    "brands": "ブランド",
+    "brandsSelected": "{count} 件選択中",
+    "searchBrand": "ブランドを検索...",
+    "noBrands": "ブランドが見つかりません。",
+    "filterAll": "すべて",
+    "filterLogo": "ロゴ",
+    "filterPoster": "ポスター",
+    "filterAnimation": "アニメーション",
+    "emptyYours": "ロゴやポスターを生成すると、ここに表示されます。",
+    "openAria": "{domain} の生成を開く",
+    "openFeaturedAria": "{domain} の注目生成を開く",
+    "viewAria": "生成 {index} を表示",
+    "animationPreviewAria": "{domain} のアニメーションプレビュー",
+    "previewUnavailable": "プレビューは利用できません",
+    "basedOnLogo": "ロゴを元に作成",
+    "basedOn": "元にしたもの:",
+    "referencedLogoAlt": "参照ロゴ"
+  },
+  "kind": {
+    "logo": "ロゴ",
+    "poster": "ポスター",
+    "animation": "アニメーション"
+  },
+  "progress": {
+    "generatingLogo": "ロゴを生成中",
+    "generatingPoster": "ポスターを生成中",
+    "preparingAnimation": "アニメーションを準備中",
+    "messages": {
+      "gathering": "ブランドのインスピレーションを収集中...",
+      "sketching": "最初のストロークとシルエットをスケッチ中...",
+      "blending": "色・スタイル・フォントを調整中...",
+      "character": "個性とシグネチャーディテールを追加中...",
+      "lighting": "照明とバランスを調整中...",
+      "polishing": "ハイライトとテクスチャを磨いています...",
+      "framing": "最終的な仕上がりをフレーミング中...",
+      "almost": "もうすぐ完成です。少々お待ちください！"
+    }
+  },
+  "status": {
+    "pending": "保留中",
+    "processing": "処理中",
+    "failed": "失敗",
+    "ready": "完了"
+  },
+  "asyncTile": {
+    "genericError": "生成を完了できませんでした。もう一度お試しください。",
+    "stillRunning": "生成はまだ実行中です。",
+    "queued": "生成はキューに入っており、まもなく表示されます。"
+  },
+  "actions": {
+    "copy": "コピー",
+    "copyLink": "リンクをコピー",
+    "tweet": "ツイート",
+    "download": "ダウンロード"
+  },
+  "delete": {
+    "title": "生成を削除しますか？",
+    "titleSingle": "この生成を削除しますか？",
+    "descriptionLogo": "{domain} のロゴをギャラリーから削除します。この操作は取り消せません。",
+    "descriptionPoster": "{domain} のポスターをギャラリーから削除します。この操作は取り消せません。",
+    "descriptionAnimation": "{domain} のアニメーションをギャラリーから削除します。この操作は取り消せません。",
+    "deleting": "削除中..."
+  },
+  "share": {
+    "unableTitle": "共有できません",
+    "unableMissingLink": "この生成の共有リンクは利用できません。",
+    "unableMissingLinkOrDomain": "この生成の共有リンクまたはドメインが見つかりませんでした。"
+  },
+  "imageGrid": {
+    "previewUnavailable": "プレビューは利用できません"
+  },
+  "details": {
+    "backToStudio": "Namefi ブランドスタジオに戻る",
+    "headingLogo": "{brand} のロゴ",
+    "headingPoster": "{brand} のポスター",
+    "headingAnimation": "{brand} のアニメーション",
+    "notFoundTitle": "生成が見つかりません",
+    "notFoundDescription": "お探しの生成は見つかりませんでした。",
+    "assetUnavailable": "アセットはまだ利用できません。",
+    "sectionTitle": "詳細",
+    "type": "タイプ:",
+    "status": "ステータス:",
+    "collateral": "コラテラル:",
+    "motion": "モーション:",
+    "mode": "モード:",
+    "opening": "オープニング:",
+    "intensity": "強度:",
+    "model": "モデル:",
+    "created": "作成日:",
+    "createdUnknown": "不明",
+    "collateralUnknown": "不明",
+    "logoProperties": "ロゴのプロパティ",
+    "logoStyle": "スタイル:",
+    "logoType": "タイプ:",
+    "logoTld": "TLD:",
+    "logoTypography": "フォント:",
+    "sourceLogo": "元のロゴ",
+    "sourceLogoAlt": "派生生成に使用されたロゴ",
+    "viewLogoDetails": "ロゴの詳細を表示",
+    "sourcePreviewUnavailable": "元のロゴのプレビューは利用できません",
+    "sourceLoadFailed": "ロゴの詳細の読み込みに失敗しました",
+    "sourceNotFound": "ロゴの参照が見つかりません",
+    "animationSheet": "アニメーションシート",
+    "animationSheetAlt": "{domain} の生成済みアニメーションシート",
+    "openSheetAria": "アニメーションシートのプレビューを開く",
+    "sheetModel": "シートモデル:",
+    "sheetDialogTitle": "アニメーションシート",
+    "sheetDialogDescription": "このアニメーションの制作に使用されたストーリーボードです。",
+    "shareTwitterTitle": "Twitterでシェア",
+    "copyLinkTitle": "リンクをコピー",
+    "twitter": "Twitter",
+    "linkCopied": "リンクをコピーしました",
+    "linkCopiedDescription": "このリンクを他の方に共有できます",
+    "linkCopyFailed": "リンクのコピーに失敗しました",
+    "linkCopyFailedDescription": "もう一度お試しください",
+    "animationLabelAria": "{domain} のAI生成 {mode} アニメーション",
+    "imageAlt": "{domain} のAI生成 {type}"
+  }
+}

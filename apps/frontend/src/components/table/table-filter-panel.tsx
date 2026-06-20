@@ -25,6 +25,7 @@ import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Filter } from 'lucide-react';
 import type { ColumnFiltersState } from '@tanstack/react-table';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
 
 type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
@@ -63,34 +64,47 @@ type TableFilterPanelProps = {
   onClearAll?: () => void;
 };
 
+type OperatorLabelKey =
+  | 'contains'
+  | 'equals'
+  | 'notEquals'
+  | 'greaterThan'
+  | 'greaterOrEqual'
+  | 'lessThan'
+  | 'lessOrEqual'
+  | 'after'
+  | 'onOrAfter'
+  | 'before'
+  | 'onOrBefore';
+
 const OPERATORS_BY_TYPE: Record<
   string,
-  { value: FilterOperator; label: string }[]
+  { value: FilterOperator; labelKey: OperatorLabelKey }[]
 > = {
   text: [
-    { value: 'like', label: 'Contains' },
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
+    { value: 'like', labelKey: 'contains' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
   ],
   number: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'Greater Than' },
-    { value: 'gte', label: 'Greater or Equal' },
-    { value: 'lt', label: 'Less Than' },
-    { value: 'lte', label: 'Less or Equal' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'greaterThan' },
+    { value: 'gte', labelKey: 'greaterOrEqual' },
+    { value: 'lt', labelKey: 'lessThan' },
+    { value: 'lte', labelKey: 'lessOrEqual' },
   ],
   date: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'After' },
-    { value: 'gte', label: 'On or After' },
-    { value: 'lt', label: 'Before' },
-    { value: 'lte', label: 'On or Before' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'after' },
+    { value: 'gte', labelKey: 'onOrAfter' },
+    { value: 'lt', labelKey: 'before' },
+    { value: 'lte', labelKey: 'onOrBefore' },
   ],
   select: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
   ],
 };
 
@@ -112,6 +126,7 @@ function FilterField({
   value: FilterValue | undefined;
   onChange: (value: FilterValue | undefined) => void;
 }) {
+  const t = useTranslations('shared');
   const operators = OPERATORS_BY_TYPE[config.type] ?? OPERATORS_BY_TYPE.text;
   const defaultOperator = operators[0]?.value ?? 'eq';
 
@@ -181,7 +196,7 @@ function FilterField({
           htmlFor={`filter-operator-${columnId}`}
           className="text-xs font-medium text-foreground"
         >
-          Operator
+          {t('table.filter.operator')}
         </label>
         <Select
           value={operator}
@@ -196,7 +211,7 @@ function FilterField({
           <SelectContent>
             {operators.map((op) => (
               <SelectItem key={op.value} value={op.value}>
-                {op.label}
+                {t(`table.filter.operators.${op.labelKey}`)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -208,7 +223,7 @@ function FilterField({
           htmlFor={`filter-value-${columnId}`}
           className="text-xs font-medium text-foreground"
         >
-          Value
+          {t('table.filter.value')}
         </label>
         {config.type === 'select' && config.options ? (
           <Select
@@ -216,7 +231,7 @@ function FilterField({
             onValueChange={(v) => setFilterValue(v ?? '')}
           >
             <SelectTrigger id={`filter-value-${columnId}`} className="h-9">
-              <SelectValue placeholder="Select..." />
+              <SelectValue placeholder={t('table.filter.selectPlaceholder')} />
             </SelectTrigger>
             <SelectContent>
               {config.options.map((option) => (
@@ -238,14 +253,18 @@ function FilterField({
                 setFilterValue('');
               }
             }}
-            placeholder={`Enter ${config.label?.toLowerCase() || 'date'}...`}
+            placeholder={t('table.filter.enterFieldPlaceholder', {
+              field: config.label?.toLowerCase() || 'date',
+            })}
             className="flex flex-col gap-2"
           />
         ) : (
           <Input
             id={`filter-value-${columnId}`}
             type={config.type === 'number' ? 'number' : 'text'}
-            placeholder={`Enter ${config.label?.toLowerCase() || 'value'}...`}
+            placeholder={t('table.filter.enterFieldPlaceholder', {
+              field: config.label?.toLowerCase() || 'value',
+            })}
             value={filterValue}
             onChange={(e) => setFilterValue(e.target.value)}
             onKeyDown={(e) => {
@@ -265,7 +284,7 @@ function FilterField({
           className="flex-1"
           variant={'secondary'}
         >
-          Apply
+          {t('table.filter.apply')}
         </Button>
         <Button
           onClick={handleClear}
@@ -273,7 +292,7 @@ function FilterField({
           variant="outline"
           disabled={!value}
         >
-          Clear
+          {t('table.filter.clear')}
         </Button>
       </div>
     </div>
@@ -281,6 +300,7 @@ function FilterField({
 }
 
 function CustomFilter({ filter }: { filter: CustomFilterField }) {
+  const t = useTranslations('shared');
   const [localValue, setLocalValue] = useState<string>(
     filter.value !== undefined ? String(filter.value) : '',
   );
@@ -315,7 +335,7 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
           htmlFor={`custom-filter-${filter.id}`}
           className="text-xs font-medium text-foreground"
         >
-          Value
+          {t('table.filter.value')}
         </label>
         {filter.type === 'select' && filter.options ? (
           <Select
@@ -323,7 +343,11 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
             onValueChange={(v) => setLocalValue(v ?? '')}
           >
             <SelectTrigger className="h-9">
-              <SelectValue placeholder={filter.placeholder || 'Select...'} />
+              <SelectValue
+                placeholder={
+                  filter.placeholder || t('table.filter.selectPlaceholder')
+                }
+              />
             </SelectTrigger>
             <SelectContent>
               {filter.options.map((option) => (
@@ -344,7 +368,10 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
                   : 'text'
             }
             placeholder={
-              filter.placeholder || `Enter ${filter.label.toLowerCase()}...`
+              filter.placeholder ||
+              t('table.filter.enterFieldPlaceholder', {
+                field: filter.label.toLowerCase(),
+              })
             }
             value={localValue}
             onChange={(e) => setLocalValue(e.target.value)}
@@ -360,7 +387,7 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
 
       <div className="flex gap-2">
         <Button onClick={handleApply} size="sm" className="flex-1">
-          Apply
+          {t('table.filter.apply')}
         </Button>
         <Button
           onClick={handleClear}
@@ -372,7 +399,7 @@ function CustomFilter({ filter }: { filter: CustomFilterField }) {
             filter.value === ''
           }
         >
-          Clear
+          {t('table.filter.clear')}
         </Button>
       </div>
     </div>
@@ -388,6 +415,7 @@ export function TableFilterPanel({
   customFilters = [],
   onClearAll,
 }: TableFilterPanelProps) {
+  const t = useTranslations('shared');
   const activeFiltersCount =
     columnFilters.length +
     customFilters.filter((f) => f.value !== undefined && f.value !== '').length;
@@ -445,9 +473,13 @@ export function TableFilterPanel({
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Table Filters
+              {t('table.filterPanel.title')}
               {activeFiltersCount > 0 && (
-                <Badge variant="secondary">{activeFiltersCount} active</Badge>
+                <Badge variant="secondary">
+                  {t('table.filterPanel.activeCount', {
+                    count: activeFiltersCount,
+                  })}
+                </Badge>
               )}
             </div>
             {activeFiltersCount > 0 && (
@@ -457,12 +489,12 @@ export function TableFilterPanel({
                 onClick={handleClearAll}
                 className="h-auto p-1"
               >
-                Clear all
+                {t('table.filterPanel.clearAll')}
               </Button>
             )}
           </SheetTitle>
           <SheetDescription>
-            Apply filters to narrow down your table results
+            {t('table.filterPanel.description')}
           </SheetDescription>
         </SheetHeader>
 
@@ -473,7 +505,7 @@ export function TableFilterPanel({
               <div className="flex items-center gap-3 px-1">
                 <div className="h-1 w-1 rounded-full bg-primary" />
                 <h3 className="text-sm font-semibold text-foreground">
-                  General Filters
+                  {t('table.filterPanel.generalFilters')}
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
@@ -507,7 +539,7 @@ export function TableFilterPanel({
                               variant="default"
                               className="ms-2 text-xs bg-primary"
                             >
-                              Active
+                              {t('table.filterPanel.active')}
                             </Badge>
                           )}
                         </div>
@@ -528,7 +560,7 @@ export function TableFilterPanel({
               <div className="flex items-center gap-3 px-1">
                 <div className="h-1 w-1 rounded-full bg-primary" />
                 <h3 className="text-sm font-semibold text-foreground">
-                  Column Filters
+                  {t('table.filterPanel.columnFilters')}
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
@@ -563,7 +595,7 @@ export function TableFilterPanel({
                               variant="default"
                               className="ms-2 text-xs bg-primary"
                             >
-                              Active
+                              {t('table.filterPanel.active')}
                             </Badge>
                           )}
                         </div>
@@ -588,7 +620,7 @@ export function TableFilterPanel({
           {Object.keys(filterConfig).length === 0 &&
             customFilters.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
-                No filters available
+                {t('table.filterPanel.noFiltersAvailable')}
               </div>
             )}
         </div>

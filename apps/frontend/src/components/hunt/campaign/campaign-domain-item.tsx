@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { type MouseEvent, useCallback } from 'react';
 import { ArrowBigUpIcon } from 'lucide-react';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { usePendingToast } from '@/hooks/use-pending-toast';
 import { type Domain, useHuntVoteCount } from '../domains-list-item';
 import { useHuntVoteRow } from '@/hooks/use-hunt-vote-row';
@@ -51,6 +52,7 @@ const VoteButton = ({
   onUnvote?: () => void;
   count: string;
 }) => {
+  const t = useTranslations('hunt');
   const handleClick = useCallback(
     (event: MouseEvent) => {
       event.preventDefault();
@@ -65,7 +67,7 @@ const VoteButton = ({
     [voted, onUpvote, onUnvote],
   );
 
-  usePendingToast(pending, 'Voting...');
+  usePendingToast(pending, t('vote.voting'));
   return (
     <button
       type="button"
@@ -75,7 +77,7 @@ const VoteButton = ({
           ? 'bg-brand-primary text-primary-foreground hover:bg-brand-primary/90'
           : 'bg-primary-foreground text-white/70 hover:bg-white/10 hover:text-white',
       )}
-      aria-label="Upvote"
+      aria-label={t('vote.ariaLabel')}
       onClick={handleClick}
     >
       <ArrowBigUpIcon className="w-6 h-6 fill-current" />

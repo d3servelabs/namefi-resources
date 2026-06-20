@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi பிராண்ட் ஸ்டுடியோ",
+    "subtitle": "உங்கள் பிராண்டிற்கு தனிப்பயன் லோகோக்கள், போஸ்டர்கள் மற்றும் அனிமேஷன்கள் உருவாக்குங்கள்",
+    "poweredByAlt": "Namefi ஆல் இயக்கப்படுகிறது"
+  },
+  "tabs": {
+    "logo": "லோகோ",
+    "poster": "போஸ்டர்",
+    "animation": "அனிமேஷன்"
+  },
+  "prerequisite": {
+    "title": "முதலில் லோகோ உருவாக்குங்கள்",
+    "posterDescription": "போஸ்டர்களுக்கு பிராண்ட் குறிப்பாக உங்கள் உருவாக்கிய லோகோக்களில் ஒன்று தேவை.",
+    "animationDescription": "அனிமேஷன்களுக்கு மூல கலைப்படைப்பாக உங்கள் உருவாக்கிய லோகோக்களில் ஒன்று தேவை."
+  },
+  "usage": {
+    "credits": "AI கிரெடிட்கள்",
+    "usedThisMonth": "இந்த மாதம் {max} இல் {current} பயன்படுத்தப்பட்டது",
+    "limitReached": "கிரெடிட் வரம்பு அடைந்தது",
+    "creditsLeft": "{count, plural, one {# கிரெடிட் உள்ளது} other {# கிரெடிட்கள் உள்ளன}}",
+    "refreshAria": "AI கிரெடிட் புதுப்பிக்கும் நேரம்",
+    "refreshAt": "கிரெடிட்கள் {time} இல் புதுப்பிக்கப்படும்",
+    "refreshMonthly": "கிரெடிட்கள் மாதந்தோறும் புதுப்பிக்கப்படும்",
+    "balanceCheckError": "AI கிரெடிட் இருப்பை சரிபார்க்க முடியவில்லை",
+    "balanceCheckErrorDescription": "உங்கள் மீதமுள்ள கிரெடிட்களை சரிபார்க்க முடியவில்லை, ஆனால் சொத்துக்களை உருவாக்க முயற்சிக்கலாம்.",
+    "checkingBalance": "AI கிரெடிட் இருப்பை சரிபார்க்கிறது...",
+    "willCheckBalance": "உருவாக்கல் தொடங்கும் முன் உங்கள் AI கிரெடிட் இருப்பை சரிபார்ப்போம்.",
+    "creditAmount": "{count, plural, one {# AI கிரெடிட்} other {# AI கிரெடிட்கள்}}",
+    "costInsufficient": "இந்த உருவாக்கலுக்கு {cost} தேவை. இந்த மாதம் உங்களிடம் {remaining} மட்டுமே உள்ளது.",
+    "costPreview": "இந்த உருவாக்கலுக்கு {cost} செலவாகும். இந்த மாதம் {remaining} மிச்சமிருக்கும்."
+  },
+  "domainField": {
+    "fixedLabel": "உங்கள் டொமைனை உள்ளிடுங்கள் (எ.கா., example.com)",
+    "logoPlaceholder": "உங்கள் பிராண்ட் டொமைனை தேர்ந்தெடுக்கவும் அல்லது உள்ளிடவும்",
+    "brandPlaceholder": "உங்கள் பிராண்ட் டொமைனை தேர்ந்தெடுக்கவும் (கட்டாயம்)",
+    "searchBrands": "பிராண்ட் டொமைன்களை தேடுங்கள்...",
+    "searchOrEnter": "டொமைனை தேடவும் அல்லது உள்ளிடவும்",
+    "emptyStudioLogos": "ஸ்டுடியோ லோகோ டொமைன்கள் எதுவும் கிடைக்கவில்லை.",
+    "emptyMatching": "பொருந்தும் டொமைன்கள் எதுவும் இல்லை."
+  },
+  "description": {
+    "label": "உங்கள் பிராண்டை விவரிக்கவும் (விருப்பம்)",
+    "placeholder": "உங்கள் பிராண்ட் தொலைநோக்கு பற்றி மேலும் சொல்லுங்கள்"
+  },
+  "logo": {
+    "gridTitle": "உருவாக்கப்பட்ட லோகோக்கள்",
+    "chooseType": "ஒரு வகையை தேர்ந்தெடுங்கள்",
+    "chooseStyle": "ஒரு பாணியை தேர்ந்தெடுங்கள்",
+    "chooseTldTreatment": "TLD அமைப்பை தேர்ந்தெடுங்கள்",
+    "chooseTypography": "தட்டெழுத்தை தேர்ந்தெடுங்கள்",
+    "chooseModel": "ஒரு மாதிரியை தேர்ந்தெடுங்கள்",
+    "controls": {
+      "type": "வகை",
+      "style": "பாணி",
+      "tld": "TLD",
+      "typography": "தட்டெழுத்து",
+      "model": "மாதிரி",
+      "brandVision": "பிராண்ட் தொலைநோக்கு",
+      "advanced": "மேம்பட்டது"
+    },
+    "actions": {
+      "createPoster": "போஸ்டர் உருவாக்கு",
+      "animateLogo": "லோகோவை அசைவாக்கு"
+    }
+  },
+  "poster": {
+    "title": "போஸ்டர் உருவாக்கி",
+    "gridTitle": "உருவாக்கப்பட்ட போஸ்டர்கள்",
+    "usingBrand": "{domain} பிராண்டை பயன்படுத்துகிறது",
+    "backToLogos": "லோகோக்களுக்கு திரும்பு",
+    "chooseLogo": "போஸ்டரின் அடிப்படையாக ஒரு லோகோவை தேர்ந்தெடுங்கள்",
+    "chooseModel": "ஒரு மாதிரியை தேர்ந்தெடுங்கள்",
+    "chooseCollateral": "பொருள் வகையை தேர்ந்தெடுங்கள்",
+    "selectCollateral": "பொருளை தேர்ந்தெடுங்கள்",
+    "controls": {
+      "useLogo": "லோகோ பயன்படுத்து",
+      "selected": "தேர்ந்தெடுக்கப்பட்டது",
+      "description": "விவரம்",
+      "model": "மாதிரி",
+      "collateral": "பொருள்",
+      "advanced": "மேம்பட்ட"
+    },
+    "collateral": {
+      "letAiChoose": "AI தேர்வு செய்யட்டும்",
+      "billboard": "பில்போர்டு",
+      "apparel": "ஆடை",
+      "vehicle": "வாகனம்",
+      "product": "தயாரிப்பு"
+    }
+  },
+  "animation": {
+    "title": "லோகோ அனிமேஷன்",
+    "gridTitle": "உருவாக்கப்பட்ட அனிமேஷன்கள்",
+    "usingBrand": "{domain} பிராண்டை பயன்படுத்துகிறது",
+    "backToLogos": "லோகோக்களுக்கு திரும்பு",
+    "chooseMode": "அனிமேஷன் முறையை தேர்ந்தெடுங்கள்",
+    "chooseLogo": "அசைவாக்க ஒரு லோகோவை தேர்ந்தெடுங்கள்",
+    "chooseOpening": "தொடக்க பாணியை தேர்ந்தெடுங்கள்",
+    "chooseMotion": "இயக்க திசையை தேர்ந்தெடுங்கள்",
+    "chooseIntensity": "இயக்க தீவிரத்தை தேர்ந்தெடுங்கள்",
+    "chooseModel": "ஒரு மாதிரியை தேர்ந்தெடுங்கள்",
+    "selectOpening": "தொடக்க பாணியை தேர்ந்தெடுக்கவும்",
+    "selectMotion": "இயக்கத்தை தேர்ந்தெடுக்கவும்",
+    "selectIntensity": "தீவிரத்தை தேர்ந்தெடுக்கவும்",
+    "useLogoAria": "{domain} லோகோவை பயன்படுத்துக",
+    "controls": {
+      "mode": "முறை",
+      "useLogo": "லோகோ பயன்படுத்து",
+      "selected": "தேர்ந்தெடுக்கப்பட்டது",
+      "description": "விவரம்",
+      "opening": "தொடக்கம்",
+      "motion": "இயக்கம்",
+      "intensity": "தீவிரம்",
+      "model": "மாதிரி"
+    },
+    "validation": {
+      "openingRequired": "சினிமாடிக் அனிமேஷனுக்கு தொடக்கம் அவசியம்",
+      "chooseCinematicModel": "சினிமாடிக் மாதிரியை தேர்ந்தெடுங்கள்",
+      "chooseCinematicMotion": "சினிமாடிக் இயக்க முன்னமைவை தேர்ந்தெடுங்கள்",
+      "chooseSeedanceModel": "Seedance மாதிரியை தேர்ந்தெடுங்கள்",
+      "intensityRequired": "சுழல் அனிமேஷனுக்கு தீவிரம் அவசியம்",
+      "chooseLoopedModel": "சுழல் மாதிரியை தேர்ந்தெடுங்கள்",
+      "chooseLoopedMotion": "சுழல் இயக்க முன்னமைவை தேர்ந்தெடுங்கள்"
+    }
+  },
+  "model": {
+    "select": "ஒரு மாதிரியை தேர்ந்தெடுக்கவும்"
+  },
+  "submit": {
+    "generate": "உருவாக்கு",
+    "generating": "உருவாக்குகிறது",
+    "animate": "அசைவாக்கு",
+    "selectBrand": "பிராண்டை தேர்ந்தெடுங்கள்"
+  },
+  "gallery": {
+    "yours": "உங்கள் உருவாக்கல்கள்",
+    "featured": "சிறப்பு",
+    "brands": "பிராண்டுகள்",
+    "brandsSelected": "{count} தேர்ந்தெடுக்கப்பட்டது",
+    "searchBrand": "பிராண்டை தேடுங்கள்...",
+    "noBrands": "பிராண்டுகள் எதுவும் கிடைக்கவில்லை.",
+    "filterAll": "அனைத்தும்",
+    "filterLogo": "லோகோ",
+    "filterPoster": "போஸ்டர்",
+    "filterAnimation": "அனிமேஷன்",
+    "emptyYours": "லோகோ அல்லது போஸ்டர் உருவாக்கினால் இங்கே தெரியும்.",
+    "openAria": "{domain} க்கான உருவாக்கலை திறக்கவும்",
+    "openFeaturedAria": "{domain} க்கான சிறப்பு உருவாக்கலை திறக்கவும்",
+    "viewAria": "உருவாக்கல் {index} ஐ பார்க்கவும்",
+    "animationPreviewAria": "{domain} க்கான அனிமேஷன் மாதிரி",
+    "previewUnavailable": "மாதிரி கிடைக்கவில்லை",
+    "basedOnLogo": "லோகோ அடிப்படையில்",
+    "basedOn": "அடிப்படை:",
+    "referencedLogoAlt": "குறிப்பு லோகோ"
+  },
+  "kind": {
+    "logo": "லோகோ",
+    "poster": "போஸ்டர்",
+    "animation": "அனிமேஷன்"
+  },
+  "progress": {
+    "generatingLogo": "லோகோ உருவாக்குகிறது",
+    "generatingPoster": "போஸ்டர் உருவாக்குகிறது",
+    "preparingAnimation": "அனிமேஷன் தயார் செய்கிறது",
+    "messages": {
+      "gathering": "உங்கள் பிராண்டிற்கான உத்வேகம் திரட்டுகிறோம்...",
+      "sketching": "முதல் கோடுகள் மற்றும் வடிவங்களை வரைகிறோம்...",
+      "blending": "நிறங்கள், பாணிகள் மற்றும் எழுத்துருக்களை கலக்குகிறோம்...",
+      "character": "தனித்தன்மை மற்றும் சிறப்பு விவரங்களை சேர்க்கிறோம்...",
+      "lighting": "வெளிச்சம் மற்றும் சமநிலையை செம்மைப்படுத்துகிறோம்...",
+      "polishing": "சிறப்பு முடிப்புகள் மற்றும் அமைப்புகளை பளபளப்பாக்குகிறோம்...",
+      "framing": "இறுதி காட்சியை சட்டகமிடுகிறோம்...",
+      "almost": "கிட்டதட்ட தயார்—சற்று காத்திருங்கள்!"
+    }
+  },
+  "status": {
+    "pending": "நிலுவையில்",
+    "processing": "செயலாக்கத்தில்",
+    "failed": "தோல்வியுற்றது",
+    "ready": "தயார்"
+  },
+  "asyncTile": {
+    "genericError": "இந்த உருவாக்கலை முடிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.",
+    "stillRunning": "உங்கள் உருவாக்கல் இன்னும் நடைபெறுகிறது.",
+    "queued": "உங்கள் உருவாக்கல் வரிசையில் உள்ளது, சீக்கிரம் இங்கே தெரியும்."
+  },
+  "actions": {
+    "copy": "நகலெடு",
+    "copyLink": "இணைப்பு நகலெடு",
+    "tweet": "Tweet",
+    "download": "பதிவிறக்கு"
+  },
+  "delete": {
+    "title": "உருவாக்கலை நீக்கவா?",
+    "titleSingle": "இந்த உருவாக்கலை நீக்கவா?",
+    "descriptionLogo": "இது {domain} க்கான லோகோவை உங்கள் தொகுப்பிலிருந்து நீக்கும். இந்த செயலை மாற்ற முடியாது.",
+    "descriptionPoster": "இது {domain} க்கான போஸ்டரை உங்கள் தொகுப்பிலிருந்து நீக்கும். இந்த செயலை மாற்ற முடியாது.",
+    "descriptionAnimation": "இது {domain} க்கான அனிமேஷனை உங்கள் தொகுப்பிலிருந்து நீக்கும். இந்த செயலை மாற்ற முடியாது.",
+    "deleting": "நீக்குகிறது..."
+  },
+  "share": {
+    "unableTitle": "பகிர முடியவில்லை",
+    "unableMissingLink": "இந்த உருவாக்கலுக்கு பகிரக்கூடிய இணைப்பு கிடைக்கவில்லை.",
+    "unableMissingLinkOrDomain": "இந்த உருவாக்கலுக்கு பகிரக்கூடிய இணைப்பு அல்லது டொமைன் கிடைக்கவில்லை."
+  },
+  "imageGrid": {
+    "previewUnavailable": "மாதிரி கிடைக்கவில்லை"
+  },
+  "details": {
+    "backToStudio": "Namefi பிராண்ட் ஸ்டுடியோவிற்கு திரும்பு",
+    "headingLogo": "{brand} க்கான லோகோ",
+    "headingPoster": "{brand} க்கான போஸ்டர்",
+    "headingAnimation": "{brand} க்கான அனிமேஷன்",
+    "notFoundTitle": "உருவாக்கல் கிடைக்கவில்லை",
+    "notFoundDescription": "நீங்கள் தேடும் உருவாக்கலை கண்டுபிடிக்க முடியவில்லை.",
+    "assetUnavailable": "சொத்து இன்னும் கிடைக்கவில்லை.",
+    "sectionTitle": "விவரங்கள்",
+    "type": "வகை:",
+    "status": "நிலை:",
+    "collateral": "பொருள்:",
+    "motion": "இயக்கம்:",
+    "mode": "முறை:",
+    "opening": "தொடக்கம்:",
+    "intensity": "தீவிரம்:",
+    "model": "மாதிரி:",
+    "created": "உருவாக்கப்பட்டது:",
+    "createdUnknown": "தெரியவில்லை",
+    "collateralUnknown": "தெரியவில்லை",
+    "logoProperties": "லோகோ பண்புகள்",
+    "logoStyle": "பாணி:",
+    "logoType": "வகை:",
+    "logoTld": "TLD:",
+    "logoTypography": "தட்டெழுத்து:",
+    "sourceLogo": "மூல லோகோ",
+    "sourceLogoAlt": "வழிப்பட்ட உருவாக்கலுக்கு பயன்படுத்திய லோகோ",
+    "viewLogoDetails": "லோகோ விவரங்களை பார்க்கவும்",
+    "sourcePreviewUnavailable": "மூல லோகோ மாதிரி கிடைக்கவில்லை",
+    "sourceLoadFailed": "லோகோ விவரங்களை ஏற்றுவதில் தோல்வி",
+    "sourceNotFound": "லோகோ குறிப்பு எதுவும் கிடைக்கவில்லை",
+    "animationSheet": "அனிமேஷன் தாள்",
+    "animationSheetAlt": "{domain} க்காக உருவாக்கப்பட்ட அனிமேஷன் தாள்",
+    "openSheetAria": "அனிமேஷன் தாள் மாதிரியை திறக்கவும்",
+    "sheetModel": "தாள் மாதிரி:",
+    "sheetDialogTitle": "அனிமேஷன் தாள்",
+    "sheetDialogDescription": "இந்த அனிமேஷனை வழிநடத்த பயன்படுத்திய உருவாக்கப்பட்ட கதைப்பலகை.",
+    "shareTwitterTitle": "Twitter இல் பகிர்",
+    "copyLinkTitle": "இணைப்பை நகலெடு",
+    "twitter": "Twitter",
+    "linkCopied": "இணைப்பு நகலெடுக்கப்பட்டது",
+    "linkCopiedDescription": "இப்போது இந்த உருவாக்கலை மற்றவர்களுடன் பகிரலாம்",
+    "linkCopyFailed": "இணைப்பை நகலெடுக்கத் தோல்வி",
+    "linkCopyFailedDescription": "மீண்டும் முயற்சிக்கவும்",
+    "animationLabelAria": "{domain} க்கான AI உருவாக்கிய {mode} அனிமேஷன்",
+    "imageAlt": "{domain} க்கான AI உருவாக்கிய {type}"
+  }
+}

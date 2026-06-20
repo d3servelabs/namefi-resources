@@ -23,6 +23,7 @@ import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { TRPCClientError } from '@trpc/client';
 import { ChevronDown, CircleCheck, CircleX, Loader2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { pluck } from 'ramda';
 import { type ReactElement, type ReactNode, useCallback } from 'react';
 import { toast } from 'sonner';
@@ -46,6 +47,8 @@ export const DeleteRecordDialog = ({
   children,
   onOpenChange,
 }: DeleteRecordDialogProps) => {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const { mutateAsync, isPending } = useMutation(
     trpc.dnsRecords.deleteRecords.mutationOptions(),
@@ -61,11 +64,11 @@ export const DeleteRecordDialog = ({
         zoneName,
       });
       onDeleteSettledCallback?.('success');
-      toast.success(`Successfully deleted ${recordCount} record(s)`);
+      toast.success(t('records.toasts.deleted', { count: recordCount }));
       queryClient.invalidateQueries({
         queryKey: trpc.dnsRecords.getRecords.queryKey({ zoneName }),
       });
-      toast.success(`Successfully deleted ${recordCount} record(s)`, {
+      toast.success(t('records.toasts.deleted', { count: recordCount }), {
         duration: 10_000,
         dismissible: true,
         icon: <CircleCheck className="h-4 w-4" />,
@@ -83,12 +86,15 @@ export const DeleteRecordDialog = ({
             richColors: true,
           });
         } else {
-          toast.error(`Failed to delete record(s): ${error.message}`, {
-            duration: 10_000,
-            dismissible: true,
-            icon: <CircleX className="h-4 w-4" />,
-            richColors: true,
-          });
+          toast.error(
+            t('records.toasts.deleteFailed', { error: error.message }),
+            {
+              duration: 10_000,
+              dismissible: true,
+              icon: <CircleX className="h-4 w-4" />,
+              richColors: true,
+            },
+          );
         }
       }
     }
@@ -102,6 +108,7 @@ export const DeleteRecordDialog = ({
     onOpenChange,
     queryClient,
     trpc.dnsRecords.getRecords.queryKey,
+    t,
   ]);
 
   return (
@@ -114,10 +121,11 @@ export const DeleteRecordDialog = ({
         )}
       >
         <DialogHeader>
-          <DialogTitle className="text-xl">Delete records?</DialogTitle>
+          <DialogTitle className="text-xl">
+            {t('dialogs.delete.title')}
+          </DialogTitle>
           <DialogDescription className="text-zinc-400">
-            This change may affect your domain&apos;s functionality and take
-            time to update across networks.
+            {t('dialogs.delete.description')}
           </DialogDescription>
         </DialogHeader>
 
@@ -125,7 +133,7 @@ export const DeleteRecordDialog = ({
           <Collapsible open={true} className="w-full">
             <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-zinc-900/50 transition-colors">
               <h4 className="text-sm font-medium">
-                delete {recordCount} {recordCount === 1 ? 'record' : 'records'}
+                {t('dialogs.delete.summary', { count: recordCount })}
               </h4>
               <CollapsibleTrigger
                 render={
@@ -139,17 +147,17 @@ export const DeleteRecordDialog = ({
                 <ChevronDown
                   className={`h-5 w-5 text-zinc-400 transition-transform duration-200 ${isOpen ? '' : '-rotate-90'}`}
                 />
-                <span className="sr-only">Toggle</span>
+                <span className="sr-only">{t('dialogs.delete.toggle')}</span>
               </CollapsibleTrigger>
             </div>
             <CollapsibleContent>
               <div className="px-4 pb-4">
                 <div className="rounded-md border border-zinc-800 px-4 py-3 font-mono text-sm">
                   <div className="grid grid-cols-4 gap-4 text-zinc-400 border-b border-zinc-800 pb-2">
-                    <div>Name</div>
-                    <div>Type</div>
-                    <div>Value</div>
-                    <div>TTL</div>
+                    <div>{t('dialogs.delete.columnName')}</div>
+                    <div>{t('dialogs.delete.columnType')}</div>
+                    <div>{t('dialogs.delete.columnValue')}</div>
+                    <div>{t('dialogs.delete.columnTtl')}</div>
                   </div>
                   <ScrollArea
                     className={recordCount > 3 ? 'h-40 mt-2' : 'mt-2'}
@@ -184,7 +192,7 @@ export const DeleteRecordDialog = ({
               onOpenChange?.(false);
             }}
           >
-            Cancel
+            {tCommon('actions.cancel')}
           </Button>
           <Button
             variant="destructive"
@@ -194,10 +202,12 @@ export const DeleteRecordDialog = ({
             {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />{' '}
-                <span>Deleting...</span>
+                <span>{t('dialogs.delete.deleting')}</span>
               </>
+            ) : recordCount > 1 ? (
+              t('dialogs.delete.confirmMultiple')
             ) : (
-              `Yes, delete ${recordCount > 1 ? 'them' : 'it'}`
+              t('dialogs.delete.confirmSingle')
             )}
           </Button>
         </DialogFooter>

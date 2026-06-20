@@ -133,13 +133,20 @@ function loadAdminUserLookupDialog(): Promise<AdminUserLookupDialogComponent> {
  * To Add NavItems to the UserDropdown, go to @see {getUserDropdownItems}
  */
 
+function UserDropdownMenuFallback() {
+  const tNav = useTranslations('nav');
+  return (
+    <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuItem disabled>
+        {tNav('userDropdown.unableToLoadMenu')}
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  );
+}
+
 export const UserDropdownMenu = ErrorBoundary.with(
   {
-    fallback: (
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem disabled>Unable to load menu.</DropdownMenuItem>
-      </DropdownMenuContent>
-    ),
+    fallback: <UserDropdownMenuFallback />,
   },
   function UserDropdownMenu() {
     const t = useTranslations('common');
@@ -1049,37 +1056,41 @@ function SignOutDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
+  const t = useTranslations('common');
+  const tNav = useTranslations('nav');
   const { logout } = useLogout();
   const handleSignOut = useCallback(async () => {
     try {
       await logout(); // Callbacks are already configured in the hook
       onOpenChange(false);
     } catch (error) {
-      toast.error('Failed to sign out', {
+      toast.error(tNav('userDropdown.signOutFailedTitle'), {
         description:
-          error instanceof Error ? error.message : 'Please try again.',
+          error instanceof Error
+            ? error.message
+            : tNav('userDropdown.signOutFailedFallback'),
       });
     }
-  }, [logout, onOpenChange]);
+  }, [logout, onOpenChange, tNav]);
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Are you sure you want to sign out?
+            {tNav('userDropdown.signOutConfirmTitle')}
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to sign out? Any unsaved changes will be lost.
+            {tNav('userDropdown.signOutConfirmDescription')}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{t('actions.cancel')}</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleSignOut}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            Sign Out
+            {t('actions.signOut')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

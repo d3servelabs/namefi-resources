@@ -18,6 +18,7 @@ import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { AlertCircle, Mail } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { getAuthContactEmail } from '@/components/providers/auth-display-profile';
@@ -26,6 +27,7 @@ import { useAdminFeatureFlag } from './admin/feature-flags/use-flag';
 import { FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG } from '@/lib/openfeature-flags';
 
 export function HeaderMissingEmailWarning() {
+  const t = useTranslations('shared');
   const [forceHeaderMissingEmailWarning] = useAdminFeatureFlag(
     FORCE_HEADER_MISSING_EMAIL_WARNING_FLAG,
   );
@@ -81,7 +83,9 @@ export function HeaderMissingEmailWarning() {
       }}
     >
       <AlertCircle className="size-4 shrink-0" />
-      <span className="hidden sm:inline">No Contact Email</span>
+      <span className="hidden sm:inline">
+        {t('missingEmail.noContactEmail')}
+      </span>
     </button>
   );
 
@@ -98,7 +102,7 @@ export function HeaderMissingEmailWarning() {
                 <Mail className="h-6 w-6 text-amber-600 dark:text-amber-400" />
               </div>
               <DialogTitle className="text-center">
-                No Contact Email
+                {t('missingEmail.noContactEmail')}
               </DialogTitle>
               <DialogDescription className="text-center">
                 Add your email to receive important notifications about your
@@ -112,10 +116,10 @@ export function HeaderMissingEmailWarning() {
                 onClick={() => setIsDialogOpen(false)}
                 className="w-full sm:w-auto"
               >
-                Later
+                {t('missingEmail.later')}
               </Button>
               <Button onClick={handleAddEmail} className="w-full sm:w-auto">
-                Add Email to Profile
+                {t('missingEmail.addEmailToProfile')}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -134,7 +138,9 @@ export function HeaderMissingEmailWarning() {
               <Mail className="h-5 w-5 text-amber-600 dark:text-amber-400" />
             </div>
             <div className="flex-1 space-y-1">
-              <h4 className="font-semibold text-sm">No Contact Email</h4>
+              <h4 className="font-semibold text-sm">
+                {t('missingEmail.noContactEmail')}
+              </h4>
               <p className="text-sm text-muted-foreground">
                 Add your email to receive important notifications about your
                 orders, domains, and account updates.
@@ -148,10 +154,10 @@ export function HeaderMissingEmailWarning() {
               onClick={() => setIsPopoverOpen(false)}
               className="flex-1"
             >
-              Later
+              {t('missingEmail.later')}
             </Button>
             <Button size="sm" onClick={handleAddEmail} className="flex-1">
-              Add Email
+              {t('missingEmail.addEmail')}
             </Button>
           </div>
         </div>

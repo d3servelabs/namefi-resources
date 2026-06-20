@@ -1,0 +1,83 @@
+{
+  "status400": {
+    "title": {
+      "description": "Heading on the 400 (Bad Request) error page. Short, calm.",
+      "maxLength": 24
+    },
+    "description": {
+      "description": "One-line, light-hearted explanation under the 400 error heading. The request was malformed."
+    }
+  },
+  "status403": {
+    "title": {
+      "description": "Heading on the 403 (Access Denied) error page. Short, calm.",
+      "maxLength": 24
+    },
+    "description": {
+      "description": "One-line, light-hearted explanation under the 403 error heading. The user is not authorized; signing in may help."
+    }
+  },
+  "status404": {
+    "title": {
+      "description": "Heading on the 404 (Not Found) error page. Short, calm.",
+      "maxLength": 24
+    },
+    "description": {
+      "description": "One-line, light-hearted explanation under the 404 error heading. The page does not exist."
+    }
+  },
+  "status500": {
+    "title": {
+      "description": "Heading on the 500 (Server Error) error page. Short, calm.",
+      "maxLength": 24
+    },
+    "description": {
+      "description": "One-line, light-hearted explanation under the 500 error heading. Something failed on our side; retrying may help."
+    }
+  },
+  "actions": {
+    "goHome": {
+      "description": "Button that navigates back to the site home page.",
+      "maxLength": 20
+    },
+    "searchDomains": {
+      "description": "Button on the 404 page that jumps to domain search.",
+      "maxLength": 20
+    },
+    "logIn": {
+      "description": "Button to sign in, shown on auth-related error pages. Same intent as Sign In.",
+      "maxLength": 16
+    },
+    "signIn": {
+      "description": "Sign-in button on the unauthorized-access card.",
+      "maxLength": 16
+    },
+    "goToHome": {
+      "description": "Button on the unauthorized-access card that returns to the home page.",
+      "maxLength": 16
+    }
+  },
+  "unauthorized": {
+    "title": {
+      "description": "Heading of the unauthorized-access card shown when a user lacks permission for a page.",
+      "maxLength": 28
+    },
+    "description": {
+      "description": "Body of the unauthorized-access card explaining the user lacks permission and can sign in or go home."
+    },
+    "contactSupport": {
+      "description": "Footnote on the unauthorized-access card inviting the user to contact support if they think it's a mistake."
+    }
+  },
+  "reference": {
+    "description": "Small footnote showing the support reference id. Keep the {requestId} placeholder verbatim; translate only the label word before it."
+  },
+  "login": {
+    "failedTitle": {
+      "description": "Toast title shown when starting the sign-in flow fails."
+    },
+    "failedDescription": {
+      "description": "Toast body shown when starting the sign-in flow fails; asks the user to try again."
+    }
+  }
+}

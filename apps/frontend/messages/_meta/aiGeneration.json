@@ -1,0 +1,746 @@
+{
+  "studio": {
+    "title": { "description": "Brand Studio page heading.", "maxLength": 40 },
+    "subtitle": {
+      "description": "Brand Studio page subtitle describing what users can create."
+    },
+    "poweredByAlt": {
+      "description": "Alt text for the 'Powered by Namefi' badge image.",
+      "maxLength": 30
+    }
+  },
+  "tabs": {
+    "logo": {
+      "description": "Tab label for the logo generator.",
+      "maxLength": 16
+    },
+    "poster": {
+      "description": "Tab label for the poster generator.",
+      "maxLength": 16
+    },
+    "animation": {
+      "description": "Tab label for the animation generator.",
+      "maxLength": 16
+    }
+  },
+  "prerequisite": {
+    "title": {
+      "description": "Hint title shown when a logo must be generated before a derivative.",
+      "maxLength": 30
+    },
+    "posterDescription": {
+      "description": "Explains a generated logo is required before creating a poster."
+    },
+    "animationDescription": {
+      "description": "Explains a generated logo is required before creating an animation."
+    }
+  },
+  "usage": {
+    "credits": {
+      "description": "Label for the AI credits usage card.",
+      "maxLength": 20
+    },
+    "usedThisMonth": {
+      "description": "Shows how many AI credits are used this month. {current} and {max} are numbers."
+    },
+    "limitReached": {
+      "description": "Badge shown when the monthly AI credit limit is reached.",
+      "maxLength": 30
+    },
+    "creditsLeft": {
+      "description": "Badge showing remaining AI credits. {count} is a number, with plural forms."
+    },
+    "refreshAria": {
+      "description": "Accessible label for the credit refresh time info button."
+    },
+    "refreshAt": {
+      "description": "Tooltip text showing when credits refresh. {time} is a formatted date/time."
+    },
+    "refreshMonthly": {
+      "description": "Fallback tooltip text stating credits refresh monthly."
+    },
+    "balanceCheckError": {
+      "description": "Toast title when the AI credit balance cannot be checked."
+    },
+    "balanceCheckErrorDescription": {
+      "description": "Toast body when the AI credit balance cannot be verified."
+    },
+    "checkingBalance": {
+      "description": "Status text shown while the AI credit balance is loading."
+    },
+    "willCheckBalance": {
+      "description": "Status text stating the balance will be checked before generation."
+    },
+    "creditAmount": {
+      "description": "Formats a credit cost amount. {count} is a number, with plural forms."
+    },
+    "costInsufficient": {
+      "description": "Warning that a generation needs more credits than remaining. {cost} and {remaining} are formatted credit amounts."
+    },
+    "costPreview": {
+      "description": "Preview of a generation's credit cost and remaining balance. {cost} and {remaining} are formatted credit amounts."
+    }
+  },
+  "domainField": {
+    "fixedLabel": {
+      "description": "Placeholder/label for the domain input when no domain is fixed."
+    },
+    "logoPlaceholder": {
+      "description": "Placeholder for the brand domain field in the logo generator."
+    },
+    "brandPlaceholder": {
+      "description": "Placeholder for the required brand domain field in poster/animation generators."
+    },
+    "searchBrands": {
+      "description": "Search placeholder when only brand domains may be selected."
+    },
+    "searchOrEnter": {
+      "description": "Search placeholder when a domain may be searched or typed."
+    },
+    "emptyStudioLogos": {
+      "description": "Empty-state message when no Studio logo domains are found."
+    },
+    "emptyMatching": {
+      "description": "Empty-state message when no matching domains are found."
+    }
+  },
+  "description": {
+    "label": {
+      "description": "Label for the optional brand description textarea."
+    },
+    "placeholder": {
+      "description": "Placeholder for the brand description textarea."
+    }
+  },
+  "logo": {
+    "gridTitle": {
+      "description": "Heading above the grid of generated logos.",
+      "maxLength": 30
+    },
+    "chooseType": {
+      "description": "Section label for choosing a logo type.",
+      "maxLength": 30
+    },
+    "chooseStyle": {
+      "description": "Section label for choosing a logo style.",
+      "maxLength": 30
+    },
+    "chooseTldTreatment": {
+      "description": "Section label for choosing a TLD treatment.",
+      "maxLength": 40
+    },
+    "chooseTypography": {
+      "description": "Section label for choosing typography.",
+      "maxLength": 30
+    },
+    "chooseModel": {
+      "description": "Section label for choosing an image model.",
+      "maxLength": 30
+    },
+    "controls": {
+      "type": {
+        "description": "Control chip label for logo type.",
+        "maxLength": 16
+      },
+      "style": {
+        "description": "Control chip label for logo style.",
+        "maxLength": 16
+      },
+      "tld": {
+        "description": "Control chip label for TLD treatment.",
+        "maxLength": 16
+      },
+      "typography": {
+        "description": "Control chip label for typography.",
+        "maxLength": 16
+      },
+      "model": {
+        "description": "Control chip label for the image model.",
+        "maxLength": 16
+      },
+      "brandVision": {
+        "description": "Control chip label opening the brand description panel.",
+        "maxLength": 20
+      },
+      "advanced": {
+        "description": "Toggle label revealing advanced logo controls.",
+        "maxLength": 16
+      }
+    },
+    "actions": {
+      "createPoster": {
+        "description": "Action to create a poster from a logo.",
+        "maxLength": 20
+      },
+      "animateLogo": {
+        "description": "Action to animate a logo.",
+        "maxLength": 20
+      }
+    }
+  },
+  "poster": {
+    "title": { "description": "Poster generator heading.", "maxLength": 30 },
+    "gridTitle": {
+      "description": "Heading above the grid of generated posters.",
+      "maxLength": 30
+    },
+    "usingBrand": {
+      "description": "Shows which brand domain a poster uses. {domain} is the domain name."
+    },
+    "backToLogos": {
+      "description": "Button returning from the poster flow to the logo tab.",
+      "maxLength": 20
+    },
+    "chooseLogo": {
+      "description": "Section label for choosing a logo to base a poster on."
+    },
+    "chooseModel": {
+      "description": "Section label for choosing an image model.",
+      "maxLength": 30
+    },
+    "chooseCollateral": {
+      "description": "Section label for choosing a collateral type.",
+      "maxLength": 30
+    },
+    "selectCollateral": {
+      "description": "Placeholder for the collateral type select.",
+      "maxLength": 30
+    },
+    "controls": {
+      "useLogo": {
+        "description": "Control chip label for selecting a logo.",
+        "maxLength": 16
+      },
+      "selected": {
+        "description": "Badge shown on the Use Logo chip when a logo is selected.",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "Control chip label opening the description panel.",
+        "maxLength": 16
+      },
+      "model": {
+        "description": "Control chip label for the image model.",
+        "maxLength": 16
+      },
+      "collateral": {
+        "description": "Control chip label for the collateral type.",
+        "maxLength": 16
+      },
+      "advanced": {
+        "description": "Toggle label revealing advanced poster controls.",
+        "maxLength": 16
+      }
+    },
+    "collateral": {
+      "letAiChoose": {
+        "description": "Collateral option: let the AI choose the collateral type.",
+        "maxLength": 20
+      },
+      "billboard": {
+        "description": "Collateral option: billboard.",
+        "maxLength": 20
+      },
+      "apparel": {
+        "description": "Collateral option: apparel.",
+        "maxLength": 20
+      },
+      "vehicle": {
+        "description": "Collateral option: vehicle.",
+        "maxLength": 20
+      },
+      "product": {
+        "description": "Collateral option: product.",
+        "maxLength": 20
+      }
+    }
+  },
+  "animation": {
+    "title": { "description": "Animation generator heading.", "maxLength": 30 },
+    "gridTitle": {
+      "description": "Heading above the grid of generated animations.",
+      "maxLength": 30
+    },
+    "usingBrand": {
+      "description": "Shows which brand domain an animation uses. {domain} is the domain name."
+    },
+    "backToLogos": {
+      "description": "Button returning from the animation flow to the logo tab.",
+      "maxLength": 20
+    },
+    "chooseMode": {
+      "description": "Section label for choosing an animation mode.",
+      "maxLength": 30
+    },
+    "chooseLogo": {
+      "description": "Section label for choosing a logo to animate.",
+      "maxLength": 40
+    },
+    "chooseOpening": {
+      "description": "Section label for choosing an opening style.",
+      "maxLength": 30
+    },
+    "chooseMotion": {
+      "description": "Section label for choosing a motion direction.",
+      "maxLength": 30
+    },
+    "chooseIntensity": {
+      "description": "Section label for choosing motion intensity.",
+      "maxLength": 30
+    },
+    "chooseModel": {
+      "description": "Section label for choosing an animation model.",
+      "maxLength": 30
+    },
+    "selectOpening": {
+      "description": "Placeholder for the opening style select.",
+      "maxLength": 30
+    },
+    "selectMotion": {
+      "description": "Placeholder for the motion preset select.",
+      "maxLength": 30
+    },
+    "selectIntensity": {
+      "description": "Placeholder for the motion intensity select.",
+      "maxLength": 30
+    },
+    "useLogoAria": {
+      "description": "Accessible label for a logo selection card. {domain} is the domain name."
+    },
+    "controls": {
+      "mode": {
+        "description": "Control chip label for the animation mode.",
+        "maxLength": 16
+      },
+      "useLogo": {
+        "description": "Control chip label for selecting a logo.",
+        "maxLength": 16
+      },
+      "selected": {
+        "description": "Badge shown on the Use Logo chip when a logo is selected.",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "Control chip label opening the description panel.",
+        "maxLength": 16
+      },
+      "opening": {
+        "description": "Control chip label for the opening style.",
+        "maxLength": 16
+      },
+      "motion": {
+        "description": "Control chip label for the motion direction.",
+        "maxLength": 16
+      },
+      "intensity": {
+        "description": "Control chip label for the motion intensity.",
+        "maxLength": 16
+      },
+      "model": {
+        "description": "Control chip label for the animation model.",
+        "maxLength": 16
+      }
+    },
+    "validation": {
+      "openingRequired": {
+        "description": "Validation error when an opening is required for cinematic animation."
+      },
+      "chooseCinematicModel": {
+        "description": "Validation error prompting selection of a cinematic model."
+      },
+      "chooseCinematicMotion": {
+        "description": "Validation error prompting selection of a cinematic motion preset."
+      },
+      "chooseSeedanceModel": {
+        "description": "Validation error prompting selection of a Seedance model."
+      },
+      "intensityRequired": {
+        "description": "Validation error when intensity is required for looped animation."
+      },
+      "chooseLoopedModel": {
+        "description": "Validation error prompting selection of a looped model."
+      },
+      "chooseLoopedMotion": {
+        "description": "Validation error prompting selection of a looped motion preset."
+      }
+    }
+  },
+  "model": {
+    "select": {
+      "description": "Placeholder for the image model select.",
+      "maxLength": 30
+    }
+  },
+  "submit": {
+    "generate": {
+      "description": "Submit button text to generate an asset.",
+      "maxLength": 20
+    },
+    "generating": {
+      "description": "Submit button text while generating.",
+      "maxLength": 20
+    },
+    "animate": {
+      "description": "Submit button text to generate an animation.",
+      "maxLength": 20
+    },
+    "selectBrand": {
+      "description": "Submit button text prompting brand selection when none is chosen.",
+      "maxLength": 20
+    }
+  },
+  "gallery": {
+    "yours": {
+      "description": "Tab label for the user's own generations.",
+      "maxLength": 24
+    },
+    "featured": {
+      "description": "Tab label for featured generations.",
+      "maxLength": 24
+    },
+    "brands": {
+      "description": "Trigger label for the brand filter when none selected.",
+      "maxLength": 20
+    },
+    "brandsSelected": {
+      "description": "Brand filter trigger showing count of selected brands. {count} is a number."
+    },
+    "searchBrand": {
+      "description": "Search placeholder in the brand filter.",
+      "maxLength": 24
+    },
+    "noBrands": {
+      "description": "Empty-state message when no brands match the filter."
+    },
+    "filterAll": { "description": "Type filter option: all.", "maxLength": 16 },
+    "filterLogo": {
+      "description": "Type filter option: logo.",
+      "maxLength": 16
+    },
+    "filterPoster": {
+      "description": "Type filter option: poster.",
+      "maxLength": 16
+    },
+    "filterAnimation": {
+      "description": "Type filter option: animation.",
+      "maxLength": 16
+    },
+    "emptyYours": {
+      "description": "Empty-state message when the user has no generations yet."
+    },
+    "openAria": {
+      "description": "Accessible label to open a generation. {domain} is the domain name."
+    },
+    "openFeaturedAria": {
+      "description": "Accessible label to open a featured generation. {domain} is the domain name."
+    },
+    "viewAria": {
+      "description": "Accessible label to view a generation by index. {index} is a number."
+    },
+    "animationPreviewAria": {
+      "description": "Accessible label for an animation preview video. {domain} is the domain name."
+    },
+    "previewUnavailable": {
+      "description": "Placeholder text when a gallery item preview is unavailable."
+    },
+    "basedOnLogo": {
+      "description": "Badge marking a generation derived from a logo.",
+      "maxLength": 20
+    },
+    "basedOn": {
+      "description": "Label preceding the source logo thumbnail.",
+      "maxLength": 16
+    },
+    "referencedLogoAlt": {
+      "description": "Alt text for the referenced source logo thumbnail.",
+      "maxLength": 30
+    }
+  },
+  "kind": {
+    "logo": {
+      "description": "Type label for a logo generation tile.",
+      "maxLength": 16
+    },
+    "poster": {
+      "description": "Type label for a poster generation tile.",
+      "maxLength": 16
+    },
+    "animation": {
+      "description": "Type label for an animation generation tile.",
+      "maxLength": 16
+    }
+  },
+  "progress": {
+    "generatingLogo": {
+      "description": "Overline label on a pending logo tile.",
+      "maxLength": 24
+    },
+    "generatingPoster": {
+      "description": "Overline label on a pending poster tile.",
+      "maxLength": 24
+    },
+    "preparingAnimation": {
+      "description": "Overline label on a pending animation tile.",
+      "maxLength": 24
+    },
+    "messages": {
+      "gathering": {
+        "description": "Playful progress message at the start of a generation."
+      },
+      "sketching": {
+        "description": "Playful progress message early in a generation."
+      },
+      "blending": {
+        "description": "Playful progress message during a generation."
+      },
+      "character": {
+        "description": "Playful progress message during a generation."
+      },
+      "lighting": {
+        "description": "Playful progress message during a generation."
+      },
+      "polishing": {
+        "description": "Playful progress message late in a generation."
+      },
+      "framing": {
+        "description": "Playful progress message near the end of a generation."
+      },
+      "almost": {
+        "description": "Playful progress message just before completion."
+      }
+    }
+  },
+  "status": {
+    "pending": {
+      "description": "Generation status: pending.",
+      "maxLength": 16
+    },
+    "processing": {
+      "description": "Generation status: processing.",
+      "maxLength": 16
+    },
+    "failed": { "description": "Generation status: failed.", "maxLength": 16 },
+    "ready": { "description": "Generation status: ready.", "maxLength": 16 }
+  },
+  "asyncTile": {
+    "genericError": {
+      "description": "Generic message shown when a generation fails."
+    },
+    "stillRunning": {
+      "description": "Message shown while a generation is still processing."
+    },
+    "queued": {
+      "description": "Message shown while a generation is queued."
+    }
+  },
+  "actions": {
+    "copy": {
+      "description": "Button to copy a generation link (compact).",
+      "maxLength": 16
+    },
+    "copyLink": {
+      "description": "Button to copy a generation link.",
+      "maxLength": 16
+    },
+    "tweet": {
+      "description": "Button to share a generation on X/Twitter.",
+      "maxLength": 16
+    },
+    "download": {
+      "description": "Button to download a generation asset.",
+      "maxLength": 16
+    }
+  },
+  "delete": {
+    "title": {
+      "description": "Confirmation dialog title for deleting a generation.",
+      "maxLength": 30
+    },
+    "titleSingle": {
+      "description": "Confirmation dialog title for deleting the current generation.",
+      "maxLength": 30
+    },
+    "descriptionLogo": {
+      "description": "Delete confirmation body for a logo. {domain} is the domain name."
+    },
+    "descriptionPoster": {
+      "description": "Delete confirmation body for a poster. {domain} is the domain name."
+    },
+    "descriptionAnimation": {
+      "description": "Delete confirmation body for an animation. {domain} is the domain name."
+    },
+    "deleting": {
+      "description": "Button text while a delete is in progress.",
+      "maxLength": 20
+    }
+  },
+  "share": {
+    "unableTitle": {
+      "description": "Toast title when sharing is not possible.",
+      "maxLength": 30
+    },
+    "unableMissingLink": {
+      "description": "Toast body when no shareable link exists for a generation."
+    },
+    "unableMissingLinkOrDomain": {
+      "description": "Toast body when no shareable link or domain exists for a generation."
+    }
+  },
+  "imageGrid": {
+    "previewUnavailable": {
+      "description": "Placeholder text when an image grid item preview is unavailable."
+    }
+  },
+  "details": {
+    "backToStudio": {
+      "description": "Button returning to the Brand Studio from the details page.",
+      "maxLength": 40
+    },
+    "headingLogo": {
+      "description": "Details page heading for a logo. {brand} is the brand name."
+    },
+    "headingPoster": {
+      "description": "Details page heading for a poster. {brand} is the brand name."
+    },
+    "headingAnimation": {
+      "description": "Details page heading for an animation. {brand} is the brand name."
+    },
+    "notFoundTitle": {
+      "description": "Title shown when a generation cannot be found.",
+      "maxLength": 30
+    },
+    "notFoundDescription": {
+      "description": "Body shown when a generation cannot be found."
+    },
+    "assetUnavailable": {
+      "description": "Message shown when the generated asset is not yet available."
+    },
+    "sectionTitle": {
+      "description": "Heading for the generation details card.",
+      "maxLength": 20
+    },
+    "type": { "description": "Field label: generation type.", "maxLength": 16 },
+    "status": {
+      "description": "Field label: generation status.",
+      "maxLength": 16
+    },
+    "collateral": {
+      "description": "Field label: poster collateral type.",
+      "maxLength": 20
+    },
+    "motion": {
+      "description": "Field label: animation motion preset.",
+      "maxLength": 16
+    },
+    "mode": { "description": "Field label: animation mode.", "maxLength": 16 },
+    "opening": {
+      "description": "Field label: animation opening style.",
+      "maxLength": 16
+    },
+    "intensity": {
+      "description": "Field label: animation motion intensity.",
+      "maxLength": 16
+    },
+    "model": {
+      "description": "Field label: animation model.",
+      "maxLength": 16
+    },
+    "created": {
+      "description": "Field label: creation date.",
+      "maxLength": 16
+    },
+    "createdUnknown": {
+      "description": "Fallback text when the creation date is unknown.",
+      "maxLength": 16
+    },
+    "collateralUnknown": {
+      "description": "Fallback text when the collateral type is unknown.",
+      "maxLength": 16
+    },
+    "logoProperties": {
+      "description": "Heading for the logo properties card.",
+      "maxLength": 24
+    },
+    "logoStyle": { "description": "Field label: logo style.", "maxLength": 16 },
+    "logoType": { "description": "Field label: logo type.", "maxLength": 16 },
+    "logoTld": {
+      "description": "Field label: logo TLD treatment.",
+      "maxLength": 16
+    },
+    "logoTypography": {
+      "description": "Field label: logo typography.",
+      "maxLength": 16
+    },
+    "sourceLogo": {
+      "description": "Heading for the source logo card.",
+      "maxLength": 24
+    },
+    "sourceLogoAlt": {
+      "description": "Alt text for the source logo image."
+    },
+    "viewLogoDetails": {
+      "description": "Button to open the source logo's details page.",
+      "maxLength": 24
+    },
+    "sourcePreviewUnavailable": {
+      "description": "Message when the source logo preview is unavailable."
+    },
+    "sourceLoadFailed": {
+      "description": "Message when the source logo details fail to load."
+    },
+    "sourceNotFound": {
+      "description": "Message when no source logo reference is found."
+    },
+    "animationSheet": {
+      "description": "Heading for the animation sheet card.",
+      "maxLength": 24
+    },
+    "animationSheetAlt": {
+      "description": "Alt text for the generated animation sheet. {domain} is the domain name."
+    },
+    "openSheetAria": {
+      "description": "Accessible label to open the animation sheet preview."
+    },
+    "sheetModel": {
+      "description": "Field label: animation sheet model.",
+      "maxLength": 20
+    },
+    "sheetDialogTitle": {
+      "description": "Title of the animation sheet preview dialog.",
+      "maxLength": 24
+    },
+    "sheetDialogDescription": {
+      "description": "Description of the animation sheet preview dialog."
+    },
+    "shareTwitterTitle": {
+      "description": "Tooltip/title for the Twitter share button.",
+      "maxLength": 24
+    },
+    "copyLinkTitle": {
+      "description": "Tooltip/title for the copy link button.",
+      "maxLength": 24
+    },
+    "twitter": {
+      "description": "Twitter share button label.",
+      "maxLength": 16
+    },
+    "linkCopied": {
+      "description": "Toast title when the link is copied."
+    },
+    "linkCopiedDescription": {
+      "description": "Toast body after the link is copied."
+    },
+    "linkCopyFailed": {
+      "description": "Toast title when copying the link fails."
+    },
+    "linkCopyFailedDescription": {
+      "description": "Toast body when copying the link fails."
+    },
+    "animationLabelAria": {
+      "description": "Accessible label for the animation video. {mode} is the mode, {domain} is the domain name."
+    },
+    "imageAlt": {
+      "description": "Alt text for a generated image. {type} is the generation type, {domain} is the domain name."
+    }
+  }
+}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { InfoIcon, Trash2Icon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import { LoadingButton } from '@/components/buttons/loading-button';
@@ -67,8 +68,10 @@ export function DelegationSignersTable({
   activeSigners,
   pendingSigners,
   disableAllButtons,
-  emptyMessage = 'No delegation signers associated yet.',
+  emptyMessage,
 }: DelegationSignersTableProps) {
+  const t = useTranslations('dnsManagement');
+  const tDomains = useTranslations('domains');
   const isMobile = useIsMobile();
 
   const rows: DisplayRow[] = [
@@ -77,7 +80,11 @@ export function DelegationSignersTable({
   ];
 
   if (rows.length === 0) {
-    return <p className="text-xs text-zinc-500 italic">{emptyMessage}</p>;
+    return (
+      <p className="text-xs text-zinc-500 italic">
+        {emptyMessage ?? t('dnssecPanel.signersTable.empty')}
+      </p>
+    );
   }
 
   if (isMobile) {
@@ -113,11 +120,22 @@ export function DelegationSignersTable({
       <table className="w-full text-xs" /* mobile-ok */>
         <thead className="bg-zinc-900/60 text-zinc-400">
           <tr>
-            <th className="text-start p-2">Key tag</th>
-            <th className="text-start p-2">Algorithm</th>
-            <th className="text-start p-2">Digest type</th>
-            <th className="text-start p-2">Digest</th>
-            <th className="text-end p-2 w-10" aria-label="Actions" />
+            <th className="text-start p-2">
+              {t('dnssecPanel.signersTable.keyTag')}
+            </th>
+            <th className="text-start p-2">
+              {t('dnssecPanel.signersTable.algorithm')}
+            </th>
+            <th className="text-start p-2">
+              {t('dnssecPanel.signersTable.digestType')}
+            </th>
+            <th className="text-start p-2">
+              {t('dnssecPanel.signersTable.digest')}
+            </th>
+            <th
+              className="text-end p-2 w-10"
+              aria-label={tDomains('dnssec.actionsAriaLabel')}
+            />
           </tr>
         </thead>
         <tbody className="font-mono">
@@ -285,6 +303,7 @@ function PendingSignerRow({
   pending: PendingSigner;
   disabled: boolean;
 }) {
+  const t = useTranslations('dnsManagement');
   return (
     <tr className="border-t border-zinc-800">
       <td className="p-2">
@@ -294,7 +313,7 @@ function PendingSignerRow({
             variant="outline"
             className="bg-amber-500/15 text-amber-300 border-amber-500/30"
           >
-            Pending
+            {t('dnssecPanel.signersTable.pending')}
           </Badge>
           <PendingPhaseTooltip pending={pending} />
         </div>
@@ -319,7 +338,8 @@ function PendingSignerRow({
 }
 
 function PendingPhaseTooltip({ pending }: { pending: PendingSigner }) {
-  const tooltipBody = describePendingPhase(pending);
+  const t = useTranslations('dnsManagement');
+  const tooltipBody = describePendingPhase(pending, t);
   return (
     <TooltipProvider>
       <Tooltip>
@@ -338,7 +358,14 @@ function PendingPhaseTooltip({ pending }: { pending: PendingSigner }) {
   );
 }
 
-function describePendingPhase(pending: PendingSigner): string {
+type DnsManagementTranslator = ReturnType<
+  typeof useTranslations<'dnsManagement'>
+>;
+
+function describePendingPhase(
+  pending: PendingSigner,
+  t: DnsManagementTranslator,
+): string {
   // `authoritativeTimeoutMs` and `publicDnsTimeoutMs` are *phase-specific*
   // — they're the `failThresholdMs` passed into each `pollWithTimeoutAlert`
   // call, counted from the moment that phase's polling starts (not from
@@ -349,27 +376,33 @@ function describePendingPhase(pending: PendingSigner): string {
     case 'await-authoritative-validation': {
       const remaining = formatRemaining(
         phaseStart + pending.authoritativeTimeoutMs - Date.now(),
+        t,
       );
-      return `Awaiting authoritative-NS validation. Times out in ~${remaining}.`;
+      return t('dnssecPanel.signersTable.phaseAuthoritative', { remaining });
     }
     case 'await-public-dns-validation': {
       const remaining = formatRemaining(
         phaseStart + pending.publicDnsTimeoutMs - Date.now(),
+        t,
       );
-      return `Awaiting public-DNS propagation. Times out in ~${remaining}.`;
+      return t('dnssecPanel.signersTable.phasePublicDns', { remaining });
     }
     case 'submit-to-registrar':
-      return 'Validation passed; submitting DS to the registrar.';
+      return t('dnssecPanel.signersTable.phaseSubmit');
   }
 }
 
-function formatRemaining(ms: number): string {
-  if (ms <= 0) return 'now';
+function formatRemaining(ms: number, t: DnsManagementTranslator): string {
+  if (ms <= 0) return t('dnssecPanel.signersTable.remainingNow');
   const totalMinutes = Math.floor(ms / 60_000);
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  if (hours <= 0) return `${minutes}m`;
-  return `${hours}h ${minutes}m`;
+  if (hours <= 0)
+    return t('dnssecPanel.signersTable.remainingMinutes', { minutes });
+  return t('dnssecPanel.signersTable.remainingHoursMinutes', {
+    hours,
+    minutes,
+  });
 }
 
 function resolveSignerKeyId(signer: ActiveSigner): string | null {
@@ -388,6 +421,8 @@ function DisassociateButton({
   signer: ActiveSigner;
   disabled: boolean;
 }) {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -398,7 +433,13 @@ function DisassociateButton({
     trpc.domainConfig.dnssec.disassociateDelegationSigner.mutationOptions({
       async onSuccess() {
         toast.success(
-          `Removed delegation signer${signer.keyTag ? ` (key tag ${signer.keyTag})` : ''}`,
+          t('dnssecPanel.signersTable.removeSuccess', {
+            keyTagSuffix: signer.keyTag
+              ? t('dnssecPanel.signersTable.removeSuccessKeyTagSuffix', {
+                  keyTag: signer.keyTag,
+                })
+              : '',
+          }),
         );
         await queryClient.refetchQueries({
           queryKey: trpc.domainConfig.dnssec.getDomainDnssecDetails.queryKey({
@@ -408,7 +449,9 @@ function DisassociateButton({
         setOpen(false);
       },
       onError(error) {
-        toast.error(`Failed to remove delegation signer: ${error.message}`);
+        toast.error(
+          t('dnssecPanel.signersTable.removeFailed', { error: error.message }),
+        );
       },
     }),
   );
@@ -422,7 +465,7 @@ function DisassociateButton({
             size="icon"
             className="h-7 w-7 text-zinc-400 hover:text-red-400"
             disabled={disabled || !keyId}
-            aria-label="Remove delegation signer"
+            aria-label={t('dnssecPanel.signersTable.removeAria')}
           >
             <Trash2Icon className="w-4 h-4" />
           </Button>
@@ -430,35 +473,37 @@ function DisassociateButton({
       />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Remove delegation signer?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t('dnssecPanel.signersTable.removeTitle')}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This disassociates the DS at the registrar.{' '}
-            {signer.keyTag ? `Key tag ${signer.keyTag}. ` : ''}If this is the
-            only DS for the domain, DNSSEC validation will break globally within
-            a few hours. Make sure you've already published a replacement at the
-            parent or are intentionally turning DNSSEC off.
+            {t('dnssecPanel.signersTable.removeDescription', {
+              keyTagSuffix: signer.keyTag
+                ? t('dnssecPanel.signersTable.removeKeyTagSuffix', {
+                    keyTag: signer.keyTag,
+                  })
+                : '',
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>{tCommon('actions.cancel')}</AlertDialogCancel>
           <AlertDialogAction
             render={
               <LoadingButton
                 variant="destructive"
                 isLoading={mutation.isPending}
-                loadingText="Removing..."
+                loadingText={t('dnssecPanel.signersTable.removing')}
                 onClick={(event) => {
                   event.preventDefault();
                   if (!keyId) {
-                    toast.error(
-                      'Cannot determine which key to remove (no id, publicKey, or keyTag).',
-                    );
+                    toast.error(t('dnssecPanel.signersTable.noKeyId'));
                     return;
                   }
                   mutation.mutate({ domainName, keyId });
                 }}
               >
-                Remove
+                {t('dnssecPanel.signersTable.remove')}
               </LoadingButton>
             }
           />
@@ -477,6 +522,7 @@ function CancelDeferredButton({
   pending: PendingSigner;
   disabled: boolean;
 }) {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -485,7 +531,9 @@ function CancelDeferredButton({
     trpc.domainConfig.dnssec.cancelDeferredDelegationSigner.mutationOptions({
       async onSuccess() {
         toast.success(
-          `Cancelled deferred submission (key tag ${pending.signingConfig.keyTag})`,
+          t('dnssecPanel.signersTable.cancelSuccess', {
+            keyTag: pending.signingConfig.keyTag,
+          }),
         );
         await queryClient.refetchQueries({
           queryKey:
@@ -496,7 +544,9 @@ function CancelDeferredButton({
         setOpen(false);
       },
       onError(error) {
-        toast.error(`Failed to cancel: ${error.message}`);
+        toast.error(
+          t('dnssecPanel.signersTable.cancelFailed', { error: error.message }),
+        );
       },
     }),
   );
@@ -510,7 +560,7 @@ function CancelDeferredButton({
             size="icon"
             className="h-7 w-7 text-zinc-400 hover:text-red-400"
             disabled={disabled}
-            aria-label="Cancel deferred DS submission"
+            aria-label={t('dnssecPanel.signersTable.cancelDeferredAria')}
           >
             <Trash2Icon className="w-4 h-4" />
           </Button>
@@ -518,22 +568,23 @@ function CancelDeferredButton({
       />
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Cancel deferred DS submission?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {t('dnssecPanel.signersTable.cancelDeferredTitle')}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This stops the validation poll for key tag{' '}
-            {pending.signingConfig.keyTag}. No DS will be associated. The
-            submission can be retried later by clicking Enable DNSSEC again or
-            from the Add Delegation Signer dialog.
+            {t('dnssecPanel.signersTable.cancelDeferredDescription', {
+              keyTag: pending.signingConfig.keyTag,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Keep waiting</AlertDialogCancel>
+          <AlertDialogCancel>{t('actions.keepWaiting')}</AlertDialogCancel>
           <AlertDialogAction
             render={
               <LoadingButton
                 variant="destructive"
                 isLoading={mutation.isPending}
-                loadingText="Cancelling..."
+                loadingText={t('dnssecPanel.signersTable.cancelling')}
                 onClick={(event) => {
                   event.preventDefault();
                   mutation.mutate({
@@ -542,7 +593,7 @@ function CancelDeferredButton({
                   });
                 }}
               >
-                Cancel submission
+                {t('dnssecPanel.signersTable.cancelSubmission')}
               </LoadingButton>
             }
           />

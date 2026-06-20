@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import type { UseFormReturn } from 'react-hook-form';
 import { useQuery } from '@tanstack/react-query';
 import { Check } from 'lucide-react';
@@ -57,93 +58,100 @@ import { useAuth } from '@/hooks/use-auth';
 
 const DEFAULT_ANIMATION_MODE = 'sheet-guided' satisfies AnimationMode;
 
-const animationFormSchema = baseFormSchema
-  .extend({
-    selectedLogoId: z.string().uuid(),
-    mode: z.enum(ANIMATION_MODE_IDS).default(DEFAULT_ANIMATION_MODE),
-    sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).optional(),
-    motionPreset: z
-      .enum(ANIMATION_MOTION_PRESET_IDS)
-      .default('let-ai-choose' satisfies AnimationMotionPresetInput),
-    motionIntensity: z.enum(ANIMATION_MOTION_INTENSITY_IDS).optional(),
-    model: z
-      .enum(ANIMATION_MODEL_IDS)
-      .default('bytedance/seedance-2.0' satisfies AnimationModel),
-  })
-  .superRefine((value, ctx) => {
-    if (value.mode === 'cinematic') {
-      if (!value.sourceMode) {
+type AnimationTranslator = ReturnType<typeof useTranslations<'aiGeneration'>>;
+
+function buildAnimationFormSchema(t: AnimationTranslator) {
+  return baseFormSchema
+    .extend({
+      selectedLogoId: z.string().uuid(),
+      mode: z.enum(ANIMATION_MODE_IDS).default(DEFAULT_ANIMATION_MODE),
+      sourceMode: z.enum(ANIMATION_SOURCE_MODE_IDS).optional(),
+      motionPreset: z
+        .enum(ANIMATION_MOTION_PRESET_IDS)
+        .default('let-ai-choose' satisfies AnimationMotionPresetInput),
+      motionIntensity: z.enum(ANIMATION_MOTION_INTENSITY_IDS).optional(),
+      model: z
+        .enum(ANIMATION_MODEL_IDS)
+        .default('bytedance/seedance-2.0' satisfies AnimationModel),
+    })
+    .superRefine((value, ctx) => {
+      if (value.mode === 'cinematic') {
+        if (!value.sourceMode) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t('animation.validation.openingRequired'),
+            path: ['sourceMode'],
+          });
+        }
+
+        if (!CINEMATIC_ANIMATION_MODEL_IDS.includes(value.model as never)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t('animation.validation.chooseCinematicModel'),
+            path: ['model'],
+          });
+        }
+
+        if (
+          !CINEMATIC_ANIMATION_MOTION_PRESET_IDS.includes(
+            value.motionPreset as never,
+          )
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t('animation.validation.chooseCinematicMotion'),
+            path: ['motionPreset'],
+          });
+        }
+
+        return;
+      }
+
+      if (value.mode === 'sheet-guided') {
+        if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t('animation.validation.chooseSeedanceModel'),
+            path: ['model'],
+          });
+        }
+
+        return;
+      }
+
+      if (!value.motionIntensity) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Opening is required for cinematic animation',
-          path: ['sourceMode'],
+          message: t('animation.validation.intensityRequired'),
+          path: ['motionIntensity'],
         });
       }
 
-      if (!CINEMATIC_ANIMATION_MODEL_IDS.includes(value.model as never)) {
+      if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Choose a cinematic model',
+          message: t('animation.validation.chooseLoopedModel'),
           path: ['model'],
         });
       }
 
       if (
-        !CINEMATIC_ANIMATION_MOTION_PRESET_IDS.includes(
+        !LOOPED_ANIMATION_MOTION_PRESET_IDS.includes(
           value.motionPreset as never,
         )
       ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Choose a cinematic motion preset',
+          message: t('animation.validation.chooseLoopedMotion'),
           path: ['motionPreset'],
         });
       }
+    });
+}
 
-      return;
-    }
-
-    if (value.mode === 'sheet-guided') {
-      if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Choose a Seedance model',
-          path: ['model'],
-        });
-      }
-
-      return;
-    }
-
-    if (!value.motionIntensity) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Intensity is required for looped animation',
-        path: ['motionIntensity'],
-      });
-    }
-
-    if (!LOOPED_ANIMATION_MODEL_IDS.includes(value.model as never)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Choose a looped model',
-        path: ['model'],
-      });
-    }
-
-    if (
-      !LOOPED_ANIMATION_MOTION_PRESET_IDS.includes(value.motionPreset as never)
-    ) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Choose a looped motion preset',
-        path: ['motionPreset'],
-      });
-    }
-  });
-
-type AnimationFormInput = z.input<typeof animationFormSchema>;
-type AnimationFormData = z.output<typeof animationFormSchema>;
+type AnimationFormSchema = ReturnType<typeof buildAnimationFormSchema>;
+type AnimationFormInput = z.input<AnimationFormSchema>;
+type AnimationFormData = z.output<AnimationFormSchema>;
 
 export type { AnimationFormData };
 
@@ -270,6 +278,7 @@ function applyAnimationModeChange(params: {
 }
 
 function buildControlPanelButtons(params: {
+  t: AnimationTranslator;
   mode: AnimationMode;
   openPanel: string | null;
   setOpenPanel: (panel: string | null) => void;
@@ -279,6 +288,7 @@ function buildControlPanelButtons(params: {
   resolvedMotionIntensity: AnimationMotionIntensity;
   resolvedModel: AnimationModel;
 }) {
+  const { t } = params;
   const togglePanel = (panel: string) => {
     params.setOpenPanel(params.openPanel === panel ? null : panel);
   };
@@ -292,21 +302,21 @@ function buildControlPanelButtons(params: {
   }> = [
     {
       key: 'mode',
-      label: 'Mode',
+      label: t('animation.controls.mode'),
       badge: ANIMATION_MODES[params.mode].name,
       onClick: () => togglePanel('mode'),
       isActive: params.openPanel === 'mode',
     },
     {
       key: 'logos',
-      label: 'Use Logo',
-      badge: params.selectedLogo ? 'Selected' : undefined,
+      label: t('animation.controls.useLogo'),
+      badge: params.selectedLogo ? t('animation.controls.selected') : undefined,
       onClick: () => togglePanel('logos'),
       isActive: params.openPanel === 'logos',
     },
     {
       key: 'description',
-      label: 'Description',
+      label: t('animation.controls.description'),
       onClick: () => togglePanel('description'),
       isActive: params.openPanel === 'description',
     },
@@ -315,7 +325,7 @@ function buildControlPanelButtons(params: {
   if (params.mode === 'cinematic') {
     buttons.push({
       key: 'opening',
-      label: 'Opening',
+      label: t('animation.controls.opening'),
       badge: ANIMATION_SOURCE_MODES[params.resolvedSourceMode].name,
       onClick: () => togglePanel('opening'),
       isActive: params.openPanel === 'opening',
@@ -325,7 +335,7 @@ function buildControlPanelButtons(params: {
   if (params.mode !== 'sheet-guided') {
     buttons.push({
       key: 'motion',
-      label: 'Motion',
+      label: t('animation.controls.motion'),
       badge: ANIMATION_MOTION_PRESETS[params.resolvedMotionPreset].name,
       onClick: () => togglePanel('motion'),
       isActive: params.openPanel === 'motion',
@@ -335,7 +345,7 @@ function buildControlPanelButtons(params: {
   if (params.mode === 'looped') {
     buttons.push({
       key: 'intensity',
-      label: 'Intensity',
+      label: t('animation.controls.intensity'),
       badge: ANIMATION_MOTION_INTENSITIES[params.resolvedMotionIntensity].name,
       onClick: () => togglePanel('intensity'),
       isActive: params.openPanel === 'intensity',
@@ -344,7 +354,7 @@ function buildControlPanelButtons(params: {
 
   buttons.push({
     key: 'model',
-    label: 'Model',
+    label: t('animation.controls.model'),
     badge: ANIMATION_MODELS[params.resolvedModel].name,
     onClick: () => togglePanel('model'),
     isActive: params.openPanel === 'model',
@@ -359,13 +369,14 @@ function AnimationLogoCard(props: {
   onSelect: (logoId: string) => void;
 }) {
   const { logo, isSelected, onSelect } = props;
+  const t = useTranslations('aiGeneration');
   const logoImageSrc = logo.thumbnailUrl ?? logo.url;
 
   return (
     <button
       type="button"
       aria-pressed={isSelected}
-      aria-label={`Use ${logo.domain} logo`}
+      aria-label={t('animation.useLogoAria', { domain: logo.domain })}
       className="w-full rounded-xl bg-transparent p-0 text-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       onClick={() => {
         onSelect(logo.id);
@@ -425,6 +436,7 @@ function AnimationGeneratorPanels({
   openPanel,
   setOpenPanel,
 }: AnimationGeneratorPanelsProps) {
+  const t = useTranslations('aiGeneration');
   const selectedLogoId = form.watch('selectedLogoId');
   const selectedMode = form.watch('mode') ?? DEFAULT_ANIMATION_MODE;
   const selectedSourceMode = form.watch('sourceMode');
@@ -459,6 +471,7 @@ function AnimationGeneratorPanels({
   };
 
   const controlButtons = buildControlPanelButtons({
+    t,
     mode: selectedMode,
     openPanel,
     setOpenPanel,
@@ -476,7 +489,7 @@ function AnimationGeneratorPanels({
       {openPanel === 'mode' && (
         <div className="mt-6 space-y-3">
           <FormLabel className="text-lg font-semibold">
-            Choose animation mode
+            {t('animation.chooseMode')}
           </FormLabel>
           <div className="flex flex-wrap gap-2">
             {ANIMATION_MODE_IDS.map((modeId) => (
@@ -505,7 +518,7 @@ function AnimationGeneratorPanels({
           render={() => (
             <FormItem className="mt-6">
               <FormLabel className="text-lg font-semibold">
-                Choose a logo to animate
+                {t('animation.chooseLogo')}
               </FormLabel>
               <FormControl>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -532,7 +545,7 @@ function AnimationGeneratorPanels({
           render={({ field }) => (
             <FormItem className="mt-6">
               <FormLabel className="text-lg font-semibold">
-                Choose opening style
+                {t('animation.chooseOpening')}
               </FormLabel>
               <FormControl>
                 <Select
@@ -544,7 +557,7 @@ function AnimationGeneratorPanels({
                   }}
                 >
                   <SelectTrigger className="w-full max-w-sm">
-                    <SelectValue placeholder="Select opening style" />
+                    <SelectValue placeholder={t('animation.selectOpening')} />
                   </SelectTrigger>
                   <SelectContent>
                     {ANIMATION_SOURCE_MODE_IDS.map((sourceModeId) => (
@@ -576,7 +589,7 @@ function AnimationGeneratorPanels({
           render={({ field }) => (
             <FormItem className="mt-6">
               <FormLabel className="text-lg font-semibold">
-                Choose motion direction
+                {t('animation.chooseMotion')}
               </FormLabel>
               <FormControl>
                 <Select
@@ -588,7 +601,7 @@ function AnimationGeneratorPanels({
                   }}
                 >
                   <SelectTrigger className="w-full max-w-sm">
-                    <SelectValue placeholder="Select motion" />
+                    <SelectValue placeholder={t('animation.selectMotion')} />
                   </SelectTrigger>
                   <SelectContent>
                     {selection.motionPresetIds.map((presetId) => (
@@ -622,7 +635,7 @@ function AnimationGeneratorPanels({
           render={({ field }) => (
             <FormItem className="mt-6">
               <FormLabel className="text-lg font-semibold">
-                Choose motion intensity
+                {t('animation.chooseIntensity')}
               </FormLabel>
               <FormControl>
                 <Select
@@ -634,7 +647,7 @@ function AnimationGeneratorPanels({
                   }}
                 >
                   <SelectTrigger className="w-full max-w-sm">
-                    <SelectValue placeholder="Select intensity" />
+                    <SelectValue placeholder={t('animation.selectIntensity')} />
                   </SelectTrigger>
                   <SelectContent>
                     {ANIMATION_MOTION_INTENSITY_IDS.map((intensityId) => (
@@ -666,7 +679,7 @@ function AnimationGeneratorPanels({
           render={({ field }) => (
             <FormItem className="mt-6">
               <FormLabel className="text-lg font-semibold">
-                Choose a model
+                {t('animation.chooseModel')}
               </FormLabel>
               <FormControl>
                 <Select
@@ -678,7 +691,7 @@ function AnimationGeneratorPanels({
                   }}
                 >
                   <SelectTrigger className="w-full max-w-sm">
-                    <SelectValue placeholder="Select a model" />
+                    <SelectValue placeholder={t('model.select')} />
                   </SelectTrigger>
                   <SelectContent>
                     {selection.modelIds.map((modelId) => (
@@ -714,6 +727,8 @@ export function AnimationGenerator({
   onGenerateMore,
   initialSelectedLogoId,
 }: AnimationGeneratorProps) {
+  const t = useTranslations('aiGeneration');
+  const animationFormSchema = useMemo(() => buildAnimationFormSchema(t), [t]);
   const [selectedDomain, setSelectedDomain] = useState<
     NamefiNormalizedDomain | ''
   >(fixedDomain ?? '');
@@ -803,7 +818,7 @@ export function AnimationGenerator({
       fixedDomain={fixedDomain}
       formSchema={animationFormSchema}
       defaultValues={defaultValues}
-      domainPlaceholder="Select your brand domain (required)"
+      domainPlaceholder={t('domainField.brandPlaceholder')}
       domainSelectOnly={true}
       domainOnlyDomainsWithLogos={true}
       onDomainChange={(domain) => {
@@ -829,7 +844,9 @@ export function AnimationGenerator({
           });
         }
       }}
-      submitButtonText={logosToShow.length > 0 ? 'Animate' : 'Select a brand'}
+      submitButtonText={
+        logosToShow.length > 0 ? t('submit.animate') : t('submit.selectBrand')
+      }
       submitLoadingText="Generating"
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}

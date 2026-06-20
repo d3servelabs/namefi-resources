@@ -13,6 +13,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsgo --noEmit",
+    "check:i18n": "bun run scripts/check-i18n-coverage.ts",
+    "check:i18n:convention": "bun run scripts/check-i18n-convention.ts",
     "validate:secrets": "bun run src/lib/env/validate-secrets.ts",
     "check:mobile": "bun run scripts/check-mobile-responsive.ts",
     "check:testid": "bun run scripts/check-testid.ts",

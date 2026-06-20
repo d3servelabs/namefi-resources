@@ -14,6 +14,7 @@ import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
@@ -35,6 +36,8 @@ export function BatchDnsDialog({
   domains,
   action,
 }: BatchDnsDialogProps) {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [webRecordForm, setWebRecordForm] = useState<{
@@ -86,7 +89,9 @@ export function BatchDnsDialog({
             }),
           ),
         );
-        toast.success(`Forwarding updated for ${domains.length} domains`);
+        toast.success(
+          t('dialogs.batch.forwardingUpdated', { count: domains.length }),
+        );
       } else if (action === 'web') {
         if (!webRecordForm.isValid) return;
 
@@ -101,15 +106,17 @@ export function BatchDnsDialog({
             });
           }),
         );
-        toast.success(`Web records updated for ${domains.length} domains`);
+        toast.success(
+          t('dialogs.batch.webRecordsUpdated', { count: domains.length }),
+        );
       } else if (action === 'ns') {
         // TODO: Implement batch NS update
         // This requires nameserver change workflow which is signed payload.
         // Doing this in batch might require multiple signatures or a new batch endpoint.
         // Given complexity, we might defer or show "Coming soon".
-        toast.info('Batch nameserver update coming soon');
+        toast.info(t('dialogs.batch.nameserverComingSoon'));
       } else {
-        toast.info('Batch DNS record update coming soon');
+        toast.info(t('dialogs.batch.recordComingSoon'));
       }
 
       await queryClient.invalidateQueries({
@@ -120,7 +127,7 @@ export function BatchDnsDialog({
       if (error instanceof Error) {
         toast.error(error.message);
       } else {
-        toast.error('Failed to update domains');
+        toast.error(t('dialogs.batch.updateFailed'));
       }
     } finally {
       setIsLoading(false);
@@ -130,17 +137,17 @@ export function BatchDnsDialog({
   const getTitle = () => {
     switch (action) {
       case 'ns':
-        return 'Set Nameservers';
+        return t('dialogs.batch.setNameservers');
       case 'forward':
-        return 'Set URL Forwarding';
+        return t('dialogs.batch.setUrlForwarding');
       case 'web':
-        return 'Set Web Records';
+        return t('dialogs.batch.setWebRecords');
       case 'mx':
-        return 'Set MX Records';
+        return t('dialogs.batch.setMxRecords');
       case 'ens':
-        return 'Set ENS Record';
+        return t('dialogs.batch.setEnsRecord');
       default:
-        return 'Batch Action';
+        return t('dialogs.batch.batchAction');
     }
   };
 
@@ -150,17 +157,19 @@ export function BatchDnsDialog({
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
           <DialogDescription>
-            Applying to {domains.length} selected domains.
+            {t('dialogs.batch.applyingToDomains', { count: domains.length })}
           </DialogDescription>
         </DialogHeader>
 
         <div className="grid gap-4 py-4">
           {action === 'forward' && (
             <div className="grid gap-2">
-              <Label htmlFor="batch-forward">Forward URL</Label>
+              <Label htmlFor="batch-forward">
+                {t('dialogs.batch.forwardUrlLabel')}
+              </Label>
               <Input
                 id="batch-forward"
-                placeholder="https://example.com"
+                placeholder={t('dialogs.forwarding.placeholder')}
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
               />
@@ -169,7 +178,7 @@ export function BatchDnsDialog({
           {action === 'web' && (
             <div className="grid gap-2">
               <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-500 p-3 rounded-md text-xs mb-2">
-                This will add the specified record to all selected domains.
+                {t('dialogs.batch.webRecordNotice')}
               </div>
               <DnsRecordForm
                 index={0}
@@ -184,14 +193,16 @@ export function BatchDnsDialog({
           )}
           {action !== 'forward' && action !== 'web' && (
             <div className="p-4 border rounded bg-muted/50 text-center text-muted-foreground">
-              Batch editing for {action?.toUpperCase()} is coming soon.
+              {t('dialogs.batch.comingSoon', {
+                action: action?.toUpperCase() ?? '',
+              })}
             </div>
           )}
         </div>
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            {tCommon('actions.cancel')}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -202,7 +213,7 @@ export function BatchDnsDialog({
             }
           >
             {isLoading && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
-            Save
+            {tCommon('actions.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

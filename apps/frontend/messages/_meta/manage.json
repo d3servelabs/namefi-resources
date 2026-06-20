@@ -1,0 +1,49 @@
+{
+  "heading": {
+    "description": "Page heading of the seller dashboard listing domains the user has sold.",
+    "maxLength": 28
+  },
+  "loadErrorTitle": {
+    "description": "Error card title when the sold-domains list fails to load."
+  },
+  "loadErrorFallback": {
+    "description": "Generic fallback message shown under the error title when no specific error message is available."
+  },
+  "retry": {
+    "description": "Button to retry loading the sold-domains list.",
+    "maxLength": 16
+  },
+  "totalDomainsSold": {
+    "description": "Stat card label for the total count of domains sold.",
+    "maxLength": 24
+  },
+  "proceeds": {
+    "description": "Stat card label for total proceeds (revenue) from sold domains.",
+    "maxLength": 20
+  },
+  "domainsSold": {
+    "description": "Heading of the table listing individual sold domains.",
+    "maxLength": 20
+  },
+  "emptyState": {
+    "description": "Message shown when the user has not sold any domains yet."
+  },
+  "columns": {
+    "domainName": {
+      "description": "Table column header for the sold domain name.",
+      "maxLength": 16
+    },
+    "wallet": {
+      "description": "Table column header for the buyer's wallet address.",
+      "maxLength": 12
+    },
+    "date": {
+      "description": "Table column header for the sale date.",
+      "maxLength": 12
+    },
+    "price": {
+      "description": "Table column header for the sale price.",
+      "maxLength": 12
+    }
+  }
+}

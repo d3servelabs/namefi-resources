@@ -49,6 +49,7 @@ import {
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { range } from 'ramda';
 import {
   formatRemovalDate,
@@ -61,23 +62,33 @@ import { PreviouslyOwnedDomainCard } from '@/components/previously-owned-domain-
 
 type RemovalType = PreviouslyOwnedDomainRow['removalType'];
 
+type DomainsTranslator = ReturnType<typeof useTranslations<'domains'>>;
+
 // ExtensibleDataTable owns pagination/sorting/filtering (all manual), so the
 // parent feeds it the already filtered + sorted rows. This table has no
 // pagination, so a single page holds every row.
 const noop = () => undefined;
 
-const LoadingSkeletons: FC = () => (
+const LoadingSkeletons: FC<{ t: DomainsTranslator }> = ({ t }) => (
   <div className="flex flex-col gap-4">
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Domain Name</TableHead>
-            <TableHead className="w-[200px]">Account</TableHead>
-            <TableHead className="w-[150px]">Removal Date</TableHead>
-            <TableHead className="w-[220px]">Reason</TableHead>
-            <TableHead className="w-[220px]">Receiving Wallet</TableHead>
-            <TableHead className="w-[150px]">Actions</TableHead>
+            <TableHead>{t('columns.domainNamePlain')}</TableHead>
+            <TableHead className="w-[200px]">
+              {t('previouslyOwned.columnAccount')}
+            </TableHead>
+            <TableHead className="w-[150px]">
+              {t('previouslyOwned.columnRemovalDate')}
+            </TableHead>
+            <TableHead className="w-[220px]">
+              {t('previouslyOwned.columnReason')}
+            </TableHead>
+            <TableHead className="w-[220px]">
+              {t('previouslyOwned.columnReceivingWallet')}
+            </TableHead>
+            <TableHead className="w-[150px]">{t('columns.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -113,22 +124,26 @@ const LoadingSkeletons: FC = () => (
 );
 
 const MyPreviouslyOwnedDomainsEmptyPlaceholder: FC<
-  HTMLAttributes<HTMLDivElement>
-> = ({ className, children, ...rest }: HTMLAttributes<HTMLDivElement>) => {
+  HTMLAttributes<HTMLDivElement> & { t: DomainsTranslator }
+> = ({
+  className,
+  children,
+  t,
+  ...rest
+}: HTMLAttributes<HTMLDivElement> & { t: DomainsTranslator }) => {
   return (
     <EmptyPlaceholder className={cn('', className)} {...rest}>
       <div className="flex size-20 items-center justify-center rounded-full bg-muted">
         <Flame className="size-10 text-muted-foreground" />
       </div>
       <EmptyPlaceholder.Title>
-        No previously owned domains found
+        {t('previouslyOwned.empty')}
       </EmptyPlaceholder.Title>
       <EmptyPlaceholder.Description>
-        You haven't burned or transferred any domains away from your linked
-        wallets yet
+        {t('previouslyOwned.emptyDescription')}
       </EmptyPlaceholder.Description>
       <Button render={<Link href="/" />} nativeButton={false} variant="outline">
-        Search Page
+        {t('emptyPlaceholder.action')}
       </Button>
     </EmptyPlaceholder>
   );
@@ -162,6 +177,7 @@ const reasonFilterOptions: Array<{ value: RemovalType; label: string }> = [
 ];
 
 function MyPreviouslyOwnedDomainsTable() {
+  const t = useTranslations('domains');
   const trpc = useTRPC();
   const { data: _domains, isLoading } = useQuery({
     ...trpc.users.getCurrentUserBurnedDomains.queryOptions(void 0, {
@@ -179,7 +195,7 @@ function MyPreviouslyOwnedDomainsTable() {
     () => [
       {
         accessorKey: 'normalizedDomainName',
-        header: `Domain Name (${domains.length})`,
+        header: t('columns.domainName', { count: domains.length }),
         cell: ({ row }) => (
           <span className="font-medium">
             {row.getValue('normalizedDomainName')}
@@ -188,7 +204,7 @@ function MyPreviouslyOwnedDomainsTable() {
       },
       {
         id: 'account',
-        header: 'Account',
+        header: t('previouslyOwned.columnAccount'),
         cell: ({ row }) => (
           <AddressWithChain
             address={row.original.fromAddress ?? null}
@@ -208,7 +224,7 @@ function MyPreviouslyOwnedDomainsTable() {
       },
       {
         accessorKey: 'removedAt',
-        header: 'Removal Date',
+        header: t('previouslyOwned.columnRemovalDate'),
         cell: ({ row }) => (
           <span className="text-sm">
             {formatRemovalDate(row.getValue('removedAt') as Date)}
@@ -218,7 +234,7 @@ function MyPreviouslyOwnedDomainsTable() {
       },
       {
         accessorKey: 'removalReason',
-        header: 'Reason',
+        header: t('previouslyOwned.columnReason'),
         cell: ({ row }) => {
           const { label, extraText } = getRemovalReasonDisplay(row.original);
           return (
@@ -237,7 +253,7 @@ function MyPreviouslyOwnedDomainsTable() {
       },
       {
         id: 'receivingWallet',
-        header: 'Receiving Wallet',
+        header: t('previouslyOwned.columnReceivingWallet'),
         cell: ({ row }) => {
           const receivingWallet = getReceivingWallet(row.original);
           if (!receivingWallet) {
@@ -255,7 +271,7 @@ function MyPreviouslyOwnedDomainsTable() {
       },
       {
         id: 'actions',
-        header: 'Actions',
+        header: t('columns.actions'),
         cell: ({ row }) => (
           <div className="flex gap-2">
             <ViewNftAction row={row.original} />
@@ -265,7 +281,7 @@ function MyPreviouslyOwnedDomainsTable() {
         enableSorting: false,
       },
     ],
-    [domains.length],
+    [domains.length, t],
   );
 
   const {
@@ -345,11 +361,11 @@ function MyPreviouslyOwnedDomainsTable() {
     reasonFilter.length === 0 ? 'All' : `${reasonFilter.length} selected`;
 
   if (isLoading || !_domains) {
-    return <LoadingSkeletons />;
+    return <LoadingSkeletons t={t} />;
   }
 
   if (domains.length === 0) {
-    return <MyPreviouslyOwnedDomainsEmptyPlaceholder />;
+    return <MyPreviouslyOwnedDomainsEmptyPlaceholder t={t} />;
   }
 
   const toolbarActions = (
@@ -363,11 +379,13 @@ function MyPreviouslyOwnedDomainsTable() {
         }
       >
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select chain">
+          <SelectValue
+            placeholder={t('previouslyOwned.selectChainPlaceholder')}
+          >
             {(() => {
               const selectedValue = chainFilter?.toString() ?? '-1';
               if (selectedValue === '-1') {
-                return 'All chains';
+                return t('previouslyOwned.allChains');
               }
               const chain = getChain(Number.parseInt(selectedValue, 10));
               return chain ? (
@@ -376,13 +394,13 @@ function MyPreviouslyOwnedDomainsTable() {
                   {chain.name}
                 </div>
               ) : (
-                'Select chain'
+                t('previouslyOwned.selectChainPlaceholder')
               );
             })()}
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value={'-1'}>All chains</SelectItem>
+          <SelectItem value={'-1'}>{t('previouslyOwned.allChains')}</SelectItem>
           {(config.TYPE === 'local' || config.TYPE === 'development') && (
             <SelectItem value={CHAINS.sepolia.id.toString()}>
               <div className="flex items-center gap-2">
@@ -415,7 +433,9 @@ function MyPreviouslyOwnedDomainsTable() {
             />
           }
         >
-          <span className="text-sm font-medium">Reason</span>
+          <span className="text-sm font-medium">
+            {t('previouslyOwned.columnReason')}
+          </span>
           <span className="flex items-center gap-1 text-sm text-muted-foreground">
             {reasonFilterSummary}
             <ChevronDown className="h-4 w-4 opacity-60" />
@@ -444,7 +464,7 @@ function MyPreviouslyOwnedDomainsTable() {
             onClick={() => handleReasonFilterChange([])}
             className="text-xs text-muted-foreground"
           >
-            Clear filters
+            {t('previouslyOwned.clearFilters')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -486,6 +506,7 @@ export function MyPreviouslyOwnedDomainsContent() {
 }
 
 export default function MyBurnedDomains() {
+  const t = useTranslations('domains');
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
@@ -495,9 +516,13 @@ export default function MyBurnedDomains() {
   return (
     <PageShell>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Previously Owned Domains</h2>
+        <h2 className="text-2xl font-bold">{t('previouslyOwned.title')}</h2>
       </div>
-      {isLoading ? <LoadingSkeletons /> : <MyPreviouslyOwnedDomainsContent />}
+      {isLoading ? (
+        <LoadingSkeletons t={t} />
+      ) : (
+        <MyPreviouslyOwnedDomainsContent />
+      )}
     </PageShell>
   );
 }

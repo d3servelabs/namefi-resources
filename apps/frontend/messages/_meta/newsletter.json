@@ -1,0 +1,70 @@
+{
+  "defaultTitle": {
+    "description": "Default heading of the newsletter sign-up card when no custom title is provided.",
+    "maxLength": 24
+  },
+  "defaultDescription": {
+    "description": "Default subheading of the newsletter sign-up card when no custom description is provided."
+  },
+  "closeAriaLabel": {
+    "description": "Accessible label for the button that closes the newsletter sign-up card."
+  },
+  "invalidEmail": {
+    "description": "Validation message shown when the entered email address is not valid."
+  },
+  "successTitle": {
+    "description": "Heading shown after a successful newsletter subscription."
+  },
+  "successDescription": {
+    "description": "Body shown after subscribing, asking the user to confirm via the email they received."
+  },
+  "subscribeAnother": {
+    "description": "Button on the success screen to subscribe a different email address."
+  },
+  "emailPlaceholder": {
+    "description": "Placeholder for the email input in the minimal newsletter form variant."
+  },
+  "subscribing": {
+    "description": "Button label shown while the subscription request is in progress.",
+    "maxLength": 20
+  },
+  "subscribe": {
+    "description": "Submit button label for the minimal newsletter form variant.",
+    "maxLength": 20
+  },
+  "subscribeToNewsletter": {
+    "description": "Submit button label for the full newsletter form variant.",
+    "maxLength": 28
+  },
+  "nameLabel": {
+    "description": "Label for the optional name field in the newsletter form.",
+    "maxLength": 24
+  },
+  "namePlaceholder": {
+    "description": "Placeholder for the optional name input in the newsletter form."
+  },
+  "emailLabel": {
+    "description": "Label for the email field in the newsletter form.",
+    "maxLength": 16
+  },
+  "emailExamplePlaceholder": {
+    "description": "Example-email placeholder for the email input. Keep as an email-like example."
+  },
+  "toast": {
+    "subscribedTitle": {
+      "description": "Success toast title shown when the user subscribes."
+    },
+    "alreadySubscribedTitle": {
+      "description": "Info toast title shown when the email is already subscribed."
+    },
+    "alreadySubscribedDescription": {
+      "description": "Info toast body shown when the email is already on the mailing list."
+    },
+    "failedTitle": {
+      "description": "Error toast title shown when the subscription fails."
+    },
+    "failedFallback": {
+      "description": "Generic fallback error toast body when no specific subscription error is available."
+    }
+  }
+}

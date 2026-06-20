@@ -15,5 +15,12 @@
     "hunt": "Caza",
     "marketplace": "Mercado"
   },
-  "recentDomains": "Dominios recientes"
+  "recentDomains": "Dominios recientes",
+  "userDropdown": {
+    "unableToLoadMenu": "No se puede cargar el menú.",
+    "signOutConfirmTitle": "¿Estás seguro de que deseas cerrar sesión?",
+    "signOutConfirmDescription": "¿Estás seguro de que deseas cerrar sesión? Se perderán los cambios no guardados.",
+    "signOutFailedTitle": "Error al cerrar sesión",
+    "signOutFailedFallback": "Por favor, inténtalo de nuevo."
+  }
 }

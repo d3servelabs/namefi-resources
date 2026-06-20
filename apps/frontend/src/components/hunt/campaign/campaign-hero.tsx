@@ -8,12 +8,14 @@ import Image from 'next/image';
 import { DefaultHeroBackground } from './hero-background/default-hero-background';
 import { AwardedHeroBackground } from './hero-background/awarded-hero-background';
 import { NFTDomain } from '@/components/nft-domain';
+import { useTranslations } from 'next-intl';
 
 interface CampaignHeroProps {
   campaignKey: string;
 }
 
 export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
+  const t = useTranslations('hunt');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
 
@@ -51,7 +53,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
       <div className="flex flex-col items-center justify-center gap-10 relative z-10">
         {isAwarded && (
           <h1 className="text-center text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-2">
-            Congratulations!
+            {t('campaign.congratulations')}
           </h1>
         )}
 
@@ -69,7 +71,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
         ) : campaign?.logoUrl ? (
           <Image
             src={campaign?.logoUrl}
-            alt="Campaign Icon"
+            alt={t('campaign.winnerCampaignIcon')}
             width={160}
             height={160}
             className="w-40 h-40"
@@ -85,7 +87,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
                 <span className="text-blue-500">
                   {rankings?.[0]?.domainName}
                 </span>{' '}
-                is the winner
+                {t('campaign.isTheWinner')}
               </>
             ) : (
               campaign?.title
@@ -95,7 +97,7 @@ export const CampaignHero = ({ campaignKey }: CampaignHeroProps) => {
             {campaign
               ? isActive
                 ? campaign?.description
-                : 'Thank you for voting - winners will receive an email with subdomain claim details.'
+                : t('campaign.votingClosedThanks')
               : null}
           </p>
         </div>

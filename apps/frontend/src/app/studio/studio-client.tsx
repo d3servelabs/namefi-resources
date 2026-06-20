@@ -14,6 +14,7 @@ import { useTRPC } from '@/lib/trpc';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
 export function NamefiBrandStudioClient() {
@@ -68,19 +69,18 @@ export function NamefiBrandStudioClient() {
 }
 
 function PageHeader() {
+  const t = useTranslations('aiGeneration');
   return (
     <div className="mb-6 flex flex-col items-center text-center">
       <Image
         src="/powered-by-namefi-jain.svg"
-        alt="Powered by Namefi"
+        alt={t('studio.poweredByAlt')}
         className="mb-3"
         width={141}
         height={22}
       />
-      <h2 className="text-2xl font-bold">Namefi Brand Studio</h2>
-      <p className="text-muted-foreground mt-2">
-        Create custom logos, posters, and animations for your brand
-      </p>
+      <h2 className="text-2xl font-bold">{t('studio.title')}</h2>
+      <p className="text-muted-foreground mt-2">{t('studio.subtitle')}</p>
     </div>
   );
 }

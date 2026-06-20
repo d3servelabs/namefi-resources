@@ -15,6 +15,7 @@ import { PosterTab } from './poster-tab';
 import { useDerivativeFlow } from './derivative-flow-context';
 import type { Generation } from './shared/types';
 import type { DomainPreview } from './shared/gallery-types';
+import { useTranslations } from 'next-intl';
 import { useAuth } from '@/hooks/use-auth';
 import { useAIPostAuthGenerationExecutor } from './use-ai-post-auth-generation-executor';
 
@@ -70,6 +71,7 @@ export function AITabs({
     closeFlow,
   } = useDerivativeFlow();
   const { isAuthenticated } = useAuth();
+  const t = useTranslations('aiGeneration');
   useAIPostAuthGenerationExecutor();
 
   const hasPosterOwnedLogos = hasDerivativeOwnedLogos(posterTabProps);
@@ -119,18 +121,18 @@ export function AITabs({
         className="mb-6"
       >
         <TabsList className="grid w-full grid-cols-3 max-sm:flex max-sm:h-auto! max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
-          <TabsTrigger value="logo">Logo</TabsTrigger>
-          <TabsTrigger value="poster">Poster</TabsTrigger>
-          <TabsTrigger value="animation">Animation</TabsTrigger>
+          <TabsTrigger value="logo">{t('tabs.logo')}</TabsTrigger>
+          <TabsTrigger value="poster">{t('tabs.poster')}</TabsTrigger>
+          <TabsTrigger value="animation">{t('tabs.animation')}</TabsTrigger>
         </TabsList>
       </Tabs>
       {requestedMode && (
         <div className="mb-4 rounded-lg border border-border/70 bg-muted/30 px-4 py-3">
-          <p className="text-sm font-medium">Create a logo first</p>
+          <p className="text-sm font-medium">{t('prerequisite.title')}</p>
           <p className="mt-1 text-sm text-muted-foreground">
             {requestedMode === 'poster'
-              ? 'Posters need one of your generated logos as the brand reference.'
-              : 'Animations need one of your generated logos as the source artwork.'}
+              ? t('prerequisite.posterDescription')
+              : t('prerequisite.animationDescription')}
           </p>
         </div>
       )}

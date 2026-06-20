@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "请求有误",
+    "description": "信息好像在半路走丢了。"
+  },
+  "status403": {
+    "title": "无权访问",
+    "description": "这扇门上了锁，请确认您的权限。"
+  },
+  "status404": {
+    "title": "页面不见了",
+    "description": "我们找遍了每个角落，还是没找到。"
+  },
+  "status500": {
+    "title": "服务器出错",
+    "description": "服务器正在小憩，请稍后再试。"
+  },
+  "actions": {
+    "goHome": "回到首页",
+    "searchDomains": "搜索域名",
+    "logIn": "登录",
+    "signIn": "登录",
+    "goToHome": "返回首页"
+  },
+  "reference": "请求编号：{requestId}",
+  "login": {
+    "failedTitle": "登录未能启动",
+    "failedDescription": "请稍后重试。"
+  },
+  "unauthorized": {
+    "title": "未授权访问",
+    "description": "您没有权限访问此页面。请登录或返回首页。",
+    "contactSupport": "如果您认为这是错误，请联系支持团队。"
+  }
+}

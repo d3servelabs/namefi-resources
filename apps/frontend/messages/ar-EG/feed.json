@@ -22,7 +22,6 @@
     "clear": "مسح"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "مفيش عروض بيطابق الفلتر الحالي.",
     "empty": "مفيش عروض لحد دلوقتي.",
     "endOfFeed": "خلصت العروض",

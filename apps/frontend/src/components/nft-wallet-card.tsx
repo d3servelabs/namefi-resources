@@ -24,6 +24,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 
 type EnsCandidate = {
@@ -65,6 +66,7 @@ export function NftWalletCard({
   isLinkedOrUserConfirmed: unlinkedWalletConfirmed,
   onIsLinkedOrUserConfirmationChange: onUnlinkedWalletConfirmationChange,
 }: NftWalletCardProps) {
+  const t = useTranslations('shared');
   const { defaultNftChainId: defaultChainId } = useAllowedChains(parentDomain);
   const [inputValue, setInputValue] = useState<string>(
     selectedWalletAddress ?? '',
@@ -469,7 +471,9 @@ export function NftWalletCard({
                       ) : (
                         <Copy className="size-4" aria-hidden="true" />
                       )}
-                      <span className="sr-only">Copy resolved address</span>
+                      <span className="sr-only">
+                        {t('nftWalletCard.copyResolvedAddress')}
+                      </span>
                     </Button>
                   </div>
                 </div>
@@ -502,7 +506,7 @@ export function NftWalletCard({
   }, [defaultChainId, selectedChainId, statusMeta.address]);
 
   return (
-    <CartCard title="Receiving Wallet or ENS">
+    <CartCard title={t('nftWalletCard.title')}>
       <div className="flex items-start gap-2">
         <WalletEditableSelect
           onChainIdChange={onChainIdChange}

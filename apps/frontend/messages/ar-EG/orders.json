@@ -51,7 +51,6 @@
     "renew": "تجديد"
   },
   "unlinkedWalletTooltip": "المحفظة دي مش مربوطة بحسابك الحالي، فمش هتلاقي النطاق في حسابك.",
-  "walletNotLinked": "المحفظة دي مش مربوطة بحسابك.",
   "timeline": {
     "subtitle": "تحديثات لحظية للطلب",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "النطاق كان محظور وفريق الدعم ألغى الطلب.",
     "failureUserAuthCode": "كان مطلوب auth code وإنت ألغيت الطلب.",
     "failureUserLocked": "النطاق كان محظور وإنت ألغيت الطلب."
-  }
+  },
+  "nftWalletLabel": "محفظة NFT",
+  "viewTransactionTitle": "عرض المعاملة"
 }

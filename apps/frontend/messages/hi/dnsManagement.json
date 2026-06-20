@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "DNSSEC स्थिति जाँच नहीं हो सकी",
+    "pendingTitle": "DNSSEC सेटअप जारी है",
+    "activeTitle": "DNSSEC सक्रिय है",
+    "misconfiguredTitle": "DNSSEC गलत तरीके से कॉन्फ़िगर है"
+  },
+  "actions": {
+    "enable": "DNSSEC चालू करें",
+    "disable": "DNSSEC बंद करें",
+    "cancelSetup": "सेटअप रद्द करें",
+    "keepWaiting": "प्रतीक्षा जारी रखें"
+  },
+  "disableDialog": {
+    "title": "DNSSEC बंद करें?"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "स्वतः पहचान",
+      "manual": "मैन्युअल"
+    },
+    "manual": {
+      "description": "एक DNSKEY या DS रिकॉर्ड पेस्ट करें (पूरी zone-file लाइन या केवल rdata)। हम स्वतः फ़ॉर्मेट पहचान लेंगे।",
+      "enterFieldsManually": "या फ़ील्ड मैन्युअल रूप से भरें",
+      "derive": "DS फ़ील्ड निकालें",
+      "deriving": "निकाला जा रहा है..."
+    },
+    "autoDetect": {
+      "description": "आपके डोमेन के प्रत्यायोजित nameservers से क्वेरी करके पहचानें",
+      "detect": "प्रत्यायोजित nameservers से पहचानें",
+      "detecting": "पहचाना जा रहा है...",
+      "kskCandidate": "KSK उम्मीदवार",
+      "candidateOption": "key tag {keyTag} — alg {algorithm}"
+    },
+    "dsValuesTitle": "DS मान",
+    "viewSummary": "सारांश देखें",
+    "fields": {
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "flags": "Flags",
+      "digestType": "Digest प्रकार",
+      "publicKey": "सार्वजनिक कुंजी (base64)",
+      "digest": "Digest (hex)"
+    },
+    "placeholders": {
+      "algorithm": "Algorithm चुनें",
+      "flags": "Flag चुनें",
+      "digestType": "Digest प्रकार चुनें"
+    },
+    "publicKeyMissingNotice": "पेस्ट किए गए DS में सार्वजनिक कुंजी नहीं है। स्वतः पहचान उपयोग करें या DNSKEY रिकॉर्ड पेस्ट करें ताकि हम रजिस्ट्रार को सबमिट कर सकें।",
+    "summary": {
+      "notSet": "सेट नहीं है"
+    },
+    "deferredNotice": "हम इसे एक बैकग्राउंड वर्कफ़्लो के रूप में चलाएंगे जो सत्यापन पोल करेगा और केवल तभी सबमिट करेगा जब दोनों लेन पास हों। सफल या समय-सीमा समाप्त होने पर आपको ईमेल मिलेगा।",
+    "validate": "सत्यापित करें",
+    "validating": "सत्यापित हो रहा है...",
+    "scheduleDs": "DS शेड्यूल करें",
+    "submitDs": "DS सबमिट करें",
+    "scheduling": "शेड्यूल हो रहा है...",
+    "submitting": "सबमिट हो रहा है...",
+    "validation": {
+      "pending": "आधिकारिक nameservers और सार्वजनिक DNS पर DNSKEY रिकॉर्ड क्वेरी की जा रही है...",
+      "laneAuthoritative": "आधिकारिक nameservers",
+      "lanePublicDns": "सार्वजनिक DNS (Google)",
+      "statusCouldNotValidate": "सत्यापन नहीं हो सका",
+      "statusMatch": "मेल खाता है",
+      "statusNoMatchingDnskey": "कोई मेल खाती DNSKEY नहीं",
+      "queried": "क्वेरी की गई: {source}",
+      "matched": "Computed key tag {keyTag}। स्रोत: {source}।",
+      "noMatch": "{source} पर प्रकाशित किसी भी DNSKEY से आपके दर्ज digest का मेल नहीं हुआ।",
+      "tableFlags": "Flags",
+      "tableAlg": "Alg",
+      "tableComputedKeyTag": "Computed key tag",
+      "tableComputedDigest": "Computed digest"
+    },
+    "ack": {
+      "validationDidNotPass": "मैं समझता/समझती हूँ कि सत्यापन पास नहीं हुआ, फिर भी मैं इस DS को जोड़ना चाहता/चाहती हूँ (उदा. nameservers बदलने से पहले स्टेजिंग)।",
+      "sure": "मुझे यकीन है, यह DS जोड़ें।",
+      "notFullyReflected": "मैं समझता/समझती हूँ कि DNSKEY सभी क्षेत्रों में पूरी तरह प्रसारित नहीं हुई है और इस बदलाव के बाद कुछ क्षेत्रों में थोड़ी देर के लिए सेवा बाधित हो सकती है। फिर भी मैं यह DS जोड़ना चाहता/चाहती हूँ।"
+    }
+  },
+  "prefs": {
+    "panelTitle": "डोमेन प्राथमिकताएँ",
+    "loadFailed": "कुछ गड़बड़ हो गई! कृपया बाद में पुनः प्रयास करें।",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "डोमेन के लिए ENS स्वतः सक्षम करें",
+      "unavailableTooltip": "AutoENS इस डोमेन के लिए उपलब्ध नहीं है। ENS के लिए DNSSEC आवश्यक है।",
+      "enableDnssecFirst": "पहले DNSSEC सक्षम करना ज़रूरी है।",
+      "dnssecUnsupported": "और यह डोमेन DNSSEC का समर्थन नहीं करता।"
+    },
+    "autoPark": {
+      "label": "Auto Park",
+      "description": "डोमेन को स्वतः पार्क करें"
+    },
+    "forwardTo": {
+      "label": "फॉरवर्ड करें",
+      "description": "डोमेन को किसी अन्य पते पर फॉरवर्ड करें"
+    },
+    "notManagingNameservers": "Namefi इस डोमेन के nameservers प्रबंधित नहीं कर रहा",
+    "propagationNotice": "DNSSEC में बदलाव तुरंत लागू नहीं होते। इन्हें वैश्विक स्तर पर प्रसारित होने में 24-48 घंटे लग सकते हैं।",
+    "conflictDialog": {
+      "title": "परस्पर विरोधी शीर्ष-स्तरीय रिकॉर्ड हटाएँ?",
+      "description": "यह प्राथमिकता परिवर्तन इस डोमेन पर परस्पर विरोधी रूट रिकॉर्ड हटाना आवश्यक करता है।",
+      "apexCname": "कोई भी शीर्ष-स्तरीय CNAME (`@`) रिकॉर्ड पहले हटाया जाएगा।",
+      "apexAddress": "कोई भी शीर्ष-स्तरीय A/AAAA (`@`) रिकॉर्ड पहले हटाए जाएंगे।",
+      "keepRecords": "रिकॉर्ड रखें",
+      "removeAndContinue": "हटाएँ और जारी रखें",
+      "applying": "लागू हो रहा है..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNS रिकॉर्ड",
+      "description": "अपने डोमेन के DNS रिकॉर्ड प्रबंधित करें",
+      "addRecord": "रिकॉर्ड जोड़ें",
+      "recordTypes": "रिकॉर्ड प्रकार",
+      "recordTypeOption": "{type} रिकॉर्ड"
+    },
+    "table": {
+      "searchPlaceholder": "रिकॉर्ड खोजें...",
+      "columns": "कॉलम",
+      "toggleColumns": "कॉलम टॉगल करें",
+      "filter": "फ़िल्टर",
+      "filterByType": "प्रकार से फ़िल्टर करें",
+      "clearFilters": "फ़िल्टर साफ़ करें",
+      "actionsLabel": "क्रियाएँ",
+      "tableActions": "तालिका क्रियाएँ",
+      "exportRecords": "रिकॉर्ड निर्यात करें",
+      "importRecords": "रिकॉर्ड आयात करें",
+      "copyAsZoneFile": "Zone File के रूप में कॉपी करें",
+      "editSelected": "चयनित संपादित करें ({count})",
+      "deleteSelected": "चयनित हटाएँ ({count})",
+      "empty": "कोई रिकॉर्ड नहीं मिला।",
+      "rowsSelected": "{total} में से {selected} पंक्ति(याँ) चुनी गईं।",
+      "columnType": "प्रकार",
+      "columnName": "नाम",
+      "columnValue": "मान",
+      "columnTtl": "TTL",
+      "columnActions": "क्रियाएँ",
+      "editRecordTooltip": "रिकॉर्ड संपादित करें",
+      "deleteRecordTooltip": "रिकॉर्ड हटाएँ",
+      "disableManagedRecordTooltip": "प्रबंधित रिकॉर्ड अक्षम करें",
+      "copyRecordTooltip": "रिकॉर्ड कॉपी करें",
+      "refreshRecordTooltip": "रिकॉर्ड रीफ़्रेश करें"
+    },
+    "toasts": {
+      "recordUpdated": "रिकॉर्ड अपडेट हुआ",
+      "recordUpdatedDescription": "{field} सफलतापूर्वक अपडेट हुआ।",
+      "copiedToClipboard": "क्लिपबोर्ड पर कॉपी हुआ",
+      "copiedToClipboardDescription": "रिकॉर्ड विवरण क्लिपबोर्ड पर कॉपी हुआ",
+      "saved": "{count, plural, one {# रिकॉर्ड} other {# रिकॉर्ड}} सफलतापूर्वक सहेजा गया",
+      "updated": "{count, plural, one {# रिकॉर्ड} other {# रिकॉर्ड}} सफलतापूर्वक अपडेट हुआ",
+      "deleted": "{count, plural, one {# रिकॉर्ड} other {# रिकॉर्ड}} सफलतापूर्वक हटाया गया",
+      "deleteFailed": "रिकॉर्ड हटाने में विफल: {error}",
+      "recordPrefix": "रिकॉर्ड {index}: {message}",
+      "undeterminedError": "अज्ञात त्रुटि, कृपया सहायता से संपर्क करें",
+      "genericError": "कुछ गड़बड़ हो गई। कृपया पुनः प्रयास करें।",
+      "parkingForwardingDisabled": "पार्किंग और फॉरवर्डिंग अक्षम",
+      "autoEnsDisabled": "AutoENS अक्षम",
+      "forwardingDisabled": "फॉरवर्डिंग अक्षम",
+      "managedUpdateFailed": "प्रबंधित DNS सेटिंग अपडेट करने में विफल"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "पार्किंग रिकॉर्ड अक्षम करें?",
+      "disableAutoEnsTitle": "AutoENS रिकॉर्ड अक्षम करें?",
+      "disableForwardingTitle": "फॉरवर्डिंग रिकॉर्ड अक्षम करें?",
+      "disableParkingDescription": "यह पंक्ति डोमेन प्राथमिकताओं द्वारा प्रबंधित है। इसे अक्षम करने से पार्किंग बंद हो जाएगी।",
+      "disableAutoEnsDescription": "यह पंक्ति डोमेन प्राथमिकताओं द्वारा प्रबंधित है। इसे अक्षम करने से AutoENS बंद हो जाएगा।",
+      "disableForwardingDescription": "यह पंक्ति डोमेन प्राथमिकताओं द्वारा प्रबंधित है। इसे अक्षम करने से फॉरवर्डिंग हट जाएगी।",
+      "parkingDisablesForwarding": "पार्किंग रिकॉर्ड अक्षम करने से फॉरवर्डिंग भी अक्षम हो जाती है।",
+      "disabling": "अक्षम हो रहा है..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "Nameservers प्रबंधन",
+    "tooltip": "Nameservers आपके डोमेन पर ट्रैफ़िक निर्देशित करते हैं",
+    "resetToNamefi": "Namefi Nameservers पर रीसेट करें",
+    "addNameserver": "Nameserver जोड़ें",
+    "nameserverLabel": "Nameserver {index}",
+    "nameserverPlaceholder": "उदा., ns1.example.com",
+    "saveChanges": "बदलाव सहेजें",
+    "saving": "सहेजा जा रहा है...",
+    "propagationNotice": "Nameservers में बदलाव वैश्विक स्तर पर प्रसारित होने में 24-48 घंटे लग सकते हैं।",
+    "manageDialogTitle": "Nameservers प्रबंधित करें",
+    "workflow": {
+      "resetInProgress": "Nameservers को Namefi डिफ़ॉल्ट पर रीसेट करने का ऑपरेशन जारी है...",
+      "changeInProgress": "Nameservers अपडेट करने का ऑपरेशन जारी है...",
+      "resettingTitle": "{domain} के nameservers रीसेट हो रहे हैं",
+      "changingTitle": "{domain} के nameservers बदले जा रहे हैं",
+      "viewProgress": "प्रगति विवरण देखें",
+      "cancelWorkflow": "वर्कफ़्लो रद्द करें",
+      "cancelling": "रद्द हो रहा है...",
+      "cancellationRequested": "रद्दीकरण अनुरोध किया गया",
+      "cancelFailed": "रद्द करने में विफल: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "Nameservers Namefi डिफ़ॉल्ट पर रीसेट हुए",
+      "changeSuccess": "Nameservers सफलतापूर्वक अपडेट हुए",
+      "resetFailed": "Nameservers रीसेट करने में विफल",
+      "changeFailed": "Nameservers अपडेट करने में विफल",
+      "signatureRejected": "हस्ताक्षर अनुरोध अस्वीकार हुआ",
+      "ownerWalletUnavailable": "डोमेन स्वामी का वॉलेट निर्धारित नहीं हो सका"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC प्रबंधन",
+    "tooltip": "DNSSEC एक सुरक्षा सुविधा है जो आपके डोमेन को फ़िशिंग हमलों से बचाने में मदद करती है।",
+    "refreshAria": "DNSSEC स्थिति रीफ़्रेश करें",
+    "refresh": "रीफ़्रेश",
+    "modeToggle": {
+      "legend": "DNSSEC पैनल मोड",
+      "simple": "सरल",
+      "advanced": "उन्नत",
+      "simpleHint": "सामान्य स्थिति के लिए एक-क्लिक सक्षम।",
+      "advancedHint": "पूर्ण नियंत्रण: DNSKEY/DS पेस्ट करें, सत्यापित करें और एकाधिक कुंजियाँ प्रबंधित करें।"
+    },
+    "noDetails": "कोई DNSSEC विवरण नहीं मिला",
+    "notSupported": "इस डोमेन के लिए DNSSEC समर्थित नहीं है",
+    "zoneSigning": "Zone रिकॉर्ड साइन कर रहा है",
+    "zoneNotSigning": "Zone रिकॉर्ड साइन नहीं कर रहा",
+    "namefiAutoHandling": "Namefi इस डोमेन के लिए DNSSEC स्वतः संभाल रहा है।",
+    "namefiSigningRecords": "Namefi इस डोमेन के रिकॉर्ड साइन कर रहा है",
+    "zoneSigningRecords": "Zone इस डोमेन के रिकॉर्ड साइन कर रहा है",
+    "allSecure": "पूरी तरह सुरक्षित",
+    "namefiOnlySigner": "Namefi इस डोमेन का एकमात्र delegation signer है",
+    "customSigners": "कस्टम delegation signers",
+    "notEnabled": "DNSSEC सक्षम नहीं है",
+    "noSigners": "कोई delegation signer नहीं",
+    "propagationNotice": "DNSSEC में बदलाव तुरंत लागू नहीं होते। इन्हें वैश्विक स्तर पर प्रसारित होने में 24-48 घंटे लग सकते हैं।",
+    "requestInProgress": "DNSSEC को {operation, select, disable {अक्षम} other {सक्षम}} करने का अनुरोध पहले से जारी है",
+    "operationInProgress": "एक ऑपरेशन पहले से जारी है",
+    "enableNamefiSigning": "Namefi Signing सक्षम करें",
+    "disableNamefiSigning": "Namefi Signing अक्षम करें",
+    "enabling": "सक्षम हो रहा है...",
+    "disabling": "अक्षम हो रहा है...",
+    "disableConfirmDescription": "क्या आप वाकई Namefi Signing अक्षम करना चाहते हैं?",
+    "disableConfirmDetail": "इससे आपके डोमेन की सुरक्षा कम हो जाएगी और इस पर निर्भर सेवाएँ प्रभावित होंगी (उदा. AutoENS)।",
+    "confirmAndDisable": "पुष्टि करें और अक्षम करें",
+    "progress": {
+      "enablingTitle": "{domain} के लिए सक्षम हो रहा है",
+      "disablingTitle": "{domain} के लिए अक्षम हो रहा है",
+      "viewProgress": "प्रगति विवरण देखें",
+      "cancelWorkflow": "वर्कफ़्लो रद्द करें",
+      "cancelling": "रद्द हो रहा है...",
+      "cancellationRequested": "रद्दीकरण अनुरोध किया गया",
+      "cancelFailed": "रद्द करने में विफल: {error}"
+    },
+    "toasts": {
+      "enableSent": "DNSSEC सक्षम करने का अनुरोध भेज दिया गया",
+      "enableFailed": "DNSSEC सक्षम करने का अनुरोध विफल हुआ",
+      "disableSent": "DNSSEC अक्षम करने का अनुरोध भेज दिया गया",
+      "disableFailed": "DNSSEC अक्षम करने का अनुरोध विफल हुआ"
+    },
+    "signersTable": {
+      "empty": "अभी कोई delegation signer नहीं जोड़ा गया।",
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "digestType": "Digest प्रकार",
+      "digest": "Digest",
+      "pending": "लंबित",
+      "removeAria": "Delegation signer हटाएँ",
+      "cancelDeferredAria": "स्थगित DS सबमिशन रद्द करें",
+      "removeTitle": "Delegation signer हटाएँ?",
+      "removeDescription": "इससे रजिस्ट्रार पर DS असंबद्ध हो जाएगा। {keyTagSuffix}यदि यह डोमेन का एकमात्र DS है, तो कुछ घंटों में DNSSEC सत्यापन वैश्विक स्तर पर बाधित हो जाएगा। सुनिश्चित करें कि आपने पहले से कोई प्रतिस्थापन पेरेंट पर प्रकाशित किया है या DNSSEC जानबूझकर बंद कर रहे हैं।",
+      "removeKeyTagSuffix": "Key tag {keyTag}। ",
+      "remove": "हटाएँ",
+      "removing": "हटाया जा रहा है...",
+      "cancelDeferredTitle": "स्थगित DS सबमिशन रद्द करें?",
+      "cancelDeferredDescription": "यह key tag {keyTag} के लिए सत्यापन पोल रोक देगा। कोई DS नहीं जोड़ा जाएगा। सबमिशन बाद में DNSSEC सक्षम करें बटन दबाकर या Delegation Signer जोड़ें डायलॉग से पुनः प्रयास किया जा सकता है।",
+      "cancelSubmission": "सबमिशन रद्द करें",
+      "cancelling": "रद्द हो रहा है...",
+      "removeSuccess": "Delegation signer{keyTagSuffix} हटाया गया",
+      "removeSuccessKeyTagSuffix": " (key tag {keyTag})",
+      "removeFailed": "Delegation signer हटाने में विफल: {error}",
+      "noKeyId": "कौन सी कुंजी हटानी है यह निर्धारित नहीं हो सका (कोई id, publicKey या keyTag नहीं)।",
+      "cancelSuccess": "स्थगित सबमिशन रद्द हुआ (key tag {keyTag})",
+      "cancelFailed": "रद्द करने में विफल: {error}",
+      "phaseAuthoritative": "आधिकारिक NS सत्यापन की प्रतीक्षा। लगभग {remaining} में समय-सीमा।",
+      "phasePublicDns": "सार्वजनिक DNS प्रसार की प्रतीक्षा। लगभग {remaining} में समय-सीमा।",
+      "phaseSubmit": "सत्यापन पास हुआ; DS रजिस्ट्रार को सबमिट हो रहा है।",
+      "remainingNow": "अभी",
+      "remainingHoursMinutes": "{hours}घ {minutes}मि",
+      "remainingMinutes": "{minutes}मि"
+    },
+    "advancedPanel": {
+      "title": "कस्टम Delegation Signers",
+      "description": "यह तब आवश्यक है जब यह डोमेन अपने स्वयं के आधिकारिक nameservers पर चलता है। वह DS सबमिट करें जो आपके DNS प्रदाता द्वारा प्रकाशित DNSKEY से मेल खाता हो।",
+      "addSigner": "Delegation Signer जोड़ें",
+      "dialogTitle": "कस्टम Delegation Signer जोड़ें",
+      "dialogDescription": "अपना DNSKEY/DS पेस्ट करें या nameservers से स्वतः पहचानें, फिर सबमिट करने से पहले सत्यापित करें।"
+    }
+  },
+  "overview": {
+    "panelTitle": "डोमेन अवलोकन",
+    "panelSubtitle": "अपनी डोमेन सेटिंग और नवीनीकरण प्रबंधित करें",
+    "expired": {
+      "title": "डोमेन समाप्त",
+      "canRenew": "आपका डोमेन समाप्त हो गया है। आप अभी भी नवीनीकरण के लिए अनुरोध सबमिट कर सकते हैं और यह TLD (.com, .org, ...) के आधार पर स्वीकार हो सकता है।",
+      "cannotRenew": "आपका डोमेन समाप्त हो गया है। यह पुनर्स्थापित हो सकता है या नहीं, यह जाँचने के लिए सहायता से संपर्क करें (सभी TLD (.com, .org, ...) के लिए यह संभव नहीं हो सकता)।",
+      "cannotRenewShort": "आपका डोमेन समाप्त हो गया है। पुनर्स्थापना की संभावना जाँचने के लिए सहायता से संपर्क करें (सभी TLD के लिए यह संभव नहीं हो सकता)।"
+    },
+    "autoRenew": {
+      "label": "स्वतः नवीनीकरण",
+      "description": "डोमेन स्वतः नवीनीकृत करें",
+      "expires": "समाप्त: {date}"
+    },
+    "manualRenew": {
+      "label": "मैन्युअल नवीनीकरण",
+      "description": "डोमेन मैन्युअल रूप से नवीनीकृत करें"
+    },
+    "renewNow": "अभी नवीनीकृत करें",
+    "renewExpirationUnavailable": "डोमेन समाप्ति जानकारी उपलब्ध नहीं",
+    "autoRenewalCard": {
+      "title": "स्वतः नवीनीकरण",
+      "description": "समाप्ति से पहले अपना डोमेन स्वतः नवीनीकृत करें",
+      "auto": "स्वतः"
+    },
+    "manualRenewalCard": {
+      "title": "मैन्युअल नवीनीकरण",
+      "descriptionWithDate": "{expiration} - डोमेन पुनर्स्थापित करने के लिए अभी नवीनीकृत करें",
+      "description": "अपना डोमेन मैन्युअल रूप से नवीनीकृत करें"
+    },
+    "preferencesUpdated": "प्राथमिकताएँ अपडेट हुईं",
+    "preferencesUpdateFailed": "प्राथमिकताएँ अपडेट करने में विफल",
+    "export": {
+      "label": "डोमेन निर्यात",
+      "description": "डोमेन किसी अन्य रजिस्ट्रार को निर्यात करें",
+      "descriptionCard": "अपना डोमेन किसी अन्य रजिस्ट्रार को स्थानांतरित करें",
+      "unavailableCard": "इस डोमेन के लिए निर्यात उपलब्ध नहीं",
+      "requestExport": "निर्यात अनुरोध करें",
+      "exportUnavailable": "निर्यात अनुपलब्ध",
+      "unavailable": "अनुपलब्ध",
+      "enableRequestPending": "निर्यात सक्षम करने का अनुरोध लंबित है...",
+      "pending": "लंबित...",
+      "getAuthCode": "Auth Code प्राप्त करें",
+      "requestingExport": "निर्यात अनुरोध हो रहा है...",
+      "requesting": "अनुरोध हो रहा है...",
+      "nftNotMinted": "NFT अभी तक mint नहीं हुआ। Minting पूर्ण होने के बाद निर्यात उपलब्ध होगा।",
+      "loadDetailsFailed": "डोमेन निर्यात विवरण प्राप्त करने में कुछ गड़बड़ हुई! कृपया बाद में पुनः प्रयास करें।",
+      "loadDetailsFailedShort": "निर्यात विवरण लोड करने में विफल। कृपया बाद में पुनः प्रयास करें।"
+    },
+    "exportToasts": {
+      "requestSubmitted": "निर्यात अनुरोध सफलतापूर्वक सबमिट हुआ",
+      "requestFailed": "डोमेन निर्यात अनुरोध विफल हुआ",
+      "authCodeCopied": "Auth code क्लिपबोर्ड पर कॉपी हुआ",
+      "authCodeCopyFailed": "Auth code कॉपी करने में विफल",
+      "authCodeFailed": "Auth code प्राप्त करने में विफल",
+      "signatureRejected": "हस्ताक्षर अनुरोध अस्वीकार हुआ",
+      "signatureFailed": "हस्ताक्षर अनुरोध विफल हुआ। यह ब्राउज़र त्रुटि या आपके वॉलेट की समस्या के कारण हो सकता है।",
+      "ownerWalletUnavailable": "डोमेन स्वामी का वॉलेट निर्धारित नहीं हो सका"
+    },
+    "pendingTransfer": {
+      "label": "लंबित निर्यात",
+      "cardTitle": "लंबित निर्यात अनुरोध",
+      "requestedBy": "निर्यात अनुरोधकर्ता: {registrar}",
+      "actionRequiredBy": "कार्रवाई आवश्यक: {date} तक",
+      "cardDescription": "अनुरोधकर्ता: {registrar} - कार्रवाई आवश्यक {date} तक",
+      "approve": "स्वीकृत करें",
+      "reject": "अस्वीकार करें",
+      "approveSuccess": "निर्यात सफलतापूर्वक स्वीकृत हुआ",
+      "approveFailed": "निर्यात स्वीकृत करने में विफल",
+      "rejectSuccess": "निर्यात सफलतापूर्वक अस्वीकार हुआ",
+      "rejectFailed": "निर्यात अस्वीकार करने में विफल"
+    },
+    "nftOwnership": {
+      "title": "ब्लॉकचेन स्वामित्व",
+      "tooltip": "आपका डोमेन ब्लॉकचेन पर एक NFT (Non-Fungible Token) के रूप में संग्रहीत है। यह डिजिटल प्रमाणपत्र सिद्ध करता है कि आप इस डोमेन के स्वामी हैं और क्रिप्टोग्राफी द्वारा सुरक्षित है।",
+      "securedOn": "सुरक्षित है",
+      "verified": "सत्यापित",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "Chain {chainId}",
+      "ownerWallet": "स्वामी का वॉलेट",
+      "ownerWalletTooltip": "यह वह वॉलेट पता है जो इस डोमेन NFT का स्वामी है। केवल यही वॉलेट डोमेन प्रबंधित या स्थानांतरित कर सकता है।",
+      "tokenId": "Token ID",
+      "tokenIdTooltip": "ब्लॉकचेन पर आपके डोमेन NFT का एक अद्वितीय पहचानकर्ता। इसे अपनी डिजिटल संपत्ति के क्रमांक की तरह समझें।",
+      "verifyOnExplorer": "Block Explorer पर सत्यापित करें",
+      "showNftInWallet": "वॉलेट में NFT देखें",
+      "addingToWallet": "वॉलेट में जोड़ा जा रहा है...",
+      "nftAdded": "NFT आपके वॉलेट में जोड़ा गया",
+      "nftAddFailed": "NFT आपके वॉलेट में नहीं जोड़ा जा सका",
+      "nftAddError": "वॉलेट में NFT जोड़ने में विफल",
+      "unknownError": "अज्ञात त्रुटि",
+      "walletAddressCopied": "वॉलेट पता कॉपी हुआ",
+      "walletAddressCopyFailed": "वॉलेट पता कॉपी करने में विफल",
+      "tokenIdCopied": "Token ID कॉपी हुआ",
+      "tokenIdCopyFailed": "Token ID कॉपी करने में विफल"
+    },
+    "educationalBanner": {
+      "title": "आपका डोमेन ब्लॉकचेन पर सुरक्षित है",
+      "description": "पारंपरिक रजिस्ट्रार के विपरीत, आपका डोमेन आपके वॉलेट में NFT के रूप में संग्रहीत है। इसका अर्थ है कि यह वास्तव में आपका है — आपकी अनुमति के बिना कोई कंपनी इसे नहीं ले सकती।",
+      "dismissAria": "बैनर बंद करें"
+    },
+    "moreInfoAria": "अधिक जानकारी",
+    "learnMore": "और जानें",
+    "web3Concepts": {
+      "title": "अपने डोमेन को समझें",
+      "footer": "NameFi पारंपरिक डोमेन को ब्लॉकचेन स्वामित्व से जोड़ता है",
+      "nftTerm": "NFT",
+      "nftDescription": "आपके वॉलेट में संग्रहीत स्वामित्व का एक डिजिटल प्रमाणपत्र — जैसे किसी घर की विलेख",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "एक सुरक्षित डिजिटल बहीखाता जो आपके स्वामित्व को स्थायी रूप से दर्ज करता है",
+      "walletTerm": "Wallet",
+      "walletDescription": "आपकी व्यक्तिगत डिजिटल तिजोरी — केवल आप इसे एक्सेस कर सकते हैं",
+      "icannTerm": "ICANN",
+      "icannDescription": ".com, .io, .xyz डोमेन प्रबंधित करने वाला वैश्विक प्राधिकरण"
+    },
+    "transferLock": {
+      "title": "निर्यात उपलब्ध {date}",
+      "description": "ICANN नीति के अनुसार आयात के बाद 60 दिनों तक डोमेन लॉक रहते हैं।",
+      "importedOn": " यह डोमेन {date} को आयात किया गया था।",
+      "gotIt": "समझ गया"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "साइन इन आवश्यक",
+    "signInRequiredMessage": "इस डोमेन को प्रबंधित करने के लिए कृपया साइन इन करें।",
+    "loadErrorTitle": "डोमेन प्रबंधन लोड नहीं हो सका",
+    "loadErrorFallback": "कृपया पुनः प्रयास करें।",
+    "marketplaceErrorTitle": "Marketplace स्थिति लोड नहीं हो सकी",
+    "retry": "पुनः प्रयास करें",
+    "publicViewTitle": "ध्यान दें!",
+    "publicViewMessage": "यह डोमेन किसी अन्य उपयोगकर्ता का है। आप सार्वजनिक जानकारी देख रहे हैं।",
+    "tabDomainOverview": "डोमेन अवलोकन",
+    "tabDnsRecords": "DNS रिकॉर्ड",
+    "tabDnsManagement": "DNS प्रबंधन",
+    "tabMarketplace": "Marketplace",
+    "tabDnsSetting": "DNS सेटिंग",
+    "notMigratedTitle": "डोमेन अभी स्थानांतरित नहीं हुआ",
+    "redirectToRegistrar": "Registrar पर जाएँ",
+    "comingSoon": "जल्द आ रहा है ..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "DNS रिकॉर्ड जोड़ें",
+      "editTitle": "DNS रिकॉर्ड संपादित करें",
+      "requiredFieldsError": "कृपया * से चिह्नित सभी आवश्यक फ़ील्ड भरें",
+      "addMoreRecord": "और रिकॉर्ड जोड़ें",
+      "addRecord": "रिकॉर्ड जोड़ें",
+      "saveRecord": "रिकॉर्ड सहेजें",
+      "cnameConflictTitle": "CNAME अन्य रिकॉर्ड से टकरा रहा है",
+      "cnameConflictBody1": "CNAME रिकॉर्ड अन्य रिकॉर्ड प्रकारों के साथ एक ही नाम साझा नहीं कर सकते।",
+      "cnameConflictBody2": "पहले टकराने वाले रिकॉर्ड हटाएँ, फिर यह CNAME पुनः जोड़ें।",
+      "understood": "समझ गया",
+      "disableManagedTitle": "प्रबंधित रिकॉर्ड अक्षम करके जारी रखें?",
+      "disableManagedBody1": "यह CNAME केवल इस डोमेन पर प्रबंधित रिकॉर्ड से टकराता है।",
+      "disableManagedBodyWithForwarding": "Parking, Forwarding और AutoENS अक्षम करके जारी रखें, फिर यह CNAME जोड़ें।",
+      "disableManagedBody": "Parking और AutoENS अक्षम करके जारी रखें, फिर यह CNAME जोड़ें।",
+      "keepManagedRecords": "प्रबंधित रिकॉर्ड रखें",
+      "disableAndContinue": "अक्षम करें और जारी रखें",
+      "disabling": "अक्षम हो रहा है...",
+      "disableParkingTitle": "पार्किंग अक्षम करके जारी रखें?",
+      "disableParkingBody": "यह रिकॉर्ड प्रबंधित पार्किंग रिकॉर्ड से टकराता है। जारी रखने के लिए पहले पार्किंग अक्षम करनी होगी।",
+      "disableParkingForwardingNotice": "यहाँ पार्किंग अक्षम करने से फॉरवर्डिंग भी अक्षम हो जाती है।",
+      "keepParkingEnabled": "पार्किंग चालू रखें",
+      "loadRecordsFailed": "DNS रिकॉर्ड लोड करने में विफल"
+    },
+    "delete": {
+      "title": "रिकॉर्ड हटाएँ?",
+      "description": "यह बदलाव आपके डोमेन की कार्यक्षमता प्रभावित कर सकता है और नेटवर्क पर अपडेट होने में समय लग सकता है।",
+      "summary": "{count, plural, one {# रिकॉर्ड} other {# रिकॉर्ड}} हटाएँ",
+      "toggle": "टॉगल",
+      "columnName": "नाम",
+      "columnType": "प्रकार",
+      "columnValue": "मान",
+      "columnTtl": "TTL",
+      "deleting": "हटाया जा रहा है...",
+      "confirmSingle": "हाँ, हटाएँ",
+      "confirmMultiple": "हाँ, सभी हटाएँ"
+    },
+    "form": {
+      "typeLabel": "प्रकार",
+      "typePlaceholder": "प्रकार चुनें",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "TTL चुनें",
+      "nameLabel": "नाम",
+      "namePlaceholder": "www या @",
+      "valueLabel": "मान",
+      "removeRecordAria": "रिकॉर्ड {index} हटाएँ",
+      "ttlOption1Minute": "1 मिनट",
+      "ttlOption5Minutes": "5 मिनट",
+      "ttlOption20Minutes": "20 मिनट",
+      "ttlOption1Hour": "1 घंटा",
+      "ttlOption1Day": "1 दिन",
+      "ttlOption1Week": "1 सप्ताह",
+      "errorRecordTypeRequired": "रिकॉर्ड प्रकार आवश्यक है",
+      "errorValueRequired": "मान आवश्यक है",
+      "errorTtlRequired": "TTL आवश्यक है"
+    },
+    "forwarding": {
+      "title": "URL फॉरवर्डिंग संपादित करें",
+      "description": "वह URL दर्ज करें जिस पर {domain} को फॉरवर्ड करना है।",
+      "fieldLabel": "फॉरवर्ड करें URL पर",
+      "placeholder": "https://example.com",
+      "updated": "फॉरवर्डिंग URL अपडेट हुआ",
+      "updateFailed": "फॉरवर्डिंग URL अपडेट करने में विफल"
+    },
+    "batch": {
+      "setNameservers": "Nameservers सेट करें",
+      "setUrlForwarding": "URL फॉरवर्डिंग सेट करें",
+      "setWebRecords": "Web रिकॉर्ड सेट करें",
+      "setMxRecords": "MX रिकॉर्ड सेट करें",
+      "setEnsRecord": "ENS रिकॉर्ड सेट करें",
+      "batchAction": "बैच क्रिया",
+      "applyingToDomains": "{count} चयनित डोमेन पर लागू हो रहा है।",
+      "forwardUrlLabel": "फॉरवर्ड URL",
+      "webRecordNotice": "यह सभी चयनित डोमेन पर निर्दिष्ट रिकॉर्ड जोड़ देगा।",
+      "comingSoon": "{action} के लिए बैच संपादन जल्द आ रहा है।",
+      "forwardingUpdated": "{count} डोमेन के लिए फॉरवर्डिंग अपडेट हुई",
+      "webRecordsUpdated": "{count} डोमेन के लिए Web रिकॉर्ड अपडेट हुए",
+      "nameserverComingSoon": "बैच nameserver अपडेट जल्द आ रहा है",
+      "recordComingSoon": "बैच DNS रिकॉर्ड अपडेट जल्द आ रहा है",
+      "updateFailed": "डोमेन अपडेट करने में विफल"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS क्रियाएँ",
+    "notEditableExternal": "बाहरी nameservers उपयोग करते समय संपादन योग्य नहीं",
+    "nameservers": "Nameservers: {value}",
+    "nameserversNone": "कोई नहीं",
+    "parkedOnNamefi": "Namefi पर पार्क",
+    "webRecordsConfigured": "Web रिकॉर्ड कॉन्फ़िगर हैं",
+    "noWebRecords": "कोई Web रिकॉर्ड नहीं",
+    "enableParkingForForwarding": "फॉरवर्डिंग के लिए पार्किंग सक्षम करें",
+    "forwardsTo": "फॉरवर्ड होता है: {url}",
+    "noForwarding": "कोई URL फॉरवर्डिंग नहीं",
+    "mxConfigured": "MX रिकॉर्ड कॉन्फ़िगर हैं",
+    "noMxRecords": "कोई MX रिकॉर्ड नहीं",
+    "autoEnsEnabled": "Auto-ENS सक्षम",
+    "noEnsRecord": "कोई ENS रिकॉर्ड नहीं",
+    "manageMore": "और DNS रिकॉर्ड प्रबंधित करें"
+  },
+  "cacheFlush": {
+    "title": "DNS Cache Flush",
+    "description": "किसी विशिष्ट ज़ोन और रिकॉर्ड प्रकार के लिए कॉन्फ़िगर किए गए सर्वर पर DNS कैश फ्लश करें",
+    "zoneLabel": "ज़ोन/डोमेन",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "रिकॉर्ड प्रकार",
+    "recordTypeAll": "सभी",
+    "flushing": "कैश फ्लश हो रहा है...",
+    "submit": "DNS Cache फ्लश करें",
+    "resultsHeading": "परिणाम:",
+    "resultSuccess": "सफल",
+    "resultFailed": "विफल",
+    "zoneRequired": "ज़ोन आवश्यक है",
+    "flushCompleteTitle": "Cache Flush पूर्ण",
+    "flushFailedTitle": "Cache Flush विफल हुआ"
+  }
+}

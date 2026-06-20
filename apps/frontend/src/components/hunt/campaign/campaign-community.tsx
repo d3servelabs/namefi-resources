@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ShareIcon, CheckIcon } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 const CommunityExternalLink = ({
   href,
@@ -25,16 +26,17 @@ const CommunityExternalLink = ({
 };
 
 export const CampaignCommunity = () => {
+  const t = useTranslations('hunt');
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
-      toast.success('Link copied to clipboard!');
+      toast.success(t('community.copySuccess'));
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
-      toast.error('Failed to copy link');
+    } catch {
+      toast.error(t('community.copyError'));
     }
   };
 
@@ -45,10 +47,10 @@ export const CampaignCommunity = () => {
         <div className="flex-1 flex flex-col gap-8 py-10 px-4 max-w-90">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-white mb-2">
-              Join the Community
+              {t('community.joinTitle')}
             </h2>
             <p className="text-base text-white/50">
-              Connect with fellow hunters - vote together on upcoming domains.
+              {t('community.joinDescription')}
             </p>
           </div>
 
@@ -90,10 +92,10 @@ export const CampaignCommunity = () => {
         <div className="flex-1 flex flex-col gap-8 py-10 px-4 max-w-90">
           <div className="text-center">
             <h2 className="text-2xl font-semibold text-white mb-2">
-              Share the hunt
+              {t('community.shareTitle')}
             </h2>
             <p className="text-base text-white/50">
-              Invite your friends - earn one raffle entry for every vote.
+              {t('community.shareDescription')}
             </p>
           </div>
 
@@ -104,7 +106,7 @@ export const CampaignCommunity = () => {
               className="flex items-center justify-center gap-2 px-4 py-3 min-w-30 w-full rounded-md border border-[#262626] bg-[#0A0A0A]"
             >
               <span className="text-sm font-medium">
-                {copied ? 'Copied!' : 'Invite Friends'}
+                {copied ? t('community.invited') : t('community.inviteFriends')}
               </span>
               {copied ? (
                 <CheckIcon className="w-4 h-4 text-green-400" />

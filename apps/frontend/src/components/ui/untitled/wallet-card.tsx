@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { WalletIcon as GenericWalletIcon } from 'lucide-react';
 import type { ComponentType, SVGProps } from 'react';
 import { useState } from 'react';
@@ -569,6 +570,7 @@ export function WalletCard({
   onNetworksClick,
   bottomContent,
 }: WalletCardProps) {
+  const t = useTranslations('shared');
   const [showNetworksModal, setShowNetworksModal] = useState(false);
 
   const style = providerStyles[provider];
@@ -699,10 +701,10 @@ export function WalletCard({
           {bottomContent || (
             <div className="flex justify-between items-end">
               <div className="text-xs opacity-70 uppercase tracking-wider">
-                Ethereum Wallet
+                {t('walletCard.ethereumWallet')}
               </div>
               <div className="flex items-center gap-1 text-xs opacity-70">
-                <span>Connected</span>
+                <span>{t('walletCard.connected')}</span>
                 <div className="w-2 h-2 rounded-full bg-current animate-pulse" />
               </div>
             </div>
@@ -714,7 +716,7 @@ export function WalletCard({
       <Dialog open={showNetworksModal} onOpenChange={setShowNetworksModal}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Connected Networks</DialogTitle>
+            <DialogTitle>{t('walletCard.connectedNetworks')}</DialogTitle>
           </DialogHeader>
           <div className="grid grid-cols-2 gap-3 mt-4">
             {networks.map((network) => (

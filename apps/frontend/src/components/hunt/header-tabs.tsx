@@ -6,6 +6,7 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import styles from './header-tabs.module.css';
 
 const TabItem = ({
@@ -70,6 +71,7 @@ interface HeaderTabsProps {
 }
 
 export const HeaderTabs = ({ activeTab, className }: HeaderTabsProps) => {
+  const t = useTranslations('hunt');
   const router = useRouter();
   const handleClickAllHunt = useCallback(() => {
     router.push('/hunt');
@@ -85,7 +87,7 @@ export const HeaderTabs = ({ activeTab, className }: HeaderTabsProps) => {
       >
         <div className="flex items-center gap-2 sm:gap-4 min-w-full px-4 sm:px-0 sm:justify-center">
           <TabItem onClick={handleClickAllHunt} active={activeTab === 'all'}>
-            All hunt
+            {t('tabs.allHunt')}
           </TabItem>
           {config.HUNT_CAMPAIGN_KEYS.map((campaignKey) => (
             <CampaignTab

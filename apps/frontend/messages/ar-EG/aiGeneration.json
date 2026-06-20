@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "اصنع شعارات وملصقات وأنيميشن مخصصة لعلامتك التجارية",
+    "poweredByAlt": "مدعوم من Namefi"
+  },
+  "tabs": {
+    "logo": "شعار",
+    "poster": "ملصق",
+    "animation": "أنيميشن"
+  },
+  "prerequisite": {
+    "title": "ابدأ بإنشاء شعار",
+    "posterDescription": "الملصقات تحتاج شعاراً من تصاميمك كمرجع للعلامة التجارية.",
+    "animationDescription": "الأنيميشن يحتاج شعاراً من تصاميمك كمصدر للعمل الفني."
+  },
+  "usage": {
+    "credits": "رصيد الذكاء الاصطناعي",
+    "usedThisMonth": "{current} من {max} مستخدمة هذا الشهر",
+    "limitReached": "وصلت للحد الأقصى",
+    "creditsLeft": "{count, plural, one {# رصيد متبقي} other {# أرصدة متبقية}}",
+    "refreshAria": "وقت تجديد رصيد الذكاء الاصطناعي",
+    "refreshAt": "يتجدد الرصيد {time}",
+    "refreshMonthly": "يتجدد الرصيد شهرياً",
+    "balanceCheckError": "تعذّر التحقق من الرصيد",
+    "balanceCheckErrorDescription": "لم نتمكن من التحقق من رصيدك المتبقي، لكن لا يزال بإمكانك المحاولة.",
+    "checkingBalance": "جاري التحقق من الرصيد...",
+    "willCheckBalance": "سنتحقق من رصيدك قبل بدء الإنشاء.",
+    "creditAmount": "{count, plural, one {# رصيد} other {# أرصدة}}",
+    "costInsufficient": "هذا الإنشاء يحتاج {cost}. لديك {remaining} متبقية هذا الشهر.",
+    "costPreview": "تكلفة هذا الإنشاء {cost}. سيتبقى لديك {remaining} هذا الشهر."
+  },
+  "domainField": {
+    "fixedLabel": "أدخل نطاقك (مثال: example.com)",
+    "logoPlaceholder": "اختر أو أدخل نطاق علامتك التجارية",
+    "brandPlaceholder": "اختر نطاق علامتك التجارية (مطلوب)",
+    "searchBrands": "ابحث في نطاقات العلامات...",
+    "searchOrEnter": "ابحث أو أدخل نطاقاً",
+    "emptyStudioLogos": "لا توجد نطاقات بشعارات Studio.",
+    "emptyMatching": "لا توجد نطاقات مطابقة."
+  },
+  "description": {
+    "label": "صف علامتك التجارية (اختياري)",
+    "placeholder": "أخبرنا أكثر عن رؤيتك لعلامتك التجارية"
+  },
+  "logo": {
+    "gridTitle": "الشعارات المُنشأة",
+    "chooseType": "اختر النوع",
+    "chooseStyle": "اختر الأسلوب",
+    "chooseTldTreatment": "اختر طريقة عرض النطاق",
+    "chooseTypography": "اختر الخط",
+    "chooseModel": "اختر النموذج",
+    "controls": {
+      "type": "النوع",
+      "style": "الأسلوب",
+      "tld": "النطاق",
+      "typography": "الخط",
+      "model": "النموذج",
+      "brandVision": "رؤية العلامة",
+      "advanced": "متقدم"
+    },
+    "actions": {
+      "createPoster": "إنشاء ملصق",
+      "animateLogo": "تحريك الشعار"
+    }
+  },
+  "poster": {
+    "title": "منشئ الملصقات",
+    "gridTitle": "الملصقات المُنشأة",
+    "usingBrand": "باستخدام علامة {domain}",
+    "backToLogos": "العودة للشعارات",
+    "chooseLogo": "اختر شعاراً لبناء ملصقك عليه",
+    "chooseModel": "اختر النموذج",
+    "chooseCollateral": "اختر نوع المطبوعة",
+    "selectCollateral": "اختر المطبوعة",
+    "controls": {
+      "useLogo": "استخدم شعاراً",
+      "selected": "مختار",
+      "description": "الوصف",
+      "model": "النموذج",
+      "collateral": "المطبوعة",
+      "advanced": "متقدم"
+    },
+    "collateral": {
+      "letAiChoose": "دع الذكاء يختار",
+      "billboard": "لوحة إعلانية",
+      "apparel": "ملابس",
+      "vehicle": "مركبة",
+      "product": "منتج"
+    }
+  },
+  "animation": {
+    "title": "أنيميشن الشعار",
+    "gridTitle": "الأنيميشن المُنشأ",
+    "usingBrand": "باستخدام علامة {domain}",
+    "backToLogos": "العودة للشعارات",
+    "chooseMode": "اختر وضع الأنيميشن",
+    "chooseLogo": "اختر شعاراً لتحريكه",
+    "chooseOpening": "اختر أسلوب الافتتاحية",
+    "chooseMotion": "اختر اتجاه الحركة",
+    "chooseIntensity": "اختر حدة الحركة",
+    "chooseModel": "اختر النموذج",
+    "selectOpening": "اختر الافتتاحية",
+    "selectMotion": "اختر الحركة",
+    "selectIntensity": "اختر الحدة",
+    "useLogoAria": "استخدم شعار {domain}",
+    "controls": {
+      "mode": "الوضع",
+      "useLogo": "استخدم شعاراً",
+      "selected": "مختار",
+      "description": "الوصف",
+      "opening": "الافتتاحية",
+      "motion": "الحركة",
+      "intensity": "الحدة",
+      "model": "النموذج"
+    },
+    "validation": {
+      "openingRequired": "الافتتاحية مطلوبة للأنيميشن السينمائي",
+      "chooseCinematicModel": "اختر نموذجاً سينمائياً",
+      "chooseCinematicMotion": "اختر إعداد حركة سينمائية",
+      "chooseSeedanceModel": "اختر نموذج Seedance",
+      "intensityRequired": "الحدة مطلوبة للأنيميشن المتكرر",
+      "chooseLoopedModel": "اختر نموذجاً للأنيميشن المتكرر",
+      "chooseLoopedMotion": "اختر إعداد حركة للأنيميشن المتكرر"
+    }
+  },
+  "model": {
+    "select": "اختر نموذجاً"
+  },
+  "submit": {
+    "generate": "إنشاء",
+    "generating": "جاري الإنشاء",
+    "animate": "تحريك",
+    "selectBrand": "اختر علامة تجارية"
+  },
+  "gallery": {
+    "yours": "تصاميمك",
+    "featured": "مميز",
+    "brands": "العلامات التجارية",
+    "brandsSelected": "{count} مختارة",
+    "searchBrand": "ابحث عن علامة...",
+    "noBrands": "لا توجد علامات تجارية.",
+    "filterAll": "الكل",
+    "filterLogo": "شعار",
+    "filterPoster": "ملصق",
+    "filterAnimation": "أنيميشن",
+    "emptyYours": "أنشئ شعاراً أو ملصقاً وستظهر هنا.",
+    "openAria": "فتح تصميم {domain}",
+    "openFeaturedAria": "فتح التصميم المميز لـ {domain}",
+    "viewAria": "عرض التصميم {index}",
+    "animationPreviewAria": "معاينة الأنيميشن لـ {domain}",
+    "previewUnavailable": "المعاينة غير متاحة",
+    "basedOnLogo": "مبني على شعار",
+    "basedOn": "مبني على:",
+    "referencedLogoAlt": "الشعار المرجعي"
+  },
+  "kind": {
+    "logo": "شعار",
+    "poster": "ملصق",
+    "animation": "أنيميشن"
+  },
+  "progress": {
+    "generatingLogo": "جاري إنشاء الشعار",
+    "generatingPoster": "جاري إنشاء الملصق",
+    "preparingAnimation": "جاري تجهيز الأنيميشن",
+    "messages": {
+      "gathering": "نجمع الإلهام لعلامتك التجارية...",
+      "sketching": "نرسم الخطوط والملامح الأولى...",
+      "blending": "نمزج الألوان والأساليب والخطوط...",
+      "character": "نضيف الشخصية والتفاصيل المميزة...",
+      "lighting": "نضبط الإضاءة والتوازن...",
+      "polishing": "نلمّع الإبرازات والملمس...",
+      "framing": "نؤطر اللمسة الأخيرة...",
+      "almost": "تقريباً انتهينا—لحظة صبر!"
+    }
+  },
+  "status": {
+    "pending": "في الانتظار",
+    "processing": "جاري المعالجة",
+    "failed": "فشل",
+    "ready": "جاهز"
+  },
+  "asyncTile": {
+    "genericError": "لم نتمكن من إكمال هذا الإنشاء. حاول مرة أخرى.",
+    "stillRunning": "الإنشاء لا يزال جارياً.",
+    "queued": "الإنشاء في قائمة الانتظار وسيظهر هنا قريباً."
+  },
+  "actions": {
+    "copy": "نسخ",
+    "copyLink": "نسخ الرابط",
+    "tweet": "تغريد",
+    "download": "تنزيل"
+  },
+  "delete": {
+    "title": "حذف التصميم؟",
+    "titleSingle": "حذف هذا التصميم؟",
+    "descriptionLogo": "سيُزال شعار {domain} من معرضك. لا يمكن التراجع عن هذا الإجراء.",
+    "descriptionPoster": "سيُزال ملصق {domain} من معرضك. لا يمكن التراجع عن هذا الإجراء.",
+    "descriptionAnimation": "سيُزال أنيميشن {domain} من معرضك. لا يمكن التراجع عن هذا الإجراء.",
+    "deleting": "جاري الحذف..."
+  },
+  "share": {
+    "unableTitle": "تعذّر المشاركة",
+    "unableMissingLink": "لا يوجد رابط مشاركة لهذا التصميم.",
+    "unableMissingLinkOrDomain": "لم يُعثر على رابط مشاركة أو نطاق لهذا التصميم."
+  },
+  "imageGrid": {
+    "previewUnavailable": "المعاينة غير متاحة"
+  },
+  "details": {
+    "backToStudio": "العودة إلى Namefi Brand Studio",
+    "headingLogo": "شعار {brand}",
+    "headingPoster": "ملصق {brand}",
+    "headingAnimation": "أنيميشن {brand}",
+    "notFoundTitle": "التصميم غير موجود",
+    "notFoundDescription": "لم يُعثر على التصميم الذي تبحث عنه.",
+    "assetUnavailable": "الملف غير متاح بعد.",
+    "sectionTitle": "التفاصيل",
+    "type": "النوع:",
+    "status": "الحالة:",
+    "collateral": "المطبوعة:",
+    "motion": "الحركة:",
+    "mode": "الوضع:",
+    "opening": "الافتتاحية:",
+    "intensity": "الحدة:",
+    "model": "النموذج:",
+    "created": "تاريخ الإنشاء:",
+    "createdUnknown": "غير معروف",
+    "collateralUnknown": "غير معروف",
+    "logoProperties": "خصائص الشعار",
+    "logoStyle": "الأسلوب:",
+    "logoType": "النوع:",
+    "logoTld": "النطاق:",
+    "logoTypography": "الخط:",
+    "sourceLogo": "الشعار الأصلي",
+    "sourceLogoAlt": "الشعار المستخدم كمصدر للتصميم المشتق",
+    "viewLogoDetails": "عرض تفاصيل الشعار",
+    "sourcePreviewUnavailable": "معاينة الشعار الأصلي غير متاحة",
+    "sourceLoadFailed": "فشل تحميل تفاصيل الشعار",
+    "sourceNotFound": "لم يُعثر على مرجع للشعار",
+    "animationSheet": "ورقة الأنيميشن",
+    "animationSheetAlt": "ورقة الأنيميشن المُنشأة لـ {domain}",
+    "openSheetAria": "فتح معاينة ورقة الأنيميشن",
+    "sheetModel": "نموذج الورقة:",
+    "sheetDialogTitle": "ورقة الأنيميشن",
+    "sheetDialogDescription": "اللوحة القصصية المُنشأة التي استُرشد بها لإنتاج هذا الأنيميشن.",
+    "shareTwitterTitle": "مشاركة على Twitter",
+    "copyLinkTitle": "نسخ الرابط",
+    "twitter": "Twitter",
+    "linkCopied": "تم نسخ الرابط",
+    "linkCopiedDescription": "يمكنك الآن مشاركة هذا التصميم مع الآخرين",
+    "linkCopyFailed": "فشل نسخ الرابط",
+    "linkCopyFailedDescription": "حاول مرة أخرى",
+    "animationLabelAria": "أنيميشن {mode} مُنشأ بالذكاء الاصطناعي لـ {domain}",
+    "imageAlt": "{type} مُنشأ بالذكاء الاصطناعي لـ {domain}"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "title": "TLD 定价",
+  "description": "查看受支持的非溢价 TLD 的基础 USD 定价。",
+  "loadError": "暂时无法加载 TLD 定价，请稍后重试。",
+  "loadingMessage": "正在加载 TLD 定价...",
+  "emptyMessage": "没有符合筛选条件的 TLD",
+  "nonPremiumNote": "** 以上价格仅适用于非溢价域名",
+  "columns": {
+    "tld": "TLD",
+    "registration": "注册",
+    "renewal": "续费",
+    "transfer": "转移",
+    "registrar": "注册商"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "注册商"
+  },
+  "variablePrice": "可变价格",
+  "variablePriceTooltip": "价格因域名而异",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / 年"
+}

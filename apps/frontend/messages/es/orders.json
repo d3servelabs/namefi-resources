@@ -51,7 +51,6 @@
     "renew": "Renovación"
   },
   "unlinkedWalletTooltip": "Esta cartera no está vinculada a la cuenta actual, por lo que no podrá ver el dominio en la cuenta.",
-  "walletNotLinked": "Esta cartera no está vinculada a su cuenta.",
   "timeline": {
     "subtitle": "Actualizaciones en tiempo real",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "El dominio estaba bloqueado y el soporte canceló la solicitud.",
     "failureUserAuthCode": "Se requería actualizar el código de autorización y usted canceló la solicitud.",
     "failureUserLocked": "El dominio estaba bloqueado y usted canceló la solicitud."
-  }
+  },
+  "nftWalletLabel": "Billetera NFT",
+  "viewTransactionTitle": "Ver transacción"
 }

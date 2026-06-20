@@ -10,6 +10,7 @@ import {
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { useTranslations } from 'next-intl';
 import { LogIn, Share2 } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 
@@ -28,6 +29,7 @@ export function VoteOrShareChoiceDialog({
   onChooseLogin,
   onChooseShare,
 }: VoteOrShareChoiceDialogProps) {
+  const t = useTranslations('shared');
   // No need for wrapper - just call onChooseLogin directly
 
   const handleChooseShare = useCallback(() => {
@@ -51,7 +53,7 @@ export function VoteOrShareChoiceDialog({
           <div className="space-y-3">
             <Button onClick={onChooseLogin} className="w-full" size="lg">
               <LogIn className="w-4 h-4 me-2" />
-              Sign in to Vote
+              {t('voteOrShare.signInToVote')}
             </Button>
 
             <Button
@@ -61,7 +63,7 @@ export function VoteOrShareChoiceDialog({
               size="lg"
             >
               <Share2 className="w-4 h-4 me-2" />
-              Share Domain Instead
+              {t('voteOrShare.shareDomainInstead')}
             </Button>
           </div>
 

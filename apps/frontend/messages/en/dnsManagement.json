@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "Couldn't check DNSSEC status",
+    "pendingTitle": "DNSSEC setup in progress",
+    "activeTitle": "DNSSEC is enabled",
+    "misconfiguredTitle": "DNSSEC is misconfigured"
+  },
+  "actions": {
+    "enable": "Enable DNSSEC",
+    "disable": "Disable DNSSEC",
+    "cancelSetup": "Cancel setup",
+    "keepWaiting": "Keep waiting"
+  },
+  "disableDialog": {
+    "title": "Disable DNSSEC?"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "Automatic Detection",
+      "manual": "Manual"
+    },
+    "manual": {
+      "description": "Paste a DNSKEY or DS record (full zone-file line or just rdata). We'll auto-detect the format.",
+      "enterFieldsManually": "or enter fields manually",
+      "derive": "Derive DS fields",
+      "deriving": "Deriving..."
+    },
+    "autoDetect": {
+      "description": "Query your domain's delegated nameservers and detect",
+      "detect": "Detect from delegated nameservers",
+      "detecting": "Detecting...",
+      "kskCandidate": "KSK candidate",
+      "candidateOption": "key tag {keyTag} — alg {algorithm}"
+    },
+    "dsValuesTitle": "DS values",
+    "viewSummary": "View summary",
+    "fields": {
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "flags": "Flags",
+      "digestType": "Digest type",
+      "publicKey": "Public key (base64)",
+      "digest": "Digest (hex)"
+    },
+    "placeholders": {
+      "algorithm": "Select algorithm",
+      "flags": "Select flag",
+      "digestType": "Select digest type"
+    },
+    "publicKeyMissingNotice": "Public key not present in the pasted DS. Use Automatic Detection or paste the DNSKEY record so we can submit to the registrar.",
+    "summary": {
+      "notSet": "not set"
+    },
+    "deferredNotice": "We'll run this as a background workflow that polls validation and only submits when both lanes pass. You'll get an email when it lands or times out.",
+    "validate": "Validate",
+    "validating": "Validating...",
+    "scheduleDs": "Schedule DS",
+    "submitDs": "Submit DS",
+    "scheduling": "Scheduling...",
+    "submitting": "Submitting...",
+    "validation": {
+      "pending": "Querying DNSKEY records at authoritative nameservers and public DNS...",
+      "laneAuthoritative": "Authoritative nameservers",
+      "lanePublicDns": "Public DNS (Google)",
+      "statusCouldNotValidate": "could not validate",
+      "statusMatch": "match",
+      "statusNoMatchingDnskey": "no matching DNSKEY",
+      "queried": "Queried: {source}",
+      "matched": "Computed key tag {keyTag}. Source: {source}.",
+      "noMatch": "None of the published DNSKEYs at {source} produces the digest you entered.",
+      "tableFlags": "Flags",
+      "tableAlg": "Alg",
+      "tableComputedKeyTag": "Computed key tag",
+      "tableComputedDigest": "Computed digest"
+    },
+    "ack": {
+      "validationDidNotPass": "I understand validation didn't pass and want to associate this DS anyway (e.g. staging before flipping nameservers).",
+      "sure": "I'm sure, associate this DS.",
+      "notFullyReflected": "I understand that DNSKEY has not fully reflect in all regions and some regions might have a slight downtime after this change. I want to associate this DS anyway."
+    }
+  },
+  "prefs": {
+    "panelTitle": "Domain Preferences",
+    "loadFailed": "Something went wrong! Please try again later.",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "Automatically enable ENS for the domain",
+      "unavailableTooltip": "AutoENS is not available for this domain. ENS Requires DNSSEC.",
+      "enableDnssecFirst": "You need to enable DNSSEC first.",
+      "dnssecUnsupported": "And this domain does not support DNSSEC."
+    },
+    "autoPark": {
+      "label": "Auto Park",
+      "description": "Automatically park the domain"
+    },
+    "forwardTo": {
+      "label": "Forward To",
+      "description": "Forward the domain to a different address"
+    },
+    "notManagingNameservers": "Namefi is not managing the nameservers for this domain",
+    "propagationNotice": "Changes to DNSSEC are not immediate. It can take up to 24-48 hours to propagate globally.",
+    "conflictDialog": {
+      "title": "Remove conflicting top-level records?",
+      "description": "This preference change requires removing conflicting root records on this domain.",
+      "apexCname": "Any top-level CNAME (`@`) record will be removed first.",
+      "apexAddress": "Any top-level A/AAAA (`@`) records will be removed first.",
+      "keepRecords": "Keep records",
+      "removeAndContinue": "Remove and continue",
+      "applying": "Applying..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNS Records",
+      "description": "Manage your domain's DNS records",
+      "addRecord": "Add record",
+      "recordTypes": "Record Types",
+      "recordTypeOption": "{type} Record"
+    },
+    "table": {
+      "searchPlaceholder": "Search records...",
+      "columns": "Columns",
+      "toggleColumns": "Toggle Columns",
+      "filter": "Filter",
+      "filterByType": "Filter by Type",
+      "clearFilters": "Clear Filters",
+      "actionsLabel": "Actions",
+      "tableActions": "Table Actions",
+      "exportRecords": "Export Records",
+      "importRecords": "Import Records",
+      "copyAsZoneFile": "Copy as Zone File",
+      "editSelected": "Edit Selected ({count})",
+      "deleteSelected": "Delete Selected ({count})",
+      "empty": "No records found.",
+      "rowsSelected": "{selected} of {total} row(s) selected.",
+      "columnType": "Type",
+      "columnName": "Name",
+      "columnValue": "Value",
+      "columnTtl": "TTL",
+      "columnActions": "Actions",
+      "editRecordTooltip": "Edit record",
+      "deleteRecordTooltip": "Delete record",
+      "disableManagedRecordTooltip": "Disable managed record",
+      "copyRecordTooltip": "Copy record",
+      "refreshRecordTooltip": "Refresh record"
+    },
+    "toasts": {
+      "recordUpdated": "Record updated",
+      "recordUpdatedDescription": "{field} updated successfully.",
+      "copiedToClipboard": "Copied to clipboard",
+      "copiedToClipboardDescription": "Record details copied to clipboard",
+      "saved": "{count, plural, one {# record} other {# records}} saved successfully",
+      "updated": "{count, plural, one {# record} other {# records}} updated successfully",
+      "deleted": "Successfully deleted {count, plural, one {# record} other {# records}}",
+      "deleteFailed": "Failed to delete record(s): {error}",
+      "recordPrefix": "Record {index}: {message}",
+      "undeterminedError": "Undetermined Error, please contact support",
+      "genericError": "Something went wrong. Please try again.",
+      "parkingForwardingDisabled": "Parking and forwarding disabled",
+      "autoEnsDisabled": "AutoENS disabled",
+      "forwardingDisabled": "Forwarding disabled",
+      "managedUpdateFailed": "Failed to update managed DNS settings"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "Disable parking records?",
+      "disableAutoEnsTitle": "Disable AutoENS record?",
+      "disableForwardingTitle": "Disable forwarding record?",
+      "disableParkingDescription": "This row is managed by Domain Preferences. Disabling it turns off parking.",
+      "disableAutoEnsDescription": "This row is managed by Domain Preferences. Disabling it turns off AutoENS.",
+      "disableForwardingDescription": "This row is managed by Domain Preferences. Disabling it clears forwarding.",
+      "parkingDisablesForwarding": "Disabling parking records also disables forwarding.",
+      "disabling": "Disabling..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "Nameservers Management",
+    "tooltip": "Nameservers direct traffic to your domain",
+    "resetToNamefi": "Reset to Namefi Nameservers",
+    "addNameserver": "Add nameserver",
+    "nameserverLabel": "Nameserver {index}",
+    "nameserverPlaceholder": "e.g., ns1.example.com",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "propagationNotice": "Changes to nameservers can take 24-48 hours to propagate globally.",
+    "manageDialogTitle": "Manage Nameservers",
+    "workflow": {
+      "resetInProgress": "An operation to reset nameservers to Namefi defaults is in progress...",
+      "changeInProgress": "An operation to update nameservers is in progress...",
+      "resettingTitle": "Resetting nameservers for {domain}",
+      "changingTitle": "Changing nameservers for {domain}",
+      "viewProgress": "View progress details",
+      "cancelWorkflow": "Cancel Workflow",
+      "cancelling": "Cancelling...",
+      "cancellationRequested": "Cancellation requested",
+      "cancelFailed": "Failed to cancel: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "Nameservers reset to Namefi defaults",
+      "changeSuccess": "Nameservers Updated Successfully",
+      "resetFailed": "Failed to reset nameservers",
+      "changeFailed": "Failed to update Nameservers",
+      "signatureRejected": "Signature request was rejected",
+      "ownerWalletUnavailable": "Unable to determine domain owner wallet"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC Management",
+    "tooltip": "DNSSEC is a security feature that helps to protect your domain from phishing attacks.",
+    "refreshAria": "Refresh DNSSEC status",
+    "refresh": "Refresh",
+    "modeToggle": {
+      "legend": "DNSSEC panel mode",
+      "simple": "Simple",
+      "advanced": "Advanced",
+      "simpleHint": "One-click Enable for the common case.",
+      "advancedHint": "Full control: paste DNSKEY/DS, validate, and manage multiple keys."
+    },
+    "noDetails": "No DNSSEC details found",
+    "notSupported": "DNSSEC is not supported for this domain",
+    "zoneSigning": "Zone is signing records",
+    "zoneNotSigning": "Zone is not signing records",
+    "namefiAutoHandling": "Namefi is automatically handling DNSSEC for this domain.",
+    "namefiSigningRecords": "Namefi is signing records for this domain",
+    "zoneSigningRecords": "Zone is signing records for this domain",
+    "allSecure": "All Secure",
+    "namefiOnlySigner": "Namefi is the only delegation signer for this domain",
+    "customSigners": "Custom delegation signers",
+    "notEnabled": "DNSSEC not enabled",
+    "noSigners": "No delegation signers",
+    "propagationNotice": "Changes to DNSSEC are not immediate. It can take up to 24-48 hours to propagate globally.",
+    "requestInProgress": "A request to {operation, select, disable {disable} other {enable}} DNSSEC is already in progress",
+    "operationInProgress": "An operation is already in progress",
+    "enableNamefiSigning": "Enable Namefi Signing",
+    "disableNamefiSigning": "Disable Namefi Signing",
+    "enabling": "Enabling...",
+    "disabling": "Disabling...",
+    "disableConfirmDescription": "Are you sure you want to disable Namefi Signing?",
+    "disableConfirmDetail": "This will reduce the security of your domain. and it will affect service that rely on it (e.g. AutoENS)",
+    "confirmAndDisable": "Confirm and Disable",
+    "progress": {
+      "enablingTitle": "Enabling for {domain}",
+      "disablingTitle": "Disabling for {domain}",
+      "viewProgress": "View progress details",
+      "cancelWorkflow": "Cancel Workflow",
+      "cancelling": "Cancelling...",
+      "cancellationRequested": "Cancellation requested",
+      "cancelFailed": "Failed to cancel: {error}"
+    },
+    "toasts": {
+      "enableSent": "Request to Enable DNSSEC has been sent",
+      "enableFailed": "Request to Enable DNSSEC has failed",
+      "disableSent": "Request to Disable DNSSEC has been sent",
+      "disableFailed": "Request to Disable DNSSEC has failed"
+    },
+    "signersTable": {
+      "empty": "No delegation signers associated yet.",
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "digestType": "Digest type",
+      "digest": "Digest",
+      "pending": "Pending",
+      "removeAria": "Remove delegation signer",
+      "cancelDeferredAria": "Cancel deferred DS submission",
+      "removeTitle": "Remove delegation signer?",
+      "removeDescription": "This disassociates the DS at the registrar. {keyTagSuffix}If this is the only DS for the domain, DNSSEC validation will break globally within a few hours. Make sure you've already published a replacement at the parent or are intentionally turning DNSSEC off.",
+      "removeKeyTagSuffix": "Key tag {keyTag}. ",
+      "remove": "Remove",
+      "removing": "Removing...",
+      "cancelDeferredTitle": "Cancel deferred DS submission?",
+      "cancelDeferredDescription": "This stops the validation poll for key tag {keyTag}. No DS will be associated. The submission can be retried later by clicking Enable DNSSEC again or from the Add Delegation Signer dialog.",
+      "cancelSubmission": "Cancel submission",
+      "cancelling": "Cancelling...",
+      "removeSuccess": "Removed delegation signer{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": " (key tag {keyTag})",
+      "removeFailed": "Failed to remove delegation signer: {error}",
+      "noKeyId": "Cannot determine which key to remove (no id, publicKey, or keyTag).",
+      "cancelSuccess": "Cancelled deferred submission (key tag {keyTag})",
+      "cancelFailed": "Failed to cancel: {error}",
+      "phaseAuthoritative": "Awaiting authoritative-NS validation. Times out in ~{remaining}.",
+      "phasePublicDns": "Awaiting public-DNS propagation. Times out in ~{remaining}.",
+      "phaseSubmit": "Validation passed; submitting DS to the registrar.",
+      "remainingNow": "now",
+      "remainingHoursMinutes": "{hours}h {minutes}m",
+      "remainingMinutes": "{minutes}m"
+    },
+    "advancedPanel": {
+      "title": "Custom Delegation Signers",
+      "description": "Required when this domain runs on its own authoritative nameservers. Submit the DS that matches the DNSKEY your DNS provider publishes.",
+      "addSigner": "Add Delegation Signer",
+      "dialogTitle": "Add Custom Delegation Signer",
+      "dialogDescription": "Paste your DNSKEY/DS or auto-detect from your nameservers, then validate before submitting."
+    }
+  },
+  "overview": {
+    "panelTitle": "Domain Overview",
+    "panelSubtitle": "Manage your domain settings and renewal",
+    "expired": {
+      "title": "Domain Expired",
+      "canRenew": "Your domain has expired. You can still submit a request to renew the domain and it might go through depending on the TLD (.com, .org, ...)",
+      "cannotRenew": "Your domain has expired. You can contact support to check if it can be restored (this might not be possible for all TLDs(.com, .org, ...))",
+      "cannotRenewShort": "Your domain has expired. Contact support to check if it can be restored (this might not be possible for all TLDs)."
+    },
+    "autoRenew": {
+      "label": "Auto Renew",
+      "description": "Automatically renew the domain",
+      "expires": "Expires: {date}"
+    },
+    "manualRenew": {
+      "label": "Manual Renew",
+      "description": "Renew the domain manually"
+    },
+    "renewNow": "Renew now",
+    "renewExpirationUnavailable": "Domain expiration information not available",
+    "autoRenewalCard": {
+      "title": "Auto Renewal",
+      "description": "Automatically renew your domain before expiration",
+      "auto": "Auto"
+    },
+    "manualRenewalCard": {
+      "title": "Manual Renewal",
+      "descriptionWithDate": "{expiration} - Renew now to restore your domain",
+      "description": "Renew your domain manually"
+    },
+    "preferencesUpdated": "Preferences updated",
+    "preferencesUpdateFailed": "Failed to update preferences",
+    "export": {
+      "label": "Domain Export",
+      "description": "Export domain to another registrar",
+      "descriptionCard": "Transfer your domain to another registrar",
+      "unavailableCard": "Export not available for this domain",
+      "requestExport": "Request Export",
+      "exportUnavailable": "Export Unavailable",
+      "unavailable": "Unavailable",
+      "enableRequestPending": "Enable Export Request Pending...",
+      "pending": "Pending...",
+      "getAuthCode": "Get Auth Code",
+      "requestingExport": "Requesting Export...",
+      "requesting": "Requesting...",
+      "nftNotMinted": "NFT not minted yet. Export will be available once minting completes.",
+      "loadDetailsFailed": "Something went wrong with fetching domain export details! Please try again later.",
+      "loadDetailsFailedShort": "Failed to load export details. Please try again later."
+    },
+    "exportToasts": {
+      "requestSubmitted": "Export request submitted successfully",
+      "requestFailed": "Failed to request domain export",
+      "authCodeCopied": "Auth code copied to clipboard",
+      "authCodeCopyFailed": "Failed to copy auth code",
+      "authCodeFailed": "Failed to get auth code",
+      "signatureRejected": "Signature request was rejected",
+      "signatureFailed": "Failed to request signature. This could be due to a browser error or a problem with your wallet.",
+      "ownerWalletUnavailable": "Unable to determine domain owner wallet"
+    },
+    "pendingTransfer": {
+      "label": "Pending Export",
+      "cardTitle": "Pending Export Request",
+      "requestedBy": "Export requested by: {registrar}",
+      "actionRequiredBy": "Action required by: {date}",
+      "cardDescription": "Requested by: {registrar} - Action required by {date}",
+      "approve": "Approve",
+      "reject": "Reject",
+      "approveSuccess": "Export approved successfully",
+      "approveFailed": "Failed to approve export",
+      "rejectSuccess": "Export rejected successfully",
+      "rejectFailed": "Failed to reject export"
+    },
+    "nftOwnership": {
+      "title": "Blockchain Ownership",
+      "tooltip": "Your domain is stored as an NFT (Non-Fungible Token) on the blockchain. This digital certificate proves you own this domain and is secured by cryptography.",
+      "securedOn": "Secured on",
+      "verified": "Verified",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "Chain {chainId}",
+      "ownerWallet": "Owner Wallet",
+      "ownerWalletTooltip": "This is the wallet address that owns this domain NFT. Only this wallet can manage or transfer the domain.",
+      "tokenId": "Token ID",
+      "tokenIdTooltip": "A unique identifier for your domain NFT on the blockchain. Think of it like a serial number for your digital asset.",
+      "verifyOnExplorer": "Verify on Block Explorer",
+      "showNftInWallet": "Show NFT in Wallet",
+      "addingToWallet": "Adding to wallet...",
+      "nftAdded": "NFT added to your wallet",
+      "nftAddFailed": "Couldn't add NFT to your wallet",
+      "nftAddError": "Failed to add NFT to wallet",
+      "unknownError": "Unknown error",
+      "walletAddressCopied": "Wallet address copied",
+      "walletAddressCopyFailed": "Failed to copy wallet address",
+      "tokenIdCopied": "Token ID copied",
+      "tokenIdCopyFailed": "Failed to copy token ID"
+    },
+    "educationalBanner": {
+      "title": "Your domain is secured on the blockchain",
+      "description": "Unlike traditional registrars, your domain is stored as an NFT in your wallet. This means you truly own it - no company can take it away without your permission.",
+      "dismissAria": "Dismiss banner"
+    },
+    "moreInfoAria": "More information",
+    "learnMore": "Learn more",
+    "web3Concepts": {
+      "title": "Understanding Your Domain",
+      "footer": "NameFi bridges traditional domains with blockchain ownership",
+      "nftTerm": "NFT",
+      "nftDescription": "A digital certificate of ownership stored in your wallet - like a deed to a house",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "A secure digital ledger that permanently records your ownership",
+      "walletTerm": "Wallet",
+      "walletDescription": "Your personal digital vault - only you can access it",
+      "icannTerm": "ICANN",
+      "icannDescription": "The global authority managing .com, .io, .xyz domains"
+    },
+    "transferLock": {
+      "title": "Export Available {date}",
+      "description": "Domains are locked for 60 days after import per ICANN policy.",
+      "importedOn": " This domain was imported on {date}.",
+      "gotIt": "Got It"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "Sign in required",
+    "signInRequiredMessage": "Please sign in to manage this domain.",
+    "loadErrorTitle": "Unable to load domain management",
+    "loadErrorFallback": "Please try again.",
+    "marketplaceErrorTitle": "Unable to load marketplace status",
+    "retry": "Retry",
+    "publicViewTitle": "Heads up!",
+    "publicViewMessage": "This domain is owned by another user. You are viewing public information",
+    "tabDomainOverview": "Domain Overview",
+    "tabDnsRecords": "DNS Records",
+    "tabDnsManagement": "DNS Management",
+    "tabMarketplace": "Marketplace",
+    "tabDnsSetting": "DNS Setting",
+    "notMigratedTitle": "Domain Not Migrated Yet",
+    "redirectToRegistrar": "Redirect to Registrar",
+    "comingSoon": "Coming Soon ..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "Add DNS Record",
+      "editTitle": "Edit DNS Record",
+      "requiredFieldsError": "Please complete all required fields marked with *",
+      "addMoreRecord": "Add more record",
+      "addRecord": "Add record",
+      "saveRecord": "Save record",
+      "cnameConflictTitle": "CNAME conflicts with other records",
+      "cnameConflictBody1": "CNAME records cannot share the same name with other record types.",
+      "cnameConflictBody2": "Delete the conflicting records first, then add this CNAME again.",
+      "understood": "Understood",
+      "disableManagedTitle": "Disable managed records and continue?",
+      "disableManagedBody1": "This CNAME conflicts only with managed records on this domain.",
+      "disableManagedBodyWithForwarding": "Continue to disable Parking, Forwarding, and AutoENS, then add this CNAME.",
+      "disableManagedBody": "Continue to disable Parking and AutoENS, then add this CNAME.",
+      "keepManagedRecords": "Keep managed records",
+      "disableAndContinue": "Disable and continue",
+      "disabling": "Disabling...",
+      "disableParkingTitle": "Disable parking and continue?",
+      "disableParkingBody": "This record conflicts with managed parking records. To continue, parking must be disabled first.",
+      "disableParkingForwardingNotice": "Disabling parking here also disables forwarding.",
+      "keepParkingEnabled": "Keep parking enabled",
+      "loadRecordsFailed": "Failed to load DNS records"
+    },
+    "delete": {
+      "title": "Delete records?",
+      "description": "This change may affect your domain's functionality and take time to update across networks.",
+      "summary": "delete {count, plural, one {# record} other {# records}}",
+      "toggle": "Toggle",
+      "columnName": "Name",
+      "columnType": "Type",
+      "columnValue": "Value",
+      "columnTtl": "TTL",
+      "deleting": "Deleting...",
+      "confirmSingle": "Yes, delete it",
+      "confirmMultiple": "Yes, delete them"
+    },
+    "form": {
+      "typeLabel": "Type",
+      "typePlaceholder": "Select type",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "Select TTL",
+      "nameLabel": "Name",
+      "namePlaceholder": "www or @",
+      "valueLabel": "Value",
+      "removeRecordAria": "Remove record {index}",
+      "ttlOption1Minute": "1 minutes",
+      "ttlOption5Minutes": "5 minutes",
+      "ttlOption20Minutes": "20 minutes",
+      "ttlOption1Hour": "1 hour",
+      "ttlOption1Day": "1 day",
+      "ttlOption1Week": "1 week",
+      "errorRecordTypeRequired": "Record type is required",
+      "errorValueRequired": "Value is required",
+      "errorTtlRequired": "TTL is required"
+    },
+    "forwarding": {
+      "title": "Edit URL Forwarding",
+      "description": "Enter the URL you want {domain} to forward to.",
+      "fieldLabel": "Forward To URL",
+      "placeholder": "https://example.com",
+      "updated": "Forwarding URL updated",
+      "updateFailed": "Failed to update forwarding URL"
+    },
+    "batch": {
+      "setNameservers": "Set Nameservers",
+      "setUrlForwarding": "Set URL Forwarding",
+      "setWebRecords": "Set Web Records",
+      "setMxRecords": "Set MX Records",
+      "setEnsRecord": "Set ENS Record",
+      "batchAction": "Batch Action",
+      "applyingToDomains": "Applying to {count} selected domains.",
+      "forwardUrlLabel": "Forward URL",
+      "webRecordNotice": "This will add the specified record to all selected domains.",
+      "comingSoon": "Batch editing for {action} is coming soon.",
+      "forwardingUpdated": "Forwarding updated for {count} domains",
+      "webRecordsUpdated": "Web records updated for {count} domains",
+      "nameserverComingSoon": "Batch nameserver update coming soon",
+      "recordComingSoon": "Batch DNS record update coming soon",
+      "updateFailed": "Failed to update domains"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS Actions",
+    "notEditableExternal": "Not editable when using external nameservers",
+    "nameservers": "Nameservers: {value}",
+    "nameserversNone": "None",
+    "parkedOnNamefi": "Parked on Namefi",
+    "webRecordsConfigured": "Web Records Configured",
+    "noWebRecords": "No Web Records",
+    "enableParkingForForwarding": "Enable Parking to use Forwarding",
+    "forwardsTo": "Forwards to: {url}",
+    "noForwarding": "No URL Forwarding",
+    "mxConfigured": "MX Records Configured",
+    "noMxRecords": "No MX Records",
+    "autoEnsEnabled": "Auto-ENS enabled",
+    "noEnsRecord": "No ENS Record",
+    "manageMore": "Manage more DNS records"
+  },
+  "cacheFlush": {
+    "title": "DNS Cache Flush",
+    "description": "Flush DNS caches across configured servers for a specific zone and record type",
+    "zoneLabel": "Zone/Domain",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "Record Type",
+    "recordTypeAll": "ALL",
+    "flushing": "Flushing Cache...",
+    "submit": "Flush DNS Cache",
+    "resultsHeading": "Results:",
+    "resultSuccess": "Success",
+    "resultFailed": "Failed",
+    "zoneRequired": "Zone is required",
+    "flushCompleteTitle": "Cache Flush Complete",
+    "flushFailedTitle": "Cache Flush Failed"
+  }
+}

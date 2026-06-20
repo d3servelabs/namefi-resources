@@ -22,7 +22,6 @@
     "clear": "Limpiar"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "No hay listados que coincidan con los filtros actuales.",
     "empty": "No se encontraron listados.",
     "endOfFeed": "Fin del feed",

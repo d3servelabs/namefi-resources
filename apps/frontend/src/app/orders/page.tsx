@@ -248,7 +248,7 @@ function OrdersPageV1() {
                         valueClassName="text-muted-foreground"
                       />
                       <MobileTableItemField
-                        label="NFT Wallet"
+                        label={t('nftWalletLabel')}
                         className="justify-start gap-2"
                         value={renderNftWalletValue({
                           walletAddress: item.nftWalletAddress ?? null,

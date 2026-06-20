@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, type ChangeEvent } from 'react';
+import { useTranslations } from 'next-intl';
 import { CalendarIcon } from 'lucide-react';
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -71,6 +72,7 @@ export function DatePickerWithInput({
   id = 'date',
   className,
 }: DatePickerWithInputProps) {
+  const t = useTranslations('shared');
   const [open, setOpen] = useState(false);
   const [uncontrolledDate, setUncontrolledDate] = useState<Date | undefined>(
     controlledValue ?? undefined,
@@ -151,7 +153,7 @@ export function DatePickerWithInput({
             }
           >
             <CalendarIcon className="size-3.5" />
-            <span className="sr-only">Select date</span>
+            <span className="sr-only">{t('datePicker.selectDate')}</span>
           </PopoverTrigger>
           <PopoverContent
             className="w-auto overflow-hidden p-0 z-[9999] pointer-events-auto"

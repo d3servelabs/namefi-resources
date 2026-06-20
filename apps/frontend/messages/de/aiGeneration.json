@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "Erstellen Sie individuelle Logos, Poster und Animationen für Ihre Marke",
+    "poweredByAlt": "Unterstützt von Namefi"
+  },
+  "tabs": {
+    "logo": "Logo",
+    "poster": "Poster",
+    "animation": "Animation"
+  },
+  "prerequisite": {
+    "title": "Erstellen Sie zuerst ein Logo",
+    "posterDescription": "Poster benötigen eines Ihrer generierten Logos als Markenreferenz.",
+    "animationDescription": "Animationen benötigen eines Ihrer generierten Logos als Quellgrafik."
+  },
+  "usage": {
+    "credits": "KI-Credits",
+    "usedThisMonth": "{current} von {max} diesen Monat verbraucht",
+    "limitReached": "Credit-Limit erreicht",
+    "creditsLeft": "{count, plural, one {# Credit verbleibend} other {# Credits verbleibend}}",
+    "refreshAria": "Erneuerungszeit der KI-Credits",
+    "refreshAt": "Credits werden {time} erneuert",
+    "refreshMonthly": "Credits werden monatlich erneuert",
+    "balanceCheckError": "KI-Credit-Guthaben nicht abrufbar",
+    "balanceCheckErrorDescription": "Ihr verbleibendes Guthaben konnte nicht geprüft werden. Sie können dennoch versuchen, Assets zu generieren.",
+    "checkingBalance": "KI-Credit-Guthaben wird geprüft…",
+    "willCheckBalance": "Ihr KI-Credit-Guthaben wird vor der Generierung geprüft.",
+    "creditAmount": "{count, plural, one {# KI-Credit} other {# KI-Credits}}",
+    "costInsufficient": "Diese Generierung benötigt {cost}. Diesen Monat verbleiben Ihnen {remaining}.",
+    "costPreview": "Diese Generierung kostet {cost}. Diesen Monat verbleiben Ihnen danach {remaining}."
+  },
+  "domainField": {
+    "fixedLabel": "Domain eingeben (z. B. beispiel.com)",
+    "logoPlaceholder": "Markendomain auswählen oder eingeben",
+    "brandPlaceholder": "Markendomain auswählen (erforderlich)",
+    "searchBrands": "Markendomains durchsuchen…",
+    "searchOrEnter": "Domain suchen oder eingeben",
+    "emptyStudioLogos": "Keine Studio-Logo-Domains gefunden.",
+    "emptyMatching": "Keine passenden Domains."
+  },
+  "description": {
+    "label": "Marke beschreiben (optional)",
+    "placeholder": "Beschreiben Sie Ihre Markenvision"
+  },
+  "logo": {
+    "gridTitle": "Generierte Logos",
+    "chooseType": "Typ wählen",
+    "chooseStyle": "Stil wählen",
+    "chooseTldTreatment": "TLD-Darstellung wählen",
+    "chooseTypography": "Typografie wählen",
+    "chooseModel": "Modell wählen",
+    "controls": {
+      "type": "Typ",
+      "style": "Stil",
+      "tld": "TLD",
+      "typography": "Typografie",
+      "model": "Modell",
+      "brandVision": "Markenvision",
+      "advanced": "Erweitert"
+    },
+    "actions": {
+      "createPoster": "Poster erstellen",
+      "animateLogo": "Logo animieren"
+    }
+  },
+  "poster": {
+    "title": "Poster-Generator",
+    "gridTitle": "Generierte Poster",
+    "usingBrand": "Marke {domain} wird verwendet",
+    "backToLogos": "Zurück zu Logos",
+    "chooseLogo": "Logo als Basis für Ihr Poster wählen",
+    "chooseModel": "Modell wählen",
+    "chooseCollateral": "Verwendungszweck wählen",
+    "selectCollateral": "Verwendungszweck auswählen",
+    "controls": {
+      "useLogo": "Logo nutzen",
+      "selected": "Ausgewählt",
+      "description": "Beschreibung",
+      "model": "Modell",
+      "collateral": "Verwendung",
+      "advanced": "Erweitert"
+    },
+    "collateral": {
+      "letAiChoose": "KI entscheiden lassen",
+      "billboard": "Billboard",
+      "apparel": "Bekleidung",
+      "vehicle": "Fahrzeug",
+      "product": "Produkt"
+    }
+  },
+  "animation": {
+    "title": "Logo-Animation",
+    "gridTitle": "Generierte Animationen",
+    "usingBrand": "Marke {domain} wird verwendet",
+    "backToLogos": "Zurück zu Logos",
+    "chooseMode": "Animationsmodus wählen",
+    "chooseLogo": "Zu animierendes Logo wählen",
+    "chooseOpening": "Eröffnungsstil wählen",
+    "chooseMotion": "Bewegungsrichtung wählen",
+    "chooseIntensity": "Bewegungsintensität wählen",
+    "chooseModel": "Modell wählen",
+    "selectOpening": "Eröffnungsstil auswählen",
+    "selectMotion": "Bewegung auswählen",
+    "selectIntensity": "Intensität auswählen",
+    "useLogoAria": "Logo {domain} verwenden",
+    "controls": {
+      "mode": "Modus",
+      "useLogo": "Logo nutzen",
+      "selected": "Ausgewählt",
+      "description": "Beschreibung",
+      "opening": "Eröffnung",
+      "motion": "Bewegung",
+      "intensity": "Intensität",
+      "model": "Modell"
+    },
+    "validation": {
+      "openingRequired": "Eröffnung ist für Kinoanimationen erforderlich",
+      "chooseCinematicModel": "Kinomodell wählen",
+      "chooseCinematicMotion": "Kinobewegungsvorlage wählen",
+      "chooseSeedanceModel": "Seedance-Modell wählen",
+      "intensityRequired": "Intensität ist für Loop-Animationen erforderlich",
+      "chooseLoopedModel": "Loop-Modell wählen",
+      "chooseLoopedMotion": "Loop-Bewegungsvorlage wählen"
+    }
+  },
+  "model": {
+    "select": "Modell auswählen"
+  },
+  "submit": {
+    "generate": "Generieren",
+    "generating": "Wird generiert",
+    "animate": "Animieren",
+    "selectBrand": "Marke auswählen"
+  },
+  "gallery": {
+    "yours": "Ihre Generierungen",
+    "featured": "Empfohlen",
+    "brands": "Marken",
+    "brandsSelected": "{count} ausgewählt",
+    "searchBrand": "Marke suchen…",
+    "noBrands": "Keine Marken gefunden.",
+    "filterAll": "Alle",
+    "filterLogo": "Logo",
+    "filterPoster": "Poster",
+    "filterAnimation": "Animation",
+    "emptyYours": "Generieren Sie ein Logo oder Poster, damit es hier erscheint.",
+    "openAria": "Generierung für {domain} öffnen",
+    "openFeaturedAria": "Empfohlene Generierung für {domain} öffnen",
+    "viewAria": "Generierung {index} anzeigen",
+    "animationPreviewAria": "Animationsvorschau für {domain}",
+    "previewUnavailable": "Vorschau nicht verfügbar",
+    "basedOnLogo": "Basiert auf Logo",
+    "basedOn": "Basiert auf:",
+    "referencedLogoAlt": "Referenziertes Logo"
+  },
+  "kind": {
+    "logo": "Logo",
+    "poster": "Poster",
+    "animation": "Animation"
+  },
+  "progress": {
+    "generatingLogo": "Logo wird generiert",
+    "generatingPoster": "Poster wird generiert",
+    "preparingAnimation": "Animation wird vorbereitet",
+    "messages": {
+      "gathering": "Inspiration für Ihre Marke wird gesammelt…",
+      "sketching": "Erste Linien und Silhouetten werden skizziert…",
+      "blending": "Farben, Stile und Schriften werden kombiniert…",
+      "character": "Charakter und markante Details werden hinzugefügt…",
+      "lighting": "Licht und Balance werden verfeinert…",
+      "polishing": "Highlights und Texturen werden poliert…",
+      "framing": "Die finale Enthüllung wird gerahmt…",
+      "almost": "Fast fertig—gleich ist es soweit!"
+    }
+  },
+  "status": {
+    "pending": "Ausstehend",
+    "processing": "Wird verarbeitet",
+    "failed": "Fehlgeschlagen",
+    "ready": "Bereit"
+  },
+  "asyncTile": {
+    "genericError": "Diese Generierung konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut.",
+    "stillRunning": "Ihre Generierung läuft noch.",
+    "queued": "Ihre Generierung befindet sich in der Warteschlange und erscheint in Kürze hier."
+  },
+  "actions": {
+    "copy": "Kopieren",
+    "copyLink": "Link kopieren",
+    "tweet": "Tweet",
+    "download": "Herunterladen"
+  },
+  "delete": {
+    "title": "Generierung löschen?",
+    "titleSingle": "Diese Generierung löschen?",
+    "descriptionLogo": "Das Logo für {domain} wird aus Ihrer Galerie entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "descriptionPoster": "Das Poster für {domain} wird aus Ihrer Galerie entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "descriptionAnimation": "Die Animation für {domain} wird aus Ihrer Galerie entfernt. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleting": "Wird gelöscht…"
+  },
+  "share": {
+    "unableTitle": "Teilen nicht möglich",
+    "unableMissingLink": "Für diese Generierung ist kein Freigabelink verfügbar.",
+    "unableMissingLinkOrDomain": "Für diese Generierung wurde kein Freigabelink oder keine Domain gefunden."
+  },
+  "imageGrid": {
+    "previewUnavailable": "Vorschau nicht verfügbar"
+  },
+  "details": {
+    "backToStudio": "Zurück zum Namefi Brand Studio",
+    "headingLogo": "Logo für {brand}",
+    "headingPoster": "Poster für {brand}",
+    "headingAnimation": "Animation für {brand}",
+    "notFoundTitle": "Generierung nicht gefunden",
+    "notFoundDescription": "Die gesuchte Generierung konnte nicht gefunden werden.",
+    "assetUnavailable": "Das Asset ist noch nicht verfügbar.",
+    "sectionTitle": "Details",
+    "type": "Typ:",
+    "status": "Status:",
+    "collateral": "Verwendung:",
+    "motion": "Bewegung:",
+    "mode": "Modus:",
+    "opening": "Eröffnung:",
+    "intensity": "Intensität:",
+    "model": "Modell:",
+    "created": "Erstellt:",
+    "createdUnknown": "Unbekannt",
+    "collateralUnknown": "Unbekannt",
+    "logoProperties": "Logo-Eigenschaften",
+    "logoStyle": "Stil:",
+    "logoType": "Typ:",
+    "logoTld": "TLD:",
+    "logoTypography": "Typografie:",
+    "sourceLogo": "Quell-Logo",
+    "sourceLogoAlt": "Logo für die abgeleitete Generierung verwendet",
+    "viewLogoDetails": "Logo-Details anzeigen",
+    "sourcePreviewUnavailable": "Vorschau des Quell-Logos nicht verfügbar",
+    "sourceLoadFailed": "Logo-Details konnten nicht geladen werden",
+    "sourceNotFound": "Keine Logo-Referenz gefunden",
+    "animationSheet": "Animations-Sheet",
+    "animationSheetAlt": "Generiertes Animations-Sheet für {domain}",
+    "openSheetAria": "Animations-Sheet-Vorschau öffnen",
+    "sheetModel": "Sheet-Modell:",
+    "sheetDialogTitle": "Animations-Sheet",
+    "sheetDialogDescription": "Das generierte Storyboard, das als Vorlage für diese Animation diente.",
+    "shareTwitterTitle": "Auf Twitter teilen",
+    "copyLinkTitle": "Link kopieren",
+    "twitter": "Twitter",
+    "linkCopied": "Link kopiert",
+    "linkCopiedDescription": "Sie können diese Generierung jetzt mit anderen teilen",
+    "linkCopyFailed": "Link konnte nicht kopiert werden",
+    "linkCopyFailedDescription": "Bitte versuchen Sie es erneut",
+    "animationLabelAria": "KI-generierte {mode}-Animation für {domain}",
+    "imageAlt": "KI-generiertes {type} für {domain}"
+  }
+}

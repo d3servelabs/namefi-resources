@@ -13,6 +13,7 @@ import {
 import { useCartContext } from '@/components/providers/cart';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Loader2, ShoppingCart } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
 import { forwardRef, useMemo, useState } from 'react';
 import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
@@ -36,13 +37,14 @@ export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
 };
 
 function CartDropdownContentFallback() {
+  const t = useTranslations('cart');
   return (
     <DropdownMenuGroup>
-      <DropdownMenuLabel>My Cart</DropdownMenuLabel>
+      <DropdownMenuLabel>{t('cartDropdown.myCart')}</DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem className="justify-start font-medium italic">
         <Loader2 className="me-2 size-4 animate-spin" />
-        <span>Loading cart...</span>
+        <span>{t('cartDropdown.loadingCart')}</span>
       </DropdownMenuItem>
     </DropdownMenuGroup>
   );

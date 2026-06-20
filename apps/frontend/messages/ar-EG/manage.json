@@ -1,0 +1,16 @@
+{
+  "heading": "النطاقات المباعة",
+  "loadErrorTitle": "تعذّر تحميل النطاقات المباعة",
+  "loadErrorFallback": "حاول مرة أخرى.",
+  "retry": "إعادة المحاولة",
+  "totalDomainsSold": "إجمالي النطاقات المباعة",
+  "proceeds": "العائدات",
+  "domainsSold": "النطاقات المباعة",
+  "emptyState": "لا توجد نطاقات مباعة بعد.",
+  "columns": {
+    "domainName": "اسم النطاق",
+    "wallet": "المحفظة",
+    "date": "التاريخ",
+    "price": "السعر"
+  }
+}

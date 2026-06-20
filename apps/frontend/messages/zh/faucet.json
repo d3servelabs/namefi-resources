@@ -1,0 +1,18 @@
+{
+  "title": "NFSC 水龙头",
+  "description": "在测试网上请求 20 $NFSC，用于沙盒环境测试。",
+  "chainLabel": "链",
+  "receivingWalletLabel": "接收钱包",
+  "walletPlaceholder": "粘贴钱包地址或从已关联钱包中选择",
+  "walletHelpText": "代币将在 Sepolia 上铸造到所选钱包。",
+  "submitting": "正在提交请求...",
+  "requestNfsc": "请求 NFSC",
+  "rateLimitedTitle": "您刚刚完成了铸造。",
+  "rateLimitedDescription": "请在 {time} 后重试。",
+  "rateLimitedFallback": "稍后",
+  "mintInProgressTitle": "铸造进行中",
+  "mintInProgressDescription": "正在等待 Sepolia 上的交易确认。",
+  "mintCompleteTitle": "铸造完成",
+  "viewTransaction": "查看交易",
+  "requestFailedTitle": "请求失败"
+}

@@ -17,6 +17,7 @@ import {
   DropdownMenuSeparator,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { Loader2, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { type FC, type MouseEvent, useCallback, useMemo } from 'react';
 
@@ -91,6 +92,7 @@ export function CartDropdownContent({
   totalAmountInUsdCents,
 }: CartDropdownContentProps) {
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+  const t = useTranslations('cart');
   const isCartEmpty = items.length === 0;
 
   const logBeginCheckout = useCallback(() => {
@@ -106,7 +108,7 @@ export function CartDropdownContent({
   return (
     <>
       <DropdownMenuGroup>
-        <DropdownMenuLabel>My Cart</DropdownMenuLabel>
+        <DropdownMenuLabel>{t('cartDropdown.myCart')}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {items.map((item) => (
           <CartDropdownItem
@@ -116,13 +118,13 @@ export function CartDropdownContent({
         ))}
         {isCartEmpty && (
           <DropdownMenuItem className="justify-start font-medium italic">
-            <span>Your cart is empty</span>
+            <span>{t('cartDropdown.yourCartIsEmpty')}</span>
           </DropdownMenuItem>
         )}
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem className="justify-between font-medium">
-        <span>Total</span>
+        <span>{t('cartDropdown.total')}</span>
         <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
       </DropdownMenuItem>
       <DropdownMenuItem className="p-0">
@@ -137,7 +139,7 @@ export function CartDropdownContent({
           nativeButton={isCartEmpty}
           disabled={isCartEmpty}
         >
-          Checkout
+          {t('cartDropdown.checkout')}
         </Button>
       </DropdownMenuItem>
     </>

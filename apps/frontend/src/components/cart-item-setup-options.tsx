@@ -10,6 +10,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { supportsDnssec } from '@namefi-astra/registrars/data/supports-dnssec';
 import { Check, CheckCheck, Minus, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo } from 'react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
@@ -181,20 +182,23 @@ export function CartItemSetupOptionsSummary({
   onExpand,
   className,
 }: CartItemSetupOptionsSummaryProps) {
+  const t = useTranslations('cart');
   const labels = useMemo(() => getEnabledSetupOptionLabels(item), [item]);
 
   return (
     <button
       type="button"
       onClick={onExpand}
-      aria-label="Show domain setup options"
+      aria-label={t('cartItemSetup.showOptionsAria')}
       className={cn(
         'flex max-w-[15rem] flex-wrap items-center gap-1 text-start',
         className,
       )}
     >
       {labels.length === 0 ? (
-        <span className="text-[11px] text-zinc-500">No setup options</span>
+        <span className="text-[11px] text-zinc-500">
+          {t('cartItemSetup.noSetupOptions')}
+        </span>
       ) : (
         labels.map((label) => (
           <span

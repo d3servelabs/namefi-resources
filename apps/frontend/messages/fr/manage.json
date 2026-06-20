@@ -1,0 +1,16 @@
+{
+  "heading": "Mes domaines vendus",
+  "loadErrorTitle": "Impossible de charger les domaines vendus",
+  "loadErrorFallback": "Veuillez réessayer.",
+  "retry": "Réessayer",
+  "totalDomainsSold": "Total des domaines vendus",
+  "proceeds": "Recettes",
+  "domainsSold": "Domaines vendus",
+  "emptyState": "Aucun domaine vendu pour l'instant.",
+  "columns": {
+    "domainName": "Nom de domaine",
+    "wallet": "Portefeuille",
+    "date": "Date",
+    "price": "Prix"
+  }
+}

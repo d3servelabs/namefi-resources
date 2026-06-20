@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "DNSSEC-Status konnte nicht geprüft werden",
+    "pendingTitle": "DNSSEC-Einrichtung läuft",
+    "activeTitle": "DNSSEC ist aktiviert",
+    "misconfiguredTitle": "DNSSEC ist fehlerhaft konfiguriert"
+  },
+  "actions": {
+    "enable": "DNSSEC aktivieren",
+    "disable": "DNSSEC deaktivieren",
+    "cancelSetup": "Einrichtung abbrechen",
+    "keepWaiting": "Weiter warten"
+  },
+  "disableDialog": {
+    "title": "DNSSEC deaktivieren?"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "Automatische Erkennung",
+      "manual": "Manuell"
+    },
+    "manual": {
+      "description": "Fügen Sie einen DNSKEY- oder DS-Eintrag ein (vollständige Zone-File-Zeile oder nur rdata). Das Format wird automatisch erkannt.",
+      "enterFieldsManually": "oder Felder manuell eingeben",
+      "derive": "DS-Felder ableiten",
+      "deriving": "Wird abgeleitet..."
+    },
+    "autoDetect": {
+      "description": "Nameserver Ihrer Domain abfragen und erkennen",
+      "detect": "Von delegierten Nameservern erkennen",
+      "detecting": "Wird erkannt...",
+      "kskCandidate": "KSK-Kandidat",
+      "candidateOption": "Key-Tag {keyTag} — Alg. {algorithm}"
+    },
+    "dsValuesTitle": "DS-Werte",
+    "viewSummary": "Zusammenfassung",
+    "fields": {
+      "keyTag": "Key-Tag",
+      "algorithm": "Algorithmus",
+      "flags": "Flags",
+      "digestType": "Digest-Typ",
+      "publicKey": "Öffentlicher Schlüssel (base64)",
+      "digest": "Digest (hex)"
+    },
+    "placeholders": {
+      "algorithm": "Algorithmus wählen",
+      "flags": "Flag wählen",
+      "digestType": "Digest-Typ wählen"
+    },
+    "publicKeyMissingNotice": "Der eingefügte DS-Eintrag enthält keinen öffentlichen Schlüssel. Verwenden Sie die automatische Erkennung oder fügen Sie den DNSKEY-Eintrag ein, damit wir ihn beim Registrar einreichen können.",
+    "summary": {
+      "notSet": "nicht gesetzt"
+    },
+    "deferredNotice": "Dies wird als Hintergrund-Workflow ausgeführt, der die Validierung abruft und erst einreicht, wenn beide Prüfungen bestanden sind. Sie erhalten eine E-Mail, sobald der Vorgang abgeschlossen ist oder ein Timeout auftritt.",
+    "validate": "Validieren",
+    "validating": "Wird validiert...",
+    "scheduleDs": "DS planen",
+    "submitDs": "DS einreichen",
+    "scheduling": "Wird geplant...",
+    "submitting": "Wird eingereicht...",
+    "validation": {
+      "pending": "DNSKEY-Einträge bei autoritativen Nameservern und öffentlichem DNS werden abgefragt...",
+      "laneAuthoritative": "Autoritative Nameserver",
+      "lanePublicDns": "Öffentliches DNS (Google)",
+      "statusCouldNotValidate": "konnte nicht validiert werden",
+      "statusMatch": "Übereinstimmung",
+      "statusNoMatchingDnskey": "kein passender DNSKEY",
+      "queried": "Abgefragt: {source}",
+      "matched": "Key-Tag {keyTag} berechnet. Quelle: {source}.",
+      "noMatch": "Keiner der veröffentlichten DNSKEYs bei {source} erzeugt den von Ihnen eingegebenen Digest.",
+      "tableFlags": "Flags",
+      "tableAlg": "Alg.",
+      "tableComputedKeyTag": "Berechneter Key-Tag",
+      "tableComputedDigest": "Berechneter Digest"
+    },
+    "ack": {
+      "validationDidNotPass": "Ich verstehe, dass die Validierung nicht bestanden wurde, und möchte diesen DS trotzdem verknüpfen (z. B. Staging vor dem Wechsel der Nameserver).",
+      "sure": "Ich bin sicher, diesen DS verknüpfen.",
+      "notFullyReflected": "Ich verstehe, dass DNSKEY noch nicht in allen Regionen vollständig übertragen wurde und in einigen Regionen nach dieser Änderung eine kurze Ausfallzeit auftreten kann. Ich möchte diesen DS trotzdem verknüpfen."
+    }
+  },
+  "prefs": {
+    "panelTitle": "Domain-Einstellungen",
+    "loadFailed": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.",
+    "autoEns": {
+      "label": "Auto-ENS",
+      "description": "ENS für die Domain automatisch aktivieren",
+      "unavailableTooltip": "AutoENS ist für diese Domain nicht verfügbar. ENS erfordert DNSSEC.",
+      "enableDnssecFirst": "Sie müssen zuerst DNSSEC aktivieren.",
+      "dnssecUnsupported": "Diese Domain unterstützt kein DNSSEC."
+    },
+    "autoPark": {
+      "label": "Auto-Parking",
+      "description": "Die Domain automatisch parken"
+    },
+    "forwardTo": {
+      "label": "Weiterleitung",
+      "description": "Domain auf eine andere Adresse weiterleiten"
+    },
+    "notManagingNameservers": "Namefi verwaltet die Nameserver für diese Domain nicht",
+    "propagationNotice": "Änderungen an DNSSEC sind nicht sofort wirksam. Die globale Übertragung kann bis zu 24–48 Stunden dauern.",
+    "conflictDialog": {
+      "title": "Konfliktierende Top-Level-Einträge entfernen?",
+      "description": "Diese Einstellungsänderung erfordert das Entfernen konfliktierender Root-Einträge auf dieser Domain.",
+      "apexCname": "Jeder Top-Level-CNAME-Eintrag (`@`) wird zuerst entfernt.",
+      "apexAddress": "Alle Top-Level-A/AAAA-Einträge (`@`) werden zuerst entfernt.",
+      "keepRecords": "Einträge behalten",
+      "removeAndContinue": "Entfernen und fortfahren",
+      "applying": "Wird angewendet..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNS-Einträge",
+      "description": "DNS-Einträge Ihrer Domain verwalten",
+      "addRecord": "Eintrag hinzufügen",
+      "recordTypes": "Eintragstypen",
+      "recordTypeOption": "{type}-Eintrag"
+    },
+    "table": {
+      "searchPlaceholder": "Einträge suchen...",
+      "columns": "Spalten",
+      "toggleColumns": "Spalten ein-/ausblenden",
+      "filter": "Filter",
+      "filterByType": "Nach Typ filtern",
+      "clearFilters": "Filter zurücksetzen",
+      "actionsLabel": "Aktionen",
+      "tableActions": "Tabellenaktionen",
+      "exportRecords": "Einträge exportieren",
+      "importRecords": "Einträge importieren",
+      "copyAsZoneFile": "Als Zone-File kopieren",
+      "editSelected": "Auswahl bearbeiten ({count})",
+      "deleteSelected": "Auswahl löschen ({count})",
+      "empty": "Keine Einträge gefunden.",
+      "rowsSelected": "{selected} von {total} Zeile(n) ausgewählt.",
+      "columnType": "Typ",
+      "columnName": "Name",
+      "columnValue": "Wert",
+      "columnTtl": "TTL",
+      "columnActions": "Aktionen",
+      "editRecordTooltip": "Eintrag bearbeiten",
+      "deleteRecordTooltip": "Eintrag löschen",
+      "disableManagedRecordTooltip": "Verwalteten Eintrag deaktivieren",
+      "copyRecordTooltip": "Eintrag kopieren",
+      "refreshRecordTooltip": "Eintrag aktualisieren"
+    },
+    "toasts": {
+      "recordUpdated": "Eintrag aktualisiert",
+      "recordUpdatedDescription": "{field} erfolgreich aktualisiert.",
+      "copiedToClipboard": "In Zwischenablage kopiert",
+      "copiedToClipboardDescription": "Eintragsdetails in Zwischenablage kopiert",
+      "saved": "{count, plural, one {# Eintrag} other {# Einträge}} erfolgreich gespeichert",
+      "updated": "{count, plural, one {# Eintrag} other {# Einträge}} erfolgreich aktualisiert",
+      "deleted": "{count, plural, one {# Eintrag} other {# Einträge}} erfolgreich gelöscht",
+      "deleteFailed": "Eintrag konnte nicht gelöscht werden: {error}",
+      "recordPrefix": "Eintrag {index}: {message}",
+      "undeterminedError": "Unbekannter Fehler – bitte wenden Sie sich an den Support",
+      "genericError": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+      "parkingForwardingDisabled": "Parking und Weiterleitung deaktiviert",
+      "autoEnsDisabled": "AutoENS deaktiviert",
+      "forwardingDisabled": "Weiterleitung deaktiviert",
+      "managedUpdateFailed": "Verwaltete DNS-Einstellungen konnten nicht aktualisiert werden"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "Parking-Einträge deaktivieren?",
+      "disableAutoEnsTitle": "AutoENS-Eintrag deaktivieren?",
+      "disableForwardingTitle": "Weiterleitungseintrag deaktivieren?",
+      "disableParkingDescription": "Diese Zeile wird von den Domain-Einstellungen verwaltet. Durch Deaktivieren wird das Parking ausgeschaltet.",
+      "disableAutoEnsDescription": "Diese Zeile wird von den Domain-Einstellungen verwaltet. Durch Deaktivieren wird AutoENS ausgeschaltet.",
+      "disableForwardingDescription": "Diese Zeile wird von den Domain-Einstellungen verwaltet. Durch Deaktivieren wird die Weiterleitung aufgehoben.",
+      "parkingDisablesForwarding": "Das Deaktivieren von Parking-Einträgen deaktiviert auch die Weiterleitung.",
+      "disabling": "Wird deaktiviert..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "Nameserver-Verwaltung",
+    "tooltip": "Nameserver leiten den Datenverkehr zu Ihrer Domain",
+    "resetToNamefi": "Auf Namefi-Nameserver zurücksetzen",
+    "addNameserver": "Nameserver hinzufügen",
+    "nameserverLabel": "Nameserver {index}",
+    "nameserverPlaceholder": "z. B. ns1.example.com",
+    "saveChanges": "Änderungen speichern",
+    "saving": "Wird gespeichert...",
+    "propagationNotice": "Änderungen an Nameservern können 24–48 Stunden benötigen, um sich global zu übertragen.",
+    "manageDialogTitle": "Nameserver verwalten",
+    "workflow": {
+      "resetInProgress": "Ein Vorgang zum Zurücksetzen der Nameserver auf die Namefi-Standardwerte läuft...",
+      "changeInProgress": "Ein Vorgang zum Aktualisieren der Nameserver läuft...",
+      "resettingTitle": "Nameserver für {domain} werden zurückgesetzt",
+      "changingTitle": "Nameserver für {domain} werden geändert",
+      "viewProgress": "Fortschrittsdetails anzeigen",
+      "cancelWorkflow": "Workflow abbrechen",
+      "cancelling": "Wird abgebrochen...",
+      "cancellationRequested": "Abbruch angefordert",
+      "cancelFailed": "Abbruch fehlgeschlagen: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "Nameserver auf Namefi-Standardwerte zurückgesetzt",
+      "changeSuccess": "Nameserver erfolgreich aktualisiert",
+      "resetFailed": "Nameserver konnten nicht zurückgesetzt werden",
+      "changeFailed": "Nameserver konnten nicht aktualisiert werden",
+      "signatureRejected": "Signaturanfrage wurde abgelehnt",
+      "ownerWalletUnavailable": "Domain-Inhaber-Wallet konnte nicht ermittelt werden"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC-Verwaltung",
+    "tooltip": "DNSSEC ist eine Sicherheitsfunktion, die Ihre Domain vor Phishing-Angriffen schützt.",
+    "refreshAria": "DNSSEC-Status aktualisieren",
+    "refresh": "Aktualisieren",
+    "modeToggle": {
+      "legend": "DNSSEC-Panel-Modus",
+      "simple": "Einfach",
+      "advanced": "Erweitert",
+      "simpleHint": "Ein-Klick-Aktivierung für den Standardfall.",
+      "advancedHint": "Volle Kontrolle: DNSKEY/DS einfügen, validieren und mehrere Schlüssel verwalten."
+    },
+    "noDetails": "Keine DNSSEC-Details gefunden",
+    "notSupported": "DNSSEC wird für diese Domain nicht unterstützt",
+    "zoneSigning": "Zone signiert Einträge",
+    "zoneNotSigning": "Zone signiert keine Einträge",
+    "namefiAutoHandling": "Namefi verwaltet DNSSEC für diese Domain automatisch.",
+    "namefiSigningRecords": "Namefi signiert Einträge für diese Domain",
+    "zoneSigningRecords": "Zone signiert Einträge für diese Domain",
+    "allSecure": "Vollständig gesichert",
+    "namefiOnlySigner": "Namefi ist der einzige Delegierungs-Signer für diese Domain",
+    "customSigners": "Benutzerdefinierte Delegierungs-Signer",
+    "notEnabled": "DNSSEC nicht aktiviert",
+    "noSigners": "Keine Delegierungs-Signer",
+    "propagationNotice": "Änderungen an DNSSEC sind nicht sofort wirksam. Die globale Übertragung kann bis zu 24–48 Stunden dauern.",
+    "requestInProgress": "Eine Anfrage zum {operation, select, disable {Deaktivieren} other {Aktivieren}} von DNSSEC ist bereits in Bearbeitung",
+    "operationInProgress": "Ein Vorgang ist bereits in Bearbeitung",
+    "enableNamefiSigning": "Namefi-Signierung aktivieren",
+    "disableNamefiSigning": "Namefi-Signierung deaktivieren",
+    "enabling": "Wird aktiviert...",
+    "disabling": "Wird deaktiviert...",
+    "disableConfirmDescription": "Möchten Sie die Namefi-Signierung wirklich deaktivieren?",
+    "disableConfirmDetail": "Dies verringert die Sicherheit Ihrer Domain und betrifft Dienste, die davon abhängen (z. B. AutoENS).",
+    "confirmAndDisable": "Bestätigen und deaktivieren",
+    "progress": {
+      "enablingTitle": "Wird für {domain} aktiviert",
+      "disablingTitle": "Wird für {domain} deaktiviert",
+      "viewProgress": "Fortschrittsdetails anzeigen",
+      "cancelWorkflow": "Workflow abbrechen",
+      "cancelling": "Wird abgebrochen...",
+      "cancellationRequested": "Abbruch angefordert",
+      "cancelFailed": "Abbruch fehlgeschlagen: {error}"
+    },
+    "toasts": {
+      "enableSent": "Anfrage zur DNSSEC-Aktivierung wurde gesendet",
+      "enableFailed": "Anfrage zur DNSSEC-Aktivierung ist fehlgeschlagen",
+      "disableSent": "Anfrage zur DNSSEC-Deaktivierung wurde gesendet",
+      "disableFailed": "Anfrage zur DNSSEC-Deaktivierung ist fehlgeschlagen"
+    },
+    "signersTable": {
+      "empty": "Noch keine Delegierungs-Signer verknüpft.",
+      "keyTag": "Key-Tag",
+      "algorithm": "Algorithmus",
+      "digestType": "Digest-Typ",
+      "digest": "Digest",
+      "pending": "Ausstehend",
+      "removeAria": "Delegierungs-Signer entfernen",
+      "cancelDeferredAria": "Zurückgestellte DS-Einreichung abbrechen",
+      "removeTitle": "Delegierungs-Signer entfernen?",
+      "removeDescription": "Dadurch wird die Verknüpfung des DS beim Registrar aufgehoben. {keyTagSuffix}Wenn dies der einzige DS für die Domain ist, schlägt die DNSSEC-Validierung innerhalb weniger Stunden global fehl. Stellen Sie sicher, dass Sie bereits einen Ersatz beim übergeordneten Eintrag veröffentlicht haben oder DNSSEC absichtlich deaktivieren.",
+      "removeKeyTagSuffix": "Key-Tag {keyTag}. ",
+      "remove": "Entfernen",
+      "removing": "Wird entfernt...",
+      "cancelDeferredTitle": "Zurückgestellte DS-Einreichung abbrechen?",
+      "cancelDeferredDescription": "Dies stoppt den Validierungs-Poll für Key-Tag {keyTag}. Es wird kein DS verknüpft. Die Einreichung kann später wiederholt werden, indem Sie erneut auf \"DNSSEC aktivieren\" klicken oder den Dialog \"Delegierungs-Signer hinzufügen\" öffnen.",
+      "cancelSubmission": "Einreichung abbrechen",
+      "cancelling": "Wird abgebrochen...",
+      "removeSuccess": "Delegierungs-Signer entfernt{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": " (Key-Tag {keyTag})",
+      "removeFailed": "Delegierungs-Signer konnte nicht entfernt werden: {error}",
+      "noKeyId": "Es kann nicht ermittelt werden, welcher Schlüssel entfernt werden soll (keine id, publicKey oder keyTag).",
+      "cancelSuccess": "Zurückgestellte Einreichung abgebrochen (Key-Tag {keyTag})",
+      "cancelFailed": "Abbruch fehlgeschlagen: {error}",
+      "phaseAuthoritative": "Warte auf Validierung durch autoritative NS. Timeout in ca. {remaining}.",
+      "phasePublicDns": "Warte auf Übertragung im öffentlichen DNS. Timeout in ca. {remaining}.",
+      "phaseSubmit": "Validierung bestanden; DS wird beim Registrar eingereicht.",
+      "remainingNow": "jetzt",
+      "remainingHoursMinutes": "{hours}h {minutes}m",
+      "remainingMinutes": "{minutes}m"
+    },
+    "advancedPanel": {
+      "title": "Benutzerdefinierte Delegierungs-Signer",
+      "description": "Erforderlich, wenn diese Domain auf eigenen autoritativen Nameservern betrieben wird. Reichen Sie den DS ein, der dem von Ihrem DNS-Anbieter veröffentlichten DNSKEY entspricht.",
+      "addSigner": "Delegierungs-Signer hinzufügen",
+      "dialogTitle": "Benutzerdefinierten Delegierungs-Signer hinzufügen",
+      "dialogDescription": "Fügen Sie Ihren DNSKEY/DS ein oder erkennen Sie ihn automatisch von Ihren Nameservern, und validieren Sie ihn vor der Einreichung."
+    }
+  },
+  "overview": {
+    "panelTitle": "Domain-Übersicht",
+    "panelSubtitle": "Domain-Einstellungen und Verlängerung verwalten",
+    "expired": {
+      "title": "Domain abgelaufen",
+      "canRenew": "Ihre Domain ist abgelaufen. Sie können noch eine Verlängerungsanfrage stellen – ob diese angenommen wird, hängt von der TLD (.com, .org, ...) ab.",
+      "cannotRenew": "Ihre Domain ist abgelaufen. Wenden Sie sich an den Support, um zu prüfen, ob die Domain wiederhergestellt werden kann (dies ist nicht für alle TLDs möglich (.com, .org, ...)).",
+      "cannotRenewShort": "Ihre Domain ist abgelaufen. Wenden Sie sich an den Support, um zu prüfen, ob eine Wiederherstellung möglich ist (nicht für alle TLDs verfügbar)."
+    },
+    "autoRenew": {
+      "label": "Auto-Verlängerung",
+      "description": "Domain automatisch verlängern",
+      "expires": "Läuft ab: {date}"
+    },
+    "manualRenew": {
+      "label": "Manuelle Verlängerung",
+      "description": "Domain manuell verlängern"
+    },
+    "renewNow": "Jetzt verlängern",
+    "renewExpirationUnavailable": "Ablaufinformationen der Domain nicht verfügbar",
+    "autoRenewalCard": {
+      "title": "Automatische Verlängerung",
+      "description": "Domain automatisch vor Ablauf verlängern",
+      "auto": "Auto"
+    },
+    "manualRenewalCard": {
+      "title": "Manuelle Verlängerung",
+      "descriptionWithDate": "{expiration} – Jetzt verlängern, um Ihre Domain wiederherzustellen",
+      "description": "Domain manuell verlängern"
+    },
+    "preferencesUpdated": "Einstellungen aktualisiert",
+    "preferencesUpdateFailed": "Einstellungen konnten nicht aktualisiert werden",
+    "export": {
+      "label": "Domain-Export",
+      "description": "Domain zu einem anderen Registrar exportieren",
+      "descriptionCard": "Domain zu einem anderen Registrar übertragen",
+      "unavailableCard": "Export für diese Domain nicht verfügbar",
+      "requestExport": "Export anfordern",
+      "exportUnavailable": "Export nicht verfügbar",
+      "unavailable": "Nicht verfügbar",
+      "enableRequestPending": "Export-Anfrage wird aktiviert...",
+      "pending": "Ausstehend...",
+      "getAuthCode": "Auth-Code abrufen",
+      "requestingExport": "Export wird angefordert...",
+      "requesting": "Wird angefordert...",
+      "nftNotMinted": "NFT noch nicht geminted. Der Export ist verfügbar, sobald das Minting abgeschlossen ist.",
+      "loadDetailsFailed": "Beim Abrufen der Domain-Export-Details ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.",
+      "loadDetailsFailedShort": "Export-Details konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+    },
+    "exportToasts": {
+      "requestSubmitted": "Export-Anfrage erfolgreich eingereicht",
+      "requestFailed": "Domain-Export konnte nicht angefordert werden",
+      "authCodeCopied": "Auth-Code in Zwischenablage kopiert",
+      "authCodeCopyFailed": "Auth-Code konnte nicht kopiert werden",
+      "authCodeFailed": "Auth-Code konnte nicht abgerufen werden",
+      "signatureRejected": "Signaturanfrage wurde abgelehnt",
+      "signatureFailed": "Signatur konnte nicht angefordert werden. Dies kann auf einen Browser-Fehler oder ein Problem mit Ihrer Wallet zurückzuführen sein.",
+      "ownerWalletUnavailable": "Domain-Inhaber-Wallet konnte nicht ermittelt werden"
+    },
+    "pendingTransfer": {
+      "label": "Ausstehender Export",
+      "cardTitle": "Ausstehende Export-Anfrage",
+      "requestedBy": "Export angefordert von: {registrar}",
+      "actionRequiredBy": "Aktion erforderlich bis: {date}",
+      "cardDescription": "Angefordert von: {registrar} – Aktion erforderlich bis {date}",
+      "approve": "Genehmigen",
+      "reject": "Ablehnen",
+      "approveSuccess": "Export erfolgreich genehmigt",
+      "approveFailed": "Export konnte nicht genehmigt werden",
+      "rejectSuccess": "Export erfolgreich abgelehnt",
+      "rejectFailed": "Export konnte nicht abgelehnt werden"
+    },
+    "nftOwnership": {
+      "title": "Blockchain-Eigentümerschaft",
+      "tooltip": "Ihre Domain ist als NFT (Non-Fungible Token) auf der Blockchain gespeichert. Dieses digitale Zertifikat beweist Ihr Eigentum an dieser Domain und ist durch Kryptographie gesichert.",
+      "securedOn": "Gesichert auf",
+      "verified": "Verifiziert",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "Chain {chainId}",
+      "ownerWallet": "Inhaber-Wallet",
+      "ownerWalletTooltip": "Dies ist die Wallet-Adresse, die dieses Domain-NFT besitzt. Nur diese Wallet kann die Domain verwalten oder übertragen.",
+      "tokenId": "Token-ID",
+      "tokenIdTooltip": "Eine eindeutige Kennung für Ihr Domain-NFT auf der Blockchain – vergleichbar mit einer Seriennummer für Ihr digitales Asset.",
+      "verifyOnExplorer": "Im Block-Explorer verifizieren",
+      "showNftInWallet": "NFT in Wallet anzeigen",
+      "addingToWallet": "Wird zur Wallet hinzugefügt...",
+      "nftAdded": "NFT zu Ihrer Wallet hinzugefügt",
+      "nftAddFailed": "NFT konnte nicht zur Wallet hinzugefügt werden",
+      "nftAddError": "NFT konnte nicht zur Wallet hinzugefügt werden",
+      "unknownError": "Unbekannter Fehler",
+      "walletAddressCopied": "Wallet-Adresse kopiert",
+      "walletAddressCopyFailed": "Wallet-Adresse konnte nicht kopiert werden",
+      "tokenIdCopied": "Token-ID kopiert",
+      "tokenIdCopyFailed": "Token-ID konnte nicht kopiert werden"
+    },
+    "educationalBanner": {
+      "title": "Ihre Domain ist auf der Blockchain gesichert",
+      "description": "Anders als bei traditionellen Registraren ist Ihre Domain als NFT in Ihrer Wallet gespeichert. Das bedeutet: Sie sind der echte Eigentümer – kein Unternehmen kann sie Ihnen ohne Ihre Zustimmung entziehen.",
+      "dismissAria": "Banner schließen"
+    },
+    "moreInfoAria": "Weitere Informationen",
+    "learnMore": "Mehr erfahren",
+    "web3Concepts": {
+      "title": "Ihre Domain verstehen",
+      "footer": "NameFi verbindet traditionelle Domains mit Blockchain-Eigentümerschaft",
+      "nftTerm": "NFT",
+      "nftDescription": "Ein digitales Eigentumszertifikat in Ihrer Wallet – wie eine Urkunde für ein Haus",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "Ein sicheres digitales Hauptbuch, das Ihr Eigentum dauerhaft erfasst",
+      "walletTerm": "Wallet",
+      "walletDescription": "Ihr persönlicher digitaler Tresor – nur Sie haben Zugang",
+      "icannTerm": "ICANN",
+      "icannDescription": "Die globale Behörde, die .com-, .io- und .xyz-Domains verwaltet"
+    },
+    "transferLock": {
+      "title": "Export verfügbar ab {date}",
+      "description": "Domains sind gemäß ICANN-Richtlinie 60 Tage nach dem Import gesperrt.",
+      "importedOn": " Diese Domain wurde am {date} importiert.",
+      "gotIt": "Verstanden"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "Anmeldung erforderlich",
+    "signInRequiredMessage": "Bitte melden Sie sich an, um diese Domain zu verwalten.",
+    "loadErrorTitle": "Domain-Verwaltung konnte nicht geladen werden",
+    "loadErrorFallback": "Bitte versuchen Sie es erneut.",
+    "marketplaceErrorTitle": "Marketplace-Status konnte nicht geladen werden",
+    "retry": "Erneut versuchen",
+    "publicViewTitle": "Hinweis!",
+    "publicViewMessage": "Diese Domain gehört einem anderen Nutzer. Sie sehen öffentliche Informationen.",
+    "tabDomainOverview": "Domain-Übersicht",
+    "tabDnsRecords": "DNS-Einträge",
+    "tabDnsManagement": "DNS-Verwaltung",
+    "tabMarketplace": "Marketplace",
+    "tabDnsSetting": "DNS-Einstellung",
+    "notMigratedTitle": "Domain noch nicht migriert",
+    "redirectToRegistrar": "Zum Registrar weiterleiten",
+    "comingSoon": "Demnächst verfügbar ..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "DNS-Eintrag hinzufügen",
+      "editTitle": "DNS-Eintrag bearbeiten",
+      "requiredFieldsError": "Bitte füllen Sie alle mit * markierten Pflichtfelder aus",
+      "addMoreRecord": "Weiteren Eintrag hinzufügen",
+      "addRecord": "Eintrag hinzufügen",
+      "saveRecord": "Eintrag speichern",
+      "cnameConflictTitle": "CNAME-Konflikt mit anderen Einträgen",
+      "cnameConflictBody1": "CNAME-Einträge können nicht denselben Namen wie andere Eintragstypen haben.",
+      "cnameConflictBody2": "Löschen Sie zuerst die konfliktierenden Einträge und fügen Sie diesen CNAME dann erneut hinzu.",
+      "understood": "Verstanden",
+      "disableManagedTitle": "Verwaltete Einträge deaktivieren und fortfahren?",
+      "disableManagedBody1": "Dieser CNAME steht nur mit verwalteten Einträgen auf dieser Domain in Konflikt.",
+      "disableManagedBodyWithForwarding": "Fortfahren, um Parking, Weiterleitung und AutoENS zu deaktivieren und dann diesen CNAME hinzuzufügen.",
+      "disableManagedBody": "Fortfahren, um Parking und AutoENS zu deaktivieren und dann diesen CNAME hinzuzufügen.",
+      "keepManagedRecords": "Verwaltete Einträge behalten",
+      "disableAndContinue": "Deaktivieren und fortfahren",
+      "disabling": "Wird deaktiviert...",
+      "disableParkingTitle": "Parking deaktivieren und fortfahren?",
+      "disableParkingBody": "Dieser Eintrag steht mit verwalteten Parking-Einträgen in Konflikt. Um fortzufahren, muss das Parking zuerst deaktiviert werden.",
+      "disableParkingForwardingNotice": "Das Deaktivieren von Parking hier deaktiviert auch die Weiterleitung.",
+      "keepParkingEnabled": "Parking aktiviert lassen",
+      "loadRecordsFailed": "DNS-Einträge konnten nicht geladen werden"
+    },
+    "delete": {
+      "title": "Einträge löschen?",
+      "description": "Diese Änderung kann die Funktionalität Ihrer Domain beeinflussen und einige Zeit benötigen, um sich in allen Netzwerken zu aktualisieren.",
+      "summary": "{count, plural, one {# Eintrag} other {# Einträge}} löschen",
+      "toggle": "Umschalten",
+      "columnName": "Name",
+      "columnType": "Typ",
+      "columnValue": "Wert",
+      "columnTtl": "TTL",
+      "deleting": "Wird gelöscht...",
+      "confirmSingle": "Ja, löschen",
+      "confirmMultiple": "Ja, alle löschen"
+    },
+    "form": {
+      "typeLabel": "Typ",
+      "typePlaceholder": "Typ wählen",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "TTL wählen",
+      "nameLabel": "Name",
+      "namePlaceholder": "www oder @",
+      "valueLabel": "Wert",
+      "removeRecordAria": "Eintrag {index} entfernen",
+      "ttlOption1Minute": "1 Minute",
+      "ttlOption5Minutes": "5 Minuten",
+      "ttlOption20Minutes": "20 Minuten",
+      "ttlOption1Hour": "1 Stunde",
+      "ttlOption1Day": "1 Tag",
+      "ttlOption1Week": "1 Woche",
+      "errorRecordTypeRequired": "Eintragstyp ist erforderlich",
+      "errorValueRequired": "Wert ist erforderlich",
+      "errorTtlRequired": "TTL ist erforderlich"
+    },
+    "forwarding": {
+      "title": "URL-Weiterleitung bearbeiten",
+      "description": "Geben Sie die URL ein, auf die {domain} weitergeleitet werden soll.",
+      "fieldLabel": "Weiterleitungs-URL",
+      "placeholder": "https://example.com",
+      "updated": "Weiterleitungs-URL aktualisiert",
+      "updateFailed": "Weiterleitungs-URL konnte nicht aktualisiert werden"
+    },
+    "batch": {
+      "setNameservers": "Nameserver festlegen",
+      "setUrlForwarding": "URL-Weiterleitung festlegen",
+      "setWebRecords": "Web-Einträge festlegen",
+      "setMxRecords": "MX-Einträge festlegen",
+      "setEnsRecord": "ENS-Eintrag festlegen",
+      "batchAction": "Sammelaktion",
+      "applyingToDomains": "Wird auf {count} ausgewählte Domains angewendet.",
+      "forwardUrlLabel": "Weiterleitungs-URL",
+      "webRecordNotice": "Dieser Eintrag wird zu allen ausgewählten Domains hinzugefügt.",
+      "comingSoon": "Sammelbearbeitung für {action} folgt in Kürze.",
+      "forwardingUpdated": "Weiterleitung für {count} Domains aktualisiert",
+      "webRecordsUpdated": "Web-Einträge für {count} Domains aktualisiert",
+      "nameserverComingSoon": "Sammel-Nameserver-Aktualisierung folgt in Kürze",
+      "recordComingSoon": "Sammel-DNS-Eintrags-Aktualisierung folgt in Kürze",
+      "updateFailed": "Domains konnten nicht aktualisiert werden"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS-Aktionen",
+    "notEditableExternal": "Nicht bearbeitbar bei Verwendung externer Nameserver",
+    "nameservers": "Nameserver: {value}",
+    "nameserversNone": "Keine",
+    "parkedOnNamefi": "Geparkt auf Namefi",
+    "webRecordsConfigured": "Web-Einträge konfiguriert",
+    "noWebRecords": "Keine Web-Einträge",
+    "enableParkingForForwarding": "Parking aktivieren, um Weiterleitung zu nutzen",
+    "forwardsTo": "Weiterleitung zu: {url}",
+    "noForwarding": "Keine URL-Weiterleitung",
+    "mxConfigured": "MX-Einträge konfiguriert",
+    "noMxRecords": "Keine MX-Einträge",
+    "autoEnsEnabled": "Auto-ENS aktiviert",
+    "noEnsRecord": "Kein ENS-Eintrag",
+    "manageMore": "Weitere DNS-Einträge verwalten"
+  },
+  "cacheFlush": {
+    "title": "DNS-Cache leeren",
+    "description": "DNS-Caches auf konfigurierten Servern für eine bestimmte Zone und einen bestimmten Eintragstyp leeren",
+    "zoneLabel": "Zone/Domain",
+    "zonePlaceholder": "beispiel.de",
+    "recordTypeLabel": "Eintragstyp",
+    "recordTypeAll": "ALLE",
+    "flushing": "Cache wird geleert...",
+    "submit": "DNS-Cache leeren",
+    "resultsHeading": "Ergebnisse:",
+    "resultSuccess": "Erfolgreich",
+    "resultFailed": "Fehlgeschlagen",
+    "zoneRequired": "Zone ist erforderlich",
+    "flushCompleteTitle": "Cache-Leerung abgeschlossen",
+    "flushFailedTitle": "Cache-Leerung fehlgeschlagen"
+  }
+}

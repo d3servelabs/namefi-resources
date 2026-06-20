@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import {
@@ -68,6 +69,8 @@ export function MultiGiftDialog({
   onSuccess,
   pbnDomain: forcedPbnDomain,
 }: Props) {
+  const t = useTranslations('gifts');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const [mode, setMode] = useState<Mode>('parent');
   const [csv, setCsv] = useState('');
@@ -304,14 +307,14 @@ export function MultiGiftDialog({
         )}
       >
         <DialogHeader>
-          <DialogTitle>Bulk Gift Reservations</DialogTitle>
+          <DialogTitle>{t('multi.title')}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <div>
               <Label className="text-sm font-medium" htmlFor="bulk-domain">
-                Your Domain
+                {t('fields.yourDomain')}
               </Label>
               <Select
                 value={pbnDomain}
@@ -321,7 +324,9 @@ export function MultiGiftDialog({
                 }}
               >
                 <SelectTrigger id="bulk-domain" disabled={!!forcedPbnDomain}>
-                  <SelectValue placeholder="Select a domain you own" />
+                  <SelectValue
+                    placeholder={t('fields.yourDomainPlaceholder')}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {forcedPbnDomain ? (
@@ -343,7 +348,7 @@ export function MultiGiftDialog({
             </div>
             <div>
               <Label className="text-sm font-medium" htmlFor="bulk-mode">
-                Mode
+                {t('fields.mode')}
               </Label>
               <Select
                 value={mode}
@@ -357,14 +362,16 @@ export function MultiGiftDialog({
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="parent">Any Subdomain</SelectItem>
-                  <SelectItem value="exact">Specific Subdomain</SelectItem>
+                  <SelectItem value="parent">
+                    {t('fields.modeParent')}
+                  </SelectItem>
+                  <SelectItem value="exact">{t('fields.modeExact')}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
               <Label className="text-sm font-medium" htmlFor="bulk-expiration">
-                Expiration
+                {t('fields.expiration')}
               </Label>
               <NaturalLanguageDatePicker
                 value={{
@@ -387,9 +394,11 @@ export function MultiGiftDialog({
             {mode === 'exact' && (
               <div className="flex items-center justify-between border rounded p-3">
                 <div>
-                  <Label htmlFor="bulk-reserve">Reserve while pending</Label>
+                  <Label htmlFor="bulk-reserve">
+                    {t('fields.reserveLabel')}
+                  </Label>
                   <div className="text-xs text-muted-foreground">
-                    Hold each exact name until it’s received or expires.
+                    {t('multi.reserveDescription')}
                   </div>
                 </div>
                 <Switch
@@ -401,9 +410,11 @@ export function MultiGiftDialog({
             )}
             <div className="flex items-center justify-between border rounded p-3">
               <div>
-                <Label htmlFor="bulk-send-email">Send email</Label>
+                <Label htmlFor="bulk-send-email">
+                  {t('multi.sendEmailLabel')}
+                </Label>
                 <div className="text-xs text-muted-foreground">
-                  Notify recipients by email.
+                  {t('multi.sendEmailDescription')}
                 </div>
               </div>
               <Switch
@@ -424,7 +435,7 @@ export function MultiGiftDialog({
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <Label className="text-sm font-medium" htmlFor="bulk-csv">
-                Bulk Text Input
+                {t('multi.bulkInputLabel')}
               </Label>
               <Tooltip>
                 <TooltipTrigger
@@ -435,31 +446,11 @@ export function MultiGiftDialog({
                   ?
                 </TooltipTrigger>
                 <TooltipContent>
-                  {mode === 'parent' ? (
-                    <div>
-                      Enter one per line:
-                      <br />
-                      <code>email,count(optional)</code>
-                      <br />
-                      <br />
-                      Example:
-                      <br />
-                      <code>alice@example.com,2</code> <br />
-                      <code>bob@example.com</code>
-                    </div>
-                  ) : (
-                    <div>
-                      Enter one per line:
-                      <br />
-                      <code>email, subdomain</code>
-                      <br />
-                      <br />
-                      Example:
-                      <br />
-                      <code>alice@example.com, alice.{pbnDomain}</code> <br />
-                      <code>bob@example.com, bob.{pbnDomain}</code>
-                    </div>
-                  )}
+                  <div className="whitespace-pre-line">
+                    {mode === 'parent'
+                      ? t('multi.tooltipParent')
+                      : t('multi.tooltipExact', { domain: pbnDomain })}
+                  </div>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -468,21 +459,21 @@ export function MultiGiftDialog({
               rows={8}
               placeholder={
                 mode === 'parent'
-                  ? 'email@example.com\nuser2@example.com\n...'
-                  : 'email@example.com,alice.domain.com\nuser2@example.com,bob.domain.com\n...'
+                  ? t('multi.csvPlaceholderParent')
+                  : t('multi.csvPlaceholderExact')
               }
               value={csv}
               onChange={(e) => setCsv(e.currentTarget.value)}
             />
             <div className="flex justify-end">
               <Button variant="outline" size="sm" onClick={appendCsvToTable}>
-                Append Values to table
+                {t('multi.appendToTable')}
               </Button>
             </div>
             <div className="text-xs text-muted-foreground">
               {mode === 'parent'
-                ? 'One email per line.'
-                : 'Each line: email,exactName'}
+                ? t('multi.csvHintParent')
+                : t('multi.csvHintExact')}
             </div>
           </div>
 
@@ -490,19 +481,21 @@ export function MultiGiftDialog({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">
-                Entries ({tableRows.length})
+                {t('multi.entriesCount', { count: tableRows.length })}
               </div>
               <Button variant="secondary" size="sm" onClick={addEmptyRow}>
-                <Plus className="h-3.5 w-3.5 me-1" /> Add Row
+                <Plus className="h-3.5 w-3.5 me-1" /> {t('multi.addRow')}
               </Button>
             </div>
             <div className="border rounded">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Email</TableHead>
+                    <TableHead>{t('fields.columnEmail')}</TableHead>
                     <TableHead>
-                      {mode === 'parent' ? 'Count' : 'Subdomain'}
+                      {mode === 'parent'
+                        ? t('fields.columnCount')
+                        : t('fields.columnSubdomain')}
                     </TableHead>
                     <TableHead className="w-12" />
                   </TableRow>
@@ -541,16 +534,18 @@ export function MultiGiftDialog({
                                   e.currentTarget.value,
                                 )
                               }
-                              placeholder="user@example.com"
+                              placeholder={t(
+                                'fields.recipientEmailRowPlaceholder',
+                              )}
                             />
                             {!emailOk && (
                               <div className="text-xs text-red-600">
-                                Enter a valid email
+                                {t('multi.validEmail')}
                               </div>
                             )}
                             {isDupRow && (
                               <div className="text-xs text-red-600">
-                                Duplicate row
+                                {t('multi.duplicateRow')}
                               </div>
                             )}
                           </div>
@@ -572,7 +567,7 @@ export function MultiGiftDialog({
                               />
                               {!countOk && (
                                 <div className="text-xs text-red-600">
-                                  Count must be at least 1
+                                  {t('multi.countMin')}
                                 </div>
                               )}
                             </div>
@@ -587,12 +582,16 @@ export function MultiGiftDialog({
                                     e.currentTarget.value,
                                   )
                                 }
-                                placeholder={`alice.${pbnDomain}`}
+                                placeholder={t(
+                                  'fields.exactDomainNamePlaceholder',
+                                  { domain: pbnDomain },
+                                )}
                               />
                               {!exactOk && (
                                 <div className="text-xs text-red-600">
-                                  Must be a single-label subdomain of{' '}
-                                  {pbnDomain}
+                                  {t('multi.subdomainOf', {
+                                    domain: pbnDomain,
+                                  })}
                                 </div>
                               )}
                             </div>
@@ -617,22 +616,26 @@ export function MultiGiftDialog({
 
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Badge variant="outline">
-              {mode === 'parent' ? 'Parent' : 'Exact'}
+              {mode === 'parent'
+                ? t('multi.badgeParent')
+                : t('multi.badgeExact')}
             </Badge>
-            <span>Entries: {tableRows.length}</span>
+            <span>{t('multi.entriesLabel', { count: tableRows.length })}</span>
             {duplicateCount > 0 && (
               <Badge variant="destructive">
-                {duplicateCount} duplicate{duplicateCount === 1 ? '' : 's'}
+                {t('multi.duplicateBadge', { count: duplicateCount })}
               </Badge>
             )}
             {invalidCount > 0 && (
-              <Badge variant="destructive">{invalidCount} invalid</Badge>
+              <Badge variant="destructive">
+                {t('multi.invalidBadge', { count: invalidCount })}
+              </Badge>
             )}
           </div>
 
           <div className="flex justify-end gap-2">
             <Button variant="outline" onClick={() => onOpenChange(false)}>
-              Close
+              {tCommon('actions.close')}
             </Button>
             <Button
               onClick={() => setConfirmOpen(true)}
@@ -641,22 +644,15 @@ export function MultiGiftDialog({
               {bulkMutation.isPending && (
                 <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}
-              Create{' '}
-              {mode === 'parent'
-                ? annotatedRows.reduce(
-                    (n: number, r: any) => n + (r.count ?? 1),
-                    0,
-                  )
-                : tableRows.length}{' '}
-              Gift
-              {(mode === 'parent'
-                ? annotatedRows.reduce(
-                    (n: number, r: any) => n + (r.count ?? 1),
-                    0,
-                  )
-                : tableRows.length) === 1
-                ? ''
-                : 's'}
+              {t('multi.createButton', {
+                count:
+                  mode === 'parent'
+                    ? annotatedRows.reduce(
+                        (n: number, r: any) => n + (r.count ?? 1),
+                        0,
+                      )
+                    : tableRows.length,
+              })}
             </Button>
           </div>
         </div>
@@ -688,37 +684,31 @@ function ConfirmDialog({
   annotatedRows: any[];
   tableRows: any[];
 }) {
+  const t = useTranslations('gifts');
+  const confirmCount =
+    mode === 'parent'
+      ? annotatedRows.reduce((n: number, r: any) => n + (r.count ?? 1), 0)
+      : tableRows.length;
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="!max-w-[700px] !w-full overflow-y-auto">
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Bulk Gifts</AlertDialogTitle>
+          <AlertDialogTitle>{t('multi.confirmTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
-            You are about to create{' '}
-            <strong>
-              {mode === 'parent'
-                ? annotatedRows.reduce(
-                    (n: number, r: any) => n + (r.count ?? 1),
-                    0,
-                  )
-                : tableRows.length}
-            </strong>{' '}
-            gift
-            {(mode === 'parent'
-              ? annotatedRows.reduce(
-                  (n: number, r: any) => n + (r.count ?? 1),
-                  0,
-                )
-              : tableRows.length) === 1
-              ? ''
-              : 's'}
-            . Review the entries below.
+            {t.rich('multi.confirmDescription', {
+              count: confirmCount,
+              b: (chunks) => <strong>{chunks}</strong>,
+            })}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="border rounded max-h-72 overflow-auto">
           <div className="grid grid-cols-2 gap-2 p-2 text-xs font-medium bg-muted">
-            <div>Email</div>
-            <div>{mode === 'parent' ? 'Count' : 'Subdomain'}</div>
+            <div>{t('fields.columnEmail')}</div>
+            <div>
+              {mode === 'parent'
+                ? t('fields.columnCount')
+                : t('fields.columnSubdomain')}
+            </div>
           </div>
           <div className="divide-y">
             {annotatedRows.slice(0, 300).map((r: any, idx) => (
@@ -727,16 +717,18 @@ function ConfirmDialog({
                 className="grid grid-cols-2 gap-2 p-2 text-sm items-center"
               >
                 <div className="truncate flex items-center gap-2">
-                  {r.isDup && <Badge variant="outline">Duplicate</Badge>}
+                  {r.isDup && (
+                    <Badge variant="outline">{t('multi.tagDuplicate')}</Badge>
+                  )}
                   {!emailRegex.test(r.email) && (
-                    <Badge variant="outline">Invalid</Badge>
+                    <Badge variant="outline">{t('multi.tagInvalid')}</Badge>
                   )}
                   {r.email}
                 </div>
                 <div className="truncate flex items-center gap-2">
                   {mode === 'parent' ? (r.count ?? 1) : r.exact || '—'}
                   {mode === 'exact' && !r.exact && (
-                    <Badge variant="outline">Missing</Badge>
+                    <Badge variant="outline">{t('multi.tagMissing')}</Badge>
                   )}
                 </div>
               </div>
@@ -744,9 +736,9 @@ function ConfirmDialog({
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Back</AlertDialogCancel>
+          <AlertDialogCancel>{t('multi.back')}</AlertDialogCancel>
           <AlertDialogAction onClick={onSubmit}>
-            Confirm & Create
+            {t('multi.confirmCreate')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

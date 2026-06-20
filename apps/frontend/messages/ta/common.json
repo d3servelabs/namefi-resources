@@ -1,5 +1,4 @@
 {
-  "language": "மொழி",
   "languageSelector": {
     "label": "மொழி",
     "ariaLabel": "மொழியை மாற்று"
@@ -9,7 +8,6 @@
     "loading": "ஏற்றுகிறது...",
     "tryAgain": "மறுமுயல்",
     "dismiss": "மூடு",
-    "contactSupport": "ஆதரவை தொடர்பு",
     "cancel": "ரத்துசெய்",
     "close": "மூடு",
     "save": "சேமி",
@@ -23,10 +21,11 @@
     "loadMore": "மேலும் காண்",
     "connectWallet": "வாலட் இணை",
     "goBack": "திரும்பு",
-    "approve": "அனுமதி",
-    "reject": "நிராகரி",
     "disable": "முடக்கு",
-    "signOut": "வெளியேறு"
+    "signOut": "வெளியேறு",
+    "copy": "நகலெடுக்கவும்",
+    "copyAddress": "முகவரியை நகலெடுக்கவும்",
+    "toggleSidebar": "பக்கப்பட்டியை மாற்றவும்"
   },
   "account": {
     "label": "கணக்கு",

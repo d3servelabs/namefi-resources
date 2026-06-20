@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PlusIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
@@ -38,6 +39,7 @@ export function CustomDelegationSignerPanel({
   dnssecDetails,
   disableAllButtons,
 }: CustomDelegationSignerPanelProps) {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -56,10 +58,11 @@ export function CustomDelegationSignerPanel({
     <div className="flex flex-col gap-3 w-full pt-4 border-t border-zinc-800">
       <div className="flex items-center justify-between gap-2">
         <div>
-          <h3 className="text-sm font-medium">Custom Delegation Signers</h3>
+          <h3 className="text-sm font-medium">
+            {t('dnssecPanel.advancedPanel.title')}
+          </h3>
           <p className="text-xs text-zinc-500 mt-0.5">
-            Required when this domain runs on its own authoritative nameservers.
-            Submit the DS that matches the DNSKEY your DNS provider publishes.
+            {t('dnssecPanel.advancedPanel.description')}
           </p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -67,7 +70,7 @@ export function CustomDelegationSignerPanel({
             render={
               <Button variant="default" disabled={disableAllButtons}>
                 <PlusIcon className="w-4 h-4" />
-                Add Delegation Signer
+                {t('dnssecPanel.advancedPanel.addSigner')}
               </Button>
             }
           />
@@ -78,10 +81,11 @@ export function CustomDelegationSignerPanel({
             )}
           >
             <DialogHeader>
-              <DialogTitle>Add Custom Delegation Signer</DialogTitle>
+              <DialogTitle>
+                {t('dnssecPanel.advancedPanel.dialogTitle')}
+              </DialogTitle>
               <DialogDescription>
-                Paste your DNSKEY/DS or auto-detect from your nameservers, then
-                validate before submitting.
+                {t('dnssecPanel.advancedPanel.dialogDescription')}
               </DialogDescription>
             </DialogHeader>
             <CustomDelegationSignerForm

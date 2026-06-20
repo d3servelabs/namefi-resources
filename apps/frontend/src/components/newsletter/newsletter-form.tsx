@@ -14,6 +14,7 @@ import {
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
 import { useTRPC } from '@/lib/trpc';
+import { useTranslations } from 'next-intl';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { toast } from 'sonner';
 import { Mail, CheckCircle2, X } from 'lucide-react';
@@ -37,10 +38,13 @@ const AltchaVerifier = forwardRef<AltchaVerifierRef, AltchaProps>(
   ),
 );
 
-const newsletterFormSchema = z.object({
-  email: z.string().trim().email('Please enter a valid email address'),
-  name: z.string().optional(),
-});
+type NewsletterTranslator = ReturnType<typeof useTranslations<'newsletter'>>;
+
+const makeNewsletterFormSchema = (t: NewsletterTranslator) =>
+  z.object({
+    email: z.string().trim().email(t('invalidEmail')),
+    name: z.string().optional(),
+  });
 
 interface NewsletterFormProps {
   /**
@@ -90,8 +94,8 @@ interface NewsletterFormProps {
 }
 
 export function NewsletterForm({
-  title = 'Stay Updated',
-  description = 'Subscribe to our newsletter for the latest updates and announcements.',
+  title,
+  description,
   showNameField = true,
   variant = 'default',
   showCloseButton = false,
@@ -126,8 +130,14 @@ function NewsletterFormInner({
   headerClassName,
   contentClassName,
 }: NewsletterFormProps) {
+  const t = useTranslations('newsletter');
   const [isSuccess, setIsSuccess] = useState(false);
   const trpc = useTRPC();
+
+  const resolvedTitle = title ?? t('defaultTitle');
+  const resolvedDescription = description ?? t('defaultDescription');
+
+  const newsletterFormSchema = useMemo(() => makeNewsletterFormSchema(t), [t]);
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -138,7 +148,7 @@ function NewsletterFormInner({
       email,
       name,
     });
-  }, [email, name]);
+  }, [email, name, newsletterFormSchema]);
 
   const errors = useMemo(() => {
     return validationResult.error
@@ -158,7 +168,7 @@ function NewsletterFormInner({
         setEmail('');
         setName('');
         setHasAttemptedSubmit(false);
-        toast.success('Subscribed!', {
+        toast.success(t('toast.subscribedTitle'), {
           description: data.message,
         });
         setTimeout(() => {
@@ -168,12 +178,12 @@ function NewsletterFormInner({
       },
       onError: (error) => {
         if (error.message.includes('already subscribed')) {
-          toast.info('Already Subscribed', {
-            description: "You're already on our mailing list!",
+          toast.info(t('toast.alreadySubscribedTitle'), {
+            description: t('toast.alreadySubscribedDescription'),
           });
         } else {
-          toast.error('Subscription Failed', {
-            description: error.message || 'Please try again later.',
+          toast.error(t('toast.failedTitle'), {
+            description: error.message || t('toast.failedFallback'),
           });
         }
       },
@@ -213,7 +223,7 @@ function NewsletterFormInner({
             size="icon"
             onClick={onClose}
             className="absolute -top-2 -left-2 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background border border-border shadow-lg"
-            aria-label="Close newsletter form"
+            aria-label={t('closeAriaLabel')}
           >
             <X className="h-4 w-4" />
           </Button>
@@ -222,17 +232,15 @@ function NewsletterFormInner({
           <div className="flex flex-col items-center justify-center text-center space-y-4 py-8">
             <CheckCircle2 className="w-16 h-16 text-green-500" />
             <div className="space-y-2">
-              <h3 className="text-xl font-semibold">Thanks for subscribing!</h3>
-              <p className="text-muted-foreground">
-                Please check your email to confirm your subscription.
-              </p>
+              <h3 className="text-xl font-semibold">{t('successTitle')}</h3>
+              <p className="text-muted-foreground">{t('successDescription')}</p>
             </div>
             <Button
               variant="outline"
               onClick={() => setIsSuccess(false)}
               className="mt-4"
             >
-              Subscribe with another email
+              {t('subscribeAnother')}
             </Button>
           </div>
         </CardContent>
@@ -248,7 +256,7 @@ function NewsletterFormInner({
       >
         <div className="flex-1">
           <Input
-            placeholder="Enter your email"
+            placeholder={t('emailPlaceholder')}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -265,11 +273,11 @@ function NewsletterFormInner({
           className="shrink-0"
         >
           {subscribeMutation.isPending ? (
-            'Subscribing...'
+            t('subscribing')
           ) : (
             <>
               <Mail className="w-4 h-4 me-2" />
-              Subscribe
+              {t('subscribe')}
             </>
           )}
         </Button>
@@ -285,23 +293,25 @@ function NewsletterFormInner({
           size="icon"
           onClick={onClose}
           className="absolute -top-2 -left-2 z-10 h-8 w-8 rounded-full bg-background/80 backdrop-blur-sm hover:bg-background border border-border shadow-lg"
-          aria-label="Close newsletter form"
+          aria-label={t('closeAriaLabel')}
         >
           <X className="h-4 w-4" />
         </Button>
       )}
       <CardHeader className={cn(headerClassName)}>
-        <CardTitle>{title}</CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        <CardTitle>{resolvedTitle}</CardTitle>
+        {resolvedDescription && (
+          <CardDescription>{resolvedDescription}</CardDescription>
+        )}
       </CardHeader>
       <CardContent className={cn(contentClassName)}>
         <form onSubmit={handleSubmit} className="space-y-4">
           {showNameField && (
             <div className="grid gap-2">
-              <Label htmlFor="newsletter-name">Name (optional)</Label>
+              <Label htmlFor="newsletter-name">{t('nameLabel')}</Label>
               <Input
                 id="newsletter-name"
-                placeholder="Your name"
+                placeholder={t('namePlaceholder')}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={subscribeMutation.isPending}
@@ -310,10 +320,10 @@ function NewsletterFormInner({
           )}
 
           <div className="grid gap-2">
-            <Label htmlFor="newsletter-email">Email</Label>
+            <Label htmlFor="newsletter-email">{t('emailLabel')}</Label>
             <Input
               id="newsletter-email"
-              placeholder="your@email.com"
+              placeholder={t('emailExamplePlaceholder')}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -333,11 +343,11 @@ function NewsletterFormInner({
             disabled={subscribeMutation.isPending}
           >
             {subscribeMutation.isPending ? (
-              'Subscribing...'
+              t('subscribing')
             ) : (
               <>
                 <Mail className="w-4 h-4 me-2" />
-                Subscribe to Newsletter
+                {t('subscribeToNewsletter')}
               </>
             )}
           </Button>

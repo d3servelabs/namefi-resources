@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, forwardRef } from 'react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
@@ -65,6 +66,7 @@ const DNS_RECORD_TYPES = [
 ] as const;
 
 export default function DnsCacheFlushPage() {
+  const t = useTranslations('dnsManagement');
   const isClient = useIsClient();
   const [zone, setZone] = useState('');
   const [recordType, setRecordType] = useState<string>('ALL');
@@ -77,12 +79,12 @@ export default function DnsCacheFlushPage() {
     trpc.dnsCache.flushCache.mutationOptions({
       onSuccess: (data) => {
         setResults(data.results);
-        toast.success('Cache Flush Complete', {
+        toast.success(t('cacheFlush.flushCompleteTitle'), {
           description: data.message,
         });
       },
       onError: (error) => {
-        toast.error('Cache Flush Failed', {
+        toast.error(t('cacheFlush.flushFailedTitle'), {
           description: error.message,
         });
       },
@@ -93,7 +95,7 @@ export default function DnsCacheFlushPage() {
     e.preventDefault();
 
     if (!zone) {
-      toast.error('Zone is required');
+      toast.error(t('cacheFlush.zoneRequired'));
       return;
     }
 
@@ -112,20 +114,17 @@ export default function DnsCacheFlushPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <BrushCleaningIcon className="w-5 h-5" />
-            DNS Cache Flush
+            {t('cacheFlush.title')}
           </CardTitle>
-          <CardDescription>
-            Flush DNS caches across configured servers for a specific zone and
-            record type
-          </CardDescription>
+          <CardDescription>{t('cacheFlush.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="zone">Zone/Domain</Label>
+              <Label htmlFor="zone">{t('cacheFlush.zoneLabel')}</Label>
               <Input
                 id="zone"
-                placeholder="example.com"
+                placeholder={t('cacheFlush.zonePlaceholder')}
                 value={zone}
                 onChange={(e) => setZone(e.target.value)}
                 disabled={flushMutation.isPending}
@@ -133,7 +132,9 @@ export default function DnsCacheFlushPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recordType">Record Type</Label>
+              <Label htmlFor="recordType">
+                {t('cacheFlush.recordTypeLabel')}
+              </Label>
               <Select
                 value={recordType}
                 onValueChange={(value) => {
@@ -148,7 +149,7 @@ export default function DnsCacheFlushPage() {
                 <SelectContent>
                   {DNS_RECORD_TYPES.map((type) => (
                     <SelectItem key={type} value={type}>
-                      {type}
+                      {type === 'ALL' ? t('cacheFlush.recordTypeAll') : type}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -165,12 +166,12 @@ export default function DnsCacheFlushPage() {
               {flushMutation.isPending ? (
                 <>
                   <BrushCleaningIcon className="w-4 h-4 me-2 animate-spin" />
-                  Flushing Cache...
+                  {t('cacheFlush.flushing')}
                 </>
               ) : (
                 <>
                   <BrushCleaningIcon className="w-4 h-4 me-2" />
-                  Flush DNS Cache
+                  {t('cacheFlush.submit')}
                 </>
               )}
             </Button>
@@ -178,7 +179,9 @@ export default function DnsCacheFlushPage() {
 
           {results && results.length > 0 && (
             <div className="mt-6 space-y-2">
-              <h3 className="font-semibold">Results:</h3>
+              <h3 className="font-semibold">
+                {t('cacheFlush.resultsHeading')}
+              </h3>
               {results.map((result, index) => (
                 <div
                   key={index}
@@ -189,13 +192,15 @@ export default function DnsCacheFlushPage() {
                     {result.success ? (
                       <>
                         <CheckCircle2 className="w-5 h-5 text-green-500" />
-                        <span className="text-sm text-green-600">Success</span>
+                        <span className="text-sm text-green-600">
+                          {t('cacheFlush.resultSuccess')}
+                        </span>
                       </>
                     ) : (
                       <>
                         <XCircle className="w-5 h-5 text-red-500" />
                         <span className="text-sm text-red-600">
-                          {result.error || 'Failed'}
+                          {result.error || t('cacheFlush.resultFailed')}
                         </span>
                       </>
                     )}

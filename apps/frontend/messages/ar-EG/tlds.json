@@ -1,0 +1,23 @@
+{
+  "title": "أسعار TLD",
+  "description": "راجع الأسعار الأساسية بالـ USD للـ TLDs غير المميزة المدعومة.",
+  "loadError": "تعذّر تحميل أسعار TLD الآن. حاول مرة أخرى بعد قليل.",
+  "loadingMessage": "جارٍ تحميل أسعار TLD...",
+  "emptyMessage": "لا توجد TLDs تطابق الفلاتر",
+  "nonPremiumNote": "** هذه الأسعار تنطبق فقط على النطاقات غير المميزة",
+  "columns": {
+    "tld": "TLD",
+    "registration": "التسجيل",
+    "renewal": "التجديد",
+    "transfer": "النقل",
+    "registrar": "المسجِّل"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "المسجِّل"
+  },
+  "variablePrice": "سعر متغير",
+  "variablePriceTooltip": "السعر متغير ويعتمد على اسم النطاق",
+  "notAvailable": "غير متاح",
+  "perYear": "<price>{value}</price> / سنة"
+}

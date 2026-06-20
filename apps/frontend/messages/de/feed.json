@@ -22,7 +22,6 @@
     "clear": "Löschen"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "Keine passenden Einträge in diesem Feed-Abschnitt.",
     "empty": "Keine Einträge gefunden.",
     "endOfFeed": "Ende des Feeds",

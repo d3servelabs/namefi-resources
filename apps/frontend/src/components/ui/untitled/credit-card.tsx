@@ -3,6 +3,7 @@
 
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { VisaIcon } from './visa-icon';
 
@@ -99,6 +100,7 @@ export function CreditCard({
   children,
   withChip = false,
 }: CreditCardProps) {
+  const t = useTranslations('shared');
   const normalizedBrand = brand.toLowerCase();
   const logo = brandLogos[normalizedBrand] || brandLogos.visa;
 
@@ -150,7 +152,9 @@ export function CreditCard({
         {/* Bottom Section with Card Holder and Expiry */}
         <div className="flex justify-between items-end">
           <div>
-            <div className="text-xs opacity-60 uppercase mb-1">Card Holder</div>
+            <div className="text-xs opacity-60 uppercase mb-1">
+              {t('creditCard.cardHolder')}
+            </div>
             <div className="text-sm font-medium uppercase tracking-wide opacity-90">
               <TruncatedTextWithHover maxLength={20}>
                 {cardHolder}
@@ -158,7 +162,9 @@ export function CreditCard({
             </div>
           </div>
           <div>
-            <div className="text-xs opacity-60 uppercase mb-1">Expires</div>
+            <div className="text-xs opacity-60 uppercase mb-1">
+              {t('creditCard.expires')}
+            </div>
             <div className="text-sm font-medium opacity-90">
               {cardExpiration}
             </div>

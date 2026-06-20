@@ -5,6 +5,7 @@ import type {
   DefaultFilterField,
 } from '../types';
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { TableFilterPanel } from '../../table-filter-panel';
 import type { CustomFilterField } from '..';
 import type { ColumnFiltersState } from '@tanstack/react-table';
@@ -30,6 +31,7 @@ export function useBasicServerFilterStrategy<TData = any>({
   filterDisplayOptions?: FilterDisplayOptions;
   customFilters?: CustomFilterField[];
 }): BasicServerFilterStrategy<TData> {
+  const t = useTranslations('shared');
   const [filterState, setFilterState] = useState<DefaultSingleFilterState[]>(
     [],
   );
@@ -109,7 +111,7 @@ export function useBasicServerFilterStrategy<TData = any>({
     }, [_onFilterStateChange]),
 
     renderFilter: ({ columnId, columns, filterStrategy }) => {
-      return <div>Filter</div>;
+      return <div>{t('table.filter.label')}</div>;
     },
 
     renderFilterPanel: (props) => {

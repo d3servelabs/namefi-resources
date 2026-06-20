@@ -51,7 +51,6 @@
     "renew": "续费"
   },
   "unlinkedWalletTooltip": "此钱包未关联到当前账户，因此您将无法在账户中看到该域名。",
-  "walletNotLinked": "此钱包未关联到您的账户。",
   "timeline": {
     "subtitle": "订单实时更新",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "域名处于锁定状态，客服已取消该请求。",
     "failureUserAuthCode": "需要更新授权码，您已取消该请求。",
     "failureUserLocked": "域名处于锁定状态，您已取消该请求。"
-  }
+  },
+  "nftWalletLabel": "NFT 钱包",
+  "viewTransactionTitle": "查看交易"
 }

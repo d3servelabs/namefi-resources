@@ -1,7 +1,8 @@
 {
   "authRequired": {
     "title": "Anmeldung erforderlich",
-    "description": "Bitte melden Sie sich an, um fortzufahren"
+    "description": "Bitte melden Sie sich an, um fortzufahren",
+    "communityDescription": "Sie müssen sich anmelden, um fortzufahren. Treten Sie der Community bei, um die besten Domains zu entdecken und darüber abzustimmen!"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "um diese Aktion abzuschließen",
@@ -12,18 +13,18 @@
     },
     "description": {
       "wrongWallet": "Bitte verbinden Sie das richtige Wallet, um fortzufahren.",
-      "settingActive": "Bitte warten Sie, während wir Ihr Wallet als aktiv setzen...",
+      "settingActive": "Bitte warten Sie, während wir Ihr Wallet als aktiv setzen…",
       "connect": "Bitte verbinden Sie Ihr Wallet {actionDescription}."
     },
-    "checkingStatus": "Wallet-Status wird geprüft...",
-    "settingAsActive": "Wallet wird als aktiv gesetzt...",
+    "checkingStatus": "Wallet-Status wird geprüft…",
+    "settingAsActive": "Wallet wird aktiviert…",
     "requiredWallet": "Erforderliches Wallet",
-    "waitingForConnection": "Warte auf Wallet-Verbindung...",
+    "waitingForConnection": "Warte auf Wallet-Verbindung…",
     "differentWalletConnected": "Sie haben ein anderes Wallet verbunden",
     "youConnected": "Verbunden",
     "butWeNeed": "Benötigt wird",
     "connectedSuccessfully": "Wallet erfolgreich verbunden",
-    "connecting": "Verbinden...",
+    "connecting": "Verbinden…",
     "next": "Weiter",
     "toast": {
       "setActiveFailed": "Aktives Wallet konnte nicht gesetzt werden",
@@ -33,9 +34,9 @@
   },
   "countryInput": {
     "placeholder": "Land auswählen",
-    "searchPlaceholder": "Länder suchen...",
+    "searchPlaceholder": "Länder suchen…",
     "noResults": "Kein Land gefunden.",
-    "clearSelection": "Auswahl löschen"
+    "clearSelection": "Auswahl aufheben"
   },
   "myDomains": {
     "heading": "Meine Domains"
@@ -43,37 +44,204 @@
   "walletNftGrid": {
     "notIndexedYet": "Noch nicht indiziert",
     "emptyIdentifier": "Geben Sie eine Wallet-Adresse oder einen ENS-Namen ein, um NFTs anzuzeigen.",
-    "invalidIdentifier": "Dies ist keine gültige Wallet-Adresse oder kein gültiger ENS-Name.",
-    "invalidIdentifierHint": "Wallets müssen mit 0x beginnen; ENS-Namen benötigen mindestens einen Punkt.",
+    "invalidIdentifier": "Dies scheint keine gültige Wallet-Adresse oder kein gültiger ENS-Name zu sein.",
+    "invalidIdentifierHint": "Wallet-Adressen müssen mit 0x beginnen; ENS-Namen benötigen mindestens einen Punkt.",
     "ensResolveFailed": "Der ENS-Name konnte nicht aufgelöst werden.",
-    "ensResolveFailedHint": "Überprüfen Sie die Schreibweise oder versuchen Sie es in einem Moment erneut.",
-    "noWalletResolved": "Für diese Eingabe konnte kein Wallet aufgelöst werden.",
+    "ensResolveFailedHint": "Überprüfen Sie die Schreibweise oder versuchen Sie es gleich erneut.",
+    "noWalletResolved": "Für diese Eingabe konnte kein Wallet ermittelt werden.",
     "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
-    "loadDomainsFailed": "Domains für dieses Wallet konnten nicht geladen werden.",
-    "loadDomainsFailedHint": "Bitte aktualisieren Sie die Seite und versuchen Sie es erneut.",
-    "noNftsFound": "Keine Namefi NFTs für dieses Wallet gefunden.",
+    "loadDomainsFailed": "Die Domains für dieses Wallet konnten nicht geladen werden.",
+    "loadDomainsFailedHint": "Bitte laden Sie die Seite neu und versuchen Sie es erneut.",
+    "noNftsFound": "Keine Namefi-NFTs für dieses Wallet gefunden.",
     "noNftsFoundHint": "Überprüfen Sie die Wallet-Adresse oder den ENS-Namen, oder warten Sie, bis die Indizierung abgeschlossen ist.",
     "unknownNetwork": "Unbekanntes Netzwerk",
     "explorer": "Explorer",
     "viewOnExplorer": "Im Explorer ansehen",
-    "viewOn": "Ansehen auf {explorer}",
+    "viewOn": "Auf {explorer} ansehen",
     "network": "Netzwerk",
     "expiration": "Ablauf",
     "wallet": "Wallet",
     "ens": "ENS: {name}",
-    "copiedToClipboard": "In Zwischenablage kopiert",
+    "copiedToClipboard": "In die Zwischenablage kopiert",
     "copyFailed": "Kopieren fehlgeschlagen",
     "copyFailedDescription": "Der Wert konnte nicht kopiert werden. Bitte versuchen Sie es erneut."
   },
   "instantBuyModal": {
     "title": "{domain} kaufen",
-    "description": "Kauf für 1 Jahr Registrierung abschließen",
+    "description": "Schließen Sie Ihren Kauf für 1 Jahr Registrierung ab",
     "domain": "Domain",
     "pricePerYear": "{price} USD / Jahr",
     "selectNftWallet": "NFT-Wallet für den Kauf auswählen",
     "buyNow": "Jetzt kaufen",
     "errorTitle": "Etwas ist schiefgelaufen.",
-    "errorDescription": "Keine Sorge, es wird nichts berechnet. Sie können es erneut versuchen. ",
-    "errorDetail": "(Fehler – {error})"
+    "errorDescription": "Keine Sorge, es wurde nichts berechnet. Bitte versuchen Sie es erneut.",
+    "errorDetail": "(Fehler – {error})",
+    "tooltip": "Diese Domain sofort kaufen"
+  },
+  "table": {
+    "searchPlaceholder": "Suchen…",
+    "empty": "Keine Daten",
+    "emptyDefault": "Keine Daten gefunden",
+    "emptyAuditLogs": "Keine Audit-Protokolle gefunden",
+    "loadingAuditLogs": "Audit-Protokolle werden geladen…",
+    "noMoreRows": "Keine weiteren Zeilen",
+    "showing": "{count, plural, one {# Zeile angezeigt} other {# Zeilen angezeigt}}",
+    "pagination": {
+      "rowsPerPage": "Zeilen/Seite:",
+      "pageOf": "Seite {page} von {total}",
+      "pageOfTotal": "Seite {page} von {total} – Gesamt {count, plural, one {# Zeile} other {# Zeilen}}",
+      "totalShort": "Gesamt: {count, plural, one {# Zeile} other {# Zeilen}}",
+      "previous": "Zurück",
+      "next": "Weiter"
+    },
+    "columns": {
+      "label": "Spalten",
+      "toggle": "Spalten ein-/ausblenden",
+      "resetToDefaults": "Standard wiederherstellen",
+      "resizeColumn": "Spaltenbreite anpassen"
+    },
+    "filters": {
+      "label": "Filter"
+    },
+    "filterPanel": {
+      "title": "Tabellenfilter",
+      "titleAdvanced": "Erweiterte Filter",
+      "description": "Wenden Sie Filter an, um die Tabellenergebnisse einzugrenzen",
+      "descriptionAdvanced": "Erstellen Sie komplexe Filter mit mehreren Bedingungen und UND/ODER-Logik",
+      "activeCount": "{count} aktiv",
+      "clearAll": "Alle entfernen",
+      "generalFilters": "Allgemeine Filter",
+      "columnFilters": "Spaltenfilter",
+      "noFiltersAvailable": "Keine Filter verfügbar",
+      "active": "Aktiv",
+      "conditionCount": "{count, plural, one {# Bedingung} other {# Bedingungen}}"
+    },
+    "filter": {
+      "label": "Filter",
+      "filterColumn": "{column} filtern",
+      "filterActive": "Filter aktiv",
+      "operator": "Operator",
+      "value": "Wert",
+      "apply": "Anwenden",
+      "clear": "Löschen",
+      "addCondition": "Bedingung hinzufügen",
+      "clearAllConditions": "Alle löschen",
+      "maxConditionsReached": "{count, plural, one {Maximale Anzahl von # Bedingung erreicht} other {Maximale Anzahl von # Bedingungen erreicht}}",
+      "selectPlaceholder": "Auswählen…",
+      "selectDatePlaceholder": "Datum auswählen…",
+      "enterValuePlaceholder": "Wert eingeben…",
+      "typeValuePlaceholder": "Wert eingeben…",
+      "enterFieldPlaceholder": "{field} eingeben…",
+      "noSuggestions": "Keine passenden Vorschläge. Sie können den eingegebenen Wert trotzdem verwenden.",
+      "suggestions": "Vorschläge",
+      "invalidNumber": "Ungültige Zahl",
+      "invalidDate": "Ungültiges Datum",
+      "operators": {
+        "contains": "Enthält",
+        "containsCaseInsensitive": "Enthält (Groß-/Kleinschreibung egal)",
+        "equals": "Gleich",
+        "notEquals": "Ungleich",
+        "greaterThan": "Größer als",
+        "greaterOrEqual": "Größer oder gleich",
+        "lessThan": "Kleiner als",
+        "lessOrEqual": "Kleiner oder gleich",
+        "after": "Nach",
+        "onOrAfter": "Am oder nach",
+        "before": "Vor",
+        "onOrBefore": "Am oder vor",
+        "isNull": "Ist leer",
+        "isNotNull": "Ist nicht leer",
+        "inList": "In Liste",
+        "notInList": "Nicht in Liste",
+        "allElementsEquals": "Alle Elemente gleich",
+        "allElementsNotEquals": "Kein Element gleich",
+        "anyElementEquals": "Mind. ein Element gleich",
+        "anyElementNotEquals": "Mind. ein Element ungleich",
+        "allElementsContain": "Alle Elemente enthalten",
+        "allElementsNotContain": "Kein Element enthält",
+        "anyElementContains": "Mind. ein Element enthält",
+        "anyElementNotContain": "Mind. ein Element enthält nicht"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "Wallet und Netzwerk bereit",
+    "preparing": "Wird vorbereitet...",
+    "connectWallet": "Wallet verbinden",
+    "useThisWallet": "Dieses Wallet verwenden",
+    "switchWallet": "Wallet wechseln",
+    "switchNetwork": "Netzwerk wechseln",
+    "connecting": "Wird verbunden…",
+    "activating": "Wird aktiviert…",
+    "switchingNetwork": "Netzwerk wird gewechselt…",
+    "walletStep": "Wallet",
+    "networkStep": "Netzwerk",
+    "requiredWallet": "Erforderliches Wallet",
+    "differentWalletConnected": "Sie haben ein anderes Wallet verbunden",
+    "youConnected": "Sie haben verbunden",
+    "butWeNeed": "Wir benötigen jedoch",
+    "switchNetworkPrompt": "Wechseln Sie das Netzwerk Ihres Wallets, um fortzufahren.",
+    "current": "Aktuell",
+    "required": "Erforderlich",
+    "chainLabel": "Chain {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "Domain auswählen oder eingeben",
+    "loadingDomains": "Domains werden geladen",
+    "useTypedDomain": "Eingegebene Domain verwenden",
+    "domains": "Domains"
+  },
+  "previewGate": {
+    "title": "Vorschau-Zugang",
+    "description": "Geben Sie den Zugangscode ein, um auf diese Vorschau-Umgebung zuzugreifen.",
+    "accessCode": "Zugangscode",
+    "unlock": "Entsperren"
+  },
+  "missingEmail": {
+    "noContactEmail": "Keine Kontakt-E-Mail",
+    "later": "Später",
+    "addEmailToProfile": "E-Mail zum Profil hinzufügen",
+    "addEmail": "E-Mail hinzufügen"
+  },
+  "announcements": {
+    "previous": "Vorherige Ankündigung",
+    "next": "Nächste Ankündigung",
+    "dismiss": "Ankündigung schließen"
+  },
+  "emailRequired": {
+    "title": "E-Mail erforderlich",
+    "description": "Sie müssen eine gültige E-Mail-Adresse zu Ihrem Profil hinzufügen, um fortzufahren."
+  },
+  "voteOrShare": {
+    "signInToVote": "Anmelden zum Abstimmen",
+    "shareDomainInstead": "Domain stattdessen teilen"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "Morgen oder nächste Woche",
+    "selectDate": "Datum auswählen"
+  },
+  "selectWalletAndChain": {
+    "linked": "Verknüpft",
+    "selectChainPlaceholder": "Chain auswählen"
+  },
+  "feedback": {
+    "close": "Feedback schließen",
+    "skip": "Überspringen"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "Aufgelöste Adresse kopieren",
+    "title": "Empfangs-Wallet oder ENS"
+  },
+  "creditCard": {
+    "cardHolder": "Karteninhaber",
+    "expires": "Läuft ab"
+  },
+  "walletCard": {
+    "ethereumWallet": "Ethereum-Wallet",
+    "connected": "Verbunden",
+    "connectedNetworks": "Verbundene Netzwerke"
+  },
+  "ownerPage": {
+    "heading": "Domains in diesem Wallet"
   }
 }

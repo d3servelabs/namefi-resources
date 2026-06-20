@@ -44,5 +44,20 @@
   },
   "items.marketplace": {
     "description": "Sidebar nav link to the Marketplace page where users browse Namefi domain NFTs listed for sale on OpenSea."
+  },
+  "userDropdown.unableToLoadMenu": {
+    "description": "Disabled menu item shown when the user account dropdown menu fails to load."
+  },
+  "userDropdown.signOutConfirmTitle": {
+    "description": "Title of the confirmation dialog shown before signing the user out."
+  },
+  "userDropdown.signOutConfirmDescription": {
+    "description": "Body of the sign-out confirmation dialog warning that unsaved changes will be lost."
+  },
+  "userDropdown.signOutFailedTitle": {
+    "description": "Error toast title shown when signing out fails."
+  },
+  "userDropdown.signOutFailedFallback": {
+    "description": "Generic fallback error toast body shown when sign-out fails with no specific message."
   }
 }

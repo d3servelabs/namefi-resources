@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { CopyIcon } from 'lucide-react';
 import {
   type FC,
@@ -24,6 +25,7 @@ export const Copy: FC<CopyProps> = ({
   children,
   ...rest
 }: CopyProps) => {
+  const t = useTranslations('common');
   const handleCopy = useCallback(async () => {
     await navigator.clipboard.writeText(text);
 
@@ -43,7 +45,7 @@ export const Copy: FC<CopyProps> = ({
         type="button"
         onClick={handleCopy}
         className="rounded-full p-1 hover:bg-muted"
-        aria-label="Copy"
+        aria-label={t('actions.copy')}
       >
         <CopyIcon className="h-3 w-3" />
       </button>

@@ -18,12 +18,14 @@ import { PaginationControls } from '@/components/hunt/pagination-control';
 import { MySubmittedDomains } from '@/components/hunt/mine/my-submitted-domains';
 import { MyUpvotedDomains } from '@/components/hunt/mine/my-upvoted-domains';
 import { PageShell } from '@/components/page-shell';
+import { useTranslations } from 'next-intl';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 
 type TabKey = 'submitted' | 'upvoted';
 
 export default function MyDomainsPage() {
+  const t = useTranslations('hunt');
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [submittedPage, setSubmittedPage] = useState(1);
   const [upvotedPage, setUpvotedPage] = useState(1);
@@ -71,8 +73,8 @@ export default function MyDomainsPage() {
   if (!(authLoading || isAuthenticated)) {
     return (
       <AuthRequired
-        title="Sign in to view your activity"
-        description="Please sign in to see your submitted domains and voting history"
+        title={t('mine.signInTitle')}
+        description={t('mine.signInDescription')}
       />
     );
   }
@@ -90,7 +92,7 @@ export default function MyDomainsPage() {
               <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
             </Button>
           </Link>
-          <h2 className="text-2xl font-bold">My Activity</h2>
+          <h2 className="text-2xl font-bold">{t('mine.title')}</h2>
         </div>
       </div>
 
@@ -101,10 +103,10 @@ export default function MyDomainsPage() {
       >
         <TabsList>
           <TabsTrigger value="upvoted" className="cursor-pointer">
-            Upvoted Domains
+            {t('mine.upvotedTab')}
           </TabsTrigger>
           <TabsTrigger value="submitted" className="cursor-pointer">
-            Submitted Domains
+            {t('mine.submittedTab')}
           </TabsTrigger>
         </TabsList>
 

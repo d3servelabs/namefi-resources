@@ -1,0 +1,23 @@
+{
+  "title": "TLD मूल्य निर्धारण",
+  "description": "समर्थित गैर-प्रीमियम TLD के लिए आधार USD मूल्य निर्धारण की समीक्षा करें।",
+  "loadError": "अभी TLD मूल्य निर्धारण लोड करने में असमर्थ। कृपया शीघ्र पुनः प्रयास करें।",
+  "loadingMessage": "TLD मूल्य निर्धारण लोड हो रहा है...",
+  "emptyMessage": "आपके फ़िल्टर से मेल खाने वाले कोई TLD नहीं हैं",
+  "nonPremiumNote": "** ये मूल्य केवल गैर-प्रीमियम डोमेन पर लागू होते हैं",
+  "columns": {
+    "tld": "TLD",
+    "registration": "पंजीकरण",
+    "renewal": "नवीनीकरण",
+    "transfer": "स्थानांतरण",
+    "registrar": "रजिस्ट्रार"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "रजिस्ट्रार"
+  },
+  "variablePrice": "परिवर्तनीय मूल्य",
+  "variablePriceTooltip": "मूल्य परिवर्तनीय है और डोमेन नाम पर निर्भर करता है",
+  "notAvailable": "उपलब्ध नहीं",
+  "perYear": "<price>{value}</price> / वर्ष"
+}

@@ -1,0 +1,63 @@
+{
+  "title": "Notificaciones",
+  "bell": {
+    "label": "Notificaciones",
+    "labelWithUnread": "Notificaciones, {count} sin leer",
+    "relatedLabel": "Notificaciones relacionadas",
+    "relatedLabelWithUnread": "Notificaciones relacionadas, {count} sin leer"
+  },
+  "permission": {
+    "tooltip": "No te pierdas ninguna notificación, activa las notificaciones de Namefi Webapp.",
+    "enable": "Activar",
+    "ctaText": "Recibe alertas del sistema cuando lleguen nuevas notificaciones."
+  },
+  "modal": {
+    "description": "Tus notificaciones en la aplicación. Usa los controles para marcar como vistas, archivar o filtrar por recurso relacionado."
+  },
+  "list": {
+    "filters": "Filtros",
+    "refresh": "Actualizar notificaciones",
+    "relatedTo": "Relacionado con",
+    "any": "Cualquiera",
+    "nameOrKey": "Nombre o clave",
+    "nameOrKeyPlaceholder": "nombre o clave",
+    "includeSeen": "Incluir vistas",
+    "includeSeenAria": "Incluir notificaciones vistas",
+    "includeArchived": "Incluir archivadas",
+    "includeArchivedAria": "Incluir notificaciones archivadas",
+    "selectAllAria": "Seleccionar todas las notificaciones visibles",
+    "selectedCount": "{count} seleccionadas",
+    "markSeen": "Vista",
+    "markUnseen": "No vista",
+    "archive": "Archivar",
+    "restore": "Restaurar",
+    "markAllSeen": "Marcar todas como vistas",
+    "loading": "Cargando…",
+    "empty": "Sin notificaciones.",
+    "loadingMore": "Cargando más…"
+  },
+  "item": {
+    "selectAria": "Seleccionar {title}",
+    "markSeenAria": "Marcar como vista",
+    "markUnseenAria": "Marcar como no vista",
+    "archiveAria": "Archivar",
+    "restoreAria": "Restaurar del archivo"
+  },
+  "errors": {
+    "markSeen": "Error al marcar como vista",
+    "markUnseen": "Error al marcar como no vista",
+    "archive": "Error al archivar",
+    "restore": "Error al restaurar",
+    "markAllSeen": "Error al marcar todas como vistas"
+  },
+  "resourceTypes": {
+    "user": "Usuario",
+    "domain": "Dominio",
+    "wallet": "Billetera",
+    "order": "Pedido",
+    "order_item": "Artículo del pedido",
+    "payment": "Pago",
+    "cart": "Carrito",
+    "dns_record": "Registro DNS"
+  }
+}

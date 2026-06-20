@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Loader2, Zap } from 'lucide-react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { useAuth } from '@/hooks/use-auth';
@@ -52,6 +53,7 @@ export function InstantBuyButtonInner({
   const [InstantBuyModalRuntime, setInstantBuyModalRuntime] =
     useState<InstantBuyModalRuntimeComponent | null>(null);
   const { isAuthenticated } = useAuth();
+  const t = useTranslations('shared');
 
   const requestModalRuntime = useCallback(() => {
     if (InstantBuyModalRuntime) return;
@@ -106,11 +108,11 @@ export function InstantBuyButtonInner({
             className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
             style={{ transition: 'all 0.4s ease-in-out' }}
           >
-            Buy Now
+            {t('instantBuyModal.buyNow')}
           </span>
         </TooltipTrigger>
         <TooltipContent>
-          <p>Purchase this domain instantly</p>
+          <p>{t('instantBuyModal.tooltip')}</p>
         </TooltipContent>
       </Tooltip>
 

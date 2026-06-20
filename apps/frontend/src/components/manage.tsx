@@ -16,6 +16,7 @@ import { formatAmountInUSD } from '@/lib/number';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import type { inferOutput } from '@trpc/tanstack-react-query';
+import { useTranslations } from 'next-intl';
 import { type FC, useMemo } from 'react';
 
 const LoadingSkeletons: FC = () => (
@@ -50,6 +51,7 @@ function SoldDomainsContent() {
     typeof trpc.users.getRegisteredSubdomainsForParentDomainOwner
   >[number];
 
+  const t = useTranslations('manage');
   const trpc = useTRPC();
 
   const { data, isLoading, isError, error, refetch } = useQuery({
@@ -92,11 +94,9 @@ function SoldDomainsContent() {
         <CardContent className="p-6">
           <div className="space-y-3">
             <div>
-              <h3 className="text-lg font-semibold">
-                Unable to load sold domains
-              </h3>
+              <h3 className="text-lg font-semibold">{t('loadErrorTitle')}</h3>
               <p className="text-sm text-muted-foreground">
-                {error?.message || 'Please try again.'}
+                {error?.message || t('loadErrorFallback')}
               </p>
             </div>
             <button
@@ -106,7 +106,7 @@ function SoldDomainsContent() {
                 void refetch();
               }}
             >
-              Retry
+              {t('retry')}
             </button>
           </div>
         </CardContent>
@@ -123,7 +123,7 @@ function SoldDomainsContent() {
       {/* SoldDomainsCountCard */}
       <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0">
         <CardHeader>
-          <CardTitle>Total Domains Sold</CardTitle>
+          <CardTitle>{t('totalDomainsSold')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-lg">{soldDomainsCount}</div>
@@ -133,7 +133,7 @@ function SoldDomainsContent() {
       {/* SoldDomainsProceedsCard */}
       <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0">
         <CardHeader>
-          <CardTitle>Proceeds</CardTitle>
+          <CardTitle>{t('proceeds')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-lg">{revenue}</div>
@@ -143,18 +143,18 @@ function SoldDomainsContent() {
       {/* SoldDomainsTableCard */}
       <Card className="col-span-2 bg-white/[0.03] border border-white/10 shadow-sm rounded-lg p-6 gap-0">
         <CardHeader>
-          <CardTitle>Domains Sold</CardTitle>
+          <CardTitle>{t('domainsSold')}</CardTitle>
         </CardHeader>
         <CardContent>
-          {subdomains.length === 0 && <div>No domains sold yet.</div>}
+          {subdomains.length === 0 && <div>{t('emptyState')}</div>}
           {subdomains.length > 0 && (
             <Table className="w-full">
               <Thead>
                 <Tr>
-                  <Th>Domain Name</Th>
-                  <Th>Wallet</Th>
-                  <Th>Date</Th>
-                  <Th>Price</Th>
+                  <Th>{t('columns.domainName')}</Th>
+                  <Th>{t('columns.wallet')}</Th>
+                  <Th>{t('columns.date')}</Th>
+                  <Th>{t('columns.price')}</Th>
                 </Tr>
               </Thead>
               <TableBody>
@@ -184,6 +184,7 @@ function SoldDomainsContent() {
 }
 
 export default function ManageDashboard() {
+  const t = useTranslations('manage');
   const { isAuthenticated, isLoading } = useAuth();
 
   if (!(isLoading || isAuthenticated)) {
@@ -193,7 +194,7 @@ export default function ManageDashboard() {
   return (
     <PageShell>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">My Sold Domains</h2>
+        <h2 className="text-2xl font-bold">{t('heading')}</h2>
       </div>
       {isLoading ? <LoadingSkeletons /> : <SoldDomainsContent />}
     </PageShell>

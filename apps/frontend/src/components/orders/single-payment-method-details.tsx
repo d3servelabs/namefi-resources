@@ -1,3 +1,4 @@
+import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
 import { getChain } from '@namefi-astra/utils/chains';
 import { getShortAddress } from '@/lib/string';
@@ -42,6 +43,7 @@ export function SinglePaymentMethodDetails({
   payment: PaymentSelect;
   paymentMethodDetails: PaymentMethodDetails;
 }) {
+  const t = useTranslations('orders');
   const isCreditCardPayment = useMemo(
     () => payment.paymentProvider === 'STRIPE',
     [payment.paymentProvider],
@@ -133,7 +135,7 @@ export function SinglePaymentMethodDetails({
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline inline-flex items-center"
-              title="View transaction"
+              title={t('viewTransactionTitle')}
             >
               <ExternalLink className="h-3 w-3" />
             </a>

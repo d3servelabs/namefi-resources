@@ -1,5 +1,4 @@
 {
-  "language": "भाषा",
   "languageSelector": {
     "label": "भाषा",
     "ariaLabel": "भाषा बदलें"
@@ -9,7 +8,6 @@
     "loading": "लोड हो रहा...",
     "tryAgain": "पुनः प्रयास",
     "dismiss": "बंद करें",
-    "contactSupport": "सहायता से संपर्क",
     "cancel": "रद्द करें",
     "close": "बंद करें",
     "save": "सहेजें",
@@ -23,10 +21,11 @@
     "loadMore": "और लोड करें",
     "connectWallet": "Wallet जोड़ें",
     "goBack": "वापस जाएँ",
-    "approve": "स्वीकार",
-    "reject": "अस्वीकार",
     "disable": "अक्षम करें",
-    "signOut": "साइन आउट"
+    "signOut": "साइन आउट",
+    "copy": "कॉपी करें",
+    "copyAddress": "पता कॉपी करें",
+    "toggleSidebar": "साइडबार टॉगल करें"
   },
   "account": {
     "label": "खाता",

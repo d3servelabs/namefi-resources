@@ -1,0 +1,18 @@
+{
+  "title": "NFSC Faucet",
+  "description": "Fordern Sie 20 $NFSC in Testnetzwerken für die Verwendung in Sandbox-Umgebungen an.",
+  "chainLabel": "Chain",
+  "receivingWalletLabel": "Empfangs-Wallet",
+  "walletPlaceholder": "Wallet-Adresse einfügen oder aus verknüpften Wallets auswählen",
+  "walletHelpText": "Token werden auf Sepolia an das ausgewählte Wallet geminted.",
+  "submitting": "Anfrage wird übermittelt...",
+  "requestNfsc": "NFSC anfordern",
+  "rateLimitedTitle": "Sie haben vor Kurzem geminted.",
+  "rateLimitedDescription": "Versuchen Sie es erneut nach {time}.",
+  "rateLimitedFallback": "später",
+  "mintInProgressTitle": "Mint wird ausgeführt",
+  "mintInProgressDescription": "Warten auf Bestätigung der Transaktion auf Sepolia.",
+  "mintCompleteTitle": "Mint abgeschlossen",
+  "viewTransaction": "Transaktion anzeigen",
+  "requestFailedTitle": "Anfrage fehlgeschlagen"
+}

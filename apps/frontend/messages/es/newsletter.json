@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "Mantente informado",
+  "defaultDescription": "Suscríbete a nuestro boletín para recibir las últimas actualizaciones y anuncios.",
+  "closeAriaLabel": "Cerrar formulario de boletín",
+  "invalidEmail": "Por favor, introduce una dirección de correo electrónico válida",
+  "successTitle": "¡Gracias por suscribirte!",
+  "successDescription": "Revisa tu correo electrónico para confirmar tu suscripción.",
+  "subscribeAnother": "Suscribirse con otro correo electrónico",
+  "emailPlaceholder": "Introduce tu correo electrónico",
+  "subscribing": "Suscribiendo...",
+  "subscribe": "Suscribirse",
+  "subscribeToNewsletter": "Suscribirse al boletín",
+  "nameLabel": "Nombre (opcional)",
+  "namePlaceholder": "Tu nombre",
+  "emailLabel": "Correo electrónico",
+  "emailExamplePlaceholder": "tu@correo.com",
+  "toast": {
+    "subscribedTitle": "¡Suscrito!",
+    "alreadySubscribedTitle": "Ya suscrito",
+    "alreadySubscribedDescription": "¡Ya estás en nuestra lista de correo!",
+    "failedTitle": "Suscripción fallida",
+    "failedFallback": "Por favor, inténtalo de nuevo más tarde."
+  }
+}

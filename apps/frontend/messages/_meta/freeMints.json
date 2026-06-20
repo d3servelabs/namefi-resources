@@ -67,5 +67,17 @@
   },
   "card.poweredByNamefi": {
     "description": "Accessibility label for the brand logo on the free-mint card. Keep 'Namefi' as the brand name."
+  },
+  "dropdown.title": {
+    "description": "Header label at the top of the free-mints dropdown menu in the site header.",
+    "maxLength": 20
+  },
+  "dropdown.claim": {
+    "description": "Button in a free-mints dropdown row that starts claiming that free mint.",
+    "maxLength": 12
+  },
+  "dropdown.viewAll": {
+    "description": "Footer link in the free-mints dropdown that navigates to the full My Free Mints page.",
+    "maxLength": 30
   }
 }

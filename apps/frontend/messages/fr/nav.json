@@ -15,5 +15,12 @@
     "hunt": "Chasse",
     "marketplace": "Place de marché"
   },
-  "recentDomains": "Domaines récents"
+  "recentDomains": "Domaines récents",
+  "userDropdown": {
+    "unableToLoadMenu": "Impossible de charger le menu.",
+    "signOutConfirmTitle": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "signOutConfirmDescription": "Êtes-vous sûr de vouloir vous déconnecter ? Toute modification non enregistrée sera perdue.",
+    "signOutFailedTitle": "Échec de la déconnexion",
+    "signOutFailedFallback": "Veuillez réessayer."
+  }
 }

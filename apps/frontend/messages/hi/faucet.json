@@ -1,0 +1,18 @@
+{
+  "title": "NFSC Faucet",
+  "description": "सैंडबॉक्स परिवेश में उपयोग के लिए टेस्टनेट पर 20$NFSC का अनुरोध करें।",
+  "chainLabel": "चेन",
+  "receivingWalletLabel": "प्राप्तकर्ता वॉलेट",
+  "walletPlaceholder": "एक वॉलेट पता पेस्ट करें या लिंक किए गए वॉलेट में से चुनें",
+  "walletHelpText": "Sepolia पर चयनित वॉलेट में टोकन मिंट किए जाते हैं।",
+  "submitting": "अनुरोध सबमिट हो रहा है...",
+  "requestNfsc": "NFSC का अनुरोध करें",
+  "rateLimitedTitle": "आपने अभी हाल ही में मिंट किया है।",
+  "rateLimitedDescription": "{time} के बाद पुनः प्रयास करें।",
+  "rateLimitedFallback": "बाद में",
+  "mintInProgressTitle": "मिंट प्रक्रिया जारी है",
+  "mintInProgressDescription": "Sepolia पर लेनदेन की पुष्टि की प्रतीक्षा हो रही है।",
+  "mintCompleteTitle": "मिंट पूर्ण",
+  "viewTransaction": "लेनदेन देखें",
+  "requestFailedTitle": "अनुरोध विफल हुआ"
+}

@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "अपने ब्रांड के लिए कस्टम लोगो, पोस्टर और एनिमेशन बनाएं",
+    "poweredByAlt": "Namefi द्वारा संचालित"
+  },
+  "tabs": {
+    "logo": "लोगो",
+    "poster": "पोस्टर",
+    "animation": "एनिमेशन"
+  },
+  "prerequisite": {
+    "title": "पहले एक लोगो बनाएं",
+    "posterDescription": "पोस्टर के लिए आपके किसी जनरेटेड लोगो की ब्रांड संदर्भ के रूप में आवश्यकता होती है।",
+    "animationDescription": "एनिमेशन के लिए आपके किसी जनरेटेड लोगो को स्रोत आर्टवर्क के रूप में उपयोग किया जाता है।"
+  },
+  "usage": {
+    "credits": "AI क्रेडिट",
+    "usedThisMonth": "इस माह {current} में से {max} उपयोग किए",
+    "limitReached": "क्रेडिट सीमा समाप्त",
+    "creditsLeft": "{count, plural, one {# क्रेडिट शेष} other {# क्रेडिट शेष}}",
+    "refreshAria": "AI क्रेडिट रिफ्रेश समय",
+    "refreshAt": "क्रेडिट {time} पर रिफ्रेश होंगे",
+    "refreshMonthly": "क्रेडिट मासिक रिफ्रेश होते हैं",
+    "balanceCheckError": "AI क्रेडिट बैलेंस जांचा नहीं जा सका",
+    "balanceCheckErrorDescription": "आपके शेष क्रेडिट की पुष्टि नहीं हो सकी, लेकिन आप फिर भी एसेट जनरेट करने का प्रयास कर सकते हैं।",
+    "checkingBalance": "AI क्रेडिट बैलेंस जांचा जा रहा है...",
+    "willCheckBalance": "जनरेशन शुरू होने से पहले हम आपका AI क्रेडिट बैलेंस जांचेंगे।",
+    "creditAmount": "{count, plural, one {# AI क्रेडिट} other {# AI क्रेडिट}}",
+    "costInsufficient": "इस जनरेशन के लिए {cost} चाहिए। इस माह आपके पास {remaining} शेष हैं।",
+    "costPreview": "इस जनरेशन की लागत {cost} है। इस माह आपके पास {remaining} शेष रहेंगे।"
+  },
+  "domainField": {
+    "fixedLabel": "अपना डोमेन दर्ज करें (जैसे, example.com)",
+    "logoPlaceholder": "अपना ब्रांड डोमेन चुनें या दर्ज करें",
+    "brandPlaceholder": "ब्रांड डोमेन चुनें (आवश्यक)",
+    "searchBrands": "ब्रांड डोमेन खोजें...",
+    "searchOrEnter": "डोमेन खोजें या दर्ज करें",
+    "emptyStudioLogos": "कोई Studio लोगो डोमेन नहीं मिला।",
+    "emptyMatching": "कोई मेल खाता डोमेन नहीं मिला।"
+  },
+  "description": {
+    "label": "अपने ब्रांड का विवरण दें (वैकल्पिक)",
+    "placeholder": "अपने ब्रांड विज़न के बारे में बताएं"
+  },
+  "logo": {
+    "gridTitle": "जनरेटेड लोगो",
+    "chooseType": "एक प्रकार चुनें",
+    "chooseStyle": "एक स्टाइल चुनें",
+    "chooseTldTreatment": "TLD ट्रीटमेंट चुनें",
+    "chooseTypography": "टाइपोग्राफी चुनें",
+    "chooseModel": "एक मॉडल चुनें",
+    "controls": {
+      "type": "प्रकार",
+      "style": "स्टाइल",
+      "tld": "TLD",
+      "typography": "टाइपोग्राफी",
+      "model": "मॉडल",
+      "brandVision": "ब्रांड विज़न",
+      "advanced": "उन्नत"
+    },
+    "actions": {
+      "createPoster": "पोस्टर बनाएं",
+      "animateLogo": "लोगो एनिमेट करें"
+    }
+  },
+  "poster": {
+    "title": "पोस्टर जनरेटर",
+    "gridTitle": "जनरेटेड पोस्टर",
+    "usingBrand": "{domain} ब्रांड का उपयोग",
+    "backToLogos": "लोगो पर वापस",
+    "chooseLogo": "पोस्टर के आधार के लिए एक लोगो चुनें",
+    "chooseModel": "एक मॉडल चुनें",
+    "chooseCollateral": "कोलैटरल प्रकार चुनें",
+    "selectCollateral": "कोलैटरल चुनें",
+    "controls": {
+      "useLogo": "लोगो उपयोग करें",
+      "selected": "चुना गया",
+      "description": "विवरण",
+      "model": "मॉडल",
+      "collateral": "कोलैटरल",
+      "advanced": "उन्नत"
+    },
+    "collateral": {
+      "letAiChoose": "AI को चुनने दें",
+      "billboard": "बिलबोर्ड",
+      "apparel": "परिधान",
+      "vehicle": "वाहन",
+      "product": "उत्पाद"
+    }
+  },
+  "animation": {
+    "title": "लोगो एनिमेशन",
+    "gridTitle": "जनरेटेड एनिमेशन",
+    "usingBrand": "{domain} ब्रांड का उपयोग",
+    "backToLogos": "लोगो पर वापस",
+    "chooseMode": "एनिमेशन मोड चुनें",
+    "chooseLogo": "एनिमेट करने के लिए एक लोगो चुनें",
+    "chooseOpening": "ओपनिंग स्टाइल चुनें",
+    "chooseMotion": "मोशन दिशा चुनें",
+    "chooseIntensity": "मोशन तीव्रता चुनें",
+    "chooseModel": "एक मॉडल चुनें",
+    "selectOpening": "ओपनिंग स्टाइल चुनें",
+    "selectMotion": "मोशन चुनें",
+    "selectIntensity": "तीव्रता चुनें",
+    "useLogoAria": "{domain} लोगो उपयोग करें",
+    "controls": {
+      "mode": "मोड",
+      "useLogo": "लोगो उपयोग करें",
+      "selected": "चुना गया",
+      "description": "विवरण",
+      "opening": "ओपनिंग",
+      "motion": "मोशन",
+      "intensity": "तीव्रता",
+      "model": "मॉडल"
+    },
+    "validation": {
+      "openingRequired": "सिनेमैटिक एनिमेशन के लिए ओपनिंग आवश्यक है",
+      "chooseCinematicModel": "एक सिनेमैटिक मॉडल चुनें",
+      "chooseCinematicMotion": "एक सिनेमैटिक मोशन प्रीसेट चुनें",
+      "chooseSeedanceModel": "एक Seedance मॉडल चुनें",
+      "intensityRequired": "लूप्ड एनिमेशन के लिए तीव्रता आवश्यक है",
+      "chooseLoopedModel": "एक लूप्ड मॉडल चुनें",
+      "chooseLoopedMotion": "एक लूप्ड मोशन प्रीसेट चुनें"
+    }
+  },
+  "model": {
+    "select": "एक मॉडल चुनें"
+  },
+  "submit": {
+    "generate": "जनरेट करें",
+    "generating": "जनरेट हो रहा है",
+    "animate": "एनिमेट करें",
+    "selectBrand": "ब्रांड चुनें"
+  },
+  "gallery": {
+    "yours": "आपकी जनरेशन",
+    "featured": "विशेष",
+    "brands": "ब्रांड",
+    "brandsSelected": "{count} चुने गए",
+    "searchBrand": "ब्रांड खोजें...",
+    "noBrands": "कोई ब्रांड नहीं मिला।",
+    "filterAll": "सभी",
+    "filterLogo": "लोगो",
+    "filterPoster": "पोस्टर",
+    "filterAnimation": "एनिमेशन",
+    "emptyYours": "लोगो या पोस्टर जनरेट करें, यह यहाँ दिखेगा।",
+    "openAria": "{domain} के लिए जनरेशन खोलें",
+    "openFeaturedAria": "{domain} की विशेष जनरेशन खोलें",
+    "viewAria": "जनरेशन {index} देखें",
+    "animationPreviewAria": "{domain} का एनिमेशन प्रीव्यू",
+    "previewUnavailable": "प्रीव्यू उपलब्ध नहीं",
+    "basedOnLogo": "लोगो पर आधारित",
+    "basedOn": "आधारित:",
+    "referencedLogoAlt": "संदर्भित लोगो"
+  },
+  "kind": {
+    "logo": "लोगो",
+    "poster": "पोस्टर",
+    "animation": "एनिमेशन"
+  },
+  "progress": {
+    "generatingLogo": "लोगो जनरेट हो रहा है",
+    "generatingPoster": "पोस्टर जनरेट हो रहा है",
+    "preparingAnimation": "एनिमेशन तैयार हो रहा है",
+    "messages": {
+      "gathering": "आपके ब्रांड के लिए प्रेरणा जुटाई जा रही है...",
+      "sketching": "पहली रेखाएं और सिल्हूट बनाए जा रहे हैं...",
+      "blending": "रंग, स्टाइल और फ़ॉन्ट मिलाए जा रहे हैं...",
+      "character": "चरित्र और विशेष विवरण जोड़े जा रहे हैं...",
+      "lighting": "प्रकाश और संतुलन परिष्कृत किया जा रहा है...",
+      "polishing": "हाइलाइट्स और बनावट को निखारा जा रहा है...",
+      "framing": "अंतिम रूप को फ्रेम किया जा रहा है...",
+      "almost": "लगभग तैयार है—ज़रा रुकें!"
+    }
+  },
+  "status": {
+    "pending": "लंबित",
+    "processing": "प्रोसेसिंग",
+    "failed": "विफल",
+    "ready": "तैयार"
+  },
+  "asyncTile": {
+    "genericError": "यह जनरेशन पूरी नहीं हो सकी। कृपया पुनः प्रयास करें।",
+    "stillRunning": "आपकी जनरेशन अभी चल रही है।",
+    "queued": "आपकी जनरेशन कतार में है और शीघ्र यहाँ दिखेगी।"
+  },
+  "actions": {
+    "copy": "कॉपी",
+    "copyLink": "लिंक कॉपी करें",
+    "tweet": "Tweet",
+    "download": "डाउनलोड"
+  },
+  "delete": {
+    "title": "जनरेशन हटाएं?",
+    "titleSingle": "यह जनरेशन हटाएं?",
+    "descriptionLogo": "यह {domain} का लोगो आपकी गैलरी से हटा देगा। यह क्रिया वापस नहीं की जा सकती।",
+    "descriptionPoster": "यह {domain} का पोस्टर आपकी गैलरी से हटा देगा। यह क्रिया वापस नहीं की जा सकती।",
+    "descriptionAnimation": "यह {domain} का एनिमेशन आपकी गैलरी से हटा देगा। यह क्रिया वापस नहीं की जा सकती।",
+    "deleting": "हटाया जा रहा है..."
+  },
+  "share": {
+    "unableTitle": "शेयर नहीं हो सका",
+    "unableMissingLink": "इस जनरेशन के लिए शेयर करने योग्य लिंक उपलब्ध नहीं है।",
+    "unableMissingLinkOrDomain": "इस जनरेशन के लिए शेयर लिंक या डोमेन नहीं मिला।"
+  },
+  "imageGrid": {
+    "previewUnavailable": "प्रीव्यू उपलब्ध नहीं"
+  },
+  "details": {
+    "backToStudio": "Namefi Brand Studio पर वापस",
+    "headingLogo": "{brand} का लोगो",
+    "headingPoster": "{brand} का पोस्टर",
+    "headingAnimation": "{brand} का एनिमेशन",
+    "notFoundTitle": "जनरेशन नहीं मिली",
+    "notFoundDescription": "जो जनरेशन आप खोज रहे हैं वह नहीं मिल सकी।",
+    "assetUnavailable": "एसेट अभी उपलब्ध नहीं है।",
+    "sectionTitle": "विवरण",
+    "type": "प्रकार:",
+    "status": "स्थिति:",
+    "collateral": "कोलैटरल:",
+    "motion": "मोशन:",
+    "mode": "मोड:",
+    "opening": "ओपनिंग:",
+    "intensity": "तीव्रता:",
+    "model": "मॉडल:",
+    "created": "बनाया गया:",
+    "createdUnknown": "अज्ञात",
+    "collateralUnknown": "अज्ञात",
+    "logoProperties": "लोगो गुण",
+    "logoStyle": "स्टाइल:",
+    "logoType": "प्रकार:",
+    "logoTld": "TLD:",
+    "logoTypography": "टाइपोग्राफी:",
+    "sourceLogo": "स्रोत लोगो",
+    "sourceLogoAlt": "व्युत्पन्न जनरेशन के लिए उपयोग किया गया लोगो",
+    "viewLogoDetails": "लोगो विवरण देखें",
+    "sourcePreviewUnavailable": "स्रोत लोगो प्रीव्यू उपलब्ध नहीं",
+    "sourceLoadFailed": "लोगो विवरण लोड नहीं हो सका",
+    "sourceNotFound": "कोई लोगो संदर्भ नहीं मिला",
+    "animationSheet": "एनिमेशन शीट",
+    "animationSheetAlt": "{domain} के लिए जनरेटेड एनिमेशन शीट",
+    "openSheetAria": "एनिमेशन शीट प्रीव्यू खोलें",
+    "sheetModel": "शीट मॉडल:",
+    "sheetDialogTitle": "एनिमेशन शीट",
+    "sheetDialogDescription": "यह एनिमेशन बनाने के लिए उपयोग किया गया जनरेटेड स्टोरीबोर्ड है।",
+    "shareTwitterTitle": "Twitter पर शेयर करें",
+    "copyLinkTitle": "लिंक कॉपी करें",
+    "twitter": "Twitter",
+    "linkCopied": "लिंक कॉपी हो गया",
+    "linkCopiedDescription": "अब आप यह जनरेशन दूसरों के साथ शेयर कर सकते हैं",
+    "linkCopyFailed": "लिंक कॉपी नहीं हो सका",
+    "linkCopyFailedDescription": "कृपया पुनः प्रयास करें",
+    "animationLabelAria": "{domain} के लिए AI-जनरेटेड {mode} एनिमेशन",
+    "imageAlt": "{domain} के लिए AI-जनरेटेड {type}"
+  }
+}

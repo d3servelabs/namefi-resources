@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useTRPC } from '@/lib/trpc';
 import { AddEditRecordsDialog } from './add-edit-records-dialog';
 import { Loader2 } from 'lucide-react';
@@ -31,6 +32,7 @@ export function EditDnsRecordsWrapper({
   readOnly,
   warningMessage,
 }: EditDnsRecordsWrapperProps) {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   const {
     data: records,
@@ -71,10 +73,10 @@ export function EditDnsRecordsWrapper({
           <p className="text-destructive">
             {error instanceof Error
               ? error.message
-              : 'Failed to load DNS records'}
+              : t('dialogs.addEdit.loadRecordsFailed')}
           </p>
           <Button variant="outline" onClick={() => refetch()}>
-            Retry
+            {t('management.retry')}
           </Button>
         </div>
       </AddEditRecordsDialog>

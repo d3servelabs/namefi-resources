@@ -94,6 +94,17 @@
     "description": "Global action atom: disable a feature/setting.",
     "maxLength": 10
   },
+  "actions.copy": {
+    "description": "Global action atom: copy a value to the clipboard. Reused as an aria-label/button across components.",
+    "maxLength": 10
+  },
+  "actions.copyAddress": {
+    "description": "Global action atom: copy a wallet address to the clipboard (aria-label).",
+    "maxLength": 16
+  },
+  "actions.toggleSidebar": {
+    "description": "Global action atom: toggle the sidebar open/closed (aria-label for the sidebar rail)."
+  },
   "status.created": {
     "description": "Global order/payment status label: the order or payment has been created. Shown in status badges; keep short.",
     "maxLength": 12

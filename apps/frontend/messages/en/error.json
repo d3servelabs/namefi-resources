@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "Bad Request",
+    "description": "Something got lost in translation."
+  },
+  "status403": {
+    "title": "Access Denied",
+    "description": "This door is locked. Try your key."
+  },
+  "status404": {
+    "title": "Not Found",
+    "description": "We looked everywhere. Under the couch too."
+  },
+  "status500": {
+    "title": "Server Error",
+    "description": "Our hamsters need a coffee break."
+  },
+  "actions": {
+    "goHome": "Go to Homepage",
+    "searchDomains": "Search Domains",
+    "logIn": "Log In",
+    "signIn": "Sign In",
+    "goToHome": "Go to Home"
+  },
+  "unauthorized": {
+    "title": "Unauthorized Access",
+    "description": "You don't have permission to access this page. Please sign in or return to the home page.",
+    "contactSupport": "If you believe this is an error, please contact support."
+  },
+  "reference": "Reference: {requestId}",
+  "login": {
+    "failedTitle": "Could not start sign in",
+    "failedDescription": "Please try again."
+  }
+}

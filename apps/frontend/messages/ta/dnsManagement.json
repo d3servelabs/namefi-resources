@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "DNSSEC நிலையை சரிபார்க்க முடியவில்லை",
+    "pendingTitle": "DNSSEC அமைப்பு நடந்து கொண்டிருக்கிறது",
+    "activeTitle": "DNSSEC இயக்கப்பட்டுள்ளது",
+    "misconfiguredTitle": "DNSSEC தவறாக உள்ளமைக்கப்பட்டுள்ளது"
+  },
+  "actions": {
+    "enable": "DNSSEC இயக்கு",
+    "disable": "DNSSEC முடக்கு",
+    "cancelSetup": "அமைப்பை ரத்து செய்",
+    "keepWaiting": "காத்திரு"
+  },
+  "disableDialog": {
+    "title": "DNSSEC முடக்கவா?"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "தானியங்கி கண்டறிதல்",
+      "manual": "கைமுறை"
+    },
+    "manual": {
+      "description": "ஒரு DNSKEY அல்லது DS பதிவை ஒட்டவும் (முழு zone-file வரி அல்லது rdata மட்டும்). வடிவமைப்பை தானாகவே கண்டறிவோம்.",
+      "enterFieldsManually": "அல்லது புலங்களை கைமுறையாக உள்ளிடவும்",
+      "derive": "DS புலங்களை பெறு",
+      "deriving": "பெறுகிறோம்..."
+    },
+    "autoDetect": {
+      "description": "உங்கள் டொமைனின் பொறுப்பேற்கப்பட்ட nameserverகளை வினவி கண்டறியவும்",
+      "detect": "பொறுப்பேற்கப்பட்ட nameserverகளிலிருந்து கண்டறி",
+      "detecting": "கண்டறிகிறோம்...",
+      "kskCandidate": "KSK வேட்பாளர்",
+      "candidateOption": "key tag {keyTag} — alg {algorithm}"
+    },
+    "dsValuesTitle": "DS மதிப்புகள்",
+    "viewSummary": "சுருக்கம் காண்",
+    "fields": {
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "flags": "Flags",
+      "digestType": "Digest வகை",
+      "publicKey": "பொது விசை (base64)",
+      "digest": "Digest (hex)"
+    },
+    "placeholders": {
+      "algorithm": "Algorithm தேர்ந்தெடு",
+      "flags": "Flag தேர்ந்தெடு",
+      "digestType": "Digest வகை தேர்ந்தெடு"
+    },
+    "publicKeyMissingNotice": "ஒட்டப்பட்ட DS இல் பொது விசை இல்லை. தானியங்கி கண்டறிதலைப் பயன்படுத்தவும் அல்லது DNSKEY பதிவை ஒட்டவும், பதிவாளரிடம் சமர்ப்பிக்க இயலும்.",
+    "summary": {
+      "notSet": "அமைக்கப்படவில்லை"
+    },
+    "deferredNotice": "இதை பின்னணி workflow ஆக இயக்குவோம், சரிபார்ப்பை வாக்கெடுப்பு நடத்தி இரு பாதைகளும் தேறியதும் மட்டும் சமர்ப்பிக்கும். முடிந்ததும் அல்லது நேரம் தாண்டியதும் மின்னஞ்சல் வரும்.",
+    "validate": "சரிபார்க்கவும்",
+    "validating": "சரிபார்க்கிறோம்...",
+    "scheduleDs": "DS திட்டமிடு",
+    "submitDs": "DS சமர்ப்பி",
+    "scheduling": "திட்டமிடுகிறோம்...",
+    "submitting": "சமர்ப்பிக்கிறோம்...",
+    "validation": {
+      "pending": "அதிகாரப்பூர்வ nameserverகளிலும் பொது DNS இலும் DNSKEY பதிவுகளை வினவுகிறோம்...",
+      "laneAuthoritative": "அதிகாரப்பூர்வ nameserverகள்",
+      "lanePublicDns": "பொது DNS (Google)",
+      "statusCouldNotValidate": "சரிபார்க்க இயலவில்லை",
+      "statusMatch": "பொருந்துகிறது",
+      "statusNoMatchingDnskey": "பொருந்தும் DNSKEY இல்லை",
+      "queried": "வினவப்பட்டவை: {source}",
+      "matched": "Computed key tag {keyTag}. ஆதாரம்: {source}.",
+      "noMatch": "{source} இல் வெளியிடப்பட்ட எந்த DNSKEY உம் நீங்கள் உள்ளிட்ட digest ஐ உருவாக்கவில்லை.",
+      "tableFlags": "Flags",
+      "tableAlg": "Alg",
+      "tableComputedKeyTag": "Computed key tag",
+      "tableComputedDigest": "Computed digest"
+    },
+    "ack": {
+      "validationDidNotPass": "சரிபார்ப்பு தேறவில்லை என்று புரிகிறது; இருந்தும் இந்த DS ஐ இணைக்க விரும்புகிறேன் (எ.கா. nameserverகளை மாற்றுவதற்கு முன் staging).",
+      "sure": "உறுதியாக உள்ளேன், இந்த DS ஐ இணை.",
+      "notFullyReflected": "DNSKEY அனைத்து பகுதிகளிலும் முழுமையாகப் பரவாமல் இருக்கலாம் என்று புரிகிறது; இந்த மாற்றத்திற்குப் பிறகு சில பகுதிகளில் சிறிது downtime ஏற்படலாம். இருந்தும் இந்த DS ஐ இணைக்க விரும்புகிறேன்."
+    }
+  },
+  "prefs": {
+    "panelTitle": "டொமைன் விருப்பங்கள்",
+    "loadFailed": "ஏதோ தவறு நடந்தது! பின்னர் மீண்டும் முயற்சிக்கவும்.",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "டொமைனுக்கு ENS தானாக இயக்கவும்",
+      "unavailableTooltip": "இந்த டொமைனுக்கு AutoENS கிடைக்கவில்லை. ENS க்கு DNSSEC தேவை.",
+      "enableDnssecFirst": "முதலில் DNSSEC இயக்க வேண்டும்.",
+      "dnssecUnsupported": "இந்த டொமைன் DNSSEC ஐ ஆதரிக்கவில்லை."
+    },
+    "autoPark": {
+      "label": "Auto Park",
+      "description": "டொமைனை தானாக நிறுத்திவை"
+    },
+    "forwardTo": {
+      "label": "இங்கு திருப்பிவிடு",
+      "description": "டொமைனை வேறொரு முகவரிக்கு திருப்பிவிடவும்"
+    },
+    "notManagingNameservers": "இந்த டொமைனின் nameserverகளை Namefi நிர்வகிக்கவில்லை",
+    "propagationNotice": "DNSSEC மாற்றங்கள் உடனடியாக நடைபெறாது. உலகளவில் பரவ 24-48 மணி நேரம் ஆகலாம்.",
+    "conflictDialog": {
+      "title": "மோதும் top-level பதிவுகளை நீக்கவா?",
+      "description": "இந்த விருப்ப மாற்றத்திற்கு டொமைனில் மோதும் root பதிவுகளை நீக்க வேண்டும்.",
+      "apexCname": "எந்த top-level CNAME (`@`) பதிவும் முதலில் நீக்கப்படும்.",
+      "apexAddress": "எந்த top-level A/AAAA (`@`) பதிவுகளும் முதலில் நீக்கப்படும்.",
+      "keepRecords": "பதிவுகளை வை",
+      "removeAndContinue": "நீக்கி தொடர்",
+      "applying": "பயன்படுத்துகிறோம்..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "DNS பதிவுகள்",
+      "description": "உங்கள் டொமைனின் DNS பதிவுகளை நிர்வகிக்கவும்",
+      "addRecord": "பதிவு சேர்",
+      "recordTypes": "பதிவு வகைகள்",
+      "recordTypeOption": "{type} பதிவு"
+    },
+    "table": {
+      "searchPlaceholder": "பதிவுகளை தேடுக...",
+      "columns": "நெடுவரிசைகள்",
+      "toggleColumns": "நெடுவரிசைகளை மாற்று",
+      "filter": "வடிகட்டு",
+      "filterByType": "வகை மூலம் வடிகட்டு",
+      "clearFilters": "வடிகட்டிகளை அழி",
+      "actionsLabel": "செயல்கள்",
+      "tableActions": "அட்டவணை செயல்கள்",
+      "exportRecords": "பதிவுகளை ஏற்றுமதி செய்",
+      "importRecords": "பதிவுகளை இறக்குமதி செய்",
+      "copyAsZoneFile": "Zone File ஆக நகலெடு",
+      "editSelected": "தேர்ந்தவற்றை திருத்து ({count})",
+      "deleteSelected": "தேர்ந்தவற்றை நீக்கு ({count})",
+      "empty": "பதிவுகள் இல்லை.",
+      "rowsSelected": "{total} இல் {selected} வரிசை(கள்) தேர்ந்தெடுக்கப்பட்டன.",
+      "columnType": "வகை",
+      "columnName": "பெயர்",
+      "columnValue": "மதிப்பு",
+      "columnTtl": "TTL",
+      "columnActions": "செயல்கள்",
+      "editRecordTooltip": "பதிவை திருத்து",
+      "deleteRecordTooltip": "பதிவை நீக்கு",
+      "disableManagedRecordTooltip": "நிர்வகிக்கப்பட்ட பதிவை முடக்கு",
+      "copyRecordTooltip": "பதிவை நகலெடு",
+      "refreshRecordTooltip": "பதிவை புதுப்பி"
+    },
+    "toasts": {
+      "recordUpdated": "பதிவு புதுப்பிக்கப்பட்டது",
+      "recordUpdatedDescription": "{field} வெற்றிகரமாக புதுப்பிக்கப்பட்டது.",
+      "copiedToClipboard": "clipboard இல் நகலெடுக்கப்பட்டது",
+      "copiedToClipboardDescription": "பதிவு விவரங்கள் clipboard இல் நகலெடுக்கப்பட்டன",
+      "saved": "{count, plural, one {# பதிவு} other {# பதிவுகள்}} வெற்றிகரமாக சேமிக்கப்பட்டன",
+      "updated": "{count, plural, one {# பதிவு} other {# பதிவுகள்}} வெற்றிகரமாக புதுப்பிக்கப்பட்டன",
+      "deleted": "{count, plural, one {# பதிவு} other {# பதிவுகள்}} வெற்றிகரமாக நீக்கப்பட்டன",
+      "deleteFailed": "பதிவ(கள்) நீக்க தோல்வியானது: {error}",
+      "recordPrefix": "பதிவு {index}: {message}",
+      "undeterminedError": "தீர்மானிக்கப்படாத பிழை, ஆதரவை தொடர்புகொள்ளவும்",
+      "genericError": "ஏதோ தவறு நடந்தது. மீண்டும் முயற்சிக்கவும்.",
+      "parkingForwardingDisabled": "Parking மற்றும் forwarding முடக்கப்பட்டன",
+      "autoEnsDisabled": "AutoENS முடக்கப்பட்டது",
+      "forwardingDisabled": "Forwarding முடக்கப்பட்டது",
+      "managedUpdateFailed": "நிர்வகிக்கப்பட்ட DNS அமைப்புகளை புதுப்பிக்க தோல்வியானது"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "Parking பதிவுகளை முடக்கவா?",
+      "disableAutoEnsTitle": "AutoENS பதிவை முடக்கவா?",
+      "disableForwardingTitle": "Forwarding பதிவை முடக்கவா?",
+      "disableParkingDescription": "இந்த வரிசை டொமைன் விருப்பங்களால் நிர்வகிக்கப்படுகிறது. இதை முடக்கினால் parking நிறுத்தப்படும்.",
+      "disableAutoEnsDescription": "இந்த வரிசை டொமைன் விருப்பங்களால் நிர்வகிக்கப்படுகிறது. இதை முடக்கினால் AutoENS நிறுத்தப்படும்.",
+      "disableForwardingDescription": "இந்த வரிசை டொமைன் விருப்பங்களால் நிர்வகிக்கப்படுகிறது. இதை முடக்கினால் forwarding அழிக்கப்படும்.",
+      "parkingDisablesForwarding": "Parking பதிவுகளை முடக்கினால் forwarding உம் முடக்கப்படும்.",
+      "disabling": "முடக்குகிறோம்..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "Nameservers நிர்வாகம்",
+    "tooltip": "Nameserverகள் உங்கள் டொமைனுக்கு போக்குவரத்தை இயக்குகின்றன",
+    "resetToNamefi": "Namefi Nameserverகளுக்கு மீட்டமை",
+    "addNameserver": "Nameserver சேர்",
+    "nameserverLabel": "Nameserver {index}",
+    "nameserverPlaceholder": "எ.கா., ns1.example.com",
+    "saveChanges": "மாற்றங்களை சேமி",
+    "saving": "சேமிக்கிறோம்...",
+    "propagationNotice": "Nameserver மாற்றங்கள் உலகளவில் பரவ 24-48 மணி நேரம் ஆகலாம்.",
+    "manageDialogTitle": "Nameserverகளை நிர்வகி",
+    "workflow": {
+      "resetInProgress": "Nameserverகளை Namefi இயல்புநிலைக்கு மீட்டமைக்கும் செயல்பாடு நடக்கிறது...",
+      "changeInProgress": "Nameserverகளை புதுப்பிக்கும் செயல்பாடு நடக்கிறது...",
+      "resettingTitle": "{domain} க்கான nameserverகளை மீட்டமைக்கிறோம்",
+      "changingTitle": "{domain} க்கான nameserverகளை மாற்றுகிறோம்",
+      "viewProgress": "முன்னேற்ற விவரங்களை காண்",
+      "cancelWorkflow": "Workflow ரத்து செய்",
+      "cancelling": "ரத்து செய்கிறோம்...",
+      "cancellationRequested": "ரத்து செய்யும் கோரிக்கை அனுப்பப்பட்டது",
+      "cancelFailed": "ரத்து செய்ய தோல்வியானது: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "Nameserverகள் Namefi இயல்புநிலைக்கு மீட்டமைக்கப்பட்டன",
+      "changeSuccess": "Nameserverகள் வெற்றிகரமாக புதுப்பிக்கப்பட்டன",
+      "resetFailed": "Nameserverகளை மீட்டமைக்க தோல்வியானது",
+      "changeFailed": "Nameserverகளை புதுப்பிக்க தோல்வியானது",
+      "signatureRejected": "கையொப்ப கோரிக்கை நிராகரிக்கப்பட்டது",
+      "ownerWalletUnavailable": "டொமைன் உரிமையாளர் wallet ஐ தீர்மானிக்க இயலவில்லை"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "DNSSEC நிர்வாகம்",
+    "tooltip": "DNSSEC என்பது உங்கள் டொமைனை phishing தாக்குதல்களிலிருந்து பாதுகாக்கும் பாதுகாப்பு அம்சம்.",
+    "refreshAria": "DNSSEC நிலையை புதுப்பி",
+    "refresh": "புதுப்பி",
+    "modeToggle": {
+      "legend": "DNSSEC panel பயன்முறை",
+      "simple": "எளிய",
+      "advanced": "மேம்பட்ட",
+      "simpleHint": "பொதுவான தேவைக்கு ஒரே கிளிக்கில் இயக்கவும்.",
+      "advancedHint": "முழு கட்டுப்பாடு: DNSKEY/DS ஒட்டு, சரிபார்க்கவும், பல விசைகளை நிர்வகிக்கவும்."
+    },
+    "noDetails": "DNSSEC விவரங்கள் இல்லை",
+    "notSupported": "இந்த டொமைனுக்கு DNSSEC ஆதரிக்கப்படவில்லை",
+    "zoneSigning": "Zone பதிவுகளில் கையொப்பமிடுகிறது",
+    "zoneNotSigning": "Zone பதிவுகளில் கையொப்பமிடவில்லை",
+    "namefiAutoHandling": "இந்த டொமைனுக்கான DNSSEC ஐ Namefi தானாக கையாளுகிறது.",
+    "namefiSigningRecords": "இந்த டொமைனின் பதிவுகளில் Namefi கையொப்பமிடுகிறது",
+    "zoneSigningRecords": "இந்த டொமைனின் பதிவுகளில் Zone கையொப்பமிடுகிறது",
+    "allSecure": "அனைத்தும் பாதுகாப்பானது",
+    "namefiOnlySigner": "இந்த டொமைனுக்கு Namefi மட்டுமே delegation signer",
+    "customSigners": "தனிப்பயன் delegation signerகள்",
+    "notEnabled": "DNSSEC இயக்கப்படவில்லை",
+    "noSigners": "Delegation signerகள் இல்லை",
+    "propagationNotice": "DNSSEC மாற்றங்கள் உடனடியாக நடைபெறாது. உலகளவில் பரவ 24-48 மணி நேரம் ஆகலாம்.",
+    "requestInProgress": "DNSSEC ஐ {operation, select, disable {முடக்கும்} other {இயக்கும்}} கோரிக்கை ஏற்கனவே நடக்கிறது",
+    "operationInProgress": "ஒரு செயல்பாடு ஏற்கனவே நடக்கிறது",
+    "enableNamefiSigning": "Namefi Signing இயக்கு",
+    "disableNamefiSigning": "Namefi Signing முடக்கு",
+    "enabling": "இயக்குகிறோம்...",
+    "disabling": "முடக்குகிறோம்...",
+    "disableConfirmDescription": "Namefi Signing ஐ முடக்க உறுதியாக உள்ளீர்களா?",
+    "disableConfirmDetail": "இது உங்கள் டொமைனின் பாதுகாப்பை குறைக்கும், மேலும் அதை சார்ந்த சேவைகளை (எ.கா. AutoENS) பாதிக்கும்",
+    "confirmAndDisable": "உறுதிப்படுத்தி முடக்கு",
+    "progress": {
+      "enablingTitle": "{domain} க்கு இயக்குகிறோம்",
+      "disablingTitle": "{domain} க்கு முடக்குகிறோம்",
+      "viewProgress": "முன்னேற்ற விவரங்களை காண்",
+      "cancelWorkflow": "Workflow ரத்து செய்",
+      "cancelling": "ரத்து செய்கிறோம்...",
+      "cancellationRequested": "ரத்து செய்யும் கோரிக்கை அனுப்பப்பட்டது",
+      "cancelFailed": "ரத்து செய்ய தோல்வியானது: {error}"
+    },
+    "toasts": {
+      "enableSent": "DNSSEC இயக்கும் கோரிக்கை அனுப்பப்பட்டது",
+      "enableFailed": "DNSSEC இயக்கும் கோரிக்கை தோல்வியானது",
+      "disableSent": "DNSSEC முடக்கும் கோரிக்கை அனுப்பப்பட்டது",
+      "disableFailed": "DNSSEC முடக்கும் கோரிக்கை தோல்வியானது"
+    },
+    "signersTable": {
+      "empty": "இன்னும் delegation signerகள் இணைக்கப்படவில்லை.",
+      "keyTag": "Key tag",
+      "algorithm": "Algorithm",
+      "digestType": "Digest வகை",
+      "digest": "Digest",
+      "pending": "நிலுவையில்",
+      "removeAria": "Delegation signer நீக்கு",
+      "cancelDeferredAria": "ஒத்திவைக்கப்பட்ட DS சமர்ப்பிப்பை ரத்து செய்",
+      "removeTitle": "Delegation signer நீக்கவா?",
+      "removeDescription": "இது registrar இல் DS ஐ துண்டிக்கும். {keyTagSuffix}இது டொமைனுக்கான ஒரே DS என்றால், சில மணி நேரங்களில் DNSSEC சரிபார்ப்பு உலகளவில் முறிந்துவிடும். parent இல் மாற்று ஏற்கனவே வெளியிட்டிருக்கிறீர்கள் அல்லது DNSSEC ஐ வேண்டும்என்றே நிறுத்துகிறீர்கள் என்று உறுதிப்படுத்திக்கொள்ளுங்கள்.",
+      "removeKeyTagSuffix": "Key tag {keyTag}. ",
+      "remove": "நீக்கு",
+      "removing": "நீக்குகிறோம்...",
+      "cancelDeferredTitle": "ஒத்திவைக்கப்பட்ட DS சமர்ப்பிப்பை ரத்து செய்யவா?",
+      "cancelDeferredDescription": "இது key tag {keyTag} க்கான சரிபார்ப்பு வாக்கெடுப்பை நிறுத்துகிறது. எந்த DS உம் இணைக்கப்படாது. Enable DNSSEC மீண்டும் கிளிக் செய்வதன் மூலம் அல்லது Add Delegation Signer உரையாடல் மூலம் பின்னர் மீண்டும் முயற்சிக்கலாம்.",
+      "cancelSubmission": "சமர்ப்பிப்பை ரத்து செய்",
+      "cancelling": "ரத்து செய்கிறோம்...",
+      "removeSuccess": "Delegation signer நீக்கப்பட்டது{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": " (key tag {keyTag})",
+      "removeFailed": "Delegation signer நீக்க தோல்வியானது: {error}",
+      "noKeyId": "எந்த விசையை நீக்குவது என்று தீர்மானிக்க இயலவில்லை (id, publicKey, அல்லது keyTag இல்லை).",
+      "cancelSuccess": "ஒத்திவைக்கப்பட்ட சமர்ப்பிப்பை ரத்து செய்தோம் (key tag {keyTag})",
+      "cancelFailed": "ரத்து செய்ய தோல்வியானது: {error}",
+      "phaseAuthoritative": "அதிகாரப்பூர்வ-NS சரிபார்ப்பை காத்திருக்கிறோம். ~{remaining} இல் முடிவடையும்.",
+      "phasePublicDns": "பொது-DNS பரவலை காத்திருக்கிறோம். ~{remaining} இல் முடிவடையும்.",
+      "phaseSubmit": "சரிபார்ப்பு தேறியது; registrar இடம் DS சமர்ப்பிக்கிறோம்.",
+      "remainingNow": "இப்போது",
+      "remainingHoursMinutes": "{hours}ம {minutes}நி",
+      "remainingMinutes": "{minutes}நி"
+    },
+    "advancedPanel": {
+      "title": "தனிப்பயன் Delegation Signerகள்",
+      "description": "இந்த டொமைன் சொந்த அதிகாரப்பூர்வ nameserverகளில் இயங்கும்போது தேவை. உங்கள் DNS வழங்குநர் வெளியிடும் DNSKEY க்கு பொருந்தும் DS ஐ சமர்ப்பிக்கவும்.",
+      "addSigner": "Delegation Signer சேர்",
+      "dialogTitle": "தனிப்பயன் Delegation Signer சேர்",
+      "dialogDescription": "உங்கள் DNSKEY/DS ஒட்டவும் அல்லது nameserverகளிலிருந்து தானாக கண்டறியவும், பின்னர் சமர்ப்பிப்பதற்கு முன் சரிபார்க்கவும்."
+    }
+  },
+  "overview": {
+    "panelTitle": "டொமைன் கண்ணோட்டம்",
+    "panelSubtitle": "உங்கள் டொமைன் அமைப்புகளையும் புதுப்பித்தலையும் நிர்வகிக்கவும்",
+    "expired": {
+      "title": "டொமைன் காலாவதியானது",
+      "canRenew": "உங்கள் டொமைன் காலாவதியானது. டொமைனை புதுப்பிக்க கோரிக்கை சமர்ப்பிக்கலாம், TLD ஐ பொறுத்து (.com, .org, ...) அது நிறைவேறலாம்.",
+      "cannotRenew": "உங்கள் டொமைன் காலாவதியானது. மீட்டெடுக்க முடியுமா என்று சரிபார்க்க ஆதரவை தொடர்புகொள்ளவும் (அனைத்து TLD களுக்கும் (.com, .org, ...) இது சாத்தியமில்லாமல் போகலாம்).",
+      "cannotRenewShort": "உங்கள் டொமைன் காலாவதியானது. மீட்டெடுக்க முடியுமா என்று ஆதரவை தொடர்புகொள்ளவும் (அனைத்து TLD களுக்கும் இது சாத்தியமில்லாமல் போகலாம்)."
+    },
+    "autoRenew": {
+      "label": "Auto Renew",
+      "description": "டொமைனை தானாக புதுப்பி",
+      "expires": "காலாவதி: {date}"
+    },
+    "manualRenew": {
+      "label": "கைமுறை புதுப்பிப்பு",
+      "description": "டொமைனை கைமுறையாக புதுப்பி"
+    },
+    "renewNow": "இப்போது புதுப்பி",
+    "renewExpirationUnavailable": "டொமைன் காலாவதி தகவல் கிடைக்கவில்லை",
+    "autoRenewalCard": {
+      "title": "தானியங்கி புதுப்பிப்பு",
+      "description": "காலாவதிக்கு முன் டொமைனை தானாக புதுப்பிக்கவும்",
+      "auto": "Auto"
+    },
+    "manualRenewalCard": {
+      "title": "கைமுறை புதுப்பிப்பு",
+      "descriptionWithDate": "{expiration} - உங்கள் டொமைனை மீட்டெடுக்க இப்போது புதுப்பிக்கவும்",
+      "description": "டொமைனை கைமுறையாக புதுப்பிக்கவும்"
+    },
+    "preferencesUpdated": "விருப்பங்கள் புதுப்பிக்கப்பட்டன",
+    "preferencesUpdateFailed": "விருப்பங்களை புதுப்பிக்க தோல்வியானது",
+    "export": {
+      "label": "டொமைன் ஏற்றுமதி",
+      "description": "டொமைனை வேறொரு registrar க்கு ஏற்றுமதி செய்",
+      "descriptionCard": "உங்கள் டொமைனை வேறொரு registrar க்கு மாற்றவும்",
+      "unavailableCard": "இந்த டொமைனுக்கு ஏற்றுமதி கிடைக்கவில்லை",
+      "requestExport": "ஏற்றுமதி கோரு",
+      "exportUnavailable": "ஏற்றுமதி கிடைக்கவில்லை",
+      "unavailable": "கிடைக்கவில்லை",
+      "enableRequestPending": "ஏற்றுமதி இயக்கும் கோரிக்கை நிலுவையில்...",
+      "pending": "நிலுவையில்...",
+      "getAuthCode": "Auth Code பெறு",
+      "requestingExport": "ஏற்றுமதி கோருகிறோம்...",
+      "requesting": "கோருகிறோம்...",
+      "nftNotMinted": "NFT இன்னும் mint செய்யப்படவில்லை. Minting முடிந்ததும் ஏற்றுமதி கிடைக்கும்.",
+      "loadDetailsFailed": "டொமைன் ஏற்றுமதி விவரங்களை பெறுவதில் ஏதோ தவறு நடந்தது! பின்னர் மீண்டும் முயற்சிக்கவும்.",
+      "loadDetailsFailedShort": "ஏற்றுமதி விவரங்களை ஏற்ற தோல்வியானது. பின்னர் மீண்டும் முயற்சிக்கவும்."
+    },
+    "exportToasts": {
+      "requestSubmitted": "ஏற்றுமதி கோரிக்கை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது",
+      "requestFailed": "டொமைன் ஏற்றுமதி கோர தோல்வியானது",
+      "authCodeCopied": "Auth code clipboard இல் நகலெடுக்கப்பட்டது",
+      "authCodeCopyFailed": "Auth code நகலெடுக்க தோல்வியானது",
+      "authCodeFailed": "Auth code பெற தோல்வியானது",
+      "signatureRejected": "கையொப்ப கோரிக்கை நிராகரிக்கப்பட்டது",
+      "signatureFailed": "கையொப்பம் கோர தோல்வியானது. இது browser பிழை அல்லது wallet சிக்கல் காரணமாக இருக்கலாம்.",
+      "ownerWalletUnavailable": "டொமைன் உரிமையாளர் wallet ஐ தீர்மானிக்க இயலவில்லை"
+    },
+    "pendingTransfer": {
+      "label": "நிலுவையில் உள்ள ஏற்றுமதி",
+      "cardTitle": "நிலுவையில் உள்ள ஏற்றுமதி கோரிக்கை",
+      "requestedBy": "ஏற்றுமதி கோரியவர்: {registrar}",
+      "actionRequiredBy": "செயல் தேவை: {date} க்குள்",
+      "cardDescription": "கோரியவர்: {registrar} - {date} க்குள் செயல் தேவை",
+      "approve": "அனுமதி",
+      "reject": "நிராகரி",
+      "approveSuccess": "ஏற்றுமதி வெற்றிகரமாக அனுமதிக்கப்பட்டது",
+      "approveFailed": "ஏற்றுமதியை அனுமதிக்க தோல்வியானது",
+      "rejectSuccess": "ஏற்றுமதி வெற்றிகரமாக நிராகரிக்கப்பட்டது",
+      "rejectFailed": "ஏற்றுமதியை நிராகரிக்க தோல்வியானது"
+    },
+    "nftOwnership": {
+      "title": "Blockchain உரிமை",
+      "tooltip": "உங்கள் டொமைன் blockchain இல் NFT (Non-Fungible Token) ஆக சேமிக்கப்பட்டுள்ளது. இந்த டிஜிட்டல் சான்றிதழ் நீங்கள் இந்த டொமைனை சொந்தமாக வைத்திருக்கிறீர்கள் என்பதை cryptography மூலம் நிரூபிக்கிறது.",
+      "securedOn": "பாதுகாக்கப்பட்டது",
+      "verified": "சரிபார்க்கப்பட்டது",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "Chain {chainId}",
+      "ownerWallet": "உரிமையாளர் Wallet",
+      "ownerWalletTooltip": "இந்த டொமைன் NFT ஐ சொந்தமாக வைத்திருக்கும் wallet முகவரி இதுவே. இந்த wallet மட்டுமே டொமைனை நிர்வகிக்கவும் மாற்றவும் முடியும்.",
+      "tokenId": "Token ID",
+      "tokenIdTooltip": "blockchain இல் உங்கள் டொமைன் NFT க்கான தனித்துவமான அடையாளெண். உங்கள் டிஜிட்டல் சொத்தின் வரிசை எண் போல் நினைக்கலாம்.",
+      "verifyOnExplorer": "Block Explorer இல் சரிபார்",
+      "showNftInWallet": "Wallet இல் NFT காண்",
+      "addingToWallet": "wallet இல் சேர்க்கிறோம்...",
+      "nftAdded": "NFT உங்கள் wallet இல் சேர்க்கப்பட்டது",
+      "nftAddFailed": "NFT ஐ உங்கள் wallet இல் சேர்க்க இயலவில்லை",
+      "nftAddError": "NFT ஐ wallet இல் சேர்க்க தோல்வியானது",
+      "unknownError": "அறியப்படாத பிழை",
+      "walletAddressCopied": "Wallet முகவரி நகலெடுக்கப்பட்டது",
+      "walletAddressCopyFailed": "Wallet முகவரியை நகலெடுக்க தோல்வியானது",
+      "tokenIdCopied": "Token ID நகலெடுக்கப்பட்டது",
+      "tokenIdCopyFailed": "Token ID நகலெடுக்க தோல்வியானது"
+    },
+    "educationalBanner": {
+      "title": "உங்கள் டொமைன் blockchain இல் பாதுகாக்கப்பட்டுள்ளது",
+      "description": "பாரம்பரிய registrarகளை விட, உங்கள் டொமைன் உங்கள் wallet இல் NFT ஆக சேமிக்கப்படுகிறது. இதன் பொருள் நீங்கள் அதை உண்மையிலேயே சொந்தமாக வைத்திருக்கிறீர்கள் - உங்கள் அனுமதியின்றி எந்த நிறுவனமும் அதை எடுத்துக்கொள்ள முடியாது.",
+      "dismissAria": "Banner மூடு"
+    },
+    "moreInfoAria": "மேலும் தகவல்",
+    "learnMore": "மேலும் அறிக",
+    "web3Concepts": {
+      "title": "உங்கள் டொமைனை புரிந்துகொள்ளுங்கள்",
+      "footer": "NameFi பாரம்பரிய டொமைன்களை blockchain உரிமையுடன் இணைக்கிறது",
+      "nftTerm": "NFT",
+      "nftDescription": "உங்கள் wallet இல் சேமிக்கப்பட்ட உரிமையின் டிஜிட்டல் சான்றிதழ் - வீட்டு பட்டாவைப் போல",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "உங்கள் உரிமையை நிரந்தரமாக பதிவுசெய்யும் பாதுகாப்பான டிஜிட்டல் பதிவேடு",
+      "walletTerm": "Wallet",
+      "walletDescription": "உங்கள் தனிப்பட்ட டிஜிட்டல் பெட்டகம் - நீங்கள் மட்டுமே அணுகலாம்",
+      "icannTerm": "ICANN",
+      "icannDescription": ".com, .io, .xyz டொமைன்களை நிர்வகிக்கும் உலகளாவிய அதிகாரம்"
+    },
+    "transferLock": {
+      "title": "{date} அன்று ஏற்றுமதி கிடைக்கும்",
+      "description": "ICANN கொள்கையின்படி இறக்குமதிக்கு பிறகு 60 நாட்கள் டொமைன்கள் பூட்டப்பட்டிருக்கும்.",
+      "importedOn": " இந்த டொமைன் {date} அன்று இறக்குமதி செய்யப்பட்டது.",
+      "gotIt": "புரிந்தது"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "உள்நுழைவு தேவை",
+    "signInRequiredMessage": "இந்த டொமைனை நிர்வகிக்க உள்நுழையவும்.",
+    "loadErrorTitle": "டொமைன் நிர்வாகத்தை ஏற்ற இயலவில்லை",
+    "loadErrorFallback": "மீண்டும் முயற்சிக்கவும்.",
+    "marketplaceErrorTitle": "Marketplace நிலையை ஏற்ற இயலவில்லை",
+    "retry": "மீண்டும் முயற்சி",
+    "publicViewTitle": "கவனிக்கவும்!",
+    "publicViewMessage": "இந்த டொமைன் வேறொரு பயனரால் சொந்தமாக வைக்கப்பட்டுள்ளது. நீங்கள் பொது தகவலை மட்டும் பார்க்கிறீர்கள்",
+    "tabDomainOverview": "டொமைன் கண்ணோட்டம்",
+    "tabDnsRecords": "DNS பதிவுகள்",
+    "tabDnsManagement": "DNS நிர்வாகம்",
+    "tabMarketplace": "Marketplace",
+    "tabDnsSetting": "DNS அமைப்பு",
+    "notMigratedTitle": "டொமைன் இன்னும் இடம்பெயர்க்கப்படவில்லை",
+    "redirectToRegistrar": "Registrar க்கு திருப்பிவிடு",
+    "comingSoon": "விரைவில் வருகிறது ..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "DNS பதிவு சேர்",
+      "editTitle": "DNS பதிவை திருத்து",
+      "requiredFieldsError": "* உடன் குறிக்கப்பட்ட அனைத்து தேவையான புலங்களையும் நிரப்பவும்",
+      "addMoreRecord": "மேலும் பதிவு சேர்",
+      "addRecord": "பதிவு சேர்",
+      "saveRecord": "பதிவை சேமி",
+      "cnameConflictTitle": "CNAME மற்ற பதிவுகளுடன் மோதுகிறது",
+      "cnameConflictBody1": "CNAME பதிவுகள் மற்ற பதிவு வகைகளுடன் ஒரே பெயரை பகிர முடியாது.",
+      "cnameConflictBody2": "மோதும் பதிவுகளை முதலில் நீக்கி, பின்னர் இந்த CNAME ஐ மீண்டும் சேர்க்கவும்.",
+      "understood": "புரிந்தது",
+      "disableManagedTitle": "நிர்வகிக்கப்பட்ட பதிவுகளை முடக்கி தொடரவா?",
+      "disableManagedBody1": "இந்த CNAME இந்த டொமைனில் நிர்வகிக்கப்பட்ட பதிவுகளுடன் மட்டும் மோதுகிறது.",
+      "disableManagedBodyWithForwarding": "Parking, Forwarding மற்றும் AutoENS முடக்கி இந்த CNAME சேர்க்கவும்.",
+      "disableManagedBody": "Parking மற்றும் AutoENS முடக்கி இந்த CNAME சேர்க்கவும்.",
+      "keepManagedRecords": "நிர்வகிக்கப்பட்ட பதிவுகளை வை",
+      "disableAndContinue": "முடக்கி தொடர்",
+      "disabling": "முடக்குகிறோம்...",
+      "disableParkingTitle": "Parking முடக்கி தொடரவா?",
+      "disableParkingBody": "இந்த பதிவு நிர்வகிக்கப்பட்ட parking பதிவுகளுடன் மோதுகிறது. தொடர, parking முதலில் முடக்கப்பட வேண்டும்.",
+      "disableParkingForwardingNotice": "இங்கு parking முடக்கினால் forwarding உம் முடக்கப்படும்.",
+      "keepParkingEnabled": "Parking இயக்கத்தில் வை",
+      "loadRecordsFailed": "DNS பதிவுகளை ஏற்ற தோல்வியானது"
+    },
+    "delete": {
+      "title": "பதிவுகளை நீக்கவா?",
+      "description": "இந்த மாற்றம் உங்கள் டொமைனின் செயல்பாட்டை பாதிக்கலாம் மற்றும் நெட்வொர்க்குகளில் புதுப்பிக்க நேரம் ஆகலாம்.",
+      "summary": "{count, plural, one {# பதிவை} other {# பதிவுகளை}} நீக்கு",
+      "toggle": "மாற்று",
+      "columnName": "பெயர்",
+      "columnType": "வகை",
+      "columnValue": "மதிப்பு",
+      "columnTtl": "TTL",
+      "deleting": "நீக்குகிறோம்...",
+      "confirmSingle": "ஆம், நீக்கு",
+      "confirmMultiple": "ஆம், நீக்கு"
+    },
+    "form": {
+      "typeLabel": "வகை",
+      "typePlaceholder": "வகை தேர்ந்தெடு",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "TTL தேர்ந்தெடு",
+      "nameLabel": "பெயர்",
+      "namePlaceholder": "www அல்லது @",
+      "valueLabel": "மதிப்பு",
+      "removeRecordAria": "பதிவு {index} நீக்கு",
+      "ttlOption1Minute": "1 நிமிடம்",
+      "ttlOption5Minutes": "5 நிமிடங்கள்",
+      "ttlOption20Minutes": "20 நிமிடங்கள்",
+      "ttlOption1Hour": "1 மணி நேரம்",
+      "ttlOption1Day": "1 நாள்",
+      "ttlOption1Week": "1 வாரம்",
+      "errorRecordTypeRequired": "பதிவு வகை தேவை",
+      "errorValueRequired": "மதிப்பு தேவை",
+      "errorTtlRequired": "TTL தேவை"
+    },
+    "forwarding": {
+      "title": "URL Forwarding திருத்து",
+      "description": "{domain} திருப்பிவிட வேண்டும் என்ற URL ஐ உள்ளிடவும்.",
+      "fieldLabel": "Forward செய்யும் URL",
+      "placeholder": "https://example.com",
+      "updated": "Forwarding URL புதுப்பிக்கப்பட்டது",
+      "updateFailed": "Forwarding URL புதுப்பிக்க தோல்வியானது"
+    },
+    "batch": {
+      "setNameservers": "Nameserverகள் அமை",
+      "setUrlForwarding": "URL Forwarding அமை",
+      "setWebRecords": "Web பதிவுகள் அமை",
+      "setMxRecords": "MX பதிவுகள் அமை",
+      "setEnsRecord": "ENS பதிவு அமை",
+      "batchAction": "தொகுதி செயல்",
+      "applyingToDomains": "{count} தேர்ந்தெடுக்கப்பட்ட டொமைன்களுக்கு பயன்படுத்துகிறோம்.",
+      "forwardUrlLabel": "Forward URL",
+      "webRecordNotice": "இது தேர்ந்தெடுக்கப்பட்ட அனைத்து டொமைன்களிலும் குறிப்பிட்ட பதிவை சேர்க்கும்.",
+      "comingSoon": "{action} க்கான தொகுதி திருத்தல் விரைவில் வருகிறது.",
+      "forwardingUpdated": "{count} டொமைன்களுக்கு forwarding புதுப்பிக்கப்பட்டது",
+      "webRecordsUpdated": "{count} டொமைன்களுக்கு web பதிவுகள் புதுப்பிக்கப்பட்டன",
+      "nameserverComingSoon": "தொகுதி nameserver புதுப்பிப்பு விரைவில் வருகிறது",
+      "recordComingSoon": "தொகுதி DNS பதிவு புதுப்பிப்பு விரைவில் வருகிறது",
+      "updateFailed": "டொமைன்களை புதுப்பிக்க தோல்வியானது"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "DNS செயல்கள்",
+    "notEditableExternal": "வெளிப்புற nameserverகள் பயன்படுத்தும்போது திருத்த இயலாது",
+    "nameservers": "Nameserverகள்: {value}",
+    "nameserversNone": "இல்லை",
+    "parkedOnNamefi": "Namefi இல் நிறுத்தப்பட்டுள்ளது",
+    "webRecordsConfigured": "Web பதிவுகள் உள்ளமைக்கப்பட்டன",
+    "noWebRecords": "Web பதிவுகள் இல்லை",
+    "enableParkingForForwarding": "Forwarding பயன்படுத்த Parking இயக்கவும்",
+    "forwardsTo": "திருப்பிவிடப்படுகிறது: {url}",
+    "noForwarding": "URL Forwarding இல்லை",
+    "mxConfigured": "MX பதிவுகள் உள்ளமைக்கப்பட்டன",
+    "noMxRecords": "MX பதிவுகள் இல்லை",
+    "autoEnsEnabled": "Auto-ENS இயக்கப்பட்டுள்ளது",
+    "noEnsRecord": "ENS பதிவு இல்லை",
+    "manageMore": "மேலும் DNS பதிவுகளை நிர்வகி"
+  },
+  "cacheFlush": {
+    "title": "DNS தற்காலிக சேமிப்பு நீக்கம்",
+    "description": "குறிப்பிட்ட மண்டலம் மற்றும் பதிவு வகைக்கு உள்ளமைக்கப்பட்ட சேவையகங்கள் முழுவதும் DNS தற்காலிக சேமிப்புகளை நீக்கவும்",
+    "zoneLabel": "மண்டலம்/டொமைன்",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "பதிவு வகை",
+    "recordTypeAll": "அனைத்தும்",
+    "flushing": "தற்காலிக சேமிப்பு நீக்கப்படுகிறது...",
+    "submit": "DNS தற்காலிக சேமிப்பை நீக்கு",
+    "resultsHeading": "முடிவுகள்:",
+    "resultSuccess": "வெற்றி",
+    "resultFailed": "தோல்வி",
+    "zoneRequired": "மண்டலம் தேவை",
+    "flushCompleteTitle": "தற்காலிக சேமிப்பு நீக்கம் முடிந்தது",
+    "flushFailedTitle": "தற்காலிக சேமிப்பு நீக்கம் தோல்வியடைந்தது"
+  }
+}

@@ -22,7 +22,6 @@
     "clear": "Effacer"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "Aucune annonce correspondante dans cette partie du fil.",
     "empty": "Aucune annonce trouvée.",
     "endOfFeed": "Fin du fil",

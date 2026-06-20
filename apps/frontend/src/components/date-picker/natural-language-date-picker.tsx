@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { type ReactNode, useMemo } from 'react';
 import { parseDate } from 'chrono-node';
+import { useTranslations } from 'next-intl';
 import { CalendarIcon } from 'lucide-react';
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -45,6 +46,7 @@ export function NaturalLanguageDatePicker({
   hideLabel: boolean;
   className?: string;
 }) {
+  const t = useTranslations('shared');
   const date = useMemo(
     () => value.date ?? parseDate(value.display) ?? undefined,
     [value.date, value.display],
@@ -64,7 +66,7 @@ export function NaturalLanguageDatePicker({
         <Input
           id="date"
           value={value.display}
-          placeholder="Tomorrow or next week"
+          placeholder={t('datePicker.naturalLanguagePlaceholder')}
           className="bg-background pe-10"
           onChange={(e) => {
             const date = parseDate(e.target.value);
@@ -91,7 +93,7 @@ export function NaturalLanguageDatePicker({
             }
           >
             <CalendarIcon className="size-3.5" />
-            <span className="sr-only">Select date</span>
+            <span className="sr-only">{t('datePicker.selectDate')}</span>
           </PopoverTrigger>
           <PopoverContent className="w-auto overflow-hidden p-0" align="end">
             <Calendar

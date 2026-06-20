@@ -64,6 +64,7 @@ import {
   ShieldXIcon,
   XCircleIcon,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { isNotEmpty, isNotNil } from 'ramda';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -105,12 +106,13 @@ const Layout = ({
    */
   headerActions?: React.ReactNode;
 }) => {
+  const t = useTranslations('dnsManagement');
   return (
     <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="flex items-center gap-2">
-            DNSSEC Management
+            {t('dnssecPanel.panelTitle')}
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger
@@ -121,10 +123,7 @@ const Layout = ({
                   <Info className="h-4 w-4" />
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>
-                    DNSSEC is a security feature that helps to protect your
-                    domain from phishing attacks.
-                  </p>
+                  <p>{t('dnssecPanel.tooltip')}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -244,6 +243,7 @@ export const DnssecPanelInner = ({
    */
   customDnssecActive: boolean;
 }) => {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   useRegisterAdminFlags(DNSSEC_PANEL_FLAGS);
   const [dnssecMode, setDnssecMode] = useDnssecModePreference(domainName);
@@ -295,7 +295,7 @@ export const DnssecPanelInner = ({
   if (!data) {
     return (
       <Layout>
-        <div>No DNSSEC details found</div>
+        <div>{t('dnssecPanel.noDetails')}</div>
       </Layout>
     );
   }
@@ -303,7 +303,7 @@ export const DnssecPanelInner = ({
   if (!data.supportsDnssec) {
     return (
       <Layout>
-        <div>DNSSEC is not supported for this domain</div>
+        <div>{t('dnssecPanel.notSupported')}</div>
       </Layout>
     );
   }
@@ -314,12 +314,12 @@ export const DnssecPanelInner = ({
         {data.zoneHasActiveDnssec ? (
           <>
             <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-            <p>Zone is signing records</p>
+            <p>{t('dnssecPanel.zoneSigning')}</p>
           </>
         ) : (
           <>
             <ShieldXIcon className="w-6 h-6 text-red-500" />
-            <p>Zone is not signing records</p>
+            <p>{t('dnssecPanel.zoneNotSigning')}</p>
           </>
         )}
       </div>
@@ -346,7 +346,7 @@ export const DnssecPanelInner = ({
         />
         {isUsingNamefiSigning ? (
           <div className="flex items-center gap-2">
-            <p>Namefi is automatically handling DNSSEC for this domain.</p>
+            <p>{t('dnssecPanel.namefiAutoHandling')}</p>
           </div>
         ) : undefined}
 
@@ -359,12 +359,12 @@ export const DnssecPanelInner = ({
                 dnssecMode === 'simple' ? (
                   <>
                     <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-                    <p>All Secure</p>
+                    <p>{t('dnssecPanel.allSecure')}</p>
                   </>
                 ) : (
                   <>
                     <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-                    <p>Namefi is the only delegation signer for this domain</p>
+                    <p>{t('dnssecPanel.namefiOnlySigner')}</p>
                   </>
                 )
               ) : dnssecMode === 'simple' ? (
@@ -372,16 +372,16 @@ export const DnssecPanelInner = ({
               ) : (
                 <>
                   <ShieldCheckIcon className="w-6 h-6 text-sky-500" />
-                  <p>Custom delegation signers</p>
+                  <p>{t('dnssecPanel.customSigners')}</p>
                 </>
               )
             ) : (
               <>
                 <ShieldXIcon className="w-6 h-6 text-red-500" />
                 {dnssecMode === 'simple' ? (
-                  <p>DNSSEC not enabled</p>
+                  <p>{t('dnssecPanel.notEnabled')}</p>
                 ) : (
-                  <p>No delegation signers</p>
+                  <p>{t('dnssecPanel.noSigners')}</p>
                 )}
               </>
             )}
@@ -423,10 +423,7 @@ export const DnssecPanelInner = ({
          */}
         {customDnssecActive && dnssecMode === 'advanced' ? (
           <div className="text-sm text-zinc-500 mt-4">
-            <p>
-              Changes to DNSSEC are not immediate. It can take up to 24-48 hours
-              to propagate globally.
-            </p>
+            <p>{t('dnssecPanel.propagationNotice')}</p>
           </div>
         ) : null}
       </div>
@@ -445,6 +442,7 @@ function DnssecRefreshButton({
 }: {
   domainName: PunycodeDomainName;
 }) {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -494,7 +492,7 @@ function DnssecRefreshButton({
               className="h-7 w-7 p-0"
               disabled={isRefreshing}
               onClick={handleRefresh}
-              aria-label="Refresh DNSSEC status"
+              aria-label={t('dnssecPanel.refreshAria')}
             >
               <RefreshCwIcon
                 className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`}
@@ -502,7 +500,7 @@ function DnssecRefreshButton({
             </Button>
           }
         />
-        <TooltipContent>Refresh</TooltipContent>
+        <TooltipContent>{t('dnssecPanel.refresh')}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );
@@ -518,6 +516,7 @@ function DnssecProgressModal({
   domainName: PunycodeDomainName;
   operation: 'ENABLE_DNSSEC' | 'REMOVE_DNSSEC';
 }) {
+  const t = useTranslations('dnsManagement');
   const [open, setOpen] = useState(false);
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -550,7 +549,7 @@ function DnssecProgressModal({
   const cancelMutation = useMutation(
     trpc.domainConfig.dnssec.cancelDnssecWorkflow.mutationOptions({
       async onSuccess() {
-        toast.success('Cancellation requested');
+        toast.success(t('dnssecPanel.progress.cancellationRequested'));
         // Force refetch — workflow-listing query needs to drop the running
         // entry immediately, not on the next stale-window lapse.
         await queryClient.refetchQueries({
@@ -561,13 +560,17 @@ function DnssecProgressModal({
         });
       },
       onError(error) {
-        toast.error(`Failed to cancel: ${error.message}`);
+        toast.error(
+          t('dnssecPanel.progress.cancelFailed', { error: error.message }),
+        );
       },
     }),
   );
 
   const isEnabling = operation === 'ENABLE_DNSSEC';
-  const title = `${isEnabling ? 'Enabling' : 'Disabling'} for ${domainName}`;
+  const title = isEnabling
+    ? t('dnssecPanel.progress.enablingTitle', { domain: domainName })
+    : t('dnssecPanel.progress.disablingTitle', { domain: domainName });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -585,7 +588,7 @@ function DnssecProgressModal({
             <Info className="h-4 w-4" />
           </TooltipTrigger>
           <TooltipContent>
-            <p>View progress details</p>
+            <p>{t('dnssecPanel.progress.viewProgress')}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -616,11 +619,11 @@ function DnssecProgressModal({
               variant="destructive"
               size="sm"
               isLoading={cancelMutation.isPending}
-              loadingText="Cancelling..."
+              loadingText={t('dnssecPanel.progress.cancelling')}
               onClick={() => cancelMutation.mutate({ domainName, operation })}
             >
               <XCircleIcon className="w-4 h-4" />
-              Cancel Workflow
+              {t('dnssecPanel.progress.cancelWorkflow')}
             </LoadingButton>
           </div>
         )}
@@ -638,6 +641,8 @@ export const DnssecPanelAction = ({
   dnssecDetails: DnssecStatusDetails;
   disableAllButtons: boolean;
 }) => {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const {
@@ -682,11 +687,11 @@ export const DnssecPanelAction = ({
     trpc.domainConfig.dnssec.enableDnssec.mutationOptions({
       onError(error) {
         console.error(error);
-        toast.error('Request to Enable DNSSEC has failed');
+        toast.error(t('dnssecPanel.toasts.enableFailed'));
       },
       async onSuccess() {
         await refetchQueries();
-        toast.success('Request to Enable DNSSEC has been sent');
+        toast.success(t('dnssecPanel.toasts.enableSent'));
       },
     });
 
@@ -696,11 +701,11 @@ export const DnssecPanelAction = ({
     trpc.domainConfig.dnssec.disableDnssec.mutationOptions({
       onError(error) {
         console.error(error);
-        toast.error('Request to Disable DNSSEC has failed');
+        toast.error(t('dnssecPanel.toasts.disableFailed'));
       },
       async onSuccess() {
         await refetchQueries();
-        toast.success('Request to Disable DNSSEC has been sent');
+        toast.success(t('dnssecPanel.toasts.disableSent'));
       },
     });
 
@@ -725,8 +730,9 @@ export const DnssecPanelAction = ({
         >
           <Loader2 className="w-4 h-4 animate-spin" />
           <p>
-            A request to {operation === 'REMOVE_DNSSEC' ? 'disable' : 'enable'}{' '}
-            DNSSEC is already in progress
+            {t('dnssecPanel.requestInProgress', {
+              operation: operation === 'REMOVE_DNSSEC' ? 'disable' : 'enable',
+            })}
           </p>
           <DnssecProgressModal domainName={domainName} operation={operation} />
         </div>
@@ -734,7 +740,7 @@ export const DnssecPanelAction = ({
     }
     return (
       <div>
-        <p>An operation is already in progress</p>
+        <p>{t('dnssecPanel.operationInProgress')}</p>
       </div>
     );
   }
@@ -748,43 +754,44 @@ export const DnssecPanelAction = ({
               <LoadingButton
                 disabled={disableAllButtons}
                 isLoading={disableNamefiSigning.isPending}
-                loadingText="Disabling..."
+                loadingText={t('dnssecPanel.disabling')}
               />
             }
           >
-            <ShieldMinusIcon width={20} height={20} /> Disable Namefi Signing
+            <ShieldMinusIcon width={20} height={20} />{' '}
+            {t('dnssecPanel.disableNamefiSigning')}
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Disable Namefi Signing</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t('dnssecPanel.disableNamefiSigning')}
+              </AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to disable Namefi Signing?
+                {t('dnssecPanel.disableConfirmDescription')}
                 <br />
-                <p>
-                  This will reduce the security of your domain. and it will
-                  affect service that rely on it (e.g. AutoENS)
-                </p>
+                <p>{t('dnssecPanel.disableConfirmDetail')}</p>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{tCommon('actions.cancel')}</AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => disableNamefiSigning.mutate({ domainName })}
                 variant="destructive"
               >
-                Confirm and Disable
+                {t('dnssecPanel.confirmAndDisable')}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       ) : (
         <AsyncButton
-          loadingText="Enabling..."
+          loadingText={t('dnssecPanel.enabling')}
           onClick={() => enableNamefiSigning.mutateAsync({ domainName })}
           variant={'default'}
           disabled={disableAllButtons}
         >
-          <ShieldPlusIcon width={20} height={20} /> Enable Namefi Signing
+          <ShieldPlusIcon width={20} height={20} />{' '}
+          {t('dnssecPanel.enableNamefiSigning')}
         </AsyncButton>
       )}
     </div>
@@ -792,21 +799,22 @@ export const DnssecPanelAction = ({
 };
 
 export const AutoManagedDnssecPanel = () => {
+  const t = useTranslations('dnsManagement');
   return (
     <Layout>
       <div className="flex flex-col items-start gap-4">
         <div className="flex items-center gap-2">
-          <p>Namefi is signing records for this domain</p>
+          <p>{t('dnssecPanel.namefiSigningRecords')}</p>
         </div>
 
         <div className="flex flex-col items-start gap-2">
           <div className="flex items-center gap-2">
             <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-            <p>Namefi is the only delegation signer for this domain</p>
+            <p>{t('dnssecPanel.namefiOnlySigner')}</p>
           </div>
           <div className="flex items-center gap-2">
             <ShieldCheckIcon className="w-6 h-6 text-green-500" />
-            <p>Zone is signing records for this domain</p>
+            <p>{t('dnssecPanel.zoneSigningRecords')}</p>
           </div>
         </div>
       </div>

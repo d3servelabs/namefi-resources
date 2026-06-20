@@ -21,12 +21,14 @@ import { VoteOrShareChoiceDialog } from '../dialogs/vote-or-share-choice-dialog'
 import { TwitterShareDialog } from './twitter-share-dialog';
 import { useHuntVote } from '@/hooks/use-hunt-vote';
 import { PageShell } from '@/components/page-shell';
+import { useTranslations } from 'next-intl';
 
 const DOMAINS_LIST_PER_PAGE_LIMIT = 20;
 
 type TimeRange = AppRouterInput['hunt']['getTrendingDomains']['timeRange'];
 
 export const HuntHome = () => {
+  const t = useTranslations('hunt');
   const [page, setPage] = useState(1);
   const [timeRange, setTimeRange] = useState<TimeRange>('ANYTIME');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
@@ -64,7 +66,7 @@ export const HuntHome = () => {
         <PageShell padding="compact">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
             <h2 className="text-2xl font-bold flex items-center gap-2">
-              Domain Hunt
+              {t('home.title')}
             </h2>
             <div className="flex items-center gap-4">
               {isAuthenticated ? (
@@ -75,7 +77,7 @@ export const HuntHome = () => {
                       className="flex items-center gap-2 cursor-pointer"
                     >
                       <PlusIcon className="h-4 w-4" />
-                      Submit Domain
+                      {t('home.submitDomain')}
                     </Button>
                   </SubmitDomainDialog>
                   <Link href="/hunt/mine">
@@ -90,15 +92,15 @@ export const HuntHome = () => {
               ) : (
                 <div className="flex items-center gap-4">
                   <AuthGuard
-                    title="Sign in to submit domains"
-                    description="You need to sign in to submit domains to the hunt. Join the community and share your favorite domains!"
+                    title={t('home.signInToSubmitTitle')}
+                    description={t('home.signInToSubmitDescription')}
                   >
                     <Button
                       variant="outline"
                       className="flex items-center gap-2 cursor-pointer"
                     >
                       <PlusIcon className="h-4 w-4" />
-                      Submit Domain
+                      {t('home.submitDomain')}
                     </Button>
                   </AuthGuard>
                 </div>
@@ -109,20 +111,20 @@ export const HuntHome = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-bold">Trending Domains</h3>
+                <h3 className="text-lg font-bold">{t('home.trendingTitle')}</h3>
                 <Tabs value={timeRange} onValueChange={handleTimeRangeChange}>
                   <TabsList>
                     <TabsTrigger value="LAST_7_DAYS" className="cursor-pointer">
-                      Last 7 Days
+                      {t('timeRange.last7Days')}
                     </TabsTrigger>
                     <TabsTrigger
                       value="LAST_30_DAYS"
                       className="cursor-pointer"
                     >
-                      Last 30 Days
+                      {t('timeRange.last30Days')}
                     </TabsTrigger>
                     <TabsTrigger value="ANYTIME" className="cursor-pointer">
-                      Anytime
+                      {t('timeRange.anytime')}
                     </TabsTrigger>
                   </TabsList>
                 </Tabs>

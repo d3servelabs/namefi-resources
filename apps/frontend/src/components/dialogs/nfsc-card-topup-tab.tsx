@@ -21,6 +21,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -48,6 +49,7 @@ const HIDDEN_NFSC_PROGRESS_STEP_IDS = new Set<string>([
 type Phase = 'enter-amount' | 'enter-card' | 'processing';
 
 export function NfscCardTopUpTab(props: Props) {
+  const t = useTranslations('nfsc');
   const { recipientWalletAddress, chainId, onClose } = props;
   const trpc = useTRPC();
 
@@ -74,7 +76,7 @@ export function NfscCardTopUpTab(props: Props) {
       },
       onError: () => {
         setCustomerSessionClientSecret(undefined);
-        setErrorMessage('Could not initialize payment. Please try again.');
+        setErrorMessage(t('topup.initPaymentError'));
       },
     }),
   );
@@ -86,7 +88,7 @@ export function NfscCardTopUpTab(props: Props) {
         setPhase('processing');
       },
       onError: (error) => {
-        setErrorMessage(error.message || 'Failed to start the top-up');
+        setErrorMessage(error.message || t('topup.startTopUpError'));
       },
     }),
   );
@@ -115,17 +117,18 @@ export function NfscCardTopUpTab(props: Props) {
     }
     setHasNotified(true);
     if (state.status === 'SUCCEEDED') {
-      toast.success('NFSC top-up complete', {
-        description: `Added ${(amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS)} NFSC to your wallet`,
+      toast.success(t('topup.completeToastTitle'), {
+        description: t('topup.completeToastDescription', {
+          amount: (amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS),
+        }),
       });
       onClose();
     } else {
-      toast.error('NFSC top-up did not complete', {
-        description:
-          state.error ?? 'Check your orders for details, or contact support.',
+      toast.error(t('topup.incompleteToastTitle'), {
+        description: state.error ?? t('topup.incompleteToastFallback'),
       });
     }
-  }, [phase, hasCompleted, state, hasNotified, amountInUsdCents, onClose]);
+  }, [phase, hasCompleted, state, hasNotified, amountInUsdCents, onClose, t]);
 
   const handleAmountChange = useCallback((value: string) => {
     // Only allow valid decimal numbers.
@@ -137,26 +140,26 @@ export function NfscCardTopUpTab(props: Props) {
 
   const handleContinue = useCallback(() => {
     if (!isAmountValid) {
-      setErrorMessage('Enter an amount of at least $1.00');
+      setErrorMessage(t('topup.enterMinAmountError'));
       return;
     }
     if (!chainId) {
-      setErrorMessage('Select a network first');
+      setErrorMessage(t('topup.selectNetworkError'));
       return;
     }
     setErrorMessage('');
     createCustomerSession();
     setPhase('enter-card');
-  }, [isAmountValid, chainId, createCustomerSession]);
+  }, [isAmountValid, chainId, createCustomerSession, t]);
 
   const handleConfirmationToken = useCallback(
     (confirmationToken: ConfirmationToken) => {
       if (!chainId) {
-        setErrorMessage('Select a network first');
+        setErrorMessage(t('topup.selectNetworkError'));
         return;
       }
       if (!recipientWalletAddress) {
-        setErrorMessage('No recipient wallet available');
+        setErrorMessage(t('topup.noRecipientWalletError'));
         return;
       }
       setErrorMessage('');
@@ -178,7 +181,7 @@ export function NfscCardTopUpTab(props: Props) {
         ],
       });
     },
-    [amountInUsdCents, buyNfsc, chainId, recipientWalletAddress],
+    [amountInUsdCents, buyNfsc, chainId, recipientWalletAddress, t],
   );
 
   if (!recipientWalletAddress) {
@@ -186,9 +189,7 @@ export function NfscCardTopUpTab(props: Props) {
       <div className="px-6 pb-6 pt-2">
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            Connect or select a wallet to top up its NFSC balance.
-          </AlertDescription>
+          <AlertDescription>{t('topup.connectWalletPrompt')}</AlertDescription>
         </Alert>
       </div>
     );
@@ -199,7 +200,7 @@ export function NfscCardTopUpTab(props: Props) {
       {phase === 'enter-amount' && (
         <div className="mx-6 mb-1">
           <div className="bg-zinc-900 rounded-lg p-4">
-            <p className="text-gray-400 mb-2">You pay with card</p>
+            <p className="text-gray-400 mb-2">{t('topup.youPayWithCard')}</p>
             <div className="flex justify-between items-center">
               <Input
                 type="text"
@@ -222,7 +223,7 @@ export function NfscCardTopUpTab(props: Props) {
           </div>
 
           <div className="bg-zinc-900 rounded-lg p-4">
-            <p className="text-gray-400 mb-2">You receive</p>
+            <p className="text-gray-400 mb-2">{t('topup.youReceive')}</p>
             <div className="flex justify-between items-center">
               <span className="text-secondary-foreground text-xl">
                 {amountInUsdCents > 0
@@ -234,7 +235,9 @@ export function NfscCardTopUpTab(props: Props) {
                 <span className="font-medium">NFSC</span>
               </div>
             </div>
-            <p className="text-gray-400 text-sm mt-2">Rate: 1 USD = 1 NFSC</p>
+            <p className="text-gray-400 text-sm mt-2">
+              {t('topup.rateUsdToNfsc')}
+            </p>
           </div>
         </div>
       )}
@@ -250,19 +253,21 @@ export function NfscCardTopUpTab(props: Props) {
             className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-200 self-start"
           >
             <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
-            Change amount
+            {t('topup.changeAmount')}
           </button>
           <div className="bg-zinc-900 rounded-lg p-4 flex justify-between items-center">
-            <span className="text-gray-400">You pay</span>
+            <span className="text-gray-400">{t('topup.youPay')}</span>
             <span className="font-medium">
-              ${(amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS)} for{' '}
-              {(amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS)} NFSC
+              {t('topup.youPaySummary', {
+                usdAmount: (amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS),
+                nfscAmount: (amountInUsdCents / 100).toFixed(DISPLAY_DECIMALS),
+              })}
             </span>
           </div>
           {buyNfsc.isPending ? (
             <div className="flex items-center justify-center gap-2 py-6 text-gray-400">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Starting your top-up...
+              {t('topup.startingTopUp')}
             </div>
           ) : (
             <StripeProvider
@@ -283,7 +288,7 @@ export function NfscCardTopUpTab(props: Props) {
           {visibleSteps.length === 0 ? (
             <div className="flex items-center justify-center gap-2 py-6 text-gray-400">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Processing your top-up...
+              {t('topup.processingTopUp')}
             </div>
           ) : (
             <ul className="flex flex-col gap-2 py-2">
@@ -337,7 +342,9 @@ export function NfscCardTopUpTab(props: Props) {
             onClick={handleContinue}
             disabled={!isAmountValid || !chainId}
           >
-            {isAmountValid ? 'Continue to payment' : 'Enter an amount'}
+            {isAmountValid
+              ? t('topup.continueToPayment')
+              : t('topup.enterAmount')}
           </Button>
         </div>
       )}

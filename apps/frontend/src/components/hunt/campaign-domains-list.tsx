@@ -9,6 +9,7 @@ import { useMemo } from 'react';
 import { DomainsList } from './domains-list';
 import { PaginationControls } from './pagination-control';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import type { DomainsListProps } from './domains-list';
 
 const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 10;
@@ -33,6 +34,7 @@ export const CampaignDomainsList = ({
   unvote,
   isVotePending,
 }: CampaignDomainsListProps) => {
+  const t = useTranslations('hunt');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
   const offset = (page - 1) * limit;
@@ -77,10 +79,10 @@ export const CampaignDomainsList = ({
                   )}
                 >
                   {data.campaign.status === 'ACTIVE'
-                    ? 'ongoing!'
+                    ? t('campaign.status.ongoing')
                     : data.campaign.status === 'ENDED'
-                      ? 'ended'
-                      : 'not started yet'}
+                      ? t('campaign.status.ended')
+                      : t('campaign.status.notStarted')}
                 </Badge>
               )}
             </h3>

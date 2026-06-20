@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "Stay Updated",
+  "defaultDescription": "Subscribe to our newsletter for the latest updates and announcements.",
+  "closeAriaLabel": "Close newsletter form",
+  "invalidEmail": "Please enter a valid email address",
+  "successTitle": "Thanks for subscribing!",
+  "successDescription": "Please check your email to confirm your subscription.",
+  "subscribeAnother": "Subscribe with another email",
+  "emailPlaceholder": "Enter your email",
+  "subscribing": "Subscribing...",
+  "subscribe": "Subscribe",
+  "subscribeToNewsletter": "Subscribe to Newsletter",
+  "nameLabel": "Name (optional)",
+  "namePlaceholder": "Your name",
+  "emailLabel": "Email",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "Subscribed!",
+    "alreadySubscribedTitle": "Already Subscribed",
+    "alreadySubscribedDescription": "You're already on our mailing list!",
+    "failedTitle": "Subscription Failed",
+    "failedFallback": "Please try again later."
+  }
+}

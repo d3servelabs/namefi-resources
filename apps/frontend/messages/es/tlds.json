@@ -1,0 +1,23 @@
+{
+  "title": "Precios de TLD",
+  "description": "Consulta los precios base en USD para TLDs no premium compatibles.",
+  "loadError": "No se pueden cargar los precios de TLD en este momento. Por favor, inténtalo de nuevo en breve.",
+  "loadingMessage": "Cargando precios de TLD...",
+  "emptyMessage": "Ningún TLD coincide con tus filtros",
+  "nonPremiumNote": "** Estos precios se aplican únicamente a dominios no premium",
+  "columns": {
+    "tld": "TLD",
+    "registration": "Registro",
+    "renewal": "Renovación",
+    "transfer": "Transferencia",
+    "registrar": "Registrador"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "Registrador"
+  },
+  "variablePrice": "Precio variable",
+  "variablePriceTooltip": "El precio es variable y depende del nombre de dominio",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / año"
+}

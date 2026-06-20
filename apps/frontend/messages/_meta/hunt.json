@@ -1,0 +1,395 @@
+{
+  "home.title": {
+    "description": "Main heading of the Domain Hunt landing page.",
+    "maxLength": 24
+  },
+  "home.submitDomain": {
+    "description": "Button that opens the dialog to submit a new domain to the hunt.",
+    "maxLength": 18
+  },
+  "home.trendingTitle": {
+    "description": "Section heading above the list of currently trending domains.",
+    "maxLength": 24
+  },
+  "home.signInToSubmitTitle": {
+    "description": "Title of the sign-in gate shown to logged-out users who try to submit a domain."
+  },
+  "home.signInToSubmitDescription": {
+    "description": "Body text of the sign-in gate encouraging logged-out users to sign in and submit domains."
+  },
+  "timeRange.last7Days": {
+    "description": "Tab/filter label limiting trending domains to the last 7 days.",
+    "maxLength": 16
+  },
+  "timeRange.last30Days": {
+    "description": "Tab/filter label limiting trending domains to the last 30 days.",
+    "maxLength": 16
+  },
+  "timeRange.anytime": {
+    "description": "Tab/filter label showing trending domains across all time.",
+    "maxLength": 12
+  },
+  "tabs.allHunt": {
+    "description": "Header tab label for the main (non-campaign) hunt view showing all domains.",
+    "maxLength": 14
+  },
+  "mine.title": {
+    "description": "Heading of the user's personal activity page (submitted and upvoted domains).",
+    "maxLength": 20
+  },
+  "mine.upvotedTab": {
+    "description": "Tab label for the list of domains the user has upvoted.",
+    "maxLength": 20
+  },
+  "mine.submittedTab": {
+    "description": "Tab label for the list of domains the user has submitted.",
+    "maxLength": 20
+  },
+  "mine.signInTitle": {
+    "description": "Title of the auth gate shown when a logged-out user opens their activity page."
+  },
+  "mine.signInDescription": {
+    "description": "Body text of the auth gate prompting the user to sign in to see their activity."
+  },
+  "list.loadError": {
+    "description": "Error message shown when the trending/campaign domains list fails to load."
+  },
+  "list.empty": {
+    "description": "Empty-state message shown at the end of a domains list when there are no more domains."
+  },
+  "submitDialog.title": {
+    "description": "Title of the dialog for submitting a new domain to the hunt."
+  },
+  "submitDialog.domainNameLabel": {
+    "description": "Field label for the domain name input in the submit dialog.",
+    "maxLength": 18
+  },
+  "submitDialog.submitting": {
+    "description": "Submit button text while the domain submission is in progress.",
+    "maxLength": 16
+  },
+  "submitDialog.validation.singleLevel": {
+    "description": "Validation error: the entered value must be at least a single-level domain (e.g. example.com)."
+  },
+  "submitDialog.validation.invalidDomain": {
+    "description": "Validation error: the entered value is not a valid domain name."
+  },
+  "submitDialog.validation.mustEndWith": {
+    "description": "Validation error when a domain extension is required. {extension} is the required TLD without the leading dot, e.g. 'cv'."
+  },
+  "submitDialog.validation.invalidExtension": {
+    "description": "Validation error: the domain extension (TLD) is invalid."
+  },
+  "submitDialog.validation.required": {
+    "description": "Validation error shown when the domain name field is empty on submit."
+  },
+  "submitDialog.toast.submitting": {
+    "description": "Loading toast shown while a domain submission request is pending."
+  },
+  "submitDialog.toast.alreadyExists": {
+    "description": "Toast shown when the submitted domain already exists in the hunt."
+  },
+  "submitDialog.toast.success": {
+    "description": "Success toast shown after a domain is submitted and auto-upvoted."
+  },
+  "submitDialog.toast.error": {
+    "description": "Fallback error toast shown when submitting a domain fails."
+  },
+  "vote.ariaLabel": {
+    "description": "Accessible label for the upvote button on a domain item.",
+    "maxLength": 12
+  },
+  "vote.voting": {
+    "description": "Loading toast shown while an upvote is being recorded.",
+    "maxLength": 14
+  },
+  "vote.voted": {
+    "description": "Vote button state indicating the user has already upvoted this domain.",
+    "maxLength": 10
+  },
+  "vote.vote": {
+    "description": "Vote button label prompting the user to upvote a domain.",
+    "maxLength": 8
+  },
+  "vote.processing": {
+    "description": "Loading toast shown while a vote toggle is being processed on the domain detail page."
+  },
+  "vote.removing": {
+    "description": "Button text shown while a vote is being removed.",
+    "maxLength": 14
+  },
+  "vote.unvote": {
+    "description": "Button label to remove the user's existing upvote.",
+    "maxLength": 10
+  },
+  "vote.removeSuccess": {
+    "description": "Success toast shown after the user's vote is removed."
+  },
+  "vote.removeError": {
+    "description": "Error toast shown when removing a vote fails."
+  },
+  "vote.confirmRemove": {
+    "description": "Confirmation prompt before removing a vote. {domainName} is the domain being unvoted."
+  },
+  "detail.back": {
+    "description": "Back button label on the domain detail page.",
+    "maxLength": 10
+  },
+  "detail.quickActions": {
+    "description": "Card title for the quick actions section on the domain detail page.",
+    "maxLength": 18
+  },
+  "detail.visitDomain": {
+    "description": "Button that opens the domain's website in a new tab.",
+    "maxLength": 16
+  },
+  "detail.deleteSuccess": {
+    "description": "Success toast shown after a domain is deleted from the hunt."
+  },
+  "detail.deleteError": {
+    "description": "Fallback error toast shown when deleting a domain fails."
+  },
+  "detail.deleting": {
+    "description": "Loading toast shown while a domain is being deleted."
+  },
+  "awards.title": {
+    "description": "Card title for the awards section on the domain detail page.",
+    "maxLength": 12
+  },
+  "awards.loadError": {
+    "description": "Error message shown when a domain's awards fail to load."
+  },
+  "awards.empty": {
+    "description": "Empty-state message shown when a domain has not won any awards yet."
+  },
+  "awards.medalLabel": {
+    "description": "Accessible SVG title/label for the medal award icon, announced by screen readers.",
+    "maxLength": 12
+  },
+  "submitted.loadError": {
+    "description": "Error message shown when the user's submitted domains fail to load."
+  },
+  "submitted.empty": {
+    "description": "Empty-state message shown when the user has not submitted any domains."
+  },
+  "submitted.youUpvoted": {
+    "description": "Inline badge on a submitted-domain row indicating the user has also upvoted it. Leading checkmark is part of the string.",
+    "maxLength": 24
+  },
+  "submitted.submittedOn": {
+    "description": "Label showing when the user submitted a domain. {date} is the localized submission date."
+  },
+  "upvoted.loadError": {
+    "description": "Error message shown when the user's upvoted domains fail to load."
+  },
+  "upvoted.empty": {
+    "description": "Empty-state message shown when the user has not upvoted any domains."
+  },
+  "upvoted.upvotedOn": {
+    "description": "Label showing when the user upvoted a domain. {date} is the localized upvote date."
+  },
+  "campaign.status.ongoing": {
+    "description": "Status badge text for a campaign that is currently active. Exclamation is part of the string.",
+    "maxLength": 14
+  },
+  "campaign.status.ended": {
+    "description": "Status badge text for a campaign that has ended.",
+    "maxLength": 12
+  },
+  "campaign.status.notStarted": {
+    "description": "Status badge text for a campaign that has not started yet.",
+    "maxLength": 18
+  },
+  "campaign.loadErrorTitle": {
+    "description": "Title of the error state shown when campaign domains fail to load."
+  },
+  "campaign.loadErrorDescription": {
+    "description": "Body text of the error state shown when campaign domains fail to load."
+  },
+  "campaign.emptyTitle": {
+    "description": "Title of the empty state shown when a campaign has no domains."
+  },
+  "campaign.emptyDescription": {
+    "description": "Body text of the empty state shown when a campaign has no domains."
+  },
+  "campaign.nominatePrompt": {
+    "description": "Prompt text inviting users to nominate a missing favourite domain, shown before the nominate action link."
+  },
+  "campaign.nominateAction": {
+    "description": "Inline link/button text that opens the submit dialog to nominate a domain.",
+    "maxLength": 16
+  },
+  "campaign.congratulations": {
+    "description": "Celebratory heading shown on the campaign hero once a winner has been awarded.",
+    "maxLength": 20
+  },
+  "campaign.winnerCampaignIcon": {
+    "description": "Alt text for the campaign logo/icon image in the campaign hero."
+  },
+  "campaign.isTheWinner": {
+    "description": "Trailing text after the winning domain name on the awarded campaign hero, forming e.g. 'example.cv is the winner'."
+  },
+  "campaign.votingClosedThanks": {
+    "description": "Message shown on the campaign hero after voting has closed, thanking voters and noting winners are emailed."
+  },
+  "howItWorks.voteTitle": {
+    "description": "Title of the 'Vote' step in the campaign how-it-works section.",
+    "maxLength": 12
+  },
+  "howItWorks.voteDescription": {
+    "description": "Description of the 'Vote' step: pick your favorite domain."
+  },
+  "howItWorks.winTitle": {
+    "description": "Title of the 'Win' step in the campaign how-it-works section.",
+    "maxLength": 12
+  },
+  "howItWorks.winDescription": {
+    "description": "Description of the 'Win' step: the winning domain starts issuing subdomains."
+  },
+  "howItWorks.celebrateTitle": {
+    "description": "Title of the 'Celebrate' step in the campaign how-it-works section.",
+    "maxLength": 14
+  },
+  "howItWorks.celebrateDescription": {
+    "description": "Description of the 'Celebrate' step: claim your free subdomain."
+  },
+  "whyVote.title": {
+    "description": "Section heading for the 'Why Vote?' benefits area of a campaign.",
+    "maxLength": 16
+  },
+  "whyVote.priorityClaimTitle": {
+    "description": "Benefit title: priority claim on new subdomains.",
+    "maxLength": 20
+  },
+  "whyVote.priorityClaimDescription": {
+    "description": "Benefit description: first dibs on new subdomains while supplies last."
+  },
+  "whyVote.weeklyNfscTitle": {
+    "description": "Benefit title for the weekly $NFSC reward. Keep '$NFSC' (token symbol) untranslated.",
+    "maxLength": 20
+  },
+  "whyVote.weeklyNfscDescription": {
+    "description": "Benefit description: weekly raffle to earn $NFSC for upvoters. Keep '$NFSC' untranslated."
+  },
+  "whyVote.launchTitle": {
+    "description": "Benefit title about helping launch a [name].cv domain. Keep the '[name].cv' placeholder literal."
+  },
+  "whyVote.launchDescription": {
+    "description": "Benefit description: the [name].cv with the most votes launches subdomain issuance. Keep '[name].cv' literal."
+  },
+  "community.joinTitle": {
+    "description": "Heading of the 'Join the Community' block in the campaign community section.",
+    "maxLength": 24
+  },
+  "community.joinDescription": {
+    "description": "Body text inviting users to connect with fellow hunters and vote together."
+  },
+  "community.shareTitle": {
+    "description": "Heading of the 'Share the hunt' block in the campaign community section.",
+    "maxLength": 20
+  },
+  "community.shareDescription": {
+    "description": "Body text inviting users to invite friends and earn raffle entries per vote."
+  },
+  "community.inviteFriends": {
+    "description": "Default label of the button that copies the campaign share link.",
+    "maxLength": 18
+  },
+  "community.invited": {
+    "description": "Transient label shown on the invite button right after the link is copied.",
+    "maxLength": 12
+  },
+  "community.copySuccess": {
+    "description": "Success toast shown after the campaign link is copied to the clipboard."
+  },
+  "community.copyError": {
+    "description": "Error toast shown when copying the campaign link fails."
+  },
+  "countdown.votingEndsIn": {
+    "description": "Label above the countdown timer indicating time remaining until voting ends.",
+    "maxLength": 20
+  },
+  "countdown.days": {
+    "description": "Unit label under the days digits of the countdown timer.",
+    "maxLength": 8
+  },
+  "countdown.hours": {
+    "description": "Unit label under the hours digits of the countdown timer.",
+    "maxLength": 8
+  },
+  "countdown.minutes": {
+    "description": "Unit label under the minutes digits of the countdown timer.",
+    "maxLength": 10
+  },
+  "countdown.seconds": {
+    "description": "Unit label under the seconds digits of the countdown timer.",
+    "maxLength": 10
+  },
+  "share.titleDomain": {
+    "description": "Twitter/X share dialog title when sharing a domain. {domainName} is the domain being shared."
+  },
+  "share.titleSubject": {
+    "description": "Twitter/X share dialog title when sharing a non-domain subject. {subject} is the item type (e.g. logo, poster); {domainName} is the related domain."
+  },
+  "share.descriptionDomainTracked": {
+    "description": "Dialog description when sharing a domain and shares are tracked for rewards."
+  },
+  "share.descriptionDomain": {
+    "description": "Dialog description when sharing a domain without reward tracking."
+  },
+  "share.descriptionSubject": {
+    "description": "Dialog description when sharing a non-domain subject. {subject} is the item type being shared."
+  },
+  "share.shareUrlLabel": {
+    "description": "Field label for the read-only share URL input.",
+    "maxLength": 16
+  },
+  "share.quickShareLabel": {
+    "description": "Field label above the quick-share (post to Twitter/X) button.",
+    "maxLength": 16
+  },
+  "share.shareOnTwitter": {
+    "description": "Button that opens Twitter/X with a pre-filled post.",
+    "maxLength": 24
+  },
+  "share.prefilledHint": {
+    "description": "Hint under the share button. {target} is the domain or item being shared (e.g. 'example.com')."
+  },
+  "share.alreadyShared": {
+    "description": "Badge shown when the user has already recorded a share for this domain.",
+    "maxLength": 18
+  },
+  "share.postUrlLabel": {
+    "description": "Field label for the input where the user pastes their Twitter/X post URL.",
+    "maxLength": 24
+  },
+  "share.postUrlHint": {
+    "description": "Hint under the post URL field explaining that pasting the tweet URL earns rewards."
+  },
+  "share.recording": {
+    "description": "Submit button text while the share is being recorded.",
+    "maxLength": 16
+  },
+  "share.recordShare": {
+    "description": "Submit button label to record the user's share for rewards.",
+    "maxLength": 18
+  },
+  "share.invalidPostUrl": {
+    "description": "Validation error shown when the pasted value is not a valid Twitter/X post URL."
+  },
+  "share.recordError": {
+    "description": "Fallback error message shown when recording the share fails."
+  },
+  "share.checkPostUrl": {
+    "description": "Generic error asking the user to check the post URL and try again."
+  },
+  "share.copySuccess": {
+    "description": "Toast shown after the share URL is copied to the clipboard."
+  },
+  "share.copyError": {
+    "description": "Toast shown when copying the share URL fails."
+  },
+  "share.recordingShare": {
+    "description": "Loading toast shown while the user's share is being recorded."
+  }
+}

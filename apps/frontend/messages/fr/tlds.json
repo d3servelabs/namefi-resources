@@ -1,0 +1,23 @@
+{
+  "title": "Tarification des TLD",
+  "description": "Consultez la tarification de base en USD pour les TLD non premium pris en charge.",
+  "loadError": "Impossible de charger la tarification des TLD pour l'instant. Veuillez réessayer dans un moment.",
+  "loadingMessage": "Chargement de la tarification des TLD…",
+  "emptyMessage": "Aucun TLD ne correspond à vos filtres",
+  "nonPremiumNote": "** Ces prix s'appliquent uniquement aux domaines non premium",
+  "columns": {
+    "tld": "TLD",
+    "registration": "Enregistrement",
+    "renewal": "Renouvellement",
+    "transfer": "Transfert",
+    "registrar": "Bureau d'enregistrement"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "Bureau d'enregistrement"
+  },
+  "variablePrice": "Prix variable",
+  "variablePriceTooltip": "Le prix est variable et dépend du nom de domaine",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / an"
+}

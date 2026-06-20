@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "リクエストエラー",
+    "description": "送信内容に問題があったようです。"
+  },
+  "status403": {
+    "title": "アクセス拒否",
+    "description": "このドアには鍵がかかっています。正しい鍵をお試しください。"
+  },
+  "status404": {
+    "title": "見つかりません",
+    "description": "くまなく探しましたが、どこにも見当たりませんでした。"
+  },
+  "status500": {
+    "title": "サーバーエラー",
+    "description": "サーバーが少し疲れているようです。少々お待ちください。"
+  },
+  "actions": {
+    "goHome": "ホームへ戻る",
+    "searchDomains": "ドメインを検索",
+    "logIn": "ログイン",
+    "signIn": "サインイン",
+    "goToHome": "ホームへ戻る"
+  },
+  "reference": "参照ID: {requestId}",
+  "login": {
+    "failedTitle": "ログインを開始できませんでした",
+    "failedDescription": "もう一度お試しください。"
+  },
+  "unauthorized": {
+    "title": "アクセス権限がありません",
+    "description": "このページにアクセスする権限がありません。サインインするか、ホームページに戻ってください。",
+    "contactSupport": "誤りと思われる場合は、サポートまでお問い合わせください。"
+  }
+}

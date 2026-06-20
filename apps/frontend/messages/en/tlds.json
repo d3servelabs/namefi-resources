@@ -1,0 +1,23 @@
+{
+  "title": "TLD Pricing",
+  "description": "Review the base USD pricing for supported non-premium TLDs.",
+  "loadError": "Unable to load TLD pricing right now. Please try again shortly.",
+  "loadingMessage": "Loading TLD pricing...",
+  "emptyMessage": "No TLDs match your filters",
+  "nonPremiumNote": "** These prices apply only to non premium domains",
+  "columns": {
+    "tld": "TLD",
+    "registration": "Registration",
+    "renewal": "Renewal",
+    "transfer": "Transfer",
+    "registrar": "Registrar"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "Registrar"
+  },
+  "variablePrice": "Variable Price",
+  "variablePriceTooltip": "The price is variable and depends on the domain name",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / year"
+}

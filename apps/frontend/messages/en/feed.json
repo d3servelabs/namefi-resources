@@ -22,7 +22,6 @@
     "clear": "Clear"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "No matching listings in this part of the feed.",
     "empty": "No listings found.",
     "endOfFeed": "End of feed",

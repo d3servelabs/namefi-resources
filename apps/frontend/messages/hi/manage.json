@@ -1,0 +1,16 @@
+{
+  "heading": "मेरे बेचे गए डोमेन",
+  "loadErrorTitle": "बेचे गए डोमेन लोड करने में असमर्थ",
+  "loadErrorFallback": "कृपया पुनः प्रयास करें।",
+  "retry": "पुनः प्रयास करें",
+  "totalDomainsSold": "कुल बेचे गए डोमेन",
+  "proceeds": "आय",
+  "domainsSold": "बेचे गए डोमेन",
+  "emptyState": "अभी तक कोई डोमेन नहीं बेचा गया।",
+  "columns": {
+    "domainName": "डोमेन नाम",
+    "wallet": "वॉलेट",
+    "date": "तारीख",
+    "price": "मूल्य"
+  }
+}

@@ -1,5 +1,4 @@
 {
-  "language": "Sprache",
   "languageSelector": {
     "label": "Sprache",
     "ariaLabel": "Sprache ändern"
@@ -9,7 +8,6 @@
     "loading": "Laden...",
     "tryAgain": "Nochmal",
     "dismiss": "Schließen",
-    "contactSupport": "Hilfe kontaktieren",
     "cancel": "Abbrechen",
     "close": "Schließen",
     "save": "Speichern",
@@ -23,10 +21,11 @@
     "loadMore": "Mehr laden",
     "connectWallet": "Wallet verbinden",
     "goBack": "Zurück",
-    "approve": "Genehmigen",
-    "reject": "Ablehnen",
     "disable": "Abschalten",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "copy": "Kopieren",
+    "copyAddress": "Adresse kopieren",
+    "toggleSidebar": "Seitenleiste ein-/ausblenden"
   },
   "account": {
     "label": "Konto",

@@ -26,6 +26,7 @@ import {
   Loader2,
   RefreshCw,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useInvalidateNotifications } from '@/hooks/use-invalidate-notifications';
@@ -45,18 +46,9 @@ const PAGE_LIMIT = 25;
  */
 const RELATED_TO_ANY = '__any__';
 
-const RELATED_TO_LABELS: Record<NotificationResourceType, string> = {
-  user: 'User',
-  domain: 'Domain',
-  wallet: 'Wallet',
-  order: 'Order',
-  order_item: 'Order item',
-  payment: 'Payment',
-  cart: 'Cart',
-  dns_record: 'DNS record',
-};
-
 export function NotificationsList({ initialFilter }: NotificationsListProps) {
+  const t = useTranslations('notifications');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const invalidateNotifications = useInvalidateNotifications();
 
@@ -162,14 +154,14 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
     trpc.notifications.markAsSeen.mutationOptions({
       onSuccess: invalidateNotifications,
       onError: (error) =>
-        toast.error('Failed to mark as seen', { description: error.message }),
+        toast.error(t('errors.markSeen'), { description: error.message }),
     }),
   );
   const markAsUnseenMutation = useMutation(
     trpc.notifications.markAsUnseen.mutationOptions({
       onSuccess: invalidateNotifications,
       onError: (error) =>
-        toast.error('Failed to mark as unseen', { description: error.message }),
+        toast.error(t('errors.markUnseen'), { description: error.message }),
     }),
   );
   const archiveMutation = useMutation(
@@ -179,21 +171,21 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
         setSelectedIds(new Set());
       },
       onError: (error) =>
-        toast.error('Failed to archive', { description: error.message }),
+        toast.error(t('errors.archive'), { description: error.message }),
     }),
   );
   const unarchiveMutation = useMutation(
     trpc.notifications.unarchive.mutationOptions({
       onSuccess: invalidateNotifications,
       onError: (error) =>
-        toast.error('Failed to restore', { description: error.message }),
+        toast.error(t('errors.restore'), { description: error.message }),
     }),
   );
   const markAllAsSeenMutation = useMutation(
     trpc.notifications.markAllAsSeen.mutationOptions({
       onSuccess: invalidateNotifications,
       onError: (error) =>
-        toast.error('Failed to mark all as seen', {
+        toast.error(t('errors.markAllSeen'), {
           description: error.message,
         }),
     }),
@@ -242,7 +234,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           aria-controls="notifications-filters"
         >
           <FilterIcon className="me-1 size-3.5" />
-          Filters
+          {t('list.filters')}
         </Button>
         <Button
           type="button"
@@ -251,12 +243,12 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           className="h-8 text-xs"
           onClick={() => void refetch()}
           disabled={isFetching}
-          aria-label="Refresh notifications"
+          aria-label={t('list.refresh')}
         >
           <RefreshCw
             className={cn('me-1 size-3.5', isFetching && 'animate-spin')}
           />
-          Refresh
+          {tCommon('actions.refresh')}
         </Button>
       </div>
 
@@ -270,7 +262,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               id="notifications-related-to-label"
               className="text-[11px] font-medium text-muted-foreground"
             >
-              Related to
+              {t('list.relatedTo')}
             </span>
             <Select
               value={filterType === '' ? RELATED_TO_ANY : filterType}
@@ -286,21 +278,21 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                 className="h-8 text-xs"
                 aria-labelledby="notifications-related-to-label"
               >
-                <SelectValue placeholder="Any">
+                <SelectValue placeholder={t('list.any')}>
                   {(value: string | null) => {
-                    if (!value || value === RELATED_TO_ANY) return 'Any';
-                    return (
-                      RELATED_TO_LABELS[value as NotificationResourceType] ??
-                      value
+                    if (!value || value === RELATED_TO_ANY)
+                      return t('list.any');
+                    return t(
+                      `resourceTypes.${value as NotificationResourceType}`,
                     );
                   }}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={RELATED_TO_ANY}>Any</SelectItem>
-                {notificationResourceTypeValues.map((t) => (
-                  <SelectItem key={t} value={t}>
-                    {RELATED_TO_LABELS[t]}
+                <SelectItem value={RELATED_TO_ANY}>{t('list.any')}</SelectItem>
+                {notificationResourceTypeValues.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {t(`resourceTypes.${type}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -309,15 +301,15 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
 
           <div className="flex flex-col gap-1">
             <span className="text-[11px] font-medium text-muted-foreground">
-              Name or key
+              {t('list.nameOrKey')}
             </span>
             <input
               type="text"
               value={filterIdentifier}
               onChange={(e) => setFilterIdentifier(e.target.value)}
-              placeholder="name or key"
+              placeholder={t('list.nameOrKeyPlaceholder')}
               className="h-8 rounded-md border border-input bg-background px-2 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
-              aria-label="Name or key"
+              aria-label={t('list.nameOrKey')}
             />
           </div>
 
@@ -325,17 +317,17 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
             <Checkbox
               checked={includeSeen}
               onCheckedChange={(v) => setIncludeSeen(v === true)}
-              aria-label="Include seen notifications"
+              aria-label={t('list.includeSeenAria')}
             />
-            Include seen
+            {t('list.includeSeen')}
           </span>
           <span className="flex items-end gap-2 text-xs text-muted-foreground sm:items-center">
             <Checkbox
               checked={includeArchived}
               onCheckedChange={(v) => setIncludeArchived(v === true)}
-              aria-label="Include archived notifications"
+              aria-label={t('list.includeArchivedAria')}
             />
-            Include archived
+            {t('list.includeArchived')}
           </span>
         </div>
       )}
@@ -351,9 +343,9 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               checked={allSelected}
               indeterminate={someSelected}
               onCheckedChange={toggleSelectAll}
-              aria-label="Select all visible notifications"
+              aria-label={t('list.selectAllAria')}
             />
-            {selectedArray.length} selected
+            {t('list.selectedCount', { count: selectedArray.length })}
           </span>
           <div className="flex flex-wrap items-center gap-1">
             <Button
@@ -364,7 +356,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={markAsSeenMutation.isPending}
               onClick={() => markAsSeenMutation.mutate({ ids: selectedArray })}
             >
-              <Eye className="me-1 size-3.5" /> Seen
+              <Eye className="me-1 size-3.5" /> {t('list.markSeen')}
             </Button>
             <Button
               type="button"
@@ -376,7 +368,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                 markAsUnseenMutation.mutate({ ids: selectedArray })
               }
             >
-              <EyeOff className="me-1 size-3.5" /> Unseen
+              <EyeOff className="me-1 size-3.5" /> {t('list.markUnseen')}
             </Button>
             <Button
               type="button"
@@ -386,7 +378,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={archiveMutation.isPending}
               onClick={() => archiveMutation.mutate({ ids: selectedArray })}
             >
-              <Archive className="me-1 size-3.5" /> Archive
+              <Archive className="me-1 size-3.5" /> {t('list.archive')}
             </Button>
             <Button
               type="button"
@@ -396,7 +388,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               disabled={unarchiveMutation.isPending}
               onClick={() => unarchiveMutation.mutate({ ids: selectedArray })}
             >
-              <ArchiveRestore className="me-1 size-3.5" /> Restore
+              <ArchiveRestore className="me-1 size-3.5" /> {t('list.restore')}
             </Button>
             <Button
               type="button"
@@ -418,7 +410,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                 })
               }
             >
-              Mark all as seen
+              {t('list.markAllSeen')}
             </Button>
           </div>
         </div>
@@ -427,11 +419,11 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
       <div className="-mx-2 flex-1 overflow-y-auto px-2">
         {isLoading ? (
           <div className="flex items-center justify-center py-10 text-sm text-muted-foreground">
-            <Loader2 className="me-2 size-4 animate-spin" /> Loading…
+            <Loader2 className="me-2 size-4 animate-spin" /> {t('list.loading')}
           </div>
         ) : items.length === 0 ? (
           <div className="py-10 text-center text-sm text-muted-foreground">
-            No notifications.
+            {t('list.empty')}
           </div>
         ) : (
           <ul className={cn('flex flex-col gap-2 pb-4')}>
@@ -462,7 +454,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
             {isFetchingNextPage ? (
               <Loader2 className="size-4 animate-spin" />
             ) : (
-              'Loading more…'
+              t('list.loadingMore')
             )}
           </div>
         )}

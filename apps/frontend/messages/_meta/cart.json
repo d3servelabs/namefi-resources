@@ -163,5 +163,57 @@
   },
   "submitErrors.orderFailed": {
     "description": "Generic error message shown when the order could not be submitted, inviting a retry."
+  },
+  "cartFootnote.learnMore": {
+    "description": "Inline link in the cart footnote that opens a modal with the full TLD registration/acceptable-use policy. Lowercase to read mid-sentence.",
+    "maxLength": 20
+  },
+  "cartFootnote.agree": {
+    "description": "Button in the cart footnote policy modal (and the per-item registration requirement modal) that accepts the policy and ticks its acknowledgement checkbox.",
+    "maxLength": 16
+  },
+  "cartItemRegistration.learnMore": {
+    "description": "Inline link on a cart item's registration-requirement banner that opens the full requirement details modal.",
+    "maxLength": 20
+  },
+  "cartItemRegistration.gotIt": {
+    "description": "Dismiss button in the registration-requirement modal for informational (implicit) requirements that need no acknowledgement.",
+    "maxLength": 16
+  },
+  "cartItemSetup.showOptionsAria": {
+    "description": "Accessibility label for the collapsed domain-setup-options summary button that expands the setup option chips.",
+    "maxLength": 40
+  },
+  "cartItemSetup.noSetupOptions": {
+    "description": "Placeholder text shown in the collapsed setup-options summary when no setup options are enabled for the cart item.",
+    "maxLength": 24
+  },
+  "cartItem.setupOptionsAria": {
+    "description": "Accessibility label for the toggle button that expands/collapses a cart item's domain setup options.",
+    "maxLength": 40
+  },
+  "cartDropdown.myCart": {
+    "description": "Header label at the top of the cart dropdown menu.",
+    "maxLength": 20
+  },
+  "cartDropdown.yourCartIsEmpty": {
+    "description": "Empty-state line shown in the cart dropdown when there are no items.",
+    "maxLength": 30
+  },
+  "cartDropdown.total": {
+    "description": "Label for the cart total row in the cart dropdown.",
+    "maxLength": 16
+  },
+  "cartDropdown.checkout": {
+    "description": "Button in the cart dropdown that navigates to the cart/checkout page.",
+    "maxLength": 16
+  },
+  "cartDropdown.loadingCart": {
+    "description": "Loading line shown in the cart dropdown while the cart contents are being fetched.",
+    "maxLength": 24
+  },
+  "cartButton.removeAria": {
+    "description": "Accessibility label for the button that removes a domain from the cart on the search/result card.",
+    "maxLength": 30
   }
 }

@@ -116,9 +116,9 @@
     "test:ci:dry": "act -j test -n",
     "sgr": "bun run scripts/run-sgr.ts scan *",
     "sgr:fix": "bun run scripts/run-sgr.ts scan --fix *",
-    "validate": "concurrently -n 'typecheck,biome,sherif,sgr' -c 'blue.bold,green.bold,yellow.bold,red.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-4}\" \"turbo run check:error --concurrency ${TURBO_CHECKERROR_CONCURRENCY:-4}\" \"bun sherif\" \"bun sgr\"",
+    "validate": "concurrently -n 'typecheck,biome,sherif,sgr,i18n' -c 'blue.bold,green.bold,yellow.bold,red.bold,magenta.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-4}\" \"turbo run check:error --concurrency ${TURBO_CHECKERROR_CONCURRENCY:-4}\" \"bun sherif\" \"bun sgr\" \"bun --cwd=apps/frontend run check:i18n\"",
     "validate:staged": "concurrently -n 'typecheck,biome,sherif' -c 'blue.bold,green.bold,yellow.bold' \"bun run typecheck:affected\" \"bun run check:staged\" \"bun sherif\"",
-    "validate:pre-push": "concurrently -n 'typecheck,biome,sherif' -c 'blue.bold,green.bold,yellow.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-1}\" \"bun check:error\" \"bun sherif\"",
+    "validate:pre-push": "concurrently -n 'typecheck,biome,sherif,i18n' -c 'blue.bold,green.bold,yellow.bold,magenta.bold' \"turbo run typecheck --concurrency ${TURBO_TYPECHECK_CONCURRENCY:-1}\" \"bun check:error\" \"bun sherif\" \"bun --cwd=apps/frontend run check:i18n\"",
     "validate:secrets": "turbo run validate:secrets",
     "knip": "bunx knip"
   },

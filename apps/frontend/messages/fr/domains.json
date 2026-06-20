@@ -159,5 +159,115 @@
     "nftAlt": "NFT",
     "offerWaiting": "Votre offre est ouverte et en attente d'acceptation par le vendeur."
   },
-  "metaTitle": "Namefi | Gérer les domaines"
+  "metaTitle": "Namefi | Gérer les domaines",
+  "card": {
+    "account": "Compte",
+    "expand": "Développer",
+    "collapse": "Réduire",
+    "expandAll": "Tout développer",
+    "collapseAll": "Tout réduire",
+    "sort": "Trier"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "Les annonces du marché ne sont pas encore prises en charge sur {chain}",
+      "supportedNetworks": "Réseaux pris en charge : {networks}."
+    },
+    "exportBlocked": {
+      "title": "Annonce sur le marché indisponible",
+      "description": "La mise en vente sur les marchés Web3 n'est pas autorisée tant que ce domaine est exportable vers d'autres registraires. <link>Contacter le support</link> pour désactiver l'exportation."
+    },
+    "listings": {
+      "title": "Annonces en cours",
+      "description": "Annonces de vente actives sur les marchés pris en charge.",
+      "findBuyers": "Trouver des acheteurs",
+      "findBuyersAria": "Trouver des acheteurs pour {domain}",
+      "columnMarketplace": "Marché",
+      "columnPrice": "Prix",
+      "columnExpires": "Expiration",
+      "columnActions": "Actions",
+      "loadFailed": "Impossible de charger les annonces : {error}",
+      "empty": "Aucune annonce active. Utilisez « Créer une annonce » pour mettre ce domaine en vente.",
+      "view": "Voir",
+      "cancel": "Annuler",
+      "cancelled": "Annonce annulée",
+      "cancelledDescription": "Elle disparaîtra des marchés dans un instant.",
+      "cancelFailed": "Échec de l'annulation de l'annonce"
+    },
+    "offers": {
+      "title": "Offres reçues",
+      "description": "Enchères placées sur ce domaine sur les marchés pris en charge. Accepter une offre transfère le NFT à l'enchérisseur et vous crédite le montant de l'enchère.",
+      "columnMarketplace": "Marché",
+      "columnBidder": "Enchérisseur",
+      "columnOffer": "Offre",
+      "columnExpires": "Expiration",
+      "columnActions": "Actions",
+      "loadFailed": "Impossible de charger les offres : {error}",
+      "empty": "Aucune offre active. Lorsqu'un acheteur place une enchère, elle apparaîtra ici.",
+      "view": "Voir",
+      "accept": "Accepter",
+      "accepted": "Offre acceptée pour {price}",
+      "acceptedDescription": "NFT transféré à l'enchérisseur.",
+      "acceptFailed": "Échec de l'acceptation de l'offre"
+    },
+    "createListing": {
+      "trigger": "Créer une annonce",
+      "title": "Créer une annonce",
+      "description": "Vendez ce domaine sur OpenSea. L'annonce est signée par votre portefeuille et publiée dans le carnet d'ordres Seaport d'OpenSea.",
+      "noMarketplaces": "Aucun marché ne prend encore en charge ce réseau.",
+      "marketplaceLabel": "Marché",
+      "alreadyListedSuffix": " — déjà listé",
+      "checkingListings": "Vérification des annonces actives…",
+      "allListed": "Ce domaine est déjà listé sur tous les marchés pris en charge. Annulez une annonce existante pour le remettre en vente.",
+      "priceLabel": "Prix ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "Devise",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "Durée",
+      "duration1Day": "1 jour",
+      "duration7Days": "7 jours",
+      "duration30Days": "30 jours",
+      "listOn": "Lister sur {marketplace}",
+      "connectWallet": "Connecter le portefeuille",
+      "feeMarketplace": "Frais de marché",
+      "feeRoyalty": "Redevance créateur",
+      "feeYouReceive": "Vous recevez",
+      "feeEstimate": "estimation",
+      "feeEstimateTooltip": "Les frais définitifs sont calculés par le marché au moment de la signature.",
+      "listedToast": "Listé pour {price}",
+      "listedToastDescription": "L'annonce peut mettre quelques instants à apparaître sur le marché.",
+      "connectWalletError": "Connectez un portefeuille pour lister ce domaine.",
+      "stillChecking": "Vérification des annonces actives en cours",
+      "alreadyListedError": "Ce domaine possède déjà une annonce active sur ce marché.",
+      "alreadyListedErrorDescription": "Annulez l'annonce existante avant d'en créer une nouvelle.",
+      "pickCurrency": "Choisissez une devise de paiement.",
+      "invalidPrice": "Saisissez un prix valide supérieur à 0.",
+      "switchNetwork": "Basculez sur le réseau approprié pour continuer.",
+      "createFailed": "Échec de la création de l'annonce",
+      "errorSignatureCancelled": "Signature annulée dans votre portefeuille.",
+      "errorInsufficientFunds": "Le portefeuille ne dispose pas de suffisamment d'ETH natif pour la transaction d'approbation.",
+      "errorNotConfigured": "L'intégration du marché n'est pas configurée pour cet environnement.",
+      "errorRateLimited": "Le marché limite les requêtes en ce moment. Patientez une minute, puis réessayez.",
+      "errorSeaportUnavailable": "Impossible de joindre le contrat Seaport d'OpenSea sur ce réseau. Assurez-vous que votre portefeuille est connecté à la même chaîne que le NFT du domaine, puis réessayez."
+    }
+  },
+  "previouslyOwned": {
+    "title": "Domaines précédemment possédés",
+    "columnAccount": "Compte",
+    "columnRemovalDate": "Date de suppression",
+    "columnReason": "Raison",
+    "columnReceivingWallet": "Portefeuille destinataire",
+    "empty": "Aucun domaine précédemment possédé trouvé",
+    "emptyDescription": "Vous n'avez encore brûlé ni transféré aucun domaine depuis vos portefeuilles liés",
+    "selectChainPlaceholder": "Sélectionner une chaîne",
+    "allChains": "Toutes les chaînes",
+    "clearFilters": "Effacer les filtres"
+  },
+  "dnsRecords": {
+    "selectAll": "Tout sélectionner",
+    "selectRow": "Sélectionner la ligne"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "Actions"
+  }
 }

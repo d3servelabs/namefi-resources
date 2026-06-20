@@ -29,6 +29,7 @@ import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
 import { NetworkLogo } from '@/components/network-logo';
 import { AutoTruncateText } from '../auto-truncate-text';
+import { useTranslations } from 'next-intl';
 
 type WorkflowRow = {
   workflowId: string;
@@ -59,6 +60,7 @@ const getStatusColor = (
 };
 
 export function RecentWorkflowsTable() {
+  const t = useTranslations('nfsc');
   const trpc = useTRPC();
   const { theme } = useTheme();
   const [days, setDays] = useState<number>(7);
@@ -82,7 +84,7 @@ export function RecentWorkflowsTable() {
     () => [
       {
         accessorKey: 'workflowId',
-        header: 'Workflow ID',
+        header: t('recentWorkflows.workflowId'),
         cell: ({ row }) => (
           <div className="font-mono text-xs">
             <AutoTruncateText minCharactersToDisplay={20}>
@@ -93,7 +95,7 @@ export function RecentWorkflowsTable() {
       },
       {
         accessorKey: 'status',
-        header: 'Status',
+        header: t('recentWorkflows.status'),
         cell: ({ row }) => (
           <Badge variant={getStatusColor(row.original.status)}>
             {row.original.status}
@@ -224,7 +226,7 @@ export function RecentWorkflowsTable() {
         ),
       },
     ],
-    [],
+    [t],
   );
 
   return (
@@ -233,7 +235,9 @@ export function RecentWorkflowsTable() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <Label htmlFor="days-filter">Time Range:</Label>
+            <Label htmlFor="days-filter">
+              {t('recentWorkflows.timeRange')}
+            </Label>
             <Select
               value={days.toString()}
               onValueChange={(v) => {
@@ -302,7 +306,7 @@ export function RecentWorkflowsTable() {
           )}
         >
           <DialogHeader>
-            <DialogTitle>Workflow Details</DialogTitle>
+            <DialogTitle>{t('recentWorkflows.detailsTitle')}</DialogTitle>
           </DialogHeader>
 
           {selectedWorkflow && (
@@ -310,7 +314,7 @@ export function RecentWorkflowsTable() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-xs text-muted-foreground">
-                    Workflow ID
+                    {t('recentWorkflows.workflowId')}
                   </Label>
                   <div className="font-mono text-xs mt-1">
                     {selectedWorkflow.workflowId}
@@ -318,7 +322,7 @@ export function RecentWorkflowsTable() {
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">
-                    Run ID
+                    {t('recentWorkflows.runId')}
                   </Label>
                   <div className="font-mono text-xs mt-1">
                     {selectedWorkflow.runId}
@@ -326,7 +330,7 @@ export function RecentWorkflowsTable() {
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">
-                    Status
+                    {t('recentWorkflows.status')}
                   </Label>
                   <div className="mt-1">
                     <Badge variant={getStatusColor(selectedWorkflow.status)}>
@@ -336,7 +340,7 @@ export function RecentWorkflowsTable() {
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">
-                    Workflow Type
+                    {t('recentWorkflows.workflowType')}
                   </Label>
                   <div className="text-sm mt-1">
                     {selectedWorkflow.workflowType}
@@ -345,7 +349,9 @@ export function RecentWorkflowsTable() {
               </div>
 
               <div>
-                <Label className="text-sm font-medium">Memo Data</Label>
+                <Label className="text-sm font-medium">
+                  {t('recentWorkflows.memoData')}
+                </Label>
                 <div className="mt-2 border rounded-lg p-3 bg-muted/50">
                   <JsonView
                     value={selectedWorkflow.memo}
@@ -376,7 +382,9 @@ export function RecentWorkflowsTable() {
               </div>
 
               <div>
-                <Label className="text-sm font-medium">Search Attributes</Label>
+                <Label className="text-sm font-medium">
+                  {t('recentWorkflows.searchAttributes')}
+                </Label>
                 <div className="mt-2 border rounded-lg p-3 bg-muted/50">
                   <JsonView
                     value={selectedWorkflow.searchAttributes}

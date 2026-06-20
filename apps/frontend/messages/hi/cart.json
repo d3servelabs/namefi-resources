@@ -80,5 +80,30 @@
     "x402ConnectWallet": "अपना x402 भुगतान साइन करने के लिए एक सक्रिय वॉलेट कनेक्ट करें",
     "orderFailed": "आपका ऑर्डर सबमिट नहीं किया जा सका। कृपया पुनः प्रयास करें।"
   },
-  "metaTitle": "Namefi | कार्ट"
+  "metaTitle": "Namefi | कार्ट",
+  "cartFootnote": {
+    "learnMore": "और जानें",
+    "agree": "सहमत हैं"
+  },
+  "cartItemRegistration": {
+    "learnMore": "और जानें",
+    "gotIt": "समझ गया"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "डोमेन सेटअप विकल्प दिखाएं",
+    "noSetupOptions": "कोई सेटअप विकल्प नहीं"
+  },
+  "cartItem": {
+    "setupOptionsAria": "डोमेन सेटअप विकल्प"
+  },
+  "cartDropdown": {
+    "myCart": "मेरी कार्ट",
+    "yourCartIsEmpty": "आपकी कार्ट खाली है",
+    "total": "कुल",
+    "checkout": "चेकआउट",
+    "loadingCart": "कार्ट लोड हो रही है..."
+  },
+  "cartButton": {
+    "removeAria": "कार्ट से हटाएं"
+  }
 }

@@ -1,0 +1,550 @@
+{
+  "status": {
+    "checkFailedTitle": "تعذّر التحقق من حالة DNSSEC",
+    "pendingTitle": "جارٍ إعداد DNSSEC",
+    "activeTitle": "DNSSEC مُفعَّل",
+    "misconfiguredTitle": "DNSSEC مُهيَّأ بشكل خاطئ"
+  },
+  "actions": {
+    "enable": "تفعيل DNSSEC",
+    "disable": "تعطيل DNSSEC",
+    "cancelSetup": "إلغاء الإعداد",
+    "keepWaiting": "الاستمرار في الانتظار"
+  },
+  "disableDialog": {
+    "title": "تعطيل DNSSEC؟"
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": "الاكتشاف التلقائي",
+      "manual": "يدوي"
+    },
+    "manual": {
+      "description": "الصق سجل DNSKEY أو DS (السطر الكامل من ملف المنطقة أو rdata فقط). سنكتشف التنسيق تلقائيًا.",
+      "enterFieldsManually": "أو أدخِل الحقول يدويًا",
+      "derive": "استخراج حقول DS",
+      "deriving": "جارٍ الاستخراج..."
+    },
+    "autoDetect": {
+      "description": "استعلام خوادم الأسماء المُفوَّضة لنطاقك واكتشاف",
+      "detect": "الاكتشاف من خوادم الأسماء المُفوَّضة",
+      "detecting": "جارٍ الاكتشاف...",
+      "kskCandidate": "مرشّح KSK",
+      "candidateOption": "علامة المفتاح {keyTag} — خوارزمية {algorithm}"
+    },
+    "dsValuesTitle": "قيم DS",
+    "viewSummary": "عرض الملخص",
+    "fields": {
+      "keyTag": "علامة المفتاح",
+      "algorithm": "الخوارزمية",
+      "flags": "الأعلام",
+      "digestType": "نوع الملخص",
+      "publicKey": "المفتاح العام (base64)",
+      "digest": "الملخص (hex)"
+    },
+    "placeholders": {
+      "algorithm": "اختر الخوارزمية",
+      "flags": "اختر العلم",
+      "digestType": "اختر نوع الملخص"
+    },
+    "publicKeyMissingNotice": "المفتاح العام غير موجود في سجل DS الذي لصقته. استخدم الاكتشاف التلقائي أو الصق سجل DNSKEY حتى نتمكن من إرساله إلى المسجِّل.",
+    "summary": {
+      "notSet": "غير محدَّد"
+    },
+    "deferredNotice": "سيعمل هذا كسير عمل في الخلفية يستعلم التحقق ولا يُرسل إلا عند اجتياز كلا المسارين. ستصلك رسالة بريد إلكتروني عند الانتهاء أو انتهاء المهلة.",
+    "validate": "التحقق",
+    "validating": "جارٍ التحقق...",
+    "scheduleDs": "جدولة DS",
+    "submitDs": "إرسال DS",
+    "scheduling": "جارٍ الجدولة...",
+    "submitting": "جارٍ الإرسال...",
+    "validation": {
+      "pending": "جارٍ الاستعلام عن سجلات DNSKEY من خوادم الأسماء الموثوقة وDNS العام...",
+      "laneAuthoritative": "خوادم الأسماء الموثوقة",
+      "lanePublicDns": "DNS العام (Google)",
+      "statusCouldNotValidate": "تعذَّر التحقق",
+      "statusMatch": "تطابق",
+      "statusNoMatchingDnskey": "لا يوجد DNSKEY مطابق",
+      "queried": "تمّ الاستعلام من: {source}",
+      "matched": "تمّ احتساب علامة المفتاح {keyTag}. المصدر: {source}.",
+      "noMatch": "لا يُنتج أيٌّ من سجلات DNSKEY المنشورة على {source} الملخصَ الذي أدخلته.",
+      "tableFlags": "الأعلام",
+      "tableAlg": "الخوارزمية",
+      "tableComputedKeyTag": "علامة المفتاح المحسوبة",
+      "tableComputedDigest": "الملخص المحسوب"
+    },
+    "ack": {
+      "validationDidNotPass": "أفهم أن التحقق لم ينجح وأرغب في ربط هذا السجل DS على أي حال (مثلًا التجهيز قبل تبديل خوادم الأسماء).",
+      "sure": "أنا متأكد، اربط هذا السجل DS.",
+      "notFullyReflected": "أفهم أن DNSKEY لم ينتشر بالكامل في جميع المناطق وقد يحدث توقف بسيط في بعض المناطق بعد هذا التغيير. أرغب في ربط هذا السجل DS على أي حال."
+    }
+  },
+  "prefs": {
+    "panelTitle": "تفضيلات النطاق",
+    "loadFailed": "حدث خطأ ما! يرجى المحاولة مرة أخرى لاحقًا.",
+    "autoEns": {
+      "label": "Auto ENS",
+      "description": "تفعيل ENS للنطاق تلقائيًا",
+      "unavailableTooltip": "AutoENS غير متاح لهذا النطاق. يتطلب ENS تفعيل DNSSEC.",
+      "enableDnssecFirst": "تحتاج إلى تفعيل DNSSEC أولًا.",
+      "dnssecUnsupported": "وهذا النطاق لا يدعم DNSSEC."
+    },
+    "autoPark": {
+      "label": "الإيقاف التلقائي",
+      "description": "إيقاف النطاق تلقائيًا"
+    },
+    "forwardTo": {
+      "label": "إعادة التوجيه إلى",
+      "description": "إعادة توجيه النطاق إلى عنوان مختلف"
+    },
+    "notManagingNameservers": "Namefi لا تدير خوادم الأسماء لهذا النطاق",
+    "propagationNotice": "التغييرات على DNSSEC ليست فورية. قد يستغرق الانتشار العالمي ما بين 24 و48 ساعة.",
+    "conflictDialog": {
+      "title": "حذف السجلات الجذرية المتعارضة؟",
+      "description": "يتطلب هذا التغيير في التفضيلات حذف السجلات الجذرية المتعارضة على هذا النطاق.",
+      "apexCname": "سيُحذف أي سجل CNAME جذري (`@`) أولًا.",
+      "apexAddress": "ستُحذف أي سجلات A/AAAA جذرية (`@`) أولًا.",
+      "keepRecords": "الاحتفاظ بالسجلات",
+      "removeAndContinue": "حذف والمتابعة",
+      "applying": "جارٍ التطبيق..."
+    }
+  },
+  "records": {
+    "panel": {
+      "title": "سجلات DNS",
+      "description": "إدارة سجلات DNS الخاصة بنطاقك",
+      "addRecord": "إضافة سجل",
+      "recordTypes": "أنواع السجلات",
+      "recordTypeOption": "سجل {type}"
+    },
+    "table": {
+      "searchPlaceholder": "البحث في السجلات...",
+      "columns": "الأعمدة",
+      "toggleColumns": "إظهار/إخفاء الأعمدة",
+      "filter": "تصفية",
+      "filterByType": "تصفية حسب النوع",
+      "clearFilters": "مسح التصفية",
+      "actionsLabel": "الإجراءات",
+      "tableActions": "إجراءات الجدول",
+      "exportRecords": "تصدير السجلات",
+      "importRecords": "استيراد السجلات",
+      "copyAsZoneFile": "نسخ كملف منطقة",
+      "editSelected": "تعديل المحدَّد ({count})",
+      "deleteSelected": "حذف المحدَّد ({count})",
+      "empty": "لا توجد سجلات.",
+      "rowsSelected": "{selected} من {total} صف مُحدَّد.",
+      "columnType": "النوع",
+      "columnName": "الاسم",
+      "columnValue": "القيمة",
+      "columnTtl": "TTL",
+      "columnActions": "الإجراءات",
+      "editRecordTooltip": "تعديل السجل",
+      "deleteRecordTooltip": "حذف السجل",
+      "disableManagedRecordTooltip": "تعطيل السجل المُدار",
+      "copyRecordTooltip": "نسخ السجل",
+      "refreshRecordTooltip": "تحديث السجل"
+    },
+    "toasts": {
+      "recordUpdated": "تمّ تحديث السجل",
+      "recordUpdatedDescription": "تمّ تحديث {field} بنجاح.",
+      "copiedToClipboard": "تمّ النسخ إلى الحافظة",
+      "copiedToClipboardDescription": "تمّ نسخ تفاصيل السجل إلى الحافظة",
+      "saved": "{count, plural, one {تمّ حفظ سجل واحد بنجاح} other {تمّ حفظ # سجلات بنجاح}}",
+      "updated": "{count, plural, one {تمّ تحديث سجل واحد بنجاح} other {تمّ تحديث # سجلات بنجاح}}",
+      "deleted": "{count, plural, one {تمّ حذف سجل واحد بنجاح} other {تمّ حذف # سجلات بنجاح}}",
+      "deleteFailed": "فشل حذف السجل/السجلات: {error}",
+      "recordPrefix": "السجل {index}: {message}",
+      "undeterminedError": "خطأ غير محدَّد، يرجى التواصل مع الدعم",
+      "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
+      "parkingForwardingDisabled": "تمّ تعطيل الإيقاف وإعادة التوجيه",
+      "autoEnsDisabled": "تمّ تعطيل AutoENS",
+      "forwardingDisabled": "تمّ تعطيل إعادة التوجيه",
+      "managedUpdateFailed": "فشل تحديث إعدادات DNS المُدارة"
+    },
+    "managedDelete": {
+      "disableParkingTitle": "تعطيل سجلات الإيقاف؟",
+      "disableAutoEnsTitle": "تعطيل سجل AutoENS؟",
+      "disableForwardingTitle": "تعطيل سجل إعادة التوجيه؟",
+      "disableParkingDescription": "هذا الصف مُدار بواسطة تفضيلات النطاق. تعطيله سيوقف خاصية الإيقاف.",
+      "disableAutoEnsDescription": "هذا الصف مُدار بواسطة تفضيلات النطاق. تعطيله سيوقف AutoENS.",
+      "disableForwardingDescription": "هذا الصف مُدار بواسطة تفضيلات النطاق. تعطيله سيلغي إعادة التوجيه.",
+      "parkingDisablesForwarding": "تعطيل سجلات الإيقاف سيُعطِّل إعادة التوجيه أيضًا.",
+      "disabling": "جارٍ التعطيل..."
+    }
+  },
+  "nameservers": {
+    "panelTitle": "إدارة خوادم الأسماء",
+    "tooltip": "تُوجِّه خوادم الأسماء حركة الزيارات إلى نطاقك",
+    "resetToNamefi": "إعادة الضبط على خوادم أسماء Namefi",
+    "addNameserver": "إضافة خادم أسماء",
+    "nameserverLabel": "خادم الأسماء {index}",
+    "nameserverPlaceholder": "مثل: ns1.example.com",
+    "saveChanges": "حفظ التغييرات",
+    "saving": "جارٍ الحفظ...",
+    "propagationNotice": "قد تستغرق التغييرات على خوادم الأسماء من 24 إلى 48 ساعة حتى تنتشر عالميًا.",
+    "manageDialogTitle": "إدارة خوادم الأسماء",
+    "workflow": {
+      "resetInProgress": "جارٍ إجراء عملية إعادة ضبط خوادم الأسماء على الإعدادات الافتراضية لـ Namefi...",
+      "changeInProgress": "جارٍ إجراء عملية تحديث خوادم الأسماء...",
+      "resettingTitle": "جارٍ إعادة ضبط خوادم الأسماء لـ {domain}",
+      "changingTitle": "جارٍ تغيير خوادم الأسماء لـ {domain}",
+      "viewProgress": "عرض تفاصيل التقدم",
+      "cancelWorkflow": "إلغاء سير العمل",
+      "cancelling": "جارٍ الإلغاء...",
+      "cancellationRequested": "تمّ طلب الإلغاء",
+      "cancelFailed": "فشل الإلغاء: {error}"
+    },
+    "toasts": {
+      "resetSuccess": "تمّت إعادة ضبط خوادم الأسماء على الإعدادات الافتراضية لـ Namefi",
+      "changeSuccess": "تمّ تحديث خوادم الأسماء بنجاح",
+      "resetFailed": "فشلت إعادة ضبط خوادم الأسماء",
+      "changeFailed": "فشل تحديث خوادم الأسماء",
+      "signatureRejected": "تمّ رفض طلب التوقيع",
+      "ownerWalletUnavailable": "تعذَّر تحديد محفظة مالك النطاق"
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": "إدارة DNSSEC",
+    "tooltip": "DNSSEC ميزة أمان تساعد على حماية نطاقك من هجمات التصيد الاحتيالي.",
+    "refreshAria": "تحديث حالة DNSSEC",
+    "refresh": "تحديث",
+    "modeToggle": {
+      "legend": "وضع لوحة DNSSEC",
+      "simple": "بسيط",
+      "advanced": "متقدم",
+      "simpleHint": "تفعيل بنقرة واحدة للحالات الشائعة.",
+      "advancedHint": "تحكم كامل: الصق DNSKEY/DS، تحقق، وأدر مفاتيح متعددة."
+    },
+    "noDetails": "لم يُعثر على تفاصيل DNSSEC",
+    "notSupported": "DNSSEC غير مدعوم لهذا النطاق",
+    "zoneSigning": "المنطقة تُوقِّع السجلات",
+    "zoneNotSigning": "المنطقة لا تُوقِّع السجلات",
+    "namefiAutoHandling": "Namefi تتولى إدارة DNSSEC لهذا النطاق تلقائيًا.",
+    "namefiSigningRecords": "Namefi تُوقِّع السجلات لهذا النطاق",
+    "zoneSigningRecords": "المنطقة تُوقِّع السجلات لهذا النطاق",
+    "allSecure": "كل شيء آمن",
+    "namefiOnlySigner": "Namefi هي الموقِّع الوحيد على التفويض لهذا النطاق",
+    "customSigners": "موقِّعو التفويض المخصَّصون",
+    "notEnabled": "DNSSEC غير مُفعَّل",
+    "noSigners": "لا يوجد موقِّعو تفويض",
+    "propagationNotice": "التغييرات على DNSSEC ليست فورية. قد يستغرق الانتشار العالمي ما بين 24 و48 ساعة.",
+    "requestInProgress": "طلب {operation, select, disable {تعطيل} other {تفعيل}} DNSSEC قيد التنفيذ بالفعل",
+    "operationInProgress": "توجد عملية أخرى قيد التنفيذ بالفعل",
+    "enableNamefiSigning": "تفعيل توقيع Namefi",
+    "disableNamefiSigning": "تعطيل توقيع Namefi",
+    "enabling": "جارٍ التفعيل...",
+    "disabling": "جارٍ التعطيل...",
+    "disableConfirmDescription": "هل أنت متأكد من رغبتك في تعطيل توقيع Namefi؟",
+    "disableConfirmDetail": "سيُقلِّل هذا من مستوى أمان نطاقك، وسيؤثر على الخدمات التي تعتمد عليه (مثل AutoENS).",
+    "confirmAndDisable": "تأكيد وتعطيل",
+    "progress": {
+      "enablingTitle": "جارٍ التفعيل لـ {domain}",
+      "disablingTitle": "جارٍ التعطيل لـ {domain}",
+      "viewProgress": "عرض تفاصيل التقدم",
+      "cancelWorkflow": "إلغاء سير العمل",
+      "cancelling": "جارٍ الإلغاء...",
+      "cancellationRequested": "تمّ طلب الإلغاء",
+      "cancelFailed": "فشل الإلغاء: {error}"
+    },
+    "toasts": {
+      "enableSent": "تمّ إرسال طلب تفعيل DNSSEC",
+      "enableFailed": "فشل طلب تفعيل DNSSEC",
+      "disableSent": "تمّ إرسال طلب تعطيل DNSSEC",
+      "disableFailed": "فشل طلب تعطيل DNSSEC"
+    },
+    "signersTable": {
+      "empty": "لا يوجد موقِّعو تفويض مرتبطون بعد.",
+      "keyTag": "علامة المفتاح",
+      "algorithm": "الخوارزمية",
+      "digestType": "نوع الملخص",
+      "digest": "الملخص",
+      "pending": "قيد الانتظار",
+      "removeAria": "إزالة موقِّع التفويض",
+      "cancelDeferredAria": "إلغاء إرسال DS المؤجَّل",
+      "removeTitle": "إزالة موقِّع التفويض؟",
+      "removeDescription": "سيُلغي هذا ارتباط سجل DS من المسجِّل. {keyTagSuffix}إذا كان هذا هو السجل DS الوحيد للنطاق، فسينكسر التحقق من DNSSEC عالميًا خلال ساعات قليلة. تأكد من أنك نشرت بديلًا في الجذر أو أنك تقصد إيقاف DNSSEC.",
+      "removeKeyTagSuffix": "علامة المفتاح {keyTag}. ",
+      "remove": "إزالة",
+      "removing": "جارٍ الإزالة...",
+      "cancelDeferredTitle": "إلغاء إرسال DS المؤجَّل؟",
+      "cancelDeferredDescription": "سيوقف هذا استعلام التحقق لعلامة المفتاح {keyTag}. لن يُربط أي سجل DS. يمكن إعادة محاولة الإرسال لاحقًا بالنقر على تفعيل DNSSEC مرة أخرى أو من مربع حوار إضافة موقِّع التفويض.",
+      "cancelSubmission": "إلغاء الإرسال",
+      "cancelling": "جارٍ الإلغاء...",
+      "removeSuccess": "تمّت إزالة موقِّع التفويض{keyTagSuffix}",
+      "removeSuccessKeyTagSuffix": " (علامة المفتاح {keyTag})",
+      "removeFailed": "فشلت إزالة موقِّع التفويض: {error}",
+      "noKeyId": "تعذَّر تحديد المفتاح المراد إزالته (لا يوجد id أو publicKey أو keyTag).",
+      "cancelSuccess": "تمّ إلغاء الإرسال المؤجَّل (علامة المفتاح {keyTag})",
+      "cancelFailed": "فشل الإلغاء: {error}",
+      "phaseAuthoritative": "في انتظار التحقق من NS الموثوق. تنتهي المهلة في حوالي {remaining}.",
+      "phasePublicDns": "في انتظار انتشار DNS العام. تنتهي المهلة في حوالي {remaining}.",
+      "phaseSubmit": "اجتاز التحقق؛ جارٍ إرسال DS إلى المسجِّل.",
+      "remainingNow": "الآن",
+      "remainingHoursMinutes": "{hours}س {minutes}د",
+      "remainingMinutes": "{minutes}د"
+    },
+    "advancedPanel": {
+      "title": "موقِّعو التفويض المخصَّصون",
+      "description": "مطلوب عند تشغيل هذا النطاق على خوادم أسمائه الموثوقة الخاصة. أرسل سجل DS المطابق لـ DNSKEY الذي ينشره مزوِّد DNS لديك.",
+      "addSigner": "إضافة موقِّع تفويض",
+      "dialogTitle": "إضافة موقِّع تفويض مخصَّص",
+      "dialogDescription": "الصق DNSKEY/DS أو اكتشفه تلقائيًا من خوادم أسمائك، ثم تحقق قبل الإرسال."
+    }
+  },
+  "overview": {
+    "panelTitle": "نظرة عامة على النطاق",
+    "panelSubtitle": "إدارة إعدادات نطاقك وتجديده",
+    "expired": {
+      "title": "انتهت صلاحية النطاق",
+      "canRenew": "انتهت صلاحية نطاقك. لا يزال بإمكانك تقديم طلب لتجديد النطاق وقد يتم قبوله بحسب امتداد النطاق (.com أو .org أو غيرها).",
+      "cannotRenew": "انتهت صلاحية نطاقك. يمكنك التواصل مع الدعم للتحقق من إمكانية استعادته (قد لا يكون ذلك ممكنًا لجميع الامتدادات مثل .com و.org وغيرها).",
+      "cannotRenewShort": "انتهت صلاحية نطاقك. تواصل مع الدعم للتحقق من إمكانية استعادته (قد لا يكون ذلك ممكنًا لجميع الامتدادات)."
+    },
+    "autoRenew": {
+      "label": "التجديد التلقائي",
+      "description": "تجديد النطاق تلقائيًا",
+      "expires": "تاريخ الانتهاء: {date}"
+    },
+    "manualRenew": {
+      "label": "التجديد اليدوي",
+      "description": "تجديد النطاق يدويًا"
+    },
+    "renewNow": "تجديد الآن",
+    "renewExpirationUnavailable": "معلومات انتهاء صلاحية النطاق غير متاحة",
+    "autoRenewalCard": {
+      "title": "التجديد التلقائي",
+      "description": "تجديد نطاقك تلقائيًا قبل انتهاء صلاحيته",
+      "auto": "تلقائي"
+    },
+    "manualRenewalCard": {
+      "title": "التجديد اليدوي",
+      "descriptionWithDate": "{expiration} - جدِّد الآن لاستعادة نطاقك",
+      "description": "جدِّد نطاقك يدويًا"
+    },
+    "preferencesUpdated": "تمّ تحديث التفضيلات",
+    "preferencesUpdateFailed": "فشل تحديث التفضيلات",
+    "export": {
+      "label": "تصدير النطاق",
+      "description": "تصدير النطاق إلى مسجِّل آخر",
+      "descriptionCard": "نقل نطاقك إلى مسجِّل آخر",
+      "unavailableCard": "التصدير غير متاح لهذا النطاق",
+      "requestExport": "طلب التصدير",
+      "exportUnavailable": "التصدير غير متاح",
+      "unavailable": "غير متاح",
+      "enableRequestPending": "طلب تفعيل التصدير قيد الانتظار...",
+      "pending": "قيد الانتظار...",
+      "getAuthCode": "الحصول على رمز المصادقة",
+      "requestingExport": "جارٍ طلب التصدير...",
+      "requesting": "جارٍ الطلب...",
+      "nftNotMinted": "لم يُسكَّ NFT بعد. سيتوفر التصدير بمجرد اكتمال السك.",
+      "loadDetailsFailed": "حدث خطأ أثناء جلب تفاصيل تصدير النطاق! يرجى المحاولة مرة أخرى لاحقًا.",
+      "loadDetailsFailedShort": "فشل تحميل تفاصيل التصدير. يرجى المحاولة مرة أخرى لاحقًا."
+    },
+    "exportToasts": {
+      "requestSubmitted": "تمّ إرسال طلب التصدير بنجاح",
+      "requestFailed": "فشل طلب تصدير النطاق",
+      "authCodeCopied": "تمّ نسخ رمز المصادقة إلى الحافظة",
+      "authCodeCopyFailed": "فشل نسخ رمز المصادقة",
+      "authCodeFailed": "فشل الحصول على رمز المصادقة",
+      "signatureRejected": "تمّ رفض طلب التوقيع",
+      "signatureFailed": "فشل طلب التوقيع. قد يكون ذلك بسبب خطأ في المتصفح أو مشكلة في محفظتك.",
+      "ownerWalletUnavailable": "تعذَّر تحديد محفظة مالك النطاق"
+    },
+    "pendingTransfer": {
+      "label": "تصدير معلَّق",
+      "cardTitle": "طلب تصدير معلَّق",
+      "requestedBy": "طلب التصدير من قِبَل: {registrar}",
+      "actionRequiredBy": "الإجراء المطلوب بحلول: {date}",
+      "cardDescription": "مطلوب من: {registrar} - يجب اتخاذ إجراء بحلول {date}",
+      "approve": "موافقة",
+      "reject": "رفض",
+      "approveSuccess": "تمّت الموافقة على التصدير بنجاح",
+      "approveFailed": "فشلت الموافقة على التصدير",
+      "rejectSuccess": "تمّ رفض التصدير بنجاح",
+      "rejectFailed": "فشل رفض التصدير"
+    },
+    "nftOwnership": {
+      "title": "الملكية على البلوك تشين",
+      "tooltip": "نطاقك مخزَّن كـ NFT (رمز غير قابل للاستبدال) على البلوك تشين. تُثبت هذه الشهادة الرقمية ملكيتك للنطاق وهي محمية بالتشفير.",
+      "securedOn": "مُأمَّن على",
+      "verified": "موثَّق",
+      "chainEthereum": "Ethereum",
+      "chainBase": "Base",
+      "chainOther": "الشبكة {chainId}",
+      "ownerWallet": "محفظة المالك",
+      "ownerWalletTooltip": "هذا هو عنوان المحفظة التي تمتلك NFT الخاص بهذا النطاق. هذه المحفظة فقط هي التي يمكنها إدارة النطاق أو نقله.",
+      "tokenId": "Token ID",
+      "tokenIdTooltip": "معرِّف فريد لـ NFT نطاقك على البلوك تشين. فكِّر فيه كرقم تسلسلي لأصلك الرقمي.",
+      "verifyOnExplorer": "التحقق على مستكشف الكتل",
+      "showNftInWallet": "عرض NFT في المحفظة",
+      "addingToWallet": "جارٍ الإضافة إلى المحفظة...",
+      "nftAdded": "تمّت إضافة NFT إلى محفظتك",
+      "nftAddFailed": "تعذَّرت إضافة NFT إلى محفظتك",
+      "nftAddError": "فشلت إضافة NFT إلى المحفظة",
+      "unknownError": "خطأ غير معروف",
+      "walletAddressCopied": "تمّ نسخ عنوان المحفظة",
+      "walletAddressCopyFailed": "فشل نسخ عنوان المحفظة",
+      "tokenIdCopied": "تمّ نسخ Token ID",
+      "tokenIdCopyFailed": "فشل نسخ Token ID"
+    },
+    "educationalBanner": {
+      "title": "نطاقك مُأمَّن على البلوك تشين",
+      "description": "خلافًا للمسجِّلين التقليديين، يُخزَّن نطاقك كـ NFT في محفظتك. وهذا يعني أنك تملكه فعلًا - لا يمكن لأي شركة أخذه منك دون إذنك.",
+      "dismissAria": "إغلاق الشعار"
+    },
+    "moreInfoAria": "مزيد من المعلومات",
+    "learnMore": "اعرف أكثر",
+    "web3Concepts": {
+      "title": "تعرَّف على نطاقك",
+      "footer": "Namefi يجمع بين النطاقات التقليدية والملكية على البلوك تشين",
+      "nftTerm": "NFT",
+      "nftDescription": "شهادة ملكية رقمية مخزَّنة في محفظتك - كعقد ملكية منزل",
+      "blockchainTerm": "Blockchain",
+      "blockchainDescription": "سجل رقمي آمن يُسجِّل ملكيتك بصورة دائمة",
+      "walletTerm": "المحفظة",
+      "walletDescription": "خزنتك الرقمية الشخصية - أنت الوحيد الذي يمكنه الوصول إليها",
+      "icannTerm": "ICANN",
+      "icannDescription": "الجهة العالمية المسؤولة عن إدارة نطاقات .com و.io و.xyz"
+    },
+    "transferLock": {
+      "title": "التصدير متاح في {date}",
+      "description": "تُقفَل النطاقات لمدة 60 يومًا بعد الاستيراد وفقًا لسياسة ICANN.",
+      "importedOn": " تمّ استيراد هذا النطاق في {date}.",
+      "gotIt": "حسنًا"
+    }
+  },
+  "management": {
+    "signInRequiredTitle": "تسجيل الدخول مطلوب",
+    "signInRequiredMessage": "يرجى تسجيل الدخول لإدارة هذا النطاق.",
+    "loadErrorTitle": "تعذَّر تحميل إدارة النطاق",
+    "loadErrorFallback": "يرجى المحاولة مرة أخرى.",
+    "marketplaceErrorTitle": "تعذَّر تحميل حالة السوق",
+    "retry": "إعادة المحاولة",
+    "publicViewTitle": "تنبيه!",
+    "publicViewMessage": "هذا النطاق مملوك لمستخدم آخر. أنت تعرض المعلومات العامة فقط.",
+    "tabDomainOverview": "نظرة عامة على النطاق",
+    "tabDnsRecords": "سجلات DNS",
+    "tabDnsManagement": "إدارة DNS",
+    "tabMarketplace": "السوق",
+    "tabDnsSetting": "إعدادات DNS",
+    "notMigratedTitle": "لم يُهاجَر النطاق بعد",
+    "redirectToRegistrar": "الانتقال إلى المسجِّل",
+    "comingSoon": "قريبًا ..."
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": "إضافة سجل DNS",
+      "editTitle": "تعديل سجل DNS",
+      "requiredFieldsError": "يرجى إكمال جميع الحقول المطلوبة المعلَّمة بـ *",
+      "addMoreRecord": "إضافة سجل آخر",
+      "addRecord": "إضافة سجل",
+      "saveRecord": "حفظ السجل",
+      "cnameConflictTitle": "CNAME يتعارض مع سجلات أخرى",
+      "cnameConflictBody1": "لا يمكن لسجلات CNAME مشاركة نفس الاسم مع أنواع سجلات أخرى.",
+      "cnameConflictBody2": "احذف السجلات المتعارضة أولًا، ثم أضِف سجل CNAME هذا مرة أخرى.",
+      "understood": "فهمت",
+      "disableManagedTitle": "تعطيل السجلات المُدارة والمتابعة؟",
+      "disableManagedBody1": "سجل CNAME هذا لا يتعارض إلا مع السجلات المُدارة على هذا النطاق.",
+      "disableManagedBodyWithForwarding": "تابع لتعطيل الإيقاف وإعادة التوجيه وAutoENS، ثم أضِف سجل CNAME هذا.",
+      "disableManagedBody": "تابع لتعطيل الإيقاف وAutoENS، ثم أضِف سجل CNAME هذا.",
+      "keepManagedRecords": "الإبقاء على السجلات المُدارة",
+      "disableAndContinue": "تعطيل والمتابعة",
+      "disabling": "جارٍ التعطيل...",
+      "disableParkingTitle": "تعطيل الإيقاف والمتابعة؟",
+      "disableParkingBody": "هذا السجل يتعارض مع سجلات الإيقاف المُدارة. للمتابعة، يجب تعطيل الإيقاف أولًا.",
+      "disableParkingForwardingNotice": "تعطيل الإيقاف هنا سيُعطِّل إعادة التوجيه أيضًا.",
+      "keepParkingEnabled": "إبقاء الإيقاف مُفعَّلًا",
+      "loadRecordsFailed": "فشل تحميل سجلات DNS"
+    },
+    "delete": {
+      "title": "حذف السجلات؟",
+      "description": "قد يؤثر هذا التغيير على وظائف نطاقك ويستغرق وقتًا للتحديث عبر الشبكات.",
+      "summary": "{count, plural, one {حذف سجل واحد} other {حذف # سجلات}}",
+      "toggle": "تبديل",
+      "columnName": "الاسم",
+      "columnType": "النوع",
+      "columnValue": "القيمة",
+      "columnTtl": "TTL",
+      "deleting": "جارٍ الحذف...",
+      "confirmSingle": "نعم، احذفه",
+      "confirmMultiple": "نعم، احذفها"
+    },
+    "form": {
+      "typeLabel": "النوع",
+      "typePlaceholder": "اختر النوع",
+      "ttlLabel": "TTL",
+      "ttlPlaceholder": "اختر TTL",
+      "nameLabel": "الاسم",
+      "namePlaceholder": "www أو @",
+      "valueLabel": "القيمة",
+      "removeRecordAria": "إزالة السجل {index}",
+      "ttlOption1Minute": "دقيقة واحدة",
+      "ttlOption5Minutes": "5 دقائق",
+      "ttlOption20Minutes": "20 دقيقة",
+      "ttlOption1Hour": "ساعة واحدة",
+      "ttlOption1Day": "يوم واحد",
+      "ttlOption1Week": "أسبوع واحد",
+      "errorRecordTypeRequired": "نوع السجل مطلوب",
+      "errorValueRequired": "القيمة مطلوبة",
+      "errorTtlRequired": "TTL مطلوب"
+    },
+    "forwarding": {
+      "title": "تعديل إعادة توجيه URL",
+      "description": "أدخل عنوان URL الذي تريد إعادة توجيه {domain} إليه.",
+      "fieldLabel": "URL إعادة التوجيه",
+      "placeholder": "https://example.com",
+      "updated": "تمّ تحديث URL إعادة التوجيه",
+      "updateFailed": "فشل تحديث URL إعادة التوجيه"
+    },
+    "batch": {
+      "setNameservers": "ضبط خوادم الأسماء",
+      "setUrlForwarding": "ضبط إعادة توجيه URL",
+      "setWebRecords": "ضبط سجلات الويب",
+      "setMxRecords": "ضبط سجلات MX",
+      "setEnsRecord": "ضبط سجل ENS",
+      "batchAction": "إجراء دُفعي",
+      "applyingToDomains": "جارٍ التطبيق على {count} نطاقات محدَّدة.",
+      "forwardUrlLabel": "URL إعادة التوجيه",
+      "webRecordNotice": "سيُضاف السجل المحدَّد إلى جميع النطاقات المحدَّدة.",
+      "comingSoon": "التحرير الدُّفعي لـ {action} قادم قريبًا.",
+      "forwardingUpdated": "تمّ تحديث إعادة التوجيه لـ {count} نطاقات",
+      "webRecordsUpdated": "تمّ تحديث سجلات الويب لـ {count} نطاقات",
+      "nameserverComingSoon": "التحديث الدُّفعي لخوادم الأسماء قادم قريبًا",
+      "recordComingSoon": "التحديث الدُّفعي لسجلات DNS قادم قريبًا",
+      "updateFailed": "فشل تحديث النطاقات"
+    }
+  },
+  "statusCell": {
+    "ariaLabel": "إجراءات DNS",
+    "notEditableExternal": "غير قابل للتعديل عند استخدام خوادم أسماء خارجية",
+    "nameservers": "خوادم الأسماء: {value}",
+    "nameserversNone": "لا شيء",
+    "parkedOnNamefi": "موقوف على Namefi",
+    "webRecordsConfigured": "سجلات الويب مُهيَّأة",
+    "noWebRecords": "لا توجد سجلات ويب",
+    "enableParkingForForwarding": "فعِّل الإيقاف لاستخدام إعادة التوجيه",
+    "forwardsTo": "يُعيد التوجيه إلى: {url}",
+    "noForwarding": "لا توجد إعادة توجيه URL",
+    "mxConfigured": "سجلات MX مُهيَّأة",
+    "noMxRecords": "لا توجد سجلات MX",
+    "autoEnsEnabled": "Auto-ENS مُفعَّل",
+    "noEnsRecord": "لا يوجد سجل ENS",
+    "manageMore": "إدارة المزيد من سجلات DNS"
+  },
+  "cacheFlush": {
+    "title": "مسح ذاكرة التخزين المؤقت لـ DNS",
+    "description": "امسح ذاكرة التخزين المؤقت لـ DNS عبر الخوادم المضبوطة لمنطقة ونوع سجل محددين",
+    "zoneLabel": "المنطقة/النطاق",
+    "zonePlaceholder": "example.com",
+    "recordTypeLabel": "نوع السجل",
+    "recordTypeAll": "الكل",
+    "flushing": "جارٍ المسح...",
+    "submit": "مسح ذاكرة DNS",
+    "resultsHeading": "النتائج:",
+    "resultSuccess": "نجاح",
+    "resultFailed": "فشل",
+    "zoneRequired": "المنطقة مطلوبة",
+    "flushCompleteTitle": "اكتمل مسح الذاكرة",
+    "flushFailedTitle": "فشل مسح الذاكرة"
+  }
+}

@@ -25,5 +25,10 @@
     "validThru": "有效期至",
     "claimNow": "立即认领",
     "poweredByNamefi": "Powered by Namefi"
+  },
+  "dropdown": {
+    "title": "免费铸造",
+    "claim": "领取",
+    "viewAll": "查看所有免费铸造"
   }
 }

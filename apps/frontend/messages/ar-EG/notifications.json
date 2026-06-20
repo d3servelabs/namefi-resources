@@ -1,0 +1,63 @@
+{
+  "title": "الإشعارات",
+  "bell": {
+    "label": "الإشعارات",
+    "labelWithUnread": "الإشعارات، {count} غير مقروءة",
+    "relatedLabel": "الإشعارات ذات الصلة",
+    "relatedLabelWithUnread": "الإشعارات ذات الصلة، {count} غير مقروءة"
+  },
+  "permission": {
+    "tooltip": "لا تفوّت أي إشعار — فعّل الإشعارات لـ Namefi Webapp.",
+    "enable": "تفعيل",
+    "ctaText": "احصل على تنبيهات النظام فور وصول إشعارات جديدة."
+  },
+  "modal": {
+    "description": "إشعاراتك داخل التطبيق. يمكنك وضع علامة \"مقروء\"، أو الأرشفة، أو التصفية حسب المورد المرتبط."
+  },
+  "list": {
+    "filters": "تصفية",
+    "refresh": "تحديث الإشعارات",
+    "relatedTo": "مرتبط بـ",
+    "any": "الكل",
+    "nameOrKey": "الاسم أو المفتاح",
+    "nameOrKeyPlaceholder": "اسم أو مفتاح",
+    "includeSeen": "تضمين المقروءة",
+    "includeSeenAria": "تضمين الإشعارات المقروءة",
+    "includeArchived": "تضمين المؤرشفة",
+    "includeArchivedAria": "تضمين الإشعارات المؤرشفة",
+    "selectAllAria": "تحديد جميع الإشعارات الظاهرة",
+    "selectedCount": "{count} محدد",
+    "markSeen": "مقروء",
+    "markUnseen": "غير مقروء",
+    "archive": "أرشفة",
+    "restore": "استعادة",
+    "markAllSeen": "تعليم الكل كمقروء",
+    "loading": "جاري التحميل…",
+    "empty": "لا توجد إشعارات.",
+    "loadingMore": "تحميل المزيد…"
+  },
+  "item": {
+    "selectAria": "تحديد {title}",
+    "markSeenAria": "تعليم كمقروء",
+    "markUnseenAria": "تعليم كغير مقروء",
+    "archiveAria": "أرشفة",
+    "restoreAria": "استعادة من الأرشيف"
+  },
+  "errors": {
+    "markSeen": "تعذّر التعليم كمقروء",
+    "markUnseen": "تعذّر التعليم كغير مقروء",
+    "archive": "تعذّرت الأرشفة",
+    "restore": "تعذّرت الاستعادة",
+    "markAllSeen": "تعذّر تعليم الكل كمقروء"
+  },
+  "resourceTypes": {
+    "user": "مستخدم",
+    "domain": "نطاق",
+    "wallet": "محفظة",
+    "order": "طلب",
+    "order_item": "عنصر الطلب",
+    "payment": "دفع",
+    "cart": "سلة",
+    "dns_record": "سجل DNS"
+  }
+}

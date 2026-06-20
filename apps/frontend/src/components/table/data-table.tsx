@@ -49,6 +49,7 @@ import {
   DropdownMenuTrigger,
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { useTranslations } from 'next-intl';
 
 // Helper function to apply filter operators for client-side filtering
 export const applyFilterOperator = (
@@ -166,9 +167,14 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
     customFilters,
     columnVisibility,
     onColumnVisibilityChange,
-    emptyMessage = 'No audit logs found',
-    loadingMessage = 'Loading audit logs...',
+    emptyMessage,
+    loadingMessage,
   } = props;
+
+  const t = useTranslations('shared');
+  const tCommon = useTranslations('common');
+  const resolvedEmptyMessage = emptyMessage ?? t('table.emptyAuditLogs');
+  const resolvedLoadingMessage = loadingMessage ?? t('table.loadingAuditLogs');
 
   const [internalSorting, setInternalSorting] = useState<SortingState>([]);
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
@@ -257,7 +263,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             onPageSizeChange={(n) => onPageSizeChange(n)}
           />
           <span className="text-sm text-muted-foreground">
-            Showing {data.length} {data.length === 1 ? 'row' : 'rows'}
+            {t('table.showing', { count: data.length })}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -280,7 +286,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                 )}
               >
                 <FilterIcon className="h-3 w-3 me-1" />
-                Filters
+                {t('table.filters.label')}
                 {activeFilterCount > 0 && (
                   <Badge variant="secondary" className="ms-2">
                     {activeFilterCount}
@@ -295,11 +301,13 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
               render={<Button variant="outline" size="sm" />}
             >
               <ColumnsIcon className="h-3 w-3 me-1" />
-              Columns
+              {t('table.columns.label')}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[180px]">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {t('table.columns.toggle')}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {table
                   .getAllColumns()
@@ -333,12 +341,12 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
               {isLoading ? (
                 <>
                   <Loader2Icon className="h-3 w-3 me-1 animate-spin" />
-                  Loading...
+                  {tCommon('actions.loading')}
                 </>
               ) : nextPageToken ? (
-                'Load More'
+                tCommon('actions.loadMore')
               ) : (
-                'No More Rows'
+                t('table.noMoreRows')
               )}
             </Button>
           )}
@@ -479,7 +487,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                           style={{
                             transform: 'translateX(50%)',
                           }}
-                          aria-label="Resize column"
+                          aria-label={t('table.columns.resizeColumn')}
                           tabIndex={-1}
                         />
                       )}
@@ -496,7 +504,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
                     <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
-                    <p>{loadingMessage}</p>
+                    <p>{resolvedLoadingMessage}</p>
                   </td>
                 </tr>
               ) : table.getRowModel().rows.length === 0 ? (
@@ -505,7 +513,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
                     colSpan={columns.length}
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
-                    {emptyMessage}
+                    {resolvedEmptyMessage}
                   </td>
                 </tr>
               ) : (
@@ -558,10 +566,11 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-2">
         <div className="text-xs text-muted-foreground">
-          Page {table.getState().pagination.pageIndex + 1} of{' '}
-          {table.getPageCount()} — Total{' '}
-          {table.getFilteredRowModel().rows.length}{' '}
-          {table.getFilteredRowModel().rows.length === 1 ? 'row' : 'rows'}
+          {t('table.pagination.pageOfTotal', {
+            page: table.getState().pagination.pageIndex + 1,
+            total: table.getPageCount(),
+            count: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -570,7 +579,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            Previous
+            {t('table.pagination.previous')}
           </Button>
           <Button
             variant="outline"
@@ -578,7 +587,7 @@ export function DataTable<TData>(props: DataTableProps<TData>) {
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            Next
+            {t('table.pagination.next')}
           </Button>
         </div>
       </div>

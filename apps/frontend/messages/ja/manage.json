@@ -1,0 +1,16 @@
+{
+  "heading": "売却済みドメイン",
+  "loadErrorTitle": "売却済みドメインを読み込めません",
+  "loadErrorFallback": "再試行してください。",
+  "retry": "再試行",
+  "totalDomainsSold": "売却済みドメイン総数",
+  "proceeds": "売上",
+  "domainsSold": "売却済みドメイン",
+  "emptyState": "まだ売却されたドメインはありません。",
+  "columns": {
+    "domainName": "ドメイン名",
+    "wallet": "ウォレット",
+    "date": "日付",
+    "price": "価格"
+  }
+}

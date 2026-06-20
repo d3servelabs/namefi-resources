@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "Solicitud incorrecta",
+    "description": "Algo se perdió en el camino."
+  },
+  "status403": {
+    "title": "Acceso denegado",
+    "description": "Esta puerta está cerrada. Prueba tu llave."
+  },
+  "status404": {
+    "title": "No encontrado",
+    "description": "Buscamos por todas partes. Hasta debajo del sofá."
+  },
+  "status500": {
+    "title": "Error del servidor",
+    "description": "Nuestros servidores necesitan un descanso con café."
+  },
+  "actions": {
+    "goHome": "Ir al inicio",
+    "searchDomains": "Buscar dominios",
+    "logIn": "Iniciar sesión",
+    "signIn": "Iniciar sesión",
+    "goToHome": "Ir al inicio"
+  },
+  "reference": "Referencia: {requestId}",
+  "login": {
+    "failedTitle": "No se pudo iniciar sesión",
+    "failedDescription": "Por favor, inténtalo de nuevo."
+  },
+  "unauthorized": {
+    "title": "Acceso no autorizado",
+    "description": "No tienes permiso para acceder a esta página. Por favor, inicia sesión o regresa a la página de inicio.",
+    "contactSupport": "Si crees que esto es un error, por favor contacta al soporte."
+  }
+}

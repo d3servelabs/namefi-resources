@@ -8,6 +8,7 @@ import {
   type RefObject,
 } from 'react';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { useDebounceCallback } from 'usehooks-ts';
 import {
   HoverCard,
@@ -53,6 +54,7 @@ export const AutoTruncateTextV2 = ({
    */
   copyable?: boolean;
 }) => {
+  const t = useTranslations('common');
   const id = useId();
   const [copied, setCopied] = useState(false);
 
@@ -267,7 +269,7 @@ export const AutoTruncateTextV2 = ({
                     e.stopPropagation();
                     handleCopy();
                   }}
-                  aria-label="Copy"
+                  aria-label={t('actions.copy')}
                   className="text-muted-foreground hover:text-foreground mt-0.5 shrink-0 cursor-pointer transition-colors"
                 >
                   {copied ? (

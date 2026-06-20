@@ -31,6 +31,7 @@ import {
 } from '@/hooks/use-hunt-vote-row';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { PageShell } from '@/components/page-shell';
+import { useTranslations } from 'next-intl';
 
 interface DomainDetailProps extends Omit<HuntVoteRowOptions, 'domain'> {
   domainName: NamefiNormalizedDomain;
@@ -40,6 +41,7 @@ export const DomainDetail = ({
   domainName,
   shareConfig,
 }: DomainDetailProps) => {
+  const t = useTranslations('hunt');
   const router = useRouter();
   const trpc = useTRPC();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -74,17 +76,17 @@ export const DomainDetail = ({
   const deleteDomainMutation = useMutation(
     trpc.hunt.removeDomain.mutationOptions({
       onSuccess: () => {
-        toast.success('Domain deleted successfully');
+        toast.success(t('detail.deleteSuccess'));
         router.push('/hunt');
       },
       onError: (error) => {
-        toast.error(error.message || 'Failed to delete domain');
+        toast.error(error.message || t('detail.deleteError'));
       },
     }),
   );
 
-  usePendingToast(isVotePending, 'Processing vote...');
-  usePendingToast(deleteDomainMutation.isPending, 'Deleting domain...');
+  usePendingToast(isVotePending, t('vote.processing'));
+  usePendingToast(deleteDomainMutation.isPending, t('detail.deleting'));
 
   if (domainLoading || authLoading) {
     return (
@@ -108,7 +110,7 @@ export const DomainDetail = ({
             className="flex items-center gap-2 cursor-pointer"
           >
             <ArrowLeftIcon className="h-4 w-4 rtl:-scale-x-100" />
-            Back
+            {t('detail.back')}
           </Button>
         </div>
 
@@ -139,7 +141,9 @@ export const DomainDetail = ({
                   className="flex items-center gap-2 cursor-pointer"
                 >
                   <TrendingUpIcon className="h-4 w-4" />
-                  {domainData?.userHasUpvoted ? 'Voted' : 'Vote'}
+                  {domainData?.userHasUpvoted
+                    ? t('vote.voted')
+                    : t('vote.vote')}
                   {domainData?.upvoteCount !== undefined && (
                     <Badge variant="secondary">{domainData.upvoteCount}</Badge>
                   )}
@@ -157,7 +161,7 @@ export const DomainDetail = ({
         {/* Quick Actions */}
         <Card>
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle>{t('detail.quickActions')}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 gap-4">
@@ -173,7 +177,7 @@ export const DomainDetail = ({
                 variant="outline"
               >
                 <ExternalLinkIcon className="h-4 w-4" />
-                Visit Domain
+                {t('detail.visitDomain')}
               </Button>
             </div>
           </CardContent>

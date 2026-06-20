@@ -1,39 +1,40 @@
 {
   "authRequired": {
     "title": "Connexion requise",
-    "description": "Veuillez vous connecter pour continuer"
+    "description": "Veuillez vous connecter pour continuer",
+    "communityDescription": "Vous devez vous connecter pour continuer. Rejoignez la communauté pour découvrir et voter pour les meilleurs domaines !"
   },
   "requestWalletConnection": {
-    "defaultActionDescription": "pour effectuer cette action",
+    "defaultActionDescription": "pour finaliser cette action",
     "title": {
-      "wrongWallet": "Mauvais portefeuille connecté",
-      "settingActive": "Activation du portefeuille",
+      "wrongWallet": "Portefeuille incorrect connecté",
+      "settingActive": "Activation du portefeuille en cours",
       "connect": "Connectez votre portefeuille"
     },
     "description": {
       "wrongWallet": "Veuillez connecter le bon portefeuille pour continuer.",
-      "settingActive": "Veuillez patienter pendant l'activation de votre portefeuille...",
+      "settingActive": "Veuillez patienter pendant l'activation de votre portefeuille…",
       "connect": "Veuillez connecter votre portefeuille {actionDescription}."
     },
-    "checkingStatus": "Vérification du statut du portefeuille...",
-    "settingAsActive": "Activation du portefeuille en cours...",
+    "checkingStatus": "Vérification du statut du portefeuille…",
+    "settingAsActive": "Activation du portefeuille en cours…",
     "requiredWallet": "Portefeuille requis",
-    "waitingForConnection": "En attente de la connexion du portefeuille...",
-    "differentWalletConnected": "Vous avez connecté un autre portefeuille",
+    "waitingForConnection": "En attente de la connexion au portefeuille…",
+    "differentWalletConnected": "Vous avez connecté un portefeuille différent",
     "youConnected": "Vous avez connecté",
     "butWeNeed": "Mais nous avons besoin de",
     "connectedSuccessfully": "Portefeuille connecté avec succès",
-    "connecting": "Connexion...",
+    "connecting": "Connexion…",
     "next": "Suivant",
     "toast": {
       "setActiveFailed": "Échec de l'activation du portefeuille",
-      "connectFailed": "Échec de la connexion du portefeuille",
+      "connectFailed": "Échec de la connexion au portefeuille",
       "unknownError": "Erreur inconnue"
     }
   },
   "countryInput": {
     "placeholder": "Sélectionner un pays",
-    "searchPlaceholder": "Rechercher un pays...",
+    "searchPlaceholder": "Rechercher un pays…",
     "noResults": "Aucun pays trouvé.",
     "clearSelection": "Effacer la sélection"
   },
@@ -42,13 +43,13 @@
   },
   "walletNftGrid": {
     "notIndexedYet": "Pas encore indexé",
-    "emptyIdentifier": "Saisissez une adresse de portefeuille ou un nom ENS pour voir vos NFTs.",
-    "invalidIdentifier": "Cela ne ressemble pas à une adresse de portefeuille ou un nom ENS valide.",
-    "invalidIdentifierHint": "Les adresses de portefeuille doivent commencer par 0x et les noms ENS nécessitent au moins un point.",
+    "emptyIdentifier": "Saisissez une adresse de portefeuille ou un nom ENS pour afficher les NFT.",
+    "invalidIdentifier": "Cette valeur ne semble pas être une adresse de portefeuille ou un nom ENS valide.",
+    "invalidIdentifierHint": "Les adresses de portefeuille doivent commencer par 0x et les noms ENS doivent contenir au moins un point.",
     "ensResolveFailed": "Nous n'avons pas pu résoudre ce nom ENS.",
-    "ensResolveFailedHint": "Vérifiez l'orthographe ou réessayez dans un moment.",
-    "noWalletResolved": "Nous n'avons pas pu résoudre un portefeuille pour cette saisie.",
-    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
+    "ensResolveFailedHint": "Vérifiez l'orthographe ou réessayez dans un instant.",
+    "noWalletResolved": "Nous n'avons pas pu associer un portefeuille à cette entrée.",
+    "nftCount": "{count, plural, one {# NFT} other {# NFT}}",
     "loadDomainsFailed": "Nous n'avons pas pu charger les domaines de ce portefeuille.",
     "loadDomainsFailedHint": "Veuillez actualiser la page et réessayer.",
     "noNftsFound": "Aucun NFT Namefi trouvé pour ce portefeuille.",
@@ -60,7 +61,7 @@
     "network": "Réseau",
     "expiration": "Expiration",
     "wallet": "Portefeuille",
-    "ens": "ENS : {name}",
+    "ens": "ENS : {name}",
     "copiedToClipboard": "Copié dans le presse-papiers",
     "copyFailed": "Échec de la copie",
     "copyFailedDescription": "Nous n'avons pas pu copier cette valeur. Veuillez réessayer."
@@ -73,7 +74,174 @@
     "selectNftWallet": "Sélectionnez un portefeuille NFT pour continuer",
     "buyNow": "Acheter",
     "errorTitle": "Une erreur est survenue.",
-    "errorDescription": "Vous ne serez pas débité. Vous pouvez réessayer. ",
-    "errorDetail": "(Erreur - {error})"
+    "errorDescription": "Pas d'inquiétude, vous ne serez pas débité. N'hésitez pas à réessayer. ",
+    "errorDetail": "(Erreur - {error})",
+    "tooltip": "Acheter ce domaine instantanément"
+  },
+  "table": {
+    "searchPlaceholder": "Rechercher…",
+    "empty": "Aucune donnée",
+    "emptyDefault": "Aucun résultat trouvé",
+    "emptyAuditLogs": "Aucun journal d'audit trouvé",
+    "loadingAuditLogs": "Chargement des journaux d'audit…",
+    "noMoreRows": "Plus de lignes",
+    "showing": "Affichage de {count, plural, one {# ligne} other {# lignes}}",
+    "pagination": {
+      "rowsPerPage": "Lignes par page :",
+      "pageOf": "Page {page} sur {total}",
+      "pageOfTotal": "Page {page} sur {total} — Total : {count, plural, one {# ligne} other {# lignes}}",
+      "totalShort": "Total : {count, plural, one {# ligne} other {# lignes}}",
+      "previous": "Précédent",
+      "next": "Suivant"
+    },
+    "columns": {
+      "label": "Colonnes",
+      "toggle": "Afficher/masquer les colonnes",
+      "resetToDefaults": "Rétablir les paramètres par défaut",
+      "resizeColumn": "Redimensionner la colonne"
+    },
+    "filters": {
+      "label": "Filtres"
+    },
+    "filterPanel": {
+      "title": "Filtres du tableau",
+      "titleAdvanced": "Filtres avancés",
+      "description": "Appliquez des filtres pour affiner les résultats du tableau",
+      "descriptionAdvanced": "Créez des filtres complexes avec plusieurs conditions et la logique ET/OU",
+      "activeCount": "{count} actif(s)",
+      "clearAll": "Tout effacer",
+      "generalFilters": "Filtres généraux",
+      "columnFilters": "Filtres par colonne",
+      "noFiltersAvailable": "Aucun filtre disponible",
+      "active": "Actif",
+      "conditionCount": "{count, plural, one {# condition} other {# conditions}}"
+    },
+    "filter": {
+      "label": "Filtre",
+      "filterColumn": "Filtrer {column}",
+      "filterActive": "Filtre actif",
+      "operator": "Opérateur",
+      "value": "Valeur",
+      "apply": "Appliquer",
+      "clear": "Effacer",
+      "addCondition": "Ajouter une condition",
+      "clearAllConditions": "Tout effacer",
+      "maxConditionsReached": "{count, plural, one {Nombre maximum de # condition atteint} other {Nombre maximum de # conditions atteint}}",
+      "selectPlaceholder": "Sélectionner…",
+      "selectDatePlaceholder": "Sélectionner une date…",
+      "enterValuePlaceholder": "Saisir une valeur…",
+      "typeValuePlaceholder": "Taper une valeur…",
+      "enterFieldPlaceholder": "Saisir {field}…",
+      "noSuggestions": "Aucune suggestion correspondante. Vous pouvez tout de même utiliser la valeur saisie.",
+      "suggestions": "Suggestions",
+      "invalidNumber": "Nombre invalide",
+      "invalidDate": "Date invalide",
+      "operators": {
+        "contains": "Contient",
+        "containsCaseInsensitive": "Contient (insensible à la casse)",
+        "equals": "Égal à",
+        "notEquals": "Différent de",
+        "greaterThan": "Supérieur à",
+        "greaterOrEqual": "Supérieur ou égal à",
+        "lessThan": "Inférieur à",
+        "lessOrEqual": "Inférieur ou égal à",
+        "after": "Après",
+        "onOrAfter": "Le ou après",
+        "before": "Avant",
+        "onOrBefore": "Le ou avant",
+        "isNull": "Est vide",
+        "isNotNull": "N'est pas vide",
+        "inList": "Dans la liste",
+        "notInList": "Hors de la liste",
+        "allElementsEquals": "Tous les éléments sont égaux à",
+        "allElementsNotEquals": "Aucun élément n'est égal à",
+        "anyElementEquals": "Au moins un élément est égal à",
+        "anyElementNotEquals": "Au moins un élément est différent de",
+        "allElementsContain": "Tous les éléments contiennent",
+        "allElementsNotContain": "Aucun élément ne contient",
+        "anyElementContains": "Au moins un élément contient",
+        "anyElementNotContain": "Au moins un élément ne contient pas"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "Portefeuille et réseau prêts",
+    "preparing": "Préparation…",
+    "connectWallet": "Connecter le portefeuille",
+    "useThisWallet": "Utiliser ce portefeuille",
+    "switchWallet": "Changer de portefeuille",
+    "switchNetwork": "Changer de réseau",
+    "connecting": "Connexion…",
+    "activating": "Activation…",
+    "switchingNetwork": "Changement de réseau…",
+    "walletStep": "Portefeuille",
+    "networkStep": "Réseau",
+    "requiredWallet": "Portefeuille requis",
+    "differentWalletConnected": "Vous avez connecté un portefeuille différent",
+    "youConnected": "Vous avez connecté",
+    "butWeNeed": "Mais nous avons besoin de",
+    "switchNetworkPrompt": "Changez le réseau de votre portefeuille pour continuer.",
+    "current": "Actuel",
+    "required": "Requis",
+    "chainLabel": "Chaîne {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "Sélectionnez ou saisissez un domaine",
+    "loadingDomains": "Chargement des domaines",
+    "useTypedDomain": "Utiliser le domaine saisi",
+    "domains": "Domaines"
+  },
+  "previewGate": {
+    "title": "Accès à l'aperçu",
+    "description": "Saisissez le code d'accès pour accéder à cet environnement d'aperçu.",
+    "accessCode": "Code d'accès",
+    "unlock": "Déverrouiller"
+  },
+  "missingEmail": {
+    "noContactEmail": "Aucun e-mail de contact",
+    "later": "Plus tard",
+    "addEmailToProfile": "Ajouter un e-mail au profil",
+    "addEmail": "Ajouter un e-mail"
+  },
+  "announcements": {
+    "previous": "Annonce précédente",
+    "next": "Annonce suivante",
+    "dismiss": "Ignorer l'annonce"
+  },
+  "emailRequired": {
+    "title": "E-mail obligatoire",
+    "description": "Vous devez ajouter une adresse e-mail valide à votre profil pour continuer."
+  },
+  "voteOrShare": {
+    "signInToVote": "Se connecter pour voter",
+    "shareDomainInstead": "Partager le domaine à la place"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "Demain ou la semaine prochaine",
+    "selectDate": "Sélectionner une date"
+  },
+  "selectWalletAndChain": {
+    "linked": "Lié",
+    "selectChainPlaceholder": "Sélectionner une chaîne"
+  },
+  "feedback": {
+    "close": "Fermer les commentaires",
+    "skip": "Ignorer"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "Copier l'adresse résolue",
+    "title": "Portefeuille destinataire ou ENS"
+  },
+  "creditCard": {
+    "cardHolder": "Titulaire de la carte",
+    "expires": "Expire le"
+  },
+  "walletCard": {
+    "ethereumWallet": "Portefeuille Ethereum",
+    "connected": "Connecté",
+    "connectedNetworks": "Réseaux connectés"
+  },
+  "ownerPage": {
+    "heading": "Domaines détenus par ce portefeuille"
   }
 }

@@ -8,6 +8,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/form';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { useTranslations } from 'next-intl';
 import { DomainSearchCombobox } from '@/components/domain-search-combobox';
 import { useDomainSearchOptions } from '@/hooks/use-domain-search-options';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
@@ -29,10 +30,12 @@ export function DomainField<T extends FieldValues, TTransformedValues = T>({
   control,
   name,
   fixedDomain,
-  placeholder = 'Enter your domain (e.g., example.com)',
+  placeholder,
   selectOnly = false,
   onlyDomainsWithLogos = false,
 }: DomainFieldProps<T, TTransformedValues>) {
+  const t = useTranslations('aiGeneration');
+  const resolvedPlaceholder = placeholder ?? t('domainField.fixedLabel');
   if (fixedDomain) {
     return (
       <div className="mb-6">
@@ -53,7 +56,7 @@ export function DomainField<T extends FieldValues, TTransformedValues = T>({
           onChange={field.onChange}
           onBlur={field.onBlur}
           name={field.name}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           selectOnly={selectOnly}
           onlyDomainsWithLogos={onlyDomainsWithLogos}
           required
@@ -82,6 +85,7 @@ function DomainFieldWithSuggestions({
   selectOnly?: boolean;
   onlyDomainsWithLogos?: boolean;
 }) {
+  const t = useTranslations('aiGeneration');
   const { options: domainOptions, isLoading: isDomainOptionsLoading } =
     useDomainSearchOptions({
       onlyDomainsWithLogos,
@@ -98,12 +102,14 @@ function DomainFieldWithSuggestions({
           options={domainOptions}
           placeholder={placeholder}
           searchPlaceholder={
-            selectOnly ? 'Search brand domains...' : 'Search or enter a domain'
+            selectOnly
+              ? t('domainField.searchBrands')
+              : t('domainField.searchOrEnter')
           }
           emptyMessage={
             selectOnly
-              ? 'No Studio logo domains found.'
-              : 'No matching domains.'
+              ? t('domainField.emptyStudioLogos')
+              : t('domainField.emptyMatching')
           }
           allowCustomValue={!selectOnly}
           isLoading={isDomainOptionsLoading}
@@ -134,21 +140,26 @@ export function DescriptionField<
 >({
   control,
   name,
-  label = 'Describe your brand (optional)',
-  placeholder = 'Tell us more about your brand vision',
+  label,
+  placeholder,
   rows = 4,
 }: DescriptionFieldProps<T, TTransformedValues>) {
+  const t = useTranslations('aiGeneration');
+  const resolvedLabel = label ?? t('description.label');
+  const resolvedPlaceholder = placeholder ?? t('description.placeholder');
   return (
     <FormField
       control={control as unknown as Control<T>}
       name={name}
       render={({ field }) => (
         <FormItem className="mt-6">
-          <FormLabel className="text-gray-700 font-medium">{label}</FormLabel>
+          <FormLabel className="text-gray-700 font-medium">
+            {resolvedLabel}
+          </FormLabel>
           <FormControl>
             <Textarea
               {...field}
-              placeholder={placeholder}
+              placeholder={resolvedPlaceholder}
               className="w-full resize-none"
               rows={rows}
             />

@@ -15,5 +15,12 @@
     "hunt": "صيد الدومانات",
     "marketplace": "السوق"
   },
-  "recentDomains": "آخر دومانات شفتها"
+  "recentDomains": "آخر دومانات شفتها",
+  "userDropdown": {
+    "unableToLoadMenu": "تعذّر تحميل القائمة.",
+    "signOutConfirmTitle": "هل أنت متأكد من تسجيل الخروج؟",
+    "signOutConfirmDescription": "هل أنت متأكد من تسجيل الخروج؟ سيتم فقدان أي تغييرات غير محفوظة.",
+    "signOutFailedTitle": "فشل تسجيل الخروج",
+    "signOutFailedFallback": "حاول مرة أخرى."
+  }
 }

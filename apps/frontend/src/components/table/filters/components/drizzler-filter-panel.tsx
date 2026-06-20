@@ -15,6 +15,7 @@ import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Filter } from 'lucide-react';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { DrizzlerFilterField } from './drizzler-filter-field';
 import type {
   DrizzlerFilterFieldConfig as DrizzlerFilterFieldType,
@@ -50,6 +51,7 @@ export function DrizzlerFilterPanel({
     filterState: DrizzlerFilterState;
   }) => { value: string; label: string; type?: 'wallet' }[];
 }) {
+  const t = useTranslations('shared');
   const activeFilterCount =
     Object.keys(filterState.columnFilters).length +
     Object.keys(filterState.customFilters).length;
@@ -127,9 +129,13 @@ export function DrizzlerFilterPanel({
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4" />
-              Advanced Filters
+              {t('table.filterPanel.titleAdvanced')}
               {activeFilterCount > 0 && (
-                <Badge variant="secondary">{activeFilterCount} active</Badge>
+                <Badge variant="secondary">
+                  {t('table.filterPanel.activeCount', {
+                    count: activeFilterCount,
+                  })}
+                </Badge>
               )}
             </div>
             {activeFilterCount > 0 && (
@@ -139,12 +145,12 @@ export function DrizzlerFilterPanel({
                 onClick={onClearAll}
                 className="h-auto p-1"
               >
-                Clear all
+                {t('table.filterPanel.clearAll')}
               </Button>
             )}
           </SheetTitle>
           <SheetDescription>
-            Build complex filters with multiple conditions and AND/OR logic
+            {t('table.filterPanel.descriptionAdvanced')}
           </SheetDescription>
         </SheetHeader>
 
@@ -155,7 +161,7 @@ export function DrizzlerFilterPanel({
               <div className="flex items-center gap-3 px-1">
                 <div className="h-1 w-1 rounded-full bg-primary" />
                 <h3 className="text-sm font-semibold text-foreground">
-                  General Filters
+                  {t('table.filterPanel.generalFilters')}
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
@@ -195,8 +201,9 @@ export function DrizzlerFilterPanel({
                               variant="default"
                               className="ms-2 text-xs bg-primary"
                             >
-                              {filterForField.conditions.length} condition
-                              {filterForField.conditions.length > 1 ? 's' : ''}
+                              {t('table.filterPanel.conditionCount', {
+                                count: filterForField.conditions.length,
+                              })}
                             </Badge>
                           )}
                         </div>
@@ -235,7 +242,7 @@ export function DrizzlerFilterPanel({
               <div className="flex items-center gap-3 px-1">
                 <div className="h-1 w-1 rounded-full bg-primary" />
                 <h3 className="text-sm font-semibold text-foreground">
-                  Column Filters
+                  {t('table.filterPanel.columnFilters')}
                 </h3>
                 <div className="h-px flex-1 bg-border" />
               </div>
@@ -275,8 +282,9 @@ export function DrizzlerFilterPanel({
                               variant="default"
                               className="ms-2 text-xs bg-primary"
                             >
-                              {filterForField.conditions.length} condition
-                              {filterForField.conditions.length > 1 ? 's' : ''}
+                              {t('table.filterPanel.conditionCount', {
+                                count: filterForField.conditions.length,
+                              })}
                             </Badge>
                           )}
                         </div>
@@ -312,7 +320,7 @@ export function DrizzlerFilterPanel({
           {columnFilterConfigsArray.length === 0 &&
             customFilterConfigsArray.length === 0 && (
               <div className="text-center py-8 text-muted-foreground">
-                No filters available
+                {t('table.filterPanel.noFiltersAvailable')}
               </div>
             )}
         </div>

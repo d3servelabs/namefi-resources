@@ -10,6 +10,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/card';
 import { useAuth } from '@/hooks/use-auth';
 import { ShieldAlert } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ErrorHelpLinks } from '@/components/error-help-links';
 
@@ -21,12 +22,15 @@ export interface UnauthorizedProps {
 }
 
 export function Unauthorized({
-  title = 'Unauthorized Access',
-  description = "You don't have permission to access this page. Please sign in or return to the home page.",
+  title,
+  description,
   authUrl = '/',
   homeUrl = '/',
 }: UnauthorizedProps) {
+  const t = useTranslations('error');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const resolvedTitle = title ?? t('unauthorized.title');
+  const resolvedDescription = description ?? t('unauthorized.description');
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
@@ -35,8 +39,10 @@ export function Unauthorized({
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
             <ShieldAlert className="h-6 w-6 text-destructive" />
           </div>
-          <CardTitle className="text-xl sm:text-2xl">{title}</CardTitle>
-          <CardDescription className="mt-2">{description}</CardDescription>
+          <CardTitle className="text-xl sm:text-2xl">{resolvedTitle}</CardTitle>
+          <CardDescription className="mt-2">
+            {resolvedDescription}
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col space-y-2 sm:gap-x-2 sm:space-y-0 gap-2">
@@ -46,7 +52,7 @@ export function Unauthorized({
                 nativeButton={false}
                 className="w-full"
               >
-                Sign In
+                {t('actions.signIn')}
               </Button>
             )}
             <Button
@@ -55,12 +61,12 @@ export function Unauthorized({
               variant="outline"
               className="w-full"
             >
-              Go to Home
+              {t('actions.goToHome')}
             </Button>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-1 text-center text-sm text-muted-foreground">
-          <span>If you believe this is an error, please contact support.</span>
+          <span>{t('unauthorized.contactSupport')}</span>
           <ErrorHelpLinks className="mt-1" />
         </CardFooter>
       </Card>

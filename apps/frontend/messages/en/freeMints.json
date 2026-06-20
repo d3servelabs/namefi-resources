@@ -25,5 +25,10 @@
     "validThru": "Valid Thru",
     "claimNow": "Claim Now",
     "poweredByNamefi": "Powered by Namefi"
+  },
+  "dropdown": {
+    "title": "Free Mints",
+    "claim": "Claim",
+    "viewAll": "View All Free Mints"
   }
 }

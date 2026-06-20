@@ -1,0 +1,63 @@
+{
+  "title": "通知",
+  "bell": {
+    "label": "通知",
+    "labelWithUnread": "通知，{count} 条未读",
+    "relatedLabel": "相关通知",
+    "relatedLabelWithUnread": "相关通知，{count} 条未读"
+  },
+  "permission": {
+    "tooltip": "不错过任何通知，请为 Namefi 网页应用开启通知权限。",
+    "enable": "开启",
+    "ctaText": "有新通知时接收系统横幅提醒。"
+  },
+  "modal": {
+    "description": "您的应用内通知。可标为已读、归档，或按关联资源筛选。"
+  },
+  "list": {
+    "filters": "筛选",
+    "refresh": "刷新通知",
+    "relatedTo": "关联资源",
+    "any": "全部",
+    "nameOrKey": "名称或标识",
+    "nameOrKeyPlaceholder": "名称或标识",
+    "includeSeen": "包含已读",
+    "includeSeenAria": "包含已读通知",
+    "includeArchived": "包含已归档",
+    "includeArchivedAria": "包含已归档通知",
+    "selectAllAria": "选择所有可见通知",
+    "selectedCount": "已选 {count} 条",
+    "markSeen": "已读",
+    "markUnseen": "未读",
+    "archive": "归档",
+    "restore": "恢复",
+    "markAllSeen": "全部标为已读",
+    "loading": "加载中…",
+    "empty": "暂无通知。",
+    "loadingMore": "加载更多…"
+  },
+  "item": {
+    "selectAria": "选择 {title}",
+    "markSeenAria": "标为已读",
+    "markUnseenAria": "标为未读",
+    "archiveAria": "归档",
+    "restoreAria": "从归档中恢复"
+  },
+  "errors": {
+    "markSeen": "标为已读失败",
+    "markUnseen": "标为未读失败",
+    "archive": "归档失败",
+    "restore": "恢复失败",
+    "markAllSeen": "全部标为已读失败"
+  },
+  "resourceTypes": {
+    "user": "用户",
+    "domain": "域名",
+    "wallet": "钱包",
+    "order": "订单",
+    "order_item": "订单项",
+    "payment": "付款",
+    "cart": "购物车",
+    "dns_record": "DNS 记录"
+  }
+}

@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { forwardRef, useState } from 'react';
 import { Loader2, ShoppingCart, Check, Download, Trash } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 
 type CartButtonState =
@@ -78,6 +79,7 @@ export const AnimatedCartButton = forwardRef<
     ref,
   ) => {
     const [isHovered, setIsHovered] = useState(false);
+    const t = useTranslations('cart');
 
     const isMobile = useIsMobile();
     const removeButtonSize = isMobile ? 'icon-sm' : 'icon';
@@ -131,7 +133,7 @@ export const AnimatedCartButton = forwardRef<
             >
               <Button
                 size={removeButtonSize}
-                aria-label="Remove from cart"
+                aria-label={t('cartButton.removeAria')}
                 className="bg-secondary text-secondary-foreground hover:bg-red-600/80 transition-colors duration-200 rounded-md shrink-0 disabled:opacity-100 flex items-center justify-center"
                 onClick={onRemove}
                 disabled={isDisabled}

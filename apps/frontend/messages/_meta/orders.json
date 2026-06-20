@@ -134,6 +134,14 @@
   "unlinkedWalletTooltip": {
     "description": "Tooltip explaining that the NFT receiving wallet is not linked to the current account, so the domain won't appear in the account."
   },
+  "nftWalletLabel": {
+    "description": "Field label for the NFT receiving wallet in the mobile order list row. 'NFT' is a technical term — keep it.",
+    "maxLength": 20
+  },
+  "viewTransactionTitle": {
+    "description": "Tooltip/title for the link that opens an x402 payment's blockchain transaction in a block explorer.",
+    "maxLength": 24
+  },
   "walletNotLinked": {
     "description": "Short inline notice that the displayed wallet isn't linked to the user's account."
   },

@@ -1,34 +1,35 @@
 {
   "authRequired": {
     "title": "サインインが必要です",
-    "description": "続行するにはサインインしてください"
+    "description": "続行するにはサインインしてください",
+    "communityDescription": "続けるにはサインインが必要です。コミュニティに参加して、最高のドメインを発見し、投票しましょう！"
   },
   "requestWalletConnection": {
-    "defaultActionDescription": "この操作を完了するため",
+    "defaultActionDescription": "この操作を完了するために",
     "title": {
-      "wrongWallet": "別のウォレットが接続されています",
+      "wrongWallet": "接続されているウォレットが異なります",
       "settingActive": "アクティブウォレットを設定中",
       "connect": "ウォレットを接続してください"
     },
     "description": {
-      "wrongWallet": "続行するには正しいウォレットを接続してください。",
+      "wrongWallet": "続行するには、正しいウォレットを接続してください。",
       "settingActive": "ウォレットをアクティブに設定しています。しばらくお待ちください...",
-      "connect": "{actionDescription}ウォレットを接続してください。"
+      "connect": "{actionDescription}、ウォレットを接続してください。"
     },
     "checkingStatus": "ウォレットの状態を確認中...",
     "settingAsActive": "ウォレットをアクティブに設定中...",
     "requiredWallet": "必要なウォレット",
-    "waitingForConnection": "ウォレット接続を待機中...",
-    "differentWalletConnected": "別のウォレットが接続されました",
+    "waitingForConnection": "ウォレットの接続を待機中...",
+    "differentWalletConnected": "別のウォレットが接続されています",
     "youConnected": "接続されたウォレット",
     "butWeNeed": "必要なウォレット",
-    "connectedSuccessfully": "ウォレットの接続に成功しました",
+    "connectedSuccessfully": "ウォレットが正常に接続されました",
     "connecting": "接続中...",
     "next": "次へ",
     "toast": {
       "setActiveFailed": "アクティブウォレットの設定に失敗しました",
       "connectFailed": "ウォレットの接続に失敗しました",
-      "unknownError": "不明なエラー"
+      "unknownError": "不明なエラーが発生しました"
     }
   },
   "countryInput": {
@@ -42,16 +43,16 @@
   },
   "walletNftGrid": {
     "notIndexedYet": "未インデックス",
-    "emptyIdentifier": "NFTを表示するにはウォレットアドレスまたはENS名を入力してください。",
-    "invalidIdentifier": "有効なウォレットアドレスまたはENS名ではありません。",
-    "invalidIdentifierHint": "ウォレットは0xで始まる必要があり、ENS名にはドットが必要です。",
-    "ensResolveFailed": "ENS名を解決できませんでした。",
-    "ensResolveFailedHint": "スペルを確認するか、しばらくしてから再試行してください。",
-    "noWalletResolved": "入力からウォレットを解決できませんでした。",
-    "nftCount": "{count, plural, other {# NFT}}",
+    "emptyIdentifier": "NFTを表示するには、ウォレットアドレスまたはENS名を入力してください。",
+    "invalidIdentifier": "有効なウォレットアドレスまたはENS名ではないようです。",
+    "invalidIdentifierHint": "ウォレットは0xで始まる必要があり、ENS名にはドットが最低1つ必要です。",
+    "ensResolveFailed": "そのENS名を解決できませんでした。",
+    "ensResolveFailedHint": "スペルを確認するか、しばらくしてから再度お試しください。",
+    "noWalletResolved": "入力内容からウォレットを解決できませんでした。",
+    "nftCount": "{count, plural, one {# NFT} other {# NFT}}",
     "loadDomainsFailed": "このウォレットのドメインを読み込めませんでした。",
-    "loadDomainsFailedHint": "ページを更新して再試行してください。",
-    "noNftsFound": "このウォレットにNamefi NFTが見つかりません。",
+    "loadDomainsFailedHint": "ページを更新して、もう一度お試しください。",
+    "noNftsFound": "このウォレットにNamefi NFTは見つかりませんでした。",
     "noNftsFoundHint": "ウォレットアドレスまたはENS名を確認するか、インデックスが追いつくまでしばらくお待ちください。",
     "unknownNetwork": "不明なネットワーク",
     "explorer": "エクスプローラー",
@@ -63,17 +64,184 @@
     "ens": "ENS: {name}",
     "copiedToClipboard": "クリップボードにコピーしました",
     "copyFailed": "コピーに失敗しました",
-    "copyFailedDescription": "値をコピーできませんでした。再試行してください。"
+    "copyFailedDescription": "値をコピーできませんでした。もう一度お試しください。"
   },
   "instantBuyModal": {
     "title": "{domain}を購入",
-    "description": "1年間の登録購入を完了してください",
+    "description": "1年間の登録購入を完了します",
     "domain": "ドメイン",
     "pricePerYear": "{price} USD / 年",
-    "selectNftWallet": "続行するNFTウォレットを選択",
+    "selectNftWallet": "続行するNFTウォレットを選択してください",
     "buyNow": "今すぐ購入",
-    "errorTitle": "問題が発生しました。",
-    "errorDescription": "ご安心ください。請求は発生していません。再試行してください。",
-    "errorDetail": "(エラー - {error})"
+    "errorTitle": "エラーが発生しました。",
+    "errorDescription": "ご安心ください。請求は行われていません。もう一度お試しください。",
+    "errorDetail": "(エラー - {error})",
+    "tooltip": "このドメインを今すぐ購入する"
+  },
+  "table": {
+    "searchPlaceholder": "検索...",
+    "empty": "データなし",
+    "emptyDefault": "データが見つかりません",
+    "emptyAuditLogs": "監査ログが見つかりません",
+    "loadingAuditLogs": "監査ログを読み込み中...",
+    "noMoreRows": "これ以上の行はありません",
+    "showing": "{count, plural, one {# 件表示中} other {# 件表示中}}",
+    "pagination": {
+      "rowsPerPage": "1ページの行数:",
+      "pageOf": "{page} / {total} ページ",
+      "pageOfTotal": "{page} / {total} ページ — 合計 {count, plural, one {# 件} other {# 件}}",
+      "totalShort": "合計: {count, plural, one {# 件} other {# 件}}",
+      "previous": "前へ",
+      "next": "次へ"
+    },
+    "columns": {
+      "label": "列",
+      "toggle": "列の表示切り替え",
+      "resetToDefaults": "デフォルトに戻す",
+      "resizeColumn": "列のサイズを変更"
+    },
+    "filters": {
+      "label": "フィルター"
+    },
+    "filterPanel": {
+      "title": "テーブルフィルター",
+      "titleAdvanced": "詳細フィルター",
+      "description": "フィルターを適用してテーブルの結果を絞り込みます",
+      "descriptionAdvanced": "AND/OR論理を使用して、複数の条件で複雑なフィルターを構築します",
+      "activeCount": "{count} 件有効",
+      "clearAll": "すべてクリア",
+      "generalFilters": "一般フィルター",
+      "columnFilters": "列フィルター",
+      "noFiltersAvailable": "利用可能なフィルターはありません",
+      "active": "有効",
+      "conditionCount": "{count, plural, one {# 件の条件} other {# 件の条件}}"
+    },
+    "filter": {
+      "label": "フィルター",
+      "filterColumn": "{column}をフィルター",
+      "filterActive": "フィルターが有効です",
+      "operator": "演算子",
+      "value": "値",
+      "apply": "適用",
+      "clear": "クリア",
+      "addCondition": "条件を追加",
+      "clearAllConditions": "すべてクリア",
+      "maxConditionsReached": "{count, plural, one {条件の上限（# 件）に達しました} other {条件の上限（# 件）に達しました}}",
+      "selectPlaceholder": "選択...",
+      "selectDatePlaceholder": "日付を選択...",
+      "enterValuePlaceholder": "値を入力...",
+      "typeValuePlaceholder": "値を入力...",
+      "enterFieldPlaceholder": "{field}を入力...",
+      "noSuggestions": "一致する候補はありません。入力した値をそのまま使用できます。",
+      "suggestions": "候補",
+      "invalidNumber": "無効な数値です",
+      "invalidDate": "無効な日付です",
+      "operators": {
+        "contains": "を含む",
+        "containsCaseInsensitive": "を含む（大文字・小文字を区別しない）",
+        "equals": "と等しい",
+        "notEquals": "と等しくない",
+        "greaterThan": "より大きい",
+        "greaterOrEqual": "以上",
+        "lessThan": "より小さい",
+        "lessOrEqual": "以下",
+        "after": "より後",
+        "onOrAfter": "以降",
+        "before": "より前",
+        "onOrBefore": "以前",
+        "isNull": "空である",
+        "isNotNull": "空でない",
+        "inList": "リストに含まれる",
+        "notInList": "リストに含まれない",
+        "allElementsEquals": "すべての要素が等しい",
+        "allElementsNotEquals": "すべての要素が等しくない",
+        "anyElementEquals": "いずれかの要素が等しい",
+        "anyElementNotEquals": "いずれかの要素が等しくない",
+        "allElementsContain": "すべての要素が含む",
+        "allElementsNotContain": "すべての要素が含まない",
+        "anyElementContains": "いずれかの要素が含む",
+        "anyElementNotContain": "いずれかの要素が含まない"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "ウォレットとネットワークの準備が整いました",
+    "preparing": "準備中...",
+    "connectWallet": "ウォレットを接続",
+    "useThisWallet": "このウォレットを使用",
+    "switchWallet": "ウォレットを切り替え",
+    "switchNetwork": "ネットワークを切り替え",
+    "connecting": "接続中…",
+    "activating": "アクティベート中…",
+    "switchingNetwork": "ネットワークを切り替え中…",
+    "walletStep": "ウォレット",
+    "networkStep": "ネットワーク",
+    "requiredWallet": "必要なウォレット",
+    "differentWalletConnected": "別のウォレットが接続されています",
+    "youConnected": "接続されたウォレット",
+    "butWeNeed": "必要なウォレット",
+    "switchNetworkPrompt": "続けるにはウォレットのネットワークを切り替えてください。",
+    "current": "現在",
+    "required": "必要",
+    "chainLabel": "チェーン {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "ドメインを選択または入力してください",
+    "loadingDomains": "ドメインを読み込み中",
+    "useTypedDomain": "入力したドメインを使用",
+    "domains": "ドメイン"
+  },
+  "previewGate": {
+    "title": "プレビューアクセス",
+    "description": "このプレビュー環境にアクセスするには、アクセスコードを入力してください。",
+    "accessCode": "アクセスコード",
+    "unlock": "ロック解除"
+  },
+  "missingEmail": {
+    "noContactEmail": "連絡先メールアドレスがありません",
+    "later": "後で",
+    "addEmailToProfile": "プロフィールにメールを追加",
+    "addEmail": "メールを追加"
+  },
+  "announcements": {
+    "previous": "前のお知らせ",
+    "next": "次のお知らせ",
+    "dismiss": "お知らせを閉じる"
+  },
+  "emailRequired": {
+    "title": "メールアドレスが必要です",
+    "description": "続けるには、プロフィールに有効なメールアドレスを追加してください。"
+  },
+  "voteOrShare": {
+    "signInToVote": "サインインして投票する",
+    "shareDomainInstead": "代わりにドメインをシェアする"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "明日または来週",
+    "selectDate": "日付を選択"
+  },
+  "selectWalletAndChain": {
+    "linked": "連携済み",
+    "selectChainPlaceholder": "チェーンを選択"
+  },
+  "feedback": {
+    "close": "フィードバックを閉じる",
+    "skip": "スキップ"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "解決済みアドレスをコピー",
+    "title": "受取ウォレットまたは ENS"
+  },
+  "creditCard": {
+    "cardHolder": "カード名義人",
+    "expires": "有効期限"
+  },
+  "walletCard": {
+    "ethereumWallet": "Ethereum ウォレット",
+    "connected": "接続済み",
+    "connectedNetworks": "接続済みネットワーク"
+  },
+  "ownerPage": {
+    "heading": "このウォレットが所有するドメイン"
   }
 }

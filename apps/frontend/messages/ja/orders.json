@@ -51,7 +51,6 @@
     "renew": "更新"
   },
   "unlinkedWalletTooltip": "このウォレットは現在のアカウントにリンクされていないため、アカウント内でドメインを確認できません。",
-  "walletNotLinked": "このウォレットはアカウントにリンクされていません。",
   "timeline": {
     "subtitle": "注文のリアルタイム更新",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "ドメインがロックされていたため、サポートがリクエストをキャンセルしました。",
     "failureUserAuthCode": "Auth code の更新が必要でしたが、お客様がリクエストをキャンセルしました。",
     "failureUserLocked": "ドメインがロックされていたため、お客様がリクエストをキャンセルしました。"
-  }
+  },
+  "nftWalletLabel": "NFT ウォレット",
+  "viewTransactionTitle": "トランザクションを表示"
 }

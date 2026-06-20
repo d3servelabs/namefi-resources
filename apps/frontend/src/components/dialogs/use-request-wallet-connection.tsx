@@ -21,6 +21,7 @@ import {
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
+import { useTranslations } from 'next-intl';
 import {
   AlertCircle,
   CheckCircle,
@@ -384,6 +385,8 @@ function deriveState({
 export function RequestWalletConnectionDialog(
   props: RequestWalletConnectionDialogProps,
 ) {
+  const t = useTranslations('shared');
+  const tCommon = useTranslations('common');
   const config = useSafeConfig();
   const {
     open,
@@ -491,7 +494,7 @@ export function RequestWalletConnectionDialog(
               <div className="flex items-center gap-2 px-3 py-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg">
                 <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
                 <p className="text-sm text-green-600 dark:text-green-400">
-                  Wallet and network ready
+                  {t('walletConnectionDialog.walletAndNetworkReady')}
                 </p>
               </div>
             )}
@@ -499,22 +502,24 @@ export function RequestWalletConnectionDialog(
         ) : (
           <div className="flex flex-col items-center justify-center gap-4 py-8">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Preparing...</p>
+            <p className="text-sm text-muted-foreground">
+              {t('walletConnectionDialog.preparing')}
+            </p>
           </div>
         )}
 
         <DialogFooter>
           <Button variant="outline" onClick={onCancel} disabled={isBusy}>
-            Cancel
+            {tCommon('actions.cancel')}
           </Button>
           {state === 'wallet-not-connected' && (
             <Button onClick={onConnectWallet} disabled={isBusy}>
-              Connect Wallet
+              {t('walletConnectionDialog.connectWallet')}
             </Button>
           )}
           {state === 'wallet-in-list-not-active' && (
             <Button onClick={onSetActiveWallet} disabled={isBusy}>
-              Use This Wallet
+              {t('walletConnectionDialog.useThisWallet')}
             </Button>
           )}
           {state === 'wrong-wallet' && (
@@ -526,30 +531,30 @@ export function RequestWalletConnectionDialog(
               }
               disabled={isBusy}
             >
-              Switch Wallet
+              {t('walletConnectionDialog.switchWallet')}
             </Button>
           )}
           {state === 'wallet-matches-wrong-chain' && (
             <Button onClick={onSwitchChain} disabled={isBusy}>
-              Switch Network
+              {t('walletConnectionDialog.switchNetwork')}
             </Button>
           )}
           {state === 'connecting-wallet' && (
             <Button disabled>
               <Loader2 className="h-4 w-4 me-2 animate-spin" />
-              Connecting…
+              {t('walletConnectionDialog.connecting')}
             </Button>
           )}
           {state === 'setting-active' && (
             <Button disabled>
               <Loader2 className="h-4 w-4 me-2 animate-spin" />
-              Activating…
+              {t('walletConnectionDialog.activating')}
             </Button>
           )}
           {state === 'switching-chain' && (
             <Button disabled>
               <Loader2 className="h-4 w-4 me-2 animate-spin" />
-              Switching network…
+              {t('walletConnectionDialog.switchingNetwork')}
             </Button>
           )}
         </DialogFooter>
@@ -559,6 +564,7 @@ export function RequestWalletConnectionDialog(
 }
 
 function StepIndicator({ state }: { state: DerivedState }) {
+  const t = useTranslations('shared');
   const walletDone =
     state === 'wallet-matches-wrong-chain' ||
     state === 'switching-chain' ||
@@ -574,7 +580,7 @@ function StepIndicator({ state }: { state: DerivedState }) {
         ) : (
           <Wallet2 className="h-3.5 w-3.5" />
         )}
-        Wallet
+        {t('walletConnectionDialog.walletStep')}
       </span>
       <span>→</span>
       <span
@@ -585,17 +591,18 @@ function StepIndicator({ state }: { state: DerivedState }) {
         ) : (
           <Network className="h-3.5 w-3.5" />
         )}
-        Network
+        {t('walletConnectionDialog.networkStep')}
       </span>
     </div>
   );
 }
 
 function RequiredWalletPanel({ address }: { address: string }) {
+  const t = useTranslations('shared');
   return (
     <div className="flex flex-col gap-2">
       <span className="text-xs text-gray-500 uppercase tracking-wide">
-        Required Wallet
+        {t('walletConnectionDialog.requiredWallet')}
       </span>
       <div className="flex items-center gap-2 px-2 py-2 bg-muted rounded-xl">
         <UserWalletAvatar address={address} className="size-8" />
@@ -621,17 +628,18 @@ function WrongWalletPanel({
   requiredAddress: string;
   connectedAddress: string;
 }) {
+  const t = useTranslations('shared');
   return (
     <>
       <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
         <AlertCircle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
         <p className="text-sm text-amber-600 dark:text-amber-400">
-          You connected a different wallet
+          {t('walletConnectionDialog.differentWalletConnected')}
         </p>
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-xs text-gray-500 uppercase tracking-wide">
-          You Connected
+          {t('walletConnectionDialog.youConnected')}
         </span>
         <div className="flex items-center gap-2 px-2 py-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-xl">
           <UserWalletAvatar address={connectedAddress} className="size-8" />
@@ -648,7 +656,7 @@ function WrongWalletPanel({
       </div>
       <div className="flex flex-col gap-2">
         <span className="text-xs text-gray-500 uppercase tracking-wide">
-          But We Need
+          {t('walletConnectionDialog.butWeNeed')}
         </span>
         <div className="flex items-center gap-2 px-2 py-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-xl">
           <UserWalletAvatar address={requiredAddress} className="size-8" />
@@ -674,29 +682,30 @@ function NetworkPanel({
   currentChainId: number;
   requiredChainId: number;
 }) {
+  const t = useTranslations('shared');
   return (
     <>
       <div className="flex items-center gap-2 px-3 py-2 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded-lg">
         <Network className="h-4 w-4 text-amber-600 dark:text-amber-400" />
         <p className="text-sm text-amber-600 dark:text-amber-400">
-          Switch your wallet network to continue.
+          {t('walletConnectionDialog.switchNetworkPrompt')}
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div className="flex flex-col gap-1">
           <span className="text-xs text-gray-500 uppercase tracking-wide">
-            Current
+            {t('walletConnectionDialog.current')}
           </span>
           <div className="px-3 py-2 bg-muted rounded-lg font-mono text-sm">
-            Chain {currentChainId}
+            {t('walletConnectionDialog.chainLabel', { id: currentChainId })}
           </div>
         </div>
         <div className="flex flex-col gap-1">
           <span className="text-xs text-gray-500 uppercase tracking-wide">
-            Required
+            {t('walletConnectionDialog.required')}
           </span>
           <div className="px-3 py-2 bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800 rounded-lg font-mono text-sm text-green-600 dark:text-green-400">
-            Chain {requiredChainId}
+            {t('walletConnectionDialog.chainLabel', { id: requiredChainId })}
           </div>
         </div>
       </div>

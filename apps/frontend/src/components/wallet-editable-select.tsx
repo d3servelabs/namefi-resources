@@ -10,6 +10,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/select';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { getShortAddress } from '@/lib/string';
 import type { ChangeEvent, ReactNode } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -47,6 +48,7 @@ export function WalletEditableSelect({
   selectedChainId,
   parentDomain,
 }: WalletEditableSelectProps) {
+  const t = useTranslations('shared');
   const { nftChains: chains, defaultNftChainId: defaultChainId } =
     useAllowedChains(parentDomain);
   const activeChainId = selectedChainId ?? defaultChainId;
@@ -110,7 +112,9 @@ export function WalletEditableSelect({
             }}
           >
             <SelectTrigger className="h-12 py-5.5 me-1">
-              <SelectValue placeholder="Select a Chain">
+              <SelectValue
+                placeholder={t('selectWalletAndChain.selectChainPlaceholder')}
+              >
                 {selectedChain ? (
                   <span className="flex items-center gap-2">
                     <NetworkLogo

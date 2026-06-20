@@ -22,7 +22,6 @@
     "clear": "クリア"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "この条件に一致するリストがありません。",
     "empty": "リストが見つかりません。",
     "endOfFeed": "フィードの末尾",

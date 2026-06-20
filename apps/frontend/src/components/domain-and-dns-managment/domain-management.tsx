@@ -15,6 +15,7 @@ import { useTRPC } from '@/lib/trpc';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { useQuery } from '@tanstack/react-query';
 import { AlertTriangle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   type FC,
   type HTMLAttributes,
@@ -202,6 +203,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
   className,
   ...rest
 }: DomainManagementProps) => {
+  const t = useTranslations('dnsManagement');
   useRegisterAdminFlags(DOMAIN_FLAG_DEFINITION);
 
   const [newOverviewComponent] = useAdminFeatureFlag(DOMAIN_FLAG_DEFINITION[0]);
@@ -337,8 +339,8 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       <div className={cn('', className)} {...rest}>
         <DomainManagementErrorState
           domain={domain}
-          title="Sign in required"
-          message="Please sign in to manage this domain."
+          title={t('management.signInRequiredTitle')}
+          message={t('management.signInRequiredMessage')}
         />
       </div>
     );
@@ -349,11 +351,11 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       <div className={cn('', className)} {...rest}>
         <DomainManagementErrorState
           domain={domain}
-          title="Unable to load domain management"
+          title={t('management.loadErrorTitle')}
           message={
             domainManagementError instanceof Error
               ? domainManagementError.message
-              : 'Please try again.'
+              : t('management.loadErrorFallback')
           }
           onRetry={retryDomainManagementQueries}
         />
@@ -366,11 +368,11 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       <div className={cn('', className)} {...rest}>
         <DomainManagementErrorState
           domain={domain}
-          title="Unable to load marketplace status"
+          title={t('management.marketplaceErrorTitle')}
           message={
             marketplaceExportError instanceof Error
               ? marketplaceExportError.message
-              : 'Please try again.'
+              : t('management.loadErrorFallback')
           }
           onRetry={() => {
             void domainExportDetailsQuery.refetch();
@@ -413,10 +415,9 @@ export const DomainManagement: FC<DomainManagementProps> = ({
           className="my-1 dark:bg-amber-500/50 bg-amber-200"
         >
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Heads up!</AlertTitle>
+          <AlertTitle>{t('management.publicViewTitle')}</AlertTitle>
           <AlertDescription>
-            This domain is owned by another user. You are viewing public
-            information
+            {t('management.publicViewMessage')}
           </AlertDescription>
         </Alert>
       )}
@@ -442,19 +443,23 @@ export const DomainManagement: FC<DomainManagementProps> = ({
             <Tabs value={currentTab} onValueChange={handleTabChange}>
               <TabsList className="border-1 border-brand-primary/5 bg-gradient-to-r from-brand-primary/15 via-transparent to-brand-secondary/15 mb-8">
                 <TabsTrigger value="domain-overview">
-                  Domain Overview
+                  {t('management.tabDomainOverview')}
                 </TabsTrigger>
 
                 {showDnsTable && (
-                  <TabsTrigger value="dns-records">DNS Records</TabsTrigger>
+                  <TabsTrigger value="dns-records">
+                    {t('management.tabDnsRecords')}
+                  </TabsTrigger>
                 )}
                 {showDnsManagement && (
                   <TabsTrigger value="dns-management">
-                    DNS Management
+                    {t('management.tabDnsManagement')}
                   </TabsTrigger>
                 )}
                 {marketplaceListingEnabled && (
-                  <TabsTrigger value="marketplace">Marketplace</TabsTrigger>
+                  <TabsTrigger value="marketplace">
+                    {t('management.tabMarketplace')}
+                  </TabsTrigger>
                 )}
               </TabsList>
 
@@ -513,7 +518,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
       ) : (
         <Card className={cn('bg-zinc-900 border-zinc-800')}>
           <CardHeader>
-            <CardTitle>Domain Not Migrated Yet</CardTitle>
+            <CardTitle>{t('management.notMigratedTitle')}</CardTitle>
           </CardHeader>
           <div className="text-center py-2 flex flex-col gap-4 items-center">
             <p
@@ -541,7 +546,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                 nativeButton={false}
                 variant="outline"
               >
-                Redirect to Registrar
+                {t('management.redirectToRegistrar')}
               </Button>
             ) : undefined}
           </div>
@@ -553,22 +558,26 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
 const showTabs = false;
 const MainTabs = () => {
+  const t = useTranslations('dnsManagement');
   return (
     <TabsList
       className={cn('w-full grid-cols-1 mb-8', showTabs ? 'grid' : 'hidden')}
     >
-      <TabsTrigger value="dns-setting">DNS Setting</TabsTrigger>
+      <TabsTrigger value="dns-setting">
+        {t('management.tabDnsSetting')}
+      </TabsTrigger>
     </TabsList>
   );
 };
 
 export const ComingSoonCard = ({ title }: { title: string }) => {
+  const t = useTranslations('dnsManagement');
   return (
     <Card className={cn('bg-zinc-900 border-zinc-800')}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <div className="text-center py-12">Coming Soon ...</div>
+      <div className="text-center py-12">{t('management.comingSoon')}</div>
     </Card>
   );
 };
@@ -603,7 +612,7 @@ function DomainManagementErrorState({
   title,
   message,
   onRetry,
-  retryLabel = 'Retry',
+  retryLabel,
 }: {
   domain: string;
   title: string;
@@ -611,6 +620,7 @@ function DomainManagementErrorState({
   onRetry?: () => void;
   retryLabel?: string;
 }) {
+  const t = useTranslations('dnsManagement');
   return (
     <div className="space-y-6">
       <DomainManagementTitle domain={domain} />
@@ -622,7 +632,7 @@ function DomainManagementErrorState({
           <p className="text-sm text-muted-foreground">{message}</p>
           {onRetry ? (
             <Button type="button" variant="outline" onClick={onRetry}>
-              {retryLabel}
+              {retryLabel ?? t('management.retry')}
             </Button>
           ) : null}
         </div>

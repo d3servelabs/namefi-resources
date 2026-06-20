@@ -19,6 +19,7 @@ import {
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
 import { Check, ExternalLink, HandCoins } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
@@ -42,6 +43,7 @@ export function OffersCard({
   tokenId,
   ownerAddress,
 }: Props) {
+  const t = useTranslations('domains');
   const offersQuery = useOffers({ chainId, tokenAddress, tokenId });
   const acceptMutation = useAcceptOffer({
     chainId,
@@ -50,9 +52,11 @@ export function OffersCard({
     ownerAddress,
     onSuccess: (offer) =>
       toast.success(
-        `Accepted offer for ${offer.price.decimal.toFixed(4)} ${offer.price.currency.symbol}`,
+        t('marketplace.offers.accepted', {
+          price: `${offer.price.decimal.toFixed(4)} ${offer.price.currency.symbol}`,
+        }),
         {
-          description: 'NFT transferred to the bidder.',
+          description: t('marketplace.offers.acceptedDescription'),
         },
       ),
   });
@@ -61,7 +65,7 @@ export function OffersCard({
     try {
       await acceptMutation.mutateAsync({ offer });
     } catch (error) {
-      toast.error('Failed to accept offer', {
+      toast.error(t('marketplace.offers.acceptFailed'), {
         description: errorToMessage(error),
       });
       throw error;
@@ -73,12 +77,9 @@ export function OffersCard({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-zinc-100">
           <HandCoins className="h-4 w-4 text-brand-primary" />
-          Incoming offers
+          {t('marketplace.offers.title')}
         </CardTitle>
-        <CardDescription>
-          Bids placed on this domain across supported marketplaces. Accepting an
-          offer transfers the NFT to the bidder and credits you the bid amount.
-        </CardDescription>
+        <CardDescription>{t('marketplace.offers.description')}</CardDescription>
       </CardHeader>
       <CardContent>
         {offersQuery.isLoading ? (
@@ -88,21 +89,27 @@ export function OffersCard({
           </div>
         ) : offersQuery.error ? (
           <p className="text-sm text-red-400">
-            Couldn't load offers: {errorToMessage(offersQuery.error)}
+            {t('marketplace.offers.loadFailed', {
+              error: errorToMessage(offersQuery.error),
+            })}
           </p>
         ) : !offersQuery.data || offersQuery.data.length === 0 ? (
           <p className="text-sm text-zinc-400">
-            No active offers. When a buyer places a bid it will appear here.
+            {t('marketplace.offers.empty')}
           </p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Marketplace</TableHead>
-                <TableHead>Bidder</TableHead>
-                <TableHead>Offer</TableHead>
-                <TableHead>Expires</TableHead>
-                <TableHead className="text-end">Actions</TableHead>
+                <TableHead>
+                  {t('marketplace.offers.columnMarketplace')}
+                </TableHead>
+                <TableHead>{t('marketplace.offers.columnBidder')}</TableHead>
+                <TableHead>{t('marketplace.offers.columnOffer')}</TableHead>
+                <TableHead>{t('marketplace.offers.columnExpires')}</TableHead>
+                <TableHead className="text-end">
+                  {t('marketplace.offers.columnActions')}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -144,7 +151,7 @@ export function OffersCard({
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
                           >
-                            View
+                            {t('marketplace.offers.view')}
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         ) : null;
@@ -155,7 +162,7 @@ export function OffersCard({
                         className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"
                       >
                         <Check className="h-3 w-3 me-1" />
-                        Accept
+                        {t('marketplace.offers.accept')}
                       </AsyncButton>
                     </div>
                   </TableCell>

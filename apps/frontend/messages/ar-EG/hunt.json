@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "صيد النطاقات",
+    "submitDomain": "أضف نطاقًا",
+    "trendingTitle": "النطاقات الرائجة",
+    "signInToSubmitTitle": "سجّل دخولك لإضافة نطاقات",
+    "signInToSubmitDescription": "تحتاج إلى تسجيل الدخول لإضافة نطاقات إلى الصيد. انضم للمجتمع وشارك بنطاقاتك المفضلة!"
+  },
+  "timeRange": {
+    "last7Days": "آخر 7 أيام",
+    "last30Days": "آخر 30 يومًا",
+    "anytime": "في أي وقت"
+  },
+  "tabs": {
+    "allHunt": "كل الصيد"
+  },
+  "mine": {
+    "title": "نشاطي",
+    "upvotedTab": "النطاقات التي صوّتُ لها",
+    "submittedTab": "النطاقات التي أضفتُها",
+    "signInTitle": "سجّل دخولك لعرض نشاطك",
+    "signInDescription": "سجّل دخولك لترى النطاقات التي أضفتها وسجل تصويتك"
+  },
+  "list": {
+    "loadError": "تعذّر تحميل النطاقات",
+    "empty": "لا توجد نطاقات أخرى، حاول مرة أخرى لاحقًا."
+  },
+  "submitDialog": {
+    "title": "أضف نطاقًا جديدًا",
+    "domainNameLabel": "اسم النطاق",
+    "submitting": "جارٍ الإضافة...",
+    "validation": {
+      "singleLevel": "يجب أن يكون النطاق من مستوى واحد (مثال: example.com) أو أعلى (مثال: sub.example.com)",
+      "invalidDomain": "اسم النطاق غير صالح",
+      "mustEndWith": "يجب أن ينتهي النطاق بـ .{extension}",
+      "invalidExtension": "امتداد النطاق غير صالح",
+      "required": "الرجاء إدخال اسم النطاق"
+    },
+    "toast": {
+      "submitting": "جارٍ إضافة النطاق...",
+      "alreadyExists": "النطاق موجود بالفعل.",
+      "success": "تمت إضافة النطاق والتصويت له بنجاح!",
+      "error": "تعذّرت إضافة النطاق"
+    }
+  },
+  "vote": {
+    "ariaLabel": "تصويت",
+    "voting": "جارٍ التصويت...",
+    "voted": "صوّتُ",
+    "vote": "صوّت",
+    "processing": "جارٍ معالجة التصويت...",
+    "removing": "جارٍ الإلغاء...",
+    "unvote": "إلغاء التصويت",
+    "removeSuccess": "تم إلغاء تصويتك بنجاح",
+    "removeError": "تعذّر إلغاء التصويت. حاول مرة أخرى.",
+    "confirmRemove": "هل أنت متأكد أنك تريد إلغاء تصويتك على \"{domainName}\"?"
+  },
+  "detail": {
+    "back": "رجوع",
+    "quickActions": "إجراءات سريعة",
+    "visitDomain": "زيارة النطاق",
+    "deleteSuccess": "تم حذف النطاق بنجاح",
+    "deleteError": "تعذّر حذف النطاق",
+    "deleting": "جارٍ حذف النطاق..."
+  },
+  "awards": {
+    "title": "الجوائز",
+    "loadError": "تعذّر تحميل الجوائز",
+    "empty": "لا توجد جوائز بعد. استمر في التصويت لمساعدة هذا النطاق على الفوز!",
+    "medalLabel": "ميدالية"
+  },
+  "submitted": {
+    "loadError": "تعذّر تحميل نطاقاتك",
+    "empty": "لم تضف أي نطاقات بعد.",
+    "youUpvoted": "✓ صوّتَّ لهذا النطاق",
+    "submittedOn": "أُضيف في {date}"
+  },
+  "upvoted": {
+    "loadError": "تعذّر تحميل النطاقات التي صوّتَّ لها",
+    "empty": "لم تصوّت لأي نطاق بعد.",
+    "upvotedOn": "صوّتَّ له في {date}"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "جارٍ الآن!",
+      "ended": "انتهى",
+      "notStarted": "لم يبدأ بعد"
+    },
+    "loadErrorTitle": "خطأ في تحميل النطاقات",
+    "loadErrorDescription": "تعذّر تحميل نطاقات الحملة. حاول مرة أخرى لاحقًا.",
+    "emptyTitle": "لا توجد نطاقات",
+    "emptyDescription": "لا توجد نطاقات متاحة لهذه الحملة.",
+    "nominatePrompt": "لماذا نطاقي المفضل غير موجود هنا؟",
+    "nominateAction": "رشّحه!",
+    "congratulations": "مبروك!",
+    "winnerCampaignIcon": "أيقونة الحملة",
+    "isTheWinner": "هو الفائز",
+    "votingClosedThanks": "شكرًا لتصويتك - سيتلقى الفائزون بريدًا إلكترونيًا بتفاصيل المطالبة بالنطاق الفرعي."
+  },
+  "howItWorks": {
+    "voteTitle": "صوّت",
+    "voteDescription": "اختر نطاقك المفضل",
+    "winTitle": "افز",
+    "winDescription": "يبدأ النطاق الفائز بإصدار نطاقات فرعية",
+    "celebrateTitle": "احتفل",
+    "celebrateDescription": "احصل على نطاقك الفرعي المجاني"
+  },
+  "whyVote": {
+    "title": "لماذا تصوّت؟",
+    "priorityClaimTitle": "أولوية المطالبة",
+    "priorityClaimDescription": "احصل على أولوية في النطاقات الفرعية الجديدة (طالما المخزون متاح)",
+    "weeklyNfscTitle": "ربح $NFSC أسبوعيًا",
+    "weeklyNfscDescription": "سحب أسبوعي لكسب $NFSC للمصوّتين",
+    "launchTitle": "ساعد في إطلاق [name].cv",
+    "launchDescription": "النطاق [name].cv الحاصل على أعلى الأصوات يبدأ إصدار النطاقات الفرعية"
+  },
+  "community": {
+    "joinTitle": "انضم إلى المجتمع",
+    "joinDescription": "تواصل مع صيّادي النطاقات الآخرين وصوّتوا معًا على النطاقات القادمة.",
+    "shareTitle": "شارك الصيد",
+    "shareDescription": "ادعُ أصدقاءك واحصل على قرعة لكل تصويت.",
+    "inviteFriends": "ادعُ الأصدقاء",
+    "invited": "تم النسخ!",
+    "copySuccess": "تم نسخ الرابط!",
+    "copyError": "تعذّر نسخ الرابط"
+  },
+  "countdown": {
+    "votingEndsIn": "ينتهي التصويت خلال",
+    "days": "أيام",
+    "hours": "ساعات",
+    "minutes": "دقائق",
+    "seconds": "ثواني"
+  },
+  "share": {
+    "titleDomain": "شارك {domainName}",
+    "titleSubject": "شارك {subject} لـ {domainName}",
+    "descriptionDomainTracked": "شارك هذا النطاق على Twitter/X لمساعدة الآخرين في اكتشافه وكسب مكافآت.",
+    "descriptionDomain": "شارك هذا النطاق على Twitter/X لمساعدة الآخرين في اكتشافه.",
+    "descriptionSubject": "شارك هذا {subject} على Twitter/X.",
+    "shareUrlLabel": "رابط المشاركة",
+    "quickShareLabel": "مشاركة سريعة",
+    "shareOnTwitter": "شارك على Twitter/X",
+    "prefilledHint": "يفتح Twitter/X بمنشور جاهز لـ {target}",
+    "alreadyShared": "تمت المشاركة بالفعل",
+    "postUrlLabel": "رابط منشور Twitter/X",
+    "postUrlHint": "الصق رابط تغريدتك بعد المشاركة لكسب المكافآت",
+    "recording": "جارٍ التسجيل...",
+    "recordShare": "سجّل المشاركة",
+    "invalidPostUrl": "الرجاء إدخال رابط منشور Twitter/X صالح",
+    "recordError": "تعذّر تسجيل مشاركتك. حاول مرة أخرى.",
+    "checkPostUrl": "تحقق من رابط المنشور وحاول مرة أخرى.",
+    "copySuccess": "تم نسخ رابط المشاركة.",
+    "copyError": "تعذّر نسخ الرابط",
+    "recordingShare": "جارٍ تسجيل مشاركتك..."
+  }
+}

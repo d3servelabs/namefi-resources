@@ -290,6 +290,45 @@
   "actions.unknownError": {
     "description": "Fallback error text used when no specific error message is available."
   },
+  "previouslyOwned.title": {
+    "description": "Page heading for the Previously Owned Domains page (domains the user used to own but no longer holds)."
+  },
+  "previouslyOwned.columnAccount": {
+    "description": "Table column header for the wallet account a previously owned domain was held in."
+  },
+  "previouslyOwned.columnRemovalDate": {
+    "description": "Table column header for the date a previously owned domain left the user's wallet."
+  },
+  "previouslyOwned.columnReason": {
+    "description": "Table column header / filter label for why a domain is no longer owned (expired, transferred, exported)."
+  },
+  "previouslyOwned.columnReceivingWallet": {
+    "description": "Table column header for the wallet that received a domain transferred away from the user."
+  },
+  "previouslyOwned.empty": {
+    "description": "Empty-state title shown when the user has no previously owned domains."
+  },
+  "previouslyOwned.emptyDescription": {
+    "description": "Empty-state body explaining the user hasn't burned or transferred any domains away from their linked wallets yet."
+  },
+  "previouslyOwned.selectChainPlaceholder": {
+    "description": "Placeholder text for the chain filter dropdown on the Previously Owned Domains page."
+  },
+  "previouslyOwned.allChains": {
+    "description": "Chain filter option that shows previously owned domains across all chains."
+  },
+  "previouslyOwned.clearFilters": {
+    "description": "Menu item that clears the selected reason filters on the Previously Owned Domains page."
+  },
+  "dnsRecords.selectAll": {
+    "description": "Accessibility label for the header checkbox that selects all rows in the DNS records table."
+  },
+  "dnsRecords.selectRow": {
+    "description": "Accessibility label for the per-row checkbox that selects a single DNS record row."
+  },
+  "dnssec.actionsAriaLabel": {
+    "description": "Accessibility label for the DNSSEC delegation-signers table's actions column header (which has no visible text)."
+  },
   "floatingPanel.selected": {
     "description": "Label in the bulk-selection floating panel indicating how many rows are selected (follows a count)."
   },
@@ -383,5 +422,264 @@
   },
   "marketplaceOrders.offerWaiting": {
     "description": "Status text on an offer card indicating the offer is open and waiting for the seller to accept."
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": {
+        "description": "UI text: \"Marketplace listings aren't supported on {chain} yet\"."
+      },
+      "supportedNetworks": {
+        "description": "UI text: \"Supported networks: {networks}.\"."
+      }
+    },
+    "exportBlocked": {
+      "title": {
+        "description": "UI text: \"Marketplace listing unavailable\"."
+      },
+      "description": {
+        "description": "UI text: \"Listing on Web3 marketplaces isn't allowed while this domain is exportable to other registrars. <link>Contact support</link> to disable export.\"."
+      }
+    },
+    "listings": {
+      "title": {
+        "description": "UI text: \"Current listings\".",
+        "maxLength": 26
+      },
+      "description": {
+        "description": "UI text: \"Active sale listings across supported marketplaces.\"."
+      },
+      "findBuyers": {
+        "description": "UI text: \"Find buyers\".",
+        "maxLength": 18
+      },
+      "findBuyersAria": {
+        "description": "UI text: \"Find buyers for {domain}\"."
+      },
+      "columnMarketplace": {
+        "description": "UI text: \"Marketplace\".",
+        "maxLength": 18
+      },
+      "columnPrice": {
+        "description": "UI text: \"Price\".",
+        "maxLength": 12
+      },
+      "columnExpires": {
+        "description": "UI text: \"Expires\".",
+        "maxLength": 12
+      },
+      "columnActions": {
+        "description": "UI text: \"Actions\".",
+        "maxLength": 12
+      },
+      "loadFailed": {
+        "description": "UI text: \"Couldn't load listings: {error}\"."
+      },
+      "empty": {
+        "description": "UI text: \"No active listings. Use “Create listing” to put this domain up for sale.\"."
+      },
+      "view": {
+        "description": "UI text: \"View\".",
+        "maxLength": 12
+      },
+      "cancel": {
+        "description": "UI text: \"Cancel\".",
+        "maxLength": 12
+      },
+      "cancelled": {
+        "description": "UI text: \"Listing cancelled\".",
+        "maxLength": 28
+      },
+      "cancelledDescription": {
+        "description": "UI text: \"It will disappear from marketplaces within a moment.\"."
+      },
+      "cancelFailed": {
+        "description": "UI text: \"Failed to cancel listing\".",
+        "maxLength": 39
+      }
+    },
+    "offers": {
+      "title": {
+        "description": "UI text: \"Incoming offers\".",
+        "maxLength": 24
+      },
+      "description": {
+        "description": "UI text: \"Bids placed on this domain across supported marketplaces. Accepting an offer transfers the NFT to the bidder and credits you the bid amount.\"."
+      },
+      "columnMarketplace": {
+        "description": "UI text: \"Marketplace\".",
+        "maxLength": 18
+      },
+      "columnBidder": {
+        "description": "UI text: \"Bidder\".",
+        "maxLength": 12
+      },
+      "columnOffer": {
+        "description": "UI text: \"Offer\".",
+        "maxLength": 12
+      },
+      "columnExpires": {
+        "description": "UI text: \"Expires\".",
+        "maxLength": 12
+      },
+      "columnActions": {
+        "description": "UI text: \"Actions\".",
+        "maxLength": 12
+      },
+      "loadFailed": {
+        "description": "UI text: \"Couldn't load offers: {error}\"."
+      },
+      "empty": {
+        "description": "UI text: \"No active offers. When a buyer places a bid it will appear here.\"."
+      },
+      "view": {
+        "description": "UI text: \"View\".",
+        "maxLength": 12
+      },
+      "accept": {
+        "description": "UI text: \"Accept\".",
+        "maxLength": 12
+      },
+      "accepted": {
+        "description": "UI text: \"Accepted offer for {price}\"."
+      },
+      "acceptedDescription": {
+        "description": "UI text: \"NFT transferred to the bidder.\"."
+      },
+      "acceptFailed": {
+        "description": "UI text: \"Failed to accept offer\".",
+        "maxLength": 36
+      }
+    },
+    "createListing": {
+      "trigger": {
+        "description": "UI text: \"Create listing\".",
+        "maxLength": 23
+      },
+      "title": {
+        "description": "UI text: \"Create listing\".",
+        "maxLength": 23
+      },
+      "description": {
+        "description": "UI text: \"Sell this domain on OpenSea. The listing is signed by your wallet and posted to OpenSea's Seaport orderbook.\"."
+      },
+      "noMarketplaces": {
+        "description": "UI text: \"No marketplaces support this network yet.\"."
+      },
+      "marketplaceLabel": {
+        "description": "UI text: \"Marketplace\".",
+        "maxLength": 18
+      },
+      "alreadyListedSuffix": {
+        "description": "UI text: \" — already listed\".",
+        "maxLength": 28
+      },
+      "checkingListings": {
+        "description": "UI text: \"Checking active listings...\"."
+      },
+      "allListed": {
+        "description": "UI text: \"This domain is already listed on every supported marketplace. Cancel an existing listing to relist.\"."
+      },
+      "priceLabel": {
+        "description": "UI text: \"Price ({currency})\"."
+      },
+      "pricePlaceholder": {
+        "description": "UI text: \"0.05\"."
+      },
+      "currencyLabel": {
+        "description": "UI text: \"Currency\".",
+        "maxLength": 13
+      },
+      "currencyOption": {
+        "description": "UI text: \"{symbol} — {name}\"."
+      },
+      "durationLabel": {
+        "description": "UI text: \"Duration\".",
+        "maxLength": 13
+      },
+      "duration1Day": {
+        "description": "UI text: \"1 day\".",
+        "maxLength": 12
+      },
+      "duration7Days": {
+        "description": "UI text: \"7 days\".",
+        "maxLength": 12
+      },
+      "duration30Days": {
+        "description": "UI text: \"30 days\".",
+        "maxLength": 12
+      },
+      "listOn": {
+        "description": "UI text: \"List on {marketplace}\"."
+      },
+      "connectWallet": {
+        "description": "UI text: \"Connect wallet\".",
+        "maxLength": 23
+      },
+      "feeMarketplace": {
+        "description": "UI text: \"Marketplace fee\".",
+        "maxLength": 24
+      },
+      "feeRoyalty": {
+        "description": "UI text: \"Creator royalty\".",
+        "maxLength": 24
+      },
+      "feeYouReceive": {
+        "description": "UI text: \"You receive\".",
+        "maxLength": 18
+      },
+      "feeEstimate": {
+        "description": "UI text: \"estimate\".",
+        "maxLength": 13
+      },
+      "feeEstimateTooltip": {
+        "description": "UI text: \"Final fees are computed by the marketplace at signing time.\"."
+      },
+      "listedToast": {
+        "description": "UI text: \"Listed for {price}\"."
+      },
+      "listedToastDescription": {
+        "description": "UI text: \"It may take a moment to appear on the marketplace.\"."
+      },
+      "connectWalletError": {
+        "description": "UI text: \"Connect a wallet to list this domain.\"."
+      },
+      "stillChecking": {
+        "description": "UI text: \"Still checking active listings\"."
+      },
+      "alreadyListedError": {
+        "description": "UI text: \"This domain already has an active listing there.\"."
+      },
+      "alreadyListedErrorDescription": {
+        "description": "UI text: \"Cancel the existing listing before creating a new one.\"."
+      },
+      "pickCurrency": {
+        "description": "UI text: \"Pick a payment currency.\"."
+      },
+      "invalidPrice": {
+        "description": "UI text: \"Enter a valid price greater than 0.\"."
+      },
+      "switchNetwork": {
+        "description": "UI text: \"Switch to the correct network to continue.\"."
+      },
+      "createFailed": {
+        "description": "UI text: \"Failed to create listing\".",
+        "maxLength": 39
+      },
+      "errorSignatureCancelled": {
+        "description": "UI text: \"Signature cancelled in your wallet.\"."
+      },
+      "errorInsufficientFunds": {
+        "description": "UI text: \"Wallet does not have enough native ETH for the approval transaction.\"."
+      },
+      "errorNotConfigured": {
+        "description": "UI text: \"The marketplace integration is not configured for this environment.\"."
+      },
+      "errorRateLimited": {
+        "description": "UI text: \"The marketplace is rate-limiting requests right now. Wait a minute and try again.\"."
+      },
+      "errorSeaportUnavailable": {
+        "description": "UI text: \"Couldn't reach OpenSea's Seaport contract on this network. Make sure your wallet is connected to the same chain as the domain NFT, then try again.\"."
+      }
+    }
   }
 }

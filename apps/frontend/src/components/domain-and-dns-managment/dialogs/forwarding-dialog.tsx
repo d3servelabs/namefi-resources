@@ -15,6 +15,7 @@ import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -36,6 +37,8 @@ export function ForwardingDialog({
   readOnly,
   warningMessage,
 }: ForwardingDialogProps) {
+  const t = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const [forwardUrl, setForwardUrl] = useState(currentForwardUrl || '');
   const trpc = useTRPC();
   const queryClient = useQueryClient();
@@ -57,7 +60,7 @@ export function ForwardingDialog({
         },
       });
 
-      toast.success('Forwarding URL updated');
+      toast.success(t('dialogs.forwarding.updated'));
 
       await Promise.all([
         queryClient.invalidateQueries({
@@ -75,7 +78,7 @@ export function ForwardingDialog({
       toast.error(
         error instanceof Error
           ? error.message
-          : 'Failed to update forwarding URL',
+          : t('dialogs.forwarding.updateFailed'),
       );
     }
   };
@@ -84,9 +87,9 @@ export function ForwardingDialog({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
-          <DialogTitle>Edit URL Forwarding</DialogTitle>
+          <DialogTitle>{t('dialogs.forwarding.title')}</DialogTitle>
           <DialogDescription>
-            Enter the URL you want {domainName} to forward to.
+            {t('dialogs.forwarding.description', { domain: domainName })}
           </DialogDescription>
         </DialogHeader>
 
@@ -98,10 +101,12 @@ export function ForwardingDialog({
 
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="forward-url">Forward To URL</Label>
+            <Label htmlFor="forward-url">
+              {t('dialogs.forwarding.fieldLabel')}
+            </Label>
             <Input
               id="forward-url"
-              placeholder="https://example.com"
+              placeholder={t('dialogs.forwarding.placeholder')}
               value={forwardUrl}
               onChange={(e) => setForwardUrl(e.target.value)}
               disabled={readOnly}
@@ -110,14 +115,14 @@ export function ForwardingDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            {readOnly ? 'Close' : 'Cancel'}
+            {readOnly ? tCommon('actions.close') : tCommon('actions.cancel')}
           </Button>
           {!readOnly && (
             <Button onClick={handleSave} disabled={updateConfig.isPending}>
               {updateConfig.isPending && (
                 <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}
-              Save
+              {tCommon('actions.save')}
             </Button>
           )}
         </DialogFooter>

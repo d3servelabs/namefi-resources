@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "Requête invalide",
+    "description": "Quelque chose s'est perdu en route."
+  },
+  "status403": {
+    "title": "Accès refusé",
+    "description": "Cette porte est verrouillée. Avez-vous la bonne clé ?"
+  },
+  "status404": {
+    "title": "Page introuvable",
+    "description": "On a cherché partout. Même sous le canapé."
+  },
+  "status500": {
+    "title": "Erreur serveur",
+    "description": "Nos serveurs font une petite pause café."
+  },
+  "actions": {
+    "goHome": "Accueil",
+    "searchDomains": "Rechercher des domaines",
+    "logIn": "Se connecter",
+    "signIn": "Se connecter",
+    "goToHome": "Aller à l'accueil"
+  },
+  "reference": "Référence : {requestId}",
+  "login": {
+    "failedTitle": "Connexion impossible",
+    "failedDescription": "Veuillez réessayer."
+  },
+  "unauthorized": {
+    "title": "Accès non autorisé",
+    "description": "Vous n'avez pas l'autorisation d'accéder à cette page. Veuillez vous connecter ou retourner à la page d'accueil.",
+    "contactSupport": "Si vous pensez qu'il s'agit d'une erreur, veuillez contacter le support."
+  }
+}

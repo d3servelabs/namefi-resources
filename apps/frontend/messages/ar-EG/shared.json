@@ -1,79 +1,247 @@
 {
   "authRequired": {
-    "title": "محتاج تسجّل دخول",
-    "description": "سجّل دخولك الأول عشان تكمّل"
+    "title": "تسجيل الدخول مطلوب",
+    "description": "من فضلك سجّل دخولك للمتابعة",
+    "communityDescription": "تحتاج إلى تسجيل الدخول للمتابعة. انضم للمجتمع لاكتشاف والتصويت على أفضل النطاقات!"
   },
   "requestWalletConnection": {
-    "defaultActionDescription": "عشان تكمّل العملية دي",
+    "defaultActionDescription": "لإتمام هذه العملية",
     "title": {
-      "wrongWallet": "المحفظة المتصلة مش صح",
-      "settingActive": "بنظبط المحفظة النشطة",
+      "wrongWallet": "المحفظة المتصلة غير صحيحة",
+      "settingActive": "جارٍ تفعيل المحفظة",
       "connect": "وصّل محفظتك"
     },
     "description": {
-      "wrongWallet": "وصّل المحفظة الصح عشان تكمّل.",
-      "settingActive": "استنّى شوية وإحنا بنظبط محفظتك...",
-      "connect": "وصّل محفظتك {actionDescription}."
+      "wrongWallet": "من فضلك وصّل المحفظة الصحيحة للمتابعة.",
+      "settingActive": "انتظر لحظة بينما نُفعّل محفظتك...",
+      "connect": "من فضلك وصّل محفظتك {actionDescription}."
     },
-    "checkingStatus": "بنتحقق من حالة المحفظة...",
-    "settingAsActive": "بنظبط المحفظة كنشطة...",
+    "checkingStatus": "جارٍ التحقق من حالة المحفظة...",
+    "settingAsActive": "جارٍ تفعيل المحفظة...",
     "requiredWallet": "المحفظة المطلوبة",
-    "waitingForConnection": "مستنيين توصيل المحفظة...",
-    "differentWalletConnected": "وصّلت محفظة تانية",
-    "youConnected": "اللي وصّلته",
-    "butWeNeed": "اللي محتاجينه",
-    "connectedSuccessfully": "اتوصلت المحفظة بنجاح",
-    "connecting": "بيتوصل...",
+    "waitingForConnection": "في انتظار الاتصال بالمحفظة...",
+    "differentWalletConnected": "وصّلت محفظة مختلفة",
+    "youConnected": "وصّلت",
+    "butWeNeed": "لكن نحتاج",
+    "connectedSuccessfully": "اتصلت المحفظة بنجاح",
+    "connecting": "جارٍ الاتصال...",
     "next": "التالي",
     "toast": {
-      "setActiveFailed": "مش قدرنا نظبط المحفظة النشطة",
-      "connectFailed": "مش قدرنا نوصّل المحفظة",
-      "unknownError": "حصل خطأ مش معروف"
+      "setActiveFailed": "فشل تفعيل المحفظة",
+      "connectFailed": "فشل الاتصال بالمحفظة",
+      "unknownError": "خطأ غير معروف"
     }
   },
   "countryInput": {
-    "placeholder": "اختار الدولة",
-    "searchPlaceholder": "ابحث عن دولة...",
-    "noResults": "مفيش دولة بالاسم ده.",
-    "clearSelection": "امسح الاختيار"
+    "placeholder": "اختر الدولة",
+    "searchPlaceholder": "ابحث في الدول...",
+    "noResults": "لم يتم العثور على دولة.",
+    "clearSelection": "إلغاء الاختيار"
   },
   "myDomains": {
-    "heading": "دوماياتي"
+    "heading": "نطاقاتي"
   },
   "walletNftGrid": {
-    "notIndexedYet": "لسه متفهرسش",
-    "emptyIdentifier": "حط عنوان المحفظة أو اسم ENS عشان تشوف الـ NFTs.",
-    "invalidIdentifier": "ده مش عنوان محفظة أو اسم ENS صح.",
-    "invalidIdentifierHint": "المحافظ لازم تبدأ بـ 0x وأسماء ENS لازم يكون فيها نقطة على الأقل.",
-    "ensResolveFailed": "مش قدرنا نحل اسم ENS ده.",
-    "ensResolveFailedHint": "تأكد من الإملاء أو حاول تاني بعد شوية.",
-    "noWalletResolved": "مش قدرنا نلاقي محفظة من الإدخال ده.",
-    "nftCount": "{count, plural, one {# NFT} other {# NFTs}}",
-    "loadDomainsFailed": "مش قدرنا نحمّل الدومينات للمحفظة دي.",
-    "loadDomainsFailedHint": "جدّد الصفحة وحاول تاني.",
-    "noNftsFound": "مفيش Namefi NFTs للمحفظة دي.",
-    "noNftsFoundHint": "تأكد من عنوان المحفظة أو اسم ENS، أو حاول تاني بعد شوية لما الفهرسة تخلص.",
-    "unknownNetwork": "شبكة مش معروفة",
-    "explorer": "المستكشف",
-    "viewOnExplorer": "اعرض في المستكشف",
-    "viewOn": "اعرض في {explorer}",
+    "notIndexedYet": "لم تتم فهرسته بعد",
+    "emptyIdentifier": "أدخل عنوان محفظة أو اسم ENS لعرض الـ NFTs.",
+    "invalidIdentifier": "هذا لا يبدو عنوان محفظة أو اسم ENS صالحاً.",
+    "invalidIdentifierHint": "عناوين المحافظ تبدأ بـ 0x وأسماء ENS تحتوي على نقطة واحدة على الأقل.",
+    "ensResolveFailed": "لم نتمكن من حل اسم ENS هذا.",
+    "ensResolveFailedHint": "تحقق من الإملاء أو حاول مرة أخرى بعد قليل.",
+    "noWalletResolved": "لم نتمكن من تحديد محفظة من هذه البيانات.",
+    "nftCount": "{count, plural, zero {لا يوجد NFT} one {# NFT} two {# NFTs} few {# NFTs} many {# NFT} other {# NFTs}}",
+    "loadDomainsFailed": "لم نتمكن من تحميل النطاقات لهذه المحفظة.",
+    "loadDomainsFailedHint": "من فضلك أعد تحميل الصفحة وحاول مرة أخرى.",
+    "noNftsFound": "لا توجد Namefi NFTs لهذه المحفظة.",
+    "noNftsFoundHint": "تحقق من عنوان المحفظة أو اسم ENS، أو انتظر قليلاً ريثما تكتمل الفهرسة.",
+    "unknownNetwork": "شبكة غير معروفة",
+    "explorer": "المستعرض",
+    "viewOnExplorer": "عرض في المستعرض",
+    "viewOn": "عرض في {explorer}",
     "network": "الشبكة",
     "expiration": "تاريخ الانتهاء",
     "wallet": "المحفظة",
     "ens": "ENS: {name}",
-    "copiedToClipboard": "اتنسخ في الحافظة",
-    "copyFailed": "النسخ فشل",
-    "copyFailedDescription": "مش قدرنا ننسخ القيمة دي. حاول تاني."
+    "copiedToClipboard": "تم النسخ إلى الحافظة",
+    "copyFailed": "فشل النسخ",
+    "copyFailedDescription": "لم نتمكن من نسخ هذه القيمة. من فضلك حاول مرة أخرى."
   },
   "instantBuyModal": {
-    "title": "اشتري {domain}",
-    "description": "كمّل عملية الشراء لتسجيل لمدة سنة",
-    "domain": "الدومين",
+    "title": "شراء {domain}",
+    "description": "أتمم عملية الشراء لتسجيل لمدة سنة واحدة",
+    "domain": "النطاق",
     "pricePerYear": "{price} USD / سنة",
-    "selectNftWallet": "اختار محفظة NFT عشان تكمّل",
-    "buyNow": "اشتري دلوقتي",
-    "errorTitle": "يا عم حصل غلطة!",
-    "errorDescription": "متقلقش، مش هيتخصم منك حاجة. حاول تاني.",
-    "errorDetail": "(خطأ - {error})"
+    "selectNftWallet": "اختر محفظة NFT للمتابعة",
+    "buyNow": "اشترِ الآن",
+    "errorTitle": "حدث خطأ ما.",
+    "errorDescription": "لا تقلق، لن تُحسب عليك أي رسوم. يمكنك المحاولة مرة أخرى.",
+    "errorDetail": "(خطأ - {error})",
+    "tooltip": "اشترِ هذا النطاق فوراً"
+  },
+  "table": {
+    "searchPlaceholder": "بحث...",
+    "empty": "لا توجد بيانات",
+    "emptyDefault": "لم يتم العثور على بيانات",
+    "emptyAuditLogs": "لم يتم العثور على سجلات مراجعة",
+    "loadingAuditLogs": "جارٍ تحميل سجلات المراجعة...",
+    "noMoreRows": "لا توجد صفوف أخرى",
+    "showing": "عرض {count, plural, zero {لا توجد صفوف} one {# صف} two {# صفين} few {# صفوف} many {# صفاً} other {# صفوف}}",
+    "pagination": {
+      "rowsPerPage": "صفوف في الصفحة:",
+      "pageOf": "الصفحة {page} من {total}",
+      "pageOfTotal": "الصفحة {page} من {total} — الإجمالي {count, plural, zero {لا صفوف} one {# صف} two {# صفين} few {# صفوف} many {# صفاً} other {# صفوف}}",
+      "totalShort": "الإجمالي: {count, plural, zero {لا صفوف} one {# صف} two {# صفين} few {# صفوف} many {# صفاً} other {# صفوف}}",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "columns": {
+      "label": "الأعمدة",
+      "toggle": "تبديل الأعمدة",
+      "resetToDefaults": "استعادة الافتراضي",
+      "resizeColumn": "تغيير حجم العمود"
+    },
+    "filters": {
+      "label": "الفلاتر"
+    },
+    "filterPanel": {
+      "title": "فلاتر الجدول",
+      "titleAdvanced": "فلاتر متقدمة",
+      "description": "طبّق الفلاتر لتضييق نتائج الجدول",
+      "descriptionAdvanced": "أنشئ فلاتر مركّبة بشروط متعددة ومنطق AND/OR",
+      "activeCount": "{count} نشط",
+      "clearAll": "مسح الكل",
+      "generalFilters": "فلاتر عامة",
+      "columnFilters": "فلاتر الأعمدة",
+      "noFiltersAvailable": "لا توجد فلاتر متاحة",
+      "active": "نشط",
+      "conditionCount": "{count, plural, zero {لا شروط} one {# شرط} two {# شرطين} few {# شروط} many {# شرطاً} other {# شروط}}"
+    },
+    "filter": {
+      "label": "فلتر",
+      "filterColumn": "فلترة {column}",
+      "filterActive": "الفلتر نشط",
+      "operator": "العامل",
+      "value": "القيمة",
+      "apply": "تطبيق",
+      "clear": "مسح",
+      "addCondition": "إضافة شرط",
+      "clearAllConditions": "مسح الكل",
+      "maxConditionsReached": "{count, plural, zero {لا شروط} one {تم بلوغ الحد الأقصى البالغ # شرط} two {تم بلوغ الحد الأقصى البالغ # شرطين} few {تم بلوغ الحد الأقصى البالغ # شروط} many {تم بلوغ الحد الأقصى البالغ # شرطاً} other {تم بلوغ الحد الأقصى البالغ # شروط}}",
+      "selectPlaceholder": "اختر...",
+      "selectDatePlaceholder": "اختر تاريخاً...",
+      "enterValuePlaceholder": "أدخل القيمة...",
+      "typeValuePlaceholder": "اكتب القيمة...",
+      "enterFieldPlaceholder": "أدخل {field}...",
+      "noSuggestions": "لا توجد اقتراحات مطابقة. يمكنك استخدام القيمة التي كتبتها.",
+      "suggestions": "اقتراحات",
+      "invalidNumber": "رقم غير صالح",
+      "invalidDate": "تاريخ غير صالح",
+      "operators": {
+        "contains": "يحتوي على",
+        "containsCaseInsensitive": "يحتوي على (بغض النظر عن حالة الأحرف)",
+        "equals": "يساوي",
+        "notEquals": "لا يساوي",
+        "greaterThan": "أكبر من",
+        "greaterOrEqual": "أكبر من أو يساوي",
+        "lessThan": "أصغر من",
+        "lessOrEqual": "أصغر من أو يساوي",
+        "after": "بعد",
+        "onOrAfter": "في أو بعد",
+        "before": "قبل",
+        "onOrBefore": "في أو قبل",
+        "isNull": "فارغ",
+        "isNotNull": "غير فارغ",
+        "inList": "ضمن القائمة",
+        "notInList": "خارج القائمة",
+        "allElementsEquals": "جميع العناصر تساوي",
+        "allElementsNotEquals": "جميع العناصر لا تساوي",
+        "anyElementEquals": "أي عنصر يساوي",
+        "anyElementNotEquals": "أي عنصر لا يساوي",
+        "allElementsContain": "جميع العناصر تحتوي على",
+        "allElementsNotContain": "جميع العناصر لا تحتوي على",
+        "anyElementContains": "أي عنصر يحتوي على",
+        "anyElementNotContain": "أي عنصر لا يحتوي على"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "المحفظة والشبكة جاهزتان",
+    "preparing": "جارٍ التحضير...",
+    "connectWallet": "ربط المحفظة",
+    "useThisWallet": "استخدام هذه المحفظة",
+    "switchWallet": "تغيير المحفظة",
+    "switchNetwork": "تغيير الشبكة",
+    "connecting": "جارٍ الاتصال…",
+    "activating": "جارٍ التفعيل…",
+    "switchingNetwork": "جارٍ تغيير الشبكة…",
+    "walletStep": "المحفظة",
+    "networkStep": "الشبكة",
+    "requiredWallet": "المحفظة المطلوبة",
+    "differentWalletConnected": "لقد ربطت محفظة مختلفة",
+    "youConnected": "لقد ربطت",
+    "butWeNeed": "لكننا نحتاج",
+    "switchNetworkPrompt": "غيّر شبكة محفظتك للمتابعة.",
+    "current": "الحالية",
+    "required": "المطلوبة",
+    "chainLabel": "الشبكة {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "اختر أو أدخل نطاقاً",
+    "loadingDomains": "جارٍ تحميل النطاقات",
+    "useTypedDomain": "استخدام النطاق المكتوب",
+    "domains": "النطاقات"
+  },
+  "previewGate": {
+    "title": "صلاحية المعاينة",
+    "description": "أدخل رمز الوصول للدخول إلى بيئة المعاينة.",
+    "accessCode": "رمز الوصول",
+    "unlock": "فتح"
+  },
+  "missingEmail": {
+    "noContactEmail": "لا يوجد بريد إلكتروني للتواصل",
+    "later": "لاحقاً",
+    "addEmailToProfile": "إضافة بريد إلكتروني للملف الشخصي",
+    "addEmail": "إضافة بريد إلكتروني"
+  },
+  "announcements": {
+    "previous": "الإعلان السابق",
+    "next": "الإعلان التالي",
+    "dismiss": "إخفاء الإعلان"
+  },
+  "emailRequired": {
+    "title": "البريد الإلكتروني مطلوب",
+    "description": "تحتاج إلى إضافة بريد إلكتروني صحيح لملفك الشخصي للمتابعة."
+  },
+  "voteOrShare": {
+    "signInToVote": "سجّل دخولك للتصويت",
+    "shareDomainInstead": "شارك النطاق بدلاً من ذلك"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "الغد أو الأسبوع القادم",
+    "selectDate": "اختر تاريخاً"
+  },
+  "selectWalletAndChain": {
+    "linked": "مرتبطة",
+    "selectChainPlaceholder": "اختر شبكة"
+  },
+  "feedback": {
+    "close": "إغلاق التغذية الراجعة",
+    "skip": "تخطي"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "نسخ العنوان المحلول",
+    "title": "محفظة الاستقبال أو ENS"
+  },
+  "creditCard": {
+    "cardHolder": "حامل البطاقة",
+    "expires": "تنتهي في"
+  },
+  "walletCard": {
+    "ethereumWallet": "محفظة Ethereum",
+    "connected": "متصلة",
+    "connectedNetworks": "الشبكات المتصلة"
+  },
+  "ownerPage": {
+    "heading": "النطاقات المملوكة لهذه المحفظة"
   }
 }

@@ -44,12 +44,23 @@ export const NAMESPACES = [
   'gallery',
   'mart',
   'domains',
+  'dnsManagement',
   'claim',
   'freeMints',
   'feed',
   'payment',
   'shared',
   'consent',
+  'error',
+  'hunt',
+  'gifts',
+  'notifications',
+  'aiGeneration',
+  'nfsc',
+  'faucet',
+  'newsletter',
+  'tlds',
+  'manage',
 ] as const;
 
 export type MessageNamespace = (typeof NAMESPACES)[number];

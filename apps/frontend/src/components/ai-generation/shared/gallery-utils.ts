@@ -1,15 +1,28 @@
 const PROGRESS_DURATION_MS = 40_000;
 const FINISH_DURATION_MS = 900;
 
-const PROGRESS_MESSAGES: Array<{ threshold: number; text: string }> = [
-  { threshold: 0, text: 'Gathering inspiration for your brand...' },
-  { threshold: 10, text: 'Sketching first strokes and silhouettes...' },
-  { threshold: 25, text: 'Blending colors, styles, and fonts...' },
-  { threshold: 45, text: 'Adding character and signature details...' },
-  { threshold: 65, text: 'Refining lighting and balance...' },
-  { threshold: 80, text: 'Polishing highlights and textures...' },
-  { threshold: 92, text: 'Framing the final reveal...' },
-  { threshold: 99, text: 'Almost ready—hang tight!' },
+export type ProgressMessageKey =
+  | 'gathering'
+  | 'sketching'
+  | 'blending'
+  | 'character'
+  | 'lighting'
+  | 'polishing'
+  | 'framing'
+  | 'almost';
+
+const PROGRESS_MESSAGES: ReadonlyArray<{
+  threshold: number;
+  key: ProgressMessageKey;
+}> = [
+  { threshold: 0, key: 'gathering' },
+  { threshold: 10, key: 'sketching' },
+  { threshold: 25, key: 'blending' },
+  { threshold: 45, key: 'character' },
+  { threshold: 65, key: 'lighting' },
+  { threshold: 80, key: 'polishing' },
+  { threshold: 92, key: 'framing' },
+  { threshold: 99, key: 'almost' },
 ];
 
 const smoothstep = (t: number) =>
@@ -38,13 +51,14 @@ export const computePendingProgress = (elapsedMs: number) => {
   return Math.min(99.2, tail);
 };
 
-export const getProgressMessage = (value: number) => {
+export const getProgressMessageKey = (value: number): ProgressMessageKey => {
   for (let i = PROGRESS_MESSAGES.length - 1; i >= 0; i -= 1) {
-    if (value >= PROGRESS_MESSAGES[i]?.threshold) {
-      return PROGRESS_MESSAGES[i]?.text ?? '';
+    const entry = PROGRESS_MESSAGES[i];
+    if (entry && value >= entry.threshold) {
+      return entry.key;
     }
   }
-  return PROGRESS_MESSAGES[0]?.text ?? '';
+  return PROGRESS_MESSAGES[0]?.key ?? 'gathering';
 };
 
 export const buildGenerationShareUrl = (id: string) => {

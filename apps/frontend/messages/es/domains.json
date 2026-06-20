@@ -159,5 +159,115 @@
     "nftAlt": "NFT",
     "offerWaiting": "Tu oferta está abierta y a la espera de que el vendedor la acepte."
   },
-  "metaTitle": "Namefi | Gestionar dominios"
+  "metaTitle": "Namefi | Gestionar dominios",
+  "card": {
+    "account": "Cuenta",
+    "expand": "Expandir",
+    "collapse": "Contraer",
+    "expandAll": "Expandir todo",
+    "collapseAll": "Contraer todo",
+    "sort": "Ordenar"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "Los listados de marketplace aún no están disponibles en {chain}",
+      "supportedNetworks": "Redes compatibles: {networks}."
+    },
+    "exportBlocked": {
+      "title": "Listado en marketplace no disponible",
+      "description": "No se permite listar en marketplaces de Web3 mientras este dominio sea exportable a otros registradores. <link>Contacta con soporte</link> para desactivar la exportación."
+    },
+    "listings": {
+      "title": "Listados actuales",
+      "description": "Listados de venta activos en los marketplaces compatibles.",
+      "findBuyers": "Buscar compradores",
+      "findBuyersAria": "Buscar compradores para {domain}",
+      "columnMarketplace": "Marketplace",
+      "columnPrice": "Precio",
+      "columnExpires": "Vence",
+      "columnActions": "Acciones",
+      "loadFailed": "No se pudieron cargar los listados: {error}",
+      "empty": "Sin listados activos. Usa \"Crear listado\" para poner este dominio en venta.",
+      "view": "Ver",
+      "cancel": "Cancelar",
+      "cancelled": "Listado cancelado",
+      "cancelledDescription": "Desaparecerá de los marketplaces en un momento.",
+      "cancelFailed": "Error al cancelar el listado"
+    },
+    "offers": {
+      "title": "Ofertas recibidas",
+      "description": "Pujas realizadas sobre este dominio en los marketplaces compatibles. Aceptar una oferta transfiere el NFT al postor y te acredita el monto de la puja.",
+      "columnMarketplace": "Marketplace",
+      "columnBidder": "Postor",
+      "columnOffer": "Oferta",
+      "columnExpires": "Vence",
+      "columnActions": "Acciones",
+      "loadFailed": "No se pudieron cargar las ofertas: {error}",
+      "empty": "Sin ofertas activas. Cuando un comprador realice una puja aparecerá aquí.",
+      "view": "Ver",
+      "accept": "Aceptar",
+      "accepted": "Oferta aceptada por {price}",
+      "acceptedDescription": "NFT transferido al postor.",
+      "acceptFailed": "Error al aceptar la oferta"
+    },
+    "createListing": {
+      "trigger": "Crear listado",
+      "title": "Crear listado",
+      "description": "Vende este dominio en OpenSea. El listado es firmado por tu billetera y publicado en el libro de órdenes Seaport de OpenSea.",
+      "noMarketplaces": "Ningún marketplace es compatible con esta red todavía.",
+      "marketplaceLabel": "Marketplace",
+      "alreadyListedSuffix": " — ya listado",
+      "checkingListings": "Comprobando listados activos...",
+      "allListed": "Este dominio ya está listado en todos los marketplaces compatibles. Cancela un listado existente para volver a listar.",
+      "priceLabel": "Precio ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "Moneda",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "Duración",
+      "duration1Day": "1 día",
+      "duration7Days": "7 días",
+      "duration30Days": "30 días",
+      "listOn": "Listar en {marketplace}",
+      "connectWallet": "Conectar billetera",
+      "feeMarketplace": "Comisión del marketplace",
+      "feeRoyalty": "Regalía del creador",
+      "feeYouReceive": "Recibes",
+      "feeEstimate": "estimado",
+      "feeEstimateTooltip": "Las comisiones finales son calculadas por el marketplace en el momento de la firma.",
+      "listedToast": "Listado por {price}",
+      "listedToastDescription": "Puede tardar un momento en aparecer en el marketplace.",
+      "connectWalletError": "Conecta una billetera para listar este dominio.",
+      "stillChecking": "Aún comprobando listados activos",
+      "alreadyListedError": "Este dominio ya tiene un listado activo allí.",
+      "alreadyListedErrorDescription": "Cancela el listado existente antes de crear uno nuevo.",
+      "pickCurrency": "Elige una moneda de pago.",
+      "invalidPrice": "Ingresa un precio válido mayor que 0.",
+      "switchNetwork": "Cambia a la red correcta para continuar.",
+      "createFailed": "Error al crear el listado",
+      "errorSignatureCancelled": "Firma cancelada en tu billetera.",
+      "errorInsufficientFunds": "La billetera no tiene suficiente ETH nativo para la transacción de aprobación.",
+      "errorNotConfigured": "La integración con el marketplace no está configurada para este entorno.",
+      "errorRateLimited": "El marketplace está limitando las solicitudes en este momento. Espera un minuto e inténtalo de nuevo.",
+      "errorSeaportUnavailable": "No se pudo comunicar con el contrato Seaport de OpenSea en esta red. Asegúrate de que tu billetera esté conectada a la misma cadena que el NFT del dominio e inténtalo de nuevo."
+    }
+  },
+  "previouslyOwned": {
+    "title": "Dominios previamente en propiedad",
+    "columnAccount": "Cuenta",
+    "columnRemovalDate": "Fecha de eliminación",
+    "columnReason": "Motivo",
+    "columnReceivingWallet": "Billetera receptora",
+    "empty": "No se encontraron dominios previamente en propiedad",
+    "emptyDescription": "Aún no has quemado ni transferido ningún dominio de tus billeteras vinculadas",
+    "selectChainPlaceholder": "Seleccionar cadena",
+    "allChains": "Todas las cadenas",
+    "clearFilters": "Limpiar filtros"
+  },
+  "dnsRecords": {
+    "selectAll": "Seleccionar todo",
+    "selectRow": "Seleccionar fila"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "Acciones"
+  }
 }

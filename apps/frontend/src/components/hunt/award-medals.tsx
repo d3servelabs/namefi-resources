@@ -1,3 +1,7 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 type MedalType = 'gold' | 'silver' | 'bronze' | 'participation';
 
 interface MedalConfig {
@@ -134,6 +138,7 @@ export interface MedalProps {
 }
 
 export const Medal = ({ type, className }: MedalProps) => {
+  const t = useTranslations('hunt');
   const config = medalConfigs[type];
   const gradientId = `${type}Gradient`;
   const innerId = `${type}Inner`;
@@ -149,7 +154,7 @@ export const Medal = ({ type, className }: MedalProps) => {
       role="img"
       aria-labelledby={`${type}-medal-title`}
     >
-      <title id={`${type}-medal-title`}>Medal</title>
+      <title id={`${type}-medal-title`}>{t('awards.medalLabel')}</title>
       <circle
         cx="32"
         cy="32"

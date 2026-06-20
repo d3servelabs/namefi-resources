@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "Domain Hunt",
+    "submitDomain": "Domain einreichen",
+    "trendingTitle": "Trending Domains",
+    "signInToSubmitTitle": "Anmelden, um Domains einzureichen",
+    "signInToSubmitDescription": "Sie müssen angemeldet sein, um Domains einzureichen. Werden Sie Teil der Community und teilen Sie Ihre Lieblingsdomains!"
+  },
+  "timeRange": {
+    "last7Days": "Letzte 7 Tage",
+    "last30Days": "Letzte 30 Tage",
+    "anytime": "Jederzeit"
+  },
+  "tabs": {
+    "allHunt": "Alle Hunts"
+  },
+  "mine": {
+    "title": "Meine Aktivität",
+    "upvotedTab": "Hochgestimmte Domains",
+    "submittedTab": "Eingereichte Domains",
+    "signInTitle": "Anmelden, um Ihre Aktivität zu sehen",
+    "signInDescription": "Bitte melden Sie sich an, um Ihre eingereichten Domains und Ihren Abstimmungsverlauf zu sehen."
+  },
+  "list": {
+    "loadError": "Domains konnten nicht geladen werden",
+    "empty": "Keine weiteren Domains vorhanden. Bitte versuchen Sie es später erneut."
+  },
+  "submitDialog": {
+    "title": "Neue Domain einreichen",
+    "domainNameLabel": "Domainname",
+    "submitting": "Wird eingereicht…",
+    "validation": {
+      "singleLevel": "Der Domainname muss eine einstufige Domain sein (z. B. example.com) oder höher (z. B. sub.example.com).",
+      "invalidDomain": "Ungültiger Domainname",
+      "mustEndWith": "Die Domain muss auf .{extension} enden.",
+      "invalidExtension": "Ungültige Domain-Endung",
+      "required": "Bitte geben Sie einen Domainnamen ein."
+    },
+    "toast": {
+      "submitting": "Domain wird eingereicht…",
+      "alreadyExists": "Diese Domain existiert bereits.",
+      "success": "Domain erfolgreich eingereicht und hochgestimmt!",
+      "error": "Domain konnte nicht eingereicht werden."
+    }
+  },
+  "vote": {
+    "ariaLabel": "Hochstimmen",
+    "voting": "Wird abgestimmt…",
+    "voted": "Abgestimmt",
+    "vote": "Abstimmen",
+    "processing": "Abstimmung wird verarbeitet…",
+    "removing": "Wird entfernt…",
+    "unvote": "Rückgängig",
+    "removeSuccess": "Stimme erfolgreich entfernt",
+    "removeError": "Stimme konnte nicht entfernt werden. Bitte versuchen Sie es erneut.",
+    "confirmRemove": "Möchten Sie Ihre Stimme für „{domainName}“ wirklich entfernen?"
+  },
+  "detail": {
+    "back": "Zurück",
+    "quickActions": "Schnellaktionen",
+    "visitDomain": "Domain besuchen",
+    "deleteSuccess": "Domain erfolgreich gelöscht",
+    "deleteError": "Domain konnte nicht gelöscht werden.",
+    "deleting": "Domain wird gelöscht…"
+  },
+  "awards": {
+    "title": "Auszeichnungen",
+    "loadError": "Auszeichnungen konnten nicht geladen werden.",
+    "empty": "Noch keine Auszeichnungen. Stimmen Sie weiter ab, damit diese Domain gewinnt!",
+    "medalLabel": "Medaille"
+  },
+  "submitted": {
+    "loadError": "Ihre Domains konnten nicht geladen werden.",
+    "empty": "Sie haben noch keine Domains eingereicht.",
+    "youUpvoted": "✓ Von Ihnen hochgestimmt",
+    "submittedOn": "Eingereicht am {date}"
+  },
+  "upvoted": {
+    "loadError": "Ihre hochgestimmten Domains konnten nicht geladen werden.",
+    "empty": "Sie haben noch keine Domains hochgestimmt.",
+    "upvotedOn": "Hochgestimmt am {date}"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "läuft!",
+      "ended": "beendet",
+      "notStarted": "noch nicht gestartet"
+    },
+    "loadErrorTitle": "Fehler beim Laden der Domains",
+    "loadErrorDescription": "Kampagnen-Domains konnten nicht geladen werden. Bitte versuchen Sie es später erneut.",
+    "emptyTitle": "Keine Domains gefunden",
+    "emptyDescription": "Für diese Kampagne sind keine Domains verfügbar.",
+    "nominatePrompt": "Warum fehlt Ihre Lieblingsdomain hier?",
+    "nominateAction": "Jetzt nominieren!",
+    "congratulations": "Herzlichen Glückwunsch!",
+    "winnerCampaignIcon": "Kampagnen-Symbol",
+    "isTheWinner": "ist der Gewinner",
+    "votingClosedThanks": "Vielen Dank für Ihre Teilnahme – Gewinner erhalten eine E-Mail mit Details zur Subdomain-Vergabe."
+  },
+  "howItWorks": {
+    "voteTitle": "Abstimmen",
+    "voteDescription": "Wählen Sie Ihren Favoriten",
+    "winTitle": "Gewinnen",
+    "winDescription": "Die Gewinnerdomain startet die Vergabe",
+    "celebrateTitle": "Feiern",
+    "celebrateDescription": "Kostenlose Subdomain sichern"
+  },
+  "whyVote": {
+    "title": "Warum abstimmen?",
+    "priorityClaimTitle": "Vorrangiger Anspruch",
+    "priorityClaimDescription": "Bevorzugter Zugang zu neuen Subdomains (solange der Vorrat reicht)",
+    "weeklyNfscTitle": "Wöchentlich $NFSC",
+    "weeklyNfscDescription": "Wöchentliche Verlosung: Abstimmende können $NFSC gewinnen.",
+    "launchTitle": "Helfen Sie, [name].cv zu starten",
+    "launchDescription": "Das [name].cv mit den meisten Stimmen startet die Subdomain-Vergabe."
+  },
+  "community": {
+    "joinTitle": "Community beitreten",
+    "joinDescription": "Vernetzen Sie sich mit anderen Huntern und stimmen Sie gemeinsam über kommende Domains ab.",
+    "shareTitle": "Hunt teilen",
+    "shareDescription": "Laden Sie Freunde ein – für jede Stimme erhalten Sie ein Gewinnlos.",
+    "inviteFriends": "Freunde einladen",
+    "invited": "Kopiert!",
+    "copySuccess": "Link in Zwischenablage kopiert!",
+    "copyError": "Link konnte nicht kopiert werden."
+  },
+  "countdown": {
+    "votingEndsIn": "Abstimmung endet in",
+    "days": "Tage",
+    "hours": "Stunden",
+    "minutes": "Minuten",
+    "seconds": "Sekunden"
+  },
+  "share": {
+    "titleDomain": "{domainName} teilen",
+    "titleSubject": "{subject} für {domainName} teilen",
+    "descriptionDomainTracked": "Teilen Sie diese Domain auf Twitter/X, damit andere sie entdecken, und verdienen Sie Prämien.",
+    "descriptionDomain": "Teilen Sie diese Domain auf Twitter/X, damit andere sie entdecken.",
+    "descriptionSubject": "Teilen Sie dieses {subject} auf Twitter/X.",
+    "shareUrlLabel": "Link zum Teilen",
+    "quickShareLabel": "Schnell teilen",
+    "shareOnTwitter": "Auf Twitter/X teilen",
+    "prefilledHint": "Öffnet Twitter/X mit einem vorausgefüllten Beitrag für {target}.",
+    "alreadyShared": "Bereits geteilt",
+    "postUrlLabel": "Twitter/X-Beitrags-URL",
+    "postUrlHint": "Fügen Sie die URL Ihres Tweets nach dem Teilen ein, um Prämien zu verdienen.",
+    "recording": "Wird gespeichert…",
+    "recordShare": "Teilen erfassen",
+    "invalidPostUrl": "Bitte geben Sie eine gültige Twitter/X-Beitrags-URL ein.",
+    "recordError": "Ihr Teilen konnte nicht erfasst werden. Bitte versuchen Sie es erneut.",
+    "checkPostUrl": "Bitte prüfen Sie die Beitrags-URL und versuchen Sie es erneut.",
+    "copySuccess": "Link zum Teilen kopiert.",
+    "copyError": "URL konnte nicht kopiert werden.",
+    "recordingShare": "Ihr Teilen wird erfasst…"
+  }
+}

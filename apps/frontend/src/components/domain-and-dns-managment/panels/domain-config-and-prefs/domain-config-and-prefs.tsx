@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -66,11 +67,12 @@ function isApexRecordName(name: string) {
 }
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const tDns = useTranslations('dnsManagement');
   return (
     <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          Domain Preferences
+          {tDns('prefs.panelTitle')}
         </CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
@@ -134,6 +136,7 @@ export const DomainConfigAndPrefsInner = ({
   domainName: PunycodeDomainName;
 }) => {
   const trpc = useTRPC();
+  const tDns = useTranslations('dnsManagement');
 
   const { data: dnssecDetails, isLoading: isDnssecLoading } = useQuery(
     trpc.domainConfig.dnssec.getDomainDnssecDetails.queryOptions(
@@ -205,9 +208,7 @@ export const DomainConfigAndPrefsInner = ({
   if (isNil(dnssecDetails) || isNil(domainPreferencesAndConfig)) {
     return (
       <Layout>
-        <div className="text-center py-12">
-          Something went wrong! Please try again later.
-        </div>
+        <div className="text-center py-12">{tDns('prefs.loadFailed')}</div>
       </Layout>
     );
   }
@@ -239,6 +240,8 @@ export const DomainConfigAndPrefsForm = ({
   dnssecDetails: AppRouterOutput['domainConfig']['dnssec']['getDomainDnssecDetails'];
 }) => {
   const trpc = useTRPC();
+  const tCommon = useTranslations('common');
+  const tDns = useTranslations('dnsManagement');
 
   const [forwardTo, setForwardTo] = useState<string | undefined>(
     domainPreferencesAndConfig?.forwardTo,
@@ -455,9 +458,9 @@ export const DomainConfigAndPrefsForm = ({
           <>
             <div className="flex items-center justify-between rounded-2xl bg-black/50 border border-brand-primary/20 p-4">
               <div className="space-y-0.5">
-                <Label htmlFor="auto-ens">Auto ENS</Label>
+                <Label htmlFor="auto-ens">{tDns('prefs.autoEns.label')}</Label>
                 <p className="text-sm text-muted-foreground">
-                  Automatically enable ENS for the domain
+                  {tDns('prefs.autoEns.description')}
                 </p>
               </div>
               <div className="flex items-center gap-2">
@@ -482,13 +485,12 @@ export const DomainConfigAndPrefsForm = ({
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>
-                          AutoENS is not available for this domain. ENS Requires
-                          DNSSEC.
+                          {tDns('prefs.autoEns.unavailableTooltip')}
                           <br />
                           {dnssecDetails?.supportsDnssec ? (
-                            <p>You need to enable DNSSEC first.</p>
+                            <p>{tDns('prefs.autoEns.enableDnssecFirst')}</p>
                           ) : (
-                            <p>And this domain does not support DNSSEC.</p>
+                            <p>{tDns('prefs.autoEns.dnssecUnsupported')}</p>
                           )}
                         </p>
                       </TooltipContent>
@@ -512,9 +514,11 @@ export const DomainConfigAndPrefsForm = ({
 
             <div className="flex items-center justify-between rounded-2xl bg-black/50 border border-brand-primary/20 p-4">
               <div className="space-y-0.5">
-                <Label htmlFor="auto-park">Auto Park</Label>
+                <Label htmlFor="auto-park">
+                  {tDns('prefs.autoPark.label')}
+                </Label>
                 <p className="text-sm text-muted-foreground">
-                  Automatically park the domain
+                  {tDns('prefs.autoPark.description')}
                 </p>
               </div>
               <Switch
@@ -528,9 +532,11 @@ export const DomainConfigAndPrefsForm = ({
 
             <div className="flex flex-col items-start justify-between col-span-2 rounded-2xl bg-black/50 border border-brand-primary/20 p-4 gap-2">
               <div className="space-y-0.5">
-                <Label htmlFor="forward-to">Forward To</Label>
+                <Label htmlFor="forward-to">
+                  {tDns('prefs.forwardTo.label')}
+                </Label>
                 <p className="text-sm text-muted-foreground">
-                  Forward the domain to a different address
+                  {tDns('prefs.forwardTo.description')}
                 </p>
               </div>
               <div className="flex items-center gap-2 w-full">
@@ -547,30 +553,27 @@ export const DomainConfigAndPrefsForm = ({
                       setForwardTo(domainPreferencesAndConfig?.forwardTo)
                     }
                   >
-                    Cancel
+                    {tCommon('actions.cancel')}
                   </Button>
                 ) : undefined}
                 <AsyncButton
                   onClick={() => handleChange('forwardTo')(forwardTo)}
                   disabled={!forwardToChanged}
                 >
-                  Save
+                  {tCommon('actions.save')}
                 </AsyncButton>
               </div>
             </div>
           </>
         ) : (
           <div>
-            <p>Namefi is not managing the nameservers for this domain</p>
+            <p>{tDns('prefs.notManagingNameservers')}</p>
           </div>
         )}
       </div>
 
       <div className="text-sm text-zinc-500 mt-4">
-        <p>
-          Changes to DNSSEC are not immediate. It can take up to 24-48 hours to
-          propagate globally.
-        </p>
+        <p>{tDns('prefs.propagationNotice')}</p>
       </div>
 
       <AlertDialog
@@ -584,18 +587,15 @@ export const DomainConfigAndPrefsForm = ({
         <AlertDialogContent className="bg-zinc-950 border-zinc-800">
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Remove conflicting top-level records?
+              {tDns('prefs.conflictDialog.title')}
             </AlertDialogTitle>
             <AlertDialogDescription className="space-y-2 text-zinc-400">
-              <p>
-                This preference change requires removing conflicting root
-                records on this domain.
-              </p>
+              <p>{tDns('prefs.conflictDialog.description')}</p>
               {pendingPreferenceConflict?.hasApexCnameConflict && (
-                <p>Any top-level CNAME (`@`) record will be removed first.</p>
+                <p>{tDns('prefs.conflictDialog.apexCname')}</p>
               )}
               {pendingPreferenceConflict?.hasApexAddressConflict && (
-                <p>Any top-level A/AAAA (`@`) records will be removed first.</p>
+                <p>{tDns('prefs.conflictDialog.apexAddress')}</p>
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -604,7 +604,7 @@ export const DomainConfigAndPrefsForm = ({
               disabled={isPending}
               onClick={() => setPendingPreferenceConflict(null)}
             >
-              Keep records
+              {tDns('prefs.conflictDialog.keepRecords')}
             </AlertDialogCancel>
             <AlertDialogAction
               variant="destructive"
@@ -616,10 +616,11 @@ export const DomainConfigAndPrefsForm = ({
             >
               {isPending ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> Applying...
+                  <Loader2 className="h-4 w-4 animate-spin" />{' '}
+                  {tDns('prefs.conflictDialog.applying')}
                 </>
               ) : (
-                'Remove and continue'
+                tDns('prefs.conflictDialog.removeAndContinue')
               )}
             </AlertDialogAction>
           </AlertDialogFooter>

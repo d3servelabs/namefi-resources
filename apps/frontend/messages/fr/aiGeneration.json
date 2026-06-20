@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "Créez des logos, affiches et animations personnalisés pour votre marque",
+    "poweredByAlt": "Propulsé par Namefi"
+  },
+  "tabs": {
+    "logo": "Logo",
+    "poster": "Affiche",
+    "animation": "Animation"
+  },
+  "prerequisite": {
+    "title": "Créez d'abord un logo",
+    "posterDescription": "Les affiches nécessitent l'un de vos logos générés comme référence de marque.",
+    "animationDescription": "Les animations nécessitent l'un de vos logos générés comme illustration source."
+  },
+  "usage": {
+    "credits": "Crédits IA",
+    "usedThisMonth": "{current} sur {max} utilisés ce mois-ci",
+    "limitReached": "Limite de crédits atteinte",
+    "creditsLeft": "{count, plural, one {# crédit restant} other {# crédits restants}}",
+    "refreshAria": "Heure de renouvellement des crédits IA",
+    "refreshAt": "Crédits renouvelés {time}",
+    "refreshMonthly": "Les crédits se renouvellent chaque mois",
+    "balanceCheckError": "Impossible de vérifier le solde de crédits IA",
+    "balanceCheckErrorDescription": "Nous n'avons pas pu vérifier vos crédits restants, mais vous pouvez tout de même tenter une génération.",
+    "checkingBalance": "Vérification du solde de crédits IA…",
+    "willCheckBalance": "Votre solde de crédits IA sera vérifié avant le lancement de la génération.",
+    "creditAmount": "{count, plural, one {# crédit IA} other {# crédits IA}}",
+    "costInsufficient": "Cette génération nécessite {cost}. Il vous reste {remaining} ce mois-ci.",
+    "costPreview": "Cette génération coûte {cost}. Il vous restera {remaining} ce mois-ci."
+  },
+  "domainField": {
+    "fixedLabel": "Saisissez votre domaine (ex. : exemple.com)",
+    "logoPlaceholder": "Sélectionnez ou saisissez votre domaine de marque",
+    "brandPlaceholder": "Sélectionnez votre domaine de marque (obligatoire)",
+    "searchBrands": "Rechercher des domaines de marque…",
+    "searchOrEnter": "Rechercher ou saisir un domaine",
+    "emptyStudioLogos": "Aucun domaine avec logo Studio trouvé.",
+    "emptyMatching": "Aucun domaine correspondant."
+  },
+  "description": {
+    "label": "Décrivez votre marque (facultatif)",
+    "placeholder": "Partagez votre vision de marque"
+  },
+  "logo": {
+    "gridTitle": "Logos générés",
+    "chooseType": "Choisissez un type",
+    "chooseStyle": "Choisissez un style",
+    "chooseTldTreatment": "Choisissez un traitement TLD",
+    "chooseTypography": "Choisissez une typographie",
+    "chooseModel": "Choisissez un modèle",
+    "controls": {
+      "type": "Type",
+      "style": "Style",
+      "tld": "TLD",
+      "typography": "Typographie",
+      "model": "Modèle",
+      "brandVision": "Vision de marque",
+      "advanced": "Avancé"
+    },
+    "actions": {
+      "createPoster": "Créer une affiche",
+      "animateLogo": "Animer le logo"
+    }
+  },
+  "poster": {
+    "title": "Générateur d'affiches",
+    "gridTitle": "Affiches générées",
+    "usingBrand": "Marque utilisée : {domain}",
+    "backToLogos": "Retour aux logos",
+    "chooseLogo": "Choisissez un logo comme base de votre affiche",
+    "chooseModel": "Choisissez un modèle",
+    "chooseCollateral": "Choisissez un type de support",
+    "selectCollateral": "Sélectionnez un support",
+    "controls": {
+      "useLogo": "Utiliser ce logo",
+      "selected": "Sélectionné",
+      "description": "Description",
+      "model": "Modèle",
+      "collateral": "Support",
+      "advanced": "Avancé"
+    },
+    "collateral": {
+      "letAiChoose": "Laisser l'IA choisir",
+      "billboard": "Panneau d'affichage",
+      "apparel": "Vêtements",
+      "vehicle": "Véhicule",
+      "product": "Produit"
+    }
+  },
+  "animation": {
+    "title": "Animation de logo",
+    "gridTitle": "Animations générées",
+    "usingBrand": "Marque utilisée : {domain}",
+    "backToLogos": "Retour aux logos",
+    "chooseMode": "Choisissez un mode d'animation",
+    "chooseLogo": "Choisissez un logo à animer",
+    "chooseOpening": "Choisissez un style d'ouverture",
+    "chooseMotion": "Choisissez une direction de mouvement",
+    "chooseIntensity": "Choisissez l'intensité du mouvement",
+    "chooseModel": "Choisissez un modèle",
+    "selectOpening": "Sélectionnez un style d'ouverture",
+    "selectMotion": "Sélectionnez un mouvement",
+    "selectIntensity": "Sélectionnez l'intensité",
+    "useLogoAria": "Utiliser le logo {domain}",
+    "controls": {
+      "mode": "Mode",
+      "useLogo": "Utiliser ce logo",
+      "selected": "Sélectionné",
+      "description": "Description",
+      "opening": "Ouverture",
+      "motion": "Mouvement",
+      "intensity": "Intensité",
+      "model": "Modèle"
+    },
+    "validation": {
+      "openingRequired": "Un style d'ouverture est requis pour l'animation cinématique",
+      "chooseCinematicModel": "Choisissez un modèle cinématique",
+      "chooseCinematicMotion": "Choisissez un preset de mouvement cinématique",
+      "chooseSeedanceModel": "Choisissez un modèle Seedance",
+      "intensityRequired": "L'intensité est requise pour l'animation en boucle",
+      "chooseLoopedModel": "Choisissez un modèle en boucle",
+      "chooseLoopedMotion": "Choisissez un preset de mouvement en boucle"
+    }
+  },
+  "model": {
+    "select": "Sélectionnez un modèle"
+  },
+  "submit": {
+    "generate": "Générer",
+    "generating": "Génération…",
+    "animate": "Animer",
+    "selectBrand": "Sélectionnez une marque"
+  },
+  "gallery": {
+    "yours": "Vos générations",
+    "featured": "En vedette",
+    "brands": "Marques",
+    "brandsSelected": "{count} sélectionnée(s)",
+    "searchBrand": "Rechercher une marque…",
+    "noBrands": "Aucune marque trouvée.",
+    "filterAll": "Tout",
+    "filterLogo": "Logo",
+    "filterPoster": "Affiche",
+    "filterAnimation": "Animation",
+    "emptyYours": "Générez un logo ou une affiche pour le voir apparaître ici.",
+    "openAria": "Ouvrir la génération pour {domain}",
+    "openFeaturedAria": "Ouvrir la génération en vedette pour {domain}",
+    "viewAria": "Voir la génération {index}",
+    "animationPreviewAria": "Aperçu de l'animation pour {domain}",
+    "previewUnavailable": "Aperçu indisponible",
+    "basedOnLogo": "Basé sur un logo",
+    "basedOn": "Basé sur :",
+    "referencedLogoAlt": "Logo de référence"
+  },
+  "kind": {
+    "logo": "Logo",
+    "poster": "Affiche",
+    "animation": "Animation"
+  },
+  "progress": {
+    "generatingLogo": "Génération du logo",
+    "generatingPoster": "Génération de l'affiche",
+    "preparingAnimation": "Préparation de l'animation",
+    "messages": {
+      "gathering": "Collecte d'inspiration pour votre marque…",
+      "sketching": "Esquisse des premiers tracés et silhouettes…",
+      "blending": "Fusion des couleurs, styles et polices…",
+      "character": "Ajout du caractère et des détails signature…",
+      "lighting": "Affinage de l'éclairage et de l'équilibre…",
+      "polishing": "Peaufinage des reflets et des textures…",
+      "framing": "Composition du rendu final…",
+      "almost": "Presque prêt — encore un instant !"
+    }
+  },
+  "status": {
+    "pending": "En attente",
+    "processing": "En cours",
+    "failed": "Échoué",
+    "ready": "Prêt"
+  },
+  "asyncTile": {
+    "genericError": "Cette génération n'a pas pu aboutir. Veuillez réessayer.",
+    "stillRunning": "Votre génération est toujours en cours.",
+    "queued": "Votre génération est en file d'attente et apparaîtra ici sous peu."
+  },
+  "actions": {
+    "copy": "Copier",
+    "copyLink": "Copier le lien",
+    "tweet": "Tweeter",
+    "download": "Télécharger"
+  },
+  "delete": {
+    "title": "Supprimer la génération ?",
+    "titleSingle": "Supprimer cette génération ?",
+    "descriptionLogo": "Le logo de {domain} sera supprimé de votre galerie. Cette action est irréversible.",
+    "descriptionPoster": "L'affiche de {domain} sera supprimée de votre galerie. Cette action est irréversible.",
+    "descriptionAnimation": "L'animation de {domain} sera supprimée de votre galerie. Cette action est irréversible.",
+    "deleting": "Suppression…"
+  },
+  "share": {
+    "unableTitle": "Partage impossible",
+    "unableMissingLink": "Aucun lien de partage n'est disponible pour cette génération.",
+    "unableMissingLinkOrDomain": "Aucun lien de partage ni domaine n'a été trouvé pour cette génération."
+  },
+  "imageGrid": {
+    "previewUnavailable": "Aperçu indisponible"
+  },
+  "details": {
+    "backToStudio": "Retour au Namefi Brand Studio",
+    "headingLogo": "Logo pour {brand}",
+    "headingPoster": "Affiche pour {brand}",
+    "headingAnimation": "Animation pour {brand}",
+    "notFoundTitle": "Génération introuvable",
+    "notFoundDescription": "La génération que vous recherchez est introuvable.",
+    "assetUnavailable": "La ressource n'est pas encore disponible.",
+    "sectionTitle": "Détails",
+    "type": "Type :",
+    "status": "Statut :",
+    "collateral": "Support :",
+    "motion": "Mouvement :",
+    "mode": "Mode :",
+    "opening": "Ouverture :",
+    "intensity": "Intensité :",
+    "model": "Modèle :",
+    "created": "Créé le :",
+    "createdUnknown": "Inconnu",
+    "collateralUnknown": "Inconnu",
+    "logoProperties": "Propriétés du logo",
+    "logoStyle": "Style :",
+    "logoType": "Type :",
+    "logoTld": "TLD :",
+    "logoTypography": "Typographie :",
+    "sourceLogo": "Logo source",
+    "sourceLogoAlt": "Logo utilisé pour la génération dérivée",
+    "viewLogoDetails": "Voir les détails du logo",
+    "sourcePreviewUnavailable": "L'aperçu du logo source est indisponible",
+    "sourceLoadFailed": "Échec du chargement des détails du logo",
+    "sourceNotFound": "Aucune référence de logo trouvée",
+    "animationSheet": "Feuille d'animation",
+    "animationSheetAlt": "Feuille d'animation générée pour {domain}",
+    "openSheetAria": "Ouvrir l'aperçu de la feuille d'animation",
+    "sheetModel": "Modèle de feuille :",
+    "sheetDialogTitle": "Feuille d'animation",
+    "sheetDialogDescription": "Le storyboard généré utilisé pour guider cette animation.",
+    "shareTwitterTitle": "Partager sur Twitter",
+    "copyLinkTitle": "Copier le lien",
+    "twitter": "Twitter",
+    "linkCopied": "Lien copié dans le presse-papiers",
+    "linkCopiedDescription": "Vous pouvez désormais partager cette génération",
+    "linkCopyFailed": "Échec de la copie du lien",
+    "linkCopyFailedDescription": "Veuillez réessayer",
+    "animationLabelAria": "Animation {mode} générée par IA pour {domain}",
+    "imageAlt": "{type} généré(e) par IA pour {domain}"
+  }
+}

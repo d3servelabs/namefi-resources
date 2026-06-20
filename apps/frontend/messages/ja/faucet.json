@@ -1,0 +1,18 @@
+{
+  "title": "NFSC フォーセット",
+  "description": "サンドボックス環境で使用するため、テストネットで20$NFSCをリクエストします。",
+  "chainLabel": "チェーン",
+  "receivingWalletLabel": "受取ウォレット",
+  "walletPlaceholder": "ウォレットアドレスを貼り付けるか、連携済みウォレットから選択してください",
+  "walletHelpText": "Sepoliaの選択したウォレットにトークンがミントされます。",
+  "submitting": "リクエストを送信中...",
+  "requestNfsc": "NFSC をリクエスト",
+  "rateLimitedTitle": "最近ミントしたばかりです。",
+  "rateLimitedDescription": "{time} 後に再試行してください。",
+  "rateLimitedFallback": "後ほど",
+  "mintInProgressTitle": "ミント処理中",
+  "mintInProgressDescription": "Sepoliaでトランザクションの確認を待っています。",
+  "mintCompleteTitle": "ミント完了",
+  "viewTransaction": "トランザクションを表示",
+  "requestFailedTitle": "リクエストに失敗しました"
+}

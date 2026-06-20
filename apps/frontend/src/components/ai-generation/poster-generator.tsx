@@ -10,6 +10,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/form';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Check } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { z } from 'zod';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
@@ -47,6 +48,18 @@ export const collateralLabels: Record<MarketingCollateralTypeInput, string> = {
   product: 'Product',
   let_ai_choose: 'Let AI Choose',
 };
+
+function buildCollateralLabels(
+  t: ReturnType<typeof useTranslations<'aiGeneration'>>,
+): Record<MarketingCollateralTypeInput, string> {
+  return {
+    billboard: t('poster.collateral.billboard'),
+    apparel: t('poster.collateral.apparel'),
+    vehicle: t('poster.collateral.vehicle'),
+    product: t('poster.collateral.product'),
+    let_ai_choose: t('poster.collateral.letAiChoose'),
+  };
+}
 
 const posterFormSchema = baseFormSchema.extend({
   selectedLogoId: z.string().uuid(),
@@ -88,6 +101,11 @@ export function PosterGenerator({
   onGenerateMore,
   initialSelectedLogoId,
 }: PosterGeneratorProps) {
+  const t = useTranslations('aiGeneration');
+  const localizedCollateralLabels = useMemo(
+    () => buildCollateralLabels(t),
+    [t],
+  );
   const [selectedDomain, setSelectedDomain] = useState<string>('');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const trpc = useTRPC();
@@ -165,7 +183,7 @@ export function PosterGenerator({
       fixedDomain={fixedDomain}
       formSchema={posterFormSchema}
       defaultValues={defaultValues}
-      domainPlaceholder="Select your brand domain (required)"
+      domainPlaceholder={t('domainField.brandPlaceholder')}
       domainSelectOnly={true}
       domainOnlyDomainsWithLogos={true}
       onDomainChange={(d) => setSelectedDomain(d)}
@@ -264,8 +282,8 @@ export function PosterGenerator({
         if (logosToShow.length > 0) {
           controlButtons.push({
             key: 'logos',
-            label: 'Use Logo',
-            badge: selectedLogo ? 'Selected' : undefined,
+            label: t('poster.controls.useLogo'),
+            badge: selectedLogo ? t('poster.controls.selected') : undefined,
             onClick: () => setOpenPanel(openPanel === 'logos' ? null : 'logos'),
             isActive: openPanel === 'logos',
           });
@@ -273,7 +291,7 @@ export function PosterGenerator({
 
         controlButtons.push({
           key: 'description',
-          label: 'Description',
+          label: t('poster.controls.description'),
           onClick: () =>
             setOpenPanel(openPanel === 'description' ? null : 'description'),
           isActive: openPanel === 'description',
@@ -293,7 +311,7 @@ export function PosterGenerator({
                   : 'OpenAI (legacy)';
         controlButtons.push({
           key: 'model',
-          label: 'Model',
+          label: t('poster.controls.model'),
           badge: selectedModelLabel,
           onClick: () => setOpenPanel(openPanel === 'model' ? null : 'model'),
           isActive: openPanel === 'model',
@@ -301,9 +319,10 @@ export function PosterGenerator({
 
         controlButtons.push({
           key: 'collateral',
-          label: 'Collateral',
+          label: t('poster.controls.collateral'),
           badge:
-            (selectedCollateral && collateralLabels[selectedCollateral]) ||
+            (selectedCollateral &&
+              localizedCollateralLabels[selectedCollateral]) ||
             undefined,
           onClick: () =>
             setOpenPanel(openPanel === 'collateral' ? null : 'collateral'),
@@ -326,7 +345,7 @@ export function PosterGenerator({
                   htmlFor="poster-advanced"
                   className="text-xs font-medium"
                 >
-                  Advanced
+                  {t('poster.controls.advanced')}
                 </Label>
                 <Switch
                   id="poster-advanced"
@@ -344,7 +363,7 @@ export function PosterGenerator({
                 render={() => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a logo to base your poster on
+                      {t('poster.chooseLogo')}
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -365,7 +384,7 @@ export function PosterGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a model
+                      {t('poster.chooseModel')}
                     </FormLabel>
                     <FormControl>
                       <Select
@@ -377,7 +396,7 @@ export function PosterGenerator({
                         }}
                       >
                         <SelectTrigger className="w-full max-w-sm">
-                          <SelectValue placeholder="Select a model" />
+                          <SelectValue placeholder={t('model.select')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="gemini-3-pro-image-preview">
@@ -410,7 +429,7 @@ export function PosterGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose collateral type
+                      {t('poster.chooseCollateral')}
                     </FormLabel>
                     <FormControl>
                       <Select
@@ -422,16 +441,26 @@ export function PosterGenerator({
                         }}
                       >
                         <SelectTrigger className="w-full max-w-sm">
-                          <SelectValue placeholder="Select collateral" />
+                          <SelectValue
+                            placeholder={t('poster.selectCollateral')}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="let_ai_choose">
-                            Let AI Choose
+                            {t('poster.collateral.letAiChoose')}
                           </SelectItem>
-                          <SelectItem value="billboard">Billboard</SelectItem>
-                          <SelectItem value="apparel">Apparel</SelectItem>
-                          <SelectItem value="vehicle">Vehicle</SelectItem>
-                          <SelectItem value="product">Product</SelectItem>
+                          <SelectItem value="billboard">
+                            {t('poster.collateral.billboard')}
+                          </SelectItem>
+                          <SelectItem value="apparel">
+                            {t('poster.collateral.apparel')}
+                          </SelectItem>
+                          <SelectItem value="vehicle">
+                            {t('poster.collateral.vehicle')}
+                          </SelectItem>
+                          <SelectItem value="product">
+                            {t('poster.collateral.product')}
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>

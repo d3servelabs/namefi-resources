@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi 品牌工作室",
+    "subtitle": "为你的品牌生成专属 Logo、海报和动画",
+    "poweredByAlt": "由 Namefi 驱动"
+  },
+  "tabs": {
+    "logo": "Logo",
+    "poster": "海报",
+    "animation": "动画"
+  },
+  "prerequisite": {
+    "title": "请先创建 Logo",
+    "posterDescription": "生成海报前，需要先选择一个已生成的 Logo 作为品牌参考。",
+    "animationDescription": "生成动画前，需要先选择一个已生成的 Logo 作为素材来源。"
+  },
+  "usage": {
+    "credits": "AI 点数",
+    "usedThisMonth": "本月已用 {current} / {max}",
+    "limitReached": "本月点数已用完",
+    "creditsLeft": "{count, plural, one {剩余 # 点} other {剩余 # 点}}",
+    "refreshAria": "AI 点数刷新时间",
+    "refreshAt": "点数将于 {time} 刷新",
+    "refreshMonthly": "点数每月刷新",
+    "balanceCheckError": "无法查询 AI 点数余额",
+    "balanceCheckErrorDescription": "暂时无法验证剩余点数，但你仍可尝试生成素材。",
+    "checkingBalance": "正在查询 AI 点数余额……",
+    "willCheckBalance": "生成开始前将自动核查 AI 点数余额。",
+    "creditAmount": "{count, plural, one {# 点 AI 点数} other {# 点 AI 点数}}",
+    "costInsufficient": "本次生成需要 {cost}，本月剩余 {remaining}，点数不足。",
+    "costPreview": "本次生成消耗 {cost}，生成后本月剩余 {remaining}。"
+  },
+  "domainField": {
+    "fixedLabel": "输入域名（如 example.com）",
+    "logoPlaceholder": "选择或输入品牌域名",
+    "brandPlaceholder": "选择品牌域名（必填）",
+    "searchBrands": "搜索品牌域名……",
+    "searchOrEnter": "搜索或输入域名",
+    "emptyStudioLogos": "未找到工作室 Logo 域名。",
+    "emptyMatching": "无匹配域名。"
+  },
+  "description": {
+    "label": "描述你的品牌（选填）",
+    "placeholder": "告诉我们更多关于你的品牌愿景"
+  },
+  "logo": {
+    "gridTitle": "已生成的 Logo",
+    "chooseType": "选择类型",
+    "chooseStyle": "选择风格",
+    "chooseTldTreatment": "选择 TLD 处理方式",
+    "chooseTypography": "选择字体排版",
+    "chooseModel": "选择模型",
+    "controls": {
+      "type": "类型",
+      "style": "风格",
+      "tld": "TLD",
+      "typography": "字体",
+      "model": "模型",
+      "brandVision": "品牌愿景",
+      "advanced": "高级"
+    },
+    "actions": {
+      "createPoster": "生成海报",
+      "animateLogo": "制作动画"
+    }
+  },
+  "poster": {
+    "title": "海报生成器",
+    "gridTitle": "已生成的海报",
+    "usingBrand": "品牌：{domain}",
+    "backToLogos": "返回 Logo",
+    "chooseLogo": "选择一个 Logo 作为海报基础",
+    "chooseModel": "选择模型",
+    "chooseCollateral": "选择物料类型",
+    "selectCollateral": "选择物料",
+    "controls": {
+      "useLogo": "使用 Logo",
+      "selected": "已选择",
+      "description": "描述",
+      "model": "模型",
+      "collateral": "物料",
+      "advanced": "高级"
+    },
+    "collateral": {
+      "letAiChoose": "AI 自动选择",
+      "billboard": "广告牌",
+      "apparel": "服装",
+      "vehicle": "车身",
+      "product": "产品"
+    }
+  },
+  "animation": {
+    "title": "Logo 动画",
+    "gridTitle": "已生成的动画",
+    "usingBrand": "品牌：{domain}",
+    "backToLogos": "返回 Logo",
+    "chooseMode": "选择动画模式",
+    "chooseLogo": "选择要制作动画的 Logo",
+    "chooseOpening": "选择开场风格",
+    "chooseMotion": "选择运动方向",
+    "chooseIntensity": "选择运动强度",
+    "chooseModel": "选择模型",
+    "selectOpening": "选择开场风格",
+    "selectMotion": "选择运动方式",
+    "selectIntensity": "选择强度",
+    "useLogoAria": "使用 {domain} 的 Logo",
+    "controls": {
+      "mode": "模式",
+      "useLogo": "使用 Logo",
+      "selected": "已选择",
+      "description": "描述",
+      "opening": "开场",
+      "motion": "运动",
+      "intensity": "强度",
+      "model": "模型"
+    },
+    "validation": {
+      "openingRequired": "电影模式动画需要选择开场风格",
+      "chooseCinematicModel": "请选择电影模式模型",
+      "chooseCinematicMotion": "请选择电影模式运动预设",
+      "chooseSeedanceModel": "请选择 Seedance 模型",
+      "intensityRequired": "循环动画需要选择运动强度",
+      "chooseLoopedModel": "请选择循环模式模型",
+      "chooseLoopedMotion": "请选择循环模式运动预设"
+    }
+  },
+  "model": {
+    "select": "选择模型"
+  },
+  "submit": {
+    "generate": "生成",
+    "generating": "生成中",
+    "animate": "制作动画",
+    "selectBrand": "请选择品牌"
+  },
+  "gallery": {
+    "yours": "我的作品",
+    "featured": "精选",
+    "brands": "品牌",
+    "brandsSelected": "已选 {count} 个",
+    "searchBrand": "搜索品牌……",
+    "noBrands": "未找到品牌。",
+    "filterAll": "全部",
+    "filterLogo": "Logo",
+    "filterPoster": "海报",
+    "filterAnimation": "动画",
+    "emptyYours": "生成一个 Logo 或海报后，它将显示在这里。",
+    "openAria": "打开 {domain} 的生成结果",
+    "openFeaturedAria": "打开 {domain} 的精选生成结果",
+    "viewAria": "查看第 {index} 个生成结果",
+    "animationPreviewAria": "{domain} 的动画预览",
+    "previewUnavailable": "预览不可用",
+    "basedOnLogo": "基于 Logo",
+    "basedOn": "基于：",
+    "referencedLogoAlt": "引用的 Logo"
+  },
+  "kind": {
+    "logo": "Logo",
+    "poster": "海报",
+    "animation": "动画"
+  },
+  "progress": {
+    "generatingLogo": "正在生成 Logo",
+    "generatingPoster": "正在生成海报",
+    "preparingAnimation": "正在准备动画",
+    "messages": {
+      "gathering": "正在为你的品牌收集灵感……",
+      "sketching": "勾勒初步轮廓与线条……",
+      "blending": "融合色彩、风格与字体……",
+      "character": "注入品牌个性与标志性细节……",
+      "lighting": "精调光影与视觉平衡……",
+      "polishing": "打磨高光与质感……",
+      "framing": "呈现最终成果……",
+      "almost": "即将完成，请稍候！"
+    }
+  },
+  "status": {
+    "pending": "等待中",
+    "processing": "处理中",
+    "failed": "失败",
+    "ready": "已就绪"
+  },
+  "asyncTile": {
+    "genericError": "本次生成未能完成，请重试。",
+    "stillRunning": "生成仍在进行中。",
+    "queued": "生成已排队，即将显示在此处。"
+  },
+  "actions": {
+    "copy": "复制",
+    "copyLink": "复制链接",
+    "tweet": "发推",
+    "download": "下载"
+  },
+  "delete": {
+    "title": "删除生成结果？",
+    "titleSingle": "删除此生成结果？",
+    "descriptionLogo": "这将从你的作品集中移除 {domain} 的 Logo，此操作无法撤销。",
+    "descriptionPoster": "这将从你的作品集中移除 {domain} 的海报，此操作无法撤销。",
+    "descriptionAnimation": "这将从你的作品集中移除 {domain} 的动画，此操作无法撤销。",
+    "deleting": "正在删除……"
+  },
+  "share": {
+    "unableTitle": "无法分享",
+    "unableMissingLink": "此生成结果暂无可分享的链接。",
+    "unableMissingLinkOrDomain": "未找到此生成结果的可分享链接或域名。"
+  },
+  "imageGrid": {
+    "previewUnavailable": "预览不可用"
+  },
+  "details": {
+    "backToStudio": "返回 Namefi 品牌工作室",
+    "headingLogo": "{brand} 的 Logo",
+    "headingPoster": "{brand} 的海报",
+    "headingAnimation": "{brand} 的动画",
+    "notFoundTitle": "未找到生成结果",
+    "notFoundDescription": "你查找的生成结果不存在。",
+    "assetUnavailable": "素材暂不可用。",
+    "sectionTitle": "详情",
+    "type": "类型：",
+    "status": "状态：",
+    "collateral": "物料：",
+    "motion": "运动：",
+    "mode": "模式：",
+    "opening": "开场：",
+    "intensity": "强度：",
+    "model": "模型：",
+    "created": "创建时间：",
+    "createdUnknown": "未知",
+    "collateralUnknown": "未知",
+    "logoProperties": "Logo 属性",
+    "logoStyle": "风格：",
+    "logoType": "类型：",
+    "logoTld": "TLD：",
+    "logoTypography": "字体：",
+    "sourceLogo": "源 Logo",
+    "sourceLogoAlt": "用于衍生生成的 Logo",
+    "viewLogoDetails": "查看 Logo 详情",
+    "sourcePreviewUnavailable": "源 Logo 预览不可用",
+    "sourceLoadFailed": "加载 Logo 详情失败",
+    "sourceNotFound": "未找到 Logo 引用",
+    "animationSheet": "动画分镜",
+    "animationSheetAlt": "{domain} 的生成动画分镜",
+    "openSheetAria": "打开动画分镜预览",
+    "sheetModel": "分镜模型：",
+    "sheetDialogTitle": "动画分镜",
+    "sheetDialogDescription": "用于引导本次动画生成的故事板。",
+    "shareTwitterTitle": "分享到 Twitter",
+    "copyLinkTitle": "复制链接",
+    "twitter": "Twitter",
+    "linkCopied": "链接已复制",
+    "linkCopiedDescription": "你现在可以将此生成结果分享给他人",
+    "linkCopyFailed": "复制链接失败",
+    "linkCopyFailedDescription": "请重试",
+    "animationLabelAria": "为 {domain} AI 生成的 {mode} 动画",
+    "imageAlt": "为 {domain} AI 生成的 {type}"
+  }
+}

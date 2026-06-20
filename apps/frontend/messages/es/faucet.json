@@ -1,0 +1,18 @@
+{
+  "title": "Grifo NFSC",
+  "description": "Solicita 20 $NFSC en redes de prueba para usar en entornos sandbox.",
+  "chainLabel": "Cadena",
+  "receivingWalletLabel": "Billetera receptora",
+  "walletPlaceholder": "Pega una dirección de billetera o selecciona entre las billeteras vinculadas",
+  "walletHelpText": "Los tokens se acuñan en la billetera seleccionada en Sepolia.",
+  "submitting": "Enviando solicitud...",
+  "requestNfsc": "Solicitar NFSC",
+  "rateLimitedTitle": "Acabas de acuñar recientemente.",
+  "rateLimitedDescription": "Inténtalo de nuevo después de {time}.",
+  "rateLimitedFallback": "más tarde",
+  "mintInProgressTitle": "Acuñación en progreso",
+  "mintInProgressDescription": "Esperando confirmación de la transacción en Sepolia.",
+  "mintCompleteTitle": "Acuñación completada",
+  "viewTransaction": "Ver transacción",
+  "requestFailedTitle": "Solicitud fallida"
+}

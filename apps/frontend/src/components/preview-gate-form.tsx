@@ -8,6 +8,7 @@ import {
   type FormEvent,
 } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -36,6 +37,7 @@ function stripAccessCodeFromUrl() {
 }
 
 export function PreviewGateForm() {
+  const t = useTranslations('shared');
   const router = useRouter();
   const searchParams = useSearchParams();
   const [accessCode, setAccessCode] = useState('');
@@ -99,15 +101,15 @@ export function PreviewGateForm() {
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background/95 backdrop-blur-sm p-4">
       <Card className="w-full max-w-sm">
         <CardHeader>
-          <CardTitle>Preview access</CardTitle>
-          <CardDescription>
-            Enter the access code to access this preview environment.
-          </CardDescription>
+          <CardTitle>{t('previewGate.title')}</CardTitle>
+          <CardDescription>{t('previewGate.description')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={onSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="preview-gate-access-code">Access code</Label>
+              <Label htmlFor="preview-gate-access-code">
+                {t('previewGate.accessCode')}
+              </Label>
               <PasswordInput
                 id="preview-gate-access-code"
                 autoFocus
@@ -121,7 +123,7 @@ export function PreviewGateForm() {
               type="submit"
               disabled={submitting || accessCode.length === 0}
             >
-              Unlock
+              {t('previewGate.unlock')}
             </Button>
           </form>
         </CardContent>

@@ -20,6 +20,7 @@ import useNfscBalance from '@/hooks/use-nfsc-balance';
 import { AlertCircle, ArrowDown, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { parseEther } from 'viem';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -48,16 +49,26 @@ import { useQuery } from '@tanstack/react-query';
 import { useConnectWallet } from '@privy-io/react-auth';
 import dynamic from 'next/dynamic';
 import {
-  getSwapButtonLabel,
   getSwapButtonState,
   isConnectAction,
   isSwapButtonBusy,
   isSwapButtonDisabled,
+  type SwapButtonState,
   SWAP_DIALOG_ACTION_BAR_CLASSNAME,
   SWAP_DIALOG_CONTENT_CLASSNAME,
   SWAP_DIALOG_SCROLL_CLASSNAME,
 } from '@/components/dialogs/nfsc-swap-dialog-utils';
 import { WagmiProvider } from '@/components/providers/wagmi';
+
+function TabLoadingFallback() {
+  const tCommon = useTranslations('common');
+  return (
+    <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
+      <Loader2 className="h-5 w-5 animate-spin" />
+      {tCommon('actions.loading')}
+    </div>
+  );
+}
 
 const NfscCardTopUpTab = dynamic(
   () =>
@@ -65,12 +76,7 @@ const NfscCardTopUpTab = dynamic(
       (mod) => mod.NfscCardTopUpTab,
     ),
   {
-    loading: () => (
-      <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
-        <Loader2 className="h-5 w-5 animate-spin" />
-        Loading...
-      </div>
-    ),
+    loading: () => <TabLoadingFallback />,
   },
 );
 
@@ -109,6 +115,8 @@ export default function NFSCSwapDialog(props: Props) {
 }
 
 function NFSCSwapDialogInner(props: Props) {
+  const t = useTranslations('nfsc');
+  const tCommon = useTranslations('common');
   const { open, onOpenChange, walletAddress } = props;
   const { address: connectedAddress, chainId } = useAccount();
   const displayAddress = walletAddress || connectedAddress;
@@ -158,14 +166,17 @@ function NFSCSwapDialogInner(props: Props) {
   } = useBuyNfsc({
     walletAddress: checksummedAddress ?? undefined,
     onSuccess: () => {
-      toast.success('Swap submitted', {
-        description: `Your ${amountPay} ETH to ${displayReceiveAmount()} NFSC swap was sent to the network.`,
+      toast.success(t('swap.submittedToastTitle'), {
+        description: t('swap.submittedToastDescription', {
+          payAmount: amountPay,
+          receiveAmount: displayReceiveAmount(),
+        }),
       });
       onOpenChange(false);
     },
     onError: (error) => {
       console.error('NFSCSwap error', error);
-      setErrorMessage(error?.message || 'An error occurred during the swap');
+      setErrorMessage(error?.message || t('swap.genericError'));
     },
   });
 
@@ -222,12 +233,15 @@ function NFSCSwapDialogInner(props: Props) {
           { chainId: selectedChainId },
           {
             onSuccess: () => {
-              toast.success('Network switched', {
-                description: `Switched to ${chains.find((c) => c.id === selectedChainId)?.name}`,
+              toast.success(t('swap.networkSwitchedToastTitle'), {
+                description: t('swap.networkSwitchedToastDescription', {
+                  network:
+                    chains.find((c) => c.id === selectedChainId)?.name ?? '',
+                }),
               });
             },
             onError: (error) => {
-              toast.error('Failed to switch network', {
+              toast.error(t('swap.networkSwitchFailedToastTitle'), {
                 description: error.message,
               });
             },
@@ -235,7 +249,7 @@ function NFSCSwapDialogInner(props: Props) {
         );
       }
     },
-    [switchChain, chainId, chains],
+    [switchChain, chainId, chains, t],
   );
 
   const handleConnectWallet = useCallback(async () => {
@@ -268,12 +282,12 @@ function NFSCSwapDialogInner(props: Props) {
     setErrorMessage('');
 
     if (insufficientBalance) {
-      setErrorMessage('Insufficient ETH balance');
+      setErrorMessage(t('swap.insufficientEthError'));
       return;
     }
 
     if (!isInputValid()) {
-      setErrorMessage('Please enter a valid amount');
+      setErrorMessage(t('swap.invalidAmountError'));
       return;
     }
 
@@ -281,7 +295,9 @@ function NFSCSwapDialogInner(props: Props) {
       await exchangeNfsc(parseEther(amountPay));
     } catch (error) {
       setErrorMessage(
-        error instanceof Error ? error.message : 'Transaction failed',
+        error instanceof Error
+          ? error.message
+          : t('swap.transactionFailedError'),
       );
     }
   };
@@ -329,13 +345,13 @@ function NFSCSwapDialogInner(props: Props) {
   });
 
   const gasFee = useMemo(() => {
-    if (isGasFeeLoading) return 'Estimating…';
+    if (isGasFeeLoading) return t('swap.estimatingGasFee');
     if (gasFeeEth == null) return '—';
     const formatted = `${Number.parseFloat(gasFeeEth).toFixed(CALCULATION_DECIMALS)} ETH`;
     // A fallback estimate is a representative figure, not the user's exact tx —
     // mark it approximate so the number isn't read as a precise quote.
     return isGasFeeFallback ? `≈ ${formatted}` : formatted;
-  }, [isGasFeeLoading, gasFeeEth, isGasFeeFallback]);
+  }, [isGasFeeLoading, gasFeeEth, isGasFeeFallback, t]);
 
   const isEthTabLoading = isLoading || isConversionRateLoading;
 
@@ -348,6 +364,22 @@ function NFSCSwapDialogInner(props: Props) {
   });
   const isButtonDisabled = isSwapButtonDisabled(swapButtonState);
   const isSwapButtonActionConnect = isConnectAction(swapButtonState);
+  const swapButtonLabel = ((state: SwapButtonState): string => {
+    switch (state) {
+      case 'processing':
+        return tCommon('actions.processing');
+      case 'wallet-loading':
+        return t('swap.button.connectingWallet');
+      case 'connect-wallet':
+        return t('swap.button.connectWallet');
+      case 'insufficient-balance':
+        return t('swap.button.insufficientEthBalance');
+      case 'enter-amount':
+        return t('swap.button.enterAmount');
+      case 'ready':
+        return t('swap.button.swapTokens');
+    }
+  })(swapButtonState);
   const formattedRate = conversionRate
     ? Number.parseFloat(conversionRate).toFixed(DISPLAY_DECIMALS)
     : '0';
@@ -379,12 +411,12 @@ function NFSCSwapDialogInner(props: Props) {
                   (top-4 right-4, size-8) so a long/localized title never runs
                   under the X. */}
               <DialogTitle className="pe-10 text-2xl font-bold">
-                Add funds to your NFSC
+                {t('swap.title')}
               </DialogTitle>
               {checksummedAddress && (
                 <div className="flex flex-col gap-1">
                   <span className="text-xs text-gray-500 uppercase tracking-wide">
-                    Charging wallet
+                    {t('swap.chargingWallet')}
                   </span>
                   <div
                     className="flex items-center gap-2 px-2 py-1.5 bg-muted rounded-xl max-w-full"
@@ -409,7 +441,7 @@ function NFSCSwapDialogInner(props: Props) {
               )}
               <div className="flex flex-col gap-1">
                 <span className="text-xs text-gray-500 uppercase tracking-wide">
-                  Network
+                  {t('swap.network')}
                 </span>
                 <Select
                   value={chainId?.toString()}
@@ -424,18 +456,18 @@ function NFSCSwapDialogInner(props: Props) {
                       {isSwitchingChain ? (
                         <div className="flex items-center gap-2">
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Switching...</span>
+                          <span>{t('swap.switchingNetwork')}</span>
                         </div>
                       ) : chainId ? (
                         <div className="flex items-center gap-2">
                           <NetworkLogo network={chainId} className="w-5 h-5" />
                           <span>
                             {chains.find((c) => c.id === chainId)?.name ||
-                              'Unknown'}
+                              t('swap.unknownNetwork')}
                           </span>
                         </div>
                       ) : (
-                        'Select network'
+                        t('swap.selectNetwork')
                       )}
                     </SelectValue>
                   </SelectTrigger>
@@ -457,7 +489,7 @@ function NFSCSwapDialogInner(props: Props) {
           {pendingNfscOrders && pendingNfscOrders.length > 0 && (
             <div className="px-6 pb-3">
               <p className="text-xs text-gray-500 uppercase tracking-wide mb-2">
-                Pending top-ups for this wallet
+                {t('swap.pendingTopUps')}
               </p>
               <NfscOrdersList orders={pendingNfscOrders} />
             </div>
@@ -469,21 +501,21 @@ function NFSCSwapDialogInner(props: Props) {
             className="w-full"
           >
             <TabsList className="grid grid-cols-2 mx-6">
-              <TabsTrigger value="eth">Pay with ETH</TabsTrigger>
-              <TabsTrigger value="card">Pay with card</TabsTrigger>
+              <TabsTrigger value="eth">{t('swap.payWithEth')}</TabsTrigger>
+              <TabsTrigger value="card">{t('swap.payWithCard')}</TabsTrigger>
             </TabsList>
             <TabsContent value="eth">
               {isEthTabLoading ? (
                 <div className="flex items-center justify-center gap-2 py-10 text-gray-400">
                   <Loader2 className="h-5 w-5 animate-spin" />
-                  Loading...
+                  {tCommon('actions.loading')}
                 </div>
               ) : (
                 <div className="flex flex-col gap-2">
                   <div className="relative mx-6">
                     <div className="bg-zinc-900 rounded-lg p-4 mb-1">
                       <p className="text-gray-400 mb-2">
-                        You pay (excluding gas fee)
+                        {t('swap.youPayExcludingGas')}
                       </p>
                       <div className="flex justify-between items-center">
                         <Input
@@ -509,9 +541,13 @@ function NFSCSwapDialogInner(props: Props) {
                         <p
                           className={`text-sm mt-2 ${insufficientBalance ? 'text-red-500' : 'text-gray-400'}`}
                         >
-                          Balance: {formattedEthBalance} ETH
+                          {t('swap.ethBalance', {
+                            amount: formattedEthBalance,
+                          })}
                           {insufficientBalance && (
-                            <span className="ms-2">• Insufficient balance</span>
+                            <span className="ms-2">
+                              • {t('swap.insufficientBalanceInline')}
+                            </span>
                           )}
                         </p>
                       </div>
@@ -524,7 +560,9 @@ function NFSCSwapDialogInner(props: Props) {
                     </div>
 
                     <div className="bg-zinc-900 rounded-lg p-4">
-                      <p className="text-gray-400 mb-2">You receive</p>
+                      <p className="text-gray-400 mb-2">
+                        {t('swap.youReceive')}
+                      </p>
                       <div className="flex justify-between items-center">
                         <Input
                           type="text"
@@ -545,7 +583,9 @@ function NFSCSwapDialogInner(props: Props) {
                         </div>
                       </div>
                       <p className="text-gray-400 text-sm mt-2">
-                        Balance: {formattedNfscBalance} NFSC
+                        {t('swap.nfscBalance', {
+                          amount: formattedNfscBalance,
+                        })}
                       </p>
                     </div>
                   </div>
@@ -570,14 +610,14 @@ function NFSCSwapDialogInner(props: Props) {
                     above the floating action bar. */}
                   <div className="px-6 pt-2">
                     <div className="flex justify-between text-gray-400 mb-4">
-                      <span>Rate</span>
+                      <span>{t('swap.rate')}</span>
                       <span data-testid="nfsc-swap-rate">
-                        1 ETH = {formattedRate} NFSC
+                        {t('swap.rateValue', { rate: formattedRate })}
                       </span>
                     </div>
 
                     <div className="flex justify-between text-gray-400">
-                      <span>Gas Fee</span>
+                      <span>{t('swap.gasFee')}</span>
                       <span data-testid="nfsc-swap-gas-fee">{gasFee}</span>
                     </div>
                   </div>
@@ -625,7 +665,7 @@ function NFSCSwapDialogInner(props: Props) {
               {isSwapButtonBusy(swapButtonState) && (
                 <Loader2 className="h-5 w-5 animate-spin" />
               )}
-              {getSwapButtonLabel(swapButtonState)}
+              {swapButtonLabel}
             </Button>
           </div>
         )}

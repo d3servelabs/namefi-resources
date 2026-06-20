@@ -8,6 +8,7 @@ import { PaginationControls } from '../pagination-control';
 import { useMemo } from 'react';
 import { DomainItemSkeleton } from '../domain-item-skeleton';
 import { SubmitDomainDialog } from '../submit-domain-dialog';
+import { useTranslations } from 'next-intl';
 
 const DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT = 20;
 
@@ -24,6 +25,7 @@ export const CampaignDomainsList = ({
   limit = DEFAULT_CAMPAIGN_DOMAINS_PER_PAGE_LIMIT,
   onPageChange,
 }: CampaignDomainsListProps) => {
+  const t = useTranslations('hunt');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
 
   const trpc = useTRPC();
@@ -52,10 +54,10 @@ export const CampaignDomainsList = ({
         <div className="bg-white/5 backdrop-blur-[100px] border border-white/10 rounded-xl p-8">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-4">
-              Error loading domains
+              {t('campaign.loadErrorTitle')}
             </h2>
             <p className="text-white/50">
-              Failed to load campaign domains. Please try again later.
+              {t('campaign.loadErrorDescription')}
             </p>
           </div>
         </div>
@@ -82,11 +84,9 @@ export const CampaignDomainsList = ({
           {data?.rankings?.length === 0 ? (
             <div className="text-center py-12">
               <h3 className="text-xl font-semibold text-white mb-2">
-                No domains found
+                {t('campaign.emptyTitle')}
               </h3>
-              <p className="text-white/50">
-                No domains are available for this campaign.
-              </p>
+              <p className="text-white/50">{t('campaign.emptyDescription')}</p>
             </div>
           ) : (
             <>
@@ -108,13 +108,13 @@ export const CampaignDomainsList = ({
                   />
 
                   <p className="text-white/50 text-sm">
-                    Why isn't my favourite domain here?{' '}
+                    {t('campaign.nominatePrompt')}{' '}
                     <SubmitDomainDialog>
                       <button
                         type="button"
                         className="cursor-pointer underline"
                       >
-                        Nominate it!
+                        {t('campaign.nominateAction')}
                       </button>
                     </SubmitDomainDialog>
                   </p>

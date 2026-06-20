@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { NameserversDialog } from '../dialogs/nameservers-dialog';
@@ -156,6 +157,7 @@ export function DnsStatusCell({
   disabled,
   nftChainId,
 }: DnsStatusCellProps) {
+  const t = useTranslations('dnsManagement');
   const [activeDialog, setActiveDialog] = useState<DialogType>(null);
   const router = useRouter();
   const { gate: gateDnsEmail, modal: dnsEmailModal } = useDnsEmailGate();
@@ -168,7 +170,7 @@ export function DnsStatusCell({
   // the cell just reads it.
   const isReadOnly = !status.isUsingNamefiNameservers;
   const warningMessage = isReadOnly
-    ? 'Not editable when using external nameservers'
+    ? t('statusCell.notEditableExternal')
     : undefined;
 
   // Forwarding is allowed only if parking is enabled (A record points to Namefi Parking)
@@ -178,7 +180,7 @@ export function DnsStatusCell({
     <div
       className="flex items-center gap-3"
       role="toolbar"
-      aria-label="DNS Actions"
+      aria-label={t('statusCell.ariaLabel')}
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => {
         if (['Enter', ' ', 'Spacebar', 'Escape'].includes(e.key)) {
@@ -204,10 +206,12 @@ export function DnsStatusCell({
           <Server className={cn('w-4 h-4', nsColor)} />
         </TooltipTrigger>
         <TooltipContent>
-          Nameservers:{' '}
-          {status.nameservers.length > 0
-            ? status.nameservers.map(formatNameserverForDisplay).join(', ')
-            : 'None'}
+          {t('statusCell.nameservers', {
+            value:
+              status.nameservers.length > 0
+                ? status.nameservers.map(formatNameserverForDisplay).join(', ')
+                : t('statusCell.nameserversNone'),
+          })}
         </TooltipContent>
       </Tooltip>
 
@@ -232,10 +236,10 @@ export function DnsStatusCell({
         </TooltipTrigger>
         <TooltipContent>
           {status.isParkingEnabled
-            ? 'Parked on Namefi'
+            ? t('statusCell.parkedOnNamefi')
             : status.hasWebRecords
-              ? 'Web Records Configured'
-              : 'No Web Records'}
+              ? t('statusCell.webRecordsConfigured')
+              : t('statusCell.noWebRecords')}
         </TooltipContent>
       </Tooltip>
 
@@ -267,10 +271,10 @@ export function DnsStatusCell({
         </TooltipTrigger>
         <TooltipContent>
           {!isForwardingAllowed
-            ? 'Enable Parking to use Forwarding'
+            ? t('statusCell.enableParkingForForwarding')
             : status.forwardTo
-              ? `Forwards to: ${status.forwardTo}`
-              : 'No URL Forwarding'}
+              ? t('statusCell.forwardsTo', { url: status.forwardTo })
+              : t('statusCell.noForwarding')}
         </TooltipContent>
       </Tooltip>
 
@@ -292,7 +296,9 @@ export function DnsStatusCell({
           <Mail className={cn('w-4 h-4', mxColor)} />
         </TooltipTrigger>
         <TooltipContent>
-          {status.hasMxRecords ? 'MX Records Configured' : 'No MX Records'}
+          {status.hasMxRecords
+            ? t('statusCell.mxConfigured')
+            : t('statusCell.noMxRecords')}
         </TooltipContent>
       </Tooltip>
 
@@ -316,7 +322,9 @@ export function DnsStatusCell({
           <Hexagon className={cn('w-4 h-4', ensColor)} />
         </TooltipTrigger>
         <TooltipContent>
-          {autoEnsEnabled ? 'Auto-ENS enabled' : 'No ENS Record'}
+          {autoEnsEnabled
+            ? t('statusCell.autoEnsEnabled')
+            : t('statusCell.noEnsRecord')}
         </TooltipContent>
       </Tooltip>
 
@@ -335,7 +343,7 @@ export function DnsStatusCell({
         >
           <Ellipsis className="w-4 h-4" />
         </TooltipTrigger>
-        <TooltipContent>Manage more DNS records</TooltipContent>
+        <TooltipContent>{t('statusCell.manageMore')}</TooltipContent>
       </Tooltip>
 
       <DnsDialogs

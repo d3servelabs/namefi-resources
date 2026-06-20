@@ -47,6 +47,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { useTranslations } from 'next-intl';
 import { ColumnFilter } from './column-filter';
 import { TableFilterPanel } from './table-filter-panel';
 import { isNotNil } from 'ramda';
@@ -140,7 +141,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     onSortingChange,
     searchTerm,
     onSearchChange,
-    searchPlaceholder = 'Search...',
+    searchPlaceholder,
     columnFilters: controlledColumnFilters,
     onColumnFiltersChange,
     filterConfig,
@@ -148,14 +149,21 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
     customFilters,
     renderSubRow,
     getRowCanExpand,
-    emptyMessage = 'No data found',
-    loadingMessage = 'Loading...',
+    emptyMessage,
+    loadingMessage,
     columnVisibility,
     onColumnVisibilityChange,
     columnOrder: controlledColumnOrder,
     onColumnOrderChange,
     onResetPreferences,
   } = props;
+
+  const t = useTranslations('shared');
+  const tCommon = useTranslations('common');
+  const resolvedSearchPlaceholder =
+    searchPlaceholder ?? t('table.searchPlaceholder');
+  const resolvedEmptyMessage = emptyMessage ?? t('table.emptyDefault');
+  const resolvedLoadingMessage = loadingMessage ?? tCommon('actions.loading');
 
   const [columnSizing, setColumnSizing] = useState<ColumnSizingState>({});
   const [expanded, setExpanded] = useState<ExpandedState>({});
@@ -304,14 +312,19 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
       <div className="relative w-64">
         <Search className="absolute start-2 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder={searchPlaceholder}
+          placeholder={resolvedSearchPlaceholder}
           value={searchTerm ?? ''}
           onChange={handleSearchChange}
           className="ps-8"
         />
       </div>
     );
-  }, [searchTerm, handleSearchChange, searchPlaceholder, onSearchChange]);
+  }, [
+    searchTerm,
+    handleSearchChange,
+    resolvedSearchPlaceholder,
+    onSearchChange,
+  ]);
 
   // Calculate total active filter count
   const activeFilterCount = useMemo(() => {
@@ -349,7 +362,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                   onClick={() => setFilterPanelOpen(true)}
                 >
                   <FilterIcon className="h-3 w-3 me-1" />
-                  Filters
+                  {t('table.filters.label')}
                   {activeFilterCount > 0 && (
                     <Badge variant="outline" className="ms-1">
                       {activeFilterCount}
@@ -365,7 +378,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
               render={<Button variant="outline" size="sm" />}
             >
               <ColumnsIcon className="h-3 w-3 me-1" />
-              Columns
+              {t('table.columns.label')}
               <Badge variant="outline" className="ms-1">
                 {table.getVisibleFlatColumns().length}/
                 {table.getAllColumns().length}
@@ -373,7 +386,9 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[180px]">
               <DropdownMenuGroup>
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {t('table.columns.toggle')}
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {visibilityColumns.map((column) => (
                   <DropdownMenuCheckboxItem
@@ -396,7 +411,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                       onSelect={() => onResetPreferences()}
                     >
                       <RotateCcwIcon className="h-3 w-3 me-2" />
-                      Reset to defaults
+                      {t('table.columns.resetToDefaults')}
                     </DropdownMenuItem>
                   </>
                 )}
@@ -546,7 +561,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                           style={{
                             transform: 'translateX(50%)',
                           }}
-                          aria-label="Resize column"
+                          aria-label={t('table.columns.resizeColumn')}
                           tabIndex={-1}
                         />
                       )}
@@ -563,7 +578,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
                     <Loader2Icon className="h-6 w-6 animate-spin mx-auto mb-2" />
-                    <p>{loadingMessage}</p>
+                    <p>{resolvedLoadingMessage}</p>
                   </td>
                 </tr>
               ) : table.getRowModel().rows.length === 0 ? (
@@ -572,7 +587,7 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
                     colSpan={columns.length}
                     className="px-4 py-12 text-center text-muted-foreground"
                   >
-                    {emptyMessage}
+                    {resolvedEmptyMessage}
                   </td>
                 </tr>
               ) : (
@@ -630,8 +645,11 @@ export function ServerDataTable<TData>(props: ServerDataTableProps<TData>) {
             onPageSizeChange={onPageSizeChange}
           />
           <div className="text-sm text-muted-foreground">
-            Page {page} of {totalPages} — Total {totalCount}{' '}
-            {totalCount === 1 ? 'row' : 'rows'}
+            {t('table.pagination.pageOfTotal', {
+              page,
+              total: totalPages,
+              count: totalCount,
+            })}
           </div>
         </div>
         <TablePageSelector

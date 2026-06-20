@@ -4,6 +4,7 @@ import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { ChevronDown, Loader2 } from 'lucide-react';
 import type { FocusEvent, KeyboardEvent, ReactNode } from 'react';
 import {
@@ -68,7 +69,7 @@ export function DomainSearchCombobox({
   onValueChange,
   onBlur,
   options,
-  placeholder = 'Select or enter a domain',
+  placeholder,
   searchPlaceholder = 'Search domains...',
   emptyMessage = 'No matching domains.',
   disabled = false,
@@ -78,6 +79,9 @@ export function DomainSearchCombobox({
   className,
   triggerClassName,
 }: DomainSearchComboboxProps) {
+  const t = useTranslations('shared');
+  const resolvedPlaceholder =
+    placeholder ?? t('domainSearchCombobox.placeholder');
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState(value);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -268,7 +272,7 @@ export function DomainSearchCombobox({
         onChange={(event) => handleInputChange(event.target.value)}
         onFocus={openCombobox}
         onKeyDown={handleKeyDown}
-        placeholder={placeholder}
+        placeholder={resolvedPlaceholder}
         disabled={disabled}
         required={required}
         autoCapitalize="none"
@@ -353,6 +357,7 @@ function DomainSearchListbox({
   onActiveIndexChange: (index: number) => void;
   onSelect: (value: string) => void;
 }) {
+  const t = useTranslations('shared');
   const optionIndexOffset = canUseCustomValue ? 1 : 0;
 
   return (
@@ -365,13 +370,13 @@ function DomainSearchListbox({
         {isLoading ? (
           <div className="flex items-center gap-2 px-3 py-3 text-sm text-muted-foreground">
             <Loader2 className="animate-spin" />
-            Loading domains
+            {t('domainSearchCombobox.loadingDomains')}
           </div>
         ) : null}
         {canUseCustomValue ? (
           <div>
             <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-              Use typed domain
+              {t('domainSearchCombobox.useTypedDomain')}
             </div>
             <DomainOptionButton
               id={`${id}-option-0`}
@@ -388,7 +393,7 @@ function DomainSearchListbox({
         {options.length > 0 ? (
           <div>
             <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-              Domains
+              {t('domainSearchCombobox.domains')}
             </div>
             {options.map((option, optionIndex) => {
               const itemIndex = optionIndex + optionIndexOffset;

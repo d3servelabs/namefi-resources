@@ -14,6 +14,7 @@ import type { NotificationRelatedResource } from '@namefi-astra/common/shared-sc
 import NumberFlow from '@number-flow/react';
 import { Bell } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import {
   forwardRef,
   type ReactElement,
@@ -86,6 +87,7 @@ const NotificationsBellInner = forwardRef<
   { variant, filter, className, autoSurfaceOnIncrease = false },
   forwardedRef,
 ) {
+  const t = useTranslations('notifications');
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   // Tracks the count at which we last auto-surfaced. Prevents re-runs
   // while `justIncreased` is true (~2.5s) when the parent passes an
@@ -159,7 +161,7 @@ const NotificationsBellInner = forwardRef<
           actionVariant="icon"
           className={cn('text-white/90', justIncreased && 'animate-bounce')}
           aria-label={
-            count > 0 ? `Notifications, ${count} unread` : 'Notifications'
+            count > 0 ? t('bell.labelWithUnread', { count }) : t('bell.label')
           }
           onClick={handleClick}
         >
@@ -175,7 +177,7 @@ const NotificationsBellInner = forwardRef<
           type="button"
           onClick={handleClick}
           aria-label={
-            count > 0 ? `Notifications, ${count} unread` : 'Notifications'
+            count > 0 ? t('bell.labelWithUnread', { count }) : t('bell.label')
           }
           className={cn(
             'group relative flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60',
@@ -187,7 +189,7 @@ const NotificationsBellInner = forwardRef<
             {badge}
           </span>
           <span className="group-data-[collapsible=icon]:hidden">
-            Notifications
+            {t('bell.label')}
           </span>
         </button>
       );
@@ -200,8 +202,8 @@ const NotificationsBellInner = forwardRef<
         onClick={handleClick}
         aria-label={
           count > 0
-            ? `Related notifications, ${count} unread`
-            : 'Related notifications'
+            ? t('bell.relatedLabelWithUnread', { count })
+            : t('bell.relatedLabel')
         }
         className={cn(
           'relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/80 transition-colors hover:border-brand-primary/70 hover:bg-brand-primary/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60',
@@ -235,6 +237,8 @@ NotificationsBell.displayName = 'NotificationsBell';
 NotificationsBellInner.displayName = 'NotificationsBellInner';
 
 function PermissionPromptTooltip({ children }: { children: ReactElement }) {
+  const t = useTranslations('notifications');
+  const tCommon = useTranslations('common');
   const capability = useBrowserNotificationCapability();
   const [open, setOpen] = useState(false);
 
@@ -255,9 +259,7 @@ function PermissionPromptTooltip({ children }: { children: ReactElement }) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger render={children} />
       <PopoverContent className="w-72 p-3" align="end" sideOffset={8}>
-        <p className="text-sm text-foreground">
-          Don't miss any notifications, enable notifications for Namefi Webapp.
-        </p>
+        <p className="text-sm text-foreground">{t('permission.tooltip')}</p>
         <div className="mt-3 flex items-center justify-end gap-2">
           <Button
             type="button"
@@ -269,7 +271,7 @@ function PermissionPromptTooltip({ children }: { children: ReactElement }) {
               setOpen(false);
             }}
           >
-            Dismiss
+            {tCommon('actions.dismiss')}
           </Button>
           <Button
             type="button"
@@ -281,7 +283,7 @@ function PermissionPromptTooltip({ children }: { children: ReactElement }) {
               setOpen(false);
             }}
           >
-            Enable
+            {t('permission.enable')}
           </Button>
         </div>
       </PopoverContent>

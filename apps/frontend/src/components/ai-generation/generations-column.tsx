@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { toast } from 'sonner';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
@@ -64,7 +65,7 @@ import {
   type DerivativeSource,
 } from './derivative-flow-context';
 import { useGalleryPending } from './gallery-pending-context';
-import { getProgressMessage } from './shared/gallery-utils';
+import { getProgressMessageKey } from './shared/gallery-utils';
 import {
   buildDownloadFilename,
   copyGenerationLink,
@@ -103,9 +104,6 @@ type DeleteTarget = {
   type: 'logo' | 'marketing' | 'animation';
 };
 
-const GENERIC_GENERATION_ERROR_MESSAGE =
-  "We couldn't finish this generation. Please try again.";
-
 const getGenerationShareSubject = (
   type?: GalleryItem['type'],
 ): TwitterShareSubject => {
@@ -122,6 +120,8 @@ export function GenerationsColumn({
   domains,
   className,
 }: GenerationsColumnProps) {
+  const t = useTranslations('aiGeneration');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const { isAuthenticated } = useAuth();
   const { pendingItems, removePendingItem } = useGalleryPending();
@@ -263,8 +263,8 @@ export function GenerationsColumn({
   const handleOpenShareDialog = (item: ShareableGenerationItem) => {
     const url = resolveGenerationLink({ id: item.id });
     if (!url) {
-      toast.error('Unable to share', {
-        description: 'A shareable link is not available for this generation.',
+      toast.error(t('share.unableTitle'), {
+        description: t('share.unableMissingLink'),
       });
       return;
     }
@@ -338,7 +338,7 @@ export function GenerationsColumn({
     if (filteredGalleryItems.length === 0) {
       return (
         <div className="flex-1 px-4 py-6 text-sm text-muted-foreground">
-          Generate a logo or poster to see it appear here.
+          {t('gallery.emptyYours')}
         </div>
       );
     }
@@ -472,28 +472,32 @@ export function GenerationsColumn({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete generation?</AlertDialogTitle>
+            <AlertDialogTitle>{t('delete.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              This will remove the{' '}
-              {deleteTarget?.type === 'marketing'
-                ? 'poster'
-                : deleteTarget?.type === 'animation'
-                  ? 'animation'
-                  : 'logo'}{' '}
-              for <strong>{deleteTarget?.domain}</strong> from your gallery.
-              This action can't be undone.
+              {(() => {
+                const domain = deleteTarget?.domain ?? '';
+                if (deleteTarget?.type === 'marketing') {
+                  return t('delete.descriptionPoster', { domain });
+                }
+                if (deleteTarget?.type === 'animation') {
+                  return t('delete.descriptionAnimation', { domain });
+                }
+                return t('delete.descriptionLogo', { domain });
+              })()}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={deleteMutation.isPending}>
-              Cancel
+              {tCommon('actions.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
               disabled={deleteMutation.isPending}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending
+                ? t('delete.deleting')
+                : tCommon('actions.delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -525,6 +529,7 @@ function GalleryHeader({
   onTypeChange,
   isYoursActive,
 }: GalleryHeaderProps) {
+  const t = useTranslations('aiGeneration');
   return (
     <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
       <Tabs
@@ -533,9 +538,9 @@ function GalleryHeader({
       >
         <TabsList>
           {showYoursTab && (
-            <TabsTrigger value="yours">Your Generations</TabsTrigger>
+            <TabsTrigger value="yours">{t('gallery.yours')}</TabsTrigger>
           )}
-          <TabsTrigger value="featured">Featured</TabsTrigger>
+          <TabsTrigger value="featured">{t('gallery.featured')}</TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -556,19 +561,21 @@ function GalleryHeader({
               <span className="flex items-center gap-2">
                 <Building2 className="h-4 w-4 text-muted-foreground" />
                 {selectedBrands.length > 0
-                  ? `${selectedBrands.length} selected`
-                  : 'Brands'}
+                  ? t('gallery.brandsSelected', {
+                      count: selectedBrands.length,
+                    })
+                  : t('gallery.brands')}
               </span>
               <ChevronDown className="ms-2 h-4 w-4 shrink-0 text-muted-foreground opacity-50" />
             </PopoverTrigger>
             <PopoverContent className="w-64 p-0" align="end" sideOffset={8}>
               <Command className="rounded-lg bg-popover text-popover-foreground">
                 <CommandInput
-                  placeholder="Search brand..."
+                  placeholder={t('gallery.searchBrand')}
                   className="border-none bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring-transparent"
                 />
                 <CommandList>
-                  <CommandEmpty>No brands found.</CommandEmpty>
+                  <CommandEmpty>{t('gallery.noBrands')}</CommandEmpty>
                   <CommandGroup>
                     {domains.map((domain) => {
                       const isSelected = selectedBrands.includes(domain.domain);
@@ -614,10 +621,14 @@ function GalleryHeader({
               sideOffset={8}
               alignItemWithTrigger={false}
             >
-              <SelectItem value="all">All</SelectItem>
-              <SelectItem value="logo">Logo</SelectItem>
-              <SelectItem value="marketing">Poster</SelectItem>
-              <SelectItem value="animation">Animation</SelectItem>
+              <SelectItem value="all">{t('gallery.filterAll')}</SelectItem>
+              <SelectItem value="logo">{t('gallery.filterLogo')}</SelectItem>
+              <SelectItem value="marketing">
+                {t('gallery.filterPoster')}
+              </SelectItem>
+              <SelectItem value="animation">
+                {t('gallery.filterAnimation')}
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -635,8 +646,9 @@ function PendingGenerationTile({
   item,
   progressValue,
 }: PendingGenerationTileProps) {
+  const t = useTranslations('aiGeneration');
   const clamped = Math.max(0, Math.min(100, Math.round(progressValue)));
-  const message = getProgressMessage(clamped);
+  const message = t(`progress.messages.${getProgressMessageKey(clamped)}`);
 
   return (
     <div className="relative flex aspect-[1/1] items-center justify-center overflow-hidden rounded-xl border border-border/40 bg-muted/30 shadow-xs">
@@ -649,10 +661,10 @@ function PendingGenerationTile({
         </div>
         <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground/80">
           {item.type === 'marketing'
-            ? 'Generating Poster'
+            ? t('progress.generatingPoster')
             : item.type === 'animation'
-              ? 'Preparing Animation'
-              : 'Generating Logo'}{' '}
+              ? t('progress.preparingAnimation')
+              : t('progress.generatingLogo')}{' '}
           · {item.domain}
         </div>
       </div>
@@ -685,11 +697,12 @@ function ReadyGenerationTile({
   onDelete,
   isDeleting,
 }: ReadyGenerationTileProps) {
+  const t = useTranslations('aiGeneration');
   const ctaActions =
     item.type === 'logo' && isReadyLogoGeneration(item.generation)
       ? [
           {
-            label: 'Create Poster',
+            label: t('logo.actions.createPoster'),
             icon: Sparkles,
             onClick: (event: MouseEvent<HTMLButtonElement>) => {
               event.stopPropagation();
@@ -698,7 +711,7 @@ function ReadyGenerationTile({
             },
           },
           {
-            label: 'Animate Logo',
+            label: t('logo.actions.animateLogo'),
             icon: Clapperboard,
             onClick: (event: MouseEvent<HTMLButtonElement>) => {
               event.stopPropagation();
@@ -714,7 +727,7 @@ function ReadyGenerationTile({
     <div
       role="button"
       tabIndex={0}
-      aria-label={`Open generation for ${item.domain}`}
+      aria-label={t('gallery.openAria', { domain: item.domain })}
       onClick={() => onNavigate(item.id)}
       onKeyDown={(event) => {
         if (
@@ -736,10 +749,10 @@ function ReadyGenerationTile({
           <div>
             <div className="text-xs font-semibold uppercase tracking-wide text-white/90">
               {item.type === 'marketing'
-                ? 'Poster'
+                ? t('kind.poster')
                 : item.type === 'animation'
-                  ? 'Animation'
-                  : 'Logo'}
+                  ? t('kind.animation')
+                  : t('kind.logo')}
             </div>
             <div className="text-sm font-semibold drop-shadow-md">
               {item.domain}
@@ -819,6 +832,7 @@ function AsyncGenerationTile({
   onDelete,
   isDeleting,
 }: AsyncGenerationTileProps) {
+  const t = useTranslations('aiGeneration');
   useEffect(() => {
     if (item.status !== 'failed' || !item.errorMessage) return;
 
@@ -835,7 +849,7 @@ function AsyncGenerationTile({
     item.type === 'logo' && isReadyLogoGeneration(item.generation)
       ? [
           {
-            label: 'Create Poster',
+            label: t('logo.actions.createPoster'),
             icon: Sparkles,
             onClick: (event: MouseEvent<HTMLButtonElement>) => {
               event.stopPropagation();
@@ -844,7 +858,7 @@ function AsyncGenerationTile({
             },
           },
           {
-            label: 'Animate Logo',
+            label: t('logo.actions.animateLogo'),
             icon: Clapperboard,
             onClick: (event: MouseEvent<HTMLButtonElement>) => {
               event.stopPropagation();
@@ -856,17 +870,17 @@ function AsyncGenerationTile({
       : undefined;
   const statusLabel =
     item.status === 'failed'
-      ? 'Failed'
+      ? t('status.failed')
       : item.status === 'processing'
-        ? 'Processing'
-        : 'Pending';
+        ? t('status.processing')
+        : t('status.pending');
 
   return (
     // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
     <div
       role="button"
       tabIndex={0}
-      aria-label={`Open generation for ${item.domain}`}
+      aria-label={t('gallery.openAria', { domain: item.domain })}
       onClick={() => onNavigate(item.id)}
       onKeyDown={(event) => {
         if (
@@ -917,10 +931,10 @@ function AsyncGenerationTile({
             </div>
             <div className="mt-1 text-sm text-white/95">
               {item.status === 'failed'
-                ? GENERIC_GENERATION_ERROR_MESSAGE
+                ? t('asyncTile.genericError')
                 : item.status === 'processing'
-                  ? 'Your generation is still running.'
-                  : 'Your generation is queued and will appear here shortly.'}
+                  ? t('asyncTile.stillRunning')
+                  : t('asyncTile.queued')}
             </div>
           </div>
         </div>
@@ -984,12 +998,13 @@ function FeaturedGenerationTile({
   onShare,
   onDownload,
 }: FeaturedGenerationTileProps) {
+  const t = useTranslations('aiGeneration');
   return (
     // biome-ignore lint/a11y/useSemanticElements: container wraps nested action buttons within the card
     <div
       role="button"
       tabIndex={0}
-      aria-label={`Open featured generation for ${item.domain}`}
+      aria-label={t('gallery.openFeaturedAria', { domain: item.domain })}
       onClick={() => onNavigate(item.id)}
       onKeyDown={(event) => {
         if (event.key === 'Enter') {
@@ -1043,6 +1058,7 @@ interface GalleryPreviewProps {
 }
 
 function GalleryPreview({ item, className }: GalleryPreviewProps) {
+  const t = useTranslations('aiGeneration');
   const isTransientStatus =
     item.status === 'pending' ||
     item.status === 'processing' ||
@@ -1064,7 +1080,9 @@ function GalleryPreview({ item, className }: GalleryPreviewProps) {
     return (
       <>
         <video
-          aria-label={`Animation preview for ${item.domain}`}
+          aria-label={t('gallery.animationPreviewAria', {
+            domain: item.domain,
+          })}
           className={className}
           muted
           playsInline
@@ -1083,7 +1101,7 @@ function GalleryPreview({ item, className }: GalleryPreviewProps) {
 
     return (
       <div className="flex h-full w-full items-center justify-center bg-muted/30 text-xs text-muted-foreground">
-        Preview unavailable
+        {t('gallery.previewUnavailable')}
       </div>
     );
   }
@@ -1135,13 +1153,14 @@ export function GenerationsColumnSkeleton({
 }: {
   className?: string;
 }) {
+  const t = useTranslations('aiGeneration');
   return (
     <div className={cn('flex h-full min-h-0 flex-col', className)}>
       <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <Tabs value="yours" className="pointer-events-none opacity-60">
           <TabsList>
-            <TabsTrigger value="yours">Your Generations</TabsTrigger>
-            <TabsTrigger value="featured">Featured</TabsTrigger>
+            <TabsTrigger value="yours">{t('gallery.yours')}</TabsTrigger>
+            <TabsTrigger value="featured">{t('gallery.featured')}</TabsTrigger>
           </TabsList>
         </Tabs>
         <div className="flex items-center gap-2.5">

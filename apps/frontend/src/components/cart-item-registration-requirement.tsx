@@ -16,6 +16,7 @@ import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-s
 import type { TldRegistrationRequirement } from '@namefi-astra/common/domain-availability';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { CheckCircle2, ExternalLink, Info } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
@@ -62,6 +63,8 @@ export function CartItemRegistrationRequirement({
   readOnly,
 }: CartItemRegistrationRequirementProps) {
   const { cart, updatingBusy } = useCartRow(item.normalizedDomainName);
+  const t = useTranslations('cart');
+  const tCommon = useTranslations('common');
   const [modalOpen, setModalOpen] = useState(false);
 
   const isExplicit = requirement.confirmation === 'explicit';
@@ -136,7 +139,7 @@ export function CartItemRegistrationRequirement({
               onClick={() => setModalOpen(true)}
               className="shrink-0 text-[11px] font-medium text-zinc-400 underline-offset-2 hover:text-zinc-200 hover:underline"
             >
-              Learn more
+              {t('cartItemRegistration.learnMore')}
             </button>
           </div>
           {isExplicit && (
@@ -194,14 +197,16 @@ export function CartItemRegistrationRequirement({
             {isExplicit ? (
               <>
                 <DialogClose render={<Button variant="outline" />}>
-                  Cancel
+                  {tCommon('actions.cancel')}
                 </DialogClose>
                 <Button onClick={handleAgree} disabled={readOnly}>
-                  Agree
+                  {t('cartFootnote.agree')}
                 </Button>
               </>
             ) : (
-              <DialogClose render={<Button />}>Got it</DialogClose>
+              <DialogClose render={<Button />}>
+                {t('cartItemRegistration.gotIt')}
+              </DialogClose>
             )}
           </DialogFooter>
         </DialogContent>

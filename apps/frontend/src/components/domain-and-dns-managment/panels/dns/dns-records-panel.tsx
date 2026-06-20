@@ -20,6 +20,7 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import type { RecordType } from '@namefi-astra/zod-dns';
 import { Database, FileText, FileType, Mail, Plus, Server } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import {
   type FC,
   type HTMLAttributes,
@@ -40,6 +41,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
   className,
   ...rest
 }: DnsRecordsPanelProps) => {
+  const t = useTranslations('dnsManagement');
   const [preselectedType, setPreselectedType] = useState<string | undefined>(
     undefined,
   );
@@ -67,9 +69,11 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
       />
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <div>
-          <CardTitle className="text-xl font-bold">DNS Records</CardTitle>
+          <CardTitle className="text-xl font-bold">
+            {t('records.panel.title')}
+          </CardTitle>
           <CardDescription className="text-zinc-400">
-            Manage your domain's DNS records
+            {t('records.panel.description')}
           </CardDescription>
         </div>
 
@@ -78,7 +82,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
             disabled={!domain}
             className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
           >
-            <Plus className="me-1 h-4 w-4" /> Add record
+            <Plus className="me-1 h-4 w-4" /> {t('records.panel.addRecord')}
           </Button>
         </AddRecordDropdownMenu>
       </CardHeader>
@@ -108,12 +112,15 @@ const AddRecordDropdownMenu = React.memo(
     onAddRecordClicked: (type: string) => void;
     children: ReactNode;
   }) => {
+    const t = useTranslations('dnsManagement');
     return (
       <DropdownMenu>
         <DropdownMenuTrigger render={children as React.ReactElement} />
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Record Types</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {t('records.panel.recordTypes')}
+            </DropdownMenuLabel>
             {DNS_RECORD_TYPES.map((type, index) => {
               const Icon =
                 RecordTypeIconMap[type as keyof typeof RecordTypeIconMap] ||
@@ -125,7 +132,7 @@ const AddRecordDropdownMenu = React.memo(
                     onClick={() => onAddRecordClicked(type)}
                   >
                     <Icon className="me-2 h-4 w-4" />
-                    <span>{type} Record</span>
+                    <span>{t('records.panel.recordTypeOption', { type })}</span>
                   </DropdownMenuItem>
 
                   {index !== DNS_RECORD_TYPES.length - 1 && (

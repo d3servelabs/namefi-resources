@@ -1,0 +1,257 @@
+{
+  "studio": {
+    "title": "Namefi Brand Studio",
+    "subtitle": "Create custom logos, posters, and animations for your brand",
+    "poweredByAlt": "Powered by Namefi"
+  },
+  "tabs": {
+    "logo": "Logo",
+    "poster": "Poster",
+    "animation": "Animation"
+  },
+  "prerequisite": {
+    "title": "Create a logo first",
+    "posterDescription": "Posters need one of your generated logos as the brand reference.",
+    "animationDescription": "Animations need one of your generated logos as the source artwork."
+  },
+  "usage": {
+    "credits": "AI credits",
+    "usedThisMonth": "{current} of {max} used this month",
+    "limitReached": "Credit limit reached",
+    "creditsLeft": "{count, plural, one {# credit left} other {# credits left}}",
+    "refreshAria": "AI credit refresh time",
+    "refreshAt": "Credits refresh {time}",
+    "refreshMonthly": "Credits refresh monthly",
+    "balanceCheckError": "Unable to check AI credit balance",
+    "balanceCheckErrorDescription": "We could not verify your remaining credits, but you can still try generating assets.",
+    "checkingBalance": "Checking AI credit balance...",
+    "willCheckBalance": "We will check your AI credit balance before generation starts.",
+    "creditAmount": "{count, plural, one {# AI credit} other {# AI credits}}",
+    "costInsufficient": "This generation needs {cost}. You have {remaining} left this month.",
+    "costPreview": "This generation costs {cost}. You will have {remaining} left this month."
+  },
+  "domainField": {
+    "fixedLabel": "Enter your domain (e.g., example.com)",
+    "logoPlaceholder": "Select or enter your brand domain",
+    "brandPlaceholder": "Select your brand domain (required)",
+    "searchBrands": "Search brand domains...",
+    "searchOrEnter": "Search or enter a domain",
+    "emptyStudioLogos": "No Studio logo domains found.",
+    "emptyMatching": "No matching domains."
+  },
+  "description": {
+    "label": "Describe your brand (optional)",
+    "placeholder": "Tell us more about your brand vision"
+  },
+  "logo": {
+    "gridTitle": "Generated Logos",
+    "chooseType": "Choose a type",
+    "chooseStyle": "Choose a style",
+    "chooseTldTreatment": "Choose a TLD treatment",
+    "chooseTypography": "Choose typography",
+    "chooseModel": "Choose a model",
+    "controls": {
+      "type": "Type",
+      "style": "Style",
+      "tld": "TLD",
+      "typography": "Typography",
+      "model": "Model",
+      "brandVision": "Brand Vision",
+      "advanced": "Advanced"
+    },
+    "actions": {
+      "createPoster": "Create Poster",
+      "animateLogo": "Animate Logo"
+    }
+  },
+  "poster": {
+    "title": "Poster Generator",
+    "gridTitle": "Generated Posters",
+    "usingBrand": "Using brand {domain}",
+    "backToLogos": "Back to logos",
+    "chooseLogo": "Choose a logo to base your poster on",
+    "chooseModel": "Choose a model",
+    "chooseCollateral": "Choose collateral type",
+    "selectCollateral": "Select collateral",
+    "controls": {
+      "useLogo": "Use Logo",
+      "selected": "Selected",
+      "description": "Description",
+      "model": "Model",
+      "collateral": "Collateral",
+      "advanced": "Advanced"
+    },
+    "collateral": {
+      "letAiChoose": "Let AI Choose",
+      "billboard": "Billboard",
+      "apparel": "Apparel",
+      "vehicle": "Vehicle",
+      "product": "Product"
+    }
+  },
+  "animation": {
+    "title": "Logo Animation",
+    "gridTitle": "Generated Animations",
+    "usingBrand": "Using brand {domain}",
+    "backToLogos": "Back to logos",
+    "chooseMode": "Choose animation mode",
+    "chooseLogo": "Choose a logo to animate",
+    "chooseOpening": "Choose opening style",
+    "chooseMotion": "Choose motion direction",
+    "chooseIntensity": "Choose motion intensity",
+    "chooseModel": "Choose a model",
+    "selectOpening": "Select opening style",
+    "selectMotion": "Select motion",
+    "selectIntensity": "Select intensity",
+    "useLogoAria": "Use {domain} logo",
+    "controls": {
+      "mode": "Mode",
+      "useLogo": "Use Logo",
+      "selected": "Selected",
+      "description": "Description",
+      "opening": "Opening",
+      "motion": "Motion",
+      "intensity": "Intensity",
+      "model": "Model"
+    },
+    "validation": {
+      "openingRequired": "Opening is required for cinematic animation",
+      "chooseCinematicModel": "Choose a cinematic model",
+      "chooseCinematicMotion": "Choose a cinematic motion preset",
+      "chooseSeedanceModel": "Choose a Seedance model",
+      "intensityRequired": "Intensity is required for looped animation",
+      "chooseLoopedModel": "Choose a looped model",
+      "chooseLoopedMotion": "Choose a looped motion preset"
+    }
+  },
+  "model": {
+    "select": "Select a model"
+  },
+  "submit": {
+    "generate": "Generate",
+    "generating": "Generating",
+    "animate": "Animate",
+    "selectBrand": "Select a brand"
+  },
+  "gallery": {
+    "yours": "Your Generations",
+    "featured": "Featured",
+    "brands": "Brands",
+    "brandsSelected": "{count} selected",
+    "searchBrand": "Search brand...",
+    "noBrands": "No brands found.",
+    "filterAll": "All",
+    "filterLogo": "Logo",
+    "filterPoster": "Poster",
+    "filterAnimation": "Animation",
+    "emptyYours": "Generate a logo or poster to see it appear here.",
+    "openAria": "Open generation for {domain}",
+    "openFeaturedAria": "Open featured generation for {domain}",
+    "viewAria": "View generation {index}",
+    "animationPreviewAria": "Animation preview for {domain}",
+    "previewUnavailable": "Preview unavailable",
+    "basedOnLogo": "Based on logo",
+    "basedOn": "Based on:",
+    "referencedLogoAlt": "Referenced logo"
+  },
+  "kind": {
+    "logo": "Logo",
+    "poster": "Poster",
+    "animation": "Animation"
+  },
+  "progress": {
+    "generatingLogo": "Generating Logo",
+    "generatingPoster": "Generating Poster",
+    "preparingAnimation": "Preparing Animation",
+    "messages": {
+      "gathering": "Gathering inspiration for your brand...",
+      "sketching": "Sketching first strokes and silhouettes...",
+      "blending": "Blending colors, styles, and fonts...",
+      "character": "Adding character and signature details...",
+      "lighting": "Refining lighting and balance...",
+      "polishing": "Polishing highlights and textures...",
+      "framing": "Framing the final reveal...",
+      "almost": "Almost ready—hang tight!"
+    }
+  },
+  "status": {
+    "pending": "Pending",
+    "processing": "Processing",
+    "failed": "Failed",
+    "ready": "Ready"
+  },
+  "asyncTile": {
+    "genericError": "We couldn't finish this generation. Please try again.",
+    "stillRunning": "Your generation is still running.",
+    "queued": "Your generation is queued and will appear here shortly."
+  },
+  "actions": {
+    "copy": "Copy",
+    "copyLink": "Copy Link",
+    "tweet": "Tweet",
+    "download": "Download"
+  },
+  "delete": {
+    "title": "Delete generation?",
+    "titleSingle": "Delete this generation?",
+    "descriptionLogo": "This will remove the logo for {domain} from your gallery. This action can't be undone.",
+    "descriptionPoster": "This will remove the poster for {domain} from your gallery. This action can't be undone.",
+    "descriptionAnimation": "This will remove the animation for {domain} from your gallery. This action can't be undone.",
+    "deleting": "Deleting..."
+  },
+  "share": {
+    "unableTitle": "Unable to share",
+    "unableMissingLink": "A shareable link is not available for this generation.",
+    "unableMissingLinkOrDomain": "A shareable link or domain was not found for this generation."
+  },
+  "imageGrid": {
+    "previewUnavailable": "Preview unavailable"
+  },
+  "details": {
+    "backToStudio": "Back to Namefi Brand Studio",
+    "headingLogo": "Logo for {brand}",
+    "headingPoster": "Poster for {brand}",
+    "headingAnimation": "Animation for {brand}",
+    "notFoundTitle": "Generation not found",
+    "notFoundDescription": "The generation you are looking for could not be found.",
+    "assetUnavailable": "The asset is not available yet.",
+    "sectionTitle": "Details",
+    "type": "Type:",
+    "status": "Status:",
+    "collateral": "Collateral:",
+    "motion": "Motion:",
+    "mode": "Mode:",
+    "opening": "Opening:",
+    "intensity": "Intensity:",
+    "model": "Model:",
+    "created": "Created:",
+    "createdUnknown": "Unknown",
+    "collateralUnknown": "Unknown",
+    "logoProperties": "Logo Properties",
+    "logoStyle": "Style:",
+    "logoType": "Type:",
+    "logoTld": "TLD:",
+    "logoTypography": "Typography:",
+    "sourceLogo": "Source Logo",
+    "sourceLogoAlt": "Logo used for derivative generation",
+    "viewLogoDetails": "View Logo Details",
+    "sourcePreviewUnavailable": "Source logo preview is unavailable",
+    "sourceLoadFailed": "Failed to load logo details",
+    "sourceNotFound": "No logo reference found",
+    "animationSheet": "Animation Sheet",
+    "animationSheetAlt": "Generated animation sheet for {domain}",
+    "openSheetAria": "Open animation sheet preview",
+    "sheetModel": "Sheet model:",
+    "sheetDialogTitle": "Animation sheet",
+    "sheetDialogDescription": "The generated storyboard used to guide this animation.",
+    "shareTwitterTitle": "Share on Twitter",
+    "copyLinkTitle": "Copy link",
+    "twitter": "Twitter",
+    "linkCopied": "Link copied to clipboard",
+    "linkCopiedDescription": "You can now share this generation with others",
+    "linkCopyFailed": "Failed to copy link",
+    "linkCopyFailedDescription": "Please try again",
+    "animationLabelAria": "AI-generated {mode} animation for {domain}",
+    "imageAlt": "AI-generated {type} for {domain}"
+  }
+}

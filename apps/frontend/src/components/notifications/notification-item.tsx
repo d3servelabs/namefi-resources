@@ -8,12 +8,12 @@ import type { NotificationDto } from '@namefi-astra/common/contract/notification
 import { Archive, ArchiveRestore, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import type { Route } from 'next';
+import { useTranslations } from 'next-intl';
 import { useRef } from 'react';
 
 import {
   LINKABLE_NOTIFICATION_RESOURCE_TYPES,
   resourceHref,
-  resourceLabel,
 } from './resource-href';
 import { useNotificationRenderTracking } from './use-render-tracking';
 
@@ -56,6 +56,7 @@ export function NotificationItem({
   onUnarchive,
   onAutoMarkSeen,
 }: NotificationItemProps) {
+  const t = useTranslations('notifications');
   const liRef = useRef<HTMLLIElement | null>(null);
   const linkableResources = notification.relatedResources.filter((r) =>
     LINKABLE_NOTIFICATION_RESOURCE_TYPES.has(r.type),
@@ -82,7 +83,7 @@ export function NotificationItem({
         <Checkbox
           checked={selected}
           onCheckedChange={() => onToggleSelected(notification.id)}
-          aria-label={`Select ${notification.title}`}
+          aria-label={t('item.selectAria', { title: notification.title })}
         />
       </div>
 
@@ -105,7 +106,7 @@ export function NotificationItem({
                 variant="ghost"
                 size="icon"
                 className="size-7"
-                aria-label="Mark as unseen"
+                aria-label={t('item.markUnseenAria')}
                 onClick={() => onMarkUnseen(notification.id)}
               >
                 <EyeOff className="size-3.5" />
@@ -116,7 +117,7 @@ export function NotificationItem({
                 variant="ghost"
                 size="icon"
                 className="size-7"
-                aria-label="Mark as seen"
+                aria-label={t('item.markSeenAria')}
                 onClick={() => onMarkSeen(notification.id)}
               >
                 <Eye className="size-3.5" />
@@ -128,7 +129,7 @@ export function NotificationItem({
                 variant="ghost"
                 size="icon"
                 className="size-7"
-                aria-label="Restore from archive"
+                aria-label={t('item.restoreAria')}
                 onClick={() => onUnarchive(notification.id)}
               >
                 <ArchiveRestore className="size-3.5" />
@@ -139,7 +140,7 @@ export function NotificationItem({
                 variant="ghost"
                 size="icon"
                 className="size-7"
-                aria-label="Archive"
+                aria-label={t('item.archiveAria')}
                 onClick={() => onArchive(notification.id)}
               >
                 <Archive className="size-3.5" />
@@ -159,8 +160,9 @@ export function NotificationItem({
               const href = resourceHref(resource);
               const shownIdentifier = truncateResourceIdentifier(resource);
               const isTruncated = shownIdentifier !== resource.identifier;
-              const fullLabel = `${resourceLabel(resource)}: ${resource.identifier}`;
-              const shownLabel = `${resourceLabel(resource)}: ${shownIdentifier}`;
+              const typeLabel = t(`resourceTypes.${resource.type}`);
+              const fullLabel = `${typeLabel}: ${resource.identifier}`;
+              const shownLabel = `${typeLabel}: ${shownIdentifier}`;
               if (!href) {
                 return (
                   <span

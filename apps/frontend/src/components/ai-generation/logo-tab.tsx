@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useFeedback } from '@/components/providers/feedback';
 import { feedbackTriggerSchema } from '@/lib/feedback-triggers';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -33,6 +34,7 @@ export function LogoTab({
   existingGenerations = [],
   brandDomain,
 }: LogoTabProps) {
+  const t = useTranslations('aiGeneration');
   const lastGenerationParams = useRef<LogoFormData | null>(null);
   const [latestGeneration, setLatestGeneration] = useState<Generation | null>(
     null,
@@ -130,15 +132,15 @@ export function LogoTab({
           }}
         />
       }
-      title="Generated Logos"
+      title={t('logo.gridTitle')}
       convertToGeneratedItems={convertLogoGenerations}
       logoActions={[
         {
-          label: 'Create Poster',
+          label: t('logo.actions.createPoster'),
           onRequest: openPoster,
         },
         {
-          label: 'Animate Logo',
+          label: t('logo.actions.animateLogo'),
           onRequest: openAnimation,
         },
       ]}

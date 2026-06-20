@@ -25,5 +25,10 @@
     "validThru": "有効期限",
     "claimNow": "今すぐ取得",
     "poweredByNamefi": "Powered by Namefi"
+  },
+  "dropdown": {
+    "title": "無料ミント",
+    "claim": "クレーム",
+    "viewAll": "すべての無料ミントを表示"
   }
 }

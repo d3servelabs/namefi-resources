@@ -43,6 +43,7 @@ import {
   Type,
 } from 'lucide-react';
 import { z } from 'zod';
+import { useTranslations } from 'next-intl';
 import { BaseGenerator, baseFormSchema } from './shared/base-generator';
 import { ControlPanel } from './shared/form-fields';
 import { shouldBypassImageOptimization } from '@/lib/image-src';
@@ -332,6 +333,7 @@ export function LogoGenerator({
   onGenerateMore,
   onPosterRequest,
 }: LogoGeneratorProps) {
+  const t = useTranslations('aiGeneration');
   const [showAdvanced, setShowAdvanced] = useState(false);
   const getTypeDisplay = (type: string) => {
     const logoType = LOGO_TYPES[type as keyof typeof LOGO_TYPES];
@@ -382,10 +384,10 @@ export function LogoGenerator({
       fixedDomain={fixedDomain}
       formSchema={logoFormSchema}
       defaultValues={defaultValues}
-      domainPlaceholder="Select or enter your brand domain"
+      domainPlaceholder={t('domainField.logoPlaceholder')}
       domainSelectOnly={false}
-      submitButtonText="Generate"
-      submitLoadingText="Generating"
+      submitButtonText={t('submit.generate')}
+      submitLoadingText={t('submit.generating')}
       latestGeneration={latestGeneration}
       onGenerateMore={onGenerateMore}
       onPosterRequest={onPosterRequest}
@@ -411,7 +413,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'type',
-                          label: 'Type',
+                          label: t('logo.controls.type'),
                           badge: selectedType
                             ? getTypeDisplay(selectedType)
                             : undefined,
@@ -425,7 +427,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'style',
-                          label: 'Style',
+                          label: t('logo.controls.style'),
                           badge: selectedStyle
                             ? getStyleDisplay(selectedStyle)
                             : undefined,
@@ -441,7 +443,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'text',
-                          label: 'TLD',
+                          label: t('logo.controls.tld'),
                           badge: selectedTextTreatment
                             ? getTextTreatmentDisplay(selectedTextTreatment)
                             : undefined,
@@ -455,7 +457,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'typography',
-                          label: 'Typography',
+                          label: t('logo.controls.typography'),
                           badge: selectedTypography
                             ? getTypographyDisplay(selectedTypography)
                             : undefined,
@@ -471,7 +473,7 @@ export function LogoGenerator({
                     ? [
                         {
                           key: 'model',
-                          label: 'Model',
+                          label: t('logo.controls.model'),
                           badge: selectedModel
                             ? getModelDisplay(selectedModel)
                             : undefined,
@@ -485,7 +487,7 @@ export function LogoGenerator({
                     : []),
                   {
                     key: 'description',
-                    label: 'Brand Vision',
+                    label: t('logo.controls.brandVision'),
                     onClick: () =>
                       setOpenPanel(
                         openPanel === 'description' ? null : 'description',
@@ -496,7 +498,7 @@ export function LogoGenerator({
               />
               <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <Label htmlFor="logo-advanced" className="text-xs font-medium">
-                  Advanced
+                  {t('logo.controls.advanced')}
                 </Label>
                 <Switch
                   id="logo-advanced"
@@ -514,7 +516,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a type
+                      {t('logo.chooseType')}
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -570,7 +572,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a style
+                      {t('logo.chooseStyle')}
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -626,7 +628,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a TLD treatment
+                      {t('logo.chooseTldTreatment')}
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -694,7 +696,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose typography
+                      {t('logo.chooseTypography')}
                     </FormLabel>
                     <FormControl>
                       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -762,7 +764,7 @@ export function LogoGenerator({
                 render={({ field }) => (
                   <FormItem className="mt-6">
                     <FormLabel className="text-lg font-semibold">
-                      Choose a model
+                      {t('logo.chooseModel')}
                     </FormLabel>
                     <FormControl>
                       <Select
@@ -774,7 +776,7 @@ export function LogoGenerator({
                         }}
                       >
                         <SelectTrigger className="w-full max-w-sm">
-                          <SelectValue placeholder="Select a model" />
+                          <SelectValue placeholder={t('model.select')} />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="gemini-3-pro-image-preview">

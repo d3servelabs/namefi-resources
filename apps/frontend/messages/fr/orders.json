@@ -51,7 +51,6 @@
     "renew": "Renouvellement"
   },
   "unlinkedWalletTooltip": "Ce portefeuille n'est pas lié au compte actuel, le domaine n'apparaîtra donc pas dans votre compte.",
-  "walletNotLinked": "Ce portefeuille n'est pas lié à votre compte.",
   "timeline": {
     "subtitle": "Mises à jour en direct",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "Le domaine était verrouillé et le support a annulé la demande.",
     "failureUserAuthCode": "Une mise à jour du code d'autorisation était requise et vous avez annulé la demande.",
     "failureUserLocked": "Le domaine était verrouillé et vous avez annulé la demande."
-  }
+  },
+  "nftWalletLabel": "Portefeuille NFT",
+  "viewTransactionTitle": "Voir la transaction"
 }

@@ -22,6 +22,7 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Loader2, Settings2 as Settings, Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useCartRow } from '@/hooks/use-cart-row';
 import type { UnifiedCartItem } from '@/hooks/use-cart';
 import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availability';
@@ -60,6 +61,7 @@ export function CartItem({
     item.normalizedDomainName,
   );
 
+  const t = useTranslations('cart');
   const setupOptionsEnabled = useBooleanOpenFeatureFlag(
     CART_ITEM_DOMAIN_SETUP_OPTIONS_FLAG,
   );
@@ -235,7 +237,7 @@ export function CartItem({
                   onClick={() => setSetupExpanded((open) => !open)}
                   disabled={isDisabled}
                   aria-expanded={setupExpanded}
-                  aria-label="Domain setup options"
+                  aria-label={t('cartItem.setupOptionsAria')}
                 >
                   <Settings className="size-4" />
                 </button>

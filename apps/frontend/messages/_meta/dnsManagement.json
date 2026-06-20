@@ -1,0 +1,1662 @@
+{
+  "status": {
+    "checkFailedTitle": {
+      "description": "Heading shown when the app could not determine the domain's DNSSEC status (a check error)."
+    },
+    "pendingTitle": {
+      "description": "Heading shown while DNSSEC is being set up / activating for the domain."
+    },
+    "activeTitle": {
+      "description": "Heading shown when DNSSEC is successfully enabled for the domain."
+    },
+    "misconfiguredTitle": {
+      "description": "Heading shown when DNSSEC is enabled but misconfigured (records don't match)."
+    }
+  },
+  "actions": {
+    "enable": {
+      "description": "Button that turns on DNSSEC for the domain. DNSSEC is a security extension; keep the acronym DNSSEC.",
+      "maxLength": 20
+    },
+    "disable": {
+      "description": "Button that turns off DNSSEC for the domain. Keep the acronym DNSSEC.",
+      "maxLength": 20
+    },
+    "cancelSetup": {
+      "description": "Button that cancels an in-progress DNSSEC setup.",
+      "maxLength": 18
+    },
+    "keepWaiting": {
+      "description": "Button to keep waiting for an in-progress DNSSEC setup to finish instead of cancelling.",
+      "maxLength": 18
+    }
+  },
+  "disableDialog": {
+    "title": {
+      "description": "Confirmation dialog title before disabling DNSSEC. Keep the acronym DNSSEC; ends with a question mark.",
+      "maxLength": 24
+    }
+  },
+  "form": {
+    "tabs": {
+      "autoDetect": {
+        "description": "Tab label for automatically detecting DNSSEC DS/DNSKEY records from the domain's nameservers.",
+        "maxLength": 24
+      },
+      "manual": {
+        "description": "Tab label for manually pasting or entering a DNSSEC DS/DNSKEY record.",
+        "maxLength": 12
+      }
+    },
+    "manual": {
+      "description": {
+        "description": "Helper text on the manual DNSSEC tab explaining the user can paste a DNSKEY or DS record; keep DNSKEY and DS acronyms."
+      },
+      "enterFieldsManually": {
+        "description": "Inline link/button text to switch to entering the DS-record fields one by one instead of pasting.",
+        "maxLength": 30
+      },
+      "derive": {
+        "description": "Button that parses the pasted record and fills in the DS fields. DS = Delegation Signer; keep the DS acronym.",
+        "maxLength": 20
+      },
+      "deriving": {
+        "description": "Loading text shown while the pasted record is being parsed into DS fields.",
+        "maxLength": 16
+      }
+    },
+    "autoDetect": {
+      "description": {
+        "description": "Helper text on the automatic-detection tab explaining it queries the domain's delegated nameservers."
+      },
+      "detect": {
+        "description": "Button that queries the domain's delegated nameservers to detect DNSSEC keys.",
+        "maxLength": 36
+      },
+      "detecting": {
+        "description": "Loading text shown while detecting DNSSEC keys from nameservers.",
+        "maxLength": 16
+      },
+      "kskCandidate": {
+        "description": "Label next to a dropdown for picking which Key Signing Key (KSK) candidate to use; keep the KSK acronym.",
+        "maxLength": 16
+      },
+      "candidateOption": {
+        "description": "Dropdown option label for a detected key candidate, showing its key tag number and DNSSEC algorithm number. {keyTag} and {algorithm} are numbers."
+      }
+    },
+    "dsValuesTitle": {
+      "description": "Small heading above the DS-record fields/summary. DS = Delegation Signer; keep the DS acronym.",
+      "maxLength": 20
+    },
+    "viewSummary": {
+      "description": "Button to switch the DS-record editor from edit mode back to a read-only summary view.",
+      "maxLength": 18
+    },
+    "fields": {
+      "keyTag": {
+        "description": "Field label for a DNSSEC DS record's key tag (a numeric identifier).",
+        "maxLength": 16
+      },
+      "algorithm": {
+        "description": "Field label for the DNSSEC signing algorithm.",
+        "maxLength": 16
+      },
+      "flags": {
+        "description": "Field label for the DNSSEC DNSKEY flags value.",
+        "maxLength": 16
+      },
+      "digestType": {
+        "description": "Field label for the DNSSEC DS record's digest (hash) type.",
+        "maxLength": 16
+      },
+      "publicKey": {
+        "description": "Field label for the DNSSEC public key, entered as base64; keep the word base64.",
+        "maxLength": 22
+      },
+      "digest": {
+        "description": "Field label for the DNSSEC DS record's digest value, entered as hexadecimal; keep the word hex.",
+        "maxLength": 18
+      }
+    },
+    "placeholders": {
+      "algorithm": {
+        "description": "Placeholder in the DNSSEC algorithm dropdown prompting the user to choose one.",
+        "maxLength": 24
+      },
+      "flags": {
+        "description": "Placeholder in the DNSSEC flags dropdown prompting the user to choose one.",
+        "maxLength": 24
+      },
+      "digestType": {
+        "description": "Placeholder in the DNSSEC digest-type dropdown prompting the user to choose one.",
+        "maxLength": 24
+      }
+    },
+    "publicKeyMissingNotice": {
+      "description": "Warning shown when the pasted DS record had no public key, telling the user to use Automatic Detection or paste the DNSKEY record. Keep DS and DNSKEY acronyms."
+    },
+    "summary": {
+      "notSet": {
+        "description": "Placeholder text in the DS summary indicating the public key value has not been provided.",
+        "maxLength": 12
+      }
+    },
+    "deferredNotice": {
+      "description": "Explanation that submitting will run a background workflow polling DNSSEC validation and emailing the user when it completes or times out."
+    },
+    "validate": {
+      "description": "Button that validates the entered DS record against the domain's published DNSKEYs. Keep the DS acronym.",
+      "maxLength": 16
+    },
+    "validating": {
+      "description": "Loading text shown while the DS record is being validated.",
+      "maxLength": 16
+    },
+    "scheduleDs": {
+      "description": "Submit button that schedules the DS submission as a deferred workflow when validation has not yet passed. Keep the DS acronym.",
+      "maxLength": 16
+    },
+    "submitDs": {
+      "description": "Submit button that immediately submits the validated DS record. Keep the DS acronym.",
+      "maxLength": 16
+    },
+    "scheduling": {
+      "description": "Loading text shown while the deferred DS submission is being scheduled.",
+      "maxLength": 16
+    },
+    "submitting": {
+      "description": "Loading text shown while the DS record is being submitted.",
+      "maxLength": 16
+    },
+    "validation": {
+      "pending": {
+        "description": "Status text shown while querying DNSKEY records at authoritative nameservers and public DNS. Keep the DNSKEY acronym."
+      },
+      "laneAuthoritative": {
+        "description": "Title of the validation result section for the domain's authoritative nameservers.",
+        "maxLength": 30
+      },
+      "lanePublicDns": {
+        "description": "Title of the validation result section for public DNS (resolved via Google). Keep DNS and Google.",
+        "maxLength": 30
+      },
+      "statusCouldNotValidate": {
+        "description": "Short status suffix shown when a validation lane errored and could not be validated.",
+        "maxLength": 24
+      },
+      "statusMatch": {
+        "description": "Short status suffix shown when a validation lane found a matching DNSKEY.",
+        "maxLength": 16
+      },
+      "statusNoMatchingDnskey": {
+        "description": "Short status suffix shown when a validation lane found no matching DNSKEY. Keep the DNSKEY acronym.",
+        "maxLength": 24
+      },
+      "queried": {
+        "description": "Caption showing which nameservers/sources were queried. {source} is a comma-separated list of servers."
+      },
+      "matched": {
+        "description": "Result text when validation matched, showing the computed key tag and queried source. {keyTag} is a number, {source} is a server list."
+      },
+      "noMatch": {
+        "description": "Result text explaining none of the published DNSKEYs at the queried source produced the entered digest. {source} is a server list; keep DNSKEY."
+      },
+      "tableFlags": {
+        "description": "Column header for the DNSKEY flags value in the published-keys table.",
+        "maxLength": 12
+      },
+      "tableAlg": {
+        "description": "Column header (abbreviation for Algorithm) in the published-keys table.",
+        "maxLength": 8
+      },
+      "tableComputedKeyTag": {
+        "description": "Column header for the computed key tag in the published-keys table.",
+        "maxLength": 20
+      },
+      "tableComputedDigest": {
+        "description": "Column header for the computed digest in the published-keys table.",
+        "maxLength": 20
+      }
+    },
+    "ack": {
+      "validationDidNotPass": {
+        "description": "Acknowledgement checkbox label confirming the user wants to associate the DS even though validation didn't pass (e.g. staging before flipping nameservers). Keep the DS acronym."
+      },
+      "sure": {
+        "description": "Acknowledgement checkbox label confirming the user wants to associate the validated DS record. Keep the DS acronym."
+      },
+      "notFullyReflected": {
+        "description": "Acknowledgement checkbox label confirming the user understands DNSKEY has not fully propagated to all regions, accepting possible brief downtime, and wants to associate the DS anyway. Keep DNSKEY and DS acronyms."
+      }
+    }
+  },
+  "prefs": {
+    "panelTitle": {
+      "description": "Card title for the domain preferences/configuration panel.",
+      "maxLength": 24
+    },
+    "loadFailed": {
+      "description": "Error message shown when the domain preferences panel fails to load its data."
+    },
+    "autoEns": {
+      "label": {
+        "description": "Toggle label for automatically enabling ENS (Ethereum Name Service) for the domain. Keep the acronym ENS.",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "Helper text under the Auto ENS toggle explaining it automatically enables ENS for the domain. Keep ENS."
+      },
+      "unavailableTooltip": {
+        "description": "Tooltip explaining AutoENS is unavailable because ENS requires DNSSEC. Keep AutoENS, ENS, and DNSSEC."
+      },
+      "enableDnssecFirst": {
+        "description": "Tooltip line telling the user they must enable DNSSEC first before AutoENS can be used. Keep DNSSEC."
+      },
+      "dnssecUnsupported": {
+        "description": "Tooltip line stating this domain does not support DNSSEC. Keep DNSSEC."
+      }
+    },
+    "autoPark": {
+      "label": {
+        "description": "Toggle label for automatically parking the domain.",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "Helper text under the Auto Park toggle explaining it automatically parks the domain."
+      }
+    },
+    "forwardTo": {
+      "label": {
+        "description": "Label for the field that forwards the domain to a different address.",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "Helper text explaining the Forward To field redirects the domain to a different address."
+      }
+    },
+    "notManagingNameservers": {
+      "description": "Message shown when Namefi is not managing the nameservers for the domain, so preferences can't be configured. Keep the brand name Namefi."
+    },
+    "propagationNotice": {
+      "description": "Notice that DNSSEC changes are not immediate and may take 24-48 hours to propagate globally. Keep DNSSEC."
+    },
+    "conflictDialog": {
+      "title": {
+        "description": "Confirmation dialog title asking whether to remove conflicting top-level (apex) DNS records; ends with a question mark.",
+        "maxLength": 44
+      },
+      "description": {
+        "description": "Dialog body explaining the preference change requires removing conflicting root records on the domain."
+      },
+      "apexCname": {
+        "description": "Dialog line warning that any top-level CNAME (@) record will be removed first. Keep the @ symbol and CNAME."
+      },
+      "apexAddress": {
+        "description": "Dialog line warning that any top-level A/AAAA (@) records will be removed first. Keep the @ symbol and A/AAAA."
+      },
+      "keepRecords": {
+        "description": "Dialog cancel button that keeps the existing records and aborts the change.",
+        "maxLength": 18
+      },
+      "removeAndContinue": {
+        "description": "Dialog confirm button that removes the conflicting records and applies the preference change.",
+        "maxLength": 24
+      },
+      "applying": {
+        "description": "Loading text shown on the confirm button while the records are being removed and the change applied.",
+        "maxLength": 16
+      }
+    }
+  },
+  "records": {
+    "panel": {
+      "title": {
+        "description": "UI text: \"DNS Records\".",
+        "maxLength": 18
+      },
+      "description": {
+        "description": "UI text: \"Manage your domain's DNS records\"."
+      },
+      "addRecord": {
+        "description": "UI text: \"Add record\".",
+        "maxLength": 16
+      },
+      "recordTypes": {
+        "description": "UI text: \"Record Types\".",
+        "maxLength": 20
+      },
+      "recordTypeOption": {
+        "description": "UI text: \"{type} Record\"."
+      }
+    },
+    "table": {
+      "searchPlaceholder": {
+        "description": "UI text: \"Search records...\"."
+      },
+      "columns": {
+        "description": "UI text: \"Columns\".",
+        "maxLength": 12
+      },
+      "toggleColumns": {
+        "description": "UI text: \"Toggle Columns\".",
+        "maxLength": 23
+      },
+      "filter": {
+        "description": "UI text: \"Filter\".",
+        "maxLength": 12
+      },
+      "filterByType": {
+        "description": "UI text: \"Filter by Type\".",
+        "maxLength": 23
+      },
+      "clearFilters": {
+        "description": "UI text: \"Clear Filters\".",
+        "maxLength": 21
+      },
+      "actionsLabel": {
+        "description": "UI text: \"Actions\".",
+        "maxLength": 12
+      },
+      "tableActions": {
+        "description": "UI text: \"Table Actions\".",
+        "maxLength": 21
+      },
+      "exportRecords": {
+        "description": "UI text: \"Export Records\".",
+        "maxLength": 23
+      },
+      "importRecords": {
+        "description": "UI text: \"Import Records\".",
+        "maxLength": 23
+      },
+      "copyAsZoneFile": {
+        "description": "UI text: \"Copy as Zone File\".",
+        "maxLength": 28
+      },
+      "editSelected": {
+        "description": "UI text: \"Edit Selected ({count})\"."
+      },
+      "deleteSelected": {
+        "description": "UI text: \"Delete Selected ({count})\"."
+      },
+      "empty": {
+        "description": "UI text: \"No records found.\"."
+      },
+      "rowsSelected": {
+        "description": "UI text: \"{selected} of {total} row(s) selected.\"."
+      },
+      "columnType": {
+        "description": "UI text: \"Type\".",
+        "maxLength": 12
+      },
+      "columnName": {
+        "description": "UI text: \"Name\".",
+        "maxLength": 12
+      },
+      "columnValue": {
+        "description": "UI text: \"Value\".",
+        "maxLength": 12
+      },
+      "columnTtl": {
+        "description": "UI text: \"TTL\".",
+        "maxLength": 12
+      },
+      "columnActions": {
+        "description": "UI text: \"Actions\".",
+        "maxLength": 12
+      },
+      "editRecordTooltip": {
+        "description": "UI text: \"Edit record\".",
+        "maxLength": 18
+      },
+      "deleteRecordTooltip": {
+        "description": "UI text: \"Delete record\".",
+        "maxLength": 21
+      },
+      "disableManagedRecordTooltip": {
+        "description": "UI text: \"Disable managed record\".",
+        "maxLength": 36
+      },
+      "copyRecordTooltip": {
+        "description": "UI text: \"Copy record\".",
+        "maxLength": 18
+      },
+      "refreshRecordTooltip": {
+        "description": "UI text: \"Refresh record\".",
+        "maxLength": 23
+      }
+    },
+    "toasts": {
+      "recordUpdated": {
+        "description": "UI text: \"Record updated\".",
+        "maxLength": 23
+      },
+      "recordUpdatedDescription": {
+        "description": "UI text: \"{field} updated successfully.\"."
+      },
+      "copiedToClipboard": {
+        "description": "UI text: \"Copied to clipboard\".",
+        "maxLength": 31
+      },
+      "copiedToClipboardDescription": {
+        "description": "UI text: \"Record details copied to clipboard\"."
+      },
+      "saved": {
+        "description": "UI text: \"{count, plural, one {# record} other {# records}} saved successfully\"."
+      },
+      "updated": {
+        "description": "UI text: \"{count, plural, one {# record} other {# records}} updated successfully\"."
+      },
+      "deleted": {
+        "description": "UI text: \"Successfully deleted {count, plural, one {# record} other {# records}}\"."
+      },
+      "deleteFailed": {
+        "description": "UI text: \"Failed to delete record(s): {error}\"."
+      },
+      "recordPrefix": {
+        "description": "UI text: \"Record {index}: {message}\"."
+      },
+      "undeterminedError": {
+        "description": "UI text: \"Undetermined Error, please contact support\"."
+      },
+      "genericError": {
+        "description": "UI text: \"Something went wrong. Please try again.\"."
+      },
+      "parkingForwardingDisabled": {
+        "description": "UI text: \"Parking and forwarding disabled\"."
+      },
+      "autoEnsDisabled": {
+        "description": "UI text: \"AutoENS disabled\".",
+        "maxLength": 26
+      },
+      "forwardingDisabled": {
+        "description": "UI text: \"Forwarding disabled\".",
+        "maxLength": 31
+      },
+      "managedUpdateFailed": {
+        "description": "UI text: \"Failed to update managed DNS settings\"."
+      }
+    },
+    "managedDelete": {
+      "disableParkingTitle": {
+        "description": "UI text: \"Disable parking records?\".",
+        "maxLength": 39
+      },
+      "disableAutoEnsTitle": {
+        "description": "UI text: \"Disable AutoENS record?\".",
+        "maxLength": 37
+      },
+      "disableForwardingTitle": {
+        "description": "UI text: \"Disable forwarding record?\"."
+      },
+      "disableParkingDescription": {
+        "description": "UI text: \"This row is managed by Domain Preferences. Disabling it turns off parking.\"."
+      },
+      "disableAutoEnsDescription": {
+        "description": "UI text: \"This row is managed by Domain Preferences. Disabling it turns off AutoENS.\"."
+      },
+      "disableForwardingDescription": {
+        "description": "UI text: \"This row is managed by Domain Preferences. Disabling it clears forwarding.\"."
+      },
+      "parkingDisablesForwarding": {
+        "description": "UI text: \"Disabling parking records also disables forwarding.\"."
+      },
+      "disabling": {
+        "description": "UI text: \"Disabling...\"."
+      }
+    }
+  },
+  "nameservers": {
+    "panelTitle": {
+      "description": "UI text: \"Nameservers Management\".",
+      "maxLength": 36
+    },
+    "tooltip": {
+      "description": "UI text: \"Nameservers direct traffic to your domain\"."
+    },
+    "resetToNamefi": {
+      "description": "UI text: \"Reset to Namefi Nameservers\"."
+    },
+    "addNameserver": {
+      "description": "UI text: \"Add nameserver\".",
+      "maxLength": 23
+    },
+    "nameserverLabel": {
+      "description": "UI text: \"Nameserver {index}\"."
+    },
+    "nameserverPlaceholder": {
+      "description": "UI text: \"e.g., ns1.example.com\"."
+    },
+    "saveChanges": {
+      "description": "UI text: \"Save Changes\".",
+      "maxLength": 20
+    },
+    "saving": {
+      "description": "UI text: \"Saving...\"."
+    },
+    "propagationNotice": {
+      "description": "UI text: \"Changes to nameservers can take 24-48 hours to propagate globally.\"."
+    },
+    "manageDialogTitle": {
+      "description": "UI text: \"Manage Nameservers\".",
+      "maxLength": 29
+    },
+    "workflow": {
+      "resetInProgress": {
+        "description": "UI text: \"An operation to reset nameservers to Namefi defaults is in progress...\"."
+      },
+      "changeInProgress": {
+        "description": "UI text: \"An operation to update nameservers is in progress...\"."
+      },
+      "resettingTitle": {
+        "description": "UI text: \"Resetting nameservers for {domain}\"."
+      },
+      "changingTitle": {
+        "description": "UI text: \"Changing nameservers for {domain}\"."
+      },
+      "viewProgress": {
+        "description": "UI text: \"View progress details\".",
+        "maxLength": 34
+      },
+      "cancelWorkflow": {
+        "description": "UI text: \"Cancel Workflow\".",
+        "maxLength": 24
+      },
+      "cancelling": {
+        "description": "UI text: \"Cancelling...\"."
+      },
+      "cancellationRequested": {
+        "description": "UI text: \"Cancellation requested\".",
+        "maxLength": 36
+      },
+      "cancelFailed": {
+        "description": "UI text: \"Failed to cancel: {error}\"."
+      }
+    },
+    "toasts": {
+      "resetSuccess": {
+        "description": "UI text: \"Nameservers reset to Namefi defaults\"."
+      },
+      "changeSuccess": {
+        "description": "UI text: \"Nameservers Updated Successfully\"."
+      },
+      "resetFailed": {
+        "description": "UI text: \"Failed to reset nameservers\"."
+      },
+      "changeFailed": {
+        "description": "UI text: \"Failed to update Nameservers\"."
+      },
+      "signatureRejected": {
+        "description": "UI text: \"Signature request was rejected\"."
+      },
+      "ownerWalletUnavailable": {
+        "description": "UI text: \"Unable to determine domain owner wallet\"."
+      }
+    }
+  },
+  "dnssecPanel": {
+    "panelTitle": {
+      "description": "UI text: \"DNSSEC Management\".",
+      "maxLength": 28
+    },
+    "tooltip": {
+      "description": "UI text: \"DNSSEC is a security feature that helps to protect your domain from phishing attacks.\"."
+    },
+    "refreshAria": {
+      "description": "UI text: \"Refresh DNSSEC status\".",
+      "maxLength": 34
+    },
+    "refresh": {
+      "description": "UI text: \"Refresh\".",
+      "maxLength": 12
+    },
+    "modeToggle": {
+      "legend": {
+        "description": "UI text: \"DNSSEC panel mode\".",
+        "maxLength": 28
+      },
+      "simple": {
+        "description": "UI text: \"Simple\".",
+        "maxLength": 12
+      },
+      "advanced": {
+        "description": "UI text: \"Advanced\".",
+        "maxLength": 13
+      },
+      "simpleHint": {
+        "description": "UI text: \"One-click Enable for the common case.\"."
+      },
+      "advancedHint": {
+        "description": "UI text: \"Full control: paste DNSKEY/DS, validate, and manage multiple keys.\"."
+      }
+    },
+    "noDetails": {
+      "description": "UI text: \"No DNSSEC details found\".",
+      "maxLength": 37
+    },
+    "notSupported": {
+      "description": "UI text: \"DNSSEC is not supported for this domain\"."
+    },
+    "zoneSigning": {
+      "description": "UI text: \"Zone is signing records\".",
+      "maxLength": 37
+    },
+    "zoneNotSigning": {
+      "description": "UI text: \"Zone is not signing records\"."
+    },
+    "namefiAutoHandling": {
+      "description": "UI text: \"Namefi is automatically handling DNSSEC for this domain.\"."
+    },
+    "namefiSigningRecords": {
+      "description": "UI text: \"Namefi is signing records for this domain\"."
+    },
+    "zoneSigningRecords": {
+      "description": "UI text: \"Zone is signing records for this domain\"."
+    },
+    "allSecure": {
+      "description": "UI text: \"All Secure\".",
+      "maxLength": 16
+    },
+    "namefiOnlySigner": {
+      "description": "UI text: \"Namefi is the only delegation signer for this domain\"."
+    },
+    "customSigners": {
+      "description": "UI text: \"Custom delegation signers\"."
+    },
+    "notEnabled": {
+      "description": "UI text: \"DNSSEC not enabled\".",
+      "maxLength": 29
+    },
+    "noSigners": {
+      "description": "UI text: \"No delegation signers\".",
+      "maxLength": 34
+    },
+    "propagationNotice": {
+      "description": "UI text: \"Changes to DNSSEC are not immediate. It can take up to 24-48 hours to propagate globally.\"."
+    },
+    "requestInProgress": {
+      "description": "UI text: \"A request to {operation, select, disable {disable} other {enable}} DNSSEC is already in progress\"."
+    },
+    "operationInProgress": {
+      "description": "UI text: \"An operation is already in progress\"."
+    },
+    "enableNamefiSigning": {
+      "description": "UI text: \"Enable Namefi Signing\".",
+      "maxLength": 34
+    },
+    "disableNamefiSigning": {
+      "description": "UI text: \"Disable Namefi Signing\".",
+      "maxLength": 36
+    },
+    "enabling": {
+      "description": "UI text: \"Enabling...\"."
+    },
+    "disabling": {
+      "description": "UI text: \"Disabling...\"."
+    },
+    "disableConfirmDescription": {
+      "description": "UI text: \"Are you sure you want to disable Namefi Signing?\"."
+    },
+    "disableConfirmDetail": {
+      "description": "UI text: \"This will reduce the security of your domain. and it will affect service that rely on it (e.g. AutoENS)\"."
+    },
+    "confirmAndDisable": {
+      "description": "UI text: \"Confirm and Disable\".",
+      "maxLength": 31
+    },
+    "progress": {
+      "enablingTitle": {
+        "description": "UI text: \"Enabling for {domain}\"."
+      },
+      "disablingTitle": {
+        "description": "UI text: \"Disabling for {domain}\"."
+      },
+      "viewProgress": {
+        "description": "UI text: \"View progress details\".",
+        "maxLength": 34
+      },
+      "cancelWorkflow": {
+        "description": "UI text: \"Cancel Workflow\".",
+        "maxLength": 24
+      },
+      "cancelling": {
+        "description": "UI text: \"Cancelling...\"."
+      },
+      "cancellationRequested": {
+        "description": "UI text: \"Cancellation requested\".",
+        "maxLength": 36
+      },
+      "cancelFailed": {
+        "description": "UI text: \"Failed to cancel: {error}\"."
+      }
+    },
+    "toasts": {
+      "enableSent": {
+        "description": "UI text: \"Request to Enable DNSSEC has been sent\"."
+      },
+      "enableFailed": {
+        "description": "UI text: \"Request to Enable DNSSEC has failed\"."
+      },
+      "disableSent": {
+        "description": "UI text: \"Request to Disable DNSSEC has been sent\"."
+      },
+      "disableFailed": {
+        "description": "UI text: \"Request to Disable DNSSEC has failed\"."
+      }
+    },
+    "signersTable": {
+      "empty": {
+        "description": "UI text: \"No delegation signers associated yet.\"."
+      },
+      "keyTag": {
+        "description": "UI text: \"Key tag\".",
+        "maxLength": 12
+      },
+      "algorithm": {
+        "description": "UI text: \"Algorithm\".",
+        "maxLength": 15
+      },
+      "digestType": {
+        "description": "UI text: \"Digest type\".",
+        "maxLength": 18
+      },
+      "digest": {
+        "description": "UI text: \"Digest\".",
+        "maxLength": 12
+      },
+      "pending": {
+        "description": "UI text: \"Pending\".",
+        "maxLength": 12
+      },
+      "removeAria": {
+        "description": "UI text: \"Remove delegation signer\".",
+        "maxLength": 39
+      },
+      "cancelDeferredAria": {
+        "description": "UI text: \"Cancel deferred DS submission\"."
+      },
+      "removeTitle": {
+        "description": "UI text: \"Remove delegation signer?\"."
+      },
+      "removeDescription": {
+        "description": "UI text: \"This disassociates the DS at the registrar. {keyTagSuffix}If this is the only DS for the domain, DNSSEC validation will break globally within a few hours. Make sure you've already published a replacement at the parent or are intentionally turning DNSSEC off.\"."
+      },
+      "removeKeyTagSuffix": {
+        "description": "UI text: \"Key tag {keyTag}. \"."
+      },
+      "remove": {
+        "description": "UI text: \"Remove\".",
+        "maxLength": 12
+      },
+      "removing": {
+        "description": "UI text: \"Removing...\"."
+      },
+      "cancelDeferredTitle": {
+        "description": "UI text: \"Cancel deferred DS submission?\"."
+      },
+      "cancelDeferredDescription": {
+        "description": "UI text: \"This stops the validation poll for key tag {keyTag}. No DS will be associated. The submission can be retried later by clicking Enable DNSSEC again or from the Add Delegation Signer dialog.\"."
+      },
+      "cancelSubmission": {
+        "description": "UI text: \"Cancel submission\".",
+        "maxLength": 28
+      },
+      "cancelling": {
+        "description": "UI text: \"Cancelling...\"."
+      },
+      "removeSuccess": {
+        "description": "UI text: \"Removed delegation signer{keyTagSuffix}\"."
+      },
+      "removeSuccessKeyTagSuffix": {
+        "description": "UI text: \" (key tag {keyTag})\"."
+      },
+      "removeFailed": {
+        "description": "UI text: \"Failed to remove delegation signer: {error}\"."
+      },
+      "noKeyId": {
+        "description": "UI text: \"Cannot determine which key to remove (no id, publicKey, or keyTag).\"."
+      },
+      "cancelSuccess": {
+        "description": "UI text: \"Cancelled deferred submission (key tag {keyTag})\"."
+      },
+      "cancelFailed": {
+        "description": "UI text: \"Failed to cancel: {error}\"."
+      },
+      "phaseAuthoritative": {
+        "description": "UI text: \"Awaiting authoritative-NS validation. Times out in ~{remaining}.\"."
+      },
+      "phasePublicDns": {
+        "description": "UI text: \"Awaiting public-DNS propagation. Times out in ~{remaining}.\"."
+      },
+      "phaseSubmit": {
+        "description": "UI text: \"Validation passed; submitting DS to the registrar.\"."
+      },
+      "remainingNow": {
+        "description": "UI text: \"now\".",
+        "maxLength": 12
+      },
+      "remainingHoursMinutes": {
+        "description": "UI text: \"{hours}h {minutes}m\"."
+      },
+      "remainingMinutes": {
+        "description": "UI text: \"{minutes}m\"."
+      }
+    },
+    "advancedPanel": {
+      "title": {
+        "description": "UI text: \"Custom Delegation Signers\"."
+      },
+      "description": {
+        "description": "UI text: \"Required when this domain runs on its own authoritative nameservers. Submit the DS that matches the DNSKEY your DNS provider publishes.\"."
+      },
+      "addSigner": {
+        "description": "UI text: \"Add Delegation Signer\".",
+        "maxLength": 34
+      },
+      "dialogTitle": {
+        "description": "UI text: \"Add Custom Delegation Signer\"."
+      },
+      "dialogDescription": {
+        "description": "UI text: \"Paste your DNSKEY/DS or auto-detect from your nameservers, then validate before submitting.\"."
+      }
+    }
+  },
+  "overview": {
+    "panelTitle": {
+      "description": "UI text: \"Domain Overview\".",
+      "maxLength": 24
+    },
+    "panelSubtitle": {
+      "description": "UI text: \"Manage your domain settings and renewal\"."
+    },
+    "expired": {
+      "title": {
+        "description": "UI text: \"Domain Expired\".",
+        "maxLength": 23
+      },
+      "canRenew": {
+        "description": "UI text: \"Your domain has expired. You can still submit a request to renew the domain and it might go through depending on the TLD (.com, .org, ...)\"."
+      },
+      "cannotRenew": {
+        "description": "UI text: \"Your domain has expired. You can contact support to check if it can be restored (this might not be possible for all TLDs(.com, .org, ...))\"."
+      },
+      "cannotRenewShort": {
+        "description": "UI text: \"Your domain has expired. Contact support to check if it can be restored (this might not be possible for all TLDs).\"."
+      }
+    },
+    "autoRenew": {
+      "label": {
+        "description": "UI text: \"Auto Renew\".",
+        "maxLength": 16
+      },
+      "description": {
+        "description": "UI text: \"Automatically renew the domain\"."
+      },
+      "expires": {
+        "description": "UI text: \"Expires: {date}\"."
+      }
+    },
+    "manualRenew": {
+      "label": {
+        "description": "UI text: \"Manual Renew\".",
+        "maxLength": 20
+      },
+      "description": {
+        "description": "UI text: \"Renew the domain manually\"."
+      }
+    },
+    "renewNow": {
+      "description": "UI text: \"Renew now\".",
+      "maxLength": 15
+    },
+    "renewExpirationUnavailable": {
+      "description": "UI text: \"Domain expiration information not available\"."
+    },
+    "autoRenewalCard": {
+      "title": {
+        "description": "UI text: \"Auto Renewal\".",
+        "maxLength": 20
+      },
+      "description": {
+        "description": "UI text: \"Automatically renew your domain before expiration\"."
+      },
+      "auto": {
+        "description": "UI text: \"Auto\".",
+        "maxLength": 12
+      }
+    },
+    "manualRenewalCard": {
+      "title": {
+        "description": "UI text: \"Manual Renewal\".",
+        "maxLength": 23
+      },
+      "descriptionWithDate": {
+        "description": "UI text: \"{expiration} - Renew now to restore your domain\"."
+      },
+      "description": {
+        "description": "UI text: \"Renew your domain manually\"."
+      }
+    },
+    "preferencesUpdated": {
+      "description": "UI text: \"Preferences updated\".",
+      "maxLength": 31
+    },
+    "preferencesUpdateFailed": {
+      "description": "UI text: \"Failed to update preferences\"."
+    },
+    "export": {
+      "label": {
+        "description": "UI text: \"Domain Export\".",
+        "maxLength": 21
+      },
+      "description": {
+        "description": "UI text: \"Export domain to another registrar\"."
+      },
+      "descriptionCard": {
+        "description": "UI text: \"Transfer your domain to another registrar\"."
+      },
+      "unavailableCard": {
+        "description": "UI text: \"Export not available for this domain\"."
+      },
+      "requestExport": {
+        "description": "UI text: \"Request Export\".",
+        "maxLength": 23
+      },
+      "exportUnavailable": {
+        "description": "UI text: \"Export Unavailable\".",
+        "maxLength": 29
+      },
+      "unavailable": {
+        "description": "UI text: \"Unavailable\".",
+        "maxLength": 18
+      },
+      "enableRequestPending": {
+        "description": "UI text: \"Enable Export Request Pending...\"."
+      },
+      "pending": {
+        "description": "UI text: \"Pending...\"."
+      },
+      "getAuthCode": {
+        "description": "UI text: \"Get Auth Code\".",
+        "maxLength": 21
+      },
+      "requestingExport": {
+        "description": "UI text: \"Requesting Export...\"."
+      },
+      "requesting": {
+        "description": "UI text: \"Requesting...\"."
+      },
+      "nftNotMinted": {
+        "description": "UI text: \"NFT not minted yet. Export will be available once minting completes.\"."
+      },
+      "loadDetailsFailed": {
+        "description": "UI text: \"Something went wrong with fetching domain export details! Please try again later.\"."
+      },
+      "loadDetailsFailedShort": {
+        "description": "UI text: \"Failed to load export details. Please try again later.\"."
+      }
+    },
+    "exportToasts": {
+      "requestSubmitted": {
+        "description": "UI text: \"Export request submitted successfully\"."
+      },
+      "requestFailed": {
+        "description": "UI text: \"Failed to request domain export\"."
+      },
+      "authCodeCopied": {
+        "description": "UI text: \"Auth code copied to clipboard\"."
+      },
+      "authCodeCopyFailed": {
+        "description": "UI text: \"Failed to copy auth code\".",
+        "maxLength": 39
+      },
+      "authCodeFailed": {
+        "description": "UI text: \"Failed to get auth code\".",
+        "maxLength": 37
+      },
+      "signatureRejected": {
+        "description": "UI text: \"Signature request was rejected\"."
+      },
+      "signatureFailed": {
+        "description": "UI text: \"Failed to request signature. This could be due to a browser error or a problem with your wallet.\"."
+      },
+      "ownerWalletUnavailable": {
+        "description": "UI text: \"Unable to determine domain owner wallet\"."
+      }
+    },
+    "pendingTransfer": {
+      "label": {
+        "description": "UI text: \"Pending Export\".",
+        "maxLength": 23
+      },
+      "cardTitle": {
+        "description": "UI text: \"Pending Export Request\".",
+        "maxLength": 36
+      },
+      "requestedBy": {
+        "description": "UI text: \"Export requested by: {registrar}\"."
+      },
+      "actionRequiredBy": {
+        "description": "UI text: \"Action required by: {date}\"."
+      },
+      "cardDescription": {
+        "description": "UI text: \"Requested by: {registrar} - Action required by {date}\"."
+      },
+      "approve": {
+        "description": "UI text: \"Approve\".",
+        "maxLength": 12
+      },
+      "reject": {
+        "description": "UI text: \"Reject\".",
+        "maxLength": 12
+      },
+      "approveSuccess": {
+        "description": "UI text: \"Export approved successfully\"."
+      },
+      "approveFailed": {
+        "description": "UI text: \"Failed to approve export\".",
+        "maxLength": 39
+      },
+      "rejectSuccess": {
+        "description": "UI text: \"Export rejected successfully\"."
+      },
+      "rejectFailed": {
+        "description": "UI text: \"Failed to reject export\".",
+        "maxLength": 37
+      }
+    },
+    "nftOwnership": {
+      "title": {
+        "description": "UI text: \"Blockchain Ownership\".",
+        "maxLength": 32
+      },
+      "tooltip": {
+        "description": "UI text: \"Your domain is stored as an NFT (Non-Fungible Token) on the blockchain. This digital certificate proves you own this domain and is secured by cryptography.\"."
+      },
+      "securedOn": {
+        "description": "UI text: \"Secured on\".",
+        "maxLength": 16
+      },
+      "verified": {
+        "description": "UI text: \"Verified\".",
+        "maxLength": 13
+      },
+      "chainEthereum": {
+        "description": "UI text: \"Ethereum\".",
+        "maxLength": 13
+      },
+      "chainBase": {
+        "description": "UI text: \"Base\".",
+        "maxLength": 12
+      },
+      "chainOther": {
+        "description": "UI text: \"Chain {chainId}\"."
+      },
+      "ownerWallet": {
+        "description": "UI text: \"Owner Wallet\".",
+        "maxLength": 20
+      },
+      "ownerWalletTooltip": {
+        "description": "UI text: \"This is the wallet address that owns this domain NFT. Only this wallet can manage or transfer the domain.\"."
+      },
+      "tokenId": {
+        "description": "UI text: \"Token ID\".",
+        "maxLength": 13
+      },
+      "tokenIdTooltip": {
+        "description": "UI text: \"A unique identifier for your domain NFT on the blockchain. Think of it like a serial number for your digital asset.\"."
+      },
+      "verifyOnExplorer": {
+        "description": "UI text: \"Verify on Block Explorer\".",
+        "maxLength": 39
+      },
+      "showNftInWallet": {
+        "description": "UI text: \"Show NFT in Wallet\".",
+        "maxLength": 29
+      },
+      "addingToWallet": {
+        "description": "UI text: \"Adding to wallet...\"."
+      },
+      "nftAdded": {
+        "description": "UI text: \"NFT added to your wallet\".",
+        "maxLength": 39
+      },
+      "nftAddFailed": {
+        "description": "UI text: \"Couldn't add NFT to your wallet\"."
+      },
+      "nftAddError": {
+        "description": "UI text: \"Failed to add NFT to wallet\"."
+      },
+      "unknownError": {
+        "description": "UI text: \"Unknown error\".",
+        "maxLength": 21
+      },
+      "walletAddressCopied": {
+        "description": "UI text: \"Wallet address copied\".",
+        "maxLength": 34
+      },
+      "walletAddressCopyFailed": {
+        "description": "UI text: \"Failed to copy wallet address\"."
+      },
+      "tokenIdCopied": {
+        "description": "UI text: \"Token ID copied\".",
+        "maxLength": 24
+      },
+      "tokenIdCopyFailed": {
+        "description": "UI text: \"Failed to copy token ID\".",
+        "maxLength": 37
+      }
+    },
+    "educationalBanner": {
+      "title": {
+        "description": "UI text: \"Your domain is secured on the blockchain\"."
+      },
+      "description": {
+        "description": "UI text: \"Unlike traditional registrars, your domain is stored as an NFT in your wallet. This means you truly own it - no company can take it away without your permission.\"."
+      },
+      "dismissAria": {
+        "description": "UI text: \"Dismiss banner\".",
+        "maxLength": 23
+      }
+    },
+    "moreInfoAria": {
+      "description": "UI text: \"More information\".",
+      "maxLength": 26
+    },
+    "learnMore": {
+      "description": "UI text: \"Learn more\".",
+      "maxLength": 16
+    },
+    "web3Concepts": {
+      "title": {
+        "description": "UI text: \"Understanding Your Domain\"."
+      },
+      "footer": {
+        "description": "UI text: \"NameFi bridges traditional domains with blockchain ownership\"."
+      },
+      "nftTerm": {
+        "description": "UI text: \"NFT\".",
+        "maxLength": 12
+      },
+      "nftDescription": {
+        "description": "UI text: \"A digital certificate of ownership stored in your wallet - like a deed to a house\"."
+      },
+      "blockchainTerm": {
+        "description": "UI text: \"Blockchain\".",
+        "maxLength": 16
+      },
+      "blockchainDescription": {
+        "description": "UI text: \"A secure digital ledger that permanently records your ownership\"."
+      },
+      "walletTerm": {
+        "description": "UI text: \"Wallet\".",
+        "maxLength": 12
+      },
+      "walletDescription": {
+        "description": "UI text: \"Your personal digital vault - only you can access it\"."
+      },
+      "icannTerm": {
+        "description": "UI text: \"ICANN\".",
+        "maxLength": 12
+      },
+      "icannDescription": {
+        "description": "UI text: \"The global authority managing .com, .io, .xyz domains\"."
+      }
+    },
+    "transferLock": {
+      "title": {
+        "description": "UI text: \"Export Available {date}\"."
+      },
+      "description": {
+        "description": "UI text: \"Domains are locked for 60 days after import per ICANN policy.\"."
+      },
+      "importedOn": {
+        "description": "UI text: \" This domain was imported on {date}.\"."
+      },
+      "gotIt": {
+        "description": "UI text: \"Got It\".",
+        "maxLength": 12
+      }
+    }
+  },
+  "management": {
+    "signInRequiredTitle": {
+      "description": "UI text: \"Sign in required\".",
+      "maxLength": 26
+    },
+    "signInRequiredMessage": {
+      "description": "UI text: \"Please sign in to manage this domain.\"."
+    },
+    "loadErrorTitle": {
+      "description": "UI text: \"Unable to load domain management\"."
+    },
+    "loadErrorFallback": {
+      "description": "UI text: \"Please try again.\"."
+    },
+    "marketplaceErrorTitle": {
+      "description": "UI text: \"Unable to load marketplace status\"."
+    },
+    "retry": {
+      "description": "UI text: \"Retry\".",
+      "maxLength": 12
+    },
+    "publicViewTitle": {
+      "description": "UI text: \"Heads up!\".",
+      "maxLength": 15
+    },
+    "publicViewMessage": {
+      "description": "UI text: \"This domain is owned by another user. You are viewing public information\"."
+    },
+    "tabDomainOverview": {
+      "description": "UI text: \"Domain Overview\".",
+      "maxLength": 24
+    },
+    "tabDnsRecords": {
+      "description": "UI text: \"DNS Records\".",
+      "maxLength": 18
+    },
+    "tabDnsManagement": {
+      "description": "UI text: \"DNS Management\".",
+      "maxLength": 23
+    },
+    "tabMarketplace": {
+      "description": "UI text: \"Marketplace\".",
+      "maxLength": 18
+    },
+    "tabDnsSetting": {
+      "description": "UI text: \"DNS Setting\".",
+      "maxLength": 18
+    },
+    "notMigratedTitle": {
+      "description": "UI text: \"Domain Not Migrated Yet\".",
+      "maxLength": 37
+    },
+    "redirectToRegistrar": {
+      "description": "UI text: \"Redirect to Registrar\".",
+      "maxLength": 34
+    },
+    "comingSoon": {
+      "description": "UI text: \"Coming Soon ...\"."
+    }
+  },
+  "dialogs": {
+    "addEdit": {
+      "addTitle": {
+        "description": "UI text: \"Add DNS Record\".",
+        "maxLength": 23
+      },
+      "editTitle": {
+        "description": "UI text: \"Edit DNS Record\".",
+        "maxLength": 24
+      },
+      "requiredFieldsError": {
+        "description": "UI text: \"Please complete all required fields marked with *\"."
+      },
+      "addMoreRecord": {
+        "description": "UI text: \"Add more record\".",
+        "maxLength": 24
+      },
+      "addRecord": {
+        "description": "UI text: \"Add record\".",
+        "maxLength": 16
+      },
+      "saveRecord": {
+        "description": "UI text: \"Save record\".",
+        "maxLength": 18
+      },
+      "cnameConflictTitle": {
+        "description": "UI text: \"CNAME conflicts with other records\"."
+      },
+      "cnameConflictBody1": {
+        "description": "UI text: \"CNAME records cannot share the same name with other record types.\"."
+      },
+      "cnameConflictBody2": {
+        "description": "UI text: \"Delete the conflicting records first, then add this CNAME again.\"."
+      },
+      "understood": {
+        "description": "UI text: \"Understood\".",
+        "maxLength": 16
+      },
+      "disableManagedTitle": {
+        "description": "UI text: \"Disable managed records and continue?\"."
+      },
+      "disableManagedBody1": {
+        "description": "UI text: \"This CNAME conflicts only with managed records on this domain.\"."
+      },
+      "disableManagedBodyWithForwarding": {
+        "description": "UI text: \"Continue to disable Parking, Forwarding, and AutoENS, then add this CNAME.\"."
+      },
+      "disableManagedBody": {
+        "description": "UI text: \"Continue to disable Parking and AutoENS, then add this CNAME.\"."
+      },
+      "keepManagedRecords": {
+        "description": "UI text: \"Keep managed records\".",
+        "maxLength": 32
+      },
+      "disableAndContinue": {
+        "description": "UI text: \"Disable and continue\".",
+        "maxLength": 32
+      },
+      "disabling": {
+        "description": "UI text: \"Disabling...\"."
+      },
+      "disableParkingTitle": {
+        "description": "UI text: \"Disable parking and continue?\"."
+      },
+      "disableParkingBody": {
+        "description": "UI text: \"This record conflicts with managed parking records. To continue, parking must be disabled first.\"."
+      },
+      "disableParkingForwardingNotice": {
+        "description": "UI text: \"Disabling parking here also disables forwarding.\"."
+      },
+      "keepParkingEnabled": {
+        "description": "UI text: \"Keep parking enabled\".",
+        "maxLength": 32
+      },
+      "loadRecordsFailed": {
+        "description": "UI text: \"Failed to load DNS records\"."
+      }
+    },
+    "delete": {
+      "title": {
+        "description": "UI text: \"Delete records?\".",
+        "maxLength": 24
+      },
+      "description": {
+        "description": "UI text: \"This change may affect your domain's functionality and take time to update across networks.\"."
+      },
+      "summary": {
+        "description": "UI text: \"delete {count, plural, one {# record} other {# records}}\"."
+      },
+      "toggle": {
+        "description": "UI text: \"Toggle\".",
+        "maxLength": 12
+      },
+      "columnName": {
+        "description": "UI text: \"Name\".",
+        "maxLength": 12
+      },
+      "columnType": {
+        "description": "UI text: \"Type\".",
+        "maxLength": 12
+      },
+      "columnValue": {
+        "description": "UI text: \"Value\".",
+        "maxLength": 12
+      },
+      "columnTtl": {
+        "description": "UI text: \"TTL\".",
+        "maxLength": 12
+      },
+      "deleting": {
+        "description": "UI text: \"Deleting...\"."
+      },
+      "confirmSingle": {
+        "description": "UI text: \"Yes, delete it\".",
+        "maxLength": 23
+      },
+      "confirmMultiple": {
+        "description": "UI text: \"Yes, delete them\".",
+        "maxLength": 26
+      }
+    },
+    "form": {
+      "typeLabel": {
+        "description": "UI text: \"Type\".",
+        "maxLength": 12
+      },
+      "typePlaceholder": {
+        "description": "UI text: \"Select type\".",
+        "maxLength": 18
+      },
+      "ttlLabel": {
+        "description": "UI text: \"TTL\".",
+        "maxLength": 12
+      },
+      "ttlPlaceholder": {
+        "description": "UI text: \"Select TTL\".",
+        "maxLength": 16
+      },
+      "nameLabel": {
+        "description": "UI text: \"Name\".",
+        "maxLength": 12
+      },
+      "namePlaceholder": {
+        "description": "UI text: \"www or @\".",
+        "maxLength": 13
+      },
+      "valueLabel": {
+        "description": "UI text: \"Value\".",
+        "maxLength": 12
+      },
+      "removeRecordAria": {
+        "description": "UI text: \"Remove record {index}\"."
+      },
+      "ttlOption1Minute": {
+        "description": "UI text: \"1 minutes\".",
+        "maxLength": 15
+      },
+      "ttlOption5Minutes": {
+        "description": "UI text: \"5 minutes\".",
+        "maxLength": 15
+      },
+      "ttlOption20Minutes": {
+        "description": "UI text: \"20 minutes\".",
+        "maxLength": 16
+      },
+      "ttlOption1Hour": {
+        "description": "UI text: \"1 hour\".",
+        "maxLength": 12
+      },
+      "ttlOption1Day": {
+        "description": "UI text: \"1 day\".",
+        "maxLength": 12
+      },
+      "ttlOption1Week": {
+        "description": "UI text: \"1 week\".",
+        "maxLength": 12
+      },
+      "errorRecordTypeRequired": {
+        "description": "UI text: \"Record type is required\".",
+        "maxLength": 37
+      },
+      "errorValueRequired": {
+        "description": "UI text: \"Value is required\".",
+        "maxLength": 28
+      },
+      "errorTtlRequired": {
+        "description": "UI text: \"TTL is required\".",
+        "maxLength": 24
+      }
+    },
+    "forwarding": {
+      "title": {
+        "description": "UI text: \"Edit URL Forwarding\".",
+        "maxLength": 31
+      },
+      "description": {
+        "description": "UI text: \"Enter the URL you want {domain} to forward to.\"."
+      },
+      "fieldLabel": {
+        "description": "UI text: \"Forward To URL\".",
+        "maxLength": 23
+      },
+      "placeholder": {
+        "description": "UI text: \"https://example.com\"."
+      },
+      "updated": {
+        "description": "UI text: \"Forwarding URL updated\".",
+        "maxLength": 36
+      },
+      "updateFailed": {
+        "description": "UI text: \"Failed to update forwarding URL\"."
+      }
+    },
+    "batch": {
+      "setNameservers": {
+        "description": "UI text: \"Set Nameservers\".",
+        "maxLength": 24
+      },
+      "setUrlForwarding": {
+        "description": "UI text: \"Set URL Forwarding\".",
+        "maxLength": 29
+      },
+      "setWebRecords": {
+        "description": "UI text: \"Set Web Records\".",
+        "maxLength": 24
+      },
+      "setMxRecords": {
+        "description": "UI text: \"Set MX Records\".",
+        "maxLength": 23
+      },
+      "setEnsRecord": {
+        "description": "UI text: \"Set ENS Record\".",
+        "maxLength": 23
+      },
+      "batchAction": {
+        "description": "UI text: \"Batch Action\".",
+        "maxLength": 20
+      },
+      "applyingToDomains": {
+        "description": "UI text: \"Applying to {count} selected domains.\"."
+      },
+      "forwardUrlLabel": {
+        "description": "UI text: \"Forward URL\".",
+        "maxLength": 18
+      },
+      "webRecordNotice": {
+        "description": "UI text: \"This will add the specified record to all selected domains.\"."
+      },
+      "comingSoon": {
+        "description": "UI text: \"Batch editing for {action} is coming soon.\"."
+      },
+      "forwardingUpdated": {
+        "description": "UI text: \"Forwarding updated for {count} domains\"."
+      },
+      "webRecordsUpdated": {
+        "description": "UI text: \"Web records updated for {count} domains\"."
+      },
+      "nameserverComingSoon": {
+        "description": "UI text: \"Batch nameserver update coming soon\"."
+      },
+      "recordComingSoon": {
+        "description": "UI text: \"Batch DNS record update coming soon\"."
+      },
+      "updateFailed": {
+        "description": "UI text: \"Failed to update domains\".",
+        "maxLength": 39
+      }
+    }
+  },
+  "statusCell": {
+    "ariaLabel": {
+      "description": "UI text: \"DNS Actions\".",
+      "maxLength": 18
+    },
+    "notEditableExternal": {
+      "description": "UI text: \"Not editable when using external nameservers\"."
+    },
+    "nameservers": {
+      "description": "UI text: \"Nameservers: {value}\"."
+    },
+    "nameserversNone": {
+      "description": "UI text: \"None\".",
+      "maxLength": 12
+    },
+    "parkedOnNamefi": {
+      "description": "UI text: \"Parked on Namefi\".",
+      "maxLength": 26
+    },
+    "webRecordsConfigured": {
+      "description": "UI text: \"Web Records Configured\".",
+      "maxLength": 36
+    },
+    "noWebRecords": {
+      "description": "UI text: \"No Web Records\".",
+      "maxLength": 23
+    },
+    "enableParkingForForwarding": {
+      "description": "UI text: \"Enable Parking to use Forwarding\"."
+    },
+    "forwardsTo": {
+      "description": "UI text: \"Forwards to: {url}\"."
+    },
+    "noForwarding": {
+      "description": "UI text: \"No URL Forwarding\".",
+      "maxLength": 28
+    },
+    "mxConfigured": {
+      "description": "UI text: \"MX Records Configured\".",
+      "maxLength": 34
+    },
+    "noMxRecords": {
+      "description": "UI text: \"No MX Records\".",
+      "maxLength": 21
+    },
+    "autoEnsEnabled": {
+      "description": "UI text: \"Auto-ENS enabled\".",
+      "maxLength": 26
+    },
+    "noEnsRecord": {
+      "description": "UI text: \"No ENS Record\".",
+      "maxLength": 21
+    },
+    "manageMore": {
+      "description": "UI text: \"Manage more DNS records\".",
+      "maxLength": 37
+    }
+  },
+  "cacheFlush": {
+    "title": {
+      "description": "Heading of the DNS cache-flush tool page.",
+      "maxLength": 24
+    },
+    "description": {
+      "description": "Subheading explaining the tool flushes DNS caches for a zone and record type."
+    },
+    "zoneLabel": {
+      "description": "Field label for the DNS zone / domain to flush.",
+      "maxLength": 20
+    },
+    "zonePlaceholder": {
+      "description": "Placeholder example domain in the zone input. Keep as a domain-like example."
+    },
+    "recordTypeLabel": {
+      "description": "Field label for the DNS record-type selector.",
+      "maxLength": 16
+    },
+    "recordTypeAll": {
+      "description": "Selector option meaning every record type. Brand/acronym style; typically left as 'ALL'.",
+      "maxLength": 8
+    },
+    "flushing": {
+      "description": "Button label shown while the cache flush is in progress.",
+      "maxLength": 24
+    },
+    "submit": {
+      "description": "Primary button that triggers the DNS cache flush.",
+      "maxLength": 20
+    },
+    "resultsHeading": {
+      "description": "Heading above the per-server flush results list."
+    },
+    "resultSuccess": {
+      "description": "Per-server status word indicating the flush succeeded.",
+      "maxLength": 12
+    },
+    "resultFailed": {
+      "description": "Per-server fallback status word indicating the flush failed.",
+      "maxLength": 12
+    },
+    "zoneRequired": {
+      "description": "Validation toast shown when the zone field is empty on submit."
+    },
+    "flushCompleteTitle": {
+      "description": "Success toast title shown when the cache flush completes."
+    },
+    "flushFailedTitle": {
+      "description": "Error toast title shown when the cache flush fails."
+    }
+  }
+}

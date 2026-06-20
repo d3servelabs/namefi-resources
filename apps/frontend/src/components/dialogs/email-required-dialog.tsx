@@ -11,6 +11,7 @@ import {
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Mail } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 
 interface EmailRequiredModalProps {
@@ -34,13 +35,14 @@ export const DNS_MANAGEMENT_EMAIL_REQUIRED = {
 export function EmailRequiredModal({
   isOpen,
   onOpenChange,
-  title = 'Email Required',
-  description = 'You need to add a valid email to your profile to continue.',
+  title,
+  description,
   actionText = 'Add Email',
   actionHref = '/profile?tab=contact-details',
   dismissible = true,
   onGoBack,
 }: EmailRequiredModalProps) {
+  const t = useTranslations('shared');
   const router = useRouter();
 
   const handleAddEmail = () => {
@@ -68,9 +70,11 @@ export function EmailRequiredModal({
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <Mail className="h-6 w-6 text-muted-foreground" />
           </div>
-          <DialogTitle className="text-center">{title}</DialogTitle>
+          <DialogTitle className="text-center">
+            {title ?? t('emailRequired.title')}
+          </DialogTitle>
           <DialogDescription className="text-center">
-            {description}
+            {description ?? t('emailRequired.description')}
           </DialogDescription>
         </DialogHeader>
 

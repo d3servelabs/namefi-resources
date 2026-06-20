@@ -25,5 +25,10 @@
     "validThru": "Valide jusqu'au",
     "claimNow": "Réclamer",
     "poweredByNamefi": "Propulsé par Namefi"
+  },
+  "dropdown": {
+    "title": "Émissions gratuites",
+    "claim": "Réclamer",
+    "viewAll": "Voir toutes les émissions gratuites"
   }
 }

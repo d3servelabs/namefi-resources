@@ -167,5 +167,107 @@
     "collapseAll": "طي الكل",
     "sort": "ترتيب"
   },
-  "metaTitle": "Namefi | إدارة النطاقات"
+  "metaTitle": "Namefi | إدارة النطاقات",
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "قوائم السوق مش متاحة على {chain} لسه",
+      "supportedNetworks": "الشبكات المدعومة: {networks}."
+    },
+    "exportBlocked": {
+      "title": "قائمة السوق مش متاحة",
+      "description": "مش مسموح بإدراج الدومين في أسواق Web3 وهو قابل للتصدير لمسجلين تانيين. <link>تواصل مع الدعم</link> عشان توقف التصدير."
+    },
+    "listings": {
+      "title": "القوائم الحالية",
+      "description": "قوائم البيع النشطة في الأسواق المدعومة.",
+      "findBuyers": "ابحث عن مشترين",
+      "findBuyersAria": "ابحث عن مشترين لـ {domain}",
+      "columnMarketplace": "السوق",
+      "columnPrice": "السعر",
+      "columnExpires": "تنتهي في",
+      "columnActions": "إجراءات",
+      "loadFailed": "مقدرناش نحمّل القوائم: {error}",
+      "empty": "مفيش قوائم نشطة. استخدم \"إنشاء قائمة\" عشان تعرض الدومين للبيع.",
+      "view": "عرض",
+      "cancel": "إلغاء",
+      "cancelled": "تم إلغاء القائمة",
+      "cancelledDescription": "هتختفي من الأسواق في لحظة.",
+      "cancelFailed": "فشل إلغاء القائمة"
+    },
+    "offers": {
+      "title": "العروض الواردة",
+      "description": "العروض المقدمة على الدومين ده في الأسواق المدعومة. قبول العرض بيحول NFT للمشتري وبيُضاف مبلغ العرض لحسابك.",
+      "columnMarketplace": "السوق",
+      "columnBidder": "المقدّم",
+      "columnOffer": "العرض",
+      "columnExpires": "تنتهي في",
+      "columnActions": "إجراءات",
+      "loadFailed": "مقدرناش نحمّل العروض: {error}",
+      "empty": "مفيش عروض نشطة. لما حد يقدم عرض هيظهر هنا.",
+      "view": "عرض",
+      "accept": "قبول",
+      "accepted": "تم قبول العرض بـ {price}",
+      "acceptedDescription": "تم تحويل NFT للمشتري.",
+      "acceptFailed": "فشل قبول العرض"
+    },
+    "createListing": {
+      "trigger": "إنشاء قائمة",
+      "title": "إنشاء قائمة",
+      "description": "بيع الدومين ده على OpenSea. القائمة بتتوقّع بمحفظتك وبتتنشر في دفتر أوامر Seaport بتاع OpenSea.",
+      "noMarketplaces": "مفيش أسواق بتدعم الشبكة دي لسه.",
+      "marketplaceLabel": "السوق",
+      "alreadyListedSuffix": " — مدرج بالفعل",
+      "checkingListings": "جاري التحقق من القوائم النشطة...",
+      "allListed": "الدومين ده مدرج بالفعل في كل الأسواق المدعومة. ألغِ قائمة موجودة عشان تعيد الإدراج.",
+      "priceLabel": "السعر ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "العملة",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "المدة",
+      "duration1Day": "يوم واحد",
+      "duration7Days": "7 أيام",
+      "duration30Days": "30 يوم",
+      "listOn": "أدرج على {marketplace}",
+      "connectWallet": "وصّل المحفظة",
+      "feeMarketplace": "رسوم السوق",
+      "feeRoyalty": "عائد المبدع",
+      "feeYouReceive": "هتستلم",
+      "feeEstimate": "تقدير",
+      "feeEstimateTooltip": "الرسوم النهائية بتتحسب من السوق وقت التوقيع.",
+      "listedToast": "تم الإدراج بـ {price}",
+      "listedToastDescription": "ممكن يأخد لحظة قبل ما يظهر في السوق.",
+      "connectWalletError": "وصّل محفظة عشان تدرج الدومين ده.",
+      "stillChecking": "لسه بيتحقق من القوائم النشطة",
+      "alreadyListedError": "الدومين ده عنده قائمة نشطة هناك بالفعل.",
+      "alreadyListedErrorDescription": "ألغِ القائمة الموجودة الأول قبل ما تعمل واحدة جديدة.",
+      "pickCurrency": "اختار عملة الدفع.",
+      "invalidPrice": "أدخل سعر صحيح أكبر من 0.",
+      "switchNetwork": "حوّل للشبكة الصح عشان تكمل.",
+      "createFailed": "فشل إنشاء القائمة",
+      "errorSignatureCancelled": "تم إلغاء التوقيع من محفظتك.",
+      "errorInsufficientFunds": "المحفظة مش عندها ETH كافي للعملية دي.",
+      "errorNotConfigured": "تكامل السوق مش متضبط لهذه البيئة.",
+      "errorRateLimited": "السوق بيقيّد الطلبات دلوقتي. استنى دقيقة وحاول تاني.",
+      "errorSeaportUnavailable": "مقدرناش نوصل لعقد Seaport بتاع OpenSea على الشبكة دي. تأكد إن محفظتك متوصلة بنفس الشبكة اللي فيها دومين NFT، وبعدين حاول تاني."
+    }
+  },
+  "previouslyOwned": {
+    "title": "النطاقات المملوكة سابقاً",
+    "columnAccount": "الحساب",
+    "columnRemovalDate": "تاريخ الإزالة",
+    "columnReason": "السبب",
+    "columnReceivingWallet": "المحفظة المستقبِلة",
+    "empty": "لا توجد نطاقات مملوكة سابقاً",
+    "emptyDescription": "لم تقم بحرق أو نقل أي نطاقات من محافظك المرتبطة بعد",
+    "selectChainPlaceholder": "اختر شبكة",
+    "allChains": "جميع الشبكات",
+    "clearFilters": "مسح الفلاتر"
+  },
+  "dnsRecords": {
+    "selectAll": "تحديد الكل",
+    "selectRow": "تحديد الصف"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "الإجراءات"
+  }
 }

@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "ドメインハント",
+    "submitDomain": "ドメインを登録",
+    "trendingTitle": "注目のドメイン",
+    "signInToSubmitTitle": "登録するにはサインインが必要です",
+    "signInToSubmitDescription": "ドメインをハントに登録するにはサインインしてください。コミュニティに参加して、お気に入りのドメインをシェアしましょう！"
+  },
+  "timeRange": {
+    "last7Days": "過去7日間",
+    "last30Days": "過去30日間",
+    "anytime": "すべての期間"
+  },
+  "tabs": {
+    "allHunt": "すべて"
+  },
+  "mine": {
+    "title": "マイアクティビティ",
+    "upvotedTab": "投票済みドメイン",
+    "submittedTab": "登録済みドメイン",
+    "signInTitle": "サインインしてアクティビティを確認",
+    "signInDescription": "登録したドメインや投票履歴を確認するにはサインインしてください"
+  },
+  "list": {
+    "loadError": "ドメインの読み込みに失敗しました",
+    "empty": "これ以上ドメインはありません。しばらくしてから再度お試しください。"
+  },
+  "submitDialog": {
+    "title": "新しいドメインを登録",
+    "domainNameLabel": "ドメイン名",
+    "submitting": "登録中...",
+    "validation": {
+      "singleLevel": "ドメイン名はシングルレベル（例：example.com）またはそれ以上（例：sub.example.com）の形式で入力してください",
+      "invalidDomain": "無効なドメイン名です",
+      "mustEndWith": "ドメインは .{extension} で終わる必要があります",
+      "invalidExtension": "無効なドメイン拡張子です",
+      "required": "ドメイン名を入力してください"
+    },
+    "toast": {
+      "submitting": "ドメインを登録中...",
+      "alreadyExists": "このドメインはすでに登録されています。",
+      "success": "ドメインを登録し、投票しました！",
+      "error": "ドメインの登録に失敗しました"
+    }
+  },
+  "vote": {
+    "ariaLabel": "投票する",
+    "voting": "投票中...",
+    "voted": "投票済み",
+    "vote": "投票",
+    "processing": "投票を処理中...",
+    "removing": "取り消し中...",
+    "unvote": "取り消す",
+    "removeSuccess": "投票を取り消しました",
+    "removeError": "投票の取り消しに失敗しました。もう一度お試しください。",
+    "confirmRemove": "「{domainName}」への投票を取り消しますか？"
+  },
+  "detail": {
+    "back": "戻る",
+    "quickActions": "クイックアクション",
+    "visitDomain": "ドメインを開く",
+    "deleteSuccess": "ドメインを削除しました",
+    "deleteError": "ドメインの削除に失敗しました",
+    "deleting": "ドメインを削除中..."
+  },
+  "awards": {
+    "title": "アワード",
+    "loadError": "アワードの読み込みに失敗しました",
+    "empty": "まだアワードはありません。投票してこのドメインを応援しましょう！",
+    "medalLabel": "メダル"
+  },
+  "submitted": {
+    "loadError": "登録済みドメインの読み込みに失敗しました",
+    "empty": "まだドメインを登録していません。",
+    "youUpvoted": "✓ 投票済み",
+    "submittedOn": "{date} に登録"
+  },
+  "upvoted": {
+    "loadError": "投票済みドメインの読み込みに失敗しました",
+    "empty": "まだ投票したドメインはありません。",
+    "upvotedOn": "{date} に投票"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "開催中！",
+      "ended": "終了",
+      "notStarted": "開始前"
+    },
+    "loadErrorTitle": "ドメインの読み込みエラー",
+    "loadErrorDescription": "キャンペーンのドメインを読み込めませんでした。しばらくしてから再度お試しください。",
+    "emptyTitle": "ドメインが見つかりません",
+    "emptyDescription": "このキャンペーンに対象ドメインはありません。",
+    "nominatePrompt": "お気に入りのドメインがありませんか？",
+    "nominateAction": "推薦する",
+    "congratulations": "おめでとうございます！",
+    "winnerCampaignIcon": "キャンペーンアイコン",
+    "isTheWinner": "が優勝しました",
+    "votingClosedThanks": "ご投票ありがとうございました。当選者にはサブドメイン取得の詳細をメールでお送りします。"
+  },
+  "howItWorks": {
+    "voteTitle": "投票する",
+    "voteDescription": "お気に入りを選ぶ",
+    "winTitle": "当選",
+    "winDescription": "当選ドメインの発行開始",
+    "celebrateTitle": "お祝い",
+    "celebrateDescription": "無料サブドメインを取得"
+  },
+  "whyVote": {
+    "title": "投票する理由",
+    "priorityClaimTitle": "優先取得権",
+    "priorityClaimDescription": "新しいサブドメインを先着で取得できます（数量限定）",
+    "weeklyNfscTitle": "週次 $NFSC",
+    "weeklyNfscDescription": "投票者を対象に毎週 $NFSC が当たる抽選を実施",
+    "launchTitle": "[name].cv の立ち上げを支援",
+    "launchDescription": "最多票を獲得した [name].cv がサブドメイン発行を開始します"
+  },
+  "community": {
+    "joinTitle": "コミュニティに参加",
+    "joinDescription": "同じハンターたちとつながり、一緒にドメインへ投票しましょう。",
+    "shareTitle": "ハントをシェア",
+    "shareDescription": "友達を招待しましょう。投票ごとに抽選エントリーが1件獲得できます。",
+    "inviteFriends": "友達を招待",
+    "invited": "コピーしました！",
+    "copySuccess": "リンクをコピーしました！",
+    "copyError": "リンクのコピーに失敗しました"
+  },
+  "countdown": {
+    "votingEndsIn": "投票終了まで",
+    "days": "日",
+    "hours": "時間",
+    "minutes": "分",
+    "seconds": "秒"
+  },
+  "share": {
+    "titleDomain": "{domainName} をシェア",
+    "titleSubject": "{domainName} の {subject} をシェア",
+    "descriptionDomainTracked": "このドメインをTwitter/Xでシェアして、発見を広め、報酬を獲得しましょう。",
+    "descriptionDomain": "このドメインをTwitter/Xでシェアして、みんなに広めましょう。",
+    "descriptionSubject": "この {subject} をTwitter/Xでシェアしましょう。",
+    "shareUrlLabel": "シェアURL",
+    "quickShareLabel": "クイックシェア",
+    "shareOnTwitter": "Twitter/Xでシェア",
+    "prefilledHint": "{target} の投稿文が入力済みでTwitter/Xが開きます",
+    "alreadyShared": "シェア済み",
+    "postUrlLabel": "Twitter/X 投稿URL",
+    "postUrlHint": "シェア後にツイートのURLを貼り付けると報酬を獲得できます",
+    "recording": "記録中...",
+    "recordShare": "シェアを記録",
+    "invalidPostUrl": "有効なTwitter/X の投稿URLを入力してください",
+    "recordError": "シェアの記録に失敗しました。もう一度お試しください。",
+    "checkPostUrl": "投稿URLをご確認の上、再度お試しください。",
+    "copySuccess": "シェアURLをコピーしました。",
+    "copyError": "URLのコピーに失敗しました",
+    "recordingShare": "シェアを記録中..."
+  }
+}

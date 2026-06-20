@@ -25,5 +25,10 @@
     "validThru": "صالح لغاية",
     "claimNow": "احجز دلوقتي",
     "poweredByNamefi": "Powered by Namefi"
+  },
+  "dropdown": {
+    "title": "السك المجاني",
+    "claim": "استلام",
+    "viewAll": "عرض كل السكّات المجانية"
   }
 }

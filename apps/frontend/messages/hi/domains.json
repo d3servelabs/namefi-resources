@@ -159,5 +159,115 @@
     "nftAlt": "NFT",
     "offerWaiting": "आपका ऑफ़र खुला है और विक्रेता की स्वीकृति की प्रतीक्षा में है।"
   },
-  "metaTitle": "Namefi | डोमेन प्रबंधित करें"
+  "metaTitle": "Namefi | डोमेन प्रबंधित करें",
+  "card": {
+    "account": "खाता",
+    "expand": "विस्तृत करें",
+    "collapse": "संक्षिप्त करें",
+    "expandAll": "सभी विस्तृत करें",
+    "collapseAll": "सभी संक्षिप्त करें",
+    "sort": "क्रमबद्ध करें"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "{chain} पर मार्केटप्लेस लिस्टिंग अभी समर्थित नहीं है",
+      "supportedNetworks": "समर्थित नेटवर्क: {networks}।"
+    },
+    "exportBlocked": {
+      "title": "मार्केटप्लेस लिस्टिंग उपलब्ध नहीं है",
+      "description": "जब तक यह डोमेन अन्य रजिस्ट्रार को एक्सपोर्ट योग्य है, Web3 मार्केटप्लेस पर लिस्टिंग की अनुमति नहीं है। एक्सपोर्ट बंद करने के लिए <link>सहायता से संपर्क करें</link>।"
+    },
+    "listings": {
+      "title": "वर्तमान लिस्टिंग",
+      "description": "समर्थित मार्केटप्लेस पर सक्रिय बिक्री लिस्टिंग।",
+      "findBuyers": "खरीदार खोजें",
+      "findBuyersAria": "{domain} के लिए खरीदार खोजें",
+      "columnMarketplace": "मार्केटप्लेस",
+      "columnPrice": "मूल्य",
+      "columnExpires": "समाप्ति",
+      "columnActions": "कार्रवाई",
+      "loadFailed": "लिस्टिंग लोड नहीं हो सकी: {error}",
+      "empty": "कोई सक्रिय लिस्टिंग नहीं। इस डोमेन को बिक्री पर रखने के लिए \"लिस्टिंग बनाएँ\" का उपयोग करें।",
+      "view": "देखें",
+      "cancel": "रद्द करें",
+      "cancelled": "लिस्टिंग रद्द हुई",
+      "cancelledDescription": "यह कुछ ही देर में मार्केटप्लेस से हट जाएगी।",
+      "cancelFailed": "लिस्टिंग रद्द करने में विफल"
+    },
+    "offers": {
+      "title": "आने वाले प्रस्ताव",
+      "description": "समर्थित मार्केटप्लेस पर इस डोमेन पर लगाई गई बोलियाँ। प्रस्ताव स्वीकार करने पर NFT बोलीकर्ता को स्थानांतरित हो जाती है और आपको बोली राशि प्राप्त होती है।",
+      "columnMarketplace": "मार्केटप्लेस",
+      "columnBidder": "बोलीकर्ता",
+      "columnOffer": "प्रस्ताव",
+      "columnExpires": "समाप्ति",
+      "columnActions": "कार्रवाई",
+      "loadFailed": "प्रस्ताव लोड नहीं हो सके: {error}",
+      "empty": "कोई सक्रिय प्रस्ताव नहीं। जब कोई खरीदार बोली लगाएगा तो वह यहाँ दिखेगी।",
+      "view": "देखें",
+      "accept": "स्वीकार करें",
+      "accepted": "{price} के लिए प्रस्ताव स्वीकृत",
+      "acceptedDescription": "NFT बोलीकर्ता को स्थानांतरित कर दी गई।",
+      "acceptFailed": "प्रस्ताव स्वीकार करने में विफल"
+    },
+    "createListing": {
+      "trigger": "लिस्टिंग बनाएँ",
+      "title": "लिस्टिंग बनाएँ",
+      "description": "इस डोमेन को OpenSea पर बेचें। लिस्टिंग आपके वॉलेट द्वारा हस्ताक्षरित होकर OpenSea के Seaport ऑर्डरबुक पर पोस्ट की जाती है।",
+      "noMarketplaces": "अभी कोई मार्केटप्लेस इस नेटवर्क को समर्थन नहीं करती।",
+      "marketplaceLabel": "मार्केटप्लेस",
+      "alreadyListedSuffix": " — पहले से सूचीबद्ध",
+      "checkingListings": "सक्रिय लिस्टिंग जाँची जा रही हैं...",
+      "allListed": "यह डोमेन हर समर्थित मार्केटप्लेस पर पहले से सूचीबद्ध है। पुनः सूचीबद्ध करने के लिए मौजूदा लिस्टिंग रद्द करें।",
+      "priceLabel": "मूल्य ({currency})",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "मुद्रा",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "अवधि",
+      "duration1Day": "1 दिन",
+      "duration7Days": "7 दिन",
+      "duration30Days": "30 दिन",
+      "listOn": "{marketplace} पर सूचीबद्ध करें",
+      "connectWallet": "वॉलेट जोड़ें",
+      "feeMarketplace": "मार्केटप्लेस शुल्क",
+      "feeRoyalty": "क्रिएटर रॉयल्टी",
+      "feeYouReceive": "आपको प्राप्त होगा",
+      "feeEstimate": "अनुमान",
+      "feeEstimateTooltip": "अंतिम शुल्क हस्ताक्षर के समय मार्केटप्लेस द्वारा निर्धारित किए जाते हैं।",
+      "listedToast": "{price} पर सूचीबद्ध किया गया",
+      "listedToastDescription": "मार्केटप्लेस पर दिखने में थोड़ा समय लग सकता है।",
+      "connectWalletError": "इस डोमेन को सूचीबद्ध करने के लिए एक वॉलेट जोड़ें।",
+      "stillChecking": "सक्रिय लिस्टिंग अभी भी जाँची जा रही हैं",
+      "alreadyListedError": "इस डोमेन की वहाँ पहले से एक सक्रिय लिस्टिंग है।",
+      "alreadyListedErrorDescription": "नई लिस्टिंग बनाने से पहले मौजूदा लिस्टिंग रद्द करें।",
+      "pickCurrency": "भुगतान मुद्रा चुनें।",
+      "invalidPrice": "0 से अधिक एक वैध मूल्य दर्ज करें।",
+      "switchNetwork": "जारी रखने के लिए सही नेटवर्क पर स्विच करें।",
+      "createFailed": "लिस्टिंग बनाने में विफल",
+      "errorSignatureCancelled": "आपके वॉलेट में हस्ताक्षर रद्द कर दिया गया।",
+      "errorInsufficientFunds": "अनुमोदन ट्रांज़ैक्शन के लिए वॉलेट में पर्याप्त नेटिव ETH नहीं है।",
+      "errorNotConfigured": "इस वातावरण के लिए मार्केटप्लेस इंटीग्रेशन कॉन्फ़िगर नहीं है।",
+      "errorRateLimited": "मार्केटप्लेस अभी अनुरोधों को सीमित कर रहा है। एक मिनट प्रतीक्षा करें और फिर प्रयास करें।",
+      "errorSeaportUnavailable": "इस नेटवर्क पर OpenSea के Seaport कॉन्ट्रैक्ट तक नहीं पहुँचा जा सका। सुनिश्चित करें कि आपका वॉलेट डोमेन NFT वाली उसी चेन से जुड़ा है, फिर पुनः प्रयास करें।"
+    }
+  },
+  "previouslyOwned": {
+    "title": "पहले स्वामित्व वाले डोमेन",
+    "columnAccount": "खाता",
+    "columnRemovalDate": "हटाने की तारीख",
+    "columnReason": "कारण",
+    "columnReceivingWallet": "प्राप्तकर्ता वॉलेट",
+    "empty": "पहले स्वामित्व वाले कोई डोमेन नहीं मिले",
+    "emptyDescription": "आपने अभी तक अपने लिंक किए गए वॉलेट से कोई डोमेन बर्न या ट्रांसफर नहीं किया है",
+    "selectChainPlaceholder": "चेन चुनें",
+    "allChains": "सभी चेन",
+    "clearFilters": "फ़िल्टर साफ़ करें"
+  },
+  "dnsRecords": {
+    "selectAll": "सभी चुनें",
+    "selectRow": "पंक्ति चुनें"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "क्रियाएं"
+  }
 }

@@ -1,0 +1,63 @@
+{
+  "title": "सूचनाएँ",
+  "bell": {
+    "label": "सूचनाएँ",
+    "labelWithUnread": "सूचनाएँ, {count} अपठित",
+    "relatedLabel": "संबंधित सूचनाएँ",
+    "relatedLabelWithUnread": "संबंधित सूचनाएँ, {count} अपठित"
+  },
+  "permission": {
+    "tooltip": "कोई सूचना न चूकें — Namefi Webapp के लिए सूचनाएँ सक्षम करें।",
+    "enable": "सक्षम करें",
+    "ctaText": "नई सूचना आने पर OS बैनर प्राप्त करें।"
+  },
+  "modal": {
+    "description": "आपकी इन-ऐप सूचनाएँ। देखी गई, संग्रहीत करें, या संबंधित संसाधन के अनुसार फ़िल्टर करें।"
+  },
+  "list": {
+    "filters": "फ़िल्टर",
+    "refresh": "सूचनाएँ ताज़ा करें",
+    "relatedTo": "संबंधित",
+    "any": "सभी",
+    "nameOrKey": "नाम या कुंजी",
+    "nameOrKeyPlaceholder": "नाम या कुंजी",
+    "includeSeen": "देखी गई शामिल करें",
+    "includeSeenAria": "देखी गई सूचनाएँ शामिल करें",
+    "includeArchived": "संग्रहीत शामिल करें",
+    "includeArchivedAria": "संग्रहीत सूचनाएँ शामिल करें",
+    "selectAllAria": "सभी दृश्यमान सूचनाएँ चुनें",
+    "selectedCount": "{count} चुनी गई",
+    "markSeen": "देखी गई",
+    "markUnseen": "अनदेखी",
+    "archive": "संग्रहीत करें",
+    "restore": "पुनर्स्थापित करें",
+    "markAllSeen": "सभी देखी गई मार्क करें",
+    "loading": "लोड हो रहा है…",
+    "empty": "कोई सूचना नहीं।",
+    "loadingMore": "और लोड हो रहा है…"
+  },
+  "item": {
+    "selectAria": "{title} चुनें",
+    "markSeenAria": "देखी गई मार्क करें",
+    "markUnseenAria": "अनदेखी मार्क करें",
+    "archiveAria": "संग्रहीत करें",
+    "restoreAria": "संग्रह से पुनर्स्थापित करें"
+  },
+  "errors": {
+    "markSeen": "देखी गई मार्क करने में विफल",
+    "markUnseen": "अनदेखी मार्क करने में विफल",
+    "archive": "संग्रहीत करने में विफल",
+    "restore": "पुनर्स्थापित करने में विफल",
+    "markAllSeen": "सभी देखी गई मार्क करने में विफल"
+  },
+  "resourceTypes": {
+    "user": "उपयोगकर्ता",
+    "domain": "डोमेन",
+    "wallet": "वॉलेट",
+    "order": "ऑर्डर",
+    "order_item": "ऑर्डर आइटम",
+    "payment": "भुगतान",
+    "cart": "कार्ट",
+    "dns_record": "DNS रिकॉर्ड"
+  }
+}

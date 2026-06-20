@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import {
   type SubmitHandler,
@@ -62,6 +63,8 @@ import {
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+
+type DnsTranslator = ReturnType<typeof useTranslations<'dnsManagement'>>;
 
 const SUPPORTED_ALGORITHMS = [
   { value: DnssecAlgorithms.RSA_SHA_256, label: '8 — RSA/SHA-256' },
@@ -137,6 +140,8 @@ export function CustomDelegationSignerForm({
 }: CustomDelegationSignerFormProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const tCommon = useTranslations('common');
+  const tDns = useTranslations('dnsManagement');
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -316,7 +321,10 @@ export function CustomDelegationSignerForm({
     }),
   );
 
-  const ackInfo = useMemo(() => buildAckInfo(validation), [validation]);
+  const ackInfo = useMemo(
+    () => buildAckInfo(validation, tDns),
+    [validation, tDns],
+  );
 
   const validationFailed =
     validation.status === 'done' &&
@@ -430,20 +438,21 @@ export function CustomDelegationSignerForm({
           }
         >
           <TabsList>
-            <TabsTrigger value="auto-detect">Automatic Detection</TabsTrigger>
-            <TabsTrigger value="manual">Manual</TabsTrigger>
+            <TabsTrigger value="auto-detect">
+              {tDns('form.tabs.autoDetect')}
+            </TabsTrigger>
+            <TabsTrigger value="manual">{tDns('form.tabs.manual')}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="manual" className="flex flex-col gap-3 min-w-0">
             <p className="text-sm text-zinc-400">
-              Paste a DNSKEY or DS record (full zone-file line or just rdata).
-              We'll auto-detect the format.{' '}
+              {tDns('form.manual.description')}{' '}
               <button
                 type="button"
                 onClick={() => setViewMode('edit')}
                 className="inline rounded bg-blue-500/15 px-1.5 py-0.5 text-blue-300 hover:bg-blue-500/25 cursor-pointer transition-colors"
               >
-                or enter fields manually
+                {tDns('form.manual.enterFieldsManually')}
               </button>
             </p>
             <Textarea
@@ -458,11 +467,11 @@ export function CustomDelegationSignerForm({
                 type="button"
                 variant="secondary"
                 isLoading={deriveMutation.isPending}
-                loadingText="Deriving..."
+                loadingText={tDns('form.manual.deriving')}
                 onClick={handleManualDerive}
                 disabled={pastedText.trim().length === 0}
               >
-                Derive DS fields
+                {tDns('form.manual.derive')}
               </LoadingButton>
             </div>
           </TabsContent>
@@ -472,23 +481,23 @@ export function CustomDelegationSignerForm({
             className="flex flex-col gap-3 min-w-0"
           >
             <p className="text-sm text-zinc-400">
-              Query your domain's delegated nameservers and detect
+              {tDns('form.autoDetect.description')}
             </p>
             <div className="flex items-center justify-between gap-2">
               <LoadingButton
                 type="button"
                 variant="secondary"
                 isLoading={deriveMutation.isPending}
-                loadingText="Detecting..."
+                loadingText={tDns('form.autoDetect.detecting')}
                 onClick={handleAutoDetect}
               >
                 <RadarIcon className="w-4 h-4" />
-                Detect from delegated nameservers
+                {tDns('form.autoDetect.detect')}
               </LoadingButton>
               {autoDetectCandidates.length > 1 ? (
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="text-xs text-zinc-400 shrink-0">
-                    KSK candidate
+                    {tDns('form.autoDetect.kskCandidate')}
                   </span>
                   <Select
                     value={String(selectedCandidateIdx)}
@@ -507,7 +516,10 @@ export function CustomDelegationSignerForm({
                           key={`${candidate.keyTag}-${idx}`}
                           value={String(idx)}
                         >
-                          key tag {candidate.keyTag} — alg {candidate.algorithm}
+                          {tDns('form.autoDetect.candidateOption', {
+                            keyTag: candidate.keyTag,
+                            algorithm: candidate.algorithm,
+                          })}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -519,7 +531,7 @@ export function CustomDelegationSignerForm({
         </Tabs>
 
         <div className="flex items-center justify-between gap-2 min-w-0">
-          <h3 className="text-sm font-medium">DS values</h3>
+          <h3 className="text-sm font-medium">{tDns('form.dsValuesTitle')}</h3>
           <Button
             type="button"
             variant="ghost"
@@ -531,19 +543,19 @@ export function CustomDelegationSignerForm({
             {viewMode === 'summary' ? (
               <>
                 <PencilIcon className="w-4 h-4" />
-                Edit
+                {tCommon('actions.edit')}
               </>
             ) : (
               <>
                 <EyeIcon className="w-4 h-4" />
-                View summary
+                {tDns('form.viewSummary')}
               </>
             )}
           </Button>
         </div>
 
         {viewMode === 'summary' ? (
-          <DsSummaryTable form={form} />
+          <DsSummaryTable form={form} tDns={tDns} />
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 min-w-0">
@@ -552,7 +564,7 @@ export function CustomDelegationSignerForm({
                 name="keyTag"
                 render={({ field }) => (
                   <FormItem className="min-w-0">
-                    <FormLabel>Key tag</FormLabel>
+                    <FormLabel>{tDns('form.fields.keyTag')}</FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -573,12 +585,12 @@ export function CustomDelegationSignerForm({
                 name="algorithm"
                 render={({ field }) => (
                   <FormItem className="min-w-0">
-                    <FormLabel>Algorithm</FormLabel>
+                    <FormLabel>{tDns('form.fields.algorithm')}</FormLabel>
                     <FormControl>
                       <SelectField
                         field={field}
                         options={SUPPORTED_ALGORITHMS}
-                        placeholder="Select algorithm"
+                        placeholder={tDns('form.placeholders.algorithm')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -591,12 +603,12 @@ export function CustomDelegationSignerForm({
                 name="flags"
                 render={({ field }) => (
                   <FormItem className="min-w-0">
-                    <FormLabel>Flags</FormLabel>
+                    <FormLabel>{tDns('form.fields.flags')}</FormLabel>
                     <FormControl>
                       <SelectField
                         field={field}
                         options={FLAG_OPTIONS}
-                        placeholder="Select flag"
+                        placeholder={tDns('form.placeholders.flags')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -609,12 +621,12 @@ export function CustomDelegationSignerForm({
                 name="digestType"
                 render={({ field }) => (
                   <FormItem className="min-w-0">
-                    <FormLabel>Digest type</FormLabel>
+                    <FormLabel>{tDns('form.fields.digestType')}</FormLabel>
                     <FormControl>
                       <SelectField
                         field={field}
                         options={DIGEST_TYPE_OPTIONS}
-                        placeholder="Select digest type"
+                        placeholder={tDns('form.placeholders.digestType')}
                       />
                     </FormControl>
                     <FormMessage />
@@ -628,7 +640,7 @@ export function CustomDelegationSignerForm({
               name="publicKey"
               render={({ field }) => (
                 <FormItem className="min-w-0">
-                  <FormLabel>Public key (base64)</FormLabel>
+                  <FormLabel>{tDns('form.fields.publicKey')}</FormLabel>
                   <FormControl>
                     <Textarea
                       rows={3}
@@ -639,10 +651,7 @@ export function CustomDelegationSignerForm({
                   </FormControl>
                   {publicKeyMissingNotice && !field.value?.trim() ? (
                     <p className="text-xs text-amber-400 mt-1">
-                      Public key not present in the pasted DS. Use{' '}
-                      <span className="font-medium">Automatic Detection</span>{' '}
-                      or paste the DNSKEY record so we can submit to the
-                      registrar.
+                      {tDns('form.publicKeyMissingNotice')}
                     </p>
                   ) : null}
                   <FormMessage />
@@ -655,7 +664,7 @@ export function CustomDelegationSignerForm({
               name="digest"
               render={({ field }) => (
                 <FormItem className="min-w-0">
-                  <FormLabel>Digest (hex)</FormLabel>
+                  <FormLabel>{tDns('form.fields.digest')}</FormLabel>
                   <FormControl>
                     <Textarea
                       rows={2}
@@ -671,7 +680,7 @@ export function CustomDelegationSignerForm({
           </>
         )}
 
-        <ValidationResultPanel state={validation} />
+        <ValidationResultPanel state={validation} tDns={tDns} />
 
         {ackInfo ? (
           <div className="flex flex-col gap-1">
@@ -687,9 +696,7 @@ export function CustomDelegationSignerForm({
             </div>
             {validationFailed ? (
               <p className="text-xs text-zinc-500 ms-6">
-                We'll run this as a background workflow that polls validation
-                and only submits when both lanes pass. You'll get an email when
-                it lands or times out.
+                {tDns('form.deferredNotice')}
               </p>
             ) : null}
           </div>
@@ -700,15 +707,15 @@ export function CustomDelegationSignerForm({
             type="button"
             variant="secondary"
             isLoading={validateMutation.isPending}
-            loadingText="Validating..."
+            loadingText={tDns('form.validating')}
             onClick={handleValidate}
           >
             <ShieldAlertIcon className="w-4 h-4" />
-            Validate
+            {tDns('form.validate')}
           </LoadingButton>
           <div className="flex items-center gap-2">
             <Button type="button" variant="ghost" onClick={onCancel}>
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <LoadingButton
               type="submit"
@@ -716,11 +723,15 @@ export function CustomDelegationSignerForm({
                 associateMutation.isPending || deferredMutation.isPending
               }
               loadingText={
-                deferredMutation.isPending ? 'Scheduling...' : 'Submitting...'
+                deferredMutation.isPending
+                  ? tDns('form.scheduling')
+                  : tDns('form.submitting')
               }
               disabled={submitDisabled}
             >
-              {validationFailed ? 'Schedule DS' : 'Submit DS'}
+              {validationFailed
+                ? tDns('form.scheduleDs')
+                : tDns('form.submitDs')}
             </LoadingButton>
           </div>
         </div>
@@ -736,6 +747,7 @@ export function CustomDelegationSignerForm({
  */
 function summaryEntries(
   values: FormValues,
+  tDns: DnsTranslator,
 ): Array<{ label: string; value: React.ReactNode }> {
   const algorithmLabel =
     SUPPORTED_ALGORITHMS.find((opt) => opt.value === values.algorithm)?.label ??
@@ -748,12 +760,12 @@ function summaryEntries(
     String(values.digestType);
 
   return [
-    { label: 'Key tag', value: values.keyTag },
-    { label: 'Algorithm', value: algorithmLabel },
-    { label: 'Flags', value: flagsLabel },
-    { label: 'Digest type', value: digestTypeLabel },
+    { label: tDns('form.fields.keyTag'), value: values.keyTag },
+    { label: tDns('form.fields.algorithm'), value: algorithmLabel },
+    { label: tDns('form.fields.flags'), value: flagsLabel },
+    { label: tDns('form.fields.digestType'), value: digestTypeLabel },
     {
-      label: 'Public key',
+      label: tDns('form.fields.publicKey'),
       value: values.publicKey ? (
         <span
           className="font-mono break-all text-zinc-200"
@@ -762,11 +774,13 @@ function summaryEntries(
           {truncateMiddle(values.publicKey, 64)}
         </span>
       ) : (
-        <span className="italic text-amber-400">not set</span>
+        <span className="italic text-amber-400">
+          {tDns('form.summary.notSet')}
+        </span>
       ),
     },
     {
-      label: 'Digest',
+      label: tDns('form.fields.digest'),
       value: values.digest ? (
         <span
           className="font-mono break-all text-zinc-200"
@@ -781,10 +795,16 @@ function summaryEntries(
   ];
 }
 
-function DsSummaryTable({ form }: { form: UseFormReturn<FormValues> }) {
+function DsSummaryTable({
+  form,
+  tDns,
+}: {
+  form: UseFormReturn<FormValues>;
+  tDns: DnsTranslator;
+}) {
   const isMobile = useIsMobile();
   const values = form.watch();
-  const entries = summaryEntries(values);
+  const entries = summaryEntries(values, tDns);
 
   if (isMobile) {
     // Mobile: a labeled grouped list rendered from the SAME summary entries as
@@ -884,13 +904,19 @@ function SelectField({
 
 const VALIDATION_LANE_VALUES = ['authoritative', 'public-dns'] as const;
 
-function ValidationResultPanel({ state }: { state: ValidationState }) {
+function ValidationResultPanel({
+  state,
+  tDns,
+}: {
+  state: ValidationState;
+  tDns: DnsTranslator;
+}) {
   if (state.status === 'idle') return null;
   if (state.status === 'pending') {
     return (
       <div className="flex items-center gap-2 text-sm text-zinc-400 bg-zinc-800/50 rounded-md p-3">
         <Loader2 className="w-4 h-4 animate-spin" />
-        Querying DNSKEY records at authoritative nameservers and public DNS...
+        {tDns('form.validation.pending')}
       </div>
     );
   }
@@ -902,13 +928,15 @@ function ValidationResultPanel({ state }: { state: ValidationState }) {
     >
       <ValidationLane
         value="authoritative"
-        title="Authoritative nameservers"
+        title={tDns('form.validation.laneAuthoritative')}
         lane={state.result.authoritative}
+        tDns={tDns}
       />
       <ValidationLane
         value="public-dns"
-        title="Public DNS (Google)"
+        title={tDns('form.validation.lanePublicDns')}
         lane={state.result.publicDns}
+        tDns={tDns}
       />
     </Accordion>
   );
@@ -923,7 +951,10 @@ type LanePalette = {
   statusLabel: string;
 };
 
-function pickPalette(lane: ValidateResult['authoritative']): LanePalette {
+function pickPalette(
+  lane: ValidateResult['authoritative'],
+  tDns: DnsTranslator,
+): LanePalette {
   if (lane.errorMessage) {
     return {
       bg: 'bg-red-950/40',
@@ -931,7 +962,7 @@ function pickPalette(lane: ValidateResult['authoritative']): LanePalette {
       triggerText: 'text-red-400',
       subtitleText: 'text-red-300/80',
       icon: <ShieldAlertIcon className="w-4 h-4 shrink-0" />,
-      statusLabel: 'could not validate',
+      statusLabel: tDns('form.validation.statusCouldNotValidate'),
     };
   }
   if (lane.isValid) {
@@ -941,7 +972,7 @@ function pickPalette(lane: ValidateResult['authoritative']): LanePalette {
       triggerText: 'text-green-400',
       subtitleText: 'text-green-300/80',
       icon: <CheckCircle2Icon className="w-4 h-4 shrink-0" />,
-      statusLabel: 'match',
+      statusLabel: tDns('form.validation.statusMatch'),
     };
   }
   return {
@@ -950,7 +981,7 @@ function pickPalette(lane: ValidateResult['authoritative']): LanePalette {
     triggerText: 'text-amber-400',
     subtitleText: 'text-amber-300/80',
     icon: <ShieldAlertIcon className="w-4 h-4 shrink-0" />,
-    statusLabel: 'no matching DNSKEY',
+    statusLabel: tDns('form.validation.statusNoMatchingDnskey'),
   };
 }
 
@@ -958,15 +989,17 @@ function ValidationLane({
   value,
   title,
   lane,
+  tDns,
 }: {
   value: string;
   title: string;
   lane: ValidateResult['authoritative'];
+  tDns: DnsTranslator;
 }) {
   const sourceLabel = lane.queriedSource.length
     ? lane.queriedSource.join(', ')
     : '—';
-  const palette = pickPalette(lane);
+  const palette = pickPalette(lane, tDns);
 
   return (
     <AccordionItem
@@ -992,21 +1025,27 @@ function ValidationLane({
             <p className={cn('text-xs break-words', palette.subtitleText)}>
               {lane.errorMessage}
             </p>
-            <p className="text-xs text-zinc-500">Queried: {sourceLabel}</p>
+            <p className="text-xs text-zinc-500">
+              {tDns('form.validation.queried', { source: sourceLabel })}
+            </p>
           </div>
         ) : lane.isValid ? (
           <p className={cn('text-xs break-words', palette.subtitleText)}>
-            Computed key tag {lane.matchedDnskey?.keyTag}. Source: {sourceLabel}
-            .
+            {tDns('form.validation.matched', {
+              keyTag: lane.matchedDnskey?.keyTag ?? '',
+              source: sourceLabel,
+            })}
           </p>
         ) : (
           <div className="flex flex-col gap-2 min-w-0">
             <p className={cn('text-xs break-words', palette.subtitleText)}>
-              None of the published DNSKEYs at {sourceLabel} produces the digest
-              you entered.
+              {tDns('form.validation.noMatch', { source: sourceLabel })}
             </p>
             {lane.publishedDnskeys.length > 0 ? (
-              <PublishedDnskeysList dnskeys={lane.publishedDnskeys} />
+              <PublishedDnskeysList
+                dnskeys={lane.publishedDnskeys}
+                tDns={tDns}
+              />
             ) : null}
           </div>
         )}
@@ -1023,7 +1062,13 @@ type PublishedDnskey =
  * keeps the compact table; mobile renders the SAME rows as a labeled card stack
  * (the wide computed-digest column overflows a phone otherwise).
  */
-function PublishedDnskeysList({ dnskeys }: { dnskeys: PublishedDnskey[] }) {
+function PublishedDnskeysList({
+  dnskeys,
+  tDns,
+}: {
+  dnskeys: PublishedDnskey[];
+  tDns: DnsTranslator;
+}) {
   const isMobile = useIsMobile();
 
   if (isMobile) {
@@ -1036,19 +1081,27 @@ function PublishedDnskeysList({ dnskeys }: { dnskeys: PublishedDnskey[] }) {
           >
             <dl className="flex flex-col gap-1">
               <div className="flex items-start justify-between gap-3">
-                <dt className="shrink-0 text-zinc-500">Flags</dt>
+                <dt className="shrink-0 text-zinc-500">
+                  {tDns('form.validation.tableFlags')}
+                </dt>
                 <dd className="text-end">{d.flags}</dd>
               </div>
               <div className="flex items-start justify-between gap-3">
-                <dt className="shrink-0 text-zinc-500">Alg</dt>
+                <dt className="shrink-0 text-zinc-500">
+                  {tDns('form.validation.tableAlg')}
+                </dt>
                 <dd className="text-end">{d.algorithm}</dd>
               </div>
               <div className="flex items-start justify-between gap-3">
-                <dt className="shrink-0 text-zinc-500">Computed key tag</dt>
+                <dt className="shrink-0 text-zinc-500">
+                  {tDns('form.validation.tableComputedKeyTag')}
+                </dt>
                 <dd className="text-end">{d.computedKeyTag}</dd>
               </div>
               <div className="flex flex-col gap-0.5">
-                <dt className="text-zinc-500">Computed digest</dt>
+                <dt className="text-zinc-500">
+                  {tDns('form.validation.tableComputedDigest')}
+                </dt>
                 <dd className="break-all" title={d.computedDigest}>
                   {d.computedDigest}
                 </dd>
@@ -1066,10 +1119,18 @@ function PublishedDnskeysList({ dnskeys }: { dnskeys: PublishedDnskey[] }) {
       <table className="w-full font-mono" /* mobile-ok */>
         <thead className="text-zinc-500">
           <tr>
-            <th className="text-start pe-3">Flags</th>
-            <th className="text-start pe-3">Alg</th>
-            <th className="text-start pe-3">Computed key tag</th>
-            <th className="text-start">Computed digest</th>
+            <th className="text-start pe-3">
+              {tDns('form.validation.tableFlags')}
+            </th>
+            <th className="text-start pe-3">
+              {tDns('form.validation.tableAlg')}
+            </th>
+            <th className="text-start pe-3">
+              {tDns('form.validation.tableComputedKeyTag')}
+            </th>
+            <th className="text-start">
+              {tDns('form.validation.tableComputedDigest')}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -1091,22 +1152,19 @@ function PublishedDnskeysList({ dnskeys }: { dnskeys: PublishedDnskey[] }) {
 
 // --- Acknowledgement copy -----------------------------------------------
 
-function buildAckInfo(state: ValidationState): { label: string } | null {
+function buildAckInfo(
+  state: ValidationState,
+  tDns: DnsTranslator,
+): { label: string } | null {
   if (state.status !== 'done') return null;
   const auth = state.result.authoritative;
   const pub = state.result.publicDns;
   // Treat "errored" lanes as not-valid for ack purposes.
   if (!auth.isValid) {
-    return {
-      label:
-        "I understand validation didn't pass and want to associate this DS anyway (e.g. staging before flipping nameservers).",
-    };
+    return { label: tDns('form.ack.validationDidNotPass') };
   }
   if (auth.isValid && pub.isValid) {
-    return { label: "I'm sure, associate this DS." };
+    return { label: tDns('form.ack.sure') };
   }
-  return {
-    label:
-      'I understand that DNSKEY has not fully reflect in all regions and some regions might have a slight downtime after this change. I want to associate this DS anyway.',
-  };
+  return { label: tDns('form.ack.notFullyReflected') };
 }

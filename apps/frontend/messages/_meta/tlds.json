@@ -1,0 +1,67 @@
+{
+  "title": {
+    "description": "Heading of the TLD (top-level domain) pricing page. 'TLD' is an acronym; keep verbatim.",
+    "maxLength": 20
+  },
+  "description": {
+    "description": "Subheading explaining the page lists base USD prices for non-premium TLDs."
+  },
+  "loadError": {
+    "description": "Error message shown when the TLD pricing table fails to load."
+  },
+  "loadingMessage": {
+    "description": "Message shown while the TLD pricing table is loading."
+  },
+  "emptyMessage": {
+    "description": "Message shown when no TLDs match the active filters."
+  },
+  "nonPremiumNote": {
+    "description": "Footnote clarifying the listed prices apply only to non-premium domains. Keep the leading '**'."
+  },
+  "columns": {
+    "tld": {
+      "description": "Table column header for the top-level domain. Acronym; keep verbatim.",
+      "maxLength": 12
+    },
+    "registration": {
+      "description": "Table column header for the registration price.",
+      "maxLength": 16
+    },
+    "renewal": {
+      "description": "Table column header for the renewal price.",
+      "maxLength": 16
+    },
+    "transfer": {
+      "description": "Table column header for the transfer price.",
+      "maxLength": 16
+    },
+    "registrar": {
+      "description": "Table column header for the registrar (admin-only column).",
+      "maxLength": 16
+    }
+  },
+  "filters": {
+    "tld": {
+      "description": "Filter label for the TLD column. Acronym; keep verbatim.",
+      "maxLength": 12
+    },
+    "registrar": {
+      "description": "Filter label for the registrar column.",
+      "maxLength": 16
+    }
+  },
+  "variablePrice": {
+    "description": "Cell text shown when a TLD has no fixed price (price varies by domain).",
+    "maxLength": 20
+  },
+  "variablePriceTooltip": {
+    "description": "Tooltip explaining that a variable price depends on the specific domain name."
+  },
+  "notAvailable": {
+    "description": "Short placeholder shown when a price is not available. Typically 'N/A'.",
+    "maxLength": 8
+  },
+  "perYear": {
+    "description": "Annual price line: the formatted amount wrapped in <price>{value}</price> followed by '/ year'. Keep the <price></price> tags and {value} placeholder verbatim; translate only the '/ year' part."
+  }
+}

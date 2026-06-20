@@ -80,5 +80,30 @@
     "x402ConnectWallet": "x402 கட்டணத்தில் கையொப்பமிட செயலில் உள்ள வாலட்டை இணைக்கவும்",
     "orderFailed": "ஆர்டர் சமர்ப்பிக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்."
   },
-  "metaTitle": "Namefi | கூடை"
+  "metaTitle": "Namefi | கூடை",
+  "cartFootnote": {
+    "learnMore": "மேலும் அறிக",
+    "agree": "ஒப்புக்கொள்கிறேன்"
+  },
+  "cartItemRegistration": {
+    "learnMore": "மேலும் அறிக",
+    "gotIt": "புரிந்தது"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "டொமைன் அமைவு விருப்பங்களை காட்டு",
+    "noSetupOptions": "அமைவு விருப்பங்கள் இல்லை"
+  },
+  "cartItem": {
+    "setupOptionsAria": "டொமைன் அமைவு விருப்பங்கள்"
+  },
+  "cartDropdown": {
+    "myCart": "என் கார்ட்",
+    "yourCartIsEmpty": "உங்கள் கார்ட் காலியாக உள்ளது",
+    "total": "மொத்தம்",
+    "checkout": "செலுத்துங்கள்",
+    "loadingCart": "கார்ட் ஏற்றுகிறது..."
+  },
+  "cartButton": {
+    "removeAria": "கார்டிலிருந்து அகற்று"
+  }
 }

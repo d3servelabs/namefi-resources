@@ -80,5 +80,30 @@
     "x402ConnectWallet": "请连接一个活跃钱包以签署您的 x402 支付。",
     "orderFailed": "无法提交您的订单，请重试。"
   },
-  "metaTitle": "Namefi | 购物车"
+  "metaTitle": "Namefi | 购物车",
+  "cartFootnote": {
+    "learnMore": "了解更多",
+    "agree": "同意"
+  },
+  "cartItemRegistration": {
+    "learnMore": "了解更多",
+    "gotIt": "知道了"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "显示域名设置选项",
+    "noSetupOptions": "无设置选项"
+  },
+  "cartItem": {
+    "setupOptionsAria": "域名设置选项"
+  },
+  "cartDropdown": {
+    "myCart": "我的购物车",
+    "yourCartIsEmpty": "您的购物车为空",
+    "total": "合计",
+    "checkout": "结账",
+    "loadingCart": "正在加载购物车..."
+  },
+  "cartButton": {
+    "removeAria": "从购物车移除"
+  }
 }

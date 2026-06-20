@@ -11,6 +11,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useAuth } from '@/hooks/use-auth';
+import { useTranslations } from 'next-intl';
 import {
   type MouseEvent,
   type ReactElement,
@@ -29,15 +30,18 @@ interface AuthRequiredDialogProps {
 export const AuthRequiredDialog = ({
   isOpen,
   onClose,
-  title = 'Sign in required',
-  description = 'You need to sign in to continue. Join the community to discover and vote for the best domains!',
+  title,
+  description,
 }: AuthRequiredDialogProps) => {
+  const t = useTranslations('shared');
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <DialogTitle>{title ?? t('authRequired.title')}</DialogTitle>
+          <DialogDescription>
+            {description ?? t('authRequired.communityDescription')}
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <UserDropdown />
@@ -88,8 +92,8 @@ interface AuthGuardProps {
  */
 export const AuthGuard = ({
   children,
-  title = 'Sign in required',
-  description = 'You need to sign in to continue. Join the community to discover and vote for the best domains!',
+  title,
+  description,
   fallbackAction,
 }: AuthGuardProps) => {
   const { isAuthenticated } = useAuth();

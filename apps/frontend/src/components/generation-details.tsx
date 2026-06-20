@@ -45,6 +45,7 @@ import {
   Type,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { TwitterIcon } from 'react-share';
 import {
@@ -335,23 +336,30 @@ const ErrorPlaceholder = ({
 }: {
   error: string;
   onGoBack: () => void;
-}) => (
-  <div className="container max-w-4xl mx-auto py-8 px-8">
-    <EmptyPlaceholder>
-      <div className="flex size-20 items-center justify-center rounded-full bg-muted">
-        <ImageIcon className="size-10 text-muted-foreground" />
-      </div>
-      <EmptyPlaceholder.Title>Generation not found</EmptyPlaceholder.Title>
-      <EmptyPlaceholder.Description>
-        {error || 'The generation you are looking for could not be found.'}
-      </EmptyPlaceholder.Description>
-      <Button variant="outline" onClick={onGoBack} className="mt-4">
-        <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
-        Go back
-      </Button>
-    </EmptyPlaceholder>
-  </div>
-);
+}) => {
+  const t = useTranslations('aiGeneration');
+  const tCommon = useTranslations('common');
+
+  return (
+    <div className="container max-w-4xl mx-auto py-8 px-8">
+      <EmptyPlaceholder>
+        <div className="flex size-20 items-center justify-center rounded-full bg-muted">
+          <ImageIcon className="size-10 text-muted-foreground" />
+        </div>
+        <EmptyPlaceholder.Title>
+          {t('details.notFoundTitle')}
+        </EmptyPlaceholder.Title>
+        <EmptyPlaceholder.Description>
+          {error || t('details.notFoundDescription')}
+        </EmptyPlaceholder.Description>
+        <Button variant="outline" onClick={onGoBack} className="mt-4">
+          <ArrowLeft className="me-2 h-4 w-4 rtl:-scale-x-100" />
+          {tCommon('actions.goBack')}
+        </Button>
+      </EmptyPlaceholder>
+    </div>
+  );
+};
 
 function AnimationPreview(props: {
   domain: string;
@@ -359,6 +367,7 @@ function AnimationPreview(props: {
   posterUrl?: string | null;
   url: string;
 }) {
+  const t = useTranslations('aiGeneration');
   const isLooped = props.mode === 'looped';
   const modeLabel = props.mode
     ? ANIMATION_MODES[props.mode].name.toLowerCase()
@@ -366,7 +375,10 @@ function AnimationPreview(props: {
 
   return (
     <video
-      aria-label={`AI-generated ${modeLabel} animation for ${props.domain}`}
+      aria-label={t('details.animationLabelAria', {
+        mode: modeLabel,
+        domain: props.domain,
+      })}
       autoPlay={isLooped}
       className="h-full w-full rounded-lg bg-black object-contain"
       controls
@@ -387,6 +399,8 @@ export function GenerationDetailsClient({
   initialGeneration,
   error: initialError,
 }: GenerationDetailsClientProps) {
+  const t = useTranslations('aiGeneration');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   const { isAuthenticated, isLoading: isAuthLoading, user } = useAuth();
   const trpc = useTRPC();
@@ -547,12 +561,12 @@ export function GenerationDetailsClient({
 
   const statusLabel =
     generation?.status === 'PENDING'
-      ? 'Pending'
+      ? t('status.pending')
       : generation?.status === 'PROCESSING'
-        ? 'Processing'
+        ? t('status.processing')
         : generation?.status === 'FAILED'
-          ? 'Failed'
-          : 'Ready';
+          ? t('status.failed')
+          : t('status.ready');
 
   const previewUrl = generation?.thumbnailUrl ?? generation?.url;
   const referenceGenerationPreviewUrl =
@@ -571,16 +585,16 @@ export function GenerationDetailsClient({
   const handleCopyLink = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);
-      toast('Link copied to clipboard', {
-        description: 'You can now share this generation with others',
+      toast(t('details.linkCopied'), {
+        description: t('details.linkCopiedDescription'),
       });
     } catch (error) {
       console.error('Failed to copy link:', error);
-      toast.error('Failed to copy link', {
-        description: 'Please try again',
+      toast.error(t('details.linkCopyFailed'), {
+        description: t('details.linkCopyFailedDescription'),
       });
     }
-  }, [currentUrl]);
+  }, [currentUrl, t]);
 
   const handleCreatePoster = useCallback(() => {
     if (!isReadyLogoGeneration(generation)) return;
@@ -659,20 +673,19 @@ export function GenerationDetailsClient({
             variant="ghost"
             size="sm"
             onClick={handleGoBack}
-            aria-label="Back to Namefi Brand Studio"
+            aria-label={t('details.backToStudio')}
             className="flex items-center gap-2 cursor-pointer self-start"
           >
             <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
-            Back to Namefi Brand Studio
+            {t('details.backToStudio')}
           </Button>
           <div>
             <h1 className="text-2xl font-bold">
               {generation.type === 'logo'
-                ? 'Logo'
+                ? t('details.headingLogo', { brand: brandName })
                 : generation.type === 'animation'
-                  ? 'Animation'
-                  : 'Poster'}{' '}
-              for {brandName}
+                  ? t('details.headingAnimation', { brand: brandName })
+                  : t('details.headingPoster', { brand: brandName })}
             </h1>
             <p className="text-muted-foreground mt-1">{domain}</p>
           </div>
@@ -699,7 +712,10 @@ export function GenerationDetailsClient({
                   ) : previewUrl ? (
                     <Image
                       src={previewUrl}
-                      alt={`AI-generated ${generation.type} for ${domain}`}
+                      alt={t('details.imageAlt', {
+                        type: generation.type,
+                        domain,
+                      })}
                       fill
                       sizes="(max-width: 1024px) 100vw, 67vw"
                       loading="eager"
@@ -715,7 +731,7 @@ export function GenerationDetailsClient({
                         <div className="mt-2 text-sm text-muted-foreground">
                           {generation.status === 'FAILED'
                             ? GENERIC_GENERATION_ERROR_MESSAGE
-                            : 'The asset is not available yet.'}
+                            : t('details.assetUnavailable')}
                         </div>
                       </div>
                     </div>
@@ -753,14 +769,14 @@ export function GenerationDetailsClient({
                     onClick={handleCreatePoster}
                   >
                     <Sparkles className="h-4 w-4" />
-                    Create Poster
+                    {t('logo.actions.createPoster')}
                   </Button>
                   <Button
                     className={logoCtaButtonClassName}
                     onClick={handleCreateAnimation}
                   >
                     <Clapperboard className="h-4 w-4" />
-                    Animate Logo
+                    {t('logo.actions.animateLogo')}
                   </Button>
                 </div>
               )}
@@ -771,13 +787,13 @@ export function GenerationDetailsClient({
                   disabled={!generation.url}
                 >
                   <Download className="h-4 w-4" />
-                  Download
+                  {t('actions.download')}
                 </Button>
                 <div className="grid grid-cols-2 gap-2">
                   <Button
                     variant="outline"
                     className={detailActionButtonClassName}
-                    title="Share on Twitter"
+                    title={t('details.shareTwitterTitle')}
                     onClick={() => {
                       if (!shareableDomain) {
                         return;
@@ -788,16 +804,16 @@ export function GenerationDetailsClient({
                     }}
                   >
                     <TwitterIcon className="h-4 w-4 rounded" />
-                    Twitter
+                    {t('details.twitter')}
                   </Button>
                   <Button
                     variant="outline"
                     className={detailActionButtonClassName}
                     onClick={handleCopyLink}
-                    title="Copy link"
+                    title={t('details.copyLinkTitle')}
                   >
                     <Copy className="h-4 w-4" />
-                    Copy Link
+                    {t('actions.copyLink')}
                   </Button>
                 </div>
               </div>
@@ -816,12 +832,12 @@ export function GenerationDetailsClient({
                     }
                   >
                     <Trash2 className="h-4 w-4" />
-                    Delete
+                    {tCommon('actions.delete')}
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>
-                        Delete this generation?
+                        {t('delete.titleSingle')}
                       </AlertDialogTitle>
                       <AlertDialogDescription>
                         This will remove the{' '}
@@ -836,7 +852,7 @@ export function GenerationDetailsClient({
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel disabled={deleteMutation.isPending}>
-                        Cancel
+                        {tCommon('actions.cancel')}
                       </AlertDialogCancel>
                       <AlertDialogAction
                         onClick={() => {
@@ -847,7 +863,9 @@ export function GenerationDetailsClient({
                         disabled={deleteMutation.isPending}
                         className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                       >
-                        {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                        {deleteMutation.isPending
+                          ? t('delete.deleting')
+                          : tCommon('actions.delete')}
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
@@ -860,13 +878,13 @@ export function GenerationDetailsClient({
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Sparkles className="h-5 w-5" />
-                  Details
+                  {t('details.sectionTitle')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Type className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Type:</span>
+                  <span className="text-sm">{t('details.type')}</span>
                   <Badge variant="secondary" className="capitalize">
                     {generation.type}
                   </Badge>
@@ -874,7 +892,7 @@ export function GenerationDetailsClient({
 
                 <div className="flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">Status:</span>
+                  <span className="text-sm">{t('details.status')}</span>
                   <Badge
                     variant={
                       generation.status === 'FAILED'
@@ -889,7 +907,7 @@ export function GenerationDetailsClient({
                 {generation.type === 'marketing' && (
                   <div className="flex items-center gap-2">
                     <Type className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Collateral:</span>
+                    <span className="text-sm">{t('details.collateral')}</span>
                     <Badge variant="secondary" className="capitalize">
                       {(() => {
                         const key =
@@ -900,7 +918,7 @@ export function GenerationDetailsClient({
                           ? (collateralLabels[
                               key as keyof typeof collateralLabels
                             ] ?? key)
-                          : 'Unknown';
+                          : t('details.collateralUnknown');
                       })()}
                     </Badge>
                   </div>
@@ -909,7 +927,7 @@ export function GenerationDetailsClient({
                 {generation.type === 'animation' && motionPresetValue && (
                   <div className="flex items-center gap-2">
                     <Clapperboard className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Motion:</span>
+                    <span className="text-sm">{t('details.motion')}</span>
                     <Badge variant="secondary">
                       {ANIMATION_MOTION_PRESETS[motionPresetValue].name}
                     </Badge>
@@ -919,7 +937,7 @@ export function GenerationDetailsClient({
                 {generation.type === 'animation' && animationModeValue && (
                   <div className="flex items-center gap-2">
                     <Type className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Mode:</span>
+                    <span className="text-sm">{t('details.mode')}</span>
                     <Badge variant="secondary">
                       {ANIMATION_MODES[animationModeValue].name}
                     </Badge>
@@ -931,7 +949,7 @@ export function GenerationDetailsClient({
                   animationSourceModeValue && (
                     <div className="flex items-center gap-2">
                       <Type className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">Opening:</span>
+                      <span className="text-sm">{t('details.opening')}</span>
                       <Badge variant="secondary">
                         {ANIMATION_SOURCE_MODES[animationSourceModeValue].name}
                       </Badge>
@@ -943,7 +961,7 @@ export function GenerationDetailsClient({
                   animationMotionIntensityValue && (
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm">Intensity:</span>
+                      <span className="text-sm">{t('details.intensity')}</span>
                       <Badge variant="secondary">
                         {
                           ANIMATION_MOTION_INTENSITIES[
@@ -957,7 +975,7 @@ export function GenerationDetailsClient({
                 {generation.type === 'animation' && animationModelValue && (
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm">Model:</span>
+                    <span className="text-sm">{t('details.model')}</span>
                     <Badge variant="secondary">
                       {ANIMATION_MODELS[animationModelValue].name}
                     </Badge>
@@ -967,9 +985,9 @@ export function GenerationDetailsClient({
                 <div className="flex items-start gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground mt-0.5" />
                   <div className="flex-1">
-                    <span className="text-sm">Created:</span>
+                    <span className="text-sm">{t('details.created')}</span>
                     <p className="text-xs text-muted-foreground">
-                      {visibleCreatedAtDisplay ?? 'Unknown'}
+                      {visibleCreatedAtDisplay ?? t('details.createdUnknown')}
                     </p>
                   </div>
                 </div>
@@ -986,24 +1004,30 @@ export function GenerationDetailsClient({
             {generation.type === 'logo' && (
               <Card>
                 <CardHeader>
-                  <CardTitle>Logo Properties</CardTitle>
+                  <CardTitle>{t('details.logoProperties')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
-                    <span className="text-sm font-medium">Style:</span>
+                    <span className="text-sm font-medium">
+                      {t('details.logoStyle')}
+                    </span>
                     <Badge variant="outline" className="ms-2 capitalize">
                       {logoStyleValue ? getLogoStyleLabel(logoStyleValue) : ''}
                     </Badge>
                   </div>
                   <div>
-                    <span className="text-sm font-medium">Type:</span>
+                    <span className="text-sm font-medium">
+                      {t('details.logoType')}
+                    </span>
                     <Badge variant="outline" className="ms-2 capitalize">
                       {logoTypeValue ? getLogoTypeLabel(logoTypeValue) : ''}
                     </Badge>
                   </div>
                   {textTreatmentValue && (
                     <div>
-                      <span className="text-sm font-medium">TLD:</span>
+                      <span className="text-sm font-medium">
+                        {t('details.logoTld')}
+                      </span>
                       <Badge variant="outline" className="ms-2 capitalize">
                         {getTextTreatmentLabel(textTreatmentValue)}
                       </Badge>
@@ -1011,7 +1035,9 @@ export function GenerationDetailsClient({
                   )}
                   {typographyValue && (
                     <div>
-                      <span className="text-sm font-medium">Typography:</span>
+                      <span className="text-sm font-medium">
+                        {t('details.logoTypography')}
+                      </span>
                       <Badge variant="outline" className="ms-2 capitalize">
                         {getTypographyLabel(typographyValue)}
                       </Badge>
@@ -1029,7 +1055,7 @@ export function GenerationDetailsClient({
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <ImageIcon className="h-5 w-5" />
-                      Source Logo
+                      {t('details.sourceLogo')}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
@@ -1044,7 +1070,7 @@ export function GenerationDetailsClient({
                         <div className="relative w-full aspect-square bg-muted rounded-lg overflow-hidden">
                           <Image
                             src={referenceGenerationPreviewUrl}
-                            alt="Logo used for derivative generation"
+                            alt={t('details.sourceLogoAlt')}
                             fill
                             sizes="(max-width: 1024px) 100vw, 320px"
                             className="object-contain"
@@ -1062,21 +1088,21 @@ export function GenerationDetailsClient({
                             }
                             className="text-xs"
                           >
-                            View Logo Details
+                            {t('details.viewLogoDetails')}
                           </Button>
                         </div>
                       </>
                     ) : referenceGeneration ? (
                       <div className="text-sm text-muted-foreground">
-                        Source logo preview is unavailable
+                        {t('details.sourcePreviewUnavailable')}
                       </div>
                     ) : referenceError ? (
                       <div className="text-sm text-muted-foreground">
-                        Failed to load logo details
+                        {t('details.sourceLoadFailed')}
                       </div>
                     ) : (
                       <div className="text-sm text-muted-foreground">
-                        No logo reference found
+                        {t('details.sourceNotFound')}
                       </div>
                     )}
                   </CardContent>
@@ -1088,7 +1114,7 @@ export function GenerationDetailsClient({
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clapperboard className="h-5 w-5" />
-                    Animation Sheet
+                    {t('details.animationSheet')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -1096,11 +1122,11 @@ export function GenerationDetailsClient({
                     type="button"
                     className="group relative aspect-[3/2] w-full overflow-hidden rounded-lg bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                     onClick={() => setIsSheetPreviewOpen(true)}
-                    aria-label="Open animation sheet preview"
+                    aria-label={t('details.openSheetAria')}
                   >
                     <Image
                       src={animationSheetReference.url}
-                      alt={`Generated animation sheet for ${domain}`}
+                      alt={t('details.animationSheetAlt', { domain })}
                       fill
                       sizes="(max-width: 1024px) 100vw, 320px"
                       className="object-contain"
@@ -1112,7 +1138,9 @@ export function GenerationDetailsClient({
 
                   {animationSheetReference.model && (
                     <div>
-                      <span className="text-sm font-medium">Sheet model:</span>
+                      <span className="text-sm font-medium">
+                        {t('details.sheetModel')}
+                      </span>
                       <Badge variant="outline" className="ms-2">
                         {animationSheetReference.model}
                       </Badge>
@@ -1152,16 +1180,16 @@ export function GenerationDetailsClient({
           )}
         >
           <DialogHeader className="border-b px-5 py-4">
-            <DialogTitle>Animation sheet</DialogTitle>
+            <DialogTitle>{t('details.sheetDialogTitle')}</DialogTitle>
             <DialogDescription>
-              The generated storyboard used to guide this animation.
+              {t('details.sheetDialogDescription')}
             </DialogDescription>
           </DialogHeader>
           {animationSheetReference && (
             <div className="max-h-[78vh] overflow-auto bg-muted/30 p-4">
               <AnimationSheetDialogImage
                 src={animationSheetReference.url}
-                alt={`Generated animation sheet for ${domain}`}
+                alt={t('details.animationSheetAlt', { domain })}
               />
             </div>
           )}

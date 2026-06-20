@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -42,45 +43,49 @@ import { toast } from 'sonner';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
 import { da } from 'date-fns/locale';
 
-const createGiftSchema = z
-  .object({
-    pbnDomain: namefiNormalizedDomainSchema,
-    recipientEmail: z.string().email('Please enter a valid email address'),
-    giftType: z.enum(['exact', 'parent']),
-    exactDomainName: namefiNormalizedDomainSchema.optional(),
-    parentDomain: namefiNormalizedDomainSchema.optional(),
-    reserveHold: z.boolean().optional(),
-    reason: z.string().optional(),
-    personalMessage: z.string().optional(),
-    expirationDate: z.date().optional().nullable(),
-  })
-  .superRefine((data, ctx) => {
-    if (data.giftType === 'exact') {
-      if (!data.exactDomainName) {
+const createGiftSchema = (t: ReturnType<typeof useTranslations<'gifts'>>) =>
+  z
+    .object({
+      pbnDomain: namefiNormalizedDomainSchema,
+      recipientEmail: z.string().email(t('validation.invalidEmail')),
+      giftType: z.enum(['exact', 'parent']),
+      exactDomainName: namefiNormalizedDomainSchema.optional(),
+      parentDomain: namefiNormalizedDomainSchema.optional(),
+      reserveHold: z.boolean().optional(),
+      reason: z.string().optional(),
+      personalMessage: z.string().optional(),
+      expirationDate: z.date().optional().nullable(),
+    })
+    .superRefine((data, ctx) => {
+      if (data.giftType === 'exact') {
+        if (!data.exactDomainName) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['exactDomainName'],
+            message: t('validation.exactRequired'),
+          });
+        } else if (!data.exactDomainName.endsWith(data.pbnDomain)) {
+          ctx.addIssue({
+            code: 'custom',
+            path: ['exactDomainName'],
+            message: t('validation.exactMustEndWith', {
+              domain: data.pbnDomain,
+            }),
+          });
+        }
+      }
+      if (data.giftType === 'parent' && !data.parentDomain) {
         ctx.addIssue({
           code: 'custom',
-          path: ['exactDomainName'],
-          message: 'Exact domain is required',
-        });
-      } else if (!data.exactDomainName.endsWith(data.pbnDomain)) {
-        ctx.addIssue({
-          code: 'custom',
-          path: ['exactDomainName'],
-          message: `Exact domain must end with "${data.pbnDomain}" domain`,
+          path: ['parentDomain'],
+          message: t('validation.parentRequired'),
         });
       }
-    }
-    if (data.giftType === 'parent' && !data.parentDomain) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['parentDomain'],
-        message: 'Parent domain is required',
-      });
-    }
-  });
+    });
 
-type CreateGiftFormInput = z.input<typeof createGiftSchema>;
-type CreateGiftFormOutput = z.output<typeof createGiftSchema>;
+type CreateGiftSchema = ReturnType<typeof createGiftSchema>;
+type CreateGiftFormInput = z.input<CreateGiftSchema>;
+type CreateGiftFormOutput = z.output<CreateGiftSchema>;
 
 interface CreateGiftDialogProps {
   open: boolean;
@@ -95,8 +100,12 @@ export function CreateGiftDialog({
   onSuccess,
   pbnDomain: forcedPbnDomain,
 }: CreateGiftDialogProps) {
+  const t = useTranslations('gifts');
+  const tCommon = useTranslations('common');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const trpc = useTRPC();
+
+  const giftSchema = useMemo(() => createGiftSchema(t), [t]);
 
   // Fetch user's PBN domains
   const domainsQuery = useQuery(
@@ -106,7 +115,7 @@ export function CreateGiftDialog({
   );
 
   const form = useForm<CreateGiftFormInput, unknown, CreateGiftFormOutput>({
-    resolver: zodResolver(createGiftSchema) as Resolver<
+    resolver: zodResolver(giftSchema) as Resolver<
       CreateGiftFormInput,
       unknown,
       CreateGiftFormOutput
@@ -130,15 +139,15 @@ export function CreateGiftDialog({
       onSuccess: (data) => {
         toast.success(
           data.emailSent
-            ? 'Gift created and email sent successfully!'
-            : 'Gift created successfully, but email failed to send',
+            ? t('toast.createdEmailSent')
+            : t('toast.createdEmailFailed'),
         );
         form.reset();
         onSuccess?.();
         onOpenChange(false);
       },
       onError: (error) => {
-        toast.error(`Failed to create gift: ${error.message}`);
+        toast.error(t('toast.createFailed', { error: error.message }));
       },
       onSettled: () => {
         setIsSubmitting(false);
@@ -176,13 +185,13 @@ export function CreateGiftDialog({
         )}
       >
         <DialogHeader>
-          <DialogTitle>Create Gift</DialogTitle>
+          <DialogTitle>{t('create.title')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((data) =>
-              onSubmit(createGiftSchema.parse(data)),
+              onSubmit(giftSchema.parse(data)),
             )}
             className="space-y-4"
           >
@@ -192,7 +201,7 @@ export function CreateGiftDialog({
               name="pbnDomain"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Your Domain</FormLabel>
+                  <FormLabel>{t('fields.yourDomain')}</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       if (!value || forcedPbnDomain) return;
@@ -202,7 +211,9 @@ export function CreateGiftDialog({
                   >
                     <FormControl>
                       <SelectTrigger disabled={!!forcedPbnDomain}>
-                        <SelectValue placeholder="Select a domain you own" />
+                        <SelectValue
+                          placeholder={t('fields.yourDomainPlaceholder')}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -224,8 +235,8 @@ export function CreateGiftDialog({
                   </Select>
                   <FormDescription>
                     {forcedPbnDomain
-                      ? 'Domain is fixed for this page'
-                      : 'Select the Powered by Namefi domain you want to gift from'}
+                      ? t('fields.yourDomainDescriptionFixed')
+                      : t('fields.yourDomainDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -238,12 +249,15 @@ export function CreateGiftDialog({
               name="recipientEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Recipient Email</FormLabel>
+                  <FormLabel>{t('fields.recipientEmail')}</FormLabel>
                   <FormControl>
-                    <Input placeholder="recipient@example.com" {...field} />
+                    <Input
+                      placeholder={t('fields.recipientEmailPlaceholder')}
+                      {...field}
+                    />
                   </FormControl>
                   <FormDescription>
-                    Email address of the gift recipient
+                    {t('fields.recipientEmailDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -256,7 +270,7 @@ export function CreateGiftDialog({
               name="giftType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gift Type</FormLabel>
+                  <FormLabel>{t('fields.giftType')}</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       if (!value) return;
@@ -270,13 +284,16 @@ export function CreateGiftDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="exact">Specific Domain</SelectItem>
-                      <SelectItem value="parent">Any Subdomain</SelectItem>
+                      <SelectItem value="exact">
+                        {t('fields.giftTypeExact')}
+                      </SelectItem>
+                      <SelectItem value="parent">
+                        {t('fields.giftTypeParent')}
+                      </SelectItem>
                     </SelectContent>
                   </Select>
                   <FormDescription>
-                    Gift a specific domain or allow recipient to choose any
-                    subdomain
+                    {t('fields.giftTypeDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -290,15 +307,18 @@ export function CreateGiftDialog({
                 name="exactDomainName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Exact Domain Name</FormLabel>
+                    <FormLabel>{t('fields.exactDomainName')}</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder={`alice.${forcedPbnDomain ?? form.getValues('pbnDomain')}`}
+                        placeholder={t('fields.exactDomainNamePlaceholder', {
+                          domain:
+                            forcedPbnDomain ?? form.getValues('pbnDomain'),
+                        })}
                         {...field}
                       />
                     </FormControl>
                     <FormDescription>
-                      The specific domain name to gift
+                      {t('fields.exactDomainNameDescription')}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -313,10 +333,9 @@ export function CreateGiftDialog({
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                     <div className="space-y-0.5">
-                      <FormLabel>Reserve while pending</FormLabel>
+                      <FormLabel>{t('fields.reserveLabel')}</FormLabel>
                       <FormDescription>
-                        Prevent others from claiming this exact domain until the
-                        gift expires or is received.
+                        {t('fields.reserveDescription')}
                       </FormDescription>
                     </div>
                     <FormControl>
@@ -332,7 +351,7 @@ export function CreateGiftDialog({
 
             {giftType === 'parent' && (
               <div className="text-sm text-muted-foreground">
-                Parent domain will be the selected PBN domain.
+                {t('fields.parentNote')}
               </div>
             )}
 
@@ -342,7 +361,7 @@ export function CreateGiftDialog({
               name="expirationDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Expiration Date</FormLabel>
+                  <FormLabel>{t('fields.expirationDate')}</FormLabel>
                   <FormControl>
                     <NaturalLanguageDatePicker
                       value={{
@@ -360,7 +379,7 @@ export function CreateGiftDialog({
                     />
                   </FormControl>
                   <FormDescription>
-                    When this gift expires if not claimed
+                    {t('fields.expirationDateDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -373,14 +392,16 @@ export function CreateGiftDialog({
               name="reason"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Reason (Optional)</FormLabel>
+                  <FormLabel>{t('fields.reason')}</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Welcome gift, Contest prize, etc."
+                      placeholder={t('fields.reasonPlaceholder')}
                       {...field}
                     />
                   </FormControl>
-                  <FormDescription>Brief reason for this gift</FormDescription>
+                  <FormDescription>
+                    {t('fields.reasonDescription')}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -392,16 +413,16 @@ export function CreateGiftDialog({
               name="personalMessage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Personal Message (Optional)</FormLabel>
+                  <FormLabel>{t('fields.personalMessage')}</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Add a personal message for the recipient..."
+                      placeholder={t('fields.personalMessagePlaceholder')}
                       className="resize-none"
                       {...field}
                     />
                   </FormControl>
                   <FormDescription>
-                    Personal message to include in the gift email
+                    {t('fields.personalMessageDescription')}
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -416,13 +437,13 @@ export function CreateGiftDialog({
                 onClick={() => onOpenChange(false)}
                 disabled={isSubmitting}
               >
-                Cancel
+                {tCommon('actions.cancel')}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting && (
                   <Loader2 className="me-2 h-4 w-4 animate-spin" />
                 )}
-                Create Gift
+                {t('create.submit')}
               </Button>
             </div>
           </form>

@@ -1,0 +1,63 @@
+{
+  "title": "Notifications",
+  "bell": {
+    "label": "Notifications",
+    "labelWithUnread": "Notifications, {count} non lues",
+    "relatedLabel": "Notifications associées",
+    "relatedLabelWithUnread": "Notifications associées, {count} non lues"
+  },
+  "permission": {
+    "tooltip": "Ne manquez aucune notification — activez les notifications pour Namefi Webapp.",
+    "enable": "Activer",
+    "ctaText": "Recevez des alertes système dès qu'une nouvelle notification arrive."
+  },
+  "modal": {
+    "description": "Vos notifications dans l'application. Utilisez les contrôles pour marquer comme vues, archiver ou filtrer par ressource associée."
+  },
+  "list": {
+    "filters": "Filtres",
+    "refresh": "Actualiser les notifications",
+    "relatedTo": "Lié à",
+    "any": "Tous",
+    "nameOrKey": "Nom ou clé",
+    "nameOrKeyPlaceholder": "nom ou clé",
+    "includeSeen": "Déjà vues",
+    "includeSeenAria": "Inclure les notifications déjà vues",
+    "includeArchived": "Archivées",
+    "includeArchivedAria": "Inclure les notifications archivées",
+    "selectAllAria": "Sélectionner toutes les notifications visibles",
+    "selectedCount": "{count} sélectionnée(s)",
+    "markSeen": "Vue",
+    "markUnseen": "Non vue",
+    "archive": "Archiver",
+    "restore": "Restaurer",
+    "markAllSeen": "Tout marquer comme vu",
+    "loading": "Chargement…",
+    "empty": "Aucune notification.",
+    "loadingMore": "Chargement…"
+  },
+  "item": {
+    "selectAria": "Sélectionner {title}",
+    "markSeenAria": "Marquer comme vue",
+    "markUnseenAria": "Marquer comme non vue",
+    "archiveAria": "Archiver",
+    "restoreAria": "Restaurer depuis les archives"
+  },
+  "errors": {
+    "markSeen": "Impossible de marquer comme vue",
+    "markUnseen": "Impossible de marquer comme non vue",
+    "archive": "Échec de l'archivage",
+    "restore": "Échec de la restauration",
+    "markAllSeen": "Impossible de tout marquer comme vu"
+  },
+  "resourceTypes": {
+    "user": "Utilisateur",
+    "domain": "Domaine",
+    "wallet": "Portefeuille",
+    "order": "Commande",
+    "order_item": "Article commandé",
+    "payment": "Paiement",
+    "cart": "Panier",
+    "dns_record": "Enregistrement DNS"
+  }
+}

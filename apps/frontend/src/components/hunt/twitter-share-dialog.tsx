@@ -31,8 +31,10 @@ import { ExternalLink, Copy, CheckCircle } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useTranslations } from 'next-intl';
 
-const TWITTER_POST_URL_MESSAGE = 'Please enter a valid Twitter/X post URL';
+type HuntTranslator = ReturnType<typeof useTranslations<'hunt'>>;
+
 const URL_PROTOCOL_REGEX = /^https?:\/\//i;
 const LEADING_WWW_REGEX = /^www\./;
 
@@ -65,44 +67,56 @@ const isTwitterPostUrl = (value: string) => {
   }
 };
 
-const shareFormSchema = z.object({
-  postUrl: z
-    .string()
-    .trim()
-    .min(1, TWITTER_POST_URL_MESSAGE)
-    .transform(normalizePostUrl)
-    .pipe(z.string().url(TWITTER_POST_URL_MESSAGE))
-    .refine(isTwitterPostUrl, { message: TWITTER_POST_URL_MESSAGE }),
-});
+const createShareFormSchema = (invalidPostUrlMessage: string) =>
+  z.object({
+    postUrl: z
+      .string()
+      .trim()
+      .min(1, invalidPostUrlMessage)
+      .transform(normalizePostUrl)
+      .pipe(z.string().url(invalidPostUrlMessage))
+      .refine(isTwitterPostUrl, { message: invalidPostUrlMessage }),
+  });
 
-type ShareFormData = z.infer<typeof shareFormSchema>;
+type ShareFormData = z.infer<ReturnType<typeof createShareFormSchema>>;
 
-const getPostUrlValidationMessage = (error: z.ZodError<unknown>) =>
+const getPostUrlValidationMessage = (
+  error: z.ZodError<unknown>,
+  fallback: string,
+) =>
   error.issues.find((issue) => issue.path[0] === 'postUrl')?.message ??
-  TWITTER_POST_URL_MESSAGE;
+  fallback;
 
-const shareFormResolver: Resolver<ShareFormData> = async (values) => {
-  const result = await shareFormSchema.safeParseAsync(values);
+const createShareFormResolver = (
+  invalidPostUrlMessage: string,
+): Resolver<ShareFormData> => {
+  const schema = createShareFormSchema(invalidPostUrlMessage);
+  return async (values) => {
+    const result = await schema.safeParseAsync(values);
 
-  if (result.success) {
+    if (result.success) {
+      return {
+        errors: {} as Record<string, never>,
+        values: result.data,
+      };
+    }
+
+    const postUrlIssue = result.error.issues.find(
+      (issue) => issue.path[0] === 'postUrl',
+    );
+
     return {
-      errors: {} as Record<string, never>,
-      values: result.data,
-    };
-  }
-
-  const postUrlIssue = result.error.issues.find(
-    (issue) => issue.path[0] === 'postUrl',
-  );
-
-  return {
-    errors: {
-      postUrl: {
-        type: postUrlIssue?.code ?? 'validate',
-        message: getPostUrlValidationMessage(result.error),
+      errors: {
+        postUrl: {
+          type: postUrlIssue?.code ?? 'validate',
+          message: getPostUrlValidationMessage(
+            result.error,
+            invalidPostUrlMessage,
+          ),
+        },
       },
-    },
-    values: {},
+      values: {},
+    };
   };
 };
 
@@ -133,11 +147,13 @@ function resolveTwitterShareCopy({
   featureKey,
   shareSubject,
   trackShares,
+  t,
 }: {
   domainName: NamefiNormalizedDomain | null;
   featureKey: string;
   shareSubject?: TwitterShareSubject;
   trackShares: boolean;
+  t: HuntTranslator;
 }) {
   const resolvedShareSubject =
     shareSubject ?? (featureKey === 'ai_generation' ? 'generation' : 'domain');
@@ -149,14 +165,17 @@ function resolveTwitterShareCopy({
       : `this ${shareSubjectLabel} for ${domainName}`;
   const dialogTitle =
     resolvedShareSubject === 'domain'
-      ? `Share ${domainName}`
-      : `Share ${shareSubjectLabel} for ${domainName}`;
+      ? t('share.titleDomain', { domainName: domainName ?? '' })
+      : t('share.titleSubject', {
+          subject: shareSubjectLabel,
+          domainName: domainName ?? '',
+        });
   const dialogDescription =
     resolvedShareSubject === 'domain'
-      ? `Share this domain on Twitter/X to help others discover it${
-          trackShares ? ' and earn rewards.' : '.'
-        }`
-      : `Share this ${shareSubjectLabel} on Twitter/X.`;
+      ? trackShares
+        ? t('share.descriptionDomainTracked')
+        : t('share.descriptionDomain')
+      : t('share.descriptionSubject', { subject: shareSubjectLabel });
   const tweetText =
     resolvedShareSubject === 'domain'
       ? `Check out ${domainName} on Namefi Hunt.`
@@ -189,8 +208,16 @@ export function TwitterShareDialog({
   featureKey,
   shareSubject,
 }: TwitterShareDialogProps) {
+  const t = useTranslations('hunt');
+  const tCommon = useTranslations('common');
   const [hasCopied, setHasCopied] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
+
+  const invalidPostUrlMessage = t('share.invalidPostUrl');
+  const shareFormResolver = useMemo(
+    () => createShareFormResolver(invalidPostUrlMessage),
+    [invalidPostUrlMessage],
+  );
 
   const form = useForm<ShareFormData>({
     resolver: shareFormResolver,
@@ -214,6 +241,7 @@ export function TwitterShareDialog({
       featureKey,
       shareSubject,
       trackShares,
+      t,
     });
 
   // Generate Twitter intent URL
@@ -236,7 +264,7 @@ export function TwitterShareDialog({
     try {
       await navigator.clipboard.writeText(shareUrl);
       setHasCopied(true);
-      toast.success('Share URL copied.');
+      toast.success(t('share.copySuccess'));
       setTimeout(() => setHasCopied(false), 2000);
 
       // Track copy intent
@@ -251,7 +279,7 @@ export function TwitterShareDialog({
         },
       });
     } catch {
-      toast.error('Could not copy URL');
+      toast.error(t('share.copyError'));
     }
   }, [
     shareUrl,
@@ -259,6 +287,7 @@ export function TwitterShareDialog({
     campaignKey,
     featureKey,
     logEventWithInteractionLoggers,
+    t,
   ]);
 
   // Handle form submission
@@ -270,9 +299,7 @@ export function TwitterShareDialog({
       } catch (error) {
         // Set server error on the form field
         const errorMessage =
-          error instanceof Error
-            ? error.message
-            : 'Failed to record your share. Please try again.';
+          error instanceof Error ? error.message : t('share.recordError');
 
         setError('postUrl', {
           type: 'server',
@@ -280,7 +307,7 @@ export function TwitterShareDialog({
         });
       }
     },
-    [onSubmit, reset, setError],
+    [onSubmit, reset, setError, t],
   );
 
   const handleShareFormSubmit = useCallback(
@@ -290,8 +317,8 @@ export function TwitterShareDialog({
       void handleSubmit(handleFormSubmit)(event).catch((error: unknown) => {
         const message =
           error instanceof z.ZodError
-            ? getPostUrlValidationMessage(error)
-            : 'Please check the post URL and try again.';
+            ? getPostUrlValidationMessage(error, invalidPostUrlMessage)
+            : t('share.checkPostUrl');
 
         setError('postUrl', {
           type: 'validate',
@@ -299,7 +326,7 @@ export function TwitterShareDialog({
         });
       });
     },
-    [handleSubmit, handleFormSubmit, setError],
+    [handleSubmit, handleFormSubmit, setError, t, invalidPostUrlMessage],
   );
 
   // Handle dialog close
@@ -335,7 +362,7 @@ export function TwitterShareDialog({
     logEventWithInteractionLoggers,
   ]);
 
-  usePendingToast(isSubmitting, 'Recording your share...');
+  usePendingToast(isSubmitting, t('share.recordingShare'));
 
   if (!domainName || !shareUrl) return null;
 
@@ -355,7 +382,7 @@ export function TwitterShareDialog({
         <div className="space-y-6">
           {/* Share URL Display */}
           <div className="space-y-2">
-            <Label>Share URL</Label>
+            <Label>{t('share.shareUrlLabel')}</Label>
             <div className="flex items-center gap-2">
               <Input value={shareUrl} readOnly className="font-mono text-sm" />
               <Button
@@ -375,18 +402,18 @@ export function TwitterShareDialog({
 
           {/* Quick Tweet Button */}
           <div className="space-y-2">
-            <Label>Quick Share</Label>
+            <Label>{t('share.quickShareLabel')}</Label>
             <Button
               onClick={handleOpenTwitter}
               disabled={!twitterIntentUrl}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
               <XBrandIcon className="me-2 h-4 w-4" />
-              Share on Twitter/X
+              {t('share.shareOnTwitter')}
               <ExternalLink className="h-4 w-4 ms-2" />
             </Button>
             <p className="text-xs text-muted-foreground">
-              Opens Twitter/X with a pre-filled post for {shareTarget}
+              {t('share.prefilledHint', { target: shareTarget ?? '' })}
             </p>
           </div>
 
@@ -398,7 +425,7 @@ export function TwitterShareDialog({
                 className="text-green-600 bg-green-50 border-green-200"
               >
                 <CheckCircle className="h-3 w-3 me-1" />
-                Already shared
+                {t('share.alreadyShared')}
               </Badge>
             </div>
           )}
@@ -414,7 +441,7 @@ export function TwitterShareDialog({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>
-                          Twitter/X Post URL{' '}
+                          {t('share.postUrlLabel')}{' '}
                           <span className="text-red-500">*</span>
                         </FormLabel>
                         <FormControl>
@@ -430,8 +457,7 @@ export function TwitterShareDialog({
                         </FormControl>
                         <FormMessage />
                         <p className="text-xs text-muted-foreground">
-                          Paste the URL of your tweet after sharing to earn
-                          rewards
+                          {t('share.postUrlHint')}
                         </p>
                       </FormItem>
                     )}
@@ -444,7 +470,7 @@ export function TwitterShareDialog({
                       onClick={handleClose}
                       disabled={isSubmitting}
                     >
-                      Cancel
+                      {tCommon('actions.cancel')}
                     </Button>
                     <Button
                       type="submit"
@@ -454,7 +480,9 @@ export function TwitterShareDialog({
                         isCheckingStatus
                       }
                     >
-                      {isSubmitting ? 'Recording...' : 'Record Share'}
+                      {isSubmitting
+                        ? t('share.recording')
+                        : t('share.recordShare')}
                     </Button>
                   </div>
                 </form>
@@ -466,7 +494,7 @@ export function TwitterShareDialog({
           {(!trackShares || hasShared) && (
             <div className="flex justify-end">
               <Button variant="outline" onClick={handleClose}>
-                Close
+                {tCommon('actions.close')}
               </Button>
             </div>
           )}

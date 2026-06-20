@@ -51,7 +51,6 @@
     "renew": "नवीनीकरण"
   },
   "unlinkedWalletTooltip": "यह वॉलेट वर्तमान खाते से लिंक नहीं है, इसलिए आप खाते में डोमेन नहीं देख पाएँगे।",
-  "walletNotLinked": "यह वॉलेट आपके खाते से लिंक नहीं है।",
   "timeline": {
     "subtitle": "ऑर्डर के लाइव अपडेट",
     "orderDetails": {
@@ -239,5 +238,7 @@
     "failureAdminLocked": "डोमेन लॉक था और सपोर्ट ने अनुरोध रद्द कर दिया।",
     "failureUserAuthCode": "Auth code अपडेट आवश्यक था और आपने अनुरोध रद्द कर दिया।",
     "failureUserLocked": "डोमेन लॉक था और आपने अनुरोध रद्द कर दिया।"
-  }
+  },
+  "nftWalletLabel": "NFT वॉलेट",
+  "viewTransactionTitle": "लेनदेन देखें"
 }

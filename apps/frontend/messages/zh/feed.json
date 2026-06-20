@@ -22,7 +22,6 @@
     "clear": "清除"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "动态的这一部分没有匹配的挂牌。",
     "empty": "未找到挂牌。",
     "endOfFeed": "已到动态末尾",

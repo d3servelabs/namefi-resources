@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { useTranslations } from 'next-intl';
 import { reportAppRouterError } from '@/lib/datadog-react-error';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -27,7 +28,18 @@ function getRequestId(error: Error): string | undefined {
   return undefined;
 }
 
+function ErrorReference({ requestId }: { requestId: string | undefined }) {
+  const t = useTranslations('error');
+  if (!requestId) return null;
+  return (
+    <p className="mt-8 text-xs text-muted-foreground/60">
+      {t('reference', { requestId })}
+    </p>
+  );
+}
+
 function ErrorContent403({ requestId }: { requestId: string | undefined }) {
+  const t = useTranslations('error');
   return (
     <>
       <Image
@@ -38,9 +50,9 @@ function ErrorContent403({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">403</h1>
-      <h2 className="mb-2 text-xl font-semibold">Access Denied</h2>
+      <h2 className="mb-2 text-xl font-semibold">{t('status403.title')}</h2>
       <p className="mb-8 max-w-sm text-center text-muted-foreground">
-        This door is locked. Try your key.
+        {t('status403.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <LoginButton />
@@ -49,19 +61,16 @@ function ErrorContent403({ requestId }: { requestId: string | undefined }) {
           nativeButton={false}
           variant="outline"
         >
-          Go to Homepage
+          {t('actions.goHome')}
         </Button>
       </div>
-      {requestId && (
-        <p className="mt-8 text-xs text-muted-foreground/60">
-          Reference: {requestId}
-        </p>
-      )}
+      <ErrorReference requestId={requestId} />
     </>
   );
 }
 
 function ErrorContent404({ requestId }: { requestId: string | undefined }) {
+  const t = useTranslations('error');
   return (
     <>
       <Image
@@ -72,32 +81,29 @@ function ErrorContent404({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">404</h1>
-      <h2 className="mb-2 text-xl font-semibold">Not Found</h2>
+      <h2 className="mb-2 text-xl font-semibold">{t('status404.title')}</h2>
       <p className="mb-8 max-w-sm text-center text-muted-foreground">
-        We looked everywhere. Under the couch too.
+        {t('status404.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <Button render={<Link href="/" />} nativeButton={false}>
-          Go to Homepage
+          {t('actions.goHome')}
         </Button>
         <Button
           render={<Link href="/#domain-search" />}
           nativeButton={false}
           variant="outline"
         >
-          Search Domains
+          {t('actions.searchDomains')}
         </Button>
       </div>
-      {requestId && (
-        <p className="mt-8 text-xs text-muted-foreground/60">
-          Reference: {requestId}
-        </p>
-      )}
+      <ErrorReference requestId={requestId} />
     </>
   );
 }
 
 function ErrorContent400({ requestId }: { requestId: string | undefined }) {
+  const t = useTranslations('error');
   return (
     <>
       <Image
@@ -108,9 +114,9 @@ function ErrorContent400({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">400</h1>
-      <h2 className="mb-2 text-xl font-semibold">Bad Request</h2>
+      <h2 className="mb-2 text-xl font-semibold">{t('status400.title')}</h2>
       <p className="mb-8 max-w-sm text-center text-muted-foreground">
-        Something got lost in translation.
+        {t('status400.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
         <LoginButton />
@@ -119,14 +125,10 @@ function ErrorContent400({ requestId }: { requestId: string | undefined }) {
           nativeButton={false}
           variant="outline"
         >
-          Go to Homepage
+          {t('actions.goHome')}
         </Button>
       </div>
-      {requestId && (
-        <p className="mt-8 text-xs text-muted-foreground/60">
-          Reference: {requestId}
-        </p>
-      )}
+      <ErrorReference requestId={requestId} />
     </>
   );
 }
@@ -138,6 +140,8 @@ function ErrorContent500({
   requestId: string | undefined;
   reset: () => void;
 }) {
+  const t = useTranslations('error');
+  const tCommon = useTranslations('common');
   const router = useRouter();
   return (
     <>
@@ -149,40 +153,39 @@ function ErrorContent500({
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">500</h1>
-      <h2 className="mb-2 text-xl font-semibold">Server Error</h2>
+      <h2 className="mb-2 text-xl font-semibold">{t('status500.title')}</h2>
       <p className="mb-8 max-w-sm text-center text-muted-foreground">
-        Our hamsters need a coffee break.
+        {t('status500.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-        <Button onClick={() => reset()}>Try Again</Button>
+        <Button onClick={() => reset()}>{tCommon('actions.tryAgain')}</Button>
         <Button onClick={() => router.push('/')} variant="outline">
-          Go to Homepage
+          {t('actions.goHome')}
         </Button>
       </div>
-      {requestId && (
-        <p className="mt-8 text-xs text-muted-foreground/60">
-          Reference: {requestId}
-        </p>
-      )}
+      <ErrorReference requestId={requestId} />
     </>
   );
 }
 
 function LoginButton() {
+  const t = useTranslations('error');
   const { login } = useLogin();
 
   return (
     <Button
       onClick={() => {
         void login().catch((error) => {
-          toast.error('Could not start sign in', {
+          toast.error(t('login.failedTitle'), {
             description:
-              error instanceof Error ? error.message : 'Please try again.',
+              error instanceof Error
+                ? error.message
+                : t('login.failedDescription'),
           });
         });
       }}
     >
-      Log In
+      {t('actions.logIn')}
     </Button>
   );
 }

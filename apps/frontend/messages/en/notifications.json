@@ -1,0 +1,63 @@
+{
+  "title": "Notifications",
+  "bell": {
+    "label": "Notifications",
+    "labelWithUnread": "Notifications, {count} unread",
+    "relatedLabel": "Related notifications",
+    "relatedLabelWithUnread": "Related notifications, {count} unread"
+  },
+  "permission": {
+    "tooltip": "Don't miss any notifications, enable notifications for Namefi Webapp.",
+    "enable": "Enable",
+    "ctaText": "Get OS banners when new notifications arrive."
+  },
+  "modal": {
+    "description": "Your in-app notifications. Use the controls to mark as seen, archive, or filter by related resource."
+  },
+  "list": {
+    "filters": "Filters",
+    "refresh": "Refresh notifications",
+    "relatedTo": "Related to",
+    "any": "Any",
+    "nameOrKey": "Name or key",
+    "nameOrKeyPlaceholder": "name or key",
+    "includeSeen": "Include seen",
+    "includeSeenAria": "Include seen notifications",
+    "includeArchived": "Include archived",
+    "includeArchivedAria": "Include archived notifications",
+    "selectAllAria": "Select all visible notifications",
+    "selectedCount": "{count} selected",
+    "markSeen": "Seen",
+    "markUnseen": "Unseen",
+    "archive": "Archive",
+    "restore": "Restore",
+    "markAllSeen": "Mark all as seen",
+    "loading": "Loading…",
+    "empty": "No notifications.",
+    "loadingMore": "Loading more…"
+  },
+  "item": {
+    "selectAria": "Select {title}",
+    "markSeenAria": "Mark as seen",
+    "markUnseenAria": "Mark as unseen",
+    "archiveAria": "Archive",
+    "restoreAria": "Restore from archive"
+  },
+  "errors": {
+    "markSeen": "Failed to mark as seen",
+    "markUnseen": "Failed to mark as unseen",
+    "archive": "Failed to archive",
+    "restore": "Failed to restore",
+    "markAllSeen": "Failed to mark all as seen"
+  },
+  "resourceTypes": {
+    "user": "User",
+    "domain": "Domain",
+    "wallet": "Wallet",
+    "order": "Order",
+    "order_item": "Order item",
+    "payment": "Payment",
+    "cart": "Cart",
+    "dns_record": "DNS record"
+  }
+}

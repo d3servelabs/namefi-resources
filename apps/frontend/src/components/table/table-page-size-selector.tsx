@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
+import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 
 export type TablePageSizeSelectorProps = {
@@ -24,9 +25,12 @@ export const TablePageSizeSelector: FC<TablePageSizeSelectorProps> = ({
     { label: '100', value: 100 },
   ],
 }: TablePageSizeSelectorProps) => {
+  const t = useTranslations('shared');
   return (
     <div className="flex items-center gap-2">
-      <span className="text-sm text-zinc-500">Rows per page:</span>
+      <span className="text-sm text-zinc-500">
+        {t('table.pagination.rowsPerPage')}
+      </span>
       <Select
         value={pageSize.toString()}
         onValueChange={(value) => {

@@ -1,5 +1,6 @@
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
+import { useTranslations } from 'next-intl';
 
 /*
  * This is a custom sidebar rail component that is used to toggle the sidebar.
@@ -10,13 +11,14 @@ export function SidebarRail({
   className,
   ...props
 }: React.ComponentProps<'button'>) {
+  const t = useTranslations('common');
   const { toggleSidebar } = useSidebar();
 
   return (
     <button
       data-sidebar="rail"
       data-slot="sidebar-rail"
-      aria-label="Toggle Sidebar"
+      aria-label={t('actions.toggleSidebar')}
       tabIndex={-1}
       onClick={toggleSidebar}
       className={cn(

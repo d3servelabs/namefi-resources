@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "域名猎手",
+    "submitDomain": "提交域名",
+    "trendingTitle": "热门域名",
+    "signInToSubmitTitle": "登录后即可提交域名",
+    "signInToSubmitDescription": "请登录后向猎手榜提交域名，加入社区，分享你最喜欢的域名！"
+  },
+  "timeRange": {
+    "last7Days": "近 7 天",
+    "last30Days": "近 30 天",
+    "anytime": "全部时间"
+  },
+  "tabs": {
+    "allHunt": "全部"
+  },
+  "mine": {
+    "title": "我的动态",
+    "upvotedTab": "已投票域名",
+    "submittedTab": "已提交域名",
+    "signInTitle": "登录后查看你的动态",
+    "signInDescription": "请登录以查看你提交的域名和投票记录"
+  },
+  "list": {
+    "loadError": "域名加载失败",
+    "empty": "暂无更多域名，请稍后再试。"
+  },
+  "submitDialog": {
+    "title": "提交新域名",
+    "domainNameLabel": "域名",
+    "submitting": "提交中...",
+    "validation": {
+      "singleLevel": "请输入有效域名（如 example.com）或其子域名（如 sub.example.com）",
+      "invalidDomain": "无效的域名",
+      "mustEndWith": "域名必须以 .{extension} 结尾",
+      "invalidExtension": "无效的域名后缀",
+      "required": "请输入域名"
+    },
+    "toast": {
+      "submitting": "正在提交域名...",
+      "alreadyExists": "该域名已存在。",
+      "success": "域名提交成功并已投票！",
+      "error": "域名提交失败"
+    }
+  },
+  "vote": {
+    "ariaLabel": "投票",
+    "voting": "投票中...",
+    "voted": "已投票",
+    "vote": "投票",
+    "processing": "处理投票中...",
+    "removing": "撤销中...",
+    "unvote": "撤销投票",
+    "removeSuccess": "投票已撤销",
+    "removeError": "撤销投票失败，请重试。",
+    "confirmRemove": "确定要撤销对 \"{domainName}\" 的投票吗？"
+  },
+  "detail": {
+    "back": "返回",
+    "quickActions": "快捷操作",
+    "visitDomain": "访问域名",
+    "deleteSuccess": "域名已删除",
+    "deleteError": "域名删除失败",
+    "deleting": "正在删除域名..."
+  },
+  "awards": {
+    "title": "获奖记录",
+    "loadError": "获奖记录加载失败",
+    "empty": "暂无获奖记录，继续投票助力此域名获奖！",
+    "medalLabel": "奖牌"
+  },
+  "submitted": {
+    "loadError": "已提交域名加载失败",
+    "empty": "你还没有提交过任何域名。",
+    "youUpvoted": "✓ 已投票",
+    "submittedOn": "提交于 {date}"
+  },
+  "upvoted": {
+    "loadError": "已投票域名加载失败",
+    "empty": "你还没有为任何域名投票。",
+    "upvotedOn": "投票于 {date}"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "进行中！",
+      "ended": "已结束",
+      "notStarted": "尚未开始"
+    },
+    "loadErrorTitle": "域名加载出错",
+    "loadErrorDescription": "活动域名加载失败，请稍后重试。",
+    "emptyTitle": "暂无域名",
+    "emptyDescription": "本次活动暂无可参与的域名。",
+    "nominatePrompt": "没看到你喜欢的域名？",
+    "nominateAction": "立即提名！",
+    "congratulations": "恭喜！",
+    "winnerCampaignIcon": "活动图标",
+    "isTheWinner": "是本次获奖域名",
+    "votingClosedThanks": "感谢你的参与——获奖者将收到包含子域名领取详情的邮件。"
+  },
+  "howItWorks": {
+    "voteTitle": "投票",
+    "voteDescription": "选出你的最爱",
+    "winTitle": "获胜",
+    "winDescription": "获胜域名开始发行",
+    "celebrateTitle": "庆祝",
+    "celebrateDescription": "领取你的免费子域名"
+  },
+  "whyVote": {
+    "title": "为什么要投票？",
+    "priorityClaimTitle": "优先认领",
+    "priorityClaimDescription": "优先获得新子域名名额（数量有限）",
+    "weeklyNfscTitle": "每周 $NFSC",
+    "weeklyNfscDescription": "每周抽奖，投票者可赢取 $NFSC",
+    "launchTitle": "助力 [name].cv 上线",
+    "launchDescription": "票数最高的 [name].cv 将率先开放子域名发行"
+  },
+  "community": {
+    "joinTitle": "加入社区",
+    "joinDescription": "与猎手们携手同行，共同投票，决定下一个热门域名。",
+    "shareTitle": "分享猎手榜",
+    "shareDescription": "邀请好友参与——每带来一票，即可获得一次抽奖机会。",
+    "inviteFriends": "邀请好友",
+    "invited": "已复制！",
+    "copySuccess": "链接已复制到剪贴板！",
+    "copyError": "链接复制失败"
+  },
+  "countdown": {
+    "votingEndsIn": "投票剩余时间",
+    "days": "天",
+    "hours": "时",
+    "minutes": "分",
+    "seconds": "秒"
+  },
+  "share": {
+    "titleDomain": "分享 {domainName}",
+    "titleSubject": "分享 {domainName} 的{subject}",
+    "descriptionDomainTracked": "在 Twitter/X 上分享此域名，帮助更多人发现它并赢取奖励。",
+    "descriptionDomain": "在 Twitter/X 上分享此域名，帮助更多人发现它。",
+    "descriptionSubject": "在 Twitter/X 上分享此{subject}。",
+    "shareUrlLabel": "分享链接",
+    "quickShareLabel": "快速分享",
+    "shareOnTwitter": "分享到 Twitter/X",
+    "prefilledHint": "将在 Twitter/X 打开预填好的推文，内容关于 {target}",
+    "alreadyShared": "已分享",
+    "postUrlLabel": "Twitter/X 推文链接",
+    "postUrlHint": "分享后粘贴你的推文链接，即可赢取奖励",
+    "recording": "记录中...",
+    "recordShare": "记录分享",
+    "invalidPostUrl": "请输入有效的 Twitter/X 推文链接",
+    "recordError": "分享记录失败，请重试。",
+    "checkPostUrl": "请检查推文链接后重试。",
+    "copySuccess": "分享链接已复制。",
+    "copyError": "链接复制失败",
+    "recordingShare": "正在记录你的分享..."
+  }
+}

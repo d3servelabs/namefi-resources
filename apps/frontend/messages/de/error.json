@@ -1,0 +1,35 @@
+{
+  "status400": {
+    "title": "Ungültige Anfrage",
+    "description": "Da ist wohl etwas verloren gegangen."
+  },
+  "status403": {
+    "title": "Kein Zugriff",
+    "description": "Diese Tür ist verschlossen. Haben Sie den richtigen Schlüssel?"
+  },
+  "status404": {
+    "title": "Nicht gefunden",
+    "description": "Wir haben überall gesucht – sogar unterm Sofa."
+  },
+  "status500": {
+    "title": "Serverfehler",
+    "description": "Unsere Server gönnen sich gerade eine Kaffeepause."
+  },
+  "actions": {
+    "goHome": "Zur Startseite",
+    "searchDomains": "Domains suchen",
+    "logIn": "Anmelden",
+    "signIn": "Anmelden",
+    "goToHome": "Zur Startseite"
+  },
+  "reference": "Referenz: {requestId}",
+  "login": {
+    "failedTitle": "Anmeldung fehlgeschlagen",
+    "failedDescription": "Bitte versuchen Sie es erneut."
+  },
+  "unauthorized": {
+    "title": "Nicht autorisierter Zugriff",
+    "description": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen. Bitte melden Sie sich an oder kehren Sie zur Startseite zurück.",
+    "contactSupport": "Wenn Sie glauben, dass dies ein Fehler ist, wenden Sie sich bitte an den Support."
+  }
+}

@@ -7,12 +7,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
+import { useTranslations } from 'next-intl';
 
 import type { DnssecPanelMode } from './use-dnssec-mode-preference';
-
-const SIMPLE_HINT = 'One-click Enable for the common case.';
-const ADVANCED_HINT =
-  'Full control: paste DNSKEY/DS, validate, and manage multiple keys.';
 
 export type DnssecModeToggleProps = {
   mode: DnssecPanelMode;
@@ -26,10 +23,15 @@ export type DnssecModeToggleProps = {
  * Advanced (the existing manual / auto-detect form + table).
  */
 export function DnssecModeToggle({ mode, onChange }: DnssecModeToggleProps) {
+  const t = useTranslations('dnsManagement');
+  const SimpleHint = t('dnssecPanel.modeToggle.simpleHint');
+  const AdvancedHint = t('dnssecPanel.modeToggle.advancedHint');
   return (
     <TooltipProvider>
       <fieldset className="m-0 inline-flex items-center rounded-md border border-zinc-800 bg-zinc-900/40 p-0.5">
-        <legend className="sr-only">DNSSEC panel mode</legend>
+        <legend className="sr-only">
+          {t('dnssecPanel.modeToggle.legend')}
+        </legend>
         <Tooltip>
           <TooltipTrigger
             render={
@@ -41,11 +43,11 @@ export function DnssecModeToggle({ mode, onChange }: DnssecModeToggleProps) {
                 className="h-7 px-3 text-xs"
                 onClick={() => onChange('simple')}
               >
-                Simple
+                {t('dnssecPanel.modeToggle.simple')}
               </Button>
             }
           />
-          <TooltipContent>{SIMPLE_HINT}</TooltipContent>
+          <TooltipContent>{SimpleHint}</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger
@@ -58,11 +60,11 @@ export function DnssecModeToggle({ mode, onChange }: DnssecModeToggleProps) {
                 className="h-7 px-3 text-xs"
                 onClick={() => onChange('advanced')}
               >
-                Advanced
+                {t('dnssecPanel.modeToggle.advanced')}
               </Button>
             }
           />
-          <TooltipContent>{ADVANCED_HINT}</TooltipContent>
+          <TooltipContent>{AdvancedHint}</TooltipContent>
         </Tooltip>
       </fieldset>
     </TooltipProvider>

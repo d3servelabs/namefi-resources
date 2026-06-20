@@ -45,6 +45,7 @@ import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { toast } from 'sonner';
 import { CHAINS as chains } from '@namefi-astra/utils/chains';
 import { isAddress } from 'viem';
+import { useTranslations } from 'next-intl';
 
 type Props = {
   open: boolean;
@@ -61,6 +62,8 @@ type TableRowData = {
 const DEFAULT_AMOUNT = 50;
 
 export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
+  const t = useTranslations('nfsc');
+  const tCommon = useTranslations('common');
   const trpc = useTRPC();
   const [csv, setCsv] = useState('');
   const [chainId, setChainId] = useState<number>(chains.base.id);
@@ -220,14 +223,14 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
           )}
         >
           <DialogHeader>
-            <DialogTitle>Bulk Mint NFSC</DialogTitle>
+            <DialogTitle>{t('bulkMint.title')}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div>
                 <Label className="text-sm font-medium" htmlFor="chain">
-                  Chain
+                  {t('bulkMint.chainLabel')}
                 </Label>
                 <Select
                   value={chainId.toString()}
@@ -241,13 +244,13 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value={chains.base.id.toString()}>
-                      Base
+                      {t('bulkMint.chainBase')}
                     </SelectItem>
                     <SelectItem value={chains.sepolia.id.toString()}>
-                      Sepolia
+                      {t('bulkMint.chainSepolia')}
                     </SelectItem>
                     <SelectItem value={chains.mainnet.id.toString()}>
-                      Mainnet
+                      {t('bulkMint.chainMainnet')}
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -269,11 +272,12 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
 
               <div>
                 <Label className="text-sm font-medium" htmlFor="reason">
-                  Reason <span className="text-red-500">*</span>
+                  {t('bulkMint.reasonLabel')}{' '}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="reason"
-                  placeholder="e.g., Campaign rewards"
+                  placeholder={t('bulkMint.reasonPlaceholder')}
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
                 />
@@ -282,7 +286,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
 
             <div className="space-y-2">
               <Label className="text-sm font-medium" htmlFor="bulk-csv">
-                CSV Input
+                {t('bulkMint.csvInput')}
               </Label>
               <div className="text-xs text-muted-foreground">
                 Format:{' '}
@@ -301,7 +305,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
               />
               <div className="flex justify-end">
                 <Button variant="outline" size="sm" onClick={appendCsvToTable}>
-                  Append to Table
+                  {t('bulkMint.appendToTable')}
                 </Button>
               </div>
             </div>
@@ -312,7 +316,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                   Recipients ({tableRows.length})
                 </div>
                 <Button variant="secondary" size="sm" onClick={addEmptyRow}>
-                  <Plus className="h-3.5 w-3.5 me-1" /> Add Row
+                  <Plus className="h-3.5 w-3.5 me-1" /> {t('bulkMint.addRow')}
                 </Button>
               </div>
 
@@ -320,9 +324,9 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Wallet Address</TableHead>
+                      <TableHead>{t('bulkMint.walletAddress')}</TableHead>
                       <TableHead>Amount (NFSC)</TableHead>
-                      <TableHead>Memo</TableHead>
+                      <TableHead>{t('bulkMint.memo')}</TableHead>
                       <TableHead className="w-12" />
                     </TableRow>
                   </TableHeader>
@@ -351,12 +355,12 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                               />
                               {anno && !anno.walletValid && (
                                 <div className="text-xs text-red-600">
-                                  Invalid wallet address
+                                  {t('bulkMint.invalidWalletAddress')}
                                 </div>
                               )}
                               {anno?.isDup && (
                                 <div className="text-xs text-red-600">
-                                  Duplicate address
+                                  {t('bulkMint.duplicateAddress')}
                                 </div>
                               )}
                             </div>
@@ -398,7 +402,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
                                   e.currentTarget.value,
                                 )
                               }
-                              placeholder="Optional note"
+                              placeholder={t('bulkMint.memoPlaceholder')}
                             />
                           </TableCell>
                           <TableCell>
@@ -440,7 +444,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
 
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={() => onOpenChange(false)}>
-                Close
+                {tCommon('actions.close')}
               </Button>
               <Button onClick={() => setConfirmOpen(true)} disabled={disabled}>
                 {bulkMutation.isPending && (
@@ -465,7 +469,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent className="!max-w-[700px] !w-full overflow-y-auto">
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirm Bulk NFSC Mint</AlertDialogTitle>
+            <AlertDialogTitle>{t('bulkMint.confirmTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
               You are about to mint NFSC for{' '}
               <strong>
@@ -484,9 +488,9 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
           </AlertDialogHeader>
           <div className="border rounded max-h-72 overflow-auto">
             <div className="grid grid-cols-3 gap-2 p-2 text-xs font-medium bg-muted">
-              <div>Wallet Address</div>
+              <div>{t('bulkMint.walletAddress')}</div>
               <div>Amount (NFSC)</div>
-              <div>Memo</div>
+              <div>{t('bulkMint.memo')}</div>
             </div>
             <div className="divide-y">
               {annotatedRows
@@ -509,7 +513,7 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
             </div>
           </div>
           <AlertDialogFooter>
-            <AlertDialogCancel>Back</AlertDialogCancel>
+            <AlertDialogCancel>{t('bulkMint.back')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleSubmit}
               disabled={bulkMutation.isPending}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -297,13 +298,15 @@ function DetectingCard() {
 }
 
 function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
+  const tDns = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   return (
     <div className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3">
       <div className="flex items-start gap-3">
         <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-zinc-100">
-            Couldn't check DNSSEC status
+            {tDns('status.checkFailedTitle')}
           </p>
           <p className="text-xs text-zinc-400">
             We couldn't reach your registrar or nameservers. Try again in a
@@ -319,7 +322,7 @@ function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
           className="text-xs"
         >
           <RefreshCwIcon className="h-3.5 w-3.5" />
-          Try again
+          {tCommon('actions.tryAgain')}
         </Button>
       </div>
     </div>
@@ -336,6 +339,7 @@ function PendingCard({
   disabled: boolean;
 }) {
   const trpc = useTRPC();
+  const tDns = useTranslations('dnsManagement');
   const queryClient = useQueryClient();
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
@@ -373,7 +377,7 @@ function PendingCard({
         <Loader2Icon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0 animate-spin" />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-zinc-100">
-            DNSSEC setup in progress
+            {tDns('status.pendingTitle')}
           </p>
           <p className="text-xs text-zinc-400">
             Waiting for your DNSSEC {keyWord} to propagate globally. Usually a
@@ -391,7 +395,7 @@ function PendingCard({
                 className="text-xs"
                 disabled={disabled || pending.length === 0}
               >
-                Cancel setup
+                {tDns('actions.cancelSetup')}
               </Button>
             }
           />
@@ -411,7 +415,7 @@ function PendingCard({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isCancelling}>
-                Keep waiting
+                {tDns('actions.keepWaiting')}
               </AlertDialogCancel>
               <AlertDialogAction
                 render={
@@ -424,7 +428,7 @@ function PendingCard({
                       void handleCancelAll();
                     }}
                   >
-                    Cancel setup
+                    {tDns('actions.cancelSetup')}
                   </LoadingButton>
                 }
               />
@@ -447,6 +451,8 @@ function AlreadyActiveCard({
 }) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
+  const tCommon = useTranslations('common');
+  const tDns = useTranslations('dnsManagement');
   const [disableDialogOpen, setDisableDialogOpen] = useState(false);
   const [isDisabling, setIsDisabling] = useState(false);
 
@@ -482,7 +488,9 @@ function AlreadyActiveCard({
       <div className="flex items-start gap-3">
         <ShieldCheckIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium text-zinc-100">DNSSEC is enabled</p>
+          <p className="text-sm font-medium text-zinc-100">
+            {tDns('status.activeTitle')}
+          </p>
           <p className="text-xs text-zinc-400">
             Your domain is signed with {count} {recordWord}. Disable to remove
             the {recordWord} and turn DNSSEC off.
@@ -503,13 +511,13 @@ function AlreadyActiveCard({
                 disabled={disabled || count === 0}
               >
                 <Trash2Icon className="h-3.5 w-3.5" />
-                Disable DNSSEC
+                {tDns('actions.disable')}
               </Button>
             }
           />
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Disable DNSSEC?</AlertDialogTitle>
+              <AlertDialogTitle>{tDns('disableDialog.title')}</AlertDialogTitle>
               <AlertDialogDescription>
                 This removes {count} {recordWord} at the registrar and turns
                 DNSSEC off for this domain. You can re-enable it any time by
@@ -518,7 +526,7 @@ function AlreadyActiveCard({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isDisabling}>
-                Cancel
+                {tCommon('actions.cancel')}
               </AlertDialogCancel>
               <AlertDialogAction
                 render={
@@ -531,7 +539,7 @@ function AlreadyActiveCard({
                       void handleDisable();
                     }}
                   >
-                    Disable
+                    {tCommon('actions.disable')}
                   </LoadingButton>
                 }
               />
@@ -556,6 +564,7 @@ function ReadyCard({
   enabling: boolean;
   disabled: boolean;
 }) {
+  const tDns = useTranslations('dnsManagement');
   const kskWord = kskCount === 1 ? 'DNSKEY' : 'DNSKEYs';
   const sample = firstAndMore(sampleNameservers);
   return (
@@ -563,7 +572,9 @@ function ReadyCard({
       <div className="flex items-start gap-3">
         <ShieldPlusIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
-          <p className="text-sm font-medium text-zinc-100">Enable DNSSEC</p>
+          <p className="text-sm font-medium text-zinc-100">
+            {tDns('actions.enable')}
+          </p>
           <p className="text-xs text-zinc-400">
             We detected{' '}
             <span className="text-zinc-200">
@@ -590,7 +601,7 @@ function ReadyCard({
           onClick={onEnable}
         >
           <ShieldPlusIcon className="h-4 w-4" />
-          Enable DNSSEC
+          {tDns('actions.enable')}
         </LoadingButton>
       </div>
     </div>
@@ -674,6 +685,8 @@ function MismatchCard({
   disabled: boolean;
 }) {
   const trpc = useTRPC();
+  const tDns = useTranslations('dnsManagement');
+  const tCommon = useTranslations('common');
   const queryClient = useQueryClient();
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [isRemoving, setIsRemoving] = useState(false);
@@ -712,7 +725,7 @@ function MismatchCard({
         <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
           <p className="text-sm font-medium text-zinc-100">
-            DNSSEC is misconfigured
+            {tDns('status.misconfiguredTitle')}
           </p>
           <p className="text-xs text-zinc-400">
             A DNSSEC is enabled here, but it's not enabled on your custom
@@ -754,7 +767,7 @@ function MismatchCard({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel disabled={isRemoving}>
-                Cancel
+                {tCommon('actions.cancel')}
               </AlertDialogCancel>
               <AlertDialogAction
                 render={
@@ -767,7 +780,7 @@ function MismatchCard({
                       void handleRemoveAll();
                     }}
                   >
-                    Remove
+                    {tCommon('actions.remove')}
                   </LoadingButton>
                 }
               />

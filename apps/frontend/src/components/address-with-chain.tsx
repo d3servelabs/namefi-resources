@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { CopyIcon } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { ComponentProps } from 'react';
 import { useCallback } from 'react';
 import { toast } from 'sonner';
@@ -41,6 +42,7 @@ export function AddressWithChain({
   className,
   ...props
 }: AddressWithChainProps) {
+  const t = useTranslations('common');
   const safeAddress = address ?? '';
   const short = getShortAddress(safeAddress);
   const mobileShort = formatMobileAddress(safeAddress);
@@ -108,13 +110,13 @@ export function AddressWithChain({
                 handleCopy();
               }}
               className={cn('rounded-full p-1 hover:bg-muted', props.className)}
-              aria-label="Copy address"
+              aria-label={t('actions.copyAddress')}
             >
               <CopyIcon className="h-3 w-3" />
             </button>
           )}
         />
-        <TooltipContent sideOffset={6}>Copy</TooltipContent>
+        <TooltipContent sideOffset={6}>{t('actions.copy')}</TooltipContent>
       </Tooltip>
     </div>
   );

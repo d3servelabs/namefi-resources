@@ -80,5 +80,30 @@
     "x402ConnectWallet": "وصّل محفظة شغالة عشان توقّع دفع x402",
     "orderFailed": "مقدرناش نبعت طلبك. حاول تاني."
   },
-  "metaTitle": "Namefi | السلة"
+  "metaTitle": "Namefi | السلة",
+  "cartFootnote": {
+    "learnMore": "اعرف المزيد",
+    "agree": "موافق"
+  },
+  "cartItemRegistration": {
+    "learnMore": "اعرف المزيد",
+    "gotIt": "فهمت"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "عرض خيارات إعداد النطاق",
+    "noSetupOptions": "لا توجد خيارات إعداد"
+  },
+  "cartItem": {
+    "setupOptionsAria": "خيارات إعداد النطاق"
+  },
+  "cartDropdown": {
+    "myCart": "سلة التسوق",
+    "yourCartIsEmpty": "سلتك فارغة",
+    "total": "الإجمالي",
+    "checkout": "إتمام الشراء",
+    "loadingCart": "جارٍ تحميل السلة..."
+  },
+  "cartButton": {
+    "removeAria": "إزالة من السلة"
+  }
 }

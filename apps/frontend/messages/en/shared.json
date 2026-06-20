@@ -1,7 +1,85 @@
 {
   "authRequired": {
     "title": "Sign in required",
-    "description": "Please sign in to continue"
+    "description": "Please sign in to continue",
+    "communityDescription": "You need to sign in to continue. Join the community to discover and vote for the best domains!"
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "Wallet and network ready",
+    "preparing": "Preparing...",
+    "connectWallet": "Connect Wallet",
+    "useThisWallet": "Use This Wallet",
+    "switchWallet": "Switch Wallet",
+    "switchNetwork": "Switch Network",
+    "connecting": "Connecting…",
+    "activating": "Activating…",
+    "switchingNetwork": "Switching network…",
+    "walletStep": "Wallet",
+    "networkStep": "Network",
+    "requiredWallet": "Required Wallet",
+    "differentWalletConnected": "You connected a different wallet",
+    "youConnected": "You Connected",
+    "butWeNeed": "But We Need",
+    "switchNetworkPrompt": "Switch your wallet network to continue.",
+    "current": "Current",
+    "required": "Required",
+    "chainLabel": "Chain {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "Select or enter a domain",
+    "loadingDomains": "Loading domains",
+    "useTypedDomain": "Use typed domain",
+    "domains": "Domains"
+  },
+  "previewGate": {
+    "title": "Preview access",
+    "description": "Enter the access code to access this preview environment.",
+    "accessCode": "Access code",
+    "unlock": "Unlock"
+  },
+  "missingEmail": {
+    "noContactEmail": "No Contact Email",
+    "later": "Later",
+    "addEmailToProfile": "Add Email to Profile",
+    "addEmail": "Add Email"
+  },
+  "announcements": {
+    "previous": "Previous announcement",
+    "next": "Next announcement",
+    "dismiss": "Dismiss announcement"
+  },
+  "emailRequired": {
+    "title": "Email Required",
+    "description": "You need to add a valid email to your profile to continue."
+  },
+  "voteOrShare": {
+    "signInToVote": "Sign in to Vote",
+    "shareDomainInstead": "Share Domain Instead"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "Tomorrow or next week",
+    "selectDate": "Select date"
+  },
+  "selectWalletAndChain": {
+    "linked": "Linked",
+    "selectChainPlaceholder": "Select a Chain"
+  },
+  "feedback": {
+    "close": "Close feedback",
+    "skip": "Skip"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "Copy resolved address",
+    "title": "Receiving Wallet or ENS"
+  },
+  "creditCard": {
+    "cardHolder": "Card Holder",
+    "expires": "Expires"
+  },
+  "walletCard": {
+    "ethereumWallet": "Ethereum Wallet",
+    "connected": "Connected",
+    "connectedNetworks": "Connected Networks"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "to complete this action",
@@ -40,6 +118,9 @@
   "myDomains": {
     "heading": "My Domains"
   },
+  "ownerPage": {
+    "heading": "Domains owned by this wallet"
+  },
   "walletNftGrid": {
     "notIndexedYet": "Not indexed yet",
     "emptyIdentifier": "Provide a wallet address or ENS name to view NFTs.",
@@ -72,8 +153,95 @@
     "pricePerYear": "{price} USD / year",
     "selectNftWallet": "Select NFT Wallet to Continue",
     "buyNow": "Buy Now",
+    "tooltip": "Purchase this domain instantly",
     "errorTitle": "Oops! Something went wrong.",
     "errorDescription": "Don't worry, you won't be charged. Feel free to try again. ",
     "errorDetail": "(Error - {error})"
+  },
+  "table": {
+    "searchPlaceholder": "Search...",
+    "empty": "No data",
+    "emptyDefault": "No data found",
+    "emptyAuditLogs": "No audit logs found",
+    "loadingAuditLogs": "Loading audit logs...",
+    "noMoreRows": "No More Rows",
+    "showing": "Showing {count, plural, one {# row} other {# rows}}",
+    "pagination": {
+      "rowsPerPage": "Rows per page:",
+      "pageOf": "Page {page} of {total}",
+      "pageOfTotal": "Page {page} of {total} — Total {count, plural, one {# row} other {# rows}}",
+      "totalShort": "Total: {count, plural, one {# row} other {# rows}}",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "columns": {
+      "label": "Columns",
+      "toggle": "Toggle columns",
+      "resetToDefaults": "Reset to defaults",
+      "resizeColumn": "Resize column"
+    },
+    "filters": {
+      "label": "Filters"
+    },
+    "filterPanel": {
+      "title": "Table Filters",
+      "titleAdvanced": "Advanced Filters",
+      "description": "Apply filters to narrow down your table results",
+      "descriptionAdvanced": "Build complex filters with multiple conditions and AND/OR logic",
+      "activeCount": "{count} active",
+      "clearAll": "Clear all",
+      "generalFilters": "General Filters",
+      "columnFilters": "Column Filters",
+      "noFiltersAvailable": "No filters available",
+      "active": "Active",
+      "conditionCount": "{count, plural, one {# condition} other {# conditions}}"
+    },
+    "filter": {
+      "label": "Filter",
+      "filterColumn": "Filter {column}",
+      "filterActive": "Filter active",
+      "operator": "Operator",
+      "value": "Value",
+      "apply": "Apply",
+      "clear": "Clear",
+      "addCondition": "Add Condition",
+      "clearAllConditions": "Clear All",
+      "maxConditionsReached": "{count, plural, one {Maximum # condition reached} other {Maximum # conditions reached}}",
+      "selectPlaceholder": "Select...",
+      "selectDatePlaceholder": "Select date...",
+      "enterValuePlaceholder": "Enter value...",
+      "typeValuePlaceholder": "Type value...",
+      "enterFieldPlaceholder": "Enter {field}...",
+      "noSuggestions": "No matching suggestions. You can still use the typed value.",
+      "suggestions": "Suggestions",
+      "invalidNumber": "Invalid number",
+      "invalidDate": "Invalid date",
+      "operators": {
+        "contains": "Contains",
+        "containsCaseInsensitive": "Contains (case-insensitive)",
+        "equals": "Equals",
+        "notEquals": "Not Equals",
+        "greaterThan": "Greater Than",
+        "greaterOrEqual": "Greater or Equal",
+        "lessThan": "Less Than",
+        "lessOrEqual": "Less or Equal",
+        "after": "After",
+        "onOrAfter": "On or After",
+        "before": "Before",
+        "onOrBefore": "On or Before",
+        "isNull": "Is Null",
+        "isNotNull": "Is Not Null",
+        "inList": "In List",
+        "notInList": "Not In List",
+        "allElementsEquals": "All Elements Equals",
+        "allElementsNotEquals": "All Elements Does Not Equal",
+        "anyElementEquals": "Any Element Equals",
+        "anyElementNotEquals": "Any Element Does Not Equal",
+        "allElementsContain": "All Elements Contain",
+        "allElementsNotContain": "All Elements Do Not Contain",
+        "anyElementContains": "Any Element Contains",
+        "anyElementNotContain": "Any Element Does Not Contain"
+      }
+    }
   }
 }

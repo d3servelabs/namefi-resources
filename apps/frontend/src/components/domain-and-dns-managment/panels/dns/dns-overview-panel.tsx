@@ -50,6 +50,7 @@ import {
   type RequestWalletConnectionRef,
 } from '@/components/dialogs/request-wallet-connection';
 import { useAccount } from 'wagmi';
+import { useTranslations } from 'next-intl';
 import { TransferLockGuard } from './transfer-lock-guard';
 
 /**
@@ -93,6 +94,7 @@ export const DnsOverviewPanel = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const {
     data: {
       features: domainSupportedFeatures,
@@ -114,7 +116,7 @@ export const DnsOverviewPanel = ({
   return (
     <Card className="bg-zinc-900 border-zinc-800">
       <CardHeader>
-        <CardTitle>Domain Overview</CardTitle>
+        <CardTitle>{t('overview.panelTitle')}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
@@ -125,11 +127,9 @@ export const DnsOverviewPanel = ({
                 className="col-span-2 border-amber-500/30 bg-amber-500/10 text-amber-200"
               >
                 <AlertOctagon />
-                <AlertTitle>Domain Expired</AlertTitle>
+                <AlertTitle>{t('overview.expired.title')}</AlertTitle>
                 <AlertDescription className="text-amber-200/80">
-                  Your domain has expired. You can still submit a request to
-                  renew the domain and it might go through depending on the
-                  TLD(.com, .org, ...)
+                  {t('overview.expired.canRenew')}
                 </AlertDescription>
               </Alert>
             ) : (
@@ -138,11 +138,9 @@ export const DnsOverviewPanel = ({
                 className="col-span-2 border-amber-500/30 bg-amber-500/10 text-amber-200"
               >
                 <AlertOctagon />
-                <AlertTitle>Domain Expired</AlertTitle>
+                <AlertTitle>{t('overview.expired.title')}</AlertTitle>
                 <AlertDescription className="text-amber-200/80">
-                  Your domain has expired. You can contact support to check if
-                  it can be restored (this might not be possible for all
-                  TLDs(.com, .org, ...))
+                  {t('overview.expired.cannotRenew')}
                 </AlertDescription>
               </Alert>
             ))}
@@ -177,6 +175,7 @@ export const DomainRenewalSection = ({
   disabled: boolean;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
 
@@ -243,7 +242,7 @@ export const DomainRenewalSection = ({
           domainName: domain,
           domainPreferencesAndConfig: updatedDomainPreferencesAndConfig,
         });
-        toast.success('Preferences updated');
+        toast.success(t('overview.preferencesUpdated'));
         await queryClient.invalidateQueries({
           queryKey: trpc.dnsRecords.getRecords.queryKey({
             zoneName: domain,
@@ -255,7 +254,7 @@ export const DomainRenewalSection = ({
           }),
         });
       } catch (_error) {
-        toast.error('Failed to update preferences');
+        toast.error(t('overview.preferencesUpdateFailed'));
       } finally {
         setIsPending(false);
       }
@@ -272,14 +271,15 @@ export const DomainRenewalSection = ({
   return (
     <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
       <div className="space-y-0.5">
-        <Label htmlFor="auto-renew">Auto Renew</Label>
+        <Label htmlFor="auto-renew">{t('overview.autoRenew.label')}</Label>
         <p className="text-sm text-muted-foreground">
-          Automatically renew the domain
+          {t('overview.autoRenew.description')}
         </p>
         {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
           <p className="text-xs text-zinc-400">
-            Expires:{' '}
-            {new Date(domainDetails.expirationTime).toLocaleDateString()}
+            {t('overview.autoRenew.expires', {
+              date: new Date(domainDetails.expirationTime).toLocaleDateString(),
+            })}
           </p>
         ) : isDomainDetailsLoading ? (
           <Skeleton className="h-3 w-24" />
@@ -324,6 +324,7 @@ export const ManualRenewalSection = ({
   disabled: boolean;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
 
   const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
     trpc.domainConfig.getDomainDetails.queryOptions(
@@ -352,14 +353,15 @@ export const ManualRenewalSection = ({
   return (
     <div className="flex items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4">
       <div className="space-y-0.5">
-        <Label htmlFor="manual-renew">Manual Renew</Label>
+        <Label htmlFor="manual-renew">{t('overview.manualRenew.label')}</Label>
         <p className="text-sm text-muted-foreground">
-          Renew the domain manually
+          {t('overview.manualRenew.description')}
         </p>
         {domainDetails?.expirationTime && !isDomainDetailsLoading ? (
           <p className="text-xs text-zinc-400">
-            Expires:{' '}
-            {new Date(domainDetails.expirationTime).toLocaleDateString()}
+            {t('overview.autoRenew.expires', {
+              date: new Date(domainDetails.expirationTime).toLocaleDateString(),
+            })}
           </p>
         ) : isDomainDetailsLoading ? (
           <Skeleton className="h-3 w-24" />
@@ -388,6 +390,7 @@ export const RenewDomainButton = ({
   className?: string;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const { renewDomains } = useDomainRenewal();
 
   const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
@@ -405,7 +408,7 @@ export const RenewDomainButton = ({
     <AsyncButton
       onClick={async () => {
         if (!domainDetails?.expirationTime) {
-          toast.error('Domain expiration information not available');
+          toast.error(t('overview.renewExpirationUnavailable'));
           return;
         }
 
@@ -425,7 +428,7 @@ export const RenewDomainButton = ({
       size="sm"
       className={className}
     >
-      Renew now
+      {t('overview.renewNow')}
     </AsyncButton>
   );
 };
@@ -440,6 +443,7 @@ export const DomainExportSection = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
   const { signTypedData } = useSignTypedData();
@@ -463,7 +467,7 @@ export const DomainExportSection = ({
       setIsRequestingExport(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -488,7 +492,7 @@ export const DomainExportSection = ({
         signature,
         payload,
       });
-      toast.success('Export request submitted successfully');
+      toast.success(t('overview.exportToasts.requestSubmitted'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getDomainExportDetails.queryKey({
           domainName: domain,
@@ -496,9 +500,9 @@ export const DomainExportSection = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to request domain export');
+        toast.error(t('overview.exportToasts.requestFailed'));
       }
     } finally {
       setIsRequestingExport(false);
@@ -508,7 +512,7 @@ export const DomainExportSection = ({
   const handleRequestExport = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (activeWalletAddress !== ownerWalletAddress) {
@@ -524,7 +528,7 @@ export const DomainExportSection = ({
     try {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -548,9 +552,7 @@ export const DomainExportSection = ({
         });
       } catch (error) {
         console.error(error);
-        toast.error(
-          'Failed to request signature. This could be due to a browser error or a problem with your wallet.',
-        );
+        toast.error(t('overview.exportToasts.signatureFailed'));
         setIsFetchingAuthCode(false);
         return;
       }
@@ -561,9 +563,9 @@ export const DomainExportSection = ({
       setAuthCode(result.authCode);
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to get auth code');
+        toast.error(t('overview.exportToasts.authCodeFailed'));
       }
     } finally {
       setIsFetchingAuthCode(false);
@@ -573,7 +575,7 @@ export const DomainExportSection = ({
   const handleGetAuthCode = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (activeWalletAddress !== ownerWalletAddress) {
@@ -589,9 +591,9 @@ export const DomainExportSection = ({
     if (authCode) {
       try {
         await navigator.clipboard.writeText(authCode);
-        toast.success('Auth code copied to clipboard');
+        toast.success(t('overview.exportToasts.authCodeCopied'));
       } catch (error) {
-        toast.error('Failed to copy auth code');
+        toast.error(t('overview.exportToasts.authCodeCopyFailed'));
       }
     }
   };
@@ -619,8 +621,7 @@ export const DomainExportSection = ({
   if (isNil(domainExportDetails)) {
     return (
       <div className="text-center py-12">
-        Something went wrong with fetching domain export details! Please try
-        again later.
+        {t('overview.export.loadDetailsFailed')}
       </div>
     );
   }
@@ -641,7 +642,7 @@ export const DomainExportSection = ({
       <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-zinc-800 p-4 gap-y-2">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
-            <Label htmlFor="domain-export">Domain Export</Label>
+            <Label htmlFor="domain-export">{t('overview.export.label')}</Label>
             {!domainExportDetails.supportsExport && (
               <TooltipProvider>
                 <Tooltip>
@@ -660,7 +661,7 @@ export const DomainExportSection = ({
             )}
           </div>
           <p className="text-sm text-muted-foreground">
-            Export domain to another registrar
+            {t('overview.export.description')}
           </p>
         </div>
         <div className="flex items-center gap-2 sm:w-auto w-full">
@@ -672,12 +673,12 @@ export const DomainExportSection = ({
               className="w-full sm:w-auto"
             >
               <ExternalLink className="h-4 w-4 me-2" />
-              Export Unavailable
+              {t('overview.export.exportUnavailable')}
             </Button>
           ) : domainExportDetails.pendingRequestToEnableExport ? (
             <Button disabled className="w-full sm:w-auto">
               <Loader2 className="h-4 w-4 animate-spin" />
-              <span>Enable Export Request Pending...</span>
+              <span>{t('overview.export.enableRequestPending')}</span>
             </Button>
           ) : domainExportDetails.readyToExport ? (
             <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -705,7 +706,7 @@ export const DomainExportSection = ({
                   ) : (
                     <ExternalLink className="h-4 w-4 me-2" />
                   )}
-                  Get Auth Code
+                  {t('overview.export.getAuthCode')}
                 </Button>
               )}
             </div>
@@ -714,13 +715,13 @@ export const DomainExportSection = ({
               <AsyncButton
                 onClick={handleRequestExport}
                 disabled={disabled || isRequestingExport}
-                loadingText="Requesting Export..."
+                loadingText={t('overview.export.requestingExport')}
                 loadingIcon={<Loader2 className="h-4 w-4 animate-spin me-2" />}
                 size="sm"
                 className="w-full sm:w-auto"
               >
                 <ExternalLink className="h-4 w-4 me-2" />
-                Request Export
+                {t('overview.export.requestExport')}
               </AsyncButton>
             </TransferLockGuard>
           )}
@@ -738,6 +739,7 @@ export const PendingTransferSection = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
   const { signTypedData } = useSignTypedData();
@@ -779,7 +781,7 @@ export const PendingTransferSection = ({
       setIsApproving(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -804,7 +806,7 @@ export const PendingTransferSection = ({
         signature,
         payload,
       });
-      toast.success('Export approved successfully');
+      toast.success(t('overview.pendingTransfer.approveSuccess'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
@@ -812,9 +814,9 @@ export const PendingTransferSection = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to approve export');
+        toast.error(t('overview.pendingTransfer.approveFailed'));
       }
     } finally {
       setIsApproving(false);
@@ -826,7 +828,7 @@ export const PendingTransferSection = ({
       setIsRejecting(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -851,7 +853,7 @@ export const PendingTransferSection = ({
         signature,
         payload,
       });
-      toast.success('Export rejected successfully');
+      toast.success(t('overview.pendingTransfer.rejectSuccess'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
@@ -859,9 +861,9 @@ export const PendingTransferSection = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to reject export');
+        toast.error(t('overview.pendingTransfer.rejectFailed'));
       }
     } finally {
       setIsRejecting(false);
@@ -880,7 +882,7 @@ export const PendingTransferSection = ({
   const handleApprove = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (activeWalletAddress !== ownerWalletAddress) {
@@ -894,7 +896,7 @@ export const PendingTransferSection = ({
   const handleReject = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (activeWalletAddress !== ownerWalletAddress) {
@@ -926,15 +928,18 @@ export const PendingTransferSection = ({
           <div className="flex items-center gap-2">
             <ArrowRightLeft className="h-4 w-4 text-amber-500" />
             <Label htmlFor="pending-export" className="text-amber-500">
-              Pending Export
+              {t('overview.pendingTransfer.label')}
             </Label>
           </div>
           <p className="text-sm text-muted-foreground">
-            Export requested by: {pendingTransfer.requestingRegistrarId}
+            {t('overview.pendingTransfer.requestedBy', {
+              registrar: pendingTransfer.requestingRegistrarId,
+            })}
           </p>
           <p className="text-xs text-zinc-400">
-            Action required by:{' '}
-            {new Date(pendingTransfer.actionDate).toLocaleDateString()}
+            {t('overview.pendingTransfer.actionRequiredBy', {
+              date: new Date(pendingTransfer.actionDate).toLocaleDateString(),
+            })}
           </p>
         </div>
         <div className="flex items-center gap-2 sm:w-auto w-full">
@@ -950,7 +955,7 @@ export const PendingTransferSection = ({
             ) : (
               <Check className="h-4 w-4 me-2" />
             )}
-            Approve
+            {t('overview.pendingTransfer.approve')}
           </AsyncButton>
           <AsyncButton
             onClick={handleReject}
@@ -964,7 +969,7 @@ export const PendingTransferSection = ({
             ) : (
               <X className="h-4 w-4 me-2" />
             )}
-            Reject
+            {t('overview.pendingTransfer.reject')}
           </AsyncButton>
         </div>
       </div>

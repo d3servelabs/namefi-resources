@@ -1,0 +1,23 @@
+{
+  "title": "TLD விலை நிர்ணயம்",
+  "description": "ஆதரிக்கப்படும் premium அல்லாத TLDs க்கான அடிப்படை USD விலையை மதிப்பாய்வு செய்யுங்கள்.",
+  "loadError": "இப்போது TLD விலை நிர்ணயத்தை ஏற்ற முடியவில்லை. சீக்கிரம் மீண்டும் முயற்சிக்கவும்.",
+  "loadingMessage": "TLD விலை நிர்ணயம் ஏற்றுகிறது...",
+  "emptyMessage": "உங்கள் வடிப்பான்களுக்கு பொருந்தும் TLDs இல்லை",
+  "nonPremiumNote": "** இந்த விலைகள் premium அல்லாத டொமைன்களுக்கு மட்டுமே பொருந்தும்",
+  "columns": {
+    "tld": "TLD",
+    "registration": "பதிவு",
+    "renewal": "புதுப்பித்தல்",
+    "transfer": "இடமாற்றம்",
+    "registrar": "பதிவாளர்"
+  },
+  "filters": {
+    "tld": "TLD",
+    "registrar": "பதிவாளர்"
+  },
+  "variablePrice": "மாறும் விலை",
+  "variablePriceTooltip": "விலை மாறும் தன்மையுடையது மற்றும் டொமைன் பெயரைப் பொறுத்தது",
+  "notAvailable": "N/A",
+  "perYear": "<price>{value}</price> / ஆண்டு"
+}

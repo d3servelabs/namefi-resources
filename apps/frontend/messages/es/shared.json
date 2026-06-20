@@ -1,7 +1,8 @@
 {
   "authRequired": {
     "title": "Inicio de sesión requerido",
-    "description": "Por favor, inicia sesión para continuar"
+    "description": "Por favor, inicia sesión para continuar",
+    "communityDescription": "Debes iniciar sesión para continuar. ¡Únete a la comunidad para descubrir y votar por los mejores dominios!"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "para completar esta acción",
@@ -74,6 +75,173 @@
     "buyNow": "Comprar",
     "errorTitle": "Algo salió mal.",
     "errorDescription": "No te preocupes, no se te cobrará. Puedes intentarlo de nuevo. ",
-    "errorDetail": "(Error - {error})"
+    "errorDetail": "(Error - {error})",
+    "tooltip": "Compra este dominio de inmediato"
+  },
+  "table": {
+    "searchPlaceholder": "Buscar...",
+    "empty": "Sin datos",
+    "emptyDefault": "No se encontraron datos",
+    "emptyAuditLogs": "No se encontraron registros de auditoría",
+    "loadingAuditLogs": "Cargando registros de auditoría...",
+    "noMoreRows": "No hay más filas",
+    "showing": "Mostrando {count, plural, one {# fila} other {# filas}}",
+    "pagination": {
+      "rowsPerPage": "Filas por página:",
+      "pageOf": "Página {page} de {total}",
+      "pageOfTotal": "Página {page} de {total} — Total {count, plural, one {# fila} other {# filas}}",
+      "totalShort": "Total: {count, plural, one {# fila} other {# filas}}",
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "columns": {
+      "label": "Columnas",
+      "toggle": "Mostrar u ocultar columnas",
+      "resetToDefaults": "Restablecer valores predeterminados",
+      "resizeColumn": "Redimensionar columna"
+    },
+    "filters": {
+      "label": "Filtros"
+    },
+    "filterPanel": {
+      "title": "Filtros de tabla",
+      "titleAdvanced": "Filtros avanzados",
+      "description": "Aplica filtros para acotar los resultados de la tabla",
+      "descriptionAdvanced": "Crea filtros complejos con múltiples condiciones y lógica AND/OR",
+      "activeCount": "{count} activos",
+      "clearAll": "Borrar todo",
+      "generalFilters": "Filtros generales",
+      "columnFilters": "Filtros por columna",
+      "noFiltersAvailable": "No hay filtros disponibles",
+      "active": "Activo",
+      "conditionCount": "{count, plural, one {# condición} other {# condiciones}}"
+    },
+    "filter": {
+      "label": "Filtrar",
+      "filterColumn": "Filtrar {column}",
+      "filterActive": "Filtro activo",
+      "operator": "Operador",
+      "value": "Valor",
+      "apply": "Aplicar",
+      "clear": "Borrar",
+      "addCondition": "Agregar condición",
+      "clearAllConditions": "Borrar todo",
+      "maxConditionsReached": "{count, plural, one {Se alcanzó el máximo de # condición} other {Se alcanzó el máximo de # condiciones}}",
+      "selectPlaceholder": "Seleccionar...",
+      "selectDatePlaceholder": "Seleccionar fecha...",
+      "enterValuePlaceholder": "Ingresar valor...",
+      "typeValuePlaceholder": "Escribe un valor...",
+      "enterFieldPlaceholder": "Ingresar {field}...",
+      "noSuggestions": "Sin sugerencias coincidentes. Puedes usar el valor ingresado.",
+      "suggestions": "Sugerencias",
+      "invalidNumber": "Número inválido",
+      "invalidDate": "Fecha inválida",
+      "operators": {
+        "contains": "Contiene",
+        "containsCaseInsensitive": "Contiene (sin distinción de mayúsculas)",
+        "equals": "Igual a",
+        "notEquals": "Distinto de",
+        "greaterThan": "Mayor que",
+        "greaterOrEqual": "Mayor o igual que",
+        "lessThan": "Menor que",
+        "lessOrEqual": "Menor o igual que",
+        "after": "Después de",
+        "onOrAfter": "El día o después de",
+        "before": "Antes de",
+        "onOrBefore": "El día o antes de",
+        "isNull": "Está vacío",
+        "isNotNull": "No está vacío",
+        "inList": "En la lista",
+        "notInList": "No está en la lista",
+        "allElementsEquals": "Todos los elementos son iguales a",
+        "allElementsNotEquals": "Ningún elemento es igual a",
+        "anyElementEquals": "Algún elemento es igual a",
+        "anyElementNotEquals": "Algún elemento es distinto de",
+        "allElementsContain": "Todos los elementos contienen",
+        "allElementsNotContain": "Ningún elemento contiene",
+        "anyElementContains": "Algún elemento contiene",
+        "anyElementNotContain": "Algún elemento no contiene"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "Billetera y red listas",
+    "preparing": "Preparando...",
+    "connectWallet": "Conectar billetera",
+    "useThisWallet": "Usar esta billetera",
+    "switchWallet": "Cambiar billetera",
+    "switchNetwork": "Cambiar red",
+    "connecting": "Conectando…",
+    "activating": "Activando…",
+    "switchingNetwork": "Cambiando de red…",
+    "walletStep": "Billetera",
+    "networkStep": "Red",
+    "requiredWallet": "Billetera requerida",
+    "differentWalletConnected": "Conectaste una billetera diferente",
+    "youConnected": "Conectaste",
+    "butWeNeed": "Pero necesitamos",
+    "switchNetworkPrompt": "Cambia la red de tu billetera para continuar.",
+    "current": "Actual",
+    "required": "Requerida",
+    "chainLabel": "Cadena {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "Selecciona o introduce un dominio",
+    "loadingDomains": "Cargando dominios",
+    "useTypedDomain": "Usar dominio escrito",
+    "domains": "Dominios"
+  },
+  "previewGate": {
+    "title": "Acceso a vista previa",
+    "description": "Introduce el código de acceso para acceder a este entorno de vista previa.",
+    "accessCode": "Código de acceso",
+    "unlock": "Desbloquear"
+  },
+  "missingEmail": {
+    "noContactEmail": "Sin correo de contacto",
+    "later": "Más tarde",
+    "addEmailToProfile": "Agregar correo al perfil",
+    "addEmail": "Agregar correo"
+  },
+  "announcements": {
+    "previous": "Anuncio anterior",
+    "next": "Siguiente anuncio",
+    "dismiss": "Cerrar anuncio"
+  },
+  "emailRequired": {
+    "title": "Correo electrónico requerido",
+    "description": "Debes agregar un correo electrónico válido a tu perfil para continuar."
+  },
+  "voteOrShare": {
+    "signInToVote": "Inicia sesión para votar",
+    "shareDomainInstead": "Compartir dominio en su lugar"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "Mañana o la próxima semana",
+    "selectDate": "Seleccionar fecha"
+  },
+  "selectWalletAndChain": {
+    "linked": "Vinculada",
+    "selectChainPlaceholder": "Seleccionar una cadena"
+  },
+  "feedback": {
+    "close": "Cerrar comentarios",
+    "skip": "Omitir"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "Copiar dirección resuelta",
+    "title": "Billetera receptora o ENS"
+  },
+  "creditCard": {
+    "cardHolder": "Titular de la tarjeta",
+    "expires": "Vence"
+  },
+  "walletCard": {
+    "ethereumWallet": "Billetera Ethereum",
+    "connected": "Conectada",
+    "connectedNetworks": "Redes conectadas"
+  },
+  "ownerPage": {
+    "heading": "Dominios en propiedad de esta billetera"
   }
 }

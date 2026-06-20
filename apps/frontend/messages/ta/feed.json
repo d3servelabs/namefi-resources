@@ -22,7 +22,6 @@
     "clear": "அழி"
   },
   "list": {
-    "errorTitle": "{message}",
     "emptyFiltered": "இந்த பகுதியில் பொருந்தும் பட்டியல்கள் இல்லை.",
     "empty": "பட்டியல்கள் எதுவும் இல்லை.",
     "endOfFeed": "Feed முடிந்தது",

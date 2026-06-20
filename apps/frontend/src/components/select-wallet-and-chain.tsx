@@ -3,6 +3,7 @@ import { useLinkedWalletAddresses } from '@/hooks/use-user-wallet-addresses';
 import { useAllowedChains } from '@/hooks/use-allowed-chains';
 import { getShortAddress } from '@/lib/string';
 import { CHAINS } from '@namefi-astra/utils/chains';
+import { useTranslations } from 'next-intl';
 import { useCallback, useState } from 'react';
 import type { Chain } from 'viem';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
@@ -31,6 +32,7 @@ export function SelectWallet({
   onValueChange,
   selectTriggerDisabled,
 }: SelectWalletProps) {
+  const t = useTranslations('shared');
   const [selectWalletAddress, setSelectedWalletAddress] = useState<
     string | null
   >(null);
@@ -65,7 +67,7 @@ export function SelectWallet({
         {linkedWalletAddresses.map((walletAddress: string) => (
           <SelectItem key={`${walletAddress}`} value={`${walletAddress}`}>
             <div className="flex items-center gap-2">
-              <Badge>Linked</Badge>
+              <Badge>{t('selectWalletAndChain.linked')}</Badge>
               {`${isMobile ? getShortAddress(walletAddress) : walletAddress}`}
             </div>
           </SelectItem>
@@ -81,6 +83,7 @@ export function SelectChain({
   selectTriggerDisabled,
   parentDomain,
 }: SelectChainProps) {
+  const t = useTranslations('shared');
   const {
     nfscBalanceChains: chains,
     defaultNfscBalanceChainId: defaultPaymentChainId,
@@ -105,7 +108,9 @@ export function SelectChain({
       defaultValue={`${defaultPaymentChainId}`}
     >
       <SelectTrigger>
-        <SelectValue placeholder="Select a Chain" />
+        <SelectValue
+          placeholder={t('selectWalletAndChain.selectChainPlaceholder')}
+        />
       </SelectTrigger>
       <SelectContent>
         {chains.map((chain: Chain) => (

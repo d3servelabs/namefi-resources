@@ -31,6 +31,7 @@ import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor'
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import { InteractionLoggingEventName } from '@/lib/analytics-events';
+import { useTranslations } from 'next-intl';
 
 interface SubmitDomainDialogProps {
   children: ReactNode;
@@ -39,21 +40,23 @@ interface SubmitDomainDialogProps {
   extension?: string;
 }
 
-const createSubmitDomainSchema = (extension?: string) =>
+const createSubmitDomainSchema = (
+  t: ReturnType<typeof useTranslations<'hunt'>>,
+  extension?: string,
+) =>
   z.object({
     domainName: z
       .string()
       .refine((val) => val.includes('.'), {
-        message:
-          'Domain name must be a single level domain (e.g. example.com) or higher (e.g. sub.example.com)',
+        message: t('submitDialog.validation.singleLevel'),
       })
       .refine((val) => namefiNormalizedDomainSchema.safeParse(val).success, {
-        message: 'Invalid domain name',
+        message: t('submitDialog.validation.invalidDomain'),
       })
       .refine((val) => !extension || val.endsWith(`.${extension}`), {
         message: extension
-          ? `Domain must end with .${extension}`
-          : 'Invalid domain extension',
+          ? t('submitDialog.validation.mustEndWith', { extension })
+          : t('submitDialog.validation.invalidExtension'),
       }),
   });
 export const SubmitDomainDialog = ({
@@ -62,12 +65,14 @@ export const SubmitDomainDialog = ({
   extension,
   redirectOnSuccess = true,
 }: SubmitDomainDialogProps) => {
+  const t = useTranslations('hunt');
+  const tCommon = useTranslations('common');
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
 
   const submitDomainSchema = useMemo(
-    () => createSubmitDomainSchema(extension),
-    [extension],
+    () => createSubmitDomainSchema(t, extension),
+    [t, extension],
   );
 
   const {
@@ -109,9 +114,9 @@ export const SubmitDomainDialog = ({
 
         // Show different messages based on whether it's a new submission or existing domain
         if (data.message === 'Domain already exists') {
-          toast.success('Domain already exists.');
+          toast.success(t('submitDialog.toast.alreadyExists'));
         } else {
-          toast.success('Domain submitted and upvoted successfully!');
+          toast.success(t('submitDialog.toast.success'));
           // Track the auto-upvote that happens on domain submission
           logEventWithInteractionLoggers({
             name: InteractionLoggingEventName.Vote,
@@ -128,7 +133,7 @@ export const SubmitDomainDialog = ({
         }
       },
       onError: (error) => {
-        toast.error(error.message || 'Failed to submit domain');
+        toast.error(error.message || t('submitDialog.toast.error'));
       },
     }),
   );
@@ -137,12 +142,12 @@ export const SubmitDomainDialog = ({
     (data: z.infer<typeof submitDomainSchema>) => {
       const domainName = data.domainName;
       if (!domainName.trim()) {
-        toast.error('Please enter a domain name');
+        toast.error(t('submitDialog.validation.required'));
         return;
       }
       submitDomainMutation.mutate({ domainName: domainName.trim() });
     },
-    [submitDomainMutation],
+    [submitDomainMutation, t],
   );
 
   const handleInputKeyDown = useCallback(
@@ -160,18 +165,23 @@ export const SubmitDomainDialog = ({
     reset();
   }, [reset]);
 
-  usePendingToast(submitDomainMutation.isPending, 'Submitting domain...');
+  usePendingToast(
+    submitDomainMutation.isPending,
+    t('submitDialog.toast.submitting'),
+  );
 
   return (
     <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
       <DialogTrigger render={children as ReactElement} />
       <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
-          <DialogTitle>Submit a new domain</DialogTitle>
+          <DialogTitle>{t('submitDialog.title')}</DialogTitle>
         </DialogHeader>
         <div className="space-y-8">
           <div className="flex flex-col gap-4">
-            <Label htmlFor="domain-name">Domain Name</Label>
+            <Label htmlFor="domain-name">
+              {t('submitDialog.domainNameLabel')}
+            </Label>
             <Input
               id="domain-name"
               onKeyDown={handleInputKeyDown}
@@ -191,14 +201,16 @@ export const SubmitDomainDialog = ({
               className="cursor-pointer"
               onClick={handleCancel}
             >
-              Cancel
+              {tCommon('actions.cancel')}
             </Button>
             <Button
               className="cursor-pointer"
               onClick={handleSubmit(handleSubmitDomain)}
               disabled={submitDomainMutation.isPending}
             >
-              {submitDomainMutation.isPending ? 'Submitting...' : 'Submit'}
+              {submitDomainMutation.isPending
+                ? t('submitDialog.submitting')
+                : 'Submit'}
             </Button>
           </div>
         </div>

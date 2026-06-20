@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "अपडेट रहें",
+  "defaultDescription": "नवीनतम अपडेट और घोषणाओं के लिए हमारे न्यूज़लेटर की सदस्यता लें।",
+  "closeAriaLabel": "न्यूज़लेटर फॉर्म बंद करें",
+  "invalidEmail": "कृपया एक मान्य ईमेल पता दर्ज करें",
+  "successTitle": "सदस्यता के लिए धन्यवाद!",
+  "successDescription": "अपनी सदस्यता की पुष्टि करने के लिए कृपया अपना ईमेल जाँचें।",
+  "subscribeAnother": "किसी अन्य ईमेल से सदस्यता लें",
+  "emailPlaceholder": "अपना ईमेल दर्ज करें",
+  "subscribing": "सदस्यता ली जा रही है...",
+  "subscribe": "सदस्यता लें",
+  "subscribeToNewsletter": "न्यूज़लेटर की सदस्यता लें",
+  "nameLabel": "नाम (वैकल्पिक)",
+  "namePlaceholder": "आपका नाम",
+  "emailLabel": "ईमेल",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "सदस्यता ली गई!",
+    "alreadySubscribedTitle": "पहले से सदस्यता है",
+    "alreadySubscribedDescription": "आप पहले से हमारी मेलिंग सूची में हैं!",
+    "failedTitle": "सदस्यता विफल हुई",
+    "failedFallback": "कृपया बाद में पुनः प्रयास करें।"
+  }
+}

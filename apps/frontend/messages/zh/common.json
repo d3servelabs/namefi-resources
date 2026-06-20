@@ -1,5 +1,4 @@
 {
-  "language": "语言",
   "languageSelector": {
     "label": "语言",
     "ariaLabel": "切换语言"
@@ -9,7 +8,6 @@
     "loading": "加载中…",
     "tryAgain": "重试",
     "dismiss": "关闭",
-    "contactSupport": "联系客服",
     "cancel": "取消",
     "close": "关闭",
     "save": "保存",
@@ -23,10 +21,11 @@
     "loadMore": "加载更多",
     "connectWallet": "连接钱包",
     "goBack": "返回",
-    "approve": "批准",
-    "reject": "拒绝",
     "disable": "禁用",
-    "signOut": "退出登录"
+    "signOut": "退出登录",
+    "copy": "复制",
+    "copyAddress": "复制地址",
+    "toggleSidebar": "切换侧边栏"
   },
   "account": {
     "label": "账户",

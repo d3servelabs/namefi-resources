@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "ابقَ على اطلاع",
+  "defaultDescription": "اشترك في نشرتنا البريدية لتصلك آخر التحديثات والإعلانات.",
+  "closeAriaLabel": "إغلاق نموذج النشرة البريدية",
+  "invalidEmail": "من فضلك أدخل عنوان بريد إلكتروني صحيح",
+  "successTitle": "شكراً على اشتراكك!",
+  "successDescription": "تفقد بريدك الإلكتروني لتأكيد اشتراكك.",
+  "subscribeAnother": "اشترك بعنوان بريد آخر",
+  "emailPlaceholder": "أدخل بريدك الإلكتروني",
+  "subscribing": "جارٍ الاشتراك...",
+  "subscribe": "اشترك",
+  "subscribeToNewsletter": "اشترك في النشرة البريدية",
+  "nameLabel": "الاسم (اختياري)",
+  "namePlaceholder": "اسمك",
+  "emailLabel": "البريد الإلكتروني",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "تم الاشتراك!",
+    "alreadySubscribedTitle": "مشترك بالفعل",
+    "alreadySubscribedDescription": "أنت مدرج بالفعل في قائمتنا البريدية!",
+    "failedTitle": "فشل الاشتراك",
+    "failedFallback": "حاول مرة أخرى لاحقاً."
+  }
+}

@@ -30,6 +30,7 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { Plus, ShoppingBag, Wallet2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { type Address, formatUnits, getAddress, parseUnits } from 'viem';
@@ -55,10 +56,10 @@ import type {
 } from '@/lib/marketplaces/types';
 import { useCreateListing, useListings } from './use-listings';
 
-const DURATION_OPTIONS: ReadonlyArray<{ label: string; seconds: number }> = [
-  { label: '1 day', seconds: 24 * 60 * 60 },
-  { label: '7 days', seconds: 7 * 24 * 60 * 60 },
-  { label: '30 days', seconds: 30 * 24 * 60 * 60 },
+const DURATION_OPTIONS: ReadonlyArray<{ seconds: number }> = [
+  { seconds: 24 * 60 * 60 },
+  { seconds: 7 * 24 * 60 * 60 },
+  { seconds: 30 * 24 * 60 * 60 },
 ];
 
 interface Props {
@@ -82,9 +83,17 @@ export function CreateListingModal({
   defaultOpen = false,
   onOpenChange,
   showTrigger = true,
-  triggerLabel = 'Create listing',
+  triggerLabel,
   ownerAddress,
 }: Props) {
+  const t = useTranslations('domains');
+  const durationLabel = (seconds: number): string => {
+    if (seconds === 24 * 60 * 60)
+      return t('marketplace.createListing.duration1Day');
+    if (seconds === 30 * 24 * 60 * 60)
+      return t('marketplace.createListing.duration30Days');
+    return t('marketplace.createListing.duration7Days');
+  };
   const [open, setOpenState] = useState(defaultOpen);
   const { address: connectedAddress } = useAccount();
   const activeChainId = useChainId();
@@ -221,11 +230,13 @@ export function CreateListingModal({
         },
       });
       toast.success(
-        `Listed for ${listing.price.decimal.toFixed(4)} ${listing.price.currency.symbol}`,
+        t('marketplace.createListing.listedToast', {
+          price: `${listing.price.decimal.toFixed(4)} ${listing.price.currency.symbol}`,
+        }),
         {
-          description: 'It may take a moment to appear on the marketplace.',
+          description: t('marketplace.createListing.listedToastDescription'),
           action: {
-            label: 'View',
+            label: t('marketplace.listings.view'),
             onClick: () =>
               window.open(listing.externalUrl, '_blank', 'noopener,noreferrer'),
           },
@@ -269,32 +280,34 @@ export function CreateListingModal({
 
   const handleSubmit = async () => {
     if (!connectedAddress) {
-      toast.error('Connect a wallet to list this domain.');
+      toast.error(t('marketplace.createListing.connectWalletError'));
       return;
     }
     if (isListingStatusLoading) {
-      toast('Still checking active listings');
+      toast(t('marketplace.createListing.stillChecking'));
       return;
     }
     if (selectedMarketplaceListed) {
-      toast.error('This domain already has an active listing there.', {
-        description: 'Cancel the existing listing before creating a new one.',
+      toast.error(t('marketplace.createListing.alreadyListedError'), {
+        description: t(
+          'marketplace.createListing.alreadyListedErrorDescription',
+        ),
       });
       return;
     }
     if (!currency) {
-      toast.error('Pick a payment currency.');
+      toast.error(t('marketplace.createListing.pickCurrency'));
       return;
     }
     if (!priceWei) {
-      toast.error('Enter a valid price greater than 0.');
+      toast.error(t('marketplace.createListing.invalidPrice'));
       return;
     }
     if (activeChainId !== chainId) {
       try {
         await switchChainAsync({ chainId });
       } catch (error) {
-        toast.error('Switch to the correct network to continue.', {
+        toast.error(t('marketplace.createListing.switchNetwork'), {
           description: errorToMessage(error),
         });
         return;
@@ -314,8 +327,10 @@ export function CreateListingModal({
       });
     } catch (error) {
       const message = errorToMessage(error);
-      const friendly = friendlyErrorMessage(message);
-      toast.error('Failed to create listing', { description: friendly });
+      const friendly = friendlyErrorMessage(message, t);
+      toast.error(t('marketplace.createListing.createFailed'), {
+        description: friendly,
+      });
       throw error;
     }
   };
@@ -332,29 +347,30 @@ export function CreateListingModal({
           }
         >
           <Plus className="h-4 w-4 me-1.5" />
-          {triggerLabel}
+          {triggerLabel ?? t('marketplace.createListing.trigger')}
         </DialogTrigger>
       ) : null}
       <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-zinc-100">
             <ShoppingBag className="h-4 w-4 text-brand-primary" />
-            Create listing
+            {t('marketplace.createListing.title')}
           </DialogTitle>
           <DialogDescription>
-            Sell this domain on OpenSea. The listing is signed by your wallet
-            and posted to OpenSea's Seaport orderbook.
+            {t('marketplace.createListing.description')}
           </DialogDescription>
         </DialogHeader>
 
         {availableMarketplaceOptions.length === 0 ? (
           <p className="text-sm text-zinc-400">
-            No marketplaces support this network yet.
+            {t('marketplace.createListing.noMarketplaces')}
           </p>
         ) : (
           <div className="space-y-5">
             <div className="space-y-2">
-              <Label className="text-sm text-zinc-300">Marketplace</Label>
+              <Label className="text-sm text-zinc-300">
+                {t('marketplace.createListing.marketplaceLabel')}
+              </Label>
               <Select
                 value={marketplaceId}
                 onValueChange={(v) => setMarketplaceId(v as MarketplaceId)}
@@ -370,19 +386,20 @@ export function CreateListingModal({
                       disabled={option.alreadyListed}
                     >
                       {option.label}
-                      {option.alreadyListed ? ' — already listed' : ''}
+                      {option.alreadyListed
+                        ? t('marketplace.createListing.alreadyListedSuffix')
+                        : ''}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
               {isListingStatusLoading ? (
                 <p className="text-xs text-zinc-500">
-                  Checking active listings...
+                  {t('marketplace.createListing.checkingListings')}
                 </p>
               ) : allMarketplacesListed ? (
                 <p className="text-xs text-amber-300">
-                  This domain is already listed on every supported marketplace.
-                  Cancel an existing listing to relist.
+                  {t('marketplace.createListing.allListed')}
                 </p>
               ) : selectedMarketplace ? (
                 <p className="text-xs text-zinc-500">
@@ -397,21 +414,25 @@ export function CreateListingModal({
                   htmlFor="marketplace-price"
                   className="text-sm text-zinc-300"
                 >
-                  Price ({currency?.symbol ?? '—'})
+                  {t('marketplace.createListing.priceLabel', {
+                    currency: currency?.symbol ?? '—',
+                  })}
                 </Label>
                 <Input
                   id="marketplace-price"
                   type="number"
                   min="0"
                   step="0.0001"
-                  placeholder="0.05"
+                  placeholder={t('marketplace.createListing.pricePlaceholder')}
                   value={priceInput}
                   onChange={(e) => setPriceInput(e.target.value)}
                   className="bg-zinc-950/40 border-zinc-800 text-zinc-100 font-mono"
                 />
               </div>
               <div className="space-y-2">
-                <Label className="text-sm text-zinc-300">Currency</Label>
+                <Label className="text-sm text-zinc-300">
+                  {t('marketplace.createListing.currencyLabel')}
+                </Label>
                 <Select
                   value={currencyAddress}
                   onValueChange={(v) => setCurrencyAddress(v as Address)}
@@ -422,7 +443,10 @@ export function CreateListingModal({
                   <SelectContent>
                     {availableCurrencies.map((c) => (
                       <SelectItem key={c.contract} value={c.contract}>
-                        {c.symbol} — {c.name}
+                        {t('marketplace.createListing.currencyOption', {
+                          symbol: c.symbol,
+                          name: c.name,
+                        })}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -431,18 +455,24 @@ export function CreateListingModal({
             </div>
 
             <div className="space-y-2">
-              <Label className="text-sm text-zinc-300">Duration</Label>
+              <Label className="text-sm text-zinc-300">
+                {t('marketplace.createListing.durationLabel')}
+              </Label>
               <Select
                 value={String(durationSeconds)}
                 onValueChange={(v) => setDurationSeconds(Number(v))}
               >
                 <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
-                  <SelectValue>{selectedDuration?.label}</SelectValue>
+                  <SelectValue>
+                    {selectedDuration
+                      ? durationLabel(selectedDuration.seconds)
+                      : undefined}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {DURATION_OPTIONS.map((d) => (
                     <SelectItem key={d.seconds} value={String(d.seconds)}>
-                      {d.label}
+                      {durationLabel(d.seconds)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -469,7 +499,9 @@ export function CreateListingModal({
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             >
               <ShoppingBag className="h-4 w-4 me-2" />
-              List on {selectedMarketplace?.label ?? marketplaceId}
+              {t('marketplace.createListing.listOn', {
+                marketplace: selectedMarketplace?.label ?? marketplaceId,
+              })}
             </AsyncButton>
           ) : (
             <AsyncButton
@@ -482,7 +514,7 @@ export function CreateListingModal({
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             >
               <Wallet2 className="h-4 w-4 me-2" />
-              Connect wallet
+              {t('marketplace.createListing.connectWallet')}
             </AsyncButton>
           )}
         </DialogFooter>
@@ -501,6 +533,7 @@ function FeePreview({
   currency: ListingCurrency | undefined;
   priceWei: bigint | undefined;
 }) {
+  const t = useTranslations('domains');
   if (!priceWei || !currency || !fees) return null;
   // Use formatUnits to avoid precision loss when netToSellerWei exceeds
   // Number.MAX_SAFE_INTEGER (true for 18-decimal token amounts above ~9 ETH).
@@ -508,16 +541,16 @@ function FeePreview({
   return (
     <div className="rounded-xl border border-zinc-800 bg-zinc-950/40 p-4 text-sm space-y-2">
       <div className="flex justify-between text-zinc-400">
-        <span>Marketplace fee</span>
+        <span>{t('marketplace.createListing.feeMarketplace')}</span>
         <span>{(fees.marketplaceFeeBps / 100).toFixed(2)}%</span>
       </div>
       <div className="flex justify-between text-zinc-400">
-        <span>Creator royalty</span>
+        <span>{t('marketplace.createListing.feeRoyalty')}</span>
         <span>{(fees.royaltyFeeBps / 100).toFixed(2)}%</span>
       </div>
       <div className="flex justify-between text-zinc-100 font-medium pt-2 border-t border-zinc-800">
         <span className="flex items-center gap-1">
-          You receive
+          {t('marketplace.createListing.feeYouReceive')}
           {fees.isEstimate ? (
             <TooltipProvider>
               <Tooltip>
@@ -526,11 +559,11 @@ function FeePreview({
                     variant="outline"
                     className="ms-1 text-[10px] border-amber-500/40 text-amber-300"
                   >
-                    estimate
+                    {t('marketplace.createListing.feeEstimate')}
                   </Badge>
                 </TooltipTrigger>
                 <TooltipContent>
-                  Final fees are computed by the marketplace at signing time.
+                  {t('marketplace.createListing.feeEstimateTooltip')}
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -572,33 +605,36 @@ function errorToMessage(error: unknown): string {
 
 const HTTP_429_PATTERN = /\b429\b/;
 
-function friendlyErrorMessage(message: string): string {
+function friendlyErrorMessage(
+  message: string,
+  t: ReturnType<typeof useTranslations<'domains'>>,
+): string {
   const lowered = message.toLowerCase();
   if (lowered.includes('user rejected') || lowered.includes('user denied')) {
-    return 'Signature cancelled in your wallet.';
+    return t('marketplace.createListing.errorSignatureCancelled');
   }
   if (lowered.includes('insufficient funds')) {
-    return 'Wallet does not have enough native ETH for the approval transaction.';
+    return t('marketplace.createListing.errorInsufficientFunds');
   }
   if (
     lowered.includes('marketplace is not configured') ||
     lowered.includes('api key')
   ) {
-    return 'The marketplace integration is not configured for this environment.';
+    return t('marketplace.createListing.errorNotConfigured');
   }
   if (
     HTTP_429_PATTERN.test(lowered) ||
     lowered.includes('too many requests') ||
     lowered.includes('rate limit')
   ) {
-    return 'The marketplace is rate-limiting requests right now. Wait a minute and try again.';
+    return t('marketplace.createListing.errorRateLimited');
   }
   if (
     lowered.includes('call_exception') ||
     lowered.includes('missing revert data') ||
     lowered.includes("seaport contract isn't available")
   ) {
-    return "Couldn't reach OpenSea's Seaport contract on this network. Make sure your wallet is connected to the same chain as the domain NFT, then try again.";
+    return t('marketplace.createListing.errorSeaportUnavailable');
   }
   return message;
 }

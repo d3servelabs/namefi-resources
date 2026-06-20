@@ -18,6 +18,7 @@ import {
   AlertDialogTitle,
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { addDays, format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 /** Number of days after import during which export is not allowed (ICANN rule) */
 // const TRANSFER_LOCK_DAYS = process.env.ENVIRONMENT === 'production' ? 60 : 0;
@@ -30,6 +31,7 @@ export function TransferLockGuard({
   domainExportDetails: AppRouterOutput['domainConfig']['getDomainExportDetails'];
   children: ReactElement;
 }) {
+  const t = useTranslations('dnsManagement');
   const [showTransferLockDialog, setShowTransferLockDialog] = useState(false);
 
   // Calculate the export available date for display in the dialog
@@ -57,29 +59,26 @@ export function TransferLockGuard({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Export Available{' '}
-              {exportAvailableDate
-                ? format(exportAvailableDate, 'yyyy-MM-dd')
-                : ''}
+              {t('overview.transferLock.title', {
+                date: exportAvailableDate
+                  ? format(exportAvailableDate, 'yyyy-MM-dd')
+                  : '',
+              })}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Domains are locked for 60 days after import per ICANN policy.
-              {domainExportDetails?.dateTokenized && (
-                <>
-                  {' '}
-                  This domain was imported on{' '}
-                  {format(
+              {t('overview.transferLock.description')}
+              {domainExportDetails?.dateTokenized &&
+                t('overview.transferLock.importedOn', {
+                  date: format(
                     new Date(domainExportDetails.dateTokenized),
                     'yyyy-MM-dd',
-                  )}
-                  .
-                </>
-              )}
+                  ),
+                })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => setShowTransferLockDialog(false)}>
-              Got It
+              {t('overview.transferLock.gotIt')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

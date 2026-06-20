@@ -4,6 +4,9 @@ import type {
 } from '@namefi-astra/common/shared-schemas';
 import type { Route } from 'next';
 
+// Resource-type display labels are localized at the call site via
+// `t('notifications.resourceTypes.<type>')` (see `notification-item.tsx`).
+
 /**
  * Resource kinds that map to a real detail page in this app. Used both
  * by `NotificationItem` (footer link rendering) and by the browser
@@ -26,18 +29,5 @@ export function resourceHref(
       return '/orders';
     default:
       return null;
-  }
-}
-
-export function resourceLabel(resource: NotificationRelatedResource): string {
-  switch (resource.type) {
-    case 'domain':
-      return 'Domain';
-    case 'order':
-      return 'Order';
-    case 'order_item':
-      return 'Order item';
-    default:
-      return resource.type;
   }
 }

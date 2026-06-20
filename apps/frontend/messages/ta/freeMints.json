@@ -25,5 +25,10 @@
     "validThru": "காலம் வரை",
     "claimNow": "இப்போது கோரு",
     "poweredByNamefi": "Namefi ஆல் இயக்கப்படுகிறது"
+  },
+  "dropdown": {
+    "title": "இலவச Mints",
+    "claim": "கோருங்கள்",
+    "viewAll": "அனைத்து இலவச Mints காண்க"
   }
 }

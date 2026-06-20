@@ -159,5 +159,115 @@
     "nftAlt": "NFT",
     "offerWaiting": "オファーは有効です。出品者の承認をお待ちください。"
   },
-  "metaTitle": "Namefi | ドメイン管理"
+  "metaTitle": "Namefi | ドメイン管理",
+  "card": {
+    "account": "アカウント",
+    "expand": "展開",
+    "collapse": "折りたたむ",
+    "expandAll": "すべて展開",
+    "collapseAll": "すべて折りたたむ",
+    "sort": "並び替え"
+  },
+  "marketplace": {
+    "unsupportedChain": {
+      "title": "{chain} ではマーケットプレイスへの出品はまだサポートされていません",
+      "supportedNetworks": "対応ネットワーク: {networks}。"
+    },
+    "exportBlocked": {
+      "title": "マーケットプレイスへの出品ができません",
+      "description": "このドメインが他のレジストラへのエクスポートを許可している間は、Web3 マーケットプレイスへの出品はできません。エクスポートを無効にするには <link>サポートにお問い合わせ</link> ください。"
+    },
+    "listings": {
+      "title": "現在の出品",
+      "description": "対応マーケットプレイスにおけるアクティブな販売出品一覧です。",
+      "findBuyers": "購入者を探す",
+      "findBuyersAria": "{domain} の購入者を探す",
+      "columnMarketplace": "マーケットプレイス",
+      "columnPrice": "価格",
+      "columnExpires": "有効期限",
+      "columnActions": "操作",
+      "loadFailed": "出品を読み込めませんでした: {error}",
+      "empty": "アクティブな出品はありません。「出品を作成」を使用してこのドメインを販売に出してください。",
+      "view": "表示",
+      "cancel": "キャンセル",
+      "cancelled": "出品をキャンセルしました",
+      "cancelledDescription": "まもなくマーケットプレイスから非表示になります。",
+      "cancelFailed": "出品のキャンセルに失敗しました"
+    },
+    "offers": {
+      "title": "受信したオファー",
+      "description": "対応マーケットプレイスでこのドメインに寄せられた入札です。オファーを承認すると、NFT が入札者に転送され、入札額があなたに支払われます。",
+      "columnMarketplace": "マーケットプレイス",
+      "columnBidder": "入札者",
+      "columnOffer": "オファー",
+      "columnExpires": "有効期限",
+      "columnActions": "操作",
+      "loadFailed": "オファーを読み込めませんでした: {error}",
+      "empty": "アクティブなオファーはありません。購入者が入札するとここに表示されます。",
+      "view": "表示",
+      "accept": "承認",
+      "accepted": "{price} のオファーを承認しました",
+      "acceptedDescription": "NFT が入札者に転送されました。",
+      "acceptFailed": "オファーの承認に失敗しました"
+    },
+    "createListing": {
+      "trigger": "出品を作成",
+      "title": "出品を作成",
+      "description": "OpenSea でこのドメインを販売します。出品はウォレットで署名され、OpenSea の Seaport オーダーブックに登録されます。",
+      "noMarketplaces": "このネットワークに対応しているマーケットプレイスはまだありません。",
+      "marketplaceLabel": "マーケットプレイス",
+      "alreadyListedSuffix": " — 出品済み",
+      "checkingListings": "アクティブな出品を確認しています...",
+      "allListed": "このドメインはすべての対応マーケットプレイスにすでに出品されています。再出品するには既存の出品をキャンセルしてください。",
+      "priceLabel": "価格（{currency}）",
+      "pricePlaceholder": "0.05",
+      "currencyLabel": "通貨",
+      "currencyOption": "{symbol} — {name}",
+      "durationLabel": "期間",
+      "duration1Day": "1日",
+      "duration7Days": "7日間",
+      "duration30Days": "30日間",
+      "listOn": "{marketplace} に出品する",
+      "connectWallet": "ウォレットを接続",
+      "feeMarketplace": "マーケットプレイス手数料",
+      "feeRoyalty": "クリエイターロイヤリティ",
+      "feeYouReceive": "受取額",
+      "feeEstimate": "概算",
+      "feeEstimateTooltip": "最終的な手数料は署名時にマーケットプレイスによって計算されます。",
+      "listedToast": "{price} で出品しました",
+      "listedToastDescription": "マーケットプレイスに表示されるまで少し時間がかかる場合があります。",
+      "connectWalletError": "このドメインを出品するにはウォレットを接続してください。",
+      "stillChecking": "アクティブな出品を引き続き確認しています",
+      "alreadyListedError": "このドメインはすでにそのマーケットプレイスでアクティブな出品があります。",
+      "alreadyListedErrorDescription": "新しい出品を作成する前に既存の出品をキャンセルしてください。",
+      "pickCurrency": "支払い通貨を選択してください。",
+      "invalidPrice": "0 より大きい有効な価格を入力してください。",
+      "switchNetwork": "続行するには正しいネットワークに切り替えてください。",
+      "createFailed": "出品の作成に失敗しました",
+      "errorSignatureCancelled": "ウォレットで署名がキャンセルされました。",
+      "errorInsufficientFunds": "承認トランザクションに必要なネイティブ ETH がウォレットに不足しています。",
+      "errorNotConfigured": "この環境ではマーケットプレイスの統合が設定されていません。",
+      "errorRateLimited": "マーケットプレイスが現在リクエストをレート制限しています。しばらくしてから再試行してください。",
+      "errorSeaportUnavailable": "このネットワーク上の OpenSea の Seaport コントラクトに接続できませんでした。ウォレットがドメイン NFT と同じチェーンに接続されていることを確認してから、再試行してください。"
+    }
+  },
+  "previouslyOwned": {
+    "title": "以前所有していたドメイン",
+    "columnAccount": "アカウント",
+    "columnRemovalDate": "削除日",
+    "columnReason": "理由",
+    "columnReceivingWallet": "受取ウォレット",
+    "empty": "以前所有していたドメインは見つかりませんでした",
+    "emptyDescription": "まだ連携済みウォレットからバーンまたは移管されたドメインはありません",
+    "selectChainPlaceholder": "チェーンを選択",
+    "allChains": "すべてのチェーン",
+    "clearFilters": "フィルターをクリア"
+  },
+  "dnsRecords": {
+    "selectAll": "すべて選択",
+    "selectRow": "行を選択"
+  },
+  "dnssec": {
+    "actionsAriaLabel": "アクション"
+  }
 }

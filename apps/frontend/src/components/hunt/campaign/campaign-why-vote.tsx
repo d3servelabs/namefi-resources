@@ -1,8 +1,10 @@
 'use client';
 
 import Image from 'next/image';
+import { useTranslations } from 'next-intl';
 
 export const CampaignWhyVote = () => {
+  const t = useTranslations('hunt');
   const benefits = [
     {
       icon: (
@@ -13,8 +15,8 @@ export const CampaignWhyVote = () => {
           height={48}
         />
       ),
-      title: 'Priority Claim',
-      description: 'First dibs on new subdomains (while supplies last)',
+      title: t('whyVote.priorityClaimTitle'),
+      description: t('whyVote.priorityClaimDescription'),
     },
     {
       icon: (
@@ -25,8 +27,8 @@ export const CampaignWhyVote = () => {
           height={48}
         />
       ),
-      title: 'Weekly $NFSC',
-      description: 'Weekly raffle to earn $NFSC for upvoter',
+      title: t('whyVote.weeklyNfscTitle'),
+      description: t('whyVote.weeklyNfscDescription'),
     },
     {
       icon: (
@@ -37,9 +39,8 @@ export const CampaignWhyVote = () => {
           height={48}
         />
       ),
-      title: 'Help launch [name].cv',
-      description:
-        'The [name].cv with highest votes launches subdomain issuance',
+      title: t('whyVote.launchTitle'),
+      description: t('whyVote.launchDescription'),
     },
   ];
 
@@ -56,7 +57,9 @@ export const CampaignWhyVote = () => {
             className="object-contain"
           />
         </div>
-        <h2 className="text-3xl font-semibold text-white">Why Vote?</h2>
+        <h2 className="text-3xl font-semibold text-white">
+          {t('whyVote.title')}
+        </h2>
       </div>
 
       {/* Benefits Grid */}

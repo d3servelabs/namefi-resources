@@ -1,9 +1,12 @@
+'use client';
+
 import {
   motion,
   AnimatePresence,
   LayoutGroup,
   useReducedMotion,
 } from 'motion/react';
+import { useTranslations } from 'next-intl';
 import { DomainItemSkeleton } from './domain-item-skeleton';
 import {
   type Domain,
@@ -28,6 +31,7 @@ export const DomainsList = ({
   unvote,
   isVotePending,
 }: DomainsListProps) => {
+  const t = useTranslations('hunt');
   const shouldReduceMotion = useReducedMotion();
 
   const {
@@ -61,7 +65,7 @@ export const DomainsList = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            Failed to load domains
+            {t('list.loadError')}
           </motion.div>
         )}
 
@@ -72,7 +76,7 @@ export const DomainsList = ({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            No more domains, please try again later.
+            {t('list.empty')}
           </motion.div>
         ) : (
           <AnimatePresence mode="popLayout">

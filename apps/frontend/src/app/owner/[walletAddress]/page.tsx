@@ -5,6 +5,7 @@ import {
 import { getOriginRuntime } from '@/lib/origin/utils.server';
 import type { OriginInfo } from '@/lib/origin';
 import { Suspense } from 'react';
+import { getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { PageShell } from '@/components/page-shell';
 import { WagmiProvider } from '@/components/providers/wagmi';
@@ -28,11 +29,13 @@ export default async function OwnerWalletPage({ params }: PageProps) {
     config: originRuntime.config,
   };
 
+  const t = await getTranslations('shared');
+
   return (
     <PageShell size="wide" padding="relaxed">
       <div className="mb-8 space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">
-          Domains owned by this wallet
+          {t('ownerPage.heading')}
         </h1>
         <p className="font-mono text-lg text-muted-foreground break-all">
           {decoded}

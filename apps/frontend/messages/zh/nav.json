@@ -15,5 +15,12 @@
     "hunt": "域名猎寻",
     "marketplace": "市场"
   },
-  "recentDomains": "最近浏览的域名"
+  "recentDomains": "最近浏览的域名",
+  "userDropdown": {
+    "unableToLoadMenu": "无法加载菜单。",
+    "signOutConfirmTitle": "确定要退出登录吗？",
+    "signOutConfirmDescription": "确定要退出登录吗？未保存的更改将会丢失。",
+    "signOutFailedTitle": "退出登录失败",
+    "signOutFailedFallback": "请重试。"
+  }
 }

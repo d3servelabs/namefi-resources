@@ -19,14 +19,15 @@ import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type RecordType, sanitizeDnsRecord } from '@namefi-astra/zod-dns';
 import { Trash2 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
   DNS_RECORD_TYPES,
   type DnsRecordFormValues,
-  TTL_OPTIONS,
-  dnsRecordSchema,
+  getDnsRecordSchema,
+  getTtlOptions,
 } from '../schemas';
 
 interface DnsRecordFormProps {
@@ -48,15 +49,6 @@ const SHORT_VALUE_TYPES = new Set<RecordType>(['A', 'AAAA', 'CNAME', 'NS']);
 
 const isShortValueType = (type: RecordType) => SHORT_VALUE_TYPES.has(type);
 
-const resolver = zodResolver(
-  z
-    .any()
-    .transform((val) => {
-      return sanitizeDnsRecord(val);
-    })
-    .pipe(dnsRecordSchema),
-);
-
 export function DnsRecordForm({
   defaultValues = DEFAULT_VALUES,
   onValuesChange,
@@ -65,6 +57,20 @@ export function DnsRecordForm({
   index,
   disabled = false,
 }: DnsRecordFormProps & { disabled?: boolean }) {
+  const t = useTranslations('dnsManagement');
+  const resolver = useMemo(
+    () =>
+      zodResolver(
+        z
+          .any()
+          .transform((val) => {
+            return sanitizeDnsRecord(val);
+          })
+          .pipe(getDnsRecordSchema(t)),
+      ),
+    [t],
+  );
+  const ttlOptions = useMemo(() => getTtlOptions(), []);
   const form = useForm<DnsRecordFormValues>({
     resolver,
     defaultValues,
@@ -102,7 +108,8 @@ export function DnsRecordForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm text-zinc-400">
-                Type <span className="text-red-500">*</span>
+                {t('dialogs.form.typeLabel')}{' '}
+                <span className="text-red-500">*</span>
               </FormLabel>
               <Select
                 onValueChange={(value) => {
@@ -114,7 +121,9 @@ export function DnsRecordForm({
               >
                 <FormControl>
                   <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue
+                      placeholder={t('dialogs.form.typePlaceholder')}
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -135,7 +144,9 @@ export function DnsRecordForm({
           name="ttl"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm text-zinc-400">TTL</FormLabel>
+              <FormLabel className="text-sm text-zinc-400">
+                {t('dialogs.form.ttlLabel')}
+              </FormLabel>
               <Select
                 onValueChange={(value) => {
                   if (!value) return;
@@ -146,16 +157,18 @@ export function DnsRecordForm({
               >
                 <FormControl>
                   <SelectTrigger className="bg-zinc-900 border-zinc-800">
-                    <SelectValue placeholder="Select TTL" />
+                    <SelectValue
+                      placeholder={t('dialogs.form.ttlPlaceholder')}
+                    />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {TTL_OPTIONS.map((option) => (
+                  {ttlOptions.map((option) => (
                     <SelectItem
                       key={option.value}
                       value={option.value.toString()}
                     >
-                      {option.label}
+                      {t(option.labelKey)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -170,11 +183,13 @@ export function DnsRecordForm({
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-sm text-zinc-400">Name</FormLabel>
+              <FormLabel className="text-sm text-zinc-400">
+                {t('dialogs.form.nameLabel')}
+              </FormLabel>
               <div className="flex flex-row flex-nowrap">
                 <FormControl>
                   <Input
-                    placeholder="www or @"
+                    placeholder={t('dialogs.form.namePlaceholder')}
                     className="bg-zinc-900 border-zinc-800 rounded-e-none"
                     {...field}
                     disabled={disabled}
@@ -200,7 +215,8 @@ export function DnsRecordForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel className="text-sm text-zinc-400">
-                Value <span className="text-red-500">*</span>
+                {t('dialogs.form.valueLabel')}{' '}
+                <span className="text-red-500">*</span>
               </FormLabel>
               <FormControl>
                 {isShortValueType(selectedType) ? (
@@ -231,7 +247,9 @@ export function DnsRecordForm({
               size="icon"
               onClick={onRemove}
               type="button"
-              aria-label={`Remove record ${index + 1}`}
+              aria-label={t('dialogs.form.removeRecordAria', {
+                index: index + 1,
+              })}
               disabled={disabled}
             >
               <Trash2 className="h-4 w-4" />

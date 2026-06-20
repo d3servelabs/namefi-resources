@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "Restez informé",
+  "defaultDescription": "Abonnez-vous à notre newsletter pour recevoir les dernières actualités et annonces.",
+  "closeAriaLabel": "Fermer le formulaire de newsletter",
+  "invalidEmail": "Veuillez saisir une adresse e-mail valide",
+  "successTitle": "Merci de votre abonnement !",
+  "successDescription": "Veuillez vérifier votre e-mail pour confirmer votre abonnement.",
+  "subscribeAnother": "S'abonner avec une autre adresse e-mail",
+  "emailPlaceholder": "Saisissez votre e-mail",
+  "subscribing": "Abonnement en cours…",
+  "subscribe": "S'abonner",
+  "subscribeToNewsletter": "S'abonner à la newsletter",
+  "nameLabel": "Nom (facultatif)",
+  "namePlaceholder": "Votre nom",
+  "emailLabel": "E-mail",
+  "emailExamplePlaceholder": "votre@email.com",
+  "toast": {
+    "subscribedTitle": "Abonné !",
+    "alreadySubscribedTitle": "Déjà abonné",
+    "alreadySubscribedDescription": "Vous êtes déjà sur notre liste de diffusion !",
+    "failedTitle": "Échec de l'abonnement",
+    "failedFallback": "Veuillez réessayer plus tard."
+  }
+}

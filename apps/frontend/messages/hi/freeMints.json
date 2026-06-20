@@ -25,5 +25,10 @@
     "validThru": "वैध तक",
     "claimNow": "अभी क्लेम करें",
     "poweredByNamefi": "Namefi द्वारा संचालित"
+  },
+  "dropdown": {
+    "title": "निःशुल्क मिंट",
+    "claim": "क्लेम करें",
+    "viewAll": "सभी निःशुल्क मिंट देखें"
   }
 }

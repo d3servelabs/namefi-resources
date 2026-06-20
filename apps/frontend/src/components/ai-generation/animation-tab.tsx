@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslations } from 'next-intl';
 import { ArrowLeft } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -34,6 +35,7 @@ export function AnimationTab({
   focusedLogo,
   onDismiss,
 }: AnimationTabProps) {
+  const t = useTranslations('aiGeneration');
   const {
     effectiveDomain,
     focusedLogoId,
@@ -92,10 +94,10 @@ export function AnimationTab({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold">Logo Animation</h2>
+          <h2 className="text-xl font-semibold">{t('animation.title')}</h2>
           {focusedLogo?.domain && (
             <p className="text-sm text-muted-foreground">
-              Using brand {focusedLogo.domain}
+              {t('animation.usingBrand', { domain: focusedLogo.domain })}
             </p>
           )}
         </div>
@@ -107,7 +109,7 @@ export function AnimationTab({
             className="gap-2"
           >
             <ArrowLeft className="h-4 w-4 rtl:-scale-x-100" />
-            Back to logos
+            {t('animation.backToLogos')}
           </Button>
         )}
       </div>
@@ -126,7 +128,7 @@ export function AnimationTab({
             initialSelectedLogoId={focusedLogoId ?? undefined}
           />
         }
-        title="Generated Animations"
+        title={t('animation.gridTitle')}
         convertToGeneratedItems={convertAnimationGenerations}
         availableLogos={logosWithFocus}
       />

@@ -5,6 +5,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { FC } from 'react';
 
 type TablePageSelectorProps = {
@@ -18,10 +19,14 @@ export const TablePageSelector: FC<TablePageSelectorProps> = ({
   setPageIndex,
   pageCount,
 }) => {
+  const t = useTranslations('shared');
   return (
     <div className="flex items-center gap-2">
       <span className="text-sm text-zinc-500">
-        Page {pageIndex + 1} of {pageCount || 1}
+        {t('table.pagination.pageOf', {
+          page: pageIndex + 1,
+          total: pageCount || 1,
+        })}
       </span>
 
       <Button

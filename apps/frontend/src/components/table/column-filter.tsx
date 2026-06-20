@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
 import { Filter, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 type FilterOperator = 'like' | 'eq' | 'neq' | 'gt' | 'gte' | 'lt' | 'lte';
@@ -36,34 +37,47 @@ type ColumnFilterProps = {
   options?: { value: string; label: string }[];
 };
 
+type OperatorLabelKey =
+  | 'contains'
+  | 'equals'
+  | 'notEquals'
+  | 'greaterThan'
+  | 'greaterOrEqual'
+  | 'lessThan'
+  | 'lessOrEqual'
+  | 'after'
+  | 'onOrAfter'
+  | 'before'
+  | 'onOrBefore';
+
 const OPERATORS_BY_TYPE: Record<
   string,
-  { value: FilterOperator; label: string }[]
+  { value: FilterOperator; labelKey: OperatorLabelKey }[]
 > = {
   text: [
-    { value: 'like', label: 'Contains' },
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
+    { value: 'like', labelKey: 'contains' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
   ],
   number: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'Greater Than' },
-    { value: 'gte', label: 'Greater or Equal' },
-    { value: 'lt', label: 'Less Than' },
-    { value: 'lte', label: 'Less or Equal' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'greaterThan' },
+    { value: 'gte', labelKey: 'greaterOrEqual' },
+    { value: 'lt', labelKey: 'lessThan' },
+    { value: 'lte', labelKey: 'lessOrEqual' },
   ],
   date: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'After' },
-    { value: 'gte', label: 'On or After' },
-    { value: 'lt', label: 'Before' },
-    { value: 'lte', label: 'On or Before' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'after' },
+    { value: 'gte', labelKey: 'onOrAfter' },
+    { value: 'lt', labelKey: 'before' },
+    { value: 'lte', labelKey: 'onOrBefore' },
   ],
   select: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
   ],
 };
 
@@ -82,6 +96,7 @@ export function ColumnFilter({
   onChange,
   options,
 }: ColumnFilterProps) {
+  const t = useTranslations('shared');
   const operators = OPERATORS_BY_TYPE[filterType] ?? OPERATORS_BY_TYPE.text;
   const defaultOperator = operators[0]?.value ?? 'like';
 
@@ -120,13 +135,13 @@ export function ColumnFilter({
       if (filterType === 'number') {
         processedValue = Number(filterValue);
         if (Number.isNaN(processedValue)) {
-          toast.error('Invalid number');
+          toast.error(t('table.filter.invalidNumber'));
           return;
         }
       } else if (filterType === 'date') {
         processedValue = new Date(filterValue);
         if (Number.isNaN(processedValue.getTime())) {
-          toast.error('Invalid date');
+          toast.error(t('table.filter.invalidDate'));
           return;
         }
       }
@@ -157,12 +172,16 @@ export function ColumnFilter({
         }
       >
         <Filter className="h-3 w-3" />
-        {isActive && <span className="sr-only">Filter active</span>}
+        {isActive && (
+          <span className="sr-only">{t('table.filter.filterActive')}</span>
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-80" align="start">
         <div className="space-y-4">
           <div className="space-y-2">
-            <h4 className="font-medium text-sm">Filter {columnName}</h4>
+            <h4 className="font-medium text-sm">
+              {t('table.filter.filterColumn', { column: columnName })}
+            </h4>
           </div>
 
           <div className="space-y-2">
@@ -170,7 +189,7 @@ export function ColumnFilter({
               htmlFor="filter-operator"
               className="text-xs text-muted-foreground"
             >
-              Operator
+              {t('table.filter.operator')}
             </label>
             <Select
               value={operator}
@@ -185,7 +204,7 @@ export function ColumnFilter({
               <SelectContent>
                 {operators.map((op) => (
                   <SelectItem key={op.value} value={op.value}>
-                    {op.label}
+                    {t(`table.filter.operators.${op.labelKey}`)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -197,7 +216,7 @@ export function ColumnFilter({
               htmlFor="filter-value"
               className="text-xs text-muted-foreground"
             >
-              Value
+              {t('table.filter.value')}
             </label>
             {filterType === 'select' && options ? (
               <Select
@@ -208,7 +227,9 @@ export function ColumnFilter({
                 }}
               >
                 <SelectTrigger id="filter-value">
-                  <SelectValue placeholder="Select..." />
+                  <SelectValue
+                    placeholder={t('table.filter.selectPlaceholder')}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   {options.map((option) => (
@@ -228,7 +249,9 @@ export function ColumnFilter({
                       ? 'date'
                       : 'text'
                 }
-                placeholder={`Enter ${columnName.toLowerCase()}...`}
+                placeholder={t('table.filter.enterFieldPlaceholder', {
+                  field: columnName.toLowerCase(),
+                })}
                 value={filterValue}
                 onChange={(e) => setFilterValue(e.target.value)}
                 onKeyDown={(e) => {
@@ -242,7 +265,7 @@ export function ColumnFilter({
 
           <div className="flex gap-2">
             <Button onClick={handleApply} size="sm" className="flex-1">
-              Apply
+              {t('table.filter.apply')}
             </Button>
             <Button
               onClick={handleClear}
@@ -251,7 +274,7 @@ export function ColumnFilter({
               className="gap-1"
             >
               <X className="h-3 w-3" />
-              Clear
+              {t('table.filter.clear')}
             </Button>
           </div>
         </div>

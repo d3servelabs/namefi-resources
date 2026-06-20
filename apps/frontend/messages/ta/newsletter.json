@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "புதுப்பிப்புகளை பெறுங்கள்",
+  "defaultDescription": "சமீபத்திய புதுப்பிப்புகள் மற்றும் அறிவிப்புகளுக்கு எங்கள் செய்திமடலுக்கு சந்தா செலுத்துங்கள்.",
+  "closeAriaLabel": "செய்திமடல் படிவத்தை மூடு",
+  "invalidEmail": "சரியான மின்னஞ்சல் முகவரியை உள்ளிடவும்",
+  "successTitle": "சந்தா செலுத்தியதற்கு நன்றி!",
+  "successDescription": "உங்கள் சந்தாவை உறுதிப்படுத்த உங்கள் மின்னஞ்சலை சரிபார்க்கவும்.",
+  "subscribeAnother": "வேறொரு மின்னஞ்சலுடன் சந்தா செலுத்துங்கள்",
+  "emailPlaceholder": "உங்கள் மின்னஞ்சலை உள்ளிடுங்கள்",
+  "subscribing": "சந்தா செலுத்துகிறது...",
+  "subscribe": "சந்தா செலுத்துங்கள்",
+  "subscribeToNewsletter": "செய்திமடலுக்கு சந்தா செலுத்துங்கள்",
+  "nameLabel": "பெயர் (விருப்பத்தேர்வு)",
+  "namePlaceholder": "உங்கள் பெயர்",
+  "emailLabel": "மின்னஞ்சல்",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "சந்தா செலுத்தப்பட்டது!",
+    "alreadySubscribedTitle": "ஏற்கனவே சந்தா செலுத்தப்பட்டது",
+    "alreadySubscribedDescription": "நீங்கள் ஏற்கனவே எங்கள் அஞ்சல் பட்டியலில் உள்ளீர்கள்!",
+    "failedTitle": "சந்தா தோல்வியடைந்தது",
+    "failedFallback": "பிறகு மீண்டும் முயற்சிக்கவும்."
+  }
+}

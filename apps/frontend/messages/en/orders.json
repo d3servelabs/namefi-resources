@@ -51,7 +51,8 @@
     "renew": "Renew"
   },
   "unlinkedWalletTooltip": "This wallet is not linked to the current account, so you won't be able to see the domain in account",
-  "walletNotLinked": "This wallet isn't linked to your account.",
+  "nftWalletLabel": "NFT Wallet",
+  "viewTransactionTitle": "View transaction",
   "timeline": {
     "subtitle": "Live order updates",
     "orderDetails": {

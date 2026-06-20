@@ -1,0 +1,24 @@
+{
+  "defaultTitle": "最新情報をお受け取りください",
+  "defaultDescription": "ニュースレターを購読して、最新のアップデートやお知らせをお受け取りください。",
+  "closeAriaLabel": "ニュースレターフォームを閉じる",
+  "invalidEmail": "有効なメールアドレスを入力してください",
+  "successTitle": "ご購読ありがとうございます！",
+  "successDescription": "購読を確認するため、メールをご確認ください。",
+  "subscribeAnother": "別のメールアドレスで購読する",
+  "emailPlaceholder": "メールアドレスを入力",
+  "subscribing": "購読中...",
+  "subscribe": "購読する",
+  "subscribeToNewsletter": "ニュースレターを購読する",
+  "nameLabel": "名前（任意）",
+  "namePlaceholder": "お名前",
+  "emailLabel": "メールアドレス",
+  "emailExamplePlaceholder": "your@email.com",
+  "toast": {
+    "subscribedTitle": "購読完了！",
+    "alreadySubscribedTitle": "すでに購読済みです",
+    "alreadySubscribedDescription": "すでにメーリングリストに登録されています！",
+    "failedTitle": "購読に失敗しました",
+    "failedFallback": "後ほど再試行してください。"
+  }
+}

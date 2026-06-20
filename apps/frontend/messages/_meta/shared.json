@@ -5,6 +5,179 @@
   "authRequired.description": {
     "description": "Body of the auth-required prompt asking the user to sign in to continue."
   },
+  "authRequired.communityDescription": {
+    "description": "Longer body of the auth-required prompt: asks the user to sign in and join the community to discover and vote for domains."
+  },
+  "walletConnectionDialog.walletAndNetworkReady": {
+    "description": "Success message in the wallet-connection dialog confirming both the wallet and network are ready."
+  },
+  "walletConnectionDialog.preparing": {
+    "description": "Loading message shown while the wallet-connection dialog prepares. Includes a trailing ellipsis."
+  },
+  "walletConnectionDialog.connectWallet": {
+    "description": "Button to connect a wallet in the wallet-connection dialog.",
+    "maxLength": 18
+  },
+  "walletConnectionDialog.useThisWallet": {
+    "description": "Button to set an already-connected wallet as the active one.",
+    "maxLength": 18
+  },
+  "walletConnectionDialog.switchWallet": {
+    "description": "Button to switch to the required wallet when a different one is connected.",
+    "maxLength": 18
+  },
+  "walletConnectionDialog.switchNetwork": {
+    "description": "Button to switch the wallet to the required blockchain network.",
+    "maxLength": 18
+  },
+  "walletConnectionDialog.connecting": {
+    "description": "Busy label on the connect button while connecting. Includes a trailing ellipsis.",
+    "maxLength": 16
+  },
+  "walletConnectionDialog.activating": {
+    "description": "Busy label while the chosen wallet is being set as active. Includes a trailing ellipsis.",
+    "maxLength": 16
+  },
+  "walletConnectionDialog.switchingNetwork": {
+    "description": "Busy label while the wallet network is being switched. Includes a trailing ellipsis.",
+    "maxLength": 20
+  },
+  "walletConnectionDialog.walletStep": {
+    "description": "Step-indicator label for the wallet step of the wallet-connection flow.",
+    "maxLength": 12
+  },
+  "walletConnectionDialog.networkStep": {
+    "description": "Step-indicator label for the network step of the wallet-connection flow.",
+    "maxLength": 12
+  },
+  "walletConnectionDialog.requiredWallet": {
+    "description": "Label for the wallet address the user must connect (the required wallet)."
+  },
+  "walletConnectionDialog.differentWalletConnected": {
+    "description": "Warning noting the user connected a wallet other than the required one."
+  },
+  "walletConnectionDialog.youConnected": {
+    "description": "Label preceding the wallet address the user actually connected."
+  },
+  "walletConnectionDialog.butWeNeed": {
+    "description": "Label preceding the wallet address the app actually requires (contrast with what the user connected)."
+  },
+  "walletConnectionDialog.switchNetworkPrompt": {
+    "description": "Warning asking the user to switch their wallet network to continue."
+  },
+  "walletConnectionDialog.current": {
+    "description": "Label for the user's current blockchain network in the network panel.",
+    "maxLength": 14
+  },
+  "walletConnectionDialog.required": {
+    "description": "Label for the required blockchain network in the network panel.",
+    "maxLength": 14
+  },
+  "walletConnectionDialog.chainLabel": {
+    "description": "Label showing a blockchain chain by its numeric id. {id} is the EVM chain id (e.g. 1) — keep the placeholder."
+  },
+  "domainSearchCombobox.placeholder": {
+    "description": "Placeholder in the domain search/select combobox; means 'Select or enter a domain'."
+  },
+  "domainSearchCombobox.loadingDomains": {
+    "description": "Loading text shown in the domain combobox while domain options load."
+  },
+  "domainSearchCombobox.useTypedDomain": {
+    "description": "Section heading in the domain combobox above the option that uses the user's typed-in domain."
+  },
+  "domainSearchCombobox.domains": {
+    "description": "Section heading in the domain combobox above the list of suggested domains."
+  },
+  "previewGate.title": {
+    "description": "Title of the preview-access gate shown on preview/staging environments; means 'Preview access'."
+  },
+  "previewGate.description": {
+    "description": "Body of the preview-access gate prompting the user to enter the access code."
+  },
+  "previewGate.accessCode": {
+    "description": "Label for the access-code input on the preview-access gate."
+  },
+  "previewGate.unlock": {
+    "description": "Button that submits the access code to unlock the preview environment.",
+    "maxLength": 14
+  },
+  "missingEmail.noContactEmail": {
+    "description": "Title/label of the warning shown when the user has no contact email on file; means 'No Contact Email'."
+  },
+  "missingEmail.later": {
+    "description": "Dismiss button on the missing-email warning, deferring the action.",
+    "maxLength": 12
+  },
+  "missingEmail.addEmailToProfile": {
+    "description": "Primary button on the missing-email dialog that navigates to the profile to add an email."
+  },
+  "missingEmail.addEmail": {
+    "description": "Primary button on the missing-email popover that navigates to add an email.",
+    "maxLength": 14
+  },
+  "announcements.previous": {
+    "description": "Accessibility (aria) label for the button that shows the previous announcement."
+  },
+  "announcements.next": {
+    "description": "Accessibility (aria) label for the button that shows the next announcement."
+  },
+  "announcements.dismiss": {
+    "description": "Accessibility (aria) label for the button that dismisses an announcement."
+  },
+  "emailRequired.title": {
+    "description": "Title of the email-required dialog; means 'Email Required'."
+  },
+  "emailRequired.description": {
+    "description": "Body of the email-required dialog asking the user to add a valid email to continue."
+  },
+  "voteOrShare.signInToVote": {
+    "description": "Primary button to sign in so the user can vote for a domain."
+  },
+  "voteOrShare.shareDomainInstead": {
+    "description": "Secondary button to share a domain instead of signing in to vote."
+  },
+  "datePicker.naturalLanguagePlaceholder": {
+    "description": "Placeholder in the natural-language date input giving example phrasings; e.g. 'Tomorrow or next week'."
+  },
+  "datePicker.selectDate": {
+    "description": "Accessibility (sr-only) label for the calendar button that opens the date picker; means 'Select date'."
+  },
+  "selectWalletAndChain.linked": {
+    "description": "Badge marking a wallet as linked to the user's account.",
+    "maxLength": 12
+  },
+  "selectWalletAndChain.selectChainPlaceholder": {
+    "description": "Placeholder in the chain selector before a network is chosen; means 'Select a Chain'."
+  },
+  "feedback.close": {
+    "description": "Accessibility (aria) label for the button that closes the feedback toast."
+  },
+  "feedback.skip": {
+    "description": "Button that skips/dismisses the feedback prompt without submitting.",
+    "maxLength": 12
+  },
+  "nftWalletCard.copyResolvedAddress": {
+    "description": "Accessibility (sr-only) label for the button that copies the resolved wallet address."
+  },
+  "nftWalletCard.title": {
+    "description": "Card title for the receiving-wallet input that accepts a wallet address or ENS name. Keep 'ENS' untranslated."
+  },
+  "creditCard.cardHolder": {
+    "description": "Field label on the credit-card visual for the cardholder's name; means 'Card Holder'."
+  },
+  "creditCard.expires": {
+    "description": "Field label on the credit-card visual for the expiration date; means 'Expires'."
+  },
+  "walletCard.ethereumWallet": {
+    "description": "Footer label on the wallet card indicating an Ethereum wallet. Keep 'Ethereum' (network name) recognizable."
+  },
+  "walletCard.connected": {
+    "description": "Status label on the wallet card indicating the wallet is connected.",
+    "maxLength": 14
+  },
+  "walletCard.connectedNetworks": {
+    "description": "Title of the dialog listing the networks a wallet is connected to."
+  },
   "requestWalletConnection.defaultActionDescription": {
     "description": "Default value substituted into the {actionDescription} placeholder of the 'connect' description, e.g. 'to complete this action'. A short purpose clause."
   },
@@ -81,6 +254,9 @@
   },
   "myDomains.heading": {
     "description": "Page/section heading for the list of domains the signed-in user owns; means 'My Domains'."
+  },
+  "ownerPage.heading": {
+    "description": "Heading on the public owner page showing all domains held by a given wallet address."
   },
   "walletNftGrid.notIndexedYet": {
     "description": "Badge on an NFT card indicating the domain has not been indexed yet."
@@ -175,6 +351,10 @@
     "description": "Primary button to confirm the instant purchase.",
     "maxLength": 12
   },
+  "instantBuyModal.tooltip": {
+    "description": "Tooltip shown on hover over the Buy Now instant-buy button, explaining the action.",
+    "maxLength": 40
+  },
   "instantBuyModal.errorTitle": {
     "description": "Error title shown when the instant purchase fails."
   },
@@ -183,5 +363,231 @@
   },
   "instantBuyModal.errorDetail": {
     "description": "Technical error detail line. {error} is the raw error message/code — keep untranslated."
+  },
+  "table.searchPlaceholder": {
+    "description": "Default placeholder for the table's global search input; means 'Search...'. Includes a trailing ellipsis."
+  },
+  "table.empty": {
+    "description": "Empty-state text shown in a table body when there are no rows; short form meaning 'No data'."
+  },
+  "table.emptyDefault": {
+    "description": "Default empty-state message for a data table when no rows are returned; means 'No data found'."
+  },
+  "table.emptyAuditLogs": {
+    "description": "Default empty-state message for the audit-log data table when no log entries are found."
+  },
+  "table.loadingAuditLogs": {
+    "description": "Default loading message for the audit-log data table while entries load. Includes a trailing ellipsis."
+  },
+  "table.noMoreRows": {
+    "description": "Label on the load-more button when there are no further rows to load.",
+    "maxLength": 16
+  },
+  "table.showing": {
+    "description": "Toolbar text reporting how many rows are currently shown. {count} is the number; keep ICU plural syntax intact."
+  },
+  "table.pagination.rowsPerPage": {
+    "description": "Label before the page-size selector controlling how many rows show per page; means 'Rows per page:'.",
+    "maxLength": 18
+  },
+  "table.pagination.pageOf": {
+    "description": "Current page indicator. {page} is the current page number and {total} the total page count; keep both placeholders."
+  },
+  "table.pagination.pageOfTotal": {
+    "description": "Pagination summary combining current page and total row count. {page}, {total} are numbers; {count} drives the ICU plural — keep all placeholders and ICU syntax."
+  },
+  "table.pagination.totalShort": {
+    "description": "Compact (mobile) pagination summary showing only the total row count. {count} drives the ICU plural — keep ICU syntax intact."
+  },
+  "table.pagination.previous": {
+    "description": "Button to go to the previous page of table results.",
+    "maxLength": 12
+  },
+  "table.pagination.next": {
+    "description": "Button to go to the next page of table results.",
+    "maxLength": 12
+  },
+  "table.columns.label": {
+    "description": "Dropdown trigger label for the column-visibility menu; means 'Columns'.",
+    "maxLength": 12
+  },
+  "table.columns.toggle": {
+    "description": "Heading inside the column-visibility dropdown for toggling individual columns on/off."
+  },
+  "table.columns.resetToDefaults": {
+    "description": "Action that restores the table's column layout/visibility to its default settings."
+  },
+  "table.columns.resizeColumn": {
+    "description": "Accessible (aria) label for the drag handle that resizes a table column."
+  },
+  "table.filters.label": {
+    "description": "Button label that opens the table's filter panel; means 'Filters'.",
+    "maxLength": 12
+  },
+  "table.filterPanel.title": {
+    "description": "Title of the table filter side panel; means 'Table Filters'."
+  },
+  "table.filterPanel.titleAdvanced": {
+    "description": "Title of the advanced (multi-condition) table filter side panel; means 'Advanced Filters'."
+  },
+  "table.filterPanel.description": {
+    "description": "Subtitle of the table filter panel explaining its purpose."
+  },
+  "table.filterPanel.descriptionAdvanced": {
+    "description": "Subtitle of the advanced filter panel. Keep 'AND/OR' (logical operators) recognizable; they may stay as-is."
+  },
+  "table.filterPanel.activeCount": {
+    "description": "Badge showing how many filters are currently active. {count} is the number of active filters."
+  },
+  "table.filterPanel.clearAll": {
+    "description": "Action that clears all currently applied table filters."
+  },
+  "table.filterPanel.generalFilters": {
+    "description": "Section heading in the filter panel for general (non-column-specific) filters."
+  },
+  "table.filterPanel.columnFilters": {
+    "description": "Section heading in the filter panel for per-column filters."
+  },
+  "table.filterPanel.noFiltersAvailable": {
+    "description": "Message shown in the filter panel when the table has no configurable filters."
+  },
+  "table.filterPanel.active": {
+    "description": "Badge marking an individual filter accordion item as currently active.",
+    "maxLength": 12
+  },
+  "table.filterPanel.conditionCount": {
+    "description": "Badge showing how many conditions an advanced filter has. {count} is the number; keep ICU plural syntax intact."
+  },
+  "table.filter.label": {
+    "description": "Generic placeholder label for an in-header column filter control; means 'Filter'.",
+    "maxLength": 12
+  },
+  "table.filter.filterColumn": {
+    "description": "Heading of a column's filter popover. {column} is the column name (caller-provided) — keep the placeholder."
+  },
+  "table.filter.filterActive": {
+    "description": "Screen-reader-only text announcing that a column filter is currently active."
+  },
+  "table.filter.operator": {
+    "description": "Field label for selecting the comparison operator of a filter (e.g. equals, contains)."
+  },
+  "table.filter.value": {
+    "description": "Field label for the value to filter a column by."
+  },
+  "table.filter.apply": {
+    "description": "Button that applies the entered filter.",
+    "maxLength": 12
+  },
+  "table.filter.clear": {
+    "description": "Button that clears the current filter input.",
+    "maxLength": 12
+  },
+  "table.filter.addCondition": {
+    "description": "Button that adds another condition to an advanced (multi-condition) filter."
+  },
+  "table.filter.clearAllConditions": {
+    "description": "Button that removes all conditions from an advanced filter; means 'Clear All'."
+  },
+  "table.filter.maxConditionsReached": {
+    "description": "Tooltip shown when the maximum number of filter conditions has been reached. {count} is the maximum; keep ICU plural syntax intact."
+  },
+  "table.filter.selectPlaceholder": {
+    "description": "Placeholder for a select-type filter dropdown before a value is chosen; means 'Select...'."
+  },
+  "table.filter.selectDatePlaceholder": {
+    "description": "Placeholder for a date filter input before a date is chosen. Includes a trailing ellipsis."
+  },
+  "table.filter.enterValuePlaceholder": {
+    "description": "Generic placeholder for a free-text filter value input; means 'Enter value...'."
+  },
+  "table.filter.typeValuePlaceholder": {
+    "description": "Placeholder for the combobox search input where a user types a filter value. Includes a trailing ellipsis."
+  },
+  "table.filter.enterFieldPlaceholder": {
+    "description": "Placeholder prompting input for a specific field's filter value. {field} is the lowercased field name (caller-provided) — keep the placeholder."
+  },
+  "table.filter.noSuggestions": {
+    "description": "Message in a filter combobox when no suggestions match, noting the typed value can still be used."
+  },
+  "table.filter.suggestions": {
+    "description": "Heading above the list of suggested filter values in a combobox."
+  },
+  "table.filter.invalidNumber": {
+    "description": "Toast error shown when a numeric filter value is not a valid number."
+  },
+  "table.filter.invalidDate": {
+    "description": "Toast error shown when a date filter value is not a valid date."
+  },
+  "table.filter.operators.contains": {
+    "description": "Filter operator: the cell value contains the entered text."
+  },
+  "table.filter.operators.containsCaseInsensitive": {
+    "description": "Filter operator: contains the entered text, ignoring letter case."
+  },
+  "table.filter.operators.equals": {
+    "description": "Filter operator: the cell value equals the entered value."
+  },
+  "table.filter.operators.notEquals": {
+    "description": "Filter operator: the cell value does not equal the entered value."
+  },
+  "table.filter.operators.greaterThan": {
+    "description": "Filter operator: the cell value is greater than the entered value."
+  },
+  "table.filter.operators.greaterOrEqual": {
+    "description": "Filter operator: the cell value is greater than or equal to the entered value."
+  },
+  "table.filter.operators.lessThan": {
+    "description": "Filter operator: the cell value is less than the entered value."
+  },
+  "table.filter.operators.lessOrEqual": {
+    "description": "Filter operator: the cell value is less than or equal to the entered value."
+  },
+  "table.filter.operators.after": {
+    "description": "Date filter operator: the date is after the entered date."
+  },
+  "table.filter.operators.onOrAfter": {
+    "description": "Date filter operator: the date is on or after the entered date."
+  },
+  "table.filter.operators.before": {
+    "description": "Date filter operator: the date is before the entered date."
+  },
+  "table.filter.operators.onOrBefore": {
+    "description": "Date filter operator: the date is on or before the entered date."
+  },
+  "table.filter.operators.isNull": {
+    "description": "Filter operator: the cell value is empty/null."
+  },
+  "table.filter.operators.isNotNull": {
+    "description": "Filter operator: the cell value is not empty/null."
+  },
+  "table.filter.operators.inList": {
+    "description": "Filter operator: the cell value is one of a list of values."
+  },
+  "table.filter.operators.notInList": {
+    "description": "Filter operator: the cell value is not in a list of values."
+  },
+  "table.filter.operators.allElementsEquals": {
+    "description": "Array filter operator: every element of the array equals the value. 'Elements' may be swapped for a caller-provided element name in English only."
+  },
+  "table.filter.operators.allElementsNotEquals": {
+    "description": "Array filter operator: every element of the array does not equal the value."
+  },
+  "table.filter.operators.anyElementEquals": {
+    "description": "Array filter operator: at least one element of the array equals the value."
+  },
+  "table.filter.operators.anyElementNotEquals": {
+    "description": "Array filter operator: at least one element of the array does not equal the value."
+  },
+  "table.filter.operators.allElementsContain": {
+    "description": "Array filter operator: every element of the array contains the text."
+  },
+  "table.filter.operators.allElementsNotContain": {
+    "description": "Array filter operator: every element of the array does not contain the text."
+  },
+  "table.filter.operators.anyElementContains": {
+    "description": "Array filter operator: at least one element of the array contains the text."
+  },
+  "table.filter.operators.anyElementNotContain": {
+    "description": "Array filter operator: at least one element of the array does not contain the text."
   }
 }

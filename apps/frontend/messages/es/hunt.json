@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "Domain Hunt",
+    "submitDomain": "Enviar dominio",
+    "trendingTitle": "Dominios en tendencia",
+    "signInToSubmitTitle": "Inicia sesión para enviar dominios",
+    "signInToSubmitDescription": "Necesitas iniciar sesión para enviar dominios. Únete a la comunidad y comparte tus dominios favoritos."
+  },
+  "timeRange": {
+    "last7Days": "Últimos 7 días",
+    "last30Days": "Últimos 30 días",
+    "anytime": "Todo el tiempo"
+  },
+  "tabs": {
+    "allHunt": "Todo el hunt"
+  },
+  "mine": {
+    "title": "Mi actividad",
+    "upvotedTab": "Dominios votados",
+    "submittedTab": "Dominios enviados",
+    "signInTitle": "Inicia sesión para ver tu actividad",
+    "signInDescription": "Inicia sesión para ver tus dominios enviados y tu historial de votos."
+  },
+  "list": {
+    "loadError": "No se pudieron cargar los dominios",
+    "empty": "No hay más dominios. Vuelve más tarde."
+  },
+  "submitDialog": {
+    "title": "Enviar un nuevo dominio",
+    "domainNameLabel": "Nombre de dominio",
+    "submitting": "Enviando...",
+    "validation": {
+      "singleLevel": "El dominio debe ser de un nivel (p. ej. ejemplo.com) o superior (p. ej. sub.ejemplo.com)",
+      "invalidDomain": "Nombre de dominio no válido",
+      "mustEndWith": "El dominio debe terminar en .{extension}",
+      "invalidExtension": "Extensión de dominio no válida",
+      "required": "Ingresa un nombre de dominio"
+    },
+    "toast": {
+      "submitting": "Enviando dominio...",
+      "alreadyExists": "El dominio ya existe.",
+      "success": "Dominio enviado y votado correctamente.",
+      "error": "No se pudo enviar el dominio"
+    }
+  },
+  "vote": {
+    "ariaLabel": "Votar",
+    "voting": "Votando...",
+    "voted": "Votado",
+    "vote": "Votar",
+    "processing": "Procesando voto...",
+    "removing": "Quitando...",
+    "unvote": "Quitar voto",
+    "removeSuccess": "Voto eliminado correctamente",
+    "removeError": "No se pudo eliminar el voto. Inténtalo de nuevo.",
+    "confirmRemove": "¿Seguro que quieres quitar tu voto para \"{domainName}\"?"
+  },
+  "detail": {
+    "back": "Volver",
+    "quickActions": "Acciones rápidas",
+    "visitDomain": "Visitar dominio",
+    "deleteSuccess": "Dominio eliminado correctamente",
+    "deleteError": "No se pudo eliminar el dominio",
+    "deleting": "Eliminando dominio..."
+  },
+  "awards": {
+    "title": "Premios",
+    "loadError": "No se pudieron cargar los premios",
+    "empty": "Sin premios aún. Sigue votando para que este dominio gane.",
+    "medalLabel": "Medalla"
+  },
+  "submitted": {
+    "loadError": "No se pudieron cargar tus dominios",
+    "empty": "Todavía no has enviado ningún dominio.",
+    "youUpvoted": "✓ Votaste por este",
+    "submittedOn": "Enviado el {date}"
+  },
+  "upvoted": {
+    "loadError": "No se pudieron cargar tus dominios votados",
+    "empty": "Todavía no has votado por ningún dominio.",
+    "upvotedOn": "Votado el {date}"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "en curso!",
+      "ended": "finalizada",
+      "notStarted": "aún no iniciada"
+    },
+    "loadErrorTitle": "Error al cargar dominios",
+    "loadErrorDescription": "No se pudieron cargar los dominios de la campaña. Inténtalo más tarde.",
+    "emptyTitle": "Sin dominios",
+    "emptyDescription": "No hay dominios disponibles para esta campaña.",
+    "nominatePrompt": "¿Por qué no está mi dominio favorito aquí?",
+    "nominateAction": "¡Nomínalo!",
+    "congratulations": "¡Felicitaciones!",
+    "winnerCampaignIcon": "Ícono de campaña",
+    "isTheWinner": "es el ganador",
+    "votingClosedThanks": "Gracias por votar. Los ganadores recibirán un correo con los detalles para reclamar su subdominio."
+  },
+  "howItWorks": {
+    "voteTitle": "Vota",
+    "voteDescription": "Elige tu favorito",
+    "winTitle": "Gana",
+    "winDescription": "El dominio ganador comienza a emitir",
+    "celebrateTitle": "Celebra",
+    "celebrateDescription": "Reclama tu subdominio gratis"
+  },
+  "whyVote": {
+    "title": "¿Por qué votar?",
+    "priorityClaimTitle": "Acceso prioritario",
+    "priorityClaimDescription": "Primero en la fila para nuevos subdominios (mientras haya disponibilidad)",
+    "weeklyNfscTitle": "Weekly $NFSC",
+    "weeklyNfscDescription": "Sorteo semanal para ganar $NFSC por votar",
+    "launchTitle": "Ayuda a lanzar [name].cv",
+    "launchDescription": "El [name].cv con más votos activa la emisión de subdominios"
+  },
+  "community": {
+    "joinTitle": "Únete a la comunidad",
+    "joinDescription": "Conecta con otros hunters y voten juntos por los próximos dominios.",
+    "shareTitle": "Comparte el hunt",
+    "shareDescription": "Invita amigos y gana un cupón de sorteo por cada voto.",
+    "inviteFriends": "Invitar amigos",
+    "invited": "¡Copiado!",
+    "copySuccess": "¡Enlace copiado al portapapeles!",
+    "copyError": "No se pudo copiar el enlace"
+  },
+  "countdown": {
+    "votingEndsIn": "Votación termina en",
+    "days": "días",
+    "hours": "horas",
+    "minutes": "minutos",
+    "seconds": "segundos"
+  },
+  "share": {
+    "titleDomain": "Compartir {domainName}",
+    "titleSubject": "Compartir {subject} de {domainName}",
+    "descriptionDomainTracked": "Comparte este dominio en Twitter/X para ayudar a otros a descubrirlo y ganar recompensas.",
+    "descriptionDomain": "Comparte este dominio en Twitter/X para que más personas lo descubran.",
+    "descriptionSubject": "Comparte este {subject} en Twitter/X.",
+    "shareUrlLabel": "URL para compartir",
+    "quickShareLabel": "Compartir rápido",
+    "shareOnTwitter": "Compartir en Twitter/X",
+    "prefilledHint": "Abre Twitter/X con una publicación pre-escrita para {target}",
+    "alreadyShared": "Ya compartido",
+    "postUrlLabel": "URL de la publicación en Twitter/X",
+    "postUrlHint": "Pega la URL de tu tweet tras compartir para ganar recompensas",
+    "recording": "Registrando...",
+    "recordShare": "Registrar compartido",
+    "invalidPostUrl": "Ingresa una URL válida de Twitter/X",
+    "recordError": "No se pudo registrar tu publicación. Inténtalo de nuevo.",
+    "checkPostUrl": "Verifica la URL de la publicación e inténtalo de nuevo.",
+    "copySuccess": "URL copiada.",
+    "copyError": "No se pudo copiar la URL",
+    "recordingShare": "Registrando tu publicación..."
+  }
+}

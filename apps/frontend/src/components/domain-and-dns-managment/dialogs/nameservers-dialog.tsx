@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { useTranslations } from 'next-intl';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { NameserversPanelInner } from '../panels/nameservers/nameservers-panel';
 import type { PunycodeDomainName } from '@namefi-astra/registrars/data/validations';
@@ -22,6 +23,7 @@ export function NameserversDialog({
   domainName: string;
   nftChainId: number | bigint;
 }) {
+  const t = useTranslations('dnsManagement');
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent
@@ -31,7 +33,7 @@ export function NameserversDialog({
         )}
       >
         <DialogHeader>
-          <DialogTitle>Manage Nameservers</DialogTitle>
+          <DialogTitle>{t('nameservers.manageDialogTitle')}</DialogTitle>
         </DialogHeader>
         <NameserversPanelInner
           domainName={domainName as PunycodeDomainName}

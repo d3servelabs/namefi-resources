@@ -20,6 +20,7 @@ import {
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
 import { ExternalLink, Tag, UserRoundSearch, X } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { format } from 'date-fns';
@@ -49,6 +50,7 @@ export function CurrentListingsCard({
   tokenId,
   ownerAddress,
 }: Props) {
+  const t = useTranslations('domains');
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
   const listingsQuery = useListings({ chainId, tokenAddress, tokenId });
   const cancelMutation = useCancelListing({
@@ -65,8 +67,8 @@ export function CurrentListingsCard({
           chainId,
         },
       });
-      toast.success('Listing cancelled', {
-        description: 'It will disappear from marketplaces within a moment.',
+      toast.success(t('marketplace.listings.cancelled'), {
+        description: t('marketplace.listings.cancelledDescription'),
       });
     },
   });
@@ -76,7 +78,9 @@ export function CurrentListingsCard({
       await cancelMutation.mutateAsync({ listing });
     } catch (error) {
       const message = errorToMessage(error);
-      toast.error('Failed to cancel listing', { description: message });
+      toast.error(t('marketplace.listings.cancelFailed'), {
+        description: message,
+      });
       throw error;
     }
   };
@@ -88,10 +92,10 @@ export function CurrentListingsCard({
           <div className="min-w-0 space-y-1.5">
             <CardTitle className="flex items-center gap-2 text-zinc-100">
               <Tag className="h-4 w-4 text-brand-primary" />
-              Current listings
+              {t('marketplace.listings.title')}
             </CardTitle>
             <CardDescription>
-              Active sale listings across supported marketplaces.
+              {t('marketplace.listings.description')}
             </CardDescription>
           </div>
           <div className="flex shrink-0 flex-wrap gap-2 sm:justify-end">
@@ -102,13 +106,15 @@ export function CurrentListingsCard({
               render={
                 <Link
                   href={getLeadgenStartHref(domain)}
-                  aria-label={`Find buyers for ${domain}`}
+                  aria-label={t('marketplace.listings.findBuyersAria', {
+                    domain,
+                  })}
                 />
               }
               nativeButton={false}
             >
               <UserRoundSearch className="h-4 w-4" />
-              Find buyers
+              {t('marketplace.listings.findBuyers')}
             </Button>
             <CreateListingModal
               domain={domain}
@@ -128,21 +134,26 @@ export function CurrentListingsCard({
           </div>
         ) : listingsQuery.error ? (
           <p className="text-sm text-red-400">
-            Couldn't load listings: {errorToMessage(listingsQuery.error)}
+            {t('marketplace.listings.loadFailed', {
+              error: errorToMessage(listingsQuery.error),
+            })}
           </p>
         ) : !listingsQuery.data || listingsQuery.data.length === 0 ? (
           <p className="text-sm text-zinc-400">
-            No active listings. Use “Create listing” to put this domain up for
-            sale.
+            {t('marketplace.listings.empty')}
           </p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Marketplace</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Expires</TableHead>
-                <TableHead className="text-end">Actions</TableHead>
+                <TableHead>
+                  {t('marketplace.listings.columnMarketplace')}
+                </TableHead>
+                <TableHead>{t('marketplace.listings.columnPrice')}</TableHead>
+                <TableHead>{t('marketplace.listings.columnExpires')}</TableHead>
+                <TableHead className="text-end">
+                  {t('marketplace.listings.columnActions')}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -181,7 +192,7 @@ export function CurrentListingsCard({
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
                           >
-                            View
+                            {t('marketplace.listings.view')}
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         ) : null;
@@ -192,7 +203,7 @@ export function CurrentListingsCard({
                         className="bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30"
                       >
                         <X className="h-3 w-3 me-1" />
-                        Cancel
+                        {t('marketplace.listings.cancel')}
                       </AsyncButton>
                     </div>
                   </TableCell>

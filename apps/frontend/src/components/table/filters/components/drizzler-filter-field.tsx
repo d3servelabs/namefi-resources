@@ -10,6 +10,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/select';
 import { DatePickerWithInput } from '@/components/date-picker/date-picker-with-input';
 import { Plus, X, Check, ChevronsUpDown } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
 import type {
   DrizzlerFilterFieldConfig,
@@ -44,63 +45,89 @@ type DrizzlerFilterFieldProps = {
 };
 
 // Operator definitions by field type
+type OperatorLabelKey =
+  | 'contains'
+  | 'containsCaseInsensitive'
+  | 'equals'
+  | 'notEquals'
+  | 'greaterThan'
+  | 'greaterOrEqual'
+  | 'lessThan'
+  | 'lessOrEqual'
+  | 'after'
+  | 'onOrAfter'
+  | 'before'
+  | 'onOrBefore'
+  | 'isNull'
+  | 'isNotNull'
+  | 'inList'
+  | 'notInList'
+  | 'allElementsEquals'
+  | 'allElementsNotEquals'
+  | 'anyElementEquals'
+  | 'anyElementNotEquals'
+  | 'allElementsContain'
+  | 'allElementsNotContain'
+  | 'anyElementContains'
+  | 'anyElementNotContain';
+
 export const OPERATORS_BY_TYPE: Record<
   string,
-  { value: FilterOperators; label: string }[]
+  { value: FilterOperators; labelKey: OperatorLabelKey }[]
 > = {
   text: [
-    { value: 'like', label: 'Contains' },
-    { value: 'ilike', label: 'Contains (case-insensitive)' },
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'isnull', label: 'Is Null' },
-    { value: 'not_isnull', label: 'Is Not Null' },
+    { value: 'like', labelKey: 'contains' },
+    { value: 'ilike', labelKey: 'containsCaseInsensitive' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'isnull', labelKey: 'isNull' },
+    { value: 'not_isnull', labelKey: 'isNotNull' },
   ],
   number: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'Greater Than' },
-    { value: 'gte', label: 'Greater or Equal' },
-    { value: 'lt', label: 'Less Than' },
-    { value: 'lte', label: 'Less or Equal' },
-    { value: 'isnull', label: 'Is Null' },
-    { value: 'not_isnull', label: 'Is Not Null' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'greaterThan' },
+    { value: 'gte', labelKey: 'greaterOrEqual' },
+    { value: 'lt', labelKey: 'lessThan' },
+    { value: 'lte', labelKey: 'lessOrEqual' },
+    { value: 'isnull', labelKey: 'isNull' },
+    { value: 'not_isnull', labelKey: 'isNotNull' },
   ],
   date: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'gt', label: 'After' },
-    { value: 'gte', label: 'On or After' },
-    { value: 'lt', label: 'Before' },
-    { value: 'lte', label: 'On or Before' },
-    { value: 'isnull', label: 'Is Null' },
-    { value: 'not_isnull', label: 'Is Not Null' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'gt', labelKey: 'after' },
+    { value: 'gte', labelKey: 'onOrAfter' },
+    { value: 'lt', labelKey: 'before' },
+    { value: 'lte', labelKey: 'onOrBefore' },
+    { value: 'isnull', labelKey: 'isNull' },
+    { value: 'not_isnull', labelKey: 'isNotNull' },
   ],
   select: [
-    { value: 'eq', label: 'Equals' },
-    { value: 'neq', label: 'Not Equals' },
-    { value: 'in_array', label: 'In List' },
-    { value: 'not_in_array', label: 'Not In List' },
-    { value: 'isnull', label: 'Is Null' },
-    { value: 'not_isnull', label: 'Is Not Null' },
+    { value: 'eq', labelKey: 'equals' },
+    { value: 'neq', labelKey: 'notEquals' },
+    { value: 'in_array', labelKey: 'inList' },
+    { value: 'not_in_array', labelKey: 'notInList' },
+    { value: 'isnull', labelKey: 'isNull' },
+    { value: 'not_isnull', labelKey: 'isNotNull' },
   ],
   array: [
-    { value: 'isnull', label: 'Is Null' },
-    { value: 'not_isnull', label: 'Is Not Null' },
+    { value: 'isnull', labelKey: 'isNull' },
+    { value: 'not_isnull', labelKey: 'isNotNull' },
 
-    { value: 'array_all_i_like', label: 'All Elements Equals' },
-    { value: 'not_array_all_i_like', label: 'All Elements Does Not Equal' },
+    { value: 'array_all_i_like', labelKey: 'allElementsEquals' },
+    { value: 'not_array_all_i_like', labelKey: 'allElementsNotEquals' },
 
-    { value: 'array_any_i_like', label: 'Any Element Equals' },
-    { value: 'not_array_any_i_like', label: 'Any Element Does Not Equal' },
+    { value: 'array_any_i_like', labelKey: 'anyElementEquals' },
+    { value: 'not_array_any_i_like', labelKey: 'anyElementNotEquals' },
 
-    { value: 'array_all_i_contains', label: 'All Elements Contain' },
-    { value: 'not_array_all_i_contains', label: 'All Elements Do Not Contain' },
+    { value: 'array_all_i_contains', labelKey: 'allElementsContain' },
+    { value: 'not_array_all_i_contains', labelKey: 'allElementsNotContain' },
 
-    { value: 'array_any_i_contains', label: 'Any Element Contains' },
+    { value: 'array_any_i_contains', labelKey: 'anyElementContains' },
     {
       value: 'not_array_any_i_contains',
-      label: 'Any Element Does Not Contain',
+      labelKey: 'anyElementNotContain',
     },
   ],
 };
@@ -144,22 +171,19 @@ function SingleConditionEditor({
   onRemove: () => void;
   showRemove: boolean;
 }) {
+  const t = useTranslations('shared');
   const allOperators = OPERATORS_BY_TYPE[fieldType] ?? OPERATORS_BY_TYPE.text;
-  // Filter operators based on allowedOperators if provided
+  // Filter operators based on allowedOperators if provided, then resolve labels.
   const operators = useMemo(() => {
-    let operatorsList = allowedOperators
+    const operatorsList = allowedOperators
       ? allOperators.filter((op) => allowedOperators.includes(op.value))
       : allOperators;
-    if (operatorsCustomLabels) {
-      operatorsList = operatorsList.map((op) => ({
-        ...op,
-        label: operatorsCustomLabels[op.value] ?? op.label,
-      }));
-    }
-    if (fieldType === 'array') {
-      return operatorsList.map((op) => ({
-        ...op,
-        label: op.label
+    return operatorsList.map((op) => {
+      let label =
+        operatorsCustomLabels?.[op.value] ??
+        t(`table.filter.operators.${op.labelKey}`);
+      if (fieldType === 'array') {
+        label = label
           .replace(
             'Elements',
             typeSpecificOptions?.array?.elementName?.plural ?? 'Elements',
@@ -167,10 +191,10 @@ function SingleConditionEditor({
           .replace(
             'Element',
             typeSpecificOptions?.array?.elementName?.singular ?? 'Element',
-          ),
-      }));
-    }
-    return operatorsList;
+          );
+      }
+      return { value: op.value, label };
+    });
   }, [
     allowedOperators,
     allOperators,
@@ -178,6 +202,7 @@ function SingleConditionEditor({
     typeSpecificOptions?.array?.elementName?.plural,
     typeSpecificOptions?.array?.elementName?.singular,
     operatorsCustomLabels,
+    t,
   ]);
   const isUnaryOperator = UNARY_OPERATORS.includes(condition.operator);
 
@@ -251,13 +276,13 @@ function SingleConditionEditor({
           />
         }
       >
-        {localValue || 'Enter value...'}
+        {localValue || t('table.filter.enterValuePlaceholder')}
         <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0" align="start" side="bottom">
         <Command>
           <CommandInput
-            placeholder="Type value..."
+            placeholder={t('table.filter.typeValuePlaceholder')}
             value={localValue}
             onValueChange={(val) => {
               setLocalValue(val);
@@ -281,9 +306,9 @@ function SingleConditionEditor({
           />
           <CommandList>
             <CommandEmpty className="py-2 px-4 text-sm text-muted-foreground">
-              No matching suggestions. You can still use the typed value.
+              {t('table.filter.noSuggestions')}
             </CommandEmpty>
-            <CommandGroup heading="Suggestions">
+            <CommandGroup heading={t('table.filter.suggestions')}>
               {suggestions?.map((suggestion) => (
                 <CommandItem
                   key={suggestion.value}
@@ -382,10 +407,10 @@ function SingleConditionEditor({
               }}
             >
               <SelectTrigger className="h-9">
-                <SelectValue placeholder="Select...">
+                <SelectValue placeholder={t('table.filter.selectPlaceholder')}>
                   {fieldOptions.find(
                     (option) => option.value?.toString() === localValue,
-                  )?.label ?? 'Select...'}
+                  )?.label ?? t('table.filter.selectPlaceholder')}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -412,7 +437,7 @@ function SingleConditionEditor({
                   handleValueChange(undefined);
                 }
               }}
-              placeholder="Select date..."
+              placeholder={t('table.filter.selectDatePlaceholder')}
               className="flex flex-col gap-2"
             />
           ) : suggestions && suggestions.length > 0 ? (
@@ -420,7 +445,7 @@ function SingleConditionEditor({
           ) : (
             <Input
               type={fieldType === 'number' ? 'number' : 'text'}
-              placeholder="Enter value..."
+              placeholder={t('table.filter.enterValuePlaceholder')}
               value={localValue}
               onChange={(e) => {
                 setLocalValue(e.target.value);
@@ -473,6 +498,7 @@ export function DrizzlerFilterField({
   onClear,
   suggestions,
 }: DrizzlerFilterFieldProps) {
+  const t = useTranslations('shared');
   const conditions: DrizzlerFilterCondition[] = useMemo(() => {
     if (!_conditions || _conditions.length === 0) {
       return [
@@ -574,18 +600,20 @@ export function DrizzlerFilterField({
           className="flex-1"
           disabled={!canAddMoreConditions}
           title={
-            !canAddMoreConditions
-              ? `Maximum ${field.maxConditions} condition${field.maxConditions === 1 ? '' : 's'} reached`
+            !canAddMoreConditions && field.maxConditions !== undefined
+              ? t('table.filter.maxConditionsReached', {
+                  count: field.maxConditions,
+                })
               : undefined
           }
         >
           <Plus className="h-4 w-4 me-1" />
-          Add Condition
+          {t('table.filter.addCondition')}
           {field.maxConditions !== undefined &&
             ` (${conditions.length}/${field.maxConditions})`}
         </Button>
         <Button onClick={onClear} size="sm" variant="outline">
-          Clear All
+          {t('table.filter.clearAllConditions')}
         </Button>
       </div>
     </div>

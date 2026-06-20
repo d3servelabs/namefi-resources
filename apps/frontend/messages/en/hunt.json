@@ -1,0 +1,156 @@
+{
+  "home": {
+    "title": "Domain Hunt",
+    "submitDomain": "Submit Domain",
+    "trendingTitle": "Trending Domains",
+    "signInToSubmitTitle": "Sign in to submit domains",
+    "signInToSubmitDescription": "You need to sign in to submit domains to the hunt. Join the community and share your favorite domains!"
+  },
+  "timeRange": {
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "anytime": "Anytime"
+  },
+  "tabs": {
+    "allHunt": "All hunt"
+  },
+  "mine": {
+    "title": "My Activity",
+    "upvotedTab": "Upvoted Domains",
+    "submittedTab": "Submitted Domains",
+    "signInTitle": "Sign in to view your activity",
+    "signInDescription": "Please sign in to see your submitted domains and voting history"
+  },
+  "list": {
+    "loadError": "Failed to load domains",
+    "empty": "No more domains, please try again later."
+  },
+  "submitDialog": {
+    "title": "Submit a new domain",
+    "domainNameLabel": "Domain Name",
+    "submitting": "Submitting...",
+    "validation": {
+      "singleLevel": "Domain name must be a single level domain (e.g. example.com) or higher (e.g. sub.example.com)",
+      "invalidDomain": "Invalid domain name",
+      "mustEndWith": "Domain must end with .{extension}",
+      "invalidExtension": "Invalid domain extension",
+      "required": "Please enter a domain name"
+    },
+    "toast": {
+      "submitting": "Submitting domain...",
+      "alreadyExists": "Domain already exists.",
+      "success": "Domain submitted and upvoted successfully!",
+      "error": "Failed to submit domain"
+    }
+  },
+  "vote": {
+    "ariaLabel": "Upvote",
+    "voting": "Voting...",
+    "voted": "Voted",
+    "vote": "Vote",
+    "processing": "Processing vote...",
+    "removing": "Removing...",
+    "unvote": "Unvote",
+    "removeSuccess": "Vote removed successfully",
+    "removeError": "Failed to remove vote. Please try again.",
+    "confirmRemove": "Are you sure you want to remove your vote for \"{domainName}\"?"
+  },
+  "detail": {
+    "back": "Back",
+    "quickActions": "Quick Actions",
+    "visitDomain": "Visit Domain",
+    "deleteSuccess": "Domain deleted successfully",
+    "deleteError": "Failed to delete domain",
+    "deleting": "Deleting domain..."
+  },
+  "awards": {
+    "title": "Awards",
+    "loadError": "Failed to load awards",
+    "empty": "No awards yet. Keep voting to help this domain win!",
+    "medalLabel": "Medal"
+  },
+  "submitted": {
+    "loadError": "Failed to load your domains",
+    "empty": "You haven't submitted any domains yet.",
+    "youUpvoted": "✓ You upvoted this",
+    "submittedOn": "Submitted {date}"
+  },
+  "upvoted": {
+    "loadError": "Failed to load your upvoted domains",
+    "empty": "You haven't upvoted any domains yet.",
+    "upvotedOn": "Upvoted {date}"
+  },
+  "campaign": {
+    "status": {
+      "ongoing": "ongoing!",
+      "ended": "ended",
+      "notStarted": "not started yet"
+    },
+    "loadErrorTitle": "Error loading domains",
+    "loadErrorDescription": "Failed to load campaign domains. Please try again later.",
+    "emptyTitle": "No domains found",
+    "emptyDescription": "No domains are available for this campaign.",
+    "nominatePrompt": "Why isn't my favourite domain here?",
+    "nominateAction": "Nominate it!",
+    "congratulations": "Congratulations!",
+    "winnerCampaignIcon": "Campaign Icon",
+    "isTheWinner": "is the winner",
+    "votingClosedThanks": "Thank you for voting - winners will receive an email with subdomain claim details."
+  },
+  "howItWorks": {
+    "voteTitle": "Vote",
+    "voteDescription": "Pick your favorite",
+    "winTitle": "Win",
+    "winDescription": "Winner domain starts issuing",
+    "celebrateTitle": "Celebrate",
+    "celebrateDescription": "Claim your free subdomain"
+  },
+  "whyVote": {
+    "title": "Why Vote?",
+    "priorityClaimTitle": "Priority Claim",
+    "priorityClaimDescription": "First dibs on new subdomains (while supplies last)",
+    "weeklyNfscTitle": "Weekly $NFSC",
+    "weeklyNfscDescription": "Weekly raffle to earn $NFSC for upvoter",
+    "launchTitle": "Help launch [name].cv",
+    "launchDescription": "The [name].cv with highest votes launches subdomain issuance"
+  },
+  "community": {
+    "joinTitle": "Join the Community",
+    "joinDescription": "Connect with fellow hunters - vote together on upcoming domains.",
+    "shareTitle": "Share the hunt",
+    "shareDescription": "Invite your friends - earn one raffle entry for every vote.",
+    "inviteFriends": "Invite Friends",
+    "invited": "Copied!",
+    "copySuccess": "Link copied to clipboard!",
+    "copyError": "Failed to copy link"
+  },
+  "countdown": {
+    "votingEndsIn": "Voting ends in",
+    "days": "days",
+    "hours": "hours",
+    "minutes": "minutes",
+    "seconds": "seconds"
+  },
+  "share": {
+    "titleDomain": "Share {domainName}",
+    "titleSubject": "Share {subject} for {domainName}",
+    "descriptionDomainTracked": "Share this domain on Twitter/X to help others discover it and earn rewards.",
+    "descriptionDomain": "Share this domain on Twitter/X to help others discover it.",
+    "descriptionSubject": "Share this {subject} on Twitter/X.",
+    "shareUrlLabel": "Share URL",
+    "quickShareLabel": "Quick Share",
+    "shareOnTwitter": "Share on Twitter/X",
+    "prefilledHint": "Opens Twitter/X with a pre-filled post for {target}",
+    "alreadyShared": "Already shared",
+    "postUrlLabel": "Twitter/X Post URL",
+    "postUrlHint": "Paste the URL of your tweet after sharing to earn rewards",
+    "recording": "Recording...",
+    "recordShare": "Record Share",
+    "invalidPostUrl": "Please enter a valid Twitter/X post URL",
+    "recordError": "Failed to record your share. Please try again.",
+    "checkPostUrl": "Please check the post URL and try again.",
+    "copySuccess": "Share URL copied.",
+    "copyError": "Could not copy URL",
+    "recordingShare": "Recording your share..."
+  }
+}

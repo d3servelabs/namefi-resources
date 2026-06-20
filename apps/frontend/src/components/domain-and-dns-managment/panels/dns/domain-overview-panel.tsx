@@ -72,6 +72,7 @@ import {
   type RequestWalletConnectionRef,
 } from '@/components/dialogs/request-wallet-connection';
 import { useAccount } from 'wagmi';
+import { useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { TransferLockGuard } from './transfer-lock-guard';
 
@@ -167,6 +168,7 @@ function InfoTooltip({
   content: string;
   learnMoreUrl?: string;
 }) {
+  const t = useTranslations('dnsManagement');
   return (
     <TooltipProvider>
       <Tooltip>
@@ -174,7 +176,7 @@ function InfoTooltip({
           render={
             <button
               type="button"
-              aria-label="More information"
+              aria-label={t('overview.moreInfoAria')}
               className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
             />
           }
@@ -190,7 +192,7 @@ function InfoTooltip({
               rel="noopener noreferrer"
               className="text-xs text-brand-primary hover:underline mt-1 inline-block"
             >
-              Learn more
+              {t('overview.learnMore')}
             </a>
           )}
         </TooltipContent>
@@ -210,6 +212,7 @@ function EducationalBanner({
   icon: React.ElementType;
   onDismiss?: () => void;
 }) {
+  const t = useTranslations('dnsManagement');
   const [isVisible, setIsVisible] = useState(true);
 
   if (!isVisible) return null;
@@ -227,7 +230,7 @@ function EducationalBanner({
         {onDismiss && (
           <button
             type="button"
-            aria-label="Dismiss banner"
+            aria-label={t('overview.educationalBanner.dismissAria')}
             onClick={() => {
               setIsVisible(false);
               onDismiss();
@@ -255,6 +258,7 @@ function NFTOwnershipCard({
   explorerUrl: string | null;
   isLoading: boolean;
 }) {
+  const t = useTranslations('dnsManagement');
   const [copiedAddress, setCopiedAddress] = useState(false);
   const [copiedTokenId, setCopiedTokenId] = useState(false);
   const { watchNamefiNftInWallet, isAnyWalletConnected } = useWatchAssets();
@@ -268,13 +272,16 @@ function NFTOwnershipCard({
         ownerAddress,
       );
       if (added) {
-        toast.success('NFT added to your wallet');
+        toast.success(t('overview.nftOwnership.nftAdded'));
       } else {
-        toast.error("Couldn't add NFT to your wallet");
+        toast.error(t('overview.nftOwnership.nftAddFailed'));
       }
     } catch (error) {
-      toast.error('Failed to add NFT to wallet', {
-        description: error instanceof Error ? error.message : 'Unknown error',
+      toast.error(t('overview.nftOwnership.nftAddError'), {
+        description:
+          error instanceof Error
+            ? error.message
+            : t('overview.nftOwnership.unknownError'),
       });
     }
   };
@@ -284,10 +291,10 @@ function NFTOwnershipCard({
     try {
       await navigator.clipboard.writeText(ownerAddress);
       setCopiedAddress(true);
-      toast.success('Wallet address copied');
+      toast.success(t('overview.nftOwnership.walletAddressCopied'));
       setTimeout(() => setCopiedAddress(false), 2000);
     } catch {
-      toast.error('Failed to copy wallet address');
+      toast.error(t('overview.nftOwnership.walletAddressCopyFailed'));
     }
   };
 
@@ -296,10 +303,10 @@ function NFTOwnershipCard({
     try {
       await navigator.clipboard.writeText(tokenId);
       setCopiedTokenId(true);
-      toast.success('Token ID copied');
+      toast.success(t('overview.nftOwnership.tokenIdCopied'));
       setTimeout(() => setCopiedTokenId(false), 2000);
     } catch {
-      toast.error('Failed to copy token ID');
+      toast.error(t('overview.nftOwnership.tokenIdCopyFailed'));
     }
   };
 
@@ -326,10 +333,10 @@ function NFTOwnershipCard({
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-emerald-400" />
             <CardTitle className="text-sm font-medium">
-              Blockchain Ownership
+              {t('overview.nftOwnership.title')}
             </CardTitle>
           </div>
-          <InfoTooltip content="Your domain is stored as an NFT (Non-Fungible Token) on the blockchain. This digital certificate proves you own this domain and is secured by cryptography." />
+          <InfoTooltip content={t('overview.nftOwnership.tooltip')} />
         </div>
       </CardHeader>
       <CardContent className="space-y-4 relative">
@@ -337,13 +344,15 @@ function NFTOwnershipCard({
           <div className="flex items-center gap-3">
             <NetworkLogo network={chainId} className="size-8" />
             <div>
-              <p className="text-xs text-muted-foreground">Secured on</p>
+              <p className="text-xs text-muted-foreground">
+                {t('overview.nftOwnership.securedOn')}
+              </p>
               <p className="text-sm font-medium">
                 {chainId === 1
-                  ? 'Ethereum'
+                  ? t('overview.nftOwnership.chainEthereum')
                   : chainId === 8453
-                    ? 'Base'
-                    : `Chain ${chainId}`}
+                    ? t('overview.nftOwnership.chainBase')
+                    : t('overview.nftOwnership.chainOther', { chainId })}
               </p>
             </div>
           </div>
@@ -352,7 +361,7 @@ function NFTOwnershipCard({
             className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
           >
             <Lock className="h-3 w-3 me-1" />
-            Verified
+            {t('overview.nftOwnership.verified')}
           </Badge>
         </div>
 
@@ -366,8 +375,10 @@ function NFTOwnershipCard({
                 />
                 <div>
                   <p className="text-xs text-muted-foreground flex items-center gap-1">
-                    Owner Wallet
-                    <InfoTooltip content="This is the wallet address that owns this domain NFT. Only this wallet can manage or transfer the domain." />
+                    {t('overview.nftOwnership.ownerWallet')}
+                    <InfoTooltip
+                      content={t('overview.nftOwnership.ownerWalletTooltip')}
+                    />
                   </p>
                   <p className="text-sm font-mono">
                     {getShortAddress(ownerAddress)}
@@ -395,8 +406,10 @@ function NFTOwnershipCard({
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  Token ID
-                  <InfoTooltip content="A unique identifier for your domain NFT on the blockchain. Think of it like a serial number for your digital asset." />
+                  {t('overview.nftOwnership.tokenId')}
+                  <InfoTooltip
+                    content={t('overview.nftOwnership.tokenIdTooltip')}
+                  />
                 </p>
                 <p className="text-sm font-mono">
                   <TruncatedTextWithHover maxLength={13}>
@@ -427,7 +440,7 @@ function NFTOwnershipCard({
             render={
               <a href={explorerUrl} target="_blank" rel="noopener noreferrer">
                 <FileCheck className="h-4 w-4 me-2" />
-                Verify on Block Explorer
+                {t('overview.nftOwnership.verifyOnExplorer')}
                 <ExternalLink className="h-3.5 w-3.5 ms-auto" />
               </a>
             }
@@ -440,10 +453,10 @@ function NFTOwnershipCard({
             variant="outline"
             className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
             onClick={handleWatchNft}
-            loadingText="Adding to wallet..."
+            loadingText={t('overview.nftOwnership.addingToWallet')}
           >
             <Wallet className="h-4 w-4 me-2" />
-            Show NFT in Wallet
+            {t('overview.nftOwnership.showNftInWallet')}
           </AsyncButton>
         )}
       </CardContent>
@@ -452,31 +465,25 @@ function NFTOwnershipCard({
 }
 
 function Web3ConceptsCard() {
+  const t = useTranslations('dnsManagement');
   const [isExpanded, setIsExpanded] = useState(false);
 
   const concepts = [
     {
-      term: 'NFT',
-      forTraditional:
-        'A digital certificate of ownership stored in your wallet - like a deed to a house',
-      forWeb3: 'ERC-721 token representing domain ownership on-chain',
+      term: t('overview.web3Concepts.nftTerm'),
+      forTraditional: t('overview.web3Concepts.nftDescription'),
     },
     {
-      term: 'Blockchain',
-      forTraditional:
-        'A secure digital ledger that permanently records your ownership',
-      forWeb3: 'Decentralized network (Ethereum/Base) securing your asset',
+      term: t('overview.web3Concepts.blockchainTerm'),
+      forTraditional: t('overview.web3Concepts.blockchainDescription'),
     },
     {
-      term: 'Wallet',
-      forTraditional: 'Your personal digital vault - only you can access it',
-      forWeb3: 'EOA or smart contract holding your domain NFT',
+      term: t('overview.web3Concepts.walletTerm'),
+      forTraditional: t('overview.web3Concepts.walletDescription'),
     },
     {
-      term: 'ICANN',
-      forTraditional: 'The global authority managing .com, .io, .xyz domains',
-      forWeb3:
-        'Traditional DNS registry - NameFi bridges ICANN domains to NFTs',
+      term: t('overview.web3Concepts.icannTerm'),
+      forTraditional: t('overview.web3Concepts.icannDescription'),
     },
   ];
 
@@ -491,7 +498,7 @@ function Web3ConceptsCard() {
           <div className="flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-muted-foreground" />
             <CardTitle className="text-sm font-medium">
-              Understanding Your Domain
+              {t('overview.web3Concepts.title')}
             </CardTitle>
           </div>
           {isExpanded ? (
@@ -519,7 +526,7 @@ function Web3ConceptsCard() {
             ))}
           </div>
           <p className="text-xs text-muted-foreground mt-3 text-center">
-            NameFi bridges traditional domains with blockchain ownership
+            {t('overview.web3Concepts.footer')}
           </p>
         </CardContent>
       )}
@@ -535,6 +542,7 @@ export const DomainOverviewPanel = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const {
     data: {
       features: domainSupportedFeatures,
@@ -589,8 +597,8 @@ export const DomainOverviewPanel = ({
     <div className="space-y-6">
       <EducationalBanner
         icon={Sparkles}
-        title="Your domain is secured on the blockchain"
-        description="Unlike traditional registrars, your domain is stored as an NFT in your wallet. This means you truly own it - no company can take it away without your permission."
+        title={t('overview.educationalBanner.title')}
+        description={t('overview.educationalBanner.description')}
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -607,10 +615,10 @@ export const DomainOverviewPanel = ({
                   </div>
                   <div>
                     <CardTitle className="text-xl font-semibold">
-                      Domain Overview
+                      {t('overview.panelTitle')}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground mt-0.5">
-                      Manage your domain settings and renewal
+                      {t('overview.panelSubtitle')}
                     </p>
                   </div>
                 </div>
@@ -637,12 +645,12 @@ export const DomainOverviewPanel = ({
                 >
                   <AlertOctagon className="h-5 w-5" />
                   <AlertTitle className="font-semibold">
-                    Domain Expired
+                    {t('overview.expired.title')}
                   </AlertTitle>
                   <AlertDescription className="text-amber-200/80">
                     {canAttemptRenewal
-                      ? 'Your domain has expired. You can still submit a request to renew the domain and it might go through depending on the TLD (.com, .org, ...)'
-                      : 'Your domain has expired. Contact support to check if it can be restored (this might not be possible for all TLDs).'}
+                      ? t('overview.expired.canRenew')
+                      : t('overview.expired.cannotRenewShort')}
                   </AlertDescription>
                 </Alert>
               )}
@@ -799,6 +807,7 @@ export const DomainRenewalCard = ({
   disabled: boolean;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
 
@@ -862,14 +871,14 @@ export const DomainRenewalCard = ({
         domainName: domain,
         domainPreferencesAndConfig: updatedDomainPreferencesAndConfig,
       });
-      toast.success('Preferences updated');
+      toast.success(t('overview.preferencesUpdated'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getDomainPreferencesAndConfig.queryKey({
           domainName: domain,
         }),
       });
     } catch (_error) {
-      toast.error('Failed to update preferences');
+      toast.error(t('overview.preferencesUpdateFailed'));
     } finally {
       setIsPending(false);
     }
@@ -904,11 +913,11 @@ export const DomainRenewalCard = ({
           ? 'text-emerald-400'
           : undefined
       }
-      title="Auto Renewal"
+      title={t('overview.autoRenewalCard.title')}
       description={
         expirationDate
           ? `${formatExpirationDate(expirationDate)} - ${expirationDate.toLocaleDateString()}`
-          : 'Automatically renew your domain before expiration'
+          : t('overview.autoRenewalCard.description')
       }
     >
       <RenewDomainButton
@@ -917,7 +926,9 @@ export const DomainRenewalCard = ({
         isPending={isPending}
       />
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">Auto</span>
+        <span className="text-xs text-muted-foreground">
+          {t('overview.autoRenewalCard.auto')}
+        </span>
         <Switch
           id="auto-renew"
           className={cn(isPending ? 'animate-pulse cursor-progress' : '')}
@@ -938,6 +949,7 @@ export const ManualRenewalCard = ({
   disabled: boolean;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
 
   const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
     trpc.domainConfig.getDomainDetails.queryOptions(
@@ -978,11 +990,13 @@ export const ManualRenewalCard = ({
   return (
     <FeatureCard
       icon={RefreshCw}
-      title="Manual Renewal"
+      title={t('overview.manualRenewalCard.title')}
       description={
         expirationDate
-          ? `${formatExpirationDate(expirationDate)} - Renew now to restore your domain`
-          : 'Renew your domain manually'
+          ? t('overview.manualRenewalCard.descriptionWithDate', {
+              expiration: formatExpirationDate(expirationDate),
+            })
+          : t('overview.manualRenewalCard.description')
       }
     >
       <RenewDomainButton
@@ -1004,6 +1018,7 @@ export const RenewDomainButton = ({
   isPending: boolean;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const { renewDomains } = useDomainRenewal();
 
   const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
@@ -1021,7 +1036,7 @@ export const RenewDomainButton = ({
     <AsyncButton
       onClick={async () => {
         if (!domainDetails?.expirationTime) {
-          toast.error('Domain expiration information not available');
+          toast.error(t('overview.renewExpirationUnavailable'));
           return;
         }
 
@@ -1042,7 +1057,7 @@ export const RenewDomainButton = ({
       className="bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary border border-brand-primary/30 hover:border-brand-primary/50 transition-all"
     >
       <Sparkles className="h-3.5 w-3.5 me-1.5" />
-      Renew now
+      {t('overview.renewNow')}
     </AsyncButton>
   );
 };
@@ -1057,6 +1072,7 @@ export const DomainExportCard = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
   const { signTypedData } = useSignTypedData();
@@ -1086,7 +1102,7 @@ export const DomainExportCard = ({
       setIsRequestingExport(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -1110,7 +1126,7 @@ export const DomainExportCard = ({
         signature,
         payload,
       });
-      toast.success('Export request submitted successfully');
+      toast.success(t('overview.exportToasts.requestSubmitted'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getDomainExportDetails.queryKey({
           domainName: domain,
@@ -1118,9 +1134,9 @@ export const DomainExportCard = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to request domain export');
+        toast.error(t('overview.exportToasts.requestFailed'));
       }
     } finally {
       setIsRequestingExport(false);
@@ -1130,7 +1146,7 @@ export const DomainExportCard = ({
   const handleRequestExport = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (!isSameAddress(activeWalletAddress, ownerWalletAddress)) {
@@ -1147,7 +1163,7 @@ export const DomainExportCard = ({
     try {
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -1170,9 +1186,7 @@ export const DomainExportCard = ({
         });
       } catch (error) {
         console.error(error);
-        toast.error(
-          'Failed to request signature. This could be due to a browser error or a problem with your wallet.',
-        );
+        toast.error(t('overview.exportToasts.signatureFailed'));
         setIsFetchingAuthCode(false);
         return;
       }
@@ -1184,9 +1198,9 @@ export const DomainExportCard = ({
     } catch (error) {
       setAuthCode(null);
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to get auth code');
+        toast.error(t('overview.exportToasts.authCodeFailed'));
       }
     } finally {
       setIsFetchingAuthCode(false);
@@ -1196,7 +1210,7 @@ export const DomainExportCard = ({
   const handleGetAuthCode = async () => {
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (!isSameAddress(activeWalletAddress, ownerWalletAddress)) {
@@ -1212,9 +1226,9 @@ export const DomainExportCard = ({
     if (authCode) {
       try {
         await navigator.clipboard.writeText(authCode);
-        toast.success('Auth code copied to clipboard');
+        toast.success(t('overview.exportToasts.authCodeCopied'));
       } catch (error) {
-        toast.error('Failed to copy auth code');
+        toast.error(t('overview.exportToasts.authCodeCopyFailed'));
       }
     }
   };
@@ -1252,7 +1266,7 @@ export const DomainExportCard = ({
     return (
       <div className="rounded-2xl border border-red-500/30 bg-red-500/5 p-5 text-center">
         <p className="text-sm text-red-400">
-          Failed to load export details. Please try again later.
+          {t('overview.export.loadDetailsFailedShort')}
         </p>
       </div>
     );
@@ -1272,12 +1286,12 @@ export const DomainExportCard = ({
       />
       <FeatureCard
         icon={ExternalLink}
-        title="Domain Export"
+        title={t('overview.export.label')}
         description={
           domainExportDetails.supportsExport
-            ? 'Transfer your domain to another registrar'
+            ? t('overview.export.descriptionCard')
             : (domainExportDetails.message ??
-              'Export not available for this domain')
+              t('overview.export.unavailableCard'))
         }
       >
         {isNftMinting ? (
@@ -1295,14 +1309,11 @@ export const DomainExportCard = ({
                   className="pointer-events-none opacity-50"
                 >
                   <Info className="h-3.5 w-3.5 me-1.5" />
-                  Request Export
+                  {t('overview.export.requestExport')}
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>
-                  NFT not minted yet. Export will be available once minting
-                  completes.
-                </p>
+                <p>{t('overview.export.nftNotMinted')}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -1318,7 +1329,7 @@ export const DomainExportCard = ({
                     className="opacity-50"
                   >
                     <Info className="h-3.5 w-3.5 me-1.5" />
-                    Unavailable
+                    {t('overview.export.unavailable')}
                   </Button>
                 }
               />
@@ -1330,7 +1341,7 @@ export const DomainExportCard = ({
         ) : domainExportDetails.pendingRequestToEnableExport ? (
           <Button disabled size="sm" className="animate-pulse">
             <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
-            Pending...
+            {t('overview.export.pending')}
           </Button>
         ) : domainExportDetails.readyToExport ? (
           authCode ? (
@@ -1359,7 +1370,7 @@ export const DomainExportCard = ({
               ) : (
                 <Shield className="h-3.5 w-3.5 me-1.5" />
               )}
-              Get Auth Code
+              {t('overview.export.getAuthCode')}
             </Button>
           )
         ) : (
@@ -1367,7 +1378,7 @@ export const DomainExportCard = ({
             <AsyncButton
               onClick={handleRequestExport}
               disabled={disabled || isRequestingExport}
-              loadingText="Requesting..."
+              loadingText={t('overview.export.requesting')}
               loadingIcon={
                 <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
               }
@@ -1375,7 +1386,7 @@ export const DomainExportCard = ({
               className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 text-zinc-100"
             >
               <ExternalLink className="h-3.5 w-3.5 me-1.5" />
-              Request Export
+              {t('overview.export.requestExport')}
             </AsyncButton>
           </TransferLockGuard>
         )}
@@ -1392,6 +1403,7 @@ export const PendingTransferCard = ({
   nftChainId: number | bigint;
 }) => {
   const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
   const { signTypedData } = useSignTypedData();
@@ -1431,7 +1443,7 @@ export const PendingTransferCard = ({
       setIsApproving(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -1455,7 +1467,7 @@ export const PendingTransferCard = ({
         signature,
         payload,
       });
-      toast.success('Export approved successfully');
+      toast.success(t('overview.pendingTransfer.approveSuccess'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
@@ -1463,9 +1475,9 @@ export const PendingTransferCard = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to approve export');
+        toast.error(t('overview.pendingTransfer.approveFailed'));
       }
     } finally {
       setIsApproving(false);
@@ -1477,7 +1489,7 @@ export const PendingTransferCard = ({
       setIsRejecting(true);
       const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
       if (!ownerWalletAddress) {
-        toast.error('Unable to determine domain owner wallet');
+        toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
         return;
       }
 
@@ -1501,7 +1513,7 @@ export const PendingTransferCard = ({
         signature,
         payload,
       });
-      toast.success('Export rejected successfully');
+      toast.success(t('overview.pendingTransfer.rejectSuccess'));
       await queryClient.refetchQueries({
         queryKey: trpc.domainConfig.getPendingTransfer.queryKey({
           domainName: domain,
@@ -1509,9 +1521,9 @@ export const PendingTransferCard = ({
       });
     } catch (error) {
       if (error instanceof Error && error.message.includes('rejected')) {
-        toast.error('Signature request was rejected');
+        toast.error(t('overview.exportToasts.signatureRejected'));
       } else {
-        toast.error('Failed to reject export');
+        toast.error(t('overview.pendingTransfer.rejectFailed'));
       }
     } finally {
       setIsRejecting(false);
@@ -1531,7 +1543,7 @@ export const PendingTransferCard = ({
     if (isApproving || isRejecting) return;
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (!isSameAddress(activeWalletAddress, ownerWalletAddress)) {
@@ -1552,7 +1564,7 @@ export const PendingTransferCard = ({
     if (isApproving || isRejecting) return;
     const ownerWalletAddress = ownerWalletData?.ownerWalletAddress;
     if (!ownerWalletAddress) {
-      toast.error('Unable to determine domain owner wallet');
+      toast.error(t('overview.exportToasts.ownerWalletUnavailable'));
       return;
     }
     if (!isSameAddress(activeWalletAddress, ownerWalletAddress)) {
@@ -1582,8 +1594,11 @@ export const PendingTransferCard = ({
       <FeatureCard
         icon={ArrowRightLeft}
         iconClassName="text-amber-500"
-        title="Pending Export Request"
-        description={`Requested by: ${pendingTransfer.requestingRegistrarId} - Action required by ${new Date(pendingTransfer.actionDate).toLocaleDateString()}`}
+        title={t('overview.pendingTransfer.cardTitle')}
+        description={t('overview.pendingTransfer.cardDescription', {
+          registrar: pendingTransfer.requestingRegistrarId,
+          date: new Date(pendingTransfer.actionDate).toLocaleDateString(),
+        })}
         highlight
         className="lg:col-span-2"
       >
@@ -1598,7 +1613,7 @@ export const PendingTransferCard = ({
           ) : (
             <Check className="h-3.5 w-3.5 me-1.5" />
           )}
-          Approve
+          {t('overview.pendingTransfer.approve')}
         </AsyncButton>
         <AsyncButton
           onClick={handleReject}
@@ -1612,7 +1627,7 @@ export const PendingTransferCard = ({
           ) : (
             <X className="h-3.5 w-3.5 me-1.5" />
           )}
-          Reject
+          {t('overview.pendingTransfer.reject')}
         </AsyncButton>
       </FeatureCard>
     </>

@@ -1,6 +1,7 @@
 'use client';
 
 import { AlertCircle } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { getChain } from '@namefi-astra/utils/chains';
 import { MARKETPLACE_SUPPORTED_CHAINS } from '@/lib/marketplaces/chains';
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export function UnsupportedChainEmptyState({ chainId }: Props) {
+  const t = useTranslations('domains');
   const chain = getChain(chainId);
   const chainLabel = chain?.name ?? `chain ${chainId}`;
   const supportedNames = MARKETPLACE_SUPPORTED_CHAINS.map(
@@ -21,10 +23,12 @@ export function UnsupportedChainEmptyState({ chainId }: Props) {
         <AlertCircle className="h-5 w-5 text-amber-500" />
       </div>
       <h3 className="text-lg font-semibold text-zinc-100">
-        Marketplace listings aren't supported on {chainLabel} yet
+        {t('marketplace.unsupportedChain.title', { chain: chainLabel })}
       </h3>
       <p className="mt-2 text-sm text-zinc-400">
-        Supported networks: {supportedNames}.
+        {t('marketplace.unsupportedChain.supportedNetworks', {
+          networks: supportedNames,
+        })}
       </p>
     </div>
   );

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import {
   TwitterShareDialog,
@@ -70,6 +71,7 @@ export function ImageGrid({
   brandDomain,
   logoActions,
 }: ImageGridProps) {
+  const t = useTranslations('aiGeneration');
   const shareDialog = useTwitterShareDialog({
     enabled: true,
     trackShares: false,
@@ -89,9 +91,8 @@ export function ImageGrid({
     const link = resolveGenerationLink({ id: item.id, fallbackUrl: item.url });
     const domain = domainOverride ?? item.domain;
     if (!link || !domain) {
-      toast.error('Unable to share', {
-        description:
-          'A shareable link or domain was not found for this generation.',
+      toast.error(t('share.unableTitle'), {
+        description: t('share.unableMissingLinkOrDomain'),
       });
       return;
     }
@@ -184,7 +185,7 @@ export function ImageGrid({
                     )}
                     {item.basedOnLogo && (
                       <span className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded">
-                        Based on logo
+                        {t('gallery.basedOnLogo')}
                       </span>
                     )}
                   </div>
@@ -192,12 +193,14 @@ export function ImageGrid({
                   {/* Show logo reference if available */}
                   {item.basedOnLogo && (
                     <div className="mb-3 p-2 bg-gray-50 rounded-lg">
-                      <p className="text-xs text-gray-600 mb-2">Based on:</p>
+                      <p className="text-xs text-gray-600 mb-2">
+                        {t('gallery.basedOn')}
+                      </p>
                       <div className="flex items-center gap-2">
                         <div className="relative size-8 overflow-hidden rounded">
                           <Image
                             src={item.basedOnLogo.result}
-                            alt="Referenced logo"
+                            alt={t('gallery.referencedLogoAlt')}
                             fill
                             sizes="32px"
                             className="object-cover"
@@ -228,7 +231,7 @@ export function ImageGrid({
                 key={itemKey}
                 role="button"
                 tabIndex={0}
-                aria-label={`View generation ${index + 1}`}
+                aria-label={t('gallery.viewAria', { index: index + 1 })}
                 className="cursor-pointer"
                 onClick={() => {
                   if (item.id) {
@@ -280,6 +283,7 @@ function GeneratedItemPreview({
   item: GeneratedItem;
   previewUrl?: string | null;
 }) {
+  const t = useTranslations('aiGeneration');
   const showPlayIndicator = item.kind === 'animation' && Boolean(item.url);
   const videoUrl =
     item.kind === 'animation' &&
@@ -307,7 +311,7 @@ function GeneratedItemPreview({
   if (!previewUrl) {
     return (
       <div className="flex h-full w-full items-center justify-center bg-muted/30 text-sm text-muted-foreground">
-        Preview unavailable
+        {t('imageGrid.previewUnavailable')}
       </div>
     );
   }

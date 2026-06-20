@@ -5,6 +5,7 @@ import { useDismissedAnnouncements } from '@/hooks/use-dismissed-announcements';
 import { isSafeHref, renderInlineMarkdown } from '@/lib/inline-markdown';
 import type { AnnouncementDto } from '@namefi-astra/common/contract/announcements-contract';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import type { Route } from 'next';
 import Link from 'next/link';
@@ -93,6 +94,7 @@ function AnnouncementStrip({
   onNext: () => void;
   onDismiss: () => void;
 }) {
+  const t = useTranslations('shared');
   const stripRef = useRef<HTMLDivElement>(null);
   // Only render the CTA when the href passes the safe-scheme allowlist.
   const safeLinkUrl =
@@ -171,7 +173,7 @@ function AnnouncementStrip({
               <button
                 type="button"
                 data-testid="announcement-prev-button"
-                aria-label="Previous announcement"
+                aria-label={t('announcements.previous')}
                 onClick={onPrev}
                 className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
               >
@@ -205,7 +207,7 @@ function AnnouncementStrip({
               <button
                 type="button"
                 data-testid="announcement-next-button"
-                aria-label="Next announcement"
+                aria-label={t('announcements.next')}
                 onClick={onNext}
                 className="shrink-0 rounded-full p-0.5 opacity-80 hover:opacity-100"
               >
@@ -218,7 +220,7 @@ function AnnouncementStrip({
             <button
               type="button"
               data-testid="announcement-dismiss-button"
-              aria-label="Dismiss announcement"
+              aria-label={t('announcements.dismiss')}
               onClick={onDismiss}
               className="absolute inset-y-0 right-2 my-auto flex size-6 items-center justify-center rounded-full opacity-80 hover:opacity-100"
             >

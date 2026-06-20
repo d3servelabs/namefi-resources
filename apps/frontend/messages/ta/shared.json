@@ -1,7 +1,8 @@
 {
   "authRequired": {
     "title": "உள்நுழைவு தேவை",
-    "description": "தொடர உள்நுழையவும்"
+    "description": "தொடர உள்நுழையவும்",
+    "communityDescription": "தொடர உள்நுழைய வேண்டும். சிறந்த டொமைன்களை கண்டுபிடித்து வாக்களிக்க சமூகத்தில் சேருங்கள்!"
   },
   "requestWalletConnection": {
     "defaultActionDescription": "இந்தச் செயலை முடிக்க",
@@ -74,6 +75,173 @@
     "buyNow": "வாங்கவும்",
     "errorTitle": "ஐயோ! ஏதோ தவறு நடந்தது.",
     "errorDescription": "கவலைப்படாதீர்கள், கட்டணம் வசூலிக்கப்படாது. மீண்டும் முயற்சிக்கலாம்.",
-    "errorDetail": "(பிழை - {error})"
+    "errorDetail": "(பிழை - {error})",
+    "tooltip": "இந்த டொமைனை உடனடியாக வாங்குங்கள்"
+  },
+  "table": {
+    "searchPlaceholder": "தேடவும்...",
+    "empty": "தகவல் இல்லை",
+    "emptyDefault": "தகவல் எதுவும் கிடைக்கவில்லை",
+    "emptyAuditLogs": "தணிக்கை பதிவுகள் எதுவும் கிடைக்கவில்லை",
+    "loadingAuditLogs": "தணிக்கை பதிவுகள் ஏற்றப்படுகின்றன...",
+    "noMoreRows": "இனி வரிசைகள் இல்லை",
+    "showing": "{count, plural, one {# வரிசை} other {# வரிசைகள்}} காட்டப்படுகிறது",
+    "pagination": {
+      "rowsPerPage": "பக்கத்திற்கு வரிசைகள்:",
+      "pageOf": "பக்கம் {page} / {total}",
+      "pageOfTotal": "பக்கம் {page} / {total} — மொத்தம் {count, plural, one {# வரிசை} other {# வரிசைகள்}}",
+      "totalShort": "மொத்தம்: {count, plural, one {# வரிசை} other {# வரிசைகள்}}",
+      "previous": "முந்தையது",
+      "next": "அடுத்தது"
+    },
+    "columns": {
+      "label": "நெடுவரிசைகள்",
+      "toggle": "நெடுவரிசைகளை மாற்றவும்",
+      "resetToDefaults": "இயல்புநிலைக்கு மீட்டமைக்கவும்",
+      "resizeColumn": "நெடுவரிசை அளவை மாற்றவும்"
+    },
+    "filters": {
+      "label": "வடிகட்டிகள்"
+    },
+    "filterPanel": {
+      "title": "அட்டவணை வடிகட்டிகள்",
+      "titleAdvanced": "மேம்பட்ட வடிகட்டிகள்",
+      "description": "அட்டவணை முடிவுகளை குறுகலாக்க வடிகட்டிகளை பயன்படுத்தவும்",
+      "descriptionAdvanced": "AND/OR தர்க்கத்துடன் பல நிபந்தனைகளை உருவாக்கவும்",
+      "activeCount": "{count} செயலில்",
+      "clearAll": "அனைத்தையும் அழிக்கவும்",
+      "generalFilters": "பொது வடிகட்டிகள்",
+      "columnFilters": "நெடுவரிசை வடிகட்டிகள்",
+      "noFiltersAvailable": "வடிகட்டிகள் எதுவும் இல்லை",
+      "active": "செயலில்",
+      "conditionCount": "{count, plural, one {# நிபந்தனை} other {# நிபந்தனைகள்}}"
+    },
+    "filter": {
+      "label": "வடிகட்டி",
+      "filterColumn": "{column} வடிகட்டவும்",
+      "filterActive": "வடிகட்டி செயலில் உள்ளது",
+      "operator": "ஆபரேட்டர்",
+      "value": "மதிப்பு",
+      "apply": "பயன்படுத்து",
+      "clear": "அழிக்கவும்",
+      "addCondition": "நிபந்தனை சேர்க்கவும்",
+      "clearAllConditions": "அனைத்தையும் அழிக்கவும்",
+      "maxConditionsReached": "{count, plural, one {அதிகபட்சம் # நிபந்தனை அடைந்தது} other {அதிகபட்சம் # நிபந்தனைகள் அடைந்தன}}",
+      "selectPlaceholder": "தேர்ந்தெடுக்கவும்...",
+      "selectDatePlaceholder": "தேதி தேர்ந்தெடுக்கவும்...",
+      "enterValuePlaceholder": "மதிப்பை உள்ளிடவும்...",
+      "typeValuePlaceholder": "மதிப்பை தட்டச்சு செய்யவும்...",
+      "enterFieldPlaceholder": "{field} உள்ளிடவும்...",
+      "noSuggestions": "பொருந்தும் பரிந்துரைகள் இல்லை. தட்டச்சு செய்த மதிப்பை பயன்படுத்தலாம்.",
+      "suggestions": "பரிந்துரைகள்",
+      "invalidNumber": "தவறான எண்",
+      "invalidDate": "தவறான தேதி",
+      "operators": {
+        "contains": "உள்ளடக்கியது",
+        "containsCaseInsensitive": "உள்ளடக்கியது (எழுத்து வேறுபாடின்றி)",
+        "equals": "சமம்",
+        "notEquals": "சமமில்லை",
+        "greaterThan": "அதிகம்",
+        "greaterOrEqual": "அதிகம் அல்லது சமம்",
+        "lessThan": "குறைவு",
+        "lessOrEqual": "குறைவு அல்லது சமம்",
+        "after": "பிறகு",
+        "onOrAfter": "அன்று அல்லது பிறகு",
+        "before": "முன்பு",
+        "onOrBefore": "அன்று அல்லது முன்பு",
+        "isNull": "காலியாக உள்ளது",
+        "isNotNull": "காலியாக இல்லை",
+        "inList": "பட்டியலில் உள்ளது",
+        "notInList": "பட்டியலில் இல்லை",
+        "allElementsEquals": "அனைத்து உறுப்புகளும் சமம்",
+        "allElementsNotEquals": "அனைத்து உறுப்புகளும் சமமில்லை",
+        "anyElementEquals": "ஏதாவது உறுப்பு சமம்",
+        "anyElementNotEquals": "ஏதாவது உறுப்பு சமமில்லை",
+        "allElementsContain": "அனைத்து உறுப்புகளும் உள்ளடக்கியது",
+        "allElementsNotContain": "அனைத்து உறுப்புகளும் உள்ளடக்கவில்லை",
+        "anyElementContains": "ஏதாவது உறுப்பு உள்ளடக்கியது",
+        "anyElementNotContain": "ஏதாவது உறுப்பு உள்ளடக்கவில்லை"
+      }
+    }
+  },
+  "walletConnectionDialog": {
+    "walletAndNetworkReady": "வாலட் மற்றும் நெட்வொர்க் தயாராக உள்ளது",
+    "preparing": "தயாராகிறது...",
+    "connectWallet": "வாலட் இணைக்கவும்",
+    "useThisWallet": "இந்த வாலட்டை பயன்படுத்துங்கள்",
+    "switchWallet": "வாலட் மாற்றுங்கள்",
+    "switchNetwork": "நெட்வொர்க் மாற்றுங்கள்",
+    "connecting": "இணைக்கிறது…",
+    "activating": "செயல்படுத்துகிறது…",
+    "switchingNetwork": "நெட்வொர்க் மாற்றுகிறது…",
+    "walletStep": "வாலட்",
+    "networkStep": "நெட்வொர்க்",
+    "requiredWallet": "தேவையான வாலட்",
+    "differentWalletConnected": "நீங்கள் வேறொரு வாலட்டை இணைத்தீர்கள்",
+    "youConnected": "நீங்கள் இணைத்தது",
+    "butWeNeed": "ஆனால் எங்களுக்கு தேவை",
+    "switchNetworkPrompt": "தொடர உங்கள் வாலட் நெட்வொர்க்கை மாற்றவும்.",
+    "current": "தற்போதைய",
+    "required": "தேவையான",
+    "chainLabel": "சங்கிலி {id}"
+  },
+  "domainSearchCombobox": {
+    "placeholder": "டொமைனை தேர்ந்தெடுக்கவும் அல்லது உள்ளிடவும்",
+    "loadingDomains": "டொமைன்கள் ஏற்றுகிறது",
+    "useTypedDomain": "தட்டச்சு செய்த டொமைனை பயன்படுத்துங்கள்",
+    "domains": "டொமைன்கள்"
+  },
+  "previewGate": {
+    "title": "முன்னோட்ட அணுகல்",
+    "description": "இந்த முன்னோட்ட சூழலை அணுக அணுகல் குறியீட்டை உள்ளிடவும்.",
+    "accessCode": "அணுகல் குறியீடு",
+    "unlock": "திறக்கவும்"
+  },
+  "missingEmail": {
+    "noContactEmail": "தொடர்பு மின்னஞ்சல் இல்லை",
+    "later": "பிறகு",
+    "addEmailToProfile": "சுயவிவரத்தில் மின்னஞ்சல் சேர்க்கவும்",
+    "addEmail": "மின்னஞ்சல் சேர்க்கவும்"
+  },
+  "announcements": {
+    "previous": "முந்தைய அறிவிப்பு",
+    "next": "அடுத்த அறிவிப்பு",
+    "dismiss": "அறிவிப்பை நிராகரிக்கவும்"
+  },
+  "emailRequired": {
+    "title": "மின்னஞ்சல் தேவை",
+    "description": "தொடர உங்கள் சுயவிவரத்தில் சரியான மின்னஞ்சலை சேர்க்க வேண்டும்."
+  },
+  "voteOrShare": {
+    "signInToVote": "வாக்களிக்க உள்நுழைக",
+    "shareDomainInstead": "டொமைனை பகிர்க"
+  },
+  "datePicker": {
+    "naturalLanguagePlaceholder": "நாளை அல்லது அடுத்த வாரம்",
+    "selectDate": "தேதி தேர்ந்தெடுக்கவும்"
+  },
+  "selectWalletAndChain": {
+    "linked": "இணைக்கப்பட்டது",
+    "selectChainPlaceholder": "ஒரு சங்கிலியை தேர்ந்தெடுக்கவும்"
+  },
+  "feedback": {
+    "close": "கருத்தை மூடு",
+    "skip": "தவிர்க்கவும்"
+  },
+  "nftWalletCard": {
+    "copyResolvedAddress": "தீர்க்கப்பட்ட முகவரியை நகலெடுக்கவும்",
+    "title": "பெறும் வாலட் அல்லது ENS"
+  },
+  "creditCard": {
+    "cardHolder": "கார்டு வைத்திருப்பவர்",
+    "expires": "காலாவதியாகும் தேதி"
+  },
+  "walletCard": {
+    "ethereumWallet": "Ethereum வாலட்",
+    "connected": "இணைக்கப்பட்டது",
+    "connectedNetworks": "இணைக்கப்பட்ட நெட்வொர்க்குகள்"
+  },
+  "ownerPage": {
+    "heading": "இந்த வாலட்டுக்கு சொந்தமான டொமைன்கள்"
   }
 }

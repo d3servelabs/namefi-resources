@@ -44,6 +44,7 @@ import {
   Trash2,
   Upload,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { pick, pluck } from 'ramda';
 import type { Dispatch, FC, HTMLAttributes, SetStateAction } from 'react';
 import {
@@ -85,6 +86,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
   className,
   ...rest
 }: DnsRecordsTableProps) => {
+  const t = useTranslations('dnsManagement');
   const trpc = useTRPC();
   const dnsRecords = useQuery(
     trpc.dnsRecords.getRecords.queryOptions(
@@ -155,11 +157,13 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     (_rowId: string, columnId: string, _value: string) => {
       // TODO: Implement this
 
-      toast('Record updated', {
-        description: `${columnId.charAt(0).toUpperCase() + columnId.slice(1)} updated successfully.`,
+      toast(t('records.toasts.recordUpdated'), {
+        description: t('records.toasts.recordUpdatedDescription', {
+          field: columnId.charAt(0).toUpperCase() + columnId.slice(1),
+        }),
       });
     },
-    [],
+    [t],
   );
 
   // Define columns with useMemo
@@ -195,7 +199,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       },
       {
         accessorKey: 'rdata',
-        header: 'Value',
+        header: t('records.table.columnValue'),
         cell: (context) => (
           <ValueColumnCell context={context} onCellUpdate={handleCellUpdate} />
         ),
@@ -209,11 +213,11 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       },
       {
         id: 'actions',
-        header: 'Actions',
+        header: t('records.table.columnActions'),
         cell: (context) => <ActionsColumnCell context={context} />,
       },
     ],
-    [handleCellUpdate],
+    [handleCellUpdate, t],
   );
 
   const finalColumnFilters = useMemo(
@@ -300,14 +304,14 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       <div className="relative w-64">
         <Search className="absolute start-2 top-2.5 h-4 w-4 text-zinc-500" />
         <Input
-          placeholder="Search records..."
+          placeholder={t('records.table.searchPlaceholder')}
           value={globalFilter ?? ''}
           onChange={handleGlobalFilterChange}
           className="ps-8"
         />
       </div>
     ),
-    [globalFilter, handleGlobalFilterChange],
+    [globalFilter, handleGlobalFilterChange, t],
   );
 
   // Memoize the column visibility dropdown
@@ -319,11 +323,13 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           render={<Button variant="outline" className="ms-2" />}
         >
           <SlidersHorizontal className="me-2 h-4 w-4" />
-          Columns
+          {t('records.table.columns')}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Toggle Columns</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {t('records.table.toggleColumns')}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {table
               .getAllColumns()
@@ -346,7 +352,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
     ),
-    [columnVisibility],
+    [columnVisibility, t],
   );
 
   // Memoize the filter dropdown
@@ -357,11 +363,13 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           render={<Button variant="outline" className="ms-2" />}
         >
           <Filter className="me-2 h-4 w-4" />
-          Filter
+          {t('records.table.filter')}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Filter by Type</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {t('records.table.filterByType')}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             {DNS_RECORD_TYPES.map((type) => (
               <DropdownMenuCheckboxItem
@@ -379,7 +387,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
                   onClick={() => setTypeFilter([])}
                   className="text-red-500"
                 >
-                  Clear Filters
+                  {t('records.table.clearFilters')}
                 </DropdownMenuItem>
               </>
             )}
@@ -387,7 +395,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
         </DropdownMenuContent>
       </DropdownMenu>
     ),
-    [handleTypeFilterChange, typeFilter],
+    [handleTypeFilterChange, typeFilter, t],
   );
 
   // Memoize the export/import dropdown
@@ -398,30 +406,32 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           render={<Button variant="outline" className="ms-2 hidden" />}
         >
           <Settings className="me-2 h-4 w-4" />
-          Actions
+          {t('records.table.actionsLabel')}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuGroup>
-            <DropdownMenuLabel>Table Actions</DropdownMenuLabel>
+            <DropdownMenuLabel>
+              {t('records.table.tableActions')}
+            </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Download className="me-2 h-4 w-4" />
-              Export Records
+              {t('records.table.exportRecords')}
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Upload className="me-2 h-4 w-4" />
-              Import Records
+              {t('records.table.importRecords')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <Clipboard className="me-2 h-4 w-4" />
-              Copy as Zone File
+              {t('records.table.copyAsZoneFile')}
             </DropdownMenuItem>
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>
     ),
-    [],
+    [t],
   );
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -440,7 +450,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           >
             <Button variant="outline" size="sm" className="ms-2">
               <Edit className="me-2 h-4 w-4" />
-              Edit Selected ({selectedRecords.length})
+              {t('records.table.editSelected', {
+                count: selectedRecords.length,
+              })}
             </Button>
           </AddEditRecordsDialog>
           <DeleteRecordDialog
@@ -451,7 +463,9 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           >
             <Button variant="destructive" size="sm" className="ms-2">
               <Trash2 className="me-2 h-4 w-4" />
-              Delete Selected ({selectedRecords.length})
+              {t('records.table.deleteSelected', {
+                count: selectedRecords.length,
+              })}
             </Button>
           </DeleteRecordDialog>
         </>
@@ -462,6 +476,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
       domain,
       isDeleteDialogOpen,
       isEditDialogOpen,
+      t,
     ],
   );
 
@@ -526,7 +541,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
               ) : (
                 <Tr>
                   <Td colSpan={columns.length} className="h-24 text-center">
-                    No records found.
+                    {t('records.table.empty')}
                   </Td>
                 </Tr>
               )}
@@ -537,8 +552,10 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
 
       <div className="flex items-center justify-between">
         <div className="text-sm text-zinc-500">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+          {t('records.table.rowsSelected', {
+            selected: table.getFilteredSelectedRowModel().rows.length,
+            total: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         {ENABLE_PAGINATION && (
           <TableFooterPageSelector

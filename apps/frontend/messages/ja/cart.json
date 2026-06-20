@@ -80,5 +80,30 @@
     "x402ConnectWallet": "x402支払いに署名するためにアクティブなウォレットを接続してください",
     "orderFailed": "注文を送信できませんでした。もう一度お試しください。"
   },
-  "metaTitle": "Namefi | カート"
+  "metaTitle": "Namefi | カート",
+  "cartFootnote": {
+    "learnMore": "詳しく見る",
+    "agree": "同意する"
+  },
+  "cartItemRegistration": {
+    "learnMore": "詳しく見る",
+    "gotIt": "了解しました"
+  },
+  "cartItemSetup": {
+    "showOptionsAria": "ドメイン設定オプションを表示",
+    "noSetupOptions": "設定オプションなし"
+  },
+  "cartItem": {
+    "setupOptionsAria": "ドメイン設定オプション"
+  },
+  "cartDropdown": {
+    "myCart": "マイカート",
+    "yourCartIsEmpty": "カートは空です",
+    "total": "合計",
+    "checkout": "チェックアウト",
+    "loadingCart": "カートを読み込み中..."
+  },
+  "cartButton": {
+    "removeAria": "カートから削除"
+  }
 }

@@ -1,0 +1,282 @@
+{
+  "create.title": {
+    "description": "Title of the single-gift creation dialog where a domain owner gifts a domain to one recipient.",
+    "maxLength": 24
+  },
+  "create.submit": {
+    "description": "Primary submit button of the single-gift dialog that creates the gift.",
+    "maxLength": 20
+  },
+  "multi.title": {
+    "description": "Title of the bulk gift dialog where a domain owner creates many gift reservations at once.",
+    "maxLength": 32
+  },
+  "multi.bulkInputLabel": {
+    "description": "Label above the textarea where the user pastes multiple email/subdomain lines for bulk gifting.",
+    "maxLength": 24
+  },
+  "multi.appendToTable": {
+    "description": "Button that parses the bulk text input and appends the rows to the editable entries table.",
+    "maxLength": 28
+  },
+  "multi.addRow": {
+    "description": "Button that adds one empty row to the editable bulk-gift entries table.",
+    "maxLength": 14
+  },
+  "multi.entriesCount": {
+    "description": "Heading above the bulk-gift entries table. {count} = number of rows currently in the table.",
+    "maxLength": 20
+  },
+  "multi.entriesLabel": {
+    "description": "Inline summary showing how many entries are in the bulk-gift table. {count} = number of rows.",
+    "maxLength": 20
+  },
+  "multi.tooltipParent": {
+    "description": "Help tooltip for parent (any-subdomain) bulk mode explaining the expected line format (email,count). Keep code samples and emails untranslated; preserve newlines."
+  },
+  "multi.tooltipExact": {
+    "description": "Help tooltip for exact (specific-subdomain) bulk mode explaining the expected line format (email, subdomain). {domain} = the user's PBN domain — keep untranslated. Keep emails untranslated; preserve newlines."
+  },
+  "multi.csvPlaceholderParent": {
+    "description": "Placeholder text for the bulk-input textarea in parent mode (one email per line). Keep example emails untranslated; preserve newlines."
+  },
+  "multi.csvPlaceholderExact": {
+    "description": "Placeholder text for the bulk-input textarea in exact mode (email,subdomain per line). Keep example emails untranslated; preserve newlines."
+  },
+  "multi.csvHintParent": {
+    "description": "Hint below the bulk-input textarea in parent mode describing the expected one-email-per-line format.",
+    "maxLength": 28
+  },
+  "multi.csvHintExact": {
+    "description": "Hint below the bulk-input textarea in exact mode describing the email,exactName line format. Keep 'email,exactName' literal.",
+    "maxLength": 28
+  },
+  "multi.sendEmailLabel": {
+    "description": "Label for the toggle that controls whether gift recipients are notified by email.",
+    "maxLength": 16
+  },
+  "multi.sendEmailDescription": {
+    "description": "Helper text under the Send email toggle in the bulk-gift dialog.",
+    "maxLength": 36
+  },
+  "multi.reserveDescription": {
+    "description": "Helper text under the Reserve toggle in the bulk-gift exact mode, explaining each name is held until received or expired.",
+    "maxLength": 56
+  },
+  "multi.badgeParent": {
+    "description": "Compact badge labelling the current bulk mode as parent (any subdomain).",
+    "maxLength": 10
+  },
+  "multi.badgeExact": {
+    "description": "Compact badge labelling the current bulk mode as exact (specific subdomain).",
+    "maxLength": 10
+  },
+  "multi.duplicateBadge": {
+    "description": "Destructive badge showing how many duplicate rows exist. {count} = number of duplicates (ICU plural selects 'duplicate'/'duplicates').",
+    "maxLength": 16
+  },
+  "multi.invalidBadge": {
+    "description": "Destructive badge showing how many invalid rows exist. {count} = number of invalid rows.",
+    "maxLength": 16
+  },
+  "multi.createButton": {
+    "description": "Primary button that creates the bulk gifts. {count} = total number of gifts to create (ICU plural selects 'Gift'/'Gifts').",
+    "maxLength": 24
+  },
+  "multi.validEmail": {
+    "description": "Inline validation error shown under a bulk-gift row when the email is invalid.",
+    "maxLength": 24
+  },
+  "multi.duplicateRow": {
+    "description": "Inline validation error shown under a bulk-gift row that duplicates another row.",
+    "maxLength": 20
+  },
+  "multi.countMin": {
+    "description": "Inline validation error shown when a bulk-gift parent-mode count is below 1.",
+    "maxLength": 28
+  },
+  "multi.subdomainOf": {
+    "description": "Inline validation error when an exact-mode entry is not a single-label subdomain. {domain} = the PBN domain — keep untranslated.",
+    "maxLength": 48
+  },
+  "multi.confirmTitle": {
+    "description": "Title of the confirmation dialog shown before creating bulk gifts.",
+    "maxLength": 24
+  },
+  "multi.confirmDescription": {
+    "description": "Confirmation body before creating bulk gifts. {count} = total gifts (ICU plural selects 'gift'/'gifts'); the <b> tags bold the count."
+  },
+  "multi.confirmCreate": {
+    "description": "Button in the confirmation dialog that finalizes creating the bulk gifts.",
+    "maxLength": 20
+  },
+  "multi.back": {
+    "description": "Cancel/back button in the bulk-gift confirmation dialog that returns to editing.",
+    "maxLength": 12
+  },
+  "multi.tagDuplicate": {
+    "description": "Small badge marking a row as a duplicate in the bulk-gift confirmation list.",
+    "maxLength": 12
+  },
+  "multi.tagInvalid": {
+    "description": "Small badge marking a row as invalid in the bulk-gift confirmation list.",
+    "maxLength": 12
+  },
+  "multi.tagMissing": {
+    "description": "Small badge marking a missing subdomain value in the bulk-gift confirmation list.",
+    "maxLength": 12
+  },
+  "fields.yourDomain": {
+    "description": "Label for the select where the owner picks which of their PBN domains to gift from.",
+    "maxLength": 16
+  },
+  "fields.yourDomainPlaceholder": {
+    "description": "Placeholder in the domain select prompting the user to choose an owned domain.",
+    "maxLength": 28
+  },
+  "fields.yourDomainDescriptionFixed": {
+    "description": "Helper text shown under the domain select when the domain is preset and cannot be changed.",
+    "maxLength": 32
+  },
+  "fields.yourDomainDescription": {
+    "description": "Helper text under the domain select explaining the user picks the PBN domain to gift from.",
+    "maxLength": 60
+  },
+  "fields.recipientEmail": {
+    "description": "Label for the recipient email field in the single-gift dialog.",
+    "maxLength": 20
+  },
+  "fields.recipientEmailPlaceholder": {
+    "description": "Placeholder example email in the recipient email field. Keep as an example email.",
+    "maxLength": 28
+  },
+  "fields.recipientEmailDescription": {
+    "description": "Helper text under the recipient email field.",
+    "maxLength": 36
+  },
+  "fields.recipientEmailRowPlaceholder": {
+    "description": "Placeholder example email in each bulk-gift table row email input. Keep as an example email.",
+    "maxLength": 24
+  },
+  "fields.giftType": {
+    "description": "Label for the gift type select (specific domain vs any subdomain).",
+    "maxLength": 16
+  },
+  "fields.giftTypeExact": {
+    "description": "Gift type option: gift one specific exact domain.",
+    "maxLength": 20
+  },
+  "fields.giftTypeParent": {
+    "description": "Gift type option: let the recipient claim any subdomain.",
+    "maxLength": 20
+  },
+  "fields.giftTypeDescription": {
+    "description": "Helper text under the gift type select explaining the two options.",
+    "maxLength": 72
+  },
+  "fields.exactDomainName": {
+    "description": "Label for the exact domain name field when gifting one specific domain.",
+    "maxLength": 20
+  },
+  "fields.exactDomainNamePlaceholder": {
+    "description": "Placeholder example subdomain in the exact domain field. {domain} = the PBN domain — keep untranslated.",
+    "maxLength": 32
+  },
+  "fields.exactDomainNameDescription": {
+    "description": "Helper text under the exact domain name field.",
+    "maxLength": 36
+  },
+  "fields.reserveLabel": {
+    "description": "Label for the toggle that reserves the exact domain while the gift is pending.",
+    "maxLength": 24
+  },
+  "fields.reserveDescription": {
+    "description": "Helper text under the reserve toggle explaining the domain is held until the gift expires or is received.",
+    "maxLength": 96
+  },
+  "fields.parentNote": {
+    "description": "Note shown in parent gift mode clarifying the parent domain equals the selected PBN domain.",
+    "maxLength": 56
+  },
+  "fields.expirationDate": {
+    "description": "Label for the expiration date picker in the single-gift dialog.",
+    "maxLength": 20
+  },
+  "fields.expirationDateDescription": {
+    "description": "Helper text under the expiration date picker.",
+    "maxLength": 40
+  },
+  "fields.reason": {
+    "description": "Label for the optional reason field describing why the gift is being sent.",
+    "maxLength": 24
+  },
+  "fields.reasonPlaceholder": {
+    "description": "Placeholder example text in the reason field.",
+    "maxLength": 36
+  },
+  "fields.reasonDescription": {
+    "description": "Helper text under the reason field.",
+    "maxLength": 28
+  },
+  "fields.personalMessage": {
+    "description": "Label for the optional personal message field included in the gift email.",
+    "maxLength": 28
+  },
+  "fields.personalMessagePlaceholder": {
+    "description": "Placeholder text in the personal message textarea.",
+    "maxLength": 44
+  },
+  "fields.personalMessageDescription": {
+    "description": "Helper text under the personal message field.",
+    "maxLength": 48
+  },
+  "fields.mode": {
+    "description": "Label for the bulk-gift mode select (any subdomain vs specific subdomain).",
+    "maxLength": 12
+  },
+  "fields.modeParent": {
+    "description": "Bulk-gift mode option: recipients can claim any subdomain.",
+    "maxLength": 20
+  },
+  "fields.modeExact": {
+    "description": "Bulk-gift mode option: each recipient gets a specific subdomain.",
+    "maxLength": 20
+  },
+  "fields.expiration": {
+    "description": "Label for the expiration date picker in the bulk-gift dialog.",
+    "maxLength": 16
+  },
+  "fields.columnEmail": {
+    "description": "Column header for the recipient email in the bulk-gift entries table.",
+    "maxLength": 12
+  },
+  "fields.columnCount": {
+    "description": "Column header for the per-recipient gift count in parent bulk mode.",
+    "maxLength": 12
+  },
+  "fields.columnSubdomain": {
+    "description": "Column header for the specific subdomain in exact bulk mode.",
+    "maxLength": 14
+  },
+  "toast.createdEmailSent": {
+    "description": "Success toast when a gift is created and the notification email was sent."
+  },
+  "toast.createdEmailFailed": {
+    "description": "Warning toast when a gift is created but the notification email failed to send."
+  },
+  "toast.createFailed": {
+    "description": "Error toast when gift creation fails. {error} = the error message — keep untranslated."
+  },
+  "validation.invalidEmail": {
+    "description": "Form validation error when the recipient email is not a valid email address."
+  },
+  "validation.exactRequired": {
+    "description": "Form validation error when the exact domain name is required but missing."
+  },
+  "validation.exactMustEndWith": {
+    "description": "Form validation error when the exact domain does not end with the PBN domain. {domain} = the PBN domain — keep untranslated."
+  },
+  "validation.parentRequired": {
+    "description": "Form validation error when the parent domain is required but missing."
+  }
+}
