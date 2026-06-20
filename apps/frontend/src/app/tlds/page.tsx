@@ -1,6 +1,6 @@
 'use client';
 
-import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
 import {
   Card,
@@ -10,7 +10,6 @@ import {
   CardTitle,
 } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
-import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { useHasPermissions } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
@@ -19,50 +18,17 @@ import {
   useDrizzlerServerFilterStrategy,
 } from '@/components/table/filters';
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
-import type {
-  ColumnDef,
-  Row,
-  SortingState,
-  VisibilityState,
-} from '@tanstack/react-table';
+import type { ColumnDef, Row, VisibilityState } from '@tanstack/react-table';
 import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { both, isNil, complement, isNotNil } from 'ramda';
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
 import { PageShell } from '@/components/page-shell';
-
-type TldPricingRow =
-  AppRouterOutput['registry']['getTldPricingTable']['tldPricing'][number];
-
-const usdFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
-});
-
-const formatUsdPerYear = (value: number | null) => {
-  if (isNil(value)) {
-    return 'N/A';
-  }
-  return `${usdFormatter.format(value)} / year`;
-};
-
-const formatRegistrarKey = (key: string | null) => {
-  if (!key) {
-    return 'N/A';
-  }
-  if (key === 'dynadot') {
-    return 'Dynadot GDG';
-  }
-  return key
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(' ');
-};
+import {
+  PriceCell,
+  RegistrarCell,
+  TldNameCell,
+  type TldPricingRow,
+} from './cells';
+import { TldPricingCard } from './tld-pricing-card';
 
 export default function TldPricingPage() {
   const trpc = useTRPC();
@@ -222,33 +188,37 @@ export default function TldPricingPage() {
       {
         accessorKey: 'tld',
         header: 'TLD',
-        cell: ({ row }) => (
-          <code className="font-medium uppercase ring-1 ring-inset ring-ring/50 rounded-md px-2 py-1">{`.${row.getValue('tld')}`}</code>
-        ),
+        cell: ({ row }) => <TldNameCell tld={row.getValue('tld')} />,
         size: 120,
       },
       {
         accessorKey: 'registrationPriceUsdPerYear',
         header: 'Registration',
-        cell: ({ row }) =>
-          priceCell({
-            value: row.getValue('registrationPriceUsdPerYear'),
-            row,
-          }),
+        cell: ({ row }) => (
+          <PriceCell
+            value={row.getValue('registrationPriceUsdPerYear')}
+            row={row}
+          />
+        ),
         size: 160,
       },
       {
         accessorKey: 'renewalPriceUsdPerYear',
         header: 'Renewal',
-        cell: ({ row }) =>
-          priceCell({ value: row.getValue('renewalPriceUsdPerYear'), row }),
+        cell: ({ row }) => (
+          <PriceCell value={row.getValue('renewalPriceUsdPerYear')} row={row} />
+        ),
         size: 160,
       },
       {
         accessorKey: 'transferPriceUsdPerYear',
         header: 'Transfer',
-        cell: ({ row }) =>
-          priceCell({ value: row.getValue('transferPriceUsdPerYear'), row }),
+        cell: ({ row }) => (
+          <PriceCell
+            value={row.getValue('transferPriceUsdPerYear')}
+            row={row}
+          />
+        ),
         size: 160,
       },
     ];
@@ -257,20 +227,24 @@ export default function TldPricingPage() {
       baseColumns.push({
         accessorKey: 'registrarKey',
         header: 'Registrar',
-        cell: ({ row }) => {
-          const registrarKey = row.getValue('registrarKey') as string | null;
-          return (
-            <Badge variant="secondary">
-              {formatRegistrarKey(registrarKey)}
-            </Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <RegistrarCell registrarKey={row.getValue('registrarKey')} />
+        ),
         size: 140,
       });
     }
 
     return baseColumns;
   }, [isAdmin]);
+
+  // Mobile card renderer. Mirrors the column cells so a phone-sized viewport gets
+  // a readable stacked card per TLD instead of a horizontally-scrolling table.
+  const renderMobileCard = useCallback(
+    (row: Row<TldPricingRow>) => (
+      <TldPricingCard row={row} showRegistrar={isAdmin} />
+    ),
+    [isAdmin],
+  );
 
   if (pricingQuery.isLoading) {
     return (
@@ -342,6 +316,7 @@ export default function TldPricingPage() {
             filterStrategy={filterStrategy}
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
+            renderMobileCard={renderMobileCard}
             emptyMessage="No TLDs match your filters"
             loadingMessage="Loading TLD pricing..."
           />
@@ -351,43 +326,5 @@ export default function TldPricingPage() {
         </CardContent>
       </Card>
     </PageShell>
-  );
-}
-
-function priceCell({
-  value,
-  row,
-}: {
-  value: number | null;
-  row: Row<TldPricingRow>;
-}) {
-  const all = [
-    row.getValue('registrationPriceUsdPerYear'),
-    row.getValue('renewalPriceUsdPerYear'),
-    row.getValue('transferPriceUsdPerYear'),
-  ].filter(both(complement(Number.isNaN), isNotNil));
-
-  if (all.length === 0) {
-    return (
-      <Tooltip>
-        <TooltipTrigger>
-          <span className="text-muted-foreground">Variable Price</span>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>The price is variable and depends on the domain name</p>
-        </TooltipContent>
-      </Tooltip>
-    );
-  }
-  if (isNil(value) || Number.isNaN(value)) {
-    return <span className="text-muted-foreground">N/A</span>;
-  }
-  return (
-    <span className="text-muted-foreground">
-      <span className="font-medium font-mono text-foreground">
-        {value.toFixed(2)}$
-      </span>{' '}
-      / year
-    </span>
   );
 }
