@@ -18,6 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import {
   AlertCircle,
@@ -453,7 +455,7 @@ export function RequestWalletConnectionDialog(
 
   return (
     <Dialog open={open} modal={true}>
-      <DialogContent className="max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

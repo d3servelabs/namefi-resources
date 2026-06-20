@@ -8,6 +8,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
@@ -339,7 +341,9 @@ export function TwitterShareDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[500px]')}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <XBrandIcon className="h-5 w-5 text-blue-500" />

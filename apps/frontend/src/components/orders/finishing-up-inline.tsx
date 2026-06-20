@@ -16,6 +16,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/sheet';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Check, Gem, type LucideIcon, Shield, Sparkles } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { type ReactNode, useState } from 'react';
@@ -147,7 +148,9 @@ export function FinishingUpInline({
         </Sheet>
       ) : (
         <Dialog open={open} onOpenChange={onOpenChange}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent
+            className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}
+          >
             <DialogHeader>
               <DialogTitle>{detail?.title}</DialogTitle>
               <DialogDescription>{detail?.description}</DialogDescription>

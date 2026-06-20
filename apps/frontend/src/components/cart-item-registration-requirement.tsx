@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import type { TldRegistrationRequirement } from '@namefi-astra/common/domain-availability';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import { CheckCircle2, ExternalLink, Info } from 'lucide-react';
@@ -161,7 +162,7 @@ export function CartItemRegistrationRequirement({
       </div>
 
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent>
+        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
           <DialogHeader>
             <DialogTitle>{requirement.title}</DialogTitle>
             <DialogDescription>{requirement.summary}</DialogDescription>

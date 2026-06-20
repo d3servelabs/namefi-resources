@@ -52,6 +52,8 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Check, Copy, Info } from 'lucide-react';
 
 // Dynamically import heavy visualization components to reduce first-hit compile time
@@ -797,7 +799,9 @@ export default function OrderPage({ params }: OrderPageProps) {
       </div>
 
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
-        <DialogContent className="sm:max-w-[560px]">
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[560px]')}
+        >
           <DialogHeader>
             <DialogTitle>{t('detail.shareDialogTitle')}</DialogTitle>
             <DialogDescription>

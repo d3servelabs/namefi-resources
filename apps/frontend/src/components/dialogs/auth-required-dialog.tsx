@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useAuth } from '@/hooks/use-auth';
 import {
   type MouseEvent,
@@ -33,7 +34,7 @@ export const AuthRequiredDialog = ({
 }: AuthRequiredDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

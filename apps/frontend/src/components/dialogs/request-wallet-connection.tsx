@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
@@ -297,7 +299,7 @@ export const RequestWalletConnection = forwardRef<
   }
   return (
     <Dialog open={open} modal={true}>
-      <DialogContent className="max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}>
         <DialogHeader>
           <DialogTitle>
             {connectionState === 'wrong-wallet'

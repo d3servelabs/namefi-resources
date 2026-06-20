@@ -16,6 +16,7 @@ import {
 } from '@namefi-astra/ui/components/shadcn/popover';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { AlertCircle, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -89,7 +90,9 @@ export function HeaderMissingEmailWarning() {
       <>
         {triggerButton}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent
+            className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[425px]')}
+          >
             <DialogHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/10">
                 <Mail className="h-6 w-6 text-amber-600 dark:text-amber-400" />

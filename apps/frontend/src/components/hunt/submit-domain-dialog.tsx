@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTRPC } from '@/lib/trpc';
@@ -164,7 +165,7 @@ export const SubmitDomainDialog = ({
   return (
     <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
       <DialogTrigger render={children as ReactElement} />
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>Submit a new domain</DialogTitle>
         </DialogHeader>

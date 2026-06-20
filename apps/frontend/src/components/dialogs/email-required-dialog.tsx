@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -58,7 +60,10 @@ export function EmailRequiredModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={dismissible ? onOpenChange : undefined}>
-      <DialogContent className="sm:max-w-[425px]" showCloseButton={dismissible}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[425px]')}
+        showCloseButton={dismissible}
+      >
         <DialogHeader className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <Mail className="h-6 w-6 text-muted-foreground" />

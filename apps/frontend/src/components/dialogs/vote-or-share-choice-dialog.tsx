@@ -7,6 +7,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { LogIn, Share2 } from 'lucide-react';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
@@ -35,7 +37,7 @@ export function VoteOrShareChoiceDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}>
         <DialogHeader>
           <DialogTitle>Vote for {domainName || 'domain'}</DialogTitle>
         </DialogHeader>
