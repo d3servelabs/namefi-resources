@@ -8,6 +8,47 @@
 - [Logs Access](./docs/logs.md)
 - [Dev Guides](./docs/dev-guides.md)
 
+## Deployments
+
+How each app reaches production:
+
+### Frontend & backend (`apps/frontend`, `apps/backend`)
+
+Released by promoting `main` → the `prod` branch via the **Create Release** workflow
+(`.github/workflows/release.yml`). It runs on a nightly cron (`0 11 * * *`, 11:00 UTC) or a manual
+`workflow_dispatch`, bumps the app versions, and opens/merges a `main → prod` release PR. The `prod`
+branch drives the production deployment.
+
+### Park (`apps/park`) — parked-domain landing pages
+
+**The park production deploy is a manual step. It is _not_ automated, _not_ triggered by pushing
+`main`, and _not_ part of the Create Release flow.**
+
+- `apps/park/vercel.json` enables Vercel Git deploys **only on `main`**
+  (`deploymentEnabled: { "*": false, "main": true }`). Every push to `main` therefore creates a
+  **preview/dev**-target park build — never a production one. The `prod` branch does **not** build
+  park, so the release / `prod`-branch flow has no effect on it.
+- The Vercel project **`namefi-astra-park`** serves real parked domains (e.g. `82228.net`, proxied
+  through Caddy) from its **production**-target deployment, which only changes when someone
+  **manually promotes a `main` build to production**. Historically this is done every few weeks by a
+  team member.
+
+**To ship park to production** (after your change is merged to `main`):
+
+1. **Vercel Dashboard** — open the `namefi-astra-park` project → **Deployments** → pick the latest
+   `Ready` deployment built from `main` → **Redeploy → Production**. Prefer _Redeploy → Production_
+   (a fresh production build) over a plain _Promote_: a plain promote reuses the existing dev build
+   and would run with **dev** environment variables (e.g. pointing park at the dev backend).
+2. **Vercel CLI** — from a checkout at the target `main` commit, with the directory linked to the
+   `namefi-astra-park` project:
+   ```bash
+   vercel deploy --prod --scope d3servelabs
+   ```
+
+After promoting, verify the live page on a **real parked domain** (e.g. `https://82228.net`). The bare
+`*.vercel.app` deployment host is blocked by the Vercel firewall (`x-vercel-mitigated: deny`), so the
+deployment URL itself returns `403` — always test through an actual parked domain.
+
 ## Quick Start
 
 Once you have all dependencies installed
