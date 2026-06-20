@@ -13,6 +13,7 @@
  *   wide-fixed-width      w-[>=360px] / min-w-[>=360px] with no `max-sm:` sibling.
  *   bottom-no-safe-area   fixed/sticky bottom-pinned UI without env(safe-area-inset-bottom).
  *   tabs-grid-no-wrap     <TabsList> using grid-cols-N with no flex-wrap fallback.
+ *   dialog-no-bottom-sheet <DialogContent> (centered modal) without MOBILE_BOTTOM_SHEET_DIALOG.
  *
  * Usage:
  *   bun run check:mobile                 # advisory report (always exit 0)
@@ -54,7 +55,8 @@ type Detector =
   | 'raw-table'
   | 'wide-fixed-width'
   | 'bottom-no-safe-area'
-  | 'tabs-grid-no-wrap';
+  | 'tabs-grid-no-wrap'
+  | 'dialog-no-bottom-sheet';
 
 interface Finding {
   detector: Detector;
@@ -75,6 +77,8 @@ const MESSAGES: Record<Detector, string> = {
     'fixed/sticky bottom-pinned UI without env(safe-area-inset-bottom) — add pb-[max(<base>,env(safe-area-inset-bottom))] (see floating-cart.tsx).',
   'tabs-grid-no-wrap':
     'TabsList grid-cols-N without flex-wrap — wrap on mobile, grid at lg (see my-domains/content.tsx).',
+  'dialog-no-bottom-sheet':
+    'centered <DialogContent> without MOBILE_BOTTOM_SHEET_DIALOG — dock to a bottom sheet on mobile via cn(MOBILE_BOTTOM_SHEET_DIALOG, …) (see the converted DNS dialogs / mobile-bottom-sheet.tsx).',
 };
 
 function walk(dir: string, out: string[] = []): string[] {
@@ -209,6 +213,32 @@ function analyze(file: string, rel: string): Finding[] {
           snippet: '<TabsList … grid-cols-N>',
           message: MESSAGES['tabs-grid-no-wrap'],
         });
+    }
+  }
+
+  // F. <DialogContent> (centered modal) without MOBILE_BOTTOM_SHEET_DIALOG.
+  // The shadcn primitive lives in packages/ui (not scanned), so only app call sites
+  // reach here. A file that converts its dialog(s) (adds the class to every
+  // DialogContent) clears the finding; one deliberately-centered dialog can carry a
+  // `mobile-ok` marker on its `<DialogContent` line.
+  if (!rel.startsWith('src/components/ui/')) {
+    let dlgFrom = 0;
+    while (true) {
+      const start = content.indexOf('<DialogContent', dlgFrom);
+      if (start === -1) break;
+      const gt = content.indexOf('>', start);
+      const tag = content.slice(start, gt === -1 ? start + 400 : gt + 1);
+      dlgFrom = gt === -1 ? start + 14 : gt + 1;
+      if (tag.includes('MOBILE_BOTTOM_SHEET_DIALOG')) continue;
+      const ln = lineOf(content, start);
+      if (tag.includes('mobile-ok') || suppressed(ln - 1)) continue;
+      findings.push({
+        detector: 'dialog-no-bottom-sheet',
+        file: rel,
+        line: ln,
+        snippet: '<DialogContent …>',
+        message: MESSAGES['dialog-no-bottom-sheet'],
+      });
     }
   }
 
