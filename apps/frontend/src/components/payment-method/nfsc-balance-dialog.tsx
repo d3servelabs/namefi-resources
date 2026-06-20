@@ -22,6 +22,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useQuery } from '@tanstack/react-query';
 import { CoinsIcon, Loader2Icon, PlusCircleIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -148,7 +150,9 @@ export function BalanceBreakdownDialog({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+        >
           <DialogHeader>
             <DialogTitle>{t('nfscBalanceDialog.title')}</DialogTitle>
             <DialogDescription>

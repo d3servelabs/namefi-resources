@@ -12,6 +12,8 @@ import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { type ReactElement, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { SavePaymentMethodForm } from './save-payment-method-form';
 
 export interface SavePaymentMethodDialogProps {
@@ -61,7 +63,12 @@ export function SavePaymentMethodDialog({
   return (
     <Dialog open={showSavePaymentMethodDialog} onOpenChange={onOpenChange}>
       <DialogTrigger render={dialogTrigger} />
-      <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%] overflow-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'sm:max-w-[425px] max-sm:max-h-[85%] overflow-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>{t('saveDialog.title')}</DialogTitle>
           <DialogDescription>{t('saveDialog.description')}</DialogDescription>

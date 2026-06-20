@@ -23,6 +23,8 @@ import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { useTranslations } from 'next-intl';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 /**
  * EIP-712 types for revoking an API key
@@ -145,7 +147,9 @@ export function RevokeApiKeyDialog({
       />
 
       <Dialog open={isOpen} onOpenChange={onOpenChange}>
-        <DialogContent className="sm:max-w-[450px]">
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[450px]')}
+        >
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-destructive" />

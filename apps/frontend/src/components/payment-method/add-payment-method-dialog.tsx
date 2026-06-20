@@ -13,6 +13,8 @@ import { Loader2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { type ReactElement, type ReactNode, useEffect, useState } from 'react';
 import { StripeProvider } from '@/components/providers/stripe';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 import { AddPaymentMethodForm } from './add-payment-method-form';
 
 export interface AddPaymentMethodDialogProps {
@@ -70,7 +72,12 @@ export function AddPaymentMethodDialog({
         disabled={disabled}
         render={dialogTrigger as ReactElement}
       />
-      <DialogContent className="sm:max-w-[425px] max-sm:max-h-[85%]">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'sm:max-w-[425px] max-sm:max-h-[85%]',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>{t('addPaymentMethodDialog.title')}</DialogTitle>
           <DialogDescription>

@@ -48,6 +48,8 @@ import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
 import { useAccount } from 'wagmi';
 import { getPublicKey, utils as secp256k1Utils } from '@noble/secp256k1';
 import { useTranslations } from 'next-intl';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { cn } from '@namefi-astra/ui/lib/cn';
 
 /**
  * Convert Uint8Array to hex string
@@ -395,7 +397,12 @@ export function CreateApiKeyDialog({
       />
 
       <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            'sm:max-w-[500px] max-h-[90vh] overflow-y-auto',
+          )}
+        >
           {step === 'form' ? (
             <>
               <DialogHeader>
