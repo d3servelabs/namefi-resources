@@ -28,22 +28,30 @@ branch drives the production deployment.
   (`deploymentEnabled: { "*": false, "main": true }`). Every push to `main` therefore creates a
   **preview/dev**-target park build — never a production one. The `prod` branch does **not** build
   park, so the release / `prod`-branch flow has no effect on it.
-- The Vercel project **`namefi-astra-park`** serves real parked domains (e.g. `82228.net`, proxied
-  through Caddy) from its **production**-target deployment, which only changes when someone
-  **manually promotes a `main` build to production**. Historically this is done every few weeks by a
-  team member.
+- Real parked domains (e.g. `82228.net`) resolve via DNS to Namefi's **Caddy** reverse proxy, which
+  forwards to the project's production custom domains (`park.namefi.io`, `park.astra.namefi.io`, …).
+  Those custom domains follow the project's **current production deployment** in the Vercel project
+  **`namefi-astra-park`** — which only changes when someone **manually promotes a `main` build to
+  production**. Historically this is done every few weeks by a team member.
 
 **To ship park to production** (after your change is merged to `main`):
 
 1. **Vercel Dashboard** — open the `namefi-astra-park` project → **Deployments** → pick the latest
    `Ready` deployment built from `main` → **Redeploy → Production**. Prefer _Redeploy → Production_
-   (a fresh production build) over a plain _Promote_: a plain promote reuses the existing dev build
-   and would run with **dev** environment variables (e.g. pointing park at the dev backend).
+   (a fresh production build) over promoting an existing **preview/dev** build: a dev build runs with
+   **dev** environment variables (e.g. pointing park at the dev backend).
 2. **Vercel CLI** — from a checkout at the target `main` commit, with the directory linked to the
    `namefi-astra-park` project:
    ```bash
    vercel deploy --prod --scope d3servelabs
    ```
+
+> **Two steps, not one.** A *production-target build* is not automatically the *current* production
+> deployment — and the custom domains only follow the **current** one. `vercel deploy --prod` and the
+> dashboard "Redeploy → Production" both build **and** make it current. If you instead create a
+> production build out-of-band (e.g. via the REST API), you must also **Promote** it to current
+> production (dashboard "Promote to Production", or `POST /v10/projects/{id}/promote/{deploymentId}`),
+> otherwise parked domains keep serving the previous build (look for a large `age:` / `x-vercel-cache: HIT`).
 
 After promoting, verify the live page on a **real parked domain** (e.g. `https://82228.net`). The bare
 `*.vercel.app` deployment host is blocked by the Vercel firewall (`x-vercel-mitigated: deny`), so the
