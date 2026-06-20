@@ -6,10 +6,8 @@ import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import type { ColumnDef, Row } from '@tanstack/react-table';
-import { ChevronDown, ChevronRight, Copy, Play } from 'lucide-react';
+import { ChevronDown, ChevronRight, Play } from 'lucide-react';
 import { toast } from 'sonner';
-import { UserWalletAvatar } from '@/components/user-avatar';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   useDrizzlerServerFilterStrategy,
@@ -17,74 +15,41 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { NetworkLogo } from '@/components/network-logo';
-import { getChain, CHAINS } from '@namefi-astra/utils/chains';
+import { CHAINS } from '@namefi-astra/utils/chains';
 import { ExportStatusBadge } from './export-status-badge';
+import { ExportTrackingCard } from './export-tracking-card';
+import {
+  ChainCell,
+  formatDateTime,
+  LatestEvidenceCell,
+  OwnerAddressCell,
+} from './export-tracking-cells';
 import { StatusHistorySubrow } from './status-history-subrow';
+import type { ExportTrackingRecord } from './types';
 import { VerifyButton } from './verify-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@namefi-astra/ui/components/shadcn/popover';
 
-const attemptGetChecksummedAddress = (address: string): string => {
-  const parsed = checksumWalletAddressSchema.safeParse(address);
-  return parsed.success ? parsed.data : address;
-};
-
-type ExportTrackingRecord = {
-  id: string;
-  normalizedDomainName: string;
-  chainId: number;
-  ownerAddress: string;
-  status: string;
-  previousStatus: string | null;
-  statusHistory: Array<{
-    timestamp: string;
-    status: string;
-    eppStatuses?: string[];
-  }> | null;
-  eppStatuses: string[] | null;
-  registrarKey: string | null;
-  statusChangedAt: Date;
-  firstDetectedAt: Date;
-  lastCheckedAt: Date;
-  clientApprovedAt: Date | null;
-  adminVerifiedAt: Date | null;
-  verfyingAdminId: string | null;
-  confirmedOutOfAccountAt: Date | null;
-  nftBurnedAt: Date | null;
-  nftBurnTxHash: string | null;
-  pendingNotifiedAt: Date | null;
-  userNotified: boolean;
-  notifiedAt: Date | null;
-  latestEvidence: {
-    checkedAt?: string;
-    evidenceSource?: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
-    accountCheck?: {
-      inOurAccount?: boolean;
-      confirmed?: boolean;
-    };
-    rdapTransferEvent?: {
-      detected?: boolean;
-      eventAction?: string;
-      eventDate?: string;
-    };
-    decisionAction?: string;
-    decisionReason?: string;
-  } | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+/**
+ * Whether a row has any expandable detail (status-history timeline / email
+ * timestamps). Shared by the desktop `getRowCanExpand` and the mobile card so
+ * both gate the expander on the exact same condition.
+ */
+const rowCanExpand = (record: ExportTrackingRecord): boolean =>
+  (record.statusHistory?.length ?? 0) > 0 ||
+  Boolean(record.pendingNotifiedAt) ||
+  Boolean(record.notifiedAt);
 
 export function ExportTrackingTable() {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
+  // Which mobile cards have their status-history timeline expanded. Cards start
+  // collapsed so the list stays scannable; this only drives the card layout.
+  const [expandedCardIds, setExpandedCardIds] = useState<Set<string>>(
+    () => new Set(),
+  );
 
   const {
     preferences: { sorting, pageSize, columnVisibility },
@@ -263,20 +228,7 @@ export function ExportTrackingTable() {
         {
           accessorKey: 'chainId',
           header: 'Chain',
-          cell: ({ row }) => {
-            const chain = getChain(row.original.chainId);
-            return (
-              <div className="flex items-center gap-2">
-                <NetworkLogo
-                  network={row.original.chainId}
-                  className="w-5 h-5"
-                />
-                <span className="text-xs text-muted-foreground">
-                  {chain?.name ?? `Chain ${row.original.chainId}`}
-                </span>
-              </div>
-            );
-          },
+          cell: ({ row }) => <ChainCell chainId={row.original.chainId} />,
           size: 120,
         },
         {
@@ -288,42 +240,9 @@ export function ExportTrackingTable() {
         {
           accessorKey: 'ownerAddress',
           header: 'Owner',
-          cell: ({ row }) => {
-            const ownerAddress = attemptGetChecksummedAddress(
-              row.original.ownerAddress,
-            );
-            const handleCopyWallet = async () => {
-              try {
-                await navigator.clipboard.writeText(ownerAddress);
-                toast.success('Copied address successfully');
-              } catch (error) {
-                toast.error('Failed to copy address');
-              }
-            };
-
-            return (
-              <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-                <UserWalletAvatar address={ownerAddress} className="size-6" />
-                <div className="flex-1 min-w-0">
-                  <AutoTruncateTextV2
-                    initialCharactersCountToDisplay={16}
-                    minCharactersToDisplay={10}
-                    className="font-mono text-xs"
-                  >
-                    {ownerAddress}
-                  </AutoTruncateTextV2>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleCopyWallet}
-                  className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-                  title="Copy address"
-                >
-                  <Copy className="h-3 w-3" />
-                </button>
-              </div>
-            );
-          },
+          cell: ({ row }) => (
+            <OwnerAddressCell ownerAddress={row.original.ownerAddress} />
+          ),
           size: 200,
         },
         {
@@ -337,127 +256,46 @@ export function ExportTrackingTable() {
         {
           accessorKey: 'statusChangedAt',
           header: 'Status Changed',
-          cell: ({ row }) =>
-            row.original.statusChangedAt
-              ? new Date(row.original.statusChangedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.statusChangedAt),
           size: 160,
         },
         {
           accessorKey: 'clientApprovedAt',
           header: 'Client Approved',
-          cell: ({ row }) =>
-            row.original.clientApprovedAt
-              ? new Date(row.original.clientApprovedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.clientApprovedAt),
           size: 160,
         },
         {
           accessorKey: 'adminVerifiedAt',
           header: 'Admin Verified',
-          cell: ({ row }) =>
-            row.original.adminVerifiedAt
-              ? new Date(row.original.adminVerifiedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.adminVerifiedAt),
           size: 160,
         },
         {
           accessorKey: 'pendingNotifiedAt',
           header: 'Pending Email Sent',
-          cell: ({ row }) =>
-            row.original.pendingNotifiedAt
-              ? new Date(row.original.pendingNotifiedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.pendingNotifiedAt),
           size: 180,
         },
         {
           accessorKey: 'notifiedAt',
           header: 'Completion Email Sent',
-          cell: ({ row }) =>
-            row.original.notifiedAt
-              ? new Date(row.original.notifiedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.notifiedAt),
           size: 190,
         },
         {
           accessorKey: 'nftBurnedAt',
           header: 'NFT Burned',
-          cell: ({ row }) =>
-            row.original.nftBurnedAt
-              ? new Date(row.original.nftBurnedAt).toLocaleString()
-              : '-',
+          cell: ({ row }) => formatDateTime(row.original.nftBurnedAt),
           size: 160,
         },
         {
           accessorKey: 'latestEvidence',
           header: 'Latest Evidence',
           enableSorting: false,
-          cell: ({ row }) => {
-            const latestEvidence = row.original.latestEvidence;
-            if (!latestEvidence) {
-              return <span className="text-xs text-muted-foreground">-</span>;
-            }
-
-            const accountCheck = latestEvidence.accountCheck;
-            const accountSummary = accountCheck
-              ? `${accountCheck.inOurAccount ? 'In account' : 'Out of account'} (${accountCheck.confirmed ? 'confirmed' : 'unconfirmed'})`
-              : 'Unknown';
-
-            const rdapEvent = latestEvidence.rdapTransferEvent;
-            const rdapSummary = rdapEvent?.detected
-              ? rdapEvent.eventDate
-                ? `Detected (${new Date(rdapEvent.eventDate).toLocaleString()})`
-                : 'Detected'
-              : 'Not detected';
-
-            return (
-              <div className="space-y-0.5 text-xs max-w-[300px]">
-                <div>
-                  <span className="text-muted-foreground">Account:</span>{' '}
-                  <span>{accountSummary}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">RDAP transfer:</span>{' '}
-                  <span>{rdapSummary}</span>
-                </div>
-                {latestEvidence.checkedAt && (
-                  <div className="text-muted-foreground">
-                    Checked:{' '}
-                    {new Date(latestEvidence.checkedAt).toLocaleString()}
-                  </div>
-                )}
-                {latestEvidence.evidenceSource && (
-                  <div className="text-muted-foreground">
-                    Source: {latestEvidence.evidenceSource}
-                  </div>
-                )}
-                <Popover>
-                  <PopoverTrigger
-                    render={
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-6 px-2 text-xs -ms-2"
-                      />
-                    }
-                  >
-                    View JSON
-                  </PopoverTrigger>
-                  <PopoverContent
-                    align="start"
-                    className="w-[440px] max-sm:w-[calc(100vw-2rem)] p-3"
-                  >
-                    <div className="space-y-2">
-                      <div className="text-xs font-medium">Latest Evidence</div>
-                      <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">
-                        {JSON.stringify(latestEvidence, null, 2)}
-                      </pre>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            );
-          },
+          cell: ({ row }) => (
+            <LatestEvidenceCell latestEvidence={row.original.latestEvidence} />
+          ),
           size: 320,
         },
         {
@@ -476,6 +314,37 @@ export function ExportTrackingTable() {
       pendingNotifiedAt={row.original.pendingNotifiedAt}
       notifiedAt={row.original.notifiedAt}
     />
+  );
+
+  const handleToggleCardExpanded = useCallback((id: string) => {
+    setExpandedCardIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  // Mobile card renderer. Renders off the SAME row data + shared cell components
+  // as the desktop columns, so a phone gets a readable stacked card per record
+  // instead of a horizontally-scrolling table. Gated internally by
+  // ExtensibleDataTable on useIsMobile().
+  const renderMobileCard = useCallback(
+    (row: Row<ExportTrackingRecord>) => {
+      const record = row.original;
+      return (
+        <ExportTrackingCard
+          record={record}
+          canExpand={rowCanExpand(record)}
+          isExpanded={expandedCardIds.has(record.id)}
+          onToggleExpanded={() => handleToggleCardExpanded(record.id)}
+        />
+      );
+    },
+    [expandedCardIds, handleToggleCardExpanded],
   );
 
   return (
@@ -518,11 +387,8 @@ export function ExportTrackingTable() {
         sorting={sorting}
         onSortingChange={setSorting}
         renderSubRow={renderSubRow}
-        getRowCanExpand={(row) =>
-          (row.original.statusHistory?.length ?? 0) > 0 ||
-          Boolean(row.original.pendingNotifiedAt) ||
-          Boolean(row.original.notifiedAt)
-        }
+        getRowCanExpand={(row) => rowCanExpand(row.original)}
+        renderMobileCard={renderMobileCard}
         emptyMessage="No export tracking records found"
         loadingMessage="Loading export tracking records..."
         columnVisibility={columnVisibility}
