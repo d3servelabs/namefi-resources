@@ -4,6 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
@@ -46,7 +47,7 @@ export function EditDomainDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>Edit {domain.normalizedDomainName}</DialogTitle>
         </DialogHeader>

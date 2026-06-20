@@ -41,6 +41,7 @@ import {
   resetNameserversEnableDnssecSubstepDisplayInfo,
 } from '@/hooks/use-change-nameservers-progress';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { type AppRouterOutput, useTRPC, useTRPCClient } from '@/lib/trpc';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Nameserver } from '@namefi-astra/registrars/data/types/nameservers';
@@ -845,7 +846,7 @@ function NameserversProgressModal({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>

@@ -16,6 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { GitHubBrandIcon } from '@namefi-astra/ui/components/namefi/brand-icons';
 import { type User, usePrivy } from '@privy-io/react-auth';
 import { Users2 } from 'lucide-react';
@@ -185,7 +186,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         open={isUnlinkGitHubDialogOpen}
         onOpenChange={setIsUnlinkGitHubDialogOpen}
       >
-        <DialogContent>
+        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
           <DialogHeader>
             <DialogTitle>
               {t('socialAccounts.unlinkGithubDialogTitle')}
@@ -215,7 +216,7 @@ export const SocialAccounts = ({ user }: SocialAccountsProps) => {
         open={isUnlinkTwitterDialogOpen}
         onOpenChange={setIsUnlinkTwitterDialogOpen}
       >
-        <DialogContent>
+        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
           <DialogHeader>
             <DialogTitle>
               {t('socialAccounts.unlinkTwitterDialogTitle')}

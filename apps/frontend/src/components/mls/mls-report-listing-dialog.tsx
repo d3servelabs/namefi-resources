@@ -32,6 +32,8 @@ import {
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   MLS_LISTING_REPORT_REASONS,
   type MlsCreateListingReportInput,
@@ -164,7 +166,7 @@ export function MlsReportListingDialog({
         }
       />
 
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle>{t('report.dialogTitle')}</DialogTitle>
           <DialogDescription>

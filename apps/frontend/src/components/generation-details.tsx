@@ -16,6 +16,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -1143,7 +1145,12 @@ export function GenerationDetailsClient({
         shareSubject={shareSubject}
       />
       <Dialog open={isSheetPreviewOpen} onOpenChange={setIsSheetPreviewOpen}>
-        <DialogContent className="!max-w-6xl overflow-hidden p-0">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-6xl overflow-hidden p-0',
+          )}
+        >
           <DialogHeader className="border-b px-5 py-4">
             <DialogTitle>Animation sheet</DialogTitle>
             <DialogDescription>

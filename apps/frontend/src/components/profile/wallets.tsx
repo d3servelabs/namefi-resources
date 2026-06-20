@@ -26,6 +26,7 @@ import {
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { useLinkedWallets } from '@/hooks/use-user-wallet-addresses';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { getShortAddress, shortage } from '@/lib/string';
 import { type WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
@@ -357,7 +358,7 @@ export const UnlinkWalletDialog = ({
       open={isUnlinkWalletDialogOpen}
       onOpenChange={setIsUnlinkWalletDialogOpen}
     >
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>{t('wallets.unlinkDialogTitle')}</DialogTitle>
           <DialogDescription>

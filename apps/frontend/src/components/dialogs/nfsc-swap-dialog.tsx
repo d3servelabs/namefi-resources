@@ -12,6 +12,8 @@ import {
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useBuyNfsc } from '@/hooks/use-buy-nfsc';
 import useGetNfscExchangeRate from '@/hooks/use-get-nfsc-exchange-rate';
 import useNfscBalance from '@/hooks/use-nfsc-balance';
@@ -359,7 +361,10 @@ function NFSCSwapDialogInner(props: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className={SWAP_DIALOG_CONTENT_CLASSNAME}
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          SWAP_DIALOG_CONTENT_CLASSNAME,
+        )}
         data-testid="nfsc-swap-dialog"
       >
         {/* Scrollable body — header, balances, and the swap inputs scroll here,

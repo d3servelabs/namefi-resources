@@ -71,6 +71,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Permission } from '@namefi-astra/utils/permissions';
@@ -623,7 +625,7 @@ function LazyDialogStatus({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{errorMessage ?? loadingLabel}</DialogDescription>
@@ -728,7 +730,9 @@ function FindUserDialog({
           }
         }}
       >
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-2xl')}
+        >
           <DialogHeader>
             <DialogTitle>Find User</DialogTitle>
             <DialogDescription>
@@ -841,7 +845,7 @@ function AdminQuickAccessDialog({
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-3xl')}>
         <DialogHeader>
           <DialogTitle>Admin Quick Access</DialogTitle>
           <DialogDescription>

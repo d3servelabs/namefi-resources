@@ -2,6 +2,7 @@
 
 import { AuthRequired } from '@/components/auth-required';
 import { GenerationUsage } from '@/components/ai-generation/generation-usage';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { DomainSearchCombobox } from '@/components/domain-search-combobox';
 import { PageShell } from '@/components/page-shell';
 import { useAuth } from '@/hooks/use-auth';
@@ -1016,7 +1017,9 @@ function UnownedDomainRunDialog({
 
   return (
     <Dialog open={Boolean(pendingRun)} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[460px]">
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[460px]')}
+      >
         <DialogHeader>
           <DialogTitle>Continue with this domain?</DialogTitle>
           <DialogDescription>
@@ -3020,7 +3023,12 @@ function LeadEmailDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[min(90vh,860px)] w-[calc(100vw-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden sm:max-w-[620px]">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-h-[min(90vh,860px)] w-[calc(100vw-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] overflow-hidden sm:max-w-[620px]',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Email {lead.businessDomain}</DialogTitle>
           <DialogDescription>

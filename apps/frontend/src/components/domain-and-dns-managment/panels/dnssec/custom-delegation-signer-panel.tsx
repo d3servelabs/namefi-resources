@@ -15,6 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 
 import { CustomDelegationSignerForm } from './custom-delegation-signer-form';
 import {
@@ -69,7 +71,12 @@ export function CustomDelegationSignerPanel({
               </Button>
             }
           />
-          <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogContent
+            className={cn(
+              MOBILE_BOTTOM_SHEET_DIALOG,
+              'sm:max-w-2xl max-h-[90vh] overflow-y-auto',
+            )}
+          >
             <DialogHeader>
               <DialogTitle>Add Custom Delegation Signer</DialogTitle>
               <DialogDescription>

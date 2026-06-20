@@ -21,6 +21,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -315,7 +316,7 @@ export function ReservedWordsManager({ domain }: ReservedWordsManagerProps) {
               <Plus className="w-4 h-4 me-2" />
               Add Words
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
               <DialogHeader>
                 <DialogTitle>Add Protected Words</DialogTitle>
               </DialogHeader>
