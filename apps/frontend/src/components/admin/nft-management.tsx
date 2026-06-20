@@ -11,29 +11,18 @@ import {
 } from 'react';
 import type {
   ColumnDef,
+  Row,
   SortingState,
   VisibilityState,
 } from '@tanstack/react-table';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { format } from 'date-fns';
-import {
-  AlertTriangle,
-  CirclePlay,
-  Copy,
-  Flame,
-  Loader2,
-  RefreshCw,
-  Wrench,
-} from 'lucide-react';
+import { CirclePlay, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { FilterOperators } from '@samyx/drizzler-filters-sorters';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
-import { getChain } from '@namefi-astra/utils/chains';
 import { AuthRequired } from '@/components/auth-required';
-import { AdminUserLookupButton } from '@/components/admin/user-details';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { NetworkLogo } from '@/components/network-logo';
+import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { PageShell } from '@/components/page-shell';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
@@ -41,24 +30,12 @@ import {
   type DrizzlerFilterState,
   useDrizzlerServerFilterStrategy,
 } from '@/components/table/filters';
-import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@namefi-astra/ui/components/shadcn/accordion';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@namefi-astra/ui/components/shadcn/alert-dialog';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
@@ -83,19 +60,28 @@ import {
   TableHeader,
   TableRow,
 } from '@namefi-astra/ui/components/shadcn/table';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
-import { UserWalletAvatar } from '@/components/user-avatar';
 import { useAuth } from '@/hooks/use-auth';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { useTRPC } from '@/lib/trpc';
+import { NftManagementCard } from './nft-management-card';
+import {
+  AutoRenewBadge,
+  ChainCell,
+  DateStateBadge,
+  DomainNameCell,
+  DomainStatusBadge,
+  formatDateOnly,
+  NftActionsCell,
+  type NftManagementRow,
+  NftStatusBadge,
+  OwnerAddressCell,
+  PrimaryEmailValue,
+  PrivyUserIdValue,
+  RegistrarValue,
+  UserIdValue,
+  YesNo,
+} from './nft-management-cells';
 import { NftKnownIssuesCard } from './nft-known-issues-card';
-
-type NftManagementRow =
-  AppRouterOutput['admin']['nft']['getNftsWithExpirationStatus']['data'][number];
 
 type WorkflowRow = {
   domainName: string;
@@ -165,15 +151,6 @@ const LOADING_ROW_KEYS = [
   'nft-loading-6',
 ] as const;
 
-const formatDateOnly = (value: Date | string | null | undefined) => {
-  if (!value) return '-';
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return '-';
-
-  return format(date, 'yyyy-MM-dd');
-};
-
 const formatWorkflowDate = (value: Date | string | null | undefined) => {
   if (!value) return 'N/A';
 
@@ -181,56 +158,6 @@ const formatWorkflowDate = (value: Date | string | null | undefined) => {
   if (Number.isNaN(date.getTime())) return 'N/A';
 
   return format(date, 'yyyy-MM-dd HH:mm');
-};
-
-const attemptGetChecksummedAddress = (address: string): string => {
-  const parsed = checksumWalletAddressSchema.safeParse(address);
-  return parsed.success ? parsed.data : address;
-};
-
-const getDomainStatusLabel = (
-  domainStatus: NftManagementRow['domainStatus'],
-) => {
-  switch (domainStatus) {
-    case 'expired':
-      return 'Expired';
-    case 'not-found':
-      return 'Not Found';
-    default:
-      return 'Active';
-  }
-};
-
-const getNftStatusLabel = (nftStatus: NftManagementRow['nftStatus']) => {
-  switch (nftStatus) {
-    case 'expired':
-      return 'Expired';
-    case 'not-available':
-      return 'N/A';
-    default:
-      return 'Active';
-  }
-};
-
-const getDateStateLabel = (dateState: NftManagementRow['dateState']) => {
-  switch (dateState) {
-    case 'missing-data':
-      return 'Missing Data';
-    case 'date-mismatch':
-      return 'Date Mismatch';
-    default:
-      return 'Match';
-  }
-};
-
-const getAutoRenewLabel = (
-  autoRenewEnabled: NftManagementRow['autoRenewEnabled'],
-) => {
-  if (autoRenewEnabled === null) {
-    return 'Not set';
-  }
-
-  return autoRenewEnabled ? 'Enabled' : 'Disabled';
 };
 
 const LoadingSkeletons: FC = () => (
@@ -255,170 +182,6 @@ const LoadingSkeletons: FC = () => (
     </CardContent>
   </Card>
 );
-
-function BurnActionButton(props: {
-  row: NftManagementRow;
-  isBurning: boolean;
-  isBurnWorkflowActive: boolean;
-  onBurn: (normalizedDomainName: string, chainId: number) => void;
-}) {
-  const { row, isBurning, isBurnWorkflowActive, onBurn } = props;
-
-  if (!row.canBurn) {
-    return null;
-  }
-
-  if (isBurnWorkflowActive) {
-    return (
-      <Tooltip>
-        <TooltipTrigger
-          render={
-            <Button
-              variant="outline"
-              size="sm"
-              disabled
-              className="border-red-200 text-red-400"
-            />
-          }
-        >
-          <Flame className="h-3 w-3" />
-          Burn
-        </TooltipTrigger>
-        <TooltipContent>
-          A burn workflow is already in progress for this domain.
-        </TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger
-        render={
-          <Button
-            variant="secondary"
-            size="sm"
-            disabled={isBurning}
-            className="border border-red-200 bg-red-900/10 text-red-600 hover:bg-red-900/20"
-          />
-        }
-      >
-        <Flame className="h-3 w-3" />
-        {isBurning ? 'Burning...' : 'Burn'}
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Burn NFT</AlertDialogTitle>
-          <AlertDialogDescription>
-            Burn the NFT for <strong>{row.normalizedDomainName}</strong>? This
-            action cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => onBurn(row.normalizedDomainName, row.chainId)}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-          >
-            Burn NFT
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
-
-function FixExpirationActionButton(props: {
-  row: NftManagementRow;
-  isPending: boolean;
-  onFix: (normalizedDomainName: string, chainId: number) => void;
-}) {
-  const { row, isPending, onFix } = props;
-
-  if (!row.needsExpirationReview) {
-    return null;
-  }
-
-  const isDateMismatchFixable =
-    row.hasDateMismatch && !row.hasMissingData && !row.isPoweredByNamefiDomain;
-
-  if (!isDateMismatchFixable) {
-    return (
-      <Tooltip>
-        <TooltipTrigger
-          render={<Button variant="outline" size="sm" disabled />}
-        >
-          <AlertTriangle className="h-3 w-3" />
-          Cannot Fix
-        </TooltipTrigger>
-        <TooltipContent>
-          Cannot fix when expiration data is missing.
-        </TooltipContent>
-      </Tooltip>
-    );
-  }
-
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={() => onFix(row.normalizedDomainName, row.chainId)}
-      disabled={isPending}
-    >
-      <Wrench className="h-3 w-3" />
-      {isPending ? 'Fixing...' : 'Fix'}
-    </Button>
-  );
-}
-
-function RenewActionButton(props: { row: NftManagementRow }) {
-  const { row } = props;
-
-  if (row.canBurn || row.hasMissingData) {
-    return null;
-  }
-
-  return (
-    <Tooltip>
-      <TooltipTrigger render={<Button variant="outline" size="sm" disabled />}>
-        <RefreshCw className="h-3 w-3" />
-        Renew
-      </TooltipTrigger>
-      <TooltipContent>
-        Domain renewal is not yet implemented here.
-      </TooltipContent>
-    </Tooltip>
-  );
-}
-
-function NftActionsCell(props: {
-  row: NftManagementRow;
-  isBurning: boolean;
-  isBurnWorkflowActive: boolean;
-  isFixPending: boolean;
-  onBurn: (normalizedDomainName: string, chainId: number) => void;
-  onFix: (normalizedDomainName: string, chainId: number) => void;
-}) {
-  const { row, isBurning, isBurnWorkflowActive, isFixPending, onBurn, onFix } =
-    props;
-
-  return (
-    <div className="flex flex-wrap gap-1">
-      <BurnActionButton
-        row={row}
-        isBurning={isBurning}
-        isBurnWorkflowActive={isBurnWorkflowActive}
-        onBurn={onBurn}
-      />
-      <FixExpirationActionButton
-        row={row}
-        isPending={isFixPending}
-        onFix={onFix}
-      />
-      <RenewActionButton row={row} />
-    </div>
-  );
-}
 
 function WorkflowTableSection(props: {
   value: string;
@@ -907,146 +670,45 @@ const NftManagementTable = memo(function NftManagementTable() {
       {
         accessorKey: 'chainId',
         header: 'Chain',
-        cell: ({ row }) => {
-          const chain = getChain(row.original.chainId);
-
-          return (
-            <div className="flex items-center gap-2">
-              <NetworkLogo
-                network={row.original.chainId}
-                className="size-5 bg-transparent"
-              />
-              <span className="text-xs text-muted-foreground">
-                {chain?.name ?? `Chain ${row.original.chainId}`}
-              </span>
-            </div>
-          );
-        },
+        cell: ({ row }) => <ChainCell chainId={row.original.chainId} />,
         size: 130,
       },
       {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
-        cell: ({ row }) => (
-          <div className="flex flex-col gap-1">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={32}
-              minCharactersToDisplay={16}
-              className="font-medium"
-            >
-              {row.original.normalizedDomainName}
-            </AutoTruncateTextV2>
-            {row.original.isPoweredByNamefiDomain ? (
-              <Badge variant="secondary" className="w-fit text-[10px]">
-                Powered by Namefi
-              </Badge>
-            ) : null}
-          </div>
-        ),
+        cell: ({ row }) => <DomainNameCell row={row.original} />,
         size: 220,
       },
       {
         accessorKey: 'ownerAddress',
         header: 'Owner Address',
-        cell: ({ row }) => {
-          const ownerAddress = attemptGetChecksummedAddress(
-            row.original.ownerAddress,
-          );
-
-          const handleCopyWallet = async () => {
-            try {
-              await navigator.clipboard.writeText(ownerAddress);
-              toast.success('Copied address successfully');
-            } catch {
-              toast.error('Failed to copy address');
-            }
-          };
-
-          return (
-            <div className="flex items-center gap-2 rounded-xl bg-muted px-2 py-1.5 max-w-full">
-              <UserWalletAvatar
-                address={ownerAddress}
-                userId={row.original.userId ?? undefined}
-                className="size-6"
-              />
-              <div className="min-w-0 flex-1">
-                <AutoTruncateTextV2
-                  initialCharactersCountToDisplay={16}
-                  minCharactersToDisplay={10}
-                  className="font-mono text-xs"
-                >
-                  {ownerAddress}
-                </AutoTruncateTextV2>
-              </div>
-              <button
-                type="button"
-                onClick={handleCopyWallet}
-                className="rounded p-1 transition-colors hover:bg-background"
-                title="Copy address"
-              >
-                <Copy className="h-3 w-3" />
-              </button>
-            </div>
-          );
-        },
+        cell: ({ row }) => <OwnerAddressCell row={row.original} />,
         size: 220,
       },
       {
         accessorKey: 'autoRenewEnabled',
         header: 'Auto Renew',
-        cell: ({ row }) => {
-          if (row.original.autoRenewEnabled === null) {
-            return (
-              <Badge variant="outline" className="text-muted-foreground">
-                {getAutoRenewLabel(row.original.autoRenewEnabled)}
-              </Badge>
-            );
-          }
-
-          return row.original.autoRenewEnabled ? (
-            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-              {getAutoRenewLabel(row.original.autoRenewEnabled)}
-            </Badge>
-          ) : (
-            <Badge variant="secondary">
-              {getAutoRenewLabel(row.original.autoRenewEnabled)}
-            </Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <AutoRenewBadge autoRenewEnabled={row.original.autoRenewEnabled} />
+        ),
         size: 120,
       },
       {
         accessorKey: 'domainStatus',
         header: 'Domain Status',
         enableSorting: false,
-        cell: ({ row }) => {
-          if (row.original.domainStatus === 'not-found') {
-            return <Badge variant="destructive">Not Found</Badge>;
-          }
-
-          return row.original.domainStatus === 'expired' ? (
-            <Badge variant="destructive">Expired</Badge>
-          ) : (
-            <Badge>{getDomainStatusLabel(row.original.domainStatus)}</Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <DomainStatusBadge domainStatus={row.original.domainStatus} />
+        ),
         size: 120,
       },
       {
         accessorKey: 'nftStatus',
         header: 'NFT Status',
         enableSorting: false,
-        cell: ({ row }) => {
-          if (row.original.nftStatus === 'not-available') {
-            return <Badge variant="secondary">N/A</Badge>;
-          }
-
-          return row.original.nftStatus === 'expired' ? (
-            <Badge variant="destructive">Expired</Badge>
-          ) : (
-            <Badge>{getNftStatusLabel(row.original.nftStatus)}</Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <NftStatusBadge nftStatus={row.original.nftStatus} />
+        ),
         size: 120,
       },
       {
@@ -1065,38 +727,17 @@ const NftManagementTable = memo(function NftManagementTable() {
         id: 'dateState',
         header: 'Date State',
         accessorKey: 'dateState',
-        cell: ({ row }) => {
-          const dateState = row.original.dateState;
-
-          if (dateState === 'missing-data') {
-            return <Badge variant="destructive">Missing Data</Badge>;
-          }
-
-          if (dateState === 'date-mismatch') {
-            return (
-              <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">
-                Date Mismatch
-              </Badge>
-            );
-          }
-
-          return (
-            <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-              {getDateStateLabel(dateState)}
-            </Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <DateStateBadge dateState={row.original.dateState} />
+        ),
         size: 130,
       },
       {
         accessorKey: 'registrarKey',
         header: 'Registrar',
-        cell: ({ row }) =>
-          row.original.registrarKey ? (
-            <Badge variant="outline">{row.original.registrarKey}</Badge>
-          ) : (
-            <span className="text-muted-foreground">N/A</span>
-          ),
+        cell: ({ row }) => (
+          <RegistrarValue registrarKey={row.original.registrarKey} />
+        ),
         size: 130,
       },
       {
@@ -1109,98 +750,60 @@ const NftManagementTable = memo(function NftManagementTable() {
         accessorKey: 'primaryEmail',
         header: 'Primary Email',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={20}
-            minCharactersToDisplay={10}
-          >
-            {row.original.primaryEmail ?? '-'}
-          </AutoTruncateTextV2>
+          <PrimaryEmailValue primaryEmail={row.original.primaryEmail} />
         ),
         size: 180,
       },
       {
         accessorKey: 'userId',
         header: 'User ID',
-        cell: ({ row }) => {
-          if (!row.original.userId) return '-';
-
-          return (
-            <div className="flex items-center gap-2">
-              <AutoTruncateTextV2
-                initialCharactersCountToDisplay={16}
-                minCharactersToDisplay={12}
-                className="font-mono text-xs"
-              >
-                {row.original.userId}
-              </AutoTruncateTextV2>
-              <AdminUserLookupButton
-                reference={{ userId: row.original.userId }}
-                title="Open user details"
-              />
-            </div>
-          );
-        },
+        cell: ({ row }) => <UserIdValue userId={row.original.userId} />,
         size: 170,
       },
       {
         accessorKey: 'privyUserId',
         header: 'Privy User ID',
-        cell: ({ row }) => {
-          if (!row.original.privyUserId) return '-';
-
-          return (
-            <div className="flex items-center gap-2">
-              <AutoTruncateTextV2
-                initialCharactersCountToDisplay={16}
-                minCharactersToDisplay={12}
-                className="font-mono text-xs"
-              >
-                {row.original.privyUserId}
-              </AutoTruncateTextV2>
-              <AdminUserLookupButton
-                reference={{ privyUserId: row.original.privyUserId }}
-                title="Open user details by Privy ID"
-              />
-            </div>
-          );
-        },
+        cell: ({ row }) => (
+          <PrivyUserIdValue privyUserId={row.original.privyUserId} />
+        ),
         size: 180,
       },
       {
         accessorKey: 'isPoweredByNamefiDomain',
         header: 'Powered by Namefi',
-        cell: ({ row }) =>
-          row.original.isPoweredByNamefiDomain ? 'Yes' : 'No',
+        cell: ({ row }) => (
+          <YesNo value={row.original.isPoweredByNamefiDomain} />
+        ),
         size: 130,
       },
       {
         accessorKey: 'canBurn',
         header: 'Can Burn',
-        cell: ({ row }) => (row.original.canBurn ? 'Yes' : 'No'),
+        cell: ({ row }) => <YesNo value={row.original.canBurn} />,
         size: 100,
       },
       {
         accessorKey: 'hasMissingData',
         header: 'Missing Data',
-        cell: ({ row }) => (row.original.hasMissingData ? 'Yes' : 'No'),
+        cell: ({ row }) => <YesNo value={row.original.hasMissingData} />,
         size: 110,
       },
       {
         accessorKey: 'hasDateMismatch',
         header: 'Strict Date Mismatch',
-        cell: ({ row }) => (row.original.hasDateMismatch ? 'Yes' : 'No'),
+        cell: ({ row }) => <YesNo value={row.original.hasDateMismatch} />,
         size: 150,
       },
       {
         accessorKey: 'needsExpirationReview',
         header: 'Needs Expiration Review',
-        cell: ({ row }) => (row.original.needsExpirationReview ? 'Yes' : 'No'),
+        cell: ({ row }) => <YesNo value={row.original.needsExpirationReview} />,
         size: 170,
       },
       {
         accessorKey: 'isExpired',
         header: 'Expired',
-        cell: ({ row }) => (row.original.isExpired ? 'Yes' : 'No'),
+        cell: ({ row }) => <YesNo value={row.original.isExpired} />,
         size: 90,
       },
       {
@@ -1236,6 +839,33 @@ const NftManagementTable = memo(function NftManagementTable() {
         size: 220,
       },
     ],
+    [
+      activeBurnWorkflowKeys,
+      burnInProgress,
+      fixNftExpirationMutation.isPending,
+      handleBurnNft,
+      handleFixNftExpiration,
+    ],
+  );
+
+  // Mobile card renderer. Maps each row to a stacked card built from the same
+  // shared cell components the desktop columns use, so a phone gets a readable
+  // labeled list instead of a horizontally-scrolling table.
+  const renderMobileCard = useCallback(
+    (row: Row<NftManagementRow>) => {
+      const burnKey = `${row.original.normalizedDomainName}-${row.original.chainId}`;
+
+      return (
+        <NftManagementCard
+          row={row.original}
+          isBurning={burnInProgress.has(burnKey)}
+          isBurnWorkflowActive={activeBurnWorkflowKeys.has(burnKey)}
+          isFixPending={fixNftExpirationMutation.isPending}
+          onBurn={handleBurnNft}
+          onFix={handleFixNftExpiration}
+        />
+      );
+    },
     [
       activeBurnWorkflowKeys,
       burnInProgress,
@@ -1308,6 +938,7 @@ const NftManagementTable = memo(function NftManagementTable() {
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
             onResetPreferences={resetToDefaults}
+            renderMobileCard={renderMobileCard}
           />
         </CardContent>
       </Card>
