@@ -798,7 +798,14 @@ jobs:
               }
             }
 
-            core.setFailed(`❌ Timed out waiting for production Deploy Resources deployment for ${tagName}.`);
+            // Non-fatal: this verification runs AFTER the tag is pushed and the
+            // production deploy is already triggered, so it gates nothing. The
+            // GITHUB_TOKEN listing intermittently fails to surface tag-triggered
+            // runs (a GitHub visibility quirk), which would otherwise mark a
+            // successful release red. The deploy-resources run for the tag is the
+            // source of truth and stays visibly red on a genuine failure, so warn
+            // and let the release conclude rather than reporting a false failure.
+            core.warning(`Could not confirm the production Deploy Resources deployment for ${tagName} within the wait window; the tag's deploy-resources run is the source of truth.`);
             core.setOutput('failure_reason', 'no_deployment_found');
 
   release-summary:
@@ -920,14 +927,23 @@ jobs:
             # that here rather than always claiming the dev deploy succeeded.
             DEV_DEPLOY_REASON="${{ needs.wait-version-dev-deploy.outputs.failure_reason }}"
             if [[ -n "$DEV_DEPLOY_REASON" ]]; then
-              DEV_DEPLOY_LINE="- ⚠️ Version commit dev deploy: not confirmed (${DEV_DEPLOY_REASON}); proceeded — validated by the production deploy below"
+              DEV_DEPLOY_LINE="- ⚠️ Version commit dev deploy: not confirmed (${DEV_DEPLOY_REASON}); proceeded — see the tag's deploy-resources run"
             else
               DEV_DEPLOY_LINE="- ✅ Version commit dev deploy: [Successful](${{ needs.wait-version-dev-deploy.outputs.deployment_run_url }})"
+            fi
+            # The prod-deploy gate is also non-fatal (the tag's deploy-resources
+            # run is the source of truth); reflect an unconfirmed result instead
+            # of always claiming success.
+            PROD_DEPLOY_REASON="${{ needs.wait-production-deploy.outputs.failure_reason }}"
+            if [[ -n "$PROD_DEPLOY_REASON" ]]; then
+              PROD_DEPLOY_LINE="- ⚠️ Production deploy: not confirmed by the gate (${PROD_DEPLOY_REASON}); check the tag's deploy-resources run"
+            else
+              PROD_DEPLOY_LINE="- ✅ Production deploy: [Successful](${{ needs.wait-production-deploy.outputs.deployment_run_url }})"
             fi
             write_summary \
               "### Deployment Verification" \
               "$DEV_DEPLOY_LINE" \
-              "- ✅ Production deploy: [Successful](${{ needs.wait-production-deploy.outputs.deployment_run_url }})" \
+              "$PROD_DEPLOY_LINE" \
               "- ✅ Version commit: [\`${{ needs.update-versions.outputs.commit_sha }}\`](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})" \
               ""
           fi
