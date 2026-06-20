@@ -491,7 +491,8 @@ async function _extendSldDomainAndReturnNewExpirationTime({
     previousExpirationTimeIso: workflow.patched(
       'fix typescript previousExpirationTime.toISOString',
     )
-      ? 'toISOString' in previousExpirationTime
+      ? typeof previousExpirationTime === 'object' &&
+        'toISOString' in previousExpirationTime
         ? previousExpirationTime.toISOString()
         : previousExpirationTime
       : previousExpirationTime.toISOString(),
