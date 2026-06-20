@@ -2230,7 +2230,7 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
       />
 
       <Tabs defaultValue="domains" className="w-full">
-        <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-xl p-1 lg:grid-cols-5">
+        <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-xl p-1 lg:grid-cols-5 max-sm:flex max-sm:flex-wrap max-sm:justify-start">
           <TabsTrigger value="domains">Domains & NFTs</TabsTrigger>
           <TabsTrigger value="balances">NFSC & Payment Methods</TabsTrigger>
           <TabsTrigger value="orders">Orders</TabsTrigger>

@@ -379,7 +379,7 @@ function EppTestingDashboard() {
 
       {/* Operations Tabs */}
       <Tabs defaultValue="create" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-5 max-sm:flex max-sm:h-auto! max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
           <TabsTrigger value="create">Create Domain</TabsTrigger>
           <TabsTrigger value="authcode">Auth Code</TabsTrigger>
           <TabsTrigger value="import">Import</TabsTrigger>

@@ -51,7 +51,7 @@ export function HandlebarsHelpModal({
           onValueChange={(value) => setTab(value as typeof tab)}
           className="flex-1 flex flex-col overflow-hidden"
         >
-          <TabsList className="grid grid-cols-4">
+          <TabsList className="grid grid-cols-4 max-sm:flex max-sm:h-auto! max-sm:w-full max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
             <TabsTrigger value="syntax">Handlebars</TabsTrigger>
             <TabsTrigger value="vars">Variables</TabsTrigger>
             <TabsTrigger value="sample">Sample JSON</TabsTrigger>

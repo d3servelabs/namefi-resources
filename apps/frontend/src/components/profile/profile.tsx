@@ -73,7 +73,7 @@ export default function Profile() {
       <Header user={user} unsafeDisplayProfile={unsafeDisplayProfile} />
 
       <Tabs value={activeTab.toString()} onValueChange={handleTabChange}>
-        <TabsList className="grid w-full grid-cols-4 lg:w-auto">
+        <TabsList className="grid w-full grid-cols-4 lg:w-auto max-sm:flex max-sm:h-auto! max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
           <TabsTrigger value={TabValues.WALLETS}>
             {t('tabs.wallets')}
           </TabsTrigger>

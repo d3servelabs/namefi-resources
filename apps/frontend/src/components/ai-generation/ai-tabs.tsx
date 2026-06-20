@@ -118,7 +118,7 @@ export function AITabs({
         onValueChange={handleToolChange}
         className="mb-6"
       >
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-3 max-sm:flex max-sm:h-auto! max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
           <TabsTrigger value="logo">Logo</TabsTrigger>
           <TabsTrigger value="poster">Poster</TabsTrigger>
           <TabsTrigger value="animation">Animation</TabsTrigger>
