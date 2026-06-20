@@ -164,3 +164,10 @@ jobs:
       - name: Run validation
         if: steps.resources-only.outputs.result != 'true'
         run: bun validate
+
+      # Advisory guardrail for the mobile-responsive-ux rule: blocks only NEW
+      # findings above the committed baseline (existing backlog is tolerated).
+      - name: Run mobile-responsive guardrail
+        if: steps.resources-only.outputs.result != 'true'
+        working-directory: apps/frontend
+        run: bun run check:mobile --strict
