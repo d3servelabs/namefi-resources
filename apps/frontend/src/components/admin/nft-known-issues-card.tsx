@@ -46,6 +46,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import {
@@ -243,7 +245,7 @@ function KnownIssueFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle>
             {mode === 'add' ? 'Add Known Issue' : 'Edit Known Issue'}

@@ -56,6 +56,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 
 const CAMPAIGNS = EMAIL_CAMPAIGNS;
 type CampaignKey = EmailCampaignKey;
@@ -1310,7 +1312,7 @@ export default function AdminEmailCampaigns() {
           }
         }}
       >
-        <DialogContent className="max-w-xl">
+        <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-xl')}>
           <DialogHeader>
             <DialogTitle>Owned Domains</DialogTitle>
             <DialogDescription>

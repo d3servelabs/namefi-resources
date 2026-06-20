@@ -9,6 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
@@ -211,7 +213,12 @@ export function BulkMintNfscDialog({ open, onOpenChange, onSuccess }: Props) {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="!max-w-[900px] !w-full overflow-y-auto max-h-[90vh]">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-[900px] !w-full overflow-y-auto max-h-[90vh]',
+          )}
+        >
           <DialogHeader>
             <DialogTitle>Bulk Mint NFSC</DialogTitle>
           </DialogHeader>

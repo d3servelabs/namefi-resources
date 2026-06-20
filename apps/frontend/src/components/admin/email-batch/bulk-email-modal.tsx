@@ -45,6 +45,7 @@ import {
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useTRPC } from '@/lib/trpc';
 import { HandlebarsHelpModal } from './handlebars-help-modal';
 import type { EmailBatchRecipient, EmailBatchTemplateStyle } from './types';
@@ -272,7 +273,12 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="!max-w-[95vw] w-[95vw] !p-0 max-h-[95vh] h-[95vh] flex flex-col gap-0 overflow-hidden">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-[95vw] w-[95vw] !p-0 max-h-[95vh] h-[95vh] flex flex-col gap-0 overflow-hidden',
+          )}
+        >
           <DialogHeader className="p-4 pe-14 border-b flex-row items-center justify-between gap-3 space-y-0">
             <div>
               <DialogTitle>Bulk one-off email</DialogTitle>

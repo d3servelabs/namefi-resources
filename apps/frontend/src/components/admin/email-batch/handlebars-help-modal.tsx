@@ -14,6 +14,8 @@ import {
   TabsList,
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 
 type HandlebarsHelpModalProps = {
   open: boolean;
@@ -36,7 +38,12 @@ export function HandlebarsHelpModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-3xl max-h-[80vh] overflow-hidden flex flex-col gap-4">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-3xl max-h-[80vh] overflow-hidden flex flex-col gap-4',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Template authoring guide</DialogTitle>
           <DialogDescription>

@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import { useTRPC, type AppRouterOutput } from '@/lib/trpc';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { formatAmountInUSD } from '@/lib/number';
 import { getShortAddress } from '@/lib/string';
 import { AddToEmailBatchButton } from '@/components/admin/email-batch/add-to-email-batch-button';
@@ -255,7 +256,12 @@ function DialogLoadingSkeleton() {
 
 function LoadingDialogBody({ title }: { title: string }) {
   return (
-    <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
+    <DialogContent
+      className={cn(
+        MOBILE_BOTTOM_SHEET_DIALOG,
+        '!max-w-6xl max-h-[85vh] overflow-y-auto',
+      )}
+    >
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>Loading details...</DialogDescription>
@@ -273,7 +279,7 @@ function ErrorDialogBody({
   description: string;
 }) {
   return (
-    <DialogContent className="!max-w-xl">
+    <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-xl')}>
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
@@ -709,7 +715,12 @@ function AdminUserLookupDialogContent({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-6xl max-h-[85vh] overflow-y-auto',
+        )}
+      >
         {content}
       </DialogContent>
     </Dialog>
@@ -865,7 +876,12 @@ function AdminUserDetailsDialog({
           }
         />
       ) : (
-        <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-6xl max-h-[85vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle>{getUserLabel(query.data.user)}</DialogTitle>
             <DialogDescription>
@@ -927,7 +943,12 @@ export function AdminWalletDetailsDialog({
           }
         />
       ) : (
-        <DialogContent className="!max-w-6xl max-h-[85vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-6xl max-h-[85vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle>{getWalletLabel(query.data.wallet)}</DialogTitle>
             <DialogDescription>{query.data.wallet.address}</DialogDescription>
@@ -1056,7 +1077,7 @@ function AdminUserPreferencesDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-md')}>
         <DialogHeader>
           <DialogTitle>Edit domain defaults</DialogTitle>
           <DialogDescription>

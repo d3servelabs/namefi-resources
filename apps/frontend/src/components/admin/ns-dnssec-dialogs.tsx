@@ -44,6 +44,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { LoadingButton } from '@/components/buttons/loading-button';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useTRPC } from '@/lib/trpc';
@@ -348,7 +350,7 @@ export function AdminEditNameserversDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
         <DialogHeader>
           <DialogTitle>
             Edit nameservers — {row.normalizedDomainName}
@@ -526,7 +528,7 @@ export function AdminToggleDnssecDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}>
         <DialogHeader>
           <DialogTitle>Toggle DNSSEC — {row.normalizedDomainName}</DialogTitle>
           <DialogDescription>

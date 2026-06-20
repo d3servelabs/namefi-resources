@@ -13,6 +13,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   Select,
   SelectContent,
@@ -293,7 +295,12 @@ export function RecentWorkflowsTable() {
 
       {/* Details Modal */}
       <Dialog open={detailsModalOpen} onOpenChange={setDetailsModalOpen}>
-        <DialogContent className="max-w-4xl! max-h-[80vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            'max-w-4xl! max-h-[80vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle>Workflow Details</DialogTitle>
           </DialogHeader>

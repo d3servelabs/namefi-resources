@@ -51,6 +51,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
   Table,
@@ -269,7 +271,12 @@ function ActiveWorkflowsDialog(props: {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[80vh] max-w-[95vw] overflow-y-auto lg:max-w-5xl">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-h-[80vh] max-w-[95vw] overflow-y-auto lg:max-w-5xl',
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <CirclePlay className="h-5 w-5" />

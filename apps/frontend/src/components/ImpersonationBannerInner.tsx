@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { MoreHorizontal, X } from 'lucide-react';
 import { toast } from 'sonner';
@@ -104,7 +105,7 @@ function ActiveImpersonationBannerInner({
           >
             <MoreHorizontal className="h-4 w-4" />
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
             <DialogHeader>
               <DialogTitle>Impersonation Details</DialogTitle>
               <DialogDescription>

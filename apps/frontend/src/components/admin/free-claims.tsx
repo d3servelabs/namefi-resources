@@ -40,6 +40,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/alert-dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   RadioGroup,
   RadioGroupItem,
@@ -254,7 +256,12 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
         <Plus className="h-4 w-4" />
         Add Free Claim
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-w-2xl max-h-[90vh] overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Create New Free Claim</DialogTitle>
           <DialogDescription>
