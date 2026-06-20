@@ -488,7 +488,13 @@ async function _extendSldDomainAndReturnNewExpirationTime({
     normalizedDomainName,
     externalOperationId,
     durationInYears,
-    previousExpirationTimeIso: previousExpirationTime.toISOString(),
+    previousExpirationTimeIso: workflow.patched(
+      'fix typescript previousExpirationTime.toISOString',
+    )
+      ? 'toISOString' in previousExpirationTime
+        ? previousExpirationTime.toISOString()
+        : previousExpirationTime
+      : previousExpirationTime.toISOString(),
     ...(chainId !== undefined ? { chainId } : {}),
   };
 
