@@ -15,8 +15,9 @@ import {
   TabsTrigger,
 } from '@namefi-astra/ui/components/shadcn/tabs';
 import { useQuery } from '@tanstack/react-query';
+import type { Row } from '@tanstack/react-table';
 import { BarChart3 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
   buildOrderColumns,
   buildOrderItemColumns,
@@ -25,6 +26,7 @@ import {
   renderOrderItemGroupHeader,
   renderPaymentGroupHeader,
 } from './columns';
+import { OrderCard, OrderItemCard, PaymentCard } from './financials-cells';
 import {
   orderFilterConfig,
   orderItemFilterConfig,
@@ -185,6 +187,10 @@ function OrderItemsByOrderTable({
     [groupByOrder],
   );
   const columns = useMemo(() => buildOrderItemColumns(), []);
+  const renderMobileCard = useCallback(
+    (row: Row<FinancialOrderItemRow>) => <OrderItemCard row={row.original} />,
+    [],
+  );
 
   return (
     <FinancialTableCard
@@ -234,6 +240,7 @@ function OrderItemsByOrderTable({
         }
         expanded={groupByOrder ? groupExpansion.expanded : undefined}
         onExpandedChange={groupByOrder ? groupExpansion.setExpanded : undefined}
+        renderMobileCard={renderMobileCard}
         emptyMessage="No order items found"
         loadingMessage="Loading order items..."
       />
@@ -300,6 +307,10 @@ function PaymentsByOrderTable({
     [groupByOrder],
   );
   const columns = useMemo(() => buildPaymentColumns(), []);
+  const renderMobileCard = useCallback(
+    (row: Row<FinancialPaymentRow>) => <PaymentCard row={row.original} />,
+    [],
+  );
 
   return (
     <FinancialTableCard
@@ -344,6 +355,7 @@ function PaymentsByOrderTable({
         renderGroupHeader={groupByOrder ? renderPaymentGroupHeader : undefined}
         expanded={groupByOrder ? groupExpansion.expanded : undefined}
         onExpandedChange={groupByOrder ? groupExpansion.setExpanded : undefined}
+        renderMobileCard={renderMobileCard}
         emptyMessage="No payments found"
         loadingMessage="Loading payments..."
       />
@@ -403,6 +415,16 @@ function OrdersWithItemsTable({
     [query.data?.items],
   );
   const columns = useMemo(() => buildOrderColumns(), []);
+  const renderMobileCard = useCallback((row: Row<FinancialOrderRow>) => {
+    const order = row.original;
+    const hasExpandedContent =
+      order.items.length > 0 || order.payments.length > 0;
+    return (
+      <OrderCard row={order}>
+        {hasExpandedContent ? <OrderExpandedContent order={order} /> : null}
+      </OrderCard>
+    );
+  }, []);
 
   return (
     <FinancialTableCard
@@ -442,6 +464,7 @@ function OrdersWithItemsTable({
         getRowCanExpand={(row) =>
           row.original.items.length > 0 || row.original.payments.length > 0
         }
+        renderMobileCard={renderMobileCard}
         emptyMessage="No orders found"
         loadingMessage="Loading orders..."
       />

@@ -1,10 +1,16 @@
 'use client';
 
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { ColumnDef, Row } from '@tanstack/react-table';
 import { ChevronDown, ChevronRight } from 'lucide-react';
+import {
+  MonoId,
+  OrderItemSubCard,
+  PaymentSubCard,
+  StatusBadge,
+} from './financials-cells';
 import type {
   FinancialOrderItemRow,
   FinancialOrderRow,
@@ -302,18 +308,6 @@ function amountColumn<Data>(
   };
 }
 
-function MonoId({ value }: { value: string }) {
-  return (
-    <AutoTruncateTextV2
-      initialCharactersCountToDisplay={10}
-      minCharactersToDisplay={10}
-      className="font-mono text-xs"
-    >
-      {value}
-    </AutoTruncateTextV2>
-  );
-}
-
 type OrderGroupHeaderShellProps = {
   orderId: string;
   orderStatus: string;
@@ -389,14 +383,30 @@ const OrderGroupHeaderShell = forwardRef<
 });
 
 function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
+  const isMobile = useIsMobile();
   if (items.length === 0) {
     return <p className="text-sm text-muted-foreground">No order items.</p>;
+  }
+  if (isMobile) {
+    // Mobile: a vertical stack of cards built from the SAME rows + shared cell
+    // helpers as the desktop sub-table; only the layout differs.
+    return (
+      <div>
+        <h4 className="mb-2 text-sm font-semibold">Order Items</h4>
+        <div className="flex flex-col gap-3">
+          {items.map((item) => (
+            <OrderItemSubCard key={item.orderItemId} item={item} />
+          ))}
+        </div>
+      </div>
+    );
   }
   return (
     <div>
       <h4 className="mb-2 text-sm font-semibold">Order Items</h4>
       <div className="overflow-x-auto rounded-md border bg-background">
-        <table className="w-full text-sm">
+        {/* desktop-only table; mobile renders cards via useIsMobile above */}
+        <table className="w-full text-sm" /* mobile-ok */>
           <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-3 py-2 text-start">Domain</th>
@@ -437,14 +447,30 @@ function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
 }
 
 function PaymentsSubTable({ payments }: { payments: FinancialPaymentRow[] }) {
+  const isMobile = useIsMobile();
   if (payments.length === 0) {
     return <p className="text-sm text-muted-foreground">No payments.</p>;
+  }
+  if (isMobile) {
+    // Mobile: a vertical stack of cards built from the SAME rows + shared cell
+    // helpers as the desktop sub-table; only the layout differs.
+    return (
+      <div>
+        <h4 className="mb-2 text-sm font-semibold">Payments</h4>
+        <div className="flex flex-col gap-3">
+          {payments.map((payment) => (
+            <PaymentSubCard key={payment.paymentId} payment={payment} />
+          ))}
+        </div>
+      </div>
+    );
   }
   return (
     <div>
       <h4 className="mb-2 text-sm font-semibold">Payments</h4>
       <div className="overflow-x-auto rounded-md border bg-background">
-        <table className="w-full text-sm">
+        {/* desktop-only table; mobile renders cards via useIsMobile above */}
+        <table className="w-full text-sm" /* mobile-ok */>
           <thead className="bg-muted/60 text-xs uppercase text-muted-foreground">
             <tr>
               <th className="px-3 py-2 text-start">Payment ID</th>
@@ -495,36 +521,4 @@ function PaymentsSubTable({ payments }: { payments: FinancialPaymentRow[] }) {
       </div>
     </div>
   );
-}
-
-function StatusBadge({ status }: { status: string | null }) {
-  if (!status) return <span className="text-muted-foreground">-</span>;
-  return (
-    <Badge
-      variant="outline"
-      className={cn('w-fit', getStatusClassName(status))}
-    >
-      {status}
-    </Badge>
-  );
-}
-
-function getStatusClassName(status: string) {
-  switch (status.toLowerCase()) {
-    case 'succeeded':
-    case 'completed':
-      return 'bg-green-100 text-green-800 border-green-300';
-    case 'created':
-    case 'processing':
-    case 'requires_capture':
-    case 'requires_action':
-      return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-    case 'failed':
-    case 'cancelled':
-      return 'bg-red-100 text-red-800 border-red-300';
-    case 'refund_requested':
-      return 'bg-purple-100 text-purple-800 border-purple-300';
-    default:
-      return 'bg-gray-100 text-gray-800 border-gray-300';
-  }
 }
