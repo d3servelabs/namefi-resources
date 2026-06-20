@@ -1,15 +1,17 @@
 'use client';
 
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Info } from 'lucide-react';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useFormatter, useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
-  shortToken,
-  useExpiryLabel,
-} from '@/components/my-domains/marketplace-orders/format';
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@namefi-astra/ui/components/shadcn/tooltip';
+import { shortToken } from '@/components/my-domains/marketplace-orders/format';
 import { toSafeExternalUrl } from '@/components/domain-and-dns-managment/panels/marketplace/safe-external-url';
 import { NetworkLogo } from '@/components/network-logo';
 import type { DomainDetails } from '@/components/my-domains/marketplace-orders/use-domain-details';
@@ -29,6 +31,12 @@ interface Props {
   details?: DomainDetails;
   /** True while the parent's domain-details batch is still resolving. */
   detailsLoading?: boolean;
+  /**
+   * Current ETH→USD price (USD per 1 ETH), or null when unavailable. Provided
+   * by the parent so every card shares one oracle read. Used only to show an
+   * approximate fiat value beside an ETH-denominated price.
+   */
+  ethUsdPrice?: number | null;
 }
 
 /**
@@ -43,9 +51,9 @@ export function MartListingCard({
   listing,
   details,
   detailsLoading,
+  ethUsdPrice,
 }: Props) {
   const t = useTranslations('mart');
-  const expiryLabel = useExpiryLabel();
   const safeUrl = toSafeExternalUrl(listing.externalUrl);
   const safeImage = toSafeExternalUrl(details?.imageUrl ?? null);
   const displayName =
@@ -53,8 +61,8 @@ export function MartListingCard({
     shortToken(listing.tokenAddress, listing.tokenId);
   const awaitingName = !details && detailsLoading;
 
-  const card = (
-    <Card className="h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40">
+  return (
+    <Card className="relative h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40">
       <div className="relative aspect-square w-full bg-zinc-900">
         {safeImage ? (
           <Image
@@ -95,43 +103,95 @@ export function MartListingCard({
           )}
           <NetworkLogo network={chainId} className="ms-auto h-5 w-5 shrink-0" />
         </div>
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="font-mono text-lg font-semibold text-zinc-100">
-            {listing.price.decimal.toFixed(4)} {listing.price.currency.symbol}
-          </span>
-          <span
-            className="text-xs text-zinc-500"
-            title={listing.expirationTime}
-          >
-            {expiryLabel(listing.expirationTime)}
-          </span>
-        </div>
+        <PriceTag listing={listing} ethUsdPrice={ethUsdPrice} />
         {safeUrl ? (
-          <span className="inline-flex items-center gap-1 text-sm text-brand-primary">
+          // Stretched link: `after:absolute after:inset-0` makes the whole card
+          // clickable while keeping the inner info button a valid, separately
+          // interactive sibling (not nested inside an <a>).
+          <a
+            href={safeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={t('buyAria', {
+              domain: displayName,
+              marketplace: listing.source,
+            })}
+            className="inline-flex items-center gap-1 rounded-xs text-sm text-brand-primary after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
             {t('buyOn', { marketplace: listing.source })}
             <ExternalLink className="h-3 w-3" aria-hidden="true" />
-          </span>
+          </a>
         ) : null}
       </CardContent>
     </Card>
   );
+}
 
-  if (!safeUrl) {
-    return card;
-  }
+/**
+ * The asking price for a card. ETH/WETH listings render with the Ξ symbol, an
+ * info tooltip explaining it, and an approximate USD value; other currencies
+ * (USDC, etc.) show their own symbol and no fiat estimate. Kept on one line —
+ * the amount never wraps away from its symbol.
+ */
+function PriceTag({
+  listing,
+  ethUsdPrice,
+}: {
+  listing: Listing;
+  ethUsdPrice?: number | null;
+}) {
+  const t = useTranslations('mart');
+  const format = useFormatter();
+
+  // Native ETH and WETH are both denominated in ether — render with Ξ and a
+  // fiat estimate. Anything else keeps its own ticker.
+  const { isNative, symbol } = listing.price.currency;
+  const isEther = isNative || symbol === 'ETH' || symbol === 'WETH';
+  const usdValue =
+    isEther && ethUsdPrice != null ? ethUsdPrice * listing.price.decimal : null;
+  const usdLabel =
+    usdValue != null
+      ? format.number(usdValue, {
+          style: 'currency',
+          currency: 'USD',
+          maximumFractionDigits: usdValue >= 1000 ? 0 : 2,
+        })
+      : null;
 
   return (
-    <a
-      href={safeUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={t('buyAria', {
-        domain: displayName,
-        marketplace: listing.source,
-      })}
-      className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-xl"
-    >
-      {card}
-    </a>
+    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+      <span className="inline-flex items-center gap-1 whitespace-nowrap font-mono text-lg font-semibold text-zinc-100">
+        {isEther ? (
+          <>
+            <span aria-hidden="true">Ξ</span>
+            {listing.price.decimal.toFixed(4)}
+            <Tooltip>
+              <TooltipTrigger
+                render={(props) => (
+                  <button
+                    type="button"
+                    {...props}
+                    aria-label={t('etherSymbolLabel')}
+                    className="relative z-10 cursor-help text-zinc-500 transition-colors hover:text-zinc-300"
+                  >
+                    <Info className="h-3.5 w-3.5" aria-hidden="true" />
+                  </button>
+                )}
+              />
+              <TooltipContent>{t('etherSymbolTooltip')}</TooltipContent>
+            </Tooltip>
+          </>
+        ) : (
+          <>
+            {listing.price.decimal.toFixed(4)} {symbol}
+          </>
+        )}
+      </span>
+      {usdLabel ? (
+        <span className="whitespace-nowrap text-sm text-zinc-400">
+          {t('approxUsd', { amount: usdLabel })}
+        </span>
+      ) : null}
+    </div>
   );
 }

@@ -11,6 +11,7 @@ import {
 } from '@/components/my-domains/marketplace-orders/use-domain-details';
 import { MartListingCard } from './mart-listing-card';
 import { useCollectionListings } from './use-collection-listings';
+import { useEthUsdPrice } from './use-eth-usd-price';
 
 /**
  * Client island for the `/mart` page: reads OpenSea's active Namefi listings
@@ -23,6 +24,7 @@ import { useCollectionListings } from './use-collection-listings';
 export function MarketplaceBrowser() {
   const t = useTranslations('mart');
   const listingsQuery = useCollectionListings();
+  const ethUsdPrice = useEthUsdPrice();
 
   // Collect every unique (chainId, tokenAddress, tokenId) the cards need so the
   // batch hook fires one tRPC call per (chainId, contract).
@@ -52,11 +54,13 @@ export function MarketplaceBrowser() {
     return <MarketplaceBrowserSkeleton />;
   }
 
-  // Every chain errored and nothing came back — surface the failure instead of
-  // rendering a misleading "no listings" empty state.
+  // Surface a total-load failure only when *every* chain errored. A partial
+  // failure (one chain down, another returning zero listings) must not show
+  // "couldn't load listings" — the healthy chain genuinely returned empty, and
+  // the failed chain's note is rendered in the empty state below.
   if (
     listingsQuery.data.length === 0 &&
-    listingsQuery.errors.length > 0 &&
+    listingsQuery.allErrored &&
     listingsQuery.isFetched
   ) {
     return (
@@ -71,12 +75,21 @@ export function MarketplaceBrowser() {
 
   if (listingsQuery.data.length === 0) {
     return (
-      <EmptyPlaceholder>
-        <EmptyPlaceholder.Title>{t('emptyTitle')}</EmptyPlaceholder.Title>
-        <EmptyPlaceholder.Description>
-          {t('emptyDescription')}
-        </EmptyPlaceholder.Description>
-      </EmptyPlaceholder>
+      <div className="space-y-4">
+        <EmptyPlaceholder>
+          <EmptyPlaceholder.Title>{t('emptyTitle')}</EmptyPlaceholder.Title>
+          <EmptyPlaceholder.Description>
+            {t('emptyDescription')}
+          </EmptyPlaceholder.Description>
+        </EmptyPlaceholder>
+        {/* Some chains loaded empty but at least one failed — say so, so an
+            incomplete result isn't mistaken for a confirmed "nothing listed". */}
+        {listingsQuery.errors.length > 0 ? (
+          <p className="text-center text-xs text-muted-foreground">
+            {t('partialLoadNote')}
+          </p>
+        ) : null}
+      </div>
     );
   }
 
@@ -100,6 +113,7 @@ export function MarketplaceBrowser() {
               ),
             )}
             detailsLoading={detailsQuery.isLoading}
+            ethUsdPrice={ethUsdPrice}
           />
         ))}
       </div>

@@ -45,6 +45,15 @@ export interface AggregatedCollectionListings {
   /** True once at least one chain has returned (so the grid can render early). */
   isFetched: boolean;
   errors: Error[];
+  /**
+   * True only when *every* chain query errored — i.e. a total load failure with
+   * nothing salvageable. A single chain erroring while another returns
+   * (possibly empty) results is a partial failure, not a total one, so this
+   * stays false and the grid shows whatever did load (plus a partial-load
+   * note). Distinguishing the two prevents an empty-but-healthy chain from
+   * being misreported as "couldn't load listings".
+   */
+  allErrored: boolean;
 }
 
 /**
@@ -122,6 +131,8 @@ function combineResults(
     isLoading,
     isFetched,
     errors,
+    // Total failure only when there's at least one query and every one errored.
+    allErrored: results.length > 0 && results.every((r) => Boolean(r.error)),
   };
 }
 

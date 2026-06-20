@@ -23,6 +23,15 @@
   "buyAria": {
     "description": "Accessible label for the whole listing card link. {domain} is the domain name (e.g. 'alice.com'); {marketplace} is the marketplace name (e.g. 'OpenSea'). Keep both placeholders; don't translate their values."
   },
+  "etherSymbolLabel": {
+    "description": "Accessible label (aria-label) for the small info icon next to an ETH price that explains the Ξ symbol. 'ether' is the Ethereum cryptocurrency."
+  },
+  "etherSymbolTooltip": {
+    "description": "Tooltip explaining that the Greek letter Ξ (xi) is the symbol for ether, the Ethereum cryptocurrency. Keep the 'Ξ' character and 'ETH' as-is; translate the rest."
+  },
+  "approxUsd": {
+    "description": "Approximate US-dollar equivalent shown next to an ETH price. {amount} is a pre-formatted, localized currency string (e.g. '$1,234'). Keep the '≈' (approximately) sign and the {amount} placeholder; do not translate the value."
+  },
   "partialLoadNote": {
     "description": "Small non-blocking notice shown below the grid when listings from one or more marketplaces/chains failed to load."
   },
