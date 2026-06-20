@@ -23,7 +23,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo, useCallback, type FC } from 'react';
 import {
   RefreshCw,
-  Loader2,
   CheckCircle2,
   XCircle,
   AlertTriangle,
@@ -35,6 +34,7 @@ import {
   Calendar,
   Play,
   Mail,
+  ExternalLink,
 } from 'lucide-react';
 import Link from 'next/link';
 import { PageShell } from '@/components/page-shell';
@@ -50,180 +50,30 @@ import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/ex
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { AdminUserLookupButton } from '@/components/admin/user-details';
-import { getTransactionExplorerUrl } from '@/components/admin/bulk-burn-management';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
-import { toast } from 'sonner';
-import { Copy, ExternalLink } from 'lucide-react';
+import {
+  ChargeCell,
+  type DomainRow,
+  DomainCell,
+  ErrorActionCell,
+  formatRegistrar,
+  formatUsd,
+  OwnerEmailCell,
+  OwnerIdCell,
+  PaymentsCell,
+  RegistrarCell,
+  StatusCell,
+  TxHashCell,
+  WalletCell,
+} from './auto-renewal-management-cells';
+import { AutoRenewalDomainCard } from './auto-renewal-domain-card';
 import { cn } from '@namefi-astra/ui/lib/cn';
 
-// ─── Types ───────────────────────────────────────────────────────
-
-type DomainRow = {
-  domain: string;
-  userId: string;
-  userEmail?: string;
-  walletAddress?: string;
-  registrar?: string;
-  chainId?: number;
-  status:
-    | 'SUCCESS'
-    | 'FAILED'
-    | 'PAYMENT_FAILED'
-    | 'MISSING_PRICE'
-    | 'SKIPPED_INSUFFICIENT_FUNDS';
-  chargeAmountUsd?: number | null;
-  errorReason?: string;
-  actionRequired?: string;
-  txHash?: string;
-  eppOperationStatus?: string;
-  /**
-   * User-level payment status (SUCCEEDED / FAILED / SKIPPED).
-   * Carried on every row of the same user so the group header — which
-   * is computed from the currently visible (filtered + paginated) rows —
-   * can still display the user-level status without round-tripping back
-   * to the full userResults set.
-   */
-  userPaymentStatus?: string;
-  /**
-   * Per-user run-start snapshot fields. Same values on every row in the
-   * same group; duplicated so the group header (which derives from visible
-   * rows) can render balance + payment-method info without a separate map.
-   * USD. `availableBalanceInNfsc` is summed across chains at workflow start
-   * and does NOT reflect post-charge debits.
-   */
-  availableBalanceInNfsc?: number;
-  nfscBalancesByChain?: Array<{
-    walletAddress: string;
-    chainId: number;
-    balanceInUsd: number | null;
-  }>;
-  availablePaymentMethods?: Array<
-    | { kind: 'NFSC_WALLET'; walletAddress: string }
-    | { kind: 'STRIPE'; last4: string | null; paymentMethodId: string }
-  >;
-  /** USD cents short of covering the full original renewal bill. */
-  shortfallInUsdCents?: number;
-  snapshotTakenAt?: string;
-  /** All payments for the user this domain belongs to. Same array on every row in the same group. */
-  payments?: Array<{
-    provider: string;
-    /** Amount in USD cents (1 USD = 100 cents). */
-    amountInUsdCents: number;
-    /**
-     * Provider-specific external reference.
-     * - Stripe: Payment Intent ID (e.g. `pi_...`)
-     * - NFSC / X402 / MPP: on-chain transaction hash
-     */
-    paymentProviderReferenceId?: string;
-  }>;
-};
-
 // ─── Helpers ─────────────────────────────────────────────────────
-
-function getStatusBadge(status: DomainRow['status']) {
-  switch (status) {
-    case 'SUCCESS':
-      return (
-        <Badge
-          variant="outline"
-          className="gap-1 border-green-300 text-green-300"
-        >
-          <CheckCircle2 className="w-3 h-3" />
-          Success
-        </Badge>
-      );
-    case 'FAILED':
-      return (
-        <Badge variant="outline" className="gap-1 border-red-300 text-red-300">
-          <XCircle className="w-3 h-3" />
-          Failed
-        </Badge>
-      );
-    case 'PAYMENT_FAILED':
-      return (
-        <Badge
-          variant="outline"
-          className="gap-1 border-amber-200 text-amber-200"
-        >
-          <AlertTriangle className="w-3 h-3" />
-          Could Not Charge
-        </Badge>
-      );
-    case 'SKIPPED_INSUFFICIENT_FUNDS':
-      return (
-        <Badge
-          variant="outline"
-          className="gap-1 border-amber-300/80 text-amber-300/80"
-        >
-          <Clock className="w-3 h-3" />
-          Deferred — Low Balance
-        </Badge>
-      );
-    case 'MISSING_PRICE':
-      return (
-        <Badge
-          variant="outline"
-          className="gap-1 border-orange-300 text-orange-300"
-        >
-          <AlertTriangle className="w-3 h-3" />
-          Missing Price
-        </Badge>
-      );
-    default:
-      return <Badge variant="secondary">{status}</Badge>;
-  }
-}
-
-function formatUsd(amount: number | null | undefined): string {
-  if (amount == null) return '-';
-  return `$${amount.toFixed(2)}`;
-}
-
-/**
- * Build a provider-specific external URL for a single payment.
- *
- * - Stripe → Stripe dashboard payment intent page (https://dashboard.stripe.com/payments/<pi_...>).
- * - NFSC_BASE / X402 / MPP → Base block explorer (chain 8453).
- * - NFSC_ETHEREUM → Ethereum mainnet block explorer (chain 1).
- * - NFSC_ETHEREUM_SEPOLIA → Sepolia testnet block explorer (chain 11155111).
- * - Anything else → null.
- *
- * For on-chain providers, prefers the payment-specific reference (the actual
- * settlement tx hash from `paymentsTable.paymentProviderReferenceId`), but
- * falls back to the renewal-tx hash from the row when that field is missing
- * (e.g. for older payments that predate the reference being persisted, or
- * providers that didn't record one). This matches the previous behavior
- * where the cell linked to the renewal tx hash.
- */
-function getPaymentExplorerUrl(
-  provider: string,
-  reference: string | undefined,
-  renewalTxHash?: string,
-  renewalChainId?: number,
-): string | null {
-  if (provider === 'STRIPE') {
-    if (!reference) return null;
-    return `https://dashboard.stripe.com/payments/${reference}`;
-  }
-  // Map provider → chain id for on-chain settlements.
-  const providerChainId =
-    provider === 'NFSC_ETHEREUM'
-      ? 1
-      : provider === 'NFSC_ETHEREUM_SEPOLIA'
-        ? 11155111
-        : 8453; // NFSC_BASE, X402, MPP — all default to Base mainnet
-
-  // Prefer the payment-specific settlement tx hash; fall back to the
-  // renewal tx hash on the same row (which always lives on the NFT chain).
-  if (reference) {
-    return getTransactionExplorerUrl(providerChainId, reference);
-  }
-  if (renewalTxHash && renewalChainId) {
-    return getTransactionExplorerUrl(renewalChainId, renewalTxHash);
-  }
-  return null;
-}
+// `DomainRow`, `formatUsd`, `formatRegistrar`, `getStatusBadge`,
+// `getPaymentExplorerUrl` and the per-column cell components live in
+// `./auto-renewal-management-cells` so the desktop table columns and the mobile
+// card render off one source (switch layout, reuse logic).
 
 function formatDuration(ms: number | undefined): string {
   if (!ms) return '-';
@@ -231,19 +81,6 @@ function formatDuration(ms: number | undefined): string {
   const minutes = Math.floor(totalSeconds / 60);
   const seconds = totalSeconds % 60;
   return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;
-}
-
-function formatRegistrar(registrar: string | undefined): string {
-  switch (registrar) {
-    case 'dynadot_gdg':
-      return 'Dynadot (GDG)';
-    case 'dynadot_regular':
-      return 'Dynadot (Regular)';
-    case 'route53':
-      return 'Route 53';
-    default:
-      return registrar || 'Unknown';
-  }
 }
 
 // ─── Loading Skeleton ────────────────────────────────────────────
@@ -1734,62 +1571,25 @@ function DomainsTable({
         id: 'domain',
         accessorKey: 'domain',
         header: 'Domain',
-        cell: ({ row }) => (
-          <span className="font-mono text-xs">{row.original.domain}</span>
-        ),
+        cell: ({ row }) => <DomainCell domain={row.original.domain} />,
       },
       {
         id: 'walletAddress',
         accessorKey: 'walletAddress',
         header: 'Wallet',
-        cell: ({ row }) =>
-          row.original.walletAddress ? (
-            <UserWalletAvatar
-              address={row.original.walletAddress}
-              adminOpenTarget="wallet"
-              userId={row.original.userId}
-              className="size-6"
-            />
-          ) : (
-            <span className="text-xs text-muted-foreground">-</span>
-          ),
+        cell: ({ row }) => <WalletCell row={row.original} />,
       },
       {
         id: 'userEmail',
         accessorKey: 'userEmail',
         header: 'Owner Email',
-        cell: ({ row }) =>
-          row.original.userEmail ? (
-            <AdminUserLookupButton
-              reference={{ userId: row.original.userId }}
-              variant="ghost"
-              size="sm"
-              className="h-auto px-0 py-0 text-xs hover:underline justify-start max-w-[200px]"
-            >
-              <TruncatedTextWithHover maxLength={24}>
-                {row.original.userEmail}
-              </TruncatedTextWithHover>
-            </AdminUserLookupButton>
-          ) : (
-            <span className="text-xs text-muted-foreground">-</span>
-          ),
+        cell: ({ row }) => <OwnerEmailCell row={row.original} />,
       },
       {
         id: 'userId',
         accessorKey: 'userId',
         header: 'Owner ID',
-        cell: ({ row }) => (
-          <AdminUserLookupButton
-            reference={{ userId: row.original.userId }}
-            variant="ghost"
-            size="sm"
-            className="h-auto px-0 py-0 text-xs font-mono hover:underline justify-start max-w-[140px]"
-          >
-            <TruncatedTextWithHover maxLength={12}>
-              {row.original.userId}
-            </TruncatedTextWithHover>
-          </AdminUserLookupButton>
-        ),
+        cell: ({ row }) => <OwnerIdCell row={row.original} />,
       },
       {
         id: 'status',
@@ -1797,7 +1597,7 @@ function DomainsTable({
         header: () => <div className="text-center">Status</div>,
         cell: ({ row }) => (
           <div className="flex justify-center">
-            {getStatusBadge(row.original.status)}
+            <StatusCell status={row.original.status} />
           </div>
         ),
       },
@@ -1805,177 +1605,88 @@ function DomainsTable({
         id: 'registrar',
         accessorKey: 'registrar',
         header: 'Registrar',
-        cell: ({ row }) => (
-          <span className="text-sm">
-            {formatRegistrar(row.original.registrar)}
-          </span>
-        ),
+        cell: ({ row }) => <RegistrarCell registrar={row.original.registrar} />,
       },
       {
         id: 'chargeAmountUsd',
         accessorKey: 'chargeAmountUsd',
         header: 'Charge (USD)',
         cell: ({ row }) => (
-          <span className="text-sm font-mono">
-            {formatUsd(row.original.chargeAmountUsd)}
-          </span>
+          <ChargeCell chargeAmountUsd={row.original.chargeAmountUsd} />
         ),
       },
       {
         id: 'payments',
         accessorKey: 'payments',
         header: 'Payment',
-        cell: ({ row }) => {
-          const payments = row.original.payments;
-          if (!payments || payments.length === 0)
-            return <span className="text-xs text-muted-foreground">-</span>;
-          return (
-            <div className="flex flex-col gap-0.5 text-xs">
-              {payments.map((p, i) => {
-                const url = getPaymentExplorerUrl(
-                  p.provider,
-                  p.paymentProviderReferenceId,
-                  row.original.txHash,
-                  row.original.chainId,
-                );
-                const inner = (
-                  <span className="flex items-center gap-1.5 whitespace-nowrap">
-                    <span className="text-muted-foreground">{p.provider}</span>
-                    <span className="font-mono">
-                      ${(p.amountInUsdCents / 100).toFixed(2)}
-                    </span>
-                    {url && <ExternalLink className="h-3 w-3 opacity-60" />}
-                  </span>
-                );
-                return url ? (
-                  <a
-                    key={`${p.provider}-${i}`}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="hover:underline text-blue-300"
-                    title={`View on ${p.provider === 'STRIPE' ? 'Stripe dashboard' : 'block explorer'}`}
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <div key={`${p.provider}-${i}`}>{inner}</div>
-                );
-              })}
-            </div>
-          );
-        },
+        cell: ({ row }) => <PaymentsCell row={row.original} />,
       },
       {
         id: 'errorReason',
         accessorKey: 'errorReason',
         header: 'Error / Action',
-        cell: ({ row }) => {
-          if (!row.original.errorReason)
-            return <span className="text-sm">-</span>;
-          const isContactAction =
-            row.original.actionRequired === 'Contact user about payment';
-          const canEmail = isContactAction && row.original.userEmail;
-          return (
-            <div className="flex flex-col gap-0.5 max-w-[250px]">
-              <span className="text-xs text-red-400">
-                <TruncatedTextWithHover maxLength={40}>
-                  {row.original.errorReason}
-                </TruncatedTextWithHover>
-              </span>
-              {row.original.actionRequired &&
-                (canEmail ? (
-                  (() => {
-                    const subject = `Domain Renewal Issue: ${row.original.domain}`;
-                    const body =
-                      'Hi,\n\n' +
-                      `We noticed an issue with the renewal of your domain ${row.original.domain}.\n\n` +
-                      `Reason: ${row.original.errorReason ?? 'Unknown'}\n\n` +
-                      'Please contact us if you need assistance.';
-                    const params = new URLSearchParams({ subject, body });
-                    const href = `mailto:${row.original.userEmail}?${params.toString()}`;
-                    return (
-                      <>
-                        <a href={href} onClick={(e) => e.stopPropagation()}>
-                          <Badge
-                            variant="outline"
-                            className="text-xs w-fit border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
-                          >
-                            {row.original.actionRequired}
-                          </Badge>
-                        </a>
-                        <AddToEmailBatchButton
-                          email={row.original.userEmail}
-                          userId={row.original.userId}
-                        />
-                      </>
-                    );
-                  })()
-                ) : (
-                  <Badge variant="outline" className="text-xs w-fit">
-                    {row.original.actionRequired}
-                  </Badge>
-                ))}
-            </div>
-          );
-        },
+        cell: ({ row }) => <ErrorActionCell row={row.original} />,
       },
       {
         id: 'txHash',
         accessorKey: 'txHash',
         header: 'Tx Hash',
-        cell: ({ row }) => {
-          if (!row.original.txHash) return <span className="text-sm">-</span>;
-          const hash = row.original.txHash;
-          const url = row.original.chainId
-            ? getTransactionExplorerUrl(row.original.chainId, hash)
-            : null;
-          return (
-            <div className="flex items-center gap-1 max-w-[160px]">
-              <span className="font-mono text-xs flex-1 min-w-0">
-                <AutoTruncateTextV2
-                  initialCharactersCountToDisplay={8}
-                  minCharactersToDisplay={8}
-                >
-                  {hash}
-                </AutoTruncateTextV2>
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 p-0 flex-shrink-0"
-                title="Copy tx hash"
-                onClick={async (e) => {
-                  e.stopPropagation();
-                  try {
-                    await navigator.clipboard.writeText(hash);
-                    toast.success('Copied tx hash');
-                  } catch {
-                    toast.error('Failed to copy');
-                  }
-                }}
-              >
-                <Copy className="h-3 w-3" />
-              </Button>
-              {url && (
-                <a
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  title="View on explorer"
-                  className="flex-shrink-0 inline-flex h-6 w-6 items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground"
-                >
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              )}
-            </div>
-          );
-        },
+        cell: ({ row }) => <TxHashCell row={row.original} />,
       },
     ],
     [],
+  );
+
+  // Mobile card renderer. The card layout iterates every row in the model —
+  // grouped header rows AND leaf rows — so we branch: grouped rows reuse the
+  // exact same `renderGroupHeader` content (wrapped in a tappable, horizontally
+  // scrollable Card that toggles expansion like the desktop header row), and
+  // leaf rows render `AutoRenewalDomainCard`, which composes the same shared
+  // cell components the desktop columns use (switch layout, reuse logic).
+  const renderMobileCard = useCallback(
+    (row: Row<DomainRow>) => {
+      if (row.getIsGrouped()) {
+        return (
+          <button
+            type="button"
+            onClick={row.getToggleExpandedHandler()}
+            className="w-full rounded-lg border border-border bg-muted/40 px-3 py-2.5 text-start transition-colors hover:bg-muted/60"
+          >
+            <div className="overflow-x-auto">{renderGroupHeader(row)}</div>
+          </button>
+        );
+      }
+      return <AutoRenewalDomainCard row={row.original} />;
+    },
+    [renderGroupHeader],
+  );
+
+  // Group-by-owner + expand/collapse controls for the mobile card layout, where
+  // the desktop CardHeader buttons aren't visible alongside the card stack.
+  const cardListHeader = (
+    <div className="flex items-center justify-end gap-2">
+      <Button
+        variant={groupByUser ? 'default' : 'outline'}
+        size="sm"
+        onClick={() => {
+          setGroupByUser((v) => !v);
+          setPage(1);
+        }}
+        className="text-xs"
+      >
+        Group by Owner
+      </Button>
+      {groupByUser && allUserIds.length > 0 && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleExpandAll}
+          className="text-xs"
+        >
+          {allExpanded ? 'Collapse All' : 'Expand All'}
+        </Button>
+      )}
+    </div>
   );
 
   return (
@@ -2037,6 +1748,8 @@ function DomainsTable({
           grouping={grouping}
           groupedColumnMode={false}
           renderGroupHeader={renderGroupHeader}
+          renderMobileCard={renderMobileCard}
+          cardListHeader={cardListHeader}
           expanded={expanded}
           onExpandedChange={setExpanded}
           paginationVisibility={groupByUser ? 'hidden' : 'always'}
