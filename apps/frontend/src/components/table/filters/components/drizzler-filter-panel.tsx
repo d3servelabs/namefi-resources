@@ -122,7 +122,7 @@ export function DrizzlerFilterPanel({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[400px] sm:w-[625px] overflow-y-auto px-2 sm:px-4 pt-2">
+      <SheetContent className="w-[400px] max-sm:w-full sm:w-[625px] overflow-y-auto px-2 sm:px-4 pt-2">
         <SheetHeader className="pb-6">
           <SheetTitle className="flex items-center justify-between">
             <div className="flex items-center gap-2">

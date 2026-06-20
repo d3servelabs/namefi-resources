@@ -179,7 +179,7 @@ export function AdminDomainDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-[85vw] min-w-[1024px] max-h-[85vh] overflow-y-auto">
+      <DialogContent className="!max-w-[85vw] min-w-[1024px] max-sm:min-w-0 max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-zinc-500" />

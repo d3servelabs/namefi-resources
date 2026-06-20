@@ -443,7 +443,10 @@ export function ExportTrackingTable() {
                   >
                     View JSON
                   </PopoverTrigger>
-                  <PopoverContent align="start" className="w-[440px] p-3">
+                  <PopoverContent
+                    align="start"
+                    className="w-[440px] max-sm:w-[calc(100vw-2rem)] p-3"
+                  >
                     <div className="space-y-2">
                       <div className="text-xs font-medium">Latest Evidence</div>
                       <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">

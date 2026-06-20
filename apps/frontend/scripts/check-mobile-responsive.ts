@@ -150,7 +150,13 @@ function analyze(file: string, rel: string): Finding[] {
   // Only BASE (non-breakpoint-prefixed) widths — `sm:w-[625px]` after a `w-full` base is fine.
   const widthRe = /(?<![:\w-])(?:min-)?w-\[(\d{3,})px\]/g;
   lines.forEach((text, i) => {
-    if (text.includes('mobile-ok')) return;
+    // Skip decorative blurred orbs (e.g. `absolute … rounded-full … blur-3xl`) —
+    // intentionally oversized background glows, not layout containers.
+    if (
+      text.includes('mobile-ok') ||
+      (/rounded-full/.test(text) && /\bblur/.test(text))
+    )
+      return;
     for (const mm of text.matchAll(widthRe)) {
       const px = Number.parseInt(mm[1], 10);
       if (px >= WIDTH_THRESHOLD_PX && !text.includes('max-sm:')) {

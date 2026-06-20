@@ -47,7 +47,10 @@ export function AdminFeatureFlagsSheet({ pageKey }: { pageKey?: string }) {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="right" className="w-[380px] sm:max-w-sm px-8 pt-4">
+      <SheetContent
+        side="right"
+        className="w-[380px] max-sm:w-full sm:max-w-sm px-8 pt-4"
+      >
         <SheetHeader>
           <SheetTitle>Admin Feature Flags</SheetTitle>
         </SheetHeader>
