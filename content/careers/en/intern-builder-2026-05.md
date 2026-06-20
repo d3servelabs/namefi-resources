@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Contribute to real product work from day one, learning fast with AI agents and the latest development tools alongside experienced builders.
 employmentType: INTERN
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Generally unpaid with exceptions

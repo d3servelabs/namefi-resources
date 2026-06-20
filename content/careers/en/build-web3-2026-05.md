@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Bring deep Web3 and smart contract expertise across the full product surface, using AI agents to accelerate on-chain and off-chain delivery.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Grow and nurture our community with meaningful engagement, using AI agents to stay responsive and surface insights at scale.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Community
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

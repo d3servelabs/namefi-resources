@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Turn high AI and agent fluency into real product output — no conventional background required, just the ability to deliver with cutting-edge tools.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Create content and media that amplify our brand across every channel, using the latest AI and generative tools to move at creative speed.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Marketing
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

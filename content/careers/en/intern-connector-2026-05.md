@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Get hands-on experience in content, partnerships, or community while developing AI-agent-powered communication and outreach skills.
 employmentType: INTERN
-validThrough: '2026-08-31'
 team: Marketing
 location: Remote (Worldwide)
 compensation: Generally unpaid with exceptions

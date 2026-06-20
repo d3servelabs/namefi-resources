@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Deliver end-to-end product features across the entire stack, leveraging AI agents and the latest AI tooling to ship faster and smarter.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity

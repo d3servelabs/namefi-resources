@@ -8,7 +8,6 @@ draft: false
 type: job
 description: Apply security-first thinking across everything we ship while contributing as a hands-on engineer, amplified by AI-augmented tooling.
 employmentType: FULL_TIME
-validThrough: '2026-08-31'
 team: Engineering
 location: Remote (Worldwide)
 compensation: Competitive pay with equity
