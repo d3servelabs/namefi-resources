@@ -8,8 +8,10 @@ import { SiteHeader } from '@/components/site-header';
 import { Providers } from '@/components/providers';
 import { ConsentIsland } from '@/components/providers/consent-island';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
+import { JsonLd } from '@/components/json-ld';
 import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { resolveBaseUrl } from '@/lib/site-url';
+import { buildWebsiteJsonLd } from '@/lib/structured-data';
 import { C15tPrefetch } from '@c15t/nextjs';
 import type { Metadata } from 'next';
 import '../globals.css';
@@ -54,11 +56,16 @@ export default async function RootLayout({
   const dictionary = await getDictionary(locale);
   const direction = localeDirections[locale] ?? 'ltr';
   const isRtl = isRtlLocale(locale);
+  const websiteJsonLd = buildWebsiteJsonLd({
+    baseUrl: resolveBaseUrl(),
+    locale,
+  });
 
   return (
     <html lang={locale} dir={direction}>
       <head>
         <C15tPrefetch backendURL={C15T_BROWSER_BACKEND_URL} />
+        <JsonLd data={websiteJsonLd} />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground antialiased ${

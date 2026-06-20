@@ -21,6 +21,29 @@ export function buildPublisher(baseUrl: string): Record<string, unknown> {
   };
 }
 
+// Emits the site-level WebSite node. This is Google's supported lever for the
+// site name shown in search results (the bold source label above the title), so
+// it carries name/alternateName and links to the Organization publisher by @id.
+// Emitted once per page from the locale layout; @id is per-locale to match the
+// self-canonical i18n strategy (each locale is its own canonical rendering,
+// tied together by hreflang rather than a shared canonical).
+export function buildWebsiteJsonLd(options: {
+  baseUrl: string;
+  locale: Locale;
+}): Record<string, unknown> {
+  const url = `${options.baseUrl}/r/${options.locale}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${url}#website`,
+    name: 'Namefi',
+    alternateName: 'Namefi Resources',
+    url,
+    inLanguage: options.locale,
+    publisher: buildPublisher(options.baseUrl),
+  };
+}
+
 export type Breadcrumb = { name: string; url: string };
 
 export function buildBreadcrumbJsonLd(
