@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useForm, type Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -20,13 +20,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { PageShell } from '@/components/page-shell';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
@@ -45,23 +38,15 @@ import {
   Clock,
   Plus,
   Search,
-  Settings,
-  ExternalLink,
   Loader2,
   X,
-  Play,
-  Pause,
-  Edit,
-  MoreHorizontal,
 } from 'lucide-react';
 import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { formatDistanceToNow, format } from 'date-fns';
 import { toast } from 'sonner';
 import type { AppRouterOutput } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { namefiNormalizedDomainSchema } from '@namefi-astra/utils/namefi-flavor';
-import { getDomainLevelLabel } from '@namefi-astra/utils/parse-domain-name';
 import {
   computeDefaultAdditionalAllowedHostnames,
   isTldOnly,
@@ -69,7 +54,7 @@ import {
 import { HostnamesChipInput } from './forms/hostnames-chip-input';
 import { EditHostnamesDialog } from './forms/edit-hostnames-form';
 import { DnsStatusCell } from './cells/dns-status-cell';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import { useDebounceValue } from 'usehooks-ts';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
@@ -78,7 +63,18 @@ import {
   type DrizzlerFilterState,
 } from '@/components/table/filters';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
+import { PoweredByNamefiCard } from './powered-by-namefi-card';
+import {
+  CostCell,
+  DomainActionsMenu,
+  DomainLevelBadge,
+  DomainNameCell,
+  DurationCell,
+  EnabledBadge,
+  type PoweredByNamefiDomainRow,
+  RelativeDateCell,
+  RolloutStartedCell,
+} from './powered-by-namefi-cells';
 
 // Form schema for creating powered by namefi domains
 const createDomainSchema = z.object({
@@ -118,22 +114,9 @@ type SetupStatus = NonNullable<
   AppRouterOutput['admin']['poweredByNamefi']['getPoweredByNamefiDomainStatus']['setupStatus']
 >[0];
 
-type Domain = {
-  normalizedDomainName: string;
-  additionalAllowedHostnames: string[] | null;
-  additionalReservedNames: string[] | null;
-  durationConstraints: {
-    minDurationInYears: number;
-    maxDurationInYears: number;
-  };
-  costPerYearInUsdCents: number;
-  metadata: unknown;
-  ownerId: string | null;
-  enabled: boolean;
-  startRolloutAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+// The PBN domain row shape lives in `powered-by-namefi-cells` so the desktop
+// columns, the mobile card, and this page all share one definition.
+type Domain = PoweredByNamefiDomainRow;
 
 const StatusIcon = ({
   isSetup,
@@ -172,19 +155,6 @@ const StatusBadge = ({
 
   return <Badge variant={variant}>{text}</Badge>;
 };
-
-/**
- * TLD / SLD / 3LD / 4LD / 5LD+ marker for a PBN parent. The label is
- * computed client-side from `parseDomainName`; see the notes in
- * `packages/utils/src/parse-domain-name.ts` for why we don't expose this
- * as a server-sortable column.
- */
-function DomainLevelBadge({ name }: { name: string }) {
-  const label = getDomainLevelLabel(name);
-  const variant: 'default' | 'secondary' | 'outline' =
-    label === 'TLD' ? 'outline' : label === 'SLD' ? 'default' : 'secondary';
-  return <Badge variant={variant}>{label}</Badge>;
-}
 
 export default withAdminGuard(function PoweredByNamefiDomainsPage() {
   const trpc = useTRPC();
@@ -441,6 +411,32 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
     },
   });
 
+  // Row-action handlers shared by the desktop "Actions" column and the mobile
+  // card so both surfaces drive the exact same mutations / dialogs.
+  const handleToggleEnabled = useCallback(
+    (domain: Domain) =>
+      toggleDomainEnabled({
+        normalizedDomainName: domain.normalizedDomainName,
+        enabled: !domain.enabled,
+      }),
+    [toggleDomainEnabled],
+  );
+  const handleStartRollout = useCallback(
+    (domain: Domain) =>
+      startRollout({ normalizedDomainName: domain.normalizedDomainName }),
+    [startRollout],
+  );
+  const handleEditCostAndDuration = useCallback((domain: Domain) => {
+    setEditingDomain(domain);
+    setIsEditCostDialogOpen(true);
+  }, []);
+  const handleEditHostnames = useCallback((domain: Domain) => {
+    setEditingHostnamesDomain(domain);
+  }, []);
+  const handleOpenDnsConfiguration = useCallback((domain: Domain) => {
+    setSelectedDomain(domain.normalizedDomainName);
+  }, []);
+
   const columns = useMemo<ColumnDef<Domain>[]>(
     () => [
       {
@@ -448,13 +444,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         header: 'Domain',
         size: 240,
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={32}
-            minCharactersToDisplay={16}
-            className="font-medium"
-          >
-            {row.original.normalizedDomainName}
-          </AutoTruncateTextV2>
+          <DomainNameCell name={row.original.normalizedDomainName} />
         ),
       },
       {
@@ -470,11 +460,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         accessorKey: 'enabled',
         header: 'Status',
         size: 110,
-        cell: ({ row }) => (
-          <Badge variant={row.original.enabled ? 'default' : 'secondary'}>
-            {row.original.enabled ? 'Enabled' : 'Disabled'}
-          </Badge>
-        ),
+        cell: ({ row }) => <EnabledBadge enabled={row.original.enabled} />,
       },
       {
         id: 'dnsStatus',
@@ -493,9 +479,9 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         header: 'Cost/Year',
         size: 110,
         cell: ({ row }) => (
-          <span className="tabular-nums">
-            ${(row.original.costPerYearInUsdCents / 100).toFixed(2)}
-          </span>
+          <CostCell
+            costPerYearInUsdCents={row.original.costPerYearInUsdCents}
+          />
         ),
       },
       {
@@ -504,10 +490,9 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         size: 110,
         enableSorting: false,
         cell: ({ row }) => (
-          <span className="text-muted-foreground">
-            {row.original.durationConstraints.minDurationInYears}–
-            {row.original.durationConstraints.maxDurationInYears} yr
-          </span>
+          <DurationCell
+            durationConstraints={row.original.durationConstraints}
+          />
         ),
       },
       {
@@ -528,164 +513,77 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         accessorKey: 'startRolloutAt',
         header: 'Rollout Started',
         size: 160,
-        cell: ({ row }) =>
-          row.original.startRolloutAt ? (
-            <div className="text-sm">
-              <div>
-                {format(new Date(row.original.startRolloutAt), 'yyyy-MM-dd')}
-              </div>
-              <div className="text-muted-foreground text-xs">
-                {formatDistanceToNow(new Date(row.original.startRolloutAt), {
-                  addSuffix: true,
-                })}
-              </div>
-            </div>
-          ) : (
-            <span className="text-muted-foreground">Not started</span>
-          ),
+        cell: ({ row }) => (
+          <RolloutStartedCell startRolloutAt={row.original.startRolloutAt} />
+        ),
       },
       {
         accessorKey: 'createdAt',
         header: 'Created',
         size: 140,
-        cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">
-            {formatDistanceToNow(new Date(row.original.createdAt), {
-              addSuffix: true,
-            })}
-          </span>
-        ),
+        cell: ({ row }) => <RelativeDateCell date={row.original.createdAt} />,
       },
       {
         accessorKey: 'updatedAt',
         header: 'Updated',
         size: 140,
-        cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">
-            {formatDistanceToNow(new Date(row.original.updatedAt), {
-              addSuffix: true,
-            })}
-          </span>
-        ),
+        cell: ({ row }) => <RelativeDateCell date={row.original.updatedAt} />,
       },
       {
         id: 'actions',
         header: 'Actions',
         size: 80,
         enableSorting: false,
-        cell: ({ row }) => {
-          const domain = row.original;
-          return (
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={<Button variant="ghost" size="sm" />}
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </DropdownMenuTrigger>
-              {/*
-                The project's base DropdownMenuContent pins
-                `w-(--anchor-width)` (i.e. the trigger's width). The
-                trigger here is a 32px icon button, which clips every
-                label. Override with auto width + a comfortable minimum
-                so items never truncate, and cap at the viewport on
-                mobile.
-              */}
-              <DropdownMenuContent
-                align="end"
-                className="w-auto min-w-56 max-w-[calc(100vw-2rem)]"
-              >
-                {/* Enable/Disable Toggle */}
-                <DropdownMenuItem
-                  onClick={() =>
-                    toggleDomainEnabled({
-                      normalizedDomainName: domain.normalizedDomainName,
-                      enabled: !domain.enabled,
-                    })
-                  }
-                  disabled={toggleDomainEnabledPending}
-                >
-                  {domain.enabled ? (
-                    <>
-                      <Pause className="h-4 w-4 me-2" />
-                      Disable
-                    </>
-                  ) : (
-                    <>
-                      <Play className="h-4 w-4 me-2" />
-                      Enable
-                    </>
-                  )}
-                </DropdownMenuItem>
-
-                {/* Start Rollout (only if not started) */}
-                {!domain.startRolloutAt && (
-                  <DropdownMenuItem
-                    onClick={() =>
-                      startRollout({
-                        normalizedDomainName: domain.normalizedDomainName,
-                      })
-                    }
-                    disabled={startRolloutPending}
-                  >
-                    <Play className="h-4 w-4 me-2" />
-                    Start Rollout
-                  </DropdownMenuItem>
-                )}
-
-                <DropdownMenuSeparator />
-
-                {/* Edit Cost and Duration */}
-                <DropdownMenuItem
-                  onClick={() => {
-                    setEditingDomain(domain);
-                    setIsEditCostDialogOpen(true);
-                  }}
-                >
-                  <Edit className="h-4 w-4 me-2" />
-                  Edit Cost & Duration
-                </DropdownMenuItem>
-
-                {/* Edit additionalAllowedHostnames */}
-                <DropdownMenuItem
-                  onClick={() => setEditingHostnamesDomain(domain)}
-                >
-                  <Edit className="h-4 w-4 me-2" />
-                  Edit Additional Hostnames
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
-                {/* Configuration Dialog */}
-                <DropdownMenuItem
-                  onClick={() => setSelectedDomain(domain.normalizedDomainName)}
-                >
-                  <Settings className="h-4 w-4 me-2" />
-                  DNS Configuration
-                </DropdownMenuItem>
-
-                {/* Visit Domain */}
-                <DropdownMenuItem
-                  onClick={() =>
-                    window.open(
-                      `https://${domain.normalizedDomainName}`,
-                      '_blank',
-                    )
-                  }
-                >
-                  <ExternalLink className="h-4 w-4 me-2" />
-                  Visit Domain
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          );
-        },
+        cell: ({ row }) => (
+          <DomainActionsMenu
+            domain={row.original}
+            toggleDomainEnabledPending={toggleDomainEnabledPending}
+            startRolloutPending={startRolloutPending}
+            onToggleEnabled={handleToggleEnabled}
+            onStartRollout={handleStartRollout}
+            onEditCostAndDuration={handleEditCostAndDuration}
+            onEditHostnames={handleEditHostnames}
+            onOpenDnsConfiguration={handleOpenDnsConfiguration}
+          />
+        ),
       },
     ],
     [
-      toggleDomainEnabled,
       toggleDomainEnabledPending,
-      startRollout,
       startRolloutPending,
+      handleToggleEnabled,
+      handleStartRollout,
+      handleEditCostAndDuration,
+      handleEditHostnames,
+      handleOpenDnsConfiguration,
+    ],
+  );
+
+  // Mobile card renderer. Mirrors the desktop columns (same shared cells +
+  // action handlers) so a phone gets a readable stacked card per row instead of
+  // a horizontally-scrolling table.
+  const renderMobileCard = useCallback(
+    (row: Row<Domain>) => (
+      <PoweredByNamefiCard
+        row={row.original}
+        index={row.index}
+        toggleDomainEnabledPending={toggleDomainEnabledPending}
+        startRolloutPending={startRolloutPending}
+        onToggleEnabled={handleToggleEnabled}
+        onStartRollout={handleStartRollout}
+        onEditCostAndDuration={handleEditCostAndDuration}
+        onEditHostnames={handleEditHostnames}
+        onOpenDnsConfiguration={handleOpenDnsConfiguration}
+      />
+    ),
+    [
+      toggleDomainEnabledPending,
+      startRolloutPending,
+      handleToggleEnabled,
+      handleStartRollout,
+      handleEditCostAndDuration,
+      handleEditHostnames,
+      handleOpenDnsConfiguration,
     ],
   );
 
@@ -776,6 +674,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
             onResetPreferences={resetToDefaults}
+            renderMobileCard={renderMobileCard}
             emptyMessage="No domains found"
             loadingMessage="Loading domains..."
           />
