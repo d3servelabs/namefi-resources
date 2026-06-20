@@ -26,7 +26,7 @@ import { useTRPC } from '@/lib/trpc';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { type FC, useState, useMemo, useCallback } from 'react';
 import { toast } from 'sonner';
-import { format, formatDistanceToNow } from 'date-fns';
+import { formatDistanceToNow } from 'date-fns';
 import {
   Flame,
   Loader2,
@@ -35,14 +35,12 @@ import {
   XCircle,
   Clock,
   RefreshCw,
-  Copy,
 } from 'lucide-react';
 import { AutoTruncateTextV2 } from '../auto-truncate-text-v2';
 import { PageShell } from '@/components/page-shell';
-import { UserWalletAvatar } from '../user-avatar';
 import { getChain } from '@namefi-astra/utils/chains';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import {
   useDrizzlerServerFilterStrategy,
   convertToDrizzlerFilterOptions,
@@ -52,21 +50,18 @@ import {
 import { applyDrizzlerFilterOnDataset } from '@samyx/drizzler-filters-sorters/experimental';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { useDebounceValue } from 'usehooks-ts';
-
-type DomainToBurn = {
-  domain: string;
-  chainId: number;
-  ownerAddress: string;
-  nftExpirationDate: Date;
-  daysSinceExpiration: number;
-  registrar?: string;
-  [key: string]: unknown;
-};
-
-type EnrichedDomainToBurn = DomainToBurn & {
-  autoRenewEnabled: boolean | null;
-  userEmail: string | null;
-};
+import { BulkBurnCard } from './bulk-burn-card';
+import {
+  AutoRenewBadge,
+  ChainBadge,
+  DaysExpiredBadge,
+  DomainNameValue,
+  type EnrichedDomainToBurn,
+  NftExpiryValue,
+  OwnerCell,
+  RegistrarValue,
+  UserEmailValue,
+} from './bulk-burn-management-cells';
 
 const LoadingSkeletons: FC = () => (
   <div className="flex flex-col gap-4">
@@ -356,110 +351,54 @@ function BulkBurnManagementContent({
       {
         accessorKey: 'domain',
         header: 'Domain',
-        cell: ({ row }) => (
-          <AutoTruncateTextV2
-            minCharactersToDisplay={30}
-            initialCharactersCountToDisplay={30}
-          >
-            {row.original.domain}
-          </AutoTruncateTextV2>
-        ),
+        cell: ({ row }) => <DomainNameValue domain={row.original.domain} />,
       },
       {
         accessorKey: 'chainId',
         header: 'Chain',
-        cell: ({ row }) => (
-          <Badge variant="outline">{getChainName(row.original.chainId)}</Badge>
-        ),
+        cell: ({ row }) => <ChainBadge chainId={row.original.chainId} />,
       },
       {
         accessorKey: 'ownerAddress',
         header: 'Owner',
         cell: ({ row }) => (
-          <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-            <UserWalletAvatar
-              address={row.original.ownerAddress}
-              className="size-6"
-            />
-            <div className="flex-1 min-w-0">
-              <AutoTruncateTextV2
-                initialCharactersCountToDisplay={16}
-                minCharactersToDisplay={16}
-                className="font-mono text-xs"
-              >
-                {row.original.ownerAddress}
-              </AutoTruncateTextV2>
-            </div>
-            <button
-              type="button"
-              onClick={() => handleCopyWallet(row.original.ownerAddress)}
-              className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-              title="Copy address"
-            >
-              <Copy className="h-3 w-3" />
-            </button>
-          </div>
+          <OwnerCell
+            ownerAddress={row.original.ownerAddress}
+            onCopy={handleCopyWallet}
+          />
         ),
       },
       {
         accessorKey: 'autoRenewEnabled',
         header: 'Auto Renew',
-        cell: ({ row }) => {
-          const val = row.original.autoRenewEnabled;
-          if (val == null)
-            return <span className="text-sm text-muted-foreground">N/A</span>;
-          return val ? (
-            <Badge variant="default" className="bg-green-600">
-              Enabled
-            </Badge>
-          ) : (
-            <Badge variant="secondary">Disabled</Badge>
-          );
-        },
+        cell: ({ row }) => (
+          <AutoRenewBadge value={row.original.autoRenewEnabled} />
+        ),
       },
       {
         accessorKey: 'userEmail',
         header: 'User Email',
-        cell: ({ row }) => {
-          const email = row.original.userEmail;
-          if (!email)
-            return <span className="text-sm text-muted-foreground">-</span>;
-          return (
-            <AutoTruncateTextV2
-              minCharactersToDisplay={20}
-              initialCharactersCountToDisplay={20}
-              className="text-sm"
-            >
-              {email}
-            </AutoTruncateTextV2>
-          );
-        },
+        cell: ({ row }) => <UserEmailValue email={row.original.userEmail} />,
       },
       {
         accessorKey: 'nftExpirationDate',
         header: 'NFT Expiry',
         cell: ({ row }) => (
-          <span className="text-sm">
-            {format(new Date(row.original.nftExpirationDate), 'yyyy-MM-dd')}
-          </span>
+          <NftExpiryValue nftExpirationDate={row.original.nftExpirationDate} />
         ),
       },
       {
         accessorKey: 'daysSinceExpiration',
         header: 'Days Expired',
         cell: ({ row }) => (
-          <Badge variant="secondary">
-            {row.original.daysSinceExpiration} days
-          </Badge>
+          <DaysExpiredBadge days={row.original.daysSinceExpiration} />
         ),
       },
       {
         accessorKey: 'registrar',
         header: 'Registrar',
         cell: ({ row }) => (
-          <span className="text-sm text-muted-foreground">
-            {row.original.registrar || 'N/A'}
-          </span>
+          <RegistrarValue registrar={row.original.registrar} />
         ),
       },
     ],
@@ -472,6 +411,22 @@ function BulkBurnManagementContent({
       handleSelectAll,
       handleSelectDomain,
     ],
+  );
+
+  // Mobile card renderer. Renders the same row data through the same shared cell
+  // components the desktop columns use (switch layout, reuse logic) so a phone
+  // gets a stacked card per domain instead of a horizontally-scrolling table.
+  const renderMobileCard = useCallback(
+    (row: Row<EnrichedDomainToBurn>) => (
+      <BulkBurnCard
+        row={row.original}
+        isSelected={selectedDomains.has(row.original.domain)}
+        selectDisabled={!isWaitingApproval}
+        onSelectedChange={handleSelectDomain}
+        onCopyWallet={handleCopyWallet}
+      />
+    ),
+    [selectedDomains, isWaitingApproval, handleSelectDomain, handleCopyWallet],
   );
 
   const handleApprove = () => {
@@ -955,6 +910,7 @@ function BulkBurnManagementContent({
               columnVisibility={columnVisibility}
               onColumnVisibilityChange={setColumnVisibility}
               onResetPreferences={resetToDefaults}
+              renderMobileCard={renderMobileCard}
               emptyMessage="No verified domains"
               loadingMessage="Loading domains..."
             />
@@ -1030,18 +986,5 @@ function getStatusBadge(status: string) {
       );
     default:
       return <Badge variant="secondary">{status}</Badge>;
-  }
-}
-
-function getChainName(chainId: number) {
-  switch (chainId) {
-    case 1:
-      return 'Ethereum';
-    case 8453:
-      return 'Base';
-    case 11155111:
-      return 'Sepolia';
-    default:
-      return `Chain ${chainId}`;
   }
 }
