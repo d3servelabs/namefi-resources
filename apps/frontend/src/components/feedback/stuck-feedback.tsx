@@ -154,7 +154,7 @@ export function StuckFeedback({
       className={cn(
         // Bottom-left to avoid the bottom-right zone used by Sonner toasts and
         // the dev/preview skip-auth banner.
-        'fixed bottom-4 left-4 z-50 w-[calc(100vw-2rem)] sm:w-[360px]',
+        'fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] left-4 z-50 w-[calc(100vw-2rem)] sm:w-[360px]',
         'rounded-xl border border-border bg-card p-4 shadow-lg',
         'transition-all duration-200 ease-out',
         entered ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
