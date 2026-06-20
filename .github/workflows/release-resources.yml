@@ -713,12 +713,19 @@ jobs:
 
             while (Date.now() < deadline) {
               try {
+              // Scope by head_sha (the tag's commit) so the API returns just the
+              // 1-2 runs at that SHA — the main-push dev deploy and the tag-push
+              // production deploy — reliably. The previous unfiltered paginate
+              // over all deploy-resources runs didn't surface the recent prod run
+              // (so this gate timed out even though prod deployed fine). We pick
+              // the production run via head_branch === tagName below.
               const runs = await github.paginate(
                 github.rest.actions.listWorkflowRuns,
                 {
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   workflow_id: 'deploy-resources.yml',
+                  head_sha: targetSha,
                   per_page: 100,
                 },
                 (response) => response.data.workflow_runs ?? [],
