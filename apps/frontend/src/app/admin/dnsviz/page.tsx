@@ -1,16 +1,34 @@
 'use client';
 
 import { AdminGuard } from '@/components/admin/admin-guard';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
   convertToDrizzlerFilterOptions,
   useDrizzlerServerFilterStrategy,
   type DrizzlerFilterState,
 } from '@/components/table/filters';
-import { UserWalletAvatar } from '@/components/user-avatar';
-import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
 import { useTRPC, useTRPCClient } from '@/lib/trpc';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
+import {
+  AnalysisDateCell,
+  AnalyzedAtCell,
+  DnsvizAnalysisCard,
+  DnsvizMessageCard,
+  type DnsvizDetailMessage,
+  DomainNameCell as DnsvizDomainNameCell,
+  DsStatusCell,
+  ErrorsCountCell,
+  MessageCodeCell,
+  NamefiNsBadgeCell,
+  NameserversListCell,
+  ReasoningCell,
+  RegistrarCell,
+  StatusBadge,
+  STATUS_BADGE_VARIANT,
+  SupportsDnssecCell,
+  UserCell,
+  ZoneSigningCell,
+} from './dnsviz-cells';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { Checkbox } from '@namefi-astra/ui/components/shadcn/checkbox';
@@ -47,13 +65,11 @@ import {
   RefreshCw,
   ListTree,
   Play,
-  ShieldCheckIcon,
-  ShieldXIcon,
   X as XIcon,
 } from 'lucide-react';
 import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
-import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import type { ColumnDef, Row, SortingState } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { UTCDate } from '@date-fns/utc';
 import { useCallback, useMemo, useState } from 'react';
@@ -61,7 +77,6 @@ import { toast } from 'sonner';
 import type {
   DnsvizAnalysesCounts,
   DnsvizAnalysisRow,
-  DnsvizAnalysisStatus,
   DnsvizFailureBreakdown,
   DnsvizGraphType,
 } from '@namefi-astra/common/contract/admin/admin-dnsviz-contract';
@@ -73,20 +88,6 @@ export default function AdminDnsvizPage() {
     </AdminGuard>
   );
 }
-
-const STATUS_BADGE_VARIANT: Record<
-  DnsvizAnalysisStatus,
-  'default' | 'secondary' | 'outline' | 'destructive'
-> = {
-  SECURE: 'default',
-  INSECURE: 'secondary',
-  BOGUS: 'destructive',
-  ERROR: 'destructive',
-  // Reclassified buckets — the underlying row landed in BOGUS/ERROR
-  // but the indexed-domain state explains why, so it's not actionable.
-  EXPECTED_ERROR: 'outline',
-  WARN: 'secondary',
-};
 
 function DnsvizAnalysesPanel() {
   const trpc = useTRPC();
@@ -336,7 +337,7 @@ function DnsvizAnalysesPanel() {
         accessorKey: 'analysisDate',
         header: 'Date',
         cell: ({ row }) => (
-          <span className="text-sm font-mono">{row.original.analysisDate}</span>
+          <AnalysisDateCell analysisDate={row.original.analysisDate} />
         ),
         size: 110,
       },
@@ -344,38 +345,23 @@ function DnsvizAnalysesPanel() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <div className="flex items-center gap-1">
-            <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
-              {row.original.normalizedDomainName}
-            </code>
-            <AdminDomainDetailsButton
-              domainName={row.original.normalizedDomainName}
-              size="icon-xs"
-            />
-          </div>
+          <DnsvizDomainNameCell
+            normalizedDomainName={row.original.normalizedDomainName}
+          />
         ),
         size: 240,
       },
       {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => (
-          <Badge
-            variant={STATUS_BADGE_VARIANT[row.original.status]}
-            className="font-mono text-xs"
-          >
-            {row.original.status}
-          </Badge>
-        ),
+        cell: ({ row }) => <StatusBadge status={row.original.status} />,
         size: 110,
       },
       {
         accessorKey: 'registrarKey',
         header: 'Registrar',
         cell: ({ row }) => (
-          <span className="text-xs text-muted-foreground">
-            {row.original.registrarKey}
-          </span>
+          <RegistrarCell registrarKey={row.original.registrarKey} />
         ),
         size: 120,
       },
@@ -435,48 +421,20 @@ function DnsvizAnalysesPanel() {
       {
         accessorKey: 'errorsCount',
         header: 'Errors',
-        cell: ({ row }) => {
-          const n = row.original.errorsCount;
-          const ignored = row.original.summary?.ignoredErrorsCount ?? 0;
-          return (
-            <span
-              className={
-                n > 0
-                  ? 'text-sm font-mono text-destructive'
-                  : 'text-sm font-mono text-muted-foreground'
-              }
-            >
-              {n}
-              {ignored > 0 ? (
-                <span className="ms-1 text-muted-foreground">
-                  ({ignored} ignored)
-                </span>
-              ) : null}
-            </span>
-          );
-        },
+        cell: ({ row }) => <ErrorsCountCell row={row.original} />,
         size: 130,
       },
       {
         id: 'reasoning',
         header: 'Reasoning',
-        cell: ({ row }) => (
-          <span className="text-xs text-muted-foreground">
-            {row.original.reasoning}
-          </span>
-        ),
+        cell: ({ row }) => <ReasoningCell reasoning={row.original.reasoning} />,
         size: 380,
       },
       {
         id: 'analyzedAt',
         header: 'Analyzed',
         cell: ({ row }) => (
-          <span className="text-xs text-muted-foreground">
-            {format(
-              new UTCDate(row.original.analysisStartedAt),
-              "yyyy-MM-dd HH:mm 'UTC'",
-            )}
-          </span>
+          <AnalyzedAtCell analysisStartedAt={row.original.analysisStartedAt} />
         ),
         size: 160,
       },
@@ -512,6 +470,52 @@ function DnsvizAnalysesPanel() {
       toggleAllOnPage,
       toggleRow,
     ],
+  );
+
+  /**
+   * Mobile card renderer for the EDT. Renders the SAME row data through the
+   * SAME shared cells as the desktop columns, and forwards the row's select
+   * checkbox + `RowActions` wired to the SAME selection / dialog handlers — so
+   * the card and the table can never drift (switch layout, reuse logic).
+   */
+  const renderMobileCard = useCallback(
+    (tableRow: Row<DnsvizAnalysisRow>) => {
+      const row = tableRow.original;
+      return (
+        <DnsvizAnalysisCard
+          row={row}
+          selectControl={
+            <Checkbox
+              checked={selectedRows.has(row.id)}
+              onCheckedChange={(c) =>
+                toggleRow(row.id, row.normalizedDomainName, c === true)
+              }
+              aria-label={`Select ${row.normalizedDomainName}`}
+            />
+          }
+          actions={
+            <RowActions
+              row={row}
+              onView={() =>
+                setGraphTarget({
+                  id: row.id,
+                  domainName: row.normalizedDomainName,
+                  analysisDate: row.analysisDate,
+                })
+              }
+              onShowDetails={() =>
+                setDetailsTarget({
+                  id: row.id,
+                  domainName: row.normalizedDomainName,
+                  analysisDate: row.analysisDate,
+                })
+              }
+            />
+          }
+        />
+      );
+    },
+    [selectedRows, toggleRow],
   );
 
   return (
@@ -599,6 +603,7 @@ function DnsvizAnalysesPanel() {
             }}
             sorting={sorting}
             onSortingChange={setSorting}
+            renderMobileCard={renderMobileCard}
             emptyMessage="No DNSSEC analyses match the current filters."
             loadingMessage="Loading DNSViz analyses..."
           />
@@ -826,194 +831,6 @@ function FailureBreakdownBlock({
           <div>Unknown: {breakdown.unknownSupportsDnssec}</div>
         </div>
       </div>
-    </div>
-  );
-}
-
-/**
- * NFT-owner + Namefi user, joined server-side from
- * `namefi_nft_owners_view` → `privy_users` → `users`. All fields nullable —
- * AD_HOC dnsviz rows (third-party domains run via the on-demand workflow)
- * have no NFT and no Namefi user.
- */
-function UserCell({ row }: { row: DnsvizAnalysisRow }) {
-  const { userId, ownerAddress } = row;
-  if (!userId && !ownerAddress) {
-    return <span className="text-xs text-muted-foreground">—</span>;
-  }
-  const tail = ownerAddress
-    ? `${ownerAddress.slice(0, 6)}…${ownerAddress.slice(-4)}`
-    : null;
-  return (
-    <div className="flex items-center gap-2">
-      <UserWalletAvatar
-        address={ownerAddress ?? undefined}
-        userId={userId ?? undefined}
-        className="size-6 rounded-md"
-      />
-      <div className="flex flex-col leading-tight">
-        {userId ? (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={14}
-            minCharactersToDisplay={10}
-            className="text-xs"
-          >
-            {userId}
-          </AutoTruncateTextV2>
-        ) : (
-          <span className="text-xs text-amber-600">No user</span>
-        )}
-        {tail ? (
-          <span className="font-mono text-[10px] text-muted-foreground">
-            {tail}
-          </span>
-        ) : null}
-      </div>
-    </div>
-  );
-}
-
-/**
- * Single-cell badge for `is_using_namefi_nameservers`. Split out of the
- * combined "Nameservers" cell so the column is filterable on its own.
- * Renders Namefi / Custom / Unknown explicitly to avoid collapsing null
- * into "Custom".
- */
-function NamefiNsBadgeCell({ value }: { value: boolean | null }) {
-  if (value == null) {
-    return (
-      <Badge variant="outline" className="text-xs text-muted-foreground">
-        Unknown
-      </Badge>
-    );
-  }
-  if (value === true) {
-    return (
-      <Badge variant="secondary" className="text-xs">
-        Namefi
-      </Badge>
-    );
-  }
-  return (
-    <Badge variant="outline" className="text-xs">
-      Custom
-    </Badge>
-  );
-}
-
-/** Just the list of NS hostnames; the Namefi/Custom badge moved to its
- *  own column above. */
-function NameserversListCell({ row }: { row: DnsvizAnalysisRow }) {
-  if (row.nameservers == null) {
-    return <span className="text-xs text-muted-foreground">—</span>;
-  }
-  if (row.nameservers.length === 0) {
-    return <span className="text-xs text-amber-600">Not indexed</span>;
-  }
-  return (
-    <ul className="text-xs text-muted-foreground font-mono leading-tight">
-      {row.nameservers.map((ns) => (
-        <li key={ns}>{ns}</li>
-      ))}
-    </ul>
-  );
-}
-
-/**
- * Each of the three DNSSEC signals from `indexed_domains.dnssec_status`
- * gets its own column so it's individually filterable. Each cell handles
- * the null / true / false trichotomy with a fixed 4×4 icon (`size-4`)
- * for consistent column widths.
- */
-function SupportsDnssecCell({ value }: { value: boolean | null }) {
-  if (value == null) {
-    return (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldXIcon className="size-4 text-muted-foreground" />
-        <span className="text-muted-foreground">Unknown</span>
-      </div>
-    );
-  }
-  if (value === true) {
-    return (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldCheckIcon className="size-4 text-green-500" />
-        <span>Yes</span>
-      </div>
-    );
-  }
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <ShieldXIcon className="size-4 text-red-500" />
-      <span>No</span>
-    </div>
-  );
-}
-
-function ZoneSigningCell({ value }: { value: boolean | null }) {
-  if (value == null) {
-    return (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldXIcon className="size-4 text-muted-foreground" />
-        <span className="text-muted-foreground">Unknown</span>
-      </div>
-    );
-  }
-  if (value === true) {
-    return (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldCheckIcon className="size-4 text-green-500" />
-        <span>On</span>
-      </div>
-    );
-  }
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <ShieldXIcon className="size-4 text-red-500" />
-      <span>Off</span>
-    </div>
-  );
-}
-
-/**
- * Combines the two DS flags (`hasDelegationSigner` +
- * `isUsingNamefiDelegationSigner`) into a single 4-state cell — Namefi
- * DS / Custom DS / No DS / Unknown. They're inherently coupled (you
- * can't have "Namefi DS" without "has DS"), so a single column is the
- * right granularity even though the underlying source has two booleans.
- */
-function DsStatusCell({
-  hasDs,
-  isNamefiDs,
-}: {
-  hasDs: boolean | null;
-  isNamefiDs: boolean | null;
-}) {
-  if (hasDs == null || isNamefiDs == null) {
-    return (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldXIcon className="size-4 text-muted-foreground" />
-        <span className="text-muted-foreground">Unknown</span>
-      </div>
-    );
-  }
-  if (hasDs === true) {
-    return isNamefiDs === true ? (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldCheckIcon className="size-4 text-green-500" />
-        <span>Namefi DS</span>
-      </div>
-    ) : (
-      <div className="flex items-center gap-2 text-xs">
-        <ShieldCheckIcon className="size-4 text-amber-500" />
-        <span>Custom DS</span>
-      </div>
-    );
-  }
-  return (
-    <div className="flex items-center gap-2 text-xs">
-      <ShieldXIcon className="size-4 text-red-500" />
-      <span>No DS</span>
     </div>
   );
 }
@@ -1352,15 +1169,11 @@ function MessagesTable({
   emptyMessage,
 }: {
   title: string;
-  messages: Array<{
-    zone: string;
-    path: string;
-    code: string | null;
-    description: string;
-    ignored: boolean;
-  }>;
+  messages: Array<DnsvizDetailMessage>;
   emptyMessage: string;
 }) {
+  const isMobile = useIsMobile();
+
   if (messages.length === 0) {
     return (
       <div>
@@ -1369,11 +1182,29 @@ function MessagesTable({
       </div>
     );
   }
+
+  if (isMobile) {
+    // Mobile: a vertical stack of cards built from the SAME message entries as
+    // the desktop table, reusing the shared `DnsvizMessageCard` cells so the
+    // two layouts can never drift.
+    return (
+      <div>
+        <h3 className="text-sm font-semibold">{title}</h3>
+        <div className="mt-2 flex flex-col gap-2.5">
+          {messages.map((m, i) => (
+            <DnsvizMessageCard key={`${m.zone}-${m.path}-${i}`} message={m} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h3 className="text-sm font-semibold">{title}</h3>
       <div className="mt-2 overflow-x-auto rounded border">
-        <table className="min-w-full text-start text-xs">
+        {/* desktop-only table; mobile renders cards via useIsMobile above */}
+        <table className="min-w-full text-start text-xs" /* mobile-ok */>
           <thead className="bg-muted/50 font-mono text-muted-foreground">
             <tr>
               <th className="p-2">Zone</th>
@@ -1390,12 +1221,7 @@ function MessagesTable({
               >
                 <td className="border-t p-2 font-mono">{m.zone}</td>
                 <td className="border-t p-2 font-mono">
-                  {m.code ?? '—'}
-                  {m.ignored ? (
-                    <Badge variant="outline" className="ms-1 text-[10px]">
-                      ignored
-                    </Badge>
-                  ) : null}
+                  <MessageCodeCell message={m} />
                 </td>
                 <td className="border-t p-2">{m.description}</td>
                 <td className="border-t p-2 font-mono text-[10px] text-muted-foreground">
