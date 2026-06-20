@@ -49,6 +49,9 @@ const previewConfig: ConfigInput = {
   DOCS_URL: process.env.DOCS_URL || 'https://docs.namefi.dev',
   FIRST_PARTY_DEPLOYMENT_URL: previewDeploymentUrl,
   GA_MEASUREMENT_ID: process.env.GA_MEASUREMENT_ID || 'G-PHKF9PM32W',
+  // "Namefi Dev" PostHog project (sourced from Infisical at build time).
+  POSTHOG_PROJECT_TOKEN: process.env.POSTHOG_PROJECT_TOKEN,
+  POSTHOG_HOST: process.env.POSTHOG_HOST,
   PRIVY_APP_ID: process.env.PRIVY_APP_ID || 'cm2lx4u5a03x3rtgp4keapmrb',
   STRIPE_PUBLISHABLE_KEY:
     process.env.STRIPE_PUBLISHABLE_KEY ||

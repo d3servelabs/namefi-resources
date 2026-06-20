@@ -10,6 +10,19 @@ export const configSchema = z.object({
   DOCS_URL: z.url(),
   FIRST_PARTY_DEPLOYMENT_URL: z.url(),
   GA_MEASUREMENT_ID: z.string(),
+  /**
+   * PostHog project API key (a.k.a. "Project Token"). This is a write-only,
+   * publishable key — safe to expose to the browser. Sourced per-environment
+   * from Infisical (`POSTHOG_PROJECT_TOKEN`): the "Namefi Dev" project for
+   * local/development/preview and "Namefi Prod" for production. When absent,
+   * PostHog never initializes and the contextual feedback widget stays inert.
+   */
+  POSTHOG_PROJECT_TOKEN: z.string().optional(),
+  /**
+   * PostHog ingestion host. Defaults to PostHog Cloud US. Override via Infisical
+   * (`POSTHOG_HOST`) to point at the EU region or a reverse proxy.
+   */
+  POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
   PRIVY_APP_ID: z.string().min(1, 'PRIVY_APP_ID is required'),
   STRIPE_PUBLISHABLE_KEY: z.string(),
   /**
