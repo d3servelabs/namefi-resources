@@ -2,7 +2,7 @@
 
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { type ThHTMLAttributes, forwardRef } from 'react';
-import { Consumer, type Context } from '../utils';
+import { Consumer, type Context, TABLE_TESTID_ROOT } from '../utils';
 
 type Props = ThHTMLAttributes<HTMLTableCellElement>;
 
@@ -13,7 +13,7 @@ export const Th = forwardRef<HTMLTableCellElement, Props>(
         {(data: Context) => (
           <th
             ref={ref}
-            data-testid="th"
+            data-testid={`${data.testId ?? TABLE_TESTID_ROOT}.col`}
             className={cn('', data.classes?.th, className)}
             {...rest}
           >

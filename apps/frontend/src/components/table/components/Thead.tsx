@@ -9,7 +9,7 @@ import {
   forwardRef,
   isValidElement,
 } from 'react';
-import { Consumer, type Context } from '../utils';
+import { Consumer, type Context, TABLE_TESTID_ROOT } from '../utils';
 
 type Props = HTMLAttributes<HTMLTableSectionElement>;
 
@@ -21,7 +21,7 @@ export const Thead = forwardRef<HTMLTableSectionElement, Props>(
           <thead
             ref={ref}
             className={cn('', data.classes?.thead, className)}
-            data-testid="thead"
+            data-testid={`${data.testId ?? TABLE_TESTID_ROOT}.head`}
             {...rest}
           >
             {children

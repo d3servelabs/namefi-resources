@@ -2,7 +2,7 @@
 
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Children, type HTMLAttributes, forwardRef } from 'react';
-import { Consumer, type Context } from '../utils';
+import { Consumer, type Context, TABLE_TESTID_ROOT } from '../utils';
 import { Td } from './Td';
 import { Tr } from './Tr';
 
@@ -15,7 +15,7 @@ export const Tbody = forwardRef<HTMLTableSectionElement, Props>(
         <tbody
           ref={ref}
           className={cn('', data.classes?.tbody, className)}
-          data-testid="tbody"
+          data-testid={`${data.testId ?? TABLE_TESTID_ROOT}.body`}
           {...rest}
         >
           {Children.count(children) ? (

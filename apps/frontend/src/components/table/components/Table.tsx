@@ -10,7 +10,7 @@ import {
 import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import type { Classes } from '../types';
-import { type Context, Provider } from '../utils';
+import { TABLE_TESTID_ROOT, type Context, Provider } from '../utils';
 
 const defaults: Classes = {
   table: 'w-full caption-bottom text-sm',
@@ -31,6 +31,12 @@ interface Props extends TableHTMLAttributes<HTMLTableElement> {
   hasHeader?: boolean;
   hasFooter?: boolean;
   hasPivot?: boolean;
+  /**
+   * Root `data-testid` namespace. Flows through context so child primitives
+   * generate hierarchical ids (`${testId}.head`, `.row`, `.cell`). Defaults to
+   * `'table'`. See the `testid-hierarchy` rule.
+   */
+  'data-testid'?: string;
 }
 
 const Wrapper = styled.table<Props>`
@@ -86,11 +92,16 @@ export const Table = forwardRef<HTMLTableElement, Props>(function Table(
     hasPivot = true,
     children,
     className,
+    'data-testid': testId,
     ...rest
   },
   ref,
 ) {
   const mobile = useMediaQuery({ query: `(max-width: ${screen}px)` });
+  // Root namespace child primitives derive their hierarchical ids from.
+  // `||` (not `??`) so an explicit empty `data-testid=""` also falls back to the
+  // default — otherwise children would emit invalid handles like `.body`/`.row`.
+  const root = testId || TABLE_TESTID_ROOT;
 
   const value = useMemo<Context>(
     () => ({
@@ -102,14 +113,15 @@ export const Table = forwardRef<HTMLTableElement, Props>(function Table(
       hasHeader,
       hasFooter,
       hasPivot,
+      testId: root,
     }),
-    [mobile, pivot, screen, classes, hasHeader, hasFooter, hasPivot],
+    [mobile, pivot, screen, classes, hasHeader, hasFooter, hasPivot, root],
   );
 
   return (
     <Provider value={value}>
       <Wrapper
-        data-testid="table"
+        data-testid={root}
         className={cn('', classes?.table, className)}
         screen={screen}
         ref={ref}

@@ -15,6 +15,7 @@
     "typecheck": "tsgo --noEmit",
     "validate:secrets": "bun run src/lib/env/validate-secrets.ts",
     "check:mobile": "bun run scripts/check-mobile-responsive.ts",
+    "check:testid": "bun run scripts/check-testid.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
