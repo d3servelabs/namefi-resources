@@ -108,6 +108,7 @@ export const DomainDetail = ({
             size="sm"
             onClick={() => router.back()}
             className="flex items-center gap-2 cursor-pointer"
+            data-testid="domains.detail.back"
           >
             <ArrowLeftIcon className="h-4 w-4 rtl:-scale-x-100" />
             {t('detail.back')}
@@ -119,7 +120,10 @@ export const DomainDetail = ({
           <CardHeader>
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <CardTitle className="text-2xl font-bold mb-3">
+                <CardTitle
+                  className="text-2xl font-bold mb-3"
+                  data-testid="domains.detail.name"
+                >
                   {domainName}
                 </CardTitle>
                 {domainData?.tags && domainData.tags.length > 0 && (
@@ -139,6 +143,7 @@ export const DomainDetail = ({
                   disabled={isVotePending}
                   variant={domainData?.userHasUpvoted ? 'default' : 'outline'}
                   className="flex items-center gap-2 cursor-pointer"
+                  data-testid="domains.detail.vote"
                 >
                   <TrendingUpIcon className="h-4 w-4" />
                   {domainData?.userHasUpvoted
@@ -171,6 +176,7 @@ export const DomainDetail = ({
                     href={`https://${domainName}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-testid="domains.detail.visit-domain"
                   />
                 }
                 nativeButton={false}

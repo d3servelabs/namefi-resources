@@ -116,7 +116,10 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}
+        data-testid="domains.renew-modal.content"
+      >
         <DialogHeader>
           <DialogTitle>
             {t('renewModal.title', { count: domains.length })}
@@ -159,7 +162,10 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
                 setSelectedYears(Number.parseInt(value, 10));
               }}
             >
-              <SelectTrigger className="w-32">
+              <SelectTrigger
+                className="w-32"
+                data-testid="domains.renew-modal.years-trigger"
+              >
                 <SelectValue placeholder={t('renewModal.selectYears')} />
               </SelectTrigger>
               <SelectContent>
@@ -182,7 +188,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
             <Separator />
             <div className="flex items-center justify-between font-medium">
               <span>{t('renewModal.total', { years: selectedYears })}</span>
-              <span className="text-lg">
+              <span className="text-lg" data-testid="domains.renew-modal.total">
                 {formatAmountInUSD(totalPricePerYear * selectedYears)}
               </span>
             </div>
@@ -194,6 +200,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isProcessing}
+            data-testid="domains.renew-modal.cancel"
           >
             {tCommon('actions.cancel')}
           </Button>
@@ -203,6 +210,7 @@ export const RenewNowModal: FC<RenewNowModalProps> = ({
           <Button
             onClick={handleRenew}
             disabled={isProcessing || totalPricePerYear === 0}
+            data-testid="domains.renew-modal.add-to-cart"
           >
             {isProcessing ? (
               <>

@@ -26,6 +26,7 @@ export const RenewPricePremiumInfo: FC<{ domainName: string }> = ({
               setOpen((prev) => !prev);
             }}
             className="inline-flex size-4 items-center justify-center rounded-full border border-muted-foreground/40 text-[10px] font-semibold leading-none text-muted-foreground hover:bg-muted hover:text-foreground"
+            data-testid="domains.renewal.premium-info"
           />
         }
       >

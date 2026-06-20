@@ -498,6 +498,7 @@ export const DomainCard: FC<{
       href={feedListingHref}
       aria-label={t('card.onFeedAriaLabel', { domain: displayDomain })}
       className="inline-flex items-center gap-1 text-[10px] text-muted-foreground transition-colors hover:text-foreground sm:text-[11px]"
+      data-testid="search.result.feed-link"
     >
       <span>{t('card.onFeedPrefix')}</span>
       <Image
@@ -513,6 +514,7 @@ export const DomainCard: FC<{
 
   return (
     <Card
+      data-testid={domain ? `search.result.${domain}` : 'search.result.loading'}
       className={cn(
         'flex min-h-[116px] w-full items-stretch border-[1px] border-white/10 bg-white/5 p-0 backdrop-blur-lg transition-all duration-150 sm:min-h-[126px] md:min-h-[136px]',
         // Only dim domains we know are unavailable and not actionable (not
@@ -576,7 +578,10 @@ export const DomainCard: FC<{
                 isOnNamefi ? // Already owned on Namefi — no acquire price in browse mode.
               null : isNotNil(priceInUsd) ? (
                 <div className="flex flex-col gap-0.5 text-start transition-opacity duration-200 ease-out">
-                  <p className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1">
+                  <p
+                    className="line-clamp-2 text-sm font-medium sm:text-base md:text-xl sm:line-clamp-1"
+                    data-testid="search.result.price"
+                  >
                     <span
                       className={cn(
                         'font-semibold',
@@ -610,6 +615,7 @@ export const DomainCard: FC<{
                   owner: shortOwner,
                 })}
                 className="flex items-center gap-1.5 text-[11px] text-muted-foreground transition-colors hover:text-foreground sm:text-xs"
+                data-testid="search.result.owner-link"
               >
                 <span>{t('card.onNamefi')}</span>
                 <Image
@@ -713,6 +719,7 @@ export const DomainCard: FC<{
                       onClick={onRequestImportMode}
                       aria-label={t('card.importAriaLabel')}
                       className="h-8 max-w-full shrink-0 border border-white/15 bg-white/5 px-2.5 text-[11px] text-white hover:bg-white/10 sm:h-9 sm:px-3 sm:text-xs"
+                      data-testid="search.result.import"
                     >
                       {t('card.import')}
                     </Button>
@@ -736,6 +743,7 @@ export const DomainCard: FC<{
                   disabled={isWaitingForAuthoritativeAvailability}
                   aria-busy={isWaitingForAuthoritativeAvailability}
                   className="h-8 max-w-full px-3 text-[11px] bg-brand-primary text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:text-xs disabled:opacity-100"
+                  data-testid="search.result.free-claim"
                 >
                   <Gift className="h-4 w-4" />
                   {t('card.freeClaim')}

@@ -72,6 +72,7 @@ export function ActionsCell({
       className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-orange-400')}
       onClick={() => onListForSaleClick(domainName)}
       aria-label={t('actions.listForSaleAria', { domain: domainName })}
+      data-testid="domains.actions.list-for-sale"
     >
       <BadgeDollarSign className="w-4 h-4" />
     </Button>
@@ -87,6 +88,7 @@ export function ActionsCell({
           href={`/orders/${orderId}/details`}
           aria-label={t('actions.viewOrderAria', { domain: domainName })}
           className="flex justify-start items-center"
+          data-testid="domains.actions.view-order"
         />
       }
       nativeButton={false}
@@ -105,6 +107,7 @@ export function ActionsCell({
           href={getLeadgenStartHref(domainName)}
           aria-label={t('actions.findBuyersAria', { domain: domainName })}
           className="flex justify-start items-center"
+          data-testid="domains.actions.find-buyers"
         />
       }
       nativeButton={false}
@@ -127,6 +130,7 @@ export function ActionsCell({
             target="_blank"
             rel="noopener noreferrer"
             className={cn('flex justify-start items-center', props.className)}
+            data-testid="domains.actions.view-nft"
           >
             {props.children}
           </a>
@@ -147,6 +151,7 @@ export function ActionsCell({
               size="sm"
               className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
               aria-label={t('actions.actionsAria', { domain: domainName })}
+              data-testid="domains.actions.menu-trigger"
             />
           }
         >
@@ -267,6 +272,7 @@ function WatchNftButton({
       className={cn(ACTION_BUTTON_BASE_CLASSES, 'hover:!text-violet-400')}
       onClick={handleWatchNft}
       aria-label={t('actions.showNftInWalletAria', { domain: domainName })}
+      data-testid="domains.actions.watch-nft"
     >
       <Wallet className="w-4 h-4" />
     </Button>
@@ -278,6 +284,7 @@ function WatchNftButton({
         onClick={handleWatchNft}
         aria-label={t('actions.showNftInWalletAria', { domain: domainName })}
         className={'hover:!text-violet-400'}
+        data-testid="domains.actions.watch-nft-menu"
       >
         <Wallet className="w-4 h-4" /> {t('actions.showNftInWallet')}
       </DropdownMenuItem>
@@ -312,6 +319,7 @@ export function DropdownDomainActionsMenu({
       className={cn('hover:!text-orange-400')}
       onClick={() => onListForSaleClick(domainName)}
       aria-label={t('actions.listForSaleAria', { domain: domainName })}
+      data-testid="domains.actions.list-for-sale-menu"
     >
       <BadgeDollarSign className="w-4 h-4" /> {t('actions.listForSale')}
     </DropdownMenuItem>
@@ -326,6 +334,7 @@ export function DropdownDomainActionsMenu({
           href={`/orders/${orderId}/details`}
           aria-label={t('actions.viewOrderAria', { domain: domainName })}
           className={cn('flex justify-start items-center', props.className)}
+          data-testid="domains.actions.view-order-menu"
         />
       )}
     >
@@ -342,6 +351,7 @@ export function DropdownDomainActionsMenu({
           href={getLeadgenStartHref(domainName)}
           aria-label={t('actions.findBuyersAria', { domain: domainName })}
           className={cn('flex justify-start items-center', props.className)}
+          data-testid="domains.actions.find-buyers-menu"
         />
       )}
     >
@@ -361,6 +371,7 @@ export function DropdownDomainActionsMenu({
             target="_blank"
             rel="noopener noreferrer"
             className={cn('flex justify-start items-center', props.className)}
+            data-testid="domains.actions.view-nft-menu"
           >
             {props.children}
           </a>
@@ -384,6 +395,7 @@ export function DropdownDomainActionsMenu({
           target="_blank"
           rel="noopener noreferrer"
           className={cn('flex justify-start items-center', props.className)}
+          data-testid="domains.actions.visit-domain-menu"
         >
           {props.children}
         </a>
@@ -402,6 +414,7 @@ export function DropdownDomainActionsMenu({
             size="sm"
             className="!text-white border-0 bg-transparent shadow-none hover:bg-muted/30"
             aria-label={t('actions.actionsAria', { domain: domainName })}
+            data-testid="domains.actions.menu-trigger-compact"
           />
         }
       >

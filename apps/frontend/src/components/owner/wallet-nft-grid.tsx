@@ -193,7 +193,11 @@ export function WalletNftGrid({
           ensName={displayEnsName}
           onCopy={handleCopy}
         />
-        <Badge variant="secondary" className="rounded-full">
+        <Badge
+          variant="secondary"
+          className="rounded-full"
+          data-testid="shared.wallet-nft-grid.nft-count"
+        >
           {t('walletNftGrid.nftCount', { count: ownedDomains.length })}
         </Badge>
       </div>
@@ -240,7 +244,10 @@ export function WalletNftGrid({
                 diagonalPattern={{ spacing: 15, intensity: 0.6 }}
                 rainbowEffect={{ enabled: true, intensity: 0.7 }}
               >
-                <div className="flex h-full flex-col gap-3 p-3">
+                <div
+                  className="flex h-full flex-col gap-3 p-3"
+                  data-testid={`shared.wallet-nft-grid.card.${nft.normalizedDomainName}`}
+                >
                   <NftDomainCard
                     item={{
                       subdomain,
@@ -355,6 +362,7 @@ function WalletIdentityBadge({
         type="button"
         className="rounded-md border border-white/10 p-2 text-xs hover:bg-white/5"
         onClick={() => onCopy(formattedAddress)}
+        data-testid="shared.wallet-nft-grid.copy-address"
       >
         <Copy className="size-4" />
       </button>

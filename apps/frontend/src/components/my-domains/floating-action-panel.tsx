@@ -112,6 +112,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="backdrop-blur-2xl bg-background/30 border border-border/50 rounded-2xl shadow-2xl shadow-black/20"
+            data-testid="domains.floating-panel.container"
             style={{
               background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(20px) saturate(180%)',
@@ -150,6 +151,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                       onClick={onClearSelection}
                       className="h-6 w-6 rounded-full hover:bg-muted"
                       aria-label={t('floatingPanel.clearSelection')}
+                      data-testid="domains.floating-panel.clear-selection"
                     >
                       <X className="w-4 h-4" />
                     </Button>
@@ -180,6 +182,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                           ariaLabel={t('floatingPanel.bulkAutoRenewAria', {
                             count: selectedDomainCount,
                           })}
+                          data-testid="domains.floating-panel.bulk-auto-renew-toggle"
                         />
                       </TooltipTrigger>
                       <TooltipContent>
@@ -209,6 +212,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             aria-label={t('floatingPanel.renewAria', {
                               count: renewableDomainsCount,
                             })}
+                            data-testid="domains.floating-panel.renew"
                           />
                         }
                       >
@@ -235,6 +239,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             onClick={() => onBatchAction('web')}
                             className="h-8 w-8"
                             aria-label={t('floatingPanel.setWebRecords')}
+                            data-testid="domains.floating-panel.set-web"
                           />
                         }
                       >
@@ -254,6 +259,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             onClick={() => onBatchAction('forward')}
                             className="h-8 w-8"
                             aria-label={t('floatingPanel.setUrlForwarding')}
+                            data-testid="domains.floating-panel.set-forward"
                           />
                         }
                       >
@@ -273,6 +279,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             onClick={() => onBatchAction('ens')}
                             className="h-8 w-8"
                             aria-label={t('floatingPanel.setEnsRecord')}
+                            data-testid="domains.floating-panel.set-ens"
                           />
                         }
                       >
@@ -300,6 +307,7 @@ const FloatingActionPanel: FC<FloatingActionPanelProps> = ({
                             aria-label={t('floatingPanel.showInWalletAria', {
                               count: selectedDomainCount,
                             })}
+                            data-testid="domains.floating-panel.watch-wallet"
                           />
                         }
                       >

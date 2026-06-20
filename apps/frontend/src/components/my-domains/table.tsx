@@ -939,6 +939,7 @@ export function MyDomainsTable(props: {
               variant="ghost"
               size="sm"
               className="h-8 gap-1.5 text-muted-foreground"
+              data-testid="domains.list.sort-trigger"
             />
           }
         >
@@ -951,6 +952,7 @@ export function MyDomainsTable(props: {
               key={opt.id}
               onClick={() => handleSortChange(opt.id)}
               className="gap-2"
+              data-testid={`domains.list.sort-option.${opt.id}`}
             >
               <span className="flex-1">{opt.label}</span>
               {activeSort?.id === opt.id ? (
@@ -969,6 +971,7 @@ export function MyDomainsTable(props: {
         size="sm"
         onClick={handleToggleExpandAll}
         className="h-8 gap-1.5 text-muted-foreground"
+        data-testid="domains.list.expand-all"
       >
         {allCardsExpanded ? (
           <ChevronsDownUp className="size-3.5" />
@@ -1037,6 +1040,7 @@ export function MyDomainsTable(props: {
         aria-label={t('table.showNftsInWalletAria', {
           count: watchableNftCount,
         })}
+        data-testid="domains.list.watch-wallet"
       >
         <Wallet className="h-3 w-3 me-1" />
         {t('table.showNftsInWallet')}
@@ -1064,6 +1068,7 @@ export function MyDomainsTable(props: {
         <h2
           id={title.toLowerCase().replaceAll(' ', '-')}
           className="text-xl font-semibold mb-1"
+          data-testid="domains.list.title"
         >
           {title}
         </h2>

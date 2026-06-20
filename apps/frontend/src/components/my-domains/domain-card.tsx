@@ -108,7 +108,10 @@ export function DomainCard({
     : null;
 
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`domains.card.${domainName}`}
+    >
       <div className="flex items-start gap-2 px-3 py-2.5">
         <Checkbox
           checked={isSelected}
@@ -120,6 +123,7 @@ export function DomainCard({
           }
           aria-label={t('columns.selectRow')}
           className="mt-1 shrink-0"
+          data-testid="domains.card.select"
         />
         <button
           type="button"
@@ -127,6 +131,7 @@ export function DomainCard({
           aria-expanded={isExpanded}
           aria-label={t(isExpanded ? 'card.collapse' : 'card.expand')}
           className="mt-0.5 shrink-0 rounded-md p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+          data-testid="domains.card.expand-toggle"
         >
           <ChevronRight
             className={cn(
@@ -146,6 +151,7 @@ export function DomainCard({
               type="button"
               onClick={onToggleExpanded}
               className="mt-0.5 flex items-center gap-1.5 text-left text-[11px] text-muted-foreground"
+              data-testid="domains.card.expiry-summary"
             >
               <span
                 className={cn(
@@ -189,6 +195,7 @@ export function DomainCard({
                 ariaLabel={t('renewalCell.autoRenewAria', {
                   domain: domainName,
                 })}
+                data-testid="domains.card.auto-renew-toggle"
               />
             </div>
             {canRenew ? (
@@ -201,6 +208,7 @@ export function DomainCard({
                   })
                 }
                 className="cursor-pointer text-[11px] text-muted-foreground transition-colors hover:text-foreground hover:underline"
+                data-testid="domains.card.renew"
               >
                 {formatExpirationDateISO(expirationDate)} (
                 {timeLeftLabel(getTimeLeft(expirationDate))})

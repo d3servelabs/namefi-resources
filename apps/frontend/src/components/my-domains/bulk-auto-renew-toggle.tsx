@@ -27,6 +27,7 @@ export interface BulkAutoRenewToggleProps {
   disabled?: boolean;
   isLoading?: boolean;
   ariaLabel: string;
+  'data-testid'?: string;
 }
 
 export const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
@@ -35,6 +36,7 @@ export const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
   disabled = false,
   isLoading = false,
   ariaLabel,
+  'data-testid': dataTestId,
 }) => {
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLInputElement>) => {
@@ -188,6 +190,7 @@ export const BulkAutoRenewToggle: FC<BulkAutoRenewToggleProps> = ({
         onKeyDown={handleKeyDown}
         readOnly={true}
         className="absolute inset-0 opacity-0"
+        data-testid={dataTestId}
       />
       {/* ON/OFF text labels - only show when not mixed */}
       {showTextLabels && (

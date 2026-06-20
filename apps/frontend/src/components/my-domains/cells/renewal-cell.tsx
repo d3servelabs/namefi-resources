@@ -85,6 +85,7 @@ export function RenewalCell({
             disabled={isExpired}
             isLoading={isToggling}
             ariaLabel={t('renewalCell.autoRenewAria', { domain: domainName })}
+            data-testid="domains.renewal.auto-renew-toggle"
           />
         </div>
 
@@ -98,12 +99,16 @@ export function RenewalCell({
               })
             }
             className="text-start text-[11px] text-muted-foreground hover:text-foreground hover:underline cursor-pointer transition-colors"
+            data-testid="domains.renewal.expiry"
           >
             {formatExpirationDateISO(expirationDate)} (
             {timeLeftLabel(getTimeLeft(expirationDate))})
           </button>
         ) : (
-          <span className="text-[11px] text-muted-foreground">
+          <span
+            className="text-[11px] text-muted-foreground"
+            data-testid="domains.renewal.expiry-readonly"
+          >
             {formatExpirationDateISO(expirationDate)} (
             {isExpired
               ? t('renewalCell.expired')

@@ -79,6 +79,7 @@ export function ViewNftAction({ row }: { row: PreviouslyOwnedDomainRow }) {
           aria-label={`View NFT for ${domainName}`}
           target="_blank"
           rel="noopener noreferrer"
+          data-testid="domains.previously-owned.view-nft"
         >
           {props.children}
         </a>

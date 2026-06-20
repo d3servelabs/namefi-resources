@@ -19,6 +19,7 @@ export interface AutoRenewToggleProps {
   disabled?: boolean;
   isLoading?: boolean;
   ariaLabel?: string;
+  'data-testid'?: string;
 }
 
 export const AutoRenewToggle: FC<AutoRenewToggleProps> = ({
@@ -27,6 +28,7 @@ export const AutoRenewToggle: FC<AutoRenewToggleProps> = ({
   disabled = false,
   isLoading = false,
   ariaLabel,
+  'data-testid': dataTestId,
 }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -77,6 +79,7 @@ export const AutoRenewToggle: FC<AutoRenewToggleProps> = ({
       aria-label={ariaLabel ?? 'Toggle setting'}
       disabled={disabled || isLoading}
       onClick={handleToggle}
+      data-testid={dataTestId}
       className={cn(
         'relative inline-flex h-7 w-14 shrink-0 cursor-pointer items-center rounded-full border-0 transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'active:scale-95', // CSS-based tap animation

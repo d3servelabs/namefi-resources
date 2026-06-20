@@ -142,7 +142,12 @@ const MyPreviouslyOwnedDomainsEmptyPlaceholder: FC<
       <EmptyPlaceholder.Description>
         {t('previouslyOwned.emptyDescription')}
       </EmptyPlaceholder.Description>
-      <Button render={<Link href="/" />} nativeButton={false} variant="outline">
+      <Button
+        render={<Link href="/" />}
+        nativeButton={false}
+        variant="outline"
+        data-testid="domains.previously-owned.search-page"
+      >
         {t('emptyPlaceholder.action')}
       </Button>
     </EmptyPlaceholder>
@@ -378,7 +383,10 @@ function MyPreviouslyOwnedDomainsTable() {
           )
         }
       >
-        <SelectTrigger className="w-[180px]">
+        <SelectTrigger
+          className="w-[180px]"
+          data-testid="domains.previously-owned.chain-filter"
+        >
           <SelectValue
             placeholder={t('previouslyOwned.selectChainPlaceholder')}
           >
@@ -430,6 +438,7 @@ function MyPreviouslyOwnedDomainsTable() {
             <Button
               variant="outline"
               className="min-w-[220px] justify-between text-start"
+              data-testid="domains.previously-owned.reason-filter-trigger"
             />
           }
         >
@@ -448,6 +457,7 @@ function MyPreviouslyOwnedDomainsTable() {
               <DropdownMenuCheckboxItem
                 key={option.value}
                 checked={checked}
+                data-testid={`domains.previously-owned.reason-option.${option.value}`}
                 onCheckedChange={(nextChecked) => {
                   const next = nextChecked
                     ? [...reasonFilter, option.value]
@@ -463,6 +473,7 @@ function MyPreviouslyOwnedDomainsTable() {
           <DropdownMenuItem
             onClick={() => handleReasonFilterChange([])}
             className="text-xs text-muted-foreground"
+            data-testid="domains.previously-owned.reason-clear"
           >
             {t('previouslyOwned.clearFilters')}
           </DropdownMenuItem>
