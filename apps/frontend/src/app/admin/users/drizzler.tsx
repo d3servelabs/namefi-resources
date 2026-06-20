@@ -1,6 +1,5 @@
 'use client';
 
-import { AddToEmailBatchButton } from '@/components/admin/email-batch/add-to-email-batch-button';
 import { AdminGuard } from '@/components/admin/admin-guard';
 import { Permission } from '@namefi-astra/utils/permissions';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -18,75 +17,32 @@ import {
   convertToDrizzlerFilterOptions,
   type DrizzlerFilterState,
 } from '@/components/table/filters';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import {
-  AdminUserExpandedDetails,
-  AdminUserLookupButton,
-} from '@/components/admin/user-details';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import { AdminUserExpandedDetails } from '@/components/admin/user-details';
 import { PageShell } from '@/components/page-shell';
 import { toast } from 'sonner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useRouter } from 'next/navigation';
-import { AsyncButton } from '@/components/buttons/async-button';
 import { useDebounceValue } from 'usehooks-ts';
 import type { ColumnDef, Row, VisibilityState } from '@tanstack/react-table';
 import { useTablePreferences } from '@/hooks/use-table-preferences';
-import {
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  Mail,
-  VenetianMask,
-} from 'lucide-react';
-import { checksumWalletAddressSchema } from '@namefi-astra/utils/namefi-flavor';
-import {
-  differenceInYears,
-  differenceInMonths,
-  differenceInDays,
-} from 'date-fns';
-import { UserWalletAvatar } from '@/components/user-avatar';
-import {
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-  Tooltip,
-} from '@namefi-astra/ui/components/shadcn/tooltip';
-import { cn } from '@namefi-astra/ui/lib/cn';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import { OPERATORS_BY_TYPE } from '@/components/table/filters/components/drizzler-filter-field';
-
-const attemptGetChecksummedAddress = (address: string): string => {
-  const parsed = checksumWalletAddressSchema.safeParse(address);
-  return parsed.success ? parsed.data : address;
-};
-
-type UserRow = {
-  id: string;
-  displayName: string | null;
-  primaryEmail: string | null;
-  privyUserId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  lastSignInAt: Date | null;
-  twitterUsername: string | null;
-  twitterDetails: {
-    username?: string;
-    name?: string;
-    subject?: string;
-    profilePictureUrl?: string;
-  } | null;
-  isAdmin: boolean;
-  wallets: string[];
-  nfts: Array<{
-    chainId: number;
-    normalizedDomainName: string;
-    tokenId: string;
-    expirationTime: Date | string;
-    ownerAddress: string;
-  }>;
-  nftCount: number;
-};
+import { DrizzlerCard } from './drizzler-card';
+import {
+  AllWalletsCell,
+  AssetCountCell,
+  DisplayNameCell,
+  EmailCell,
+  formatTimestamp,
+  LastSignInCell,
+  PrimaryWalletCell,
+  PrivyIdCell,
+  TwitterCell,
+  UserActionsCell,
+  UserIdCell,
+  type UserRow,
+} from './drizzler-cells';
 
 export default function AdminUsersV2Page() {
   return (
@@ -188,216 +144,41 @@ function UsersTableV2() {
       {
         accessorKey: 'id',
         header: 'ID',
-        cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={16}
-              minCharactersToDisplay={16}
-              className="font-mono text-xs"
-            >
-              {row.original.id}
-            </AutoTruncateTextV2>
-            <AdminUserLookupButton
-              reference={{ userId: row.original.id }}
-              title="Open user details by user ID"
-            />
-          </div>
-        ),
+        cell: ({ row }) => <UserIdCell id={row.original.id} />,
         size: 150,
       },
       {
         accessorKey: 'displayName',
         header: 'Display Name',
         cell: ({ row }) => (
-          <AutoTruncateTextV2
-            initialCharactersCountToDisplay={15}
-            minCharactersToDisplay={15}
-          >
-            {row.original.displayName ?? '-'}
-          </AutoTruncateTextV2>
+          <DisplayNameCell displayName={row.original.displayName} />
         ),
         size: 150,
       },
       {
         accessorKey: 'primaryEmail',
         header: 'Email',
-        cell: ({ row }) => (
-          <div
-            className={cn(
-              'flex items-center justify-between w-full px-3 py-1 rounded-2xl',
-              row.original.primaryEmail ? 'bg-muted' : '',
-            )}
-          >
-            <AutoTruncateTextV2
-              className="w-full"
-              initialCharactersCountToDisplay={20}
-              minCharactersToDisplay={5}
-            >
-              {row.original.primaryEmail ?? '-'}
-            </AutoTruncateTextV2>
-            {!!row.original.primaryEmail && (
-              <div className="ms-1 flex items-center">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger
-                      render={(props) => (
-                        <a
-                          {...props}
-                          href={`mailto:${row.original.primaryEmail}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`Send email to ${row.original.primaryEmail}`}
-                          className={cn(props.className)}
-                        >
-                          {props.children}
-                        </a>
-                      )}
-                    >
-                      <Mail className="h-[14px] w-[14px]" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Send email to {row.original.primaryEmail}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <AddToEmailBatchButton
-                  email={row.original.primaryEmail}
-                  userId={row.original.id}
-                  privyUserId={row.original.privyUserId ?? undefined}
-                  displayLabel={row.original.displayName ?? undefined}
-                  className="!h-6 !w-6"
-                />
-                <CopyIconButton
-                  text={row.original.primaryEmail}
-                  classNames={{
-                    icon: '!h-[14px] !w-[14px]',
-                    button: '!p-[1px]',
-                  }}
-                />
-              </div>
-            )}
-          </div>
-        ),
+        cell: ({ row }) => <EmailCell row={row.original} />,
         size: 150,
       },
       {
         accessorKey: 'privyUserId',
         header: 'Privy ID',
         cell: ({ row }) => (
-          <div className="flex items-center gap-2">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={16}
-              minCharactersToDisplay={16}
-              className="font-mono text-xs"
-            >
-              {row.original.privyUserId}
-            </AutoTruncateTextV2>
-            <AdminUserLookupButton
-              reference={{ privyUserId: row.original.privyUserId }}
-              title="Open user details by Privy ID"
-            />
-          </div>
+          <PrivyIdCell privyUserId={row.original.privyUserId} />
         ),
         size: 150,
       },
       {
         accessorKey: 'primaryWallet',
         header: 'Primary Wallet',
-        cell: ({ row }) => {
-          let primaryWallet = row.original.wallets?.[0];
-          if (!primaryWallet) return '-';
-          primaryWallet = attemptGetChecksummedAddress(primaryWallet);
-
-          const handleCopyWallet = async () => {
-            try {
-              await navigator.clipboard.writeText(primaryWallet);
-              toast.success('Copied address successfully');
-            } catch (_error) {
-              toast.error('Failed to copy address');
-            }
-          };
-
-          return (
-            <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
-              <UserWalletAvatar
-                address={primaryWallet}
-                userId={row.original.id}
-                className="size-6"
-              />
-              <div className="flex-1 min-w-0">
-                <AutoTruncateTextV2
-                  initialCharactersCountToDisplay={16}
-                  minCharactersToDisplay={16}
-                  className="font-mono text-xs"
-                >
-                  {primaryWallet}
-                </AutoTruncateTextV2>
-              </div>
-              <button
-                type="button"
-                onClick={handleCopyWallet}
-                className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
-                title="Copy address"
-              >
-                <Copy className="h-3 w-3" />
-              </button>
-            </div>
-          );
-        },
+        cell: ({ row }) => <PrimaryWalletCell row={row.original} />,
         size: 150,
       },
       {
         accessorKey: 'allWallets',
         header: 'All Wallets',
-        cell: ({ row }) => {
-          let wallets = row.original.wallets ?? [];
-          if (wallets.length === 0) return '-';
-
-          wallets = wallets
-            .map((wallet) => attemptGetChecksummedAddress(wallet))
-            .filter((wallet) => wallet !== null);
-          const handleCopyWallet = async (wallet: string) => {
-            try {
-              await navigator.clipboard.writeText(wallet);
-              toast.success('Copied address successfully');
-            } catch (_error) {
-              toast.error('Failed to copy address');
-            }
-          };
-
-          return (
-            <div className="flex flex-col gap-1">
-              {wallets.map((wallet) => (
-                <div
-                  key={wallet}
-                  className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl w-fit"
-                >
-                  <UserWalletAvatar
-                    address={wallet}
-                    userId={row.original.id}
-                    className="size-6"
-                  />
-                  <span className="text-xs font-mono">
-                    <AutoTruncateTextV2
-                      initialCharactersCountToDisplay={16}
-                      minCharactersToDisplay={16}
-                    >
-                      {wallet}
-                    </AutoTruncateTextV2>
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => handleCopyWallet(wallet)}
-                    className="p-1 hover:bg-background rounded transition-colors"
-                    title="Copy address"
-                  >
-                    <Copy className="h-3 w-3" />
-                  </button>
-                </div>
-              ))}
-            </div>
-          );
-        },
+        cell: ({ row }) => <AllWalletsCell row={row.original} />,
         size: 200,
       },
       {
@@ -410,96 +191,27 @@ function UsersTableV2() {
       {
         accessorKey: 'createdAt',
         header: 'Created',
-        cell: ({ row }) =>
-          row.original.createdAt
-            ? new Date(row.original.createdAt).toLocaleString()
-            : '-',
+        cell: ({ row }) => formatTimestamp(row.original.createdAt),
       },
       {
         accessorKey: 'updatedAt',
         header: 'Updated',
-        cell: ({ row }) =>
-          row.original.updatedAt
-            ? new Date(row.original.updatedAt).toLocaleString()
-            : '-',
+        cell: ({ row }) => formatTimestamp(row.original.updatedAt),
       },
       {
         accessorKey: 'lastSignInAt',
         header: 'Last Sign In',
-        cell: ({ row }) => {
-          if (!row.original.lastSignInAt) return '-';
-
-          const lastSignIn = new Date(row.original.lastSignInAt);
-          const now = new Date();
-
-          // Calculate time difference
-          const years = differenceInYears(now, lastSignIn);
-          const months = differenceInMonths(now, lastSignIn);
-          const days = differenceInDays(now, lastSignIn);
-
-          let relativeTime = '';
-          let colorClass = 'text-green-600'; // Recent
-
-          if (years > 0) {
-            relativeTime = `${years}y ago`;
-            colorClass = 'text-red-600'; // Very old
-          } else if (months > 0) {
-            relativeTime = `${months}mo ago`;
-            colorClass = months > 1 ? 'text-red-600' : 'text-orange-600';
-          } else if (days > 0) {
-            relativeTime = `${days}d ago`;
-            colorClass = days > 7 ? 'text-orange-600' : 'text-green-600';
-          } else {
-            relativeTime = 'Today';
-            colorClass = 'text-green-600';
-          }
-
-          return (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger
-                  render={(props) => (
-                    <span
-                      {...props}
-                      className={cn(
-                        'font-medium cursor-help',
-                        colorClass,
-                        props.className,
-                      )}
-                    >
-                      {props.children}
-                    </span>
-                  )}
-                >
-                  {relativeTime}
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{lastSignIn.toLocaleString()}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          );
-        },
+        cell: ({ row }) => (
+          <LastSignInCell lastSignInAt={row.original.lastSignInAt} />
+        ),
         size: 120,
       },
       {
         accessorKey: 'twitterUsername',
         header: 'Twitter',
-        cell: ({ row }) => {
-          const username = row.original.twitterUsername;
-          if (!username) return '-';
-
-          return (
-            <a
-              href={`https://x.com/${username}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline"
-            >
-              <span>@{username}</span>
-            </a>
-          );
-        },
+        cell: ({ row }) => (
+          <TwitterCell username={row.original.twitterUsername} />
+        ),
         size: 120,
       },
       {
@@ -510,71 +222,16 @@ function UsersTableV2() {
       {
         accessorKey: 'nftCount',
         header: 'Assets',
-        cell: ({ row }) => (
-          <span className="font-medium">{row.original.nftCount}</span>
-        ),
+        cell: ({ row }) => <AssetCountCell nftCount={row.original.nftCount} />,
       },
       {
         id: 'actions',
         header: 'Action',
         cell: ({ row }) => (
-          <div className="flex items-center gap-1">
-            {!row.original.isAdmin && (
-              <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
-                <AsyncButton
-                  className="group"
-                  size="sm"
-                  variant="secondary"
-                  onClick={() => handleImpersonate(row.original.id)}
-                  loadingText="Impersonating..."
-                >
-                  <VenetianMask className="h-4 w-4" />
-                  <span
-                    className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
-                    style={{ transition: 'all 0.4s ease-in-out' }}
-                  >
-                    Impersonate
-                  </span>
-                </AsyncButton>
-              </PermissionGate>
-            )}
-            {!!row.original.primaryEmail && (
-              <Button
-                className="group"
-                size="sm"
-                variant="secondary"
-                render={(props) => (
-                  <a
-                    {...props}
-                    href={`mailto:${row.original.primaryEmail}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Send email"
-                    className={cn('flex', props.className)}
-                  >
-                    {props.children}
-                  </a>
-                )}
-                nativeButton={false}
-              >
-                <Mail className="h-4 w-4" />{' '}
-                <span
-                  className="origin-left w-0 group-hover:w-[calc-size(auto,size)] truncate"
-                  style={{ transition: 'all 0.8s allow-discrete' }}
-                >
-                  Send Email
-                </span>
-              </Button>
-            )}
-            {!!row.original.primaryEmail && (
-              <AddToEmailBatchButton
-                email={row.original.primaryEmail}
-                userId={row.original.id}
-                privyUserId={row.original.privyUserId ?? undefined}
-                displayLabel={row.original.displayName ?? undefined}
-              />
-            )}
-          </div>
+          <UserActionsCell
+            row={row.original}
+            onImpersonate={handleImpersonate}
+          />
         ),
       },
     ],
@@ -790,6 +447,21 @@ function UsersTableV2() {
     toast.success(`Copied ${label} to clipboard`);
   }, []);
 
+  // Mobile card renderer. Composes the SAME shared cell components as the desktop
+  // columns and reuses the table's own row-expansion state, so behavior stays
+  // identical — only the layout switches from a wide table row to a stacked card.
+  const renderMobileCard = useCallback(
+    (row: Row<UserRow>) => (
+      <DrizzlerCard
+        row={row.original}
+        isExpanded={row.getIsExpanded()}
+        onToggleExpanded={() => row.toggleExpanded()}
+        onImpersonate={handleImpersonate}
+      />
+    ),
+    [handleImpersonate],
+  );
+
   return (
     <PageShell padding="admin">
       <Card>
@@ -828,6 +500,7 @@ function UsersTableV2() {
             loadingMessage="Loading users..."
             columnVisibility={columnVisibility}
             onColumnVisibilityChange={setColumnVisibility}
+            renderMobileCard={renderMobileCard}
           />
         </CardContent>
       </Card>
@@ -841,50 +514,4 @@ function renderSubRow(row: Row<UserRow>) {
 
 const UserNftsSubRow = ({ original: user }: Row<UserRow>) => {
   return <AdminUserExpandedDetails userId={user.id} />;
-};
-
-const CopyIconButton = ({
-  text,
-  classNames,
-}: {
-  text: string;
-  classNames?: { button?: string; icon?: string; tooltipContent?: string };
-}) => {
-  const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(text);
-    toast.success('Copied to clipboard');
-  }, [text]);
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger
-          render={(props) => (
-            <Button
-              {...props}
-              className={cn(
-                'rounded-full',
-                classNames?.button,
-                props.className,
-              )}
-              size="icon"
-              variant="ghost"
-              aria-label="Copy to clipboard"
-              onClick={(event) => {
-                props.onClick?.(event);
-                if (event.defaultPrevented) return;
-                handleCopy();
-              }}
-            >
-              {props.children}
-            </Button>
-          )}
-        >
-          <Copy className={cn('h-4 w-4', classNames?.icon)} />
-        </TooltipTrigger>
-        <TooltipContent className={cn(classNames?.tooltipContent)}>
-          <p>Copy To Clipboard</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
 };
