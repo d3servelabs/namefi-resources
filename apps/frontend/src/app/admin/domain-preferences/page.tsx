@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, Row } from '@tanstack/react-table';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import { toast } from 'sonner';
@@ -22,33 +22,16 @@ import {
 import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
-import { AddressWithChain as AddressWithChainId } from '@/components/address-with-chain';
+import { DomainPreferenceCard } from './domain-preference-card';
 import {
-  ForwardToField,
-  NOT_SET_DEFAULTS,
-  NotSetText,
-  PreferenceToggle,
-} from '@/components/admin/preference-fields';
-import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
-
-type DomainPreferencesRow = {
-  userId: string | null;
-  normalizedDomainName: string;
-  ownerAddress: string | null;
-  chainId: number;
-  autoRenewEnabled: boolean | null;
-  autoEnsEnabled: boolean | null;
-  autoParkEnabled: boolean | null;
-  forwardTo: string | null;
-};
-
-type PreferenceDraft = {
-  autoRenewEnabled?: boolean;
-  autoEnsEnabled?: boolean;
-  autoParkEnabled?: boolean;
-  forwardTo?: string;
-};
+  type DomainPreferencesRow,
+  DomainNameCell,
+  ForwardToCell,
+  type PreferenceDraft,
+  PreferenceToggleCell,
+  UserIdCell,
+  WalletCell,
+} from './domain-preferences-cells';
 
 const DEFAULT_COLUMN_VISIBILITY = {
   userId: true,
@@ -347,169 +330,104 @@ function DomainPreferencesTable() {
         accessorKey: 'normalizedDomainName',
         header: 'Domain',
         cell: ({ row }) => (
-          <div className="flex items-center gap-1">
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={32}
-              minCharactersToDisplay={16}
-              className="font-medium"
-            >
-              {row.original.normalizedDomainName}
-            </AutoTruncateTextV2>
-            <AdminDomainDetailsButton
-              domainName={row.original.normalizedDomainName}
-              size="icon-xs"
-            />
-          </div>
+          <DomainNameCell domainName={row.original.normalizedDomainName} />
         ),
         size: 240,
       },
       {
         accessorKey: 'userId',
         header: 'User ID',
-        cell: ({ row }) => {
-          if (!row.original.userId) {
-            return <NotSetText />;
-          }
-          return (
-            <AutoTruncateTextV2
-              initialCharactersCountToDisplay={16}
-              minCharactersToDisplay={12}
-            >
-              {row.original.userId}
-            </AutoTruncateTextV2>
-          );
-        },
+        cell: ({ row }) => <UserIdCell userId={row.original.userId} />,
         size: 180,
       },
       {
         accessorKey: 'ownerAddress',
         header: 'Wallet',
-        cell: ({ row }) => {
-          if (!row.original.ownerAddress) {
-            return <NotSetText />;
-          }
-          return (
-            <AddressWithChainId
-              address={row.original.ownerAddress}
-              chainId={row.original.chainId}
-            />
-          );
-        },
+        cell: ({ row }) => (
+          <WalletCell
+            ownerAddress={row.original.ownerAddress}
+            chainId={row.original.chainId}
+          />
+        ),
         size: 220,
       },
       {
         accessorKey: 'autoRenewEnabled',
         header: 'Auto Renew',
-        cell: ({ row }) => {
-          const draft = drafts[row.original.normalizedDomainName];
-          const isNotSet =
-            row.original.autoRenewEnabled === null &&
-            draft?.autoRenewEnabled === undefined;
-          const value =
-            draft?.autoRenewEnabled ??
-            row.original.autoRenewEnabled ??
-            NOT_SET_DEFAULTS.autoRenewEnabled;
-          return (
-            <PreferenceToggle
-              value={value}
-              isNotSet={isNotSet}
-              disabled={!canWrite}
-              onChange={(checked) =>
-                setDraftValue(
-                  row.original.normalizedDomainName,
-                  'autoRenewEnabled',
-                  checked,
-                )
-              }
-            />
-          );
-        },
+        cell: ({ row }) => (
+          <PreferenceToggleCell
+            row={row.original}
+            draft={drafts[row.original.normalizedDomainName]}
+            field="autoRenewEnabled"
+            disabled={!canWrite}
+            onChange={(checked) =>
+              setDraftValue(
+                row.original.normalizedDomainName,
+                'autoRenewEnabled',
+                checked,
+              )
+            }
+          />
+        ),
         size: 140,
       },
       {
         accessorKey: 'autoEnsEnabled',
         header: 'Auto ENS',
-        cell: ({ row }) => {
-          const draft = drafts[row.original.normalizedDomainName];
-          const isNotSet =
-            row.original.autoEnsEnabled === null &&
-            draft?.autoEnsEnabled === undefined;
-          const value =
-            draft?.autoEnsEnabled ??
-            row.original.autoEnsEnabled ??
-            NOT_SET_DEFAULTS.autoEnsEnabled;
-          return (
-            <PreferenceToggle
-              value={value}
-              isNotSet={isNotSet}
-              disabled={!canWrite}
-              onChange={(checked) =>
-                setDraftValue(
-                  row.original.normalizedDomainName,
-                  'autoEnsEnabled',
-                  checked,
-                )
-              }
-            />
-          );
-        },
+        cell: ({ row }) => (
+          <PreferenceToggleCell
+            row={row.original}
+            draft={drafts[row.original.normalizedDomainName]}
+            field="autoEnsEnabled"
+            disabled={!canWrite}
+            onChange={(checked) =>
+              setDraftValue(
+                row.original.normalizedDomainName,
+                'autoEnsEnabled',
+                checked,
+              )
+            }
+          />
+        ),
         size: 140,
       },
       {
         accessorKey: 'autoParkEnabled',
         header: 'Auto Park',
-        cell: ({ row }) => {
-          const draft = drafts[row.original.normalizedDomainName];
-          const isNotSet =
-            row.original.autoParkEnabled === null &&
-            draft?.autoParkEnabled === undefined;
-          const value =
-            draft?.autoParkEnabled ??
-            row.original.autoParkEnabled ??
-            NOT_SET_DEFAULTS.autoParkEnabled;
-          return (
-            <PreferenceToggle
-              value={value}
-              isNotSet={isNotSet}
-              disabled={!canWrite}
-              onChange={(checked) =>
-                setDraftValue(
-                  row.original.normalizedDomainName,
-                  'autoParkEnabled',
-                  checked,
-                )
-              }
-            />
-          );
-        },
+        cell: ({ row }) => (
+          <PreferenceToggleCell
+            row={row.original}
+            draft={drafts[row.original.normalizedDomainName]}
+            field="autoParkEnabled"
+            disabled={!canWrite}
+            onChange={(checked) =>
+              setDraftValue(
+                row.original.normalizedDomainName,
+                'autoParkEnabled',
+                checked,
+              )
+            }
+          />
+        ),
         size: 140,
       },
       {
         accessorKey: 'forwardTo',
         header: 'Forward To',
-        cell: ({ row }) => {
-          const draft = drafts[row.original.normalizedDomainName];
-          const isNotSet =
-            row.original.forwardTo === null && draft?.forwardTo === undefined;
-          const value =
-            draft?.forwardTo ??
-            row.original.forwardTo ??
-            NOT_SET_DEFAULTS.forwardTo;
-          return (
-            <ForwardToField
-              value={value}
-              disabled={!canWrite}
-              isNotSet={isNotSet}
-              onChange={(nextValue) =>
-                setDraftValue(
-                  row.original.normalizedDomainName,
-                  'forwardTo',
-                  nextValue,
-                )
-              }
-            />
-          );
-        },
+        cell: ({ row }) => (
+          <ForwardToCell
+            row={row.original}
+            draft={drafts[row.original.normalizedDomainName]}
+            disabled={!canWrite}
+            onChange={(nextValue) =>
+              setDraftValue(
+                row.original.normalizedDomainName,
+                'forwardTo',
+                nextValue,
+              )
+            }
+          />
+        ),
         size: 220,
       },
       {
@@ -552,6 +470,39 @@ function DomainPreferencesTable() {
     ],
   );
 
+  // Mobile card renderer. On phones ExtensibleDataTable swaps the wide,
+  // horizontally-scrolling table for these stacked cards. The card composes the
+  // SAME extracted cells the desktop columns use and edits flow through the same
+  // draft state + Reset/Save mutation (switch layout, reuse logic).
+  const renderMobileCard = useCallback(
+    (row: Row<DomainPreferencesRow>) => {
+      const domainName = row.original.normalizedDomainName;
+      return (
+        <DomainPreferenceCard
+          row={row.original}
+          draft={drafts[domainName]}
+          canWrite={canWrite}
+          isDirty={hasRowChanges(row.original)}
+          isSaving={updateMutation.isPending}
+          onDraftChange={(field, value) =>
+            setDraftValue(domainName, field, value)
+          }
+          onReset={() => resetDraft(domainName)}
+          onSave={async () => applyChanges(row.original)}
+        />
+      );
+    },
+    [
+      applyChanges,
+      canWrite,
+      drafts,
+      hasRowChanges,
+      resetDraft,
+      setDraftValue,
+      updateMutation.isPending,
+    ],
+  );
+
   return (
     <ExtensibleDataTable<DomainPreferencesRow, typeof filterStrategy>
       filterStrategy={filterStrategy}
@@ -575,6 +526,7 @@ function DomainPreferencesTable() {
       columnVisibility={columnVisibility}
       onColumnVisibilityChange={setColumnVisibility}
       onResetPreferences={resetToDefaults}
+      renderMobileCard={renderMobileCard}
     />
   );
 }
