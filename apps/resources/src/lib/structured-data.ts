@@ -149,3 +149,63 @@ export function buildArticleJsonLd(options: {
       : {}),
   };
 }
+
+export type DefinedTermItem = { name: string; url: string };
+
+// Emits a DefinedTermSet for the glossary index — a controlled vocabulary whose
+// members are the individual glossary terms. DefinedTerm is not a visual Google
+// rich result, but it makes the glossary a machine-readable entity set that
+// knowledge-graph and AI answer engines can resolve term-by-term. The set @id is
+// per-locale so each term page can reference its own locale's set by @id.
+export function buildDefinedTermSetJsonLd(options: {
+  name: string;
+  description: string;
+  canonicalUrl: string;
+  baseUrl: string;
+  locale: Locale;
+  terms: readonly DefinedTermItem[];
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTermSet',
+    '@id': `${options.canonicalUrl}#definedtermset`,
+    name: options.name,
+    description: options.description,
+    url: options.canonicalUrl,
+    inLanguage: options.locale,
+    publisher: buildPublisher(options.baseUrl),
+    hasDefinedTerm: options.terms.map((term) => ({
+      '@type': 'DefinedTerm',
+      name: term.name,
+      url: term.url,
+    })),
+  };
+}
+
+// Emits a DefinedTerm for a single glossary entry, linked back to its locale's
+// DefinedTermSet by @id so the term and the set resolve to one graph across the
+// glossary index and the term page.
+export function buildDefinedTermJsonLd(options: {
+  name: string;
+  description?: string;
+  url: string;
+  canonicalUrl: string;
+  locale: Locale;
+  termSet: { name: string; url: string };
+}): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    '@id': `${options.canonicalUrl}#definedterm`,
+    name: options.name,
+    ...(options.description ? { description: options.description } : {}),
+    url: options.url,
+    inLanguage: options.locale,
+    inDefinedTermSet: {
+      '@type': 'DefinedTermSet',
+      '@id': `${options.termSet.url}#definedtermset`,
+      name: options.termSet.name,
+      url: options.termSet.url,
+    },
+  };
+}

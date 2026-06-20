@@ -19,6 +19,7 @@ import {
   type ArticleAuthor,
   buildArticleJsonLd,
   buildBreadcrumbJsonLd,
+  buildDefinedTermJsonLd,
 } from '@/lib/structured-data';
 import { JsonLd } from '@/components/json-ld';
 import { useMDXComponents } from '@/mdx-components';
@@ -105,6 +106,66 @@ export async function generateMetadata({
   };
 }
 
+// Builds the article / breadcrumb / defined-term payloads for a glossary entry.
+// Kept out of the page component so the component stays under the cognitive-
+// complexity budget and the canonical/url derivation lives in one place.
+function buildGlossaryDetailJsonLd(args: {
+  entry: NonNullable<ReturnType<typeof getGlossaryCached>>;
+  authorEntries: AuthorEntry[];
+  dictionary: Awaited<ReturnType<typeof getDictionary>>;
+  locale: Locale;
+  slug: string;
+}) {
+  const { entry, authorEntries, dictionary, locale, slug } = args;
+  const baseUrl = resolveBaseUrl();
+  const selfPath = `/r/${locale}/glossary/${slug}`;
+  const selfUrl = `${baseUrl}${selfPath}`;
+  // Match the canonical chosen in generateMetadata: English consolidates
+  // ranking signals when a translated term points back to its English source.
+  const canonicalUrl =
+    locale === 'en' || !getGlossaryCached('en', slug)
+      ? selfUrl
+      : `${baseUrl}/r/en/glossary/${slug}`;
+  const description =
+    entry.frontmatter.summary ?? entry.frontmatter.description;
+  const glossaryUrl = `${baseUrl}/r/${locale}/glossary`;
+  const articleAuthors: ArticleAuthor[] = authorEntries.map((author) => ({
+    name: author.frontmatter.name,
+    url: author.frontmatter.twitter ?? author.frontmatter.linkedin,
+  }));
+
+  return {
+    articleJsonLd: buildArticleJsonLd({
+      headline: entry.frontmatter.title,
+      description,
+      url: selfUrl,
+      canonicalUrl,
+      imageUrl: `${baseUrl}${selfPath}/opengraph-image`,
+      datePublished: entry.publishedAt.toISOString(),
+      authors: articleAuthors,
+      baseUrl,
+      locale,
+      keywords: entry.frontmatter.keywords,
+    }),
+    breadcrumbJsonLd: buildBreadcrumbJsonLd([
+      { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
+      { name: dictionary.nav.glossary, url: glossaryUrl },
+      { name: entry.frontmatter.title, url: selfUrl },
+    ]),
+    definedTermJsonLd: buildDefinedTermJsonLd({
+      name: entry.frontmatter.title,
+      description,
+      url: selfUrl,
+      canonicalUrl,
+      locale,
+      termSet: {
+        name: dictionary.glossary.indexTitle ?? dictionary.nav.glossary,
+        url: glossaryUrl,
+      },
+    }),
+  };
+}
+
 export default async function GlossaryDetailPage({
   params,
 }: {
@@ -159,41 +220,20 @@ export default async function GlossaryDetailPage({
     }),
   );
 
-  const baseUrl = resolveBaseUrl();
-  const selfPath = `/r/${locale}/glossary/${slug}`;
-  const selfUrl = `${baseUrl}${selfPath}`;
-  // Match the canonical chosen in generateMetadata: English consolidates
-  // ranking signals when a translated term points back to its English source.
-  const canonicalUrl =
-    locale === 'en' || !getGlossaryCached('en', slug)
-      ? selfUrl
-      : `${baseUrl}/r/en/glossary/${slug}`;
-  const articleAuthors: ArticleAuthor[] = authorEntries.map((author) => ({
-    name: author.frontmatter.name,
-    url: author.frontmatter.twitter ?? author.frontmatter.linkedin,
-  }));
-  const articleJsonLd = buildArticleJsonLd({
-    headline: entry.frontmatter.title,
-    description: entry.frontmatter.summary ?? entry.frontmatter.description,
-    url: selfUrl,
-    canonicalUrl,
-    imageUrl: `${baseUrl}${selfPath}/opengraph-image`,
-    datePublished: entry.publishedAt.toISOString(),
-    authors: articleAuthors,
-    baseUrl,
-    locale,
-    keywords: entry.frontmatter.keywords,
-  });
-  const breadcrumbJsonLd = buildBreadcrumbJsonLd([
-    { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
-    { name: dictionary.nav.glossary, url: `${baseUrl}/r/${locale}/glossary` },
-    { name: entry.frontmatter.title, url: selfUrl },
-  ]);
+  const { articleJsonLd, breadcrumbJsonLd, definedTermJsonLd } =
+    buildGlossaryDetailJsonLd({
+      entry,
+      authorEntries,
+      dictionary,
+      locale,
+      slug,
+    });
 
   return (
     <article className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-12 text-start md:px-10 lg:px-12">
       <JsonLd data={articleJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={definedTermJsonLd} />
       <Link
         href={`/${locale}/glossary`}
         className="inline-flex w-fit items-center rounded-full border border-border/60 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground transition hover:border-brand-primary/60 hover:text-foreground"

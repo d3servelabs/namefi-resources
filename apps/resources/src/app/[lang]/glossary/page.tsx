@@ -5,7 +5,10 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getGlossaryEntriesForLocale } from '@/lib/content';
 import { resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
-import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
+import {
+  buildBreadcrumbJsonLd,
+  buildDefinedTermSetJsonLd,
+} from '@/lib/structured-data';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
@@ -94,14 +97,28 @@ export default async function GlossaryIndex({
   });
 
   const baseUrl = resolveBaseUrl();
+  const glossaryUrl = `${baseUrl}/r/${locale}/glossary`;
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
-    { name: dictionary.nav.glossary, url: `${baseUrl}/r/${locale}/glossary` },
+    { name: dictionary.nav.glossary, url: glossaryUrl },
   ]);
+  const definedTermSetJsonLd = buildDefinedTermSetJsonLd({
+    name: dictionary.glossary.indexTitle ?? dictionary.nav.glossary,
+    description:
+      dictionary.glossary.indexDescription ?? dictionary.nav.glossary,
+    canonicalUrl: glossaryUrl,
+    baseUrl,
+    locale,
+    terms: entries.map((entry) => ({
+      name: entry.frontmatter.title,
+      url: `${baseUrl}/r/${locale}/glossary/${entry.slug}`,
+    })),
+  });
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
       <JsonLd data={breadcrumbJsonLd} />
+      <JsonLd data={definedTermSetJsonLd} />
       {entries.length === 0 ? (
         <ResourceIndexEmptyState>
           {dictionary.glossary.indexEmpty}
