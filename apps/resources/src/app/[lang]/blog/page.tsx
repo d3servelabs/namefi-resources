@@ -5,7 +5,10 @@ import { getDictionary } from '@/get-dictionary';
 import { getAuthorNames, getPostsForLocale } from '@/lib/content';
 import { resolveDescription, resolveTitle } from '@/lib/site-metadata';
 import { resolveBaseUrl } from '@/lib/site-url';
-import { buildBreadcrumbJsonLd } from '@/lib/structured-data';
+import {
+  buildBreadcrumbJsonLd,
+  buildCollectionJsonLd,
+} from '@/lib/structured-data';
 import {
   ResourceIndexCard,
   ResourceIndexEmptyState,
@@ -101,13 +104,30 @@ export default async function BlogIndex({
   });
 
   const baseUrl = resolveBaseUrl();
+  const selfUrl = `${baseUrl}/r/${locale}/blog`;
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: dictionary.nav.resources, url: `${baseUrl}/r/${locale}` },
-    { name: dictionary.nav.blog, url: `${baseUrl}/r/${locale}/blog` },
+    { name: dictionary.nav.blog, url: selfUrl },
   ]);
+  // CollectionPage + ItemList for the post list, matching the topics/series/
+  // watch indexes — this is the one listing page that lacked it. Self-canonical
+  // per locale (same as this page's metadata canonical) so each language ranks
+  // on its own.
+  const collectionJsonLd = buildCollectionJsonLd({
+    name: resolveTitle(locale),
+    description: resolveDescription(locale),
+    canonicalUrl: selfUrl,
+    baseUrl,
+    locale,
+    items: posts.map((post) => ({
+      name: post.frontmatter.title,
+      url: `${baseUrl}/r/${locale}/blog/${post.slug}`,
+    })),
+  });
 
   return (
     <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 md:px-10 lg:px-12">
+      <JsonLd data={collectionJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {posts.length === 0 ? (
         <ResourceIndexEmptyState>
