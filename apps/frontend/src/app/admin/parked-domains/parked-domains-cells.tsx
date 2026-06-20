@@ -24,6 +24,7 @@ import {
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
@@ -178,7 +179,7 @@ export function VerificationDetailDialog({
       <DialogTrigger render={<Button variant="ghost" size="sm" />}>
         Details
       </DialogTrigger>
-      <DialogContent className="!max-w-2xl">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-2xl')}>
         <DialogHeader>
           <DialogTitle className="break-all">{result.domain}</DialogTitle>
           <DialogDescription>

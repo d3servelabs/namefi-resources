@@ -5,6 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Progress } from '@namefi-astra/ui/components/shadcn/progress';
 import { AlertCircle, Server } from 'lucide-react';
 import {
@@ -76,7 +78,12 @@ export function CombinedStatsModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-w-3xl max-h-[90vh] overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Combined Server Statistics</DialogTitle>
           <DialogDescription>

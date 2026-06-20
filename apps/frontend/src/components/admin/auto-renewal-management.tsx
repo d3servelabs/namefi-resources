@@ -68,6 +68,7 @@ import {
 } from './auto-renewal-management-cells';
 import { AutoRenewalDomainCard } from './auto-renewal-domain-card';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 
 // ─── Helpers ─────────────────────────────────────────────────────
 // `DomainRow`, `formatUsd`, `formatRegistrar`, `getStatusBadge`,
@@ -849,7 +850,10 @@ function UserSnapshotDialog({
         }
       />
       <DialogContent
-        className="max-w-3xl max-h-[85vh] overflow-y-auto"
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'max-w-3xl max-h-[85vh] overflow-y-auto',
+        )}
         onClick={(e) => e.stopPropagation()}
       >
         <DialogHeader>

@@ -41,6 +41,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { useTRPC } from '@/lib/trpc';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { useHasPermissions } from '@/components/access/PermissionGate';
@@ -179,7 +181,12 @@ export function AdminDomainDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="!max-w-[85vw] min-w-[1024px] max-sm:min-w-0 max-h-[85vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-[85vw] min-w-[1024px] max-sm:min-w-0 max-h-[85vh] overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-zinc-500" />

@@ -41,6 +41,7 @@ import {
   PopoverTrigger,
 } from '@namefi-astra/ui/components/shadcn/popover';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import JsonView from '@uiw/react-json-view';
 import { useTheme } from 'next-themes';
 import { PageShell } from '@/components/page-shell';
@@ -369,7 +370,12 @@ function AuditLogsPageInner() {
 
       {/* Details Modal */}
       <Dialog open={detailsModalOpen} onOpenChange={setDetailsModalOpen}>
-        <DialogContent className="!max-w-3xl !max-h-[80vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-3xl !max-h-[80vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle>Audit Log Details</DialogTitle>
           </DialogHeader>

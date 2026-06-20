@@ -33,6 +33,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   Ban,
   ExternalLink,
@@ -1044,7 +1046,12 @@ function GateDetailsDialog({
         <Info className="me-1.5 h-3.5 w-3.5" />
         Details
       </DialogTrigger>
-      <DialogContent className="!max-w-2xl max-h-[85vh] overflow-y-auto text-base">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-2xl max-h-[85vh] overflow-y-auto text-base',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>Gate details</DialogTitle>
           <DialogDescription>
@@ -1548,7 +1555,7 @@ function RespondDialog({
         <Reply className="h-3.5 w-3.5 me-1.5" />
         RESPOND
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>Respond to gate</DialogTitle>
           <DialogDescription>
@@ -1621,7 +1628,7 @@ function CancelDialog({
         <Ban className="h-3.5 w-3.5 me-1.5" />
         FAIL
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
         <DialogHeader>
           <DialogTitle>Fail gate</DialogTitle>
           <DialogDescription>

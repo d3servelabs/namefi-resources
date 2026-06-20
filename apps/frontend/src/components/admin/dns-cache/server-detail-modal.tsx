@@ -6,6 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import {
   Select,
@@ -160,7 +162,12 @@ export function ServerDetailModal({
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
-        <DialogContent className="!max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-4xl max-h-[90vh] overflow-y-auto',
+          )}
+        >
           <DialogHeader>
             <DialogTitle className="flex items-center justify-start gap-2">
               <span>{serverName} Details</span>

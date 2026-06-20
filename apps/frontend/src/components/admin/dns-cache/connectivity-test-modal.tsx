@@ -6,6 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { CheckCircle2, XCircle, Loader2, RefreshCw } from 'lucide-react';
 import { useTRPC } from '@/lib/trpc';
@@ -51,7 +53,7 @@ export function ConnectivityTestModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-2xl')}>
         <DialogHeader>
           <DialogTitle>Server Connectivity Test</DialogTitle>
           <DialogDescription>

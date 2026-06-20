@@ -47,6 +47,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -669,7 +671,7 @@ function RunOnDemandDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-xl')}>
         <DialogHeader>
           <DialogTitle>Run on-demand DNSSEC analysis</DialogTitle>
           <DialogDescription>
@@ -953,7 +955,12 @@ function GraphPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="!max-w-[85vw] !min-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-[85vw] !min-w-5xl max-h-[90vh] overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>
             {target?.domainName ?? 'DNSSEC graph'}{' '}
@@ -1010,7 +1017,12 @@ function AnalysisDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="!max-w-5xl max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          '!max-w-5xl max-h-[90vh] overflow-y-auto',
+        )}
+      >
         <DialogHeader>
           <DialogTitle>
             {target?.domainName ?? 'Analysis details'}{' '}

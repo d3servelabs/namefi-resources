@@ -20,6 +20,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { PageShell } from '@/components/page-shell';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
 import {
@@ -618,7 +620,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                 form a min-height:0 track — required for nested overflow
                 to work.
               */}
-              <DialogContent className="sm:max-w-2xl w-full max-h-[min(90vh,920px)] overflow-hidden grid-rows-[auto_1fr]">
+              <DialogContent
+                className={cn(
+                  MOBILE_BOTTOM_SHEET_DIALOG,
+                  'sm:max-w-2xl w-full max-h-[min(90vh,920px)] overflow-hidden grid-rows-[auto_1fr]',
+                )}
+              >
                 <DialogHeader>
                   <DialogTitle>Add New Powered by Namefi Domain</DialogTitle>
                 </DialogHeader>
@@ -686,7 +693,9 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
         open={isEditCostDialogOpen}
         onOpenChange={setIsEditCostDialogOpen}
       >
-        <DialogContent className="sm:max-w-lg w-full">
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg w-full')}
+        >
           <DialogHeader>
             <DialogTitle className="break-words pe-8">
               Edit Cost &amp; Duration
@@ -742,7 +751,12 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
           if (!open) setSelectedDomain(null);
         }}
       >
-        <DialogContent className="!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]">
+        <DialogContent
+          className={cn(
+            MOBILE_BOTTOM_SHEET_DIALOG,
+            '!max-w-[min(96rem,calc(100vw-2rem))] w-full max-h-[min(90vh,960px)] overflow-hidden grid-rows-[auto_1fr]',
+          )}
+        >
           <DialogHeader>
             <DialogTitle className="break-words pe-8">
               Configuration Status:{' '}

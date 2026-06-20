@@ -8,6 +8,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@namefi-astra/ui/components/shadcn/dialog';
+import { cn } from '@namefi-astra/ui/lib/cn';
+import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AsyncButton } from '@/components/buttons/async-button';
 import { HostnamesChipInput } from './hostnames-chip-input';
@@ -65,7 +67,12 @@ export function EditHostnamesDialog({
         if (!open) onClose();
       }}
     >
-      <DialogContent className="sm:max-w-xl w-full max-h-[min(90vh,720px)] overflow-hidden grid-rows-[auto_1fr_auto]">
+      <DialogContent
+        className={cn(
+          MOBILE_BOTTOM_SHEET_DIALOG,
+          'sm:max-w-xl w-full max-h-[min(90vh,720px)] overflow-hidden grid-rows-[auto_1fr_auto]',
+        )}
+      >
         <DialogHeader>
           <DialogTitle className="flex flex-wrap items-baseline gap-x-2 pe-8 break-words">
             <span>Additional Hostnames</span>
