@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import type { CSSProperties } from 'react';
 import { Footer } from '@/components/footer';
 import { ParkHeader } from '@/components/header';
+import { InstantBuy } from '@/components/instant-buy';
 import { ParkNftCard } from '@/components/nft-card';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { getInternalGenerationsByDomain } from '@/lib/ai';
@@ -504,6 +505,12 @@ export default async function ParkPage({
     data.domainDocument,
     frontendBaseUrl,
   );
+  // Inputs for the client-side "Instant Buy" CTA: only meaningful once the
+  // domain is minted (has a tokenId) and therefore has an OpenSea item link.
+  const openSeaItemLink = marketplaceLinks.find(
+    (link) => link.key === 'opensea',
+  );
+  const instantBuyTokenId = normalizeTokenId(data.domainDocument.tokenId);
   const chainExplorerUrl = buildChainExplorerUrl(data.domainDocument);
   const description =
     data.domainDocument.explain ??
@@ -552,6 +559,14 @@ export default async function ParkPage({
                 </Link>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-3">
+                {openSeaItemLink && instantBuyTokenId ? (
+                  <InstantBuy
+                    contract={DEFAULT_NAMEFI_NFT_ADDRESS}
+                    tokenId={instantBuyTokenId}
+                    chain={data.domainDocument.chainName ?? 'ethereum'}
+                    itemUrl={openSeaItemLink.href}
+                  />
+                ) : null}
                 <Button
                   render={<Link href="#marketplaces" />}
                   nativeButton={false}
