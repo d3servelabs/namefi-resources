@@ -1,10 +1,42 @@
 'use client';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 
 export function OrdersTableSkeleton() {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    // Mobile: stack of card-shaped skeletons mirroring OrderCard's layout.
+    return (
+      <div className="flex flex-col gap-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Card key={i} className="gap-0 overflow-hidden px-0 py-0">
+            <div className="flex items-center justify-between gap-3 px-3.5 py-3">
+              <Skeleton className="h-4 w-40" />
+              <Skeleton className="h-6 w-6 rounded-full" />
+            </div>
+            <div className="divide-y divide-border/50 border-t border-border/50">
+              {Array.from({ length: 4 }).map((__, j) => (
+                <div
+                  key={j}
+                  className="flex items-center justify-between gap-3 px-3.5 py-2.5"
+                >
+                  <Skeleton className="h-3 w-20" />
+                  <Skeleton className="h-4 w-24" />
+                </div>
+              ))}
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full text-sm" /* mobile-ok desktop-only */>
+        {/* mobile renders card skeletons via useIsMobile (above) */}
         <thead className="text-start text-muted-foreground">
           <tr>
             <th className="py-2">Chain</th>

@@ -11,7 +11,9 @@ import {
   type ColumnFiltersState,
   type VisibilityState,
 } from '@tanstack/react-table';
+import type { ReactNode } from 'react';
 import { useMemo, useState } from 'react';
+import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { Input } from '@namefi-astra/ui/components/shadcn/input';
 import {
   Select,
@@ -20,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@namefi-astra/ui/components/shadcn/select';
+import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
 import NetworkLogo from '@/components/network-logo';
 import { TablePageSelector } from '@/components/table/table-page-selector';
 import { TablePageSizeSelector } from '@/components/table/table-page-size-selector';
@@ -37,7 +40,126 @@ export type OrdersDataRow = {
   nftChainId?: number | null;
 };
 
+// ---------------------------------------------------------------------------
+// Shared per-cell rendering. Both the desktop table columns and the mobile
+// cards render from these helpers so the two layouts can never drift — one
+// source of truth for chain logos, amount formatting, status pills, promo
+// composition, and timestamps.
+// ---------------------------------------------------------------------------
+
+function ChainCell({ chainId }: { chainId: number | null | undefined }) {
+  if (!chainId) return <>-</>;
+  return <NetworkLogo network={chainId} className="w-6 h-6" />;
+}
+
+function formatAmountUSD(amountInUsdCents: number | null | undefined): string {
+  return ((Number(amountInUsdCents) || 0) / 100).toFixed(2);
+}
+
+function StatusCell({ status }: { status: string | null | undefined }) {
+  const v = String(status ?? '');
+  const color =
+    v === 'SUCCEEDED'
+      ? 'bg-green-100 text-green-700'
+      : v === 'FAILED'
+        ? 'bg-red-100 text-red-700'
+        : v === 'CANCELLED'
+          ? 'bg-gray-200 text-gray-700'
+          : 'bg-yellow-100 text-yellow-700';
+  return (
+    <span
+      className={`inline-block px-2 py-1 rounded text-xs font-medium ${color}`}
+    >
+      {v}
+    </span>
+  );
+}
+
+/** Flat searchable/sortable string for the promo column. */
+function promoSearchValue(row: OrdersDataRow): string {
+  const promoGroupOrCampaignKey = row.promoGroupOrCampaignKey ?? '';
+  const promoReason = row.promoReason ?? '';
+  if (promoGroupOrCampaignKey && promoReason) {
+    return `${promoGroupOrCampaignKey} - (${promoReason})`;
+  }
+  return promoGroupOrCampaignKey || promoReason || '-';
+}
+
+function PromoCell({ row }: { row: OrdersDataRow }) {
+  const promoGroupOrCampaignKey = row.promoGroupOrCampaignKey ?? '';
+  const promoReason = row.promoReason ?? '';
+  return (
+    <div className="text-md font-semibold text-gray-100/85">
+      {promoGroupOrCampaignKey}
+      {!!promoReason && (
+        <>
+          <br />
+          <span className="text-xs text-muted-foreground font-normal">
+            ({promoReason})
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+
+function formatCreatedAt(value: string | Date): string {
+  // biome-ignore lint/suspicious/noExplicitAny: createdAt may arrive as string|Date.
+  return new Date(value as any).toLocaleString();
+}
+
+/** One labeled row of a mobile card: label start-aligned, value end-aligned. */
+function CardRow({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex items-start justify-between gap-3 px-3.5 py-2.5">
+      <dt className="shrink-0 pt-0.5 text-[13px] text-muted-foreground">
+        {label}
+      </dt>
+      <dd className="flex min-w-0 flex-col items-end gap-0.5 text-right">
+        {children}
+      </dd>
+    </div>
+  );
+}
+
+/**
+ * Mobile card for a single order row. Reuses the exact same cell components and
+ * formatters as the desktop table columns — only the layout differs (an
+ * iOS-style grouped list instead of a table row).
+ */
+function OrderCard({ row }: { row: OrdersDataRow }) {
+  return (
+    <Card className="gap-0 overflow-hidden px-0 py-0">
+      <div className="flex items-center justify-between gap-3 px-3.5 py-3">
+        <span className="min-w-0 truncate text-sm font-semibold text-foreground">
+          {row.normalizedDomainName || '-'}
+        </span>
+        <ChainCell chainId={row.nftChainId} />
+      </div>
+      <dl className="divide-y divide-border/50 border-t border-border/50">
+        <CardRow label="Amount (USD)">
+          <span className="text-sm font-medium text-foreground">
+            {formatAmountUSD(row.amountInUSDCents)}
+          </span>
+        </CardRow>
+        <CardRow label="Status">
+          <StatusCell status={row.status} />
+        </CardRow>
+        <CardRow label="Promo">
+          <PromoCell row={row} />
+        </CardRow>
+        <CardRow label="Created At">
+          <span className="text-[13px] text-muted-foreground">
+            {formatCreatedAt(row.createdAt)}
+          </span>
+        </CardRow>
+      </dl>
+    </Card>
+  );
+}
+
 export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
+  const isMobile = useIsMobile();
   const [sorting, setSorting] = useState<SortingState>([
     { id: 'createdAt', desc: true },
   ]);
@@ -60,11 +182,9 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         id: 'nftChainId',
         header: 'Chain',
         accessorKey: 'nftChainId',
-        cell: ({ getValue }) => {
-          const v = getValue<number | null>();
-          if (!v) return '-';
-          return <NetworkLogo network={v} className="w-6 h-6" />;
-        },
+        cell: ({ getValue }) => (
+          <ChainCell chainId={getValue<number | null>()} />
+        ),
       },
       {
         id: 'normalizedDomainName',
@@ -76,7 +196,7 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         id: 'amountInUSDCents',
         header: 'Amount (USD)',
         accessorKey: 'amountInUSDCents',
-        cell: ({ getValue }) => ((Number(getValue()) || 0) / 100).toFixed(2),
+        cell: ({ getValue }) => formatAmountUSD(getValue<number>()),
         sortingFn: (a, b) =>
           (a.getValue<number>('amountInUSDCents') ?? 0) -
           (b.getValue<number>('amountInUSDCents') ?? 0),
@@ -85,56 +205,14 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         id: 'status',
         header: 'Status',
         accessorKey: 'status',
-        cell: ({ getValue }) => {
-          const v = String(getValue() ?? '');
-          const color =
-            v === 'SUCCEEDED'
-              ? 'bg-green-100 text-green-700'
-              : v === 'FAILED'
-                ? 'bg-red-100 text-red-700'
-                : v === 'CANCELLED'
-                  ? 'bg-gray-200 text-gray-700'
-                  : 'bg-yellow-100 text-yellow-700';
-          return (
-            <span
-              className={`inline-block px-2 py-1 rounded text-xs font-medium ${color}`}
-            >
-              {v}
-            </span>
-          );
-        },
+        cell: ({ getValue }) => <StatusCell status={getValue<string>()} />,
       },
       {
         id: 'promoGroupOrCampaignKey',
         header: 'Promo',
-        accessorFn: (row) => {
-          const promoGroupOrCampaignKey = row.promoGroupOrCampaignKey ?? '';
-          const promoReason = row.promoReason ?? '';
-          if (promoGroupOrCampaignKey && promoReason) {
-            return `${promoGroupOrCampaignKey} - (${promoReason})`;
-          }
-          return promoGroupOrCampaignKey || promoReason || '-';
-        },
+        accessorFn: (row) => promoSearchValue(row),
         filterFn: 'includesString',
-        cell({ row }) {
-          const promoGroupOrCampaignKey =
-            row.original.promoGroupOrCampaignKey ?? '';
-          const promoReason = row.original.promoReason ?? '';
-
-          return (
-            <div className="text-md font-semibold text-gray-100/85">
-              {promoGroupOrCampaignKey}
-              {!!promoReason && (
-                <>
-                  <br />
-                  <span className="text-xs text-muted-foreground font-normal">
-                    ({promoReason})
-                  </span>
-                </>
-              )}
-            </div>
-          );
-        },
+        cell: ({ row }) => <PromoCell row={row.original} />,
       },
       // Hidden computed column for combined search across domain and promo
       {
@@ -149,12 +227,11 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
         id: 'createdAt',
         header: 'Created At',
         accessorKey: 'createdAt',
-        cell: ({ getValue }) => {
-          const v = getValue() as string | Date;
-          return new Date(v as any).toLocaleString();
-        },
+        cell: ({ getValue }) => formatCreatedAt(getValue<string | Date>()),
         sortingFn: (a, b) =>
+          // biome-ignore lint/suspicious/noExplicitAny: createdAt may arrive as string|Date.
           new Date(a.getValue<any>('createdAt')).getTime() -
+          // biome-ignore lint/suspicious/noExplicitAny: createdAt may arrive as string|Date.
           new Date(b.getValue<any>('createdAt')).getTime(),
       },
     ],
@@ -241,42 +318,53 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
           </SelectContent>
         </Select>
       </div>
-      <table className="w-full text-sm">
-        <thead className="text-start text-muted-foreground">
-          {table.getHeaderGroups().map((hg) => (
-            <tr key={hg.id} className="[&>th]:py-3">
-              {hg.headers.map((header) => (
-                <th
-                  key={header.id}
-                  className="py-3 cursor-pointer select-none"
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                  {header.column.getIsSorted() === 'asc'
-                    ? ' ▲'
-                    : header.column.getIsSorted() === 'desc'
-                      ? ' ▼'
-                      : ''}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
+      {isMobile ? (
+        // Mobile: a vertical stack of cards built from the SAME sorted/filtered/
+        // paginated rows as the desktop table, reusing the shared cell helpers.
+        <div className="flex flex-col gap-3">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="border-t [&>td]:py-3">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="py-2">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
+            <OrderCard key={row.id} row={row.original} />
           ))}
-        </tbody>
-      </table>
+        </div>
+      ) : (
+        <table className="w-full text-sm" /* mobile-ok desktop-only */>
+          {/* mobile renders cards via useIsMobile; see OrderCard above */}
+          <thead className="text-start text-muted-foreground">
+            {table.getHeaderGroups().map((hg) => (
+              <tr key={hg.id} className="[&>th]:py-3">
+                {hg.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="py-3 cursor-pointer select-none"
+                    onClick={header.column.getToggleSortingHandler()}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                    {header.column.getIsSorted() === 'asc'
+                      ? ' ▲'
+                      : header.column.getIsSorted() === 'desc'
+                        ? ' ▼'
+                        : ''}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="border-t [&>td]:py-3">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="py-2">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-between mt-4">
