@@ -33,12 +33,11 @@ import {
 } from '@namefi-astra/ui/components/shadcn/select';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import { useAuth } from '@/hooks/use-auth';
-import { type AppRouterOutput, useTRPC } from '@/lib/trpc';
+import { useTRPC } from '@/lib/trpc';
 import { CHAINS, getChain } from '@namefi-astra/utils/chains';
-import { getNftExplorerUrl } from '@namefi-astra/utils/nft-hash';
 import { useQuery } from '@tanstack/react-query';
-import type { ColumnDef, SortingState } from '@tanstack/react-table';
-import { ChevronDown, ExternalLink, Flame } from 'lucide-react';
+import type { ColumnDef, Row, SortingState } from '@tanstack/react-table';
+import { ChevronDown, Flame } from 'lucide-react';
 import Link from 'next/link';
 import {
   type FC,
@@ -51,10 +50,15 @@ import { useTablePreferences } from '@/hooks/use-table-preferences';
 import { config } from '@/lib/env';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { range } from 'ramda';
-import { format } from 'date-fns';
+import {
+  formatRemovalDate,
+  getReceivingWallet,
+  getRemovalReasonDisplay,
+  type PreviouslyOwnedDomainRow,
+  ViewNftAction,
+} from '@/components/previously-owned-domain-cells';
+import { PreviouslyOwnedDomainCard } from '@/components/previously-owned-domain-card';
 
-type PreviouslyOwnedDomainRow =
-  AppRouterOutput['users']['getCurrentUserBurnedDomains'][number];
 type RemovalType = PreviouslyOwnedDomainRow['removalType'];
 
 // ExtensibleDataTable owns pagination/sorting/filtering (all manual), so the
@@ -205,42 +209,18 @@ function MyPreviouslyOwnedDomainsTable() {
       {
         accessorKey: 'removedAt',
         header: 'Removal Date',
-        cell: ({ row }) => {
-          const removedAt = row.getValue('removedAt') as Date;
-          return (
-            <span className="text-sm">
-              {new Date(removedAt).toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
-                year: 'numeric',
-              })}
-            </span>
-          );
-        },
+        cell: ({ row }) => (
+          <span className="text-sm">
+            {formatRemovalDate(row.getValue('removedAt') as Date)}
+          </span>
+        ),
         size: 150,
       },
       {
         accessorKey: 'removalReason',
         header: 'Reason',
         cell: ({ row }) => {
-          const defaultReason = row.getValue('removalReason') as string;
-
-          let label = defaultReason;
-          let extraText: string | null = null;
-
-          switch (row.original.removalType) {
-            case 'domain_exported':
-              if (row.original.chainId === CHAINS.sepolia.id) {
-                label = 'Domain Exported (Fake)';
-                extraText = 'Actual Reason: Removed From Test Chain';
-              }
-              break;
-            case 'domain_expired':
-              if (row.original.expirationTimeAtRemoval) {
-                extraText = `Expired At: ${format(row.original.expirationTimeAtRemoval, 'MMM do yyyy, hh:mm aa')}`;
-              }
-          }
-
+          const { label, extraText } = getRemovalReasonDisplay(row.original);
           return (
             <div className="flex flex-col gap-1">
               <span className="text-sm text-white">{label}</span>
@@ -259,15 +239,13 @@ function MyPreviouslyOwnedDomainsTable() {
         id: 'receivingWallet',
         header: 'Receiving Wallet',
         cell: ({ row }) => {
-          if (
-            row.original.removalType !== 'transferred_to_another_wallet' ||
-            !row.original.toAddress
-          ) {
+          const receivingWallet = getReceivingWallet(row.original);
+          if (!receivingWallet) {
             return <span className="text-sm text-muted-foreground">—</span>;
           }
           return (
             <AddressWithChain
-              address={row.original.toAddress}
+              address={receivingWallet}
               chainId={row.original.chainId ?? null}
             />
           );
@@ -278,37 +256,11 @@ function MyPreviouslyOwnedDomainsTable() {
       {
         id: 'actions',
         header: 'Actions',
-        cell: ({ row }) => {
-          const domainName = row.getValue('normalizedDomainName') as string;
-          const explorerUrl = getNftExplorerUrl(
-            row.original.chainId ?? null,
-            row.original.tokenId ?? null,
-          );
-          return (
-            <div className="flex gap-2">
-              {explorerUrl ? (
-                <Button
-                  render={(props) => (
-                    <a
-                      {...props}
-                      href={explorerUrl}
-                      aria-label={`View NFT for ${domainName}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {props.children}
-                    </a>
-                  )}
-                  nativeButton={false}
-                  variant="outline"
-                  size="sm"
-                >
-                  <ExternalLink className="w-4 h-4 me-1" /> View NFT
-                </Button>
-              ) : null}
-            </div>
-          );
-        },
+        cell: ({ row }) => (
+          <div className="flex gap-2">
+            <ViewNftAction row={row.original} />
+          </div>
+        ),
         size: 150,
         enableSorting: false,
       },
@@ -378,6 +330,16 @@ function MyPreviouslyOwnedDomainsTable() {
   const handleReasonFilterChange = useCallback((next: RemovalType[]) => {
     setReasonFilter(next);
   }, []);
+
+  // Mobile card renderer. Reuses the same shared cell helpers the desktop columns
+  // use, so a phone-sized viewport gets a readable stacked card per row instead
+  // of a horizontally-scrolling table.
+  const renderMobileCard = useCallback(
+    (row: Row<PreviouslyOwnedDomainRow>) => (
+      <PreviouslyOwnedDomainCard domain={row.original} />
+    ),
+    [],
+  );
 
   const reasonFilterSummary =
     reasonFilter.length === 0 ? 'All' : `${reasonFilter.length} selected`;
@@ -513,6 +475,7 @@ function MyPreviouslyOwnedDomainsTable() {
       onColumnVisibilityChange={setColumnVisibility}
       onResetPreferences={resetToDefaults}
       toolbarActions={toolbarActions}
+      renderMobileCard={renderMobileCard}
       emptyMessage="No results."
     />
   );
