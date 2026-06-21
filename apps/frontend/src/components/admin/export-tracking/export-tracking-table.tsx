@@ -56,18 +56,8 @@ type EvidenceSourceEntry = {
   checkedAt: string;
 };
 
-type SourceBasedLatestEvidence = {
-  checkedAt?: string;
-  decisionAction?: string;
-  decisionReason?: string;
-  sources?: EvidenceSourceEntry[];
-  eppStatuses?: string[];
-};
-
-type TableLatestEvidence =
-  | BaseExportTrackingRecord['latestEvidence']
-  | SourceBasedLatestEvidence
-  | null;
+type TableLatestEvidence = BaseExportTrackingRecord['latestEvidence'];
+type LatestEvidenceSnapshot = NonNullable<TableLatestEvidence>;
 
 type TableExportTrackingRecord = Omit<
   BaseExportTrackingRecord,
@@ -143,7 +133,9 @@ const buildCardRecord = (
 
 const hasSourceEvidence = (
   latestEvidence: TableLatestEvidence,
-): latestEvidence is SourceBasedLatestEvidence =>
+): latestEvidence is LatestEvidenceSnapshot & {
+  sources: EvidenceSourceEntry[];
+} =>
   Boolean(
     latestEvidence &&
     'sources' in latestEvidence &&
@@ -151,7 +143,7 @@ const hasSourceEvidence = (
   );
 
 const formatSourceBasedAccountSummary = (
-  latestEvidence: SourceBasedLatestEvidence,
+  latestEvidence: LatestEvidenceSnapshot,
 ): string => {
   const accountSource = latestEvidence.sources?.find(
     (source) => source.source === 'AccountCheck',
@@ -175,7 +167,7 @@ const formatSourceBasedAccountSummary = (
 };
 
 const formatSourceBasedRdapSummary = (
-  latestEvidence: SourceBasedLatestEvidence,
+  latestEvidence: LatestEvidenceSnapshot,
 ): string => {
   const rdapEventsSource = latestEvidence.sources?.find(
     (source) => source.source === 'RDAPEvents',
@@ -204,7 +196,7 @@ const formatSourceBasedRdapSummary = (
 };
 
 const formatSourceBasedDomainIndexSummary = (
-  latestEvidence: SourceBasedLatestEvidence,
+  latestEvidence: LatestEvidenceSnapshot,
 ): string => {
   const domainIndexSource = latestEvidence.sources?.find(
     (source) => source.source === 'DomainIndex',

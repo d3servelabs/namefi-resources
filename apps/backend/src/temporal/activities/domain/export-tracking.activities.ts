@@ -226,9 +226,9 @@ function extractWhoisStatuses(whoisData: unknown): string[] {
 function isDomainNotInAccountsError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : String(error ?? '');
   const causeMessage =
-    error instanceof Error && error.cause && (error.cause as any).message
-      ? error.cause.message
-      : String(error?.cause ?? '');
+    error instanceof Error && error.cause
+      ? String((error.cause as any).message ?? error.cause ?? '')
+      : '';
   return (
     isRegistrarDomainNotFoundError(error) ||
     message.includes('unknown-registrar') ||

@@ -128,12 +128,18 @@ export function ExportTrackingCard({
 
         <CardRow label="Pending Email Sent">
           <span className="text-xs">
-            {formatDateTime(record.pendingNotifiedAt)}
+            {formatDateTime(
+              record.pendingExportEmailSentAt ?? record.pendingNotifiedAt,
+            )}
           </span>
         </CardRow>
 
         <CardRow label="Completion Email Sent">
-          <span className="text-xs">{formatDateTime(record.notifiedAt)}</span>
+          <span className="text-xs">
+            {formatDateTime(
+              record.completedExportEmailSentAt ?? record.notifiedAt,
+            )}
+          </span>
         </CardRow>
 
         <CardRow label="NFT Burned">
@@ -159,8 +165,19 @@ export function ExportTrackingCard({
         <div className="border-t border-border/50 bg-muted/30">
           <StatusHistorySubrow
             statusHistory={record.statusHistory ?? []}
-            pendingNotifiedAt={record.pendingNotifiedAt}
-            notifiedAt={record.notifiedAt}
+            pendingExportEmailSentAt={
+              record.pendingExportEmailSentAt ?? record.pendingNotifiedAt
+            }
+            pendingExportEmailAttempts={record.pendingExportEmailAttempts}
+            pendingExportEmailLastError={record.pendingExportEmailLastError}
+            failedExportEmailSentAt={record.failedExportEmailSentAt}
+            failedExportEmailAttempts={record.failedExportEmailAttempts}
+            failedExportEmailLastError={record.failedExportEmailLastError}
+            completedExportEmailSentAt={
+              record.completedExportEmailSentAt ?? record.notifiedAt
+            }
+            completedExportEmailAttempts={record.completedExportEmailAttempts}
+            completedExportEmailLastError={record.completedExportEmailLastError}
           />
         </div>
       ) : null}
