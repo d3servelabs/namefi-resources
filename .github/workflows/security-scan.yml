@@ -86,8 +86,12 @@ jobs:
         continue-on-error: true
         uses: google/osv-scanner-action/osv-scanner-action@9a498708959aeaef5ef730655706c5a1df1edbc2 # v2.3.8
         with:
+          # JSON output lets the evaluate step below tell real findings from a
+          # tool/network error, instead of treating any non-zero exit as a hit.
           scan-args: |-
             --lockfile=bun.lock
+            --format=json
+            --output=osv-results.json
 
       - name: Trivy filesystem (vuln + misconfig + secret)
         id: trivy
@@ -99,23 +103,55 @@ jobs:
           scanners: vuln,misconfig,secret
           severity: HIGH,CRITICAL
           ignore-unfixed: true
-          # Exit non-zero on HIGH/CRITICAL so its outcome can feed the Slack gate
-          # below; continue-on-error keeps the job green (report-only).
-          exit-code: "1"
-          format: table
+          # exit-code 0: the evaluate step decides findings by parsing the JSON,
+          # so a Trivy crash doesn't masquerade as a finding. continue-on-error
+          # is kept as a belt-and-braces guard. Report-only: never fails the job.
+          exit-code: "0"
+          format: json
+          output: trivy-results.json
+
+      - name: Evaluate scanner results
+        id: eval
+        if: always()
+        shell: bash
+        run: |
+          set -uo pipefail
+          osv_found=false
+          trivy_found=false
+
+          # A finding is decided by the presence of entries in the result file —
+          # not by step outcome — so transient OSV/Trivy errors don't alert.
+          if jq -e '[.results[]?.packages[]?.vulnerabilities[]?] | length > 0' osv-results.json >/dev/null 2>&1; then
+            osv_found=true
+          elif [ "${{ steps.osv.outcome }}" = "failure" ]; then
+            echo "::warning::OSV-Scanner failed without parseable findings (likely a tool error, not a vulnerability)"
+          fi
+
+          if jq -e '[.Results[]? | (.Vulnerabilities // [])[], (.Misconfigurations // [])[], (.Secrets // [])[]] | length > 0' trivy-results.json >/dev/null 2>&1; then
+            trivy_found=true
+          elif [ "${{ steps.trivy.outcome }}" = "failure" ]; then
+            echo "::warning::Trivy failed without parseable findings (likely a tool error, not a finding)"
+          fi
+
+          echo "osv_found=$osv_found" >> "$GITHUB_OUTPUT"
+          echo "trivy_found=$trivy_found" >> "$GITHUB_OUTPUT"
+          echo "OSV findings: $osv_found · Trivy findings: $trivy_found" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload scan artifacts
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: security-scan-results
-          path: bun-audit.txt
+          path: |
+            bun-audit.txt
+            osv-results.json
+            trivy-results.json
           if-no-files-found: ignore
           retention-days: 14
 
       - name: Build Slack payload
         id: notify_gate
-        if: always() && env.SLACK_WEBHOOK_URL != '' && (steps.bun_audit.outputs.found == 'true' || steps.osv.outcome == 'failure' || steps.trivy.outcome == 'failure')
+        if: always() && env.SLACK_WEBHOOK_URL != '' && (steps.bun_audit.outputs.found == 'true' || steps.eval.outputs.osv_found == 'true' || steps.eval.outputs.trivy_found == 'true')
         shell: bash
         run: |
           set -euo pipefail
