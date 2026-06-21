@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: true
 cluster: domain-investing
 series: domain-flipping-skills
-seriesOrder: 0
+seriesOrder: 1
 format: guide
 description: "What domain flipping really is — buying names low and selling high — and the stack of skills behind the trade, from sourcing and appraisal to selling."
 ogImage: ../../assets/domain-flipping-og.jpg
