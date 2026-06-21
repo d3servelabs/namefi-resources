@@ -158,6 +158,7 @@ export const SERIES_SLUGS = [
   'tokenize-your-com',
   'best-tlds-by-industry',
   'domain-investor-field-guide',
+  'domain-flipping-skills',
 ] as const;
 
 export type SeriesSlug = (typeof SERIES_SLUGS)[number];
@@ -208,6 +209,14 @@ export const SERIES: Record<SeriesSlug, SeriesMeta> = {
     description: {
       en: 'A practical field guide for domain investors — selling, the trade media, the newsletters, and the communities that matter.',
       zh: '面向域名投资人的实用手册——出售、行业媒体、值得订阅的资讯,以及重要的社区。',
+    },
+  },
+  // zh label pending the translation pass (en-first); LocalizedText only requires `en`.
+  'domain-flipping-skills': {
+    slug: 'domain-flipping-skills',
+    title: { en: 'Domain Flipping Skills' },
+    description: {
+      en: 'The craft of buying low and selling high — sourcing, appraising, naming, protecting, and selling domains for profit.',
     },
   },
 };
