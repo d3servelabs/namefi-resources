@@ -1,11 +1,9 @@
 name: Translate Blog Posts
 
+# Manual-only: translations run on demand (Actions → Run workflow), not
+# automatically on every English-content merge. English-first is the workflow;
+# translate a batch deliberately after the English posts are reviewed.
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'content/blog/en/**'
   workflow_dispatch:
 
 permissions:
