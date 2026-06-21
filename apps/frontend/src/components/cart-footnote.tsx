@@ -19,7 +19,13 @@ import type {
 } from '@namefi-astra/common/domain-availability';
 import { ExternalLink } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { Fragment, useCallback, useMemo, useState } from 'react';
+import {
+  Fragment,
+  type ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import { useCartContext } from '@/components/providers/cart';
 import {
   type AggregatedRequirement,
@@ -52,6 +58,7 @@ export function CartFootnote({
   className,
 }: CartFootnoteProps) {
   const cart = useCartContext();
+  const t = useTranslations('cart');
 
   const { implicit, explicit } = useMemo(
     () =>
@@ -77,58 +84,63 @@ export function CartFootnote({
 
   const hasExtraPolicies = implicitLinks.length > 0 || explicit.length > 0;
 
+  // Each branch renders a complete sentence from a single key so every locale
+  // controls word order and terminal punctuation (e.g. Japanese SOV order and
+  // its `。` full stop). <tos> wraps the terms-of-service link; <tlds> is the
+  // slot for the per-TLD policy links — placing both inside one message string
+  // avoids gluing translated fragments together in a fixed English order.
+  const renderAgreement = () => {
+    const tos = (chunks: ReactNode) => (
+      <a
+        href={TOS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="underline underline-offset-2 hover:text-foreground"
+      >
+        {chunks}
+      </a>
+    );
+
+    if (implicitLinks.length > 0) {
+      return t.rich(
+        implicitLinks.length === 1
+          ? 'cartFootnote.termsPolicyOne'
+          : 'cartFootnote.termsPolicyMany',
+        {
+          tos,
+          tlds: () => (
+            <>
+              {implicitLinks.map((link, index) => (
+                <Fragment key={link.tld}>
+                  {index > 0 && ', '}
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono underline underline-offset-2 hover:text-foreground"
+                  >
+                    .{link.tld}
+                  </a>
+                </Fragment>
+              ))}
+            </>
+          ),
+        },
+      );
+    }
+
+    // Explicit-only policies (acknowledged via the checkboxes below) still get a
+    // full agreement sentence; there are no inline TLD links to render here.
+    return t.rich(
+      hasExtraPolicies ? 'cartFootnote.terms' : 'cartFootnote.simple',
+      { tos },
+    );
+  };
+
   return (
     <div className={cn('space-y-2', className)}>
       <p className="text-center text-[11px] leading-relaxed text-muted-foreground">
-        By purchasing domains from Namefi, you agree to{' '}
-        {hasExtraPolicies ? (
-          <>
-            Namefi&apos;s{' '}
-            <a
-              href={TOS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground"
-            >
-              terms of service
-            </a>
-            {implicitLinks.length > 0 && (
-              <>
-                {' '}
-                and <wbr />
-                {implicitLinks.length === 1
-                  ? 'the policy for '
-                  : 'policies for '}
-                {implicitLinks.map((link, index) => (
-                  <Fragment key={link.tld}>
-                    {index > 0 && ', '}
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono underline underline-offset-2 hover:text-foreground"
-                    >
-                      .{link.tld}
-                    </a>
-                  </Fragment>
-                ))}
-              </>
-            )}
-            .
-          </>
-        ) : (
-          <>
-            these{' '}
-            <a
-              href={TOS_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="underline underline-offset-2 hover:text-foreground"
-            >
-              terms &amp; conditions
-            </a>
-          </>
-        )}
+        {renderAgreement()}
       </p>
       {explicit.length > 0 && <ExplicitPolicyList explicit={explicit} />}
     </div>

@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | कार्ट",
   "cartFootnote": {
     "learnMore": "और जानें",
-    "agree": "सहमत हैं"
+    "agree": "सहमत हैं",
+    "terms": "Namefi से डोमेन खरीदकर, आप Namefi की <tos>सेवा की शर्तों</tos> से सहमत होते हैं।",
+    "termsPolicyOne": "Namefi से डोमेन खरीदकर, आप Namefi की <tos>सेवा की शर्तों</tos> और <tlds></tlds> की नीति से सहमत होते हैं।",
+    "termsPolicyMany": "Namefi से डोमेन खरीदकर, आप Namefi की <tos>सेवा की शर्तों</tos> और <tlds></tlds> की नीतियों से सहमत होते हैं।",
+    "simple": "Namefi से डोमेन खरीदकर, आप इन <tos>नियम और शर्तों</tos> से सहमत होते हैं।"
   },
   "cartItemRegistration": {
     "learnMore": "और जानें",

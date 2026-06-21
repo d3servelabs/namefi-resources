@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | السلة",
   "cartFootnote": {
     "learnMore": "اعرف المزيد",
-    "agree": "موافق"
+    "agree": "موافق",
+    "terms": "بشرائك نطاقات من Namefi، فأنت توافق على <tos>شروط الخدمة</tos> الخاصة بـ Namefi.",
+    "termsPolicyOne": "بشرائك نطاقات من Namefi، فأنت توافق على <tos>شروط الخدمة</tos> الخاصة بـ Namefi وسياسة نطاق <tlds></tlds>.",
+    "termsPolicyMany": "بشرائك نطاقات من Namefi، فأنت توافق على <tos>شروط الخدمة</tos> الخاصة بـ Namefi وسياسات نطاقات <tlds></tlds>.",
+    "simple": "بشرائك نطاقات من Namefi، فأنت توافق على <tos>الشروط والأحكام</tos> هذه."
   },
   "cartItemRegistration": {
     "learnMore": "اعرف المزيد",

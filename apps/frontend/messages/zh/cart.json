@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | 购物车",
   "cartFootnote": {
     "learnMore": "了解更多",
-    "agree": "同意"
+    "agree": "同意",
+    "terms": "购买 Namefi 域名即表示您同意 Namefi 的<tos>服务条款</tos>。",
+    "termsPolicyOne": "购买 Namefi 域名即表示您同意 Namefi 的<tos>服务条款</tos>及 <tlds></tlds> 的相关政策。",
+    "termsPolicyMany": "购买 Namefi 域名即表示您同意 Namefi 的<tos>服务条款</tos>及 <tlds></tlds> 的相关政策。",
+    "simple": "购买 Namefi 域名即表示您同意这些<tos>条款与条件</tos>。"
   },
   "cartItemRegistration": {
     "learnMore": "了解更多",

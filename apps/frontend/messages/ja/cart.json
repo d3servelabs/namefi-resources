@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | カート",
   "cartFootnote": {
     "learnMore": "詳しく見る",
-    "agree": "同意する"
+    "agree": "同意する",
+    "terms": "Namefiでドメインを購入することにより、Namefiの<tos>利用規約</tos>に同意したものとみなされます。",
+    "termsPolicyOne": "Namefiでドメインを購入することにより、Namefiの<tos>利用規約</tos>および<tlds></tlds>のポリシーに同意したものとみなされます。",
+    "termsPolicyMany": "Namefiでドメインを購入することにより、Namefiの<tos>利用規約</tos>および<tlds></tlds>の各ポリシーに同意したものとみなされます。",
+    "simple": "Namefiでドメインを購入することにより、これらの<tos>利用規約</tos>に同意したものとみなされます。"
   },
   "cartItemRegistration": {
     "learnMore": "詳しく見る",

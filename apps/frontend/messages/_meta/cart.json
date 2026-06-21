@@ -215,5 +215,19 @@
   "cartButton.removeAria": {
     "description": "Accessibility label for the button that removes a domain from the cart on the search/result card.",
     "maxLength": 30
+  },
+  "cartFootnote": {
+    "terms": {
+      "description": "Full cart legal footnote (only generic policies apply): the user agrees to Namefi's terms of service. <tos> wraps the link text. Complete sentence — place the period where grammatically natural for the language."
+    },
+    "termsPolicyOne": {
+      "description": "Cart legal footnote when ONE per-TLD policy applies. <tos> wraps the terms-of-service link; <tlds> is a placeholder for the (Latin) TLD link(s) like .com — position both where natural. Complete sentence with terminal punctuation."
+    },
+    "termsPolicyMany": {
+      "description": "Cart legal footnote when MULTIPLE per-TLD policies apply (plural). <tos> wraps the terms-of-service link; <tlds> is a placeholder for the comma-separated TLD links. Complete sentence with terminal punctuation."
+    },
+    "simple": {
+      "description": "Simple cart legal footnote (no per-TLD policies): the user agrees to these terms & conditions. <tos> wraps the link text."
+    }
   }
 }

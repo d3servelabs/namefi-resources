@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | Warenkorb",
   "cartFootnote": {
     "learnMore": "mehr erfahren",
-    "agree": "Zustimmen"
+    "agree": "Zustimmen",
+    "terms": "Durch den Kauf von Domains bei Namefi stimmen Sie den <tos>Nutzungsbedingungen</tos> von Namefi zu.",
+    "termsPolicyOne": "Durch den Kauf von Domains bei Namefi stimmen Sie den <tos>Nutzungsbedingungen</tos> von Namefi sowie der Richtlinie für <tlds></tlds> zu.",
+    "termsPolicyMany": "Durch den Kauf von Domains bei Namefi stimmen Sie den <tos>Nutzungsbedingungen</tos> von Namefi sowie den Richtlinien für <tlds></tlds> zu.",
+    "simple": "Durch den Kauf von Domains bei Namefi stimmen Sie diesen <tos>Allgemeinen Geschäftsbedingungen</tos> zu."
   },
   "cartItemRegistration": {
     "learnMore": "Mehr erfahren",

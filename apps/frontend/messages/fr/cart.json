@@ -83,7 +83,11 @@
   "metaTitle": "Namefi | Panier",
   "cartFootnote": {
     "learnMore": "en savoir plus",
-    "agree": "Accepter"
+    "agree": "Accepter",
+    "terms": "En achetant des domaines sur Namefi, vous acceptez les <tos>conditions d'utilisation</tos> de Namefi.",
+    "termsPolicyOne": "En achetant des domaines sur Namefi, vous acceptez les <tos>conditions d'utilisation</tos> de Namefi ainsi que la politique relative à <tlds></tlds>.",
+    "termsPolicyMany": "En achetant des domaines sur Namefi, vous acceptez les <tos>conditions d'utilisation</tos> de Namefi ainsi que les politiques relatives à <tlds></tlds>.",
+    "simple": "En achetant des domaines sur Namefi, vous acceptez ces <tos>conditions générales</tos>."
   },
   "cartItemRegistration": {
     "learnMore": "En savoir plus",
