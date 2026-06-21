@@ -1,0 +1,34 @@
+# Dependabot configuration — recurrent dependency + GitHub Actions updates.
+# Pairs with Dependabot *alerts* and *security updates*, which are enabled at the
+# repo level via the API (see docs/security-scanning.md), not in this file.
+version: 2
+updates:
+  # GitHub Actions — guaranteed-supported ecosystem. Keeps Actions current and,
+  # together with SHA-pinning, closes the mutable-tag supply-chain risk
+  # (e.g. the 2025 tj-actions/changed-files compromise).
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
+
+  # JS/TS dependencies. NOTE: validate Dependabot's Bun (bun.lock) support — if it
+  # cannot parse the workspace lockfile, rely on `bun audit` + OSV-Scanner in
+  # security-scan.yml for dependency CVEs and keep this entry for manifest-level
+  # version bumps only. Grouped to limit PR churn across the monorepo.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch

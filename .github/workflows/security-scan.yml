@@ -1,0 +1,116 @@
+name: Security Scan
+
+# Recurrent software-composition-analysis (SCA) + supply-chain monitoring for the
+# Bun workspace and Dockerfiles. Report-only: findings are surfaced to the run
+# summary, uploaded as an artifact, and posted to Slack. It does NOT gate PRs yet
+# — flip the scanner exit codes to gate once the signal is trusted.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Weekly, Monday 09:17 UTC — off the hour to reduce scheduled-workflow contention.
+    - cron: "17 9 * * 1"
+  pull_request:
+    paths:
+      - "bun.lock"
+      - "**/package.json"
+      - ".github/workflows/security-scan.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
+
+jobs:
+  scan:
+    name: Dependency & filesystem vulnerabilities
+    # GitHub-hosted runner so step-security/harden-runner is fully supported.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Harden runner (egress audit)
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Install dependencies (frozen lockfile)
+        run: bun install --frozen-lockfile
+
+      - name: bun audit (GitHub advisory DB)
+        id: bun_audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          echo "## bun audit (high+)" >> "$GITHUB_STEP_SUMMARY"
+          if bun audit --audit-level=high | tee bun-audit.txt; then
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "No high/critical advisories." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "found=true" >> "$GITHUB_OUTPUT"
+            { echo '```'; cat bun-audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: OSV-Scanner (lockfile)
+        id: osv
+        continue-on-error: true
+        uses: google/osv-scanner-action@9a498708959aeaef5ef730655706c5a1df1edbc2 # v2.3.8
+        with:
+          scan-args: |-
+            --lockfile=bun.lock
+
+      - name: Trivy filesystem (vuln + misconfig + secret)
+        continue-on-error: true
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          scanners: vuln,misconfig,secret
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "0"
+          format: table
+
+      - name: Upload scan artifacts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: security-scan-results
+          path: bun-audit.txt
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Build Slack payload
+        id: notify_gate
+        if: always() && env.SLACK_WEBHOOK_URL != '' && (steps.bun_audit.outputs.found == 'true' || steps.osv.outcome == 'failure')
+        shell: bash
+        run: |
+          set -euo pipefail
+          run_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          jq -n --arg url "$run_url" \
+            '{text: (":warning: *namefi-astra security scan found issues* — review " + $url)}' \
+            > slack-payload.json
+
+      - name: Notify Slack
+        if: always() && steps.notify_gate.outcome == 'success'
+        uses: slackapi/slack-github-action@45a88b9581bfab2566dc881e2cd66d334e621e2c # v3.0.3
+        with:
+          webhook: ${{ env.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload-file-path: slack-payload.json
+          errors: true
+          retries: RAPID
