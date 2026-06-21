@@ -42,7 +42,19 @@ gh api repos/d3servelabs/namefi-astra/dependabot/alerts \
 3. It then comments on every PR that changes the lockfile, flagging risky package
    behavior. (Optional later: add `socket-security/socket-action` to gate CI.)
 
-### 3. (Optional) Add a Scorecard token
+### 3. (Optional) Dedicated Slack alert channel
+
+`security-scan.yml` posts to `SLACK_WEBHOOK_SECURITY_CHANNEL_URL` if set, otherwise
+falls back to `SLACK_WEBHOOK_RELEASE_CHANNEL_URL`. To route alerts to a dedicated
+channel, create an incoming webhook in Slack and store it as a repo secret —
+**never paste the URL into a PR, issue, or chat**:
+
+```bash
+# Reads the value from a hidden prompt (or pipe from a file) — not echoed.
+gh secret set SLACK_WEBHOOK_SECURITY_CHANNEL_URL --repo d3servelabs/namefi-astra
+```
+
+### 4. (Optional) Add a Scorecard token
 
 `scorecard.yml` falls back to `GITHUB_TOKEN`. For fuller private-repo coverage,
 add a classic PAT with `repo` read scope as the `SCORECARD_TOKEN` repo secret.

@@ -24,7 +24,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
+  # Prefer a dedicated security channel; fall back to the release channel until
+  # SLACK_WEBHOOK_SECURITY_CHANNEL_URL is set. If neither exists, Slack steps no-op.
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_SECURITY_CHANNEL_URL || secrets.SLACK_WEBHOOK_RELEASE_CHANNEL_URL }}
 
 jobs:
   scan:
