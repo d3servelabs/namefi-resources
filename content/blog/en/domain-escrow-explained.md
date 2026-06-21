@@ -2,7 +2,7 @@
 title: "Domain Escrow Explained: How Safe Domain Transactions Work"
 date: '2026-06-10'
 language: en
-tags: ['guide']
+tags: ['guide', 'domains', 'domain-investing', 'domain-flipping']
 authors: ['namefiteam']
 draft: false
 cluster: domain-basics
