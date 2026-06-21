@@ -1,8 +1,20 @@
 # Namefi API
   > Namefi lets you register traditional domains as NFTs and manage their DNS records via API.
+  > MCP server (every operation below as MCP tools): https://api.namefi.io/mcp — discovery descriptor at https://namefi.io/.well-known/mcp/servers.json
 
 ## Base URLs
 - https://api.namefi.io/v-next/
+
+## MCP Server (for AI agents)
+
+Prefer MCP if your client supports it: connect to `https://api.namefi.io/mcp` over the
+Streamable HTTP transport to get every `/v-next` operation as a typed tool (search,
+registration, DNS, domain config, outbound). Discovery descriptor:
+https://namefi.io/.well-known/mcp/servers.json
+
+- Auth: send your API key as the `x-api-key` connection header (read-only tools need none).
+- Add in Claude Code: `claude mcp add --transport http namefi https://api.namefi.io/mcp --header "x-api-key: YOUR_KEY"`
+- The REST endpoints below remain available for clients without MCP support.
 
 ## Authentication
 

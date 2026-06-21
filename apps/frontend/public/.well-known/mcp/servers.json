@@ -1,0 +1,18 @@
+{
+  "servers": [
+    {
+      "name": "namefi-api",
+      "description": "Register traditional domains as NFTs, manage DNS records, search availability, and run outbound lead-finding. Exposes the full Namefi /v-next API as MCP tools.",
+      "version": "next",
+      "transport": "streamable-http",
+      "url": "https://api.namefi.io/mcp",
+      "authentication": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "Generate a key at https://namefi.io/api-key. Read-only tools (availability search, DNS reads) need no auth."
+      },
+      "documentation": "https://namefi.io/llms.txt"
+    }
+  ]
+}
