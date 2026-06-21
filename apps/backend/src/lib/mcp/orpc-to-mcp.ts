@@ -19,7 +19,10 @@ import {
   type AnyRouter,
 } from '@orpc/server';
 import type { TypedDataDomain } from 'viem';
-import { EIP712_SIGNATURE_HEADER_HEADERS } from '#lib/auth/methods/eip712/api-key-eip712';
+import {
+  EIP712_SIGNATURE_HEADER_HEADERS,
+  EIP712_SIGNATURE_HEADER_METHOD_ID,
+} from '#lib/auth/methods/eip712/api-key-eip712';
 import { SIWE_SIGNATURE_HEADER_HEADERS } from '#lib/auth/methods/siwe/api-key-siwe';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import {
@@ -333,6 +336,34 @@ export async function createMcpServerFromOrpc(
   return server;
 }
 
+/**
+ * Enforce the EIP-712 primary-type guard that the OpenAPI handler applies via
+ * its `onStart` client interceptor. Direct `call()` dispatch bypasses that
+ * interceptor, so without this an EIP-712 signature valid for one primary type
+ * could authenticate a tool whose `acceptedPrimaryTypes` does not include it.
+ * Mirrors apps/backend/src/routers/openapi.ts.
+ */
+function assertEip712TypeAllowed(
+  tool: DiscoveredTool,
+  headers: Record<string, string | undefined>,
+  authResult: { methodId: string | null },
+): void {
+  if (authResult.methodId !== EIP712_SIGNATURE_HEADER_METHOD_ID) {
+    return;
+  }
+  const acceptedPrimaryTypes = tool.eip712?.acceptedPrimaryTypes ?? [];
+  if (acceptedPrimaryTypes.length === 0) {
+    return;
+  }
+  const type = headers[EIP712_SIGNATURE_HEADER_HEADERS.TYPE];
+  if (!type) {
+    throw new Error('No EIP-712 type provided');
+  }
+  if (!acceptedPrimaryTypes.includes(type)) {
+    throw new Error('Invalid EIP-712 type');
+  }
+}
+
 async function executeToolCall(
   tool: DiscoveredTool,
   input: McpToolCallInput,
@@ -351,6 +382,8 @@ async function executeToolCall(
       body,
       baseContext,
     );
+
+    assertEip712TypeAllowed(tool, headers, authResult);
 
     const mergedContext: TrpcContextWithUserOrNull = {
       ...baseContext,

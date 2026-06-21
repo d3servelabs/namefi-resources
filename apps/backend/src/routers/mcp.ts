@@ -21,6 +21,7 @@ import {
 } from '#lib/auth/auth-registry';
 import { defaultEip712SchemaConverter } from '#lib/eip712/orpc-eip712-schema-converter';
 import { initializeAuthRegistry } from '#lib/auth/api-key-auth';
+import { createRedisRateLimiter } from '#lib/rate-limit';
 import { type UserSelect, db } from '@namefi-astra/db';
 import type { RequestInfo } from '#lib/request-info';
 import type { TrpcContextWithUserOrNull } from '#trpc/index';
@@ -43,8 +44,11 @@ const mcpServer = await createMcpServerFromOrpc(orpcRouter, {
   eip712Domain: NAMEFI_EIP712_DOMAIN,
 });
 
-// @hono/mcp transport — handles session management, SSE, and reconnects
+// @hono/mcp transport — handles session management, SSE, and reconnects.
+// Connect once at startup so concurrent first requests can't race on a lazy
+// `connect()` (which could throw or leave the transport half-initialized).
 const transport = new StreamableHTTPTransport();
+await mcpServer.connect(transport);
 
 // ---------------------------------------------------------------------------
 // Auth helper — resolves user from request headers
@@ -54,7 +58,13 @@ async function resolveAuth(
   c: Context,
 ): Promise<{ user: UserSelect | null; authResult: AuthMethodResult }> {
   const honoVars = c.var as unknown as McpHonoVars;
-  const clientIp = honoVars.connInfo?.remote?.address || null;
+  // Prefer the proxy-aware IP (set by the app-level request-info middleware) so
+  // API keys with IP allowlists resolve the same address as on the REST path;
+  // fall back to the raw socket address.
+  const clientIp =
+    honoVars.requestInfo?.ipAddress ||
+    honoVars.connInfo?.remote?.address ||
+    null;
   const rawBody = await c.req.raw.clone().text();
 
   const authCtx = createAuthContext(
@@ -99,6 +109,19 @@ function buildTrpcContext(
 export const mcpRouter = new Hono();
 initializeAuthRegistry();
 
+// Per-IP rate limit, mirroring the v-next OpenAPI surface. MCP tool calls
+// dispatch into the same oRPC procedures, so without this the `/mcp` route
+// would let clients reach the full API uncapped. Uses the shared Redis store
+// (proxy-aware IP via the app-level request-info middleware).
+mcpRouter.use(
+  '/*',
+  createRedisRateLimiter({
+    points: 60,
+    duration: 60,
+    keyPrefix: 'rl:mcp:ip',
+  }),
+);
+
 /**
  * All MCP communication (POST for JSON-RPC, GET for SSE, DELETE for session
  * teardown) goes through a single `app.all` handler. The @hono/mcp transport
@@ -110,11 +133,6 @@ mcpRouter.all('/', async (c) => {
   // tool call's own `headers` argument inside the oRPC-to-MCP adapter.
   const { user, authResult } = await resolveAuth(c);
   const trpcContext = buildTrpcContext(c, user, authResult);
-
-  // Connect the server to the transport once, lazily on first request.
-  if (!mcpServer.isConnected()) {
-    await mcpServer.connect(transport);
-  }
 
   // Run within the context store so tool handlers can reach auth / db / user
   // via AsyncLocalStorage.
