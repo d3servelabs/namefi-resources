@@ -152,6 +152,7 @@ export function BalanceBreakdownDialog({
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent
           className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+          data-testid="payment.nfsc-balance-dialog"
         >
           <DialogHeader>
             <DialogTitle>{t('nfscBalanceDialog.title')}</DialogTitle>
@@ -162,10 +163,16 @@ export function BalanceBreakdownDialog({
 
           <Tabs defaultValue="balance" className="mt-2">
             <TabsList className="grid grid-cols-2 w-full">
-              <TabsTrigger value="balance">
+              <TabsTrigger
+                value="balance"
+                data-testid="payment.nfsc-balance-dialog.tab-balance"
+              >
                 {tCommon('account.balance')}
               </TabsTrigger>
-              <TabsTrigger value="orders">
+              <TabsTrigger
+                value="orders"
+                data-testid="payment.nfsc-balance-dialog.tab-orders"
+              >
                 {t('nfscBalanceDialog.tabOrders')}
               </TabsTrigger>
             </TabsList>
@@ -175,12 +182,19 @@ export function BalanceBreakdownDialog({
                 <div className="text-xs uppercase tracking-wide text-muted-foreground">
                   {t('nfscBalanceDialog.totalAvailable')}
                 </div>
-                <div className="text-2xl font-semibold">
+                <div
+                  className="text-2xl font-semibold"
+                  data-testid="payment.nfsc-balance-dialog.total-available"
+                >
                   {formatAmountInUSD(totalBalanceInUsdCents, true)} NFSC
                 </div>
               </div>
 
-              <Button className="w-full" onClick={handleTopUp}>
+              <Button
+                className="w-full"
+                onClick={handleTopUp}
+                data-testid="payment.nfsc-balance-dialog.top-up"
+              >
                 <PlusCircleIcon className="me-2 h-4 w-4" />
                 {t('nfscBalanceDialog.topUp')}
               </Button>
@@ -191,6 +205,7 @@ export function BalanceBreakdownDialog({
                   size="sm"
                   className="w-full"
                   onClick={handleWatchNfsc}
+                  data-testid="payment.nfsc-balance-dialog.show-in-wallet"
                 >
                   <CoinsIcon className="me-2 h-4 w-4" />
                   {t('nfscBalanceDialog.showNfscInWallet')}
@@ -246,6 +261,7 @@ export function BalanceBreakdownDialog({
                           size="sm"
                           className="w-full"
                           onClick={() => handleAddFunds(walletAddress)}
+                          data-testid={`payment.nfsc-balance-dialog.add-funds.${walletAddress}`}
                         >
                           {t('nfscBalanceDialog.addFunds')}
                         </Button>
@@ -275,12 +291,14 @@ export function BalanceBreakdownDialog({
               onClick={() => onOpenChange(false)}
               render={<Link href="/payment-methods" />}
               nativeButton={false}
+              data-testid="payment.nfsc-balance-dialog.go-to-payment-methods"
             >
               {t('nfscBalanceDialog.goToPaymentMethods')}
             </Button>
             <Button
               className="w-full sm:flex-1"
               onClick={() => onOpenChange(false)}
+              data-testid="payment.nfsc-balance-dialog.close"
             >
               {tCommon('actions.close')}
             </Button>

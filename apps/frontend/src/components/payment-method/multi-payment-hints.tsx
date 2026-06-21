@@ -35,13 +35,18 @@ export function MultiPaymentHints({
         className={cn(
           'flex items-center justify-between gap-3 p-3 rounded-md bg-white/5 border border-white/10',
         )}
+        data-testid="payment.multi-hints.banner"
       >
         <span>
           {showNfscToCardHint
             ? t('multiPaymentHints.nfscToCard')
             : t('multiPaymentHints.cardToNfsc')}
         </span>
-        <Button variant="outline" onClick={onUseMultiPayment}>
+        <Button
+          variant="outline"
+          onClick={onUseMultiPayment}
+          data-testid="payment.multi-hints.use-multi-payment"
+        >
           {t('multiPaymentHints.useMultiPayment')}
         </Button>
       </div>

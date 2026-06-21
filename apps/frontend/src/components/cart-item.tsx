@@ -175,7 +175,10 @@ export function CartItem({
 
   const priceDisplay =
     originalAmountInUsdCents !== undefined ? (
-      <span className="flex items-baseline gap-2">
+      <span
+        className="flex items-baseline gap-2"
+        data-testid={`cart.item.price.${item.normalizedDomainName}`}
+      >
         <span className="text-sm text-muted-foreground line-through">
           {formatAmountInUSD(originalAmountInUsdCents, true)}
         </span>
@@ -184,17 +187,25 @@ export function CartItem({
         </span>
       </span>
     ) : (
-      <span className="text-xl">
+      <span
+        className="text-xl"
+        data-testid={`cart.item.price.${item.normalizedDomainName}`}
+      >
         {formatAmountInUSD(displayedAmountInUsdCents, true)}
       </span>
     );
 
   return (
-    <div>
+    <div data-testid={`cart.item.${item.normalizedDomainName}`}>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col">
           <div className="flex items-center gap-2">
-            <span className="text-xl">{displayName}</span>
+            <span
+              className="text-xl"
+              data-testid={`cart.item.name.${item.normalizedDomainName}`}
+            >
+              {displayName}
+            </span>
             {(item.type === itemTypeSchema.enum.IMPORT ||
               item.type === itemTypeSchema.enum.RENEW) && (
               <Badge className="text-xs bg-blue-600/20 text-blue-400 border-blue-400/50">
@@ -216,6 +227,7 @@ export function CartItem({
                 className="p-2 rounded-lg bg-[#27272A] hover:bg-[#3F3F46] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => handleRemoveItem(item.normalizedDomainName)}
                 disabled={isDisabled || removingBusy}
+                data-testid={`cart.item.remove.${item.normalizedDomainName}`}
               >
                 {removingBusy ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -238,6 +250,7 @@ export function CartItem({
                   disabled={isDisabled}
                   aria-expanded={setupExpanded}
                   aria-label={t('cartItem.setupOptionsAria')}
+                  data-testid={`cart.item.setup-toggle.${item.normalizedDomainName}`}
                 >
                   <Settings className="size-4" />
                 </button>

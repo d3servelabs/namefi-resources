@@ -138,7 +138,9 @@ export default function PaymentMethodsManager() {
             <SavePaymentMethodDialog
               amountInUsdCents={1000}
               dialogTrigger={
-                <NamefiButton>{t('creditCards.addButton')}</NamefiButton>
+                <NamefiButton data-testid="paymentMethods.credit-cards.add">
+                  {t('creditCards.addButton')}
+                </NamefiButton>
               }
               onSavePaymentMethodError={handleSavePaymentMethodError}
               onSavePaymentMethodSuccess={handleSavePaymentMethodSuccess}
@@ -365,6 +367,7 @@ function PaymentMethodsGrid({
                       brand: method.brand || 'card',
                     })
                   }
+                  data-testid={`paymentMethods.credit-cards.delete.${method.id}`}
                 >
                   {deletePaymentMethodPending &&
                   deletePaymentMethodVariables?.paymentMethodId ===
@@ -382,7 +385,7 @@ function PaymentMethodsGrid({
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="paymentMethods.credit-cards.delete-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('creditCards.deleteDialog.title')}
@@ -395,12 +398,16 @@ function PaymentMethodsGrid({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={handleCancelDelete}>
+            <AlertDialogCancel
+              onClick={handleCancelDelete}
+              data-testid="paymentMethods.credit-cards.delete-dialog.cancel"
+            >
               {tCommon('actions.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              data-testid="paymentMethods.credit-cards.delete-dialog.confirm"
             >
               {tCommon('actions.delete')}
             </AlertDialogAction>
@@ -646,6 +653,7 @@ function UserWalletCardsGrid() {
                         size="sm"
                         variant="secondary"
                         className="flex-1 text-xs"
+                        data-testid={`paymentMethods.wallets.show-in-wallet.${walletAddress}`}
                       >
                         {t('wallets.showInWallet')}
                       </Button>
@@ -656,6 +664,7 @@ function UserWalletCardsGrid() {
                         size="sm"
                         variant="secondary"
                         className="flex-1 text-xs"
+                        data-testid={`paymentMethods.wallets.add-funds.${walletAddress}`}
                       >
                         {t('wallets.addFunds')}
                       </Button>
@@ -683,6 +692,7 @@ function UserWalletCardsGrid() {
                           walletAddress as `0x${string}`,
                         )
                       }
+                      data-testid={`paymentMethods.wallets.unlink.${walletAddress}`}
                     >
                       {isUnlinkWalletPending &&
                       walletToUnlink === walletAddress ? (
@@ -727,6 +737,7 @@ function UserWalletCardsGrid() {
           onClick={handleLinkWalletClicked}
           className="font-bold"
           size="sm"
+          data-testid="paymentMethods.wallets.link"
         >
           {t('wallets.linkButton')}
         </NamefiButton>

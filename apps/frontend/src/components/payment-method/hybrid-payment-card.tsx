@@ -221,7 +221,9 @@ export function HybridPaymentCard({
         <div className="space-y-4 w-full">
           <div className="flex items-center justify-end text-xl gap-4">
             <span>{t('hybridPaymentCard.total')}</span>
-            <span>{formatAmountInUSD(totalAmountInUsdCents, true)} USD</span>
+            <span data-testid="payment.hybrid.total">
+              {formatAmountInUSD(totalAmountInUsdCents, true)} USD
+            </span>
           </div>
           <DisabledReasonTooltip
             reason={
@@ -238,6 +240,7 @@ export function HybridPaymentCard({
               }
               onClick={handleSubmit}
               size="lg"
+              data-testid="payment.hybrid.submit"
             >
               {isProcessing && (
                 <Loader2 className="me-2 h-4 w-4 animate-spin" />
@@ -279,6 +282,7 @@ export function HybridPaymentCard({
                 : undefined
             }
             disabled={!canUseBalance}
+            data-testid="payment.hybrid.use-balance-toggle"
           />
         </div>
 
@@ -298,6 +302,7 @@ export function HybridPaymentCard({
                   size="sm"
                   onClick={() => setShowBalanceDetails(!showBalanceDetails)}
                   className="w-full justify-between h-8"
+                  data-testid="payment.hybrid.balance-breakdown-toggle"
                 >
                   <span className="text-sm">
                     {t('hybridPaymentCard.balanceBreakdown')}
@@ -356,6 +361,7 @@ export function HybridPaymentCard({
                   }
                   className="w-full"
                   onClick={() => setRemainderPaymentProvider('X402')}
+                  data-testid="payment.hybrid.provider-x402"
                 >
                   x402 (USDC)
                 </Button>
@@ -367,6 +373,7 @@ export function HybridPaymentCard({
                   }
                   className="w-full"
                   onClick={() => setRemainderPaymentProvider('STRIPE')}
+                  data-testid="payment.hybrid.provider-stripe"
                 >
                   {t('hybridPaymentCard.creditCard')}
                 </Button>
@@ -443,7 +450,11 @@ export function HybridPaymentCard({
                   showAddPaymentMethodDialog={showAddPaymentMethodDialog}
                   disabled={isDisabled}
                   dialogTrigger={
-                    <Button variant="outline" className="w-full">
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      data-testid="payment.hybrid.add-card"
+                    >
                       {stripeConfirmationTokenId
                         ? t('hybridPaymentCard.changeCard')
                         : t('hybridPaymentCard.addOrSelectCard')}

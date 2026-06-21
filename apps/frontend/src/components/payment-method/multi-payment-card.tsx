@@ -196,6 +196,7 @@ export function MultiPaymentCard({
             disabled={isDisabled || submitOrderDisabled || isProcessing}
             onClick={onSubmit}
             size="lg"
+            data-testid="payment.multi.submit"
           >
             {isProcessing && <Loader2 className="me-2 h-4 w-4 animate-spin" />}
             {submitButtonText}
@@ -233,6 +234,7 @@ export function MultiPaymentCard({
             variant="outline"
             className="w-full"
             onClick={() => setIncludeNfsc(true)}
+            data-testid="payment.multi.add-nfsc"
           >
             {t('multiPaymentCard.addNfscBalance')}
           </Button>
@@ -250,6 +252,7 @@ export function MultiPaymentCard({
                   setIncludeStripe(false);
                   setStripeConfirmationTokenId(null);
                 }}
+                data-testid="payment.multi.remove-stripe"
               >
                 {tCommon('actions.remove')}
               </Button>
@@ -273,7 +276,11 @@ export function MultiPaymentCard({
                 showAddPaymentMethodDialog={showAddPaymentMethodDialog}
                 disabled={isDisabled}
                 dialogTrigger={
-                  <Button variant="outline" className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    data-testid="payment.multi.add-card"
+                  >
                     {stripeConfirmationTokenId
                       ? t('multiPaymentCard.changeCard')
                       : t('multiPaymentCard.addOrSelectCard')}
@@ -287,6 +294,7 @@ export function MultiPaymentCard({
             variant="outline"
             className="w-full"
             onClick={() => setIncludeStripe(true)}
+            data-testid="payment.multi.add-credit-card"
           >
             {t('multiPaymentCard.addCreditCard')}
           </Button>
@@ -295,7 +303,7 @@ export function MultiPaymentCard({
         <Separator />
         <div className="flex items-center justify-between text-sm">
           <span>{t('multiPaymentCard.total')}</span>
-          <span>
+          <span data-testid="payment.multi.total">
             <span
               className={cn(
                 availableAmountInUsdCents === totalAmountInUsdCents &&

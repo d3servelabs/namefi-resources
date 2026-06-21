@@ -61,6 +61,7 @@ function CartDropdownItem({ item }: CartDropdownItemProps) {
     <DropdownMenuItem
       className="flex items-center gap-3"
       onSelect={(event) => event.preventDefault()}
+      data-testid={`cart.dropdown.item.${item.normalizedDomainName}`}
     >
       <span className="flex-1 truncate">
         <DomainDisplayName normalizedDomainName={item.normalizedDomainName} />
@@ -76,6 +77,7 @@ function CartDropdownItem({ item }: CartDropdownItemProps) {
         onClick={handleRemove}
         disabled={removingBusy}
         aria-label={`Remove ${item.normalizedDomainName} from cart`}
+        data-testid={`cart.dropdown.remove.${item.normalizedDomainName}`}
       >
         {removingBusy ? (
           <Loader2 className="size-4 animate-spin" />
@@ -117,7 +119,10 @@ export function CartDropdownContent({
           />
         ))}
         {isCartEmpty && (
-          <DropdownMenuItem className="justify-start font-medium italic">
+          <DropdownMenuItem
+            className="justify-start font-medium italic"
+            data-testid="cart.dropdown.empty-state"
+          >
             <span>{t('cartDropdown.yourCartIsEmpty')}</span>
           </DropdownMenuItem>
         )}
@@ -125,7 +130,9 @@ export function CartDropdownContent({
       <DropdownMenuSeparator />
       <DropdownMenuItem className="justify-between font-medium">
         <span>{t('cartDropdown.total')}</span>
-        <span>{formatAmountInUSD(totalAmountInUsdCents, true)}</span>
+        <span data-testid="cart.dropdown.total">
+          {formatAmountInUSD(totalAmountInUsdCents, true)}
+        </span>
       </DropdownMenuItem>
       <DropdownMenuItem className="p-0">
         <Button
@@ -138,6 +145,7 @@ export function CartDropdownContent({
           }
           nativeButton={isCartEmpty}
           disabled={isCartEmpty}
+          data-testid="cart.dropdown.checkout"
         >
           {t('cartDropdown.checkout')}
         </Button>

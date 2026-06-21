@@ -44,7 +44,10 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
   );
 
   return (
-    <div className="space-y-2 p-3 rounded-md bg-[#18181B]">
+    <div
+      className="space-y-2 p-3 rounded-md bg-[#18181B]"
+      data-testid="payment.summary"
+    >
       <div className="text-sm font-medium mb-2">
         {t('paymentSummary.title')}
       </div>
@@ -142,6 +145,7 @@ export function PaymentSummary({ calculation }: PaymentSummaryProps) {
           className={cn(
             calculation.isValid ? 'text-green-500' : 'text-red-500',
           )}
+          data-testid="payment.summary.total"
         >
           {formatAmountInUSD(
             calculation.totalPayments.reduce(

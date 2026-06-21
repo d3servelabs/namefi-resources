@@ -126,6 +126,7 @@ export function CartItemRegistrationRequirement({
           container,
           updatingBusy && 'animate-pulse opacity-70',
         )}
+        data-testid={`cart.requirement.${item.id}`}
       >
         <Icon className={cn('mt-0.5 size-3.5 shrink-0', icon)} />
         <div className="min-w-0 flex-1">
@@ -138,6 +139,7 @@ export function CartItemRegistrationRequirement({
               type="button"
               onClick={() => setModalOpen(true)}
               className="shrink-0 text-[11px] font-medium text-zinc-400 underline-offset-2 hover:text-zinc-200 hover:underline"
+              data-testid={`cart.requirement.learn-more.${item.id}`}
             >
               {t('cartItemRegistration.learnMore')}
             </button>
@@ -155,6 +157,7 @@ export function CartItemRegistrationRequirement({
                 checked={acknowledged}
                 onCheckedChange={(checked) => setAcknowledged(checked === true)}
                 disabled={readOnly || updatingBusy}
+                data-testid={`cart.requirement.ack.${item.id}`}
               />
               <span>
                 I understand and agree to the .{requirement.tld} requirements.
@@ -165,7 +168,10 @@ export function CartItemRegistrationRequirement({
       </div>
 
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+        <DialogContent
+          className={MOBILE_BOTTOM_SHEET_DIALOG}
+          data-testid={`cart.requirement.dialog.${item.id}`}
+        >
           <DialogHeader>
             <DialogTitle>{requirement.title}</DialogTitle>
             <DialogDescription>{requirement.summary}</DialogDescription>
@@ -196,15 +202,25 @@ export function CartItemRegistrationRequirement({
           <DialogFooter>
             {isExplicit ? (
               <>
-                <DialogClose render={<Button variant="outline" />}>
+                <DialogClose
+                  render={<Button variant="outline" />}
+                  data-testid={`cart.requirement.dialog.cancel.${item.id}`}
+                >
                   {tCommon('actions.cancel')}
                 </DialogClose>
-                <Button onClick={handleAgree} disabled={readOnly}>
+                <Button
+                  onClick={handleAgree}
+                  disabled={readOnly}
+                  data-testid={`cart.requirement.dialog.agree.${item.id}`}
+                >
                   {t('cartFootnote.agree')}
                 </Button>
               </>
             ) : (
-              <DialogClose render={<Button />}>
+              <DialogClose
+                render={<Button />}
+                data-testid={`cart.requirement.dialog.got-it.${item.id}`}
+              >
                 {t('cartItemRegistration.gotIt')}
               </DialogClose>
             )}

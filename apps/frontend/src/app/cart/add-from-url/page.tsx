@@ -281,7 +281,10 @@ export default function AddFromUrlPage() {
               <p className="text-sm text-muted-foreground">
                 {t('addFromUrl.domainsRequested')}
               </p>
-              <p className="text-base font-medium break-words">
+              <p
+                className="text-base font-medium break-words"
+                data-testid="cart.add-from-url.domains-requested"
+              >
                 {joinedRequested || '—'}
               </p>
             </div>
@@ -327,21 +330,31 @@ export default function AddFromUrlPage() {
             {showConfirm && (
               <div className="space-y-2">
                 <p className="text-sm text-muted-foreground">{confirmHelper}</p>
-                <Button onClick={handleConfirmAdd} disabled={!canConfirm}>
+                <Button
+                  onClick={handleConfirmAdd}
+                  disabled={!canConfirm}
+                  data-testid="cart.add-from-url.confirm"
+                >
                   {confirmLabel}
                 </Button>
               </div>
             )}
 
             {error && (
-              <div className="flex items-center gap-2 text-sm text-destructive">
+              <div
+                className="flex items-center gap-2 text-sm text-destructive"
+                data-testid="cart.add-from-url.error"
+              >
                 <AlertTriangle className="h-4 w-4" />
                 <span>{error}</span>
               </div>
             )}
 
             {stepStatus.redirect === 'active' && !error && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <div
+                className="flex items-center gap-2 text-sm text-muted-foreground"
+                data-testid="cart.add-from-url.redirecting"
+              >
                 <Loader2 className="h-4 w-4 animate-spin" />
                 {t('addFromUrl.redirecting')}
               </div>

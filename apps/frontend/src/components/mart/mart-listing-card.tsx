@@ -62,7 +62,10 @@ export function MartListingCard({
   const awaitingName = !details && detailsLoading;
 
   return (
-    <Card className="relative h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40">
+    <Card
+      className="relative h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40"
+      data-testid={`mart.card.${listing.tokenAddress}-${listing.tokenId}`}
+    >
       <div className="relative aspect-square w-full bg-zinc-900">
         {safeImage ? (
           <Image
@@ -97,7 +100,10 @@ export function MartListingCard({
           {awaitingName ? (
             <Skeleton className="h-5 w-32" />
           ) : (
-            <span className="min-w-0 truncate font-mono text-zinc-100">
+            <span
+              className="min-w-0 truncate font-mono text-zinc-100"
+              data-testid={`mart.card.name.${listing.tokenAddress}-${listing.tokenId}`}
+            >
               {displayName}
             </span>
           )}
@@ -117,6 +123,7 @@ export function MartListingCard({
               marketplace: listing.source,
             })}
             className="inline-flex items-center gap-1 rounded-xs text-sm text-brand-primary after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            data-testid={`mart.card.buy.${listing.tokenAddress}-${listing.tokenId}`}
           >
             {t('buyOn', { marketplace: listing.source })}
             <ExternalLink className="h-3 w-3" aria-hidden="true" />
@@ -159,7 +166,10 @@ function PriceTag({
       : null;
 
   return (
-    <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+    <div
+      className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5"
+      data-testid={`mart.card.price.${listing.tokenAddress}-${listing.tokenId}`}
+    >
       <span className="inline-flex items-center gap-1 whitespace-nowrap font-mono text-lg font-semibold text-zinc-100">
         {isEther ? (
           <>

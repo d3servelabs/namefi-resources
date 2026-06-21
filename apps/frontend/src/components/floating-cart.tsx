@@ -233,7 +233,10 @@ export const FloatingCart = ({
                 {/* Show cart info only when there are items in cart */}
                 {hasItems && (
                   <div className="flex w-full items-center gap-2 sm:gap-3">
-                    <span className="flex flex-shrink-0 items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:px-3 sm:py-1 sm:text-xs sm:tracking-[0.2em]">
+                    <span
+                      className="flex flex-shrink-0 items-center gap-1 rounded-full border border-white/10 bg-white/[0.05] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-white/70 sm:px-3 sm:py-1 sm:text-xs sm:tracking-[0.2em]"
+                      data-testid="cart.floating-cart.item-count"
+                    >
                       <NumberFlow
                         value={itemCount}
                         className="text-[13px] font-semibold normal-case tracking-normal text-white sm:text-base"
@@ -248,7 +251,10 @@ export const FloatingCart = ({
                         {t('floatingCart.itemCount', { count: itemCount })}
                       </span>
                     </span>
-                    <div className="ms-auto flex min-w-0 flex-col items-end text-end text-white/80 sm:ms-0 sm:items-start sm:text-start sm:gap-0">
+                    <div
+                      className="ms-auto flex min-w-0 flex-col items-end text-end text-white/80 sm:ms-0 sm:items-start sm:text-start sm:gap-0"
+                      data-testid="cart.floating-cart.total"
+                    >
                       <span className="text-[9px] uppercase tracking-[0.1em] text-white/55 sm:text-[11px] sm:tracking-[0.2em]">
                         {t('floatingCart.cartTotal')}
                       </span>
@@ -297,6 +303,7 @@ export const FloatingCart = ({
                       variant={hasItems ? 'ghost' : 'default'}
                       onClick={handleAddAllToCart}
                       disabled={isAddingAll}
+                      data-testid="cart.floating-cart.add-all"
                       className={cn(
                         hasItems
                           ? 'inline-flex h-9 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.02] px-4 text-[11px] font-semibold text-white transition hover:border-white/20 hover:bg-white/[0.07] sm:h-10 sm:w-auto sm:px-6 sm:text-sm'
@@ -337,6 +344,7 @@ export const FloatingCart = ({
                         logBeginCheckout();
                         router.push('/cart');
                       }}
+                      data-testid="cart.floating-cart.checkout"
                     >
                       <ShoppingCartIcon className="size-5" />
                       {t('floatingCart.checkout')}

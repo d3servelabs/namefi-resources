@@ -727,7 +727,7 @@ export default function CartPage() {
   return (
     <PageShell>
       <AlertDialog open={isErrorDialogOpen} onOpenChange={setIsErrorDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="cart.error-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>{t('errorDialog.title')}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -740,10 +740,13 @@ export default function CartPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{tc('actions.close')}</AlertDialogCancel>
+            <AlertDialogCancel data-testid="cart.error-dialog.close">
+              {tc('actions.close')}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleRetryOrder}
               className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+              data-testid="cart.error-dialog.retry"
             >
               {tc('actions.tryAgain')}
             </AlertDialogAction>
@@ -767,13 +770,17 @@ export default function CartPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isClearingCart}>
+            <AlertDialogCancel
+              disabled={isClearingCart}
+              data-testid="cart.clear-cart-dialog.cancel"
+            >
               {tc('actions.cancel')}
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90 gap-2"
               onClick={handleClearCart}
               disabled={isClearingCart}
+              data-testid="cart.clear-cart-dialog.confirm"
             >
               {isClearingCart && (
                 <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
@@ -812,6 +819,7 @@ export default function CartPage() {
                   <Button
                     variant="outline"
                     onClick={() => setCartItemsChangesSummary(undefined)}
+                    data-testid="cart.cart-changes.dismiss"
                   >
                     <ArchiveX className="size-4" /> {tc('actions.dismiss')}
                   </Button>
@@ -859,6 +867,7 @@ export default function CartPage() {
                   onClick={() => setIsClearCartDialogOpen(true)}
                   disabled={isClearingCart || isCartUpdating || !items?.length}
                   className="gap-2"
+                  data-testid="cart.summary.clear-cart"
                 >
                   {isClearingCart ? (
                     <Loader2
@@ -872,7 +881,7 @@ export default function CartPage() {
                 </Button>
               }
             >
-              <div className="flex flex-col">
+              <div className="flex flex-col" data-testid="cart.items">
                 {items.map((item, index) => (
                   <CartItem
                     key={item.id}
@@ -907,6 +916,7 @@ export default function CartPage() {
                         disabled={submitOrderDisabled || isDisabled}
                         onClick={handleSubmitOrder}
                         size="lg"
+                        data-testid="cart.summary.submit-order"
                       >
                         {(isCreateOrderPending ||
                           isRedirecting ||
@@ -943,6 +953,7 @@ export default function CartPage() {
                           disabled={submitOrderDisabled || isDisabled}
                           onClick={handleSubmitOrder}
                           size="lg"
+                          data-testid="cart.summary.submit-order"
                         >
                           {(isCreateOrderPending ||
                             isCreateOrderV2Pending ||
@@ -1009,11 +1020,18 @@ export default function CartPage() {
         </div>
       ) : (
         <CartCard title={t('yourCartIsEmpty')}>
-          <div className="flex flex-col items-center justify-center gap-4 py-8">
+          <div
+            className="flex flex-col items-center justify-center gap-4 py-8"
+            data-testid="cart.empty-state"
+          >
             <p className="text-muted-foreground text-center">
               {t('emptyCartHint')}
             </p>
-            <NamefiButton variant="outline" onClick={() => router.push('/')}>
+            <NamefiButton
+              variant="outline"
+              onClick={() => router.push('/')}
+              data-testid="cart.empty-state.browse"
+            >
               {t('browseDomains')}
             </NamefiButton>
           </div>

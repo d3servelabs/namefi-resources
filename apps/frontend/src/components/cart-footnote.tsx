@@ -202,6 +202,7 @@ function ExplicitPolicyList({
                 className="mt-px shrink-0"
                 checked={isAcked(entry)}
                 onCheckedChange={(checked) => setAck(entry, checked === true)}
+                data-testid={`cart.footnote.policy-ack.${tld}`}
               />
               <span className="flex-1">
                 <label htmlFor={checkboxId} className="cursor-pointer">
@@ -213,6 +214,7 @@ function ExplicitPolicyList({
                   type="button"
                   onClick={() => setOpenPolicy(entry.requirement)}
                   className="font-medium text-zinc-400 underline-offset-2 hover:text-zinc-200 hover:underline"
+                  data-testid={`cart.footnote.policy-learn-more.${tld}`}
                 >
                   {t('cartFootnote.learnMore')}
                 </button>
@@ -230,7 +232,10 @@ function ExplicitPolicyList({
           }
         }}
       >
-        <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+        <DialogContent
+          className={MOBILE_BOTTOM_SHEET_DIALOG}
+          data-testid="cart.footnote.policy-dialog"
+        >
           {openPolicy && (
             <>
               <DialogHeader>
@@ -261,10 +266,18 @@ function ExplicitPolicyList({
                 )}
               </div>
               <DialogFooter>
-                <DialogClose render={<Button variant="outline" />}>
+                <DialogClose
+                  render={<Button variant="outline" />}
+                  data-testid="cart.footnote.policy-dialog.close"
+                >
                   {tCommon('actions.close')}
                 </DialogClose>
-                <Button onClick={handleAgree}>{t('cartFootnote.agree')}</Button>
+                <Button
+                  onClick={handleAgree}
+                  data-testid="cart.footnote.policy-dialog.agree"
+                >
+                  {t('cartFootnote.agree')}
+                </Button>
               </DialogFooter>
             </>
           )}
