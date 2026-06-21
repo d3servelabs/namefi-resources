@@ -260,7 +260,13 @@ async function authenticateToolCall(
   body: McpToolCallBody | undefined,
   baseContext: TrpcContextWithUserOrNull,
 ) {
-  const clientIp = baseContext.honoVars?.connInfo?.remote?.address ?? null;
+  // Prefer the proxy-aware IP (set by the app-level request-info middleware),
+  // matching the REST path and the transport-level resolver, so API-key IP
+  // allowlists evaluate the same address behind a load balancer.
+  const clientIp =
+    baseContext.honoVars?.requestInfo?.ipAddress ??
+    baseContext.honoVars?.connInfo?.remote?.address ??
+    null;
   const rawBody = getRawBodyForAuth(headers, body);
   const authCtx = createAuthContext(
     headers,
