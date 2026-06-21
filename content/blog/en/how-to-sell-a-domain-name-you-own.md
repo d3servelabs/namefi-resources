@@ -2,7 +2,7 @@
 title: "How to Sell a Domain Name You Own: A Practical Checklist"
 date: '2026-06-09'
 language: en
-tags: ['domains', 'guide', 'domain-investing', 'outbound']
+tags: ['domains', 'guide', 'domain-investing', 'outbound', 'domain-flipping']
 authors: ['namefiteam']
 draft: false
 cluster: domain-investing
