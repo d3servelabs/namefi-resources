@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: true
 cluster: domain-investing
 series: domain-flipping-skills
-seriesOrder: 6
+seriesOrder: 2
 format: guide
 description: "How to appraise a domain name: the value factors, what appraisal tools get wrong, how to read comparable sales, and the end-user vs reseller spread."
 ogImage: ../../assets/how-to-value-a-domain-name-og.jpg

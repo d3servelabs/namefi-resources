@@ -7,7 +7,7 @@ authors: ['namefiteam']
 draft: true
 cluster: domain-investing
 series: domain-flipping-skills
-seriesOrder: 12
+seriesOrder: 3
 format: explainer
 description: "What a domain hack is, why brands and flippers prize these clever short domains, the ccTLD risks behind them, and how to value one."
 ogImage: ../../assets/domain-hacks-explained-og.jpg
