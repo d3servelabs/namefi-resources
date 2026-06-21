@@ -233,7 +233,11 @@ export default function ClaimPage() {
           description={t('page.invalidDomain.description')}
           footer={
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => router.back()}>
+              <Button
+                variant="outline"
+                data-testid="claim.invalid-domain.go-back"
+                onClick={() => router.back()}
+              >
                 <ArrowLeft className="size-4 rtl:-scale-x-100" />{' '}
                 {tCommon('actions.goBack')}
               </Button>
@@ -258,6 +262,7 @@ export default function ClaimPage() {
 
       {showIneligibleBanner && (
         <div
+          data-testid="claim.ineligible-banner"
           className={cn(
             'rounded-lg border p-4 flex items-start gap-3',
             'border-amber-500/40 bg-amber-500/10',
@@ -273,10 +278,18 @@ export default function ClaimPage() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button variant="secondary" onClick={handleAddToCart}>
+            <Button
+              variant="secondary"
+              data-testid="claim.ineligible-banner.add-to-cart"
+              onClick={handleAddToCart}
+            >
               {t('page.ineligibleBanner.addToCart')}
             </Button>
-            <Button variant="outline" onClick={() => router.back()}>
+            <Button
+              variant="outline"
+              data-testid="claim.ineligible-banner.go-back"
+              onClick={() => router.back()}
+            >
               <ArrowLeft className="size-4 rtl:-scale-x-100" />{' '}
               {tCommon('actions.goBack')}
             </Button>
@@ -289,7 +302,10 @@ export default function ClaimPage() {
         {/* Domain summary */}
         <CartCard>
           <div className="flex flex-col gap-1">
-            <div className="text-2xl md:text-3xl font-semibold break-all">
+            <div
+              data-testid="claim.page.domain-name"
+              className="text-2xl md:text-3xl font-semibold break-all"
+            >
               {normalizedDomainName}
             </div>
             <div className="text-sm md:text-base text-muted-foreground">
@@ -321,6 +337,7 @@ export default function ClaimPage() {
         ) : (
           <NamefiButton
             variant="default"
+            data-testid="claim.page.submit"
             className="w-full h-11 text-base"
             disabled={
               isClaimPending ||

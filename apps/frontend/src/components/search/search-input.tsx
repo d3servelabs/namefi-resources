@@ -66,6 +66,7 @@ export const SearchHeader: FC<{
           <div className="flex items-center gap-2 mx-auto w-full max-w-md overflow-x-auto">
             <Button
               key="main"
+              data-testid="search.header.network-all"
               variant={parentDomain === undefined ? 'default' : 'outline'}
               size="sm"
               onClick={() => setParentDomain(undefined)}
@@ -76,6 +77,7 @@ export const SearchHeader: FC<{
             {config.POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.map((origin) => (
               <Button
                 key={origin}
+                data-testid={`search.header.network.${origin}`}
                 variant={parentDomain === origin ? 'default' : 'outline'}
                 size="sm"
                 onClick={() => setParentDomain(origin)}
@@ -109,12 +111,14 @@ export const SearchModeTabs: FC<{
       <TabsList className="!grid !h-full !w-full grid-cols-2 !rounded-full border border-white/12 bg-neutral-900/80 !p-0.5 backdrop-blur-md">
         <TabsTrigger
           value={SearchMode.REGISTER}
+          data-testid="search.mode-tabs.register"
           className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
           {t('modeTabs.register')}
         </TabsTrigger>
         <TabsTrigger
           value={SearchMode.IMPORT}
+          data-testid="search.mode-tabs.import"
           className="!h-full !rounded-full !border-0 !py-0 px-3 text-sm font-medium !text-muted-foreground transition !shadow-none data-active:!bg-white/10 data-active:!text-white data-active:!shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] after:hidden md:px-4 md:text-base"
         >
           {t('modeTabs.import')}
@@ -343,6 +347,7 @@ export const SearchInput: FC<{
                     >
                       <Textarea
                         ref={textareaRef}
+                        data-testid="search.input.textarea"
                         name="search-textarea"
                         placeholder={importPlaceholder}
                         value={query}
@@ -370,6 +375,7 @@ export const SearchInput: FC<{
                       <Button
                         variant="ghost"
                         size="icon"
+                        data-testid="search.input.clear-import"
                         className="absolute top-2 end-2 h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white z-10"
                         onClick={() => handleQueryChange('')}
                       >
@@ -396,6 +402,7 @@ export const SearchInput: FC<{
                 )}
                 <Input
                   ref={inputRef}
+                  data-testid="search.input.field"
                   name="search-input"
                   placeholder={t('input.placeholder')}
                   value={query}
@@ -416,6 +423,7 @@ export const SearchInput: FC<{
                   <Button
                     variant="ghost"
                     size="icon"
+                    data-testid="search.input.clear"
                     className="h-8 w-8 shrink-0 rounded-full bg-white/12 p-0 text-white/80 transition hover:bg-white/20 hover:text-white"
                     onClick={() => handleQueryChange('')}
                   >
@@ -484,6 +492,7 @@ export const SearchInput: FC<{
                             <Button
                               variant="ghost"
                               size="icon"
+                              data-testid="search.input.clear-parent-domain"
                               aria-label={t('input.clearParentDomainAriaLabel')}
                               onClick={
                                 clearParentDomainAndDismissFreeMintGuidance
@@ -512,6 +521,7 @@ export const SearchInput: FC<{
             }}
           >
             <NamefiButton
+              data-testid="search.input.submit"
               onClick={handleSearchClick}
               className={cn(
                 'not-only:font-semibold md:h-12 h-10 shrink-0 rounded-full px-6 text-base shadow-none',

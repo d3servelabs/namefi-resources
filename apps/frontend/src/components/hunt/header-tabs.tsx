@@ -13,14 +13,17 @@ const TabItem = ({
   active,
   children,
   onClick,
+  'data-testid': dataTestid,
 }: {
   active?: boolean;
   children: React.ReactNode;
   onClick: () => void;
+  'data-testid'?: string;
 }) => {
   return (
     <button
       type="button"
+      data-testid={dataTestid}
       className={cn(
         'py-2 px-3 sm:py-3 sm:px-4 text-sm sm:text-lg whitespace-nowrap',
         active
@@ -59,7 +62,12 @@ const CampaignTab = ({
   }, [campaignKey, router]);
 
   return (
-    <TabItem key={campaignKey} onClick={handleClick} active={active}>
+    <TabItem
+      key={campaignKey}
+      data-testid={`nav.hunt-tabs.campaign.${campaignKey}`}
+      onClick={handleClick}
+      active={active}
+    >
       {name}
     </TabItem>
   );
@@ -86,7 +94,11 @@ export const HeaderTabs = ({ activeTab, className }: HeaderTabsProps) => {
         )}
       >
         <div className="flex items-center gap-2 sm:gap-4 min-w-full px-4 sm:px-0 sm:justify-center">
-          <TabItem onClick={handleClickAllHunt} active={activeTab === 'all'}>
+          <TabItem
+            data-testid="nav.hunt-tabs.all"
+            onClick={handleClickAllHunt}
+            active={activeTab === 'all'}
+          >
             {t('tabs.allHunt')}
           </TabItem>
           {config.HUNT_CAMPAIGN_KEYS.map((campaignKey) => (

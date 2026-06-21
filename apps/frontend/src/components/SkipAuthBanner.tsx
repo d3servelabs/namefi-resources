@@ -16,7 +16,10 @@ export default function SkipAuthBanner() {
   if (!isSkipAuthActive || isBannerDismissed) return null;
 
   return (
-    <div className="fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] right-4 z-50">
+    <div
+      data-testid="common.skip-auth-banner"
+      className="fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] right-4 z-50"
+    >
       <div className="rounded-md bg-amber-500 text-amber-950 shadow-lg border border-amber-600 px-3 py-2 flex items-center gap-2">
         <Unlock className="h-4 w-4" />
         <span className="text-sm font-medium">Auth Skipped (Dev Mode)</span>
@@ -27,6 +30,7 @@ export default function SkipAuthBanner() {
         <Button
           size="icon"
           variant="ghost"
+          data-testid="common.skip-auth-banner.disable"
           className="h-6 w-6 hover:bg-amber-600 text-amber-950"
           onClick={disableSkipAuth}
           title="Disable skip auth"
@@ -38,6 +42,7 @@ export default function SkipAuthBanner() {
         <Button
           size="icon"
           variant="ghost"
+          data-testid="common.skip-auth-banner.dismiss"
           className="h-6 w-6 hover:bg-amber-600 text-amber-950"
           onClick={dismissBanner}
           title="Dismiss banner"

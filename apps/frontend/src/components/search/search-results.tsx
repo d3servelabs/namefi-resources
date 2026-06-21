@@ -116,7 +116,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   // Show error state
   if (isError && query.length > 0) {
     return (
-      <div>
+      <div data-testid="search.results.error">
         <Placeholder
           title={t('results.errorTitle')}
           description={error || t('results.errorDescription')}
@@ -128,7 +128,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   // Show loading skeletons when fetching but no data yet
   if (isLoading && !hasData) {
     return (
-      <div className="flex flex-col gap-4">
+      <div data-testid="search.results.loading" className="flex flex-col gap-4">
         <LoadingSkeletons key="initial-loading" />
       </div>
     );
@@ -139,7 +139,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
     const isImportMode = searchMode === SearchMode.IMPORT;
 
     return (
-      <div className="flex flex-col gap-4">
+      <div data-testid="search.results.list" className="flex flex-col gap-4">
         {domains.map((domain) => {
           const availabilityInfo = domainInfos.get(domain);
           const isAvailabilityAuthoritative = authoritativeDomainInfos
@@ -172,6 +172,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
           <div className="flex justify-center">
             <Button
               variant="outline"
+              data-testid="search.results.load-more"
               className="mt-2 rounded-full border-white/30 bg-white/5 text-white hover:bg-white/10"
               disabled={isLoadingMore}
               onClick={onLoadMore}
@@ -190,7 +191,7 @@ export const SearchResults: FC<SearchResultsProps> = ({
   // Show "no results" if we have searched, completed, and have no data
   if (query.length > 0 && !isLoading && !hasData) {
     return (
-      <div>
+      <div data-testid="search.results.empty">
         <Placeholder
           title={t('results.noResultsTitle')}
           description={t('results.noResultsDescription', { query })}

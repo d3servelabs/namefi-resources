@@ -84,6 +84,7 @@ export function FreeMintsDropdown({
                 <HeaderActionButton
                   actionVariant="icon"
                   disableBackdropBlur={disableBackdropBlur}
+                  data-testid="freeMints.dropdown.trigger"
                   className="text-white/90"
                   aria-label={`You have ${availableCount} free ${availableCount === 1 ? 'mint' : 'mints'} available`}
                 />
@@ -101,6 +102,7 @@ export function FreeMintsDropdown({
                 {availableFreeMints.map((freeMint) => (
                   <DropdownMenuItem
                     key={freeMint.id}
+                    data-testid={`freeMints.dropdown.item.${freeMint.id}`}
                     className="flex justify-between"
                     onClick={() => handleClaimAction(freeMint)}
                   >
@@ -113,6 +115,7 @@ export function FreeMintsDropdown({
                     </span>
                     <Button
                       size="sm"
+                      data-testid={`freeMints.dropdown.claim.${freeMint.id}`}
                       className="shrink-0 bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
                       onClick={() => handleClaimAction(freeMint)}
                     >
@@ -124,6 +127,7 @@ export function FreeMintsDropdown({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 render={<Link href="/free-mints" />}
+                data-testid="freeMints.dropdown.view-all"
                 className="bg-primary text-primary-foreground justify-center hover:bg-primary/80 focus:bg-primary/80"
               >
                 {t('dropdown.viewAll')}

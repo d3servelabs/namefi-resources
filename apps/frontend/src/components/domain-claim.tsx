@@ -240,6 +240,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
                 {t('widget.steps.linkSocial.description')}
               </p>
               <Button
+                data-testid="claim.widget.visit-profile"
                 render={<Link href="/profile" />}
                 nativeButton={false}
                 size="sm"
@@ -268,6 +269,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
           <div className="flex items-center justify-center w-full ps-2 gap-1 md:gap-2 h-14">
             <SearchIcon className="h-5 w-5 text-gray-400" />
             <Input
+              data-testid="claim.widget.subdomain-input"
               placeholder={
                 isMobile
                   ? t('widget.input.placeholderMobile')
@@ -282,6 +284,7 @@ export const DomainClaim: FC<DomainClaimProps> = ({
           <div className="me-4 text-gray-400 text-lg">.{domain}</div>
         </div>
         <NamefiButton
+          data-testid="claim.widget.claim-button"
           className="w-40 md:w-44 h-14"
           onClick={handleClaim}
           disabled={!canClaim}

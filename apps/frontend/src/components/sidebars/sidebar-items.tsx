@@ -144,6 +144,7 @@ const CollapsedSidebarSubmenuItem: FC<{
               return (
                 <DropdownMenuItem
                   key={subItem.href}
+                  data-testid={`nav.sidebar.collapsed-subitem.${subItem.href}`}
                   className={cn(
                     'cursor-pointer',
                     subItemActive && 'bg-accent text-accent-foreground',
@@ -208,6 +209,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                     render={<SidebarMenuItem />}
                   >
                     <CollapsibleTrigger
+                      data-testid={`nav.sidebar.group.${item.href}`}
                       render={
                         <SidebarMenuButton
                           className="group/collapsible-trigger"
@@ -227,6 +229,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                             <SidebarMenuSubItem key={subItem.href}>
                               <SidebarMenuSubButton
                                 isActive={isRouteActive(subItem, pathname)}
+                                data-testid={`nav.sidebar.subitem.${subItem.href}`}
                                 render={
                                   <Link
                                     href={subItem.href as Route}
@@ -253,6 +256,7 @@ export const SidebarItems: FC<SidebarItemsProps> = ({
                     <SidebarMenuButton
                       isActive={isActive}
                       tooltip={label}
+                      data-testid={`nav.sidebar.item.${item.href}`}
                       render={
                         <Link
                           href={item.href as Route}

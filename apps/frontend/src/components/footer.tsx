@@ -255,6 +255,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               {SOCIAL_LINKS.map(({ name, href, icon: Icon }) => (
                 <a
                   key={name}
+                  data-testid={`footer.social.${name}`}
                   href={href}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -282,6 +283,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                       <li key={labelKey}>
                         {external ? (
                           <a
+                            data-testid={`footer.link.${section.sectionKey}.${labelKey}`}
                             href={href}
                             target="_blank"
                             rel="noreferrer noopener"
@@ -295,6 +297,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                           </a>
                         ) : (
                           <Link
+                            data-testid={`footer.link.${section.sectionKey}.${labelKey}`}
                             href={localizeBlogHref(href, locale) as Route}
                             className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
                           >
@@ -333,6 +336,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               <LanguageSelector />
               <button
                 type="button"
+                data-testid="footer.legal.cookie-settings"
                 className="text-white/70 transition hover:text-white"
                 aria-label={t('cookieSettingsAriaLabel')}
                 onClick={() => setActiveUI('dialog', { force: true })}
@@ -341,6 +345,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
               </button>
               <Link
                 href="/tos"
+                data-testid="footer.legal.terms"
                 className="text-white/70 transition hover:text-white"
               >
                 {t('termsAndConditions')}

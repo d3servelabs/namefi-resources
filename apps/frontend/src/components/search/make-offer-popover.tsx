@@ -52,6 +52,7 @@ export const OpenSeaOfferButton: FC<{ href: string; className?: string }> = ({
 
   return (
     <Button
+      data-testid="search.card.make-offer-opensea"
       onClick={() => window.open(href, '_blank', 'noopener,noreferrer')}
       aria-label={t('card.makeOfferOnOpenSea')}
       className={cn(
@@ -82,6 +83,7 @@ export const MakeOfferButton: FC<{ domain: string; className?: string }> = ({
       <PopoverTrigger
         render={
           <Button
+            data-testid="search.card.make-offer-trigger"
             aria-label={t('card.makeOfferTitle')}
             className={cn(
               'h-8 max-w-full shrink-0 gap-1 bg-brand-primary px-2.5 text-[11px] text-primary-foreground hover:bg-brand-primary/90 sm:h-9 sm:px-3 sm:text-xs',
@@ -104,6 +106,7 @@ export const MakeOfferButton: FC<{ domain: string; className?: string }> = ({
           {OFFER_BROKERS.map((broker) => (
             <a
               key={broker.id}
+              data-testid={`search.card.make-offer-broker.${broker.id}`}
               href={broker.buildOfferUrl(domain)}
               target="_blank"
               rel="noopener noreferrer"

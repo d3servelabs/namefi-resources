@@ -68,6 +68,7 @@ export function HeaderMissingEmailWarning() {
   const triggerButton = (
     <button
       type="button"
+      data-testid="nav.missing-email.trigger"
       className={cn(
         'inline-flex items-center justify-center gap-1.5 rounded-full px-2.75 py-2.75 text-xs font-medium transition-colors',
         'bg-amber-500/10 text-amber-600 border border-amber-500/20',
@@ -113,12 +114,17 @@ export function HeaderMissingEmailWarning() {
             <DialogFooter className="flex flex-col gap-2 sm:flex-row sm:justify-center mt-6">
               <Button
                 variant="outline"
+                data-testid="nav.missing-email.dialog-dismiss"
                 onClick={() => setIsDialogOpen(false)}
                 className="w-full sm:w-auto"
               >
                 {t('missingEmail.later')}
               </Button>
-              <Button onClick={handleAddEmail} className="w-full sm:w-auto">
+              <Button
+                data-testid="nav.missing-email.dialog-add-email"
+                onClick={handleAddEmail}
+                className="w-full sm:w-auto"
+              >
                 {t('missingEmail.addEmailToProfile')}
               </Button>
             </DialogFooter>
@@ -151,12 +157,18 @@ export function HeaderMissingEmailWarning() {
             <Button
               variant="outline"
               size="sm"
+              data-testid="nav.missing-email.popover-dismiss"
               onClick={() => setIsPopoverOpen(false)}
               className="flex-1"
             >
               {t('missingEmail.later')}
             </Button>
-            <Button size="sm" onClick={handleAddEmail} className="flex-1">
+            <Button
+              size="sm"
+              data-testid="nav.missing-email.popover-add-email"
+              onClick={handleAddEmail}
+              className="flex-1"
+            >
               {t('missingEmail.addEmail')}
             </Button>
           </div>

@@ -15,7 +15,7 @@ export interface FreeMintCardProps {
 }
 
 export function FreeMintCard({ data }: FreeMintCardProps) {
-  const { type, domain, expirationDate, createdAt } = data;
+  const { type, domain, expirationDate, createdAt, id } = data;
   const t = useTranslations('freeMints');
   const { startCampaignSearch } = useFreeMintsGuidance();
   const router = useRouter();
@@ -56,7 +56,11 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
   };
 
   return (
-    <div data-theme={theme} className="flex flex-col items-center">
+    <div
+      data-theme={theme}
+      data-testid={`freeMints.card.${id}`}
+      className="flex flex-col items-center"
+    >
       <CometCard rotateDepth={8} translateDepth={16} className="w-full">
         <div className="relative aspect-[85.6/53.98] overflow-hidden rounded-2xl">
           {/* Dark metallic base */}
@@ -157,6 +161,7 @@ export function FreeMintCard({ data }: FreeMintCardProps) {
 
               <Button
                 onClick={handleClaim}
+                data-testid={`freeMints.card.claim.${id}`}
                 className="w-full h-11 rounded-xl font-medium
                            text-brand-primary
                            font-mono

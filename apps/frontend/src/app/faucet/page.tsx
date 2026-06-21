@@ -225,7 +225,10 @@ export default function FaucetPage() {
             <div className="space-y-2">
               <Label htmlFor="chain">{t('chainLabel')}</Label>
               <Select value={SEPOLIA.id.toString()} disabled>
-                <SelectTrigger id="chain">
+                <SelectTrigger
+                  id="chain"
+                  data-testid="common.faucet.chain-select"
+                >
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -254,7 +257,12 @@ export default function FaucetPage() {
 
             <AltchaVerifier ref={altchaRef} expire={120_000} />
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              data-testid="common.faucet.submit"
+              className="w-full"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? (
                 <>
                   <Loader2 className="me-2 size-4 animate-spin" />
@@ -270,7 +278,10 @@ export default function FaucetPage() {
           </form>
 
           {(status !== 'idle' || errorMessage) && (
-            <div className="mt-6 space-y-3 rounded-md border border-border/60 bg-muted/40 p-4">
+            <div
+              data-testid="common.faucet.status"
+              className="mt-6 space-y-3 rounded-md border border-border/60 bg-muted/40 p-4"
+            >
               {status === 'rate_limited' && (
                 <div className="flex items-start gap-3">
                   <TriangleAlert className="mt-0.5 size-5 text-amber-500" />
@@ -302,6 +313,7 @@ export default function FaucetPage() {
                 <div className="space-y-2">
                   <p className="font-medium">{t('mintCompleteTitle')}</p>
                   <a
+                    data-testid="common.faucet.tx-link"
                     className="inline-flex items-center gap-2 text-sm text-primary hover:underline"
                     href={`https://sepolia.etherscan.io/tx/${txHash}`}
                     target="_blank"
