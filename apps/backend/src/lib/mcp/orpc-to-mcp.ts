@@ -287,6 +287,48 @@ function getProcedureInputFromToolCall(
   return body?.payload ?? {};
 }
 
+/**
+ * Expose the MCP tool-wrapper `headers` through `ctx.req.header()` so procedures
+ * that read request headers directly (e.g. delegated-account headers in
+ * siwe.orpc, x402 payment headers in ordersRouter.orpc) see the values the
+ * client put in the tool argument — matching the REST `/v-next` path, where
+ * those headers arrive on the HTTP request. Without this, only the auth layer
+ * (which is handed the tool headers explicitly) sees them, and procedures
+ * diverge from REST for the same inputs.
+ *
+ * Tool headers (already lowercased) take precedence over the transport
+ * request's headers. All other request methods/properties delegate to the
+ * original request.
+ */
+function mergeToolHeadersIntoReq(
+  req: TrpcContextWithUserOrNull['req'],
+  toolHeaders: Record<string, string | undefined>,
+): TrpcContextWithUserOrNull['req'] {
+  const transportHeaders =
+    typeof req?.header === 'function'
+      ? (req.header() as Record<string, string>)
+      : {};
+  const merged: Record<string, string> = { ...transportHeaders };
+  for (const [key, value] of Object.entries(toolHeaders)) {
+    if (value !== undefined) {
+      merged[key.toLowerCase()] = value;
+    }
+  }
+
+  const headerFn = (name?: string) =>
+    name === undefined ? merged : merged[name.toLowerCase()];
+
+  return new Proxy(req as object, {
+    get(target, prop, receiver) {
+      if (prop === 'header') {
+        return headerFn;
+      }
+      const value = Reflect.get(target, prop, receiver);
+      return typeof value === 'function' ? value.bind(target) : value;
+    },
+  }) as TrpcContextWithUserOrNull['req'];
+}
+
 async function discoverTools(
   router: AnyRouter,
   eip712Domain?: TypedDataDomain,
@@ -395,6 +437,7 @@ async function executeToolCall(
       ...baseContext,
       apiAuthResult: authResult,
       user: authResult.success ? (authResult.user ?? null) : null,
+      req: mergeToolHeadersIntoReq(baseContext.req, headers),
     };
 
     const normalizedInput = getProcedureInputFromToolCall(body);
