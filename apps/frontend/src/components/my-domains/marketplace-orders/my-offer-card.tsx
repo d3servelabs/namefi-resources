@@ -38,7 +38,10 @@ export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
   const safeImage = toSafeExternalUrl(details?.imageUrl ?? null);
 
   return (
-    <Card className="border border-zinc-800 bg-zinc-900/50">
+    <Card
+      className="border border-zinc-800 bg-zinc-900/50"
+      data-testid={`orders.offer.${offer.marketplace}:${offer.id}`}
+    >
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3 min-w-0">
@@ -93,6 +96,7 @@ export function MyOfferCard({ chainId, marketplaceId, offer, details }: Props) {
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
+              data-testid="orders.offer.view-link"
             >
               {tCommon('actions.view')}
               <ExternalLink className="h-3 w-3" aria-hidden="true" />

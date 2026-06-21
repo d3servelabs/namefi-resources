@@ -658,7 +658,10 @@ export default function OrderPage({ params }: OrderPageProps) {
             </>
           ) : (
             <>
-              <h1 className="mb-3 text-balance break-words font-bold text-2xl sm:text-4xl">
+              <h1
+                className="mb-3 text-balance break-words font-bold text-2xl sm:text-4xl"
+                data-testid="orders.detail.heading"
+              >
                 {heading}
               </h1>
               <p className="text-muted-foreground text-lg flex items-center justify-center gap-2">
@@ -673,6 +676,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                     <AddressWithChain
                       address={recipientWalletAddress}
                       chainId={recipientChainId}
+                      data-testid="orders.detail.nft-wallet"
                     />
                   </div>
                   {!isRecipientLinked && (
@@ -770,6 +774,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               <Link
                 href={`/orders/${id}/details`}
                 className="text-xs text-zinc-500 transition-colors hover:text-zinc-300"
+                data-testid="orders.detail.view-details-link"
               >
                 View full details →
               </Link>
@@ -784,6 +789,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               className="flex-1 bg-black/[0.03] border-white/10 hover:bg-white/5"
               render={<Link href={`/orders/${id}/details`} />}
               nativeButton={false}
+              data-testid="orders.detail.view-full-details"
             >
               {t('detail.viewFullDetails')}
             </NamefiButton>
@@ -791,6 +797,7 @@ export default function OrderPage({ params }: OrderPageProps) {
               className="flex-1"
               render={<Link href="/" />}
               nativeButton={false}
+              data-testid="orders.detail.back-to-home"
             >
               {t('detail.backToHome')}
             </NamefiButton>
@@ -801,6 +808,7 @@ export default function OrderPage({ params }: OrderPageProps) {
       <Dialog open={shareDialogOpen} onOpenChange={setShareDialogOpen}>
         <DialogContent
           className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[560px]')}
+          data-testid="orders.detail.share-dialog"
         >
           <DialogHeader>
             <DialogTitle>{t('detail.shareDialogTitle')}</DialogTitle>
@@ -820,6 +828,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                   }
                   readOnly
                   className="min-h-[110px] font-medium"
+                  data-testid="orders.detail.share-message"
                 />
                 <Button
                   variant="outline"
@@ -831,6 +840,7 @@ export default function OrderPage({ params }: OrderPageProps) {
                     )
                   }
                   disabled={!shareManageMessage}
+                  data-testid="orders.detail.share-copy"
                 >
                   {copiedField === 'message' ? (
                     <Check className="h-4 w-4" />
@@ -842,7 +852,11 @@ export default function OrderPage({ params }: OrderPageProps) {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShareDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setShareDialogOpen(false)}
+              data-testid="orders.detail.share-close"
+            >
               {tCommon('actions.close')}
             </Button>
           </DialogFooter>

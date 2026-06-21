@@ -59,7 +59,10 @@ export function MyListingCard({
     shortToken(listing.tokenAddress, listing.tokenId);
 
   return (
-    <Card className="border border-brand-primary/15 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      className="border border-brand-primary/15 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+      data-testid={`orders.listing.${marketplaceId}:${listing.tokenAddress}:${listing.tokenId}`}
+    >
       <CardHeader>
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-start gap-3 min-w-0">
@@ -112,6 +115,7 @@ export function MyListingCard({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm text-zinc-300 hover:text-zinc-100"
+              data-testid="orders.listing.view-link"
             >
               {tCommon('actions.view')}
               <ExternalLink className="h-3 w-3" aria-hidden="true" />
@@ -149,6 +153,7 @@ export function MyListingCard({
                 <li
                   key={`${offer.marketplace}:${offer.id}`}
                   className="flex flex-wrap items-center gap-3 text-sm text-zinc-300 rounded-md border border-zinc-800 bg-zinc-900/50 px-3 py-1.5"
+                  data-testid={`orders.offer.${offer.marketplace}:${offer.id}`}
                 >
                   <Image
                     src={MARKETPLACE_ICONS[offer.marketplace]}

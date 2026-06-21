@@ -107,6 +107,7 @@ export function FinishingUpInline({
               key={chip.key}
               onClick={() => setOpenKey(chip.key)}
               className="group inline-flex items-center gap-1.5 rounded-sm"
+              data-testid={`orders.finishing-up.chip.${chip.key}`}
             >
               <span className="relative inline-flex shrink-0">
                 {inProgress ? (
@@ -138,6 +139,7 @@ export function FinishingUpInline({
           <SheetContent
             side="bottom"
             className="max-h-[85vh] overflow-y-auto rounded-t-2xl px-5 pb-8"
+            data-testid="orders.finishing-up.detail-sheet"
           >
             <SheetHeader className="px-0">
               <SheetTitle>{detail?.title}</SheetTitle>
@@ -150,6 +152,7 @@ export function FinishingUpInline({
         <Dialog open={open} onOpenChange={onOpenChange}>
           <DialogContent
             className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}
+            data-testid="orders.finishing-up.detail-dialog"
           >
             <DialogHeader>
               <DialogTitle>{detail?.title}</DialogTitle>

@@ -131,6 +131,7 @@ export function OrderCard({
     <GradientCard
       gradient="minimal-horizontal"
       className={'border-none ring-1 ring-zinc-800 p-4 gap-1'}
+      data-testid={`orders.item.${order.id}`}
     >
       <MobileTableItemHeader>
         <MobileTableItemTitle className="flex gap-x-2">
@@ -141,6 +142,7 @@ export function OrderCard({
                 : `/orders/${order.id}/details`
             }
             className="hover:underline text-foreground"
+            data-testid="orders.card.order-number"
           >
             {t('card.orderNumber', { rowNum: order.rowNum })}
           </Link>
@@ -196,7 +198,10 @@ export function OrderCard({
                   })
                 : t('card.itemsHeading', { visible: visibleItems.length })}
             </span>
-            <span className="font-medium text-sm">
+            <span
+              className="font-medium text-sm"
+              data-testid="orders.card.total"
+            >
               <span className="text-muted-foreground text-xs">
                 {t('card.totalLabel')}
               </span>
@@ -233,6 +238,7 @@ export function OrderCard({
                 variant="ghost"
                 size="sm"
                 onClick={() => setExpanded(true)}
+                data-testid="orders.card.show-more"
               >
                 <ChevronDown className="h-4 w-4 me-1" />
                 {t('card.showMore', { count: hiddenByCollapseCount })}
@@ -243,6 +249,7 @@ export function OrderCard({
                 variant="ghost"
                 size="sm"
                 onClick={() => setExpanded(false)}
+                data-testid="orders.card.show-less"
               >
                 <ChevronUp className="h-4 w-4 me-1" />
                 {t('card.showLess')}
@@ -253,6 +260,7 @@ export function OrderCard({
                 variant="ghost"
                 size="sm"
                 onClick={() => setRevealOtherParents((prev) => !prev)}
+                data-testid="orders.card.toggle-other-parents"
               >
                 {revealOtherParents ? (
                   <>
@@ -286,7 +294,10 @@ interface OrderItemRowProps {
 function OrderItemRow({ item, showStatus }: OrderItemRowProps) {
   const t = useTranslations('orders');
   return (
-    <li className="flex items-center justify-between gap-3 text-sm px-5 hover:border-s-2 border-white/50 py-0.5">
+    <li
+      className="flex items-center justify-between gap-3 text-sm px-5 hover:border-s-2 border-white/50 py-0.5"
+      data-testid={`orders.card.item.${item.id}`}
+    >
       <div className="min-w-0 flex-1 flex flex-row gap-2">
         <div className="font-medium truncate min-w-[18ch] max-w-[18ch]">
           {item.normalizedDomainName}

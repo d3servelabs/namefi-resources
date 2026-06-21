@@ -11,12 +11,15 @@ export const OrderNotFound = () => {
 
   return (
     <PageShell>
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto" data-testid="orders.not-found">
         <CartCard
           title={t('notFound.title')}
           description={t('notFound.description')}
           footer={
-            <Button onClick={() => router.push('/orders')}>
+            <Button
+              onClick={() => router.push('/orders')}
+              data-testid="orders.not-found.back-to-orders"
+            >
               {t('notFound.backToOrders')}
             </Button>
           }

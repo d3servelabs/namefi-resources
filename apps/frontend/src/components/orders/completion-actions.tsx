@@ -29,6 +29,7 @@ export function CompletionActions({
         className="gap-2"
         render={<Link href={manageHref} />}
         nativeButton={false}
+        data-testid="orders.completion.manage"
       >
         <Settings2 className="h-4 w-4" />
         Manage{multiple ? ' domains' : ''}
@@ -38,6 +39,7 @@ export function CompletionActions({
         variant="outline"
         className="gap-2 border-white/10 bg-black/[0.03] hover:bg-white/5"
         onClick={onShare}
+        data-testid="orders.completion.share"
       >
         <Share2 className="h-4 w-4" />
         Share
@@ -48,6 +50,7 @@ export function CompletionActions({
           variant="outline"
           className="gap-2 border-emerald-500/40 bg-emerald-500/10 text-emerald-300 hover:bg-emerald-500/20"
           onClick={onList}
+          data-testid="orders.completion.list"
         >
           <Tag className="h-4 w-4" />
           List for Sale

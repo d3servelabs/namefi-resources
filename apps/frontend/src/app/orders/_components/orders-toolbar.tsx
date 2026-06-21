@@ -226,12 +226,16 @@ export function OrdersToolbar({
   };
 
   return (
-    <div className="flex items-center flex-wrap gap-2">
+    <div
+      className="flex items-center flex-wrap gap-2"
+      data-testid="orders.toolbar"
+    >
       <Button
         type="button"
         variant="outline"
         size="sm"
         onClick={() => setFilterPanelOpen(true)}
+        data-testid="orders.toolbar.filters"
       >
         <Filter className="h-4 w-4 me-2" />
         {t('toolbar.filters')}
@@ -245,7 +249,12 @@ export function OrdersToolbar({
       <Popover open={sortPopoverOpen} onOpenChange={setSortPopoverOpen}>
         <PopoverTrigger
           render={
-            <Button type="button" variant="outline" size="sm">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              data-testid="orders.toolbar.sort"
+            >
               <ArrowUpDown className="h-4 w-4 me-2" />
               {t('toolbar.sort', { label: sortLabel })}
             </Button>
@@ -266,7 +275,7 @@ export function OrdersToolbar({
                   })
                 }
               >
-                <SelectTrigger size="sm">
+                <SelectTrigger size="sm" data-testid="orders.toolbar.sort-by">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -286,6 +295,7 @@ export function OrdersToolbar({
                 variant="outline"
                 size="sm"
                 onClick={flipDirection}
+                data-testid="orders.toolbar.sort-direction"
               >
                 {sort.sortDirection === 'asc' ? (
                   <>
@@ -310,6 +320,7 @@ export function OrdersToolbar({
             id="orders-show-only-curret-pbn"
             checked={!showAllParents}
             onCheckedChange={(checked) => onShowAllParentsChange(!checked)}
+            data-testid="orders.toolbar.only-current-pbn"
           />
           <Label
             htmlFor="orders-show-only-curret-pbn"
@@ -330,6 +341,7 @@ export function OrdersToolbar({
           size="sm"
           onClick={onReset}
           className="ms-auto"
+          data-testid="orders.toolbar.reset"
         >
           <RotateCcw className="h-3.5 w-3.5 me-1" />
           {t('toolbar.reset')}

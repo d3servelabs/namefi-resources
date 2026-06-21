@@ -424,7 +424,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
       ) : null}
 
       {/* Top - Order Details header */}
-      <h1 className="text-4xl font-bold my-2 font-mono">
+      <h1
+        className="text-4xl font-bold my-2 font-mono"
+        data-testid="orders.details.heading"
+      >
         {t('details.heading')}
       </h1>
       <CartCard className="relative mb-8" gradient="minimal">
@@ -435,13 +438,17 @@ export function OrderDetailsContent({ id }: { id: string }) {
           onClick={() => setIsTechModalOpen(true)}
           title={t('details.viewOrderDetails')}
           aria-label={t('details.viewTechnicalDetails')}
+          data-testid="orders.details.tech-details-button"
         >
           <Info size={16} />
         </Button>
         <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
           <div className="flex items-center justify-between h-8">
             <span className="font-medium">{t('details.status')}</span>
-            <div className="flex items-center">
+            <div
+              className="flex items-center"
+              data-testid="orders.details.status"
+            >
               {order.status ? (
                 <StatusBadge status={order.status} type="order" />
               ) : (
@@ -506,6 +513,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                               'recipientWalletAddress',
                             );
                           }}
+                          data-testid="orders.details.copy-wallet"
                         />
                       }
                     >
@@ -566,6 +574,7 @@ export function OrderDetailsContent({ id }: { id: string }) {
                   key={item.id}
                   onClick={() => setSelectedItemId(item.id)}
                   className="text-start rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+                  data-testid={`orders.details.item.${item.id}`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="min-w-0">
@@ -660,7 +669,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
           </div>
           <div className="flex items-center justify-between pt-4">
             <span className="text-xl font-medium">{t('details.total')}</span>
-            <span className="text-xl font-bold">
+            <span
+              className="text-xl font-bold"
+              data-testid="orders.details.total"
+            >
               {formatAmountInUSD(order.amountInUSDCents, true)}
             </span>
           </div>
@@ -693,7 +705,10 @@ export function OrderDetailsContent({ id }: { id: string }) {
 
       {/* Technical Details Modal */}
       <AlertDialog open={isTechModalOpen} onOpenChange={setIsTechModalOpen}>
-        <AlertDialogContent className="max-w-2xl">
+        <AlertDialogContent
+          className="max-w-2xl"
+          data-testid="orders.details.tech-dialog"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>{t('details.techDialogTitle')}</AlertDialogTitle>
             <AlertDialogDescription>
@@ -1041,6 +1056,7 @@ function PaymentSummaryCard({
       type="button"
       onClick={onClick}
       className="text-start rounded-lg border border-white/10 bg-white/[0.02] p-4 hover:bg-white/[0.06] transition-colors"
+      data-testid={`orders.details.payment.${payment.id}`}
     >
       <div className="flex items-center justify-between">
         <div className="text-sm text-muted-foreground">
@@ -1175,7 +1191,10 @@ function PaymentDetailsModal({
 
   return (
     <AlertDialog open={!!paymentId} onOpenChange={() => onOpenChange(null)}>
-      <AlertDialogContent className="!max-w-2xl !w-full">
+      <AlertDialogContent
+        className="!max-w-2xl !w-full"
+        data-testid="orders.details.payment-dialog"
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>
             {t('details.paymentDetailsTitle')}
@@ -1569,7 +1588,10 @@ function ItemDetailsModal({
 
   return (
     <AlertDialog open={!!itemId} onOpenChange={() => onOpenChange(null)}>
-      <AlertDialogContent className="!max-w-xl">
+      <AlertDialogContent
+        className="!max-w-xl"
+        data-testid="orders.details.item-dialog"
+      >
         <AlertDialogHeader>
           <AlertDialogTitle>{t('details.itemDetailsTitle')}</AlertDialogTitle>
           <AlertDialogDescription>
@@ -1637,6 +1659,7 @@ function ItemDetailsModal({
                   type="button"
                   onClick={handleConfirmUnlock}
                   disabled={isActionPending}
+                  data-testid="orders.details.confirm-unlock"
                 >
                   {confirmUnlockMutation.isPending ? (
                     <>
@@ -1674,11 +1697,13 @@ function ItemDetailsModal({
                       placeholder={t('details.authCodePlaceholder')}
                       autoComplete="off"
                       disabled={isActionPending}
+                      data-testid="orders.details.auth-code-input"
                     />
                   </div>
                   <Button
                     type="submit"
                     disabled={isActionPending || !authCode.trim()}
+                    data-testid="orders.details.submit-auth-code"
                   >
                     {updateAuthCodeMutation.isPending ? (
                       <>
@@ -1706,6 +1731,7 @@ function ItemDetailsModal({
                   size="sm"
                   onClick={handleCancelRequiredAction}
                   disabled={isActionPending}
+                  data-testid="orders.details.cancel-item"
                 >
                   {cancelRequiredActionMutation.isPending ? (
                     <>

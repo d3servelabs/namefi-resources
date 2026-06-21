@@ -121,13 +121,22 @@ export function SinglePaymentMethodDetails({
   }, [isCreditCardPayment, isX402Payment]);
 
   return (
-    <div className="flex flex-row gap-2 items-center">
+    <div
+      className="flex flex-row gap-2 items-center"
+      data-testid={`payment.method.details.${payment.id}`}
+    >
       {isCreditCardPayment ? (
-        <span className="font-medium text-muted-foreground text-sm">
+        <span
+          className="font-medium text-muted-foreground text-sm"
+          data-testid={`payment.method.card.${payment.id}`}
+        >
           {creditCardPreviewText}
         </span>
       ) : isX402Payment && x402PaymentPreview ? (
-        <span className="font-medium text-muted-foreground text-sm inline-flex items-center gap-1">
+        <span
+          className="font-medium text-muted-foreground text-sm inline-flex items-center gap-1"
+          data-testid={`payment.method.x402.${payment.id}`}
+        >
           ({x402PaymentPreview.networkName}) {x402PaymentPreview.shortAddress}
           {x402PaymentPreview.explorerUrl && (
             <a
@@ -136,13 +145,17 @@ export function SinglePaymentMethodDetails({
               rel="noopener noreferrer"
               className="text-primary hover:underline inline-flex items-center"
               title={t('viewTransactionTitle')}
+              data-testid={`payment.method.explorer-link.${payment.id}`}
             >
               <ExternalLink className="h-3 w-3" />
             </a>
           )}
         </span>
       ) : (
-        <span className="font-medium text-muted-foreground text-sm">
+        <span
+          className="font-medium text-muted-foreground text-sm"
+          data-testid={`payment.method.nfsc.${payment.id}`}
+        >
           {nfscPaymentPreviewText}
         </span>
       )}
@@ -151,7 +164,10 @@ export function SinglePaymentMethodDetails({
           <StatusBadge status={payment.status} type="payment" />
         </div>
       )}
-      <span className="w-[8ch] text-end whitespace-pre">
+      <span
+        className="w-[8ch] text-end whitespace-pre"
+        data-testid={`payment.method.amount.${payment.id}`}
+      >
         ${payment.amountInUSDCents / 100} {currencyDisplay}
       </span>
     </div>

@@ -129,7 +129,10 @@ function CardRow({ label, children }: { label: string; children: ReactNode }) {
  */
 function OrderCard({ row }: { row: OrdersDataRow }) {
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`orders.item.${row.id}`}
+    >
       <div className="flex items-center justify-between gap-3 px-3.5 py-3">
         <span className="min-w-0 truncate text-sm font-semibold text-foreground">
           {row.normalizedDomainName || '-'}
@@ -294,6 +297,7 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
             table.getColumn('search')?.setFilterValue(v);
           }}
           className="max-w-xs"
+          data-testid="orders.list.search"
         />
         <Select
           value={status}
@@ -305,7 +309,10 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
               ?.setFilterValue(v === 'ALL' ? undefined : v);
           }}
         >
-          <SelectTrigger className="w-44">
+          <SelectTrigger
+            className="w-44"
+            data-testid="orders.list.status-filter"
+          >
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -327,7 +334,10 @@ export function OrdersDataTable({ items }: { items: OrdersDataRow[] }) {
           ))}
         </div>
       ) : (
-        <table className="w-full text-sm" /* mobile-ok desktop-only */>
+        <table
+          className="w-full text-sm" /* mobile-ok desktop-only */
+          data-testid="orders.list.table"
+        >
           {/* mobile renders cards via useIsMobile; see OrderCard above */}
           <thead className="text-start text-muted-foreground">
             {table.getHeaderGroups().map((hg) => (

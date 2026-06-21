@@ -150,7 +150,10 @@ export function OrdersPageV2() {
       </div>
       <div className="flex flex-col gap-4">
         {totalCount > 0 && (
-          <div className="text-xs text-muted-foreground">
+          <div
+            className="text-xs text-muted-foreground"
+            data-testid="orders.list.count"
+          >
             {t('showingCount', { shown: orders.length, total: totalCount })}
           </div>
         )}
@@ -187,6 +190,7 @@ export function OrdersPageV2() {
               size="sm"
               onClick={() => void fetchNextPage()}
               disabled={isFetchingNextPage}
+              data-testid="orders.list.load-more"
             >
               {isFetchingNextPage ? t('loading') : t('loadMore')}
             </Button>
