@@ -288,6 +288,28 @@ function getProcedureInputFromToolCall(
 }
 
 /**
+ * Effective auth headers for a tool call: the connection (Streamable HTTP
+ * transport) request headers as a base, with the per-tool `headers` argument
+ * taking precedence.
+ *
+ * This lets a client configure the API key once at the connection level
+ * (e.g. `claude mcp add --header "x-api-key: …"`) and have every tool call
+ * authenticate — keeping the secret in client config rather than forcing it
+ * into each tool's arguments (and the model's context). Per-call headers still
+ * override, so a single connection can use a different EIP-712 signer per tool.
+ */
+function resolveEffectiveHeaders(
+  baseContext: TrpcContextWithUserOrNull,
+  toolHeaders: Record<string, string | undefined>,
+): Record<string, string | undefined> {
+  const transportHeaders =
+    typeof baseContext.req?.header === 'function'
+      ? (baseContext.req.header() as Record<string, string>)
+      : {};
+  return { ...normalizeHeaders(transportHeaders), ...toolHeaders };
+}
+
+/**
  * Expose the MCP tool-wrapper `headers` through `ctx.req.header()` so procedures
  * that read request headers directly (e.g. delegated-account headers in
  * siwe.orpc, x402 payment headers in ordersRouter.orpc) see the values the
@@ -422,7 +444,10 @@ async function executeToolCall(
       throw new Error('MCP base context is unavailable');
     }
 
-    const headers = normalizeHeaders(input.headers);
+    const toolHeaders = normalizeHeaders(input.headers);
+    // Merge connection-level transport headers with the per-tool headers so a
+    // connection-configured API key authenticates every tool call.
+    const headers = resolveEffectiveHeaders(baseContext, toolHeaders);
     const body = input.body;
     const authResult = await authenticateToolCall(
       tool,
