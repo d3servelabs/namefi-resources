@@ -73,8 +73,7 @@ These edit critical deploy paths and are intentionally **not** in the monitoring
 
 ## Validate before trusting
 
-- Dispatch `Security Scan` manually once and confirm **OSV-Scanner parses
-  `bun.lock`** (the text lockfile is relatively new) — if not, lean on `bun audit`
-  for deps and adjust the OSV step.
-- Confirm Dependabot's **Bun lockfile** support; otherwise keep its `npm` entry for
-  manifest bumps only and rely on the scan workflow for dependency CVEs.
+- ✅ Verified via manual dispatch (run 27920091882): OSV-Scanner parses `bun.lock`,
+  and `bun audit` surfaces advisories (it flagged a critical `@orpc/client` issue).
+- Dependabot uses the native `bun` ecosystem (GA 2025-02-13); note the known quirk
+  that it may rewrite the `configVersion` field in `bun.lock` on update PRs.

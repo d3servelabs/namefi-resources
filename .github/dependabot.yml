@@ -17,11 +17,11 @@ updates:
         patterns:
           - "*"
 
-  # JS/TS dependencies. NOTE: validate Dependabot's Bun (bun.lock) support — if it
-  # cannot parse the workspace lockfile, rely on `bun audit` + OSV-Scanner in
-  # security-scan.yml for dependency CVEs and keep this entry for manifest-level
-  # version bumps only. Grouped to limit PR churn across the monorepo.
-  - package-ecosystem: npm
+  # JS/TS dependencies. Uses the native `bun` ecosystem (Dependabot GA'd Bun
+  # support 2025-02-13), so it reads this Bun workspace's bun.lock directly.
+  # Dependency CVEs are additionally covered by `bun audit` + OSV-Scanner in
+  # security-scan.yml. Grouped to limit PR churn across the monorepo.
+  - package-ecosystem: bun
     directory: /
     schedule:
       interval: weekly

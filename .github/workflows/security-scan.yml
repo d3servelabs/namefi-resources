@@ -59,13 +59,27 @@ jobs:
         run: |
           set -uo pipefail
           echo "## bun audit (high+)" >> "$GITHUB_STEP_SUMMARY"
-          if bun audit --audit-level=high | tee bun-audit.txt; then
-            echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "No high/critical advisories." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "found=true" >> "$GITHUB_OUTPUT"
-            { echo '```'; cat bun-audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
-          fi
+          # Capture the exact exit code: 0 = clean, 1 = advisories found (npm/bun
+          # convention), anything else = tool/network error. Distinguishing them
+          # avoids a transient failure masquerading as a vulnerability alert.
+          rc=0
+          bun audit --audit-level=high > bun-audit.txt 2>&1 || rc=$?
+          cat bun-audit.txt
+          case "$rc" in
+            0)
+              echo "found=false" >> "$GITHUB_OUTPUT"
+              echo "No high/critical advisories." >> "$GITHUB_STEP_SUMMARY"
+              ;;
+            1)
+              echo "found=true" >> "$GITHUB_OUTPUT"
+              { echo '```'; cat bun-audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+              ;;
+            *)
+              echo "found=false" >> "$GITHUB_OUTPUT"
+              echo "::warning::bun audit exited $rc (tool error, not advisories)"
+              { echo "> bun audit tool error (exit $rc):"; echo '```'; cat bun-audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+              ;;
+          esac
 
       - name: OSV-Scanner (lockfile)
         id: osv
@@ -76,6 +90,7 @@ jobs:
             --lockfile=bun.lock
 
       - name: Trivy filesystem (vuln + misconfig + secret)
+        id: trivy
         continue-on-error: true
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
@@ -84,7 +99,9 @@ jobs:
           scanners: vuln,misconfig,secret
           severity: HIGH,CRITICAL
           ignore-unfixed: true
-          exit-code: "0"
+          # Exit non-zero on HIGH/CRITICAL so its outcome can feed the Slack gate
+          # below; continue-on-error keeps the job green (report-only).
+          exit-code: "1"
           format: table
 
       - name: Upload scan artifacts
@@ -98,7 +115,7 @@ jobs:
 
       - name: Build Slack payload
         id: notify_gate
-        if: always() && env.SLACK_WEBHOOK_URL != '' && (steps.bun_audit.outputs.found == 'true' || steps.osv.outcome == 'failure')
+        if: always() && env.SLACK_WEBHOOK_URL != '' && (steps.bun_audit.outputs.found == 'true' || steps.osv.outcome == 'failure' || steps.trivy.outcome == 'failure')
         shell: bash
         run: |
           set -euo pipefail
