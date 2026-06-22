@@ -87,7 +87,7 @@ Most bad valuations come from a short list of repeat offenders:
 
 Appraisal answers "how much." It doesn't answer the harder operational question that follows: how do both sides actually trade a five- or six-figure name without one of them getting hurt? The buyer has to wire money before they truly control the asset; the seller has to release control before they've confirmed the money. That trust gap is where high-value [domain trading](/en/glossary/domain-trading/) gets risky, and it's separate from — and downstream of — getting the price right. (We've watched that gap play out in real rebrands, like the [TeslaMotors.com to Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/) acquisition.)
 
-This is the gap [Namefi](https://namefi.io) is built to close. Tokenizing a real ICANN domain makes ownership easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change — the appraisal tells you the number, and a clean transfer protects both sides once you've agreed on it. Value the name honestly; then make the trade safe.
+This is the gap [Namefi](https://namefi.io) is built to close. Tokenizing a real [ICANN](/en/glossary/icann/) domain makes ownership easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change — the appraisal tells you the number, and a clean transfer protects both sides once you've agreed on it. Value the name honestly; then make the trade safe.
 
 ## Sources and further reading
 
