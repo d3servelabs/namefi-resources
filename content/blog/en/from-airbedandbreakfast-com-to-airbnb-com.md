@@ -127,9 +127,9 @@ The domain upgrade did not make Airbnb win. Product, design, relentless founder 
 
 Airbnb's rename was, at its core, an asset decision dressed up as a branding decision.
 
-The hard part of most domain upgrades is rarely deciding that the better name matters. It is executing the move safely: securing the new domain, proving ownership, transferring control without breaking the live site, and making sure the asset doesn't sit fragile and undocumented inside one founder's registrar account during the most chaotic year of the company's life. Airbnb was lucky enough to have registered its short domain early — but most companies discover the name they want only after someone else already owns it.
+The hard part of most domain upgrades is rarely deciding that the better name matters. It is executing the move safely: securing the new domain, proving ownership, transferring control without breaking the live site, and making sure the asset doesn't sit fragile and undocumented inside one founder's [registrar](/en/glossary/registrar/) account during the most chaotic year of the company's life. Airbnb was lucky enough to have registered its short domain early — but most companies discover the name they want only after someone else already owns it.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — turning the messiest part of a rebrand, proving who owns what and moving it cleanly, into something closer to an auditable transaction.
+[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with [DNS](/en/glossary/dns/) — turning the messiest part of a rebrand, proving who owns what and moving it cleanly, into something closer to an auditable transaction.
 
 Airbnb.com looks inevitable now because Airbnb became enormous. But the lesson lands long before that scale: when a name is going to carry the business, the domain isn't decoration. It's the part of the brand worth shortening, securing, and getting right while you still can.
 
