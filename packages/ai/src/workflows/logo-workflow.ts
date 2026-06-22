@@ -78,31 +78,14 @@ export async function runLogoWorkflow(
   const input = logoWorkflowInputSchema.parse(rawInput);
   throwIfAborted(options.abortSignal);
 
-  const preferredType =
-    input.preferredType && input.preferredType !== 'let-ai-choose'
-      ? input.preferredType
-      : undefined;
-  const preferredStyle =
-    input.preferredStyle && input.preferredStyle !== 'let-ai-choose'
-      ? input.preferredStyle
-      : undefined;
-  const preferredTextTreatment =
-    input.textTreatment && input.textTreatment !== 'let-ai-choose'
-      ? input.textTreatment
-      : undefined;
-  const preferredTypography =
-    input.typography && input.typography !== 'let-ai-choose'
-      ? input.typography
-      : undefined;
-
   const strategy = await generateLogoStrategy(
     {
       domain: input.domain,
       description: input.description,
-      preferredType,
-      preferredStyle,
-      preferredTextTreatment,
-      preferredTypography,
+      preferredType: input.preferredType,
+      preferredStyle: input.preferredStyle,
+      preferredTextTreatment: input.textTreatment,
+      preferredTypography: input.typography,
     },
     { abortSignal: options.abortSignal },
   );

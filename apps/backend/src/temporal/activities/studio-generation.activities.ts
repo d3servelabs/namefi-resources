@@ -548,7 +548,10 @@ export async function generateStudioLogo({
           typography: resolvedConcept.typography ?? logoInput.typography,
           imageModel: logoResult.image.model,
         },
-        metadata,
+        metadata: {
+          ...metadata,
+          logoPromptVersion: 'logo-strategy-v2',
+        },
         tokenUsage: buildImageGenerationTokenUsageEntries(logoResult),
         updatedAt: new Date(),
       })

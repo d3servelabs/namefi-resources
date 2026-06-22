@@ -13,6 +13,7 @@ export interface LogoImageParams {
   domain: NamefiNormalizedDomain;
   logoType: LogoType;
   style: LogoStyle;
+  colorPalette?: string[];
   textTreatment?: LogoTextTreatmentInput;
   typography?: LogoTypographyInput;
   model: ImageModel;
@@ -69,6 +70,11 @@ function buildTextTreatmentInstructions(
 ) {
   const fullDomainText = `Use the exact text "${info.fullDomain}" when rendering the domain.`;
   const tldHint = info.tld ? `.${info.tld}` : '';
+  const dotRules = [
+    'The dot before the TLD is mandatory whenever the TLD appears.',
+    'Never render a naked TLD; use the leading dot, for example ".ai" instead of "ai".',
+    'Never replace the real TLD with another TLD, and never add spaces around the dot.',
+  ];
 
   switch (treatment) {
     case 'full-domain':
@@ -79,32 +85,71 @@ function buildTextTreatmentInstructions(
         'If the domain is long, keep it one line by reducing font size, using condensed letterforms, tightening tracking/kerning, or placing the wordmark on a gentle arc/curve.',
         'Do not split the TLD onto a new line under any circumstances.',
         'Keep the dot visible and the TLD legible.',
+        ...dotRules,
       ];
     case 'tld-subtle':
       return [
         'Text treatment: TLD Subtle.',
         `Primary wordmark is "${info.brandLabel}" with "${tldHint}" secondary, smaller, or lighter.`,
         'Keep the dot aligned with the baseline and fully visible.',
+        ...dotRules,
       ];
     case 'tld-highlight':
       return [
         'Text treatment: TLD Highlight.',
         `Primary wordmark is "${info.brandLabel}" and "${tldHint}" (or the dot) becomes a deliberate accent.`,
         'Keep the TLD readable while using color, shape, or weight for emphasis.',
+        ...dotRules,
       ];
     case 'stacked-domain':
       return [
         'Text treatment: Stacked Domain.',
         `Stack "${info.brandLabel}" on the first line and "${tldHint}" on the second line.`,
-        'Preserve the dot and keep alignment clean.',
+        'Preserve the leading dot on the second line and keep alignment clean.',
+        ...dotRules,
       ];
     default:
       return [
         'Text treatment: Choose the strongest lockup for the brand.',
         fullDomainText,
         'If you include the domain, treat the dot and TLD as intentional design elements.',
+        ...dotRules,
       ];
   }
+}
+
+function buildColorInstructions(colorPalette: string[] | undefined) {
+  if (!colorPalette?.length) {
+    return [
+      'Color plan:',
+      '- Use a high-contrast role-based palette.',
+      '- Choose a soft, subtle, colorful gradient canvas that supports the logo colors.',
+      '- Prefer medium-low background saturation: softened, muted, or dusted color classes are usually better than intense edge-to-edge saturated fields, but the background should not become washed out or nearly white.',
+      '- Use 2-3 softly blended background stops plus an optional gentle accent, chosen freely for the brand rather than from a fixed recipe.',
+      '- Make the background feel polished, playful, and intentionally colorful, but quieter than the logo.',
+      '- Make the gradient clearly but quietly multi-color at thumbnail size while preserving a clean focal area for the logo.',
+      '- Keep the background low-detail and behind the logo.',
+      '- Add a barely visible fine grain/noise layer to soften the gradient and reduce banding; it must not read as heavy texture, speckles, dust, paper, or a pattern.',
+      '- Maintain strong contrast with the primary text, mark, dot, and TLD.',
+      '- Do not let background color relationships make the logo blend into the canvas.',
+    ].join('\n');
+  }
+
+  return [
+    'Color plan:',
+    ...colorPalette.map((color) => `- ${color}`),
+    '- Use the Background base and Background gradient accents as a soft, subtle, colorful gradient canvas.',
+    '- Prefer medium-low background saturation: softened, muted, or dusted color classes are usually better than intense edge-to-edge saturated fields, but the background should not become washed out or nearly white.',
+    '- Use 2-3 softly blended background stops plus an optional gentle accent, chosen freely from the logo palette, brand personality, domain meaning, and selected style.',
+    '- Make the background feel polished, playful, and intentionally colorful, but quieter than the logo.',
+    '- Make the gradient clearly but quietly multi-color at thumbnail size while preserving a clean focal area for the logo.',
+    '- Keep the gradient low-detail and behind the logo.',
+    '- Add a barely visible fine grain/noise layer to soften the gradient and reduce banding; it must not read as heavy texture, speckles, dust, paper, or a pattern.',
+    '- The background must never compete with the mark, wordmark, dot, or TLD.',
+    '- Maintain strong contrast between the background and the primary text/wordmark, main mark/accent, and TLD/dot treatment.',
+    '- Place the most visually active background regions away from fine text or small TLD details when needed.',
+    '- Do not let background color relationships make the logo blend into the canvas.',
+  ].join('\n');
 }
 
 function buildTypographyInstructions(
@@ -135,13 +180,13 @@ function buildLogoTypeInstructions(logoType: LogoType, forceWordmark: boolean) {
     case 'wordmark':
       return `${base} Wordmark is the primary element; focus on typographic craft.`;
     case 'letter-mark':
-      return `${base} Use the first letter from the brand label as the mark, with optional supporting wordmark.`;
+      return `${base} Use the first letter or initials from the brand label as the mark, with optional supporting wordmark.`;
     case 'mascot':
       return `${base} If using a mascot, keep it stylized and logo-like (not illustrative).`;
     case 'image-icon':
-      return `${base} Pair a clear symbol with the wordmark for balance.`;
+      return `${base} Pair a recognizable object, product, tool, or concrete symbol with the wordmark for balance.`;
     case 'abstract-icon':
-      return `${base} Use a refined abstract mark paired with the wordmark.`;
+      return `${base} Use a refined non-literal geometric or metaphorical mark paired with the wordmark.`;
     default:
       return base;
   }
@@ -152,6 +197,7 @@ export const enhanceLogoPrompt = ({
   domain,
   logoType,
   style,
+  colorPalette,
   textTreatment,
   typography,
   model,
@@ -176,6 +222,7 @@ ${domainInfo.subdomain ? `- Subdomain prefix: ${domainInfo.subdomain}` : ''}
 ${textTreatmentLines.join('\n')}
 ${buildTypographyInstructions(typography, style)}
 ${buildLogoTypeInstructions(logoType, forceWordmark)}
+${buildColorInstructions(colorPalette)}
 
 Logo craftsmanship:
 - Prioritize a logo feel: clean vector-like shapes, strong geometry, and clear negative space.
@@ -186,10 +233,15 @@ Logo craftsmanship:
 Ensure the design is professional, scalable, and works well in various contexts.
 
 Background styling:
-- Use a subtle, non-distracting background that complements the primary logo colors
-- Prefer soft, low-contrast gradients with complementary or analogous hues; otherwise use a clean solid fill matching the palette
-- Avoid busy textures or patterns; keep contrast and readability high
-- The background should enhance the logo and never overpower it
+- Use the color plan's soft, subtle, colorful gradient canvas behind the logo.
+- Use 2-3 softly blended background stops plus an optional gentle accent.
+- Prefer medium-low background saturation: softened, muted, or dusted color classes are usually better than intense edge-to-edge saturated fields, but the background should not become washed out or nearly white.
+- Make the background feel polished, playful, and intentionally colorful, but quieter than the logo.
+- Make the gradient clearly but quietly multi-color at thumbnail size while preserving a clean focal area for the logo.
+- Add a barely visible fine grain/noise layer to soften the gradient and reduce banding; it must not read as heavy texture, speckles, dust, paper, or a pattern.
+- Keep the background low-detail and visually quiet.
+- Do not let the gradient reduce text, dot, TLD, or mark contrast.
+- The background should enhance the logo and never overpower it.
 
 ${
   model === 'gemini-2.5-flash-image' || model === 'gemini-3-pro-image-preview'
@@ -197,7 +249,7 @@ ${
 REQUIREMENTS:
 - Output a single square image at 1024x1024 resolution.
 - Produce ONLY the logo (no mockups, products, scenes, people, or environments).
-- Background: subtle gradient or clean solid fill that is visually complementary and non-distracting.
+- Background: soft, subtle, colorful gradient canvas from the color plan, visually complementary and non-distracting, with barely visible fine grain and strong logo contrast.
 - No watermarks or additional decorative elements beyond the simple background.
 - Center the logo with balanced padding; leave adequate breathing room around it.
 - If the logo includes the brand name text, render it cleanly; otherwise, render only the mark.

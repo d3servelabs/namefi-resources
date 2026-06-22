@@ -352,6 +352,7 @@ publicAiRouter.post('/generate-logo', async (c) => {
         tokenUsage,
         metadata: {
           requestId: c.get('requestId'),
+          logoPromptVersion: 'logo-strategy-v2',
         },
       })
       .returning();

@@ -386,6 +386,7 @@ export async function generateLogoImage(input: LogoGenerationInput) {
     domain: input.domain,
     logoType: input.concept.logoConcept.type,
     style: input.concept.logoConcept.style,
+    colorPalette: input.concept.colorPalette,
     textTreatment: input.textTreatment,
     typography: input.typography,
     model: input.model,

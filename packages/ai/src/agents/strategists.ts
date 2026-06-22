@@ -28,10 +28,7 @@ import {
   logoConceptSchema,
   type LogoConceptSchema,
 } from '../types/logo-schemas';
-import {
-  logoAnalysisUserPrompt,
-  logoGenerationSystemPrompt,
-} from '../prompts/logo-generation';
+import { logoAnalysisUserPrompt } from '../prompts/logo-generation';
 
 const logoTypeInstructions = Object.values(LOGO_TYPES)
   .filter((type) => type.id !== 'let-ai-choose')
@@ -77,12 +74,13 @@ const loopedAnimationMotionInstructions = Object.values(
   .join('\n');
 
 const logoStrategistAgent = new ToolLoopAgent({
-  model: openai('gpt-5.2'),
-  instructions: `${logoGenerationSystemPrompt}
+  model: openai('gpt-5.4'),
+  instructions: `You are a senior brand identity strategist creating one production-ready logo strategy for a domain-based brand.
 
 STRICT JSON OUTPUT RULES:
 - Return only JSON matching the supplied schema.
 - Use the exact ID values (lowercase, hyphenated) listed below for logoConcept.type, logoConcept.style, logoConcept.textTreatment, and logoConcept.typography.
+- Never output "let-ai-choose". If the user selected "Let AI Choose", actively choose exactly one resolved finite option from the available IDs.
 
 AVAILABLE LOGO TYPES (use the id on the left):
 ${logoTypeInstructions}
