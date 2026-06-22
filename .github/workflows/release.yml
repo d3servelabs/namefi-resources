@@ -3,15 +3,6 @@ name: Create Release
 on:
   workflow_dispatch:
     inputs:
-      merge_method:
-        description: 'Merge method for the PR'
-        required: false
-        default: 'rebase'
-        type: choice
-        options:
-          - squash
-          - merge
-          - rebase
       forceRelease:
         description: 'Force release even if no changes detected in apps/frontend or apps/backend'
         required: false
@@ -431,124 +422,6 @@ jobs:
           echo "✅ Version bump committed and pushed successfully"
           echo "   Commit SHA: $COMMIT_SHA"
 
-  create-pull-request:
-    name: Create Pull Request
-    needs: [auth-namefi-bot, check-deployment-status, update-versions]
-    runs-on: ubuntu-latest
-    if: ${{ vars.CREATE_RELEASE_PR == 'true' }}
-    outputs:
-      pr_number: ${{ steps.create-pr.outputs.pr_number }}
-      pr_url: ${{ steps.create-pr.outputs.pr_url }}
-    steps:
-      - uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
-          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
-
-      - name: Create Pull Request
-        id: create-pr
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            // Create the PR
-            const { data: pr } = await github.rest.pulls.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title: `Release: frontend ${{ needs.update-versions.outputs.frontend_version }} backend ${{ needs.update-versions.outputs.backend_version }}`,
-              head: 'main',
-              base: 'prod',
-              body: `## 🚀 Production Release
-
-            ### Version Updates
-            - **Frontend**: ${{ needs.update-versions.outputs.old_frontend_version }} → ${{ needs.update-versions.outputs.frontend_version }}
-            - **Backend**: ${{ needs.update-versions.outputs.old_backend_version }} → ${{ needs.update-versions.outputs.backend_version }}
-
-            ### Pre-release Checks
-            - ✅ Deploy Backend workflow on main branch: [Success](${{ needs.check-deployment-status.outputs.deployment_run_url }})
-            - ✅ Version increments applied: [Commit](https://github.com/${{ github.repository }}/commit/${{ needs.update-versions.outputs.commit_sha }})
-
-            ### Deployment Information
-            - **Deployment SHA**: \`${{ needs.check-deployment-status.outputs.deployment_sha }}\`
-            - **Release Commit**: \`${{ needs.update-versions.outputs.commit_sha }}\`
-            - **Triggered by**: ${{ github.event_name == 'schedule' && '🤖 Scheduled (Daily @ 11:00 UTC)' || format('@{0}', github.actor) }}
-            - **Release Type**: ${{ github.event_name == 'schedule' && '⏰ Automated' || '🔧 Manual' }}
-            - **Release Time**: ${{ github.event.head_commit.timestamp || github.event.repository.updated_at }}
-
-            ### Auto-merge Status
-            🔄 This PR will **automatically merge** when all status checks pass.
-
-            ---
-            *This is an automated release created by the release workflow.*`
-            });
-
-            console.log(`✅ Pull request created: ${pr.html_url}`);
-            core.setOutput('pr_number', pr.number);
-            core.setOutput('pr_url', pr.html_url);
-
-            return pr;
-
-  enable-auto-merge:
-    name: Enable Auto-merge
-    needs: [auth-namefi-bot, create-pull-request, update-versions]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/create-github-app-token@v2
-        id: app-token
-        with:
-          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
-          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
-
-      - name: Enable Auto-merge
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ steps.app-token.outputs.token }}
-          script: |
-            const prNumber = ${{ needs.create-pull-request.outputs.pr_number }};
-            const mergeMethod = '${{ github.event.inputs.merge_method || 'merge' }}';
-
-            try {
-              // Get the PR to ensure we have the latest node ID
-              const { data: pullRequest } = await github.rest.pulls.get({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                pull_number: prNumber
-              });
-
-              // Enable auto-merge using GraphQL API
-              const mutation = `
-                mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
-                  enablePullRequestAutoMerge(input: {
-                    pullRequestId: $pullRequestId,
-                    mergeMethod: $mergeMethod
-                  }) {
-                    pullRequest {
-                      autoMergeRequest {
-                        enabledAt
-                        mergeMethod
-                      }
-                    }
-                  }
-                }
-              `;
-
-              const variables = {
-                pullRequestId: pullRequest.node_id,
-                mergeMethod: mergeMethod.toUpperCase()
-              };
-
-              const result = await github.graphql(mutation, variables);
-
-              console.log(`✅ Auto-merge enabled with ${mergeMethod} method`);
-              console.log('Auto-merge details:', result.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
-            } catch (error) {
-              console.log(`⚠️ Could not enable auto-merge: ${error.message}`);
-              console.log('The PR will need to be merged manually once checks pass.');
-              // Don't fail the workflow if auto-merge can't be enabled
-              // This might happen if branch protection rules don't allow it
-            }
-
   release-summary:
     name: Release Summary
     needs:
@@ -557,8 +430,6 @@ jobs:
       - auth-namefi-bot
       - check-deployment-status
       - update-versions
-      - create-pull-request
-      - enable-auto-merge
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -619,20 +490,6 @@ jobs:
             exit 0
           fi
 
-          if [[ "${{ needs.create-pull-request.result }}" == "failure" ]]; then
-            echo "## ❌ Release Failed - Pull Request Creation" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Failed to create the release pull request from main to prod." >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Possible causes:**" >> $GITHUB_STEP_SUMMARY
-            echo "- There may already be an open PR from main to prod" >> $GITHUB_STEP_SUMMARY
-            echo "- Insufficient permissions to create pull requests" >> $GITHUB_STEP_SUMMARY
-            echo "- Network or API issues" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Action Required:** Check for existing PRs and review the workflow logs." >> $GITHUB_STEP_SUMMARY
-            exit 0
-          fi
-
           # Success case
           echo "## 🎉 Release Created Successfully!" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -647,21 +504,6 @@ jobs:
             echo "### Version Updates" >> $GITHUB_STEP_SUMMARY
             echo "- **Frontend**: ${{ needs.update-versions.outputs.old_frontend_version }} → ${{ needs.update-versions.outputs.frontend_version }}" >> $GITHUB_STEP_SUMMARY
             echo "- **Backend**: ${{ needs.update-versions.outputs.old_backend_version }} → ${{ needs.update-versions.outputs.backend_version }}" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # Pull Request details
-          if [[ -n "${{ needs.create-pull-request.outputs.pr_number }}" ]]; then
-            echo "### Pull Request" >> $GITHUB_STEP_SUMMARY
-            echo "- **PR**: [#${{ needs.create-pull-request.outputs.pr_number }}](${{ needs.create-pull-request.outputs.pr_url }})" >> $GITHUB_STEP_SUMMARY
-
-            if [[ "${{ needs.enable-auto-merge.result }}" == "success" ]]; then
-              echo "- **Status**: ✅ Auto-merge enabled (will merge when checks pass)" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "- **Status**: ⚠️ Auto-merge could not be enabled (manual merge required)" >> $GITHUB_STEP_SUMMARY
-            fi
-
-            echo "- **Merge method**: ${{ github.event.inputs.merge_method || 'merge' }}" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
           fi
 
@@ -681,6 +523,5 @@ jobs:
           fi
 
           echo "### Next Steps" >> $GITHUB_STEP_SUMMARY
-          echo "1. Monitor the [PR](${{ needs.create-pull-request.outputs.pr_url }}) for status check completion" >> $GITHUB_STEP_SUMMARY
-          echo "2. Once merged, the prod branch will trigger production deployment" >> $GITHUB_STEP_SUMMARY
-          echo "3. Verify production deployment in the Deploy Backend workflow" >> $GITHUB_STEP_SUMMARY
+          echo "1. The release tag \`${{ needs.update-versions.outputs.tag_name }}\` triggers the production deployment (\`astra/v*\` tag push)" >> $GITHUB_STEP_SUMMARY
+          echo "2. Verify production deployment in the Deploy Backend workflow" >> $GITHUB_STEP_SUMMARY
