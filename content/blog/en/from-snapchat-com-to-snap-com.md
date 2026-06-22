@@ -47,9 +47,9 @@ Crucially, the expensive, slow-to-acquire piece was already done. Snap had quiet
 
 ## The seller's side: Idealab, an SEC filing, and a number nobody announced
 
-Unlike the loud, decade-long Tesla.com saga, the Snap.com purchase was almost invisible at the time. There was no press release, no founder tweet, no confirmed price. The story had to be reverse-engineered.
+Unlike the loud, decade-long [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/) saga, the Snap.com purchase was almost invisible at the time. There was no press release, no founder tweet, no confirmed price. The story had to be reverse-engineered.
 
-The domain's prior owner was **Idealab**, Bill Gross's long-running technology incubator, which had held Snap.com for years. Domain researchers traced the handoff through public WHOIS records: [according to the WHOIS history at DomainTools, Snap.com changed from Idealab in mid-November of 2014](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=According%20to%20the%20WHOIS%20history%20at%20DomainTools%2C%20Snap.com%20changed%20from%20Idealab%20in%20mid-November%20of%202014) into privacy-protected and then corporate registrar accounts — the classic fingerprint of a quiet acquisition by a company that didn't want to tip its hand.
+The domain's prior owner was **Idealab**, Bill Gross's long-running technology incubator, which had held Snap.com for years. Domain researchers traced the handoff through public [WHOIS](/en/glossary/whois/) records: [according to the WHOIS history at DomainTools, Snap.com changed from Idealab in mid-November of 2014](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=According%20to%20the%20WHOIS%20history%20at%20DomainTools%2C%20Snap.com%20changed%20from%20Idealab%20in%20mid-November%20of%202014) into privacy-protected and then corporate [registrar](/en/glossary/registrar/) accounts — the classic fingerprint of a quiet acquisition by a company that didn't want to tip its hand.
 
 The price surfaced only when Snap filed to go public. Buried in the financials was a domain-name line item that domain investors immediately recognized. As the analysis put it, [there is a $5 million number for domain names, can't imagine any other domain purchases by the company that would account for this number](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=There%20is%20a%20%245%20million%20number%20for%20domain%20names%2C%20can%27t%20imagine%20any%20other%20domain%20purchases%20by%20the%20company%20that%20would%20account%20for%20this%20number). The amortization schedule fit a single large purchase: [this lines up almost perfectly with a single $5 million deal in November/December 2014](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=this%20lines%20up%20almost%20perfectly%20with%20a%20single%20%245%20million%20deal%20in%20November%2FDecember%202014).
 
@@ -113,7 +113,7 @@ The domain didn't build Snap's brand — the app, the camera, and the culture di
 
 ## What founders should learn from Case 12
 
-The easy takeaway — "buy your short .com" — misses the more useful structure. Snap's lesson is about *sequence and quiet timing*:
+The easy takeaway — "buy your short [.com](/en/tld/com/)" — misses the more useful structure. Snap's lesson is about *sequence and quiet timing*:
 
 1. **A literal, self-describing domain is a great way to start.** Snapchat.com matched the app perfectly and made the product spread by word of mouth. A descriptive name is an on-ramp, not a failure.
 2. **Watch for when the product name becomes a company ceiling.** The signal to upgrade wasn't aesthetic — it was strategic. Once "chat" no longer described the ambition (hardware, camera, AR), the app name could not also be the company name.

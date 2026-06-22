@@ -127,7 +127,7 @@ The domain didn't build Tesla's brand. But once Tesla.com was the address, every
 
 ![Editorial four-step diagram for founders upgrading from a descriptive launch domain to an exact-match brand domain](../../assets/from-teslamotors-com-to-tesla-com-08-founders-lessons.jpg)
 
-The easy takeaway — "buy your exact-match .com early" — is the wrong one. Tesla *couldn't* buy Tesla.com early; the owner wouldn't sell. The more useful lessons are about timing and treatment:
+The easy takeaway — "buy your exact-match [.com](/en/tld/com/) early" — is the wrong one. Tesla *couldn't* buy Tesla.com early; the owner wouldn't sell. The more useful lessons are about timing and treatment:
 
 1. **A descriptive domain is fine to start.** TeslaMotors.com did its job for thirteen years and through some of the most important product launches in the company's history. A modifier like "Motors," "App," or "HQ" is not a failure; it is a reasonable on-ramp.
 2. **Watch for the moment the modifier becomes a ceiling.** The signal to upgrade isn't aesthetic. It's when your name starts describing a smaller company than the one you're becoming. For Tesla, that was the pivot beyond cars.

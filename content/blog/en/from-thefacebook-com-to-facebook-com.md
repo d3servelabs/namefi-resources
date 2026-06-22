@@ -183,7 +183,7 @@ But Facebook.com made the win easier to name.
 
 Most domain upgrades are not just naming decisions. They are asset-transfer decisions.
 
-The hard part is often not deciding that the better domain matters. It is making the transaction happen safely: finding the owner, agreeing on price, coordinating payment, transferring control, preserving DNS continuity, documenting ownership, and making sure the domain does not sit inside one person's registrar account after the deal.
+The hard part is often not deciding that the better domain matters. It is making the transaction happen safely: finding the owner, agreeing on price, coordinating payment, transferring control, preserving [DNS](/en/glossary/dns/) continuity, documenting ownership, and making sure the domain does not sit inside one person's [registrar](/en/glossary/registrar/) account after the deal.
 
 [Namefi](https://namefi.io) is built around the idea that domains should behave more like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while preserving compatibility with DNS.
 
