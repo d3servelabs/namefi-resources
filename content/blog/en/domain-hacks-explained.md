@@ -22,7 +22,7 @@ That trick has a name. It's called a **domain hack**, and it's one of the oldest
 
 A domain hack is a domain name where the extension itself becomes part of the word. Instead of the address *pointing at* a word, the address *is* the word, spelled across the dot. Wikipedia defines it precisely: [a domain hack is a domain name that suggests a word, phrase, or name when concatenating two or more adjacent levels of that domain](https://en.wikipedia.org/wiki/Domain_hack#:~:text=A%20domain%20hack%20is%20a%20domain%20name%20that%20suggests%20a%20word).
 
-The mechanism is the [top-level domain](/en/glossary/tld/) — the part after the final dot. Most famous domain hacks borrow a **country code top-level domain** (a ccTLD), the two-letter extension a country gets in the global DNS, and use it as if it were the last syllable of an English word. `del.icio.us` did exactly this: it took `.us` (the United States ccTLD), registered `icio.us`, stacked `del` in front as a subdomain, and the whole thing read as "delicious." We pulled that one apart in [the del.icio.us case study](/en/blog/from-del-icio-us-to-delicious-com/), and it remains the textbook example.
+The mechanism is the [top-level domain](/en/glossary/tld/) — the part after the final dot. Most famous domain hacks borrow a **country code top-level domain** (a ccTLD), the two-letter extension a country gets in the global [DNS](/en/glossary/dns/), and use it as if it were the last syllable of an English word. `del.icio.us` did exactly this: it took `.us` (the United States ccTLD), registered `icio.us`, stacked `del` in front as a subdomain, and the whole thing read as "delicious." We pulled that one apart in [the del.icio.us case study](/en/blog/from-del-icio-us-to-delicious-com/), and it remains the textbook example.
 
 It works because ccTLDs were never designed to be word endings — that's an accident of which two letters each country happened to get. (If you've never thought about where these extensions come from, our explainer on [what a TLD is](/en/blog/what-is-a-tld/) covers the ground.) A domain hack is what happens when someone notices that a country's two-letter code also spells a useful suffix and decides to build a brand on the coincidence.
 
@@ -82,7 +82,7 @@ The short version: value the word, test it spoken, price in the country, and che
 
 When a premium hack does change hands, the hard part isn't agreeing on a price — it's the transfer. Moving a valuable name means proving who holds it, handing it over without the site going dark, and trusting that the other side actually delivers. That's the same friction behind any high-value [domain trade](/en/glossary/domain-trading/), and it's worse for a hack, where the name often *is* live infrastructure inside someone's product.
 
-This is the gap [Namefi](https://namefi.io) is built to close: tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover. Clever is fun. A clean, auditable transfer of the asset underneath the cleverness is what lets you actually trade on it.
+This is the gap [Namefi](https://namefi.io) is built to close: tokenized ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover. Clever is fun. A clean, auditable transfer of the asset underneath the cleverness is what lets you actually trade on it.
 
 ## Sources and further reading
 

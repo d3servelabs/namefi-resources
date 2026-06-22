@@ -14,7 +14,7 @@ ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['domain for sale landing page', 'domain for sale page', 'sell a domain', 'domain landing page', 'for sale lander', 'domain sales page', 'buy now domain', 'make an offer domain', 'domain parking page', 'domain price', 'domain landing page that converts', 'how to sell a domain', 'domain escrow', 'domain conversion rate', 'domain trust signals']
 ---
 
-A buyer who wants your name rarely arrives through your marketing. They type the name into a browser to see if it's taken, the domain resolves, and a page loads. Whatever that page says is your entire pitch. If it's a registrar default, a parking page stuffed with ads, or nothing at all, you just lost the one visitor who was already convinced the name mattered. The for-sale landing page is the storefront on the most valuable traffic you'll ever get: people who found you by typing the exact thing you're selling.
+A buyer who wants your name rarely arrives through your marketing. They type the name into a browser to see if it's taken, the domain resolves, and a page loads. Whatever that page says is your entire pitch. If it's a [registrar](/en/glossary/registrar/) default, a parking page stuffed with ads, or nothing at all, you just lost the one visitor who was already convinced the name mattered. The for-sale landing page is the storefront on the most valuable traffic you'll ever get: people who found you by typing the exact thing you're selling.
 
 This guide covers what a for-sale lander has to do, the three things every converting page gets right (a clear price or offer path, real trust signals, and a frictionless way to transact), and the mistakes that quietly kill deals. It's a companion to [marketing your domains for sale](/en/blog/marketing-your-domains-for-sale/), which covers the channels that drive traffic; this one is about what happens when that traffic lands. Both sit under the [domain flipping](/en/blog/domain-flipping/) series.
 
@@ -48,7 +48,7 @@ Concrete trust signals that move the needle:
 - **The name as the headline.** Obvious, but the page should state plainly that *this exact domain* is for sale. A visitor should never have to guess whether they're on a parking page for a different name.
 - **A named, reachable seller or platform.** A real contact channel, a consistent identity, and ideally a recognizable marketplace or broker behind the listing. Anonymity reads as risk.
 - **A neutral settlement method, stated up front.** Telling the buyer the deal closes through [escrow](/en/glossary/escrow/) does more work than any "trusted seller" copy. Escrow is, in Wikipedia's words, [a contractual arrangement in which a third party (the stakeholder or escrow agent) receives and disburses money or property for the primary transacting parties](https://en.wikipedia.org/wiki/Escrow#:~:text=a%20contractual%20arrangement%20in%20which%20a%20third%20party), with release conditional on the agreed terms. Naming it tells the buyer that neither side has to go first. We unpack the mechanism in [domain escrow explained](/en/blog/domain-escrow-explained/).
-- **Verifiable ownership.** Anything that lets a buyer confirm you hold the name (consistent [WHOIS](/en/glossary/whois/), a marketplace badge, or on-chain proof of [domain ownership](/en/glossary/domain-ownership/)) converts skeptics that polished copy never will.
+- **Verifiable ownership.** Anything that lets a buyer confirm you hold the name (consistent [WHOIS](/en/glossary/whois/), a marketplace badge, or [on-chain](/en/glossary/on-chain/) proof of [domain ownership](/en/glossary/domain-ownership/)) converts skeptics that polished copy never will.
 
 ### 3. A frictionless path to buy or make contact
 
@@ -75,13 +75,13 @@ Most for-sale landers fail in predictable ways:
 - **No price and no offer button.** The most common own-goal. Pick one path and make it obvious.
 - **Friction in the contact flow.** Required accounts, captchas stacked on long forms, and slow human follow-up all convert "ready to buy" into "moved on."
 - **Nothing that signals legitimacy.** No named seller, no escrow mention, no ownership proof. The buyer's default assumption is "scam," and silence confirms it.
-- **A page that looks abandoned.** Broken styling, a name that doesn't resolve cleanly, or DNS that intermittently fails all read as "this seller isn't reachable." A name that flickers offline during the exact window a buyer is inspecting it is a deal you'll never know you lost.
+- **A page that looks abandoned.** Broken styling, a name that doesn't resolve cleanly, or [DNS](/en/glossary/dns/) that intermittently fails all read as "this seller isn't reachable." A name that flickers offline during the exact window a buyer is inspecting it is a deal you'll never know you lost.
 
 ## Where the lander hands off
 
 The lander's job ends the moment the buyer decides. What happens next — agreeing terms, settling payment, transferring the name — is where high-value deals get tense, because the buyer won't pay before receiving the domain and the seller won't transfer before getting paid. That standoff is why escrow exists, and why naming a clean settlement path on the lander reduces friction before the buyer ever clicks.
 
-This is the seam [Namefi](https://namefi.io) is built to smooth. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover — no dark hours where a live site goes down mid-deal. A lander that converts is only valuable if the deal behind it closes; the newer model of settlement is covered in [how tokenized marketplaces replace escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/). A great storefront earns the click. A clean, auditable transfer turns the click into a check.
+This is the seam [Namefi](https://namefi.io) is built to smooth. Tokenized ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover — no dark hours where a live site goes down mid-deal. A lander that converts is only valuable if the deal behind it closes; the newer model of settlement is covered in [how tokenized marketplaces replace escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/). A great storefront earns the click. A clean, auditable transfer turns the click into a check.
 
 ## Friendly Disclaimer (Read Me!)
 
