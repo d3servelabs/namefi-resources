@@ -13,7 +13,7 @@ description: A practical look at how regular DNS — nameservers, A/AAAA, MX, TX
 keywords: ['DNS tokenized domain', 'DNSSEC NFT domain', 'tokenized domain nameservers', 'tokenized domain email', 'MX records NFT domain', 'CAA records tokenized domain', 'tokenized domain DNS management', 'on-chain domain DNS', 'NFT domain MX', 'NFT domain DNSSEC', 'tokenized domain Cloudflare', 'tokenized domain Route53', 'how DNS works tokenized', 'tokenized domain resolution']
 ---
 
-A common worry about tokenizing a domain: *"Will my website still work? Will my email still work? Will I have to learn a whole new DNS stack?"*
+A common worry about [tokenizing](/en/glossary/tokenize/) a domain: *"Will my website still work? Will my email still work? Will I have to learn a whole new DNS stack?"*
 
 Short answer: **yes, yes, no.** A tokenized domain is still a real ICANN domain. DNS keeps doing exactly what DNS does. This post is a tour of what changes (a little) and what doesn't (most of it).
 
