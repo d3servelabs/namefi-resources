@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 8
 format: comparison
 description: "How automated domain appraisers like Estibot and GoDaddy actually work, where they systematically miss, and how to use them as a first filter."
+ogImage: ../../assets/domain-appraisal-tools-compared-og.jpg
 keywords: ['domain appraisal tools', 'estibot vs godaddy', 'domain value calculator', 'automated domain appraisal', 'domain valuation tool', 'how accurate is estibot', 'godaddy domain appraisal', 'what is my domain worth', 'domain appraisal accuracy', 'estibot review', 'domain value estimate', 'machine learning domain valuation', 'domain comps tool', 'how to appraise a domain', 'domain flipping tools']
 ---
 
@@ -18,6 +19,8 @@ Paste a domain into an appraisal tool and you get a number in about a second. It
 Both Estibot and GoDaddy's appraiser are good at what they're built for, and genuinely bad at the one thing that decides most real sales. This guide explains how the two leading tools actually work, where they agree, where they diverge, and — the part that matters — the specific blind spot they share that no amount of machine learning fixes. It's a companion to our appraisal pillar, [how to value a domain name](/en/blog/how-to-value-a-domain-name/), and part of the wider [domain flipping](/en/blog/domain-flipping/) series.
 
 ## What an automated appraiser is actually doing
+
+![Editorial illustration of a domain name card fed into a pattern-matching machine that compares it against a grid of past sale records](../../assets/domain-appraisal-tools-compared-01-pattern-match.jpg)
 
 Under the hood, both major tools are doing the same thing: scoring your name against a large database of past sales using a model trained on the fundamentals that move price. They are pattern-matchers, not oracles.
 
@@ -47,6 +50,8 @@ The takeaway isn't "use Estibot" or "use GoDaddy." It's run both, treat the two 
 
 ## The blind spot they share: the end user
 
+![Editorial illustration of a machine measuring a faceless crowd while one distinct end-user buyer it cannot see stands highlighted apart](../../assets/domain-appraisal-tools-compared-02-end-user.jpg)
+
 Here is the thing no appraisal tool can do, no matter how much sales data it ingests. **It cannot see the one buyer who makes the sale.**
 
 Every automated valuation is a statement about the *average* market for names like yours. But domains don't sell to the average market. They sell to one specific buyer, at one specific moment, for one specific reason the model has no way to know. A regional dentist who wants the exact-match [`.com`](/en/tld/com/) of their town. A funded startup that rebranded last quarter and needs your one-word name *this* quarter. A company quietly defending against a competitor who's circling the same string. None of that — intent, timing, strategic fit, urgency — is a feature any model can read off the name. It's the gap between [end-user and reseller pricing](/en/blog/end-user-vs-reseller-domain-pricing/), and it's exactly where the money is.
@@ -56,6 +61,8 @@ This is why an automated number and a real sale can look like they're describing
 That blind spot isn't a bug to be patched. It's structural. The information that closes a five-figure deal — a stranger's roadmap, budget, and deadline — does not exist in any sales database, so it cannot be in any model trained on one.
 
 ## Reading the comps, not just the number
+
+![Editorial illustration of one large price tag set aside while a magnifying glass examines a row of comparable sale tags and their spread](../../assets/domain-appraisal-tools-compared-03-comps.jpg)
 
 The most valuable output of either tool is usually not the headline figure. It's the comparable sales underneath it.
 

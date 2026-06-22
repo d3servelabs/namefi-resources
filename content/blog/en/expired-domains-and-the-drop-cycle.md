@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 3
 format: explainer
 description: "How a domain expires and drops: grace period, the 30-day redemption window, 5-day pending delete, release — and where dropped names surface for flippers."
+ogImage: ../../assets/expired-domains-and-the-drop-cycle-og.jpg
 keywords: ['expired domains', 'domain drop cycle', 'domain life cycle', 'redemption grace period', 'pending delete', 'domain drop catching', 'expired domain names', 'how domains expire', 'dropped domains', 'domain sniping', 'buy expired domains', 'domain redemption period', 'when do domains drop', 'domain backorder', 'find domains to flip']
 ---
 
@@ -27,6 +28,8 @@ Most registrars stop the site from resolving and post a placeholder during this 
 
 ## Stage two: the redemption grace period
 
+![Editorial illustration of a domain name tag suspended in an hourglass inside a countdown dial, with a hand offering a coin to pay a recovery fee before time runs out](../../assets/expired-domains-and-the-drop-cycle-01-redemption.jpg)
+
 If the grace window closes with no renewal, the registrar deletes the name into a recovery window called the **Redemption Grace Period** (you'll also see "redemption period" or `redemptionPeriod` in [WHOIS](/en/glossary/whois/) and EPP status). This is the stage that most often surprises people, because the old owner can still get the name back, though it now costs real money and triggers a formal status change. ICANN itself refers to the [30-day Redemption Grace Period (RGP)](https://www.icann.org/resources/pages/grace-2013-05-03-en#:~:text=30%2Dday%20Redemption%20Grace%20Period%20%28RGP%29), and its registrant FAQ confirms that if a name is deleted, [the domain name will enter into a redemption period for 30 days](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en#:~:text=the%20domain%20name%20will%20enter%20into%20a%20redemption%20period%20for%2030%20days). The binding `.com` contract pins the same number — [the current length of this Redemption Period is 30 calendar days](https://www.icann.org/en/registry-agreements/com/com-registry-agreement-appendix-7-1-12-2012-en#:~:text=The%20current%20length%20of%20this%20Redemption%20Period%20is%2030%20calendar%20days).
 
 Two practical details matter to a flipper here. First, the 30-day figure is the baseline for common gTLDs, not a universal constant. Per Wikipedia, [this length of time varies by TLD, and is usually around 30 to 90 days](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days). Second, recovery during redemption is intentionally expensive. It isn't a click-to-renew; ICANN's rules require that [domain names that are in the 30-day Redemption Grace Period can be redeemed (or renewed)](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en#:~:text=Domain%20names%20that%20are%20in%20the%2030%2Dday%20Redemption%20Grace%20Period%20can%20be%20redeemed) before the window closes, but the registrar typically charges a steep redemption fee on top of the renewal — Wikipedia puts it at a price where the owner [may be required to pay a fee (typically around US$100) to re-activate and re-register the domain](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=may%20be%20required%20to%20pay%20a%20fee%20%28typically%20around%20US%24100%29). That fee exists on purpose: it gives a genuinely forgetful owner a last chance while making it costly to play games with the cycle.
@@ -41,6 +44,8 @@ The duration here is the most fixed number in the whole cycle. ICANN's registran
 
 ## Stage four: release, and the scramble to catch it
 
+![Editorial illustration of several automated robot servers racing through an open gate to catch a single falling domain tag the instant it releases](../../assets/expired-domains-and-the-drop-cycle-02-release-scramble.jpg)
+
 At the end of pending delete the name is purged from the registry and returns to the available pool. ICANN's guidance is plain: after the redemption and pending-delete periods, [the domain name will be released and made available for registration on a first-come-first-served basis](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en#:~:text=the%20domain%20name%20will%20be%20released%20and%20made%20available%20for%20registration%20on%20a%20first%2Dcome%2Dfirst%2Dserved%20basis). In theory, that's the moment anyone can register it for the standard fee. In practice, the most desirable names almost never reach a human typing into a registrar search box, because the release is contested by automated systems built for exactly this instant.
 
 This is where drop-catching services come in. Rather than refreshing a search and hoping, these operators point infrastructure at the registry to fire registration requests the microsecond a name releases. As Wikipedia describes them, [these services offer to dedicate their servers to securing a domain name upon its availability, usually at an auction price](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=These%20services%20offer%20to%20dedicate%20their%20servers%20to%20securing%20a%20domain%20name%20upon%20its%20availability) — and they win consistently against anyone doing it by hand. Wikipedia is blunt about the asymmetry: [individuals with their limited resources find it difficult to compete with these drop catching firms](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=Individuals%20with%20their%20limited%20resources%20find%20it%20difficult%20to%20compete%20with%20these%20drop%20catching%20firms) for the desirable names. When more than one service catches the same name for different clients, it goes to a private auction among them, so "catching" a contested name usually means winning a bid, not paying a registration fee.
@@ -48,6 +53,8 @@ This is where drop-catching services come in. Rather than refreshing a search an
 The honest framing for a flipper: for genuinely good names, you don't really catch the drop yourself — you hire the catch. Understanding the cycle tells you *when* a name is winnable and *what it's worth*; the actual capture runs through a backorder or drop-catch service, which we cover in [domain backorders and drop catching](/en/blog/domain-backorders-and-drop-catching/).
 
 ## Where dropped names surface
+
+![Editorial illustration of a central magnifying-glass sourcing hub branching to four channels — a drop list, a backorder ticket, an auction gavel, and an aftermarket storefront — each carrying a domain tag](../../assets/expired-domains-and-the-drop-cycle-03-where-surface.jpg)
 
 Knowing the cycle only helps if you know where to watch it. Dropped and dropping names surface in a few predictable places, and a working sourcing routine usually pulls from several at once:
 

@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 2
 format: guide
 description: "The four ways to source domains to flip — hand-registration, expired drops, auctions, and the aftermarket — and each channel's risk and price profile."
+ogImage: ../../assets/how-to-find-domains-to-flip-og.jpg
 keywords: ['how to find domains to flip', 'domains to flip', 'sourcing domains', 'find domains to flip', 'hand register domains', 'expired domains', 'drop catching', 'domain auctions', 'domain aftermarket', 'buy domains to resell', 'cheap domains to flip', 'domain investing for beginners', 'where to buy domains to flip', 'domain backorders', 'best domains to flip']
 ---
 
@@ -25,6 +26,8 @@ Roughly ranked from cheapest and riskiest to most expensive and safest, your fou
 
 ## Hand-registration: cheapest in, hardest to sell
 
+![Editorial illustration of a hand placing a coral price tag on one fresh blank name card in front of an endless wall of identical empty cards](../../assets/how-to-find-domains-to-flip-01-hand-registration.jpg)
+
 Hand-registration means coining a brand-new name and registering it fresh at a [registrar](/en/glossary/registrar/) for the standard fee. This is the entry point everyone starts at, because the cost of admission is tiny — Wikipedia notes that as of 2023 [the retail cost generally ranges from a low of about $9.70 per year to about $35 per year](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year) for a simple `.com`.
 
 That low price is exactly the trap. When anyone can register a name for the cost of a sandwich, the supply of available strings is effectively infinite, and the names still sitting unregistered are unregistered for a reason: the obvious, valuable ones were claimed years ago. Hand-registration is a game of finding the small overlap between "still available" and "someone will actually pay for it" — usually a fresh two-word brandable, a name riding a brand-new trend, or a strong combination in a newer [extension](/en/tld/xyz/) like [`.app`](/en/tld/app/) or [`.io`](/en/tld/io/) where the inventory hasn't been picked clean.
@@ -33,11 +36,15 @@ The carrying math is the discipline here. Each hand-reg costs you that fee every
 
 ## Expired and dropped names: buying age, inheriting risk
 
+![Editorial illustration of a domain card moving along a timeline through grace-period gates and an hourglass, arriving with rings of age and traffic plus a warning triangle for inherited risk](../../assets/how-to-find-domains-to-flip-02-drop-lifecycle.jpg)
+
 When a registrant stops paying, a name doesn't snap back to available instantly. It moves through a fixed lifecycle of grace periods first, and understanding that timeline is the whole skill of this channel. After expiry there's a redemption window — per Wikipedia, [the Redemption Grace Period ... allows a registrant to reclaim their domain name for a number of days after it has expired](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=The%20Redemption%20Grace%20Period), a length that [varies by TLD, and is usually around 30 to 90 days](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days). Only after that, at [the end of the "pending delete" phase of 5 days, the domain will be dropped from the ICANN database](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=At%20the%20end%20of%20the%20%22pending%20delete%22%20phase%20of%205%20days%2C%20the%20domain%20will%20be%20dropped) and becomes registrable again.
 
 The appeal of a dropped name over a hand-reg is that it may arrive with history: prior age, inbound links, residual type-in traffic, or existing search authority. The risk is that you inherit the previous owner's baggage too — a name burned by spam, tangled in a trademark, or carrying links you'd rather not be associated with. Diligence is not optional. Check the history (the [WHOIS](/en/glossary/whois/) record and archived snapshots), check the trademark exposure, and never assume "old" means "good." A name that dropped because it was toxic is a name you can keep forever. We map the full lifecycle and the diligence checklist in [expired domains and the drop cycle](/en/blog/expired-domains-and-the-drop-cycle/).
 
 ## Auctions: where the market sets the price for you
+
+![Editorial illustration of a domain card on an auction pedestal with multiple raised bidding paddles below and a rising stepped price line climbing to the right](../../assets/how-to-find-domains-to-flip-03-auction.jpg)
 
 Some of the best names never go through a quiet drop — they get auctioned, either by a registrar selling its own expiring inventory or on an aftermarket platform. An [auction](/en/glossary/auction/) is the channel where the cleverest filtering is done for you: the platform has already surfaced names with demonstrable demand, and the bidding reveals what the market thinks they're worth in real time.
 

@@ -10,12 +10,15 @@ series: domain-flipping-skills
 seriesOrder: 19
 format: guide
 description: "The end-to-end playbook for selling domains: inbound vs outbound, pricing format, where to list, when to use a broker, and closing the deal safely."
+ogImage: ../../assets/how-to-sell-domains-for-profit-og.jpg
 keywords: ['how to sell domains for profit', 'sell a domain name', 'domain selling guide', 'inbound vs outbound domain sales', 'domain pricing', 'where to sell domains', 'domain marketplaces', 'domain broker', 'domain escrow', 'buy now vs make offer', 'sell domains online', 'domain aftermarket', 'closing a domain sale', 'domain sales outreach', 'flip a domain']
 ---
 
 A domain you can't sell is just a renewal bill with a clever name on it. Buying well and appraising honestly are upstream skills; this is the one where the money actually arrives. Most of the profit in flipping is made or lost at the selling stage, because a mediocre name sold well beats a great name nobody can find. This is the selling pillar of our guide to [domain flipping](/en/blog/domain-flipping/) — the end-to-end arc from "I own this name" to "the funds cleared." We'll cover the two ways buyers reach you, how to set a price format, where to list, when a broker earns their cut, and how to close without getting scammed. For a step-by-step checklist of a single sale, pair this with [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/).
 
 ## Inbound vs outbound: the two roads to a buyer
+
+![Editorial illustration of two roads converging on a buyer, one inbound path with a for-sale sign and one outbound path with a paper-airplane message reaching a company](../../assets/how-to-sell-domains-for-profit-01-inbound-outbound.jpg)
 
 Every domain sale starts one of two ways, and knowing which game you're playing changes everything downstream.
 
@@ -36,6 +39,8 @@ There's no universally right answer; the choice depends on the name, your patien
 
 ## Where to sell: marketplaces, parking, and your own page
 
+![Editorial illustration of one domain name fanning out to three selling venues: a marketplace stall, a for-sale parked page, and an auction stand with a gavel](../../assets/how-to-sell-domains-for-profit-02-venues.jpg)
+
 Inbound demand has to land somewhere. The domain aftermarket exists precisely for this. Wikipedia defines it as [the secondary resale market for Internet domain names in which a party interested in acquiring a domain that is already registered bids or negotiates a price](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names) to effect the transfer. It's a real, active market: per Wikipedia, [according to NameBio, 144,700 domain name sales totaling US$185 million were recorded in 2024](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024) — and that's only the disclosed slice.
 
 Your main venues:
@@ -53,6 +58,8 @@ For high-value names — five figures and up, or a single strategic name with on
 The tradeoff is the fee, typically a meaningful percentage of the sale, and the loss of direct control. Brokers earn their keep on names where the buyer pool is small and the stakes are high, not on a $300 flip you could list yourself in five minutes. We cover how to choose one and what to expect in [working with domain brokers](/en/blog/working-with-domain-brokers/).
 
 ## Closing the deal without getting scammed
+
+![Editorial illustration of an escrow vault on a balanced scale, with a buyer placing coins in from one side and a seller handing over a domain key from the other](../../assets/how-to-sell-domains-for-profit-03-escrow.jpg)
 
 This is the stage where real money is on the table and trust is at its thinnest. The classic standoff: the seller doesn't want to transfer the name before getting paid, and the buyer doesn't want to pay before receiving the name. Neither wants to move first.
 

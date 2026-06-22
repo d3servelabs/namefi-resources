@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 12
 format: explainer
 description: "Why one string of letters is worth thousands and a near-identical one is worth nothing: length, real words, the .com premium, intent, and brandability."
+ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['what makes a domain valuable', 'domain value factors', 'what makes a good domain name', 'domain name value', 'why are domains expensive', 'short domain names', 'keyword domains', 'brandable domains', 'com premium', 'domain extension value', 'commercial intent domains', 'memorable domain names', 'domain investing fundamentals', 'how domains are valued', 'premium domain names']
 ---
 
@@ -24,6 +25,8 @@ Start with what a domain actually does. A domain name exists because numbers are
 Hold onto that, because it explains nearly every value factor below. A domain's whole job is to be remembered, typed, and said. Every property that makes a name more memorable, more typeable, and more sayable makes it more valuable, and every property that makes it harder makes it worth less. Length, real words, clean spelling, a trusted extension — they're not arbitrary collector's preferences. They're all measuring the same thing: how easily a human can carry this name in their head and get back to it. If you only remember one idea from this piece, remember that the value is the memorability. To go from these fundamentals to an actual dollar figure, see [how to value a domain name](/en/blog/how-to-value-a-domain-name/).
 
 ## Length: shorter is almost always better
+
+![Editorial illustration of a short premium domain tag held easily in one hand while a long hyphenated string slips out of a person's reach](../../assets/what-makes-a-domain-valuable-01-length.jpg)
 
 The first thing professionals look at is character count, because length is the cheapest proxy for memorability there is. Fewer letters are easier to recall, faster to type, simpler to fit on a sign or a business card, and harder for a competitor to crowd out with a near-match.
 
@@ -43,11 +46,15 @@ A name that passes all three tests is a fundamentally different asset from one t
 
 ## The .com premium
 
+![Editorial illustration of one tall crowned pedestal towering above smaller ones as a crowd of name tags gravitates toward the dominant default extension](../../assets/what-makes-a-domain-valuable-02-premium.jpg)
+
 Then there's the part after the dot, and one extension still sets the baseline for all the others. `.com` is the default the rest of the web is measured against. Wikipedia notes it [is short for *commercial*](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial) and [has grown into the largest top-level domain](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain), with [161 Million](https://en.wikipedia.org/wiki/.com#:~:text=161%20Million) names registered as of late 2025.
 
 That ubiquity is the whole point. Because `.com` is what people assume, it's what they type without thinking, what they guess when they half-remember a brand, and what they trust by reflex. An identical name on [`.com`](/en/tld/com/) therefore typically commands a real premium over the same name on another [TLD](/en/glossary/tld/) — you're paying for the extension everyone defaults to. That doesn't make other extensions worthless; it means you should know the spread you're trading. A startup might rationally pick [`.io`](/en/tld/io/), [`.co`](/en/tld/co/), [`.app`](/en/tld/app/), or [`.xyz`](/en/tld/xyz/) for fit, price, or availability, and the choice between a [brandable name and a keyword `.com`](/en/blog/brandable-vs-keyword-domains/) is a real strategic fork. But the `.com` of a good word remains the benchmark, and for most mass-market buyers it's still the one they'll pay the most to own.
 
 ## Keyword and commercial intent
+
+![Editorial illustration of a domain tag linked to a storefront doorway where a coin changes hands at the checkout, showing a word sitting next to a transaction](../../assets/what-makes-a-domain-valuable-03-intent.jpg)
 
 Not every word is worth the same, even at the same length on the same extension. A word sitting next to a transaction is worth more than a word sitting next to a hobby, because the owner can convert attention on that word into revenue.
 

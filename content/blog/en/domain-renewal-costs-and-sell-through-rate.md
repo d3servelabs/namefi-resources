@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 25
 format: analysis
 description: "The honest economics of domaining: renewal drag, sell-through rate as a rule of thumb, and why one good sale has to fund many years of renewals."
+ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
 keywords: ['domain renewal cost', 'sell-through rate domains', 'domain flipping economics', 'domain carrying cost', 'domain renewal fees', 'domaining profit math', 'domain portfolio cost', 'is domain flipping profitable', 'domain renewal drag', 'cost basis domains', 'domain investing returns', 'how much do domains cost to renew', '.com renewal price', 'domain holding cost']
 ---
 
@@ -19,6 +20,8 @@ This piece is about that quieter half of the ledger. It walks through the two nu
 
 ## You don't own a domain, you rent it
 
+![Editorial illustration of a domain-name key being handed over, tethered by a chain to an annual renewal clock dial](../../assets/domain-renewal-costs-and-sell-through-rate-01-rent-not-own.jpg)
+
 Start with the thing that makes domaining different from buying baseball cards or art: you never own a domain outright. You hold it for a registration term and you keep it only by paying to renew. Miss the renewal and the name leaves your control on a fixed schedule.
 
 The term has a ceiling. Per Wikipedia, [the maximum period of registration for a gTLD domain name is 10 years](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years), so even if you pay as far forward as the system allows, the clock restarts at least once a decade. Most investors renew annually, which means the bill arrives every year on every name. The work of deciding which names earn another year is the job at the center of [when to drop a domain](/en/blog/when-to-drop-a-domain/) — and it never stops.
@@ -26,6 +29,8 @@ The term has a ceiling. Per Wikipedia, [the maximum period of registration for a
 The renewal isn't a formality, either. Let it lapse and the name doesn't vanish instantly, but it does start a countdown you don't control. After expiry a name typically enters a redemption window — which, as the domain drop-catching literature notes, [varies by TLD, and is usually around 30 to 90 days](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days) and lets you recover it for a stiff fee — and after that a short final phase before release: [at the end of the "pending delete" phase of 5 days, the domain will be dropped from the ICANN database](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=the%20domain%20will%20be%20dropped%20from%20the%20ICANN%20database). Once it drops, anyone can register it. A name you forgot to renew can be a name a competitor catches at the [drop auction](/en/glossary/auction/) the same week.
 
 ## What renewal actually costs
+
+![Editorial illustration of one tiny renewal fee multiplied across a shelf of many domain tags into a rising staircase of coin stacks](../../assets/domain-renewal-costs-and-sell-through-rate-02-renewal-multiplies.jpg)
 
 A single `.com` renewal looks trivial. Wikipedia puts the retail range plainly: as of 2023, [the retail cost generally ranges from a low of about $9.70 per year to about $35 per year](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year) for a simple `.com` registration. Ten dollars. Forgettable on one name.
 
@@ -46,6 +51,8 @@ What you *can* trust is the shape of the number, which everyone in the business 
 The fix isn't to chase a higher percentage by listing junk. It's to know your own number. Track how many names you actually sold last year against how many you held, and you have a real sell-through rate for *your* portfolio and *your* sourcing — worth more than any industry average. That tracking is the discipline at the heart of [portfolio management](/en/blog/domain-portfolio-management/), and it's the input every other decision depends on.
 
 ## One sale funds many renewals
+
+![Editorial illustration of one large glowing coin feeding a flow line that pays a long row of small recurring renewal bills](../../assets/domain-renewal-costs-and-sell-through-rate-03-one-sale-funds-renewals.jpg)
 
 Put the two numbers together and the entire economics resolve into a single sentence experienced domainers repeat like a mantra: **one sale funds many renewals.**
 

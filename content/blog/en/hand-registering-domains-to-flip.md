@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 5
 format: guide
 description: "How to find still-available domains worth a registration fee: wordlists, TLD permutations, brandable patterns, and the filters that beat impulse buys."
+ogImage: ../../assets/hand-registering-domains-to-flip-og.jpg
 keywords: ['hand registering domains', 'hand registered domains', 'available domains to flip', 'find available domains', 'brandable domain names', 'domain wordlists', 'register domains to sell', 'cheap domains to flip', 'how to find domains to register', 'domain name ideas to sell', 'domain flipping for beginners', 'TLD permutations', 'available .com domains', 'speculative domain registration', 'domaining hand reg']
 ---
 
@@ -26,6 +27,8 @@ But cheap and easy is exactly why it's the channel where most beginners lose. A 
 So the honest framing: hand-reg is not "free domains you might sell." It's a tiny bet against an infinite supply, where you provide all the judgment. The whole skill is the judgment.
 
 ## Where available gems actually come from
+
+![Editorial illustration of seed and modifier word-lists combining through a sieve into many domain tags with one rare gem highlighted](../../assets/hand-registering-domains-to-flip-01-where-gems-come-from.jpg)
 
 You don't find good hand-regs by typing single dictionary words and hoping. Every clean one-word `.com` was registered decades ago. Available names live in *combinations* and *newer extensions*, and there are a few reliable veins to mine.
 
@@ -49,6 +52,8 @@ Keep the carrying cost in view the whole time. Each name you keep is a renewal b
 
 ## Why most hand-regs never sell
 
+![Editorial illustration of a grid of dormant domain tags draining renewal costs while one rare tag rises with a sale arrow](../../assets/hand-registering-domains-to-flip-02-most-never-sell.jpg)
+
 This is the part the "make money flipping domains" videos skip. The default outcome of a hand-registered name is that it never sells. Sell-through on speculative hand-reg portfolios is low — as a domainer rule of thumb, often in the low single-digit percentages per year, though treat that as an industry estimate rather than a measured figure. The trade only works as a portfolio: a few good sales have to cover the renewals on the large majority that go nowhere.
 
 The names that die do so for predictable reasons:
@@ -59,6 +64,8 @@ The names that die do so for predictable reasons:
 - **It's a worse version of a name that exists.** If the buyer's obvious choice is the `.com` and you hold the `.net` or a modifier variant, you're the fallback, not the deal.
 
 ## The filters that beat an impulse buy
+
+![Editorial illustration of domain tags passing through a sequence of sieve gates with most rejected and one approved](../../assets/hand-registering-domains-to-flip-03-filters-gate.jpg)
 
 Before any hand-reg, run the name through a short gate. If it fails one, walk away — the registration fee is the cheap part; the renewals are what bleed you.
 

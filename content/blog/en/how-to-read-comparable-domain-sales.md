@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 9
 format: guide
 description: "How to use NameBio-style sales history to price a domain: finding true comparables, adjusting for TLD, length and keyword, and avoiding cherry-picking."
+ogImage: ../../assets/how-to-read-comparable-domain-sales-og.jpg
 keywords: ['comparable domain sales', 'domain comps', 'how to read domain comps', 'NameBio', 'domain sales history', 'domain valuation comps', 'domain price comparison', 'how to price a domain', 'domain appraisal comparables', 'domain sales data', 'find comparable domains', 'domain comp adjustment', 'domaining comps', 'domain pricing data']
 ---
 
@@ -27,6 +28,8 @@ Automated appraisal tools draw from this same well. GoDaddy's valuation tool, fo
 
 ## What makes a sale a true comparable
 
+![Editorial illustration of a target domain card linked by solid lines to matching comparable domains and by faint dashed lines to mismatched ones](../../assets/how-to-read-comparable-domain-sales-01-true-comparable.jpg)
+
 A comp is only useful if it's genuinely *like* your name. The single most common appraisal error is treating any sale that contains your keyword as evidence for your price. It isn't. A true comparable matches your name on the dimensions that actually drive value, not just the word.
 
 Work down this checklist, hardest constraint first:
@@ -41,6 +44,8 @@ A comp that matches on all five is gold. A comp that matches on two is a startin
 
 ## Adjusting for the differences that always exist
 
+![Editorial illustration of a starting comp price moved by extension, length and timing sliders into a final adjusted price](../../assets/how-to-read-comparable-domain-sales-02-adjusting.jpg)
+
 No two domains are identical, so every comp needs adjustment. This is where appraisal becomes a skill rather than a lookup. The discipline is simple to state: start from the comp's price, then move it up or down for each way your name differs.
 
 **Extension.** `.com` is the benchmark the rest of the market is priced against. If your comp is a `.com` and your name isn't, adjust down — often steeply — because the same string on a less-trusted extension commands less. If you're lucky enough to have the `.com` and your comp is a weaker extension, adjust up. Premium extensions break the rule in their niche: a developer tool on [`.io`](/en/tld/io/) or an AI startup on [`.ai`](/en/tld/ai/) can price near or above a generic `.com`, and the aftermarket has noticed — `.ai` dollar volume in 2024 [more than doubled, rising 107%](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=more%20than%20doubled%2C%20rising%20107%25). Price the extension's market, not just the extension.
@@ -54,6 +59,8 @@ No two domains are identical, so every comp needs adjustment. This is where appr
 **Attached value.** Some sales aren't really comps for a bare name at all, because the buyer was paying for a *business*, not a string. When QuinStreet bought `CarInsurance.com` for [$49.7 million in cash](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash) in 2010, the price wasn't for the name in isolation. Domain Name Wire reported that [the value comes primarily from the organic traffic the site receives and how that converts into leads](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic). Using a sale like that as a comp for a parked, traffic-free domain in the same niche would inflate your number by millions. Strip the attached value out before you compare, or don't use the sale at all.
 
 ## The cherry-picking trap
+
+![Editorial illustration of a hand picking the single tall outlier bar while ignoring the median cluster of ordinary sales](../../assets/how-to-read-comparable-domain-sales-03-cherry-picking.jpg)
 
 Here is the mistake that ruins more appraisals than every other combined: you find the one stratospheric sale in your keyword family, anchor to it, and ignore the hundred ordinary ones around it. It's the easiest trap in the business because the data invites it — the biggest sales are the most famous, the most quoted, and the most emotionally satisfying to find.
 

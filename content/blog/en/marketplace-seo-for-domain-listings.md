@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 31
 format: guide
 description: "How to get a domain listing found: titles, keywords, and categories on Afternic and Sedo, plus the discoverability that lands the right buyer."
+ogImage: ../../assets/marketplace-seo-for-domain-listings-og.jpg
 keywords: ['marketplace SEO', 'domain listing SEO', 'how to list a domain on Afternic', 'how to list a domain on Sedo', 'domain listing title', 'domain listing keywords', 'domain marketplace categories', 'get a domain listing found', 'domain aftermarket listing', 'sell a domain online', 'domain listing optimization', 'domain search visibility', 'how buyers find domains', 'domain reseller network']
 ---
 
@@ -27,6 +28,8 @@ There's a second discovery layer most beginners miss. Afternic doesn't just show
 
 ## The listing title: your one shot at a search match
 
+![Editorial illustration of a stack of marketplace search-result rows with the top row highlighted and its domain tag leading the row as a cursor points to it](../../assets/marketplace-seo-for-domain-listings-01-title.jpg)
+
 The title is the single most important field in any listing, and the rule it follows is borrowed straight from search. As Google's own guidance on result titles notes, the title is [the primary piece of information people use to decide which result to click](https://developers.google.com/search/docs/appearance/title-link#:~:text=the%20primary%20piece%20of%20information%20people%20use%20to%20decide%20which%20result%20to%20click). The same logic governs a marketplace listing: the title is what a buyer scans, and it's often what the marketplace's own search matches against.
 
 For a domain listing, the title is usually the name itself, so the real work is the name's *presentation* and the copy around it:
@@ -39,6 +42,8 @@ The title earns the click; the rest of the listing keeps it. For what happens af
 
 ## Keywords: matching the search a buyer actually runs
 
+![Editorial illustration of an invented-name tag bridged by a chain of keyword chips to a cluster of use-case and industry icons](../../assets/marketplace-seo-for-domain-listings-02-keywords.jpg)
+
 Keywords are where most listings quietly fail. A name like `lumora.com` has no obvious dictionary meaning, so it surfaces only for buyers who already know to search for that exact string — almost nobody. The fix is to attach the *concepts* the name could serve. If `lumora` reads as a lighting or wellness brand, the listing's keyword fields should say so, because that's what a buyer in those categories will search.
 
 A few working rules for keyword fields:
@@ -50,6 +55,8 @@ A few working rules for keyword fields:
 This is genuine, if small-scale, [SEO](/en/glossary/seo/): you're matching supply (your name) to a demand expressed as a query. The names that sell inbound are usually the ones whose listings answered a search the seller anticipated.
 
 ## Categories and extension: getting filed where buyers browse
+
+![Editorial illustration of domain-name cards funneling into labeled category bins with one highlighted card landing in its correct matching bin](../../assets/marketplace-seo-for-domain-listings-03-categories.jpg)
 
 After search, the second way buyers find names is by filtering — and that runs on the structured fields you set: category, length, price band, and [extension](/en/tld/com/). These are easy to fill in carelessly and expensive to get wrong: a miscategorized name never appears in the filtered views where its buyer is looking.
 

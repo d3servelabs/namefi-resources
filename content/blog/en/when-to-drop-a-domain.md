@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 26
 format: guide
 description: "How to decide when to let a domain expire: renewal cost vs realistic resale odds, the sunk-cost trap, and the signals a name will never sell."
+ogImage: ../../assets/when-to-drop-a-domain-og.jpg
 keywords: ['when to drop a domain', 'let a domain expire', 'cut domain losers', 'domain renewal decision', 'domain sunk cost', 'should I renew a domain', 'domain portfolio pruning', 'drop a domain name', 'domain holding cost', 'domain sell-through rate', 'domaining losses', 'expire a domain', 'domain renewal cost', 'domain investing mistakes', 'prune domain portfolio']
 ---
 
@@ -27,6 +28,8 @@ The mental model worth internalizing: each renewal isn't a sunk cost you're prot
 
 ## Renewal cost vs realistic resale odds
 
+![Editorial illustration of a balance scale weighing a single renewal coin against the slim resale odds of a domain card](../../assets/when-to-drop-a-domain-01-scale.jpg)
+
 The renew-or-drop call is an expected-value problem. A name is worth keeping when its expected resale value, discounted by how likely it is to sell and how long you'll wait, comfortably exceeds the cost of renewing it until then.
 
 The trouble is the second half of that equation. Most domainers overestimate their resale odds because they anchor on headline outcomes — the Voice.com and Sex.com scale sales that survive into the press — rather than the base rate. The industry rule of thumb, and it is a rule of thumb rather than a measured statistic, is that a hand-registered portfolio's annual **sell-through rate** (the share of names that sell in a given year) sits in the low single-digit percentages. Treat that as an estimate, but treat it seriously: if your odds of selling a mediocre name this year are a couple of percent and your expected price is a few hundred dollars, the expected annual return is a few dollars. Once the renewal fee approaches that number, the name is no longer an investment. It's a subscription you keep paying out of hope.
@@ -35,6 +38,8 @@ This is why valuation discipline doesn't stop at acquisition. The same inputs th
 
 ## The sunk-cost trap
 
+![Editorial illustration of a person dropping fresh coins into a hole where past coins already lie out of reach, the sunk-cost trap](../../assets/when-to-drop-a-domain-02-sunk-cost.jpg)
+
 The single biggest reason flippers keep losers is psychological, and it has a name. A sunk cost is, in the standard definition, [a cost that has already been incurred and cannot be recovered](https://en.wikipedia.org/wiki/Sunk_cost#:~:text=a%20cost%20that%20has%20already%20been%20incurred%20and%20cannot%20be%20recovered). The acquisition price you paid for a domain, plus every renewal you've already made, is gone the moment you spent it. Whether you renew again has zero effect on recovering it. The only thing that money is doing now is biasing your decision.
 
 The fallacy is well documented: people show [a greater tendency to continue an endeavor once an investment in money, effort, or time has been made](https://en.wikipedia.org/wiki/Sunk_cost#:~:text=a%20greater%20tendency%20to%20continue%20an%20endeavor%20once%20an%20investment%20in%20money%2C%20effort%2C%20or%20time%20has%20been%20made). For domainers this shows up as a specific, predictable mistake. You paid $2,000 for a name three years ago. It hasn't sold. The renewal is $30. You renew, because dropping it would mean "wasting" the $2,000 — even though the $2,000 was wasted years ago and the renewal is a separate, brand-new $30 you're now choosing to throw after it. That's the literal definition of [throwing good money after bad](https://en.wikipedia.org/wiki/Sunk_cost#:~:text=throwing%20good%20money%20after%20bad).
@@ -42,6 +47,8 @@ The fallacy is well documented: people show [a greater tendency to continue an e
 The cure is a rule, not willpower. When the renewal notice arrives, ignore what you paid and what you've already spent renewing. Those numbers are not inputs to today's decision. Ask only: at this renewal price, would I acquire this name today? If you wouldn't buy it fresh, you shouldn't buy it again — which is what renewing is. Track acquisition cost and cumulative holding cost in your portfolio sheet for tax purposes, but deliberately don't look at those columns when making the renew call. The accounting and the decision are different jobs (the tax side is its own topic in [taxes and accounting for domain investors](/en/blog/taxes-and-accounting-for-domain-investors/)); conflating them is how losers survive.
 
 ## Signals a name will never sell
+
+![Editorial illustration of a checklist of domain-name rows flagged with warning flags and downward arrows signaling names that will never sell](../../assets/when-to-drop-a-domain-03-redflags.jpg)
 
 Expected value is the framework, but in practice you're scanning a list of names quickly, and a handful of concrete signals reliably flag a name that should go. None is fatal alone; two or three together is a clear drop.
 

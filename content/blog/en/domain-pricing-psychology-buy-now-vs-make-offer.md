@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 21
 format: guide
 description: "Why the listing mode and the first number decide your domain sale: anchoring, never naming the price first, price laddering, and buy-now vs make-offer."
+ogImage: ../../assets/domain-pricing-psychology-buy-now-vs-make-offer-og.jpg
 keywords: ['domain pricing psychology', 'buy now vs make offer', 'domain anchoring', 'how to price a domain', 'domain price negotiation', 'make offer domain', 'buy it now domain', 'price laddering domains', 'domain listing format', 'who names the price first', 'domain negotiation tactics', 'charm pricing domains', 'end user domain price', 'domain sale psychology']
 ---
 
@@ -18,6 +19,8 @@ The number on your listing is doing more work than you think. Two flippers can o
 This guide is the psychological layer underneath the mechanical choices in [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/), the selling pillar of our [domain flipping](/en/blog/domain-flipping/) series. We'll cover what anchoring does to a negotiation, why naming the first number is a two-sided trap, how to ladder a price instead of folding, and how buy-now versus make-offer quietly decides the outcome before a single message is sent.
 
 ## Anchoring: the first number wins
+
+![Editorial illustration of a heavy dropped anchor bending a negotiation line toward it while a small figure is pulled along](../../assets/domain-pricing-psychology-buy-now-vs-make-offer-01-anchoring.jpg)
 
 Start with the one cognitive bias that governs every price negotiation. The anchoring effect is, as Wikipedia defines it, [a psychological phenomenon in which an individual's judgments or decisions are influenced by a reference point or "anchor"](https://en.wikipedia.org/wiki/Anchoring_effect#:~:text=a%20psychological%20phenomenon%20in%20which%20an%20individual%27s%20judgments%20or%20decisions%20are%20influenced%20by%20a%20reference%20point), and that reference point can be almost arbitrary. Once a number is on the table, every figure that follows gets measured against it. The buyer who hears "$25,000" first will treat $12,000 as a win; the buyer who hears "$3,000" first will treat $4,500 as a stretch. Same name, same buyer, different anchor, different ceiling.
 
@@ -43,6 +46,8 @@ This is why make-offer listings full of "great brandable name!!!" sit unsold for
 
 ## Buy-now vs make-offer: the mode is a strategy
 
+![Editorial illustration of a forked path splitting toward a fixed price tag for instant buy-now and an offer envelope with a handshake for make-offer negotiation](../../assets/domain-pricing-psychology-buy-now-vs-make-offer-02-modes.jpg)
+
 The listing format is not a checkbox. It's a decision about which buyer you're hunting and which bias you're leaning on.
 
 **Buy It Now (a fixed price)** removes friction. A motivated buyer transacts instantly, with no back-and-forth, and it filters out tire-kickers who only engage when they smell negotiation. The cost is the ceiling: price a name at $2,000 when an end user would have paid $20,000, and the fixed number is the most you'll ever see. Buy-now is a velocity play, good for mid-tier names where a clean, instant sale beats a long hunt for the perfect buyer.
@@ -52,6 +57,8 @@ The listing format is not a checkbox. It's a decision about which buyer you're h
 Here's the part most listicles miss: the mode itself anchors the buyer before you've said a word. A high buy-now price anchors high even for a buyer who intends to haggle down — they start from your number, not from zero. A bare "make offer" with no price anchors *low*, because the buyer's instinct is to test you with a fraction of what they'd actually pay. If you choose make-offer, consider a stated "minimum offer" or a high floor; the absence of any number is itself an anchor, and it usually works against you. For the venues where each format lives, see [where to sell domains: marketplaces compared](/en/blog/where-to-sell-domains-marketplaces-compared/), and for the step-by-step of a single sale, [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/).
 
 ## Price laddering: never fold to the first counter
+
+![Editorial illustration of a descending staircase of shrinking blocks stepping down toward a floor, with a dashed arrow tracing the smaller and smaller concessions](../../assets/domain-pricing-psychology-buy-now-vs-make-offer-03-laddering.jpg)
 
 When a make-offer negotiation opens, the rookie mistake is to swing straight to your real minimum the moment the buyer pushes back. That hands them the whole spread and teaches them that pressure works. Experienced sellers ladder instead, moving down in shrinking steps that signal the floor is near.
 

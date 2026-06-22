@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 4
 format: explainer
 description: "What domain backorders and drop-catching are, how services race to grab a name the instant it releases, and when a backorder is worth paying for."
+ogImage: ../../assets/domain-backorders-and-drop-catching-og.jpg
 keywords: ['domain backorder', 'drop catching', 'how to backorder a domain', 'catch expiring domains', 'DropCatch', 'SnapNames', 'NameJet', 'Park.io', 'Dynadot backorder', 'domain drop catching service', 'redemption grace period', 'pending delete domain', 'when do domains drop', 'expired domain auction', 'how to get a registered domain']
 ---
 
@@ -19,6 +20,8 @@ That is the whole game behind backorders and drop-catching. Both are ways of bet
 
 ## First, why a name "drops" at all
 
+![Editorial illustration of a domain name moving through a timeline of grace-period stages before falling into an open pool](../../assets/domain-backorders-and-drop-catching-01-drop-cycle.jpg)
+
 A domain isn't sold once and kept forever. It's [registered](/en/glossary/registrar/) for a term and has to be renewed, and when an owner stops paying, the name doesn't vanish instantly. It walks through a fixed lifecycle of grace periods before it returns to the open market, and that timeline is the whole foundation for catching one. We cover the full cycle in [expired domains and the drop cycle](/en/blog/expired-domains-and-the-drop-cycle/); here's the part that matters for catching.
 
 After expiry, the registry runs the name through a recovery window. As Wikipedia describes it, the Redemption Grace Period is [an addition to ICANN's Registrar Accreditation Agreement (RAA) which allows a registrant to reclaim their domain name for a number of days after it has expired](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=an%20addition%20to%20ICANN%27s%20Registrar%20Accreditation%20Agreement%20%28RAA%29%20which%20allows%20a%20registrant%20to%20reclaim%20their%20domain%20name%20for%20a%20number%20of%20days%20after%20it%20has%20expired). During redemption an owner can still get the name back, though not cheaply — Wikipedia notes the owner [may be required to pay a fee (typically around US$100)](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=may%20be%20required%20to%20pay%20a%20fee%20%28typically%20around%20US%24100%29) to reactivate it. How long this lasts depends on the extension; per Wikipedia, [this length of time varies by TLD, and is usually around 30 to 90 days](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=This%20length%20of%20time%20varies%20by%20TLD%2C%20and%20is%20usually%20around%2030%20to%2090%20days).
@@ -27,6 +30,8 @@ Only after that does the name enter its final countdown. As Wikipedia puts it, [
 
 ## Drop-catching: winning the millisecond
 
+![Editorial illustration of multiple server arms racing to grab a single domain-name tag the instant it releases, with a stopwatch counting fractions of a second](../../assets/domain-backorders-and-drop-catching-02-millisecond-race.jpg)
+
 Drop-catching is the brute-force approach: you (or, realistically, a service acting for you) try to register the name the literal instant it's deleted. Wikipedia's definition is plain — drop catching, also known as domain sniping, is [the practice of registering a domain name once registration has lapsed, immediately after expiry](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=is%20the%20practice%20of%20registering%20a%20domain%20name%20once%20registration%20has%20lapsed%2C%20immediately%20after%20expiry).
 
 You cannot win this by hand. Good names are deleted on a predictable schedule, and a crowd of professional services is hammering the registry the same second you are. As the domain-speculation literature describes it, [the business of registering the domain names as they are deleted by the registries is known as drop catching. It is a highly competitive business](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20business%20of%20registering%20the%20domain%20names%20as%20they%20are%20deleted%20by%20the%20registries%20is%20known%20as%20drop%20catching.%20It%20is%20a%20highly%20competitive%20business), and the contest is brutally fast: [the time between a drop and a capture is often measured in seconds or fractions thereof](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20time%20between%20a%20drop%20and%20a%20capture%20is%20often%20measured%20in%20seconds%20or%20fractions%20thereof).
@@ -34,6 +39,8 @@ You cannot win this by hand. Good names are deleted on a predictable schedule, a
 This is why drop-catch services exist and win names you never could from a normal [registrar](/en/glossary/registrar/) checkout page. The serious catchers hold many registrar accreditations and run server farms aimed at the registry's deletion queue. Wikipedia describes the model simply: these services [offer to dedicate their servers to securing a domain name upon its availability, usually at an auction price](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=offer%20to%20dedicate%20their%20servers%20to%20securing%20a%20domain%20name%20upon%20its%20availability%2C%20usually%20at%20an%20auction%20price). That last clause is the part beginners miss. If a service catches a name more than one customer wanted, you don't get it for the registration fee — it goes to [auction](/en/glossary/auction/) among the interested backorderers, and a contested catch on a desirable name can clear for hundreds or thousands of dollars. The mechanics of those bidding wars are their own skill, covered in [how to win domain auctions](/en/blog/how-to-win-domain-auctions/).
 
 ## Backorders: reserving your spot before the drop
+
+![Editorial illustration of a person holding a reservation ticket at the front of a roped-off line, securing a priority spot ahead of a waiting crowd](../../assets/domain-backorders-and-drop-catching-03-reserve-spot.jpg)
 
 A backorder is the reservation you place ahead of time. Instead of frantically trying to register a name at the drop, you tell a service "if this name becomes available, try to catch it for me," usually for a flat fee paid up front. Wikipedia frames the difference cleanly: a backorder gives priority, because [the owner of the back-order will be given the first opportunity to acquire the domain name before the name is deleted and is open to a free-for-all. In this way back-orders will usually take precedence over drop-catch](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=the%20owner%20of%20the%20back%2Dorder%20will%20be%20given%20the%20first%20opportunity%20to%20acquire%20the%20domain%20name).
 
