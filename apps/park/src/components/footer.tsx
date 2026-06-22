@@ -28,6 +28,13 @@ export type FooterProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 const YEAR = new Date().getFullYear();
+
+// Build version stamp, inlined at build time via next.config `env`.
+const BUILD_VERSION = process.env.BUILD_VERSION ?? 'unknown';
+const BUILD_COMMIT_SHA = process.env.BUILD_COMMIT_SHA ?? 'unknown';
+const BUILD_COMMIT_DATE = process.env.BUILD_COMMIT_DATE ?? 'unknown';
+const BUILD_COMMIT_URL = process.env.BUILD_COMMIT_URL ?? '';
+
 const URL_PROTOCOL_PATTERN = /^[a-z][a-z\d+\-.]*:/i;
 const DEFAULT_PBN_LOGO = {
   src: '/powered-by-namefi.svg',
@@ -235,6 +242,16 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
         <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
             <span>© {YEAR} D3SERVE LABS, Inc. All rights reserved.</span>
+            {BUILD_COMMIT_URL ? (
+              <Link
+                href={BUILD_COMMIT_URL}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-mono text-xs text-white/40 transition hover:text-white/70"
+              >
+                v{BUILD_VERSION}-{BUILD_COMMIT_SHA}-{BUILD_COMMIT_DATE}
+              </Link>
+            ) : null}
           </div>
           <div className="flex flex-wrap items-center gap-4">
             <button

@@ -1,9 +1,42 @@
 import createMdx from '@next/mdx';
 import type { NextConfig } from 'next';
+// biome-ignore lint/correctness/noNodejsModules: next.config runs in Node and needs execSync to read build metadata
+import { execSync } from 'node:child_process';
 // biome-ignore lint/correctness/noNodejsModules: next.config runs in Node and needs createRequire
 import { createRequire } from 'node:module';
 import packageJson from './package.json';
 import { config as appConfig } from './src/lib/env/load';
+
+// Build-time version stamp for the footer: a `v<version>-<6charSha>-<yyyy-mm-dd>`
+// label that links to the deployed commit's GitHub permalink. Prefer Vercel's
+// authoritative SHA, fall back to local git, and degrade to 'unknown' if git is
+// unavailable. The date is the committer date (`%cs`, already yyyy-mm-dd).
+function resolveBuildInfo(version: string) {
+  const git = (args: string) => {
+    try {
+      return execSync(`git ${args}`, { stdio: ['ignore', 'pipe', 'ignore'] })
+        .toString()
+        .trim();
+    } catch {
+      return '';
+    }
+  };
+  const sha =
+    process.env.VERCEL_GIT_COMMIT_SHA?.trim() || git('rev-parse HEAD');
+  const commitDate = git(`show -s --format=%cs ${sha || 'HEAD'}`);
+  const repo =
+    process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
+      ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
+      : 'd3servelabs/namefi-astra';
+  return {
+    BUILD_VERSION: version,
+    BUILD_COMMIT_SHA: sha ? sha.slice(0, 6) : 'unknown',
+    BUILD_COMMIT_DATE: commitDate || 'unknown',
+    BUILD_COMMIT_URL: sha ? `https://github.com/${repo}/commit/${sha}` : '',
+  };
+}
+
+const buildInfo = resolveBuildInfo(packageJson.version);
 
 const require = createRequire(import.meta.url);
 const remarkStaticImageImportsPath = require.resolve(
@@ -45,6 +78,7 @@ const nextConfig: NextConfig = {
     ENVIRONMENT: process.env.ENVIRONMENT,
     version: packageJson.version,
     name: packageJson.name,
+    ...buildInfo,
   },
   typescript: {
     // Note: validate is run on CI with build
