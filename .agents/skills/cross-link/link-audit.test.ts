@@ -112,3 +112,48 @@ test('--fix never leaves a link whose target is absent from slugIndex', () => {
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test('an un-translated slug is MISSING_TRANSLATION (warning, exit 0), not BROKEN', () => {
+  const root = scaffold();
+  try {
+    // zh lacks `dnssec`, but en has it → the app serves it via the en
+    // fallback (200). A warning, never a 404.
+    writeFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      `---\ntitle: probe\n---\nSee [DNSSEC](/zh/glossary/dnssec/).\n`,
+    );
+    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const report = JSON.parse(audit.stdout) as {
+      findings: { severity: string; href: string }[];
+    };
+    const finding = report.findings.find(
+      (f) => f.href === '/zh/glossary/dnssec/',
+    );
+    expect(finding?.severity).toBe('MISSING_TRANSLATION');
+    expect(report.findings.some((f) => f.severity === 'BROKEN')).toBe(false);
+    expect(audit.code).toBe(0); // warnings never fail the run
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('a slug absent from every locale (no en fallback) is BROKEN (exit 1)', () => {
+  const root = scaffold();
+  try {
+    writeFileSync(
+      path.join(root, 'content/glossary/zh/probe.md'),
+      `---\ntitle: probe\n---\nSee [Ghost](/zh/glossary/ghost/).\n`,
+    );
+    const audit = run(root, ['--json', 'content/glossary/zh/probe.md']);
+    const report = JSON.parse(audit.stdout) as {
+      findings: { severity: string; href: string }[];
+    };
+    const finding = report.findings.find(
+      (f) => f.href === '/zh/glossary/ghost/',
+    );
+    expect(finding?.severity).toBe('BROKEN');
+    expect(audit.code).toBe(1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

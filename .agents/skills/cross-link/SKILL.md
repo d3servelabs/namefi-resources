@@ -59,15 +59,24 @@ bun .agents/skills/cross-link/link-audit.ts --fix <paths>   # repoint LOCALE_MIS
 bun .agents/skills/cross-link/link-audit.ts --json <paths>  # machine-readable
 ```
 
-It classifies every internal link:
+It classifies every internal link. The resources app **falls back to the default locale (`en`)
+at runtime** — requesting `/<loc>/.../<slug>` when that locale lacks the slug serves the English
+entry (HTTP 200) with `rel=canonical` → the `en` URL (the `load*Entry` fallback in
+`apps/resources/src/lib/content.ts`). So a missing translation is **not** a 404; only the absence of
+the `en` fallback is. The severities mirror that:
 
-- **`BROKEN`** — target slug exists in no locale → 404. **Must be fixed by hand** (create the
-  missing translation, or repoint to `/en/...` if that's the only existing copy). The auditor never
-  auto-fixes these because the right answer is editorial.
+- **`BROKEN`** — slug exists in neither the link locale **nor** the `en` fallback → genuine 404.
+  **Must be fixed by hand** (create the term, or repoint to a locale that has it). Never auto-fixed
+  (the right answer is editorial). The only severity that fails the run (exit 1).
 - **`LOCALE_MISMATCH`** — link locale ≠ file locale and the file's own locale *has* the counterpart.
   **Auto-fixable** with `--fix` (repoints to the file's locale).
-- **`CROSS_LOCALE`** — link locale ≠ file locale and the file's locale has *no* counterpart. An
-  acceptable `/en/...` fallback; surfaced as a dim warning, never auto-fixed.
+- **`MISSING_TRANSLATION`** — the link locale lacks the slug but `en` has it, so the app renders it
+  via the `en` fallback (200, canonical → `en`). A warning, not a 404: ideally translate the term,
+  or link `/en/...` explicitly for a self-canonical URL. Never auto-fixed (translate-vs-repoint is
+  an editorial call).
+- **`CROSS_LOCALE`** — link locale ≠ file locale, the linked page genuinely exists, and the file's
+  locale has *no* counterpart (the term is only translated in the linked locale). An acceptable
+  `/en/...`-style fallback; a dim warning, never auto-fixed.
 
 The full repo currently carries thousands of `LOCALE_MISMATCH` links — do **not** mass-fix the whole
 repo in a content PR. Scope `--fix` to the paths you actually created or edited.
