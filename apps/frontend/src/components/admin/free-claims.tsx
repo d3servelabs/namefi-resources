@@ -67,8 +67,13 @@ import {
   CheckCircle,
   Clock,
   MoreHorizontal,
-  X,
+  Sparkles,
+  DollarSign,
 } from 'lucide-react';
+import {
+  UserSelectComboBox,
+  type UserOption,
+} from '@/components/admin/user-select-combobox';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 
@@ -81,14 +86,36 @@ interface CreateFreeClaimForm {
   parentDomain: string;
   hasExpiration: boolean;
   expirationDate: string;
+  /** When false (default) premium domains are blocked from this claim. */
+  allowPremium: boolean;
+  /** Max 1-year registration price (USD) as a raw input string; '' = no cap. */
+  maxPrice: string;
 }
 
-interface SearchedUser {
-  id: string;
-  privyUserId: string;
-  primaryEmail: string | null;
-  walletAddresses: string[];
-  displayName: string | null;
+const INITIAL_CREATE_FORM: CreateFreeClaimForm = {
+  userId: '',
+  groupOrCampaignKey: '',
+  reason: '',
+  domainType: 'exactDomain',
+  exactDomainName: '',
+  parentDomain: '',
+  hasExpiration: false,
+  expirationDate: '',
+  allowPremium: false,
+  maxPrice: '',
+};
+
+/** Per-claim free-claim guard policy, read from a claim row's jsonb metadata. */
+function getClaimPolicy(metadata: unknown): {
+  allowPremium: boolean;
+  maxPrice: number | null;
+} {
+  const m = (metadata ?? {}) as Record<string, unknown>;
+  return {
+    allowPremium: m.allowPremium === true,
+    maxPrice:
+      typeof m.maxPrice === 'number' && m.maxPrice > 0 ? m.maxPrice : null,
+  };
 }
 
 const LoadingSkeletons: FC = () => (
@@ -139,52 +166,45 @@ const getStatusBadge = (status: string) => {
   }
 };
 
+const ClaimLimitsCell: FC<{ metadata: unknown }> = ({ metadata }) => {
+  const policy = getClaimPolicy(metadata);
+
+  if (!policy.allowPremium && policy.maxPrice == null) {
+    return <span className="text-muted-foreground text-sm">No limits</span>;
+  }
+
+  return (
+    <div className="flex flex-col items-start gap-1 text-sm">
+      {policy.allowPremium && (
+        <Badge variant="outline" className="flex items-center gap-1">
+          <Sparkles className="h-3 w-3" />
+          Premium allowed
+        </Badge>
+      )}
+      {policy.maxPrice != null && (
+        <span className="text-muted-foreground">
+          Max ${policy.maxPrice} USD
+        </span>
+      )}
+    </div>
+  );
+};
+
 function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState<CreateFreeClaimForm>({
-    userId: '',
-    groupOrCampaignKey: '',
-    reason: '',
-    domainType: 'exactDomain',
-    exactDomainName: '',
-    parentDomain: '',
-    hasExpiration: false,
-    expirationDate: '',
-  });
-  const [userSearchTerm, setUserSearchTerm] = useState('');
-  const [selectedUser, setSelectedUser] = useState<SearchedUser | null>(null);
-  const [showUserSearch, setShowUserSearch] = useState(false);
+  const [form, setForm] = useState<CreateFreeClaimForm>(INITIAL_CREATE_FORM);
+  const [selectedUser, setSelectedUser] = useState<UserOption | null>(null);
 
   const trpc = useTRPC();
   const queryClient = useQueryClient();
-
-  // User search query
-  const userSearchQuery = useQuery({
-    ...trpc.admin.users.searchUsers.queryOptions({
-      searchTerm: userSearchTerm,
-      limit: 10,
-    }),
-    enabled: userSearchTerm.length >= 2,
-  });
 
   const createMutation = useMutation({
     ...trpc.admin.freeClaims.createFreeClaim.mutationOptions(),
     onSuccess: () => {
       toast.success('Free claim created successfully');
       setOpen(false);
-      setForm({
-        userId: '',
-        groupOrCampaignKey: '',
-        reason: '',
-        domainType: 'exactDomain',
-        exactDomainName: '',
-        parentDomain: '',
-        hasExpiration: false,
-        expirationDate: '',
-      });
-      setUserSearchTerm('');
+      setForm(INITIAL_CREATE_FORM);
       setSelectedUser(null);
-      setShowUserSearch(false);
       onSuccess();
       queryClient.invalidateQueries({
         queryKey: trpc.admin.freeClaims.getFreeClaimsWithPagination.queryKey(),
@@ -203,6 +223,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
         userId: form.userId,
         groupOrCampaignKey: form.groupOrCampaignKey,
         reason: form.reason,
+        allowPremium: form.allowPremium,
       };
 
       if (form.domainType === 'exactDomain' && form.exactDomainName) {
@@ -215,6 +236,15 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
         payload.expirationDate = new Date(form.expirationDate);
       }
 
+      const parsedMaxPrice = Number.parseFloat(form.maxPrice);
+      if (
+        form.maxPrice.trim() &&
+        Number.isFinite(parsedMaxPrice) &&
+        parsedMaxPrice > 0
+      ) {
+        payload.maxPrice = parsedMaxPrice;
+      }
+
       createMutation.mutate(payload);
     },
     [form, createMutation],
@@ -224,17 +254,16 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
     setForm((prev) => ({ ...prev, ...updates }));
   }, []);
 
-  const handleUserSelect = useCallback((user: SearchedUser) => {
+  const handleUserChange = useCallback((user: UserOption | null) => {
     setSelectedUser(user);
-    setForm((prev) => ({ ...prev, userId: user.id }));
-    setShowUserSearch(false);
-    setUserSearchTerm('');
+    setForm((prev) => ({ ...prev, userId: user?.id ?? '' }));
   }, []);
 
-  const handleClearSelectedUser = useCallback(() => {
-    setSelectedUser(null);
-    setForm((prev) => ({ ...prev, userId: '' }));
-  }, []);
+  const isMaxPriceInvalid = useMemo(() => {
+    if (!form.maxPrice.trim()) return false;
+    const parsed = Number.parseFloat(form.maxPrice);
+    return !Number.isFinite(parsed) || parsed <= 0;
+  }, [form.maxPrice]);
 
   const isFormValid = useMemo(() => {
     if (
@@ -244,11 +273,15 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
     )
       return false;
 
+    if (isMaxPriceInvalid) {
+      return false;
+    }
+
     if (form.domainType === 'exactDomain') {
       return Boolean(form.exactDomainName.trim());
     }
     return Boolean(form.parentDomain.trim());
-  }, [form]);
+  }, [form, isMaxPriceInvalid]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -282,119 +315,14 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="userId">User *</Label>
-              {selectedUser ? (
-                <div className="flex items-center justify-between p-3 border rounded-md bg-muted">
-                  <div className="space-y-1">
-                    <div className="font-medium">
-                      {selectedUser.displayName ||
-                        selectedUser.primaryEmail ||
-                        'Unknown User'}
-                    </div>
-                    {selectedUser.primaryEmail && (
-                      <div className="text-sm text-muted-foreground">
-                        {selectedUser.primaryEmail}
-                      </div>
-                    )}
-                    {selectedUser.walletAddresses.length > 0 && (
-                      <div className="text-xs text-muted-foreground font-mono">
-                        {selectedUser.walletAddresses[0]}
-                        {selectedUser.walletAddresses.length > 1 &&
-                          ` (+${selectedUser.walletAddresses.length - 1} more)`}
-                      </div>
-                    )}
-                    <div className="text-xs text-muted-foreground">
-                      ID: {selectedUser.id}
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleClearSelectedUser}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : showUserSearch ? (
-                <div className="space-y-2">
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Search by email, wallet address, or user ID..."
-                      value={userSearchTerm}
-                      onChange={(e) => setUserSearchTerm(e.target.value)}
-                      autoFocus
-                      data-testid="admin.free-claims.create.user-search-input"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setShowUserSearch(false)}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                  {userSearchQuery.isLoading && userSearchTerm.length >= 2 && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <Loader2 className="h-3 w-3 animate-spin" />
-                      Searching users...
-                    </div>
-                  )}
-                  {userSearchQuery.data && userSearchQuery.data.length > 0 && (
-                    <div className="border rounded-md max-h-60 overflow-y-auto">
-                      {userSearchQuery.data.map((user) => (
-                        <button
-                          type="button"
-                          key={user.id}
-                          className="p-3 hover:bg-muted cursor-pointer border-b last:border-b-0"
-                          onClick={() => handleUserSelect(user)}
-                          data-testid={`admin.free-claims.create.user-result.${user.id}`}
-                        >
-                          <div className="space-y-1">
-                            <div className="font-medium">
-                              {user.displayName ||
-                                user.primaryEmail ||
-                                'Unknown User'}
-                            </div>
-                            {user.primaryEmail && (
-                              <div className="text-sm text-muted-foreground">
-                                {user.primaryEmail}
-                              </div>
-                            )}
-                            {user.walletAddresses.length > 0 && (
-                              <div className="text-xs text-muted-foreground font-mono">
-                                {user.walletAddresses[0]}
-                                {user.walletAddresses.length > 1 &&
-                                  ` (+${user.walletAddresses.length - 1} more)`}
-                              </div>
-                            )}
-                            <div className="text-xs text-muted-foreground">
-                              ID: {user.id}
-                            </div>
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                  {userSearchQuery.data &&
-                    userSearchQuery.data.length === 0 &&
-                    userSearchTerm.length >= 2 &&
-                    !userSearchQuery.isLoading && (
-                      <div className="text-sm text-muted-foreground p-3 border rounded-md">
-                        No users found matching "{userSearchTerm}"
-                      </div>
-                    )}
-                </div>
-              ) : (
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full justify-start"
-                  onClick={() => setShowUserSearch(true)}
-                >
-                  <Search className="h-4 w-4 me-2" />
-                  Search for user by email, wallet, or name...
-                </Button>
-              )}
+              <UserSelectComboBox
+                id="userId"
+                mode="single"
+                value={selectedUser}
+                onChange={handleUserChange}
+                placeholder="Search by email, name, wallet, or domain…"
+                ariaLabel="Select user"
+              />
               <p className="text-xs text-muted-foreground">
                 Select the user who can claim this domain
               </p>
@@ -531,6 +459,55 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                 />
               </div>
             )}
+
+            {/* Allow premium domains */}
+            <div className="flex items-center gap-x-2">
+              <Switch
+                id="allowPremium"
+                checked={form.allowPremium}
+                onCheckedChange={(checked) =>
+                  updateForm({ allowPremium: checked })
+                }
+                data-testid="admin.free-claims.create.allow-premium-switch"
+              />
+              <Label htmlFor="allowPremium" className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4" />
+                Allow premium domains
+              </Label>
+            </div>
+            <p className="ms-6 text-xs text-muted-foreground">
+              Off by default — premium domains are blocked from this free claim
+              unless enabled.
+            </p>
+
+            {/* Max registration price cap */}
+            <div className="space-y-2">
+              <Label htmlFor="maxPrice" className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Max registration price (USD)
+              </Label>
+              <Input
+                id="maxPrice"
+                type="number"
+                min="1"
+                step="1"
+                inputMode="decimal"
+                value={form.maxPrice}
+                onChange={(e) => updateForm({ maxPrice: e.target.value })}
+                placeholder="No cap"
+                aria-invalid={isMaxPriceInvalid}
+                data-testid="admin.free-claims.create.max-price-input"
+              />
+              <p className="text-xs text-muted-foreground">
+                Blocks claiming a domain whose 1-year registration price exceeds
+                this amount. Leave empty for no cap.
+              </p>
+              {isMaxPriceInvalid && (
+                <p className="text-xs text-destructive">
+                  Enter a positive number.
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-end gap-2">
@@ -539,9 +516,8 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
               variant="outline"
               onClick={() => {
                 setOpen(false);
-                setUserSearchTerm('');
+                setForm(INITIAL_CREATE_FORM);
                 setSelectedUser(null);
-                setShowUserSearch(false);
               }}
               disabled={createMutation.isPending}
             >
@@ -901,11 +877,7 @@ function FreeClaimsContent() {
                         </Td>
                         <Td>{getStatusBadge(claim.claimingStatus)}</Td>
                         <Td>
-                          <div className="space-y-1 text-sm">
-                            <span className="text-muted-foreground">
-                              No limits
-                            </span>
-                          </div>
+                          <ClaimLimitsCell metadata={claim.metadata} />
                         </Td>
                         <Td>
                           {claim.expirationDate ? (

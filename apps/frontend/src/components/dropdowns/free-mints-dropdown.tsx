@@ -110,7 +110,7 @@ export function FreeMintsDropdown({
                       {freeMint.type === 'single'
                         ? freeMint.domain
                         : freeMint.type === 'campaign'
-                          ? `Any .${freeMint.domain}`
+                          ? `Choose a .${freeMint.domain}` //TODO reflect if premium is allowed or not
                           : null}
                     </span>
                     <Button

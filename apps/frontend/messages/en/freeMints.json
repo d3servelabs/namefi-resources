@@ -9,8 +9,8 @@
     "claimedDomain": "Claimed Domain",
     "claimedOn": "Claimed On"
   },
-  "campaignItem": "Any <domain>{domain}</domain> subdomain",
-  "campaignLabel": "Any {domain} subdomain",
+  "campaignItem": "Choose a <domain>{domain}</domain> subdomain",
+  "campaignLabel": "Choose a {domain} subdomain",
   "statusBadge": {
     "claimed": "Claimed",
     "inProgress": "In Progress",
