@@ -142,7 +142,7 @@ The domain didn't build Uber's brand. But once Uber.com was the address, every f
 
 ## What founders should learn from Case 4
 
-The easy takeaway — "drop the descriptive word and buy your exact-match .com" — is too blunt. The more useful lessons are about sequence, leverage, and how you pay:
+The easy takeaway — "drop the descriptive word and buy your exact-match [.com](/en/tld/com/)" — is too blunt. The more useful lessons are about sequence, leverage, and how you pay:
 
 1. **A descriptive domain is fine to start.** UberCab.com did real work: it made an alien idea — summon a car with your phone — instantly legible. A modifier like "Cab," "App," or "HQ" is a reasonable on-ramp, not a failure.
 2. **Watch for the moment the modifier becomes a liability, not just a ceiling.** For most companies the signal is ambition outgrowing the name. For Uber it was sharper: the word "Cab" literally invited a [cease and desist](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=cease%20and%20desist). When your name is doing the regulator's targeting for them, the upgrade is urgent.
@@ -159,7 +159,7 @@ This case is, at its core, a transfer problem wearing a branding costume.
 
 The strategic decision was never really in doubt — of course a company called Uber should own Uber.com. The hard part was everything around the asset: finding the unlikely owner (a music label sitting on a dead startup's domain), agreeing on terms when the buyer had no cash, structuring an equity-for-domain trade, moving control cleanly, and doing it all under deadline pressure from regulators. The deal also left a long tail of value questions — what was 2% worth then, what was it worth later, who captured the upside — that took years and a Vanity Fair scoop to fully surface.
 
-[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with DNS — turning the messiest parts of a deal like this (proving who owns what, agreeing on value, and moving it safely) into something closer to a clean, auditable transaction. A future where a domain can be priced, traded, and even partially exchanged for other assets without a multi-year paper trail is exactly the kind of friction this case spent so much effort overcoming.
+[Namefi](https://namefi.io) is built around the idea that domains should behave like internet-native assets. Tokenized ownership can make domain control easier to verify, transfer, and integrate into modern workflows while staying compatible with [DNS](/en/glossary/dns/) — turning the messiest parts of a deal like this (proving who owns what, agreeing on value, and moving it safely) into something closer to a clean, auditable transaction. A future where a domain can be priced, traded, and even partially exchanged for other assets without a multi-year paper trail is exactly the kind of friction this case spent so much effort overcoming.
 
 Uber.com looks inevitable now because Uber became enormous. But the lesson lands long before that scale: when a name is going to carry the business — and especially when the old name has become a liability — the domain isn't decoration. It's the part of the brand worth trading a slice of the company to get right.
 
