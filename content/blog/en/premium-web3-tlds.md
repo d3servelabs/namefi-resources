@@ -11,7 +11,7 @@ description: A clear 2026 guide to premium Web3 TLDs—what "Web3 TLD" really me
 keywords: ['premium web3 tld', 'premium web3 tlds', 'web3 tld', 'web3 tlds', 'premium web3 domains', 'best web3 domains', 'web3 domain extensions', 'web3 domain', 'web3 domains', 'tokenized domain extensions', 'premium domain extensions', 'most valuable domain extensions', 'tokenized tld', 'tokenized domains', 'ICANN tld', 'blockchain tld', 'NFT domain', 'premium .com', 'premium .ai', 'premium .io', 'premium .xyz', 'best domain extensions 2026', 'crypto tld', 'web3 naming', 'domain tld investment', 'namefi']
 ---
 
-Search for "premium Web3 TLD" and you'll find two completely different products wearing the same label. One is a **blockchain-only name** like a `.eth` or `.crypto` that lives outside the global DNS root. The other is a **real, ICANN-recognized extension** (`.com`, `.ai`, `.io`, `.xyz`) that has been *tokenized* on-chain so it behaves like a Web3 asset while still resolving in every browser on Earth.
+Search for "premium Web3 TLD" and you'll find two completely different products wearing the same label. One is a **blockchain-only name** like a `.eth` or `.crypto` that lives outside the global [DNS](/en/glossary/dns/) root. The other is a **real, ICANN-recognized extension** (`.com`, `.ai`, `.io`, `.xyz`) that has been *tokenized* [on-chain](/en/glossary/on-chain/) so it behaves like a [Web3](/en/glossary/web3/) asset while still resolving in every browser on Earth.
 
 These are not the same thing, and the difference decides whether your "premium Web3 domain" actually works as a website, an email address, or a brand. This guide untangles the terminology, then walks through which extensions are genuinely premium for tokenization and investment in 2026.
 
@@ -25,15 +25,15 @@ The phrase "Web3 TLD" gets used for two architectures that have almost nothing i
 
 ### Meaning A: Blockchain-native naming (not in the DNS root)
 
-This is the world of [ENS](/en/glossary/ens/) (`.eth`), Unstoppable Domains (`.crypto`, `.x`, `.nft`), Freename's user-created TLDs, and Handshake. These extensions are minted as [NFTs](/en/glossary/nft/) or smart-contract records and are **not part of the [ICANN](/en/glossary/icann/) DNS root**. Each project effectively publishes its own namespace, governed by smart contracts and controlled by private keys.
+This is the world of [ENS](/en/glossary/ens/) (`.eth`), Unstoppable Domains (`.crypto`, `.x`, `.nft`), Freename's user-created [TLDs](/en/glossary/tld/), and Handshake. These extensions are minted as [NFTs](/en/glossary/nft/) or smart-contract records and are **not part of the [ICANN](/en/glossary/icann/) DNS root**. Each project effectively publishes its own namespace, governed by smart contracts and controlled by private keys.
 
-The strength: they're wallet-native by design—turning a long `0x…` address into `you.eth`, powering dApp logins, and serving as on-chain identity. The tradeoff: a `.eth` or `.crypto` does **not** resolve in a normal browser, mail server, CDN, or SSL/TLS certificate authority without a resolver, extension, or bridge. They sit *beside* the traditional internet's naming layer rather than *inside* it.
+The strength: they're [wallet](/en/glossary/wallet/)-native by design—turning a long `0x…` address into `you.eth`, powering dApp logins, and serving as on-chain identity. The tradeoff: a `.eth` or `.crypto` does **not** resolve in a normal browser, mail server, CDN, or SSL/TLS certificate authority without a resolver, extension, or bridge. They sit *beside* the traditional internet's naming layer rather than *inside* it.
 
 ### Meaning B: Real ICANN TLDs that are tokenized on-chain (Namefi's model)
 
 This is a different design entirely. You take a standard, globally recognized extension—`.com`, `.ai`, `.io`, `.xyz`—register a real DNS domain, and add an **on-chain ownership token** on top. The result is one domain with two synchronized layers: the DNS/registry record *and* an [NFT](/en/glossary/nft/) in your wallet.
 
-A tokenized `.com` is still a real `.com`. It resolves natively in Chrome and Safari, supports email and SSL, and pays normal annual renewals—while *also* being a tradable, composable on-chain asset you can sell, transfer, or use as collateral in seconds.
+A tokenized `.com` is still a real `.com`. It resolves natively in Chrome and Safari, supports email and SSL, and pays normal annual renewals—while *also* being a tradable, composable on-chain asset you can sell, transfer, or use as [collateral](/en/glossary/collateral/) in seconds.
 
 > One-line summary: a **blockchain-native TLD replaces DNS**; a **tokenized ICANN TLD extends DNS**. Both can be called "Web3," but only one keeps universal browser and email compatibility.
 
@@ -53,7 +53,7 @@ If your goal is a premium asset that is *also* Web3-ready, tokenizing a real ext
 | Usable as DeFi collateral | Yes | Yes |
 | Universal Web2 + Web3 reach | No | Yes |
 
-The "premium" in *premium domain* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. Tokenizing it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/defi/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
+The "premium" in *premium domain* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. [Tokenizing](/en/glossary/tokenize/) it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/defi/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
 
 You don't have to choose sides, either. Many owners hold a tokenized `.com` for their real product *and* an [`.eth`](/en/tld/eth/) name as a wallet identity. They do different jobs. (See [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/) for the full breakdown.)
 
@@ -65,7 +65,7 @@ Not every extension carries the same weight. When investors and builders talk ab
 
 ### `.com` — the default premium standard
 
-[`.com`](/en/tld/com/) remains the most universally trusted and most valuable extension overall, with the largest registered base and the deepest aftermarket history. A short, brandable, dictionary, or single-word `.com` is the blue-chip of domain investing. Tokenizing one combines that blue-chip status with instant, registrar-free transferability. See [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
+[`.com`](/en/tld/com/) remains the most universally trusted and most valuable extension overall, with the largest registered base and the deepest aftermarket history. A short, brandable, dictionary, or single-word `.com` is the blue-chip of domain investing. Tokenizing one combines that blue-chip status with instant, [registrar](/en/glossary/registrar/)-free transferability. See [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
 
 ### `.ai` — the highest-momentum premium extension
 
