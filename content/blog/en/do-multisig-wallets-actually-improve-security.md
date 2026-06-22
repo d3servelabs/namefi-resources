@@ -12,13 +12,13 @@ ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['multisig wallet', 'multisignature', 'safe wallet', 'gnosis safe', 'key management', 'self custody', 'threshold signature', 'social recovery', 'namefi']
 ---
 
-Multisignature wallets—wallets where M-of-N keys must sign before a transaction is valid—are usually presented as the obvious upgrade from a single-key hot wallet. Most treasury setups in DAOs, exchanges, and serious crypto-native companies run through some flavor of multisig (Safe, Squads, Multisig.js, threshold-signature variants).
+Multisignature wallets—[wallets](/en/glossary/wallet/) where M-of-N keys must sign before a transaction is valid—are usually presented as the obvious upgrade from a single-key hot wallet. Most treasury setups in DAOs, exchanges, and serious crypto-native companies run through some flavor of [multisig](/en/glossary/multi-sig/) (Safe, Squads, Multisig.js, threshold-signature variants).
 
 That reputation is well earned, but only against a *specific* threat model. Multisig defeats some of the most common ways funds get stolen and does almost nothing against others. Below is the honest version: what multisig is actually good at, where it falls short, and the cases where adopting it can make a setup *less* safe.
 
 ## What multisig is, very briefly
 
-In a 2-of-3 multisig, three private keys exist; any two of them must sign a transaction for it to execute on-chain. The wallet itself is a smart contract (in the Ethereum / EVM world) or a native multisig output type (in Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). The contract verifies the signatures and then forwards the transaction.
+In a 2-of-3 multisig, three private keys exist; any two of them must sign a transaction for it to execute [on-chain](/en/glossary/on-chain/). The wallet itself is a [smart contract](/en/glossary/smart-contract/) (in the Ethereum / EVM world) or a native multisig output type (in Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). The contract verifies the signatures and then forwards the transaction.
 
 The most widely used implementation in EVM ecosystems is [Safe](https://safe.global/) (formerly Gnosis Safe). On Solana, [Squads](https://squads.so/) plays the same role. Bitcoin has a long history of native multisig support, often combined with hardware wallets through [PSBT workflows](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 
@@ -28,7 +28,7 @@ Threshold-signature schemes (TSS, FROST, MPC) achieve a similar outcome with a s
 
 ### Single-key compromise
 
-This is the headline benefit. If one signer's hardware wallet is stolen, one signer's phone is malware-infected, one signer's seed phrase leaks, an attacker holding that single key cannot move funds. They need to compromise at least M-1 other keys at the same time.
+This is the headline benefit. If one signer's [hardware wallet](/en/glossary/hardware-wallet/) is stolen, one signer's phone is malware-infected, one signer's [seed phrase](/en/glossary/seed-phrase/) leaks, an attacker holding that single key cannot move funds. They need to compromise at least M-1 other keys at the same time.
 
 For a 2-of-3 setup, this means the attacker must compromise *two independent endpoints*, ideally held by different people, on different hardware, in different physical locations. The probability of two independent compromises in the same window is usually orders of magnitude lower than the probability of one.
 
@@ -110,7 +110,7 @@ This is more discipline than most teams realize at the outset. The good news is 
 
 ## How this connects to domains
 
-Naming is one of the strongest analogies to multisig in the off-chain world. A domain controlled by a single registrar account behind a single password is a single-key wallet. A domain protected by registrar lock + registry lock + 2FA at the DNS provider + multiple authoritative providers is, structurally, a multisig: multiple independent factors must each be compromised before the name moves.
+Naming is one of the strongest analogies to multisig in the off-chain world. A domain controlled by a single [registrar](/en/glossary/registrar/) account behind a single password is a single-key wallet. A domain protected by registrar lock + registry lock + 2FA at the DNS provider + multiple authoritative providers is, structurally, a multisig: multiple independent factors must each be compromised before the name moves.
 
 Namefi takes this further by representing ownership as an on-chain record that can be held in a multisig wallet directly. The same threshold scheme that protects a treasury can now protect the *DNS control plane*—so a single phished individual cannot lose the company's domain any more than they can drain the treasury alone. The threat model upgrade is the same in both worlds: replace "trust one credential" with "compromise M of N independent factors."
 

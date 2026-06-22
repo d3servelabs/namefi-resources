@@ -79,7 +79,7 @@ The one-line version: use automated appraisers as a *first filter, never as gosp
 
 A good appraisal — tool-assisted, comp-checked, end-user-adjusted — tells you what to ask. It doesn't get you paid. That's a separate problem, and it's the one where high-value [domain trading](/en/glossary/domain-trading/) actually gets nervous: the buyer doesn't want to wire money before they control the name, and the seller doesn't want to release the name before the money lands. That standoff is downstream of pricing and it's where deals quietly die. We cover the mechanics in [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/) and the neutral-third-party workflow in [domain escrow explained](/en/blog/domain-escrow-explained/).
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real ICANN domain makes ownership easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change. Price the name honestly with the tools as your first filter — then make the trade itself safe.
+This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real [ICANN](/en/glossary/icann/) domain makes ownership easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change. Price the name honestly with the tools as your first filter — then make the trade itself safe.
 
 ## Friendly Disclaimer (Read Me!)
 

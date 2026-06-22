@@ -13,7 +13,7 @@ keywords: ['domain escrow', 'what is escrow', 'escrow account', 'escrow meaning'
 
 If you've ever bought or sold something expensive between strangers — a car, a house, a `.com` worth five figures — you've run into the same problem: the buyer doesn't want to pay before they get the thing, and the seller doesn't want to hand over the thing before they get paid. Somebody has to go first, and going first means trusting the other person.
 
-**Escrow** is the standard solution to that problem. This guide explains what an escrow account is in plain terms, how escrow works step by step in a domain sale, why it matters, and how a newer approach — [tokenized domains](/en/blog/what-are-tokenized-domains/) and smart contracts — is starting to replace traditional escrow entirely.
+**[Escrow](/en/glossary/escrow/)** is the standard solution to that problem. This guide explains what an escrow account is in plain terms, how escrow works step by step in a domain sale, why it matters, and how a newer approach — [tokenized domains](/en/blog/what-are-tokenized-domains/) and smart contracts — is starting to replace traditional escrow entirely.
 
 ---
 
@@ -75,7 +75,7 @@ These trade-offs were simply the price of safety — until a different settlemen
 
 ## How Tokenized Domains + Smart Contracts Replace Escrow
 
-When a domain is [tokenized](/en/blog/what-are-tokenized-domains/), ownership is represented by an on-chain token (an NFT) rather than only a registrar database entry. That changes what's possible at settlement.
+When a domain is [tokenized](/en/blog/what-are-tokenized-domains/), ownership is represented by an [on-chain](/en/glossary/on-chain/) token (an NFT) rather than only a registrar database entry. That changes what's possible at settlement.
 
 A [smart contract](/en/glossary/smart-contract/) is code that runs on a blockchain and executes automatically when its conditions are met. Crucially, an on-chain transaction is **atomic**: payment and asset transfer happen in the *same* transaction, in the same block — or neither happens at all. There is no in-between state where one side has moved and the other hasn't.
 
@@ -87,7 +87,7 @@ That property does exactly what escrow was invented to do, without a third party
 
 In other words, the smart contract becomes the escrow — but it's transparent, automatic, instant, and doesn't take a cut for holding your money. For a deeper walkthrough of the full marketplace flow and where the risks shift, see [From Listing to Settlement: How Tokenized Marketplaces Replace Escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/).
 
-This isn't risk-free — it just moves the risks. Instead of trusting an escrow company, you now rely on wallet security and the soundness of the smart contract. The point isn't that tokenized settlement is magic; it's that the *job escrow does* can be done by code rather than by a paid intermediary.
+This isn't risk-free — it just moves the risks. Instead of trusting an escrow company, you now rely on [wallet](/en/glossary/wallet/) security and the soundness of the smart contract. The point isn't that tokenized settlement is magic; it's that the *job escrow does* can be done by code rather than by a paid intermediary.
 
 ---
 
@@ -96,7 +96,7 @@ This isn't risk-free — it just moves the risks. Instead of trusting an escrow 
 It depends on what you're transacting:
 
 - **Buying or selling a traditional, non-tokenized domain between strangers?** Yes — use a reputable escrow service. The fees are worth it, and skipping escrow is how people get defrauded.
-- **Transacting a tokenized domain on a marketplace?** Atomic on-chain settlement already gives you escrow's core guarantee. Your focus shifts to verifying the contract and the recipient address.
+- **Transacting a tokenized domain on a [marketplace](/en/glossary/marketplace/)?** Atomic on-chain settlement already gives you escrow's core guarantee. Your focus shifts to verifying the contract and the recipient address.
 
 Namefi works with tokenized domains so that buying and selling can settle on-chain — getting you the safety escrow provides without the wait or the percentage. If you want to see how it works in practice, head to [namefi.io](https://namefi.io).
 
