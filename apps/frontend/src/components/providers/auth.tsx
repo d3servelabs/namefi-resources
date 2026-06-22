@@ -1036,16 +1036,29 @@ function extendTrpcQueryKey<Q extends AnyUseQueryOptions>(
   keys: unknown[],
   query: Q,
 ): Q {
-  const queryKey: unknown[] | undefined = query.queryKey
-    ? [...query.queryKey]
-    : undefined;
-  if (keys.length && queryKey) {
-    queryKey.push(...keys);
+  const originalKey = query.queryKey as unknown[] | undefined;
+  if (!keys.length || !originalKey) {
+    return query;
   }
+  // tRPC v11.8+ interprets a queryKey of length >= 3 as a *prefixed* key
+  // ([prefix, path, args]) and reads the procedure path from queryKey[1] (see
+  // @trpc/tanstack-react-query readQueryKey/isPrefixedQueryKey). The previous
+  // approach *appended* auth-scope segments, which pushed the key to length >= 3
+  // and made tRPC read the `{input,type}` args object as the path —
+  // "queryKeyData.path.join is not a function" — so getUser errored on the
+  // post-login transition and auth never completed.
+  //
+  // Keep tRPC's unprefixed [path, args] shape (length 2) and fold the auth scope
+  // INTO args instead: it only adds react-query cache-key distinctness (tRPC
+  // ignores unknown args fields when building the request, reading only
+  // `args.input`). Auth-state isolation is otherwise enforced by
+  // clearAuthTransitionQueryCache() clearing the whole cache on transitions.
+  const [path, args] = originalKey;
+  const authScope = Object.assign({}, ...(keys as object[]));
   return {
     ...query,
-    queryKey,
-  };
+    queryKey: [path, { ...(args as object | null), __authScope: authScope }],
+  } as Q;
 }
 
 function handleAuthQueryKey<Q extends AnyUseQueryOptions>(

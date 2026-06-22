@@ -109,6 +109,16 @@ const AGENT_DISCOVERY_PATHS = new Set([
   '/v-next/openapi/doc.json',
 ]);
 
+// Team-owned namefi-astra Vercel deployment URLs, e.g.
+// https://namefi-astra-cjnrjrlp6-d3servelabs.vercel.app . The id segment is 9
+// lowercase alphanumerics (the Vercel deployment id); the `-d3servelabs` scope
+// segment can only be produced by deployments to our Vercel team, so a third
+// party cannot forge a matching origin. Permitting CORS for these lets us test
+// login against this backend on a Vercel deployment without promoting it to
+// namefi.io. Origin headers carry no path/trailing-slash, so this anchors on host.
+const NAMEFI_ASTRA_VERCEL_DEPLOYMENT_ORIGIN_RE =
+  /^https:\/\/namefi-astra-[a-z0-9]{9}-d3servelabs\.vercel\.app$/;
+
 async function resolveCorsOrigin(origin: string | undefined, path: string) {
   if (config.ALLOW_ALL_ORIGINS) {
     return origin;
@@ -146,6 +156,17 @@ async function resolveCorsOrigin(origin: string | undefined, path: string) {
     // Check if it's using https
     if (!config.ALLOW_HTTP && parsedOrigin.protocol !== 'https:') {
       return null;
+    }
+
+    // Allow team-owned namefi-astra Vercel deployment URLs so login can be
+    // tested against this backend on a Vercel deployment without promoting it to
+    // namefi.io. Only the d3servelabs Vercel team can mint these hostnames.
+    if (NAMEFI_ASTRA_VERCEL_DEPLOYMENT_ORIGIN_RE.test(origin)) {
+      logger.debug(
+        { origin },
+        'CORS: allowing namefi-astra Vercel deployment origin',
+      );
+      return origin;
     }
 
     if (isHostnameAllowed(parsedOrigin.hostname, allowedHostnames)) {
