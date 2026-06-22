@@ -91,6 +91,7 @@ type Page = {
   keywords: string[];
   cluster?: string;
   series?: string;
+  draft: boolean;
   raw: string;
   prose: string;
 };
@@ -151,6 +152,7 @@ function loadPage(file: string): Page | null {
     keywords,
     cluster: typeof data.cluster === 'string' ? data.cluster : undefined,
     series: typeof data.series === 'string' ? data.series : undefined,
+    draft: data.draft === true || data.draft === 'true',
     raw,
     prose: stripNonProse(raw),
   };
@@ -161,7 +163,10 @@ for (const collection of COLLECTIONS)
   for (const locale of LOCALES)
     for (const f of listMarkdown(path.join(CONTENT_ROOT, collection, locale))) {
       const p = loadPage(f);
-      if (p) corpus.push(p);
+      // Exclude drafts: they must never become link targets or inbound sources.
+      // An explicitly-passed draft target is still analyzed via the loadPage
+      // fallback in the run loop below.
+      if (p && !p.draft) corpus.push(p);
     }
 const byHref = new Map(corpus.map((p) => [p.href, p]));
 
@@ -378,7 +383,9 @@ if (termArgs.length) {
     }
   }
   console.log('');
-  process.exit(0);
+  // Only stop here if there are no positional file targets; otherwise fall
+  // through and also run candidate analysis for those files.
+  if (targets.length === 0) process.exit(0);
 }
 
 // --- run -------------------------------------------------------------------
