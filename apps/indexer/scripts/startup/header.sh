@@ -50,7 +50,7 @@ fi
 
 systemctl enable docker && systemctl start docker
 
-mkdir -p /opt/ponder/nginx/conf.d /opt/ponder/nginx/certbot/conf /opt/ponder/nginx/certbot/www
+mkdir -p /opt/ponder
 cd /opt/ponder
 
 gcloud auth configure-docker us-central1-docker.pkg.dev 

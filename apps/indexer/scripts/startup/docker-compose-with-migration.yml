@@ -41,24 +41,21 @@ services:
       tags: "env:prod,team:infra,service:ponder-migration"
       com.datadoghq.ad.logs: '[{"source": "ponder-migration", "service": "ponder-migration"}]'
 
-  nginx:
-    image: nginx:stable
+  caddy:
+    image: caddy:2-alpine
     restart: always
     ports:
       - "80:80"
       - "443:443"
+    environment:
+      - DOMAIN=${DOMAIN}
+      - ACME_EMAIL=${EMAIL}
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:ro
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      - ./nginx/certbot/www:/var/www/certbot
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     depends_on:
       - app
-
-  certbot:
-    image: certbot/certbot
-    volumes:
-      - ./nginx/certbot/conf:/etc/letsencrypt
-      - ./nginx/certbot/www:/var/www/certbot
 
   datadog-agent:
     image: gcr.io/datadoghq/agent:latest
@@ -67,17 +64,12 @@ services:
       - DD_API_KEY=${DD_API_KEY}
       - DD_SITE=us5.datadoghq.com
       - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true
-      - DD_CONTAINER_EXCLUDE=name:datadog-agent
+      - DD_CONTAINER_EXCLUDE=name:datadog-agent,name:caddy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /proc/:/host/proc/:ro
       - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
 
-  watchtower:
-    image: containrrr/watchtower
-    restart: always
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=300
+volumes:
+  caddy_data:
+  caddy_config:

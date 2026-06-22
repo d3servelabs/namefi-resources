@@ -42,19 +42,12 @@ STARTUP_SCRIPT=$(mktemp)
   echo ""
   echo 'EOF'
   echo ""
-  echo "# ==== nginx conf ===="
-  # echo 'cat > nginx/conf.d/app.conf <<EOF'
-  # cat $BASE_DIR/startup/nginx.conf
-  # echo 'EOF'
-  echo 'envsubst '"'"'$DOMAIN'"'"' <<'$EOF_WITH_QUOTES' > nginx/conf.d/app.conf'
-  cat $BASE_DIR/startup/nginx.conf
+  echo "# ==== Caddyfile ===="
+  # Caddy reads {$DOMAIN}/{$ACME_EMAIL} from the caddy container's env (set in the
+  # compose file), so the Caddyfile is written literally — no envsubst needed.
+  echo 'cat > Caddyfile <<'$EOF_WITH_QUOTES
+  cat $BASE_DIR/startup/Caddyfile
   echo 'EOF'
-  echo ""
-  echo "# ==== renew-cert.sh ===="
-  echo 'cat > renew-cert.sh <<'$EOF_WITH_QUOTES
-  cat $BASE_DIR/startup/renew-cert.sh
-  echo 'EOF'
-  echo 'chmod +x renew-cert.sh'
   echo ""
   cat $BASE_DIR/startup/footer.sh
 } > "$STARTUP_SCRIPT"

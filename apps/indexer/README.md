@@ -228,15 +228,13 @@ For detailed information about the schema migration system, see [SCHEMA_MIGRATIO
 - Database view management
 - Deployment workflow examples
 
-# 🛠️ GCP Docker Deployment with SSL, Datadog & Watchtower
+# 🛠️ GCP Docker Deployment with Caddy HTTPS & Datadog
 
 This package automates deployment of a containerized app on a GCP Compute Engine VM with:
 
 - 🐳 Docker & Docker Compose  
 - 🐶 Datadog Agent for metrics  
-- 🔐 NGINX reverse proxy + Certbot for SSL  
-- 🔁 Watchtower for auto-updating images  
-- ⏰ Cron-based SSL renewal  
+- 🔐 Caddy reverse proxy with automatic, auto-renewing Let's Encrypt HTTPS  
 - ✅ GitHub Actions + Makefile automation
 
 ---
@@ -254,10 +252,9 @@ apps/indexer/
        ├── local-test.sh              # Simulate startup locally
        └── startup/
            ├── header.sh              # Pre-install, env loading
-           ├── docker-compose.yml     # All services (app, nginx, certbot, datadog, watchtower)
-           ├── nginx.conf             # HTTPS + HTTP->HTTPS redirect
-           ├── renew-cert.sh          # Daily SSL renewal logic
-           └── footer.sh              # Launch stack & setup cron
+           ├── docker-compose.yml     # All services (app, caddy, datadog)
+           ├── Caddyfile              # HTTPS reverse proxy (auto Let's Encrypt)
+           └── footer.sh              # Launch the stack
 ```
 
 ---
@@ -300,7 +297,7 @@ These values are passed as instance metadata:
 |-------------|----------------------------------------|----------------------------------|
 | `DD_API_KEY`| `abc123...`                            | Your Datadog API key             |
 | `APP_IMAGE` | `ghcr.io/org/app:latest`               | Your Docker image to deploy      |
-| `DOMAIN`    | `yourdomain.com`                       | Domain name for NGINX + certbot  |
+| `DOMAIN`    | `yourdomain.com`                       | Domain Caddy serves over HTTPS  |
 | `EMAIL`     | `you@example.com`                      | Email for Let's Encrypt          |
 
 ---
@@ -323,20 +320,16 @@ This simulates what the GCP VM does on first boot.
 | Feature            | Description                                                       |
 |--------------------|-------------------------------------------------------------------|
 | Docker App         | Runs your app using Docker Compose                                |
-| NGINX Gateway      | HTTPS gateway to your app                                         |
-| Certbot SSL        | Automatic Let's Encrypt setup                                     |
-| Cron Renewal       | Daily SSL renewal via `certbot renew` + `docker restart nginx`   |
+| Caddy Gateway      | HTTPS gateway with automatic, auto-renewing Let's Encrypt certs   |
 | Datadog Metrics    | Container monitoring and Prometheus scraping                      |
-| Watchtower         | Automatically pulls/restarts containers with new image versions   |
 | GitHub Deploy      | GitHub Actions workflow to deploy from Git                        |
 
 ---
 
 ## 🧩 Tips
 
-- Make sure your domain has DNS pointed to the GCP VM before provisioning SSL.
-- If you're behind Cloudflare or using CDN, temporarily disable proxy for certbot to work.
-- Watchtower expects images to be tagged with `:latest` or updated digest.
+- Make sure your domain has DNS pointed to the GCP VM before first boot, so Caddy can issue the certificate.
+- If you're behind Cloudflare or using CDN, use DNS-only (grey-cloud) for the indexer host so Caddy's ACME challenge can complete.
 
 ---
 
