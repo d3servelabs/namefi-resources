@@ -330,3 +330,4 @@ scripts/.gsc-deps/
 out/
 .gstack/
 .opencode/
+opencode.jsonc

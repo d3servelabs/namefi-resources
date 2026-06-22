@@ -19,16 +19,16 @@
   },
   "dependencies": {
     "@namefi-astra/backend": "workspace:*",
-    "@orpc/client": "^1.13.2",
-    "@orpc/contract": "^1.13.2",
-    "@orpc/openapi-client": "^1.13.2"
+    "@orpc/client": "^1.13.8",
+    "@orpc/contract": "^1.13.8",
+    "@orpc/openapi-client": "^1.13.8"
   },
   "exports": {
     ".": "./src/index.ts"
   },
   "peerDependencies": {
     "viem": "catalog:",
-    "vitest": "^3.1.2",
+    "vitest": "^3.2.6",
     "zod": "^4.1.12"
   },
   "devDependencies": {

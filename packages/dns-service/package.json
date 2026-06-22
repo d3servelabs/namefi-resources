@@ -31,9 +31,9 @@
     "@namefi-astra/registrars": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
     "@namefi-astra/zod-dns": "workspace:*",
-    "@trpc/server": "^11.4.4",
-    "drizzle-orm": "^0.44.6",
-    "hono": "^4.12.8",
+    "@trpc/server": "^11.8.0",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.25",
     "jose": "^6.0.12",
     "lru-cache": "^11.1.0",
     "mnemonist": "^0.40.3",
@@ -50,7 +50,7 @@
     "@types/ramda": "^0.30.2"
   },
   "peerDependencies": {
-    "@vitest/coverage-v8": "^3.1.2",
-    "vitest": "^3.1.2"
+    "@vitest/coverage-v8": "^3.2.6",
+    "vitest": "^3.2.6"
   }
 }

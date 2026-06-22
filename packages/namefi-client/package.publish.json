@@ -11,9 +11,9 @@
     "postpublish": "./switch-config-copy.sh build"
   },
   "dependencies": {
-    "@orpc/client": "^1.13.2",
-    "@orpc/contract": "^1.13.2",
-    "@orpc/openapi-client": "^1.13.2"
+    "@orpc/client": "^1.13.8",
+    "@orpc/contract": "^1.13.8",
+    "@orpc/openapi-client": "^1.13.8"
   },
   "exports": {
     ".": {

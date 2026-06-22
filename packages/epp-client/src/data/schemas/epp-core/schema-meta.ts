@@ -3,6 +3,8 @@
  * Auto-generated from XSD. Do not edit manually.
  */
 
+import type { Matcher } from 'fast-xml-parser';
+
 export const schemaPackName = 'epp-core';
 
 export const namespaces = [
@@ -2603,12 +2605,19 @@ for (const sn of singularNodes) {
  *   isArray: (name, jpath) => !isSingularNode(name, jpath)
  * });
  */
-export const isSingularNode = (nodeName: string, jpath: string): boolean => {
+export const isSingularNode = (
+  nodeName: string,
+  jpathOrMatcher: string | Matcher,
+): boolean => {
   const entry = singularNodeMap.get(nodeName);
   if (!entry) {
     // Not in singular list - treat as array
     return false;
   }
+  const jpath =
+    typeof jpathOrMatcher === 'string'
+      ? jpathOrMatcher
+      : (jpathOrMatcher?.toString() ?? '');
 
   // Extract parent path from jpath by removing the last segment (nodeName)
   // jpath format: "epp:epp.epp:command" -> parent is "epp:epp"

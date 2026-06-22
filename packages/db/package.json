@@ -30,7 +30,7 @@
     "@namefi-astra/zod-dns": "workspace:*",
     "@samyx/drizzler-utils": "^0.0.1",
     "bufferutil": "^4.0.9",
-    "drizzle-orm": "^0.44.6",
+    "drizzle-orm": "^0.45.2",
     "drizzle-zod": "^0.8.3",
     "ws": "^8.18.1",
     "zod": "catalog:"

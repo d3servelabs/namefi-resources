@@ -24,11 +24,11 @@
     "@temporalio/common": "catalog:"
   },
   "peerDependencies": {
-    "@trpc/server": "^11.4.4",
+    "@trpc/server": "^11.8.0",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.6"
   }
 }

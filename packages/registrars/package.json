@@ -65,7 +65,7 @@
   },
 
   "peerDependencies": {
-    "vitest": "^3.1.2",
+    "vitest": "^3.2.6",
     "zod": "catalog:"
   },
   "devDependencies": {

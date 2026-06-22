@@ -16,8 +16,8 @@
   "dependencies": {
     "@namefi-astra/db": "workspace:*",
     "@namefi-astra/dns-service": "workspace:*",
-    "drizzle-orm": "^0.44.6",
-    "hono": "^4.12.8"
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.12.25"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*",
