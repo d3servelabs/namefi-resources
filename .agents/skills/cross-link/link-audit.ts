@@ -157,9 +157,29 @@ function localeOfFile(file: string): string | null {
   return m ? m[1] : null;
 }
 
+// Every internal-link href in `content` whose exact target
+// (`<collection>/<linkLocale>/<slug>`) is absent from slugIndex — i.e. a 404.
+// Used by the --fix self-check to prove a rewrite never *introduces* a dead
+// link (the en-only mislocalization bug). Returns raw hrefs (may repeat).
+function findAbsentTargets(content: string): string[] {
+  const prose = stripNonProse(content);
+  const out: string[] = [];
+  for (const m of prose.matchAll(LINK_RE)) {
+    const href = m[1];
+    const parts = href.match(HREF_PARTS_RE);
+    if (!parts) continue;
+    const [, linkLocale, collection, slugRaw] = parts;
+    const slug = decodeURIComponent(slugRaw);
+    if (!slugIndex.has(`${collection}/${linkLocale}/${slug}`)) out.push(href);
+  }
+  return out;
+}
+
 // --- audit -----------------------------------------------------------------
 const findings: Finding[] = [];
 const filesToRewrite = new Map<string, string>();
+// Count of files where --fix would have created a dead link and was refused.
+let selfCheckFailures = 0;
 
 for (const file of auditFiles) {
   const fileLocale = localeOfFile(file);
@@ -183,8 +203,12 @@ for (const file of auditFiles) {
     return lo + 1;
   };
 
-  let mutated = raw;
-  let changed = false;
+  // Collected --fix rewrites as exact byte spans into `raw`. prose is built by
+  // stripNonProse, which blanks frontmatter/code char-for-char (length and
+  // newlines preserved), so a match index in `prose` is the same index in
+  // `raw`. Splicing exact spans — rather than the old substring replace —
+  // is what makes the fix immune to prefix collisions (see below).
+  const edits: { start: number; end: number; replacement: string }[] = [];
 
   for (const m of prose.matchAll(LINK_RE)) {
     const href = m[1];
@@ -194,24 +218,23 @@ for (const file of auditFiles) {
     const slug = decodeURIComponent(slugRaw);
 
     const literalExists = slugIndex.has(`${collection}/${linkLocale}/${slug}`);
+    // The file's OWN locale having the slug is the single source of truth for
+    // "auto-fixable": it guarantees the repointed /<fileLocale>/ href resolves
+    // to a real slug, so --fix can never localize an en-only term into a 404.
     const sameLocaleExists = slugIndex.has(
       `${collection}/${fileLocale}/${slug}`,
-    );
-    const anyLocaleExists = (LOCALES as readonly string[]).some((l) =>
-      slugIndex.has(`${collection}/${l}/${slug}`),
     );
 
     let severity: Severity | null = null;
     let fixedHref: string | undefined;
 
     if (!literalExists) {
+      // The linked locale itself lacks the slug → this exact href 404s.
       if (sameLocaleExists) {
         severity = 'LOCALE_MISMATCH';
         fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
-      } else if (!anyLocaleExists) {
-        severity = 'BROKEN';
       } else {
-        // points at a locale that lacks the slug, and our locale lacks it too
+        // Missing in the linked locale and in ours — not auto-fixable.
         severity = 'BROKEN';
       }
     } else if (linkLocale !== fileLocale) {
@@ -219,6 +242,7 @@ for (const file of auditFiles) {
         severity = 'LOCALE_MISMATCH';
         fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
       } else {
+        // Term only translated in the linked locale — acceptable fallback.
         severity = 'CROSS_LOCALE';
       }
     }
@@ -238,12 +262,43 @@ for (const file of auditFiles) {
     });
 
     if (FIX && severity === 'LOCALE_MISMATCH' && fixedHref) {
-      mutated = mutated.split(`](${href}`).join(`](${fixedHref}`);
-      changed = true;
+      // Rewrite ONLY this href occurrence. The previous implementation did
+      // `content.split(`](${href}`).join(...)`, a substring replace that also
+      // rewrote any longer href sharing this one as a prefix: fixing
+      // `](/en/glossary/dns` clobbered the sibling `](/en/glossary/dnssec/)`,
+      // repointing an en-only fallback to a /zh/ 404 (and doing so only for
+      // the no-trailing-slash form). LINK_RE puts m.index at the `]`, so the
+      // href begins two chars later, at `](`.length.
+      const start = (m.index ?? 0) + 2;
+      edits.push({ start, end: start + href.length, replacement: fixedHref });
     }
   }
 
-  if (changed) filesToRewrite.set(file, mutated);
+  if (FIX && edits.length > 0) {
+    // Apply right-to-left so earlier offsets stay valid as we splice.
+    edits.sort((a, b) => b.start - a.start);
+    let mutated = raw;
+    for (const e of edits) {
+      mutated = mutated.slice(0, e.start) + e.replacement + mutated.slice(e.end);
+    }
+    // Guard: --fix must never INTRODUCE a link whose target is absent from
+    // slugIndex. Pre-existing BROKEN links are allowed to remain (we don't
+    // invent translations), so compare against the original rather than
+    // requiring zero. If the rewrite would create a new dead link, refuse to
+    // write the file and fail the run loudly instead of shipping a 404.
+    const before = new Set(findAbsentTargets(raw));
+    const introduced = findAbsentTargets(mutated).filter((h) => !before.has(h));
+    if (introduced.length > 0) {
+      console.error(
+        `✗ self-check failed for ${rel(file)}: --fix would create dead ` +
+          `link(s) absent from slugIndex: ${introduced.join(', ')}. ` +
+          `Refusing to write this file.`,
+      );
+      selfCheckFailures++;
+    } else {
+      filesToRewrite.set(file, mutated);
+    }
+  }
 }
 
 if (FIX) {
@@ -289,6 +344,12 @@ if (JSON_OUT) {
   if (!FIX && mismatch > 0) {
     console.log('Re-run with --fix to repoint locale-mismatch links automatically.');
   }
+  if (selfCheckFailures > 0) {
+    console.log(
+      c('31', `${selfCheckFailures} file(s) skipped: --fix self-check failed.`),
+    );
+  }
 }
 
-process.exitCode = findings.some((f) => f.severity === 'BROKEN') ? 1 : 0;
+process.exitCode =
+  selfCheckFailures > 0 || findings.some((f) => f.severity === 'BROKEN') ? 1 : 0;
