@@ -28,7 +28,7 @@ The **reseller (wholesale) price** is what another investor will pay you. They a
 
 The **end-user (retail) price** is what the business that will actually *use* the name pays. They are not buying an asset to flip; they are buying the front door to their company, and they value it against what that name is worth to *their* operation: their brand, their marketing, the deal they're trying to close this quarter. They're comparing the price not to other domains but to the cost of launching with a worse name. This is the **high number**.
 
-Same string of letters, same WHOIS record, two prices, because two completely different buyers are doing two completely different kinds of math.
+Same string of letters, same [WHOIS](/en/glossary/whois/) record, two prices, because two completely different buyers are doing two completely different kinds of math.
 
 ## Why the gap exists at all
 
@@ -84,7 +84,7 @@ Three habits keep the two-price reality working for you instead of against you.
 
 Knowing your number is half the job. The other half is collecting it without getting hurt — and the higher the end-user price, the sharper the risk at the moment of transfer. The classic standoff: the buyer doesn't want to wire money before they control the name, and you don't want to release the name before you've confirmed the money. That trust gap is where high-value [domain trading](/en/glossary/domain-trading/) gets nervous, and it's the same whether you're collecting a wholesale price from a peer or an end-user price from a first-time buyer who has never bought a domain before. The traditional fix is a neutral [escrow](/en/glossary/escrow/) workflow so neither side has to move first, which we cover in [domain escrow explained](/en/blog/domain-escrow-explained/).
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real ICANN domain makes [ownership](/en/glossary/domain-ownership/) easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change. Price the name to the right buyer; then make the trade safe. The number you fought to get is only real once it clears.
+This is the gap [Namefi](https://namefi.io) is built to narrow. [Tokenizing](/en/glossary/tokenize/) a real [ICANN](/en/glossary/icann/) domain makes [ownership](/en/glossary/domain-ownership/) easier to verify and transfer, so the handoff at closing is auditable and the name keeps resolving through the change. Price the name to the right buyer; then make the trade safe. The number you fought to get is only real once it clears.
 
 ## Friendly Disclaimer (Read Me!)
 

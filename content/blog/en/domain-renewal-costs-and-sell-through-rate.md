@@ -78,7 +78,7 @@ Do all three and the renewal bill stops being a vague dread and becomes a manage
 
 The economics above decide *whether* to hold a name. The other half of every flip is the mechanics of moving it when a sale finally lands — and that's where a hard-won sale can still slip. High-value transfers carry the classic standoff: the seller won't hand over the name before payment, the buyer won't pay before delivery, which is the whole reason [escrow](/en/glossary/escrow/) exists. We walk that workflow in [domain escrow explained](/en/blog/domain-escrow-explained/).
 
-[Namefi](https://namefi.io) narrows that friction at the settlement step. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so a live name keeps resolving through the handover. For the math in this article, less settlement friction means the rare sale that's supposed to fund a year of renewals is more likely to actually close — and a sale that closes cleanly is the only kind that pays the bill.
+[Namefi](https://namefi.io) narrows that friction at the settlement step. [Tokenized](/en/glossary/tokenize/) ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with [DNS](/en/glossary/dns/) continuity so a live name keeps resolving through the handover. For the math in this article, less settlement friction means the rare sale that's supposed to fund a year of renewals is more likely to actually close — and a sale that closes cleanly is the only kind that pays the bill.
 
 ## Friendly Disclaimer (Read Me!)
 

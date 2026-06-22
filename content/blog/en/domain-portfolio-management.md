@@ -36,7 +36,7 @@ Before you optimize anything, you have to be able to see it. The foundation of r
 - **Asking price and any offers received.** What you're listing at, and the real demand signal of what anyone has actually offered.
 - **Status.** Live and listed, parked, in negotiation, or marked for the drop. Status is what turns the ledger into a to-do list.
 
-The cost-basis and renewal columns aren't just operational hygiene; they're the raw material for the tax side of the business, where holding period and basis determine what you owe when a name finally sells. We go deeper on that in [taxes and accounting for domain investors](/en/blog/taxes-and-accounting-for-domain-investors/). And the registrar column earns its keep on the day a buyer wants to inspect a name — a portfolio where [WHOIS](/en/glossary/whois/) records, contact emails, and DNS are all current looks like an asset; one with bounced contacts and broken nameservers looks like a risk, and a risk sells for less.
+The cost-basis and renewal columns aren't just operational hygiene; they're the raw material for the tax side of the business, where holding period and basis determine what you owe when a name finally sells. We go deeper on that in [taxes and accounting for domain investors](/en/blog/taxes-and-accounting-for-domain-investors/). And the registrar column earns its keep on the day a buyer wants to inspect a name — a portfolio where [WHOIS](/en/glossary/whois/) records, contact emails, and [DNS](/en/glossary/dns/) are all current looks like an asset; one with bounced contacts and broken nameservers looks like a risk, and a risk sells for less.
 
 ## Sell-through rate: the one number that tells the truth
 
@@ -76,7 +76,7 @@ That frame also keeps you honest about scale. Doubling your portfolio doubles yo
 
 A clean ledger and a disciplined drop list answer *what* you own and *whether* to keep it. They don't, on their own, make the ownership itself easy to prove or move. When a buyer finally appears for one of your tracked names, the trade still hinges on the old standoff: the seller won't transfer before payment, the buyer won't pay before transfer, and a six-figure name sitting at a registrar is only as auditable as a WHOIS record and an [auth code](/en/glossary/auth-code/) you email over.
 
-This is the layer [Namefi](https://namefi.io) is built for. Tokenizing a real ICANN domain makes ownership verifiable and transferable as an on-chain asset, with DNS continuity so the name keeps resolving cleanly through the handover. For a portfolio operator, that means inventory whose control is provable rather than asserted, and exits that close with less friction — the natural endpoint of treating the whole book like a business.
+This is the layer [Namefi](https://namefi.io) is built for. [Tokenizing](/en/glossary/tokenize/) a real [ICANN](/en/glossary/icann/) domain makes ownership verifiable and transferable as an on-chain asset, with DNS continuity so the name keeps resolving cleanly through the handover. For a portfolio operator, that means inventory whose control is provable rather than asserted, and exits that close with less friction — the natural endpoint of treating the whole book like a business.
 
 ## Friendly Disclaimer (Read Me!)
 
