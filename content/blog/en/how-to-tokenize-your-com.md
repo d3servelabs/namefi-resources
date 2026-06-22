@@ -100,7 +100,7 @@ If you have a [hardware wallet](/en/glossary/hardware-wallet/), this is a great 
 
 ## Step 7: Manage DNS and Renewals
 
-Tokenizing a domain doesn't change how it resolves. Your nameservers, A records, MX records, DNSSEC — all of it keeps working. You can manage these from the Namefi dashboard, or delegate to your existing DNS provider (Cloudflare, Route53, etc.) just like before.
+Tokenizing a domain doesn't change how it resolves. Your nameservers, A records, MX records, [DNSSEC](/en/glossary/dnssec/) — all of it keeps working. You can manage these from the Namefi dashboard, or delegate to your existing DNS provider (Cloudflare, Route53, etc.) just like before.
 
 For details on what changes (and what doesn't) at the DNS layer, see [DNS Still Works: Nameservers, Email, and DNSSEC on a Tokenized Domain](/en/blog/dns-on-tokenized-domains/).
 

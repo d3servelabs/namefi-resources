@@ -88,7 +88,7 @@ You're now sending an NFT to a wallet address. If the buyer gave you the wrong a
 
 ### Smart-contract risk
 
-The marketplace smart contract is the new "escrow." If it has a bug, weird things can happen. This is why audited, battle-tested marketplaces matter. Don't be the first to use a brand-new contract for a high-value sale.
+The marketplace [smart contract](/en/glossary/smart-contract/) is the new "escrow." If it has a bug, weird things can happen. This is why audited, battle-tested marketplaces matter. Don't be the first to use a brand-new contract for a high-value sale.
 
 ### Front-running and MEV
 
@@ -111,7 +111,7 @@ A sale paid in crypto is a different tax event from a sale paid in fiat in some 
 ## What This Means for Buyers
 
 - **Speed.** Sales settle in minutes, not days.
-- **Lower fees.** No escrow cut. Marketplace and gas costs are usually much lower than 3–6%.
+- **Lower fees.** No escrow cut. Marketplace and [gas](/en/glossary/gas/) costs are usually much lower than 3–6%.
 - **Direct ownership.** The NFT is in your wallet, immediately, with no waiting.
 - **Verification.** You can check on-chain history before buying — when the domain was minted, prior transfers, prior listings.
 
@@ -148,7 +148,7 @@ Once buyers and sellers are used to atomic settlement, the traditional escrow fl
 
 - Better domain-specific search and filtering on NFT marketplaces.
 - Better valuation tooling for heterogeneous assets.
-- Wider TLD coverage across tokenization platforms.
+- Wider [TLD](/en/glossary/tld/) coverage across tokenization platforms.
 - Stable, well-audited contracts that haven't introduced any high-profile incidents.
 
 All of these are work-in-progress and visibly improving year over year.
