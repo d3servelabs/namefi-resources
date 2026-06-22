@@ -173,7 +173,10 @@ export function FeedbackToastContent({
   }, [copy]);
 
   return (
-    <Card className="pointer-events-auto w-full max-w-md rounded-2xl border border-border/80 bg-background/90 p-4 shadow-2xl ring-1 ring-black/10 backdrop-blur gap-4">
+    <Card
+      className="pointer-events-auto w-full max-w-md rounded-2xl border border-border/80 bg-background/90 p-4 shadow-2xl ring-1 ring-black/10 backdrop-blur gap-4"
+      data-testid="shared.feedback.toast"
+    >
       <div className="flex items-start justify-between gap-2">
         <div className="space-y-1">
           <p className="text-sm font-semibold text-foreground">
@@ -192,6 +195,7 @@ export function FeedbackToastContent({
             toast.dismiss(toastId);
           }}
           aria-label={t('feedback.close')}
+          data-testid="shared.feedback.close-button"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </Button>
@@ -208,6 +212,7 @@ export function FeedbackToastContent({
               size="sm"
               onClick={() => handleRatingSelect(option.value)}
               aria-pressed={isActive}
+              data-testid={`shared.feedback.rating-button.${option.value}`}
               className={cn(
                 'flex h-12 flex-col items-center justify-center rounded-xl text-sm font-medium transition-all sm:h-14',
                 isActive
@@ -256,10 +261,15 @@ export function FeedbackToastContent({
                     toast.dismiss(toastId);
                   }}
                   disabled={submitFeedback.isPending}
+                  data-testid="shared.feedback.skip-button"
                 >
                   {t('feedback.skip')}
                 </Button>
-                <Button type="submit" disabled={!canSubmit}>
+                <Button
+                  type="submit"
+                  disabled={!canSubmit}
+                  data-testid="shared.feedback.submit-button"
+                >
                   {submitFeedback.isPending ? (
                     <>
                       <Loader2 className="h-4 w-4 animate-spin" />

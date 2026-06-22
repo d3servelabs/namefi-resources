@@ -72,6 +72,7 @@ export function NotificationItem({
   return (
     <li
       ref={liRef}
+      data-testid={`notifications.list.item.${notification.id}`}
       className={cn(
         'group relative flex gap-3 rounded-lg border border-white/5 bg-white/[0.02] p-3 transition-colors',
         !notification.isSeen &&
@@ -84,13 +85,17 @@ export function NotificationItem({
           checked={selected}
           onCheckedChange={() => onToggleSelected(notification.id)}
           aria-label={t('item.selectAria', { title: notification.title })}
+          data-testid={`notifications.item.select-checkbox.${notification.id}`}
         />
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
-            <h3 className="truncate text-sm font-semibold text-foreground">
+            <h3
+              className="truncate text-sm font-semibold text-foreground"
+              data-testid={`notifications.item.title.${notification.id}`}
+            >
               {notification.title}
             </h3>
             {notification.subtitle && (
@@ -108,6 +113,7 @@ export function NotificationItem({
                 className="size-7"
                 aria-label={t('item.markUnseenAria')}
                 onClick={() => onMarkUnseen(notification.id)}
+                data-testid={`notifications.item.mark-unseen-button.${notification.id}`}
               >
                 <EyeOff className="size-3.5" />
               </Button>
@@ -119,6 +125,7 @@ export function NotificationItem({
                 className="size-7"
                 aria-label={t('item.markSeenAria')}
                 onClick={() => onMarkSeen(notification.id)}
+                data-testid={`notifications.item.mark-seen-button.${notification.id}`}
               >
                 <Eye className="size-3.5" />
               </Button>
@@ -131,6 +138,7 @@ export function NotificationItem({
                 className="size-7"
                 aria-label={t('item.restoreAria')}
                 onClick={() => onUnarchive(notification.id)}
+                data-testid={`notifications.item.restore-button.${notification.id}`}
               >
                 <ArchiveRestore className="size-3.5" />
               </Button>
@@ -142,6 +150,7 @@ export function NotificationItem({
                 className="size-7"
                 aria-label={t('item.archiveAria')}
                 onClick={() => onArchive(notification.id)}
+                data-testid={`notifications.item.archive-button.${notification.id}`}
               >
                 <Archive className="size-3.5" />
               </Button>
@@ -178,6 +187,7 @@ export function NotificationItem({
                   key={`${resource.type}-${resource.identifier}-${idx}`}
                   href={href as Route}
                   title={isTruncated ? fullLabel : undefined}
+                  data-testid={`notifications.item.resource-link.${notification.id}.${resource.type}.${resource.identifier}`}
                   className="inline-flex items-center gap-1 rounded-full border border-white/10 px-2 py-0.5 text-foreground/70 transition-colors hover:border-brand-primary/70 hover:text-foreground"
                 >
                   {shownLabel} →

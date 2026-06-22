@@ -36,10 +36,15 @@ export const AuthRequiredDialog = ({
   const t = useTranslations('shared');
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+        data-testid="shared.auth-required.dialog"
+      >
         <DialogHeader>
-          <DialogTitle>{title ?? t('authRequired.title')}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle data-testid="shared.auth-required.title">
+            {title ?? t('authRequired.title')}
+          </DialogTitle>
+          <DialogDescription data-testid="shared.auth-required.description">
             {description ?? t('authRequired.communityDescription')}
           </DialogDescription>
         </DialogHeader>

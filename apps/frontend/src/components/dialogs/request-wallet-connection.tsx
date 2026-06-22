@@ -299,16 +299,19 @@ export const RequestWalletConnection = forwardRef<
   }
   return (
     <Dialog open={open} modal={true}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-md')}
+        data-testid="shared.request-wallet-connection.dialog"
+      >
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle data-testid="shared.request-wallet-connection.title">
             {connectionState === 'wrong-wallet'
               ? t('requestWalletConnection.title.wrongWallet')
               : connectionState === 'setting-active'
                 ? t('requestWalletConnection.title.settingActive')
                 : t('requestWalletConnection.title.connect')}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription data-testid="shared.request-wallet-connection.description">
             {connectionState === 'wrong-wallet'
               ? t('requestWalletConnection.description.wrongWallet')
               : connectionState === 'setting-active'
@@ -346,7 +349,10 @@ export const RequestWalletConnection = forwardRef<
                     address={checksummedRequestedAddress}
                     className="size-8"
                   />
-                  <div className="flex-1 min-w-0">
+                  <div
+                    className="flex-1 min-w-0"
+                    data-testid="shared.request-wallet-connection.requested-address"
+                  >
                     <AutoTruncateTextV2
                       initialCharactersCountToDisplay={20}
                       minCharactersToDisplay={12}
@@ -390,7 +396,10 @@ export const RequestWalletConnection = forwardRef<
                       address={checksummedWrongAddress}
                       className="size-8"
                     />
-                    <div className="flex-1 min-w-0">
+                    <div
+                      className="flex-1 min-w-0"
+                      data-testid="shared.request-wallet-connection.connected-address"
+                    >
                       <AutoTruncateTextV2
                         initialCharactersCountToDisplay={20}
                         minCharactersToDisplay={12}
@@ -411,7 +420,10 @@ export const RequestWalletConnection = forwardRef<
                       address={checksummedRequestedAddress}
                       className="size-8"
                     />
-                    <div className="flex-1 min-w-0">
+                    <div
+                      className="flex-1 min-w-0"
+                      data-testid="shared.request-wallet-connection.needed-address"
+                    >
                       <AutoTruncateTextV2
                         initialCharactersCountToDisplay={20}
                         minCharactersToDisplay={12}
@@ -445,6 +457,7 @@ export const RequestWalletConnection = forwardRef<
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 disabled={connectionState === 'connecting'}
+                data-testid="shared.request-wallet-connection.cancel-button"
               >
                 {tCommon('actions.cancel')}
               </Button>
@@ -454,6 +467,7 @@ export const RequestWalletConnection = forwardRef<
                   handleConnectClick(requestedWalletAddress)
                 }
                 disabled={connectionState === 'connecting'}
+                data-testid="shared.request-wallet-connection.connect-button"
               >
                 {connectionState === 'connecting' ? (
                   <>
@@ -469,10 +483,17 @@ export const RequestWalletConnection = forwardRef<
 
           {connectionState === 'wrong-wallet' && (
             <>
-              <Button variant="outline" onClick={() => onOpenChange(false)}>
+              <Button
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                data-testid="shared.request-wallet-connection.wrong-wallet-cancel-button"
+              >
                 {tCommon('actions.cancel')}
               </Button>
-              <Button onClick={handleTryAgain}>
+              <Button
+                onClick={handleTryAgain}
+                data-testid="shared.request-wallet-connection.try-again-button"
+              >
                 {tCommon('actions.tryAgain')}
               </Button>
             </>
@@ -486,6 +507,7 @@ export const RequestWalletConnection = forwardRef<
                   }
                   onOpenChange(false);
                 }}
+                data-testid="shared.request-wallet-connection.next-button"
               >
                 {t('requestWalletConnection.next')}
               </Button>

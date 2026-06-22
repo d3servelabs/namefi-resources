@@ -50,8 +50,16 @@ function ErrorContent403({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">403</h1>
-      <h2 className="mb-2 text-xl font-semibold">{t('status403.title')}</h2>
-      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+      <h2
+        className="mb-2 text-xl font-semibold"
+        data-testid="error.status403.title"
+      >
+        {t('status403.title')}
+      </h2>
+      <p
+        className="mb-8 max-w-sm text-center text-muted-foreground"
+        data-testid="error.status403.message"
+      >
         {t('status403.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
@@ -60,6 +68,7 @@ function ErrorContent403({ requestId }: { requestId: string | undefined }) {
           render={<Link href="/" />}
           nativeButton={false}
           variant="outline"
+          data-testid="error.status403.go-home-button"
         >
           {t('actions.goHome')}
         </Button>
@@ -81,18 +90,31 @@ function ErrorContent404({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">404</h1>
-      <h2 className="mb-2 text-xl font-semibold">{t('status404.title')}</h2>
-      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+      <h2
+        className="mb-2 text-xl font-semibold"
+        data-testid="error.status404.title"
+      >
+        {t('status404.title')}
+      </h2>
+      <p
+        className="mb-8 max-w-sm text-center text-muted-foreground"
+        data-testid="error.status404.message"
+      >
         {t('status404.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-        <Button render={<Link href="/" />} nativeButton={false}>
+        <Button
+          render={<Link href="/" />}
+          nativeButton={false}
+          data-testid="error.status404.go-home-button"
+        >
           {t('actions.goHome')}
         </Button>
         <Button
           render={<Link href="/#domain-search" />}
           nativeButton={false}
           variant="outline"
+          data-testid="error.status404.search-domains-button"
         >
           {t('actions.searchDomains')}
         </Button>
@@ -114,8 +136,16 @@ function ErrorContent400({ requestId }: { requestId: string | undefined }) {
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">400</h1>
-      <h2 className="mb-2 text-xl font-semibold">{t('status400.title')}</h2>
-      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+      <h2
+        className="mb-2 text-xl font-semibold"
+        data-testid="error.status400.title"
+      >
+        {t('status400.title')}
+      </h2>
+      <p
+        className="mb-8 max-w-sm text-center text-muted-foreground"
+        data-testid="error.status400.message"
+      >
         {t('status400.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
@@ -124,6 +154,7 @@ function ErrorContent400({ requestId }: { requestId: string | undefined }) {
           render={<Link href="/" />}
           nativeButton={false}
           variant="outline"
+          data-testid="error.status400.go-home-button"
         >
           {t('actions.goHome')}
         </Button>
@@ -153,13 +184,30 @@ function ErrorContent500({
         className="mb-6"
       />
       <h1 className="mb-2 text-5xl font-bold tracking-tight">500</h1>
-      <h2 className="mb-2 text-xl font-semibold">{t('status500.title')}</h2>
-      <p className="mb-8 max-w-sm text-center text-muted-foreground">
+      <h2
+        className="mb-2 text-xl font-semibold"
+        data-testid="error.status500.title"
+      >
+        {t('status500.title')}
+      </h2>
+      <p
+        className="mb-8 max-w-sm text-center text-muted-foreground"
+        data-testid="error.status500.message"
+      >
         {t('status500.description')}
       </p>
       <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
-        <Button onClick={() => reset()}>{tCommon('actions.tryAgain')}</Button>
-        <Button onClick={() => router.push('/')} variant="outline">
+        <Button
+          onClick={() => reset()}
+          data-testid="error.status500.retry-button"
+        >
+          {tCommon('actions.tryAgain')}
+        </Button>
+        <Button
+          onClick={() => router.push('/')}
+          variant="outline"
+          data-testid="error.status500.go-home-button"
+        >
           {t('actions.goHome')}
         </Button>
       </div>
@@ -184,6 +232,7 @@ function LoginButton() {
           });
         });
       }}
+      data-testid="error.login-button"
     >
       {t('actions.logIn')}
     </Button>

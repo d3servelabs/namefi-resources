@@ -136,6 +136,7 @@ const NotificationsBellInner = forwardRef<
       {count > 0 && (
         <motion.div
           key="notif-badge"
+          data-testid="notifications.bell.unread-badge"
           className={cn(HEADER_BADGE_CLASS, justIncreased && 'animate-bounce')}
           initial={{ opacity: 0, scale: 0.9, y: -6 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -164,6 +165,7 @@ const NotificationsBellInner = forwardRef<
             count > 0 ? t('bell.labelWithUnread', { count }) : t('bell.label')
           }
           onClick={handleClick}
+          data-testid="notifications.bell.topbar"
         >
           <Bell className="h-5 w-5" />
           {badge}
@@ -179,6 +181,7 @@ const NotificationsBellInner = forwardRef<
           aria-label={
             count > 0 ? t('bell.labelWithUnread', { count }) : t('bell.label')
           }
+          data-testid="notifications.bell.sidebar"
           className={cn(
             'group relative flex w-full items-center gap-2 rounded-md px-2 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60',
             justIncreased && 'animate-bounce',
@@ -205,6 +208,7 @@ const NotificationsBellInner = forwardRef<
             ? t('bell.relatedLabelWithUnread', { count })
             : t('bell.relatedLabel')
         }
+        data-testid="notifications.bell.inline"
         className={cn(
           'relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.04] text-white/80 transition-colors hover:border-brand-primary/70 hover:bg-brand-primary/15 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary/60',
           justIncreased && 'animate-bounce',
@@ -270,6 +274,7 @@ function PermissionPromptTooltip({ children }: { children: ReactElement }) {
               dismissPermissionTooltip();
               setOpen(false);
             }}
+            data-testid="notifications.permission.dismiss-button"
           >
             {tCommon('actions.dismiss')}
           </Button>
@@ -282,6 +287,7 @@ function PermissionPromptTooltip({ children }: { children: ReactElement }) {
               await requestBrowserNotificationPermissionForce();
               setOpen(false);
             }}
+            data-testid="notifications.permission.enable-button"
           >
             {t('permission.enable')}
           </Button>

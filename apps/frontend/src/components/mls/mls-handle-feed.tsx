@@ -183,6 +183,7 @@ function MlsHandleHeader({
         <Link
           href="/feed"
           className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          data-testid="feed.handle.back-link"
         >
           <ArrowLeft className="size-4 rtl:-scale-x-100" />
           {t('handle.backToFeed')}
@@ -191,7 +192,10 @@ function MlsHandleHeader({
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              <h1
+                className="text-2xl font-semibold tracking-tight sm:text-3xl"
+                data-testid="feed.handle.seller-label"
+              >
                 {sellerLabel}
               </h1>
               {sourceLabel ? (
@@ -216,6 +220,7 @@ function MlsHandleHeader({
             variant="outline"
             onClick={onRefresh}
             disabled={!hasValidHandle || isLoading || isRefetching}
+            data-testid="feed.handle.refresh-button"
           >
             {isRefetching ? (
               <span className="inline-flex items-center gap-2">
@@ -306,7 +311,10 @@ function MlsHandleInvalidHandleBanner() {
   const t = useTranslations('feed');
 
   return (
-    <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+    <div
+      className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+      data-testid="feed.handle.invalid-state"
+    >
       {t('handle.invalidPath')}
     </div>
   );
@@ -329,7 +337,10 @@ function MlsHandleInitialState({
 
   if (showErrorState) {
     return (
-      <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+      <div
+        className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+        data-testid="feed.handle.error-state"
+      >
         {errorMessage}
       </div>
     );
@@ -361,7 +372,11 @@ function MlsHandlePagination({
 
       {hasNextPage && !isFetchingNextPage ? (
         <div className="flex justify-center pt-2">
-          <Button variant="ghost" onClick={onLoadMore}>
+          <Button
+            variant="ghost"
+            onClick={onLoadMore}
+            data-testid="feed.handle.load-more-button"
+          >
             {tCommon('actions.loadMore')}
           </Button>
         </div>
@@ -383,7 +398,10 @@ function MlsHandleCompletionState({
 
   if (showEmptyState) {
     return (
-      <p className="py-6 text-center text-sm text-muted-foreground">
+      <p
+        className="py-6 text-center text-sm text-muted-foreground"
+        data-testid="feed.handle.empty-state"
+      >
         {t('handle.emptyListings')}
       </p>
     );

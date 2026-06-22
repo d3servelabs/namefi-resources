@@ -232,6 +232,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           onClick={() => setFiltersOpen((v) => !v)}
           aria-expanded={filtersOpen}
           aria-controls="notifications-filters"
+          data-testid="notifications.list.filters-toggle"
         >
           <FilterIcon className="me-1 size-3.5" />
           {t('list.filters')}
@@ -244,6 +245,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
           onClick={() => void refetch()}
           disabled={isFetching}
           aria-label={t('list.refresh')}
+          data-testid="notifications.list.refresh-button"
         >
           <RefreshCw
             className={cn('me-1 size-3.5', isFetching && 'animate-spin')}
@@ -277,6 +279,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               <SelectTrigger
                 className="h-8 text-xs"
                 aria-labelledby="notifications-related-to-label"
+                data-testid="notifications.list.related-to-select"
               >
                 <SelectValue placeholder={t('list.any')}>
                   {(value: string | null) => {
@@ -310,6 +313,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               placeholder={t('list.nameOrKeyPlaceholder')}
               className="h-8 rounded-md border border-input bg-background px-2 text-xs focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
               aria-label={t('list.nameOrKey')}
+              data-testid="notifications.list.name-or-key-input"
             />
           </div>
 
@@ -318,6 +322,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               checked={includeSeen}
               onCheckedChange={(v) => setIncludeSeen(v === true)}
               aria-label={t('list.includeSeenAria')}
+              data-testid="notifications.list.include-seen-checkbox"
             />
             {t('list.includeSeen')}
           </span>
@@ -326,6 +331,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               checked={includeArchived}
               onCheckedChange={(v) => setIncludeArchived(v === true)}
               aria-label={t('list.includeArchivedAria')}
+              data-testid="notifications.list.include-archived-checkbox"
             />
             {t('list.includeArchived')}
           </span>
@@ -344,6 +350,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               indeterminate={someSelected}
               onCheckedChange={toggleSelectAll}
               aria-label={t('list.selectAllAria')}
+              data-testid="notifications.list.select-all-checkbox"
             />
             {t('list.selectedCount', { count: selectedArray.length })}
           </span>
@@ -355,6 +362,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               className="h-7 text-xs"
               disabled={markAsSeenMutation.isPending}
               onClick={() => markAsSeenMutation.mutate({ ids: selectedArray })}
+              data-testid="notifications.list.bulk-mark-seen-button"
             >
               <Eye className="me-1 size-3.5" /> {t('list.markSeen')}
             </Button>
@@ -367,6 +375,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               onClick={() =>
                 markAsUnseenMutation.mutate({ ids: selectedArray })
               }
+              data-testid="notifications.list.bulk-mark-unseen-button"
             >
               <EyeOff className="me-1 size-3.5" /> {t('list.markUnseen')}
             </Button>
@@ -377,6 +386,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               className="h-7 text-xs"
               disabled={archiveMutation.isPending}
               onClick={() => archiveMutation.mutate({ ids: selectedArray })}
+              data-testid="notifications.list.bulk-archive-button"
             >
               <Archive className="me-1 size-3.5" /> {t('list.archive')}
             </Button>
@@ -387,6 +397,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
               className="h-7 text-xs"
               disabled={unarchiveMutation.isPending}
               onClick={() => unarchiveMutation.mutate({ ids: selectedArray })}
+              data-testid="notifications.list.bulk-restore-button"
             >
               <ArchiveRestore className="me-1 size-3.5" /> {t('list.restore')}
             </Button>
@@ -409,6 +420,7 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
                     : {}),
                 })
               }
+              data-testid="notifications.list.mark-all-seen-button"
             >
               {t('list.markAllSeen')}
             </Button>
@@ -418,15 +430,24 @@ export function NotificationsList({ initialFilter }: NotificationsListProps) {
 
       <div className="-mx-2 flex-1 overflow-y-auto px-2">
         {isLoading ? (
-          <div className="flex items-center justify-center py-10 text-sm text-muted-foreground">
+          <div
+            className="flex items-center justify-center py-10 text-sm text-muted-foreground"
+            data-testid="notifications.list.loading-state"
+          >
             <Loader2 className="me-2 size-4 animate-spin" /> {t('list.loading')}
           </div>
         ) : items.length === 0 ? (
-          <div className="py-10 text-center text-sm text-muted-foreground">
+          <div
+            className="py-10 text-center text-sm text-muted-foreground"
+            data-testid="notifications.list.empty-state"
+          >
             {t('list.empty')}
           </div>
         ) : (
-          <ul className={cn('flex flex-col gap-2 pb-4')}>
+          <ul
+            className={cn('flex flex-col gap-2 pb-4')}
+            data-testid="notifications.list.items"
+          >
             {items.map((notification) => (
               <NotificationItem
                 key={notification.id}

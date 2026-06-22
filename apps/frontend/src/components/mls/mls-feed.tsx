@@ -142,11 +142,14 @@ export function MlsFeed() {
         }}
       />
 
-      <section className="mt-6 flex flex-col">
+      <section className="mt-6 flex flex-col" data-testid="feed.list">
         {isLoading ? <MlsFeedSkeleton /> : null}
 
         {isError && listings.length === 0 ? (
-          <div className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive">
+          <div
+            className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+            data-testid="feed.list.error-state"
+          >
             {error.message}
           </div>
         ) : null}
@@ -156,7 +159,10 @@ export function MlsFeed() {
         ))}
 
         {!isLoading && !isError && listings.length === 0 ? (
-          <p className="py-6 text-center text-sm text-muted-foreground">
+          <p
+            className="py-6 text-center text-sm text-muted-foreground"
+            data-testid="feed.list.empty-state"
+          >
             {filters.hasAppliedFilters
               ? t('list.emptyFiltered')
               : t('list.empty')}
@@ -174,6 +180,7 @@ export function MlsFeed() {
               onClick={() => {
                 void fetchNextPage();
               }}
+              data-testid="feed.list.load-more-button"
             >
               {tCommon('actions.loadMore')}
             </Button>
@@ -294,6 +301,7 @@ function MlsFeedHeader({
             <Link
               href="/feed/users"
               className={buttonVariants({ variant: 'secondary' })}
+              data-testid="feed.header.users-link"
             >
               <Users data-icon="inline-start" />
               {t('header.usersLink')}
@@ -305,6 +313,7 @@ function MlsFeedHeader({
             target="_blank"
             rel="noreferrer noopener"
             className={buttonVariants({ variant: 'secondary' })}
+            data-testid="feed.header.rss-link"
           >
             <Rss data-icon="inline-start" />
             {t('header.subscribeRss')}
@@ -314,6 +323,7 @@ function MlsFeedHeader({
             variant="outline"
             onClick={onRefresh}
             disabled={isLoading || isRefetching}
+            data-testid="feed.header.refresh-button"
           >
             {isRefetching ? (
               <span className="inline-flex items-center gap-2">
@@ -395,6 +405,7 @@ function MlsFeedControls({
                     variant: 'secondary',
                     size: 'sm',
                   })}
+                  data-testid="feed.controls.users-link"
                 >
                   <Users data-icon="inline-start" />
                   {t('header.usersLink')}
@@ -405,6 +416,7 @@ function MlsFeedControls({
                 target="_blank"
                 rel="noreferrer noopener"
                 className={buttonVariants({ variant: 'secondary', size: 'sm' })}
+                data-testid="feed.controls.rss-link"
               >
                 <Rss data-icon="inline-start" />
                 {t('header.rss')}
@@ -415,6 +427,7 @@ function MlsFeedControls({
                 size="sm"
                 onClick={onRefresh}
                 disabled={isLoading || isRefetching}
+                data-testid="feed.controls.refresh-button"
               >
                 {isRefetching ? (
                   <Loader2 data-icon="inline-start" className="animate-spin" />
@@ -453,6 +466,7 @@ function MlsFeedControls({
               onChange={(event) => onSearchInputChange(event.target.value)}
               placeholder={searchPlaceholder}
               className="h-10 bg-background/80 pe-9 ps-9"
+              data-testid="feed.controls.search-input"
             />
             {searchInput ? (
               <Button
@@ -462,6 +476,7 @@ function MlsFeedControls({
                 className="absolute top-1/2 end-2 -translate-y-1/2"
                 aria-label={t('controls.clearSearchAriaLabel')}
                 onClick={() => onSearchInputChange('')}
+                data-testid="feed.controls.clear-search-button"
               >
                 <X />
               </Button>
@@ -485,6 +500,7 @@ function MlsFeedControls({
             variant="ghost"
             className="h-10 justify-self-start sm:justify-self-auto"
             onClick={onClearFilters}
+            data-testid="feed.controls.clear-filters-button"
           >
             <X data-icon="inline-start" />
             {t('controls.clear')}
@@ -538,6 +554,7 @@ function MlsTldFilterCombobox({
               'h-10 w-full justify-between bg-background/80 px-3 font-normal',
               !selectedTld && 'text-muted-foreground',
             )}
+            data-testid="feed.controls.tld-combobox"
           />
         }
       >
@@ -624,6 +641,7 @@ function MlsBackToTopButton({ isVisible }: { isVisible: boolean }) {
             className="size-10 rounded-full border-border/70 bg-background/85 shadow-lg backdrop-blur-md"
             onClick={scrollMlsFeedToTop}
             aria-label={t('list.backToTopAriaLabel')}
+            data-testid="feed.list.back-to-top-button"
           >
             <ArrowUp />
           </Button>

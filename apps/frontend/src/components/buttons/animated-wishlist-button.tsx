@@ -83,6 +83,7 @@ export const AnimatedWishlistButton = forwardRef<
         onClick={handleClick}
         tabIndex={0}
         disabled={isBusy}
+        data-testid="wishlist.toggle-button"
         {...props}
       >
         {config.spinning ? (

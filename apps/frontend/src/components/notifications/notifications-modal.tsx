@@ -51,9 +51,12 @@ export function NotificationsModal() {
           'dark bg-background text-foreground sm:max-w-5xl',
         )}
         data-theme={activeTheme}
+        data-testid="notifications.modal.dialog"
       >
         <DialogHeader>
-          <DialogTitle>{t('title')}</DialogTitle>
+          <DialogTitle data-testid="notifications.modal.title">
+            {t('title')}
+          </DialogTitle>
           <DialogDescription className="sr-only">
             {t('modal.description')}
           </DialogDescription>
@@ -81,6 +84,7 @@ function EnableBrowserNotificationsCta() {
         size="sm"
         className="h-7 text-xs"
         onClick={() => void requestBrowserNotificationPermissionForce()}
+        data-testid="notifications.modal.enable-button"
       >
         {t('permission.enable')}
       </Button>

@@ -28,8 +28,16 @@ function GlobalErrorContent({ reset }: { reset: () => void }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
       <h1 className="mb-2 text-5xl font-bold tracking-tight">500</h1>
-      <h2 className="mb-2 text-xl font-semibold">{t('status500.title')}</h2>
-      <p className="mb-8 max-w-sm text-center text-sm text-muted-foreground">
+      <h2
+        className="mb-2 text-xl font-semibold"
+        data-testid="error.global.title"
+      >
+        {t('status500.title')}
+      </h2>
+      <p
+        className="mb-8 max-w-sm text-center text-sm text-muted-foreground"
+        data-testid="error.global.message"
+      >
         {t('status500.description')}
       </p>
       <div className="flex gap-3">
@@ -37,12 +45,14 @@ function GlobalErrorContent({ reset }: { reset: () => void }) {
           className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
           onClick={() => reset()}
           type="button"
+          data-testid="error.global.retry-button"
         >
           {tCommon('actions.tryAgain')}
         </button>
         <a
           className="inline-flex h-10 items-center justify-center rounded-md border border-input px-4 text-sm font-medium"
           href="/"
+          data-testid="error.global.go-home-button"
         >
           {t('actions.goHome')}
         </a>
