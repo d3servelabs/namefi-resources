@@ -12,7 +12,7 @@ ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['cctld market share', 'country code domains', '.cn', '.de', '.uk', '.tk', '.io', 'domain statistics', 'registry data', 'namefi']
 ---
 
-When most people picture the internet, they picture `.com`. And in raw numbers, `.com` is still the largest top-level domain on the planet, with roughly 160 million names under management. But `.com` is a gTLD—a *generic* top-level domain. Shift the lens to **country-code TLDs (ccTLDs)**—the two-letter suffixes assigned to nations and territories under [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—and the picture gets much more interesting, and much less predictable.
+When most people picture the internet, they picture `.com`. And in raw numbers, `.com` is still the largest [top-level domain](/en/glossary/tld/) on the planet, with roughly 160 million names under management. But `.com` is a gTLD—a *generic* top-level domain. Shift the lens to **country-code TLDs (ccTLDs)**—the two-letter suffixes assigned to nations and territories under [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—and the picture gets much more interesting, and much less predictable.
 
 This post walks through which ccTLDs lead by registration volume, why the leaders are not who you would guess, and what those numbers reveal about how the internet is *actually used* in different parts of the world.
 
@@ -45,11 +45,11 @@ This is the single biggest reason ccTLD market share looks unfamiliar. The denom
 
 Several small-country ccTLDs are operated more like generic extensions, and most of their registrations come from outside the country.
 
-- **.io** (British Indian Ocean Territory) — beloved by tech startups for "input/output" wordplay.
+- **[.io](/en/tld/io/)** (British Indian Ocean Territory) — beloved by tech startups for "input/output" wordplay.
 - **.tv** (Tuvalu) — leased to media and streaming brands.
-- **.co** (Colombia) — marketed globally as a `.com` alternative.
+- **[.co](/en/tld/co/)** (Colombia) — marketed globally as a `.com` alternative.
 - **.me** (Montenegro) — pronoun-friendly, popular for personal sites.
-- **.ai** (Anguilla) — recently exploded thanks to the AI boom.
+- **[.ai](/en/tld/ai/)** (Anguilla) — recently exploded thanks to the AI boom.
 - **.tk** (Tokelau) — historically inflated by free-registration programs, since [discontinued](https://en.wikipedia.org/wiki/.tk).
 
 These zones can show very large volume numbers, but the volume reflects *global branding demand*, not population or economic activity in the assigned country. Tuvalu has about 11,000 residents and one of the most-watched ccTLDs in the world.
@@ -83,7 +83,7 @@ For builders, the practical takeaways are:
 
 ## How Namefi thinks about this
 
-At Namefi we route registrations through multiple registrar back-ends across many of the ccTLDs above, including restricted ones with eligibility checks. Because we tokenize the ownership record on-chain rather than relying on a single registrar's account-level controls, the choice of extension becomes a routing decision rather than a lock-in decision. Want to start on `.io` and move the same brand identity to `.de` for a local market later? That is a transfer workflow we are designed to handle, not a migration project.
+At Namefi we route registrations through multiple [registrar](/en/glossary/registrar/) back-ends across many of the ccTLDs above, including restricted ones with eligibility checks. Because we [tokenize](/en/glossary/tokenize/) the ownership record [on-chain](/en/glossary/on-chain/) rather than relying on a single registrar's account-level controls, the choice of extension becomes a routing decision rather than a lock-in decision. Want to start on `.io` and move the same brand identity to `.de` for a local market later? That is a transfer workflow we are designed to handle, not a migration project.
 
 The deeper point: ccTLD market share is a story about *trust signals* on the open internet. The names people register tell you which extensions feel native in which markets. And those native extensions are not always the ones the volume tables put on top.
 

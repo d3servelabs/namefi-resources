@@ -23,7 +23,7 @@ In our conversation, we explored how usability became the core problem Privy cho
 
 When Henri Stern started Privy, the company’s mission was to help developers build privacy into their products. But as he quickly discovered, privacy wasn’t the most urgent problem then — usability was. Developers weren’t ignoring privacy out of apathy; they simply couldn’t implement it without breaking their own products.
 
-That realization became a turning point. Instead of focusing on encryption or infrastructure alone, Henri and his team shifted toward usability — building crypto tools that felt invisible to the user. It wasn’t about solving for blockchains or wallets anymore; it was about solving for people.
+That realization became a turning point. Instead of focusing on encryption or infrastructure alone, Henri and his team shifted toward usability — building crypto tools that felt invisible to the user. It wasn’t about solving for blockchains or [wallets](/en/glossary/wallet/) anymore; it was about solving for people.
 
 That shift eventually made Privy the foundation for products like friend.tech, where the focus was not on teaching users crypto, but on abstracting complexity away from crypto.
 
@@ -31,11 +31,11 @@ That shift eventually made Privy the foundation for products like friend.tech, w
 
 ## Mapping the Usability Frontier
 
-Henri views the evolution of crypto usability as a phased journey. The early years were dominated by technical barriers: private keys, gas fees, and fragmented wallet connectors.
+Henri views the evolution of crypto usability as a phased journey. The early years were dominated by technical barriers: private keys, [gas](/en/glossary/gas/) fees, and fragmented wallet connectors.
 
 By 2025, he believes those issues have largely been addressed — or at least tamed. Gas fees are manageable. Wallet creation and recovery are smoother. The remaining bottleneck, in his eyes, is on-ramps — the process of helping everyday users actually get into crypto safely and intuitively.
 
-Once users can easily enter the ecosystem, the next step is to empower them with useful financial tools: yield-bearing wallets, seamless payments, and stablecoin-based applications that blend Web2 familiarity with Web3 capability.
+Once users can easily enter the ecosystem, the next step is to empower them with useful financial tools: yield-bearing wallets, seamless payments, and [stablecoin](/en/glossary/stablecoin/)-based applications that blend Web2 familiarity with [Web3](/en/glossary/web3/) capability.
 
 For Henri, the mission now isn’t just reducing friction — it’s turning crypto into infrastructure people use without even noticing.
 
