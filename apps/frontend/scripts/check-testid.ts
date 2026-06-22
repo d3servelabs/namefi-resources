@@ -56,10 +56,27 @@ const PRIMITIVE_ROOTS = new Set([
   'field',
 ]);
 
+// Feature-area roots for surfaces that are intentionally NOT translated (admin,
+// marketing landings, dev tools, B2B). Test ids cover these, but i18n does not —
+// so they have no `messages/en/` counterpart and would otherwise trip the
+// unknown-ns detector. Explicit allowlist, kept narrow on purpose.
+const NON_I18N_ROOTS = new Set([
+  'admin', // src/app/admin/**, components/admin/**
+  'pbns', // src/pbns/** marketing landings
+  'x402', // src/app/x402/** payment pages
+  'nfsc', // NFSC token management
+  'mls', // marketplace listing service
+  'leadgen', // lead-gen embeds
+  'newsletter', // newsletter signup
+  'poweredBy', // powered-by-namefi B2B
+  'dev', // dev/test utilities (test-signed-payload, impersonation, etc.)
+]);
+
 // Known i18n namespaces = the message namespace files (cart, domains, …) plus the
-// two cross-cutting tiers. Built at runtime so it tracks messages/en/ exactly.
+// two cross-cutting tiers and the non-i18n feature roots above. Built at runtime
+// so it tracks messages/en/ exactly.
 function knownNamespaces(): Set<string> {
-  const ns = new Set<string>(['shared', 'common']);
+  const ns = new Set<string>(['shared', 'common', ...NON_I18N_ROOTS]);
   if (existsSync(MESSAGES_ROOT)) {
     for (const f of readdirSync(MESSAGES_ROOT)) {
       if (f.endsWith('.json')) ns.add(f.replace(/\.json$/, ''));

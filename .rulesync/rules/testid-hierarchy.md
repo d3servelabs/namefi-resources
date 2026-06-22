@@ -59,6 +59,26 @@ Pick the first tier that fits, exactly as for translation keys
 - **Otherwise the feature namespace** the component already uses for copy →
   `cart.*`, `domains.*`, `search.*`, `nav.*`, `profile.*`, …
 
+### Surfaces that are NOT translated — test ids still cover them
+
+**Test ids cover the whole app; i18n does not.** Admin tools, marketing landings,
+dev/test utilities, and B2B surfaces are intentionally English-only with no
+`useTranslations` and no `messages/<locale>/` namespace. They still get test ids —
+using a **feature-area namespace** that does *not* need a translation counterpart.
+The allowed non-i18n roots (see `NON_I18N_ROOTS` in `scripts/check-testid.ts`):
+
+| Root | Surface |
+|---|---|
+| `admin.<area>.*` | `src/app/admin/**`, `components/admin/**` (e.g. `admin.users.*`, `admin.financials.*`) |
+| `pbns.<site>.*` | `src/pbns/**` marketing landings (e.g. `pbns.aave.*`) |
+| `x402.*` | `src/app/x402/**` payment pages |
+| `nfsc.*` / `mls.*` / `leadgen.*` / `newsletter.*` / `poweredBy.*` | those feature areas |
+| `dev.*` | dev/test utilities (test-signed-payload, impersonation banner, …) |
+
+For these, derive the area from the path/feature, not from a translation key. The
+guardrail's `unknown-ns` detector only allows i18n namespaces **plus** this
+allowlist — extend the allowlist (and this table) before introducing a new root.
+
 Keep the **section** segment meaningful (`summary`, `list`, `row`, `toolbar`,
 `empty-state`), not a DOM tag. The leaf is the concrete thing a test clicks,
 reads, or asserts on (`checkout-button`, `total`, `error`).
