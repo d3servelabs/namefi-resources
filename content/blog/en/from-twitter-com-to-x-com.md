@@ -25,7 +25,7 @@ In July 2023, nine months after buying the company [for $44bn](https://www.aljaz
 
 In the beginning, there was no domain problem to solve.
 
-When Twitter launched in 2006, it had the thing most startups in this series spent years and millions chasing: the exact-match .com that matched its name. Twitter.com *was* Twitter. The blue bird, the verb "to tweet," the @-reply, the hashtag — an entire vocabulary grew on top of an address that needed no explanation. For most of its life, Twitter was the counter-example to every "buy your exact match" lesson, because it never had to.
+When Twitter launched in 2006, it had the thing most startups in this series spent years and millions chasing: the exact-match [.com](/en/tld/com/) that matched its name. Twitter.com *was* Twitter. The blue bird, the verb "to tweet," the @-reply, the hashtag — an entire vocabulary grew on top of an address that needed no explanation. For most of its life, Twitter was the counter-example to every "buy your exact match" lesson, because it never had to.
 
 That is what makes this case different. The pressure to change the domain did not come from the product outgrowing the name, the way "Motors" outgrew Tesla or "Cab" outgrew Uber. It came from a new owner who already had a different name in mind — and had been waiting on it for a very long time.
 
@@ -59,7 +59,7 @@ There was no business plan attached. PYMNTS reported simply that [space entrepre
 
 Engadget also captured the wound underneath the purchase: [when Musk was pushed out, the domain (with its aught-tastic logo, above) stayed behind with PayPal](https://www.engadget.com/2017-07-11-elon-musk-buys-his-old-x-com-domain-from-paypal.html#:~:text=when%20Musk%20was%20pushed%20out%2C%20the%20domain%20%28with%20its%20aught%2Dtastic%20logo%2C%20above%29%20stayed%20behind%20with%20PayPal). Buying it back, seventeen years later, was Musk repossessing the one piece of his first company that had outlived everything else.
 
-This is the rarest motivation in the entire series. Tesla bought Tesla.com because it had to. Uber traded equity for Uber.com because it had to. Musk bought X.com in 2017 because he *wanted* to — "no plans right now." The domain was an heirloom before it was a strategy.
+This is the rarest motivation in the entire series. Tesla bought [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/) because it had to. Uber traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/) because it had to. Musk bought X.com in 2017 because he *wanted* to — "no plans right now." The domain was an heirloom before it was a strategy.
 
 ## The money looked different then
 
