@@ -336,6 +336,11 @@ export const useSearch = (
     trackBeginSearch(sanitized);
   }, [domains.length, sanitized, trackBeginSearch]);
 
+  /**
+   * Search entry point for the home search journey (route '/'): runs the
+   * query and surfaces availability/pricing/suggestions.
+   * @cuj ['CUJ-Owner.1']
+   */
   const runSearch = useCallback(() => {
     const searchTerm = query.trim();
     if (searchTerm.length === 0) return;

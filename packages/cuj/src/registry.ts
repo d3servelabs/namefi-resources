@@ -6,10 +6,25 @@
  *   - the generated catalog doc (`docs/product/critical-user-journeys.md`)
  *   - e2e test tags / `describe` names (e.g. `@CUJ-Trader.3`)
  *   - `data-cuj="Trader.3"` markers on journey entry-point components
+ *   - `@cuj` JSDoc annotations on the functions a journey exercises (see below)
  *   - the preview / screen-recording generator (driven by `routes`)
  *
  * STABILITY RULE: ids are append-only handles. Never renumber on reword and
  * never reuse a retired number — set `status: 'deprecated'` instead (see Hunter).
+ *
+ * FUNCTION MARKER (`@cuj`): annotate a production function with the journeys it
+ * implements using a JSDoc tag carrying an **array** of full ids:
+ *
+ *     /** @cuj ['CUJ-Owner.1'] *\/
+ *     const runSearch = useCallback(() => { ... });
+ *
+ * It is an array because a *shared* function (e.g. the cart-write reached by
+ * search, checkout, instant-buy and claim) ends up listing every journey that
+ * reaches it. ORDERING RULE: sort the ids ascending — by area (alphabetical),
+ * then by number — so a function touched by a new journey gets a minimal,
+ * stable diff (e.g. `['CUJ-Owner.1', 'CUJ-Owner.2']`, never the reverse).
+ * `check:cuj` validates each annotation array is ordered and duplicate-free,
+ * and (like the other reference forms above) counts the ids toward coverage.
  *
  * `Owner` is a shared journey LIBRARY, not a persona: the mechanics every domain
  * owner performs. The Trader, Collector and DAO personas all reference it (see

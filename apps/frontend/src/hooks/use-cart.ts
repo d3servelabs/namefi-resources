@@ -772,6 +772,13 @@ export function useCartOperations(sync: ReturnType<typeof useCartServerSync>) {
   const { isAuthenticated, isLoading: isUserLoading, user } = useAuth();
   const userId = user?.id ?? GUEST_USER_ID;
 
+  /**
+   * Shared cart-write reached by every "add to cart" entry point. As more
+   * journeys get e2e-tagged, append their ids to the array below — ordered by
+   * area then number per the CUJ marker convention in
+   * packages/cuj/src/registry.ts. Today only the search journey is covered.
+   * @cuj ['CUJ-Owner.1']
+   */
   const addItem = useCallback(
     async (
       raw: AddToCartParams | AddToCartParams[],

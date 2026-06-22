@@ -400,6 +400,11 @@ export const DomainCard: FC<{
   const compactWishlistButtonClassName =
     'size-8 [&_svg]:h-4 [&_svg]:w-4 sm:size-9 sm:[&_svg]:h-5 sm:[&_svg]:w-5';
 
+  /**
+   * Adds the result domain to the cart from a search result card — the
+   * "add to cart" step of the home search journey.
+   * @cuj ['CUJ-Owner.1']
+   */
   const handleAdd = useCallback(async () => {
     if (!availabilityInfo) return;
     // Cart rows can be created from preliminary search data; cart/checkout

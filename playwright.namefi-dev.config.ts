@@ -6,6 +6,10 @@ const chromiumExecutablePath =
 
 export default defineConfig({
   testDir: './tests/e2e',
+  // This suite is the nightly checkout smoke. CUJ walkthrough specs live in the
+  // same dir but run under playwright.cuj.config.ts (video: 'on'); keep them out
+  // of here — they don't sign in and would collide with the checkout domain.
+  grep: /@nightly/,
   fullyParallel: false,
   forbidOnly: isCi,
   retries: isCi ? 1 : 0,

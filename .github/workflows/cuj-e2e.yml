@@ -1,0 +1,105 @@
+name: CUJ E2E Walkthroughs
+
+# Runs the Critical User Journey e2e suite (epic #4780) against the dev
+# environment and uploads the recorded video walkthroughs as artifacts — one
+# per journey, retrievable as living documentation / preview material.
+#
+# Unlike the nightly checkout smoke, these specs are read-only (search → guest
+# add-to-cart, etc.) and need no secrets, so this workflow runs without the
+# test-account / Stripe credentials.
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Offset from the nightly checkout smoke (08:37) to spread scheduled load.
+    - cron: "47 8 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+env:
+  CI: true
+  NAMEFI_DEV_BASE_URL: https://namefi.dev
+
+jobs:
+  cuj-e2e:
+    name: CUJ e2e + video
+    runs-on: "blacksmith-4vcpu-ubuntu-2404"
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: ".bun-version"
+
+      - name: Cache bun dependencies
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lock') }}
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package.json', 'bun.lock') }}
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Chromium
+        id: install-chromium
+        continue-on-error: true
+        run: bunx playwright install --with-deps chromium
+
+      - name: Configure browser executables
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          playwright_chrome="$(bun -e 'console.log(require("playwright").chromium.executablePath())')"
+          if [[ -x "$playwright_chrome" ]]; then
+            echo "CHROME_PATH=$playwright_chrome" >> "$GITHUB_ENV"
+            exit 0
+          fi
+
+          system_chrome="$(
+            command -v google-chrome-stable ||
+            command -v google-chrome ||
+            command -v chromium ||
+            command -v chromium-browser ||
+            true
+          )"
+
+          if [[ -n "$system_chrome" ]]; then
+            echo "CHROME_PATH=$system_chrome" >> "$GITHUB_ENV"
+            echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=$system_chrome" >> "$GITHUB_ENV"
+          else
+            echo "No Playwright-managed Chromium or system Chrome executable found."
+            exit 1
+          fi
+
+      - name: Run CUJ e2e walkthroughs
+        run: bun run test:e2e:cuj
+
+      - name: Upload CUJ videos + report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: cuj-e2e-videos-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/cuj/
+            test-results/cuj/
+          if-no-files-found: warn
+          retention-days: 30

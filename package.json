@@ -109,6 +109,7 @@
     "test:watch": "NODE_ENV=test turbo run test:watch",
     "test:coverage": "NODE_ENV=test turbo run test:coverage",
     "test:e2e:namefi-dev": "playwright test -c playwright.namefi-dev.config.ts",
+    "test:e2e:cuj": "playwright test -c playwright.cuj.config.ts",
     "lighthouse:namefi": "bun run scripts/lighthouse-namefi.ts",
     "sherif": "bunx sherif@latest",
     "sherif:fix": "bunx sherif@latest -f",

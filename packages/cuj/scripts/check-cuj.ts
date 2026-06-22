@@ -38,11 +38,58 @@ const SCAN_EXT = /\.(ts|tsx|mts|cts|js|jsx)$/;
 const ID_RE = /\bCUJ-[A-Za-z][A-Za-z0-9]*\.\d+\b/g;
 const DATA_CUJ_RE = /data-cuj\s*=\s*["'`]([A-Za-z][A-Za-z0-9]*\.\d+)["'`]/g;
 const ID_SHAPE = /^CUJ-([A-Za-z][A-Za-z0-9]*)\.\d+$/;
+// `@cuj ['CUJ-Owner.1', 'CUJ-Owner.2']` — function marker carrying an ordered
+// array of ids (see the convention in ../src/registry.ts). Captures the
+// bracket body so its ids can be checked for ordering + uniqueness. `[\s\S]*?`
+// (not `[^\]]*` line-by-line) so arrays wrapped across multiple lines — which a
+// shared function with many ids will be — are still validated, not bypassed.
+const CUJ_ANNOTATION_RE = /@cuj\b\s*\[([\s\S]*?)\]/g;
+const ID_WITH_AREA_AND_N = /^CUJ-([A-Za-z][A-Za-z0-9]*)\.(\d+)$/;
 
 interface Ref {
   readonly id: string;
   readonly file: string;
   readonly line: number;
+}
+
+/** Canonical order for `@cuj` arrays: by area (alphabetical), then number. */
+function compareCujIds(a: string, b: string): number {
+  const pa = ID_WITH_AREA_AND_N.exec(a);
+  const pb = ID_WITH_AREA_AND_N.exec(b);
+  if (!pa || !pb) return a < b ? -1 : a > b ? 1 : 0;
+  if (pa[1] !== pb[1]) return pa[1] < pb[1] ? -1 : 1;
+  return Number(pa[2]) - Number(pb[2]);
+}
+
+/** Validate every `@cuj [...]` annotation is non-empty, deduped, and ordered. */
+function collectAnnotationErrors(): string[] {
+  const errs: string[] = [];
+  for (const root of SCAN_ROOTS) {
+    for (const file of walk(join(REPO_ROOT, root))) {
+      const rel = relative(REPO_ROOT, file);
+      const content = readFileSync(file, 'utf8');
+      for (const m of content.matchAll(CUJ_ANNOTATION_RE)) {
+        // 1-based line of the `@cuj` token, derived from the match offset.
+        const line = content.slice(0, m.index).split('\n').length;
+        const at = `${rel}:${line}`;
+        const ids = [...m[1].matchAll(ID_RE)].map((x) => x[0]);
+        if (ids.length === 0) {
+          errs.push(`@cuj annotation has no valid CUJ ids  (${at})`);
+          continue;
+        }
+        for (let k = 1; k < ids.length; k += 1) {
+          const cmp = compareCujIds(ids[k - 1], ids[k]);
+          if (cmp === 0)
+            errs.push(`@cuj annotation has duplicate ${ids[k]}  (${at})`);
+          else if (cmp > 0)
+            errs.push(
+              `@cuj annotation not ordered: ${ids[k - 1]} before ${ids[k]} — sort by area then number  (${at})`,
+            );
+        }
+      }
+    }
+  }
+  return errs;
 }
 
 function* walk(dir: string): Generator<string> {
@@ -116,6 +163,9 @@ const main = () => {
         `deprecated CUJ referenced: ${r.id}  (${r.file}:${r.line})`,
       );
   }
+
+  // ── 2b. `@cuj` annotation integrity (blocking) ───────────────────────────
+  errors.push(...collectAnnotationErrors());
 
   // ── 3. Coverage (advisory) ───────────────────────────────────────────────
   const uncoveredLive = [...liveIds].filter((id) => !referenced.has(id)).sort();
