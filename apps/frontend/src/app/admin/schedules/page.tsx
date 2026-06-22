@@ -183,6 +183,7 @@ export default function SchedulesPage() {
             </p>
           </div>
           <Button
+            data-testid="admin.schedules.refresh"
             onClick={() => {
               queryClient.invalidateQueries({
                 queryKey: trpc.admin.schedules.getAllSchedules.queryKey(),
@@ -205,7 +206,7 @@ export default function SchedulesPage() {
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList>
-          <TabsTrigger value="all">
+          <TabsTrigger data-testid="admin.schedules.tab.all" value="all">
             All ({schedulesWithStatus.length})
           </TabsTrigger>
           {categories.map((category) => {
@@ -213,7 +214,11 @@ export default function SchedulesPage() {
               (s) => s.config.category === category,
             ).length;
             return (
-              <TabsTrigger key={category} value={category}>
+              <TabsTrigger
+                data-testid={`admin.schedules.tab.${category}`}
+                key={category}
+                value={category}
+              >
                 {category} ({count})
               </TabsTrigger>
             );
@@ -365,7 +370,7 @@ export default function SchedulesPage() {
           )}
 
           {!isLoading && filteredSchedules.length === 0 && (
-            <Card>
+            <Card data-testid="admin.schedules.empty">
               <CardContent className="p-8 text-center">
                 <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                 <p className="text-lg font-medium text-gray-900 mb-2">
@@ -386,6 +391,7 @@ export default function SchedulesPage() {
 }
 
 interface ScheduleActionsProps {
+  scheduleId: string;
   needsSetup: boolean;
   hasStatus: boolean;
   isPaused: boolean;
@@ -398,6 +404,7 @@ interface ScheduleActionsProps {
 }
 
 function ScheduleActions({
+  scheduleId,
   needsSetup,
   hasStatus,
   isPaused,
@@ -414,6 +421,7 @@ function ScheduleActions({
         <Tooltip>
           <TooltipTrigger>
             <Button
+              data-testid={`admin.schedules.card.${scheduleId}.setup`}
               size="sm"
               onClick={onSubmit}
               disabled={isLoading}
@@ -430,6 +438,7 @@ function ScheduleActions({
       ) : hasStatus ? (
         <>
           <Button
+            data-testid={`admin.schedules.card.${scheduleId}.trigger`}
             size="sm"
             variant="outline"
             onClick={onTrigger}
@@ -441,6 +450,7 @@ function ScheduleActions({
 
           {isPaused ? (
             <Button
+              data-testid={`admin.schedules.card.${scheduleId}.resume`}
               size="sm"
               variant="outline"
               onClick={onUnpause}
@@ -451,6 +461,7 @@ function ScheduleActions({
             </Button>
           ) : (
             <Button
+              data-testid={`admin.schedules.card.${scheduleId}.pause`}
               size="sm"
               variant="outline"
               onClick={onPause}
@@ -462,6 +473,7 @@ function ScheduleActions({
           )}
 
           <Button
+            data-testid={`admin.schedules.card.${scheduleId}.delete`}
             size="sm"
             variant="destructive"
             onClick={onDelete}
@@ -508,7 +520,11 @@ function ScheduleCard({
   const hasStatus = !!actualStatus;
 
   return (
-    <Card id={scheduleConfig.scheduleId} className="h-fit">
+    <Card
+      id={scheduleConfig.scheduleId}
+      data-testid={`admin.schedules.card.${scheduleConfig.scheduleId}`}
+      className="h-fit"
+    >
       <CardHeader>
         <div className="flex items-start justify-between">
           <div className="flex-1">
@@ -603,6 +619,7 @@ function ScheduleCard({
             )}
 
           <ScheduleActions
+            scheduleId={scheduleConfig.scheduleId}
             needsSetup={needsSetup}
             hasStatus={hasStatus}
             isPaused={isPaused}

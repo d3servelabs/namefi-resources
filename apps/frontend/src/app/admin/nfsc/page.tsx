@@ -55,14 +55,17 @@ function NfscManagement() {
             </p>
           </div>
         </div>
-        <Button onClick={() => setBulkMintDialogOpen(true)}>
+        <Button
+          onClick={() => setBulkMintDialogOpen(true)}
+          data-testid="admin.nfsc.bulk-mint-button"
+        >
           <Coins className="h-4 w-4 me-2" />
           Bulk Mint NFSC
         </Button>
       </div>
 
       {/* Recent Workflows */}
-      <Card>
+      <Card data-testid="admin.nfsc.recent-workflows-card">
         <CardHeader>
           <div className="flex items-center gap-x-2">
             <History className="h-5 w-5 text-primary" />
@@ -74,7 +77,7 @@ function NfscManagement() {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card data-testid="admin.nfsc.about-card">
         <CardHeader>
           <CardTitle>About NFSC Minting</CardTitle>
         </CardHeader>

@@ -152,6 +152,7 @@ export function RowActions({
         size="sm"
         disabled={blocked}
         onClick={() => setNsOpen(true)}
+        data-testid={`admin.ns-and-dnssec.row.edit-nameservers.${row.normalizedDomainName}`}
       >
         Edit Nameservers
       </Button>
@@ -160,6 +161,7 @@ export function RowActions({
         size="sm"
         disabled={blocked}
         onClick={() => setDnssecOpen(true)}
+        data-testid={`admin.ns-and-dnssec.row.toggle-dnssec.${row.normalizedDomainName}`}
       >
         Toggle DNSSEC
       </Button>

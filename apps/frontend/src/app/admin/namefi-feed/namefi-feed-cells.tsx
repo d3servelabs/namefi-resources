@@ -93,6 +93,7 @@ export function TargetEnabledCell({
           disabled={isMutating}
           onCheckedChange={(checked) => onToggle(target, checked)}
           aria-label={`Toggle ${target.label}`}
+          data-testid={`admin.namefi-feed.target.row.toggle-enabled.${target.id}`}
         />
       </PermissionGate>
     </div>
@@ -123,6 +124,7 @@ export function TargetActionsCell({
           aria-label={`Edit ${target.label}`}
           disabled={isMutating}
           onClick={() => onEdit(target)}
+          data-testid={`admin.namefi-feed.target.row.edit.${target.id}`}
         >
           <Pencil className="h-4 w-4" />
         </Button>
@@ -132,6 +134,7 @@ export function TargetActionsCell({
           aria-label={`Delete ${target.label}`}
           disabled={isMutating}
           onClick={() => onDelete(target)}
+          data-testid={`admin.namefi-feed.target.row.delete.${target.id}`}
         >
           <Trash2 className="h-4 w-4" />
         </Button>

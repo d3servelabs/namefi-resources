@@ -643,6 +643,7 @@ function NamefiFeedAdminContent() {
           variant="outline"
           onClick={() => overviewQuery.refetch()}
           disabled={overviewQuery.isFetching}
+          data-testid="admin.namefi-feed.refresh-button"
         >
           <RefreshCw className="h-4 w-4" />
           Refresh
@@ -685,14 +686,48 @@ function NamefiFeedAdminContent() {
 
       <Tabs defaultValue="runs" className="w-full">
         <TabsList className="flex h-auto w-full flex-wrap justify-start lg:w-auto">
-          <TabsTrigger value="runs">Ingested</TabsTrigger>
-          <TabsTrigger value="posts">Processed</TabsTrigger>
-          <TabsTrigger value="listings">Listed</TabsTrigger>
-          <TabsTrigger value="reports">Reports</TabsTrigger>
-          <TabsTrigger value="targets">Digest Targets</TabsTrigger>
-          <TabsTrigger value="digest-runs">Digest Runs</TabsTrigger>
-          <TabsTrigger value="deliveries">Digest Deliveries</TabsTrigger>
-          <TabsTrigger value="settings">Settings</TabsTrigger>
+          <TabsTrigger value="runs" data-testid="admin.namefi-feed.tab.runs">
+            Ingested
+          </TabsTrigger>
+          <TabsTrigger value="posts" data-testid="admin.namefi-feed.tab.posts">
+            Processed
+          </TabsTrigger>
+          <TabsTrigger
+            value="listings"
+            data-testid="admin.namefi-feed.tab.listings"
+          >
+            Listed
+          </TabsTrigger>
+          <TabsTrigger
+            value="reports"
+            data-testid="admin.namefi-feed.tab.reports"
+          >
+            Reports
+          </TabsTrigger>
+          <TabsTrigger
+            value="targets"
+            data-testid="admin.namefi-feed.tab.targets"
+          >
+            Digest Targets
+          </TabsTrigger>
+          <TabsTrigger
+            value="digest-runs"
+            data-testid="admin.namefi-feed.tab.digest-runs"
+          >
+            Digest Runs
+          </TabsTrigger>
+          <TabsTrigger
+            value="deliveries"
+            data-testid="admin.namefi-feed.tab.deliveries"
+          >
+            Digest Deliveries
+          </TabsTrigger>
+          <TabsTrigger
+            value="settings"
+            data-testid="admin.namefi-feed.tab.settings"
+          >
+            Settings
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="settings" className="mt-4">
@@ -925,6 +960,7 @@ function NamefiFeedAdminContent() {
                     disabled={
                       !settingsLoaded || updateSettingsMutation.isPending
                     }
+                    data-testid="admin.namefi-feed.settings.save-button"
                   >
                     <Save className="h-4 w-4" />
                     Save
@@ -953,6 +989,7 @@ function NamefiFeedAdminContent() {
                       startIngestionMutation.isPending ||
                       !hasRunnableSavedScanSource
                     }
+                    data-testid="admin.namefi-feed.ingestion.start-scan-button"
                   >
                     <Play className="h-4 w-4" />
                     Start Scan
@@ -988,6 +1025,7 @@ function NamefiFeedAdminContent() {
                     disabled={
                       startIngestionMutation.isPending || !canQueueManualTweets
                     }
+                    data-testid="admin.namefi-feed.ingestion.queue-posts-button"
                   >
                     <Play className="h-4 w-4" />
                     Queue Posts
@@ -1074,6 +1112,7 @@ function NamefiFeedAdminContent() {
                       runDigestMutation.isPending ||
                       (!digestDryRun && selectedDigestTargetIds.length === 0)
                     }
+                    data-testid="admin.namefi-feed.digest.run-button"
                   >
                     <Play className="h-4 w-4" />
                     Run Digest
@@ -1162,6 +1201,7 @@ function NamefiFeedAdminContent() {
             <AlertDialogAction
               onClick={runDigest}
               disabled={runDigestMutation.isPending}
+              data-testid="admin.namefi-feed.digest.confirm-button"
             >
               <Play className="h-4 w-4" />
               Start Digest
@@ -1199,6 +1239,7 @@ function NamefiFeedAdminContent() {
                   });
                 }
               }}
+              data-testid="admin.namefi-feed.target.confirm-delete-button"
             >
               <Trash2 className="h-4 w-4" />
               Delete Target
@@ -1695,6 +1736,7 @@ function ListingsTable({
               size="icon"
               aria-label={`Open source post for ${row.original.domain}`}
               onClick={() => openExternalUrl(row.original.sourceUrl)}
+              data-testid={`admin.namefi-feed.listings.row.open-source.${row.original.id}`}
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
@@ -1703,6 +1745,7 @@ function ListingsTable({
                 variant="outline"
                 size="sm"
                 disabled={isMutating}
+                data-testid={`admin.namefi-feed.listings.row.toggle-suppressed.${row.original.id}`}
                 onClick={() =>
                   onToggleSuppressed(row.original.id, !row.original.suppressed)
                 }
@@ -1816,6 +1859,7 @@ function ReportsTable({
               size="icon"
               aria-label={`Open source post for ${row.original.domain}`}
               onClick={() => openExternalUrl(row.original.sourceUrl)}
+              data-testid={`admin.namefi-feed.reports.row.open-source.${row.original.id}`}
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
@@ -1825,6 +1869,7 @@ function ReportsTable({
                 size="sm"
                 disabled={isMutating}
                 onClick={() => onResolve(row.original.id, 'dismissed')}
+                data-testid={`admin.namefi-feed.reports.row.dismiss.${row.original.id}`}
               >
                 Dismiss
               </Button>
@@ -1833,6 +1878,7 @@ function ReportsTable({
                 size="sm"
                 disabled={isMutating}
                 onClick={() => onResolve(row.original.id, 'suppressed_listing')}
+                data-testid={`admin.namefi-feed.reports.row.suppress.${row.original.id}`}
               >
                 Suppress
               </Button>
@@ -2096,6 +2142,7 @@ function PostsTable() {
             size="icon"
             aria-label="Open source post"
             onClick={() => openExternalUrl(row.original.sourceUrl)}
+            data-testid={`admin.namefi-feed.posts.row.open-source.${row.original.id}`}
           >
             <ExternalLink className="h-4 w-4" />
           </Button>
@@ -2435,6 +2482,7 @@ function DeliveriesTable() {
               size="icon"
               aria-label="Open delivered message"
               onClick={() => openExternalUrl(externalMessageUrl)}
+              data-testid={`admin.namefi-feed.deliveries.row.open-message.${row.original.id}`}
             >
               <ExternalLink className="h-4 w-4" />
             </Button>
@@ -2516,6 +2564,7 @@ function DigestTargetEditor({
           <Label htmlFor="target-type">Channel</Label>
           <select
             id="target-type"
+            data-testid="admin.namefi-feed.target-editor.channel-select"
             className="h-10 rounded-md border bg-background px-3 text-sm"
             value={draft.targetType}
             disabled={Boolean(draft.id)}
@@ -2536,6 +2585,7 @@ function DigestTargetEditor({
           <Label htmlFor="target-label">Label</Label>
           <Input
             id="target-label"
+            data-testid="admin.namefi-feed.target-editor.label-input"
             value={draft.label}
             placeholder="Ops digest"
             onChange={(event) =>
@@ -2561,7 +2611,11 @@ function DigestTargetEditor({
 
         <PermissionGate permissions={[Permission.WRITE_NAMEFI_FEED]}>
           <div className="flex items-end gap-2">
-            <Button onClick={onSave} disabled={isSaving}>
+            <Button
+              onClick={onSave}
+              disabled={isSaving}
+              data-testid="admin.namefi-feed.target-editor.save-button"
+            >
               <Save className="h-4 w-4" />
               {draft.id ? 'Save' : 'Add'}
             </Button>
@@ -2571,6 +2625,7 @@ function DigestTargetEditor({
                 size="icon"
                 aria-label="Cancel editing digest target"
                 onClick={onCancel}
+                data-testid="admin.namefi-feed.target-editor.cancel-button"
               >
                 <X className="h-4 w-4" />
               </Button>

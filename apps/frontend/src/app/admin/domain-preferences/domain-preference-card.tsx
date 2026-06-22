@@ -64,8 +64,9 @@ export function DomainPreferenceCard({
   onReset,
   onSave,
 }: DomainPreferenceCardProps) {
+  const testIdBase = `admin.domain-preferences.card.${row.normalizedDomainName}`;
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card className="gap-0 overflow-hidden px-0 py-0" data-testid={testIdBase}>
       <div className="flex items-start gap-2 px-3 py-2.5">
         <div className="min-w-0 flex-1">
           <DomainNameCell domainName={row.normalizedDomainName} />
@@ -127,6 +128,7 @@ export function DomainPreferenceCard({
           size="sm"
           disabled={!isDirty || !canWrite || isSaving}
           onClick={onReset}
+          data-testid={`${testIdBase}.reset`}
         >
           Reset
         </Button>
@@ -134,6 +136,7 @@ export function DomainPreferenceCard({
           size="sm"
           disabled={!isDirty || !canWrite || isSaving}
           onClick={onSave}
+          data-testid={`${testIdBase}.save`}
         >
           Save
         </AsyncButton>

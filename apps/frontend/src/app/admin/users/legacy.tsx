@@ -545,6 +545,7 @@ function UsersTable({
             {!row.original.isAdmin && (
               <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
                 <AsyncButton
+                  data-testid={`admin.users.row.${row.original.id}.impersonate`}
                   className="group"
                   size="sm"
                   variant="secondary"
@@ -563,6 +564,7 @@ function UsersTable({
             )}
             {!!row.original.primaryEmail && (
               <Button
+                data-testid={`admin.users.row.${row.original.id}.send-email`}
                 className="group"
                 size="sm"
                 variant="secondary"
@@ -729,6 +731,7 @@ function UsersTable({
               </div>
             )}
             <AsyncButton
+              data-testid="admin.users.refresh-privy-index"
               size="sm"
               variant="outline"
               onClick={handleForceRefresh}

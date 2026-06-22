@@ -214,6 +214,7 @@ function OrderItemsTable() {
                   onClick={() => handleCopyWallet(row.original.userEmail!)}
                   className="p-1 hover:bg-muted rounded transition-colors"
                   title="Copy email"
+                  data-testid={`admin.order-items.row.copy-email.${row.original.id}`}
                 >
                   <Copy className="h-3 w-3" />
                 </button>
@@ -281,6 +282,7 @@ function OrderItemsTable() {
                 onClick={() => handleCopyWallet(checksummedAddress)}
                 className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
                 title="Copy address"
+                data-testid={`admin.order-items.row.copy-wallet.${row.original.id}`}
               >
                 <Copy className="h-3 w-3" />
               </button>
@@ -553,11 +555,19 @@ function OrderItemsTable() {
   );
 
   return (
-    <Card className="border border-muted/60 m-6">
+    <Card
+      className="border border-muted/60 m-6"
+      data-testid="admin.order-items.card"
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl">Order Items</CardTitle>
-          <div className="text-sm text-muted-foreground">
+          <CardTitle className="text-xl" data-testid="admin.order-items.title">
+            Order Items
+          </CardTitle>
+          <div
+            className="text-sm text-muted-foreground"
+            data-testid="admin.order-items.total"
+          >
             Total: {orderItems.data?.total ?? 0} items
           </div>
         </div>

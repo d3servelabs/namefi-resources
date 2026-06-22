@@ -386,18 +386,32 @@ function LoginHistoryTable() {
   );
 
   return (
-    <Card className="border border-muted/60 m-6">
+    <Card
+      className="border border-muted/60 m-6"
+      data-testid="admin.login-history.card"
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl">Login History</CardTitle>
-          <div className="text-sm text-muted-foreground">
+          <CardTitle
+            className="text-xl"
+            data-testid="admin.login-history.title"
+          >
+            Login History
+          </CardTitle>
+          <div
+            className="text-sm text-muted-foreground"
+            data-testid="admin.login-history.total"
+          >
             Total: {query.data?.total ?? 0} sessions
           </div>
         </div>
       </CardHeader>
       <CardContent>
         {query.isError ? (
-          <div className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-destructive/40 bg-destructive/5 p-8">
+          <div
+            className="flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-destructive/40 bg-destructive/5 p-8"
+            data-testid="admin.login-history.error-state"
+          >
             <AlertTriangle className="h-8 w-8 text-destructive" />
             <div className="text-center">
               <p className="font-medium">Failed to load login history</p>
@@ -410,6 +424,7 @@ function LoginHistoryTable() {
               size="sm"
               onClick={() => query.refetch()}
               disabled={query.isFetching}
+              data-testid="admin.login-history.retry-button"
             >
               <RefreshCw
                 className={`h-4 w-4 me-2 ${query.isFetching ? 'animate-spin' : ''}`}
@@ -494,6 +509,7 @@ function RecognitionActions({ row }: { row: LoginHistoryRow }) {
         size="sm"
         onClick={() => onAcknowledge(null)}
         disabled={acknowledge.isPending}
+        data-testid={`admin.login-history.row.clear-decision.${row.id}`}
       >
         Clear decision
       </Button>
@@ -512,6 +528,7 @@ function RecognitionActions({ row }: { row: LoginHistoryRow }) {
         className="border-green-400/60 text-green-700 hover:bg-green-50 dark:hover:bg-green-950"
         onClick={() => onAcknowledge(true)}
         disabled={acknowledge.isPending}
+        data-testid={`admin.login-history.row.recognize.${row.id}`}
       >
         <Check className="h-4 w-4" />
       </Button>
@@ -521,6 +538,7 @@ function RecognitionActions({ row }: { row: LoginHistoryRow }) {
         className="border-red-400/60 text-red-700 hover:bg-red-50 dark:hover:bg-red-950"
         onClick={() => onAcknowledge(false)}
         disabled={acknowledge.isPending}
+        data-testid={`admin.login-history.row.reject.${row.id}`}
       >
         <X className="h-4 w-4" />
       </Button>

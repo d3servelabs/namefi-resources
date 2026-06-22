@@ -128,6 +128,7 @@ function UsersTableV2() {
           return (
             <button
               type="button"
+              data-testid={`admin.users.row.${row.original.id}.expand`}
               onClick={() => row.toggleExpanded()}
               className="p-1 hover:bg-muted rounded transition-colors"
             >

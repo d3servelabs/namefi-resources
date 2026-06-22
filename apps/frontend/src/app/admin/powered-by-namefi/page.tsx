@@ -787,6 +787,7 @@ export default withAdminGuard(function PoweredByNamefiDomainsPage() {
                   DNS call failed — try again in a moment.
                 </p>
                 <AsyncButton
+                  data-testid="admin.powered-by.dns-config-dialog.retry"
                   variant="outline"
                   size="sm"
                   onClick={async () => {

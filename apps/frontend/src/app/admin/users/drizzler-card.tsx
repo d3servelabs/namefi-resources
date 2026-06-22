@@ -62,11 +62,15 @@ export function DrizzlerCard({
   const canExpand = row.nftCount > 0 || row.wallets.length > 0;
 
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      data-testid={`admin.users.card.${row.id}`}
+      className="gap-0 overflow-hidden px-0 py-0"
+    >
       <div className="flex items-start gap-2 px-3 py-2.5">
         {canExpand ? (
           <button
             type="button"
+            data-testid={`admin.users.card.${row.id}.expand`}
             onClick={onToggleExpanded}
             aria-expanded={isExpanded}
             aria-label={isExpanded ? 'Collapse details' : 'Expand details'}

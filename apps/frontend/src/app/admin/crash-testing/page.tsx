@@ -115,7 +115,10 @@ function AdminCrashTestingPage() {
         </p>
       </div>
 
-      <Card className="border-destructive/40">
+      <Card
+        data-testid="admin.crash-testing.fatal-crash-card"
+        className="border-destructive/40"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-destructive" />
@@ -128,6 +131,7 @@ function AdminCrashTestingPage() {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-3">
           <Button
+            data-testid="admin.crash-testing.fatal-crash-button"
             type="button"
             variant="destructive"
             onClick={() => setShouldCrash(true)}
@@ -135,6 +139,7 @@ function AdminCrashTestingPage() {
             Trigger Fatal Crash
           </Button>
           <Button
+            data-testid="admin.crash-testing.fatal-crash-timestamp-button"
             type="button"
             variant="destructive"
             onClick={() => setShouldCrash(new Date())}
@@ -144,7 +149,10 @@ function AdminCrashTestingPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-destructive/40">
+      <Card
+        data-testid="admin.crash-testing.trpc-error-card"
+        className="border-destructive/40"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <ServerCrash className="h-5 w-5 text-destructive" />
@@ -158,6 +166,7 @@ function AdminCrashTestingPage() {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-3">
           <Button
+            data-testid="admin.crash-testing.trpc-400-button"
             type="button"
             variant="destructive"
             disabled={testFailureMutation.isPending}
@@ -166,6 +175,7 @@ function AdminCrashTestingPage() {
             Trigger tRPC 400 (BAD_REQUEST)
           </Button>
           <Button
+            data-testid="admin.crash-testing.trpc-500-button"
             type="button"
             variant="destructive"
             disabled={testFailureMutation.isPending}
@@ -178,7 +188,10 @@ function AdminCrashTestingPage() {
         </CardContent>
       </Card>
 
-      <Card className="border-destructive/40">
+      <Card
+        data-testid="admin.crash-testing.hono-error-card"
+        className="border-destructive/40"
+      >
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Webhook className="h-5 w-5 text-destructive" />
@@ -193,6 +206,7 @@ function AdminCrashTestingPage() {
         </CardHeader>
         <CardContent className="flex flex-wrap gap-3">
           <Button
+            data-testid="admin.crash-testing.hono-400-button"
             type="button"
             variant="destructive"
             disabled={honoPending !== null}
@@ -201,6 +215,7 @@ function AdminCrashTestingPage() {
             Trigger Hono 400
           </Button>
           <Button
+            data-testid="admin.crash-testing.hono-500-button"
             type="button"
             variant="destructive"
             disabled={honoPending !== null}

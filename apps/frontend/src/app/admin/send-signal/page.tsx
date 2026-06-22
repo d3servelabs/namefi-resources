@@ -72,7 +72,7 @@ export default withAdminGuard(function SendSignalPage() {
       </div>
 
       <PermissionGate permissions={[Permission.WRITE_WORKFLOWS]}>
-        <Card className="max-w-2xl">
+        <Card data-testid="admin.send-signal.card" className="max-w-2xl">
           <CardHeader>
             <CardTitle>Signal</CardTitle>
             <CardDescription>
@@ -86,6 +86,7 @@ export default withAdminGuard(function SendSignalPage() {
               </label>
               <Input
                 id="workflowId"
+                data-testid="admin.send-signal.workflow-id"
                 placeholder="enable-dnssec-[example.com]"
                 value={workflowId}
                 onChange={(e) => setWorkflowId(e.target.value)}
@@ -98,6 +99,7 @@ export default withAdminGuard(function SendSignalPage() {
               </label>
               <Input
                 id="signalName"
+                data-testid="admin.send-signal.signal-name"
                 placeholder="test-harness:enable-dnssec:ds-association"
                 value={signalName}
                 onChange={(e) => setSignalName(e.target.value)}
@@ -106,6 +108,7 @@ export default withAdminGuard(function SendSignalPage() {
                 {TEST_HARNESS_SIGNALS.map((s) => (
                   <Button
                     key={s}
+                    data-testid={`admin.send-signal.preset.${s}`}
                     type="button"
                     size="sm"
                     variant="outline"
@@ -123,6 +126,7 @@ export default withAdminGuard(function SendSignalPage() {
               </label>
               <Input
                 id="reason"
+                data-testid="admin.send-signal.reason"
                 placeholder="Sent as { reason } — for the audit log"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
@@ -130,7 +134,12 @@ export default withAdminGuard(function SendSignalPage() {
             </div>
 
             <div className="flex justify-end pt-2">
-              <AsyncButton onClick={submit}>Send Signal</AsyncButton>
+              <AsyncButton
+                data-testid="admin.send-signal.submit"
+                onClick={submit}
+              >
+                Send Signal
+              </AsyncButton>
             </div>
           </CardContent>
         </Card>

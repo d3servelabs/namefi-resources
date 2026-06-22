@@ -443,6 +443,7 @@ function DomainPreferencesTable() {
                 size="sm"
                 disabled={!isDirty || !canWrite || updateMutation.isPending}
                 onClick={() => resetDraft(row.original.normalizedDomainName)}
+                data-testid={`admin.domain-preferences.row.${row.original.normalizedDomainName}.reset`}
               >
                 Reset
               </Button>
@@ -450,6 +451,7 @@ function DomainPreferencesTable() {
                 size="sm"
                 disabled={!isDirty || !canWrite || updateMutation.isPending}
                 onClick={async () => applyChanges(row.original)}
+                data-testid={`admin.domain-preferences.row.${row.original.normalizedDomainName}.save`}
               >
                 Save
               </AsyncButton>

@@ -58,7 +58,10 @@ export function ParkedDomainCard({
   const domainName = row.normalizedDomainName;
 
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`admin.parked-domains.card.${domainName}`}
+    >
       <div className="flex items-start gap-2 px-3 py-2.5">
         <Checkbox
           checked={isSelected}
@@ -67,6 +70,7 @@ export function ParkedDomainCard({
           }
           aria-label={`Select ${domainName}`}
           className="mt-1 shrink-0"
+          data-testid={`admin.parked-domains.card.select.${domainName}`}
         />
         <div className="min-w-0 flex-1">
           <DomainNameCell domainName={domainName} />
@@ -134,6 +138,7 @@ export function ParkedDomainCard({
           size="sm"
           variant="outline"
           onClick={async () => onVerify([domainName])}
+          data-testid={`admin.parked-domains.card.verify.${domainName}`}
         >
           {result ? 'Re-verify' : 'Verify'}
         </AsyncButton>

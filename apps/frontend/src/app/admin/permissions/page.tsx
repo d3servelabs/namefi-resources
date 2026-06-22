@@ -110,7 +110,10 @@ function ExistingUsers({
   );
 
   return (
-    <Card className="border border-muted/60">
+    <Card
+      className="border border-muted/60"
+      data-testid="admin.permissions.existing-users.card"
+    >
       <CardHeader>
         <CardTitle className="text-xl">Existing Users</CardTitle>
       </CardHeader>
@@ -129,7 +132,10 @@ function ExistingUsers({
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2, ease: 'easeOut' }}
               >
-                <AccordionItem value={u.userId}>
+                <AccordionItem
+                  value={u.userId}
+                  data-testid={`admin.permissions.user.row.${u.userId}`}
+                >
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex w-full items-center justify-between transition-colors">
                       <UserIdentityRow
@@ -161,12 +167,15 @@ function ExistingUsers({
                                 variant="destructive"
                                 size="sm"
                                 onClick={() => setConfirmUserId(u.userId)}
+                                data-testid={`admin.permissions.user.revoke-all.${u.userId}`}
                               />
                             }
                           >
                             Revoke All Permissions
                           </AlertDialogTrigger>
-                          <AlertDialogContent>
+                          <AlertDialogContent
+                            data-testid={`admin.permissions.user.revoke-all-dialog.${u.userId}`}
+                          >
                             <AlertDialogHeader>
                               <AlertDialogTitle>
                                 Revoke all permissions?
@@ -187,6 +196,7 @@ function ExistingUsers({
                                         userId: u.userId,
                                       });
                                     }}
+                                    data-testid={`admin.permissions.user.revoke-all-confirm.${u.userId}`}
                                   />
                                 }
                               >
@@ -234,7 +244,10 @@ function AddUser({
     enabled: debouncedSearchTerm.trim().length > 1,
   });
   return (
-    <Card className="border border-muted/60">
+    <Card
+      className="border border-muted/60"
+      data-testid="admin.permissions.add-user.card"
+    >
       <CardHeader>
         <CardTitle className="text-xl">Add User</CardTitle>
       </CardHeader>
@@ -247,6 +260,7 @@ function AddUser({
           placeholder="Enter email, wallet, Privy ID, UUID, or ENS"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          data-testid="admin.permissions.add-user.search"
         />
         {searchUsers.data && searchUsers.data.length > 0 && (
           <ul className="rounded border divide-y">
@@ -258,6 +272,7 @@ function AddUser({
                   onClick={() => {
                     setSelectedUserId(u.id);
                   }}
+                  data-testid={`admin.permissions.add-user.result.${u.id}`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
@@ -446,6 +461,7 @@ function PermissionEditor({
                     return next;
                   });
                 }}
+                data-testid="admin.permissions.select-all"
               >
                 Select All
               </Button>
@@ -464,6 +480,7 @@ function PermissionEditor({
                     return next;
                   });
                 }}
+                data-testid="admin.permissions.deselect-all"
               >
                 Deselect All
               </Button>
@@ -486,6 +503,7 @@ function PermissionEditor({
             !hasChanges || grantMutation.isPending || revokeMutation.isPending
           }
           onClick={() => setStaged(baseMap)}
+          data-testid="admin.permissions.reset"
         >
           Reset
         </Button>
@@ -494,6 +512,7 @@ function PermissionEditor({
             !hasChanges || grantMutation.isPending || revokeMutation.isPending
           }
           onClick={applyChanges}
+          data-testid="admin.permissions.apply"
         >
           {grantMutation.isPending || revokeMutation.isPending
             ? 'Applying...'
@@ -656,6 +675,7 @@ function PermissionGroupSection({
             checked={checked}
             disabled={disabled}
             onChange={(v) => onToggle(perm as Permission, v)}
+            data-testid={`admin.permissions.item.${str}`}
           />
         </fieldset>
       </div>
@@ -674,6 +694,7 @@ function PermissionGroupSection({
           labelText="Manage"
           checked={manageAllChecked}
           onChange={(v) => onManageToggle(Boolean(v))}
+          data-testid={`admin.permissions.group.manage.${groupKey}`}
         />
         {perms.map((perm) => {
           const str = perm as unknown as string;
@@ -689,6 +710,7 @@ function PermissionGroupSection({
               checked={checked}
               disabled={disabled}
               onChange={(v) => onToggle(perm as Permission, v)}
+              data-testid={`admin.permissions.item.${str}`}
             />
           );
         })}
@@ -703,24 +725,28 @@ function PermissionItem({
   checked,
   disabled,
   onChange,
+  'data-testid': dataTestId,
 }: {
   id: string;
   labelText: string;
   checked: boolean;
   disabled?: boolean;
   onChange: (value: boolean) => void;
+  'data-testid'?: string;
 }) {
   return (
     <div
       className={`flex items-center gap-2 rounded px-3 py-2 border ${
         checked ? 'bg-accent/20 border-accent' : 'border-muted'
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      data-testid={dataTestId}
     >
       <Checkbox
         id={id}
         checked={checked}
         disabled={disabled}
         onCheckedChange={(value) => onChange(Boolean(value))}
+        data-testid={dataTestId ? `${dataTestId}.checkbox` : undefined}
       />
       <Label htmlFor={id} className="text-sm font-medium cursor-pointer">
         {labelText}

@@ -511,6 +511,7 @@ function AnnouncementFormDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        data-testid="admin.announcements.form-dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           'max-h-[90vh] overflow-y-auto sm:max-w-2xl',
@@ -902,6 +903,7 @@ function AnnouncementFormDialog({
 
             <DialogFooter>
               <Button
+                data-testid="admin.announcements.form-dialog.cancel-button"
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
@@ -909,6 +911,7 @@ function AnnouncementFormDialog({
                 Cancel
               </Button>
               <Button
+                data-testid="admin.announcements.form-dialog.submit-button"
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending}
               >
@@ -972,7 +975,10 @@ function AnnouncementsAdmin() {
           </div>
         </div>
         <PermissionGate permissions={[Permission.WRITE_ANNOUNCEMENTS]}>
-          <Button onClick={openCreate}>
+          <Button
+            data-testid="admin.announcements.create-button"
+            onClick={openCreate}
+          >
             <Plus className="size-4" /> New announcement
           </Button>
         </PermissionGate>
@@ -983,7 +989,7 @@ function AnnouncementsAdmin() {
           <CardTitle>All announcements</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
+          <Table data-testid="admin.announcements.list">
             <TableHeader>
               <TableRow>
                 <TableHead>Title</TableHead>
@@ -999,7 +1005,7 @@ function AnnouncementsAdmin() {
             </TableHeader>
             <TableBody>
               {isPending ? (
-                <TableRow>
+                <TableRow data-testid="admin.announcements.loading">
                   <TableCell
                     colSpan={9}
                     className="text-center text-muted-foreground"
@@ -1008,7 +1014,7 @@ function AnnouncementsAdmin() {
                   </TableCell>
                 </TableRow>
               ) : rows.length === 0 ? (
-                <TableRow>
+                <TableRow data-testid="admin.announcements.empty">
                   <TableCell
                     colSpan={9}
                     className="text-center text-muted-foreground"
@@ -1018,7 +1024,10 @@ function AnnouncementsAdmin() {
                 </TableRow>
               ) : (
                 rows.map((row) => (
-                  <TableRow key={row.id}>
+                  <TableRow
+                    key={row.id}
+                    data-testid={`admin.announcements.row.${row.id}`}
+                  >
                     <TableCell className="max-w-xs">
                       <div className="truncate font-medium">
                         {row.title ?? (
@@ -1051,7 +1060,10 @@ function AnnouncementsAdmin() {
                       />
                     </TableCell>
                     <TableCell>
-                      <Badge variant={row.isActive ? 'default' : 'outline'}>
+                      <Badge
+                        data-testid={`admin.announcements.row.status.${row.id}`}
+                        variant={row.isActive ? 'default' : 'outline'}
+                      >
                         {row.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </TableCell>
@@ -1077,6 +1089,7 @@ function AnnouncementsAdmin() {
                       >
                         <div className="flex justify-end gap-1">
                           <Button
+                            data-testid={`admin.announcements.row.edit-button.${row.id}`}
                             variant="ghost"
                             size="icon-sm"
                             aria-label="Edit"
@@ -1085,6 +1098,7 @@ function AnnouncementsAdmin() {
                             <Pencil className="size-4" />
                           </Button>
                           <Button
+                            data-testid={`admin.announcements.row.delete-button.${row.id}`}
                             variant="ghost"
                             size="icon-sm"
                             aria-label="Delete"
@@ -1113,7 +1127,7 @@ function AnnouncementsAdmin() {
         open={pendingDelete !== null}
         onOpenChange={(open) => !open && setPendingDelete(null)}
       >
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="admin.announcements.delete-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>Delete announcement?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -1125,8 +1139,11 @@ function AnnouncementsAdmin() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel data-testid="admin.announcements.delete-dialog.cancel-button">
+              Cancel
+            </AlertDialogCancel>
             <AsyncButton
+              data-testid="admin.announcements.delete-dialog.confirm-button"
               variant="destructive"
               onClick={async () => {
                 if (pendingDelete) {

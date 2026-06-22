@@ -84,6 +84,7 @@ export function HostnamesChipInput({
               </span>
               <button
                 type="button"
+                data-testid={`admin.powered-by.hostnames-chip-input.chip.${hostname}.remove`}
                 aria-label={`Remove ${hostname}`}
                 disabled={disabled}
                 onClick={() => remove(hostname)}
@@ -97,6 +98,7 @@ export function HostnamesChipInput({
       ) : null}
       <div className="flex flex-wrap items-stretch gap-2 w-full min-w-0">
         <Input
+          data-testid="admin.powered-by.hostnames-chip-input.input"
           value={draft}
           onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setDraft(e.target.value);
@@ -109,6 +111,7 @@ export function HostnamesChipInput({
         />
         <Button
           type="button"
+          data-testid="admin.powered-by.hostnames-chip-input.add"
           variant="outline"
           size="sm"
           onClick={commit}

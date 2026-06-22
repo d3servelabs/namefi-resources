@@ -259,6 +259,7 @@ function ParkedDomainsTable() {
             checked={allVisibleSelected}
             onCheckedChange={(checked) => toggleAllVisible(checked === true)}
             aria-label="Select all visible parked domains"
+            data-testid="admin.parked-domains.select-all"
           />
         ),
         cell: ({ row }) => (
@@ -268,6 +269,7 @@ function ParkedDomainsTable() {
               toggleRow(row.original.normalizedDomainName, checked === true)
             }
             aria-label={`Select ${row.original.normalizedDomainName}`}
+            data-testid={`admin.parked-domains.row.select.${row.original.normalizedDomainName}`}
           />
         ),
         size: 40,
@@ -344,6 +346,7 @@ function ParkedDomainsTable() {
                 onClick={async () =>
                   verifyDomains([row.original.normalizedDomainName])
                 }
+                data-testid={`admin.parked-domains.row.verify.${row.original.normalizedDomainName}`}
               >
                 {result ? 'Re-verify' : 'Verify'}
               </AsyncButton>
@@ -382,8 +385,14 @@ function ParkedDomainsTable() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-sm text-muted-foreground">
+      <div
+        className="flex flex-wrap items-center justify-between gap-3"
+        data-testid="admin.parked-domains.toolbar"
+      >
+        <div
+          className="text-sm text-muted-foreground"
+          data-testid="admin.parked-domains.verified-count"
+        >
           {verifiedCount} of {visibleDomains.length} visible verified
           {selectedCount ? ` · ${selectedCount} selected` : ''}
         </div>
@@ -392,6 +401,7 @@ function ParkedDomainsTable() {
             variant="outline"
             onClick={async () => verifyDomains([...selected])}
             disabled={selectedCount === 0}
+            data-testid="admin.parked-domains.verify-selected"
           >
             Verify selected{selectedCount ? ` (${selectedCount})` : ''}
           </AsyncButton>
@@ -399,11 +409,17 @@ function ParkedDomainsTable() {
             variant="outline"
             onClick={async () => verifyDomains(visibleDomains)}
             disabled={visibleDomains.length === 0}
+            data-testid="admin.parked-domains.verify-visible"
           >
             <ShieldCheck className="mr-2 h-4 w-4" />
             Verify visible page
           </AsyncButton>
-          <AsyncButton onClick={verifyAll}>Verify all</AsyncButton>
+          <AsyncButton
+            onClick={verifyAll}
+            data-testid="admin.parked-domains.verify-all"
+          >
+            Verify all
+          </AsyncButton>
         </div>
       </div>
       <ExtensibleDataTable<ParkedDomainRow, typeof filterStrategy>

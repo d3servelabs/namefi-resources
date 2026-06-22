@@ -211,6 +211,7 @@ function AdminDnsCachePage() {
               <div className="space-y-2">
                 <Label htmlFor="zone">Zone/Domain</Label>
                 <Input
+                  data-testid="admin.dns-cache.zone-input"
                   id="zone"
                   placeholder="example.com"
                   value={zone}
@@ -229,7 +230,10 @@ function AdminDnsCachePage() {
                   }}
                   disabled={flushMutation.isPending}
                 >
-                  <SelectTrigger id="recordType">
+                  <SelectTrigger
+                    data-testid="admin.dns-cache.record-type-select"
+                    id="recordType"
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -243,6 +247,7 @@ function AdminDnsCachePage() {
               </div>
 
               <Button
+                data-testid="admin.dns-cache.flush-button"
                 type="submit"
                 className="w-full"
                 disabled={
@@ -264,11 +269,15 @@ function AdminDnsCachePage() {
             </form>
 
             {results && results.length > 0 && (
-              <div className="mt-6 space-y-2">
+              <div
+                data-testid="admin.dns-cache.results"
+                className="mt-6 space-y-2"
+              >
                 <h3 className="font-semibold">Results:</h3>
                 {results.map((result, index) => (
                   <div
                     key={index}
+                    data-testid={`admin.dns-cache.result.${result.serverName}`}
                     className="flex items-center justify-between p-3 rounded-md border"
                   >
                     <span className="font-medium">{result.serverName}</span>
@@ -319,6 +328,7 @@ function AdminDnsCachePage() {
                 {/* Master checkbox */}
                 <div className="flex items-center gap-x-2 pb-2 border-b">
                   <Checkbox
+                    data-testid="admin.dns-cache.select-all-checkbox"
                     id="select-all"
                     checked={isAllSelected}
                     onCheckedChange={handleToggleAll}
@@ -333,8 +343,13 @@ function AdminDnsCachePage() {
 
                 {/* Individual server checkboxes */}
                 {serversQuery.data.map((server, index) => (
-                  <div key={index} className="flex items-start gap-2 group">
+                  <div
+                    key={index}
+                    data-testid={`admin.dns-cache.server-row.${server.name}`}
+                    className="flex items-start gap-2 group"
+                  >
                     <Checkbox
+                      data-testid={`admin.dns-cache.server-checkbox.${server.name}`}
                       id={`server-${index}`}
                       checked={selectedServers.includes(server.name)}
                       onCheckedChange={() => handleToggleServer(server.name)}
@@ -352,6 +367,7 @@ function AdminDnsCachePage() {
                       </label>
                     </div>
                     <Button
+                      data-testid={`admin.dns-cache.server-inspect-button.${server.name}`}
                       variant="ghost"
                       size="sm"
                       className="opacity-0 group-hover:opacity-100 transition-opacity"
@@ -380,6 +396,7 @@ function AdminDnsCachePage() {
           <CardContent>
             <div className="flex flex-wrap gap-3">
               <Button
+                data-testid="admin.dns-cache.combined-stats-button"
                 variant="outline"
                 onClick={() => setCombinedStatsOpen(true)}
                 disabled={selectedServers.length === 0}
@@ -388,6 +405,7 @@ function AdminDnsCachePage() {
                 View Combined Stats
               </Button>
               <Button
+                data-testid="admin.dns-cache.connectivity-test-button"
                 variant="outline"
                 onClick={() => setConnectivityTestOpen(true)}
                 disabled={selectedServers.length === 0}
@@ -396,6 +414,7 @@ function AdminDnsCachePage() {
                 Test Connectivity
               </Button>
               <Button
+                data-testid="admin.dns-cache.flush-all-button"
                 variant="destructive"
                 onClick={() => setConfirmFlushAllOpen(true)}
                 disabled={

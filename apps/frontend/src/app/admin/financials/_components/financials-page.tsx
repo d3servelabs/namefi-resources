@@ -151,6 +151,7 @@ function FinancialsPageContent() {
           onClick={() => summaryQuery.refetch()}
           disabled={summaryQuery.isFetching}
           className="w-fit"
+          data-testid="admin.financials.refresh-summary"
         >
           {summaryQuery.isFetching ? (
             <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -178,8 +179,18 @@ function FinancialsPageContent() {
         onValueChange={(value) => setActiveTab(value as PageTab)}
       >
         <TabsList className="w-fit">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="details">Details</TabsTrigger>
+          <TabsTrigger
+            value="overview"
+            data-testid="admin.financials.tab.overview"
+          >
+            Overview
+          </TabsTrigger>
+          <TabsTrigger
+            value="details"
+            data-testid="admin.financials.tab.details"
+          >
+            Details
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 

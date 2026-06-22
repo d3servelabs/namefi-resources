@@ -39,7 +39,7 @@ export function FinancialTableCard({
   children: ReactNode;
 }) {
   return (
-    <Card>
+    <Card data-testid="admin.financials.table-card">
       <CardHeader className="gap-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -54,6 +54,7 @@ export function FinancialTableCard({
               size="sm"
               onClick={onRefresh}
               disabled={isFetching}
+              data-testid="admin.financials.table-card.refresh"
             >
               {isFetching ? (
                 <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -85,6 +86,7 @@ export function GroupByOrderToggle({
         variant={enabled ? 'default' : 'outline'}
         size="sm"
         onClick={onToggle}
+        data-testid="admin.financials.group-by-order-toggle"
       >
         {enabled ? 'Disable grouping' : 'Group by order'}
       </Button>
@@ -101,7 +103,10 @@ function ExportMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" />}
+        data-testid="admin.financials.export-menu.trigger"
+      >
         {isExporting ? (
           <Loader2 className="h-4 w-4 me-2 animate-spin" />
         ) : (
@@ -113,6 +118,7 @@ function ExportMenu({
         <DropdownMenuItem
           onClick={() => onExport('csv')}
           disabled={isExporting}
+          data-testid="admin.financials.export-menu.csv"
         >
           <FileText className="h-4 w-4 me-2" />
           Download CSV
@@ -120,6 +126,7 @@ function ExportMenu({
         <DropdownMenuItem
           onClick={() => onExport('json')}
           disabled={isExporting}
+          data-testid="admin.financials.export-menu.json"
         >
           <FileJson className="h-4 w-4 me-2" />
           Download JSON

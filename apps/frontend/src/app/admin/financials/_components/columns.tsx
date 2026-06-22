@@ -258,6 +258,7 @@ function expandColumn<Data>(): ColumnDef<Data> {
           onClick={() => row.toggleExpanded()}
           className="rounded p-1 transition-colors hover:bg-muted"
           aria-label={row.getIsExpanded() ? 'Collapse row' : 'Expand row'}
+          data-testid={`admin.financials.row.${row.id}.expander`}
         >
           {row.getIsExpanded() ? (
             <ChevronDown className="h-4 w-4" />
@@ -350,6 +351,7 @@ const OrderGroupHeaderShell = forwardRef<
         isExpanded ? 'opacity-30' : 'opacity-60',
       )}
       onClick={() => toggleExpanded?.()}
+      data-testid={`admin.financials.order-group.${orderId}`}
     >
       <div className="flex items-center gap-2 min-w-[220px]">
         <span className="font-semibold">Order</span>
@@ -419,7 +421,10 @@ function OrderItemsSubTable({ items }: { items: FinancialOrderItemRow[] }) {
           </thead>
           <tbody className="divide-y">
             {items.map((item) => (
-              <tr key={item.orderItemId}>
+              <tr
+                key={item.orderItemId}
+                data-testid={`admin.financials.order-item-row.${item.orderItemId}`}
+              >
                 <td className="px-3 py-2 font-medium">
                   {item.normalizedDomainName}
                   {item.metadataAutoRenew && (
@@ -486,7 +491,10 @@ function PaymentsSubTable({ payments }: { payments: FinancialPaymentRow[] }) {
           </thead>
           <tbody className="divide-y">
             {payments.map((payment) => (
-              <tr key={payment.paymentId}>
+              <tr
+                key={payment.paymentId}
+                data-testid={`admin.financials.payment-row.${payment.paymentId}`}
+              >
                 <td className="px-3 py-2 font-mono text-xs">
                   {payment.paymentId}
                 </td>

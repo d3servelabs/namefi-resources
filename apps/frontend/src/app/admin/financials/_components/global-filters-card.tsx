@@ -56,7 +56,7 @@ export function GlobalFiltersCard({
     Object.keys(filterState.customFilters).length;
 
   return (
-    <Card>
+    <Card data-testid="admin.financials.global-filters">
       <CardHeader>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -71,6 +71,7 @@ export function GlobalFiltersCard({
             size="sm"
             onClick={onReset}
             disabled={activeFilterCount === 0 && searchTerm.length === 0}
+            data-testid="admin.financials.global-filters.reset"
           >
             <RotateCcw className="h-4 w-4 me-2" />
             Reset Global Filters
@@ -91,6 +92,7 @@ export function GlobalFiltersCard({
                 value={searchTerm}
                 onChange={(event) => onSearchTermChange(event.target.value)}
                 placeholder="Orders, users, domains, wallets, payments..."
+                data-testid="admin.financials.global-filters.search"
               />
             </div>
             <div className="space-y-2">
@@ -100,6 +102,7 @@ export function GlobalFiltersCard({
                 variant="outline"
                 className="w-full justify-start"
                 onClick={() => setFilterPanelOpen(true)}
+                data-testid="admin.financials.global-filters.configure"
               >
                 <Filter className="h-4 w-4 me-2" />
                 Configure Filters
@@ -164,7 +167,10 @@ function FinancialDateRangeControl({
   };
 
   return (
-    <div className="space-y-3 rounded-lg border bg-muted/20 p-3">
+    <div
+      className="space-y-3 rounded-lg border bg-muted/20 p-3"
+      data-testid="admin.financials.date-range"
+    >
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <Label>Order Created Date</Label>
@@ -173,13 +179,28 @@ function FinancialDateRangeControl({
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" size="sm" onClick={() => applyPreset(7)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => applyPreset(7)}
+            data-testid="admin.financials.date-range.preset-7d"
+          >
             7D
           </Button>
-          <Button variant="outline" size="sm" onClick={() => applyPreset(30)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => applyPreset(30)}
+            data-testid="admin.financials.date-range.preset-30d"
+          >
             30D
           </Button>
-          <Button variant="outline" size="sm" onClick={() => applyPreset(90)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => applyPreset(90)}
+            data-testid="admin.financials.date-range.preset-90d"
+          >
             90D
           </Button>
         </div>

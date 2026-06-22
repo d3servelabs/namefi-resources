@@ -219,6 +219,7 @@ function AnalyticsPageContent() {
         <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
           <Button
+            data-testid="admin.analytics.refresh-button"
             onClick={handleRefresh}
             variant="outline"
             size="sm"
@@ -235,16 +236,23 @@ function AnalyticsPageContent() {
       </div>
 
       <Tabs value={analyticsView} onValueChange={handleAnalyticsViewChange}>
-        <TabsList>
-          <TabsTrigger value="dns">DNS Analytics</TabsTrigger>
-          <TabsTrigger value="checkout">Checkout Analytics</TabsTrigger>
+        <TabsList data-testid="admin.analytics.view-tabs">
+          <TabsTrigger data-testid="admin.analytics.view-tab.dns" value="dns">
+            DNS Analytics
+          </TabsTrigger>
+          <TabsTrigger
+            data-testid="admin.analytics.view-tab.checkout"
+            value="checkout"
+          >
+            Checkout Analytics
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 
       {analyticsView === 'dns' && (
         <>
           {/* Filter Card */}
-          <Card className="relative">
+          <Card data-testid="admin.analytics.filters" className="relative">
             {isFetching && (
               <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -264,6 +272,7 @@ function AnalyticsPageContent() {
                 </CardTitle>
                 {(publicSuffixFilter || domainFilter) && (
                   <Button
+                    data-testid="admin.analytics.clear-filters-button"
                     onClick={handleClearFilters}
                     variant="outline"
                     size="sm"
@@ -287,7 +296,10 @@ function AnalyticsPageContent() {
                     onValueChange={handlePublicSuffixChange}
                     disabled={isFetching}
                   >
-                    <SelectTrigger id="public-suffix-filter">
+                    <SelectTrigger
+                      data-testid="admin.analytics.public-suffix-filter"
+                      id="public-suffix-filter"
+                    >
                       <SelectValue placeholder="Choose a public suffix..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -324,7 +336,10 @@ function AnalyticsPageContent() {
                     onValueChange={handleDomainChange}
                     disabled={isFetching}
                   >
-                    <SelectTrigger id="domain-filter">
+                    <SelectTrigger
+                      data-testid="admin.analytics.domain-filter"
+                      id="domain-filter"
+                    >
                       <SelectValue placeholder="Choose a domain..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -389,7 +404,10 @@ function AnalyticsPageContent() {
 
           {/* Quick Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="relative">
+            <Card
+              data-testid="admin.analytics.stat.total-queries"
+              className="relative"
+            >
               {isFetching && (
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
                   <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -402,7 +420,10 @@ function AnalyticsPageContent() {
                 <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div
+                  data-testid="admin.analytics.stat.total-queries.value"
+                  className="text-2xl font-bold"
+                >
                   {dashboardData?.dailyVolume?.rows
                     ?.reduce(
                       (sum: number, row: any) =>
@@ -419,7 +440,10 @@ function AnalyticsPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="relative">
+            <Card
+              data-testid="admin.analytics.stat.unique-domains"
+              className="relative"
+            >
               {isFetching && (
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
                   <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -432,7 +456,10 @@ function AnalyticsPageContent() {
                 <GlobeIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div
+                  data-testid="admin.analytics.stat.unique-domains.value"
+                  className="text-2xl font-bold"
+                >
                   {dashboardData?.topDomains?.rows?.length?.toLocaleString() ||
                     '0'}
                 </div>
@@ -442,7 +469,10 @@ function AnalyticsPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="relative">
+            <Card
+              data-testid="admin.analytics.stat.cache-hit-rate"
+              className="relative"
+            >
               {isFetching && (
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
                   <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -455,7 +485,10 @@ function AnalyticsPageContent() {
                 <PieChartIcon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div
+                  data-testid="admin.analytics.stat.cache-hit-rate.value"
+                  className="text-2xl font-bold"
+                >
                   {(() => {
                     const cacheData = dashboardData?.cacheHitRatio?.rows;
                     if (!cacheData || cacheData.length === 0) return 'N/A';
@@ -483,7 +516,10 @@ function AnalyticsPageContent() {
               </CardContent>
             </Card>
 
-            <Card className="relative">
+            <Card
+              data-testid="admin.analytics.stat.client-ips"
+              className="relative"
+            >
               {isFetching && (
                 <div className="absolute inset-0 bg-background/60 backdrop-blur-sm z-10 rounded-lg flex items-center justify-center">
                   <Loader2Icon className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -496,7 +532,10 @@ function AnalyticsPageContent() {
                 <BarChart3Icon className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
+                <div
+                  data-testid="admin.analytics.stat.client-ips.value"
+                  className="text-2xl font-bold"
+                >
                   {dashboardData?.topClientIps?.rows?.length || 0}
                 </div>
                 <p className="text-xs text-muted-foreground">
@@ -522,10 +561,25 @@ function AnalyticsPageContent() {
               value={checkoutEventSource}
               onValueChange={handleCheckoutEventSourceChange}
             >
-              <TabsList>
-                <TabsTrigger value="all">All Sources</TabsTrigger>
-                <TabsTrigger value="api">API Events</TabsTrigger>
-                <TabsTrigger value="non_api">Non-API Events</TabsTrigger>
+              <TabsList data-testid="admin.analytics.checkout-source-tabs">
+                <TabsTrigger
+                  data-testid="admin.analytics.checkout-source-tab.all"
+                  value="all"
+                >
+                  All Sources
+                </TabsTrigger>
+                <TabsTrigger
+                  data-testid="admin.analytics.checkout-source-tab.api"
+                  value="api"
+                >
+                  API Events
+                </TabsTrigger>
+                <TabsTrigger
+                  data-testid="admin.analytics.checkout-source-tab.non-api"
+                  value="non_api"
+                >
+                  Non-API Events
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>

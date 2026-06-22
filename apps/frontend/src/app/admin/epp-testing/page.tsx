@@ -332,12 +332,14 @@ function EppTestingDashboard() {
                 placeholder="example.pw"
                 value={domainName}
                 onChange={(e) => setDomainName(e.target.value.toLowerCase())}
+                data-testid="admin.epp-testing.domain-input"
               />
             </div>
             <Button
               variant="outline"
               onClick={handleAvailabilityRefetch}
               disabled={!domainName || isLoading}
+              data-testid="admin.epp-testing.check-availability"
             >
               <Search className="h-4 w-4 me-2" />
               Check Availability
@@ -346,6 +348,7 @@ function EppTestingDashboard() {
               variant="outline"
               onClick={handleDomainInfoRefetch}
               disabled={!domainName || isLoading}
+              data-testid="admin.epp-testing.get-info"
             >
               <RefreshCw className="h-4 w-4 me-2" />
               Get Info
@@ -354,6 +357,7 @@ function EppTestingDashboard() {
               variant="outline"
               onClick={handleTransferQueryRefetch}
               disabled={!domainName || isLoading}
+              data-testid="admin.epp-testing.query-transfer"
             >
               <Search className="h-4 w-4 me-2" />
               Query Transfer
@@ -380,11 +384,33 @@ function EppTestingDashboard() {
       {/* Operations Tabs */}
       <Tabs defaultValue="create" className="space-y-4">
         <TabsList className="grid w-full grid-cols-5 max-sm:flex max-sm:h-auto! max-sm:flex-wrap max-sm:justify-start max-sm:gap-1">
-          <TabsTrigger value="create">Create Domain</TabsTrigger>
-          <TabsTrigger value="authcode">Auth Code</TabsTrigger>
-          <TabsTrigger value="import">Import</TabsTrigger>
-          <TabsTrigger value="export">Export</TabsTrigger>
-          <TabsTrigger value="lock">Lock/Unlock</TabsTrigger>
+          <TabsTrigger
+            value="create"
+            data-testid="admin.epp-testing.tab.create"
+          >
+            Create Domain
+          </TabsTrigger>
+          <TabsTrigger
+            value="authcode"
+            data-testid="admin.epp-testing.tab.authcode"
+          >
+            Auth Code
+          </TabsTrigger>
+          <TabsTrigger
+            value="import"
+            data-testid="admin.epp-testing.tab.import"
+          >
+            Import
+          </TabsTrigger>
+          <TabsTrigger
+            value="export"
+            data-testid="admin.epp-testing.tab.export"
+          >
+            Export
+          </TabsTrigger>
+          <TabsTrigger value="lock" data-testid="admin.epp-testing.tab.lock">
+            Lock/Unlock
+          </TabsTrigger>
         </TabsList>
 
         {/* Create Domain Tab */}
@@ -408,6 +434,7 @@ function EppTestingDashboard() {
                     value={years}
                     onChange={(e) => setYears(Number(e.target.value))}
                     className="w-24"
+                    data-testid="admin.epp-testing.years-input"
                   />
                 </div>
                 <Button
@@ -415,6 +442,7 @@ function EppTestingDashboard() {
                     createDomainMutation.mutate({ domainName, years })
                   }
                   disabled={!domainName || isLoading}
+                  data-testid="admin.epp-testing.create-domain"
                 >
                   <Globe className="h-4 w-4 me-2" />
                   Create Domain
@@ -440,16 +468,23 @@ function EppTestingDashboard() {
               <Button
                 onClick={() => changeAuthCodeMutation.mutate({ domainName })}
                 disabled={!domainName || isLoading}
+                data-testid="admin.epp-testing.generate-auth-code"
               >
                 <Key className="h-4 w-4 me-2" />
                 Generate New Auth Code
               </Button>
 
               {changeAuthCodeMutation.data?.authCode && (
-                <div className="p-4 rounded-lg border bg-muted/50">
+                <div
+                  className="p-4 rounded-lg border bg-muted/50"
+                  data-testid="admin.epp-testing.auth-code-result"
+                >
                   <Label>Auth Code</Label>
                   <div className="flex items-center gap-2 mt-2">
-                    <code className="flex-1 p-2 bg-background rounded text-sm font-mono">
+                    <code
+                      className="flex-1 p-2 bg-background rounded text-sm font-mono"
+                      data-testid="admin.epp-testing.auth-code-value"
+                    >
                       {changeAuthCodeMutation.data.authCode}
                     </code>
                     <Button
@@ -458,6 +493,7 @@ function EppTestingDashboard() {
                       onClick={() =>
                         copyToClipboard(changeAuthCodeMutation.data!.authCode)
                       }
+                      data-testid="admin.epp-testing.auth-code-copy"
                     >
                       <Copy className="h-4 w-4" />
                     </Button>
@@ -486,6 +522,7 @@ function EppTestingDashboard() {
                     placeholder="Enter auth code from losing registrar"
                     value={authCode}
                     onChange={(e) => setAuthCode(e.target.value)}
+                    data-testid="admin.epp-testing.transfer-auth-code-input"
                   />
                 </div>
                 <Button
@@ -493,6 +530,7 @@ function EppTestingDashboard() {
                     requestTransferMutation.mutate({ domainName, authCode })
                   }
                   disabled={!domainName || !authCode || isLoading}
+                  data-testid="admin.epp-testing.request-import"
                 >
                   <Send className="h-4 w-4 me-2" />
                   Request Import
@@ -521,6 +559,7 @@ function EppTestingDashboard() {
                   variant="outline"
                   onClick={handleTransferQueryRefetch}
                   disabled={!domainName || isLoading}
+                  data-testid="admin.epp-testing.check-pending-transfer"
                 >
                   <Search className="h-4 w-4 me-2" />
                   Check Pending Transfer
@@ -555,6 +594,7 @@ function EppTestingDashboard() {
                             approveTransferMutation.mutate({ domainName })
                           }
                           disabled={!domainName || isLoading}
+                          data-testid="admin.epp-testing.approve-export"
                         >
                           <CheckCircle className="h-4 w-4 me-2" />
                           Approve Export
@@ -565,6 +605,7 @@ function EppTestingDashboard() {
                             rejectTransferMutation.mutate({ domainName })
                           }
                           disabled={!domainName || isLoading}
+                          data-testid="admin.epp-testing.reject-export"
                         >
                           <XCircle className="h-4 w-4 me-2" />
                           Reject Export
@@ -619,6 +660,7 @@ function EppTestingDashboard() {
                   variant="outline"
                   onClick={() => lockDomainMutation.mutate({ domainName })}
                   disabled={!domainName || isLoading}
+                  data-testid="admin.epp-testing.lock-domain"
                 >
                   <Lock className="h-4 w-4 me-2" />
                   Lock Domain
@@ -627,6 +669,7 @@ function EppTestingDashboard() {
                   variant="outline"
                   onClick={() => unlockDomainMutation.mutate({ domainName })}
                   disabled={!domainName || isLoading}
+                  data-testid="admin.epp-testing.unlock-domain"
                 >
                   <LockOpen className="h-4 w-4 me-2" />
                   Unlock Domain
@@ -736,7 +779,10 @@ function StatusIcon({ status }: { status: string }) {
 
 function AvailabilityDisplay({ result }: { result: CheckAvailabilityResult }) {
   return (
-    <div className="p-4 rounded-lg border bg-muted/50">
+    <div
+      className="p-4 rounded-lg border bg-muted/50"
+      data-testid="admin.epp-testing.availability-result"
+    >
       <div className="flex items-center gap-2">
         {result.available === 'AVAILABLE' ? (
           <>
@@ -778,12 +824,17 @@ function DomainInfoDisplay({
   domain: GetDomainInfoResult['domain'];
 }) {
   return (
-    <div className="p-4 rounded-lg border bg-muted/50 space-y-3">
+    <div
+      className="p-4 rounded-lg border bg-muted/50 space-y-3"
+      data-testid="admin.epp-testing.domain-info-result"
+    >
       <h4 className="font-medium">Domain Information</h4>
       <div className="grid grid-cols-2 gap-4 text-sm">
         <div>
           <span className="text-muted-foreground">Domain Name:</span>
-          <p className="font-mono">{domain.domainName}</p>
+          <p className="font-mono" data-testid="admin.epp-testing.info.domain">
+            {domain.domainName}
+          </p>
         </div>
         <div>
           <span className="text-muted-foreground">Expiration:</span>
@@ -820,7 +871,10 @@ function DomainInfoDisplay({
 
 function TransferStatusDisplay({ result }: { result: QueryTransferResult }) {
   return (
-    <div className="p-4 rounded-lg border bg-muted/50">
+    <div
+      className="p-4 rounded-lg border bg-muted/50"
+      data-testid="admin.epp-testing.transfer-status-result"
+    >
       <h4 className="font-medium mb-2">Transfer Status</h4>
       {result.hasPendingTransfer ? (
         <div className="space-y-2">
@@ -850,11 +904,18 @@ function OperationResultDisplay({ result }: { result: OperationResult }) {
           : 'bg-muted/50';
 
   return (
-    <div className={`p-4 rounded-lg border ${bgClass}`}>
+    <div
+      className={`p-4 rounded-lg border ${bgClass}`}
+      data-testid="admin.epp-testing.operation-result"
+    >
       <div className="flex items-center gap-2 mb-2">
         <StatusIcon status={result.status} />
         <span className="font-medium">{getStatusMessage(result.status)}</span>
-        <Badge variant="outline" className="ms-2">
+        <Badge
+          variant="outline"
+          className="ms-2"
+          data-testid="admin.epp-testing.operation-result.status"
+        >
           {result.status}
         </Badge>
       </div>
@@ -862,7 +923,10 @@ function OperationResultDisplay({ result }: { result: OperationResult }) {
         <p className="text-sm text-muted-foreground">{result.message}</p>
       )}
       {result.operationId && (
-        <p className="text-xs text-muted-foreground mt-1">
+        <p
+          className="text-xs text-muted-foreground mt-1"
+          data-testid="admin.epp-testing.operation-result.operation-id"
+        >
           Operation ID: {result.operationId}
         </p>
       )}

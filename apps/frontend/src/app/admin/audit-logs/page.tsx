@@ -293,6 +293,7 @@ function AuditLogsPageInner() {
         enableSorting: false,
         cell: ({ row }: any) => (
           <Button
+            data-testid={`admin.audit-logs.row.view-button.${row.original.id}`}
             variant="outline"
             size="sm"
             onClick={() => {
@@ -343,6 +344,7 @@ function AuditLogsPageInner() {
             }}
           />
           <Button
+            data-testid="admin.audit-logs.refresh-button"
             variant="outline"
             size="sm"
             onClick={() => refetch()}
@@ -371,6 +373,7 @@ function AuditLogsPageInner() {
       {/* Details Modal */}
       <Dialog open={detailsModalOpen} onOpenChange={setDetailsModalOpen}>
         <DialogContent
+          data-testid="admin.audit-logs.details-dialog"
           className={cn(
             MOBILE_BOTTOM_SHEET_DIALOG,
             '!max-w-3xl !max-h-[80vh] overflow-y-auto',
@@ -385,19 +388,32 @@ function AuditLogsPageInner() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <Label className="text-xs text-muted-foreground">ID</Label>
-                  <p className="font-mono text-sm">{selectedRow.id}</p>
+                  <p
+                    data-testid="admin.audit-logs.details.id"
+                    className="font-mono text-sm"
+                  >
+                    {selectedRow.id}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">
                     Service
                   </Label>
-                  <p className="text-sm">{selectedRow.service_name || 'N/A'}</p>
+                  <p
+                    data-testid="admin.audit-logs.details.service"
+                    className="text-sm"
+                  >
+                    {selectedRow.service_name || 'N/A'}
+                  </p>
                 </div>
                 <div>
                   <Label className="text-xs text-muted-foreground">
                     Timestamp
                   </Label>
-                  <p className="text-sm">
+                  <p
+                    data-testid="admin.audit-logs.details.timestamp"
+                    className="text-sm"
+                  >
                     {new Date(selectedRow.ts / 1000).toLocaleString()}
                   </p>
                 </div>
@@ -405,7 +421,10 @@ function AuditLogsPageInner() {
                   <Label className="text-xs text-muted-foreground">
                     Action
                   </Label>
-                  <p className="text-sm">
+                  <p
+                    data-testid="admin.audit-logs.details.action"
+                    className="text-sm"
+                  >
                     {selectedRow.audit_payload?.action || 'N/A'}
                   </p>
                 </div>
@@ -573,7 +592,15 @@ export function FilterPanel({
 
   return (
     <Sheet open={filterSheetOpen} onOpenChange={setFilterSheetOpen}>
-      <SheetTrigger render={<Button variant="outline" size="sm" />}>
+      <SheetTrigger
+        render={
+          <Button
+            data-testid="admin.audit-logs.filters-button"
+            variant="outline"
+            size="sm"
+          />
+        }
+      >
         <FilterIcon className="h-4 w-4 me-2" />
         Filters
         {appliedFilterCount > 0 && (
@@ -582,7 +609,11 @@ export function FilterPanel({
           </span>
         )}
       </SheetTrigger>
-      <SheetContent side="left" className="overflow-y-auto px-8 pt-2">
+      <SheetContent
+        data-testid="admin.audit-logs.filter-panel"
+        side="left"
+        className="overflow-y-auto px-8 pt-2"
+      >
         <SheetHeader>
           <SheetTitle>Filter Audit Logs</SheetTitle>
           <SheetDescription>
@@ -594,6 +625,7 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Resource Type</Label>
             <Input
+              data-testid="admin.audit-logs.filter.resource-type"
               value={draftFilters.resourceType ?? ''}
               onChange={(e) =>
                 setDraftFilters((f) => ({
@@ -608,6 +640,7 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Resource ID</Label>
             <Input
+              data-testid="admin.audit-logs.filter.resource-id"
               value={draftFilters.resourceId ?? ''}
               onChange={(e) =>
                 setDraftFilters((f) => ({
@@ -622,6 +655,7 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Action</Label>
             <Input
+              data-testid="admin.audit-logs.filter.action"
               value={draftFilters.action ?? ''}
               onChange={(e) =>
                 setDraftFilters((f) => ({
@@ -636,6 +670,7 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Actor Type</Label>
             <Input
+              data-testid="admin.audit-logs.filter.actor-type"
               value={draftFilters.actorType ?? ''}
               onChange={(e) =>
                 setDraftFilters((f) => ({
@@ -650,6 +685,7 @@ export function FilterPanel({
           <div>
             <Label className="text-sm font-medium mb-2">Actor ID</Label>
             <Input
+              data-testid="admin.audit-logs.filter.actor-id"
               value={draftFilters.actorId ?? ''}
               onChange={(e) =>
                 setDraftFilters((f) => ({
@@ -671,6 +707,7 @@ export function FilterPanel({
                   <PopoverTrigger
                     render={
                       <Button
+                        data-testid="admin.audit-logs.filter.start-date-button"
                         variant="outline"
                         className={cn(
                           'w-full justify-start text-start font-normal',
@@ -703,6 +740,7 @@ export function FilterPanel({
                   <PopoverTrigger
                     render={
                       <Button
+                        data-testid="admin.audit-logs.filter.end-date-button"
                         variant="outline"
                         className={cn(
                           'w-full justify-start text-start font-normal',
@@ -733,6 +771,7 @@ export function FilterPanel({
 
           <div className="pt-4 flex gap-2">
             <Button
+              data-testid="admin.audit-logs.filter.apply-button"
               onClick={handleApplyFilters}
               disabled={isFetching}
               className="flex-1"
@@ -740,6 +779,7 @@ export function FilterPanel({
               Apply Filters
             </Button>
             <Button
+              data-testid="admin.audit-logs.filter.reset-button"
               variant="outline"
               onClick={handleResetFilters}
               disabled={isFetching}

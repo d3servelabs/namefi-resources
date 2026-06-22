@@ -417,6 +417,7 @@ export function UserActionsCell({
       {!row.isAdmin && (
         <PermissionGate permissions={[Permission.IMPERSONATE_USERS]}>
           <AsyncButton
+            data-testid={`admin.users.row.${row.id}.impersonate`}
             className="group"
             size="sm"
             variant="secondary"
@@ -435,6 +436,7 @@ export function UserActionsCell({
       )}
       {!!row.primaryEmail && (
         <Button
+          data-testid={`admin.users.row.${row.id}.send-email`}
           className="group"
           size="sm"
           variant="secondary"

@@ -973,6 +973,7 @@ function GateEvidencePanel({
   if (!enabled) {
     return (
       <Button
+        data-testid="admin.decision-gates.gather-evidence-button"
         size="sm"
         variant="outline"
         className="mt-1.5 h-7 px-2 text-sm"
@@ -1041,12 +1042,20 @@ function GateDetailsDialog({
   return (
     <Dialog>
       <DialogTrigger
-        render={<Button size="sm" variant="outline" className="h-8" />}
+        render={
+          <Button
+            data-testid={`admin.decision-gates.gate.details-button.${gate.interactionId}`}
+            size="sm"
+            variant="outline"
+            className="h-8"
+          />
+        }
       >
         <Info className="me-1.5 h-3.5 w-3.5" />
         Details
       </DialogTrigger>
       <DialogContent
+        data-testid="admin.decision-gates.details-dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           '!max-w-2xl max-h-[85vh] overflow-y-auto text-base',
@@ -1340,6 +1349,7 @@ function GateCard({
           return (
             <AsyncButton
               key={action}
+              data-testid={`admin.decision-gates.gate.action-button.${gate.interactionId}.${action}`}
               size="sm"
               variant="outline"
               onClick={() =>
@@ -1415,6 +1425,7 @@ export default withAdminGuard(function DecisionGatesPage() {
           </p>
         </div>
         <Button
+          data-testid="admin.decision-gates.refresh-button"
           variant="outline"
           onClick={() => listQuery.refetch()}
           disabled={listQuery.isFetching}
@@ -1551,11 +1562,22 @@ function RespondDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button size="sm" variant="outline" />}>
+      <DialogTrigger
+        render={
+          <Button
+            data-testid={`admin.decision-gates.gate.respond-button.${gate.interactionId}`}
+            size="sm"
+            variant="outline"
+          />
+        }
+      >
         <Reply className="h-3.5 w-3.5 me-1.5" />
         RESPOND
       </DialogTrigger>
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        data-testid="admin.decision-gates.respond-dialog"
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+      >
         <DialogHeader>
           <DialogTitle>Respond to gate</DialogTitle>
           <DialogDescription>
@@ -1585,10 +1607,19 @@ function RespondDialog({
         )}
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
+          <Button
+            data-testid="admin.decision-gates.respond-dialog.cancel-button"
+            variant="ghost"
+            onClick={() => setOpen(false)}
+          >
             Cancel
           </Button>
-          <AsyncButton onClick={submit}>Send RESPOND</AsyncButton>
+          <AsyncButton
+            data-testid="admin.decision-gates.respond-dialog.submit-button"
+            onClick={submit}
+          >
+            Send RESPOND
+          </AsyncButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -1624,11 +1655,22 @@ function CancelDialog({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button size="sm" variant="destructive" />}>
+      <DialogTrigger
+        render={
+          <Button
+            data-testid={`admin.decision-gates.gate.fail-button.${gate.interactionId}`}
+            size="sm"
+            variant="destructive"
+          />
+        }
+      >
         <Ban className="h-3.5 w-3.5 me-1.5" />
         FAIL
       </DialogTrigger>
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        data-testid="admin.decision-gates.fail-dialog"
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+      >
         <DialogHeader>
           <DialogTitle>Fail gate</DialogTitle>
           <DialogDescription>
@@ -1644,6 +1686,7 @@ function CancelDialog({
             Failure message (optional)
           </label>
           <Input
+            data-testid="admin.decision-gates.fail-dialog.message-input"
             id="cancelMessage"
             placeholder="Leave blank for the default cancellation error"
             value={message}
@@ -1652,10 +1695,18 @@ function CancelDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="ghost" onClick={() => setOpen(false)}>
+          <Button
+            data-testid="admin.decision-gates.fail-dialog.back-button"
+            variant="ghost"
+            onClick={() => setOpen(false)}
+          >
             Back
           </Button>
-          <AsyncButton variant="destructive" onClick={submit}>
+          <AsyncButton
+            data-testid="admin.decision-gates.fail-dialog.submit-button"
+            variant="destructive"
+            onClick={submit}
+          >
             Send FAIL
           </AsyncButton>
         </DialogFooter>

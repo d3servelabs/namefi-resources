@@ -145,6 +145,7 @@ function OrdersTable() {
               onClick={() => handleCopyValue(row.original.id)}
               className="p-1 hover:bg-muted rounded transition-colors"
               title="Copy Order ID"
+              data-testid={`admin.orders.row.copy-id.${row.original.id}`}
             >
               <Copy className="h-3 w-3" />
             </button>
@@ -189,6 +190,7 @@ function OrdersTable() {
                   onClick={() => handleCopyValue(row.original.userEmail!)}
                   className="p-1 hover:bg-muted rounded transition-colors"
                   title="Copy email"
+                  data-testid={`admin.orders.row.copy-email.${row.original.id}`}
                 >
                   <Copy className="h-3 w-3" />
                 </button>
@@ -228,6 +230,7 @@ function OrdersTable() {
                 onClick={() => handleCopyValue(checksummedAddress)}
                 className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
                 title="Copy address"
+                data-testid={`admin.orders.row.copy-wallet.${row.original.id}`}
               >
                 <Copy className="h-3 w-3" />
               </button>
@@ -305,6 +308,7 @@ function OrdersTable() {
             nativeButton={false}
             variant="outline"
             size="sm"
+            data-testid={`admin.orders.row.view.${row.original.id}`}
           >
             <ExternalLink className="h-4 w-4 me-2" />
             View
@@ -381,11 +385,19 @@ function OrdersTable() {
   );
 
   return (
-    <Card className="border border-muted/60 m-6">
+    <Card
+      className="border border-muted/60 m-6"
+      data-testid="admin.orders.card"
+    >
       <CardHeader>
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl">All Orders</CardTitle>
-          <div className="text-sm text-muted-foreground">
+          <CardTitle className="text-xl" data-testid="admin.orders.title">
+            All Orders
+          </CardTitle>
+          <div
+            className="text-sm text-muted-foreground"
+            data-testid="admin.orders.total"
+          >
             Total: {ordersQuery.data?.total ?? 0} orders
           </div>
         </div>

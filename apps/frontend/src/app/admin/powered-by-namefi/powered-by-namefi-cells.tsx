@@ -161,7 +161,10 @@ export function DomainActionsMenu({
 }: DomainActionsMenuProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" size="sm" />}>
+      <DropdownMenuTrigger
+        data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.actions`}
+        render={<Button variant="ghost" size="sm" />}
+      >
         <MoreHorizontal className="h-4 w-4" />
       </DropdownMenuTrigger>
       {/*
@@ -178,6 +181,7 @@ export function DomainActionsMenu({
       >
         {/* Enable/Disable Toggle */}
         <DropdownMenuItem
+          data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.toggle-enabled`}
           onClick={() => onToggleEnabled(domain)}
           disabled={toggleDomainEnabledPending}
         >
@@ -197,6 +201,7 @@ export function DomainActionsMenu({
         {/* Start Rollout (only if not started) */}
         {!domain.startRolloutAt && (
           <DropdownMenuItem
+            data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.start-rollout`}
             onClick={() => onStartRollout(domain)}
             disabled={startRolloutPending}
           >
@@ -208,13 +213,19 @@ export function DomainActionsMenu({
         <DropdownMenuSeparator />
 
         {/* Edit Cost and Duration */}
-        <DropdownMenuItem onClick={() => onEditCostAndDuration(domain)}>
+        <DropdownMenuItem
+          data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.edit-cost-duration`}
+          onClick={() => onEditCostAndDuration(domain)}
+        >
           <Edit className="h-4 w-4 me-2" />
           Edit Cost & Duration
         </DropdownMenuItem>
 
         {/* Edit additionalAllowedHostnames */}
-        <DropdownMenuItem onClick={() => onEditHostnames(domain)}>
+        <DropdownMenuItem
+          data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.edit-hostnames`}
+          onClick={() => onEditHostnames(domain)}
+        >
           <Edit className="h-4 w-4 me-2" />
           Edit Additional Hostnames
         </DropdownMenuItem>
@@ -222,13 +233,17 @@ export function DomainActionsMenu({
         <DropdownMenuSeparator />
 
         {/* Configuration Dialog */}
-        <DropdownMenuItem onClick={() => onOpenDnsConfiguration(domain)}>
+        <DropdownMenuItem
+          data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.dns-configuration`}
+          onClick={() => onOpenDnsConfiguration(domain)}
+        >
           <Settings className="h-4 w-4 me-2" />
           DNS Configuration
         </DropdownMenuItem>
 
         {/* Visit Domain */}
         <DropdownMenuItem
+          data-testid={`admin.powered-by.row.${domain.normalizedDomainName}.visit`}
           onClick={() =>
             window.open(`https://${domain.normalizedDomainName}`, '_blank')
           }

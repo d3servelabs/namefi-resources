@@ -313,6 +313,7 @@ function DnsvizAnalysesPanel() {
         id: 'select',
         header: () => (
           <Checkbox
+            data-testid="admin.dnsviz.select-all-checkbox"
             checked={allOnPageSelected}
             indeterminate={someOnPageSelected}
             onCheckedChange={(c) => toggleAllOnPage(c === true)}
@@ -321,6 +322,7 @@ function DnsvizAnalysesPanel() {
         ),
         cell: ({ row }) => (
           <Checkbox
+            data-testid={`admin.dnsviz.row.select.${row.original.id}`}
             checked={selectedRows.has(row.original.id)}
             onCheckedChange={(c) =>
               toggleRow(
@@ -488,6 +490,7 @@ function DnsvizAnalysesPanel() {
           row={row}
           selectControl={
             <Checkbox
+              data-testid={`admin.dnsviz.row.select.${row.id}`}
               checked={selectedRows.has(row.id)}
               onCheckedChange={(c) =>
                 toggleRow(row.id, row.normalizedDomainName, c === true)
@@ -542,6 +545,7 @@ function DnsvizAnalysesPanel() {
         */}
         <div className="flex justify-end">
           <Button
+            data-testid="admin.dnsviz.refresh-button"
             variant="outline"
             size="sm"
             onClick={() => query.refetch()}
@@ -555,13 +559,17 @@ function DnsvizAnalysesPanel() {
         </div>
 
         {selectedRows.size > 0 ? (
-          <div className="flex flex-wrap items-center justify-between gap-2 rounded border bg-primary/5 p-2 text-sm">
+          <div
+            data-testid="admin.dnsviz.selection-toolbar"
+            className="flex flex-wrap items-center justify-between gap-2 rounded border bg-primary/5 p-2 text-sm"
+          >
             <span>
               <strong>{selectedRows.size}</strong> domain
               {selectedRows.size === 1 ? '' : 's'} selected
             </span>
             <div className="flex items-center gap-2">
               <Button
+                data-testid="admin.dnsviz.clear-selection-button"
                 variant="outline"
                 size="sm"
                 onClick={clearSelection}
@@ -571,6 +579,7 @@ function DnsvizAnalysesPanel() {
                 Clear
               </Button>
               <Button
+                data-testid="admin.dnsviz.run-analysis-button"
                 size="sm"
                 onClick={() => setSubmitOpen(true)}
                 disabled={selectedRows.size === 0}
@@ -583,7 +592,10 @@ function DnsvizAnalysesPanel() {
         ) : null}
 
         {query.isError ? (
-          <div className="flex items-center gap-2 rounded border border-destructive/50 bg-destructive/10 p-4 text-sm">
+          <div
+            data-testid="admin.dnsviz.error"
+            className="flex items-center gap-2 rounded border border-destructive/50 bg-destructive/10 p-4 text-sm"
+          >
             <AlertTriangle className="h-4 w-4" />
             <span>Failed to load: {query.error.message}</span>
           </div>
@@ -852,11 +864,21 @@ function RowActions({
 
   return (
     <div className="flex items-center gap-1">
-      <Button variant="outline" size="sm" onClick={onView}>
+      <Button
+        data-testid={`admin.dnsviz.row.graph-button.${row.id}`}
+        variant="outline"
+        size="sm"
+        onClick={onView}
+      >
         <Eye className="h-3 w-3 me-1.5" />
         Graph
       </Button>
-      <Button variant="outline" size="sm" onClick={onShowDetails}>
+      <Button
+        data-testid={`admin.dnsviz.row.details-button.${row.id}`}
+        variant="outline"
+        size="sm"
+        onClick={onShowDetails}
+      >
         <ListTree className="h-3 w-3 me-1.5" />
         Details
       </Button>
@@ -868,7 +890,14 @@ function RowActions({
       */}
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" size="sm" disabled={isPending} />}
+          render={
+            <Button
+              data-testid={`admin.dnsviz.row.download-button.${row.id}`}
+              variant="outline"
+              size="sm"
+              disabled={isPending}
+            />
+          }
         >
           {isPending ? (
             <Loader2 className="h-3 w-3 me-1.5 animate-spin" />

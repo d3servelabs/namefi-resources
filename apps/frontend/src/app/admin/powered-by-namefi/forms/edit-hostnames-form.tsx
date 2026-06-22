@@ -68,6 +68,7 @@ export function EditHostnamesDialog({
       }}
     >
       <DialogContent
+        data-testid="admin.powered-by.edit-hostnames-dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           'sm:max-w-xl w-full max-h-[min(90vh,720px)] overflow-hidden grid-rows-[auto_1fr_auto]',
@@ -98,6 +99,7 @@ export function EditHostnamesDialog({
         </div>
         <DialogFooter>
           <Button
+            data-testid="admin.powered-by.edit-hostnames-dialog.cancel"
             variant="outline"
             onClick={onClose}
             disabled={isSubmitting}
@@ -106,6 +108,7 @@ export function EditHostnamesDialog({
             Cancel
           </Button>
           <AsyncButton
+            data-testid="admin.powered-by.edit-hostnames-dialog.save"
             onClick={handleSubmit}
             disabled={isSubmitting}
             isLoading={isSubmitting}
