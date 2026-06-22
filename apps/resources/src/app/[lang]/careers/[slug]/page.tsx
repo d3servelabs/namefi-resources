@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
 import { getCareerCached, getCareerParams } from '@/lib/content';
@@ -78,6 +78,13 @@ export default async function CareerSlugPage({
 
   if (!entry) {
     notFound();
+  }
+
+  // No own-locale file: the entry is the default-locale fallback. Redirect
+  // (307) to the source-locale URL rather than serving en under a /<locale>/
+  // path — one canonical URL, no html-lang/content mismatch.
+  if (entry.requestedLanguage !== entry.sourceLanguage) {
+    redirect(`/${entry.sourceLanguage}/careers/${entry.slug}`);
   }
 
   const components = useMDXComponents();

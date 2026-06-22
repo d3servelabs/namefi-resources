@@ -1043,6 +1043,11 @@ export function getPostParams(): Array<{ lang: Locale; slug: string }> {
     for (const slug of slugs) {
       const entry = loadPostEntry(locale, slug);
       if (!entry) continue;
+      // Only the locale's OWN file gets a pre-rendered/announced URL. A
+      // default-locale fallback (sourceLanguage !== locale) is served by a
+      // redirect to the source locale, so it must not become a static param
+      // or a sitemap entry.
+      if (entry.sourceLanguage !== locale) continue;
       if (isProduction && isDraft(entry)) continue;
       params.push({ lang: locale, slug: entry.slug });
     }
@@ -1269,7 +1274,10 @@ export function getAuthorNames(locale: Locale, slugs: string[]): string[] {
 export function getAvailableLocalesForSlug(slug: string): Locale[] {
   const locales: Locale[] = [];
   for (const locale of i18n.locales) {
-    if (loadPostEntry(locale, slug)) {
+    const entry = loadPostEntry(locale, slug);
+    // Only locales whose OWN file defines the slug are real translations and
+    // earn an hreflang alternate; a default-locale fallback is not one.
+    if (entry && entry.sourceLanguage === locale) {
       locales.push(locale);
     }
   }
@@ -1298,6 +1306,8 @@ export function getGlossaryParams(): Array<{ lang: Locale; slug: string }> {
     for (const slug of slugs) {
       const entry = loadGlossaryEntry(locale, slug);
       if (!entry) continue;
+      // Skip default-locale fallbacks (see getPostParams) — they redirect.
+      if (entry.sourceLanguage !== locale) continue;
       if (isProduction && isGlossaryDraft(entry)) continue;
       params.push({ lang: locale, slug: entry.slug });
     }
@@ -1382,6 +1392,8 @@ export function getTldParams(): Array<{ lang: Locale; slug: string }> {
     for (const slug of slugs) {
       const entry = loadTldEntry(locale, slug);
       if (!entry) continue;
+      // Skip default-locale fallbacks (see getPostParams) — they redirect.
+      if (entry.sourceLanguage !== locale) continue;
       if (isProduction && isTldDraft(entry)) continue;
       params.push({ lang: locale, slug: entry.slug });
     }
@@ -1452,7 +1464,10 @@ export function getRelatedTlds(
 export function getAvailableLocalesForTld(slug: string): Locale[] {
   const locales: Locale[] = [];
   for (const locale of i18n.locales) {
-    if (loadTldEntry(locale, slug)) {
+    const entry = loadTldEntry(locale, slug);
+    // Only locales whose OWN file defines the slug are real translations and
+    // earn an hreflang alternate; a default-locale fallback is not one.
+    if (entry && entry.sourceLanguage === locale) {
       locales.push(locale);
     }
   }
@@ -1467,6 +1482,8 @@ export function getPartnerParams(): Array<{ lang: Locale; slug: string }> {
     for (const slug of slugs) {
       const entry = loadPartnerEntry(locale, slug);
       if (!entry) continue;
+      // Skip default-locale fallbacks (see getPostParams) — they redirect.
+      if (entry.sourceLanguage !== locale) continue;
       if (isProduction && isPartnerDraft(entry)) continue;
       params.push({ lang: locale, slug: entry.slug });
     }
@@ -1683,6 +1700,8 @@ export function getCareerParams(): Array<{ lang: Locale; slug: string }> {
     for (const slug of slugs) {
       const entry = loadCareerEntry(locale, slug);
       if (!entry) continue;
+      // Skip default-locale fallbacks (see getPostParams) — they redirect.
+      if (entry.sourceLanguage !== locale) continue;
       if (isProduction && isCareerDraft(entry)) continue;
       params.push({ lang: locale, slug: entry.slug });
     }

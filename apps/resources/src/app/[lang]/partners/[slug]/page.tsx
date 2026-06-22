@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeLabels, localeDateLocales } from '@/i18n-config';
@@ -58,7 +58,10 @@ export async function generateMetadata({
 
   const languageAlternates: Partial<Record<Locale, string>> = {};
   for (const localeOption of i18n.locales) {
-    if (getPartnerCached(localeOption, slug)) {
+    const alternate = getPartnerCached(localeOption, slug);
+    // Only advertise an hreflang alternate for a locale that genuinely has the
+    // page — a default-locale fallback redirects, and hreflang URLs must be 200.
+    if (alternate && alternate.sourceLanguage === localeOption) {
       languageAlternates[localeOption] =
         `${baseUrl}/r/${localeOption}/partners/${slug}`;
     }
@@ -117,6 +120,13 @@ export default async function PartnerDetailPage({
 
   if (!entry) {
     notFound();
+  }
+
+  // No own-locale file: the entry is the default-locale fallback. Redirect
+  // (307) to the source-locale URL rather than serving en under a /<locale>/
+  // path — one canonical URL, no html-lang/content mismatch.
+  if (entry.requestedLanguage !== entry.sourceLanguage) {
+    redirect(`/${entry.sourceLanguage}/partners/${entry.slug}`);
   }
 
   const components = useMDXComponents();
