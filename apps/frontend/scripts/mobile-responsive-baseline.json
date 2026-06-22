@@ -1,5 +1,6 @@
 {
   "keys": [
+    "raw-table|src/components/domain-and-dns-managment/panels/dnssec/delegation-signers-table.tsx|<table>",
     "raw-table|src/components/powered-by-namefi/OrdersDataTable.tsx|<table>"
   ]
 }
