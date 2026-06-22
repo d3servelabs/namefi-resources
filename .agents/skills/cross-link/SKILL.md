@@ -1,6 +1,6 @@
 ---
 name: cross-link
-description: Cross-link Namefi resources content whenever a blog post, glossary term, TLD page, or partner page is created or updated. Wires the new/updated page outward to relevant existing pages, pulls inbound links from existing pages that should mention it, and keeps every internal link pointing at its own-locale counterpart across all 7 locales. Use this in the namefi-resources repository after writing or editing any content under content/{blog,glossary,tld,partners}/<locale>/.
+description: Cross-link Namefi resources content whenever a blog post, glossary term, TLD page, or partner page is created or updated. Discovers links on the ENGLISH page only (outbound to relevant existing pages, inbound from pages that should mention it), then propagates the same links into every translated locale (each pointing at its own-locale counterpart) and keeps all internal links locale-correct. Use this in the namefi-resources repository after writing or editing any content under content/{blog,glossary,tld,partners}/.
 ---
 
 # cross-link
@@ -10,13 +10,21 @@ internal link graph dense, relevant, and locale-correct. Cross-linking is what t
 isolated articles into a hub-and-spoke knowledge base that readers (and LLM/Google crawlers)
 traverse — and it is the easiest thing to forget when you add or edit one page.
 
-A cross-link pass works in **three directions**:
+**English is the single source of truth for the link graph.** Do all link *discovery* on the `en`
+pages only — the other six locales are *derived* from English, not cross-linked independently. This
+mirrors how the repo already works: `en` is the translation source, `translate-blog.yml` regenerates
+locales on `content/blog/en/**` changes, and the renderer doesn't auto-localize hrefs.
 
-1. **Outbound** — the page you just touched should link *out* to relevant existing pages
-   (glossary terms it mentions, the cluster cornerstone, series siblings, related TLDs).
-2. **Inbound** — existing pages that naturally reference this page's topic should link *in* to it.
-3. **i18n parity** — every internal link must point at the **same-locale** counterpart that
-   actually exists, and the link set should mirror across all translated counterparts.
+So a pass works in **two discovery directions on English, then one derivation step**:
+
+1. **Outbound** (en) — the `en` page you just touched should link *out* to relevant existing `en`
+   pages (glossary terms it mentions, the cluster cornerstone, series siblings, related TLDs).
+2. **Inbound** (en) — existing `en` pages that naturally reference this page's topic should link
+   *in* to it.
+3. **Derive locales** — propagate the English link set into the translated counterparts (via
+   re-translation or by mirroring the same links), then run the auditor's `--fix` so every internal
+   link points at its **own-locale** counterpart (falling back to `/en/...` only where no counterpart
+   exists). You never hand-discover links in a non-English page.
 
 ## Repository conventions (read before editing)
 
@@ -64,57 +72,92 @@ It classifies every internal link:
 The full repo currently carries thousands of `LOCALE_MISMATCH` links — do **not** mass-fix the whole
 repo in a content PR. Scope `--fix` to the paths you actually created or edited.
 
+## Candidate discovery: `link-suggest.ts`
+
+Don't read every article by hand to find what should link where — that part is mechanical too.
+`link-suggest.ts` precomputes link candidates from frontmatter (`keywords`, `cluster`, `series`) and
+glossary/TLD canonical terms, so your job narrows to **judging and placing** a ranked shortlist
+instead of *discovering* from scratch.
+
+```bash
+bun .agents/skills/cross-link/link-suggest.ts content/blog/<locale>/<slug>.md   # all candidates
+bun .agents/skills/cross-link/link-suggest.ts --min=high <path>                 # only rock-solid term hits
+bun .agents/skills/cross-link/link-suggest.ts --json <path>                     # machine-readable
+```
+
+It prints three locale-scoped sections for the target page:
+
+- **`OUTBOUND`** — existing pages whose canonical term appears in the target's prose (with `L<line>`
+  and the exact anchor phrase). Every phrase resolves to **one** canonical destination: a glossary
+  title head (`escrow`), its parenthetical (`Non-Fungible Token`), or a TLD extension (`.com`).
+  Already-linked targets are excluded.
+- **`INBOUND`** — existing same-locale pages whose prose mentions the target's distinctive term and
+  don't link back yet (`file:line`). This is the big win when you add a **glossary term**: it finds
+  every post that should now link to it.
+- **`RELATED`** — pages ranked by shared `keywords` + same `cluster`/`series`. No exact anchor; you
+  decide whether/where to weave them in.
+
+Confidence is `high` (canonical term), `medium` (sole-owner keyword), or `low`. It is a **candidate
+generator**, not an editor — it never writes files, and some `medium`/`low` noise is expected and
+cheap to reject. Use `--min=high` for a near-zero-noise pass. Matching is boundary-aware for Latin
+scripts and substring for CJK/RTL.
+
 ## Workflow
 
-### 0. Scope the change
-Identify exactly what was created/updated and limit the blast radius to it plus its direct neighbors.
+### 0. Scope the change — on English
+Identify what was created/updated and resolve it to its **English** page(s). All discovery happens on
+`en`; the translated counterparts are derived in step 3, never cross-linked independently.
 ```bash
 git -C <repo> status --porcelain content/   # what changed
 ```
-For each changed file note: collection, locale, slug, `title`, `description`, `keywords`, and
-`cluster`/`series` if present. If only the `en` page changed, the translated counterparts still need
-the same link treatment (step 4).
+For each changed `en` file note: collection, slug, `title`, `description`, `keywords`, and
+`cluster`/`series` if present. (If a non-`en` page changed on its own, map back to its `en`
+counterpart and discover there.)
 
-### 1. Outbound — link the changed page → existing pages
-Read the body. For each concept the prose *already mentions*, add a link to the existing page for it,
-on the **first meaningful mention only**:
-- **Glossary terms** — the highest-value, lowest-risk links. If the prose says "escrow", "registrar",
-  "auth code", "NFT", etc. and `content/glossary/<locale>/<that-slug>.md` exists, link the first
-  mention: `[escrow](/<locale>/glossary/escrow/)`.
-- **Related blog posts** — especially the **cluster cornerstone** and **same-series** posts (from the
-  `cluster`/`series` frontmatter), plus any post whose topic the prose references.
-- **TLD pages** — when the prose discusses a specific extension (`.com`, `.io`, `.ai`) and a
-  `content/tld/<locale>/<ext>.md` page exists.
-
-Rules: only link where the prose *naturally* names the concept (never invent a sentence to host a
-link); link the first occurrence, not every one; keep anchor text the natural words already there.
-
-### 2. Inbound — link existing pages → the changed page
-Find existing pages (same locale) whose prose references the new page's topic but don't yet link to
-it, and add a link at the first natural mention. Search by the new page's title/keywords:
+### 1. Outbound — link the English page → existing English pages
+Run the suggester on the **`en`** file and work its `OUTBOUND` + `RELATED` sections:
 ```bash
-grep -rniE "<keyword1>|<keyword2>" content/<collection>/<locale> --include='*.md'
+bun .agents/skills/cross-link/link-suggest.ts content/<collection>/en/<slug>.md
 ```
-Prioritize: the cluster cornerstone, same-cluster/same-series posts, then anything that mentions the
-topic. **Cap the blast radius** — pick the few most relevant pages (typically ≤5), not every file
-that happens to contain the word. Report what you linked and what you deliberately skipped.
+Take the `high` (and good `medium`) `OUTBOUND` hits and add the link at the cited line, on the
+**first meaningful mention only**. Glossary terms are the highest-value, lowest-risk links
+(`[escrow](/en/glossary/escrow/)`); also pull in the **cluster cornerstone** / **same-series** posts
+surfaced under `RELATED`, and TLD pages for any specific extension the prose discusses.
 
-### 3. i18n parity — fix locale and broken links
-```bash
-bun .agents/skills/cross-link/link-audit.ts <changed-paths>          # review
-bun .agents/skills/cross-link/link-audit.ts --fix <changed-paths>    # auto-repoint mismatches
-```
-Then resolve any `BROKEN` findings by hand. Leave `CROSS_LOCALE` fallbacks as-is unless you're also
-adding the missing translation in this change.
+Rules: only link where the prose *naturally* names the concept (the suggester gives you the line —
+confirm it reads naturally; never invent a sentence to host a link); link the first occurrence, not
+every one; keep anchor text the natural words already there; reject `medium`/`low` noise.
 
-### 4. Mirror across locale counterparts
-Every outbound/inbound link you added in the `en` page must be reflected in each translated
-counterpart that exists — pointing at *that locale's own* counterpart of the target (or the `/en/...`
-fallback when the target isn't translated in that locale). The same applies to inbound links: if you
-added a back-link in the `en` post, add it in the translated copies of that same post. Re-run the
-auditor on the translated paths to confirm parity.
+### 2. Inbound — link existing English pages → the English page
+The suggester's `INBOUND` section lists `en` pages that mention the changed page's distinctive term
+but don't link back — each with `file:line`. Add a link at the cited mention. (Or run the suggester
+directly against a glossary term you just added to find every `en` post that should now cite it.)
+Prioritize the cluster cornerstone and same-cluster/same-series posts. **Cap the blast radius** — pick
+the few most relevant pages (typically ≤5), not every match. Report what you linked and skipped.
 
-### 5. Validate
+### 3. Derive the other locales — apply the SAME links, per language
+For **every** English page you edited in steps 1–2 (the changed page *and* any `en` pages that gained
+an inbound link), propagate the new links into all translated counterparts. Don't re-discover — apply
+the exact same link set, localized. Two paths:
+
+- **Re-translate (preferred, mechanical).** Regenerate the locale files from the now-linked English so
+  the markdown links carry over verbatim, then repoint prefixes:
+  ```bash
+  bun scripts/translate-blog.ts        # or dispatch the translate-blog workflow
+  bun .agents/skills/cross-link/link-audit.ts --fix content/<collection>/<L>/<slug>.md   # per locale
+  ```
+- **Mirror by hand (no re-translation).** In each existing locale counterpart of the article, find the
+  translated term and link it. The anchor in locale `L` is the **target page's title in `L`** (e.g.
+  `/en/glossary/smart-contract/` → zh title `智能合约`, so link `智能合约` → `/zh/glossary/smart-contract/`).
+  Point at `/<L>/<collection>/<slug>/` when that counterpart exists, else fall back to `/en/...`.
+
+Either way, finish with `link-audit.ts --fix` on the locale paths to guarantee every link points at
+its own-locale counterpart, and resolve any `BROKEN` by hand. Concretely: if the English edit linked
+`smart contract` → `/en/glossary/smart-contract/`, then the `zh`, `ar`, `de`, … counterparts of that
+article must each link their translation of the term to their own glossary page (or the `/en/` fallback
+where no counterpart exists).
+
+### 4. Validate
 ```bash
 TMPDIR=/private/tmp bun run data:validate
 TMPDIR=/private/tmp bun run lint:mdx
@@ -131,7 +174,10 @@ bun .agents/skills/cross-link/link-audit.ts <changed-paths>   # 0 broken on touc
   counterpart; fall back to `/en/...` only when no local counterpart exists.
 - **Idempotent.** Re-running must not double-link an already-linked first mention.
 - **Scope `--fix` to changed paths**, never the whole repo, inside a content PR.
-- **English first, then mirror** into translations. Never force-push.
+- **Discover on English only; apply to every locale.** Never scan each locale for candidates. Find
+  the link on `en`, then mirror it into every translated counterpart (own-locale target, or `/en/`
+  fallback). `bun .agents/skills/cross-link/link-suggest.ts --term=/en/<coll>/<slug>/` prints each
+  locale's anchor term + counterpart href for the mirror. Never force-push.
 
 ## Report format
 Summarize the pass as a short table: per touched file, the **outbound** links added, **inbound**
