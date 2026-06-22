@@ -257,14 +257,18 @@ function alreadyLinks(fromRaw: string, toHref: string): boolean {
 }
 
 // First occurrence (lowest index) of each distinct matched phrase in prose.
-function scanFirst(prose: string, scanner: { latin?: RegExp; other?: RegExp }): Map<string, number> {
-  const first = new Map<string, number>();
+// Returns lowercased-key -> { index, text }: the key dedupes case-insensitively
+// and joins the phrase indexes, while `text` keeps the prose's ORIGINAL casing
+// so the reported anchor matches what's actually on the page.
+function scanFirst(prose: string, scanner: { latin?: RegExp; other?: RegExp }): Map<string, { index: number; text: string }> {
+  const first = new Map<string, { index: number; text: string }>();
   for (const re of [scanner.latin, scanner.other]) {
     if (!re) continue;
     for (const m of prose.matchAll(re)) {
       const key = m[0].toLowerCase();
       const idx = m.index ?? 0;
-      if (!first.has(key) || idx < first.get(key)!) first.set(key, idx);
+      const prev = first.get(key);
+      if (!prev || idx < prev.index) first.set(key, { index: idx, text: m[0] });
     }
   }
   return first;
@@ -282,11 +286,11 @@ function analyze(target: Page): Report {
   const scanner = buildScanner(localePhrases);
   const matched = scanFirst(target.prose, scanner);
   const outByTarget = new Map<string, OutboundCand>();
-  for (const [phrase, idx] of matched) {
+  for (const [phrase, hit] of matched) {
     const res = outboundIndex.get(`${target.locale}::${phrase}`);
     if (!res || res.target.href === target.href) continue;
     if (!passConf(res.confidence) || alreadyLinks(target.raw, res.target.href)) continue;
-    const cand: OutboundCand = { target: res.target.href, phrase, line: lineOf(target.prose, idx), confidence: res.confidence };
+    const cand: OutboundCand = { target: res.target.href, phrase: hit.text, line: lineOf(target.prose, hit.index), confidence: res.confidence };
     const prev = outByTarget.get(res.target.href);
     if (!prev || CONFIDENCE_RANK[cand.confidence] > CONFIDENCE_RANK[prev.confidence] || (CONFIDENCE_RANK[cand.confidence] === CONFIDENCE_RANK[prev.confidence] && cand.line < prev.line)) outByTarget.set(res.target.href, cand);
   }
@@ -304,9 +308,9 @@ function analyze(target: Page): Report {
       const hits = scanFirst(other.prose, myScanner);
       if (hits.size === 0) continue;
       let best: { phrase: string; idx: number; conf: Confidence } | null = null;
-      for (const [phrase, idx] of hits) {
+      for (const [phrase, hit] of hits) {
         const conf = confOf.get(phrase) ?? 'medium';
-        if (!best || CONFIDENCE_RANK[conf] > CONFIDENCE_RANK[best.conf] || (CONFIDENCE_RANK[conf] === CONFIDENCE_RANK[best.conf] && idx < best.idx)) best = { phrase, idx, conf };
+        if (!best || CONFIDENCE_RANK[conf] > CONFIDENCE_RANK[best.conf] || (CONFIDENCE_RANK[conf] === CONFIDENCE_RANK[best.conf] && hit.index < best.idx)) best = { phrase: hit.text, idx: hit.index, conf };
       }
       if (best) inbound.push({ source: rel(other.file), phrase: best.phrase, line: lineOf(other.prose, best.idx), confidence: best.conf });
     }
