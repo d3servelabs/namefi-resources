@@ -370,6 +370,7 @@ export function TwitterShareDialog({
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent
         className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-[500px]')}
+        data-testid="hunt.share.dialog"
       >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -384,12 +385,18 @@ export function TwitterShareDialog({
           <div className="space-y-2">
             <Label>{t('share.shareUrlLabel')}</Label>
             <div className="flex items-center gap-2">
-              <Input value={shareUrl} readOnly className="font-mono text-sm" />
+              <Input
+                value={shareUrl}
+                readOnly
+                className="font-mono text-sm"
+                data-testid="hunt.share.share-url"
+              />
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleCopyUrl}
                 className="shrink-0"
+                data-testid="hunt.share.copy-button"
               >
                 {hasCopied ? (
                   <CheckCircle className="h-4 w-4 text-green-500" />
@@ -407,6 +414,7 @@ export function TwitterShareDialog({
               onClick={handleOpenTwitter}
               disabled={!twitterIntentUrl}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              data-testid="hunt.share.tweet-button"
             >
               <XBrandIcon className="me-2 h-4 w-4" />
               {t('share.shareOnTwitter')}
@@ -448,6 +456,7 @@ export function TwitterShareDialog({
                           <Input
                             placeholder="https://twitter.com/username/status/1234567890"
                             {...field}
+                            data-testid="hunt.share.post-url-input"
                             className={
                               errors.postUrl
                                 ? 'border-red-500 focus-visible:ring-red-500'
@@ -469,6 +478,7 @@ export function TwitterShareDialog({
                       variant="outline"
                       onClick={handleClose}
                       disabled={isSubmitting}
+                      data-testid="hunt.share.cancel-button"
                     >
                       {tCommon('actions.cancel')}
                     </Button>
@@ -479,6 +489,7 @@ export function TwitterShareDialog({
                         isSubmitting ||
                         isCheckingStatus
                       }
+                      data-testid="hunt.share.record-button"
                     >
                       {isSubmitting
                         ? t('share.recording')
@@ -493,7 +504,11 @@ export function TwitterShareDialog({
           {/* Close button - show if tracking is disabled or if already shared */}
           {(!trackShares || hasShared) && (
             <div className="flex justify-end">
-              <Button variant="outline" onClick={handleClose}>
+              <Button
+                variant="outline"
+                onClick={handleClose}
+                data-testid="hunt.share.close-button"
+              >
                 {tCommon('actions.close')}
               </Button>
             </div>

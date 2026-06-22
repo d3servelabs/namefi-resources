@@ -56,12 +56,18 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
   }, [domain.domainName, unvoteMutation, t]);
 
   return (
-    <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 py-6 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition">
+    <div
+      className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 py-6 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition"
+      data-testid={`hunt.upvoted.row.${domain.domainName}`}
+    >
       {/* Stats */}
       <div className="flex flex-col items-center w-12 sm:w-16">
         <div className="flex flex-col items-center">
           <UpvoteIcon className="text-2xl text-muted-foreground" />
-          <span className="text-base/8 font-bold text-foreground font-mono">
+          <span
+            className="text-base/8 font-bold text-foreground font-mono"
+            data-testid={`hunt.upvoted.vote-count.${domain.domainName}`}
+          >
             {formatNumberWithAbbreviations(domain.upvoteCount)}
           </span>
         </div>
@@ -73,6 +79,7 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
           <Link
             href={`/hunt/domains/${encodeURIComponent(domain.domainName)}`}
             className="text-base sm:text-lg text-start font-semibold text-foreground font-sans hover:text-primary transition-colors"
+            data-testid={`hunt.upvoted.domain-link.${domain.domainName}`}
           >
             {domain.domainName}
           </Link>
@@ -96,6 +103,7 @@ const MyUpvotedDomainItem = ({ domain }: { domain: MyUpvotedDomain }) => {
             onClick={handleUnvote}
             disabled={unvoteMutation.isPending}
             className="text-muted-foreground hover:text-foreground"
+            data-testid={`hunt.upvoted.unvote-button.${domain.domainName}`}
           >
             <TrendingDownIcon className="h-4 w-4" />
             {unvoteMutation.isPending ? t('vote.removing') : t('vote.unvote')}
@@ -124,7 +132,10 @@ export const MyUpvotedDomains = ({
 
   if (isError) {
     return (
-      <div className="p-8 text-center text-red-500">
+      <div
+        className="p-8 text-center text-red-500"
+        data-testid="hunt.upvoted.error"
+      >
         {t('upvoted.loadError')}
       </div>
     );
@@ -132,14 +143,17 @@ export const MyUpvotedDomains = ({
 
   if (domains.length === 0) {
     return (
-      <div className="p-8 text-center text-muted-foreground">
+      <div
+        className="p-8 text-center text-muted-foreground"
+        data-testid="hunt.upvoted.empty"
+      >
         {t('upvoted.empty')}
       </div>
     );
   }
 
   return (
-    <div className="divide-y divide-border">
+    <div className="divide-y divide-border" data-testid="hunt.upvoted.list">
       {domains.map((domain) => (
         <MyUpvotedDomainItem key={domain.domainName} domain={domain} />
       ))}

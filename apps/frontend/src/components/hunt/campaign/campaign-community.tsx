@@ -9,15 +9,18 @@ import { useTranslations } from 'next-intl';
 const CommunityExternalLink = ({
   href,
   children,
+  'data-testid': dataTestId,
 }: {
   href: string;
   children: React.ReactNode;
+  'data-testid'?: string;
 }) => {
   return (
     <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      data-testid={dataTestId}
       className="flex items-center justify-center w-12 h-12 bg-[#0A0A0A] hover:bg-white/10 text-white rounded-lg transition-colors border border-white/10"
     >
       {children}
@@ -55,7 +58,10 @@ export const CampaignCommunity = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-1">
-            <CommunityExternalLink href="https://discord.namefi.gg/">
+            <CommunityExternalLink
+              href="https://discord.namefi.gg/"
+              data-testid="hunt.community.discord-link"
+            >
               <Image
                 src="/assets/hunt/community-discord.svg"
                 alt="Discord"
@@ -64,7 +70,10 @@ export const CampaignCommunity = () => {
               />
             </CommunityExternalLink>
 
-            <CommunityExternalLink href="https://twitter.com/namefi_io">
+            <CommunityExternalLink
+              href="https://twitter.com/namefi_io"
+              data-testid="hunt.community.twitter-link"
+            >
               <Image
                 src="/assets/hunt/community-twitter.svg"
                 alt="Twitter"
@@ -74,7 +83,10 @@ export const CampaignCommunity = () => {
               />
             </CommunityExternalLink>
 
-            <CommunityExternalLink href="https://t.me/namefi">
+            <CommunityExternalLink
+              href="https://t.me/namefi"
+              data-testid="hunt.community.telegram-link"
+            >
               <Image
                 src="/assets/hunt/community-telegram.svg"
                 alt="Telegram"
@@ -103,6 +115,7 @@ export const CampaignCommunity = () => {
             <button
               type="button"
               onClick={handleCopy}
+              data-testid="hunt.community.invite-button"
               className="flex items-center justify-center gap-2 px-4 py-3 min-w-30 w-full rounded-md border border-[#262626] bg-[#0A0A0A]"
             >
               <span className="text-sm font-medium">

@@ -45,12 +45,14 @@ const VoteButton = ({
   onUpvote,
   onUnvote,
   count,
+  'data-testid': dataTestId,
 }: {
   voted?: boolean;
   pending?: boolean;
   onUpvote?: () => void;
   onUnvote?: () => void;
   count: string;
+  'data-testid'?: string;
 }) => {
   const t = useTranslations('hunt');
   const handleClick = useCallback(
@@ -79,9 +81,13 @@ const VoteButton = ({
       )}
       aria-label={t('vote.ariaLabel')}
       onClick={handleClick}
+      data-testid={dataTestId}
     >
       <ArrowBigUpIcon className="w-6 h-6 fill-current" />
-      <span className="text-sm font-semibold font-sans leading-none">
+      <span
+        className="text-sm font-semibold font-sans leading-none"
+        data-testid={dataTestId ? `${dataTestId}.count` : undefined}
+      >
         {count}
       </span>
     </button>
@@ -112,9 +118,13 @@ export const CampaignDomainItem = ({
 
   return (
     <>
-      <div className="flex justify-between gap-4 p-4 hover:bg-brand-primary/5 rounded-xl">
+      <div
+        className="flex justify-between gap-4 p-4 hover:bg-brand-primary/5 rounded-xl"
+        data-testid={`hunt.campaign.row.${domain.domainName}`}
+      >
         {/* Rank */}
         <div
+          data-testid={`hunt.campaign.rank.${domain.domainName}`}
           className={`flex items-center justify-center w-14 h-14 rounded-lg font-semibold text-4xl ${
             domain.rank === 1
               ? 'bg-clip-text text-transparent bg-gradient-to-b from-[#F9EA95] to-[#DFB357]'
@@ -133,6 +143,7 @@ export const CampaignDomainItem = ({
           <div className="flex items-center">
             <Link
               href={`/hunt/domains/${encodeURIComponent(domain.domainName)}`}
+              data-testid={`hunt.campaign.domain-link.${domain.domainName}`}
             >
               <h3 className="text-2xl font-semibold text-white cursor-pointer">
                 {domain.domainName}
@@ -155,6 +166,7 @@ export const CampaignDomainItem = ({
             onUpvote={upvote}
             onUnvote={unvote}
             count={count}
+            data-testid={`hunt.campaign.vote-button.${domain.domainName}`}
           />
         </div>
       </div>

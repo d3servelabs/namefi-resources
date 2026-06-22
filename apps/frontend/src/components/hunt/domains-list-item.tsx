@@ -30,11 +30,13 @@ const VoteButton = ({
   pending,
   onUpvote,
   onUnvote,
+  'data-testid': dataTestId,
 }: {
   voted?: boolean;
   pending?: boolean;
   onUpvote?: () => void;
   onUnvote?: () => void;
+  'data-testid'?: string;
 }) => {
   const t = useTranslations('hunt');
   const handleClick = useCallback(
@@ -61,6 +63,7 @@ const VoteButton = ({
       )}
       aria-label={t('vote.ariaLabel')}
       onClick={handleClick}
+      data-testid={dataTestId}
     >
       <UpvoteIcon className="text-2xl" />
     </button>
@@ -112,9 +115,13 @@ export const DomainsListItem = memo(function DomainsListItem({
   );
 
   return (
-    <div className="flex items-center gap-4 sm:gap-6 pe-4 sm:pe-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors">
+    <div
+      className="flex items-center gap-4 sm:gap-6 pe-4 sm:pe-6 py-6 sm:py-8 first:rounded-t-xl last:rounded-b-xl hover:bg-accent/30 transition-colors"
+      data-testid={`hunt.list.row.${domain.domainName}`}
+    >
       <div className="flex items-center gap-2 w-20 sm:w-24 justify-center border-e border-border px-4 sm:px-6">
         <span
+          data-testid={`hunt.list.rank.${domain.domainName}`}
           className={cn(
             'text-lg/8 font-bold text-foreground/40 font-mono italic',
             domain.rank === 1 && 'text-brand-primary',
@@ -131,6 +138,7 @@ export const DomainsListItem = memo(function DomainsListItem({
           <Link
             href={`/hunt/domains/${encodeURIComponent(domain.domainName)}`}
             className="text-base sm:text-lg text-start font-semibold text-foreground font-sans hover:text-primary transition-colors"
+            data-testid={`hunt.list.domain-link.${domain.domainName}`}
           >
             {domain.domainName}
           </Link>
@@ -144,8 +152,12 @@ export const DomainsListItem = memo(function DomainsListItem({
           pending={pending}
           onUpvote={handleUpvote}
           onUnvote={handleUnvote}
+          data-testid={`hunt.list.vote-button.${domain.domainName}`}
         />
-        <span className="text-base leading-none font-bold text-foreground font-mono">
+        <span
+          className="text-base leading-none font-bold text-foreground font-mono"
+          data-testid={`hunt.list.vote-count.${domain.domainName}`}
+        >
           {count}
         </span>
       </div>

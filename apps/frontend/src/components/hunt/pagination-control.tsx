@@ -30,6 +30,7 @@ export const PaginationControls = ({
             <PaginationPrevious
               onClick={() => onPageChange(page - 1)}
               className="cursor-pointer"
+              data-testid="hunt.pagination.prev"
             />
           </PaginationItem>
         )}
@@ -38,6 +39,7 @@ export const PaginationControls = ({
             <PaginationLink
               onClick={() => onPageChange(1)}
               className="cursor-pointer"
+              data-testid="hunt.pagination.first"
             >
               1
             </PaginationLink>
@@ -49,7 +51,11 @@ export const PaginationControls = ({
           </PaginationItem>
         )}
         <PaginationItem>
-          <PaginationLink isActive={true} aria-current="page">
+          <PaginationLink
+            isActive={true}
+            aria-current="page"
+            data-testid="hunt.pagination.current"
+          >
             {page}
           </PaginationLink>
         </PaginationItem>
@@ -58,6 +64,7 @@ export const PaginationControls = ({
             <PaginationNext
               onClick={() => onPageChange(page + 1)}
               className="cursor-pointer"
+              data-testid="hunt.pagination.next"
             />
           </PaginationItem>
         )}

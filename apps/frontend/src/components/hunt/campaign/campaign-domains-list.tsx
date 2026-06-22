@@ -50,7 +50,7 @@ export const CampaignDomainsList = ({
 
   if (isError) {
     return (
-      <section className="py-16 px-4 sm:px-8">
+      <section className="py-16 px-4 sm:px-8" data-testid="hunt.campaign.error">
         <div className="bg-white/5 backdrop-blur-[100px] border border-white/10 rounded-xl p-8">
           <div className="text-center">
             <h2 className="text-2xl font-bold text-white mb-4">
@@ -67,7 +67,10 @@ export const CampaignDomainsList = ({
 
   if (isLoading || isAuthLoading) {
     return (
-      <div className="container mx-auto py-4">
+      <div
+        className="container mx-auto py-4"
+        data-testid="hunt.campaign.loading"
+      >
         <DomainItemSkeleton />
         <DomainItemSkeleton />
         <DomainItemSkeleton />
@@ -78,11 +81,17 @@ export const CampaignDomainsList = ({
   }
 
   return (
-    <section className="container mx-auto py-4">
+    <section
+      className="container mx-auto py-4"
+      data-testid="hunt.campaign.list"
+    >
       <div className="flex flex-col gap-4">
         <div className="space-y-4">
           {data?.rankings?.length === 0 ? (
-            <div className="text-center py-12">
+            <div
+              className="text-center py-12"
+              data-testid="hunt.campaign.empty"
+            >
               <h3 className="text-xl font-semibold text-white mb-2">
                 {t('campaign.emptyTitle')}
               </h3>
@@ -113,6 +122,7 @@ export const CampaignDomainsList = ({
                       <button
                         type="button"
                         className="cursor-pointer underline"
+                        data-testid="hunt.campaign.nominate-button"
                       >
                         {t('campaign.nominateAction')}
                       </button>

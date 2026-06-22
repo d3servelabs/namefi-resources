@@ -173,7 +173,10 @@ export const SubmitDomainDialog = ({
   return (
     <Dialog open={isSubmitDialogOpen} onOpenChange={setIsSubmitDialogOpen}>
       <DialogTrigger render={children as ReactElement} />
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+        data-testid="hunt.submit.dialog"
+      >
         <DialogHeader>
           <DialogTitle>{t('submitDialog.title')}</DialogTitle>
         </DialogHeader>
@@ -186,6 +189,7 @@ export const SubmitDomainDialog = ({
               id="domain-name"
               onKeyDown={handleInputKeyDown}
               placeholder={extension ? `example.${extension}` : 'example.com'}
+              data-testid="hunt.submit.domain-input"
               {...register('domainName')}
             />
             {errors.domainName && (
@@ -200,6 +204,7 @@ export const SubmitDomainDialog = ({
               variant="outline"
               className="cursor-pointer"
               onClick={handleCancel}
+              data-testid="hunt.submit.cancel-button"
             >
               {tCommon('actions.cancel')}
             </Button>
@@ -207,6 +212,7 @@ export const SubmitDomainDialog = ({
               className="cursor-pointer"
               onClick={handleSubmit(handleSubmitDomain)}
               disabled={submitDomainMutation.isPending}
+              data-testid="hunt.submit.submit-button"
             >
               {submitDomainMutation.isPending
                 ? t('submitDialog.submitting')
