@@ -14,9 +14,9 @@ ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['domainer blogs', 'domain investing blogs', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'domain newsletter', 'domain substack']
 ---
 
-If [forums](/blog/top-domain-trader-forums) are where the domain community *argues*, individual domainer blogs are where the community *thinks out loud*. Most of the long-running, considered analysis in the industry — sale post-mortems, registrar-policy critiques, market reads — happens on a small number of personal blogs that have been running for fifteen or twenty years.
+If [forums](/blog/top-domain-trader-forums) are where the domain community *argues*, individual domainer blogs are where the community *thinks out loud*. Most of the long-running, considered analysis in the industry — sale post-mortems, [registrar](/en/glossary/registrar/)-policy critiques, market reads — happens on a small number of personal blogs that have been running for fifteen or twenty years.
 
-This is the list worth bookmarking. It is opinionated, and it skews toward people who actually buy and sell domains (rather than to consultants or registries marketing their services).
+This is the list worth bookmarking. It is opinionated, and it skews toward people who actually [buy and sell domains](/en/blog/domain-flipping/) (rather than to consultants or registries marketing their services).
 
 ## The blogs that set the tone
 
