@@ -17,7 +17,7 @@ Route402 lets you integrate [x402](https://www.x402.org/) once, then route reque
 
 ## x402, in plain terms
 
-x402 defines a standard handshake for paid requests. It gives clients and facilitators a common shape for verify and settle flows so you do not need custom glue for every provider.
+[x402](/en/glossary/x402/) defines a standard handshake for paid requests. It gives clients and facilitators a common shape for verify and settle flows so you do not need custom glue for every provider.
 
 That standardization is great. The hard part starts when you have more than one facilitator, network, or environment.
 

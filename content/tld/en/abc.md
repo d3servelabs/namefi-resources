@@ -31,11 +31,11 @@ keywords:
 
 ## **What is .abc?**
 
-The **.abc** Top-Level Domain (TLD) represents one of the most intuitive and recognizable strings on the internet. In the world of domain names, brevity and familiarity are king, and few combinations are as universally understood as the first three letters of the alphabet.
+The **.abc** [Top-Level Domain](/en/glossary/tld/) (TLD) represents one of the most intuitive and recognizable strings on the internet. In the world of domain names, brevity and familiarity are king, and few combinations are as universally understood as the first three letters of the alphabet.
 
-While legacy TLDs like `.com` or `.net` have been the standard for decades, the introduction of [New gTLDs (Generic Top-Level Domains)](https://newgtlds.icann.org/en/about/program) has opened the door for more creative and specific extensions. The .abc TLD falls into a unique category of "generic" domains that offer immense versatility. It serves as a symbol for basics, foundations, and starting points.
+While legacy TLDs like [`.com`](/en/tld/com/) or `.net` have been the standard for decades, the introduction of [New gTLDs (Generic Top-Level Domains)](https://newgtlds.icann.org/en/about/program) has opened the door for more creative and specific extensions. The .abc TLD falls into a unique category of "generic" domains that offer immense versatility. It serves as a symbol for basics, foundations, and starting points.
 
-In the context of **domain investing** and the evolving **Web3** landscape, unique strings like .abc are increasingly viewed as high-value digital assets. Whether utilized on traditional DNS or explored through alternative blockchain naming roots, .abc signifies simplicity.
+In the context of **domain investing** and the evolving **[Web3](/en/glossary/web3/)** landscape, unique strings like .abc are increasingly viewed as high-value digital assets. Whether utilized on traditional DNS or explored through alternative blockchain naming roots, .abc signifies simplicity.
 
 ## **How People Are Using .abc**
 
@@ -53,7 +53,7 @@ While usage of new gTLDs is still growing compared to the `.com` giant, the conc
 
 *   **Alphabet Inc. (Google):** Perhaps the most famous utilization of the "ABC" concept is by Google’s parent company, Alphabet. While they famously utilize `abc.xyz`, their branding strategy validated the immense power of the "ABC" string, driving interest in the specific `.abc` extension among investors.
 *   **ABC News/Media:** Various broadcasting corporations around the globe share the acronym ABC. As digital rights evolve, owning the exact match `.abc` domain becomes a defensive branding asset for major media outlets.
-*   **Blockchain Projects:** In the decentralized web, shorter domains are highly coveted for wallet addresses. The .abc string is popular in [Handshake (HNS)](https://handshake.org/) and other decentralized naming ecosystems for its brevity and ease of typing.
+*   **Blockchain Projects:** In the decentralized web, shorter domains are highly coveted for [wallet](/en/glossary/wallet/) addresses. The .abc string is popular in [Handshake (HNS)](https://handshake.org/) and other decentralized naming ecosystems for its brevity and ease of typing.
 
 ## **Why Choose .abc?**
 
@@ -69,11 +69,11 @@ Choosing the right extension is critical for your digital identity. Here is why 
 
 Ready to secure a domain that is as easy as 1-2-3?
 
-At **Namefi**, we bridge the gap between traditional Web2 domain registration and the future of Web3. When you register with us, you aren't just buying a name; you are securing a digital asset that is fully ICANN-accredited and ready for the tokenized economy.
+At **Namefi**, we bridge the gap between traditional Web2 domain registration and the future of Web3. When you register with us, you aren't just buying a name; you are securing a digital asset that is fully [ICANN](/en/glossary/icann/)-accredited and ready for the tokenized economy.
 
 *   **Seamless Web3 Integration:** Manage your domains with the security of blockchain technology.
 *   **Transparent Pricing:** No hidden fees, just premium service.
-*   **Instant Ownership:** Tokenize your domain instantly for easier trading and management.
+*   **Instant Ownership:** [Tokenize](/en/glossary/tokenize/) your domain instantly for easier trading and management.
 
 Don't let the perfect name slip away. Start your journey with the fundamental building block of the internet.
 

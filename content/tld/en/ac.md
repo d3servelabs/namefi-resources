@@ -11,13 +11,13 @@ keywords: ['.ac domains', '.ac TLD', 'top-level domain .ac', 'what is .ac', 'why
 
 ## **What is .ac?**
 
-The **.ac** domain is the **Country Code Top-Level Domain (ccTLD)** designated for **Ascension Island**, a remote British Overseas Territory located in the South Atlantic Ocean. Despite its geographic origins, the .ac TLD has transcended its physical borders to become a versatile and highly sought-after extension in the global digital landscape.
+The **.ac** domain is the **Country Code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** designated for **Ascension Island**, a remote British Overseas Territory located in the South Atlantic Ocean. Despite its geographic origins, the .ac TLD has transcended its physical borders to become a versatile and highly sought-after extension in the global digital landscape.
 
 While it is technically a geographic domain, .ac is widely recognized and managed as an open registry. This means that anyone, regardless of their location, can register a .ac domain. It is managed by the [Internet Computer Bureau (ICB)](http://www.nic.ac/), ensuring a stable and reliable infrastructure.
 
 The domain has gained significant traction for two primary reasons:
 1.  **Academic Association:** "AC" is the universal abbreviation for "Academic" or "Academy."
-2.  **Branding Potential:** It serves as a perfect suffix for words ending in "ac" (domain hacks) or abbreviations for "Account," "Activity," or "Action."
+2.  **Branding Potential:** It serves as a perfect suffix for words ending in "ac" ([domain hacks](/en/blog/domain-hacks-explained/)) or abbreviations for "Account," "Activity," or "Action."
 
 ## **How People Are Using .ac**
 
@@ -42,7 +42,7 @@ While .ac is often used as a backend infrastructure TLD (for shortening) or by n
 If you are considering a new domain name, here is why .ac should be at the top of your list:
 
 *   **Instant Credibility:** If you are in the education sector, .ac signals "Academy" immediately. It carries the weight of institutional trust without the strict requirements of a .edu domain.
-*   **Superior Availability:** Unlike .com or .net, which are saturated, the .ac namespace still offers a vast selection of short, memorable, and premium names. You are more likely to get `YourName.ac` than `YourName.com`.
+*   **Superior Availability:** Unlike [.com](/en/tld/com/) or [.net](/en/tld/net/), which are saturated, the .ac namespace still offers a vast selection of short, memorable, and premium names. You are more likely to get `YourName.ac` than `YourName.com`.
 *   **Professional Branding:** For accountants and consultants, it offers a professional abbreviation built right into the URL (e.g., `SmithCPA.ac`).
 *   **Domain Hacks:** It offers creative opportunities for brands ending in "ac" (e.g., `bivou.ac`, `tarm.ac`, or `mani.ac`), making your URL catchy and easy to remember.
 *   **Global Recognition:** According to [IANA](https://www.iana.org/domains/root/db/ac.html), the domain is standard and recognized globally, ensuring your site resolves correctly anywhere in the world.
@@ -51,9 +51,9 @@ If you are considering a new domain name, here is why .ac should be at the top o
 
 Whether you are launching an online course, an accounting firm, or a sleek tech startup, **.ac** offers the perfect blend of availability and authority.
 
-At **Namefi**, we make securing your .ac domain seamless and future-proof. We are not just a traditional registrar; we bridge the gap between Web2 and Web3.
-*   **ICANN Accredited:** Trustworthy and secure registration.
-*   **Tokenized Domains:** When you register with Namefi, you have the option to mint your domain as an NFT, giving you true ownership and the ability to trade it easily on the blockchain.
+At **Namefi**, we make securing your .ac domain seamless and future-proof. We are not just a traditional [registrar](/en/glossary/registrar/); we bridge the gap between Web2 and [Web3](/en/glossary/web3/).
+*   **[ICANN](/en/glossary/icann/) Accredited:** Trustworthy and secure registration.
+*   **[Tokenized Domains](/en/blog/what-are-tokenized-domains/):** When you register with Namefi, you have the option to mint your domain as an [NFT](/en/glossary/nft/), giving you true ownership and the ability to trade it easily on the blockchain.
 *   **Instant Setup:** Get your site running in minutes.
 
 Don't let your perfect domain name get snapped up by someone else. Take action today.

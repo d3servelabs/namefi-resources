@@ -11,11 +11,11 @@ keywords: ['.abb domains', 'TLD', 'top-level domain', 'what is .abb', 'why choos
 
 ## **What is .abb?**
 
-The **.abb** extension is a generic Top-Level Domain (gTLD) that originated as a "Brand TLD." It was established for the exclusive use of **ABB (ASEA Brown Boveri)**, a Swedish-Swiss multinational corporation headquartered in Zürich, Switzerland. ABB is a global leader in robotics, power, heavy electrical equipment, and automation technology.
+The **.abb** extension is a generic [Top-Level Domain](/en/glossary/tld/) (gTLD) that originated as a "Brand TLD." It was established for the exclusive use of **ABB (ASEA Brown Boveri)**, a Swedish-Swiss multinational corporation headquartered in Zürich, Switzerland. ABB is a global leader in robotics, power, heavy electrical equipment, and automation technology.
 
-Unlike open extensions like .com or .net, .abb belongs to a specific category of domains delegated by [ICANN](https://www.icann.org/) to organizations wishing to manage their own digital identity on the root level of the internet. While historically restricted to the entity and its affiliates, Brand TLDs like .abb represent the pinnacle of corporate digital authority, signaling security, verification, and industrial prestige.
+Unlike open extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), .abb belongs to a specific category of domains delegated by [ICANN](https://www.icann.org/) to organizations wishing to manage their own digital identity on the root level of the internet. While historically restricted to the entity and its affiliates, Brand TLDs like .abb represent the pinnacle of corporate digital authority, signaling security, verification, and industrial prestige.
 
-In the evolving landscape of 2025, understanding the value of such specific extensions is crucial for domain investors and Web3 enthusiasts looking at the tokenization of high-value digital assets. You can verify the delegation details on the [IANA Root Zone Database](https://www.iana.org/domains/root/db/abb.html).
+In the evolving landscape of 2025, understanding the value of such specific extensions is crucial for domain investors and [Web3](/en/glossary/web3/) enthusiasts looking at the tokenization of high-value digital assets. You can verify the delegation details on the [IANA Root Zone Database](https://www.iana.org/domains/root/db/abb.html).
 
 ## **How People Are Using .abb**
 
@@ -44,14 +44,14 @@ For those interested in the domain industry, the mechanics of the .abb TLD offer
 
 ## **Register Your .abb Domain at Namefi**
 
-Are you looking to secure premium domains or explore the world of tokenized real-world assets? At **Namefi**, we simplify the complex world of domain ownership by bridging the gap between Web2 DNS and Web3 blockchain technology.
+Are you looking to secure premium domains or explore the world of tokenized real-world assets? At **Namefi**, we simplify the complex world of [domain ownership](/en/glossary/domain-ownership/) by bridging the gap between Web2 DNS and Web3 blockchain technology.
 
-While .abb is a restricted Brand TLD, Namefi offers a vast marketplace of premium, generic, and next-generation TLDs that can elevate your digital presence. Whether you are an investor looking for high-value short domains or a developer needing a seamless Web3 integration, we have you covered.
+While .abb is a restricted Brand TLD, Namefi offers a vast [marketplace](/en/glossary/marketplace/) of premium, generic, and next-generation TLDs that can elevate your digital presence. Whether you are an investor looking for high-value short domains or a developer needing a seamless Web3 integration, we have you covered.
 
 **Why choose Namefi?**
 *   **Seamless Integration:** We use standard NFT standards to represent domain ownership, making transfer and management instant.
 *   **ICANN Accredited:** We adhere to global standards, ensuring your ownership is secure and recognized.
-*   **Defi Compatible:** Use your domains as collateral or trade them effortlessly on open marketplaces.
+*   **[Defi](/en/glossary/defi/) Compatible:** Use your domains as [collateral](/en/glossary/collateral/) or trade them effortlessly on open marketplaces.
 
 Don't wait to claim your stake in the digital future.
 

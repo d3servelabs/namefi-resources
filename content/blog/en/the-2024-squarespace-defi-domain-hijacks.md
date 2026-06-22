@@ -13,11 +13,11 @@ description: 'In July 2024, a registrar migration from Google Domains to Squares
 keywords: ['squarespace domain hijack', 'google domains migration', 'defi dns hijack', 'compound finance hijack', 'celer network hijack', 'wallet drainer', 'inferno drainer', 'domain security', 'registrar migration', 'mfa multi-factor authentication', 'oauth account takeover', 'dns hijacking', 'crypto phishing']
 ---
 
-In July 2024, the most dangerous thing about a crypto project's website was not a smart-contract bug or a leaked private key. It was the registrar that owned the domain.
+In July 2024, the most dangerous thing about a crypto project's website was not a [smart-contract](/en/glossary/smart-contract/) bug or a leaked private key. It was the [registrar](/en/glossary/registrar/) that owned the domain.
 
-For a stretch of days that month, users who typed a familiar address into their browser — the official site of a lending protocol they trusted, a bridge they had used a hundred times — landed exactly where they expected, on a page that looked exactly right, and then watched their wallets drain. Nothing had been hacked in the usual sense. No one had cracked a password or phished a seed phrase. The attackers had simply walked in through the front door of the *domain* itself, because that front door had been left unlocked during a corporate move most of these projects never noticed.
+For a stretch of days that month, users who typed a familiar address into their browser — the official site of a [lending protocol](/en/glossary/lending-protocol/) they trusted, a bridge they had used a hundred times — landed exactly where they expected, on a page that looked exactly right, and then watched their [wallets](/en/glossary/wallet/) drain. Nothing had been hacked in the usual sense. No one had cracked a password or phished a [seed phrase](/en/glossary/seed-phrase/). The attackers had simply walked in through the front door of the *domain* itself, because that front door had been left unlocked during a corporate move most of these projects never noticed.
 
-The move was the migration of Google Domains to Squarespace. The unlocked door was Squarespace's authentication defaults. And the result was a coordinated wave of DNS hijacks against crypto and DeFi projects controlling, in the words of one researcher, billions of dollars of assets.
+The move was the migration of Google Domains to Squarespace. The unlocked door was Squarespace's authentication defaults. And the result was a coordinated wave of [DNS](/en/glossary/dns/) hijacks against crypto and [DeFi](/en/glossary/defi/) projects controlling, in the words of one researcher, billions of dollars of assets.
 
 ## How a registrar migration created a mass attack surface
 
@@ -73,7 +73,7 @@ The Squarespace hijacks are not really a story about one company's misconfigurat
 
 A few lessons generalize well beyond July 2024:
 
-1. **The registrar account is the real root of trust — not the smart contract.** None of the affected protocols had a contract bug. Their on-chain code was fine. The attackers took the *domain*, and the domain is what users type, trust, and connect their wallets to. A project can be flawless on-chain and still hand its users to an attacker if its DNS control plane is weak.
+1. **The registrar account is the real root of trust — not the smart contract.** None of the affected protocols had a contract bug. Their [on-chain](/en/glossary/on-chain/) code was fine. The attackers took the *domain*, and the domain is what users type, trust, and connect their wallets to. A project can be flawless on-chain and still hand its users to an attacker if its DNS [control plane](/en/blog/dns-is-the-control-plane/) is weak.
 
 2. **MFA is only protection if it survives migrations.** The painful detail here is that MFA didn't fail under attack — it was *removed* before the attack, as a migration convenience. Treat MFA status as something to re-verify after every account move, transfer, or vendor change, not something to set once and forget.
 
@@ -89,9 +89,9 @@ A few lessons generalize well beyond July 2024:
 
 The 2024 hijacks happened in the gap between "who really owns this domain" and "who can log into the account that controls it." In the traditional model, those two things are only loosely connected: ownership is a record in a registrar's database, and access to it is gated by whatever authentication that registrar happens to enforce that week — including in the middle of a 10-million-domain migration where the gate was, briefly, wide open.
 
-[Namefi](https://namefi.io) is built to close that gap. By representing domain ownership as a tokenized, on-chain asset that stays compatible with DNS, control becomes something you can *verify cryptographically* rather than something that rests on a guessable email and a vendor's login defaults. Ownership lives in a wallet you control, transfers are auditable, and the question "who is allowed to change this domain's records" has a tamper-resistant answer instead of a customer-support answer.
+[Namefi](https://namefi.io) is built to close that gap. By representing [domain ownership](/en/glossary/domain-ownership/) as a tokenized, on-chain asset that stays compatible with DNS, control becomes something you can *verify cryptographically* rather than something that rests on a guessable email and a vendor's login defaults. Ownership lives in a wallet you control, transfers are auditable, and the question "who is allowed to change this domain's records" has a tamper-resistant answer instead of a customer-support answer.
 
-That would not have made Squarespace's migration flawless. But it changes the failure mode. An attacker who registers an account with a known email does not thereby own a tokenized domain — ownership is not a row that a half-initialized account can quietly claim. The control plane for a name should be as hard to spoof as the assets it guards. In July 2024, for hundreds of crypto projects, it wasn't. That gap is exactly the one worth engineering away.
+That would not have made Squarespace's migration flawless. But it changes the failure mode. An attacker who registers an account with a known email does not thereby own a [tokenized domain](/en/blog/what-are-tokenized-domains/) — ownership is not a row that a half-initialized account can quietly claim. The control plane for a name should be as hard to spoof as the assets it guards. In July 2024, for hundreds of crypto projects, it wasn't. That gap is exactly the one worth engineering away.
 
 ## Sources and further reading
 

@@ -11,7 +11,7 @@ keywords: ['.adac domains', '.adac TLD', 'top-level domain', 'what is .adac', 'w
 
 ## **What is .adac?**
 
-The **.adac** Top-Level Domain (TLD) is a specialized "Brand TLD" (dot-brand) delegated to the **Allgemeiner Deutscher Automobil-Club e.V. (ADAC)**, Europe's largest motoring association. Unlike generic extensions like .com or .net, the .adac extension serves as a dedicated digital identity for the organization, offering a unique layer of trust, security, and brand verification.
+The **.adac** [Top-Level Domain](/en/glossary/tld/) (TLD) is a specialized "Brand TLD" (dot-brand) delegated to the **Allgemeiner Deutscher Automobil-Club e.V. (ADAC)**, Europe's largest motoring association. Unlike generic extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), the .adac extension serves as a dedicated digital identity for the organization, offering a unique layer of trust, security, and brand verification.
 
 Introduced during the expansion of the internet's namespace by **[ICANN](https://www.icann.org/)** (Internet Corporation for Assigned Names and Numbers), the .adac TLD was designed to centralize the diverse services offered by the club—ranging from roadside assistance to insurance and travel—under a unified, authentic digital banner.
 
@@ -47,14 +47,14 @@ While .adac is exclusive to the association, understanding its advantages highli
 
 ## **Register Your .adac Domain at Namefi**
 
-Are you interested in the world of specialized TLDs, domain investment, and Web3 integration?
+Are you interested in the world of specialized TLDs, domain investment, and [Web3](/en/glossary/web3/) integration?
 
 While the .adac registry is currently restricted to the ADAC organization, the world of domains is vast. At **Namefi**, we specialize in helping you secure high-value domains and **[tokenized Web3 domains](https://namefi.io)** that offer similar benefits of trust, brevity, and branding power.
 
-Whether you are looking for available brandable domains, new gTLDs that fit your niche (like .auto, .car, or .club), or want to tokenize your existing portfolio for easier trading on the blockchain, Namefi is your premier partner.
+Whether you are looking for available brandable domains, new gTLDs that fit your niche (like .auto, .car, or [.club](/en/tld/club/)), or want to [tokenize](/en/glossary/tokenize/) your existing portfolio for easier trading on the blockchain, Namefi is your premier partner.
 
 **Why use Namefi?**
-*   **ICANN-Accredited** Registrar.
+*   **[ICANN](/en/glossary/icann/)-Accredited** [Registrar](/en/glossary/registrar/).
 *   Seamless integration of **Web2 DNS and Web3 capabilities**.
 *   Transparent pricing and advanced domain management tools.
 

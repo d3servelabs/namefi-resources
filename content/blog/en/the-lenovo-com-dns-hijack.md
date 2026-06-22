@@ -15,7 +15,7 @@ keywords: ['lenovo.com dns hijack', 'lizard squad', 'webnic registrar', 'web com
 
 On the morning of February 25, 2015, the most-clicked link on the internet for the world's largest PC maker pointed at a slideshow of bored teenagers staring into their webcams, scored to a song from *High School Musical*. Nobody had hacked a single Lenovo server. Nobody had stolen a Lenovo password. The attackers never touched the building, the network, or the website itself.
 
-They changed one record at the company's domain registrar — and that was enough to seize Lenovo's front door, reroute its mail, and turn its brand into a punchline for an afternoon.
+They changed one record at the company's domain [registrar](/en/glossary/registrar/) — and that was enough to seize Lenovo's front door, reroute its mail, and turn its brand into a punchline for an afternoon.
 
 This is **Domain Mayday EP17**: the Lenovo.com DNS hijack. It is a small story by the numbers — a few hours of downtime, no breached production systems, no leaked customer database. But it is one of the cleanest demonstrations ever staged of a lesson most companies still get wrong: your domain is only as secure as the registrar that holds it, and that registrar is almost never inside your security program.
 
@@ -64,7 +64,7 @@ This was not Webnic's first bad week. Just two days earlier, Google's Vietnamese
 The mechanics, from Krebs's reporting, read like a textbook for why a registrar is a juicy target:
 
 - **The way in.** Lizard Squad used a [command injection vulnerability in Webnic.cc to upload a rootkit](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=command%20injection%20vulnerability%20in%20Webnic.cc%20to%20upload%20a%20rootkit) — giving them persistent, hidden access to the registrar's systems.
-- **The master keys.** They also [gained access to Webnic's store of](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=also%20gained%20access%20to%20Webnic%27s%20store%20of) "auth codes" — the EPP transfer secrets that can move *any* domain to another registrar.
+- **The master keys.** They also [gained access to Webnic's store of](https://krebsonsecurity.com/2015/02/webnic-registrar-blamed-for-hijack-of-lenovo-google-domains/#:~:text=also%20gained%20access%20to%20Webnic%27s%20store%20of) ["auth codes"](/en/glossary/auth-code/) — the EPP transfer secrets that can move *any* domain to another registrar.
 - **The redirect.** With registrar-level control, they changed lenovo.com's nameserver records. The Register noted the domain's [nameserver settings were suspiciously updated today to point at DNS servers belonging to web hosting biz CloudFlare](https://www.theregister.com/2015/02/25/lenovo_hacked_lizard_squad/#:~:text=nameserver%20settings%20were%20suspiciously%20updated%20today%20to%20point%20at%20DNS%20servers%20belonging%20to%20web%20hosting%20biz%20CloudFlare) — using Cloudflare to mask the true destination server.
 - **The mail grab.** Crucially, they didn't stop at the website. They [changed mail server records allowing them to intercept messages](https://www.securityweek.com/lizard-squad-hijacks-lenovo-website-emails/) sent to Lenovo addresses. DNS controls more than the `A` record; it controls the `MX` record too. Owning the domain meant owning the mail.
 
@@ -87,7 +87,7 @@ A few takeaways that generalize far beyond 2015:
 1. **The registrar is in your trust boundary whether you treat it that way or not.** You can harden every server you own and still lose the domain at a third party you've probably never security-reviewed. The attacker takes the path of least resistance — and the registrar is often softer than you are.
 2. **DNS control is mail control.** A hijack isn't just a defaced homepage. The same record change quietly reroutes email, enabling interception, password resets against your domain, and impersonation. Treat the `MX` record as a security-critical asset, not plumbing.
 3. **Lock what can be locked.** Registrar locks (registrar-lock / `clientTransferProhibited`), restricted access to EPP/auth codes, and registry-level locks for high-value domains exist precisely to stop unauthorized nameserver and transfer changes. They are cheap. The downside of skipping them is your brand on a webcam slideshow.
-4. **DNSSEC raises the cost.** It wouldn't have stopped a registrar-account takeover by itself, but signed zones and monitored DNS make silent tampering harder to pull off undetected.
+4. **[DNSSEC](/en/glossary/dnssec/) raises the cost.** It wouldn't have stopped a registrar-account takeover by itself, but signed zones and monitored DNS make silent tampering harder to pull off undetected.
 5. **Monitor your own DNS for drift.** Lenovo's nameservers changing to an unexpected provider was the tell. Continuous monitoring of NS and MX records turns "we found out when customers saw a slideshow" into "we got paged when the record changed."
 
 The shared theme: domain control is a security domain of its own, and most companies have outsourced it to a vendor that never appears in their threat model.

@@ -11,9 +11,9 @@ keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .aga
 
 ## **What is .agakhan?**
 
-The **.agakhan** extension is a unique and specialized generic Top-Level Domain (gTLD). Unlike standard open domains like .com or .net, **.agakhan** falls under the category of a **Brand TLD** (or registry-closed TLD). It was established to serve the specific digital infrastructure needs of the **Aga Khan Development Network (AKDN)** and its associated agencies.
+The **.agakhan** extension is a unique and specialized generic [Top-Level Domain (gTLD)](/en/glossary/tld/). Unlike standard open domains like [.com](/en/tld/com/) or [.net](/en/tld/net/), **.agakhan** falls under the category of a **Brand TLD** (or registry-closed TLD). It was established to serve the specific digital infrastructure needs of the **Aga Khan Development Network (AKDN)** and its associated agencies.
 
-Delegated through the Internet Corporation for Assigned Names and Numbers (ICANN) New gTLD Program, this extension allows the organization to create a unified, secure, and authoritative namespace on the internet. By operating its own registry, the organization ensures that any website ending in **.agakhan** is verified, authentic, and directly affiliated with the institution.
+Delegated through the Internet Corporation for Assigned Names and Numbers ([ICANN](/en/glossary/icann/)) New gTLD Program, this extension allows the organization to create a unified, secure, and authoritative namespace on the internet. By operating its own registry, the organization ensures that any website ending in **.agakhan** is verified, authentic, and directly affiliated with the institution.
 
 For more technical details on the delegation, you can view the [IANA Delegation Record for .agakhan](https://www.iana.org/domains/root/db/agakhan.html).
 

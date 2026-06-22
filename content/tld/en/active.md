@@ -11,9 +11,9 @@ keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .activ
 
 ## **What is .active?**
 
-The **.active** extension is a part of the "New gTLD" (New Generic Top-Level Domain) program, an initiative managed by [ICANN](https://www.icann.org/) to expand the internet's namespace beyond the traditional .com, .net, and .org.
+The **.active** extension is a part of the "New gTLD" (New Generic Top-Level Domain) program, an initiative managed by [ICANN](https://www.icann.org/) to expand the internet's namespace beyond the traditional [.com](/en/tld/com/), [.net](/en/tld/net/), and [.org](/en/tld/org/).
 
-Unlike generic domains that define a commercial entity or an organization, **.active** is an identity-focused TLD. It is designed specifically to represent movement, energy, lifestyle, and engagement. It serves as a digital beacon for businesses, communities, and individuals involved in sports, fitness, outdoor recreation, and health technology.
+Unlike generic domains that define a commercial entity or an organization, **.active** is an identity-focused [TLD](/en/glossary/tld/). It is designed specifically to represent movement, energy, lifestyle, and engagement. It serves as a digital beacon for businesses, communities, and individuals involved in sports, fitness, outdoor recreation, and health technology.
 
 Originally applied for by The Active Network, Inc., this TLD falls under the category of domains that communicate a specific state of being. Whether for a decentralized fitness app (FiWeb3) or a local sports club, this extension tells the user exactly what to expect: action. You can verify the delegation details of this TLD via the [IANA Root Zone Database](https://www.iana.org/domains/root/db/active.html).
 
@@ -25,7 +25,7 @@ Because ".active" is an adjective that implies vitality, its usage spans several
 *   **Health Tech & Wearables:** Developers creating apps for step tracking, heart rate monitoring, and bio-hacking are finding it relevant for product landing pages.
 *   **Outdoor and Adventure Companies:** Camping gear retailers and hiking tour guides use it to appeal to adventurous demographics.
 *   **Community Movements:** Non-profits and social groups focused on social activism and community engagement utilize it to mobilize members.
-*   **Web3 and Move-to-Earn Projects:** With the rise of blockchain gaming and "Move-to-Earn" models, crypto projects are using .active to denote tokenized physical activity.
+*   **[Web3](/en/glossary/web3/) and Move-to-Earn Projects:** With the rise of blockchain gaming and "Move-to-Earn" models, crypto projects are using .active to denote tokenized physical activity.
 
 ## **Notable Entities Using .active**
 
@@ -51,7 +51,7 @@ Choosing the right domain extension is critical for your brand's digital identit
 
 Ready to bring energy to your brand? Securing a **.active** domain is the first step toward building a dynamic online presence.
 
-At **Namefi**, we go beyond traditional registration. As an ICANN-accredited registrar, we offer a seamless bridge between Web2 and Web3. When you register with us, you can easily mint your domain as an NFT, allowing for instant liquidity, easy transfers, and integration with the decentralized web—all while maintaining standard DNS functionality.
+At **Namefi**, we go beyond traditional registration. As an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/), we offer a seamless bridge between Web2 and Web3. When you register with us, you can easily mint your domain as an [NFT](/en/glossary/nft/), allowing for instant liquidity, easy transfers, and integration with the decentralized web—all while maintaining standard DNS functionality.
 
 Don't let your perfect name sprint away.
 

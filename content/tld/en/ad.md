@@ -11,7 +11,7 @@ keywords: [".ad domains", ".ad TLD", ".ad top-level domain", "what is .ad", "why
 
 ## **What is .ad?**
 
-The **.ad** domain extension is the **country code Top-Level Domain (ccTLD)** for the **Principality of Andorra**, a small, sovereign landlocked microstate on the Iberian Peninsula, bordered by France and Spain. Managed by [Andorra Telecom](https://www.andorratelecom.ad/), this extension was originally created to serve the local population and businesses of Andorra.
+The **.ad** domain extension is the **country code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** for the **Principality of Andorra**, a small, sovereign landlocked microstate on the Iberian Peninsula, bordered by France and Spain. Managed by [Andorra Telecom](https://www.andorratelecom.ad/), this extension was originally created to serve the local population and businesses of Andorra.
 
 However, in the world of the internet, **.ad** holds a unique and powerful position due to its linguistic association. It is globally recognized as the standard abbreviation for **"Advertisement"** or **"Advertising."**
 
@@ -41,7 +41,7 @@ Because `.ad` is a specialized ccTLD, it is less common among Fortune 500 giants
 *   **Visit Andorra (visitandorra.com / .ad):** The official tourism board utilizes the local extension to promote the country's world-famous ski resorts and shopping.
 *   **Andorra Telecom:** The registry and primary telecommunications provider operates strictly on `.ad`, setting the standard for local infrastructure.
 *   **Creative Agencies:** Numerous boutique marketing firms have adopted domains like `pop.ad` or `native.ad` to stand out in the crowded agency market.
-*   **Tech Startups:** Various startups in the Web3 and marketing space utilize `.ad` for URL shorteners to track campaign links (e.g., `brand.ad/promo`).
+*   **Tech Startups:** Various startups in the [Web3](/en/glossary/web3/) and marketing space utilize `.ad` for URL shorteners to track campaign links (e.g., `brand.ad/promo`).
 
 ## **Why Choose .ad?**
 
@@ -58,13 +58,13 @@ If you are debating between a standard generic domain and `.ad`, here are compel
 
 ## **Register Your .ad Domain at Namefi**
 
-Whether you are launching a new ad-tech platform, a creative design studio, or simply securing a clever domain hack for your portfolio, `.ad` offers distinct branding advantages that are hard to ignore.
+Whether you are launching a new ad-tech platform, a creative design studio, or simply securing a clever [domain hack](/en/blog/domain-hacks-explained/) for your portfolio, `.ad` offers distinct branding advantages that are hard to ignore.
 
 At **Namefi**, we make registering and managing these unique domains effortless.
 
 *   **Seamless Ownership:** We handle the complexity of ccTLD registration for you.
-*   **Web3 Integration:** Namefi allows you to tokenize your domains. This means you can hold your `.ad` domain in your crypto wallet, trade it instantly on NFT marketplaces, and manage DNS settings without bureaucratic hurdles.
-*   **ICANN Accredited Standards:** Enjoy the security of a compliant, professional registrar built for the future of the internet.
+*   **Web3 Integration:** Namefi allows you to [tokenize](/en/glossary/tokenize/) your domains. This means you can hold your `.ad` domain in your crypto [wallet](/en/glossary/wallet/), trade it instantly on [NFT](/en/glossary/nft/) marketplaces, and manage DNS settings without bureaucratic hurdles.
+*   **[ICANN](/en/glossary/icann/) Accredited Standards:** Enjoy the security of a compliant, professional [registrar](/en/glossary/registrar/) built for the future of the internet.
 
 **Ready to boost your brand's visibility?**
 

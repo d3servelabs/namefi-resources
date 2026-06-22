@@ -28,11 +28,11 @@ keywords:
 
 ## **What is .afl?**
 
-The **.afl** extension is a specialized Top-Level Domain (TLD) representing the **Australian Football League (AFL)**. Unlike generic extensions like `.com` or `.net`, `.afl` is categorized as a **Brand TLD** (or "dotBrand"). It was created during [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), which allowed organizations to apply for their own proprietary domain extensions.
+The **.afl** extension is a specialized [Top-Level Domain (TLD)](/en/glossary/tld/) representing the **Australian Football League (AFL)**. Unlike generic extensions like `.com` or `.net`, `.afl` is categorized as a **Brand TLD** (or "dotBrand"). It was created during [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), which allowed organizations to apply for their own proprietary domain extensions.
 
 The intended purpose of `.afl` is to provide a dedicated, verified digital space for the Australian Football League, its clubs, and its massive fanbase. By operating its own registry, the AFL ensures that any website ending in `.afl` is an official, authorized source of information, stats, or media related to the sport.
 
-In the world of domain investing and Web3, Brand TLDs like `.afl` represent the pinnacle of digital asset ownership—where an entity doesn't just own the domain name (the string to the left of the dot), but the infrastructure of the extension itself.
+In the world of domain investing and [Web3](/en/glossary/web3/), Brand TLDs like `.afl` represent the pinnacle of digital asset ownership—where an entity doesn't just own the domain name (the string to the left of the dot), but the infrastructure of the extension itself.
 
 ## **How People Are Using .afl**
 
@@ -67,7 +67,7 @@ While `.afl` is restricted to the league, understanding its advantages highlight
 
 Whether you are looking for a sports-related domain, a geographical extension, or a brand-new gTLD to define your digital identity, securing the right name is the first step toward success.
 
-At **Namefi**, we revolutionize how you manage these digital assets. We are an ICANN-accredited registrar that bridges the gap between Web2 and Web3. When you register a domain with us, we wrap it in a seamless NFT envelop, allowing you to trade, transfer, and manage your domains with the ease of blockchain technology.
+At **Namefi**, we revolutionize how you manage these digital assets. We are an ICANN-accredited [registrar](/en/glossary/registrar/) that bridges the gap between Web2 and Web3. When you register a domain with us, we wrap it in a seamless NFT envelop, allowing you to trade, transfer, and manage your domains with the ease of blockchain technology.
 
 While `.afl` is exclusive to the league, you can search for thousands of other available TLDs that suit your brand perfectly.
 

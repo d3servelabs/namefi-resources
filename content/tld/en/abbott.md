@@ -11,7 +11,7 @@ keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbot
 
 ## **What is .abbott?**
 
-The **.abbott** Top-Level Domain (TLD) is a unique and specific extension in the landscape of the internet. Unlike open domains such as `.com` or `.net` that anyone can register, **.abbott** is classified as a **Brand TLD** (or "dot brand"). It is a generic Top-Level Domain (gTLD) that was acquired during [ICANN’s new gTLD program](https://newgtlds.icann.org/en/about/program), specifically delegated to **Abbott Laboratories**, the global healthcare and pharmaceutical giant.
+The **.abbott** [Top-Level Domain](/en/glossary/tld/) (TLD) is a unique and specific extension in the landscape of the internet. Unlike open domains such as [`.com`](/en/tld/com/) or `.net` that anyone can register, **.abbott** is classified as a **Brand TLD** (or "dot brand"). It is a generic Top-Level Domain (gTLD) that was acquired during [ICANN’s new gTLD program](https://newgtlds.icann.org/en/about/program), specifically delegated to **Abbott Laboratories**, the global healthcare and pharmaceutical giant.
 
 The primary purpose of the .abbott TLD is to serve as a trusted, digital namespace exclusively for Abbott Laboratories and its affiliates. By operating their own registry, Abbott creates a closed loop of digital identity. When a user sees a URL ending in `.abbott`, they can be 100% certain that the content is published by the official healthcare company, ensuring authenticity in an industry where trust is paramount.
 

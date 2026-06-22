@@ -13,7 +13,7 @@ description: 'Between 2020 and 2022, a single threat actor group lived inside Go
 keywords: ['godaddy breach', 'godaddy data breach', 'managed wordpress breach', 'registrar security', 'domain security', 'multi-year breach', 'cpanel malware', 'website redirect attack', 'ssl private key exposure', 'sftp password breach', 'sec 10-k cybersecurity', 'registrar concentration risk', 'single point of failure']
 ---
 
-A domain registrar is the most boring company you will ever depend on completely.
+A domain [registrar](/en/glossary/registrar/) is the most boring company you will ever depend on completely.
 
 You pay it once a year. You log in maybe twice. And in exchange it holds the one thing that makes your business reachable: the right to say "this name points here." Email, website, login, payments — every digital thread you own runs through whoever controls your domain's DNS. Most people never think about that company again after checkout.
 
