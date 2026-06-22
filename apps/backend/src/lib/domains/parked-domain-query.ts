@@ -4,8 +4,11 @@
  * lockstep.
  *
  * "Active parked" means ALL of:
- *  1. served by Namefi park infra: auto-park is on (defaults to true) OR a
- *     forward is configured;
+ *  1. served by Namefi park infra: auto-park is explicitly enabled OR a
+ *     non-empty forward is configured. (A missing `domain_config` row — NULL
+ *     `autoParkEnabled` via the LEFT JOIN — is NOT parked; we don't default it
+ *     to true. An empty/whitespace `forwardTo` is NOT a forward, matching the
+ *     DNS service's `normalizeForwardTo`.);
  *  2. active: the NFT has not expired (`namefiNftView.expirationTime > now()`)
  *     AND the registrar domain has not expired
  *     (`indexedDomainsTable.expirationTime > now()`);
@@ -41,7 +44,7 @@ export const parkedDomainConfigJoinOn = eq(
 
 /** Parked + active (NFT & registrar) + on Namefi NS. See module docstring. */
 export const ACTIVE_PARKED_CONDITION: SQL = sql`(
-  (COALESCE(${domainConfigTable.autoParkEnabled}, true) = true OR ${domainConfigTable.forwardTo} IS NOT NULL)
+  (${domainConfigTable.autoParkEnabled} IS TRUE OR COALESCE(TRIM(${domainConfigTable.forwardTo}), '') <> '')
   AND ${namefiNftView.expirationTime} > now()
   AND EXISTS (
     SELECT 1 FROM ${indexedDomainsTable}
