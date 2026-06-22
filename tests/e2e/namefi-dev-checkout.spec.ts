@@ -12,16 +12,18 @@ const totalUsdPattern =
   /Total\s*(?:\n|\s)+(?:\$[\d,.]+\s*\/\s*)?\$([\d,.]+)\s+USD/gi;
 const receivingWalletPlaceholderPattern = /Paste a wallet address or ENS name/i;
 const signInButtonPattern = /^Sign In$/i;
+const privyAuthDialogPattern = /log in or sign up/i;
 const continueWithEmailButtonPattern = /continue with email/i;
 const emailButtonPattern = /^email$/i;
 const continueButtonPattern = /^Continue$/i;
 const sendCodeButtonPattern = /send code/i;
 const emailControlPattern = /email/i;
 const signInOrLogInButtonPattern = /sign in|log in/i;
+const submitButtonPattern = /^Submit$/i;
 const verifyButtonPattern = /verify/i;
 const clearCartButtonPattern = /^Clear Cart$/;
-const acceptAllButtonPattern = /^Accept All$/i;
-const rejectAllButtonPattern = /^Reject All$/i;
+const acceptAllButtonPattern = /^Accept(?: All)?$/i;
+const rejectAllButtonPattern = /^Reject(?: All)?$/i;
 const cartSectionPattern =
   /In your cart(?<cartSection>[\s\S]*?)Payment Method/i;
 const domainLikePattern = /\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9-]+)+\b/gi;
@@ -169,11 +171,28 @@ async function clickFirstVisible(candidates: Locator[], timeoutMs: number) {
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
 
-  throw new Error('Timed out waiting for a visible login control.');
+  throw new Error('Timed out waiting for a visible control.');
 }
 
-async function fillPrivyOtp(page: Page, otp: string) {
-  const singleCodeInput = page
+function getPrivyAuthDialog(page: Page) {
+  return page.getByRole('dialog', { name: privyAuthDialogPattern }).first();
+}
+
+function getPrivyEmailInput(dialog: Locator) {
+  return dialog
+    .locator(
+      [
+        'input[type="email"]',
+        'input[name="email"]',
+        'input[autocomplete="email"]',
+        'input[placeholder*="email" i]',
+      ].join(', '),
+    )
+    .first();
+}
+
+async function fillPrivyOtp(dialog: Locator, otp: string) {
+  const singleCodeInput = dialog
     .locator(
       [
         'input[autocomplete="one-time-code"]',
@@ -183,7 +202,7 @@ async function fillPrivyOtp(page: Page, otp: string) {
       ].join(', '),
     )
     .first();
-  const digitInputs = page.locator(
+  const digitInputs = dialog.locator(
     [
       'input[inputmode="numeric"]',
       'input[type="tel"]',
@@ -232,18 +251,17 @@ async function signInWithTestAccount(page: Page) {
 
   await signInButton.click();
 
-  const emailInput = page
-    .locator(
-      'input[type="email"], input[name="email"], input[autocomplete="email"]',
-    )
-    .first();
+  const privyDialog = getPrivyAuthDialog(page);
+  await privyDialog.waitFor({ state: 'attached', timeout: 30_000 });
+
+  const emailInput = getPrivyEmailInput(privyDialog);
   if (!(await isVisibleWithin(emailInput, 5_000))) {
     await clickFirstVisible(
       [
-        page
+        privyDialog
           .getByRole('button', { name: continueWithEmailButtonPattern })
           .first(),
-        page.getByRole('button', { name: emailButtonPattern }).first(),
+        privyDialog.getByRole('button', { name: emailButtonPattern }).first(),
       ],
       15_000,
     );
@@ -254,20 +272,25 @@ async function signInWithTestAccount(page: Page) {
 
   await clickFirstVisible(
     [
-      page.getByRole('button', { name: continueButtonPattern }).first(),
-      page.getByRole('button', { name: sendCodeButtonPattern }).first(),
-      page.getByRole('button', { name: emailControlPattern }).first(),
-      page.getByRole('button', { name: signInOrLogInButtonPattern }).first(),
+      privyDialog.getByRole('button', { name: submitButtonPattern }).first(),
+      privyDialog.getByRole('button', { name: continueButtonPattern }).first(),
+      privyDialog.getByRole('button', { name: sendCodeButtonPattern }).first(),
+      privyDialog.getByRole('button', { name: emailControlPattern }).first(),
+      privyDialog
+        .getByRole('button', { name: signInOrLogInButtonPattern })
+        .first(),
     ],
     30_000,
   );
 
-  await fillPrivyOtp(page, otp);
+  await fillPrivyOtp(privyDialog, otp);
 
   const verifyButtons = [
-    page.getByRole('button', { name: verifyButtonPattern }).first(),
-    page.getByRole('button', { name: continueButtonPattern }).first(),
-    page.getByRole('button', { name: signInOrLogInButtonPattern }).first(),
+    privyDialog.getByRole('button', { name: verifyButtonPattern }).first(),
+    privyDialog.getByRole('button', { name: continueButtonPattern }).first(),
+    privyDialog
+      .getByRole('button', { name: signInOrLogInButtonPattern })
+      .first(),
   ];
   for (const button of verifyButtons) {
     if (await isVisibleWithin(button, 1_000)) {
@@ -332,16 +355,11 @@ async function clearCartBeforeCheckout(page: Page) {
 
 async function dismissCookieBanner(page: Page) {
   const cookieButtons = [
-    page.getByRole('button', { name: acceptAllButtonPattern }),
-    page.getByRole('button', { name: rejectAllButtonPattern }),
+    page.getByRole('button', { name: acceptAllButtonPattern }).first(),
+    page.getByRole('button', { name: rejectAllButtonPattern }).first(),
   ];
 
-  for (const button of cookieButtons) {
-    if (await isVisibleWithin(button, 1_000)) {
-      await button.click();
-      return;
-    }
-  }
+  await clickFirstVisible(cookieButtons, 5_000).catch(() => undefined);
 }
 
 async function expectOnlyCartDomain(page: Page, domain: string) {
