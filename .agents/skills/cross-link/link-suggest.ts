@@ -102,6 +102,9 @@ function stripNonProse(raw: string): string {
   // Blank whole markdown links/images so phrases can't match inside existing
   // anchor text or href slugs — we only want to surface UNLINKED prose mentions.
   body = body.replace(/!?\[[^\]\n]*\]\([^)\n]*\)/g, (m) => m.replace(/[^\n]/g, ' '));
+  // Blank ATX heading lines — the skill forbids links in headings, so a term in
+  // a heading must not be cited as the first mention.
+  body = body.replace(/^#{1,6} .*$/gm, (m) => m.replace(/[^\n]/g, ' '));
   return body;
 }
 
