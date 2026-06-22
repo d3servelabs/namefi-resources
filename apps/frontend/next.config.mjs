@@ -300,6 +300,47 @@ const nextConfig = {
         destination: '/r/:path*',
         permanent: true,
       },
+      // -----------------------------------------------------------------------
+      // Legacy resources URLs → `/r/<locale>` prefix.
+      //
+      // The resources app (blog, glossary, tld, series, topics, watch,
+      // partners, careers) was relocated under the `/r` basePath. Old flat
+      // locale-prefixed URLs (`/zh/blog`, `/de/tld/ai`) remain indexed by
+      // Google and linked externally, and now 404 (see GSC "Not found (404)"
+      // crawl report, 2026-06-22). These 301s forward the link equity to the
+      // new `/r/...` homes.
+      //
+      // Scope is deliberately limited to paths that CANNOT collide with a
+      // current or future frontend route, so a permanent redirect can never
+      // shadow a real page. The frontend uses next-intl cookie-mode (no
+      // `/<locale>` path prefix), so:
+      //   * `/<locale>/<section>/...` is never a frontend route — the locale
+      //     prefix + known resources section make it unambiguously a legacy
+      //     resources URL.
+      //   * `/<locale>` bare is a two-letter locale root, same reasoning.
+      // Bare single-segment paths (`/blog`, `/watch`, `/partners`, ...) are
+      // intentionally NOT redirected: each could become a frontend marketing
+      // route later, and a permanent 301 would be sticky. They were also
+      // negligible in the crawl report (their locale-prefixed forms ARE
+      // covered above). When unsure whether a path is legacy, we leave it.
+      //
+      // TODO(SEO): remove this block after ~2026-09-22 (≈3 months). It is
+      // transitional — once GSC stops reporting 404s for these legacy paths
+      // (i.e. Google has recrawled and updated its index), it can be dropped.
+      // -----------------------------------------------------------------------
+      {
+        // `/<locale>/<section>/...` → `/r/<locale>/<section>/...`
+        source:
+          '/:locale(en|es|de|fr|zh|ar|hi)/:section(blog|glossary|tld|series|topics|watch|partners|careers)/:path*',
+        destination: '/r/:locale/:section/:path*',
+        permanent: true,
+      },
+      {
+        // bare locale root `/<locale>` → `/r/<locale>`
+        source: '/:locale(en|es|de|fr|zh|ar|hi)',
+        destination: '/r/:locale',
+        permanent: true,
+      },
       {
         source: '/discord',
         destination:
