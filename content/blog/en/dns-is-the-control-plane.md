@@ -25,7 +25,7 @@ That said, the Namefi engineering team reviews global outages like this and lear
 
 ## What actually went wrong in AWS—without the jargon
 
-Every app and website needs a way to “look up” where to connect. That address book of the internet is called DNS—short for Domain Name System. On Oct 20, a naming problem inside AWS meant some computers couldn’t find a key AWS database service by name. If the address book can’t provide the right entry at the right moment, even healthy systems can’t talk to each other.
+Every app and website needs a way to “look up” where to connect. That address book of the internet is called DNS—short for [Domain Name System](/en/glossary/dns/). On Oct 20, a naming problem inside AWS meant some computers couldn’t find a key AWS database service by name. If the address book can’t provide the right entry at the right moment, even healthy systems can’t talk to each other.
 
 AWS fixed the immediate naming problem within a couple of hours and then spent the rest of the day letting backlogs clear and easing systems back to normal. By late afternoon (Pacific time), AWS said everything was operating normally again, though some services took longer to catch up.
 

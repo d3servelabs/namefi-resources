@@ -12,7 +12,7 @@ ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns over https', 'doh', 'split horizon dns', 'enterprise dns', 'dot', 'encrypted dns', 'internal dns', 'name resolution', 'namefi']
 ---
 
-For most of the internet's history, DNS queries traveled in cleartext over port 53. Anyone on the network path could read them, log them, and modify them. That was a privacy problem the IETF eventually addressed with two encrypted alternatives: [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) in 2016 and [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) in 2018.
+For most of the internet's history, [DNS](/en/glossary/dns/) queries traveled in cleartext over port 53. Anyone on the network path could read them, log them, and modify them. That was a privacy problem the IETF eventually addressed with two encrypted alternatives: [DNS over TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) in 2016 and [DNS over HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) in 2018.
 
 DoH in particular changed the game, because it hides DNS *inside* a regular HTTPS stream. To a network observer, a DoH query looks identical to any other TLS connection to a content server. That is great for users browsing on a hostile coffee-shop network. It is much less great for a corporate IT team that depends on seeing—and steering—every DNS query that crosses the perimeter.
 
@@ -111,7 +111,7 @@ If you run a domain that is consumed by enterprises—a SaaS app, a developer to
 
 ## How Namefi fits in
 
-Namefi treats DNS as the public-facing control plane—the place where global naming meets local policy. Our DNS workflows assume queries can come from any resolver, including DoH endpoints we cannot enumerate, and the names we publish work consistently regardless. For customers running split-horizon internally, we sit on the public side: the authoritative answer for `example.com` is what we serve, and what the internal resolver overrides for internal users is between them and their endpoint policy.
+Namefi treats DNS as the public-facing [control plane](/en/blog/dns-is-the-control-plane/)—the place where global naming meets local policy. Our DNS workflows assume queries can come from any resolver, including DoH endpoints we cannot enumerate, and the names we publish work consistently regardless. For customers running split-horizon internally, we sit on the public side: the authoritative answer for `example.com` is what we serve, and what the internal resolver overrides for internal users is between them and their endpoint policy.
 
 The deeper point: encrypted DNS is here to stay, and so is enterprise visibility. The way to reconcile them is not to fight the standards, but to move the policy enforcement point from the network to the operating system. The standards bodies, Microsoft, Apple, Google, and Mozilla have all converged on that answer. The work left is mostly operational.
 

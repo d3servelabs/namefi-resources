@@ -32,7 +32,7 @@ The trouble starts when a name's value comes *from* a brand rather than from the
 
 ![Editorial illustration of three padlocks in a row, each checkmarked, joined by one chain releasing a single domain-name tag](../../assets/cybersquatting-vs-domaining-udrp-acpa-01-three-locks.jpg)
 
-The first and most common system is the [UDRP](/en/glossary/udrp/), the Uniform Domain-Name Dispute-Resolution Policy. Every accredited registrar makes you agree to it when you register a name, which is why a private arbitration panel, not a court, can order your domain transferred away. We cover the full process, timeline, and outcomes in [what is UDRP](/en/blog/what-is-udrp/); here the focus is the test itself, because the test is where flippers win or lose.
+The first and most common system is the [UDRP](/en/glossary/udrp/), the Uniform Domain-Name Dispute-Resolution Policy. Every accredited [registrar](/en/glossary/registrar/) makes you agree to it when you register a name, which is why a private arbitration panel, not a court, can order your domain transferred away. We cover the full process, timeline, and outcomes in [what is UDRP](/en/blog/what-is-udrp/); here the focus is the test itself, because the test is where flippers win or lose.
 
 A complainant must prove **all three** of the following. This is a *conjunctive* test, which is the single most important fact about it. Fail any one element and the complaint is denied, no matter how strong the other two are.
 
@@ -77,7 +77,7 @@ Most of staying safe is decided before you spend a dollar. A handful of habits k
 - **Keep records, and keep parking clean.** Save your registration date and reasoning, since bad faith generally must exist at registration. Avoid PPC ads that compete with any trademark owner, which can turn a generic name into evidence of bad-faith use.
 - **Handle inbound offers carefully.** If a brand approaches you, do not demand a number framed around *their* need for the name. That framing is easily recast as "registered primarily to sell to the trademark owner."
 
-When the name is clean and the records are clean, the transfer itself is the last variable. High-value sales settle through neutral [escrow](/en/glossary/escrow/) precisely so neither side has to move first, and a verifiable chain of custody is part of what makes a name defensible if its history is ever questioned. [Namefi](https://namefi.io) leans into that: tokenized ownership gives a name a durable, auditable provenance record while keeping it fully ICANN-compliant, so the underlying domain stays squarely inside the system the UDRP and ACPA govern. Tokenization strengthens your evidence and your control. It does not place a name outside trademark law, and no honest tool would claim otherwise.
+When the name is clean and the records are clean, the transfer itself is the last variable. High-value sales settle through neutral [escrow](/en/glossary/escrow/) precisely so neither side has to move first, and a verifiable chain of custody is part of what makes a name defensible if its history is ever questioned. [Namefi](https://namefi.io) leans into that: tokenized ownership gives a name a durable, auditable provenance record while keeping it fully [ICANN](/en/glossary/icann/)-compliant, so the underlying domain stays squarely inside the system the UDRP and ACPA govern. Tokenization strengthens your evidence and your control. It does not place a name outside trademark law, and no honest tool would claim otherwise.
 
 ## The bottom line
 

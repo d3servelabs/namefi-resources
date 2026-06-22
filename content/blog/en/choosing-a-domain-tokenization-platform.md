@@ -35,9 +35,9 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 **Best for:** owners who want a real `.com`/`.xyz`/`.io` [tokenized](/en/glossary/tokenize/) on Ethereum or Base, with broad NFT-marketplace and [DeFi](/en/glossary/defi/)-lending support, and DNS management that doesn't feel like a step backward from Cloudflare.
 
-**Notable:** [ICANN](/en/glossary/icann/)-recognized domains across many [TLDs](/en/glossary/tld/), on-chain ownership via standard [NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), so wallets, marketplaces, and on-chain tooling Just Work), full DNS management including [DNSSEC](/en/glossary/dnssec/), an in-app [marketplace](/en/glossary/marketplace/), and integrations with on-chain payments ([x402](/en/glossary/x402/)). Multi-chain. Self-custody from day one.
+**Notable:** [ICANN](/en/glossary/icann/)-recognized domains across many [TLDs](/en/glossary/tld/), [on-chain](/en/glossary/on-chain/) ownership via standard [NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), so wallets, marketplaces, and on-chain tooling Just Work), full DNS management including [DNSSEC](/en/glossary/dnssec/), an in-app [marketplace](/en/glossary/marketplace/), and integrations with on-chain payments ([x402](/en/glossary/x402/)). Multi-chain. Self-custody from day one.
 
-**Less suited for:** people who want a brand-new TLD they don't already own, or people who only want a Web3-native name like `name.eth`.
+**Less suited for:** people who want a brand-new TLD they don't already own, or people who only want a [Web3](/en/glossary/web3/)-native name like `name.eth`.
 
 ### Doma Protocol
 
@@ -81,7 +81,7 @@ These categories overlap. Some platforms span more than one. But "what camp does
 
 ### GBM (GBM Auctions)
 
-**Best for:** selling tokenized domains via "bid to earn" auction mechanics.
+**Best for:** selling tokenized domains via "bid to earn" [auction](/en/glossary/auction/) mechanics.
 
 **Notable:** auction infrastructure, not a tokenization platform itself. Often used in combination with one of the above to handle the sale step.
 
@@ -94,13 +94,13 @@ These categories overlap. Some platforms span more than one. But "what camp does
 When you're deciding between platforms, the marketing pages won't tell you which is right. These questions will:
 
 - **TLD coverage.** Does the platform support the specific TLDs you care about (`.com`, `.io`, `.xyz`, `.art`, ccTLDs like `.de`/`.uk`)?
-- **Chain coverage.** Ethereum mainnet, Base, Polygon, others? Where does the NFT live? Where is gas paid?
+- **Chain coverage.** Ethereum mainnet, Base, Polygon, others? Where does the NFT live? Where is [gas](/en/glossary/gas/) paid?
 - **NFT standards.** Standard ERC-721? That matters for marketplace compatibility (OpenSea, Blur, Magic Eden, etc.) and on-chain lending.
 - **DNS management.** Can you manage DNS in-platform? Use external nameservers (Cloudflare, Route53)? DNSSEC supported?
 - **Lending / collateralization.** Can you borrow against the tokenized domain on existing money markets, or only inside a platform-specific silo?
 - **Marketplace compatibility.** Will Blur, OpenSea, etc. show the listing, or is it only visible inside the platform's own marketplace?
-- **Custody model.** Self-custody (your wallet, your keys, your problem) or platform-custodied? Both have trade-offs.
-- **Renewal flow.** Who pays the registrar? How is annual renewal billed? What happens if you stop paying?
+- **Custody model.** Self-custody (your [wallet](/en/glossary/wallet/), your keys, your problem) or platform-custodied? Both have trade-offs.
+- **Renewal flow.** Who pays the [registrar](/en/glossary/registrar/)? How is annual renewal billed? What happens if you stop paying?
 - **Exit path.** If you ever want to *de-tokenize* and go back to a plain registrar setup, can you?
 - **Fees.** Mint fee, marketplace fee, transfer fee, renewal fee, gas. Add them up for your specific scenario before you commit.
 
@@ -132,7 +132,7 @@ There is no universal "best" platform. The right answer depends on:
 - What TLDs you care about.
 - Whether you're an owner, a developer, or a marketplace.
 - How much you value self-custody.
-- Whether you want to use the domain as DeFi collateral or just hold it.
+- Whether you want to use the domain as DeFi [collateral](/en/glossary/collateral/) or just hold it.
 - How much you trust any single platform.
 
 We obviously think Namefi is the right answer for a lot of owners. But the best thing you can do is **try at least one besides us**. If we're better, you'll know after a side-by-side. If something else is better for your use case, you should use that.

@@ -30,7 +30,7 @@ Now the nuance, because "lean toward" is doing a lot of work in those two senten
 
 ## Origins: Two Caribbean and Indian Ocean Accidents
 
-Neither extension was designed for startups. Both are **country code top-level domains (ccTLDs)** that got adopted for what their letters happen to spell.
+Neither extension was designed for startups. Both are **country code [top-level domains](/en/glossary/tld/) (ccTLDs)** that got adopted for what their letters happen to spell.
 
 - **`.ai`** is the ccTLD for **Anguilla**, a British Overseas Territory in the Eastern Caribbean, delegated in 1995. It went mainstream when "AI" became shorthand for artificial intelligence, and companies wanted that meaning baked into the URL.
 - **`.io`** is the ccTLD for the **British Indian Ocean Territory**. Developers read it as **I/O** (input/output), a core computing concept, and it became the de facto badge of the modern tech and SaaS world.
@@ -51,7 +51,7 @@ Google maintains a list of ccTLDs it treats as **generic** (gccTLDs) because the
 
 ## Pricing and Availability
 
-This is where the two diverge sharply. Exact prices vary by registrar and change over time, so treat the following as directional rather than a quote.
+This is where the two diverge sharply. Exact prices vary by [registrar](/en/glossary/registrar/) and change over time, so treat the following as directional rather than a quote.
 
 - **`.ai` is the premium option.** It typically registers in the higher tens to low hundreds of dollars per year, and the registry usually requires a **minimum two-year registration**, so your first invoice is larger. Wholesale `.ai` pricing rose again in early 2026, continuing an upward trend driven by AI-era demand. The flip side: that cost acts as a filter, so short, brandable `.ai` names remain more available than you'd expect for such a hot extension.
 - **`.io` is mid-premium.** It costs more than legacy extensions like `.com` or `.net`, but generally less than `.ai`, and without the multi-year minimum. Because it's been a startup standard for over a decade, the best one-word `.io` names are heavily picked over, though clever combinations and "domain hacks" (like `rad.io` or `stud.io`) are still findable.
@@ -112,7 +112,7 @@ What this does **not** mean:
 
 ## Choose `.io` If…
 
-- You're building general tech: SaaS, APIs, developer tools, infrastructure, or a crypto/Web3 product.
+- You're building general tech: SaaS, APIs, developer tools, infrastructure, or a crypto/[Web3](/en/glossary/web3/) product.
 - You want a recognized, vertical-neutral tech signal without pigeonholing yourself as "AI-only."
 - You prefer a lower upfront cost and a standard one-year registration.
 - You're comfortable with the long-horizon sovereignty uncertainty, or you plan to also secure a matching `.com` / `.ai` as a hedge.
@@ -125,7 +125,7 @@ Whichever you pick, the next question is how you actually *own* it. If you want 
 
 ## Buy and Tokenize Your `.ai` or `.io` at Namefi
 
-Once you've decided, [Namefi](https://namefi.io) can register it for you. As an ICANN-accredited registrar, we handle both `.ai` and `.io` like any traditional registrar, with one difference: your domain can be **tokenized**, giving you on-chain ownership, easier transfers, and integration with Web3 tooling, without giving up normal DNS and website hosting.
+Once you've decided, [Namefi](https://namefi.io) can register it for you. As an [ICANN](/en/glossary/icann/)-accredited registrar, we handle both `.ai` and `.io` like any traditional registrar, with one difference: your domain can be **tokenized**, giving you [on-chain](/en/glossary/on-chain/) ownership, easier transfers, and integration with Web3 tooling, without giving up normal DNS and website hosting.
 
 Pick the extension that fits your brand, secure it before someone else does, and own it on your terms.
 
