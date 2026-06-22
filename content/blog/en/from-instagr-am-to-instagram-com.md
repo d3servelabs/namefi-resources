@@ -15,9 +15,9 @@ keywords: ['instagr.am', 'instagram.com', 'instagram domain name', 'domain hack'
 
 Before Instagram became a billion-user platform, a verb for taking pictures, and one of the most valuable apps Facebook ever bought, it had a name that was also a piece of clever engineering: **instagr.am**.
 
-That address was not a typo and not a redirect trick. It was a *domain hack* — a domain name where the extension itself finishes the word. Wikipedia defines the form precisely: a domain hack is [a domain name that suggests a word, phrase, or name when concatenating two or more adjacent levels of that domain](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name), and it names Instagram's as a textbook case: [instagr.am makes use of the ccTLD .am (Armenia) to spell the name of photo-sharing service "Instagram"](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name).
+That address was not a typo and not a redirect trick. It was a [*domain hack*](/en/blog/domain-hacks-explained/) — a domain name where the extension itself finishes the word. Wikipedia defines the form precisely: a domain hack is [a domain name that suggests a word, phrase, or name when concatenating two or more adjacent levels of that domain](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name), and it names Instagram's as a textbook case: [instagr.am makes use of the ccTLD .am (Armenia) to spell the name of photo-sharing service "Instagram"](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name).
 
-Read that again. To spell its own brand, a San Francisco photo app borrowed the country-code top-level domain of **Armenia**, a country roughly 7,000 miles away. The "am" in Instagram lived, technically, in Yerevan.
+Read that again. To spell its own brand, a San Francisco photo app borrowed the country-code [top-level domain](/en/glossary/tld/) of **Armenia**, a country roughly 7,000 miles away. The "am" in Instagram lived, technically, in Yerevan.
 
 For a tiny startup launching into a crowded App Store, the hack was a gift. It was short, it was exact, it read as one word, and — crucially — it was *available* when the obvious address, Instagram.com, was not.
 
@@ -41,7 +41,7 @@ To understand why instagr.am was so attractive, you have to understand what `.am
 
 For a 2010 startup, the appeal was obvious:
 
-- **It was exact.** "instagr" + ".am" reads as the full brand, with nothing extra to explain — the holy grail of an unfunded launch.
+- **It was exact.** "instagr" + "[.am](/en/tld/am/)" reads as the full brand, with nothing extra to explain — the holy grail of an unfunded launch.
 - **It was short and shareable.** A photo app lives or dies on how easily a link gets passed around. instagr.am was tight enough to print, text, and tweet.
 - **It was available right now.** Instagram.com was already owned by someone else, and a brand-new app had neither the cash nor the leverage to pry it loose on day one.
 
