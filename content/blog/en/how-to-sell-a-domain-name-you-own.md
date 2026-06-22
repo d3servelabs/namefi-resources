@@ -31,7 +31,7 @@ If you only remember one flow, make it this:
 5. Use [Namefi Outbound](https://namefi.io/outbound) to research possible buyers, buyer angles, public contacts when available, and editable first-message drafts.
 6. Send short, specific outreach only to people who might actually care.
 7. Negotiate in writing: price, fee split, transfer method, included assets, and timeline.
-8. Close through a secure payment or escrow workflow, transfer the domain, then keep the records.
+8. Close through a secure payment or [escrow](/en/glossary/escrow/) workflow, transfer the domain, then keep the records.
 
 The transfer is the last step. Buyer fit is the first one.
 
@@ -58,7 +58,7 @@ Also check the uncomfortable stuff early:
 
 - Does the domain look confusingly similar to someone else's trademark?
 - Did you register it mainly because of a specific company's brand?
-- Is the current website, parking page, or ad content creating confusion?
+- Is the current website, [parking page](/en/blog/domain-parking-and-monetization/), or ad content creating confusion?
 - Is the domain close to expiration?
 - Is it locked from transfer because it was recently registered or transferred?
 
@@ -74,7 +74,7 @@ Still, a defensible price usually comes from five inputs:
 
 | Input | What to Check |
 | --- | --- |
-| Comparable sales | Recent sales with similar length, word count, category, and TLD |
+| Comparable sales | Recent sales with similar length, word count, category, and [TLD](/en/glossary/tld/) |
 | TLD strength | Whether the extension is liquid globally or useful mainly in a niche |
 | Buyer use case | How directly the name helps a real business, campaign, product, or category |
 | Existing value | Traffic, backlinks, revenue, age, clean history, or developed assets |
@@ -92,7 +92,7 @@ Then choose the pricing style:
 
 - **Fixed price / buy now:** best when you want speed and less back-and-forth.
 - **Make offer:** best when the domain is unusual or buyer value varies widely.
-- **Auction:** best when there is visible demand from multiple buyers.
+- **[Auction](/en/glossary/auction/):** best when there is visible demand from multiple buyers.
 - **Private negotiation:** best when the buyer pool is small and strategic.
 
 The bigger the domain, the more important it is to know your walk-away number before the first reply arrives. Negotiation is much calmer when you are not inventing your price in the middle of it.
@@ -111,7 +111,7 @@ If the domain is close to expiration, renew it before serious outreach. A buyer 
 
 ### Check transfer status
 
-ICANN explains that registrars may deny transfers in certain cases, including when a domain is in lock status, within 60 days of initial registration, or within 60 days of a previous transfer. You will also need an [AuthInfo/auth code](/en/glossary/auth-code/) for many cross-registrar transfers, and ICANN says registrars must either let you create one or provide it within five calendar days of request.
+ICANN explains that registrars may deny transfers in certain cases, including when a domain is in lock status, within 60 days of initial registration, or within 60 days of a previous transfer. You will also need an [AuthInfo/auth code](/en/glossary/auth-code/) for many [cross-registrar transfers](/en/glossary/cross-registrar-transfer/), and [ICANN](/en/glossary/icann/) says registrars must either let you create one or provide it within five calendar days of request.
 
 That does not mean every sale has to wait. If the buyer is willing to receive the domain at the current registrar, a same-registrar account push or change of ownership may be possible. But you need to know the transfer path before you promise a closing date.
 
@@ -272,7 +272,7 @@ In the U.S., the IRS treats sales of assets under tax rules that depend on how t
 
 If your domain is a [tokenized domain](/en/blog/what-are-tokenized-domains/), the closing mechanics can be different.
 
-In a traditional sale, escrow exists because payment and registrar transfer happen in separate steps. In a tokenized-domain sale, ownership may be represented by an [NFT](/en/glossary/nft/) and transferred through an [on-chain](/en/glossary/on-chain/) transaction. That can compress settlement, but it does not remove every risk. You still need buyer fit, clean legal posture, wallet security, tax records, and a clear understanding of what the buyer expects to receive.
+In a traditional sale, escrow exists because payment and registrar transfer happen in separate steps. In a tokenized-domain sale, ownership may be represented by an [NFT](/en/glossary/nft/) and transferred through an [on-chain](/en/glossary/on-chain/) transaction. That can compress settlement, but it does not remove every risk. You still need buyer fit, clean legal posture, [wallet](/en/glossary/wallet/) security, tax records, and a clear understanding of what the buyer expects to receive.
 
 For more on how tokenized sales change escrow mechanics, read [From Listing to Settlement: How Tokenized Marketplaces Replace Escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/).
 
