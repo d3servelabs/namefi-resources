@@ -99,6 +99,9 @@ function stripNonProse(raw: string): string {
   let body = raw.replace(/^---\n[\s\S]*?\n---\n?/, (m) => m.replace(/[^\n]/g, ' '));
   body = body.replace(/^([ \t]*)(`{3,}|~{3,})[\s\S]*?\n\1\2[^\n]*$/gm, (m) => m.replace(/[^\n]/g, ' '));
   body = body.replace(/`[^`\n]*`/g, (m) => m.replace(/[^\n]/g, ' '));
+  // Blank whole markdown links/images so phrases can't match inside existing
+  // anchor text or href slugs — we only want to surface UNLINKED prose mentions.
+  body = body.replace(/!?\[[^\]\n]*\]\([^)\n]*\)/g, (m) => m.replace(/[^\n]/g, ' '));
   return body;
 }
 
@@ -282,7 +285,7 @@ function analyze(target: Page): Report {
     if (!passConf(res.confidence) || alreadyLinks(target.raw, res.target.href)) continue;
     const cand: OutboundCand = { target: res.target.href, phrase, line: lineOf(target.prose, idx), confidence: res.confidence };
     const prev = outByTarget.get(res.target.href);
-    if (!prev || CONFIDENCE_RANK[cand.confidence] > CONFIDENCE_RANK[prev.confidence] || cand.line < prev.line) outByTarget.set(res.target.href, cand);
+    if (!prev || CONFIDENCE_RANK[cand.confidence] > CONFIDENCE_RANK[prev.confidence] || (CONFIDENCE_RANK[cand.confidence] === CONFIDENCE_RANK[prev.confidence] && cand.line < prev.line)) outByTarget.set(res.target.href, cand);
   }
   const outbound = [...outByTarget.values()].sort((a, b) => CONFIDENCE_RANK[b.confidence] - CONFIDENCE_RANK[a.confidence] || a.line - b.line);
 
@@ -387,7 +390,7 @@ if (JSON_OUT) {
   console.log(JSON.stringify(reports, null, 2));
 } else {
   const tty = process.stdout.isTTY;
-  const c = (code: string, s: string) => (tty ? `[${code}m${s}[0m` : s);
+  const c = (code: string, s: string) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);
   const cc: Record<Confidence, string> = { high: '32', medium: '33', low: '2' };
   for (const r of reports) {
     const tp = byHref.get(r.target);
