@@ -92,4 +92,3 @@ L'économie ci-dessus décide *s'il faut* conserver un nom. L'autre moitié de c
 - Wikipédia — [Domain drop catching (période de rachat de ~30–90 jours ; phase de 'pending-delete' de 5 jours)](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days)
 - Domain Name Wire — [Augmentation du prix de gros du .com par Verisign à 10,26 $ (plafond annuel de 7 % dans le cadre du contrat de registre)](https://domainnamewire.com/2024/02/08/verisign-announces-com-price-hike-to-10-26/#:~:text=charges%20registrars%20%249.59%20per%20year%20for%20.com%20registrations.%20That%20will%20increase%20to%20%2410.26)
 - Wikipédia — [Domain name speculation (parking et partage des revenus PPC sur les domaines inutilisés)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=allow%20unused%20domains%20to%20be%20parked%20with%20the%20registrant%20receiving%20a%20share%20of%20the%20PPC%20revenue)
-</content>

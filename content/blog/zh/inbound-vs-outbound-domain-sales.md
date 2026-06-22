@@ -104,4 +104,3 @@ keywords: ['主动式与被动式域名销售对比', '被动式域名销售', '
 - 维基百科 — [Domain name speculation (域名投资的定义)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)
 - 维基百科 — [Uniform Domain-Name Dispute-Resolution Policy (UDRP 申诉的三要素)](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=identical%20or%20confusingly%20similar%20to%20a%20trademark%20or%20service%20mark)
 - 维基百科 — [Cybersquatting (定义)](https://en.wikipedia.org/wiki/Cybersquatting#:~:text=is%20the%20practice%20of%20registering%2C%20trafficking%20in%2C%20or%20using%20an%20Internet%20domain%20name%2C%20with%20a%20bad%20faith%20intent)
-</content>

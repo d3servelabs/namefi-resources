@@ -81,5 +81,4 @@ C'est ce fossé que [Namefi](https://namefi.io) a été conçu pour combler. La 
 - Wikipedia — [Domain name speculation (revenus PPC des domaines parqués ; systèmes de parking des registrars)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20ease%20with%20which%20PPC%20revenue%20could%20be%20derived%20from%20parked%20domains)
 - Wikipedia — [Domain name registrar (durée maximale de 10 ans pour les gTLD ; prix de renouvellement public d'un `.com`)](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)
 - SIDN — [Voice.com sold for USD 30 million (Block.one, 2019)](https://www.sidn.nl/en/news-and-blogs/voice-com-sold-for-usd-30-million#:~:text=blockchain%20provider%20Block.one%20paid%2030%20million%20US%20dollars%20for%20the%20domain%20name%20voice.com)
-</content>
 </invoke>

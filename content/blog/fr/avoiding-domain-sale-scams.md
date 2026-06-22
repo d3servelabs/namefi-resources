@@ -96,4 +96,3 @@ La majeure partie de ce guide traite de la protection du moment du transfert —
 - Wikipédia — [Chargeback (définition et comment une rétrofacturation annule un paiement)](https://en.wikipedia.org/wiki/Chargeback#:~:text=A%20chargeback%20is%20a%20return%20of%20money%20to%20a%20payer)
 - Wikipédia — [Domain name transfer (code d'auth EPP, transfert d'environ 5 jours, verrouillage de 30 jours)](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=obtains%20the%20authentication%20code%20%28EPP%20transfer%20code%29)
 - Ressources Namefi — [Domain escrow explained](/en/blog/domain-escrow-explained/) · [How to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/) · [How domain hijacking actually happens](/en/blog/how-domain-hijacking-actually-happens/)
-</content>

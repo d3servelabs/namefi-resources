@@ -45,6 +45,8 @@ async function callGeminiThrottled(prompt: string, locale: string, filename: str
         text = text.trim()
             .replace(/^```[a-zA-Z]*\s*\n/, "")
             .replace(/\n```\s*$/, "")
+            .replace(/^<content>\s*\n/, "")        // stray wrapper tags some models emit
+            .replace(/\n?<\/content>\s*$/, "")
             .trim();
         if (!text.startsWith("---")) {
              text = "---\n" + text;

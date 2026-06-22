@@ -97,4 +97,3 @@ keywords: ['可比域名销售', '域名可比案例', '如何解读域名可比
 - GoDaddy — [域名价值与评估工具](https://www.godaddy.com/resources/skills/godaddy-domain-name-value-appraisal-tool#:~:text=algorithm%20uses%20proprietary%20machine%20learning%20and%20real%20market%20sales%20data%20to%20estimate%20domain%20values) (machine learning + real market sales data; provides comparable sales)
 - GlobeNewswire — [QuinStreet 宣布收购 CarInsurance.com, Inc.](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash) ($49.7M cash, 2010)
 - Domain Name Wire — [QuinStreet 收购 CarInsurance.com 是为了自然流量](https://domainnamewire.com/2010/11/09/quinstreet-bought-carinsurance-com-for-the-organic-traffic/#:~:text=the%20value%20comes%20primarily%20from%20the%20organic%20traffic)
-</content>
