@@ -21,7 +21,7 @@ Then, in 2019, after almost three decades of explaining itself, the company drop
 
 The reasoning was that "Juice" had stopped describing the business — and started shrinking it. The chain now sold bowls, plant-based bites, and boosts, not just blended drinks, and the word "juice" had quietly turned into a liability in a more sugar-conscious era.
 
-But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its exact-match domain.** Unlike Tesla, which paid $11 million for Tesla.com, or Uber, which traded equity for Uber.com, Jamba had quietly owned **Jamba.com for decades** — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) back in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
+But here's the detail that makes this case different from almost every other story in this series: **Jamba didn't have to buy its exact-match domain.** Unlike Tesla, which paid $11 million for [Tesla.com](/en/blog/from-teslamotors-com-to-tesla-com/), or Uber, which traded equity for [Uber.com](/en/blog/from-ubercab-com-to-uber-com/), Jamba had quietly owned **Jamba.com for decades** — the snapshot record shows the site live and reading [Welcome to Jamba.com](http://web.archive.org/web/19990125090358/http://jamba.com:80/) back in January 1999. When the rebrand came, the hardest, most expensive part of a name change was already done.
 
 ## 1990–1995: the Juice Club that became Jamba Juice
 
@@ -101,7 +101,7 @@ A company's core domain shows up in places the marketing team never directly con
 
 Every one of those repetitions either adds friction or removes it. JambaJuice.com made each mention longer and pinned it to a single, increasingly loaded word. Jamba.com made each mention shorter, cleaner, and category-free — letting "bowls" and "boosts" and "plant-based" coexist with the name instead of fighting it.
 
-And the crucial point: **Jamba could make that switch instantly, because it already owned the destination.** Its own SEC filings list, in plain language, that [the Company has registered and maintains numerous Internet domain names, including "jamba.com" and "jambajuice.com."](https://www.sec.gov/Archives/edgar/data/1316898/000114420414014228/v369380_10k.htm) — a sentence on the record years *before* the 2019 rebrand. The expensive, slow part of a name change — securing the exact-match .com — had been quietly handled since the late 1990s.
+And the crucial point: **Jamba could make that switch instantly, because it already owned the destination.** Its own SEC filings list, in plain language, that [the Company has registered and maintains numerous Internet domain names, including "jamba.com" and "jambajuice.com."](https://www.sec.gov/Archives/edgar/data/1316898/000114420414014228/v369380_10k.htm) — a sentence on the record years *before* the 2019 rebrand. The expensive, slow part of a name change — securing the exact-match [.com](/en/tld/com/) — had been quietly handled since the late 1990s.
 
 Is there a public price for Jamba.com? No. Because there was no headline acquisition to put a number on. Jamba registered and held the name itself, so unlike the eleven-million-dollar Tesla.com deal or the equity-for-Uber.com trade, there is simply no public sale figure — and we won't invent one. The story here isn't what the domain cost. It's that owning it early made the rebrand almost free to execute.
 

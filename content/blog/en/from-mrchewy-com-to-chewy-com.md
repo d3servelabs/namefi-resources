@@ -55,7 +55,7 @@ By the time the money arrived, the brand had to be ready to scale — and a bran
 
 It is tempting to look at "Chewy" and "Chewy.com" and assume the one-word name was always obvious, always cheap, always inevitable. It wasn't.
 
-In 2011 and 2012, Chewy was a self-funded startup running on the founders' own cash and small loans, in a category investors actively avoided. A premium, exact-match, one-word .com — hand-registered in 2004 and parked inside a top-tier domain portfolio — is not the kind of asset a cash-strapped pet store buys casually. Whatever the undisclosed price was, it was being weighed against payroll, inventory, and the customer-service infrastructure that would actually become the company's moat.
+In 2011 and 2012, Chewy was a self-funded startup running on the founders' own cash and small loans, in a category investors actively avoided. A premium, exact-match, one-word [.com](/en/tld/com/) — hand-registered in 2004 and parked inside a top-tier domain portfolio — is not the kind of asset a cash-strapped pet store buys casually. Whatever the undisclosed price was, it was being weighed against payroll, inventory, and the customer-service infrastructure that would actually become the company's moat.
 
 That is the right frame for any domain decision: not "what is this name worth at the end of the story," but "what is it worth to a company that doesn't yet know if it will survive the year." Chewy chose to consolidate on the clean name early, while it was still small enough that the decision was a real cost — and that, more than hindsight, is what made it a strategic choice rather than a vanity one.
 

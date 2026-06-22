@@ -13,9 +13,9 @@ description: 'How the crypto-card startup Monaco rebranded to Crypto.com in 2018
 keywords: ['mona.co', 'crypto.com', 'crypto.com domain', 'monaco mco', 'matt blaze crypto.com', 'kris marszalek', 'domain upgrade', 'premium domain', 'category domain', 'domain acquisition', 'crypto rebrand', 'exact match domain', 'branding']
 ---
 
-For its first couple of years, one of the most aggressive brands in crypto lived at a quietly clever address: **Mona.co** — the company "Monaco," spelled out across a domain and a country-code TLD, the way bit.ly or goo.gl turned a `.ly` or `.gl` into part of the word.
+For its first couple of years, one of the most aggressive brands in crypto lived at a quietly clever address: **Mona.co** — the company "Monaco," spelled out across a domain and a country-code [TLD](/en/glossary/tld/), the way bit.ly or goo.gl turned a `.ly` or `.gl` into part of the word.
 
-The name was a pun, and a good one. The startup, founded in Hong Kong in 2016, was building a Visa card and wallet for spending cryptocurrency. "Monaco" evoked wealth, luxury, the Riviera — and the `.co` let the brand sit on a short, memorable URL while the team waited to see how big the idea could get. Mona.co told you the company's name. It didn't tell you the category.
+The name was a pun, and a good one. The startup, founded in Hong Kong in 2016, was building a Visa card and [wallet](/en/glossary/wallet/) for spending cryptocurrency. "Monaco" evoked wealth, luxury, the Riviera — and the `.co` let the brand sit on a short, memorable URL while the team waited to see how big the idea could get. Mona.co told you the company's name. It didn't tell you the category.
 
 That was the gap. Monaco wasn't trying to be a luxury card company. It was trying to be *the* place ordinary people touched cryptocurrency for the first time. And the single word that named that entire category — the word every headline, every regulator, every newcomer already used — wasn't "Monaco." It was **crypto**.
 
@@ -108,13 +108,13 @@ A company's core domain shows up in places the marketing team never directly con
 - In search results and the browser bar — where "crypto.com" is something a newcomer might type *before* they know any brand at all.
 - In every word-of-mouth recommendation: "just go to crypto dot com."
 
-Every one of those repetitions either adds friction or removes it. Mona.co required a tiny act of translation — *Monaco, spelled with the .co* — and told a first-timer nothing about the category. Crypto.com removed the translation entirely and pre-loaded the category into the name. For a company whose whole strategy was to be the default on-ramp for people who knew nothing about the space, that pre-loading was the product.
+Every one of those repetitions either adds friction or removes it. Mona.co required a tiny act of translation — *Monaco, spelled with the [.co](/en/tld/co/)* — and told a first-timer nothing about the category. Crypto.com removed the translation entirely and pre-loaded the category into the name. For a company whose whole strategy was to be the default on-ramp for people who knew nothing about the space, that pre-loading was the product.
 
 The domain didn't build Crypto.com's brand. But once Crypto.com was the address, every future mention of the category — in headlines, in conversations, in the panicked first search of someone who just heard about Bitcoin at a dinner party — had a chance of landing on the company's front door instead of someone else's.
 
 ## What founders should learn from Case 20
 
-The easy takeaway — "buy the category-defining .com" — is the wrong lesson, because almost no founder *can*. Crypto.com existed for 25 years and was unbuyable for 24 of them. The useful lessons are narrower:
+The easy takeaway — "buy the category-defining [.com](/en/tld/com/)" — is the wrong lesson, because almost no founder *can*. Crypto.com existed for 25 years and was unbuyable for 24 of them. The useful lessons are narrower:
 
 1. **A clever brand-hack domain is a fine on-ramp.** Mona.co did genuine work: short, premium, memorable, cheap relative to the exact match. A `.co` pun or a modifier domain is a reasonable starting line, not a failure.
 2. **Know the difference between your name and your category.** Most domain upgrades trade a descriptive name for the brand. The rarest and most powerful upgrade trades the brand for the *category* — but it only pays off if you intend to be the default, not a boutique.

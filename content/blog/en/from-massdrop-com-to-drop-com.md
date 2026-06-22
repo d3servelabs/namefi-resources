@@ -21,7 +21,7 @@ For that first audience, Massdrop.com was perfect. It named the move.
 
 But the company underneath the name kept changing. By 2019, Massdrop was no longer just a coordinator of bulk orders. It was designing its own keyboards and headphones, running a real commerce platform, and preparing to ship to new markets. The "Mass" — the word that made the model legible on day one — had started to describe a smaller, older company than the one it had become.
 
-So in April 2019, Massdrop did what a surprising number of growing companies eventually do: it dropped half its name. It became simply **Drop**, and it moved to the exact-match domain it had quietly secured ahead of time — **Drop.com**, a premium one-word .com that had once carried an [asking price of $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
+So in April 2019, Massdrop did what a surprising number of growing companies eventually do: it dropped half its name. It became simply **Drop**, and it moved to the exact-match domain it had quietly secured ahead of time — **Drop.com**, a premium one-word [.com](/en/tld/com/) that had once carried an [asking price of $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
 
 ## 2012–2019: the "Mass" that did real work
 
@@ -97,7 +97,7 @@ That is the subtle art of a good rename: cut the word that limits you, keep the 
 
 The order of events is what makes this case instructive.
 
-The $800,000 asking price for Drop.com surfaced in early 2017. The domain went behind Whois privacy in [August of 2017](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=Whois%20privacy%20enabled%20at%20GoDaddy%20since%20August%20of%202017). The public rebrand to Drop didn't happen until [29 April, 2019](https://www.notebookcheck.net/Massdrop-becomes-Drop-announces-new-range-of-own-brand-products.419780.0.html#:~:text=29%20April%2C%202019). The expensive, externally-owned asset was locked down well before the name went live.
+The $800,000 asking price for Drop.com surfaced in early 2017. The domain went behind [Whois](/en/glossary/whois/) privacy in [August of 2017](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=Whois%20privacy%20enabled%20at%20GoDaddy%20since%20August%20of%202017). The public rebrand to Drop didn't happen until [29 April, 2019](https://www.notebookcheck.net/Massdrop-becomes-Drop-announces-new-range-of-own-brand-products.419780.0.html#:~:text=29%20April%2C%202019). The expensive, externally-owned asset was locked down well before the name went live.
 
 Notice the dependency. Massdrop couldn't credibly *be* "Drop" while its website lived at Massdrop.com and someone else owned Drop.com. The brand, the social handles, and the domain had to move together — and the piece least under the company's control was the domain, because it had a price tag and an owner. Securing Drop.com (and the @Drop handles) is what let the company flip the switch in a single announcement, with [Massdrop.com now directs to Drop.com](https://smartbranding.com/massdrop-rebrands-to-drop/#:~:text=Massdrop.com%20now%20directs%20to%20Drop.com) on day one.
 
