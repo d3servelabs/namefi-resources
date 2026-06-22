@@ -20,7 +20,7 @@ This guide is about that competition. It covers how a domain listing actually ge
 
 ## Where listings live: the marketplace as a search engine
 
-When you list a domain for sale, you're publishing into the [domain aftermarket](/en/glossary/marketplace/) — which is, by definition, [the secondary resale market for Internet domain names](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=is%20the%20secondary%20resale%20market%20for%20Internet%20domain%20names) where a buyer who wants a name that's already registered negotiates to take it over. Two marketplaces dominate that market for most sellers. Sedo, [an American domain aftermarket company](https://en.wikipedia.org/wiki/Sedo#:~:text=is%20an%20American%20domain%20aftermarket%20company) founded in 2000, runs one of the largest [marketplaces](/en/glossary/domain-trading/) and auction systems. Afternic, GoDaddy's aftermarket arm, runs the other.
+When you list a domain for sale, you're publishing into the [domain aftermarket](/en/glossary/marketplace/) — which is, by definition, [the secondary resale market for Internet domain names](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=is%20the%20secondary%20resale%20market%20for%20Internet%20domain%20names) where a buyer who wants a name that's already registered negotiates to take it over. Two marketplaces dominate that market for most sellers. Sedo, [an American domain aftermarket company](https://en.wikipedia.org/wiki/Sedo#:~:text=is%20an%20American%20domain%20aftermarket%20company) founded in 2000, runs one of the largest [marketplaces](/en/glossary/domain-trading/) and [auction](/en/glossary/auction/) systems. Afternic, GoDaddy's aftermarket arm, runs the other.
 
 The mental shift that makes a flipper better at this is simple: treat each marketplace as a search engine, not a noticeboard. Buyers don't browse front to back. They search — by keyword, by [TLD](/en/glossary/tld/), by price, by length — and your listing either matches that query or it doesn't. Everything below is about making your name match the searches real buyers run.
 
@@ -66,7 +66,7 @@ After search, the second way buyers find names is by filtering — and that runs
 
 ## Internal discoverability: don't waste the traffic you already have
 
-Marketplaces aren't the only place a name gets found. A surprising share of inbound interest arrives at the domain itself — someone types it into a browser, or follows a stale link. That traffic is free, intent-rich, and easy to squander. Every visitor who lands on a registrar error or a generic ad page is a buyer you paid renewal fees to lose.
+Marketplaces aren't the only place a name gets found. A surprising share of inbound interest arrives at the domain itself — someone types it into a browser, or follows a stale link. That traffic is free, intent-rich, and easy to squander. Every visitor who lands on a [registrar](/en/glossary/registrar/) error or a generic ad page is a buyer you paid renewal fees to lose.
 
 Capturing that traffic is the job of two pages the [marketing pillar](/en/blog/marketing-your-domains-for-sale/) covers in depth: the parking page and the for-sale lander. Both should make the for-sale status obvious and point straight at your listing or contact path. We go deep on the revenue side in [domain parking and monetization](/en/blog/domain-parking-and-monetization/), and on conversion in [domain for sale landing pages](/en/blog/domain-for-sale-landing-pages/). The discoverability point is narrow: a buyer who finds the name directly should never have to wonder whether it's available or hunt for how to buy it. GoDaddy frames its lander's job exactly this way — it [lets interested buyers know your domain is for sale and provides all the information they need to purchase your domain](https://www.godaddy.com/help/add-a-for-sale-lander-to-my-domain-listing-41624#:~:text=lets%20interested%20buyers%20know%20your%20domain%20is%20for%20sale%20and%20provides%20all%20the%20information%20they%20need%20to%20purchase).
 
@@ -96,7 +96,7 @@ Five yeses, and you've done the discoverability work that's in your control. The
 
 Getting found is half the battle; the other half is the handoff. Once a listing does its job and a buyer commits, the trade still has to settle — and that's where high-value deals stall, because neither side wants to move first. The usual fix is a neutral [escrow](/en/glossary/escrow/) workflow, which we explain in [domain escrow explained](/en/blog/domain-escrow-explained/).
 
-[Namefi](https://namefi.io) narrows that friction a different way. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover. A listing's whole purpose is to start a conversation with the right buyer; a clean, auditable transfer is what turns that conversation into a closed sale.
+[Namefi](https://namefi.io) narrows that friction a different way. Tokenized ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with [DNS](/en/glossary/dns/) continuity so the name keeps resolving through the handover. A listing's whole purpose is to start a conversation with the right buyer; a clean, auditable transfer is what turns that conversation into a closed sale.
 
 ## Friendly Disclaimer (Read Me!)
 
