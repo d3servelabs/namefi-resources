@@ -11,7 +11,7 @@ keywords: ['Wie man eine Domain tokenisiert', 'Wie man eine .com tokenisiert', '
 
 Sie besitzen also eine Domain – vielleicht `mybrand.com`, vielleicht ein Portfolio von `.xyz`-Namen – und Sie haben beschlossen, dass Sie diese **tokenisieren** möchten. Dieser Leitfaden führt Sie Bildschirm für Bildschirm durch das, was tatsächlich passiert, damit Sie die Zeit, das Geld und die Zugriffsrechte planen können, die Sie benötigen, bevor Sie beginnen.
 
-Wenn Sie noch überlegen, *warum* Sie tokenisieren sollten, lesen Sie zuerst [Warum Domains On-Chain tokenisieren?](/en/blog/why-tokenize-domains/). Wenn Sie sich nicht sicher sind, *was* Tokenisierung überhaupt bedeutet, ist [Was sind tokenisierte Domains?](/en/blog/what-are-tokenized-domains/) der richtige Einstiegspunkt.
+Wenn Sie noch überlegen, *warum* Sie tokenisieren sollten, lesen Sie zuerst [Warum Domains On-Chain tokenisieren?](/de/blog/why-tokenize-domains/). Wenn Sie sich nicht sicher sind, *was* Tokenisierung überhaupt bedeutet, ist [Was sind tokenisierte Domains?](/de/blog/what-are-tokenized-domains/) der richtige Einstiegspunkt.
 
 Dieser Beitrag geht davon aus, dass Sie es bereits tun möchten.
 
@@ -21,10 +21,10 @@ Dieser Beitrag geht davon aus, dass Sie es bereits tun möchten.
 
 Der Ablauf wird viel reibungsloser sein, wenn folgende Punkte erfüllt sind, bevor Sie irgendwo klicken:
 
-- **Sie kontrollieren die Domain bei ihrem aktuellen [Registrar](/en/glossary/registrar/).** Sie können sich einloggen, Nameserver ändern und Transfers / [Auth-Codes](/en/glossary/auth-code/) genehmigen.
-- **Sie besitzen eine selbstverwaltete (self-custodial) [Wallet](/en/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet oder jede andere Standard-EVM-Wallet. Stellen Sie sicher, dass Sie tatsächlich über die [Seed-Phrase](/en/glossary/seed-phrase/) verfügen – und nicht nur über ein Konto bei einer Kryptobörse.
-- **Die Wallet verfügt über eine kleine Menge an [Gas](/en/glossary/gas/).** Ein paar Dollar in ETH oder Base-ETH decken die [On-Chain](/en/glossary/on-chain/)-Mint-Transaktion ab. Sie benötigen nicht viel.
-- **Die Domain ist nicht gesperrt, läuft nicht bald ab und befindet sich nicht mitten in einem Transfer.** Domains innerhalb von etwa 60 Tagen nach einem kürzlichen [Registrar-Transfer](/en/glossary/cross-registrar-transfer/) oder innerhalb von 30 Tagen vor Ablauf können oft nicht übertragen werden. Prüfen Sie dies im Voraus.
+- **Sie kontrollieren die Domain bei ihrem aktuellen [Registrar](/de/glossary/registrar/).** Sie können sich einloggen, Nameserver ändern und Transfers / [Auth-Codes](/en/glossary/auth-code/) genehmigen.
+- **Sie besitzen eine selbstverwaltete (self-custodial) [Wallet](/de/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet oder jede andere Standard-EVM-Wallet. Stellen Sie sicher, dass Sie tatsächlich über die [Seed-Phrase](/en/glossary/seed-phrase/) verfügen – und nicht nur über ein Konto bei einer Kryptobörse.
+- **Die Wallet verfügt über eine kleine Menge an [Gas](/en/glossary/gas/).** Ein paar Dollar in ETH oder Base-ETH decken die [On-Chain](/de/glossary/on-chain/)-Mint-Transaktion ab. Sie benötigen nicht viel.
+- **Die Domain ist nicht gesperrt, läuft nicht bald ab und befindet sich nicht mitten in einem Transfer.** Domains innerhalb von etwa 60 Tagen nach einem kürzlichen [Registrar-Transfer](/de/glossary/cross-registrar-transfer/) oder innerhalb von 30 Tagen vor Ablauf können oft nicht übertragen werden. Prüfen Sie dies im Voraus.
 - **Sie haben Zeit.** Planen Sie etwa 30 Minuten aktive Aufmerksamkeit ein, plus bis zu 5–7 Tage für die Hintergrundverarbeitung bei Registrar-Transfers.
 
 Wenn einer dieser Punkte unsicher ist, beheben Sie ihn, bevor Sie beginnen. Der Prozess verträgt Geduld viel besser als Überraschungen.
@@ -35,13 +35,13 @@ Wenn einer dieser Punkte unsicher ist, beheben Sie ihn, bevor Sie beginnen. Der 
 
 Gehen Sie zu [namefi.io](https://namefi.io) und klicken Sie auf „Connect Wallet“. Bestätigen Sie die Verbindung in Ihrer Wallet. Diese Wallet wird der **Eigentümer** der tokenisierten Domain – der NFT wird hier liegen, und wer diese Wallet besitzt, besitzt die Domain.
 
-> **Nehmen Sie das ernst.** Wenn Sie diese Wallet verlieren, verlieren Sie die On-Chain-Seite Ihrer Domain. Wir haben einen separaten Leitfaden zur [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) – lesen Sie ihn jetzt, nicht erst später.
+> **Nehmen Sie das ernst.** Wenn Sie diese Wallet verlieren, verlieren Sie die On-Chain-Seite Ihrer Domain. Wir haben einen separaten Leitfaden zur [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/de/blog/recovering-a-tokenized-domain-after-wallet-loss/) – lesen Sie ihn jetzt, nicht erst später.
 
 ---
 
 ## Schritt 2: Fügen Sie die Domain hinzu, die Sie tokenisieren möchten
 
-Suchen oder fügen Sie in Ihrem Namefi-Dashboard die Domain hinzu, die Sie bereits besitzen. Namefi prüft die Eignung – den [Registrar](/en/glossary/registrar/), bei dem sie sich derzeit befindet, ob sie gesperrt werden kann, ob sie den [ICANN](/en/glossary/icann/)-Transferregeln entspricht und ob die [TLD](/en/glossary/tld/) unterstützt wird.
+Suchen oder fügen Sie in Ihrem Namefi-Dashboard die Domain hinzu, die Sie bereits besitzen. Namefi prüft die Eignung – den [Registrar](/de/glossary/registrar/), bei dem sie sich derzeit befindet, ob sie gesperrt werden kann, ob sie den [ICANN](/de/glossary/icann/)-Transferregeln entspricht und ob die [TLD](/en/glossary/tld/) unterstützt wird.
 
 Sie werden einen von drei Status sehen:
 
@@ -75,12 +75,12 @@ Dies ist der langsamste Teil des gesamten Prozesses. Planen Sie 5–7 Tage für 
 
 ## Schritt 5: Den On-Chain-Token minten
 
-Sobald sich die Domain unter der Namefi-Registrar-Integration befindet, werden Sie aufgefordert, die [NFT](/en/glossary/nft/)-Darstellung (ein Standard-[ERC-721](/en/glossary/erc-721/)-Token) zu **minten**. Ihre Wallet öffnet sich; Sie bestätigen eine Transaktion; [Gas](/en/glossary/gas/) wird bezahlt; der Token landet in Ihrer Wallet.
+Sobald sich die Domain unter der Namefi-Registrar-Integration befindet, werden Sie aufgefordert, die [NFT](/de/glossary/nft/)-Darstellung (ein Standard-[ERC-721](/en/glossary/erc-721/)-Token) zu **minten**. Ihre Wallet öffnet sich; Sie bestätigen eine Transaktion; [Gas](/en/glossary/gas/) wird bezahlt; der Token landet in Ihrer Wallet.
 
-Dies ist der Moment, in dem die Domain [*tokenisiert*](/en/glossary/tokenize/) wird. Sie haben nun:
+Dies ist der Moment, in dem die Domain [*tokenisiert*](/de/glossary/tokenize/) wird. Sie haben nun:
 
-- Den traditionellen [DNS](/en/glossary/dns/) / Registrar-Eintrag (immer noch real, immer noch ICANN-anerkannt).
-- Einen [On-Chain](/en/glossary/on-chain/)-NFT in Ihrer Wallet, der das Eigentum repräsentiert.
+- Den traditionellen [DNS](/de/glossary/dns/) / Registrar-Eintrag (immer noch real, immer noch ICANN-anerkannt).
+- Einen [On-Chain](/de/glossary/on-chain/)-NFT in Ihrer Wallet, der das Eigentum repräsentiert.
 
 Beide werden fortan durch das Protokoll synchron gehalten.
 
@@ -98,7 +98,7 @@ Wenn Sie eine [Hardware-Wallet](/en/glossary/hardware-wallet/) haben, ist dies e
 
 Die Tokenisierung einer Domain ändert nichts daran, wie sie aufgelöst wird. Ihre Nameserver, A-Records, MX-Records, DNSSEC – all das funktioniert weiterhin. Sie können diese über das Namefi-Dashboard verwalten oder sie wie bisher an Ihren bestehenden DNS-Anbieter (Cloudflare, Route53 usw.) delegieren.
 
-Details darüber, was sich auf der DNS-Ebene ändert (und was nicht), finden Sie unter [DNS funktioniert weiterhin: Nameserver, E-Mail und DNSSEC bei einer tokenisierten Domain](/en/blog/dns-on-tokenized-domains/).
+Details darüber, was sich auf der DNS-Ebene ändert (und was nicht), finden Sie unter [DNS funktioniert weiterhin: Nameserver, E-Mail und DNSSEC bei einer tokenisierten Domain](/de/blog/dns-on-tokenized-domains/).
 
 Verlängerungen (Renewals) erfolgen weiterhin über die Registrar-Ebene. Namefi übernimmt die registrarseitige Abrechnung; Sie behalten das On-Chain-Eigentum.
 
@@ -121,7 +121,7 @@ Es gibt keine versteckten Überraschungen. Wenn eine Zahl nicht auf dem Bestäti
 - **„Mein Registrar gibt den Auth-Code nicht heraus.“** Einige Registrare verstecken diesen tief in ihrer Benutzeroberfläche oder verlangen ein Support-Ticket. Seien Sie geduldig und hartnäckig.
 - **„Ich habe die Domain entsperrt, aber das System sagt immer noch, sie sei gesperrt.“** Registrare speichern den Sperrstatus oft für bis zu 24 Stunden im Cache. Warten Sie einen Tag ab und aktualisieren Sie dann die Seite.
 - **„Meine Wallet zeigt den NFT an, aber die Domain erscheint immer noch bei meinem alten Registrar.“** Während des Transferfensters können beide Seiten kurzzeitig den Besitz anzeigen. Die On-Chain-Seite wird maßgeblich, nachdem der Transfer abgeschlossen ist.
-- **„Ich möchte eine [Multisig](/en/glossary/multi-sig/) als Eigentümer verwenden.“** Wird unterstützt. Verbinden Sie die Multisig-Wallet. Stellen Sie nur sicher, dass Sie tatsächlich Transaktionen von ihr ausführen können – eine Multisig, bei der Sie Unterzeichner verloren haben, bedeutet auch eine verlorene Domain. Hintergrundinformationen: [Verbessern Multisig-Wallets tatsächlich die Sicherheit?](/en/blog/do-multisig-wallets-actually-improve-security/)
+- **„Ich möchte eine [Multisig](/de/glossary/multi-sig/) als Eigentümer verwenden.“** Wird unterstützt. Verbinden Sie die Multisig-Wallet. Stellen Sie nur sicher, dass Sie tatsächlich Transaktionen von ihr ausführen können – eine Multisig, bei der Sie Unterzeichner verloren haben, bedeutet auch eine verlorene Domain. Hintergrundinformationen: [Verbessern Multisig-Wallets tatsächlich die Sicherheit?](/de/blog/do-multisig-wallets-actually-improve-security/)
 
 ---
 
@@ -139,6 +139,6 @@ Es gibt keine versteckten Überraschungen. Wenn eine Zahl nicht auf dem Bestäti
 - Sie benötigen: Kontrolle über die Domain, eine selbstverwaltete Wallet, eine kleine Menge an Gas und Geduld.
 - Der On-Chain-Mint ist der *letzte* Schritt; die meiste Arbeit ist der eher langweilige Registrar-Transfer-Ablauf, den die ICANN unabhängig von der Blockchain vorschreibt.
 - Nach der Tokenisierung haben Sie **zwei synchronisierte Eigentumsschichten** – den traditionellen DNS-Eintrag und einen NFT in Ihrer Wallet.
-- Lesen Sie den [Leitfaden zur Wiederherstellung nach Wallet-Verlust](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) *bevor* Sie tokenisieren, nicht erst danach.
+- Lesen Sie den [Leitfaden zur Wiederherstellung nach Wallet-Verlust](/de/blog/recovering-a-tokenized-domain-after-wallet-loss/) *bevor* Sie tokenisieren, nicht erst danach.
 
 Bereit loszulegen? Besuchen Sie [namefi.io](https://namefi.io).

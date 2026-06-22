@@ -11,7 +11,7 @@ keywords: ['comment tokéniser un domaine', 'comment tokéniser un .com', 'toké
 
 Vous possédez donc un domaine — peut-être `mybrand.com`, ou peut-être un portefeuille de noms en `.xyz` — et vous avez décidé de le **tokéniser**. Ce guide explique ce qui se passe réellement, écran par écran, afin que vous puissiez anticiper le temps, l'argent et les accès dont vous aurez besoin avant de commencer.
 
-Si vous vous demandez encore *pourquoi* tokéniser, lisez d'abord [Pourquoi tokéniser des domaines sur la blockchain ?](/en/blog/why-tokenize-domains/). Si vous n'êtes pas sûr de ce que *signifie* la tokénisation, [Que sont les domaines tokénisés ?](/en/blog/what-are-tokenized-domains/) est le point de départ idéal.
+Si vous vous demandez encore *pourquoi* tokéniser, lisez d'abord [Pourquoi tokéniser des domaines sur la blockchain ?](/fr/blog/why-tokenize-domains/). Si vous n'êtes pas sûr de ce que *signifie* la tokénisation, [Que sont les domaines tokénisés ?](/fr/blog/what-are-tokenized-domains/) est le point de départ idéal.
 
 Cet article suppose que votre décision est déjà prise.
 
@@ -21,10 +21,10 @@ Cet article suppose que votre décision est déjà prise.
 
 Le processus sera beaucoup plus fluide si ces conditions sont remplies avant même de cliquer sur quoi que ce soit :
 
-- **Vous contrôlez le domaine chez son [bureau d'enregistrement](/en/glossary/registrar/) (registrar) actuel.** Vous pouvez vous connecter, modifier les serveurs de noms et approuver les transferts / [codes d'autorisation](/en/glossary/auth-code/).
-- **Vous possédez un [portefeuille](/en/glossary/wallet/) (wallet) auto-hébergé.** MetaMask, Rabby, Coinbase Wallet, ou tout portefeuille EVM standard. Assurez-vous de bien détenir la [phrase de récupération](/en/glossary/seed-phrase/) (seed phrase) — et pas seulement un compte sur une plateforme d'échange.
-- **Le portefeuille contient un peu de [gaz](/en/glossary/gas/) (gas).** Quelques dollars en ETH ou Base ETH suffisent pour couvrir la transaction de création (*mint*) [sur la blockchain](/en/glossary/on-chain/). Vous n'avez pas besoin de beaucoup.
-- **Le domaine n'est ni verrouillé, ni sur le point d'expirer, ni en cours de transfert.** Les domaines ayant subi un récent [transfert entre bureaux d'enregistrement](/en/glossary/cross-registrar-transfer/) il y a moins de 60 jours environ, ou expirant dans moins de 30 jours, ne peuvent souvent pas être déplacés. Vérifiez d'abord.
+- **Vous contrôlez le domaine chez son [bureau d'enregistrement](/fr/glossary/registrar/) (registrar) actuel.** Vous pouvez vous connecter, modifier les serveurs de noms et approuver les transferts / [codes d'autorisation](/en/glossary/auth-code/).
+- **Vous possédez un [portefeuille](/fr/glossary/wallet/) (wallet) auto-hébergé.** MetaMask, Rabby, Coinbase Wallet, ou tout portefeuille EVM standard. Assurez-vous de bien détenir la [phrase de récupération](/en/glossary/seed-phrase/) (seed phrase) — et pas seulement un compte sur une plateforme d'échange.
+- **Le portefeuille contient un peu de [gaz](/en/glossary/gas/) (gas).** Quelques dollars en ETH ou Base ETH suffisent pour couvrir la transaction de création (*mint*) [sur la blockchain](/fr/glossary/on-chain/). Vous n'avez pas besoin de beaucoup.
+- **Le domaine n'est ni verrouillé, ni sur le point d'expirer, ni en cours de transfert.** Les domaines ayant subi un récent [transfert entre bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) il y a moins de 60 jours environ, ou expirant dans moins de 30 jours, ne peuvent souvent pas être déplacés. Vérifiez d'abord.
 - **Vous avez du temps.** Prévoyez environ 30 minutes d'attention, plus jusqu'à 5 à 7 jours de traitement en arrière-plan pour les transferts entre registrars.
 
 Si l'un de ces points est incertain, réglez-le avant de commencer. Le processus tolère bien mieux la patience que les surprises.
@@ -35,13 +35,13 @@ Si l'un de ces points est incertain, réglez-le avant de commencer. Le processus
 
 Rendez-vous sur [namefi.io](https://namefi.io) et cliquez sur « Connect Wallet » (Connecter le portefeuille). Approuvez la connexion dans votre portefeuille. Ce portefeuille deviendra le **propriétaire** du domaine tokénisé — le NFT y résidera, et quiconque détient ce portefeuille détient le domaine.
 
-> **Prenez cela très au sérieux.** Si vous perdez ce portefeuille, vous perdez la partie on-chain de votre domaine. Nous avons un guide dédié sur [la récupération d'un domaine tokénisé après la perte d'un portefeuille](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) — lisez-le maintenant, et non plus tard.
+> **Prenez cela très au sérieux.** Si vous perdez ce portefeuille, vous perdez la partie on-chain de votre domaine. Nous avons un guide dédié sur [la récupération d'un domaine tokénisé après la perte d'un portefeuille](/fr/blog/recovering-a-tokenized-domain-after-wallet-loss/) — lisez-le maintenant, et non plus tard.
 
 ---
 
 ## Étape 2 : Ajoutez le domaine que vous souhaitez tokéniser
 
-Dans votre tableau de bord Namefi, recherchez ou ajoutez le domaine que vous possédez déjà. Namefi vérifiera son éligibilité : le [bureau d'enregistrement](/en/glossary/registrar/) actuel, s'il est verrouillable, s'il respecte les règles de transfert de l'[ICANN](/en/glossary/icann/), et si l'extension ([TLD](/en/glossary/tld/)) est prise en charge.
+Dans votre tableau de bord Namefi, recherchez ou ajoutez le domaine que vous possédez déjà. Namefi vérifiera son éligibilité : le [bureau d'enregistrement](/fr/glossary/registrar/) actuel, s'il est verrouillable, s'il respecte les règles de transfert de l'[ICANN](/fr/glossary/icann/), et si l'extension ([TLD](/en/glossary/tld/)) est prise en charge.
 
 Vous verrez l'un des trois statuts suivants :
 
@@ -75,12 +75,12 @@ C'est la partie la plus lente de tout le processus. Prévoyez 5 à 7 jours pour 
 
 ## Étape 5 : *Mintez* le jeton sur la blockchain
 
-Une fois le domaine passé sous l'intégration du registrar Namefi, vous serez invité à **minter** (créer) sa représentation [NFT](/en/glossary/nft/) (un jeton standard [ERC-721](/en/glossary/erc-721/)). Votre portefeuille s'ouvre ; vous confirmez la transaction ; le [gaz](/en/glossary/gas/) est payé ; et le jeton atterrit dans votre portefeuille.
+Une fois le domaine passé sous l'intégration du registrar Namefi, vous serez invité à **minter** (créer) sa représentation [NFT](/fr/glossary/nft/) (un jeton standard [ERC-721](/en/glossary/erc-721/)). Votre portefeuille s'ouvre ; vous confirmez la transaction ; le [gaz](/en/glossary/gas/) est payé ; et le jeton atterrit dans votre portefeuille.
 
-C'est à ce moment précis que le domaine devient [*tokénisé*](/en/glossary/tokenize/). Vous disposez désormais de :
+C'est à ce moment précis que le domaine devient [*tokénisé*](/fr/glossary/tokenize/). Vous disposez désormais de :
 
-- L'enregistrement [DNS](/en/glossary/dns/) / registrar traditionnel (toujours réel et reconnu par l'ICANN).
-- Un NFT [on-chain](/en/glossary/on-chain/) dans votre portefeuille, représentant la propriété du domaine.
+- L'enregistrement [DNS](/fr/glossary/dns/) / registrar traditionnel (toujours réel et reconnu par l'ICANN).
+- Un NFT [on-chain](/fr/glossary/on-chain/) dans votre portefeuille, représentant la propriété du domaine.
 
 Les deux sont désormais maintenus synchronisés par le protocole.
 
@@ -98,7 +98,7 @@ Si vous avez un [portefeuille matériel](/en/glossary/hardware-wallet/) (hardwar
 
 Tokéniser un domaine ne modifie en rien sa résolution. Vos serveurs de noms, enregistrements A, enregistrements MX, DNSSEC : tout continue de fonctionner normalement. Vous pouvez gérer cela depuis le tableau de bord Namefi, ou bien déléguer la gestion à votre fournisseur DNS existant (Cloudflare, Route53, etc.) exactement comme avant.
 
-Pour plus de détails sur ce qui change (ou pas) au niveau de la couche DNS, consultez [Le DNS fonctionne toujours : serveurs de noms, e-mails et DNSSEC sur un domaine tokénisé](/en/blog/dns-on-tokenized-domains/).
+Pour plus de détails sur ce qui change (ou pas) au niveau de la couche DNS, consultez [Le DNS fonctionne toujours : serveurs de noms, e-mails et DNSSEC sur un domaine tokénisé](/fr/blog/dns-on-tokenized-domains/).
 
 Les renouvellements continuent de s'effectuer via la couche du bureau d'enregistrement. Namefi gère la facturation côté registrar ; et vous conservez la propriété on-chain.
 
@@ -121,7 +121,7 @@ Il n'y a aucune surprise cachée. Si un montant ne figure pas sur l'écran de co
 - **« Mon registrar refuse de libérer le code d'autorisation. »** Certains bureaux d'enregistrement cachent cette option dans les tréfonds de leur interface ou exigent que vous ouvriez un ticket au support. Soyez patient et persévérant.
 - **« J'ai déverrouillé le domaine mais le système l'indique toujours verrouillé. »** Les registrars mettent souvent le statut de verrouillage en cache, parfois jusqu'à 24 heures. Attendez un jour, puis rafraîchissez la page.
 - **« Mon portefeuille affiche le NFT, mais le domaine apparaît encore chez mon ancien registrar. »** Pendant la fenêtre de transfert, les deux côtés peuvent afficher brièvement la propriété. La partie on-chain fait autorité une fois le transfert finalisé.
-- **« Je souhaite utiliser un [multisig](/en/glossary/multi-sig/) comme propriétaire. »** C'est pris en charge. Connectez le portefeuille multisig. Assurez-vous simplement que vous pouvez réellement y exécuter des transactions — un multisig dont vous auriez perdu les signataires est un domaine que vous perdrez également. Pour aller plus loin : [Les portefeuilles multisig améliorent-ils vraiment la sécurité ?](/en/blog/do-multisig-wallets-actually-improve-security/)
+- **« Je souhaite utiliser un [multisig](/fr/glossary/multi-sig/) comme propriétaire. »** C'est pris en charge. Connectez le portefeuille multisig. Assurez-vous simplement que vous pouvez réellement y exécuter des transactions — un multisig dont vous auriez perdu les signataires est un domaine que vous perdrez également. Pour aller plus loin : [Les portefeuilles multisig améliorent-ils vraiment la sécurité ?](/fr/blog/do-multisig-wallets-actually-improve-security/)
 
 ---
 
@@ -139,6 +139,6 @@ Il n'y a aucune surprise cachée. Si un montant ne figure pas sur l'écran de co
 - Vous avez besoin : du contrôle du domaine, d'un portefeuille auto-hébergé, d'une petite quantité de gaz et de patience.
 - Le *mint* sur la blockchain est la *dernière* étape ; le gros du travail réside dans l'ennuyeux processus de transfert de registrar qu'impose l'ICANN, indépendamment de toute blockchain.
 - Après la tokénisation, vous obtenez **deux couches de propriété synchronisées** : l'enregistrement DNS traditionnel et un NFT dans votre portefeuille.
-- Lisez le [guide de récupération en cas de perte de portefeuille](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) *avant* de tokéniser, et non pas après.
+- Lisez le [guide de récupération en cas de perte de portefeuille](/fr/blog/recovering-a-tokenized-domain-after-wallet-loss/) *avant* de tokéniser, et non pas après.
 
 Prêt à commencer ? Rendez-vous sur [namefi.io](https://namefi.io).

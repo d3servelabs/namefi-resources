@@ -22,7 +22,7 @@ Bei der Bewertung von Endungen sollten Sie drei Kriterien abwägen. **Vertrauens
 
 ### 1. .com — Ihre Haupt- und Markendomain
 
-Die [.com](/en/tld/com)-Endung bleibt die Standarderwartung für jede Unternehmenswebsite und ist fast immer die erste Anlaufstelle für Mandanten, Partner und Suchmaschinen. Sie wird von Verisign im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/com) betrieben und steht jedem offen. Machen Sie diese zu Ihrer kanonischen Adresse und leiten Sie Ihre anderen Domains dorthin um.
+Die [.com](/de/tld/com)-Endung bleibt die Standarderwartung für jede Unternehmenswebsite und ist fast immer die erste Anlaufstelle für Mandanten, Partner und Suchmaschinen. Sie wird von Verisign im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/com) betrieben und steht jedem offen. Machen Sie diese zu Ihrer kanonischen Adresse und leiten Sie Ihre anderen Domains dorthin um.
 
 ### 2. .cpa — das Gold-Standard-Vertrauenssignal (eingeschränkt)
 
@@ -34,11 +34,11 @@ Die [.tax](/en/tld/tax)-Endung kommuniziert unmittelbar eine Spezialisierung auf
 
 ### 4. .accountant — offen und allgemein verfügbar
 
-Die [.accountant](/en/tld/accountant)-Endung wird von dog beach, LLC (einer Identity-Digital-Registry) im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/accountant) betrieben. Wichtig: .accountant ist **für die Öffentlichkeit offen** und erfordert keine professionelle Überprüfung – jeder kann sie nach dem Prinzip „Wer zuerst kommt, mahlt zuerst" registrieren. Das macht sie für Marketing- und Schutzzwecke nützlich, birgt aber kein eingebautes Zulassungssignal wie .cpa.
+Die [.accountant](/de/tld/accountant)-Endung wird von dog beach, LLC (einer Identity-Digital-Registry) im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/accountant) betrieben. Wichtig: .accountant ist **für die Öffentlichkeit offen** und erfordert keine professionelle Überprüfung – jeder kann sie nach dem Prinzip „Wer zuerst kommt, mahlt zuerst" registrieren. Das macht sie für Marketing- und Schutzzwecke nützlich, birgt aber kein eingebautes Zulassungssignal wie .cpa.
 
 ### 5. .accountants — branchenfokussiert, plurale Variante
 
-Die plurale [.accountants](/en/tld/accountants)-Endung wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/accountants) betrieben und eignet sich gut für Sozietäten und größere Kanzleien. Obwohl Registries gezielte Richtlinien anwenden können, ist .accountants im Allgemeinen für Steuerberater und verwandte Unternehmen ohne die strenge Zulassungsprüfung verfügbar, die für .cpa gilt. Die gleichzeitige Sicherung von .accountants und .accountant verhindert Verwechslungen zwischen Singular- und Pluralform.
+Die plurale [.accountants](/de/tld/accountants)-Endung wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/accountants) betrieben und eignet sich gut für Sozietäten und größere Kanzleien. Obwohl Registries gezielte Richtlinien anwenden können, ist .accountants im Allgemeinen für Steuerberater und verwandte Unternehmen ohne die strenge Zulassungsprüfung verfügbar, die für .cpa gilt. Die gleichzeitige Sicherung von .accountants und .accountant verhindert Verwechslungen zwischen Singular- und Pluralform.
 
 ### 6. .finance — für Beratungs- und Vermögensdienstleistungen
 
@@ -46,19 +46,19 @@ Die [.finance](/en/tld/finance)-Endung positioniert Ihre Kanzlei im breiteren Fi
 
 ### 7. .net — die klassische technische Alternative
 
-Die [.net](/en/tld/net)-Endung ist eine der ursprünglichen generischen TLDs, betrieben von Verisign im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/net). Sie ist weit verbreitet und wird häufig als defensive Registrierung neben .com eingesetzt, damit niemand eine verwirrend ähnliche Website aufbauen kann. Leiten Sie sie auf Ihre Hauptdomain um.
+Die [.net](/de/tld/net)-Endung ist eine der ursprünglichen generischen TLDs, betrieben von Verisign im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/net). Sie ist weit verbreitet und wird häufig als defensive Registrierung neben .com eingesetzt, damit niemand eine verwirrend ähnliche Website aufbauen kann. Leiten Sie sie auf Ihre Hauptdomain um.
 
 ### 8. .org — Glaubwürdigkeit für Verbände und gemeinnützige Organisationen
 
-Die [.org](/en/tld/org)-Endung, betrieben von der Public Interest Registry im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/org), vermittelt institutionelles Vertrauen. Sie ist eine sinnvolle defensive Registrierung für jede Kanzlei und eine natürliche primäre Wahl, wenn Ihre Kanzlei mit einer gemeinnützigen Stiftung, einem Berufsverband oder einem Gemeinschaftsprogramm verbunden ist.
+Die [.org](/de/tld/org)-Endung, betrieben von der Public Interest Registry im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/org), vermittelt institutionelles Vertrauen. Sie ist eine sinnvolle defensive Registrierung für jede Kanzlei und eine natürliche primäre Wahl, wenn Ihre Kanzlei mit einer gemeinnützigen Stiftung, einem Berufsverband oder einem Gemeinschaftsprogramm verbunden ist.
 
 ### 9. .agency — modern und serviceorientiert
 
-Die [.agency](/en/tld/agency)-Endung eignet sich für Kanzleien, die sich als Full-Service-Partner präsentieren statt als reine Auftragsbearbeiter. Sie wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/agency) betrieben und steht zur allgemeinen Registrierung offen – eine zeitgemäße, markenfähige Option für Kampagnen oder Sub-Marken.
+Die [.agency](/de/tld/agency)-Endung eignet sich für Kanzleien, die sich als Full-Service-Partner präsentieren statt als reine Auftragsbearbeiter. Sie wird von Binky Moon, LLC im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/agency) betrieben und steht zur allgemeinen Registrierung offen – eine zeitgemäße, markenfähige Option für Kampagnen oder Sub-Marken.
 
 ### 10. .info — informativ und defensiv
 
-Die [.info](/en/tld/info)-Endung, betrieben von Identity Digital im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/info), ist eine offene TLD, die sich gut für Ressourcen-Hubs, Mandantenportale und Wissensdatenbanken eignet – oder schlicht als kostengünstige defensive Registrierung, um Ihr Portfolio zu vervollständigen.
+Die [.info](/de/tld/info)-Endung, betrieben von Identity Digital im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/info), ist eine offene TLD, die sich gut für Ressourcen-Hubs, Mandantenportale und Wissensdatenbanken eignet – oder schlicht als kostengünstige defensive Registrierung, um Ihr Portfolio zu vervollständigen.
 
 ## Strategie für defensive Domain-Registrierungen
 

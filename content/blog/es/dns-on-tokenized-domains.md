@@ -19,8 +19,8 @@ Respuesta corta: **sí, sí, no.** Un dominio tokenizado sigue siendo un dominio
 
 Un dominio tokenizado tiene **dos capas**:
 
-1. **La capa de [DNS](/en/glossary/dns/) / registro**: la misma en la que tu `.com` siempre ha vivido. [ICANN](/en/glossary/icann/), el [registrador](/en/glossary/registrar/), los servidores raíz, los resolutores recursivos.
-2. **La capa [on-chain](/en/glossary/on-chain/)**: un [NFT](/en/glossary/nft/) en tu [billetera](/en/glossary/wallet/) que representa la *propiedad*.
+1. **La capa de [DNS](/es/glossary/dns/) / registro**: la misma en la que tu `.com` siempre ha vivido. [ICANN](/es/glossary/icann/), el [registrador](/es/glossary/registrar/), los servidores raíz, los resolutores recursivos.
+2. **La capa [on-chain](/es/glossary/on-chain/)**: un [NFT](/es/glossary/nft/) en tu [billetera](/es/glossary/wallet/) que representa la *propiedad*.
 
 La resolución de DNS (convertir `example.com` en una dirección IP) ocurre completamente en la capa 1. La capa on-chain trata sobre **quién controla el dominio**, no sobre cómo se resuelve. Los navegadores, servidores de correo electrónico, CDN y autoridades de certificación nunca necesitan saber que existe una blockchain.
 
@@ -67,7 +67,7 @@ El dominio se sigue renovando a través del registrador, en el mismo calendario 
 Antes: quien tuviera el inicio de sesión de la cuenta del registrador.
 Después: **quien posea el NFT on-chain** tiene el control autoritativo. El panel de Namefi vincula el NFT a la cuenta del registrador a través del protocolo, por lo que la billetera es la fuente de la verdad.
 
-Este es el punto principal. También es la razón por la que debes tomarte en serio la seguridad de tu billetera: consulta [Recuperación de un dominio tokenizado tras la pérdida de la billetera](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/).
+Este es el punto principal. También es la razón por la que debes tomarte en serio la seguridad de tu billetera: consulta [Recuperación de un dominio tokenizado tras la pérdida de la billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/).
 
 ### Dónde haces clic para gestionar el DNS
 
@@ -75,8 +75,8 @@ La mayoría de los propietarios gestionan los registros DNS dentro del panel de 
 
 ### Transferencia del dominio
 
-Antes: flujo de [transferencia entre registradores](/en/glossary/cross-registrar-transfer/), con [códigos de autorización](/en/glossary/auth-code/) y periodos de espera de 60 días.
-Después: [**transferir el NFT**](/en/glossary/atomic-transfer/). Una sola transacción on-chain transfiere la propiedad. El protocolo mantiene sincronizado el registro en el lado del registrador. Esto es radicalmente más rápido y es la razón por la que los mercados de dominios tokenizados no necesitan el tradicional [depósito de garantía (escrow)](/en/glossary/escrow/) (consulta [Del listado a la liquidación](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
+Antes: flujo de [transferencia entre registradores](/es/glossary/cross-registrar-transfer/), con [códigos de autorización](/en/glossary/auth-code/) y periodos de espera de 60 días.
+Después: [**transferir el NFT**](/es/glossary/atomic-transfer/). Una sola transacción on-chain transfiere la propiedad. El protocolo mantiene sincronizado el registro en el lado del registrador. Esto es radicalmente más rápido y es la razón por la que los mercados de dominios tokenizados no necesitan el tradicional [depósito de garantía (escrow)](/es/glossary/escrow/) (consulta [Del listado a la liquidación](/es/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Todavía puedes hacer una transferencia de registrador tradicional si lo deseas; la capa on-chain no lo impide.
 
@@ -147,4 +147,4 @@ Toda la capa "tokenizada" se sitúa *al lado* del DNS, no encima de él.
 - Puedes mantener tu DNS en Cloudflare, Route53 o donde sea que resida. O gestionarlo a través de Namefi. Ambas opciones son válidas.
 - Implicación práctica: un `.com` tokenizado es operativamente indistinguible de un `.com` no tokenizado, hasta que vas a venderlo o transferirlo, momento en el cual la capa on-chain hace que todo sea radicalmente más rápido.
 
-Para obtener una guía a nivel de operador sobre cómo tokenizar en primer lugar, consulta [Cómo tokenizar tu .com](/en/blog/how-to-tokenize-your-com/).
+Para obtener una guía a nivel de operador sobre cómo tokenizar en primer lugar, consulta [Cómo tokenizar tu .com](/es/blog/how-to-tokenize-your-com/).

@@ -36,7 +36,7 @@ Si vous lancez une entreprise, protégez une marque ou construisez quelque chose
 
 ## Qu'est-ce que le .com ?
 
-Le **domaine de premier niveau .com** est un [gTLD (domaine générique de premier niveau)](/en/blog/what-is-a-tld/) initialement destiné aux organisations commerciales. C'est l'un des tout premiers TLD créés en 1985, aux côtés de `.net`, `.org`, `.edu`, `.gov` et `.mil`, comme le documente l'[entrée de zone racine IANA pour .com](https://www.iana.org/domains/root/db/com.html). L'opérateur du registre est **Verisign**, qui gère l'infrastructure .com faisant autorité depuis des décennies.
+Le **domaine de premier niveau .com** est un [gTLD (domaine générique de premier niveau)](/fr/blog/what-is-a-tld/) initialement destiné aux organisations commerciales. C'est l'un des tout premiers TLD créés en 1985, aux côtés de `.net`, `.org`, `.edu`, `.gov` et `.mil`, comme le documente l'[entrée de zone racine IANA pour .com](https://www.iana.org/domains/root/db/com.html). L'opérateur du registre est **Verisign**, qui gère l'infrastructure .com faisant autorité depuis des décennies.
 
 Le label « com » renvoie à une vocation commerciale, mais cette restriction n'a jamais été réellement appliquée, et le suffixe est aujourd'hui utilisé par tous, des entreprises du Fortune 500 aux blogs personnels et aux organisations à but non lucratif. Pour le référencement, Google classe le .com comme une extension **générique** plutôt que ciblée géographiquement, de sorte qu'un site en .com **n'est pas géociblé** vers un seul marché et constitue un choix judicieux pour les audiences mondiales.
 
@@ -56,7 +56,7 @@ Le suffixe couvre pratiquement tous les secteurs, mais il se concentre là où l
 - **Investisseurs en noms de domaine** qui traitent les noms .com premium comme des actifs numériques de premier ordre
 - **Marques personnelles et portfolios** qui souhaitent paraître établis et crédibles
 
-**Pour qui ce n'est pas idéal :** les acheteurs à petit budget qui n'ont besoin que d'un emplacement temporaire, les projets qui veulent délibérément un signal de niche ou technologique (où [.io](/en/tld/io/) ou [.ai](/en/tld/ai/) conviennent mieux), ou toute personne qui ne trouve pas de nom acceptable disponible et ne souhaite pas envisager le marché secondaire.
+**Pour qui ce n'est pas idéal :** les acheteurs à petit budget qui n'ont besoin que d'un emplacement temporaire, les projets qui veulent délibérément un signal de niche ou technologique (où [.io](/fr/tld/io/) ou [.ai](/fr/tld/ai/) conviennent mieux), ou toute personne qui ne trouve pas de nom acceptable disponible et ne souhaite pas envisager le marché secondaire.
 
 ## Sites notables utilisant le .com
 
@@ -76,7 +76,7 @@ Ces exemples couvrent la recherche, la distribution, le matériel informatique e
 | Disponibilité de noms courts | Très rare | Rare | Modérée | Bonne |
 | Niveau de prix typique | Standard | Standard | Standard | Premium |
 
-Choisissez le **.com** comme valeur universelle par défaut chaque fois que vous pouvez trouver ou vous offrir le nom. Optez pour [.net](/en/tld/net/) comme alternative classique lorsque le .com correspondant est pris, [.org](/en/tld/org/) lorsque vous souhaitez une connotation communautaire, à but non lucratif ou de projet ouvert, ou [.io](/en/tld/io/) lorsqu'un signal technique et orienté startup ainsi que la disponibilité de noms courts comptent davantage que la familiarité grand public.
+Choisissez le **.com** comme valeur universelle par défaut chaque fois que vous pouvez trouver ou vous offrir le nom. Optez pour [.net](/fr/tld/net/) comme alternative classique lorsque le .com correspondant est pris, [.org](/fr/tld/org/) lorsque vous souhaitez une connotation communautaire, à but non lucratif ou de projet ouvert, ou [.io](/fr/tld/io/) lorsqu'un signal technique et orienté startup ainsi que la disponibilité de noms courts comptent davantage que la familiarité grand public.
 
 ## Pourquoi choisir le .com ?
 
@@ -84,7 +84,7 @@ Choisissez le **.com** comme valeur universelle par défaut chaque fois que vous
 - **Confiance et crédibilité.** Des décennies d'omniprésence font du .com un signe de légitimité et d'établissement, ce qui est particulièrement précieux pour le e-commerce et tout site demandant des informations de paiement.
 - **Intégration dans les interfaces.** De nombreux claviers mobiles proposent encore une touche dédiée « .com », un niveau de commodité intégrée qu'aucun autre suffixe ne partage.
 - **SEO mondial.** Google le traite comme générique, de sorte que votre site peut être classé dans le monde entier sans être limité à un seul pays.
-- **Valeur de revente.** Les noms .com premium conservent leur valeur plus fiablement que presque toute autre extension et ancrent le segment le plus liquide du [marché secondaire](/en/blog/how-to-sell-a-domain-name-you-own/) des domaines.
+- **Valeur de revente.** Les noms .com premium conservent leur valeur plus fiablement que presque toute autre extension et ancrent le segment le plus liquide du [marché secondaire](/fr/blog/how-to-sell-a-domain-name-you-own/) des domaines.
 
 ## Points à considérer
 
@@ -97,7 +97,7 @@ Choisissez le **.com** comme valeur universelle par défaut chaque fois que vous
 
 **Restrictions d'enregistrement : ouvert à tous.** N'importe qui dans le monde peut enregistrer un domaine .com. Il n'existe **aucune exigence de présence locale**, aucune vérification d'éligibilité commerciale, ni aucune condition de qualification ou d'appartenance à une communauté. L'intention « commerciale » d'origine n'a jamais été appliquée, de sorte que les particuliers, les organisations à but non lucratif et les entreprises enregistrent librement des noms .com.
 
-Les noms comportent **1 à 63 caractères**, autorisent les lettres, chiffres et traits d'union (mais pas en début ou en fin de nom), et **les noms de domaine internationalisés (IDN)** sont pris en charge pour les scripts non latins. Le registre prend en charge **DNSSEC**, et le comportement standard de transfert, de renouvellement et de période de grâce de récupération s'applique, y compris le processus de transfert par code d'autorisation habituel et un verrouillage de 60 jours après transfert. Comme le .com est un gTLD de l'ICANN, les règles contraignantes sont énoncées dans l'[accord de registre .com entre l'ICANN et Verisign](https://www.icann.org/en/registry-agreements/details/com), et les titulaires de marques peuvent utiliser les mécanismes de règlement des litiges de l'ICANN tels que l'[UDRP](/en/blog/what-is-udrp/) contre les enregistrements contrevenants.
+Les noms comportent **1 à 63 caractères**, autorisent les lettres, chiffres et traits d'union (mais pas en début ou en fin de nom), et **les noms de domaine internationalisés (IDN)** sont pris en charge pour les scripts non latins. Le registre prend en charge **DNSSEC**, et le comportement standard de transfert, de renouvellement et de période de grâce de récupération s'applique, y compris le processus de transfert par code d'autorisation habituel et un verrouillage de 60 jours après transfert. Comme le .com est un gTLD de l'ICANN, les règles contraignantes sont énoncées dans l'[accord de registre .com entre l'ICANN et Verisign](https://www.icann.org/en/registry-agreements/details/com), et les titulaires de marques peuvent utiliser les mécanismes de règlement des litiges de l'ICANN tels que l'[UDRP](/fr/blog/what-is-udrp/) contre les enregistrements contrevenants.
 
 ## Tarification et valeur du .com
 
@@ -125,7 +125,7 @@ Méfiez-vous de deux écueils. Premièrement, évitez les traits d'union gênant
 2. **Choisissez** le résultat en .com (et toute alternative valant la peine d'être sécurisée).
 3. **Enregistrez** et configurez vos DNS.
 
-En tant que [bureau d'enregistrement accrédité ICANN](/en/glossary/icann/) ([registrar](/en/glossary/registrar/)), Namefi fait le pont entre le Web2 et le Web3 : tarification transparente, gestion rapide des [DNS](/en/glossary/dns/), et la possibilité de conserver votre nom sous forme de [domaine tokenisé](/en/blog/what-are-tokenized-domains/) pour une [propriété de domaine](/en/glossary/domain-ownership/) vérifiable et une transférabilité facilitée. Vous pouvez même [tokeniser un .com existant](/en/blog/how-to-tokenize-your-com/) que vous possédez déjà. Commencez sur [Namefi](https://namefi.io).
+En tant que [bureau d'enregistrement accrédité ICANN](/fr/glossary/icann/) ([registrar](/fr/glossary/registrar/)), Namefi fait le pont entre le Web2 et le Web3 : tarification transparente, gestion rapide des [DNS](/fr/glossary/dns/), et la possibilité de conserver votre nom sous forme de [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) pour une [propriété de domaine](/fr/glossary/domain-ownership/) vérifiable et une transférabilité facilitée. Vous pouvez même [tokeniser un .com existant](/fr/blog/how-to-tokenize-your-com/) que vous possédez déjà. Commencez sur [Namefi](https://namefi.io).
 
 ## Foire aux questions
 
@@ -151,10 +151,10 @@ Le DNSSEC est pris en charge par le registre .com. La disponibilité de la confi
 
 ## Ressources connexes
 
-- [Qu'est-ce qu'un domaine ?](/en/blog/what-is-domain/)
-- [Qu'est-ce qu'un TLD ?](/en/blog/what-is-a-tld/)
-- [Guide de terminologie des domaines](/en/blog/domain-terminology-guide/)
-- [Comment tokeniser votre .com](/en/blog/how-to-tokenize-your-com/)
-- [Comment vendre un nom de domaine que vous possédez](/en/blog/how-to-sell-a-domain-name-you-own/)
-- Guides TLD : [.net](/en/tld/net/), [.org](/en/tld/org/), [.io](/en/tld/io/), [.ai](/en/tld/ai/), [.xyz](/en/tld/xyz/)
-- Glossaire : [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- [Qu'est-ce qu'un domaine ?](/fr/blog/what-is-domain/)
+- [Qu'est-ce qu'un TLD ?](/fr/blog/what-is-a-tld/)
+- [Guide de terminologie des domaines](/fr/blog/domain-terminology-guide/)
+- [Comment tokeniser votre .com](/fr/blog/how-to-tokenize-your-com/)
+- [Comment vendre un nom de domaine que vous possédez](/fr/blog/how-to-sell-a-domain-name-you-own/)
+- Guides TLD : [.net](/fr/tld/net/), [.org](/fr/tld/org/), [.io](/fr/tld/io/), [.ai](/fr/tld/ai/), [.xyz](/fr/tld/xyz/)
+- Glossaire : [ICANN](/fr/glossary/icann/), [registrar](/fr/glossary/registrar/), [DNS](/fr/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)

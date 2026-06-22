@@ -38,7 +38,7 @@ En tant que nouveau gTLD moderne et ouvert disposant d'un vaste pool de noms non
 
 ## Qu'est-ce que .shop ?
 
-**.shop** est un [domaine générique de premier niveau (gTLD)](/en/glossary/tld) introduit dans le cadre du Programme Nouveaux gTLD de l'[ICANN](/en/glossary/icann) — l'expansion de 2012 qui a ajouté des centaines de suffixes basés sur des mots à la zone racine. Sa signification est explicite : « shop » est un mot anglais quasi-universel pour désigner une destination commerciale, et il fonctionne comme une étiquette sémantique claire pour le commerce.
+**.shop** est un [domaine générique de premier niveau (gTLD)](/en/glossary/tld) introduit dans le cadre du Programme Nouveaux gTLD de l'[ICANN](/fr/glossary/icann) — l'expansion de 2012 qui a ajouté des centaines de suffixes basés sur des mots à la zone racine. Sa signification est explicite : « shop » est un mot anglais quasi-universel pour désigner une destination commerciale, et il fonctionne comme une étiquette sémantique claire pour le commerce.
 
 Parce qu'il est générique plutôt qu'un ccTLD (code pays), les moteurs de recherche ne rattachent pas **.shop** à une géographie particulière. Les directives de Google indiquent qu'il traite les nouveaux gTLD de la même façon que les extensions héritées et n'applique pas de ciblage géographique basé sur un nom comme `.shop` — ainsi, un site `.shop` peut être classé mondialement comme un `.com`. Vous pouvez consulter les détails du registre sur l'entrée officielle de [la zone racine IANA pour .shop](https://www.iana.org/domains/root/db/shop.html).
 
@@ -71,12 +71,12 @@ Ce sont de vrais sites commerciaux actifs. Lorsqu'une grande marque gère sa bou
 
 | Extension | Signal de sens | Disponibilité de l'espace de noms | Idéal quand |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | Générique, confiance par défaut | Très rare / coûteux | La notoriété maximale prime avant tout |
+| [.com](/fr/tld/com) | Générique, confiance par défaut | Très rare / coûteux | La notoriété maximale prime avant tout |
 | **.shop** | « Un endroit pour acheter » | Large, ouvert | Vous voulez une intention retail explicite |
-| [.store](/en/tld/store) | « Une boutique » | Large | Cadrage retail similaire, mot alternatif |
-| [.online](/en/tld/online) | Présence web large | Large | Site générique, pas strictement retail |
+| [.store](/fr/tld/store) | « Une boutique » | Large | Cadrage retail similaire, mot alternatif |
+| [.online](/fr/tld/online) | Présence web large | Large | Site générique, pas strictement retail |
 
-Choisissez `.com` quand la reconnaissance par défaut prime sur tout et que vous pouvez obtenir le nom exact. Choisissez **.shop** quand vous voulez que l'adresse elle-même annonce que vous vendez. [.store](/en/tld/store) est son concurrent sémantique le plus proche — choisissez selon le mot qui s'accorde le mieux avec votre marque — tandis que [.online](/en/tld/online) est plus large et moins spécifique au commerce.
+Choisissez `.com` quand la reconnaissance par défaut prime sur tout et que vous pouvez obtenir le nom exact. Choisissez **.shop** quand vous voulez que l'adresse elle-même annonce que vous vendez. [.store](/fr/tld/store) est son concurrent sémantique le plus proche — choisissez selon le mot qui s'accorde le mieux avec votre marque — tandis que [.online](/fr/tld/online) est plus large et moins spécifique au commerce.
 
 ## Pourquoi choisir .shop ?
 
@@ -103,7 +103,7 @@ Les pratiques standard des nouveaux gTLD s'appliquent. Les titulaires de marques
 
 Cette page ne cite jamais de prix en temps réel, mais les **dynamiques** méritent d'être comprises. Les noms `.shop` standard se situent dans la fourchette typique des nouveaux gTLD, et comme pour la plupart de ces extensions, le **prix de la première année et le prix de renouvellement peuvent différer** — les premières années promotionnelles sont courantes, alors vérifiez toujours combien coûte le nom à conserver d'année en année.
 
-Le registre désigne également certains noms très demandés comme **premium**, avec des frais d'enregistrement élevés et parfois des frais de renouvellement élevés ; les termes retail génériques d'un seul mot sont les plus susceptibles d'être dans la catégorie premium. Ce qui détermine le coût global, c'est la redevance de gros du registre, si un nom est signalé comme premium, et la marge de votre [bureau d'enregistrement](/en/glossary/registrar) ainsi que toute offre de lancement. Pour les ventes sur le marché secondaire, un `.shop` correspondant exactement à un terme recherché peut également commander une prime de revente entre propriétaires.
+Le registre désigne également certains noms très demandés comme **premium**, avec des frais d'enregistrement élevés et parfois des frais de renouvellement élevés ; les termes retail génériques d'un seul mot sont les plus susceptibles d'être dans la catégorie premium. Ce qui détermine le coût global, c'est la redevance de gros du registre, si un nom est signalé comme premium, et la marge de votre [bureau d'enregistrement](/fr/glossary/registrar) ainsi que toute offre de lancement. Pour les ventes sur le marché secondaire, un `.shop` correspondant exactement à un terme recherché peut également commander une prime de revente entre propriétaires.
 
 ## Réputation et délivrabilité des e-mails
 
@@ -124,7 +124,7 @@ Pour les e-mails, l'extension elle-même n'est pas ce que les filtres anti-spam 
 2. Choisissez le nom exact (et toutes les variantes défensives comme `.store` ou `.com`).
 3. Finalisez l'enregistrement et configurez le DNS.
 
-[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'[ICANN](/en/glossary/icann) avec une tarification transparente et une gestion [DNS](/en/glossary/dns) rapide. Il vous permet également de tokeniser votre domaine pour une propriété Web3 — transformant votre adresse `.shop` en un actif on-chain transférable — tout en conservant les fonctionnalités standard d'un bureau d'enregistrement.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann) avec une tarification transparente et une gestion [DNS](/fr/glossary/dns) rapide. Il vous permet également de tokeniser votre domaine pour une propriété Web3 — transformant votre adresse `.shop` en un actif on-chain transférable — tout en conservant les fonctionnalités standard d'un bureau d'enregistrement.
 
 ## Foire aux questions
 
@@ -150,11 +150,11 @@ Oui. **.shop** prend en charge DNSSEC au niveau du registre, et la plupart des b
 
 ## Ressources associées
 
-- [Qu'est-ce qu'un TLD ?](/en/blog/what-is-a-tld)
-- [Qu'est-ce qu'un domaine ?](/en/blog/what-is-domain)
-- [Les meilleurs TLD à sécuriser pour votre boutique e-commerce](/en/blog/top-tlds-to-secure-for-your-ecommerce-store)
-- [Que sont les domaines tokenisés ?](/en/blog/what-are-tokenized-domains)
-- [Domaine .store](/en/tld/store)
-- [Domaine .online](/en/tld/online)
-- [Domaine .com](/en/tld/com)
-- Glossaire : [bureau d'enregistrement](/en/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)
+- [Qu'est-ce qu'un TLD ?](/fr/blog/what-is-a-tld)
+- [Qu'est-ce qu'un domaine ?](/fr/blog/what-is-domain)
+- [Les meilleurs TLD à sécuriser pour votre boutique e-commerce](/fr/blog/top-tlds-to-secure-for-your-ecommerce-store)
+- [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains)
+- [Domaine .store](/fr/tld/store)
+- [Domaine .online](/fr/tld/online)
+- [Domaine .com](/fr/tld/com)
+- Glossaire : [bureau d'enregistrement](/fr/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)

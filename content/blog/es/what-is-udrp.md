@@ -17,7 +17,7 @@ Esta guía explica qué es la UDRP, cuándo se aplica, qué debe probar realment
 
 ## ¿Qué es la UDRP?
 
-La **UDRP** — la **Política Uniforme de Resolución de Disputas sobre Nombres de Dominio** (en alemán, **UDRP-Verfahren**) — es una política creada por [ICANN](/en/glossary/icann/) en 1999 para resolver disputas sobre nombres de dominio que presuntamente infringen la marca registrada de alguien. Todo registrador acreditado te exige que aceptes la UDRP al registrar un dominio. Ese acuerdo es la razón por la que un panel de arbitraje privado, en lugar de un tribunal nacional, puede ordenar que te transfieran el dominio.
+La **UDRP** — la **Política Uniforme de Resolución de Disputas sobre Nombres de Dominio** (en alemán, **UDRP-Verfahren**) — es una política creada por [ICANN](/es/glossary/icann/) en 1999 para resolver disputas sobre nombres de dominio que presuntamente infringen la marca registrada de alguien. Todo registrador acreditado te exige que aceptes la UDRP al registrar un dominio. Ese acuerdo es la razón por la que un panel de arbitraje privado, en lugar de un tribunal nacional, puede ordenar que te transfieran el dominio.
 
 La UDRP existe para hacer frente a la **ciberocupación**: registrar un dominio que coincide con la marca de otra persona con el fin de beneficiarse de ello. Es deliberadamente restrictiva. No es una herramienta para resolver cualquier desacuerdo sobre quién "merece" un nombre. Tiene como objetivo el registro de mala fe de dominios que infringen marcas registradas, y nada más.
 
@@ -97,13 +97,13 @@ Una resolución de RDNH no concede dinero al titular, pero es una reprimenda pú
 
 **Si recibes una reclamación, no la ignores.** La mayor pérdida evitable es la rebeldía — perder el plazo de respuesta de aproximadamente 20 días. Una respuesta bien documentada que muestre un interés legítimo y una fecha de registro de buena fe gana muchos casos. Este es el momento de contar con asesoramiento jurídico.
 
-También vale la pena entender que una transferencia por UDRP es un problema diferente al de un [secuestro por seguridad](/en/blog/how-domain-hijacking-actually-happens/). Uno es un proceso legal al que puedes responder; el otro es un ataque que debes prevenir. Ambos pueden costarte un nombre, y un propietario serio planifica para cada uno de ellos.
+También vale la pena entender que una transferencia por UDRP es un problema diferente al de un [secuestro por seguridad](/es/blog/how-domain-hijacking-actually-happens/). Uno es un proceso legal al que puedes responder; el otro es un ataque que debes prevenir. Ambos pueden costarte un nombre, y un propietario serio planifica para cada uno de ellos.
 
 ## Qué significa la UDRP para dominios valiosos y tokenizados
 
-Para los nombres de alto valor, una reclamación UDRP es un riesgo existencial — y es una de las razones por las que la procedencia y los registros claros son tan importantes cuando [vendes un dominio de tu propiedad](/en/blog/how-to-sell-a-domain-name-you-own/). Un historial de registro limpio y una historia de uso legítimo son activos que protegen el valor del nombre.
+Para los nombres de alto valor, una reclamación UDRP es un riesgo existencial — y es una de las razones por las que la procedencia y los registros claros son tan importantes cuando [vendes un dominio de tu propiedad](/es/blog/how-to-sell-a-domain-name-you-own/). Un historial de registro limpio y una historia de uso legítimo son activos que protegen el valor del nombre.
 
-Aquí es también donde los [dominios tokenizados](/en/blog/what-are-tokenized-domains/) encajan en el panorama. La tokenización cambia *quién controla de manera verificable* un nombre y crea un registro duradero en la cadena de bloques de la propiedad y las transferencias — una procedencia útil si alguna vez se cuestiona una fecha de registro o una cadena de custodia. Sin embargo, **no** coloca un dominio fuera del alcance de la UDRP: el nombre subyacente sigue operando en el DNS bajo un registrador acreditado por ICANN, y la UDRP sigue aplicándose. La tokenización fortalece tus pruebas y tu control; no te exime del derecho de marcas.
+Aquí es también donde los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) encajan en el panorama. La tokenización cambia *quién controla de manera verificable* un nombre y crea un registro duradero en la cadena de bloques de la propiedad y las transferencias — una procedencia útil si alguna vez se cuestiona una fecha de registro o una cadena de custodia. Sin embargo, **no** coloca un dominio fuera del alcance de la UDRP: el nombre subyacente sigue operando en el DNS bajo un registrador acreditado por ICANN, y la UDRP sigue aplicándose. La tokenización fortalece tus pruebas y tu control; no te exime del derecho de marcas.
 
 [Namefi](https://namefi.io) tokeniza la relación de titular manteniendo el dominio completamente conforme con ICANN, de modo que los propietarios obtienen procedencia en cadena y autocustodia sin salirse del sistema que rige la UDRP. El objetivo es sencillo: poseer nombres valiosos con registros más sólidos y un control más limpio, manteniéndose firmemente dentro de las normas.
 

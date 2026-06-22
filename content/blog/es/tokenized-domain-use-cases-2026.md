@@ -11,37 +11,37 @@ keywords: ['casos de uso de dominios tokenizados', 'DomainFi', 'préstamos con d
 
 Es tentador hablar de los dominios tokenizados como una *tecnología*. Resulta más útil hablar de ellos como un conjunto de *cosas que puedes hacer con ellos* que no podrías hacer fácilmente con un dominio tradicional alojado en un registrador. Esta publicación es un recorrido por esos casos de uso: qué es real hoy, qué está emergiendo y qué sigue siendo principalmente una presentación de diapositivas.
 
-Mantendremos un enfoque neutral respecto a las plataformas. Los casos de uso a continuación se aplican a [Namefi](https://namefi.io), Doma Protocol, D3 Global Inc, 3DNS y las demás plataformas de tokenización (consulta [Cómo elegir una plataforma de tokenización de dominios](/en/blog/choosing-a-domain-tokenization-platform/)).
+Mantendremos un enfoque neutral respecto a las plataformas. Los casos de uso a continuación se aplican a [Namefi](https://namefi.io), Doma Protocol, D3 Global Inc, 3DNS y las demás plataformas de tokenización (consulta [Cómo elegir una plataforma de tokenización de dominios](/es/blog/choosing-a-domain-tokenization-platform/)).
 
 ---
 
 ## Caso de uso 1: Venta y liquidación nativas desde la billetera
 
-**Qué es:** Vender un dominio firmando una única transacción [on-chain](/en/glossary/on-chain/). El comprador paga, el [NFT](/en/glossary/nft/) se transfiere y el registro del [registrador](/en/glossary/registrar/) se actualiza de forma [atómica](/en/glossary/atomic-transfer/). Sin servicios de [depósito en garantía (escrow)](/en/glossary/escrow/), sin [códigos de autorización (auth code)](/en/glossary/auth-code/) y sin el bloqueo de 5 días del registrador.
+**Qué es:** Vender un dominio firmando una única transacción [on-chain](/es/glossary/on-chain/). El comprador paga, el [NFT](/es/glossary/nft/) se transfiere y el registro del [registrador](/es/glossary/registrar/) se actualiza de forma [atómica](/es/glossary/atomic-transfer/). Sin servicios de [depósito en garantía (escrow)](/es/glossary/escrow/), sin [códigos de autorización (auth code)](/en/glossary/auth-code/) y sin el bloqueo de 5 días del registrador.
 
 **Por qué es importante:** Las ventas tradicionales de dominios dependen de servicios de depósito en garantía de terceros ([Escrow.com](https://www.escrow.com/), Sav, Sedo) para retener los fondos mientras se realiza la transferencia en el registrador. Eso es lento y costoso: tarifas de escrow del 3 al 6 % y plazos que se miden en días, no en minutos. Las ventas tokenizadas reemplazan esto con una liquidación atómica on-chain.
 
 **Dosis de realidad:** Esto está **en vivo y funcionando** en 2026 en múltiples plataformas. La parte más difícil es la liquidez (¿encuentran suficientes compradores tu anuncio?), no la mecánica.
 
-Para profundizar, consulta [De la publicación a la liquidación](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Para profundizar, consulta [De la publicación a la liquidación](/es/blog/how-tokenized-marketplaces-replace-escrow/).
 
 ---
 
 ## Caso de uso 2: Garantía DeFi / Préstamos
 
-**Qué es:** Bloquear tu dominio tokenizado en un [protocolo de préstamos](/en/glossary/lending-protocol/) y pedir prestadas [monedas estables (stablecoins)](/en/glossary/stablecoin/) utilizando su valor como [garantía (collateral)](/en/glossary/collateral/). Si pagas el préstamo, recuperas el dominio. Si no lo haces, el dominio se liquida.
+**Qué es:** Bloquear tu dominio tokenizado en un [protocolo de préstamos](/es/glossary/lending-protocol/) y pedir prestadas [monedas estables (stablecoins)](/en/glossary/stablecoin/) utilizando su valor como [garantía (collateral)](/es/glossary/collateral/). Si pagas el préstamo, recuperas el dominio. Si no lo haces, el dominio se liquida.
 
 **Por qué es importante:** Históricamente, las carteras de dominios no tenían liquidez: eras dueño del activo, pero no podías pedir préstamos fácilmente utilizando su valor sin antes venderlo. Los mercados de préstamos [DeFi](/en/glossary/defi/) compatibles con NFT ([NFTfi](https://www.nftfi.com/), [Arcade](https://www.arcade.xyz/) y protocolos que se integran específicamente con dominios tokenizados) cambian esto.
 
 **Dosis de realidad:** Es real, pero aún está madurando. Poner precio a los dominios tokenizados para préstamos es la parte difícil: son activos heterogéneos (cada dominio es único), a diferencia de los tokens fungibles. Espera relaciones préstamo-valor (LTV) conservadoras y una iteración continua en los modelos de valoración. Las liquidaciones ocurren y son públicas.
 
-Este es también el caso de uso donde las [cuestiones fiscales](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) se vuelven complejas. Consulta a tu contador.
+Este es también el caso de uso donde las [cuestiones fiscales](/es/blog/tax-and-accounting-questions-for-tokenized-domains/) se vuelven complejas. Consulta a tu contador.
 
 ---
 
 ## Caso de uso 3: Arrendamiento
 
-**Qué es:** [Alquilar](/en/glossary/leasing/) el uso de un dominio por un período determinado sin venderlo. El propietario conserva el NFT; el arrendatario obtiene derechos por un tiempo limitado para operar el dominio.
+**Qué es:** [Alquilar](/es/glossary/leasing/) el uso de un dominio por un período determinado sin venderlo. El propietario conserva el NFT; el arrendatario obtiene derechos por un tiempo limitado para operar el dominio.
 
 **Por qué es importante:** Los titulares de carteras a menudo tienen dominios que son valiosos pero que no se utilizan. El arrendamiento convierte el inventario en flujo de caja sin ceder la propiedad.
 
@@ -51,7 +51,7 @@ Este es también el caso de uso donde las [cuestiones fiscales](/en/blog/tax-and
 
 ## Caso de uso 4: Propiedad fraccionada
 
-**Qué es:** Dividir la propiedad de un dominio premium entre varios titulares, cada uno de los cuales posee [acciones fraccionadas](/en/glossary/fractional-ownership/).
+**Qué es:** Dividir la propiedad de un dominio premium entre varios titulares, cada uno de los cuales posee [acciones fraccionadas](/es/glossary/fractional-ownership/).
 
 **Por qué es importante:** Un dominio de la categoría de `LLM.com` o `crypto.com` vale millones. Dividirlo entre una comunidad de titulares desbloquea la inversión en esos activos sin que nadie necesite ser el único propietario. Domora ha construido su tesis en torno a esto; Doma Prime y Mizu Launchpad tienen primitivas relacionadas.
 
@@ -61,19 +61,19 @@ Este es también el caso de uso donde las [cuestiones fiscales](/en/blog/tax-and
 
 ## Caso de uso 5: Identidad de agentes de IA
 
-**Qué es:** Un [agente de IA](/en/glossary/ai-agent/) (un software que actúa en nombre de un usuario) posee una [billetera](/en/glossary/wallet/), y esa billetera contiene un dominio tokenizado. El dominio se convierte en la identidad del agente: direccionable, verificable y monetizable.
+**Qué es:** Un [agente de IA](/en/glossary/ai-agent/) (un software que actúa en nombre de un usuario) posee una [billetera](/es/glossary/wallet/), y esa billetera contiene un dominio tokenizado. El dominio se convierte en la identidad del agente: direccionable, verificable y monetizable.
 
 **Por qué es importante:** A medida que los agentes de IA comienzan a realizar actividades económicas reales (reservar, comprar, pagar), necesitan identificadores persistentes, puntos de pago y una estructura de reputación. Los dominios tokenizados pueden servir para los tres propósitos: un nombre único, una billetera para recibir pagos (p. ej., a través de [x402](/en/glossary/x402/)) y un historial on-chain.
 
 **Dosis de realidad:** Emergente. El patrón es plausible y se está construyendo. La mayoría de los ejemplos de producción en este momento son demostraciones o implementaciones específicas en lugar de una adopción generalizada. Si estás construyendo infraestructura de agentes, este es un caso de uso a considerar en el diseño. Si eres un usuario final, espera ver más de esto a lo largo de 2026 y 2027.
 
-Consulta [Google presenta un protocolo de comercio universal](/en/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/) para obtener contexto relacionado sobre el stack de comercio para agentes.
+Consulta [Google presenta un protocolo de comercio universal](/es/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/) para obtener contexto relacionado sobre el stack de comercio para agentes.
 
 ---
 
 ## Caso de uso 6: Publicaciones en mercados que realmente funcionan
 
-**Qué es:** Publicar tu dominio tokenizado en [OpenSea](https://opensea.io/), [Blur](https://blur.io/), [Magic Eden](https://magiceden.io/) o en [mercados (marketplaces)](/en/glossary/marketplace/) específicos de la plataforma: con la misma experiencia de usuario (UX) que listar cualquier NFT [ERC-721](/en/glossary/erc-721/).
+**Qué es:** Publicar tu dominio tokenizado en [OpenSea](https://opensea.io/), [Blur](https://blur.io/), [Magic Eden](https://magiceden.io/) o en [mercados (marketplaces)](/es/glossary/marketplace/) específicos de la plataforma: con la misma experiencia de usuario (UX) que listar cualquier NFT [ERC-721](/en/glossary/erc-721/).
 
 **Por qué es importante:** Los mercados de dominios tradicionales siempre han sido un circuito cerrado (Sedo, Afternic, Dan.com). La tokenización abre la distribución al ecosistema más amplio de mercados NFT, el cual ha desarrollado herramientas de UX, búsqueda, interacción social y fijación de precios que el mercado tradicional no tiene.
 
@@ -83,7 +83,7 @@ Consulta [Google presenta un protocolo de comercio universal](/en/blog/google-un
 
 ## Caso de uso 7: Dominios programables
 
-**Qué es:** Dominios que responden a condiciones on-chain; por ejemplo, un [contrato inteligente](/en/glossary/smart-contract/) que transfiere un dominio solo si se paga un depósito, o un dominio cuyos registros DNS pueden ser votados por una [DAO](/en/glossary/dao/) de titulares. Así es como se ve la [componibilidad](/en/glossary/composability/) en los activos de dominios.
+**Qué es:** Dominios que responden a condiciones on-chain; por ejemplo, un [contrato inteligente](/es/glossary/smart-contract/) que transfiere un dominio solo si se paga un depósito, o un dominio cuyos registros DNS pueden ser votados por una [DAO](/es/glossary/dao/) de titulares. Así es como se ve la [componibilidad](/es/glossary/composability/) en los activos de dominios.
 
 **Por qué es importante:** Una vez que un dominio es un token, se vuelve componible con cualquier lógica de contrato inteligente que puedas programar. Transferencias condicionales, dominios de propiedad de tesorerías, ventas con bloqueo temporal, subastas automáticas, entre otros.
 
@@ -97,7 +97,7 @@ Consulta [Google presenta un protocolo de comercio universal](/en/blog/google-un
 
 **Por qué es importante:** Los dominios tradicionales mueren con las personas todo el tiempo. Quedan atrapados en cuentas de registradores a las que nadie puede acceder, las tarjetas de facturación vencen y el dominio se pierde. Los dominios tokenizados tienen al menos la *posibilidad* de una herencia limpia a través de la gestión de la billetera.
 
-**Dosis de realidad:** Es viable pero requiere planificación. Consulta [Cómo recuperar un dominio tokenizado tras perder la billetera](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) para conocer el aspecto operativo, y la [publicación sobre preguntas fiscales / patrimoniales](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) para las dudas legales que debes plantear a tu asesor profesional.
+**Dosis de realidad:** Es viable pero requiere planificación. Consulta [Cómo recuperar un dominio tokenizado tras perder la billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/) para conocer el aspecto operativo, y la [publicación sobre preguntas fiscales / patrimoniales](/es/blog/tax-and-accounting-questions-for-tokenized-domains/) para las dudas legales que debes plantear a tu asesor profesional.
 
 ---
 

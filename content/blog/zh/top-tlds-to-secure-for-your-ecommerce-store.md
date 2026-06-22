@@ -12,33 +12,33 @@ keywords: ['电子商务顶级域名', '网店最佳域名后缀', '电商域名
 
 对于网络零售商而言，域名不仅仅是一个地址——它同时是门面、信任标志和品牌资产。为您的电子商务店铺抢注合适的**顶级域名（TLD）**，是您能购买到的最低成本的品牌保护手段之一。当您拥有客户和不法分子最可能键入的域名后缀时，您便能掌控流量走向，同时让那些可能滥用这些资产的人无机可乘。
 
-最后这一点比大多数商家意识到的更为重要。仿冒店铺使用其他域名后缀是网络钓鱼和假冒商品诈骗的常见手段：欺诈者在您跳过的具有零售色彩的TLD上注册您的品牌，搭建一个以假乱真的结账页面，窃取购物者的支付信息。提前抢注一批高意图域名后缀——连同您的主要 [`.com`](/en/tld/com)——可以在他人钻空子之前将这些漏洞封堵。
+最后这一点比大多数商家意识到的更为重要。仿冒店铺使用其他域名后缀是网络钓鱼和假冒商品诈骗的常见手段：欺诈者在您跳过的具有零售色彩的TLD上注册您的品牌，搭建一个以假乱真的结账页面，窃取购物者的支付信息。提前抢注一批高意图域名后缀——连同您的主要 [`.com`](/zh/tld/com)——可以在他人钻空子之前将这些漏洞封堵。
 
 ## 如何为您的网店选择域名后缀
 
-决策应由三个标准主导。第一，**信任度与转化率**：购物者对某些后缀的认知度和信任度高于其他，熟悉的TLD能降低购买时的犹豫。第二，**零售意图**：[`.shop`](/en/tld/shop) 和 [`.store`](/en/tld/store) 等后缀具有明显的商业含义，可以强化您的品牌定位，让营销文案读起来更自然。第三，**防御覆盖范围**：即使您从未打算在某些后缀上建站，只要竞争对手或仿冒者可能利用它们对付您的品牌，这些后缀就值得持有。目标是建立一个小而精、有针对性的域名组合——不是持有所有TLD，而是那些能保护您的名称、服务您客户的后缀。
+决策应由三个标准主导。第一，**信任度与转化率**：购物者对某些后缀的认知度和信任度高于其他，熟悉的TLD能降低购买时的犹豫。第二，**零售意图**：[`.shop`](/zh/tld/shop) 和 [`.store`](/zh/tld/store) 等后缀具有明显的商业含义，可以强化您的品牌定位，让营销文案读起来更自然。第三，**防御覆盖范围**：即使您从未打算在某些后缀上建站，只要竞争对手或仿冒者可能利用它们对付您的品牌，这些后缀就值得持有。目标是建立一个小而精、有针对性的域名组合——不是持有所有TLD，而是那些能保护您的名称、服务您客户的后缀。
 
 ## 为您的电子商务店铺抢注的十大TLD
 
-### 1. [.com](/en/tld/com) — 不可跳过的默认选择
+### 1. [.com](/zh/tld/com) — 不可跳过的默认选择
 
 `.com` 至今仍是全球最受认可和信赖的域名后缀，对大多数店铺而言，它是品牌的规范主页。该后缀由威瑞信（Verisign）根据[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/com)运营，向所有人开放注册。如果您的品牌精确匹配的 `.com` 域名仍可注册，请首先抢注；组合中的其他所有域名都应将客户引回这里。
 
-### 2. [.shop](/en/tld/shop) — 专为零售而生
+### 2. [.shop](/zh/tld/shop) — 专为零售而生
 
 `.shop` 是一个专为商业目的打造的通用TLD，[于2016年授权](https://www.iana.org/domains/root/db/shop.html)，由GMO Registry运营——该公司在ICANN竞标中赢得了运营权。它向所有注册人开放，无特殊资质要求（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/shop)）。后缀中内嵌的关键词让人一眼就能看出"这是一个购物场所"，非常适合作为店铺门面或营销活动的专用落地页。
 
-### 3. [.store](/en/tld/store) — 清晰的商业信号
+### 3. [.store](/zh/tld/store) — 清晰的商业信号
 
 `.store` 由Radix运营，[于2016年推出](https://en.wikipedia.org/wiki/.store)，除ICANN标准保留名称规则外，对终端用户无注册限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/store)）。它在精神上与 `.shop` 可互换，同时持有两者既能拓宽您的零售覆盖面，也能防止高度相似的仿冒域名落入他人之手。
 
-### 4. [.online](/en/tld/online) — 广泛而多用途
+### 4. [.online](/zh/tld/online) — 广泛而多用途
 
-[`.online`](/en/tld/online) 是Radix旗下另一个开放后缀，[于2015年推出](https://en.wikipedia.org/wiki/.online)，无资质限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/online)）。其通用含义使其灵活多变：可用作落地页、区域店铺，或仅仅作为防御性持有，防止仿冒者声称"yourbrand.online"。
+[`.online`](/zh/tld/online) 是Radix旗下另一个开放后缀，[于2015年推出](https://en.wikipedia.org/wiki/.online)，无资质限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/online)）。其通用含义使其灵活多变：可用作落地页、区域店铺，或仅仅作为防御性持有，防止仿冒者声称"yourbrand.online"。
 
-### 5. [.site](/en/tld/site) — 简洁易记的替代选择
+### 5. [.site](/zh/tld/site) — 简洁易记的替代选择
 
-[`.site`](/en/tld/site) 是Radix旗下的开放TLD（[于2015年授权](https://en.wikipedia.org/wiki/.site)），无注册限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/site)）。它简短、易于发音、广为人知，是合理的防御性注册选择，也可用于微型网站或单页促销活动。
+[`.site`](/zh/tld/site) 是Radix旗下的开放TLD（[于2015年授权](https://en.wikipedia.org/wiki/.site)），无注册限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/site)）。它简短、易于发音、广为人知，是合理的防御性注册选择，也可用于微型网站或单页促销活动。
 
 ### 6. .co — 简短、适合初创企业的选项
 
@@ -52,13 +52,13 @@ keywords: ['电子商务顶级域名', '网店最佳域名后缀', '电商域名
 
 [`.deals`](/en/tld/deals) 同样由Identity Digital运营，向所有注册人开放（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/deals)）。对于经常开展促销活动的电商品牌，"yourbrand.deals" 是清仓页面和优惠券落地页的绝佳选择——同时也值得提前持有，以防被用于虚假折扣诈骗。
 
-### 9. [.club](/en/tld/club) — 社区与会员
+### 9. [.club](/zh/tld/club) — 社区与会员
 
-[`.club`](/en/tld/club) 是一个通用TLD，[于2014年向公众开放](https://en.wikipedia.org/wiki/.club)，现由GoDaddy Registry运营，无一般注册限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/club)）。如果您的店铺运营积分计划、订阅层级或会员专属活动，`.club` 能完美呼应这一定位。
+[`.club`](/zh/tld/club) 是一个通用TLD，[于2014年向公众开放](https://en.wikipedia.org/wiki/.club)，现由GoDaddy Registry运营，无一般注册限制（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/club)）。如果您的店铺运营积分计划、订阅层级或会员专属活动，`.club` 能完美呼应这一定位。
 
-### 10. [.vip](/en/tld/vip) — 高端层级与专属感
+### 10. [.vip](/zh/tld/vip) — 高端层级与专属感
 
-[`.vip`](/en/tld/vip) 是一个通用TLD，[于2016年推出](https://en.wikipedia.org/wiki/.vip)——最初由Minds + Machines运营，现已并入GoDaddy Registry——向所有人开放（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/vip)）。它非常适合高端产品线、早鸟抢购项目或高价值客户门户，在专属感是核心卖点的场景下尤为出色。
+[`.vip`](/zh/tld/vip) 是一个通用TLD，[于2016年推出](https://en.wikipedia.org/wiki/.vip)——最初由Minds + Machines运营，现已并入GoDaddy Registry——向所有人开放（[ICANN注册协议](https://www.icann.org/en/registry-agreements/details/vip)）。它非常适合高端产品线、早鸟抢购项目或高价值客户门户，在专属感是核心卖点的场景下尤为出色。
 
 ## 防御性注册策略
 

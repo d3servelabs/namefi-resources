@@ -22,31 +22,31 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ### 1. .com — 全球用户下意识输入的首选
 
-[.com](/en/tld/com) 至今仍是互联网上认知度最高、最受信赖的后缀——用户会条件反射般地输入它，大多数邮件客户端和应用程序也默认以此为基础。它由 Verisign 根据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/com) 运营，你可以在 [IANA 根数据库](https://www.iana.org/domains/root/db/com.html) 中查阅其授权记录。如果你只注册一个域名，请选 .com。注册无资质限制，主要挑战在于域名的可用性。
+[.com](/zh/tld/com) 至今仍是互联网上认知度最高、最受信赖的后缀——用户会条件反射般地输入它，大多数邮件客户端和应用程序也默认以此为基础。它由 Verisign 根据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/com) 运营，你可以在 [IANA 根数据库](https://www.iana.org/domains/root/db/com.html) 中查阅其授权记录。如果你只注册一个域名，请选 .com。注册无资质限制，主要挑战在于域名的可用性。
 
 ### 2. .io — 科技与 SaaS 创业公司的最爱
 
-[.io](/en/tld/io) 因"I/O"在软件领域代表输入/输出而深受初创公司喜爱，天然带有技术气息。它是分配给英属印度洋领地的国家代码顶级域名，注册局现由 [Identity Digital](https://www.identity.digital/) 旗下的 Internet Computer Bureau 运营，详见 [IANA 授权记录](https://www.iana.org/domains/root/db/io.html)。全球任何人均可注册。需要注意的是，该领地的长期地缘政治状态已有[公开讨论](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)，因此应将 .io 视为 .com 的有力补充，而非替代品。
+[.io](/zh/tld/io) 因"I/O"在软件领域代表输入/输出而深受初创公司喜爱，天然带有技术气息。它是分配给英属印度洋领地的国家代码顶级域名，注册局现由 [Identity Digital](https://www.identity.digital/) 旗下的 Internet Computer Bureau 运营，详见 [IANA 授权记录](https://www.iana.org/domains/root/db/io.html)。全球任何人均可注册。需要注意的是，该领地的长期地缘政治状态已有[公开讨论](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)，因此应将 .io 视为 .com 的有力补充，而非替代品。
 
 ### 3. .ai — AI 初创公司的不二之选
 
-[.ai](/en/tld/ai) 随着人工智能热潮的兴起而迅速走红，几乎成为所有 AI 方向公司的标配。它是安圭拉的国家代码顶级域名，由安圭拉政府管理，该政府于 [2024 年宣布与 Identity Digital 建立合作关系](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses)，共同应对 .ai 域名的爆炸式增长；详见 [IANA 记录](https://www.iana.org/domains/root/db/ai.html)。注册无需 AI 行业资质，但定价和续费条款与常规通用顶级域名有所不同，需提前做好规划。
+[.ai](/zh/tld/ai) 随着人工智能热潮的兴起而迅速走红，几乎成为所有 AI 方向公司的标配。它是安圭拉的国家代码顶级域名，由安圭拉政府管理，该政府于 [2024 年宣布与 Identity Digital 建立合作关系](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses)，共同应对 .ai 域名的爆炸式增长；详见 [IANA 记录](https://www.iana.org/domains/root/db/ai.html)。注册无需 AI 行业资质，但定价和续费条款与常规通用顶级域名有所不同，需提前做好规划。
 
 ### 4. .app — 默认安全的应用域名
 
-[.app](/en/tld/app) 由 Google Registry 运营，专为软件、应用程序和移动产品打造。其突出特点是：整个 .app 命名空间均列入 [HSTS 预加载列表](https://hstspreload.org/)，这意味着所有 .app 网站必须通过 HTTPS 加载，Google 在其[政策文档](https://www.registry.google/policies/)中有明确说明。这种默认安全机制使其成为产品页或下载页的可信之选。需注意，网站必须配置有效的 TLS 证书才能正常加载。
+[.app](/zh/tld/app) 由 Google Registry 运营，专为软件、应用程序和移动产品打造。其突出特点是：整个 .app 命名空间均列入 [HSTS 预加载列表](https://hstspreload.org/)，这意味着所有 .app 网站必须通过 HTTPS 加载，Google 在其[政策文档](https://www.registry.google/policies/)中有明确说明。这种默认安全机制使其成为产品页或下载页的可信之选。需注意，网站必须配置有效的 TLS 证书才能正常加载。
 
 ### 5. .dev — 为开发者而生
 
-[.dev](/en/tld/dev) 同样由 Google Registry 运营，专门面向开发者、工程团队和技术文档。与 .app 一样，整个 .dev 区域也列入 [HSTS 预加载列表](https://hstspreload.org/)，全域强制 HTTPS。它非常适合开发者工具初创公司、API 文档或内部工程门户。在部署之前，请参阅 [Google Registry 文档](https://www.registry.google/policies/)确认相关要求。
+[.dev](/zh/tld/dev) 同样由 Google Registry 运营，专门面向开发者、工程团队和技术文档。与 .app 一样，整个 .dev 区域也列入 [HSTS 预加载列表](https://hstspreload.org/)，全域强制 HTTPS。它非常适合开发者工具初创公司、API 文档或内部工程门户。在部署之前，请参阅 [Google Registry 文档](https://www.registry.google/policies/)确认相关要求。
 
 ### 6. .tech — 描述清晰、可用性广
 
-[.tech](/en/tld/tech) 是由 [Radix](https://radix.com/)（新通用顶级域名最大注册局之一）运营的通用顶级域名，技术后端服务由 Tucows 提供。它直白地标明你的公司以技术为核心，且相比拥挤的 .com 空间可用性更高——当你理想的 .com 已被注册时，.tech 往往是不错的选择。注册无特殊资质要求。
+[.tech](/zh/tld/tech) 是由 [Radix](https://radix.com/)（新通用顶级域名最大注册局之一）运营的通用顶级域名，技术后端服务由 Tucows 提供。它直白地标明你的公司以技术为核心，且相比拥挤的 .com 空间可用性更高——当你理想的 .com 已被注册时，.tech 往往是不错的选择。注册无特殊资质要求。
 
 ### 7. .xyz — 灵活通用、初创友好
 
-[.xyz](/en/tld/xyz) 是由 XYZ.COM LLC 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz) 运营的通用开放型后缀。其开放、中性的品牌属性使其在初创公司和 Web3 项目中广受欢迎（Alphabet 的 abc.xyz 便是广为人知的例子）。没有相关性限制，是落地页、营销活动或实验性产品的灵活之选。
+[.xyz](/zh/tld/xyz) 是由 XYZ.COM LLC 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz) 运营的通用开放型后缀。其开放、中性的品牌属性使其在初创公司和 Web3 项目中广受欢迎（Alphabet 的 abc.xyz 便是广为人知的例子）。没有相关性限制，是落地页、营销活动或实验性产品的灵活之选。
 
 ### 8. .co — .com 的简洁替代
 
@@ -54,11 +54,11 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ### 9. .net — 经典备用后缀
 
-[.net](/en/tld/net) 是最早的通用顶级域名之一，由 Verisign 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/net) 运营（详见其 [IANA 记录](https://www.iana.org/domains/root/db/net.html)）。它拥有成熟、可信的口碑，尤其适合基础设施、网络和平台类公司。即便你不以 .net 作为主品牌域名，注册与品牌名完全一致的 .net 仍是明智的防御举措。
+[.net](/zh/tld/net) 是最早的通用顶级域名之一，由 Verisign 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/net) 运营（详见其 [IANA 记录](https://www.iana.org/domains/root/db/net.html)）。它拥有成熟、可信的口碑，尤其适合基础设施、网络和平台类公司。即便你不以 .net 作为主品牌域名，注册与品牌名完全一致的 .net 仍是明智的防御举措。
 
 ### 10. .club — 面向社区驱动型初创公司
 
-[.club](/en/tld/club) 是由 GoDaddy Registry 旗下的 Registry Services, LLC 运营的开放型通用顶级域名，依据其 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/club) 及 [IANA 记录](https://www.iana.org/domains/root/db/club.html)运作。如果你的初创公司以会员制、社区或定期受众为核心，.club 能用一个单词传递"归属感"。对于创作者平台、订阅制产品和社交创业项目，这是一个极具感染力的类别后缀。
+[.club](/zh/tld/club) 是由 GoDaddy Registry 旗下的 Registry Services, LLC 运营的开放型通用顶级域名，依据其 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/club) 及 [IANA 记录](https://www.iana.org/domains/root/db/club.html)运作。如果你的初创公司以会员制、社区或定期受众为核心，.club 能用一个单词传递"归属感"。对于创作者平台、订阅制产品和社交创业项目，这是一个极具感染力的类别后缀。
 
 ## 防御性注册策略
 

@@ -11,7 +11,7 @@ keywords: ['cómo tokenizar un dominio', 'cómo tokenizar un .com', 'tokenizar m
 
 Así que posees un dominio —tal vez `mybrand.com`, tal vez un portafolio de nombres `.xyz`— y has decidido que quieres **tokenizarlo**. Esta guía detalla lo que realmente sucede, pantalla por pantalla, para que puedas planificar el tiempo, el dinero y el acceso que necesitarás antes de empezar.
 
-Si todavía estás decidiendo *por qué* tokenizar, lee primero [¿Por qué tokenizar dominios on-chain?](/en/blog/why-tokenize-domains/). Si ni siquiera estás seguro de *qué* significa la tokenización, [¿Qué son los dominios tokenizados?](/en/blog/what-are-tokenized-domains/) es el lugar para comenzar.
+Si todavía estás decidiendo *por qué* tokenizar, lee primero [¿Por qué tokenizar dominios on-chain?](/es/blog/why-tokenize-domains/). Si ni siquiera estás seguro de *qué* significa la tokenización, [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains/) es el lugar para comenzar.
 
 Esta publicación asume que ya quieres hacerlo.
 
@@ -21,10 +21,10 @@ Esta publicación asume que ya quieres hacerlo.
 
 Tendrás una experiencia mucho más fluida si estas condiciones se cumplen antes de hacer clic en cualquier lugar:
 
-- **Controlas el dominio en su [registrador](/en/glossary/registrar/) actual.** Puedes iniciar sesión, cambiar los servidores de nombres (nameservers) y aprobar transferencias / [códigos de autorización (auth codes)](/en/glossary/auth-code/).
-- **Tienes una [billetera (wallet)](/en/glossary/wallet/) de autocustodia.** MetaMask, Rabby, Coinbase Wallet, o cualquier billetera EVM estándar. Asegúrate de tener realmente la [frase semilla (seed phrase)](/en/glossary/seed-phrase/), no solo una cuenta en un exchange.
-- **La billetera tiene una pequeña cantidad de [gas](/en/glossary/gas/).** Unos pocos dólares de ETH o Base ETH cubren la transacción de minteo (acuñación) [on-chain](/en/glossary/on-chain/). No necesitas mucho.
-- **El dominio no está bloqueado, a punto de expirar ni en medio de una transferencia.** Los dominios que están dentro de los ~60 días posteriores a una [transferencia entre registradores](/en/glossary/cross-registrar-transfer/) reciente, o a 30 días de su expiración, a menudo no se pueden mover. Compruébalo primero.
+- **Controlas el dominio en su [registrador](/es/glossary/registrar/) actual.** Puedes iniciar sesión, cambiar los servidores de nombres (nameservers) y aprobar transferencias / [códigos de autorización (auth codes)](/en/glossary/auth-code/).
+- **Tienes una [billetera (wallet)](/es/glossary/wallet/) de autocustodia.** MetaMask, Rabby, Coinbase Wallet, o cualquier billetera EVM estándar. Asegúrate de tener realmente la [frase semilla (seed phrase)](/en/glossary/seed-phrase/), no solo una cuenta en un exchange.
+- **La billetera tiene una pequeña cantidad de [gas](/en/glossary/gas/).** Unos pocos dólares de ETH o Base ETH cubren la transacción de minteo (acuñación) [on-chain](/es/glossary/on-chain/). No necesitas mucho.
+- **El dominio no está bloqueado, a punto de expirar ni en medio de una transferencia.** Los dominios que están dentro de los ~60 días posteriores a una [transferencia entre registradores](/es/glossary/cross-registrar-transfer/) reciente, o a 30 días de su expiración, a menudo no se pueden mover. Compruébalo primero.
 - **Tienes tiempo.** Calcula unos 30 minutos de atención, más hasta 5–7 días de procesamiento en segundo plano para movimientos entre registradores.
 
 Si algo de esto no es seguro, soluciónalo antes de empezar. El proceso tolera la paciencia mucho mejor que las sorpresas.
@@ -35,13 +35,13 @@ Si algo de esto no es seguro, soluciónalo antes de empezar. El proceso tolera l
 
 Dirígete a [namefi.io](https://namefi.io) y haz clic en "Connect Wallet" (Conectar Billetera). Aprueba la conexión en tu billetera. Esta billetera se convertirá en la **propietaria** del dominio tokenizado: el NFT vivirá aquí, y quien posea esta billetera, posee el dominio.
 
-> **Toma esto en serio.** Si pierdes esta billetera, pierdes el lado on-chain de tu dominio. Tenemos una guía separada sobre [cómo recuperar un dominio tokenizado tras la pérdida de la billetera](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/); léela ahora, no después.
+> **Toma esto en serio.** Si pierdes esta billetera, pierdes el lado on-chain de tu dominio. Tenemos una guía separada sobre [cómo recuperar un dominio tokenizado tras la pérdida de la billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/); léela ahora, no después.
 
 ---
 
 ## Paso 2: Añade el dominio que quieres tokenizar
 
-En tu panel de control de Namefi, busca o añade el dominio que ya posees. Namefi verificará su elegibilidad: el [registrador](/en/glossary/registrar/) en el que se encuentra actualmente, si se puede bloquear, si cumple con las reglas de transferencia de la [ICANN](/en/glossary/icann/) y si el [TLD](/en/glossary/tld/) es compatible.
+En tu panel de control de Namefi, busca o añade el dominio que ya posees. Namefi verificará su elegibilidad: el [registrador](/es/glossary/registrar/) en el que se encuentra actualmente, si se puede bloquear, si cumple con las reglas de transferencia de la [ICANN](/es/glossary/icann/) y si el [TLD](/en/glossary/tld/) es compatible.
 
 Verás uno de estos tres estados:
 
@@ -75,12 +75,12 @@ Esta es la parte más lenta de todo el proceso. Planifica entre 5 y 7 días para
 
 ## Paso 5: Mintear el token on-chain
 
-Una vez que el dominio esté bajo la integración del registrador de Namefi, se te pedirá que **mintees** la representación [NFT](/en/glossary/nft/) (un token [ERC-721](/en/glossary/erc-721/) estándar). Tu billetera aparecerá; confirmas una transacción; se paga el [gas](/en/glossary/gas/); el token aterriza en tu billetera.
+Una vez que el dominio esté bajo la integración del registrador de Namefi, se te pedirá que **mintees** la representación [NFT](/es/glossary/nft/) (un token [ERC-721](/en/glossary/erc-721/) estándar). Tu billetera aparecerá; confirmas una transacción; se paga el [gas](/en/glossary/gas/); el token aterriza en tu billetera.
 
-Este es el momento en que el dominio queda [*tokenizado*](/en/glossary/tokenize/). Ahora tienes:
+Este es el momento en que el dominio queda [*tokenizado*](/es/glossary/tokenize/). Ahora tienes:
 
-- El registro [DNS](/en/glossary/dns/) / registrador tradicional (sigue siendo real, sigue siendo reconocido por la ICANN).
-- Un NFT [on-chain](/en/glossary/on-chain/) en tu billetera que representa la propiedad.
+- El registro [DNS](/es/glossary/dns/) / registrador tradicional (sigue siendo real, sigue siendo reconocido por la ICANN).
+- Un NFT [on-chain](/es/glossary/on-chain/) en tu billetera que representa la propiedad.
 
 En adelante, el protocolo mantendrá a ambos sincronizados.
 
@@ -98,7 +98,7 @@ Si tienes una [billetera de hardware (hardware wallet)](/en/glossary/hardware-wa
 
 Tokenizar un dominio no cambia cómo se resuelve. Tus servidores de nombres, registros A, registros MX, DNSSEC... todo sigue funcionando. Puedes gestionarlos desde el panel de control de Namefi, o delegarlos a tu proveedor de DNS existente (Cloudflare, Route53, etc.) tal como antes.
 
-Para obtener detalles sobre qué cambia (y qué no) en la capa DNS, consulta [El DNS sigue funcionando: Servidores de nombres, correo electrónico y DNSSEC en un dominio tokenizado](/en/blog/dns-on-tokenized-domains/).
+Para obtener detalles sobre qué cambia (y qué no) en la capa DNS, consulta [El DNS sigue funcionando: Servidores de nombres, correo electrónico y DNSSEC en un dominio tokenizado](/es/blog/dns-on-tokenized-domains/).
 
 Las renovaciones siguen ocurriendo a través de la capa del registrador. Namefi se encarga de la facturación del lado del registrador; tú conservas la propiedad on-chain.
 
@@ -121,7 +121,7 @@ No hay sorpresas ocultas. Si un número no está en la pantalla de confirmación
 - **"Mi registrador no libera el código de autorización."** Algunos registradores ocultan esto en lo profundo de su interfaz de usuario o requieren un ticket de soporte. Sé paciente y persistente.
 - **"Desbloqueé el dominio pero el sistema aún dice que está bloqueado."** Los registradores a menudo guardan en caché el estado de bloqueo hasta por 24 horas. Espera un día y actualiza.
 - **"Mi billetera muestra el NFT, pero el dominio todavía aparece en mi antiguo registrador."** Durante la ventana de transferencia, ambas partes pueden mostrar la propiedad brevemente. El lado on-chain se vuelve autoritativo después de que la transferencia se liquida.
-- **"Quiero usar una [multisig](/en/glossary/multi-sig/) como propietario."** Es compatible. Conecta la billetera multisig. Solo asegúrate de que realmente puedes ejecutar transacciones desde ella: una multisig en la que has perdido firmantes es un dominio que también has perdido. Contexto: [¿Las billeteras multifirma (multisig) realmente mejoran la seguridad?](/en/blog/do-multisig-wallets-actually-improve-security/)
+- **"Quiero usar una [multisig](/es/glossary/multi-sig/) como propietario."** Es compatible. Conecta la billetera multisig. Solo asegúrate de que realmente puedes ejecutar transacciones desde ella: una multisig en la que has perdido firmantes es un dominio que también has perdido. Contexto: [¿Las billeteras multifirma (multisig) realmente mejoran la seguridad?](/es/blog/do-multisig-wallets-actually-improve-security/)
 
 ---
 
@@ -139,6 +139,6 @@ No hay sorpresas ocultas. Si un número no está en la pantalla de confirmación
 - Necesitas: control del dominio, una billetera de autocustodia, una pequeña cantidad de gas y paciencia.
 - El minteo on-chain es el *último* paso; la mayor parte del trabajo es el aburrido flujo de transferencia entre registradores que la ICANN impone independientemente de la blockchain.
 - Después de la tokenización, tienes **dos capas de propiedad sincronizadas**: el registro DNS tradicional y un NFT en tu billetera.
-- Lee la [guía de recuperación por pérdida de billetera](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) *antes* de tokenizar, no después.
+- Lee la [guía de recuperación por pérdida de billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/) *antes* de tokenizar, no después.
 
 ¿Listo para empezar? Dirígete a [namefi.io](https://namefi.io).

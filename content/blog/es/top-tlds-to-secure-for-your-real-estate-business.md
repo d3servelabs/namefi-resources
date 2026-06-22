@@ -12,7 +12,7 @@ keywords: ['tlds para agentes inmobiliarios', 'nombres de dominio para bienes ra
 
 Tu nombre y tu marca local son los dos activos más valiosos en el sector inmobiliario. Cuando un comprador busca "Juan García Agente Inmobiliario" o el nombre del vecindario que trabajas, los dominios vinculados a esos términos deberían apuntar hacia ti — no a un competidor, a alguien que se haga pasar por ti, o a una página aparcada llena de anuncios. Por eso, asegurar más de un **TLD (dominio de nivel superior)** para tu negocio inmobiliario es una de las formas más económicas de proteger tu marca.
 
-Un agente inmobiliario que solo posee el [`.com`](/en/tld/com) de su nombre deja la puerta abierta para que alguien más registre la versión [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes) o [`.house`](/en/tld/house) y se aproveche de la reputación que tú construiste. Registrar un pequeño portafolio de los dominios de nivel superior correctos te permite proteger tu marca local, crear submarcas limpias para tus listados o áreas de trabajo, y bloquear la suplantación de identidad antes de que comience. Esta guía repasa los mejores TLD para agentes inmobiliarios, las reglas de elegibilidad que importan y una estrategia defensiva sencilla.
+Un agente inmobiliario que solo posee el [`.com`](/es/tld/com) de su nombre deja la puerta abierta para que alguien más registre la versión [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes) o [`.house`](/en/tld/house) y se aproveche de la reputación que tú construiste. Registrar un pequeño portafolio de los dominios de nivel superior correctos te permite proteger tu marca local, crear submarcas limpias para tus listados o áreas de trabajo, y bloquear la suplantación de identidad antes de que comience. Esta guía repasa los mejores TLD para agentes inmobiliarios, las reglas de elegibilidad que importan y una estrategia defensiva sencilla.
 
 ## Cómo elegir TLD para tu negocio inmobiliario
 
@@ -20,7 +20,7 @@ Algunos criterios deben guiar cada registro. La **confianza** es lo primero: las
 
 ## Los 10 mejores TLD para asegurar como agente inmobiliario
 
-### 1. [.com](/en/tld/com) — tu ancla indispensable
+### 1. [.com](/es/tld/com) — tu ancla indispensable
 
 `.com` sigue siendo la extensión predeterminada que los compradores escriben y en la que confían, y sigue siendo el TLD más grande del mundo. Registra primero el `.com` de tu marca personal y el nombre de tu correduría; todo lo demás es secundario. Si tu `.com` exacto ya está tomado, una variación cercana vale más que una coincidencia perfecta en una extensión desconocida. Es operado por Verisign bajo un [acuerdo de registro de ICANN](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -48,17 +48,17 @@ Algunos criterios deben guiar cada registro. La **confianza** es lo primero: las
 
 `.house` es una extensión compacta y amigable que funciona igualmente para campañas de jornadas de puertas abiertas, sitios de una sola propiedad y marcas personales informales. Está abierto a cualquier persona y es fácil de decir en voz alta, lo que ayuda en letreros y radio. Sus detalles de registro están disponibles en [ICANN](https://www.icann.org/en/registry-agreements/details/house).
 
-### 8. [.net](/en/tld/net) — la copia de seguridad defensiva clásica
+### 8. [.net](/es/tld/net) — la copia de seguridad defensiva clásica
 
-[`.net`](/en/tld/net) es una de las extensiones más antiguas y reconocidas, lo que la convierte en el complemento defensivo natural de tu `.com`. Poseerla evita que un competidor se quede con la segunda opción más obvia de tu nombre. Es operado por Verisign bajo un [acuerdo de registro de ICANN](https://www.icann.org/en/registry-agreements/details/net).
+[`.net`](/es/tld/net) es una de las extensiones más antiguas y reconocidas, lo que la convierte en el complemento defensivo natural de tu `.com`. Poseerla evita que un competidor se quede con la segunda opción más obvia de tu nombre. Es operado por Verisign bajo un [acuerdo de registro de ICANN](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/en/tld/org) — credibilidad para asociaciones y trabajo comunitario
+### 9. [.org](/es/tld/org) — credibilidad para asociaciones y trabajo comunitario
 
-[`.org`](/en/tld/org) tiene un tono confiable y orientado a la comunidad, adecuado para asociaciones de agentes inmobiliarios, recursos vecinales y proyectos no comerciales que gestionas junto a tu práctica profesional. Registrarlo también evita que los suplantadores lo utilicen. El TLD `.org` está documentado en la [base de datos raíz de IANA](https://www.iana.org/domains/root/db/org.html).
+[`.org`](/es/tld/org) tiene un tono confiable y orientado a la comunidad, adecuado para asociaciones de agentes inmobiliarios, recursos vecinales y proyectos no comerciales que gestionas junto a tu práctica profesional. Registrarlo también evita que los suplantadores lo utilicen. El TLD `.org` está documentado en la [base de datos raíz de IANA](https://www.iana.org/domains/root/db/org.html).
 
-### 10. [.vip](/en/tld/vip) — posicionamiento premium para clientes exclusivos
+### 10. [.vip](/es/tld/vip) — posicionamiento premium para clientes exclusivos
 
-[`.vip`](/en/tld/vip) transmite exclusividad, lo que puede encajar en una práctica de lujo o un portal privado para clientes como `clientes.tunombre.vip`. No tiene restricciones y es corto, por lo que destaca en una tarjeta de presentación. Su acuerdo de registro está publicado por [ICANN](https://www.icann.org/en/registry-agreements/details/vip).
+[`.vip`](/es/tld/vip) transmite exclusividad, lo que puede encajar en una práctica de lujo o un portal privado para clientes como `clientes.tunombre.vip`. No tiene restricciones y es corto, por lo que destaca en una tarjeta de presentación. Su acuerdo de registro está publicado por [ICANN](https://www.icann.org/en/registry-agreements/details/vip).
 
 ## Estrategia de registro defensivo
 

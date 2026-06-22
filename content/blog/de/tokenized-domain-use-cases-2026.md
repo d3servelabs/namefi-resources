@@ -11,37 +11,37 @@ keywords: ['Anwendungsfälle tokenisierte Domains', 'DomainFi', 'tokenisierte Do
 
 Es ist verlockend, über tokenisierte Domains als reine *Technologie* zu sprechen. Viel nützlicher ist es jedoch, sie als eine Reihe von *Dingen zu betrachten, die man mit ihnen tun kann* – Dinge, die mit einer einfachen, bei einem Registrar verwalteten Domain nicht ohne Weiteres möglich wären. Dieser Beitrag ist ein Rundgang durch diese Anwendungsfälle – was heute Realität ist, was im Entstehen begriffen ist und was größtenteils noch reine Theorie (Slide-Deck) ist.
 
-Wir halten das Ganze plattformneutral. Die unten aufgeführten Anwendungsfälle gelten übergreifend für [Namefi](https://namefi.io), Doma Protocol, D3 Global Inc, 3DNS und die anderen Tokenisierungsplattformen (siehe [Auswahl einer Domain-Tokenisierungsplattform](/en/blog/choosing-a-domain-tokenization-platform/)).
+Wir halten das Ganze plattformneutral. Die unten aufgeführten Anwendungsfälle gelten übergreifend für [Namefi](https://namefi.io), Doma Protocol, D3 Global Inc, 3DNS und die anderen Tokenisierungsplattformen (siehe [Auswahl einer Domain-Tokenisierungsplattform](/de/blog/choosing-a-domain-tokenization-platform/)).
 
 ---
 
 ## Anwendungsfall 1: Wallet-nativer Verkauf und Abwicklung
 
-**Was es ist:** Verkaufen Sie eine Domain, indem Sie eine einzige [On-Chain](/en/glossary/on-chain/)-Transaktion signieren. Der Käufer zahlt, das [NFT](/en/glossary/nft/) wechselt den Besitzer, der Eintrag beim [Registrar](/en/glossary/registrar/) wird aktualisiert – und das alles [atomar](/en/glossary/atomic-transfer/) (gleichzeitig). Kein [Treuhandservice (Escrow)](/en/glossary/escrow/), kein [Auth-Code](/en/glossary/auth-code/), keine 5-tägige Registrar-Sperre.
+**Was es ist:** Verkaufen Sie eine Domain, indem Sie eine einzige [On-Chain](/de/glossary/on-chain/)-Transaktion signieren. Der Käufer zahlt, das [NFT](/de/glossary/nft/) wechselt den Besitzer, der Eintrag beim [Registrar](/de/glossary/registrar/) wird aktualisiert – und das alles [atomar](/de/glossary/atomic-transfer/) (gleichzeitig). Kein [Treuhandservice (Escrow)](/de/glossary/escrow/), kein [Auth-Code](/en/glossary/auth-code/), keine 5-tägige Registrar-Sperre.
 
 **Warum es wichtig ist:** Traditionelle Domainverkäufe sind auf externe Treuhanddienste ([Escrow.com](https://www.escrow.com/), Sav, Sedo) angewiesen, um Gelder zu verwahren, während der Registrar-Transfer läuft. Das ist langsam und teuer – Treuhandgebühren von 3–6 % und Zeiträume, die in Tagen statt Minuten gemessen werden. Tokenisierte Verkäufe ersetzen dies durch eine atomare On-Chain-Abwicklung.
 
 **Realitätscheck:** Dies ist 2026 plattformübergreifend **live und funktionsfähig**. Der schwierigste Teil ist die Liquidität (finden genug Käufer Ihr Angebot?) und nicht die Mechanik.
 
-Für tiefere Einblicke siehe [Vom Listing bis zur Abwicklung](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Für tiefere Einblicke siehe [Vom Listing bis zur Abwicklung](/de/blog/how-tokenized-marketplaces-replace-escrow/).
 
 ---
 
 ## Anwendungsfall 2: DeFi-Sicherheiten / Kreditaufnahme
 
-**Was es ist:** Sperren Sie Ihre tokenisierte Domain in einem [Kreditprotokoll](/en/glossary/lending-protocol/) und leihen Sie sich [Stablecoins](/en/glossary/stablecoin/) gegen deren Wert als [Sicherheit (Collateral)](/en/glossary/collateral/). Wenn Sie den Kredit zurückzahlen, erhalten Sie die Domain zurück. Tun Sie das nicht, wird die Domain liquidiert.
+**Was es ist:** Sperren Sie Ihre tokenisierte Domain in einem [Kreditprotokoll](/de/glossary/lending-protocol/) und leihen Sie sich [Stablecoins](/en/glossary/stablecoin/) gegen deren Wert als [Sicherheit (Collateral)](/de/glossary/collateral/). Wenn Sie den Kredit zurückzahlen, erhalten Sie die Domain zurück. Tun Sie das nicht, wird die Domain liquidiert.
 
 **Warum es wichtig ist:** Domain-Portfolios waren in der Vergangenheit illiquide – man besaß den Vermögenswert, konnte ihn aber nicht ohne Weiteres beleihen, ohne ihn zu verkaufen. NFT-fähige [DeFi](/en/glossary/defi/)-Kreditmärkte ([NFTfi](https://www.nftfi.com/), [Arcade](https://www.arcade.xyz/) und Protokolle, die speziell tokenisierte Domains integrieren) ändern das.
 
 **Realitätscheck:** Real, aber noch in der Entwicklung. Die Preisgestaltung von tokenisierten Domains für die Kreditvergabe ist der schwierige Teil – es handelt sich um heterogene Vermögenswerte (jede Domain ist einzigartig), im Gegensatz zu fungiblen Token. Erwarten Sie konservative Beleihungsausläufe (Loan-to-Value) und fortlaufende Anpassungen der Bewertungsmodelle. Liquidationen finden statt und sind öffentlich.
 
-Dies ist auch der Anwendungsfall, bei dem die [Steuerfragen](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) brisant werden. Fragen Sie Ihren Steuerberater.
+Dies ist auch der Anwendungsfall, bei dem die [Steuerfragen](/de/blog/tax-and-accounting-questions-for-tokenized-domains/) brisant werden. Fragen Sie Ihren Steuerberater.
 
 ---
 
 ## Anwendungsfall 3: Leasing
 
-**Was es ist:** [Vermieten](/en/glossary/leasing/) Sie die Nutzung einer Domain für einen bestimmten Zeitraum, ohne sie zu verkaufen. Der Eigentümer behält das NFT; der Leasingnehmer erhält zeitlich begrenzte Rechte, die Domain zu betreiben.
+**Was es ist:** [Vermieten](/de/glossary/leasing/) Sie die Nutzung einer Domain für einen bestimmten Zeitraum, ohne sie zu verkaufen. Der Eigentümer behält das NFT; der Leasingnehmer erhält zeitlich begrenzte Rechte, die Domain zu betreiben.
 
 **Warum es wichtig ist:** Portfolioinhaber besitzen oft Domains, die wertvoll, aber ungenutzt sind. Leasing verwandelt den Bestand in Cashflow, ohne das Eigentum aufzugeben.
 
@@ -51,7 +51,7 @@ Dies ist auch der Anwendungsfall, bei dem die [Steuerfragen](/en/blog/tax-and-ac
 
 ## Anwendungsfall 4: Teilbesitz (Fractional Ownership)
 
-**Was es ist:** Die Aufteilung des Eigentums an einer Premium-Domain auf mehrere Inhaber, von denen jeder [Bruchteile (Anteile)](/en/glossary/fractional-ownership/) besitzt.
+**Was es ist:** Die Aufteilung des Eigentums an einer Premium-Domain auf mehrere Inhaber, von denen jeder [Bruchteile (Anteile)](/de/glossary/fractional-ownership/) besitzt.
 
 **Warum es wichtig ist:** Eine Domain der Klasse `LLM.com` oder `crypto.com` ist Millionen wert. Die Aufteilung auf eine Community von Inhabern ermöglicht Investitionen in diese Vermögenswerte, ohne dass jemand der alleinige Eigentümer sein muss. Domora hat seine These darauf aufgebaut; Doma Prime und Mizu Launchpad haben verwandte Basisstrukturen (Primitives).
 
@@ -61,19 +61,19 @@ Dies ist auch der Anwendungsfall, bei dem die [Steuerfragen](/en/blog/tax-and-ac
 
 ## Anwendungsfall 5: Identität für KI-Agenten
 
-**Was es ist:** Ein [KI-Agent](/en/glossary/ai-agent/) (eine Software, die im Auftrag eines Nutzers handelt) besitzt ein [Wallet](/en/glossary/wallet/), und dieses Wallet hält eine tokenisierte Domain. Die Domain wird zur Identität des Agenten – adressierbar, verifizierbar, monetarisierbar.
+**Was es ist:** Ein [KI-Agent](/en/glossary/ai-agent/) (eine Software, die im Auftrag eines Nutzers handelt) besitzt ein [Wallet](/de/glossary/wallet/), und dieses Wallet hält eine tokenisierte Domain. Die Domain wird zur Identität des Agenten – adressierbar, verifizierbar, monetarisierbar.
 
 **Warum es wichtig ist:** Da KI-Agenten beginnen, echte wirtschaftliche Aktivitäten auszuführen (buchen, kaufen, bezahlen), benötigen sie dauerhafte Identifikatoren, Zahlungsendpunkte und ein Reputationsgerüst. Tokenisierte Domains können alles drei bieten: einen einzigartigen Namen, ein Wallet zum Empfangen von Zahlungen (z.B. via [x402](/en/glossary/x402/)) und eine On-Chain-Historie.
 
 **Realitätscheck:** Im Entstehen begriffen. Das Muster ist plausibel und wird derzeit entwickelt. Die meisten Beispiele in der Produktion sind derzeit eher Demos oder spezifische Bereitstellungen als eine breite Akzeptanz. Wenn Sie eine Agenten-Infrastruktur aufbauen, ist dies ein Anwendungsfall, den Sie in Ihr Design einbeziehen sollten. Wenn Sie ein Endnutzer sind, können Sie erwarten, in den Jahren 2026 und 2027 mehr davon zu sehen.
 
-Siehe [Google enthüllt Universal Commerce Protocol](/en/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/) für weiteren Kontext zum Commerce-Stack für Agenten.
+Siehe [Google enthüllt Universal Commerce Protocol](/de/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/) für weiteren Kontext zum Commerce-Stack für Agenten.
 
 ---
 
 ## Anwendungsfall 6: Marktplatz-Listings, die wirklich funktionieren
 
-**Was es ist:** Listen Sie Ihre tokenisierte Domain auf [OpenSea](https://opensea.io/), [Blur](https://blur.io/), [Magic Eden](https://magiceden.io/) oder plattformspezifischen [Marktplätzen](/en/glossary/marketplace/) – mit derselben Nutzererfahrung (UX) wie das Listen eines beliebigen [ERC-721](/en/glossary/erc-721/) NFTs.
+**Was es ist:** Listen Sie Ihre tokenisierte Domain auf [OpenSea](https://opensea.io/), [Blur](https://blur.io/), [Magic Eden](https://magiceden.io/) oder plattformspezifischen [Marktplätzen](/de/glossary/marketplace/) – mit derselben Nutzererfahrung (UX) wie das Listen eines beliebigen [ERC-721](/en/glossary/erc-721/) NFTs.
 
 **Warum es wichtig ist:** Traditionelle Domain-Marktplätze waren schon immer ein geschlossener Kreislauf (Sedo, Afternic, Dan.com). Die Tokenisierung öffnet den Vertrieb für das breitere NFT-Marktplatz-Ökosystem, das UX-, Such-, Social- und Preistools entwickelt hat, über die der traditionelle Markt nicht verfügt.
 
@@ -83,7 +83,7 @@ Siehe [Google enthüllt Universal Commerce Protocol](/en/blog/google-unveils-uni
 
 ## Anwendungsfall 7: Programmierbare Domains
 
-**Was es ist:** Domains, die auf On-Chain-Bedingungen reagieren – z. B. ein [Smart Contract](/en/glossary/smart-contract/), der eine Domain nur überträgt, wenn eine Anzahlung geleistet wird, oder eine Domain, über deren DNS-Einträge von einer [DAO](/en/glossary/dao/) der Inhaber abgestimmt werden kann. So sieht die [Zusammensetzbarkeit (Composability)](/en/glossary/composability/) bei Domain-Assets aus.
+**Was es ist:** Domains, die auf On-Chain-Bedingungen reagieren – z. B. ein [Smart Contract](/de/glossary/smart-contract/), der eine Domain nur überträgt, wenn eine Anzahlung geleistet wird, oder eine Domain, über deren DNS-Einträge von einer [DAO](/de/glossary/dao/) der Inhaber abgestimmt werden kann. So sieht die [Zusammensetzbarkeit (Composability)](/de/glossary/composability/) bei Domain-Assets aus.
 
 **Warum es wichtig ist:** Sobald eine Domain ein Token ist, lässt sie sich mit jeder Smart-Contract-Logik kombinieren, die man schreiben kann. Bedingte Übertragungen, Domains im Besitz der Treasury, zeitgebundene (time-locked) Verkäufe, automatische Auktionen und so weiter.
 
@@ -97,7 +97,7 @@ Siehe [Google enthüllt Universal Commerce Protocol](/en/blog/google-unveils-uni
 
 **Warum es wichtig ist:** Herkömmliche Domains sterben ständig mit den Menschen. Sie bleiben in Registrar-Konten hängen, auf die niemand zugreifen kann, Kreditkarten laufen ab, und die Domain verfällt (drop). Tokenisierte Domains bieten zumindest die *Möglichkeit* einer sauberen Vererbung durch ein entsprechendes Wallet-Management.
 
-**Realitätscheck:** Machbar, erfordert aber Planung. Lesen Sie [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) für die operative Seite und den Beitrag [Steuer- und Nachlassfragen](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) für die rechtlichen Fragen, die Sie mit einem Fachmann klären sollten.
+**Realitätscheck:** Machbar, erfordert aber Planung. Lesen Sie [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/de/blog/recovering-a-tokenized-domain-after-wallet-loss/) für die operative Seite und den Beitrag [Steuer- und Nachlassfragen](/de/blog/tax-and-accounting-questions-for-tokenized-domains/) für die rechtlichen Fragen, die Sie mit einem Fachmann klären sollten.
 
 ---
 

@@ -13,7 +13,7 @@ keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domai
 
 本指南将 `.ai` 与 `.io` 进行正面比较，帮助您选出真正契合公司定位的那一个——而不仅仅是当季最流行的那一个。
 
-如需深度解析，我们分别有 [.ai TLD](/en/tld/ai/) 和 [.io TLD](/en/tld/io/) 的完整说明。本文聚焦于如何在两者之间做出选择。
+如需深度解析，我们分别有 [.ai TLD](/zh/tld/ai/) 和 [.io TLD](/zh/tld/io/) 的完整说明。本文聚焦于如何在两者之间做出选择。
 
 ---
 
@@ -117,7 +117,7 @@ keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domai
 
 **仍然犹豫不决？** 许多创业公司两个都注册，将其中一个指向另一个，这样就能在受众最可能输入的两个后缀上都保护好品牌。如果预算允许，这是最稳妥的做法。
 
-无论您选哪个，下一个问题是如何真正*拥有*它。如果您想要一个可以持有、转让并作为可编程资产使用的域名，请参阅 [什么是代币化域名？](/en/blog/what-are-tokenized-domains/)
+无论您选哪个，下一个问题是如何真正*拥有*它。如果您想要一个可以持有、转让并作为可编程资产使用的域名，请参阅 [什么是代币化域名？](/zh/blog/what-are-tokenized-domains/)
 
 ---
 
@@ -149,4 +149,4 @@ keywords: ["ai vs io tld", "io vs ai domain", "ai or io domain", "io vs ai domai
 可以，许多创业公司都这样做。同时拥有两者，可以在受众最可能输入的两个后缀上保护您的品牌，并将其中一个重定向至另一个。在 [Namefi](https://namefi.io)，您可以注册并代币化这两个域名。
 
 ### 代币化 `.ai` 或 `.io` 域名意味着什么？
-代币化是在您真实的 ICANN 域名上添加一个链上所有权代币，让您能够以 Web3 的安全性和灵活性进行转让和管理，同时保留标准 DNS 和托管功能。了解更多，请参阅 [什么是代币化域名？](/en/blog/what-are-tokenized-domains/)
+代币化是在您真实的 ICANN 域名上添加一个链上所有权代币，让您能够以 Web3 的安全性和灵活性进行转让和管理，同时保留标准 DNS 和托管功能。了解更多，请参阅 [什么是代币化域名？](/zh/blog/what-are-tokenized-domains/)

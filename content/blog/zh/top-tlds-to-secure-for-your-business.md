@@ -22,7 +22,7 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 1. .com — 互联网的默认选择
 
-[.com](/en/tld/com) 是最初的商业通用顶级域名（gTLD），至今仍是全球最具知名度和公信力的后缀。它由 [Verisign](https://www.icann.org/en/registry-agreements/details/com) 在与 ICANN 签订的合同下运营。对于大多数企业而言，与品牌完全匹配的 `.com` 是最重要的域名，因为客户会本能地输入它，竞争对手也对它觊觎已久。
+[.com](/zh/tld/com) 是最初的商业通用顶级域名（gTLD），至今仍是全球最具知名度和公信力的后缀。它由 [Verisign](https://www.icann.org/en/registry-agreements/details/com) 在与 ICANN 签订的合同下运营。对于大多数企业而言，与品牌完全匹配的 `.com` 是最重要的域名，因为客户会本能地输入它，竞争对手也对它觊觎已久。
 
 ### 2. .co — 现代化、易于品牌化的替代选择
 
@@ -30,15 +30,15 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 3. .net — 值得信赖的经典后缀
 
-[.net](/en/tld/net) 最初面向网络基础设施提供商，与 `.com` 一样由 [Verisign](https://www.iana.org/domains/root/db/net.html) 运营。它拥有数十年的良好声誉，是客户能立即认出的常见备选项。注册它可防止第三方使用与您主要 `.com` 地址几乎相同的域名。
+[.net](/zh/tld/net) 最初面向网络基础设施提供商，与 `.com` 一样由 [Verisign](https://www.iana.org/domains/root/db/net.html) 运营。它拥有数十年的良好声誉，是客户能立即认出的常见备选项。注册它可防止第三方使用与您主要 `.com` 地址几乎相同的域名。
 
 ### 4. .org — 公信力与信任的象征
 
-[.org](/en/tld/org) 传达出组织或使命驱动型实体的形象，由非营利组织 [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) 运营。即使是纯商业性企业，通常也会防御性地注册 `.org`，以防有人以其品牌名创建批评性或冒充性的"组织"网站。该后缀无限制，向所有人开放。
+[.org](/zh/tld/org) 传达出组织或使命驱动型实体的形象，由非营利组织 [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) 运营。即使是纯商业性企业，通常也会防御性地注册 `.org`，以防有人以其品牌名创建批评性或冒充性的"组织"网站。该后缀无限制，向所有人开放。
 
 ### 5. .io — 科技与初创公司的最爱
 
-[.io](/en/tld/io) 在技术上是英属印度洋领地的国家代码顶级域名，但这两个字母让人联想到"输入/输出"（input/output），使其成为开发者、SaaS 企业和初创公司的宠儿。它由 [Identity Digital 旗下子公司 Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html) 管理，无需本地存在即可全球注册。如果您的业务面向科技领域，拥有 `.io` 后缀值得认真考虑。
+[.io](/zh/tld/io) 在技术上是英属印度洋领地的国家代码顶级域名，但这两个字母让人联想到"输入/输出"（input/output），使其成为开发者、SaaS 企业和初创公司的宠儿。它由 [Identity Digital 旗下子公司 Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html) 管理，无需本地存在即可全球注册。如果您的业务面向科技领域，拥有 `.io` 后缀值得认真考虑。
 
 ### 6. .biz — 专属商业后缀
 
@@ -46,11 +46,11 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 7. .info — 信息性且平易近人
 
-[.info](/en/tld/info) 是最早的新通用顶级域名之一，广泛用于知识库、文档和信息类微站。它由 [Identity Digital](https://www.iana.org/domains/root/db/info.html) 运营，无注册限制。拥有它可以让您托管帮助中心或活动页面，同时防止仿冒者以您的名义发布"资讯"。
+[.info](/zh/tld/info) 是最早的新通用顶级域名之一，广泛用于知识库、文档和信息类微站。它由 [Identity Digital](https://www.iana.org/domains/root/db/info.html) 运营，无注册限制。拥有它可以让您托管帮助中心或活动页面，同时防止仿冒者以您的名义发布"资讯"。
 
 ### 8. .online — 广泛、直观、面向全球
 
-[.online](/en/tld/online) 是一个描述性的新通用顶级域名，几乎适合任何有网络存在的企业。它由 [Radix](https://www.iana.org/domains/root/db/online.html) 拥有和运营，向全球开放注册，无限制。其通俗易懂的含义使其成为着陆页和区域店面的直观地址。
+[.online](/zh/tld/online) 是一个描述性的新通用顶级域名，几乎适合任何有网络存在的企业。它由 [Radix](https://www.iana.org/domains/root/db/online.html) 拥有和运营，向全球开放注册，无限制。其通俗易懂的含义使其成为着陆页和区域店面的直观地址。
 
 ### 9. .company — 适合任何公司的字面后缀
 
@@ -58,9 +58,9 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 10. .vip — 彰显高端定位
 
-[.vip](/en/tld/vip) 代表"非常重要的人"（very important person），用于传达专属感、会员身份或高端档次。它由 [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html) 运营（作为前 Minds + Machines 组合的一部分收购），注册向所有人开放。对于忠诚度计划、会员专属内容或高端产品线，`.vip` 是令人印象深刻的选择。
+[.vip](/zh/tld/vip) 代表"非常重要的人"（very important person），用于传达专属感、会员身份或高端档次。它由 [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html) 运营（作为前 Minds + Machines 组合的一部分收购），注册向所有人开放。对于忠诚度计划、会员专属内容或高端产品线，`.vip` 是令人印象深刻的选择。
 
-在构建域名组合时，还有两个值得简要提及的后缀：[.agency](https://www.icann.org/en/registry-agreements/details/agency) 适合服务型公司，而您所在行业中的 [.com](/en/tld/com) 变体应始终是您的核心锚点。
+在构建域名组合时，还有两个值得简要提及的后缀：[.agency](https://www.icann.org/en/registry-agreements/details/agency) 适合服务型公司，而您所在行业中的 [.com](/zh/tld/com) 变体应始终是您的核心锚点。
 
 ## 防御性注册策略
 

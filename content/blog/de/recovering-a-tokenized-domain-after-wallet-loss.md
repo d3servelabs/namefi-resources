@@ -9,7 +9,7 @@ description: "Was wirklich passiert, wenn Sie den Zugriff auf die Wallet verlier
 keywords: ['NFT-Domain wiederherstellen', 'Wallet-Verlust Domain', 'tokenisierte Domain Wallet verloren', 'Wallet-Wiederherstellung Domain', 'NFT-Domain Backup', 'tokenisierte Domain Hardware-Wallet', 'Multisig tokenisierte Domain', 'Schlüsselwiederherstellung tokenisierte Domain', 'Seed-Phrase verloren Domain', 'NFT-Domain Sicherheit', 'tokenisierte Domain Backup', 'Domain Schlüsselverwaltung', 'Wallet-Verlust Wiederherstellung']
 ---
 
-Von allen Dingen, über die sich Menschen vor der [Tokenisierung einer Domain](/en/blog/what-are-tokenized-domains/) keine Gedanken machen, ist die **Wiederherstellung nach einem Wallet-Verlust** das größte. Sobald eine Domain tokenisiert ist, ist die [Wallet](/en/glossary/wallet/), die das [NFT](/en/glossary/nft/) hält, die einzige Quelle der Wahrheit (Source of Truth) für das Eigentum. Verlieren Sie die Wallet, haben Sie ein echtes Problem.
+Von allen Dingen, über die sich Menschen vor der [Tokenisierung einer Domain](/de/blog/what-are-tokenized-domains/) keine Gedanken machen, ist die **Wiederherstellung nach einem Wallet-Verlust** das größte. Sobald eine Domain tokenisiert ist, ist die [Wallet](/de/glossary/wallet/), die das [NFT](/de/glossary/nft/) hält, die einzige Quelle der Wahrheit (Source of Truth) für das Eigentum. Verlieren Sie die Wallet, haben Sie ein echtes Problem.
 
 Dieser Beitrag erklärt ehrlich, wie Ihre Optionen tatsächlich aussehen – und wie Sie die Dinge *jetzt* so einrichten, dass der Worst Case behebbar ist.
 
@@ -47,7 +47,7 @@ Die Wallet, die Sie verwenden, um mit Apps zu *interagieren*, kann eine Hot Wall
 
 ### 3. Ziehen Sie eine Multisig-Wallet für wertvolle Domains in Betracht
 
-Für Domains, die ein Unternehmen repräsentieren – die primäre `.com` Ihres Unternehmens, eine wichtige Marke – ist eine [**Multisig-Wallet**](/en/glossary/multi-sig/) ([Safe](https://safe.global/), ehemals Gnosis Safe) eine hervorragende Wahl. Richten Sie 2-aus-3 oder 3-aus-5 Unterzeichner (Signers) über verschiedene Geräte und Personen hinweg ein. Wenn ein Unterzeichner wegfällt, ist die Domain nicht verloren.
+Für Domains, die ein Unternehmen repräsentieren – die primäre `.com` Ihres Unternehmens, eine wichtige Marke – ist eine [**Multisig-Wallet**](/de/glossary/multi-sig/) ([Safe](https://safe.global/), ehemals Gnosis Safe) eine hervorragende Wahl. Richten Sie 2-aus-3 oder 3-aus-5 Unterzeichner (Signers) über verschiedene Geräte und Personen hinweg ein. Wenn ein Unterzeichner wegfällt, ist die Domain nicht verloren.
 
 Stellen Sie sicher, dass Sie tatsächlich verstehen, wie man Multisig-Transaktionen *ausführt*, nicht nur, wie man sie hält. Bei einer Multisig-Wallet, bei der Sie Unterzeichner verloren haben, haben Sie auch die Domain verloren. Üben Sie die Übertragung eines kleinen Tokens, bevor es wirklich darauf ankommt.
 
@@ -55,7 +55,7 @@ Stellen Sie sicher, dass Sie tatsächlich verstehen, wie man Multisig-Transaktio
 
 Ja, das klingt makaber. Es ist jedoch auch einer der häufigsten Gründe, warum Domains für immer unwiderruflich verloren gehen. Ein kurzes Dokument, in dem steht: „Die Wallet für [Domain] befindet sich an [Ort], die Wiederherstellung ist an [anderer Ort], kontaktieren Sie [Person/Anwalt], wenn Sie mich nicht erreichen können“, ist weitaus mehr wert als die Zeit, die es braucht, um es zu schreiben.
 
-Dies ist auch ein wichtiges Thema für unseren [Beitrag zu Steuer- und Buchhaltungsfragen](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) – Domain-Assets ähneln Immobilien in dem Sinne, dass sie nicht verschwinden, wenn Sie es tun.
+Dies ist auch ein wichtiges Thema für unseren [Beitrag zu Steuer- und Buchhaltungsfragen](/de/blog/tax-and-accounting-questions-for-tokenized-domains/) – Domain-Assets ähneln Immobilien in dem Sinne, dass sie nicht verschwinden, wenn Sie es tun.
 
 ### 5. Dokumentieren Sie die Plattform-Seite
 
@@ -84,7 +84,7 @@ Kaufen Sie ein neues Gerät. Stellen Sie es über den Seed wieder her. Der Domai
 Das ist der schwierigste Fall. Kryptografisch ist das NFT nun unzugänglich. Ihre Optionen:
 
 1. **Plattformseitige Wiederherstellung.** Wenn die Plattform (z. B. Namefi) über eine kontogebundene Identität verfügt, die mit Ihrer Registrierungs-E-Mail und KYC (sofern anwendbar) verknüpft ist, können Sie möglicherweise beweisen, dass Sie der Registrant sind, und eine von der Plattform verwaltete Fehlerbehebung anfordern. Dies ist **nicht garantiert**, erfordert eine Identitätsprüfung und gilt in der Regel nur unter bestimmten Bedingungen. Kontaktieren Sie den Support sofort – je länger Sie warten, desto schwieriger wird es.
-2. **Einsprüche bei Registry / Registrar.** Da es sich um eine echte [ICANN](/en/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/en/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/en/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
+2. **Einsprüche bei Registry / Registrar.** Da es sich um eine echte [ICANN](/de/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/de/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/en/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
 3. **Der Rechtsweg.** Für wertvolle Domains, die in einem Unternehmens- oder Nachlasskontext gehalten werden, gibt es Anwälte und Recovery-Firmen, die sich darauf spezialisieren. Teuer, langsam und fallabhängig.
 
 Was niemand tun kann: Den privaten Schlüssel per Brute-Force knacken. Vertrauen Sie niemandem, der behauptet, das zu können.
@@ -115,13 +115,13 @@ Ein 2-aus-3-Safe mit Schlüsseln bei:
 
 Der Nachteil ist der administrative Aufwand: Jede Übertragung / Signatur erfordert die Koordination der Unterzeichner. Für eine Domain, die Sie selten verkaufen und für immer besitzen, ist das in Ordnung. Für eine Domain, mit der Sie aktiv handeln, sollten Sie vielleicht eine kleinere „Hot“ Wallet neben der Multisig betreiben.
 
-> Lesen Sie [Verbessern Multisig-Wallets tatsächlich die Sicherheit?](/en/blog/do-multisig-wallets-actually-improve-security/) für einen tieferen Einblick, wann Multisig hilft und wann nicht.
+> Lesen Sie [Verbessern Multisig-Wallets tatsächlich die Sicherheit?](/de/blog/do-multisig-wallets-actually-improve-security/) für einen tieferen Einblick, wann Multisig hilft und wann nicht.
 
 ---
 
 ## Social Recovery Wallets
 
-Account-Abstraction-Wallets ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) mit Social-Recovery-Modulen, [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Accounts) ermöglichen es Ihnen, „Wächter“ (Guardians) zu ernennen, die Ihnen gemeinsam helfen können, den Zugang wiederherzustellen. Dies ist hervorragend für Personen, die keine [Multisig](/en/glossary/multi-sig/) direkt verwalten möchten.
+Account-Abstraction-Wallets ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) mit Social-Recovery-Modulen, [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Accounts) ermöglichen es Ihnen, „Wächter“ (Guardians) zu ernennen, die Ihnen gemeinsam helfen können, den Zugang wiederherzustellen. Dies ist hervorragend für Personen, die keine [Multisig](/de/glossary/multi-sig/) direkt verwalten möchten.
 
 Vorteile: fehlertolerant, benutzerfreundlich.
 Nachteile: noch relativ neu, die Guardian-Gruppe muss tatsächlich existieren und reagieren, und der Smart-Contract-Code selbst ist eine weitere Komponente, der man vertrauen muss.

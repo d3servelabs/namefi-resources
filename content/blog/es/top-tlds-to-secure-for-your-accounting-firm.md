@@ -22,7 +22,7 @@ Al evaluar extensiones, considera tres criterios. Las **señales de confianza** 
 
 ### 1. .com — tu dominio principal y marca insignia
 
-La extensión [.com](/en/tld/com) sigue siendo la expectativa predeterminada para cualquier sitio web empresarial, y es casi siempre donde los clientes, socios y motores de búsqueda buscarán primero. Está operada por Verisign bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/com), y el registro está abierto a cualquiera. Úsala como tu dirección canónica y redirige tus otros dominios hacia ella.
+La extensión [.com](/es/tld/com) sigue siendo la expectativa predeterminada para cualquier sitio web empresarial, y es casi siempre donde los clientes, socios y motores de búsqueda buscarán primero. Está operada por Verisign bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/com), y el registro está abierto a cualquiera. Úsala como tu dirección canónica y redirige tus otros dominios hacia ella.
 
 ### 2. .cpa — la señal de confianza más valiosa (restringida)
 
@@ -34,11 +34,11 @@ La extensión [.tax](/en/tld/tax) comunica de inmediato una especialización en 
 
 ### 4. .accountant — abierto y ampliamente disponible
 
-La extensión [.accountant](/en/tld/accountant) está operada por dog beach, LLC (un registro de Identity Digital) bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/accountant). Es importante destacar que .accountant está **abierto al público** sin ningún requisito de verificación profesional — cualquiera puede registrarlo por orden de llegada. Eso lo hace útil para fines de marketing y defensa, pero no lleva una señal de licencia integrada como sí lo hace .cpa.
+La extensión [.accountant](/es/tld/accountant) está operada por dog beach, LLC (un registro de Identity Digital) bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/accountant). Es importante destacar que .accountant está **abierto al público** sin ningún requisito de verificación profesional — cualquiera puede registrarlo por orden de llegada. Eso lo hace útil para fines de marketing y defensa, pero no lleva una señal de licencia integrada como sí lo hace .cpa.
 
 ### 5. .accountants — variante plural orientada a la industria
 
-La extensión plural [.accountants](/en/tld/accountants) está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/accountants) y es muy adecuada para prácticas con varios socios y firmas. Si bien los registros pueden aplicar políticas específicas, .accountants generalmente está disponible para profesionales de la contabilidad y empresas relacionadas sin la verificación estricta de licencias que rige .cpa. Asegurarlo junto con .accountant evita confusiones entre las formas singular y plural.
+La extensión plural [.accountants](/es/tld/accountants) está operada por Binky Moon, LLC bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/accountants) y es muy adecuada para prácticas con varios socios y firmas. Si bien los registros pueden aplicar políticas específicas, .accountants generalmente está disponible para profesionales de la contabilidad y empresas relacionadas sin la verificación estricta de licencias que rige .cpa. Asegurarlo junto con .accountant evita confusiones entre las formas singular y plural.
 
 ### 6. .finance — para servicios de asesoría y patrimonio
 
@@ -46,11 +46,11 @@ La extensión [.finance](/en/tld/finance) posiciona a tu firma en el panorama m�
 
 ### 7. .net — la alternativa técnica clásica
 
-La extensión [.net](/en/tld/net) es uno de los TLDs genéricos originales, operado por Verisign bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/net). Es ampliamente reconocida y frecuentemente registrada de manera defensiva junto con .com para que nadie pueda crear un sitio confusamente similar. Redirigela a tu dominio principal.
+La extensión [.net](/es/tld/net) es uno de los TLDs genéricos originales, operado por Verisign bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/net). Es ampliamente reconocida y frecuentemente registrada de manera defensiva junto con .com para que nadie pueda crear un sitio confusamente similar. Redirigela a tu dominio principal.
 
 ### 8. .org — credibilidad para asociaciones y sin fines de lucro
 
-La extensión [.org](/en/tld/org), operada por Public Interest Registry bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/org), transmite confianza institucional. Es un registro defensivo inteligente para cualquier firma, y una opción principal natural si tu práctica gestiona una fundación asociada, una asociación profesional o un programa comunitario.
+La extensión [.org](/es/tld/org), operada por Public Interest Registry bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/org), transmite confianza institucional. Es un registro defensivo inteligente para cualquier firma, y una opción principal natural si tu práctica gestiona una fundación asociada, una asociación profesional o un programa comunitario.
 
 ### 9. .agency — moderno y orientado a servicios
 
@@ -58,7 +58,7 @@ La extensión [.agency](/en/tld/agency) es adecuada para firmas que se presentan
 
 ### 10. .info — informativo y defensivo
 
-La extensión [.info](/en/tld/info), operada por Identity Digital bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/info), es un TLD abierto ideal para centros de recursos, portales de clientes y bases de conocimiento — o simplemente como un registro defensivo económico para completar tu portafolio.
+La extensión [.info](/es/tld/info), operada por Identity Digital bajo un [acuerdo de registro con ICANN](https://www.icann.org/en/registry-agreements/details/info), es un TLD abierto ideal para centros de recursos, portales de clientes y bases de conocimiento — o simplemente como un registro defensivo económico para completar tu portafolio.
 
 ## Estrategia de registro defensivo
 

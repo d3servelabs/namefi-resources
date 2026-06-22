@@ -29,7 +29,7 @@ Ces changements étant des changements *de gros*, ils touchent **tous les bureau
 
 Le prix suit la demande, et la demande pour `.io` est exceptionnellement forte dans le segment qui dispose justement des moyens financiers.
 
-Pour les ingénieurs, `.io` évoque **I/O — entrée/sortie (input/output)**, un concept fondamental de l'informatique. Cette heureuse coïncidence a transformé un code d'île minuscule en badge de facto de l'écosystème technologique moderne. Comme l'explique notre [guide TLD `.io`](/en/tld/io/), l'extension est désormais standard pour :
+Pour les ingénieurs, `.io` évoque **I/O — entrée/sortie (input/output)**, un concept fondamental de l'informatique. Cette heureuse coïncidence a transformé un code d'île minuscule en badge de facto de l'écosystème technologique moderne. Comme l'explique notre [guide TLD `.io`](/fr/tld/io/), l'extension est désormais standard pour :
 
 - **Les startups SaaS et IA** qui signalent une crédibilité technique immédiate auprès des utilisateurs et des investisseurs
 - **Les projets Web3 et blockchain** (pensez aux explorateurs de blocs et aux dApps)
@@ -80,12 +80,12 @@ Si `.io` coche vos cases, la prime est souvent justifiée. Si la certitude et le
 ### Alternatives à comparer
 
 - **`.com`** — la valeur universelle par défaut : confiance maximale, aucun risque ccTLD, tarification contractuellement plafonnée, mais les noms courts sont rares et coûteux sur le marché secondaire.
-- **`.ai`** — l'extension émergente pour les marques d'intelligence artificielle. Notez qu'elle est *aussi* un ccTLD (pour Anguilla) et est elle-même **premium**, ce qui résout la question du prestige mais pas celle du coût ou de l'origine ccTLD. Voir notre [comparaison `.ai` vs `.io`](/en/blog/ai-vs-io-domain/) et le [guide TLD `.ai`](/en/tld/ai/).
+- **`.ai`** — l'extension émergente pour les marques d'intelligence artificielle. Notez qu'elle est *aussi* un ccTLD (pour Anguilla) et est elle-même **premium**, ce qui résout la question du prestige mais pas celle du coût ou de l'origine ccTLD. Voir notre [comparaison `.ai` vs `.io`](/fr/blog/ai-vs-io-domain/) et le [guide TLD `.ai`](/fr/tld/ai/).
 - **`.dev`** — un véritable TLD générique géré par Google, adapté aux développeurs, avec HTTPS obligatoire et sans dépendance au code pays.
 
 ## Achetez, vendez ou tokenisez des domaines .io sur Namefi
 
-Quelle que soit votre décision, **[Namefi](https://namefi.io)** peut vous aider à agir. En tant que bureau d'enregistrement accrédité par l'ICANN faisant le lien entre Web2 et Web3, Namefi vous permet d'**enregistrer, acheter, vendre et tokeniser des domaines `.io`** — transformant un nom en [domaine tokenisé](/en/blog/what-are-tokenized-domains/) dont la propriété est reflétée on-chain pour des transferts plus simples et sans besoin de confiance. Si vous investissez dans `.io` ou en faites le commerce, cela rend le transfert de noms entre acheteurs et vendeurs bien plus fluide que le processus traditionnel.
+Quelle que soit votre décision, **[Namefi](https://namefi.io)** peut vous aider à agir. En tant que bureau d'enregistrement accrédité par l'ICANN faisant le lien entre Web2 et Web3, Namefi vous permet d'**enregistrer, acheter, vendre et tokeniser des domaines `.io`** — transformant un nom en [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) dont la propriété est reflétée on-chain pour des transferts plus simples et sans besoin de confiance. Si vous investissez dans `.io` ou en faites le commerce, cela rend le transfert de noms entre acheteurs et vendeurs bien plus fluide que le processus traditionnel.
 
 ## Questions fréquemment posées
 
@@ -115,4 +115,4 @@ Les principales alternatives sont `.com` (confiance universelle, tarification pl
 
 ---
 
-*Prêt à sécuriser, échanger ou tokeniser un nom `.io` ? Explorez le [TLD `.io` sur Namefi](/en/tld/io/) ou [commencez sur namefi.io](https://namefi.io).*
+*Prêt à sécuriser, échanger ou tokeniser un nom `.io` ? Explorez le [TLD `.io` sur Namefi](/fr/tld/io/) ou [commencez sur namefi.io](https://namefi.io).*

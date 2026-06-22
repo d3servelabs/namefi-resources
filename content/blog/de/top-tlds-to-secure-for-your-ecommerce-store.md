@@ -12,33 +12,33 @@ keywords: ['Top-TLDs für E-Commerce', 'beste Domain-Endungen für Online-Shop',
 
 Für einen Online-Händler ist ein Domainname nicht nur eine Adresse – er ist ein Schaufenster, ein Vertrauenssignal und gleichzeitig ein Markenwert. Die richtigen **Top-Level-Domains (TLDs) für Ihren E-Commerce-Shop** zu sichern, ist eine der günstigsten Formen des Markenschutzes, die Sie erwerben können. Wenn Sie die Endungen besitzen, die Kunden und böswillige Akteure am wahrscheinlichsten eintippen, kontrollieren Sie, wohin Ihr Traffic fließt – und verwehren Sie dieses digitale Grundstück jedem, der es missbrauchen könnte.
 
-Dieser letzte Punkt ist für die meisten Händler wichtiger, als sie ahnen. Täuschend ähnliche Schaufenster auf alternativen Endungen sind ein verbreiteter Angriffspunkt für Phishing und Betrug mit gefälschten Waren: Ein Betrüger registriert Ihre Marke auf einer handelsbezogenen TLD, die Sie ausgelassen haben, baut eine überzeugende Checkout-Seite auf und stiehlt Zahlungsdaten Ihrer Kunden. Indem Sie vorab einige Intent-starke Endungen sichern – neben Ihrer primären [`.com`](/en/tld/com) – schließen Sie diese Lücken, bevor jemand anderes sie öffnen kann.
+Dieser letzte Punkt ist für die meisten Händler wichtiger, als sie ahnen. Täuschend ähnliche Schaufenster auf alternativen Endungen sind ein verbreiteter Angriffspunkt für Phishing und Betrug mit gefälschten Waren: Ein Betrüger registriert Ihre Marke auf einer handelsbezogenen TLD, die Sie ausgelassen haben, baut eine überzeugende Checkout-Seite auf und stiehlt Zahlungsdaten Ihrer Kunden. Indem Sie vorab einige Intent-starke Endungen sichern – neben Ihrer primären [`.com`](/de/tld/com) – schließen Sie diese Lücken, bevor jemand anderes sie öffnen kann.
 
 ## So wählen Sie TLDs für Ihren Online-Shop aus
 
-Drei Kriterien sollten die Entscheidung leiten. Erstens **Vertrauen und Konversion**: Käufer erkennen und vertrauen manchen Endungen mehr als anderen, und eine vertraute TLD verringert die Hemmschwelle im Moment des Kaufs. Zweitens **Handelsabsicht**: Endungen wie [`.shop`](/en/tld/shop) und [`.store`](/en/tld/store) tragen eine offensichtliche kommerzielle Bedeutung, die Ihre Positionierung unterstreichen und Marketingtexte natürlicher klingen lässt. Drittens **defensiver Schutz**: Selbst Endungen, auf denen Sie nie eine Website betreiben wollen, sind es wert, gehalten zu werden, wenn ein Wettbewerber oder Nachahmer sie plausiblerweise gegen Ihre Marke einsetzen könnte. Das Ziel ist ein kleines, durchdachtes Portfolio – nicht jede TLD, die es gibt, sondern die, die Ihren Namen schützen und Ihren Kunden dienen.
+Drei Kriterien sollten die Entscheidung leiten. Erstens **Vertrauen und Konversion**: Käufer erkennen und vertrauen manchen Endungen mehr als anderen, und eine vertraute TLD verringert die Hemmschwelle im Moment des Kaufs. Zweitens **Handelsabsicht**: Endungen wie [`.shop`](/de/tld/shop) und [`.store`](/de/tld/store) tragen eine offensichtliche kommerzielle Bedeutung, die Ihre Positionierung unterstreichen und Marketingtexte natürlicher klingen lässt. Drittens **defensiver Schutz**: Selbst Endungen, auf denen Sie nie eine Website betreiben wollen, sind es wert, gehalten zu werden, wenn ein Wettbewerber oder Nachahmer sie plausiblerweise gegen Ihre Marke einsetzen könnte. Das Ziel ist ein kleines, durchdachtes Portfolio – nicht jede TLD, die es gibt, sondern die, die Ihren Namen schützen und Ihren Kunden dienen.
 
 ## Die Top 10 TLDs, die Sie für Ihren E-Commerce-Shop sichern sollten
 
-### 1. [.com](/en/tld/com) — die Standardendung, die Sie nicht auslassen dürfen
+### 1. [.com](/de/tld/com) — die Standardendung, die Sie nicht auslassen dürfen
 
 `.com` ist nach wie vor die bekannteste und vertrauenswürdigste Endung der Welt, und für die meisten Shops ist sie der kanonische Hauptsitz der Marke. Sie wird von Verisign im Rahmen eines [ICANN-Registrierungsvertrags](https://www.icann.org/en/registry-agreements/details/com) betrieben und steht jedem offen. Wenn Ihre exakte `.com`-Adresse verfügbar ist, sichern Sie sie zuerst – alles andere in Ihrem Portfolio sollte Kunden zurück dorthin leiten.
 
-### 2. [.shop](/en/tld/shop) — speziell für den Handel entwickelt
+### 2. [.shop](/de/tld/shop) — speziell für den Handel entwickelt
 
 `.shop` ist eine generische TLD, die eigens für den E-Commerce entwickelt wurde, [2016 delegiert](https://www.iana.org/domains/root/db/shop.html) und von GMO Registry betrieben, das die Rechte bei einer ICANN-Auktion gewann. Sie steht allen Registranten ohne besondere Berechtigungsanforderungen offen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/shop)). Das Schlüsselwort in der Endung signalisiert sofort: „Hier kann man etwas kaufen" – was sie zu einer natürlichen Wahl für einen Storefront oder eine Kampagnen-Microsite macht.
 
-### 3. [.store](/en/tld/store) — ein klares kommerzielles Signal
+### 3. [.store](/de/tld/store) — ein klares kommerzielles Signal
 
 `.store` wird von Radix betrieben und wurde [2016 eingeführt](https://en.wikipedia.org/wiki/.store) ohne Registrierungsbeschränkungen für Endnutzer – abgesehen von ICANNs standardmäßigen Regeln für reservierte Namen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/store)). Dem Geist nach ist sie mit `.shop` austauschbar und es lohnt sich, beide zu halten – um Ihre Präsenz im Einzelhandel zu erweitern und eine nahezu identische Lookalike-Domain aus fremden Händen zu halten.
 
-### 4. [.online](/en/tld/online) — breit gefächert und vielseitig
+### 4. [.online](/de/tld/online) — breit gefächert und vielseitig
 
-[`.online`](/en/tld/online) ist eine weitere offene Radix-Endung, [2015 eingeführt](https://en.wikipedia.org/wiki/.online) ohne Berechtigungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/online)). Ihre generische Bedeutung macht sie flexibel: nützlich als Landingpage, regionaler Shop oder einfach als defensiver Besitz, damit Nachahmer nicht „ihremarke.online" beanspruchen können.
+[`.online`](/de/tld/online) ist eine weitere offene Radix-Endung, [2015 eingeführt](https://en.wikipedia.org/wiki/.online) ohne Berechtigungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/online)). Ihre generische Bedeutung macht sie flexibel: nützlich als Landingpage, regionaler Shop oder einfach als defensiver Besitz, damit Nachahmer nicht „ihremarke.online" beanspruchen können.
 
-### 5. [.site](/en/tld/site) — eine einfache, wiedererkennbare Alternative
+### 5. [.site](/de/tld/site) — eine einfache, wiedererkennbare Alternative
 
-[`.site`](/en/tld/site) ist eine offene Radix-TLD ([2015 delegiert](https://en.wikipedia.org/wiki/.site)) ohne Registrierungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/site)). Sie ist kurz, leicht auszusprechen und allgemein verständlich – was sie zu einer sinnvollen defensiven Registrierung und einem verwendbaren Zuhause für eine Microsite oder eine einseitige Promotion macht.
+[`.site`](/de/tld/site) ist eine offene Radix-TLD ([2015 delegiert](https://en.wikipedia.org/wiki/.site)) ohne Registrierungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/site)). Sie ist kurz, leicht auszusprechen und allgemein verständlich – was sie zu einer sinnvollen defensiven Registrierung und einem verwendbaren Zuhause für eine Microsite oder eine einseitige Promotion macht.
 
 ### 6. .co — die kurze, startup-freundliche Option
 
@@ -52,13 +52,13 @@ Drei Kriterien sollten die Entscheidung leiten. Erstens **Vertrauen und Konversi
 
 [`.deals`](/en/tld/deals) wird ebenfalls von Identity Digital betrieben und steht allen Registranten offen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/deals)). Für eine E-Commerce-Marke, die häufig Aktionen durchführt, ist „ihremarke.deals" ein einprägsamer Ort für Räumungsseiten und Gutschein-Landingpages – und es lohnt sich, sie zu halten, damit sie nicht für einen gefälschten Rabatt-Betrug missbraucht werden kann.
 
-### 9. [.club](/en/tld/club) — Community und Mitgliedschaft
+### 9. [.club](/de/tld/club) — Community und Mitgliedschaft
 
-[`.club`](/en/tld/club) ist eine generische TLD, die [2014 für die Öffentlichkeit gestartet wurde](https://en.wikipedia.org/wiki/.club) und jetzt von GoDaddy Registry betrieben wird, ohne allgemeine Registrierungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/club)). Wenn Ihr Shop ein Treueprogramm, eine Abonnementstufe oder exklusive Drops betreibt, rahmt `.club` das perfekt ein.
+[`.club`](/de/tld/club) ist eine generische TLD, die [2014 für die Öffentlichkeit gestartet wurde](https://en.wikipedia.org/wiki/.club) und jetzt von GoDaddy Registry betrieben wird, ohne allgemeine Registrierungsbeschränkungen ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/club)). Wenn Ihr Shop ein Treueprogramm, eine Abonnementstufe oder exklusive Drops betreibt, rahmt `.club` das perfekt ein.
 
-### 10. [.vip](/en/tld/vip) — Premium-Angebote und Exklusivität
+### 10. [.vip](/de/tld/vip) — Premium-Angebote und Exklusivität
 
-[`.vip`](/en/tld/vip) ist eine generische TLD, die [2016 gestartet wurde](https://en.wikipedia.org/wiki/.vip) – ursprünglich unter Minds + Machines und jetzt Teil von GoDaddy Registry – und für alle offen ist ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/vip)). Sie ist eine starke Wahl für Premium-Produktlinien, Early-Access-Programme oder hochwertige Kundenportale, bei denen Exklusivität zum Versprechen gehört.
+[`.vip`](/de/tld/vip) ist eine generische TLD, die [2016 gestartet wurde](https://en.wikipedia.org/wiki/.vip) – ursprünglich unter Minds + Machines und jetzt Teil von GoDaddy Registry – und für alle offen ist ([ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/vip)). Sie ist eine starke Wahl für Premium-Produktlinien, Early-Access-Programme oder hochwertige Kundenportale, bei denen Exklusivität zum Versprechen gehört.
 
 ## Defensive Registrierungsstrategie
 

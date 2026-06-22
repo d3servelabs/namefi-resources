@@ -68,10 +68,10 @@ Estos son despliegues reales de alto perfil y no simples redirecciones de vanida
 
 | Extensión | Tipo | Significado | Uso típico |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | gTLD heredado | Ninguno (predeterminado universal) | Cualquier sitio comercial o general |
+| [.com](/es/tld/com) | gTLD heredado | Ninguno (predeterminado universal) | Cualquier sitio comercial o general |
 | .xyz | Nuevo gTLD | Ninguno (deliberadamente genérico) | Startups, Web3, marcas en blanco |
-| [.io](/en/tld/io) | ccTLD (usado como gTLD tech) | "Tech/startup" por convención | SaaS, herramientas para desarrolladores, cripto |
-| [.app](/en/tld/app) | Nuevo gTLD | Apps/software | Sitios de productos y aplicaciones |
+| [.io](/es/tld/io) | ccTLD (usado como gTLD tech) | "Tech/startup" por convención | SaaS, herramientas para desarrolladores, cripto |
+| [.app](/es/tld/app) | Nuevo gTLD | Apps/software | Sitios de productos y aplicaciones |
 
 Elige **.com** cuando la familiaridad universal importe más y el nombre esté disponible. Elige **.xyz** cuando quieras un nombre corto, neutro y asequible y el .com ya esté tomado. Recurre a **.io** o **.app** cuando quieras específicamente que la audiencia interprete "software" solo con el sufijo.
 
@@ -135,10 +135,10 @@ Su bajo precio y registro abierto han atraído registros masivos y abusivos, y l
 
 ## Recursos relacionados
 
-- [¿Qué es un TLD?](/en/blog/what-is-a-tld)
-- [¿Qué es un dominio?](/en/blog/what-is-domain)
-- [Guía de terminología de dominios](/en/blog/domain-terminology-guide)
-- [Los mejores TLD para asegurar para tu startup](/en/blog/top-tlds-to-secure-for-your-startup)
-- [¿Qué son los dominios tokenizados?](/en/blog/what-are-tokenized-domains)
-- [Dominio .com](/en/tld/com) · [Dominio .io](/en/tld/io) · [Dominio .app](/en/tld/app)
-- Glosario: [ICANN](/en/glossary/icann) · [registrador](/en/glossary/registrar) · [SEO](/en/glossary/seo)
+- [¿Qué es un TLD?](/es/blog/what-is-a-tld)
+- [¿Qué es un dominio?](/es/blog/what-is-domain)
+- [Guía de terminología de dominios](/es/blog/domain-terminology-guide)
+- [Los mejores TLD para asegurar para tu startup](/es/blog/top-tlds-to-secure-for-your-startup)
+- [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains)
+- [Dominio .com](/es/tld/com) · [Dominio .io](/es/tld/io) · [Dominio .app](/es/tld/app)
+- Glosario: [ICANN](/es/glossary/icann) · [registrador](/es/glossary/registrar) · [SEO](/es/glossary/seo)

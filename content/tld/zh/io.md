@@ -37,7 +37,7 @@ faqs:
 
 ## 什么是 .io？
 
-**.io 顶级域名**是一个[国家代码顶级域名（ccTLD）](/en/blog/cctld-market-share-by-registration-volume/)，分配给查戈斯群岛的**英属印度洋领地**。它于 1997 年依据 ISO 3166-1 标准委派，相关记录可见于 [IANA 根区 .io 条目](https://www.iana.org/domains/root/db/io.html)。注册局管理方为 **Internet Computer Bureau Ltd**，现为注册局服务提供商 [Identity Digital](https://www.identity.digital/) 的子公司。
+**.io 顶级域名**是一个[国家代码顶级域名（ccTLD）](/zh/blog/cctld-market-share-by-registration-volume/)，分配给查戈斯群岛的**英属印度洋领地**。它于 1997 年依据 ISO 3166-1 标准委派，相关记录可见于 [IANA 根区 .io 条目](https://www.iana.org/domains/root/db/io.html)。注册局管理方为 **Internet Computer Bureau Ltd**，现为注册局服务提供商 [Identity Digital](https://www.identity.digital/) 的子公司。
 
 尽管 .io 在名义上是 ccTLD，但在所有对购买者重要的层面上，它的行为与通用后缀无异。Google 明确将 .io 归类为**通用顶级域名**进行搜索处理，并指出用户和网站所有者将其视为通用域名而非国家定向域名。因此，与 `.fr` 或 `.jp` 不同，.io 网站**不会被地理定向**到某一特定地区，是面向全球受众的理想选择。
 
@@ -77,12 +77,12 @@ faqs:
 | 短名称可用性 | 较好 | 极为稀缺 | 较好 | 较好 |
 | 典型价格区间 | 溢价 | 标准 | 溢价+ | 标准+ |
 
-如果能找到或负担得起心仪的名称，选择 [.com](/en/tld/com/) 作为通用默认选项。如果您的产品明确与人工智能相关，选择 [.ai](/en/tld/ai/)；若用于开发者工具和文档，选择 [.dev](/en/tld/dev/)。在通用技术、SaaS、基础设施、游戏和 Web3 场景中，当输入/输出的联想契合需求且短名称仍可获取时，选择 **.io**。
+如果能找到或负担得起心仪的名称，选择 [.com](/zh/tld/com/) 作为通用默认选项。如果您的产品明确与人工智能相关，选择 [.ai](/zh/tld/ai/)；若用于开发者工具和文档，选择 [.dev](/zh/tld/dev/)。在通用技术、SaaS、基础设施、游戏和 Web3 场景中，当输入/输出的联想契合需求且短名称仍可获取时，选择 **.io**。
 
 ## 为什么选择 .io？
 
 - **行业认可度。** 在创始人、工程师和投资者中，.io 立即传达出"科技公司"的印象。
-- **更好的短名称可用性。** 该命名空间比 [.com](/en/tld/com/) 更年轻、规模更小，因此简洁、易于打造品牌的名称更容易获取。
+- **更好的短名称可用性。** 该命名空间比 [.com](/zh/tld/com/) 更年轻、规模更小，因此简洁、易于打造品牌的名称更容易获取。
 - **域名创意拼接潜力。** 两字母后缀能巧妙融入词汇（`rad.io`、`stud.io`），创造出聪明而令人难忘的名称。
 - **全球 SEO 友好。** 搜索引擎将其视为通用域名，网站可在全球排名，不被局限于某一地区。
 
@@ -109,7 +109,7 @@ faqs:
 
 - **较高的批发底价。** .io 注册局设定了相对较高的基础价格，注册商会将其传递给用户。即便是普通的未注册 .io 域名，其费用通常也是基础 .com 的数倍。
 - **首年与续费价格不同。** 首年优惠注册价可能低于后续续费价格，因此预算时应以续费价格为准，而非仅看首次注册价。
-- **存在溢价名称。** 简短、词典类或高度品牌价值的 .io 域名可能被注册局列为溢价名称，其二级市场也相当活跃。我们在[为什么 .io 域名这么贵](/en/blog/why-are-io-domains-expensive/)一文中详细分析了驱动因素。
+- **存在溢价名称。** 简短、词典类或高度品牌价值的 .io 域名可能被注册局列为溢价名称，其二级市场也相当活跃。我们在[为什么 .io 域名这么贵](/zh/blog/why-are-io-domains-expensive/)一文中详细分析了驱动因素。
 
 ## 声誉与电子邮件投递能力
 
@@ -129,7 +129,7 @@ faqs:
 2. **选择** .io 结果（以及任何值得保护的备选名称）。
 3. **注册**并配置 DNS。
 
-作为 [ICANN 认证](/en/glossary/icann/)的[注册商](/en/glossary/registrar/)，Namefi 连接 Web2 与 Web3：透明定价、快速的 [DNS](/en/glossary/dns/) 管理，以及将您的域名持有为[代币化域名](/en/blog/what-are-tokenized-domains/)的选项，实现可验证的[域名所有权](/en/glossary/domain-ownership/)和便捷的转移。立即在 [Namefi](https://namefi.io) 开始您的旅程。
+作为 [ICANN 认证](/zh/glossary/icann/)的[注册商](/zh/glossary/registrar/)，Namefi 连接 Web2 与 Web3：透明定价、快速的 [DNS](/zh/glossary/dns/) 管理，以及将您的域名持有为[代币化域名](/zh/blog/what-are-tokenized-domains/)的选项，实现可验证的[域名所有权](/zh/glossary/domain-ownership/)和便捷的转移。立即在 [Namefi](https://namefi.io) 开始您的旅程。
 
 ## 常见问题
 
@@ -155,10 +155,10 @@ faqs:
 
 ## 相关资源
 
-- [什么是域名？](/en/blog/what-is-domain/)
-- [域名术语指南](/en/blog/domain-terminology-guide/)
-- [为什么 .io 域名这么贵？](/en/blog/why-are-io-domains-expensive/)
-- [.ai 与 .io 域名对比](/en/blog/ai-vs-io-domain/)
-- [代币化域名使用案例（2026）](/en/blog/tokenized-domain-use-cases-2026/)
-- TLD 指南：[.com](/en/tld/com/)、[.ai](/en/tld/ai/)、[.dev](/en/tld/dev/)、[.app](/en/tld/app/)、[.tech](/en/tld/tech/)
-- 术语表：[ICANN](/en/glossary/icann/)、[注册商](/en/glossary/registrar/)、[DNS](/en/glossary/dns/)、[DNSSEC](/en/glossary/dnssec/)
+- [什么是域名？](/zh/blog/what-is-domain/)
+- [域名术语指南](/zh/blog/domain-terminology-guide/)
+- [为什么 .io 域名这么贵？](/zh/blog/why-are-io-domains-expensive/)
+- [.ai 与 .io 域名对比](/zh/blog/ai-vs-io-domain/)
+- [代币化域名使用案例（2026）](/zh/blog/tokenized-domain-use-cases-2026/)
+- TLD 指南：[.com](/zh/tld/com/)、[.ai](/zh/tld/ai/)、[.dev](/zh/tld/dev/)、[.app](/zh/tld/app/)、[.tech](/zh/tld/tech/)
+- 术语表：[ICANN](/zh/glossary/icann/)、[注册商](/zh/glossary/registrar/)、[DNS](/zh/glossary/dns/)、[DNSSEC](/en/glossary/dnssec/)

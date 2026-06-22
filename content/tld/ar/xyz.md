@@ -68,10 +68,10 @@ faqs:
 
 | النطاق | النوع | المعنى | الاستخدام الشائع |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | gTLD قديم | لا يوجد (الافتراضي العالمي) | أي موقع تجاري أو عام |
+| [.com](/ar/tld/com) | gTLD قديم | لا يوجد (الافتراضي العالمي) | أي موقع تجاري أو عام |
 | .xyz | New gTLD | لا يوجد (عام بشكل مقصود) | شركات ناشئة، Web3، علامات مفتوحة |
-| [.io](/en/tld/io) | ccTLD (بيُستخدم كـ gTLD تقني) | "تكنولوجيا/ناشئة" بالعرف | SaaS، أدوات المطورين، كريبتو |
-| [.app](/en/tld/app) | New gTLD | تطبيقات/برامج | مواقع منتجات وتطبيقات |
+| [.io](/ar/tld/io) | ccTLD (بيُستخدم كـ gTLD تقني) | "تكنولوجيا/ناشئة" بالعرف | SaaS، أدوات المطورين، كريبتو |
+| [.app](/ar/tld/app) | New gTLD | تطبيقات/برامج | مواقع منتجات وتطبيقات |
 
 اختار **.com** لما الإلفة العالمية هي الأهم والاسم متاح. اختار **.xyz** لما تريد اسم قصير ومحايد وبسعر كويس والـ .com راح. اختار **.io** أو **.app** لما عايز الجمهور يفهم "برمجيات" من اللاحقة لوحدها.
 
@@ -135,10 +135,10 @@ faqs:
 
 ## موارد ذات صلة
 
-- [ما هو TLD؟](/en/blog/what-is-a-tld)
-- [ما هو الدومين؟](/en/blog/what-is-domain)
-- [دليل مصطلحات الدومينات](/en/blog/domain-terminology-guide)
-- [أفضل النطاقات لتأمينها لشركتك الناشئة](/en/blog/top-tlds-to-secure-for-your-startup)
-- [ما هي الدومينات المرمّزة؟](/en/blog/what-are-tokenized-domains)
-- [دومين .com](/en/tld/com) · [دومين .io](/en/tld/io) · [دومين .app](/en/tld/app)
-- مسرد المصطلحات: [ICANN](/en/glossary/icann) · [مسجّل النطاقات](/en/glossary/registrar) · [SEO](/en/glossary/seo)
+- [ما هو TLD؟](/ar/blog/what-is-a-tld)
+- [ما هو الدومين؟](/ar/blog/what-is-domain)
+- [دليل مصطلحات الدومينات](/ar/blog/domain-terminology-guide)
+- [أفضل النطاقات لتأمينها لشركتك الناشئة](/ar/blog/top-tlds-to-secure-for-your-startup)
+- [ما هي الدومينات المرمّزة؟](/ar/blog/what-are-tokenized-domains)
+- [دومين .com](/ar/tld/com) · [دومين .io](/ar/tld/io) · [دومين .app](/ar/tld/app)
+- مسرد المصطلحات: [ICANN](/ar/glossary/icann) · [مسجّل النطاقات](/ar/glossary/registrar) · [SEO](/ar/glossary/seo)

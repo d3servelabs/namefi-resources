@@ -13,7 +13,7 @@ Busca "TLD Web3 premium" y encontrarás dos productos completamente diferentes b
 
 No son lo mismo, y la diferencia determina si tu "dominio Web3 premium" realmente funciona como sitio web, dirección de correo electrónico o marca. Esta guía desenreda la terminología y luego repasa qué extensiones son genuinamente premium para la tokenización y la inversión en 2026.
 
-Si primero quieres el contexto fundamental, lee [¿Qué son los dominios tokenizados?](/en/blog/what-are-tokenized-domains/) y [Dominio tokenizado vs. dominio Web3](/en/blog/tokenized-domain-vs-web3-domain/).
+Si primero quieres el contexto fundamental, lee [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains/) y [Dominio tokenizado vs. dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/).
 
 ---
 
@@ -23,13 +23,13 @@ La expresión "TLD Web3" se usa para dos arquitecturas que no tienen casi nada e
 
 ### Significado A: Nomenclatura nativa de blockchain (no incluida en la raíz DNS)
 
-Este es el mundo de [ENS](/en/glossary/ens/) (`.eth`), Unstoppable Domains (`.crypto`, `.x`, `.nft`), los TLDs creados por usuarios de Freename y Handshake. Estas extensiones se acuñan como [NFTs](/en/glossary/nft/) o registros de contratos inteligentes y **no forman parte de la raíz DNS de [ICANN](/en/glossary/icann/)**. Cada proyecto publica efectivamente su propio espacio de nombres, gobernado por contratos inteligentes y controlado por claves privadas.
+Este es el mundo de [ENS](/en/glossary/ens/) (`.eth`), Unstoppable Domains (`.crypto`, `.x`, `.nft`), los TLDs creados por usuarios de Freename y Handshake. Estas extensiones se acuñan como [NFTs](/es/glossary/nft/) o registros de contratos inteligentes y **no forman parte de la raíz DNS de [ICANN](/es/glossary/icann/)**. Cada proyecto publica efectivamente su propio espacio de nombres, gobernado por contratos inteligentes y controlado por claves privadas.
 
 La fortaleza: son nativas de la cartera por diseño—convierten una dirección larga `0x…` en `tu.eth`, impulsan los inicios de sesión en dApps y sirven como identidad en cadena. La contrapartida: un nombre `.eth` o `.crypto` **no** resuelve en un navegador normal, servidor de correo, CDN o autoridad de certificación SSL/TLS sin un resolver, extensión o puente. Se sitúan *junto* a la capa de nomenclatura de la internet tradicional, no *dentro* de ella.
 
 ### Significado B: TLDs ICANN reales tokenizados en cadena (el modelo de Namefi)
 
-Este es un diseño completamente diferente. Tomas una extensión estándar reconocida globalmente—`.com`, `.ai`, `.io`, `.xyz`—, registras un dominio DNS real y añades encima un **token de propiedad en cadena**. El resultado es un dominio con dos capas sincronizadas: el registro DNS/registry *y* un [NFT](/en/glossary/nft/) en tu cartera.
+Este es un diseño completamente diferente. Tomas una extensión estándar reconocida globalmente—`.com`, `.ai`, `.io`, `.xyz`—, registras un dominio DNS real y añades encima un **token de propiedad en cadena**. El resultado es un dominio con dos capas sincronizadas: el registro DNS/registry *y* un [NFT](/es/glossary/nft/) en tu cartera.
 
 Un `.com` tokenizado sigue siendo un `.com` real. Resuelve de forma nativa en Chrome y Safari, admite correo electrónico y SSL, y paga renovaciones anuales normales—mientras que *también* es un activo en cadena negociable y componible que puedes vender, transferir o usar como garantía en segundos.
 
@@ -53,7 +53,7 @@ Si tu objetivo es un activo premium que *también* sea compatible con Web3, toke
 
 Lo "premium" en *dominio premium* siempre ha provenido de la escasez, la solidez de marca y décadas de soporte universal. Un `.com` corto y memorable o un `.ai` que define una categoría tiene ese valor precisamente *porque* toda la internet ya lo reconoce. Tokenizarlo conserva todo ese valor y añade la propiedad nativa de cartera y la [componibilidad](/en/glossary/defi/) en cadena—sin heredar los problemas de resolución y compatibilidad de los nombres que solo viven en cadena.
 
-Tampoco tienes que elegir un bando. Muchos propietarios tienen un `.com` tokenizado para su producto real *y* un nombre [`.eth`](/en/tld/eth/) como identidad de cartera. Hacen trabajos distintos. (Consulta [Dominio tokenizado vs. dominio Web3](/en/blog/tokenized-domain-vs-web3-domain/) para el análisis completo.)
+Tampoco tienes que elegir un bando. Muchos propietarios tienen un `.com` tokenizado para su producto real *y* un nombre [`.eth`](/es/tld/eth/) como identidad de cartera. Hacen trabajos distintos. (Consulta [Dominio tokenizado vs. dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/) para el análisis completo.)
 
 ---
 
@@ -63,25 +63,25 @@ No todas las extensiones tienen el mismo peso. Cuando los inversores y desarroll
 
 ### `.com` — el estándar premium por defecto
 
-[`.com`](/en/tld/com/) sigue siendo la extensión más confiable y más valiosa en general, con la mayor base de registros y la historia más profunda en el mercado secundario. Un `.com` corto, con marca, de diccionario o de una sola palabra es el blue-chip de la inversión en dominios. Tokenizar uno combina ese estatus de blue-chip con una transferibilidad instantánea sin necesidad de registrador. Consulta [Cómo tokenizar tu .com](/en/blog/how-to-tokenize-your-com/).
+[`.com`](/es/tld/com/) sigue siendo la extensión más confiable y más valiosa en general, con la mayor base de registros y la historia más profunda en el mercado secundario. Un `.com` corto, con marca, de diccionario o de una sola palabra es el blue-chip de la inversión en dominios. Tokenizar uno combina ese estatus de blue-chip con una transferibilidad instantánea sin necesidad de registrador. Consulta [Cómo tokenizar tu .com](/es/blog/how-to-tokenize-your-com/).
 
 ### `.ai` — la extensión premium de mayor impulso
 
-[`.ai`](/en/tld/ai/) se ha convertido en la extensión premium destacada de esta era, con altos precios promedio en el mercado secundario a medida que la demanda de empresas de IA supera a la oferta. Para los fundadores que desarrollan en IA, un `.ai` sólido es tanto un activo de marca como una inversión escasa—un candidato ideal para tokenización para que pueda negociarse con la liquidez de un NFT.
+[`.ai`](/es/tld/ai/) se ha convertido en la extensión premium destacada de esta era, con altos precios promedio en el mercado secundario a medida que la demanda de empresas de IA supera a la oferta. Para los fundadores que desarrollan en IA, un `.ai` sólido es tanto un activo de marca como una inversión escasa—un candidato ideal para tokenización para que pueda negociarse con la liquidez de un NFT.
 
 ### `.io` — el favorito de desarrolladores y startups
 
-[`.io`](/en/tld/io/) ganó su estatus premium como la extensión preferida para herramientas para desarrolladores, SaaS y startups de criptomonedas. Tiene genuino cachet de marca en los círculos tecnológicos. (Los inversores deben tener en cuenta las discusiones de gobernanza en curso sobre el estado a largo plazo de la extensión; como siempre, [haz tu propia investigación](/en/blog/what-are-tokenized-domains/).)
+[`.io`](/es/tld/io/) ganó su estatus premium como la extensión preferida para herramientas para desarrolladores, SaaS y startups de criptomonedas. Tiene genuino cachet de marca en los círculos tecnológicos. (Los inversores deben tener en cuenta las discusiones de gobernanza en curso sobre el estado a largo plazo de la extensión; como siempre, [haz tu propia investigación](/es/blog/what-are-tokenized-domains/).)
 
 ### `.xyz` — la moderna alternativa de rápido crecimiento
 
-[`.xyz`](/en/tld/xyz/) es una de las extensiones de mayor crecimiento por volumen de registros y favorita de las marcas nativas de Web3 y startups. Es abierta, asequible y culturalmente alineada con las criptomonedas—lo que la convierte en una opción natural para la tokenización y la marca en cadena.
+[`.xyz`](/es/tld/xyz/) es una de las extensiones de mayor crecimiento por volumen de registros y favorita de las marcas nativas de Web3 y startups. Es abierta, asequible y culturalmente alineada con las criptomonedas—lo que la convierte en una opción natural para la tokenización y la marca en cadena.
 
 ### Otras extensiones premium y de marca notables
 
-- [`.org`](/en/tld/org/) — confiable, institucional, con un mercado secundario en fortalecimiento.
-- [`.app`](/en/tld/app/) y [`.dev`](/en/tld/dev/) — TLDs seguros y amigables para desarrolladores de Google, populares para productos y herramientas.
-- [`.net`](/en/tld/net/) — una extensión heredada bien establecida con demanda constante.
+- [`.org`](/es/tld/org/) — confiable, institucional, con un mercado secundario en fortalecimiento.
+- [`.app`](/es/tld/app/) y [`.dev`](/es/tld/dev/) — TLDs seguros y amigables para desarrolladores de Google, populares para productos y herramientas.
+- [`.net`](/es/tld/net/) — una extensión heredada bien establecida con demanda constante.
 
 El hilo conductor: el valor premium proviene de la **escasez, la solidez de marca y la demanda del mundo real**—no de estar en una blockchain. La tokenización no genera ese valor; hace que extensiones ya valiosas sean líquidas, programables y nativas de cartera.
 
@@ -130,4 +130,4 @@ Sí. Debido a que el activo subyacente es un dominio DNS real, sigue los ciclos 
 - Las extensiones más premium para tokenización—`.com`, `.ai`, `.io`, `.xyz`—son premium por su escasez, marca y demanda, no por estar en ninguna cadena.
 - Puedes tener ambos: un `.com` tokenizado para tu producto y un `.eth` para la identidad de cartera.
 
-Para empezar, lee [¿Qué son los dominios tokenizados?](/en/blog/what-are-tokenized-domains/), compara categorías en [Dominio tokenizado vs. dominio Web3](/en/blog/tokenized-domain-vs-web3-domain/), o tokeniza y negocia dominios premium en [namefi.io](https://namefi.io).
+Para empezar, lee [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains/), compara categorías en [Dominio tokenizado vs. dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/), o tokeniza y negocia dominios premium en [namefi.io](https://namefi.io).

@@ -22,7 +22,7 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 1. .com — der Standard des Webs
 
-[.com](/en/tld/com) ist die ursprüngliche kommerzielle gTLD und bleibt das weltweit bekannteste und vertrauenswürdigste Suffix. Es wird von [Verisign](https://www.icann.org/en/registry-agreements/details/com) im Auftrag von ICANN betrieben. Für die meisten Unternehmen ist das exakt übereinstimmende `.com` der wichtigste Name, den es zu besitzen gilt, denn Kunden tippen es reflexartig ein und Mitbewerber begehren es am meisten.
+[.com](/de/tld/com) ist die ursprüngliche kommerzielle gTLD und bleibt das weltweit bekannteste und vertrauenswürdigste Suffix. Es wird von [Verisign](https://www.icann.org/en/registry-agreements/details/com) im Auftrag von ICANN betrieben. Für die meisten Unternehmen ist das exakt übereinstimmende `.com` der wichtigste Name, den es zu besitzen gilt, denn Kunden tippen es reflexartig ein und Mitbewerber begehren es am meisten.
 
 ### 2. .co — die moderne, markentaugliche Alternative
 
@@ -30,15 +30,15 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 3. .net — der vertrauenswürdige Klassiker
 
-[.net](/en/tld/net) war ursprünglich für Netzwerkinfrastrukturanbieter gedacht und wird wie `.com` von [Verisign](https://www.iana.org/domains/root/db/net.html) betrieben. Es trägt jahrzehntelange Glaubwürdigkeit in sich und ist ein häufig genutzter Ausweich-Name, den Kunden sofort erkennen. Es zu sichern verhindert, dass Dritte eine nahezu identische Adresse zu Ihrer primären `.com` anbieten.
+[.net](/de/tld/net) war ursprünglich für Netzwerkinfrastrukturanbieter gedacht und wird wie `.com` von [Verisign](https://www.iana.org/domains/root/db/net.html) betrieben. Es trägt jahrzehntelange Glaubwürdigkeit in sich und ist ein häufig genutzter Ausweich-Name, den Kunden sofort erkennen. Es zu sichern verhindert, dass Dritte eine nahezu identische Adresse zu Ihrer primären `.com` anbieten.
 
 ### 4. .org — Glaubwürdigkeit und Vertrauen
 
-[.org](/en/tld/org) signalisiert eine Organisation oder einen missionsorientierten Akteur und wird von der [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), einer gemeinnützigen Organisation, betrieben. Selbst rein kommerzielle Unternehmen registrieren `.org` oft defensiv, damit niemand eine kritische oder betrügerische „Organisation" unter ihrem Markennamen aufbauen kann. Es ist uneingeschränkt und für jeden offen.
+[.org](/de/tld/org) signalisiert eine Organisation oder einen missionsorientierten Akteur und wird von der [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), einer gemeinnützigen Organisation, betrieben. Selbst rein kommerzielle Unternehmen registrieren `.org` oft defensiv, damit niemand eine kritische oder betrügerische „Organisation" unter ihrem Markennamen aufbauen kann. Es ist uneingeschränkt und für jeden offen.
 
 ### 5. .io — der Liebling von Tech und Startups
 
-[.io](/en/tld/io) ist technisch gesehen die Länder-Code-TLD für das Britische Territorium im Indischen Ozean, aber die Buchstaben erinnern an „input/output", was es zum Favoriten von Entwicklern, SaaS-Unternehmen und Startups gemacht hat. Es wird über [Identity Digitals Tochtergesellschaft, das Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html) verwaltet, und die Registrierung ist weltweit ohne Anforderungen an einen lokalen Standort offen. Wenn Ihr Unternehmen technologieorientiert ist, lohnt es sich, das `.io` in Betracht zu ziehen.
+[.io](/de/tld/io) ist technisch gesehen die Länder-Code-TLD für das Britische Territorium im Indischen Ozean, aber die Buchstaben erinnern an „input/output", was es zum Favoriten von Entwicklern, SaaS-Unternehmen und Startups gemacht hat. Es wird über [Identity Digitals Tochtergesellschaft, das Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html) verwaltet, und die Registrierung ist weltweit ohne Anforderungen an einen lokalen Standort offen. Wenn Ihr Unternehmen technologieorientiert ist, lohnt es sich, das `.io` in Betracht zu ziehen.
 
 ### 6. .biz — das rein geschäftliche Suffix
 
@@ -46,11 +46,11 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 7. .info — informativ und zugänglich
 
-[.info](/en/tld/info) ist eine der ursprünglichen neuen gTLDs und wird häufig für Wissensdatenbanken, Dokumentationen und informative Microsites verwendet. Es wird von [Identity Digital](https://www.iana.org/domains/root/db/info.html) ohne Registrierungsbeschränkungen betrieben. Es zu besitzen ermöglicht Ihnen, ein Hilfecenter oder eine Kampagnenseite zu betreiben — und verhindert, dass ein Imitator unter Ihrem Namen „Fakten" veröffentlicht.
+[.info](/de/tld/info) ist eine der ursprünglichen neuen gTLDs und wird häufig für Wissensdatenbanken, Dokumentationen und informative Microsites verwendet. Es wird von [Identity Digital](https://www.iana.org/domains/root/db/info.html) ohne Registrierungsbeschränkungen betrieben. Es zu besitzen ermöglicht Ihnen, ein Hilfecenter oder eine Kampagnenseite zu betreiben — und verhindert, dass ein Imitator unter Ihrem Namen „Fakten" veröffentlicht.
 
 ### 8. .online — weitreichend, beschreibend, global
 
-[.online](/en/tld/online) ist eine beschreibende neue gTLD, die für fast jedes Unternehmen mit einer Webpräsenz geeignet ist. Sie gehört [Radix](https://www.iana.org/domains/root/db/online.html) und wird von diesem betrieben, wobei die Registrierung weltweit uneingeschränkt möglich ist. Ihre klare Bedeutung macht sie zu einer einfachen, intuitiven Adresse für Landingpages und regionale Online-Shops.
+[.online](/de/tld/online) ist eine beschreibende neue gTLD, die für fast jedes Unternehmen mit einer Webpräsenz geeignet ist. Sie gehört [Radix](https://www.iana.org/domains/root/db/online.html) und wird von diesem betrieben, wobei die Registrierung weltweit uneingeschränkt möglich ist. Ihre klare Bedeutung macht sie zu einer einfachen, intuitiven Adresse für Landingpages und regionale Online-Shops.
 
 ### 9. .company — eine wörtliche Passform für jedes Unternehmen
 
@@ -58,9 +58,9 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 10. .vip — Premium-Positionierung
 
-[.vip](/en/tld/vip) steht für „very important person" und wird verwendet, um Exklusivität, Mitgliedschaft oder Premium-Angebote zu signalisieren. Es wird von [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html) betrieben, das es als Teil des ehemaligen Minds + Machines-Portfolios erwarb, und die Registrierung ist für alle offen. Für Treueprogramme, mitgliederexklusive Inhalte oder eine hochwertige Produktlinie ist `.vip` eine einprägsame Wahl.
+[.vip](/de/tld/vip) steht für „very important person" und wird verwendet, um Exklusivität, Mitgliedschaft oder Premium-Angebote zu signalisieren. Es wird von [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html) betrieben, das es als Teil des ehemaligen Minds + Machines-Portfolios erwarb, und die Registrierung ist für alle offen. Für Treueprogramme, mitgliederexklusive Inhalte oder eine hochwertige Produktlinie ist `.vip` eine einprägsame Wahl.
 
-Zwei weitere, die kurz erwähnenswert sind, wenn Sie ein Portfolio aufbauen: [.agency](https://www.icann.org/en/registry-agreements/details/agency) eignet sich für Dienstleistungsunternehmen, und [.com](/en/tld/com)-Varianten in Ihrer Kategorie sollten immer Ihr Anker sein.
+Zwei weitere, die kurz erwähnenswert sind, wenn Sie ein Portfolio aufbauen: [.agency](https://www.icann.org/en/registry-agreements/details/agency) eignet sich für Dienstleistungsunternehmen, und [.com](/de/tld/com)-Varianten in Ihrer Kategorie sollten immer Ihr Anker sein.
 
 ## Strategie für defensive Registrierung
 

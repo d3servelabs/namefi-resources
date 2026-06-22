@@ -24,23 +24,23 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 1. .com — Ihr unverzichtbarer Anker
 
-[.com](/en/tld/com) bleibt die Standard-Endung, die Käufer eintippen und der sie vertrauen, betrieben von [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Für eine Modemarke ist sie das primäre Schaufenster und die E-Mail-Domain – Punkt. Sichern Sie sie zuerst; alles andere wird darum herum aufgebaut. Es gibt keine Berechtigungseinschränkungen – jeder Registrant kann eine `.com` halten.
+[.com](/de/tld/com) bleibt die Standard-Endung, die Käufer eintippen und der sie vertrauen, betrieben von [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Für eine Modemarke ist sie das primäre Schaufenster und die E-Mail-Domain – Punkt. Sichern Sie sie zuerst; alles andere wird darum herum aufgebaut. Es gibt keine Berechtigungseinschränkungen – jeder Registrant kann eine `.com` halten.
 
 ### 2. .shop — Einzelhandelsabsicht im Namen
 
-[.shop](/en/tld/shop) wird von [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) aus Tokio betrieben und ist speziell für den Handel konzipiert. Für eine Marke liest sich `ihrebrand.shop` als eindeutiges „hier kaufen"-Signal, was ideal für eine dedizierte E-Commerce-Präsenz oder einen saisonalen Drop ist. Offen für alle Registranten, ohne besondere Einschränkungen.
+[.shop](/de/tld/shop) wird von [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) aus Tokio betrieben und ist speziell für den Handel konzipiert. Für eine Marke liest sich `ihrebrand.shop` als eindeutiges „hier kaufen"-Signal, was ideal für eine dedizierte E-Commerce-Präsenz oder einen saisonalen Drop ist. Offen für alle Registranten, ohne besondere Einschränkungen.
 
 ### 3. .store — für das Schaufenster konzipiert
 
-[.store](/en/tld/store) wird von [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) betrieben und signalisiert, ähnlich wie `.shop`, direkt Einzelhandel. Sie passt gut zu einer Flaggschiff-Online-Boutique oder einer Pop-up-/Limited-Edition-Website und ist ein starker defensiver Begleiter zu `.shop`, damit keiner in fremden Händen landet. Offene Registrierung, keine Einschränkungen.
+[.store](/de/tld/store) wird von [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) betrieben und signalisiert, ähnlich wie `.shop`, direkt Einzelhandel. Sie passt gut zu einer Flaggschiff-Online-Boutique oder einer Pop-up-/Limited-Edition-Website und ist ein starker defensiver Begleiter zu `.shop`, damit keiner in fremden Händen landet. Offene Registrierung, keine Einschränkungen.
 
 ### 4. .online — breite, flexible Präsenz
 
-[.online](/en/tld/online) ist ebenfalls eine [Radix](https://www.iana.org/domains/root/db/online.html)-Endung und funktioniert als Auffang-Domain, wenn `.com` vergeben ist, oder als Kampagnen- und Lookbook-Domain. Sie ist generisch genug, um überall hinzuzeigen – auf einen Marken-Hub, ein Pressepaket oder einen saisonalen Teaser – und unterliegt keinen Berechtigungseinschränkungen.
+[.online](/de/tld/online) ist ebenfalls eine [Radix](https://www.iana.org/domains/root/db/online.html)-Endung und funktioniert als Auffang-Domain, wenn `.com` vergeben ist, oder als Kampagnen- und Lookbook-Domain. Sie ist generisch genug, um überall hinzuzeigen – auf einen Marken-Hub, ein Pressepaket oder einen saisonalen Teaser – und unterliegt keinen Berechtigungseinschränkungen.
 
 ### 5. .site — eine vielseitige defensive Wahl
 
-[.site](/en/tld/site) (ein weiterer [Radix](https://www.iana.org/domains/root/db/site.html)-Namespace) ist kostengünstig, weit verbreitet und leicht defensiv zu halten. Nutzen Sie sie für eine Microsite oder eine Kampagnen-Landingpage, oder parken Sie sie einfach, damit sie nicht gegen Ihren Namen eingesetzt werden kann. Offen für alle.
+[.site](/de/tld/site) (ein weiterer [Radix](https://www.iana.org/domains/root/db/site.html)-Namespace) ist kostengünstig, weit verbreitet und leicht defensiv zu halten. Nutzen Sie sie für eine Microsite oder eine Kampagnen-Landingpage, oder parken Sie sie einfach, damit sie nicht gegen Ihren Namen eingesetzt werden kann. Offen für alle.
 
 ### 6. .co — die kurze, hochwertige Alternative
 
@@ -60,7 +60,7 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 10. .vip — Exklusivität und Loyalität
 
-[.vip](/en/tld/vip) wird von [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry) betrieben. Im Modebereich passt sie gut zu Members-only-Drops, Treueprogrammen und Vorabzugangs-Events – `ihrebrand.vip` rahmt ein exklusives Erlebnis ein. Offen für alle Registranten, ohne Mitgliedschaftsvoraussetzung.
+[.vip](/de/tld/vip) wird von [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry) betrieben. Im Modebereich passt sie gut zu Members-only-Drops, Treueprogrammen und Vorabzugangs-Events – `ihrebrand.vip` rahmt ein exklusives Erlebnis ein. Offen für alle Registranten, ohne Mitgliedschaftsvoraussetzung.
 
 ## Defensive Registrierungsstrategie
 

@@ -38,7 +38,7 @@ faqs:
 
 ## 什么是 .shop？
 
-**.shop** 是在 [ICANN](/en/glossary/icann) 新通用顶级域名计划下推出的[通用顶级域名（gTLD）](/en/glossary/tld)——该计划于 2012 年启动，向根区域添加了数百个基于单词的后缀。其含义不言自明："shop"在英语中几乎是零售目的地的代名词，作为商业活动的语义标签清晰有力。
+**.shop** 是在 [ICANN](/zh/glossary/icann) 新通用顶级域名计划下推出的[通用顶级域名（gTLD）](/en/glossary/tld)——该计划于 2012 年启动，向根区域添加了数百个基于单词的后缀。其含义不言自明："shop"在英语中几乎是零售目的地的代名词，作为商业活动的语义标签清晰有力。
 
 由于它是通用型域名而非国家代码顶级域名，搜索引擎不会将 **.shop** 与任何特定地区挂钩。Google 的官方指引明确表示，对新通用顶级域名的处理方式与传统后缀相同，不会基于 `.shop` 这样的名称进行地理定向——因此 `.shop` 网站可以像 `.com` 一样在全球范围内获得排名。您可在官方 [IANA 根区域 .shop 条目](https://www.iana.org/domains/root/db/shop.html) 上查看注册局详情。
 
@@ -71,12 +71,12 @@ faqs:
 
 | 后缀 | 含义信号 | 命名空间可用性 | 最适合的场景 |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | 通用，默认信任 | 非常稀缺 / 价格高昂 | 最大程度的认知度最重要时 |
+| [.com](/zh/tld/com) | 通用，默认信任 | 非常稀缺 / 价格高昂 | 最大程度的认知度最重要时 |
 | **.shop** | "一个购物的地方" | 宽裕，开放 | 需要明确传达零售意图时 |
-| [.store](/en/tld/store) | "一家商店" | 宽裕 | 类似零售定位，另一个单词选项 |
-| [.online](/en/tld/online) | 广泛的网络存在 | 宽裕 | 通用网站，不限于零售 |
+| [.store](/zh/tld/store) | "一家商店" | 宽裕 | 类似零售定位，另一个单词选项 |
+| [.online](/zh/tld/online) | 广泛的网络存在 | 宽裕 | 通用网站，不限于零售 |
 
-当默认认知度压倒一切、且您能获得精准域名时，选择 `.com`。当您希望地址本身就能宣告"我们在售卖"时，选择 **.shop**。[.store](/en/tld/store) 是其最接近的语义竞争对手——根据哪个词与您的品牌搭配更好来决定；[.online](/en/tld/online) 则更宽泛，商业属性不如前两者。
+当默认认知度压倒一切、且您能获得精准域名时，选择 `.com`。当您希望地址本身就能宣告"我们在售卖"时，选择 **.shop**。[.store](/zh/tld/store) 是其最接近的语义竞争对手——根据哪个词与您的品牌搭配更好来决定；[.online](/zh/tld/online) 则更宽泛，商业属性不如前两者。
 
 ## 为什么选择 .shop？
 
@@ -103,7 +103,7 @@ faqs:
 
 本页不提供实时报价，但以下**规律**值得了解。标准 `.shop` 域名的价格处于典型新通用顶级域名范围内，与大多数此类后缀一样，**首年价格与续费价格可能不同**——低价首年促销很常见，因此请务必确认每年的续费费用。
 
-注册局还会将部分高需求域名指定为**溢价域名**，注册费（有时还有续费费）会相应提高；通用单词零售类目词最有可能属于溢价档。影响整体费用的因素包括：注册局的批发费用、域名是否被标记为溢价，以及您的[注册商](/en/glossary/registrar)的利润空间和任何首推优惠。在二级市场上，一个理想的精准匹配 `.shop` 域名在转手时也可能溢价出售。
+注册局还会将部分高需求域名指定为**溢价域名**，注册费（有时还有续费费）会相应提高；通用单词零售类目词最有可能属于溢价档。影响整体费用的因素包括：注册局的批发费用、域名是否被标记为溢价，以及您的[注册商](/zh/glossary/registrar)的利润空间和任何首推优惠。在二级市场上，一个理想的精准匹配 `.shop` 域名在转手时也可能溢价出售。
 
 ## 声誉与邮件送达率
 
@@ -124,7 +124,7 @@ faqs:
 2. 选择精准域名（以及任何防御性变体，如 `.store` 或 `.com`）。
 3. 完成注册并配置 DNS。
 
-[Namefi](https://namefi.io) 是经 [ICANN](/en/glossary/icann) 认证的注册商，提供透明定价和快速 [DNS](/en/glossary/dns) 管理。它还支持将您的域名通证化以实现 Web3 所有权——将您的 `.shop` 地址转化为可在链上转让的资产——同时保留标准注册商的全部功能。
+[Namefi](https://namefi.io) 是经 [ICANN](/zh/glossary/icann) 认证的注册商，提供透明定价和快速 [DNS](/zh/glossary/dns) 管理。它还支持将您的域名通证化以实现 Web3 所有权——将您的 `.shop` 地址转化为可在链上转让的资产——同时保留标准注册商的全部功能。
 
 ## 常见问题
 
@@ -150,11 +150,11 @@ faqs:
 
 ## 相关资源
 
-- [什么是顶级域名？](/en/blog/what-is-a-tld)
-- [什么是域名？](/en/blog/what-is-domain)
-- [电商网站应优先注册的顶级域名](/en/blog/top-tlds-to-secure-for-your-ecommerce-store)
-- [什么是通证化域名？](/en/blog/what-are-tokenized-domains)
-- [.store 域名](/en/tld/store)
-- [.online 域名](/en/tld/online)
-- [.com 域名](/en/tld/com)
-- 术语表：[注册商](/en/glossary/registrar)、[DNSSEC](/en/glossary/dnssec)、[WHOIS](/en/glossary/whois)
+- [什么是顶级域名？](/zh/blog/what-is-a-tld)
+- [什么是域名？](/zh/blog/what-is-domain)
+- [电商网站应优先注册的顶级域名](/zh/blog/top-tlds-to-secure-for-your-ecommerce-store)
+- [什么是通证化域名？](/zh/blog/what-are-tokenized-domains)
+- [.store 域名](/zh/tld/store)
+- [.online 域名](/zh/tld/online)
+- [.com 域名](/zh/tld/com)
+- 术语表：[注册商](/zh/glossary/registrar)、[DNSSEC](/en/glossary/dnssec)、[WHOIS](/en/glossary/whois)

@@ -99,7 +99,7 @@ Faites cette partie avant la prospection. Cela évite des e-mails embarrassants 
 
 ### Confirmez le contrôle
 
-Assurez-vous de pouvoir vous connecter au compte du [bureau d'enregistrement (registrar)](/en/glossary/registrar/), d'accéder à l'e-mail du titulaire/administrateur et de prouver que vous contrôlez le domaine. Si le domaine appartient à une entreprise, confirmez qui a l'autorité pour le vendre.
+Assurez-vous de pouvoir vous connecter au compte du [bureau d'enregistrement (registrar)](/fr/glossary/registrar/), d'accéder à l'e-mail du titulaire/administrateur et de prouver que vous contrôlez le domaine. Si le domaine appartient à une entreprise, confirmez qui a l'autorité pour le vendre.
 
 ### Vérifiez l'expiration
 
@@ -119,7 +119,7 @@ Mettez cela par écrit. « Le domaine » et « l'entreprise autour du domaine »
 
 ### Gardez le DNS simple
 
-Si le domaine héberge un site web actif ou une messagerie, soyez prudent avec les modifications de [DNS](/en/glossary/dns/). Un transfert de bureau d'enregistrement ne signifie pas toujours que le DNS doit changer, mais un DNS hébergé par le bureau d'enregistrement peut casser si personne ne planifie la transition. Pour un domaine opérationnel précieux, confirmez où le DNS est hébergé, quels enregistrements sont importants, et qui gérera la continuité après la vente.
+Si le domaine héberge un site web actif ou une messagerie, soyez prudent avec les modifications de [DNS](/fr/glossary/dns/). Un transfert de bureau d'enregistrement ne signifie pas toujours que le DNS doit changer, mais un DNS hébergé par le bureau d'enregistrement peut casser si personne ne planifie la transition. Pour un domaine opérationnel précieux, confirmez où le DNS est hébergé, quels enregistrements sont importants, et qui gérera la continuité après la vente.
 
 ## 4. Choisissez l'approche entrante, sortante, ou les deux
 
@@ -266,11 +266,11 @@ Aux États-Unis, l'IRS traite les ventes d'actifs selon des règles fiscales qui
 
 ## Cas particulier : les domaines tokenisés
 
-Si votre domaine est un [domaine tokenisé](/en/blog/what-are-tokenized-domains/), la mécanique de conclusion peut être différente.
+Si votre domaine est un [domaine tokenisé](/fr/blog/what-are-tokenized-domains/), la mécanique de conclusion peut être différente.
 
-Dans une vente traditionnelle, le séquestre existe parce que le paiement et le transfert du bureau d'enregistrement se déroulent en deux étapes distinctes. Dans la vente d'un domaine tokenisé, la propriété peut être représentée par un [NFT](/en/glossary/nft/) et transférée via une transaction [sur la blockchain (on-chain)](/en/glossary/on-chain/). Cela peut réduire le temps de règlement, mais n'élimine pas tous les risques. Vous avez toujours besoin de l'adéquation avec l'acheteur, d'une situation légale propre, d'une sécurité du portefeuille (wallet), de registres fiscaux, et d'une compréhension claire de ce que l'acheteur s'attend à recevoir.
+Dans une vente traditionnelle, le séquestre existe parce que le paiement et le transfert du bureau d'enregistrement se déroulent en deux étapes distinctes. Dans la vente d'un domaine tokenisé, la propriété peut être représentée par un [NFT](/fr/glossary/nft/) et transférée via une transaction [sur la blockchain (on-chain)](/fr/glossary/on-chain/). Cela peut réduire le temps de règlement, mais n'élimine pas tous les risques. Vous avez toujours besoin de l'adéquation avec l'acheteur, d'une situation légale propre, d'une sécurité du portefeuille (wallet), de registres fiscaux, et d'une compréhension claire de ce que l'acheteur s'attend à recevoir.
 
-Pour en savoir plus sur la façon dont les ventes tokenisées modifient la mécanique de séquestre, lisez [De l'annonce au règlement : Comment les marchés tokenisés remplacent le séquestre (Escrow)](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Pour en savoir plus sur la façon dont les ventes tokenisées modifient la mécanique de séquestre, lisez [De l'annonce au règlement : Comment les marchés tokenisés remplacent le séquestre (Escrow)](/fr/blog/how-tokenized-marketplaces-replace-escrow/).
 
 ## Ce qu'il ne faut pas faire
 

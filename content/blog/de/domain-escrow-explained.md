@@ -11,7 +11,7 @@ keywords: ['Domain-Treuhand', 'was ist Treuhand', 'Treuhandkonto', 'Treuhand Bed
 
 Wenn Sie schon einmal etwas Wertvolles zwischen Fremden gekauft oder verkauft haben — ein Auto, ein Haus, eine `.com`-Domain im fünfstelligen Bereich — kennen Sie das Problem: Der Käufer möchte nicht zahlen, bevor er das Gut erhalten hat, und der Verkäufer möchte das Gut nicht übergeben, bevor er bezahlt wurde. Einer muss den ersten Schritt machen, und wer zuerst handelt, muss dem anderen vertrauen.
 
-**Treuhand** ist die Standardlösung für dieses Problem. Dieser Leitfaden erklärt, was ein Treuhandkonto in einfachen Worten ist, wie Treuhand Schritt für Schritt bei einem Domain-Verkauf funktioniert, warum es wichtig ist, und wie ein neuerer Ansatz — [tokenisierte Domains](/en/blog/what-are-tokenized-domains/) und Smart Contracts — dabei ist, die traditionelle Treuhand vollständig zu ersetzen.
+**Treuhand** ist die Standardlösung für dieses Problem. Dieser Leitfaden erklärt, was ein Treuhandkonto in einfachen Worten ist, wie Treuhand Schritt für Schritt bei einem Domain-Verkauf funktioniert, warum es wichtig ist, und wie ein neuerer Ansatz — [tokenisierte Domains](/de/blog/what-are-tokenized-domains/) und Smart Contracts — dabei ist, die traditionelle Treuhand vollständig zu ersetzen.
 
 ---
 
@@ -34,7 +34,7 @@ Hier ist der klassische Ablauf für den Verkauf eines Domainnamens über einen T
 1. **Bedingungen vereinbaren.** Käufer und Verkäufer einigen sich auf einen Preis und darauf, wer die Treuhandgebühr bezahlt. Sie eröffnen eine Transaktion beim Treuhanddienst.
 2. **Käufer finanziert die Treuhand.** Der Käufer überweist den vereinbarten Betrag auf das Treuhandkonto — per Überweisung, Karte oder Kryptowährung. Wichtig: Der Verkäufer hat dieses Geld *noch nicht*; die Treuhand verwahrt es lediglich.
 3. **Treuhand bestätigt die Mittel.** Der Treuhanddienst verifiziert, dass die Zahlung eingegangen ist, und benachrichtigt den Verkäufer: *„Das Geld ist vorhanden. Sie können die Domain sicher übertragen."*
-4. **Verkäufer überträgt die Domain.** Der Verkäufer entsperrt die Domain bei seinem [Registrar](/en/glossary/registrar/) und stellt den [Auth-Code](/en/glossary/auth-code/) (auch EPP-Code genannt) zur Verfügung — ein Passwort, das die Übertragung der Domain zu einem anderen Registrar autorisiert.
+4. **Verkäufer überträgt die Domain.** Der Verkäufer entsperrt die Domain bei seinem [Registrar](/de/glossary/registrar/) und stellt den [Auth-Code](/en/glossary/auth-code/) (auch EPP-Code genannt) zur Verfügung — ein Passwort, das die Übertragung der Domain zu einem anderen Registrar autorisiert.
 5. **Käufer leitet die Übertragung ein.** Mit diesem Auth-Code startet der Käufer eine Übertragung zu seinem eigenen Registrar. Ein [ICANN](https://www.icann.org/)-Registrar-Transfer dauert in der Regel etwa fünf bis sieben Tage bis zur vollständigen Abwicklung.
 6. **Käufer bestätigt den Erhalt.** Sobald die Domain im Konto des Käufers angekommen ist, bestätigt dieser den Eingang über den Treuhanddienst.
 7. **Treuhand gibt die Mittel frei.** Jetzt — und nur jetzt — bezahlt die Treuhand den Verkäufer. Das Geschäft ist abgeschlossen.
@@ -54,7 +54,7 @@ Domains sind ein bevorzugtes Ziel für Betrug, weil sie wertvoll, immateriell un
 
 Treuhand neutralisiert die ersten beiden Fälle direkt: Geld und Vermögenswert können nicht beide verschwinden, weil die Treuhand eines einbehält, bis das andere bestätigt ist. Seriöse Treuhanddienste fügen auch Identitätsprüfungen und Zahlungsverifizierungen hinzu, die einen Teil der dritten Kategorie ebenfalls aufdecken. Bei jedem bedeutsamen Domain-Verkauf zwischen Fremden ist **Treuhand die grundlegende Erwartung** — die Verweigerung eines Treuhanddienstes ist selbst ein Warnsignal.
 
-Mehr über die Betrugslandschaft erfahren Sie unter [Wie Domain-Hijacking wirklich passiert](/en/blog/how-domain-hijacking-actually-happens/).
+Mehr über die Betrugslandschaft erfahren Sie unter [Wie Domain-Hijacking wirklich passiert](/de/blog/how-domain-hijacking-actually-happens/).
 
 ---
 
@@ -73,9 +73,9 @@ Diese Kompromisse waren schlicht der Preis für Sicherheit — bis ein anderes A
 
 ## Wie tokenisierte Domains + Smart Contracts die Treuhand ersetzen
 
-Wenn eine Domain [tokenisiert](/en/blog/what-are-tokenized-domains/) ist, wird das Eigentum durch ein On-Chain-Token (ein NFT) repräsentiert und nicht nur durch einen Registrar-Datenbankeintrag. Das verändert, was bei der Abwicklung möglich ist.
+Wenn eine Domain [tokenisiert](/de/blog/what-are-tokenized-domains/) ist, wird das Eigentum durch ein On-Chain-Token (ein NFT) repräsentiert und nicht nur durch einen Registrar-Datenbankeintrag. Das verändert, was bei der Abwicklung möglich ist.
 
-Ein [Smart Contract](/en/glossary/smart-contract/) ist Code, der auf einer Blockchain läuft und automatisch ausgeführt wird, wenn seine Bedingungen erfüllt sind. Entscheidend ist, dass eine On-Chain-Transaktion **atomar** ist: Zahlung und Vermögensübertragung erfolgen in der *gleichen* Transaktion, im gleichen Block — oder keines von beidem. Es gibt keinen Zwischenzustand, in dem eine Seite bereits gehandelt hat und die andere nicht.
+Ein [Smart Contract](/de/glossary/smart-contract/) ist Code, der auf einer Blockchain läuft und automatisch ausgeführt wird, wenn seine Bedingungen erfüllt sind. Entscheidend ist, dass eine On-Chain-Transaktion **atomar** ist: Zahlung und Vermögensübertragung erfolgen in der *gleichen* Transaktion, im gleichen Block — oder keines von beidem. Es gibt keinen Zwischenzustand, in dem eine Seite bereits gehandelt hat und die andere nicht.
 
 Diese Eigenschaft tut genau das, wofür Treuhand erfunden wurde, ohne dass ein Dritter etwas hält:
 
@@ -83,7 +83,7 @@ Diese Eigenschaft tut genau das, wofür Treuhand erfunden wurde, ohne dass ein D
 - Es gibt **keinen Auth-Code zum Teilen** und keinen mehrtägigen Registrar-Transfer für die On-Chain-Eigentumsänderung — das Token bewegt sich sofort.
 - Es gibt **keine Treuhandgebühr**, weil keine neutrale Partei Mittel hält. Der Smart Contract *ist* der unparteiische Schiedsrichter, und seine Ausführung kostet nur die normalen Netzwerkgebühren.
 
-Mit anderen Worten: Der Smart Contract wird zur Treuhand — aber er ist transparent, automatisch, sofort und nimmt keine Provision für das Halten Ihres Geldes. Eine ausführlichere Erklärung des gesamten Marktplatzablaufs und der veränderten Risiken finden Sie unter [Vom Angebot zur Abwicklung: Wie tokenisierte Marktplätze die Treuhand ersetzen](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Mit anderen Worten: Der Smart Contract wird zur Treuhand — aber er ist transparent, automatisch, sofort und nimmt keine Provision für das Halten Ihres Geldes. Eine ausführlichere Erklärung des gesamten Marktplatzablaufs und der veränderten Risiken finden Sie unter [Vom Angebot zur Abwicklung: Wie tokenisierte Marktplätze die Treuhand ersetzen](/de/blog/how-tokenized-marketplaces-replace-escrow/).
 
 Dies ist nicht risikofrei — es verlagert die Risiken nur. Anstatt einem Treuhandunternehmen zu vertrauen, sind Sie nun auf Wallet-Sicherheit und die Korrektheit des Smart Contracts angewiesen. Der Punkt ist nicht, dass tokenisierte Abwicklung magisch ist; es ist, dass die *Aufgabe, die Treuhand erfüllt*, durch Code statt durch einen bezahlten Vermittler erledigt werden kann.
 

@@ -31,9 +31,9 @@ Diese Kategorien überschneiden sich. Einige Plattformen decken mehr als eine ab
 
 ### Namefi
 
-**Am besten für:** Eigentümer, die eine echte `.com`/`.xyz`/`.io` auf Ethereum oder Base [tokenisiert](/en/glossary/tokenize/) haben möchten, mit breiter Unterstützung für NFT-Marktplätze und [DeFi](/en/glossary/defi/)-Lending sowie einer DNS-Verwaltung, die sich nicht wie ein Rückschritt gegenüber Cloudflare anfühlt.
+**Am besten für:** Eigentümer, die eine echte `.com`/`.xyz`/`.io` auf Ethereum oder Base [tokenisiert](/de/glossary/tokenize/) haben möchten, mit breiter Unterstützung für NFT-Marktplätze und [DeFi](/en/glossary/defi/)-Lending sowie einer DNS-Verwaltung, die sich nicht wie ein Rückschritt gegenüber Cloudflare anfühlt.
 
-**Besonderheiten:** [ICANN](/en/glossary/icann/)-anerkannte Domains über viele [TLDs](/en/glossary/tld/) hinweg, On-Chain-Eigentum über Standard-[NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), sodass Wallets, Marktplätze und On-Chain-Tools einfach funktionieren), vollständige DNS-Verwaltung inklusive [DNSSEC](/en/glossary/dnssec/), ein in die App integrierter [Marktplatz](/en/glossary/marketplace/) und Integrationen mit On-Chain-Zahlungen ([x402](/en/glossary/x402/)). Multi-Chain. Self-Custody (Selbstverwahrung) vom ersten Tag an.
+**Besonderheiten:** [ICANN](/de/glossary/icann/)-anerkannte Domains über viele [TLDs](/en/glossary/tld/) hinweg, On-Chain-Eigentum über Standard-[NFTs](/de/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), sodass Wallets, Marktplätze und On-Chain-Tools einfach funktionieren), vollständige DNS-Verwaltung inklusive [DNSSEC](/en/glossary/dnssec/), ein in die App integrierter [Marktplatz](/de/glossary/marketplace/) und Integrationen mit On-Chain-Zahlungen ([x402](/en/glossary/x402/)). Multi-Chain. Self-Custody (Selbstverwahrung) vom ersten Tag an.
 
 **Weniger geeignet für:** Personen, die eine brandneue TLD möchten, die sie noch nicht besitzen, oder Personen, die nur einen Web3-nativen Namen wie `name.eth` wollen.
 
@@ -119,7 +119,7 @@ Wenn die Dokumentation einer Plattform in diesen Punkten unklar ist, ist das an 
 | Vertriebsinfrastruktur im Auktionsstil | GBM |
 | Reine On-Chain-Identität (z. B. `name.eth`) — *andere Kategorie* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
-Die letzte Zeile ist wichtig: **On-Chain-Identitätsnamen wie `.eth` sind eine verwandte Kategorie, aber keine tokenisierten ICANN-Domains.** Sie sind für unterschiedliche Dinge nützlich. Eine genaue Aufschlüsselung finden Sie unter [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/).
+Die letzte Zeile ist wichtig: **On-Chain-Identitätsnamen wie `.eth` sind eine verwandte Kategorie, aber keine tokenisierten ICANN-Domains.** Sie sind für unterschiedliche Dinge nützlich. Eine genaue Aufschlüsselung finden Sie unter [Tokenized Domain vs Web3 Domain](/de/blog/tokenized-domain-vs-web3-domain/).
 
 ---
 
@@ -155,4 +155,4 @@ Wir denken natürlich, dass Namefi für viele Eigentümer die richtige Antwort i
 - Die richtige Wahl hängt von Ihren TLDs, Ihren Präferenzen bezüglich der Verwahrung (Custody), der Marktplatz-Kompatibilität und davon ab, was Sie mit der tokenisierten Domain *vorhaben*.
 - Probieren Sie mehr als eine aus, bevor Sie Ihr Portfolio binden.
 
-Um mehr speziell über Namefi zu erfahren, besuchen Sie [namefi.io](https://namefi.io). Um die breitere Kategorie zu verstehen, lesen Sie [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/).
+Um mehr speziell über Namefi zu erfahren, besuchen Sie [namefi.io](https://namefi.io). Um die breitere Kategorie zu verstehen, lesen Sie [What Are Tokenized Domains?](/de/blog/what-are-tokenized-domains/).

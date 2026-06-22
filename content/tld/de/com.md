@@ -36,7 +36,7 @@ Wenn Sie ein Unternehmen gründen, eine Marke schützen oder etwas aufbauen, das
 
 ## Was ist .com?
 
-Die **.com Top-Level-Domain** ist eine [generische TLD (gTLD)](/en/blog/what-is-a-tld/), die ursprünglich für kommerzielle Organisationen gedacht war. Sie war eine der allerersten TLDs, die 1985 erstellt wurden, zusammen mit `.net`, `.org`, `.edu`, `.gov` und `.mil`, wie im [IANA-Root-Zone-Eintrag für .com](https://www.iana.org/domains/root/db/com.html) dokumentiert. Der Registry-Betreiber ist **Verisign**, das die maßgebliche .com-Infrastruktur seit Jahrzehnten betreibt.
+Die **.com Top-Level-Domain** ist eine [generische TLD (gTLD)](/de/blog/what-is-a-tld/), die ursprünglich für kommerzielle Organisationen gedacht war. Sie war eine der allerersten TLDs, die 1985 erstellt wurden, zusammen mit `.net`, `.org`, `.edu`, `.gov` und `.mil`, wie im [IANA-Root-Zone-Eintrag für .com](https://www.iana.org/domains/root/db/com.html) dokumentiert. Der Registry-Betreiber ist **Verisign**, das die maßgebliche .com-Infrastruktur seit Jahrzehnten betreibt.
 
 Das Label „com" verweist auf einen kommerziellen Zweck, aber diese Einschränkung wurde nie ernsthaft durchgesetzt, und die Endung wird heute von Fortune-500-Unternehmen bis hin zu persönlichen Blogs und gemeinnützigen Organisationen verwendet. Für die Suche klassifiziert Google .com als **generische** und nicht ländergezielte Endung, sodass eine .com-Website **nicht geo-targeting** auf einen einzigen Markt ausgerichtet ist und eine solide Wahl für globale Zielgruppen darstellt.
 
@@ -56,7 +56,7 @@ Die Endung erstreckt sich auf nahezu jeden Sektor, konzentriert sich aber dort, 
 - **Domain-Investoren**, die Premium-.com-Namen als Blue-Chip-Digitalwerte behandeln
 - **Persönliche Marken und Portfolios**, die als etabliert und glaubwürdig wahrgenommen werden möchten
 
-**Für wen es nicht ideal ist:** Käufer mit kleinem Budget, die nur einen Platzhalter benötigen, Projekte, die bewusst ein nischen- oder technikbezogenes Signal setzen möchten (wo [.io](/en/tld/io/) oder [.ai](/en/tld/ai/) besser passen), oder alle, die keinen akzeptablen verfügbaren Namen finden können und den Aftermarket nicht in Betracht ziehen möchten.
+**Für wen es nicht ideal ist:** Käufer mit kleinem Budget, die nur einen Platzhalter benötigen, Projekte, die bewusst ein nischen- oder technikbezogenes Signal setzen möchten (wo [.io](/de/tld/io/) oder [.ai](/de/tld/ai/) besser passen), oder alle, die keinen akzeptablen verfügbaren Namen finden können und den Aftermarket nicht in Betracht ziehen möchten.
 
 ## Bekannte Websites mit .com
 
@@ -76,7 +76,7 @@ Diese spannen Suche, Einzelhandel, Hardware und Geschichte selbst auf und verans
 | Verfügbarkeit kurzer Namen | Sehr selten | Selten | Mäßig | Gut |
 | Typisches Preisniveau | Standard | Standard | Standard | Premium |
 
-Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden oder sich leisten können. Wählen Sie [.net](/en/tld/net/) als klassische Alternative, wenn die passende .com vergeben ist, [.org](/en/tld/org/), wenn Sie eine Community-, gemeinnützige oder Open-Project-Konnotation wünschen, oder [.io](/en/tld/io/), wenn ein technisches, startup-geprägtes Signal und die Verfügbarkeit kurzer Namen wichtiger sind als Mainstream-Bekanntheit.
+Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden oder sich leisten können. Wählen Sie [.net](/de/tld/net/) als klassische Alternative, wenn die passende .com vergeben ist, [.org](/de/tld/org/), wenn Sie eine Community-, gemeinnützige oder Open-Project-Konnotation wünschen, oder [.io](/de/tld/io/), wenn ein technisches, startup-geprägtes Signal und die Verfügbarkeit kurzer Namen wichtiger sind als Mainstream-Bekanntheit.
 
 ## Warum .com wählen?
 
@@ -84,7 +84,7 @@ Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden 
 - **Vertrauen und Glaubwürdigkeit.** Jahrzehntelange Allgegenwart lassen .com als legitim und etabliert erscheinen – besonders wertvoll für den E-Commerce und alle Websites, die nach Zahlungsdetails fragen.
 - **Interface-Integration.** Viele mobile Tastaturen haben noch immer eine eigene „.com"-Taste – ein Maß an eingebautem Komfort, das keine andere Endung bietet.
 - **Globale SEO.** Google behandelt sie als generisch, sodass Ihre Website weltweit ranken kann, ohne auf ein einzelnes Land beschränkt zu werden.
-- **Wiederverkaufswert.** Premium-.com-Namen behalten ihren Wert zuverlässiger als fast jede andere Endung und bilden das liquideste Segment des Domain-[Aftermarkets](/en/blog/how-to-sell-a-domain-name-you-own/).
+- **Wiederverkaufswert.** Premium-.com-Namen behalten ihren Wert zuverlässiger als fast jede andere Endung und bilden das liquideste Segment des Domain-[Aftermarkets](/de/blog/how-to-sell-a-domain-name-you-own/).
 
 ## Was zu beachten ist
 
@@ -97,7 +97,7 @@ Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden 
 
 **Registrierungsbeschränkungen: offen für alle.** Jeder auf der Welt kann eine .com-Domain registrieren. Es gibt **keine Anforderung an lokale Präsenz**, keine Geschäftseignungsprüfung und kein Qualifikations- oder Community-Erfordernis. Die ursprüngliche „kommerzielle" Absicht wurde nie durchgesetzt, sodass Privatpersonen, gemeinnützige Organisationen und Unternehmen .com-Namen frei registrieren können.
 
-Namen umfassen **1–63 Zeichen**, erlauben Buchstaben, Ziffern und Bindestriche (nicht am Anfang oder Ende), und **internationalisierte Domainnamen (IDNs)** werden für nicht-lateinische Schriften unterstützt. Die Registry unterstützt **DNSSEC**, und das standardmäßige Transfer-, Verlängerungs- und Redemption-Grace-Period-Verhalten gilt, einschließlich des üblichen Auth-Code-Transferprozesses und einer 60-tägigen Post-Transfer-Sperre. Da .com eine ICANN-gTLD ist, sind die verbindlichen Regeln im [.com Registry Agreement zwischen ICANN und Verisign](https://www.icann.org/en/registry-agreements/details/com) festgelegt, und Markeninhaber können ICANN-Streitbeilegungsmechanismen wie die [UDRP](/en/blog/what-is-udrp/) gegen verletzende Registrierungen einsetzen.
+Namen umfassen **1–63 Zeichen**, erlauben Buchstaben, Ziffern und Bindestriche (nicht am Anfang oder Ende), und **internationalisierte Domainnamen (IDNs)** werden für nicht-lateinische Schriften unterstützt. Die Registry unterstützt **DNSSEC**, und das standardmäßige Transfer-, Verlängerungs- und Redemption-Grace-Period-Verhalten gilt, einschließlich des üblichen Auth-Code-Transferprozesses und einer 60-tägigen Post-Transfer-Sperre. Da .com eine ICANN-gTLD ist, sind die verbindlichen Regeln im [.com Registry Agreement zwischen ICANN und Verisign](https://www.icann.org/en/registry-agreements/details/com) festgelegt, und Markeninhaber können ICANN-Streitbeilegungsmechanismen wie die [UDRP](/de/blog/what-is-udrp/) gegen verletzende Registrierungen einsetzen.
 
 ## .com-Preisgestaltung und -Wert
 
@@ -125,7 +125,7 @@ Achten Sie auf zwei Fallstricke. Erstens: Vermeiden Sie unangenehme Bindestriche
 2. **Wählen** Sie das .com-Ergebnis (und alle Alternativen, die es wert sind, gesichert zu werden).
 3. **Registrieren** und DNS konfigurieren.
 
-Als [ICANN-akkreditierter](/en/glossary/icann/) [Registrar](/en/glossary/registrar/) verbindet Namefi Web2 und Web3: transparente Preisgestaltung, schnelles [DNS](/en/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/en/blog/what-are-tokenized-domains/) für überprüfbares [Domain-Eigentum](/en/glossary/domain-ownership/) und einfache Übertragbarkeit zu halten. Sie können sogar eine [bestehende .com tokenisieren](/en/blog/how-to-tokenize-your-com/), die Sie bereits besitzen. Beginnen Sie bei [Namefi](https://namefi.io).
+Als [ICANN-akkreditierter](/de/glossary/icann/) [Registrar](/de/glossary/registrar/) verbindet Namefi Web2 und Web3: transparente Preisgestaltung, schnelles [DNS](/de/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) für überprüfbares [Domain-Eigentum](/de/glossary/domain-ownership/) und einfache Übertragbarkeit zu halten. Sie können sogar eine [bestehende .com tokenisieren](/de/blog/how-to-tokenize-your-com/), die Sie bereits besitzen. Beginnen Sie bei [Namefi](https://namefi.io).
 
 ## Häufig gestellte Fragen
 
@@ -151,10 +151,10 @@ DNSSEC wird von der .com-Registry unterstützt. Die Verfügbarkeit von WHOIS-Dat
 
 ## Verwandte Ressourcen
 
-- [Was ist eine Domain?](/en/blog/what-is-domain/)
-- [Was ist eine TLD?](/en/blog/what-is-a-tld/)
-- [Domain-Terminologieleitfaden](/en/blog/domain-terminology-guide/)
-- [So tokenisieren Sie Ihre .com](/en/blog/how-to-tokenize-your-com/)
-- [So verkaufen Sie einen Domainnamen, den Sie besitzen](/en/blog/how-to-sell-a-domain-name-you-own/)
-- TLD-Leitfäden: [.net](/en/tld/net/), [.org](/en/tld/org/), [.io](/en/tld/io/), [.ai](/en/tld/ai/), [.xyz](/en/tld/xyz/)
-- Glossar: [ICANN](/en/glossary/icann/), [Registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- [Was ist eine Domain?](/de/blog/what-is-domain/)
+- [Was ist eine TLD?](/de/blog/what-is-a-tld/)
+- [Domain-Terminologieleitfaden](/de/blog/domain-terminology-guide/)
+- [So tokenisieren Sie Ihre .com](/de/blog/how-to-tokenize-your-com/)
+- [So verkaufen Sie einen Domainnamen, den Sie besitzen](/de/blog/how-to-sell-a-domain-name-you-own/)
+- TLD-Leitfäden: [.net](/de/tld/net/), [.org](/de/tld/org/), [.io](/de/tld/io/), [.ai](/de/tld/ai/), [.xyz](/de/tld/xyz/)
+- Glossar: [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), [DNS](/de/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)

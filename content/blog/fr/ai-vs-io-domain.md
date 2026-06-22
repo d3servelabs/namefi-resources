@@ -13,7 +13,7 @@ Vous avez trouvé le nom. Maintenant vous êtes bloqué sur les deux derniers ca
 
 Ce guide compare `.ai` et `.io` en face à face, pour que vous puissiez choisir celui qui correspond à votre entreprise, et pas seulement celui qui est tendance ce trimestre.
 
-Si vous souhaitez des analyses approfondies, nous proposons des présentations détaillées du [TLD .ai](/en/tld/ai/) et du [TLD .io](/en/tld/io/). Cet article traite du choix entre les deux.
+Si vous souhaitez des analyses approfondies, nous proposons des présentations détaillées du [TLD .ai](/fr/tld/ai/) et du [TLD .io](/fr/tld/io/). Cet article traite du choix entre les deux.
 
 ---
 
@@ -117,7 +117,7 @@ Ce que cela ne signifie **pas** :
 
 **Toujours indécis ?** De nombreuses startups enregistrent les deux, faisant pointer l'un vers l'autre, afin de posséder la marque sur les deux extensions que leur audience est la plus susceptible de taper. Si le budget le permet, c'est le choix le plus sûr.
 
-Quelle que soit votre décision, la question suivante est de savoir comment vous en devenez réellement *propriétaire*. Si vous souhaitez un domaine que vous pouvez conserver, transférer et utiliser comme actif programmable, consultez [Que sont les domaines tokenisés ?](/en/blog/what-are-tokenized-domains/).
+Quelle que soit votre décision, la question suivante est de savoir comment vous en devenez réellement *propriétaire*. Si vous souhaitez un domaine que vous pouvez conserver, transférer et utiliser comme actif programmable, consultez [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/).
 
 ---
 
@@ -149,4 +149,4 @@ Pas maintenant, et il n'y a aucune date d'arrêt. Le transfert de souveraineté 
 Oui, et de nombreuses startups le font. Posséder les deux vous permet de protéger votre marque sur les deux extensions que votre audience est la plus susceptible de taper, et vous pouvez rediriger l'une vers l'autre. Chez [Namefi](https://namefi.io), vous pouvez enregistrer et tokeniser les deux.
 
 ### Que signifie tokeniser un domaine `.ai` ou `.io` ?
-La tokenisation ajoute un jeton de propriété on-chain à votre vrai domaine ICANN, afin que vous puissiez le transférer et le gérer avec la sécurité et la flexibilité du Web3, tout en conservant le DNS standard et l'hébergement. En savoir plus dans [Que sont les domaines tokenisés ?](/en/blog/what-are-tokenized-domains/).
+La tokenisation ajoute un jeton de propriété on-chain à votre vrai domaine ICANN, afin que vous puissiez le transférer et le gérer avec la sécurité et la flexibilité du Web3, tout en conservant le DNS standard et l'hébergement. En savoir plus dans [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/).

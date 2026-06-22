@@ -12,7 +12,7 @@ keywords: ['律师事务所域名后缀', '律师最佳域名', '.law 域名', '
 
 对于律师事务所来说，域名不仅仅是一个网址——它更是一种信任信号。客户在几秒钟内就会判断你的可信度，而在知名后缀下干净、专业的域名，能够发挥出宣传册所无法实现的无声作用。选择一套合适的**律师事务所域名后缀**，能够保护那些对你最重要的名称：你的事务所名称、合伙人姓名，以及你希望在搜索中脱颖而出的业务领域。
 
-此外，还有防御性注册的考量。如果你只注册了 [`.com`](/en/tld/com)，竞争对手、心怀不满的人或恶意抢注者完全可以抢先注册相同名称的 [`.net`](/en/tld/net)、[`.law`](/en/tld/law) 或拼写变体。提前注册几个相关后缀的费用，远低于日后处理网络域名抢注纠纷的诉讼成本，同时也能让你的品牌在网络上保持一致性。
+此外，还有防御性注册的考量。如果你只注册了 [`.com`](/zh/tld/com)，竞争对手、心怀不满的人或恶意抢注者完全可以抢先注册相同名称的 [`.net`](/zh/tld/net)、[`.law`](/en/tld/law) 或拼写变体。提前注册几个相关后缀的费用，远低于日后处理网络域名抢注纠纷的诉讼成本，同时也能让你的品牌在网络上保持一致性。
 
 ## 如何为律师事务所选择域名后缀
 
@@ -20,7 +20,7 @@ keywords: ['律师事务所域名后缀', '律师最佳域名', '.law 域名', '
 
 ## 律师事务所必须注册的十大域名后缀
 
-### 1. [.com](/en/tld/com) — 不可或缺的核心锚点
+### 1. [.com](/zh/tld/com) — 不可或缺的核心锚点
 
 `.com` 仍然是全球最受认可、最受信任的域名后缀，大多数客户在输入网址时会默认使用它。请优先注册事务所主要的 `.com` 域名，并将其他所有域名指向它。这是你绝对不能让其过期的域名。该后缀由 [Verisign](https://www.iana.org/domains/root/db/com.html) 根据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/com) 运营。
 
@@ -44,21 +44,21 @@ keywords: ['律师事务所域名后缀', '律师最佳域名', '.law 域名', '
 
 `.lawyer` 与个人执业律师的姓名天然搭配，与 `.attorney` 一样，**不**限制于经过认证的注册人。你可以在 [IANA 根数据库](https://www.iana.org/domains/root/db/lawyer.html) 和 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/lawyer) 中确认其授权情况。注册它既能保护你的名称，也可用于支持合伙人的独立微型网站。
 
-### 7. [.abogado](/en/tld/abogado) — 触达西班牙语客户群
+### 7. [.abogado](/zh/tld/abogado) — 触达西班牙语客户群
 
-[`.abogado`](/en/tld/abogado)（西班牙语"律师"）是面向西班牙裔及拉丁裔社区提供服务的事务所，或在西班牙语市场运营的机构的明智之选。该后缀开放注册；详见其 [IANA 根数据库条目](https://www.iana.org/domains/root/db/abogado.html) 和 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/abogado)。这是传达语言亲和力与文化认同感的有效方式。
+[`.abogado`](/zh/tld/abogado)（西班牙语"律师"）是面向西班牙裔及拉丁裔社区提供服务的事务所，或在西班牙语市场运营的机构的明智之选。该后缀开放注册；详见其 [IANA 根数据库条目](https://www.iana.org/domains/root/db/abogado.html) 和 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/abogado)。这是传达语言亲和力与文化认同感的有效方式。
 
-### 8. [.net](/en/tld/net) — 经典的防御性备用后缀
+### 8. [.net](/zh/tld/net) — 经典的防御性备用后缀
 
 `.net` 是历史最悠久、最受信任的通用后缀之一，是 `.com` 域名天然的防御性配套选择。注册它可以防止混淆，并堵住一个容易被利用的冒充渠道。该后缀由 [Verisign](https://www.iana.org/domains/root/db/net.html) 根据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/net) 运营。
 
-### 9. [.org](/en/tld/org) — 适用于非营利机构、法律援助及协会组织
+### 9. [.org](/zh/tld/org) — 适用于非营利机构、法律援助及协会组织
 
-[`.org`](/en/tld/org) 带有使命感和公益服务的色彩，适合法律援助组织、律师协会周边团体及公益项目，即便是商业性事务所也值得从防御角度注册。该后缀由 [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) 管理，与 `.com` 和 `.net` 并列构成传统三大通用后缀。
+[`.org`](/zh/tld/org) 带有使命感和公益服务的色彩，适合法律援助组织、律师协会周边团体及公益项目，即便是商业性事务所也值得从防御角度注册。该后缀由 [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) 管理，与 `.com` 和 `.net` 并列构成传统三大通用后缀。
 
-### 10. [.info](/en/tld/info) — 面向客户的资讯平台
+### 10. [.info](/zh/tld/info) — 面向客户的资讯平台
 
-[`.info`](/en/tld/info) 适合用于常见问题解答中心、业务领域介绍及案件受理资源页面，域名本身即传达"信息"之意。它是一种低成本的防御性注册选择，也是灵活承载内容的理想归属。详见其 [IANA 根数据库条目](https://www.iana.org/domains/root/db/info.html) 中的授权信息。
+[`.info`](/zh/tld/info) 适合用于常见问题解答中心、业务领域介绍及案件受理资源页面，域名本身即传达"信息"之意。它是一种低成本的防御性注册选择，也是灵活承载内容的理想归属。详见其 [IANA 根数据库条目](https://www.iana.org/domains/root/db/info.html) 中的授权信息。
 
 ## 防御性域名注册策略
 
