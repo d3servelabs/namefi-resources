@@ -54,7 +54,7 @@ Bewerten Sie TLDs anhand von drei Filtern: **Markenpassung** (unterstreicht die 
 
 ### 9. .co — die kurze, markenfähige Alternative zu .com
 
-[.co](/en/tld/co) ist die ccTLD für Kolumbien, [von der IANA delegiert](https://www.iana.org/domains/root/db/co.html), wird aber global als kurze Bezeichnung für „company" oder „.com" vermarktet und genutzt. Viele Startups verwenden sie, wenn die `.com` vergeben ist. Sie ist markenfähig und einprägsam, obwohl Sie aufgrund ihrer visuellen Ähnlichkeit zu `.com` beide sichern sollten, um fehlgeleiteten Traffic zu vermeiden.
+[.co](/de/tld/co) ist die ccTLD für Kolumbien, [von der IANA delegiert](https://www.iana.org/domains/root/db/co.html), wird aber global als kurze Bezeichnung für „company" oder „.com" vermarktet und genutzt. Viele Startups verwenden sie, wenn die `.com` vergeben ist. Sie ist markenfähig und einprägsam, obwohl Sie aufgrund ihrer visuellen Ähnlichkeit zu `.com` beide sichern sollten, um fehlgeleiteten Traffic zu vermeiden.
 
 ### 10. .xyz — flexibel und weit verbreitet
 

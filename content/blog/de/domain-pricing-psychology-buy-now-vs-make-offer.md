@@ -76,7 +76,7 @@ Für Domains ist die Lehre differenzierter als „immer auf 9 enden“. Die Form
 - Eine seltsam genaue Zahl ($24,750) kann als kalkulierte Bewertung oder, bei einem günstigeren Namen, als Hinweis auf einen Rabatt interpretiert werden. Gut eingesetzt, impliziert Präzision, dass Sie Ihre Hausaufgaben gemacht haben; unachtsam verwendet, sieht es wie ein Wühltisch aus.
 - Eine sehr niedrige, psychologisch bepreiste Zahl ($299, $499) signalisiert einen Budget-Namen und zieht Käufer mit geringem Budget an. Gut für schnelle Verkäufe, aber falsch für einen Namen, von dem Sie glauben, dass ein Unternehmen ihn haben will.
 
-Die Domain-Endung spielt ebenfalls eine Rolle: Dasselbe Wort unter einer [`.com`](/de/tld/com/) hat eine andere Preisobergrenze als unter [`.io`](/de/tld/io/) oder [`.co`](/en/tld/co/), also passen Sie die Form dem Namen und dem Käufer an. Ein runder Premium-Preis filtert nach Endnutzern; ein psychologischer Preis filtert nach Schnäppchenjägern und anderen Wiederverkäufern auf dem [Marktplatz](/de/glossary/marketplace/). Eine Nichtübereinstimmung schreckt leise den Käufer ab, den Sie eigentlich wollen.
+Die Domain-Endung spielt ebenfalls eine Rolle: Dasselbe Wort unter einer [`.com`](/de/tld/com/) hat eine andere Preisobergrenze als unter [`.io`](/de/tld/io/) oder [`.co`](/de/tld/co/), also passen Sie die Form dem Namen und dem Käufer an. Ein runder Premium-Preis filtert nach Endnutzern; ein psychologischer Preis filtert nach Schnäppchenjägern und anderen Wiederverkäufern auf dem [Marktplatz](/de/glossary/marketplace/). Eine Nichtübereinstimmung schreckt leise den Käufer ab, den Sie eigentlich wollen.
 
 ## Das Ganze zusammenfügen
 

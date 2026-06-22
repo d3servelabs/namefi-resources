@@ -44,7 +44,7 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 6. .co — die kurze, hochwertige Alternative
 
-[.co](/en/tld/co) ist die Ländercode-Domain für Kolumbien, verwaltet vom kolumbianischen [Ministerium für Informations- und Kommunikationstechnologien (MinTIC)](https://www.iana.org/domains/root/db/co.html) mit technischem Betrieb durch CentralNic, wird jedoch weltweit als kurze Alternative für „company" oder „commerce" vermarktet und genutzt. Viele Mode-Startups wählen `.co`, wenn die `.com` nicht verfügbar ist. Die Registrierung ist weltweit offen; da es sich um eine ccTLD handelt, die unter einer nationalen Behörde betrieben wird, lesen Sie die Nutzungsbedingungen der Registry, bevor Sie sie als Ihr einziges Schaufenster nutzen.
+[.co](/de/tld/co) ist die Ländercode-Domain für Kolumbien, verwaltet vom kolumbianischen [Ministerium für Informations- und Kommunikationstechnologien (MinTIC)](https://www.iana.org/domains/root/db/co.html) mit technischem Betrieb durch CentralNic, wird jedoch weltweit als kurze Alternative für „company" oder „commerce" vermarktet und genutzt. Viele Mode-Startups wählen `.co`, wenn die `.com` nicht verfügbar ist. Die Registrierung ist weltweit offen; da es sich um eine ccTLD handelt, die unter einer nationalen Behörde betrieben wird, lesen Sie die Nutzungsbedingungen der Registry, bevor Sie sie als Ihr einziges Schaufenster nutzen.
 
 ### 7. .fashion — kategorieprägende Relevanz
 

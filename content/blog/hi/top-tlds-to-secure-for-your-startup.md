@@ -50,7 +50,7 @@ keywords: ['स्टार्टअप के लिए शीर्ष TLD', '
 
 ### 8. .co — .com का संक्षिप्त विकल्प
 
-[.co](/en/tld/co) को व्यापक रूप से "company," "corporation," या "commerce" के संक्षिप्त नाम के रूप में पढ़ा जाता है, और यह इतना छोटा है कि अत्यधिक यादगार है। यह कोलंबिया का कंट्री-कोड TLD है; 2025 में ऑपरेटिंग अनुबंध [एक नए कंसोर्शियम को स्थानांतरित हो गया](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) जिसमें Team Internet शामिल है, जैसा कि इसके [IANA रिकॉर्ड](https://www.iana.org/domains/root/db/co.html) में दिखाया गया है। रजिस्ट्रेशन वैश्विक स्तर पर खुला है, जिससे .co तब एक लोकप्रिय विकल्प बन जाता है जब मेल खाता .com उपलब्ध न हो।
+[.co](/hi/tld/co) को व्यापक रूप से "company," "corporation," या "commerce" के संक्षिप्त नाम के रूप में पढ़ा जाता है, और यह इतना छोटा है कि अत्यधिक यादगार है। यह कोलंबिया का कंट्री-कोड TLD है; 2025 में ऑपरेटिंग अनुबंध [एक नए कंसोर्शियम को स्थानांतरित हो गया](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) जिसमें Team Internet शामिल है, जैसा कि इसके [IANA रिकॉर्ड](https://www.iana.org/domains/root/db/co.html) में दिखाया गया है। रजिस्ट्रेशन वैश्विक स्तर पर खुला है, जिससे .co तब एक लोकप्रिय विकल्प बन जाता है जब मेल खाता .com उपलब्ध न हो।
 
 ### 9. .net — क्लासिक बैकअप
 

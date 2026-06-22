@@ -50,7 +50,7 @@ keywords: ['أفضل امتدادات الدومين للشركات الناشئ
 
 ### 8. ‎.co — البديل القصير لـ .com
 
-[‎.co](/en/tld/co) بيتقرأ على نطاق واسع كاختصار لـ "company" أو "corporation" أو "commerce"، وهو قصير بما يكفي ليكون سهل التذكر. هو امتداد الدولة لكولومبيا؛ في 2025 عقد التشغيل [انتقل لكونسورتيوم جديد](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) بيضم Team Internet، كما هو موضّح في [سجل IANA](https://www.iana.org/domains/root/db/co.html). التسجيل مفتوح عالميًا، وده بيخلّي .co خيارًا شائعًا لما الـ .com المطابق مش متاح.
+[‎.co](/ar/tld/co) بيتقرأ على نطاق واسع كاختصار لـ "company" أو "corporation" أو "commerce"، وهو قصير بما يكفي ليكون سهل التذكر. هو امتداد الدولة لكولومبيا؛ في 2025 عقد التشغيل [انتقل لكونسورتيوم جديد](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) بيضم Team Internet، كما هو موضّح في [سجل IANA](https://www.iana.org/domains/root/db/co.html). التسجيل مفتوح عالميًا، وده بيخلّي .co خيارًا شائعًا لما الـ .com المطابق مش متاح.
 
 ### 9. ‎.net — الاحتياطي الكلاسيكي
 

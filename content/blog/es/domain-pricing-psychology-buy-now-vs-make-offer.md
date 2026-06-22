@@ -76,7 +76,7 @@ Para los dominios, la lección es más matizada que "siempre terminar en 9". La 
 - Una cifra extrañamente precisa ($24,750) puede interpretarse como una valoración calculada o, en un nombre más barato, como una señal de descuento. Usada bien, la precisión implica que has hecho los cálculos; usada descuidadamente, parece un estante de liquidación.
 - Un número muy bajo con precio psicológico ($299, $499) señala un nombre económico e invita a compradores con presupuesto limitado. Está bien para la velocidad, pero es incorrecto para un nombre que crees que una empresa querrá.
 
-La extensión también influye: la misma palabra en un [`.com`](/es/tld/com/) tiene un techo diferente que en un [`.io`](/es/tld/io/) o un [`.co`](/en/tld/co/), así que haz coincidir la forma con el nombre y el comprador. Un precio prémium redondo filtra para usuarios finales; un precio psicológico filtra para cazadores de gangas y otros revendedores en el [mercado](/es/glossary/marketplace/). Un desajuste repele silenciosamente al comprador que realmente quieres.
+La extensión también influye: la misma palabra en un [`.com`](/es/tld/com/) tiene un techo diferente que en un [`.io`](/es/tld/io/) o un [`.co`](/es/tld/co/), así que haz coincidir la forma con el nombre y el comprador. Un precio prémium redondo filtra para usuarios finales; un precio psicológico filtra para cazadores de gangas y otros revendedores en el [mercado](/es/glossary/marketplace/). Un desajuste repele silenciosamente al comprador que realmente quieres.
 
 ## Poniéndolo todo junto
 

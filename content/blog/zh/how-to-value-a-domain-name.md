@@ -34,7 +34,7 @@ keywords: ['如何评估域名价值', '域名估价', '我的域名值多少钱
 
 **词语本身。** 这是影响价值最大的单一杠杆，它有三个检验标准。它是一个*真实*的词语或既定术语，而不是一堆胡乱拼凑的字母吗？它是否*被搜索*——它是否对应人们实际寻找的东西，背后有真实的商业需求？它是否能*清晰地口述*——你读出来后，别人不用你拼写就能准确访问吗？一个通过所有三项检验的域名（如 `cars`、`loans`、`cloud`）与一个一项都未通过的域名，属于完全不同的资产类别。
 
-**后缀。** `.com` 仍然是衡量网络其余部分价值的默认标准。维基百科指出，它[是 *commercial*（商业）的缩写](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial)，并[已发展成为最大的顶级域名](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)，注册量大约有 1.6 亿。正是这种普遍性，使得 `.com` 域名通常比其他[顶级域名（TLD）](/en/glossary/tld/)上的相同名称享有溢价——因为人们默认会假设它是 `.com`，并毫不犹豫地输入。其他后缀在特定情境下也可能非常有价值（比如开发者品牌使用 [`.io`](/zh/tld/io/)，人工智能公司使用 [`.ai`](/zh/tld/ai/)，或者初创公司选择 [`.co`](/en/tld/co/) 作为备选），但 `.com` 与其他所有后缀之间的价差是实实在在的。我们在[顶级域名如何影响域名价值](/zh/blog/how-tld-affects-domain-value/)一文中详细分析了其中的机制。
+**后缀。** `.com` 仍然是衡量网络其余部分价值的默认标准。维基百科指出，它[是 *commercial*（商业）的缩写](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial)，并[已发展成为最大的顶级域名](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)，注册量大约有 1.6 亿。正是这种普遍性，使得 `.com` 域名通常比其他[顶级域名（TLD）](/en/glossary/tld/)上的相同名称享有溢价——因为人们默认会假设它是 `.com`，并毫不犹豫地输入。其他后缀在特定情境下也可能非常有价值（比如开发者品牌使用 [`.io`](/zh/tld/io/)，人工智能公司使用 [`.ai`](/zh/tld/ai/)，或者初创公司选择 [`.co`](/zh/tld/co/) 作为备选），但 `.com` 与其他所有后缀之间的价差是实实在在的。我们在[顶级域名如何影响域名价值](/zh/blog/how-tld-affects-domain-value/)一文中详细分析了其中的机制。
 
 **关键词与商业意图。** 与交易相关的词语比与爱好相关的词语更有价值。`insurance`、`mortgage` 和 `casino` 等域名常年昂贵，因为每一次点击都可能为所有者转化为实际收入。一个域名越接近金钱交易的环节，终端用户就越愿意花钱拥有这个“前门”——这正是[搜索引擎优化（SEO）](/zh/glossary/seo/)价值与品牌价值重叠的地方。
 

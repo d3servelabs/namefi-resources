@@ -26,7 +26,7 @@ Pesez quatre critères. **La pertinence** : le suffixe correspond-il à votre se
 
 ### 2. .co — l'alternative moderne et brandable
 
-[.co](/en/tld/co) se lit comme un raccourci élégant pour « company » (entreprise) et est favori des startups lorsque le `.com` est pris. Il s'agit du TLD de code pays de la Colombie, désormais exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) à la suite de l'acquisition du département registre de Neustar, et il est ouvert à l'enregistrement mondial sans restriction. Il est court, mémorable et constitue un complément défensif solide au `.com`.
+[.co](/fr/tld/co) se lit comme un raccourci élégant pour « company » (entreprise) et est favori des startups lorsque le `.com` est pris. Il s'agit du TLD de code pays de la Colombie, désormais exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) à la suite de l'acquisition du département registre de Neustar, et il est ouvert à l'enregistrement mondial sans restriction. Il est court, mémorable et constitue un complément défensif solide au `.com`.
 
 ### 3. .net — le classique de confiance
 
@@ -42,7 +42,7 @@ Pesez quatre critères. **La pertinence** : le suffixe correspond-il à votre se
 
 ### 6. .biz — le suffixe réservé aux entreprises
 
-[.biz](/en/tld/biz) a été créé explicitement comme alternative commerciale au `.com` et est réservé aux usages commerciaux ou d'entreprise légitimes en vertu de sa [politique de registre](https://www.iana.org/domains/root/db/biz.html). Désormais exploité par GoDaddy Registry, c'est un choix défensif naturel précisément parce que son nom crie « commerce », ce qui le rend attrayant pour quiconque tente d'usurper l'identité d'une marque commerciale.
+[.biz](/fr/tld/biz) a été créé explicitement comme alternative commerciale au `.com` et est réservé aux usages commerciaux ou d'entreprise légitimes en vertu de sa [politique de registre](https://www.iana.org/domains/root/db/biz.html). Désormais exploité par GoDaddy Registry, c'est un choix défensif naturel précisément parce que son nom crie « commerce », ce qui le rend attrayant pour quiconque tente d'usurper l'identité d'une marque commerciale.
 
 ### 7. .info — informatif et accessible
 

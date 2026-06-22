@@ -50,7 +50,7 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ### 8. .co — .com 的简洁替代
 
-[.co](/en/tld/co) 被广泛理解为"company"（公司）、"corporation"（法人）或"commerce"（商业）的缩写，且足够简短，极易记忆。它是哥伦比亚的国家代码顶级域名；2025 年，运营合同已[转让给新的联合体](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/)，详见其 [IANA 记录](https://www.iana.org/domains/root/db/co.html)。注册对全球开放，当对应的 .com 不可用时，.co 是颇受欢迎的备选方案。
+[.co](/zh/tld/co) 被广泛理解为"company"（公司）、"corporation"（法人）或"commerce"（商业）的缩写，且足够简短，极易记忆。它是哥伦比亚的国家代码顶级域名；2025 年，运营合同已[转让给新的联合体](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/)，详见其 [IANA 记录](https://www.iana.org/domains/root/db/co.html)。注册对全球开放，当对应的 .com 不可用时，.co 是颇受欢迎的备选方案。
 
 ### 9. .net — 经典备用后缀
 

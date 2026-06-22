@@ -54,7 +54,7 @@ Evalúa los TLD con tres filtros: **adecuación a la marca** (¿la extensión re
 
 ### 9. .co — la alternativa corta y de marca al .com
 
-[.co](/en/tld/co) es el ccTLD de Colombia, [delegado por IANA](https://www.iana.org/domains/root/db/co.html), pero comercializado y utilizado globalmente como un sustituto corto de "company" o ".com." Muchas startups lo adoptan cuando el `.com` no está disponible. Es memorable y fácil de usar como marca, aunque debido a su similitud visual con `.com` conviene asegurar ambos para evitar el desvío de tráfico.
+[.co](/es/tld/co) es el ccTLD de Colombia, [delegado por IANA](https://www.iana.org/domains/root/db/co.html), pero comercializado y utilizado globalmente como un sustituto corto de "company" o ".com." Muchas startups lo adoptan cuando el `.com` no está disponible. Es memorable y fácil de usar como marca, aunque debido a su similitud visual con `.com` conviene asegurar ambos para evitar el desvío de tráfico.
 
 ### 10. .xyz — flexible y ampliamente adoptado
 

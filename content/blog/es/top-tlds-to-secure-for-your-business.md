@@ -26,7 +26,7 @@ Considera cuatro criterios. **Relevancia**: ¿el sufijo se adapta a tu industria
 
 ### 2. .co — la alternativa moderna y de marca
 
-[.co](/en/tld/co) se lee como una abreviatura limpia de "company" (empresa) y es favorita de las startups cuando el `.com` ya está tomado. Es el ccTLD de Colombia, ahora operado por [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) tras su adquisición del negocio de registros de Neustar, y está abierto al registro global sin restricciones. Es corto, memorable y una sólida opción defensiva junto con `.com`.
+[.co](/es/tld/co) se lee como una abreviatura limpia de "company" (empresa) y es favorita de las startups cuando el `.com` ya está tomado. Es el ccTLD de Colombia, ahora operado por [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) tras su adquisición del negocio de registros de Neustar, y está abierto al registro global sin restricciones. Es corto, memorable y una sólida opción defensiva junto con `.com`.
 
 ### 3. .net — el clásico de confianza
 
@@ -42,7 +42,7 @@ Considera cuatro criterios. **Relevancia**: ¿el sufijo se adapta a tu industria
 
 ### 6. .biz — el sufijo exclusivo para negocios
 
-[.biz](/en/tld/biz) fue creado explícitamente como alternativa comercial a `.com` y está restringido a uso comercial o empresarial legítimo según su [política de registro](https://www.iana.org/domains/root/db/biz.html). Ahora operado por GoDaddy Registry, es una opción defensiva natural precisamente porque su nombre grita "negocio", lo que lo hace atractivo para cualquiera que intente suplantar a una marca comercial.
+[.biz](/es/tld/biz) fue creado explícitamente como alternativa comercial a `.com` y está restringido a uso comercial o empresarial legítimo según su [política de registro](https://www.iana.org/domains/root/db/biz.html). Ahora operado por GoDaddy Registry, es una opción defensiva natural precisamente porque su nombre grita "negocio", lo que lo hace atractivo para cualquiera que intente suplantar a una marca comercial.
 
 ### 7. .info — informativo y accesible
 

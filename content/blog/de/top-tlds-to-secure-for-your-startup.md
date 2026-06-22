@@ -50,7 +50,7 @@ Konzentrieren Sie sich auf vier Kriterien. **Relevanz**: Signalisiert das Suffix
 
 ### 8. .co — die kurze Alternative zu .com
 
-[.co](/en/tld/co) wird weithin als Abkürzung für „company", „corporation" oder „commerce" gelesen und ist kurz genug, um sehr einprägsam zu sein. Es ist die Ländercode-TLD für Kolumbien; 2025 wurde der Betriebsvertrag [an ein neues Konsortium übertragen](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/), an dem Team Internet beteiligt ist, wie in ihrem [IANA-Eintrag](https://www.iana.org/domains/root/db/co.html) ersichtlich. Die Registrierung steht weltweit offen, was .co zu einem beliebten Fallback macht, wenn die passende .com nicht verfügbar ist.
+[.co](/de/tld/co) wird weithin als Abkürzung für „company", „corporation" oder „commerce" gelesen und ist kurz genug, um sehr einprägsam zu sein. Es ist die Ländercode-TLD für Kolumbien; 2025 wurde der Betriebsvertrag [an ein neues Konsortium übertragen](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/), an dem Team Internet beteiligt ist, wie in ihrem [IANA-Eintrag](https://www.iana.org/domains/root/db/co.html) ersichtlich. Die Registrierung steht weltweit offen, was .co zu einem beliebten Fallback macht, wenn die passende .com nicht verfügbar ist.
 
 ### 9. .net — das klassische Backup
 

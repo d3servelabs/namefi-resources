@@ -50,7 +50,7 @@ Concéntrate en cuatro criterios. **Relevancia**: ¿el sufijo indica a qué te d
 
 ### 8. .co — el sustituto corto de .com
 
-[.co](/en/tld/co) se lee ampliamente como abreviatura de "company" (empresa), "corporation" (corporación) o "commerce" (comercio), y es lo suficientemente corto como para ser muy memorable. Es el TLD de código de país de Colombia; en 2025 el contrato de operación [se transfirió a un nuevo consorcio](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) que involucra a Team Internet, como se muestra en su [registro de IANA](https://www.iana.org/domains/root/db/co.html). El registro está abierto globalmente, lo que convierte a .co en una alternativa popular cuando el .com correspondiente no está disponible.
+[.co](/es/tld/co) se lee ampliamente como abreviatura de "company" (empresa), "corporation" (corporación) o "commerce" (comercio), y es lo suficientemente corto como para ser muy memorable. Es el TLD de código de país de Colombia; en 2025 el contrato de operación [se transfirió a un nuevo consorcio](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) que involucra a Team Internet, como se muestra en su [registro de IANA](https://www.iana.org/domains/root/db/co.html). El registro está abierto globalmente, lo que convierte a .co en una alternativa popular cuando el .com correspondiente no está disponible.
 
 ### 9. .net — la alternativa clásica
 

@@ -26,7 +26,7 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 2. .co — 现代化、易于品牌化的替代选择
 
-[.co](/en/tld/co) 简洁地代表 "company"（公司），当 `.com` 已被注册时，它是初创公司的热门选择。它是哥伦比亚的国家代码顶级域名，目前由 [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) 运营（收购了 Neustar 的注册业务后），并向全球开放注册，无任何限制。它简短易记，与 `.com` 搭配构成强有力的防御组合。
+[.co](/zh/tld/co) 简洁地代表 "company"（公司），当 `.com` 已被注册时，它是初创公司的热门选择。它是哥伦比亚的国家代码顶级域名，目前由 [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) 运营（收购了 Neustar 的注册业务后），并向全球开放注册，无任何限制。它简短易记，与 `.com` 搭配构成强有力的防御组合。
 
 ### 3. .net — 值得信赖的经典后缀
 
@@ -42,7 +42,7 @@ keywords: ['企业应抢注的顶级域名后缀', '最佳商业域名扩展', '
 
 ### 6. .biz — 专属商业后缀
 
-[.biz](/en/tld/biz) 是专门作为 `.com` 的商业替代品而创建的，根据其[注册局政策](https://www.iana.org/domains/root/db/biz.html)，仅限真正的商业用途使用。目前由 GoDaddy Registry 运营，正因其名称直接体现"商业"含义，它成为冒充商业品牌的不法分子的目标，因此是必要的防御性注册选项。
+[.biz](/zh/tld/biz) 是专门作为 `.com` 的商业替代品而创建的，根据其[注册局政策](https://www.iana.org/domains/root/db/biz.html)，仅限真正的商业用途使用。目前由 GoDaddy Registry 运营，正因其名称直接体现"商业"含义，它成为冒充商业品牌的不法分子的目标，因此是必要的防御性注册选项。
 
 ### 7. .info — 信息性且平易近人
 

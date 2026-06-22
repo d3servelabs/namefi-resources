@@ -42,7 +42,7 @@ Trois critères doivent guider la décision. Premièrement, **confiance et conve
 
 ### 6. .co — l'option courte, prisée des startups
 
-[`.co`](/en/tld/co) est techniquement le TLD national de la Colombie, mais les restrictions de présence locale ont été levées en 2010, de sorte que n'importe qui dans le monde peut en enregistrer un ([Wikipedia : .co](https://en.wikipedia.org/wiki/.co)). Il est largement adopté par les startups et les marques qui ne peuvent pas obtenir leur `.com`, et notamment, c'est l'un des rares ccTLD que Google traite comme une extension générique non géographique. Étant donné que `.co` ne diffère de `.com` que d'un seul caractère, détenir votre marque ici est autant défensif que stratégique.
+[`.co`](/fr/tld/co) est techniquement le TLD national de la Colombie, mais les restrictions de présence locale ont été levées en 2010, de sorte que n'importe qui dans le monde peut en enregistrer un ([Wikipedia : .co](https://en.wikipedia.org/wiki/.co)). Il est largement adopté par les startups et les marques qui ne peuvent pas obtenir leur `.com`, et notamment, c'est l'un des rares ccTLD que Google traite comme une extension générique non géographique. Étant donné que `.co` ne diffère de `.com` que d'un seul caractère, détenir votre marque ici est autant défensif que stratégique.
 
 ### 7. .shopping — forte intention commerciale
 

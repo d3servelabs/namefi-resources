@@ -50,7 +50,7 @@ Concentrez-vous sur quatre critères. **Pertinence** : le suffixe signale-t-il c
 
 ### 8. .co — le raccourci court pour .com
 
-[.co](/en/tld/co) est largement compris comme abréviation de « company » (entreprise), « corporation » ou « commerce », et il est suffisamment court pour être très mémorable. Il s'agit du TLD de code pays de la Colombie ; en 2025, le contrat d'exploitation [a été transféré à un nouveau consortium](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) impliquant Team Internet, comme indiqué dans son [enregistrement IANA](https://www.iana.org/domains/root/db/co.html). L'enregistrement est ouvert à l'échelle mondiale, faisant de .co une alternative populaire lorsque le .com correspondant n'est pas disponible.
+[.co](/fr/tld/co) est largement compris comme abréviation de « company » (entreprise), « corporation » ou « commerce », et il est suffisamment court pour être très mémorable. Il s'agit du TLD de code pays de la Colombie ; en 2025, le contrat d'exploitation [a été transféré à un nouveau consortium](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) impliquant Team Internet, comme indiqué dans son [enregistrement IANA](https://www.iana.org/domains/root/db/co.html). L'enregistrement est ouvert à l'échelle mondiale, faisant de .co une alternative populaire lorsque le .com correspondant n'est pas disponible.
 
 ### 9. .net — la sauvegarde classique
 

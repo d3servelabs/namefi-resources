@@ -42,7 +42,7 @@ Tres criterios deben guiar la decisión. Primero, **confianza y conversión**: l
 
 ### 6. .co — la opción corta y amigable para startups
 
-[`.co`](/en/tld/co) es técnicamente el TLD de código de país de Colombia, pero las restricciones de presencia se levantaron en 2010, por lo que cualquier persona en el mundo puede registrar uno ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). Es ampliamente adoptado por startups y marcas que no pueden obtener su `.com`, y cabe destacar que es uno de los pocos ccTLDs que Google trata como una extensión genérica no geográfica. Dado que `.co` se diferencia de `.com` por un solo carácter, tener tu marca aquí tiene tanto un propósito defensivo como estratégico.
+[`.co`](/es/tld/co) es técnicamente el TLD de código de país de Colombia, pero las restricciones de presencia se levantaron en 2010, por lo que cualquier persona en el mundo puede registrar uno ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). Es ampliamente adoptado por startups y marcas que no pueden obtener su `.com`, y cabe destacar que es uno de los pocos ccTLDs que Google trata como una extensión genérica no geográfica. Dado que `.co` se diferencia de `.com` por un solo carácter, tener tu marca aquí tiene tanto un propósito defensivo como estratégico.
 
 ### 7. .shopping — alta intención comercial
 

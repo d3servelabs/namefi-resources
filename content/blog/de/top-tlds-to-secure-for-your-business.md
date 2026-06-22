@@ -26,7 +26,7 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 2. .co — die moderne, markentaugliche Alternative
 
-[.co](/en/tld/co) liest sich als saubere Kurzform für „company" (Unternehmen) und ist bei Startups beliebt, wenn das `.com` bereits vergeben ist. Es ist die Länder-Code-TLD für Kolumbien, wird nun von [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) nach der Übernahme des Registry-Geschäfts von Neustar betrieben und ist für globale, uneingeschränkte Registrierung geöffnet. Es ist kurz, einprägsam und eine starke defensive Ergänzung zu `.com`.
+[.co](/de/tld/co) liest sich als saubere Kurzform für „company" (Unternehmen) und ist bei Startups beliebt, wenn das `.com` bereits vergeben ist. Es ist die Länder-Code-TLD für Kolumbien, wird nun von [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) nach der Übernahme des Registry-Geschäfts von Neustar betrieben und ist für globale, uneingeschränkte Registrierung geöffnet. Es ist kurz, einprägsam und eine starke defensive Ergänzung zu `.com`.
 
 ### 3. .net — der vertrauenswürdige Klassiker
 
@@ -42,7 +42,7 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 6. .biz — das rein geschäftliche Suffix
 
-[.biz](/en/tld/biz) wurde explizit als kommerzielle Alternative zu `.com` geschaffen und ist laut seiner [Registry-Richtlinie](https://www.iana.org/domains/root/db/biz.html) auf echte geschäftliche oder kommerzielle Nutzung beschränkt. Es wird jetzt von GoDaddy Registry betrieben und ist eine naheliegende defensive Wahl, gerade weil sein Name „Geschäft" signalisiert — was es für jeden attraktiv macht, der eine Handelsmarke imitieren möchte.
+[.biz](/de/tld/biz) wurde explizit als kommerzielle Alternative zu `.com` geschaffen und ist laut seiner [Registry-Richtlinie](https://www.iana.org/domains/root/db/biz.html) auf echte geschäftliche oder kommerzielle Nutzung beschränkt. Es wird jetzt von GoDaddy Registry betrieben und ist eine naheliegende defensive Wahl, gerade weil sein Name „Geschäft" signalisiert — was es für jeden attraktiv macht, der eine Handelsmarke imitieren möchte.
 
 ### 7. .info — informativ und zugänglich
 

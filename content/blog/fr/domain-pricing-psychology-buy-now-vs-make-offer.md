@@ -76,7 +76,7 @@ Pour les domaines, la leçon est plus nuancée que « toujours terminer par 9 »
 -   Un chiffre étrangement précis (24 750 $) peut être interprété comme une évaluation calculée ou, pour un nom moins cher, comme un indice de réduction. Bien utilisée, la précision implique que vous avez fait vos calculs ; utilisée négligemment, elle ressemble à un article en solde.
 -   Un chiffre très bas, de type prix psychologique (299 $, 499 $), signale un nom à petit budget et attire des acheteurs à petit budget. C'est bien pour le volume, mais inapproprié pour un nom que vous pensez qu'une entreprise voudra.
 
-L'extension joue également un rôle : le même mot sur un [`.com`](/fr/tld/com/) a un plafond différent de celui sur un [`.io`](/fr/tld/io/) ou un [`.co`](/en/tld/co/), alors faites correspondre la forme du prix au nom et à l'acheteur. Un prix premium rond filtre pour les utilisateurs finaux ; un prix psychologique filtre pour les chasseurs de bonnes affaires et les autres revendeurs sur la [place de marché](/fr/glossary/marketplace/). Une inadéquation repousse discrètement l'acheteur que vous voulez réellement attirer.
+L'extension joue également un rôle : le même mot sur un [`.com`](/fr/tld/com/) a un plafond différent de celui sur un [`.io`](/fr/tld/io/) ou un [`.co`](/fr/tld/co/), alors faites correspondre la forme du prix au nom et à l'acheteur. Un prix premium rond filtre pour les utilisateurs finaux ; un prix psychologique filtre pour les chasseurs de bonnes affaires et les autres revendeurs sur la [place de marché](/fr/glossary/marketplace/). Une inadéquation repousse discrètement l'acheteur que vous voulez réellement attirer.
 
 ## Pour résumer
 

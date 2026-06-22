@@ -44,7 +44,7 @@ No necesitas cientos de dominios. Necesitas el `.com` canónico, un pequeño gru
 
 ### 6. .co — la alternativa corta y premium
 
-[.co](/en/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El registro está abierto en todo el mundo; dado que es un ccTLD operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
+[.co](/es/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El registro está abierto en todo el mundo; dado que es un ccTLD operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
 
 ### 7. .fashion — relevancia que define la categoría
 

@@ -46,7 +46,7 @@ Hier ist der Teil, der Flipper wirklich interessiert, und die ehrliche Antwort i
 
 Ein paar praktische Faustregeln, eher als Schätzungen denn als gemessene Fakten formuliert:
 
-- **Die Endung ist bei Keyword-Namen wichtiger.** Der Wert eines Keywords stützt sich stark auf die Glaubwürdigkeit und die Type-in-Gewohnheit von [`.com`](/de/tld/com/). Dasselbe Keyword mit einer schwächeren Endung verliert viel von dem Vorteil „Ich tippe es einfach ein“. Markenfähige Namen funktionieren besser über verschiedene Endungen hinweg, weshalb Gründer gerne auf [`.io`](/de/tld/io/), [`.ai`](/de/tld/ai/), [`.co`](/en/tld/co/), [`.xyz`](/de/tld/xyz/), [`.app`](/de/tld/app/) und [`.am`](/de/tld/am/) aufbauen.
+- **Die Endung ist bei Keyword-Namen wichtiger.** Der Wert eines Keywords stützt sich stark auf die Glaubwürdigkeit und die Type-in-Gewohnheit von [`.com`](/de/tld/com/). Dasselbe Keyword mit einer schwächeren Endung verliert viel von dem Vorteil „Ich tippe es einfach ein“. Markenfähige Namen funktionieren besser über verschiedene Endungen hinweg, weshalb Gründer gerne auf [`.io`](/de/tld/io/), [`.ai`](/de/tld/ai/), [`.co`](/de/tld/co/), [`.xyz`](/de/tld/xyz/), [`.app`](/de/tld/app/) und [`.am`](/de/tld/am/) aufbauen.
 - **Bei markenfähigen Namen zählt die Aussprechbarkeit, bei Keywords die Exaktheit.** Ein erfundenes Wort, das schwer laut auszusprechen ist, ist ein schwacher markenfähiger Name. Ein Keyword, das nicht die *exakte* Phrase ist, die Käufer verwenden, ist ein schwaches Keyword.
 - **Die Verkaufsraten sind für beide bei handregistriertem Inventar niedrig**, oft im niedrigen einstelligen Prozentbereich pro Jahr. Keine der beiden Kategorien ist im Durchschnitt ein schneller Flip; beide funktionieren als Portfolios.
 
