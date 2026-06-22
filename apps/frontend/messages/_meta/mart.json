@@ -8,9 +8,6 @@
   "title": {
     "description": "On-page H1 title of the Marketplace page. A short noun for a place to buy/sell domains."
   },
-  "subtitle": {
-    "description": "Intro paragraph beneath the Marketplace title describing the live OpenSea listings of Namefi domains. Keep brand names 'Namefi' and 'OpenSea' untranslated."
-  },
   "nftAlt": {
     "description": "Alt text for a domain NFT's artwork image shown on a listing card."
   },
@@ -22,6 +19,48 @@
   },
   "buyAria": {
     "description": "Accessible label for the whole listing card link. {domain} is the domain name (e.g. 'alice.com'); {marketplace} is the marketplace name (e.g. 'OpenSea'). Keep both placeholders; don't translate their values."
+  },
+  "buyNow": {
+    "description": "Primary call-to-action button on a listing card that opens the in-app purchase dialog. Short imperative, e.g. 'Buy Now'."
+  },
+  "buyNowAria": {
+    "description": "Accessible label for the 'Buy Now' button. {domain} is the domain name (e.g. 'alice.com'); keep the placeholder, don't translate its value."
+  },
+  "viewOnMarketplace": {
+    "description": "Secondary link under the Buy Now button to view the listing on the external marketplace. {marketplace} is the marketplace name (e.g. 'OpenSea') — don't translate the value."
+  },
+  "buyDialogTitle": {
+    "description": "Title of the Buy Now confirmation dialog. {domain} is the domain being purchased (e.g. 'alice.com'); keep the placeholder."
+  },
+  "buyDialogDescription": {
+    "description": "Subtitle of the Buy Now dialog reassuring the user they'll confirm the final amount in their wallet before any funds move."
+  },
+  "buyDialogPriceLabel": {
+    "description": "Row label in the Buy Now dialog for the listing's asking price."
+  },
+  "buyDialogNetworkLabel": {
+    "description": "Row label in the Buy Now dialog for the blockchain network the listing is on."
+  },
+  "buyDialogFeeNote": {
+    "description": "Small note in the Buy Now dialog clarifying that marketplace + network fees are added and the wallet shows the final total."
+  },
+  "buyDialogConfirm": {
+    "description": "Confirm button in the Buy Now dialog that initiates the on-chain purchase. Short imperative, e.g. 'Buy Now'."
+  },
+  "buyDialogPending": {
+    "description": "Buy Now confirm button label while the purchase transaction is awaiting the user's wallet signature/confirmation."
+  },
+  "buyToastSubmitted": {
+    "description": "Toast shown right after the user confirms, while the purchase transaction is being submitted/mined."
+  },
+  "buyToastSuccess": {
+    "description": "Toast shown when the purchase transaction succeeds."
+  },
+  "buyToastError": {
+    "description": "Toast shown when the purchase fails or is rejected. Keep it reassuring and actionable."
+  },
+  "buyToastRateLimited": {
+    "description": "Toast shown when the purchase can't proceed because OpenSea is rate-limiting / no API key could be obtained. Reassure the user it's temporary and to retry shortly. Keep 'OpenSea' untranslated."
   },
   "etherSymbolLabel": {
     "description": "Accessible label (aria-label) for the small info icon next to an ETH price that explains the Ξ symbol. 'ether' is the Ethereum cryptocurrency."

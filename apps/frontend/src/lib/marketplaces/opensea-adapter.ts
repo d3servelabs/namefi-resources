@@ -5,6 +5,7 @@ import {
   type Offer as OpenSeaOfferV2,
   OpenSeaSDK,
   OrderStatus as OpenSeaOrderStatus,
+  TokenStandard,
 } from '@opensea/sdk/viem';
 import { type Address, formatUnits, getAddress } from 'viem';
 import {
@@ -29,7 +30,6 @@ import {
   OPENSEA_SITE_BASE_TESTNET,
   TESTNET_CHAIN_IDS,
 } from './opensea/constants';
-import { OpenSeaRestClient } from './opensea/rest-client';
 import { Erc2981Abi, SeaportCancelAbi } from './seaport/abi';
 import { SEAPORT_V1_6_ADDRESS } from './seaport/constants';
 import type {
@@ -56,10 +56,11 @@ import type { OpenSeaAdapterArgs } from './factory';
  *   - `@opensea/sdk/viem` builds + signs + posts orders (createListing, off-chain
  *     cancel) and serves all read endpoints (getBestListing / getOffersByNFT via
  *     the slug-based v2 paths).
- *   - `OpenSeaRestClient` (raw v2 REST + zod) for `/api/v2/offers/fulfillment_data`,
- *     which the SDK doesn't wrap.
- *   - viem `walletClient.sendTransaction(...)` for the actual fulfillment tx after
- *     OpenSea hands us ready-to-send `{to, data, value}`.
+ *   - `sdk.fulfillOrder(...)` for buying a listing / accepting an offer: the SDK
+ *     fetches OpenSea's fulfillment data, ABI-encodes the Seaport call (its
+ *     `input_data` is a decoded params object, NOT ready-to-send calldata), and
+ *     sends it via the wallet client. Accepting an offer is preceded by
+ *     `sdk.batchApproveAssets(...)` so the conduit can move the seller's NFT.
  *   - viem `writeContract` for the on-chain `Seaport.cancel` fallback when the
  *     off-chain cancel can't be applied.
  *
@@ -73,7 +74,6 @@ export class OpenSeaAdapter implements MarketPlace {
   readonly chainId: number;
 
   private readonly sdk: OpenSeaSDK;
-  private readonly rest: OpenSeaRestClient;
   private readonly publicClient: OpenSeaAdapterArgs['publicClient'];
   private readonly walletClient: OpenSeaAdapterArgs['walletClient'];
   private readonly walletAddress: Address | undefined;
@@ -124,11 +124,6 @@ export class OpenSeaAdapter implements MarketPlace {
       },
       { chain: openSeaChain, apiKey: args.apiKey },
     );
-    this.rest = new OpenSeaRestClient({
-      chainSlug,
-      isTestnet,
-      apiKey: args.apiKey,
-    });
   }
 
   // -------- discovery --------
@@ -146,7 +141,8 @@ export class OpenSeaAdapter implements MarketPlace {
   getCapabilities(): MarketplaceCapabilities {
     // `sdk.api.getProfileListings/getProfileOffers` cover the maker scope;
     // `sdk.api.getAllListings/getCollectionOffers` cover the collection scope.
-    return { byMaker: true, byCollection: true };
+    // `fulfillListing` is backed by `/api/v2/listings/fulfillment_data`.
+    return { byMaker: true, byCollection: true, canFulfillListing: true };
   }
 
   async calculateListingFees(input: {
@@ -289,6 +285,32 @@ export class OpenSeaAdapter implements MarketPlace {
     return this.createListing(input);
   }
 
+  /**
+   * Buy (fulfill) an existing listing from the connected buyer's wallet.
+   *
+   * Delegates to the OpenSea SDK's `fulfillOrder`, which fetches the
+   * fulfillment data and — crucially — ABI-encodes the Seaport call before
+   * sending. OpenSea's `fulfillment_data.transaction.input_data` is a *decoded*
+   * params object, not ready-to-send hex calldata, so the raw-REST path can't
+   * submit it without re-encoding the order against its Seaport function (the
+   * fragile manual-Seaport route this adapter deliberately avoids). The SDK
+   * does that encoding internally and signs with the wallet client passed at
+   * construction.
+   */
+  async fulfillListing(listing: Listing): Promise<{ txHash?: `0x${string}` }> {
+    if (!this.walletClient || !this.walletAddress) {
+      throw new Error('Wallet not connected — cannot buy OpenSea listing.');
+    }
+    // `listing.raw` is the enriched SDK order (with protocol_data) we stored in
+    // `adaptSdkListing` — exactly the shape `fulfillOrder` expects.
+    const order = listing.raw as OpenSeaListingV2;
+    const txHash = await this.sdk.fulfillOrder({
+      order,
+      accountAddress: this.walletAddress,
+    });
+    return { txHash: txHash as `0x${string}` };
+  }
+
   // -------- offers (buyer side, seller-accepts) --------
 
   async getOffersForListing(query: OffersQuery): Promise<Offer[]> {
@@ -318,39 +340,30 @@ export class OpenSeaAdapter implements MarketPlace {
     if (!this.walletClient || !this.walletAddress) {
       throw new Error('Wallet not connected — cannot accept OpenSea offer.');
     }
-    const protocolAddress =
-      (offer.raw as { protocol_address?: string } | undefined)
-        ?.protocol_address ?? SEAPORT_V1_6_ADDRESS;
-
-    const fulfillment = await this.rest.getOfferFulfillmentData({
-      orderHash: offer.id,
-      fulfillerAddress: this.walletAddress,
-      protocolAddress,
-      consideration: {
-        tokenAddress: offer.tokenAddress,
-        tokenId: offer.tokenId,
-      },
+    // Accepting a bid transfers the NFT FROM the seller, so the Seaport conduit
+    // must be approved to move it. Unlike buying a listing, `fulfillOrder` does
+    // NOT auto-approve. `batchApproveAssets` is conditional — it returns
+    // `undefined` and sends no tx when the conduit is already approved — so it
+    // only adds a wallet prompt the first time this seller sells the collection.
+    await this.sdk.batchApproveAssets({
+      assets: [
+        {
+          asset: {
+            tokenAddress: offer.tokenAddress,
+            tokenId: offer.tokenId,
+            tokenStandard: TokenStandard.ERC721,
+          },
+        },
+      ],
+      fromAddress: this.walletAddress,
     });
-
-    const tx =
-      fulfillment.fulfillment_data?.transaction ??
-      fulfillment.actions?.find((a) => a.transaction)?.transaction;
-    if (!tx) {
-      throw new Error(
-        'OpenSea did not return fulfillment transaction data for this offer.',
-      );
-    }
-
-    const txHash = await this.walletClient.sendTransaction({
-      to: tx.to as `0x${string}`,
-      data: encodeInputData(tx.input_data),
-      value: BigInt(
-        typeof tx.value === 'number' ? tx.value : (tx.value ?? '0'),
-      ),
-      account: this.walletClient.account ?? null,
-      chain: null,
+    // Same SDK fulfillment path as buying a listing: it fetches fulfillment
+    // data, ABI-encodes the Seaport call, and signs with the wallet client.
+    const txHash = await this.sdk.fulfillOrder({
+      order: offer.raw as OpenSeaOfferV2,
+      accountAddress: this.walletAddress,
     });
-    return { txHash };
+    return { txHash: txHash as `0x${string}` };
   }
 
   rejectOffer(): Promise<never> {
@@ -901,15 +914,6 @@ function orderComponentsForCancel(params: SeaportOrderParameters) {
     conduitKey: params.conduitKey as `0x${string}`,
     counter: BigInt(params.counter ?? 0),
   };
-}
-
-function encodeInputData(inputData: unknown): `0x${string}` {
-  if (typeof inputData === 'string' && inputData.startsWith('0x')) {
-    return inputData as `0x${string}`;
-  }
-  throw new Error(
-    'OpenSea fulfillment_data returned an unexpected input_data shape (expected hex calldata).',
-  );
 }
 
 void getAddress;

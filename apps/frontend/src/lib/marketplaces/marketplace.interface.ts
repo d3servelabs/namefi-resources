@@ -67,6 +67,14 @@ export interface MarketPlace {
    * which produces two wallet prompts (Seaport has no native update operation).
    */
   updateListing(listing: Listing, input: ListingInput): Promise<Listing>;
+  /**
+   * Fulfill (buy) an existing listing from the connected buyer's wallet —
+   * transfers the NFT to the buyer and pays the seller the listing price.
+   * Requires a wallet signature + sufficient balance. Adapters that lack a
+   * buyer-side fulfillment path report `canFulfillListing: false` from
+   * `getCapabilities()` and throw `MarketplaceUnsupportedOperationError`.
+   */
+  fulfillListing(listing: Listing): Promise<{ txHash?: `0x${string}` }>;
 
   // -------- offers (buyer side, seller-accepts) --------
 

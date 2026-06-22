@@ -112,7 +112,15 @@ export class LegacyOkxAdapter implements MarketPlace {
   }
 
   getCapabilities(): MarketplaceCapabilities {
-    return { byMaker: false, byCollection: false };
+    return { byMaker: false, byCollection: false, canFulfillListing: false };
+  }
+
+  fulfillListing(_listing: Listing): Promise<{ txHash?: `0x${string}` }> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'buy a listing',
+      'Buyer-side listing fulfillment is not supported by the legacy OKX adapter.',
+    );
   }
 
   async calculateListingFees(input: {

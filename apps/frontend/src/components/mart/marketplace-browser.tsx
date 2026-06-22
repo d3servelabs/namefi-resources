@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Address } from 'viem';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
@@ -9,9 +9,19 @@ import {
   domainDetailsKey,
   useDomainDetailsByTokenIds,
 } from '@/components/my-domains/marketplace-orders/use-domain-details';
+import { MartBuyNowDialog } from './mart-buy-now-dialog';
 import { MartListingCard } from './mart-listing-card';
-import { useCollectionListings } from './use-collection-listings';
+import {
+  type CollectionListingRow,
+  useCollectionListings,
+} from './use-collection-listings';
 import { useEthUsdPrice } from './use-eth-usd-price';
+import { useFulfillListing } from './use-fulfill-listing';
+
+/** In-app fulfillment is wired up for OpenSea only (the sole `/mart` source). */
+function canBuyInApp(row: CollectionListingRow): boolean {
+  return row.marketplaceId === 'opensea';
+}
 
 /**
  * Client island for the `/mart` page: reads OpenSea's active Namefi listings
@@ -25,6 +35,11 @@ export function MarketplaceBrowser() {
   const t = useTranslations('mart');
   const listingsQuery = useCollectionListings();
   const ethUsdPrice = useEthUsdPrice();
+  // The listing the user is buying (drives the single shared confirm dialog).
+  const [buyRow, setBuyRow] = useState<CollectionListingRow | null>(null);
+  // The buy mutation is owned here (not in the dialog) so a purchase in flight
+  // can't be switched to a different row mid-transaction.
+  const buy = useFulfillListing({ onPurchased: () => setBuyRow(null) });
 
   // Collect every unique (chainId, tokenAddress, tokenId) the cards need so the
   // batch hook fires one tRPC call per (chainId, contract).
@@ -114,12 +129,37 @@ export function MarketplaceBrowser() {
             )}
             detailsLoading={detailsQuery.isLoading}
             ethUsdPrice={ethUsdPrice}
+            canBuy={canBuyInApp(row)}
+            onBuy={() => {
+              // Ignore while a purchase is in flight so the dialog can't switch
+              // to a different listing than the one being bought.
+              if (!buy.isPending) setBuyRow(row);
+            }}
           />
         ))}
       </div>
       {listingsQuery.errors.length > 0 ? (
         <p className="text-xs text-muted-foreground">{t('partialLoadNote')}</p>
       ) : null}
+      <MartBuyNowDialog
+        buy={buy}
+        row={buyRow}
+        onOpenChange={(open) => {
+          if (!open) setBuyRow(null);
+        }}
+        details={
+          buyRow
+            ? detailsQuery.byKey.get(
+                domainDetailsKey(
+                  buyRow.chainId,
+                  buyRow.listing.tokenAddress,
+                  buyRow.listing.tokenId,
+                ),
+              )
+            : undefined
+        }
+        ethUsdPrice={ethUsdPrice}
+      />
     </div>
   );
 }

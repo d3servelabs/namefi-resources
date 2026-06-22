@@ -63,6 +63,16 @@ export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
   /**
+   * Optional OpenSea API key. The OpenSea adapter primarily uses a per-user
+   * "instant" key it auto-requests + caches in the browser; this env key is a
+   * FALLBACK used only when that issuance fails (the instant-key endpoint caps
+   * issuance at 3/hour/IP). Leave unset in prod (pure per-user instant); set it
+   * in dev/preview so testing across many preview origins doesn't hit that cap.
+   * NOTE: a NEXT_PUBLIC value ships in the client bundle, so use a low-privilege
+   * dev key here, not a high-limit production key.
+   */
+  NEXT_PUBLIC_OPENSEA_API_KEY: z.string().optional(),
+  /**
    * Rarible API key (developer portal). Required for the Rarible marketplace
    * adapter — Rarible has no instant-key endpoint, so this must be set per env.
    * When absent, the Rarible adapter is treated as unconfigured and the

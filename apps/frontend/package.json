@@ -22,6 +22,8 @@
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
     "check:unsafe": "biome check --write --unsafe .",
+    "test": "ENVIRONMENT=test NODE_ENV=test vitest run --project=unit",
+    "test:watch": "ENVIRONMENT=test NODE_ENV=test vitest --project=unit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test-storybook": "test-storybook --url http://127.0.0.1:6006",

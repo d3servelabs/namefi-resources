@@ -35,6 +35,17 @@ export default defineConfig({
           setupFiles: ['.storybook/vitest.setup.ts'],
         },
       },
+      {
+        // Plain Node unit tests (`*.test.ts(x)`). The Storybook project above
+        // only runs stories in a browser, so these wouldn't execute otherwise.
+        // Run via `bun run test` (-> `vitest run --project=unit`).
+        extends: true,
+        test: {
+          name: 'unit',
+          environment: 'node',
+          include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+        },
+      },
     ],
   },
   resolve: {

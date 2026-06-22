@@ -100,8 +100,8 @@ export class RaribleAdapter implements MarketPlace {
   getCapabilities(): MarketplaceCapabilities {
     // Rarible's `byMaker` endpoints accept an optional `collection` filter but
     // there's no "all listings/offers in collection X" endpoint without a
-    // maker, so `byCollection` stays false.
-    return { byMaker: true, byCollection: false };
+    // maker, so `byCollection` stays false. No buyer-side fulfillment path yet.
+    return { byMaker: true, byCollection: false, canFulfillListing: false };
   }
 
   async calculateListingFees(input: {
@@ -304,6 +304,14 @@ export class RaribleAdapter implements MarketPlace {
     }
     const byId = new Map(detailed.map((o) => [o.id, o]));
     return orders.map((o) => byId.get(o.id) ?? o);
+  }
+
+  fulfillListing(_listing: Listing): Promise<{ txHash?: `0x${string}` }> {
+    throw new MarketplaceUnsupportedOperationError(
+      'rarible',
+      'buy a listing',
+      'Buyer-side fulfillment is not wired up for the Rarible adapter yet — it only supports seller-side flows.',
+    );
   }
 
   getListingsByCollection(_query: CollectionListingsQuery): Promise<Listing[]> {

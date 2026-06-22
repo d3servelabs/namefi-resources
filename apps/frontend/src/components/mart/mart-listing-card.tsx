@@ -4,6 +4,7 @@ import { ExternalLink, Info } from 'lucide-react';
 import Image from 'next/image';
 import { useFormatter, useTranslations } from 'next-intl';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card, CardContent } from '@namefi-astra/ui/components/shadcn/card';
 import { Skeleton } from '@namefi-astra/ui/components/shadcn/skeleton';
 import {
@@ -37,13 +38,20 @@ interface Props {
    * approximate fiat value beside an ETH-denominated price.
    */
   ethUsdPrice?: number | null;
+  /**
+   * Opens the in-app Buy-Now confirm dialog for this listing. When omitted (or
+   * `canBuy` is false) the card falls back to the external marketplace link.
+   */
+  onBuy?: () => void;
+  /** Whether in-app fulfillment is available for this listing's marketplace. */
+  canBuy?: boolean;
 }
 
 /**
  * A single buy-oriented card in the `/mart` browse grid. Shows the domain's
- * NFT image, name, asking price and a deep link to complete the purchase on
- * the listing's marketplace. Read-only — no wallet interaction happens here;
- * the buy flow lives on the marketplace.
+ * NFT image, name and asking price. When in-app fulfillment is supported the
+ * primary action is a "Buy Now" button that opens the purchase dialog;
+ * otherwise it falls back to a deep link to the listing's marketplace.
  */
 export function MartListingCard({
   chainId,
@@ -52,6 +60,8 @@ export function MartListingCard({
   details,
   detailsLoading,
   ethUsdPrice,
+  onBuy,
+  canBuy,
 }: Props) {
   const t = useTranslations('mart');
   const safeUrl = toSafeExternalUrl(listing.externalUrl);
@@ -63,7 +73,7 @@ export function MartListingCard({
 
   return (
     <Card
-      className="relative h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40"
+      className="h-full overflow-hidden border border-brand-primary/15 bg-gradient-to-br from-brand-primary/5 via-transparent to-brand-secondary/5 transition-colors hover:border-brand-primary/40"
       data-testid={`mart.card.${listing.tokenAddress}-${listing.tokenId}`}
     >
       <div className="relative aspect-square w-full bg-zinc-900">
@@ -110,10 +120,30 @@ export function MartListingCard({
           <NetworkLogo network={chainId} className="ms-auto h-5 w-5 shrink-0" />
         </div>
         <PriceTag listing={listing} ethUsdPrice={ethUsdPrice} />
-        {safeUrl ? (
-          // Stretched link: `after:absolute after:inset-0` makes the whole card
-          // clickable while keeping the inner info button a valid, separately
-          // interactive sibling (not nested inside an <a>).
+        {canBuy && onBuy ? (
+          <div className="space-y-1.5 pt-1">
+            <Button
+              type="button"
+              className="w-full bg-brand-primary font-semibold text-primary-foreground hover:bg-brand-primary/90"
+              onClick={onBuy}
+              aria-label={t('buyNowAria', { domain: displayName })}
+              data-testid={`mart.card.buy.${listing.tokenAddress}-${listing.tokenId}`}
+            >
+              {t('buyNow')}
+            </Button>
+            {safeUrl ? (
+              <a
+                href={safeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-full items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground"
+              >
+                {t('viewOnMarketplace', { marketplace: listing.source })}
+                <ExternalLink className="h-3 w-3" aria-hidden="true" />
+              </a>
+            ) : null}
+          </div>
+        ) : safeUrl ? (
           <a
             href={safeUrl}
             target="_blank"
@@ -122,7 +152,7 @@ export function MartListingCard({
               domain: displayName,
               marketplace: listing.source,
             })}
-            className="inline-flex items-center gap-1 rounded-xs text-sm text-brand-primary after:absolute after:inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            className="inline-flex items-center gap-1 rounded-xs text-sm text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             data-testid={`mart.card.buy.${listing.tokenAddress}-${listing.tokenId}`}
           >
             {t('buyOn', { marketplace: listing.source })}

@@ -42,13 +42,10 @@ export default async function MarketplacePage() {
 
   return (
     <PageShell size="wide" padding="relaxed">
-      <header className="mb-8 space-y-3">
+      <header className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
           {t('title')}
         </h1>
-        <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
-          {t('subtitle')}
-        </p>
       </header>
       <Suspense fallback={<MarketplaceBrowserSkeleton />}>
         <WagmiProvider>

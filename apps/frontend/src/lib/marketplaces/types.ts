@@ -137,6 +137,13 @@ export interface MarketplaceCapabilities {
    * still report `false` here.
    */
   readonly byCollection: boolean;
+  /**
+   * Adapter can FULFILL (buy) an existing listing from the buyer's wallet — the
+   * in-app "Buy Now" flow. Adapters without a buyer-side fulfillment path report
+   * `false`, and the UI hides their Buy-Now button (the card falls back to the
+   * external marketplace link).
+   */
+  readonly canFulfillListing: boolean;
 }
 
 /**

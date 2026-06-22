@@ -116,7 +116,8 @@ export class OkxAdapter implements MarketPlace {
     // by-maker or by-collection listing/offer endpoints. Until the proxy grows
     // those routes, the maker-/collection-scoped query methods on this adapter
     // throw and the UI hides OKX from cross-token panels via these flags.
-    return { byMaker: false, byCollection: false };
+    // Buyer-side listing fulfillment isn't wired through the proxy yet either.
+    return { byMaker: false, byCollection: false, canFulfillListing: false };
   }
 
   async calculateListingFees(input: {
@@ -295,6 +296,14 @@ export class OkxAdapter implements MarketPlace {
   async updateListing(listing: Listing, input: ListingInput): Promise<Listing> {
     await this.cancelListing(listing);
     return this.createListing(input);
+  }
+
+  fulfillListing(_listing: Listing): Promise<{ txHash?: `0x${string}` }> {
+    throw new MarketplaceUnsupportedOperationError(
+      'okx',
+      'buy a listing',
+      'Buyer-side listing fulfillment is not wired through the OKX proxy yet.',
+    );
   }
 
   // -------- offers (buyer side, seller-accepts) --------

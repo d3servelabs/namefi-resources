@@ -79,7 +79,14 @@ export async function getMarketplace(
       import('./opensea/api-key'),
       import('./opensea/constants'),
     ]);
-  const apiKey = await getOrRequestApiKey(getOpenSeaApiBaseUrl(args.chainId));
+  // Primary: the per-user instant key (auto-requested + cached). Fallback: an
+  // optional configured key — used only when instant issuance fails (e.g. the
+  // 3/hour/IP cap, common when testing across many preview origins). Unset in
+  // prod, so prod stays pure per-user instant.
+  const apiKey = await getOrRequestApiKey(
+    getOpenSeaApiBaseUrl(args.chainId),
+    clientSideEnv.NEXT_PUBLIC_OPENSEA_API_KEY,
+  );
   return new OpenSeaAdapter({ ...args, apiKey });
 }
 
