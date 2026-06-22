@@ -1,0 +1,94 @@
+---
+title: "Verlängerungskosten und Verkaufsquote: Die wahre Mathematik des Domain-Handels"
+date: '2026-06-21'
+language: de
+tags: ['domains', 'domain-investing', 'domain-flipping', 'analysis']
+authors: ['namefiteam']
+draft: false
+cluster: domain-investing
+series: domain-flipping-skills
+seriesOrder: 25
+format: analysis
+description: "Die ehrliche Wirtschaftlichkeit des Domain-Handels: die Belastung durch Verlängerungen, die Verkaufsquote als Faustregel und warum ein guter Verkauf viele Jahre an Verlängerungen finanzieren muss."
+ogImage: ../../assets/domain-renewal-costs-and-sell-through-rate-og.jpg
+keywords: ['Domain-Verlängerungskosten', 'Verkaufsquote Domains', 'Wirtschaftlichkeit Domain-Flipping', 'Haltungskosten Domain', 'Domain-Verlängerungsgebühren', 'Gewinnberechnung Domain-Handel', 'Kosten Domain-Portfolio', 'ist Domain-Flipping profitabel', 'Belastung durch Domain-Verlängerung', 'Kostenbasis Domains', 'Renditen Domain-Investitionen', 'was kostet eine Domain-Verlängerung', 'Preis .com-Verlängerung', 'Haltungskosten für Domains']
+---
+
+Jede Domain, die Sie halten, schickt Ihnen einmal im Jahr eine Rechnung. Diese eine Tatsache ist die Schwerkraft, unter der jeder Domain-Investor lebt, und es ist der Teil, den die Erfolgsgeschichten auslassen. Ein fünfstelliger Verkauf sorgt für eine tolle Schlagzeile. Die zweihundert Namen, die sich nicht verkauft haben und leise alle zwölf Monate eine Verlängerungsgebühr nach sich ziehen, schaffen es nie in die Geschichte.
+
+Dieser Beitrag befasst sich mit dieser ruhigeren Hälfte der Bilanz. Er geht auf die beiden Zahlen ein, die tatsächlich darüber entscheiden, ob ein Domain-Portfolio Geld einbringt: was es kostet, Namen Jahr für Jahr zu *halten*, und wie viele davon Sie realistischerweise erwarten können, zu *verkaufen*. Wenn man bei beidem ehrlich ist, sieht das ganze Geschäft nicht mehr wie eine Lotterie aus, sondern wie das, was es ist – ein Bestandsgeschäft mit stetigen Haltungskosten und einer kleinen Anzahl übergroßer Gewinne. Das ist die Mathematik hinter dem [Domain-Flipping](/en/blog/domain-flipping/) und das Fundament des [Domain-Portfolio-Managements](/en/blog/domain-portfolio-management/).
+
+## Sie besitzen eine Domain nicht, Sie mieten sie
+
+![Editorial illustration of a domain-name key being handed over, tethered by a chain to an annual renewal clock dial](../../assets/domain-renewal-costs-and-sell-through-rate-01-rent-not-own.jpg)
+
+Beginnen wir mit dem, was den Domain-Handel vom Kauf von Baseballkarten oder Kunst unterscheidet: Sie besitzen eine Domain niemals vollständig. Sie halten sie für eine Registrierungsperiode und behalten sie nur, indem Sie für die Verlängerung bezahlen. Verpassen Sie die Verlängerung, entgleitet Ihnen der Name nach einem festen Zeitplan.
+
+Die Laufzeit hat eine Obergrenze. Laut Wikipedia beträgt [die maximale Registrierungsperiode für einen gTLD-Domainnamen 10 Jahre](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years), also selbst wenn Sie so weit im Voraus bezahlen, wie es das System erlaubt, beginnt die Uhr mindestens einmal pro Jahrzehnt von neuem. Die meisten Investoren verlängern jährlich, was bedeutet, dass die Rechnung jedes Jahr für jeden Namen ankommt. Die Entscheidung, welche Namen sich ein weiteres Jahr verdienen, ist die zentrale Aufgabe bei der Frage, [wann man eine Domain aufgeben sollte](/en/blog/when-to-drop-a-domain/) – und sie hört niemals auf.
+
+Die Verlängerung ist auch keine bloße Formalität. Lässt man sie verfallen, verschwindet der Name nicht sofort, aber es beginnt ein Countdown, den man nicht kontrollieren kann. Nach dem Ablaufdatum tritt ein Name typischerweise in eine Redemption-Phase ein – die, wie in der Literatur zum Domain-Drop-Catching vermerkt, [je nach TLD variiert und normalerweise etwa 30 bis 90 Tage beträgt](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days) und es Ihnen ermöglicht, ihn gegen eine saftige Gebühr wiederherzustellen – und danach in eine kurze Endphase vor der Freigabe: [Am Ende der 5-tägigen „Pending-Delete“-Phase wird die Domain aus der ICANN-Datenbank gelöscht](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=the%20domain%20will%20be%20dropped%20from%20the%20ICANN%20database). Sobald sie gelöscht wird, kann jeder sie registrieren. Ein Name, den Sie zu verlängern vergessen haben, kann ein Name sein, den ein Konkurrent noch in derselben Woche bei der [Drop-Auktion](/en/glossary/auction/) abfängt.
+
+## Was eine Verlängerung wirklich kostet
+
+![Editorial illustration of one tiny renewal fee multiplied across a shelf of many domain tags into a rising staircase of coin stacks](../../assets/domain-renewal-costs-and-sell-through-rate-02-renewal-multiplies.jpg)
+
+Die Verlängerung einer einzelnen `.com`-Domain scheint trivial. Wikipedia gibt die Einzelhandelsspanne klar an: Stand 2023 [liegen die Einzelhandelskosten für eine einfache `.com`-Registrierung im Allgemeinen zwischen einem Tiefstwert von etwa 9,70 $ pro Jahr und etwa 35 $ pro Jahr](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year). Zehn Dollar. Bei einem Namen zu vernachlässigen.
+
+Bei dreihundert ist es nicht zu vernachlässigen. Derselbe Zehn-Dollar-Schein, multipliziert über ein reales Portfolio, wird zum einzelnen größten Posten im Betrieb – die Zahl, um die herum jeder ernsthafte Domain-Händler das ganze Jahr organisiert. Ein Portfolio von 300 `.com`-Namen, das am unteren Ende dieser Spanne liegt, verursacht allein an Verlängerungen etwa 3.000 $ pro Jahr, und das, bevor Sie einen Dollar für den Erwerb neuer Namen ausgegeben haben. Die Kosten skalieren linear mit der Anzahl der Namen, die Sie halten, und überhaupt nicht damit, wie viele davon gut sind. Die Belastung durch die Verlängerungskosten schert sich nicht darum, ob ein Name ein zukünftiger fünfstelliger Verkauf oder ein Tippfehler ist, den Sie schon vor zwei Jahren hätten aufgeben sollen.
+
+Zwei Kräfte treiben diese Zahl im Laufe der Zeit in die Höhe, und beide arbeiten gegen Sie. Erstens steigt der Großhandelspreis unter Ihrem Verkaufspreis weiter an. Als Verisign seine Preiserhöhung für 2024 ankündigte, berechnete die Registry [den Registraren derzeit 9,59 $ pro Jahr für .com-Registrierungen. Dieser Betrag wird auf 10,26 $ steigen](https://domainnamewire.com/2024/02/08/verisign-announces-com-price-hike-to-10-26/#:~:text=charges%20registrars%20%249.59%20per%20year%20for%20.com%20registrations.%20That%20will%20increase%20to%20%2410.26), und gemäß dem Registry-Vertrag ist es Verisign [erlaubt, die Preise in jedem der letzten vier Jahre](https://domainnamewire.com/2024/02/08/verisign-announces-com-price-hike-to-10-26/#:~:text=is%20allowed%20to%20increase%20prices%20by%207%25%20in%20each%20of%20the%20last%20four%20years) seiner Vertragslaufzeit um 7 % zu erhöhen. Eine Aufzinsung von 7 % bedeutet, dass die Untergrenze Ihrer Verlängerungsrechnung stufenweise ansteigt, unabhängig davon, ob Ihre Namen an Wert gewinnen. Zweitens wächst die Rechnung jedes Mal, wenn Sie schneller einkaufen als verkaufen – und die meisten Investoren kaufen schneller ein als sie verkaufen, denn Kaufen ist der spaßige Teil.
+
+Auch die Wahl der Endung verändert das Bild. Die konventionelle `.com`-Untergrenze ist eine Sache; eine [Premium-Endung](/en/tld/io/) wie [`.io`](/en/blog/why-are-io-domains-expensive/) oder [`.ai`](/en/tld/ai/) kostet bei der Verlängerung oft ein Vielfaches davon, während eine günstige [`.xyz`](/en/tld/xyz/) zwar billig zu verlängern sein mag, sich aber selten weiterverkauft. Ein Portfolio mit teuer zu verlängernden Endungen benötigt eine entsprechend höhere Verkaufsrate, nur um die Kosten zu decken. Der von Ihnen gewählte [Registrar](/en/glossary/registrar/) spielt am Rande ebenfalls eine Rolle, da sich die Registrare bei den Verlängerungspreisen am stärksten unterscheiden.
+
+## Verkaufsquote: die Zahl, die niemand beweisen kann
+
+Hier ist die zweite Hälfte der Rechnung und der ehrliche Teil. Diesen stetigen Verlängerungskosten stellen Sie Ihre **Verkaufsquote** gegenüber – der Anteil Ihres Portfolios, der sich in einem bestimmten Jahr tatsächlich verkauft. Es ist die Kennzahl, die alles entscheidet, und es ist auch die, für die es keine verlässliche Quelle gibt.
+
+Behandeln Sie jede konkrete Zahl, die Sie sehen, als Schätzung, nicht als gemessene Statistik. Die weithin wiederholte Faustregel für ein handregistriertes Portfolio ist eine Verkaufsquote im niedrigen einstelligen Prozentbereich pro Jahr – oft wird sie mit 1 % bis 2 % angegeben. Wir kennzeichnen dies als eine Faustregel der Community, nicht als belegte Tatsache: Es gibt keine neutrale Registry, die die Portfolio-Verkaufsquoten über alle Domain-Händler hinweg veröffentlicht, die Zahl schwankt stark mit der Qualität der Namen und dem Kanal, auf dem sie gelistet sind, und die Leute, die sie zitieren, zitieren normalerweise einander. Jeder, der Ihnen einen präzisen Prozentsatz für die Verkaufsquote als Evangelium verkauft, verkauft Ihnen ein Selbstvertrauen, das er nicht besitzt.
+
+Worauf Sie sich jedoch verlassen *können*, ist die Größenordnung der Zahl, über die sich alle in der Branche einig sind. Die Verkaufsquote für spekulative, handregistrierte Namen ist **niedrig** – ein kleiner Bruchteil eines Portfolios wird in einem beliebigen Jahr verkauft, und der Rest bleibt liegen und muss verlängert werden. Diese niedrige Rate ist strukturell bedingt und kein Zeichen dafür, dass Sie etwas falsch machen. Sie ist eine direkte Folge der Funktionsweise des [Aftermarkets](/en/glossary/marketplace/): die meisten Namen sprechen nur eine winzige Gruppe von Käufern an, und in einem bestimmten Jahr sind die meisten dieser Käufer nicht auf der Suche. Ein Name kann wirklich gut sein und sich dennoch jahrelang nicht verkaufen, einfach weil das eine Unternehmen, das ihn braucht, sein Namensfindungsmeeting noch nicht hatte.
+
+Die Lösung besteht nicht darin, eine höhere Quote durch das Auflisten von Ramsch zu jagen. Es geht darum, seine eigene Zahl zu kennen. Verfolgen Sie, wie viele Namen Sie im letzten Jahr tatsächlich verkauft haben, im Verhältnis zu der Anzahl, die Sie gehalten haben, und Sie haben eine reale Verkaufsquote für *Ihr* Portfolio und *Ihre* Beschaffungsstrategie – wertvoller als jeder Branchendurchschnitt. Dieses Tracking ist die Disziplin im Herzen des [Portfolio-Managements](/en/blog/domain-portfolio-management/), und es ist der Input, von dem jede andere Entscheidung abhängt.
+
+## Ein Verkauf finanziert viele Verlängerungen
+
+![Editorial illustration of one large glowing coin feeding a flow line that pays a long row of small recurring renewal bills](../../assets/domain-renewal-costs-and-sell-through-rate-03-one-sale-funds-renewals.jpg)
+
+Fügt man die beiden Zahlen zusammen, löst sich die gesamte Wirtschaftlichkeit in einem einzigen Satz auf, den erfahrene Domain-Händler wie ein Mantra wiederholen: **Ein Verkauf finanziert viele Verlängerungen.**
+
+Die Arithmetik ist unerbittlich, aber einfach. Wenn Ihr Portfolio 1 % bis 2 % seiner Namen pro Jahr verkauft, zahlen Sie Verlängerungen für 98 % bis 99 % eines Bestandes, der keine Einnahmen generiert hat. Das Modell überlebt nur, weil der *Preis* eines Verkaufs in keinem Verhältnis zu den Kosten einer Verlängerung steht. Ein Name, der für 2.000 $ weiterverkauft wird, deckt die jährliche Verlängerung von etwa zweihundert `.com`-Domains am unteren Ende dieser Einzelhandelsspanne. Ein einziger vier- oder fünfstelliger Verkauf kann ein großes Portfolio für ein Jahr oder länger tragen – und genau deshalb funktioniert der Handel überhaupt.
+
+Deshalb ist der Domain-Handel ein Portfoliospiel und niemals eine Wette auf einen einzelnen Namen. Sie versuchen nicht, mit jedem Namen zu gewinnen; Sie versuchen sicherzustellen, dass die seltenen Gewinner groß genug und häufig genug sind, um die Belastung durch die Verlängerungen all dessen, was sich nicht verkauft, zu übertreffen. Wenn man es als Break-even betrachtet, wird der Test konkret: Ihr erwarteter Jahresumsatz muss Ihre gesamten jährlichen Verlängerungskosten mit genügend Spielraum übersteigen, sonst haben Sie keine Investition – Sie haben ein Abonnement, für das Sie ständig zahlen, nur für das Privileg zu hoffen.
+
+Diese Betrachtungsweise erklärt auch, warum Preisgestaltung und Verkauf wichtiger sind als der Erwerb. Ein Portfolio mit einer mittelmäßigen Verkaufsquote, aber disziplinierter Preisgestaltung – Namen, die, wenn sie sich verkaufen, für echtes Geld verkauft werden – schlägt ein Portfolio mit einer hohen Trefferquote an geringwertigen Verkäufen. Der Hebel liegt in der Größe der Gewinne, weshalb das Verkaufshandwerk in [wie man einen Domain-Namen verkauft, den man besitzt](/en/blog/how-to-sell-a-domain-name-you-own/) am umsatzseitigen Ende des gesamten Betriebs angesiedelt ist.
+
+## Die Rechnung wie ein Unternehmen führen
+
+Wenn Sie den Domain-Handel als Geschäft und nicht als Hobby betreiben, sorgen drei Gewohnheiten dafür, dass die Rechnung ehrlich bleibt.
+
+**Kennen Sie Ihre Kostenbasis und Haltungskosten pro Name.** Die Kostenbasis ist das, was Sie für den Erwerb bezahlt haben; die Haltungskosten sind jede Verlängerung, die Sie seitdem bezahlt haben. Ein Name, den Sie sechs Jahre lang verlängert haben, hat viel höhere reale Kosten als sein Anschaffungspreis, und diese akkumulierten Haltungskosten sollten die Entscheidung für oder gegen das Aufgeben bestimmen. Das Nachverfolgen macht auch die Steuererklärung handhabbar – siehe [Steuern und Buchhaltung für Domain-Investoren](/en/blog/taxes-and-accounting-for-domain-investors/), um zu erfahren, warum Kostenbasis und Haltedauer die Zahlen sind, nach denen Ihr Steuerberater zuerst fragen wird.
+
+**Misten Sie rigoros und nach Plan aus.** Der wirksamste Schritt gegen die Belastung durch Verlängerungen ist, Namen aufzugeben, die sich niemals verkaufen werden, *bevor* die Verlängerung fällig wird, nicht danach. Jeder Name, den Sie aufgeben, ist eine Verlängerung, die Sie für immer nicht bezahlen. Der Instinkt, „nur noch ein weiteres Jahr“ zu halten, falls sich ein Name doch noch bewegt, ist genau das, was ein Portfolio in eine Geldgrube verwandelt. [Wann man eine Domain aufgeben sollte](/en/blog/when-to-drop-a-domain/), ist die Disziplin, die Ihre Gewinner davor schützt, durch Ihren toten Bestand subventioniert und in die roten Zahlen getrieben zu werden.
+
+**Gleichen Sie Haltungskosten aus, wo Sie können, aber verlassen Sie sich nicht darauf.** Einige Investoren parken unverkaufte Namen, um einen kleinen Teil der Verlängerungskosten wieder hereinzuholen. Wie in der Domain-Literatur vermerkt, erlauben Registrare, [unbenutzte Domains zu parken, wobei der Registrant einen Anteil an den PPC-Einnahmen erhält](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=allow%20unused%20domains%20to%20be%20parked%20with%20the%20registrant%20receiving%20a%20share%20of%20the%20PPC%20revenue). Für den typischen Markennamen ohne Type-in-Traffic sind Einnahmen aus dem Domain-Parking nur Peanuts und werden Ihre Gewinnschwelle nicht beeinflussen – aber bei Namen, die tatsächlich Traffic anziehen, kann dies unbemerkt einen Teil der Verlängerungsrechnung decken. Betrachten Sie es als kleinen Ausgleich, nicht als Strategie.
+
+Wenn Sie alle drei Punkte befolgen, ist die Verlängerungsrechnung keine vage Angst mehr, sondern eine steuerbare Größe, die Sie gegen erwartete Verkäufe prognostizieren können. Diese Prognose ist der Unterschied zwischen Investieren und Horten.
+
+## Wo die Mechanik auf die Mathematik trifft
+
+Die obige Ökonomie entscheidet, *ob* man einen Namen hält. Die andere Hälfte jedes Flips ist die Mechanik, ihn zu bewegen, wenn ein Verkauf endlich zustande kommt – und hier kann ein hart erkämpfter Verkauf immer noch scheitern. Wertvolle Übertragungen bringen die klassische Pattsituation mit sich: Der Verkäufer wird den Namen nicht vor der Bezahlung übergeben, der Käufer wird nicht vor der Lieferung bezahlen, was der ganze Grund ist, warum [Treuhanddienste (Escrow)](/en/glossary/escrow/) existieren. Wir erläutern diesen Arbeitsablauf in [Domain-Escrow erklärt](/en/blog/domain-escrow-explained/).
+
+[Namefi](https://namefi.io) reduziert diese Reibung beim Abwicklungsschritt. Tokenisierter Besitz erleichtert die Überprüfung und Übertragung der Kontrolle über eine echte ICANN-Domain, mit DNS-Kontinuität, sodass ein live geschalteter Name während der Übergabe weiterhin auflöst. Für die Mathematik in diesem Artikel bedeutet weniger Reibung bei der Abwicklung, dass der seltene Verkauf, der ein Jahr an Verlängerungen finanzieren soll, mit größerer Wahrscheinlichkeit tatsächlich zustande kommt – und ein sauber abgeschlossener Verkauf ist die einzige Art, die die Rechnungen bezahlt.
+
+## Freundlicher Haftungsausschluss (Lesen Sie mich!)
+
+> Wir sind keine Anwälte, Buchhalter, Finanzberater oder Ärzte, und **nichts in diesem Artikel stellt eine rechtliche, finanzielle, steuerliche, buchhalterische, medizinische oder sonstige Form von professioneller Beratung dar.** Wir schreiben diese Beiträge, um uns selbst weiterzubilden und als Service für unsere Kunden. Die hierin enthaltenen Informationen können veraltet, ortsspezifisch oder einfach nur falsch sein. Auch wir machen Fehler.
+>
+> Für jede wichtige Entscheidung **konsultieren Sie bitte einen echten Fachmann (ernsthaft!)**. Oder wenn das nicht Ihr Stil ist, fragen Sie einen Freund, fragen Sie Twitter, fragen Sie Reddit, fragen Sie eine KI oder fragen Sie einen Hellseher. Kurz gesagt: **DOYR - Do Your Own Research (Recherchieren Sie selbst)**. Lassen Sie uns lernen und Spaß haben.
+
+## Quellen und weiterführende Literatur
+
+- Wikipedia — [Domain name registrar (10-year max gTLD term; retail `.com` renewal pricing)](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)
+- Wikipedia — [Domain drop catching (redemption window of ~30–90 days; 5-day pending-delete phase)](https://en.wikipedia.org/wiki/Domain_drop_catching#:~:text=usually%20around%2030%20to%2090%20days)
+- Domain Name Wire — [Verisign .com wholesale price increase to $10.26 (7% annual cap under the registry contract)](https://domainnamewire.com/2024/02/08/verisign-announces-com-price-hike-to-10-26/#:~:text=charges%20registrars%20%249.59%20per%20year%20for%20.com%20registrations.%20That%20will%20increase%20to%20%2410.26)
+- Wikipedia — [Domain name speculation (parking and PPC revenue share on unused domains)](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=allow%20unused%20domains%20to%20be%20parked%20with%20the%20registrant%20receiving%20a%20share%20of%20the%20PPC%20revenue)

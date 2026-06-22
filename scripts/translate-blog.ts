@@ -41,9 +41,12 @@ async function callGeminiThrottled(prompt: string, locale: string, filename: str
         const response = await result.response;
         let text = response.text();
 
-        // Cleanup markdown fences
-        text = text.replace(/^```markdown\n/, "").replace(/^```\n/, "").replace(/\n```$/, "");
-        if (!text.trim().startsWith("---")) {
+        // Cleanup wrapping code fences of ANY language (```markdown, ```yaml, ```)
+        text = text.trim()
+            .replace(/^```[a-zA-Z]*\s*\n/, "")
+            .replace(/\n```\s*$/, "")
+            .trim();
+        if (!text.startsWith("---")) {
              text = "---\n" + text;
         }
         return text;
@@ -78,6 +81,11 @@ async function translateFile(filename: string, targetLocale: string) {
     const fileContent = await fs.readFile(sourcePath, "utf-8");
     const { data: frontmatter, content } = matter(fileContent);
 
+    // Per-locale dialect guidance (Namefi convention: Arabic = Egyptian, not MSA)
+    const dialectNote = targetLocale === "ar"
+        ? "\n    -   **Arabic dialect**: write in modern Egyptian Arabic (اللهجة المصرية المعاصرة) — the natural register an Egyptian reader expects for a tech/business blog — NOT formal MSA, while keeping technical terms clear."
+        : "";
+
     // Construct Prompt
     const prompt = `
 You are a professional translator and technical content writer for Namefi, a domain name company.
@@ -87,16 +95,17 @@ Translate the following Markdown blog post from English to ${targetLocale}.
 1.  **Frontmatter**:
     -   Preserve the YAML frontmatter structure exactly.
     -   Translate the 'title', 'description', and 'keywords' values.
-    -   Keep 'date', 'tags', 'authors', 'draft' as is (unless tags clearly need translation, but usually keep English tags for consistency or translate if common practice).
+    -   Keep 'date', 'tags', 'authors', 'draft', 'cluster', 'series', 'seriesOrder', 'format', 'ogImage' EXACTLY as in the source (do not translate or alter them).
     -   Ensure 'language' field in frontmatter is updated to '${targetLocale}'.
-    -   **Important**: Properly quote strings in YAML if they contain colons or special characters.
+    -   **YAML quoting**: properly quote strings containing colons/special characters. If a single-quoted YAML string must contain an apostrophe, escape it by DOUBLING it ('') — NEVER with a backslash.
 
 2.  **Content**:
-    -   Translate the body content to ${targetLocale}.
-    -   Maintain a professional, informative, and encouraging tone.
-    -   Preserve all Markdown formatting (headers, bold, lists, code blocks, links).
-    -   Do not translate URLs or code snippets unless they are comments/text within code.
-    -   If there are images, keep the image syntax and URLs exactly as is.
+    -   Translate the body to ${targetLocale} with natural, fluent, idiomatic phrasing and a confident, concrete tone (not stiff machine translation).${dialectNote}
+    -   Use consistent, standard domain-industry terminology throughout.
+    -   Preserve all Markdown formatting (headers, bold, lists, code blocks, links, image syntax).
+    -   Keep ALL links EXACTLY as-is — internal links such as /en/blog/... , /en/glossary/... , /en/tld/... (do NOT change the /en/ prefix) and citation URLs INCLUDING any #:~:text= fragments. Never translate or alter a URL or a fragment.
+    -   Keep image references and asset paths (../../assets/...) exactly as is.
+    -   Do not translate domain names, brand names, code, or figures (e.g. del.icio.us, bit.ly, Voice.com, GoDaddy, $30 million) — keep them verbatim.
 
 3.  **Output**:
     -   Return ONLY the complete translated markdown file (frontmatter + body).
@@ -151,7 +160,20 @@ async function main() {
 
     files = files.filter(f => f.endsWith(".md") || f.endsWith(".mdx"));
 
-    console.log(`Found ${files.length} English blog posts.`);
+    // Optional: scope to a single series (e.g. SERIES_FILTER=domain-flipping-skills)
+    const SERIES_FILTER = process.env.SERIES_FILTER;
+    if (SERIES_FILTER) {
+        const kept: string[] = [];
+        for (const f of files) {
+            try {
+                const { data } = matter(await fs.readFile(path.join(enDir, f), "utf-8"));
+                if (data.series === SERIES_FILTER) kept.push(f);
+            } catch { /* skip unreadable */ }
+        }
+        files = kept;
+    }
+
+    console.log(`Found ${files.length} English blog posts${SERIES_FILTER ? ` in series '${SERIES_FILTER}'` : ""}.`);
 
     const limit = pLimit(CONCURRENCY);
     const tasks = [];
