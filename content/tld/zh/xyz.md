@@ -68,10 +68,10 @@ faqs:
 
 | 后缀 | 类型 | 含义 | 典型用途 |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | 传统 gTLD | 无（通用默认） | 任何商业或综合网站 |
+| [.com](/zh/tld/com) | 传统 gTLD | 无（通用默认） | 任何商业或综合网站 |
 | .xyz | 新 gTLD | 无（刻意通用） | 初创企业、Web3、空白品牌 |
-| [.io](/en/tld/io) | ccTLD（用作技术 gTLD） | 约定俗成的"技术/初创" | SaaS、开发者工具、加密货币 |
-| [.app](/en/tld/app) | 新 gTLD | 应用/软件 | 产品和应用网站 |
+| [.io](/zh/tld/io) | ccTLD（用作技术 gTLD） | 约定俗成的"技术/初创" | SaaS、开发者工具、加密货币 |
+| [.app](/zh/tld/app) | 新 gTLD | 应用/软件 | 产品和应用网站 |
 
 当通用认知度最重要且名称可用时，选择 **.com**。当你希望名称简短、中性、价格实惠且 .com 已不可用时，选择 **.xyz**。当你希望受众仅凭后缀就联想到"软件"时，选择 **.io** 或 **.app**。
 
@@ -135,10 +135,10 @@ faqs:
 
 ## 相关资源
 
-- [什么是顶级域名（TLD）？](/en/blog/what-is-a-tld)
-- [什么是域名？](/en/blog/what-is-domain)
-- [域名术语指南](/en/blog/domain-terminology-guide)
-- [初创企业应注册的顶级域名](/en/blog/top-tlds-to-secure-for-your-startup)
-- [什么是代币化域名？](/en/blog/what-are-tokenized-domains)
-- [.com 域名](/en/tld/com) · [.io 域名](/en/tld/io) · [.app 域名](/en/tld/app)
-- 术语表：[ICANN](/en/glossary/icann) · [注册商](/en/glossary/registrar) · [SEO](/en/glossary/seo)
+- [什么是顶级域名（TLD）？](/zh/blog/what-is-a-tld)
+- [什么是域名？](/zh/blog/what-is-domain)
+- [域名术语指南](/zh/blog/domain-terminology-guide)
+- [初创企业应注册的顶级域名](/zh/blog/top-tlds-to-secure-for-your-startup)
+- [什么是代币化域名？](/zh/blog/what-are-tokenized-domains)
+- [.com 域名](/zh/tld/com) · [.io 域名](/zh/tld/io) · [.app 域名](/zh/tld/app)
+- 术语表：[ICANN](/zh/glossary/icann) · [注册商](/zh/glossary/registrar) · [SEO](/zh/glossary/seo)

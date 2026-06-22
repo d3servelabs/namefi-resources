@@ -11,10 +11,10 @@ keywords: ['impuestos dominio NFT', 'base de coste dominio tokenizado', 'contabi
 
 > **Lee esto primero.** Esta publicación **no** es un asesoramiento fiscal, contable, legal ni financiero. No somos su CPA (Contador Público Autorizado), no somos su abogado y no tenemos idea de en qué jurisdicción se encuentra. Esta es una *lista de preguntas* para llevar a un profesional de verdad. Úsela como una hoja de preparación, no como una postura en la cual confiar. El descargo de responsabilidad completo se encuentra al final y se aplica *especialmente* a esta publicación.
 
-Ser propietario de un [dominio tokenizado](/en/blog/what-are-tokenized-domains/) abarca dos mundos que el código fiscal generalmente entiende por separado:
+Ser propietario de un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) abarca dos mundos que el código fiscal generalmente entiende por separado:
 
 - Un **nombre de dominio registrado**, que durante décadas ha sido tratado bajo las reglas de activos intangibles / [Sección 197](https://www.irs.gov/publications/p535) en muchas jurisdicciones.
-- Un [**NFT**](/en/glossary/nft/), que es mucho más reciente y sobre el cual diversas autoridades fiscales han adoptado posiciones diferentes (a veces tratándolo como un objeto de colección, otras como propiedad, o como un activo digital con su propia categoría emergente — consulte el [Aviso 2023-27 del IRS](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) para conocer el tratamiento de los NFT como objetos de colección en EE. UU.).
+- Un [**NFT**](/es/glossary/nft/), que es mucho más reciente y sobre el cual diversas autoridades fiscales han adoptado posiciones diferentes (a veces tratándolo como un objeto de colección, otras como propiedad, o como un activo digital con su propia categoría emergente — consulte el [Aviso 2023-27 del IRS](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) para conocer el tratamiento de los NFT como objetos de colección en EE. UU.).
 
 Esta combinación es novedosa. No asuma que su CPA ha visto uno antes. Tampoco asuma que no lo han hecho. La medida correcta es llevarles las preguntas adecuadas y dejarles hacer su trabajo.
 
@@ -22,12 +22,12 @@ Esta combinación es novedosa. No asuma que su CPA ha visto uno antes. Tampoco a
 
 ## Por qué "simplemente tratarlo como un dominio" no es suficiente
 
-Los dominios tokenizados tienen eventos continuos [en cadena (on-chain)](/en/glossary/on-chain/) que los dominios tradicionales no tienen:
+Los dominios tokenizados tienen eventos continuos [en cadena (on-chain)](/es/glossary/on-chain/) que los dominios tradicionales no tienen:
 
-- Acuñación (minting) (el momento de la [tokenización](/en/glossary/tokenize/) en sí — ¿es un evento imponible? Probablemente no en la mayoría de las jurisdicciones, pero pregunte).
+- Acuñación (minting) (el momento de la [tokenización](/es/glossary/tokenize/) en sí — ¿es un evento imponible? Probablemente no en la mayoría de las jurisdicciones, pero pregunte).
 - Transferencias on-chain, incluyendo flujos de donaciones y herencias.
 - Ventas realizadas íntegramente on-chain, pagadas en criptomonedas o [monedas estables (stablecoins)](/en/glossary/stablecoin/).
-- Posible uso como [garantía](/en/glossary/collateral/) [DeFi](/en/glossary/defi/) (por ejemplo, obtener un préstamo respaldado por el dominio).
+- Posible uso como [garantía](/es/glossary/collateral/) [DeFi](/en/glossary/defi/) (por ejemplo, obtener un préstamo respaldado por el dominio).
 - Uso de puentes (bridging) o movimiento del token entre cadenas.
 
 Cada una de esas interacciones tiene implicaciones fiscales en algunas jurisdicciones y en otras no. La siguiente lista es el menú de preguntas que vale la pena analizar con un profesional.

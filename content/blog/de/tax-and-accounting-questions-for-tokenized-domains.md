@@ -11,10 +11,10 @@ keywords: ['NFT Domain Steuern', 'tokenisierte Domain Anschaffungskosten', 'toke
 
 > **Bitte zuerst lesen.** Dieser Beitrag ist **keine** Steuer-, Buchhaltungs-, Rechts- oder Finanzberatung. Wir sind weder Ihr Wirtschaftsprüfer (CPA) noch Ihr Anwalt, und wir haben keine Ahnung, in welcher Gerichtsbarkeit Sie sich befinden. Dies ist eine *Liste von Fragen*, die Sie einem echten Fachexperten stellen können. Nutzen Sie sie als Vorbereitungsbogen, nicht als verbindliche Grundlage. Der vollständige Haftungsausschluss befindet sich am Ende und gilt *insbesondere* für diesen Beitrag.
 
-Der Besitz einer [tokenisierten Domain](/en/blog/what-are-tokenized-domains/) verbindet zwei Welten, die das Steuerrecht meist getrennt voneinander betrachtet:
+Der Besitz einer [tokenisierten Domain](/de/blog/what-are-tokenized-domains/) verbindet zwei Welten, die das Steuerrecht meist getrennt voneinander betrachtet:
 
 - Einen **registrierten Domainnamen**, der in vielen Rechtsordnungen seit Jahrzehnten nach den Regeln für immaterielle Vermögenswerte / [Abschnitt 197](https://www.irs.gov/publications/p535) behandelt wird.
-- Ein [**NFT**](/en/glossary/nft/), das viel neuer ist und zu dem verschiedene Steuerbehörden unterschiedliche Standpunkte eingenommen haben (manchmal als Sammlerstück, manchmal als Eigentum, manchmal als digitaler Vermögenswert mit einer eigenen, neu entstehenden Kategorie behandelt – siehe [IRS Notice 2023-27](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) für die US-Behandlung von NFTs als Sammlerstücke).
+- Ein [**NFT**](/de/glossary/nft/), das viel neuer ist und zu dem verschiedene Steuerbehörden unterschiedliche Standpunkte eingenommen haben (manchmal als Sammlerstück, manchmal als Eigentum, manchmal als digitaler Vermögenswert mit einer eigenen, neu entstehenden Kategorie behandelt – siehe [IRS Notice 2023-27](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) für die US-Behandlung von NFTs als Sammlerstücke).
 
 Diese Kombination ist neu. Gehen Sie nicht davon aus, dass Ihr Steuerberater so etwas schon einmal gesehen hat. Gehen Sie aber auch nicht vom Gegenteil aus. Der richtige Schritt ist, ihm die richtigen Fragen zu stellen und ihn seine Arbeit machen zu lassen.
 
@@ -22,12 +22,12 @@ Diese Kombination ist neu. Gehen Sie nicht davon aus, dass Ihr Steuerberater so 
 
 ## Warum „Behandle es einfach wie eine Domain“ nicht ausreicht
 
-Tokenisierte Domains haben fortlaufende [On-Chain](/en/glossary/on-chain/)-Ereignisse, die traditionelle Domains nicht haben:
+Tokenisierte Domains haben fortlaufende [On-Chain](/de/glossary/on-chain/)-Ereignisse, die traditionelle Domains nicht haben:
 
-- Minting (der Moment der [Tokenisierung](/en/glossary/tokenize/) selbst – ist das ein steuerpflichtiges Ereignis? In den meisten Rechtsordnungen wahrscheinlich nicht, aber fragen Sie nach.)
+- Minting (der Moment der [Tokenisierung](/de/glossary/tokenize/) selbst – ist das ein steuerpflichtiges Ereignis? In den meisten Rechtsordnungen wahrscheinlich nicht, aber fragen Sie nach.)
 - On-Chain-Transfers, einschließlich Schenkungen und Erbschaften.
 - Verkäufe, die vollständig On-Chain abgewickelt und in Krypto oder [Stablecoins](/en/glossary/stablecoin/) bezahlt werden.
-- Mögliche Nutzung als [DeFi](/en/glossary/defi/)-[Sicherheit](/en/glossary/collateral/) (z. B. Kreditaufnahme gegen die Domain).
+- Mögliche Nutzung als [DeFi](/en/glossary/defi/)-[Sicherheit](/de/glossary/collateral/) (z. B. Kreditaufnahme gegen die Domain).
 - Bridging oder das Verschieben des Tokens zwischen Chains.
 
 Jede dieser Interaktionen hat in einigen Rechtsordnungen steuerliche Auswirkungen, in anderen wiederum nicht. Die nachstehende Liste bietet eine Auswahl an Fragen, die es wert sind, mit einem Fachexperten durchgegangen zu werden.

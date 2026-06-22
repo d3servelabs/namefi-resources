@@ -11,9 +11,9 @@ keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipa
 
 ## **What is .alipay?**
 
-The **.alipay** extension is a specialized **generic Top-Level Domain (gTLD)** that falls under the category of a "Brand TLD." Unlike standard open domains like .com or .io, the .alipay TLD was applied for and secured by the **Alibaba Group** specifically for its digital payment arm, Alipay.
+The **.alipay** extension is a specialized **generic [Top-Level Domain (gTLD)](/en/glossary/tld/)** that falls under the category of a "Brand TLD." Unlike standard open domains like [.com](/en/tld/com/) or [.io](/en/tld/io/), the .alipay TLD was applied for and secured by the **Alibaba Group** specifically for its digital payment arm, Alipay.
 
-Introduced during ICANN's massive expansion of the domain name system, the primary purpose of .alipay is to provide a dedicated, secure, and authenticated namespace for one of the world's largest mobile payment platforms. By operating its own registry, Alipay ensures that every domain ending in .alipay is legitimate, significantly reducing the risk of phishing and fraud.
+Introduced during [ICANN](/en/glossary/icann/)'s massive expansion of the [domain name system](/en/glossary/dns/), the primary purpose of .alipay is to provide a dedicated, secure, and authenticated namespace for one of the world's largest mobile payment platforms. By operating its own registry, Alipay ensures that every domain ending in .alipay is legitimate, significantly reducing the risk of phishing and fraud.
 
 Currently, this TLD serves as a hallmark of digital trust within the fintech sector, representing a move away from shared public spaces toward fortified digital ecosystems.
 
@@ -40,7 +40,7 @@ As a restricted Brand TLD, the "notable entities" are strictly internal to the p
 
 ## **Why Choose .alipay?**
 
-While general registration is restricted, understanding the *value* of the .alipay TLD is essential for domain investors and developers looking at the future of **fintech** and **Web3** naming conventions. The advantages demonstrated by .alipay include:
+While general registration is restricted, understanding the *value* of the .alipay TLD is essential for domain investors and developers looking at the future of **fintech** and **[Web3](/en/glossary/web3/)** naming conventions. The advantages demonstrated by .alipay include:
 
 *   **Unparalleled Trust:** In the financial sector, trust is the currency. A Brand TLD signals maximum security credentials.
 *   **Zero Phishing Risk:** Because only the brand owner can create domains, users are protected from "typosquatting" attacks (e.g., `alipay-login.com`).

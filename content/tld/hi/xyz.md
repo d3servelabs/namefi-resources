@@ -68,10 +68,10 @@ faqs:
 
 | एक्सटेंशन | प्रकार | अर्थ | सामान्य उपयोग |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | Legacy gTLD | कोई नहीं (सार्वभौमिक डिफ़ॉल्ट) | कोई भी वाणिज्यिक या सामान्य साइट |
+| [.com](/hi/tld/com) | Legacy gTLD | कोई नहीं (सार्वभौमिक डिफ़ॉल्ट) | कोई भी वाणिज्यिक या सामान्य साइट |
 | .xyz | New gTLD | कोई नहीं (जानबूझकर जेनेरिक) | स्टार्टअप, Web3, ब्लैंक-स्लेट ब्रांड |
-| [.io](/en/tld/io) | ccTLD (टेक gTLD के रूप में उपयोग) | परंपरा से "टेक/स्टार्टअप" | SaaS, डेवलपर टूल, क्रिप्टो |
-| [.app](/en/tld/app) | New gTLD | ऐप/सॉफ़्टवेयर | प्रोडक्ट और ऐप साइट |
+| [.io](/hi/tld/io) | ccTLD (टेक gTLD के रूप में उपयोग) | परंपरा से "टेक/स्टार्टअप" | SaaS, डेवलपर टूल, क्रिप्टो |
+| [.app](/hi/tld/app) | New gTLD | ऐप/सॉफ़्टवेयर | प्रोडक्ट और ऐप साइट |
 
 **.com** चुनें जब सार्वभौमिक परिचितता सबसे अधिक मायने रखती हो और नाम उपलब्ध हो। **.xyz** चुनें जब आप एक छोटा, तटस्थ, किफायती नाम चाहते हों और .com उपलब्ध न हो। **.io** या **.app** का उपयोग करें जब आप विशेष रूप से चाहते हों कि दर्शक सफ़िक्स से ही "सॉफ़्टवेयर" पढ़ें।
 
@@ -135,10 +135,10 @@ faqs:
 
 ## संबंधित संसाधन
 
-- [TLD क्या है?](/en/blog/what-is-a-tld)
-- [डोमेन क्या है?](/en/blog/what-is-domain)
-- [डोमेन शब्दावली गाइड](/en/blog/domain-terminology-guide)
-- [अपने स्टार्टअप के लिए सुरक्षित करने के लिए शीर्ष TLD](/en/blog/top-tlds-to-secure-for-your-startup)
-- [टोकनाइज़्ड डोमेन क्या हैं?](/en/blog/what-are-tokenized-domains)
-- [.com डोमेन](/en/tld/com) · [.io डोमेन](/en/tld/io) · [.app डोमेन](/en/tld/app)
-- शब्दावली: [ICANN](/en/glossary/icann) · [रजिस्ट्रार](/en/glossary/registrar) · [SEO](/en/glossary/seo)
+- [TLD क्या है?](/hi/blog/what-is-a-tld)
+- [डोमेन क्या है?](/hi/blog/what-is-domain)
+- [डोमेन शब्दावली गाइड](/hi/blog/domain-terminology-guide)
+- [अपने स्टार्टअप के लिए सुरक्षित करने के लिए शीर्ष TLD](/hi/blog/top-tlds-to-secure-for-your-startup)
+- [टोकनाइज़्ड डोमेन क्या हैं?](/hi/blog/what-are-tokenized-domains)
+- [.com डोमेन](/hi/tld/com) · [.io डोमेन](/hi/tld/io) · [.app डोमेन](/hi/tld/app)
+- शब्दावली: [ICANN](/hi/glossary/icann) · [रजिस्ट्रार](/hi/glossary/registrar) · [SEO](/hi/glossary/seo)

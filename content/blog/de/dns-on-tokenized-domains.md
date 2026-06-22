@@ -19,8 +19,8 @@ Kurze Antwort: **Ja, ja, nein.** Eine tokenisierte Domain ist immer noch eine ec
 
 Eine tokenisierte Domain hat **zwei Ebenen**:
 
-1. **Die [DNS](/en/glossary/dns/) / Registry-Ebene** – dieselbe, auf der Ihre `.com` schon immer existiert hat. [ICANN](/en/glossary/icann/), [Registrar](/en/glossary/registrar/), Root-Server, rekursive Resolver.
-2. **Die [On-Chain](/en/glossary/on-chain/)-Ebene** – ein [NFT](/en/glossary/nft/) in Ihrem [Wallet](/en/glossary/wallet/), das das *Eigentum* repräsentiert.
+1. **Die [DNS](/de/glossary/dns/) / Registry-Ebene** – dieselbe, auf der Ihre `.com` schon immer existiert hat. [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), Root-Server, rekursive Resolver.
+2. **Die [On-Chain](/de/glossary/on-chain/)-Ebene** – ein [NFT](/de/glossary/nft/) in Ihrem [Wallet](/de/glossary/wallet/), das das *Eigentum* repräsentiert.
 
 Die DNS-Auflösung – die Umwandlung von `example.com` in eine IP-Adresse – findet vollständig auf Ebene 1 statt. Auf der On-Chain-Ebene geht es darum, **wer die Domain kontrolliert**, nicht darum, wie sie aufgelöst wird. Browser, E-Mail-Server, CDNs und Zertifizierungsstellen müssen nie wissen, dass eine Blockchain existiert.
 
@@ -67,7 +67,7 @@ Die Domain wird weiterhin über den Registrar verlängert, nach dem gleichen Zei
 Vorher: Derjenige, der die Login-Daten für das Registrar-Konto hat.
 Nachher: **Derjenige, der das On-Chain-NFT besitzt**, hat die maßgebliche Kontrolle. Das Namefi-Dashboard verknüpft das NFT über das Protokoll mit dem Registrar-Konto, sodass das Wallet die einzige Quelle der Wahrheit (Source of Truth) ist.
 
-Das ist der springende Punkt. Es ist auch der Grund, warum Sie die Sicherheit Ihres Wallets ernst nehmen müssen – siehe [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/).
+Das ist der springende Punkt. Es ist auch der Grund, warum Sie die Sicherheit Ihres Wallets ernst nehmen müssen – siehe [Wiederherstellung einer tokenisierten Domain nach Wallet-Verlust](/de/blog/recovering-a-tokenized-domain-after-wallet-loss/).
 
 ### Wo Sie klicken, um DNS zu verwalten
 
@@ -75,8 +75,8 @@ Die meisten Eigentümer verwalten ihre DNS-Einträge nach der Tokenisierung übe
 
 ### Übertragung der Domain
 
-Vorher: Der [Cross-Registrar-Transfer](/en/glossary/cross-registrar-transfer/)-Ablauf, mit [Auth-Codes](/en/glossary/auth-code/) und 60-tägigen Sperrfristen.
-Nachher: [**Übertragung des NFTs**](/en/glossary/atomic-transfer/). Eine einzige On-Chain-Transaktion überträgt das Eigentum. Der Eintrag aufseiten des Registrars wird durch das Protokoll synchron gehalten. Das ist drastisch schneller – und der Grund, warum Marktplätze für tokenisierte Domains kein traditionelles [Treuhandverfahren (Escrow)](/en/glossary/escrow/) benötigen (siehe [Vom Angebot bis zur Abwicklung](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
+Vorher: Der [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/)-Ablauf, mit [Auth-Codes](/en/glossary/auth-code/) und 60-tägigen Sperrfristen.
+Nachher: [**Übertragung des NFTs**](/de/glossary/atomic-transfer/). Eine einzige On-Chain-Transaktion überträgt das Eigentum. Der Eintrag aufseiten des Registrars wird durch das Protokoll synchron gehalten. Das ist drastisch schneller – und der Grund, warum Marktplätze für tokenisierte Domains kein traditionelles [Treuhandverfahren (Escrow)](/de/glossary/escrow/) benötigen (siehe [Vom Angebot bis zur Abwicklung](/de/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Sie können weiterhin einen traditionellen Registrar-Transfer durchführen, wenn Sie dies wünschen; die On-Chain-Ebene verhindert dies nicht.
 
@@ -147,4 +147,4 @@ Die gesamte "tokenisierte" Ebene befindet sich *neben* dem DNS, nicht darüber.
 - Sie können Ihr DNS bei Cloudflare, Route53 oder wo auch immer es sich befindet, belassen. Oder verwalten Sie es über Namefi. Beides ist zulässig.
 - Praktische Auswirkung: Eine tokenisierte `.com` ist im Betrieb nicht von einer nicht-tokenisierten `.com` zu unterscheiden, bis Sie sie verkaufen oder übertragen möchten – an diesem Punkt macht die On-Chain-Ebene alles drastisch schneller.
 
-Einen Leitfaden auf Betreiberebene zur Tokenisierung finden Sie unter [So tokenisieren Sie Ihre .com](/en/blog/how-to-tokenize-your-com/).
+Einen Leitfaden auf Betreiberebene zur Tokenisierung finden Sie unter [So tokenisieren Sie Ihre .com](/de/blog/how-to-tokenize-your-com/).

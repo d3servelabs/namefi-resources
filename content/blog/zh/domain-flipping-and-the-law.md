@@ -16,7 +16,7 @@ keywords: ['域名倒卖 法律', '域名倒卖合法吗', '网络抢注', 'UDRP
 
 倒卖域名是合法的。但倒卖错误的域名不仅会让你失去域名本身和你支付的费用，有时甚至会招致一笔五位数的判罚。这两种结果之间的差别并非运气使然，而在于一些你一个下午就能学会的法律知识，以及一些能让你的域名组合保持清白、交易免遭诈骗的操作习惯。
 
-本文是我们 [域名倒卖](/en/blog/domain-flipping/) 系列中关于法律和安全的核心内容，涵盖了域名投资与网络抢注的界线、执行该界线的两种争议解决机制、如何在不被骗的情况下完成销售结算，以及如何防止他人窃取你的域名。本文内容均不构成法律建议（请参阅文末的免责声明），但这些都是经验丰富的域名倒卖者在每笔交易中都会考量的实用知识。
+本文是我们 [域名倒卖](/zh/blog/domain-flipping/) 系列中关于法律和安全的核心内容，涵盖了域名投资与网络抢注的界线、执行该界线的两种争议解决机制、如何在不被骗的情况下完成销售结算，以及如何防止他人窃取你的域名。本文内容均不构成法律建议（请参阅文末的免责声明），但这些都是经验丰富的域名倒卖者在每笔交易中都会考量的实用知识。
 
 ## 你不能逾越的红线：商标
 
@@ -24,13 +24,13 @@ keywords: ['域名倒卖 法律', '域名倒卖合法吗', '网络抢注', 'UDRP
 
 整个法律问题可以归结为一个核心区别。注册一个通用、描述性或自创的名称进行转售是常规的投资行为。但注册利用*特定公司品牌*的域名则属于网络抢注，正是这一行为会将一桩合法的交易变成一笔亏本买卖。
 
-维基百科的定义是标准定义：网络抢注是[以恶意从他人商标的商誉中获利为目的，对互联网域名进行注册、贩卖或使用的行为](https://en.wikipedia.org/wiki/Cybersquatting#:~:text=is%20the%20practice%20of%20registering%2C%20trafficking%20in%2C%20or%20using%20an%20Internet%20domain%20name%2C%20with%20a%20bad%20faith%20intent%20to%20profit)。这句话中有两个词起着关键作用：*恶意 (bad faith)* 和*商标 (trademark)*。像 `loans` 这样的字典词或像 `Zapio` 这样的自创名称不属于任何特定方。而 `nikeshoes-store.com` 则明显依赖于一个已有的商标。一个域名越是接近现有品牌，就越像你注册它就是为了从该品牌身上榨取钱财，而法律惩罚的正是这种意图。我们在[网络抢注与域名投资：UDRP 和 ACPA](/en/blog/cybersquatting-vs-domaining-udrp-acpa/) 一文中详细阐述了这一界线。
+维基百科的定义是标准定义：网络抢注是[以恶意从他人商标的商誉中获利为目的，对互联网域名进行注册、贩卖或使用的行为](https://en.wikipedia.org/wiki/Cybersquatting#:~:text=is%20the%20practice%20of%20registering%2C%20trafficking%20in%2C%20or%20using%20an%20Internet%20domain%20name%2C%20with%20a%20bad%20faith%20intent%20to%20profit)。这句话中有两个词起着关键作用：*恶意 (bad faith)* 和*商标 (trademark)*。像 `loans` 这样的字典词或像 `Zapio` 这样的自创名称不属于任何特定方。而 `nikeshoes-store.com` 则明显依赖于一个已有的商标。一个域名越是接近现有品牌，就越像你注册它就是为了从该品牌身上榨取钱财，而法律惩罚的正是这种意图。我们在[网络抢注与域名投资：UDRP 和 ACPA](/zh/blog/cybersquatting-vs-domaining-udrp-acpa/) 一文中详细阐述了这一界线。
 
-购买前的一个实用判断标准是：一个理性的人会认为这个域名是*意在*指向某个特定公司吗？如果答案是肯定的，无论它多便宜都要敬而远之。我们在[如何评估域名价值](/en/blog/how-to-value-a-domain-name/)和[什么是域名](/en/blog/what-is-domain/)中介绍了让一个域名值得拥有的基本要素；一个未能通过商标测试的域名具有负价值，因为持有它本身就是一项负债。
+购买前的一个实用判断标准是：一个理性的人会认为这个域名是*意在*指向某个特定公司吗？如果答案是肯定的，无论它多便宜都要敬而远之。我们在[如何评估域名价值](/zh/blog/how-to-value-a-domain-name/)和[什么是域名](/zh/blog/what-is-domain/)中介绍了让一个域名值得拥有的基本要素；一个未能通过商标测试的域名具有负价值，因为持有它本身就是一项负债。
 
 ## UDRP：商标所有者如何夺回域名
 
-统一域名争议解决政策 (Uniform Domain-Name Dispute-Resolution Policy) 是一种快速、低成本的执行途径。它是 [ICANN](/en/glossary/icann/) 规则的一部分，已经融入到您每次注册域名时接受的注册协议中，因此您已经受到其约束。ICANN 于 1999 年采纳了 [UDRP](/en/glossary/udrp/)，争议由经认证的提供商裁决——其中最著名的是[世界知识产权组织 (WIPO)](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=World%20Intellectual%20Property%20Organization)。
+统一域名争议解决政策 (Uniform Domain-Name Dispute-Resolution Policy) 是一种快速、低成本的执行途径。它是 [ICANN](/zh/glossary/icann/) 规则的一部分，已经融入到您每次注册域名时接受的注册协议中，因此您已经受到其约束。ICANN 于 1999 年采纳了 [UDRP](/zh/glossary/udrp/)，争议由经认证的提供商裁决——其中最著名的是[世界知识产权组织 (WIPO)](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=World%20Intellectual%20Property%20Organization)。
 
 投诉人必须同时证明三点。正如维基百科对该政策的总结，域名必须[与投诉人拥有权利的商标或服务标志相同或混淆性相似](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=identical%20or%20confusingly%20similar%20to%20a%20trademark%20or%20service%20mark)；注册人[对该域名不享有任何权利或合法利益](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=does%20not%20have%20any%20rights%20or%20legitimate%20interests)；以及该域名[被注册且正被“恶意”使用](https://en.wikipedia.org/wiki/Uniform_Domain-Name_Dispute-Resolution_Policy#:~:text=has%20been%20registered%20and%20the%20domain%20name%20is%20being%20used)。只要其中任何一点不成立，投诉就会失败。
 
@@ -56,15 +56,15 @@ ACPA 的关键在于注册人是否[有恶意从该商标中获利的意图](htt
 
 商标风险是法律上的危害，而交易风险则在于交易本身。域名销售是一个典型的信任僵局：卖方在收到付款前不会转移域名，而买方在收到域名前不会付款。谁先行动，谁就暴露在风险之下，而骗子就活跃在这个缺口中。
 
-标准的解决方案是托管服务 (escrow)——一个中立的第三方，根据其通用定义，它[为主要交易方接收和支付金钱或财产，支付取决于双方同意的条件](https://en.wikipedia.org/wiki/Escrow#:~:text=receives%20and%20disburses%20money%20or%20property%20for%20the%20primary%20transacting%20parties)。买方将资金付给托管代理，卖方转移域名，代理确认交接完成，然后释放款项。双方都不需要信任对方，只需要信任托管代理。我们在[域名托管服务详解](/en/blog/domain-escrow-explained/)和[托管服务 (escrow)](/en/glossary/escrow/) 词汇表中详细介绍了其运作机制。
+标准的解决方案是托管服务 (escrow)——一个中立的第三方，根据其通用定义，它[为主要交易方接收和支付金钱或财产，支付取决于双方同意的条件](https://en.wikipedia.org/wiki/Escrow#:~:text=receives%20and%20disburses%20money%20or%20property%20for%20the%20primary%20transacting%20parties)。买方将资金付给托管代理，卖方转移域名，代理确认交接完成，然后释放款项。双方都不需要信任对方，只需要信任托管代理。我们在[域名托管服务详解](/zh/blog/domain-escrow-explained/)和[托管服务 (escrow)](/zh/glossary/escrow/) 词汇表中详细介绍了其运作机制。
 
-有几种骗局模式经常出现，值得牢记，我们在[避免域名销售骗局](/en/blog/avoiding-domain-sale-scams/)中收录了更多案例：
+有几种骗局模式经常出现，值得牢记，我们在[避免域名销售骗局](/zh/blog/avoiding-domain-sale-scams/)中收录了更多案例：
 
 - **虚假托管网站。** “买家”坚持使用一个你从未听说过的托管服务，其网址模仿一个真实的网站。这个网站是他们自己的；你的域名和任何费用都会消失。只使用你自己选择并独立核实的托管服务。
 - **拒付和撤销付款欺诈。** 买家通过可撤销的方式付款，你转移域名后，他们再把款项追回。信誉良好的托管服务和不可逆转的结算方式正是为了杜绝这种情况而存在的。
 - **多付款骗局。** “买家”支付了过多的金额，并要求你退还差额；而最初的付款随后会被退回。
 
-核心原则是：永远不要凭一句承诺就放弃对域名的控制权。有关卖方的完整操作手册，请参阅[如何出售您拥有的域名](/en/blog/how-to-sell-a-domain-name-you-own/)和更广泛的[域名交易](/en/glossary/domain-trading/)概述。
+核心原则是：永远不要凭一句承诺就放弃对域名的控制权。有关卖方的完整操作手册，请参阅[如何出售您拥有的域名](/zh/blog/how-to-sell-a-domain-name-you-own/)和更广泛的[域名交易](/zh/glossary/domain-trading/)概述。
 
 ## 保护你的域名组合不被盗窃
 
@@ -72,23 +72,23 @@ ACPA 的关键在于注册人是否[有恶意从该商标中获利的意图](htt
 
 最后的威胁根本不需要你的配合。域名劫持是[未经原始注册人许可，更改域名注册信息的行为](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=is%20the%20act%20of%20changing%20the%20registration%20of%20a%20domain%20name%20without%20the%20permission)。对域名倒卖者来说，你的域名组合*就是*你的银行账户，一个被劫持的优质域名可能在你发现它丢失之前就被卖给了不知情的第三方。
 
-劫持者很少破解密码学。他们通过人际关系和电子邮件下手。根据维基百科，常见的途径是[未经授权访问或利用域名注册商系统的漏洞，通过社会工程学](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=unauthorized%20access%20to%2C%20or%20exploiting%20a%20vulnerability%20in%20the%20domain%20name%20registrar%27s%20system%2C%20through%20social%20engineering)，或者干脆[进入与域名注册相关联的域名所有者的电子邮件账户](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=getting%20into%20the%20domain%20owner%27s%20email%20account)。一旦存档的电子邮件被攻破，窃贼就可以重置注册商密码并批准转移。我们的文章[域名劫持的真实过程](/en/blog/how-domain-hijacking-actually-happens/)追溯了完整的攻击链。
+劫持者很少破解密码学。他们通过人际关系和电子邮件下手。根据维基百科，常见的途径是[未经授权访问或利用域名注册商系统的漏洞，通过社会工程学](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=unauthorized%20access%20to%2C%20or%20exploiting%20a%20vulnerability%20in%20the%20domain%20name%20registrar%27s%20system%2C%20through%20social%20engineering)，或者干脆[进入与域名注册相关联的域名所有者的电子邮件账户](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=getting%20into%20the%20domain%20owner%27s%20email%20account)。一旦存档的电子邮件被攻破，窃贼就可以重置注册商密码并批准转移。我们的文章[域名劫持的真实过程](/zh/blog/how-domain-hijacking-actually-happens/)追溯了完整的攻击链。
 
-防御措施成本低廉，值得在你使用的每个[注册商](/en/glossary/registrar/)处都纳入你的日常操作中：
+防御措施成本低廉，值得在你使用的每个[注册商](/zh/glossary/registrar/)处都纳入你的日常操作中：
 
 - **锁定你的域名。** `clientTransferProhibited` 状态告诉注册局[拒绝转移该域名的请求](https://en.wikipedia.org/wiki/Extensible_Provisioning_Protocol#:~:text=reject%20requests%20to%20transfer%20the%20domain)，其目的在于[帮助防止因劫持和/或欺诈导致的未经授权的转移](https://en.wikipedia.org/wiki/Extensible_Provisioning_Protocol#:~:text=help%20prevent%20unauthorized%20transfers%20resulting%20from%20hijacking%20and%2For%20fraud)。对于任何你没有正在转移的域名，都应保持此状态开启。
-- **保护[授权码 (auth code)](/en/glossary/auth-code/)。** 一次合法的[跨注册商转移](/en/glossary/cross-registrar-transfer/)需要你当前注册商提供的授权码 (auth code)——这是[注册商之间转移时必需的机密信息](https://en.wikipedia.org/wiki/Extensible_Provisioning_Protocol#:~:text=is%20a%20secret%20required%20in%20the%20transfer%20between%20registrars)。像对待密码一样对待它；绝不要将其粘贴到陌生人的“转移表格”中。
-- **加固存档的电子邮件。** 为与你注册商关联的电子邮件账户设置双因素身份验证，因为那个收件箱是通往你整个[域名所有权](/en/glossary/domain-ownership/)记录的万能钥匙。
+- **保护[授权码 (auth code)](/en/glossary/auth-code/)。** 一次合法的[跨注册商转移](/zh/glossary/cross-registrar-transfer/)需要你当前注册商提供的授权码 (auth code)——这是[注册商之间转移时必需的机密信息](https://en.wikipedia.org/wiki/Extensible_Provisioning_Protocol#:~:text=is%20a%20secret%20required%20in%20the%20transfer%20between%20registrars)。像对待密码一样对待它；绝不要将其粘贴到陌生人的“转移表格”中。
+- **加固存档的电子邮件。** 为与你注册商关联的电子邮件账户设置双因素身份验证，因为那个收件箱是通往你整个[域名所有权](/zh/glossary/domain-ownership/)记录的万能钥匙。
 
 ## 代币化所有权如何改变风险
 
 上述大部分风险都有一个共同的根本原因：传统域名的所有权是注册商数据库中的一行记录，只能通过该注册商的账户和电子邮件恢复来证明，并且只能通过一个多步骤的过程进行转移，其中每个交接环节都有可能被诈骗或劫持。攻击者和欺诈者利用的正是这个薄弱环节。
 
-将一个真实的 ICANN 域名代币化可以缩小这个攻击面。当控制权在[链上](/en/glossary/on-chain/)表示时，所有权是可审计而非依赖信任的，转移可以实现原子化结算，而不是在一个可能有人干预的时间窗口内拖延——并且具备 DNS 连续性，确保域名在交接过程中持续正常解析。这并不能废除商标法（一个侵犯品牌的域名在任何平台上都是个坏主意），但它直接解决了托管服务的信任鸿沟和通过电子邮件进行劫持的问题。这正是 [Namefi](https://namefi.io) 旨在弥合的差距，我们在[代币化市场如何取代托管服务](/en/blog/how-tokenized-marketplaces-replace-escrow/)一文中有更深入的探讨。
+将一个真实的 ICANN 域名代币化可以缩小这个攻击面。当控制权在[链上](/zh/glossary/on-chain/)表示时，所有权是可审计而非依赖信任的，转移可以实现原子化结算，而不是在一个可能有人干预的时间窗口内拖延——并且具备 DNS 连续性，确保域名在交接过程中持续正常解析。这并不能废除商标法（一个侵犯品牌的域名在任何平台上都是个坏主意），但它直接解决了托管服务的信任鸿沟和通过电子邮件进行劫持的问题。这正是 [Namefi](https://namefi.io) 旨在弥合的差距，我们在[代币化市场如何取代托管服务](/zh/blog/how-tokenized-marketplaces-replace-escrow/)一文中有更深入的探讨。
 
 ## 简而言之
 
-购买通用、描述性和自创的域名；绝不购买依赖品牌的域名。要清楚 [UDRP](/en/blog/what-is-udrp/) 可以快速夺走域名，而 ACPA 还能索取金钱赔偿。保留清晰的记录，以便为合法域名辩护，包括应对反向劫持。每笔交易都通过你自己选择的托管服务完成，并锁定你的域名组合，防止任何人盗走它们。做到这些，法律就会成为一道保护你业务的围栏，而不是一个等待触发的陷阱。
+购买通用、描述性和自创的域名；绝不购买依赖品牌的域名。要清楚 [UDRP](/zh/blog/what-is-udrp/) 可以快速夺走域名，而 ACPA 还能索取金钱赔偿。保留清晰的记录，以便为合法域名辩护，包括应对反向劫持。每笔交易都通过你自己选择的托管服务完成，并锁定你的域名组合，防止任何人盗走它们。做到这些，法律就会成为一道保护你业务的围栏，而不是一个等待触发的陷阱。
 
 ## 友情免责声明（请阅读！）
 

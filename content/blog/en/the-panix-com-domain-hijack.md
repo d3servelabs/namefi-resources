@@ -15,7 +15,7 @@ keywords: ['panix.com', 'panix domain hijack', 'domain hijacking', 'inter-regist
 
 For more than fifteen years, one of the oldest commercial internet providers in the United States lived at a single address: **panix.com**. Then, over a long holiday weekend in January 2005, someone took it.
 
-Not by hacking a server. Not by guessing a password. They filled out a transfer form, paid with a stolen credit card, and waited for a brand-new ICANN rule to do the rest. Within hours the ownership of panix.com had been moved to a company in Australia, its DNS pointed at a host in the United Kingdom, and its email rerouted through Canada — all while the people who actually ran Panix slept through a Saturday night, having received no warning at all.
+Not by hacking a server. Not by guessing a password. They filled out a transfer form, paid with a stolen credit card, and waited for a brand-new [ICANN](/en/glossary/icann/) rule to do the rest. Within hours the ownership of panix.com had been moved to a company in Australia, its DNS pointed at a host in the United Kingdom, and its email rerouted through Canada — all while the people who actually ran Panix slept through a Saturday night, having received no warning at all.
 
 This is the story of how a piece of administrative paperwork, not an exploit, hijacked New York's oldest ISP — and how the cleanup helped rewrite the rules that govern who is allowed to move a domain.
 
@@ -47,7 +47,7 @@ When you control a domain's DNS, you control where its email is delivered. By re
 
 Mail that is misrouted during a hijack is not merely delayed. Much of it is gone — bounced, dropped, or silently swallowed by a server that was never supposed to receive it. For a provider whose customers measured the value of the service in "did my email arrive," days of misrouted mail was close to the worst possible outage.
 
-And there was nothing the customers could do. The problem was not on Panix's machines, which were running fine. It was in the global routing table of the Domain Name System, which had been told — by a registrar in Australia, acting on a fraudulent request — that panix.com now belonged to someone else.
+And there was nothing the customers could do. The problem was not on Panix's machines, which were running fine. It was in the global routing table of the [Domain Name System](/en/glossary/dns/), which had been told — by a [registrar](/en/glossary/registrar/) in Australia, acting on a fraudulent request — that panix.com now belonged to someone else.
 
 ## How it happened: the auto-approve transfer loophole
 
@@ -74,7 +74,7 @@ Melbourne IT, to its credit, did not hide. Two days later The Register reported 
 But the more important consequence was structural. Panix became the textbook example in the broader reckoning over transfer security that followed. ICANN's Security and Stability Advisory Committee published a 2005 report, [*Domain Name Hijacking: Incidents, Threats, Risks, and Remedial Actions*](https://itp.cdn.icann.org/en/files/security-and-stability-advisory-committee-ssac-reports/hijacking-report-12-07-2005-en.pdf), examining exactly this class of failure — registrars accepting transfers without confirming that the requester was actually the registrant. The lasting fixes that hardened the system trace directly back to weekends like this one:
 
 - **Registrar locks by default.** A domain set to `clientTransferProhibited` simply refuses to transfer until the lock is removed by the rightful holder. What was once an obscure opt-in became, for many registrars, the default state — a brake the auto-approve rule could not override.
-- **Auth codes (EPP transfer codes).** Modern gTLD transfers require a secret authorization code that the *losing* registrar releases only to the verified registrant, so a gaining registrar can no longer pull a domain on paperwork alone.
+- **[Auth codes](/en/glossary/auth-code/) (EPP transfer codes).** Modern gTLD transfers require a secret authorization code that the *losing* registrar releases only to the verified registrant, so a gaining registrar can no longer pull a domain on paperwork alone.
 - **A documented [ICANN Transfer Policy](https://www.icann.org/en/contracted-parties/accredited-registrars/resources/domain-name-transfers/policy)** with stricter confirmation duties and an emergency contact channel for reversing exactly this kind of fraudulent transfer fast.
 
 The Panix hijack did not invent these mechanisms by itself, but it became the case everyone pointed to when arguing they were necessary.
@@ -95,7 +95,7 @@ Strip away the dates and the registrar names, and Panix leaves a few durable les
 
 The Panix hijack is, at its heart, an *authority* problem. The question "who is allowed to move this domain?" was answered by a chain of resellers and a default-approve timer rather than by any strong, verifiable proof of ownership. A stolen credit card and five days of silence were enough to satisfy the system that a stranger in another hemisphere spoke for an ISP in New York.
 
-[Namefi](https://namefi.io) starts from the opposite premise: that control of a domain should be provable, not assumed. By representing domain ownership as a tokenized, on-chain asset that stays compatible with DNS, the act of "who holds this name" becomes cryptographically verifiable and auditable — a record that cannot be quietly overwritten by a registrar accepting bad paperwork. Transfers move when the holder's key authorizes them, not when a five-day clock runs out unattended. The default is *deny*, and consent has to be demonstrated, not merely un-objected-to.
+[Namefi](https://namefi.io) starts from the opposite premise: that control of a domain should be provable, not assumed. By representing [domain ownership](/en/glossary/domain-ownership/) as a tokenized, on-chain asset that stays compatible with DNS, the act of "who holds this name" becomes cryptographically verifiable and auditable — a record that cannot be quietly overwritten by a registrar accepting bad paperwork. Transfers move when the holder's key authorizes them, not when a five-day clock runs out unattended. The default is *deny*, and consent has to be demonstrated, not merely un-objected-to.
 
 None of this existed in 1989 when Panix was founded — or even in 2005, when the hijack happened. But it points at the lesson that weekend taught the whole industry: a domain is too important to be governed by silence. Ownership should be something you can prove on demand — and something a stranger cannot take simply because you weren't watching the inbox over a long weekend.
 

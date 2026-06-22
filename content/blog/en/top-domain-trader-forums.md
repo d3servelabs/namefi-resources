@@ -22,9 +22,9 @@ If you are getting into domain investing — or coming back to it after a few ye
 
 The center of gravity. If you only join one community, this is it. [NamePros](https://www.namepros.com/) has been the largest English-language domain forum for well over a decade, and the membership skews toward people who actually buy, sell, and broker domains — not just hobbyists. You will find:
 
-- **Sales boards** for fixed-price, make-offer, and auction listings.
+- **Sales boards** for fixed-price, make-offer, and [auction](/en/glossary/auction/) listings.
 - **Appraisal threads** where the community will tell you, with varying levels of tact, what your name is worth.
-- **Registrar-specific threads** for [GoDaddy](https://www.godaddy.com/), [Dynadot](https://www.dynadot.com/), [Namecheap](https://www.namecheap.com/), [Afternic](https://www.afternic.com/), [Sav](https://www.sav.com/), and friends — useful when a platform changes a policy and you want to know if it is just you.
+- **[Registrar](/en/glossary/registrar/)-specific threads** for [GoDaddy](https://www.godaddy.com/), [Dynadot](https://www.dynadot.com/), [Namecheap](https://www.namecheap.com/), [Afternic](https://www.afternic.com/), [Sav](https://www.sav.com/), and friends — useful when a platform changes a policy and you want to know if it is just you.
 - **End-user discussion**, which is the slowest-moving but often the most valuable section, because closing end-user sales is where the actual money is.
 
 NamePros is not perfect — the appraisal subforum in particular has a reputation for harsh, sometimes wrong, and occasionally cruel feedback — but the signal-to-noise ratio is still the best in the English-speaking domain world.

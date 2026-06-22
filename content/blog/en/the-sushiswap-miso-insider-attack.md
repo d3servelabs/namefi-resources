@@ -15,7 +15,7 @@ keywords: ['sushiswap miso hack', 'miso supply chain attack', 'aristok3', 'jay p
 
 Most attacks force a door. This one walked in through the front.
 
-In September 2021, the people running SushiSwap's MISO launchpad did not get phished, did not lose a private key, and did not ship a buggy smart contract. They did something far more ordinary: they trusted a contributor. An anonymous contractor with commit access to the code put their own wallet address into the auction front-end, pushed it, and let the deployment pipeline do the rest. When a single NFT auction settled, roughly **864.8 ETH — about $3 million** — flowed not to the project that ran the sale, but to the developer who had quietly rewritten where the money should go.
+In September 2021, the people running SushiSwap's MISO launchpad did not get phished, did not lose a private key, and did not ship a buggy [smart contract](/en/glossary/smart-contract/). They did something far more ordinary: they trusted a contributor. An anonymous contractor with commit access to the code put their own [wallet](/en/glossary/wallet/) address into the [auction](/en/glossary/auction/) front-end, pushed it, and let the deployment pipeline do the rest. When a single NFT auction settled, roughly **864.8 ETH — about $3 million** — flowed not to the project that ran the sale, but to the developer who had quietly rewritten where the money should go.
 
 No exploit. No zero-day. Just a line of code that nobody double-checked, signed by someone who was supposed to be on the team.
 
@@ -23,7 +23,7 @@ This is Domain Mayday EP15. It is a story about smart contracts only at the edge
 
 ## The trust you place in launchpad code
 
-A DeFi launchpad like MISO — Minimal Initial SushiSwap Offering — exists to do one thing well: take money from a crowd of strangers and route it to a project running a token or NFT sale. To do that, it stitches together audited smart contracts on-chain and a web front-end off-chain. Users interact with the front-end. The front-end tells their wallet what transaction to sign.
+A [DeFi](/en/glossary/defi/) launchpad like MISO — Minimal Initial SushiSwap Offering — exists to do one thing well: take money from a crowd of strangers and route it to a project running a token or NFT sale. To do that, it stitches together audited smart contracts [on-chain](/en/glossary/on-chain/) and a web front-end off-chain. Users interact with the front-end. The front-end tells their wallet what transaction to sign.
 
 That seam is the soft underbelly. People obsess over the smart-contract layer because that is where the audits, the bug bounties, and the headlines live. But the front-end — the JavaScript that decides *which address* an auction pays out to — is just code in a repository, deployed by a pipeline, edited by whoever has write access. Audit the vault all you want; if an insider can change the sign that says "deposit money here," the vault never comes into it.
 
@@ -83,11 +83,11 @@ The through-line: integrity of *who is allowed to make a change*, and *verificat
 
 ![Colorful illustration of verifiable, tamper-resistant ownership — secured by a green shield, a green Namefi token, and continuity](../../assets/the-sushiswap-miso-insider-attack-03-namefi-angle.jpg)
 
-MISO lost money because the *destination of value* could be silently rewritten by someone the system trusted, and no one verified the change before it went live. That failure mode is not unique to DeFi launchpads. It is the same shape as a domain whose ownership or DNS records can be quietly altered by whoever happens to hold the right access — a registrar account, an internal panel, a contractor with credentials.
+MISO lost money because the *destination of value* could be silently rewritten by someone the system trusted, and no one verified the change before it went live. That failure mode is not unique to DeFi launchpads. It is the same shape as a domain whose ownership or DNS records can be quietly altered by whoever happens to hold the right access — a [registrar](/en/glossary/registrar/) account, an internal panel, a contractor with credentials.
 
 A domain is one of the most consequential "destination" settings on the internet. Its DNS records decide where your traffic, your email, and your users actually go. If those can be changed by an insider or a compromised account without a tamper-evident, independently verifiable record of who changed what, you have the MISO problem dressed in different clothes: the lock is fine, but the sign on the door can be swapped.
 
-[Namefi](https://namefi.io) approaches this by treating domain ownership as a verifiable, tamper-resistant asset rather than an entry in someone's private account. Tokenized ownership makes control auditable and transferable on-chain while staying compatible with DNS — so "who owns this and who is allowed to change it" becomes a fact you can verify, not a trust you have to extend blindly. The MISO contractor could rewrite a payout address precisely because the system had no enforced, independently checkable answer to "is this change authorized?" The lesson Namefi takes from supply-chain attacks is that ownership and control should be provable by design, so the dangerous gap between *trusted* and *verified* never opens in the first place.
+[Namefi](https://namefi.io) approaches this by treating [domain ownership](/en/glossary/domain-ownership/) as a verifiable, tamper-resistant asset rather than an entry in someone's private account. Tokenized ownership makes control auditable and transferable on-chain while staying compatible with DNS — so "who owns this and who is allowed to change it" becomes a fact you can verify, not a trust you have to extend blindly. The MISO contractor could rewrite a payout address precisely because the system had no enforced, independently checkable answer to "is this change authorized?" The lesson Namefi takes from supply-chain attacks is that ownership and control should be provable by design, so the dangerous gap between *trusted* and *verified* never opens in the first place.
 
 ## Sources and further reading
 

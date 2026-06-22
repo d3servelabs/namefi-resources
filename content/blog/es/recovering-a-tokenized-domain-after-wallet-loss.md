@@ -9,7 +9,7 @@ description: "Qué sucede realmente si pierdes el acceso a la billetera que cont
 keywords: ['recuperar dominio NFT', 'dominio de billetera perdida', 'billetera de dominio tokenizado perdida', 'recuperación de billetera de dominio', 'copia de seguridad de dominio NFT', 'billetera de hardware de dominio tokenizado', 'dominio tokenizado multifirma', 'recuperación de clave de dominio tokenizado', 'frase semilla perdida dominio', 'seguridad de dominio NFT', 'copia de seguridad de dominio tokenizado', 'gestión de claves de dominio', 'recuperación de pérdida de billetera']
 ---
 
-De todas las cosas en las que la gente no piensa antes de [tokenizar un dominio](/en/blog/what-are-tokenized-domains/), **la recuperación tras la pérdida de la billetera** es la más importante. Una vez que se tokeniza un dominio, la [billetera](/en/glossary/wallet/) que contiene el [NFT](/en/glossary/nft/) es la fuente de la verdad para la propiedad. Si pierdes la billetera, tienes un problema real.
+De todas las cosas en las que la gente no piensa antes de [tokenizar un dominio](/es/blog/what-are-tokenized-domains/), **la recuperación tras la pérdida de la billetera** es la más importante. Una vez que se tokeniza un dominio, la [billetera](/es/glossary/wallet/) que contiene el [NFT](/es/glossary/nft/) es la fuente de la verdad para la propiedad. Si pierdes la billetera, tienes un problema real.
 
 Esta publicación explica, con honestidad, cuáles son realmente tus opciones, y cómo configurar todo *ahora* para que el peor de los casos sea recuperable.
 
@@ -47,7 +47,7 @@ La billetera que usas para *interactuar* con las aplicaciones puede ser una bill
 
 ### 3. Considera una multifirma (multisig) para dominios de alto valor
 
-Para los dominios que representan un negocio (el `.com` principal de tu empresa, una marca clave), una [**billetera multifirma**](/en/glossary/multi-sig/) ([Safe](https://safe.global/), anteriormente Gnosis Safe) es una opción sólida. Configura 2 de 3 o 3 de 5 firmantes en diferentes dispositivos y personas. Perder a un firmante no significa perder el dominio.
+Para los dominios que representan un negocio (el `.com` principal de tu empresa, una marca clave), una [**billetera multifirma**](/es/glossary/multi-sig/) ([Safe](https://safe.global/), anteriormente Gnosis Safe) es una opción sólida. Configura 2 de 3 o 3 de 5 firmantes en diferentes dispositivos y personas. Perder a un firmante no significa perder el dominio.
 
 Asegúrate de entender realmente cómo *ejecutar* transacciones multifirma, no solo cómo almacenarlas. Una multifirma en la que has perdido firmantes es un dominio que has perdido. Practica la transferencia de un token de valor muy bajo antes de que importe.
 
@@ -55,7 +55,7 @@ Asegúrate de entender realmente cómo *ejecutar* transacciones multifirma, no s
 
 Sí, esto suena morboso. Pero también es una de las formas más comunes en las que los dominios terminan siendo irrecuperables para siempre. Un documento breve que diga "la billetera para [dominio] se encuentra en [ubicación], la recuperación está en [otra ubicación], contacten a [persona/abogado] si no pueden comunicarse conmigo" vale mucho más que el tiempo que lleva escribirlo.
 
-Este también es un gran tema para la [publicación sobre preguntas de impuestos y contabilidad](/en/blog/tax-and-accounting-questions-for-tokenized-domains/); los activos de dominio son similares a los bienes raíces en el sentido de que no desaparecen cuando tú lo haces.
+Este también es un gran tema para la [publicación sobre preguntas de impuestos y contabilidad](/es/blog/tax-and-accounting-questions-for-tokenized-domains/); los activos de dominio son similares a los bienes raíces en el sentido de que no desaparecen cuando tú lo haces.
 
 ### 5. Documenta el lado de la plataforma
 
@@ -84,7 +84,7 @@ Transfiere el NFT a una nueva billetera *ahora mismo*, mientras el dispositivo a
 Esta es la situación difícil. Criptográficamente, el NFT ahora es inaccesible. Opciones:
 
 1. **Recuperación del lado de la plataforma.** Si la plataforma (por ejemplo, Namefi) tiene una identidad vinculada a tu correo electrónico de registro y KYC (cuando corresponda), es posible que puedas demostrar que eres el registrante y solicitar una remediación gestionada por la plataforma. Esto **no está garantizado**, requiere verificación de identidad y, por lo general, solo se aplica bajo condiciones específicas. Contacta a soporte inmediatamente: cuanto más esperes, más difícil será.
-2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/en/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/en/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/en/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
+2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/es/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/es/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/en/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
 3. **Vía legal.** Para dominios de alto valor mantenidos en un contexto corporativo o patrimonial, hay abogados y empresas de recuperación que se especializan en esto. Es costoso, lento y depende del caso.
 
 Lo que nadie puede hacer: usar fuerza bruta para descifrar la clave privada. No confíes en nadie que afirme poder hacerlo.
@@ -115,13 +115,13 @@ Una billetera *Safe* de 2 de 3 con claves controladas por:
 
 La desventaja es la carga operativa: cada transferencia / firma requiere coordinar a los firmantes. Para un dominio que vendes rara vez y que te pertenecerá para siempre, esto está bien. Para un dominio con el que comercias activamente, tal vez sea mejor mantener una billetera "caliente" más pequeña junto a la multifirma.
 
-> Consulta [¿Las billeteras multifirma realmente mejoran la seguridad?](/en/blog/do-multisig-wallets-actually-improve-security/) para una mirada más profunda de cuándo ayuda la multifirma y cuándo no.
+> Consulta [¿Las billeteras multifirma realmente mejoran la seguridad?](/es/blog/do-multisig-wallets-actually-improve-security/) para una mirada más profunda de cuándo ayuda la multifirma y cuándo no.
 
 ---
 
 ## Billeteras de recuperación social
 
-Las billeteras de abstracción de cuentas ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) con módulos de recuperación social, cuentas inteligentes [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) te permiten nominar "guardianes" que pueden ayudarte colectivamente a recuperar el acceso. Esto es excelente para personas que no quieren administrar una [multifirma](/en/glossary/multi-sig/) directamente.
+Las billeteras de abstracción de cuentas ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) con módulos de recuperación social, cuentas inteligentes [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) te permiten nominar "guardianes" que pueden ayudarte colectivamente a recuperar el acceso. Esto es excelente para personas que no quieren administrar una [multifirma](/es/glossary/multi-sig/) directamente.
 
 Ventajas: indulgentes, fáciles de usar.
 Desventajas: todavía son relativamente nuevas, el conjunto de guardianes tiene que existir y responder realmente, y el código del contrato inteligente en sí es una cosa más en la que confiar.

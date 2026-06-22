@@ -19,8 +19,8 @@ Réponse courte : **oui, oui, non.** Un domaine tokenisé reste un véritable do
 
 Un domaine tokenisé comporte **deux couches** :
 
-1. **La couche [DNS](/en/glossary/dns/) / registre** — celle dans laquelle votre `.com` a toujours vécu. [ICANN](/en/glossary/icann/), [bureau d'enregistrement](/en/glossary/registrar/) (registrar), serveurs racines, résolveurs récursifs.
-2. **La couche [on-chain](/en/glossary/on-chain/)** — un [NFT](/en/glossary/nft/) dans votre [portefeuille](/en/glossary/wallet/) (wallet) qui représente la *propriété*.
+1. **La couche [DNS](/fr/glossary/dns/) / registre** — celle dans laquelle votre `.com` a toujours vécu. [ICANN](/fr/glossary/icann/), [bureau d'enregistrement](/fr/glossary/registrar/) (registrar), serveurs racines, résolveurs récursifs.
+2. **La couche [on-chain](/fr/glossary/on-chain/)** — un [NFT](/fr/glossary/nft/) dans votre [portefeuille](/fr/glossary/wallet/) (wallet) qui représente la *propriété*.
 
 La résolution DNS — c'est-à-dire transformer `example.com` en une adresse IP — s'effectue entièrement sur la couche 1. La couche on-chain concerne **qui contrôle le domaine**, et non la manière dont il est résolu. Les navigateurs, les serveurs de messagerie, les CDN et les autorités de certification n'ont jamais besoin de savoir qu'une blockchain existe.
 
@@ -67,7 +67,7 @@ Le domaine est toujours renouvelé via le bureau d'enregistrement, selon le mêm
 Avant : celui qui possède les identifiants du compte du bureau d'enregistrement.
 Après : **celui qui détient le NFT on-chain** a le contrôle absolu. Le tableau de bord Namefi relie le NFT au compte du bureau d'enregistrement via le protocole, le portefeuille est donc la source de vérité.
 
-C'est tout l'intérêt. C'est aussi pourquoi vous devez prendre la sécurité de votre portefeuille au sérieux — voir [Récupérer un domaine tokenisé après la perte de son portefeuille](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/).
+C'est tout l'intérêt. C'est aussi pourquoi vous devez prendre la sécurité de votre portefeuille au sérieux — voir [Récupérer un domaine tokenisé après la perte de son portefeuille](/fr/blog/recovering-a-tokenized-domain-after-wallet-loss/).
 
 ### Où cliquer pour gérer le DNS
 
@@ -75,8 +75,8 @@ La plupart des propriétaires gèrent les enregistrements DNS depuis le tableau 
 
 ### Le transfert du domaine
 
-Avant : le processus de [transfert inter-bureaux d'enregistrement](/en/glossary/cross-registrar-transfer/) (cross-registrar transfer), avec des [codes d'autorisation](/en/glossary/auth-code/) (auth codes) et des délais de carence de 60 jours.
-Après : le [**transfert du NFT**](/en/glossary/atomic-transfer/). Une seule transaction on-chain transfère la propriété. L'enregistrement côté bureau d'enregistrement est synchronisé par le protocole. C'est considérablement plus rapide — et c'est pourquoi les places de marché de domaines tokenisés n'ont pas besoin de services d'[entiercement](/en/glossary/escrow/) (escrow) traditionnels (voir [De la mise en vente au règlement](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
+Avant : le processus de [transfert inter-bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) (cross-registrar transfer), avec des [codes d'autorisation](/en/glossary/auth-code/) (auth codes) et des délais de carence de 60 jours.
+Après : le [**transfert du NFT**](/fr/glossary/atomic-transfer/). Une seule transaction on-chain transfère la propriété. L'enregistrement côté bureau d'enregistrement est synchronisé par le protocole. C'est considérablement plus rapide — et c'est pourquoi les places de marché de domaines tokenisés n'ont pas besoin de services d'[entiercement](/fr/glossary/escrow/) (escrow) traditionnels (voir [De la mise en vente au règlement](/fr/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Vous pouvez toujours effectuer un transfert de bureau d'enregistrement traditionnel si vous le souhaitez ; la couche on-chain ne l'empêche pas.
 
@@ -147,4 +147,4 @@ Toute la couche "tokenisée" se trouve *à côté* du DNS, et non au-dessus.
 - Vous pouvez conserver votre DNS chez Cloudflare, Route53, ou là où il se trouve actuellement. Vous pouvez également le gérer via Namefi. Les deux options sont valables.
 - Implication pratique : d'un point de vue opérationnel, un `.com` tokenisé est indiscernable d'un `.com` non tokenisé, jusqu'à ce que vous décidiez de le vendre ou de le transférer — c'est à ce moment-là que la couche on-chain rend tout considérablement plus rapide.
 
-Pour obtenir un guide étape par étape sur la façon de tokeniser en premier lieu, consultez [Comment tokeniser votre .com](/en/blog/how-to-tokenize-your-com/).
+Pour obtenir un guide étape par étape sur la façon de tokeniser en premier lieu, consultez [Comment tokeniser votre .com](/fr/blog/how-to-tokenize-your-com/).

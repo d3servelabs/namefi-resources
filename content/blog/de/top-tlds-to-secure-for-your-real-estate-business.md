@@ -12,7 +12,7 @@ keywords: ['TLDs für Immobilienmakler', 'Immobilien-Domainnamen', '.realtor-Dom
 
 Ihr Name und Ihre lokale Marke sind die beiden wertvollsten Vermögenswerte im Immobiliengeschäft. Wenn ein Käufer nach „Jana Müller Immobilienmakler" oder nach dem Namen des Stadtteils sucht, den Sie betreuen, sollten die Domains zu diesen Begriffen auf Sie verweisen – und nicht auf einen Mitbewerber, eine gefälschte Kopie oder eine geparkte Seite voller Werbung. Genau deshalb ist das Sichern mehrerer **TLDs (Top-Level-Domains)** für Ihr Immobiliengeschäft eine der günstigsten Formen des Markenschutzes, die Sie erwerben können.
 
-Ein Immobilienmakler, der nur die [`.com`](/en/tld/com) seines Namens besitzt, öffnet die Tür dafür, dass jemand anderes die [`.realty`](/en/tld/realty)-, [`.homes`](/en/tld/homes)- oder [`.house`](/en/tld/house)-Version registriert und von Ihrem erarbeiteten Ruf profitiert. Durch die Registrierung eines kleinen Portfolios der richtigen Top-Level-Domains schützen Sie Ihre lokale Marke, können saubere Untermarken für Angebote oder Farmgebiete aufbauen und offensichtliche Identitätsdiebstähle von vornherein unterbinden. Dieser Leitfaden führt Sie durch die besten TLDs für Immobilienmakler, die wichtigen Zulassungsregeln und eine einfache Defensivstrategie.
+Ein Immobilienmakler, der nur die [`.com`](/de/tld/com) seines Namens besitzt, öffnet die Tür dafür, dass jemand anderes die [`.realty`](/en/tld/realty)-, [`.homes`](/en/tld/homes)- oder [`.house`](/en/tld/house)-Version registriert und von Ihrem erarbeiteten Ruf profitiert. Durch die Registrierung eines kleinen Portfolios der richtigen Top-Level-Domains schützen Sie Ihre lokale Marke, können saubere Untermarken für Angebote oder Farmgebiete aufbauen und offensichtliche Identitätsdiebstähle von vornherein unterbinden. Dieser Leitfaden führt Sie durch die besten TLDs für Immobilienmakler, die wichtigen Zulassungsregeln und eine einfache Defensivstrategie.
 
 ## So wählen Sie TLDs für Ihr Immobiliengeschäft
 
@@ -20,7 +20,7 @@ Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht a
 
 ## Die 10 wichtigsten TLDs für Immobilienmakler
 
-### 1. [.com](/en/tld/com) — Ihre unverzichtbare Ankerdomain
+### 1. [.com](/de/tld/com) — Ihre unverzichtbare Ankerdomain
 
 `.com` ist nach wie vor die Standardendung, die Käufer eingeben und der sie vertrauen, und sie bleibt die weltweit größte TLD. Registrieren Sie zuerst die `.com` Ihrer persönlichen Marke und Ihres Maklerbüros – alles andere ist sekundär. Wenn Ihre genaue `.com` bereits vergeben ist, ist eine enge Variation mehr wert als eine perfekte Übereinstimmung mit einer unbekannten Endung. Betrieben von Verisign gemäß einem [ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -48,17 +48,17 @@ Einige wenige Kriterien sollten jede Registrierung leiten. **Vertrauen** steht a
 
 `.house` ist eine kompakte, freundliche Endung, die sich für Open-House-Kampagnen, Einzelobjekt-Websites und informelle persönliche Marken eignet. Sie ist für jeden zugänglich und lässt sich laut aussprechen – was auf Gartenbeschilderungen und im Radio hilft. Die Registrierungsdetails sind bei [ICANN](https://www.icann.org/en/registry-agreements/details/house) abrufbar.
 
-### 8. [.net](/en/tld/net) — das klassische defensive Backup
+### 8. [.net](/de/tld/net) — das klassische defensive Backup
 
-[`.net`](/en/tld/net) ist eine der ältesten und bekanntesten Endungen und damit das natürliche defensive Pendant zu Ihrer `.com`. Wenn Sie sie besitzen, können Mitbewerber nicht die naheliegende zweite Wahl Ihres Namens registrieren. Sie wird von Verisign gemäß einem [ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/net) betrieben.
+[`.net`](/de/tld/net) ist eine der ältesten und bekanntesten Endungen und damit das natürliche defensive Pendant zu Ihrer `.com`. Wenn Sie sie besitzen, können Mitbewerber nicht die naheliegende zweite Wahl Ihres Namens registrieren. Sie wird von Verisign gemäß einem [ICANN-Registrierungsvertrag](https://www.icann.org/en/registry-agreements/details/net) betrieben.
 
-### 9. [.org](/en/tld/org) — Glaubwürdigkeit für Verbände und Gemeinschaftsprojekte
+### 9. [.org](/de/tld/org) — Glaubwürdigkeit für Verbände und Gemeinschaftsprojekte
 
-[`.org`](/en/tld/org) vermittelt einen vertrauenswürdigen, gemeinschaftsorientierten Ton, der zu Maklerverbänden, Nachbarschaftsressourcen und nicht-kommerziellen Projekten passt, die Sie neben Ihrer Tätigkeit betreiben. Die Registrierung hält sie außerdem aus den Händen von Nachahmern fern. Die `.org`-TLD ist in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/org.html) dokumentiert.
+[`.org`](/de/tld/org) vermittelt einen vertrauenswürdigen, gemeinschaftsorientierten Ton, der zu Maklerverbänden, Nachbarschaftsressourcen und nicht-kommerziellen Projekten passt, die Sie neben Ihrer Tätigkeit betreiben. Die Registrierung hält sie außerdem aus den Händen von Nachahmern fern. Die `.org`-TLD ist in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/org.html) dokumentiert.
 
-### 10. [.vip](/en/tld/vip) — Premium-Positionierung für Top-Kunden
+### 10. [.vip](/de/tld/vip) — Premium-Positionierung für Top-Kunden
 
-[`.vip`](/en/tld/vip) signalisiert Exklusivität, was zu einer Luxuspraxis oder einem privaten Kundenportal wie `kunden.ihrname.vip` passen kann. Sie ist uneingeschränkt und kurz, sodass sie auf einer Visitenkarte auffällt. Der Registrierungsvertrag wird von [ICANN](https://www.icann.org/en/registry-agreements/details/vip) veröffentlicht.
+[`.vip`](/de/tld/vip) signalisiert Exklusivität, was zu einer Luxuspraxis oder einem privaten Kundenportal wie `kunden.ihrname.vip` passen kann. Sie ist uneingeschränkt und kurz, sodass sie auf einer Visitenkarte auffällt. Der Registrierungsvertrag wird von [ICANN](https://www.icann.org/en/registry-agreements/details/vip) veröffentlicht.
 
 ## Strategie zur defensiven Registrierung
 

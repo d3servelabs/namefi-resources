@@ -10,7 +10,7 @@ description: "Discover the creative power of the .able domain extension. Learn h
 
 ## **What is .able?**
 
-The **.able** Top-Level Domain (TLD) is one of the most versatile and linguistically powerful extensions in the new generic Top-Level Domain (new gTLD) landscape. Unlike traditional domains that signify a type of organization (like .com for commercial or .org for organizations), **.able** is designed to play a functional grammatical role in your web address.
+The **.able** [Top-Level Domain](/en/glossary/tld/) (TLD) is one of the most versatile and linguistically powerful extensions in the new generic Top-Level Domain (new gTLD) landscape. Unlike traditional domains that signify a type of organization (like [.com](/en/tld/com/) for commercial or [.org](/en/tld/org/) for organizations), **.able** is designed to play a functional grammatical role in your web address.
 
 It serves as a suffix that transforms nouns into adjectives, signifying capability, possibility, and fitness. The primary purpose of this TLD is to allow businesses and individuals to create "domain hacks"—URL structures that form complete, readable words (e.g., *sustain.able* or *reli.able*).
 
@@ -24,7 +24,7 @@ The .able TLD offers a unique opportunity for wordplay and clear messaging. Here
 *   **Green Energy and Non-Profits:** Organizations focused on the environment frequently register *sustain.able* or *renew.able* to align their digital identity with their mission statement.
 *   **Creative Portfolios:** Designers and consultants use domains like *market.able* or *memor.able* to showcase their ability to deliver results.
 *   **Marketing Campaigns:** Brands use specific .able domains for landing pages dedicated to a specific product benefit (e.g., a camera company using *zooma.able*).
-*   **Web3 and Blockchain Projects:** Given the emphasis on interoperability in Web3, domains like *bridge.able* or *swap.able* are becoming increasingly popular for decentralized applications (dApps).
+*   **Web3 and Blockchain Projects:** Given the emphasis on interoperability in [Web3](/en/glossary/web3/), domains like *bridge.able* or *swap.able* are becoming increasingly popular for decentralized applications (dApps).
 
 ## **Notable Entities Using .able**
 
@@ -42,7 +42,7 @@ Choosing a .able domain offers distinct advantages over traditional extensions:
 
 *   **Instant Memorability:** By forming a complete word, your domain becomes a "phrase" that is easier for users to recall than a random brand name followed by .com.
 *   **Built-in Marketing:** The domain itself describes what you do. If you own *depend.able*, you have already made a promise to your customer before the page even loads.
-*   **High Availability:** compared to the saturated .com or .net markets, .able offers a much higher chance of securing a short, impactful, and keyword-rich domain name.
+*   **High Availability:** compared to the saturated .com or [.net](/en/tld/net/) markets, .able offers a much higher chance of securing a short, impactful, and keyword-rich domain name.
 *   **Modern Branding:** It signals that your brand is forward-thinking and creative. It appeals to a younger, digital-native demographic that appreciates clever branding.
 *   **SEO Potential:** While the extension itself is neutral for SEO, having a domain that is clicked more often due to its cleverness and clarity can indirectly boost your traffic metrics.
 
@@ -51,8 +51,8 @@ Choosing a .able domain offers distinct advantages over traditional extensions:
 Ready to prove what your brand is capable of? Securing a **.able** domain is a strategic move to future-proof your digital identity.
 
 At **Namefi**, we make domain registration simple, secure, and ready for the future of the internet.
-*   **ICANN-Accredited:** We provide fully compliant, secure registration services.
-*   **Web3 Integration:** Namefi is at the forefront of the domain revolution, allowing you to easily bridge your Web2 domains on-chain for seamless management and tokenization.
+*   **[ICANN](/en/glossary/icann/)-Accredited:** We provide fully compliant, secure registration services.
+*   **Web3 Integration:** Namefi is at the forefront of the domain revolution, allowing you to easily bridge your Web2 domains [on-chain](/en/glossary/on-chain/) for seamless management and tokenization.
 *   **Instant Setup:** Get your creative URL running in minutes with our user-friendly dashboard.
 
 Don't wait until the perfect adjective is taken.

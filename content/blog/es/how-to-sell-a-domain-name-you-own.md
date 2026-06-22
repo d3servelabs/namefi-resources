@@ -99,7 +99,7 @@ Haz esta parte antes de contactar con nadie. Te ahorrará correos electrónicos 
 
 ### Confirma el control
 
-Asegúrate de que puedes iniciar sesión en la cuenta del [registrador](/en/glossary/registrar/), acceder al correo electrónico del registrante/administrador y demostrar que controlas el dominio. Si el dominio pertenece a una empresa, confirma quién tiene autoridad para venderlo.
+Asegúrate de que puedes iniciar sesión en la cuenta del [registrador](/es/glossary/registrar/), acceder al correo electrónico del registrante/administrador y demostrar que controlas el dominio. Si el dominio pertenece a una empresa, confirma quién tiene autoridad para venderlo.
 
 ### Comprueba la caducidad
 
@@ -119,7 +119,7 @@ Anótalo. «El dominio» y «el negocio en torno al dominio» no son lo mismo.
 
 ### Mantén los DNS sin complicaciones
 
-Si el dominio aloja un sitio web o correo electrónico activo, ten cuidado con los cambios de [DNS](/en/glossary/dns/). Una transferencia de registrador no siempre significa que los DNS deban cambiar, pero los DNS alojados por el registrador pueden dejar de funcionar si nadie planea la transición. Para un dominio operativo valioso, confirma dónde están alojados los DNS, qué registros son importantes y quién gestionará la continuidad después del cierre.
+Si el dominio aloja un sitio web o correo electrónico activo, ten cuidado con los cambios de [DNS](/es/glossary/dns/). Una transferencia de registrador no siempre significa que los DNS deban cambiar, pero los DNS alojados por el registrador pueden dejar de funcionar si nadie planea la transición. Para un dominio operativo valioso, confirma dónde están alojados los DNS, qué registros son importantes y quién gestionará la continuidad después del cierre.
 
 ## 4. Elige Inbound, Outbound o ambas opciones
 
@@ -266,11 +266,11 @@ En los EE. UU., el IRS trata las ventas de activos bajo normas fiscales que depe
 
 ## Caso especial: Dominios tokenizados
 
-Si tu dominio es un [dominio tokenizado](/en/blog/what-are-tokenized-domains/), la mecánica de cierre puede ser diferente.
+Si tu dominio es un [dominio tokenizado](/es/blog/what-are-tokenized-domains/), la mecánica de cierre puede ser diferente.
 
-En una venta tradicional, el *escrow* existe porque el pago y la transferencia en el registrador ocurren en pasos separados. En una venta de dominio tokenizado, la propiedad puede estar representada por un [NFT](/en/glossary/nft/) y transferirse a través de una transacción [*on-chain* (en cadena)](/en/glossary/on-chain/). Eso puede comprimir la liquidación, pero no elimina todos los riesgos. Todavía necesitas que haya una idoneidad del comprador, una postura legal limpia, seguridad en la billetera, registros de impuestos y una comprensión clara de lo que el comprador espera recibir.
+En una venta tradicional, el *escrow* existe porque el pago y la transferencia en el registrador ocurren en pasos separados. En una venta de dominio tokenizado, la propiedad puede estar representada por un [NFT](/es/glossary/nft/) y transferirse a través de una transacción [*on-chain* (en cadena)](/es/glossary/on-chain/). Eso puede comprimir la liquidación, pero no elimina todos los riesgos. Todavía necesitas que haya una idoneidad del comprador, una postura legal limpia, seguridad en la billetera, registros de impuestos y una comprensión clara de lo que el comprador espera recibir.
 
-Para más información sobre cómo las ventas tokenizadas cambian la mecánica del *escrow*, lee [De la publicación a la liquidación: cómo los mercados tokenizados reemplazan al depósito en garantía](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Para más información sobre cómo las ventas tokenizadas cambian la mecánica del *escrow*, lee [De la publicación a la liquidación: cómo los mercados tokenizados reemplazan al depósito en garantía](/es/blog/how-tokenized-marketplaces-replace-escrow/).
 
 ## Qué no hacer
 

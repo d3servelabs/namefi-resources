@@ -13,10 +13,10 @@ Le processus traditionnel de vente d'un `.com` ressemble à peu près à ceci :
 
 1. Mettre en vente sur [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) ou Dan.com.
 2. Négocier.
-3. Ouvrir un [séquestre](/en/glossary/escrow/) sur [Escrow.com](https://www.escrow.com/) ou un site similaire. L'acheteur transfère les fonds.
+3. Ouvrir un [séquestre](/fr/glossary/escrow/) sur [Escrow.com](https://www.escrow.com/) ou un site similaire. L'acheteur transfère les fonds.
 4. Le vendeur déverrouille le domaine et fournit le [code d'autorisation](/en/glossary/auth-code/).
-5. L'acheteur initie un [transfert inter-bureaux d'enregistrement](/en/glossary/cross-registrar-transfer/) chez son [bureau d'enregistrement](/en/glossary/registrar/).
-6. Attendre 5 à 7 jours que le transfert [ICANN](/en/glossary/icann/) soit validé.
+5. L'acheteur initie un [transfert inter-bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) chez son [bureau d'enregistrement](/fr/glossary/registrar/).
+6. Attendre 5 à 7 jours que le transfert [ICANN](/fr/glossary/icann/) soit validé.
 7. Confirmer le transfert ; le séquestre libère les fonds.
 8. Payer 3 à 6 % de frais de séquestre, plus la commission de la place de marché.
 
@@ -28,13 +28,13 @@ Les ventes de domaines tokénisés compressent tout cela en une seule transactio
 
 ## Le nouveau processus, de bout en bout
 
-1. Mettez le [domaine tokénisé](/en/blog/what-are-tokenized-domains/) en vente sur une [place de marché](/en/glossary/marketplace/) (celle de Namefi, de Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
-2. L'acheteur paie. Le [NFT](/en/glossary/nft/) est transféré dans le [portefeuille](/en/glossary/wallet/) de l'acheteur. L'enregistrement côté [bureau d'enregistrement](/en/glossary/registrar/) est maintenu synchronisé par la plateforme.
+1. Mettez le [domaine tokénisé](/fr/blog/what-are-tokenized-domains/) en vente sur une [place de marché](/fr/glossary/marketplace/) (celle de Namefi, de Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
+2. L'acheteur paie. Le [NFT](/fr/glossary/nft/) est transféré dans le [portefeuille](/fr/glossary/wallet/) de l'acheteur. L'enregistrement côté [bureau d'enregistrement](/fr/glossary/registrar/) est maintenu synchronisé par la plateforme.
 3. Terminé.
 
-C'est tout. Deux étapes. Aucun [code d'autorisation](/en/glossary/auth-code/), aucun [séquestre](/en/glossary/escrow/), aucun verrouillage de 5 jours du bureau d'enregistrement, aucun vide du type « J'ai envoyé le virement, maintenant je te fais confiance ».
+C'est tout. Deux étapes. Aucun [code d'autorisation](/en/glossary/auth-code/), aucun [séquestre](/fr/glossary/escrow/), aucun verrouillage de 5 jours du bureau d'enregistrement, aucun vide du type « J'ai envoyé le virement, maintenant je te fais confiance ».
 
-Cela fonctionne car le **NFT est la preuve de propriété canonique**, et les transactions [sur la chaîne (on-chain)](/en/glossary/on-chain/) sont [atomiques](/en/glossary/atomic-transfer/) : le paiement et le transfert de l'actif se produisent dans le même bloc, ou aucun des deux n'a lieu.
+Cela fonctionne car le **NFT est la preuve de propriété canonique**, et les transactions [sur la chaîne (on-chain)](/fr/glossary/on-chain/) sont [atomiques](/fr/glossary/atomic-transfer/) : le paiement et le transfert de l'actif se produisent dans le même bloc, ou aucun des deux n'a lieu.
 
 ---
 
@@ -100,7 +100,7 @@ Selon la place de marché et la juridiction, les vendeurs et les acheteurs peuve
 
 ### Événements fiscaux
 
-Une vente payée en crypto constitue un événement fiscal différent d'une vente payée en monnaie fiduciaire (fiat) dans certaines juridictions. Consultez l'article sur les [questions fiscales et comptables](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) pour avoir une liste de questions à soumettre à votre expert-comptable.
+Une vente payée en crypto constitue un événement fiscal différent d'une vente payée en monnaie fiduciaire (fiat) dans certaines juridictions. Consultez l'article sur les [questions fiscales et comptables](/fr/blog/tax-and-accounting-questions-for-tokenized-domains/) pour avoir une liste de questions à soumettre à votre expert-comptable.
 
 ---
 
@@ -167,4 +167,4 @@ Tous ces éléments sont en cours de développement et s'améliorent visiblement
 - De nouveaux risques font leur apparition à la place : sécurité des portefeuilles, bugs de contrats intelligents, MEV, coordination contre les actifs volés. Ils existent à des endroits différents, et non à aucun endroit.
 - Effet net : des ventes plus rapides, moins chères et plus transparentes, avec une expérience utilisateur (UX) différente (et perfectible). Les annonces hybrides restent courantes pour les domaines premium.
 
-Si vous souhaitez réellement essayer de vendre un nom de domaine tokénisé, rendez-vous sur [namefi.io](https://namefi.io). Pour une vue d'ensemble, consultez les [Cas d'usage des domaines tokénisés en 2026](/en/blog/tokenized-domain-use-cases-2026/).
+Si vous souhaitez réellement essayer de vendre un nom de domaine tokénisé, rendez-vous sur [namefi.io](https://namefi.io). Pour une vue d'ensemble, consultez les [Cas d'usage des domaines tokénisés en 2026](/fr/blog/tokenized-domain-use-cases-2026/).

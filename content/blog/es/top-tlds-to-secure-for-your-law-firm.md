@@ -12,7 +12,7 @@ keywords: ['tlds para firmas de abogados', 'mejores dominios para abogados', 'do
 
 Para una firma de abogados, un nombre de dominio es más que una dirección — es una señal de confianza. Los clientes juzgan la credibilidad en segundos, y un dominio limpio y profesional con una extensión reconocida hace un trabajo silencioso que un folleto no puede hacer. Asegurar el conjunto correcto de **TLDs para tu firma de abogados** protege los nombres que más importan: tu firma, tus socios y las áreas de práctica en las que deseas posicionarte.
 
-También existe una dimensión defensiva. Si solo registras [`.com`](/en/tld/com), nada impide que un competidor, una parte descontenta o un ocupante de dominios similares tome el mismo nombre en [`.net`](/en/tld/net), [`.law`](/en/tld/law) o una variante con errores tipográficos. Comprar un puñado de extensiones relevantes desde el principio es mucho más barato que litigar una disputa por ciberocupación más adelante, y mantiene tu marca consistente en toda la web.
+También existe una dimensión defensiva. Si solo registras [`.com`](/es/tld/com), nada impide que un competidor, una parte descontenta o un ocupante de dominios similares tome el mismo nombre en [`.net`](/es/tld/net), [`.law`](/en/tld/law) o una variante con errores tipográficos. Comprar un puñado de extensiones relevantes desde el principio es mucho más barato que litigar una disputa por ciberocupación más adelante, y mantiene tu marca consistente en toda la web.
 
 ## Cómo elegir TLDs para tu firma de abogados
 
@@ -20,7 +20,7 @@ Tres criterios son los más importantes. Primero, **señales de confianza**: ext
 
 ## Los 10 principales TLDs que debes asegurar para tu firma de abogados
 
-### 1. [.com](/en/tld/com) — el ancla indispensable
+### 1. [.com](/es/tld/com) — el ancla indispensable
 
 `.com` sigue siendo la extensión más reconocida y confiable del mundo, y la mayoría de los clientes la escribirán por defecto. Asegura primero el `.com` principal de tu firma y redirige todo lo demás hacia él. Es el único dominio que nunca debes dejar vencer. El registro es operado por [Verisign](https://www.iana.org/domains/root/db/com.html) bajo un [acuerdo de registro ICANN](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -44,21 +44,21 @@ Tres criterios son los más importantes. Primero, **señales de confianza**: ext
 
 `.lawyer` combina naturalmente con el nombre de un profesional individual y, al igual que `.attorney`, **no** está restringido a credenciales verificadas. Puedes confirmar su delegación en la [base de datos raíz de IANA](https://www.iana.org/domains/root/db/lawyer.html) y su [acuerdo de registro ICANN](https://www.icann.org/en/registry-agreements/details/lawyer). Tómalo para proteger tu nombre y para apoyar micrositios de socios.
 
-### 7. [.abogado](/en/tld/abogado) — llega a clientes hispanohablantes
+### 7. [.abogado](/es/tld/abogado) — llega a clientes hispanohablantes
 
-[`.abogado`](/en/tld/abogado) ("lawyer" en español) es una elección inteligente para firmas que atienden a comunidades hispanas y latinas u operan en mercados de habla hispana. Está disponible abiertamente; consulta su [entrada raíz de IANA](https://www.iana.org/domains/root/db/abogado.html) y el [acuerdo de registro ICANN](https://www.icann.org/en/registry-agreements/details/abogado). Una forma enfocada de señalar idioma y afinidad cultural.
+[`.abogado`](/es/tld/abogado) ("lawyer" en español) es una elección inteligente para firmas que atienden a comunidades hispanas y latinas u operan en mercados de habla hispana. Está disponible abiertamente; consulta su [entrada raíz de IANA](https://www.iana.org/domains/root/db/abogado.html) y el [acuerdo de registro ICANN](https://www.icann.org/en/registry-agreements/details/abogado). Una forma enfocada de señalar idioma y afinidad cultural.
 
-### 8. [.net](/en/tld/net) — el clásico respaldo defensivo
+### 8. [.net](/es/tld/net) — el clásico respaldo defensivo
 
 `.net` es una de las extensiones genéricas más antiguas y confiables, lo que la convierte en el compañero defensivo natural de tu `.com`. Registrarla evita confusiones y bloquea un vector de suplantación fácil. Es operada por [Verisign](https://www.iana.org/domains/root/db/net.html) bajo un [acuerdo de registro ICANN](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/en/tld/org) — para organizaciones sin fines de lucro, clínicas y asociaciones
+### 9. [.org](/es/tld/org) — para organizaciones sin fines de lucro, clínicas y asociaciones
 
-[`.org`](/en/tld/org) conlleva connotaciones de misión y servicio público — apropiado para organizaciones de ayuda legal, grupos asociados al colegio de abogados e iniciativas pro bono, y vale la pena asegurarlo de forma defensiva incluso para firmas comerciales. Es administrado por [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). Completa el trío heredado junto con `.com` y `.net`.
+[`.org`](/es/tld/org) conlleva connotaciones de misión y servicio público — apropiado para organizaciones de ayuda legal, grupos asociados al colegio de abogados e iniciativas pro bono, y vale la pena asegurarlo de forma defensiva incluso para firmas comerciales. Es administrado por [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). Completa el trío heredado junto con `.com` y `.net`.
 
-### 10. [.info](/en/tld/info) — para recursos orientados al cliente
+### 10. [.info](/es/tld/info) — para recursos orientados al cliente
 
-[`.info`](/en/tld/info) es adecuado para centros de preguntas frecuentes, explicaciones sobre áreas de práctica y recursos de captación de clientes donde el nombre debe decir "información". Es un registro defensivo económico y un hogar flexible para contenido. Consulta su [entrada raíz de IANA](https://www.iana.org/domains/root/db/info.html) para obtener detalles de delegación.
+[`.info`](/es/tld/info) es adecuado para centros de preguntas frecuentes, explicaciones sobre áreas de práctica y recursos de captación de clientes donde el nombre debe decir "información". Es un registro defensivo económico y un hogar flexible para contenido. Consulta su [entrada raíz de IANA](https://www.iana.org/domains/root/db/info.html) para obtener detalles de delegación.
 
 ## Estrategia de registro defensivo
 

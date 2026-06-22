@@ -12,37 +12,37 @@ keywords: ['mejores TLDs para comercio electrónico', 'mejores extensiones de do
 
 Para un minorista en línea, un nombre de dominio no es solo una dirección — es un escaparate, una señal de confianza y un activo de marca al mismo tiempo. Asegurar los **dominios de nivel superior (TLDs) adecuados para tu tienda de comercio electrónico** es una de las formas más económicas de protección de marca que puedes adquirir. Cuando posees las extensiones que los clientes y los actores malintencionados tienen más probabilidades de escribir, controlas hacia dónde va tu tráfico y niegas ese espacio a cualquiera que pudiera usarlo de manera indebida.
 
-Este último punto importa más de lo que la mayoría de los comerciantes se dan cuenta. Las tiendas fraudulentas que imitan tu marca en extensiones alternativas son un vector común para el phishing y las estafas de productos falsificados: un estafador registra tu marca en un TLD de contenido minorista que omitiste, crea una convincente página de pago y recopila los datos de pago de tus clientes. Asegurar un puñado de extensiones de alta intención por adelantado — junto con tu [`.com`](/en/tld/com) principal — cierra esas brechas antes de que alguien más las abra.
+Este último punto importa más de lo que la mayoría de los comerciantes se dan cuenta. Las tiendas fraudulentas que imitan tu marca en extensiones alternativas son un vector común para el phishing y las estafas de productos falsificados: un estafador registra tu marca en un TLD de contenido minorista que omitiste, crea una convincente página de pago y recopila los datos de pago de tus clientes. Asegurar un puñado de extensiones de alta intención por adelantado — junto con tu [`.com`](/es/tld/com) principal — cierra esas brechas antes de que alguien más las abra.
 
 ## Cómo elegir TLDs para tu tienda en línea
 
-Tres criterios deben guiar la decisión. Primero, **confianza y conversión**: los compradores reconocen y confían en algunas extensiones más que en otras, y un TLD familiar reduce la duda en el momento de la compra. Segundo, **intención comercial**: extensiones como [`.shop`](/en/tld/shop) y [`.store`](/en/tld/store) tienen un significado comercial obvio, lo que puede reforzar tu posicionamiento y hacer que el texto de marketing se lea de forma natural. Tercero, **cobertura defensiva**: incluso las extensiones en las que nunca planeas lanzar vale la pena conservarlas si un competidor o suplantador podría usarlas plausiblemente en contra de tu marca. El objetivo es un portafolio pequeño y deliberado — no todos los TLDs existentes, sino los que protegen tu nombre y sirven a tus clientes.
+Tres criterios deben guiar la decisión. Primero, **confianza y conversión**: los compradores reconocen y confían en algunas extensiones más que en otras, y un TLD familiar reduce la duda en el momento de la compra. Segundo, **intención comercial**: extensiones como [`.shop`](/es/tld/shop) y [`.store`](/es/tld/store) tienen un significado comercial obvio, lo que puede reforzar tu posicionamiento y hacer que el texto de marketing se lea de forma natural. Tercero, **cobertura defensiva**: incluso las extensiones en las que nunca planeas lanzar vale la pena conservarlas si un competidor o suplantador podría usarlas plausiblemente en contra de tu marca. El objetivo es un portafolio pequeño y deliberado — no todos los TLDs existentes, sino los que protegen tu nombre y sirven a tus clientes.
 
 ## Los 10 TLDs principales para asegurar en tu tienda de comercio electrónico
 
-### 1. [.com](/en/tld/com) — el predeterminado que no puedes omitir
+### 1. [.com](/es/tld/com) — el predeterminado que no puedes omitir
 
 `.com` sigue siendo la extensión más reconocida y de mayor confianza en el mundo, y para la mayoría de las tiendas es el hogar canónico de la marca. Está operada por Verisign bajo un [Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/com) y está abierta a cualquiera. Si tu `.com` de coincidencia exacta está disponible, asegúralo primero; todo lo demás en tu portafolio debería dirigir a los clientes de regreso a él.
 
-### 2. [.shop](/en/tld/shop) — creado para el comercio minorista
+### 2. [.shop](/es/tld/shop) — creado para el comercio minorista
 
 `.shop` es un TLD genérico diseñado específicamente para el comercio, [delegado en 2016](https://www.iana.org/domains/root/db/shop.html) y operado por GMO Registry, que obtuvo los derechos en una subasta de ICANN. Está abierto a todos los registrantes sin reglas especiales de elegibilidad ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/shop)). La palabra clave en la extensión se lee instantáneamente como "este es un lugar para comprar", lo que lo convierte en una opción natural para una tienda o un micrositio de campaña.
 
-### 3. [.store](/en/tld/store) — una señal comercial clara
+### 3. [.store](/es/tld/store) — una señal comercial clara
 
 `.store` está operado por Radix y fue [introducido en 2016](https://en.wikipedia.org/wiki/.store) sin restricciones de registro para los usuarios finales más allá de las reglas estándar de nombres reservados de ICANN ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/store)). Es intercambiable en espíritu con `.shop` y vale la pena tener ambos para ampliar tu presencia minorista y para evitar que un imitador casi idéntico caiga en manos de otra persona.
 
-### 4. [.online](/en/tld/online) — amplio y versátil
+### 4. [.online](/es/tld/online) — amplio y versátil
 
-[`.online`](/en/tld/online) es otra extensión abierta de Radix, [introducida en 2015](https://en.wikipedia.org/wiki/.online) sin restricciones de elegibilidad ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/online)). Su significado genérico lo hace flexible: útil como página de destino, una tienda regional o simplemente un registro defensivo para que los suplantadores no puedan reclamar "tumarca.online."
+[`.online`](/es/tld/online) es otra extensión abierta de Radix, [introducida en 2015](https://en.wikipedia.org/wiki/.online) sin restricciones de elegibilidad ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/online)). Su significado genérico lo hace flexible: útil como página de destino, una tienda regional o simplemente un registro defensivo para que los suplantadores no puedan reclamar "tumarca.online."
 
-### 5. [.site](/en/tld/site) — una alternativa simple y reconocible
+### 5. [.site](/es/tld/site) — una alternativa simple y reconocible
 
-[`.site`](/en/tld/site) es un TLD abierto de Radix ([delegado en 2015](https://en.wikipedia.org/wiki/.site)) sin restricciones de registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/site)). Es corto, fácil de pronunciar y ampliamente comprendido, lo que lo convierte en un registro defensivo sensato y en un hogar utilizable para un micrositio o una promoción de una sola página.
+[`.site`](/es/tld/site) es un TLD abierto de Radix ([delegado en 2015](https://en.wikipedia.org/wiki/.site)) sin restricciones de registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/site)). Es corto, fácil de pronunciar y ampliamente comprendido, lo que lo convierte en un registro defensivo sensato y en un hogar utilizable para un micrositio o una promoción de una sola página.
 
 ### 6. .co — la opción corta y amigable para startups
 
-[`.co`](/en/tld/co) es técnicamente el TLD de código de país de Colombia, pero las restricciones de presencia se levantaron en 2010, por lo que cualquier persona en el mundo puede registrar uno ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). Es ampliamente adoptado por startups y marcas que no pueden obtener su `.com`, y cabe destacar que es uno de los pocos ccTLDs que Google trata como una extensión genérica no geográfica. Dado que `.co` se diferencia de `.com` por un solo carácter, tener tu marca aquí tiene tanto un propósito defensivo como estratégico.
+[`.co`](/es/tld/co) es técnicamente el TLD de código de país de Colombia, pero las restricciones de presencia se levantaron en 2010, por lo que cualquier persona en el mundo puede registrar uno ([Wikipedia: .co](https://en.wikipedia.org/wiki/.co)). Es ampliamente adoptado por startups y marcas que no pueden obtener su `.com`, y cabe destacar que es uno de los pocos ccTLDs que Google trata como una extensión genérica no geográfica. Dado que `.co` se diferencia de `.com` por un solo carácter, tener tu marca aquí tiene tanto un propósito defensivo como estratégico.
 
 ### 7. .shopping — alta intención comercial
 
@@ -52,13 +52,13 @@ Tres criterios deben guiar la decisión. Primero, **confianza y conversión**: l
 
 [`.deals`](/en/tld/deals) también está operado por Identity Digital y está abierto a todos los registrantes ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/deals)). Para una marca de comercio electrónico que realiza ventas frecuentes, "tumarca.deals" es un hogar memorable para páginas de liquidación y páginas de aterrizaje de cupones — y uno útil para tener de modo que no pueda ser utilizado en una estafa de descuentos falsos.
 
-### 9. [.club](/en/tld/club) — comunidad y membresía
+### 9. [.club](/es/tld/club) — comunidad y membresía
 
-[`.club`](/en/tld/club) es un TLD genérico que [se lanzó al público en 2014](https://en.wikipedia.org/wiki/.club) y ahora está operado por GoDaddy Registry, sin restricciones generales de registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/club)). Si tu tienda tiene un programa de fidelización, nivel de suscripción o lanzamiento exclusivo para miembros, `.club` lo enmarca perfectamente.
+[`.club`](/es/tld/club) es un TLD genérico que [se lanzó al público en 2014](https://en.wikipedia.org/wiki/.club) y ahora está operado por GoDaddy Registry, sin restricciones generales de registro ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/club)). Si tu tienda tiene un programa de fidelización, nivel de suscripción o lanzamiento exclusivo para miembros, `.club` lo enmarca perfectamente.
 
-### 10. [.vip](/en/tld/vip) — niveles premium y exclusividad
+### 10. [.vip](/es/tld/vip) — niveles premium y exclusividad
 
-[`.vip`](/en/tld/vip) es un TLD genérico que [se lanzó en 2016](https://en.wikipedia.org/wiki/.vip) — originalmente bajo Minds + Machines y ahora parte de GoDaddy Registry — y está abierto a todos ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/vip)). Es una excelente opción para líneas de productos premium, programas de acceso anticipado o portales para clientes de alto valor donde la exclusividad es parte del atractivo.
+[`.vip`](/es/tld/vip) es un TLD genérico que [se lanzó en 2016](https://en.wikipedia.org/wiki/.vip) — originalmente bajo Minds + Machines y ahora parte de GoDaddy Registry — y está abierto a todos ([Acuerdo de Registro de ICANN](https://www.icann.org/en/registry-agreements/details/vip)). Es una excelente opción para líneas de productos premium, programas de acceso anticipado o portales para clientes de alto valor donde la exclusividad es parte del atractivo.
 
 ## Estrategia de registro defensivo
 

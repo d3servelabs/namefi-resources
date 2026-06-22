@@ -13,10 +13,10 @@ Der traditionelle Ablauf beim Verkauf einer `.com`-Domain sieht in etwa so aus:
 
 1. Listing bei [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) oder Dan.com.
 2. Verhandeln.
-3. Einrichten eines [Treuhandkontos (Escrow)](/en/glossary/escrow/) bei [Escrow.com](https://www.escrow.com/) oder ähnlichen Anbietern. Der Käufer überweist das Geld.
+3. Einrichten eines [Treuhandkontos (Escrow)](/de/glossary/escrow/) bei [Escrow.com](https://www.escrow.com/) oder ähnlichen Anbietern. Der Käufer überweist das Geld.
 4. Der Verkäufer entsperrt die Domain und stellt den [Auth-Code](/en/glossary/auth-code/) zur Verfügung.
-5. Der Käufer leitet einen [Cross-Registrar-Transfer](/en/glossary/cross-registrar-transfer/) bei seinem [Registrar](/en/glossary/registrar/) ein.
-6. 5–7 Tage warten, bis der [ICANN](/en/glossary/icann/)-Transfer abgeschlossen ist.
+5. Der Käufer leitet einen [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/) bei seinem [Registrar](/de/glossary/registrar/) ein.
+6. 5–7 Tage warten, bis der [ICANN](/de/glossary/icann/)-Transfer abgeschlossen ist.
 7. Bestätigung des Transfers; der Treuhanddienst gibt die Gelder frei.
 8. Zahlung von 3–6 % Treuhandgebühren, plus Marktplatzprovisionen.
 
@@ -28,13 +28,13 @@ Der Verkauf tokenisierter Domains komprimiert das Ganze in eine einzige Transakt
 
 ## Der neue Ablauf von A bis Z
 
-1. Listing der [tokenisierten Domain](/en/blog/what-are-tokenized-domains/) auf einem [Marktplatz](/en/glossary/marketplace/) (dem eigenen von Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/) usw.).
-2. Der Käufer bezahlt. Das [NFT](/en/glossary/nft/) wandert in das [Wallet](/en/glossary/wallet/) des Käufers. Der Eintrag aufseiten des [Registrars](/en/glossary/registrar/) wird von der Plattform synchron gehalten.
+1. Listing der [tokenisierten Domain](/de/blog/what-are-tokenized-domains/) auf einem [Marktplatz](/de/glossary/marketplace/) (dem eigenen von Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/) usw.).
+2. Der Käufer bezahlt. Das [NFT](/de/glossary/nft/) wandert in das [Wallet](/de/glossary/wallet/) des Käufers. Der Eintrag aufseiten des [Registrars](/de/glossary/registrar/) wird von der Plattform synchron gehalten.
 3. Fertig.
 
-Das war's. Zwei Schritte. Kein [Auth-Code](/en/glossary/auth-code/), kein [Treuhanddienst (Escrow)](/en/glossary/escrow/), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
+Das war's. Zwei Schritte. Kein [Auth-Code](/en/glossary/auth-code/), kein [Treuhanddienst (Escrow)](/de/glossary/escrow/), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
 
-Das funktioniert, weil das **NFT der kanonische Eigentumsnachweis ist** und [On-Chain](/en/glossary/on-chain/)-Transaktionen [atomar](/en/glossary/atomic-transfer/) sind: Zahlung und Vermögensübertragung finden im selben Block statt, oder keines von beiden passiert.
+Das funktioniert, weil das **NFT der kanonische Eigentumsnachweis ist** und [On-Chain](/de/glossary/on-chain/)-Transaktionen [atomar](/de/glossary/atomic-transfer/) sind: Zahlung und Vermögensübertragung finden im selben Block statt, oder keines von beiden passiert.
 
 ---
 
@@ -100,7 +100,7 @@ Je nach Marktplatz und Rechtsprechung können Verkäufer und Käufer mit KYC-Anf
 
 ### Steuerliche Ereignisse
 
-Ein in Krypto bezahlter Verkauf stellt in einigen Rechtsordnungen ein anderes steuerliches Ereignis dar als ein in Fiat-Währung bezahlter Verkauf. Lesen Sie unseren [Beitrag über Steuer- und Buchhaltungsfragen](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) für einen Katalog von Fragen, die Sie Ihrem Steuerberater stellen können.
+Ein in Krypto bezahlter Verkauf stellt in einigen Rechtsordnungen ein anderes steuerliches Ereignis dar als ein in Fiat-Währung bezahlter Verkauf. Lesen Sie unseren [Beitrag über Steuer- und Buchhaltungsfragen](/de/blog/tax-and-accounting-questions-for-tokenized-domains/) für einen Katalog von Fragen, die Sie Ihrem Steuerberater stellen können.
 
 ---
 
@@ -167,4 +167,4 @@ All dies ist in Arbeit und verbessert sich von Jahr zu Jahr zusehends.
 - An ihrer Stelle treten neue Risiken auf: Wallet-Sicherheit, Smart-Contract-Fehler, MEV, Koordination bei gestohlenen Assets. Diese Risiken verlagern sich auf andere Bereiche, sie verschwinden nicht völlig.
 - Nettoeffekt: Schnellerer, günstigerer und transparenterer Verkauf mit einer anderen (und verbesserungsfähigen) Nutzererfahrung (UX). Hybride Listings bleiben für Premium-Domains üblich.
 
-Wenn Sie den Verkauf einer tokenisierten Domain selbst ausprobieren möchten, besuchen Sie [namefi.io](https://namefi.io). Für ein umfassenderes Bild lesen Sie [Anwendungsfälle für tokenisierte Domains im Jahr 2026](/en/blog/tokenized-domain-use-cases-2026/).
+Wenn Sie den Verkauf einer tokenisierten Domain selbst ausprobieren möchten, besuchen Sie [namefi.io](https://namefi.io). Für ein umfassenderes Bild lesen Sie [Anwendungsfälle für tokenisierte Domains im Jahr 2026](/de/blog/tokenized-domain-use-cases-2026/).

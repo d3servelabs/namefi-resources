@@ -22,35 +22,35 @@ Pesez quatre critères. **La pertinence** : le suffixe correspond-il à votre se
 
 ### 1. .com — la valeur par défaut du web
 
-[.com](/en/tld/com) est le gTLD commercial d'origine et reste le suffixe le plus reconnu et le plus fiable dans le monde. Il est exploité par [Verisign](https://www.icann.org/en/registry-agreements/details/com) sous contrat avec l'ICANN. Pour la plupart des entreprises, le `.com` au nom exact est le nom le plus important à posséder, car les clients le tapent par réflexe et les concurrents le convoitent le plus.
+[.com](/fr/tld/com) est le gTLD commercial d'origine et reste le suffixe le plus reconnu et le plus fiable dans le monde. Il est exploité par [Verisign](https://www.icann.org/en/registry-agreements/details/com) sous contrat avec l'ICANN. Pour la plupart des entreprises, le `.com` au nom exact est le nom le plus important à posséder, car les clients le tapent par réflexe et les concurrents le convoitent le plus.
 
 ### 2. .co — l'alternative moderne et brandable
 
-[.co](/en/tld/co) se lit comme un raccourci élégant pour « company » (entreprise) et est favori des startups lorsque le `.com` est pris. Il s'agit du TLD de code pays de la Colombie, désormais exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) à la suite de l'acquisition du département registre de Neustar, et il est ouvert à l'enregistrement mondial sans restriction. Il est court, mémorable et constitue un complément défensif solide au `.com`.
+[.co](/fr/tld/co) se lit comme un raccourci élégant pour « company » (entreprise) et est favori des startups lorsque le `.com` est pris. Il s'agit du TLD de code pays de la Colombie, désormais exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) à la suite de l'acquisition du département registre de Neustar, et il est ouvert à l'enregistrement mondial sans restriction. Il est court, mémorable et constitue un complément défensif solide au `.com`.
 
 ### 3. .net — le classique de confiance
 
-[.net](/en/tld/net) était à l'origine destiné aux fournisseurs d'infrastructure réseau et, comme le `.com`, est exploité par [Verisign](https://www.iana.org/domains/root/db/net.html). Il jouit de décennies de crédibilité et reste une alternative courante que les clients reconnaissent instantanément. Le sécuriser empêche un tiers de disposer d'une adresse quasi identique à votre `.com` principal.
+[.net](/fr/tld/net) était à l'origine destiné aux fournisseurs d'infrastructure réseau et, comme le `.com`, est exploité par [Verisign](https://www.iana.org/domains/root/db/net.html). Il jouit de décennies de crédibilité et reste une alternative courante que les clients reconnaissent instantanément. Le sécuriser empêche un tiers de disposer d'une adresse quasi identique à votre `.com` principal.
 
 ### 4. .org — crédibilité et confiance
 
-[.org](/en/tld/org) est associé à une organisation ou à une entité portée par une mission, et est exploité par le [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), une organisation à but non lucratif. Même les entreprises purement commerciales enregistrent souvent le `.org` à titre défensif afin que personne ne puisse créer une « organisation » critique ou imposteur utilisant leur marque. Il est sans restriction et ouvert à tous.
+[.org](/fr/tld/org) est associé à une organisation ou à une entité portée par une mission, et est exploité par le [Public Interest Registry](https://www.iana.org/domains/root/db/org.html), une organisation à but non lucratif. Même les entreprises purement commerciales enregistrent souvent le `.org` à titre défensif afin que personne ne puisse créer une « organisation » critique ou imposteur utilisant leur marque. Il est sans restriction et ouvert à tous.
 
 ### 5. .io — le favori des tech et des startups
 
-[.io](/en/tld/io) est techniquement le TLD de code pays du Territoire britannique de l'océan Indien, mais les lettres évoquent « input/output » (entrée/sortie), ce qui en a fait le chouchou des développeurs, du SaaS et des startups. Il est administré par [la filiale d'Identity Digital, l'Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html), et l'enregistrement est ouvert mondialement sans exigence de présence locale. Si votre activité est orientée technologie, posséder le `.io` mérite considération.
+[.io](/fr/tld/io) est techniquement le TLD de code pays du Territoire britannique de l'océan Indien, mais les lettres évoquent « input/output » (entrée/sortie), ce qui en a fait le chouchou des développeurs, du SaaS et des startups. Il est administré par [la filiale d'Identity Digital, l'Internet Computer Bureau](https://www.iana.org/domains/root/db/io.html), et l'enregistrement est ouvert mondialement sans exigence de présence locale. Si votre activité est orientée technologie, posséder le `.io` mérite considération.
 
 ### 6. .biz — le suffixe réservé aux entreprises
 
-[.biz](/en/tld/biz) a été créé explicitement comme alternative commerciale au `.com` et est réservé aux usages commerciaux ou d'entreprise légitimes en vertu de sa [politique de registre](https://www.iana.org/domains/root/db/biz.html). Désormais exploité par GoDaddy Registry, c'est un choix défensif naturel précisément parce que son nom crie « commerce », ce qui le rend attrayant pour quiconque tente d'usurper l'identité d'une marque commerciale.
+[.biz](/fr/tld/biz) a été créé explicitement comme alternative commerciale au `.com` et est réservé aux usages commerciaux ou d'entreprise légitimes en vertu de sa [politique de registre](https://www.iana.org/domains/root/db/biz.html). Désormais exploité par GoDaddy Registry, c'est un choix défensif naturel précisément parce que son nom crie « commerce », ce qui le rend attrayant pour quiconque tente d'usurper l'identité d'une marque commerciale.
 
 ### 7. .info — informatif et accessible
 
-[.info](/en/tld/info) est l'un des premiers nouveaux gTLD et est largement utilisé pour les bases de connaissances, la documentation et les microsites informatifs. Il est exploité par [Identity Digital](https://www.iana.org/domains/root/db/info.html) sans restriction d'enregistrement. Le posséder vous permet d'héberger un centre d'aide ou une page de campagne — et empêche un imitateur de publier des « informations » sous votre nom.
+[.info](/fr/tld/info) est l'un des premiers nouveaux gTLD et est largement utilisé pour les bases de connaissances, la documentation et les microsites informatifs. Il est exploité par [Identity Digital](https://www.iana.org/domains/root/db/info.html) sans restriction d'enregistrement. Le posséder vous permet d'héberger un centre d'aide ou une page de campagne — et empêche un imitateur de publier des « informations » sous votre nom.
 
 ### 8. .online — large, descriptif et mondial
 
-[.online](/en/tld/online) est un nouveau gTLD descriptif qui convient à presque n'importe quelle entreprise disposant d'une présence web. Il appartient à [Radix](https://www.iana.org/domains/root/db/online.html) et est exploité par cette société, avec un enregistrement ouvert sans restriction dans le monde entier. Sa signification en langage courant en fait une adresse facile et intuitive pour les pages d'atterrissage et les vitrines régionales.
+[.online](/fr/tld/online) est un nouveau gTLD descriptif qui convient à presque n'importe quelle entreprise disposant d'une présence web. Il appartient à [Radix](https://www.iana.org/domains/root/db/online.html) et est exploité par cette société, avec un enregistrement ouvert sans restriction dans le monde entier. Sa signification en langage courant en fait une adresse facile et intuitive pour les pages d'atterrissage et les vitrines régionales.
 
 ### 9. .company — une correspondance littérale pour toute entreprise
 
@@ -58,9 +58,9 @@ Pesez quatre critères. **La pertinence** : le suffixe correspond-il à votre se
 
 ### 10. .vip — un positionnement premium
 
-[.vip](/en/tld/vip) signifie « very important person » (personne très importante) et est utilisé pour signaler l'exclusivité, l'adhésion ou les niveaux premium. Il est exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html), qui l'a acquis dans le cadre de l'ancien portefeuille Minds + Machines, et l'enregistrement est ouvert à tous. Pour les programmes de fidélité, les contenus réservés aux membres ou une ligne de produits haut de gamme, `.vip` est un choix mémorable.
+[.vip](/fr/tld/vip) signifie « very important person » (personne très importante) et est utilisé pour signaler l'exclusivité, l'adhésion ou les niveaux premium. Il est exploité par [GoDaddy Registry](https://www.iana.org/domains/root/db/vip.html), qui l'a acquis dans le cadre de l'ancien portefeuille Minds + Machines, et l'enregistrement est ouvert à tous. Pour les programmes de fidélité, les contenus réservés aux membres ou une ligne de produits haut de gamme, `.vip` est un choix mémorable.
 
-Deux autres extensions méritent une mention rapide lorsque vous constituez un portefeuille : [.agency](https://www.icann.org/en/registry-agreements/details/agency) convient aux entreprises de services, et les variations [.com](/en/tld/com) dans votre catégorie doivent toujours être votre ancre.
+Deux autres extensions méritent une mention rapide lorsque vous constituez un portefeuille : [.agency](https://www.icann.org/en/registry-agreements/details/agency) convient aux entreprises de services, et les variations [.com](/fr/tld/com) dans votre catégorie doivent toujours être votre ancre.
 
 ## Stratégie d'enregistrement défensif
 

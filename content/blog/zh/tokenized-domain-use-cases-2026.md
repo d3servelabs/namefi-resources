@@ -11,37 +11,37 @@ keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '
 
 谈论通证化（Tokenized）域名时，人们很容易将其视为一种*技术*。但更有价值的视角是将其看作一系列*你可以用它做的事情*，而这些事情是你使用普通注册商托管的域名难以轻易做到的。本文将带您了解这些应用场景——哪些在今天是切实可行的，哪些正在兴起，又有哪些主要还停留在PPT阶段。
 
-我们将保持平台中立的态度。以下应用场景适用于 [Namefi](https://namefi.io)、Doma Protocol、D3 Global Inc、3DNS 以及其他通证化平台（参见[选择域名通证化平台](/en/blog/choosing-a-domain-tokenization-platform/)）。
+我们将保持平台中立的态度。以下应用场景适用于 [Namefi](https://namefi.io)、Doma Protocol、D3 Global Inc、3DNS 以及其他通证化平台（参见[选择域名通证化平台](/zh/blog/choosing-a-domain-tokenization-platform/)）。
 
 ---
 
 ## 应用场景 1：钱包原生的销售与结算
 
-**这是什么：** 通过签署单一的[链上](/en/glossary/on-chain/)交易来出售域名。买方付款、[NFT](/en/glossary/nft/) 转移、[注册商](/en/glossary/registrar/)记录更新，这一切都在[原子交易](/en/glossary/atomic-transfer/)中瞬间完成。无需[第三方担保（Escrow）](/en/glossary/escrow/)服务，无需[授权码（Auth code）](/en/glossary/auth-code/)，也没有为期5天的注册商锁定。
+**这是什么：** 通过签署单一的[链上](/zh/glossary/on-chain/)交易来出售域名。买方付款、[NFT](/zh/glossary/nft/) 转移、[注册商](/zh/glossary/registrar/)记录更新，这一切都在[原子交易](/zh/glossary/atomic-transfer/)中瞬间完成。无需[第三方担保（Escrow）](/zh/glossary/escrow/)服务，无需[授权码（Auth code）](/en/glossary/auth-code/)，也没有为期5天的注册商锁定。
 
 **为何重要：** 传统的域名销售依赖第三方担保服务（如 [Escrow.com](https://www.escrow.com/)、Sav、Sedo）在注册商转移期间持有资金。这种方式既缓慢又昂贵——担保费高达3-6%，而且耗时按“天”计算，而不是按“分钟”。通证化销售通过链上的原子结算彻底取代了这一过程。
 
 **现实情况：** 在2026年，这已在多个平台上**落地并稳定运行**。现在最难的部分是流动性（是否有足够的买家能看到你的挂单？），而不是机制本身。
 
-如需深入了解，请参阅[从挂单到结算](/en/blog/how-tokenized-marketplaces-replace-escrow/)。
+如需深入了解，请参阅[从挂单到结算](/zh/blog/how-tokenized-marketplaces-replace-escrow/)。
 
 ---
 
 ## 应用场景 2：DeFi 抵押与借贷
 
-**这是什么：** 将你的通证化域名锁定在[借贷协议](/en/glossary/lending-protocol/)中，并以其作为[抵押品](/en/glossary/collateral/)借入[稳定币](/en/glossary/stablecoin/)。如果你偿还了贷款，你就能拿回域名。如果你违约，域名就会被公开清算。
+**这是什么：** 将你的通证化域名锁定在[借贷协议](/zh/glossary/lending-protocol/)中，并以其作为[抵押品](/zh/glossary/collateral/)借入[稳定币](/en/glossary/stablecoin/)。如果你偿还了贷款，你就能拿回域名。如果你违约，域名就会被公开清算。
 
 **为何重要：** 域名投资组合历来缺乏流动性——你拥有这些资产，但如果不卖掉它们，就很难以此借到钱。支持NFT的[DeFi（去中心化金融）](/en/glossary/defi/)借贷市场（如 [NFTfi](https://www.nftfi.com/)、[Arcade](https://www.arcade.xyz/)，以及专门与通证化域名集成的协议）改变了这一局面。
 
 **现实情况：** 真实存在，但仍在走向成熟。由于通证化域名是异质资产（每个域名都是独一无二的），不像同质化代币那样标准，因此对其进行借贷定价是最大的难点。你需要对保守的贷款价值比（LTV）做好心理准备，且估值模型也在不断迭代中。清算时有发生，且完全公开。
 
-这也是[税务问题](/en/blog/tax-and-accounting-questions-for-tokenized-domains/)变得尤为复杂的一个应用场景。请咨询您的注册会计师（CPA）。
+这也是[税务问题](/zh/blog/tax-and-accounting-questions-for-tokenized-domains/)变得尤为复杂的一个应用场景。请咨询您的注册会计师（CPA）。
 
 ---
 
 ## 应用场景 3：租赁
 
-**这是什么：** 在不出售的前提下，将域名的使用权[出租](/en/glossary/leasing/)一段时间。所有者保留NFT的所有权；承租人则获得在特定期限内运营该域名的权利。
+**这是什么：** 在不出售的前提下，将域名的使用权[出租](/zh/glossary/leasing/)一段时间。所有者保留NFT的所有权；承租人则获得在特定期限内运营该域名的权利。
 
 **为何重要：** 投资组合持有者通常拥有一批价值不菲但闲置的域名。租赁可以将这些库存转化为现金流，而无需放弃所有权。
 
@@ -51,7 +51,7 @@ keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '
 
 ## 应用场景 4：碎片化所有权
 
-**这是什么：** 将优质精品域名的所有权分割给多个持有者，每人拥有[碎片化的份额](/en/glossary/fractional-ownership/)。
+**这是什么：** 将优质精品域名的所有权分割给多个持有者，每人拥有[碎片化的份额](/zh/glossary/fractional-ownership/)。
 
 **为何重要：** 像 `LLM.com` 或 `crypto.com` 这个级别的域名价值数百万美元。将其在社区持有者之间进行碎片化分割，解锁了对这些顶级资产的投资机会，无需任何人独自承担全部所有权。Domora 正是围绕这一理念建立的；Doma Prime 和 Mizu Launchpad 也拥有相关的基础模块。
 
@@ -61,19 +61,19 @@ keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '
 
 ## 应用场景 5：AI 代理身份
 
-**这是什么：** 一个[AI代理](/en/glossary/ai-agent/)（代表用户执行任务的软件程序）持有一个[钱包](/en/glossary/wallet/)，而这个钱包持有通证化域名。该域名随即成为该代理的身份——可寻址、可验证且可商业化变现。
+**这是什么：** 一个[AI代理](/en/glossary/ai-agent/)（代表用户执行任务的软件程序）持有一个[钱包](/zh/glossary/wallet/)，而这个钱包持有通证化域名。该域名随即成为该代理的身份——可寻址、可验证且可商业化变现。
 
 **为何重要：** 随着AI代理开始参与真实的经济活动（预订、购买、支付），它们需要持久的标识符、支付端点以及声誉脚手架。通证化域名能够同时满足这三项需求：一个独一无二的名称、一个用于接收付款的钱包（例如通过 [x402](/en/glossary/x402/) 协议），以及一份链上历史记录。
 
 **现实情况：** 正在兴起。这种模式在逻辑上是可行的，且正在被构建。目前大多数实际案例还是演示Demo或特定部署，尚未达到广泛采用的阶段。如果您正在构建代理基础设施，这绝对是一个值得围绕其进行设计的应用场景。如果您是终端用户，预计在2026年到2027年期间会看到更多此类应用。
 
-关于AI代理商务技术栈的相关背景，请参阅[谷歌推出通用商务协议](/en/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/)。
+关于AI代理商务技术栈的相关背景，请参阅[谷歌推出通用商务协议](/zh/blog/google-unveils-universal-commerce-protocol-to-power-the-next-generation-of-ai-shopping-agents/)。
 
 ---
 
 ## 应用场景 6：体验更佳的市场挂单
 
-**这是什么：** 将你的通证化域名挂载到 [OpenSea](https://opensea.io/)、[Blur](https://blur.io/)、[Magic Eden](https://magiceden.io/) 或针对特定平台的[交易市场](/en/glossary/marketplace/)上——其用户体验与挂单任何普通的 [ERC-721](/en/glossary/erc-721/) NFT并无二致。
+**这是什么：** 将你的通证化域名挂载到 [OpenSea](https://opensea.io/)、[Blur](https://blur.io/)、[Magic Eden](https://magiceden.io/) 或针对特定平台的[交易市场](/zh/glossary/marketplace/)上——其用户体验与挂单任何普通的 [ERC-721](/en/glossary/erc-721/) NFT并无二致。
 
 **为何重要：** 传统的域名交易市场一直是一个闭环（如 Sedo、Afternic、Dan.com）。通证化将分发渠道开放给了更广阔的NFT市场生态系统，后者建立的用户交互、搜索体验、社交属性和定价工具，是传统市场所不具备的。
 
@@ -83,7 +83,7 @@ keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '
 
 ## 应用场景 7：可编程域名
 
-**这是什么：** 能够响应链上条件的域名——例如，只有在支付了押金后才会转移域名的[智能合约](/en/glossary/smart-contract/)，或者其DNS记录可以由持有者[DAO（去中心化自治组织）](/en/glossary/dao/)投票决定的域名。这就是域名资产的[可组合性（Composability）](/en/glossary/composability/)的直观体现。
+**这是什么：** 能够响应链上条件的域名——例如，只有在支付了押金后才会转移域名的[智能合约](/zh/glossary/smart-contract/)，或者其DNS记录可以由持有者[DAO（去中心化自治组织）](/zh/glossary/dao/)投票决定的域名。这就是域名资产的[可组合性（Composability）](/zh/glossary/composability/)的直观体现。
 
 **为何重要：** 一旦域名变成通证，它就可以与你能编写的任何智能合约逻辑进行组合。例如条件转移、金库归属的域名、时间锁定的销售、自动拍卖等等。
 
@@ -97,7 +97,7 @@ keywords: ['通证化域名应用场景', 'DomainFi', '通证化域名借贷', '
 
 **为何重要：** 随着所有者的离世，传统域名随之消亡的情况屡见不鲜。它们被困在无人知晓密码的注册商账户里，一旦绑定的信用卡过期，域名就会掉落。而通证化域名至少提供了通过钱包管理实现清晰、顺畅继承的*可能性*。
 
-**现实情况：** 切实可行，但需要提前规划。关于操作层面的细节，请参阅[钱包丢失后如何恢复通证化域名](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/)；关于法律层面的疑问，请参阅[税务与会计问题指南](/en/blog/tax-and-accounting-questions-for-tokenized-domains/)，以便您向专业人士咨询。
+**现实情况：** 切实可行，但需要提前规划。关于操作层面的细节，请参阅[钱包丢失后如何恢复通证化域名](/zh/blog/recovering-a-tokenized-domain-after-wallet-loss/)；关于法律层面的疑问，请参阅[税务与会计问题指南](/zh/blog/tax-and-accounting-questions-for-tokenized-domains/)，以便您向专业人士咨询。
 
 ---
 

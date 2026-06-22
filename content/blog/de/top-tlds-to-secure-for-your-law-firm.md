@@ -12,7 +12,7 @@ keywords: ['TLDs für Kanzleien', 'beste Domains für Anwälte', '.law Domain', 
 
 Für eine Kanzlei ist ein Domainname mehr als eine Adresse – er ist ein Vertrauenssignal. Mandanten beurteilen Glaubwürdigkeit in Sekunden, und eine saubere, professionelle Domain auf einer anerkannten Endung leistet stille Arbeit, die eine Broschüre nicht leisten kann. Die richtigen **TLDs für Ihre Kanzlei** zu sichern, schützt die Namen, die am wichtigsten sind: Ihre Kanzlei, Ihre Partner und die Rechtsgebiete, für die Sie ranken möchten.
 
-Es gibt auch eine defensive Dimension. Wenn Sie nur [`.com`](/en/tld/com) registrieren, hindert nichts einen Mitbewerber, eine unzufriedene Partei oder einen Typosquatter daran, denselben Namen auf [`.net`](/en/tld/net), [`.law`](/en/tld/law) oder einer Falschschreibung zu registrieren. Ein paar relevante Endungen vorab zu kaufen ist weitaus günstiger als später einen Cybersquatting-Streit auszufechten, und es hält Ihre Marke konsistent im gesamten Web.
+Es gibt auch eine defensive Dimension. Wenn Sie nur [`.com`](/de/tld/com) registrieren, hindert nichts einen Mitbewerber, eine unzufriedene Partei oder einen Typosquatter daran, denselben Namen auf [`.net`](/de/tld/net), [`.law`](/en/tld/law) oder einer Falschschreibung zu registrieren. Ein paar relevante Endungen vorab zu kaufen ist weitaus günstiger als später einen Cybersquatting-Streit auszufechten, und es hält Ihre Marke konsistent im gesamten Web.
 
 ## So wählen Sie TLDs für Ihre Kanzlei aus
 
@@ -20,7 +20,7 @@ Drei Kriterien sind entscheidend. Erstens **Vertrauenssignale**: Endungen wie `.
 
 ## Die Top 10 TLDs, die Sie für Ihre Kanzlei sichern sollten
 
-### 1. [.com](/en/tld/com) — der unverzichtbare Anker
+### 1. [.com](/de/tld/com) — der unverzichtbare Anker
 
 `.com` ist nach wie vor die weltweit anerkannteste und vertrauenswürdigste Endung, und die meisten Mandanten werden sie standardmäßig eingeben. Sichern Sie zuerst das primäre `.com` Ihrer Kanzlei und leiten Sie alles andere darauf um. Dies ist die eine Domain, die Sie niemals verfallen lassen sollten. Die Registry wird von [Verisign](https://www.iana.org/domains/root/db/com.html) im Rahmen eines [ICANN-Registry-Vertrags](https://www.icann.org/en/registry-agreements/details/com) betrieben.
 
@@ -44,21 +44,21 @@ Drei Kriterien sind entscheidend. Erstens **Vertrauenssignale**: Endungen wie `.
 
 `.lawyer` passt natürlich zum Namen eines einzelnen Rechtsanwalts und ist wie `.attorney` **nicht** auf verifizierte Qualifikationen beschränkt. Sie können seine Delegation in der [IANA-Root-Datenbank](https://www.iana.org/domains/root/db/lawyer.html) und seinem [ICANN-Registry-Vertrag](https://www.icann.org/en/registry-agreements/details/lawyer) bestätigen. Sichern Sie es, um Ihren Namen zu schützen und Partner-Microsites zu unterstützen.
 
-### 7. [.abogado](/en/tld/abogado) — spanischsprachige Mandanten erreichen
+### 7. [.abogado](/de/tld/abogado) — spanischsprachige Mandanten erreichen
 
-[`.abogado`](/en/tld/abogado) („Anwalt" auf Spanisch) ist eine kluge Wahl für Kanzleien, die hispanische und lateinamerikanische Gemeinschaften betreuen oder in spanischsprachigen Märkten tätig sind. Es ist frei verfügbar; siehe seinen [IANA-Root-Eintrag](https://www.iana.org/domains/root/db/abogado.html) und [ICANN-Registry-Vertrag](https://www.icann.org/en/registry-agreements/details/abogado). Ein gezielter Weg, sprachliche und kulturelle Kompetenz zu signalisieren.
+[`.abogado`](/de/tld/abogado) („Anwalt" auf Spanisch) ist eine kluge Wahl für Kanzleien, die hispanische und lateinamerikanische Gemeinschaften betreuen oder in spanischsprachigen Märkten tätig sind. Es ist frei verfügbar; siehe seinen [IANA-Root-Eintrag](https://www.iana.org/domains/root/db/abogado.html) und [ICANN-Registry-Vertrag](https://www.icann.org/en/registry-agreements/details/abogado). Ein gezielter Weg, sprachliche und kulturelle Kompetenz zu signalisieren.
 
-### 8. [.net](/en/tld/net) — die klassische defensive Absicherung
+### 8. [.net](/de/tld/net) — die klassische defensive Absicherung
 
 `.net` ist eine der ältesten und vertrauenswürdigsten generischen Endungen und damit die natürliche defensive Ergänzung zu Ihrem `.com`. Ihre Registrierung verhindert Verwechslungen und blockiert einen einfachen Imitationsvektor. Es wird von [Verisign](https://www.iana.org/domains/root/db/net.html) unter einem [ICANN-Registry-Vertrag](https://www.icann.org/en/registry-agreements/details/net) betrieben.
 
-### 9. [.org](/en/tld/org) — für gemeinnützige Organisationen, Kliniken und Verbände
+### 9. [.org](/de/tld/org) — für gemeinnützige Organisationen, Kliniken und Verbände
 
-[`.org`](/en/tld/org) trägt Konnotationen von Mission und öffentlichem Dienst – passend für Rechtsberatungsstellen, Gruppen im Umfeld von Anwaltskammern und Pro-Bono-Initiativen, und auch für kommerzielle Kanzleien als defensive Registrierung sinnvoll. Es wird von der [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) verwaltet. Es vervollständigt das klassische Trio neben `.com` und `.net`.
+[`.org`](/de/tld/org) trägt Konnotationen von Mission und öffentlichem Dienst – passend für Rechtsberatungsstellen, Gruppen im Umfeld von Anwaltskammern und Pro-Bono-Initiativen, und auch für kommerzielle Kanzleien als defensive Registrierung sinnvoll. Es wird von der [Public Interest Registry](https://www.iana.org/domains/root/db/org.html) verwaltet. Es vervollständigt das klassische Trio neben `.com` und `.net`.
 
-### 10. [.info](/en/tld/info) — für mandantenorientierte Ressourcen
+### 10. [.info](/de/tld/info) — für mandantenorientierte Ressourcen
 
-[`.info`](/en/tld/info) eignet sich für FAQ-Hubs, Erläuterungen zu Rechtsgebieten und Aufnahmeressourcen, bei denen der Name „Information" vermitteln soll. Es ist eine kostengünstige defensive Registrierung und ein flexibler Ort für Inhalte. Siehe seinen [IANA-Root-Eintrag](https://www.iana.org/domains/root/db/info.html) für Delegationsdetails.
+[`.info`](/de/tld/info) eignet sich für FAQ-Hubs, Erläuterungen zu Rechtsgebieten und Aufnahmeressourcen, bei denen der Name „Information" vermitteln soll. Es ist eine kostengünstige defensive Registrierung und ein flexibler Ort für Inhalte. Siehe seinen [IANA-Root-Eintrag](https://www.iana.org/domains/root/db/info.html) für Delegationsdetails.
 
 ## Defensive Registrierungsstrategie
 

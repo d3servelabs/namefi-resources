@@ -13,11 +13,11 @@ keywords: ['tld', 'tld bedeutung', 'was ist eine tld', 'was ist eine top-level-d
 
 Eine **TLD (Top-Level-Domain)** ist der Teil eines Domainnamens, der **nach dem letzten Punkt** steht. Bei `namefi.io` ist die TLD `.io`. Bei `google.com` ist die TLD `.com`. Bei `wikipedia.org` ist die TLD `.org`.
 
-Das ist die gesamte **TLD-Definition** in einem Satz: das am weitesten rechts stehende Label eines [Domainnamens](/en/blog/what-is-domain/). Viele nennen sie auch **Domain-Endung** oder **Domain-Suffix**, aber der technisch korrekte Begriff lautet *Top-Level-Domain*. Sie steht ganz oben in der Namenshierarchie des Internets — daher der Name.
+Das ist die gesamte **TLD-Definition** in einem Satz: das am weitesten rechts stehende Label eines [Domainnamens](/de/blog/what-is-domain/). Viele nennen sie auch **Domain-Endung** oder **Domain-Suffix**, aber der technisch korrekte Begriff lautet *Top-Level-Domain*. Sie steht ganz oben in der Namenshierarchie des Internets — daher der Name.
 
-> **TLD-Bedeutung, kurz gefasst:** *Top-Level-Domain* — das Suffix am Ende einer Webadresse (`.com`, `.org`, `.io`, `.ai`, `.xyz`), das die höchste Ebene des [Domain Name System (DNS)](/en/glossary/dns/) kennzeichnet.
+> **TLD-Bedeutung, kurz gefasst:** *Top-Level-Domain* — das Suffix am Ende einer Webadresse (`.com`, `.org`, `.io`, `.ai`, `.xyz`), das die höchste Ebene des [Domain Name System (DNS)](/de/glossary/dns/) kennzeichnet.
 
-Ob Sie nach **"que es un TLD"** (Spanisch) oder **"qu'est-ce qu'un TLD"** (Französisch) gesucht haben — die Antwort ist in jeder Sprache dieselbe: Eine TLD ist die Endung eines Domainnamens, die von einem globalen System aus Registrierungsstellen unter der Aufsicht von [ICANN](/en/glossary/icann/) verwaltet wird.
+Ob Sie nach **"que es un TLD"** (Spanisch) oder **"qu'est-ce qu'un TLD"** (Französisch) gesucht haben — die Antwort ist in jeder Sprache dieselbe: Eine TLD ist die Endung eines Domainnamens, die von einem globalen System aus Registrierungsstellen unter der Aufsicht von [ICANN](/de/glossary/icann/) verwaltet wird.
 
 ---
 
@@ -45,7 +45,7 @@ Einige Unterschiede, die man kennen sollte:
 - Die **TLD** ist die gemeinsame Endung. Sie besitzen nicht `.io`; Sie besitzen einen Namen *darunter*.
 - Eine **Subdomain** können Sie kostenlos nutzen, sobald Sie die Domain besitzen — `mail.namefi.io`, `shop.namefi.io` und so weiter.
 
-Eine ausführlichere Erklärung zum Aufbau von Domains finden Sie unter [Was ist ein Domainname?](/en/blog/what-is-domain/) und in unserem [Domain-Terminologieleitfaden](/en/blog/domain-terminology-guide/).
+Eine ausführlichere Erklärung zum Aufbau von Domains finden Sie unter [Was ist ein Domainname?](/de/blog/what-is-domain/) und in unserem [Domain-Terminologieleitfaden](/de/blog/domain-terminology-guide/).
 
 ---
 
@@ -57,21 +57,21 @@ Nicht alle TLDs sind gleich. ICANN und IANA klassifizieren sie in einige Kategor
 
 **gTLDs** sind die klassischen, universell einsetzbaren Endungen. Die ursprüngliche Auswahl ist klein und weltweit bekannt:
 
-- [`.com`](/en/tld/com/) — *kommerziell*, der Standard für das gesamte Web
-- [`.net`](/en/tld/net/) — ursprünglich für Netzwerkinfrastruktur
-- [`.org`](/en/tld/org/) — ursprünglich für Organisationen und gemeinnützige Einrichtungen
-- [`.info`](/en/tld/info/) — Informationsseiten
+- [`.com`](/de/tld/com/) — *kommerziell*, der Standard für das gesamte Web
+- [`.net`](/de/tld/net/) — ursprünglich für Netzwerkinfrastruktur
+- [`.org`](/de/tld/org/) — ursprünglich für Organisationen und gemeinnützige Einrichtungen
+- [`.info`](/de/tld/info/) — Informationsseiten
 
 Diese sind für jeden zugänglich und bleiben die vertrauenswürdigsten und meistgehandelten Endungen im Internet.
 
 ### 2. Ländercode-TLDs (ccTLDs)
 
-**ccTLDs** sind zweistellige TLDs, die einem Land oder Gebiet zugeordnet sind, basierend auf der ISO-3166-Ländercodes-Liste. Beispiele sind `.us` (USA), `.uk` (Vereinigtes Königreich), `.de` (Deutschland), `.cn` (China), [`.ae`](/en/tld/ae/) (Vereinigte Arabische Emirate) und [`.ac`](/en/tld/ac/) (Ascension Island).
+**ccTLDs** sind zweistellige TLDs, die einem Land oder Gebiet zugeordnet sind, basierend auf der ISO-3166-Ländercodes-Liste. Beispiele sind `.us` (USA), `.uk` (Vereinigtes Königreich), `.de` (Deutschland), `.cn` (China), [`.ae`](/de/tld/ae/) (Vereinigte Arabische Emirate) und [`.ac`](/de/tld/ac/) (Ascension Island).
 
 Interessanterweise wurden viele ccTLDs weit über ihr Heimatland hinaus zweckentfremdet, weil die Buchstaben etwas Nützliches ergeben:
 
-- [`.ai`](/en/tld/ai/) ist technisch gesehen die ccTLD von Anguilla, hat sich aber zur *maßgeblichen* Endung für Unternehmen im Bereich künstliche Intelligenz entwickelt.
-- [`.io`](/en/tld/io/) gehört zum Britischen Territorium im Indischen Ozean, dominiert jedoch die Markenbildung im Tech- und Startup-Bereich ("I/O").
+- [`.ai`](/de/tld/ai/) ist technisch gesehen die ccTLD von Anguilla, hat sich aber zur *maßgeblichen* Endung für Unternehmen im Bereich künstliche Intelligenz entwickelt.
+- [`.io`](/de/tld/io/) gehört zum Britischen Territorium im Indischen Ozean, dominiert jedoch die Markenbildung im Tech- und Startup-Bereich ("I/O").
 - `.co` (Kolumbien) wird häufig als kurze Alternative zu `.com` verwendet.
 
 Das ist der **gTLD-vs.-ccTLD**-Unterschied auf den Punkt gebracht: gTLDs werden direkt unter ICANN-Verträgen verwaltet und sind weltweit zugänglich, während ccTLDs an nationale Behörden delegiert werden, die jeweils eigene Regeln haben (manche erfordern einen lokalen Wohnsitz, andere nicht).
@@ -86,13 +86,13 @@ Ab 2013 öffnete ICANN mit dem **neuen gTLD-Programm** die Schleusen und erweite
 
 | Kategorie | Beispiele |
 |----------|----------|
-| Tech & Web | [`.app`](/en/tld/app/), [`.dev`](/en/tld/dev/), [`.tech`](/en/tld/tech/), [`.cloud`](/en/tld/cloud/), [`.click`](/en/tld/click/) |
-| Modern & generisch | [`.xyz`](/en/tld/xyz/), [`.site`](/en/tld/site/), [`.online`](/en/tld/online/), [`.world`](/en/tld/world/), [`.space`](/en/tld/space/) |
-| Handel | [`.shop`](/en/tld/shop/), [`.store`](/en/tld/store/), [`.vip`](/en/tld/vip/) |
-| Community & Inhalte | [`.blog`](/en/tld/blog/), [`.club`](/en/tld/club/), [`.live`](/en/tld/live/), [`.fun`](/en/tld/fun/) |
-| Kurz & einprägsam | [`.io`](/en/tld/io/), [`.top`](/en/tld/top/), [`.sbs`](/en/tld/sbs/), [`.now`](/en/tld/now/) |
+| Tech & Web | [`.app`](/de/tld/app/), [`.dev`](/de/tld/dev/), [`.tech`](/de/tld/tech/), [`.cloud`](/de/tld/cloud/), [`.click`](/de/tld/click/) |
+| Modern & generisch | [`.xyz`](/de/tld/xyz/), [`.site`](/de/tld/site/), [`.online`](/de/tld/online/), [`.world`](/de/tld/world/), [`.space`](/de/tld/space/) |
+| Handel | [`.shop`](/de/tld/shop/), [`.store`](/de/tld/store/), [`.vip`](/de/tld/vip/) |
+| Community & Inhalte | [`.blog`](/de/tld/blog/), [`.club`](/de/tld/club/), [`.live`](/de/tld/live/), [`.fun`](/de/tld/fun/) |
+| Kurz & einprägsam | [`.io`](/de/tld/io/), [`.top`](/de/tld/top/), [`.sbs`](/de/tld/sbs/), [`.now`](/de/tld/now/) |
 
-Neue gTLDs verschafften dem Internet mehr Spielraum: Als alle guten `.com`-Adressen vergeben waren, eröffneten Endungen wie [`.xyz`](/en/tld/xyz/), [`.site`](/en/tld/site/) und [`.app`](/en/tld/app/) frischen, einprägsamen Namensraum.
+Neue gTLDs verschafften dem Internet mehr Spielraum: Als alle guten `.com`-Adressen vergeben waren, eröffneten Endungen wie [`.xyz`](/de/tld/xyz/), [`.site`](/de/tld/site/) und [`.app`](/de/tld/app/) frischen, einprägsamen Namensraum.
 
 ### 5. Internationalisierte TLDs (IDN-TLDs)
 
@@ -100,7 +100,7 @@ Neue gTLDs verschafften dem Internet mehr Spielraum: Als alle guten `.com`-Adres
 
 ### Ein Hinweis zu Web3-Endungen
 
-Vielleicht haben Sie auch blockchain-native Endungen wie `.eth` oder `.crypto` gesehen. Diese sind *keine* ICANN-TLDs — sie existieren außerhalb des traditionellen DNS-Roots und können nur über spezielle Wallets oder Resolver aufgelöst werden. Namefi katalogisiert auch diese (siehe [`.eth`](/en/tld/eth/)), aber es ist wichtig zu wissen, dass sie eine andere Kategorie darstellen. Diese Unterscheidung erläutern wir in [Tokenisierte Domain vs. Web3-Domain](/en/blog/tokenized-domain-vs-web3-domain/).
+Vielleicht haben Sie auch blockchain-native Endungen wie `.eth` oder `.crypto` gesehen. Diese sind *keine* ICANN-TLDs — sie existieren außerhalb des traditionellen DNS-Roots und können nur über spezielle Wallets oder Resolver aufgelöst werden. Namefi katalogisiert auch diese (siehe [`.eth`](/de/tld/eth/)), aber es ist wichtig zu wissen, dass sie eine andere Kategorie darstellen. Diese Unterscheidung erläutern wir in [Tokenisierte Domain vs. Web3-Domain](/de/blog/tokenized-domain-vs-web3-domain/).
 
 ---
 
@@ -108,10 +108,10 @@ Vielleicht haben Sie auch blockchain-native Endungen wie `.eth` oder `.crypto` g
 
 Hinter jeder TLD steckt ein vielschichtiges Verwaltungssystem. Hier ist, wer was tut:
 
-- **ICANN** — die [Internet Corporation for Assigned Names and Numbers](/en/glossary/icann/) ist die gemeinnützige Organisation, die den globalen Namensraum koordiniert, Richtlinien für gTLDs festlegt und Registrare akkreditiert. 1998 gegründet, ist sie das Nächste, was die Domain-Welt einem Schiedsrichter hat.
+- **ICANN** — die [Internet Corporation for Assigned Names and Numbers](/de/glossary/icann/) ist die gemeinnützige Organisation, die den globalen Namensraum koordiniert, Richtlinien für gTLDs festlegt und Registrare akkreditiert. 1998 gegründet, ist sie das Nächste, was die Domain-Welt einem Schiedsrichter hat.
 - **IANA** — die Internet Assigned Numbers Authority (unter ICANN betrieben) pflegt die maßgebliche **Root-Zone**: die Masterliste aller gültigen TLDs und welche Registrierungsstelle sie betreibt.
-- **Registrierungsstellen (Registries)** — jede TLD wird von einer *Registrierungsstelle* betrieben, der Organisation, die die zentrale Datenbank für diese Endung verwaltet. Beispielsweise betreibt **Verisign** `.com` und `.net`, und die **Public Interest Registry (PIR)** betreibt `.org`. ccTLD-Registrierungsstellen sind in der Regel nationale Behörden — zum Beispiel wird [`.ae`](/en/tld/ae/) von der TDRA der Vereinigten Arabischen Emirate verwaltet.
-- **Registrare** — ein [Registrar](/en/glossary/registrar/) ist der Händler, bei dem Sie kaufen. ICANN-akkreditierte Registrare (wie Namefi, GoDaddy und Namecheap) verkaufen Namen an die Öffentlichkeit und leiten Registrierungen an die Registrierungsstelle weiter.
+- **Registrierungsstellen (Registries)** — jede TLD wird von einer *Registrierungsstelle* betrieben, der Organisation, die die zentrale Datenbank für diese Endung verwaltet. Beispielsweise betreibt **Verisign** `.com` und `.net`, und die **Public Interest Registry (PIR)** betreibt `.org`. ccTLD-Registrierungsstellen sind in der Regel nationale Behörden — zum Beispiel wird [`.ae`](/de/tld/ae/) von der TDRA der Vereinigten Arabischen Emirate verwaltet.
+- **Registrare** — ein [Registrar](/de/glossary/registrar/) ist der Händler, bei dem Sie kaufen. ICANN-akkreditierte Registrare (wie Namefi, GoDaddy und Namecheap) verkaufen Namen an die Öffentlichkeit und leiten Registrierungen an die Registrierungsstelle weiter.
 
 Die Kette sieht also so aus: **ICANN/IANA** legt die Regeln und den Root fest → **Registrierungsstellen** betreiben jede TLD → **Registrare** verkaufen Namen an **Sie**. Wenn Sie `ihrname.com` registrieren, kaufen Sie bei einem Registrar, der es bei der Registrierungsstelle (Verisign) einträgt — alles unter der ICANN-Richtlinie.
 
@@ -123,20 +123,20 @@ Eine schnelle, übersichtliche Referenz gängiger **TLD-Beispiele** und wofür j
 
 | TLD | Typ | Bekannt für |
 |-----|------|----------------|
-| [`.com`](/en/tld/com/) | gTLD | Der Standard für jedes Unternehmen — meistvertraut, wertvollste |
-| [`.org`](/en/tld/org/) | gTLD | Gemeinnützige Organisationen, Communities, Open-Source-Projekte |
-| [`.net`](/en/tld/net/) | gTLD | Tech, Netzwerke, Infrastruktur |
-| [`.io`](/en/tld/io/) | ccTLD (zweckentfremdet) | Startups, Entwickler, SaaS |
-| [`.ai`](/en/tld/ai/) | ccTLD (zweckentfremdet) | Künstliche Intelligenz und Tech |
-| [`.app`](/en/tld/app/) | neue gTLD | Mobile und Web-Apps (nur HTTPS) |
-| [`.dev`](/en/tld/dev/) | neue gTLD | Entwickler und Engineering-Teams |
-| [`.tech`](/en/tld/tech/) | neue gTLD | Technologiemarken und -produkte |
-| [`.xyz`](/en/tld/xyz/) | neue gTLD | Modern, flexibel, generationsneutral |
-| [`.shop`](/en/tld/shop/) | neue gTLD | E-Commerce und Einzelhandel |
-| [`.vip`](/en/tld/vip/) | neue gTLD | Premium-, exklusive und Mitgliedschaftsmarken |
-| [`.sbs`](/en/tld/sbs/) | neue gTLD | "Side-by-side" — erschwingliche, ausdrucksstarke Namen |
+| [`.com`](/de/tld/com/) | gTLD | Der Standard für jedes Unternehmen — meistvertraut, wertvollste |
+| [`.org`](/de/tld/org/) | gTLD | Gemeinnützige Organisationen, Communities, Open-Source-Projekte |
+| [`.net`](/de/tld/net/) | gTLD | Tech, Netzwerke, Infrastruktur |
+| [`.io`](/de/tld/io/) | ccTLD (zweckentfremdet) | Startups, Entwickler, SaaS |
+| [`.ai`](/de/tld/ai/) | ccTLD (zweckentfremdet) | Künstliche Intelligenz und Tech |
+| [`.app`](/de/tld/app/) | neue gTLD | Mobile und Web-Apps (nur HTTPS) |
+| [`.dev`](/de/tld/dev/) | neue gTLD | Entwickler und Engineering-Teams |
+| [`.tech`](/de/tld/tech/) | neue gTLD | Technologiemarken und -produkte |
+| [`.xyz`](/de/tld/xyz/) | neue gTLD | Modern, flexibel, generationsneutral |
+| [`.shop`](/de/tld/shop/) | neue gTLD | E-Commerce und Einzelhandel |
+| [`.vip`](/de/tld/vip/) | neue gTLD | Premium-, exklusive und Mitgliedschaftsmarken |
+| [`.sbs`](/de/tld/sbs/) | neue gTLD | "Side-by-side" — erschwingliche, ausdrucksstarke Namen |
 
-Möchten Sie eine bestimmte Endung genauer erkunden? Durchsuchen Sie die vollständige Bibliothek der [TLD-Leitfäden](/en/tld/), einschließlich [`.cloud`](/en/tld/cloud/), [`.online`](/en/tld/online/), [`.store`](/en/tld/store/), [`.site`](/en/tld/site/), [`.club`](/en/tld/club/), [`.world`](/en/tld/world/) und vielen weiteren.
+Möchten Sie eine bestimmte Endung genauer erkunden? Durchsuchen Sie die vollständige Bibliothek der [TLD-Leitfäden](/en/tld/), einschließlich [`.cloud`](/de/tld/cloud/), [`.online`](/de/tld/online/), [`.store`](/de/tld/store/), [`.site`](/de/tld/site/), [`.club`](/de/tld/club/), [`.world`](/de/tld/world/) und vielen weiteren.
 
 ---
 
@@ -144,12 +144,12 @@ Möchten Sie eine bestimmte Endung genauer erkunden? Durchsuchen Sie die vollst�
 
 Bei weit über tausend Optionen hängt die Wahl der richtigen Endung von einigen praktischen Fragen ab:
 
-1. **Ist `.com` verfügbar?** Es ist nach wie vor der Goldstandard für Vertrauen und Wiederverkaufswert. Wenn Ihre exakte `.com`-Adresse frei und erschwinglich ist, ist sie in der Regel die sichere Standardwahl. Lesen Sie, [warum `.com` der Goldstandard bleibt](/en/tld/com/).
-2. **Passt die TLD zu Ihrem Zweck?** Ein Startup passt zu [`.io`](/en/tld/io/) oder [`.ai`](/en/tld/ai/); ein Shop passt zu [`.shop`](/en/tld/shop/) oder [`.store`](/en/tld/store/); ein Entwicklerwerkzeug passt zu [`.dev`](/en/tld/dev/). Die richtige Endung kann *beschreiben*, was Sie tun.
-3. **Richten Sie sich an ein bestimmtes Land?** Eine ccTLD wie [`.ae`](/en/tld/ae/) signalisiert lokale Präsenz und kann die lokale Sichtbarkeit in Suchmaschinen verbessern — prüfen Sie aber zuerst die Berechtigungsregeln.
-4. **Ist der Name einprägsam und markentauglich?** Ein kurzes SLD auf einer modernen TLD ([`.xyz`](/en/tld/xyz/), [`.app`](/en/tld/app/)) schlägt oft eine lange, unhandliche `.com`-Adresse.
+1. **Ist `.com` verfügbar?** Es ist nach wie vor der Goldstandard für Vertrauen und Wiederverkaufswert. Wenn Ihre exakte `.com`-Adresse frei und erschwinglich ist, ist sie in der Regel die sichere Standardwahl. Lesen Sie, [warum `.com` der Goldstandard bleibt](/de/tld/com/).
+2. **Passt die TLD zu Ihrem Zweck?** Ein Startup passt zu [`.io`](/de/tld/io/) oder [`.ai`](/de/tld/ai/); ein Shop passt zu [`.shop`](/de/tld/shop/) oder [`.store`](/de/tld/store/); ein Entwicklerwerkzeug passt zu [`.dev`](/de/tld/dev/). Die richtige Endung kann *beschreiben*, was Sie tun.
+3. **Richten Sie sich an ein bestimmtes Land?** Eine ccTLD wie [`.ae`](/de/tld/ae/) signalisiert lokale Präsenz und kann die lokale Sichtbarkeit in Suchmaschinen verbessern — prüfen Sie aber zuerst die Berechtigungsregeln.
+4. **Ist der Name einprägsam und markentauglich?** Ein kurzes SLD auf einer modernen TLD ([`.xyz`](/de/tld/xyz/), [`.app`](/de/tld/app/)) schlägt oft eine lange, unhandliche `.com`-Adresse.
 5. **Was kosten die Verlängerungen?** Einige TLDs haben günstige Erstjahresangebote, aber höhere Verlängerungspreise. Prüfen Sie immer den langfristigen Preis, nicht nur den Einführungspreis.
-6. **Gibt es Einschränkungen?** Gesponserte TLDs (`.gov`, `.edu`) und einige ccTLDs erfordern Berechtigungsnachweise. Neue gTLDs wie [`.app`](/en/tld/app/) und [`.dev`](/en/tld/dev/) erzwingen standardmäßig HTTPS.
+6. **Gibt es Einschränkungen?** Gesponserte TLDs (`.gov`, `.edu`) und einige ccTLDs erfordern Berechtigungsnachweise. Neue gTLDs wie [`.app`](/de/tld/app/) und [`.dev`](/de/tld/dev/) erzwingen standardmäßig HTTPS.
 
 Eine gute Faustregel: **Wählen Sie die TLD, der Ihr Publikum vertrauen wird und die es sich merken kann** — und stellen Sie dann sicher, dass Preis und Regeln zu Ihren Plänen passen.
 
@@ -159,7 +159,7 @@ Eine gute Faustregel: **Wählen Sie die TLD, der Ihr Publikum vertrauen wird und
 
 Hier wird es für die nächste Ära der Domains interessant. Ihre TLD beeinflusst nicht nur Ihre Markenbildung — sie bestimmt auch, ob Ihre Domain **on-chain** gebracht werden kann.
 
-Eine [tokenisierte Domain](/en/blog/what-are-tokenized-domains/) ist eine echte, ICANN-anerkannte Domain, deren Eigentümerschaft *zusätzlich* als Token (typischerweise ein [NFT](/en/glossary/nft/)) in Ihrer Wallet repräsentiert wird. Die DNS-Schicht funktioniert weiterhin genau wie zuvor; Sie gewinnen lediglich eine zweite, programmierbare Eigentumsschicht darüber.
+Eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) ist eine echte, ICANN-anerkannte Domain, deren Eigentümerschaft *zusätzlich* als Token (typischerweise ein [NFT](/de/glossary/nft/)) in Ihrer Wallet repräsentiert wird. Die DNS-Schicht funktioniert weiterhin genau wie zuvor; Sie gewinnen lediglich eine zweite, programmierbare Eigentumsschicht darüber.
 
 Aber nicht jede TLD ist gleichermaßen dafür bereit. Einige Registrierungsstellen haben frühzeitig damit begonnen, On-Chain-Eigentumsschichten zu unterstützen; andere haben sich noch gar nicht bewegt. Deshalb spielt die gewählte TLD eine Rolle, wenn Sie jemals möchten:
 
@@ -167,9 +167,9 @@ Aber nicht jede TLD ist gleichermaßen dafür bereit. Einige Registrierungsstell
 - Sie in Sekunden on-chain übertragen (der DNS-Eintrag folgt)
 - Sie auf NFT-Marktplätzen auflisten oder als Sicherheit in [DeFi](/en/glossary/defi/) nutzen
 
-**Namefi** war die erste Plattform, die echte ICANN-Domains auf dem Ethereum-Mainnet tokenisierte — und die erste, die dies auf Base tat — für viele der oben genannten TLDs, einschließlich [`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/) und mehr. Sie behalten eine echte, im Browser auflösbare Domain *und* Wallet-natives Eigentum in einem Produkt.
+**Namefi** war die erste Plattform, die echte ICANN-Domains auf dem Ethereum-Mainnet tokenisierte — und die erste, die dies auf Base tat — für viele der oben genannten TLDs, einschließlich [`.com`](/de/tld/com/), [`.xyz`](/de/tld/xyz/), [`.io`](/de/tld/io/) und mehr. Sie behalten eine echte, im Browser auflösbare Domain *und* Wallet-natives Eigentum in einem Produkt.
 
-> Neugierig, wie die beiden Schichten zusammenpassen? Lesen Sie [Was sind tokenisierte Domains?](/en/blog/what-are-tokenized-domains/) oder besuchen Sie [namefi.io](https://namefi.io), um eine Domain zu registrieren oder zu tokenisieren.
+> Neugierig, wie die beiden Schichten zusammenpassen? Lesen Sie [Was sind tokenisierte Domains?](/de/blog/what-are-tokenized-domains/) oder besuchen Sie [namefi.io](https://namefi.io), um eine Domain zu registrieren oder zu tokenisieren.
 
 ---
 
@@ -206,7 +206,7 @@ Wenn Ihre exakte `.com`-Adresse verfügbar und erschwinglich ist, ist sie in der
 - Eine **TLD (Top-Level-Domain)** ist der Teil einer Domain nach dem letzten Punkt — `.com`, `.org`, `.io` und so weiter. Sie wird auch als Domain-Endung bezeichnet.
 - Von rechts nach links gelesen, gliedert sich eine Domain in **TLD → Second-Level-Domain → Subdomain**.
 - Die wichtigsten **TLD-Typen** sind gTLDs, ccTLDs, gesponserte TLDs, neue gTLDs und internationalisierte (IDN-)TLDs.
-- TLDs werden von **ICANN** und **IANA** an der Spitze, **Registrierungsstellen** für jede Endung und **[Registraren](/en/glossary/registrar/)** verwaltet, die Namen an Sie verkaufen.
-- Die Wahl einer TLD dreht sich um Vertrauen, Passgenauigkeit, Kosten und — zunehmend — darum, ob sie **on-chain** als [tokenisierte Domain](/en/blog/what-are-tokenized-domains/) gebracht werden kann.
+- TLDs werden von **ICANN** und **IANA** an der Spitze, **Registrierungsstellen** für jede Endung und **[Registraren](/de/glossary/registrar/)** verwaltet, die Namen an Sie verkaufen.
+- Die Wahl einer TLD dreht sich um Vertrauen, Passgenauigkeit, Kosten und — zunehmend — darum, ob sie **on-chain** als [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) gebracht werden kann.
 
 Bereit, eine Domain über Ihre bevorzugte TLD zu registrieren oder zu tokenisieren? Besuchen Sie [namefi.io](https://namefi.io), um loszulegen.

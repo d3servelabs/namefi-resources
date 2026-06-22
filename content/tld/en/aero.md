@@ -11,7 +11,7 @@ keywords: [".aero domains", "TLD", "top-level domain", "what is .aero", "why cho
 
 ## **What is .aero?**
 
-The **.aero** Top-Level Domain (TLD) is the internet’s dedicated namespace for the aviation community. Unlike generic domains like .com or .net, .aero is a **Sponsored Top-Level Domain (sTLD)**. This means it is managed by a specific agency representing the community it serves—in this case, [SITA (Société Internationale de Télécommunications Aéronautiques)](https://www.sita.aero/), a multinational information technology company providing IT and telecommunication services to the air transport industry.
+The **.aero** [Top-Level Domain (TLD)](/en/glossary/tld/) is the internet’s dedicated namespace for the aviation community. Unlike generic domains like [.com](/en/tld/com/) or [.net](/en/tld/net/), .aero is a **Sponsored Top-Level Domain (sTLD)**. This means it is managed by a specific agency representing the community it serves—in this case, [SITA (Société Internationale de Télécommunications Aéronautiques)](https://www.sita.aero/), a multinational information technology company providing IT and telecommunication services to the air transport industry.
 
 Established in 2002 as the first sTLD approved by [ICANN](https://www.icann.org/), .aero was designed to structure the internet presence of the aviation world efficiently. It is a "restricted" domain, meaning not just anyone can register one. Applicants must obtain an Aviation Community ID and prove their validity within the aerospace sector. This exclusivity transforms the extension from a simple web address into a digital badge of authenticity and professionalism.
 
@@ -48,7 +48,7 @@ If you qualify for this exclusive domain, securing a .aero address offers distin
 
 Are you ready to claim your territory in the digital sky? If you are part of the aviation community, a .aero domain is a powerful asset for your brand's authority.
 
-At **Namefi**, we make managing your digital assets seamless. Whether you are securing a .aero domain for your airline or building a portfolio of high-value industry domains, Namefi offers a next-generation experience. We combine ICANN-accredited reliability with cutting-edge Web3 integration, allowing you to tokenize your domains for easier transfer, enhanced security, and seamless management on the blockchain.
+At **Namefi**, we make managing your digital assets seamless. Whether you are securing a .aero domain for your airline or building a portfolio of high-value industry domains, Namefi offers a next-generation experience. We combine [ICANN](/en/glossary/icann/)-accredited reliability with cutting-edge Web3 integration, allowing you to [tokenize](/en/glossary/tokenize/) your domains for easier transfer, enhanced security, and seamless management on the blockchain.
 
 **Secure your aviation identity today.**
 

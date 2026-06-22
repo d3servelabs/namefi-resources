@@ -12,7 +12,7 @@ keywords: ['房产经纪人域名后缀', '房地产域名', '.realtor 域名', 
 
 你的名字和本地品牌是房地产行业中最有价值的两项资产。当买家搜索"Jane Smith 房产经纪人"或你深耕的社区名称时，与这些关键词关联的域名应该指向你——而不是竞争对手、仿冒网站，或一个挂满广告的停放页面。正因如此，为你的房产业务注册多个**顶级域名（TLD）**，是你能买到的最低成本品牌保险之一。
 
-一位只拥有自己姓名 [`.com`](/en/tld/com) 域名的经纪人，无异于敞开大门，任由他人注册 [`.realty`](/en/tld/realty)、[`.homes`](/en/tld/homes) 或 [`.house`](/en/tld/house) 版本，并借助你积累的声誉从中获利。注册一组精选的顶级域名，可以让你保护本地品牌、为房源或深耕区域建立清晰的子品牌，并在明显的仿冒行为发生之前将其扼杀。本指南将介绍适合房产经纪人的最佳顶级域名、需要了解的资格要求，以及一套简单的防御性注册策略。
+一位只拥有自己姓名 [`.com`](/zh/tld/com) 域名的经纪人，无异于敞开大门，任由他人注册 [`.realty`](/en/tld/realty)、[`.homes`](/en/tld/homes) 或 [`.house`](/en/tld/house) 版本，并借助你积累的声誉从中获利。注册一组精选的顶级域名，可以让你保护本地品牌、为房源或深耕区域建立清晰的子品牌，并在明显的仿冒行为发生之前将其扼杀。本指南将介绍适合房产经纪人的最佳顶级域名、需要了解的资格要求，以及一套简单的防御性注册策略。
 
 ## 如何为你的房产业务选择顶级域名
 
@@ -20,7 +20,7 @@ keywords: ['房产经纪人域名后缀', '房地产域名', '.realtor 域名', 
 
 ## 房产经纪人应注册的十大顶级域名
 
-### 1. [.com](/en/tld/com) — 不可或缺的核心锚点
+### 1. [.com](/zh/tld/com) — 不可或缺的核心锚点
 
 `.com` 至今仍是买家默认输入和信任的后缀，也是全球最大的顶级域名。优先注册你个人品牌和经纪公司名称的 `.com`；其他一切都是次要的。如果你的精确 `.com` 已被占用，一个紧凑的变体也比在陌生后缀上拿到完美匹配更有价值。该域名由 Verisign 在 [ICANN 注册协议](https://www.icann.org/en/registry-agreements/details/com)框架下运营。
 
@@ -48,17 +48,17 @@ keywords: ['房产经纪人域名后缀', '房地产域名', '.realtor 域名', 
 
 `.house` 是一个简洁友好的后缀，适合开放日活动、单一房源网站和轻松的个人品牌等多种场景。它对任何人开放，且朗朗上口，有助于在门牌和广播中传播。注册详情可查阅 [ICANN](https://www.icann.org/en/registry-agreements/details/house)。
 
-### 8. [.net](/en/tld/net) — 经典的防御性备用后缀
+### 8. [.net](/zh/tld/net) — 经典的防御性备用后缀
 
-[`.net`](/en/tld/net) 是历史最悠久、认知度最高的后缀之一，是 `.com` 最自然的防御性配套选项。拥有它可以防止竞争对手抢注你名字的第二选择。它由 Verisign 在 [ICANN 注册协议](https://www.icann.org/en/registry-agreements/details/net)框架下运营。
+[`.net`](/zh/tld/net) 是历史最悠久、认知度最高的后缀之一，是 `.com` 最自然的防御性配套选项。拥有它可以防止竞争对手抢注你名字的第二选择。它由 Verisign 在 [ICANN 注册协议](https://www.icann.org/en/registry-agreements/details/net)框架下运营。
 
-### 9. [.org](/en/tld/org) — 协会和社区工作的公信力背书
+### 9. [.org](/zh/tld/org) — 协会和社区工作的公信力背书
 
-[`.org`](/en/tld/org) 带有可信赖、面向社区的气质，适合房产经纪人协会、社区资源网站以及你业务之外运营的非商业项目。注册它同时也能防止仿冒者使用。`.org` 顶级域名的详情见 [IANA 根域数据库](https://www.iana.org/domains/root/db/org.html)。
+[`.org`](/zh/tld/org) 带有可信赖、面向社区的气质，适合房产经纪人协会、社区资源网站以及你业务之外运营的非商业项目。注册它同时也能防止仿冒者使用。`.org` 顶级域名的详情见 [IANA 根域数据库](https://www.iana.org/domains/root/db/org.html)。
 
-### 10. [.vip](/en/tld/vip) — 为顶级客户塑造尊贵定位
+### 10. [.vip](/zh/tld/vip) — 为顶级客户塑造尊贵定位
 
-[`.vip`](/en/tld/vip) 传递出专属感，适合豪华地产业务或私人客户门户，例如 `clients.yourname.vip`。它不设注册限制，且简短醒目，在名片上格外出众。其注册协议由 [ICANN](https://www.icann.org/en/registry-agreements/details/vip) 公示。
+[`.vip`](/zh/tld/vip) 传递出专属感，适合豪华地产业务或私人客户门户，例如 `clients.yourname.vip`。它不设注册限制，且简短醒目，在名片上格外出众。其注册协议由 [ICANN](https://www.icann.org/en/registry-agreements/details/vip) 公示。
 
 ## 防御性注册策略
 

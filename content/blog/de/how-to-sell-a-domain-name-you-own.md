@@ -99,7 +99,7 @@ Erledigen Sie diesen Teil vor der Kontaktaufnahme. Das erspart später peinliche
 
 ### Bestätigen Sie die Kontrolle
 
-Stellen Sie sicher, dass Sie sich in das Konto des [Registrars](/en/glossary/registrar/) einloggen können, Zugang zur Registranten-/Admin-E-Mail haben und beweisen können, dass Sie die Domain kontrollieren. Wenn die Domain einem Unternehmen gehört, klären Sie, wer die Befugnis hat, sie zu verkaufen.
+Stellen Sie sicher, dass Sie sich in das Konto des [Registrars](/de/glossary/registrar/) einloggen können, Zugang zur Registranten-/Admin-E-Mail haben und beweisen können, dass Sie die Domain kontrollieren. Wenn die Domain einem Unternehmen gehört, klären Sie, wer die Befugnis hat, sie zu verkaufen.
 
 ### Überprüfen Sie das Ablaufdatum
 
@@ -119,7 +119,7 @@ Notieren Sie sich das. „Die Domain“ und „das Geschäft rund um die Domain�
 
 ### Halten Sie DNS unauffällig
 
-Wenn die Domain für eine aktive Website oder E-Mails genutzt wird, seien Sie vorsichtig mit [DNS](/en/glossary/dns/)-Änderungen. Ein Registrar-Transfer bedeutet nicht immer, dass sich das DNS ändern muss, aber von einem Registrar gehostetes DNS kann abbrechen, wenn niemand die Übergabe plant. Bei einer wertvollen, operativ genutzten Domain müssen Sie klären, wo das DNS gehostet wird, welche Einträge wichtig sind und wer die Kontinuität nach dem Abschluss sicherstellt.
+Wenn die Domain für eine aktive Website oder E-Mails genutzt wird, seien Sie vorsichtig mit [DNS](/de/glossary/dns/)-Änderungen. Ein Registrar-Transfer bedeutet nicht immer, dass sich das DNS ändern muss, aber von einem Registrar gehostetes DNS kann abbrechen, wenn niemand die Übergabe plant. Bei einer wertvollen, operativ genutzten Domain müssen Sie klären, wo das DNS gehostet wird, welche Einträge wichtig sind und wer die Kontinuität nach dem Abschluss sicherstellt.
 
 ## 4. Wählen Sie Inbound, Outbound oder beides
 
@@ -266,11 +266,11 @@ In den USA behandelt die IRS den Verkauf von Vermögenswerten nach Steuervorschr
 
 ## Sonderfall: Tokenisierte Domains
 
-Wenn Ihre Domain eine [tokenisierte Domain](/en/blog/what-are-tokenized-domains/) ist, können die Abschlussmechanismen anders aussehen.
+Wenn Ihre Domain eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) ist, können die Abschlussmechanismen anders aussehen.
 
-Bei einem traditionellen Verkauf gibt es Treuhandservices (Escrow), weil Zahlung und Registrar-Transfer in separaten Schritten erfolgen. Bei einem tokenisierten Domainverkauf kann das Eigentum durch ein [NFT](/en/glossary/nft/) repräsentiert und durch eine [On-Chain](/en/glossary/on-chain/)-Transaktion übertragen werden. Das kann die Abwicklung komprimieren, beseitigt aber nicht alle Risiken. Sie benötigen weiterhin die Passgenauigkeit für den Käufer, eine saubere Rechtslage, Wallet-Sicherheit, Steuerunterlagen und ein klares Verständnis dessen, was der Käufer zu erhalten erwartet.
+Bei einem traditionellen Verkauf gibt es Treuhandservices (Escrow), weil Zahlung und Registrar-Transfer in separaten Schritten erfolgen. Bei einem tokenisierten Domainverkauf kann das Eigentum durch ein [NFT](/de/glossary/nft/) repräsentiert und durch eine [On-Chain](/de/glossary/on-chain/)-Transaktion übertragen werden. Das kann die Abwicklung komprimieren, beseitigt aber nicht alle Risiken. Sie benötigen weiterhin die Passgenauigkeit für den Käufer, eine saubere Rechtslage, Wallet-Sicherheit, Steuerunterlagen und ein klares Verständnis dessen, was der Käufer zu erhalten erwartet.
 
-Mehr darüber, wie tokenisierte Verkäufe die Treuhand-Mechanismen verändern, lesen Sie unter [From Listing to Settlement: How Tokenized Marketplaces Replace Escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+Mehr darüber, wie tokenisierte Verkäufe die Treuhand-Mechanismen verändern, lesen Sie unter [From Listing to Settlement: How Tokenized Marketplaces Replace Escrow](/de/blog/how-tokenized-marketplaces-replace-escrow/).
 
 ## Was Sie nicht tun sollten
 

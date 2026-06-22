@@ -12,7 +12,7 @@ keywords: ['tlds pour cabinets d''avocats', 'meilleurs domaines pour avocats', '
 
 Pour un cabinet d'avocats, un nom de domaine est bien plus qu'une adresse — c'est un signal de confiance. Les clients jugent la crédibilité en quelques secondes, et un domaine propre et professionnel sur une extension reconnue accomplit discrètement ce qu'une brochure ne peut pas faire. Sécuriser le bon ensemble de **TLD pour votre cabinet d'avocats** protège les noms qui comptent le plus : votre cabinet, vos associés et les domaines de pratique pour lesquels vous souhaitez apparaître en tête des résultats.
 
-Il existe également une dimension défensive. Si vous n'enregistrez que le [`.com`](/en/tld/com), rien n'empêche un concurrent, une partie mécontente ou un cybersquatteur de s'emparer du même nom sur [`.net`](/en/tld/net), [`.law`](/en/tld/law) ou une variante orthographique. Acheter quelques extensions pertinentes à l'avance est bien moins coûteux que de plaider ultérieurement un litige en cybersquattage, et cela maintient une image de marque cohérente sur le web.
+Il existe également une dimension défensive. Si vous n'enregistrez que le [`.com`](/fr/tld/com), rien n'empêche un concurrent, une partie mécontente ou un cybersquatteur de s'emparer du même nom sur [`.net`](/fr/tld/net), [`.law`](/en/tld/law) ou une variante orthographique. Acheter quelques extensions pertinentes à l'avance est bien moins coûteux que de plaider ultérieurement un litige en cybersquattage, et cela maintient une image de marque cohérente sur le web.
 
 ## Comment choisir les TLD pour votre cabinet d'avocats
 
@@ -20,7 +20,7 @@ Trois critères comptent avant tout. Premièrement, les **signaux de confiance**
 
 ## Les 10 meilleurs TLD à sécuriser pour votre cabinet d'avocats
 
-### 1. [.com](/en/tld/com) — l'ancre incontournable
+### 1. [.com](/fr/tld/com) — l'ancre incontournable
 
 `.com` reste l'extension la plus reconnue et la plus fiable au monde, et la plupart des clients la tapent par défaut. Sécurisez d'abord le `.com` principal de votre cabinet et faites pointer toutes les autres extensions vers celui-ci. C'est le seul domaine que vous ne devez jamais laisser expirer. Le registre est géré par [Verisign](https://www.iana.org/domains/root/db/com.html) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -44,21 +44,21 @@ Trois critères comptent avant tout. Premièrement, les **signaux de confiance**
 
 `.lawyer` s'associe naturellement au nom d'un praticien individuel et, comme `.attorney`, **n'est pas** réservé aux détenteurs de qualifications vérifiées. Vous pouvez confirmer sa délégation dans la [base de données racine IANA](https://www.iana.org/domains/root/db/lawyer.html) et son [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/lawyer). Enregistrez-le pour protéger votre nom et pour soutenir les microsites des associés.
 
-### 7. [.abogado](/en/tld/abogado) — toucher les clients hispanophones
+### 7. [.abogado](/fr/tld/abogado) — toucher les clients hispanophones
 
-[`.abogado`](/en/tld/abogado) (« avocat » en espagnol) est un choix judicieux pour les cabinets servant des communautés hispaniques et latinos ou opérant sur des marchés hispanophones. Il est librement disponible ; consultez son [entrée racine IANA](https://www.iana.org/domains/root/db/abogado.html) et l'[accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/abogado). Un moyen ciblé de signaler l'adéquation linguistique et culturelle.
+[`.abogado`](/fr/tld/abogado) (« avocat » en espagnol) est un choix judicieux pour les cabinets servant des communautés hispaniques et latinos ou opérant sur des marchés hispanophones. Il est librement disponible ; consultez son [entrée racine IANA](https://www.iana.org/domains/root/db/abogado.html) et l'[accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/abogado). Un moyen ciblé de signaler l'adéquation linguistique et culturelle.
 
-### 8. [.net](/en/tld/net) — la sauvegarde défensive classique
+### 8. [.net](/fr/tld/net) — la sauvegarde défensive classique
 
 `.net` est l'une des extensions génériques les plus anciennes et les plus fiables, ce qui en fait le complément défensif naturel de votre `.com`. Son enregistrement prévient la confusion et bloque un vecteur d'usurpation facile. Il est géré par [Verisign](https://www.iana.org/domains/root/db/net.html) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/en/tld/org) — pour les associations, cliniques et organisations à but non lucratif
+### 9. [.org](/fr/tld/org) — pour les associations, cliniques et organisations à but non lucratif
 
-[`.org`](/en/tld/org) évoque la mission et le service public — approprié pour les organisations d'aide juridique, les groupes proches du barreau et les initiatives pro bono, et il vaut la peine d'être sécurisé de manière défensive même pour les cabinets commerciaux. Il est administré par la [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). Il complète le trio classique aux côtés de `.com` et `.net`.
+[`.org`](/fr/tld/org) évoque la mission et le service public — approprié pour les organisations d'aide juridique, les groupes proches du barreau et les initiatives pro bono, et il vaut la peine d'être sécurisé de manière défensive même pour les cabinets commerciaux. Il est administré par la [Public Interest Registry](https://www.iana.org/domains/root/db/org.html). Il complète le trio classique aux côtés de `.com` et `.net`.
 
-### 10. [.info](/en/tld/info) — pour les ressources à destination des clients
+### 10. [.info](/fr/tld/info) — pour les ressources à destination des clients
 
-[`.info`](/en/tld/info) convient aux centres de FAQ, aux explications sur les domaines de pratique et aux ressources d'accueil où le nom doit dire « information ». C'est un enregistrement défensif peu coûteux et un support flexible pour le contenu. Consultez son [entrée racine IANA](https://www.iana.org/domains/root/db/info.html) pour les détails de délégation.
+[`.info`](/fr/tld/info) convient aux centres de FAQ, aux explications sur les domaines de pratique et aux ressources d'accueil où le nom doit dire « information ». C'est un enregistrement défensif peu coûteux et un support flexible pour le contenu. Consultez son [entrée racine IANA](https://www.iana.org/domains/root/db/info.html) pour les détails de délégation.
 
 ## Stratégie d'enregistrement défensif
 

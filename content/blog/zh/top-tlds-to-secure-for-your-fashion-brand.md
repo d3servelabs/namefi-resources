@@ -24,27 +24,27 @@ keywords: ['时尚品牌域名后缀', '时尚品牌域名', '零售最佳域名
 
 ### 1. .com — 不可或缺的核心域名
 
-[.com](/en/tld/com) 至今仍是购物者默认输入并信任的后缀，由 [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html) 运营。对于时尚品牌而言，它是主要的线上店铺和电子邮件域名，仅此而已。先注册它，其他一切都围绕它展开。注册资质无任何限制，任何人均可持有`.com`。
+[.com](/zh/tld/com) 至今仍是购物者默认输入并信任的后缀，由 [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html) 运营。对于时尚品牌而言，它是主要的线上店铺和电子邮件域名，仅此而已。先注册它，其他一切都围绕它展开。注册资质无任何限制，任何人均可持有`.com`。
 
 ### 2. .shop — 名副其实的零售意图
 
-[.shop](/en/tld/shop) 由东京的 [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) 运营，专为电商场景而生。对于品牌而言，`yourbrand.shop`传达的是清晰明确的"在此购买"信号，非常适合专属电商页面或季节性限量发售。无特殊注册限制，对所有注册者开放。
+[.shop](/zh/tld/shop) 由东京的 [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) 运营，专为电商场景而生。对于品牌而言，`yourbrand.shop`传达的是清晰明确的"在此购买"信号，非常适合专属电商页面或季节性限量发售。无特殊注册限制，对所有注册者开放。
 
 ### 3. .store — 为店铺而生
 
-[.store](/en/tld/store) 由 [Radix](https://www.iana.org/domains/root/db/store.html)（Radix Technologies Inc.）运营，与`.shop`一样直接指向零售场景。它适合搭配旗舰网店或快闪/限量系列站点，同时也是`.shop`的有力防御伴侣，确保两者都不落入他人之手。开放注册，无任何限制。
+[.store](/zh/tld/store) 由 [Radix](https://www.iana.org/domains/root/db/store.html)（Radix Technologies Inc.）运营，与`.shop`一样直接指向零售场景。它适合搭配旗舰网店或快闪/限量系列站点，同时也是`.shop`的有力防御伴侣，确保两者都不落入他人之手。开放注册，无任何限制。
 
 ### 4. .online — 广泛灵活的在线存在
 
-[.online](/en/tld/online) 同样由 [Radix](https://www.iana.org/domains/root/db/online.html) 运营，适合在`.com`已被注册时作为备选，或用于营销活动及展示册域名。其通用性足以指向任何内容——品牌中心、新闻资料包、季节性预告页面——且无注册资质限制。
+[.online](/zh/tld/online) 同样由 [Radix](https://www.iana.org/domains/root/db/online.html) 运营，适合在`.com`已被注册时作为备选，或用于营销活动及展示册域名。其通用性足以指向任何内容——品牌中心、新闻资料包、季节性预告页面——且无注册资质限制。
 
 ### 5. .site — 多用途的防御选择
 
-[.site](/en/tld/site)（同属 [Radix](https://www.iana.org/domains/root/db/site.html) 命名空间）价格低廉、知名度高，易于持有用于防御目的。可用于微型站点或营销活动落地页，也可仅作停放，防止被人利用来侵害您的品牌。对所有人开放。
+[.site](/zh/tld/site)（同属 [Radix](https://www.iana.org/domains/root/db/site.html) 命名空间）价格低廉、知名度高，易于持有用于防御目的。可用于微型站点或营销活动落地页，也可仅作停放，防止被人利用来侵害您的品牌。对所有人开放。
 
 ### 6. .co — 简短的高端替代方案
 
-[.co](/en/tld/co) 是哥伦比亚的国家顶级域名，由哥伦比亚 [信息与通信技术部（MinTIC）](https://www.iana.org/domains/root/db/co.html) 管理，技术运营由 CentralNic 负责，但在全球范围内被作为"company"（公司）或"commerce"（商业）的简称使用。许多时尚初创品牌在`.com`被占用时选择`.co`。注册向全球开放；由于它是由国家主管机构运营的国家顶级域名，在将其作为唯一店铺域名使用前，请仔细阅读注册局的条款。
+[.co](/zh/tld/co) 是哥伦比亚的国家顶级域名，由哥伦比亚 [信息与通信技术部（MinTIC）](https://www.iana.org/domains/root/db/co.html) 管理，技术运营由 CentralNic 负责，但在全球范围内被作为"company"（公司）或"commerce"（商业）的简称使用。许多时尚初创品牌在`.com`被占用时选择`.co`。注册向全球开放；由于它是由国家主管机构运营的国家顶级域名，在将其作为唯一店铺域名使用前，请仔细阅读注册局的条款。
 
 ### 7. .fashion — 最直接的行业定义
 
@@ -60,7 +60,7 @@ keywords: ['时尚品牌域名后缀', '时尚品牌域名', '零售最佳域名
 
 ### 10. .vip — 专属感与用户忠诚度
 
-[.vip](/en/tld/vip) 由 [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html)（GoDaddy Registry）运营。对于时尚品牌而言，它自然对应会员专属限量发售、积分忠诚计划和优先参与活动——`yourbrand.vip`营造的是一种专属体验感。无会员资格要求，对所有注册者开放。
+[.vip](/zh/tld/vip) 由 [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html)（GoDaddy Registry）运营。对于时尚品牌而言，它自然对应会员专属限量发售、积分忠诚计划和优先参与活动——`yourbrand.vip`营造的是一种专属体验感。无会员资格要求，对所有注册者开放。
 
 ## 防御性域名注册策略
 

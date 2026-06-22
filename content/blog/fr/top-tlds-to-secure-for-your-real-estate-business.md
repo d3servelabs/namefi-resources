@@ -12,7 +12,7 @@ keywords: ['tlds pour agents immobiliers', 'noms de domaine immobilier', 'domain
 
 Votre nom et votre marque locale sont les deux atouts les plus précieux dans l'immobilier. Lorsqu'un acheteur recherche « Jane Smith Agent Immobilier » ou le nom du quartier que vous cultivez, les domaines liés à ces termes devraient pointer vers vous — et non vers un concurrent, un sosie ou une page parquée diffusant des publicités. C'est pourquoi sécuriser plusieurs **TLD (domaines de premier niveau)** pour votre activité immobilière est l'une des formes d'assurance de marque les moins chères que vous puissiez acheter.
 
-Un agent immobilier qui ne possède que le [`.com`](/en/tld/com) de son nom laisse la porte ouverte à quelqu'un d'autre pour enregistrer la version [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes) ou [`.house`](/en/tld/house) et capitaliser sur la réputation que vous avez construite. L'enregistrement d'un petit portefeuille des bons domaines de premier niveau vous permet de protéger votre marque locale, de créer des sous-marques propres pour vos annonces ou zones de prospection, et de bloquer toute usurpation d'identité évidente avant qu'elle ne commence. Ce guide passe en revue les meilleurs TLD pour les agents immobiliers, les règles d'éligibilité importantes et une stratégie défensive simple.
+Un agent immobilier qui ne possède que le [`.com`](/fr/tld/com) de son nom laisse la porte ouverte à quelqu'un d'autre pour enregistrer la version [`.realty`](/en/tld/realty), [`.homes`](/en/tld/homes) ou [`.house`](/en/tld/house) et capitaliser sur la réputation que vous avez construite. L'enregistrement d'un petit portefeuille des bons domaines de premier niveau vous permet de protéger votre marque locale, de créer des sous-marques propres pour vos annonces ou zones de prospection, et de bloquer toute usurpation d'identité évidente avant qu'elle ne commence. Ce guide passe en revue les meilleurs TLD pour les agents immobiliers, les règles d'éligibilité importantes et une stratégie défensive simple.
 
 ## Comment choisir les TLD pour votre activité immobilière
 
@@ -20,7 +20,7 @@ Quelques critères doivent guider chaque enregistrement. La **confiance** vient 
 
 ## Les 10 meilleurs TLD à sécuriser en tant qu'agent immobilier
 
-### 1. [.com](/en/tld/com) — votre ancre incontournable
+### 1. [.com](/fr/tld/com) — votre ancre incontournable
 
 `.com` est toujours l'extension par défaut que les acheteurs tapent et en qui ils ont confiance, et c'est le plus grand TLD du monde. Enregistrez le `.com` de votre marque personnelle et de votre nom d'agence en premier ; tout le reste est secondaire. Si votre `.com` exact est pris, une variante étroite vaut plus qu'une correspondance parfaite sur une extension inconnue. Opéré par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/com).
 
@@ -48,17 +48,17 @@ Quelques critères doivent guider chaque enregistrement. La **confiance** vient 
 
 `.house` est une terminaison compacte et conviviale qui fonctionne aussi bien pour les campagnes de portes ouvertes, les sites de propriétés individuelles que les marques personnelles décontractées. Il est ouvert à tous et facile à prononcer à voix haute, ce qui est utile sur les panneaux de jardin et à la radio. Ses détails de registre sont disponibles auprès de l'[ICANN](https://www.icann.org/en/registry-agreements/details/house).
 
-### 8. [.net](/en/tld/net) — la sauvegarde défensive classique
+### 8. [.net](/fr/tld/net) — la sauvegarde défensive classique
 
-[`.net`](/en/tld/net) est l'une des extensions les plus anciennes et les plus reconnues, ce qui en fait le complément défensif naturel de votre `.com`. Le posséder empêche un concurrent de s'emparer du deuxième choix évident sur votre nom. Il est opéré par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/net).
+[`.net`](/fr/tld/net) est l'une des extensions les plus anciennes et les plus reconnues, ce qui en fait le complément défensif naturel de votre `.com`. Le posséder empêche un concurrent de s'emparer du deuxième choix évident sur votre nom. Il est opéré par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/net).
 
-### 9. [.org](/en/tld/org) — crédibilité pour les associations et le travail communautaire
+### 9. [.org](/fr/tld/org) — crédibilité pour les associations et le travail communautaire
 
-[`.org`](/en/tld/org) véhicule un ton digne de confiance et orienté vers la communauté qui convient aux associations d'agents immobiliers, aux ressources de quartier et aux projets non commerciaux que vous menez parallèlement à votre activité. L'enregistrer empêche également les usurpateurs de s'en emparer. Le TLD `.org` est documenté dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/org.html).
+[`.org`](/fr/tld/org) véhicule un ton digne de confiance et orienté vers la communauté qui convient aux associations d'agents immobiliers, aux ressources de quartier et aux projets non commerciaux que vous menez parallèlement à votre activité. L'enregistrer empêche également les usurpateurs de s'en emparer. Le TLD `.org` est documenté dans la [base de données racine de l'IANA](https://www.iana.org/domains/root/db/org.html).
 
-### 10. [.vip](/en/tld/vip) — positionnement premium pour les meilleurs clients
+### 10. [.vip](/fr/tld/vip) — positionnement premium pour les meilleurs clients
 
-[`.vip`](/en/tld/vip) signale l'exclusivité, ce qui peut convenir à une pratique de luxe ou à un portail client privé comme `clients.yourname.vip`. Il est sans restriction et court, ce qui le démarque sur une carte de visite. Son accord de registre est publié par l'[ICANN](https://www.icann.org/en/registry-agreements/details/vip).
+[`.vip`](/fr/tld/vip) signale l'exclusivité, ce qui peut convenir à une pratique de luxe ou à un portail client privé comme `clients.yourname.vip`. Il est sans restriction et court, ce qui le démarque sur une carte de visite. Son accord de registre est publié par l'[ICANN](https://www.icann.org/en/registry-agreements/details/vip).
 
 ## Stratégie d'enregistrement défensif
 

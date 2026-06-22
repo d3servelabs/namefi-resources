@@ -11,9 +11,9 @@ keywords: [".akdn domains", ".akdn TLD", "top-level domain", "what is .akdn", "w
 
 ## **What is .akdn?**
 
-The **.akdn** Top-Level Domain (TLD) is a unique extension in the internet's namespace. Unlike generic domains like .com or .net, **.akdn** is a "Brand TLD" delegated specifically to the **Aga Khan Development Network (AKDN)**.
+The **.akdn** [Top-Level Domain (TLD)](/en/glossary/tld/) is a unique extension in the internet's namespace. Unlike generic domains like [.com](/en/tld/com/) or [.net](/en/tld/net/), **.akdn** is a "Brand TLD" delegated specifically to the **Aga Khan Development Network (AKDN)**.
 
-Launched during ICANN's expansion of the internet's domain name system, this TLD serves as a dedicated digital infrastructure for one of the world's largest private development agencies. The primary purpose of .akdn is to consolidate the various agencies, institutions, and programs of the network under a single, trusted, and verified digital umbrella.
+Launched during [ICANN's](/en/glossary/icann/) expansion of the internet's [domain name system](/en/glossary/dns/), this TLD serves as a dedicated digital infrastructure for one of the world's largest private development agencies. The primary purpose of .akdn is to consolidate the various agencies, institutions, and programs of the network under a single, trusted, and verified digital umbrella.
 
 Because it is a **restricted Brand TLD**, it is not available for public registration. Instead, it serves as a prime example of how major organizations use custom TLDs to enhance digital security and brand identity.
 
@@ -62,11 +62,11 @@ Here are the advantages of a closed Brand TLD:
 
 While **.akdn** is reserved for the Aga Khan Development Network, you can still secure a powerful, trustworthy, and memorable domain name for your own project.
 
-At **Namefi**, we make domain ownership easier and more advanced than ever before. Whether you are looking for a standard `.com`, a tech-focused `.io`, or exploring new Web3-ready extensions, we have you covered.
+At **Namefi**, we make [domain ownership](/en/glossary/domain-ownership/) easier and more advanced than ever before. Whether you are looking for a standard `.com`, a tech-focused `.io`, or exploring new [Web3](/en/glossary/web3/)-ready extensions, we have you covered.
 
 **Why register with Namefi?**
-*   **ICANN Accredited:** We are a fully compliant and trusted registrar.
-*   **Web3 Integration:** We allow you to "tokenize" your domain, effectively bridging the gap between traditional Web2 DNS and Web3 blockchain assets.
+*   **ICANN Accredited:** We are a fully compliant and trusted [registrar](/en/glossary/registrar/).
+*   **Web3 Integration:** We allow you to ["tokenize"](/en/glossary/tokenize/) your domain, effectively bridging the gap between traditional Web2 DNS and Web3 blockchain assets.
 *   **Bulk Search & Management:** Perfect for investors and developers managing large portfolios.
 
 Don't leave your brand identity to chance. Secure your perfect domain name today.

@@ -11,9 +11,9 @@ keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why 
 
 ## **What is .ads?**
 
-The **.ads** domain extension is a generic Top-Level Domain (gTLD) specifically designed for the advertising, marketing, and promotional industries. Introduced during the expansion of the internet's namespace by [ICANN](https://www.icann.org/), this TLD provides a specialized digital identity for businesses and individuals whose primary focus is connecting brands with audiences.
+The **.ads** domain extension is a generic Top-Level Domain (gTLD) specifically designed for the advertising, marketing, and promotional industries. Introduced during the expansion of the internet's namespace by [ICANN](https://www.icann.org/), this [TLD](/en/glossary/tld/) provides a specialized digital identity for businesses and individuals whose primary focus is connecting brands with audiences.
 
-Originally proposed and managed by Charleston Road Registry Inc. (a subsidiary of Google), **.ads** was created to serve as a trustworthy and instantly recognizable namespace. Unlike traditional extensions like .com or .net, which cover broad categories, .ads signals immediate intent. It tells the user exactly what to expect: advertising services, marketing technology, or promotional content.
+Originally proposed and managed by Charleston Road Registry Inc. (a subsidiary of Google), **.ads** was created to serve as a trustworthy and instantly recognizable namespace. Unlike traditional extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), which cover broad categories, .ads signals immediate intent. It tells the user exactly what to expect: advertising services, marketing technology, or promotional content.
 
 As the digital marketing landscape evolves, the demand for specific, keyword-rich domains has grown. The .ads TLD caters to this need, offering a modern alternative for ad networks, creative agencies, and classified listings.
 
@@ -33,7 +33,7 @@ The versatility of the .ads extension allows for a wide range of applications wi
 While .ads is a highly specific TLD, it has been adopted by major players in the tech and marketing space to streamline their services.
 
 1.  **Google:** As the registry operator, Google has utilized the extension for various internal and external advertising documentation and registry information (e.g., via the [Google Registry](https://www.registry.google/)).
-2.  **AdTech Startups:** Numerous emerging SaaS platforms in the programmatic advertising space have adopted the TLD to differentiate themselves from general tech startups using .io or .ai.
+2.  **AdTech Startups:** Numerous emerging SaaS platforms in the programmatic advertising space have adopted the TLD to differentiate themselves from general tech startups using [.io](/en/tld/io/) or [.ai](/en/tld/ai/).
 3.  **Marketing Portfolios:** Freelance media buyers and creative directors are increasingly moving away from generic domains to .ads to signal their professional niche immediately.
 
 *Note: As this is a niche gTLD, many "category-killer" domains (like auto.ads or realestate.ads) represent the most valuable use cases, often held by domain investors or large marketing conglomerates.*
@@ -52,7 +52,7 @@ Choosing the right domain extension is critical for your brand's digital strateg
 
 Ready to elevate your advertising brand? Securing your **.ads** domain is the first step toward a more powerful digital presence.
 
-At **Namefi**, we make domain registration seamless and future-proof. Whether you are a Web2 marketing agency or a Web3 developer building decentralized ad networks, Namefi offers the unique advantage of tokenized real-world assets. You can manage your ICANN-accredited domains with the ease of blockchain technology, ensuring instant transferability and enhanced security.
+At **Namefi**, we make domain registration seamless and future-proof. Whether you are a Web2 marketing agency or a [Web3](/en/glossary/web3/) developer building decentralized ad networks, Namefi offers the unique advantage of tokenized real-world assets. You can manage your [ICANN](/en/glossary/icann/)-accredited domains with the ease of blockchain technology, ensuring instant transferability and enhanced security.
 
 Don't let your perfect domain name get snapped up by a competitor.
 

@@ -11,7 +11,7 @@ keywords: ['séquestre de domaine', 'qu''est-ce que le séquestre', 'compte séq
 
 Si vous avez déjà acheté ou vendu quelque chose de coûteux entre inconnus — une voiture, une maison, un `.com` valant plusieurs dizaines de milliers d'euros — vous vous êtes heurté au même problème : l'acheteur ne veut pas payer avant d'avoir reçu la chose, et le vendeur ne veut pas remettre la chose avant d'avoir été payé. Quelqu'un doit faire le premier pas, et faire le premier pas signifie faire confiance à l'autre personne.
 
-**Le séquestre** est la solution standard à ce problème. Ce guide explique en termes simples ce qu'est un compte séquestre, comment fonctionne le séquestre étape par étape dans une vente de domaine, pourquoi c'est important, et comment une approche plus récente — les [domaines tokenisés](/en/blog/what-are-tokenized-domains/) et les contrats intelligents — commence à remplacer entièrement le séquestre traditionnel.
+**Le séquestre** est la solution standard à ce problème. Ce guide explique en termes simples ce qu'est un compte séquestre, comment fonctionne le séquestre étape par étape dans une vente de domaine, pourquoi c'est important, et comment une approche plus récente — les [domaines tokenisés](/fr/blog/what-are-tokenized-domains/) et les contrats intelligents — commence à remplacer entièrement le séquestre traditionnel.
 
 ---
 
@@ -34,7 +34,7 @@ Voici le processus classique pour vendre un nom de domaine via un service de sé
 1. **Accord sur les conditions.** L'acheteur et le vendeur s'entendent sur un prix et sur qui paie les frais de séquestre. Ils ouvrent une transaction auprès du service de séquestre.
 2. **L'acheteur approvisionne le séquestre.** L'acheteur envoie le montant convenu sur le compte séquestre — par virement, carte ou crypto. Fait important, le vendeur ne dispose *pas* encore de cet argent ; le séquestre le conserve simplement.
 3. **Le séquestre confirme les fonds.** Le service de séquestre vérifie que le paiement a bien été reçu et notifie le vendeur : *« L'argent est disponible. Vous pouvez transférer le domaine en toute sécurité. »*
-4. **Le vendeur transfère le domaine.** Le vendeur déverrouille le domaine auprès de son [registrar](/en/glossary/registrar/) et fournit le [code auth](/en/glossary/auth-code/) (également appelé code EPP) — un mot de passe qui autorise le déplacement du domaine vers un autre registrar.
+4. **Le vendeur transfère le domaine.** Le vendeur déverrouille le domaine auprès de son [registrar](/fr/glossary/registrar/) et fournit le [code auth](/en/glossary/auth-code/) (également appelé code EPP) — un mot de passe qui autorise le déplacement du domaine vers un autre registrar.
 5. **L'acheteur initie le transfert.** En utilisant ce code auth, l'acheteur lance un transfert vers son propre registrar. Un transfert inter-registrar [ICANN](https://www.icann.org/) prend généralement entre cinq et sept jours pour être entièrement finalisé.
 6. **L'acheteur confirme la réception.** Une fois le domaine arrivé dans le compte de l'acheteur, celui-ci le confirme via le service de séquestre.
 7. **Le séquestre libère les fonds.** Maintenant — et seulement maintenant — le séquestre paie le vendeur. La transaction est terminée.
@@ -54,7 +54,7 @@ Les domaines sont une cible privilégiée pour la fraude précisément parce qu'
 
 Le séquestre neutralise directement les deux premiers cas : l'argent et l'actif ne peuvent pas disparaître tous les deux, car le séquestre conserve l'un jusqu'à ce que l'autre soit confirmé. Les services de séquestre réputés ajoutent également des vérifications d'identité et de paiement qui permettent de détecter certains cas de la troisième catégorie. Pour toute vente de domaine significative entre inconnus, **le séquestre est l'attente de base** — refuser de l'utiliser est en soi un signal d'alarme.
 
-Pour en savoir plus sur le paysage des menaces, consultez [comment le piratage de domaine se produit réellement](/en/blog/how-domain-hijacking-actually-happens/).
+Pour en savoir plus sur le paysage des menaces, consultez [comment le piratage de domaine se produit réellement](/fr/blog/how-domain-hijacking-actually-happens/).
 
 ---
 
@@ -73,9 +73,9 @@ Ces compromis étaient simplement le prix de la sécurité — jusqu'à l'arriv�
 
 ## Comment les domaines tokenisés + les contrats intelligents remplacent le séquestre
 
-Lorsqu'un domaine est [tokenisé](/en/blog/what-are-tokenized-domains/), la propriété est représentée par un jeton en chaîne (un NFT) plutôt que par une simple entrée dans la base de données d'un registrar. Cela change ce qui est possible au moment du règlement.
+Lorsqu'un domaine est [tokenisé](/fr/blog/what-are-tokenized-domains/), la propriété est représentée par un jeton en chaîne (un NFT) plutôt que par une simple entrée dans la base de données d'un registrar. Cela change ce qui est possible au moment du règlement.
 
-Un [contrat intelligent](/en/glossary/smart-contract/) est un code qui s'exécute sur une blockchain et s'active automatiquement lorsque ses conditions sont remplies. Fait crucial, une transaction en chaîne est **atomique** : le paiement et le transfert d'actif se produisent dans la *même* transaction, dans le même bloc — ou aucun des deux ne se produit. Il n'existe pas d'état intermédiaire où un côté a bougé et l'autre non.
+Un [contrat intelligent](/fr/glossary/smart-contract/) est un code qui s'exécute sur une blockchain et s'active automatiquement lorsque ses conditions sont remplies. Fait crucial, une transaction en chaîne est **atomique** : le paiement et le transfert d'actif se produisent dans la *même* transaction, dans le même bloc — ou aucun des deux ne se produit. Il n'existe pas d'état intermédiaire où un côté a bougé et l'autre non.
 
 Cette propriété accomplit exactement ce pour quoi le séquestre a été inventé, sans qu'un tiers ne retienne quoi que ce soit :
 
@@ -83,7 +83,7 @@ Cette propriété accomplit exactement ce pour quoi le séquestre a été invent
 - Il n'y a **pas de code auth à partager** et pas de transfert de registrar sur plusieurs jours pour le changement de propriété en chaîne — le jeton se déplace immédiatement.
 - Il n'y a **pas de frais de séquestre**, car aucune partie neutre ne conserve des fonds. Le contrat intelligent *est* l'arbitre impartial, et son exécution est gratuite au-delà des frais réseau normaux.
 
-En d'autres termes, le contrat intelligent devient le séquestre — mais il est transparent, automatique, instantané et ne prélève pas de commission pour conserver votre argent. Pour une présentation détaillée du flux complet de la place de marché et de l'évolution des risques, consultez [De la mise en vente au règlement : comment les places de marché tokenisées remplacent le séquestre](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+En d'autres termes, le contrat intelligent devient le séquestre — mais il est transparent, automatique, instantané et ne prélève pas de commission pour conserver votre argent. Pour une présentation détaillée du flux complet de la place de marché et de l'évolution des risques, consultez [De la mise en vente au règlement : comment les places de marché tokenisées remplacent le séquestre](/fr/blog/how-tokenized-marketplaces-replace-escrow/).
 
 Ce n'est pas sans risque — cela déplace simplement les risques. Au lieu de faire confiance à une société de séquestre, vous dépendez désormais de la sécurité du portefeuille et de la solidité du contrat intelligent. L'objectif n'est pas que le règlement tokenisé soit magique ; c'est que *le travail qu'accomplit le séquestre* peut être réalisé par du code plutôt que par un intermédiaire rémunéré.
 

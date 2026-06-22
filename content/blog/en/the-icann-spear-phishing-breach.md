@@ -15,7 +15,7 @@ keywords: ['icann breach', 'icann spear phishing', 'czds', 'centralized zone dat
 
 There is a special kind of headline that makes the whole security industry pause. Not "another retailer breached," not "another startup leaks a database" — but the day the institution everyone *else* trusts admits it got hacked the most ordinary way possible.
 
-In December 2014, that institution was ICANN. The Internet Corporation for Assigned Names and Numbers — the nonprofit that coordinates the entire domain name system, the keeper of the rules that let `namefi.io` and `google.com` and every other address on earth resolve to a server — disclosed that some of its own staff had clicked a link in a fake email, typed their passwords into a fake login page, and handed attackers the keys to internal systems — including the Centralized Zone Data System (CZDS), the repository through which the world's top-level-domain zone files are requested and accessed.
+In December 2014, that institution was [ICANN](/en/glossary/icann/). The Internet Corporation for Assigned Names and Numbers — the nonprofit that coordinates the entire [domain name system](/en/glossary/dns/), the keeper of the rules that let `namefi.io` and `google.com` and every other address on earth resolve to a server — disclosed that some of its own staff had clicked a link in a fake email, typed their passwords into a fake login page, and handed attackers the keys to internal systems — including the Centralized Zone Data System (CZDS), the repository through which the world's top-level-domain zone files are requested and accessed.
 
 The organization that defines how trust works on the internet got phished. With a spoofed email. Pretending to be ICANN.
 
@@ -27,7 +27,7 @@ To understand why this story landed so hard, you have to understand what ICANN a
 
 ICANN is not a company you buy a domain from. It sits one layer above that. It coordinates the global system of unique identifiers that makes the internet navigable: the top-level domains (`.com`, `.org`, `.io`, and the hundreds of newer ones), the rules registries and registrars follow, and — through its IANA function — the very top of the DNS hierarchy, the root zone that every other lookup ultimately depends on.
 
-If domains are the addresses of the internet, ICANN runs the post office's master directory. A breach at a registrar is bad. A breach at ICANN is symbolic, because ICANN is supposed to be the *authority* — the one institution whose job is to keep the naming system orderly and trustworthy. When the authority on internet names gets compromised, the uncomfortable question is obvious: if *they* can be phished, who can't?
+If domains are the addresses of the internet, ICANN runs the post office's master directory. A breach at a [registrar](/en/glossary/registrar/) is bad. A breach at ICANN is symbolic, because ICANN is supposed to be the *authority* — the one institution whose job is to keep the naming system orderly and trustworthy. When the authority on internet names gets compromised, the uncomfortable question is obvious: if *they* can be phished, who can't?
 
 ## Late 2014: the compromise
 
@@ -51,7 +51,7 @@ In early December 2014, ICANN discovered the compromised logins had been reused 
 
 Beyond the zone files, the breach exposed the personal data CZDS users had registered with. Per ICANN, the haul "[included copies of the zone files in the system, as well as information entered by users such as name, postal address, email address, fax and telephone numbers, username, and password](https://www.icann.org/en/announcements/details/icann-targeted-in-spear-phishing-attack--enhanced-security-measures-implemented-16-12-2014-en#:~:text=This%20included%20copies%20of%20the%20zone%20files%20in%20the%20system%2C%20as%20well%20as%20information%20entered%20by%20users)." Usernames and passwords for the people who manage TLDs — sitting in a system an attacker had walked into wearing a stolen badge.
 
-The credentials reached further, too. ICANN confirmed the attackers also touched the **GAC Wiki** (the Governmental Advisory Committee's space), the **ICANN Blog**, and the **WHOIS information portal**, though it reported [no impact to the latter two systems](https://www.helpnetsecurity.com/2014/12/18/icann-systems-breached-via-spear-phishing-emails/#:~:text=The%20latter%20two%20were%20not%20affected%20in%20any%20way.) and only limited viewing on the wiki.
+The credentials reached further, too. ICANN confirmed the attackers also touched the **GAC Wiki** (the Governmental Advisory Committee's space), the **ICANN Blog**, and the **[WHOIS](/en/glossary/whois/) information portal**, though it reported [no impact to the latter two systems](https://www.helpnetsecurity.com/2014/12/18/icann-systems-breached-via-spear-phishing-emails/#:~:text=The%20latter%20two%20were%20not%20affected%20in%20any%20way.) and only limited viewing on the wiki.
 
 ## How it happened: the badge that said "ICANN"
 
@@ -99,7 +99,7 @@ The ICANN breach is, at its core, a story about *who controls the records* — a
 
 That's the structural weakness worth sitting with. When the proof of who is authorized to access or manage critical domain data lives behind a username and password on one platform, the entire trust model collapses the moment those credentials are phished. There is no second check. A convincing email and a reused password were enough to grant administrative access to the zone-data system at the center of the naming world.
 
-[Namefi](https://namefi.io) is built on a different premise: that domain ownership and control should be **verifiable, tamper-resistant, and not dependent on a single secret in a single inbox.** By representing domain ownership as on-chain tokens that stay compatible with DNS, control becomes something you can cryptographically prove and audit — not just something gated by a password that a spear-phishing email can steal. It doesn't make anyone immune to phishing; nothing does. But it narrows the blast radius, so that one borrowed credential is no longer one step away from the keys to the kingdom.
+[Namefi](https://namefi.io) is built on a different premise: that domain ownership and control should be **verifiable, tamper-resistant, and not dependent on a single secret in a single inbox.** By representing [domain ownership](/en/glossary/domain-ownership/) as [on-chain](/en/glossary/on-chain/) tokens that stay compatible with DNS, control becomes something you can cryptographically prove and audit — not just something gated by a password that a spear-phishing email can steal. It doesn't make anyone immune to phishing; nothing does. But it narrows the blast radius, so that one borrowed credential is no longer one step away from the keys to the kingdom.
 
 EP11's enduring image is the fake letter that walked past the guardian of the internet's master keys because it wore the right uniform. The fix isn't a smarter guardian. It's a system where the keys themselves can prove they're real.
 

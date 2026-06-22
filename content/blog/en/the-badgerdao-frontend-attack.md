@@ -15,11 +15,11 @@ keywords: ['badgerdao hack', 'badgerdao front-end attack', 'cloudflare api key c
 
 The audit was clean. The contracts were fine. The money left anyway.
 
-In the days around December 2, 2021, BadgerDAO — a DeFi project built around bringing Bitcoin into decentralized finance — lost roughly **$120 million** of its users' funds. There was no flash-loan trick, no reentrancy bug, no clever math exploit against the vaults. The smart contracts did exactly what they were written to do. The attacker never had to break them, because the attacker never attacked them.
+In the days around December 2, 2021, BadgerDAO — a [DeFi](/en/glossary/defi/) project built around bringing Bitcoin into decentralized finance — lost roughly **$120 million** of its users' funds. There was no flash-loan trick, no reentrancy bug, no clever math exploit against the vaults. The [smart contracts](/en/glossary/smart-contract/) did exactly what they were written to do. The attacker never had to break them, because the attacker never attacked them.
 
 He attacked the *website*.
 
-Someone had quietly slipped a malicious script into the front-end of app.badger.com. To every user who loaded the page, it looked like the same trusted dApp they used every day. But when they went to interact with it, the page asked their wallet for one extra, invisible permission — and once they clicked "approve," their tokens were no longer theirs to keep.
+Someone had quietly slipped a malicious script into the front-end of app.badger.com. To every user who loaded the page, it looked like the same trusted dApp they used every day. But when they went to interact with it, the page asked their [wallet](/en/glossary/wallet/) for one extra, invisible permission — and once they clicked "approve," their tokens were no longer theirs to keep.
 
 This is the story of how a project with audited contracts lost nine figures through a single injected line of front-end code, and why it should permanently change how you think about the boundary of your security.
 
@@ -29,7 +29,7 @@ Crypto culture trained users to ask one question before trusting a protocol: *ha
 
 It is not.
 
-An audit examines the on-chain code: the vaults, the token logic, the access controls. It says nothing about the laptop a developer left logged in, the DNS records pointing your browser somewhere, the CDN sitting in front of the site, or the JavaScript your browser actually downloads and runs when you visit the dApp. Those live in *Web2* — in cloud accounts, API keys, and domain infrastructure — and they are every bit as load-bearing as the Solidity.
+An audit examines the [on-chain](/en/glossary/on-chain/) code: the vaults, the token logic, the access controls. It says nothing about the laptop a developer left logged in, the [DNS](/en/glossary/dns/) records pointing your browser somewhere, the CDN sitting in front of the site, or the JavaScript your browser actually downloads and runs when you visit the dApp. Those live in *Web2* — in cloud accounts, API keys, and domain infrastructure — and they are every bit as load-bearing as the Solidity.
 
 BadgerDAO is the cleanest proof of this gap on record. As one technical breakdown of the incident put it bluntly: [from the perspective of the project's smart contracts, nothing had gone wrong](https://www.halborn.com/blog/post/explained-the-badgerdao-hack-december-2021#:~:text=From%20the%20perspective%20of%20the%20project%27s%20smart%20contracts%2C%20nothing%20had%20gone%20wrong), and the attacker was just using the approvals granted by users. The chain behaved perfectly. The website lied.
 
@@ -41,7 +41,7 @@ Imagine walking into a shop you have visited a hundred times. Same sign, same st
 
 That is, in effect, what happened to BadgerDAO users.
 
-The classification matters here, because it is what makes this incident so instructive. As *Vice* summarized it, the hack [did not involve complicated smart contract exploits. Instead, it was a front-end attack targeting BadgerDAO's web infrastructure](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — in particular its Cloudflare account. It was, in their framing, an *old-school* web attack pointed at a Web3 target.
+The classification matters here, because it is what makes this incident so instructive. As *Vice* summarized it, the hack [did not involve complicated smart contract exploits. Instead, it was a front-end attack targeting BadgerDAO's web infrastructure](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — in particular its Cloudflare account. It was, in their framing, an *old-school* web attack pointed at a [Web3](/en/glossary/web3/) target.
 
 The mechanism was elegant and quiet. The malicious script asked the user's wallet to grant a token-spending allowance to the attacker's address. In Vice's words, [the malicious script basically tricked people into giving the address rights to send the tokens to the exploiter address](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=The%20malicious%20script%20basically%20tricked%20people%20into%20giving). The user thought they were doing normal dApp business. They were signing away the keys to their tokens.
 
@@ -93,7 +93,7 @@ The single most important lesson of BadgerDAO is a boundary correction. Most tea
 
 **1. Your front-end is in scope. Always.** The code a user's browser executes is part of your protocol, whether or not it lives on-chain. If an attacker controls what JavaScript your site serves, they control your users' wallets — audited contracts or not. The site is not "just the UI." It is the place where consent is captured.
 
-**2. Your cloud and domain infrastructure are part of the contract.** A Cloudflare account, a DNS provider login, a registrar account, a CI/CD key — each is a path to rewriting what your users see. BadgerDAO was not breached at the vault; it was breached at the *account that controlled the website*. Treat those credentials with the same paranoia you reserve for a deployer private key.
+**2. Your cloud and domain infrastructure are part of the contract.** A Cloudflare account, a DNS provider login, a [registrar](/en/glossary/registrar/) account, a CI/CD key — each is a path to rewriting what your users see. BadgerDAO was not breached at the vault; it was breached at the *account that controlled the website*. Treat those credentials with the same paranoia you reserve for a deployer private key.
 
 **3. API keys and account-creation flows are real attack surface.** The whole disaster hinged on an unauthorized API key that should never have existed, made possible by a verification gap. Inventory every key. Scope them tightly. Rotate them. Alert on new ones. A key you forgot about is a key an attacker can use.
 

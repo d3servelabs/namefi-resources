@@ -9,18 +9,18 @@ description: "Une comparaison claire et pratique entre les domaines ICANN tokeni
 keywords: ['domaine tokenisé vs domaine web3', 'domaine tokenisé vs ENS', 'domaine ICANN vs ENS', '.com vs .eth', '.com tokenisé vs .crypto', 'domaine tokenisé vs unstoppable', 'comparaison de domaines web3', 'ENS vs domaine tokenisé', 'domaine NFT vs ENS', 'nommage web3', 'différence de nommage on-chain', 'support navigateur domaine web3', 'résolution de domaine web3']
 ---
 
-Une question légitime, posée quotidiennement : *"J'ai déjà un nom en `.eth` (ou `.crypto`, ou `.x`). Pourquoi devrais-je [tokeniser](/en/glossary/tokenize/) mon `.com` ? N'est-ce pas la même chose ?"*
+Une question légitime, posée quotidiennement : *"J'ai déjà un nom en `.eth` (ou `.crypto`, ou `.x`). Pourquoi devrais-je [tokeniser](/fr/glossary/tokenize/) mon `.com` ? N'est-ce pas la même chose ?"*
 
 Ce n'est pas le cas. Ils se chevauchent un peu dans l'esprit et beaucoup en matière de branding, mais sur le plan opérationnel, ils résolvent des problèmes différents. Cet article détaille la place qui revient à chacun.
 
-Si vous souhaitez une explication détaillée sur les domaines tokenisés spécifiquement, commencez par [Que sont les domaines tokenisés ?](/en/blog/what-are-tokenized-domains/).
+Si vous souhaitez une explication détaillée sur les domaines tokenisés spécifiquement, commencez par [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/).
 
 ---
 
 ## La réponse courte
 
-- **Domaine tokenisé** = un véritable domaine [ICANN](/en/glossary/icann/) (`.com`, `.xyz`, `.io`, etc.) auquel s'ajoute un jeton de propriété [on-chain](/en/glossary/on-chain/).
-- **Domaine** [**Web3**](/en/glossary/web3/) = un nom qui vit **uniquement** on-chain (`.eth`, `.crypto`, `.x`, etc.). Il s'agit d'un système de nommage distinct, qui ne fait pas partie du [DNS](/en/glossary/dns/).
+- **Domaine tokenisé** = un véritable domaine [ICANN](/fr/glossary/icann/) (`.com`, `.xyz`, `.io`, etc.) auquel s'ajoute un jeton de propriété [on-chain](/fr/glossary/on-chain/).
+- **Domaine** [**Web3**](/fr/glossary/web3/) = un nom qui vit **uniquement** on-chain (`.eth`, `.crypto`, `.x`, etc.). Il s'agit d'un système de nommage distinct, qui ne fait pas partie du [DNS](/fr/glossary/dns/).
 
 Un domaine tokenisé *étend* le monde DNS existant. Un domaine Web3 le *remplace* (ou coexiste à ses côtés, selon l'usage que vous en faites).
 
@@ -88,11 +88,11 @@ Exemples : votre identité Web3 personnelle, un profil sur un portefeuille, une 
 
 Vous tapez `example.com`. Votre ordinateur interroge un résolveur DNS. Le résolveur parcourt la hiérarchie DNS. Vous obtenez une adresse IP. Le navigateur récupère le site. Tout cela fonctionne de la même manière, que le domaine soit tokenisé ou non, car la tokenisation ajoute une couche de *propriété*, et non une couche de *résolution*.
 
-Voir [Le DNS fonctionne toujours](/en/blog/dns-on-tokenized-domains/) pour les détails pratiques de ce côté.
+Voir [Le DNS fonctionne toujours](/fr/blog/dns-on-tokenized-domains/) pour les détails pratiques de ce côté.
 
 ### Résolution de noms ENS / Web3
 
-Vous tapez `vitalik.eth`. Un client compatible Web3 (MetaMask, une dApp, certains navigateurs avec support [ENS](/en/glossary/ens/)) interroge le [smart contract](/en/glossary/smart-contract/) ENS sur Ethereum, récupère l'adresse ou le hash de contenu associé, et l'affiche en conséquence. Un client non compatible Web3 (Chrome sans extensions, votre serveur de messagerie professionnel, votre Autorité de Certification SSL) ne sait pas ce que signifie `.eth` et ne le résoudra pas.
+Vous tapez `vitalik.eth`. Un client compatible Web3 (MetaMask, une dApp, certains navigateurs avec support [ENS](/en/glossary/ens/)) interroge le [smart contract](/fr/glossary/smart-contract/) ENS sur Ethereum, récupère l'adresse ou le hash de contenu associé, et l'affiche en conséquence. Un client non compatible Web3 (Chrome sans extensions, votre serveur de messagerie professionnel, votre Autorité de Certification SSL) ne sait pas ce que signifie `.eth` et ne le résoudra pas.
 
 Ce n'est pas un défaut — c'est conçu ainsi. L'ENS et les systèmes similaires sont construits pour une expérience native Web3, et non pour remplacer la couche de nommage de l'internet dans son ensemble. Consultez la [documentation officielle de l'ENS](https://docs.ens.domains/) pour découvrir l'architecture sous-jacente.
 
@@ -144,4 +144,4 @@ Le `.com` tokenisé fonctionne pour l'internet ouvert. Le `.eth` fonctionne comm
 - Si vous avez besoin que le nom fonctionne partout sur internet, vous devriez opter pour un domaine DNS tokenisé. Si vous voulez un identifiant et une adresse natifs Web3, il vous faut un nom de type ENS.
 - Un même portefeuille peut contenir les deux.
 
-Pour découvrir les plateformes dans le domaine de la tokenisation, voir [Choisir une plateforme de tokenisation de domaine](/en/blog/choosing-a-domain-tokenization-platform/).
+Pour découvrir les plateformes dans le domaine de la tokenisation, voir [Choisir une plateforme de tokenisation de domaine](/fr/blog/choosing-a-domain-tokenization-platform/).

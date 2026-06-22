@@ -22,43 +22,43 @@ keywords: ['أفضل امتدادات الدومين للشركات الناشئ
 
 ### 1. ‎.com — الامتداد الافتراضي اللي العالم لسه بيكتبه
 
-[‎.com](/en/tld/com) لسه الامتداد الأشهر والأكتر ثقة على الإنترنت، ده اللي المستخدمين بيكتبوه تلقائيًا وده اللي معظم عملاء الإيميل والتطبيقات بتفترضه. بتشغّله Verisign بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/com)، وتقدر تراجع سجل التفويض بتاعه في [قاعدة بيانات IANA](https://www.iana.org/domains/root/db/com.html). لو هتأمّن دومين واحد بس، خلّيه الـ .com بتاعك. مفيش قيود تأهل، فالتحدي الرئيسي هو مجرد الإتاحة.
+[‎.com](/ar/tld/com) لسه الامتداد الأشهر والأكتر ثقة على الإنترنت، ده اللي المستخدمين بيكتبوه تلقائيًا وده اللي معظم عملاء الإيميل والتطبيقات بتفترضه. بتشغّله Verisign بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/com)، وتقدر تراجع سجل التفويض بتاعه في [قاعدة بيانات IANA](https://www.iana.org/domains/root/db/com.html). لو هتأمّن دومين واحد بس، خلّيه الـ .com بتاعك. مفيش قيود تأهل، فالتحدي الرئيسي هو مجرد الإتاحة.
 
 ### 2. ‎.io — المفضّل عند شركات التكنولوجيا والـ SaaS
 
-[‎.io](/en/tld/io) أصبح محبوبًا جدًا عند الستارت أب لأن "I/O" معناها input/output في البرمجة، مما بيدّيه صدى تقني طبيعي. هو امتداد الدولة المخصص لإقليم المحيط الهندي البريطاني، والتسجيل بتاعه دلوقتي بتشغّله Internet Computer Bureau تحت إشراف [Identity Digital](https://www.identity.digital/)، حسب [سجل التفويض في IANA](https://www.iana.org/domains/root/db/io.html). التسجيل مفتوح لأي حد في أي مكان في العالم. لاحظ إن الوضع الجيوسياسي طويل المدى للإقليم ده [اتناقش علنًا](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)، فعاملوا .io كمكمّل قوي لـ .com مش بديل عنه.
+[‎.io](/ar/tld/io) أصبح محبوبًا جدًا عند الستارت أب لأن "I/O" معناها input/output في البرمجة، مما بيدّيه صدى تقني طبيعي. هو امتداد الدولة المخصص لإقليم المحيط الهندي البريطاني، والتسجيل بتاعه دلوقتي بتشغّله Internet Computer Bureau تحت إشراف [Identity Digital](https://www.identity.digital/)، حسب [سجل التفويض في IANA](https://www.iana.org/domains/root/db/io.html). التسجيل مفتوح لأي حد في أي مكان في العالم. لاحظ إن الوضع الجيوسياسي طويل المدى للإقليم ده [اتناقش علنًا](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)، فعاملوا .io كمكمّل قوي لـ .com مش بديل عنه.
 
 ### 3. ‎.ai — الاختيار الواضح لشركات الذكاء الاصطناعي
 
-[‎.ai](/en/tld/ai) انتشر بشكل كبير مع الطفرة في الذكاء الاصطناعي، وأصبح شبه إلزامي لأي شركة متخصصة في AI. هو امتداد الدولة لأنغويلا، وبتديره حكومة أنغويلا اللي [أعلنت شراكة مع Identity Digital في 2024](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses) لإدارة نموّه المتسارع؛ شوف [سجل IANA](https://www.iana.org/domains/root/db/ai.html). التسجيل مفتوح من غير أي اشتراط للعمل في صناعة الذكاء الاصطناعي، بس الأسعار وشروط التجديد بتختلف عن الـ gTLDs العادية، فخطّط مسبقًا.
+[‎.ai](/ar/tld/ai) انتشر بشكل كبير مع الطفرة في الذكاء الاصطناعي، وأصبح شبه إلزامي لأي شركة متخصصة في AI. هو امتداد الدولة لأنغويلا، وبتديره حكومة أنغويلا اللي [أعلنت شراكة مع Identity Digital في 2024](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses) لإدارة نموّه المتسارع؛ شوف [سجل IANA](https://www.iana.org/domains/root/db/ai.html). التسجيل مفتوح من غير أي اشتراط للعمل في صناعة الذكاء الاصطناعي، بس الأسعار وشروط التجديد بتختلف عن الـ gTLDs العادية، فخطّط مسبقًا.
 
 ### 4. ‎.app — أمان من الأساس
 
-[‎.app](/en/tld/app) بتشغّله Google Registry وهو مصمم خصيصًا للبرمجيات والتطبيقات والمنتجات على الموبايل. أبرز ميزته: كل نطاق .app موجود في [قائمة HSTS preload](https://hstspreload.org/)، يعني كل موقع .app لازم يتحمّل عن طريق HTTPS، كما [توثّق Google في سياساتها](https://www.registry.google/policies/). الأمان الافتراضي ده بيخلّيه مكانًا موثوقًا لصفحة المنتج أو صفحة التحميل. هتحتاج شهادة TLS سارية عشان الموقع يشتغل خالص.
+[‎.app](/ar/tld/app) بتشغّله Google Registry وهو مصمم خصيصًا للبرمجيات والتطبيقات والمنتجات على الموبايل. أبرز ميزته: كل نطاق .app موجود في [قائمة HSTS preload](https://hstspreload.org/)، يعني كل موقع .app لازم يتحمّل عن طريق HTTPS، كما [توثّق Google في سياساتها](https://www.registry.google/policies/). الأمان الافتراضي ده بيخلّيه مكانًا موثوقًا لصفحة المنتج أو صفحة التحميل. هتحتاج شهادة TLS سارية عشان الموقع يشتغل خالص.
 
 ### 5. ‎.dev — مبني للمبتكرين
 
-[‎.dev](/en/tld/dev)، وكمان بتشغّله Google Registry، موجّه بشكل مباشر للمطوّرين وفرق الهندسة والتوثيق التقني. زي .app، منطقة .dev كلها موجودة في [قائمة HSTS preload](https://hstspreload.org/)، فـ HTTPS إلزامي في الامتداد كله. هو مناسب بشكل طبيعي لشركات أدوات المطوّرين الناشئة، أو وثائق API، أو بوّابة هندسية داخلية. راجع المتطلبات في [توثيق Google Registry](https://www.registry.google/policies/) قبل ما تبني.
+[‎.dev](/ar/tld/dev)، وكمان بتشغّله Google Registry، موجّه بشكل مباشر للمطوّرين وفرق الهندسة والتوثيق التقني. زي .app، منطقة .dev كلها موجودة في [قائمة HSTS preload](https://hstspreload.org/)، فـ HTTPS إلزامي في الامتداد كله. هو مناسب بشكل طبيعي لشركات أدوات المطوّرين الناشئة، أو وثائق API، أو بوّابة هندسية داخلية. راجع المتطلبات في [توثيق Google Registry](https://www.registry.google/policies/) قبل ما تبني.
 
 ### 6. ‎.tech — وصفي ومتاح على نطاق واسع
 
-[‎.tech](/en/tld/tech) هو TLD عام بتشغّله [Radix](https://radix.com/)، واحدة من أكبر سجلات الـ gTLD الجديدة، مع خدمات تقنية خلفية من Tucows. ببساطة بيصنّف شركتك كشركة تقنية، وغالبًا بيكون متاح أكتر من مساحة .com المزدحمة، وده ممكن يساعد لما الـ .com المثالي بتاعك مش متاح. مفيش قيود تأهل خاصة لـ .tech.
+[‎.tech](/ar/tld/tech) هو TLD عام بتشغّله [Radix](https://radix.com/)، واحدة من أكبر سجلات الـ gTLD الجديدة، مع خدمات تقنية خلفية من Tucows. ببساطة بيصنّف شركتك كشركة تقنية، وغالبًا بيكون متاح أكتر من مساحة .com المزدحمة، وده ممكن يساعد لما الـ .com المثالي بتاعك مش متاح. مفيش قيود تأهل خاصة لـ .tech.
 
 ### 7. ‎.xyz — مرن ومناسب للشركات الناشئة
 
-[‎.xyz](/en/tld/xyz) هو امتداد عام ومفتوح بدون قيود بتشغّله XYZ.COM LLC بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/xyz). علامته التجارية المفتوحة والمحايدة خلّته شائعًا عند الستارت أب ومشاريع Web3 على حد سواء (abc.xyz بتاعت Alphabet مثال شهير). من غير أي قيود على الصلة بالموضوع، هو خيار متعدد الاستخدامات لصفحة هبوط، أو حملة تسويقية، أو منتج تجريبي.
+[‎.xyz](/ar/tld/xyz) هو امتداد عام ومفتوح بدون قيود بتشغّله XYZ.COM LLC بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/xyz). علامته التجارية المفتوحة والمحايدة خلّته شائعًا عند الستارت أب ومشاريع Web3 على حد سواء (abc.xyz بتاعت Alphabet مثال شهير). من غير أي قيود على الصلة بالموضوع، هو خيار متعدد الاستخدامات لصفحة هبوط، أو حملة تسويقية، أو منتج تجريبي.
 
 ### 8. ‎.co — البديل القصير لـ .com
 
-[‎.co](/en/tld/co) بيتقرأ على نطاق واسع كاختصار لـ "company" أو "corporation" أو "commerce"، وهو قصير بما يكفي ليكون سهل التذكر. هو امتداد الدولة لكولومبيا؛ في 2025 عقد التشغيل [انتقل لكونسورتيوم جديد](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) بيضم Team Internet، كما هو موضّح في [سجل IANA](https://www.iana.org/domains/root/db/co.html). التسجيل مفتوح عالميًا، وده بيخلّي .co خيارًا شائعًا لما الـ .com المطابق مش متاح.
+[‎.co](/ar/tld/co) بيتقرأ على نطاق واسع كاختصار لـ "company" أو "corporation" أو "commerce"، وهو قصير بما يكفي ليكون سهل التذكر. هو امتداد الدولة لكولومبيا؛ في 2025 عقد التشغيل [انتقل لكونسورتيوم جديد](https://domainnamewire.com/2025/06/12/big-new-godaddy-loses-co-contract-to-tig-partnership/) بيضم Team Internet، كما هو موضّح في [سجل IANA](https://www.iana.org/domains/root/db/co.html). التسجيل مفتوح عالميًا، وده بيخلّي .co خيارًا شائعًا لما الـ .com المطابق مش متاح.
 
 ### 9. ‎.net — الاحتياطي الكلاسيكي
 
-[‎.net](/en/tld/net) هو واحد من الـ TLDs العامة الأصلية، بتشغّله Verisign بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/net) (شوف [سجل IANA](https://www.iana.org/domains/root/db/net.html)). بيتمتع بسمعة راسخة وموثوقة، خاصة لشركات البنية التحتية والشبكات والمنصات. حتى لو ما اتبنيتش علامتك التجارية الأساسية عليه، تأمين .net باسمك الحرفي خطوة دفاعية منطقية.
+[‎.net](/ar/tld/net) هو واحد من الـ TLDs العامة الأصلية، بتشغّله Verisign بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/net) (شوف [سجل IANA](https://www.iana.org/domains/root/db/net.html)). بيتمتع بسمعة راسخة وموثوقة، خاصة لشركات البنية التحتية والشبكات والمنصات. حتى لو ما اتبنيتش علامتك التجارية الأساسية عليه، تأمين .net باسمك الحرفي خطوة دفاعية منطقية.
 
 ### 10. ‎.club — للشركات الناشئة القائمة على المجتمع
 
-[‎.club](/en/tld/club) هو TLD عام بدون قيود بتشغّله GoDaddy Registry's Registry Services, LLC، بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/club) و[سجل IANA](https://www.iana.org/domains/root/db/club.html). لو شركتك الناشئة مبنية حول العضوية، أو المجتمع، أو جمهور متكرر، .club بيعبّر عن الانتماء في كلمة واحدة. هو امتداد قوي لمنصات المحتوى، ومنتجات الاشتراك، والمشاريع الاجتماعية.
+[‎.club](/ar/tld/club) هو TLD عام بدون قيود بتشغّله GoDaddy Registry's Registry Services, LLC، بموجب [اتفاقية تسجيل ICANN](https://www.icann.org/en/registry-agreements/details/club) و[سجل IANA](https://www.iana.org/domains/root/db/club.html). لو شركتك الناشئة مبنية حول العضوية، أو المجتمع، أو جمهور متكرر، .club بيعبّر عن الانتماء في كلمة واحدة. هو امتداد قوي لمنصات المحتوى، ومنتجات الاشتراك، والمشاريع الاجتماعية.
 
 ## استراتيجية التسجيل الدفاعي
 

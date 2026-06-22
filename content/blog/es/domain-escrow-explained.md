@@ -11,7 +11,7 @@ keywords: ['cuenta escrow', 'que es una cuenta escrow', 'qué es una cuenta escr
 
 Si alguna vez has comprado o vendido algo caro entre desconocidos — un coche, una casa, un `.com` de cinco cifras — te has topado con el mismo problema: el comprador no quiere pagar antes de recibir la cosa, y el vendedor no quiere entregar la cosa antes de recibir el pago. Alguien tiene que ir primero, e ir primero significa confiar en la otra persona.
 
-El **escrow** (también llamado **depósito en garantía**) es la solución estándar a ese problema. Esta guía explica, en lenguaje sencillo, qué es una cuenta escrow, qué significa escrow, cómo funciona paso a paso en la venta de un dominio, por qué importa, y cómo un enfoque más reciente — los [dominios tokenizados](/en/blog/what-are-tokenized-domains/) y los contratos inteligentes — está empezando a reemplazar por completo al escrow tradicional.
+El **escrow** (también llamado **depósito en garantía**) es la solución estándar a ese problema. Esta guía explica, en lenguaje sencillo, qué es una cuenta escrow, qué significa escrow, cómo funciona paso a paso en la venta de un dominio, por qué importa, y cómo un enfoque más reciente — los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) y los contratos inteligentes — está empezando a reemplazar por completo al escrow tradicional.
 
 ---
 
@@ -36,7 +36,7 @@ Este es el flujo clásico para vender un nombre de dominio a través de un servi
 1. **Acordar los términos.** Comprador y vendedor fijan un precio y deciden quién paga la comisión del escrow. Abren una transacción en el servicio de escrow.
 2. **El comprador deposita en la cuenta escrow.** El comprador envía el monto acordado a la cuenta escrow — por transferencia bancaria, tarjeta o cripto. Es clave entender que el vendedor *todavía no* tiene ese dinero; el escrow solo lo está reteniendo.
 3. **El escrow confirma los fondos.** El servicio de escrow verifica que el pago se haya acreditado y le avisa al vendedor: *"El dinero ya está aquí. Puedes transferir el dominio con seguridad."*
-4. **El vendedor transfiere el dominio.** El vendedor desbloquea el dominio en su [registrador](/en/glossary/registrar/) y proporciona el [código de autorización](/en/glossary/auth-code/) (también llamado código EPP) — una contraseña que autoriza mover el dominio a otro registrador.
+4. **El vendedor transfiere el dominio.** El vendedor desbloquea el dominio en su [registrador](/es/glossary/registrar/) y proporciona el [código de autorización](/en/glossary/auth-code/) (también llamado código EPP) — una contraseña que autoriza mover el dominio a otro registrador.
 5. **El comprador inicia la transferencia.** Con ese código de autorización, el comprador inicia la transferencia hacia su propio registrador. Una transferencia entre registradores de la [ICANN](https://www.icann.org/) suele tardar entre cinco y siete días en completarse por completo.
 6. **El comprador confirma la recepción.** Una vez que el dominio aparece en la cuenta del comprador, este lo confirma a través del servicio de escrow.
 7. **El escrow libera los fondos.** Ahora — y solo ahora — el escrow le paga al vendedor. El trato queda cerrado.
@@ -56,7 +56,7 @@ Los dominios son un objetivo favorito del fraude precisamente porque son valioso
 
 El escrow neutraliza los dos primeros casos de forma directa: el dinero y el activo no pueden desaparecer a la vez, porque el escrow retiene uno hasta que el otro se confirma. Los servicios de escrow serios también añaden verificaciones de identidad y de pago que atrapan parte del tercer caso. Para cualquier venta de dominio relevante entre personas que no se conocen, **el escrow es la expectativa mínima** — negarse a usarlo es, en sí mismo, una señal de alerta.
 
-Para profundizar en el panorama de amenazas, consulta [cómo ocurre realmente el secuestro de dominios](/en/blog/how-domain-hijacking-actually-happens/).
+Para profundizar en el panorama de amenazas, consulta [cómo ocurre realmente el secuestro de dominios](/es/blog/how-domain-hijacking-actually-happens/).
 
 ---
 
@@ -75,9 +75,9 @@ Estas contrapartidas eran simplemente el precio de la seguridad — hasta que ll
 
 ## Cómo los dominios tokenizados + los contratos inteligentes reemplazan el escrow
 
-Cuando un dominio está [tokenizado](/en/blog/what-are-tokenized-domains/), la propiedad se representa mediante un token en cadena (un NFT) y no solo mediante una entrada en la base de datos de un registrador. Eso cambia lo que es posible en el momento de la liquidación.
+Cuando un dominio está [tokenizado](/es/blog/what-are-tokenized-domains/), la propiedad se representa mediante un token en cadena (un NFT) y no solo mediante una entrada en la base de datos de un registrador. Eso cambia lo que es posible en el momento de la liquidación.
 
-Un [contrato inteligente](/en/glossary/smart-contract/) es código que se ejecuta en una blockchain y se cumple automáticamente cuando se dan sus condiciones. Y lo crucial: una transacción en cadena es **atómica**: el pago y la transferencia del activo ocurren en la *misma* transacción, en el mismo bloque — o no ocurre ninguno de los dos. No existe un estado intermedio en el que una parte ya se movió y la otra no.
+Un [contrato inteligente](/es/glossary/smart-contract/) es código que se ejecuta en una blockchain y se cumple automáticamente cuando se dan sus condiciones. Y lo crucial: una transacción en cadena es **atómica**: el pago y la transferencia del activo ocurren en la *misma* transacción, en el mismo bloque — o no ocurre ninguno de los dos. No existe un estado intermedio en el que una parte ya se movió y la otra no.
 
 Esa propiedad hace exactamente lo que el escrow fue inventado para hacer, sin que un tercero retenga nada:
 
@@ -85,7 +85,7 @@ Esa propiedad hace exactamente lo que el escrow fue inventado para hacer, sin qu
 - **No hay código de autorización que compartir** ni una transferencia de registrador de varios días para el cambio de propiedad en cadena — el token se mueve de inmediato.
 - **No hay comisión de escrow**, porque ningún tercero neutral está reteniendo fondos. El contrato inteligente *es* el árbitro imparcial, y su ejecución no tiene costo más allá de las comisiones normales de la red.
 
-En otras palabras, el contrato inteligente se convierte en el escrow — pero es transparente, automático, instantáneo y no se queda con una comisión por guardar tu dinero. Para un recorrido más detallado del flujo completo del mercado y de hacia dónde se trasladan los riesgos, consulta [Desde el listado hasta la liquidación: cómo los mercados tokenizados reemplazan el escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/).
+En otras palabras, el contrato inteligente se convierte en el escrow — pero es transparente, automático, instantáneo y no se queda con una comisión por guardar tu dinero. Para un recorrido más detallado del flujo completo del mercado y de hacia dónde se trasladan los riesgos, consulta [Desde el listado hasta la liquidación: cómo los mercados tokenizados reemplazan el escrow](/es/blog/how-tokenized-marketplaces-replace-escrow/).
 
 Esto no está libre de riesgos — solo los traslada. En lugar de confiar en una empresa de escrow, ahora dependes de la seguridad de tu billetera y de la solidez del contrato inteligente. La idea no es que la liquidación tokenizada sea magia; es que *el trabajo que hace el escrow* puede hacerlo el código en lugar de un intermediario al que se le paga.
 

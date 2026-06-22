@@ -38,7 +38,7 @@ Como un nuevo gTLD moderno y abierto con un amplio grupo de nombres no registrad
 
 ## ¿Qué es .shop?
 
-**.shop** es un [dominio genérico de nivel superior (gTLD)](/en/glossary/tld) introducido en el marco del Programa de Nuevos gTLD de [ICANN](/en/glossary/icann) — la expansión de 2012 que añadió cientos de sufijos basados en palabras a la zona raíz. Su significado es autoexplicativo: "shop" es una palabra en inglés casi universal para un destino minorista, y funciona como una etiqueta semántica clara para el comercio.
+**.shop** es un [dominio genérico de nivel superior (gTLD)](/en/glossary/tld) introducido en el marco del Programa de Nuevos gTLD de [ICANN](/es/glossary/icann) — la expansión de 2012 que añadió cientos de sufijos basados en palabras a la zona raíz. Su significado es autoexplicativo: "shop" es una palabra en inglés casi universal para un destino minorista, y funciona como una etiqueta semántica clara para el comercio.
 
 Dado que es genérico y no un TLD de código de país, los motores de búsqueda no asocian **.shop** con ninguna geografía. La orientación de Google indica que trata los nuevos gTLD igual que las extensiones heredadas y no aplica orientación geográfica basada en un nombre como `.shop` — por lo tanto, un sitio `.shop` puede posicionarse globalmente igual que un `.com`. Puedes confirmar los detalles del registro en la [entrada oficial de IANA en la zona raíz para .shop](https://www.iana.org/domains/root/db/shop.html).
 
@@ -71,12 +71,12 @@ Estos son sitios comerciales reales y activos. Cuando una marca importante gesti
 
 | Extensión | Señal de significado | Disponibilidad del espacio de nombres | Mejor cuando |
 | --- | --- | --- | --- |
-| [.com](/en/tld/com) | Genérico, confianza predeterminada | Muy escaso / costoso | La máxima familiaridad es lo más importante |
+| [.com](/es/tld/com) | Genérico, confianza predeterminada | Muy escaso / costoso | La máxima familiaridad es lo más importante |
 | **.shop** | "Un lugar para comprar" | Amplio, abierto | Quieres una intención minorista explícita |
-| [.store](/en/tld/store) | "Una tienda" | Amplio | Enfoque minorista similar, palabra alternativa |
-| [.online](/en/tld/online) | Presencia web amplia | Amplio | Sitio genérico, no estrictamente minorista |
+| [.store](/es/tld/store) | "Una tienda" | Amplio | Enfoque minorista similar, palabra alternativa |
+| [.online](/es/tld/online) | Presencia web amplia | Amplio | Sitio genérico, no estrictamente minorista |
 
-Elige `.com` cuando el reconocimiento predeterminado supera todo lo demás y puedes obtener el nombre exacto. Elige **.shop** cuando quieres que la dirección en sí anuncie que vendes. [.store](/en/tld/store) es su rival semántico más cercano — elige según cuál palabra combine mejor con tu marca — mientras que [.online](/en/tld/online) es más amplio y menos específico para el comercio.
+Elige `.com` cuando el reconocimiento predeterminado supera todo lo demás y puedes obtener el nombre exacto. Elige **.shop** cuando quieres que la dirección en sí anuncie que vendes. [.store](/es/tld/store) es su rival semántico más cercano — elige según cuál palabra combine mejor con tu marca — mientras que [.online](/es/tld/online) es más amplio y menos específico para el comercio.
 
 ## ¿Por qué elegir .shop?
 
@@ -103,7 +103,7 @@ Se aplican las prácticas estándar de nuevos gTLD. Los titulares de marcas come
 
 Esta página nunca cotiza precios en tiempo real, pero las **dinámicas** valen la pena entender. Los nombres estándar de `.shop` se sitúan en el rango típico de los nuevos gTLD, y como con la mayoría de dichas extensiones, **el precio del primer año y el precio de renovación pueden diferir** — los primeros años promocionales son comunes, así que comprueba siempre cuánto cuesta mantener el nombre año tras año.
 
-El registro también designa algunos nombres de alta demanda como **premium**, con tarifas de registro elevadas y a veces también tarifas de renovación elevadas; los términos minoristas genéricos de una sola palabra son los más propensos a ser de nivel premium. Lo que impulsa el costo en general es la tarifa mayorista del registro, si un nombre está marcado como premium y el margen de tu [registrador](/en/glossary/registrar) junto con cualquier oferta introductoria. En cuanto a las ventas en el mercado secundario, un `.shop` de coincidencia exacta y valor también puede alcanzar una prima de reventa entre propietarios.
+El registro también designa algunos nombres de alta demanda como **premium**, con tarifas de registro elevadas y a veces también tarifas de renovación elevadas; los términos minoristas genéricos de una sola palabra son los más propensos a ser de nivel premium. Lo que impulsa el costo en general es la tarifa mayorista del registro, si un nombre está marcado como premium y el margen de tu [registrador](/es/glossary/registrar) junto con cualquier oferta introductoria. En cuanto a las ventas en el mercado secundario, un `.shop` de coincidencia exacta y valor también puede alcanzar una prima de reventa entre propietarios.
 
 ## Reputación y entregabilidad del correo electrónico
 
@@ -124,7 +124,7 @@ Para el correo electrónico, la extensión en sí no es lo que juzgan los filtro
 2. Elige el nombre exacto (y cualquier variante defensiva como `.store` o `.com`).
 3. Completa el registro y configura el DNS.
 
-[Namefi](https://namefi.io) es un registrador acreditado por [ICANN](/en/glossary/icann) con precios transparentes y gestión rápida de [DNS](/en/glossary/dns). También te permite tokenizar tu dominio para la propiedad Web3 — convirtiendo tu dirección `.shop` en un activo en cadena transferible — mientras mantiene intactas las funciones estándar del registrador.
+[Namefi](https://namefi.io) es un registrador acreditado por [ICANN](/es/glossary/icann) con precios transparentes y gestión rápida de [DNS](/es/glossary/dns). También te permite tokenizar tu dominio para la propiedad Web3 — convirtiendo tu dirección `.shop` en un activo en cadena transferible — mientras mantiene intactas las funciones estándar del registrador.
 
 ## Preguntas frecuentes
 
@@ -150,11 +150,11 @@ Sí. **.shop** admite DNSSEC a nivel de registro, y la mayoría de los registrad
 
 ## Recursos relacionados
 
-- [¿Qué es un TLD?](/en/blog/what-is-a-tld)
-- [¿Qué es un dominio?](/en/blog/what-is-domain)
-- [Los mejores TLD para asegurar para tu tienda de comercio electrónico](/en/blog/top-tlds-to-secure-for-your-ecommerce-store)
-- [¿Qué son los dominios tokenizados?](/en/blog/what-are-tokenized-domains)
-- [Dominio .store](/en/tld/store)
-- [Dominio .online](/en/tld/online)
-- [Dominio .com](/en/tld/com)
-- Glosario: [registrador](/en/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)
+- [¿Qué es un TLD?](/es/blog/what-is-a-tld)
+- [¿Qué es un dominio?](/es/blog/what-is-domain)
+- [Los mejores TLD para asegurar para tu tienda de comercio electrónico](/es/blog/top-tlds-to-secure-for-your-ecommerce-store)
+- [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains)
+- [Dominio .store](/es/tld/store)
+- [Dominio .online](/es/tld/online)
+- [Dominio .com](/es/tld/com)
+- Glosario: [registrador](/es/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)

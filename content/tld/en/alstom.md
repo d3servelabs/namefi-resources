@@ -11,7 +11,7 @@ keywords: [".alstom domains", ".alstom TLD", "top-level domain", "what is .alsto
 
 ## **What is .alstom?**
 
-The **.alstom** extension is a specialized type of Top-Level Domain (TLD) known as a "dot-brand" or **Brand TLD**. Unlike open domains like .com or .net that generally allow public registration, .alstom was created specifically for **Alstom**, a global leader in the green and smart mobility sector, primarily known for manufacturing trains and rail infrastructure.
+The **.alstom** extension is a specialized type of [Top-Level Domain (TLD)](/en/glossary/tld/) known as a "dot-brand" or **Brand TLD**. Unlike open domains like [.com](/en/tld/com/) or [.net](/en/tld/net/) that generally allow public registration, .alstom was created specifically for **Alstom**, a global leader in the green and smart mobility sector, primarily known for manufacturing trains and rail infrastructure.
 
 Launched during [ICANN's new gTLD program](https://newgtlds.icann.org/en/about/program), this domain extension allows the corporation to create a trusted, secure, and branded digital ecosystem. It is categorized as a generic Top-Level Domain (gTLD) but operates with restricted eligibility, meaning it is managed exclusively by the company to protect its intellectual property and ensure consumer safety.
 
@@ -43,17 +43,17 @@ While .alstom is not open for public registration, understanding why a company c
 *   **Unparalleled Trust:** When a user sees a URL ending in .alstom, they know with 100% certainty that they are interacting with the official entity. It eliminates the risk of typo-squatting.
 *   **Total Control:** The registry owner has complete control over policy, pricing, and allocation. They do not have to worry about a domain squatter buying `besttrains.alstom`.
 *   **SEO & Branding:** A custom TLD is the ultimate branding signal. It allows for short, memorable, and keyword-rich domain names that legacy TLDs can no longer offer due to saturation.
-*   **Future-Proofing:** Owning a TLD provides a foundation for future technologies, potentially integrating with **Web3** and **tokenized assets** for supply chain management within the company's ecosystem.
+*   **Future-Proofing:** Owning a TLD provides a foundation for future technologies, potentially integrating with **[Web3](/en/glossary/web3/)** and **tokenized assets** for supply chain management within the company's ecosystem.
 
 ## **Register Your .alstom Domain at Namefi**
 
 The .alstom TLD represents the pinnacle of corporate digital strategy. While .alstom itself is restricted to the corporation, you can apply the same strategic thinking to your own portfolio by choosing high-value, descriptive, or Web3-ready domains.
 
-At **Namefi**, we specialize in the next generation of domain ownership. Whether you are looking for available gTLDs to build your brand or investing in tokenized domains for the decentralized web, we provide a seamless experience.
+At **Namefi**, we specialize in the next generation of [domain ownership](/en/glossary/domain-ownership/). Whether you are looking for available gTLDs to build your brand or investing in tokenized domains for the decentralized web, we provide a seamless experience.
 
 **Why Register with Namefi?**
-*   **ICANN-Accredited:** Secure, compliant, and trustworthy registration services.
-*   **Web3 Integration:** We bridge the gap between Web2 and Web3, allowing you to tokenize your domains for easier transfer and management.
+*   **[ICANN](/en/glossary/icann/)-Accredited:** Secure, compliant, and trustworthy registration services.
+*   **Web3 Integration:** We bridge the gap between Web2 and Web3, allowing you to [tokenize](/en/glossary/tokenize/) your domains for easier transfer and management.
 *   **Smart Search:** Find the perfect alternative to closed TLDs to ensure your project has the professional edge it needs.
 
 Ready to secure your digital identity?

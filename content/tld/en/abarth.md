@@ -10,7 +10,7 @@ description: Learn about the .abarth TLD, its uses, advantages, and how to regis
 
 ## **What is .abarth?**
 
-The .abarth Top-Level Domain (TLD) is a brand gTLD, representing the iconic Italian automobile marque, Abarth. Abarth, originally Abarth & C., is known for its high-performance vehicles and racing heritage. This TLD provides a dedicated online space for the Abarth brand, its community, and related content. While relatively new, the .abarth TLD is intended to serve as a hub for Abarth enthusiasts, owners, and the company itself, showcasing products, news, events, and fostering brand engagement.
+The .abarth [Top-Level Domain](/en/glossary/tld/) (TLD) is a brand gTLD, representing the iconic Italian automobile marque, Abarth. Abarth, originally Abarth & C., is known for its high-performance vehicles and racing heritage. This TLD provides a dedicated online space for the Abarth brand, its community, and related content. While relatively new, the .abarth TLD is intended to serve as a hub for Abarth enthusiasts, owners, and the company itself, showcasing products, news, events, and fostering brand engagement.
 
 ## **How People Are Using .abarth**
 
@@ -42,4 +42,4 @@ While specific examples are limited due to the relatively new nature of the TLD,
 
 ## **Register Your .abarth Domain at Namefi**
 
-Ready to accelerate your online presence with a .abarth domain? [Namefi](https://namefi.io) is an ICANN-accredited registrar offering seamless domain registration and Web3 integration. With Namefi, you can easily secure your .abarth domain and manage it with our user-friendly platform. Don't miss out on the opportunity to establish your brand within the Abarth community. Secure your .abarth domain today!
+Ready to accelerate your online presence with a .abarth domain? [Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/) offering seamless domain registration and Web3 integration. With Namefi, you can easily secure your .abarth domain and manage it with our user-friendly platform. Don't miss out on the opportunity to establish your brand within the Abarth community. Secure your .abarth domain today!

@@ -11,10 +11,10 @@ keywords: ['fiscalité domaine NFT', 'prix de revient domaine tokenisé', 'compt
 
 > **À lire en premier.** Cet article ne constitue **pas** un conseil fiscal, comptable, juridique ou financier. Nous ne sommes ni votre expert-comptable ni votre avocat, et nous ignorons de quelle juridiction vous dépendez. Il s'agit d'une *liste de questions* à soumettre à un véritable professionnel. Utilisez-la comme une fiche de préparation, et non comme une position sur laquelle vous reposer. L'avertissement complet se trouve en bas de page et s'applique *tout particulièrement* à cet article.
 
-Posséder un [domaine tokenisé](/en/blog/what-are-tokenized-domains/) se situe à la croisée de deux mondes que le code des impôts traite généralement de manière séparée :
+Posséder un [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) se situe à la croisée de deux mondes que le code des impôts traite généralement de manière séparée :
 
 - Un **nom de domaine enregistré**, qui est traité comme un actif incorporel / selon les règles de la Section 197 (aux États-Unis) ou un équivalent dans de nombreuses juridictions depuis des décennies.
-- Un [**NFT**](/en/glossary/nft/), qui est beaucoup plus récent et sur lequel les différentes autorités fiscales ont adopté des positions variées (parfois traité comme un objet de collection, parfois comme un bien, parfois comme un actif numérique avec sa propre catégorie émergente — voir la [Notice 2023-27 de l'IRS](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) pour le traitement des NFT comme objets de collection aux États-Unis).
+- Un [**NFT**](/fr/glossary/nft/), qui est beaucoup plus récent et sur lequel les différentes autorités fiscales ont adopté des positions variées (parfois traité comme un objet de collection, parfois comme un bien, parfois comme un actif numérique avec sa propre catégorie émergente — voir la [Notice 2023-27 de l'IRS](https://www.irs.gov/pub/irs-drop/n-23-27.pdf) pour le traitement des NFT comme objets de collection aux États-Unis).
 
 Cette combinaison est inédite. Ne partez pas du principe que votre expert-comptable en a déjà vu un. Ne supposez pas non plus le contraire. La meilleure approche est de lui poser les bonnes questions et de le laisser faire son travail.
 
@@ -22,12 +22,12 @@ Cette combinaison est inédite. Ne partez pas du principe que votre expert-compt
 
 ## Pourquoi « le traiter simplement comme un domaine » ne suffit pas
 
-Les domaines tokenisés impliquent des événements [on-chain](/en/glossary/on-chain/) continus que les domaines traditionnels n'ont pas :
+Les domaines tokenisés impliquent des événements [on-chain](/fr/glossary/on-chain/) continus que les domaines traditionnels n'ont pas :
 
-- Le minting (le moment de la [tokenisation](/en/glossary/tokenize/) en lui-même — est-ce un événement imposable ? Probablement pas dans la plupart des juridictions, mais posez la question).
+- Le minting (le moment de la [tokenisation](/fr/glossary/tokenize/) en lui-même — est-ce un événement imposable ? Probablement pas dans la plupart des juridictions, mais posez la question).
 - Les transferts on-chain, y compris les donations et les successions.
 - Les ventes réalisées entièrement on-chain, payées en cryptomonnaies ou en [stablecoins](/en/glossary/stablecoin/).
-- L'utilisation possible comme [collatéral](/en/glossary/collateral/) en [DeFi](/en/glossary/defi/) (par exemple, un emprunt adossé au domaine).
+- L'utilisation possible comme [collatéral](/fr/glossary/collateral/) en [DeFi](/en/glossary/defi/) (par exemple, un emprunt adossé au domaine).
 - Le bridging ou le déplacement du jeton entre différentes blockchains.
 
 Chacune de ces interactions a des implications fiscales dans certaines juridictions et pas dans d'autres. La liste ci-dessous regroupe les questions qu'il est utile d'examiner avec un professionnel.

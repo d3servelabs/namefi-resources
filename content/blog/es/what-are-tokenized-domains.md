@@ -13,17 +13,17 @@ Es posible que hayas escuchado frases como "dominio tokenizado", "tokenizar un d
 
 Este artículo responde directamente a la pregunta de **"qué"**: qué *es* un dominio tokenizado, qué *significa* la tokenización de dominios, qué *no es* tokenizar un dominio y cómo se relaciona toda esta idea con los nombres de dominio que ya conoces.
 
-> Si deseas comprender *por qué* es importante la tokenización de dominios, consulta [¿Por qué tokenizar dominios on-chain?](/en/blog/why-tokenize-domains/). Esta publicación se centra en el *qué*.
+> Si deseas comprender *por qué* es importante la tokenización de dominios, consulta [¿Por qué tokenizar dominios on-chain?](/es/blog/why-tokenize-domains/). Esta publicación se centra en el *qué*.
 
 ---
 
 ## La definición breve
 
-Un **dominio tokenizado** es un [nombre de dominio](/en/blog/what-is-domain/) normal reconocido por la [ICANN](/en/glossary/icann/) (como `mimarca.xyz` o `ejemplo.com`) cuya propiedad también se representa como un **token en una blockchain**, generalmente un [NFT](/en/glossary/nft/). El proceso de creación de esa representación respaldada por un token se denomina **tokenización de dominios**, y el acto en sí es a lo que la gente se refiere cuando dice *tokenizar un dominio* o *tokenizar dominios*.
+Un **dominio tokenizado** es un [nombre de dominio](/es/blog/what-is-domain/) normal reconocido por la [ICANN](/es/glossary/icann/) (como `mimarca.xyz` o `ejemplo.com`) cuya propiedad también se representa como un **token en una blockchain**, generalmente un [NFT](/es/glossary/nft/). El proceso de creación de esa representación respaldada por un token se denomina **tokenización de dominios**, y el acto en sí es a lo que la gente se refiere cuando dice *tokenizar un dominio* o *tokenizar dominios*.
 
 En otras palabras:
 
-> Un dominio tokenizado es un dominio con **dos capas de propiedad sincronizadas**: el registro tradicional de [DNS](/en/glossary/dns/), *y* un token on-chain que lo refleja. **Tokenizar un dominio** consiste en agregar esa segunda capa on-chain a un nombre de dominio existente o recién registrado.
+> Un dominio tokenizado es un dominio con **dos capas de propiedad sincronizadas**: el registro tradicional de [DNS](/es/glossary/dns/), *y* un token on-chain que lo refleja. **Tokenizar un dominio** consiste en agregar esa segunda capa on-chain a un nombre de dominio existente o recién registrado.
 
 Cuando transfieres el token, el dominio subyacente lo sigue. Cuando el dominio expira o se renueva, el token refleja ese estado.
 
@@ -35,8 +35,8 @@ Resulta útil imaginar que un dominio tokenizado tiene dos registros sincronizad
 
 | Capa | Qué es | Quién la mantiene |
 |---|---|---|
-| DNS / Registro | El registro oficial en el [registrador](/en/glossary/registrar/) y en el registro | [Registradores](/en/glossary/registrar/) acreditados por la [ICANN](/en/glossary/icann/) |
-| Token on-chain | Un [NFT](/en/glossary/nft/) en tu [billetera](/en/glossary/wallet/) que representa la propiedad | Un [contrato inteligente](/en/glossary/smart-contract/) en una blockchain pública |
+| DNS / Registro | El registro oficial en el [registrador](/es/glossary/registrar/) y en el registro | [Registradores](/es/glossary/registrar/) acreditados por la [ICANN](/es/glossary/icann/) |
+| Token on-chain | Un [NFT](/es/glossary/nft/) en tu [billetera](/es/glossary/wallet/) que representa la propiedad | Un [contrato inteligente](/es/glossary/smart-contract/) en una blockchain pública |
 
 Las dos capas se mantienen sincronizadas mediante la plataforma de tokenización de dominios (en el caso de Namefi, mediante el protocolo Namefi y sus integraciones con registradores). Siempre que hablamos de *tokenizar un dominio*, *tokenizar dominios* o la *tokenización de nombres de dominio*, nos referimos a establecer y mantener esta relación de dos capas para un dominio específico.
 
@@ -66,7 +66,7 @@ Los nombres de [ENS](/en/glossary/ens/) (como `vitalik.eth`) viven completamente
 
 ### No son a prueba de censura ni están "al margen de la ley"
 
-Debido a que el activo subyacente es un dominio DNS real, los dominios tokenizados siguen sujetos a renovación, a las políticas de la [ICANN](/en/glossary/icann/), a las disputas [UDRP](/en/glossary/udrp/) y a la ley aplicable. El token refleja la propiedad; no exime al dominio de las reglas del mundo real.
+Debido a que el activo subyacente es un dominio DNS real, los dominios tokenizados siguen sujetos a renovación, a las políticas de la [ICANN](/es/glossary/icann/), a las disputas [UDRP](/es/glossary/udrp/) y a la ley aplicable. El token refleja la propiedad; no exime al dominio de las reglas del mundo real.
 
 ---
 
@@ -74,8 +74,8 @@ Debido a que el activo subyacente es un dominio DNS real, los dominios tokenizad
 
 Esto es lo que sucede realmente cuando tokenizas un dominio (o registras un dominio tokenizado completamente nuevo) en Namefi:
 
-1. **Registro**: Se registra (o transfiere) un dominio DNS real a través de un [registrador](/en/glossary/registrar/) acreditado.
-2. **Acuñación (Minting)**: Como parte de la tokenización del dominio, se acuña en tu [billetera](/en/glossary/wallet/) un [NFT](/en/glossary/nft/) que representa dicho dominio.
+1. **Registro**: Se registra (o transfiere) un dominio DNS real a través de un [registrador](/es/glossary/registrar/) acreditado.
+2. **Acuñación (Minting)**: Como parte de la tokenización del dominio, se acuña en tu [billetera](/es/glossary/wallet/) un [NFT](/es/glossary/nft/) que representa dicho dominio.
 3. **Sincronización**: La plataforma mantiene la propiedad a nivel de DNS alineada con la propiedad on-chain para cada dominio tokenizado. Si transfieres el NFT, el registro DNS lo sigue.
 4. **Uso**: Puedes apuntar el dominio tokenizado a un sitio web, configurar registros DNS o utilizar el NFT en aplicaciones on-chain (mercados, identidad, [DeFi](/en/glossary/defi/), etc.).
 
@@ -91,8 +91,8 @@ Como ambas capas existen, obtienes la unión de sus capacidades:
 - **Guardarlo en tu propia billetera**: no se requiere una cuenta alojada por un tercero para tener la propiedad.
 - **Transferirlo en segundos**: enviar el NFT a otra billetera; el registro DNS lo sigue.
 - **Listarlo en mercados de NFT**: OpenSea, Blur y otros.
-- **Usarlo en contratos inteligentes**: como garantía (colateral), en [subastas](/en/glossary/auction/), [arrendamiento (leasing)](/en/glossary/leasing/), [propiedad fraccionada](/en/glossary/fractional-ownership/) y más.
-- **Vincularlo a una identidad on-chain**: conectarlo a [Farcaster](/en/glossary/farcaster/), [Lens](/en/glossary/lens/) o sistemas de [DID](/en/glossary/did/).
+- **Usarlo en contratos inteligentes**: como garantía (colateral), en [subastas](/es/glossary/auction/), [arrendamiento (leasing)](/es/glossary/leasing/), [propiedad fraccionada](/es/glossary/fractional-ownership/) y más.
+- **Vincularlo a una identidad on-chain**: conectarlo a [Farcaster](/es/glossary/farcaster/), [Lens](/es/glossary/lens/) o sistemas de [DID](/es/glossary/did/).
 
 ---
 
@@ -104,7 +104,7 @@ La tokenización de dominios ya no es un experimento de un solo proveedor: varia
 
 ### 1. Namefi (esos somos nosotros)
 
-**Enfoque:** Tokenizar dominios ICANN reales (`.com`, `.xyz`, `.io`, `.art` y muchos más) como NFT manteniendo la capa de DNS completamente funcional. Ambas capas se mantienen sincronizadas a través de [registradores](/en/glossary/registrar/) acreditados.
+**Enfoque:** Tokenizar dominios ICANN reales (`.com`, `.xyz`, `.io`, `.art` y muchos más) como NFT manteniendo la capa de DNS completamente funcional. Ambas capas se mantienen sincronizadas a través de [registradores](/es/glossary/registrar/) acreditados.
 
 **Lo que distingue a Namefi:** Namefi fue la **primera plataforma en tokenizar dominios ICANN reales en la red principal (mainnet) de Ethereum, y la primera en hacerlo en Base**. Debido a que los dominios tokenizados por Namefi viven en Ethereum y Base, se integran de manera natural con la **mayoría de los principales mercados de NFT y protocolos de préstamos** (OpenSea, Blur, NFTfi y otros) gracias al profundo y maduro ecosistema [DeFi](/en/glossary/defi/) de Ethereum. Otras plataformas han tomado sus propias decisiones sobre las redes que mejor se adaptan a sus objetivos; sin embargo, Ethereum y Base brindan a los usuarios de Namefi la compatibilidad inmediata más amplia con las herramientas de NFT y DeFi existentes en la actualidad.
 
@@ -142,7 +142,7 @@ La tokenización de dominios ya no es un experimento de un solo proveedor: varia
 
 ### 7. Registradores tradicionales explorando la tokenización
 
-Algunos [registradores](/en/glossary/registrar/) y registros incumbentes de la ICANN (por ejemplo, [GoDaddy](https://www.godaddy.com), [Identity Digital](https://www.identity.digital)) han anunciado asociaciones o iniciativas exploratorias de tokenización. La cobertura y la disponibilidad varían ampliamente, y la mayor parte de su negocio principal sigue siendo el registro tradicional exclusivo de DNS.
+Algunos [registradores](/es/glossary/registrar/) y registros incumbentes de la ICANN (por ejemplo, [GoDaddy](https://www.godaddy.com), [Identity Digital](https://www.identity.digital)) han anunciado asociaciones o iniciativas exploratorias de tokenización. La cobertura y la disponibilidad varían ampliamente, y la mayor parte de su negocio principal sigue siendo el registro tradicional exclusivo de DNS.
 
 ---
 
@@ -152,7 +152,7 @@ Un pariente cercano de los dominios tokenizados es la familia de los **dominios 
 
 Los dominios Web3 tienen un diseño intencionalmente diferente a los dominios ICANN tokenizados. Así es como debes pensar en ellos:
 
-- **Un espacio de nombres diferente por diseño.** Los dominios Web3 (`.eth`, `.crypto`, `.x`, `.nft` y los TLD creados por los usuarios) viven intencionalmente fuera de la raíz de la [ICANN](/en/glossary/icann/), lo que les permite iterar rápidamente y experimentar con nuevos modelos de nomenclatura. La contrapartida es que se sitúan junto a la jerarquía de DNS tradicional en lugar de estar dentro de ella.
+- **Un espacio de nombres diferente por diseño.** Los dominios Web3 (`.eth`, `.crypto`, `.x`, `.nft` y los TLD creados por los usuarios) viven intencionalmente fuera de la raíz de la [ICANN](/es/glossary/icann/), lo que les permite iterar rápidamente y experimentar con nuevos modelos de nomenclatura. La contrapartida es que se sitúan junto a la jerarquía de DNS tradicional en lugar de estar dentro de ella.
 - **La resolución en navegadores y correo electrónico requiere pasos adicionales.** Visitar un dominio Web3 en un navegador típico, o enviarle un correo electrónico, generalmente necesita un resolutor, una extensión o un puente. El ecosistema de billeteras, dApps y navegadores cripto-nativos que *sí* los soportan crece de forma constante; sin embargo, la paridad con navegadores estándar, servidores de correo, CDN, herramientas de SEO y autoridades de certificación SSL/TLS aún está en progreso.
 - **Casos de uso nativos de billetera genuinamente novedosos.** Aquí es donde brillan los dominios Web3: reemplazando las largas direcciones `0x…` por nombres legibles para humanos, simplificando las transferencias de tokens, impulsando los inicios de sesión en dApps y sirviendo como primitivas de identidad on-chain. Muchos de estos patrones simplemente no existían antes de ENS y sus pares, y los dominios tokenizados se basan en esas ideas.
 - **El perfil de adopción difiere de los dominios DNS / ICANN reales.** Los dominios reales (también llamados *dominios DNS*, *dominios ICANN* o *dominios reales*, por ejemplo, `.com`, `.org`, `.xyz`, `.io`) se benefician de décadas de soporte universal en todos los navegadores, proveedores de correo electrónico, CDN y autoridades de certificación. Los dominios Web3 tienen un alcance impresionante y creciente dentro del ecosistema cripto-nativo, mientras que la adopción más amplia de Internet aún se está poniendo al día.
@@ -202,4 +202,4 @@ No pierdes la capa legal o de registro. Ganas una programable encima.
 - Un dominio tokenizado **no** es un nuevo TLD, no es un nombre estilo ENS y no es una forma de eludir el DNS o la ley.
 - Te brinda todo lo que hace un dominio tradicional, *además* de propiedad nativa de billetera y componibilidad con aplicaciones on-chain.
 
-Para explorar *por qué* es importante esto y qué desbloquea la tokenización de dominios, lee [¿Por qué tokenizar dominios on-chain?](/en/blog/why-tokenize-domains/). Para registrar o tokenizar tu primer dominio, visita [namefi.io](https://namefi.io).
+Para explorar *por qué* es importante esto y qué desbloquea la tokenización de dominios, lee [¿Por qué tokenizar dominios on-chain?](/es/blog/why-tokenize-domains/). Para registrar o tokenizar tu primer dominio, visita [namefi.io](https://namefi.io).

@@ -22,7 +22,7 @@ Lors de l'évaluation des extensions, trois critères sont à peser. Les **signa
 
 ### 1. .com — votre domaine phare et marque principale
 
-L'extension [.com](/en/tld/com) reste la référence par défaut pour tout site web professionnel, et c'est presque toujours là que clients, partenaires et moteurs de recherche se rendront en premier. Elle est gérée par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/com), et l'enregistrement est ouvert à tous. Utilisez-la comme adresse canonique et redirigez vos autres domaines vers elle.
+L'extension [.com](/fr/tld/com) reste la référence par défaut pour tout site web professionnel, et c'est presque toujours là que clients, partenaires et moteurs de recherche se rendront en premier. Elle est gérée par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/com), et l'enregistrement est ouvert à tous. Utilisez-la comme adresse canonique et redirigez vos autres domaines vers elle.
 
 ### 2. .cpa — le signal de confiance de référence (accès restreint)
 
@@ -34,11 +34,11 @@ L'extension [.tax](/en/tld/tax) communique immédiatement une spécialité en pr
 
 ### 4. .accountant — ouvert et largement disponible
 
-L'extension [.accountant](/en/tld/accountant) est gérée par dog beach, LLC (un registre Identity Digital) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/accountant). Fait important, .accountant est **ouvert au public** sans exigence de vérification professionnelle — n'importe qui peut l'enregistrer selon le principe du premier arrivé, premier servi. Cela la rend utile à des fins marketing et défensives, mais elle ne comporte pas de signal de licence intégré comme le fait .cpa.
+L'extension [.accountant](/fr/tld/accountant) est gérée par dog beach, LLC (un registre Identity Digital) dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/accountant). Fait important, .accountant est **ouvert au public** sans exigence de vérification professionnelle — n'importe qui peut l'enregistrer selon le principe du premier arrivé, premier servi. Cela la rend utile à des fins marketing et défensives, mais elle ne comporte pas de signal de licence intégré comme le fait .cpa.
 
 ### 5. .accountants — variante plurielle axée sur le secteur
 
-L'extension plurielle [.accountants](/en/tld/accountants) est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/accountants) et convient bien aux cabinets multi-associés. Bien que les registres puissent appliquer des politiques ciblées, .accountants est généralement disponible pour les professionnels de la comptabilité et les entreprises connexes sans la vérification stricte des licences qui régit le .cpa. La sécuriser aux côtés de .accountant évite toute confusion entre les formes singulière et plurielle.
+L'extension plurielle [.accountants](/fr/tld/accountants) est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/accountants) et convient bien aux cabinets multi-associés. Bien que les registres puissent appliquer des politiques ciblées, .accountants est généralement disponible pour les professionnels de la comptabilité et les entreprises connexes sans la vérification stricte des licences qui régit le .cpa. La sécuriser aux côtés de .accountant évite toute confusion entre les formes singulière et plurielle.
 
 ### 6. .finance — pour les services de conseil et de gestion de patrimoine
 
@@ -46,19 +46,19 @@ L'extension [.finance](/en/tld/finance) positionne votre cabinet dans le paysage
 
 ### 7. .net — l'alternative technique classique
 
-L'extension [.net](/en/tld/net) est l'un des TLD génériques d'origine, géré par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/net). Elle est largement reconnue et fréquemment enregistrée à titre défensif aux côtés du .com afin d'éviter qu'un tiers ne crée un site confusément similaire. Redirigez-la vers votre domaine phare.
+L'extension [.net](/fr/tld/net) est l'un des TLD génériques d'origine, géré par Verisign dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/net). Elle est largement reconnue et fréquemment enregistrée à titre défensif aux côtés du .com afin d'éviter qu'un tiers ne crée un site confusément similaire. Redirigez-la vers votre domaine phare.
 
 ### 8. .org — crédibilité pour les associations et les organismes à but non lucratif
 
-L'extension [.org](/en/tld/org), gérée par Public Interest Registry dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/org), véhicule une confiance institutionnelle. C'est un enregistrement défensif judicieux pour tout cabinet, et un choix principal naturel si votre pratique gère une fondation associée, une association professionnelle ou un programme communautaire.
+L'extension [.org](/fr/tld/org), gérée par Public Interest Registry dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/org), véhicule une confiance institutionnelle. C'est un enregistrement défensif judicieux pour tout cabinet, et un choix principal naturel si votre pratique gère une fondation associée, une association professionnelle ou un programme communautaire.
 
 ### 9. .agency — moderne et orienté services
 
-L'extension [.agency](/en/tld/agency) convient aux cabinets qui se présentent comme des partenaires à part entière plutôt que comme de simples prestataires transactionnels. Elle est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/agency) et est ouverte à l'enregistrement général, vous offrant une option contemporaine et mémorable pour vos campagnes ou sous-marques.
+L'extension [.agency](/fr/tld/agency) convient aux cabinets qui se présentent comme des partenaires à part entière plutôt que comme de simples prestataires transactionnels. Elle est gérée par Binky Moon, LLC dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/agency) et est ouverte à l'enregistrement général, vous offrant une option contemporaine et mémorable pour vos campagnes ou sous-marques.
 
 ### 10. .info — informatif et défensif
 
-L'extension [.info](/en/tld/info), gérée par Identity Digital dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/info), est un TLD ouvert bien adapté aux centres de ressources, portails clients et bases de connaissances — ou simplement comme enregistrement défensif peu coûteux pour compléter votre portefeuille.
+L'extension [.info](/fr/tld/info), gérée par Identity Digital dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/info), est un TLD ouvert bien adapté aux centres de ressources, portails clients et bases de connaissances — ou simplement comme enregistrement défensif peu coûteux pour compléter votre portefeuille.
 
 ## Stratégie d'enregistrement défensif
 

@@ -24,27 +24,27 @@ No necesitas cientos de dominios. Necesitas el `.com` canónico, un pequeño gru
 
 ### 1. .com — tu ancla innegociable
 
-[.com](/en/tld/com) sigue siendo la extensión predeterminada que los compradores escriben y en la que confían, operada por [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Para una marca de moda es el escaparate principal y el dominio de correo electrónico, sin excepciones. Asegúrala primero; todo lo demás se construye a su alrededor. No hay restricciones de elegibilidad: cualquier solicitante puede tener un `.com`.
+[.com](/es/tld/com) sigue siendo la extensión predeterminada que los compradores escriben y en la que confían, operada por [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Para una marca de moda es el escaparate principal y el dominio de correo electrónico, sin excepciones. Asegúrala primero; todo lo demás se construye a su alrededor. No hay restricciones de elegibilidad: cualquier solicitante puede tener un `.com`.
 
 ### 2. .shop — intención de compra en el nombre
 
-[.shop](/en/tld/shop) es operada por [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) de Tokio y está diseñada específicamente para el comercio. Para una marca, `tumarca.shop` se lee como una señal inequívoca de "compra aquí", ideal para una propiedad de comercio electrónico dedicada o un lanzamiento de temporada. Está abierta a todos los solicitantes sin restricciones especiales.
+[.shop](/es/tld/shop) es operada por [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) de Tokio y está diseñada específicamente para el comercio. Para una marca, `tumarca.shop` se lee como una señal inequívoca de "compra aquí", ideal para una propiedad de comercio electrónico dedicada o un lanzamiento de temporada. Está abierta a todos los solicitantes sin restricciones especiales.
 
 ### 3. .store — diseñada para el escaparate
 
-[.store](/en/tld/store) es gestionada por [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) y, al igual que `.shop`, señala el comercio minorista directamente. Combina bien con una boutique online insignia o un sitio de edición limitada o pop-up, y es un complemento defensivo sólido frente a `.shop` para que ninguna quede en manos de otra persona. Registro abierto, sin restricciones.
+[.store](/es/tld/store) es gestionada por [Radix](https://www.iana.org/domains/root/db/store.html) (Radix Technologies Inc.) y, al igual que `.shop`, señala el comercio minorista directamente. Combina bien con una boutique online insignia o un sitio de edición limitada o pop-up, y es un complemento defensivo sólido frente a `.shop` para que ninguna quede en manos de otra persona. Registro abierto, sin restricciones.
 
 ### 4. .online — presencia amplia y flexible
 
-[.online](/en/tld/online) también es una extensión de [Radix](https://www.iana.org/domains/root/db/online.html) y funciona como comodín cuando el `.com` ya está tomado o como dominio de campaña o catálogo. Es lo suficientemente genérica para apuntar a cualquier lugar: un hub de marca, un dossier de prensa, un avance de temporada. No tiene restricciones de elegibilidad.
+[.online](/es/tld/online) también es una extensión de [Radix](https://www.iana.org/domains/root/db/online.html) y funciona como comodín cuando el `.com` ya está tomado o como dominio de campaña o catálogo. Es lo suficientemente genérica para apuntar a cualquier lugar: un hub de marca, un dossier de prensa, un avance de temporada. No tiene restricciones de elegibilidad.
 
 ### 5. .site — una opción defensiva versátil
 
-[.site](/en/tld/site) (otro espacio de nombres de [Radix](https://www.iana.org/domains/root/db/site.html)) es económica, ampliamente reconocida y fácil de mantener de forma defensiva. Úsala para un microsite o una página de aterrizaje de campaña, o simplemente resérvala para que no pueda usarse en tu contra. Abierta a todos.
+[.site](/es/tld/site) (otro espacio de nombres de [Radix](https://www.iana.org/domains/root/db/site.html)) es económica, ampliamente reconocida y fácil de mantener de forma defensiva. Úsala para un microsite o una página de aterrizaje de campaña, o simplemente resérvala para que no pueda usarse en tu contra. Abierta a todos.
 
 ### 6. .co — la alternativa corta y premium
 
-[.co](/en/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El registro está abierto en todo el mundo; dado que es un ccTLD operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
+[.co](/es/tld/co) es el dominio de código de país de Colombia, gestionado por el [Ministerio de Tecnologías de la Información y las Comunicaciones (MinTIC)](https://www.iana.org/domains/root/db/co.html) de Colombia con operaciones técnicas a cargo de CentralNic, pero se comercializa y usa globalmente como un sustituto corto de "company" (empresa) o "commerce" (comercio). Muchas startups de moda adoptan `.co` cuando el `.com` no está disponible. El registro está abierto en todo el mundo; dado que es un ccTLD operado bajo una autoridad nacional, revisa los términos del registro antes de utilizarlo como tu único escaparate.
 
 ### 7. .fashion — relevancia que define la categoría
 
@@ -60,7 +60,7 @@ No necesitas cientos de dominios. Necesitas el `.com` canónico, un pequeño gru
 
 ### 10. .vip — exclusividad y fidelización
 
-[.vip](/en/tld/vip) es operada por [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry). Para la moda, se adapta perfectamente a lanzamientos exclusivos para miembros, programas de fidelización y eventos de acceso anticipado: `tumarca.vip` enmarca una experiencia cerrada. Está abierta a cualquier solicitante sin requisito de membresía.
+[.vip](/es/tld/vip) es operada por [Registry Services, LLC](https://www.iana.org/domains/root/db/vip.html) (GoDaddy Registry). Para la moda, se adapta perfectamente a lanzamientos exclusivos para miembros, programas de fidelización y eventos de acceso anticipado: `tumarca.vip` enmarca una experiencia cerrada. Está abierta a cualquier solicitante sin requisito de membresía.
 
 ## Estrategia de registro defensivo
 

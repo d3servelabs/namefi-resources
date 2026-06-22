@@ -47,9 +47,9 @@ keywords:
 
 ### Namefi
 
-**इसके लिए सर्वश्रेष्ठ:** ऐसे मालिक जो Ethereum या Base पर असली `.com`/`.xyz`/`.io` को [टोकनाइज़](/en/glossary/tokenize/) करना चाहते हैं, जिसमें व्यापक NFT-मार्केटप्लेस और [DeFi](/en/glossary/defi/)-लेंडिंग सपोर्ट हो, और जिसका DNS मैनेजमेंट Cloudflare से किसी भी तरह कम न लगे।
+**इसके लिए सर्वश्रेष्ठ:** ऐसे मालिक जो Ethereum या Base पर असली `.com`/`.xyz`/`.io` को [टोकनाइज़](/hi/glossary/tokenize/) करना चाहते हैं, जिसमें व्यापक NFT-मार्केटप्लेस और [DeFi](/en/glossary/defi/)-लेंडिंग सपोर्ट हो, और जिसका DNS मैनेजमेंट Cloudflare से किसी भी तरह कम न लगे।
 
-**खास बातें:** कई [TLDs](/en/glossary/tld/) में [ICANN](/en/glossary/icann/)-मान्यता प्राप्त डोमेन, मानक [NFTs](/en/glossary/nft/) ([ERC-721](/en/glossary/erc-721/)) के माध्यम से ऑन-चेन स्वामित्व (ताकि वॉलेट, मार्केटप्लेस और ऑन-चेन टूल्स आसानी से काम करें), [DNSSEC](/en/glossary/dnssec/) सहित संपूर्ण DNS प्रबंधन, एक इन-ऐप [मार्केटप्लेस](/en/glossary/marketplace/), और ऑन-चेन भुगतान ([x402](/en/glossary/x402/)) के साथ इंटीग्रेशन। मल्टी-चेन (Multi-chain)। पहले दिन से ही सेल्फ-कस्टडी (Self-custody)।
+**खास बातें:** कई [TLDs](/en/glossary/tld/) में [ICANN](/hi/glossary/icann/)-मान्यता प्राप्त डोमेन, मानक [NFTs](/hi/glossary/nft/) ([ERC-721](/en/glossary/erc-721/)) के माध्यम से ऑन-चेन स्वामित्व (ताकि वॉलेट, मार्केटप्लेस और ऑन-चेन टूल्स आसानी से काम करें), [DNSSEC](/en/glossary/dnssec/) सहित संपूर्ण DNS प्रबंधन, एक इन-ऐप [मार्केटप्लेस](/hi/glossary/marketplace/), और ऑन-चेन भुगतान ([x402](/en/glossary/x402/)) के साथ इंटीग्रेशन। मल्टी-चेन (Multi-chain)। पहले दिन से ही सेल्फ-कस्टडी (Self-custody)।
 
 **इनके लिए कम उपयुक्त:** वे लोग जो एक बिल्कुल नया TLD चाहते हैं जो उनके पास पहले से नहीं है, या वे लोग जो केवल `name.eth` जैसा Web3-नेटिव नाम चाहते हैं।
 
@@ -135,7 +135,7 @@ keywords:
 | नीलामी-शैली का बिक्री इंफ्रास्ट्रक्चर | GBM |
 | प्योर ऑन-चेन आइडेंटिटी (उदा., `name.eth`) — *अलग श्रेणी* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
-आखिरी पंक्ति महत्वपूर्ण है: **ऑन-चेन आइडेंटिटी नाम जैसे `.eth` एक समान (sibling) श्रेणी हैं, न कि टोकनाइज़्ड ICANN डोमेन।** वे अलग-अलग चीज़ों के लिए उपयोगी हैं। इस अंतर को समझने के लिए [Tokenized Domain vs Web3 Domain (टोकनाइज़्ड डोमेन बनाम Web3 डोमेन)](/en/blog/tokenized-domain-vs-web3-domain/) देखें।
+आखिरी पंक्ति महत्वपूर्ण है: **ऑन-चेन आइडेंटिटी नाम जैसे `.eth` एक समान (sibling) श्रेणी हैं, न कि टोकनाइज़्ड ICANN डोमेन।** वे अलग-अलग चीज़ों के लिए उपयोगी हैं। इस अंतर को समझने के लिए [Tokenized Domain vs Web3 Domain (टोकनाइज़्ड डोमेन बनाम Web3 डोमेन)](/hi/blog/tokenized-domain-vs-web3-domain/) देखें।
 
 ---
 
@@ -171,4 +171,4 @@ keywords:
 - सही चुनाव आपके TLDs, आपकी कस्टडी की पसंद, मार्केटप्लेस कम्पैटिबिलिटी, और आप टोकनाइज़्ड डोमेन के साथ क्या *करना* चाहते हैं, इस पर निर्भर करता है।
 - अपने पोर्टफोलियो को सौंपने से पहले एक से अधिक विकल्पों को आज़माएं।
 
-विशेष रूप से Namefi के बारे में अधिक जानने के लिए, [namefi.io](https://namefi.io) पर जाएं। इस पूरी श्रेणी को व्यापक रूप से समझने के लिए, [What Are Tokenized Domains? (टोकनाइज़्ड डोमेन क्या हैं?)](/en/blog/what-are-tokenized-domains/) पढ़ें।
+विशेष रूप से Namefi के बारे में अधिक जानने के लिए, [namefi.io](https://namefi.io) पर जाएं। इस पूरी श्रेणी को व्यापक रूप से समझने के लिए, [What Are Tokenized Domains? (टोकनाइज़्ड डोमेन क्या हैं?)](/hi/blog/what-are-tokenized-domains/) पढ़ें।

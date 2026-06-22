@@ -37,7 +37,7 @@ Wenn Sie ein SaaS-Produkt, eine API, ein Open-Source-Projekt oder ein Blockchain
 
 ## Was ist .io?
 
-Die **.io-Top-Level-Domain** ist eine [Ländercode-TLD (ccTLD)](/en/blog/cctld-market-share-by-registration-volume/), die dem **Britischen Territorium im Indischen Ozean** im Chagos-Archipel zugewiesen ist. Sie wurde 1997 nach dem ISO-3166-1-Standard delegiert, wie im [IANA-Root-Zone-Eintrag für .io](https://www.iana.org/domains/root/db/io.html) dokumentiert. Der eingetragene ccTLD-Verwalter ist **Internet Computer Bureau Ltd**, mittlerweile eine Tochtergesellschaft des Registry-Dienstleisters [Identity Digital](https://www.identity.digital/).
+Die **.io-Top-Level-Domain** ist eine [Ländercode-TLD (ccTLD)](/de/blog/cctld-market-share-by-registration-volume/), die dem **Britischen Territorium im Indischen Ozean** im Chagos-Archipel zugewiesen ist. Sie wurde 1997 nach dem ISO-3166-1-Standard delegiert, wie im [IANA-Root-Zone-Eintrag für .io](https://www.iana.org/domains/root/db/io.html) dokumentiert. Der eingetragene ccTLD-Verwalter ist **Internet Computer Bureau Ltd**, mittlerweile eine Tochtergesellschaft des Registry-Dienstleisters [Identity Digital](https://www.identity.digital/).
 
 Obwohl .io formal eine ccTLD ist, verhält sie sich in jeder für Käufer relevanten Hinsicht wie eine generische Endung. Google klassifiziert .io ausdrücklich als **generische Top-Level-Domain** für die Suche und stellt fest, dass Nutzer und Websiteinhaber sie eher als generisch denn als länderspezifisch wahrnehmen. Anders als `.fr` oder `.jp` ist eine .io-Website **nicht auf eine Region geotargeted** und eignet sich gut für ein globales Publikum.
 
@@ -77,12 +77,12 @@ Diese umfassen Entwicklerinfrastruktur, Web3, Indie-Publishing und Gaming und ve
 | Verfügbarkeit kurzer Namen | Gut | Sehr knapp | Gut | Gut |
 | Typische Preiskategorie | Premium | Standard | Premium+ | Standard+ |
 
-Wählen Sie [.com](/en/tld/com/) als universellen Standard, wenn Sie den Namen finden und sich leisten können. Entscheiden Sie sich für [.ai](/en/tld/ai/), wenn Ihr Produkt explizit Künstliche Intelligenz zum Thema hat, oder für [.dev](/en/tld/dev/) für Entwickler-Tools und Dokumentation. Wählen Sie **.io** für allgemeine Technologie, SaaS, Infrastruktur, Gaming und Web3, wo die Input/Output-Assoziation passt und kurze Namen noch erhältlich sind.
+Wählen Sie [.com](/de/tld/com/) als universellen Standard, wenn Sie den Namen finden und sich leisten können. Entscheiden Sie sich für [.ai](/de/tld/ai/), wenn Ihr Produkt explizit Künstliche Intelligenz zum Thema hat, oder für [.dev](/de/tld/dev/) für Entwickler-Tools und Dokumentation. Wählen Sie **.io** für allgemeine Technologie, SaaS, Infrastruktur, Gaming und Web3, wo die Input/Output-Assoziation passt und kurze Namen noch erhältlich sind.
 
 ## Warum .io wählen?
 
 - **Branchenbekanntheit.** Unter Gründern, Ingenieuren und Investoren wird .io sofort als „Technologieunternehmen" wahrgenommen.
-- **Bessere Verfügbarkeit kurzer Namen.** Der Namensraum ist jünger und kleiner als [.com](/en/tld/com/), daher sind prägnante, markenfähige Namen wesentlich leichter zu finden.
+- **Bessere Verfügbarkeit kurzer Namen.** Der Namensraum ist jünger und kleiner als [.com](/de/tld/com/), daher sind prägnante, markenfähige Namen wesentlich leichter zu finden.
 - **Domain-Hack-Potenzial.** Das zweistellige Suffix lässt sich elegant in Wörter integrieren (`rad.io`, `stud.io`) und ermöglicht clevere, einprägsame Namen.
 - **Globale SEO.** Suchmaschinen behandeln es als generisch, sodass Ihre Website weltweit ranken kann, ohne auf eine Region beschränkt zu sein.
 
@@ -109,7 +109,7 @@ Diese Seite nennt keine aktuellen Preise, aber die Preis**dynamik** ist es wert,
 
 - **Eine Premium-Großhandelsuntergrenze.** Die .io-Registry setzt einen relativ hohen Basispreis, den Registrare weitergeben. Selbst ein einfacher, nicht registrierter .io-Name kostet in der Regel ein Vielfaches einer einfachen .com.
 - **Erstjahres- und Erneuerungspreise unterscheiden sich.** Ein einführender Erstjahrespreis kann unter dem wiederkehrenden Erneuerungspreis liegen – kalkulieren Sie also für die Erneuerung, nicht nur für den Anmeldepreis.
-- **Premium-Namen existieren.** Kurze, lexikalische oder sehr markenfähige .io-Namen können vom Registry als Premium reserviert sein, und der Sekundärmarkt für diese ist aktiv. Die Hintergründe erklären wir in [Warum sind .io-Domains so teuer?](/en/blog/why-are-io-domains-expensive/)
+- **Premium-Namen existieren.** Kurze, lexikalische oder sehr markenfähige .io-Namen können vom Registry als Premium reserviert sein, und der Sekundärmarkt für diese ist aktiv. Die Hintergründe erklären wir in [Warum sind .io-Domains so teuer?](/de/blog/why-are-io-domains-expensive/)
 
 ## Reputation und E-Mail-Zustellbarkeit
 
@@ -129,7 +129,7 @@ Beachten Sie zwei Fallstricke. Erstens kann „io" in einem Telefonat falsch ver
 2. **Wählen** Sie das .io-Ergebnis (und alle weiteren schützenswerten Alternativen).
 3. **Registrieren** Sie die Domain und konfigurieren Sie das DNS.
 
-Als [ICANN-akkreditierter](/en/glossary/icann/) [Registrar](/en/glossary/registrar/) verbindet Namefi Web2 und Web3: transparente Preisgestaltung, schnelles [DNS](/en/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/en/blog/what-are-tokenized-domains/) zu halten – für nachweisbares [Domain-Eigentum](/en/glossary/domain-ownership/) und einfache Übertragbarkeit. Jetzt loslegen auf [Namefi](https://namefi.io).
+Als [ICANN-akkreditierter](/de/glossary/icann/) [Registrar](/de/glossary/registrar/) verbindet Namefi Web2 und Web3: transparente Preisgestaltung, schnelles [DNS](/de/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) zu halten – für nachweisbares [Domain-Eigentum](/de/glossary/domain-ownership/) und einfache Übertragbarkeit. Jetzt loslegen auf [Namefi](https://namefi.io).
 
 ## Häufig gestellte Fragen
 
@@ -155,10 +155,10 @@ DNSSEC wird von der .io-Registry unterstützt. Die Verfügbarkeit des WHOIS-Date
 
 ## Weiterführende Ressourcen
 
-- [Was ist eine Domain?](/en/blog/what-is-domain/)
-- [Leitfaden zur Domain-Terminologie](/en/blog/domain-terminology-guide/)
-- [Warum sind .io-Domains so teuer?](/en/blog/why-are-io-domains-expensive/)
-- [.ai vs. .io-Domain](/en/blog/ai-vs-io-domain/)
-- [Anwendungsfälle für tokenisierte Domains (2026)](/en/blog/tokenized-domain-use-cases-2026/)
-- TLD-Leitfäden: [.com](/en/tld/com/), [.ai](/en/tld/ai/), [.dev](/en/tld/dev/), [.app](/en/tld/app/), [.tech](/en/tld/tech/)
-- Glossar: [ICANN](/en/glossary/icann/), [Registrar](/en/glossary/registrar/), [DNS](/en/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- [Was ist eine Domain?](/de/blog/what-is-domain/)
+- [Leitfaden zur Domain-Terminologie](/de/blog/domain-terminology-guide/)
+- [Warum sind .io-Domains so teuer?](/de/blog/why-are-io-domains-expensive/)
+- [.ai vs. .io-Domain](/de/blog/ai-vs-io-domain/)
+- [Anwendungsfälle für tokenisierte Domains (2026)](/de/blog/tokenized-domain-use-cases-2026/)
+- TLD-Leitfäden: [.com](/de/tld/com/), [.ai](/de/tld/ai/), [.dev](/de/tld/dev/), [.app](/de/tld/app/), [.tech](/de/tld/tech/)
+- Glossar: [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), [DNS](/de/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)

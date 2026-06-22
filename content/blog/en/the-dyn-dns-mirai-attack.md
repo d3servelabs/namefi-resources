@@ -23,7 +23,7 @@ This is **Domain Mayday EP08** — the day insecure smart-cameras took down the 
 
 ## DNS: the internet's phone book, and Dyn's place in it
 
-Every time you type a domain name, your computer has to translate it into a numeric IP address before it can connect to anything. That translation is the job of DNS, the Domain Name System. It is the lookup layer between the human-friendly name and the machine the name points to.
+Every time you type a domain name, your computer has to translate it into a numeric IP address before it can connect to anything. That translation is the job of DNS, the [Domain Name System](/en/glossary/dns/). It is the lookup layer between the human-friendly name and the machine the name points to.
 
 Dyn was one of the big managed providers of that lookup service. When a site outsourced its DNS to Dyn, Dyn's nameservers became the authoritative source for "where does this domain live?" The Register put the dependency plainly during the attack: by blasting Dyn offline, the public DNS resolvers run by Google and ISPs were [unable to contact Dyn to lookup hostnames for netizens, preventing people from accessing sites using Dyn for DNS](https://www.theregister.com/2016/10/21/dns_devastation_as_dyn_dies_under_denialofservice_attack/#:~:text=unable%20to%20contact%20Dyn%20to%20lookup%20hostnames).
 
@@ -77,7 +77,7 @@ Every site that went dark on October 21 had made the same reasonable-looking dec
 
 The defensive answer is redundancy: spreading authoritative DNS across more than one provider so that no single outage is fatal. Two years after Dyn, The Register found this was still rare and still painful — Infoblox's Cricket Liu noted that it [hasn't gotten any easier to use multiple authoritative DNS providers, for example (say Dyn plus Verisign or Neustar). Being able to use multiple providers would make a big difference](https://www.theregister.com/2018/10/11/dns_insecurity_survey/#:~:text=hasn%27t%20gotten%20any%20easier%20to%20use%20multiple%20authoritative%20DNS%20providers). The takeaways for anyone who depends on a domain:
 
-1. **A domain has more failure points than its registrar.** The provider answering "where does this name point?" is just as load-bearing as the servers behind it.
+1. **A domain has more failure points than its [registrar](/en/glossary/registrar/).** The provider answering "where does this name point?" is just as load-bearing as the servers behind it.
 2. **Single-provider DNS is a single point of failure.** Excellent uptime in normal conditions says nothing about behavior under a 1 Tbps flood.
 3. **Concentration is convenient and fragile.** The same efficiency that makes one provider attractive makes its outage widely felt.
 4. **Resilience is a property of ownership, not just hosting.** When something breaks, you need to control your domain's configuration cleanly enough to re-route fast.
@@ -90,7 +90,7 @@ The Dyn attack didn't steal a single domain. It didn't forge a transfer or hijac
 
 That gap — between *owning* a name and *reliably controlling* where it resolves — is exactly the seam attacks like this exploit. Domains are among the most valuable assets a business holds, yet their control often sits behind opaque, centralized infrastructure that the owner can neither verify nor quickly reconfigure under pressure.
 
-[Namefi](https://namefi.io) is built on the idea that domains should behave like internet-native assets: ownership that is cryptographically verifiable and portable, while staying fully compatible with DNS. Verifiable, owner-controlled domain ownership doesn't stop a botnet — but it pushes the world toward an internet where control of a name is provable, auditable, and not silently dependent on one provider's worst day. The Mirai-Dyn attack is a reminder that a domain you "own" is only as resilient as the layer that answers for it. Resilience starts with making ownership and control something you can actually verify.
+[Namefi](https://namefi.io) is built on the idea that domains should behave like internet-native assets: ownership that is cryptographically verifiable and portable, while staying fully compatible with DNS. Verifiable, owner-controlled [domain ownership](/en/glossary/domain-ownership/) doesn't stop a botnet — but it pushes the world toward an internet where control of a name is provable, auditable, and not silently dependent on one provider's worst day. The Mirai-Dyn attack is a reminder that a domain you "own" is only as resilient as the layer that answers for it. Resilience starts with making ownership and control something you can actually verify.
 
 ## Sources and further reading
 

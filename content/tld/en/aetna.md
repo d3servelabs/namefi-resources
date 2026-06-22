@@ -11,9 +11,9 @@ keywords: [".aetna domains", "TLD", "top-level domain", "what is .aetna", "why c
 
 ## **What is .aetna?**
 
-The **.aetna** domain is a specialized Top-Level Domain (TLD) categorized as a "Brand TLD." Unlike open generic TLDs (gTLDs) like .com, .net, or .io, which are available for public registration, .aetna was created exclusively for the use of the **Aetna Life Insurance Company** (now part of CVS Health).
+The **.aetna** domain is a specialized [Top-Level Domain (TLD)](/en/glossary/tld/) categorized as a "Brand TLD." Unlike open generic TLDs (gTLDs) like [.com](/en/tld/com/), [.net](/en/tld/net/), or [.io](/en/tld/io/), which are available for public registration, .aetna was created exclusively for the use of the **Aetna Life Insurance Company** (now part of CVS Health).
 
-This TLD was established during ICANN's (Internet Corporation for Assigned Names and Numbers) expansion of the internet's namespace. The primary purpose of a Brand TLD is to provide a dedicated, secure, and authenticated digital space for a corporation. By owning the entire registry, a company can ensure that every website ending in **.aetna** is an official corporate asset, drastically reducing the risk of phishing and cybersquatting.
+This TLD was established during [ICANN](/en/glossary/icann/)'s (Internet Corporation for Assigned Names and Numbers) expansion of the internet's namespace. The primary purpose of a Brand TLD is to provide a dedicated, secure, and authenticated digital space for a corporation. By owning the entire registry, a company can ensure that every website ending in **.aetna** is an official corporate asset, drastically reducing the risk of phishing and cybersquatting.
 
 For more information on the delegation of this TLD, you can view the [IANA Delegation Record for .aetna](https://www.iana.org/domains/root/db/aetna.html).
 

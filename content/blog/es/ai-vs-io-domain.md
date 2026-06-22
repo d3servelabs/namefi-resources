@@ -13,7 +13,7 @@ Ya tienes el nombre. Ahora estás atascado en los últimos dos caracteres: ¿deb
 
 Esta guía compara `.ai` y `.io` cara a cara para que puedas elegir el que se adapta a tu empresa, no solo el que está de moda este trimestre.
 
-Si quieres análisis más profundos, tenemos guías completas sobre [el TLD .ai](/en/tld/ai/) y [el TLD .io](/en/tld/io/). Este artículo trata sobre cómo elegir entre ambos.
+Si quieres análisis más profundos, tenemos guías completas sobre [el TLD .ai](/es/tld/ai/) y [el TLD .io](/es/tld/io/). Este artículo trata sobre cómo elegir entre ambos.
 
 ---
 
@@ -117,7 +117,7 @@ Lo que esto **no** significa:
 
 **¿Aún indeciso?** Muchas startups registran ambos, apuntando uno al otro, para así ser dueños de la marca en las dos extensiones que su audiencia más probablemente tecleará. Si el presupuesto lo permite, esa es la opción más segura.
 
-Cualquiera que elijas, la siguiente pregunta es cómo *poseerlo* realmente. Si quieres un dominio que puedas mantener, transferir y usar como activo programable, consulta [¿Qué son los Dominios Tokenizados?](/en/blog/what-are-tokenized-domains/).
+Cualquiera que elijas, la siguiente pregunta es cómo *poseerlo* realmente. Si quieres un dominio que puedas mantener, transferir y usar como activo programable, consulta [¿Qué son los Dominios Tokenizados?](/es/blog/what-are-tokenized-domains/).
 
 ---
 
@@ -149,4 +149,4 @@ No ahora, y no existe ninguna fecha de cierre. La transferencia de soberanía de
 Sí, y muchas startups lo hacen. Poseer ambos te permite proteger tu marca en las dos extensiones que tu audiencia más probablemente tecleará, y puedes redirigir una a la otra. En [Namefi](https://namefi.io) puedes registrar y tokenizar ambos.
 
 ### ¿Qué significa tokenizar un dominio `.ai` o `.io`?
-Tokenizar agrega un token de propiedad en cadena a tu dominio ICANN real, para que puedas transferirlo y gestionarlo con la seguridad y flexibilidad de Web3 mientras mantienes el DNS estándar y el alojamiento. Aprende más en [¿Qué son los Dominios Tokenizados?](/en/blog/what-are-tokenized-domains/).
+Tokenizar agrega un token de propiedad en cadena a tu dominio ICANN real, para que puedas transferirlo y gestionarlo con la seguridad y flexibilidad de Web3 mientras mantienes el DNS estándar y el alojamiento. Aprende más en [¿Qué son los Dominios Tokenizados?](/es/blog/what-are-tokenized-domains/).

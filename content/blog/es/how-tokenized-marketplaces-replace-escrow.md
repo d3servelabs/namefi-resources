@@ -13,10 +13,10 @@ El flujo tradicional para vender un `.com` es más o menos así:
 
 1. Listar en [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) o Dan.com.
 2. Negociar.
-3. Abrir un [depósito en garantía o escrow](/en/glossary/escrow/) en [Escrow.com](https://www.escrow.com/) o similar. El comprador transfiere los fondos.
+3. Abrir un [depósito en garantía o escrow](/es/glossary/escrow/) en [Escrow.com](https://www.escrow.com/) o similar. El comprador transfiere los fondos.
 4. El vendedor desbloquea el dominio y proporciona el [código de autorización](/en/glossary/auth-code/).
-5. El comprador inicia la [transferencia entre registradores](/en/glossary/cross-registrar-transfer/) en su [registrador](/en/glossary/registrar/).
-6. Esperar de 5 a 7 días para que se complete la transferencia de la [ICANN](/en/glossary/icann/).
+5. El comprador inicia la [transferencia entre registradores](/es/glossary/cross-registrar-transfer/) en su [registrador](/es/glossary/registrar/).
+6. Esperar de 5 a 7 días para que se complete la transferencia de la [ICANN](/es/glossary/icann/).
 7. Confirmar la transferencia; el escrow libera los fondos.
 8. Pagar entre un 3% y un 6% en comisiones de escrow, más la comisión del mercado.
 
@@ -28,13 +28,13 @@ Las ventas de dominios tokenizados comprimen todo esto en una sola transacción.
 
 ## El nuevo flujo, de principio a fin
 
-1. Listar el [dominio tokenizado](/en/blog/what-are-tokenized-domains/) en un [mercado](/en/glossary/marketplace/) (el propio de Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
-2. El comprador paga. El [NFT](/en/glossary/nft/) se transfiere a la [billetera (wallet)](/en/glossary/wallet/) del comprador. El registro del lado del [registrador](/en/glossary/registrar/) es mantenido en sincronía por la plataforma.
+1. Listar el [dominio tokenizado](/es/blog/what-are-tokenized-domains/) en un [mercado](/es/glossary/marketplace/) (el propio de Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
+2. El comprador paga. El [NFT](/es/glossary/nft/) se transfiere a la [billetera (wallet)](/es/glossary/wallet/) del comprador. El registro del lado del [registrador](/es/glossary/registrar/) es mantenido en sincronía por la plataforma.
 3. Listo.
 
-Eso es todo. Dos pasos. Sin [código de autorización](/en/glossary/auth-code/), sin [escrow](/en/glossary/escrow/), sin bloqueo de registrador de 5 días, sin la incertidumbre de "ya envié el dinero, ahora confío en ti".
+Eso es todo. Dos pasos. Sin [código de autorización](/en/glossary/auth-code/), sin [escrow](/es/glossary/escrow/), sin bloqueo de registrador de 5 días, sin la incertidumbre de "ya envié el dinero, ahora confío en ti".
 
-Esto funciona porque el **NFT es el registro de propiedad canónico**, y las transacciones [en cadena (on-chain)](/en/glossary/on-chain/) son [atómicas](/en/glossary/atomic-transfer/): el pago y la transferencia del activo ocurren en el mismo bloque, o no ocurre ninguno de los dos.
+Esto funciona porque el **NFT es el registro de propiedad canónico**, y las transacciones [en cadena (on-chain)](/es/glossary/on-chain/) son [atómicas](/es/glossary/atomic-transfer/): el pago y la transferencia del activo ocurren en el mismo bloque, o no ocurre ninguno de los dos.
 
 ---
 
@@ -100,7 +100,7 @@ Dependiendo del mercado y la jurisdicción, es posible que compradores y vendedo
 
 ### Eventos fiscales
 
-Una venta pagada en criptomonedas es un evento fiscal diferente a una venta pagada en moneda fiduciaria en algunas jurisdicciones. Consulta la publicación sobre [preguntas fiscales y contables sobre dominios tokenizados](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) para ver la lista de preguntas que debes plantearle a tu contador.
+Una venta pagada en criptomonedas es un evento fiscal diferente a una venta pagada en moneda fiduciaria en algunas jurisdicciones. Consulta la publicación sobre [preguntas fiscales y contables sobre dominios tokenizados](/es/blog/tax-and-accounting-questions-for-tokenized-domains/) para ver la lista de preguntas que debes plantearle a tu contador.
 
 ---
 
@@ -167,4 +167,4 @@ Todo esto está en proceso de desarrollo y mejora visiblemente año tras año.
 - En su lugar, aparecen nuevos riesgos: seguridad de la billetera, errores en los contratos inteligentes, MEV y coordinación sobre activos robados. Los riesgos se trasladan a diferentes lugares, no es que desaparezcan.
 - Efecto neto: ventas más rápidas, más baratas y más transparentes, con una experiencia de usuario diferente (y mejorable). Los listados híbridos siguen siendo comunes para los dominios premium.
 
-Si realmente quieres intentar vender un dominio tokenizado, dirígete a [namefi.io](https://namefi.io). Para tener una perspectiva más amplia, consulta los [Casos de uso para dominios tokenizados en 2026](/en/blog/tokenized-domain-use-cases-2026/).
+Si realmente quieres intentar vender un dominio tokenizado, dirígete a [namefi.io](https://namefi.io). Para tener una perspectiva más amplia, consulta los [Casos de uso para dominios tokenizados en 2026](/es/blog/tokenized-domain-use-cases-2026/).

@@ -11,11 +11,11 @@ keywords: ['.alfaromeo domains', 'TLD', 'top-level domain', 'what is .alfaromeo'
 
 ## **What is .alfaromeo?**
 
-The **.alfaromeo** domain is a specialized Top-Level Domain (TLD) belonging to the category of **Brand TLDs** (new gTLDs). Unlike open extensions like .com or .net, .alfaromeo was created specifically for **Fiat Chrysler Automobiles (now Stellantis)** to represent the iconic Italian luxury car manufacturer, Alfa Romeo.
+The **.alfaromeo** domain is a specialized [Top-Level Domain (TLD)](/en/glossary/tld/) belonging to the category of **Brand TLDs** (new gTLDs). Unlike open extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), .alfaromeo was created specifically for **Fiat Chrysler Automobiles (now Stellantis)** to represent the iconic Italian luxury car manufacturer, Alfa Romeo.
 
 Introduced during [ICANN’s new gTLD program](https://newgtlds.icann.org/en/about/program), this extension serves as a digital seal of authenticity. It allows the brand to consolidate its digital presence under a unified, secure, and instantly recognizable namespace. While traditional TLDs indicate a commercial entity or a network, .alfaromeo indicates a specific affiliation with the high-performance automotive world.
 
-For domain investors and developers interested in the **Web3** and **tokenized domain** space, understanding Brand TLDs like .alfaromeo is crucial. It highlights the shift from generic internet real estate to hyper-specific, branded digital assets.
+For domain investors and developers interested in the **[Web3](/en/glossary/web3/)** and **[tokenized domain](/en/blog/what-are-tokenized-domains/)** space, understanding Brand TLDs like .alfaromeo is crucial. It highlights the shift from generic internet real estate to hyper-specific, branded digital assets.
 
 ## **How People Are Using .alfaromeo**
 
@@ -50,9 +50,9 @@ While public registration is restricted, understanding the *value proposition* o
 Are you looking to secure a premium domain name for your automotive business, portfolio, or next Web3 project? While .alfaromeo is exclusive to the brand, **Namefi** offers access to millions of other premium TLDs and the ability to mint them as NFTs for seamless trading and management.
 
 At Namefi, we bridge the gap between Web2 and Web3.
-*   **ICANN-Accredited:** We are a fully compliant and trusted registrar.
+*   **ICANN-Accredited:** We are a fully compliant and trusted [registrar](/en/glossary/registrar/).
 *   **Tokenized Assets:** Your domains are minted on the blockchain, giving you true ownership and ease of transfer.
-*   **DeFi Ready:** Use your domain assets within the decentralized finance ecosystem.
+*   **[DeFi](/en/glossary/defi/) Ready:** Use your domain assets within the decentralized finance ecosystem.
 
 Whether you are looking for automotive-themed domains like `.car`, `.auto`, or looking to invest in the next big keyword, start your search with us.
 

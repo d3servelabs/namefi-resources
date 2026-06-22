@@ -13,7 +13,7 @@ Sie haben den Namen. Jetzt hängen Sie an den letzten zwei Zeichen fest: Soll es
 
 Dieser Leitfaden vergleicht `.ai` und `.io` direkt miteinander, damit Sie die Variante wählen können, die zu Ihrem Unternehmen passt – nicht nur die, die gerade im Trend liegt.
 
-Wenn Sie tiefergehende Analysen wünschen, haben wir ausführliche Übersichten zur [.ai-TLD](/en/tld/ai/) und zur [.io-TLD](/en/tld/io/). Dieser Beitrag dreht sich darum, zwischen den beiden zu entscheiden.
+Wenn Sie tiefergehende Analysen wünschen, haben wir ausführliche Übersichten zur [.ai-TLD](/de/tld/ai/) und zur [.io-TLD](/de/tld/io/). Dieser Beitrag dreht sich darum, zwischen den beiden zu entscheiden.
 
 ---
 
@@ -117,7 +117,7 @@ Was das **nicht** bedeutet:
 
 **Noch unentschlossen?** Viele Startups registrieren beide und leiten eine auf die andere weiter, sodass sie die Marke über die beiden Endungen abdecken, die ihr Publikum am ehesten eintippen würde. Wenn das Budget es erlaubt, ist das die sicherste Entscheidung.
 
-Egal, was Sie wählen, die nächste Frage ist, wie Sie es tatsächlich *besitzen*. Wenn Sie eine Domain haben möchten, die Sie halten, übertragen und als programmierbares Asset nutzen können, lesen Sie [Was sind tokenisierte Domains?](/en/blog/what-are-tokenized-domains/).
+Egal, was Sie wählen, die nächste Frage ist, wie Sie es tatsächlich *besitzen*. Wenn Sie eine Domain haben möchten, die Sie halten, übertragen und als programmierbares Asset nutzen können, lesen Sie [Was sind tokenisierte Domains?](/de/blog/what-are-tokenized-domains/).
 
 ---
 
@@ -149,4 +149,4 @@ Nicht jetzt, und es gibt kein Abschaltdatum. Der Souveränitätstransfer des Cha
 Ja, und viele Startups tun das. Der Besitz beider Domains schützt Ihre Marke über die beiden Endungen, die Ihr Publikum am ehesten eintippen wird, und Sie können eine auf die andere weiterleiten. Bei [Namefi](https://namefi.io) können Sie beide registrieren und tokenisieren.
 
 ### Was bedeutet es, eine `.ai`- oder `.io`-Domain zu tokenisieren?
-Durch Tokenisierung wird Ihrer echten ICANN-Domain ein On-Chain-Eigentumstoken hinzugefügt, sodass Sie sie mit der Sicherheit und Flexibilität von Web3 übertragen und verwalten können, während Sie normales DNS und Hosting beibehalten. Mehr erfahren Sie unter [Was sind tokenisierte Domains?](/en/blog/what-are-tokenized-domains/).
+Durch Tokenisierung wird Ihrer echten ICANN-Domain ein On-Chain-Eigentumstoken hinzugefügt, sodass Sie sie mit der Sicherheit und Flexibilität von Web3 übertragen und verwalten können, während Sie normales DNS und Hosting beibehalten. Mehr erfahren Sie unter [Was sind tokenisierte Domains?](/de/blog/what-are-tokenized-domains/).

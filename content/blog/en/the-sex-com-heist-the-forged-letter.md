@@ -15,7 +15,7 @@ keywords: ['sex.com', 'domain theft', 'Stephen Cohen', 'Gary Kremen', 'Kremen v.
 
 In 1995, the most valuable address on the internet changed hands because of a single sheet of paper.
 
-There was no break-in, no ransom, no exotic exploit. A con man typed a letter, signed it with a name that wasn't his, and faxed it to a domain registrar in Virginia. The registrar read it, believed it, and handed over **sex.com** — a domain that would go on to generate a reported quarter-billion-dollar business — to a man who had no right to it. The rightful owner found out only after the fact, and then spent the better part of a decade fighting to get it back.
+There was no break-in, no ransom, no exotic exploit. A con man typed a letter, signed it with a name that wasn't his, and faxed it to a domain [registrar](/en/glossary/registrar/) in Virginia. The registrar read it, believed it, and handed over **sex.com** — a domain that would go on to generate a reported quarter-billion-dollar business — to a man who had no right to it. The rightful owner found out only after the fact, and then spent the better part of a decade fighting to get it back.
 
 This is the first great domain heist, and it remains the clearest answer to a question every domain owner should ask: *what, exactly, stops someone from simply taking my name?* In 1995 the answer turned out to be almost nothing.
 
@@ -71,7 +71,7 @@ Kremen won the domain and the judgment. He never came close to collecting the fu
 
 ## How registrars let this happen in the 1990s
 
-It is tempting to read this as one negligent registrar, one freak event. It wasn't. It was the predictable result of how domain ownership actually worked in 1995.
+It is tempting to read this as one negligent registrar, one freak event. It wasn't. It was the predictable result of how [domain ownership](/en/glossary/domain-ownership/) actually worked in 1995.
 
 In that era, the "proof" that you owned a domain was a record in a registrar's database and an administrative contact — and the way you changed it was by *asking*, usually with a letter or a fax. There was no cryptographic signature, no two-factor confirmation, no automated notice to the existing owner before a transfer went through. The system ran on trust and on the assumption that nobody would simply lie. Network Solutions, faced with Cohen's letter, [made no effort to contact Kremen](https://circleid.com/posts/domain_name_theft_fraud_and_regulations/) and, as Wikipedia summarizes, [took Cohen's fraudulent letter at face value, and did no due diligence to find errors in Cohen's reasoning or to contact Kremen to verify that he had abandoned the domain name](https://en.wikipedia.org/wiki/Kremen_v._Cohen#:~:text=took%20Cohen%27s%20fraudulent%20letter%20at%20face%20value).
 
@@ -98,9 +98,9 @@ The sex.com heist is thirty years old, but its lessons are evergreen because the
 
 Strip away the Mexico flight and the porn-empire revenue, and the sex.com heist is a story about one thing: there was no tamper-resistant, owner-controlled record of who owned the name. Ownership lived in a private database, and it could be rewritten by anyone who could fool the clerk with a forged letter signed by a misspelled name.
 
-[Namefi](https://namefi.io) starts from the opposite premise. When a domain is tokenized, ownership is anchored to cryptographic keys *you* control, and every transfer is an on-chain action that is authorized, visible, and auditable — not a fax someone "takes at face value." There is no clerk to deceive, no administrative back channel where a convincing letter outranks the real owner, and no silent transfer the owner finds out about months later. Control is provable, transfers are owner-signed, and the audit trail is public by construction — all while staying compatible with the DNS the rest of the internet relies on.
+[Namefi](https://namefi.io) starts from the opposite premise. When a domain is tokenized, ownership is anchored to cryptographic keys *you* control, and every transfer is an [on-chain](/en/glossary/on-chain/) action that is authorized, visible, and auditable — not a fax someone "takes at face value." There is no clerk to deceive, no administrative back channel where a convincing letter outranks the real owner, and no silent transfer the owner finds out about months later. Control is provable, transfers are owner-signed, and the audit trail is public by construction — all while staying compatible with the DNS the rest of the internet relies on.
 
-Cohen's forged letter worked because the only thing standing between him and sex.com was someone else's willingness to believe a piece of paper. The point of verifiable, tamper-resistant ownership is to make that attack impossible to even attempt: you cannot impersonate a private key the way you can impersonate a signature. The most valuable lesson of the internet's first great domain theft is that *who owns this name* should be a fact you can prove — not a story a stranger can tell.
+Cohen's forged letter worked because the only thing standing between him and sex.com was someone else's willingness to believe a piece of paper. The point of verifiable, tamper-resistant ownership is to make that attack impossible to even attempt: you cannot impersonate a private key the way you can impersonate a signature. The most valuable lesson of the internet's first great [domain theft](/en/blog/the-perl-com-domain-theft/) is that *who owns this name* should be a fact you can prove — not a story a stranger can tell.
 
 ## Sources and further reading
 

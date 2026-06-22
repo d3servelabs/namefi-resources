@@ -17,7 +17,7 @@ When you type a website's name into a browser, you are trusting two invisible sy
 
 The first is **DNS** — the phone book of the internet — which turns a name like `myetherwallet.com` into a numeric IP address. The second is **BGP**, the Border Gateway Protocol, which decides which physical path your packets take to reach that address. Almost nobody thinks about either one. They just work, billions of times a day, silently.
 
-On the morning of **April 24, 2018**, both of them lied at the same time. For about two hours, anyone who typed `myetherwallet.com` and clicked past one browser warning was handed to a phishing clone running on a server far from where they thought they were going. By the time the routing was corrected, the attackers had drained roughly **$150,000 in Ethereum** from real users' wallets.
+On the morning of **April 24, 2018**, both of them lied at the same time. For about two hours, anyone who typed `myetherwallet.com` and clicked past one browser warning was handed to a phishing clone running on a server far from where they thought they were going. By the time the routing was corrected, the attackers had drained roughly **$150,000 in Ethereum** from real users' [wallets](/en/glossary/wallet/).
 
 What makes this incident a permanent fixture in security curricula is not the dollar amount — crypto thefts have since dwarfed it. It is the *mechanism*. The attackers never broke into MyEtherWallet's servers. They never guessed a password. They attacked the **road**, not the building — by hijacking the internet's routing layer to poison DNS itself.
 
@@ -31,7 +31,7 @@ Here is the catch. BGP is, by design, a trust-based system. As the Cloudflare-st
 
 In other words: when a network operator stands up and announces to the world "traffic for *these* IP addresses should come through *me*," the rest of the internet has historically just believed it. There is a more-specific-route tiebreaker built into BGP — if two networks claim the same addresses, the one announcing the *narrower*, more specific block wins. That tiebreaker is exactly the lever an attacker pulls.
 
-So the attack surface for any domain is bigger than its registrar, bigger than its DNS provider, and bigger than its web host. It includes the entire global routing fabric that gets your DNS query to the right place. MyEtherWallet found out the hard way.
+So the attack surface for any domain is bigger than its [registrar](/en/glossary/registrar/), bigger than its DNS provider, and bigger than its web host. It includes the entire global routing fabric that gets your DNS query to the right place. MyEtherWallet found out the hard way.
 
 ## What users lost on April 24, 2018
 
@@ -43,7 +43,7 @@ The impostor was convincing. It looked like MyEtherWallet because it was a near-
 
 The tally is reported slightly differently across outlets, but the core number is consistent. BleepingComputer put it at [215 Ether, the equivalent of $160,000, at the time of the transaction](https://www.bleepingcomputer.com/news/security/hacker-hijacks-dns-server-of-myetherwallet-to-steal-160-000/#:~:text=215%20Ether%2C%20the%20equivalent%20of%20%24160%2C000). CyberScoop reported that the thieves [managed to steal 215 Ether, amounting to about $152,000 at the time](https://cyberscoop.com/ether-dns-bgp-amazon-route-53-heist/#:~:text=215%20Ether%2C%20amounting%20to%20about%20%24152%2C000). Help Net Security summarized that attackers [managed to steal approximately $150,000 in Ethereum](https://www.helpnetsecurity.com/2018/04/25/myetherwallet-dns-hijacking/#:~:text=approximately%20%24150%2C000%20in%20Ethereum). Same 215 ETH; the dollar figure just floats with the exchange rate at the moment of the theft.
 
-That is the brutal economics of a routing-plus-DNS attack on a crypto wallet. There is no fraud-reversal department, no chargeback, no bank to call. Once private keys are entered into an attacker's clone and funds are moved on-chain, they are gone.
+That is the brutal economics of a routing-plus-DNS attack on a crypto wallet. There is no fraud-reversal department, no chargeback, no bank to call. Once private keys are entered into an attacker's clone and funds are moved [on-chain](/en/glossary/on-chain/), they are gone.
 
 ## How it happened: hijack the route, poison the answer, serve the clone
 
@@ -97,7 +97,7 @@ A few durable takeaways:
 
 The MyEtherWallet attack is a sharp reminder that a domain is not a single thing you "own" — it is a stack of trust relationships, any layer of which can be subverted: the registry, the registrar, the DNS provider, and the global routing fabric that delivers queries to that provider.
 
-[Namefi](https://namefi.io) is built around making the *ownership* layer of that stack verifiable and tamper-resistant. Tokenized domain ownership means control of a domain can be cryptographically proven and transferred in a way that is auditable, rather than resting solely on an account password at a single provider — while still staying compatible with DNS. It does not, on its own, fix BGP; nothing at the ownership layer rewrites how the internet routes packets. But it attacks the same underlying disease this incident exposed: **too much critical internet trust is implicit, unverifiable, and reversible by whoever can spoof the right message.**
+[Namefi](https://namefi.io) is built around making the *ownership* layer of that stack verifiable and tamper-resistant. [Tokenized domain ownership](/en/blog/what-are-tokenized-domains/) means control of a domain can be cryptographically proven and transferred in a way that is auditable, rather than resting solely on an account password at a single provider — while still staying compatible with DNS. It does not, on its own, fix BGP; nothing at the ownership layer rewrites how the internet routes packets. But it attacks the same underlying disease this incident exposed: **too much critical internet trust is implicit, unverifiable, and reversible by whoever can spoof the right message.**
 
 The future of domain security looks less like one strong password and more like cryptographic proof at every layer — verifiable ownership, verifiable routing (RPKI), verifiable identity (TLS). MyEtherWallet's users lost money in the gap between those layers. Closing that gap, one verifiable layer at a time, is the whole project.
 

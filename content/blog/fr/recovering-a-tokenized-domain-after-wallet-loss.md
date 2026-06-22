@@ -9,7 +9,7 @@ description: "Ce qui se passe réellement si vous perdez l'accès au portefeuill
 keywords: ['récupérer domaine NFT', 'domaine portefeuille perdu', 'portefeuille domaine tokenisé perdu', 'récupération portefeuille domaine', 'sauvegarde domaine NFT', 'portefeuille matériel domaine tokenisé', 'multisig domaine tokenisé', 'récupération clé domaine tokenisé', 'phrase de récupération domaine perdue', 'sécurité domaine NFT', 'sauvegarde domaine tokenisé', 'gestion clés domaine', 'récupération perte portefeuille']
 ---
 
-De toutes les choses auxquelles les gens ne pensent pas avant de [tokeniser un domaine](/en/blog/what-are-tokenized-domains/), la **récupération en cas de perte de portefeuille** est la plus importante. Une fois qu'un domaine est tokenisé, le [portefeuille](/en/glossary/wallet/) qui détient le [NFT](/en/glossary/nft/) est la source de vérité de la propriété. Perdez le portefeuille, et vous avez un vrai problème.
+De toutes les choses auxquelles les gens ne pensent pas avant de [tokeniser un domaine](/fr/blog/what-are-tokenized-domains/), la **récupération en cas de perte de portefeuille** est la plus importante. Une fois qu'un domaine est tokenisé, le [portefeuille](/fr/glossary/wallet/) qui détient le [NFT](/fr/glossary/nft/) est la source de vérité de la propriété. Perdez le portefeuille, et vous avez un vrai problème.
 
 Cet article explique, en toute honnêteté, quelles sont réellement vos options — et comment configurer les choses *dès maintenant* pour que le pire des scénarios reste récupérable.
 
@@ -47,7 +47,7 @@ Le portefeuille que vous utilisez pour *interagir* avec les applications peut ê
 
 ### 3. Envisagez un multisig pour les domaines de grande valeur
 
-Pour les domaines qui représentent une entreprise — le `.com` principal de votre société, une marque clé — un [**portefeuille multisig**](/en/glossary/multi-sig/) ([Safe](https://safe.global/), anciennement Gnosis Safe) est un choix solide. Configurez 2 signataires sur 3, ou 3 sur 5, répartis sur différents appareils et différentes personnes. La perte d'un signataire n'entraîne pas la perte du domaine.
+Pour les domaines qui représentent une entreprise — le `.com` principal de votre société, une marque clé — un [**portefeuille multisig**](/fr/glossary/multi-sig/) ([Safe](https://safe.global/), anciennement Gnosis Safe) est un choix solide. Configurez 2 signataires sur 3, ou 3 sur 5, répartis sur différents appareils et différentes personnes. La perte d'un signataire n'entraîne pas la perte du domaine.
 
 Assurez-vous de bien comprendre comment *exécuter* des transactions multisig, et pas seulement comment les conserver. Un multisig dont vous avez perdu les signataires est un domaine que vous avez perdu. Entraînez-vous à transférer un jeton de faible valeur avant que l'enjeu ne soit trop important.
 
@@ -55,7 +55,7 @@ Assurez-vous de bien comprendre comment *exécuter* des transactions multisig, e
 
 Oui, cela peut paraître morbide. C'est aussi l'une des raisons les plus fréquentes pour lesquelles les domaines finissent par être définitivement irrécupérables. Un court document indiquant "le portefeuille pour [domaine] se trouve à [emplacement], la phrase de récupération est à [autre emplacement], contactez [personne/avocat] si vous ne pouvez pas me joindre" vaut bien plus que le temps qu'il faut pour l'écrire.
 
-C'est également un excellent sujet abordé dans [l'article sur les questions fiscales et comptables](/en/blog/tax-and-accounting-questions-for-tokenized-domains/) — les actifs de type domaine s'apparentent à de l'immobilier, dans le sens où ils ne disparaissent pas avec vous.
+C'est également un excellent sujet abordé dans [l'article sur les questions fiscales et comptables](/fr/blog/tax-and-accounting-questions-for-tokenized-domains/) — les actifs de type domaine s'apparentent à de l'immobilier, dans le sens où ils ne disparaissent pas avec vous.
 
 ### 5. Documentez le côté plateforme
 
@@ -84,7 +84,7 @@ Transférez le NFT vers un nouveau portefeuille *immédiatement*, pendant que l'
 C'est le cas le plus difficile. Cryptographiquement parlant, le NFT est désormais inaccessible. Vos options :
 
 1. **Récupération côté plateforme.** Si la plateforme (par ex., Namefi) possède une identité liée à votre e-mail d'inscription et à un processus KYC (le cas échéant), vous pourriez être en mesure de prouver que vous êtes le titulaire et de demander une solution gérée par la plateforme. Ce n'est **pas garanti**, cela nécessite une vérification d'identité et ne s'applique généralement que sous des conditions très spécifiques. Contactez le support immédiatement — plus vous attendez, plus cela devient difficile.
-2. **Recours auprès du registre / bureau d'enregistrement.** S'agissant d'un véritable domaine [ICANN](/en/glossary/icann/), l'enregistrement sous-jacent existe toujours. Les [bureaux d'enregistrement](/en/glossary/registrar/) ont des procédures pour prouver la propriété (historique [WHOIS / RDAP](/en/glossary/whois/), factures, pièce d'identité officielle). Ces démarches sont lentes, très administratives et ne garantissent pas un résultat positif — mais elles existent.
+2. **Recours auprès du registre / bureau d'enregistrement.** S'agissant d'un véritable domaine [ICANN](/fr/glossary/icann/), l'enregistrement sous-jacent existe toujours. Les [bureaux d'enregistrement](/fr/glossary/registrar/) ont des procédures pour prouver la propriété (historique [WHOIS / RDAP](/en/glossary/whois/), factures, pièce d'identité officielle). Ces démarches sont lentes, très administratives et ne garantissent pas un résultat positif — mais elles existent.
 3. **Voie légale.** Pour les domaines de grande valeur détenus dans le cadre d'une entreprise ou d'une succession, des avocats et des sociétés de récupération se spécialisent dans ce domaine. C'est coûteux, lent et dépend de chaque cas.
 
 Ce que personne ne peut faire : forcer (brute-force) la clé privée. Ne faites confiance à personne qui prétend le contraire.
@@ -115,13 +115,13 @@ Un portefeuille Safe en configuration 2 sur 3 avec des clés détenues par :
 
 L'inconvénient est la charge de travail opérationnelle : chaque transfert / signature nécessite de coordonner les signataires. Pour un domaine que vous vendez rarement et que vous comptez posséder pour toujours, c'est très bien. Pour un domaine que vous tradez activement, conservez peut-être un plus petit "hot wallet" en plus du multisig.
 
-> Consultez [Les portefeuilles multisig améliorent-ils vraiment la sécurité ?](/en/blog/do-multisig-wallets-actually-improve-security/) pour une analyse plus approfondie des cas où le multisig aide et de ceux où il ne le fait pas.
+> Consultez [Les portefeuilles multisig améliorent-ils vraiment la sécurité ?](/fr/blog/do-multisig-wallets-actually-improve-security/) pour une analyse plus approfondie des cas où le multisig aide et de ceux où il ne le fait pas.
 
 ---
 
 ## Portefeuilles à récupération sociale
 
-Les portefeuilles reposant sur l'abstraction de compte ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) avec des modules de récupération sociale, comptes intelligents [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) vous permettent de nommer des "gardiens" qui peuvent collectivement vous aider à récupérer votre accès. C'est excellent pour les particuliers qui ne veulent pas gérer directement un [multisig](/en/glossary/multi-sig/).
+Les portefeuilles reposant sur l'abstraction de compte ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) avec des modules de récupération sociale, comptes intelligents [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) vous permettent de nommer des "gardiens" qui peuvent collectivement vous aider à récupérer votre accès. C'est excellent pour les particuliers qui ne veulent pas gérer directement un [multisig](/fr/glossary/multi-sig/).
 
 Avantages : tolérant aux erreurs, convivial.
 Inconvénients : encore relativement récent, le groupe de gardiens doit réellement exister et répondre, et le code du contrat intelligent en lui-même est un élément de plus auquel il faut accorder sa confiance.

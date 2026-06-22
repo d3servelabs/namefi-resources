@@ -11,7 +11,7 @@ keywords: [".aig domains", ".aig TLD", "top-level domain .aig", "what is .aig", 
 
 ## **What is .aig?**
 
-The digital landscape is constantly evolving, and with the explosive growth of technology, the demand for specific, relevant domain extensions has never been higher. The **.aig** Top-Level Domain (TLD) is emerging as a powerful designation specifically curated for the intersection of **A**rtificial **I**ntelligence and **G**enerative technologies (or **G**aming).
+The digital landscape is constantly evolving, and with the explosive growth of technology, the demand for specific, relevant domain extensions has never been higher. The **.aig** [Top-Level Domain (TLD)](/en/glossary/tld/) is emerging as a powerful designation specifically curated for the intersection of **A**rtificial **I**ntelligence and **G**enerative technologies (or **G**aming).
 
 While country-code TLDs like [.ai (Anguilla)](https://en.wikipedia.org/wiki/.ai) became the standard for the first wave of AI startups, the market has become incredibly saturated. The .aig extension offers a fresh territory for the next generation of innovators. It is designed to signal advanced capability, typically associating a brand with Generative AI, AI Governance, or AI-driven Gaming.
 
@@ -24,15 +24,15 @@ Because of its strong association with future-tech, the .aig TLD is attracting a
 *   **Generative AI Platforms:** Startups building Large Language Models (LLMs) or image generation tools use .aig to distinguish themselves from general AI aggregators.
 *   **AI Gaming Studios:** Developers creating non-player characters (NPCs) powered by machine learning are adopting .aig to blend "AI" and "Gaming."
 *   **Automated Investment Groups:** Fintech companies using algorithms for trading are leveraging the acronym for trust and modernity.
-*   **Web3 and DAO Governance:** Decentralized Autonomous Organizations focused on AI safety and governance are securing .aig domains to tokenize their brand identity on the blockchain.
+*   **[Web3](/en/glossary/web3/) and DAO Governance:** Decentralized Autonomous Organizations focused on AI safety and governance are securing .aig domains to [tokenize](/en/glossary/tokenize/) their brand identity on the blockchain.
 
 ## **Notable Entities Using .aig**
 
-As a newer entrant to the domain space compared to legacy extensions like .com or .net, .aig is currently a "land of opportunity" rather than a museum of established giants. However, adoption is accelerating among niche tech sectors:
+As a newer entrant to the domain space compared to legacy extensions like [.com](/en/tld/com/) or [.net](/en/tld/net/), .aig is currently a "land of opportunity" rather than a museum of established giants. However, adoption is accelerating among niche tech sectors:
 
 1.  **Generative Art Collectives:** Several decentralized artist communities are migrating to .aig to showcase algorithmic artwork.
 2.  **Next-Gen Tech Incubators:** Forward-thinking accelerators are using the extension to host portfolio sites for their AI-native cohorts.
-3.  **Strategic Domain Investors:** recognizing the scarcity of short .ai domains, investors are securing premium .aig keywords (e.g., *chat.aig*, *draw.aig*, *play.aig*) anticipating the next boom in tech naming conventions.
+3.  **Strategic Domain Investors:** recognizing the scarcity of short [.ai](/en/tld/ai/) domains, investors are securing premium .aig keywords (e.g., *chat.aig*, *draw.aig*, *play.aig*) anticipating the next boom in tech naming conventions.
 
 *Note: As this TLD grows, early adopters have the unique advantage of defining the namespace before major corporations dominate the registry.*
 

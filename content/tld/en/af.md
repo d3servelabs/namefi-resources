@@ -11,18 +11,18 @@ keywords: [".af domains", ".af TLD", "top-level domain", "what is .af", "why cho
 
 ## **What is .af?**
 
-The **.af** extension is the **country code Top-Level Domain (ccTLD)** for **Afghanistan**. It was originally delegated in 1997 and is managed by the [Afghanistan Network Information Center (AFGNIC)](https://nic.af/). 
+The **.af** extension is the **country code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** for **Afghanistan**. It was originally delegated in 1997 and is managed by the [Afghanistan Network Information Center (AFGNIC)](https://nic.af/). 
 
 While its primary purpose was to serve entities, organizations, and individuals connected to Afghanistan, the .af domain has transcended its geographic borders to become a favorite among the global tech and creative communities. This is largely due to the serendipitous linguistic coincidence in internet slang where "AF" is an acronym for "as f***" (used to emphasize an adjective, e.g., "cool af"). 
 
-Because of this dual nature—serving a nation while simultaneously offering unique branding opportunities—.af has seen a steady rise in registrations outside of its home region. It is a standard DNS domain, but like many unique extensions, it holds specific value for **domain investors** looking for short, memorable names that may not be available in saturated legacy TLDs like .com.
+Because of this dual nature—serving a nation while simultaneously offering unique branding opportunities—.af has seen a steady rise in registrations outside of its home region. It is a standard DNS domain, but like many unique extensions, it holds specific value for **domain investors** looking for short, memorable names that may not be available in saturated legacy TLDs like [.com](/en/tld/com/).
 
 ## **How People Are Using .af**
 
 The usage of .af is distinctly divided into two categories: local utility and global creativity.
 
-*   **Creative Branding and "Domain Hacks":**
-    This is currently the most popular use case on the global stage. Startups, agencies, and personal brands use .af to create phrases. For example, a fast delivery service might register `fast.af`, or a security firm might use `safe.af`. This usage is prevalent in the **Web3 and tech sectors**, where edgy, memorable branding is highly valued.
+*   **Creative Branding and ["Domain Hacks"](/en/blog/domain-hacks-explained/):**
+    This is currently the most popular use case on the global stage. Startups, agencies, and personal brands use .af to create phrases. For example, a fast delivery service might register `fast.af`, or a security firm might use `safe.af`. This usage is prevalent in the **[Web3](/en/glossary/web3/) and tech sectors**, where edgy, memorable branding is highly valued.
 *   **Local Businesses and NGOs:**
     Within Afghanistan, the domain is used for government portals, educational institutions, and local commerce, serving as a digital identifier of Afghan origin.
 *   **Portfolio and Personal Sites:**
@@ -49,7 +49,7 @@ Choosing a .af domain comes with several distinct advantages, especially if you 
 *   **Memorability and Impact:**
     Using .af allows you to complete a phrase with your URL. A domain like `bold.af` is instantly memorable and conveys a brand personality that is confident and modern.
 *   **High Availability:**
-    Compared to .com, .net, or .io, there is a much higher probability of finding short, one-word, or two-letter domain names available in the .af namespace.
+    Compared to .com, [.net](/en/tld/net/), or [.io](/en/tld/io/), there is a much higher probability of finding short, one-word, or two-letter domain names available in the .af namespace.
 *   **SEO Potential:**
     While .af is a ccTLD, search engines like Google generally understand the context of the website content. If your site is in English and targets a global audience, it can still rank well. However, it is excellent for branding, which indirectly boosts direct traffic.
 *   **Investment Value:**
@@ -61,7 +61,7 @@ Whether you are launching a bold new startup, building a personal portfolio, or 
 
 At **Namefi**, we make the registration process seamless and future-proof.
 *   **Easy Management:** Manage your traditional DNS settings with ease.
-*   **Web3 Integration:** Namefi specializes in **tokenized domains**. When you register with us, you can mint your domain as an NFT, allowing for instant transfer, fractional ownership, and integration with blockchain applications.
+*   **Web3 Integration:** Namefi specializes in **tokenized domains**. When you register with us, you can mint your domain as an NFT, allowing for instant transfer, [fractional ownership](/en/glossary/fractional-ownership/), and integration with blockchain applications.
 *   **Transparent Pricing:** No hidden fees, just straightforward access to the domains you need.
 
 Don't let your perfect domain hack get taken by someone else. Secure your brand's intensity today.
