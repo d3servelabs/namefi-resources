@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "الإشعارات ذات الصلة، {count} غير مقروءة"
   },
   "permission": {
-    "tooltip": "لا تفوّت أي إشعار — فعّل الإشعارات لـ Namefi Webapp.",
     "enable": "تفعيل",
     "ctaText": "احصل على تنبيهات النظام فور وصول إشعارات جديدة."
   },

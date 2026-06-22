@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "Notifications associées, {count} non lues"
   },
   "permission": {
-    "tooltip": "Ne manquez aucune notification — activez les notifications pour Namefi Webapp.",
     "enable": "Activer",
     "ctaText": "Recevez des alertes système dès qu'une nouvelle notification arrive."
   },

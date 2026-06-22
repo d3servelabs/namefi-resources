@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "Related notifications, {count} unread"
   },
   "permission": {
-    "tooltip": "Don't miss any notifications, enable notifications for Namefi Webapp.",
     "enable": "Enable",
     "ctaText": "Get OS banners when new notifications arrive."
   },

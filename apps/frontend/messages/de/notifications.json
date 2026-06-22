@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "Zugehörige Benachrichtigungen, {count} ungelesen"
   },
   "permission": {
-    "tooltip": "Verpassen Sie keine Benachrichtigungen – aktivieren Sie Benachrichtigungen für die Namefi Web-App.",
     "enable": "Aktivieren",
     "ctaText": "Erhalten Sie Desktop-Benachrichtigungen, sobald neue Meldungen eingehen."
   },

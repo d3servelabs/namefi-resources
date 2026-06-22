@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "関連する通知、{count}件未読"
   },
   "permission": {
-    "tooltip": "Namefi Webアプリの通知を有効にして、お知らせを見逃さないようにしましょう。",
     "enable": "有効にする",
     "ctaText": "新しい通知が届いたとき、OSのバナーでお知らせします。"
   },

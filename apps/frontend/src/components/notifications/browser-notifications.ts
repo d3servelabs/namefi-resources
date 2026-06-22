@@ -12,11 +12,10 @@ import { useSyncExternalStore } from 'react';
  * notification arrives while the page is open, we ALSO fire an OS
  * banner so the user sees it even when the tab is in the background.
  *
- * Permission is requested only from the explicit in-app "Enable" CTA,
- * keeping the browser prompt behind a clear user opt-in gesture.
+ * Permission is requested directly from a user gesture — clicking the
+ * notification bell, or the in-modal "Enable" CTA — so the native browser
+ * prompt always sits behind a clear opt-in interaction.
  */
-
-const TOOLTIP_DISMISSED_FLAG_KEY = 'namefi-browser-notifs-tooltip-dismissed-v1';
 
 export type BrowserNotificationCapability =
   | 'unsupported'
@@ -34,26 +33,11 @@ export function getBrowserNotificationCapability(): BrowserNotificationCapabilit
   return window.Notification.permission;
 }
 
-export function isPermissionTooltipDismissed(): boolean {
-  if (typeof window === 'undefined') return true;
-  try {
-    return window.localStorage.getItem(TOOLTIP_DISMISSED_FLAG_KEY) === '1';
-  } catch {
-    return false;
-  }
-}
-
-export function dismissPermissionTooltip(): void {
-  if (typeof window === 'undefined') return;
-  try {
-    window.localStorage.setItem(TOOLTIP_DISMISSED_FLAG_KEY, '1');
-  } catch {
-    /* swallow */
-  }
-}
-
 /**
- * Request browser notification permission from an explicit in-app CTA.
+ * Request browser notification permission from an explicit user gesture
+ * (the notification bell click or the in-modal "Enable" CTA). Safe to call
+ * on every click — it only triggers the native dialog while permission is
+ * still `default`, and resolves immediately once granted/denied.
  * Returns the resolved capability so callers can update their UI.
  */
 export async function requestBrowserNotificationPermissionForce(): Promise<BrowserNotificationCapability> {

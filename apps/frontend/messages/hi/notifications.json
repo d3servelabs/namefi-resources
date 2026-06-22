@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "संबंधित सूचनाएँ, {count} अपठित"
   },
   "permission": {
-    "tooltip": "कोई सूचना न चूकें — Namefi Webapp के लिए सूचनाएँ सक्षम करें।",
     "enable": "सक्षम करें",
     "ctaText": "नई सूचना आने पर OS बैनर प्राप्त करें।"
   },

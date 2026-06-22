@@ -3,12 +3,6 @@
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 import { HeaderActionButton } from '@/components/header-action-button';
 import { useAuth } from '@/hooks/use-auth';
-import { Button } from '@namefi-astra/ui/components/shadcn/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@namefi-astra/ui/components/shadcn/popover';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import NumberFlow from '@number-flow/react';
@@ -17,20 +11,13 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import {
   forwardRef,
-  type ReactElement,
   useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
 } from 'react';
 
-import {
-  dismissPermissionTooltip,
-  isPermissionTooltipDismissed,
-  requestBrowserNotificationPermissionForce,
-  useBrowserNotificationCapability,
-} from './browser-notifications';
+import { requestBrowserNotificationPermissionForce } from './browser-notifications';
 import { openNotificationsModal } from './store';
 import { useUnreadCount } from './use-unread-count';
 
@@ -52,8 +39,6 @@ export type NotificationsBellHandle = {
   scrollIntoView: () => void;
 };
 
-const TOOLTIP_AUTOSHOW_DELAY_MS = 1500;
-
 /**
  * The bell shown in the topbar (mobile), the sidebar footer (desktop), and
  * inline next to resource titles. Same lazy-loaded count, same click-to-
@@ -63,10 +48,10 @@ const TOOLTIP_AUTOSHOW_DELAY_MS = 1500;
  * count rises while the bell is mounted, so users notice fresh activity
  * without us having to push state.
  *
- * Global bells (`topbar` / `sidebar`) also surface a small popover
- * tooltip when the user hasn't granted browser-notification permission,
- * with Enable / Dismiss actions. Inline bells skip the tooltip — the
- * global one is the right place to ask.
+ * Clicking a global bell (`topbar` / `sidebar`) requests browser-notification
+ * permission directly via the native prompt (a real user gesture, per the
+ * Notifications API) before opening the modal. Inline bells skip the ask —
+ * the global bell is the right place to prompt.
  */
 export const NotificationsBell = forwardRef<
   NotificationsBellHandle,
@@ -105,8 +90,15 @@ const NotificationsBellInner = forwardRef<
   }));
 
   const handleClick = useCallback(() => {
+    // Ask for browser-notification permission directly on the global bell
+    // click (the native prompt requires a user gesture). Self-guarded — it
+    // only surfaces the dialog while permission is still `default`. The
+    // inline (per-resource) bell isn't the place to prompt.
+    if (variant !== 'inline') {
+      void requestBrowserNotificationPermissionForce();
+    }
     openNotificationsModal(filter ?? null);
-  }, [filter]);
+  }, [variant, filter]);
 
   useEffect(() => {
     if (!autoSurfaceOnIncrease) return;
@@ -230,71 +222,10 @@ const NotificationsBellInner = forwardRef<
 
   return (
     <div ref={wrapperRef} className={wrapperClassName}>
-      {variant === 'inline' ? (
-        bellInner
-      ) : (
-        <PermissionPromptTooltip>{bellInner}</PermissionPromptTooltip>
-      )}
+      {bellInner}
     </div>
   );
 });
 
 NotificationsBell.displayName = 'NotificationsBell';
 NotificationsBellInner.displayName = 'NotificationsBellInner';
-
-function PermissionPromptTooltip({ children }: { children: ReactElement }) {
-  const t = useTranslations('notifications');
-  const tCommon = useTranslations('common');
-  const capability = useBrowserNotificationCapability();
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (capability !== 'default') {
-      setOpen(false);
-      return;
-    }
-    if (isPermissionTooltipDismissed()) return;
-    const t = setTimeout(() => setOpen(true), TOOLTIP_AUTOSHOW_DELAY_MS);
-    return () => clearTimeout(t);
-  }, [capability]);
-
-  if (capability !== 'default') return <>{children}</>;
-  if (isPermissionTooltipDismissed() && !open) return <>{children}</>;
-
-  return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger render={children} />
-      <PopoverContent className="w-72 p-3" align="end" sideOffset={8}>
-        <p className="text-sm text-foreground">{t('permission.tooltip')}</p>
-        <div className="mt-3 flex items-center justify-end gap-2">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs"
-            onClick={() => {
-              dismissPermissionTooltip();
-              setOpen(false);
-            }}
-            data-testid="notifications.permission.dismiss-button"
-          >
-            {tCommon('actions.dismiss')}
-          </Button>
-          <Button
-            type="button"
-            variant="default"
-            size="sm"
-            className="h-7 text-xs"
-            onClick={async () => {
-              await requestBrowserNotificationPermissionForce();
-              setOpen(false);
-            }}
-            data-testid="notifications.permission.enable-button"
-          >
-            {t('permission.enable')}
-          </Button>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}

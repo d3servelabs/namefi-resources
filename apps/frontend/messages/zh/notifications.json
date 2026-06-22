@@ -7,7 +7,6 @@
     "relatedLabelWithUnread": "相关通知，{count} 条未读"
   },
   "permission": {
-    "tooltip": "不错过任何通知，请为 Namefi 网页应用开启通知权限。",
     "enable": "开启",
     "ctaText": "有新通知时接收系统横幅提醒。"
   },

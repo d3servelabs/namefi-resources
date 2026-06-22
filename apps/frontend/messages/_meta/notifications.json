@@ -19,9 +19,6 @@
     "description": "Accessible label for an inline notification bell with unread items. {count} = number of unread notifications.",
     "maxLength": 48
   },
-  "permission.tooltip": {
-    "description": "Popover prompt encouraging the user to grant browser-notification permission. 'Namefi Webapp' is the product name."
-  },
   "permission.enable": {
     "description": "Button that requests browser-notification permission (enables OS banners).",
     "maxLength": 12
