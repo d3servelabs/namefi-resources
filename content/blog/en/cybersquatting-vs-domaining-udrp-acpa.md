@@ -4,7 +4,7 @@ date: '2026-06-21'
 language: en
 tags: ['domains', 'security', 'domain-flipping', 'explainer']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: domain-security
 series: domain-flipping-skills
 seriesOrder: 17

@@ -4,7 +4,7 @@ date: '2026-06-21'
 language: en
 tags: ['domains', 'tld', 'domain-flipping', 'analysis']
 authors: ['namefiteam']
-draft: true
+draft: false
 cluster: choosing-a-tld
 series: domain-flipping-skills
 seriesOrder: 11
