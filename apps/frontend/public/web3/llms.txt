@@ -10,7 +10,7 @@ Buy a domain with stablecoin (USDC) using the [x402 protocol](https://x402.org).
 - `GET /x402/domain/{domainName}` — without an `X-PAYMENT` header, returns `402 Payment Required` with payment options (network, asset, amount in USDC). With a valid `X-PAYMENT` header, verifies the signature, starts the registration workflow, and settles payment.
   - Optional query params: `years` (1-10, default 1), `nftReceivingWalletAddress` (defaults to the buyer wallet).
 - `GET /x402/purchase/{purchaseId}` — poll purchase status. Returns JSON when `?content-type=json` or the `Accept` header isn't HTML; otherwise redirects to the frontend progress page.
-- namefi-api-skills have the full details about all possible payment options.
+- namefi-skills have the full details about all possible payment options.
 
 #### MPP (Machine Payable Protocol)
 

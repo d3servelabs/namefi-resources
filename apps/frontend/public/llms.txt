@@ -193,7 +193,7 @@ Supported types: A, AAAA, CNAME, MX, TXT, NS, SOA, PTR, SRV, CAA, DS, TLSA, SSHF
 - [npm: @namefi/api-client](https://www.npmjs.com/package/@namefi/api-client): Install with `npm install @namefi/api-client`.
 - [OpenAPI JSON](https://api.namefi.io/v-next/openapi/doc.json): Machine-readable OpenAPI 3 spec.
 - [Outbound agent guide](https://api.namefi.io/outbound/llms.txt): Focused instructions for finding domain buyer leads and preparing outreach.
-- [namefi-api-skills (GitHub)](https://github.com/d3servelabs/namefi-api-skills): Signer-neutral helper scripts for preparing auth payloads.
+- [namefi-skills (GitHub)](https://github.com/d3servelabs/namefi-skills): Signer-neutral helper scripts for preparing auth payloads.
 - For extra details: (optional)
   - https://docs.namefi.io/docs/03-getting-started/03-manage-dns-records.mdx
   - https://docs.namefi.io/docs/03-getting-started/05-dns-operations.mdx
