@@ -175,13 +175,33 @@ export const searchRouter = createContractTRPCRouter<typeof searchContract>({
       const { getUserUnusedClaims, checkItemClaimEligibility } = await import(
         '#temporal/activities/free-claim.activities'
       );
+      const { deriveClaimGuardInfo } = await import(
+        '#temporal/activities/free-claim-guard'
+      );
 
-      // Get all unused claims for this user
-      const unusedClaims = await getUserUnusedClaims(user.id);
+      // Fetch the user's unused claims and the domains' availability/pricing in
+      // parallel so we can hide the free-claim CTA for premium / over-priced
+      // domains (the authoritative guard still runs server-side at claim time).
+      //
+      // KNOWN LIMITATION (perf): this adds a `getDomainListInfo` registrar bulk
+      // lookup on every authenticated search. The stream subscription fetches
+      // the same data separately; a future optimization could share that result
+      // or rely on the Redis cache. Acceptable for now since the guard is
+      // authoritative server-side and this only governs CTA visibility.
+      const [unusedClaims, infos] = await Promise.all([
+        getUserUnusedClaims(user.id),
+        getDomainListInfo(domains, user),
+      ]);
+      const infoByDomain = new Map(infos.map((info) => [info.domain, info]));
 
       // Check eligibility for each domain
       const eligibilityResults = domains.map((domain) => {
-        const eligibility = checkItemClaimEligibility(domain, unusedClaims);
+        const guardInfo = deriveClaimGuardInfo(infoByDomain.get(domain));
+        const eligibility = checkItemClaimEligibility(
+          domain,
+          unusedClaims,
+          guardInfo,
+        );
 
         return {
           domain,

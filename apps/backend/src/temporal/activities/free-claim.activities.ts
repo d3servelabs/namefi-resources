@@ -11,13 +11,37 @@ import { and, eq, gte, isNull, or, sql } from 'drizzle-orm';
 import { zeroAddress } from 'viem';
 import { createLogger } from '#lib/logger';
 import { $withTransaction } from '@namefi-astra/db';
+import { getDomainListInfo } from '#lib/namefi-registry';
+import {
+  type DomainClaimGuardInfo,
+  deriveClaimGuardInfo,
+  evaluateClaimGuard,
+  getFreeClaimPolicy,
+} from './free-claim-guard';
 import { orderService } from '../../services/orders/orders.service';
 
 const logger = createLogger({ context: 'free-claim-activities' });
 
+/**
+ * Resolves the premium flag and 1-year registration price for a single domain
+ * so the free-claim guard can be evaluated. Safe to call as a Temporal activity
+ * or directly from the tRPC layer. Never throws. The pure guard logic lives in
+ * `./free-claim-guard`.
+ */
+export async function getDomainClaimGuardInfo(input: {
+  normalizedDomainName: NamefiNormalizedDomain;
+}): Promise<DomainClaimGuardInfo> {
+  const [info] = await getDomainListInfo([input.normalizedDomainName]);
+  return deriveClaimGuardInfo(info);
+}
+
 export interface ValidateAndUseClaimInput {
   userId: string;
   normalizedDomainName: NamefiNormalizedDomain;
+  /** Premium flag for the domain, used to enforce the per-claim guard. */
+  domainIsPremium: boolean;
+  /** 1-year registration price (USD) for the domain, or null if unknown. */
+  domainRegistrationPriceUsd: number | null;
   tx?: typeof db;
 }
 
@@ -108,6 +132,36 @@ export async function validateAndUseClaim(
         return {
           success: false,
           reason: 'Claim has expired',
+        };
+      }
+
+      // Enforce the per-claim premium / max-price guard before consuming the
+      // claim. Returning (not throwing) keeps the existing failure contract and
+      // rolls back nothing, since no write has happened yet.
+      //
+      // KNOWN LIMITATION: selection above picks ONE claim (exact-match-first,
+      // then earliest expiry) and the guard evaluates only that claim's policy.
+      // If a user holds multiple eligible claims for the same domain with
+      // different policies, the selected one may be blocked even though another
+      // held claim would permit it. Making the selection policy-aware is a
+      // possible follow-up.
+      const guard = evaluateClaimGuard(getFreeClaimPolicy(claim), {
+        isPremium: input.domainIsPremium,
+        registrationPriceUsd: input.domainRegistrationPriceUsd,
+      });
+      if (!guard.ok) {
+        logger.debug(
+          {
+            claimId: claim.id,
+            userId,
+            normalizedDomainName,
+            reason: guard.reason,
+          },
+          'Free claim blocked by premium/max-price guard',
+        );
+        return {
+          success: false,
+          reason: guard.reason,
         };
       }
 
@@ -463,6 +517,8 @@ export async function validateAndCreateClaimOrder(input: {
   registrarKey: string;
   recipientWalletAddress: string;
   chainId: number;
+  domainIsPremium: boolean;
+  domainRegistrationPriceUsd: number | null;
   tx?: typeof db;
 }): Promise<{
   orderId: string;
@@ -476,6 +532,8 @@ export async function validateAndCreateClaimOrder(input: {
     registrarKey,
     recipientWalletAddress,
     chainId,
+    domainIsPremium,
+    domainRegistrationPriceUsd,
     tx: existingTx,
   } = input;
 
@@ -490,6 +548,8 @@ export async function validateAndCreateClaimOrder(input: {
       const claimResult = await validateAndUseClaim({
         userId,
         normalizedDomainName,
+        domainIsPremium,
+        domainRegistrationPriceUsd,
         tx,
       });
 
@@ -969,12 +1029,22 @@ type CheckItemClaimEligibilityOutput = {
 export function checkItemClaimEligibility(
   normalizedDomainName: NamefiNormalizedDomain,
   unusedClaims: FreeClaimSelect[],
+  guardInfo?: DomainClaimGuardInfo,
 ): CheckItemClaimEligibilityOutput[] {
-  // Separate exact and parent domain matches
-  const exactMatches: typeof unusedClaims = [];
-  const parentMatches: typeof unusedClaims = [];
+  // When guard info is provided, drop claims whose per-claim policy blocks this
+  // domain (premium / over max-price) so the free-claim CTA is hidden upfront.
+  // The authoritative enforcement still happens in `validateAndUseClaim`.
+  const candidateClaims = guardInfo
+    ? unusedClaims.filter(
+        (claim) => evaluateClaimGuard(getFreeClaimPolicy(claim), guardInfo).ok,
+      )
+    : unusedClaims;
 
-  for (const claim of unusedClaims) {
+  // Separate exact and parent domain matches
+  const exactMatches: typeof candidateClaims = [];
+  const parentMatches: typeof candidateClaims = [];
+
+  for (const claim of candidateClaims) {
     // Check for exact domain match
     if (claim.exactDomainName === normalizedDomainName) {
       exactMatches.push(claim);

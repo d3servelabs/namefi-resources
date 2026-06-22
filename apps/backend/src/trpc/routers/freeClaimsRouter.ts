@@ -12,7 +12,10 @@ import {
   checkClaimEligibility,
 } from '../../temporal/activities/free-claim.activities';
 import { processReservationsForUser } from '../../temporal/activities/pbn-issuance-reservations.activities';
-import { validateAndCreateClaimOrder } from '../../temporal/activities/free-claim.activities';
+import {
+  getDomainClaimGuardInfo,
+  validateAndCreateClaimOrder,
+} from '../../temporal/activities/free-claim.activities';
 import { freeClaimsContract } from '@namefi-astra/common/contract/free-claims-contract';
 import { protectedProcedure } from '../base';
 import { createContractTRPCRouter } from '../contract';
@@ -214,6 +217,19 @@ export const freeClaimsRouter = createContractTRPCRouter<
               throw new TRPCError({
                 code: 'FORBIDDEN',
                 message: 'No eligible claims found for this domain',
+              });
+            }
+            if (actualError.includes('PREMIUM_NOT_ALLOWED')) {
+              throw new TRPCError({
+                code: 'FORBIDDEN',
+                message:
+                  'This domain is premium and not eligible for a free claim',
+              });
+            }
+            if (actualError.includes('MAX_PRICE_EXCEEDED')) {
+              throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'This domain exceeds the price limit for a free claim',
               });
             }
             if (actualError.includes('Claim validation failed')) {
@@ -422,6 +438,13 @@ export const freeClaimsRouter = createContractTRPCRouter<
       );
 
       try {
+        // Resolve the domain's premium flag + price BEFORE opening the
+        // serializable transaction — never make a registrar/network call while
+        // holding transaction locks.
+        const guardInfo = await getDomainClaimGuardInfo({
+          normalizedDomainName,
+        });
+
         const result = await $withTransaction(
           async (tx) => {
             // Step 1: Validate and create claim order using composed activities
@@ -432,6 +455,8 @@ export const freeClaimsRouter = createContractTRPCRouter<
               registrarKey,
               recipientWalletAddress,
               chainId,
+              domainIsPremium: guardInfo.isPremium,
+              domainRegistrationPriceUsd: guardInfo.registrationPriceUsd,
               tx,
             });
 
@@ -515,6 +540,19 @@ export const freeClaimsRouter = createContractTRPCRouter<
             throw new TRPCError({
               code: 'FORBIDDEN',
               message: 'Your claim for this domain has expired',
+            });
+          }
+          if (error.message.includes('PREMIUM_NOT_ALLOWED')) {
+            throw new TRPCError({
+              code: 'FORBIDDEN',
+              message:
+                'This domain is premium and not eligible for a free claim',
+            });
+          }
+          if (error.message.includes('MAX_PRICE_EXCEEDED')) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: 'This domain exceeds the price limit for a free claim',
             });
           }
         }

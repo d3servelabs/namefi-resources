@@ -275,20 +275,38 @@ export function handleEppResult<T>(
 // ============ Fee Extension Helpers ============
 
 /**
+ * Result of parsing the EPP fee extension check data: the per-command pricing
+ * plus whether the registry flagged the domain as premium.
+ */
+type ParsedFeeCheckData = {
+  pricing: DomainPricingDetails | null;
+  /**
+   * Premium flag from the fee extension's `<fee:class>` element (RFC 8748).
+   * `true` only when the registry explicitly reports `class === 'premium'`.
+   */
+  isPremium: boolean;
+};
+
+/**
  * Parse fee extension check data using FeeChkDataTypeXml schema.
+ *
+ * Reads premium status from the `<fee:class>` element rather than the
+ * `<fee:command standard="...">` attribute: `@_standard` defaults to `'0'`
+ * when omitted, which would false-positive every domain as premium.
  */
 function parseFeeCheckData(
   extensionData: Record<string, unknown> | undefined,
   query: string,
-): DomainPricingDetails | null {
-  if (!extensionData) return null;
+): ParsedFeeCheckData {
+  const empty: ParsedFeeCheckData = { pricing: null, isPremium: false };
+  if (!extensionData) return empty;
 
   const feeChkData = extensionData['fee:chkData'];
-  if (!feeChkData) return null;
+  if (!feeChkData) return empty;
 
   const parsed = FeeChkDataTypeXml.safeParse(feeChkData);
   if (!parsed.success) {
-    return null;
+    return empty;
   }
 
   const cdList = parsed.data['fee:cd'];
@@ -298,7 +316,10 @@ function parseFeeCheckData(
     return name?.toLowerCase() === query.toLowerCase();
   });
 
-  if (!cdItem) return null;
+  if (!cdItem) return empty;
+
+  const isPremium =
+    extractText(cdItem['fee:class'])?.toLowerCase() === 'premium';
 
   const commands = cdItem['fee:command'] ?? [];
   const prices: Record<string, number> = {};
@@ -314,9 +335,12 @@ function parseFeeCheckData(
   }
 
   return {
-    registrationPrice: singleYearPricingTemplate(prices.create ?? 0),
-    renewalPrice: singleYearPricingTemplate(prices.renew ?? 0),
-    importPrice: singleYearPricingTemplate(prices.transfer ?? 0),
+    pricing: {
+      registrationPrice: singleYearPricingTemplate(prices.create ?? 0),
+      renewalPrice: singleYearPricingTemplate(prices.renew ?? 0),
+      importPrice: singleYearPricingTemplate(prices.transfer ?? 0),
+    },
+    isPremium,
   };
 }
 
@@ -369,8 +393,8 @@ export function parseDomainCheckResponse(
     typeof nameField === 'object' ? nameField['@_avail'] : undefined;
   const isAvailable = avail === '1' || avail === 'true';
 
-  // Parse fee extension data if present
-  const pricing = parseFeeCheckData(extensionData, query);
+  // Parse fee extension data if present (pricing + premium class)
+  const { pricing, isPremium } = parseFeeCheckData(extensionData, query);
 
   return {
     domainName: query as PunycodeDomainName,
@@ -378,7 +402,7 @@ export function parseDomainCheckResponse(
       ? DomainAvailability.AVAILABLE
       : DomainAvailability.UNAVAILABLE,
     price: pricing,
-    isPremium: false,
+    isPremium,
     supported: true,
   };
 }

@@ -39,6 +39,16 @@ const createFreeClaimInputSchema = z
     exactDomainName: namefiNormalizedDomainSchema.optional(),
     parentDomain: namefiNormalizedDomainSchema.optional(),
     expirationDate: z.date().optional(),
+    // Free-claim guard policy, persisted to `freeClaimsTable.metadata`.
+    // KNOWN LIMITATION: these are supported by the API/backend but are not yet
+    // exposed as controls in the admin UI form, so today they are only settable
+    // via a direct API call. The safe default (premium blocked, no cap) applies
+    // to claims created without them. Surfacing them in the admin form is a
+    // possible follow-up.
+    /** Allow claiming premium domains with this claim (default: blocked). */
+    allowPremium: z.boolean().optional(),
+    /** Max 1-year registration price (USD) claimable for free (no cap if unset). */
+    maxPrice: z.number().positive().optional(),
   })
   .refine((data) => data.exactDomainName || data.parentDomain, {
     message: 'Either exactDomainName or parentDomain must be provided',
@@ -57,6 +67,10 @@ const updateFreeClaimInputSchema = z
     exactDomainName: namefiNormalizedDomainSchema.optional(),
     parentDomain: namefiNormalizedDomainSchema.optional(),
     expirationDate: z.date().optional(),
+    /** Allow claiming premium domains with this claim (default: blocked). */
+    allowPremium: z.boolean().optional(),
+    /** Max 1-year registration price (USD) claimable for free (no cap if unset). */
+    maxPrice: z.number().positive().optional(),
   })
   .refine((data) => !(data.exactDomainName && data.parentDomain), {
     message: 'Cannot specify both exactDomainName and parentDomain',

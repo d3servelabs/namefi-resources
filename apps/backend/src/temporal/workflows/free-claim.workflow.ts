@@ -119,6 +119,7 @@ export async function processFreeClaimWorkflow(
     validateAndUseClaim,
     validateClaimAndOrder,
     createClaimOrder,
+    getDomainClaimGuardInfo,
     revertClaim,
     updateClaimRecord,
     markClaimAsCompleted,
@@ -185,21 +186,25 @@ export async function processFreeClaimWorkflow(
       });
 
       if (!result.success) {
-        return {
-          success: false,
-        };
+        // Surface the validation reason to the caller instead of swallowing it
+        // behind a generic failure (the outer catch re-wraps it as
+        // "Process Free Claim Failed: <reason>", which the router maps).
+        throw new ApplicationFailure(
+          result.reason ?? 'Claim validation failed',
+        );
       }
     } else {
       const result = await _processNewClaim(input, state, {
         validateAndUseClaim,
+        getDomainClaimGuardInfo,
         createClaimOrder,
         updateClaimRecord,
       });
 
       if (!result.success) {
-        return {
-          success: false,
-        };
+        throw new ApplicationFailure(
+          result.reason ?? 'Claim validation failed',
+        );
       }
     }
 
@@ -441,14 +446,25 @@ async function _processNewClaim(
     recipientWalletAddress,
     chainId,
   } = input;
-  const { validateAndUseClaim, createClaimOrder, updateClaimRecord } =
-    activities;
+  const {
+    validateAndUseClaim,
+    getDomainClaimGuardInfo,
+    createClaimOrder,
+    updateClaimRecord,
+  } = activities;
 
-  // Step 1: Atomically validate and mark the claim as used
+  // Step 0: Resolve the domain's premium flag + price so the guard can run.
+  state.currentStep = 'fetching_guard_info';
+  const guardInfo = await getDomainClaimGuardInfo({ normalizedDomainName });
+
+  // Step 1: Atomically validate and mark the claim as used (enforces the
+  // per-claim premium / max-price guard before consuming the claim).
   state.currentStep = 'validating_claim';
   const claimValidationResult = await validateAndUseClaim({
     userId,
     normalizedDomainName,
+    domainIsPremium: guardInfo.isPremium,
+    domainRegistrationPriceUsd: guardInfo.registrationPriceUsd,
   });
 
   if (!claimValidationResult.success) {

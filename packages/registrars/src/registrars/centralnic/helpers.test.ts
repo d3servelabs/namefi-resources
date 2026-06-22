@@ -13,9 +13,14 @@ import {
   generateAuthCode,
   generateOperationId,
   handleEppResult,
+  parseDomainCheckResponse,
   parseOperationId,
 } from './helpers';
-import { OperationType, type PunycodeDomainName } from '#lib/data';
+import {
+  DomainAvailability,
+  OperationType,
+  type PunycodeDomainName,
+} from '#lib/data';
 
 type EppResult = Result<SendResult<EppEnvelopeXml>, string | undefined>;
 
@@ -129,6 +134,81 @@ describe('generateAuthCode (EPP authInfo / transfer secret)', () => {
       codes.add(generateAuthCode());
     }
     expect(codes.size).toBe(200);
+  });
+});
+
+describe('parseDomainCheckResponse premium detection (fee:class)', () => {
+  const buildCheckResponse = (
+    domainName: string,
+    feeClass: string | undefined,
+  ): SendResult<EppEnvelopeXml> =>
+    ({
+      response: {
+        'epp:epp': {
+          'epp:response': {
+            'epp:resData': {
+              'domain:chkData': {
+                'domain:cd': [
+                  { 'domain:name': { '@_avail': '1', '#text': domainName } },
+                ],
+              },
+            },
+            'epp:extension': {
+              'fee:chkData': {
+                'fee:currency': { '#text': 'USD' },
+                'fee:cd': [
+                  {
+                    'fee:objID': { '#text': domainName },
+                    ...(feeClass ? { 'fee:class': { '#text': feeClass } } : {}),
+                    'fee:command': [
+                      { '@_name': 'create', 'fee:fee': [{ '#text': '25.00' }] },
+                      { '@_name': 'renew', 'fee:fee': [{ '#text': '15.00' }] },
+                      {
+                        '@_name': 'transfer',
+                        'fee:fee': [{ '#text': '15.00' }],
+                      },
+                    ],
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      xml: '<xml/>',
+    }) as unknown as SendResult<EppEnvelopeXml>;
+
+  it('marks a domain premium when fee:class is "premium"', () => {
+    const result = parseDomainCheckResponse(
+      buildCheckResponse('example.premium', 'premium'),
+      'example.premium',
+    );
+    expect(result.isPremium).toBe(true);
+    expect(result.available).toBe(DomainAvailability.AVAILABLE);
+    // Pricing must still parse — proves the fee extension was read (not defaulted).
+    expect(result.price?.registrationPrice).toMatchObject({
+      type: 'PER_YEAR',
+      price: { amount: 25, currency: 'USD' },
+    });
+  });
+
+  it('treats a "standard" fee:class as non-premium', () => {
+    const result = parseDomainCheckResponse(
+      buildCheckResponse('example.com', 'standard'),
+      'example.com',
+    );
+    expect(result.isPremium).toBe(false);
+    expect(result.price?.registrationPrice).toMatchObject({
+      price: { amount: 25 },
+    });
+  });
+
+  it('treats a missing fee:class as non-premium', () => {
+    const result = parseDomainCheckResponse(
+      buildCheckResponse('example.com', undefined),
+      'example.com',
+    );
+    expect(result.isPremium).toBe(false);
   });
 });
 

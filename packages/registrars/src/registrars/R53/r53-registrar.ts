@@ -645,6 +645,12 @@ export class R53RegistrarService extends AbstractRegistrarService {
         searchResults.Availability === 'AVAILABLE'
           ? DomainAvailability.AVAILABLE
           : DomainAvailability.UNAVAILABLE,
+      // KNOWN LIMITATION: the AWS Route 53 Domains API does not expose a premium
+      // indicator in CheckDomainAvailability, so we cannot detect premium names
+      // here (unlike Dynadot's price string and CentralNic's EPP `fee:class`).
+      // Premium R53 names are instead caught downstream by the free-claim
+      // `maxPrice` cap (see free-claim-guard.ts). Same applies to the bulkSearch
+      // results below.
       isPremium: false,
       supported: true,
     };

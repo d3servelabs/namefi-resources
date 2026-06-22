@@ -62,6 +62,13 @@ export type DomainAvailabilityInfo = {
   importable: boolean;
   supported: boolean;
   /**
+   * Whether the registry priced this domain as premium. Only Dynadot and
+   * CentralNic (via the EPP fee extension's `fee:class`) report it; R53,
+   * subdomains, and unavailable results are always `false`/absent. Used to
+   * surface a premium badge and to block premium domains from free claims.
+   */
+  isPremium?: boolean;
+  /**
    * TLD-specific registration requirement (e.g. Google's HTTPS notice for
    * .app/.dev). Present only for TLDs in the hardcoded requirements list;
    * `undefined` otherwise.

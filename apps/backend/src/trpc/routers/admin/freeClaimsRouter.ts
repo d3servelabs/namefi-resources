@@ -137,7 +137,15 @@ export const freeClaimsRouter = createContractTRPCRouter<
         exactDomainName,
         parentDomain,
         expirationDate,
+        allowPremium,
+        maxPrice,
       } = input;
+
+      // Store the free-claim guard policy in metadata (read server-side by
+      // getFreeClaimPolicy). Only include keys the admin explicitly provided.
+      const metadata: Record<string, unknown> = {};
+      if (allowPremium !== undefined) metadata.allowPremium = allowPremium;
+      if (maxPrice !== undefined) metadata.maxPrice = maxPrice;
 
       try {
         const newClaim = await db
@@ -150,6 +158,7 @@ export const freeClaimsRouter = createContractTRPCRouter<
             parentDomain: parentDomain || null,
             expirationDate: expirationDate || null,
             claimingStatus: 'IDLE',
+            metadata,
             createdAt: new Date(),
             updatedAt: new Date(),
           })
@@ -183,7 +192,11 @@ export const freeClaimsRouter = createContractTRPCRouter<
     .input(adminFreeClaimsContract.updateFreeClaim.input)
     .output(adminFreeClaimsContract.updateFreeClaim.output)
     .mutation(async ({ input }) => {
-      const { id, ...updateData } = input;
+      // allowPremium / maxPrice are guard-policy fields stored in metadata, not
+      // table columns — pull them out of the column updates and merge separately.
+      const { id, allowPremium, maxPrice, ...updateData } = input;
+      const hasPolicyUpdate =
+        allowPremium !== undefined || maxPrice !== undefined;
 
       try {
         const updatedClaim = await db.transaction(async (tx) => {
@@ -212,11 +225,20 @@ export const freeClaimsRouter = createContractTRPCRouter<
             });
           }
 
+          const mergedMetadata = hasPolicyUpdate
+            ? {
+                ...(claim.metadata ?? {}),
+                ...(allowPremium !== undefined ? { allowPremium } : {}),
+                ...(maxPrice !== undefined ? { maxPrice } : {}),
+              }
+            : undefined;
+
           // Perform the update
           const updated = await tx
             .update(freeClaimsTable)
             .set({
               ...updateData,
+              ...(mergedMetadata ? { metadata: mergedMetadata } : {}),
               updatedAt: new Date(),
             })
             .where(eq(freeClaimsTable.id, id))

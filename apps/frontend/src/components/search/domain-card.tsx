@@ -612,6 +612,15 @@ export const DomainCard: FC<{
                   </p>
                 </div>
               )}
+              {availabilityInfo?.isPremium && (
+                <Badge
+                  variant="secondary"
+                  className="shrink-0 text-[10px] sm:text-xs"
+                  data-testid="search.card.premium"
+                >
+                  {t('card.premium')}
+                </Badge>
+              )}
             </div>
             {isOnNamefi && ownerWallet && ownerGalleryHref && (
               <Link

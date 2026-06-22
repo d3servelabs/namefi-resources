@@ -74,6 +74,7 @@ const generateUnavailableDomainInfo = (
   },
   importable: false,
   supported: supported,
+  isPremium: false,
 });
 
 /**
@@ -550,6 +551,7 @@ const _getEppDomainListInfo = async (
         max: durationConstraints.maxYears,
       },
       supported: response.supported,
+      isPremium: response.isPremium,
     };
   });
 };
@@ -648,6 +650,7 @@ const _getSubdomainListInfo = async (
     },
     registrarKey: 'namefi',
     supported: true,
+    isPremium: false,
   } satisfies DomainAvailabilityInfo;
 };
 
