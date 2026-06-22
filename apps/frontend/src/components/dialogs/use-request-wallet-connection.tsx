@@ -3,7 +3,8 @@
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
-import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
+import { useConnectWallet } from '@privy-io/react-auth';
+import { useSetActiveWallet } from '@privy-io/wagmi';
 import {
   type PromiseCallbackError,
   usePromiseCallback,
@@ -139,7 +140,8 @@ export function useRequestWalletConnection(
   const { address: activeAddress } = useAccount();
   const activeChainId = useChainId();
   const { connectedEthereumWallets } = useConnectedWallets();
-  const walletRuntime = useWalletConnectionRuntime();
+  const { connectWallet } = useConnectWallet();
+  const { setActiveWallet } = useSetActiveWallet();
   const { switchChainAsync } = useSwitchChain();
 
   const [open, setOpen] = useState(false);
@@ -252,9 +254,7 @@ export function useRequestWalletConnection(
     if (!required) return;
     setPhase('connecting-wallet');
     try {
-      await walletRuntime.connectWallet({
-        suggestedAddress: required.walletAddress,
-      });
+      await connectWallet({ suggestedAddress: required.walletAddress });
     } catch (error) {
       toast('Failed to connect wallet', {
         description: error instanceof Error ? error.message : 'Unknown error',
@@ -262,13 +262,22 @@ export function useRequestWalletConnection(
     } finally {
       setPhase('idle');
     }
-  }, [required, walletRuntime]);
+  }, [required, connectWallet]);
 
   const onSetActiveWallet = useCallback(async () => {
     if (!required) return;
+    const target = connectedEthereumWallets.find(
+      (w) => w.address.toLowerCase() === required.walletAddress.toLowerCase(),
+    );
+    if (!target) {
+      toast('Wallet not connected', {
+        description: 'The requested wallet is not in your connected wallets.',
+      });
+      return;
+    }
     setPhase('setting-active');
     try {
-      await walletRuntime.setActiveWalletByAddress(required.walletAddress);
+      await setActiveWallet(target);
     } catch (error) {
       toast('Failed to switch wallet', {
         description: error instanceof Error ? error.message : 'Unknown error',
@@ -276,7 +285,7 @@ export function useRequestWalletConnection(
     } finally {
       setPhase('idle');
     }
-  }, [required, walletRuntime]);
+  }, [required, connectedEthereumWallets, setActiveWallet]);
 
   const onSwitchChain = useCallback(async () => {
     if (!required) return;

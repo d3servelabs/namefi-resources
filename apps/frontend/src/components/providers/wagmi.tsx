@@ -1,19 +1,24 @@
 'use client';
 
+import { WagmiProvider as PrivyWagmiProvider } from '@privy-io/wagmi';
 import { createContext, useContext, type PropsWithChildren } from 'react';
-import { RainbowKitWalletStack } from './rainbowkit-wallet-stack';
+import { getWagmiConfig } from '@/lib/wagmi-config';
+import { SessionsProvider } from './privy';
 
+let config: ReturnType<typeof getWagmiConfig> | null = null;
 const WagmiRuntimeContext = createContext(false);
+
+function getConfig() {
+  config ??= getWagmiConfig();
+  return config;
+}
 
 /**
  * Public wallet-runtime boundary. Wrap components that call wagmi hooks when
  * their route or parent component does not already provide a wagmi runtime.
  *
- * The provider is idempotent: nested callers render through the existing runtime
- * instead of creating a second wagmi provider. It mounts the RainbowKit-owned
- * wallet stack — plain `wagmi` + RainbowKit own the connectors and the wallet
- * deep-link (universal/app links, fixing mobile MetaMask connect), while Privy
- * stays for identity. See namefi-astra#4753.
+ * The provider is idempotent: nested callers render through the existing
+ * runtime instead of creating a second wagmi provider.
  */
 export function WagmiProvider({ children }: PropsWithChildren) {
   const hasWagmiRuntime = useContext(WagmiRuntimeContext);
@@ -23,9 +28,13 @@ export function WagmiProvider({ children }: PropsWithChildren) {
   }
 
   return (
-    <WagmiRuntimeContext.Provider value={true}>
-      <RainbowKitWalletStack>{children}</RainbowKitWalletStack>
-    </WagmiRuntimeContext.Provider>
+    <SessionsProvider>
+      <PrivyWagmiProvider config={getConfig()}>
+        <WagmiRuntimeContext.Provider value={true}>
+          {children}
+        </WagmiRuntimeContext.Provider>
+      </PrivyWagmiProvider>
+    </SessionsProvider>
   );
 }
 

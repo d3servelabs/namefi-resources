@@ -1,3 +1,4 @@
+import { createConfig } from '@privy-io/wagmi';
 import { fallback } from 'viem';
 import { http } from 'wagmi';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -30,13 +31,7 @@ const PUBLIC_RPC_FALLBACKS: Record<number, string> = {
   [CHAINS.baseSepolia.id]: 'https://base-sepolia-rpc.publicnode.com',
 };
 
-/**
- * Build the per-chain HTTP transports map for the wagmi config. The RainbowKit
- * config builder (`getDefaultConfig`) lives in
- * `components/providers/rainbowkit-wallet-stack` and consumes this; keeping the
- * transports here (without importing RainbowKit) keeps this module light.
- */
-export const getSupportedChainTransports = () => {
+export const getWagmiConfig = () => {
   const generateAlchemyRpcUrlForChain =
     clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY
       ? getAlchemyHttpRpcUrl(clientSideEnv.NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY)
@@ -51,12 +46,16 @@ export const getSupportedChainTransports = () => {
     const publicUrl = PUBLIC_RPC_FALLBACKS[chainId];
     return publicUrl ? fallback([http(publicUrl), http()]) : http();
   };
-
-  return {
-    [CHAINS.mainnet.id]: getHttpTransport(CHAINS.mainnet.id),
-    [CHAINS.sepolia.id]: getHttpTransport(CHAINS.sepolia.id),
-    [CHAINS.base.id]: getHttpTransport(CHAINS.base.id),
-    [CHAINS.baseSepolia.id]: getHttpTransport(CHAINS.baseSepolia.id),
-    [CHAINS.robinhoodTestnet.id]: getHttpTransport(CHAINS.robinhoodTestnet.id),
-  };
+  return createConfig({
+    chains: supportedChains,
+    transports: {
+      [CHAINS.mainnet.id]: getHttpTransport(CHAINS.mainnet.id),
+      [CHAINS.sepolia.id]: getHttpTransport(CHAINS.sepolia.id),
+      [CHAINS.base.id]: getHttpTransport(CHAINS.base.id),
+      [CHAINS.baseSepolia.id]: getHttpTransport(CHAINS.baseSepolia.id),
+      [CHAINS.robinhoodTestnet.id]: getHttpTransport(
+        CHAINS.robinhoodTestnet.id,
+      ),
+    },
+  });
 };

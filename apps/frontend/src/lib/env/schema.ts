@@ -63,20 +63,6 @@ export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
   /**
-   * WalletConnect Cloud (Reown) project id. This is a **public** client id — it
-   * is safe to ship to the browser and only scopes WalletConnect relay traffic
-   * to our project. It powers the RainbowKit-owned `walletConnect` connector
-   * (see `components/providers/rainbowkit-wallet-stack`), which is the wallet
-   * stack for every user.
-   *
-   * Defaults to the id already configured in the Privy dashboard and observed in
-   * prod WalletConnect traffic, so it works on merge without any new env
-   * wiring; override per-environment via `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`.
-   */
-  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z
-    .string()
-    .default('34357d3c125c2bcf2ce2bc3309d98715'),
-  /**
    * Optional OpenSea API key. The OpenSea adapter primarily uses a per-user
    * "instant" key it auto-requests + caches in the browser; this env key is a
    * FALLBACK used only when that issuance fails (the instant-key endpoint caps

@@ -46,7 +46,7 @@ import {
 import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
+import { useConnectWallet } from '@privy-io/react-auth';
 import dynamic from 'next/dynamic';
 import {
   getSwapButtonState,
@@ -134,7 +134,7 @@ function NFSCSwapDialogInner(props: Props) {
 
   const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
-  const walletRuntime = useWalletConnectionRuntime();
+  const { connectWallet } = useConnectWallet();
 
   const { nfscBalance, nativeBalance, isLoading } =
     useNfscBalance(checksummedAddress);
@@ -259,7 +259,7 @@ function NFSCSwapDialogInner(props: Props) {
       // Suggest the charging wallet shown in the dialog so the user connects the
       // wallet they intend to top up. `buyWithEthers` credits the connected
       // signer, so connecting a different wallet would fund the wrong account.
-      await walletRuntime.connectWallet(
+      await connectWallet(
         checksummedAddress
           ? { suggestedAddress: checksummedAddress }
           : undefined,
@@ -276,7 +276,7 @@ function NFSCSwapDialogInner(props: Props) {
     } finally {
       setIsConnectingWallet(false);
     }
-  }, [walletRuntime, checksummedAddress]);
+  }, [connectWallet, checksummedAddress]);
 
   const handleOnExchange = async () => {
     setErrorMessage('');
