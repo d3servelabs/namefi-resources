@@ -14,9 +14,9 @@ ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
 ---
 
-"Domain hijacking" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A registrar account taken over by a phishing email is a hijack. A nameserver record quietly swapped at a DNS provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.
+"Domain hijacking" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A [registrar](/en/glossary/registrar/) account taken over by a phishing email is a hijack. A nameserver record quietly swapped at a [DNS](/en/glossary/dns/) provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.
 
-In every case, the result is the same: someone else is now telling the world where your name points. Email, payments, login flows, and SaaS integrations all start sending traffic to the attacker. Recovery often takes days, sometimes weeks. If the domain was transferred to another registrar, ICANN's [Transfer Dispute Resolution Policy (TDRP)](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.) may be relevant; other cases often require registrar escalation, registry escalation, platform recovery, or a court order. The fastest fix is to never get into that position in the first place.
+In every case, the result is the same: someone else is now telling the world where your name points. Email, payments, login flows, and SaaS integrations all start sending traffic to the attacker. Recovery often takes days, sometimes weeks. If the domain was transferred to another registrar, [ICANN](/en/glossary/icann/)'s [Transfer Dispute Resolution Policy (TDRP)](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.) may be relevant; other cases often require registrar escalation, registry escalation, platform recovery, or a court order. The fastest fix is to never get into that position in the first place.
 
 This post walks through the five attack paths we see most often, what each one looks like from the defender's side, and the specific controls that actually stop it.
 
@@ -24,7 +24,7 @@ This post walks through the five attack paths we see most often, what each one l
 
 The most common high-profile hijacks of the last decade did not involve any technical exploit. They involved a phone call.
 
-The pattern: an attacker collects enough information about a target—WHOIS history, LinkedIn, leaked password dumps, social media—and then calls or emails the registrar's support team impersonating the owner. They ask for a password reset, an email change, or a transfer auth code. If the support agent runs a checklist that the attacker has prepared for, the account changes hands.
+The pattern: an attacker collects enough information about a target—[WHOIS](/en/glossary/whois/) history, LinkedIn, leaked password dumps, social media—and then calls or emails the registrar's support team impersonating the owner. They ask for a password reset, an email change, or a transfer [auth code](/en/glossary/auth-code/). If the support agent runs a checklist that the attacker has prepared for, the account changes hands.
 
 This was the mechanism behind several of the most damaging hijacks involving cryptocurrency exchanges, ad platforms, and infrastructure brands. It does not require any vulnerability in the registrar's code; it exploits the human in the loop.
 
@@ -53,7 +53,7 @@ This is often the easier path for attackers, because brands invest in registrar 
 **What stops it:**
 
 - **The same 2FA rigor on the DNS provider account as on the registrar.** Treat it as equally sensitive. It is.
-- **DNSSEC**, signed at the zone level. DNSSEC does not prevent a DNS provider account compromise: if an attacker can publish records through the provider and the provider signs them with the zone's active keys, validating resolvers will treat those answers as authentic. What DNSSEC does block is in-path tampering, cache poisoning, and forged answers that are unsigned or wrongly signed, assuming the parent publishes the correct DS records. See [RFC 4033-4035](https://datatracker.ietf.org/doc/html/rfc4033) for the protocol details.
+- **[DNSSEC](/en/glossary/dnssec/)**, signed at the zone level. DNSSEC does not prevent a DNS provider account compromise: if an attacker can publish records through the provider and the provider signs them with the zone's active keys, validating resolvers will treat those answers as authentic. What DNSSEC does block is in-path tampering, cache poisoning, and forged answers that are unsigned or wrongly signed, assuming the parent publishes the correct DS records. See [RFC 4033-4035](https://datatracker.ietf.org/doc/html/rfc4033) for the protocol details.
 - **Multi-provider DNS** with separate accounts and credentials, using [multi-signer DNSSEC](https://www.rfc-editor.org/rfc/rfc8901#:~:text=The%20central%20requirement%20for%20both%20of%20the%20multiple%2Dsigner%20models%20is%20to%20ensure%20that%20the%20ZSKs%20from%20all%20providers%20are%20present%20in%20each%20provider's%20apex%20DNSKEY%20RRset.). This helps with availability and provider isolation, but it only works if every provider serves the intended zone data and the DNSKEY/DS sets are coordinated correctly. It is not a magic override where resolvers automatically prefer the uncompromised provider.
 
 ## 4. Nameserver hijacks via stale delegations and dangling records
@@ -77,7 +77,7 @@ These are catalogued under the umbrella term **dangling DNS**, and they are the 
 
 The simplest and least sympathetic attack: the registrant forgot to renew. The grace period passes. The domain drops back into the pool. Someone else registers it.
 
-This sounds like an operational failure, not a security incident, but the impact is identical—someone else now controls the name, and all of the trust signals that were built up over years (SPF, DKIM, OAuth callbacks, password reset emails, payment integrations) start flowing to a stranger. Several public incidents involved attackers buying expired domains specifically because the previous owner had registered them as the `iss` claim in OAuth tokens or as the sender for transactional email.
+This sounds like an operational failure, not a security incident, but the impact is identical—someone else now controls the name, and all of the trust signals that were built up over years (SPF, DKIM, OAuth callbacks, password reset emails, payment integrations) start flowing to a stranger. Several public incidents involved attackers buying [expired domains](/en/blog/expired-domains-and-the-drop-cycle/) specifically because the previous owner had registered them as the `iss` claim in OAuth tokens or as the sender for transactional email.
 
 **What stops it:**
 
@@ -103,7 +103,7 @@ If you are responsible for a domain and you cannot tick every row, the attacker'
 
 ## How Namefi changes the picture
 
-Most of the controls above exist as features at one registrar, one DNS provider, or one workflow tool, and the security depends on whichever account is weakest. Namefi tokenizes the registrant relationship on-chain, which means the authoritative record of *who owns this name* lives outside any single registrar's customer database. A support agent at any one provider cannot quietly change ownership without a signed transaction the rightful owner has to approve. The registrar still operates the technical delegation, but the *control* layer is moved into a place where social engineering does not work.
+Most of the controls above exist as features at one registrar, one DNS provider, or one workflow tool, and the security depends on whichever account is weakest. Namefi tokenizes the registrant relationship [on-chain](/en/glossary/on-chain/), which means the authoritative record of *who owns this name* lives outside any single registrar's customer database. A support agent at any one provider cannot quietly change ownership without a signed transaction the rightful owner has to approve. The registrar still operates the technical delegation, but the *control* layer is moved into a place where social engineering does not work.
 
 That is not a complete substitute for the controls in the table above—you still need DNSSEC, you still need 2FA on the DNS provider, you still need to renew. But it removes the single most common high-impact hijack vector (path 1) from the threat model entirely.
 
