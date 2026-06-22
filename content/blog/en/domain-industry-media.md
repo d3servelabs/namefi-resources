@@ -14,7 +14,7 @@ ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['domain industry news', 'domain name media', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']
 ---
 
-If [individual domainer blogs](/blog/famous-domainer-blogs-and-newsletters) are personal voices, *domain industry media* are the outlets that operate more like newsrooms — sometimes one-person newsrooms, but with the editorial posture of journalism rather than a trader's diary. They cover deals, policy, registry/registrar moves, ICANN, and the occasional drama, and they are the sources other people quote.
+If [individual domainer blogs](/blog/famous-domainer-blogs-and-newsletters) are personal voices, *domain industry media* are the outlets that operate more like newsrooms — sometimes one-person newsrooms, but with the editorial posture of journalism rather than a trader's diary. They cover deals, policy, registry/[registrar](/en/glossary/registrar/) moves, [ICANN](/en/glossary/icann/), and the occasional drama, and they are the sources other people quote.
 
 This is the short list of media properties worth knowing in 2026.
 
@@ -26,7 +26,7 @@ Founded by Andrew Allemann in 2005. The closest thing the domain industry has to
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-Long-running blog originally founded by Mike Berkens (one of the largest domain portfolio holders in the industry) and now edited primarily by Raymond Hackney. Mix of news, analysis, and opinion. Strong on policy stories — UDRP cases, registry contract changes, ICANN moves.
+Long-running blog originally founded by Mike Berkens (one of the largest domain portfolio holders in the industry) and now edited primarily by Raymond Hackney. Mix of news, analysis, and opinion. Strong on policy stories — [UDRP](/en/glossary/udrp/) cases, registry contract changes, ICANN moves.
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -38,7 +38,7 @@ Both [OnlineDomain](https://onlinedomain.com/) and [DomainInvesting](https://dom
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-Not strictly a domain investor publication — CircleID covers the broader DNS, ICANN, internet-governance, and infrastructure beat. But if you care about the *policy* layer (registry contracts, new gTLD rounds, WHOIS regulation, DNSSEC), CircleID is where the substantive writing happens, and the bylines include many of the same names that show up at ICANN meetings.
+Not strictly a domain investor publication — CircleID covers the broader [DNS](/en/glossary/dns/), ICANN, internet-governance, and infrastructure beat. But if you care about the *policy* layer (registry contracts, new gTLD rounds, [WHOIS](/en/glossary/whois/) regulation, [DNSSEC](/en/glossary/dnssec/)), CircleID is where the substantive writing happens, and the bylines include many of the same names that show up at ICANN meetings.
 
 ## Sales data and reference sites
 
