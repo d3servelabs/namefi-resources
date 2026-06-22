@@ -490,7 +490,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                 id="maxPrice"
                 type="number"
                 min="1"
-                step="1"
+                step="0.01"
                 inputMode="decimal"
                 value={form.maxPrice}
                 onChange={(e) => updateForm({ maxPrice: e.target.value })}
