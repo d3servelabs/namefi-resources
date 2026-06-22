@@ -207,9 +207,10 @@ function distinctivePhrases(p: Page): Phrase[] {
     out.push({ text: t, confidence, kind });
   };
   if (p.collection === 'glossary' && p.title) {
-    const head = p.title.split('(')[0].trim().replace(/[?.!,;:]+$/, '');
+    // Handle ASCII (Escrow) and full-width CJK （非同质化代币） parentheses.
+    const head = p.title.split(/[(（]/)[0].trim().replace(/[?.!,;:，。！？；：]+$/, '');
     add(head, head.length <= 3 ? 'medium' : 'high', 'term');
-    const paren = p.title.match(/\(([^)]+)\)/);
+    const paren = p.title.match(/[(（]([^)）]+)[)）]/);
     if (paren) add(paren[1], 'high', 'term');
   }
   if (p.collection === 'tld') add(`.${p.slug}`, 'high', 'term');
@@ -223,8 +224,8 @@ function distinctivePhrases(p: Page): Phrase[] {
 }
 
 // --- global outbound index: phrase -> single canonical target --------------
-type Resolved = { target: Page; confidence: Confidence; kind: Phrase['kind'] };
-const outboundIndex = new Map<string, Resolved>(); // `${locale}::${lowerphrase}` -> resolved
+type Resolved = { target: Page; confidence: Confidence; kind: Phrase['kind']; phrase: string };
+const outboundIndex = new Map<string, Resolved>(); // `${locale}::${lowerphrase}` -> resolved (phrase keeps original case)
 function betterThan(a: Resolved, b: Resolved): boolean {
   if (a.kind !== b.kind) return a.kind === 'term';
   if (CONFIDENCE_RANK[a.confidence] !== CONFIDENCE_RANK[b.confidence]) return CONFIDENCE_RANK[a.confidence] > CONFIDENCE_RANK[b.confidence];
@@ -233,7 +234,7 @@ function betterThan(a: Resolved, b: Resolved): boolean {
 for (const p of corpus)
   for (const ph of distinctivePhrases(p)) {
     const key = `${p.locale}::${ph.text.toLowerCase()}`;
-    const cand: Resolved = { target: p, confidence: ph.confidence, kind: ph.kind };
+    const cand: Resolved = { target: p, confidence: ph.confidence, kind: ph.kind, phrase: ph.text };
     const cur = outboundIndex.get(key);
     if (!cur || betterThan(cand, cur)) outboundIndex.set(key, cand);
   }
@@ -287,7 +288,10 @@ type Report = { target: string; outbound: OutboundCand[]; inbound: InboundCand[]
 
 function analyze(target: Page): Report {
   // OUTBOUND — scan target prose against the global phrase index for its locale.
-  const localePhrases = [...outboundIndex.keys()].filter((k) => k.startsWith(`${target.locale}::`)).map((k) => k.slice(target.locale.length + 2));
+  // Build the scanner from ORIGINAL-case phrases (not the lowercased keys) so
+  // mixed-script phrases like "ccTLD 市场份额" — routed to the case-sensitive
+  // non-Latin regex — still match the original casing in prose.
+  const localePhrases = [...outboundIndex.entries()].filter(([k]) => k.startsWith(`${target.locale}::`)).map(([, v]) => v.phrase);
   const scanner = buildScanner(localePhrases);
   const matched = scanFirst(target.prose, scanner);
   const outByTarget = new Map<string, OutboundCand>();
