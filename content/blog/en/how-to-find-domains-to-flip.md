@@ -66,7 +66,7 @@ One more boundary sits above all the filters: the legal line. Hand-registering o
 
 ## The Namefi angle
 
-Sourcing decides *what* you buy. The other half of every flip is moving the name cleanly when it sells — proving you hold it, handing it over without the site going dark, and trusting that the money and the asset change hands together. That settlement friction is sharpest on exactly the high-value names good sourcing produces. It's the gap [Namefi](https://namefi.io) is built to narrow: tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover. Source well, then trade on names whose ownership is auditable rather than taken on trust.
+Sourcing decides *what* you buy. The other half of every flip is moving the name cleanly when it sells — proving you hold it, handing it over without the site going dark, and trusting that the money and the asset change hands together. That settlement friction is sharpest on exactly the high-value names good sourcing produces. It's the gap [Namefi](https://namefi.io) is built to narrow: tokenized ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with [DNS](/en/glossary/dns/) continuity so the name keeps resolving through the handover. Source well, then trade on names whose ownership is auditable rather than taken on trust.
 
 ## Friendly Disclaimer (Read Me!)
 

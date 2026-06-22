@@ -76,9 +76,9 @@ One verified anchor keeps the premium concrete. The highest publicly disclosed d
 
 ## The Namefi angle
 
-Once you've decided which extension a name should live on, the other half of the trade is moving it cleanly, and that's where the extension matters again in a practical way. Transferring a high-value name means proving who controls it and handing it over without the site going dark, and the mechanics differ across registries and country codes. That friction is the same one behind any high-value [domain trade](/en/glossary/domain-trading/), and it's sharper across registrar and ccTLD boundaries.
+Once you've decided which extension a name should live on, the other half of the trade is moving it cleanly, and that's where the extension matters again in a practical way. Transferring a high-value name means proving who controls it and handing it over without the site going dark, and the mechanics differ across registries and country codes. That friction is the same one behind any high-value [domain trade](/en/glossary/domain-trading/), and it's sharper across [registrar](/en/glossary/registrar/) and ccTLD boundaries.
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving through the handover. Choosing the right extension is the appraisal call; making the transfer of that name auditable is what lets you actually trade on the call.
+This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenized ownership makes control of a real [ICANN](/en/glossary/icann/) domain easier to verify and transfer, with [DNS](/en/glossary/dns/) continuity so the name keeps resolving through the handover. Choosing the right extension is the appraisal call; making the transfer of that name auditable is what lets you actually trade on the call.
 
 ## Friendly Disclaimer (Read Me!)
 

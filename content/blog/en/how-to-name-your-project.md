@@ -43,7 +43,7 @@ Before you fall in love, spend twenty minutes here:
 
 - **Plain web search.** If page one is already crowded with a company doing something adjacent, stop. You will fight them for attention forever.
 - **Trademark databases.** Search the [USPTO trademark search system](https://www.uspto.gov/trademarks/search) for the U.S., the [EUIPO database](https://www.euipo.europa.eu/en/trade-marks/before-applying) for the EU, and [WIPO's Global Brand Database](https://branddb.wipo.int/) for an international sweep. You are not doing a lawyer's clearance — you are catching the obvious collisions for free.
-- **Domains.** The `.com` still anchors credibility for most ventures. On [Namefi](https://namefi.io) you can check availability, see **how long a `.com` has been registered** (a name held continuously since 2009 is a very different signal than one registered last month), and see **how many TLDs the name is already registered across**. A name taken on 30 extensions is contested territory; a name free almost everywhere is open road. Treat that spread as a quick "how crowded is this word" gauge.
+- **Domains.** The `.com` still anchors credibility for most ventures. On [Namefi](https://namefi.io) you can check availability, see **how long a `.com` has been registered** (a name held continuously since 2009 is a very different signal than one registered last month), and see **how many [TLDs](/en/glossary/tld/) the name is already registered across**. A name taken on 30 extensions is contested territory; a name free almost everywhere is open road. Treat that spread as a quick "how crowded is this word" gauge.
 - **Handles.** Check the [GitHub](https://github.com) org, plus X, Reddit, LinkedIn, and whichever platform your users actually live on. Consistent handles across the web ("handle uniformity") are worth a surprising amount for an early project — and they are first-come, first-served.
 
 If a candidate clears the category, the trademark sweep, a usable domain, and the handles, it has earned the right to be judged on craft.
@@ -138,7 +138,7 @@ Run the checks. Then trust the one you can't stop saying.
 
 ## How Namefi Helps
 
-Naming and owning are two halves of the same decision. [Namefi](https://namefi.io) is built for the "can I actually own this?" half: check `.com` and alternative-TLD availability, see **how long a name has been registered** and **how many extensions it spans** (your contested-vs-open signal), explore brandable names, and — when you find the one — secure and even tokenize ownership so the asset behind your brand is verifiably yours. Pick a name you love; make sure it's a name you can hold.
+Naming and owning are two halves of the same decision. [Namefi](https://namefi.io) is built for the "can I actually own this?" half: check `.com` and alternative-TLD availability, see **how long a name has been registered** and **how many extensions it spans** (your contested-vs-open signal), explore brandable names, and — when you find the one — secure and even [tokenize](/en/glossary/tokenize/) ownership so the asset behind your brand is verifiably yours. Pick a name you love; make sure it's a name you can hold.
 
 ## Sources and further reading
 

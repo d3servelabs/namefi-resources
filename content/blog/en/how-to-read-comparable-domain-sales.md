@@ -82,7 +82,7 @@ What you end up with is a *range* anchored to a cluster of genuinely similar sal
 
 Reading comps tells you what a name is worth. The other half of the trade is proving the name actually changed hands cleanly once you've agreed on the number. High-value [domain trades](/en/glossary/domain-trading/) stall on the same trust gap every time: the buyer doesn't want to pay before they control the asset, and the seller doesn't want to release it before the money clears.
 
-This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real ICANN domain makes ownership auditable and transferable, with DNS continuity so the name keeps resolving through the handover. Comps give you a number you can defend; a clean, verifiable transfer is what turns that number into a closed deal without either side moving first on faith.
+This is the gap [Namefi](https://namefi.io) is built to narrow. Tokenizing a real [ICANN](/en/glossary/icann/) domain makes ownership auditable and transferable, with [DNS](/en/glossary/dns/) continuity so the name keeps resolving through the handover. Comps give you a number you can defend; a clean, verifiable transfer is what turns that number into a closed deal without either side moving first on faith.
 
 ## Friendly Disclaimer (Read Me!)
 
