@@ -225,20 +225,26 @@ export const freeClaimsRouter = createContractTRPCRouter<
             });
           }
 
-          const mergedMetadata = hasPolicyUpdate
-            ? {
-                ...(claim.metadata ?? {}),
-                ...(allowPremium !== undefined ? { allowPremium } : {}),
-                ...(maxPrice !== undefined ? { maxPrice } : {}),
-              }
-            : undefined;
+          const mergedMetadata: Record<string, unknown> = {
+            ...(claim.metadata ?? {}),
+          };
+          if (allowPremium !== undefined) {
+            mergedMetadata.allowPremium = allowPremium;
+          }
+          // `null` clears the cap (remove the key); a number sets it; omitting
+          // it (undefined) leaves any existing cap untouched.
+          if (maxPrice === null) {
+            delete mergedMetadata.maxPrice;
+          } else if (maxPrice !== undefined) {
+            mergedMetadata.maxPrice = maxPrice;
+          }
 
           // Perform the update
           const updated = await tx
             .update(freeClaimsTable)
             .set({
               ...updateData,
-              ...(mergedMetadata ? { metadata: mergedMetadata } : {}),
+              ...(hasPolicyUpdate ? { metadata: mergedMetadata } : {}),
               updatedAt: new Date(),
             })
             .where(eq(freeClaimsTable.id, id))

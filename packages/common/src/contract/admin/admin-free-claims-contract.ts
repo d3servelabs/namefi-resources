@@ -69,8 +69,12 @@ const updateFreeClaimInputSchema = z
     expirationDate: z.date().optional(),
     /** Allow claiming premium domains with this claim (default: blocked). */
     allowPremium: z.boolean().optional(),
-    /** Max 1-year registration price (USD) claimable for free (no cap if unset). */
-    maxPrice: z.number().positive().optional(),
+    /**
+     * Max 1-year registration price (USD) claimable for free. Pass a positive
+     * number to set the cap, `null` to clear an existing cap (no cap), or omit
+     * to leave it unchanged.
+     */
+    maxPrice: z.number().positive().nullable().optional(),
   })
   .refine((data) => !(data.exactDomainName && data.parentDomain), {
     message: 'Cannot specify both exactDomainName and parentDomain',

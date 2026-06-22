@@ -229,7 +229,8 @@ export const freeClaimsRouter = createContractTRPCRouter<
             if (actualError.includes('MAX_PRICE_EXCEEDED')) {
               throw new TRPCError({
                 code: 'BAD_REQUEST',
-                message: 'This domain exceeds the price limit for a free claim',
+                message:
+                  'This domain exceeds the 1-year registration price limit (USD) for a free claim',
               });
             }
             if (actualError.includes('Claim validation failed')) {
@@ -552,7 +553,8 @@ export const freeClaimsRouter = createContractTRPCRouter<
           if (error.message.includes('MAX_PRICE_EXCEEDED')) {
             throw new TRPCError({
               code: 'BAD_REQUEST',
-              message: 'This domain exceeds the price limit for a free claim',
+              message:
+                'This domain exceeds the 1-year registration price limit (USD) for a free claim',
             });
           }
         }

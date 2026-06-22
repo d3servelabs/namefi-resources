@@ -73,7 +73,7 @@ export function evaluateClaimGuard(
     ) {
       return {
         ok: false,
-        reason: `${CLAIM_GUARD_REASONS.MAX_PRICE_EXCEEDED}: Domain price exceeds the free-claim limit of $${policy.maxPrice}`,
+        reason: `${CLAIM_GUARD_REASONS.MAX_PRICE_EXCEEDED}: 1-year registration price exceeds the free-claim limit of ${policy.maxPrice} USD`,
       };
     }
   }
