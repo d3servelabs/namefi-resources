@@ -280,7 +280,10 @@ export function EmailTemplateManager() {
   return (
     <div className="space-y-6">
       {message && (
-        <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
+        <Alert
+          variant={message.type === 'error' ? 'destructive' : 'default'}
+          data-testid="admin.email-template.message"
+        >
           <AlertDescription>{message.text}</AlertDescription>
         </Alert>
       )}
@@ -306,6 +309,7 @@ export function EmailTemplateManager() {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           handleInputChange('name', e.target.value)
                         }
+                        data-testid="admin.email-template.editor.name-input"
                       />
                     </div>
 
@@ -318,6 +322,7 @@ export function EmailTemplateManager() {
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           handleInputChange('title', e.target.value)
                         }
+                        data-testid="admin.email-template.editor.title-input"
                       />
                     </div>
                   </div>
@@ -347,6 +352,7 @@ export function EmailTemplateManager() {
                         onCheckedChange={(checked: boolean) =>
                           handleInputChange('useContainer', checked)
                         }
+                        data-testid="admin.email-template.editor.use-container-checkbox"
                       />
                       <Label htmlFor="use-container">
                         Use email container layout
@@ -362,6 +368,7 @@ export function EmailTemplateManager() {
                             onCheckedChange={(checked: boolean) =>
                               handleInputChange('useHeader', checked)
                             }
+                            data-testid="admin.email-template.editor.use-header-checkbox"
                           />
                           <Label htmlFor="use-header">Show header</Label>
                         </div>
@@ -373,6 +380,7 @@ export function EmailTemplateManager() {
                             onCheckedChange={(checked: boolean) =>
                               handleInputChange('useFooter', checked)
                             }
+                            data-testid="admin.email-template.editor.use-footer-checkbox"
                           />
                           <Label htmlFor="use-footer">Show footer</Label>
                         </div>
@@ -384,6 +392,7 @@ export function EmailTemplateManager() {
                             onCheckedChange={(checked: boolean) =>
                               handleInputChange('showGoToDashboard', checked)
                             }
+                            data-testid="admin.email-template.editor.show-dashboard-checkbox"
                           />
                           <Label htmlFor="show-dashboard">
                             Show "Go to Dashboard" button
@@ -410,6 +419,7 @@ export function EmailTemplateManager() {
                         }
                         size="lg"
                         className="w-full"
+                        data-testid="admin.email-template.editor.create-button"
                       >
                         {createTemplate.isPending ? (
                           <>
@@ -447,6 +457,7 @@ export function EmailTemplateManager() {
                           variant={autoRefresh ? 'default' : 'ghost'}
                           className="h-8 px-2"
                           title="Auto refresh"
+                          data-testid="admin.email-template.preview.auto-refresh-button"
                         >
                           <Play className="h-3 w-3 me-1" />
                           Auto
@@ -457,6 +468,7 @@ export function EmailTemplateManager() {
                           variant={!autoRefresh ? 'default' : 'ghost'}
                           className="h-8 px-2"
                           title="Manual refresh"
+                          data-testid="admin.email-template.preview.manual-refresh-button"
                         >
                           <RotateCcw className="h-3 w-3 me-1" />
                           Manual
@@ -473,6 +485,7 @@ export function EmailTemplateManager() {
                           }
                           className="h-8 px-2"
                           title="Desktop view"
+                          data-testid="admin.email-template.preview.size-desktop-button"
                         >
                           <Monitor className="h-4 w-4" />
                         </Button>
@@ -484,6 +497,7 @@ export function EmailTemplateManager() {
                           }
                           className="h-8 px-2"
                           title="Tablet view"
+                          data-testid="admin.email-template.preview.size-tablet-button"
                         >
                           <Tablet className="h-4 w-4" />
                         </Button>
@@ -495,6 +509,7 @@ export function EmailTemplateManager() {
                           }
                           className="h-8 px-2"
                           title="Mobile view"
+                          data-testid="admin.email-template.preview.size-mobile-button"
                         >
                           <Smartphone className="h-4 w-4" />
                         </Button>
@@ -509,6 +524,7 @@ export function EmailTemplateManager() {
                           !templateData.title ||
                           !templateData.content
                         }
+                        data-testid="admin.email-template.preview.refresh-button"
                       >
                         <RefreshCw className="h-4 w-4 me-1" />
                         Refresh Now
@@ -592,6 +608,7 @@ export function EmailTemplateManager() {
                           !templateData.title ||
                           !templateData.content
                         }
+                        data-testid="admin.email-template.html-source.refresh-button"
                       >
                         <RefreshCw className="h-4 w-4 me-1" />
                         Refresh Now
@@ -630,6 +647,7 @@ export function EmailTemplateManager() {
                         size="sm"
                         variant="secondary"
                         className="absolute top-2 right-2 opacity-70 hover:opacity-100"
+                        data-testid="admin.email-template.html-source.copy-button"
                       >
                         Copy
                       </Button>
@@ -676,6 +694,7 @@ export function EmailTemplateManager() {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange('name', e.target.value)
                     }
+                    data-testid="admin.email-template.editor-mobile.name-input"
                   />
                 </div>
 
@@ -688,6 +707,7 @@ export function EmailTemplateManager() {
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                       handleInputChange('title', e.target.value)
                     }
+                    data-testid="admin.email-template.editor-mobile.title-input"
                   />
                 </div>
               </div>
@@ -715,6 +735,7 @@ export function EmailTemplateManager() {
                     onCheckedChange={(checked: boolean) =>
                       handleInputChange('useContainer', checked)
                     }
+                    data-testid="admin.email-template.editor-mobile.use-container-checkbox"
                   />
                   <Label htmlFor="use-container-mobile">
                     Use email container layout
@@ -730,6 +751,7 @@ export function EmailTemplateManager() {
                         onCheckedChange={(checked: boolean) =>
                           handleInputChange('useHeader', checked)
                         }
+                        data-testid="admin.email-template.editor-mobile.use-header-checkbox"
                       />
                       <Label htmlFor="use-header-mobile">Show header</Label>
                     </div>
@@ -741,6 +763,7 @@ export function EmailTemplateManager() {
                         onCheckedChange={(checked: boolean) =>
                           handleInputChange('useFooter', checked)
                         }
+                        data-testid="admin.email-template.editor-mobile.use-footer-checkbox"
                       />
                       <Label htmlFor="use-footer-mobile">Show footer</Label>
                     </div>
@@ -752,6 +775,7 @@ export function EmailTemplateManager() {
                         onCheckedChange={(checked: boolean) =>
                           handleInputChange('showGoToDashboard', checked)
                         }
+                        data-testid="admin.email-template.editor-mobile.show-dashboard-checkbox"
                       />
                       <Label htmlFor="show-dashboard-mobile">
                         Show "Go to Dashboard" button
@@ -776,6 +800,7 @@ export function EmailTemplateManager() {
                     disabled={createTemplate.isPending || !templateData.name}
                     size="lg"
                     className="w-full"
+                    data-testid="admin.email-template.editor-mobile.create-button"
                   >
                     {createTemplate.isPending ? (
                       <>
@@ -797,8 +822,18 @@ export function EmailTemplateManager() {
       <div className="xl:hidden">
         <Tabs defaultValue="preview" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="preview">Preview</TabsTrigger>
-            <TabsTrigger value="html">HTML Source</TabsTrigger>
+            <TabsTrigger
+              value="preview"
+              data-testid="admin.email-template.tabs.preview-tab"
+            >
+              Preview
+            </TabsTrigger>
+            <TabsTrigger
+              value="html"
+              data-testid="admin.email-template.tabs.html-tab"
+            >
+              HTML Source
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="preview" className="space-y-4">
@@ -814,6 +849,7 @@ export function EmailTemplateManager() {
                       variant={previewSize === 'desktop' ? 'default' : 'ghost'}
                       className="h-8 px-2"
                       title="Desktop view"
+                      data-testid="admin.email-template.preview-tab.size-desktop-button"
                     >
                       <Monitor className="h-4 w-4" />
                     </Button>
@@ -823,6 +859,7 @@ export function EmailTemplateManager() {
                       variant={previewSize === 'tablet' ? 'default' : 'ghost'}
                       className="h-8 px-2"
                       title="Tablet view"
+                      data-testid="admin.email-template.preview-tab.size-tablet-button"
                     >
                       <Tablet className="h-4 w-4" />
                     </Button>
@@ -832,6 +869,7 @@ export function EmailTemplateManager() {
                       variant={previewSize === 'mobile' ? 'default' : 'ghost'}
                       className="h-8 px-2"
                       title="Mobile view"
+                      data-testid="admin.email-template.preview-tab.size-mobile-button"
                     >
                       <Smartphone className="h-4 w-4" />
                     </Button>
@@ -851,6 +889,7 @@ export function EmailTemplateManager() {
                       !templateData.title ||
                       !templateData.content
                     }
+                    data-testid="admin.email-template.preview-tab.refresh-button"
                   >
                     <RefreshCw className="h-4 w-4 me-1" />
                     Refresh Now
@@ -908,6 +947,7 @@ export function EmailTemplateManager() {
                       !templateData.title ||
                       !templateData.content
                     }
+                    data-testid="admin.email-template.html-tab.refresh-button"
                   >
                     <RefreshCw className="h-4 w-4 me-1" />
                     Refresh Now
@@ -932,6 +972,7 @@ export function EmailTemplateManager() {
                       size="sm"
                       variant="secondary"
                       className="absolute top-2 right-2 opacity-70 hover:opacity-100"
+                      data-testid="admin.email-template.html-tab.copy-button"
                     >
                       Copy
                     </Button>

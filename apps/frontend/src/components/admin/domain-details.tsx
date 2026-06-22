@@ -119,6 +119,7 @@ export function AdminDomainDetailsButton({
         variant={variant}
         size={size}
         className={className}
+        data-testid={`admin.domain-details.open-button.${domainName}`}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onPointerDown={onPointerDown}
@@ -182,6 +183,7 @@ export function AdminDomainDetailsDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        data-testid="admin.domain-details.dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           '!max-w-[85vw] min-w-[1024px] max-sm:min-w-0 max-h-[85vh] overflow-y-auto',
@@ -218,7 +220,10 @@ export function AdminDomainDetailsDialog({
 
 function DialogLoadingBody() {
   return (
-    <div className="flex items-center justify-center py-16 text-sm text-muted-foreground">
+    <div
+      data-testid="admin.domain-details.loading"
+      className="flex items-center justify-center py-16 text-sm text-muted-foreground"
+    >
       <Loader2 className="me-2 h-4 w-4 animate-spin" />
       Loading domain details…
     </div>
@@ -227,7 +232,10 @@ function DialogLoadingBody() {
 
 function DialogErrorBody({ message }: { message: string }) {
   return (
-    <div className="rounded-md border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500">
+    <div
+      data-testid="admin.domain-details.error"
+      className="rounded-md border border-red-500/30 bg-red-500/5 px-4 py-3 text-sm text-red-500"
+    >
       {message}
     </div>
   );
@@ -447,13 +455,13 @@ function NsAndDnssecCard({
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
+          <div data-testid="admin.domain-details.dns.nameservers">
             <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
               Nameservers
             </div>
             <NameserversCell row={row} />
           </div>
-          <div>
+          <div data-testid="admin.domain-details.dns.dnssec">
             <div className="text-xs uppercase tracking-wide text-muted-foreground mb-1">
               DNSSEC
             </div>
@@ -465,6 +473,7 @@ function NsAndDnssecCard({
           <Button
             variant="outline"
             size="sm"
+            data-testid="admin.domain-details.dns.edit-nameservers-button"
             disabled={blocked}
             onClick={() => setNsOpen(true)}
           >
@@ -473,6 +482,7 @@ function NsAndDnssecCard({
           <Button
             variant="outline"
             size="sm"
+            data-testid="admin.domain-details.dns.toggle-dnssec-button"
             disabled={blocked}
             onClick={() => setDnssecOpen(true)}
           >
@@ -657,7 +667,10 @@ function PreferencesCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
-        <PreferenceRow label="Auto Renew">
+        <PreferenceRow
+          label="Auto Renew"
+          data-testid="admin.domain-details.preferences.auto-renew"
+        >
           <PreferenceToggle
             value={autoRenewValue}
             isNotSet={autoRenewIsNotSet}
@@ -665,7 +678,10 @@ function PreferencesCard({
             onChange={(checked) => setDraftValue('autoRenewEnabled', checked)}
           />
         </PreferenceRow>
-        <PreferenceRow label="Auto ENS">
+        <PreferenceRow
+          label="Auto ENS"
+          data-testid="admin.domain-details.preferences.auto-ens"
+        >
           <PreferenceToggle
             value={autoEnsValue}
             isNotSet={autoEnsIsNotSet}
@@ -673,7 +689,10 @@ function PreferencesCard({
             onChange={(checked) => setDraftValue('autoEnsEnabled', checked)}
           />
         </PreferenceRow>
-        <PreferenceRow label="Auto Park">
+        <PreferenceRow
+          label="Auto Park"
+          data-testid="admin.domain-details.preferences.auto-park"
+        >
           <PreferenceToggle
             value={autoParkValue}
             isNotSet={autoParkIsNotSet}
@@ -681,7 +700,10 @@ function PreferencesCard({
             onChange={(checked) => setDraftValue('autoParkEnabled', checked)}
           />
         </PreferenceRow>
-        <PreferenceRow label="Forward To">
+        <PreferenceRow
+          label="Forward To"
+          data-testid="admin.domain-details.preferences.forward-to"
+        >
           <ForwardToField
             value={forwardToValue}
             isNotSet={forwardToIsNotSet}
@@ -694,6 +716,7 @@ function PreferencesCard({
           <Button
             variant="outline"
             size="sm"
+            data-testid="admin.domain-details.preferences.reset-button"
             disabled={!isDirty || !canWrite || updateMutation.isPending}
             onClick={() => setDraft({})}
           >
@@ -701,6 +724,7 @@ function PreferencesCard({
           </Button>
           <AsyncButton
             size="sm"
+            data-testid="admin.domain-details.preferences.save-button"
             disabled={!isDirty || !canWrite || updateMutation.isPending}
             onClick={applyChanges}
           >
@@ -715,12 +739,17 @@ function PreferencesCard({
 function PreferenceRow({
   label,
   children,
+  'data-testid': dataTestId,
 }: {
   label: string;
   children: ReactNode;
+  'data-testid'?: string;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div
+      className="flex items-center justify-between gap-4"
+      data-testid={dataTestId}
+    >
       <div className="text-sm text-muted-foreground">{label}</div>
       {children}
     </div>

@@ -320,7 +320,7 @@ export default function AutoRenewalManagement({
   if (isError) {
     return (
       <PageShell padding="admin">
-        <Card>
+        <Card data-testid="admin.auto-renewal.error-state">
           <CardContent className="py-12 text-center">
             <AlertTriangle className="w-8 h-8 text-red-500 mx-auto mb-3" />
             <h3 className="text-lg font-semibold">Failed to Load Workflow</h3>
@@ -331,6 +331,7 @@ export default function AutoRenewalManagement({
               onClick={() => refetch()}
               variant="outline"
               className="mt-4 gap-2"
+              data-testid="admin.auto-renewal.error-state.retry-button"
             >
               <RefreshCw className="w-4 h-4" />
               Retry
@@ -416,6 +417,7 @@ export default function AutoRenewalManagement({
             variant="outline"
             size="sm"
             className="gap-2"
+            data-testid="admin.auto-renewal.toolbar.refresh-button"
           >
             <RefreshCw className="w-4 h-4" />
             Refresh

@@ -278,6 +278,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
             MOBILE_BOTTOM_SHEET_DIALOG,
             '!max-w-[95vw] w-[95vw] !p-0 max-h-[95vh] h-[95vh] flex flex-col gap-0 overflow-hidden',
           )}
+          data-testid="admin.email-batch.modal"
         >
           <DialogHeader className="p-4 pe-14 border-b flex-row items-center justify-between gap-3 space-y-0">
             <div>
@@ -294,6 +295,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                 size="sm"
                 variant="ghost"
                 onClick={() => setHelpOpen(true)}
+                data-testid="admin.email-batch.toolbar.help-button"
               >
                 <HelpCircle className="h-4 w-4 me-1.5" />
                 Help
@@ -310,6 +312,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                   setConfirmingSend(false);
                   toast('Template cleared');
                 }}
+                data-testid="admin.email-batch.toolbar.clear-template-button"
               >
                 <Eraser className="h-4 w-4 me-1.5" />
                 Clear template
@@ -322,6 +325,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                   clearRecipients();
                   toast('Recipients cleared');
                 }}
+                data-testid="admin.email-batch.toolbar.clear-recipients-button"
               >
                 <Trash2 className="h-4 w-4 me-1.5" />
                 Clear recipients
@@ -380,6 +384,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                         setDraft({ subject: event.target.value })
                       }
                       placeholder="Subject line"
+                      data-testid="admin.email-batch.subject-input"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -398,6 +403,7 @@ export function BulkEmailModal({ open, onOpenChange }: BulkEmailModalProps) {
                         setDraft({ campaignKey: event.target.value })
                       }
                       placeholder="e.g. jan-2026-followup"
+                      data-testid="admin.email-batch.campaign-key-input"
                     />
                     <datalist id="bulk-email-campaign-key-suggestions">
                       {(knownCampaignKeysQuery.data?.keys ?? []).map((key) => (
@@ -538,6 +544,7 @@ function RecipientsPanel({
             variant="ghost"
             onClick={onClearAll}
             className="h-7 px-2"
+            data-testid="admin.email-batch.recipients.clear-all-button"
           >
             <Trash2 className="h-3.5 w-3.5 me-1" /> Clear all
           </Button>
@@ -565,6 +572,7 @@ function RecipientsPanel({
                     key={r.email}
                     className="inline-flex items-center gap-1 rounded-md bg-muted px-2 py-0.5 text-xs"
                     title={r.displayLabel ?? r.email}
+                    data-testid={`admin.email-batch.recipients.chip.${r.email}`}
                   >
                     <span className="max-w-[18ch] truncate">{r.email}</span>
                     {isUnresolved ? (
@@ -604,6 +612,7 @@ function RecipientsPanel({
                       onClick={() => onRemove(r.email)}
                       className="text-muted-foreground hover:text-foreground"
                       aria-label={`Remove ${r.email}`}
+                      data-testid={`admin.email-batch.recipients.chip.${r.email}.remove-button`}
                     >
                       <X className="h-3 w-3" />
                     </button>

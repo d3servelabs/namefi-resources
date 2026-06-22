@@ -104,6 +104,11 @@ export function AddToEmailBatchButton({
               variant="ghost"
               onClick={handleClick}
               aria-label={label}
+              data-testid={
+                alreadyAdded
+                  ? `admin.email-batch.add-button.remove.${trimmedEmail}`
+                  : `admin.email-batch.add-button.add.${trimmedEmail}`
+              }
               className={cn(
                 'h-7 w-7 p-0 inline-flex items-center justify-center',
                 alreadyAdded && 'text-destructive hover:text-destructive',

@@ -34,6 +34,7 @@ export function AdminTileCard({ card }: { card: AdminCardConfig }) {
 
   const cardContent = (
     <Card
+      data-testid={`admin.tile-card.${card.title}`}
       className={`h-full transition-all ${
         isDisabled
           ? 'opacity-50 cursor-not-allowed'
@@ -73,14 +74,22 @@ export function AdminTileCard({ card }: { card: AdminCardConfig }) {
 
   if (isInternalRoute) {
     return (
-      <Link href={card.href as Route} className="group">
+      <Link
+        href={card.href as Route}
+        className="group"
+        data-testid={`admin.tile-card.link.${card.title}`}
+      >
         {cardContent}
       </Link>
     );
   }
 
   return (
-    <a href={card.href} className="group">
+    <a
+      href={card.href}
+      className="group"
+      data-testid={`admin.tile-card.link.${card.title}`}
+    >
       {cardContent}
     </a>
   );

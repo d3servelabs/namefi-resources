@@ -217,8 +217,18 @@ export function NotificationComposer() {
             }}
           >
             <TabsList>
-              <TabsTrigger value="specific">Specific users</TabsTrigger>
-              <TabsTrigger value="everyone">Everyone</TabsTrigger>
+              <TabsTrigger
+                value="specific"
+                data-testid="admin.notifications.audience.specific-tab"
+              >
+                Specific users
+              </TabsTrigger>
+              <TabsTrigger
+                value="everyone"
+                data-testid="admin.notifications.audience.everyone-tab"
+              >
+                Everyone
+              </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -244,6 +254,7 @@ export function NotificationComposer() {
             maxLength={200}
             onChange={(event) => setTitle(event.target.value)}
             placeholder="Short, front-loaded headline"
+            data-testid="admin.notifications.compose.title-input"
           />
         </div>
 
@@ -258,6 +269,7 @@ export function NotificationComposer() {
             maxLength={400}
             onChange={(event) => setSubtitle(event.target.value)}
             placeholder="Supporting context"
+            data-testid="admin.notifications.compose.subtitle-input"
           />
         </div>
 
@@ -269,7 +281,11 @@ export function NotificationComposer() {
               setPriority(value as NotificationPriority)
             }
           >
-            <SelectTrigger id="notification-priority" className="w-full">
+            <SelectTrigger
+              id="notification-priority"
+              className="w-full"
+              data-testid="admin.notifications.compose.priority-select"
+            >
               <SelectValue>
                 {(value) =>
                   PRIORITY_OPTIONS.find((option) => option.value === value)
@@ -305,6 +321,7 @@ export function NotificationComposer() {
                 onCheckedChange={(value) =>
                   setBodyType(value === true ? 'markdown' : 'plain')
                 }
+                data-testid="admin.notifications.compose.markdown-checkbox"
               />
               Render as Markdown
             </label>
@@ -380,7 +397,10 @@ function EveryonePanel({
   isError: boolean;
 }) {
   return (
-    <div className="rounded-md border bg-muted/30 p-3 text-sm">
+    <div
+      className="rounded-md border bg-muted/30 p-3 text-sm"
+      data-testid="admin.notifications.everyone-panel"
+    >
       {isLoading ? (
         <span className="inline-flex items-center gap-1.5 text-muted-foreground">
           <Loader2 className="h-3.5 w-3.5 animate-spin" /> Counting users…
@@ -391,7 +411,10 @@ function EveryonePanel({
         </span>
       ) : (
         <>
-          This notification will be sent to <strong>{audienceSize}</strong>{' '}
+          This notification will be sent to{' '}
+          <strong data-testid="admin.notifications.everyone-panel.audience-size">
+            {audienceSize}
+          </strong>{' '}
           {audienceSize === 1 ? 'user' : 'users'}. Delivery runs in the
           background and may take a moment to reach everyone.
         </>
@@ -434,9 +457,15 @@ function SendPanel({
       : `all ${audienceSize} ${audienceSize === 1 ? 'user' : 'users'}`;
 
   return (
-    <div className="space-y-3 border-t pt-3">
+    <div
+      className="space-y-3 border-t pt-3"
+      data-testid="admin.notifications.send-panel"
+    >
       {results && (
-        <div className="space-y-2">
+        <div
+          className="space-y-2"
+          data-testid="admin.notifications.send-panel.results"
+        >
           <p className="text-sm">
             <strong>{created}</strong> notified,{' '}
             <strong>{failed.length}</strong> failed.
@@ -444,7 +473,11 @@ function SendPanel({
           {failed.length > 0 && (
             <ul className="text-xs space-y-1 max-h-40 overflow-auto">
               {failed.map((r) => (
-                <li key={r.userId} className="text-destructive">
+                <li
+                  key={r.userId}
+                  className="text-destructive"
+                  data-testid={`admin.notifications.send-panel.results.failed.${r.userId}`}
+                >
                   {userIdToLabel.get(r.userId) ?? r.userId}
                   {r.error ? ` — ${r.error}` : ''}
                 </li>
@@ -471,6 +504,7 @@ function SendPanel({
             variant="default"
             onClick={onConfirm}
             disabled={isPending}
+            data-testid="admin.notifications.send-panel.confirm-button"
           >
             {isPending ? (
               <>
@@ -487,6 +521,7 @@ function SendPanel({
             variant="ghost"
             onClick={() => setConfirming(false)}
             disabled={isPending}
+            data-testid="admin.notifications.send-panel.cancel-button"
           >
             Cancel
           </Button>
@@ -496,6 +531,7 @@ function SendPanel({
           size="sm"
           onClick={() => setConfirming(true)}
           disabled={sendDisabled}
+          data-testid="admin.notifications.send-panel.send-button"
         >
           <Send className="h-4 w-4 me-1.5" />
           Send to {targetLabel}
@@ -518,7 +554,10 @@ function PreviewCard({
 }) {
   const hasContent = Boolean(title || body);
   return (
-    <div className="dark rounded-xl border bg-[#0a0a0a] p-4">
+    <div
+      className="dark rounded-xl border bg-[#0a0a0a] p-4"
+      data-testid="admin.notifications.preview"
+    >
       {hasContent ? (
         <div className="flex gap-3 rounded-lg border border-s-2 border-white/5 border-s-brand-primary bg-white/[0.04] p-3">
           <div className="min-w-0 flex-1">

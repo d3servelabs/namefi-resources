@@ -32,6 +32,12 @@ type ExportTrackingRecord = {
 
 type VerifyButtonProps = {
   record: ExportTrackingRecord;
+  /**
+   * Optional test-id root for this row's action group. Callers (the table cells
+   * / mobile card) pass a per-row id so each row's actions are individually
+   * targetable; children derive their ids from it.
+   */
+  'data-testid'?: string;
 };
 
 type ExportTrackingEmailType = 'pending' | 'complete';
@@ -55,7 +61,10 @@ const getEmailTypeForStatus = (
   return null;
 };
 
-export function VerifyButton({ record }: VerifyButtonProps) {
+export function VerifyButton({
+  record,
+  'data-testid': testId = 'admin.export-tracking.row.actions',
+}: VerifyButtonProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
@@ -167,22 +176,41 @@ export function VerifyButton({ record }: VerifyButtonProps) {
   if (!hasAction) {
     if (record.status === 'NOTIFIED' || record.adminVerifiedAt) {
       return (
-        <Badge variant="outline" className="text-green-600 border-green-600">
+        <Badge
+          variant="outline"
+          className="text-green-600 border-green-600"
+          data-testid={`${testId}.verified`}
+        >
           <CheckIcon className="h-3 w-3 me-1" />
           Verified
         </Badge>
       );
     }
 
-    return <span className="text-xs text-muted-foreground">-</span>;
+    return (
+      <span
+        className="text-xs text-muted-foreground"
+        data-testid={`${testId}.none`}
+      >
+        -
+      </span>
+    );
   }
 
   return (
     <PermissionGate permissions={[Permission.WRITE_NFT]}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2" data-testid={testId}>
         {canApprove && (
           <AlertDialog>
-            <AlertDialogTrigger render={<Button size="sm" variant="outline" />}>
+            <AlertDialogTrigger
+              render={
+                <Button
+                  size="sm"
+                  variant="outline"
+                  data-testid={`${testId}.approve-button`}
+                />
+              }
+            >
               <CheckIcon className="h-4 w-4 me-1" />
               Approve
             </AlertDialogTrigger>
@@ -214,7 +242,14 @@ export function VerifyButton({ record }: VerifyButtonProps) {
         {canResolve && (
           <AlertDialog>
             <AlertDialogTrigger
-              render={<Button size="sm" variant="outline" className="px-2" />}
+              render={
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="px-2"
+                  data-testid={`${testId}.resolve-button`}
+                />
+              }
             >
               <XIcon className="h-4 w-4" />
             </AlertDialogTrigger>
@@ -246,7 +281,14 @@ export function VerifyButton({ record }: VerifyButtonProps) {
         {emailType && (
           <AlertDialog>
             <AlertDialogTrigger
-              render={<Button size="sm" variant="outline" className="px-2" />}
+              render={
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="px-2"
+                  data-testid={`${testId}.send-email-button`}
+                />
+              }
             >
               <MailIcon className="h-4 w-4 me-1" />
               {emailAlreadySent ? 'Resend' : 'Send Email'}

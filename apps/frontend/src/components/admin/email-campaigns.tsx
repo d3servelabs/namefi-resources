@@ -221,13 +221,20 @@ function CampaignSendHistorySubrow({
   }, [sendHistory]);
 
   if (sorted.length === 0) {
-    return <div className="p-4 text-sm text-muted-foreground">No sends</div>;
+    return (
+      <div
+        className="p-4 text-sm text-muted-foreground"
+        data-testid="admin.email-campaigns.history.empty"
+      >
+        No sends
+      </div>
+    );
   }
 
   return (
-    <div className="p-4">
+    <div className="p-4" data-testid="admin.email-campaigns.history">
       <h4 className="text-sm font-medium mb-3">History</h4>
-      <Table>
+      <Table data-testid="admin.email-campaigns.history.table">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[180px]">Sent at</TableHead>
@@ -245,7 +252,10 @@ function CampaignSendHistorySubrow({
                 ? `#${entry.metadata.variantIndex + 1}`
                 : '-';
             return (
-              <TableRow key={entry.id}>
+              <TableRow
+                key={entry.id}
+                data-testid={`admin.email-campaigns.history.row.${entry.id}`}
+              >
                 <TableCell className="text-xs">
                   {formatDateTime(entry.sentAt ?? entry.createdAt)}
                 </TableCell>
@@ -281,6 +291,7 @@ function CampaignSection({
   columns,
   emptyMessage,
   highlights,
+  'data-testid': testId,
 }: {
   title: string;
   data: EligibleUsersResponse | undefined;
@@ -295,6 +306,7 @@ function CampaignSection({
   columns: ColumnDef<EligibleUser>[];
   emptyMessage: string;
   highlights?: string[];
+  'data-testid'?: string;
 }) {
   const eligibleCount = data?.users.length ?? 0;
   const paused = scheduleStatus?.status?.paused;
@@ -327,7 +339,7 @@ function CampaignSection({
     'Schedule is not set up in Temporal yet. Open Schedules to configure it.';
 
   return (
-    <Card>
+    <Card data-testid={testId}>
       <CardHeader className="space-y-2">
         <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div>
@@ -353,7 +365,11 @@ function CampaignSection({
             ))}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary" className="w-fit">
+            <Badge
+              variant="secondary"
+              className="w-fit"
+              data-testid={testId ? `${testId}.eligible-count` : undefined}
+            >
               {eligibleCount} eligible
             </Badge>
             {!isScheduleConfigured && onSetupSchedule ? (
@@ -361,6 +377,9 @@ function CampaignSection({
                 size="sm"
                 variant="outline"
                 onClick={() => onSetupSchedule(scheduleStatus?.scheduleId)}
+                data-testid={
+                  testId ? `${testId}.setup-schedule-button` : undefined
+                }
               >
                 <Settings2 className="h-4 w-4 me-2" />
                 Set up schedule
@@ -371,6 +390,9 @@ function CampaignSection({
                 variant="outline"
                 onClick={() => onToggleSchedule(paused)}
                 disabled={scheduleDisabled}
+                data-testid={
+                  testId ? `${testId}.toggle-schedule-button` : undefined
+                }
               >
                 {isTogglingSchedule || isScheduleLoading ? (
                   <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -734,6 +756,7 @@ export default function AdminEmailCampaigns() {
                     className="p-1 hover:bg-muted rounded transition-colors"
                     title="Copy email"
                     aria-label="Copy email"
+                    data-testid={`admin.email-campaigns.cart.copy-email-button.${row.original.userId}`}
                   >
                     <Copy className="h-3 w-3" />
                   </button>
@@ -797,6 +820,7 @@ export default function AdminEmailCampaigns() {
                 )
               }
               disabled={isSending}
+              data-testid={`admin.email-campaigns.cart.send-button.${row.original.userId}`}
             >
               {isSending ? (
                 <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -865,6 +889,7 @@ export default function AdminEmailCampaigns() {
                     className="p-1 hover:bg-muted rounded transition-colors"
                     title="Copy email"
                     aria-label="Copy email"
+                    data-testid={`admin.email-campaigns.dream.copy-email-button.${row.original.userId}`}
                   >
                     <Copy className="h-3 w-3" />
                   </button>
@@ -889,6 +914,7 @@ export default function AdminEmailCampaigns() {
               onClick={() => handleOpenDreamOwnedDomains(row.original)}
               className="underline underline-offset-4 decoration-dotted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
               aria-label={`View ${count} owned domains`}
+              data-testid={`admin.email-campaigns.dream.owned-domains-button.${row.original.userId}`}
             >
               {`Yes (${count})`}
             </button>
@@ -935,6 +961,7 @@ export default function AdminEmailCampaigns() {
                 )
               }
               disabled={isSending}
+              data-testid={`admin.email-campaigns.dream.send-button.${row.original.userId}`}
             >
               {isSending ? (
                 <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -1003,6 +1030,7 @@ export default function AdminEmailCampaigns() {
                     className="p-1 hover:bg-muted rounded transition-colors"
                     title="Copy email"
                     aria-label="Copy email"
+                    data-testid={`admin.email-campaigns.traffic.copy-email-button.${row.original.userId}`}
                   >
                     <Copy className="h-3 w-3" />
                   </button>
@@ -1062,6 +1090,7 @@ export default function AdminEmailCampaigns() {
               }
               disabled={isSending || trafficDomains.length === 0}
               aria-label={`Send traffic surge email to ${recipient} for ${trafficDomains.length} heating ${trafficDomains.length === 1 ? 'domain' : 'domains'}`}
+              data-testid={`admin.email-campaigns.traffic.send-button.${row.original.userId}`}
             >
               {isSending ? (
                 <Loader2 className="h-4 w-4 me-2 animate-spin" />
@@ -1097,6 +1126,7 @@ export default function AdminEmailCampaigns() {
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Search by email, display name, or user ID..."
                 className="ps-9 pe-9"
+                data-testid="admin.email-campaigns.toolbar.search-input"
               />
               {searchTerm.length > 0 ? (
                 <button
@@ -1104,6 +1134,7 @@ export default function AdminEmailCampaigns() {
                   onClick={() => setSearchTerm('')}
                   className="absolute end-3 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   aria-label="Clear search"
+                  data-testid="admin.email-campaigns.toolbar.clear-search-button"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -1118,6 +1149,7 @@ export default function AdminEmailCampaigns() {
                 dreamQuery.isFetching ||
                 trafficQuery.isFetching
               }
+              data-testid="admin.email-campaigns.toolbar.refresh-button"
             >
               <RefreshCw className="h-4 w-4 me-2" />
               Refresh
@@ -1144,6 +1176,7 @@ export default function AdminEmailCampaigns() {
           columns={cartColumns}
           emptyMessage="No eligible users"
           highlights={cartHighlights}
+          data-testid="admin.email-campaigns.cart"
         />
 
         <CampaignSection
@@ -1165,6 +1198,7 @@ export default function AdminEmailCampaigns() {
           columns={dreamColumns}
           emptyMessage="No eligible users"
           highlights={dreamHighlights}
+          data-testid="admin.email-campaigns.dream"
         />
 
         <CampaignSection
@@ -1186,9 +1220,10 @@ export default function AdminEmailCampaigns() {
           columns={trafficColumns}
           emptyMessage="No eligible users"
           highlights={trafficHighlights}
+          data-testid="admin.email-campaigns.traffic"
         />
 
-        <Card>
+        <Card data-testid="admin.email-campaigns.funnel-debug">
           <CardHeader className="space-y-2">
             <CardTitle>Traffic Surge Funnel Debug</CardTitle>
             <p className="text-xs text-muted-foreground">
@@ -1223,16 +1258,22 @@ export default function AdminEmailCampaigns() {
           </CardHeader>
           <CardContent>
             {trafficFunnelQuery.isLoading ? (
-              <div className="text-sm text-muted-foreground flex items-center gap-2">
+              <div
+                className="text-sm text-muted-foreground flex items-center gap-2"
+                data-testid="admin.email-campaigns.funnel-debug.loading"
+              >
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading surge funnel debug...
               </div>
             ) : (trafficFunnelQuery.data?.users.length ?? 0) === 0 ? (
-              <div className="text-sm text-muted-foreground">
+              <div
+                className="text-sm text-muted-foreground"
+                data-testid="admin.email-campaigns.funnel-debug.empty"
+              >
                 No users matched the current search/filter.
               </div>
             ) : (
-              <Table>
+              <Table data-testid="admin.email-campaigns.funnel-debug.table">
                 <TableHeader>
                   <TableRow>
                     <TableHead>User</TableHead>
@@ -1253,7 +1294,10 @@ export default function AdminEmailCampaigns() {
                 </TableHeader>
                 <TableBody>
                   {trafficFunnelQuery.data?.users.map((user) => (
-                    <TableRow key={user.userId}>
+                    <TableRow
+                      key={user.userId}
+                      data-testid={`admin.email-campaigns.funnel-debug.row.${user.userId}`}
+                    >
                       <TableCell className="text-xs">
                         <div className="flex items-center gap-2">
                           <AutoTruncateTextV2
@@ -1269,6 +1313,7 @@ export default function AdminEmailCampaigns() {
                             className="p-1 hover:bg-muted rounded transition-colors"
                             title="Copy user ID"
                             aria-label="Copy user ID"
+                            data-testid={`admin.email-campaigns.funnel-debug.copy-user-id-button.${user.userId}`}
                           >
                             <Copy className="h-3 w-3" />
                           </button>
@@ -1312,7 +1357,10 @@ export default function AdminEmailCampaigns() {
           }
         }}
       >
-        <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-xl')}>
+        <DialogContent
+          className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-xl')}
+          data-testid="admin.email-campaigns.owned-domains-dialog"
+        >
           <DialogHeader>
             <DialogTitle>Owned Domains</DialogTitle>
             <DialogDescription>
@@ -1322,7 +1370,10 @@ export default function AdminEmailCampaigns() {
 
           <div className="rounded-md border max-h-[60vh] overflow-y-auto">
             {(dreamOwnedDomainsModal?.domains.length ?? 0) === 0 ? (
-              <p className="p-4 text-sm text-muted-foreground">
+              <p
+                className="p-4 text-sm text-muted-foreground"
+                data-testid="admin.email-campaigns.owned-domains-dialog.empty"
+              >
                 No owned domains found.
               </p>
             ) : (
@@ -1331,6 +1382,7 @@ export default function AdminEmailCampaigns() {
                   <li
                     key={domain}
                     className="px-4 py-2 text-sm border-b last:border-b-0"
+                    data-testid={`admin.email-campaigns.owned-domains-dialog.row.${domain}`}
                   >
                     <code>{domain}</code>
                   </li>

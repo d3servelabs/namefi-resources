@@ -205,7 +205,7 @@ export function CheckoutFlowOverview({
 
   if (!data) {
     return (
-      <Card>
+      <Card data-testid="admin.analytics.checkout-flow.empty">
         <CardContent
           className="flex items-center justify-center"
           style={{ height: `${DEFAULT_SANKEY_HEIGHT}px` }}
@@ -221,12 +221,15 @@ export function CheckoutFlowOverview({
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-        <Card>
+        <Card data-testid="admin.analytics.checkout-flow.summary.begin-search">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Begin Search</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div
+              className="text-2xl font-bold"
+              data-testid="admin.analytics.checkout-flow.summary.begin-search.value"
+            >
               {formatInt(data.summary.beginSearchCount)}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -235,28 +238,34 @@ export function CheckoutFlowOverview({
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="admin.analytics.checkout-flow.summary.order-accepted">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
               Order Accepted
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div
+              className="text-2xl font-bold"
+              data-testid="admin.analytics.checkout-flow.summary.order-accepted.value"
+            >
               {formatInt(data.summary.orderPlacedCount)}
             </div>
             <p className="text-xs text-muted-foreground">Checkout intent</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="admin.analytics.checkout-flow.summary.order-start-rate">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
               Order Start Rate
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div
+              className="text-2xl font-bold"
+              data-testid="admin.analytics.checkout-flow.summary.order-start-rate.value"
+            >
               {data.summary.conversionRatePercent === null
                 ? 'N/A'
                 : `${data.summary.conversionRatePercent.toFixed(1)}%`}
@@ -267,14 +276,17 @@ export function CheckoutFlowOverview({
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-testid="admin.analytics.checkout-flow.summary.completion-rate">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
               Completion Rate
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div
+              className="text-2xl font-bold"
+              data-testid="admin.analytics.checkout-flow.summary.completion-rate.value"
+            >
               {data.summary.completionRatePercent === null
                 ? 'N/A'
                 : `${data.summary.completionRatePercent.toFixed(1)}%`}
@@ -288,7 +300,10 @@ export function CheckoutFlowOverview({
       </div>
 
       <div className="space-y-6">
-        <Card className="relative">
+        <Card
+          className="relative"
+          data-testid="admin.analytics.checkout-flow.funnel"
+        >
           {isFetching && (
             <div className="absolute inset-0 z-10 rounded-lg bg-background/80 backdrop-blur-sm flex items-center justify-center">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -359,6 +374,7 @@ export function CheckoutFlowOverview({
                   setSankeyHeight(Number.parseInt(event.target.value, 10));
                 }}
                 className="w-36 accent-primary"
+                data-testid="admin.analytics.checkout-flow.sankey.height-range"
               />
               <span className="text-xs text-muted-foreground tabular-nums w-14 text-end">
                 {sankeyHeight}px
@@ -373,7 +389,11 @@ export function CheckoutFlowOverview({
         </Card>
 
         {sankeyCharts.map((chart) => (
-          <Card key={chart.key} className="relative">
+          <Card
+            key={chart.key}
+            className="relative"
+            data-testid={`admin.analytics.checkout-flow.sankey.${chart.key}`}
+          >
             {isFetching && (
               <div className="absolute inset-0 z-10 rounded-lg bg-background/80 backdrop-blur-sm flex items-center justify-center">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -427,6 +447,7 @@ export function CheckoutFlowOverview({
               <div
                 key={step.eventName}
                 className="rounded-md border border-border px-3 py-2 grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-2 items-center"
+                data-testid={`admin.analytics.checkout-flow.steps.row.${step.eventName}`}
               >
                 <div>
                   <p className="font-medium text-sm">{step.label}</p>

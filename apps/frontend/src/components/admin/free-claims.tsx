@@ -252,11 +252,19 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button className="flex items-center gap-2" />}>
+      <DialogTrigger
+        render={
+          <Button
+            className="flex items-center gap-2"
+            data-testid="admin.free-claims.create.open-button"
+          />
+        }
+      >
         <Plus className="h-4 w-4" />
         Add Free Claim
       </DialogTrigger>
       <DialogContent
+        data-testid="admin.free-claims.create.dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           'max-w-2xl max-h-[90vh] overflow-y-auto',
@@ -315,6 +323,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                       value={userSearchTerm}
                       onChange={(e) => setUserSearchTerm(e.target.value)}
                       autoFocus
+                      data-testid="admin.free-claims.create.user-search-input"
                     />
                     <Button
                       type="button"
@@ -338,6 +347,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                           key={user.id}
                           className="p-3 hover:bg-muted cursor-pointer border-b last:border-b-0"
                           onClick={() => handleUserSelect(user)}
+                          data-testid={`admin.free-claims.create.user-result.${user.id}`}
                         >
                           <div className="space-y-1">
                             <div className="font-medium">
@@ -400,6 +410,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                 }
                 placeholder="e.g., beta-launch-2024, special-promo"
                 required
+                data-testid="admin.free-claims.create.campaign-key-input"
               />
             </div>
 
@@ -411,6 +422,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                 onChange={(e) => updateForm({ reason: e.target.value })}
                 placeholder="Describe why this claim is being offered"
                 required
+                data-testid="admin.free-claims.create.reason-input"
               />
             </div>
           </div>
@@ -463,6 +475,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                   }
                   placeholder="example.com"
                   required
+                  data-testid="admin.free-claims.create.exact-domain-input"
                 />
               </div>
             ) : (
@@ -474,6 +487,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
                   onChange={(e) => updateForm({ parentDomain: e.target.value })}
                   placeholder="example.com"
                   required
+                  data-testid="admin.free-claims.create.parent-domain-input"
                 />
                 <p className="text-xs text-muted-foreground">
                   Users can claim any available subdomain under this parent
@@ -536,6 +550,7 @@ function CreateClaimModal({ onSuccess }: { onSuccess: () => void }) {
             <Button
               type="submit"
               disabled={!isFormValid || createMutation.isPending}
+              data-testid="admin.free-claims.create.submit-button"
             >
               {createMutation.isPending ? (
                 <>
@@ -593,6 +608,7 @@ function DeleteClaimDialog({
             variant="ghost"
             size="sm"
             className="text-destructive hover:text-destructive"
+            data-testid={`admin.free-claims.row.${claim.id}.delete-button`}
           />
         }
       >
@@ -714,6 +730,7 @@ function FreeClaimsContent() {
                 placeholder="Search claims..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                data-testid="admin.free-claims.filters.search-input"
               />
             </div>
 
@@ -726,7 +743,7 @@ function FreeClaimsContent() {
                   setStatus(value);
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.free-claims.filters.status-select">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -747,7 +764,7 @@ function FreeClaimsContent() {
                   setSortBy(value);
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.free-claims.filters.sort-select">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -769,7 +786,7 @@ function FreeClaimsContent() {
                 value={limit.toString()}
                 onValueChange={handleLimitChange}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.free-claims.filters.page-size-select">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -827,7 +844,7 @@ function FreeClaimsContent() {
           ) : (
             <div className="space-y-4">
               <div className="rounded-md border">
-                <Table>
+                <Table data-testid="admin.free-claims.list">
                   <Thead>
                     <Tr>
                       <Th>Campaign/Group</Th>
@@ -842,7 +859,10 @@ function FreeClaimsContent() {
                   </Thead>
                   <TableBody>
                     {data?.data.map((claim) => (
-                      <Tr key={claim.id}>
+                      <Tr
+                        key={claim.id}
+                        data-testid={`admin.free-claims.list.row.${claim.id}`}
+                      >
                         <Td>
                           <div className="font-medium">
                             {claim.groupOrCampaignKey}
@@ -941,6 +961,7 @@ function FreeClaimsContent() {
                       size="sm"
                       onClick={() => handlePageChange(1)}
                       disabled={page === 1 || isFetching}
+                      data-testid="admin.free-claims.list.first-button"
                     >
                       First
                     </Button>
@@ -949,6 +970,7 @@ function FreeClaimsContent() {
                       size="sm"
                       onClick={() => handlePageChange(page - 1)}
                       disabled={page === 1 || isFetching}
+                      data-testid="admin.free-claims.list.prev-button"
                     >
                       <ChevronLeft className="h-4 w-4 rtl:-scale-x-100" />
                       Previous
@@ -965,6 +987,7 @@ function FreeClaimsContent() {
                       size="sm"
                       onClick={() => handlePageChange(page + 1)}
                       disabled={page === totalPages || isFetching}
+                      data-testid="admin.free-claims.list.next-button"
                     >
                       Next
                       <ChevronRight className="h-4 w-4 rtl:-scale-x-100" />
@@ -974,6 +997,7 @@ function FreeClaimsContent() {
                       size="sm"
                       onClick={() => handlePageChange(totalPages)}
                       disabled={page === totalPages || isFetching}
+                      data-testid="admin.free-claims.list.last-button"
                     >
                       Last
                     </Button>

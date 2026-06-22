@@ -190,6 +190,7 @@ function BulkBurnWorkflowsListContent() {
               variant="outline"
               size="sm"
               className="gap-2"
+              data-testid="admin.bulk-burn.workflows.refresh-button"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -198,7 +199,7 @@ function BulkBurnWorkflowsListContent() {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <Table>
+            <Table data-testid="admin.bulk-burn.workflows.list">
               <Thead>
                 <Tr>
                   <Th>Workflow ID</Th>
@@ -211,7 +212,10 @@ function BulkBurnWorkflowsListContent() {
               </Thead>
               <TableBody>
                 {workflows.map((workflow) => (
-                  <Tr key={workflow.workflowId}>
+                  <Tr
+                    key={workflow.workflowId}
+                    data-testid={`admin.bulk-burn.workflows.list.row.${workflow.workflowId}`}
+                  >
                     <Td>
                       <code className="text-xs">
                         {workflow.workflowId.slice(0, 30)}...
@@ -235,7 +239,12 @@ function BulkBurnWorkflowsListContent() {
                     </Td>
                     <Td className="text-end">
                       <Link href={`/admin/bulk-burn/${workflow.workflowId}`}>
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          data-testid={`admin.bulk-burn.workflows.list.row.${workflow.workflowId}.view-button`}
+                        >
                           <ExternalLink className="w-4 h-4" />
                           View Details
                         </Button>

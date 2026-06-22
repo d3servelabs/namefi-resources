@@ -264,10 +264,16 @@ export function ActiveWorkflowBanner({
   };
 
   return (
-    <div className="flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-800 p-2 text-xs">
+    <div
+      className="flex items-center gap-2 rounded-md border border-zinc-700 bg-zinc-800 p-2 text-xs"
+      data-testid={`admin.ns-dnssec.active-workflow-banner.${scope}`}
+    >
       <Loader2 className="w-3 h-3 animate-spin" />
       <span>{operationLabel(workflow.operation)}</span>
-      <span className="font-mono text-muted-foreground">
+      <span
+        className="font-mono text-muted-foreground"
+        data-testid={`admin.ns-dnssec.active-workflow-banner.${scope}.workflow-id`}
+      >
         {workflow.workflowId}
       </span>
       <LoadingButton
@@ -277,6 +283,7 @@ export function ActiveWorkflowBanner({
         isLoading={cancelDnssec.isPending || cancelNs.isPending}
         loadingText="Cancelling..."
         onClick={handleCancel}
+        data-testid={`admin.ns-dnssec.active-workflow-banner.${scope}.cancel-button`}
       >
         <XCircleIcon className="w-3 h-3" />
         Cancel
@@ -350,7 +357,10 @@ export function AdminEditNameserversDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+        data-testid="admin.ns-dnssec.edit-nameservers-dialog"
+      >
         <DialogHeader>
           <DialogTitle>
             Edit nameservers — {row.normalizedDomainName}
@@ -375,6 +385,7 @@ export function AdminEditNameserversDialog({
                 placeholder={`ns${index + 1}.example.com`}
                 onChange={(e) => onChange(index, e.target.value)}
                 disabled={hasActive}
+                data-testid={`admin.ns-dnssec.edit-nameservers-dialog.nameserver-input.${index + 1}`}
               />
               {draft.length > 2 && (
                 <Button
@@ -382,6 +393,7 @@ export function AdminEditNameserversDialog({
                   size="sm"
                   onClick={() => onRemove(index)}
                   disabled={hasActive}
+                  data-testid={`admin.ns-dnssec.edit-nameservers-dialog.nameserver-remove-button.${index + 1}`}
                 >
                   Remove
                 </Button>
@@ -395,6 +407,7 @@ export function AdminEditNameserversDialog({
               className="self-start"
               onClick={onAdd}
               disabled={hasActive}
+              data-testid="admin.ns-dnssec.edit-nameservers-dialog.add-nameserver-button"
             >
               Add nameserver
             </Button>
@@ -411,6 +424,7 @@ export function AdminEditNameserversDialog({
                 domainName: row.normalizedDomainName,
               })
             }
+            data-testid="admin.ns-dnssec.edit-nameservers-dialog.reset-button"
           >
             <RotateCw className="w-4 h-4" />
             Reset to Namefi
@@ -420,6 +434,7 @@ export function AdminEditNameserversDialog({
               variant="ghost"
               size="sm"
               onClick={() => onOpenChange(false)}
+              data-testid="admin.ns-dnssec.edit-nameservers-dialog.cancel-button"
             >
               Cancel
             </Button>
@@ -432,6 +447,7 @@ export function AdminEditNameserversDialog({
                   nameservers: trimmed,
                 })
               }
+              data-testid="admin.ns-dnssec.edit-nameservers-dialog.save-button"
             >
               Save
             </AsyncButton>
@@ -528,7 +544,10 @@ export function AdminToggleDnssecDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-md')}
+        data-testid="admin.ns-dnssec.toggle-dnssec-dialog"
+      >
         <DialogHeader>
           <DialogTitle>Toggle DNSSEC — {row.normalizedDomainName}</DialogTitle>
           <DialogDescription>
@@ -563,7 +582,12 @@ export function AdminToggleDnssecDialog({
         </div>
 
         <DialogFooter className="flex flex-row items-center justify-end gap-2">
-          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => onOpenChange(false)}
+            data-testid="admin.ns-dnssec.toggle-dnssec-dialog.close-button"
+          >
             Close
           </Button>
           {isUsingNamefiSigning ? (
@@ -576,13 +600,14 @@ export function AdminToggleDnssecDialog({
                     isLoading={disableMutation.isPending}
                     loadingText="Disabling..."
                     disabled={actionsBlocked}
+                    data-testid="admin.ns-dnssec.toggle-dnssec-dialog.disable-button"
                   />
                 }
               >
                 <ShieldMinusIcon className="w-4 h-4" />
                 Disable Namefi Signing
               </AlertDialogTrigger>
-              <AlertDialogContent>
+              <AlertDialogContent data-testid="admin.ns-dnssec.toggle-dnssec-dialog.disable-confirm-dialog">
                 <AlertDialogHeader>
                   <AlertDialogTitle>Disable Namefi signing?</AlertDialogTitle>
                   <AlertDialogDescription>
@@ -600,6 +625,7 @@ export function AdminToggleDnssecDialog({
                         domainName: row.normalizedDomainName,
                       })
                     }
+                    data-testid="admin.ns-dnssec.toggle-dnssec-dialog.disable-confirm-button"
                   >
                     Confirm and disable
                   </AlertDialogAction>
@@ -615,6 +641,7 @@ export function AdminToggleDnssecDialog({
                   domainName: row.normalizedDomainName,
                 })
               }
+              data-testid="admin.ns-dnssec.toggle-dnssec-dialog.enable-button"
             >
               <ShieldPlusIcon className="w-4 h-4" />
               Enable Namefi Signing

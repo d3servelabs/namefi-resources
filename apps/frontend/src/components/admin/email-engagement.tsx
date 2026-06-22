@@ -105,6 +105,7 @@ export function EmailEngagementDashboard() {
           size="sm"
           onClick={() => query.refetch()}
           disabled={query.isFetching}
+          data-testid="admin.email-engagement.toolbar.refresh-button"
         >
           {query.isFetching ? (
             <Loader2 className="h-4 w-4 animate-spin me-2" />
@@ -116,10 +117,26 @@ export function EmailEngagementDashboard() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-        <SummaryCard label="Campaigns" value={totals.campaigns} />
-        <SummaryCard label="Total opens" value={totals.opens} />
-        <SummaryCard label="Total clicks" value={totals.clicks} />
-        <SummaryCard label="Tracked links" value={totals.links} />
+        <SummaryCard
+          label="Campaigns"
+          value={totals.campaigns}
+          data-testid="admin.email-engagement.summary.campaigns"
+        />
+        <SummaryCard
+          label="Total opens"
+          value={totals.opens}
+          data-testid="admin.email-engagement.summary.opens"
+        />
+        <SummaryCard
+          label="Total clicks"
+          value={totals.clicks}
+          data-testid="admin.email-engagement.summary.clicks"
+        />
+        <SummaryCard
+          label="Tracked links"
+          value={totals.links}
+          data-testid="admin.email-engagement.summary.links"
+        />
       </div>
 
       <Card>
@@ -138,12 +155,14 @@ export function EmailEngagementDashboard() {
               placeholder="Filter by campaign key…"
               aria-label="Filter campaigns by key"
               className="h-9 w-[220px]"
+              data-testid="admin.email-engagement.toolbar.filter-input"
             />
             <select
               value={sortKey}
               onChange={(e) => setSortKey(e.target.value as SortKey)}
               className="h-9 rounded-md border bg-background px-2 text-sm"
               aria-label="Sort campaigns"
+              data-testid="admin.email-engagement.toolbar.sort-select"
             >
               {(Object.keys(SORT_LABELS) as SortKey[]).map((key) => (
                 <option key={key} value={key}>
@@ -366,7 +385,10 @@ function CampaignsTable({
     // Mobile: a vertical stack of cards built from the SAME aggregated rows as
     // the desktop table, reusing the shared cell helpers/formatters above.
     return (
-      <div className="flex flex-col gap-3">
+      <div
+        className="flex flex-col gap-3"
+        data-testid="admin.email-engagement.list"
+      >
         {rows.map((row) => (
           <CampaignCard
             key={row.campaignKey}
@@ -374,6 +396,7 @@ function CampaignsTable({
             expanded={expanded.has(row.campaignKey)}
             canExpand={row.links.length > 0}
             onToggle={() => row.links.length > 0 && onToggle(row.campaignKey)}
+            data-testid={`admin.email-engagement.list.row.${row.campaignKey}`}
           />
         ))}
       </div>
@@ -381,7 +404,10 @@ function CampaignsTable({
   }
 
   return (
-    <div className="overflow-x-auto">
+    <div
+      className="overflow-x-auto"
+      data-testid="admin.email-engagement.list.table"
+    >
       {/* desktop-only table; mobile renders cards via useIsMobile above */}
       <table className="w-full text-sm" /* mobile-ok */>
         <thead className="text-start text-xs uppercase tracking-wide text-muted-foreground border-b">
@@ -405,6 +431,7 @@ function CampaignsTable({
                 expanded={isOpen}
                 canExpand={canExpand}
                 onToggle={() => canExpand && onToggle(row.campaignKey)}
+                data-testid={`admin.email-engagement.list.row.${row.campaignKey}`}
               />
             );
           })}
@@ -419,11 +446,13 @@ function CampaignRow({
   expanded,
   canExpand,
   onToggle,
+  'data-testid': testId,
 }: {
   row: CampaignAggregate;
   expanded: boolean;
   canExpand: boolean;
   onToggle: () => void;
+  'data-testid'?: string;
 }) {
   const Chevron = expanded ? ChevronDown : ChevronRight;
   return (
@@ -433,6 +462,7 @@ function CampaignRow({
           'border-b last:border-b-0',
           canExpand && 'cursor-pointer hover:bg-muted/50',
         )}
+        data-testid={testId}
         onClick={canExpand ? onToggle : undefined}
         onKeyDown={
           canExpand
@@ -510,15 +540,17 @@ function CampaignCard({
   expanded,
   canExpand,
   onToggle,
+  'data-testid': testId,
 }: {
   row: CampaignAggregate;
   expanded: boolean;
   canExpand: boolean;
   onToggle: () => void;
+  'data-testid'?: string;
 }) {
   const Chevron = expanded ? ChevronDown : ChevronRight;
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card className="gap-0 overflow-hidden px-0 py-0" data-testid={testId}>
       <button
         type="button"
         onClick={canExpand ? onToggle : undefined}
@@ -528,6 +560,7 @@ function CampaignCard({
           'flex w-full items-center justify-between gap-2 px-3.5 py-3 text-start',
           canExpand && 'cursor-pointer hover:bg-muted/50',
         )}
+        data-testid={testId ? `${testId}.toggle-button` : undefined}
       >
         <CampaignKeyCell campaignKey={row.campaignKey} />
         {canExpand ? (
@@ -555,9 +588,17 @@ function CampaignCard({
   );
 }
 
-function SummaryCard({ label, value }: { label: string; value: number }) {
+function SummaryCard({
+  label,
+  value,
+  'data-testid': testId,
+}: {
+  label: string;
+  value: number;
+  'data-testid'?: string;
+}) {
   return (
-    <div className="rounded-lg border bg-card p-3">
+    <div className="rounded-lg border bg-card p-3" data-testid={testId}>
       <div className="text-xs uppercase tracking-wide text-muted-foreground">
         {label}
       </div>
@@ -570,7 +611,10 @@ function SummaryCard({ label, value }: { label: string; value: number }) {
 
 function LoadingState() {
   return (
-    <div className="py-12 flex items-center justify-center text-muted-foreground text-sm">
+    <div
+      className="py-12 flex items-center justify-center text-muted-foreground text-sm"
+      data-testid="admin.email-engagement.list.loading"
+    >
       <Loader2 className="h-4 w-4 animate-spin me-2" />
       Loading engagement…
     </div>
@@ -579,7 +623,12 @@ function LoadingState() {
 
 function ErrorState({ message }: { message: string }) {
   return (
-    <div className="py-12 text-center text-sm text-destructive">{message}</div>
+    <div
+      className="py-12 text-center text-sm text-destructive"
+      data-testid="admin.email-engagement.list.error"
+    >
+      {message}
+    </div>
   );
 }
 
@@ -592,14 +641,20 @@ function EmptyState({
 }) {
   if (filterActive) {
     return (
-      <div className="py-12 text-center text-sm text-muted-foreground">
+      <div
+        className="py-12 text-center text-sm text-muted-foreground"
+        data-testid="admin.email-engagement.list.empty-filtered"
+      >
         No campaigns match the filter.
       </div>
     );
   }
   if (!hasData) {
     return (
-      <div className="py-12 text-center text-sm text-muted-foreground">
+      <div
+        className="py-12 text-center text-sm text-muted-foreground"
+        data-testid="admin.email-engagement.list.empty"
+      >
         No engagement recorded yet. Send an email with a{' '}
         <code className="font-mono text-xs">campaignKey</code> to start tracking
         opens and clicks.

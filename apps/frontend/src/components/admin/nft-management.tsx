@@ -207,7 +207,7 @@ function WorkflowTableSection(props: {
       <AccordionContent>
         {workflows && workflows.length > 0 ? (
           <div className="rounded-md border">
-            <Table>
+            <Table data-testid={`admin.nft-management.workflows.${value}.list`}>
               <TableHeader>
                 <TableRow>
                   <TableHead>Domain</TableHead>
@@ -219,7 +219,10 @@ function WorkflowTableSection(props: {
               </TableHeader>
               <TableBody>
                 {workflows.map((workflow) => (
-                  <TableRow key={workflow.workflowId}>
+                  <TableRow
+                    key={workflow.workflowId}
+                    data-testid={`admin.nft-management.workflows.${value}.list.row.${workflow.workflowId}`}
+                  >
                     <TableCell className="font-medium">
                       <TruncatedTextWithHover maxLength={28}>
                         {workflow.domainName}
@@ -276,6 +279,7 @@ function ActiveWorkflowsDialog(props: {
           MOBILE_BOTTOM_SHEET_DIALOG,
           'max-h-[80vh] max-w-[95vw] overflow-y-auto lg:max-w-5xl',
         )}
+        data-testid="admin.nft-management.workflows.dialog"
       >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -908,6 +912,7 @@ const NftManagementTable = memo(function NftManagementTable() {
             onClick={() => setWorkflowModalOpen(true)}
             disabled={isWorkflowsLoading}
             className="shrink-0"
+            data-testid="admin.nft-management.toolbar.active-workflows-button"
           >
             {isWorkflowsLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />

@@ -68,7 +68,18 @@ export const formatEvidenceRdapSummary = (
     : 'Not detected';
 
 /** Monospace owner address chip with avatar + copy-to-clipboard button. */
-export function OwnerAddressCell({ ownerAddress }: { ownerAddress: string }) {
+export function OwnerAddressCell({
+  ownerAddress,
+  'data-testid': testId,
+}: {
+  ownerAddress: string;
+  /**
+   * Optional test-id root for this cell. Callers (the table cell / mobile card)
+   * pass a per-row id so each row's owner cell + copy button are individually
+   * targetable; children derive their ids from it.
+   */
+  'data-testid'?: string;
+}) {
   const checksummed = attemptGetChecksummedAddress(ownerAddress);
   const handleCopyWallet = async () => {
     try {
@@ -80,7 +91,10 @@ export function OwnerAddressCell({ ownerAddress }: { ownerAddress: string }) {
   };
 
   return (
-    <div className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full">
+    <div
+      className="flex items-center gap-2 px-1 py-1 bg-muted rounded-xl max-w-full"
+      data-testid={testId}
+    >
       <UserWalletAvatar address={checksummed} className="size-6" />
       <div className="flex-1 min-w-0">
         <AutoTruncateTextV2
@@ -96,6 +110,7 @@ export function OwnerAddressCell({ ownerAddress }: { ownerAddress: string }) {
         onClick={handleCopyWallet}
         className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
         title="Copy address"
+        data-testid={testId ? `${testId}.copy-button` : undefined}
       >
         <Copy className="h-3 w-3" />
       </button>
@@ -119,8 +134,15 @@ export function ChainCell({ chainId }: { chainId: number }) {
 /** Latest-evidence summary block + a "View JSON" popover with the raw object. */
 export function LatestEvidenceCell({
   latestEvidence,
+  'data-testid': testId,
 }: {
   latestEvidence: LatestEvidence;
+  /**
+   * Optional test-id root for this cell. Callers (the table cell / mobile card)
+   * pass a per-row id so each row's "View JSON" trigger is individually
+   * targetable.
+   */
+  'data-testid'?: string;
 }) {
   if (!latestEvidence) {
     return <span className="text-xs text-muted-foreground">-</span>;
@@ -160,6 +182,7 @@ export function LatestEvidenceCell({
               variant="ghost"
               size="sm"
               className="h-6 px-2 text-xs -ms-2"
+              data-testid={testId ? `${testId}.view-json-button` : undefined}
             />
           }
         >

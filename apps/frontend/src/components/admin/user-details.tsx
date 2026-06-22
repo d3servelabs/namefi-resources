@@ -203,6 +203,7 @@ function UserActionButtons({
           <AsyncButton
             size="sm"
             variant="secondary"
+            data-testid="admin.users.toolbar.impersonate-button"
             onClick={handleImpersonate}
             loadingText="Impersonating..."
           >
@@ -223,6 +224,7 @@ function UserActionButtons({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Send email"
+                data-testid="admin.users.toolbar.send-email-button"
                 className={cn('flex', props.className)}
               >
                 {props.children}
@@ -257,6 +259,7 @@ function DialogLoadingSkeleton() {
 function LoadingDialogBody({ title }: { title: string }) {
   return (
     <DialogContent
+      data-testid="admin.users.dialog.loading"
       className={cn(
         MOBILE_BOTTOM_SHEET_DIALOG,
         '!max-w-6xl max-h-[85vh] overflow-y-auto',
@@ -279,7 +282,10 @@ function ErrorDialogBody({
   description: string;
 }) {
   return (
-    <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-xl')}>
+    <DialogContent
+      data-testid="admin.users.dialog.error"
+      className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-xl')}
+    >
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
@@ -364,10 +370,12 @@ export function ExternalPageButton({
   href,
   children,
   closeAdminDetailDialogs = false,
+  'data-testid': dataTestId,
 }: {
   href: Route;
   children: ReactNode;
   closeAdminDetailDialogs?: boolean;
+  'data-testid'?: string;
 }) {
   return (
     <Button
@@ -378,6 +386,7 @@ export function ExternalPageButton({
         <Link
           {...props}
           href={href}
+          data-testid={dataTestId}
           className={cn(props.className)}
           onClick={(event) => {
             props.onClick?.(event);
@@ -407,9 +416,11 @@ async function copyToClipboard(value: string, label: string) {
 export function CopyableBadge({
   label,
   value,
+  'data-testid': dataTestId,
 }: {
   label: string;
   value: string;
+  'data-testid'?: string;
 }) {
   return (
     <Badge
@@ -418,6 +429,7 @@ export function CopyableBadge({
         <button
           {...props}
           type="button"
+          data-testid={dataTestId}
           onClick={() => copyToClipboard(value, label)}
         />
       )}
@@ -504,6 +516,7 @@ export function TokenExplorerCell({
           )}
           aria-label={`Open token ${tokenId} in block explorer`}
           title="Open in block explorer"
+          data-testid={`admin.users.token.explorer-link.${tokenId}`}
         >
           <ExternalLink className="h-3.5 w-3.5" />
         </a>
@@ -716,6 +729,7 @@ function AdminUserLookupDialogContent({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
+        data-testid="admin.users.lookup.dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           '!max-w-6xl max-h-[85vh] overflow-y-auto',
@@ -771,6 +785,7 @@ export function AdminUserLookupButton({
         }}
         title={title}
         aria-label={title}
+        data-testid="admin.users.lookup.open-button"
       >
         {children ?? <ExternalLink className="h-4 w-4" />}
       </Button>
@@ -827,6 +842,7 @@ export function AdminWalletDetailsButton({
         }}
         title={title}
         aria-label={title}
+        data-testid={`admin.users.wallet.open-button.${walletAddress}`}
       >
         {children ?? <Wallet className="h-4 w-4" />}
       </Button>
@@ -877,6 +893,7 @@ function AdminUserDetailsDialog({
         />
       ) : (
         <DialogContent
+          data-testid="admin.users.details.dialog"
           className={cn(
             MOBILE_BOTTOM_SHEET_DIALOG,
             '!max-w-6xl max-h-[85vh] overflow-y-auto',
@@ -944,6 +961,7 @@ export function AdminWalletDetailsDialog({
         />
       ) : (
         <DialogContent
+          data-testid="admin.users.wallet.dialog"
           className={cn(
             MOBILE_BOTTOM_SHEET_DIALOG,
             '!max-w-6xl max-h-[85vh] overflow-y-auto',
@@ -988,12 +1006,14 @@ function PreferenceToggleRow({
   description,
   checked,
   onCheckedChange,
+  'data-testid': dataTestId,
 }: {
   id: string;
   label: string;
   description: string;
   checked: boolean;
   onCheckedChange: (checked: boolean) => void;
+  'data-testid'?: string;
 }) {
   return (
     <div className="flex items-center justify-between gap-4 rounded-xl border p-3">
@@ -1007,6 +1027,7 @@ function PreferenceToggleRow({
         id={id}
         checked={checked}
         onCheckedChange={(value) => onCheckedChange(value)}
+        data-testid={dataTestId}
       />
     </div>
   );
@@ -1077,7 +1098,10 @@ function AdminUserPreferencesDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-md')}>
+      <DialogContent
+        data-testid="admin.users.preferences.dialog"
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, '!max-w-md')}
+      >
         <DialogHeader>
           <DialogTitle>Edit domain defaults</DialogTitle>
           <DialogDescription>
@@ -1092,6 +1116,7 @@ function AdminUserPreferencesDialog({
             description="Set up ENS automatically for newly acquired domains."
             checked={defaultAutoEns}
             onCheckedChange={setDefaultAutoEns}
+            data-testid="admin.users.preferences.auto-ens-toggle"
           />
           <PreferenceToggleRow
             id="pref-default-auto-renew"
@@ -1099,16 +1124,22 @@ function AdminUserPreferencesDialog({
             description="Renew domains automatically before they expire."
             checked={defaultAutoRenew}
             onCheckedChange={setDefaultAutoRenew}
+            data-testid="admin.users.preferences.auto-renew-toggle"
           />
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            data-testid="admin.users.preferences.cancel-button"
+          >
             Cancel
           </Button>
           <AsyncButton
             onClick={handleSave}
             disabled={!isDirty}
             loadingText="Saving..."
+            data-testid="admin.users.preferences.save-button"
           >
             Save changes
           </AsyncButton>
@@ -1137,7 +1168,12 @@ function AdminUserPreferencesCard({
           </CardDescription>
         </div>
         <PermissionGate permissions={[Permission.WRITE_USERS]}>
-          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setOpen(true)}
+            data-testid="admin.users.preferences.edit-button"
+          >
             <Pencil className="h-4 w-4" />
             Edit
           </Button>
@@ -1169,8 +1205,16 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-2">
-        <CopyableBadge label="User ID" value={data.user.id} />
-        <CopyableBadge label="Privy ID" value={data.user.privyUserId} />
+        <CopyableBadge
+          label="User ID"
+          value={data.user.id}
+          data-testid="admin.users.summary.user-id"
+        />
+        <CopyableBadge
+          label="Privy ID"
+          value={data.user.privyUserId}
+          data-testid="admin.users.summary.privy-id"
+        />
         {data.user.isAdmin ? <Badge>Admin</Badge> : null}
         {data.user.matchedWalletAddress ? (
           <Badge variant="secondary">
@@ -1226,6 +1270,7 @@ function AdminUserCompactSummary({ data }: { data: AdminUserDetails }) {
             <ExternalPageButton
               href={`/admin/users/${data.user.id}` as Route}
               closeAdminDetailDialogs={true}
+              data-testid="admin.users.summary.open-page-button"
             >
               Open full page
               <ArrowUpRight className="h-4 w-4" />
@@ -1300,6 +1345,7 @@ function CompactWalletsCard({ data }: { data: AdminUserDetails }) {
           data.wallets.slice(0, 4).map((wallet) => (
             <div
               key={wallet.address}
+              data-testid={`admin.users.wallets.row.${wallet.address}`}
               className="flex flex-col gap-2 rounded-xl border p-3 md:flex-row md:items-center md:justify-between"
             >
               <div>
@@ -1338,7 +1384,11 @@ function CompactRecentOrdersCard({ data }: { data: AdminUserDetails }) {
           </div>
         ) : (
           data.orders.slice(0, 5).map((order) => (
-            <div key={order.id} className="rounded-xl border p-3">
+            <div
+              key={order.id}
+              data-testid={`admin.users.recent-orders.row.${order.id}`}
+              className="rounded-xl border p-3"
+            >
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="font-mono text-sm">{order.id}</div>
                 <Badge variant="outline">{order.status}</Badge>
@@ -1377,7 +1427,10 @@ function CompactDomainsPreviewCard({ data }: { data: AdminUserDetails }) {
               <EmptyTableRow colSpan={3} label="No domains found." />
             ) : (
               data.domains.slice(0, 6).map((domain) => (
-                <TableRow key={`${domain.chainId}-${domain.tokenId}`}>
+                <TableRow
+                  key={`${domain.chainId}-${domain.tokenId}`}
+                  data-testid={`admin.users.domains-preview.row.${domain.normalizedDomainName}`}
+                >
                   <TableCell>
                     <DomainLabel domain={domain.normalizedDomainName} />
                   </TableCell>
@@ -1515,6 +1568,7 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
             <ExternalPageButton
               href={`/admin/users/${data.wallet.linkedUserId}` as Route}
               closeAdminDetailDialogs={true}
+              data-testid="admin.users.wallet.open-user-page-button"
             >
               Open user page
               <ArrowUpRight className="h-4 w-4" />
@@ -1564,7 +1618,10 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
                 <EmptyTableRow colSpan={3} label="No NFSC balances found." />
               ) : (
                 data.balances.map((balance) => (
-                  <TableRow key={`${balance.chainId}-${balance.walletAddress}`}>
+                  <TableRow
+                    key={`${balance.chainId}-${balance.walletAddress}`}
+                    data-testid={`admin.users.wallet.balances.row.${balance.chainId}`}
+                  >
                     <TableCell>
                       <ChainCell
                         chainId={balance.chainId}
@@ -1608,7 +1665,10 @@ function AdminWalletDetailsContent({ data }: { data: AdminWalletDetails }) {
                 />
               ) : (
                 data.domains.map((domain) => (
-                  <TableRow key={`${domain.chainId}-${domain.tokenId}`}>
+                  <TableRow
+                    key={`${domain.chainId}-${domain.tokenId}`}
+                    data-testid={`admin.users.wallet.domains.row.${domain.normalizedDomainName}`}
+                  >
                     <TableCell>
                       <DomainLabel domain={domain.normalizedDomainName} />
                     </TableCell>
@@ -1652,7 +1712,10 @@ function UserDomainsTable({ data }: { data: AdminUserDetails }) {
           <EmptyTableRow colSpan={5} label="No domains found." />
         ) : (
           data.domains.map((domain) => (
-            <TableRow key={`${domain.chainId}-${domain.tokenId}`}>
+            <TableRow
+              key={`${domain.chainId}-${domain.tokenId}`}
+              data-testid={`admin.users.domains.row.${domain.normalizedDomainName}`}
+            >
               <TableCell>
                 <div className="flex items-center gap-1">
                   <DomainLabel domain={domain.normalizedDomainName} />
@@ -1734,7 +1797,10 @@ function UserBalancesTable({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={4} label="No linked wallets found." />
               ) : (
                 data.wallets.map((wallet) => (
-                  <TableRow key={wallet.address}>
+                  <TableRow
+                    key={wallet.address}
+                    data-testid={`admin.users.balances.wallet-row.${wallet.address}`}
+                  >
                     <TableCell>
                       <WalletAddressCell
                         address={wallet.address}
@@ -1776,7 +1842,10 @@ function UserBalancesTable({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={4} label="No saved payment methods." />
               ) : (
                 data.paymentMethods.map((paymentMethod) => (
-                  <TableRow key={paymentMethod.id}>
+                  <TableRow
+                    key={paymentMethod.id}
+                    data-testid={`admin.users.payment-methods.row.${paymentMethod.id}`}
+                  >
                     <TableCell>
                       {paymentMethod.cardDetails?.brand ?? paymentMethod.type}
                     </TableCell>
@@ -1820,10 +1889,14 @@ function UserOrdersTable({ data }: { data: AdminUserDetails }) {
           <EmptyTableRow colSpan={6} label="No orders found." />
         ) : (
           data.orders.map((order) => (
-            <TableRow key={order.id}>
+            <TableRow
+              key={order.id}
+              data-testid={`admin.users.orders.row.${order.id}`}
+            >
               <TableCell>
                 <Link
                   href={`/orders/${order.id}`}
+                  data-testid={`admin.users.orders.row.link.${order.id}`}
                   className={cn(
                     buttonVariants({ variant: 'link', size: 'xs' }),
                     'px-0',
@@ -1877,7 +1950,10 @@ function UserCommerceTables({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={5} label="No cart items found." />
               ) : (
                 data.cartItems.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRow
+                    key={item.id}
+                    data-testid={`admin.users.cart.row.${item.id}`}
+                  >
                     <TableCell>
                       <DomainLabel domain={item.normalizedDomainName} />
                     </TableCell>
@@ -1912,7 +1988,10 @@ function UserCommerceTables({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={2} label="No wishlist items found." />
               ) : (
                 data.wishlistItems.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRow
+                    key={item.id}
+                    data-testid={`admin.users.wishlist.row.${item.id}`}
+                  >
                     <TableCell>
                       <DomainLabel domain={item.normalizedDomainName} />
                     </TableCell>
@@ -1945,7 +2024,10 @@ function UserCommerceTables({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={5} label="No free claims found." />
               ) : (
                 data.freeClaims.map((claim) => (
-                  <TableRow key={claim.id}>
+                  <TableRow
+                    key={claim.id}
+                    data-testid={`admin.users.free-claims.row.${claim.id}`}
+                  >
                     <TableCell>{claim.groupOrCampaignKey}</TableCell>
                     <TableCell>
                       {(claim.claimedDomainName ??
@@ -2010,7 +2092,10 @@ function UserIdentityTables({ data }: { data: AdminUserDetails }) {
                 <EmptyTableRow colSpan={5} label="No linked wallets found." />
               ) : (
                 data.wallets.map((wallet) => (
-                  <TableRow key={wallet.address}>
+                  <TableRow
+                    key={wallet.address}
+                    data-testid={`admin.users.identity.wallet-row.${wallet.address}`}
+                  >
                     <TableCell>
                       <WalletAddressCell
                         address={wallet.address}
@@ -2066,6 +2151,7 @@ function UserIdentityTables({ data }: { data: AdminUserDetails }) {
                   data.credentials.linkedAccounts.map((account, index) => (
                     <TableRow
                       key={`${account.type}-${account.displayValue}-${index}`}
+                      data-testid={`admin.users.linked-accounts.row.${account.type}-${account.displayValue ?? ''}`}
                     >
                       <TableCell>{account.type}</TableCell>
                       <TableCell className="font-mono text-xs">
@@ -2108,7 +2194,10 @@ function UserIdentityTables({ data }: { data: AdminUserDetails }) {
                   <EmptyTableRow colSpan={6} label="No API keys found." />
                 ) : (
                   data.credentials.apiKeys.map((apiKey) => (
-                    <TableRow key={apiKey.id}>
+                    <TableRow
+                      key={apiKey.id}
+                      data-testid={`admin.users.api-keys.row.${apiKey.id}`}
+                    >
                       <TableCell>{apiKey.name}</TableCell>
                       <TableCell>{apiKey.type}</TableCell>
                       <TableCell className="font-mono text-xs">
@@ -2197,8 +2286,16 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <CopyableBadge label="User ID" value={data.user.id} />
-            <CopyableBadge label="Privy ID" value={data.user.privyUserId} />
+            <CopyableBadge
+              label="User ID"
+              value={data.user.id}
+              data-testid="admin.users.page.user-id"
+            />
+            <CopyableBadge
+              label="Privy ID"
+              value={data.user.privyUserId}
+              data-testid="admin.users.page.privy-id"
+            />
             {data.user.isAdmin ? <Badge>Admin</Badge> : null}
             {data.user.matchedWalletAddress ? (
               <Badge variant="secondary">
@@ -2252,13 +2349,19 @@ function UserDetailsPageContentView({ data }: { data: AdminUserDetails }) {
 
       <Tabs defaultValue="domains" className="w-full">
         <TabsList className="grid h-auto w-full grid-cols-2 gap-2 rounded-xl p-1 lg:grid-cols-5 max-sm:flex max-sm:flex-wrap max-sm:justify-start">
-          <TabsTrigger value="domains">Domains & NFTs</TabsTrigger>
-          <TabsTrigger value="balances">NFSC & Payment Methods</TabsTrigger>
-          <TabsTrigger value="orders">Orders</TabsTrigger>
-          <TabsTrigger value="commerce">
+          <TabsTrigger value="domains" data-testid="admin.users.tabs.domains">
+            Domains & NFTs
+          </TabsTrigger>
+          <TabsTrigger value="balances" data-testid="admin.users.tabs.balances">
+            NFSC & Payment Methods
+          </TabsTrigger>
+          <TabsTrigger value="orders" data-testid="admin.users.tabs.orders">
+            Orders
+          </TabsTrigger>
+          <TabsTrigger value="commerce" data-testid="admin.users.tabs.commerce">
             Cart / Wishlist / Free Claims
           </TabsTrigger>
-          <TabsTrigger value="identity">
+          <TabsTrigger value="identity" data-testid="admin.users.tabs.identity">
             Wallets / Credentials / Contact
           </TabsTrigger>
         </TabsList>
@@ -2335,7 +2438,7 @@ export function AdminUserDetailsPageContent({ userId }: { userId: string }) {
 
   if (query.isError || !query.data) {
     return (
-      <Card>
+      <Card data-testid="admin.users.page.error">
         <CardHeader>
           <CardTitle>Unable to load user details</CardTitle>
           <CardDescription>
@@ -2378,7 +2481,10 @@ export function AdminUserExpandedDetails({ userId }: { userId: string }) {
 
   if (query.isError || !query.data) {
     return (
-      <div className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground">
+      <div
+        data-testid="admin.users.expanded.error"
+        className="rounded-xl border border-dashed p-4 text-sm text-muted-foreground"
+      >
         {query.error?.message ?? 'Unable to load user details.'}
       </div>
     );
@@ -2424,6 +2530,7 @@ export function AdminUserExpandedDetails({ userId }: { userId: string }) {
         <ExternalPageButton
           href={`/admin/users/${userId}` as Route}
           closeAdminDetailDialogs={true}
+          data-testid="admin.users.expanded.open-page-button"
         >
           Open full page
           <ArrowUpRight className="h-4 w-4" />

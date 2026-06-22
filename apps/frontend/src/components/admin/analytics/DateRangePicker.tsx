@@ -78,7 +78,15 @@ export default function DateRangePicker({
 
   return (
     <Popover>
-      <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            data-testid="admin.analytics.date-range-picker.trigger"
+          />
+        }
+      >
         <CalendarIcon className="h-4 w-4 me-2" />
         {currentPreset ? currentPreset.label : 'Custom Range'}
       </PopoverTrigger>
@@ -94,7 +102,7 @@ export default function DateRangePicker({
               }
               onValueChange={handlePresetChange}
             >
-              <SelectTrigger>
+              <SelectTrigger data-testid="admin.analytics.date-range-picker.preset-select">
                 <SelectValue placeholder="Select range" />
               </SelectTrigger>
               <SelectContent>
@@ -120,6 +128,7 @@ export default function DateRangePicker({
                   value={customStartDate}
                   onChange={(e) => setCustomStartDate(e.target.value)}
                   placeholder="7daysAgo, 2024-01-01"
+                  data-testid="admin.analytics.date-range-picker.start-date-input"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   Use relative (7daysAgo) or absolute (YYYY-MM-DD) format
@@ -132,12 +141,18 @@ export default function DateRangePicker({
                   value={customEndDate}
                   onChange={(e) => setCustomEndDate(e.target.value)}
                   placeholder="today, 2024-01-08"
+                  data-testid="admin.analytics.date-range-picker.end-date-input"
                 />
                 <p className="text-xs text-muted-foreground mt-1">
                   Use relative (today, now) or absolute (YYYY-MM-DD) format
                 </p>
               </div>
-              <Button onClick={handleCustomApply} size="sm" className="w-full">
+              <Button
+                onClick={handleCustomApply}
+                size="sm"
+                className="w-full"
+                data-testid="admin.analytics.date-range-picker.apply-button"
+              >
                 Apply Custom Range
               </Button>
             </div>

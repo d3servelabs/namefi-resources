@@ -75,7 +75,10 @@ export function CacheEntriesViewer({
 
   if (isLoading) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div
+        data-testid="admin.dns-cache.entries.loading"
+        className="text-center py-8 text-muted-foreground"
+      >
         Loading cache entries...
       </div>
     );
@@ -83,7 +86,10 @@ export function CacheEntriesViewer({
 
   if (!data || data.entries.length === 0) {
     return (
-      <div className="text-center py-8 text-muted-foreground">
+      <div
+        data-testid="admin.dns-cache.entries.empty"
+        className="text-center py-8 text-muted-foreground"
+      >
         No cache entries found
       </div>
     );

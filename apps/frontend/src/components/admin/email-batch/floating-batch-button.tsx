@@ -60,11 +60,13 @@ export function FloatingBatchButton() {
                 aria-label={label}
                 className="fixed bottom-[calc(1.5rem_+_env(safe-area-inset-bottom,0px))] right-6 z-50 h-12 w-12 rounded-full shadow-lg p-0"
                 size="icon"
+                data-testid="admin.email-batch.floating-button"
               >
                 <Mail className="h-5 w-5" />
                 <span
                   className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-xs font-semibold flex items-center justify-center"
                   aria-hidden="true"
+                  data-testid="admin.email-batch.floating-button.count"
                 >
                   {count > 99 ? '99+' : count}
                 </span>

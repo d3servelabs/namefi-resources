@@ -206,7 +206,14 @@ export function formatRegistrar(registrar: string | undefined): string {
 
 /** Monospaced domain name. */
 export function DomainCell({ domain }: { domain: string }) {
-  return <span className="font-mono text-xs">{domain}</span>;
+  return (
+    <span
+      className="font-mono text-xs"
+      data-testid={`admin.auto-renewal.domains.row.${domain}.domain`}
+    >
+      {domain}
+    </span>
+  );
 }
 
 /** Owner wallet avatar (admin-openable), or "-". */
@@ -314,6 +321,7 @@ export function PaymentsCell({ row }: { row: DomainRow }) {
             onClick={(e) => e.stopPropagation()}
             className="hover:underline text-blue-300"
             title={`View on ${p.provider === 'STRIPE' ? 'Stripe dashboard' : 'block explorer'}`}
+            data-testid={`admin.auto-renewal.domains.row.${row.domain}.payment-link.${p.provider}`}
           >
             {inner}
           </a>
@@ -350,7 +358,11 @@ export function ErrorActionCell({ row }: { row: DomainRow }) {
             const href = `mailto:${row.userEmail}?${params.toString()}`;
             return (
               <>
-                <a href={href} onClick={(e) => e.stopPropagation()}>
+                <a
+                  href={href}
+                  onClick={(e) => e.stopPropagation()}
+                  data-testid={`admin.auto-renewal.domains.row.${row.domain}.contact-user-link`}
+                >
                   <Badge
                     variant="outline"
                     className="text-xs w-fit border-blue-300 text-blue-300 hover:bg-blue-300/10 cursor-pointer"
@@ -366,7 +378,11 @@ export function ErrorActionCell({ row }: { row: DomainRow }) {
             );
           })()
         ) : (
-          <Badge variant="outline" className="text-xs w-fit">
+          <Badge
+            variant="outline"
+            className="text-xs w-fit"
+            data-testid={`admin.auto-renewal.domains.row.${row.domain}.action-required`}
+          >
             {row.actionRequired}
           </Badge>
         ))}
@@ -394,6 +410,7 @@ export function TxHashCell({ row }: { row: DomainRow }) {
         size="sm"
         className="h-6 w-6 p-0 flex-shrink-0"
         title="Copy tx hash"
+        data-testid={`admin.auto-renewal.domains.row.${row.domain}.tx-hash.copy-button`}
         onClick={async (e) => {
           e.stopPropagation();
           try {
@@ -414,6 +431,7 @@ export function TxHashCell({ row }: { row: DomainRow }) {
           onClick={(e) => e.stopPropagation()}
           title="View on explorer"
           className="flex-shrink-0 inline-flex h-6 w-6 items-center justify-center rounded hover:bg-muted text-muted-foreground hover:text-foreground"
+          data-testid={`admin.auto-renewal.domains.row.${row.domain}.tx-hash.explorer-link`}
         >
           <ExternalLink className="h-3 w-3" />
         </a>

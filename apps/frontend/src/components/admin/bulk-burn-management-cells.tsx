@@ -84,6 +84,7 @@ export function OwnerCell({
         onClick={() => onCopy(ownerAddress)}
         className="p-1 hover:bg-background rounded transition-colors flex-shrink-0"
         title="Copy address"
+        data-testid={`admin.bulk-burn.domains.row.${ownerAddress}.copy-address-button`}
       >
         <Copy className="h-3 w-3" />
       </button>

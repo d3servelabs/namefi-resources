@@ -167,6 +167,7 @@ export function ServerDetailModal({
             MOBILE_BOTTOM_SHEET_DIALOG,
             '!max-w-4xl max-h-[90vh] overflow-y-auto',
           )}
+          data-testid="admin.dns-cache.server-detail.dialog"
         >
           <DialogHeader>
             <DialogTitle className="flex items-center justify-start gap-2">
@@ -189,7 +190,10 @@ export function ServerDetailModal({
                       setAutoRefresh(value);
                     }}
                   >
-                    <SelectTrigger className="w-[80px] h-6">
+                    <SelectTrigger
+                      className="w-[80px] h-6"
+                      data-testid="admin.dns-cache.server-detail.auto-refresh-select"
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -205,6 +209,7 @@ export function ServerDetailModal({
                     size="sm"
                     onClick={handleManualRefresh}
                     disabled={statsQuery.isLoading}
+                    data-testid="admin.dns-cache.server-detail.refresh-button"
                   >
                     <RefreshCw
                       className={`h-3 w-3 ${statsQuery.isLoading ? 'animate-spin' : ''}`}
@@ -216,6 +221,7 @@ export function ServerDetailModal({
                     size="sm"
                     onClick={handleDownloadStats}
                     disabled={!statsQuery.data?.stats}
+                    data-testid="admin.dns-cache.server-detail.download-stats-button"
                   >
                     <Download className="h-4 w-4 me-2" />
                     JSON
@@ -238,18 +244,28 @@ export function ServerDetailModal({
                   {showCacheEntries && (
                     <DropdownMenu>
                       <DropdownMenuTrigger
-                        render={<Button variant="outline" size="sm" />}
+                        render={
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            data-testid="admin.dns-cache.server-detail.download-dump-menu"
+                          />
+                        }
                       >
                         <Download className="h-4 w-4 me-2" />
                         Download
                         <ChevronDown className="h-4 w-4 ms-2" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
-                        <DropdownMenuItem onClick={handleDownloadDump}>
+                        <DropdownMenuItem
+                          onClick={handleDownloadDump}
+                          data-testid="admin.dns-cache.server-detail.download-dump-menu.download-json"
+                        >
                           Download JSON
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => setShowCacheEntries(false)}
+                          data-testid="admin.dns-cache.server-detail.download-dump-menu.hide-entries"
                         >
                           Hide Entries
                         </DropdownMenuItem>
@@ -261,6 +277,7 @@ export function ServerDetailModal({
                       variant="outline"
                       size="sm"
                       onClick={() => setShowCacheEntries(true)}
+                      data-testid="admin.dns-cache.server-detail.view-entries-button"
                     >
                       View Entries
                     </Button>
@@ -285,6 +302,7 @@ export function ServerDetailModal({
                 variant="destructive"
                 onClick={() => setConfirmFlushOpen(true)}
                 disabled={flushAllMutation.isPending}
+                data-testid="admin.dns-cache.server-detail.flush-all-button"
               >
                 <Trash2 className="h-4 w-4 me-2" />
                 {flushAllMutation.isPending

@@ -152,6 +152,7 @@ export function UserSelectComboBox(props: UserSelectComboBoxProps) {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger
           id={id}
+          data-testid="admin.users.combobox.single.trigger"
           aria-label={ariaLabel ?? 'Select user'}
           disabled={disabled}
           className={cn(
@@ -172,6 +173,7 @@ export function UserSelectComboBox(props: UserSelectComboBoxProps) {
             {selected && !disabled ? (
               <button
                 type="button"
+                data-testid="admin.users.combobox.single.clear-button"
                 onClick={(event) => {
                   event.stopPropagation();
                   event.preventDefault();
@@ -213,6 +215,7 @@ export function UserSelectComboBox(props: UserSelectComboBoxProps) {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger
         id={id}
+        data-testid="admin.users.combobox.multiple.trigger"
         aria-label={ariaLabel ?? 'Select users'}
         disabled={disabled}
         className={cn(
@@ -224,6 +227,7 @@ export function UserSelectComboBox(props: UserSelectComboBoxProps) {
           {props.value.map((user) => (
             <span
               key={user.id}
+              data-testid={`admin.users.combobox.chip.${user.id}`}
               className="bg-muted inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-xs"
               title={getUserLabel(user)}
             >
@@ -232,6 +236,7 @@ export function UserSelectComboBox(props: UserSelectComboBoxProps) {
               </span>
               <button
                 type="button"
+                data-testid={`admin.users.combobox.chip.remove-button.${user.id}`}
                 onClick={(event) => {
                   event.stopPropagation();
                   event.preventDefault();
@@ -321,6 +326,7 @@ function SearchBody({
         value={term}
         onValueChange={onTermChange}
         placeholder={placeholder ?? 'Search by email, name, wallet, or domain…'}
+        data-testid="admin.users.combobox.search-input"
         className="appearance-none bg-transparent text-foreground caret-foreground placeholder:text-muted-foreground"
       />
       {atMaxSelected && maxSelected ? (
@@ -332,15 +338,24 @@ function SearchBody({
       ) : null}
       <CommandList className="max-h-[260px]">
         {!meetsMinChars ? (
-          <div className="text-muted-foreground px-3 py-6 text-center text-xs">
+          <div
+            data-testid="admin.users.combobox.min-chars"
+            className="text-muted-foreground px-3 py-6 text-center text-xs"
+          >
             Type at least {MIN_SEARCH_CHARS} characters to search.
           </div>
         ) : isLoading ? (
-          <div className="text-muted-foreground flex items-center justify-center gap-2 px-3 py-6 text-xs">
+          <div
+            data-testid="admin.users.combobox.loading"
+            className="text-muted-foreground flex items-center justify-center gap-2 px-3 py-6 text-xs"
+          >
             <Loader2 className="h-3.5 w-3.5 animate-spin" /> Searching…
           </div>
         ) : hasError ? (
-          <div className="text-destructive space-y-1 px-3 py-6 text-center text-xs">
+          <div
+            data-testid="admin.users.combobox.error"
+            className="text-destructive space-y-1 px-3 py-6 text-center text-xs"
+          >
             <div>Couldn't load users.</div>
             {errorMessage ? (
               <div className="text-destructive/80 break-all text-[11px] font-mono">
@@ -349,7 +364,9 @@ function SearchBody({
             ) : null}
           </div>
         ) : results.length === 0 ? (
-          <CommandEmpty>No matching users.</CommandEmpty>
+          <CommandEmpty data-testid="admin.users.combobox.empty">
+            No matching users.
+          </CommandEmpty>
         ) : (
           <CommandGroup>
             {results.map((user) => {
@@ -361,6 +378,7 @@ function SearchBody({
                 <CommandItem
                   key={user.id}
                   value={user.id}
+                  data-testid={`admin.users.combobox.option.${user.id}`}
                   disabled={disableRow}
                   onSelect={() => onToggle(user)}
                   className="flex items-center gap-2"

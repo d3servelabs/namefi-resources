@@ -275,7 +275,7 @@ function WorkflowHistoryContent() {
                 onValueChange={handleDaysChange}
                 disabled={isFetching}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.workflow-history.filters.days-select">
                   <SelectValue placeholder="Select time range" />
                 </SelectTrigger>
                 <SelectContent>
@@ -296,7 +296,7 @@ function WorkflowHistoryContent() {
                 onValueChange={handleWorkflowTypeChange}
                 disabled={isFetching}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.workflow-history.filters.type-select">
                   <SelectValue placeholder="Select workflow type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -330,7 +330,7 @@ function WorkflowHistoryContent() {
                 onValueChange={handleLimitChange}
                 disabled={isFetching}
               >
-                <SelectTrigger>
+                <SelectTrigger data-testid="admin.workflow-history.filters.page-size-select">
                   <SelectValue placeholder="Page size" />
                 </SelectTrigger>
                 <SelectContent>
@@ -410,7 +410,10 @@ function WorkflowHistoryContent() {
                   </div>
                 </div>
               )}
-              <Table className="w-full">
+              <Table
+                className="w-full"
+                data-testid="admin.workflow-history.list"
+              >
                 <Thead>
                   <Tr>
                     <Th>Workflow Type</Th>
@@ -430,7 +433,10 @@ function WorkflowHistoryContent() {
                       workflow.runId,
                     );
                     return (
-                      <Tr key={workflow.workflowId}>
+                      <Tr
+                        key={workflow.workflowId}
+                        data-testid={`admin.workflow-history.list.row.${workflow.workflowId}`}
+                      >
                         <Td>
                           <div className="flex items-center gap-2">
                             {getWorkflowTypeIcon(workflow.workflowType)}
@@ -554,6 +560,7 @@ function WorkflowHistoryContent() {
                   onClick={handleFirstPage}
                   disabled={!hasPreviousPage || isFetching}
                   title="Go to first page"
+                  data-testid="admin.workflow-history.list.first-button"
                 >
                   <ChevronsLeft className="h-4 w-4 rtl:-scale-x-100" />
                 </Button>
@@ -563,6 +570,7 @@ function WorkflowHistoryContent() {
                   onClick={handlePreviousPage}
                   disabled={!hasPreviousPage || isFetching}
                   title="Previous page"
+                  data-testid="admin.workflow-history.list.prev-button"
                 >
                   {isFetching && hasPreviousPage ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -593,6 +601,7 @@ function WorkflowHistoryContent() {
                         : 'Next page'
                       : 'No more results'
                   }
+                  data-testid="admin.workflow-history.list.next-button"
                 >
                   {nextPageToken || previousPageTokens.length > 0
                     ? 'Load More'

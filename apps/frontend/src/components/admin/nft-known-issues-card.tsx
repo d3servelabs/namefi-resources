@@ -245,7 +245,10 @@ function KnownIssueFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+        data-testid="admin.nft-management.known-issues.form-dialog"
+      >
         <DialogHeader>
           <DialogTitle>
             {mode === 'add' ? 'Add Known Issue' : 'Edit Known Issue'}
@@ -265,6 +268,7 @@ function KnownIssueFormDialog({
               value={normalizedDomainName}
               onChange={(event) => setNormalizedDomainName(event.target.value)}
               disabled={mode === 'edit'}
+              data-testid="admin.nft-management.known-issues.form-dialog.domain-input"
             />
           </div>
 
@@ -280,7 +284,10 @@ function KnownIssueFormDialog({
                 );
               }}
             >
-              <SelectTrigger id="known-issue-category">
+              <SelectTrigger
+                id="known-issue-category"
+                data-testid="admin.nft-management.known-issues.form-dialog.category-select"
+              >
                 <SelectValue placeholder="Choose a category" />
               </SelectTrigger>
               <SelectContent>
@@ -305,6 +312,7 @@ function KnownIssueFormDialog({
               onChange={(event) => setExplanation(event.target.value)}
               rows={5}
               maxLength={2000}
+              data-testid="admin.nft-management.known-issues.form-dialog.explanation-input"
             />
             <p className="text-xs text-muted-foreground">
               {explanation.length}/2000
@@ -313,10 +321,17 @@ function KnownIssueFormDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            data-testid="admin.nft-management.known-issues.form-dialog.cancel-button"
+          >
             Cancel
           </Button>
-          <AsyncButton onClick={handleSubmit}>
+          <AsyncButton
+            onClick={handleSubmit}
+            data-testid="admin.nft-management.known-issues.form-dialog.submit-button"
+          >
             {mode === 'add' ? 'Create' : 'Save'}
           </AsyncButton>
         </DialogFooter>
@@ -330,19 +345,23 @@ function KnownIssueRowActions({
   onEdit,
   onDelete,
   isDeleting,
+  'data-testid':
+    testId = `admin.nft-management.known-issues.list.row.${issue.normalizedDomainName}.actions`,
 }: {
   issue: KnownIssue;
   onEdit: (issue: KnownIssue) => void;
   onDelete: (issue: KnownIssue) => Promise<void>;
   isDeleting: boolean;
+  'data-testid'?: string;
 }) {
   return (
-    <div className="flex items-center justify-end gap-2">
+    <div className="flex items-center justify-end gap-2" data-testid={testId}>
       <Button
         variant="outline"
         size="sm"
         onClick={() => onEdit(issue)}
         aria-label="Edit known issue"
+        data-testid={`${testId}.edit-button`}
       >
         <Pencil className="h-3 w-3" />
         Edit
@@ -356,6 +375,7 @@ function KnownIssueRowActions({
               disabled={isDeleting}
               className="border-red-200 text-red-600 hover:bg-red-900/10"
               aria-label="Delete known issue"
+              data-testid={`${testId}.delete-button`}
             />
           }
         >
@@ -504,6 +524,7 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
               size="sm"
               onClick={openAddDialog}
               className="shrink-0"
+              data-testid="admin.nft-management.known-issues.toolbar.add-button"
             >
               <Plus className="h-4 w-4" />
               Add Known Issue
@@ -519,7 +540,10 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
               ))}
             </div>
           ) : listKnownIssuesQuery.isError ? (
-            <div className="flex items-center gap-2 rounded-md border border-red-600/30 bg-red-600/10 px-4 py-3 text-sm text-red-500">
+            <div
+              className="flex items-center gap-2 rounded-md border border-red-600/30 bg-red-600/10 px-4 py-3 text-sm text-red-500"
+              data-testid="admin.nft-management.known-issues.error"
+            >
               <AlertTriangle className="h-4 w-4 flex-shrink-0" />
               Failed to load known issues
               {listKnownIssuesQuery.error?.message
@@ -527,12 +551,15 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
                 : '.'}
             </div>
           ) : issues.length === 0 ? (
-            <p className="py-6 text-center text-sm text-muted-foreground">
+            <p
+              className="py-6 text-center text-sm text-muted-foreground"
+              data-testid="admin.nft-management.known-issues.empty"
+            >
               No known issues yet. Acknowledged domains will appear here.
             </p>
           ) : (
             <div className="overflow-x-auto rounded-md border">
-              <Table>
+              <Table data-testid="admin.nft-management.known-issues.list">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Domain</TableHead>
@@ -547,7 +574,10 @@ export const NftKnownIssuesCard = memo(function NftKnownIssuesCard() {
                 </TableHeader>
                 <TableBody>
                   {issues.map((issue) => (
-                    <TableRow key={issue.normalizedDomainName}>
+                    <TableRow
+                      key={issue.normalizedDomainName}
+                      data-testid={`admin.nft-management.known-issues.list.row.${issue.normalizedDomainName}`}
+                    >
                       <TableCell className="font-medium">
                         <TruncatedTextWithHover maxLength={32}>
                           {issue.normalizedDomainName}

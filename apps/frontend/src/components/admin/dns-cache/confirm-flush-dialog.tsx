@@ -29,7 +29,7 @@ export function ConfirmFlushDialog({
 }: ConfirmFlushDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
+      <AlertDialogContent data-testid="admin.dns-cache.flush.confirm-dialog">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             <AlertCircle className="h-5 w-5 text-destructive" />
@@ -43,7 +43,11 @@ export function ConfirmFlushDialog({
             </p>
             <ul className="list-disc list-inside ps-2">
               {serverNames.map((name) => (
-                <li key={name} className="font-medium">
+                <li
+                  key={name}
+                  className="font-medium"
+                  data-testid={`admin.dns-cache.flush.confirm-dialog.server.${name}`}
+                >
                   {name}
                 </li>
               ))}
@@ -58,10 +62,13 @@ export function ConfirmFlushDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel data-testid="admin.dns-cache.flush.confirm-dialog.cancel-button">
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             className="bg-destructive hover:bg-destructive/90"
+            data-testid="admin.dns-cache.flush.confirm-dialog.confirm-button"
           >
             Yes, Flush Cache
           </AlertDialogAction>

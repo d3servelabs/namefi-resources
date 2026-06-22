@@ -57,7 +57,10 @@ export function ExportTrackingCard({
   canExpand,
 }: ExportTrackingCardProps) {
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`admin.export-tracking.card.${record.id}`}
+    >
       <div className="flex items-start gap-2 px-3 py-2.5">
         {canExpand ? (
           <button
@@ -66,6 +69,7 @@ export function ExportTrackingCard({
             aria-expanded={isExpanded}
             aria-label={isExpanded ? 'Collapse history' : 'Expand history'}
             className="mt-0.5 shrink-0 rounded-md p-0.5 text-muted-foreground transition-colors hover:bg-muted/50 hover:text-foreground"
+            data-testid={`admin.export-tracking.card.${record.id}.expand-toggle`}
           >
             <ChevronRight
               className={cn(
@@ -76,7 +80,10 @@ export function ExportTrackingCard({
           </button>
         ) : null}
         <div className="min-w-0 flex-1">
-          <div className="break-words font-medium">
+          <div
+            className="break-words font-medium"
+            data-testid={`admin.export-tracking.card.${record.id}.domain-name`}
+          >
             {record.normalizedDomainName}
           </div>
         </div>
@@ -90,7 +97,10 @@ export function ExportTrackingCard({
 
         <CardRow label="Owner">
           <div className="w-full">
-            <OwnerAddressCell ownerAddress={record.ownerAddress} />
+            <OwnerAddressCell
+              ownerAddress={record.ownerAddress}
+              data-testid={`admin.export-tracking.card.${record.id}.owner`}
+            />
           </div>
         </CardRow>
 
@@ -131,11 +141,17 @@ export function ExportTrackingCard({
         </CardRow>
 
         <CardRow label="Latest Evidence">
-          <LatestEvidenceCell latestEvidence={record.latestEvidence} />
+          <LatestEvidenceCell
+            latestEvidence={record.latestEvidence}
+            data-testid={`admin.export-tracking.card.${record.id}.latest-evidence`}
+          />
         </CardRow>
 
         <CardRow label="Actions">
-          <VerifyButton record={record} />
+          <VerifyButton
+            record={record}
+            data-testid={`admin.export-tracking.row.${record.id}.actions`}
+          />
         </CardRow>
       </dl>
 

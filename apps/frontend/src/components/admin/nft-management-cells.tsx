@@ -142,7 +142,10 @@ export function OwnerAddressCell({ row }: { row: NftManagementRow }) {
   };
 
   return (
-    <div className="flex items-center gap-2 rounded-xl bg-muted px-2 py-1.5 max-w-full">
+    <div
+      className="flex items-center gap-2 rounded-xl bg-muted px-2 py-1.5 max-w-full"
+      data-testid={`admin.nft-management.list.row.${row.normalizedDomainName}.owner-address`}
+    >
       <UserWalletAvatar
         address={ownerAddress}
         userId={row.userId ?? undefined}
@@ -162,6 +165,7 @@ export function OwnerAddressCell({ row }: { row: NftManagementRow }) {
         onClick={handleCopyWallet}
         className="rounded p-1 transition-colors hover:bg-background"
         title="Copy address"
+        data-testid={`admin.nft-management.list.row.${row.normalizedDomainName}.owner-address.copy-button`}
       >
         <Copy className="h-3 w-3" />
       </button>
@@ -350,8 +354,15 @@ export function BurnActionButton(props: {
   isBurning: boolean;
   isBurnWorkflowActive: boolean;
   onBurn: (normalizedDomainName: string, chainId: number) => Promise<void>;
+  'data-testid'?: string;
 }) {
-  const { row, isBurning, isBurnWorkflowActive, onBurn } = props;
+  const {
+    row,
+    isBurning,
+    isBurnWorkflowActive,
+    onBurn,
+    'data-testid': testId,
+  } = props;
 
   if (!row.canBurn) {
     return null;
@@ -367,6 +378,7 @@ export function BurnActionButton(props: {
               size="sm"
               disabled
               className="border-red-200 text-red-400"
+              data-testid={testId}
             />
           }
         >
@@ -389,6 +401,7 @@ export function BurnActionButton(props: {
             size="sm"
             disabled={isBurning}
             className="border border-red-200 bg-red-900/10 text-red-600 hover:bg-red-900/20"
+            data-testid={testId}
           />
         }
       >
@@ -421,8 +434,9 @@ export function FixExpirationActionButton(props: {
   row: NftManagementRow;
   isPending: boolean;
   onFix: (normalizedDomainName: string, chainId: number) => Promise<void>;
+  'data-testid'?: string;
 }) {
-  const { row, isPending, onFix } = props;
+  const { row, isPending, onFix, 'data-testid': testId } = props;
 
   if (!row.needsExpirationReview) {
     return null;
@@ -435,7 +449,9 @@ export function FixExpirationActionButton(props: {
     return (
       <Tooltip>
         <TooltipTrigger
-          render={<Button variant="outline" size="sm" disabled />}
+          render={
+            <Button variant="outline" size="sm" disabled data-testid={testId} />
+          }
         >
           <AlertTriangle className="h-3 w-3" />
           Cannot Fix
@@ -453,6 +469,7 @@ export function FixExpirationActionButton(props: {
       size="sm"
       onClick={() => onFix(row.normalizedDomainName, row.chainId)}
       disabled={isPending}
+      data-testid={testId}
     >
       <Wrench className="h-3 w-3" />
       {isPending ? 'Fixing...' : 'Fix'}
@@ -460,8 +477,11 @@ export function FixExpirationActionButton(props: {
   );
 }
 
-export function RenewActionButton(props: { row: NftManagementRow }) {
-  const { row } = props;
+export function RenewActionButton(props: {
+  row: NftManagementRow;
+  'data-testid'?: string;
+}) {
+  const { row, 'data-testid': testId } = props;
 
   if (row.canBurn || row.hasMissingData) {
     return null;
@@ -469,7 +489,11 @@ export function RenewActionButton(props: { row: NftManagementRow }) {
 
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="outline" size="sm" disabled />}>
+      <TooltipTrigger
+        render={
+          <Button variant="outline" size="sm" disabled data-testid={testId} />
+        }
+      >
         <RefreshCw className="h-3 w-3" />
         Renew
       </TooltipTrigger>
@@ -487,24 +511,35 @@ export function NftActionsCell(props: {
   isFixPending: boolean;
   onBurn: (normalizedDomainName: string, chainId: number) => Promise<void>;
   onFix: (normalizedDomainName: string, chainId: number) => Promise<void>;
+  'data-testid'?: string;
 }) {
-  const { row, isBurning, isBurnWorkflowActive, isFixPending, onBurn, onFix } =
-    props;
+  const {
+    row,
+    isBurning,
+    isBurnWorkflowActive,
+    isFixPending,
+    onBurn,
+    onFix,
+    'data-testid':
+      testId = `admin.nft-management.list.row.${row.normalizedDomainName}.actions`,
+  } = props;
 
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-1" data-testid={testId}>
       <BurnActionButton
         row={row}
         isBurning={isBurning}
         isBurnWorkflowActive={isBurnWorkflowActive}
         onBurn={onBurn}
+        data-testid={`${testId}.burn-button`}
       />
       <FixExpirationActionButton
         row={row}
         isPending={isFixPending}
         onFix={onFix}
+        data-testid={`${testId}.fix-button`}
       />
-      <RenewActionButton row={row} />
+      <RenewActionButton row={row} data-testid={`${testId}.renew-button`} />
     </div>
   );
 }

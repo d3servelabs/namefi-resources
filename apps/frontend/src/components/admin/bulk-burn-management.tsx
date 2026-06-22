@@ -336,6 +336,7 @@ function BulkBurnManagementContent({
             }
             disabled={!isWaitingApproval}
             onCheckedChange={handleSelectAll}
+            data-testid="admin.bulk-burn.verified.select-all"
           />
         ),
         cell: ({ row }) => (
@@ -343,6 +344,7 @@ function BulkBurnManagementContent({
             checked={selectedDomains.has(row.original.domain)}
             disabled={!isWaitingApproval}
             onCheckedChange={() => handleSelectDomain(row.original.domain)}
+            data-testid={`admin.bulk-burn.verified.row.${row.original.domain}.select`}
           />
         ),
         enableSorting: false,
@@ -516,6 +518,7 @@ function BulkBurnManagementContent({
                 onClick={() => refetch()}
                 variant="outline"
                 className="mt-4"
+                data-testid="admin.bulk-burn.empty.refresh-button"
               >
                 <RefreshCw className="w-4 h-4 me-2" />
                 Refresh
@@ -539,7 +542,7 @@ function BulkBurnManagementContent({
   return (
     <PageShell padding="admin" className="space-y-6">
       {/* Workflow Status Card */}
-      <Card>
+      <Card data-testid="admin.bulk-burn.workflow-status">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -549,7 +552,12 @@ function BulkBurnManagementContent({
               </CardTitle>
               <CardDescription className="mt-2">
                 Workflow ID:{' '}
-                <code className="text-xs">{currentWorkflowId}</code>
+                <code
+                  className="text-xs"
+                  data-testid="admin.bulk-burn.workflow-status.workflow-id"
+                >
+                  {currentWorkflowId}
+                </code>
               </CardDescription>
             </div>
             <div className="flex items-center gap-2">
@@ -559,6 +567,7 @@ function BulkBurnManagementContent({
                 variant="outline"
                 size="sm"
                 className="gap-2"
+                data-testid="admin.bulk-burn.workflow-status.refresh-button"
               >
                 <RefreshCw className="w-4 h-4" />
                 Refresh
@@ -630,7 +639,7 @@ function BulkBurnManagementContent({
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
-              <Table>
+              <Table data-testid="admin.bulk-burn.successful-burns.list">
                 <Thead>
                   <Tr>
                     <Th>Domain</Th>
@@ -639,7 +648,10 @@ function BulkBurnManagementContent({
                 </Thead>
                 <TableBody>
                   {successfulBurns.map((burn) => (
-                    <Tr key={burn.domain}>
+                    <Tr
+                      key={burn.domain}
+                      data-testid={`admin.bulk-burn.successful-burns.list.row.${burn.domain}`}
+                    >
                       <Td>
                         <AutoTruncateTextV2
                           minCharactersToDisplay={30}
@@ -658,6 +670,7 @@ function BulkBurnManagementContent({
                           }
                           target="_blank"
                           rel="noopener noreferrer"
+                          data-testid={`admin.bulk-burn.successful-burns.list.row.${burn.domain}.tx-link`}
                         >
                           <AutoTruncateTextV2
                             minCharactersToDisplay={10}
@@ -687,7 +700,7 @@ function BulkBurnManagementContent({
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
-              <Table>
+              <Table data-testid="admin.bulk-burn.failed-burns.list">
                 <Thead>
                   <Tr>
                     <Th>Domain</Th>
@@ -696,7 +709,10 @@ function BulkBurnManagementContent({
                 </Thead>
                 <TableBody>
                   {failedBurns.map((burn) => (
-                    <Tr key={burn.domain}>
+                    <Tr
+                      key={burn.domain}
+                      data-testid={`admin.bulk-burn.failed-burns.list.row.${burn.domain}`}
+                    >
                       <Td>
                         <AutoTruncateTextV2
                           minCharactersToDisplay={30}
@@ -717,7 +733,7 @@ function BulkBurnManagementContent({
 
       {/* Approve Confirmation Dialog */}
       <AlertDialog open={approveDialogOpen} onOpenChange={setApproveDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="admin.bulk-burn.approve-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <Flame className="w-5 h-5" />
@@ -741,6 +757,7 @@ function BulkBurnManagementContent({
               onClick={handleConfirmApprove}
               disabled={approveMutation.isPending}
               className="bg-red-600 hover:bg-red-700"
+              data-testid="admin.bulk-burn.approve-dialog.confirm-button"
             >
               {approveMutation.isPending ? (
                 <>
@@ -760,7 +777,7 @@ function BulkBurnManagementContent({
 
       {/* Cancel Confirmation Dialog */}
       <AlertDialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="admin.bulk-burn.cancel-dialog">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <XCircle className="w-5 h-5" />
@@ -779,6 +796,7 @@ function BulkBurnManagementContent({
               onClick={handleConfirmCancel}
               disabled={cancelMutation.isPending}
               className="bg-red-600 hover:bg-red-700"
+              data-testid="admin.bulk-burn.cancel-dialog.confirm-button"
             >
               {cancelMutation.isPending ? (
                 <>
@@ -807,7 +825,7 @@ function BulkBurnManagementContent({
           </CardHeader>
           <CardContent>
             <div className="rounded-md border">
-              <Table>
+              <Table data-testid="admin.bulk-burn.skipped-domains.list">
                 <Thead>
                   <Tr>
                     <Th>Domain</Th>
@@ -816,7 +834,10 @@ function BulkBurnManagementContent({
                 </Thead>
                 <TableBody>
                   {skippedDomains.map((domain) => (
-                    <Tr key={domain.domain}>
+                    <Tr
+                      key={domain.domain}
+                      data-testid={`admin.bulk-burn.skipped-domains.list.row.${domain.domain}`}
+                    >
                       <Td>
                         <AutoTruncateTextV2
                           minCharactersToDisplay={30}
@@ -854,6 +875,7 @@ function BulkBurnManagementContent({
                   variant="outline"
                   size="sm"
                   disabled={!isWaitingApproval || filteredDomains.length === 0}
+                  data-testid="admin.bulk-burn.verified.toolbar.select-all-button"
                 >
                   {selectedDomains.size === filteredDomains.length
                     ? 'Deselect All'
@@ -865,6 +887,7 @@ function BulkBurnManagementContent({
                   size="sm"
                   disabled={!isWaitingApproval || selectedDomains.size === 0}
                   className="gap-2"
+                  data-testid="admin.bulk-burn.verified.toolbar.approve-button"
                 >
                   <Flame className="w-4 h-4" />
                   Approve Burn ({selectedDomains.size})
@@ -875,6 +898,7 @@ function BulkBurnManagementContent({
                   size="sm"
                   disabled={!isWaitingApproval}
                   className="gap-2"
+                  data-testid="admin.bulk-burn.verified.toolbar.cancel-button"
                 >
                   <XCircle className="w-4 h-4" />
                   Cancel Workflow

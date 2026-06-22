@@ -231,6 +231,7 @@ function AutoRenewalWorkflowsListContent() {
               variant="outline"
               size="sm"
               className="gap-2"
+              data-testid="admin.auto-renewal.workflows.refresh-button"
             >
               <RefreshCw className="w-4 h-4" />
               Refresh
@@ -239,7 +240,7 @@ function AutoRenewalWorkflowsListContent() {
         </CardHeader>
         <CardContent>
           <div className="rounded-md border">
-            <Table>
+            <Table data-testid="admin.auto-renewal.workflows.list">
               <Thead>
                 <Tr>
                   <Th>Workflow ID</Th>
@@ -256,7 +257,10 @@ function AutoRenewalWorkflowsListContent() {
               </Thead>
               <TableBody>
                 {workflows.map((wf) => (
-                  <Tr key={wf.workflowId}>
+                  <Tr
+                    key={wf.workflowId}
+                    data-testid={`admin.auto-renewal.workflows.list.row.${wf.workflowId}`}
+                  >
                     <Td>
                       <code className="text-xs">
                         {wf.workflowId.length > 35
@@ -306,7 +310,12 @@ function AutoRenewalWorkflowsListContent() {
                       <Link
                         href={`/admin/auto-renewal/${encodeURIComponent(wf.workflowId)}?runId=${encodeURIComponent(wf.runId)}`}
                       >
-                        <Button variant="outline" size="sm" className="gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="gap-2"
+                          data-testid={`admin.auto-renewal.workflows.list.row.${wf.workflowId}.view-button`}
+                        >
                           <ExternalLink className="w-4 h-4" />
                           View Details
                         </Button>

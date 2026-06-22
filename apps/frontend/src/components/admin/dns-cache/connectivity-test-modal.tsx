@@ -53,7 +53,10 @@ export function ConnectivityTestModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-2xl')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'max-w-2xl')}
+        data-testid="admin.dns-cache.connectivity.dialog"
+      >
         <DialogHeader>
           <DialogTitle>Server Connectivity Test</DialogTitle>
           <DialogDescription>
@@ -64,7 +67,10 @@ export function ConnectivityTestModal({
 
         <div className="space-y-3">
           {connectivityQuery.isLoading && (
-            <div className="text-center py-8">
+            <div
+              className="text-center py-8"
+              data-testid="admin.dns-cache.connectivity.loading"
+            >
               <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-primary" />
               <p className="text-sm text-muted-foreground">
                 Testing server connectivity...
@@ -73,7 +79,10 @@ export function ConnectivityTestModal({
           )}
 
           {connectivityQuery.isError && (
-            <div className="text-center py-8">
+            <div
+              className="text-center py-8"
+              data-testid="admin.dns-cache.connectivity.error"
+            >
               <XCircle className="h-8 w-8 mx-auto mb-4 text-destructive" />
               <p className="text-sm text-destructive">
                 {connectivityQuery.error.message}
@@ -88,6 +97,7 @@ export function ConnectivityTestModal({
                   <div
                     key={result.serverName}
                     className="flex items-center justify-between p-3 rounded-md border"
+                    data-testid={`admin.dns-cache.connectivity.result.${result.serverName}`}
                   >
                     <div className="flex items-center gap-3">
                       {result.healthy ? (
@@ -126,6 +136,7 @@ export function ConnectivityTestModal({
                   variant="outline"
                   size="sm"
                   onClick={() => connectivityQuery.refetch()}
+                  data-testid="admin.dns-cache.connectivity.retry-button"
                 >
                   <RefreshCw className="h-4 w-4 me-2" />
                   Retry

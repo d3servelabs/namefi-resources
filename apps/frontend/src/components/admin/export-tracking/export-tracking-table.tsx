@@ -200,6 +200,7 @@ export function ExportTrackingTable() {
                 type="button"
                 onClick={() => row.toggleExpanded()}
                 className="p-1 hover:bg-muted rounded transition-colors"
+                data-testid={`admin.export-tracking.list.row.${row.original.id}.expand-toggle`}
               >
                 {row.getIsExpanded() ? (
                   <ChevronDown className="h-4 w-4" />
@@ -241,7 +242,10 @@ export function ExportTrackingTable() {
           accessorKey: 'ownerAddress',
           header: 'Owner',
           cell: ({ row }) => (
-            <OwnerAddressCell ownerAddress={row.original.ownerAddress} />
+            <OwnerAddressCell
+              ownerAddress={row.original.ownerAddress}
+              data-testid={`admin.export-tracking.list.row.${row.original.id}.owner`}
+            />
           ),
           size: 200,
         },
@@ -294,14 +298,22 @@ export function ExportTrackingTable() {
           header: 'Latest Evidence',
           enableSorting: false,
           cell: ({ row }) => (
-            <LatestEvidenceCell latestEvidence={row.original.latestEvidence} />
+            <LatestEvidenceCell
+              latestEvidence={row.original.latestEvidence}
+              data-testid={`admin.export-tracking.list.row.${row.original.id}.latest-evidence`}
+            />
           ),
           size: 320,
         },
         {
           id: 'actions',
           header: 'Actions',
-          cell: ({ row }) => <VerifyButton record={row.original} />,
+          cell: ({ row }) => (
+            <VerifyButton
+              record={row.original}
+              data-testid={`admin.export-tracking.row.${row.original.id}.actions`}
+            />
+          ),
           size: 280,
         },
       ] satisfies ColumnDef<ExportTrackingRecord>[],
@@ -360,6 +372,7 @@ export function ExportTrackingTable() {
               })
             }
             disabled={triggerExportTrackingMutation.isPending}
+            data-testid="admin.export-tracking.toolbar.run-button"
           >
             <Play className="h-4 w-4 me-1" />
             {triggerExportTrackingMutation.isPending

@@ -183,6 +183,7 @@ export function AdminAiCreditAwards() {
                   step={1}
                   value={amount}
                   onChange={(event) => setAmount(event.target.value)}
+                  data-testid="admin.ai-credits.award.amount-input"
                 />
               </div>
 
@@ -195,6 +196,7 @@ export function AdminAiCreditAwards() {
                   onChange={(event) => setReason(event.target.value)}
                   placeholder="Campaign, support adjustment, beta access, or other approved reason"
                   className="min-h-20"
+                  data-testid="admin.ai-credits.award.reason-input"
                 />
               </div>
             </div>
@@ -207,7 +209,11 @@ export function AdminAiCreditAwards() {
                     } ${selectedUsers.length === 1 ? 'recipient' : 'recipients'}`
                   : 'Select recipients, amount, and reason.'}
               </div>
-              <Button disabled={!canSubmit} onClick={handleSubmit}>
+              <Button
+                disabled={!canSubmit}
+                onClick={handleSubmit}
+                data-testid="admin.ai-credits.award.submit-button"
+              >
                 {awardMutation.isPending ? (
                   <Loader2 className="me-2 h-4 w-4 animate-spin" />
                 ) : (
@@ -234,6 +240,7 @@ export function AdminAiCreditAwards() {
               }}
               placeholder="Search user, wallet, or reason"
               className="ps-8"
+              data-testid="admin.ai-credits.ledger.search-input"
             />
           </div>
         </CardHeader>
@@ -259,6 +266,7 @@ export function AdminAiCreditAwards() {
                 size="sm"
                 disabled={page <= 1 || awardsQuery.isFetching}
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
+                data-testid="admin.ai-credits.ledger.prev-button"
               >
                 Previous
               </Button>
@@ -270,6 +278,7 @@ export function AdminAiCreditAwards() {
                 size="sm"
                 disabled={page >= totalPages || awardsQuery.isFetching}
                 onClick={() => setPage((current) => current + 1)}
+                data-testid="admin.ai-credits.ledger.next-button"
               >
                 Next
               </Button>
@@ -323,7 +332,7 @@ function AwardsTable({
 
   return (
     <div className="rounded-md border">
-      <Table>
+      <Table data-testid="admin.ai-credits.ledger.table">
         <TableHeader>
           <TableRow>
             <TableHead>Recipient</TableHead>
@@ -336,7 +345,10 @@ function AwardsTable({
         </TableHeader>
         <TableBody className={isFetching ? 'opacity-60' : undefined}>
           {awards.map((award) => (
-            <TableRow key={award.id}>
+            <TableRow
+              key={award.id}
+              data-testid={`admin.ai-credits.ledger.row.${award.id}`}
+            >
               <TableCell>
                 <UserCell
                   user={award.user}
