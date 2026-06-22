@@ -1,0 +1,2 @@
+"reason","duplicate_count","chainId","tx_hashes", Note
+"charge-user.workflow for Payment with ID: ac94b725-0d76-480a-a73a-f81c0266f85b", 1, 1, [""0x568e6fa0cfa7100cf037b7437a06b29f76ed28370a730b3105a19bd32b4c221b""],"user only had 1 NFSC by the time we attempt second send user balance is not enough"
