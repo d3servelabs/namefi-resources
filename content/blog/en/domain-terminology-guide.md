@@ -20,7 +20,7 @@ Whether you're a beginner exploring domain investing or an experienced professio
 ## **🎯 Domain Investment & Trading**
 
 ### **Domain Flipping**
-The practice of buying domain names at a lower price and then selling them at a higher price for profit. Domain flippers often look for underpriced or high-potential domain names in auctions, expired lists, or direct sales.
+The practice of buying domain names at a lower price and then selling them at a higher price for profit. Domain flippers often look for underpriced or high-potential domain names in [auctions](/en/glossary/auction/), expired lists, or direct sales.
 
 **Example**: Purchasing `TechStartup.com` for $500 and selling it to a startup company for $5,000.
 
@@ -67,9 +67,9 @@ A platform or service where domain names are sold through competitive bidding. T
 **Popular Platforms**: GoDaddy Auctions, NameJet, Sedo Auctions, SnapNames
 
 ### **Escrow Service**
-A trusted third-party service used to facilitate the safe exchange of money and domain ownership during a domain sale. The buyer pays the escrow service, and once the domain is transferred, the funds are released to the seller.
+A trusted third-party service used to facilitate the safe exchange of money and [domain ownership](/en/glossary/domain-ownership/) during a domain sale. The buyer pays the [escrow](/en/glossary/escrow/) service, and once the domain is transferred, the funds are released to the seller.
 
-**Popular Services**: Escrow.com (recommended by ICANN), PayPal, Dan.com
+**Popular Services**: Escrow.com (recommended by [ICANN](/en/glossary/icann/)), PayPal, Dan.com
 
 ---
 
@@ -91,12 +91,12 @@ An individual or business that buys domain names in bulk and resells them to end
 ## **⚙️ Technical Terms**
 
 ### **TLD (Top-Level Domain)**
-The part of a domain name that comes after the last dot (e.g., .com, .org, .net, .ai, etc.). The choice of TLD can affect the value and perception of a domain name.
+The part of a domain name that comes after the last dot (e.g., [.com](/en/tld/com/), [.org](/en/tld/org/), [.net](/en/tld/net/), [.ai](/en/tld/ai/), etc.). The choice of TLD can affect the value and perception of a domain name.
 
 **Categories**:
-- **Generic TLDs**: .com, .org, .net, .info
+- **Generic TLDs**: .com, .org, .net, [.info](/en/tld/info/)
 - **Country Code TLDs**: .us, .uk, .de, .cn
-- **New TLDs**: .ai, .io, .tech, .shop
+- **New TLDs**: .ai, [.io](/en/tld/io/), [.tech](/en/tld/tech/), [.shop](/en/tld/shop/)
 
 ### **Subdomain**
 A domain that is part of a larger domain. For example, "blog.example.com" is a subdomain of "example.com." Subdomains can be used to organize different sections of a website.
@@ -109,13 +109,13 @@ The system that translates human-readable domain names into IP addresses that co
 **Function**: Converts `namefi.io` to `192.168.1.1` for browser communication
 
 ### **WHOIS**
-A protocol used to query databases that store registered domain name information. WHOIS provides details like the domain's owner, registration dates, and contact information.
+A protocol used to query databases that store registered domain name information. [WHOIS](/en/glossary/whois/) provides details like the domain's owner, registration dates, and contact information.
 
 **Information Provided**:
 - Domain owner details
 - Registration and expiration dates
 - Name servers
-- Registrar information
+- [Registrar](/en/glossary/registrar/) information
 
 ---
 
@@ -195,7 +195,7 @@ Ready to start your domain investing journey or secure your perfect domain name?
 - **Expert Support**: Guidance for domain investors
 - **Secure Transactions**: Safe buying and selling platform
 
-👉 **Visit [namefi.io](https://namefi.io) and start building your domain portfolio today.**
+👉 **Visit [namefi.io](https://namefi.io) and start building your [domain portfolio](/en/blog/domain-portfolio-management/) today.**
 
 Master these terms, understand the market, and make informed decisions in your domain investing journey. Knowledge is your most valuable asset in the domain industry!
 

@@ -82,7 +82,7 @@ The extension feeds in too: the same word on a [`.com`](/en/tld/com/) carries a 
 
 Pricing a domain is one decision made twice: once when you pick the listing mode, and once on every number you name inside it. Choose buy-now when speed and a clean ceiling beat the hunt for a perfect buyer; choose make-offer when a premium name's upside justifies the friction, and put a floor under it so no number doesn't anchor you down. Let inbound, motivated buyers name the first figure. Ladder your concessions so each step says "almost there." Shape the number to signal the buyer you want. And watch your own endowment effect like the liability it is.
 
-The price is a message. Make sure it says what you mean. Once a deal closes, getting paid safely — [escrow](/en/glossary/escrow/), the [auth-code](/en/glossary/auth-code/) handoff, DNS continuity — is its own discipline; tokenized rails like [Namefi](https://namefi.io) aim to make settlement less nerve-racking so more agreed deals finish. But the money only gets that far if the number on the listing did its job first.
+The price is a message. Make sure it says what you mean. Once a deal closes, getting paid safely — [escrow](/en/glossary/escrow/), the [auth-code](/en/glossary/auth-code/) handoff, [DNS](/en/glossary/dns/) continuity — is its own discipline; tokenized rails like [Namefi](https://namefi.io) aim to make settlement less nerve-racking so more agreed deals finish. But the money only gets that far if the number on the listing did its job first.
 
 ## Friendly Disclaimer (Read Me!)
 
