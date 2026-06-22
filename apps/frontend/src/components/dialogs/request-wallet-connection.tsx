@@ -31,10 +31,8 @@ import {
   useConfig,
   type UseConfigParameters,
 } from 'wagmi';
-import { getAccount } from 'wagmi/actions';
 import { useConnectedWallets } from '@/hooks/use-user-wallet-addresses';
-import { useConnectWallet } from '@privy-io/react-auth';
-import { useSetActiveWallet } from '@privy-io/wagmi';
+import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
 
 type ConnectionState =
   | 'checking'
@@ -86,8 +84,7 @@ export const RequestWalletConnection = forwardRef<
 
   const { address: activeWalletAddress } = useAccount();
   const { connectedEthereumWallets } = useConnectedWallets();
-  const { connectWallet } = useConnectWallet();
-  const { setActiveWallet } = useSetActiveWallet();
+  const walletRuntime = useWalletConnectionRuntime();
 
   const checksummedRequestedAddress = useMemo(
     () =>
@@ -132,34 +129,19 @@ export const RequestWalletConnection = forwardRef<
     return _connectionState;
   }, [_connectionState, activeWalletAddress, requestedWalletAddress]);
 
-  // Handle setting the wallet as active
+  // Initiate switching to the requested wallet. RainbowKit holds a single live
+  // connection, so this re-opens the connect modal; success is NOT asserted here
+  // — it is observed reactively (see `connectionState` deriving 'success' from
+  // `useAccount`, and the effect below firing `onRequestedWalletConnected`).
+  // Asserting success synchronously would report a false success because
+  // `setActiveWalletByAddress` resolves before the active account actually changes.
   const handleSetAsActiveWallet = useCallback(
     async (requestedWalletAddress: string) => {
       setConnectionState('setting-active');
       try {
-        const targetWallet = connectedEthereumWallets.find(
-          (w) =>
-            requestedWalletAddress &&
-            w.address.toLowerCase() === requestedWalletAddress.toLowerCase(),
-        );
-
-        if (!targetWallet) {
-          console.error(
-            'Wallet not found in connected wallets',
-            requestedWalletAddress,
-            connectedEthereumWallets,
-          );
-          throw new Error('Wallet not found in connected wallets');
-        }
-
-        await setActiveWallet(targetWallet);
-        console.log('Wallet set as active', requestedWalletAddress);
-        // Give wagmi a moment to update
-        await new Promise((resolve) => setTimeout(resolve, 300));
-
-        setConnectionState('success');
-        onRequestedWalletConnected(requestedWalletAddress);
-        onOpenChange(false);
+        await walletRuntime.setActiveWalletByAddress(requestedWalletAddress);
+        // Hand off to the reactive success path; keep a cancel/retry affordance.
+        setConnectionState('waiting');
       } catch (error) {
         console.error('Failed to set active wallet', error);
         toast(t('requestWalletConnection.toast.setActiveFailed'), {
@@ -171,16 +153,16 @@ export const RequestWalletConnection = forwardRef<
         setConnectionState('waiting');
       }
     },
-    [
-      connectedEthereumWallets,
-      setActiveWallet,
-      onRequestedWalletConnected,
-      onOpenChange,
-      t,
-    ],
+    [walletRuntime, t],
   );
 
-  // Handle connect wallet button click with callbacks
+  // Initiate the connect flow. `connectWallet` opens the RainbowKit modal and
+  // resolves as soon as the modal is shown — it does NOT mean the wallet is
+  // connected. So we must not read the account synchronously here (it would still
+  // be disconnected while the user is in their wallet app, producing a spurious
+  // connect-failed toast). The actual outcome is observed reactively:
+  // `connectionState` derives 'success' / 'wrong-wallet' from `useAccount`, and
+  // the effect below fires `onRequestedWalletConnected` on success.
   const handleConnectClick = useCallback(
     async (requestedWalletAddress: string) => {
       if (!config) {
@@ -189,28 +171,12 @@ export const RequestWalletConnection = forwardRef<
       setConnectionState('connecting');
 
       try {
-        await connectWallet({
+        await walletRuntime.connectWallet({
           suggestedAddress: requestedWalletAddress,
         });
-        console.log('Wallet connected', requestedWalletAddress);
-        const account = await getAccount(config);
-        console.log('Account', account);
-        if (account.status === 'disconnected') {
-          throw new Error('Wallet not connected');
-        }
-        console.log('Account connected successfully', requestedWalletAddress);
-        if (
-          account.address &&
-          requestedWalletAddress &&
-          account.address.toLowerCase() === requestedWalletAddress.toLowerCase()
-        ) {
-          console.log('Wallet connected successfully', requestedWalletAddress);
-          setConnectionState('success');
-          onRequestedWalletConnected(requestedWalletAddress);
-          onOpenChange(false);
-        } else {
-          handleSetAsActiveWallet(requestedWalletAddress);
-        }
+        // Modal opened; wait for the user to complete it. Drop back to 'waiting'
+        // so cancel/retry stays available — reactive state resolves success.
+        setConnectionState('waiting');
       } catch (error) {
         toast(t('requestWalletConnection.toast.connectFailed'), {
           description:
@@ -221,14 +187,7 @@ export const RequestWalletConnection = forwardRef<
         setConnectionState('waiting');
       }
     },
-    [
-      connectWallet,
-      handleSetAsActiveWallet,
-      config,
-      onRequestedWalletConnected,
-      onOpenChange,
-      t,
-    ],
+    [walletRuntime, config, t],
   );
 
   // Handle try again button click
