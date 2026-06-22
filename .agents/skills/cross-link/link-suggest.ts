@@ -353,9 +353,20 @@ function analyze(target: Page): Report {
 // only, but the link must be mirrored into each locale. For a link target this
 // prints, per locale, whether a counterpart exists, its href, and the anchor
 // text to look for (that locale's title of the target).
+type TermLocale = { locale: string; exists: boolean; href: string; anchor: string | null };
+type TermResult = { collection: string; slug: string; enTitle: string | null; locales: TermLocale[] };
+const termResults: TermResult[] = [];
 if (termArgs.length) {
-  const tty = process.stdout.isTTY;
-  const c = (code: string, s: string) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);
+  // The mirror anchor is the page's canonical matched phrase(s) — the same
+  // distinctive terms OUTBOUND/INBOUND link on — NOT the full frontmatter title
+  // (a TLD title is a long explainer, but the linked token is ".com").
+  const anchorFor = (pg: Page): string => {
+    const ph = distinctivePhrases(pg);
+    const terms = ph.filter((p) => p.kind === 'term').map((p) => p.text);
+    if (terms.length) return terms.join(' / ');
+    const all = ph.map((p) => p.text);
+    return all.length ? all.slice(0, 3).join(' / ') : pg.title;
+  };
   for (const t of termArgs) {
     let collection: string | undefined;
     let slug: string | undefined;
@@ -374,18 +385,34 @@ if (termArgs.length) {
       console.error(`--term: cannot resolve "${t}" to a <collection>/<slug>`);
       continue;
     }
-    const enPage = byHref.get(`/en/${collection}/${slug}/`);
-    console.log(c('1', `\n# ${collection}/${slug}  `) + (enPage ? c('2', `(en: ${enPage.title})`) : c('31', '(no en page!)')));
-    for (const locale of LOCALES) {
-      const pg = byHref.get(`/${locale}/${collection}/${slug}/`);
-      if (pg) console.log(`  ${locale}  ${c('32', '✓')}  /${locale}/${collection}/${slug}/  ${c('2', '→ anchor:')} "${pg.title}"`);
-      else console.log(`  ${locale}  ${c('31', '✗')}  ${c('2', `no counterpart → keep /en/${collection}/${slug}/`)}`);
-    }
+    const coll = collection;
+    const sl = slug;
+    const enPage = byHref.get(`/en/${coll}/${sl}/`);
+    const locales: TermLocale[] = LOCALES.map((locale) => {
+      const pg = byHref.get(`/${locale}/${coll}/${sl}/`);
+      return { locale, exists: !!pg, href: `/${locale}/${coll}/${sl}/`, anchor: pg ? anchorFor(pg) : null };
+    });
+    termResults.push({ collection: coll, slug: sl, enTitle: enPage ? enPage.title : null, locales });
   }
-  console.log('');
-  // Only stop here if there are no positional file targets; otherwise fall
-  // through and also run candidate analysis for those files.
-  if (targets.length === 0) process.exit(0);
+  if (!JSON_OUT) {
+    const tty = process.stdout.isTTY;
+    const c = (code: string, s: string) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);
+    for (const tr of termResults) {
+      console.log(c('1', `\n# ${tr.collection}/${tr.slug}  `) + (tr.enTitle ? c('2', `(en: ${tr.enTitle})`) : c('31', '(no en page!)')));
+      for (const l of tr.locales) {
+        if (l.exists) console.log(`  ${l.locale}  ${c('32', '✓')}  ${l.href}  ${c('2', '→ anchor:')} "${l.anchor}"`);
+        else console.log(`  ${l.locale}  ${c('31', '✗')}  ${c('2', `no counterpart → keep /en/${tr.collection}/${tr.slug}/`)}`);
+      }
+    }
+    console.log('');
+  }
+  // With no positional file targets this is the whole run: emit term results
+  // (as JSON when requested) and stop. Otherwise fall through and also analyze
+  // the files; --json then emits a single combined { terms, reports } document.
+  if (targets.length === 0) {
+    if (JSON_OUT) console.log(JSON.stringify(termResults, null, 2));
+    process.exit(0);
+  }
 }
 
 // --- run -------------------------------------------------------------------
@@ -401,7 +428,7 @@ for (const t of targets) {
 }
 
 if (JSON_OUT) {
-  console.log(JSON.stringify(reports, null, 2));
+  console.log(JSON.stringify(termResults.length ? { terms: termResults, reports } : reports, null, 2));
 } else {
   const tty = process.stdout.isTTY;
   const c = (code: string, s: string) => (tty ? `\x1b[${code}m${s}\x1b[0m` : s);
