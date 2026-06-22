@@ -63,6 +63,17 @@ export type SecretsInput = z.input<typeof serverSideSecretsSchema>;
 export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
   /**
+   * WalletConnect Cloud (Reown) project id — a **public** client id, safe in the
+   * browser. Powers the Reown AppKit connector used behind
+   * `ff_mobile_walletconnect` (see `components/providers/reown-wallet-stack`).
+   * Defaults to the id already configured in the Privy dashboard / observed in
+   * prod WC traffic, so it works on merge without new env wiring; override per
+   * environment via `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`.
+   */
+  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z
+    .string()
+    .default('34357d3c125c2bcf2ce2bc3309d98715'),
+  /**
    * Optional OpenSea API key. The OpenSea adapter primarily uses a per-user
    * "instant" key it auto-requests + caches in the browser; this env key is a
    * FALLBACK used only when that issuance fails (the instant-key endpoint caps

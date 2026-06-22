@@ -46,7 +46,7 @@ import {
 import { NfscOrdersList } from '@/components/payment-method/nfsc-orders-list';
 import { useTRPC } from '@/lib/trpc';
 import { useQuery } from '@tanstack/react-query';
-import { useConnectWallet } from '@privy-io/react-auth';
+import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
 import dynamic from 'next/dynamic';
 import {
   getSwapButtonState,
@@ -119,7 +119,15 @@ function NFSCSwapDialogInner(props: Props) {
   const tCommon = useTranslations('common');
   const { open, onOpenChange, walletAddress } = props;
   const { address: connectedAddress, chainId } = useAccount();
-  const displayAddress = walletAddress || connectedAddress;
+  const walletRuntime = useWalletConnectionRuntime();
+  // `buyWithEthers` always credits the *connected* signer, and Reown AppKit
+  // can't honor a suggested address — so once a wallet is connected, target it.
+  // (Flag-off Privy mode keeps prioritizing the requested `walletAddress`, since
+  // its connect flow can switch to that exact wallet.)
+  const displayAddress =
+    walletRuntime.mode === 'reown'
+      ? connectedAddress || walletAddress
+      : walletAddress || connectedAddress;
   const checksummedAddress = useMemo(
     () =>
       displayAddress ? attemptGetChecksummedAddress(displayAddress) : null,
@@ -134,7 +142,6 @@ function NFSCSwapDialogInner(props: Props) {
 
   const { nfscBalanceChains: chains } = useAllowedChains();
   const { switchChain, isPending: isSwitchingChain } = useSwitchChain();
-  const { connectWallet } = useConnectWallet();
 
   const { nfscBalance, nativeBalance, isLoading } =
     useNfscBalance(checksummedAddress);
@@ -259,7 +266,7 @@ function NFSCSwapDialogInner(props: Props) {
       // Suggest the charging wallet shown in the dialog so the user connects the
       // wallet they intend to top up. `buyWithEthers` credits the connected
       // signer, so connecting a different wallet would fund the wrong account.
-      await connectWallet(
+      await walletRuntime.connectWallet(
         checksummedAddress
           ? { suggestedAddress: checksummedAddress }
           : undefined,
@@ -276,7 +283,7 @@ function NFSCSwapDialogInner(props: Props) {
     } finally {
       setIsConnectingWallet(false);
     }
-  }, [connectWallet, checksummedAddress]);
+  }, [walletRuntime, checksummedAddress]);
 
   const handleOnExchange = async () => {
     setErrorMessage('');

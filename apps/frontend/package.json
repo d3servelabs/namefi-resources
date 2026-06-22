@@ -67,6 +67,8 @@
     "@rarible/sdk": "^0.13.119",
     "@rarible/sdk-wallet": "^0.13.119",
     "@rarible/types": "^0.10.7",
+    "@reown/appkit": "1.8.14",
+    "@reown/appkit-adapter-wagmi": "1.8.14",
     "@samyx/drizzler-filters-sorters": "^0.0.5",
     "@samyx/react-async-hooks": "^0.0.1",
     "@samyx/trpc-utils": "^0.0.2",

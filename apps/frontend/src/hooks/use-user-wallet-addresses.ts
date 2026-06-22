@@ -3,37 +3,105 @@ import {
   type LinkedAccountWithMetadata,
   type WalletWithMetadata,
 } from '@privy-io/react-auth';
-import { useAuth } from './use-auth';
 import { useMemo } from 'react';
+import { useAccount, useConfig } from 'wagmi';
+import { switchChain as wagmiSwitchChain } from 'wagmi/actions';
+import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
+import { useAuth } from './use-auth';
 
-export function useConnectedWallets() {
-  const { ready: connectedWalletsReady, wallets } = useWallets();
-  const connectedEthereumWallets = useMemo(
-    () => wallets.filter((wallet) => wallet.type === 'ethereum'),
-    [wallets],
-  );
-
-  return { connectedWalletsReady, connectedEthereumWallets };
+/**
+ * The connected-wallet shape the app actually consumes — `address` plus the two
+ * methods `use-watch-assets` calls. Privy's `ConnectedWallet` structurally
+ * satisfies it; in Reown mode we synthesize it from the wagmi connection (Reown,
+ * not Privy, owns the live connection), so the connected-wallet surfaces
+ * (add-token, API-key signing) work without Privy. See namefi-astra#4753.
+ */
+export interface AppConnectedWallet {
+  address: string;
+  type?: string;
+  chainType?: string;
+  connectorType?: string;
+  switchChain: (chainId: number) => Promise<void>;
+  getEthereumProvider: () => Promise<{
+    request: (args: { method: string; params?: unknown }) => Promise<unknown>;
+  }>;
 }
 
 /**
- * Hook to get a user's ConnectedWallets from Privy. Currently, we only support Ethereum wallets
+ * Reown mode: the single live wallet lives in wagmi (`useAccount`), not Privy's
+ * `useWallets`. Back `switchChain`/`getEthereumProvider` with wagmi + the
+ * connector so consumers behave the same as with a Privy `ConnectedWallet`.
  */
-export function useConnectedWalletAddresses() {
-  const {
-    ready: connectedEthereumWalletsReady,
-    wallets: connectedEthereumWallets,
-  } = useWallets();
+function useReownConnectedEthereumWallets(): AppConnectedWallet[] {
+  const { address, isConnected, connector } = useAccount();
+  const config = useConfig();
 
-  const connectedWalletAddresses = useMemo(() => {
-    if (!connectedEthereumWalletsReady) {
+  return useMemo(() => {
+    if (!isConnected || !address || !connector) {
       return [];
     }
-    return [...connectedEthereumWallets].map((wallet) => wallet.address);
-  }, [connectedEthereumWallets, connectedEthereumWalletsReady]);
+    const connectorId = connector.id ?? '';
+    return [
+      {
+        address,
+        type: 'ethereum',
+        chainType: 'ethereum',
+        // Normalize so the `connectorType === 'metamask'` feature check (e.g.
+        // wallet_watchAsset support) still matches MetaMask via Reown/injected.
+        connectorType: /metamask/i.test(connectorId) ? 'metamask' : connectorId,
+        switchChain: async (chainId: number) => {
+          await wagmiSwitchChain(config, { chainId });
+        },
+        getEthereumProvider: async () =>
+          (await connector.getProvider()) as Awaited<
+            ReturnType<AppConnectedWallet['getEthereumProvider']>
+          >,
+      },
+    ];
+  }, [address, isConnected, connector, config]);
+}
+
+/**
+ * Connected Ethereum wallets. In Privy mode this is Privy's connected wallets;
+ * in Reown mode it's the wagmi connection (Privy's `useWallets` is empty there).
+ */
+export function useConnectedWallets() {
+  const { mode } = useWalletConnectionRuntime();
+  const { ready, wallets } = useWallets();
+  const reownWallets = useReownConnectedEthereumWallets();
+
+  const connectedEthereumWallets = useMemo<AppConnectedWallet[]>(() => {
+    if (mode === 'reown') {
+      return reownWallets;
+    }
+    return wallets.filter(
+      (wallet) => wallet.type === 'ethereum',
+    ) as unknown as AppConnectedWallet[];
+  }, [mode, wallets, reownWallets]);
 
   return {
-    connectedWalletsReady: connectedEthereumWalletsReady,
+    connectedWalletsReady: mode === 'reown' ? true : ready,
+    connectedEthereumWallets,
+  };
+}
+
+/**
+ * Addresses of the connected Ethereum wallets (mode-aware, via
+ * {@link useConnectedWallets}).
+ */
+export function useConnectedWalletAddresses() {
+  const { connectedWalletsReady, connectedEthereumWallets } =
+    useConnectedWallets();
+
+  const connectedWalletAddresses = useMemo(() => {
+    if (!connectedWalletsReady) {
+      return [];
+    }
+    return connectedEthereumWallets.map((wallet) => wallet.address);
+  }, [connectedEthereumWallets, connectedWalletsReady]);
+
+  return {
+    connectedWalletsReady,
     connectedWalletAddresses,
   };
 }
