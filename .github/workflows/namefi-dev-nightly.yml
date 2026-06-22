@@ -99,7 +99,7 @@ jobs:
           set -euo pipefail
 
           missing=()
-          for name in NAMEFI_E2E_TEST_ACCOUNT_EMAIL NAMEFI_E2E_TEST_ACCOUNT_OTP; do
+          for name in PRIVY_TEST_ACCOUNT_EMAIL PRIVY_TEST_ACCOUNT_OTP; do
             if [[ -z "${!name:-}" ]]; then
               missing+=("$name")
             fi

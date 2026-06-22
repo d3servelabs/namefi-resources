@@ -216,8 +216,8 @@ async function fillPrivyOtp(page: Page, otp: string) {
 }
 
 async function signInWithTestAccount(page: Page) {
-  const email = getRequiredEnv('NAMEFI_E2E_TEST_ACCOUNT_EMAIL');
-  const otp = getRequiredEnv('NAMEFI_E2E_TEST_ACCOUNT_OTP');
+  const email = getRequiredEnv('PRIVY_TEST_ACCOUNT_EMAIL');
+  const otp = getRequiredEnv('PRIVY_TEST_ACCOUNT_OTP');
 
   await page.goto(withAppBase('/'), { waitUntil: 'domcontentloaded' });
   await dismissCookieBanner(page);
