@@ -508,6 +508,14 @@
         "vitest": "^3.1.2",
       },
     },
+    "packages/cuj": {
+      "name": "@namefi-astra/cuj",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@namefi-astra/typescript": "workspace:*",
+        "@types/node": "catalog:",
+      },
+    },
     "packages/db": {
       "name": "@namefi-astra/db",
       "dependencies": {
@@ -1923,6 +1931,8 @@
     "@namefi-astra/common": ["@namefi-astra/common@workspace:packages/common"],
 
     "@namefi-astra/coredns-client": ["@namefi-astra/coredns-client@workspace:packages/coredns-client"],
+
+    "@namefi-astra/cuj": ["@namefi-astra/cuj@workspace:packages/cuj"],
 
     "@namefi-astra/db": ["@namefi-astra/db@workspace:packages/db"],
 

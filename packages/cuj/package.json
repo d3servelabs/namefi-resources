@@ -1,0 +1,24 @@
+{
+  "name": "@namefi-astra/cuj",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./*": [
+      "./src/*.ts"
+    ]
+  },
+  "scripts": {
+    "clean": "git clean -xdf .next .turbo node_modules out dist",
+    "typecheck": "tsgo --noEmit",
+    "gen:doc": "bun run scripts/generate-cuj-doc.ts",
+    "check": "biome check .",
+    "check:error": "biome check . --diagnostic-level=error",
+    "check:fix": "biome check --write ."
+  },
+  "devDependencies": {
+    "@namefi-astra/typescript": "workspace:*",
+    "@types/node": "catalog:"
+  }
+}
