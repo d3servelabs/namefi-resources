@@ -1,9 +1,11 @@
 'use client';
 
+import { Menu } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { Locale } from '@/i18n-config';
+import { useState } from 'react';
+import { isRtlLocale, type Locale } from '@/i18n-config';
 import type { Dictionary } from '@/get-dictionary';
 import { LocaleSwitcher } from './locale-switcher';
 import {
@@ -13,6 +15,15 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@namefi-astra/ui/components/shadcn/navigation-menu';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@namefi-astra/ui/components/shadcn/sheet';
 import { cn } from '@namefi-astra/ui/lib/cn';
 
 type SiteHeaderProps = {
@@ -61,28 +72,66 @@ function DesktopNav({ items }: { items: NavItem[] }) {
   );
 }
 
-function MobileNav({ items }: { items: NavItem[] }) {
+function MobileNav({
+  items,
+  menuLabel,
+  title,
+  side,
+}: {
+  items: NavItem[];
+  menuLabel: string;
+  title: string;
+  side: 'left' | 'right';
+}) {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
   return (
-    <nav className="flex items-center gap-3 text-sm font-medium text-muted-foreground md:hidden">
-      {items.map((item) => {
-        const isActive =
-          pathname === item.href || pathname.startsWith(`${item.href}/`);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              'rounded-full px-3 py-1.5 transition hover:text-foreground',
-              isActive && 'bg-primary/10 text-primary',
-            )}
-            aria-current={isActive ? 'page' : undefined}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-    </nav>
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            aria-label={menuLabel}
+            className="rounded-full border-border/60 bg-card/80 text-muted-foreground shadow-sm shadow-black/10 transition hover:border-border hover:text-foreground md:hidden"
+          />
+        }
+      >
+        <Menu className="h-4 w-4" aria-hidden="true" />
+      </SheetTrigger>
+      <SheetContent side={side} className="w-72">
+        <SheetHeader>
+          <SheetTitle className="text-xs uppercase tracking-[0.3em] text-muted-foreground">
+            {title}
+          </SheetTitle>
+        </SheetHeader>
+        <nav className="flex flex-col gap-1 px-4 pb-6 text-sm font-medium">
+          {items.map((item) => {
+            const isActive =
+              pathname === item.href || pathname.startsWith(`${item.href}/`);
+            return (
+              <SheetClose
+                key={item.href}
+                render={
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      'rounded-lg px-3 py-2.5 text-muted-foreground transition hover:bg-muted hover:text-foreground',
+                      isActive && 'bg-primary/10 text-primary',
+                    )}
+                    aria-current={isActive ? 'page' : undefined}
+                  />
+                }
+              >
+                {item.label}
+              </SheetClose>
+            );
+          })}
+        </nav>
+      </SheetContent>
+    </Sheet>
   );
 }
 
@@ -125,8 +174,13 @@ export function SiteHeader({ locale, dictionary }: SiteHeaderProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <MobileNav items={navItems} />
           <LocaleSwitcher activeLocale={locale} label={switcher.label} />
+          <MobileNav
+            items={navItems}
+            menuLabel={nav.menu}
+            title={nav.resources}
+            side={isRtlLocale(locale) ? 'right' : 'left'}
+          />
         </div>
       </div>
     </header>
