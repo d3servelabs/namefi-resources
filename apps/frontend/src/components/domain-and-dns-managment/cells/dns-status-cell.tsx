@@ -180,6 +180,7 @@ export function DnsStatusCell({
     <div
       className="flex items-center gap-3"
       role="toolbar"
+      data-testid="dnsManagement.status-cell"
       aria-label={t('statusCell.ariaLabel')}
       onClick={(e) => e.stopPropagation()}
       onKeyDown={(e) => {
@@ -194,6 +195,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.nameservers"
               className={cn(
                 'transition-colors hover:opacity-80',
                 disabled && 'cursor-not-allowed opacity-50',
@@ -221,6 +223,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.web"
               className={cn(
                 'transition-colors hover:opacity-80 cursor-pointer',
                 disabled && 'cursor-not-allowed opacity-50',
@@ -249,6 +252,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.forward"
               className={cn(
                 'transition-colors hover:opacity-80 cursor-pointer',
                 (disabled || !isForwardingAllowed) &&
@@ -284,6 +288,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.mx"
               className={cn(
                 'transition-colors hover:opacity-80 cursor-pointer',
                 disabled && 'cursor-not-allowed opacity-50',
@@ -308,6 +313,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.ens"
               className={cn(
                 'transition-colors hover:opacity-80 cursor-pointer',
                 disabled && 'cursor-not-allowed opacity-50',
@@ -334,6 +340,7 @@ export function DnsStatusCell({
           render={
             <button
               type="button"
+              data-testid="dnsManagement.status-cell.manage"
               className="transition-colors hover:opacity-80 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100 cursor-pointer"
             />
           }

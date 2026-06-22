@@ -56,7 +56,7 @@ export function TransferLockGuard({
         open={showTransferLockDialog}
         onOpenChange={setShowTransferLockDialog}
       >
-        <AlertDialogContent>
+        <AlertDialogContent data-testid="dnsManagement.transfer-lock.dialog">
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('overview.transferLock.title', {
@@ -77,7 +77,10 @@ export function TransferLockGuard({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogAction onClick={() => setShowTransferLockDialog(false)}>
+            <AlertDialogAction
+              data-testid="dnsManagement.transfer-lock.got-it"
+              onClick={() => setShowTransferLockDialog(false)}
+            >
               {t('overview.transferLock.gotIt')}
             </AlertDialogAction>
           </AlertDialogFooter>

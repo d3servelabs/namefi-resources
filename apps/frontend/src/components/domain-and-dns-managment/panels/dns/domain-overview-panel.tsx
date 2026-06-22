@@ -326,7 +326,10 @@ function NFTOwnershipCard({
   }
 
   return (
-    <Card className="border-0 bg-zinc-900/50 overflow-hidden relative">
+    <Card
+      className="border-0 bg-zinc-900/50 overflow-hidden relative"
+      data-testid="dnsManagement.overview.nft-ownership"
+    >
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
       <CardHeader className="pb-3 relative">
         <div className="flex items-center justify-between">
@@ -347,7 +350,10 @@ function NFTOwnershipCard({
               <p className="text-xs text-muted-foreground">
                 {t('overview.nftOwnership.securedOn')}
               </p>
-              <p className="text-sm font-medium">
+              <p
+                className="text-sm font-medium"
+                data-testid="dnsManagement.overview.nft-ownership.chain"
+              >
                 {chainId === 1
                   ? t('overview.nftOwnership.chainEthereum')
                   : chainId === 8453
@@ -380,7 +386,10 @@ function NFTOwnershipCard({
                       content={t('overview.nftOwnership.ownerWalletTooltip')}
                     />
                   </p>
-                  <p className="text-sm font-mono">
+                  <p
+                    className="text-sm font-mono"
+                    data-testid="dnsManagement.overview.nft-ownership.owner-address"
+                  >
                     {getShortAddress(ownerAddress)}
                   </p>
                 </div>
@@ -390,6 +399,7 @@ function NFTOwnershipCard({
                 size="sm"
                 onClick={handleCopyAddress}
                 className="h-8 w-8 p-0"
+                data-testid="dnsManagement.overview.nft-ownership.owner-address-copy"
               >
                 {copiedAddress ? (
                   <Check className="h-3.5 w-3.5 text-emerald-400" />
@@ -411,7 +421,10 @@ function NFTOwnershipCard({
                     content={t('overview.nftOwnership.tokenIdTooltip')}
                   />
                 </p>
-                <p className="text-sm font-mono">
+                <p
+                  className="text-sm font-mono"
+                  data-testid="dnsManagement.overview.nft-ownership.token-id"
+                >
                   <TruncatedTextWithHover maxLength={13}>
                     {tokenId}
                   </TruncatedTextWithHover>
@@ -422,6 +435,7 @@ function NFTOwnershipCard({
                 size="sm"
                 onClick={handleCopyTokenId}
                 className="h-8 w-8 p-0"
+                data-testid="dnsManagement.overview.nft-ownership.token-id-copy"
               >
                 {copiedTokenId ? (
                   <Check className="h-3.5 w-3.5 text-emerald-400" />
@@ -438,7 +452,12 @@ function NFTOwnershipCard({
             variant="outline"
             className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
             render={
-              <a href={explorerUrl} target="_blank" rel="noopener noreferrer">
+              <a
+                href={explorerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="dnsManagement.overview.nft-ownership.verify-on-explorer"
+              >
                 <FileCheck className="h-4 w-4 me-2" />
                 {t('overview.nftOwnership.verifyOnExplorer')}
                 <ExternalLink className="h-3.5 w-3.5 ms-auto" />
@@ -454,6 +473,7 @@ function NFTOwnershipCard({
             className="w-full bg-zinc-800/50 border-zinc-700 hover:bg-zinc-700/50"
             onClick={handleWatchNft}
             loadingText={t('overview.nftOwnership.addingToWallet')}
+            data-testid="dnsManagement.overview.nft-ownership.show-nft-in-wallet"
           >
             <Wallet className="h-4 w-4 me-2" />
             {t('overview.nftOwnership.showNftInWallet')}
@@ -494,6 +514,7 @@ function Web3ConceptsCard() {
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
           className="flex items-center justify-between w-full text-start"
+          data-testid="dnsManagement.overview.web3-concepts-toggle"
         >
           <div className="flex items-center gap-2">
             <HelpCircle className="h-4 w-4 text-muted-foreground" />
@@ -594,7 +615,7 @@ export const DomainOverviewPanel = ({
   const pendingNftStates = ownerWalletData?.pendingNftStates ?? [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="dnsManagement.overview.panel">
       <EducationalBanner
         icon={Sparkles}
         title={t('overview.educationalBanner.title')}
@@ -733,6 +754,7 @@ function ExpirationBadge({
         'px-3 py-1.5 text-xs font-medium transition-colors',
         config.className,
       )}
+      data-testid="dnsManagement.overview.expiration-badge"
     >
       <Icon className="h-3.5 w-3.5 me-1.5" />
       {formatExpirationDate(date)}
@@ -935,6 +957,7 @@ export const DomainRenewalCard = ({
           checked={domainPreferencesAndConfig?.autoRenewEnabled}
           disabled={disableAllButtons || isPending}
           onCheckedChange={handleAutoRenewChange}
+          data-testid="dnsManagement.overview.auto-renew-toggle"
         />
       </div>
     </FeatureCard>
@@ -1055,6 +1078,7 @@ export const RenewDomainButton = ({
       }
       size="sm"
       className="bg-brand-primary/10 hover:bg-brand-primary/20 text-brand-primary border border-brand-primary/30 hover:border-brand-primary/50 transition-all"
+      data-testid="dnsManagement.overview.renew-now"
     >
       <Sparkles className="h-3.5 w-3.5 me-1.5" />
       {t('overview.renewNow')}
@@ -1307,6 +1331,7 @@ export const DomainExportCard = ({
                   size="sm"
                   variant="secondary"
                   className="pointer-events-none opacity-50"
+                  data-testid="dnsManagement.overview.export-nft-minting"
                 >
                   <Info className="h-3.5 w-3.5 me-1.5" />
                   {t('overview.export.requestExport')}
@@ -1327,6 +1352,7 @@ export const DomainExportCard = ({
                     size="sm"
                     variant="secondary"
                     className="opacity-50"
+                    data-testid="dnsManagement.overview.export-unavailable"
                   >
                     <Info className="h-3.5 w-3.5 me-1.5" />
                     {t('overview.export.unavailable')}
@@ -1339,14 +1365,22 @@ export const DomainExportCard = ({
             </Tooltip>
           </TooltipProvider>
         ) : domainExportDetails.pendingRequestToEnableExport ? (
-          <Button disabled size="sm" className="animate-pulse">
+          <Button
+            disabled
+            size="sm"
+            className="animate-pulse"
+            data-testid="dnsManagement.overview.export-enable-pending"
+          >
             <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
             {t('overview.export.pending')}
           </Button>
         ) : domainExportDetails.readyToExport ? (
           authCode ? (
             <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 rounded-lg border border-emerald-500/30">
-              <span className="text-sm font-mono text-emerald-400">
+              <span
+                className="text-sm font-mono text-emerald-400"
+                data-testid="dnsManagement.overview.auth-code"
+              >
                 {authCode}
               </span>
               <Button
@@ -1354,6 +1388,7 @@ export const DomainExportCard = ({
                 variant="ghost"
                 onClick={handleCopyAuthCode}
                 className="h-6 w-6 p-0 hover:bg-emerald-500/20"
+                data-testid="dnsManagement.overview.auth-code-copy"
               >
                 <Copy className="h-3 w-3 text-emerald-400" />
               </Button>
@@ -1364,6 +1399,7 @@ export const DomainExportCard = ({
               onClick={handleGetAuthCode}
               disabled={isFetchingAuthCode}
               className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/50"
+              data-testid="dnsManagement.overview.get-auth-code"
             >
               {isFetchingAuthCode ? (
                 <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
@@ -1384,6 +1420,7 @@ export const DomainExportCard = ({
               }
               size="sm"
               className="bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 hover:border-zinc-600 text-zinc-100"
+              data-testid="dnsManagement.overview.request-export"
             >
               <ExternalLink className="h-3.5 w-3.5 me-1.5" />
               {t('overview.export.requestExport')}
@@ -1607,6 +1644,7 @@ export const PendingTransferCard = ({
           disabled={isApproving || isRejecting}
           size="sm"
           className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:border-emerald-500/50"
+          data-testid="dnsManagement.overview.pending-transfer.approve"
         >
           {isApproving ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />
@@ -1621,6 +1659,7 @@ export const PendingTransferCard = ({
           size="sm"
           variant="destructive"
           className="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 hover:border-red-500/50"
+          data-testid="dnsManagement.overview.pending-transfer.reject"
         >
           {isRejecting ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin me-1.5" />

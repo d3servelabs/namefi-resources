@@ -59,6 +59,7 @@ export const SelectColumnHeader = ({
       onCheckedChange={(value) =>
         context.table.toggleAllPageRowsSelected(!!value)
       }
+      data-testid="domains.dns-records.select-all"
       aria-label={t('dnsRecords.selectAll')}
     />
   );
@@ -74,6 +75,7 @@ export const SelectColumnCell = ({
     <Checkbox
       checked={context.row.getIsSelected()}
       onCheckedChange={(value) => context.row.toggleSelected(!!value)}
+      data-testid={`domains.dns-records.select-row.${context.row.id}`}
       aria-label={t('dnsRecords.selectRow')}
       disabled={!context.row.getCanSelect()}
     />
@@ -93,6 +95,7 @@ export const TypeColumnHeader = ({
         onClick={() =>
           context.column.toggleSorting(context.column.getIsSorted() === 'asc')
         }
+        data-testid="dnsManagement.records.sort-type"
         className="p-0 hover:bg-transparent"
       >
         {t('records.table.columnType')}
@@ -161,6 +164,7 @@ export const NameColumnHeader = ({
       <Button
         variant="ghost"
         onClick={handleSort}
+        data-testid="dnsManagement.records.sort-name"
         className="p-0 hover:bg-transparent"
       >
         {t('records.table.columnName')}
@@ -241,6 +245,7 @@ export const TTLColumnHeader = ({
       <Button
         variant="ghost"
         onClick={handleSort}
+        data-testid="dnsManagement.records.sort-ttl"
         className="p-0 hover:bg-transparent"
       >
         {t('records.table.columnTtl')}
@@ -420,7 +425,10 @@ export const ActionsColumnCell = ({
           open={isManagedDeleteDialogOpen}
           onOpenChange={setIsManagedDeleteDialogOpen}
         >
-          <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+          <AlertDialogContent
+            className="bg-zinc-950 border-zinc-800"
+            data-testid="dnsManagement.records.managed-delete.dialog"
+          >
             <AlertDialogHeader>
               <AlertDialogTitle>{managedDeleteTitle}</AlertDialogTitle>
               <AlertDialogDescription className="space-y-2 text-zinc-400">
@@ -435,12 +443,14 @@ export const ActionsColumnCell = ({
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel
+                data-testid="dnsManagement.records.managed-delete.cancel"
                 disabled={updateDomainPreferencesAndConfig.isPending}
               >
                 {tCommon('actions.cancel')}
               </AlertDialogCancel>
               <AlertDialogAction
                 variant="destructive"
+                data-testid="dnsManagement.records.managed-delete.confirm"
                 onClick={(event) => {
                   event.preventDefault();
                   void handleManagedDelete();
@@ -466,7 +476,12 @@ export const ActionsColumnCell = ({
           <Tooltip>
             <TooltipTrigger
               render={
-                <Button variant="ghost" size="icon" className="h-8 w-8" />
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  data-testid={`dnsManagement.records.edit.${record.id}`}
+                />
               }
               onClick={() => setIsEditDialogOpen(true)}
             >
@@ -482,7 +497,14 @@ export const ActionsColumnCell = ({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger
-            render={<Button variant="ghost" size="icon" className="h-8 w-8" />}
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                data-testid={`dnsManagement.records.delete.${record.id}`}
+              />
+            }
             onClick={() =>
               isManagedRecord
                 ? setIsManagedDeleteDialogOpen(true)

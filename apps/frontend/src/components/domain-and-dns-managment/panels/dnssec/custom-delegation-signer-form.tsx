@@ -430,6 +430,7 @@ export function CustomDelegationSignerForm({
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col gap-4 min-w-0"
+        data-testid="dnsManagement.dnssec.custom-ds-form"
       >
         <Tabs
           value={inputMode}
@@ -438,10 +439,18 @@ export function CustomDelegationSignerForm({
           }
         >
           <TabsList>
-            <TabsTrigger value="auto-detect">
+            <TabsTrigger
+              value="auto-detect"
+              data-testid="dnsManagement.dnssec.form.tab.auto-detect"
+            >
               {tDns('form.tabs.autoDetect')}
             </TabsTrigger>
-            <TabsTrigger value="manual">{tDns('form.tabs.manual')}</TabsTrigger>
+            <TabsTrigger
+              value="manual"
+              data-testid="dnsManagement.dnssec.form.tab.manual"
+            >
+              {tDns('form.tabs.manual')}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="manual" className="flex flex-col gap-3 min-w-0">
@@ -451,6 +460,7 @@ export function CustomDelegationSignerForm({
                 type="button"
                 onClick={() => setViewMode('edit')}
                 className="inline rounded bg-blue-500/15 px-1.5 py-0.5 text-blue-300 hover:bg-blue-500/25 cursor-pointer transition-colors"
+                data-testid="dnsManagement.dnssec.form.enter-fields-manually"
               >
                 {tDns('form.manual.enterFieldsManually')}
               </button>
@@ -461,6 +471,7 @@ export function CustomDelegationSignerForm({
               placeholder={PASTE_PLACEHOLDER}
               rows={5}
               className="font-mono text-xs w-full max-w-full"
+              data-testid="dnsManagement.dnssec.form.paste-input"
             />
             <div className="flex items-center justify-end">
               <LoadingButton
@@ -470,6 +481,7 @@ export function CustomDelegationSignerForm({
                 loadingText={tDns('form.manual.deriving')}
                 onClick={handleManualDerive}
                 disabled={pastedText.trim().length === 0}
+                data-testid="dnsManagement.dnssec.form.derive-button"
               >
                 {tDns('form.manual.derive')}
               </LoadingButton>
@@ -490,6 +502,7 @@ export function CustomDelegationSignerForm({
                 isLoading={deriveMutation.isPending}
                 loadingText={tDns('form.autoDetect.detecting')}
                 onClick={handleAutoDetect}
+                data-testid="dnsManagement.dnssec.form.detect-button"
               >
                 <RadarIcon className="w-4 h-4" />
                 {tDns('form.autoDetect.detect')}
@@ -506,7 +519,10 @@ export function CustomDelegationSignerForm({
                       handleSelectCandidate(Number(value));
                     }}
                   >
-                    <SelectTrigger className="min-w-[200px]">
+                    <SelectTrigger
+                      className="min-w-[200px]"
+                      data-testid="dnsManagement.dnssec.form.candidate-select"
+                    >
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -515,6 +531,7 @@ export function CustomDelegationSignerForm({
                           // biome-ignore lint/suspicious/noArrayIndexKey: candidate list is stable per detect call
                           key={`${candidate.keyTag}-${idx}`}
                           value={String(idx)}
+                          data-testid={`dnsManagement.dnssec.form.candidate-option.${candidate.keyTag}`}
                         >
                           {tDns('form.autoDetect.candidateOption', {
                             keyTag: candidate.keyTag,
@@ -539,6 +556,7 @@ export function CustomDelegationSignerForm({
             onClick={() =>
               setViewMode((prev) => (prev === 'summary' ? 'edit' : 'summary'))
             }
+            data-testid="dnsManagement.dnssec.form.toggle-view"
           >
             {viewMode === 'summary' ? (
               <>
@@ -573,6 +591,7 @@ export function CustomDelegationSignerForm({
                         {...field}
                         value={field.value ?? ''}
                         onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                        data-testid="dnsManagement.dnssec.form.field.key-tag"
                       />
                     </FormControl>
                     <FormMessage />
@@ -591,6 +610,7 @@ export function CustomDelegationSignerForm({
                         field={field}
                         options={SUPPORTED_ALGORITHMS}
                         placeholder={tDns('form.placeholders.algorithm')}
+                        data-testid="dnsManagement.dnssec.form.field.algorithm"
                       />
                     </FormControl>
                     <FormMessage />
@@ -609,6 +629,7 @@ export function CustomDelegationSignerForm({
                         field={field}
                         options={FLAG_OPTIONS}
                         placeholder={tDns('form.placeholders.flags')}
+                        data-testid="dnsManagement.dnssec.form.field.flags"
                       />
                     </FormControl>
                     <FormMessage />
@@ -627,6 +648,7 @@ export function CustomDelegationSignerForm({
                         field={field}
                         options={DIGEST_TYPE_OPTIONS}
                         placeholder={tDns('form.placeholders.digestType')}
+                        data-testid="dnsManagement.dnssec.form.field.digest-type"
                       />
                     </FormControl>
                     <FormMessage />
@@ -647,6 +669,7 @@ export function CustomDelegationSignerForm({
                       className="font-mono text-xs w-full max-w-full"
                       placeholder="mdsswUyr3DPW132mOi8V/+T..."
                       {...field}
+                      data-testid="dnsManagement.dnssec.form.field.public-key"
                     />
                   </FormControl>
                   {publicKeyMissingNotice && !field.value?.trim() ? (
@@ -671,6 +694,7 @@ export function CustomDelegationSignerForm({
                       className="font-mono text-xs w-full max-w-full"
                       placeholder="2BB183AF5F22588179A53B0A98631FAD1A292118..."
                       {...field}
+                      data-testid="dnsManagement.dnssec.form.field.digest"
                     />
                   </FormControl>
                   <FormMessage />
@@ -689,6 +713,7 @@ export function CustomDelegationSignerForm({
                 id="ds-ack"
                 checked={acknowledge}
                 onCheckedChange={(checked) => setAcknowledge(checked === true)}
+                data-testid="dnsManagement.dnssec.form.ack-checkbox"
               />
               <label htmlFor="ds-ack" className="cursor-pointer">
                 {ackInfo.label}
@@ -709,12 +734,18 @@ export function CustomDelegationSignerForm({
             isLoading={validateMutation.isPending}
             loadingText={tDns('form.validating')}
             onClick={handleValidate}
+            data-testid="dnsManagement.dnssec.form.validate-button"
           >
             <ShieldAlertIcon className="w-4 h-4" />
             {tDns('form.validate')}
           </LoadingButton>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="ghost" onClick={onCancel}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={onCancel}
+              data-testid="dnsManagement.dnssec.form.cancel-button"
+            >
               {tCommon('actions.cancel')}
             </Button>
             <LoadingButton
@@ -728,6 +759,7 @@ export function CustomDelegationSignerForm({
                   : tDns('form.submitting')
               }
               disabled={submitDisabled}
+              data-testid="dnsManagement.dnssec.form.submit-button"
             >
               {validationFailed
                 ? tDns('form.scheduleDs')
@@ -870,6 +902,7 @@ function SelectField({
   field,
   options,
   placeholder,
+  'data-testid': dataTestId,
 }: {
   field: ControllerRenderProps<
     FormValues,
@@ -877,6 +910,7 @@ function SelectField({
   >;
   options: ReadonlyArray<{ value: number; label: string }>;
   placeholder: string;
+  'data-testid'?: string;
 }) {
   return (
     <Select
@@ -886,7 +920,7 @@ function SelectField({
         field.onChange(Number(value));
       }}
     >
-      <SelectTrigger className="w-full">
+      <SelectTrigger className="w-full" data-testid={dataTestId}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

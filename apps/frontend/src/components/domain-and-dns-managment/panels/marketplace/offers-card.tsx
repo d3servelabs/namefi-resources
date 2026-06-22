@@ -73,7 +73,10 @@ export function OffersCard({
   };
 
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      data-testid="domains.marketplace.offers.card"
+      className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-zinc-100">
           <HandCoins className="h-4 w-4 text-brand-primary" />
@@ -83,18 +86,27 @@ export function OffersCard({
       </CardHeader>
       <CardContent>
         {offersQuery.isLoading ? (
-          <div className="space-y-2">
+          <div
+            data-testid="domains.marketplace.offers.loading"
+            className="space-y-2"
+          >
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
           </div>
         ) : offersQuery.error ? (
-          <p className="text-sm text-red-400">
+          <p
+            data-testid="domains.marketplace.offers.error"
+            className="text-sm text-red-400"
+          >
             {t('marketplace.offers.loadFailed', {
               error: errorToMessage(offersQuery.error),
             })}
           </p>
         ) : !offersQuery.data || offersQuery.data.length === 0 ? (
-          <p className="text-sm text-zinc-400">
+          <p
+            data-testid="domains.marketplace.offers.empty"
+            className="text-sm text-zinc-400"
+          >
             {t('marketplace.offers.empty')}
           </p>
         ) : (
@@ -114,7 +126,10 @@ export function OffersCard({
             </TableHeader>
             <TableBody>
               {offersQuery.data.map((offer) => (
-                <TableRow key={`${offer.marketplace}:${offer.id}`}>
+                <TableRow
+                  key={`${offer.marketplace}:${offer.id}`}
+                  data-testid={`domains.marketplace.offers.row.${offer.id}`}
+                >
                   <TableCell>
                     <Badge
                       variant="outline"
@@ -130,14 +145,23 @@ export function OffersCard({
                       {offer.source}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-zinc-300">
+                  <TableCell
+                    data-testid={`domains.marketplace.offers.row.${offer.id}.bidder`}
+                    className="font-mono text-zinc-300"
+                  >
                     {getShortAddress(offer.bidder)}
                   </TableCell>
-                  <TableCell className="font-mono text-zinc-100">
+                  <TableCell
+                    data-testid={`domains.marketplace.offers.row.${offer.id}.amount`}
+                    className="font-mono text-zinc-100"
+                  >
                     {offer.price.decimal.toFixed(4)}{' '}
                     {offer.price.currency.symbol}
                   </TableCell>
-                  <TableCell title={offer.expirationTime}>
+                  <TableCell
+                    data-testid={`domains.marketplace.offers.row.${offer.id}.expires`}
+                    title={offer.expirationTime}
+                  >
                     {formatExpiration(offer.expirationTime)}
                   </TableCell>
                   <TableCell className="text-end">
@@ -146,6 +170,7 @@ export function OffersCard({
                         const safeUrl = toSafeExternalUrl(offer.externalUrl);
                         return safeUrl ? (
                           <a
+                            data-testid={`domains.marketplace.offers.row.${offer.id}.view`}
                             href={safeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -157,6 +182,7 @@ export function OffersCard({
                         ) : null;
                       })()}
                       <AsyncButton
+                        data-testid={`domains.marketplace.offers.row.${offer.id}.accept`}
                         size="sm"
                         onClick={() => handleAccept(offer)}
                         className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30"

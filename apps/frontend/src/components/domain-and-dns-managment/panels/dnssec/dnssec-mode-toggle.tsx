@@ -40,6 +40,7 @@ export function DnssecModeToggle({ mode, onChange }: DnssecModeToggleProps) {
                 variant={mode === 'simple' ? 'default' : 'ghost'}
                 size="sm"
                 aria-pressed={mode === 'simple'}
+                data-testid="dnsManagement.dnssec-panel.mode-toggle.simple"
                 className="h-7 px-3 text-xs"
                 onClick={() => onChange('simple')}
               >
@@ -57,6 +58,7 @@ export function DnssecModeToggle({ mode, onChange }: DnssecModeToggleProps) {
                 variant={mode === 'advanced' ? 'default' : 'ghost'}
                 size="sm"
                 aria-pressed={mode === 'advanced'}
+                data-testid="dnsManagement.dnssec-panel.mode-toggle.advanced"
                 className="h-7 px-3 text-xs"
                 onClick={() => onChange('advanced')}
               >

@@ -85,7 +85,10 @@ export function ForwardingDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        data-testid="dnsManagement.forwarding.dialog"
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+      >
         <DialogHeader>
           <DialogTitle>{t('dialogs.forwarding.title')}</DialogTitle>
           <DialogDescription>
@@ -105,6 +108,7 @@ export function ForwardingDialog({
               {t('dialogs.forwarding.fieldLabel')}
             </Label>
             <Input
+              data-testid="dnsManagement.forwarding.url-input"
               id="forward-url"
               placeholder={t('dialogs.forwarding.placeholder')}
               value={forwardUrl}
@@ -114,11 +118,19 @@ export function ForwardingDialog({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            data-testid="dnsManagement.forwarding.cancel"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
             {readOnly ? tCommon('actions.close') : tCommon('actions.cancel')}
           </Button>
           {!readOnly && (
-            <Button onClick={handleSave} disabled={updateConfig.isPending}>
+            <Button
+              data-testid="dnsManagement.forwarding.save"
+              onClick={handleSave}
+              disabled={updateConfig.isPending}
+            >
               {updateConfig.isPending && (
                 <Loader2 className="me-2 h-4 w-4 animate-spin" />
               )}

@@ -291,7 +291,10 @@ function ReadinessCard({
 
 function DetectingCard() {
   return (
-    <div className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4 text-xs text-zinc-500">
+    <div
+      className="rounded-md border border-zinc-800 bg-zinc-900/40 p-4 text-xs text-zinc-500"
+      data-testid="dnsManagement.dnssec.simple.detecting-card"
+    >
       Detecting DNSKEY at your nameservers…
     </div>
   );
@@ -301,7 +304,10 @@ function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
   const tDns = useTranslations('dnsManagement');
   const tCommon = useTranslations('common');
   return (
-    <div className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.error-card"
+    >
       <div className="flex items-start gap-3">
         <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
@@ -320,6 +326,7 @@ function ErrorCard({ onRecheck }: { onRecheck: () => void }) {
           size="sm"
           onClick={onRecheck}
           className="text-xs"
+          data-testid="dnsManagement.dnssec.simple.try-again-button"
         >
           <RefreshCwIcon className="h-3.5 w-3.5" />
           {tCommon('actions.tryAgain')}
@@ -372,7 +379,10 @@ function PendingCard({
 
   const keyWord = pending.length === 1 ? 'key' : 'keys';
   return (
-    <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.pending-card"
+    >
       <div className="flex items-start gap-3">
         <Loader2Icon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0 animate-spin" />
         <div className="flex flex-col gap-1">
@@ -394,6 +404,7 @@ function PendingCard({
                 size="sm"
                 className="text-xs"
                 disabled={disabled || pending.length === 0}
+                data-testid="dnsManagement.dnssec.simple.cancel-setup-button"
               >
                 {tDns('actions.cancelSetup')}
               </Button>
@@ -427,6 +438,7 @@ function PendingCard({
                       event.preventDefault();
                       void handleCancelAll();
                     }}
+                    data-testid="dnsManagement.dnssec.simple.cancel-setup-confirm-button"
                   >
                     {tDns('actions.cancelSetup')}
                   </LoadingButton>
@@ -484,7 +496,10 @@ function AlreadyActiveCard({
   const recordWord = count === 1 ? 'DS record' : 'DS records';
 
   return (
-    <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.active-card"
+    >
       <div className="flex items-start gap-3">
         <ShieldCheckIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
@@ -509,6 +524,7 @@ function AlreadyActiveCard({
                 size="sm"
                 className="text-xs"
                 disabled={disabled || count === 0}
+                data-testid="dnsManagement.dnssec.simple.disable-button"
               >
                 <Trash2Icon className="h-3.5 w-3.5" />
                 {tDns('actions.disable')}
@@ -538,6 +554,7 @@ function AlreadyActiveCard({
                       event.preventDefault();
                       void handleDisable();
                     }}
+                    data-testid="dnsManagement.dnssec.simple.disable-confirm-button"
                   >
                     {tCommon('actions.disable')}
                   </LoadingButton>
@@ -568,7 +585,10 @@ function ReadyCard({
   const kskWord = kskCount === 1 ? 'DNSKEY' : 'DNSKEYs';
   const sample = firstAndMore(sampleNameservers);
   return (
-    <div className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-green-500/30 bg-green-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.ready-card"
+    >
       <div className="flex items-start gap-3">
         <ShieldPlusIcon className="h-5 w-5 text-green-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
@@ -599,6 +619,7 @@ function ReadyCard({
           loadingText="Enabling…"
           disabled={disabled}
           onClick={onEnable}
+          data-testid="dnsManagement.dnssec.simple.enable-button"
         >
           <ShieldPlusIcon className="h-4 w-4" />
           {tDns('actions.enable')}
@@ -626,7 +647,10 @@ function NoDnskeyCard({
   const body = `We checked your nameservers and it seems DNSSEC is not enabled. Enable DNSSEC at ${providerName || 'your DNS provider'}, then come back to enable it here.`;
 
   return (
-    <div className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-amber-500/30 bg-amber-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.no-dnskey-card"
+    >
       <div className="flex items-start gap-3">
         <ShieldXIcon className="h-5 w-5 text-amber-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
@@ -649,6 +673,7 @@ function NoDnskeyCard({
           onClick={onRecheck}
           disabled={isRefetching}
           className="text-xs"
+          data-testid="dnsManagement.dnssec.simple.recheck-button"
         >
           <RefreshCwIcon
             className={`h-3.5 w-3.5 ${isRefetching ? 'animate-spin' : ''}`}
@@ -661,7 +686,12 @@ function NoDnskeyCard({
             size="sm"
             className="text-xs"
             render={
-              <a href={setupUrl} target="_blank" rel="noreferrer">
+              <a
+                href={setupUrl}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="dnsManagement.dnssec.simple.provider-setup-link"
+              >
                 <ExternalLinkIcon className="h-3.5 w-3.5" />
                 Open {providerName} DNSSEC setup
               </a>
@@ -720,7 +750,10 @@ function MismatchCard({
   };
 
   return (
-    <div className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3">
+    <div
+      className="rounded-md border border-red-500/30 bg-red-500/5 p-4 flex flex-col gap-3"
+      data-testid="dnsManagement.dnssec.simple.mismatch-card"
+    >
       <div className="flex items-start gap-3">
         <AlertTriangleIcon className="h-5 w-5 text-red-400 mt-0.5 shrink-0" />
         <div className="flex flex-col gap-1">
@@ -747,6 +780,7 @@ function MismatchCard({
                 size="sm"
                 className="text-xs"
                 disabled={disabled || activeSigners.length === 0}
+                data-testid="dnsManagement.dnssec.simple.remove-ds-button"
               >
                 <Trash2Icon className="h-3.5 w-3.5" />
                 Remove DS record{activeSigners.length === 1 ? '' : 's'}
@@ -779,6 +813,7 @@ function MismatchCard({
                       event.preventDefault();
                       void handleRemoveAll();
                     }}
+                    data-testid="dnsManagement.dnssec.simple.remove-ds-confirm-button"
                   >
                     {tCommon('actions.remove')}
                   </LoadingButton>
@@ -793,7 +828,12 @@ function MismatchCard({
             size="sm"
             className="text-xs"
             render={
-              <a href={setupUrl} target="_blank" rel="noreferrer">
+              <a
+                href={setupUrl}
+                target="_blank"
+                rel="noreferrer"
+                data-testid="dnsManagement.dnssec.simple.mismatch-provider-setup-link"
+              >
                 <ExternalLinkIcon className="h-3.5 w-3.5" />
                 Open {providerName} DNSSEC setup
               </a>

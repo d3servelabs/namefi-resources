@@ -108,7 +108,10 @@ const Layout = ({
 }) => {
   const t = useTranslations('dnsManagement');
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+      data-testid="dnsManagement.dnssec.panel"
+    >
       <CardHeader>
         <div className="flex items-start justify-between gap-4">
           <CardTitle className="flex items-center gap-2">
@@ -309,7 +312,10 @@ export const DnssecPanelInner = ({
   }
 
   const zoneSigningStatus = (
-    <div className="flex items-center gap-2">
+    <div
+      className="flex items-center gap-2"
+      data-testid="dnsManagement.dnssec.zone-signing-status"
+    >
       <div className="flex items-center gap-2">
         {data.zoneHasActiveDnssec ? (
           <>
@@ -493,6 +499,7 @@ function DnssecRefreshButton({
               disabled={isRefreshing}
               onClick={handleRefresh}
               aria-label={t('dnssecPanel.refreshAria')}
+              data-testid="dnsManagement.dnssec.refresh-button"
             >
               <RefreshCwIcon
                 className={`h-3.5 w-3.5 ${isRefreshing ? 'animate-spin' : ''}`}
@@ -580,7 +587,12 @@ function DnssecProgressModal({
             render={
               <DialogTrigger
                 render={
-                  <Button variant="ghost" size="icon" className="h-6 w-6" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    data-testid="dnsManagement.dnssec.progress-modal-trigger"
+                  />
                 }
               />
             }
@@ -592,7 +604,10 @@ function DnssecProgressModal({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+        data-testid="dnsManagement.dnssec.progress-dialog"
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -621,6 +636,7 @@ function DnssecProgressModal({
               isLoading={cancelMutation.isPending}
               loadingText={t('dnssecPanel.progress.cancelling')}
               onClick={() => cancelMutation.mutate({ domainName, operation })}
+              data-testid="dnsManagement.dnssec.progress-cancel-button"
             >
               <XCircleIcon className="w-4 h-4" />
               {t('dnssecPanel.progress.cancelWorkflow')}
@@ -727,6 +743,7 @@ export const DnssecPanelAction = ({
         <div
           id="request-in-progress"
           className="flex items-center gap-2 bg-zinc-800 p-2 rounded-md"
+          data-testid="dnsManagement.dnssec.request-in-progress"
         >
           <Loader2 className="w-4 h-4 animate-spin" />
           <p>
@@ -755,6 +772,7 @@ export const DnssecPanelAction = ({
                 disabled={disableAllButtons}
                 isLoading={disableNamefiSigning.isPending}
                 loadingText={t('dnssecPanel.disabling')}
+                data-testid="dnsManagement.dnssec.disable-namefi-button"
               />
             }
           >
@@ -777,6 +795,7 @@ export const DnssecPanelAction = ({
               <AlertDialogAction
                 onClick={() => disableNamefiSigning.mutate({ domainName })}
                 variant="destructive"
+                data-testid="dnsManagement.dnssec.disable-namefi-confirm-button"
               >
                 {t('dnssecPanel.confirmAndDisable')}
               </AlertDialogAction>
@@ -789,6 +808,7 @@ export const DnssecPanelAction = ({
           onClick={() => enableNamefiSigning.mutateAsync({ domainName })}
           variant={'default'}
           disabled={disableAllButtons}
+          data-testid="dnsManagement.dnssec.enable-namefi-button"
         >
           <ShieldPlusIcon width={20} height={20} />{' '}
           {t('dnssecPanel.enableNamefiSigning')}

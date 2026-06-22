@@ -115,6 +115,7 @@ export const DeleteRecordDialog = ({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       {children ? <DialogTrigger render={children as ReactElement} /> : false}
       <DialogContent
+        data-testid="dnsManagement.delete.dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           'sm:max-w-[500px] bg-zinc-950 border-zinc-800',
@@ -138,6 +139,7 @@ export const DeleteRecordDialog = ({
               <CollapsibleTrigger
                 render={
                   <Button
+                    data-testid="dnsManagement.delete.toggle"
                     variant="ghost"
                     size="sm"
                     className="p-0 h-6 w-6 hover:bg-transparent"
@@ -165,16 +167,35 @@ export const DeleteRecordDialog = ({
                     {records.map((record, index) => (
                       <div
                         key={record.id}
+                        data-testid={`dnsManagement.delete.row.${record.id}`}
                         className={`grid grid-cols-4 gap-4 py-2 ${
                           index < records.length - 1
                             ? 'border-b border-zinc-800/50'
                             : ''
                         }`}
                       >
-                        <div className="truncate">{record.name}</div>
-                        <div>{record.type}</div>
-                        <div className="truncate">{record.rdata}</div>
-                        <div>{record.ttl}</div>
+                        <div
+                          data-testid={`dnsManagement.delete.row.${record.id}.name`}
+                          className="truncate"
+                        >
+                          {record.name}
+                        </div>
+                        <div
+                          data-testid={`dnsManagement.delete.row.${record.id}.type`}
+                        >
+                          {record.type}
+                        </div>
+                        <div
+                          data-testid={`dnsManagement.delete.row.${record.id}.value`}
+                          className="truncate"
+                        >
+                          {record.rdata}
+                        </div>
+                        <div
+                          data-testid={`dnsManagement.delete.row.${record.id}.ttl`}
+                        >
+                          {record.ttl}
+                        </div>
                       </div>
                     ))}
                   </ScrollArea>
@@ -186,6 +207,7 @@ export const DeleteRecordDialog = ({
 
         <DialogFooter className="gap-2 sm:gap-0">
           <Button
+            data-testid="dnsManagement.delete.cancel"
             variant="ghost"
             onClick={() => {
               onCancelClicked?.();
@@ -195,6 +217,7 @@ export const DeleteRecordDialog = ({
             {tCommon('actions.cancel')}
           </Button>
           <Button
+            data-testid="dnsManagement.delete.confirm"
             variant="destructive"
             onClick={handleDelete}
             disabled={isPending}

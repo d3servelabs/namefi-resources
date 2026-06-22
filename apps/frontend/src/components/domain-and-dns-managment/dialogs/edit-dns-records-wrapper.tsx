@@ -53,7 +53,10 @@ export function EditDnsRecordsWrapper({
         zoneName={domainName}
         onOpenChange={onOpenChange}
       >
-        <div className="flex justify-center p-8">
+        <div
+          data-testid="dnsManagement.edit-records.loading"
+          className="flex justify-center p-8"
+        >
           <Loader2 className="h-8 w-8 animate-spin" />
         </div>
       </AddEditRecordsDialog>
@@ -69,13 +72,23 @@ export function EditDnsRecordsWrapper({
         onOpenChange={onOpenChange}
         readOnly={true}
       >
-        <div className="flex flex-col items-center justify-center p-8 text-center gap-4">
-          <p className="text-destructive">
+        <div
+          data-testid="dnsManagement.edit-records.error"
+          className="flex flex-col items-center justify-center p-8 text-center gap-4"
+        >
+          <p
+            data-testid="dnsManagement.edit-records.error-message"
+            className="text-destructive"
+          >
             {error instanceof Error
               ? error.message
               : t('dialogs.addEdit.loadRecordsFailed')}
           </p>
-          <Button variant="outline" onClick={() => refetch()}>
+          <Button
+            data-testid="dnsManagement.edit-records.retry"
+            variant="outline"
+            onClick={() => refetch()}
+          >
             {t('management.retry')}
           </Button>
         </div>

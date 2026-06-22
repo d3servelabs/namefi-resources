@@ -307,6 +307,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
           placeholder={t('records.table.searchPlaceholder')}
           value={globalFilter ?? ''}
           onChange={handleGlobalFilterChange}
+          data-testid="dnsManagement.records.search"
           className="ps-8"
         />
       </div>
@@ -320,7 +321,13 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => (
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" className="ms-2" />}
+          render={
+            <Button
+              variant="outline"
+              className="ms-2"
+              data-testid="dnsManagement.records.columns-toggle"
+            />
+          }
         >
           <SlidersHorizontal className="me-2 h-4 w-4" />
           {t('records.table.columns')}
@@ -360,7 +367,13 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
     () => (
       <DropdownMenu>
         <DropdownMenuTrigger
-          render={<Button variant="outline" className="ms-2" />}
+          render={
+            <Button
+              variant="outline"
+              className="ms-2"
+              data-testid="dnsManagement.records.filter"
+            />
+          }
         >
           <Filter className="me-2 h-4 w-4" />
           {t('records.table.filter')}
@@ -448,7 +461,12 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             mode="edit"
             onOpenChange={setIsEditDialogOpen}
           >
-            <Button variant="outline" size="sm" className="ms-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="ms-2"
+              data-testid="dnsManagement.records.edit-selected"
+            >
               <Edit className="me-2 h-4 w-4" />
               {t('records.table.editSelected', {
                 count: selectedRecords.length,
@@ -461,7 +479,12 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
             isOpen={isDeleteDialogOpen}
             onOpenChange={setIsDeleteDialogOpen}
           >
-            <Button variant="destructive" size="sm" className="ms-2">
+            <Button
+              variant="destructive"
+              size="sm"
+              className="ms-2"
+              data-testid="dnsManagement.records.delete-selected"
+            >
               <Trash2 className="me-2 h-4 w-4" />
               {t('records.table.deleteSelected', {
                 count: selectedRecords.length,
@@ -503,7 +526,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
 
       <div className="rounded-md border border-zinc-800">
         <div className="w-full grid grid-cols-1 overflow-x-auto">
-          <Table>
+          <Table data-testid="dnsManagement.records.table">
             <Thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <Tr key={headerGroup.id} className="border-b border-zinc-800">
@@ -526,6 +549,7 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
                   <Tr
                     key={row.id}
                     className="border-b border-zinc-800 hover:bg-zinc-800/50"
+                    data-testid={`dnsManagement.records.row.${row.id}`}
                     data-state={row.getIsSelected() ? 'selected' : undefined}
                   >
                     {row.getVisibleCells().map((cell) => (
@@ -540,7 +564,11 @@ export const DnsRecordsTable: FC<DnsRecordsTableProps> = ({
                 ))
               ) : (
                 <Tr>
-                  <Td colSpan={columns.length} className="h-24 text-center">
+                  <Td
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                    data-testid="dnsManagement.records.empty"
+                  >
                     {t('records.table.empty')}
                   </Td>
                 </Tr>

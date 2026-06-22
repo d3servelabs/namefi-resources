@@ -58,6 +58,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
         'relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5',
         className,
       )}
+      data-testid="dnsManagement.records-panel"
       {...rest}
     >
       <AddEditRecordsDialog
@@ -81,6 +82,7 @@ export const DnsRecordsPanel: FC<DnsRecordsPanelProps> = ({
           <Button
             disabled={!domain}
             className="bg-brand-primary hover:bg-brand-primary/90 text-secondary-foreground"
+            data-testid="dnsManagement.records-panel.add-record"
           >
             <Plus className="me-1 h-4 w-4" /> {t('records.panel.addRecord')}
           </Button>
@@ -130,6 +132,7 @@ const AddRecordDropdownMenu = React.memo(
                   <DropdownMenuItem
                     key={type}
                     onClick={() => onAddRecordClicked(type)}
+                    data-testid={`dnsManagement.records-panel.add-record-type.${type.toLowerCase()}`}
                   >
                     <Icon className="me-2 h-4 w-4" />
                     <span>{t('records.panel.recordTypeOption', { type })}</span>

@@ -512,6 +512,7 @@ export function AddEditRecordsDialog({
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       {children ? <DialogTrigger render={children as ReactElement} /> : false}
       <DialogContent
+        data-testid="dnsManagement.add-edit.dialog"
         className={cn(
           MOBILE_BOTTOM_SHEET_DIALOG,
           'sm:max-w-[900px] bg-zinc-950 border-zinc-800',
@@ -557,6 +558,7 @@ export function AddEditRecordsDialog({
 
         {mode === 'add' && !readOnly && (
           <Button
+            data-testid="dnsManagement.add-edit.add-more-record"
             variant="ghost"
             onClick={addMoreRecord}
             type="button"
@@ -570,6 +572,7 @@ export function AddEditRecordsDialog({
         <DialogFooter className="flex items-center justify-end gap-2">
           <div className="flex gap-2">
             <Button
+              data-testid="dnsManagement.add-edit.cancel"
               variant="destructive"
               onClick={() => {
                 onCancelClicked?.();
@@ -581,6 +584,7 @@ export function AddEditRecordsDialog({
             </Button>
             {!readOnly && (
               <Button
+                data-testid="dnsManagement.add-edit.submit"
                 onClick={handleSubmit}
                 type="button"
                 disabled={
@@ -610,7 +614,10 @@ export function AddEditRecordsDialog({
         open={isCnameConflictDialogOpen}
         onOpenChange={setIsCnameConflictDialogOpen}
       >
-        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+        <AlertDialogContent
+          data-testid="dnsManagement.add-edit.cname-conflict-dialog"
+          className="bg-zinc-950 border-zinc-800"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('dialogs.addEdit.cnameConflictTitle')}
@@ -622,6 +629,7 @@ export function AddEditRecordsDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction
+              data-testid="dnsManagement.add-edit.cname-conflict-understood"
               onClick={() => setIsCnameConflictDialogOpen(false)}
             >
               {t('dialogs.addEdit.understood')}
@@ -638,7 +646,10 @@ export function AddEditRecordsDialog({
           }
         }}
       >
-        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+        <AlertDialogContent
+          data-testid="dnsManagement.add-edit.disable-managed-dialog"
+          className="bg-zinc-950 border-zinc-800"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('dialogs.addEdit.disableManagedTitle')}
@@ -654,12 +665,14 @@ export function AddEditRecordsDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
+              data-testid="dnsManagement.add-edit.keep-managed-records"
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={() => setPendingManagedCnameConflictRecords(null)}
             >
               {t('dialogs.addEdit.keepManagedRecords')}
             </AlertDialogCancel>
             <AlertDialogAction
+              data-testid="dnsManagement.add-edit.disable-managed-continue"
               variant="destructive"
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={(event) => {
@@ -688,7 +701,10 @@ export function AddEditRecordsDialog({
           }
         }}
       >
-        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+        <AlertDialogContent
+          data-testid="dnsManagement.add-edit.disable-parking-dialog"
+          className="bg-zinc-950 border-zinc-800"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>
               {t('dialogs.addEdit.disableParkingTitle')}
@@ -704,12 +720,14 @@ export function AddEditRecordsDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
+              data-testid="dnsManagement.add-edit.keep-parking-enabled"
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={() => setPendingParkingConflictRecords(null)}
             >
               {t('dialogs.addEdit.keepParkingEnabled')}
             </AlertDialogCancel>
             <AlertDialogAction
+              data-testid="dnsManagement.add-edit.disable-parking-continue"
               variant="destructive"
               disabled={updateDomainPreferencesAndConfig.isPending}
               onClick={(event) => {

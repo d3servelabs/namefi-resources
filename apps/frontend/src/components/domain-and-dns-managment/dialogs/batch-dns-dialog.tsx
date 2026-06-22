@@ -153,7 +153,10 @@ export function BatchDnsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className={MOBILE_BOTTOM_SHEET_DIALOG}>
+      <DialogContent
+        data-testid="dnsManagement.batch.dialog"
+        className={MOBILE_BOTTOM_SHEET_DIALOG}
+      >
         <DialogHeader>
           <DialogTitle>{getTitle()}</DialogTitle>
           <DialogDescription>
@@ -168,6 +171,7 @@ export function BatchDnsDialog({
                 {t('dialogs.batch.forwardUrlLabel')}
               </Label>
               <Input
+                data-testid="dnsManagement.batch.forward-url-input"
                 id="batch-forward"
                 placeholder={t('dialogs.forwarding.placeholder')}
                 value={value}
@@ -201,10 +205,15 @@ export function BatchDnsDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button
+            data-testid="dnsManagement.batch.cancel"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+          >
             {tCommon('actions.cancel')}
           </Button>
           <Button
+            data-testid="dnsManagement.batch.save"
             onClick={handleSubmit}
             disabled={
               isLoading ||

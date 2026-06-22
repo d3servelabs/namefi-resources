@@ -11,7 +11,10 @@ import { useTranslations } from 'next-intl';
 export function ExportBlockedCard() {
   const t = useTranslations('domains');
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 text-center">
+    <div
+      data-testid="domains.marketplace.export-blocked.card"
+      className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-8 text-center"
+    >
       <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-amber-500/30 bg-amber-500/10">
         <Ban className="h-5 w-5 text-amber-500" />
       </div>

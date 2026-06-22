@@ -341,6 +341,7 @@ export function CreateListingModal({
         <DialogTrigger
           render={
             <Button
+              data-testid="domains.marketplace.create-listing.trigger"
               size="sm"
               className="shrink-0 bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             />
@@ -350,7 +351,10 @@ export function CreateListingModal({
           {triggerLabel ?? t('marketplace.createListing.trigger')}
         </DialogTrigger>
       ) : null}
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
+      <DialogContent
+        data-testid="domains.marketplace.create-listing.dialog"
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+      >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-zinc-100">
             <ShoppingBag className="h-4 w-4 text-brand-primary" />
@@ -375,13 +379,17 @@ export function CreateListingModal({
                 value={marketplaceId}
                 onValueChange={(v) => setMarketplaceId(v as MarketplaceId)}
               >
-                <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                <SelectTrigger
+                  data-testid="domains.marketplace.create-listing.marketplace-trigger"
+                  className="bg-zinc-950/40 border-zinc-800 text-zinc-100"
+                >
                   <SelectValue>{selectedMarketplace?.label}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   {availableMarketplaceOptions.map((option) => (
                     <SelectItem
                       key={option.id}
+                      data-testid={`domains.marketplace.create-listing.marketplace-option.${option.id}`}
                       value={option.id}
                       disabled={option.alreadyListed}
                     >
@@ -419,6 +427,7 @@ export function CreateListingModal({
                   })}
                 </Label>
                 <Input
+                  data-testid="domains.marketplace.create-listing.price-input"
                   id="marketplace-price"
                   type="number"
                   min="0"
@@ -437,12 +446,19 @@ export function CreateListingModal({
                   value={currencyAddress}
                   onValueChange={(v) => setCurrencyAddress(v as Address)}
                 >
-                  <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                  <SelectTrigger
+                    data-testid="domains.marketplace.create-listing.currency-trigger"
+                    className="bg-zinc-950/40 border-zinc-800 text-zinc-100"
+                  >
                     <SelectValue>{currency?.symbol}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {availableCurrencies.map((c) => (
-                      <SelectItem key={c.contract} value={c.contract}>
+                      <SelectItem
+                        key={c.contract}
+                        data-testid={`domains.marketplace.create-listing.currency-option.${c.contract}`}
+                        value={c.contract}
+                      >
                         {t('marketplace.createListing.currencyOption', {
                           symbol: c.symbol,
                           name: c.name,
@@ -462,7 +478,10 @@ export function CreateListingModal({
                 value={String(durationSeconds)}
                 onValueChange={(v) => setDurationSeconds(Number(v))}
               >
-                <SelectTrigger className="bg-zinc-950/40 border-zinc-800 text-zinc-100">
+                <SelectTrigger
+                  data-testid="domains.marketplace.create-listing.duration-trigger"
+                  className="bg-zinc-950/40 border-zinc-800 text-zinc-100"
+                >
                   <SelectValue>
                     {selectedDuration
                       ? durationLabel(selectedDuration.seconds)
@@ -471,7 +490,11 @@ export function CreateListingModal({
                 </SelectTrigger>
                 <SelectContent>
                   {DURATION_OPTIONS.map((d) => (
-                    <SelectItem key={d.seconds} value={String(d.seconds)}>
+                    <SelectItem
+                      key={d.seconds}
+                      data-testid={`domains.marketplace.create-listing.duration-option.${d.seconds}`}
+                      value={String(d.seconds)}
+                    >
                       {durationLabel(d.seconds)}
                     </SelectItem>
                   ))}
@@ -486,6 +509,7 @@ export function CreateListingModal({
         <DialogFooter>
           {walletReady ? (
             <AsyncButton
+              data-testid="domains.marketplace.create-listing.submit"
               size="lg"
               onClick={handleSubmit}
               disabled={
@@ -505,6 +529,7 @@ export function CreateListingModal({
             </AsyncButton>
           ) : (
             <AsyncButton
+              data-testid="domains.marketplace.create-listing.connect-wallet"
               size="lg"
               onClick={handleConnectWallet}
               disabled={

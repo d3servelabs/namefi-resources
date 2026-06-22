@@ -120,7 +120,10 @@ export function DnsRecordForm({
                 disabled={disabled}
               >
                 <FormControl>
-                  <SelectTrigger className="w-full bg-zinc-900 border-zinc-800">
+                  <SelectTrigger
+                    data-testid={`dnsManagement.record-form.type-select.${index}`}
+                    className="w-full bg-zinc-900 border-zinc-800"
+                  >
                     <SelectValue
                       placeholder={t('dialogs.form.typePlaceholder')}
                     />
@@ -128,7 +131,11 @@ export function DnsRecordForm({
                 </FormControl>
                 <SelectContent>
                   {DNS_RECORD_TYPES.map((type) => (
-                    <SelectItem key={type} value={type}>
+                    <SelectItem
+                      key={type}
+                      value={type}
+                      data-testid={`dnsManagement.record-form.type-option.${type}`}
+                    >
                       {type}
                     </SelectItem>
                   ))}
@@ -156,7 +163,10 @@ export function DnsRecordForm({
                 disabled={disabled}
               >
                 <FormControl>
-                  <SelectTrigger className="bg-zinc-900 border-zinc-800">
+                  <SelectTrigger
+                    data-testid={`dnsManagement.record-form.ttl-select.${index}`}
+                    className="bg-zinc-900 border-zinc-800"
+                  >
                     <SelectValue
                       placeholder={t('dialogs.form.ttlPlaceholder')}
                     />
@@ -189,6 +199,7 @@ export function DnsRecordForm({
               <div className="flex flex-row flex-nowrap">
                 <FormControl>
                   <Input
+                    data-testid={`dnsManagement.record-form.name-input.${index}`}
                     placeholder={t('dialogs.form.namePlaceholder')}
                     className="bg-zinc-900 border-zinc-800 rounded-e-none"
                     {...field}
@@ -196,6 +207,7 @@ export function DnsRecordForm({
                   />
                 </FormControl>
                 <Input
+                  data-testid={`dnsManagement.record-form.zone-suffix.${index}`}
                   className="w-fit bg-zinc-900 border-zinc-800 border-s-0 rounded-s-none text-zinc-500"
                   style={{
                     width: `clamp(12ch, ${Math.max(zoneName.length + 2, 12)}ch, 100%)`,
@@ -221,6 +233,7 @@ export function DnsRecordForm({
               <FormControl>
                 {isShortValueType(selectedType) ? (
                   <Input
+                    data-testid={`dnsManagement.record-form.value-input.${index}`}
                     placeholder={valuePlaceholder}
                     className="bg-zinc-900 border-zinc-800"
                     {...field}
@@ -228,6 +241,7 @@ export function DnsRecordForm({
                   />
                 ) : (
                   <Textarea
+                    data-testid={`dnsManagement.record-form.value-input.${index}`}
                     placeholder={valuePlaceholder}
                     className="bg-zinc-900 border-zinc-800"
                     {...field}
@@ -243,6 +257,7 @@ export function DnsRecordForm({
         {showRemoveButton && onRemove && (
           <div className="flex md:justify-end md:pb-1">
             <Button
+              data-testid={`dnsManagement.record-form.remove.${index}`}
               variant="ghost"
               size="icon"
               onClick={onRemove}

@@ -86,7 +86,10 @@ export function CurrentListingsCard({
   };
 
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      data-testid="domains.marketplace.listings.card"
+      className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+    >
       <CardHeader>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 space-y-1.5">
@@ -105,6 +108,7 @@ export function CurrentListingsCard({
               className="border-emerald-500/30 bg-emerald-500/10 text-emerald-200 hover:bg-emerald-500/20 hover:text-emerald-100"
               render={
                 <Link
+                  data-testid="domains.marketplace.listings.find-buyers"
                   href={getLeadgenStartHref(domain)}
                   aria-label={t('marketplace.listings.findBuyersAria', {
                     domain,
@@ -128,18 +132,27 @@ export function CurrentListingsCard({
       </CardHeader>
       <CardContent>
         {listingsQuery.isLoading ? (
-          <div className="space-y-2">
+          <div
+            data-testid="domains.marketplace.listings.loading"
+            className="space-y-2"
+          >
             <Skeleton className="h-10 w-full" />
             <Skeleton className="h-10 w-full" />
           </div>
         ) : listingsQuery.error ? (
-          <p className="text-sm text-red-400">
+          <p
+            data-testid="domains.marketplace.listings.error"
+            className="text-sm text-red-400"
+          >
             {t('marketplace.listings.loadFailed', {
               error: errorToMessage(listingsQuery.error),
             })}
           </p>
         ) : !listingsQuery.data || listingsQuery.data.length === 0 ? (
-          <p className="text-sm text-zinc-400">
+          <p
+            data-testid="domains.marketplace.listings.empty"
+            className="text-sm text-zinc-400"
+          >
             {t('marketplace.listings.empty')}
           </p>
         ) : (
@@ -158,7 +171,10 @@ export function CurrentListingsCard({
             </TableHeader>
             <TableBody>
               {listingsQuery.data.map((listing) => (
-                <TableRow key={`${listing.marketplace}:${listing.id}`}>
+                <TableRow
+                  key={`${listing.marketplace}:${listing.id}`}
+                  data-testid={`domains.marketplace.listings.row.${listing.id}`}
+                >
                   <TableCell>
                     <Badge
                       variant="outline"
@@ -174,11 +190,17 @@ export function CurrentListingsCard({
                       {listing.source}
                     </Badge>
                   </TableCell>
-                  <TableCell className="font-mono text-zinc-100">
+                  <TableCell
+                    data-testid={`domains.marketplace.listings.row.${listing.id}.price`}
+                    className="font-mono text-zinc-100"
+                  >
                     {listing.price.decimal.toFixed(4)}{' '}
                     {listing.price.currency.symbol}
                   </TableCell>
-                  <TableCell title={listing.expirationTime}>
+                  <TableCell
+                    data-testid={`domains.marketplace.listings.row.${listing.id}.expires`}
+                    title={listing.expirationTime}
+                  >
                     {formatExpiration(listing.expirationTime)}
                   </TableCell>
                   <TableCell className="text-end">
@@ -187,6 +209,7 @@ export function CurrentListingsCard({
                         const safeUrl = toSafeExternalUrl(listing.externalUrl);
                         return safeUrl ? (
                           <a
+                            data-testid={`domains.marketplace.listings.row.${listing.id}.view`}
                             href={safeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -198,6 +221,7 @@ export function CurrentListingsCard({
                         ) : null;
                       })()}
                       <AsyncButton
+                        data-testid={`domains.marketplace.listings.row.${listing.id}.cancel`}
                         size="sm"
                         onClick={() => handleCancel(listing)}
                         className="bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30"

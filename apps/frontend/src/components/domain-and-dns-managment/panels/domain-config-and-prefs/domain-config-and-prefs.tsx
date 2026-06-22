@@ -69,7 +69,10 @@ function isApexRecordName(name: string) {
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const tDns = useTranslations('dnsManagement');
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+      data-testid="dnsManagement.config.panel"
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {tDns('prefs.panelTitle')}
@@ -502,6 +505,7 @@ export const DomainConfigAndPrefsForm = ({
                   className={cn(isPending ? 'animate-pulse cursor-wait' : '')}
                   checked={domainPreferencesAndConfig?.autoEnsEnabled}
                   onCheckedChange={handleChange('autoEnsEnabled')}
+                  data-testid="dnsManagement.config.auto-ens-switch"
                   disabled={
                     isPending ||
                     disableAllButtons ||
@@ -527,6 +531,7 @@ export const DomainConfigAndPrefsForm = ({
                 checked={domainPreferencesAndConfig?.autoParkEnabled}
                 onCheckedChange={handleChange('autoParkEnabled')}
                 disabled={disableAllButtons || isPending}
+                data-testid="dnsManagement.config.auto-park-switch"
               />
             </div>
 
@@ -545,6 +550,7 @@ export const DomainConfigAndPrefsForm = ({
                   onChange={(e) => setForwardTo(e.target.value)}
                   value={forwardTo}
                   disabled={disableAllButtons || isPending}
+                  data-testid="dnsManagement.config.forward-to-input"
                 />
                 {forwardToChanged ? (
                   <Button
@@ -552,6 +558,7 @@ export const DomainConfigAndPrefsForm = ({
                     onClick={() =>
                       setForwardTo(domainPreferencesAndConfig?.forwardTo)
                     }
+                    data-testid="dnsManagement.config.forward-to-cancel-button"
                   >
                     {tCommon('actions.cancel')}
                   </Button>
@@ -559,6 +566,7 @@ export const DomainConfigAndPrefsForm = ({
                 <AsyncButton
                   onClick={() => handleChange('forwardTo')(forwardTo)}
                   disabled={!forwardToChanged}
+                  data-testid="dnsManagement.config.forward-to-save-button"
                 >
                   {tCommon('actions.save')}
                 </AsyncButton>
@@ -584,7 +592,10 @@ export const DomainConfigAndPrefsForm = ({
           }
         }}
       >
-        <AlertDialogContent className="bg-zinc-950 border-zinc-800">
+        <AlertDialogContent
+          className="bg-zinc-950 border-zinc-800"
+          data-testid="dnsManagement.config.conflict-dialog"
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>
               {tDns('prefs.conflictDialog.title')}
@@ -603,6 +614,7 @@ export const DomainConfigAndPrefsForm = ({
             <AlertDialogCancel
               disabled={isPending}
               onClick={() => setPendingPreferenceConflict(null)}
+              data-testid="dnsManagement.config.conflict-keep-button"
             >
               {tDns('prefs.conflictDialog.keepRecords')}
             </AlertDialogCancel>
@@ -613,6 +625,7 @@ export const DomainConfigAndPrefsForm = ({
                 event.preventDefault();
                 void handleConfirmConflictResolution();
               }}
+              data-testid="dnsManagement.config.conflict-remove-button"
             >
               {isPending ? (
                 <>

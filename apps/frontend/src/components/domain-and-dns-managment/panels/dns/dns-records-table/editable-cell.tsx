@@ -26,11 +26,15 @@ export interface EditableCellProps {
 export const EditableCell = ({
   value: initialValue,
   row,
+  column,
   onSave,
   options,
   isSelectInput = false,
   enabled = true,
 }: EditableCellProps) => {
+  // Stable, collision-free testid suffix for this cell (column + row id), so
+  // the per-record editable controls each have a unique handle.
+  const testIdSuffix = `${column.id}.${row.id}`;
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +68,10 @@ export const EditableCell = ({
     if (isSelectInput && options) {
       return (
         <Select defaultValue={value} onValueChange={handleSelectChange}>
-          <SelectTrigger className="h-8 w-full bg-zinc-900 border-zinc-700">
+          <SelectTrigger
+            data-testid={`dnsManagement.records.cell-select.${testIdSuffix}`}
+            className="h-8 w-full bg-zinc-900 border-zinc-700"
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -89,6 +96,7 @@ export const EditableCell = ({
             onSave(value);
             setIsEditing(false);
           }}
+          data-testid={`dnsManagement.records.cell-input.${testIdSuffix}`}
           className="h-8 bg-zinc-900 border-zinc-700"
         />
         <div className="flex">
@@ -96,6 +104,7 @@ export const EditableCell = ({
             variant="ghost"
             size="icon"
             className="h-6 w-6 text-green-500"
+            data-testid={`dnsManagement.records.cell-save.${testIdSuffix}`}
             onClick={() => {
               onSave(value);
               setIsEditing(false);
@@ -107,6 +116,7 @@ export const EditableCell = ({
             variant="ghost"
             size="icon"
             className="h-6 w-6 text-red-500"
+            data-testid={`dnsManagement.records.cell-cancel.${testIdSuffix}`}
             onClick={() => {
               setValue(initialValue);
               setIsEditing(false);
@@ -123,6 +133,7 @@ export const EditableCell = ({
     <button
       type="button"
       className="cursor-pointer hover:bg-zinc-800 p-1 rounded"
+      data-testid={`dnsManagement.records.cell-value.${testIdSuffix}`}
       onClick={() => {
         if (enabled) {
           if (isManagedDnsRecord(row.original)) {

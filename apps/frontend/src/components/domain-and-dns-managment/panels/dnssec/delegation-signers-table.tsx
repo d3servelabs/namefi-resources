@@ -81,7 +81,10 @@ export function DelegationSignersTable({
 
   if (rows.length === 0) {
     return (
-      <p className="text-xs text-zinc-500 italic">
+      <p
+        className="text-xs text-zinc-500 italic"
+        data-testid="dnsManagement.delegation-signers.empty"
+      >
         {emptyMessage ?? t('dnssecPanel.signersTable.empty')}
       </p>
     );
@@ -92,7 +95,10 @@ export function DelegationSignersTable({
     // action buttons as the desktop table — only the layout differs (a
     // labeled grouped list instead of a wide table row).
     return (
-      <div className="flex flex-col gap-3">
+      <div
+        className="flex flex-col gap-3"
+        data-testid="dnsManagement.delegation-signers.list"
+      >
         {rows.map((row, idx) =>
           row.kind === 'active' ? (
             <ActiveSignerCard
@@ -117,7 +123,10 @@ export function DelegationSignersTable({
   return (
     <div className="overflow-x-auto rounded-md border border-zinc-800">
       {/* desktop-only table; mobile renders cards via useIsMobile above */}
-      <table className="w-full text-xs" /* mobile-ok */>
+      <table
+        className="w-full text-xs" /* mobile-ok */
+        data-testid="dnsManagement.delegation-signers.table"
+      >
         <thead className="bg-zinc-900/60 text-zinc-400">
           <tr>
             <th className="text-start p-2">
@@ -192,7 +201,10 @@ function ActiveSignerCard({
   disabled: boolean;
 }) {
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`dnsManagement.delegation-signers.row.${signer.keyTag ?? signer.id ?? signer.digest ?? 'unknown'}`}
+    >
       <div className="flex items-center justify-between gap-2 px-3 py-2">
         <span className="font-mono text-sm font-medium text-zinc-200">
           {signer.keyTag ?? '—'}
@@ -231,7 +243,10 @@ function PendingSignerCard({
   disabled: boolean;
 }) {
   return (
-    <Card className="gap-0 overflow-hidden px-0 py-0">
+    <Card
+      className="gap-0 overflow-hidden px-0 py-0"
+      data-testid={`dnsManagement.delegation-signers.pending-row.${pending.workflowId}`}
+    >
       <div className="flex items-center justify-between gap-2 px-3 py-2">
         <div className="flex min-w-0 items-center gap-1.5">
           <span className="font-mono text-sm font-medium text-zinc-200">
@@ -276,7 +291,10 @@ function ActiveSignerRow({
   disabled: boolean;
 }) {
   return (
-    <tr className="border-t border-zinc-800">
+    <tr
+      className="border-t border-zinc-800"
+      data-testid={`dnsManagement.delegation-signers.row.${signer.keyTag ?? signer.id ?? signer.digest ?? 'unknown'}`}
+    >
       <td className="p-2">{signer.keyTag ?? '—'}</td>
       <td className="p-2">{signer.algorithm ?? '—'}</td>
       <td className="p-2">{signer.digestType ?? '—'}</td>
@@ -305,7 +323,10 @@ function PendingSignerRow({
 }) {
   const t = useTranslations('dnsManagement');
   return (
-    <tr className="border-t border-zinc-800">
+    <tr
+      className="border-t border-zinc-800"
+      data-testid={`dnsManagement.delegation-signers.pending-row.${pending.workflowId}`}
+    >
       <td className="p-2">
         <div className="flex items-center gap-1.5">
           <span>{pending.signingConfig.keyTag}</span>
@@ -466,6 +487,7 @@ function DisassociateButton({
             className="h-7 w-7 text-zinc-400 hover:text-red-400"
             disabled={disabled || !keyId}
             aria-label={t('dnssecPanel.signersTable.removeAria')}
+            data-testid={`dnsManagement.delegation-signers.remove-button.${keyId ?? signer.keyTag ?? 'unknown'}`}
           >
             <Trash2Icon className="w-4 h-4" />
           </Button>
@@ -502,6 +524,7 @@ function DisassociateButton({
                   }
                   mutation.mutate({ domainName, keyId });
                 }}
+                data-testid="dnsManagement.delegation-signers.remove-confirm-button"
               >
                 {t('dnssecPanel.signersTable.remove')}
               </LoadingButton>
@@ -561,6 +584,7 @@ function CancelDeferredButton({
             className="h-7 w-7 text-zinc-400 hover:text-red-400"
             disabled={disabled}
             aria-label={t('dnssecPanel.signersTable.cancelDeferredAria')}
+            data-testid={`dnsManagement.delegation-signers.cancel-pending-button.${pending.workflowId}`}
           >
             <Trash2Icon className="w-4 h-4" />
           </Button>
@@ -592,6 +616,7 @@ function CancelDeferredButton({
                     workflowId: pending.workflowId,
                   });
                 }}
+                data-testid="dnsManagement.delegation-signers.cancel-pending-confirm-button"
               >
                 {t('dnssecPanel.signersTable.cancelSubmission')}
               </LoadingButton>

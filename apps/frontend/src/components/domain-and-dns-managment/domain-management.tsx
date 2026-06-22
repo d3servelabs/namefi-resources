@@ -422,7 +422,10 @@ export const DomainManagement: FC<DomainManagementProps> = ({
         </Alert>
       )}
       <div className="my-2 flex items-center gap-3">
-        <h1 className="text-4xl font-bold font-mono">
+        <h1
+          className="text-4xl font-bold font-mono"
+          data-testid="dnsManagement.management.domain-name"
+        >
           {capitalizeFirstLetter(domain)}
         </h1>
         <NotificationsBell
@@ -441,23 +444,38 @@ export const DomainManagement: FC<DomainManagementProps> = ({
 
           <TabsContent value="dns-setting">
             <Tabs value={currentTab} onValueChange={handleTabChange}>
-              <TabsList className="border-1 border-brand-primary/5 bg-gradient-to-r from-brand-primary/15 via-transparent to-brand-secondary/15 mb-8">
-                <TabsTrigger value="domain-overview">
+              <TabsList
+                className="border-1 border-brand-primary/5 bg-gradient-to-r from-brand-primary/15 via-transparent to-brand-secondary/15 mb-8"
+                data-testid="dnsManagement.management.tabs"
+              >
+                <TabsTrigger
+                  value="domain-overview"
+                  data-testid="dnsManagement.management.tab.domain-overview"
+                >
                   {t('management.tabDomainOverview')}
                 </TabsTrigger>
 
                 {showDnsTable && (
-                  <TabsTrigger value="dns-records">
+                  <TabsTrigger
+                    value="dns-records"
+                    data-testid="dnsManagement.management.tab.dns-records"
+                  >
                     {t('management.tabDnsRecords')}
                   </TabsTrigger>
                 )}
                 {showDnsManagement && (
-                  <TabsTrigger value="dns-management">
+                  <TabsTrigger
+                    value="dns-management"
+                    data-testid="dnsManagement.management.tab.dns-management"
+                  >
                     {t('management.tabDnsManagement')}
                   </TabsTrigger>
                 )}
                 {marketplaceListingEnabled && (
-                  <TabsTrigger value="marketplace">
+                  <TabsTrigger
+                    value="marketplace"
+                    data-testid="dnsManagement.management.tab.marketplace"
+                  >
                     {t('management.tabMarketplace')}
                   </TabsTrigger>
                 )}
@@ -539,6 +557,7 @@ export const DomainManagement: FC<DomainManagementProps> = ({
                       loadedDomainSupportedFeatures.domainManagement.config
                         .redirectTo
                     }
+                    data-testid="dnsManagement.management.redirect-to-registrar"
                   >
                     {props.children}
                   </a>
@@ -584,7 +603,7 @@ export const ComingSoonCard = ({ title }: { title: string }) => {
 
 function DomainManagementLoadingState({ domain }: { domain: string }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="dnsManagement.management.loading">
       <DomainManagementTitle domain={domain}>
         <Skeleton className="h-8 w-8 rounded-full" />
       </DomainManagementTitle>
@@ -622,7 +641,7 @@ function DomainManagementErrorState({
 }) {
   const t = useTranslations('dnsManagement');
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-testid="dnsManagement.management.error">
       <DomainManagementTitle domain={domain} />
       <Card className="bg-white/[0.03] border border-white/10 shadow-sm rounded-lg">
         <CardHeader>
@@ -631,7 +650,12 @@ function DomainManagementErrorState({
         <div className="space-y-4 p-6 pt-0">
           <p className="text-sm text-muted-foreground">{message}</p>
           {onRetry ? (
-            <Button type="button" variant="outline" onClick={onRetry}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onRetry}
+              data-testid="dnsManagement.management.error.retry"
+            >
               {retryLabel ?? t('management.retry')}
             </Button>
           ) : null}
@@ -650,7 +674,10 @@ function DomainManagementTitle({
 }) {
   return (
     <div className="my-2 flex items-center gap-3">
-      <h1 className="text-4xl font-bold font-mono">
+      <h1
+        className="text-4xl font-bold font-mono"
+        data-testid="dnsManagement.management.domain-name"
+      >
         {capitalizeFirstLetter(domain)}
       </h1>
       {children}

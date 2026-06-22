@@ -104,7 +104,10 @@ const DOMAIN_ACTIONS = {
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations('dnsManagement');
   return (
-    <Card className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5">
+    <Card
+      className="relative overflow-hidden border border-brand-primary/20 bg-gradient-to-r from-brand-primary/5 via-transparent to-brand-secondary/5"
+      data-testid="dnsManagement.nameservers.panel"
+    >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {t('nameservers.panelTitle')}
@@ -467,6 +470,7 @@ const NameserversPanelForm = React.memo(
           onClick={handleResetToNamefi}
           isLoading={loadingOperation === 'resetting'}
           disabled={disableAllButtons}
+          data-testid="dnsManagement.nameservers.reset-button"
         >
           <RotateCw className="me-2 h-4 w-4" />
           {t('nameservers.resetToNamefi')}
@@ -554,6 +558,7 @@ const NameserversPanelForm = React.memo(
                               placeholder={t(
                                 'nameservers.nameserverPlaceholder',
                               )}
+                              data-testid={`dnsManagement.nameservers.row.${index}.input`}
                             />
                           </FormControl>
                           {values.nameservers.length > 2 && (
@@ -563,6 +568,7 @@ const NameserversPanelForm = React.memo(
                               onClick={() => handleRemoveNameserver(index)}
                               className="text-zinc-400 hover:text-red-500"
                               disabled={disableAllButtons}
+                              data-testid={`dnsManagement.nameservers.row.${index}.remove-button`}
                             >
                               {tCommon('actions.remove')}
                             </Button>
@@ -582,6 +588,7 @@ const NameserversPanelForm = React.memo(
                     onClick={handleAddNameserver}
                     className="w-auto py-1.25 px-5 "
                     disabled={disableAllButtons}
+                    data-testid="dnsManagement.nameservers.add-button"
                   >
                     {t('nameservers.addNameserver')}
                   </Button>
@@ -592,6 +599,7 @@ const NameserversPanelForm = React.memo(
                       variant="destructive"
                       onClick={cancelChanges}
                       disabled={disableAllButtons}
+                      data-testid="dnsManagement.nameservers.cancel-button"
                     >
                       {tCommon('actions.cancel')}
                     </Button>
@@ -610,6 +618,7 @@ const NameserversPanelForm = React.memo(
                       disableAllButtons
                     }
                     variant={'default'}
+                    data-testid="dnsManagement.nameservers.save-button"
                   >
                     <SaveIcon width={20} height={20} />{' '}
                     {t('nameservers.saveChanges')}
@@ -845,7 +854,12 @@ function NameserversProgressModal({
             render={
               <DialogTrigger
                 render={
-                  <Button variant="ghost" size="icon" className="h-6 w-6" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6"
+                    data-testid="dnsManagement.nameservers.progress-modal-trigger"
+                  />
                 }
               />
             }
@@ -857,7 +871,10 @@ function NameserversProgressModal({
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-      <DialogContent className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}>
+      <DialogContent
+        className={cn(MOBILE_BOTTOM_SHEET_DIALOG, 'sm:max-w-lg')}
+        data-testid="dnsManagement.nameservers.progress-dialog"
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
@@ -877,6 +894,7 @@ function NameserversProgressModal({
               isLoading={cancelMutation.isPending}
               loadingText={t('nameservers.workflow.cancelling')}
               onClick={() => cancelMutation.mutate({ domainName })}
+              data-testid="dnsManagement.nameservers.progress-cancel-button"
             >
               <XCircleIcon className="w-4 h-4" />
               {t('nameservers.workflow.cancelWorkflow')}
@@ -931,6 +949,7 @@ export const ActiveNameserversChangeWorkflowBanner = ({
         'flex bg-zinc-800 border-zinc-700 rounded-md p-2 w-full justify-center items-center gap-2',
         !isActive && 'hidden',
       )}
+      data-testid="dnsManagement.nameservers.workflow-banner"
     >
       <Loader2 className="h-4 w-4 animate-spin" />
       <p>

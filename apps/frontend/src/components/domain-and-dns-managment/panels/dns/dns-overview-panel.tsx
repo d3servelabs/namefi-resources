@@ -114,7 +114,10 @@ export const DnsOverviewPanel = ({
   );
 
   return (
-    <Card className="bg-zinc-900 border-zinc-800">
+    <Card
+      className="bg-zinc-900 border-zinc-800"
+      data-testid="dnsManagement.overview.panel"
+    >
       <CardHeader>
         <CardTitle>{t('overview.panelTitle')}</CardTitle>
       </CardHeader>
@@ -292,6 +295,7 @@ export const DomainRenewalSection = ({
           checked={domainPreferencesAndConfig?.autoRenewEnabled}
           disabled={disableAllButtons || isPending}
           onCheckedChange={handleChange('autoRenewEnabled')}
+          data-testid="dnsManagement.overview.auto-renew-toggle-mobile"
         />
       </div>
       <div className="flex items-center gap-3 sm:w-auto w-full">
@@ -310,6 +314,7 @@ export const DomainRenewalSection = ({
           checked={domainPreferencesAndConfig?.autoRenewEnabled}
           disabled={disableAllButtons || isPending}
           onCheckedChange={handleChange('autoRenewEnabled')}
+          data-testid="dnsManagement.overview.auto-renew-toggle"
         />
       </div>
     </div>
@@ -427,6 +432,7 @@ export const RenewDomainButton = ({
       }
       size="sm"
       className={className}
+      data-testid="dnsManagement.overview.renew-now"
     >
       {t('overview.renewNow')}
     </AsyncButton>
@@ -671,12 +677,17 @@ export const DomainExportSection = ({
               size="sm"
               variant="secondary"
               className="w-full sm:w-auto"
+              data-testid="dnsManagement.overview.export-unavailable"
             >
               <ExternalLink className="h-4 w-4 me-2" />
               {t('overview.export.exportUnavailable')}
             </Button>
           ) : domainExportDetails.pendingRequestToEnableExport ? (
-            <Button disabled className="w-full sm:w-auto">
+            <Button
+              disabled
+              className="w-full sm:w-auto"
+              data-testid="dnsManagement.overview.export-enable-pending"
+            >
               <Loader2 className="h-4 w-4 animate-spin" />
               <span>{t('overview.export.enableRequestPending')}</span>
             </Button>
@@ -684,12 +695,18 @@ export const DomainExportSection = ({
             <div className="flex items-center gap-2 w-full sm:w-auto">
               {authCode ? (
                 <div className="flex items-center gap-2 px-3 py-1 bg-zinc-800 rounded border text-sm font-mono">
-                  <span className="text-green-400">{authCode}</span>
+                  <span
+                    className="text-green-400"
+                    data-testid="dnsManagement.overview.auth-code"
+                  >
+                    {authCode}
+                  </span>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={handleCopyAuthCode}
                     className="h-6 w-6 p-0"
+                    data-testid="dnsManagement.overview.auth-code-copy"
                   >
                     <Copy className="h-3 w-3" />
                   </Button>
@@ -700,6 +717,7 @@ export const DomainExportSection = ({
                   onClick={handleGetAuthCode}
                   disabled={isFetchingAuthCode}
                   className="w-full sm:w-auto"
+                  data-testid="dnsManagement.overview.get-auth-code"
                 >
                   {isFetchingAuthCode ? (
                     <Loader2 className="h-4 w-4 animate-spin me-2" />
@@ -719,6 +737,7 @@ export const DomainExportSection = ({
                 loadingIcon={<Loader2 className="h-4 w-4 animate-spin me-2" />}
                 size="sm"
                 className="w-full sm:w-auto"
+                data-testid="dnsManagement.overview.request-export"
               >
                 <ExternalLink className="h-4 w-4 me-2" />
                 {t('overview.export.requestExport')}
@@ -923,7 +942,10 @@ export const PendingTransferSection = ({
         onRequestedWalletConnected={handleWalletConnected}
         actionDescription="to manage the domain export"
       />
-      <div className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2">
+      <div
+        className="flex flex-wrap items-center justify-between rounded-2xl bg-zinc-900 border border-amber-600 p-4 gap-y-2 col-span-2"
+        data-testid="dnsManagement.overview.pending-transfer"
+      >
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <ArrowRightLeft className="h-4 w-4 text-amber-500" />
@@ -949,6 +971,7 @@ export const PendingTransferSection = ({
             size="sm"
             variant="default"
             className="w-full sm:w-auto"
+            data-testid="dnsManagement.overview.pending-transfer.approve"
           >
             {isApproving ? (
               <Loader2 className="h-4 w-4 animate-spin me-2" />
@@ -963,6 +986,7 @@ export const PendingTransferSection = ({
             size="sm"
             variant="destructive"
             className="w-full sm:w-auto"
+            data-testid="dnsManagement.overview.pending-transfer.reject"
           >
             {isRejecting ? (
               <Loader2 className="h-4 w-4 animate-spin me-2" />
