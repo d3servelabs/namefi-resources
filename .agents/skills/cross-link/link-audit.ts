@@ -4,22 +4,36 @@
  *
  * Deterministic backbone of the `cross-link` skill. It does NOT invent
  * editorial links (that is the model's judgement job) — it audits the
- * internal links that already exist and finds the two mechanical failure
- * modes a human eye misses across 7 locales x 4 collections:
+ * internal links that already exist and finds the mechanical failure modes a
+ * human eye misses across 7 locales x 4 collections.
  *
- *   BROKEN          target slug does not exist in ANY locale -> 404.
- *   LOCALE_MISMATCH link locale != file locale AND a same-locale counterpart
- *                   exists. e.g. a `zh` post links to `/en/glossary/dns/`
- *                   while `/zh/glossary/dns/` exists. Auto-fixable: repoint
- *                   the link to the file's own locale.
- *   CROSS_LOCALE    link locale != file locale and NO same-locale counterpart
- *                   exists (the term is only translated in the linked locale).
- *                   Acceptable fallback — surfaced as a warning, never auto-fixed.
+ * Severity model — the resources app falls back to the DEFAULT locale (en) at
+ * runtime: requesting /<loc>/<coll>/<slug> when that locale lacks the slug
+ * serves the English entry (200) with rel=canonical -> the en URL (see the
+ * load*Entry default-locale fallback in apps/resources/src/lib/content.ts).
+ * So "the linked locale lacks the slug" is NOT automatically a 404 — only the
+ * absence of the en fallback is. The classifier mirrors that:
+ *
+ *   BROKEN              slug exists in neither the link locale NOR the default
+ *                      locale (en) -> the runtime fallback can't save it, real
+ *                      404. Must be fixed by hand. (Exit code 1.)
+ *   LOCALE_MISMATCH    link locale != file locale AND a same-locale counterpart
+ *                      exists. e.g. a `zh` post links to `/en/glossary/dns/`
+ *                      while `/zh/glossary/dns/` exists. Auto-fixable: repoint
+ *                      the link to the file's own locale.
+ *   MISSING_TRANSLATION the link locale lacks the slug but the default locale
+ *                      (en) has it, so the app renders it via the en fallback.
+ *                      A warning (not a 404): translate the term, or link /en/
+ *                      explicitly for a self-canonical URL. Never auto-fixed.
+ *   CROSS_LOCALE       link locale != file locale, the linked page genuinely
+ *                      exists, and no same-locale counterpart does (the term is
+ *                      only translated in the linked locale). Acceptable — a
+ *                      warning, never auto-fixed.
  *
  * Internal links are written as absolute, locale-prefixed, trailing-slash
- * paths: /<locale>/<collection>/<slug>/ . The resources app does NOT
- * auto-localize hrefs (see apps/resources/src/mdx-components.tsx), so the
- * locale in the href is authoritative: a mismatch is a real bug, not cosmetic.
+ * paths: /<locale>/<collection>/<slug>/ . The app does NOT auto-localize hrefs
+ * (see apps/resources/src/mdx-components.tsx), so the locale in the href is
+ * authoritative for which page is served / canonicalized.
  *
  * Usage (run from the namefi-resources repo root):
  *   bun .agents/skills/cross-link/link-audit.ts                 # audit everything
@@ -27,17 +41,26 @@
  *   bun .agents/skills/cross-link/link-audit.ts --fix <paths>   # repoint LOCALE_MISMATCH
  *   bun .agents/skills/cross-link/link-audit.ts --json <paths>  # machine-readable
  *
- * Exit code is 1 when BROKEN links remain (after --fix), else 0.
+ * Exit code is 1 when BROKEN links remain (after --fix), else 0. Warnings
+ * (MISSING_TRANSLATION, CROSS_LOCALE) never affect the exit code.
  */
 
 import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
 const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi'] as const;
+// Mirrors i18n.defaultLocale in apps/resources: the locale every other locale
+// falls back to at runtime when it lacks a slug. A link the default locale can
+// satisfy is never a hard 404.
+const DEFAULT_LOCALE = 'en';
 const COLLECTIONS = ['blog', 'glossary', 'tld', 'partners'] as const;
 const MD_EXT = new Set(['.md', '.mdx']);
 
-type Severity = 'BROKEN' | 'LOCALE_MISMATCH' | 'CROSS_LOCALE';
+type Severity =
+  | 'BROKEN'
+  | 'LOCALE_MISMATCH'
+  | 'MISSING_TRANSLATION'
+  | 'CROSS_LOCALE';
 type Finding = {
   file: string;
   line: number;
@@ -157,9 +180,29 @@ function localeOfFile(file: string): string | null {
   return m ? m[1] : null;
 }
 
+// Every internal-link href in `content` whose exact target
+// (`<collection>/<linkLocale>/<slug>`) is absent from slugIndex — i.e. a 404.
+// Used by the --fix self-check to prove a rewrite never *introduces* a dead
+// link (the en-only mislocalization bug). Returns raw hrefs (may repeat).
+function findAbsentTargets(content: string): string[] {
+  const prose = stripNonProse(content);
+  const out: string[] = [];
+  for (const m of prose.matchAll(LINK_RE)) {
+    const href = m[1];
+    const parts = href.match(HREF_PARTS_RE);
+    if (!parts) continue;
+    const [, linkLocale, collection, slugRaw] = parts;
+    const slug = decodeURIComponent(slugRaw);
+    if (!slugIndex.has(`${collection}/${linkLocale}/${slug}`)) out.push(href);
+  }
+  return out;
+}
+
 // --- audit -----------------------------------------------------------------
 const findings: Finding[] = [];
 const filesToRewrite = new Map<string, string>();
+// Count of files where --fix would have created a dead link and was refused.
+let selfCheckFailures = 0;
 
 for (const file of auditFiles) {
   const fileLocale = localeOfFile(file);
@@ -183,8 +226,12 @@ for (const file of auditFiles) {
     return lo + 1;
   };
 
-  let mutated = raw;
-  let changed = false;
+  // Collected --fix rewrites as exact byte spans into `raw`. prose is built by
+  // stripNonProse, which blanks frontmatter/code char-for-char (length and
+  // newlines preserved), so a match index in `prose` is the same index in
+  // `raw`. Splicing exact spans — rather than the old substring replace —
+  // is what makes the fix immune to prefix collisions (see below).
+  const edits: { start: number; end: number; replacement: string }[] = [];
 
   for (const m of prose.matchAll(LINK_RE)) {
     const href = m[1];
@@ -194,24 +241,34 @@ for (const file of auditFiles) {
     const slug = decodeURIComponent(slugRaw);
 
     const literalExists = slugIndex.has(`${collection}/${linkLocale}/${slug}`);
+    // The file's OWN locale having the slug is the single source of truth for
+    // "auto-fixable": it guarantees the repointed /<fileLocale>/ href resolves
+    // to a real slug, so --fix can never localize an en-only term into a 404.
     const sameLocaleExists = slugIndex.has(
       `${collection}/${fileLocale}/${slug}`,
     );
-    const anyLocaleExists = (LOCALES as readonly string[]).some((l) =>
-      slugIndex.has(`${collection}/${l}/${slug}`),
+    // The default locale (en) is the runtime fallback target: if it has the
+    // slug, the app serves /<linkLocale>/.../<slug> via that fallback (200),
+    // so the link is at worst a missing translation, never a hard 404.
+    const defaultLocaleExists = slugIndex.has(
+      `${collection}/${DEFAULT_LOCALE}/${slug}`,
     );
 
     let severity: Severity | null = null;
     let fixedHref: string | undefined;
 
     if (!literalExists) {
+      // The linked locale itself lacks the slug.
       if (sameLocaleExists) {
+        // ...but the file's own locale has it → repoint to it (best target).
         severity = 'LOCALE_MISMATCH';
         fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
-      } else if (!anyLocaleExists) {
-        severity = 'BROKEN';
+      } else if (defaultLocaleExists) {
+        // The en fallback covers it: the app renders en at this URL (200).
+        // Not a 404 — a warning to translate or link /en/ explicitly.
+        severity = 'MISSING_TRANSLATION';
       } else {
-        // points at a locale that lacks the slug, and our locale lacks it too
+        // Missing in the linked locale AND in the en fallback — real 404.
         severity = 'BROKEN';
       }
     } else if (linkLocale !== fileLocale) {
@@ -219,6 +276,7 @@ for (const file of auditFiles) {
         severity = 'LOCALE_MISMATCH';
         fixedHref = href.replace(`/${linkLocale}/`, `/${fileLocale}/`);
       } else {
+        // Term only translated in the linked locale — acceptable fallback.
         severity = 'CROSS_LOCALE';
       }
     }
@@ -238,12 +296,43 @@ for (const file of auditFiles) {
     });
 
     if (FIX && severity === 'LOCALE_MISMATCH' && fixedHref) {
-      mutated = mutated.split(`](${href}`).join(`](${fixedHref}`);
-      changed = true;
+      // Rewrite ONLY this href occurrence. The previous implementation did
+      // `content.split(`](${href}`).join(...)`, a substring replace that also
+      // rewrote any longer href sharing this one as a prefix: fixing
+      // `](/en/glossary/dns` clobbered the sibling `](/en/glossary/dnssec/)`,
+      // repointing an en-only fallback to a /zh/ 404 (and doing so only for
+      // the no-trailing-slash form). LINK_RE puts m.index at the `]`, so the
+      // href begins two chars later, at `](`.length.
+      const start = (m.index ?? 0) + 2;
+      edits.push({ start, end: start + href.length, replacement: fixedHref });
     }
   }
 
-  if (changed) filesToRewrite.set(file, mutated);
+  if (FIX && edits.length > 0) {
+    // Apply right-to-left so earlier offsets stay valid as we splice.
+    edits.sort((a, b) => b.start - a.start);
+    let mutated = raw;
+    for (const e of edits) {
+      mutated = mutated.slice(0, e.start) + e.replacement + mutated.slice(e.end);
+    }
+    // Guard: --fix must never INTRODUCE a link whose target is absent from
+    // slugIndex. Pre-existing BROKEN links are allowed to remain (we don't
+    // invent translations), so compare against the original rather than
+    // requiring zero. If the rewrite would create a new dead link, refuse to
+    // write the file and fail the run loudly instead of shipping a 404.
+    const before = new Set(findAbsentTargets(raw));
+    const introduced = findAbsentTargets(mutated).filter((h) => !before.has(h));
+    if (introduced.length > 0) {
+      console.error(
+        `✗ self-check failed for ${rel(file)}: --fix would create dead ` +
+          `link(s) absent from slugIndex: ${introduced.join(', ')}. ` +
+          `Refusing to write this file.`,
+      );
+      selfCheckFailures++;
+    } else {
+      filesToRewrite.set(file, mutated);
+    }
+  }
 }
 
 if (FIX) {
@@ -259,6 +348,7 @@ if (JSON_OUT) {
   const tag: Record<Severity, string> = {
     BROKEN: c('31', '✗ BROKEN'),
     LOCALE_MISMATCH: c('33', '⚠ LOCALE'),
+    MISSING_TRANSLATION: c('33', '⚠ MISSING-TR'),
     CROSS_LOCALE: c('2', '· x-locale'),
   };
   const byFile = new Map<string, Finding[]>();
@@ -278,17 +368,27 @@ if (JSON_OUT) {
   }
   const broken = findings.filter((f) => f.severity === 'BROKEN').length;
   const mismatch = findings.filter((f) => f.severity === 'LOCALE_MISMATCH').length;
+  const missingTr = findings.filter(
+    (f) => f.severity === 'MISSING_TRANSLATION',
+  ).length;
   const xloc = findings.filter((f) => f.severity === 'CROSS_LOCALE').length;
   console.log('');
   console.log(
     `Audited ${auditFiles.length} file(s): ` +
       `${c('31', `${broken} broken`)}, ` +
       `${c('33', `${mismatch} locale-mismatch`)}${FIX ? ` (${filesToRewrite.size} file(s) rewritten)` : ''}, ` +
+      `${c('33', `${missingTr} missing-translation`)}, ` +
       `${c('2', `${xloc} cross-locale fallback`)}.`,
   );
   if (!FIX && mismatch > 0) {
     console.log('Re-run with --fix to repoint locale-mismatch links automatically.');
   }
+  if (selfCheckFailures > 0) {
+    console.log(
+      c('31', `${selfCheckFailures} file(s) skipped: --fix self-check failed.`),
+    );
+  }
 }
 
-process.exitCode = findings.some((f) => f.severity === 'BROKEN') ? 1 : 0;
+process.exitCode =
+  selfCheckFailures > 0 || findings.some((f) => f.severity === 'BROKEN') ? 1 : 0;
