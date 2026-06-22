@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 15
 format: analysis
 description: "Why Chinese buyers price short, four-letter, and numeric .com domains as a distinct asset class — pinyin, no-vowel premiums, and lucky 8 vs unlucky 4."
+ogImage: ../../assets/short-llll-and-numeric-domains-chinese-market-og.jpg
 keywords: ['chinese premium domains', 'numeric domains', 'LLLL.com', 'four letter domains', 'chip domains', 'short domain names', 'lucky number 8 domains', 'unlucky number 4', 'pinyin domains', 'NNNN domains', 'chinese domain market', 'numeric domain value', 'no vowel domains', 'domain flipping china', 'short com domains']
 ---
 
@@ -18,6 +19,8 @@ To a Western flipper, `xqjz.com` looks like keyboard noise and `5808.com` looks 
 This is a piece about why short, four-letter (LLLL), and numeric domains trade the way they do, and why the rules are written mostly in Mandarin. It sits under [what makes a domain valuable](/en/blog/what-makes-a-domain-valuable/) in the [domain flipping skills](/en/blog/domain-flipping/) series, and it's the companion to [domain hacks explained](/en/blog/domain-hacks-explained/): both are about value that lives in the *shape* of a name rather than its dictionary meaning.
 
 ## Why short and numeric is its own asset class
+
+![Editorial illustration of a locked glass display case holding a fixed, finite set of identical tokens while a coral demand arrow pushes upward against the sealed supply](../../assets/short-llll-and-numeric-domains-chinese-market-01-scarcity.jpg)
 
 Most domain value tracks a word. `flowers.com` is worth a fortune because "flowers" is a high-demand English noun. Short and numeric domains break that model. There is no English word in `5808.com` or `qkjz.com`, yet both can be liquid, priceable assets. Their value comes from three things the dictionary doesn't measure: scarcity, universality, and cultural resonance.
 
@@ -33,6 +36,8 @@ The "why" is structural. Chinese businesses have long branded with numbers and p
 
 ## The pinyin logic behind LLLL "Chips"
 
+![Editorial illustration of a sorting machine splitting letter-block tiles into a coral premium keeper tray and a muted teal discard bin, the way consonant Chips are prized and vowels discounted](../../assets/short-llll-and-numeric-domains-chinese-market-02-chip-pinyin.jpg)
+
 Four-letter `.com`s have their own grammar, and it is built on pinyin. In the West, a `LLLL.com` is graded on how pronounceable it is in English. In China, the prized pattern is the opposite of what an English speaker expects.
 
 The industry term is **CHIP** — Chinese Premium — coined by domainer Tim Schoon. As the GGRG brokerage explains it, in China [ALL letters are considered premium with the exception of A,E,I,O,U,V](https://ggrg.com/llll-com/#:~:text=ALL%20letters%20are%20considered%20premium%20with%20the%20exception%20of%20A%2CE%2CI%2CO%2CU%2CV). The vowels are excluded for a precise linguistic reason, not superstition: a CHIP is valuable because each letter can stand in for the first letter of a pinyin syllable (and therefore a possible company acronym), and [every syllable in Mandarin contains at least one vowel](https://ggrg.com/llll-com/#:~:text=every%20syllable%20in%20Mandarin%20contains%20at%20least%20one%20vowel). A string full of vowels is far less likely to map onto real initials. The letter V gets cut for an even simpler reason: it [simply does not exist in pinyin](https://ggrg.com/llll-com/#:~:text=simply%20does%20not%20exist%20in%20pinyin).
@@ -40,6 +45,8 @@ The industry term is **CHIP** — Chinese Premium — coined by domainer Tim Sch
 So `xqjz.com` (all consonants, all valid pinyin initials, no vowels, no V) is a clean Chip, while `aeio.com` — a Western buyer's "easy" name — is not. This is the single most counterintuitive thing for a new flipper to internalize: in this market, vowels are a discount, not a premium. The cleverness here rhymes with [domain hacks](/en/blog/domain-hacks-explained/), where value also lives in a structural pattern rather than a word, and the same caution applies — a Chip being a Chip doesn't guarantee it spells anything real, so check the pattern, don't assume meaning. The fundamentals of [brandable vs keyword domains](/en/blog/brandable-vs-keyword-domains/) still apply on top: a Chip that also happens to read as a real pinyin word or a known acronym is worth more than a random one.
 
 ## Lucky 8, unlucky 4: numerology as price input
+
+![Editorial illustration of a balance scale tipped toward a tall stack of lucky coral 8 digits against a single discounted teal 4 digit, showing Chinese numerology as a price input](../../assets/short-llll-and-numeric-domains-chinese-market-03-numerology.jpg)
 
 Numeric domains add a layer no Western valuation model has: the digits themselves carry meaning, because in Mandarin and Cantonese they sound like other words. This is not folklore a flipper can ignore. It moves prices.
 

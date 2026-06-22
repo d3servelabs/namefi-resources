@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 28
 format: guide
 description: "How to market domains for sale: parking pages, for-sale landers, and listing SEO that put the right name in front of the right buyer."
+ogImage: ../../assets/marketing-your-domains-for-sale-og.jpg
 keywords: ['marketing domains for sale', 'how to market a domain', 'domain for sale landing page', 'domain parking', 'sell a parked domain', 'domain sales lander', 'domain marketplace listing', 'domain listing SEO', 'how to advertise a domain for sale', 'inbound vs outbound domain sales', 'domain for sale page', 'get buyers for domains', 'domain marketing channels', 'domain investing marketing']
 ---
 
@@ -25,6 +26,8 @@ Marketing your domains for sale is the inbound machine. Its whole job is to conv
 
 ## Channel one: the parking page
 
+![Editorial illustration of a parked-domain holding page where the generic ad-link grid gives way to a bold for-sale sign, pulling a curious visitor in instead of letting them leave](../../assets/marketing-your-domains-for-sale-01-parking.jpg)
+
 The default state of an unused domain is parked. As Wikipedia defines it, [domain (TLD) parking is the registration of an Internet domain name without that domain being associated with any services such as e-mail or a website](https://en.wikipedia.org/wiki/Domain_parking#:~:text=is%20the%20registration%20of%20an%20Internet%20domain%20name%20without%20that%20domain%20being%20associated%20with%20any%20services). A parked name typically [resolve[s] to a web page containing advertising listings and links](https://en.wikipedia.org/wiki/Domain_parking#:~:text=resolve%20to%20a%20web%20page%20containing%20advertising%20listings%20and%20links), and the holder is usually [paid based on how many links have been visited (e.g. pay per click)](https://en.wikipedia.org/wiki/Domain_parking#:~:text=paid%20based%20on%20how%20many%20links%20have%20been%20visited). Most registrars run their own systems for this — as Wikipedia notes, [some hosters such as Godaddy have their own domain parking systems and allow unused domains to be parked with the registrant receiving a share of the PPC revenue](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=have%20their%20own%20domain%20parking%20systems).
 
 For a flipper, parking does two jobs at once, and it's worth being honest about which one matters. The first is monetization: ad clicks defray your renewal costs. On a name with real type-in traffic that revenue can be meaningful, but on the average hand-registered name it's pennies, and treating parking as an income strategy is a beginner's mistake. The second job is the one that actually moves names: a parking page is a place to plant a "for sale" message in front of every visitor who lands on the domain. The most valuable thing a parked page does is convert a curious visitor into a buyer, not earn a few cents from one who clicks an ad and leaves. We go deeper on the revenue mechanics in [domain parking and monetization](/en/blog/domain-parking-and-monetization/).
@@ -32,6 +35,8 @@ For a flipper, parking does two jobs at once, and it's worth being honest about 
 The practical rule: never leave a flippable name on a generic ad-only park. If the page doesn't make the for-sale status obvious, you've turned free buyer attention into someone else's ad revenue.
 
 ## Channel two: the for-sale landing page
+
+![Editorial illustration of a focused for-sale landing page showing a domain name bar, a single clear action button, and an escrow trust shield, with the same page fitting neatly on a phone](../../assets/marketing-your-domains-for-sale-02-lander.jpg)
 
 This is where most inbound sales are won or lost. A for-sale landing page (a "lander") is a page built for one purpose — to tell a visitor the name is available and make acting on it effortless. GoDaddy describes its version plainly: [a For Sale Lander for your domain listing lets interested buyers know your domain is for sale and provides all the information they need to purchase your domain](https://www.godaddy.com/help/add-a-for-sale-lander-to-my-domain-listing-41624#:~:text=lets%20interested%20buyers%20know%20your%20domain%20is%20for%20sale%20and%20provides%20all%20the%20information%20they%20need%20to%20purchase). That sentence is the entire spec. Everything good about a lander follows from it.
 
@@ -46,6 +51,8 @@ A few things separate a lander that converts from one that loses the visitor:
 The full anatomy of a high-converting page — layout, copy, price display, and the offer flow — is its own topic, covered in [domain for sale landing pages](/en/blog/domain-for-sale-landing-pages/). For now, the takeaway is that the lander is not decoration. It is the single highest-leverage piece of marketing you control, because it's the one page every inbound buyer sees.
 
 ## Channel three: marketplaces and listing SEO
+
+![Editorial illustration of a search bar and magnifying glass connecting to one highlighted domain listing card that sits inside a network of buyer nodes and competing listings](../../assets/marketing-your-domains-for-sale-03-marketplace.jpg)
 
 A lander captures buyers who already found the name. Marketplaces are how buyers find it in the first place. The [domain aftermarket](/en/glossary/domain-trading/) is, in Wikipedia's words, [the secondary resale market for Internet domain names in which a party interested in acquiring a domain that is already registered bids or negotiates a price](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names), and most of it runs through a handful of platforms: [transactions are facilitated by aftermarket platforms such as Afternic and Sedo](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=Transactions%20are%20facilitated%20by%20aftermarket%20platforms%20such%20as%20Afternic%20and%20Sedo). Listing on a major [marketplace](/en/glossary/marketplace/) puts your name into a network of buyers, brokers, and partner registrars you could never reach alone, and it's where serious buyers go to look first.
 

@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 6
 format: guide
 description: "How aftermarket domain auctions actually work — proxy bids, sniping, hard maxes, reading demand, and dodging the overpay and shill traps."
+ogImage: ../../assets/how-to-win-domain-auctions-og.jpg
 keywords: ['domain auctions', 'how to win domain auctions', 'domain auction strategy', 'GoDaddy Auctions', 'NameJet', 'Sedo auctions', 'proxy bidding', 'auction sniping', 'expired domain auctions', 'shill bidding', 'winner''s curse domains', 'buy expired domains', 'domain aftermarket', 'drop catching auction', 'avoid overpaying domains']
 ---
 
@@ -31,6 +32,8 @@ The supply differs, but the bidding mechanics are nearly identical. Learn them o
 
 ## Proxy bidding: the engine under the hood
 
+![Editorial illustration of a sealed envelope holding a hidden maximum bid feeding into a gear-driven machine that steps a bid up only as high as needed, stopping below a hidden ceiling line](../../assets/how-to-win-domain-auctions-01-proxy.jpg)
+
 Almost every domain auction runs on **proxy bidding**, the same system eBay made famous. The definition is precise: proxy bidding [is an implementation of an English second-price auction used on eBay, in which the winning bidder pays the price of the second-highest bid plus a defined increment](https://en.wikipedia.org/wiki/Proxy_bid#:~:text=is%20an%20implementation%20of%20an%20English%20second%2Dprice%20auction). You enter the most you're willing to pay. The system doesn't expose that number; it bids on your behalf in increments, only as high as it needs to go to stay on top, up to your ceiling.
 
 The consequence is the single most useful fact about auction strategy, and it's counterintuitive at first: because [the price paid is determined only by competitors' bids and not by the amount of the new bid](https://en.wikipedia.org/wiki/Proxy_bid#:~:text=the%20price%20paid%20is%20determined%20only%20by%20competitors%27%20bids), the rational move is to bid your true maximum once and never touch it again. You don't pay your max unless someone pushes you there. If your ceiling is $1,200 and the next-highest bidder tops out at $700, you win at roughly $700 plus one increment, not $1,200. Entering your real number doesn't "give it away," because nobody can see it and the price is set by the runner-up.
@@ -47,6 +50,8 @@ So the honest version: sniping has one legitimate use, which is keeping your int
 
 ## Set a hard max, then hold it
 
+![Editorial illustration of a rising price arrow slamming into a solid immovable wall that holds firm](../../assets/how-to-win-domain-auctions-02-hardmax.jpg)
+
 Before you place a single bid, write down the most you will pay for the name, and treat that number as a wall, not a suggestion. Your max is not "what the name might be worth to the perfect buyer." It's a backsolve from your exit: estimate a realistic resale price, subtract the marketplace commission you'll pay on the sell side, subtract the years of renewal carry you expect to eat before it sells, subtract the margin that makes the trade worth doing — and what's left is your acquisition ceiling. (If you're shaky on the resale half of that math, our guide to [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/) walks the exit.)
 
 Then hold it. The emotional architecture of a live auction is built to move your wall, and the most expensive word in domaining is "just." *Just* one more increment. *Just* another fifty dollars. Each nudge feels trivial alone, and that's the trap: a name you valued at $800 becomes a $1,400 purchase one painless step at a time, and your margin is gone before you notice it left. The proxy system protects you here if you let it. Enter your true ceiling once, walk away, and accept the outcome. If you lose, you lose to someone who valued the name more than your numbers say it's worth to you, which is a win disguised as a loss.
@@ -54,6 +59,8 @@ Then hold it. The emotional architecture of a live auction is built to move your
 The losing pattern has a name in auction theory. The **winner's curse** is the phenomenon where, among bidders with different private estimates, [the winner is the bidder with the most optimistic evaluation of the asset and therefore will tend to overestimate and overpay](https://en.wikipedia.org/wiki/Winner%27s_curse#:~:text=the%20winner%20is%20the%20bidder%20with%20the%20most%20optimistic%20evaluation). In a room full of domainers, the person who wins is, by definition, the one who valued the name highest — and that's often the one who got the valuation wrong on the high side. A hard max is your structural defense against being that person.
 
 ## Read whether the demand is real
+
+![Editorial illustration of a magnifying glass examining a crowd of many distinct bidders raising paddles versus just two figures dueling back and forth](../../assets/how-to-win-domain-auctions-03-demand.jpg)
 
 Half of not overpaying is valuing the name correctly going in, and an auction gives you signals you should learn to read instead of react to.
 

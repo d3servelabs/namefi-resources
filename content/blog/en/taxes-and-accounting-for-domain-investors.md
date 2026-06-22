@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 27
 format: faq
 description: "How domain investors handle taxes: inventory vs. capital assets, cost basis, when income is recognized, and expensing renewals. Educational, not advice."
+ogImage: ../../assets/taxes-and-accounting-for-domain-investors-og.jpg
 keywords: ['domain investing taxes', 'domain flipping taxes', 'domain cost basis', 'are domains capital assets', 'domain dealer vs investor', 'domain inventory tax', 'section 197 intangible domain', 'capital gains on domain sale', 'expensing domain renewals', 'domain holding period tax', 'how are domain sales taxed', 'domain portfolio accounting', 'domain investor tax questions', 'ordinary income vs capital gains domains']
 ---
 
@@ -20,6 +21,8 @@ Domain investing is a business with an unusual tax shape. You hold an asset that
 For the closely related questions that come up once a name lives on-chain — minting events, crypto-denominated sales, gifting tokens, DeFi collateral — see the companion piece on [tax and accounting questions for tokenized domains](/en/blog/tax-and-accounting-questions-for-tokenized-domains/). This post is about plain registered names. Both sit under [domain flipping](/en/blog/domain-flipping/) as a skill and under [domain portfolio management](/en/blog/domain-portfolio-management/) as a discipline.
 
 ## Are my domains inventory or capital assets?
+
+![Editorial illustration of a single domain name forking into two paths, one toward an investment portfolio stack as a capital asset and the other toward a rack of identical cards held as inventory for sale](../../assets/taxes-and-accounting-for-domain-investors-01-inventory-vs-capital.jpg)
 
 This is the question that changes the most downstream, and the honest answer is "it depends on what you're actually doing." The tax code draws a line between assets you hold as investments and property you hold mainly to sell to customers in the ordinary course of a trade or business.
 
@@ -34,6 +37,8 @@ Two reasons. First, the tax rate. Capital assets held long enough can qualify fo
 This is also why [domain portfolio management](/en/blog/domain-portfolio-management/) and tax treatment are tangled together. How you run the book — whether you treat it as a casual hold or an active sales operation — is part of what determines the answer.
 
 ## What counts as my cost basis in a domain?
+
+![Editorial illustration of a domain name card linked to receipts, an invoice under a magnifying glass, and a calendar marking the acquisition date, representing documented cost basis records](../../assets/taxes-and-accounting-for-domain-investors-02-cost-basis.jpg)
 
 Cost basis is what you use to figure gain or loss when you sell, so getting it right is the whole game on the accounting side. In general, basis starts with what you paid to acquire the name plus the costs of acquiring it.
 
@@ -50,6 +55,8 @@ Two wrinkles are worth flagging. First, the **holding period** drives whether a 
 Structured deals add their own questions. An installment sale, a [lease](/en/glossary/leasing/) with an option to buy, or a [rent-to-own](/en/glossary/rent-to-own/) arrangement can spread or recharacterize income across years. None of those are exotic in the domain world, and each one is a reason to ask before you sign, not after.
 
 ## Can I expense domain renewals?
+
+![Editorial illustration of a recurring renewal cost flowing from a domain card to a fork between deducting it in a single year and amortizing it across a long multi-year timeline](../../assets/taxes-and-accounting-for-domain-investors-03-expense-renewals.jpg)
 
 This is the question every portfolio holder asks, because renewals are the steady drag on the whole operation, and the answer is the classic "it depends." Two separate threads run through it.
 

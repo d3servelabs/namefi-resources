@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 24
 format: guide
 description: "Run your domains like inventory: track cost basis, watch sell-through rate, control renewal drag, prune losers, and keep the books clean."
+ogImage: ../../assets/domain-portfolio-management-og.jpg
 keywords: ['domain portfolio management', 'domain portfolio', 'manage domain portfolio', 'sell-through rate domains', 'domain renewal costs', 'when to drop a domain', 'domain cost basis', 'domain inventory tracking', 'domain investing business', 'domain renewal drag', 'pruning a domain portfolio', 'domain holding cost', 'domaining spreadsheet', 'domain portfolio spreadsheet', 'domain investor accounting']
 ---
 
@@ -25,6 +26,8 @@ That structure is unforgiving of disorganization. A stock portfolio reprices its
 
 ## Track everything: the portfolio ledger
 
+![Editorial illustration of an open domain portfolio ledger with rows of domain names showing cost, renewal date, and status columns](../../assets/domain-portfolio-management-01-ledger.jpg)
+
 Before you optimize anything, you have to be able to see it. The foundation of running domains as a business is a single source of truth — a spreadsheet is plenty to start — with one row per name and the columns that let you make decisions later. At minimum, track:
 
 - **The name and its [registrar](/en/glossary/registrar/).** Which account holds it matters the moment you need to move or sell it.
@@ -37,6 +40,8 @@ The cost-basis and renewal columns aren't just operational hygiene; they're the 
 
 ## Sell-through rate: the one number that tells the truth
 
+![Editorial illustration of a grid of domain cards funneling down with only a few converting into a sold tray of coins beside a rising trend line](../../assets/domain-portfolio-management-02-sellthrough.jpg)
+
 If you track only one performance metric, track **sell-through rate** — the share of your portfolio that actually sells in a given year. Everything else (how clever your names are, how high you've priced them) is opinion. Sell-through is the number that tells you whether the portfolio is a business or a hobby with a subscription fee.
 
 The arithmetic is simple. If you hold 500 names and 10 sell this year, your sell-through rate is 2%. Whether that's good depends entirely on price: 10 sales at an average that comfortably exceeds the renewal bill on all 500 is a healthy operation, while 10 cheap sales that barely dent the carry is a slow-motion loss. Be honest that the headline industry figures here are rules of thumb, not measured statistics — a hand-registered portfolio's annual sell-through is widely discussed as low single-digit percentages, but treat any specific number you see (including that one) as an estimate, not a fact, and measure your own. Your real sell-through, computed from your own ledger, is worth more than any benchmark.
@@ -44,6 +49,8 @@ The arithmetic is simple. If you hold 500 names and 10 sell this year, your sell
 Two refinements make the metric actionable. First, watch the trend, not just the level: a sell-through rate that's falling year over year is telling you your sourcing or pricing has drifted, regardless of the absolute number. Second, segment it. Sell-through on your `.com`s will look nothing like sell-through on a speculative new-TLD batch, and blending them hides the signal. When you can see which slices of the portfolio actually move, you know where to put your next acquisition dollar — and where to stop. The mechanics of computing and improving this number get their own treatment in [domain renewal costs and sell-through rate](/en/blog/domain-renewal-costs-and-sell-through-rate/).
 
 ## Renewal drag: the cost that compounds against you
+
+![Editorial illustration of a stack of domain TLD cards chained to a heavy recurring-cost weight with a calendar renewal loop arrow](../../assets/domain-portfolio-management-03-renewaldrag.jpg)
 
 Sell-through is the numerator of the business. Renewal drag is the denominator, and it's the cost most new flippers underestimate, because it arrives one small charge at a time. A domain isn't bought; it's rented. You register it for a term and must keep paying to keep it, and even the longest commitments are bounded — per Wikipedia, [the maximum period of registration for a gTLD domain name is 10 years](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years). Where registrars advertise longer, it isn't a longer title; Wikipedia notes that 100-year offers [involve the registrar renewing the registration for their customer every 10 years by themselves](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=involve%20the%20registrar%20renewing%20the%20registration%20for%20their%20customer%20every%2010%20years). The bill never goes away; you just prepay it.
 

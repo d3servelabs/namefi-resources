@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 11
 format: analysis
 description: "How the extension after the dot moves a domain's price: the .com premium, the .io/.ai/.co context, and the policy and geopolitical risk behind ccTLDs."
+ogImage: ../../assets/how-tld-affects-domain-value-og.jpg
 keywords: ['how tld affects domain value', 'tld and domain value', 'com premium', '.com vs ccTLD value', 'does the extension matter', 'io domain value', 'ai domain value', 'co domain value', 'ccTLD risk', 'domain extension pricing', 'tld value flipping', 'best tld for resale', 'domain extension comparison', 'ccTLD geopolitical risk', 'choosing a tld']
 ---
 
@@ -19,6 +20,8 @@ This piece breaks down how the [top-level domain](/en/glossary/tld/) drives valu
 
 ## The .com premium is real, and it's a default tax
 
+![Editorial illustration of the same domain word priced across three extensions, with .com crowned on the tallest podium and a rising line showing it commands the top price](../../assets/how-tld-affects-domain-value-01-com-premium.jpg)
+
 Start with the extension every other one is measured against. `.com` is, per Wikipedia, [short for *commercial*](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial), and it [has grown into the largest top-level domain](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain), with [161 Million](https://en.wikipedia.org/wiki/.com#:~:text=161%20Million) registered names as of Q4 2025. No other extension is close.
 
 That scale is exactly why a `.com` outprices the identical word on another TLD. `.com` is the extension people type without thinking, the one a customer assumes when they half-remember a brand, the one you never have to spell out on a phone call or read off a billboard. Every other extension carries a small ongoing cost: the owner has to *correct* the default. They put "`.io`, not `.com`" in the ad copy, they watch type-in traffic leak to the `.com` they don't own, and they answer "no, dot-c-o" more than they'd like. The premium buyers pay for the `.com` is the price of never paying that tax. For most generic, brandable, say-it-out-loud names, that's why the [`.com`](/en/tld/com/) version is the high-water mark and everything else trades at a discount to it.
@@ -26,6 +29,8 @@ That scale is exactly why a `.com` outprices the identical word on another TLD. 
 The premium is widest exactly where the name is most mass-market. A consumer brand that lives on word of mouth needs the `.com`; the cost of a confused customer is real money. A developer tool whose audience lives in a terminal cares far less. So the size of the `.com` premium is not a constant. It scales with how much the name's eventual buyer depends on people typing it from memory.
 
 ## Where .io, .ai, and .co actually fit
+
+![Editorial illustration of three distinct territory zones, each with its own native audience icon: a developer code window, an AI brain, and a company storefront](../../assets/how-tld-affects-domain-value-02-niche-fit.jpg)
 
 The premium doesn't mean other extensions are cheap. It means they win on different terms. The strongest non-`.com` extensions don't try to beat `.com` at being the universal default. They win a *segment* so decisively that, inside that segment, they read as native.
 
@@ -38,6 +43,8 @@ The premium doesn't mean other extensions are cheap. It means they win on differ
 The pattern across all three: a non-`.com` extension is worth most when it owns a *use case* the `.com` can't claim. A `.io` to developers, an `.ai` to AI startups, an [`.app`](/en/tld/app/) to mobile products. When the extension is just a cheaper substitute for an unavailable `.com`, the discount is steep and the resale market is thin. The literacy that separates these cases is the same set of fundamentals in [what makes a domain valuable](/en/blog/what-makes-a-domain-valuable/), and one whole sub-craft lives here: the [domain hack](/en/blog/domain-hacks-explained/), where the extension *becomes* the last syllable of the word, like `instagr.am` (`.am` is [the internet country code top-level domain (ccTLD) for Armenia](https://en.wikipedia.org/wiki/.am#:~:text=is%20the%20internet%20country%20code%20top%2Dlevel%20domain%20%28ccTLD%29%20for%20Armenia)). We told that story in [the instagr.am case study](/en/blog/from-instagr-am-to-instagram-com/).
 
 ## A ccTLD is somebody else's country
+
+![Editorial illustration of a country-code extension tag planted on sovereign territory with a flag and a government registry stamp, and dashed boundary lines showing the land could shift](../../assets/how-tld-affects-domain-value-03-cctld-risk.jpg)
 
 Here's the part most "best extensions for startups" lists skip, and it's the one that separates a hobbyist from someone who can actually price one of these. The extensions above (`.io`, `.ai`, `.co`, `.am`) are all **country-code TLDs**. When you register one, you are renting two letters of sovereign territory, and that territory makes the rules. A `.com` is governed by a stable, globally neutral framework. A ccTLD answers to a country, and countries change policy, restrict registration, and occasionally seize names.
 

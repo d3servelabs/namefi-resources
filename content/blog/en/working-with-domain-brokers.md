@@ -10,12 +10,15 @@ series: domain-flipping-skills
 seriesOrder: 23
 format: explainer
 description: "When a domain broker earns their cut, what good brokers actually do, inbound vs outbound brokerage, typical commissions, and how to vet one."
+ogImage: ../../assets/working-with-domain-brokers-og.jpg
 keywords: ['domain broker', 'domain brokerage', 'how to work with a domain broker', 'domain broker commission', 'sell domain with broker', 'buyer broker domains', 'seller broker domains', 'inbound domain broker', 'outbound domain broker', 'when to use a domain broker', 'vet a domain broker', 'domain broker fees', 'best domain brokers', 'domain acquisition broker', 'hire a domain broker']
 ---
 
 Most of the names you flip, you should sell yourself. List it, set a price, answer the inbound, close in escrow. A broker on a $400 name is a stranger taking a cut of money you could have kept. But there is a band of deals where a broker stops being overhead and starts being the difference between a sale and a stalemate, and knowing where that band starts is its own skill. This is the broker chapter of our [domain flipping](/en/blog/domain-flipping/) series, and it sits one level down from the selling pillar, [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/). Here we'll cover when to hand a name to a broker, what a good one actually does, the difference between buy-side and sell-side brokerage, what commissions look like, and how to tell a real broker from someone who just wants your listing.
 
 ## When a broker is worth the cut
+
+![Editorial illustration of a balance scale weighing many small do-it-yourself domain sales against a single high-value name that crosses a threshold into a broker's zone with stacked coins for the fee](../../assets/working-with-domain-brokers-01-threshold.jpg)
 
 A broker is leverage, and leverage only pays when the stakes are high enough to clear the fee. The rough threshold most experienced sellers use is five figures and up, or any single name with one obvious institutional buyer. Below that, the math rarely works: a broker's commission on a $1,200 sale is real money for service you could have performed in an afternoon with a listing and an [escrow](/en/glossary/escrow/) account.
 
@@ -30,6 +33,8 @@ Below the threshold, sell it yourself. Brokers earn their keep on names where th
 
 ## What a good broker actually does
 
+![Editorial illustration of a broker standing as a buffer between an anxious seller and a calm buyer, holding up a screen that hides the seller's emotions while a clean negotiation line carries a price through to the other side](../../assets/working-with-domain-brokers-02-distance.jpg)
+
 The word "broker" undersells the job. A good one is not a middleman who forwards emails. They are a negotiator, a researcher, and a deal closer, and the value lives in the parts of the transaction an owner is worst positioned to handle.
 
 **They create negotiating distance.** This is the single biggest thing you're buying. When you negotiate your own name, every signal you send about how much you want the deal becomes a price discount. A broker sits between you and the buyer, so your eagerness never reaches the other side of the table. They can float a number, walk it back, go quiet for a week, and let silence do work that a personally invested owner can't stomach.
@@ -41,6 +46,8 @@ The word "broker" undersells the job. A good one is not a middleman who forwards
 **They run the close.** The riskiest part of any deal is the handover, where the seller doesn't want to transfer before getting paid and the buyer doesn't want to pay before receiving the name. A broker manages the [escrow](/en/blog/domain-escrow-explained/) workflow, coordinates the transfer, and keeps a deal from dying over the awkward mechanics. They know that a domain name transfer is, per Wikipedia, [the process of changing the designated registrar of a domain name](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=A%20domain%20name%20transfer%20is%20the%20process%20of%20changing%20the%20designated%20registrar%20of%20a%20domain%20name), that the buyer's new [registrar](/en/glossary/registrar/) needs the [auth code](/en/glossary/auth-code/) the seller [supplies](https://en.wikipedia.org/wiki/Domain_name_transfer#:~:text=supplies%20the%20authentication%20code), and that a freshly moved name sits under a transfer lock for a stretch afterward. An owner closing their first big deal learns those traps the hard way; a broker has hit them all before.
 
 ## Inbound vs outbound brokerage
+
+![Editorial illustration of two mirrored brokerage flows: on the left a sell-side broker reaching out to a buyer, on the right a buy-side broker working anonymously for a masked client to acquire a held domain](../../assets/working-with-domain-brokers-03-inbound-outbound.jpg)
 
 "Broker" covers two distinct jobs, and the one you need depends on which side of the table you're on. This maps directly onto the [inbound vs outbound](/en/blog/inbound-vs-outbound-domain-sales/) split that runs through the whole selling discipline.
 

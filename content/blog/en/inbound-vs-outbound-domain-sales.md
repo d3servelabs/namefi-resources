@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 20
 format: explainer
 description: "Inbound vs outbound domain sales: when each works, the effort-and-return tradeoff, and how to run both without your outreach reading as spam."
+ogImage: ../../assets/inbound-vs-outbound-domain-sales-og.jpg
 keywords: ['inbound vs outbound domain sales', 'inbound domain sales', 'outbound domain sales', 'domain sales outreach', 'cold outreach domains', 'sell domains to end users', 'domain landing page', 'domain marketplace listing', 'domain sell-through rate', 'how to sell domains', 'domain flipping', 'domain aftermarket', 'end user domain buyer', 'domain outbound strategy', 'domain inbound strategy']
 ---
 
@@ -18,6 +19,8 @@ There are only two ways a domain ever sells. Either the buyer finds you, or you 
 Most new flippers only play one. They list a name, park it, and wait — pure inbound — then wonder why a portfolio of decent names produces nothing for a year. The sellers who consistently move inventory run both, deliberately, and know which names belong in which lane. This explainer sits under our [domain flipping](/en/blog/domain-flipping/) series as a companion to the [how to sell domains for profit](/en/blog/how-to-sell-domains-for-profit/) playbook. We'll define each road, show when each works, weigh effort against return, and give you a way to decide name by name.
 
 ## Inbound: make the name findable and let the buyer come
+
+![Editorial illustration of a for-sale storefront with a lighthouse beam drawing buyers who arrive on their own while the seller waits](../../assets/inbound-vs-outbound-domain-sales-01-inbound-storefront.jpg)
 
 Inbound selling means you make a name discoverable and wait. The mechanics are familiar: a for-sale landing page on the domain itself, a listing on an aftermarket marketplace, a visible price for anyone who types the name directly. You set it up once, and then it works while you sleep.
 
@@ -35,6 +38,8 @@ The craft of inbound is making sure that when a buyer does come, the path to "ye
 
 ## Outbound: find the buyer and reach out first
 
+![Editorial illustration of a magnifying glass sending a single targeted arrow to one specific building highlighted among a faint crowd](../../assets/inbound-vs-outbound-domain-sales-02-outbound-target.jpg)
+
 Outbound flips the direction. Instead of waiting, you identify the company, person, or project that would obviously benefit from a name you hold, find the right contact, and start the conversation yourself. It's how you sell a name whose ideal buyer would never think to search an aftermarket — because they don't know your name exists, or don't know it's for sale.
 
 The logic behind outbound is the same logic behind owning the name at all. Domain investing is, in Wikipedia's words, [the practice of identifying and registering or acquiring generic Internet domain names as an investment with the intent of selling them later for a profit](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=is%20the%20practice%20of%20identifying%20and%20registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment). Outbound is just the active version of "selling them later": you don't wait for the profit to find you, you go get it.
@@ -50,6 +55,8 @@ The cost of outbound is effort and risk, and both are real. Effort, because prec
 Done right, outbound is one well-researched message to one buyer with a real need. That single email beats a thousand blasts, and it's the difference between a salesperson and a nuisance.
 
 ## The effort-and-return tradeoff
+
+![Editorial illustration of a balance scale weighing a stack of storefronts representing scalable leverage against a magnifying glass and clock representing targeted labor](../../assets/inbound-vs-outbound-domain-sales-03-tradeoff-scale.jpg)
 
 Lay the two side by side and the tradeoff is clean.
 

@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 10
 format: explainer
 description: "Why a domain has a low wholesale/reseller price and a much higher end-user price, how big the spread is, and which number applies to your sale."
+ogImage: ../../assets/end-user-vs-reseller-domain-pricing-og.jpg
 keywords: ['end-user vs reseller domain price', 'wholesale domain price', 'retail domain price', 'domain price spread', 'how much is my domain worth', 'sell domain to end user', 'domain reseller price', 'domain wholesale value', 'domain flipping margin', 'domain aftermarket pricing', 'sell domain wholesale', 'end user domain buyer', 'domain comparable sales', 'domain pricing strategy', 'two prices for a domain']
 ---
 
@@ -18,6 +19,8 @@ Ask two experienced domainers what a name is worth and you can get two answers t
 This is the deep dive promised by our appraisal pillar, [how to value a domain name](/en/blog/how-to-value-a-domain-name/). Here we take the split apart on its own: where the two prices come from, how wide the gap between them tends to be, and how to tell which number you should be quoting for any given name.
 
 ## The two prices, defined
+
+![Editorial illustration of one domain valued by two different buyers, a wholesale investor holding inventory thinking in coins on the left and an end-user business at a storefront thinking in cash on the right](../../assets/end-user-vs-reseller-domain-pricing-01-two-buyers.jpg)
 
 Every domain in the [aftermarket](/en/glossary/marketplace/) sits inside two markets at once.
 
@@ -41,6 +44,8 @@ This is also why automated appraisers struggle. A tool like GoDaddy's, whose [al
 
 ## How wide is the spread?
 
+![Editorial illustration of a wide price spread, a short low wholesale price tag and a much taller retail price tag with a dashed uncertain range and measuring arrows showing the large gap between them](../../assets/end-user-vs-reseller-domain-pricing-02-price-spread.jpg)
+
 Here's the honest caveat first: there is no published, audited multiple for the end-user-vs-reseller gap, and anyone who quotes you a precise one is guessing. The aftermarket is famously private. Most large deals are negotiated one-to-one and never disclosed, and even the public record only catalogs the extremes. Wikipedia's list of the most expensive domain names, for instance, only includes [sales with values of $3 million USD or more](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=most%20expensive%20domain%20name%20sales%2C%20with%20values%20of%20%243%20million). Everything beneath that, and every NDA deal, is invisible.
 
 So treat the following as a working rule of thumb, not a measured statistic: across the trade, end-user prices commonly run **several multiples** of the wholesale price for the same name. A name an investor would buy from you for a few hundred dollars might sell to the right business for a few thousand, and a four-figure wholesale name can become a five-figure end-user sale. The multiple is not fixed. It's wider for names with an obvious, motivated end buyer and narrower for generic inventory that only other resellers want. But the *direction* is reliable: retail is always the higher number.
@@ -48,6 +53,8 @@ So treat the following as a working rule of thumb, not a measured statistic: acr
 The same spread is why the public comparable-sales record is so confusing to read. Tools like NameBio aggregate enormous volumes of reported transactions ([according to NameBio, 144,700 domain name sales totaling US$185 million were recorded in 2024](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024), per Wikipedia's aftermarket overview), but that pile mixes wholesale flips between investors with retail sales to end users, often without flagging which is which. A reseller comp and an end-user comp for a near-identical name can look like they're describing two different assets, and in a sense they are: they're pricing two different buyers. Learning to separate them is the core skill in [how to read comparable domain sales](/en/blog/how-to-read-comparable-domain-sales/).
 
 ## Which number applies to your sale?
+
+![Editorial illustration of a domain at a fork in the road, one path leading fast to a coin for the wholesale channel and the other winding toward a storefront and a stack of cash for the end-user channel](../../assets/end-user-vs-reseller-domain-pricing-03-channel-fork.jpg)
 
 The practical question isn't "what's the spread" in the abstract — it's "which of my two prices am I actually selling at right now?" That depends on the channel you sell through and the buyer who shows up.
 

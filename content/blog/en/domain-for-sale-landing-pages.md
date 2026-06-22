@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 30
 format: guide
 description: "How to build a domain for-sale landing page that converts: a clear price or offer path, real trust signals, and a frictionless way to buy or make an offer."
+ogImage: ../../assets/domain-for-sale-landing-pages-og.jpg
 keywords: ['domain for sale landing page', 'domain for sale page', 'sell a domain', 'domain landing page', 'for sale lander', 'domain sales page', 'buy now domain', 'make an offer domain', 'domain parking page', 'domain price', 'domain landing page that converts', 'how to sell a domain', 'domain escrow', 'domain conversion rate', 'domain trust signals']
 ---
 
@@ -24,6 +25,8 @@ Start with who shows up. Type-in traffic on a name you're selling is self-select
 So treat it as one. The discipline that applies here is conversion rate optimization — what Wikipedia calls [the systematic process of increasing the percentage of users or website visitors who complete a desired action](https://en.wikipedia.org/wiki/Conversion_rate_optimization#:~:text=the%20systematic%20process%20of%20increasing%20the%20percentage%20of%20users%20or%20website%20visitors%20who%20complete%20a%20desired%20action). Your desired action is narrow: buy now, or make a serious offer. Everything on the page either moves the visitor toward that action or gets in the way. A page that "looks nice" but buries the price, hides the contact path, or makes the visitor wonder whether you even own the name is a page that converts the wrong way.
 
 ## The three things every converting lander gets right
+
+![Editorial illustration of three pillars labeled price, trust, and a one-tap button holding up a domain for-sale storefront page](../../assets/domain-for-sale-landing-pages-01-three-pillars.jpg)
 
 A for-sale page does not need to be clever. It needs three things, and most underperforming landers are missing at least one.
 
@@ -55,11 +58,15 @@ Where the visitor goes after the click matters as much as the click. If the page
 
 ## Parking the page vs. landing the page
 
+![Editorial illustration of a cluttered ad-filled parking page and a clean single-button sales landing page diverging on a fork](../../assets/domain-for-sale-landing-pages-02-parking-vs-landing.jpg)
+
 Not every for-sale page is the same animal. A **parking page** monetizes traffic with ads while the name sits unsold; a **for-sale lander** is built to convert that traffic into a sale. The two goals pull against each other: ads distract from your offer, and a clean sales page earns no ad clicks. On a name you're actively flipping, the sales lander wins — ad revenue is usually rounding-error money next to a single completed sale. On a name you're holding indefinitely, monetization can defray renewal cost. The tradeoff, and how to run both, is the subject of [domain parking and monetization](/en/blog/domain-parking-and-monetization/).
 
 One thing both pages share: they're discoverable. A lander that no buyer ever reaches can't convert, so basic on-page [SEO](/en/glossary/seo/) hygiene — the name as the headline, a crawlable title, a clear description — helps the page surface when someone searches the string rather than typing it directly. That overlaps with [marketplace SEO for domain listings](/en/blog/marketplace-seo-for-domain-listings/), where the same instincts apply to listing pages on third-party platforms.
 
 ## Mistakes that quietly kill conversions
+
+![Editorial illustration of a neglected cobwebbed web page cracking apart while visitor figures leak away through the cracks](../../assets/domain-for-sale-landing-pages-03-mistakes-leak.jpg)
 
 Most for-sale landers fail in predictable ways:
 

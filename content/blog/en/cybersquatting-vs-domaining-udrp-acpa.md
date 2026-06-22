@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 17
 format: explainer
 description: "Where legitimate domaining ends and cybersquatting begins: the UDRP three-part test, the ACPA, reverse domain hijacking, and how to stay safe."
+ogImage: ../../assets/cybersquatting-vs-domaining-udrp-acpa-og.jpg
 keywords: ['cybersquatting', 'cybersquatting vs domaining', 'udrp', 'udrp three part test', 'acpa', 'anticybersquatting consumer protection act', 'reverse domain name hijacking', 'rdnh', 'bad faith domain registration', 'is domain flipping legal', 'trademark domain dispute', 'domain dispute resolution', 'legitimate domaining', 'wipo udrp', 'domain investing legal']
 ---
 
@@ -29,6 +30,8 @@ The trouble starts when a name's value comes *from* a brand rather than from the
 
 ## The UDRP three-part conjunctive test
 
+![Editorial illustration of three padlocks in a row, each checkmarked, joined by one chain releasing a single domain-name tag](../../assets/cybersquatting-vs-domaining-udrp-acpa-01-three-locks.jpg)
+
 The first and most common system is the [UDRP](/en/glossary/udrp/), the Uniform Domain-Name Dispute-Resolution Policy. Every accredited registrar makes you agree to it when you register a name, which is why a private arbitration panel, not a court, can order your domain transferred away. We cover the full process, timeline, and outcomes in [what is UDRP](/en/blog/what-is-udrp/); here the focus is the test itself, because the test is where flippers win or lose.
 
 A complainant must prove **all three** of the following. This is a *conjunctive* test, which is the single most important fact about it. Fail any one element and the complaint is denied, no matter how strong the other two are.
@@ -45,6 +48,8 @@ The practical takeaway for a flipper is short. Buy the dictionary word, never th
 
 ## ACPA: when cybersquatting costs real money
 
+![Editorial illustration of a judge's gavel beside rising coin stacks, with a row of domain-name tags each casting a dollar-mark shadow](../../assets/cybersquatting-vs-domaining-udrp-acpa-02-stacking-damages.jpg)
+
 The UDRP can only do two things to a name: transfer it or cancel it. There are no damages. For a determined brand, or a particularly egregious squatter, the United States built a second system with sharper teeth.
 
 The Anticybersquatting Consumer Protection Act, enacted in [1999](https://en.wikipedia.org/wiki/Anticybersquatting_Consumer_Protection_Act#:~:text=1999), created a federal cause of action. As Wikipedia summarizes it, the ACPA established [a cause of action for registering, trafficking in, or using a domain name confusingly similar to, or dilutive of, a trademark or personal name](https://en.wikipedia.org/wiki/Anticybersquatting_Consumer_Protection_Act#:~:text=a%20cause%20of%20action%20for%20registering%2C%20trafficking%20in%2C%20or%20using%20a%20domain%20name%20confusingly%20similar). The statutory standard mirrors the UDRP's intent requirement: liability under the law attaches to a person who [has a bad faith intent to profit from that mark](https://www.law.cornell.edu/uscode/text/15/1125#:~:text=has%20a%20bad%20faith%20intent%20to%20profit%20from%20that%20mark) and registers, traffics in, or uses a domain identical or confusingly similar to a distinctive mark.
@@ -54,6 +59,8 @@ The difference that matters is the remedy. Where the UDRP just moves the name, t
 Two practical points follow. The ACPA is U.S. law, most relevant when the parties or registrar have a U.S. connection, whereas the UDRP is global by registrar contract. And the two are not mutually exclusive: a brand can run a fast, cheap UDRP to grab the name and still sue under the ACPA for damages. For a legitimate domainer this is mostly reassuring, because the ACPA's bad-faith-intent requirement protects good-faith generic registrations the same way the UDRP's third element does. For a squatter it is the reason the math never works.
 
 ## Reverse domain name hijacking: when the brand is the bad actor
+
+![Editorial illustration of a large corporate brand shield grabbing for a small generic domain tag held by a smaller figure who raises a warning shield and flag to stop it](../../assets/cybersquatting-vs-domaining-udrp-acpa-03-reverse-hijack.jpg)
 
 The line runs both ways, and this is the part most "is domain flipping legal" articles skip. A trademark does not entitle its owner to every domain that resembles it. When a brand uses the dispute process to try to wrench a legitimately held name away from its owner, that abuse has a name: reverse domain name hijacking.
 

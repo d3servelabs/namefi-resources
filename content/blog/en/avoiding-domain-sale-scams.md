@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 18
 format: guide
 description: "The common domain-sale scams — fake escrow, fake buyers, overpayment chargebacks, transfer-before-payment — and the habits that keep your sales safe."
+ogImage: ../../assets/avoiding-domain-sale-scams-og.jpg
 keywords: ['domain sale scams', 'avoid domain scams', 'fake escrow site', 'bogus escrow', 'domain buyer scam', 'overpayment scam', 'chargeback fraud', 'transfer before payment', 'sell a domain safely', 'domain escrow', 'domain selling fraud', 'fake domain broker', 'domain transfer scam', 'safe domain transaction', 'domainer security']
 ---
 
@@ -25,6 +26,8 @@ Scams are just attacks on that standoff. A scammer's entire goal is to manufactu
 
 ## Fake escrow sites
 
+![Editorial illustration of a wolf in a striped referee shirt puppeteering a polished but hollow fake escrow website propped up like a stage facade](../../assets/avoiding-domain-sale-scams-01-fake-escrow.jpg)
+
 This is the classic, and it's effective because it weaponizes the exact tool you're supposed to trust. A buyer enthusiastically agrees to your price, then insists on using "their" escrow service and sends you a link. The site looks professional. It shows your transaction, your name, the agreed amount, a reassuring "funds received" status. None of it is real.
 
 Wikipedia describes the scheme plainly: [the bogus escrow scam is a straightforward confidence trick in which a scammer operates a bogus escrow service](https://en.wikipedia.org/wiki/Bogus_escrow#:~:text=The%20bogus%20escrow%20scam%20is%20a%20straightforward%20confidence%20trick%20in%20which%20a%20scammer%20operates%20a%20bogus%20escrow%20service). The fake site exists to lie to you at the one moment you're listening hardest. As Wikipedia puts it, [this bogus escrow service assures the victim that the scammer has sent its item and that the victim should send its item to the escrow service](https://en.wikipedia.org/wiki/Bogus_escrow#:~:text=This%20bogus%20escrow%20service%20assures%20the%20victim%20that%20the%20scammer%20has%20sent%20its%20item). You see "buyer has funded escrow," you transfer the domain to settle the deal, and the money was never there. The site goes dark and so does the buyer.
@@ -33,6 +36,8 @@ The tell is always the same: the buyer chose the escrow service, and you've neve
 
 ## Fake buyers and fake brokers
 
+![Editorial illustration of a smiling business persona that is really a paper cutout mask held in front of a hollow silhouette, with a fake ID badge and email envelope, exposed by a magnifying glass](../../assets/avoiding-domain-sale-scams-02-fake-buyer.jpg)
+
 Not every scam needs a fake website. Some just need a convincing person. A "buyer" emails with serious interest in a name, name-drops a company, maybe attaches a logo, and moves fast toward a number that's a little too good. The pressure is the product. The goal is to get you emotionally committed to a five-figure sale so that when the "one small step" arrives — pay a transfer fee, cover an escrow deposit, send a refund — you do it without thinking.
 
 A common variant is the fake broker or marketplace agent. You get a message claiming a high-value buyer is ready, but the deal has to run through a specific appraisal service, certification, or "release" fee you pay up front. Legitimate brokers and marketplaces take a commission out of a completed sale. They do not ask the seller to pay money in advance to unlock a buyer who supposedly already exists. Any deal that requires you to pay first to get paid later is the scam, full stop.
@@ -40,6 +45,8 @@ A common variant is the fake broker or marketplace agent. You get a message clai
 These attacks lean on a name looking more legitimate than it is, which is one reason it pays to read ownership records. A quick [WHOIS](/en/glossary/whois/) lookup and a search for the company the "buyer" claims to represent will often collapse the story in under a minute. Real buyers survive a Google search. Invented ones don't.
 
 ## Overpayment and chargeback scams
+
+![Editorial illustration of a money bag of coins on a fishhook being yanked back by a reversing arrow while a smaller refund payment flows out the opposite direction](../../assets/avoiding-domain-sale-scams-03-chargeback.jpg)
 
 The overpayment scam is older than domains and it adapts perfectly to them. The "buyer" sends a payment for *more* than the agreed price — a mistake, they say, or an accountant's error — and asks you to refund the difference. You're now staring at money that appears to have landed in your account, so wiring back a few thousand dollars of "their" money feels harmless. Then the original payment is reversed and you're out the refund you sent from your own funds.
 

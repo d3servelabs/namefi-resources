@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 14
 format: comparison
 description: "Brandable invented names vs exact-match keyword domains: who buys each, which resells more reliably, and the trademark angle every flipper should know."
+ogImage: ../../assets/brandable-vs-keyword-domains-og.jpg
 keywords: ['brandable domains', 'keyword domains', 'exact match domains', 'brandable vs keyword domains', 'invented domain names', 'generic domain names', 'domain investing', 'domain flipping', 'which domains sell better', 'type-in traffic', 'domain trademark', 'descriptive domain names', 'domain resale value', 'startup domain names', 'domain name strategy']
 ---
 
@@ -19,11 +20,15 @@ This guide draws the line between **brandable** invented names and **exact-match
 
 ## The two kinds of name
 
+![Editorial illustration of two domain names as jars: a blank unlabeled jar for an invented brandable name beside a clear jar labeled with a category icon for a keyword name](../../assets/brandable-vs-keyword-domains-01-name-vessels.jpg)
+
 A **keyword domain** is built from words people already type. It describes a market in plain language: `cars`, `insurance`, `hotels`, `loans`. The whole pitch is that the name *is* the category, so anyone in that category understands it instantly and some fraction of them type it straight into the address bar. This is the oldest target in domaining. As Wikipedia's overview of [domain name speculation](/en/glossary/domain-trading/) puts it, [the main targets of domain name speculation are generic words which can be valuable for type-in traffic and for the dominant position they would have in any field due to their descriptive nature](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=The%20main%20targets%20of%20domain%20name%20speculation%20are%20generic%20words). The article even names the classic shopping list: [generic words and phrases such as poker, insurance, travel, creditcards, loan](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=generic%20words%20and%20phrases%20such%20as).
 
 A **brandable domain** is the opposite bet. It's a short, invented or arbitrary word that carries no built-in meaning at all: `Stripe`, `Zillow`, `Google`, `Hulu`. Nobody types `zillow` into a browser hoping to find real estate the way they might type `homes`. The name is a blank vessel a company fills through marketing. Its value isn't in describing a market; it's in being short, sayable, spellable, and ownable as a unique identity. Many of the fundamentals that drive brandable value are the same ones we cover in [what makes a domain valuable](/en/blog/what-makes-a-domain-valuable/), and the cleverest corner of the brandable world is the [domain hack](/en/blog/domain-hacks-explained/), where the [TLD](/en/glossary/tld/) itself spells the last syllable of the word.
 
 ## Who buys each
+
+![Editorial illustration of two domain buyers: a founder planting a blank flag on fresh ground versus an operator at a storefront drawing in foot traffic](../../assets/brandable-vs-keyword-domains-02-two-buyers.jpg)
 
 The buyers are not the same people, and selling well means knowing which one you're holding inventory for.
 
@@ -48,6 +53,8 @@ A few practical rules of thumb, framed as estimates rather than measured fact:
 When the deal does close, the handoff mechanics are identical for both kinds of name, usually routed through neutral [escrow](/en/glossary/escrow/) or an [auction](/en/glossary/auction/) marketplace so neither side moves first. We cover that flow in [domain escrow explained](/en/blog/domain-escrow-explained/) and the step-by-step in [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/).
 
 ## The trademark angle
+
+![Editorial illustration of a trademark collision check: a safe generic name tag passing a magnifying-glass inspection of a protected mark while a risky name tag is flagged with a warning against an off-limits shield](../../assets/brandable-vs-keyword-domains-03-trademark-check.jpg)
 
 This is where the two categories split hardest, and it's the section that protects everything else.
 

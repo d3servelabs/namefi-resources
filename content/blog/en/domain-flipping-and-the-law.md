@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 16
 format: explainer
 description: "The legal landscape every domain flipper needs: trademark basics, UDRP and ACPA, escrow at closing, hijacking defense, and how to dodge sale scams."
+ogImage: ../../assets/domain-flipping-and-the-law-og.jpg
 keywords: ['domain flipping legal', 'is domain flipping legal', 'cybersquatting', 'UDRP', 'ACPA', 'domain trademark law', 'domain dispute', 'reverse domain name hijacking', 'domain flipping scams', 'domain escrow', 'domain hijacking', 'bad faith domain registration', 'domaining law', 'domain name disputes', 'how to flip domains legally']
 ---
 
@@ -18,6 +19,8 @@ Flipping domains is legal. Flipping the wrong domains will cost you the name, th
 This is the legal and safety pillar of our [domain flipping](/en/blog/domain-flipping/) series. It covers the line between domaining and cybersquatting, the two dispute systems that enforce that line, how to settle a sale without getting scammed, and how to keep someone from stealing a name out from under you. None of it is legal advice (see the disclaimer at the end), but all of it is the working knowledge experienced flippers price into every trade.
 
 ## The one line you cannot cross: trademarks
+
+![Editorial illustration of a generic domain tag with a green check on one side of a dividing line and a brand-emblem domain blocked by a red no-entry sign on the other](../../assets/domain-flipping-and-the-law-01-trademark-line.jpg)
 
 The whole legal question reduces to a single distinction. Registering a generic, descriptive, or invented name to resell is ordinary investing. Registering something that trades on a *specific company's brand* is cybersquatting, and it is the one move that turns a legitimate flip into a losing one.
 
@@ -49,6 +52,8 @@ If you registered a generic word years before some company adopted it as a brand
 
 ## Settling the sale without getting scammed
 
+![Editorial illustration of a buyer with coins and a seller with a domain tag both routing through a neutral escrow safe that releases funds and the domain simultaneously](../../assets/domain-flipping-and-the-law-02-escrow.jpg)
+
 Trademark risk is the legal hazard. The transactional hazard is the deal itself. A domain sale is a classic trust standoff: the seller will not transfer before getting paid, and the buyer will not pay before receiving the name. Whoever moves first is exposed, and scammers live in that gap.
 
 The standard fix is escrow — a neutral third party that, per the general definition, [receives and disburses money or property for the primary transacting parties, with the disbursement dependent on conditions agreed to](https://en.wikipedia.org/wiki/Escrow#:~:text=receives%20and%20disburses%20money%20or%20property%20for%20the%20primary%20transacting%20parties). The buyer funds the escrow agent, the seller transfers the domain, the agent confirms the handoff, then releases the money. Neither side has to trust the other, only the agent. We walk the mechanics in [domain escrow explained](/en/blog/domain-escrow-explained/) and the [escrow](/en/glossary/escrow/) glossary entry.
@@ -62,6 +67,8 @@ A few scam patterns recur often enough to memorize, and we catalog more in [avoi
 The throughline: never release control of a name on a promise. For the seller's full playbook, see [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own/) and the broader [domain trading](/en/glossary/domain-trading/) overview.
 
 ## Keeping your portfolio from being stolen
+
+![Editorial illustration of a domain tag protected by a closed padlock and shield with an envelope-shaped key, while a red phishing hook is blocked](../../assets/domain-flipping-and-the-law-03-hijack-defense.jpg)
 
 The last threat does not need your cooperation at all. Domain hijacking is [the act of changing the registration of a domain name without the permission of its original registrant](https://en.wikipedia.org/wiki/Domain_hijacking#:~:text=is%20the%20act%20of%20changing%20the%20registration%20of%20a%20domain%20name%20without%20the%20permission). For a flipper, your portfolio *is* your bank account, and a hijacked premium name can be sold to an innocent third party before you notice it is gone.
 

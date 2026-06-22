@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 29
 format: explainer
 description: "What domain parking is, how parked names earn ad and affiliate revenue, why modern parking is a sales channel, and when it is actually worth it."
+ogImage: ../../assets/domain-parking-and-monetization-og.jpg
 keywords: ['domain parking', 'park a domain', 'monetize a parked domain', 'domain parking revenue', 'parked domain ads', 'pay per click domains', 'type-in traffic', 'domain monetization', 'domain for sale page', 'parking page', 'domain investing', 'domain flipping', 'earn money from unused domains', 'parked domain affiliate', 'is domain parking worth it']
 ---
 
@@ -25,6 +26,8 @@ There are two flavors. Wikipedia splits them cleanly: [domain parking can be cla
 
 ## Earning ad and affiliate revenue while you hold
 
+![Editorial illustration of type-in visitors walking from a typed address bar into an ad-filled parked page while a few coins drop into a jar](../../assets/domain-parking-and-monetization-01-adrevenue.jpg)
+
 The traditional reason to park a name was money from clicks. The model is simple: the parked page is filled with advertising links, and you get a cut when visitors click them. Wikipedia describes the mechanics directly — [the domain name will usually resolve to a web page containing advertising listings and links](https://en.wikipedia.org/wiki/Domain_parking#:~:text=will%20usually%20resolve%20to%20a%20web%20page%20containing%20advertising%20listings%20and%20links), and [usually the domain holder is paid based on how many links have been visited (e.g. pay per click)](https://en.wikipedia.org/wiki/Domain_parking#:~:text=the%20domain%20holder%20is%20paid%20based%20on%20how%20many%20links%20have%20been%20visited).
 
 Where do the visitors come from? Almost entirely from **type-in traffic** — people who type a guessable name straight into the address bar. Wikipedia defines it as exactly that: [type-in traffic is a term that historically describes visitors finding a website by directly entering a URL in a web browser's address bar](https://en.wikipedia.org/wiki/Type-in_traffic#:~:text=is%20a%20term%20that%20historically%20describes%20visitors%20finding%20a%20website). Someone who wants cheap flights and types `cheapflights.com` directly, with no search engine in between, is type-in traffic — and if you happen to own a descriptive name like that, an ad-filled parking page can quietly earn off them.
@@ -35,6 +38,8 @@ The honest version for today: this only pays meaningfully on names that already 
 
 ## Modern parking is a sales channel, not a billboard
 
+![Editorial illustration of a crossed-out cluttered ad billboard beside a tidy for-sale storefront page with an offer button and inquiry form routing a buyer to a handshake](../../assets/domain-parking-and-monetization-02-saleschannel.jpg)
+
 Here's the shift that matters. For a flipper, the most valuable thing a parked page can do is not earn pennies from clicks — it's announce that the name is for sale, capture interest, and route a buyer toward a deal. The parked page is the most-visited surface your domain has, because anyone curious enough to type the name in lands there. Wasting that surface on someone else's ads, instead of your own "for sale" message, is leaving the actual money on the table.
 
 A sales-oriented parking page does a few specific jobs. It states clearly that the domain is available. It gives a way to make an offer or, better, a fixed buy-now price so a buyer can act without a back-and-forth. And it captures the inquiry — a name, an email, an offer amount — so a serious buyer who arrives at 2 a.m. doesn't bounce. This is its own discipline, covered in [domain for sale landing pages](/en/blog/domain-for-sale-landing-pages/). The broader playbook of getting the right buyer to that page is the cluster pillar, [marketing your domains for sale](/en/blog/marketing-your-domains-for-sale/), and the search side — making your listings findable — is [marketplace SEO for domain listings](/en/blog/marketplace-seo-for-domain-listings/), which leans on the same [SEO](/en/glossary/seo/) fundamentals as any other page.
@@ -44,6 +49,8 @@ Most marketplaces and parking providers now ship this for free: list a name and 
 One caution worth stating plainly: a for-sale page is a public signal, and on names that brush up against a trademark, broadcasting "make me an offer" can be read as evidence of bad-faith intent to profit. That's exactly the line the [UDRP](/en/glossary/udrp/) polices, so keep for-sale parking to generic and brandable names. The full framework is in [what is UDRP](/en/blog/what-is-udrp/).
 
 ## When parking is actually worth it
+
+![Editorial illustration of a balance scale weighing a trickle of parking pennies and a recurring renewal calendar against one large star coin and trophy that outweigh them](../../assets/domain-parking-and-monetization-03-arithmetic.jpg)
 
 Parking is cheap, so the temptation is to treat it as free upside and never think about it. The sharper question is what you're parking *for*.
 

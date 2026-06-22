@@ -10,6 +10,7 @@ series: domain-flipping-skills
 seriesOrder: 22
 format: comparison
 description: "Afternic vs Sedo vs Dan vs onchain marketplaces compared on reach, fees, and fast transfer — plus how to list one name across several at once."
+ogImage: ../../assets/where-to-sell-domains-marketplaces-compared-og.jpg
 keywords: ['where to sell domains', 'best domain marketplaces', 'afternic vs sedo', 'sell domain on afternic', 'sell domain on sedo', 'dan.com shut down', 'domain fast transfer', 'domain marketplace fees', 'list domains for sale', 'tokenized domain marketplace', 'sell domains online', 'domain aftermarket', 'where to list a domain', 'best place to sell a domain name']
 ---
 
@@ -29,6 +30,8 @@ Before the names, the criteria. When you compare venues, you're really comparing
 Hold those four in mind and the marketplaces sort themselves out quickly.
 
 ## Afternic: reach and the fast-transfer network
+
+![Editorial illustration of a single domain-name tag fanning out across thin route lines to a large grid of marketplace storefront icons, with a lightning bolt marking instant fast transfer](../../assets/where-to-sell-domains-marketplaces-compared-01-reach.jpg)
 
 Afternic is the distribution play. Its whole pitch is syndication: list once, and the name propagates across a large network of registrar storefronts so buyers find it wherever they happen to be shopping. Afternic advertises [worldwide distribution through 100+ resellers](https://www.afternic.com/domain-reseller-network#:~:text=100%2B%20resellers) and [125 million qualified searches each month](https://www.afternic.com/domain-reseller-network#:~:text=125%20million%20qualified%20searches%20each%20month) across that network. That breadth is the reason it's most flippers' first listing.
 
@@ -50,6 +53,8 @@ So "selling on Dan" in 2026 means selling on Afternic. We keep Dan in this compa
 
 ## The onchain option: tokenized marketplaces
 
+![Editorial illustration of a buyer and seller swapping a domain token and payment atomically through a locked smart-contract hexagon, with a blockchain motif below](../../assets/where-to-sell-domains-marketplaces-compared-02-atomic-swap.jpg)
+
 There's a newer category that changes the settlement question rather than the reach question. On a tokenized marketplace, control of the domain is represented by an onchain token, and the trade settles through a smart contract instead of a human escrow agent. The trust problem is the oldest one in the business: the seller won't transfer before getting paid, the buyer won't pay before receiving the name. Traditional venues answer with escrow — a third party that, as Wikipedia puts it, [receives and disburses money or property for the primary transacting parties, with the disbursement dependent on conditions agreed to](https://en.wikipedia.org/wiki/Escrow#:~:text=receives%20and%20disburses%20money%20or%20property%20for%20the%20primary%20transacting%20parties). A smart contract can enforce the same "neither party moves first" guarantee in code, releasing name and funds atomically.
 
 The reach is smaller and the category is young, so this isn't a replacement for an Afternic listing yet. But for high-value names where settlement risk is the scary part, it's a real alternative, and it's where part of the industry is heading. We trace that arc in [how tokenized marketplaces replace escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/), with the tax wrinkles in [tax and accounting questions for tokenized domains](/en/blog/tax-and-accounting-questions-for-tokenized-domains/).
@@ -57,6 +62,8 @@ The reach is smaller and the category is young, so this isn't a replacement for 
 [Namefi](https://namefi.io) is one option in this category. Tokenized ownership makes control of a real ICANN domain easier to verify and transfer, with DNS continuity so the name keeps resolving cleanly through the handover — no dark hours where a live site goes down mid-deal. It's not the venue for shifting a $200 hand-reg; it's the venue for the deal where you'd otherwise spend a week nervously emailing an escrow agent.
 
 ## How to list across several at once
+
+![Editorial illustration of one central domain-name tag connected to several distinct marketplace listing cards plus a house-shaped self-hosted for-sale page, each showing a consistent price](../../assets/where-to-sell-domains-marketplaces-compared-03-multi-list.jpg)
 
 The right strategy for most names is breadth, not loyalty. Here's the practical version:
 
