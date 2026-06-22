@@ -151,7 +151,7 @@
     "limiter": "^2.1.0",
     "mnemonist": "^0.40.3",
     "mppx": "0.4.7",
-    "nodemailer": "^6.10.0",
+    "nodemailer": "^9.0.1",
     "openai": "^5.12.2",
     "p-map": "^7.0.3",
     "p-props": "^6.0.0",

@@ -137,7 +137,7 @@
         "limiter": "^2.1.0",
         "mnemonist": "^0.40.3",
         "mppx": "0.4.7",
-        "nodemailer": "^6.10.0",
+        "nodemailer": "^9.0.1",
         "openai": "^5.12.2",
         "p-map": "^7.0.3",
         "p-props": "^6.0.0",
@@ -343,7 +343,7 @@
         "drizzle-orm": "^0.45.2",
         "hono": "^4.12.25",
         "jose": "^6.0.12",
-        "nodemailer": "^6.10.0",
+        "nodemailer": "^9.0.1",
         "pg": "^8.15.6",
         "ponder": "0.16.6",
         "ramda": "^0.30.1",
@@ -5576,7 +5576,7 @@
 
     "node1-libxmljsmt-myh": ["node1-libxmljsmt-myh@1.0.8", "", { "dependencies": { "bindings": "^1.3.0", "nan": "~2.15.0" } }, "sha512-rbRMuBcCO+Am1GSmuKuGmb92jzUtiaOc8bnDTwjodKE0cXqkFg7WE/yGVarm/yr1fVtbrZAa2Rxb0eMF/HGuxg=="],
 
-    "nodemailer": ["nodemailer@6.10.1", "", {}, "sha512-Z+iLaBGVaSjbIzQ4pX6XV41HrooLsQ10ZWPUehGmuantvzWoDVBnmsdUcOIDM1t+yPor5pDhVlDESgOMEGxhHA=="],
+    "nodemailer": ["nodemailer@9.0.1", "", {}, "sha512-Gwv8SQewT616ZM/URn0H54b8PWo/Wum7md3EW2aWy1lO27+WZCX+Xyak3J+NlmHUjDh5ME+uesJUDRbR3Ye8Bw=="],
 
     "nopt": ["nopt@5.0.0", "", { "dependencies": { "abbrev": "1" }, "bin": { "nopt": "bin/nopt.js" } }, "sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ=="],
 
