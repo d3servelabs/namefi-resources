@@ -5,6 +5,9 @@ import { zJson } from '@namefi-astra/utils/zod-helpers';
 const _baseSecretsSchema = z.object({
   DATABASE_URL: z.string().url(),
   ALCHEMY_API_KEY: z.string(),
+  DWELLIR_API_KEY: z.string().optional(),
+  QUICKNODE_API_KEY: z.string().optional(),
+  INFURA_API_KEY: z.string().optional(),
   USE_WEBSOCKETS: z
     .string()
     .optional()

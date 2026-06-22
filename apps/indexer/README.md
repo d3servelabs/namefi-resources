@@ -251,11 +251,17 @@ apps/indexer/
        ├── deploy.sh                  # Main deployment script (create/update)
        ├── local-test.sh              # Simulate startup locally
        └── startup/
-           ├── header.sh              # Pre-install, env loading
-           ├── docker-compose.yml     # All services (app, caddy, datadog)
-           ├── Caddyfile              # HTTPS reverse proxy (auto Let's Encrypt)
-           └── footer.sh              # Launch the stack
+           ├── header.sh                            # Pre-install, env loading
+           ├── docker-compose-without-migration.yml # Stack template: app + caddy + datadog
+           ├── docker-compose-with-migration.yml    # Same, plus a one-shot migration container
+           ├── Caddyfile                            # HTTPS reverse proxy (auto Let's Encrypt)
+           ├── full.sh                              # Standalone all-in-one reference
+           └── footer.sh                            # Launch the stack
 ```
+
+> `deploy.sh` assembles `header.sh` + the selected `docker-compose-*.yml` template +
+> `Caddyfile` + `footer.sh` into the VM startup-script, which writes `docker-compose.yml`
+> on the instance at boot — there is no `docker-compose.yml` checked into the repo.
 
 ---
 

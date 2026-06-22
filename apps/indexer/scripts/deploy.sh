@@ -34,11 +34,11 @@ export EOF_WITH_QUOTES="'EOF'"
 
 STARTUP_SCRIPT=$(mktemp)
 {
-  cat $BASE_DIR/startup/header.sh
+  cat "$BASE_DIR/startup/header.sh"
   echo ""
   echo "# ==== docker-compose.yml ===="
   echo 'cat > docker-compose.yml <<'$EOF_WITH_QUOTES
-  cat $BASE_DIR/startup/docker-compose-without-migration.yml
+  cat "$BASE_DIR/startup/docker-compose-without-migration.yml"
   echo ""
   echo 'EOF'
   echo ""
@@ -46,10 +46,10 @@ STARTUP_SCRIPT=$(mktemp)
   # Caddy reads {$DOMAIN}/{$ACME_EMAIL} from the caddy container's env (set in the
   # compose file), so the Caddyfile is written literally — no envsubst needed.
   echo 'cat > Caddyfile <<'$EOF_WITH_QUOTES
-  cat $BASE_DIR/startup/Caddyfile
+  cat "$BASE_DIR/startup/Caddyfile"
   echo 'EOF'
   echo ""
-  cat $BASE_DIR/startup/footer.sh
+  cat "$BASE_DIR/startup/footer.sh"
 } > "$STARTUP_SCRIPT"
 
 
