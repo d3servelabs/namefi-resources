@@ -47,7 +47,7 @@ const mlsSaleCardThemeCache = new Map<string, MlsSaleCardTheme>();
 const MLS_SOURCE_VISUALS = {
   x: {
     logoSrc: '/assets/social/x-logo.svg',
-    logoClassName: 'bg-white p-[0.2rem]',
+    logoClassName: 'bg-[#0f1419] p-[0.2rem] ring-1 ring-white/15',
     linkClassName: 'hover:text-zinc-100',
     symbol: 'X',
   },
