@@ -1,4 +1,11 @@
 {
+  "aftermarket": {
+    "en": "Aftermarket (Secondary Market)",
+    "titles": {
+      "en": "Aftermarket (Secondary Market)"
+    },
+    "level": 1
+  },
   "ai-agent": {
     "en": "AI Agent",
     "titles": {
@@ -71,6 +78,20 @@
     },
     "level": 1
   },
+  "brandable-domain": {
+    "en": "Brandable Domain",
+    "titles": {
+      "en": "Brandable Domain"
+    },
+    "level": 1
+  },
+  "buy-now-vs-make-offer": {
+    "en": "Buy-Now (BIN) vs Make-Offer",
+    "titles": {
+      "en": "Buy-Now (BIN) vs Make-Offer"
+    },
+    "level": 1
+  },
   "cctld": {
     "en": "ccTLD (Country-Code Top-Level Domain)",
     "titles": {
@@ -101,6 +122,13 @@
       "zh": "抵押品",
       "ar": "الضمان",
       "hi": "कोलैटरल (गिरवी)"
+    },
+    "level": 1
+  },
+  "comparable-sales": {
+    "en": "Comparable Sales (Comps)",
+    "titles": {
+      "en": "Comparable Sales (Comps)"
     },
     "level": 1
   },
@@ -242,6 +270,20 @@
     },
     "level": 1
   },
+  "domain-appraisal": {
+    "en": "Domain Appraisal (Valuation)",
+    "titles": {
+      "en": "Domain Appraisal (Valuation)"
+    },
+    "level": 1
+  },
+  "domain-broker": {
+    "en": "Domain Broker (Brokerage)",
+    "titles": {
+      "en": "Domain Broker (Brokerage)"
+    },
+    "level": 1
+  },
   "domain-bundle": {
     "en": "Domain bundle",
     "titles": {
@@ -262,6 +304,13 @@
     },
     "level": 1
   },
+  "domain-liquidity": {
+    "en": "Liquidity",
+    "titles": {
+      "en": "Liquidity"
+    },
+    "level": 1
+  },
   "domain-ownership": {
     "en": "Domain ownership",
     "titles": {
@@ -272,6 +321,13 @@
       "zh": "域名所有权",
       "ar": "ملكية النطاق",
       "hi": "डोमेन स्वामित्व"
+    },
+    "level": 1
+  },
+  "domain-portfolio": {
+    "en": "Domain Portfolio",
+    "titles": {
+      "en": "Domain Portfolio"
     },
     "level": 1
   },
@@ -299,6 +355,20 @@
       "zh": "域名交易",
       "ar": "تداول النطاقات",
       "hi": "डोमेन ट्रेडिंग"
+    },
+    "level": 1
+  },
+  "domaining": {
+    "en": "Domaining (Domainer)",
+    "titles": {
+      "en": "Domaining (Domainer)"
+    },
+    "level": 1
+  },
+  "end-user": {
+    "en": "End User",
+    "titles": {
+      "en": "End User"
     },
     "level": 1
   },
@@ -338,6 +408,13 @@
       "zh": "托管",
       "ar": "الضمان (Escrow)",
       "hi": "एस्क्रो"
+    },
+    "level": 1
+  },
+  "exact-match-domain": {
+    "en": "Exact-Match Domain (EMD)",
+    "titles": {
+      "en": "Exact-Match Domain (EMD)"
     },
     "level": 1
   },
@@ -407,6 +484,13 @@
     },
     "level": 1
   },
+  "holding-cost": {
+    "en": "Holding / Carrying Cost",
+    "titles": {
+      "en": "Holding / Carrying Cost"
+    },
+    "level": 1
+  },
   "iana": {
     "en": "IANA (Internet Assigned Numbers Authority)",
     "titles": {
@@ -451,6 +535,13 @@
     "en": "IP Address (IPv4 / IPv6)",
     "titles": {
       "en": "IP Address (IPv4 / IPv6)"
+    },
+    "level": 1
+  },
+  "keyword-domain": {
+    "en": "Keyword Domain",
+    "titles": {
+      "en": "Keyword Domain"
     },
     "level": 1
   },
@@ -654,6 +745,13 @@
     },
     "level": 1
   },
+  "reserve-price": {
+    "en": "Reserve Price (Minimum Offer)",
+    "titles": {
+      "en": "Reserve Price (Minimum Offer)"
+    },
+    "level": 1
+  },
   "reserved-names": {
     "en": "Reserved Names (Blocked Names)",
     "titles": {
@@ -701,6 +799,13 @@
     },
     "level": 1
   },
+  "sell-through-rate": {
+    "en": "Sell-Through Rate (STR)",
+    "titles": {
+      "en": "Sell-Through Rate (STR)"
+    },
+    "level": 1
+  },
   "seo": {
     "en": "SEO (Search Engine Optimization)",
     "titles": {
@@ -711,6 +816,13 @@
       "zh": "SEO（搜索引擎优化）",
       "ar": "تحسين محركات البحث (SEO)",
       "hi": "एसईओ (सर्च इंजन ऑप्टिमाइजेशन)"
+    },
+    "level": 1
+  },
+  "short-domain": {
+    "en": "Short / Numeric Domain (LLLL, NNNN)",
+    "titles": {
+      "en": "Short / Numeric Domain (LLLL, NNNN)"
     },
     "level": 1
   },
@@ -829,6 +941,13 @@
       "zh": "WHOIS（与 RDAP）",
       "ar": "WHOIS (و RDAP)",
       "hi": "WHOIS (और RDAP)"
+    },
+    "level": 1
+  },
+  "wholesale-vs-retail": {
+    "en": "Wholesale vs Retail Pricing",
+    "titles": {
+      "en": "Wholesale vs Retail Pricing"
     },
     "level": 1
   },
