@@ -1,0 +1,14 @@
+---
+title: EPP Status Codes (clientHold, …)
+date: '2026-06-22'
+language: en
+tags: ['glossary']
+authors: ['namefiteam']
+description: The standardized flags on a domain that show its state — locked, on hold, pending transfer, and more.
+keywords: ['EPP status codes', 'clientHold', 'serverTransferProhibited', 'domain status', 'pending delete']
+level: 1
+sources:
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+---
+
+**EPP status codes** are the machine-readable flags defined by the Extensible Provisioning Protocol ([EPP](/en/glossary/epp/)) that describe exactly what operations are permitted on a domain at any given moment. They come in two namespaces: `client*` codes set by the [registrar](/en/glossary/registrar/) and `server*` codes set by the registry, with the server codes taking precedence. Common ones include `clientTransferProhibited` (the [transfer lock](/en/glossary/transfer-lock/) that blocks outbound moves), `serverDeleteProhibited` (registry-level protection against deletion), `clientHold` (suspends DNS resolution, often for non-payment), and `pendingDelete` which marks a domain in its grace period before it is released and available for registration again — a state adjacent to [pending delete](/en/glossary/pending-delete/). Understanding these codes matters practically: a domain showing `serverTransferProhibited` cannot be moved even after the registrar unlocks it, which surprises buyers mid-transaction. For Namefi users, EPP status codes describe the state of the underlying DNS registration, while the NFT in the wallet independently records on-chain ownership — both layers must be checked when evaluating a tokenized domain's transferability. *Source: ICANN EPP Status Codes reference.*

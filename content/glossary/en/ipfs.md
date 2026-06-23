@@ -1,0 +1,14 @@
+---
+title: IPFS (InterPlanetary File System)
+date: '2026-06-22'
+language: en
+tags: ['glossary']
+authors: ['namefiteam']
+description: A peer-to-peer protocol that addresses files by their content, used to host decentralized web data.
+keywords: ['IPFS', 'content addressing', 'peer-to-peer', 'decentralized storage', 'CID']
+level: 1
+sources:
+  - https://docs.ipfs.tech/concepts/what-is-ipfs/
+---
+
+**IPFS** (InterPlanetary File System) is a peer-to-peer hypermedia protocol that identifies files by their content hash — a Content Identifier (CID) — rather than by server location. If two nodes hold the same file, they produce the same CID, so the network can retrieve it from whoever is nearest. This content-addressing model is the opposite of HTTP, where a URL points to a specific server that may go offline. In [web3](/en/glossary/web3/) applications, IPFS is a standard off-chain data layer: NFT metadata, artwork, and documents are stored on IPFS so they are not permanently pinned to the expensive [blockchain](/en/glossary/blockchain/) — instead the [on-chain](/en/glossary/on-chain/) record holds the immutable CID. For tokenized domains, IPFS can host a decentralized website that resolves when someone has an IPFS-capable gateway or browser extension, entirely bypassing conventional DNS servers. Namefi's vision includes letting domain NFT holders point their name to an IPFS site, combining blockchain-verified ownership with censorship-resistant web hosting — a core building block of the decentralized web. *Source: IPFS Documentation — What Is IPFS.*

@@ -1,4 +1,25 @@
 {
+  "301-redirect": {
+    "en": "301 Redirect (Permanent Redirect)",
+    "titles": {
+      "en": "301 Redirect (Permanent Redirect)"
+    },
+    "level": 1
+  },
+  "accredited-registrar": {
+    "en": "ICANN-Accredited Registrar (RAA)",
+    "titles": {
+      "en": "ICANN-Accredited Registrar (RAA)"
+    },
+    "level": 1
+  },
+  "acpa": {
+    "en": "ACPA (Anticybersquatting Consumer Protection Act)",
+    "titles": {
+      "en": "ACPA (Anticybersquatting Consumer Protection Act)"
+    },
+    "level": 1
+  },
   "aftermarket": {
     "en": "Aftermarket (Secondary Market)",
     "titles": {
@@ -16,6 +37,13 @@
       "zh": "AI 智能体",
       "ar": "وكيل الذكاء الاصطناعي",
       "hi": "AI एजेंट"
+    },
+    "level": 1
+  },
+  "anchor-text": {
+    "en": "Anchor Text",
+    "titles": {
+      "en": "Anchor Text"
     },
     "level": 1
   },
@@ -75,6 +103,27 @@
     "en": "Backorder (Drop-Catching)",
     "titles": {
       "en": "Backorder (Drop-Catching)"
+    },
+    "level": 1
+  },
+  "bad-faith": {
+    "en": "Bad Faith (UDRP Element)",
+    "titles": {
+      "en": "Bad Faith (UDRP Element)"
+    },
+    "level": 1
+  },
+  "bgp-hijack": {
+    "en": "BGP Hijack",
+    "titles": {
+      "en": "BGP Hijack"
+    },
+    "level": 1
+  },
+  "blockchain": {
+    "en": "Blockchain",
+    "titles": {
+      "en": "Blockchain"
     },
     "level": 1
   },
@@ -145,6 +194,13 @@
     },
     "level": 1
   },
+  "cross-chain-bridge": {
+    "en": "Bridge (Cross-Chain)",
+    "titles": {
+      "en": "Bridge (Cross-Chain)"
+    },
+    "level": 1
+  },
   "cross-registrar-transfer": {
     "en": "Cross-registrar transfer",
     "titles": {
@@ -181,6 +237,13 @@
       "zh": "托管所有权",
       "ar": "الملكية الحفظية",
       "hi": "कस्टोडियल स्वामित्व"
+    },
+    "level": 1
+  },
+  "cybersquatting": {
+    "en": "Cybersquatting",
+    "titles": {
+      "en": "Cybersquatting"
     },
     "level": 1
   },
@@ -236,6 +299,13 @@
     },
     "level": 1
   },
+  "dns-hijacking": {
+    "en": "DNS Hijacking (Spoofing, Cache Poisoning)",
+    "titles": {
+      "en": "DNS Hijacking (Spoofing, Cache Poisoning)"
+    },
+    "level": 1
+  },
   "dns-propagation": {
     "en": "DNS Propagation",
     "titles": {
@@ -277,6 +347,13 @@
     },
     "level": 1
   },
+  "domain-authority": {
+    "en": "Backlink / Domain Authority",
+    "titles": {
+      "en": "Backlink / Domain Authority"
+    },
+    "level": 1
+  },
   "domain-broker": {
     "en": "Domain Broker (Brokerage)",
     "titles": {
@@ -304,6 +381,41 @@
     },
     "level": 1
   },
+  "domain-financing": {
+    "en": "Domain Financing (Installment)",
+    "titles": {
+      "en": "Domain Financing (Installment)"
+    },
+    "level": 1
+  },
+  "domain-forwarding": {
+    "en": "Domain Forwarding (301 Redirect)",
+    "titles": {
+      "en": "Domain Forwarding (301 Redirect)"
+    },
+    "level": 1
+  },
+  "domain-hack": {
+    "en": "Domain Hack",
+    "titles": {
+      "en": "Domain Hack"
+    },
+    "level": 1
+  },
+  "domain-hijacking": {
+    "en": "Domain Hijacking",
+    "titles": {
+      "en": "Domain Hijacking"
+    },
+    "level": 1
+  },
+  "domain-landing-page": {
+    "en": "Landing Page (Lander)",
+    "titles": {
+      "en": "Landing Page (Lander)"
+    },
+    "level": 1
+  },
   "domain-liquidity": {
     "en": "Liquidity",
     "titles": {
@@ -321,6 +433,13 @@
       "zh": "域名所有权",
       "ar": "ملكية النطاق",
       "hi": "डोमेन स्वामित्व"
+    },
+    "level": 1
+  },
+  "domain-parking": {
+    "en": "Domain Parking (Parked Domain)",
+    "titles": {
+      "en": "Domain Parking (Parked Domain)"
     },
     "level": 1
   },
@@ -342,6 +461,13 @@
     "en": "Domain Tasting (AGP)",
     "titles": {
       "en": "Domain Tasting (AGP)"
+    },
+    "level": 1
+  },
+  "domain-theft": {
+    "en": "Domain Theft",
+    "titles": {
+      "en": "Domain Theft"
     },
     "level": 1
   },
@@ -385,6 +511,27 @@
     },
     "level": 1
   },
+  "epp": {
+    "en": "EPP (Extensible Provisioning Protocol)",
+    "titles": {
+      "en": "EPP (Extensible Provisioning Protocol)"
+    },
+    "level": 1
+  },
+  "epp-status-codes": {
+    "en": "EPP Status Codes (clientHold, …)",
+    "titles": {
+      "en": "EPP Status Codes (clientHold, …)"
+    },
+    "level": 1
+  },
+  "erc-20": {
+    "en": "ERC-20 (Token Standard)",
+    "titles": {
+      "en": "ERC-20 (Token Standard)"
+    },
+    "level": 1
+  },
   "erc-721": {
     "en": "ERC-721 (NFT Standard)",
     "titles": {
@@ -408,6 +555,13 @@
       "zh": "托管",
       "ar": "الضمان (Escrow)",
       "hi": "एस्क्रो"
+    },
+    "level": 1
+  },
+  "ethereum": {
+    "en": "Ethereum (ETH)",
+    "titles": {
+      "en": "Ethereum (ETH)"
     },
     "level": 1
   },
@@ -538,10 +692,38 @@
     },
     "level": 1
   },
+  "ipfs": {
+    "en": "IPFS (InterPlanetary File System)",
+    "titles": {
+      "en": "IPFS (InterPlanetary File System)"
+    },
+    "level": 1
+  },
   "keyword-domain": {
     "en": "Keyword Domain",
     "titles": {
       "en": "Keyword Domain"
+    },
+    "level": 1
+  },
+  "kyc": {
+    "en": "KYC / AML",
+    "titles": {
+      "en": "KYC / AML"
+    },
+    "level": 1
+  },
+  "layer-2": {
+    "en": "Layer 2 (Rollup)",
+    "titles": {
+      "en": "Layer 2 (Rollup)"
+    },
+    "level": 1
+  },
+  "lease-to-own": {
+    "en": "Lease-to-Own",
+    "titles": {
+      "en": "Lease-to-Own"
     },
     "level": 1
   },
@@ -594,6 +776,13 @@
       "zh": "市场 (例如 OpenSea, Blur)",
       "ar": "السوق (مثل OpenSea، Blur)",
       "hi": "मार्केटप्लेस (जैसे OpenSea, Blur)"
+    },
+    "level": 1
+  },
+  "minting": {
+    "en": "Minting (Mint)",
+    "titles": {
+      "en": "Minting (Mint)"
     },
     "level": 1
   },
@@ -670,6 +859,20 @@
     },
     "level": 1
   },
+  "phishing": {
+    "en": "Phishing",
+    "titles": {
+      "en": "Phishing"
+    },
+    "level": 1
+  },
+  "ppc": {
+    "en": "PPC (Pay-Per-Click)",
+    "titles": {
+      "en": "PPC (Pay-Per-Click)"
+    },
+    "level": 1
+  },
   "premium-domain": {
     "en": "Premium Domain",
     "titles": {
@@ -687,6 +890,13 @@
       "zh": "协议资产",
       "ar": "أصل البروتوكول",
       "hi": "प्रोटोकॉल एसेट"
+    },
+    "level": 1
+  },
+  "public-private-key": {
+    "en": "Private Key / Public Key",
+    "titles": {
+      "en": "Private Key / Public Key"
     },
     "level": 1
   },
@@ -732,6 +942,13 @@
     },
     "level": 1
   },
+  "registry-lock": {
+    "en": "Registry Lock",
+    "titles": {
+      "en": "Registry Lock"
+    },
+    "level": 1
+  },
   "rent-to-own": {
     "en": "Rent-to-own",
     "titles": {
@@ -742,6 +959,13 @@
       "zh": "先租后买",
       "ar": "الإيجار المنتهي بالتملك",
       "hi": "रेंट-टू-ओन"
+    },
+    "level": 1
+  },
+  "reseller": {
+    "en": "Reseller",
+    "titles": {
+      "en": "Reseller"
     },
     "level": 1
   },
@@ -769,6 +993,13 @@
       "zh": "收益分享",
       "ar": "مشاركة الإيرادات",
       "hi": "राजस्व-साझाकरण"
+    },
+    "level": 1
+  },
+  "reverse-domain-hijacking": {
+    "en": "Reverse Domain Hijacking (RDNH)",
+    "titles": {
+      "en": "Reverse Domain Hijacking (RDNH)"
     },
     "level": 1
   },
@@ -816,6 +1047,13 @@
       "zh": "SEO（搜索引擎优化）",
       "ar": "تحسين محركات البحث (SEO)",
       "hi": "एसईओ (सर्च इंजन ऑप्टिमाइजेशन)"
+    },
+    "level": 1
+  },
+  "serp": {
+    "en": "SERP (Search Engine Results Page)",
+    "titles": {
+      "en": "SERP (Search Engine Results Page)"
     },
     "level": 1
   },
@@ -872,6 +1110,20 @@
     },
     "level": 1
   },
+  "tld-seo": {
+    "en": "TLD SEO Impact",
+    "titles": {
+      "en": "TLD SEO Impact"
+    },
+    "level": 1
+  },
+  "tmch": {
+    "en": "Trademark Clearinghouse (Sunrise)",
+    "titles": {
+      "en": "Trademark Clearinghouse (Sunrise)"
+    },
+    "level": 1
+  },
   "tokenize": {
     "en": "Tokenize",
     "titles": {
@@ -885,10 +1137,45 @@
     },
     "level": 1
   },
+  "tokenized-domain": {
+    "en": "Tokenized Domain",
+    "titles": {
+      "en": "Tokenized Domain"
+    },
+    "level": 1
+  },
+  "trademark": {
+    "en": "Trademark",
+    "titles": {
+      "en": "Trademark"
+    },
+    "level": 1
+  },
+  "transfer-lock": {
+    "en": "Registrar / Transfer Lock",
+    "titles": {
+      "en": "Registrar / Transfer Lock"
+    },
+    "level": 1
+  },
   "ttl": {
     "en": "TTL (Time to Live)",
     "titles": {
       "en": "TTL (Time to Live)"
+    },
+    "level": 1
+  },
+  "type-in-traffic": {
+    "en": "Type-In Traffic",
+    "titles": {
+      "en": "Type-In Traffic"
+    },
+    "level": 1
+  },
+  "typosquatting": {
+    "en": "Typosquatting",
+    "titles": {
+      "en": "Typosquatting"
     },
     "level": 1
   },
@@ -902,6 +1189,13 @@
       "zh": "UDRP (统一域名争议解决政策)",
       "ar": "UDRP (السياسة الموحدة لتسوية منازعات أسماء النطاقات)",
       "hi": "UDRP (यूनिफ़ॉर्म डोमेन-नेम विवाद-समाधान नीति)"
+    },
+    "level": 1
+  },
+  "urs": {
+    "en": "URS (Uniform Rapid Suspension)",
+    "titles": {
+      "en": "URS (Uniform Rapid Suspension)"
     },
     "level": 1
   },
@@ -944,10 +1238,24 @@
     },
     "level": 1
   },
+  "whois-privacy": {
+    "en": "WHOIS Privacy (Privacy Protection)",
+    "titles": {
+      "en": "WHOIS Privacy (Privacy Protection)"
+    },
+    "level": 1
+  },
   "wholesale-vs-retail": {
     "en": "Wholesale vs Retail Pricing",
     "titles": {
       "en": "Wholesale vs Retail Pricing"
+    },
+    "level": 1
+  },
+  "wipo": {
+    "en": "WIPO (World Intellectual Property Organization)",
+    "titles": {
+      "en": "WIPO (World Intellectual Property Organization)"
     },
     "level": 1
   },

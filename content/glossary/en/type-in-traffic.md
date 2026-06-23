@@ -1,0 +1,14 @@
+---
+title: Type-In Traffic
+date: '2026-06-22'
+language: en
+tags: ['glossary']
+authors: ['namefiteam']
+description: Visitors who reach a site by typing a guessed domain directly, the basis of domain parking revenue.
+keywords: ['type-in traffic', 'direct navigation', 'domain parking', 'exact match domain', 'domain value']
+level: 1
+sources:
+  - https://www.namebio.com/
+---
+
+**Type-in traffic** (or *direct navigation traffic*) describes visitors who arrive at a website by typing a guessed URL directly into their browser's address bar rather than clicking a search result or link. These visitors assume the keyword they type is also a working domain — so "loans" becomes loans.com, or "insurance" becomes insurance.com — making the habit a self-fulfilling source of high-intent users with no advertising spend required. Type-in traffic is the economic engine behind [domain parking](/en/glossary/domain-parking/): parking services estimate the monthly visitor count for a name, then apply [PPC](/en/glossary/ppc/) rates to project annual revenue, which in turn informs the domain's appraised value. [Exact-match domains](/en/glossary/exact-match-domain/) command premium prices partly because their type-in rates can be quantified and capitalized. The phenomenon has declined somewhat with browser search integration, but remains significant for short, generic, or high-recall names. On Namefi, documented type-in data strengthens a domain's on-chain listing by providing buyers with verifiable revenue history, turning a historically opaque valuation signal into a transparent, auditable asset characteristic. *Source: NameBio domain sales data.*
