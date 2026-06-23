@@ -8,6 +8,7 @@ export const baseConfigSchema = z.object({
     'test',
     'custom',
     'preview',
+    'canary',
   ]),
 });
 

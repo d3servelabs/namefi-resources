@@ -13,6 +13,11 @@ on:
         required: false
         default: ''
         type: string
+      canary:
+        description: 'Cut a canary release candidate: tags astra/v<version>-rc.N (deploys to canary only) instead of the normal astra/v<version> (dev → prod). Does not bump main.'
+        required: false
+        default: false
+        type: boolean
   schedule:
     # Run daily at 11:00 UTC
     - cron: '0 11 * * *'
@@ -93,8 +98,11 @@ jobs:
       - name: Get latest release tag
         id: get-tag
         run: |
-          # Get the latest astra release tag
-          LATEST_TAG=$(git tag -l 'astra/v*' --sort=-version:refname | head -n 1)
+          # Get the latest STABLE astra release tag. Exclude -rc canary tags: they
+          # point at current HEAD without bumping main, so treating one as "latest"
+          # would make the next stable cut from the same commit look like "no changes"
+          # and would diff release notes from the rc instead of the last stable tag.
+          LATEST_TAG=$(git tag -l 'astra/v*' --sort=-version:refname | grep -vE -- '-rc(\.[0-9]+)?$' | head -n 1)
           if [ -z "$LATEST_TAG" ]; then
             echo "No previous release tag found, will proceed with release"
             echo "first-release=true" >> $GITHUB_OUTPUT
@@ -129,6 +137,7 @@ jobs:
           REQUESTED_VERSION: ${{ github.event.inputs.version }}
         run: |
           FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
+          CANARY="${{ github.event.inputs.canary }}"
           FIRST_RELEASE="${{ steps.get-tag.outputs.first-release }}"
           HAS_CHANGES="${{ steps.detect.outputs.has-changes }}"
 
@@ -154,6 +163,9 @@ jobs:
           # Determine if we should release
           if [ "$FORCE_RELEASE" == "true" ]; then
             echo "Force release enabled, proceeding with release"
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          elif [ "$CANARY" == "true" ]; then
+            echo "Canary release candidate requested; proceeding regardless of detected changes"
             echo "should-release=true" >> $GITHUB_OUTPUT
           elif [ -n "$REQUESTED_VERSION" ]; then
             echo "Exact version requested ($REQUESTED_VERSION); proceeding with release regardless of detected changes"
@@ -397,18 +409,49 @@ jobs:
               }
             }
 
+            // Canary release candidate: turn the resolved version into the next
+            // astra/v<base>-rc.N. This tags current HEAD (deploys to canary only)
+            // without committing a version bump to main, so the eventual stable
+            // release still cuts the same base from the unchanged main version.
+            const canaryRequested = String((context.payload.inputs && context.payload.inputs.canary) || '').trim() === 'true';
+            core.setOutput('is_canary', canaryRequested ? 'true' : 'false');
+
+            let finalBackendVersion = newBackendVersion;
+            let finalFrontendVersion = newFrontendVersion;
+
+            if (canaryRequested) {
+              // Drop any prerelease suffix from the resolved base before appending -rc.N.
+              const base = newBackendVersion.split('-')[0];
+              const { data: matches } = await github.rest.git.listMatchingRefs({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/astra/v${base}-rc`,
+              });
+              let maxRc = 0;
+              for (const m of matches) {
+                const mm = m.ref.match(/-rc\.(\d+)$/);
+                if (mm) maxRc = Math.max(maxRc, Number(mm[1]));
+              }
+              const rcVersion = `${base}-rc.${maxRc + 1}`;
+              console.log(`🐤 Canary release candidate requested → ${rcVersion}`);
+              finalBackendVersion = rcVersion;
+              finalFrontendVersion = rcVersion;
+            }
+
             // Log summary
             console.log('\n✅ Version increments calculated successfully:');
-            console.log(`   Backend:  ${oldBackendVersion} → ${newBackendVersion}`);
-            console.log(`   Frontend: ${oldFrontendVersion} → ${newFrontendVersion}`);
+            console.log(`   Backend:  ${oldBackendVersion} → ${finalBackendVersion}`);
+            console.log(`   Frontend: ${oldFrontendVersion} → ${finalFrontendVersion}`);
 
             // Set outputs
-            core.setOutput('backend_version', newBackendVersion);
-            core.setOutput('frontend_version', newFrontendVersion);
+            core.setOutput('backend_version', finalBackendVersion);
+            core.setOutput('frontend_version', finalFrontendVersion);
             core.setOutput('old_backend_version', oldBackendVersion);
             core.setOutput('old_frontend_version', oldFrontendVersion);
 
       - name: Update package versions
+        # Canary cuts a prerelease tag on current HEAD and must NOT bump main's baseline.
+        if: steps.version.outputs.is_canary != 'true'
         uses: actions/github-script@v8
         with:
           script: |
@@ -462,6 +505,21 @@ jobs:
       - name: Commit version changes and create release tag
         id: commit
         run: |
+          # Canary: tag current HEAD as a release candidate and push only the tag.
+          # No package.json bump, no commit to main — keeps main's baseline intact
+          # so the eventual stable release cuts the same base cleanly.
+          if [[ "${{ steps.version.outputs.is_canary }}" == "true" ]]; then
+            TAG_NAME="astra/v${{ steps.version.outputs.backend_version }}"
+            echo "🐤 Canary release candidate: tagging current HEAD as $TAG_NAME (main untouched)"
+            git tag -a "$TAG_NAME" -m "Canary release candidate: ${{ steps.version.outputs.backend_version }}"
+            git push origin "$TAG_NAME"
+            COMMIT_SHA=$(git rev-parse HEAD)
+            echo "commit_sha=$COMMIT_SHA" >> $GITHUB_OUTPUT
+            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+            echo "✅ Canary tag $TAG_NAME pushed (points at $COMMIT_SHA)"
+            exit 0
+          fi
+
           echo "📝 Committing version changes..."
 
           git add apps/backend/package.json apps/frontend/package.json ./bun.lock

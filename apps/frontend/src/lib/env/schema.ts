@@ -2,7 +2,14 @@ import { z, type ZodSchema } from 'zod';
 import { ALLOWED_CHAINS_SCHEMA } from '@namefi-astra/utils/allowed-chains';
 
 export const configSchema = z.object({
-  TYPE: z.enum(['development', 'production', 'local', 'preview', 'custom']),
+  TYPE: z.enum([
+    'development',
+    'production',
+    'local',
+    'preview',
+    'custom',
+    'canary',
+  ]),
   APP_VERSION: z.string().default('unknown'),
   DEPLOY_COMMIT_SHA: z.string().default('unknown'),
   BACKEND_URL: z.url(),

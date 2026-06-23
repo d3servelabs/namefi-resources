@@ -5,8 +5,8 @@ on:
     branches:
       - main # Regular push to main branch deploys to dev
     tags:
-      - "astra/prod/v*" # Tags like astra/prod/v1.0.0 for production deployment
-      - "astra/v*" # Tags like astra/v1.0.0 (marker for triggering prod deployment)
+      - "astra/prod/v*" # Tags like astra/prod/v1.0.0 for production deployment (triggers a follow-up canary run)
+      - "astra/v*" # Covers astra/v1.0.0 (dev + triggers prod) AND astra/v1.0.0-rc.N (canary only)
   workflow_dispatch:
     inputs:
       environment:
@@ -16,6 +16,7 @@ on:
         type: choice
         options:
           - dev
+          - canary
           - production
 
 env:
@@ -129,6 +130,7 @@ jobs:
       infisical_token_selector: ${{ steps.infisical_token_selector.outputs.infisical_token_selector }}
       vercel_env: ${{ steps.compute.outputs.vercel_env }}
       should_trigger_prod: ${{ steps.compute.outputs.should_trigger_prod }}
+      should_trigger_canary: ${{ steps.compute.outputs.should_trigger_canary }}
     steps:
       - name: Compute environment values
         id: compute
@@ -137,50 +139,72 @@ jobs:
           DEPLOY_ENVIRONMENT: ${{ github.event.inputs.environment || '' }}
           GITHUB_REF_NAME_FULL: ${{ github.ref }}
         run: |
-          # Determine if this is a production deployment
+          set -euo pipefail
+
+          # Release-candidate tags (astra/v<semver>-rc or -rc.<n>) deploy to canary
+          # only — keep them strictly separate from the regular astra/v* (dev +
+          # trigger-prod) path and the astra/prod/v* path.
+          RC_TAG_REGEX='^refs/tags/astra/v.*-rc(\.[0-9]+)?$'
+
+          # Resolve a single deploy label: dev | canary | prod.
+          LABEL="dev"
           IS_PROD="false"
-          if [[ "$EVENT_NAME" == "workflow_dispatch" && "$DEPLOY_ENVIRONMENT" == "production" ]]; then
-            if [[ "$GITHUB_REF_NAME_FULL" != "refs/heads/main" && ! "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra/(prod/)?v ]]; then
-              echo "Manual production Astra deployments must be run from main or an astra release tag, got $GITHUB_REF_NAME_FULL" >&2
-              exit 1
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
+            case "$DEPLOY_ENVIRONMENT" in
+              production)
+                if [[ "$GITHUB_REF_NAME_FULL" != "refs/heads/main" && ! "$GITHUB_REF_NAME_FULL" =~ ^refs/tags/astra/(prod/)?v ]]; then
+                  echo "Manual production Astra deployments must be run from main or an astra release tag, got $GITHUB_REF_NAME_FULL" >&2
+                  exit 1
+                fi
+                LABEL="prod"; IS_PROD="true" ;;
+              canary) LABEL="canary" ;;
+              *) LABEL="dev" ;;
+            esac
+          elif [[ "$EVENT_NAME" == "push" ]]; then
+            if [[ "$GITHUB_REF_NAME_FULL" == refs/tags/astra/prod/v* ]]; then
+              LABEL="prod"; IS_PROD="true"
+            elif [[ "$GITHUB_REF_NAME_FULL" =~ $RC_TAG_REGEX ]]; then
+              LABEL="canary"
+            else
+              LABEL="dev"
             fi
-            IS_PROD="true"
-          elif [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" == refs/tags/astra/prod/v* ]]; then
-            IS_PROD="true"
           fi
 
-          # Set label (prod or dev)
-          if [[ "$IS_PROD" == "true" ]]; then
-            echo "label=prod" >> "$GITHUB_OUTPUT"
-            echo "vercel_env=production" >> "$GITHUB_OUTPUT"
-          else
-            echo "label=dev" >> "$GITHUB_OUTPUT"
-            echo "vercel_env=dev" >> "$GITHUB_OUTPUT"
-          fi
+          case "$LABEL" in
+            prod) VERCEL_ENV="production" ;;
+            canary) VERCEL_ENV="canary" ;;
+            *) VERCEL_ENV="dev" ;;
+          esac
+          echo "label=$LABEL" >> "$GITHUB_OUTPUT"
+          echo "vercel_env=$VERCEL_ENV" >> "$GITHUB_OUTPUT"
 
-          # Determine if we should trigger prod deployment (only for astra/v* tags, not astra/prod/v*)
-          SHOULD_TRIGGER="false"
-          if [[ "$EVENT_NAME" == "push" && "$GITHUB_REF_NAME_FULL" == refs/tags/astra/v* && "$GITHUB_REF_NAME_FULL" != refs/tags/astra/prod/v* ]]; then
-            SHOULD_TRIGGER="true"
+          # Trigger the downstream prod deployment ONLY for a regular astra/v* tag
+          # (not astra/prod/v*, and not an -rc canary tag).
+          SHOULD_TRIGGER_PROD="false"
+          if [[ "$EVENT_NAME" == "push" \
+                && "$GITHUB_REF_NAME_FULL" == refs/tags/astra/v* \
+                && "$GITHUB_REF_NAME_FULL" != refs/tags/astra/prod/v* \
+                && ! "$GITHUB_REF_NAME_FULL" =~ $RC_TAG_REGEX ]]; then
+            SHOULD_TRIGGER_PROD="true"
           fi
-          echo "should_trigger_prod=$SHOULD_TRIGGER" >> "$GITHUB_OUTPUT"
+          echo "should_trigger_prod=$SHOULD_TRIGGER_PROD" >> "$GITHUB_OUTPUT"
+
+          # Whenever prod is being deployed, also fan out a follow-up canary run.
+          echo "should_trigger_canary=$IS_PROD" >> "$GITHUB_OUTPUT"
 
           # Output for debugging
           echo "Event: $EVENT_NAME"
           echo "Ref: $GITHUB_REF_NAME_FULL"
-          echo "Is Production: $IS_PROD"
-          echo "Label: $([ "$IS_PROD" == "true" ] && echo "prod" || echo "dev")"
-          echo "Vercel Env: $([ "$IS_PROD" == "true" ] && echo "production" || echo "dev")"
-          echo "Should Trigger Prod: $SHOULD_TRIGGER"
+          echo "Label: $LABEL"
+          echo "Vercel Env: $VERCEL_ENV"
+          echo "Should Trigger Prod: $SHOULD_TRIGGER_PROD"
+          echo "Should Trigger Canary: $IS_PROD"
 
       - name: Set Infisical token selector
         id: infisical_token_selector
         run: |
-          if [[ "${{ steps.compute.outputs.label }}" == "prod" ]]; then
-            echo "infisical_token_selector=prod" >> $GITHUB_OUTPUT
-          else
-            echo "infisical_token_selector=dev" >> $GITHUB_OUTPUT
-          fi
+          # selector mirrors the label (dev | canary | prod)
+          echo "infisical_token_selector=${{ steps.compute.outputs.label }}" >> $GITHUB_OUTPUT
 
   # Check if we should skip this run (if tag exists for same commit on main push)
   check-duplicate:
@@ -207,8 +231,11 @@ jobs:
             # and is more reliable than git ls-remote in CI environments
             echo "Checking for tags pointing to commit $COMMIT_SHA..."
 
-            # Get all tags and filter for astra/v* or astra/prod/v* tags pointing to this commit
-            MATCHING_TAGS=$(gh api repos/${{ github.repository }}/tags --paginate --jq ".[] | select(.commit.sha == \"$COMMIT_SHA\") | .name" 2>/dev/null | grep -E '^astra/(prod/)?v' || true)
+            # Get all tags pointing to this commit. Match regular astra/v* and
+            # astra/prod/v* tags (which supersede the main dev deploy), but EXCLUDE
+            # -rc canary tags: those deploy canary only and must not suppress the
+            # dev deploy of the same commit on main.
+            MATCHING_TAGS=$(gh api repos/${{ github.repository }}/tags --paginate --jq ".[] | select(.commit.sha == \"$COMMIT_SHA\") | .name" 2>/dev/null | grep -E '^astra/(prod/)?v' | grep -vE -- '-rc(\.[0-9]+)?$' || true)
 
             if [ ! -z "$MATCHING_TAGS" ]; then
               echo "Found tags for this commit via GitHub API:"
@@ -408,8 +435,6 @@ jobs:
     name: Run Database Migrations
     needs: [compute-env, deploy-backend-api, deploy-backend-temporal]
     runs-on: "blacksmith-4vcpu-ubuntu-2204"
-    env:
-      INFISICAL_SERVICE_TOKEN: ${{ needs.compute-env.outputs.infisical_token_selector == 'prod' && secrets.INFISICAL_PROD_SERVICE_TOKEN || secrets.INFISICAL_DEV_SERVICE_TOKEN }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -432,7 +457,30 @@ jobs:
 
       - name: Run DB Migration
         working-directory: ./packages/db
-        run: bun db:migrate
+        # Fail CLOSED: pick the token strictly by label and refuse to run if it is
+        # empty. A `&&/||` expression default would silently fall back to the DEV
+        # token, running migrations against the wrong DB while the run claims to be
+        # prod/canary. The selection + guard + migrate stay in one step so the token
+        # never leaves this shell (not written to outputs/GITHUB_ENV).
+        env:
+          INFISICAL_SELECTOR: ${{ needs.compute-env.outputs.infisical_token_selector }}
+          INFISICAL_DEV_SERVICE_TOKEN: ${{ secrets.INFISICAL_DEV_SERVICE_TOKEN }}
+          INFISICAL_CANARY_SERVICE_TOKEN: ${{ secrets.INFISICAL_CANARY_SERVICE_TOKEN }}
+          INFISICAL_PROD_SERVICE_TOKEN: ${{ secrets.INFISICAL_PROD_SERVICE_TOKEN }}
+        run: |
+          set -euo pipefail
+          case "$INFISICAL_SELECTOR" in
+            prod) INFISICAL_SERVICE_TOKEN="$INFISICAL_PROD_SERVICE_TOKEN" ;;
+            canary) INFISICAL_SERVICE_TOKEN="$INFISICAL_CANARY_SERVICE_TOKEN" ;;
+            dev) INFISICAL_SERVICE_TOKEN="$INFISICAL_DEV_SERVICE_TOKEN" ;;
+            *) echo "::error::Unknown Infisical token selector '$INFISICAL_SELECTOR'"; exit 1 ;;
+          esac
+          if [[ -z "$INFISICAL_SERVICE_TOKEN" ]]; then
+            echo "::error::No Infisical service token configured for environment '$INFISICAL_SELECTOR'; refusing to run migrations to avoid targeting the wrong database."
+            exit 1
+          fi
+          export INFISICAL_SERVICE_TOKEN
+          bun db:migrate
 
   # Deploy to Vercel (build happens on Vercel, but traffic is not routed yet)
   deploy-vercel:
@@ -511,13 +559,25 @@ jobs:
             --env "DEPLOY_COMMIT_SHA=${GITHUB_SHA}"
           )
 
-          if [[ "${{ needs.compute-env.outputs.label }}" == "prod" ]]; then
-            echo "Deploying to production target (traffic not routed yet)"
-            DEPLOYMENT_URL=$(vercel deploy --target=production --skip-domain "${COMMON_DEPLOY_ARGS[@]}" | tail -n 1 | tr -d '\r')
-          else
-            echo "Deploying to dev target (traffic not routed yet)"
-            DEPLOYMENT_URL=$(vercel deploy --target=dev "${COMMON_DEPLOY_ARGS[@]}" | tail -n 1 | tr -d '\r')
-          fi
+          # prod and canary build with --skip-domain so traffic is only flipped
+          # later by the promote step (after backend + migrations are healthy).
+          # canary lives in its own Vercel project (VERCEL_PROJECT_ID set per label
+          # below) and deploys to that project's production target. dev deploys
+          # straight to its target environment (no deferred promotion needed).
+          case "${{ needs.compute-env.outputs.label }}" in
+            prod)
+              echo "Deploying to production target (traffic not routed yet)"
+              DEPLOYMENT_URL=$(vercel deploy --target=production --skip-domain "${COMMON_DEPLOY_ARGS[@]}" | tail -n 1 | tr -d '\r')
+              ;;
+            canary)
+              echo "Deploying canary project (production target, traffic not routed yet)"
+              DEPLOYMENT_URL=$(vercel deploy --target=production --skip-domain "${COMMON_DEPLOY_ARGS[@]}" | tail -n 1 | tr -d '\r')
+              ;;
+            *)
+              echo "Deploying to dev target"
+              DEPLOYMENT_URL=$(vercel deploy --target=dev "${COMMON_DEPLOY_ARGS[@]}" | tail -n 1 | tr -d '\r')
+              ;;
+          esac
 
           echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
           echo "Deployed to: $DEPLOYMENT_URL"
@@ -528,7 +588,8 @@ jobs:
           echo "Deployment ID: $DEPLOYMENT_ID"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          # canary is a separate Vercel project; everything else uses the main Astra project.
+          VERCEL_PROJECT_ID: ${{ needs.compute-env.outputs.label == 'canary' && secrets.VERCEL_ASTRA_CANARY_PROJECT_ID || secrets.VERCEL_ASTRA_PROJECT_ID }}
 
       - name: Show Deployment URL
         run: |
@@ -556,22 +617,23 @@ jobs:
       - name: Install Vercel CLI
         run: bun add --global vercel@latest
 
-      - name: Promote deployment to production
-        if: needs.compute-env.outputs.label == 'prod'
+      - name: Promote deployment (prod / canary)
+        if: needs.compute-env.outputs.label == 'prod' || needs.compute-env.outputs.label == 'canary'
         run: |
-          echo "Promoting deployment to production: ${{ needs.deploy-vercel.outputs.deployment_url }}"
-          # Use vercel promote to route production traffic
+          echo "Promoting ${{ needs.compute-env.outputs.label }} deployment: ${{ needs.deploy-vercel.outputs.deployment_url }}"
+          # Use vercel promote to route the (production-target) deployment's traffic.
+          # prod and canary each promote within their own Vercel project (VERCEL_PROJECT_ID below).
           vercel promote --yes "${{ needs.deploy-vercel.outputs.deployment_id }}" --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
-          echo "✅ Production traffic routed successfully"
+          echo "✅ ${{ needs.compute-env.outputs.label }} traffic routed successfully"
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
+          VERCEL_PROJECT_ID: ${{ needs.compute-env.outputs.label == 'canary' && secrets.VERCEL_ASTRA_CANARY_PROJECT_ID || secrets.VERCEL_ASTRA_PROJECT_ID }}
 
       - name: Dev deployment ready
         if: needs.compute-env.outputs.label == 'dev'
         run: |
-          echo "Development deployment is ready at: ${{ needs.deploy-vercel.outputs.deployment_url }}"
-          echo "✅ No promotion needed for dev environment"
+          echo "dev deployment is ready at: ${{ needs.deploy-vercel.outputs.deployment_url }}"
+          echo "✅ No promotion needed for dev — the target environment already serves it"
 
   # Optional: Trigger additional workflow for prod deployment after the tag's
   # dev deployment, migrations, and Vercel routing have completed.
@@ -622,6 +684,51 @@ jobs:
             --fail-with-body \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches \
             -d '{"ref":"${{ github.ref }}","inputs":{"environment":"production"}}'
+
+  # Whenever a production deployment succeeds, fan out a follow-up canary
+  # deployment of the same ref so canary tracks prod. Runs for both an
+  # astra/prod/v* tag push and a manual production dispatch.
+  trigger-canary-deployment:
+    name: Trigger Canary Deployment
+    needs:
+      - compute-env
+      - build-backend
+      - deploy-backend-api
+      - deploy-backend-temporal
+      - migrate
+      - deploy-vercel
+      - route-vercel-traffic
+    if: |-
+      !cancelled() &&
+      needs.compute-env.outputs.should_trigger_canary == 'true' &&
+      needs.build-backend.result == 'success' &&
+      needs.deploy-backend-api.result == 'success' &&
+      needs.deploy-backend-temporal.result == 'success' &&
+      needs.migrate.result == 'success' &&
+      needs.deploy-vercel.result == 'success' &&
+      needs.route-vercel-traffic.result == 'success'
+    runs-on: "ubuntu-latest"
+    env:
+      WORKFLOW_ID: ${{ vars.DEPLOY_BACKEND_VERCEL_WORKFLOW_ID }}
+    steps:
+      - name: Authenticate as NameFi Bot
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+
+      - name: Trigger Canary Workflow
+        run: |
+          echo "Production deployment completed: ${{ github.ref }}"
+          echo "Fanning out canary deployment for the same ref/commit (${{ github.sha }})"
+
+          curl -X POST \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            --fail-with-body \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ env.WORKFLOW_ID }}/dispatches \
+            -d '{"ref":"${{ github.ref }}","inputs":{"environment":"canary"}}'
 
   # Summary job
   deployment-summary:

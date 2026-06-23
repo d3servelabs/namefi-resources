@@ -1,0 +1,34 @@
+import { CHAINS as chains } from '@namefi-astra/utils/chains';
+import type { ConfigInput } from '../schema';
+import { POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES } from '../consts';
+
+const productionConfig: ConfigInput = {
+  TYPE: 'canary',
+  BACKEND_URL: process.env.BACKEND_URL || 'https://api.namefi.run',
+  RESOURCES_URL: 'https://r.namefi.io',
+  DOCS_URL: 'https://docs.namefi.io',
+  FIRST_PARTY_DEPLOYMENT_URL: 'https://namefi.run',
+  GA_MEASUREMENT_ID: 'G-S8GRYLE2XF',
+  // "Namefi Prod" PostHog project (sourced from Infisical at build time).
+  POSTHOG_PROJECT_TOKEN: process.env.POSTHOG_PROJECT_TOKEN,
+  POSTHOG_HOST: process.env.POSTHOG_HOST,
+  PRIVY_APP_ID: 'cm23ds44v09x0oyiqqa7blr8i',
+  STRIPE_PUBLISHABLE_KEY:
+    'pk_live_51Pqc6fP7AJmUlGkq2dbLhK6JAASyzHwYSmlfdHYobkUlJiqeqAkuKykPEb0wTc57n7sqR2QJjI9TDz65Y7zn69I900f95GY1Al',
+  NAMEFI_FIRST_PARTY_HOSTNAMES: ['namefi.run'],
+  POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES,
+  ADDITIONAL_HOSTNAME_MAP: Object.fromEntries(
+    POWERED_BY_NAMEFI_THIRD_PARTY_HOSTNAMES.flatMap((hostname) => [
+      [`${hostname}.poweredby.namefi.run`, hostname],
+      [`${hostname}.astra.namefi.run`, hostname],
+    ]),
+  ),
+  ALLOWED_CHAINS: [chains.mainnet.id, chains.base.id],
+  HUNT_CAMPAIGN_KEYS: ['cv-2025-07-16', 'cta-2025-07-16'],
+  DATADOG_LOGS_SESSION_SAMPLE_RATE: 100,
+  PERF_SAMPLE_RATE: 10,
+  LAUNCHDARKLY_CLIENT_SIDE_ID: '6a155e4748c03f0a9f351d58',
+  DOMAINS_SUGGESTIONS_TLDS_SET: 'real-prod-tlds',
+};
+
+export default productionConfig;
