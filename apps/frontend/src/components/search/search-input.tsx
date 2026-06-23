@@ -554,7 +554,7 @@ export const SearchInput: FC<{
           side="bottom"
           align="center"
           sideOffset={10}
-          className="max-w-xs text-wrap text-center text-sm p-2 z-[10000]"
+          className="max-w-xs text-wrap text-center text-sm p-2"
         >
           <p>
             {parentDomain

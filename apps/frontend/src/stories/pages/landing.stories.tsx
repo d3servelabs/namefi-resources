@@ -5,6 +5,7 @@ import { createTRPCClient, splitLink, type TRPCLink } from '@trpc/client';
 import { observable } from '@trpc/server/observable';
 import { userEvent, waitFor, within } from 'storybook/test';
 import { Landing } from '@/pbns/astra/landing';
+import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
 import type { OriginRuntime } from '@/lib/origin/types';
 import type { AppRouter } from '@/lib/trpc';
 import { TRPCProvider } from '@/lib/trpc';
@@ -102,6 +103,59 @@ async function getSearchMockData(opts: {
   op: { path: string };
 }): Promise<[null, unknown]> {
   switch (opts.op.path) {
+    case 'registry.getTldPricingTable':
+      return [null, { tldPricing: MOCK_TLD_PRICING, pbnDomains: [] }];
+    case 'mls.searchDomainOffers':
+      return [null, { offersByDomain: {} }];
+    default:
+      return [null, {}];
+  }
+}
+
+async function getFreeMintGuidanceMockData(opts: {
+  op: { path: string };
+}): Promise<[null, unknown]> {
+  switch (opts.op.path) {
+    case 'freeClaims.getUserClaims':
+      return [
+        null,
+        [
+          {
+            type: 'campaignParentDomain',
+            groupOrCampaignKey: 'storybook-campaign',
+            parentDomain: 'xyz',
+            reason: 'Storybook regression claim',
+            counts: {
+              total: 1,
+              available: 1,
+              expired: 0,
+              unclaimed: 1,
+            },
+            claims: [
+              {
+                id: 'storybook-free-mint-campaign',
+                userId: 'd8988592-91c7-4b2c-a2ca-1eb612386f43',
+                groupOrCampaignKey: 'storybook-campaign',
+                reason: 'Storybook regression claim',
+                exactDomainName: null,
+                parentDomain: 'xyz',
+                expirationDate: null,
+                orderItemId: null,
+                claimingStatus: 'IDLE',
+                claimedDomainName: null,
+                claimedAt: null,
+                metadata: {},
+                isExpired: false,
+                createdAt: new Date('2026-01-01T00:00:00.000Z'),
+                updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+              },
+            ],
+          },
+        ],
+      ];
+    case 'wishlist.getWishlistDomains':
+    case 'carts.getItems':
+      return [null, []];
     case 'registry.getTldPricingTable':
       return [null, { tldPricing: MOCK_TLD_PRICING, pbnDomains: [] }];
     case 'mls.searchDomainOffers':
@@ -222,6 +276,65 @@ function MockSearchProviders({
   );
 }
 
+function MockFreeMintGuidanceProviders({
+  children,
+  origin,
+}: {
+  children: ReactNode;
+  origin: OriginRuntime;
+}) {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: { retry: false, staleTime: Number.POSITIVE_INFINITY },
+        },
+      }),
+  );
+  const [trpcClient] = useState(() =>
+    createTRPCClient<AppRouter>({
+      links: [
+        createMockLink({
+          isAuthenticated: true,
+          getMockData: getFreeMintGuidanceMockData,
+        }),
+      ],
+    }),
+  );
+
+  return (
+    <MockPrivyProvider value={{ ready: true, authenticated: true }}>
+      <QueryClientProvider client={queryClient}>
+        <TRPCProvider trpcClient={trpcClient} queryClient={queryClient}>
+          <OriginProvider originInfo={origin}>
+            <NuqsAdapter>
+              <ConsentManagerProvider options={{ mode: 'offline' }}>
+                <StorybookAuthProvider isAuthenticated={true}>
+                  <AdminFeatureFlagsProvider>
+                    <PreAuthSignalsProvider>
+                      <InteractionLoggersProvider>
+                        <WishlistProvider>
+                          <CartProvider>
+                            <SidebarProvider defaultOpen={false}>
+                              <FreeMintsGuidanceProvider>
+                                {children}
+                              </FreeMintsGuidanceProvider>
+                            </SidebarProvider>
+                          </CartProvider>
+                        </WishlistProvider>
+                      </InteractionLoggersProvider>
+                    </PreAuthSignalsProvider>
+                  </AdminFeatureFlagsProvider>
+                </StorybookAuthProvider>
+              </ConsentManagerProvider>
+            </NuqsAdapter>
+          </OriginProvider>
+        </TRPCProvider>
+      </QueryClientProvider>
+    </MockPrivyProvider>
+  );
+}
+
 const meta = {
   title: 'Pages/Landing',
   component: Landing,
@@ -240,9 +353,11 @@ const meta = {
   decorators: [
     (Story, context) => {
       const origin = context.args.origin ?? mockOriginRuntime;
-      const Providers = context.parameters.useMockSearch
-        ? MockSearchProviders
-        : StoryProviders;
+      const Providers = context.parameters.useMockFreeMints
+        ? MockFreeMintGuidanceProviders
+        : context.parameters.useMockSearch
+          ? MockSearchProviders
+          : StoryProviders;
       return (
         <Providers origin={origin}>
           <Story />
@@ -285,6 +400,70 @@ export const WithSearchResults: Story = {
       () => {
         if (!RESULT_CARD_REGEX.test(canvasElement.textContent ?? '')) {
           throw new Error('search results not rendered yet');
+        }
+      },
+      { timeout: 8000 },
+    );
+  },
+};
+
+export const FreeMintGuidanceOverlay: Story = {
+  args: {
+    origin: mockOriginRuntime,
+  },
+  parameters: {
+    useMockFreeMints: true,
+  },
+  render: (args) => (
+    <>
+      <div className="fixed top-4 right-4 z-40">
+        <FreeMintsDropdown disableBackdropBlur />
+      </div>
+      <Landing {...args} />
+    </>
+  ),
+  play: async () => {
+    const body = within(document.body);
+
+    await userEvent.click(
+      await body.findByTestId('freeMints.dropdown.trigger'),
+    );
+    await userEvent.click(
+      await body.findByTestId(
+        'freeMints.dropdown.claim.storybook-free-mint-campaign',
+      ),
+    );
+
+    await waitFor(
+      () => {
+        const tooltip = document.querySelector('[data-slot="tooltip-content"]');
+        if (!tooltip?.textContent?.includes('claim them for free')) {
+          throw new Error('free-mint guidance tooltip did not open');
+        }
+
+        const positioner = tooltip.parentElement;
+        const overlay = document.querySelector(
+          '[data-slot="spotlight-overlay"]',
+        );
+        if (!positioner || !overlay) {
+          throw new Error('tooltip positioner or spotlight overlay missing');
+        }
+
+        const positionerZ = Number(getComputedStyle(positioner).zIndex);
+        const overlayZ = Number(getComputedStyle(overlay).zIndex);
+        if (!(positionerZ > overlayZ)) {
+          throw new Error(
+            `tooltip z-index ${positionerZ} is not above overlay z-index ${overlayZ}`,
+          );
+        }
+
+        const rect = tooltip.getBoundingClientRect();
+        const topElement = document.elementsFromPoint(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+        )[0];
+        if (!topElement || !tooltip.contains(topElement)) {
+          throw new Error('tooltip is not the top visual element');
         }
       },
       { timeout: 8000 },

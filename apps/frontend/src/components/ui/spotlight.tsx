@@ -144,7 +144,8 @@ export function Spotlight({
       {visible && box && vw && vh && (
         <motion.div
           key="spotlight-overlay"
-          className="fixed inset-0 z-[9990] pointer-events-none"
+          data-slot="spotlight-overlay"
+          className="fixed inset-0 z-40 pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
