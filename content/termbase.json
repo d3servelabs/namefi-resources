@@ -64,6 +64,20 @@
     },
     "level": 1
   },
+  "backorder": {
+    "en": "Backorder (Drop-Catching)",
+    "titles": {
+      "en": "Backorder (Drop-Catching)"
+    },
+    "level": 1
+  },
+  "cctld": {
+    "en": "ccTLD (Country-Code Top-Level Domain)",
+    "titles": {
+      "en": "ccTLD (Country-Code Top-Level Domain)"
+    },
+    "level": 1
+  },
   "censorship-free": {
     "en": "Censorship-free",
     "titles": {
@@ -194,6 +208,27 @@
     },
     "level": 1
   },
+  "dns-propagation": {
+    "en": "DNS Propagation",
+    "titles": {
+      "en": "DNS Propagation"
+    },
+    "level": 1
+  },
+  "dns-record-types": {
+    "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)",
+    "titles": {
+      "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)"
+    },
+    "level": 1
+  },
+  "dns-resolver": {
+    "en": "DNS Resolver (Recursive Resolver)",
+    "titles": {
+      "en": "DNS Resolver (Recursive Resolver)"
+    },
+    "level": 1
+  },
   "dnssec": {
     "en": "DNSSEC (Domain Name System Security Extensions)",
     "titles": {
@@ -220,6 +255,13 @@
     },
     "level": 1
   },
+  "domain-expiration": {
+    "en": "Domain Expiration",
+    "titles": {
+      "en": "Domain Expiration"
+    },
+    "level": 1
+  },
   "domain-ownership": {
     "en": "Domain ownership",
     "titles": {
@@ -230,6 +272,20 @@
       "zh": "域名所有权",
       "ar": "ملكية النطاق",
       "hi": "डोमेन स्वामित्व"
+    },
+    "level": 1
+  },
+  "domain-renewal": {
+    "en": "Domain Renewal (Auto-Renew)",
+    "titles": {
+      "en": "Domain Renewal (Auto-Renew)"
+    },
+    "level": 1
+  },
+  "domain-tasting": {
+    "en": "Domain Tasting (AGP)",
+    "titles": {
+      "en": "Domain Tasting (AGP)"
     },
     "level": 1
   },
@@ -324,6 +380,20 @@
     },
     "level": 1
   },
+  "grace-period": {
+    "en": "Grace Period",
+    "titles": {
+      "en": "Grace Period"
+    },
+    "level": 1
+  },
+  "gtld": {
+    "en": "gTLD (Generic Top-Level Domain)",
+    "titles": {
+      "en": "gTLD (Generic Top-Level Domain)"
+    },
+    "level": 1
+  },
   "hardware-wallet": {
     "en": "Hardware Wallet",
     "titles": {
@@ -334,6 +404,13 @@
       "zh": "硬件钱包",
       "ar": "محفظة الأجهزة",
       "hi": "हार्डवेयर वॉलेट"
+    },
+    "level": 1
+  },
+  "iana": {
+    "en": "IANA (Internet Assigned Numbers Authority)",
+    "titles": {
+      "en": "IANA (Internet Assigned Numbers Authority)"
     },
     "level": 1
   },
@@ -350,6 +427,13 @@
     },
     "level": 1
   },
+  "idn": {
+    "en": "IDN (Internationalized Domain Name) / Punycode",
+    "titles": {
+      "en": "IDN (Internationalized Domain Name) / Punycode"
+    },
+    "level": 1
+  },
   "internet-native-asset": {
     "en": "Internet-native asset",
     "titles": {
@@ -360,6 +444,13 @@
       "zh": "互联网原生资产",
       "ar": "أصل رقمي أصيل للإنترنت",
       "hi": "इंटरनेट-नेटिव एसेट"
+    },
+    "level": 1
+  },
+  "ip-address": {
+    "en": "IP Address (IPv4 / IPv6)",
+    "titles": {
+      "en": "IP Address (IPv4 / IPv6)"
     },
     "level": 1
   },
@@ -428,6 +519,20 @@
     },
     "level": 1
   },
+  "nameserver": {
+    "en": "Nameserver (NS Record)",
+    "titles": {
+      "en": "Nameserver (NS Record)"
+    },
+    "level": 1
+  },
+  "new-gtld": {
+    "en": "New gTLD",
+    "titles": {
+      "en": "New gTLD"
+    },
+    "level": 1
+  },
   "nft": {
     "en": "NFT (Non-Fungible Token)",
     "titles": {
@@ -454,6 +559,13 @@
     },
     "level": 1
   },
+  "pending-delete": {
+    "en": "Pending Delete (Drop)",
+    "titles": {
+      "en": "Pending Delete (Drop)"
+    },
+    "level": 1
+  },
   "permissionless": {
     "en": "Permissionless",
     "titles": {
@@ -467,6 +579,13 @@
     },
     "level": 1
   },
+  "premium-domain": {
+    "en": "Premium Domain",
+    "titles": {
+      "en": "Premium Domain"
+    },
+    "level": 1
+  },
   "protocol-asset": {
     "en": "Protocol asset",
     "titles": {
@@ -477,6 +596,20 @@
       "zh": "协议资产",
       "ar": "أصل البروتوكول",
       "hi": "प्रोटोकॉल एसेट"
+    },
+    "level": 1
+  },
+  "redemption-period": {
+    "en": "Redemption Period (RGP)",
+    "titles": {
+      "en": "Redemption Period (RGP)"
+    },
+    "level": 1
+  },
+  "registrant": {
+    "en": "Registrant",
+    "titles": {
+      "en": "Registrant"
     },
     "level": 1
   },
@@ -501,6 +634,13 @@
       ]
     }
   },
+  "registry": {
+    "en": "Registry (Registry Operator)",
+    "titles": {
+      "en": "Registry (Registry Operator)"
+    },
+    "level": 1
+  },
   "rent-to-own": {
     "en": "Rent-to-own",
     "titles": {
@@ -514,6 +654,13 @@
     },
     "level": 1
   },
+  "reserved-names": {
+    "en": "Reserved Names (Blocked Names)",
+    "titles": {
+      "en": "Reserved Names (Blocked Names)"
+    },
+    "level": 1
+  },
   "revenue-sharing": {
     "en": "Revenue-sharing",
     "titles": {
@@ -524,6 +671,20 @@
       "zh": "收益分享",
       "ar": "مشاركة الإيرادات",
       "hi": "राजस्व-साझाकरण"
+    },
+    "level": 1
+  },
+  "root-zone": {
+    "en": "Root Zone (Root Servers)",
+    "titles": {
+      "en": "Root Zone (Root Servers)"
+    },
+    "level": 1
+  },
+  "second-level-domain": {
+    "en": "Second-Level Domain (SLD)",
+    "titles": {
+      "en": "Second-Level Domain (SLD)"
     },
     "level": 1
   },
@@ -579,6 +740,13 @@
     },
     "level": 1
   },
+  "subdomain": {
+    "en": "Subdomain",
+    "titles": {
+      "en": "Subdomain"
+    },
+    "level": 1
+  },
   "tld": {
     "en": "TLD (Top-Level Domain)",
     "titles": {
@@ -602,6 +770,13 @@
       "zh": "代币化",
       "ar": "ترميز",
       "hi": "टोकनाइज़ करें"
+    },
+    "level": 1
+  },
+  "ttl": {
+    "en": "TTL (Time to Live)",
+    "titles": {
+      "en": "TTL (Time to Live)"
     },
     "level": 1
   },
@@ -667,6 +842,13 @@
       "zh": "x402",
       "ar": "x402",
       "hi": "x402"
+    },
+    "level": 1
+  },
+  "zone-file": {
+    "en": "Zone File (Glue Record)",
+    "titles": {
+      "en": "Zone File (Glue Record)"
     },
     "level": 1
   }
