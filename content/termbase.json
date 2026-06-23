@@ -1,0 +1,545 @@
+{
+  "ai-agent": {
+    "en": "AI Agent",
+    "titles": {
+      "en": "AI Agent"
+    }
+  },
+  "atomic-transfer": {
+    "en": "Atomic transfer",
+    "titles": {
+      "en": "Atomic transfer",
+      "es": "Transferencia atómica",
+      "de": "Atomarer Transfer",
+      "fr": "Transfert atomique",
+      "zh": "原子传输",
+      "ar": "التحويل الذري",
+      "hi": "एटॉमिक ट्रांसफर"
+    }
+  },
+  "auction": {
+    "en": "Auction (Dutch, English, dynamic)",
+    "titles": {
+      "en": "Auction (Dutch, English, dynamic)",
+      "es": "Subasta (holandesa, inglesa, dinámica)",
+      "de": "Auktion (holländische, englische, dynamische)",
+      "fr": "Enchère (hollandaise, anglaise, dynamique)",
+      "zh": "拍卖（荷兰式、英式、动态）",
+      "ar": "المزاد (الهولندي، الإنجليزي، الديناميكي)",
+      "hi": "नीलामी (डच, इंग्लिश, डायनामिक)"
+    }
+  },
+  "auth-code": {
+    "en": "Auth Code (EPP Code, Transfer Code)",
+    "titles": {
+      "en": "Auth Code (EPP Code, Transfer Code)"
+    }
+  },
+  "automated-delegation": {
+    "en": "Automated delegation",
+    "titles": {
+      "en": "Automated delegation",
+      "es": "Delegación automatizada",
+      "de": "Automatisierte Delegierung",
+      "fr": "Délégation automatisée",
+      "zh": "自动化委托",
+      "ar": "التفويض التلقائي",
+      "hi": "स्वचालित डेलिगेशन"
+    }
+  },
+  "censorship-free": {
+    "en": "Censorship-free",
+    "titles": {
+      "en": "Censorship-free",
+      "es": "Sin censura",
+      "de": "Zensurfrei",
+      "fr": "Sans censure",
+      "zh": "抗审查",
+      "ar": "مقاومة للرقابة",
+      "hi": "सेंसरशिप-मुक्त"
+    }
+  },
+  "collateral": {
+    "en": "Collateral",
+    "titles": {
+      "en": "Collateral",
+      "es": "Garantía",
+      "de": "Sicherheit (Collateral)",
+      "fr": "Collatéral",
+      "zh": "抵押品",
+      "ar": "الضمان",
+      "hi": "कोलैटरल (गिरवी)"
+    }
+  },
+  "composability": {
+    "en": "Composability",
+    "titles": {
+      "en": "Composability",
+      "es": "Componibilidad",
+      "de": "Komponierbarkeit",
+      "fr": "Composabilité",
+      "zh": "可组合性",
+      "ar": "قابلية التركيب",
+      "hi": "कम्पोज़िबिलिटी"
+    }
+  },
+  "cross-registrar-transfer": {
+    "en": "Cross-registrar transfer",
+    "titles": {
+      "en": "Cross-registrar transfer",
+      "es": "Transferencia entre registradores",
+      "de": "Cross-Registrar-Transfer",
+      "fr": "Transfert inter-registrar",
+      "zh": "跨注册商转移",
+      "ar": "نقل النطاق بين المسجلين",
+      "hi": "क्रॉस-रजिस्ट्रार ट्रांसफर"
+    }
+  },
+  "cryptographic-security": {
+    "en": "Cryptographic security",
+    "titles": {
+      "en": "Cryptographic security",
+      "es": "Seguridad criptográfica",
+      "de": "Kryptografische Sicherheit",
+      "fr": "Sécurité cryptographique",
+      "zh": "加密安全性",
+      "ar": "الأمن التشفيري",
+      "hi": "क्रिप्टोग्राफिक सुरक्षा"
+    }
+  },
+  "custodial-ownership": {
+    "en": "Custodial ownership",
+    "titles": {
+      "en": "Custodial ownership",
+      "es": "Propiedad custodial",
+      "de": "Verwahrte Eigentümerschaft",
+      "fr": "Propriété custodiale",
+      "zh": "托管所有权",
+      "ar": "الملكية الحفظية",
+      "hi": "कस्टोडियल स्वामित्व"
+    }
+  },
+  "dao": {
+    "en": "DAO (Decentralized Autonomous Organization)",
+    "titles": {
+      "en": "DAO (Decentralized Autonomous Organization)",
+      "es": "DAO (Organización Autónoma Descentralizada)",
+      "de": "DAO (Dezentrale Autonome Organisation)",
+      "fr": "DAO (Organisation autonome décentralisée)",
+      "zh": "DAO（去中心化自治组织）",
+      "ar": "DAO (منظمة ذاتية لامركزية)",
+      "hi": "DAO (विकेंद्रीकृत स्वायत्त संगठन)"
+    }
+  },
+  "defi": {
+    "en": "DeFi (Decentralized Finance)",
+    "titles": {
+      "en": "DeFi (Decentralized Finance)"
+    }
+  },
+  "did": {
+    "en": "DID (Decentralized Identity)",
+    "titles": {
+      "en": "DID (Decentralized Identity)",
+      "es": "DID (Identidad Descentralizada)",
+      "de": "DID (Dezentrale Identität)",
+      "fr": "DID (Identité Décentralisée)",
+      "zh": "DID (去中心化身份)",
+      "ar": "DID (الهوية اللامركزية)",
+      "hi": "डीआईडी (विकेन्द्रीकृत पहचान)"
+    }
+  },
+  "dns": {
+    "en": "DNS (Domain Name System)",
+    "titles": {
+      "en": "DNS (Domain Name System)",
+      "es": "DNS (Sistema de Nombres de Dominio)",
+      "de": "DNS (Domain Name System)",
+      "fr": "DNS (Système de Noms de Domaine)",
+      "zh": "DNS (域名系统)",
+      "ar": "DNS (نظام أسماء النطاقات)",
+      "hi": "DNS (डोमेन नेम सिस्टम)"
+    }
+  },
+  "dnssec": {
+    "en": "DNSSEC (Domain Name System Security Extensions)",
+    "titles": {
+      "en": "DNSSEC (Domain Name System Security Extensions)"
+    }
+  },
+  "domain-bundle": {
+    "en": "Domain bundle",
+    "titles": {
+      "en": "Domain bundle",
+      "es": "Paquete de dominios",
+      "de": "Domain-Paket",
+      "fr": "Lot de domaines",
+      "zh": "域名捆绑包",
+      "ar": "حزمة النطاقات",
+      "hi": "डोमेन बंडल"
+    }
+  },
+  "domain-ownership": {
+    "en": "Domain ownership",
+    "titles": {
+      "en": "Domain ownership",
+      "es": "Propiedad de dominio",
+      "de": "Domain-Eigentum",
+      "fr": "Propriété de domaine",
+      "zh": "域名所有权",
+      "ar": "ملكية النطاق",
+      "hi": "डोमेन स्वामित्व"
+    }
+  },
+  "domain-trading": {
+    "en": "Domain trading",
+    "titles": {
+      "en": "Domain trading",
+      "es": "Comercio de dominios",
+      "de": "Domain-Handel",
+      "fr": "Trading de domaines",
+      "zh": "域名交易",
+      "ar": "تداول النطاقات",
+      "hi": "डोमेन ट्रेडिंग"
+    }
+  },
+  "ens": {
+    "en": "ENS (Ethereum Name Service)",
+    "titles": {
+      "en": "ENS (Ethereum Name Service)"
+    }
+  },
+  "erc-721": {
+    "en": "ERC-721 (NFT Standard)",
+    "titles": {
+      "en": "ERC-721 (NFT Standard)"
+    }
+  },
+  "escrow": {
+    "en": "Escrow",
+    "titles": {
+      "en": "Escrow",
+      "es": "Depósito en Garantía (Escrow)",
+      "de": "Treuhand",
+      "fr": "Séquestre",
+      "zh": "托管",
+      "ar": "الضمان (Escrow)",
+      "hi": "एस्क्रो"
+    }
+  },
+  "farcaster": {
+    "en": "Farcaster",
+    "titles": {
+      "en": "Farcaster",
+      "es": "Farcaster",
+      "de": "Farcaster",
+      "fr": "Farcaster",
+      "zh": "Farcaster",
+      "ar": "Farcaster",
+      "hi": "Farcaster"
+    }
+  },
+  "fractional-ownership": {
+    "en": "Fractional ownership",
+    "titles": {
+      "en": "Fractional ownership",
+      "es": "Propiedad fraccionada",
+      "de": "Teileigentum",
+      "fr": "Propriété fractionnée",
+      "zh": "部分所有权",
+      "ar": "الملكية الجزئية",
+      "hi": "आंशिक स्वामित्व"
+    }
+  },
+  "gas": {
+    "en": "Gas (Transaction Fees)",
+    "titles": {
+      "en": "Gas (Transaction Fees)"
+    }
+  },
+  "hardware-wallet": {
+    "en": "Hardware Wallet",
+    "titles": {
+      "en": "Hardware Wallet"
+    }
+  },
+  "icann": {
+    "en": "ICANN",
+    "titles": {
+      "en": "ICANN",
+      "es": "ICANN",
+      "de": "ICANN",
+      "fr": "ICANN",
+      "zh": "ICANN",
+      "ar": "ICANN",
+      "hi": "आईसीएएनएन"
+    }
+  },
+  "internet-native-asset": {
+    "en": "Internet-native asset",
+    "titles": {
+      "en": "Internet-native asset",
+      "es": "Activo nativo de Internet",
+      "de": "Internet-natives Asset",
+      "fr": "Actif natif d'Internet",
+      "zh": "互联网原生资产",
+      "ar": "أصل رقمي أصيل للإنترنت",
+      "hi": "इंटरनेट-नेटिव एसेट"
+    }
+  },
+  "leasing": {
+    "en": "Leasing",
+    "titles": {
+      "en": "Leasing",
+      "es": "Arrendamiento",
+      "de": "Leasing",
+      "fr": "Location (Leasing)",
+      "zh": "租赁",
+      "ar": "تأجير",
+      "hi": "लीजिंग"
+    }
+  },
+  "lending-protocol": {
+    "en": "Lending protocol",
+    "titles": {
+      "en": "Lending protocol",
+      "es": "Protocolo de préstamo",
+      "de": "Lending-Protokoll",
+      "fr": "Protocole de prêt",
+      "zh": "借贷协议",
+      "ar": "بروتوكول الإقراض",
+      "hi": "लेंडिंग प्रोटोकॉल"
+    }
+  },
+  "lens": {
+    "en": "Lens",
+    "titles": {
+      "en": "Lens",
+      "es": "Lens",
+      "de": "Lens",
+      "fr": "Lens",
+      "zh": "Lens",
+      "ar": "لينس",
+      "hi": "लेंस"
+    }
+  },
+  "marketplace": {
+    "en": "Marketplace (e.g., OpenSea, Blur)",
+    "titles": {
+      "en": "Marketplace (e.g., OpenSea, Blur)",
+      "es": "Mercado (ej. OpenSea, Blur)",
+      "de": "Marktplatz (z.B. OpenSea, Blur)",
+      "fr": "Place de marché (ex: OpenSea, Blur)",
+      "zh": "市场 (例如 OpenSea, Blur)",
+      "ar": "السوق (مثل OpenSea، Blur)",
+      "hi": "मार्केटप्लेस (जैसे OpenSea, Blur)"
+    }
+  },
+  "multi-sig": {
+    "en": "Multi-sig",
+    "titles": {
+      "en": "Multi-sig",
+      "es": "Multifirma (Multi-sig)",
+      "de": "Multi-Sig (Multi-Signatur)",
+      "fr": "Multi-signature (Multi-sig)",
+      "zh": "多重签名",
+      "ar": "التوقيع المتعدد (Multi-sig)",
+      "hi": "मल्टी-सिग"
+    }
+  },
+  "nft": {
+    "en": "NFT (Non-Fungible Token)",
+    "titles": {
+      "en": "NFT (Non-Fungible Token)",
+      "es": "NFT (Token No Fungible)",
+      "de": "NFT (Non-Fungible Token)",
+      "fr": "NFT (Jeton Non Fongible)",
+      "zh": "NFT（非同质化代币）",
+      "ar": "NFT (رمز غير قابل للاستبدال)",
+      "hi": "NFT (नॉन-फंजीबल टोकन)"
+    }
+  },
+  "on-chain": {
+    "en": "On-chain",
+    "titles": {
+      "en": "On-chain",
+      "es": "En cadena (On-chain)",
+      "de": "On-Chain",
+      "fr": "On-chain",
+      "zh": "链上 (On-chain)",
+      "ar": "على السلسلة (On-chain)",
+      "hi": "ऑन-चेन"
+    }
+  },
+  "permissionless": {
+    "en": "Permissionless",
+    "titles": {
+      "en": "Permissionless",
+      "es": "Sin Permiso",
+      "de": "Permissionless (Erlaubnisfrei)",
+      "fr": "Sans permission",
+      "zh": "无许可",
+      "ar": "بلا تصريح",
+      "hi": "अनुमति-रहित"
+    }
+  },
+  "protocol-asset": {
+    "en": "Protocol asset",
+    "titles": {
+      "en": "Protocol asset",
+      "es": "Activo de protocolo",
+      "de": "Protokoll-Asset",
+      "fr": "Actif de protocole",
+      "zh": "协议资产",
+      "ar": "أصل البروتوكول",
+      "hi": "प्रोटोकॉल एसेट"
+    }
+  },
+  "registrar": {
+    "en": "Registrar",
+    "titles": {
+      "en": "Registrar",
+      "es": "Registrador",
+      "de": "Registrar",
+      "fr": "Registraire",
+      "zh": "注册商",
+      "ar": "مسجل النطاقات",
+      "hi": "रजिस्ट्रार"
+    },
+    "level": 1,
+    "aliasesByLocale": {
+      "zh": [
+        "注册服务商"
+      ],
+      "de": [
+        "Registrierungsdienst"
+      ]
+    }
+  },
+  "rent-to-own": {
+    "en": "Rent-to-own",
+    "titles": {
+      "en": "Rent-to-own",
+      "es": "Alquiler con Opción a Compra",
+      "de": "Mietkauf",
+      "fr": "Location-vente",
+      "zh": "先租后买",
+      "ar": "الإيجار المنتهي بالتملك",
+      "hi": "रेंट-टू-ओन"
+    }
+  },
+  "revenue-sharing": {
+    "en": "Revenue-sharing",
+    "titles": {
+      "en": "Revenue-sharing",
+      "es": "Reparto de Ingresos",
+      "de": "Umsatzbeteiligung",
+      "fr": "Partage de revenus",
+      "zh": "收益分享",
+      "ar": "مشاركة الإيرادات",
+      "hi": "राजस्व-साझाकरण"
+    }
+  },
+  "seed-phrase": {
+    "en": "Seed Phrase (Recovery Phrase, Mnemonic)",
+    "titles": {
+      "en": "Seed Phrase (Recovery Phrase, Mnemonic)"
+    }
+  },
+  "seo": {
+    "en": "SEO (Search Engine Optimization)",
+    "titles": {
+      "en": "SEO (Search Engine Optimization)",
+      "es": "SEO (Optimización para Motores de Búsqueda)",
+      "de": "SEO (Suchmaschinenoptimierung)",
+      "fr": "SEO (Optimisation pour les moteurs de recherche)",
+      "zh": "SEO（搜索引擎优化）",
+      "ar": "تحسين محركات البحث (SEO)",
+      "hi": "एसईओ (सर्च इंजन ऑप्टिमाइजेशन)"
+    }
+  },
+  "smart-contract": {
+    "en": "Smart contract",
+    "titles": {
+      "en": "Smart contract",
+      "es": "Contrato inteligente",
+      "de": "Smart Contract",
+      "fr": "Smart contract",
+      "zh": "智能合约",
+      "ar": "عقد ذكي",
+      "hi": "स्मार्ट कॉन्ट्रैक्ट"
+    }
+  },
+  "stablecoin": {
+    "en": "Stablecoin",
+    "titles": {
+      "en": "Stablecoin"
+    }
+  },
+  "tld": {
+    "en": "TLD (Top-Level Domain)",
+    "titles": {
+      "en": "TLD (Top-Level Domain)"
+    }
+  },
+  "tokenize": {
+    "en": "Tokenize",
+    "titles": {
+      "en": "Tokenize",
+      "es": "Tokenizar",
+      "de": "Tokenisierung",
+      "fr": "Tokeniser",
+      "zh": "代币化",
+      "ar": "ترميز",
+      "hi": "टोकनाइज़ करें"
+    }
+  },
+  "udrp": {
+    "en": "UDRP (Uniform Domain-Name Dispute-Resolution Policy)",
+    "titles": {
+      "en": "UDRP (Uniform Domain-Name Dispute-Resolution Policy)",
+      "es": "UDRP (Política Uniforme de Resolución de Disputas de Nombres de Dominio)",
+      "de": "UDRP (Uniform Domain-Name Dispute-Resolution Policy)",
+      "fr": "UDRP (Uniform Domain-Name Dispute-Resolution Policy)",
+      "zh": "UDRP (统一域名争议解决政策)",
+      "ar": "UDRP (السياسة الموحدة لتسوية منازعات أسماء النطاقات)",
+      "hi": "UDRP (यूनिफ़ॉर्म डोमेन-नेम विवाद-समाधान नीति)"
+    }
+  },
+  "wallet": {
+    "en": "Wallet",
+    "titles": {
+      "en": "Wallet",
+      "es": "Billetera",
+      "de": "Wallet",
+      "fr": "Portefeuille",
+      "zh": "钱包",
+      "ar": "محفظة",
+      "hi": "वॉलेट"
+    }
+  },
+  "web3": {
+    "en": "Web3",
+    "titles": {
+      "en": "Web3",
+      "es": "Web3",
+      "de": "Web3",
+      "fr": "Web3",
+      "zh": "Web3",
+      "ar": "Web3",
+      "hi": "वेब3"
+    }
+  },
+  "whois": {
+    "en": "WHOIS (and RDAP)",
+    "titles": {
+      "en": "WHOIS (and RDAP)"
+    }
+  },
+  "x402": {
+    "en": "x402",
+    "titles": {
+      "en": "x402"
+    }
+  }
+}
