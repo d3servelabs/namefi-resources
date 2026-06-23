@@ -3,9 +3,14 @@ import { notFound } from 'next/navigation';
 import type { Locale } from '@/i18n-config';
 import { i18n, localeDirections, isRtlLocale } from '@/i18n-config';
 import { getDictionary } from '@/get-dictionary';
+import { AppSidebar } from '@/components/app-sidebar';
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
 import { Providers } from '@/components/providers';
+import {
+  SidebarInset,
+  SidebarProvider,
+} from '@namefi-astra/ui/components/shadcn/sidebar';
 import { ConsentIsland } from '@/components/providers/consent-island';
 import { GoogleAnalyticsBootstrap } from '@/components/ga-bootstrap';
 import { JsonLd } from '@/components/json-ld';
@@ -74,11 +79,14 @@ export default async function RootLayout({
       >
         <GoogleAnalyticsBootstrap />
         <Providers>
-          <div className="flex min-h-screen flex-col bg-background">
-            <SiteHeader locale={locale} dictionary={dictionary} />
-            <main className="flex-1">{children}</main>
-            <SiteFooter />
-          </div>
+          <SidebarProvider>
+            <AppSidebar locale={locale} dictionary={dictionary} />
+            <SidebarInset>
+              <SiteHeader locale={locale} dictionary={dictionary} />
+              <div className="flex-1">{children}</div>
+              <SiteFooter />
+            </SidebarInset>
+          </SidebarProvider>
         </Providers>
         <ConsentIsland />
       </body>

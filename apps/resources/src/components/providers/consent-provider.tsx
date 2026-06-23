@@ -3,6 +3,7 @@
 import { ConsentManagerProvider, useConsentManager } from '@c15t/nextjs';
 import { useEffect } from 'react';
 import { GoogleAnalyticsCookieConsentGated } from '@/components/ga';
+import { PostHogCookieConsentGated } from '@/components/posthog-consent';
 import { C15T_BROWSER_BACKEND_URL } from '@/lib/c15t';
 import { ConsentManagerClient } from './consent-manager-client';
 import { ConsentUI } from './consent-ui';
@@ -61,6 +62,7 @@ export function ConsentIslandInner() {
       <ConsentManagerClient>
         <ConsentUI />
         <GoogleAnalyticsCookieConsentGated />
+        <PostHogCookieConsentGated />
         <CookieSettingsListener />
       </ConsentManagerClient>
     </ConsentManagerProvider>

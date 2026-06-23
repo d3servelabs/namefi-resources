@@ -151,6 +151,8 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)?',
+    // `pagefind` holds the statically-served search index (many fragment fetches
+    // per query); skip the locale middleware for it like _next assets.
+    '/((?!api|_next/static|_next/image|pagefind|favicon.ico|sitemap.xml|robots.txt).*)?',
   ],
 } satisfies MiddlewareConfig;

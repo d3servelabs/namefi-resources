@@ -14,6 +14,11 @@
     "series": "Series",
     "menu": "Menú"
   },
+  "search": {
+    "label": "Buscar",
+    "placeholder": "Buscar recursos",
+    "noResults": "No se encontraron resultados"
+  },
   "blog": {
     "homeEmpty": "Todavía no hay publicaciones disponibles en este idioma. Vuelve pronto.",
     "homeCta": "Leer artículo",

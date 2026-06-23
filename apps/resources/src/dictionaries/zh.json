@@ -14,6 +14,11 @@
     "series": "系列",
     "menu": "菜单"
   },
+  "search": {
+    "label": "搜索",
+    "placeholder": "搜索资源",
+    "noResults": "未找到结果"
+  },
   "blog": {
     "homeEmpty": "该语言暂时没有文章，请稍后再来。",
     "homeCta": "阅读文章",
