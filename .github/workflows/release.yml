@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      version:
+        description: 'Exact version to release (e.g. 3.5.0 for a minor, 4.0.0 for a major). Leave blank to auto-increment the patch of the current version.'
+        required: false
+        default: ''
+        type: string
   schedule:
     # Run daily at 11:00 UTC
     - cron: '0 11 * * *'
@@ -62,6 +67,7 @@ jobs:
       changed-packages: ${{ steps.detect.outputs.changed-packages }}
       has-frontend-changes: ${{ steps.check-changes.outputs.has-frontend-changes }}
       has-backend-changes: ${{ steps.check-changes.outputs.has-backend-changes }}
+      previous-astra-tag: ${{ steps.get-tag.outputs.latest-tag }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -118,16 +124,24 @@ jobs:
 
       - name: Check for frontend/backend changes
         id: check-changes
+        env:
+          # User-controlled string — pass via env (not inline ${{ }}) to avoid shell injection.
+          REQUESTED_VERSION: ${{ github.event.inputs.version }}
         run: |
           FORCE_RELEASE="${{ github.event.inputs.forceRelease }}"
           FIRST_RELEASE="${{ steps.get-tag.outputs.first-release }}"
           HAS_CHANGES="${{ steps.detect.outputs.has-changes }}"
+
+          # Strip whitespace so a blank/whitespace-only version input doesn't trip the release
+          # gate; the update-versions job trims and validates the authoritative value the same way.
+          REQUESTED_VERSION="$(printf '%s' "$REQUESTED_VERSION" | tr -d '[:space:]')"
 
           # Use fromJSON and contains to check for frontend/backend changes
           HAS_FRONTEND_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/frontend') }}"
           HAS_BACKEND_CHANGES="${{ contains(fromJSON(steps.detect.outputs.changed-packages), '@namefi-astra/backend') }}"
 
           echo "Force release: $FORCE_RELEASE"
+          echo "Requested version: ${REQUESTED_VERSION:-(none)}"
           echo "First release: $FIRST_RELEASE"
           echo "Has changes: $HAS_CHANGES"
           echo "Changed packages: ${{ steps.detect.outputs.changed-packages }}"
@@ -140,6 +154,9 @@ jobs:
           # Determine if we should release
           if [ "$FORCE_RELEASE" == "true" ]; then
             echo "Force release enabled, proceeding with release"
+            echo "should-release=true" >> $GITHUB_OUTPUT
+          elif [ -n "$REQUESTED_VERSION" ]; then
+            echo "Exact version requested ($REQUESTED_VERSION); proceeding with release regardless of detected changes"
             echo "should-release=true" >> $GITHUB_OUTPUT
           elif [ "$FIRST_RELEASE" == "true" ]; then
             echo "No previous release tag found, proceeding with initial release"
@@ -258,7 +275,7 @@ jobs:
 
   update-versions:
     name: Update Package Versions
-    needs: [auth-namefi-bot, check-deployment-status]
+    needs: [auth-namefi-bot, check-deployment-status, detect-changes]
     runs-on: 'blacksmith-4vcpu-ubuntu-2204'
     outputs:
       backend_version: ${{ steps.version.outputs.backend_version }}
@@ -310,21 +327,75 @@ jobs:
               return suffix ? `${newVersion}-${suffix}` : newVersion;
             }
 
-            // Read and increment backend version
+            // Optional exact-version override for minor/major releases (e.g. 3.5.0, 4.0.0).
+            // Read from the event payload rather than string-interpolating the input, so an
+            // attacker-controlled value cannot inject code into this script. Empty on schedule runs.
+            const requestedVersion = ((context.payload.inputs && context.payload.inputs.version) || '').trim();
+            if (requestedVersion && !/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(requestedVersion)) {
+              core.setFailed(`Invalid 'version' input: "${requestedVersion}". Expected semver like 3.5.0 or 4.0.0-beta1.`);
+              return;
+            }
+            if (requestedVersion) {
+              console.log(`🎯 Exact version requested via workflow input: ${requestedVersion}`);
+            }
+
+            // Resolve the next version: explicit override when provided, else patch increment.
+            const resolveNewVersion = (oldVersion) => requestedVersion || incrementPatchVersion(oldVersion);
+
+            // Read and resolve backend version
             const backendPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/backend/package.json');
             const backendPkg = JSON.parse(fs.readFileSync(backendPkgPath, 'utf8'));
             const oldBackendVersion = backendPkg.version;
-            const newBackendVersion = incrementPatchVersion(oldBackendVersion);
+            const newBackendVersion = resolveNewVersion(oldBackendVersion);
 
-            console.log(`📈 Backend version increment: ${oldBackendVersion} → ${newBackendVersion}`);
+            console.log(`📈 Backend version: ${oldBackendVersion} → ${newBackendVersion}`);
 
-            // Read and increment frontend version
+            // Read and resolve frontend version
             const frontendPkgPath = path.join(process.env.GITHUB_WORKSPACE, 'apps/frontend/package.json');
             const frontendPkg = JSON.parse(fs.readFileSync(frontendPkgPath, 'utf8'));
             const oldFrontendVersion = frontendPkg.version;
-            const newFrontendVersion = incrementPatchVersion(oldFrontendVersion);
+            const newFrontendVersion = resolveNewVersion(oldFrontendVersion);
 
-            console.log(`📈 Frontend version increment: ${oldFrontendVersion} → ${newFrontendVersion}`);
+            console.log(`📈 Frontend version: ${oldFrontendVersion} → ${newFrontendVersion}`);
+
+            // Guard against a no-op release (e.g. the requested version equals the current one),
+            // which would make the later "git commit" fail with nothing to commit.
+            if (newBackendVersion === oldBackendVersion && newFrontendVersion === oldFrontendVersion) {
+              core.setFailed(`Requested version "${requestedVersion}" matches the current version; nothing to release.`);
+              return;
+            }
+
+            // For an explicit override, refuse downgrades and already-released tags. Without this,
+            // a stale/duplicate value would commit a version bump to main and only then fail at the
+            // tag push, leaving main pointing at a bad version.
+            if (requestedVersion) {
+              const baseTuple = (v) => v.split('-')[0].split('.').map(Number);
+              const compareBase = (a, b) => {
+                const [aMaj, aMin, aPat] = baseTuple(a);
+                const [bMaj, bMin, bPat] = baseTuple(b);
+                return aMaj - bMaj || aMin - bMin || aPat - bPat;
+              };
+              // The override exists to cut a new minor/major, so require a strictly greater
+              // major.minor.patch than the current version. Besides blocking downgrades, this
+              // avoids creating a stable tag that shares a base with an existing prerelease
+              // (e.g. astra/v3.4.9 next to astra/v3.4.9-beta2), which git's version:refname tag
+              // sort mis-ranks — corrupting later latest-tag detection and changelog ranges.
+              // New prereleases on the same base come from the default patch auto-increment.
+              for (const current of [oldBackendVersion, oldFrontendVersion]) {
+                if (compareBase(requestedVersion, current) <= 0) {
+                  core.setFailed(`Requested version "${requestedVersion}" must have a greater major.minor.patch than the current "${current}". Use a new minor/major (e.g. 3.5.0); leave 'version' blank to auto-increment the patch.`);
+                  return;
+                }
+              }
+              const newTag = `astra/v${requestedVersion}`;
+              try {
+                await github.rest.git.getRef({ owner: context.repo.owner, repo: context.repo.repo, ref: `tags/${newTag}` });
+                core.setFailed(`Tag ${newTag} already exists; pick a version that has not been released yet.`);
+                return;
+              } catch (err) {
+                if (err.status !== 404) throw err;
+              }
+            }
 
             // Log summary
             console.log('\n✅ Version increments calculated successfully:');
@@ -421,6 +492,61 @@ jobs:
 
           echo "✅ Version bump committed and pushed successfully"
           echo "   Commit SHA: $COMMIT_SHA"
+
+      - name: Create GitHub Release with generated notes
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          RELEASE_TAG: ${{ steps.commit.outputs.tag_name }}
+          RELEASE_VERSION: ${{ steps.version.outputs.backend_version }}
+          RELEASE_REPO: ${{ github.repository }}
+          # Previous astra/v* tag (empty on first release) — pins the changelog range.
+          PREVIOUS_ASTRA_TAG: ${{ needs.detect-changes.outputs.previous-astra-tag }}
+        run: |
+          # Auto-generate release notes from PRs merged since the previous astra release.
+          # GitHub derives the notes from PR titles + labels; the repo squash-merges,
+          # so each PR title becomes one changelog line. No conventional-commit format required.
+          notes_args=(--generate-notes)
+          if [[ -n "$PREVIOUS_ASTRA_TAG" ]]; then
+            # This repo also maintains an astra-resources/v* tag stream; pin the start tag so
+            # GitHub doesn't auto-pick a resources tag as the comparison point.
+            notes_args+=(--notes-start-tag "$PREVIOUS_ASTRA_TAG")
+            echo "📝 Generating notes since previous astra tag: $PREVIOUS_ASTRA_TAG"
+          fi
+
+          # Mark suffixed versions (e.g. 3.4.10-beta2) as prereleases so GitHub does not
+          # surface them as the "Latest" stable release.
+          prerelease_flag=()
+          if [[ "$RELEASE_VERSION" == *-* ]]; then
+            prerelease_flag=(--prerelease)
+            echo "🏷️  $RELEASE_VERSION has a prerelease suffix → marking the GitHub Release as prerelease"
+          fi
+
+          # The tag and prod deploy have already happened by now, so make Release creation robust
+          # to a partial failure: succeed if it already exists (idempotent), and retry transient
+          # API errors. A persistent failure here is recoverable by hand and does not undo the
+          # tag/deploy — re-running the whole workflow is intentionally blocked by the version
+          # guards, so this step must not leave a half-done state of its own.
+          if gh release view "$RELEASE_TAG" --repo "$RELEASE_REPO" >/dev/null 2>&1; then
+            echo "ℹ️  GitHub Release $RELEASE_TAG already exists; nothing to do."
+            exit 0
+          fi
+
+          for attempt in 1 2 3; do
+            if gh release create "$RELEASE_TAG" \
+              --repo "$RELEASE_REPO" \
+              --title "$RELEASE_TAG" \
+              --verify-tag \
+              "${notes_args[@]}" \
+              "${prerelease_flag[@]}"; then
+              echo "✅ Created GitHub Release: $RELEASE_TAG"
+              exit 0
+            fi
+            echo "⚠️  Release creation attempt $attempt failed; retrying..." >&2
+            sleep "$((attempt * 5))"
+          done
+
+          echo "::error::Failed to create GitHub Release $RELEASE_TAG after 3 attempts. The tag and deploy already succeeded — create it by hand: gh release create $RELEASE_TAG --generate-notes" >&2
+          exit 1
 
   release-summary:
     name: Release Summary
