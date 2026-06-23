@@ -17,7 +17,17 @@ reviews:
     # Matches all files in all directories - serves as the base ruleset for all code
     - path: "**/*"
       instructions: |
-        Review according to the repository-specific review policy in .agents/skills/custom-codereview-guide.md.
+        Review according to the repository-specific review policy in .agents/skills/custom-codereview-guide.md and the reusable implementation guardrails in .rulesync/skills/namefi-astra-quality-guardrails/SKILL.md.
+        Always check these quality and risk patterns before commenting:
+        - Readiness/loading gates and premature success states
+        - State defaults, persistence, reset, and migration behavior
+        - Missing identity dimensions in keys, locks, caches, and dedupe logic
+        - Async races after await, stale closures, double submits, and stale signers
+        - Cache invalidation, polling, and stale visible state
+        - Temporal determinism, activity idempotency, task queues, and error layers
+        - User-facing truthfulness in status, copy, and docs
+        - Security, permissions, migrations, CI/release automation, dependencies, and bundle surface
+
         Also check if the PR violates the following principles, and if so, remind the PR author to modify:
         - **Avoid PR too large**: If PR exceeds 1000 lines of code changes, suggest breaking it down into smaller, focused PRs for better reviewability.
         - **Exceptions are exceptions**: Avoid using exceptions as normal control flow. Exceptions should be reserved for exceptional circumstances, not as a mechanism for routine program flow control.

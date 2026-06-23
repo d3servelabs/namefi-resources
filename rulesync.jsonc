@@ -2,6 +2,6 @@
   "$schema": "https://raw.githubusercontent.com/dyoshikawa/rulesync/refs/heads/main/config-schema.json",
   "targets": ["agentsmd", "opencode", "cursor", "claudecode", "codexcli"],
   "features": ["rules", "skills"],
-  "baseDirs": ["."],
+  "outputRoots": ["."],
   "delete": true
 }

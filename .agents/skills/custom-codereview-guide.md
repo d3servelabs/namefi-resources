@@ -18,6 +18,23 @@ specific, and high-signal. Avoid broad architectural commentary unless it points
 to a concrete correctness, security, reliability, or maintainability problem in
 the current change.
 
+This repository uses RuleSync as the source of truth for reusable agent
+guidance. Apply the implementation-time guidance in
+`.rulesync/skills/namefi-astra-quality-guardrails/SKILL.md`. For non-trivial
+changes, and always for high-risk areas, also read
+`.rulesync/skills/namefi-astra-quality-guardrails/references/issue-buckets.md`.
+Use those buckets to catch quality and risk issues before commenting:
+
+- Readiness/loading gates and premature success states.
+- State defaults, persistence, reset, and migration behavior.
+- Identity dimensions in composite keys, locks, caches, and dedupe logic.
+- Async races after `await`, stale closures, double submits, and stale signers.
+- Cache invalidation, polling, and stale visible state.
+- Temporal determinism, activity idempotency, task queues, and error layers.
+- User-facing truthfulness in status, copy, and docs.
+- Security, permissions, migrations, CI/release automation, dependencies, and
+  bundle surface.
+
 ## Re-Review Hygiene
 
 This repository moves quickly and PRs are often rebased or force-pushed.
@@ -36,6 +53,17 @@ This repository moves quickly and PRs are often rebased or force-pushed.
   review thread through GitHub instead of repeating it in the next review body.
 - On repeated pushes, prefer fewer new comments. Add a new finding only when it
   applies to the latest diff and has a clear current line target.
+
+## Review Scope
+
+- Trace the affected workflow before commenting; do not reason from the changed
+  line alone when a caller, cache key, workflow, or UI state determines behavior.
+- Prefer concrete line comments over summary-only concerns when the issue is
+  Critical or Important.
+- Do not post walkthroughs, praise, style-only comments, speculative rewrites, or
+  generic "add tests" comments without naming the missing behavior.
+- If the issue is a missing invariant, name the invariant and the path that
+  violates it.
 
 ## Severity
 
@@ -61,7 +89,8 @@ blocking list short and make each blocker independently actionable.
 
 - Post one GitHub review per run and batch inline comments into that review.
 - Add inline comments only for Critical and Important issues.
-- Limit new inline comments to the 5 highest-confidence findings.
+- Normally add at most 3 new inline comments. Use 4-5 only when each finding is
+  independently high-confidence and materially affects the PR.
 - Do not add "looks good" inline comments.
 - Use GitHub suggestions only for small, contiguous edits after verifying the
   targeted line range in the checked-out file.
