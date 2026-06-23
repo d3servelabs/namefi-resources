@@ -3,6 +3,23 @@ import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import Link from 'next/link';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { ContentImage } from '@/components/content-image';
+import { GlossaryHoverLink } from '@/components/glossary-hover-link';
+import { i18n, type Locale } from '@/i18n-config';
+import { getGlossaryDescriptionMap } from '@/lib/glossary-descriptions';
+import { parseGlossaryHref } from '@/lib/glossary-href';
+
+// Resolve the one-line description for a glossary href at render time (server).
+// getGlossaryDescriptionMap is React-cached, so repeated lookups in one render
+// are cheap. Returns null when the href isn't a known glossary link.
+function glossaryHrefInfo(href: string): { description?: string } | null {
+  const parsed = parseGlossaryHref(href);
+  if (!parsed) return null;
+  if (!i18n.locales.includes(parsed.locale as Locale)) return null;
+  const description = getGlossaryDescriptionMap(parsed.locale as Locale)[
+    parsed.slug
+  ];
+  return { description };
+}
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div className="mx-auto w-full max-w-4xl px-6 py-16 md:px-8 md:py-20 lg:max-w-6xl">
@@ -62,6 +79,22 @@ const Anchor = ({
     );
   }
   if (href) {
+    // Only reach for the client hover card when there is actually a definition
+    // to show. A glossary link with no description (or any other internal link)
+    // stays a plain server-rendered Link, so article pages don't pull the
+    // preview-card JS for links that never open a card.
+    const description = glossaryHrefInfo(href)?.description;
+    if (description) {
+      return (
+        <GlossaryHoverLink
+          href={href}
+          description={description}
+          className={derivedClassName}
+        >
+          {children}
+        </GlossaryHoverLink>
+      );
+    }
     return (
       <Link href={href} className={derivedClassName}>
         {children}
