@@ -638,52 +638,60 @@ export const domainConfigRouter = createContractTRPCRouter<
       const user = ctx.user;
       const domainName = toPunycodeDomainName(input.domainName);
       await assertAuthenticatedUserIsDomainOwner(input.domainName, ctx.user);
+      try {
+        const supportsExport = await doesDomainSupportExport(domainName);
+        if (!supportsExport) {
+          return {
+            supportsExport: false,
+            message: 'Domain does not support export',
+            dateTokenized: null,
+          };
+        }
 
-      const supportsExport = await doesDomainSupportExport(domainName);
-      if (!supportsExport) {
+        // Query the most recent order item createdAt for this domain (dateTokenized)
+        // This represents when the domain was most recently imported/registered with Namefi
+        // Using desc() to get the latest import, as ICANN's 60-day lock applies after each transfer
+        const dateTokenized = await getDomainImportDate(domainName);
+
+        let workflowStatus: WorkflowExecutionStatusName | undefined;
+        try {
+          const workflow = temporalClient.workflow.getHandle(
+            prepareDomainForExportWorkflow.generateId({
+              domainName,
+              userId: user.id,
+            }),
+          );
+          if (workflow) {
+            workflowStatus = (await workflow.describe()).status.name;
+          }
+        } catch (error) {
+          logger.trace(error);
+        }
+
+        const pendingRequestToEnableExport = workflowStatus === 'RUNNING';
+        const readyToExport =
+          !pendingRequestToEnableExport &&
+          (await areExportConditionsMet(domainName));
+
+        return {
+          supportsExport,
+          readyToExport,
+          pendingRequestToEnableExport,
+          dateTokenized,
+          message: pendingRequestToEnableExport
+            ? 'Domain is being prepared for export'
+            : !readyToExport
+              ? 'Domain is not ready to export'
+              : undefined,
+        };
+      } catch (e) {
+        logger.error(e);
         return {
           supportsExport: false,
-          message: 'Domain does not support export',
+          message: 'Domain export not available at the moment.',
           dateTokenized: null,
         };
       }
-
-      // Query the most recent order item createdAt for this domain (dateTokenized)
-      // This represents when the domain was most recently imported/registered with Namefi
-      // Using desc() to get the latest import, as ICANN's 60-day lock applies after each transfer
-      const dateTokenized = await getDomainImportDate(domainName);
-
-      let workflowStatus: WorkflowExecutionStatusName | undefined;
-      try {
-        const workflow = temporalClient.workflow.getHandle(
-          prepareDomainForExportWorkflow.generateId({
-            domainName,
-            userId: user.id,
-          }),
-        );
-        if (workflow) {
-          workflowStatus = (await workflow.describe()).status.name;
-        }
-      } catch (error) {
-        logger.trace(error);
-      }
-
-      const pendingRequestToEnableExport = workflowStatus === 'RUNNING';
-      const readyToExport =
-        !pendingRequestToEnableExport &&
-        (await areExportConditionsMet(domainName));
-
-      return {
-        supportsExport,
-        readyToExport,
-        pendingRequestToEnableExport,
-        dateTokenized,
-        message: pendingRequestToEnableExport
-          ? 'Domain is being prepared for export'
-          : !readyToExport
-            ? 'Domain is not ready to export'
-            : undefined,
-      };
     }),
 
   /**
