@@ -396,6 +396,8 @@ export interface LogoConcept extends BaseConcept {
   style: LogoStyle;
   textTreatment: LogoTextTreatment;
   typography: LogoTypography;
+  logoColorTreatment?: string;
+  backgroundTreatment?: string;
 }
 
 export interface MarketingConcept extends BaseConcept {

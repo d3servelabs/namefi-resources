@@ -25,6 +25,8 @@ import {
 import { collateralAnalysisSchema } from '../types/marketing-schemas';
 import { z } from 'zod';
 import {
+  LOGO_BACKGROUND_TREATMENTS,
+  LOGO_COLOR_TREATMENTS,
   logoConceptSchema,
   type LogoConceptSchema,
 } from '../types/logo-schemas';
@@ -53,6 +55,16 @@ const logoTypographyInstructions = Object.values(LOGO_TYPOGRAPHY)
   .map((option) => `- ${option.id} → ${option.name}: ${option.description}`)
   .join('\n');
 
+const logoBackgroundTreatmentInstructions = Object.entries(
+  LOGO_BACKGROUND_TREATMENTS,
+)
+  .map(([id, description]) => `- ${id} → ${description}`)
+  .join('\n');
+
+const logoColorTreatmentInstructions = Object.entries(LOGO_COLOR_TREATMENTS)
+  .map(([id, description]) => `- ${id} → ${description}`)
+  .join('\n');
+
 const cinematicAnimationMotionResolvedEnum = z.enum(
   CINEMATIC_ANIMATION_MOTION_PRESET_RESOLVED_IDS,
 );
@@ -79,7 +91,7 @@ const logoStrategistAgent = new ToolLoopAgent({
 
 STRICT JSON OUTPUT RULES:
 - Return only JSON matching the supplied schema.
-- Use the exact ID values (lowercase, hyphenated) listed below for logoConcept.type, logoConcept.style, logoConcept.textTreatment, and logoConcept.typography.
+- Use the exact ID values (lowercase, hyphenated) listed below for logoConcept.type, logoConcept.style, logoConcept.textTreatment, logoConcept.typography, logoConcept.logoColorTreatment, and logoConcept.backgroundTreatment.
 - Never output "let-ai-choose". If the user selected "Let AI Choose", actively choose exactly one resolved finite option from the available IDs.
 
 AVAILABLE LOGO TYPES (use the id on the left):
@@ -92,7 +104,44 @@ AVAILABLE TEXT TREATMENTS (use the id on the left):
 ${logoTextTreatmentInstructions}
 
 AVAILABLE TYPOGRAPHY STYLES (use the id on the left):
-${logoTypographyInstructions}`,
+${logoTypographyInstructions}
+
+AVAILABLE LOGO COLOR TREATMENTS (use the id on the left):
+${logoColorTreatmentInstructions}
+
+LOGO COLOR TREATMENT SELECTION RULES:
+- These options describe foreground logo color application only, not the background.
+- This output is a finished parked-domain image, not a reusable transparent brand asset. The domain text is a primary visual element and should have an intentional color treatment.
+- Design the wordmark color as a small color system rooted in hierarchy, semantic meaning, contrast, and color harmony. Avoid arbitrary rainbow letters.
+- Do not default the domain wordmark to plain black. Use black only when it is the strongest deliberate aesthetic choice; otherwise use a dark chromatic ink, brand color, semantic word split, split accent, TLD/dot accent, tonal pair, letterform accent, or controlled wordmark gradient.
+- Use one-color-classic only when restraint, premium formality, institutional authority, legal/finance seriousness, architecture, or a stark editorial look is the strongest signal. It is not a fallback for legibility.
+- Prefer semantic-word-split when the pre-dot brand label contains clear meaningful units, compounds, blends, or contrasting ideas such as pixel+mango, aurora+ledger, citrus+harbor, word+mint, or letter+luxe.
+- Prefer tonal-wordmark-pair for premium, finance, trust, editorial, luxury, professional, architecture, or calm brands that need richer text color than one dark wordmark but should avoid loud multicolor type.
+- Prefer letterform-accent-system for typography, design, art, studio, creator, type, script, monogram, or custom-lettering concepts where colored strokes/counters/dots can make the wordmark feel crafted.
+- Prefer gradient-wordmark-controlled for expressive digital, light, motion, neon, creative, entertainment, AI, future, energy, or transformation concepts where color transition is conceptually meaningful.
+- Prefer brand-color-wordmark or gradient-wordmark-controlled when typography is the main visual asset, especially for short, expressive, creative, playful, tech, art, fashion, or consumer domains.
+- For parked-domain images, the full domain text often occupies as much visual importance as the mark. When the wordmark is visually co-primary, choose a text-led treatment before a mark-led treatment.
+- If textTreatment is tld-highlight, dot-integrated, or custom-lettering, first consider semantic-word-split, split-wordmark-accent, tonal-wordmark-pair, letterform-accent-system, brand-color-wordmark, or gradient-wordmark-controlled. Choose accented-tld-dot only when the suffix is the main text color idea. Choose a mark-led treatment only when the mark itself is the clearest color concept.
+- Do not default to duotone-mark. Choose it only when the mark has two meaningful conceptual parts or a clear two-material/two-force contrast.
+- If logoConcept.type is wordmark, choose an intentional text-forward treatment such as semantic-word-split, tonal-wordmark-pair, letterform-accent-system, gradient-wordmark-controlled, brand-color-wordmark, split-wordmark-accent, badge-fill-reverse, or one-color-classic when justified.
+- If logoConcept.type is not wordmark, choose the most precise treatment: semantic-word-split when domain text contains meaningful parts; tonal-wordmark-pair when the wordmark needs mature chromatic richness; letterform-accent-system when typography craft is central; brand-color-wordmark when the domain text should be the color anchor; accented-tld-dot only when the TLD/dot is the main text feature; split-wordmark-accent when a word segment or letter detail deserves emphasis; neutral-wordmark-color-mark for a simple colored symbol where the symbol is the color hero; gradient-mark-solid-wordmark only when energy, motion, tech, light, or transformation is primarily expressed by the mark; multicolor-symbol-neutral-wordmark for creative, playful, food, wellness, or multifaceted symbols; badge-fill-reverse for seals, shields, app-like badges, stamps, or contained marks; mascot-palette for characters or concrete mascots; duotone-mark only for two-part marks.
+- If textTreatment is tld-highlight and the mark does not need multiple colors, prefer semantic-word-split, split-wordmark-accent, tonal-wordmark-pair, letterform-accent-system, brand-color-wordmark, or gradient-wordmark-controlled over accented-tld-dot, duotone-mark, or gradient-mark-solid-wordmark.
+- If the domain suggests a premium, secure, legal, finance, or institutional brand, prefer tonal-wordmark-pair, one-color-classic, neutral-wordmark-color-mark, brand-color-wordmark, badge-fill-reverse, or a restrained accented-tld-dot before duotone-mark.
+- For any treatment except one-color-classic, the selected color logic should affect the pre-dot brand label when appropriate; do not make the TLD/dot the only colored text element by default.
+- The background must not be the only colorful part of the identity unless one-color-classic is selected.
+- Keep foreground colors controlled and brand-like; avoid rainbow effects, arbitrary colors, and low-contrast color-on-color text.
+
+AVAILABLE BACKGROUND TREATMENTS (use the id on the left):
+${logoBackgroundTreatmentInstructions}
+
+BACKGROUND TREATMENT SELECTION RULES:
+- These options are gradient layout strategies only, not extra symbols, rings, paths, or decorative graphics.
+- Do not choose a treatment because it seems safest for legibility; every treatment must preserve a clean focal zone.
+- Choose the treatment that best fits the domain meaning, palette, mark concept, and visual energy.
+- Use halo-orbit only for orbital, cosmic, circular-motion, ring, portal, navigation, or explicit halo concepts. It is not a default background.
+- For art, fashion, editorial, and creative domains, prefer corner-bloom, side-light-wash, split-field, mesh-fields, tonal-field, or grainy-color-field.
+- For food, hospitality, natural, travel, and place-based domains, prefer horizon-band, side-light-wash, mesh-fields, tonal-field, or grainy-color-field.
+- For technology, games, tools, and futuristic domains, prefer diagonal-flow, mesh-fields, split-field, corner-bloom, or halo-orbit only when conceptually justified.`,
   output: Output.object({ schema: logoConceptSchema }),
 });
 

@@ -231,6 +231,8 @@ const aiLogoInputSchema = z.object({
   imageModel: z.string().optional(),
   textTreatment: z.string().optional(),
   typography: z.string().optional(),
+  logoColorTreatment: z.string().optional(),
+  backgroundTreatment: z.string().optional(),
 });
 
 const aiMarketingInputSchema = z.object({
@@ -282,6 +284,8 @@ const aiLogoOutputSchema = z.object({
   logoStyle: z.string().optional(),
   textTreatment: z.string().optional(),
   typography: z.string().optional(),
+  logoColorTreatment: z.string().optional(),
+  backgroundTreatment: z.string().optional(),
   imageModel: z.string().optional(),
 });
 

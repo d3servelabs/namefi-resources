@@ -62,11 +62,12 @@ Selection rules:
 - Prefer a memorable, differentiated direction over a generic modern SaaS identity.
 
 Logo type classification rules for delegated choices:
-- Use wordmark when custom typography is the main brand asset and an icon would be decorative or redundant.
+- Use wordmark only when custom typography is the main brand asset and an icon would be decorative or redundant. Do not choose wordmark merely because the input is a domain name.
 - Use letter-mark when the brand label is short, acronym-like, initial-driven, or the strongest mark idea is built from letters/initials. Do not label a monogram or initial-based mark as abstract-icon.
 - Use image-icon when a recognizable object, tool, product, place, ingredient, or concrete symbol from the domain is the strongest memory cue.
 - Use mascot when a character, helper, companion, bot, or personality-led figure is the strongest memory cue.
 - Use abstract-icon only when the best mark is genuinely non-literal geometry or metaphorical form, not a concrete object, mascot, or monogram.
+- When the domain contains a concrete object, material, place, ingredient, tool, character idea, movement, or action, prefer image-icon, mascot, letter-mark, or abstract-icon over a pure wordmark unless typography is clearly the strongest strategy.
 
 Domain and TLD rules:
 - Preserve the exact domain spelling, dots, hyphens, numbers, and TLD.
@@ -87,17 +88,39 @@ Domain interpretation:
 
 Color and background strategy:
 - Provide a high-contrast palette with clear roles.
-- The palette must include 4 entries in this format:
+- The palette must include 6 entries in this format:
+  "Logo neutral/ink: color name or hex - purpose"
+  "Logo primary brand color: color name or hex - purpose"
+  "Logo secondary brand color: color name or hex - purpose"
+  "Logo accent/TLD/dot color: color name or hex - purpose"
   "Background base: color name or hex - purpose"
   "Background gradient accents: 2-3 color names or hexes - purpose"
-  "Primary text/wordmark: color name or hex - purpose"
-  "Main mark/accent/TLD: color name or hex - purpose"
+- Choose one resolved logoColorTreatment from the finite logo color treatment IDs supplied in the system instructions.
+- Use the logoColorTreatment to decide how foreground logo color is applied to the mark, wordmark, dot, TLD, and any badge/container.
+- Generate a finished parked-domain visual lockup by default; do not make the foreground logo monochrome unless logoColorTreatment is one-color-classic.
+- Treat Logo neutral/ink as a designed palette-derived ink color for text, such as deep teal, ink blue, aubergine, forest, oxblood, slate-green, or another dark chromatic brand color. Do not equate neutral/ink with default black.
+- Use pure black text only when it is deliberately chosen for the brand direction, not as the default legibility solution.
+- Build wordmark color from design principles: hierarchy, semantic meaning, color harmony, figure/ground contrast, and limited palette discipline.
+- For compound or blended brand labels, consider coloring meaningful pre-dot word units separately instead of only coloring the TLD.
+- For premium or serious brands, consider two related dark/chromatic inks across the pre-dot wordmark instead of a loud bright split.
+- For typography-led brands, consider colored letterform details, counters, crossbars, dots, ligatures, or controlled type gradients inside the pre-dot brand label.
+- The background must not be the only colorful part of the identity unless logoColorTreatment is one-color-classic.
+- If logoColorTreatment is not one-color-classic, the foreground logo should use at least two distinct foreground color roles in a controlled way.
+- Do not use the same foreground color for the mark, pre-dot wordmark, dot, and TLD unless one-color-classic is selected or contrast absolutely requires it.
+- Do not make the TLD/dot the only colored text element when a richer wordmark color system is appropriate for the domain.
+- Foreground color variety must remain professional: controlled duotone, accent, gradient mark, badge fill, or mascot/object palette rather than arbitrary rainbow coloring.
+- Palette role descriptions must specify flat color use, not rendering effects. Avoid material/lighting words such as metallic, chrome, glossy, dimensional, bevel, embossed, shadow depth, shine, or realistic texture.
+- If using silver, gold, copper, pearl, glass, or similar color names, treat them as flat color references only.
 - Choose the background from the palette, not from the style label.
 - The background should be a soft, subtle, colorful gradient canvas that supports the logo colors.
 - Prefer medium-low background saturation: softened, muted, or dusted color classes are usually better than intense edge-to-edge saturated fields, but the background should not become washed out or nearly white.
 - Use 2-3 softly blended background stops plus an optional gentle accent, chosen freely for the brand rather than from a fixed recipe.
 - Make the background feel polished, playful, and intentionally colorful, but quieter than the logo.
+- Choose one resolved backgroundTreatment from the finite background treatment IDs supplied in the system instructions.
+- Background treatments are gradient layout strategies only; they must not add extra symbols, rings, orbit paths, decorative lines, or standalone background graphics.
+- Use the backgroundTreatment to vary placement, direction, and composition across domains; do not collapse every logo into the same pale corner wash.
 - Tie the background colors to the logo palette, brand personality, domain meaning, and selected style so the image feels designed as one system.
+- The background accents should visibly echo, complement, or harmonize with the wordmark, mark, dot, or TLD colors instead of feeling unrelated.
 - Vary hue and luminance enough to show clear but quiet color movement while keeping the background atmospheric and low-contrast.
 - The background gradient must stay low-detail and behind the logo.
 - Add a barely visible fine grain/noise layer to soften the gradient and reduce banding; it must not read as heavy texture, speckles, dust, paper, or a pattern.
@@ -123,6 +146,8 @@ Create one logo strategy:
    - style: resolved finite option ID.
    - textTreatment: resolved finite option ID.
    - typography: resolved finite option ID.
+   - logoColorTreatment: resolved finite option ID.
+   - backgroundTreatment: resolved finite option ID.
    - concept: concise explanation of why this direction fits.
    - prompt: final image-generation prompt for gpt-image-2.
 
@@ -140,15 +165,25 @@ Design direction:
 - Style.
 - Creative typography direction.
 - One visual metaphor or mark idea.
+- Resolved logoColorTreatment and how foreground color is applied.
+- Wordmark color map: state which pre-dot letters, word units, syllables, strokes, or full-word gradients use Logo neutral/ink, Logo primary, Logo secondary, and Logo accent. Also state how the dot and TLD are colored.
 - Palette roles and contrast.
+- If logo type is not wordmark, the mark must be a substantial visual asset, not a tiny decoration beside text.
+- If logoColorTreatment is not one-color-classic, the foreground logo must carry visible brand color; do not rely on the background as the only colorful element, and do not limit all text color variety to the TLD/dot unless accented-tld-dot is deliberately selected.
 
 Background:
-- Use a soft, subtle, colorful gradient canvas derived from the palette; it should feel polished, playful, and intentionally designed, but quieter than the logo.
-- Name the background base and 2-3 gradient accent colors.
+- Use a colorful but low-detail gradient canvas derived from the palette; it should feel polished, playful, and intentionally designed, but quieter than the logo.
+- State the resolved backgroundTreatment and describe how it affects the layout of the gradient.
+- Treat the backgroundTreatment as gradient color placement only, not as permission to add extra shapes, orbit lines, rings, paths, or decorative background marks.
+- Name the background base and 2-3 gradient accent colors, and state where each color appears on the canvas.
 - Keep the gradient low-detail and behind the logo.
 - Use 2-3 softly blended stops plus an optional gentle accent; avoid making every stop equally saturated or visually loud.
 - Add barely visible fine grain/noise to soften banding, not as a decorative texture.
 - Make the gradient clearly but quietly multi-color at thumbnail size, while preserving a clean focal area for the logo.
+- Preserve contrast with local placement and a clean focal zone, not by making the entire background near-white.
+- Keep the clean focal zone tight to the logo footprint plus breathing room; surrounding areas should carry clear palette color.
+- The focal zone can be lighter, but it should still be a palette-tinted color field rather than neutral white/gray/cream.
+- Avoid making all backgrounds look like the same pale corner wash.
 - Maintain strong contrast with the primary text, mark, dot, and TLD.
 
 Composition:

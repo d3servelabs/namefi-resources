@@ -546,6 +546,11 @@ export async function generateStudioLogo({
           textTreatment:
             resolvedConcept.textTreatment ?? logoInput.textTreatment,
           typography: resolvedConcept.typography ?? logoInput.typography,
+          logoColorTreatment:
+            resolvedConcept.logoColorTreatment ?? logoInput.logoColorTreatment,
+          backgroundTreatment:
+            resolvedConcept.backgroundTreatment ??
+            logoInput.backgroundTreatment,
           imageModel: logoResult.image.model,
         },
         metadata: {

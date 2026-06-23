@@ -195,6 +195,15 @@ export async function generateInternalLogosForDomains(
           output: {
             type: 'logo',
             storagePath: logoResult.image.storagePath,
+            logoType: logoResult.concept.logoConcept.type,
+            logoStyle: logoResult.concept.logoConcept.style,
+            textTreatment: logoResult.concept.logoConcept.textTreatment,
+            typography: logoResult.concept.logoConcept.typography,
+            logoColorTreatment:
+              logoResult.concept.logoConcept.logoColorTreatment,
+            backgroundTreatment:
+              logoResult.concept.logoConcept.backgroundTreatment,
+            imageModel: logoResult.image.model,
           },
           tokenUsage: aggregateTokenUsage,
           metadata: {},

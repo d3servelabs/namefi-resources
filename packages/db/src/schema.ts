@@ -1021,6 +1021,8 @@ type AiGenerationInput =
       imageModel?: string;
       textTreatment?: string;
       typography?: string;
+      logoColorTreatment?: string;
+      backgroundTreatment?: string;
     }
   | {
       type: 'marketing';
@@ -1066,6 +1068,8 @@ type AiGenerationOutput =
       logoStyle?: string;
       textTreatment?: string;
       typography?: string;
+      logoColorTreatment?: string;
+      backgroundTreatment?: string;
       imageModel?: string;
     }
   | {
@@ -1096,6 +1100,8 @@ type ExternalAiGenerationInput =
       imageModel?: string;
       textTreatment?: string;
       typography?: string;
+      logoColorTreatment?: string;
+      backgroundTreatment?: string;
     }
   | {
       type: 'marketing';
@@ -1145,6 +1151,8 @@ type ExternalAiGenerationOutput =
       logoStyle?: string;
       textTreatment?: string;
       typography?: string;
+      logoColorTreatment?: string;
+      backgroundTreatment?: string;
       imageModel?: string;
     }
   | {

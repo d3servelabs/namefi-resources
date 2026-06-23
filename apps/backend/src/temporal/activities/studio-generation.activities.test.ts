@@ -172,6 +172,8 @@ describe('generateStudioLogo', () => {
         imageModel: 'gpt-image-2',
         textTreatment: 'let-ai-choose',
         typography: 'let-ai-choose',
+        logoColorTreatment: 'brand-color-wordmark',
+        backgroundTreatment: 'ambient-gradient-field',
       },
       output: {
         type: 'logo',
@@ -247,6 +249,8 @@ describe('generateStudioLogo', () => {
           storagePath: 'logos/brand.xyz/logo.png',
           logoType: 'wordmark',
           logoStyle: 'trust',
+          logoColorTreatment: 'brand-color-wordmark',
+          backgroundTreatment: 'ambient-gradient-field',
           imageModel: 'gpt-image-2',
         }),
         status: 'SUCCEEDED',

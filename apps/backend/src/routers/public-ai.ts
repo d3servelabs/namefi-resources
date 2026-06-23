@@ -324,6 +324,8 @@ publicAiRouter.post('/generate-logo', async (c) => {
     const resolvedTextTreatment =
       resolvedConcept.textTreatment ?? textTreatment;
     const resolvedTypography = resolvedConcept.typography ?? typography;
+    const resolvedLogoColorTreatment = resolvedConcept.logoColorTreatment;
+    const resolvedBackgroundTreatment = resolvedConcept.backgroundTreatment;
 
     const [record] = await db
       .insert(publicAiGenerationsTable)
@@ -347,6 +349,8 @@ publicAiRouter.post('/generate-logo', async (c) => {
           logoStyle: resolvedLogoStyle,
           textTreatment: resolvedTextTreatment,
           typography: resolvedTypography,
+          logoColorTreatment: resolvedLogoColorTreatment,
+          backgroundTreatment: resolvedBackgroundTreatment,
           imageModel: logoResult.image.model,
         },
         tokenUsage,
@@ -366,6 +370,8 @@ publicAiRouter.post('/generate-logo', async (c) => {
       logoStyle: resolvedLogoStyle,
       textTreatment: resolvedTextTreatment,
       typography: resolvedTypography,
+      logoColorTreatment: resolvedLogoColorTreatment,
+      backgroundTreatment: resolvedBackgroundTreatment,
       model,
       url: logoResult.image.url,
       storagePath: logoResult.image.storagePath,

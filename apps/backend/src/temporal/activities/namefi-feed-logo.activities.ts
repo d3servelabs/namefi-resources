@@ -197,6 +197,9 @@ async function generateNamefiFeedListingLogoForDomain(input: {
           logoStyle: logoResult.concept.logoConcept.style,
           textTreatment: logoResult.concept.logoConcept.textTreatment,
           typography: logoResult.concept.logoConcept.typography,
+          logoColorTreatment: logoResult.concept.logoConcept.logoColorTreatment,
+          backgroundTreatment:
+            logoResult.concept.logoConcept.backgroundTreatment,
           imageModel: logoResult.image.model,
         },
         tokenUsage,
