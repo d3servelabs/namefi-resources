@@ -235,6 +235,11 @@ async function main() {
     files = files.filter((f) => wanted.has(f.replace(/\.mdx?$/, '')));
     const found = new Set(files.map((f) => f.replace(/\.mdx?$/, '')));
     for (const s of slugArgs) if (!found.has(s)) console.warn(`⚠️ no en glossary entry for "${s}"`);
+    // Explicit slugs that match nothing must fail, not look like a clean run.
+    if (files.length === 0) {
+      console.error(`Error: none of the requested slug(s) matched an en glossary entry: ${slugArgs.join(', ')}`);
+      process.exit(1);
+    }
   }
 
   console.log(`Translating ${files.length} glossary entr${files.length === 1 ? 'y' : 'ies'} → [${TARGET_LOCALES.join(', ')}]${FORCE ? ' (force overwrite)' : ' (fill missing)'}.`);

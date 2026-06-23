@@ -130,10 +130,12 @@ function main() {
   const rows: { slug: string; mentions: number; linked: number; candidates: number }[] = [];
 
   const failed: string[] = [];
+  const missing: string[] = [];
   let done = 0;
   for (const slug of slugs) {
     const candidates = inboundCount(slug);
     if (candidates === SLUG_MISSING) {
+      missing.push(slug);
       if (!JSON_OUT) console.error(`   (skip ${slug}: no en entry)`);
       continue;
     }
@@ -151,6 +153,14 @@ function main() {
 
   rows.sort((a, b) => b.mentions - a.mentions || a.slug.localeCompare(b.slug));
   const filtered = rows.filter((r) => r.mentions >= MIN);
+
+  // Explicit slug args that ALL lack an en entry must fail loudly — a typo must
+  // not read as "0 mentions". (No args = scan everything, where empty is fine.)
+  const allRequestedMissing = slugArgs.length > 0 && rows.length === 0 && failed.length === 0;
+  if (allRequestedMissing) {
+    console.error(`Error: none of the requested slug(s) have an en glossary entry: ${missing.join(', ')}`);
+    process.exit(1);
+  }
 
   if (JSON_OUT) {
     console.log(JSON.stringify({ ranked: filtered, failed }, null, 2));
