@@ -9,6 +9,8 @@ description: "Eine Perspektive aus Sicht von Registrar/DNS-Betrieb auf den AWS-V
 keywords: ['DNS', 'AWS-Ausfall', 'Control Plane', 'DynamoDB', 'us-east-1', 'DNS-Caching', 'Cloud-Resilienz', 'Multi-Signer DNS', 'Incident Response']
 ---
 
+[![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)
+
 Am 20. Oktober 2025 erlebten Teile des Internets einen schlechten Morgen. Amazon Web Services (AWS) meldete Probleme in seinem Rechenzentrums-Cluster in Nord-Virginia (US-EAST-1). Mehrere Stunden lang waren viele beliebte Apps und Websites langsam oder nicht verfügbar – [Vercel](https://downdetector.com/status/vercel/), [Figma](https://downdetector.in/status/figma/), [Venmo](https://downdetector.in/status/venmo/) und [Snapchat](https://downdetector.com/status/snapchat/), um nur einige zu nennen. Nachrichtenagenturen und Überwachungsdienste verzeichneten Millionen von Nutzermeldungen, und sogar einige Amazon-Dienste hatten Aussetzer.
 
 Namefi-Kunden erlebten hingegen einen ruhigen Tag. Unsere Systeme liefen wie gewohnt weiter – nicht durch Zufall, sondern weil wir stark in die technische und operative Sorgfalt investieren, die die DNS-Auflösung widerstandsfähig gegen regionale Störungen macht.
