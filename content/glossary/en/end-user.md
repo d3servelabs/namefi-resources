@@ -8,6 +8,7 @@ description: A buyer who wants a domain to actually use for a business or projec
 keywords: ['end user', 'domain buyer', 'domain end use', 'business domain', 'domain deployment']
 level: 1
 sources:
+  - https://en.wikipedia.org/wiki/End_user
   - https://www.namebio.com/
 ---
 

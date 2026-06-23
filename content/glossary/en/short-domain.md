@@ -1,5 +1,5 @@
 ---
-title: Short / Numeric Domain (LLLL, NNNN)
+title: Short Domain
 date: '2026-06-22'
 language: en
 tags: ['glossary']
@@ -9,6 +9,7 @@ keywords: ['short domain', 'numeric domain', 'LLLL domain', 'NNNN domain', 'thre
 level: 1
 sources:
   - https://www.namebio.com/
+  - https://dnjournal.com/
 ---
 
 **Short domains** — particularly three-letter (LLL) and four-letter (LLLL) combinations, plus three-digit (NNN) and four-digit (NNNN) all-numeric names — are among the most consistently valued assets in domain investing, prized purely for their brevity and the ease with which they can be typed, remembered, and branded. All three-character .com combinations were registered years ago, making them available only on the [aftermarket](/en/glossary/aftermarket/), often at [premium domain](/en/glossary/premium-domain/) prices. The NNNN and NNN .com categories attract particular demand from Chinese buyers, where numeric sequences carry cultural and phonetic significance, creating a distinct sub-market with its own [domain appraisal](/en/glossary/domain-appraisal/) dynamics. While a short string offers no built-in keyword meaning, its memorability and flexibility as a [brandable domain](/en/glossary/brandable-domain/) foundation make it appealing to startups and large enterprises alike — companies like Zoom (zoom.com) and Box (box.com) built global brands on short names. Namefi tokenizes these high-value short and numeric names as on-chain NFTs, enabling atomic settlement without multi-day registrar push delays. *Source: NameBio domain sales data.*

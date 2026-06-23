@@ -1,13 +1,15 @@
 ---
-title: Aftermarket (Secondary Market)
+title: Aftermarket
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: The resale market for already-registered domains, where names are bought and sold between owners.
 keywords: ['aftermarket', 'secondary market', 'domain resale', 'domain investing', 'domain sales']
+also_known_as: ['Secondary Market']
 level: 1
 sources:
+  - https://www.investopedia.com/terms/s/secondarymarket.asp
   - https://www.namebio.com/
 ---
 

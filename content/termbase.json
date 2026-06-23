@@ -21,9 +21,9 @@
     "level": 1
   },
   "aftermarket": {
-    "en": "Aftermarket (Secondary Market)",
+    "en": "Aftermarket",
     "titles": {
-      "en": "Aftermarket (Secondary Market)"
+      "en": "Aftermarket"
     },
     "level": 1
   },
@@ -140,10 +140,10 @@
     },
     "level": 1
   },
-  "buy-now-vs-make-offer": {
-    "en": "Buy-Now (BIN) vs Make-Offer",
+  "buy-it-now": {
+    "en": "Buy It Now",
     "titles": {
-      "en": "Buy-Now (BIN) vs Make-Offer"
+      "en": "Buy It Now"
     },
     "level": 1
   },
@@ -187,9 +187,9 @@
     "level": 1
   },
   "comparable-sales": {
-    "en": "Comparable Sales (Comps)",
+    "en": "Comparable Sales",
     "titles": {
-      "en": "Comparable Sales (Comps)"
+      "en": "Comparable Sales"
     },
     "level": 1
   },
@@ -371,9 +371,9 @@
     "level": 1
   },
   "domain-appraisal": {
-    "en": "Domain Appraisal (Valuation)",
+    "en": "Domain Appraisal",
     "titles": {
-      "en": "Domain Appraisal (Valuation)"
+      "en": "Domain Appraisal"
     },
     "level": 1
   },
@@ -385,9 +385,9 @@
     "level": 1
   },
   "domain-broker": {
-    "en": "Domain Broker (Brokerage)",
+    "en": "Domain Broker",
     "titles": {
-      "en": "Domain Broker (Brokerage)"
+      "en": "Domain Broker"
     },
     "level": 1
   },
@@ -533,9 +533,9 @@
     "level": 1
   },
   "domaining": {
-    "en": "Domaining (Domainer)",
+    "en": "Domaining",
     "titles": {
-      "en": "Domaining (Domainer)"
+      "en": "Domaining"
     },
     "level": 1
   },
@@ -614,9 +614,9 @@
     "level": 1
   },
   "exact-match-domain": {
-    "en": "Exact-Match Domain (EMD)",
+    "en": "Exact-Match Domain",
     "titles": {
-      "en": "Exact-Match Domain (EMD)"
+      "en": "Exact-Match Domain"
     },
     "level": 1
   },
@@ -699,9 +699,9 @@
     "level": 1
   },
   "holding-cost": {
-    "en": "Holding / Carrying Cost",
+    "en": "Holding Cost",
     "titles": {
-      "en": "Holding / Carrying Cost"
+      "en": "Holding Cost"
     },
     "level": 1
   },
@@ -841,6 +841,13 @@
       "zh": "Lens",
       "ar": "لينس",
       "hi": "लेंस"
+    },
+    "level": 1
+  },
+  "make-offer": {
+    "en": "Make Offer",
+    "titles": {
+      "en": "Make Offer"
     },
     "level": 1
   },
@@ -1090,9 +1097,9 @@
     "level": 1
   },
   "reserve-price": {
-    "en": "Reserve Price (Minimum Offer)",
+    "en": "Reserve Price",
     "titles": {
-      "en": "Reserve Price (Minimum Offer)"
+      "en": "Reserve Price"
     },
     "level": 1
   },
@@ -1106,6 +1113,13 @@
       "zh": "保留名称（屏蔽名称）",
       "ar": "الأسماء المحجوزة (الأسماء المحظورة)",
       "hi": "रिज़र्व्ड नेम्स (ब्लॉक्ड नेम्स)"
+    },
+    "level": 1
+  },
+  "retail-pricing": {
+    "en": "Retail Pricing",
+    "titles": {
+      "en": "Retail Pricing"
     },
     "level": 1
   },
@@ -1169,9 +1183,9 @@
     "level": 1
   },
   "sell-through-rate": {
-    "en": "Sell-Through Rate (STR)",
+    "en": "Sell-Through Rate",
     "titles": {
-      "en": "Sell-Through Rate (STR)"
+      "en": "Sell-Through Rate"
     },
     "level": 1
   },
@@ -1196,9 +1210,9 @@
     "level": 1
   },
   "short-domain": {
-    "en": "Short / Numeric Domain (LLLL, NNNN)",
+    "en": "Short Domain",
     "titles": {
-      "en": "Short / Numeric Domain (LLLL, NNNN)"
+      "en": "Short Domain"
     },
     "level": 1
   },
@@ -1395,10 +1409,10 @@
     },
     "level": 1
   },
-  "wholesale-vs-retail": {
-    "en": "Wholesale vs Retail Pricing",
+  "wholesale-pricing": {
+    "en": "Wholesale Pricing",
     "titles": {
-      "en": "Wholesale vs Retail Pricing"
+      "en": "Wholesale Pricing"
     },
     "level": 1
   },

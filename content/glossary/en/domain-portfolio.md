@@ -8,6 +8,7 @@ description: A collection of domains held by one owner, managed as an investment
 keywords: ['domain portfolio', 'domain investing', 'domain management', 'domain valuation', 'domain assets']
 level: 1
 sources:
+  - https://www.investopedia.com/terms/p/portfolio.asp
   - https://www.namebio.com/
 ---
 
