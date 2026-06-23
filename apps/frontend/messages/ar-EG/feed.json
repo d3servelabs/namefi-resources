@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "المستخدمين",
     "subscribeRss": "اشترك عبر RSS",
-    "rss": "RSS",
-    "refreshing": "بيتحدث..."
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "بحث",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, one {# دومين تاني} other {# دومينات تانية}}",
+    "sellerPlatformDomainCount": "{count, plural, one {# دومين على {platform}} other {# دومينات على {platform}}}",
+    "sellerDomainCountTooltip": "{count, plural, one {# دومين من البائع ده} other {# دومينات من البائع ده}}",
     "openDomainAriaLabel": "افتح {domain}",
     "openSourceAriaLabel": "افتح مصدر {source} لـ {domain}",
-    "noExcerpt": "مفيش وصف متاح",
     "justNow": "دلوقتي",
     "unknownDate": "مش معروف",
     "logoAlt": "لوجو {name}"

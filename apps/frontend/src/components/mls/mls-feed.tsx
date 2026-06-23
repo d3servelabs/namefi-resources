@@ -1,18 +1,10 @@
 'use client';
 
 import { useInfiniteQuery } from '@tanstack/react-query';
-import {
-  ArrowUp,
-  ChevronDown,
-  Loader2,
-  RefreshCcw,
-  Rss,
-  Search,
-  Users,
-  X,
-} from 'lucide-react';
+import { ArrowUp, ChevronDown, Rss, Search, Users, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Permission } from '@namefi-astra/utils/permissions';
@@ -54,6 +46,11 @@ const SKELETON_KEYS = [
 ] as const;
 const FEED_FILTER_DEBOUNCE_MS = 300;
 const COMMON_MLS_TLDS = ['com', 'ai', 'io', 'xyz', 'app', 'co', 'org', 'net'];
+const TLD_COMMAND_INPUT_GROUP_CLASS =
+  '[&_[data-slot=command-input-wrapper]_[data-slot=input-group]]:focus-within:border-input/50 [&_[data-slot=command-input-wrapper]_[data-slot=input-group]]:focus-within:bg-input/40 [&_[data-slot=command-input-wrapper]_[data-slot=input-group]]:focus-within:ring-0 [&_[data-slot=command-input-wrapper]_[data-slot=input-group]]:focus-within:ring-transparent';
+const TLD_COMMAND_INPUT_CLASS =
+  'h-full min-w-0 flex-1 appearance-none border-0 p-0 shadow-none ring-0 focus:border-0 focus:ring-0 focus:outline-none focus-visible:border-0 focus-visible:ring-0 focus-visible:outline-none';
+const NAMEFI_TITLE_SEGMENT_PATTERN = /Namefi/i;
 // Trims leading and trailing dots from user-entered TLD labels.
 const EDGE_DOTS_PATTERN = /^\.+|\.+$/g;
 // Allows DNS-style labels with optional internal hyphens and multi-label TLDs.
@@ -72,8 +69,6 @@ export function MlsFeed() {
     error,
     isError,
     isLoading,
-    isRefetching,
-    refetch,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
@@ -118,81 +113,91 @@ export function MlsFeed() {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
-      <MlsFeedHeader
-        isLoading={isLoading}
-        isRefetching={isRefetching}
-        onRefresh={() => {
-          void refetch();
-        }}
-      />
+    <main className="mx-auto w-full max-w-[74rem] px-3 pt-4 pb-10 sm:px-5 sm:pt-6 lg:px-8">
+      <div className="grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
+        <MlsFeedControlRail
+          searchInput={filters.searchInput}
+          tldInput={filters.tldInput}
+          listingCount={listings.length}
+          isLoading={isLoading}
+          hasActiveFilters={filters.hasVisibleFilters}
+          onSearchInputChange={filters.setSearchInput}
+          onTldInputChange={filters.setTldInput}
+          onClearFilters={filters.clearFilters}
+        />
 
-      <MlsFeedControls
-        searchInput={filters.searchInput}
-        tldInput={filters.tldInput}
-        hasActiveFilters={filters.hasVisibleFilters}
-        isCompact={scrollUx.isCompact}
-        isLoading={isLoading}
-        isRefetching={isRefetching}
-        onSearchInputChange={filters.setSearchInput}
-        onTldInputChange={filters.setTldInput}
-        onClearFilters={filters.clearFilters}
-        onRefresh={() => {
-          void refetch();
-        }}
-      />
+        <div className="min-w-0">
+          <MlsFeedMobileHeader
+            listingCount={listings.length}
+            isLoading={isLoading}
+          />
 
-      <section className="mt-6 flex flex-col" data-testid="feed.list">
-        {isLoading ? <MlsFeedSkeleton /> : null}
+          <MlsFeedMobileControls
+            searchInput={filters.searchInput}
+            tldInput={filters.tldInput}
+            hasActiveFilters={filters.hasVisibleFilters}
+            onSearchInputChange={filters.setSearchInput}
+            onTldInputChange={filters.setTldInput}
+            onClearFilters={filters.clearFilters}
+          />
 
-        {isError && listings.length === 0 ? (
-          <div
-            className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
-            data-testid="feed.list.error-state"
-          >
-            {error.message}
-          </div>
-        ) : null}
+          <section className="mt-3 grid gap-3 lg:mt-0" data-testid="feed.list">
+            {isLoading ? <MlsFeedSkeleton /> : null}
 
-        {listings.map((listing) => (
-          <MlsSaleCard key={listing.id} listing={listing} />
-        ))}
+            {isError && listings.length === 0 ? (
+              <div
+                className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+                data-testid="feed.list.error-state"
+              >
+                {error.message}
+              </div>
+            ) : null}
 
-        {!isLoading && !isError && listings.length === 0 ? (
-          <p
-            className="py-6 text-center text-sm text-muted-foreground"
-            data-testid="feed.list.empty-state"
-          >
-            {filters.hasAppliedFilters
-              ? t('list.emptyFiltered')
-              : t('list.empty')}
-          </p>
-        ) : null}
+            {listings.map((listing, index) => (
+              <MlsSaleCard
+                key={listing.id}
+                listing={listing}
+                priorityImage={index === 0}
+              />
+            ))}
 
-        {isFetchingNextPage ? <MlsFeedSkeleton compact={true} /> : null}
+            {!isLoading && !isError && listings.length === 0 ? (
+              <p
+                className="rounded-lg border border-white/10 bg-card/55 px-4 py-10 text-center text-sm text-muted-foreground"
+                data-testid="feed.list.empty-state"
+              >
+                {filters.hasAppliedFilters
+                  ? t('list.emptyFiltered')
+                  : t('list.empty')}
+              </p>
+            ) : null}
 
-        {hasNextPage ? <div ref={sentinelRef} className="h-8" /> : null}
+            {isFetchingNextPage ? <MlsFeedSkeleton compact={true} /> : null}
 
-        {hasNextPage && !isFetchingNextPage ? (
-          <div className="flex justify-center pt-2">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                void fetchNextPage();
-              }}
-              data-testid="feed.list.load-more-button"
-            >
-              {tCommon('actions.loadMore')}
-            </Button>
-          </div>
-        ) : null}
+            {hasNextPage ? <div ref={sentinelRef} className="h-8" /> : null}
 
-        {!hasNextPage && listings.length > 0 ? (
-          <p className="py-6 text-center text-xs tracking-wide text-muted-foreground uppercase">
-            {t('list.endOfFeed')}
-          </p>
-        ) : null}
-      </section>
+            {hasNextPage && !isFetchingNextPage ? (
+              <div className="flex justify-center pt-1">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    void fetchNextPage();
+                  }}
+                  data-testid="feed.list.load-more-button"
+                >
+                  {tCommon('actions.loadMore')}
+                </Button>
+              </div>
+            ) : null}
+
+            {!hasNextPage && listings.length > 0 ? (
+              <p className="py-5 text-center text-xs tracking-wide text-muted-foreground uppercase">
+                {t('list.endOfFeed')}
+              </p>
+            ) : null}
+          </section>
+        </div>
+      </div>
 
       <MlsBackToTopButton isVisible={scrollUx.showBackToTop} />
     </main>
@@ -239,14 +244,9 @@ function useMlsFeedFilters() {
 }
 
 function useMlsFeedScrollUx() {
-  const [isCompact, setIsCompact] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const updateScrollState = useCallback((latest: number) => {
-    const shouldCompact = latest > 96;
     const shouldShow = latest > 320;
-    setIsCompact((current) =>
-      current === shouldCompact ? current : shouldCompact,
-    );
     setShowBackToTop((current) =>
       current === shouldShow ? current : shouldShow,
     );
@@ -269,221 +269,308 @@ function useMlsFeedScrollUx() {
   }, [updateScrollState]);
 
   return {
-    isCompact,
     showBackToTop,
   };
 }
 
-interface MlsFeedHeaderProps {
-  isLoading: boolean;
-  isRefetching: boolean;
-  onRefresh: () => void;
+interface MlsFeedFilterProps {
+  searchInput: string;
+  tldInput: string;
+  hasActiveFilters: boolean;
+  onSearchInputChange: (value: string) => void;
+  onTldInputChange: (value: string) => void;
+  onClearFilters: () => void;
 }
 
-function MlsFeedHeader({
+interface MlsFeedCountProps {
+  listingCount: number;
+  isLoading: boolean;
+}
+
+interface MlsFeedHeaderCountProps extends MlsFeedCountProps {
+  testId: string;
+  variant?: 'pill' | 'inline';
+}
+
+interface MlsFeedControlRailProps
+  extends MlsFeedFilterProps,
+    MlsFeedCountProps {}
+
+function MlsFeedControlRail({
+  searchInput,
+  tldInput,
+  listingCount,
   isLoading,
-  isRefetching,
-  onRefresh,
-}: MlsFeedHeaderProps) {
+  hasActiveFilters,
+  onSearchInputChange,
+  onTldInputChange,
+  onClearFilters,
+}: MlsFeedControlRailProps) {
+  return (
+    <aside className="hidden lg:sticky lg:top-5 lg:block lg:max-h-[calc(100svh-2.5rem)] lg:self-start">
+      <section
+        className="flex max-h-[calc(100svh-2.5rem)] flex-col gap-4 overflow-y-auto rounded-xl border border-white/[0.08] bg-[#111214] p-4 shadow-[0_1px_0_rgba(255,255,255,0.03)]"
+        data-testid="feed.controls.rail"
+      >
+        <div className="grid gap-1.5">
+          <div className="flex min-w-0 items-start justify-between gap-3">
+            <h1 className="min-w-0 text-3xl leading-tight font-semibold tracking-tight">
+              <MlsFeedTitle />
+            </h1>
+            <MlsFeedRssLink
+              testId="feed.controls.rss-link"
+              variant="ghost"
+              size="xs"
+              className="mt-1 text-white/54 hover:bg-white/[0.06] hover:text-white/86"
+            />
+          </div>
+          <MlsFeedHeaderCount
+            listingCount={listingCount}
+            isLoading={isLoading}
+            testId="feed.controls.domain-count"
+            variant="inline"
+          />
+        </div>
+
+        <MlsFeedAdminActions />
+
+        <div className="h-px bg-white/10" />
+
+        <MlsFeedFilterFields
+          mode="desktop"
+          searchInput={searchInput}
+          tldInput={tldInput}
+          hasActiveFilters={hasActiveFilters}
+          onSearchInputChange={onSearchInputChange}
+          onTldInputChange={onTldInputChange}
+          onClearFilters={onClearFilters}
+        />
+
+        <MlsAppliedFilterChips
+          searchInput={searchInput}
+          tldInput={tldInput}
+          onSearchInputChange={onSearchInputChange}
+          onTldInputChange={onTldInputChange}
+        />
+      </section>
+    </aside>
+  );
+}
+
+function MlsFeedMobileHeader({ listingCount, isLoading }: MlsFeedCountProps) {
   const t = useTranslations('feed');
-  const tCommon = useTranslations('common');
 
   return (
-    <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {t('title')}
-          </h1>
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
-            <Link
-              href="/feed/users"
-              className={buttonVariants({ variant: 'secondary' })}
-              data-testid="feed.header.users-link"
-            >
-              <Users data-icon="inline-start" />
-              {t('header.usersLink')}
-            </Link>
-          </PermissionGate>
+    <section className="mb-4 flex min-w-0 items-start justify-between gap-3 border-white/[0.08] border-b pb-4 lg:hidden">
+      <div className="grid min-w-0 gap-1.5">
+        <h1 className="min-w-0 text-2xl leading-tight font-semibold tracking-tight">
+          <MlsFeedTitle />
+        </h1>
+        <MlsFeedHeaderCount
+          listingCount={listingCount}
+          isLoading={isLoading}
+          testId="feed.header.domain-count"
+        />
+      </div>
 
-          <a
-            href={MLS_FEED_RSS_PATH}
-            target="_blank"
-            rel="noreferrer noopener"
-            className={buttonVariants({ variant: 'secondary' })}
-            data-testid="feed.header.rss-link"
+      <div className="flex shrink-0 flex-wrap justify-end gap-2">
+        <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
+          <Link
+            href="/feed/users"
+            className={buttonVariants({ variant: 'secondary', size: 'sm' })}
+            data-testid="feed.header.users-link"
           >
-            <Rss data-icon="inline-start" />
-            {t('header.subscribeRss')}
-          </a>
+            <Users data-icon="inline-start" />
+            {t('header.usersLink')}
+          </Link>
+        </PermissionGate>
 
-          <Button
-            variant="outline"
-            onClick={onRefresh}
-            disabled={isLoading || isRefetching}
-            data-testid="feed.header.refresh-button"
-          >
-            {isRefetching ? (
-              <span className="inline-flex items-center gap-2">
-                <Loader2 data-icon="inline-start" className="animate-spin" />
-                {t('header.refreshing')}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2">
-                <RefreshCcw data-icon="inline-start" />
-                {tCommon('actions.refresh')}
-              </span>
-            )}
-          </Button>
-        </div>
+        <MlsFeedRssLink testId="feed.header.rss-link" />
       </div>
     </section>
   );
 }
 
-interface MlsFeedControlsProps {
-  searchInput: string;
-  tldInput: string;
-  hasActiveFilters: boolean;
-  isCompact: boolean;
-  isLoading: boolean;
-  isRefetching: boolean;
-  onSearchInputChange: (value: string) => void;
-  onTldInputChange: (value: string) => void;
-  onClearFilters: () => void;
-  onRefresh: () => void;
-}
-
-function MlsFeedControls({
+function MlsFeedMobileControls({
   searchInput,
   tldInput,
   hasActiveFilters,
-  isCompact,
-  isLoading,
-  isRefetching,
   onSearchInputChange,
   onTldInputChange,
   onClearFilters,
-  onRefresh,
-}: MlsFeedControlsProps) {
+}: MlsFeedFilterProps) {
+  return (
+    <section
+      className="sticky top-[calc(4rem+var(--announcement-strip-height,0px))] z-30 -mx-3 border-white/10 border-y bg-background/95 px-3 py-3 shadow-[0_12px_28px_rgba(0,0,0,0.22)] backdrop-blur-xl sm:-mx-5 sm:px-5 lg:hidden"
+      data-testid="feed.controls.mobile"
+    >
+      <MlsFeedFilterFields
+        mode="mobile"
+        searchInput={searchInput}
+        tldInput={tldInput}
+        hasActiveFilters={hasActiveFilters}
+        onSearchInputChange={onSearchInputChange}
+        onTldInputChange={onTldInputChange}
+        onClearFilters={onClearFilters}
+      />
+
+      <MlsAppliedFilterChips
+        searchInput={searchInput}
+        tldInput={tldInput}
+        onSearchInputChange={onSearchInputChange}
+        onTldInputChange={onTldInputChange}
+        className="mt-2 flex-nowrap overflow-x-auto pb-0.5"
+      />
+    </section>
+  );
+}
+
+function MlsFeedAdminActions() {
   const t = useTranslations('feed');
-  const tCommon = useTranslations('common');
+
+  return (
+    <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
+      <Link
+        href="/feed/users"
+        className={cn(
+          buttonVariants({ variant: 'secondary', size: 'sm' }),
+          'w-full justify-start',
+        )}
+        data-testid="feed.controls.users-link"
+      >
+        <Users data-icon="inline-start" />
+        {t('header.usersLink')}
+      </Link>
+    </PermissionGate>
+  );
+}
+
+function MlsFeedRssLink({
+  testId,
+  variant = 'secondary',
+  size = 'sm',
+  className,
+}: {
+  testId: string;
+  variant?: 'secondary' | 'ghost';
+  size?: 'xs' | 'sm';
+  className?: string;
+}) {
+  const t = useTranslations('feed');
+
+  return (
+    <a
+      href={MLS_FEED_RSS_PATH}
+      target="_blank"
+      rel="noreferrer noopener"
+      className={cn(buttonVariants({ variant, size }), className)}
+      aria-label={t('header.subscribeRss')}
+      data-testid={testId}
+    >
+      <Rss data-icon="inline-start" />
+      {t('header.rss')}
+    </a>
+  );
+}
+
+function MlsFeedTitle() {
+  const t = useTranslations('feed');
+  const title = t('title');
+  const titleSegments = getNamefiTitleSegments(title);
+
+  if (!titleSegments) {
+    return title;
+  }
+
+  const { beforeNamefi, afterNamefi } = titleSegments;
+
+  return (
+    <span className="inline-flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
+      {beforeNamefi ? <span className="min-w-0">{beforeNamefi}</span> : null}
+      <span className="inline-flex shrink-0 items-center">
+        <span className="sr-only">Namefi</span>
+        <Image
+          src="/logotype.svg"
+          alt=""
+          aria-hidden="true"
+          width={132}
+          height={43}
+          className="h-[0.84em] w-auto"
+          loading="eager"
+          unoptimized
+        />
+      </span>
+      {afterNamefi ? <span className="min-w-0">{afterNamefi}</span> : null}
+    </span>
+  );
+}
+
+interface MlsFeedFilterFieldsProps extends MlsFeedFilterProps {
+  mode: 'desktop' | 'mobile';
+}
+
+function MlsFeedFilterFields({
+  mode,
+  searchInput,
+  tldInput,
+  hasActiveFilters,
+  onSearchInputChange,
+  onTldInputChange,
+  onClearFilters,
+}: MlsFeedFilterFieldsProps) {
+  const t = useTranslations('feed');
   const placeholderTld = normalizeTldFilter(tldInput);
   const searchPlaceholder = placeholderTld
     ? t('controls.searchPlaceholderWithTld', { tld: placeholderTld })
     : t('controls.searchPlaceholder');
+  const isMobile = mode === 'mobile';
+  const searchInputId = isMobile
+    ? 'mls-feed-search-mobile'
+    : 'mls-feed-search-desktop';
 
   return (
-    <motion.section
-      className="sticky top-20 z-20 mt-3 overflow-hidden rounded-xl border border-border/70 bg-background/95 shadow-sm backdrop-blur-md lg:top-3"
-      animate={{
-        boxShadow: isCompact
-          ? '0 14px 34px rgba(0, 0, 0, 0.22)'
-          : '0 1px 2px rgba(0, 0, 0, 0.04)',
-      }}
-      transition={{ duration: 0.22, ease: 'easeOut' }}
+    <div
+      className={cn(
+        'grid gap-3',
+        isMobile
+          ? 'grid-cols-[minmax(0,1fr)_7.75rem] items-end gap-2 min-[380px]:grid-cols-[minmax(0,1fr)_8.5rem]'
+          : null,
+      )}
     >
-      <AnimatePresence initial={false}>
-        {isCompact ? (
-          <motion.div
-            className="flex items-center justify-between gap-3 border-border/70 border-b px-3 py-2"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            <p className="min-w-0 truncate text-sm font-semibold">
-              {t('title')}
-            </p>
-            <div className="flex shrink-0 items-center gap-2">
-              <PermissionGate permissions={[Permission.VIEW_ADMIN_DASHBOARD]}>
-                <Link
-                  href="/feed/users"
-                  className={buttonVariants({
-                    variant: 'secondary',
-                    size: 'sm',
-                  })}
-                  data-testid="feed.controls.users-link"
-                >
-                  <Users data-icon="inline-start" />
-                  {t('header.usersLink')}
-                </Link>
-              </PermissionGate>
-              <a
-                href={MLS_FEED_RSS_PATH}
-                target="_blank"
-                rel="noreferrer noopener"
-                className={buttonVariants({ variant: 'secondary', size: 'sm' })}
-                data-testid="feed.controls.rss-link"
-              >
-                <Rss data-icon="inline-start" />
-                {t('header.rss')}
-              </a>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={onRefresh}
-                disabled={isLoading || isRefetching}
-                data-testid="feed.controls.refresh-button"
-              >
-                {isRefetching ? (
-                  <Loader2 data-icon="inline-start" className="animate-spin" />
-                ) : (
-                  <RefreshCcw data-icon="inline-start" />
-                )}
-                {tCommon('actions.refresh')}
-              </Button>
-            </div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <label className="grid min-w-0 gap-1.5" htmlFor={searchInputId}>
+        <span className="text-xs font-medium text-muted-foreground">
+          {t('controls.searchLabel')}
+        </span>
+        <div className="relative min-w-0">
+          <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            id={searchInputId}
+            autoCapitalize="none"
+            autoComplete="off"
+            spellCheck={false}
+            value={searchInput}
+            onChange={(event) => onSearchInputChange(event.target.value)}
+            placeholder={searchPlaceholder}
+            className="h-10 rounded-lg border-white/10 bg-background/80 pe-9 ps-9"
+            data-testid="feed.controls.search-input"
+          />
+          {searchInput ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-xs"
+              className="absolute top-1/2 end-2 -translate-y-1/2"
+              aria-label={t('controls.clearSearchAriaLabel')}
+              onClick={() => onSearchInputChange('')}
+              data-testid="feed.controls.clear-search-button"
+            >
+              <X />
+            </Button>
+          ) : null}
+        </div>
+      </label>
 
-      <motion.div
-        className={cn(
-          'grid gap-3 sm:items-end',
-          hasActiveFilters
-            ? 'sm:grid-cols-[minmax(0,1fr)_10rem_auto]'
-            : 'sm:grid-cols-[minmax(0,1fr)_10rem]',
-        )}
-        animate={{ padding: isCompact ? 10 : 12 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-      >
-        <label className="grid min-w-0 gap-1.5" htmlFor="mls-feed-search">
-          <span className="text-xs font-medium text-muted-foreground">
-            {t('controls.searchLabel')}
-          </span>
-          <div className="relative min-w-0">
-            <Search className="pointer-events-none absolute top-1/2 start-3 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              id="mls-feed-search"
-              autoCapitalize="none"
-              autoComplete="off"
-              spellCheck={false}
-              value={searchInput}
-              onChange={(event) => onSearchInputChange(event.target.value)}
-              placeholder={searchPlaceholder}
-              className="h-10 bg-background/80 pe-9 ps-9"
-              data-testid="feed.controls.search-input"
-            />
-            {searchInput ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                className="absolute top-1/2 end-2 -translate-y-1/2"
-                aria-label={t('controls.clearSearchAriaLabel')}
-                onClick={() => onSearchInputChange('')}
-                data-testid="feed.controls.clear-search-button"
-              >
-                <X />
-              </Button>
-            ) : null}
-          </div>
-        </label>
-
+      <div className="grid min-w-0 gap-2">
         <div className="grid min-w-0 gap-1.5">
           <span className="text-xs font-medium text-muted-foreground">
             {t('controls.tldLabel')}
@@ -494,11 +581,12 @@ function MlsFeedControls({
           />
         </div>
 
-        {hasActiveFilters ? (
+        {hasActiveFilters && !isMobile ? (
           <Button
             type="button"
             variant="ghost"
-            className="h-10 justify-self-start sm:justify-self-auto"
+            size="sm"
+            className="h-9 justify-self-start px-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
             onClick={onClearFilters}
             data-testid="feed.controls.clear-filters-button"
           >
@@ -506,8 +594,104 @@ function MlsFeedControls({
             {t('controls.clear')}
           </Button>
         ) : null}
-      </motion.div>
-    </motion.section>
+      </div>
+    </div>
+  );
+}
+
+interface MlsAppliedFilterChipsProps {
+  searchInput: string;
+  tldInput: string;
+  onSearchInputChange: (value: string) => void;
+  onTldInputChange: (value: string) => void;
+  className?: string;
+}
+
+function MlsAppliedFilterChips({
+  searchInput,
+  tldInput,
+  onSearchInputChange,
+  onTldInputChange,
+  className,
+}: MlsAppliedFilterChipsProps) {
+  const t = useTranslations('feed');
+  const searchValue = searchInput.trim();
+  const tldValue = normalizeTldFilter(tldInput);
+
+  if (!searchValue && !tldValue) {
+    return null;
+  }
+
+  return (
+    <div className={cn('flex flex-wrap gap-2', className)}>
+      {searchValue ? (
+        <button
+          type="button"
+          className="inline-flex h-7 max-w-full shrink-0 items-center gap-1.5 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-2.5 text-xs font-medium text-cyan-100 transition-colors hover:bg-cyan-300/15"
+          onClick={() => onSearchInputChange('')}
+          aria-label={t('controls.clearSearchAriaLabel')}
+        >
+          <span className="min-w-0 truncate">
+            {t('controls.searchLabel')}: {searchValue}
+          </span>
+          <X className="size-3" />
+        </button>
+      ) : null}
+
+      {tldValue ? (
+        <button
+          type="button"
+          className="inline-flex h-7 shrink-0 items-center gap-1.5 rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2.5 text-xs font-medium text-emerald-100 transition-colors hover:bg-emerald-300/15"
+          onClick={() => onTldInputChange('')}
+          aria-label={`${t('controls.clear')} .${tldValue}`}
+        >
+          <span>
+            {t('controls.tldLabel')}: .{tldValue}
+          </span>
+          <X className="size-3" />
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+function MlsFeedHeaderCount({
+  listingCount,
+  isLoading,
+  testId,
+  variant = 'pill',
+}: MlsFeedHeaderCountProps) {
+  const t = useTranslations('feed');
+  const value = isLoading ? '--' : listingCount;
+
+  if (variant === 'inline') {
+    return (
+      <div
+        className="inline-flex w-fit items-baseline gap-1.5 text-white/42"
+        data-testid={testId}
+      >
+        <span className="text-sm font-semibold tracking-tight text-white/72 tabular-nums">
+          {value}
+        </span>
+        <span className="text-[0.68rem] leading-none font-medium tracking-wide uppercase">
+          {t('users.columns.domains')}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className="inline-flex w-fit items-baseline gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-white/62"
+      data-testid={testId}
+    >
+      <span className="text-sm font-semibold tracking-tight text-white/86 tabular-nums">
+        {value}
+      </span>
+      <span className="text-[0.68rem] leading-none font-medium tracking-wide uppercase">
+        {t('users.columns.domains')}
+      </span>
+    </div>
   );
 }
 
@@ -564,8 +748,12 @@ function MlsTldFilterCombobox({
         <ChevronDown data-icon="inline-end" className="opacity-60" />
       </PopoverTrigger>
       <PopoverContent className="min-w-[--anchor-width] p-0" align="start">
-        <Command shouldFilter={true} className="max-h-80">
+        <Command
+          shouldFilter={true}
+          className={cn('max-h-80', TLD_COMMAND_INPUT_GROUP_CLASS)}
+        >
           <CommandInput
+            className={TLD_COMMAND_INPUT_CLASS}
             value={commandValue}
             onValueChange={setCommandValue}
             placeholder={t('controls.tldPlaceholder')}
@@ -628,7 +816,7 @@ function MlsBackToTopButton({ isVisible }: { isVisible: boolean }) {
     <AnimatePresence>
       {isVisible ? (
         <motion.div
-          className="fixed right-4 bottom-[calc(1.25rem_+_env(safe-area-inset-bottom,0px))] z-30 sm:right-6 lg:right-[max(1.5rem,calc((100vw-45rem)/2+1.5rem))]"
+          className="fixed right-4 bottom-[calc(1.25rem_+_env(safe-area-inset-bottom,0px))] z-30 sm:right-6 lg:right-[max(1.5rem,calc((100vw-78rem)/2+1.5rem))]"
           initial={{ opacity: 0, y: 8, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 8, scale: 0.96 }}
@@ -659,34 +847,47 @@ function MlsFeedSkeleton({ compact = false }: MlsFeedSkeletonProps) {
   const keys = compact ? [SKELETON_KEYS[0], SKELETON_KEYS[1]] : SKELETON_KEYS;
 
   return (
-    <div className="flex flex-col">
+    <div className="grid gap-4">
       {keys.map((key) => (
         <Card
           key={key}
-          className="rounded-none border-b border-white/10 bg-transparent shadow-none !py-0 !ring-0"
+          className="overflow-hidden rounded-lg border border-white/[0.08] bg-[#111214] shadow-[0_1px_0_rgba(255,255,255,0.03)] !py-0"
         >
-          <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-1.5 w-1.5 rounded-full" />
-              <Skeleton className="h-4 w-16" />
+          <CardContent className="grid gap-0 p-0 md:min-h-[12rem] md:grid-cols-[13rem_minmax(0,1fr)]">
+            <div className="relative min-h-40 overflow-hidden border-white/[0.08] border-b bg-[#17191d] md:min-h-full md:border-r md:border-b-0">
+              <Skeleton className="absolute inset-0 rounded-none bg-white/[0.035]" />
+              <Skeleton className="absolute top-1/2 left-1/2 h-16 w-28 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white/[0.07]" />
+              <div
+                aria-hidden={true}
+                className="pointer-events-none absolute inset-0 ring-1 ring-white/[0.04] ring-inset"
+              />
             </div>
 
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 items-center gap-4">
-                <Skeleton className="size-14 rounded-[18px] sm:size-16" />
-                <div className="min-w-0 flex items-end gap-1.5">
-                  <Skeleton className="h-11 w-52 sm:w-64" />
-                  <Skeleton className="h-8 w-14 sm:w-16" />
+            <div className="grid min-w-0 gap-4 p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_minmax(9.5rem,12rem)] md:grid-rows-[auto_minmax(0,1fr)_auto] md:gap-x-6 md:gap-y-4 md:px-6 md:py-5">
+              <div className="min-w-0">
+                <Skeleton className="h-10 w-full max-w-[18rem] bg-white/[0.08] sm:h-12 md:h-11 xl:h-12" />
+              </div>
+
+              <div className="min-w-0 md:justify-self-end md:pt-1 md:text-right">
+                <Skeleton className="h-7 w-28 bg-white/[0.08] md:ms-auto" />
+                <Skeleton className="mt-2 h-3 w-10 bg-white/[0.06] md:ms-auto" />
+              </div>
+
+              <div className="min-w-0 self-end md:col-span-2 md:col-start-1 md:row-start-2">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <Skeleton className="h-7 w-32 rounded-full bg-white/[0.08]" />
+                  <Skeleton className="h-7 w-36 rounded-full bg-white/[0.055]" />
                 </div>
               </div>
 
-              <Skeleton className="h-7 w-28" />
-            </div>
-
-            <div className="mt-6 flex items-center gap-2 border-t border-white/6 pt-4">
-              <Skeleton className="h-4 w-full max-w-[20rem]" />
-              <Skeleton className="size-3.5 shrink-0" />
+              <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-white/[0.07] border-t pt-3 md:col-span-2 md:row-start-3">
+                <div className="flex min-w-0 flex-1 items-center gap-2">
+                  <Skeleton className="size-4 shrink-0 rounded-full bg-white/[0.08]" />
+                  <Skeleton className="h-4 w-20 bg-white/[0.06]" />
+                  <Skeleton className="h-4 w-24 bg-white/[0.05]" />
+                </div>
+                <Skeleton className="h-7 w-20 rounded-md bg-white/[0.045]" />
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -725,6 +926,19 @@ function getMlsScrollTop(target: MlsScrollContainer) {
 
 function scrollMlsFeedToTop() {
   getMlsScrollContainer().scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getNamefiTitleSegments(title: string) {
+  const match = NAMEFI_TITLE_SEGMENT_PATTERN.exec(title);
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    beforeNamefi: title.slice(0, match.index).trim(),
+    afterNamefi: title.slice(match.index + match[0].length).trim(),
+  };
 }
 
 function normalizeTldFilter(value: string | null) {

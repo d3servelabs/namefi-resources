@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "Utilisateurs",
     "subscribeRss": "S'abonner via RSS",
-    "rss": "RSS",
-    "refreshing": "Actualisation"
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "Rechercher",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, one {# autre domaine} other {# autres domaines}}",
+    "sellerPlatformDomainCount": "{count, plural, one {# domaine sur {platform}} other {# domaines sur {platform}}}",
+    "sellerDomainCountTooltip": "{count, plural, one {# domaine de ce vendeur} other {# domaines de ce vendeur}}",
     "openDomainAriaLabel": "Ouvrir {domain}",
     "openSourceAriaLabel": "Ouvrir la source {source} pour {domain}",
-    "noExcerpt": "Aucun extrait disponible",
     "justNow": "à l'instant",
     "unknownDate": "Inconnu",
     "logoAlt": "Logo {name}"

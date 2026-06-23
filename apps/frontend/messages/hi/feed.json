@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "उपयोगकर्ता",
     "subscribeRss": "RSS के माध्यम से सदस्यता लें",
-    "rss": "RSS",
-    "refreshing": "रीफ्रेश हो रहा है"
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "खोजें",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, one {# अन्य डोमेन} other {# अन्य डोमेन}}",
+    "sellerPlatformDomainCount": "{count, plural, one {{platform} पर # डोमेन} other {{platform} पर # डोमेन}}",
+    "sellerDomainCountTooltip": "{count, plural, one {इस विक्रेता का # डोमेन} other {इस विक्रेता के # डोमेन}}",
     "openDomainAriaLabel": "{domain} खोलें",
     "openSourceAriaLabel": "{domain} के लिए {source} स्रोत खोलें",
-    "noExcerpt": "कोई अंश उपलब्ध नहीं",
     "justNow": "अभी-अभी",
     "unknownDate": "अज्ञात",
     "logoAlt": "{name} लोगो"

@@ -66,11 +66,13 @@ type ReportListingFormValues = z.infer<
 interface MlsReportListingDialogProps {
   listingId: string;
   domain: string;
+  triggerClassName?: string;
 }
 
 export function MlsReportListingDialog({
   listingId,
   domain,
+  triggerClassName,
 }: MlsReportListingDialogProps) {
   const t = useTranslations('feed');
   const tCommon = useTranslations('common');
@@ -156,7 +158,10 @@ export function MlsReportListingDialog({
             type="button"
             variant="ghost"
             size="sm"
-            className="text-white/35 hover:text-white/55"
+            className={cn(
+              'text-white/35 hover:text-white/55',
+              triggerClassName,
+            )}
             disabled={isReported}
             aria-label={t('report.triggerAriaLabel', { domain })}
           >

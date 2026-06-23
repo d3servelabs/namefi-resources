@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "ユーザー",
     "subscribeRss": "RSS で購読",
-    "rss": "RSS",
-    "refreshing": "更新中"
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "検索",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, other {他 # 件のドメイン}}",
+    "sellerPlatformDomainCount": "{count, plural, other {{platform} のドメイン # 件}}",
+    "sellerDomainCountTooltip": "{count, plural, other {この出品者のドメイン # 件}}",
     "openDomainAriaLabel": "{domain} を開く",
     "openSourceAriaLabel": "{domain} の {source} ソースを開く",
-    "noExcerpt": "概要なし",
     "justNow": "たった今",
     "unknownDate": "不明",
     "logoAlt": "{name} ロゴ"

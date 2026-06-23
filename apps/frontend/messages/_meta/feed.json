@@ -12,9 +12,6 @@
     "description": "Short RSS button label in the feed header. Keep 'RSS' verbatim.",
     "maxLength": 6
   },
-  "header.refreshing": {
-    "description": "Feed header button label shown while the feed is reloading."
-  },
   "controls.searchLabel": {
     "description": "Accessibility label for the feed search input in the filter controls."
   },
@@ -72,17 +69,17 @@
   "card.unknownSeller": {
     "description": "Fallback seller handle on a feed sale card when the seller is unknown. Keep the literal '@unknown' handle untranslated."
   },
-  "card.otherDomains": {
-    "description": "Feed sale card text for additional domains beyond the one shown. ICU plural on {count}; # is the count of other domains."
+  "card.sellerPlatformDomainCount": {
+    "description": "Feed sale card text showing how many domains this seller has on the listing source/platform. ICU plural on {count}; # is the domain count. {platform} is the source/platform label such as X, DNForum, or NamePros — keep {platform} intact."
+  },
+  "card.sellerDomainCountTooltip": {
+    "description": "Tooltip on the feed sale card seller badge showing the seller's total known domain count. ICU plural on {count}; # is the domain count."
   },
   "card.openDomainAriaLabel": {
     "description": "Accessibility label for the feed sale card link opening a domain. {domain} is the domain name — keep untranslated."
   },
   "card.openSourceAriaLabel": {
     "description": "Accessibility label for the feed sale card link opening the original source listing. {source} is the source/marketplace name and {domain} is the domain name — keep both untranslated."
-  },
-  "card.noExcerpt": {
-    "description": "Feed sale card placeholder shown when the listing has no excerpt text."
   },
   "card.justNow": {
     "description": "Relative timestamp on a feed sale card meaning the listing was posted moments ago."

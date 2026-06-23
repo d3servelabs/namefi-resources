@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "用户",
     "subscribeRss": "通过 RSS 订阅",
-    "rss": "RSS",
-    "refreshing": "刷新中…"
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "搜索",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, other {另有 # 个域名}}",
+    "sellerPlatformDomainCount": "{count, plural, other {{platform} 上 # 个域名}}",
+    "sellerDomainCountTooltip": "{count, plural, other {该卖家共有 # 个域名}}",
     "openDomainAriaLabel": "打开 {domain}",
     "openSourceAriaLabel": "打开 {domain} 的 {source} 来源",
-    "noExcerpt": "暂无摘要",
     "justNow": "刚刚",
     "unknownDate": "未知",
     "logoAlt": "{name} 标识"

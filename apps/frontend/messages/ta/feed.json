@@ -3,8 +3,7 @@
   "header": {
     "usersLink": "பயனர்கள்",
     "subscribeRss": "RSS மூலம் குழுசேரவும்",
-    "rss": "RSS",
-    "refreshing": "புதுப்பிக்கிறது"
+    "rss": "RSS"
   },
   "controls": {
     "searchLabel": "தேடு",
@@ -29,10 +28,10 @@
   },
   "card": {
     "unknownSeller": "@unknown",
-    "otherDomains": "{count, plural, one {# மற்ற டொமைன்} other {# மற்ற டொமைன்கள்}}",
+    "sellerPlatformDomainCount": "{count, plural, one {{platform} இல் # டொமைன்} other {{platform} இல் # டொமைன்கள்}}",
+    "sellerDomainCountTooltip": "{count, plural, one {இந்த விற்பனையாளரின் # டொமைன்} other {இந்த விற்பனையாளரின் # டொமைன்கள்}}",
     "openDomainAriaLabel": "{domain} திற",
     "openSourceAriaLabel": "{domain} க்கான {source} மூலத்தை திற",
-    "noExcerpt": "சுருக்கம் இல்லை",
     "justNow": "இப்போதே",
     "unknownDate": "தெரியவில்லை",
     "logoAlt": "{name} லோகோ"
