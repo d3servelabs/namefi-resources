@@ -18,7 +18,9 @@ import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 export type BrandLogoProps = Omit<
   AnchorHTMLAttributes<HTMLAnchorElement>,
   'href'
->;
+> & {
+  animateInitialExpand?: boolean;
+};
 
 /**
  * Width (px) the collapsed rail clips the Lottie to. The "nfi" mark sits at the
@@ -50,7 +52,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
   HTMLAnchorElement,
   BrandLogoProps
 >(function BrandLogo(
-  { className, ...rest }: BrandLogoProps,
+  { animateInitialExpand = false, className, ...rest }: BrandLogoProps,
   ref: ForwardedRef<HTMLAnchorElement>,
 ) {
   const originInfo = useOrigin();
@@ -105,6 +107,7 @@ export const BrandLogo: ForwardRefExoticComponent<BrandLogoProps> = forwardRef<
           width={logo.width}
           height={logo.height}
           collapsedWidth={LOTTIE_MARK_COLLAPSED_WIDTH}
+          animateInitialExpand={animateInitialExpand && !isRailCollapsed}
           // Show the full wordmark when expanded or on the mobile sheet; the
           // collapsed desktop rail shows the compact mark.
           expanded={!isRailCollapsed}

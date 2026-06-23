@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { BrandLogo } from '@/components/brand-logo';
+import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
 import { NotificationsBell } from '@/components/notifications/notifications-bell';
 import {
@@ -32,7 +33,9 @@ import {
   TrendingUp,
   Heart,
   Gift,
+  X,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
 
 /**
@@ -111,7 +114,8 @@ const AppSidebarHydratedFooter = dynamic(
 );
 
 export function AppSidebar() {
-  const { state, isMobile } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
+  const t = useTranslations('common');
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
@@ -131,7 +135,21 @@ export function AppSidebar() {
     >
       <SidebarHeader>
         <SidebarGroup className="px-0.5 py-2.5">
-          <BrandLogo />
+          <div className="flex items-center justify-between gap-2">
+            <BrandLogo animateInitialExpand={isMobile} />
+            {isMobile ? (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label={t('actions.close')}
+                className="shrink-0 text-sidebar-foreground/80 hover:text-sidebar-foreground"
+                onClick={() => setOpenMobile(false)}
+              >
+                <X className="size-5" />
+              </Button>
+            ) : null}
+          </div>
         </SidebarGroup>
       </SidebarHeader>
 
@@ -142,7 +160,7 @@ export function AppSidebar() {
 
       <SidebarFooter>
         <div className="flex flex-col gap-2 w-full">
-          <NotificationsBell variant="sidebar" className="hidden md:block" />
+          <NotificationsBell variant="sidebar" />
           <AppSidebarHydratedFooter isCollapsed={isCollapsed} />
           <UserDropdown forceExpanded={false} />
         </div>

@@ -2,7 +2,13 @@
 
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
-import { useCallback } from 'react';
+import {
+  createContext,
+  createElement,
+  useCallback,
+  useContext,
+  type PropsWithChildren,
+} from 'react';
 import { useInteractionLoggers } from '@/components/providers/analytics';
 import type { Locale } from '@/i18n/config';
 import { setLocaleCookie } from '@/i18n/locale-actions';
@@ -10,6 +16,27 @@ import {
   InteractionLoggingEventName,
   type LanguageChangeSource,
 } from '@/lib/analytics-events';
+
+type LocaleChangeContextValue = {
+  activeLocale: Locale;
+  changeLocale: (nextLocale: Locale) => void;
+};
+
+const LocaleChangeContext = createContext<LocaleChangeContextValue | null>(
+  null,
+);
+
+export function LocaleChangeProvider({
+  activeLocale,
+  changeLocale,
+  children,
+}: PropsWithChildren<LocaleChangeContextValue>) {
+  return createElement(
+    LocaleChangeContext.Provider,
+    { value: { activeLocale, changeLocale } },
+    children,
+  );
+}
 
 /**
  * Shared logic for both language selectors (footer + sidebar user dropdown).
@@ -20,6 +47,7 @@ import {
  * locale (cookie-mode i18n — no navigation, the URL stays put).
  */
 export function useChangeLocale(source: LanguageChangeSource) {
+  const override = useContext(LocaleChangeContext);
   const activeLocale = useLocale() as Locale;
   const router = useRouter();
   const { logEventWithInteractionLoggers } = useInteractionLoggers();
@@ -43,6 +71,8 @@ export function useChangeLocale(source: LanguageChangeSource) {
     },
     [activeLocale, logEventWithInteractionLoggers, router, source],
   );
+
+  if (override) return override;
 
   return { activeLocale, changeLocale };
 }

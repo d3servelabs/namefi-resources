@@ -261,6 +261,12 @@ export function AnnouncementsBanner({
   const current: AnnouncementDto | undefined =
     count > 0 ? visible[index % count] : undefined;
 
+  useEffect(() => {
+    if (current) return;
+    const root = document.documentElement;
+    root.style.setProperty(STRIP_HEIGHT_VAR, '0px');
+  }, [current]);
+
   // Keep the index in range as the visible set changes (e.g. after a dismissal).
   useEffect(() => {
     if (index >= count && count > 0) setIndex(0);

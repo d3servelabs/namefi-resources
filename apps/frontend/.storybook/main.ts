@@ -43,6 +43,9 @@ const mockPrivyLoginAdapter = fileURLToPath(
 const mockWagmiProviderAdapter = fileURLToPath(
   new URL('../src/stories/utils/storybook-auth-provider.tsx', import.meta.url),
 );
+const mockPrivyProviderAdapter = fileURLToPath(
+  new URL('../src/stories/utils/storybook-privy-provider.tsx', import.meta.url),
+);
 // Replaces the real `useWallets()`-backed wallet-address hooks so no real Privy
 // SDK runs in stories. See the mock's header for why (Privy-init smoke flake).
 const mockUserWalletAddressesAdapter = fileURLToPath(
@@ -84,6 +87,10 @@ const config: StorybookConfig = {
               replacement: mockWagmiProviderAdapter,
             },
             {
+              find: '@/components/providers/privy',
+              replacement: mockPrivyProviderAdapter,
+            },
+            {
               find: '@/hooks/use-user-wallet-addresses',
               replacement: mockUserWalletAddressesAdapter,
             },
@@ -92,6 +99,7 @@ const config: StorybookConfig = {
             ...(existingAlias ?? {}),
             '@/lib/privy-login': mockPrivyLoginAdapter,
             '@/components/providers/wagmi': mockWagmiProviderAdapter,
+            '@/components/providers/privy': mockPrivyProviderAdapter,
             '@/hooks/use-user-wallet-addresses': mockUserWalletAddressesAdapter,
           },
     };

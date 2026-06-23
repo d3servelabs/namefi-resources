@@ -3,7 +3,6 @@
 import { CartDropdown } from '@/components/dropdowns/cart-dropdown';
 import { LanguageSelector } from '@/components/i18n/language-selector';
 import { UserDropdown } from '@/components/dropdowns/user-dropdown';
-import { Separator } from '@namefi-astra/ui/components/shadcn/separator';
 import { FreeMintsDropdown } from '@/components/dropdowns/free-mints-dropdown';
 import { HeaderMissingEmailWarning } from '@/components/header-missing-email-warning';
 import { NotificationsBell } from '@/components/notifications/notifications-bell';
@@ -13,6 +12,8 @@ import {
 } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
+import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'motion/react';
 import {
   type ForwardRefExoticComponent,
@@ -56,23 +57,52 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
     >
       {isMobile && <SidebarTrigger />}
       {isMobile && (
-        <Separator
-          orientation="vertical"
-          className="data-[orientation=vertical]:h-4"
-        />
+        // Keep the mobile topbar branded as Namefi; origin-specific animated
+        // branding lives in the opened sidebar.
+        <Link
+          href="/"
+          aria-label="Namefi"
+          className="ms-2 inline-flex h-6 w-[66px] shrink-0 items-center"
+        >
+          <Image
+            src="/logotype.svg"
+            alt="Namefi"
+            width={66}
+            height={22}
+            className="h-auto w-full"
+            priority
+            unoptimized
+          />
+        </Link>
       )}
-      <motion.div className="flex w-full items-center gap-4" layout layoutRoot>
-        <motion.div className="ms-auto flex items-center gap-3 sm:gap-4" layout>
-          <HeaderMissingEmailWarning />
-          <LanguageSelector source="header" className="inline-flex" />
-          {isMobile && <NotificationsBell variant="topbar" />}
+      <motion.div
+        className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4"
+        layout
+        layoutRoot
+      >
+        <motion.div className="ms-auto flex items-center gap-2 sm:gap-4" layout>
+          <div className="hidden sm:block">
+            <HeaderMissingEmailWarning />
+          </div>
+          <LanguageSelector
+            source="header"
+            showLabelBelowSm={isMobile}
+            className="inline-flex"
+          />
+          {isMobile && (
+            <div className="hidden sm:block">
+              <NotificationsBell variant="topbar" />
+            </div>
+          )}
           <CartDropdown
+            className="hidden sm:block"
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />
           <FreeMintsDropdown
+            className="hidden sm:inline-flex"
             disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
           />
-          <motion.div layout>
+          <motion.div className="hidden sm:block" layout>
             <UserDropdown
               disableBackdropBlur={origin.config.landingPage?.headerIsBlurred}
             />

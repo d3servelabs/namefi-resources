@@ -23,9 +23,11 @@ import { useChangeLocale } from './use-change-locale';
  */
 export function LanguageSelector({
   className,
+  showLabelBelowSm = false,
   source = 'footer',
 }: {
   className?: string;
+  showLabelBelowSm?: boolean;
   source?: LanguageChangeSource;
 }) {
   const t = useTranslations('common.languageSelector');
@@ -47,7 +49,9 @@ export function LanguageSelector({
         <Languages className="h-3.5 w-3.5" aria-hidden="true" />
         {/* Icon-only below sm so the picker stays in the mobile header without
             the label; native-language name shows from sm up. */}
-        <span className="hidden sm:inline">{localeLabels[activeLocale]}</span>
+        <span className={showLabelBelowSm ? 'inline' : 'hidden sm:inline'}>
+          {localeLabels[activeLocale]}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuRadioGroup
