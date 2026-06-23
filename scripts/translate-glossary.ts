@@ -146,7 +146,15 @@ async function translateFile(filename: string, targetLocale: string, tb: Termbas
   if (!FORCE && existsSync(targetPath)) return; // fill-missing by default
 
   console.log(`Translating glossary/${filename} → ${targetLocale}...`);
-  const fileContent = await fs.readFile(sourcePath, 'utf-8');
+  let fileContent: string;
+  try {
+    fileContent = await fs.readFile(sourcePath, 'utf-8');
+  } catch (e) {
+    // One unreadable source must not abort the whole batch or vanish silently.
+    console.error(`✗ Could not read source ${filename}:`, e);
+    failures.push(`${targetLocale}/${filename}`);
+    return;
+  }
 
   const dialectNote = targetLocale === 'ar'
     ? '\n    -   **Arabic dialect**: write in modern Egyptian Arabic (اللهجة المصرية المعاصرة) — the natural register an Egyptian reader expects for a tech/business blog — NOT formal MSA, while keeping technical terms clear.'
@@ -250,4 +258,8 @@ async function main() {
   console.log('Glossary translation complete. Re-run build-termbase.ts to lock the new titles.');
 }
 
-main().catch(console.error);
+main().catch((e) => {
+  // A rejected run must surface a non-zero exit, never a false success.
+  console.error(e);
+  process.exit(1);
+});

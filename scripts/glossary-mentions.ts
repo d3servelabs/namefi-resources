@@ -24,6 +24,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
+import matter from 'gray-matter';
 
 const REPO_ROOT = process.cwd();
 const GLOSSARY_EN = path.join(REPO_ROOT, 'content', 'glossary', 'en');
@@ -77,6 +78,15 @@ function countAlreadyLinking(slug: string): number {
       const full = path.join(root, f);
       if (selfEntry && full === selfEntry) continue; // don't count the entry itself
       const raw = readFileSync(full, 'utf8');
+      // link-suggest excludes drafts from its inbound corpus; mirror that here so
+      // a draft page linking the term can't inflate demand past the cross-link metric.
+      let isDraft = false;
+      try {
+        isDraft = matter(raw).data?.draft === true;
+      } catch {
+        /* unparseable frontmatter — treat as non-draft, same as the loader */
+      }
+      if (isDraft) continue;
       if (raw.includes(`](${href}`) || raw.includes(`](${noSlash}`)) count++;
     }
   }
