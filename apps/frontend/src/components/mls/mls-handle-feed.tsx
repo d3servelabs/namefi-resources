@@ -96,6 +96,15 @@ export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
   const namefiDomainsCount = firstPage?.seller.namefiDomainsCount ?? 0;
   const tierDomainCount = firstPage?.seller.tierDomainCount ?? totalDomains;
   const sellerTier = hasValidHandle ? getMlsSellerTier(tierDomainCount) : null;
+  const displayedDomainCount = firstPage?.totalDomains ?? listings.length;
+  const subtitle = getSellerSubtitle(t, {
+    hasValidHandle,
+    totalDomains,
+    namefiDomainsCount,
+  });
+  const refreshListings = () => {
+    void refetch();
+  };
 
   useEffect(() => {
     const sentinel = sentinelRef.current;
@@ -118,37 +127,48 @@ export function MlsHandleFeed({ source, username }: MlsHandleFeedProps) {
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
-    <main className="mx-auto w-full max-w-[45rem] px-4 py-6 sm:px-6 lg:px-8">
-      <MlsHandleHeader
-        sellerLabel={sellerLabel}
-        sourceLabel={sourceLabel}
-        sellerTier={sellerTier}
-        subtitle={getSellerSubtitle(t, {
-          hasValidHandle,
-          totalDomains,
-          namefiDomainsCount,
-        })}
-        hasValidHandle={hasValidHandle}
-        isLoading={isLoading}
-        isRefetching={isRefetching}
-        onRefresh={() => {
-          void refetch();
-        }}
-      />
+    <main className="mx-auto w-full max-w-[74rem] px-3 pt-4 pb-10 sm:px-5 sm:pt-6 lg:px-8">
+      <div className="grid gap-5 lg:grid-cols-[18rem_minmax(0,1fr)] lg:items-start">
+        <MlsHandleControlRail
+          sellerLabel={sellerLabel}
+          sourceLabel={sourceLabel}
+          sellerTier={sellerTier}
+          domainCount={displayedDomainCount}
+          subtitle={subtitle}
+          hasValidHandle={hasValidHandle}
+          isLoading={isLoading}
+          isRefetching={isRefetching}
+          onRefresh={refreshListings}
+        />
 
-      <MlsHandleListingsSection
-        hasValidHandle={hasValidHandle}
-        isLoading={isLoading}
-        isError={isError}
-        errorMessage={error?.message ?? t('handle.loadErrorFallback')}
-        listings={listings}
-        hasNextPage={Boolean(hasNextPage)}
-        isFetchingNextPage={isFetchingNextPage}
-        sentinelRef={sentinelRef}
-        onLoadMore={() => {
-          void fetchNextPage();
-        }}
-      />
+        <div className="min-w-0">
+          <MlsHandleMobileHeader
+            sellerLabel={sellerLabel}
+            sourceLabel={sourceLabel}
+            sellerTier={sellerTier}
+            domainCount={displayedDomainCount}
+            subtitle={subtitle}
+            hasValidHandle={hasValidHandle}
+            isLoading={isLoading}
+            isRefetching={isRefetching}
+            onRefresh={refreshListings}
+          />
+
+          <MlsHandleListingsSection
+            hasValidHandle={hasValidHandle}
+            isLoading={isLoading}
+            isError={isError}
+            errorMessage={error?.message ?? t('handle.loadErrorFallback')}
+            listings={listings}
+            hasNextPage={Boolean(hasNextPage)}
+            isFetchingNextPage={isFetchingNextPage}
+            sentinelRef={sentinelRef}
+            onLoadMore={() => {
+              void fetchNextPage();
+            }}
+          />
+        </div>
+      </div>
     </main>
   );
 }
@@ -157,6 +177,7 @@ interface MlsHandleHeaderProps {
   sellerLabel: string;
   sourceLabel: string | null;
   sellerTier: MlsSellerTier | null;
+  domainCount: number;
   subtitle: string;
   hasValidHandle: boolean;
   isLoading: boolean;
@@ -164,10 +185,81 @@ interface MlsHandleHeaderProps {
   onRefresh: () => void;
 }
 
-function MlsHandleHeader({
+function MlsHandleControlRail({
   sellerLabel,
   sourceLabel,
   sellerTier,
+  domainCount,
+  subtitle,
+  hasValidHandle,
+  isLoading,
+  isRefetching,
+  onRefresh,
+}: MlsHandleHeaderProps) {
+  const t = useTranslations('feed');
+
+  return (
+    <aside className="hidden lg:sticky lg:top-5 lg:block lg:max-h-[calc(100svh-2.5rem)] lg:self-start">
+      <section
+        className="flex max-h-[calc(100svh-2.5rem)] flex-col gap-4 overflow-y-auto rounded-xl border border-white/[0.08] bg-[#111214] p-4 shadow-[0_1px_0_rgba(255,255,255,0.03)]"
+        data-testid="feed.handle.rail"
+      >
+        <Link
+          href="/feed"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          data-testid="feed.handle.rail.back-link"
+        >
+          <ArrowLeft className="size-4 rtl:-scale-x-100" />
+          {t('handle.backToFeed')}
+        </Link>
+
+        <div className="grid min-w-0 gap-2">
+          <h1
+            className="min-w-0 break-words text-3xl leading-tight font-semibold tracking-tight"
+            data-testid="feed.handle.seller-label"
+          >
+            {sellerLabel}
+          </h1>
+
+          <MlsHandleHeaderBadges
+            sourceLabel={sourceLabel}
+            sellerTier={sellerTier}
+            domainCount={domainCount}
+            isLoading={isLoading}
+            countTestId="feed.handle.rail.domain-count"
+          />
+        </div>
+
+        <p
+          className={
+            hasValidHandle
+              ? 'text-sm text-muted-foreground'
+              : 'text-sm text-destructive'
+          }
+        >
+          {subtitle}
+        </p>
+
+        <Button
+          variant="outline"
+          size="sm"
+          className="w-full justify-start border-white/10 bg-background/80"
+          onClick={onRefresh}
+          disabled={!hasValidHandle || isLoading || isRefetching}
+          data-testid="feed.handle.rail.refresh-button"
+        >
+          <MlsHandleRefreshButtonContent isRefetching={isRefetching} />
+        </Button>
+      </section>
+    </aside>
+  );
+}
+
+function MlsHandleMobileHeader({
+  sellerLabel,
+  sourceLabel,
+  sellerTier,
+  domainCount,
   subtitle,
   hasValidHandle,
   isLoading,
@@ -178,65 +270,149 @@ function MlsHandleHeader({
   const tCommon = useTranslations('common');
 
   return (
-    <section className="rounded-2xl border border-border/70 bg-gradient-to-br from-primary/10 via-background to-cyan-500/10 p-6 shadow-sm">
-      <div className="space-y-3">
-        <Link
-          href="/feed"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          data-testid="feed.handle.back-link"
-        >
-          <ArrowLeft className="size-4 rtl:-scale-x-100" />
-          {t('handle.backToFeed')}
-        </Link>
+    <section className="mb-4 grid min-w-0 gap-3 border-white/[0.08] border-b pb-4 lg:hidden">
+      <Link
+        href="/feed"
+        className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        data-testid="feed.handle.mobile.back-link"
+      >
+        <ArrowLeft className="size-4 rtl:-scale-x-100" />
+        {t('handle.backToFeed')}
+      </Link>
 
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
-              <h1
-                className="text-2xl font-semibold tracking-tight sm:text-3xl"
-                data-testid="feed.handle.seller-label"
-              >
-                {sellerLabel}
-              </h1>
-              {sourceLabel ? (
-                <span className="rounded-sm bg-background/80 px-2 py-1 text-xs font-medium text-muted-foreground">
-                  {sourceLabel}
-                </span>
-              ) : null}
-              {sellerTier ? <MlsSellerTierBadge tier={sellerTier} /> : null}
-            </div>
-            <p
-              className={
-                hasValidHandle
-                  ? 'text-sm text-muted-foreground'
-                  : 'text-sm text-destructive'
-              }
-            >
-              {subtitle}
-            </p>
-          </div>
-
-          <Button
-            variant="outline"
-            onClick={onRefresh}
-            disabled={!hasValidHandle || isLoading || isRefetching}
-            data-testid="feed.handle.refresh-button"
+      <div className="flex min-w-0 items-start justify-between gap-3">
+        <div className="grid min-w-0 gap-2">
+          <h1
+            className="min-w-0 break-words text-2xl leading-tight font-semibold tracking-tight"
+            data-testid="feed.handle.mobile.seller-label"
           >
-            {isRefetching ? (
-              <span className="inline-flex items-center gap-2">
-                <Loader2 className="size-4 animate-spin" />
-                {t('handle.refreshing')}
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-2">
-                <RefreshCcw className="size-4" />
-                {tCommon('actions.refresh')}
-              </span>
-            )}
-          </Button>
+            {sellerLabel}
+          </h1>
+
+          <MlsHandleHeaderBadges
+            sourceLabel={sourceLabel}
+            sellerTier={sellerTier}
+            domainCount={domainCount}
+            isLoading={isLoading}
+            countTestId="feed.handle.mobile.domain-count"
+          />
+
+          <p
+            className={
+              hasValidHandle
+                ? 'text-sm text-muted-foreground'
+                : 'text-sm text-destructive'
+            }
+          >
+            {subtitle}
+          </p>
         </div>
+
+        <Button
+          variant="outline"
+          size="icon-sm"
+          className="mt-0.5 shrink-0"
+          onClick={onRefresh}
+          disabled={!hasValidHandle || isLoading || isRefetching}
+          aria-label={
+            isRefetching ? t('handle.refreshing') : tCommon('actions.refresh')
+          }
+          data-testid="feed.handle.mobile.refresh-button"
+        >
+          {isRefetching ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <RefreshCcw className="size-4" />
+          )}
+        </Button>
       </div>
     </section>
+  );
+}
+
+interface MlsHandleHeaderBadgesProps {
+  sourceLabel: string | null;
+  sellerTier: MlsSellerTier | null;
+  domainCount: number;
+  isLoading: boolean;
+  countTestId: string;
+}
+
+function MlsHandleHeaderBadges({
+  sourceLabel,
+  sellerTier,
+  domainCount,
+  isLoading,
+  countTestId,
+}: MlsHandleHeaderBadgesProps) {
+  return (
+    <div className="flex min-w-0 flex-wrap items-center gap-2">
+      {sourceLabel ? (
+        <span className="rounded-sm border border-white/10 bg-white/[0.04] px-2 py-1 text-xs font-medium text-white/62">
+          {sourceLabel}
+        </span>
+      ) : null}
+
+      {sellerTier ? <MlsSellerTierBadge tier={sellerTier} /> : null}
+
+      <MlsHandleDomainCount
+        domainCount={domainCount}
+        isLoading={isLoading}
+        testId={countTestId}
+      />
+    </div>
+  );
+}
+
+function MlsHandleDomainCount({
+  domainCount,
+  isLoading,
+  testId,
+}: {
+  domainCount: number;
+  isLoading: boolean;
+  testId: string;
+}) {
+  const t = useTranslations('feed');
+  const value = isLoading ? '--' : domainCount;
+
+  return (
+    <div
+      className="inline-flex w-fit items-baseline gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-white/62"
+      data-testid={testId}
+    >
+      <span className="text-sm font-semibold tracking-tight text-white/86 tabular-nums">
+        {value}
+      </span>
+      <span className="text-[0.68rem] leading-none font-medium tracking-wide uppercase">
+        {t('users.columns.domains')}
+      </span>
+    </div>
+  );
+}
+
+function MlsHandleRefreshButtonContent({
+  isRefetching,
+}: {
+  isRefetching: boolean;
+}) {
+  const t = useTranslations('feed');
+  const tCommon = useTranslations('common');
+
+  if (isRefetching) {
+    return (
+      <>
+        <Loader2 data-icon="inline-start" className="animate-spin" />
+        {t('handle.refreshing')}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <RefreshCcw data-icon="inline-start" />
+      {tCommon('actions.refresh')}
+    </>
   );
 }
 
@@ -265,7 +441,7 @@ function MlsHandleListingsSection({
 }: MlsHandleListingsSectionProps) {
   if (!hasValidHandle) {
     return (
-      <section className="mt-6 space-y-0">
+      <section className="mt-3 grid gap-3 lg:mt-0">
         <MlsHandleInvalidHandleBanner />
       </section>
     );
@@ -276,19 +452,20 @@ function MlsHandleListingsSection({
   const showEndOfFeed = !hasNextPage && listings.length > 0;
 
   return (
-    <section className="mt-6 space-y-0">
+    <section className="mt-3 grid gap-3 lg:mt-0" data-testid="feed.handle.list">
       <MlsHandleInitialState
         isLoading={isLoading}
         showErrorState={showErrorState}
         errorMessage={errorMessage}
       />
 
-      {listings.map((listing) => (
+      {listings.map((listing, index) => (
         <MlsSaleCard
           key={listing.id}
           listing={listing}
           showOtherDomainsCount={false}
           showSellerTierBadge={false}
+          priorityImage={index === 0}
         />
       ))}
 
@@ -312,7 +489,7 @@ function MlsHandleInvalidHandleBanner() {
 
   return (
     <div
-      className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+      className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
       data-testid="feed.handle.invalid-state"
     >
       {t('handle.invalidPath')}
@@ -338,7 +515,7 @@ function MlsHandleInitialState({
   if (showErrorState) {
     return (
       <div
-        className="rounded-xl border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
+        className="rounded-lg border border-destructive/40 bg-destructive/5 p-4 text-sm text-destructive"
         data-testid="feed.handle.error-state"
       >
         {errorMessage}
@@ -371,9 +548,9 @@ function MlsHandlePagination({
       {hasNextPage ? <div ref={sentinelRef} className="h-8" /> : null}
 
       {hasNextPage && !isFetchingNextPage ? (
-        <div className="flex justify-center pt-2">
+        <div className="flex justify-center pt-1">
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={onLoadMore}
             data-testid="feed.handle.load-more-button"
           >
@@ -399,7 +576,7 @@ function MlsHandleCompletionState({
   if (showEmptyState) {
     return (
       <p
-        className="py-6 text-center text-sm text-muted-foreground"
+        className="rounded-lg border border-white/10 bg-card/55 px-4 py-10 text-center text-sm text-muted-foreground"
         data-testid="feed.handle.empty-state"
       >
         {t('handle.emptyListings')}
@@ -409,7 +586,7 @@ function MlsHandleCompletionState({
 
   if (showEndOfFeed) {
     return (
-      <p className="py-6 text-center text-xs tracking-wide text-muted-foreground uppercase">
+      <p className="py-5 text-center text-xs tracking-wide text-muted-foreground uppercase">
         {t('handle.endOfListings')}
       </p>
     );
@@ -458,34 +635,47 @@ function MlsHandleFeedSkeleton({
   const keys = compact ? [SKELETON_KEYS[0], SKELETON_KEYS[1]] : SKELETON_KEYS;
 
   return (
-    <div className="space-y-0">
+    <div className="grid gap-4">
       {keys.map((key) => (
         <Card
           key={key}
-          className="rounded-none border-b border-white/10 bg-transparent shadow-none !py-0 !ring-0"
+          className="overflow-hidden rounded-lg border border-white/[0.08] bg-[#111214] shadow-[0_1px_0_rgba(255,255,255,0.03)] !py-0"
         >
-          <CardContent className="px-5 py-6 sm:px-6 sm:py-7">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-1.5 w-1.5 rounded-full" />
-              <Skeleton className="h-4 w-16" />
+          <CardContent className="grid gap-0 p-0 md:min-h-[12rem] md:grid-cols-[13rem_minmax(0,1fr)]">
+            <div className="relative min-h-40 overflow-hidden border-white/[0.08] border-b bg-[#17191d] md:min-h-full md:border-r md:border-b-0">
+              <Skeleton className="absolute inset-0 rounded-none bg-white/[0.035]" />
+              <Skeleton className="absolute top-1/2 left-1/2 h-16 w-28 -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white/[0.07]" />
+              <div
+                aria-hidden={true}
+                className="pointer-events-none absolute inset-0 ring-1 ring-white/[0.04] ring-inset"
+              />
             </div>
 
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex min-w-0 items-center gap-4">
-                <Skeleton className="size-14 rounded-[18px] sm:size-16" />
-                <div className="min-w-0 flex items-end gap-1.5">
-                  <Skeleton className="h-11 w-52 sm:w-64" />
-                  <Skeleton className="h-8 w-14 sm:w-16" />
+            <div className="grid min-w-0 gap-4 p-4 sm:p-5 md:grid-cols-[minmax(0,1fr)_minmax(9.5rem,12rem)] md:grid-rows-[auto_minmax(0,1fr)_auto] md:gap-x-6 md:gap-y-4 md:px-6 md:py-5">
+              <div className="min-w-0">
+                <Skeleton className="h-10 w-full max-w-[18rem] bg-white/[0.08] sm:h-12 md:h-11 xl:h-12" />
+              </div>
+
+              <div className="min-w-0 md:justify-self-end md:pt-1 md:text-right">
+                <Skeleton className="h-7 w-28 bg-white/[0.08] md:ms-auto" />
+                <Skeleton className="mt-2 h-3 w-10 bg-white/[0.06] md:ms-auto" />
+              </div>
+
+              <div className="min-w-0 self-end md:col-span-2 md:col-start-1 md:row-start-2">
+                <div className="flex min-w-0 flex-wrap items-center gap-2">
+                  <Skeleton className="h-7 w-32 rounded-full bg-white/[0.08]" />
+                  <Skeleton className="h-7 w-36 rounded-full bg-white/[0.055]" />
                 </div>
               </div>
 
-              <Skeleton className="h-7 w-28" />
-            </div>
-
-            <div className="mt-6 flex items-center gap-2 border-t border-white/6 pt-4">
-              <Skeleton className="h-4 w-full max-w-[20rem]" />
-              <Skeleton className="size-3.5 shrink-0" />
+              <div className="flex min-w-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-white/[0.07] border-t pt-3 md:col-span-2 md:row-start-3">
+                <div className="flex min-w-0 flex-1 items-center gap-2">
+                  <Skeleton className="size-4 shrink-0 rounded-full bg-white/[0.08]" />
+                  <Skeleton className="h-4 w-20 bg-white/[0.06]" />
+                  <Skeleton className="h-4 w-24 bg-white/[0.05]" />
+                </div>
+                <Skeleton className="h-7 w-20 rounded-md bg-white/[0.045]" />
+              </div>
             </div>
           </CardContent>
         </Card>
