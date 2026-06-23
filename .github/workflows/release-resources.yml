@@ -506,7 +506,11 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const targetSha = process.env.TARGET_SHA;
-            const timeoutMs = 15 * 60 * 1000;
+            // A Deploy Resources build runs ~4 min, so 5 min covers the normal
+            // case with buffer. This gate is non-fatal (warns + proceeds to tag
+            // on timeout), so a slow/missing dev deploy no longer blocks the
+            // release tag for 15 min — the tag-triggered prod deploy validates.
+            const timeoutMs = 5 * 60 * 1000;
             const pollIntervalMs = 15 * 1000;
             const deadline = Date.now() + timeoutMs;
 
@@ -705,7 +709,10 @@ jobs:
             const targetSha = process.env.TARGET_SHA;
             const tagName = process.env.TAG_NAME;
             const minCreatedAt = Date.parse(process.env.MIN_CREATED_AT || '');
-            const timeoutMs = 20 * 60 * 1000;
+            // Post-tag verification only (the prod deploy is already triggered),
+            // and non-fatal on timeout — so 5 min is enough to confirm the
+            // typical ~4 min prod build without padding the workflow duration.
+            const timeoutMs = 5 * 60 * 1000;
             const pollIntervalMs = 15 * 1000;
             const deadline = Date.now() + timeoutMs;
 
