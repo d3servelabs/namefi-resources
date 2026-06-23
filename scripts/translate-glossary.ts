@@ -128,6 +128,10 @@ async function callGeminiThrottled(prompt: string, locale: string, filename: str
       .replace(/^<content>\s*\n/, '')
       .replace(/\n?<\/content>\s*$/, '')
       .trim();
+    // A blank or whitespace-only response (e.g. a safety block) must NOT be saved
+    // as a `---\n` stub that looks like a successful translation — reject it so
+    // translateFile records a failure instead of writing an invalid file.
+    if (!text) throw new Error('EMPTY_OUTPUT');
     if (!text.startsWith('---')) text = '---\n' + text;
     return text;
   } catch (error) {
