@@ -108,7 +108,12 @@ export function OrderProgressTimeline({
               },
       'post-processing': {
         label: t('timeline.postProcessing.label'),
-        helper: t('timeline.postProcessing.helper'),
+        // A renewal's post-processing finalizes the new expiration on-chain —
+        // it isn't the "Namefi Magic" (logos/DNS/parking) a registration gets.
+        helper:
+          orderKind === 'renew'
+            ? t('timeline.postProcessing.renewHelper')
+            : t('timeline.postProcessing.helper'),
       },
       'final-status': {
         label: t('timeline.finalStatus.label'),

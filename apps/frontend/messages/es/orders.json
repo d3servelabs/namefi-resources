@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "Toques finales",
-      "helper": "Añadiendo la magia de Namefi a sus dominios."
+      "helper": "Añadiendo la magia de Namefi a sus dominios.",
+      "renewHelper": "Estamos finalizando el nuevo vencimiento en cadena."
     },
     "finalStatus": {
       "label": "Finalizando estado del pedido",

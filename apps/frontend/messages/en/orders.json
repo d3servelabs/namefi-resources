@@ -73,7 +73,8 @@
     },
     "postProcessing": {
       "label": "Final touches",
-      "helper": "Adding Some Namefi Magic to your domains."
+      "helper": "Adding Some Namefi Magic to your domains.",
+      "renewHelper": "Finalizing the new expiration on-chain."
     },
     "finalStatus": {
       "label": "Finalising order status",

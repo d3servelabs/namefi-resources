@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "Letzte Schritte",
-      "helper": "Namefi Magic wird Ihren Domains hinzugefügt."
+      "helper": "Namefi Magic wird Ihren Domains hinzugefügt.",
+      "renewHelper": "Wir schließen das neue Ablaufdatum on-chain ab."
     },
     "finalStatus": {
       "label": "Bestellstatus wird abgeschlossen",

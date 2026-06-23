@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "Touches finales",
-      "helper": "Application de la magie Namefi à vos domaines."
+      "helper": "Application de la magie Namefi à vos domaines.",
+      "renewHelper": "Nous finalisons la nouvelle date d'expiration on-chain."
     },
     "finalStatus": {
       "label": "Finalisation du statut",

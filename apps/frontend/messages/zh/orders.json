@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "收尾处理",
-      "helper": "正在为您的域名添加 Namefi 的特别能力。"
+      "helper": "正在为您的域名添加 Namefi 的特别能力。",
+      "renewHelper": "我们正在链上完成新到期时间的确认。"
     },
     "finalStatus": {
       "label": "正在确定订单状态",

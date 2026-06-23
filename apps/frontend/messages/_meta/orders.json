@@ -184,6 +184,9 @@
   "timeline.postProcessing.helper": {
     "description": "Progress timeline step helper text for the post-processing stage. 'Namefi' is the brand name — keep untranslated."
   },
+  "timeline.postProcessing.renewHelper": {
+    "description": "Progress timeline step helper text for the post-processing stage of a renewals-only order (finalizing the new expiration on-chain, instead of the registration-flavored default)."
+  },
   "timeline.finalStatus.label": {
     "description": "Progress timeline step label: finalizing the overall order status."
   },

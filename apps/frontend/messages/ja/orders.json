@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "最終処理",
-      "helper": "Namefi マジックをドメインに適用しています。"
+      "helper": "Namefi マジックをドメインに適用しています。",
+      "renewHelper": "新しい有効期限をオンチェーンで確定しています。"
     },
     "finalStatus": {
       "label": "注文ステータスを確定中",

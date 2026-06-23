@@ -71,7 +71,8 @@
     },
     "postProcessing": {
       "label": "अंतिम चरण",
-      "helper": "आपके डोमेन में Namefi का जादू जोड़ा जा रहा है।"
+      "helper": "आपके डोमेन में Namefi का जादू जोड़ा जा रहा है।",
+      "renewHelper": "हम on-chain नई समाप्ति तिथि अंतिम रूप दे रहे हैं।"
     },
     "finalStatus": {
       "label": "ऑर्डर की अंतिम स्थिति",
