@@ -43,6 +43,8 @@ export type FeedbackToastCopy = {
   placeholder?: string;
 };
 
+type FeedbackSaveSource = 'rating_select' | 'form_submit';
+
 type FeedbackToastContentProps = {
   toastId: string | number;
   copy?: FeedbackToastCopy;
@@ -54,6 +56,7 @@ type FeedbackToastContentProps = {
     rating: number;
     message?: string | null;
     submittedAt: string;
+    saveSource: FeedbackSaveSource;
   }) => void;
   onDismissAction: () => void;
   onShownAction?: (shownAtIso: string) => void;
@@ -107,6 +110,7 @@ export function FeedbackToastContent({
       createdAt?: Date | null;
     },
     savedRating: number,
+    saveSource: FeedbackSaveSource,
   ) => {
     const submittedAt =
       result.createdAt instanceof Date
@@ -120,6 +124,7 @@ export function FeedbackToastContent({
         rating: savedRating,
         message: result.message ?? messageValue ?? null,
         submittedAt,
+        saveSource,
       });
     }
   };
@@ -131,7 +136,7 @@ export function FeedbackToastContent({
       feedbackId: feedbackId ?? undefined,
       path: pathname ?? undefined,
     });
-    handleSaved(result ?? {}, value);
+    handleSaved(result ?? {}, value, 'rating_select');
   };
 
   const onSubmit = form.handleSubmit(async (values) => {
@@ -145,7 +150,7 @@ export function FeedbackToastContent({
       feedbackId: feedbackId ?? undefined,
       path: pathname ?? undefined,
     });
-    handleSaved(result ?? {}, rating);
+    handleSaved(result ?? {}, rating, 'form_submit');
     toast.success('Thanks for the feedback!');
     toast.dismiss(toastId);
   });

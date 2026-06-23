@@ -5,8 +5,10 @@ import {
   type FeedbackToastCopy,
 } from '@/components/feedback/feedback-toast';
 import { LocalStorageKeys } from '@/lib/local-storage-keys';
+import { capturePostHogEvent, isPostHogConfigured } from '@/lib/posthog';
 import { useTRPC } from '@/lib/trpc';
 import type { feedbackTriggerSchema } from '@/lib/feedback-triggers';
+import { useConsentManager } from '@c15t/nextjs';
 import { useMutation } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 import {
@@ -101,8 +103,12 @@ export function useFeedback() {
 
 export function FeedbackProvider({ children }: PropsWithChildren) {
   const trpc = useTRPC();
+  const { consents, isLoadingConsentInfo } = useConsentManager();
   const { user } = useAuth();
   const userId = user?.id ?? null;
+  const canMirrorFeedbackToPostHog =
+    !isLoadingConsentInfo && consents.measurement && isPostHogConfigured();
+  const canMirrorFeedbackToPostHogRef = useRef(false);
 
   const [feedbackState, setFeedbackState] = useLocalStorage<FeedbackState>(
     LocalStorageKeys.FEEDBACK_PROMPT_STATE,
@@ -121,6 +127,10 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     setHasHydrated(true);
   }, []);
+
+  useEffect(() => {
+    canMirrorFeedbackToPostHogRef.current = canMirrorFeedbackToPostHog;
+  }, [canMirrorFeedbackToPostHog]);
 
   const markDismissed = useCallback(
     (at: Date = new Date()) => {
@@ -153,7 +163,31 @@ export function FeedbackProvider({ children }: PropsWithChildren) {
                 lastMilestonePromptedAt: shownAtIso,
               }));
             }}
-            onSavedAction={({ id, rating, message, submittedAt }) => {
+            onSavedAction={({
+              id,
+              rating,
+              message,
+              saveSource,
+              submittedAt,
+            }) => {
+              if (
+                saveSource === 'form_submit' &&
+                canMirrorFeedbackToPostHogRef.current
+              ) {
+                const trimmedMessage = message?.trim() ?? '';
+
+                void capturePostHogEvent('feedback_toast_saved', {
+                  feedback_id: id,
+                  trigger,
+                  rating,
+                  message: trimmedMessage || null,
+                  has_message: Boolean(trimmedMessage),
+                  message_length: trimmedMessage.length,
+                  submitted_at: new Date().toISOString(),
+                  source: 'feedback_toast',
+                });
+              }
+
               setFeedbackSubmissions((prev) => ({
                 ...prev,
                 [id]: {
