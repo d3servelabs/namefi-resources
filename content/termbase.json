@@ -2,7 +2,13 @@
   "ai-agent": {
     "en": "AI Agent",
     "titles": {
-      "en": "AI Agent"
+      "en": "AI Agent",
+      "es": "Agente de IA",
+      "de": "KI-Agent",
+      "fr": "Agent IA",
+      "zh": "AI 智能体",
+      "ar": "وكيل الذكاء الاصطناعي",
+      "hi": "AI एजेंट"
     },
     "level": 1
   },
@@ -35,7 +41,13 @@
   "auth-code": {
     "en": "Auth Code (EPP Code, Transfer Code)",
     "titles": {
-      "en": "Auth Code (EPP Code, Transfer Code)"
+      "en": "Auth Code (EPP Code, Transfer Code)",
+      "es": "Código de autorización (código EPP, código de transferencia)",
+      "de": "Auth-Code (EPP-Code, Transfer-Code)",
+      "fr": "Code d'autorisation (code EPP, code de transfert)",
+      "zh": "授权码（EPP 码 / 转移码）",
+      "ar": "رمز التفويض (رمز EPP، رمز النقل)",
+      "hi": "ऑथ कोड (EPP कोड, ट्रांसफर कोड)"
     },
     "level": 1
   },
@@ -146,7 +158,13 @@
   "defi": {
     "en": "DeFi (Decentralized Finance)",
     "titles": {
-      "en": "DeFi (Decentralized Finance)"
+      "en": "DeFi (Decentralized Finance)",
+      "es": "DeFi (Finanzas Descentralizadas)",
+      "de": "DeFi (Dezentrale Finanzen)",
+      "fr": "DeFi (Finance Décentralisée)",
+      "zh": "DeFi（去中心化金融）",
+      "ar": "DeFi (التمويل اللامركزي)",
+      "hi": "DeFi (विकेंद्रीकृत वित्त)"
     },
     "level": 1
   },
@@ -179,7 +197,13 @@
   "dnssec": {
     "en": "DNSSEC (Domain Name System Security Extensions)",
     "titles": {
-      "en": "DNSSEC (Domain Name System Security Extensions)"
+      "en": "DNSSEC (Domain Name System Security Extensions)",
+      "es": "DNSSEC (Extensiones de Seguridad del DNS)",
+      "de": "DNSSEC (Domain Name System Security Extensions)",
+      "fr": "DNSSEC (Extensions de sécurité du DNS)",
+      "zh": "DNSSEC（域名系统安全扩展）",
+      "ar": "DNSSEC (امتدادات أمان نظام أسماء النطاقات)",
+      "hi": "DNSSEC (डोमेन नेम सिस्टम सुरक्षा एक्सटेंशन)"
     },
     "level": 1
   },
@@ -225,14 +249,26 @@
   "ens": {
     "en": "ENS (Ethereum Name Service)",
     "titles": {
-      "en": "ENS (Ethereum Name Service)"
+      "en": "ENS (Ethereum Name Service)",
+      "es": "ENS (Servicio de Nombres de Ethereum)",
+      "de": "ENS (Ethereum Name Service)",
+      "fr": "ENS (Ethereum Name Service)",
+      "zh": "ENS（以太坊域名服务）",
+      "ar": "ENS (خدمة أسماء إيثريوم)",
+      "hi": "ENS (एथेरियम नेम सर्विस)"
     },
     "level": 1
   },
   "erc-721": {
     "en": "ERC-721 (NFT Standard)",
     "titles": {
-      "en": "ERC-721 (NFT Standard)"
+      "en": "ERC-721 (NFT Standard)",
+      "es": "ERC-721 (estándar NFT)",
+      "de": "ERC-721 (NFT-Standard)",
+      "fr": "ERC-721 (norme NFT)",
+      "zh": "ERC-721（NFT 标准）",
+      "ar": "ERC-721 (معيار NFT)",
+      "hi": "ERC-721 (NFT मानक)"
     },
     "level": 1
   },
@@ -278,14 +314,26 @@
   "gas": {
     "en": "Gas (Transaction Fees)",
     "titles": {
-      "en": "Gas (Transaction Fees)"
+      "en": "Gas (Transaction Fees)",
+      "es": "Gas (comisiones de transacción)",
+      "de": "Gas (Transaktionsgebühren)",
+      "fr": "Gas (frais de transaction)",
+      "zh": "Gas（交易费用）",
+      "ar": "الغاز (رسوم المعاملات)",
+      "hi": "गैस (ट्रांज़ैक्शन शुल्क)"
     },
     "level": 1
   },
   "hardware-wallet": {
     "en": "Hardware Wallet",
     "titles": {
-      "en": "Hardware Wallet"
+      "en": "Hardware Wallet",
+      "es": "Billetera de hardware",
+      "de": "Hardware-Wallet",
+      "fr": "Portefeuille matériel",
+      "zh": "硬件钱包",
+      "ar": "محفظة الأجهزة",
+      "hi": "हार्डवेयर वॉलेट"
     },
     "level": 1
   },
@@ -482,7 +530,13 @@
   "seed-phrase": {
     "en": "Seed Phrase (Recovery Phrase, Mnemonic)",
     "titles": {
-      "en": "Seed Phrase (Recovery Phrase, Mnemonic)"
+      "en": "Seed Phrase (Recovery Phrase, Mnemonic)",
+      "es": "Frase semilla (frase de recuperación)",
+      "de": "Seed-Phrase (Wiederherstellungsphrase)",
+      "fr": "Phrase secrète (phrase de récupération)",
+      "zh": "助记词（恢复短语）",
+      "ar": "العبارة الأولية (عبارة الاسترداد)",
+      "hi": "सीड फ्रेज़ (रिकवरी फ्रेज़)"
     },
     "level": 1
   },
@@ -515,14 +569,26 @@
   "stablecoin": {
     "en": "Stablecoin",
     "titles": {
-      "en": "Stablecoin"
+      "en": "Stablecoin",
+      "es": "Stablecoin",
+      "de": "Stablecoin",
+      "fr": "Stablecoin",
+      "zh": "稳定币",
+      "ar": "العملة المستقرة",
+      "hi": "स्टेबलकॉइन"
     },
     "level": 1
   },
   "tld": {
     "en": "TLD (Top-Level Domain)",
     "titles": {
-      "en": "TLD (Top-Level Domain)"
+      "en": "TLD (Top-Level Domain)",
+      "es": "TLD (dominio de nivel superior)",
+      "de": "TLD (Top-Level-Domain)",
+      "fr": "TLD (domaine de premier niveau)",
+      "zh": "TLD（顶级域名）",
+      "ar": "TLD (نطاق المستوى الأعلى)",
+      "hi": "TLD (टॉप-लेवल डोमेन)"
     },
     "level": 1
   },
@@ -581,14 +647,26 @@
   "whois": {
     "en": "WHOIS (and RDAP)",
     "titles": {
-      "en": "WHOIS (and RDAP)"
+      "en": "WHOIS (and RDAP)",
+      "es": "WHOIS (y RDAP)",
+      "de": "WHOIS (und RDAP)",
+      "fr": "WHOIS (et RDAP)",
+      "zh": "WHOIS（与 RDAP）",
+      "ar": "WHOIS (و RDAP)",
+      "hi": "WHOIS (और RDAP)"
     },
     "level": 1
   },
   "x402": {
     "en": "x402",
     "titles": {
-      "en": "x402"
+      "en": "x402",
+      "es": "x402",
+      "de": "x402",
+      "fr": "x402",
+      "zh": "x402",
+      "ar": "x402",
+      "hi": "x402"
     },
     "level": 1
   }
