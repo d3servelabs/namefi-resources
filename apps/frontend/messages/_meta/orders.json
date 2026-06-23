@@ -166,6 +166,18 @@
   "timeline.items.helper": {
     "description": "Progress timeline step helper text for the domain registration stage (securing each domain on the blockchain)."
   },
+  "timeline.items.renewLabel": {
+    "description": "Progress timeline step label for the items stage when the order is renewals only (renewing domains)."
+  },
+  "timeline.items.renewHelper": {
+    "description": "Progress timeline step helper text for the items stage of a renewals-only order (extending each registration on-chain)."
+  },
+  "timeline.items.importLabel": {
+    "description": "Progress timeline step label for the items stage when the order is imports only (importing domains)."
+  },
+  "timeline.items.importHelper": {
+    "description": "Progress timeline step helper text for the items stage of an imports-only order (submitting import requests to the registrars)."
+  },
   "timeline.postProcessing.label": {
     "description": "Progress timeline step label: final post-processing touches."
   },
@@ -199,11 +211,23 @@
   "detail.congratulations": {
     "description": "Celebratory heading on a successfully completed order's detail page."
   },
+  "detail.renewedTitle": {
+    "description": "Heading on a successfully completed renewals-only order's detail page (the renewal is done)."
+  },
   "detail.couldNotComplete": {
     "description": "Heading on the order detail page when the order failed to complete."
   },
   "detail.successSubheading": {
     "description": "Subheading on a successful order confirming the domain(s) and NFT(s) were delivered. {count} = number of domains (ICU plural switches 'domain'/'domains' and 'is the NFT'/'are the NFTs')."
+  },
+  "detail.mintingSubheading": {
+    "description": "Subheading on a successful registration order whose NFT(s) are still being minted on-chain. {count} = number of domains (ICU plural). 'NFT' is a technical term — keep untranslated."
+  },
+  "detail.renewedSubheading": {
+    "description": "Subheading on a successful renewals-only order confirming the registration period was extended. {count} = number of domains (ICU plural switches the possessive 'domain's registration has'/'domains' registrations have')."
+  },
+  "detail.importSubmittedSubheading": {
+    "description": "Subheading on a successful imports-only order: the import request was submitted and the previous registrar will confirm within 5-7 days. {count} = number of domains (ICU plural)."
   },
   "detail.failedSubheading": {
     "description": "Subheading on the order detail page when processing failed, inviting the user to review details below."
@@ -231,6 +255,9 @@
   },
   "detail.shareManageMessage": {
     "description": "Share message template sent to a recipient. {domains} = list of domain names — keep untranslated; {count} = number of domains (ICU plural switches 'your domain'/'your domains'). 'Namefi' is the brand name — keep untranslated."
+  },
+  "detail.shareManageMessageRenew": {
+    "description": "Share message template sent to a recipient for a renewals-only order (renewed rather than registered). {domains} = list of domain names — keep untranslated; {count} = number of domains (ICU plural switches 'your domain'/'your domains'). 'Namefi' is the brand name — keep untranslated."
   },
   "processing.processingYourOrder": {
     "description": "Heading shown on the order processing/progress screen while the order is in progress."
@@ -262,17 +289,26 @@
   "processing.descItemsDefault": {
     "description": "Default processing description for the items stage (each domain is being submitted to the registrar)."
   },
+  "processing.descItemsRenewOnly": {
+    "description": "Processing description for the items stage of a renewals-only order (extending each domain's registration on-chain). {count} = number of domains (ICU plural)."
+  },
   "processing.descPostProcessingImport": {
     "description": "Processing description for the post-processing stage of an import (the old registrar will contact the user; typically 5-7 days)."
   },
   "processing.descPostProcessingDefault": {
     "description": "Default processing description for the post-processing stage (refreshing indexes and preparing on-chain records)."
   },
+  "processing.descPostProcessingRenew": {
+    "description": "Processing description for the post-processing stage of a renewals-only order (finalizing the new expiration on-chain)."
+  },
   "processing.descImportOnly": {
     "description": "Top-level processing description when the order is import-only (initiating import; typically 5-7 days)."
   },
   "processing.descImportAndRegister": {
     "description": "Top-level processing description when the order mixes registrations and imports (imports typically 5-7 days)."
+  },
+  "processing.descRenewOnly": {
+    "description": "Top-level processing description when the order is renewals-only (extending the registration period). {count} = number of domains (ICU plural)."
   },
   "processing.descDefault": {
     "description": "Generic fallback processing description while the order is wrapping up."

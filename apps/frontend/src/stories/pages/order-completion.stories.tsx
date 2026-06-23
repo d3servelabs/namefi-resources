@@ -472,3 +472,63 @@ export const MixedRegisterAndImport: Story = {
     },
   },
 };
+
+// Single renewal: the domain was already owned, so it stays owned — but the page
+// leads with "Renewal complete", drops the "List for Sale" CTA and the minting /
+// DNSSEC finishing-up strip (renewals reuse the existing NFT and DNS).
+export const RenewSingle: Story = {
+  args: {
+    mockState: {
+      orderDetails: {
+        order: createMockOrder({ amountInUSDCents: 1299 }),
+        items: [
+          createMockOrderItem({
+            normalizedDomainName:
+              'my-existing-domain.com' as NamefiNormalizedDomain,
+            type: 'RENEW',
+          }),
+        ],
+        payments: [createMockPayment({ amountInUSDCents: 1299 })],
+        user: mockUser,
+      },
+      ownedDomains: [owned('my-existing-domain.com', '111')],
+      dnssecActive: false,
+    },
+  },
+};
+
+// Multiple renewals: same renewal framing, pluralized — no listing, no minting.
+export const RenewMultiple: Story = {
+  args: {
+    mockState: {
+      orderDetails: {
+        order: createMockOrder({ amountInUSDCents: 3897 }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName: 'first-domain.com' as NamefiNormalizedDomain,
+            type: 'RENEW',
+          }),
+          createMockOrderItem({
+            id: 'item-2',
+            normalizedDomainName: 'second-domain.io' as NamefiNormalizedDomain,
+            type: 'RENEW',
+          }),
+          createMockOrderItem({
+            id: 'item-3',
+            normalizedDomainName: 'third-domain.net' as NamefiNormalizedDomain,
+            type: 'RENEW',
+          }),
+        ],
+        payments: [createMockPayment({ amountInUSDCents: 3897 })],
+        user: mockUser,
+      },
+      ownedDomains: [
+        owned('first-domain.com', '111'),
+        owned('second-domain.io', '222'),
+        owned('third-domain.net', '333'),
+      ],
+      dnssecActive: false,
+    },
+  },
+};

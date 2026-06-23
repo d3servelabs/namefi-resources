@@ -76,24 +76,32 @@ export function usePostRegistrationTasks({
   const anyDnssecActive = dnssecQueries.some((q) => q.data?.hasActiveWorkflow);
 
   const tasks = useMemo<PostRegistrationTask[]>(
-    () => [
-      {
-        key: 'mint',
-        label: 'Minting your NFT',
-        status: allMinted ? 'done' : 'in-progress',
-        detail:
-          total > 1 && !allMinted ? `${mintedCount} of ${total}` : undefined,
-      },
-      {
-        key: 'dnssec',
-        label: 'Enabling DNSSEC',
-        status: anyDnssecActive
-          ? 'in-progress'
-          : allMinted
-            ? 'done'
-            : 'pending',
-      },
-    ],
+    // Minting + DNSSEC are *registration* after-steps. With no domains to track
+    // (e.g. a renewal- or import-only order passes none), there's nothing
+    // finishing up — return an empty list so the page renders no mint/DNSSEC UI.
+    () =>
+      total === 0
+        ? []
+        : [
+            {
+              key: 'mint',
+              label: 'Minting your NFT',
+              status: allMinted ? 'done' : 'in-progress',
+              detail:
+                total > 1 && !allMinted
+                  ? `${mintedCount} of ${total}`
+                  : undefined,
+            },
+            {
+              key: 'dnssec',
+              label: 'Enabling DNSSEC',
+              status: anyDnssecActive
+                ? 'in-progress'
+                : allMinted
+                  ? 'done'
+                  : 'pending',
+            },
+          ],
     [allMinted, mintedCount, total, anyDnssecActive],
   );
 

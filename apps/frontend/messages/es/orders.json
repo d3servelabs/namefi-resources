@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "Registrando dominios",
-      "helper": "Asegurando cada dominio en la blockchain."
+      "helper": "Asegurando cada dominio en la blockchain.",
+      "renewLabel": "Renovando dominios",
+      "renewHelper": "Extendiendo cada registro en cadena.",
+      "importLabel": "Importando dominios",
+      "importHelper": "Enviando sus solicitudes de importación a los registradores."
     },
     "postProcessing": {
       "label": "Toques finales",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "Envíe este mensaje al destinatario para que pueda comenzar a gestionar su dominio.",
     "message": "Mensaje",
     "shareManageDefault": "Comience a gestionar su dominio en Namefi.",
-    "shareManageMessage": "He registrado {domains} para usted en Namefi. Comience a gestionar {count, plural, one {su dominio} other {sus dominios}} aquí:"
+    "shareManageMessage": "He registrado {domains} para usted en Namefi. Comience a gestionar {count, plural, one {su dominio} other {sus dominios}} aquí:",
+    "renewedTitle": "Renovación completada",
+    "mintingSubheading": "{count, plural, one {Su dominio está registrado. Estamos acuñando su NFT ahora; puede gestionarlo de inmediato.} other {Sus dominios están registrados. Estamos acuñando sus NFTs ahora; puede gestionarlos de inmediato.}}",
+    "renewedSubheading": "{count, plural, one {El registro de su dominio ha} other {Los registros de sus dominios han}} sido extendido.",
+    "importSubmittedSubheading": "{count, plural, one {Su solicitud de importación está} other {Sus solicitudes de importación están}} en camino. Su registrador anterior confirmará en 5-7 días.",
+    "shareManageMessageRenew": "He renovado {domains} para usted en Namefi. Comience a gestionar {count, plural, one {su dominio} other {sus dominios}} aquí:"
   },
   "processing": {
     "processingYourOrder": "Procesando su pedido",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "Estamos actualizando los índices y preparando sus registros en cadena.",
     "descImportOnly": "Estamos iniciando la importación. Esto suele tardar entre 5 y 7 días. Puede contactar a su registrador anterior para agilizarlo.",
     "descImportAndRegister": "Estamos procesando sus dominios. Las importaciones suelen tardar entre 5 y 7 días.",
-    "descDefault": "Un momento mientras finalizamos el proceso."
+    "descDefault": "Un momento mientras finalizamos el proceso.",
+    "descItemsRenewOnly": "Estamos extendiendo {count, plural, one {el registro de su dominio} other {el registro de cada dominio}} en cadena.",
+    "descPostProcessingRenew": "Estamos finalizando el nuevo vencimiento en cadena.",
+    "descRenewOnly": "Un momento mientras extendemos {count, plural, one {su dominio} other {sus dominios}}."
   },
   "notFound": {
     "title": "Pedido no encontrado",

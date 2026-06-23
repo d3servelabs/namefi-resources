@@ -38,6 +38,7 @@ import { OrderNotFound } from '@/components/orders/order-not-found';
 import { CompletionActions } from '@/components/orders/completion-actions';
 import { FinishingUpInline } from '@/components/orders/finishing-up-inline';
 import { usePostRegistrationTasks } from '@/components/orders/use-post-registration-tasks';
+import type { OrderKind } from '@/components/orders/order-progress-timeline';
 import { itemTypeSchema } from '@namefi-astra/common/shared-schemas';
 import type { OrderItemSelect } from '@namefi-astra/common/contract/entity-schemas';
 import { PageShell } from '@/components/page-shell';
@@ -125,6 +126,24 @@ function getOrderItemCounts(items: OrderItemSelect[]): OrderItemCounts {
   };
 }
 
+/**
+ * Collapses the order's item-type mix into a single "kind" that drives the
+ * page's copy. A `renew`/`import`/`register` order is one where every active
+ * item is that single type; any blend (or an empty order) is `mixed`, which
+ * falls back to the registration-flavored wording. Renewals and imports differ
+ * meaningfully from registrations — no new domain, no fresh NFT mint, no DNS
+ * setup — so the progress, success, and finishing-up surfaces branch on this.
+ */
+function getOrderKind(counts: OrderItemCounts): OrderKind {
+  const { importCount, registerCount, renewCount } = counts;
+  const present = [
+    importCount > 0 ? 'import' : null,
+    registerCount > 0 ? 'register' : null,
+    renewCount > 0 ? 'renew' : null,
+  ].filter(Boolean) as OrderKind[];
+  return present.length === 1 ? present[0] : 'mixed';
+}
+
 type OrdersTranslator = ReturnType<typeof useTranslations<'orders'>>;
 
 function getProcessingTitle(
@@ -174,9 +193,13 @@ function getProcessingDescription(
   counts: OrderItemCounts,
   stepId: OrderProgressStepId | undefined,
 ): string {
-  const { importCount, registerCount } = counts;
+  const { importCount, registerCount, total } = counts;
+  const renewOnly = getOrderKind(counts) === 'renew';
 
   if (stepId === 'items') {
+    if (renewOnly) {
+      return t('processing.descItemsRenewOnly', { count: total });
+    }
     if (importCount > 0 && registerCount === 0) {
       return t('processing.descItemsImportOnly');
     }
@@ -187,10 +210,17 @@ function getProcessingDescription(
   }
 
   if (stepId === 'post-processing') {
+    if (renewOnly) {
+      return t('processing.descPostProcessingRenew');
+    }
     if (importCount > 0) {
       return t('processing.descPostProcessingImport');
     }
     return t('processing.descPostProcessingDefault');
+  }
+
+  if (renewOnly) {
+    return t('processing.descRenewOnly', { count: total });
   }
 
   if (importCount > 0 && registerCount === 0) {
@@ -353,6 +383,7 @@ export default function OrderPage({ params }: OrderPageProps) {
   });
 
   const itemCounts = useMemo(() => getOrderItemCounts(items), [items]);
+  const orderKind = useMemo(() => getOrderKind(itemCounts), [itemCounts]);
 
   const activeProgressCopy = useMemo(() => {
     const stepId = orderProgress.activeStep?.id;
@@ -438,10 +469,17 @@ export default function OrderPage({ params }: OrderPageProps) {
 
     const domainList = orderItems.map((item) => item.fullDomain).join(', ');
 
+    // Renewals aren't a "just got it" moment — frame them as an extension.
+    if (orderKind === 'renew') {
+      return orderItems.length > 1
+        ? `Just renewed ${domainList} on Namefi (#PoweredByNamefi).`
+        : `Just renewed ${orderItems[0].fullDomain} on Namefi (#PoweredByNamefi).`;
+    }
+
     return orderItems.length > 1
       ? `Great I've just got ${domainList} from 0x.city (#PoweredByNamefi), come check it out!`
       : `Great I've just got ${orderItems[0].fullDomain} from 0x.city (#PoweredByNamefi), come check it out`;
-  }, [orderItems]);
+  }, [orderItems, orderKind]);
 
   const recipientWalletAddress = order?.nftWalletAddress ?? null;
   const recipientChainId = order?.nftChainId ?? null;
@@ -557,14 +595,25 @@ export default function OrderPage({ params }: OrderPageProps) {
     [ownedDomainsQuery.isSuccess, viewState, orderItems.length, pendingDomains],
   );
 
-  // Background "what's still running" tasks (mint, DNS, DNSSEC, parking). Shares
-  // the getDomainsByOwner cache with the listing gate above (same query key).
-  const orderDomainNames = useMemo(
-    () => orderItems.map((item) => item.fullDomain),
-    [orderItems],
+  // Background "what's still running" tasks (mint NFT, DNSSEC). These are
+  // after-*registration* steps: only fresh registrations mint a new NFT and get
+  // DNSSEC turned on. Renewals reuse an existing NFT and imports haven't minted
+  // yet (the transfer lands days later), so scope this to REGISTER items —
+  // otherwise a renew/import order strands a forever-"minting" indicator.
+  const registerDomainNames = useMemo(
+    () =>
+      items
+        .filter(
+          (item) =>
+            item.type === itemTypeSchema.enum.REGISTER &&
+            item.status !== orderStatusSchema.enum.FAILED &&
+            item.status !== orderStatusSchema.enum.CANCELLED,
+        )
+        .map((item) => item.normalizedDomainName),
+    [items],
   );
   const { tasks: postRegistrationTasks } = usePostRegistrationTasks({
-    domains: orderDomainNames,
+    domains: registerDomainNames,
     walletAddress: recipientWalletAddress,
     enabled:
       viewState === 'success' &&
@@ -579,12 +628,13 @@ export default function OrderPage({ params }: OrderPageProps) {
     }
 
     const domainList = orderItems.map((item) => item.fullDomain).join(', ');
+    const messageParams = { domains: domainList, count: orderItems.length };
 
-    return t('detail.shareManageMessage', {
-      domains: domainList,
-      count: orderItems.length,
-    });
-  }, [t, orderItems]);
+    // Renewals didn't "register" the domain — use the renewal-worded handoff.
+    return orderKind === 'renew'
+      ? t('detail.shareManageMessageRenew', messageParams)
+      : t('detail.shareManageMessage', messageParams);
+  }, [t, orderItems, orderKind]);
 
   const shareManageUrl = useMemo(() => {
     if (!manageShareUrl) return '';
@@ -603,18 +653,25 @@ export default function OrderPage({ params }: OrderPageProps) {
 
   const heading =
     viewState === 'success'
-      ? t('detail.congratulations')
+      ? orderKind === 'renew'
+        ? t('detail.renewedTitle')
+        : t('detail.congratulations')
       : viewState === 'failed'
         ? t('detail.couldNotComplete')
         : activeProgressCopy.title;
   const subheading =
     viewState === 'success'
-      ? mintPending
-        ? // Registration is done but the NFT isn't on-chain yet — don't claim
-          // "here is the NFT". Say what's true and what's still happening.
-          // TODO(i18n): add an order translation key for this mint-pending copy.
-          `Your ${orderItems.length > 1 ? 'domains are' : 'domain is'} registered. We're minting your ${orderItems.length > 1 ? 'NFTs' : 'NFT'} now — you can manage ${orderItems.length > 1 ? 'them' : 'it'} right away.`
-        : t('detail.successSubheading', { count: orderItems.length })
+      ? orderKind === 'renew'
+        ? // No new domain, no fresh NFT — the registration period was extended.
+          t('detail.renewedSubheading', { count: orderItems.length })
+        : orderKind === 'import'
+          ? // Imports settle at the old registrar over days; nothing minted yet.
+            t('detail.importSubmittedSubheading', { count: orderItems.length })
+          : mintPending
+            ? // Registration is done but the NFT isn't on-chain yet — don't claim
+              // "here is the NFT". Say what's true and what's still happening.
+              t('detail.mintingSubheading', { count: orderItems.length })
+            : t('detail.successSubheading', { count: orderItems.length })
       : viewState === 'failed'
         ? t('detail.failedSubheading')
         : activeProgressCopy.description;
@@ -696,6 +753,7 @@ export default function OrderPage({ params }: OrderPageProps) {
             <OrderProgressTimeline
               progress={orderProgress.data ?? null}
               workflowPhase={timelinePhase}
+              orderKind={orderKind}
             />
           </div>
         )}
@@ -732,7 +790,10 @@ export default function OrderPage({ params }: OrderPageProps) {
                   isRecipientSelf &&
                   marketplaceListingEnabled &&
                   Boolean(recipientWalletAddress) &&
-                  listableDomains.length > 0
+                  listableDomains.length > 0 &&
+                  // Renewals are about keeping a domain, not selling it — don't
+                  // surface a "List for Sale" CTA on a renewal confirmation.
+                  orderKind !== 'renew'
                 }
                 multiple={orderItems.length > 1}
               />
@@ -749,7 +810,8 @@ export default function OrderPage({ params }: OrderPageProps) {
               isRecipientSelf &&
               marketplaceListingEnabled &&
               recipientWalletAddress &&
-              listableDomains.length > 0 && (
+              listableDomains.length > 0 &&
+              orderKind !== 'renew' && (
                 <div className="mt-6">
                   <ListOnMarketplaceEntry
                     domains={listableDomains}
@@ -766,7 +828,10 @@ export default function OrderPage({ params }: OrderPageProps) {
                 recipientWalletAddress && (
                   <FinishingUpInline
                     tasks={postRegistrationTasks}
-                    aiDomains={uniqueDomains}
+                    // The "Just AI'ng" logo preview is a new-brand nicety; a
+                    // renewal is an existing domain, so skip it (with no mint/
+                    // DNSSEC tasks either, the strip renders nothing for renewals).
+                    aiDomains={orderKind === 'renew' ? [] : uniqueDomains}
                     aiGenerations={internalAiGenerations}
                     aiLoading={isInternalAiGenerationsLoading}
                   />

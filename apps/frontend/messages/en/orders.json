@@ -65,7 +65,11 @@
     },
     "items": {
       "label": "Registering domains",
-      "helper": "Securing each domain on the blockchain."
+      "helper": "Securing each domain on the blockchain.",
+      "renewLabel": "Renewing domains",
+      "renewHelper": "Extending each registration on-chain.",
+      "importLabel": "Importing domains",
+      "importHelper": "Submitting your import requests to the registrars."
     },
     "postProcessing": {
       "label": "Final touches",
@@ -88,8 +92,12 @@
     "authRequired": "Please sign in to view your order details",
     "unauthorized": "You are not authorized to view this order.",
     "congratulations": "Congratulations!",
+    "renewedTitle": "Renewal complete",
     "couldNotComplete": "We couldn't complete your order",
     "successSubheading": "You've got your {count, plural, one {domain} other {domains}} and here {count, plural, one {is the NFT} other {are the NFTs}}",
+    "mintingSubheading": "{count, plural, one {Your domain is registered. We're minting its NFT now — you can manage it right away.} other {Your domains are registered. We're minting their NFTs now — you can manage them right away.}}",
+    "renewedSubheading": "{count, plural, one {Your domain's registration has} other {Your domains' registrations have}} been extended.",
+    "importSubmittedSubheading": "{count, plural, one {Your import request is} other {Your import requests are}} on the way. Your previous registrar will confirm within 5-7 days.",
     "failedSubheading": "Something went wrong while processing this order. Review the details below.",
     "nftWallet": "NFT Wallet",
     "viewFullDetails": "View full details",
@@ -98,7 +106,8 @@
     "shareDialogDescription": "Send this message to the recipient so they can begin managing their domain.",
     "message": "Message",
     "shareManageDefault": "Begin managing your domain on Namefi.",
-    "shareManageMessage": "I've registered {domains} for you on Namefi. Begin managing {count, plural, one {your domain} other {your domains}} here:"
+    "shareManageMessage": "I've registered {domains} for you on Namefi. Begin managing {count, plural, one {your domain} other {your domains}} here:",
+    "shareManageMessageRenew": "I've renewed {domains} for you on Namefi. Begin managing {count, plural, one {your domain} other {your domains}} here:"
   },
   "processing": {
     "processingYourOrder": "Processing your order",
@@ -111,10 +120,13 @@
     "descItemsImportOnly": "We are submitting the import request. This typically takes 5-7 days. You can contact your old registrar to expedite. If the domain is locked, you may need to unlock it first.",
     "descItemsImportAndRegister": "We are registering your domains and submitting import requests. Imports typically take 5-7 days. You can contact your old registrar to expedite. If a domain is locked, you may need to unlock it first.",
     "descItemsDefault": "Each domain is being submitted to the registrar.",
+    "descItemsRenewOnly": "We are extending {count, plural, one {your domain's registration} other {each domain's registration}} on-chain.",
     "descPostProcessingImport": "Your old registrar will contact you to confirm the import. This typically takes 5-7 days.",
     "descPostProcessingDefault": "We are refreshing indexes and preparing your on-chain records.",
+    "descPostProcessingRenew": "We are finalizing the new expiration on-chain.",
     "descImportOnly": "We are initiating the import. This typically takes 5-7 days. You can contact your old registrar to expedite.",
     "descImportAndRegister": "We are processing your domains. Imports typically take 5-7 days.",
+    "descRenewOnly": "Hang tight while we extend your {count, plural, one {domain} other {domains}}.",
     "descDefault": "Hang on tight while we wrap things up."
   },
   "notFound": {

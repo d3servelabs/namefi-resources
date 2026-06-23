@@ -663,6 +663,101 @@ export const MultipleRegistrationsPending: Story = {
   },
 };
 
+export const SingleRenewalPending: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 1299,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName:
+              'my-existing-domain.com' as NamefiNormalizedDomain,
+            type: 'RENEW',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'visa',
+          last4: '4242',
+        },
+      ],
+    },
+  },
+};
+
+export const MultipleRenewalsPending: Story = {
+  args: {
+    mockState: {
+      isAuthenticated: true,
+      isLoading: false,
+      orderDetails: {
+        order: createMockOrder({
+          status: 'PROCESSING',
+          amountInUSDCents: 3897,
+        }),
+        items: [
+          createMockOrderItem({
+            id: 'item-1',
+            normalizedDomainName: 'first-domain.com' as NamefiNormalizedDomain,
+            type: 'RENEW',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-2',
+            normalizedDomainName: 'second-domain.io' as NamefiNormalizedDomain,
+            type: 'RENEW',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+          createMockOrderItem({
+            id: 'item-3',
+            normalizedDomainName: 'third-domain.net' as NamefiNormalizedDomain,
+            type: 'RENEW',
+            status: 'PROCESSING',
+            amountInUSDCents: 1299,
+          }),
+        ],
+        payments: [
+          createMockPayment({
+            status: 'SUCCEEDED',
+            amountInUSDCents: 3897,
+          }),
+        ],
+        user: mockUser,
+      },
+      isOrderLoading: false,
+      paymentMethodDetails: [
+        {
+          paymentId: 'payment-1',
+          isOnChainPayment: false,
+          brand: 'amex',
+          last4: '1234',
+        },
+      ],
+    },
+  },
+};
+
 export const PunycodeDomains: Story = {
   args: {
     mockState: {

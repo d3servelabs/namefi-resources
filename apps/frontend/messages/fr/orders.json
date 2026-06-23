@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "Enregistrement des domaines",
-      "helper": "Sécurisation de chaque domaine sur la blockchain."
+      "helper": "Sécurisation de chaque domaine sur la blockchain.",
+      "renewLabel": "Renouvellement des domaines",
+      "renewHelper": "Prolongation de chaque inscription on-chain.",
+      "importLabel": "Importation des domaines",
+      "importHelper": "Soumission de vos demandes d'importation aux registrars."
     },
     "postProcessing": {
       "label": "Touches finales",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "Envoyez ce message au destinataire pour qu'il puisse commencer à gérer son domaine.",
     "message": "Message",
     "shareManageDefault": "Commencez à gérer votre domaine sur Namefi.",
-    "shareManageMessage": "J'ai enregistré {domains} pour vous sur Namefi. Commencez à gérer {count, plural, one {votre domaine} other {vos domaines}} ici :"
+    "shareManageMessage": "J'ai enregistré {domains} pour vous sur Namefi. Commencez à gérer {count, plural, one {votre domaine} other {vos domaines}} ici :",
+    "renewedTitle": "Renouvellement effectué",
+    "mintingSubheading": "{count, plural, one {Votre domaine est enregistré. Nous frappons son NFT maintenant — vous pouvez le gérer dès à présent.} other {Vos domaines sont enregistrés. Nous frappons leurs NFTs maintenant — vous pouvez les gérer dès à présent.}}",
+    "renewedSubheading": "{count, plural, one {L'inscription de votre domaine a} other {Les inscriptions de vos domaines ont}} été prolongée.",
+    "importSubmittedSubheading": "{count, plural, one {Votre demande d'importation est} other {Vos demandes d'importation sont}} en cours. Votre ancien registrar confirmera sous 5-7 jours.",
+    "shareManageMessageRenew": "J'ai renouvelé {domains} pour vous sur Namefi. Commencez à gérer {count, plural, one {votre domaine} other {vos domaines}} ici :"
   },
   "processing": {
     "processingYourOrder": "Traitement de votre commande",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "Nous actualisons les index et préparons vos enregistrements on-chain.",
     "descImportOnly": "Nous lançons l'importation. Cela prend généralement 5 à 7 jours. Vous pouvez contacter votre ancien registrar pour accélérer.",
     "descImportAndRegister": "Nous traitons vos domaines. Les importations prennent généralement 5 à 7 jours.",
-    "descDefault": "Veuillez patienter pendant que nous finalisons votre commande."
+    "descDefault": "Veuillez patienter pendant que nous finalisons votre commande.",
+    "descItemsRenewOnly": "Nous prolongeons {count, plural, one {l'inscription de votre domaine} other {l'inscription de chaque domaine}} on-chain.",
+    "descPostProcessingRenew": "Nous finalisons la nouvelle date d'expiration on-chain.",
+    "descRenewOnly": "Veuillez patienter pendant que nous prolongeons {count, plural, one {votre domaine} other {vos domaines}}."
   },
   "notFound": {
     "title": "Commande introuvable",

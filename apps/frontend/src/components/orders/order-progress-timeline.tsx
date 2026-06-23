@@ -15,9 +15,18 @@ import { useMemo } from 'react';
 type OrderProgress = AppRouterOutput['orders']['getOrderProgress'];
 type OrderStepId = NonNullable<OrderProgress['state']>['steps'][number]['id'];
 
+/**
+ * What the order's active line items actually do. Drives renewal/import-aware
+ * copy across the progress page. `mixed` (and the empty-order fallback) reuses
+ * the registration wording. Derived from order item types in the order page.
+ */
+export type OrderKind = 'register' | 'import' | 'renew' | 'mixed';
+
 interface OrderProgressTimelineProps {
   progress: OrderProgress | null;
   workflowPhase: WorkflowProgressPhase;
+  /** Tailors the "items" step copy to renewals / imports. Defaults to register. */
+  orderKind?: OrderKind;
 }
 
 /**
@@ -62,6 +71,7 @@ const orderStepDisplayInfo: Record<OrderStepId, StepDisplayInfo> = {
 export function OrderProgressTimeline({
   progress,
   workflowPhase,
+  orderKind = 'register',
 }: OrderProgressTimelineProps) {
   const t = useTranslations('orders');
   const effectiveLoading = workflowPhase === 'loading' || !progress?.state;
@@ -78,10 +88,24 @@ export function OrderProgressTimeline({
         label: t('timeline.payments.label'),
         helper: t('timeline.payments.helper'),
       },
-      items: {
-        label: t('timeline.items.label'),
-        helper: t('timeline.items.helper'),
-      },
+      // The "items" step is the one stage that means something different per
+      // order kind: renewals extend on-chain, imports submit transfer requests,
+      // and registrations (and mixed orders) secure new domains.
+      items:
+        orderKind === 'renew'
+          ? {
+              label: t('timeline.items.renewLabel'),
+              helper: t('timeline.items.renewHelper'),
+            }
+          : orderKind === 'import'
+            ? {
+                label: t('timeline.items.importLabel'),
+                helper: t('timeline.items.importHelper'),
+              }
+            : {
+                label: t('timeline.items.label'),
+                helper: t('timeline.items.helper'),
+              },
       'post-processing': {
         label: t('timeline.postProcessing.label'),
         helper: t('timeline.postProcessing.helper'),
@@ -99,7 +123,7 @@ export function OrderProgressTimeline({
         helper: t('timeline.notification.helper'),
       },
     }),
-    [t],
+    [t, orderKind],
   );
   const displayedSteps = useMemo(() => {
     return steps.filter((step) => {

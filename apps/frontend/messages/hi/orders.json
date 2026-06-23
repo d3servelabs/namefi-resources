@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "डोमेन पंजीकृत किए जा रहे हैं",
-      "helper": "प्रत्येक डोमेन को blockchain पर सुरक्षित किया जा रहा है।"
+      "helper": "प्रत्येक डोमेन को blockchain पर सुरक्षित किया जा रहा है।",
+      "renewLabel": "डोमेन नवीनीकृत किए जा रहे हैं",
+      "renewHelper": "प्रत्येक पंजीकरण on-chain बढ़ाया जा रहा है।",
+      "importLabel": "डोमेन आयात किए जा रहे हैं",
+      "importHelper": "आपके आयात अनुरोध रजिस्ट्रारों को सबमिट किए जा रहे हैं।"
     },
     "postProcessing": {
       "label": "अंतिम चरण",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "यह संदेश प्राप्तकर्ता को भेजें ताकि वे अपना डोमेन प्रबंधित करना शुरू कर सकें।",
     "message": "संदेश",
     "shareManageDefault": "Namefi पर अपना डोमेन प्रबंधित करना शुरू करें।",
-    "shareManageMessage": "मैंने Namefi पर आपके लिए {domains} पंजीकृत किए हैं। {count, plural, one {अपना डोमेन} other {अपने डोमेन}} यहाँ प्रबंधित करना शुरू करें:"
+    "shareManageMessage": "मैंने Namefi पर आपके लिए {domains} पंजीकृत किए हैं। {count, plural, one {अपना डोमेन} other {अपने डोमेन}} यहाँ प्रबंधित करना शुरू करें:",
+    "renewedTitle": "नवीनीकरण पूर्ण",
+    "mintingSubheading": "{count, plural, one {आपका डोमेन पंजीकृत हो गया है। हम अभी इसका NFT mint कर रहे हैं — आप इसे अभी प्रबंधित कर सकते हैं।} other {आपके डोमेन पंजीकृत हो गए हैं। हम अभी उनके NFTs mint कर रहे हैं — आप उन्हें अभी प्रबंधित कर सकते हैं।}}",
+    "renewedSubheading": "{count, plural, one {आपके डोमेन का पंजीकरण} other {आपके डोमेन के पंजीकरण}} बढ़ा दिए गए हैं।",
+    "importSubmittedSubheading": "{count, plural, one {आपका आयात अनुरोध} other {आपके आयात अनुरोध}} भेज दिए गए हैं। आपका पुराना रजिस्ट्रार 5-7 दिनों में पुष्टि करेगा।",
+    "shareManageMessageRenew": "मैंने Namefi पर आपके लिए {domains} नवीनीकृत किए हैं। {count, plural, one {अपना डोमेन} other {अपने डोमेन}} यहाँ प्रबंधित करना शुरू करें:"
   },
   "processing": {
     "processingYourOrder": "आपका ऑर्डर प्रक्रियाधीन है",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "हम इंडेक्स रिफ्रेश कर रहे हैं और आपके on-chain रिकॉर्ड तैयार कर रहे हैं।",
     "descImportOnly": "हम आयात शुरू कर रहे हैं। इसमें सामान्यतः 5-7 दिन लगते हैं। आप इसे शीघ्र करने के लिए अपने पुराने रजिस्ट्रार से संपर्क कर सकते हैं।",
     "descImportAndRegister": "हम आपके डोमेन प्रक्रियाधीन कर रहे हैं। आयात में सामान्यतः 5-7 दिन लगते हैं।",
-    "descDefault": "हम काम समाप्त कर रहे हैं, थोड़ा रुकें।"
+    "descDefault": "हम काम समाप्त कर रहे हैं, थोड़ा रुकें।",
+    "descItemsRenewOnly": "हम {count, plural, one {आपके डोमेन का पंजीकरण} other {प्रत्येक डोमेन का पंजीकरण}} on-chain बढ़ा रहे हैं।",
+    "descPostProcessingRenew": "हम on-chain नई समाप्ति तिथि अंतिम रूप दे रहे हैं।",
+    "descRenewOnly": "थोड़ा रुकें, हम आपके {count, plural, one {डोमेन} other {डोमेन}} का नवीनीकरण कर रहे हैं।"
   },
   "notFound": {
     "title": "ऑर्डर नहीं मिला",

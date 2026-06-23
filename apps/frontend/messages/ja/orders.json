@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "ドメインを登録中",
-      "helper": "各ドメインをブロックチェーンに登録しています。"
+      "helper": "各ドメインをブロックチェーンに登録しています。",
+      "renewLabel": "ドメインを更新中",
+      "renewHelper": "各登録をオンチェーンで延長しています。",
+      "importLabel": "ドメインをインポート中",
+      "importHelper": "インポートリクエストをレジストラに送信しています。"
     },
     "postProcessing": {
       "label": "最終処理",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "受取人がドメインの管理を開始できるよう、このメッセージを送信してください。",
     "message": "メッセージ",
     "shareManageDefault": "Namefi でドメインの管理を開始してください。",
-    "shareManageMessage": "Namefi で {domains} を登録しました。こちらから{count, plural, other {ドメイン}}の管理を開始してください："
+    "shareManageMessage": "Namefi で {domains} を登録しました。こちらから{count, plural, other {ドメイン}}の管理を開始してください：",
+    "renewedTitle": "更新完了",
+    "mintingSubheading": "{count, plural, one {ドメインが登録されました。現在 NFT を発行中です。今すぐ管理を開始できます。} other {ドメインが登録されました。現在 NFT を発行中です。今すぐ管理を開始できます。}}",
+    "renewedSubheading": "{count, plural, one {ドメインの登録期間が} other {ドメインの登録期間が}}延長されました。",
+    "importSubmittedSubheading": "{count, plural, one {インポートリクエストを送信しました。} other {インポートリクエストを送信しました。}}現在のレジストラが5〜7日以内に確認します。",
+    "shareManageMessageRenew": "Namefi で {domains} を更新しました。こちらから{count, plural, one {ドメイン} other {ドメイン}}の管理を開始してください："
   },
   "processing": {
     "processingYourOrder": "注文を処理中",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "インデックスを更新し、オンチェーンレコードを準備しています。",
     "descImportOnly": "インポートを開始しています。通常5〜7日かかります。現在のレジストラに連絡して手続きを早めることもできます。",
     "descImportAndRegister": "ドメインを処理しています。インポートは通常5〜7日かかります。",
-    "descDefault": "もうしばらくお待ちください。"
+    "descDefault": "もうしばらくお待ちください。",
+    "descItemsRenewOnly": "{count, plural, one {ドメインの登録期間をオンチェーンで延長しています。} other {各ドメインの登録期間をオンチェーンで延長しています。}}",
+    "descPostProcessingRenew": "新しい有効期限をオンチェーンで確定しています。",
+    "descRenewOnly": "{count, plural, one {ドメインの更新が完了するまでしばらくお待ちください。} other {ドメインの更新が完了するまでしばらくお待ちください。}}"
   },
   "notFound": {
     "title": "注文が見つかりません",

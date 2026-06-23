@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "Domains werden registriert",
-      "helper": "Jede Domain wird auf der Blockchain gesichert."
+      "helper": "Jede Domain wird auf der Blockchain gesichert.",
+      "renewLabel": "Domains werden verlängert",
+      "renewHelper": "Jede Registrierung wird on-chain verlängert.",
+      "importLabel": "Domains werden importiert",
+      "importHelper": "Ihre Import-Anfragen werden an die Registrare übermittelt."
     },
     "postProcessing": {
       "label": "Letzte Schritte",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "Senden Sie diese Nachricht an den Empfänger, damit er die Domain verwalten kann.",
     "message": "Nachricht",
     "shareManageDefault": "Beginnen Sie mit der Verwaltung Ihrer Domain auf Namefi.",
-    "shareManageMessage": "Ich habe {domains} für Sie auf Namefi registriert. Beginnen Sie hier mit der Verwaltung {count, plural, one {Ihrer Domain} other {Ihrer Domains}}:"
+    "shareManageMessage": "Ich habe {domains} für Sie auf Namefi registriert. Beginnen Sie hier mit der Verwaltung {count, plural, one {Ihrer Domain} other {Ihrer Domains}}:",
+    "renewedTitle": "Verlängerung abgeschlossen",
+    "mintingSubheading": "{count, plural, one {Ihre Domain ist registriert. Wir prägen jetzt das NFT – Sie können sie sofort verwalten.} other {Ihre Domains sind registriert. Wir prägen jetzt die NFTs – Sie können sie sofort verwalten.}}",
+    "renewedSubheading": "{count, plural, one {Die Registrierung Ihrer Domain wurde} other {Die Registrierungen Ihrer Domains wurden}} verlängert.",
+    "importSubmittedSubheading": "{count, plural, one {Ihre Import-Anfrage ist} other {Ihre Import-Anfragen sind}} auf dem Weg. Ihr bisheriger Registrar bestätigt dies innerhalb von 5-7 Tagen.",
+    "shareManageMessageRenew": "Ich habe {domains} für Sie auf Namefi verlängert. Beginnen Sie hier mit der Verwaltung {count, plural, one {Ihrer Domain} other {Ihrer Domains}}:"
   },
   "processing": {
     "processingYourOrder": "Ihre Bestellung wird bearbeitet",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "Wir aktualisieren die Indizes und bereiten Ihre On-Chain-Einträge vor.",
     "descImportOnly": "Wir leiten den Import ein. Dies dauert in der Regel 5–7 Tage. Sie können Ihren bisherigen Registrar kontaktieren, um den Vorgang zu beschleunigen.",
     "descImportAndRegister": "Wir verarbeiten Ihre Domains. Importe dauern in der Regel 5–7 Tage.",
-    "descDefault": "Bitte warten Sie, während wir die letzten Schritte abschließen."
+    "descDefault": "Bitte warten Sie, während wir die letzten Schritte abschließen.",
+    "descItemsRenewOnly": "Wir verlängern {count, plural, one {die Registrierung Ihrer Domain} other {die Registrierung jeder Domain}} on-chain.",
+    "descPostProcessingRenew": "Wir schließen das neue Ablaufdatum on-chain ab.",
+    "descRenewOnly": "Bitte warten Sie, während wir {count, plural, one {Ihre Domain verlängern} other {Ihre Domains verlängern}}."
   },
   "notFound": {
     "title": "Bestellung nicht gefunden",

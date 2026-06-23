@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "正在注册域名",
-      "helper": "正在将每个域名上链。"
+      "helper": "正在将每个域名上链。",
+      "renewLabel": "正在续费域名",
+      "renewHelper": "正在链上延长每个域名的注册期限。",
+      "importLabel": "正在导入域名",
+      "importHelper": "正在向注册商提交您的导入请求。"
     },
     "postProcessing": {
       "label": "收尾处理",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "将此消息发送给接收方，以便其开始管理域名。",
     "message": "消息",
     "shareManageDefault": "在 Namefi 上开始管理您的域名。",
-    "shareManageMessage": "我已在 Namefi 上为您注册 {domains}。在此开始管理{count, plural, other {您的域名}}："
+    "shareManageMessage": "我已在 Namefi 上为您注册 {domains}。在此开始管理{count, plural, other {您的域名}}：",
+    "renewedTitle": "续费完成",
+    "mintingSubheading": "{count, plural, one {您的域名已注册成功。我们正在铸造其 NFT，您现在即可开始管理。} other {您的域名已注册成功。我们正在铸造其 NFT，您现在即可开始管理。}}",
+    "renewedSubheading": "{count, plural, one {您的域名注册已} other {您的域名注册已}}延期。",
+    "importSubmittedSubheading": "{count, plural, one {您的导入请求已} other {您的导入请求已}}发出。您的原注册商将在 5-7 天内确认。",
+    "shareManageMessageRenew": "我已在 Namefi 上为您续费 {domains}。在此开始管理{count, plural, one {您的域名} other {您的域名}}："
   },
   "processing": {
     "processingYourOrder": "正在处理您的订单",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "我们正在刷新索引并准备您的链上记录。",
     "descImportOnly": "我们正在发起导入。这通常需要 5-7 天。您可以联系原注册商加速处理。",
     "descImportAndRegister": "我们正在处理您的域名。导入通常需要 5-7 天。",
-    "descDefault": "请稍候，我们正在完成收尾工作。"
+    "descDefault": "请稍候，我们正在完成收尾工作。",
+    "descItemsRenewOnly": "我们正在链上延长{count, plural, one {您的域名注册期限} other {每个域名的注册期限}}。",
+    "descPostProcessingRenew": "我们正在链上完成新到期时间的确认。",
+    "descRenewOnly": "请稍候，我们正在延长您的{count, plural, one {域名} other {域名}}注册期限。"
   },
   "notFound": {
     "title": "未找到订单",

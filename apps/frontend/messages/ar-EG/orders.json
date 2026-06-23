@@ -63,7 +63,11 @@
     },
     "items": {
       "label": "بنسجّل النطاقات",
-      "helper": "بنأمّن كل نطاق على البلوكشين."
+      "helper": "بنأمّن كل نطاق على البلوكشين.",
+      "renewLabel": "بنجدّد النطاقات",
+      "renewHelper": "بنمدّد كل تسجيل على البلوكشين.",
+      "importLabel": "بنستورد النطاقات",
+      "importHelper": "بنقدّم طلبات الاستيراد للمسجّلين."
     },
     "postProcessing": {
       "label": "اللمسات الأخيرة",
@@ -96,7 +100,12 @@
     "shareDialogDescription": "ابعت الرسالة دي للمستلم عشان يقدر يدير نطاقه.",
     "message": "الرسالة",
     "shareManageDefault": "ابدأ إدارة نطاقك على Namefi.",
-    "shareManageMessage": "سجّلتلك {domains} على Namefi. ابدأ إدارة {count, plural, one {نطاقك} other {نطاقاتك}} من هنا:"
+    "shareManageMessage": "سجّلتلك {domains} على Namefi. ابدأ إدارة {count, plural, one {نطاقك} other {نطاقاتك}} من هنا:",
+    "renewedTitle": "اتجدّد التسجيل",
+    "mintingSubheading": "{count, plural, one {نطاقك اتسجّل. بنصدر NFT بتاعته دلوقتي — تقدر تديره على طول.} other {نطاقاتك اتسجّلت. بنصدر الـ NFTs بتاعتهم دلوقتي — تقدر تديرهم على طول.}}",
+    "renewedSubheading": "{count, plural, one {اتمدّد تسجيل نطاقك.} other {اتمدّد تسجيل نطاقاتك.}}",
+    "importSubmittedSubheading": "{count, plural, one {طلب الاستيراد بتاعك في الطريق.} other {طلبات الاستيراد بتاعتك في الطريق.}} المسجّل القديم هيأكّد خلال ٥-٧ أيام.",
+    "shareManageMessageRenew": "جدّدتلك {domains} على Namefi. ابدأ إدارة {count, plural, one {نطاقك} other {نطاقاتك}} من هنا:"
   },
   "processing": {
     "processingYourOrder": "جاري معالجة طلبك",
@@ -113,7 +122,10 @@
     "descPostProcessingDefault": "بنحدّث الفهارس ونجهّز سجلاتك على السلسلة.",
     "descImportOnly": "بنبدأ الاستيراد. ده بياخد عادةً ٥-٧ أيام. تقدر تتواصل مع المسجّل القديم للتسريع.",
     "descImportAndRegister": "بنعالج نطاقاتك. الاستيراد بياخد عادةً ٥-٧ أيام.",
-    "descDefault": "استنّى شوية وإحنا بنخلص طلبك."
+    "descDefault": "استنّى شوية وإحنا بنخلص طلبك.",
+    "descItemsRenewOnly": "بنمدّد {count, plural, one {تسجيل نطاقك} other {تسجيل كل نطاق}} على البلوكشين.",
+    "descPostProcessingRenew": "بننهّي تحديث تاريخ الانتهاء الجديد على البلوكشين.",
+    "descRenewOnly": "استنّى شوية وإحنا بنمدّد {count, plural, one {نطاقك} other {نطاقاتك}}."
   },
   "notFound": {
     "title": "الطلب مش موجود",
