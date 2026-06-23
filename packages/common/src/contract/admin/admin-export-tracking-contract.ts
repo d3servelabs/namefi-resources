@@ -26,6 +26,15 @@ const sendExportTrackingEmailInputSchema = z.object({
   forceResend: z.boolean().optional().default(false),
 });
 
+const gatherExportEvidenceInputSchema = z.object({ id: z.string().uuid() });
+
+const summarizeExportEvidenceInputSchema = z.object({
+  id: z.string().uuid(),
+  evidence: z.any(),
+  decisionAction: z.string().optional(),
+  decisionReason: z.string().optional(),
+});
+
 const exportTrackingListOutputSchema = z.object({
   data: z.array(z.any()),
   pagination: z.object({
@@ -70,6 +79,16 @@ export const adminExportTrackingContract = createContract(
       type: 'mutation',
       input: sendExportTrackingEmailInputSchema,
       output: sendEmailOutputSchema,
+    },
+    gatherExportEvidence: {
+      type: 'query',
+      input: gatherExportEvidenceInputSchema,
+      output: z.any(),
+    },
+    summarizeExportEvidence: {
+      type: 'query',
+      input: summarizeExportEvidenceInputSchema,
+      output: z.any(),
     },
   },
 );

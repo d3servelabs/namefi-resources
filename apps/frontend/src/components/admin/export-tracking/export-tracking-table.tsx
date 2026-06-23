@@ -26,6 +26,7 @@ import {
 } from './export-tracking-cells';
 import { StatusHistorySubrow } from './status-history-subrow';
 import type { ExportTrackingRecord as BaseExportTrackingRecord } from './types';
+import { ExportTrackingEvidenceDialog } from './export-tracking-evidence-dialog';
 import { VerifyButton } from './verify-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PermissionGate } from '@/components/access/PermissionGate';
@@ -62,13 +63,11 @@ const toDateOrNull = (value: Date | string | null | undefined): Date | null =>
 
 const getPendingEmailSentAt = (
   record: TableExportTrackingRecord,
-): Date | string | null | undefined =>
-  record.pendingExportEmailSentAt ?? record.pendingNotifiedAt;
+): Date | string | null | undefined => record.pendingExportEmailSentAt;
 
 const getCompletedEmailSentAt = (
   record: TableExportTrackingRecord,
-): Date | string | null | undefined =>
-  record.completedExportEmailSentAt ?? record.notifiedAt;
+): Date | string | null | undefined => record.completedExportEmailSentAt;
 
 /**
  * Whether a row has any expandable detail (status-history timeline / email
@@ -97,8 +96,6 @@ const buildCardRecord = (
   record: TableExportTrackingRecord,
 ): BaseExportTrackingRecord => ({
   ...record,
-  pendingNotifiedAt: toDateOrNull(getPendingEmailSentAt(record)),
-  notifiedAt: toDateOrNull(getCompletedEmailSentAt(record)),
   latestEvidence: record.latestEvidence,
 });
 
@@ -134,6 +131,7 @@ export function ExportTrackingTable() {
         failedExportEmailLastError: false,
         completedExportEmailAttempts: false,
         completedExportEmailLastError: false,
+        nftBurnLastError: false,
       },
     },
   });
@@ -217,7 +215,6 @@ export function ExportTrackingTable() {
           { value: 'TRANSFER_COMPLETED', label: 'Transfer Completed' },
           { value: 'TRANSFER_FAILED', label: 'Transfer Failed' },
           { value: 'NEEDS_ADMIN_REVIEW', label: 'Needs Admin Review' },
-          { value: 'NOTIFIED', label: 'Notified' },
           { value: 'RESOLVED', label: 'Resolved' },
         ],
       },
@@ -440,6 +437,23 @@ export function ExportTrackingTable() {
           size: 160,
         },
         {
+          accessorKey: 'nftBurnLastError',
+          header: 'Burn Failure',
+          enableSorting: false,
+          cell: ({ row }) =>
+            row.original.nftBurnLastError ? (
+              <span className="text-xs text-destructive">
+                {row.original.nftBurnLastError}
+                {row.original.nftBurnAttempts
+                  ? ` (×${row.original.nftBurnAttempts})`
+                  : ''}
+              </span>
+            ) : (
+              <span className="text-xs text-muted-foreground">-</span>
+            ),
+          size: 220,
+        },
+        {
           accessorKey: 'latestEvidence',
           header: 'Latest Evidence',
           enableSorting: false,
@@ -455,12 +469,19 @@ export function ExportTrackingTable() {
           id: 'actions',
           header: 'Actions',
           cell: ({ row }) => (
-            <VerifyButton
-              record={buildVerifyButtonRecord(row.original)}
-              data-testid={`admin.export-tracking.row.${row.original.id}.actions`}
-            />
+            <div className="flex flex-wrap items-center gap-2">
+              <VerifyButton
+                record={buildVerifyButtonRecord(row.original)}
+                data-testid={`admin.export-tracking.row.${row.original.id}.actions`}
+              />
+              <ExportTrackingEvidenceDialog
+                recordId={row.original.id}
+                domain={row.original.normalizedDomainName}
+                data-testid={`admin.export-tracking.row.${row.original.id}.evidence-button`}
+              />
+            </div>
           ),
-          size: 280,
+          size: 340,
         },
       ] satisfies ColumnDef<TableExportTrackingRecord>[],
     [],

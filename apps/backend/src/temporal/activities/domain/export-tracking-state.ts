@@ -275,3 +275,23 @@ export function appendExportTrackingStatusHistory(
   }
   return [...history, entry];
 }
+
+/**
+ * Whether a refreshed evidence snapshot is meaningfully different from the last
+ * one recorded in the timeline. Used by the same-status / no-signal refresh
+ * paths to decide whether to append a new history entry (so the evidence trail
+ * stays current for long-lived rows like NEEDS_ADMIN_REVIEW) versus only
+ * updating `latestEvidence` (no timeline bloat on identical ticks). Compares the
+ * decision action and the EPP statuses only — transient per-source error flicker
+ * is deliberately ignored so it doesn't churn the timeline.
+ */
+export function exportEvidenceMeaningfullyChanged(
+  prev: ExportTrackingHistoryEvidenceSnapshot | undefined,
+  next: { decisionAction?: string; eppStatuses?: string[] },
+): boolean {
+  if (!prev) return true;
+  if ((prev.decisionAction ?? '') !== (next.decisionAction ?? '')) return true;
+  const prevEpp = [...(prev.eppStatuses ?? [])].sort().join('|');
+  const nextEpp = [...(next.eppStatuses ?? [])].sort().join('|');
+  return prevEpp !== nextEpp;
+}

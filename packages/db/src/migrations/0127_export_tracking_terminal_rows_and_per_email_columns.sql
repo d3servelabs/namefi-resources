@@ -4,6 +4,8 @@
 --   * Add 15 per-email-type notification columns covering pending, failed,
 --     and completed user emails (replaces legacy user_notified /
 --     notified_at / pending_notified_at)
+--   * Add NFT burn-failure bookkeeping columns (nft_burn_failed_at,
+--     nft_burn_last_error, nft_burn_attempts)
 --   * Drop NOTIFIED from domain_export_status enum; backfill existing
 --     NOTIFIED rows to TRANSFER_COMPLETED with isActive=false and
 --     completed_export_email_sent_at populated from the legacy notified_at
@@ -11,7 +13,13 @@
 --
 -- Ordering matters: backfills run BEFORE the enum rotation so the new enum
 -- (without NOTIFIED) can accept all existing rows; data is copied from
--- legacy columns into new columns BEFORE the legacy columns are dropped.
+-- legacy columns into new columns BEFORE the legacy columns are dropped; and
+-- terminal rows are flipped to is_active=false BEFORE the partial unique
+-- index is created (else pre-existing per-domain duplicates would collide).
+--
+-- NOTE: this migration's DDL is hand-authored (drizzle-kit generate only emits
+-- the schema diff, not the data backfills / safe enum rotation). The matching
+-- 0127 snapshot is drizzle-generated, so future `db:generate` diffs stay clean.
 -- =====================================================================
 
 -- 1. Add new columns first so backfills can write to them.
@@ -31,6 +39,9 @@ ALTER TABLE "domain_export_tracking" ADD COLUMN "completed_export_email_last_att
 ALTER TABLE "domain_export_tracking" ADD COLUMN "completed_export_email_attempts" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
 ALTER TABLE "domain_export_tracking" ADD COLUMN "completed_export_email_last_error" text;--> statement-breakpoint
 ALTER TABLE "domain_export_tracking" ADD COLUMN "completed_export_email_recipient" text;--> statement-breakpoint
+ALTER TABLE "domain_export_tracking" ADD COLUMN "nft_burn_failed_at" timestamp;--> statement-breakpoint
+ALTER TABLE "domain_export_tracking" ADD COLUMN "nft_burn_last_error" text;--> statement-breakpoint
+ALTER TABLE "domain_export_tracking" ADD COLUMN "nft_burn_attempts" integer DEFAULT 0 NOT NULL;--> statement-breakpoint
 
 -- 2. Backfill legacy notification timestamps into new per-email-type columns.
 -- last_attempt_at mirrors sent_at so a successful 1-attempt row stays
@@ -106,4 +117,7 @@ ALTER TABLE "domain_export_tracking"
   CHECK ("failed_export_email_attempts" >= 0);--> statement-breakpoint
 ALTER TABLE "domain_export_tracking"
   ADD CONSTRAINT "domain_export_tracking_completed_email_attempts_nonnegative"
-  CHECK ("completed_export_email_attempts" >= 0);
+  CHECK ("completed_export_email_attempts" >= 0);--> statement-breakpoint
+ALTER TABLE "domain_export_tracking"
+  ADD CONSTRAINT "domain_export_tracking_nft_burn_attempts_nonnegative"
+  CHECK ("nft_burn_attempts" >= 0);

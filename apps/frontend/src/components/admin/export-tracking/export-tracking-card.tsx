@@ -13,6 +13,7 @@ import {
 import { ExportStatusBadge } from './export-status-badge';
 import { StatusHistorySubrow } from './status-history-subrow';
 import type { ExportTrackingRecord } from './types';
+import { ExportTrackingEvidenceDialog } from './export-tracking-evidence-dialog';
 import { VerifyButton } from './verify-button';
 
 /**
@@ -128,17 +129,13 @@ export function ExportTrackingCard({
 
         <CardRow label="Pending Email Sent">
           <span className="text-xs">
-            {formatDateTime(
-              record.pendingExportEmailSentAt ?? record.pendingNotifiedAt,
-            )}
+            {formatDateTime(record.pendingExportEmailSentAt)}
           </span>
         </CardRow>
 
         <CardRow label="Completion Email Sent">
           <span className="text-xs">
-            {formatDateTime(
-              record.completedExportEmailSentAt ?? record.notifiedAt,
-            )}
+            {formatDateTime(record.completedExportEmailSentAt)}
           </span>
         </CardRow>
 
@@ -154,10 +151,17 @@ export function ExportTrackingCard({
         </CardRow>
 
         <CardRow label="Actions">
-          <VerifyButton
-            record={record}
-            data-testid={`admin.export-tracking.row.${record.id}.actions`}
-          />
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <VerifyButton
+              record={record}
+              data-testid={`admin.export-tracking.row.${record.id}.actions`}
+            />
+            <ExportTrackingEvidenceDialog
+              recordId={record.id}
+              domain={record.normalizedDomainName}
+              data-testid={`admin.export-tracking.card.${record.id}.evidence-button`}
+            />
+          </div>
         </CardRow>
       </dl>
 
@@ -165,17 +169,13 @@ export function ExportTrackingCard({
         <div className="border-t border-border/50 bg-muted/30">
           <StatusHistorySubrow
             statusHistory={record.statusHistory ?? []}
-            pendingExportEmailSentAt={
-              record.pendingExportEmailSentAt ?? record.pendingNotifiedAt
-            }
+            pendingExportEmailSentAt={record.pendingExportEmailSentAt}
             pendingExportEmailAttempts={record.pendingExportEmailAttempts}
             pendingExportEmailLastError={record.pendingExportEmailLastError}
             failedExportEmailSentAt={record.failedExportEmailSentAt}
             failedExportEmailAttempts={record.failedExportEmailAttempts}
             failedExportEmailLastError={record.failedExportEmailLastError}
-            completedExportEmailSentAt={
-              record.completedExportEmailSentAt ?? record.notifiedAt
-            }
+            completedExportEmailSentAt={record.completedExportEmailSentAt}
             completedExportEmailAttempts={record.completedExportEmailAttempts}
             completedExportEmailLastError={record.completedExportEmailLastError}
           />

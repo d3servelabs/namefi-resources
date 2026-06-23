@@ -64,6 +64,9 @@ export type ExportTrackingRecord = {
   confirmedOutOfAccountAt: Date | null;
   nftBurnedAt: Date | null;
   nftBurnTxHash: string | null;
+  nftBurnFailedAt: Date | null;
+  nftBurnLastError: string | null;
+  nftBurnAttempts: number;
   pendingExportEmailSentAt: Date | null;
   pendingExportEmailLastAttemptAt: Date | null;
   pendingExportEmailAttempts: number;
@@ -79,9 +82,6 @@ export type ExportTrackingRecord = {
   completedExportEmailAttempts: number;
   completedExportEmailLastError: string | null;
   completedExportEmailRecipient: string | null;
-  pendingNotifiedAt?: Date | null;
-  userNotified?: boolean;
-  notifiedAt?: Date | null;
   latestEvidence: EvidenceSnapshot | null;
   createdAt: Date;
   updatedAt: Date;

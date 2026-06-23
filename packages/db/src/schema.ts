@@ -1518,6 +1518,12 @@ export const domainExportTrackingTable = pgTable(
     // NFT burn tracking
     nftBurnedAt: timestamp('nft_burned_at'),
     nftBurnTxHash: text('nft_burn_tx_hash'),
+    // Burn-failure bookkeeping: the burn child workflow can fail (RPC, lock,
+    // on-chain revert). Persist the failure so admins can see why a burn-
+    // eligible row hasn't been resolved, and so retries are visible.
+    nftBurnFailedAt: timestamp('nft_burn_failed_at'),
+    nftBurnLastError: text('nft_burn_last_error'),
+    nftBurnAttempts: integer('nft_burn_attempts').notNull().default(0),
 
     ...timestamps,
   },
@@ -1535,6 +1541,10 @@ export const domainExportTrackingTable = pgTable(
     check(
       'domain_export_tracking_completed_email_attempts_nonnegative',
       sql`${table.completedExportEmailAttempts} >= 0`,
+    ),
+    check(
+      'domain_export_tracking_nft_burn_attempts_nonnegative',
+      sql`${table.nftBurnAttempts} >= 0`,
     ),
 
     // Primary lookup indexes

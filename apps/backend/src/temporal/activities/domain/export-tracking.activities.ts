@@ -56,6 +56,7 @@ import {
   appendExportTrackingStatusHistory,
   actionToTrackingStatus,
   EXPORT_BURN_ELIGIBLE_STATUSES,
+  exportEvidenceMeaningfullyChanged,
   isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
   isTerminalStatus,
@@ -684,13 +685,18 @@ async function queryDirectRegistrarEvidence(
  * RDAP is queried once and consumed by two sources (`RDAPStatus`,
  * `RDAPEvents`) — one HTTP call, two evidence entries.
  */
-export async function gatherEvidenceForDomain(input: {
-  domain: NamefiNormalizedDomain;
-  approvedForCompletion?: boolean;
-}): Promise<EvidenceSourceResult[]> {
-  const { domain, approvedForCompletion = false } = input;
-  const activityContext = Context.current();
-  activityContext.heartbeat({ domain, step: 'gather_evidence' });
+/**
+ * Context-free evidence gather: queries every source for `domain` in parallel
+ * and returns the tagged results. Deliberately does NOT touch
+ * `Context.current()`, so it is reusable outside a Temporal activity — by the
+ * admin on-demand re-gather endpoint and the pre-burn re-verification, as well
+ * as the activity wrapper below.
+ */
+export async function gatherEvidence(
+  domain: NamefiNormalizedDomain,
+  options: { approvedForCompletion?: boolean } = {},
+): Promise<EvidenceSourceResult[]> {
+  const { approvedForCompletion = false } = options;
 
   const rdapPromise: Promise<{ data?: RdapResponse; error?: unknown }> =
     RDAP.queryDomain(toPunycodeDomainName(domain))
@@ -717,6 +723,16 @@ export async function gatherEvidenceForDomain(input: {
     whois,
     directRegistrar,
   ];
+}
+
+/** Temporal-activity wrapper around `gatherEvidence` that emits a heartbeat. */
+export async function gatherEvidenceForDomain(input: {
+  domain: NamefiNormalizedDomain;
+  approvedForCompletion?: boolean;
+}): Promise<EvidenceSourceResult[]> {
+  const { domain, approvedForCompletion = false } = input;
+  Context.current().heartbeat({ domain, step: 'gather_evidence' });
+  return gatherEvidence(domain, { approvedForCompletion });
 }
 
 // =====================================================================
@@ -1119,11 +1135,7 @@ export async function getLockedNftsForTracking(): Promise<
  *     "trusted" (DIRECT_REGISTRAR or admin-approved), send the pending
  *     export email — the email function self-writes attempt columns.
  */
-export async function processSingleDomainExportStatus(input: {
-  domain: NamefiNormalizedDomain;
-  chainId: number;
-  ownerAddress: string;
-}): Promise<{
+type ProcessSingleDomainExportResult = {
   action:
     | 'created'
     | 'updated'
@@ -1139,7 +1151,13 @@ export async function processSingleDomainExportStatus(input: {
   registrarKey?: string | null;
   pendingEmailSent?: boolean;
   failedEmailSent?: boolean;
-}> {
+};
+
+export async function processSingleDomainExportStatus(input: {
+  domain: NamefiNormalizedDomain;
+  chainId: number;
+  ownerAddress: string;
+}): Promise<ProcessSingleDomainExportResult> {
   const { domain, chainId, ownerAddress } = input;
   const activityContext = Context.current();
 
@@ -1187,6 +1205,31 @@ export async function processSingleDomainExportStatus(input: {
   // existing active rows so we have heartbeat data.
   if (decision.action === 'NO_SIGNAL') {
     if (existingRecord) {
+      // Status is unchanged (NO_SIGNAL never transitions an active row); still
+      // record the refreshed evidence in the timeline (under the row's CURRENT
+      // status) when it meaningfully changed, so the trail doesn't go stale.
+      const noSignalPriorHistory =
+        (existingRecord.statusHistory as
+          | ExportTrackingStatusHistoryEntry[]
+          | null) ?? null;
+      const noSignalTrailHistory = exportEvidenceMeaningfullyChanged(
+        noSignalPriorHistory?.at(-1)?.evidence,
+        {
+          decisionAction: latestEvidence.decisionAction,
+          eppStatuses: latestEvidence.eppStatuses,
+        },
+      )
+        ? appendExportTrackingStatusHistory(
+            noSignalPriorHistory,
+            existingRecord.status as DomainExportTrackingStatus,
+            {
+              reason: 'evidence refreshed (no transfer signal)',
+              evidence: { ...latestEvidence, actor: 'workflow' },
+              eppStatuses,
+            },
+          )
+        : undefined;
+
       await db
         .update(domainExportTrackingTable)
         .set({
@@ -1194,6 +1237,9 @@ export async function processSingleDomainExportStatus(input: {
           eppStatuses,
           whoisData: rdapData as Json,
           latestEvidence,
+          ...(noSignalTrailHistory
+            ? { statusHistory: noSignalTrailHistory }
+            : {}),
         })
         .where(eq(domainExportTrackingTable.id, existingRecord.id));
     }
@@ -1202,15 +1248,19 @@ export async function processSingleDomainExportStatus(input: {
 
   const decisionIsTerminal = isTerminalStatus(persistedStatus);
 
-  if (existingRecord) {
-    const pendingAlreadySent = Boolean(existingRecord.pendingExportEmailSentAt);
+  // Apply the decision to an already-active row — a status transition (with the
+  // matching email side effects) or a same-status heartbeat. Extracted so the
+  // normal existing-row path and the insert-race fallback below share one
+  // implementation and the flow stays composable.
+  const applyToActiveRecord = async (
+    record: NonNullable<Awaited<ReturnType<typeof getActiveTrackingRecord>>>,
+  ): Promise<ProcessSingleDomainExportResult> => {
+    const pendingAlreadySent = Boolean(record.pendingExportEmailSentAt);
 
-    if (existingRecord.status !== persistedStatus) {
+    if (record.status !== persistedStatus) {
       const now = new Date();
       const statusHistory = appendExportTrackingStatusHistory(
-        existingRecord.statusHistory as
-          | ExportTrackingStatusHistoryEntry[]
-          | null,
+        record.statusHistory as ExportTrackingStatusHistoryEntry[] | null,
         persistedStatus,
         {
           now,
@@ -1226,7 +1276,7 @@ export async function processSingleDomainExportStatus(input: {
       await db
         .update(domainExportTrackingTable)
         .set({
-          previousStatus: existingRecord.status as DomainExportTrackingStatus,
+          previousStatus: record.status as DomainExportTrackingStatus,
           status: persistedStatus,
           statusHistory,
           eppStatuses,
@@ -1245,7 +1295,7 @@ export async function processSingleDomainExportStatus(input: {
             ? false
             : sql`${domainExportTrackingTable.isActive}`,
         })
-        .where(eq(domainExportTrackingTable.id, existingRecord.id));
+        .where(eq(domainExportTrackingTable.id, record.id));
 
       // Send pending email when transitioning into PENDING_TRANSFER for the
       // first time, with trusted evidence (direct registrar) or admin gate.
@@ -1254,7 +1304,7 @@ export async function processSingleDomainExportStatus(input: {
         evidence,
         existingPendingSent: pendingAlreadySent,
         adminApproved,
-        trackingRecordId: existingRecord.id,
+        trackingRecordId: record.id,
         ownerAddress,
         domain,
         registrarKey,
@@ -1266,7 +1316,7 @@ export async function processSingleDomainExportStatus(input: {
       const failedEmailSent =
         decision.action === 'TRANSFER_FAILED'
           ? await maybeSendFailedExportEmail({
-              trackingRecordId: existingRecord.id,
+              trackingRecordId: record.id,
               ownerAddress,
               domain,
               reason: decision.reason,
@@ -1276,13 +1326,38 @@ export async function processSingleDomainExportStatus(input: {
       return {
         action: 'updated',
         status: persistedStatus,
-        previousStatus: existingRecord.status,
+        previousStatus: record.status,
         pendingEmailSent,
         failedEmailSent,
       };
     }
 
-    // Same status: just touch lastCheckedAt and refresh evidence.
+    // Same status: refresh evidence + lastCheckedAt, and append a timeline entry
+    // when the evidence meaningfully changed since the last one — so the
+    // status-history carries an evidence trail even while the status holds steady
+    // (e.g. a NEEDS_ADMIN_REVIEW row awaiting an admin). Identical ticks only
+    // touch `latestEvidence` (no timeline bloat).
+    const sameStatusPriorHistory =
+      (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ??
+      null;
+    const sameStatusTrailHistory = exportEvidenceMeaningfullyChanged(
+      sameStatusPriorHistory?.at(-1)?.evidence,
+      {
+        decisionAction: latestEvidence.decisionAction,
+        eppStatuses: latestEvidence.eppStatuses,
+      },
+    )
+      ? appendExportTrackingStatusHistory(
+          sameStatusPriorHistory,
+          persistedStatus,
+          {
+            reason: `evidence refreshed (decision: ${decision.action})`,
+            evidence: { ...latestEvidence, actor: 'workflow' },
+            eppStatuses,
+          },
+        )
+      : undefined;
+
     await db
       .update(domainExportTrackingTable)
       .set({
@@ -1290,8 +1365,11 @@ export async function processSingleDomainExportStatus(input: {
         eppStatuses,
         whoisData: rdapData as Json,
         latestEvidence,
+        ...(sameStatusTrailHistory
+          ? { statusHistory: sameStatusTrailHistory }
+          : {}),
       })
-      .where(eq(domainExportTrackingTable.id, existingRecord.id));
+      .where(eq(domainExportTrackingTable.id, record.id));
 
     // Same-status path may still want to send the pending email if it
     // wasn't sent before and evidence is trusted now.
@@ -1300,7 +1378,7 @@ export async function processSingleDomainExportStatus(input: {
       evidence,
       existingPendingSent: pendingAlreadySent,
       adminApproved,
-      trackingRecordId: existingRecord.id,
+      trackingRecordId: record.id,
       ownerAddress,
       domain,
       registrarKey,
@@ -1311,9 +1389,17 @@ export async function processSingleDomainExportStatus(input: {
       status: persistedStatus,
       pendingEmailSent,
     };
+  };
+
+  if (existingRecord) {
+    return applyToActiveRecord(existingRecord);
   }
 
-  // No active row exists: insert a fresh one.
+  // No active row exists: insert a fresh one. Tolerate losing an insert race
+  // against a concurrent writer (e.g. a client `approveTransfer` upsert that
+  // lands during this scan's evidence gathering): the partial unique index
+  // `(normalizedDomainName, chainId) WHERE is_active = true` would otherwise
+  // throw. On conflict we re-fetch the winning row and apply the decision to it.
   const now = new Date();
   const initialHistory = appendExportTrackingStatusHistory(
     [],
@@ -1344,9 +1430,29 @@ export async function processSingleDomainExportStatus(input: {
       confirmedOutOfAccountAt:
         decision.action === 'TRANSFER_COMPLETED' ? now : undefined,
     })
+    .onConflictDoNothing({
+      target: [
+        domainExportTrackingTable.normalizedDomainName,
+        domainExportTrackingTable.chainId,
+      ],
+      where: sql`${domainExportTrackingTable.isActive} = true`,
+    })
     .returning({ id: domainExportTrackingTable.id });
 
   const trackingRecordId = insertedRows[0]?.id;
+
+  if (!trackingRecordId) {
+    // Lost the insert race: a concurrent writer created the active row.
+    const racedRecord = await getActiveTrackingRecord(domain, chainId);
+    if (racedRecord) {
+      return applyToActiveRecord(racedRecord);
+    }
+    logger.warn(
+      { domain, chainId },
+      'Insert conflicted but no active row found on re-fetch; skipping',
+    );
+    return { action: 'skipped' };
+  }
 
   if (decision.action === 'UNDETERMINED') {
     return {
@@ -1522,6 +1628,51 @@ export async function getPendingTransferDomains(): Promise<
     );
 
   logger.debug({ count: records.length }, 'Found pending transfer domains');
+
+  return records;
+}
+
+/**
+ * Active rows that still need ongoing evidence refresh but are NOT covered by
+ * the pending-transfer re-check (`getPendingTransferDomains`, which only watches
+ * PENDING_TRANSFER / TRANSFER_PERIOD) and may also be missing from the locked-NFT
+ * scan: NEEDS_ADMIN_REVIEW (waiting on an admin while we keep its evidence
+ * current) and UNDETERMINED. Without this, a NEEDS_ADMIN_REVIEW row whose NFT is
+ * no longer enumerated as locked goes stale — its `latestEvidence` is never
+ * refreshed even though live evidence has moved on. Re-running
+ * `processSingleDomainExportStatus` for these keeps the evidence current and
+ * applies any valid transition (e.g. an approval that landed since last tick).
+ */
+export async function getActiveAdminReviewDomains(): Promise<
+  Array<{
+    domain: NamefiNormalizedDomain;
+    chainId: number;
+    ownerAddress: string;
+  }>
+> {
+  const reviewStatuses: DomainExportTrackingStatus[] = [
+    'NEEDS_ADMIN_REVIEW',
+    'UNDETERMINED',
+  ];
+
+  const records = await db
+    .select({
+      domain: domainExportTrackingTable.normalizedDomainName,
+      chainId: domainExportTrackingTable.chainId,
+      ownerAddress: domainExportTrackingTable.ownerAddress,
+    })
+    .from(domainExportTrackingTable)
+    .where(
+      and(
+        inArray(domainExportTrackingTable.status, reviewStatuses),
+        eq(domainExportTrackingTable.isActive, true),
+      ),
+    );
+
+  logger.debug(
+    { count: records.length },
+    'Found active admin-review / undetermined rows for evidence refresh',
+  );
 
   return records;
 }
@@ -2335,6 +2486,7 @@ export type BurnEligibilityReason =
   | 'client_approved'
   | 'admin_approved'
   | 'time_confirmed'
+  | 'domain_back_in_account'
   | 'not_eligible';
 
 /**
@@ -2400,41 +2552,53 @@ export async function shouldBurnNft(input: {
     };
   }
 
+  // Determine which approval path (if any) would authorize a burn.
+  let reason: BurnEligibilityReason = 'not_eligible';
   if (record.clientApprovedAt) {
-    return {
-      shouldBurn: true,
-      reason: 'client_approved',
-      trackingRecordId: record.id,
-    };
-  }
-
-  if (record.verifyingAdminId) {
-    return {
-      shouldBurn: true,
-      reason: 'admin_approved',
-      trackingRecordId: record.id,
-    };
-  }
-
-  if (record.confirmedOutOfAccountAt) {
+    reason = 'client_approved';
+  } else if (record.verifyingAdminId) {
+    reason = 'admin_approved';
+  } else if (record.confirmedOutOfAccountAt) {
     const hoursOutOfAccount = differenceInHours(
       new Date(),
       record.confirmedOutOfAccountAt,
     );
     if (hoursOutOfAccount >= MIN_HOURS_FOR_TIME_BASED_BURN) {
-      return {
-        shouldBurn: true,
-        reason: 'time_confirmed',
-        trackingRecordId: record.id,
-      };
+      reason = 'time_confirmed';
     }
   }
 
-  return {
-    shouldBurn: false,
-    reason: 'not_eligible',
-    trackingRecordId: record.id,
-  };
+  if (reason === 'not_eligible') {
+    return { shouldBurn: false, reason, trackingRecordId: record.id };
+  }
+
+  // Pre-burn re-verification (evidence at every stage): an export can reverse
+  // after detection, and the burn is irreversible. Re-gather evidence and abort
+  // if the domain is demonstrably back in our account or a fresh transfer is
+  // in-flight. Missing/errored evidence does NOT block — a prior approval or the
+  // 36h timer already authorized the burn; only positive "it came back" evidence
+  // stops it.
+  const freshEvidence = await gatherEvidence(domain, {
+    approvedForCompletion: true,
+  });
+  const accountCheck = getEvidenceBy(freshEvidence, 'AccountCheck');
+  const backInOurAccount = accountCheck?.status === 'negative';
+  const transferInFlight = freshEvidence.some(
+    (e) => e.status === 'positive_pending' || e.status === 'positive_period',
+  );
+  if (backInOurAccount || transferInFlight) {
+    logger.warn(
+      { domain, chainId, reason, backInOurAccount, transferInFlight },
+      'Aborting NFT burn: domain appears back in our account or a transfer is in-flight',
+    );
+    return {
+      shouldBurn: false,
+      reason: 'domain_back_in_account',
+      trackingRecordId: record.id,
+    };
+  }
+
+  return { shouldBurn: true, reason, trackingRecordId: record.id };
 }
 
 export async function getDomainsEligibleForBurn(): Promise<
@@ -2480,25 +2644,35 @@ export async function getDomainsEligibleForBurn(): Promise<
 }
 
 /**
- * Record the result of an NFT burn operation. On success, transitions the
- * row to RESOLVED (terminal) and flips isActive=false.
+ * Record the result of an NFT burn operation against a specific tracking row.
+ *
+ * The caller (`shouldBurnNft` / the workflow loop) already knows which row was
+ * deemed burn-eligible, so we update by `trackingRecordId` rather than
+ * re-deriving the row from (domain, chain) — a re-import/re-export could create
+ * a newer row for the same pair, and a lookup would land on the wrong one.
+ *
+ *  - On success: transition to RESOLVED (terminal, isActive=false) and stamp the
+ *    burn tx. Guarded by `nftBurnedAt IS NULL` so a re-delivered success is a
+ *    no-op (idempotent).
+ *  - On failure: persist `nftBurnFailedAt` / `nftBurnLastError` and bump
+ *    `nftBurnAttempts` so the failure is visible to admins; status/isActive are
+ *    left untouched, so the row stays burn-eligible and is retried next tick.
  */
 export async function recordNftBurn(input: {
+  trackingRecordId: string;
   domain: NamefiNormalizedDomain;
   chainId: number;
   txHash?: string;
   error?: string;
 }): Promise<void> {
-  const { domain, chainId, txHash, error } = input;
+  const { trackingRecordId, domain, chainId, txHash, error } = input;
 
-  logger.debug({ domain, chainId, txHash, error }, 'Recording NFT burn result');
+  logger.debug(
+    { trackingRecordId, domain, chainId, txHash, error },
+    'Recording NFT burn result',
+  );
 
   if (txHash) {
-    // Burn-eligible rows include admin-verified TRANSFER_COMPLETED rows
-    // (already terminal, isActive=false). Look up the most-recent
-    // unburned row for this (domain, chain) pair instead of filtering by
-    // isActive — otherwise a successful burn on a verified row would
-    // update nothing and the workflow would pick it up again next tick.
     const existingRecord = await db
       .select({
         id: domainExportTrackingTable.id,
@@ -2507,18 +2681,16 @@ export async function recordNftBurn(input: {
       .from(domainExportTrackingTable)
       .where(
         and(
-          eq(domainExportTrackingTable.normalizedDomainName, domain),
-          eq(domainExportTrackingTable.chainId, chainId),
+          eq(domainExportTrackingTable.id, trackingRecordId),
           isNull(domainExportTrackingTable.nftBurnedAt),
         ),
       )
-      .orderBy(sql`${domainExportTrackingTable.createdAt} DESC`)
       .limit(1);
 
     const record = existingRecord[0];
     if (!record) {
       logger.warn(
-        { domain, chainId, txHash },
+        { trackingRecordId, domain, chainId, txHash },
         'No unburned export-tracking row found for successful NFT burn',
       );
       return;
@@ -2546,13 +2718,29 @@ export async function recordNftBurn(input: {
         statusHistory: updatedHistory,
         nftBurnedAt: new Date(),
         nftBurnTxHash: txHash,
+        nftBurnLastError: null,
         isActive: false,
         updatedAt: new Date(),
       })
       .where(eq(domainExportTrackingTable.id, record.id));
-    logger.debug({ domain, chainId, txHash }, 'Recorded successful NFT burn');
+    logger.debug(
+      { trackingRecordId, domain, chainId, txHash },
+      'Recorded successful NFT burn',
+    );
   } else if (error) {
-    logger.error({ domain, chainId, error }, 'NFT burn failed');
+    await db
+      .update(domainExportTrackingTable)
+      .set({
+        nftBurnFailedAt: new Date(),
+        nftBurnLastError: error,
+        nftBurnAttempts: sql`${domainExportTrackingTable.nftBurnAttempts} + 1`,
+        updatedAt: new Date(),
+      })
+      .where(eq(domainExportTrackingTable.id, trackingRecordId));
+    logger.error(
+      { trackingRecordId, domain, chainId, error },
+      'NFT burn failed',
+    );
   }
 }
 

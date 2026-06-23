@@ -15,6 +15,8 @@ import {
 import { createContractTRPCRouter } from '../../contract';
 import { adminExportTrackingContract } from '@namefi-astra/common/contract/admin/admin-export-tracking-contract';
 import {
+  decideExportTrackingState,
+  gatherEvidence,
   getUserIdFromOwnerAddress,
   sendPendingExportEmail,
   sendFailedExportEmail,
@@ -25,8 +27,10 @@ import {
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
   getExportTrackingEmailType,
+  isAdminApprovedForPendingNotification,
   type ExportTrackingStatusHistoryEntry,
 } from '#temporal/activities/domain/export-tracking-state';
+import { summarizeExportEvidence } from './export-tracking-evidence/summarize';
 import { ResourceType } from '#lib/auditor';
 import { logger } from '#lib/logger';
 
@@ -132,6 +136,9 @@ export const exportTrackingRouter = createContractTRPCRouter<
             domainExportTrackingTable.confirmedOutOfAccountAt,
           nftBurnedAt: domainExportTrackingTable.nftBurnedAt,
           nftBurnTxHash: domainExportTrackingTable.nftBurnTxHash,
+          nftBurnFailedAt: domainExportTrackingTable.nftBurnFailedAt,
+          nftBurnLastError: domainExportTrackingTable.nftBurnLastError,
+          nftBurnAttempts: domainExportTrackingTable.nftBurnAttempts,
           createdAt: domainExportTrackingTable.createdAt,
           updatedAt: domainExportTrackingTable.updatedAt,
         })
@@ -634,5 +641,96 @@ export const exportTrackingRouter = createContractTRPCRouter<
           ? `Export completion email resent for ${record.normalizedDomainName}`
           : `Export completion email sent for ${record.normalizedDomainName}`,
       };
+    }),
+
+  /**
+   * Re-gather export evidence for one row on demand (ephemeral — does NOT write
+   * to the row). Mirrors the decision-gates "Gather evidence" flow: an admin
+   * clicks a button, we run the same context-free `gatherEvidence` the workflow
+   * uses, plus the decision it would produce now, and return it for display.
+   */
+  gatherExportEvidence: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(adminExportTrackingContract.gatherExportEvidence.input)
+    .output(adminExportTrackingContract.gatherExportEvidence.output)
+    .query(async ({ input }) => {
+      const rows = await db
+        .select({
+          id: domainExportTrackingTable.id,
+          domain: domainExportTrackingTable.normalizedDomainName,
+          chainId: domainExportTrackingTable.chainId,
+          status: domainExportTrackingTable.status,
+          clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+          adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
+        })
+        .from(domainExportTrackingTable)
+        .where(eq(domainExportTrackingTable.id, input.id))
+        .limit(1);
+
+      const record = rows[0];
+      if (!record) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Export tracking record not found',
+        });
+      }
+
+      const approvedForCompletion = isAdminApprovedForPendingNotification({
+        clientApprovedAt: record.clientApprovedAt,
+        adminVerifiedAt: record.adminVerifiedAt,
+      });
+      const evidence = await gatherEvidence(record.domain, {
+        approvedForCompletion,
+      });
+      const decision = decideExportTrackingState(evidence);
+
+      return {
+        domain: record.domain,
+        chainId: record.chainId,
+        status: record.status,
+        evidence,
+        decision,
+        gatheredAt: new Date().toISOString(),
+      };
+    }),
+
+  /**
+   * Summarize re-gathered export evidence with DeepSeek. Returns `summary: null`
+   * when DeepSeek is not configured (no `DEEPSEEK_API_KEY`); throws on a real API
+   * failure so the client can offer a retry. Evidence is passed from the client
+   * (already fetched by `gatherExportEvidence`) so the slower model call is a
+   * separate, on-demand step.
+   */
+  summarizeExportEvidence: adminProcedureWithPermissions(Permission.READ_NFT)
+    .input(adminExportTrackingContract.summarizeExportEvidence.input)
+    .output(adminExportTrackingContract.summarizeExportEvidence.output)
+    .query(async ({ input }) => {
+      const rows = await db
+        .select({
+          domain: domainExportTrackingTable.normalizedDomainName,
+          chainId: domainExportTrackingTable.chainId,
+          status: domainExportTrackingTable.status,
+        })
+        .from(domainExportTrackingTable)
+        .where(eq(domainExportTrackingTable.id, input.id))
+        .limit(1);
+
+      const record = rows[0];
+      if (!record) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Export tracking record not found',
+        });
+      }
+
+      const result = await summarizeExportEvidence({
+        domain: record.domain,
+        chainId: record.chainId,
+        status: record.status,
+        decisionAction: input.decisionAction,
+        decisionReason: input.decisionReason,
+        evidence: input.evidence,
+      });
+
+      return result ?? { summary: null, reasoning: null, model: null };
     }),
 });

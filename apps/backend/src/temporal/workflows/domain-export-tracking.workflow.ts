@@ -8,10 +8,10 @@ import { ensureNftIsLockedAndBurnByNftName } from './mint.workflow';
 const {
   getLockedNftsForTracking,
   getPendingTransferDomains,
+  getActiveAdminReviewDomains,
   collectExportTrackingMetrics,
   sendExportTrackingReportEmail,
   getDomainsEligibleForBurn,
-  shouldBurnNft,
   recordNftBurn,
 } = proxyActivities<typeof DomainsActivities>({
   startToCloseTimeout: '2 minutes',
@@ -20,14 +20,18 @@ const {
   },
 });
 
-// Medium timeout for single domain processing (includes external API calls)
-const { processSingleDomainExportStatus, checkSinglePendingTransfer } =
-  proxyActivities<typeof DomainsActivities>({
-    startToCloseTimeout: '5 minutes',
-    retry: {
-      maximumAttempts: 3,
-    },
-  });
+// Medium timeout for activities that make external API calls: single-domain
+// processing, the pending re-check, and the pre-burn evidence re-verification.
+const {
+  processSingleDomainExportStatus,
+  checkSinglePendingTransfer,
+  shouldBurnNft,
+} = proxyActivities<typeof DomainsActivities>({
+  startToCloseTimeout: '5 minutes',
+  retry: {
+    maximumAttempts: 3,
+  },
+});
 
 export interface DomainExportTrackingWorkflowInput {
   /**
@@ -176,6 +180,82 @@ export async function domainExportTrackingWorkflow(
       });
     }
 
+    // Step 2b: Refresh active NEEDS_ADMIN_REVIEW / UNDETERMINED rows that the
+    // locked-NFT scan above did not cover (e.g. a domain whose NFT is no longer
+    // enumerated as locked). Without this their `latestEvidence` goes stale
+    // while they wait for an admin. Reuses processSingleDomainExportStatus so
+    // the same gather + transition logic applies; dedupes against the locked
+    // NFTs already processed this tick.
+    const processedKeys = new Set(
+      lockedNfts.map((nft) => `${nft.chainId}:${nft.normalizedDomainName}`),
+    );
+    const reviewDomains = (await getActiveAdminReviewDomains()).filter(
+      (record) => !processedKeys.has(`${record.chainId}:${record.domain}`),
+    );
+
+    if (reviewDomains.length > 0) {
+      workflow.log.info('Refreshing admin-review / undetermined rows', {
+        count: reviewDomains.length,
+      });
+
+      for (let i = 0; i < reviewDomains.length; i += maxConcurrency) {
+        const batch = reviewDomains.slice(i, i + maxConcurrency);
+
+        const results = await Promise.all(
+          batch.map((record) =>
+            processSingleDomainExportStatus({
+              domain: record.domain,
+              chainId: record.chainId,
+              ownerAddress: record.ownerAddress,
+            }).catch((error) => {
+              workflow.log.error('Failed to refresh admin-review row', {
+                domain: record.domain,
+                error,
+              });
+              return { action: 'skipped' as const };
+            }),
+          ),
+        );
+
+        for (const result of results) {
+          if ('pendingEmailSent' in result && result.pendingEmailSent) {
+            pendingExportEmailsSent++;
+          }
+          if ('failedEmailSent' in result && result.failedEmailSent) {
+            failedExportEmailsSent++;
+          }
+
+          switch (result.action) {
+            case 'created':
+              created++;
+              break;
+            case 'updated':
+              updated++;
+              break;
+            case 'skipped':
+              skipped++;
+              break;
+            case 'no_signal':
+              noSignal++;
+              break;
+            case 'undetermined':
+              undetermined++;
+              break;
+            case 'no_change':
+              noChange++;
+              break;
+          }
+        }
+      }
+
+      workflow.log.info(
+        'Completed refreshing admin-review / undetermined rows',
+        {
+          refreshed: reviewDomains.length,
+        },
+      );
+    }
+
     // Step 3: Check pending transfers
     workflow.log.info('Getting pending transfer domains');
     const pendingTransfers = await getPendingTransferDomains();
@@ -287,6 +367,7 @@ export async function domainExportTrackingWorkflow(
 
               // Record successful burn
               await recordNftBurn({
+                trackingRecordId: record.id,
                 domain: record.domain,
                 chainId: record.chainId,
                 txHash: burnTxHash,
@@ -302,6 +383,7 @@ export async function domainExportTrackingWorkflow(
             } catch (burnError) {
               nftBurnsFailed++;
               await recordNftBurn({
+                trackingRecordId: record.id,
                 domain: record.domain,
                 chainId: record.chainId,
                 error: String(burnError),
