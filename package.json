@@ -5,7 +5,12 @@
   "scripts": {
     "data:validate": "bun scripts/validate-data.ts",
     "translate:blog": "bun scripts/translate-blog.ts",
+    "translate:glossary": "bun scripts/translate-glossary.ts",
     "generate:blog": "bun scripts/generate-blog.ts",
+    "termbase:build": "bun scripts/build-termbase.ts",
+    "termbase:check": "bun scripts/build-termbase.ts --check",
+    "glossary:mentions": "bun scripts/glossary-mentions.ts",
+    "check:termbase": "bun scripts/check-termbase.ts",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""
   },
   "dependencies": {
