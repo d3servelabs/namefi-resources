@@ -33,10 +33,7 @@ import { sldRegistrar } from '#lib/namefi-registry';
 import { toPunycodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { RDAP } from '@namefi-astra/registrars/rdap-whois/rdap_client';
 import { WhoisClient } from '@namefi-astra/registrars/rdap-whois/whois_client';
-import type {
-  PendingTransferInfo,
-  TransferStatus,
-} from '@namefi-astra/registrars/data/types/transfer-status';
+import type { PendingTransferInfo } from '@namefi-astra/registrars/data/types/transfer-status';
 import type { RdapResponse } from '@namefi-astra/registrars/rdap-whois/rdap-response';
 import { sendMail } from '../../../mail/mail-client';
 import { render } from '@react-email/components';
@@ -67,10 +64,7 @@ import {
   type ExportTrackingStatusHistoryEntry,
   type TransferDecisionAction,
 } from './export-tracking-state';
-import {
-  isDomainStateError,
-  isRegistrarDomainNotFoundError,
-} from '@namefi-astra/registrars/errors';
+import { isRegistrarDomainNotFoundError } from '@namefi-astra/registrars/errors';
 
 // =====================================================================
 // CONFIG
@@ -132,6 +126,15 @@ export type EvidenceSourceStatus =
   | 'negative'
   | 'no_data'
   | 'error';
+
+function buildCompletionTransitionReason(
+  decisionReason: string,
+  adminApproved: boolean,
+): string {
+  return adminApproved
+    ? `${decisionReason}; export was already approved, so admin review is bypassed`
+    : decisionReason;
+}
 
 export interface EvidenceSourceResult {
   source: EvidenceSourceName;
@@ -281,6 +284,7 @@ function findRdapTransferEvent(rdap: RdapResponse): {
  */
 async function queryAccountCheck(
   domain: NamefiNormalizedDomain,
+  options: { approvedForCompletion?: boolean } = {},
 ): Promise<EvidenceSourceResult> {
   const checkedAt = new Date().toISOString();
   try {
@@ -305,6 +309,23 @@ async function queryAccountCheck(
     };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+
+    if (
+      options.approvedForCompletion &&
+      isRegistrarDomainNotFoundError(error)
+    ) {
+      return {
+        source: 'AccountCheck',
+        status: 'positive_completed',
+        evidence: {
+          inOurAccount: false,
+          reason:
+            'approved export and registrar reports the domain is no longer in the managed account',
+          registrarError: message,
+        },
+        checkedAt,
+      };
+    }
 
     // A registrar-resolution failure means the domain is not in any of our
     // accounts — a completion signal, not an error. Corroborate against the
@@ -569,6 +590,7 @@ async function queryWhoisEvidence(
  */
 async function queryDirectRegistrarEvidence(
   domain: NamefiNormalizedDomain,
+  options: { approvedForCompletion?: boolean } = {},
 ): Promise<EvidenceSourceResult> {
   const checkedAt = new Date().toISOString();
   try {
@@ -611,6 +633,22 @@ async function queryDirectRegistrarEvidence(
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
 
+    if (
+      options.approvedForCompletion &&
+      isRegistrarDomainNotFoundError(error)
+    ) {
+      return {
+        source: 'DirectRegistrar',
+        status: 'positive_completed',
+        evidence: {
+          reason:
+            'approved export and registrar cannot find an active transfer/domain record',
+          registrarError: message,
+        },
+        checkedAt,
+      };
+    }
+
     // The domain no longer resolving to any managed account means there is
     // simply no pending transfer to find — `no_data`, not a hard error, so
     // it doesn't pollute the decision function's "all sources errored" gate.
@@ -648,8 +686,9 @@ async function queryDirectRegistrarEvidence(
  */
 export async function gatherEvidenceForDomain(input: {
   domain: NamefiNormalizedDomain;
+  approvedForCompletion?: boolean;
 }): Promise<EvidenceSourceResult[]> {
-  const { domain } = input;
+  const { domain, approvedForCompletion = false } = input;
   const activityContext = Context.current();
   activityContext.heartbeat({ domain, step: 'gather_evidence' });
 
@@ -660,11 +699,11 @@ export async function gatherEvidenceForDomain(input: {
 
   const [accountCheck, domainIndex, rdapResult, whois, directRegistrar] =
     await Promise.all([
-      queryAccountCheck(domain),
+      queryAccountCheck(domain, { approvedForCompletion }),
       queryDomainIndexEvidence(domain),
       rdapPromise,
       queryWhoisEvidence(domain),
-      queryDirectRegistrarEvidence(domain),
+      queryDirectRegistrarEvidence(domain, { approvedForCompletion }),
     ]);
 
   const rdapStatus = rdapStatusToEvidence(rdapResult);
@@ -704,6 +743,52 @@ function getEvidenceBy(
   source: EvidenceSourceName,
 ): EvidenceSourceResult | undefined {
   return evidence.find((e) => e.source === source);
+}
+
+function buildNoSignalReason(evidence: EvidenceSourceResult[]): string {
+  const details: string[] = [];
+  const accountCheck = getEvidenceBy(evidence, 'AccountCheck');
+  const domainIndex = getEvidenceBy(evidence, 'DomainIndex');
+  const directRegistrar = getEvidenceBy(evidence, 'DirectRegistrar');
+  const rdapStatus = getEvidenceBy(evidence, 'RDAPStatus');
+  const rdapEvents = getEvidenceBy(evidence, 'RDAPEvents');
+  const whois = getEvidenceBy(evidence, 'WHOIS');
+
+  if (accountCheck?.status === 'negative') {
+    details.push('account check still sees the domain in our account');
+  } else if (accountCheck?.status === 'error') {
+    details.push(`account check errored: ${accountCheck.error ?? 'unknown'}`);
+  }
+
+  if (domainIndex?.status === 'negative') {
+    details.push('domain index still lists the domain as present');
+  } else if (domainIndex?.status === 'no_data') {
+    details.push('domain index has no row for the domain');
+  } else if (domainIndex?.status === 'error') {
+    details.push(`domain index errored: ${domainIndex.error ?? 'unknown'}`);
+  }
+
+  if (directRegistrar?.status === 'no_data') {
+    details.push('direct registrar returned no active transfer data');
+  } else if (directRegistrar?.status === 'error') {
+    details.push(
+      `direct registrar check errored: ${directRegistrar.error ?? 'unknown'}`,
+    );
+  }
+
+  if (rdapStatus?.status === 'negative' || whois?.status === 'negative') {
+    details.push('RDAP/WHOIS statuses do not include transfer states');
+  }
+
+  if (rdapEvents?.status === 'no_data') {
+    details.push('RDAP has no transfer event');
+  } else if (rdapEvents?.status === 'error') {
+    details.push(`RDAP event check errored: ${rdapEvents.error ?? 'unknown'}`);
+  }
+
+  return details.length > 0
+    ? `no explicit transfer signal; ${details.join('; ')}`
+    : 'no explicit transfer signal; waiting for pending, completion, or failure evidence';
 }
 
 /**
@@ -835,7 +920,7 @@ export function decideExportTrackingState(evidence: EvidenceSourceResult[]): {
 
   return {
     action: 'NO_SIGNAL',
-    reason: 'no explicit transfer signal across sources',
+    reason: buildNoSignalReason(evidence),
   };
 }
 
@@ -1061,10 +1146,23 @@ export async function processSingleDomainExportStatus(input: {
   logger.debug({ domain, chainId }, 'Processing single domain export status');
   activityContext.heartbeat({ domain, step: 'checking_status' });
 
-  const evidence = await gatherEvidenceForDomain({ domain });
+  const existingRecord = await getActiveTrackingRecord(domain, chainId);
+  const adminApproved = existingRecord
+    ? isAdminApprovedForPendingNotification({
+        clientApprovedAt: existingRecord.clientApprovedAt,
+        adminVerifiedAt: existingRecord.adminVerifiedAt,
+      })
+    : false;
+
+  const evidence = await gatherEvidenceForDomain({
+    domain,
+    approvedForCompletion: adminApproved,
+  });
   const decision = decideExportTrackingState(evidence);
 
-  const persistedStatus = mapDecisionToPersistedStatus(decision.action);
+  const persistedStatus = mapDecisionToPersistedStatus(decision.action, {
+    adminApproved,
+  });
   if (!persistedStatus) {
     logger.debug(
       { domain, decision },
@@ -1084,8 +1182,6 @@ export async function processSingleDomainExportStatus(input: {
   const indexRegistrarKey = await getDomainRegistrarFromIndex(domain);
   const registrarKey =
     getRegistrarKeyFromEvidence(evidence) ?? indexRegistrarKey ?? undefined;
-
-  const existingRecord = await getActiveTrackingRecord(domain, chainId);
 
   // NO_SIGNAL: don't persist a fresh row; just touch lastCheckedAt on
   // existing active rows so we have heartbeat data.
@@ -1108,10 +1204,6 @@ export async function processSingleDomainExportStatus(input: {
 
   if (existingRecord) {
     const pendingAlreadySent = Boolean(existingRecord.pendingExportEmailSentAt);
-    const adminApproved = isAdminApprovedForPendingNotification({
-      clientApprovedAt: existingRecord.clientApprovedAt,
-      adminVerifiedAt: existingRecord.adminVerifiedAt,
-    });
 
     if (existingRecord.status !== persistedStatus) {
       const now = new Date();
@@ -1122,7 +1214,10 @@ export async function processSingleDomainExportStatus(input: {
         persistedStatus,
         {
           now,
-          reason: decision.reason,
+          reason:
+            decision.action === 'TRANSFER_COMPLETED'
+              ? buildCompletionTransitionReason(decision.reason, adminApproved)
+              : decision.reason,
           evidence: { ...latestEvidence, actor: 'workflow' },
           eppStatuses,
         },
@@ -1243,7 +1338,7 @@ export async function processSingleDomainExportStatus(input: {
       whoisData: rdapData as Json,
       latestEvidence,
       registrarKey,
-      isActive: decisionIsTerminal ? false : true,
+      isActive: !decisionIsTerminal,
       transferCompletedAt:
         decision.action === 'TRANSFER_COMPLETED' ? now : undefined,
       confirmedOutOfAccountAt:
@@ -1396,6 +1491,8 @@ export async function getPendingTransferDomains(): Promise<
     ownerAddress: string;
     status: string;
     statusHistory: unknown;
+    clientApprovedAt: Date | null;
+    adminVerifiedAt: Date | null;
   }>
 > {
   logger.debug('Getting pending transfer domains');
@@ -1413,6 +1510,8 @@ export async function getPendingTransferDomains(): Promise<
       ownerAddress: domainExportTrackingTable.ownerAddress,
       status: domainExportTrackingTable.status,
       statusHistory: domainExportTrackingTable.statusHistory,
+      clientApprovedAt: domainExportTrackingTable.clientApprovedAt,
+      adminVerifiedAt: domainExportTrackingTable.adminVerifiedAt,
     })
     .from(domainExportTrackingTable)
     .where(
@@ -1431,7 +1530,8 @@ export async function getPendingTransferDomains(): Promise<
  * Re-evaluate a row currently in PENDING_TRANSFER or TRANSFER_PERIOD.
  *
  * Outcomes:
- *  - `completed`     → transition to NEEDS_ADMIN_REVIEW (admin gate).
+ *  - `completed`     → transition to TRANSFER_COMPLETED when already approved,
+ *                      otherwise NEEDS_ADMIN_REVIEW (admin gate).
  *  - `failed`        → transition to TRANSFER_FAILED (terminal, isActive=false).
  *  - `still_pending` → update lastCheckedAt + evidence only.
  *  - `undetermined`  → update lastCheckedAt + evidence; status unchanged.
@@ -1443,6 +1543,8 @@ export async function checkSinglePendingTransfer(input: {
   ownerAddress: string;
   currentStatus: string;
   statusHistory: unknown;
+  clientApprovedAt: Date | string | null;
+  adminVerifiedAt: Date | string | null;
 }): Promise<{
   action: 'failed' | 'completed' | 'still_pending' | 'undetermined';
   newStatus?: string;
@@ -1450,14 +1552,29 @@ export async function checkSinglePendingTransfer(input: {
   chainId?: number;
   failedEmailSent?: boolean;
 }> {
-  const { id, domain, chainId, ownerAddress, currentStatus, statusHistory } =
-    input;
+  const {
+    id,
+    domain,
+    chainId,
+    ownerAddress,
+    currentStatus,
+    statusHistory,
+    clientApprovedAt,
+    adminVerifiedAt,
+  } = input;
   const activityContext = Context.current();
 
   logger.debug({ domain, id }, 'Checking pending transfer');
   activityContext.heartbeat({ domain, step: 'rechecking' });
 
-  const evidence = await gatherEvidenceForDomain({ domain });
+  const adminApproved = isAdminApprovedForPendingNotification({
+    clientApprovedAt,
+    adminVerifiedAt,
+  });
+  const evidence = await gatherEvidenceForDomain({
+    domain,
+    approvedForCompletion: adminApproved,
+  });
   const decision = decideExportTrackingState(evidence);
   const evidenceCheckedAt = new Date();
   const latestEvidence = buildLatestEvidenceSnapshot({
@@ -1625,15 +1742,21 @@ export async function checkSinglePendingTransfer(input: {
     return { action: 'undetermined' };
   }
 
-  // TRANSFER_COMPLETED decision: transition to NEEDS_ADMIN_REVIEW (admin gate).
-  // Row stays active until admin acts.
+  // TRANSFER_COMPLETED decision: already-approved rows can close immediately;
+  // otherwise the row stays active until admin review.
+  const completedStatus = mapDecisionToPersistedStatus('TRANSFER_COMPLETED', {
+    adminApproved,
+  });
+  if (!completedStatus) {
+    throw new Error('TRANSFER_COMPLETED did not map to a tracking status');
+  }
   const now = new Date();
   const updatedHistory = appendExportTrackingStatusHistory(
     statusHistory as ExportTrackingStatusHistoryEntry[] | null,
-    'NEEDS_ADMIN_REVIEW',
+    completedStatus,
     {
       now,
-      reason: decision.reason,
+      reason: buildCompletionTransitionReason(decision.reason, adminApproved),
       evidence: { ...latestEvidence, actor: 'workflow' },
       eppStatuses,
     },
@@ -1642,7 +1765,7 @@ export async function checkSinglePendingTransfer(input: {
     .update(domainExportTrackingTable)
     .set({
       previousStatus: currentStatus as DomainExportTrackingStatus,
-      status: 'NEEDS_ADMIN_REVIEW',
+      status: completedStatus,
       statusHistory: updatedHistory,
       eppStatuses,
       whoisData: rdapData as Json,
@@ -1651,13 +1774,19 @@ export async function checkSinglePendingTransfer(input: {
       lastCheckedAt: now,
       transferCompletedAt: now,
       confirmedOutOfAccountAt: sql`COALESCE(${domainExportTrackingTable.confirmedOutOfAccountAt}, NOW())`,
+      isActive: isTerminalStatus(completedStatus)
+        ? false
+        : sql`${domainExportTrackingTable.isActive}`,
     })
     .where(eq(domainExportTrackingTable.id, id));
 
-  logger.debug({ domain }, 'Transfer completed — awaiting admin review');
+  logger.debug(
+    { domain, completedStatus, adminApproved },
+    'Transfer completed',
+  );
   return {
     action: 'completed',
-    newStatus: 'NEEDS_ADMIN_REVIEW',
+    newStatus: completedStatus,
     domain,
     chainId,
   };

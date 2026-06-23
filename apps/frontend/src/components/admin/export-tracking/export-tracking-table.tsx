@@ -21,6 +21,7 @@ import { ExportTrackingCard } from './export-tracking-card';
 import {
   ChainCell,
   formatDateTime,
+  LatestEvidenceCell,
   OwnerAddressCell,
 } from './export-tracking-cells';
 import { StatusHistorySubrow } from './status-history-subrow';
@@ -29,35 +30,8 @@ import { VerifyButton } from './verify-button';
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { PermissionGate } from '@/components/access/PermissionGate';
 import { Permission } from '@namefi-astra/utils/permissions';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@namefi-astra/ui/components/shadcn/popover';
-
-type EvidenceSourceEntry = {
-  source:
-  | 'AccountCheck'
-  | 'DomainIndex'
-  | 'RDAPStatus'
-  | 'RDAPEvents'
-  | 'WHOIS'
-  | 'DirectRegistrar';
-  status:
-  | 'positive_pending'
-  | 'positive_period'
-  | 'positive_completed'
-  | 'positive_failed'
-  | 'negative'
-  | 'no_data'
-  | 'error';
-  evidence?: unknown;
-  error?: string;
-  checkedAt: string;
-};
 
 type TableLatestEvidence = BaseExportTrackingRecord['latestEvidence'];
-type LatestEvidenceSnapshot = NonNullable<TableLatestEvidence>;
 
 type TableExportTrackingRecord = Omit<
   BaseExportTrackingRecord,
@@ -125,187 +99,8 @@ const buildCardRecord = (
   ...record,
   pendingNotifiedAt: toDateOrNull(getPendingEmailSentAt(record)),
   notifiedAt: toDateOrNull(getCompletedEmailSentAt(record)),
-  latestEvidence:
-    'sources' in (record.latestEvidence ?? {})
-      ? null
-      : (record.latestEvidence as BaseExportTrackingRecord['latestEvidence']),
+  latestEvidence: record.latestEvidence,
 });
-
-const hasSourceEvidence = (
-  latestEvidence: TableLatestEvidence,
-): latestEvidence is LatestEvidenceSnapshot & {
-  sources: EvidenceSourceEntry[];
-} =>
-  Boolean(
-    latestEvidence &&
-    'sources' in latestEvidence &&
-    Array.isArray(latestEvidence.sources),
-  );
-
-const formatSourceBasedAccountSummary = (
-  latestEvidence: LatestEvidenceSnapshot,
-): string => {
-  const accountSource = latestEvidence.sources?.find(
-    (source) => source.source === 'AccountCheck',
-  );
-
-  if (!accountSource) return 'No data';
-  if (accountSource.status === 'positive_completed') {
-    return 'Out of account (confirmed)';
-  }
-  if (accountSource.status === 'negative') {
-    return 'In account (confirmed)';
-  }
-  if (accountSource.status === 'error') {
-    return `Error: ${accountSource.error ?? 'unknown'}`;
-  }
-  if (accountSource.status === 'no_data') {
-    return 'No data';
-  }
-
-  return accountSource.status;
-};
-
-const formatSourceBasedRdapSummary = (
-  latestEvidence: LatestEvidenceSnapshot,
-): string => {
-  const rdapEventsSource = latestEvidence.sources?.find(
-    (source) => source.source === 'RDAPEvents',
-  );
-  const rdapEvidence = rdapEventsSource?.evidence as
-    | { eventAction?: string; eventDate?: string }
-    | undefined;
-
-  if (!rdapEventsSource) return 'No data';
-  if (rdapEventsSource.status === 'positive_completed') {
-    return rdapEvidence?.eventDate
-      ? `Detected (${new Date(rdapEvidence.eventDate).toLocaleString()})`
-      : 'Detected';
-  }
-  if (rdapEventsSource.status === 'negative') {
-    return 'Not detected';
-  }
-  if (rdapEventsSource.status === 'error') {
-    return `Error: ${rdapEventsSource.error ?? 'unknown'}`;
-  }
-  if (rdapEventsSource.status === 'no_data') {
-    return 'No data';
-  }
-
-  return rdapEventsSource.status;
-};
-
-const formatSourceBasedDomainIndexSummary = (
-  latestEvidence: LatestEvidenceSnapshot,
-): string => {
-  const domainIndexSource = latestEvidence.sources?.find(
-    (source) => source.source === 'DomainIndex',
-  );
-
-  if (!domainIndexSource) return 'No data';
-  if (domainIndexSource.status === 'positive_completed') {
-    return 'Missing from registrar';
-  }
-  if (domainIndexSource.status === 'negative') {
-    return 'Present (indexed)';
-  }
-  if (domainIndexSource.status === 'error') {
-    return `Error: ${domainIndexSource.error ?? 'unknown'}`;
-  }
-  if (domainIndexSource.status === 'no_data') {
-    return 'Not indexed';
-  }
-
-  return domainIndexSource.status;
-};
-
-function LatestEvidenceTableCell({
-  latestEvidence,
-}: {
-  latestEvidence: TableLatestEvidence;
-}) {
-  if (!latestEvidence) {
-    return <span className="text-xs text-muted-foreground">-</span>;
-  }
-
-  const accountSummary = hasSourceEvidence(latestEvidence)
-    ? formatSourceBasedAccountSummary(latestEvidence)
-    : latestEvidence.accountCheck
-      ? `${latestEvidence.accountCheck.inOurAccount ? 'In account' : 'Out of account'} (${latestEvidence.accountCheck.confirmed ? 'confirmed' : 'unconfirmed'})`
-      : 'Unknown';
-
-  const rdapSummary = hasSourceEvidence(latestEvidence)
-    ? formatSourceBasedRdapSummary(latestEvidence)
-    : latestEvidence.rdapTransferEvent?.detected
-      ? latestEvidence.rdapTransferEvent.eventDate
-        ? `Detected (${new Date(latestEvidence.rdapTransferEvent.eventDate).toLocaleString()})`
-        : 'Detected'
-      : 'Not detected';
-
-  const domainIndexSummary = hasSourceEvidence(latestEvidence)
-    ? formatSourceBasedDomainIndexSummary(latestEvidence)
-    : null;
-
-  return (
-    <div className="space-y-0.5 text-xs max-w-[300px]">
-      <div>
-        <span className="text-muted-foreground">Account:</span>{' '}
-        <span>{accountSummary}</span>
-      </div>
-      <div>
-        <span className="text-muted-foreground">RDAP transfer:</span>{' '}
-        <span>{rdapSummary}</span>
-      </div>
-      {domainIndexSummary ? (
-        <div>
-          <span className="text-muted-foreground">Domain index:</span>{' '}
-          <span>{domainIndexSummary}</span>
-        </div>
-      ) : null}
-      {latestEvidence.checkedAt && (
-        <div className="text-muted-foreground">
-          Checked: {new Date(latestEvidence.checkedAt).toLocaleString()}
-        </div>
-      )}
-      {hasSourceEvidence(latestEvidence) ? (
-        <div className="text-muted-foreground">
-          Sources: {latestEvidence.sources?.length ?? 0} (
-          {latestEvidence.sources?.filter((source) => source.status === 'error')
-            .length ?? 0}{' '}
-          errored)
-        </div>
-      ) : latestEvidence.evidenceSource ? (
-        <div className="text-muted-foreground">
-          Source: {latestEvidence.evidenceSource}
-        </div>
-      ) : null}
-      <Popover>
-        <PopoverTrigger
-          render={
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 px-2 text-xs -ms-2"
-            />
-          }
-        >
-          View JSON
-        </PopoverTrigger>
-        <PopoverContent
-          align="start"
-          className="w-[440px] max-sm:w-[calc(100vw-2rem)] p-3"
-        >
-          <div className="space-y-2">
-            <div className="text-xs font-medium">Latest Evidence</div>
-            <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">
-              {JSON.stringify(latestEvidence, null, 2)}
-            </pre>
-          </div>
-        </PopoverContent>
-      </Popover>
-    </div>
-  );
-}
 
 export function ExportTrackingTable() {
   const trpc = useTRPC();
@@ -649,7 +444,7 @@ export function ExportTrackingTable() {
           header: 'Latest Evidence',
           enableSorting: false,
           cell: ({ row }) => (
-            <LatestEvidenceTableCell
+            <LatestEvidenceCell
               latestEvidence={row.original.latestEvidence}
               data-testid={`admin.export-tracking.list.row.${row.original.id}.latest-evidence`}
             />

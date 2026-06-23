@@ -171,12 +171,13 @@ export function actionToTrackingStatus(
 }
 
 /**
- * Admin-gate policy: the decision function may return TRANSFER_COMPLETED,
- * but the workflow never persists that status directly on a fresh detection.
- * Instead the row goes to NEEDS_ADMIN_REVIEW so an admin can verify before
- * any user-facing side effects (notification, burn) happen.
+ * Admin-gate policy: the decision function may return TRANSFER_COMPLETED.
+ * If the export was already approved (`clientApprovedAt` or `adminVerifiedAt`),
+ * the workflow can persist TRANSFER_COMPLETED directly. Otherwise the row goes
+ * to NEEDS_ADMIN_REVIEW so an admin can verify before user-facing side effects
+ * (notification, burn) happen.
  *
- * The admin "Verify" action then transitions NEEDS_ADMIN_REVIEW →
+ * The admin "Verify" action transitions NEEDS_ADMIN_REVIEW →
  * TRANSFER_COMPLETED + `isActive = false`.
  *
  * Callers that need to distinguish "decision was TRANSFER_COMPLETED" (to set
@@ -186,9 +187,10 @@ export function actionToTrackingStatus(
  */
 export function mapDecisionToPersistedStatus(
   action: TransferDecisionAction,
+  options: { adminApproved?: boolean } = {},
 ): DomainExportTrackingStatus | null {
   if (action === 'TRANSFER_COMPLETED') {
-    return 'NEEDS_ADMIN_REVIEW';
+    return options.adminApproved ? 'TRANSFER_COMPLETED' : 'NEEDS_ADMIN_REVIEW';
   }
 
   return actionToTrackingStatus(action);
@@ -232,8 +234,8 @@ export function getExportTrackingEmailType(
 }
 
 export function isAdminApprovedForPendingNotification(input: {
-  clientApprovedAt?: Date | null;
-  adminVerifiedAt?: Date | null;
+  clientApprovedAt?: Date | string | null;
+  adminVerifiedAt?: Date | string | null;
 }): boolean {
   return Boolean(input.clientApprovedAt || input.adminVerifiedAt);
 }

@@ -208,6 +208,8 @@ export async function domainExportTrackingWorkflow(
               ownerAddress: record.ownerAddress,
               currentStatus: record.status,
               statusHistory: record.statusHistory,
+              clientApprovedAt: record.clientApprovedAt,
+              adminVerifiedAt: record.adminVerifiedAt,
             }).catch((error) => {
               workflow.log.error('Failed to check pending transfer', {
                 domain: record.domain,

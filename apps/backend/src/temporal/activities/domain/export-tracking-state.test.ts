@@ -13,10 +13,18 @@ import {
 
 describe('export-tracking-state', () => {
   describe('mapDecisionToPersistedStatus', () => {
-    it('routes TRANSFER_COMPLETED decisions through the admin gate', () => {
+    it('routes unapproved TRANSFER_COMPLETED decisions through the admin gate', () => {
       expect(mapDecisionToPersistedStatus('TRANSFER_COMPLETED')).toBe(
         'NEEDS_ADMIN_REVIEW',
       );
+    });
+
+    it('persists approved TRANSFER_COMPLETED decisions as terminal completed', () => {
+      expect(
+        mapDecisionToPersistedStatus('TRANSFER_COMPLETED', {
+          adminApproved: true,
+        }),
+      ).toBe('TRANSFER_COMPLETED');
     });
 
     it('keeps pending transfer action as pending transfer status', () => {
@@ -139,6 +147,15 @@ describe('export-tracking-state', () => {
         isAdminApprovedForPendingNotification({
           clientApprovedAt: null,
           adminVerifiedAt: new Date(),
+        }),
+      ).toBe(true);
+    });
+
+    it('accepts serialized approval timestamps from workflow payloads', () => {
+      expect(
+        isAdminApprovedForPendingNotification({
+          clientApprovedAt: '2026-02-23T10:00:00.000Z',
+          adminVerifiedAt: null,
         }),
       ).toBe(true);
     });

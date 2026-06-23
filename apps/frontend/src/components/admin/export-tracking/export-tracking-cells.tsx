@@ -13,6 +13,7 @@ import { getChain } from '@namefi-astra/utils/chains';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { NetworkLogo } from '@/components/network-logo';
 import { UserWalletAvatar } from '@/components/user-avatar';
+import type { EvidenceSnapshot, EvidenceSourceEntry } from './types';
 
 /**
  * Shared formatters + cell components for the admin export-tracking table.
@@ -33,21 +34,78 @@ export const formatDateTime = (
   value: Date | string | null | undefined,
 ): string => (value ? new Date(value).toLocaleString() : '-');
 
-type LatestEvidence = {
-  checkedAt?: string;
-  evidenceSource?: 'DIRECT_REGISTRAR' | 'RDAP' | 'WHOIS' | 'NONE';
-  accountCheck?: {
-    inOurAccount?: boolean;
-    confirmed?: boolean;
-  };
-  rdapTransferEvent?: {
-    detected?: boolean;
-    eventAction?: string;
-    eventDate?: string;
-  };
-  decisionAction?: string;
-  decisionReason?: string;
-} | null;
+type LatestEvidence = EvidenceSnapshot | null;
+type SourceEvidence = EvidenceSnapshot & { sources: EvidenceSourceEntry[] };
+
+const hasSourceEvidence = (
+  latestEvidence: LatestEvidence,
+): latestEvidence is SourceEvidence =>
+  Boolean(latestEvidence && Array.isArray(latestEvidence.sources));
+
+const formatSourceStatus = (entry?: EvidenceSourceEntry): string => {
+  if (!entry) return 'No data';
+  if (entry.status === 'error') return `Error: ${entry.error ?? 'unknown'}`;
+  if (entry.status === 'no_data') return 'No data';
+  if (entry.status === 'negative') return 'No transfer signal';
+  if (entry.status === 'positive_pending') return 'Pending transfer';
+  if (entry.status === 'positive_period') return 'Transfer period';
+  if (entry.status === 'positive_completed') return 'Completed';
+  if (entry.status === 'positive_failed') return 'Failed';
+  return entry.status;
+};
+
+const formatSourceBasedAccountSummary = (
+  latestEvidence: SourceEvidence,
+): string => {
+  const accountSource = latestEvidence.sources.find(
+    (source) => source.source === 'AccountCheck',
+  );
+
+  if (accountSource?.status === 'positive_completed') {
+    return 'Out of account (confirmed)';
+  }
+  if (accountSource?.status === 'negative') {
+    return 'In account (confirmed)';
+  }
+  return formatSourceStatus(accountSource);
+};
+
+const formatSourceBasedRdapSummary = (
+  latestEvidence: SourceEvidence,
+): string => {
+  const rdapEventsSource = latestEvidence.sources.find(
+    (source) => source.source === 'RDAPEvents',
+  );
+  const rdapEvidence = rdapEventsSource?.evidence as
+    | { eventAction?: string; eventDate?: string }
+    | undefined;
+
+  if (rdapEventsSource?.status === 'positive_completed') {
+    return rdapEvidence?.eventDate
+      ? `Detected (${new Date(rdapEvidence.eventDate).toLocaleString()})`
+      : 'Detected';
+  }
+  return formatSourceStatus(rdapEventsSource);
+};
+
+const formatSourceBasedDomainIndexSummary = (
+  latestEvidence: SourceEvidence,
+): string => {
+  const domainIndexSource = latestEvidence.sources.find(
+    (source) => source.source === 'DomainIndex',
+  );
+
+  if (domainIndexSource?.status === 'positive_completed') {
+    return 'Missing from registrar';
+  }
+  if (domainIndexSource?.status === 'negative') {
+    return 'Present (indexed)';
+  }
+  if (domainIndexSource?.status === 'no_data') {
+    return 'Not indexed';
+  }
+  return formatSourceStatus(domainIndexSource);
+};
 
 export const formatEvidenceAccountSummary = (
   accountCheck: NonNullable<LatestEvidence>['accountCheck'],
@@ -148,12 +206,15 @@ export function LatestEvidenceCell({
     return <span className="text-xs text-muted-foreground">-</span>;
   }
 
-  const accountSummary = formatEvidenceAccountSummary(
-    latestEvidence.accountCheck,
-  );
-  const rdapSummary = formatEvidenceRdapSummary(
-    latestEvidence.rdapTransferEvent,
-  );
+  const accountSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedAccountSummary(latestEvidence)
+    : formatEvidenceAccountSummary(latestEvidence.accountCheck);
+  const rdapSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedRdapSummary(latestEvidence)
+    : formatEvidenceRdapSummary(latestEvidence.rdapTransferEvent);
+  const domainIndexSummary = hasSourceEvidence(latestEvidence)
+    ? formatSourceBasedDomainIndexSummary(latestEvidence)
+    : null;
 
   return (
     <div className="space-y-0.5 text-xs max-w-[300px]">
@@ -165,16 +226,40 @@ export function LatestEvidenceCell({
         <span className="text-muted-foreground">RDAP transfer:</span>{' '}
         <span>{rdapSummary}</span>
       </div>
+      {domainIndexSummary ? (
+        <div>
+          <span className="text-muted-foreground">Domain index:</span>{' '}
+          <span>{domainIndexSummary}</span>
+        </div>
+      ) : null}
+      {latestEvidence.decisionAction ? (
+        <div>
+          <span className="text-muted-foreground">Decision:</span>{' '}
+          <span>{latestEvidence.decisionAction}</span>
+        </div>
+      ) : null}
+      {latestEvidence.decisionReason ? (
+        <div className="text-muted-foreground break-words">
+          Reason: {latestEvidence.decisionReason}
+        </div>
+      ) : null}
       {latestEvidence.checkedAt && (
         <div className="text-muted-foreground">
           Checked: {new Date(latestEvidence.checkedAt).toLocaleString()}
         </div>
       )}
-      {latestEvidence.evidenceSource && (
+      {hasSourceEvidence(latestEvidence) ? (
+        <div className="text-muted-foreground">
+          Sources: {latestEvidence.sources.length} (
+          {latestEvidence.sources.filter((source) => source.status === 'error')
+            .length ?? 0}{' '}
+          errored)
+        </div>
+      ) : latestEvidence.evidenceSource ? (
         <div className="text-muted-foreground">
           Source: {latestEvidence.evidenceSource}
         </div>
-      )}
+      ) : null}
       <Popover>
         <PopoverTrigger
           render={
