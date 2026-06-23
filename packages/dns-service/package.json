@@ -33,7 +33,7 @@
     "@namefi-astra/zod-dns": "workspace:*",
     "@trpc/server": "^11.8.0",
     "drizzle-orm": "^0.45.2",
-    "hono": "^4.12.25",
+    "hono": "^4.12.26",
     "jose": "^6.0.12",
     "lru-cache": "^11.1.0",
     "mnemonist": "^0.40.3",
