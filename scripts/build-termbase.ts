@@ -30,9 +30,10 @@
  *   bun scripts/build-termbase.ts --check    # verify it is up to date (CI)
  */
 
-import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { resolveEntryFile } from './glossary-fs.ts';
 
 const LOCALES = ['en', 'es', 'de', 'fr', 'zh', 'ar', 'hi'] as const;
 type Locale = (typeof LOCALES)[number];
@@ -66,24 +67,19 @@ function listSlugs(locale: Locale): string[] {
   }
 }
 
-// Resolve a (locale, slug) to a SINGLE entry file and read everything (title +
-// build-time frontmatter) from it, so level/aliases can never come from a
-// different file than the title. Prefers the first extension that has a usable
-// title; falls back to the sibling if the first exists but is titleless.
+// Resolve a (locale, slug) to the ONE canonical file (shared resolver, .md
+// preferred) and read title + build-time frontmatter from it, so level/aliases
+// can never come from a different file than the title — and so every script
+// agrees on which file a slug maps to. A titleless canonical file yields null
+// (the entry is malformed and should be fixed in content, not patched over by
+// silently reading a sibling — that is exactly what caused script divergence).
 function readEntry(locale: Locale, slug: string): { title: string; data: Record<string, unknown> } | null {
-  for (const ext of ['.md', '.mdx']) {
-    const file = path.join(GLOSSARY_ROOT, locale, slug + ext);
-    try {
-      statSync(file);
-    } catch {
-      continue;
-    }
-    const data = matter(readFileSync(file, 'utf8')).data as Record<string, unknown>;
-    const title = typeof data.title === 'string' ? data.title.trim() : '';
-    if (title) return { title, data };
-    // file exists but has no usable title — try the sibling extension.
-  }
-  return null;
+  const file = resolveEntryFile(path.join(GLOSSARY_ROOT, locale), slug);
+  if (!file) return null;
+  const data = matter(readFileSync(file, 'utf8')).data as Record<string, unknown>;
+  const title = typeof data.title === 'string' ? data.title.trim() : '';
+  if (!title) return null;
+  return { title, data };
 }
 
 function normaliseAliases(raw: unknown): Partial<Record<Locale, string[]>> | undefined {

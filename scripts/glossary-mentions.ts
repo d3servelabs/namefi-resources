@@ -25,6 +25,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import matter from 'gray-matter';
+import { resolveEntryFile } from './glossary-fs.ts';
 
 const REPO_ROOT = process.cwd();
 const GLOSSARY_EN = path.join(REPO_ROOT, 'content', 'glossary', 'en');
@@ -65,20 +66,10 @@ function listMarkdownRec(dir: string): string[] {
   return out;
 }
 
-// Resolve an en glossary entry to its actual file, honouring both extensions
-// (build-termbase.ts and translate-glossary.ts already do) so an .mdx-only term
-// is never mistaken for missing.
+// Resolve an en glossary entry to its canonical file via the shared resolver,
+// so this script targets the same file as build-termbase / translate-glossary.
 function resolveEnEntry(slug: string): string | null {
-  for (const ext of ['.md', '.mdx']) {
-    const f = path.join(GLOSSARY_EN, slug + ext);
-    try {
-      statSync(f);
-      return f;
-    } catch {
-      /* next */
-    }
-  }
-  return null;
+  return resolveEntryFile(GLOSSARY_EN, slug);
 }
 
 // link-suggest INBOUND counts pages that mention but DON'T yet link the term.

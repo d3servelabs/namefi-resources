@@ -28,10 +28,10 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'node:fs/promises';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import pLimit from 'p-limit';
-import matter from 'gray-matter';
+import { resolveEntryFile, entryExists } from './glossary-fs.ts';
 
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
@@ -142,12 +142,15 @@ async function callGeminiThrottled(prompt: string, locale: string, filename: str
 }
 
 async function translateFile(filename: string, targetLocale: string, tb: Termbase) {
+  const slug = filename.replace(/\.mdx?$/, '');
   const sourcePath = path.join(GLOSSARY_DIR, SOURCE_LOCALE, filename);
   const targetDir = path.join(GLOSSARY_DIR, targetLocale);
   const targetPath = path.join(targetDir, filename);
   await fs.mkdir(targetDir, { recursive: true });
 
-  if (!FORCE && existsSync(targetPath)) return; // fill-missing by default
+  // Fill-missing: skip if the locale already has this slug under EITHER
+  // extension, so we never add a sibling file for a concept that already exists.
+  if (!FORCE && entryExists(targetDir, slug)) return;
 
   console.log(`Translating glossary/${filename} → ${targetLocale}...`);
   let fileContent: string;
@@ -229,14 +232,14 @@ async function main() {
   let files: string[];
   try {
     const all = (await fs.readdir(enDir)).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
-    // Dedup by slug, preferring .md, so a slug present as both extensions is
-    // translated once (not twice from two different sources).
-    const bySlug = new Map<string, string>();
-    for (const f of all) {
-      const slug = f.replace(/\.mdx?$/, '');
-      if (!bySlug.has(slug) || f.endsWith('.md')) bySlug.set(slug, f);
-    }
-    files = [...bySlug.values()];
+    // Map each unique slug to its ONE canonical source file via the shared
+    // resolver, so a slug present as both extensions is translated once from the
+    // same file every other script uses.
+    const slugs = [...new Set(all.map((f) => f.replace(/\.mdx?$/, '')))];
+    files = slugs
+      .map((s) => resolveEntryFile(enDir, s))
+      .filter((p): p is string => p !== null)
+      .map((p) => path.basename(p));
   } catch {
     console.error(`Could not read source directory: ${enDir}`);
     process.exit(1);
