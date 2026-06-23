@@ -9,8 +9,6 @@ description: "从域名注册商/DNS 运营角度深度解析 2025 年 10 月 20
 keywords: ['dns', 'aws 宕机', '控制平面', 'dynamodb', 'us-east-1', 'dns 缓存', '云韧性', '多签名 dns', '事故响应']
 ---
 
-[![](../../assets/dns-is-the-control-plane.png)](../../assets/dns-is-the-control-plane.png)
-
 2025年10月20日，互联网的部分区域经历了一个糟糕的早晨。Amazon Web Services (AWS) 报告其弗吉尼亚北部数据中心集群（US-EAST-1）出现问题。在随后的几个小时里，许多流行的应用程序和网站变得缓慢或无法访问——[Vercel](https://downdetector.com/status/vercel/)、[Figma](https://downdetector.in/status/figma/)、[Venmo](https://downdetector.in/status/venmo/) 和 [Snapchat](https://downdetector.com/status/snapchat/) 等等。新闻媒体和监控服务记录了数百万份用户报告，甚至部分亚马逊自身的服务也出现了闪断。
 
 然而，Namefi 的客户却度过了平静的一天。我们的系统照常运行——这并非侥幸，而是因为我们在工程和运营上的严谨投入，使得 DNS 解析具备了应对区域性故障的韧性。
