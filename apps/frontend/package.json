@@ -18,6 +18,7 @@
     "validate:secrets": "bun run src/lib/env/validate-secrets.ts",
     "check:mobile": "bun run scripts/check-mobile-responsive.ts",
     "check:testid": "bun run scripts/check-testid.ts",
+    "check:rtl": "bun run scripts/check-rtl.ts",
     "check": "biome check .",
     "check:error": "biome check . --diagnostic-level=error",
     "check:fix": "biome check --write .",
