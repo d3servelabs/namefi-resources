@@ -2,6 +2,7 @@
 
 import { NamefiButton } from '@namefi-astra/ui/components/namefi/namefi-button';
 import { Share2, Settings2, Tag } from 'lucide-react';
+import type { Route } from 'next';
 import Link from 'next/link';
 
 /**
@@ -27,7 +28,7 @@ export function CompletionActions({
     <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:justify-center">
       <NamefiButton
         className="gap-2"
-        render={<Link href={manageHref} />}
+        render={<Link href={manageHref as Route} />}
         nativeButton={false}
         data-testid="orders.completion.manage"
       >

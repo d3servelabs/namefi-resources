@@ -37,6 +37,7 @@ import { toUnicodeDomainName } from '@namefi-astra/registrars/data/validations';
 import { computeChargesInUsdOrThrow } from '@namefi-astra/registrars/data/multi-year-pricing';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { Gift } from 'lucide-react';
+import type { Route } from 'next';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -52,6 +53,15 @@ import {
 } from 'react';
 
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
+const getClaimHref = (domain: string): Route =>
+  `/claim/${encodeURIComponent(domain)}` as Route;
+
+const getOwnerGalleryHref = (walletAddress: string): Route =>
+  `/owner/${encodeURIComponent(walletAddress)}` as Route;
+
+const getFeedListingHref = (domain: string): Route =>
+  `/feed/${encodeURIComponent(domain)}` as Route;
 
 // Format an MLS feed listing's asking price for inline display, e.g. "$350.00".
 // Returns undefined for missing or non-numeric values (e.g. "make offer").
@@ -442,7 +452,7 @@ export const DomainCard: FC<{
     if (!domain) return;
     if (!isAvailabilityAuthoritative) return;
     logBeginCheckout();
-    router.push(`/claim/${domain}`);
+    router.push(getClaimHref(domain));
   }, [domain, isAvailabilityAuthoritative, logBeginCheckout, router]);
 
   const hasAvailabilityInfo = availabilityInfo !== undefined;
@@ -469,7 +479,7 @@ export const DomainCard: FC<{
     ? `${ownerWallet.substring(0, 6)}...${ownerWallet.substring(ownerWallet.length - 4)}`
     : '';
   const ownerGalleryHref = ownerWallet
-    ? `/owner/${encodeURIComponent(ownerWallet)}`
+    ? getOwnerGalleryHref(ownerWallet)
     : undefined;
   // Default to Base mainnet — the canonical Namefi NFT chain — since the search
   // card doesn't carry a per-domain chain id.
@@ -485,7 +495,8 @@ export const DomainCard: FC<{
   // asking price plus an "on Namefi feed" link to the per-domain feed page,
   // where the original source(s) can be found.
   const hasFeedListing = Boolean(mlsOffer && domain);
-  const feedListingHref = hasFeedListing ? `/feed/${domain}` : undefined;
+  const feedListingHref =
+    hasFeedListing && domain ? getFeedListingHref(domain) : undefined;
   const feedAskingPrice = formatMlsAskingPrice(mlsOffer);
 
   const shouldShowImportHint = Boolean(

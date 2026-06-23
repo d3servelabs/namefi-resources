@@ -12,7 +12,7 @@
     "with-env": "infisical run --token=$INFISICAL_SERVICE_TOKEN -- bun",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsgo --noEmit",
+    "typecheck": "ENVIRONMENT=${ENVIRONMENT:-test} next typegen && tsgo --noEmit",
     "check:i18n": "bun run scripts/check-i18n-coverage.ts",
     "check:i18n:convention": "bun run scripts/check-i18n-convention.ts",
     "validate:secrets": "bun run src/lib/env/validate-secrets.ts",

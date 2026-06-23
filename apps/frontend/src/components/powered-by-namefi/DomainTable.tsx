@@ -2,6 +2,7 @@
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { useIsMobile } from '@namefi-astra/ui/hooks/use-mobile';
+import type { Route } from 'next';
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 
@@ -46,8 +47,8 @@ const getMinYears = (row: DomainRow) =>
 const getMaxYears = (row: DomainRow) =>
   row.durationConstraints?.maxDurationInYears ?? 1;
 
-const adminHref = (domainName: string) =>
-  `/powered-by-namefi/admin/${domainName}`;
+const adminHref = (domainName: string): Route =>
+  `/powered-by-namefi/admin/${encodeURIComponent(domainName)}` as Route;
 
 function DomainNameLink({ domainName }: { domainName: string }) {
   return <Link href={adminHref(domainName)}>{domainName}</Link>;
