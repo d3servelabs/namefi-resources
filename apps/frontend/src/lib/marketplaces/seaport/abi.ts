@@ -57,6 +57,36 @@ export const SeaportCancelAbi = [
   },
 ] as const;
 
+/**
+ * Minimal ERC-721 approval ABI — used to preview the one on-chain transaction a
+ * Seaport listing requires: `setApprovalForAll(conduit, true)` so the protocol
+ * can transfer the NFT when the (otherwise gasless) listing is filled.
+ * `isApprovedForAll` lets the create form skip the fee preview when the conduit
+ * is already approved.
+ */
+export const Erc721ApprovalAbi = [
+  {
+    type: 'function',
+    name: 'setApprovalForAll',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'operator', type: 'address' },
+      { name: 'approved', type: 'bool' },
+    ],
+    outputs: [],
+  },
+  {
+    type: 'function',
+    name: 'isApprovedForAll',
+    stateMutability: 'view',
+    inputs: [
+      { name: 'owner', type: 'address' },
+      { name: 'operator', type: 'address' },
+    ],
+    outputs: [{ name: '', type: 'bool' }],
+  },
+] as const;
+
 /** ERC-2981 royalty info — for on-chain royalty preview in `calculateListingFees`. */
 export const Erc2981Abi = [
   {

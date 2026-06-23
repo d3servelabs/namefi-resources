@@ -29,12 +29,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@namefi-astra/ui/components/shadcn/tooltip';
-import { Plus, ShoppingBag, Wallet2 } from 'lucide-react';
+import { Info, Plus, ShoppingBag, Wallet2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { type Address, formatUnits, getAddress, parseUnits } from 'viem';
-import { useAccount, useChainId, useSwitchChain } from 'wagmi';
+import {
+  useAccount,
+  useBalance,
+  useChainId,
+  useReadContract,
+  useSwitchChain,
+} from 'wagmi';
+import { useEstimateContractCall } from '@/hooks/use-estimate-contract-call';
+import { Erc721ApprovalAbi } from '@/lib/marketplaces/seaport/abi';
+import { OPENSEA_CONDUIT_ADDRESS } from '@/lib/marketplaces/seaport/constants';
 import {
   bind,
   type RequestCancelledError,
@@ -87,6 +96,7 @@ export function CreateListingModal({
   ownerAddress,
 }: Props) {
   const t = useTranslations('domains');
+  const tCommon = useTranslations('common');
   const durationLabel = (seconds: number): string => {
     if (seconds === 24 * 60 * 60)
       return t('marketplace.createListing.duration1Day');
@@ -110,6 +120,18 @@ export function CreateListingModal({
     !!connectedAddress &&
     connectedAddress.toLowerCase() === ownerAddress.toLowerCase() &&
     activeChainId === chainId;
+
+  // Native balance of the connected signer on the listing chain. The first
+  // listing of an NFT needs an on-chain `setApprovalForAll` (gas-paying) tx, so
+  // a wallet with zero native balance can never complete a listing — surface the
+  // balance and block submission instead of letting the approval tx fail.
+  const { data: nativeBalance } = useBalance({
+    address: connectedAddress,
+    chainId,
+    query: { enabled: !!connectedAddress },
+  });
+  const hasZeroNativeBalance =
+    !!connectedAddress && nativeBalance?.value === 0n;
 
   // Existing listings — a marketplace that already has an active listing for this
   // token is disabled in the selector (OpenSea allows only one listing per NFT).
@@ -207,6 +229,63 @@ export function CreateListingModal({
   }, [priceInput, currency]);
 
   const fees = useEstimatedFees(priceWei);
+
+  // The listing order itself is a gasless EIP-712 signature; the only on-chain
+  // transaction (and gas cost) is the one-time `setApprovalForAll` that lets the
+  // marketplace's conduit transfer the NFT once a buyer fills the order. We
+  // estimate that approval's network fee and, when the conduit is already
+  // approved, surface that the listing costs nothing to post.
+  //
+  // Scoped to OpenSea (the default/example marketplace): its conduit is a known
+  // constant, so we can read approval state and estimate gas without first
+  // building the order. Other adapters approve different operators.
+  const approvalOperator =
+    marketplaceId === 'opensea' ? OPENSEA_CONDUIT_ADDRESS : undefined;
+
+  const { data: isConduitApproved } = useReadContract({
+    address: tokenAddress,
+    abi: Erc721ApprovalAbi,
+    functionName: 'isApprovedForAll',
+    args:
+      connectedAddress && approvalOperator
+        ? [connectedAddress, approvalOperator]
+        : undefined,
+    chainId,
+    query: { enabled: open && !!connectedAddress && !!approvalOperator },
+  });
+
+  // `value: 0n` lets the estimator run from the connected signer (the hook skips
+  // the user's own params when `value` is undefined). `setApprovalForAll` is
+  // nonpayable, so the value is a no-op beyond enabling that path.
+  const {
+    feeFormatted: approvalFeeEth,
+    isLoading: isApprovalFeeLoading,
+    isFallback: isApprovalFeeFallback,
+  } = useEstimateContractCall({
+    contractAddress: tokenAddress,
+    abi: Erc721ApprovalAbi,
+    functionName: 'setApprovalForAll',
+    args: [approvalOperator ?? OPENSEA_CONDUIT_ADDRESS, true],
+    value: 0n,
+  });
+
+  // Only positively-known "already approved" makes the listing gasless; while
+  // the read is loading or for non-OpenSea adapters, assume an approval tx may
+  // be needed.
+  const approvalAlreadyGranted = isConduitApproved === true;
+  // Zero native balance only blocks listing when an on-chain approval tx is
+  // still required — an already-approved NFT lists with a gasless signature.
+  const needsApprovalTxButCannotPay =
+    hasZeroNativeBalance && !approvalAlreadyGranted;
+  const networkFeeDisplay = formatNetworkFee({
+    approvalAlreadyGranted,
+    isLoading: isApprovalFeeLoading,
+    feeEth: approvalFeeEth,
+    isFallback: isApprovalFeeFallback,
+    noneLabel: t('marketplace.createListing.networkFeeNone'),
+    loadingLabel: tCommon('actions.loading'),
+  });
+
   const handleOpenChange = (nextOpen: boolean) => {
     setOpenState(nextOpen);
     onOpenChange?.(nextOpen);
@@ -503,6 +582,14 @@ export function CreateListingModal({
             </div>
 
             <FeePreview fees={fees} currency={currency} priceWei={priceWei} />
+
+            <ListingCostSummary
+              connected={!!connectedAddress}
+              nativeBalanceFormatted={nativeBalance?.formatted}
+              nativeSymbol={nativeBalance?.symbol}
+              networkFeeDisplay={networkFeeDisplay}
+              needsApprovalTxButCannotPay={needsApprovalTxButCannotPay}
+            />
           </div>
         )}
 
@@ -518,7 +605,8 @@ export function CreateListingModal({
                 !currency ||
                 isListingStatusLoading ||
                 selectedMarketplaceListed ||
-                allMarketplacesListed
+                allMarketplacesListed ||
+                needsApprovalTxButCannotPay
               }
               className="bg-emerald-500 hover:bg-emerald-400 text-emerald-950"
             >
@@ -602,6 +690,82 @@ function FeePreview({
   );
 }
 
+/**
+ * Wallet balance + estimated approval network fee for the listing, plus the
+ * zero-balance warning. Listing is a gasless signature; the network fee is the
+ * one-time conduit `setApprovalForAll` (see `networkFeeDisplay` in the modal).
+ */
+function ListingCostSummary({
+  connected,
+  nativeBalanceFormatted,
+  nativeSymbol,
+  networkFeeDisplay,
+  needsApprovalTxButCannotPay,
+}: {
+  connected: boolean;
+  nativeBalanceFormatted: string | undefined;
+  nativeSymbol: string | undefined;
+  networkFeeDisplay: string;
+  needsApprovalTxButCannotPay: boolean;
+}) {
+  const t = useTranslations('domains');
+  if (!connected) return null;
+  return (
+    <>
+      {nativeBalanceFormatted != null ? (
+        <div className="flex justify-between text-sm">
+          <span className="text-zinc-400">
+            {t('marketplace.createListing.nativeBalanceLabel')}
+          </span>
+          <span
+            data-testid="domains.marketplace.create-listing.native-balance"
+            className={cn(
+              'font-mono',
+              needsApprovalTxButCannotPay ? 'text-red-400' : 'text-zinc-100',
+            )}
+          >
+            {Number.parseFloat(nativeBalanceFormatted).toFixed(4)}{' '}
+            {nativeSymbol}
+          </span>
+        </div>
+      ) : null}
+
+      <div className="flex justify-between text-sm">
+        <span className="flex items-center gap-1 text-zinc-400">
+          {t('marketplace.createListing.networkFeeLabel')}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Info className="h-3.5 w-3.5 text-zinc-500" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs">
+                {t('marketplace.createListing.networkFeeTooltip')}
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </span>
+        <span
+          data-testid="domains.marketplace.create-listing.network-fee"
+          className="font-mono text-zinc-100"
+        >
+          {networkFeeDisplay}
+        </span>
+      </div>
+
+      {needsApprovalTxButCannotPay ? (
+        <p
+          data-testid="domains.marketplace.create-listing.zero-balance-warning"
+          className="text-xs text-red-400"
+        >
+          {t('marketplace.createListing.zeroBalanceWarning', {
+            symbol: nativeSymbol ?? 'ETH',
+          })}
+        </p>
+      ) : null}
+    </>
+  );
+}
+
 function useEstimatedFees(
   priceWei: bigint | undefined,
 ): ListingFees | undefined {
@@ -621,6 +785,29 @@ function useEstimatedFees(
       isEstimate: true,
     } satisfies ListingFees;
   }, [priceWei]);
+}
+
+/** Resolve the network-fee row's display string for the approval-tx estimate. */
+function formatNetworkFee({
+  approvalAlreadyGranted,
+  isLoading,
+  feeEth,
+  isFallback,
+  noneLabel,
+  loadingLabel,
+}: {
+  approvalAlreadyGranted: boolean;
+  isLoading: boolean;
+  feeEth: string | null;
+  isFallback: boolean;
+  noneLabel: string;
+  loadingLabel: string;
+}): string {
+  if (approvalAlreadyGranted) return noneLabel;
+  if (isLoading) return loadingLabel;
+  if (feeEth == null) return '—';
+  const prefix = isFallback ? '≈ ' : '';
+  return `${prefix}${Number.parseFloat(feeEth).toFixed(6)} ETH`;
 }
 
 function errorToMessage(error: unknown): string {

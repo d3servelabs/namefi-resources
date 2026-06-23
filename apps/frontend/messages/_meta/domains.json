@@ -634,6 +634,24 @@
       "feeEstimateTooltip": {
         "description": "UI text: \"Final fees are computed by the marketplace at signing time.\"."
       },
+      "nativeBalanceLabel": {
+        "description": "Label for the connected wallet's native-token balance shown in the create-listing dialog.",
+        "maxLength": 18
+      },
+      "zeroBalanceWarning": {
+        "description": "Warning shown when the connected wallet has zero native balance and cannot pay gas for the listing approval. {symbol} is the native token symbol (e.g. ETH)."
+      },
+      "networkFeeLabel": {
+        "description": "Label for the estimated on-chain network (gas) fee of the listing approval transaction.",
+        "maxLength": 18
+      },
+      "networkFeeNone": {
+        "description": "Shown as the network-fee value when the NFT is already approved, so listing it costs no gas.",
+        "maxLength": 28
+      },
+      "networkFeeTooltip": {
+        "description": "Tooltip explaining that posting a listing is a gasless signature, but a first-time listing needs a one-time on-chain approval transaction whose network fee is estimated here."
+      },
       "listedToast": {
         "description": "UI text: \"Listed for {price}\"."
       },
