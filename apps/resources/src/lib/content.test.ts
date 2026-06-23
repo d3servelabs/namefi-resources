@@ -14,24 +14,44 @@ const {
   getAvailableLocalesForSlug,
 } = await import('@/lib/content');
 
-// Stable fixtures in the content submodule: `dnssec` exists only in en;
-// `dns` is translated into every locale.
-const EN_ONLY_TERM = 'dnssec';
+const glossaryParams = getGlossaryParams();
+const EN_ONLY_TERM = glossaryParams.find(
+  ({ lang, slug }) =>
+    lang === i18n.defaultLocale &&
+    i18n.locales.some(
+      (locale) =>
+        locale !== i18n.defaultLocale &&
+        !glossaryParams.some(
+          (param) => param.lang === locale && param.slug === slug,
+        ),
+    ),
+)?.slug;
+
+// Stable fixture in the content submodule: `dns` is translated into every locale.
 const FULLY_TRANSLATED_TERM = 'dns';
 
+function requireEnOnlyTerm() {
+  if (!EN_ONLY_TERM) {
+    throw new Error('Expected at least one English-only glossary term fixture');
+  }
+  return EN_ONLY_TERM;
+}
+
 describe('getGlossaryParams excludes default-locale fallbacks', () => {
-  const params = getGlossaryParams();
+  const params = glossaryParams;
   const has = (lang: string, slug: string) =>
     params.some((p) => p.lang === lang && p.slug === slug);
 
   it('keeps the own-locale (en) entry for an en-only term', () => {
-    expect(has('en', EN_ONLY_TERM)).toBe(true);
+    const enOnlyTerm = requireEnOnlyTerm();
+    expect(has('en', enOnlyTerm)).toBe(true);
   });
 
   it('drops the fallback combos for an en-only term (they redirect)', () => {
+    const enOnlyTerm = requireEnOnlyTerm();
     for (const locale of i18n.locales) {
       if (locale === i18n.defaultLocale) continue;
-      expect(has(locale, EN_ONLY_TERM)).toBe(false);
+      expect(has(locale, enOnlyTerm)).toBe(false);
     }
   });
 

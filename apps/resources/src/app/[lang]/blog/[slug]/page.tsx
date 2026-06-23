@@ -253,18 +253,6 @@ export default async function BlogPostPage({
       return { author, Module: module.default };
     }),
   );
-  // When a hand-made hero asset exists for this slug, render it inline above
-  // the post body. Served as a plain static file under public/blog-assets
-  // (synced from the data submodule by the sync-blog-assets prebuild step),
-  // so the URL is CDN-cacheable and resolves without invoking the
-  // opengraph-image function.
-  const heroOgAsset = getPostOgAsset(slug);
-  // The /r basePath is baked into the path here; raw <img> src doesn't get
-  // Next's basePath auto-prefix.
-  const heroImageUrl = heroOgAsset
-    ? `/r/blog-assets/${slug}-og${heroOgAsset.extension}`
-    : undefined;
-
   // Structured data (BlogPosting + BreadcrumbList) for SEO rich results and LLM
   // crawlers. Built off-component; rendered as inert <script> tags below.
   const { articleJsonLd, breadcrumbJsonLd } = buildBlogPostStructuredData({
@@ -429,24 +417,6 @@ export default async function BlogPostPage({
               </p>
             )}
           </header>
-
-          {heroImageUrl && (
-            // biome-ignore lint/performance/noImgElement: hero is served via a Next route handler, not the image optimizer.
-            <img
-              src={heroImageUrl}
-              alt={entry.frontmatter.title}
-              width={1200}
-              height={630}
-              // The LCP element is the article body text below this hero, not the
-              // hero itself. Loading the hero eagerly made its ~47KB download and
-              // 1200x630 decode compete with the text paint on throttled mobile.
-              // Defer it (lazy + async decode) so the body text settles sooner;
-              // width/height are reserved above, so deferring causes no layout shift.
-              loading="lazy"
-              decoding="async"
-              className="h-auto w-full rounded-3xl border border-border/60 shadow-lg shadow-black/5"
-            />
-          )}
 
           <PostContent components={postComponents} />
 
