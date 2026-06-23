@@ -200,6 +200,7 @@ export function AuthProvider({
   const trpc = useTRPC();
   const queryClient = useQueryClient();
   const mockPrivy = useMockPrivy();
+  const hasMockPrivyRuntime = Boolean(mockPrivy);
   const { isSkipAuthActive } = useSkipAuth();
   const initialAuthSessionSnapshot = useMemo(
     () =>
@@ -522,6 +523,11 @@ export function AuthProvider({
   );
 
   const requestSessionRefresh = useCallback(() => {
+    if (hasMockPrivyRuntime) {
+      setSessionRefreshSettled(true);
+      return false;
+    }
+
     setSessionRefreshSettled(false);
     hasRequestedSessionRuntimeRef.current = true;
     const runtimeSessionRefreshHandler = getPrivySessionRefreshCommandHandler();
@@ -540,7 +546,7 @@ export function AuthProvider({
         setSessionRefreshSettled(true);
       });
     return true;
-  }, [handleSessionRefreshSettled, mountPrivyRuntimeHost]);
+  }, [handleSessionRefreshSettled, hasMockPrivyRuntime, mountPrivyRuntimeHost]);
 
   useEffect(() => {
     return () => {
@@ -558,6 +564,7 @@ export function AuthProvider({
   useEffect(() => {
     if (
       sessionRefreshSettled ||
+      hasMockPrivyRuntime ||
       !initialCookieSnapshot.hasPrivySession ||
       initialHasServerReadableToken ||
       hasRequestedSessionRuntimeRef.current
@@ -568,6 +575,7 @@ export function AuthProvider({
     requestSessionRefresh();
   }, [
     initialCookieSnapshot.hasPrivySession,
+    hasMockPrivyRuntime,
     initialHasServerReadableToken,
     requestSessionRefresh,
     sessionRefreshSettled,
@@ -807,6 +815,7 @@ export function AuthProvider({
   useEffect(() => {
     if (
       !isAuthenticated ||
+      hasMockPrivyRuntime ||
       isLocalLogoutPending ||
       !hasServerReadableToken ||
       runtimeAuthenticated ||
@@ -820,6 +829,7 @@ export function AuthProvider({
     });
   }, [
     PrivyRuntimeHost,
+    hasMockPrivyRuntime,
     hasServerReadableToken,
     isAuthenticated,
     isLocalLogoutPending,
@@ -829,6 +839,7 @@ export function AuthProvider({
 
   const preloadLoginRuntime = useCallback(() => {
     if (
+      hasMockPrivyRuntime ||
       !shouldPreloadLoginRuntimeOnIntent({
         isLoading,
         isAuthenticated,
@@ -841,7 +852,7 @@ export function AuthProvider({
     void loadPrivyLoginRuntime().catch(() => {
       // The click path reports failures to the user; intent preload can retry.
     });
-  }, [isAuthenticated, isLoading, PrivyLoginRuntime]);
+  }, [hasMockPrivyRuntime, isAuthenticated, isLoading, PrivyLoginRuntime]);
 
   const impersonationTargetPrivyUser = impersonation.data?.impersonating
     ? normalizeDisplayUser(impersonation.data.targetPrivyUser)
@@ -957,7 +968,8 @@ export function AuthProvider({
       PrivyLogoutRuntime,
   );
   const shouldRenderPrivyRuntimeHost = Boolean(
-    PrivyRuntimeHost &&
+    !hasMockPrivyRuntime &&
+      PrivyRuntimeHost &&
       (hasPrivyRuntimeControls ||
         (isAuthenticated && hasServerReadableToken && !isLocalLogoutPending)),
   );
@@ -985,10 +997,14 @@ export function AuthProvider({
 
   return (
     <AuthContext.Provider value={value}>
-      {children}
       {shouldRenderPrivyRuntimeHost && PrivyRuntimeHost ? (
-        <PrivyRuntimeHost>{privyRuntimeControls}</PrivyRuntimeHost>
-      ) : null}
+        <PrivyRuntimeHost>
+          {children}
+          {privyRuntimeControls}
+        </PrivyRuntimeHost>
+      ) : (
+        children
+      )}
     </AuthContext.Provider>
   );
 }
