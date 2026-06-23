@@ -4,8 +4,12 @@ date: '2026-05-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-description: What is WHOIS, and how does it relate to tokenized domain ownership?
+description: WHOIS and its successor RDAP are the public lookup services for a domain's registration details, such as its registrar and expiration date.
 keywords: ['WHOIS', 'RDAP', 'domain registration lookup', 'registrant information', 'domain ownership lookup']
+level: 1
+sources:
+  - https://www.icann.org/rdap
+  - https://lookup.icann.org/
 ---
 
 **WHOIS** is the long-standing protocol and public service for looking up registration information about a domain — registrar, registration and expiration dates, and historically the registrant's contact information. Its modern successor is **RDAP (Registration Data Access Protocol)**, which returns structured JSON and is the protocol [ICANN](/en/glossary/icann/) and registries are migrating to. For [tokenized domains](/en/blog/what-are-tokenized-domains/), WHOIS/RDAP records still exist at the [registrar](/en/glossary/registrar/) level because the underlying [DNS](/en/glossary/dns/) registration is real and ICANN-recognized — only the *ownership and transfer mechanics* shift to the [on-chain](/en/glossary/on-chain/) layer. Privacy is increasingly common: many registrars now mask personal contact details by default, in line with privacy laws like GDPR. Reference: [ICANN's WHOIS lookup](https://lookup.icann.org/).

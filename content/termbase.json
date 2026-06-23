@@ -3,7 +3,8 @@
     "en": "AI Agent",
     "titles": {
       "en": "AI Agent"
-    }
+    },
+    "level": 1
   },
   "atomic-transfer": {
     "en": "Atomic transfer",
@@ -15,7 +16,8 @@
       "zh": "原子传输",
       "ar": "التحويل الذري",
       "hi": "एटॉमिक ट्रांसफर"
-    }
+    },
+    "level": 1
   },
   "auction": {
     "en": "Auction (Dutch, English, dynamic)",
@@ -27,13 +29,15 @@
       "zh": "拍卖（荷兰式、英式、动态）",
       "ar": "المزاد (الهولندي، الإنجليزي، الديناميكي)",
       "hi": "नीलामी (डच, इंग्लिश, डायनामिक)"
-    }
+    },
+    "level": 1
   },
   "auth-code": {
     "en": "Auth Code (EPP Code, Transfer Code)",
     "titles": {
       "en": "Auth Code (EPP Code, Transfer Code)"
-    }
+    },
+    "level": 1
   },
   "automated-delegation": {
     "en": "Automated delegation",
@@ -45,7 +49,8 @@
       "zh": "自动化委托",
       "ar": "التفويض التلقائي",
       "hi": "स्वचालित डेलिगेशन"
-    }
+    },
+    "level": 1
   },
   "censorship-free": {
     "en": "Censorship-free",
@@ -57,7 +62,8 @@
       "zh": "抗审查",
       "ar": "مقاومة للرقابة",
       "hi": "सेंसरशिप-मुक्त"
-    }
+    },
+    "level": 1
   },
   "collateral": {
     "en": "Collateral",
@@ -69,7 +75,8 @@
       "zh": "抵押品",
       "ar": "الضمان",
       "hi": "कोलैटरल (गिरवी)"
-    }
+    },
+    "level": 1
   },
   "composability": {
     "en": "Composability",
@@ -81,7 +88,8 @@
       "zh": "可组合性",
       "ar": "قابلية التركيب",
       "hi": "कम्पोज़िबिलिटी"
-    }
+    },
+    "level": 1
   },
   "cross-registrar-transfer": {
     "en": "Cross-registrar transfer",
@@ -93,7 +101,8 @@
       "zh": "跨注册商转移",
       "ar": "نقل النطاق بين المسجلين",
       "hi": "क्रॉस-रजिस्ट्रार ट्रांसफर"
-    }
+    },
+    "level": 1
   },
   "cryptographic-security": {
     "en": "Cryptographic security",
@@ -105,7 +114,8 @@
       "zh": "加密安全性",
       "ar": "الأمن التشفيري",
       "hi": "क्रिप्टोग्राफिक सुरक्षा"
-    }
+    },
+    "level": 1
   },
   "custodial-ownership": {
     "en": "Custodial ownership",
@@ -117,7 +127,8 @@
       "zh": "托管所有权",
       "ar": "الملكية الحفظية",
       "hi": "कस्टोडियल स्वामित्व"
-    }
+    },
+    "level": 1
   },
   "dao": {
     "en": "DAO (Decentralized Autonomous Organization)",
@@ -129,13 +140,15 @@
       "zh": "DAO（去中心化自治组织）",
       "ar": "DAO (منظمة ذاتية لامركزية)",
       "hi": "DAO (विकेंद्रीकृत स्वायत्त संगठन)"
-    }
+    },
+    "level": 1
   },
   "defi": {
     "en": "DeFi (Decentralized Finance)",
     "titles": {
       "en": "DeFi (Decentralized Finance)"
-    }
+    },
+    "level": 1
   },
   "did": {
     "en": "DID (Decentralized Identity)",
@@ -147,7 +160,8 @@
       "zh": "DID (去中心化身份)",
       "ar": "DID (الهوية اللامركزية)",
       "hi": "डीआईडी (विकेन्द्रीकृत पहचान)"
-    }
+    },
+    "level": 1
   },
   "dns": {
     "en": "DNS (Domain Name System)",
@@ -159,13 +173,15 @@
       "zh": "DNS (域名系统)",
       "ar": "DNS (نظام أسماء النطاقات)",
       "hi": "DNS (डोमेन नेम सिस्टम)"
-    }
+    },
+    "level": 1
   },
   "dnssec": {
     "en": "DNSSEC (Domain Name System Security Extensions)",
     "titles": {
       "en": "DNSSEC (Domain Name System Security Extensions)"
-    }
+    },
+    "level": 1
   },
   "domain-bundle": {
     "en": "Domain bundle",
@@ -177,7 +193,8 @@
       "zh": "域名捆绑包",
       "ar": "حزمة النطاقات",
       "hi": "डोमेन बंडल"
-    }
+    },
+    "level": 1
   },
   "domain-ownership": {
     "en": "Domain ownership",
@@ -189,7 +206,8 @@
       "zh": "域名所有权",
       "ar": "ملكية النطاق",
       "hi": "डोमेन स्वामित्व"
-    }
+    },
+    "level": 1
   },
   "domain-trading": {
     "en": "Domain trading",
@@ -201,19 +219,22 @@
       "zh": "域名交易",
       "ar": "تداول النطاقات",
       "hi": "डोमेन ट्रेडिंग"
-    }
+    },
+    "level": 1
   },
   "ens": {
     "en": "ENS (Ethereum Name Service)",
     "titles": {
       "en": "ENS (Ethereum Name Service)"
-    }
+    },
+    "level": 1
   },
   "erc-721": {
     "en": "ERC-721 (NFT Standard)",
     "titles": {
       "en": "ERC-721 (NFT Standard)"
-    }
+    },
+    "level": 1
   },
   "escrow": {
     "en": "Escrow",
@@ -225,7 +246,8 @@
       "zh": "托管",
       "ar": "الضمان (Escrow)",
       "hi": "एस्क्रो"
-    }
+    },
+    "level": 1
   },
   "farcaster": {
     "en": "Farcaster",
@@ -237,7 +259,8 @@
       "zh": "Farcaster",
       "ar": "Farcaster",
       "hi": "Farcaster"
-    }
+    },
+    "level": 1
   },
   "fractional-ownership": {
     "en": "Fractional ownership",
@@ -249,19 +272,22 @@
       "zh": "部分所有权",
       "ar": "الملكية الجزئية",
       "hi": "आंशिक स्वामित्व"
-    }
+    },
+    "level": 1
   },
   "gas": {
     "en": "Gas (Transaction Fees)",
     "titles": {
       "en": "Gas (Transaction Fees)"
-    }
+    },
+    "level": 1
   },
   "hardware-wallet": {
     "en": "Hardware Wallet",
     "titles": {
       "en": "Hardware Wallet"
-    }
+    },
+    "level": 1
   },
   "icann": {
     "en": "ICANN",
@@ -273,7 +299,8 @@
       "zh": "ICANN",
       "ar": "ICANN",
       "hi": "आईसीएएनएन"
-    }
+    },
+    "level": 1
   },
   "internet-native-asset": {
     "en": "Internet-native asset",
@@ -285,7 +312,8 @@
       "zh": "互联网原生资产",
       "ar": "أصل رقمي أصيل للإنترنت",
       "hi": "इंटरनेट-नेटिव एसेट"
-    }
+    },
+    "level": 1
   },
   "leasing": {
     "en": "Leasing",
@@ -297,7 +325,8 @@
       "zh": "租赁",
       "ar": "تأجير",
       "hi": "लीजिंग"
-    }
+    },
+    "level": 1
   },
   "lending-protocol": {
     "en": "Lending protocol",
@@ -309,7 +338,8 @@
       "zh": "借贷协议",
       "ar": "بروتوكول الإقراض",
       "hi": "लेंडिंग प्रोटोकॉल"
-    }
+    },
+    "level": 1
   },
   "lens": {
     "en": "Lens",
@@ -321,7 +351,8 @@
       "zh": "Lens",
       "ar": "لينس",
       "hi": "लेंस"
-    }
+    },
+    "level": 1
   },
   "marketplace": {
     "en": "Marketplace (e.g., OpenSea, Blur)",
@@ -333,7 +364,8 @@
       "zh": "市场 (例如 OpenSea, Blur)",
       "ar": "السوق (مثل OpenSea، Blur)",
       "hi": "मार्केटप्लेस (जैसे OpenSea, Blur)"
-    }
+    },
+    "level": 1
   },
   "multi-sig": {
     "en": "Multi-sig",
@@ -345,7 +377,8 @@
       "zh": "多重签名",
       "ar": "التوقيع المتعدد (Multi-sig)",
       "hi": "मल्टी-सिग"
-    }
+    },
+    "level": 1
   },
   "nft": {
     "en": "NFT (Non-Fungible Token)",
@@ -357,7 +390,8 @@
       "zh": "NFT（非同质化代币）",
       "ar": "NFT (رمز غير قابل للاستبدال)",
       "hi": "NFT (नॉन-फंजीबल टोकन)"
-    }
+    },
+    "level": 1
   },
   "on-chain": {
     "en": "On-chain",
@@ -369,7 +403,8 @@
       "zh": "链上 (On-chain)",
       "ar": "على السلسلة (On-chain)",
       "hi": "ऑन-चेन"
-    }
+    },
+    "level": 1
   },
   "permissionless": {
     "en": "Permissionless",
@@ -381,7 +416,8 @@
       "zh": "无许可",
       "ar": "بلا تصريح",
       "hi": "अनुमति-रहित"
-    }
+    },
+    "level": 1
   },
   "protocol-asset": {
     "en": "Protocol asset",
@@ -393,7 +429,8 @@
       "zh": "协议资产",
       "ar": "أصل البروتوكول",
       "hi": "प्रोटोकॉल एसेट"
-    }
+    },
+    "level": 1
   },
   "registrar": {
     "en": "Registrar",
@@ -426,7 +463,8 @@
       "zh": "先租后买",
       "ar": "الإيجار المنتهي بالتملك",
       "hi": "रेंट-टू-ओन"
-    }
+    },
+    "level": 1
   },
   "revenue-sharing": {
     "en": "Revenue-sharing",
@@ -438,13 +476,15 @@
       "zh": "收益分享",
       "ar": "مشاركة الإيرادات",
       "hi": "राजस्व-साझाकरण"
-    }
+    },
+    "level": 1
   },
   "seed-phrase": {
     "en": "Seed Phrase (Recovery Phrase, Mnemonic)",
     "titles": {
       "en": "Seed Phrase (Recovery Phrase, Mnemonic)"
-    }
+    },
+    "level": 1
   },
   "seo": {
     "en": "SEO (Search Engine Optimization)",
@@ -456,7 +496,8 @@
       "zh": "SEO（搜索引擎优化）",
       "ar": "تحسين محركات البحث (SEO)",
       "hi": "एसईओ (सर्च इंजन ऑप्टिमाइजेशन)"
-    }
+    },
+    "level": 1
   },
   "smart-contract": {
     "en": "Smart contract",
@@ -468,19 +509,22 @@
       "zh": "智能合约",
       "ar": "عقد ذكي",
       "hi": "स्मार्ट कॉन्ट्रैक्ट"
-    }
+    },
+    "level": 1
   },
   "stablecoin": {
     "en": "Stablecoin",
     "titles": {
       "en": "Stablecoin"
-    }
+    },
+    "level": 1
   },
   "tld": {
     "en": "TLD (Top-Level Domain)",
     "titles": {
       "en": "TLD (Top-Level Domain)"
-    }
+    },
+    "level": 1
   },
   "tokenize": {
     "en": "Tokenize",
@@ -492,7 +536,8 @@
       "zh": "代币化",
       "ar": "ترميز",
       "hi": "टोकनाइज़ करें"
-    }
+    },
+    "level": 1
   },
   "udrp": {
     "en": "UDRP (Uniform Domain-Name Dispute-Resolution Policy)",
@@ -504,7 +549,8 @@
       "zh": "UDRP (统一域名争议解决政策)",
       "ar": "UDRP (السياسة الموحدة لتسوية منازعات أسماء النطاقات)",
       "hi": "UDRP (यूनिफ़ॉर्म डोमेन-नेम विवाद-समाधान नीति)"
-    }
+    },
+    "level": 1
   },
   "wallet": {
     "en": "Wallet",
@@ -516,7 +562,8 @@
       "zh": "钱包",
       "ar": "محفظة",
       "hi": "वॉलेट"
-    }
+    },
+    "level": 1
   },
   "web3": {
     "en": "Web3",
@@ -528,18 +575,21 @@
       "zh": "Web3",
       "ar": "Web3",
       "hi": "वेब3"
-    }
+    },
+    "level": 1
   },
   "whois": {
     "en": "WHOIS (and RDAP)",
     "titles": {
       "en": "WHOIS (and RDAP)"
-    }
+    },
+    "level": 1
   },
   "x402": {
     "en": "x402",
     "titles": {
       "en": "x402"
-    }
+    },
+    "level": 1
   }
 }
