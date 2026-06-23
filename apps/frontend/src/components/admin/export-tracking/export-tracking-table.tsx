@@ -6,7 +6,22 @@ import { useTRPC } from '@/lib/trpc';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounceValue } from 'usehooks-ts';
 import type { ColumnDef, Row } from '@tanstack/react-table';
-import { ChevronDown, ChevronRight, Play } from 'lucide-react';
+import {
+  ArrowDown,
+  ArrowDownUp,
+  ArrowUp,
+  ChevronDown,
+  ChevronRight,
+  ChevronsDownUp,
+  ChevronsUpDown,
+  Play,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@namefi-astra/ui/components/shadcn/dropdown-menu';
 import { toast } from 'sonner';
 import { ExtensibleDataTable } from '@/components/table/extensible-data-table';
 import {
@@ -533,6 +548,124 @@ export function ExportTrackingTable() {
     [expandedCardIds, handleToggleCardExpanded],
   );
 
+  // Card layout has no column headers, so sorting needs its own control. Drives
+  // the same `sorting` state the table/backend already use.
+  const sortOptions = useMemo(
+    () => [
+      { id: 'normalizedDomainName', label: 'Domain' },
+      { id: 'status', label: 'Status' },
+      { id: 'statusChangedAt', label: 'Status changed' },
+      { id: 'lastCheckedAt', label: 'Last checked' },
+      { id: 'firstDetectedAt', label: 'First detected' },
+      { id: 'chainId', label: 'Chain' },
+      { id: 'isActive', label: 'Row state' },
+    ],
+    [],
+  );
+  const activeSort = sorting[0];
+  const handleSortChange = useCallback(
+    (id: string) => {
+      setSorting(
+        activeSort?.id === id
+          ? [{ id, desc: !activeSort.desc }]
+          : [{ id, desc: true }],
+      );
+    },
+    [activeSort, setSorting],
+  );
+  const activeSortLabel =
+    sortOptions.find((o) => o.id === activeSort?.id)?.label ??
+    sortOptions[0].label;
+
+  const expandableIds = useMemo(
+    () =>
+      ((query.data?.data ?? []) as TableExportTrackingRecord[])
+        .filter((record) => rowCanExpand(record))
+        .map((record) => record.id),
+    [query.data?.data],
+  );
+  const allExpanded =
+    expandableIds.length > 0 &&
+    expandableIds.every((id) => expandedCardIds.has(id));
+  const handleToggleAll = useCallback(() => {
+    setExpandedCardIds((prev) => {
+      const everyExpanded =
+        expandableIds.length > 0 && expandableIds.every((id) => prev.has(id));
+      if (everyExpanded) {
+        const next = new Set(prev);
+        for (const id of expandableIds) next.delete(id);
+        return next;
+      }
+      return new Set([...prev, ...expandableIds]);
+    });
+  }, [expandableIds]);
+
+  const cardListHeader = (
+    <div className="flex items-center justify-between gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 gap-1.5 text-muted-foreground"
+              data-testid="admin.export-tracking.sort-trigger"
+            />
+          }
+        >
+          <ArrowDownUp className="size-3.5" />
+          Sort: {activeSortLabel}
+          {activeSort?.desc ? (
+            <ArrowDown className="size-3.5" />
+          ) : (
+            <ArrowUp className="size-3.5" />
+          )}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start">
+          {sortOptions.map((opt) => (
+            <DropdownMenuItem
+              key={opt.id}
+              onClick={() => handleSortChange(opt.id)}
+              className="gap-2"
+              data-testid={`admin.export-tracking.sort-option.${opt.id}`}
+            >
+              <span className="flex-1">{opt.label}</span>
+              {activeSort?.id === opt.id ? (
+                activeSort.desc ? (
+                  <ArrowDown className="size-3.5" />
+                ) : (
+                  <ArrowUp className="size-3.5" />
+                )
+              ) : null}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {expandableIds.length > 0 ? (
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 gap-1.5 text-muted-foreground"
+          onClick={handleToggleAll}
+          data-testid="admin.export-tracking.toggle-all"
+        >
+          {allExpanded ? (
+            <>
+              <ChevronsDownUp className="size-3.5" />
+              Collapse all
+            </>
+          ) : (
+            <>
+              <ChevronsUpDown className="size-3.5" />
+              Expand all
+            </>
+          )}
+        </Button>
+      ) : null}
+    </div>
+  );
+
   return (
     <div className="space-y-3">
       <div className="flex justify-end">
@@ -576,6 +709,8 @@ export function ExportTrackingTable() {
         renderSubRow={renderSubRow}
         getRowCanExpand={(row) => rowCanExpand(row.original)}
         renderMobileCard={renderMobileCard}
+        forceCardLayout
+        cardListHeader={cardListHeader}
         emptyMessage="No export tracking records found"
         loadingMessage="Loading export tracking records..."
         columnVisibility={columnVisibility}

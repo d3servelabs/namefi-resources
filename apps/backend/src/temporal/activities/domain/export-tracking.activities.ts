@@ -16,12 +16,12 @@
  * partial unique index enforces at most one active row per (domain, chainId).
  */
 import { Context } from '@temporalio/activity';
-import { differenceInHours, format } from 'date-fns';
+import { differenceInHours, format, subDays } from 'date-fns';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { EppStatuses } from '@namefi-astra/utils';
 import type { Json } from 'drizzle-zod';
 import { db, namefiNftCte } from '@namefi-astra/db';
-import { and, eq, inArray, isNull, sql } from 'drizzle-orm';
+import { and, eq, gte, inArray, isNull, sql } from 'drizzle-orm';
 import { getAllowedChainsForNft } from '#lib/env/allowed-chains';
 import {
   domainExportTrackingTable,
@@ -74,6 +74,20 @@ import { isRegistrarDomainNotFoundError } from '@namefi-astra/registrars/errors'
 const ENABLE_EXPORT_EMAILS = false;
 /** Minimum hours domain must be confirmed out of account before time-based burn */
 const MIN_HOURS_FOR_TIME_BASED_BURN = 36;
+
+/**
+ * Re-detection cooldown. A successfully-exported domain can't be re-imported
+ * (and thus re-exported) for ~60 days on the receiving registrar, so any signal
+ * within this window of a completed export for a (domain, chain) is the SAME
+ * settled export — not a new lifecycle. We suppress re-detection during it so a
+ * frozen terminal row never spawns a duplicate active row each scan tick.
+ */
+const REDETECTION_COOLDOWN_DAYS = 60;
+/** Terminal statuses that count as a *successful* export for the cooldown. */
+const COMPLETED_EXPORT_TERMINAL_STATUSES = [
+  'TRANSFER_COMPLETED',
+  'RESOLVED',
+] as const;
 
 /** Email archive addresses for BCC */
 const EMAIL_BCC = [
@@ -1043,6 +1057,42 @@ export async function getActiveTrackingRecord(
   return records[0] || null;
 }
 
+/**
+ * The most-recent *successful* terminal export (TRANSFER_COMPLETED / RESOLVED)
+ * for a (domain, chain) whose terminal transition is within the re-detection
+ * cooldown window, or null. Used to suppress re-detecting (and re-creating) a
+ * tracking row for an export that already settled — the domain can't have been
+ * re-imported yet, so a fresh "gone" signal is the same export, not a new one.
+ */
+async function getRecentExportCompletion(
+  domain: NamefiNormalizedDomain,
+  chainId: number,
+): Promise<{ id: string; status: string; statusChangedAt: Date } | null> {
+  const cutoff = subDays(new Date(), REDETECTION_COOLDOWN_DAYS);
+
+  const records = await db
+    .select({
+      id: domainExportTrackingTable.id,
+      status: domainExportTrackingTable.status,
+      statusChangedAt: domainExportTrackingTable.statusChangedAt,
+    })
+    .from(domainExportTrackingTable)
+    .where(
+      and(
+        eq(domainExportTrackingTable.normalizedDomainName, domain),
+        eq(domainExportTrackingTable.chainId, chainId),
+        inArray(domainExportTrackingTable.status, [
+          ...COMPLETED_EXPORT_TERMINAL_STATUSES,
+        ]),
+        gte(domainExportTrackingTable.statusChangedAt, cutoff),
+      ),
+    )
+    .orderBy(sql`${domainExportTrackingTable.statusChangedAt} DESC`)
+    .limit(1);
+
+  return records[0] ?? null;
+}
+
 export async function getDomainRegistrarFromIndex(
   domain: NamefiNormalizedDomain,
 ): Promise<string | null> {
@@ -1165,6 +1215,32 @@ export async function processSingleDomainExportStatus(input: {
   activityContext.heartbeat({ domain, step: 'checking_status' });
 
   const existingRecord = await getActiveTrackingRecord(domain, chainId);
+
+  // Re-detection cooldown: with no active row, a (domain, chain) that
+  // successfully exported within the last REDETECTION_COOLDOWN_DAYS is the SAME
+  // settled export — the domain can't have been re-imported yet. Suppress
+  // re-detection so a frozen terminal row doesn't spawn a duplicate active row
+  // every tick (and skip the evidence gather entirely). The prior terminal row
+  // owns this export, including its NFT burn. A genuine new export only starts
+  // after the cooldown, once the domain has come back to us.
+  if (!existingRecord) {
+    const recentCompletion = await getRecentExportCompletion(domain, chainId);
+    if (recentCompletion) {
+      logger.debug(
+        {
+          domain,
+          chainId,
+          terminalRecordId: recentCompletion.id,
+          terminalStatus: recentCompletion.status,
+          terminalAt: recentCompletion.statusChangedAt,
+        },
+        'Suppressing export re-detection: completed within %d-day cooldown',
+        REDETECTION_COOLDOWN_DAYS,
+      );
+      return { action: 'skipped' };
+    }
+  }
+
   const adminApproved = existingRecord
     ? isAdminApprovedForPendingNotification({
         clientApprovedAt: existingRecord.clientApprovedAt,

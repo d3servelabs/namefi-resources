@@ -58,6 +58,7 @@ export type ExportTrackingRecord = {
   statusChangedAt: Date;
   firstDetectedAt: Date;
   lastCheckedAt: Date;
+  transferCompletedAt: Date | null;
   clientApprovedAt: Date | null;
   adminVerifiedAt: Date | null;
   verifyingAdminId: string | null;

@@ -136,6 +136,15 @@ type ExtensibleDataTableProps<TData, FS extends IFilterStrategy<TData>> = {
    * e.g. an "Expand all / Collapse all" toggle. Ignored in the table layout.
    */
   cardListHeader?: ReactNode;
+
+  /**
+   * Force the card layout at every breakpoint (desktop included), not just on
+   * mobile. Requires `renderMobileCard`. Use for surfaces that are card-first by
+   * design (and must provide their own sort control via `cardListHeader`, since
+   * the sortable column headers only exist in the table layout). Default `false`
+   * keeps the auto behavior (cards on mobile only).
+   */
+  forceCardLayout?: boolean;
 };
 
 export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
@@ -180,6 +189,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
     toolbarActions,
     renderMobileCard,
     cardListHeader,
+    forceCardLayout = false,
   } = props;
 
   const t = useTranslations('shared');
@@ -190,7 +200,7 @@ export function ExtensibleDataTable<TData, FS extends IFilterStrategy<TData>>(
   const resolvedLoadingMessage = loadingMessage ?? tCommon('actions.loading');
 
   const isMobile = useIsMobile();
-  const useCardLayout = isMobile && !!renderMobileCard;
+  const useCardLayout = (isMobile || forceCardLayout) && !!renderMobileCard;
   const {
     filterState: controlledFilterState,
     filterConfig,

@@ -30,18 +30,21 @@ interface MobileTableItemProps {
   children: ReactNode;
   className?: string;
   onClick?: () => void;
+  'data-testid'?: string;
 }
 
 export function MobileTableItem({
   children,
   className,
   onClick,
+  'data-testid': dataTestId,
 }: MobileTableItemProps) {
   const Component = onClick ? 'button' : 'div';
 
   return (
     <Component
       onClick={onClick}
+      data-testid={dataTestId}
       className={cn(
         'bg-card text-card-foreground',
         'border border-border rounded-lg',

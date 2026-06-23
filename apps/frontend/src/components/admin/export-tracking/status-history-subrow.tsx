@@ -154,7 +154,7 @@ function EvidenceSummary({ evidence }: { evidence?: EvidenceSnapshot }) {
         >
           View JSON
         </PopoverTrigger>
-        <PopoverContent align="start" className="w-[440px] p-3">
+        <PopoverContent align="start" className="w-[440px] max-sm:w-full p-3">
           <div className="space-y-2">
             <div className="text-xs font-medium">Evidence snapshot</div>
             <pre className="max-h-80 overflow-auto rounded-md bg-muted p-2 text-[11px] leading-relaxed">
