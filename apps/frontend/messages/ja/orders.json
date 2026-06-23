@@ -105,7 +105,8 @@
     "renewedTitle": "更新完了",
     "mintingSubheading": "{count, plural, one {ドメインが登録されました。現在 NFT を発行中です。今すぐ管理を開始できます。} other {ドメインが登録されました。現在 NFT を発行中です。今すぐ管理を開始できます。}}",
     "renewedSubheading": "{count, plural, one {ドメインの登録期間が} other {ドメインの登録期間が}}延長されました。",
-    "importSubmittedSubheading": "{count, plural, one {インポートリクエストを送信しました。} other {インポートリクエストを送信しました。}}現在のレジストラが5〜7日以内に確認します。",
+    "newExpiration": "新しい有効期限",
+    "importSubmittedSubheading": "{count, plural, one {インポートリクエストを受け付けました。} other {インポートリクエストを受け付けました。}}インポートには通常数日（約5〜7日）かかります。以前のレジストラに連絡して手続きを早めることもできます。",
     "shareManageMessageRenew": "Namefi で {domains} を更新しました。こちらから{count, plural, one {ドメイン} other {ドメイン}}の管理を開始してください："
   },
   "processing": {

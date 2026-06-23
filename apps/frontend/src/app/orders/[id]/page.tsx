@@ -55,6 +55,8 @@ import {
 import { Label } from '@namefi-astra/ui/components/shadcn/label';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-sheet';
+import { DomainName } from '@/components/domain-name';
+import { formatExpirationDateISO } from '@/components/my-domains/utils';
 import { Check, Copy, Info } from 'lucide-react';
 
 // Dynamically import heavy visualization components to reduce first-hit compile time
@@ -556,6 +558,31 @@ export default function OrderPage({ params }: OrderPageProps) {
     return map;
   }, [ownedDomainsQuery.data]);
 
+  // Indexer truth: domain -> new expiration. The order is only SUCCEEDED after
+  // post-processing has written the renewed expiration to the index, so by the
+  // success view this reflects the *new* (extended) date. The headline answer a
+  // renewal user wants is "until when am I covered now?".
+  const expirationByName = useMemo(() => {
+    const map = new Map<string, Date>();
+    for (const d of ownedDomainsQuery.data?.domains ?? []) {
+      if (d.expirationTime) {
+        map.set(d.normalizedDomainName, new Date(d.expirationTime));
+      }
+    }
+    return map;
+  }, [ownedDomainsQuery.data]);
+
+  // For a renewals-only order, the new expiration date of each renewed domain
+  // (omitting any the indexer hasn't surfaced yet). Drives the renewal hero's
+  // "New expiration" summary.
+  const renewedExpirations = useMemo(() => {
+    if (orderKind !== 'renew') return [];
+    return orderItems.flatMap((item) => {
+      const expiresAt = expirationByName.get(item.fullDomain);
+      return expiresAt ? [{ domain: item.fullDomain, expiresAt }] : [];
+    });
+  }, [orderKind, orderItems, expirationByName]);
+
   const listableDomains = useMemo(
     () =>
       orderItems.flatMap((item) => {
@@ -747,6 +774,57 @@ export default function OrderPage({ params }: OrderPageProps) {
             </>
           )}
         </div>
+
+        {/* The new expiration date is the headline outcome of a renewal — show
+            it right under the hero, above the NFT(s). */}
+        {viewState === 'success' &&
+          orderKind === 'renew' &&
+          renewedExpirations.length > 0 &&
+          (renewedExpirations.length === 1 ? (
+            <div
+              className="mb-8 flex justify-center"
+              data-testid="orders.detail.renewed-expiration"
+            >
+              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm">
+                <span className="text-muted-foreground">
+                  {t('detail.newExpiration')}
+                </span>
+                <span
+                  className="font-semibold text-emerald-300"
+                  data-testid="orders.detail.renewed-expiration.date"
+                >
+                  {formatExpirationDateISO(renewedExpirations[0].expiresAt)}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div
+              className="mb-8 flex flex-col items-center gap-2"
+              data-testid="orders.detail.renewed-expiration"
+            >
+              <span className="text-muted-foreground text-sm">
+                {t('detail.newExpiration')}
+              </span>
+              <ul className="flex flex-col items-center gap-1.5">
+                {renewedExpirations.map(({ domain, expiresAt }) => (
+                  <li
+                    key={domain}
+                    className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-1 text-sm"
+                    data-testid={`orders.detail.renewed-expiration.item.${domain}`}
+                  >
+                    <DomainName
+                      domain={domain}
+                      className="font-mono text-zinc-200"
+                    />
+                    <span className="text-zinc-500">·</span>
+                    <span className="font-semibold text-emerald-300">
+                      {formatExpirationDateISO(expiresAt)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
         {viewState !== 'success' && !isFailedOrder && (
           <div className="mb-8">

@@ -105,7 +105,8 @@
     "renewedTitle": "Verlängerung abgeschlossen",
     "mintingSubheading": "{count, plural, one {Ihre Domain ist registriert. Wir prägen jetzt das NFT – Sie können sie sofort verwalten.} other {Ihre Domains sind registriert. Wir prägen jetzt die NFTs – Sie können sie sofort verwalten.}}",
     "renewedSubheading": "{count, plural, one {Die Registrierung Ihrer Domain wurde} other {Die Registrierungen Ihrer Domains wurden}} verlängert.",
-    "importSubmittedSubheading": "{count, plural, one {Ihre Import-Anfrage ist} other {Ihre Import-Anfragen sind}} auf dem Weg. Ihr bisheriger Registrar bestätigt dies innerhalb von 5-7 Tagen.",
+    "newExpiration": "Neues Ablaufdatum",
+    "importSubmittedSubheading": "{count, plural, one {Ihre Import-Anfrage ist} other {Ihre Import-Anfragen sind}} auf dem Weg. Importe dauern in der Regel einige Tage (etwa 5–7) — Sie können Ihren bisherigen Registrar kontaktieren, um den Vorgang zu beschleunigen.",
     "shareManageMessageRenew": "Ich habe {domains} für Sie auf Namefi verlängert. Beginnen Sie hier mit der Verwaltung {count, plural, one {Ihrer Domain} other {Ihrer Domains}}:"
   },
   "processing": {

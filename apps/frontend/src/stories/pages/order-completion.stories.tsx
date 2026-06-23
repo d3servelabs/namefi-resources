@@ -92,6 +92,8 @@ type OwnedDomain = {
   normalizedDomainName: string;
   chainId: number;
   tokenId: string;
+  /** Indexed expiration — post-renewal this is the new (extended) date. */
+  expirationTime: Date | null;
 };
 
 type OrderDetails = {
@@ -317,8 +319,12 @@ function createMockPayment(
   };
 }
 
-function owned(normalizedDomainName: string, tokenId: string): OwnedDomain {
-  return { normalizedDomainName, chainId: 8453, tokenId };
+function owned(
+  normalizedDomainName: string,
+  tokenId: string,
+  expirationTime: Date | null = null,
+): OwnedDomain {
+  return { normalizedDomainName, chainId: 8453, tokenId, expirationTime };
 }
 
 type StoryArgs = { mockState: MockState };
@@ -491,7 +497,13 @@ export const RenewSingle: Story = {
         payments: [createMockPayment({ amountInUSDCents: 1299 })],
         user: mockUser,
       },
-      ownedDomains: [owned('my-existing-domain.com', '111')],
+      ownedDomains: [
+        owned(
+          'my-existing-domain.com',
+          '111',
+          new Date('2027-06-23T00:00:00Z'),
+        ),
+      ],
       dnssecActive: false,
     },
   },
@@ -524,9 +536,9 @@ export const RenewMultiple: Story = {
         user: mockUser,
       },
       ownedDomains: [
-        owned('first-domain.com', '111'),
-        owned('second-domain.io', '222'),
-        owned('third-domain.net', '333'),
+        owned('first-domain.com', '111', new Date('2027-06-23T00:00:00Z')),
+        owned('second-domain.io', '222', new Date('2028-01-15T00:00:00Z')),
+        owned('third-domain.net', '333', new Date('2027-11-30T00:00:00Z')),
       ],
       dnssecActive: false,
     },

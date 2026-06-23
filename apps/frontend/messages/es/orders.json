@@ -105,7 +105,8 @@
     "renewedTitle": "Renovación completada",
     "mintingSubheading": "{count, plural, one {Su dominio está registrado. Estamos acuñando su NFT ahora; puede gestionarlo de inmediato.} other {Sus dominios están registrados. Estamos acuñando sus NFTs ahora; puede gestionarlos de inmediato.}}",
     "renewedSubheading": "{count, plural, one {El registro de su dominio ha} other {Los registros de sus dominios han}} sido extendido.",
-    "importSubmittedSubheading": "{count, plural, one {Su solicitud de importación está} other {Sus solicitudes de importación están}} en camino. Su registrador anterior confirmará en 5-7 días.",
+    "newExpiration": "Nuevo vencimiento",
+    "importSubmittedSubheading": "{count, plural, one {Su solicitud de importación está} other {Sus solicitudes de importación están}} en camino. Las importaciones suelen tardar unos días (alrededor de 5-7) — puede contactar a su registrador anterior para agilizarlo.",
     "shareManageMessageRenew": "He renovado {domains} para usted en Namefi. Comience a gestionar {count, plural, one {su dominio} other {sus dominios}} aquí:"
   },
   "processing": {

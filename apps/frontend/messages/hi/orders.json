@@ -105,7 +105,8 @@
     "renewedTitle": "नवीनीकरण पूर्ण",
     "mintingSubheading": "{count, plural, one {आपका डोमेन पंजीकृत हो गया है। हम अभी इसका NFT mint कर रहे हैं — आप इसे अभी प्रबंधित कर सकते हैं।} other {आपके डोमेन पंजीकृत हो गए हैं। हम अभी उनके NFTs mint कर रहे हैं — आप उन्हें अभी प्रबंधित कर सकते हैं।}}",
     "renewedSubheading": "{count, plural, one {आपके डोमेन का पंजीकरण} other {आपके डोमेन के पंजीकरण}} बढ़ा दिए गए हैं।",
-    "importSubmittedSubheading": "{count, plural, one {आपका आयात अनुरोध} other {आपके आयात अनुरोध}} भेज दिए गए हैं। आपका पुराना रजिस्ट्रार 5-7 दिनों में पुष्टि करेगा।",
+    "newExpiration": "नई समाप्ति तिथि",
+    "importSubmittedSubheading": "{count, plural, one {आपका आयात अनुरोध} other {आपके आयात अनुरोध}} रास्ते में हैं। आयात में सामान्यतः कुछ दिन (लगभग 5-7) लगते हैं — आप इसे शीघ्र करने के लिए अपने पुराने रजिस्ट्रार से संपर्क कर सकते हैं।",
     "shareManageMessageRenew": "मैंने Namefi पर आपके लिए {domains} नवीनीकृत किए हैं। {count, plural, one {अपना डोमेन} other {अपने डोमेन}} यहाँ प्रबंधित करना शुरू करें:"
   },
   "processing": {

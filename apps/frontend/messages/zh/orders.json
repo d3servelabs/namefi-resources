@@ -105,7 +105,8 @@
     "renewedTitle": "续费完成",
     "mintingSubheading": "{count, plural, one {您的域名已注册成功。我们正在铸造其 NFT，您现在即可开始管理。} other {您的域名已注册成功。我们正在铸造其 NFT，您现在即可开始管理。}}",
     "renewedSubheading": "{count, plural, one {您的域名注册已} other {您的域名注册已}}延期。",
-    "importSubmittedSubheading": "{count, plural, one {您的导入请求已} other {您的导入请求已}}发出。您的原注册商将在 5-7 天内确认。",
+    "newExpiration": "新到期时间",
+    "importSubmittedSubheading": "{count, plural, one {您的导入请求已} other {您的导入请求已}}发出。导入通常需要几天时间（约 5-7 天）— 您可以联系原注册商加速处理。",
     "shareManageMessageRenew": "我已在 Namefi 上为您续费 {domains}。在此开始管理{count, plural, one {您的域名} other {您的域名}}："
   },
   "processing": {

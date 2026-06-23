@@ -229,8 +229,11 @@
   "detail.renewedSubheading": {
     "description": "Subheading on a successful renewals-only order confirming the registration period was extended. {count} = number of domains (ICU plural switches the possessive 'domain's registration has'/'domains' registrations have')."
   },
+  "detail.newExpiration": {
+    "description": "Label shown on a successful renewal next to the domain's new expiration date (an ISO yyyy-MM-dd date, rendered separately — do not include the date in the translation)."
+  },
   "detail.importSubmittedSubheading": {
-    "description": "Subheading on a successful imports-only order: the import request was submitted and the previous registrar will confirm within 5-7 days. {count} = number of domains (ICU plural)."
+    "description": "Subheading on a successful imports-only order: the import request was submitted, imports take a few days (about 5-7), and the user can contact their previous registrar to speed it up. {count} = number of domains (ICU plural)."
   },
   "detail.failedSubheading": {
     "description": "Subheading on the order detail page when processing failed, inviting the user to review details below."
