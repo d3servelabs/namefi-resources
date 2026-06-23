@@ -58,6 +58,7 @@ import { RenewNowModal } from './renew-now-modal';
 import type { BulkAutoRenewState, DomainRow } from './types';
 import { useDomainPreferencesMutation } from './use-domain-preferences-mutation';
 import {
+  buildRenewalPriceUsdPerYearByTld,
   DEFAULT_DOMAIN_LIST_PAGE_SIZE,
   getCustomRenewalPrice,
   getRenewalPriceUsdPerYearForDomain,
@@ -393,22 +394,10 @@ export function MyDomainsTable(props: {
   const tldPricingQuery = useQuery(
     trpc.registry.getTldPricingTable.queryOptions(),
   );
-  const renewalPriceUsdPerYearByTld = useMemo(() => {
-    const map = new Map<string, number | null>();
-    const tldPricing = tldPricingQuery.data?.tldPricing ?? [];
-    if (typeof tldPricing[Symbol.iterator] !== 'function') {
-      // we should have to do this but this was throwing an error on the frontend
-      return map;
-    }
-    for (const row of tldPricing) {
-      if (!row?.tld) continue;
-      map.set(
-        String(row.tld).toLowerCase(),
-        row.renewalPriceUsdPerYear ?? null,
-      );
-    }
-    return map;
-  }, [tldPricingQuery.data]);
+  const renewalPriceUsdPerYearByTld = useMemo(
+    () => buildRenewalPriceUsdPerYearByTld(tldPricingQuery.data?.tldPricing),
+    [tldPricingQuery.data],
+  );
 
   // Ref to hold the latest filtered domains for filter suggestions
   // This avoids circular dependencies between filter strategy and filtered data

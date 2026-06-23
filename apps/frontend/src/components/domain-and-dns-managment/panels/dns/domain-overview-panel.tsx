@@ -47,6 +47,12 @@ import {
 } from 'lucide-react';
 import { NetworkLogo } from '@/components/network-logo';
 import { NftPendingBadge } from '@/components/my-domains/cells/nft-pending-badge';
+import { RenewPricingCell } from '@/components/my-domains/cells/renew-pricing-cell';
+import {
+  buildRenewalPriceUsdPerYearByTld,
+  formatExpirationDateISO,
+  getRenewalPriceUsdPerYearForDomain,
+} from '@/components/my-domains/utils';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
 import { UserWalletAvatar } from '@/components/user-avatar';
 import { getShortAddress } from '@/lib/string';
@@ -113,31 +119,78 @@ function diffDaysSigned(date: Date, now: Date): number {
     : Math.floor(diffMs / MS_PER_DAY);
 }
 
-function formatExpirationDate(date: Date): string {
+/**
+ * Locale-agnostic descriptor of how far the expiration date is from now.
+ * Presentation (translation + pluralization) is deferred to
+ * {@link useExpirationLabel}, keeping the branching logic testable and the
+ * copy fully localized. Mirrors the `overview.expiration.*` keys in
+ * `messages/<locale>/dnsManagement.json`.
+ */
+type ExpirationDescriptor =
+  | { kind: 'expiredDaysAgo'; days: number }
+  | { kind: 'today' }
+  | { kind: 'tomorrow' }
+  | { kind: 'inDays'; days: number }
+  | { kind: 'inMonths'; months: number }
+  | { kind: 'inYearsAndMonths'; years: number; months: number }
+  | { kind: 'inYears'; years: number };
+
+function getExpirationDescriptor(date: Date): ExpirationDescriptor {
   const diffDays = diffDaysSigned(date, new Date());
 
   if (diffDays < 0) {
-    return `Expired ${Math.abs(diffDays)} days ago`;
+    return { kind: 'expiredDaysAgo', days: Math.abs(diffDays) };
   }
   if (diffDays === 0) {
-    return 'Expires today';
+    return { kind: 'today' };
   }
   if (diffDays === 1) {
-    return 'Expires tomorrow';
+    return { kind: 'tomorrow' };
   }
   if (diffDays <= 30) {
-    return `Expires in ${diffDays} days`;
+    return { kind: 'inDays', days: diffDays };
   }
   if (diffDays <= 365) {
-    const months = Math.floor(diffDays / 30);
-    return `Expires in ${months} month${months > 1 ? 's' : ''}`;
+    return { kind: 'inMonths', months: Math.floor(diffDays / 30) };
   }
   const years = Math.floor(diffDays / 365);
   const remainingMonths = Math.floor((diffDays % 365) / 30);
   if (remainingMonths > 0) {
-    return `Expires in ${years}y ${remainingMonths}m`;
+    return { kind: 'inYearsAndMonths', years, months: remainingMonths };
   }
-  return `Expires in ${years} year${years > 1 ? 's' : ''}`;
+  return { kind: 'inYears', years };
+}
+
+/**
+ * Map an {@link ExpirationDescriptor} to its translated, pluralized label
+ * under the `dnsManagement.overview.expiration` namespace.
+ */
+function useExpirationLabel() {
+  const t = useTranslations('dnsManagement');
+  return (date: Date): string => {
+    const descriptor = getExpirationDescriptor(date);
+    switch (descriptor.kind) {
+      case 'expiredDaysAgo':
+        return t('overview.expiration.expiredDaysAgo', {
+          days: descriptor.days,
+        });
+      case 'today':
+        return t('overview.expiration.today');
+      case 'tomorrow':
+        return t('overview.expiration.tomorrow');
+      case 'inDays':
+        return t('overview.expiration.inDays', { days: descriptor.days });
+      case 'inMonths':
+        return t('overview.expiration.inMonths', { months: descriptor.months });
+      case 'inYearsAndMonths':
+        return t('overview.expiration.inYearsAndMonths', {
+          years: descriptor.years,
+          months: descriptor.months,
+        });
+      case 'inYears':
+        return t('overview.expiration.inYears', { years: descriptor.years });
+    }
+  };
 }
 
 function getExpirationStatus(
@@ -721,6 +774,7 @@ function ExpirationBadge({
   date: Date;
   status: 'expired' | 'critical' | 'warning' | 'good';
 }) {
+  const expirationLabel = useExpirationLabel();
   const statusConfig = {
     expired: {
       className:
@@ -757,7 +811,7 @@ function ExpirationBadge({
       data-testid="dnsManagement.overview.expiration-badge"
     >
       <Icon className="h-3.5 w-3.5 me-1.5" />
-      {formatExpirationDate(date)}
+      {expirationLabel(date)}
     </Badge>
   );
 }
@@ -767,6 +821,7 @@ function FeatureCard({
   iconClassName,
   title,
   description,
+  details,
   children,
   className,
   highlight,
@@ -775,6 +830,9 @@ function FeatureCard({
   iconClassName?: string;
   title: string;
   description: string;
+  /** Optional structured rows (e.g. renewal date + price) shown between the
+   * description and the action row. */
+  details?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
   highlight?: boolean;
@@ -815,9 +873,78 @@ function FeatureCard({
             </div>
           </div>
         </div>
+        {details && (
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-950/40 p-3">
+            {details}
+          </div>
+        )}
         <div className="flex items-center justify-end gap-3">{children}</div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Renewal date + per-year renewal price rows shown inside a renewal
+ * {@link FeatureCard}. The price is resolved the same way the My Domains table
+ * does — from `getTldPricingTable` keyed by TLD, with partner-TLD promo pricing
+ * applied inside {@link RenewPricingCell} — so the two surfaces always agree.
+ */
+function RenewalDetails({
+  domain,
+  expirationDate,
+}: {
+  domain: NamefiNormalizedDomain;
+  expirationDate: Date | null;
+}) {
+  const trpc = useTRPC();
+  const t = useTranslations('dnsManagement');
+
+  const { data: tldPricing } = useQuery(
+    trpc.registry.getTldPricingTable.queryOptions(),
+  );
+
+  const renewalPriceUsdPerYear = useMemo(
+    () =>
+      getRenewalPriceUsdPerYearForDomain(
+        domain,
+        buildRenewalPriceUsdPerYearByTld(tldPricing?.tldPricing),
+      ),
+    [domain, tldPricing],
+  );
+
+  return (
+    <dl className="flex flex-col gap-2 text-xs">
+      <div className="flex items-center justify-between gap-2">
+        <dt className="text-muted-foreground">
+          {t('overview.renewalDetails.dateLabel')}
+        </dt>
+        <dd
+          className="font-medium text-zinc-200"
+          data-testid="dnsManagement.overview.renewalDetails.date"
+        >
+          {/* ISO date is an LTR run; isolate it so RTL surrounding text can't
+              reorder its digits/hyphens (see i18n-rtl bidi rule). */}
+          <bdi>{formatExpirationDateISO(expirationDate)}</bdi>
+        </dd>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <dt className="text-muted-foreground">
+          {t('overview.renewalDetails.priceLabel')}
+        </dt>
+        <dd data-testid="dnsManagement.overview.renewalDetails.price">
+          {/* Price ("$13.99") is an LTR run mixed with the unit; isolate it. */}
+          <bdi>
+            <RenewPricingCell
+              domainName={domain}
+              resolvedPrice={renewalPriceUsdPerYear}
+              unit={t('overview.renewalDetails.perYearUnit')}
+              className="text-zinc-200"
+            />
+          </bdi>
+        </dd>
+      </div>
+    </dl>
   );
 }
 
@@ -830,6 +957,7 @@ export const DomainRenewalCard = ({
 }) => {
   const trpc = useTRPC();
   const t = useTranslations('dnsManagement');
+  const expirationLabel = useExpirationLabel();
   const trpcClient = useTRPCClient();
   const queryClient = useQueryClient();
 
@@ -938,8 +1066,11 @@ export const DomainRenewalCard = ({
       title={t('overview.autoRenewalCard.title')}
       description={
         expirationDate
-          ? `${formatExpirationDate(expirationDate)} - ${expirationDate.toLocaleDateString()}`
+          ? expirationLabel(expirationDate)
           : t('overview.autoRenewalCard.description')
+      }
+      details={
+        <RenewalDetails domain={domain} expirationDate={expirationDate} />
       }
     >
       <RenewDomainButton
@@ -973,6 +1104,7 @@ export const ManualRenewalCard = ({
 }) => {
   const trpc = useTRPC();
   const t = useTranslations('dnsManagement');
+  const expirationLabel = useExpirationLabel();
 
   const { data: domainDetails, isLoading: isDomainDetailsLoading } = useQuery(
     trpc.domainConfig.getDomainDetails.queryOptions(
@@ -1017,9 +1149,12 @@ export const ManualRenewalCard = ({
       description={
         expirationDate
           ? t('overview.manualRenewalCard.descriptionWithDate', {
-              expiration: formatExpirationDate(expirationDate),
+              expiration: expirationLabel(expirationDate),
             })
           : t('overview.manualRenewalCard.description')
+      }
+      details={
+        <RenewalDetails domain={domain} expirationDate={expirationDate} />
       }
     >
       <RenewDomainButton

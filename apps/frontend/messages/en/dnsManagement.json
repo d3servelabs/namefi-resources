@@ -411,6 +411,20 @@
       "description": "Domains are locked for 60 days after import per ICANN policy.",
       "importedOn": " This domain was imported on {date}.",
       "gotIt": "Got It"
+    },
+    "expiration": {
+      "expiredDaysAgo": "Expired {days, plural, one {# day} other {# days}} ago",
+      "today": "Expires today",
+      "tomorrow": "Expires tomorrow",
+      "inDays": "Expires in {days, plural, one {# day} other {# days}}",
+      "inMonths": "Expires in {months, plural, one {# month} other {# months}}",
+      "inYearsAndMonths": "Expires in {years}y {months}m",
+      "inYears": "Expires in {years, plural, one {# year} other {# years}}"
+    },
+    "renewalDetails": {
+      "dateLabel": "Renewal date",
+      "priceLabel": "Renewal price",
+      "perYearUnit": "USD/year"
     }
   },
   "management": {

@@ -411,6 +411,20 @@
       "description": "ICANN नीति के अनुसार आयात के बाद 60 दिनों तक डोमेन लॉक रहते हैं।",
       "importedOn": " यह डोमेन {date} को आयात किया गया था।",
       "gotIt": "समझ गया"
+    },
+    "expiration": {
+      "expiredDaysAgo": "{days} दिन पहले समाप्त हो गया",
+      "today": "आज समाप्त हो रहा है",
+      "tomorrow": "कल समाप्त हो रहा है",
+      "inDays": "{days, plural, one {# दिन} other {# दिनों}} में समाप्त",
+      "inMonths": "{months} माह में समाप्त",
+      "inYearsAndMonths": "{years} वर्ष {months} माह में समाप्त",
+      "inYears": "{years, plural, one {# वर्ष} other {# वर्ष}} में समाप्त"
+    },
+    "renewalDetails": {
+      "dateLabel": "नवीनीकरण तिथि",
+      "priceLabel": "नवीनीकरण मूल्य",
+      "perYearUnit": "USD/वर्ष"
     }
   },
   "management": {

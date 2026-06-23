@@ -411,6 +411,20 @@
       "description": "ICANN கொள்கையின்படி இறக்குமதிக்கு பிறகு 60 நாட்கள் டொமைன்கள் பூட்டப்பட்டிருக்கும்.",
       "importedOn": " இந்த டொமைன் {date} அன்று இறக்குமதி செய்யப்பட்டது.",
       "gotIt": "புரிந்தது"
+    },
+    "expiration": {
+      "expiredDaysAgo": "{days, plural, one {# நாள்} other {# நாட்கள்}} முன் காலாவதியானது",
+      "today": "இன்று காலாவதியாகிறது",
+      "tomorrow": "நாளை காலாவதியாகிறது",
+      "inDays": "{days, plural, one {# நாளில்} other {# நாட்களில்}} காலாவதியாகும்",
+      "inMonths": "{months, plural, one {# மாதத்தில்} other {# மாதங்களில்}} காலாவதியாகும்",
+      "inYearsAndMonths": "{years, plural, one {# ஆண்டு} other {# ஆண்டுகள்}} {months, plural, one {# மாதம்} other {# மாதங்கள்}} இல் காலாவதியாகும்",
+      "inYears": "{years, plural, one {# ஆண்டில்} other {# ஆண்டுகளில்}} காலாவதியாகும்"
+    },
+    "renewalDetails": {
+      "dateLabel": "புதுப்பிப்பு தேதி",
+      "priceLabel": "புதுப்பிப்பு விலை",
+      "perYearUnit": "USD/ஆண்டு"
     }
   },
   "management": {

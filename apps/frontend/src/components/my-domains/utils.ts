@@ -32,6 +32,33 @@ export function getRenewalPriceUsdPerYearForDomain(
 }
 
 /**
+ * Build a `tld -> renewalPriceUsdPerYear` lookup from the registry's
+ * `getTldPricingTable` rows. Pairs with {@link getRenewalPriceUsdPerYearForDomain}
+ * to resolve a single domain's per-year renewal price. The defensive
+ * non-iterable guard mirrors a real failure mode seen when the query data is
+ * mid-flight.
+ */
+export function buildRenewalPriceUsdPerYearByTld(
+  tldPricing:
+    | ReadonlyArray<{
+        tld?: string | null;
+        renewalPriceUsdPerYear?: number | null;
+      }>
+    | undefined
+    | null,
+): Map<string, number | null> {
+  const map = new Map<string, number | null>();
+  if (!tldPricing || typeof tldPricing[Symbol.iterator] !== 'function') {
+    return map;
+  }
+  for (const row of tldPricing) {
+    if (!row?.tld) continue;
+    map.set(String(row.tld).toLowerCase(), row.renewalPriceUsdPerYear ?? null);
+  }
+  return map;
+}
+
+/**
  * Locale-agnostic descriptor of the remaining time until expiration. The
  * consuming component maps this to a translated, locale-formatted label (see
  * the `timeLeft` namespace in `messages/<locale>/domains.json`):

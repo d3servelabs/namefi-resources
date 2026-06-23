@@ -411,6 +411,20 @@
       "description": "ICANNポリシーにより、インポート後60日間はドメインがロックされます。",
       "importedOn": "このドメインは {date} にインポートされました。",
       "gotIt": "了解"
+    },
+    "expiration": {
+      "expiredDaysAgo": "{days} 日前に期限切れ",
+      "today": "本日期限切れ",
+      "tomorrow": "明日期限切れ",
+      "inDays": "{days} 日後に期限切れ",
+      "inMonths": "{months} か月後に期限切れ",
+      "inYearsAndMonths": "{years} 年 {months} か月後に期限切れ",
+      "inYears": "{years} 年後に期限切れ"
+    },
+    "renewalDetails": {
+      "dateLabel": "更新日",
+      "priceLabel": "更新料金",
+      "perYearUnit": "USD/年"
     }
   },
   "management": {

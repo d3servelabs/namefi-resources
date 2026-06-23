@@ -411,6 +411,20 @@
       "description": "تُقفَل النطاقات لمدة 60 يومًا بعد الاستيراد وفقًا لسياسة ICANN.",
       "importedOn": " تمّ استيراد هذا النطاق في {date}.",
       "gotIt": "حسنًا"
+    },
+    "expiration": {
+      "expiredDaysAgo": "انتهت منذ {days, plural, one {يوم واحد} other {# أيام}}",
+      "today": "تنتهي اليوم",
+      "tomorrow": "تنتهي غدًا",
+      "inDays": "تنتهي خلال {days, plural, one {يوم واحد} other {# أيام}}",
+      "inMonths": "تنتهي خلال {months, plural, one {شهر واحد} other {# أشهر}}",
+      "inYearsAndMonths": "تنتهي خلال {years, plural, one {سنة} other {# سنوات}} و{months, plural, one {شهر} other {# أشهر}}",
+      "inYears": "تنتهي خلال {years, plural, one {سنة واحدة} other {# سنوات}}"
+    },
+    "renewalDetails": {
+      "dateLabel": "تاريخ التجديد",
+      "priceLabel": "سعر التجديد",
+      "perYearUnit": "دولار/سنة"
     }
   },
   "management": {

@@ -259,6 +259,36 @@ function MockTrpcProvider({
               return Promise.resolve([null, { success: true }] as const);
             case 'domainConfig.rejectTransfer':
               return Promise.resolve([null, { success: true }] as const);
+            case 'registry.getTldPricingTable':
+              return Promise.resolve([
+                null,
+                {
+                  tldPricing: [
+                    {
+                      tld: 'com',
+                      registrarKey: 'mock',
+                      registrationPriceUsdPerYear: 12.0,
+                      renewalPriceUsdPerYear: 13.99,
+                      transferPriceUsdPerYear: 12.0,
+                    },
+                    {
+                      tld: 'io',
+                      registrarKey: 'mock',
+                      registrationPriceUsdPerYear: 39.0,
+                      renewalPriceUsdPerYear: 42.0,
+                      transferPriceUsdPerYear: 39.0,
+                    },
+                    {
+                      tld: 'xyz',
+                      registrarKey: 'mock',
+                      registrationPriceUsdPerYear: 9.0,
+                      renewalPriceUsdPerYear: 11.5,
+                      transferPriceUsdPerYear: 9.0,
+                    },
+                  ],
+                  pbnDomains: [],
+                },
+              ] as const);
             default:
               return Promise.resolve([
                 {
@@ -558,6 +588,24 @@ export const DomainWithAllFeatures: Story = {
       domainExportEnabled: true,
       autoRenewEnabled: true,
       expiresInDays: 500,
+    },
+  },
+};
+
+/**
+ * Arabic (RTL) — pins the locale so the panel renders right-to-left for visual
+ * regression. Verifies the renewal date/price block and the localized
+ * expiration copy mirror correctly (logical spacing, start-aligned labels).
+ * `parameters.locale` is honored by the preview decorator, which sets
+ * `dir="rtl"` from the resolved locale.
+ */
+export const ExpiringInThreeMonthsRTL: Story = {
+  name: 'Expiring In Three Months (RTL / العربية)',
+  parameters: { locale: 'ar-EG' },
+  args: {
+    mockState: {
+      ...defaultMockState,
+      expiresInDays: 90,
     },
   },
 };

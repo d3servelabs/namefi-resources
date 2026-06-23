@@ -8,6 +8,7 @@ import '@/app/globals.css';
 import {
   type Locale,
   defaultLocale,
+  getDirection,
   isLocale,
   localeLabels,
   locales,
@@ -108,6 +109,15 @@ const preview: Preview = {
   decorators: [
     (Story, context) => {
       const locale = resolveStoryLocale(context);
+      const direction = getDirection(locale);
+      // The app sets <html dir> server-side; Storybook's locale toolbar can't.
+      // Mirror it here so `rtl:` variants and logical properties flip, and set
+      // it on <html> too so high-specificity portals (centered dialogs, fixed
+      // bars) that escape the story container still pick up the direction.
+      if (typeof document !== 'undefined') {
+        document.documentElement.dir = direction;
+        document.documentElement.lang = locale;
+      }
       return (
         <NextIntlClientProvider
           locale={locale}
@@ -115,7 +125,9 @@ const preview: Preview = {
         >
           <OpenFeatureTestProvider>
             <MotionConfig reducedMotion={isChromatic() ? 'always' : 'never'}>
-              <Story />
+              <div dir={direction}>
+                <Story />
+              </div>
             </MotionConfig>
           </OpenFeatureTestProvider>
         </NextIntlClientProvider>

@@ -1218,6 +1218,45 @@
         "description": "UI text: \"Got It\".",
         "maxLength": 12
       }
+    },
+    "expiration": {
+      "expiredDaysAgo": {
+        "description": "UI text: relative expiry, e.g. \"Expired 3 days ago\". {days} is a count (ICU plural)."
+      },
+      "today": {
+        "description": "UI text: \"Expires today\".",
+        "maxLength": 20
+      },
+      "tomorrow": {
+        "description": "UI text: \"Expires tomorrow\".",
+        "maxLength": 20
+      },
+      "inDays": {
+        "description": "UI text: relative expiry, e.g. \"Expires in 5 days\". {days} is a count (ICU plural)."
+      },
+      "inMonths": {
+        "description": "UI text: relative expiry, e.g. \"Expires in 3 months\". {months} is a count (ICU plural)."
+      },
+      "inYearsAndMonths": {
+        "description": "UI text: relative expiry, e.g. \"Expires in 1y 2m\". {years} and {months} are counts (ICU plural where the language needs it)."
+      },
+      "inYears": {
+        "description": "UI text: relative expiry, e.g. \"Expires in 2 years\". {years} is a count (ICU plural)."
+      }
+    },
+    "renewalDetails": {
+      "dateLabel": {
+        "description": "UI text: label for the domain's renewal/expiration date.",
+        "maxLength": 20
+      },
+      "priceLabel": {
+        "description": "UI text: label for the per-year renewal price.",
+        "maxLength": 20
+      },
+      "perYearUnit": {
+        "description": "UI text: per-year price unit, e.g. \"USD/year\".",
+        "maxLength": 12
+      }
     }
   },
   "management": {

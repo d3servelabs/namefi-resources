@@ -411,6 +411,20 @@
       "description": "根据 ICANN 政策，域名导入后 60 天内处于锁定状态。",
       "importedOn": " 此域名于 {date} 导入。",
       "gotIt": "知道了"
+    },
+    "expiration": {
+      "expiredDaysAgo": "已于 {days} 天前过期",
+      "today": "今天到期",
+      "tomorrow": "明天到期",
+      "inDays": "{days} 天后到期",
+      "inMonths": "{months} 个月后到期",
+      "inYearsAndMonths": "{years} 年 {months} 个月后到期",
+      "inYears": "{years} 年后到期"
+    },
+    "renewalDetails": {
+      "dateLabel": "续期日期",
+      "priceLabel": "续期价格",
+      "perYearUnit": "美元/年"
     }
   },
   "management": {

@@ -411,6 +411,20 @@
       "description": "Domains sind gemäß ICANN-Richtlinie 60 Tage nach dem Import gesperrt.",
       "importedOn": " Diese Domain wurde am {date} importiert.",
       "gotIt": "Verstanden"
+    },
+    "expiration": {
+      "expiredDaysAgo": "Vor {days, plural, one {# Tag} other {# Tagen}} abgelaufen",
+      "today": "Läuft heute ab",
+      "tomorrow": "Läuft morgen ab",
+      "inDays": "Läuft in {days, plural, one {# Tag} other {# Tagen}} ab",
+      "inMonths": "Läuft in {months, plural, one {# Monat} other {# Monaten}} ab",
+      "inYearsAndMonths": "Läuft in {years} J. {months} Mon. ab",
+      "inYears": "Läuft in {years, plural, one {# Jahr} other {# Jahren}} ab"
+    },
+    "renewalDetails": {
+      "dateLabel": "Verlängerungsdatum",
+      "priceLabel": "Verlängerungspreis",
+      "perYearUnit": "USD/Jahr"
     }
   },
   "management": {

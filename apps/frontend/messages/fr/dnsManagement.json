@@ -411,6 +411,20 @@
       "description": "Les domaines sont verrouillés pendant 60 jours après l'import conformément à la politique ICANN.",
       "importedOn": " Ce domaine a été importé le {date}.",
       "gotIt": "Compris"
+    },
+    "expiration": {
+      "expiredDaysAgo": "Expiré il y a {days, plural, one {# jour} other {# jours}}",
+      "today": "Expire aujourd'hui",
+      "tomorrow": "Expire demain",
+      "inDays": "Expire dans {days, plural, one {# jour} other {# jours}}",
+      "inMonths": "Expire dans {months, plural, one {# mois} other {# mois}}",
+      "inYearsAndMonths": "Expire dans {years, plural, one {# an} other {# ans}} {months, plural, one {# mois} other {# mois}}",
+      "inYears": "Expire dans {years, plural, one {# an} other {# ans}}"
+    },
+    "renewalDetails": {
+      "dateLabel": "Date de renouvellement",
+      "priceLabel": "Prix de renouvellement",
+      "perYearUnit": "USD/an"
     }
   },
   "management": {

@@ -411,6 +411,20 @@
       "description": "Los dominios están bloqueados durante 60 días tras la importación según la política de ICANN.",
       "importedOn": " Este dominio fue importado el {date}.",
       "gotIt": "Entendido"
+    },
+    "expiration": {
+      "expiredDaysAgo": "Venció hace {days, plural, one {# día} other {# días}}",
+      "today": "Vence hoy",
+      "tomorrow": "Vence mañana",
+      "inDays": "Vence en {days, plural, one {# día} other {# días}}",
+      "inMonths": "Vence en {months, plural, one {# mes} other {# meses}}",
+      "inYearsAndMonths": "Vence en {years, plural, one {# año} other {# años}} {months, plural, one {# mes} other {# meses}}",
+      "inYears": "Vence en {years, plural, one {# año} other {# años}}"
+    },
+    "renewalDetails": {
+      "dateLabel": "Fecha de renovación",
+      "priceLabel": "Precio de renovación",
+      "perYearUnit": "USD/año"
     }
   },
   "management": {
