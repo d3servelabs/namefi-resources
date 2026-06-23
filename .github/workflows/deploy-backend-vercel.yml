@@ -508,6 +508,7 @@ jobs:
             --meta "githubCommitSha=${GITHUB_SHA}"
             --meta "githubCommitRef=${GITHUB_REF_NAME}"
             --build-env "DEPLOY_COMMIT_SHA=${GITHUB_SHA}"
+            --build-env "DD_GIT_REPOSITORY_URL=https://github.com/${GITHUB_REPOSITORY}.git"
             --env "DEPLOY_COMMIT_SHA=${GITHUB_SHA}"
           )
 

@@ -132,11 +132,18 @@ runs:
         jq -e 'type == "object"' <<<"$ADDITIONAL_META_JSON" >/dev/null
 
         MERGED_BUILD_ENV_JSON="$(
-          jq -c --arg headSha "$HEAD_SHA" '
-            if has("DEPLOY_COMMIT_SHA") then
+          jq -c \
+            --arg headSha "$HEAD_SHA" \
+            --arg repositoryUrl "https://github.com/${GITHUB_REPOSITORY}.git" '
+            (if has("DEPLOY_COMMIT_SHA") then
               .
             else
               . + { DEPLOY_COMMIT_SHA: $headSha }
+            end)
+            | if has("DD_GIT_REPOSITORY_URL") then
+              .
+            else
+              . + { DD_GIT_REPOSITORY_URL: $repositoryUrl }
             end
           ' <<<"$BUILD_ENV_JSON"
         )"

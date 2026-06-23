@@ -12,13 +12,103 @@ import type { LogsEvent } from '@datadog/browser-logs';
 // Everything now routes through this module, which imports the SDK on demand and
 // initializes it once on idle (off the critical path). Observability is
 // unchanged functionally; only the *timing* of initialization moves to browser
-// idle time, and the startup window is covered by the capture shims below.
+// idle time, and startup/runtime errors are covered by the capture shims below.
 
 const DATADOG_SERVICE = 'namefi-astra-frontend';
 const DATADOG_SITE = 'us5.datadoghq.com';
 const REDACTED = 'REDACTED';
 const SENSITIVE_QUERY_KEY_PATTERN =
   /(token|secret|pass(word)?|api[_-]?key|session|jwt|auth|code|state)/i;
+const OPAQUE_SCRIPT_ERROR_MESSAGE_PATTERN =
+  /^(?:uncaught\s+)?"?script error\.?"?$/i;
+const OPAQUE_SCRIPT_ERROR_STACK_PATTERN =
+  /^Error:\s*Script error\.?\n\s+at undefined @\s*$/i;
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  value !== null && typeof value === 'object';
+
+const getNestedString = (record: Record<string, unknown>, path: string[]) => {
+  let current: unknown = record;
+  for (const segment of path) {
+    if (!isRecord(current)) {
+      return undefined;
+    }
+    current = current[segment];
+  }
+  return typeof current === 'string' ? current : undefined;
+};
+
+const isOpaqueScriptErrorMessage = (value: unknown) =>
+  typeof value === 'string' &&
+  OPAQUE_SCRIPT_ERROR_MESSAGE_PATTERN.test(value.trim());
+
+const isOpaqueScriptErrorStack = (value: unknown) =>
+  typeof value === 'string' &&
+  OPAQUE_SCRIPT_ERROR_STACK_PATTERN.test(value.trim());
+
+const isOpaqueScriptErrorLog = (event: Record<string, unknown>) => {
+  const message = getNestedString(event, ['message']);
+  const errorMessage = getNestedString(event, ['error', 'message']);
+  const stack = getNestedString(event, ['error', 'stack']);
+  return (
+    (isOpaqueScriptErrorMessage(message) ||
+      isOpaqueScriptErrorMessage(errorMessage)) &&
+    (!stack || isOpaqueScriptErrorStack(stack))
+  );
+};
+
+const tagOpaqueScriptErrorLog = (event: Record<string, unknown>) => {
+  if (!isOpaqueScriptErrorLog(event)) {
+    return;
+  }
+
+  event.opaque_script_error = true;
+  event.source_map_symbolication = 'not_possible_opaque_script_error';
+};
+
+const isOpaqueScriptErrorEvent = (event: ErrorEvent) => {
+  const stack = event.error instanceof Error ? event.error.stack : undefined;
+  return (
+    isOpaqueScriptErrorMessage(event.message) &&
+    (!event.filename || !stack || isOpaqueScriptErrorStack(stack))
+  );
+};
+
+const createErrorFromUnknown = (
+  value: unknown,
+  fallbackMessage: string,
+): Error => {
+  if (value instanceof Error) {
+    return value;
+  }
+
+  if (typeof value === 'string' && value.trim()) {
+    return new Error(value);
+  }
+
+  if (value == null) {
+    return new Error(fallbackMessage);
+  }
+
+  try {
+    const serialized = JSON.stringify(value);
+    return new Error(
+      serialized && serialized !== '{}' ? serialized : String(value),
+    );
+  } catch {
+    return new Error(String(value));
+  }
+};
+
+const buildErrorEventContext = (
+  event: ErrorEvent,
+  captureMechanism: string,
+): Record<string, unknown> => ({
+  capture_mechanism: captureMechanism,
+  ...(event.filename ? { filename: redactUrlQueryParams(event.filename) } : {}),
+  ...(event.lineno ? { lineno: event.lineno } : {}),
+  ...(event.colno ? { colno: event.colno } : {}),
+});
 
 const redactUrlQueryParams = (value: string) => {
   if (!value || !value.includes('?')) {
@@ -82,6 +172,7 @@ const redactEventUrlFields = (event: Record<string, unknown>) => {
 const beforeSendLogs = (event: LogsEvent) => {
   const eventRecord = event as Record<string, unknown>;
   redactEventUrlFields(eventRecord);
+  tagOpaqueScriptErrorLog(eventRecord);
   return true;
 };
 
@@ -89,13 +180,10 @@ type DatadogLogs = typeof import('@datadog/browser-logs')['datadogLogs'];
 
 let datadogLogsPromise: Promise<DatadogLogs | null> | null = null;
 
-// Deferring init means `forwardErrorsToLogs` / `forwardConsoleLogs` (which only
-// attach their global handlers inside `datadogLogs.init()`) are not active during
-// the window between this module being evaluated and the SDK finishing its idle
-// load. To preserve parity with the previous eager init, mirror that capture for
-// the startup window: buffer uncaught errors, unhandled rejections, and
-// `console.error` / `console.info` with near-zero-cost shims, then replay them
-// once the SDK initializes and hand off to Datadog's own handlers.
+// Deferring init means SDK-side forwarding is not active during the window
+// between this module being evaluated and the SDK finishing its idle load. Buffer
+// uncaught errors, unhandled rejections, and `console.error` / `console.info`
+// with near-zero-cost shims, then replay them once the SDK initializes.
 type BufferedStartupLog =
   | {
       kind: 'error';
@@ -103,7 +191,13 @@ type BufferedStartupLog =
       context: Record<string, unknown>;
       error: Error;
     }
-  | { kind: 'console-error' | 'console-info'; message: string };
+  | {
+      kind: 'opaque-script-error';
+      message: string;
+      context: Record<string, unknown>;
+    }
+  | { kind: 'console-error'; message: string; error?: Error }
+  | { kind: 'console-info'; message: string };
 
 // Bound the buffer so a pre-init log/error storm (or a never-resolving SDK load)
 // can never grow memory without limit.
@@ -111,6 +205,7 @@ const MAX_BUFFERED_STARTUP_LOGS = 50;
 
 let bufferedStartupLogs: BufferedStartupLog[] = [];
 let detachStartupCapture: (() => void) | null = null;
+let detachRuntimeErrorCapture: (() => void) | null = null;
 
 function formatConsoleArgs(args: unknown[]): string {
   return args
@@ -126,6 +221,10 @@ function formatConsoleArgs(args: unknown[]): string {
     .join(' ');
 }
 
+function findFirstErrorArg(args: unknown[]) {
+  return args.find((arg): arg is Error => arg instanceof Error);
+}
+
 function captureStartupLogsUntilReady() {
   if (typeof window === 'undefined' || detachStartupCapture) {
     return;
@@ -135,16 +234,49 @@ function captureStartupLogsUntilReady() {
     if (bufferedStartupLogs.length >= MAX_BUFFERED_STARTUP_LOGS) return;
     bufferedStartupLogs.push(entry);
   };
+  const pushConsoleLog = (
+    kind: 'console-error' | 'console-info',
+    args: unknown[],
+  ) => {
+    if (bufferedStartupLogs.length >= MAX_BUFFERED_STARTUP_LOGS) return;
+    const message = formatConsoleArgs(args);
+    if (kind === 'console-error') {
+      const error = findFirstErrorArg(args);
+      push({
+        kind,
+        message,
+        ...(error ? { error } : {}),
+      });
+    } else {
+      push({ kind, message });
+    }
+  };
 
   const handleError = (event: ErrorEvent) => {
+    if (isOpaqueScriptErrorEvent(event)) {
+      push({
+        kind: 'opaque-script-error',
+        message: 'Uncaught "Script error." before Datadog init',
+        context: {
+          ...buildErrorEventContext(event, 'window.error'),
+          opaque_script_error: true,
+          source_map_symbolication: 'not_possible_opaque_script_error',
+        },
+      });
+      return;
+    }
+
     push({
       kind: 'error',
       message: 'Uncaught error before Datadog init',
-      context: { source: 'window.error', filename: event.filename },
-      error:
-        event.error instanceof Error
-          ? event.error
-          : new Error(event.message || 'Uncaught error'),
+      context: {
+        ...buildErrorEventContext(event, 'window.error'),
+        runtime_error_capture: 'startup_logger_replay',
+      },
+      error: createErrorFromUnknown(
+        event.error,
+        event.message || 'Uncaught error',
+      ),
     });
   };
   const handleRejection = (event: PromiseRejectionEvent) => {
@@ -152,8 +284,14 @@ function captureStartupLogsUntilReady() {
     push({
       kind: 'error',
       message: 'Unhandled promise rejection before Datadog init',
-      context: { source: 'window.unhandledrejection' },
-      error: reason instanceof Error ? reason : new Error(String(reason)),
+      context: {
+        capture_mechanism: 'window.unhandledrejection',
+        runtime_error_capture: 'startup_logger_replay',
+        ...(reason instanceof Error
+          ? {}
+          : { nonErrorRejection: true, reasonType: typeof reason }),
+      },
+      error: createErrorFromUnknown(reason, 'Unhandled promise rejection'),
     });
   };
 
@@ -167,11 +305,11 @@ function captureStartupLogsUntilReady() {
   const originalConsoleError = console.error;
   const originalConsoleInfo = console.info;
   console.error = (...args: unknown[]) => {
-    push({ kind: 'console-error', message: formatConsoleArgs(args) });
+    pushConsoleLog('console-error', args);
     originalConsoleError(...args);
   };
   console.info = (...args: unknown[]) => {
-    push({ kind: 'console-info', message: formatConsoleArgs(args) });
+    pushConsoleLog('console-info', args);
     originalConsoleInfo(...args);
   };
 
@@ -198,12 +336,69 @@ function flushStartupCapture(datadogLogs: DatadogLogs) {
   for (const entry of buffered) {
     if (entry.kind === 'error') {
       datadogLogs.logger.error(entry.message, entry.context, entry.error);
+    } else if (entry.kind === 'opaque-script-error') {
+      datadogLogs.logger.error(entry.message, entry.context);
     } else if (entry.kind === 'console-error') {
-      datadogLogs.logger.error(entry.message, { source: 'console.error' });
+      datadogLogs.logger.error(
+        entry.message,
+        { capture_mechanism: 'console.error' },
+        entry.error,
+      );
     } else {
-      datadogLogs.logger.info(entry.message, { source: 'console.info' });
+      datadogLogs.logger.info(entry.message, {
+        capture_mechanism: 'console.info',
+      });
     }
   }
+}
+
+function startRuntimeErrorCapture(datadogLogs: DatadogLogs) {
+  if (typeof window === 'undefined' || detachRuntimeErrorCapture) {
+    return;
+  }
+
+  const handleError = (event: ErrorEvent) => {
+    if (isOpaqueScriptErrorEvent(event)) {
+      // Keep Datadog's source-origin event for opaque script errors. It cannot
+      // be symbolicated, but its volume and timing are still useful signal.
+      return;
+    }
+
+    datadogLogs.logger.error(
+      'Uncaught runtime error',
+      {
+        ...buildErrorEventContext(event, 'window.error'),
+        duplicates_sdk_forwarded_error: true,
+        runtime_error_capture: 'logger_error_object',
+      },
+      createErrorFromUnknown(event.error, event.message || 'Uncaught error'),
+    );
+  };
+
+  const handleRejection = (event: PromiseRejectionEvent) => {
+    const reason = event.reason;
+    datadogLogs.logger.error(
+      'Unhandled promise rejection',
+      {
+        capture_mechanism: 'window.unhandledrejection',
+        duplicates_sdk_forwarded_error: true,
+        runtime_error_capture: 'logger_error_object',
+        ...(reason instanceof Error
+          ? {}
+          : { nonErrorRejection: true, reasonType: typeof reason }),
+      },
+      createErrorFromUnknown(reason, 'Unhandled promise rejection'),
+    );
+  };
+
+  window.addEventListener('error', handleError);
+  window.addEventListener('unhandledrejection', handleRejection);
+
+  detachRuntimeErrorCapture = () => {
+    window.removeEventListener('error', handleError);
+    window.removeEventListener('unhandledrejection', handleRejection);
+    detachRuntimeErrorCapture = null;
+  };
 }
 
 /**
@@ -233,6 +428,8 @@ function loadDatadogLogs(): Promise<DatadogLogs | null> {
         version: config.DEPLOY_COMMIT_SHA,
         proxy: `${config.BACKEND_URL}/client-events`,
         silentMultipleInit: true,
+        // Keep Datadog's native source/network forwarding. The runtime listener
+        // adds tagged companion logger events with original Error objects.
         forwardErrorsToLogs: true,
         forwardConsoleLogs: ['error', 'info'],
         sessionSampleRate: config.DATADOG_LOGS_SESSION_SAMPLE_RATE,
@@ -243,8 +440,9 @@ function loadDatadogLogs(): Promise<DatadogLogs | null> {
         'deployCommitSha',
         config.DEPLOY_COMMIT_SHA,
       );
-      // Replay anything captured before init; Datadog's own handlers cover the
-      // rest of the session.
+      // Replay startup errors through the logger path, then use the same path
+      // for runtime errors so Datadog receives the original Error object.
+      startRuntimeErrorCapture(datadogLogs);
       flushStartupCapture(datadogLogs);
       return datadogLogs;
     } catch {
