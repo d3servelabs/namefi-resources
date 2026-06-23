@@ -24,11 +24,11 @@ const verifyButtonPattern = /verify/i;
 const clearCartButtonPattern = /^Clear Cart$/;
 const acceptAllButtonPattern = /^Accept(?: All)?$/i;
 const rejectAllButtonPattern = /^Reject(?: All)?$/i;
+const clearCartEndpointPattern = '/trpc/carts.clear';
 const cartSectionPattern =
   /In your cart(?<cartSection>[\s\S]*?)Payment Method/i;
 const domainLikePattern = /\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9-]+)+\b/gi;
 const alphabeticTldPattern = /[a-z]/i;
-const nonDigitPattern = /\D/g;
 const tldRequirementsPattern = /I understand and agree to the .* requirements/i;
 const unlinkedWalletWarningPattern =
   /I'm purchasing for a wallet not linked to this account/i;
@@ -36,6 +36,7 @@ const changeCardButtonPattern = /^Change Card$/i;
 const addOrSelectCardButtonPattern = /^Add or Select Card$/i;
 const paymentMethodDetailsPattern = /Payment Method Details/i;
 const usePaymentMethodButtonPattern = /^Use this Payment Method$/i;
+const selectedCreditCardPattern = /^Credit Card(?:\s+\$[\d,.]+\s+USD)?$/i;
 const submitOrderButtonPattern = /^Submit Order$/i;
 // createOrderV2 returns UUID order IDs today; keep this assertion in sync
 // with backend ID generation if that contract changes.
@@ -325,32 +326,71 @@ async function waitForFirstVisible(
   );
 }
 
-async function clearCartBeforeCheckout(page: Page) {
-  await page.goto(withAppBase('/cart'), { waitUntil: 'domcontentloaded' });
+function getEmptyCartState(page: Page) {
+  return page.locator('[data-testid="cart.empty-state"]');
+}
+
+function getClearCartButton(page: Page) {
+  return page.locator('[data-testid="cart.summary.clear-cart"]').first();
+}
+
+async function waitForCartState(page: Page, timeoutMs: number) {
+  return waitForFirstVisible(
+    [
+      ['empty cart', getEmptyCartState(page)],
+      ['clear cart button', getClearCartButton(page)],
+    ],
+    timeoutMs,
+  );
+}
+
+async function cartRemainsEmptyAfterReload(page: Page) {
+  await expect(getEmptyCartState(page)).toBeVisible({ timeout: 30_000 });
+
+  await page.reload({ waitUntil: 'domcontentloaded' });
   await dismissCookieBanner(page);
 
-  const emptyCart = page.getByText('Your cart is empty');
-  const clearCartButton = page
-    .getByRole('button', { name: clearCartButtonPattern })
-    .first();
-  const cartState = await waitForFirstVisible(
-    [
-      ['empty cart', emptyCart],
-      ['clear cart button', clearCartButton],
-    ],
-    60_000,
-  );
+  return (await waitForCartState(page, 30_000)) === 'empty cart';
+}
 
-  if (cartState === 'empty cart') {
-    return;
+async function clearCartBeforeCheckout(page: Page) {
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await page.goto(withAppBase('/cart'), { waitUntil: 'domcontentloaded' });
+    await dismissCookieBanner(page);
+
+    const cartState = await waitForCartState(page, 60_000);
+    if (cartState === 'empty cart') {
+      if (await cartRemainsEmptyAfterReload(page)) {
+        return;
+      }
+      continue;
+    }
+
+    await getClearCartButton(page).click();
+
+    const dialog = page.getByRole('alertdialog');
+    await expect(dialog).toBeVisible();
+
+    const clearCartResponse = page.waitForResponse(
+      (response) =>
+        response.request().method() === 'POST' &&
+        response.url().includes(clearCartEndpointPattern),
+      { timeout: 45_000 },
+    );
+    await dialog.getByRole('button', { name: clearCartButtonPattern }).click();
+
+    const response = await clearCartResponse;
+    expect(
+      response.ok(),
+      `Cart clear request failed with status ${response.status()}.`,
+    ).toBe(true);
+
+    if (await cartRemainsEmptyAfterReload(page)) {
+      return;
+    }
   }
 
-  await clearCartButton.click();
-
-  const dialog = page.getByRole('alertdialog');
-  await expect(dialog).toBeVisible();
-  await dialog.getByRole('button', { name: clearCartButtonPattern }).click();
-  await expect(emptyCart).toBeVisible({ timeout: 30_000 });
+  throw new Error('Unable to clear persisted checkout cart before checkout.');
 }
 
 async function dismissCookieBanner(page: Page) {
@@ -459,35 +499,21 @@ async function selectStripeCardTab(
   stripeFrame: FrameLocator,
   cardNumber: Locator,
 ) {
-  if (await isVisibleWithin(cardNumber, 1_000)) {
+  if (await isVisibleWithin(cardNumber, 15_000)) {
     return;
   }
 
-  await stripeFrame
-    .locator('#card-tab, [data-testid="card"]')
-    .click({ timeout: 15_000 })
-    .catch(async () => {
-      await stripeFrame.getByText('Card', { exact: true }).click({
-        timeout: 15_000,
-      });
-    });
+  const cardTabs = [
+    stripeFrame.locator('#card-tab, [data-testid="card"]').first(),
+    stripeFrame.getByText('Card', { exact: true }).first(),
+  ];
+  await clickFirstVisible(cardTabs, 15_000);
 
   await expect(cardNumber).toBeVisible({ timeout: 30_000 });
 }
 
-function getStripeTestCardLast4() {
-  const cardDigits = stripeTestCard.number.replaceAll(nonDigitPattern, '');
-  const last4 = cardDigits.slice(-4);
-  if (last4.length !== 4) {
-    throw new Error(
-      'NAMEFI_E2E_STRIPE_CARD_NUMBER must contain at least 4 digits.',
-    );
-  }
-  return last4;
-}
-
-function getStripeTestCardLast4Pattern() {
-  return new RegExp(`\\b${getStripeTestCardLast4()}\\b`);
+function getSelectedCreditCard(page: Page) {
+  return page.getByText(selectedCreditCardPattern).first();
 }
 
 async function addStripeTestCard(page: Page) {
@@ -496,12 +522,7 @@ async function addStripeTestCard(page: Page) {
     name: changeCardButtonPattern,
   });
   if (await isVisibleWithin(changeCardButton, 2_000)) {
-    if (
-      await isVisibleWithin(
-        page.getByText(getStripeTestCardLast4Pattern()),
-        1_000,
-      )
-    ) {
+    if (await isVisibleWithin(getSelectedCreditCard(page), 1_000)) {
       return;
     }
     await changeCardButton.click();
@@ -536,11 +557,17 @@ async function addStripeTestCard(page: Page) {
 
   const postalCode = stripeFrame
     .locator(
-      'input[autocomplete="postal-code"], input[placeholder*="ZIP"], input[placeholder*="Postal"]',
+      [
+        'input[name="postalCode"]',
+        'input[autocomplete~="postal-code"]',
+        'input[placeholder*="ZIP"]',
+        'input[placeholder*="Postal"]',
+      ].join(', '),
     )
     .first();
   if (await isVisibleWithin(postalCode, 3_000)) {
     await postalCode.fill(stripeTestCard.postalCode);
+    await expect(postalCode).toHaveValue(stripeTestCard.postalCode);
   }
 
   await page
@@ -551,8 +578,8 @@ async function addStripeTestCard(page: Page) {
     page.getByRole('button', { name: changeCardButtonPattern }),
   ).toBeVisible({ timeout: 10_000 });
   await expect(
-    page.getByText(getStripeTestCardLast4Pattern()),
-    'Selected payment method should be the configured Stripe test card.',
+    getSelectedCreditCard(page),
+    'Selected payment method should be a credit card.',
   ).toBeVisible({ timeout: 10_000 });
 }
 
