@@ -23,7 +23,13 @@
   "aftermarket": {
     "en": "Aftermarket (Secondary Market)",
     "titles": {
-      "en": "Aftermarket (Secondary Market)"
+      "en": "Aftermarket (Secondary Market)",
+      "es": "Aftermarket (Mercado secundario)",
+      "de": "Aftermarket (Sekundärmarkt)",
+      "fr": "Marché secondaire (Aftermarket)",
+      "zh": "二级市场（转售市场）",
+      "ar": "السوق الثانوي (Aftermarket)",
+      "hi": "आफ्टरमार्केट (सेकेंडरी मार्केट)"
     },
     "level": 1
   },
@@ -136,14 +142,26 @@
   "brandable-domain": {
     "en": "Brandable Domain",
     "titles": {
-      "en": "Brandable Domain"
+      "en": "Brandable Domain",
+      "es": "Dominio de marca",
+      "de": "Brandable Domain",
+      "fr": "Domaine brandable",
+      "zh": "品牌型域名",
+      "ar": "النطاق القابل للتبرند",
+      "hi": "ब्रांडेबल डोमेन"
     },
     "level": 1
   },
   "buy-now-vs-make-offer": {
     "en": "Buy-Now (BIN) vs Make-Offer",
     "titles": {
-      "en": "Buy-Now (BIN) vs Make-Offer"
+      "en": "Buy-Now (BIN) vs Make-Offer",
+      "es": "BIN (Compra inmediata) vs Hacer una oferta",
+      "de": "Sofortkauf (BIN) vs. Angebot machen",
+      "fr": "Achat immédiat (BIN) vs Faire une offre",
+      "zh": "BIN（立即购买）与议价报价",
+      "ar": "BIN (اشتري الآن) مقابل تقديم عرض",
+      "hi": "BIN (Buy-Now) बनाम Make-Offer"
     },
     "level": 1
   },
@@ -189,7 +207,13 @@
   "comparable-sales": {
     "en": "Comparable Sales (Comps)",
     "titles": {
-      "en": "Comparable Sales (Comps)"
+      "en": "Comparable Sales (Comps)",
+      "es": "Ventas comparables (Comps)",
+      "de": "Vergleichbare Verkäufe (Comps)",
+      "fr": "Ventes comparables (Comps)",
+      "zh": "可比成交案例（Comps）",
+      "ar": "المبيعات المماثلة (Comps)",
+      "hi": "तुलनीय बिक्री (Comps)"
     },
     "level": 1
   },
@@ -373,7 +397,13 @@
   "domain-appraisal": {
     "en": "Domain Appraisal (Valuation)",
     "titles": {
-      "en": "Domain Appraisal (Valuation)"
+      "en": "Domain Appraisal (Valuation)",
+      "es": "Tasación de dominios (Valoración)",
+      "de": "Domain-Bewertung (Valuation)",
+      "fr": "Évaluation de domaine (Expertise)",
+      "zh": "域名估值（评估）",
+      "ar": "تقييم النطاق",
+      "hi": "डोमेन अप्रेज़ल (वैल्यूएशन)"
     },
     "level": 1
   },
@@ -387,7 +417,13 @@
   "domain-broker": {
     "en": "Domain Broker (Brokerage)",
     "titles": {
-      "en": "Domain Broker (Brokerage)"
+      "en": "Domain Broker (Brokerage)",
+      "es": "Corredor de dominios (Corretaje)",
+      "de": "Domain-Broker (Brokerage)",
+      "fr": "Courtier en domaines (Courtage)",
+      "zh": "域名经纪人（经纪服务）",
+      "ar": "وسيط النطاقات",
+      "hi": "डोमेन ब्रोकर (ब्रोकरेज)"
     },
     "level": 1
   },
@@ -455,7 +491,13 @@
   "domain-liquidity": {
     "en": "Liquidity",
     "titles": {
-      "en": "Liquidity"
+      "en": "Liquidity",
+      "es": "Liquidez",
+      "de": "Liquidität",
+      "fr": "Liquidité",
+      "zh": "域名流动性",
+      "ar": "سيولة النطاق",
+      "hi": "लिक्विडिटी"
     },
     "level": 1
   },
@@ -482,7 +524,13 @@
   "domain-portfolio": {
     "en": "Domain Portfolio",
     "titles": {
-      "en": "Domain Portfolio"
+      "en": "Domain Portfolio",
+      "es": "Portafolio de dominios",
+      "de": "Domain Portfolio",
+      "fr": "Portefeuille de domaines",
+      "zh": "域名组合",
+      "ar": "محفظة النطاقات",
+      "hi": "डोमेन पोर्टफोलियो"
     },
     "level": 1
   },
@@ -535,14 +583,26 @@
   "domaining": {
     "en": "Domaining (Domainer)",
     "titles": {
-      "en": "Domaining (Domainer)"
+      "en": "Domaining (Domainer)",
+      "es": "Domaining (Domainer)",
+      "de": "Domaining (Domainer)",
+      "fr": "Domaining (Domaineur)",
+      "zh": "域名投资（域名玩家）",
+      "ar": "الدومينينج (Domaining)",
+      "hi": "डोमेनिंग (Domainer)"
     },
     "level": 1
   },
   "end-user": {
     "en": "End User",
     "titles": {
-      "en": "End User"
+      "en": "End User",
+      "es": "Usuario final",
+      "de": "End User (Endnutzer)",
+      "fr": "Utilisateur final",
+      "zh": "终端用户",
+      "ar": "المستخدم النهائي",
+      "hi": "एंड यूज़र"
     },
     "level": 1
   },
@@ -616,7 +676,13 @@
   "exact-match-domain": {
     "en": "Exact-Match Domain (EMD)",
     "titles": {
-      "en": "Exact-Match Domain (EMD)"
+      "en": "Exact-Match Domain (EMD)",
+      "es": "EMD (Dominio de coincidencia exacta)",
+      "de": "Exact-Match Domain (EMD)",
+      "fr": "Domaine à correspondance exacte (EMD)",
+      "zh": "EMD（精确匹配域名）",
+      "ar": "EMD (نطاق المطابقة التامة)",
+      "hi": "EMD (Exact-Match Domain — सटीक-मिलान डोमेन)"
     },
     "level": 1
   },
@@ -701,7 +767,13 @@
   "holding-cost": {
     "en": "Holding / Carrying Cost",
     "titles": {
-      "en": "Holding / Carrying Cost"
+      "en": "Holding / Carrying Cost",
+      "es": "Costo de mantenimiento / costo de tenencia",
+      "de": "Haltekosten (Carrying Cost)",
+      "fr": "Coût de détention / portage",
+      "zh": "持有成本（持仓成本）",
+      "ar": "تكلفة الاحتفاظ",
+      "hi": "होल्डिंग / कैरींग कॉस्ट"
     },
     "level": 1
   },
@@ -780,7 +852,13 @@
   "keyword-domain": {
     "en": "Keyword Domain",
     "titles": {
-      "en": "Keyword Domain"
+      "en": "Keyword Domain",
+      "es": "Dominio de palabras clave",
+      "de": "Keyword Domain",
+      "fr": "Domaine à mot-clé",
+      "zh": "关键词域名",
+      "ar": "نطاق الكلمة المفتاحية",
+      "hi": "कीवर्ड डोमेन"
     },
     "level": 1
   },
@@ -1092,7 +1170,13 @@
   "reserve-price": {
     "en": "Reserve Price (Minimum Offer)",
     "titles": {
-      "en": "Reserve Price (Minimum Offer)"
+      "en": "Reserve Price (Minimum Offer)",
+      "es": "Precio de reserva (Oferta mínima)",
+      "de": "Mindestpreis (Reserve Price)",
+      "fr": "Prix de réserve (Offre minimale)",
+      "zh": "底价（最低报价）",
+      "ar": "السعر الاحتياطي (الحد الأدنى للعرض)",
+      "hi": "रिज़र्व प्राइस (न्यूनतम ऑफर)"
     },
     "level": 1
   },
@@ -1171,7 +1255,13 @@
   "sell-through-rate": {
     "en": "Sell-Through Rate (STR)",
     "titles": {
-      "en": "Sell-Through Rate (STR)"
+      "en": "Sell-Through Rate (STR)",
+      "es": "STR (Tasa de venta)",
+      "de": "Sell-Through Rate (STR)",
+      "fr": "Taux de vente (STR)",
+      "zh": "STR（售出率）",
+      "ar": "STR (معدل البيع)",
+      "hi": "STR (Sell-Through Rate — बिक्री-दर)"
     },
     "level": 1
   },
@@ -1198,7 +1288,13 @@
   "short-domain": {
     "en": "Short / Numeric Domain (LLLL, NNNN)",
     "titles": {
-      "en": "Short / Numeric Domain (LLLL, NNNN)"
+      "en": "Short / Numeric Domain (LLLL, NNNN)",
+      "es": "Dominio corto / numérico (LLLL, NNNN)",
+      "de": "Kurze / Numerische Domain (LLLL, NNNN)",
+      "fr": "Domaine court / numérique (LLLL, NNNN)",
+      "zh": "短域名 / 数字域名（LLLL、NNNN）",
+      "ar": "النطاق القصير / الرقمي (LLLL, NNNN)",
+      "hi": "शॉर्ट / न्यूमेरिक डोमेन (LLLL, NNNN)"
     },
     "level": 1
   },
@@ -1398,7 +1494,13 @@
   "wholesale-vs-retail": {
     "en": "Wholesale vs Retail Pricing",
     "titles": {
-      "en": "Wholesale vs Retail Pricing"
+      "en": "Wholesale vs Retail Pricing",
+      "es": "Precios mayoristas vs minoristas",
+      "de": "Grosshandels- vs. Einzelhandelspreise",
+      "fr": "Tarification en gros vs au détail",
+      "zh": "批发定价与零售定价",
+      "ar": "أسعار الجملة مقابل التجزئة",
+      "hi": "होलसेल बनाम रिटेल प्राइसिंग"
     },
     "level": 1
   },
