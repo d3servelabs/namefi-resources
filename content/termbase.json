@@ -102,7 +102,13 @@
   "backorder": {
     "en": "Backorder (Drop-Catching)",
     "titles": {
-      "en": "Backorder (Drop-Catching)"
+      "en": "Backorder (Drop-Catching)",
+      "es": "Reserva anticipada (Captura de caída)",
+      "de": "Backorder (Drop-Catching)",
+      "fr": "Backorder (Drop-Catching)",
+      "zh": "预订单（抢注）",
+      "ar": "الباكأوردر (Drop-Catching)",
+      "hi": "बैकऑर्डर (ड्रॉप-कैचिंग)"
     },
     "level": 1
   },
@@ -144,7 +150,13 @@
   "cctld": {
     "en": "ccTLD (Country-Code Top-Level Domain)",
     "titles": {
-      "en": "ccTLD (Country-Code Top-Level Domain)"
+      "en": "ccTLD (Country-Code Top-Level Domain)",
+      "es": "ccTLD (Dominio de Nivel Superior de Código de País)",
+      "de": "ccTLD (Country-Code Top-Level-Domain)",
+      "fr": "ccTLD (Domaine de premier niveau à code pays)",
+      "zh": "ccTLD（国家代码顶级域名）",
+      "ar": "ccTLD (نطاق المستوى الأعلى لرمز الدولة)",
+      "hi": "ccTLD (कंट्री-कोड टॉप-लेवल डोमेन)"
     },
     "level": 1
   },
@@ -309,21 +321,39 @@
   "dns-propagation": {
     "en": "DNS Propagation",
     "titles": {
-      "en": "DNS Propagation"
+      "en": "DNS Propagation",
+      "es": "Propagación DNS",
+      "de": "DNS-Propagierung",
+      "fr": "Propagation DNS",
+      "zh": "DNS 传播",
+      "ar": "انتشار DNS",
+      "hi": "DNS प्रोपेगेशन"
     },
     "level": 1
   },
   "dns-record-types": {
     "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)",
     "titles": {
-      "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)"
+      "en": "DNS Record Types (A, AAAA, CNAME, MX, TXT)",
+      "es": "Tipos de registros DNS (A, AAAA, CNAME, MX, TXT)",
+      "de": "DNS-Eintragstypen (A, AAAA, CNAME, MX, TXT)",
+      "fr": "Types d'enregistrements DNS (A, AAAA, CNAME, MX, TXT)",
+      "zh": "DNS 记录类型（A、AAAA、CNAME、MX、TXT）",
+      "ar": "أنواع سجلات DNS (A، AAAA، CNAME، MX، TXT)",
+      "hi": "DNS रिकॉर्ड प्रकार (A, AAAA, CNAME, MX, TXT)"
     },
     "level": 1
   },
   "dns-resolver": {
     "en": "DNS Resolver (Recursive Resolver)",
     "titles": {
-      "en": "DNS Resolver (Recursive Resolver)"
+      "en": "DNS Resolver (Recursive Resolver)",
+      "es": "Resolvedor DNS (Resolvedor Recursivo)",
+      "de": "DNS-Resolver (Rekursiver Resolver)",
+      "fr": "Résolveur DNS (Résolveur récursif)",
+      "zh": "DNS 解析器（递归解析器）",
+      "ar": "محلّل DNS (المحلّل التكراري)",
+      "hi": "DNS रिज़ॉल्वर (रिकर्सिव रिज़ॉल्वर)"
     },
     "level": 1
   },
@@ -377,7 +407,13 @@
   "domain-expiration": {
     "en": "Domain Expiration",
     "titles": {
-      "en": "Domain Expiration"
+      "en": "Domain Expiration",
+      "es": "Expiración de dominio",
+      "de": "Domain-Ablauf",
+      "fr": "Expiration de domaine",
+      "zh": "域名到期",
+      "ar": "انتهاء صلاحية النطاق",
+      "hi": "डोमेन एक्सपायरेशन"
     },
     "level": 1
   },
@@ -453,14 +489,26 @@
   "domain-renewal": {
     "en": "Domain Renewal (Auto-Renew)",
     "titles": {
-      "en": "Domain Renewal (Auto-Renew)"
+      "en": "Domain Renewal (Auto-Renew)",
+      "es": "Renovación de dominio (Renovación automática)",
+      "de": "Domain-Verlängerung (Auto-Renew)",
+      "fr": "Renouvellement de domaine (Renouvellement automatique)",
+      "zh": "域名续期（自动续期）",
+      "ar": "تجديد النطاق (التجديد التلقائي)",
+      "hi": "डोमेन रिन्यूअल (ऑटो-रिन्यू)"
     },
     "level": 1
   },
   "domain-tasting": {
     "en": "Domain Tasting (AGP)",
     "titles": {
-      "en": "Domain Tasting (AGP)"
+      "en": "Domain Tasting (AGP)",
+      "es": "Prueba de dominios (AGP)",
+      "de": "Domain Tasting (AGP)",
+      "fr": "Domain Tasting (AGP)",
+      "zh": "域名尝鲜（AGP）",
+      "ar": "تذوّق النطاقات (AGP)",
+      "hi": "डोमेन टेस्टिंग (AGP)"
     },
     "level": 1
   },
@@ -614,14 +662,26 @@
   "grace-period": {
     "en": "Grace Period",
     "titles": {
-      "en": "Grace Period"
+      "en": "Grace Period",
+      "es": "Período de gracia",
+      "de": "Grace Period",
+      "fr": "Période de grâce",
+      "zh": "宽限期",
+      "ar": "فترة السماح",
+      "hi": "ग्रेस पीरियड"
     },
     "level": 1
   },
   "gtld": {
     "en": "gTLD (Generic Top-Level Domain)",
     "titles": {
-      "en": "gTLD (Generic Top-Level Domain)"
+      "en": "gTLD (Generic Top-Level Domain)",
+      "es": "gTLD (Dominio de Nivel Superior Genérico)",
+      "de": "gTLD (Generic Top-Level-Domain)",
+      "fr": "gTLD (Domaine générique de premier niveau)",
+      "zh": "gTLD（通用顶级域名）",
+      "ar": "gTLD (نطاق المستوى الأعلى العام)",
+      "hi": "gTLD (जेनेरिक टॉप-लेवल डोमेन)"
     },
     "level": 1
   },
@@ -648,7 +708,13 @@
   "iana": {
     "en": "IANA (Internet Assigned Numbers Authority)",
     "titles": {
-      "en": "IANA (Internet Assigned Numbers Authority)"
+      "en": "IANA (Internet Assigned Numbers Authority)",
+      "es": "IANA (Autoridad de Asignación de Números de Internet)",
+      "de": "IANA (Internet Assigned Numbers Authority)",
+      "fr": "IANA (Autorité d'attribution des numéros Internet)",
+      "zh": "IANA（互联网号码分配机构）",
+      "ar": "IANA (هيئة الأرقام المخصصة للإنترنت)",
+      "hi": "IANA (इंटरनेट असाइन्ड नंबर्स अथॉरिटी)"
     },
     "level": 1
   },
@@ -668,7 +734,13 @@
   "idn": {
     "en": "IDN (Internationalized Domain Name) / Punycode",
     "titles": {
-      "en": "IDN (Internationalized Domain Name) / Punycode"
+      "en": "IDN (Internationalized Domain Name) / Punycode",
+      "es": "IDN (Nombre de Dominio Internacionalizado) / Punycode",
+      "de": "IDN (Internationalized Domain Name) / Punycode",
+      "fr": "IDN (Nom de domaine internationalisé) / Punycode",
+      "zh": "IDN（国际化域名）/ Punycode",
+      "ar": "IDN (اسم النطاق الدولي) / Punycode",
+      "hi": "IDN (अंतर्राष्ट्रीयकृत डोमेन नाम) / Punycode"
     },
     "level": 1
   },
@@ -688,7 +760,13 @@
   "ip-address": {
     "en": "IP Address (IPv4 / IPv6)",
     "titles": {
-      "en": "IP Address (IPv4 / IPv6)"
+      "en": "IP Address (IPv4 / IPv6)",
+      "es": "Dirección IP (IPv4 / IPv6)",
+      "de": "IP-Adresse (IPv4 / IPv6)",
+      "fr": "Adresse IP (IPv4 / IPv6)",
+      "zh": "IP 地址（IPv4 / IPv6）",
+      "ar": "عنوان IP (IPv4 / IPv6)",
+      "hi": "IP एड्रेस (IPv4 / IPv6)"
     },
     "level": 1
   },
@@ -802,14 +880,26 @@
   "nameserver": {
     "en": "Nameserver (NS Record)",
     "titles": {
-      "en": "Nameserver (NS Record)"
+      "en": "Nameserver (NS Record)",
+      "es": "Servidor de nombres (Registro NS)",
+      "de": "Nameserver (NS Record)",
+      "fr": "Serveur de noms (Enregistrement NS)",
+      "zh": "域名服务器（NS 记录）",
+      "ar": "خادم الأسماء (سجل NS)",
+      "hi": "नेमसर्वर (NS रिकॉर्ड)"
     },
     "level": 1
   },
   "new-gtld": {
     "en": "New gTLD",
     "titles": {
-      "en": "New gTLD"
+      "en": "New gTLD",
+      "es": "Nuevo gTLD",
+      "de": "New gTLD",
+      "fr": "Nouveau gTLD",
+      "zh": "新 gTLD",
+      "ar": "New gTLD",
+      "hi": "New gTLD"
     },
     "level": 1
   },
@@ -842,7 +932,13 @@
   "pending-delete": {
     "en": "Pending Delete (Drop)",
     "titles": {
-      "en": "Pending Delete (Drop)"
+      "en": "Pending Delete (Drop)",
+      "es": "Eliminación pendiente (Caída de dominio)",
+      "de": "Pending Delete (Drop)",
+      "fr": "Suppression en attente (Drop)",
+      "zh": "待删除（域名释放）",
+      "ar": "الانتظار قبل الحذف (Drop)",
+      "hi": "पेंडिंग डिलीट (ड्रॉप)"
     },
     "level": 1
   },
@@ -876,7 +972,13 @@
   "premium-domain": {
     "en": "Premium Domain",
     "titles": {
-      "en": "Premium Domain"
+      "en": "Premium Domain",
+      "es": "Dominio premium",
+      "de": "Premium-Domain",
+      "fr": "Domaine premium",
+      "zh": "溢价域名",
+      "ar": "النطاق المتميز",
+      "hi": "प्रीमियम डोमेन"
     },
     "level": 1
   },
@@ -903,14 +1005,26 @@
   "redemption-period": {
     "en": "Redemption Period (RGP)",
     "titles": {
-      "en": "Redemption Period (RGP)"
+      "en": "Redemption Period (RGP)",
+      "es": "RGP (Período de Redención)",
+      "de": "Redemption Period (RGP)",
+      "fr": "Période de rachat (RGP)",
+      "zh": "赎回期（RGP）",
+      "ar": "فترة الاسترداد (RGP)",
+      "hi": "रिडेम्पशन पीरियड (RGP)"
     },
     "level": 1
   },
   "registrant": {
     "en": "Registrant",
     "titles": {
-      "en": "Registrant"
+      "en": "Registrant",
+      "es": "Registrante",
+      "de": "Registrant",
+      "fr": "Titulaire de domaine",
+      "zh": "注册人",
+      "ar": "المسجَّل",
+      "hi": "रजिस्ट्रेंट"
     },
     "level": 1
   },
@@ -938,7 +1052,13 @@
   "registry": {
     "en": "Registry (Registry Operator)",
     "titles": {
-      "en": "Registry (Registry Operator)"
+      "en": "Registry (Registry Operator)",
+      "es": "Registro (Operador de Registro)",
+      "de": "Registry (Registry-Betreiber)",
+      "fr": "Registre (Opérateur de registre)",
+      "zh": "注册局（注册局运营商）",
+      "ar": "السجل (مشغل السجل)",
+      "hi": "रजिस्ट्री (Registry Operator)"
     },
     "level": 1
   },
@@ -979,7 +1099,13 @@
   "reserved-names": {
     "en": "Reserved Names (Blocked Names)",
     "titles": {
-      "en": "Reserved Names (Blocked Names)"
+      "en": "Reserved Names (Blocked Names)",
+      "es": "Nombres reservados (Nombres bloqueados)",
+      "de": "Reservierte Namen (Gesperrte Namen)",
+      "fr": "Noms réservés (Noms bloqués)",
+      "zh": "保留名称（屏蔽名称）",
+      "ar": "الأسماء المحجوزة (الأسماء المحظورة)",
+      "hi": "रिज़र्व्ड नेम्स (ब्लॉक्ड नेम्स)"
     },
     "level": 1
   },
@@ -1006,14 +1132,26 @@
   "root-zone": {
     "en": "Root Zone (Root Servers)",
     "titles": {
-      "en": "Root Zone (Root Servers)"
+      "en": "Root Zone (Root Servers)",
+      "es": "Zona Raíz (Servidores Raíz)",
+      "de": "Root-Zone (Root-Server)",
+      "fr": "Zone racine (Serveurs racine)",
+      "zh": "根区域（根服务器）",
+      "ar": "منطقة الجذر (خوادم الجذر)",
+      "hi": "रूट ज़ोन (रूट सर्वर)"
     },
     "level": 1
   },
   "second-level-domain": {
     "en": "Second-Level Domain (SLD)",
     "titles": {
-      "en": "Second-Level Domain (SLD)"
+      "en": "Second-Level Domain (SLD)",
+      "es": "SLD (Dominio de Segundo Nivel)",
+      "de": "Second-Level-Domain (SLD)",
+      "fr": "SLD (Domaine de deuxième niveau)",
+      "zh": "二级域名（SLD）",
+      "ar": "نطاق المستوى الثاني (SLD)",
+      "hi": "सेकंड-लेवल डोमेन (SLD)"
     },
     "level": 1
   },
@@ -1093,7 +1231,13 @@
   "subdomain": {
     "en": "Subdomain",
     "titles": {
-      "en": "Subdomain"
+      "en": "Subdomain",
+      "es": "Subdominio",
+      "de": "Subdomain",
+      "fr": "Sous-domaine",
+      "zh": "子域名",
+      "ar": "النطاق الفرعي",
+      "hi": "सबडोमेन"
     },
     "level": 1
   },
@@ -1161,7 +1305,13 @@
   "ttl": {
     "en": "TTL (Time to Live)",
     "titles": {
-      "en": "TTL (Time to Live)"
+      "en": "TTL (Time to Live)",
+      "es": "TTL (Tiempo de Vida)",
+      "de": "TTL (Time to Live)",
+      "fr": "TTL (Durée de vie)",
+      "zh": "TTL（生存时间）",
+      "ar": "TTL (مدة البقاء)",
+      "hi": "TTL (टाइम टू लिव)"
     },
     "level": 1
   },
@@ -1275,7 +1425,13 @@
   "zone-file": {
     "en": "Zone File (Glue Record)",
     "titles": {
-      "en": "Zone File (Glue Record)"
+      "en": "Zone File (Glue Record)",
+      "es": "Archivo de Zona (Registro de Pegamento)",
+      "de": "Zone-File (Glue Record)",
+      "fr": "Fichier de zone (Enregistrement glue)",
+      "zh": "区域文件（胶水记录）",
+      "ar": "ملف المنطقة (سجل الغراء)",
+      "hi": "ज़ोन फ़ाइल (ग्लू रिकॉर्ड)"
     },
     "level": 1
   }
