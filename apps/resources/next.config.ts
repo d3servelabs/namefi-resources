@@ -10,7 +10,9 @@ import { config as appConfig } from './src/lib/env/load';
 // Build-time version stamp for the footer: a `v<version>-<6charSha>-<yyyy-mm-dd>`
 // label that links to the deployed commit's GitHub permalink. Prefer Vercel's
 // authoritative SHA, fall back to local git, and degrade to 'unknown' if git is
-// unavailable. The date is the committer date (`%cs`, already yyyy-mm-dd).
+// unavailable. The date is the committer date (`%cs`, already yyyy-mm-dd), and
+// falls back to the build date because Vercel build containers don't reliably
+// expose `.git` (the SHA/permalink still pin the exact commit either way).
 function resolveBuildInfo(version: string) {
   const git = (args: string) => {
     try {
@@ -23,7 +25,9 @@ function resolveBuildInfo(version: string) {
   };
   const sha =
     process.env.VERCEL_GIT_COMMIT_SHA?.trim() || git('rev-parse HEAD');
-  const commitDate = git(`show -s --format=%cs ${sha || 'HEAD'}`);
+  const commitDate =
+    git(`show -s --format=%cs ${sha || 'HEAD'}`) ||
+    new Date().toISOString().slice(0, 10);
   const repo =
     process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
       ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
@@ -31,7 +35,7 @@ function resolveBuildInfo(version: string) {
   return {
     BUILD_VERSION: version,
     BUILD_COMMIT_SHA: sha ? sha.slice(0, 6) : 'unknown',
-    BUILD_COMMIT_DATE: commitDate || 'unknown',
+    BUILD_COMMIT_DATE: commitDate,
     BUILD_COMMIT_URL: sha ? `https://github.com/${repo}/commit/${sha}` : '',
   };
 }
