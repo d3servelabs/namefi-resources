@@ -66,25 +66,34 @@ function countAlreadyLinking(slug: string): number {
   return count;
 }
 
-function inboundCount(slug: string): number {
+// Returns the distinct-inbound-mention count, or null when link-suggest could
+// not be run/parsed (non-zero exit, empty stdout, or unparseable JSON). null is
+// NOT 0 — a failed subprocess that silently counted as 0 would drop every prose
+// mention that tool would have found and skew the promotion ranking.
+const SLUG_MISSING = Symbol('slug-missing');
+function inboundCount(slug: string): number | null | typeof SLUG_MISSING {
   const file = path.join(GLOSSARY_EN, `${slug}.md`);
   try {
     statSync(file);
   } catch {
-    return -1;
+    return SLUG_MISSING;
   }
   const res = spawnSync('bun', [LINK_SUGGEST, '--json', '--no-related', file], {
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,
   });
-  if (res.status !== 0 || !res.stdout) return 0;
+  if (res.status !== 0 || !res.stdout) {
+    process.stderr.write(`\n   ⚠️  link-suggest failed for ${slug} (exit ${res.status ?? '?'}); mention count unknown.\n`);
+    return null;
+  }
   try {
     const parsed = JSON.parse(res.stdout);
     const report = Array.isArray(parsed) ? parsed[0] : parsed.reports?.[0] ?? parsed;
     const inbound = report?.inbound;
-    return Array.isArray(inbound) ? inbound.length : 0;
+    return Array.isArray(inbound) ? inbound.length : null;
   } catch {
-    return 0;
+    process.stderr.write(`\n   ⚠️  link-suggest output for ${slug} was unparseable; mention count unknown.\n`);
+    return null;
   }
 }
 
@@ -92,11 +101,17 @@ function main() {
   const slugs = slugArgs.length ? slugArgs : listEnSlugs();
   const rows: { slug: string; mentions: number; linked: number; candidates: number }[] = [];
 
+  const failed: string[] = [];
   let done = 0;
   for (const slug of slugs) {
     const candidates = inboundCount(slug);
-    if (candidates < 0) {
+    if (candidates === SLUG_MISSING) {
       if (!JSON_OUT) console.error(`   (skip ${slug}: no en entry)`);
+      continue;
+    }
+    if (candidates === null) {
+      failed.push(slug); // link-suggest failed — do NOT silently treat as 0
+      done++;
       continue;
     }
     const linked = countAlreadyLinking(slug);
@@ -110,7 +125,8 @@ function main() {
   const filtered = rows.filter((r) => r.mentions >= MIN);
 
   if (JSON_OUT) {
-    console.log(JSON.stringify(filtered, null, 2));
+    console.log(JSON.stringify({ ranked: filtered, failed }, null, 2));
+    if (failed.length) process.exitCode = 1;
     return;
   }
 
@@ -122,6 +138,11 @@ function main() {
   });
   const over = filtered.filter((r) => r.mentions >= 8).length;
   console.log(`\n  ${over} term(s) at/above the ≥8 promotion gate.`);
+  if (failed.length) {
+    console.error(`\n  ⚠️  ${failed.length} term(s) could not be counted (link-suggest failed): ${failed.join(', ')}`);
+    console.error(`      Their ranking is UNKNOWN, not zero — re-run before trusting the gate.`);
+    process.exitCode = 1;
+  }
 }
 
 main();

@@ -59,11 +59,31 @@ const slugArgs = argv
   .filter((a) => !a.startsWith('--'))
   .map((a) => a.replace(/\.mdx?$/, '').replace(/.*\//, ''));
 
-// --- rate limiter (mirrors translate-blog.ts) ------------------------------
+// --- rate limiter ----------------------------------------------------------
 const CONCURRENCY = 5;
 const REQUESTS_PER_MINUTE = 15;
 const MIN_INTERVAL_MS = (60 * 1000) / REQUESTS_PER_MINUTE;
 let lastRequestTime = 0;
+
+// Serialise the spacing decision. With pLimit(CONCURRENCY) several workers run
+// at once; if each independently read `lastRequestTime` and slept, they could
+// all clear the check together and burst past the per-minute cap. Chaining each
+// reservation onto the previous one makes the read-update atomic, so requests
+// are guaranteed at least MIN_INTERVAL_MS apart.
+let throttleGate: Promise<void> = Promise.resolve();
+function reserveSlot(): Promise<void> {
+  const wait = throttleGate.then(async () => {
+    const delta = lastRequestTime + MIN_INTERVAL_MS - Date.now();
+    if (delta > 0) await new Promise((r) => setTimeout(r, delta));
+    lastRequestTime = Date.now();
+  });
+  throttleGate = wait.catch(() => {});
+  return wait;
+}
+
+// Files that could not be written (rate-limit exhaustion or a hard error) —
+// reported at the end so a partial run never masquerades as complete.
+const failures: string[] = [];
 
 // --- termbase: locked canonical titles to keep translations consistent -----
 type Termbase = Record<string, { en: string; titles: Record<string, string> }>;
@@ -85,12 +105,7 @@ function termbaseHint(locale: string, tb: Termbase): string {
 }
 
 async function callGeminiThrottled(prompt: string, locale: string, filename: string) {
-  const now = Date.now();
-  const timeSinceLast = now - lastRequestTime;
-  if (timeSinceLast < MIN_INTERVAL_MS) {
-    await new Promise((r) => setTimeout(r, MIN_INTERVAL_MS - timeSinceLast));
-  }
-  lastRequestTime = Date.now();
+  await reserveSlot();
 
   try {
     const result = await model.generateContent(prompt);
@@ -175,10 +190,15 @@ ${fileContent}
         delay *= 2;
       } else {
         console.error(`✗ Error translating ${filename} → ${targetLocale}:`, e);
+        failures.push(`${targetLocale}/${filename}`);
         return;
       }
     }
   }
+  // Fell out of the retry loop without writing — record it so the run is not
+  // reported as complete with this locale silently missing.
+  console.error(`✗ Gave up on ${targetLocale}/${filename} after ${maxAttempts} rate-limit retries.`);
+  failures.push(`${targetLocale}/${filename}`);
 }
 
 async function main() {
@@ -209,6 +229,13 @@ async function main() {
     }
   }
   await Promise.all(tasks);
+
+  if (failures.length) {
+    console.error(`\n❌ ${failures.length} file(s) were NOT translated: ${failures.join(', ')}`);
+    console.error('Re-run translate-glossary.ts to fill the gaps before building the termbase.');
+    process.exitCode = 1;
+    return;
+  }
   console.log('Glossary translation complete. Re-run build-termbase.ts to lock the new titles.');
 }
 
