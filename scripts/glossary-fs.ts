@@ -1,8 +1,8 @@
 // Shared glossary file-resolution so every script agrees on the ONE file that
 // represents a slug. Resolution is deterministic and existence-based: `.md`
 // wins over `.mdx` when both are present. Keeping this in one place is what
-// prevents build-termbase, glossary-mentions, and translate-glossary from each
-// picking a different file for the same slug.
+// prevents build-termbase and glossary-mentions from each picking a different
+// file for the same slug.
 
 import { existsSync } from 'node:fs';
 import path from 'node:path';
