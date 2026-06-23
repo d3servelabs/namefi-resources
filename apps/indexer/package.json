@@ -23,7 +23,7 @@
     "check:unsafe": "biome check --write --unsafe ."
   },
   "dependencies": {
-    "@date-fns/tz": "^1.3.1",
+    "@date-fns/tz": "^1.5.0",
     "@date-fns/utc": "^2.1.1",
     "@namefi-astra/env": "workspace:*",
     "@namefi-astra/utils": "workspace:*",

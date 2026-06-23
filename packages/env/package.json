@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@infisical/sdk": "^4.0.4",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.6.1"
   },
   "devDependencies": {
     "@namefi-astra/typescript": "workspace:*"

@@ -45,7 +45,7 @@
     "@cacheable/node-cache": "^1.5.8",
     "@namefi-astra/epp-client": "workspace:*",
     "@namefi-astra/utils": "workspace:*",
-    "axios": "^1.9.0",
+    "axios": "^1.18.1",
     "axios-logger": "^2.8.1",
     "bottleneck": "^2.19.5",
     "change-case": "^5.4.4",
