@@ -1,10 +1,15 @@
-# AGENTS.md — glossary authoring conventions
+---
+paths:
+  - "content/glossary/**"
+---
 
-**Scope:** these rules apply when drafting or editing anything under
-`content/glossary/`. They are stricter than general resource content because the
-glossary is **reference material** and doubles as the site's **canonical
-bilingual termbase**. (Repo-wide rules — translation, validation, PR/review,
-publishing — live in the root [`AGENTS.md`](../../AGENTS.md).)
+# Glossary authoring rules
+
+These apply when drafting or editing anything under `content/glossary/`. They are
+stricter than general resource content because the glossary is **reference
+material** and doubles as the site's **canonical bilingual termbase**. (Repo-wide
+rules — translation, validation, PR/review, publishing — are in
+[`content.md`](content.md).)
 
 When a rule here conflicts with an older plan/GOAL doc, **this file wins**.
 
@@ -21,8 +26,6 @@ fit…". Define the term as a neutral reference would.
 > "house voice" pitch. (Blog and landing content may promote; the glossary does
 > not.)
 
----
-
 ## 1. One concept per entry
 
 Never define two things in one entry, and never frame an entry as a comparison
@@ -38,14 +41,14 @@ cross-link them in the body.
 
 ## 2. Single canonical title
 
-The `title` is **one** name — no parenthetical alternates, no `A / B`, no
-examples in the title.
+The `title` is **one** name — no parenthetical alternates, no `A / B`, no examples
+in the title.
 
 - `Aftermarket` (not `Aftermarket (Secondary Market)`),
   `DAO` (not `DAO (Decentralized Autonomous Organization)`),
   `Short Domain` (not `Short / Numeric Domain (LLLL, NNNN)`).
-- Examples that used to sit in the title (`Marketplace (e.g. OpenSea, Blur)`)
-  move into the **body**.
+- Examples that used to sit in the title (`Marketplace (e.g. OpenSea, Blur)`) move
+  into the **body**.
 
 ## 3. `also_known_as` — STRICT synonyms only
 
@@ -74,10 +77,10 @@ period-terminated — **not** a "What is X…?" question. It is reused as the SE
 
 ## 5. Sources — at least two, specific
 
-Every entry carries **≥ 2** `sources`, each a **specific authoritative page**,
-not a homepage. Link-check them before committing. Good sources: IETF RFCs,
-ICANN/IANA pages, W3C, EIPs/ethereum.org, WIPO/Cornell LII (law), Google Search
-Central, Investopedia *term* pages, NameBio, DNJournal, Moz, Cloudflare Learning.
+Every entry carries **≥ 2** `sources`, each a **specific authoritative page**, not
+a homepage. Link-check them before committing. Good sources: IETF RFCs, ICANN/IANA
+pages, W3C, EIPs/ethereum.org, WIPO/Cornell LII (law), Google Search Central,
+Investopedia *term* pages, NameBio, DNJournal, Moz, Cloudflare Learning.
 (Investopedia/Cloudflare return `403` to `curl` — anti-bot, the pages are valid;
 verify the slug another way.)
 

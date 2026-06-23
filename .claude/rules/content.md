@@ -1,35 +1,32 @@
-# AGENTS.md — working conventions for `namefi-resources`
+# Content & workflow rules — `namefi-resources` (repo-wide)
 
-This repo holds the **content** that powers the Namefi resources site (blog,
-glossary, TLD pages, partners, authors, careers). It is consumed as the
-`apps/resources/data` submodule inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
+This repo holds the **content** behind the Namefi resources site (blog, glossary,
+TLD pages, partners, authors, careers), consumed as the `apps/resources/data`
+submodule inside [`d3servelabs/namefi-astra`](https://github.com/d3servelabs/namefi-astra).
 
-This file is the source of truth for **how to author and change content here**.
-It captures decisions the maintainer (zzn) has made over multiple sessions so
-future agents (and people) follow the same rules. When a rule here conflicts with
-an older plan/GOAL doc, **this file wins** — update the plan, not the rule.
+These are the standing rules for authoring/changing content here, captured so
+agents and people follow the same conventions. When a rule here conflicts with an
+older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 
-> **Drafting or editing a glossary entry?** The glossary has its own, stricter
-> conventions — **read [`content/glossary/AGENTS.md`](content/glossary/AGENTS.md)
-> first.** (Notably: glossary content is editorially neutral — no product
-> promotion — one concept per entry, single canonical titles, `also_known_as` for
-> strict synonyms only, ≥2 specific sources.)
+> **Editing a glossary entry?** Glossary content has its own, stricter rules in
+> [`.claude/rules/glossary.md`](glossary.md) — they auto-apply when you touch
+> `content/glossary/**`. (Notably: glossary content is editorially neutral, no
+> product promotion; one concept per entry; single canonical titles;
+> `also_known_as` for strict synonyms only; ≥2 specific sources.)
 
 ---
 
-## 0. Golden rules (repo-wide)
+## Golden rules
 
 - **English is the source of truth.** Author in `en` first; translate from
   English, never chain language→language. Every collection is English-first, then
   translated to all 7 locales (`en ar de es fr hi zh`).
 - **Validate before you push:** `bun data:validate` + `bun lint:mdx` +
-  cross-link audit (0 broken). See §3.
+  cross-link audit (0 broken).
 - **Only act on Cursor Bugbot** in PR review. **Ignore CodeRabbit** entirely.
 - **Never force-push** a shared branch without explicit approval.
 
----
-
-## 1. Translations
+## Translations
 
 - **Translate with Claude** (one focused pass per locale), **not** a Gemini batch
   script. There is no `translate-glossary` program — it was removed for implying a
@@ -44,7 +41,7 @@ an older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 - Keep verbatim: citation URLs (incl. `#:~:text=` fragments), code, brand names,
   domain names, and figures (`GoDaddy`, `ICANN`, `.com`, `$30`, `BIP-39`, …).
 
-## 2. Cross-linking & SEO
+## Cross-linking & SEO
 
 - Use `.agents/skills/cross-link/`. Link the **first natural mention only**;
   inbound links are **curated, ≤ 5 most-relevant pages per term**. Every internal
@@ -53,7 +50,7 @@ an older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 - Each language serves **its own page** — self-canonical + `hreflang` +
   `x-default`. Never canonicalize a translated page back to English.
 
-## 3. Validation, PRs, and publishing
+## Validation, PRs, and publishing
 
 1. **Per change:** `bun data:validate` + `bun lint:mdx` + `link-audit` (0 broken).
 2. **PR description:** a Summary/Solution section, a Test plan, and — when a Claude
@@ -67,7 +64,7 @@ an older plan/GOAL doc, **this file wins** — update the plan, not the rule.
    (`release-resources` workflow) — verify the release tag pins your merged
    resources `HEAD` before trusting prod (watch for the release-race).
 
-## 4. Tooling (run from repo root)
+## Tooling (run from repo root)
 
 | command | what it does |
 |---|---|
@@ -84,11 +81,10 @@ an older plan/GOAL doc, **this file wins** — update the plan, not the rule.
 > error in non-interactive shells — run the validators by hand and push with
 > `git push --no-verify`.
 
-## 5. Content scope
+## Content scope
 
-- `content/glossary/` — reference terms. **Has its own conventions:
-  [`content/glossary/AGENTS.md`](content/glossary/AGENTS.md).**
-- `content/blog/` — articles; organized by cluster/series taxonomy (validated by
-  astra's `taxonomy.ts`); illustrations via the image-gen recipe.
+- `content/glossary/` — reference terms. **Own rules: [`glossary.md`](glossary.md).**
+- `content/blog/` — articles; cluster/series taxonomy (validated by astra's
+  `taxonomy.ts`); illustrations via the image-gen recipe.
 - `content/tld/` — per-TLD pages (see `prompts/tld-page.md`).
 - `content/{partners,authors,careers}/` — supporting content.
