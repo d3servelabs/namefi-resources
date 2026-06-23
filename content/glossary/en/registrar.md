@@ -4,7 +4,7 @@ date: '2025-06-30'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
-description: What is a domain registrar and how does it differ from on-chain domain management?
+description: An ICANN-accredited company authorized to register and manage domain names for the public, such as GoDaddy, Namecheap, or Cloudflare.
 keywords: ['registrar', 'domain registration', 'ICANN', 'centralized control', 'domain management']
 level: 1
 sources:
