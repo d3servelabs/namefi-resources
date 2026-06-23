@@ -5,6 +5,7 @@ import {
   type NamefiNormalizedDomain,
   resolve,
 } from '@namefi-astra/utils';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { RenewOption } from '@namefi-astra/registrars/data/types/renew-option';
 import { differenceInDays, isBefore, subHours } from 'date-fns';
 import {
@@ -698,7 +699,7 @@ export async function sendEmailNotificationForUpcomingRenew(
   const renewalBodyLines = domains.map((d) => {
     const expDate = new Date(d.expirationTime).toISOString().slice(0, 10);
     const auto = d.autoRenewOption === 'AUTOMATIC' ? 'auto-renew' : 'manual';
-    return `- **${d.normalizedDomainName}** expires ${expDate} (${auto}) — $${d.renewalPrice.toFixed(2)}`;
+    return `- **${formatDomainNameForDisplay(d.normalizedDomainName)}** expires ${expDate} (${auto}) — $${d.renewalPrice.toFixed(2)}`;
   });
   await tryCreateInAppNotification({
     userId,
@@ -842,7 +843,7 @@ export async function sendEmailNotificationForRenewResult({
       `**Renewed**\n${adjustedOrderDetails.domainLdhRenewSucceeded
         .map(
           (d) =>
-            `- ${d}${
+            `- ${formatDomainNameForDisplay(d)}${
               chargeAmountInUsdByDomainLdh[d] !== undefined
                 ? ` ($${chargeAmountInUsdByDomainLdh[d].toFixed(2)})`
                 : ''
@@ -854,14 +855,14 @@ export async function sendEmailNotificationForRenewResult({
   if (adjustedOrderDetails.domainLdhRenewFailed.length > 0) {
     resultBodySections.push(
       `**Failed**\n${adjustedOrderDetails.domainLdhRenewFailed
-        .map((d) => `- ${d}`)
+        .map((d) => `- ${formatDomainNameForDisplay(d)}`)
         .join('\n')}`,
     );
   }
   if (adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds.length > 0) {
     resultBodySections.push(
       `**Skipped (insufficient balance)**\n${adjustedOrderDetails.domainLdhSkippedDueToInsufficientFunds
-        .map((d) => `- ${d}`)
+        .map((d) => `- ${formatDomainNameForDisplay(d)}`)
         .join('\n')}`,
     );
   }
@@ -954,7 +955,7 @@ export async function sendEmailNotificationForRenewFailedToCharge({
     const charge = chargeAmountInUsdByDomainLdh[d];
     const exp = expirationDatesByDomainLdh[d];
     const expStr = exp ? new Date(exp).toISOString().slice(0, 10) : 'unknown';
-    return `- **${d}** expires ${expStr}${
+    return `- **${formatDomainNameForDisplay(d)}** expires ${expStr}${
       charge !== undefined ? ` — $${charge.toFixed(2)}` : ''
     }`;
   });

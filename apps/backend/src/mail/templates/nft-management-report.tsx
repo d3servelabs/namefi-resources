@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { Hr, Section, Text } from '@react-email/components';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { format } from 'date-fns';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { buildTemplate } from '../components/build-template';
@@ -203,7 +204,7 @@ function DateMismatchSection({
                   emphasis
                   style={acknowledgedRowStyle(entry)}
                 >
-                  {entry.normalizedDomainName}
+                  {formatDomainNameForDisplay(entry.normalizedDomainName)}
                   <KnownIssueNote entry={entry} />
                 </EmailTableCell>
                 <EmailTableCell
@@ -274,7 +275,7 @@ function DomainExistsMissingNftSection({
                   emphasis
                   style={acknowledgedRowStyle(entry)}
                 >
-                  {entry.normalizedDomainName}
+                  {formatDomainNameForDisplay(entry.normalizedDomainName)}
                   <KnownIssueNote entry={entry} />
                 </EmailTableCell>
                 <EmailTableCell
@@ -335,7 +336,7 @@ function NftExistsMissingDomainSection({
                   emphasis
                   style={acknowledgedRowStyle(entry)}
                 >
-                  {entry.normalizedDomainName}
+                  {formatDomainNameForDisplay(entry.normalizedDomainName)}
                   <KnownIssueNote entry={entry} />
                 </EmailTableCell>
                 <EmailTableCell
@@ -404,7 +405,7 @@ function ExpiredSection({
                     emphasis
                     style={acknowledgedRowStyle(entry)}
                   >
-                    {entry.normalizedDomainName}
+                    {formatDomainNameForDisplay(entry.normalizedDomainName)}
                     <KnownIssueNote entry={entry} />
                   </EmailTableCell>
                   <EmailTableCell

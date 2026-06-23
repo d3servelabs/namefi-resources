@@ -1,6 +1,7 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { Hr, Section, Text } from '@react-email/components';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { format } from 'date-fns';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { buildTemplate } from '../components/build-template';
@@ -132,7 +133,7 @@ function DomainRowsTable({
         {entries.map((entry) => (
           <EmailTableRow key={`${entry.normalizedDomainName}-${entry.userId}`}>
             <EmailTableCell label="Domain" emphasis>
-              {entry.normalizedDomainName}
+              {formatDomainNameForDisplay(entry.normalizedDomainName)}
             </EmailTableCell>
             {columns.includes('registrar') && (
               <EmailTableCell label="Registrar">

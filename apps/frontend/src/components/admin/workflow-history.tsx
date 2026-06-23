@@ -1,5 +1,6 @@
 'use client';
 import { TruncatedTextWithHover } from '@/components/truncated-text-with-hover';
+import { DomainName } from '@/components/domain-name';
 import { AuthRequired } from '@/components/auth-required';
 import { PageShell } from '@/components/page-shell';
 import { Table, Td, Th, Thead, Tr } from '@/components/table';
@@ -447,9 +448,10 @@ function WorkflowHistoryContent() {
                         </Td>
                         <Td className="font-medium">
                           {workflow.domainName ? (
-                            <TruncatedTextWithHover maxLength={30}>
-                              {workflow.domainName}
-                            </TruncatedTextWithHover>
+                            <DomainName
+                              domain={workflow.domainName}
+                              className="max-w-[18rem] text-sm"
+                            />
                           ) : (
                             <span className="text-muted-foreground text-sm">
                               N/A

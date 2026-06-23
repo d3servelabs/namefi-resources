@@ -2,8 +2,8 @@
 import React from 'react';
 import { Button, Text } from '@react-email/components';
 import { addDays } from 'date-fns';
-import punycode from 'punycode';
 import pluralize from 'pluralize';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
@@ -30,14 +30,6 @@ export type CartDomainsPopularProps = {
   variant?: number;
 };
 
-const formatDomainDisplay = (domainNameLdh: string) => {
-  const unicodeName = punycode.toUnicode(domainNameLdh);
-  return {
-    primary: domainNameLdh,
-    unicode: unicodeName !== domainNameLdh ? unicodeName : null,
-  };
-};
-
 const tableStyles = {
   table: {
     ...styles.table,
@@ -47,12 +39,6 @@ const tableStyles = {
   },
   cell: {
     ...styles.tableCell,
-  },
-  mutedText: {
-    ...styles.mutedText,
-    display: 'block',
-    marginLeft: '0',
-    marginTop: '4px',
   },
   domainText: {
     ...styles.monospaceText,
@@ -102,17 +88,12 @@ export const CartDomainsPopularTemplate = (props: CartDomainsPopularProps) => {
         </thead>
         <tbody>
           {props.cartItems.map((item) => {
-            const display = formatDomainDisplay(item.domainNameLdh);
-
             return (
               <EmailTableRow key={item.domainNameLdh}>
                 <EmailTableCell label="Domain" style={tableStyles.cell}>
-                  <span style={tableStyles.domainText}>{display.primary}</span>
-                  {display.unicode && (
-                    <span style={tableStyles.mutedText}>
-                      ({display.unicode})
-                    </span>
-                  )}
+                  <span style={tableStyles.domainText}>
+                    {formatDomainNameForDisplay(item.domainNameLdh)}
+                  </span>
                 </EmailTableCell>
                 {showPrice && (
                   <EmailTableCell label="Price" style={tableStyles.cell}>

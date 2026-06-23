@@ -7,6 +7,7 @@ import {
   orderService,
   type CreateOrderItemInput,
 } from '#services/orders/orders.service';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import {
   db,
   ordersTable,
@@ -1518,7 +1519,7 @@ export async function sendOrderCompletionSlackAlert(
       .slice(0, 5)
       .map(
         (d) =>
-          `${d.normalizedDomainName} (${formatUsdCents(d.amountInUSDCents)})`,
+          `${formatDomainNameForDisplay(d.normalizedDomainName)} (${formatUsdCents(d.amountInUSDCents)})`,
       )
       .join(', ');
 
@@ -1623,10 +1624,11 @@ export async function sendOrderRequiresFurtherActionEmail({
       },
     });
   }
+  const displayDomainName = formatDomainNameForDisplay(normalizedDomainName);
   const message =
     requiredAction === 'EPP_AUTH_CODE_UPDATE_REQUIRED'
-      ? `We need a new authorization code for **${normalizedDomainName}** to continue your import.\n\nPlease provide a new auth code in your order details so we can proceed.`
-      : `Your domain **${normalizedDomainName}** is locked and needs to be unlocked before we can continue.\n\nPlease unlock the domain at your current registrar, then confirm in your order details.`;
+      ? `We need a new authorization code for **${displayDomainName}** to continue your import.\n\nPlease provide a new auth code in your order details so we can proceed.`
+      : `Your domain **${displayDomainName}** is locked and needs to be unlocked before we can continue.\n\nPlease unlock the domain at your current registrar, then confirm in your order details.`;
 
   const orderDetailsLink = NamefiEmailLinks.orderDetails({
     orderId: orderId,

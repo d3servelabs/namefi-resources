@@ -28,6 +28,7 @@ import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-s
 import { Button } from '@namefi-astra/ui/components/shadcn/button';
 import { AutoTruncateTextV2 } from '@/components/auto-truncate-text-v2';
 import { AdminDomainDetailsButton } from '@/components/admin/domain-details';
+import { DomainName } from '@/components/domain-name';
 
 // Shared types + cell logic so the desktop table columns and the mobile card
 // render identical values from the same source (switch layout, reuse logic).
@@ -137,14 +138,8 @@ export function ForwardToValue({ forwardTo }: { forwardTo: string | null }) {
 /** Domain name with the inline admin "domain details" button. */
 export function DomainNameCell({ domainName }: { domainName: string }) {
   return (
-    <div className="flex items-center gap-1">
-      <AutoTruncateTextV2
-        initialCharactersCountToDisplay={32}
-        minCharactersToDisplay={16}
-        className="font-medium"
-      >
-        {domainName}
-      </AutoTruncateTextV2>
+    <div className="flex min-w-0 items-center gap-1">
+      <DomainName domain={domainName} className="min-w-0 flex-1 font-medium" />
       <AdminDomainDetailsButton domainName={domainName} size="icon-xs" />
     </div>
   );

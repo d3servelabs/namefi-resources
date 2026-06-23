@@ -330,6 +330,38 @@ export function isPunycodeDomainName(
 }
 
 /**
+ * Formats a domain for human-facing text while preserving the canonical ASCII
+ * form for IDNs.
+ *
+ * Storage and protocol calls should keep using normalized/punycode values. This
+ * helper is only for display surfaces such as email, Slack, and admin reports.
+ */
+export function formatDomainNameForDisplay(domainName: string): string {
+  const asciiDomainName = safeToPunycodeDomainName(domainName);
+  const unicodeDomainName = safeToUnicodeDomainName(asciiDomainName);
+
+  return unicodeDomainName === asciiDomainName
+    ? asciiDomainName
+    : `${unicodeDomainName} (${asciiDomainName})`;
+}
+
+function safeToPunycodeDomainName(domainName: string): string {
+  try {
+    return toPunycodeDomainName(domainName);
+  } catch {
+    return domainName;
+  }
+}
+
+function safeToUnicodeDomainName(domainName: string): string {
+  try {
+    return toUnicodeDomainName(domainName);
+  } catch {
+    return domainName;
+  }
+}
+
+/**
  * Asserts that a string is a valid Punycode Domain Name.
  *
  * @param value - The string to validate

@@ -3,10 +3,10 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import punycode from 'punycode';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { z } from 'zod';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { buildTemplate } from '../components/build-template';
 import { NamefiEmailLinks } from '../email-links';
 import { usePoweredByNamefiDomain } from '../components/powered-by-namefi-url-context';
@@ -226,10 +226,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             {domainLdhRenewSucceeded.map((domainNameLdh) => (
               <EmailTableRow key={domainNameLdh}>
                 <EmailTableCell label="Domain Name">
-                  {domainNameLdh}{' '}
-                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                    ? ''
-                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                  {formatDomainNameForDisplay(domainNameLdh)}
                 </EmailTableCell>
                 <EmailTableCell label="Expiration Date">
                   {format(
@@ -250,10 +247,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
             {domainLdhRenewFailed.map((domainNameLdh) => (
               <EmailTableRow key={domainNameLdh}>
                 <EmailTableCell label="Domain Name">
-                  {domainNameLdh}{' '}
-                  {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                    ? ''
-                    : `(${punycode.toUnicode(domainNameLdh)})`}
+                  {formatDomainNameForDisplay(domainNameLdh)}
                 </EmailTableCell>
                 <EmailTableCell label="Expiration Date">
                   {format(
@@ -306,10 +300,7 @@ export const DomainRenewReport = buildTemplate<DomainRenewReportProps>(
                 {domainLdhSkippedDueToInsufficientFunds.map((domainNameLdh) => (
                   <EmailTableRow key={domainNameLdh}>
                     <EmailTableCell label="Domain Name">
-                      {domainNameLdh}{' '}
-                      {punycode.toUnicode(domainNameLdh) === domainNameLdh
-                        ? ''
-                        : `(${punycode.toUnicode(domainNameLdh)})`}
+                      {formatDomainNameForDisplay(domainNameLdh)}
                     </EmailTableCell>
                     <EmailTableCell label="Expiration Date">
                       {expirationDatesByDomainLdh[domainNameLdh]

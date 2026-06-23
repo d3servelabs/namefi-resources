@@ -1,6 +1,7 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { Hr, Section, Text } from '@react-email/components';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
 import { buildTemplate } from '../components/build-template';
 import {
@@ -155,7 +156,7 @@ function FailureCategoryTable({
         {entries.map((entry) => (
           <EmailTableRow key={`${entry.normalizedDomainName}-${entry.userId}`}>
             <EmailTableCell label="Domain" emphasis>
-              {entry.normalizedDomainName}
+              {formatDomainNameForDisplay(entry.normalizedDomainName)}
             </EmailTableCell>
             <EmailTableCell label="User">{formatUserRef(entry)}</EmailTableCell>
             {columns.includes('registrar') && (

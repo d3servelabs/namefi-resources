@@ -3,7 +3,6 @@
 // biome-ignore lint/correctness/noUnusedImports: required for react-email
 import React from 'react';
 import { NamefiEmailContainer } from '../components/namefi-email-container';
-import { domainToASCII, domainToUnicode } from 'node:url';
 import rehypeExternalLinks from 'rehype-external-links';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '@react-email/components';
@@ -36,6 +35,7 @@ import {
 } from '../components/email-table';
 import pluralize from 'pluralize';
 import { getChain } from '@namefi-astra/utils';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 
 export type ProcessedOrderItem = {
   normalizedDomainName: string;
@@ -528,11 +528,7 @@ export const ProcessedOrderReport = buildTemplate<ProcessedOrderProps>(
 export default ProcessedOrderReport;
 
 function getDomainWithIdn(domain: string) {
-  const unicodeDomain = domainToUnicode(domain);
-  const punycodeDomain = domainToASCII(domain) || domain;
-  return unicodeDomain === punycodeDomain
-    ? domain
-    : `${unicodeDomain} (${punycodeDomain})`;
+  return formatDomainNameForDisplay(domain);
 }
 
 function getTxExplorerUrl(

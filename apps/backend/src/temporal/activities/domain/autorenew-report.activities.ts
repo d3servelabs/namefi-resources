@@ -2,6 +2,7 @@ import { Context } from '@temporalio/activity';
 import { format } from 'date-fns';
 import type { PaymentProvider, PaymentSelect } from '@namefi-astra/db/types';
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import { secrets } from '#lib/env';
 import { sendMail } from '../../../mail/mail-client';
 import { createElement } from 'react';
@@ -717,7 +718,7 @@ export async function formatAutoRenewReport(
       const displayDomains = domains.slice(0, 10);
       for (const domain of displayDomains) {
         const userDisplay = domain.userEmail || domain.userId;
-        criticalDomainsTable += `| ${domain.domain} | ${userDisplay} | ${domain.issue.slice(0, 30)} | ${domain.registrar || 'Unknown'} | ${domain.actionRequired} |\n`;
+        criticalDomainsTable += `| ${formatDomainNameForDisplay(domain.domain)} | ${userDisplay} | ${domain.issue.slice(0, 30)} | ${domain.registrar || 'Unknown'} | ${domain.actionRequired} |\n`;
       }
 
       if (domains.length > 10) {

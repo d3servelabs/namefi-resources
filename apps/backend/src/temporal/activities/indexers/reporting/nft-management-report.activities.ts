@@ -7,6 +7,7 @@
 
 import { differenceInSeconds, format, subHours } from 'date-fns';
 import { Context } from '@temporalio/activity';
+import { formatDomainNameForDisplay } from '@namefi-astra/registrars/data/validations';
 import {
   db,
   committedNamefiNftView,
@@ -1420,10 +1421,7 @@ function formatUnmintedDomainsTable(
       status = '🟡 Missing from Registrar';
     }
 
-    const domainName =
-      domain.normalizedDomainName.length > 30
-        ? `${domain.normalizedDomainName.substring(0, 30)}...`
-        : domain.normalizedDomainName;
+    const domainName = formatDomainNameForDisplay(domain.normalizedDomainName);
 
     tableRows.push(
       `| ${domainName} | ${domain.registrarKey} | ${expirationDate} | ${status} |`,
@@ -1544,7 +1542,7 @@ function formatCriticalDomainsTable(
     const registrar = domain.registrarKey || 'Unknown';
 
     tableRows.push(
-      `| ${domain.normalizedDomainName} | ${chainName} | ${issues.join(', ')} | ${domainExpiration} | ${nftExpiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
+      `| ${formatDomainNameForDisplay(domain.normalizedDomainName)} | ${chainName} | ${issues.join(', ')} | ${domainExpiration} | ${nftExpiration} | ${registrar} | ${actions.join(', ') || 'Review'} |`,
     );
   }
 
