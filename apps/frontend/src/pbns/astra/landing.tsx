@@ -10,13 +10,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import {
-  motion,
-  AnimatePresence,
-  useInView,
-  useScroll,
-  useTransform,
-} from 'motion/react';
+import { motion, AnimatePresence, useInView } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearch } from '@/hooks/use-search';
@@ -49,6 +43,14 @@ import { FloatingCart } from '@/components/floating-cart';
 
 const MarketingSections = dynamic<MarketingSectionsProps>(() =>
   import('./landing-marketing').then((module) => module.MarketingSections),
+);
+
+// Decorative-only animated glow behind the hero. Loaded after hydration (ssr:
+// false) so its framer-motion subtree + infinite animation loops never compete
+// with the app shell (sidebar/search/sign-in) for the main thread on first load.
+const HeroBackdrop = dynamic(
+  () => import('./hero-backdrop').then((module) => module.HeroBackdrop),
+  { ssr: false },
 );
 
 const HeroSection = ({
@@ -95,13 +97,6 @@ const HeroSection = ({
 }) => {
   const t = useTranslations('landing');
   const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end center'],
-  });
-
-  const glowScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const haloOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
   return (
     <section
@@ -115,44 +110,7 @@ const HeroSection = ({
           : 'relative flex min-h-[95vh] items-center justify-center overflow-hidden'
       }
     >
-      <motion.div
-        className="absolute inset-0 -z-10"
-        style={{ opacity: haloOpacity }}
-      >
-        <motion.div
-          animate={{ rotate: [0, 3, -3, 0] }}
-          transition={{
-            duration: 12,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: 'easeInOut',
-          }}
-          className="absolute inset-0"
-        >
-          <motion.div
-            className="absolute left-1/2 top-1/3 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-brand-primary/20 blur-3xl"
-            style={{ scale: glowScale }}
-          />
-          <motion.div
-            className="absolute left-[10%] top-1/2 h-[340px] w-[340px] -translate-y-1/2 rounded-full bg-emerald-500/15 blur-[110px]"
-            animate={{ y: [0, -20, 20, 0] }}
-            transition={{
-              duration: 10,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: 'easeInOut',
-            }}
-          />
-          <motion.div
-            className="absolute right-[12%] top-[65%] h-[420px] w-[420px] rounded-full bg-sky-500/20 blur-[120px]"
-            animate={{ y: [0, 30, -30, 0] }}
-            transition={{
-              duration: 14,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: 'easeInOut',
-            }}
-          />
-        </motion.div>
-        <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] via-transparent to-transparent" />
-      </motion.div>
+      <HeroBackdrop heroRef={heroRef} />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center px-6 text-center">
         <span className="rounded-full border border-emerald-400/40 bg-emerald-500/20 px-3 py-1.5 text-[8px] md:text-[10px] uppercase tracking-[0.18em] text-emerald-100 backdrop-blur">

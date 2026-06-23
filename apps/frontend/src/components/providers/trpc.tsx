@@ -1,7 +1,7 @@
 'use client';
 
 import { config } from '@/lib/env';
-import { datadogLogs } from '@datadog/browser-logs';
+import { logDatadogError } from '@/lib/datadog/logs';
 import type { AppRouter } from '@/lib/trpc';
 import {
   QueryClient,
@@ -66,7 +66,7 @@ export function makeQueryClient() {
     defaultOptions: {
       mutations: {
         onError: (error) => {
-          datadogLogs.logger.error(
+          void logDatadogError(
             'Mutation error',
             {
               source: 'trpc.mutation',
@@ -89,7 +89,7 @@ export function makeQueryClient() {
             return true;
           }
 
-          datadogLogs.logger.error(
+          void logDatadogError(
             'Query error',
             {
               source: 'trpc.query',

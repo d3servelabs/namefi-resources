@@ -19,7 +19,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale } from 'next-intl/server';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { Suspense, type PropsWithChildren } from 'react';
-import DatadogObservability from '@/components/datadog-observability';
 import ImpersonationBanner from '@/components/ImpersonationBanner';
 import SkipAuthBanner from '@/components/SkipAuthBanner';
 import { UnofficialTldsInjector } from '@/components/providers/unofficial-tlds';
@@ -135,7 +134,6 @@ function RootLayoutInner({ children }: PropsWithChildren) {
   return (
     <NextIntlClientProvider>
       <GoogleAnalyticsBootstrap />
-      <DatadogObservability />
       <Suspense>
         <Providers>
           <GoogleAnalyticsCookieConsentGated />
