@@ -228,7 +228,15 @@ async function main() {
   const enDir = path.join(GLOSSARY_DIR, SOURCE_LOCALE);
   let files: string[];
   try {
-    files = (await fs.readdir(enDir)).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
+    const all = (await fs.readdir(enDir)).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
+    // Dedup by slug, preferring .md, so a slug present as both extensions is
+    // translated once (not twice from two different sources).
+    const bySlug = new Map<string, string>();
+    for (const f of all) {
+      const slug = f.replace(/\.mdx?$/, '');
+      if (!bySlug.has(slug) || f.endsWith('.md')) bySlug.set(slug, f);
+    }
+    files = [...bySlug.values()];
   } catch {
     console.error(`Could not read source directory: ${enDir}`);
     process.exit(1);

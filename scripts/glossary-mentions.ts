@@ -37,10 +37,14 @@ const MIN = minArg ? parseInt(minArg, 10) : 0;
 const slugArgs = argv.filter((a) => !a.startsWith('--')).map((s) => s.replace(/\.mdx?$/, '').replace(/.*\//, ''));
 
 function listEnSlugs(): string[] {
-  return readdirSync(GLOSSARY_EN)
-    .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
-    .map((f) => f.replace(/\.mdx?$/, ''))
-    .sort();
+  // Dedup: a slug present as both .md and .mdx must yield one row, not two.
+  return [
+    ...new Set(
+      readdirSync(GLOSSARY_EN)
+        .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+        .map((f) => f.replace(/\.mdx?$/, '')),
+    ),
+  ].sort();
 }
 
 // Recursive markdown walk — link-suggest builds its inbound corpus this way, so

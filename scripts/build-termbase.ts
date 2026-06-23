@@ -53,15 +53,24 @@ type Entry = {
 function listSlugs(locale: Locale): string[] {
   const dir = path.join(GLOSSARY_ROOT, locale);
   try {
-    return readdirSync(dir)
-      .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
-      .map((f) => f.replace(/\.mdx?$/, ''));
+    // Dedup: a slug present as both .md and .mdx must list once, not twice.
+    return [
+      ...new Set(
+        readdirSync(dir)
+          .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+          .map((f) => f.replace(/\.mdx?$/, '')),
+      ),
+    ];
   } catch {
     return [];
   }
 }
 
-function readTitle(locale: Locale, slug: string): string | null {
+// Resolve a (locale, slug) to a SINGLE entry file and read everything (title +
+// build-time frontmatter) from it, so level/aliases can never come from a
+// different file than the title. Prefers the first extension that has a usable
+// title; falls back to the sibling if the first exists but is titleless.
+function readEntry(locale: Locale, slug: string): { title: string; data: Record<string, unknown> } | null {
   for (const ext of ['.md', '.mdx']) {
     const file = path.join(GLOSSARY_ROOT, locale, slug + ext);
     try {
@@ -69,26 +78,12 @@ function readTitle(locale: Locale, slug: string): string | null {
     } catch {
       continue;
     }
-    const { data } = matter(readFileSync(file, 'utf8'));
+    const data = matter(readFileSync(file, 'utf8')).data as Record<string, unknown>;
     const title = typeof data.title === 'string' ? data.title.trim() : '';
-    if (title) return title;
-    // .md exists but has no usable title — keep trying the .mdx sibling rather
-    // than dropping the slug outright.
+    if (title) return { title, data };
+    // file exists but has no usable title — try the sibling extension.
   }
   return null;
-}
-
-function readEnFrontmatter(slug: string): Record<string, unknown> {
-  for (const ext of ['.md', '.mdx']) {
-    const file = path.join(GLOSSARY_ROOT, 'en', slug + ext);
-    try {
-      statSync(file);
-    } catch {
-      continue;
-    }
-    return matter(readFileSync(file, 'utf8')).data as Record<string, unknown>;
-  }
-  return {};
 }
 
 function normaliseAliases(raw: unknown): Partial<Record<Locale, string[]>> | undefined {
@@ -109,19 +104,18 @@ function build(): Record<string, Entry> {
   const termbase: Record<string, Entry> = {};
 
   for (const slug of enSlugs) {
-    const enTitle = readTitle('en', slug);
-    if (!enTitle) continue; // en is the source of truth
+    const en = readEntry('en', slug);
+    if (!en) continue; // en is the source of truth
 
-    const fm = readEnFrontmatter(slug);
     const titles: Partial<Record<Locale, string>> = {};
     for (const locale of LOCALES) {
-      const t = readTitle(locale, slug);
-      if (t) titles[locale] = t;
+      const e = readEntry(locale, slug);
+      if (e) titles[locale] = e.title;
     }
 
-    const entry: Entry = { en: enTitle, titles };
-    if (typeof fm.level === 'number') entry.level = fm.level;
-    const aliases = normaliseAliases(fm.aliasesByLocale);
+    const entry: Entry = { en: en.title, titles };
+    if (typeof en.data.level === 'number') entry.level = en.data.level;
+    const aliases = normaliseAliases(en.data.aliasesByLocale);
     if (aliases) entry.aliasesByLocale = aliases;
 
     termbase[slug] = entry;
