@@ -129,7 +129,7 @@ const NotificationsBellInner = forwardRef<
           className={cn(
             HEADER_BADGE_CLASS,
             variant === 'sidebar' &&
-              'right-1 top-1 group-data-[collapsible=icon]:-right-1.5 group-data-[collapsible=icon]:-top-1.5',
+              'right-2 top-[calc(50%-0.625rem)] group-data-[collapsible=icon]:right-1 group-data-[collapsible=icon]:top-1',
             justIncreased && 'animate-bounce',
           )}
           initial={{ opacity: 0, scale: 0.9, y: -6 }}
