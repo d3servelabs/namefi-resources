@@ -261,9 +261,20 @@ export function proxy(request: NextRequest) {
   // its locale via the URL path — applying the override there would mutate the
   // shared main-site cookie while resources content stays on the path locale.
   const isResourcesPath = pathname === '/r' || pathname.startsWith('/r/');
-  const localeOverride = isResourcesPath
-    ? null
-    : applyLocaleOverrideToRequest(request);
+  if (isResourcesPath) {
+    const destination = new URL(
+      `${pathname}${request.nextUrl.search}`,
+      configEnv.RESOURCES_URL,
+    );
+    return withHostPolicyHeader(
+      request,
+      NextResponse.rewrite(destination, {
+        request: { headers: request.headers },
+      }),
+    );
+  }
+
+  const localeOverride = applyLocaleOverrideToRequest(request);
 
   if (pathname === '/') {
     const hostname = getRequestHostname(request);
