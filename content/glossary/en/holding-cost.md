@@ -1,13 +1,15 @@
 ---
-title: Holding / Carrying Cost
+title: Holding Cost
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: The ongoing renewal fees an investor pays to keep a domain until it sells.
 keywords: ['holding cost', 'carrying cost', 'domain renewal cost', 'domain investment cost', 'annual renewal fee']
+also_known_as: ['Carrying Cost']
 level: 1
 sources:
+  - https://www.investopedia.com/terms/c/carrying-costs.asp
   - https://www.namebio.com/
 ---
 
