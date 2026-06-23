@@ -42,11 +42,28 @@ function listEnSlugs(): string[] {
     .sort();
 }
 
+// Resolve an en glossary entry to its actual file, honouring both extensions
+// (build-termbase.ts and translate-glossary.ts already do) so an .mdx-only term
+// is never mistaken for missing.
+function resolveEnEntry(slug: string): string | null {
+  for (const ext of ['.md', '.mdx']) {
+    const f = path.join(GLOSSARY_EN, slug + ext);
+    try {
+      statSync(f);
+      return f;
+    } catch {
+      /* next */
+    }
+  }
+  return null;
+}
+
 // link-suggest INBOUND counts pages that mention but DON'T yet link the term.
 // Pages that already link it are mentions too — count those from the raw href.
 function countAlreadyLinking(slug: string): number {
   const href = `/en/glossary/${slug}/`;
   const noSlash = href.replace(/\/$/, '');
+  const selfEntry = resolveEnEntry(slug); // the glossary entry itself — never count it
   let count = 0;
   const enRoots = ['blog', 'tld', 'partners', 'glossary'].map((c) => path.join(REPO_ROOT, 'content', c, 'en'));
   for (const root of enRoots) {
@@ -58,7 +75,7 @@ function countAlreadyLinking(slug: string): number {
     }
     for (const f of files) {
       const full = path.join(root, f);
-      if (path.basename(full) === `${slug}.md`) continue; // don't count the entry itself
+      if (selfEntry && full === selfEntry) continue; // don't count the entry itself
       const raw = readFileSync(full, 'utf8');
       if (raw.includes(`](${href}`) || raw.includes(`](${noSlash}`)) count++;
     }
@@ -72,12 +89,8 @@ function countAlreadyLinking(slug: string): number {
 // mention that tool would have found and skew the promotion ranking.
 const SLUG_MISSING = Symbol('slug-missing');
 function inboundCount(slug: string): number | null | typeof SLUG_MISSING {
-  const file = path.join(GLOSSARY_EN, `${slug}.md`);
-  try {
-    statSync(file);
-  } catch {
-    return SLUG_MISSING;
-  }
+  const file = resolveEnEntry(slug);
+  if (!file) return SLUG_MISSING;
   const res = spawnSync('bun', [LINK_SUGGEST, '--json', '--no-related', file], {
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,

@@ -52,9 +52,20 @@ const TERMBASE_PATH = path.join(process.cwd(), 'content', 'termbase.json');
 const argv = process.argv.slice(2);
 const FORCE = argv.includes('--force');
 const localesArg = argv.find((a) => a.startsWith('--locales='))?.slice(10);
-const TARGET_LOCALES = localesArg
-  ? localesArg.split(',').map((s) => s.trim()).filter((l) => (ALL_TARGETS as readonly string[]).includes(l))
-  : [...ALL_TARGETS];
+function resolveTargetLocales(): string[] {
+  if (localesArg === undefined) return [...ALL_TARGETS];
+  const requested = localesArg.split(',').map((s) => s.trim()).filter(Boolean);
+  const valid = requested.filter((l) => (ALL_TARGETS as readonly string[]).includes(l));
+  const unknown = requested.filter((l) => !(ALL_TARGETS as readonly string[]).includes(l));
+  if (unknown.length) console.warn(`⚠️ Ignoring unknown locale(s): ${unknown.join(', ')}`);
+  if (valid.length === 0) {
+    // A typo must not look like a completed run that wrote nothing.
+    console.error(`Error: --locales=${localesArg} matched no valid locales (allowed: ${ALL_TARGETS.join(', ')}).`);
+    process.exit(1);
+  }
+  return valid;
+}
+const TARGET_LOCALES = resolveTargetLocales();
 const slugArgs = argv
   .filter((a) => !a.startsWith('--'))
   .map((a) => a.replace(/\.mdx?$/, '').replace(/.*\//, ''));
