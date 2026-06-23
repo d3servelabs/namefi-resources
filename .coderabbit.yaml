@@ -17,7 +17,7 @@ reviews:
     # Matches all files in all directories - serves as the base ruleset for all code
     - path: "**/*"
       instructions: |
-        Review according to guidelines in .cursor/rules/default.mdc.
+        Review according to the repository-specific review policy in .agents/skills/custom-codereview-guide.md.
         Also check if the PR violates the following principles, and if so, remind the PR author to modify:
         - **Avoid PR too large**: If PR exceeds 1000 lines of code changes, suggest breaking it down into smaller, focused PRs for better reviewability.
         - **Exceptions are exceptions**: Avoid using exceptions as normal control flow. Exceptions should be reserved for exceptional circumstances, not as a mechanism for routine program flow control.

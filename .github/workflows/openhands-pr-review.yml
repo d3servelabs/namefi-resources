@@ -1,0 +1,227 @@
+name: OpenHands PR Review
+
+# Current OpenHands setup guide:
+# https://github.com/OpenHands/extensions/tree/v0.5.0/plugins/pr-review
+#
+# Required secret:
+# - OPENHANDS_LLM_API_KEY: OpenAI API key passed to Codex ACP as OPENAI_API_KEY.
+#
+# Optional repository variables:
+# - OPENHANDS_AUTO_REVIEW=true enables automatic same-repo PR reviews
+# - OPENHANDS_LLM_MODEL overrides the default ACP model. Use Codex ACP syntax,
+#   for example gpt-5.5/high to request high reasoning effort. It may be a
+#   comma-separated list for OpenHands A/B selection.
+# - OPENHANDS_ACP_COMMAND overrides the Codex ACP command. Keep the default
+#   unless testing a newer ACP bridge or a different ACP-compatible agent.
+# - OPENHANDS_ACP_PROMPT_TIMEOUT overrides the per-turn ACP timeout in seconds.
+# - OPENHANDS_REQUIRE_EVIDENCE=true enforces Evidence sections in PR bodies.
+# - OPENHANDS_USE_SUB_AGENTS is intentionally unused in ACP mode; OpenHands
+#   disables sub-agent delegation for ACP backends.
+# - OPENHANDS_LOAD_PUBLIC_SKILLS=false disables the public OpenHands skills.
+#   Keep the default true unless debugging prompt behavior.
+# - OPENHANDS_REVIEW_BOT_LOGINS can add comma-separated bot logins whose stale
+#   unresolved review threads may be auto-resolved before a new review.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - ready_for_review
+      - synchronize
+      - labeled
+      - review_requested
+    branches-ignore:
+      - prod
+      - gtmq_spec_*
+      - "*_nopreview_*"
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  OPENHANDS_EXTENSIONS_VERSION: v0.5.0
+  OPENHANDS_DEFAULT_MODEL: gpt-5.5/high
+  # Codex ACP runs in full-access mode through the current OpenHands action.
+  # Keep shell command env narrow; the remaining ACP process-env API key risk is
+  # accepted for this same-repo-only workflow.
+  OPENHANDS_DEFAULT_ACP_COMMAND: >-
+    npx -y @zed-industries/codex-acp@0.16.0
+    -c sandbox_mode="danger-full-access"
+    -c approval_policy="never"
+    -c features.shell_snapshot=false
+    -c shell_environment_policy.ignore_default_excludes=true
+    -c 'shell_environment_policy.include_only=["PATH","HOME","PWD","TMPDIR","CI","GITHUB_ACTIONS","GITHUB_TOKEN","RUNNER_*","AGENT_TOOLSDIRECTORY","ImageOS","ImageVersion"]'
+  HAS_NAMEFI_BOT_APP: ${{ vars.NAMEFI_BOT_APP_ID != '' && secrets.NAMEFI_BOT_PRIVATE_KEY != '' }}
+  OPENHANDS_REVIEW_BOT_LOGINS: ${{ vars.OPENHANDS_REVIEW_BOT_LOGINS || vars.NAMEFI_BOT_LOGINS || 'github-actions[bot],namefi-bot,namefi-bot[bot],app/namefi-bot,openhands-agent,openhands-agent[bot],all-hands-bot,all-hands-bot[bot]' }}
+
+jobs:
+  review:
+    name: Review
+    # Automatic reviews skip drafts; explicit labels/review requests are treated
+    # as manual overrides so maintainers can ask for early feedback.
+    if: |-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      (
+        (
+          github.event.pull_request.draft == false &&
+          github.event.action != 'labeled' &&
+          github.event.action != 'review_requested' &&
+          (
+            vars.OPENHANDS_AUTO_REVIEW == 'true' ||
+            contains(github.event.pull_request.labels.*.name, 'review-this')
+          )
+        ) ||
+        (
+          github.event.action == 'labeled' &&
+          github.event.label.name == 'review-this'
+        ) ||
+        (
+          github.event.action == 'review_requested' &&
+          (
+            github.event.requested_reviewer.login == 'openhands-agent' ||
+            github.event.requested_reviewer.login == 'openhands-agent[bot]' ||
+            github.event.requested_reviewer.login == 'all-hands-bot' ||
+            github.event.requested_reviewer.login == 'all-hands-bot[bot]' ||
+            github.event.requested_reviewer.login == 'namefi-bot' ||
+            github.event.requested_reviewer.login == 'namefi-bot[bot]'
+          )
+        )
+      )
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - name: Create Namefi bot token
+        id: namefi-bot-token
+        if: env.HAS_NAMEFI_BOT_APP == 'true'
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.NAMEFI_BOT_APP_ID }}
+          private-key: ${{ secrets.NAMEFI_BOT_PRIVATE_KEY }}
+          permission-contents: read
+          permission-pull-requests: write
+
+      - name: Resolve stale bot review threads
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const botLogins = new Set(
+              process.env.OPENHANDS_REVIEW_BOT_LOGINS
+                .split(',')
+                .map((login) => login.trim())
+                .filter(Boolean),
+            );
+
+            const threads = [];
+            let cursor = null;
+            do {
+              const result = await github.graphql(
+                `query($owner: String!, $repo: String!, $number: Int!, $cursor: String) {
+                  repository(owner: $owner, name: $repo) {
+                    pullRequest(number: $number) {
+                      reviewThreads(first: 100, after: $cursor) {
+                        pageInfo {
+                          hasNextPage
+                          endCursor
+                        }
+                        nodes {
+                          id
+                          isResolved
+                          isOutdated
+                          path
+                          line
+                          comments(first: 50) {
+                            pageInfo {
+                              hasNextPage
+                            }
+                            nodes {
+                              author {
+                                login
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }`,
+                {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  number: prNumber,
+                  cursor,
+                },
+              );
+
+              const page = result.repository.pullRequest.reviewThreads;
+              threads.push(...page.nodes);
+              cursor = page.pageInfo.hasNextPage ? page.pageInfo.endCursor : null;
+            } while (cursor);
+
+            const staleBotThreads = threads.filter((thread) => {
+              if (thread.isResolved || !thread.isOutdated) {
+                return false;
+              }
+
+              const comments = thread.comments.nodes;
+              if (thread.comments.pageInfo?.hasNextPage) {
+                return false;
+              }
+
+              const firstAuthor = comments[0]?.author?.login;
+              if (!botLogins.has(firstAuthor)) {
+                return false;
+              }
+
+              // Resolve only bot-only stale threads. If a human replied, leave
+              // the thread visible for OpenHands and maintainers to interpret.
+              return comments.every((comment) => botLogins.has(comment.author?.login));
+            });
+
+            core.info(`Found ${threads.length} review threads; resolving ${staleBotThreads.length} stale bot-only threads.`);
+
+            for (const thread of staleBotThreads) {
+              try {
+                await github.graphql(
+                  `mutation($threadId: ID!) {
+                    resolveReviewThread(input: { threadId: $threadId }) {
+                      thread {
+                        id
+                        isResolved
+                      }
+                    }
+                  }`,
+                  { threadId: thread.id },
+                );
+                core.info(`Resolved stale bot thread ${thread.id} at ${thread.path}:${thread.line ?? 'unknown'}`);
+              } catch (error) {
+                core.info(`Could not resolve stale bot thread ${thread.id} at ${thread.path}:${thread.line ?? 'unknown'}: ${error.message}`);
+              }
+            }
+
+      - name: Run OpenHands PR review
+        uses: OpenHands/extensions/plugins/pr-review@v0.5.0
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENHANDS_LLM_API_KEY }}
+        with:
+          extensions-version: ${{ env.OPENHANDS_EXTENSIONS_VERSION }}
+          agent-kind: acp
+          acp-command: ${{ vars.OPENHANDS_ACP_COMMAND || env.OPENHANDS_DEFAULT_ACP_COMMAND }}
+          acp-prompt-timeout: ${{ vars.OPENHANDS_ACP_PROMPT_TIMEOUT || '1800' }}
+          llm-model: ${{ vars.OPENHANDS_LLM_MODEL || env.OPENHANDS_DEFAULT_MODEL }}
+          require-evidence: ${{ vars.OPENHANDS_REQUIRE_EVIDENCE || 'false' }}
+          load-public-skills: ${{ vars.OPENHANDS_LOAD_PUBLIC_SKILLS || 'true' }}
+          collect-feedback: ${{ vars.OPENHANDS_COLLECT_FEEDBACK || 'true' }}
+          enable-uv-cache: "false"
+          github-token: ${{ steps.namefi-bot-token.outputs.token || github.token }}
+          lmnr-api-key: ${{ secrets.LMNR_PROJECT_API_KEY || secrets.LMNR_SKILLS_API_KEY || '' }}
