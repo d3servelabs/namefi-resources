@@ -38,7 +38,13 @@ const TERMBASE_PATH = path.join(CONTENT_ROOT, 'termbase.json');
 
 const argv = process.argv.slice(2);
 const STRICT = argv.includes('--strict');
-const localeArg = argv.find((a) => a.startsWith('--locale='))?.slice(9) as Locale | undefined;
+const localeArgRaw = argv.find((a) => a.startsWith('--locale='))?.slice(9);
+if (localeArgRaw !== undefined && !(LOCALES as readonly string[]).includes(localeArgRaw)) {
+  // A typo'd locale must not silently scan zero files and report "0 deviations".
+  console.error(`Error: --locale=${localeArgRaw} is not a known locale (${LOCALES.join(', ')}).`);
+  process.exit(1);
+}
+const localeArg = localeArgRaw as Locale | undefined;
 const fileArgs = argv.filter((a) => !a.startsWith('--'));
 
 type TermbaseEntry = {

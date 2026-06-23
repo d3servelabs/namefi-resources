@@ -71,7 +71,9 @@ function readTitle(locale: Locale, slug: string): string | null {
     }
     const { data } = matter(readFileSync(file, 'utf8'));
     const title = typeof data.title === 'string' ? data.title.trim() : '';
-    return title || null;
+    if (title) return title;
+    // .md exists but has no usable title — keep trying the .mdx sibling rather
+    // than dropping the slug outright.
   }
   return null;
 }
