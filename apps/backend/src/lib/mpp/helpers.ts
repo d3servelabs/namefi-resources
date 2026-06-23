@@ -17,7 +17,7 @@ import {
 } from '#lib/instant-buy/index';
 import type { z } from 'zod';
 import { tempo } from 'mppx/server';
-import { getSignerAccount } from '#lib/crypto/viem-clients';
+import { getTempoFeePayerAccount } from '#lib/crypto/viem-clients';
 
 const logger = createLogger({ context: 'MPP' });
 
@@ -30,7 +30,9 @@ const [tempoMethod, _tempoSessionMethod] = tempo({
   decimals: 6,
   recipient: getMppTempoRecipientOrThrow(),
   testnet: config.MPP_TEMPO_TESTNET,
-  feePayer: true,
+  feePayer: config.MPP_TEMPO_TESTNET
+    ? undefined
+    : await getTempoFeePayerAccount(),
   chainId: config.MPP_TEMPO_TESTNET ? tempoModeratoChain.id : tempoChain.id,
 });
 
