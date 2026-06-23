@@ -5,9 +5,8 @@
  * The glossary is the canonical bilingual termbase for the whole resources
  * site: each entry's per-locale `title` is the *standard* translation of that
  * concept in that locale. This script flattens every glossary entry into a
- * single lookup artifact so other tooling (translate-glossary, check:termbase)
- * and AI crawlers (/llms.txt) can read one file instead of re-scanning 7×N
- * markdown files.
+ * single lookup artifact so other tooling (check:termbase) and AI crawlers
+ * (/llms.txt) can read one file instead of re-scanning 7×N markdown files.
  *
  * Output schema (content/termbase.json), sorted by slug:
  *   {
@@ -21,7 +20,7 @@
  *
  * `en` is the source of truth: a slug only enters the termbase if an English
  * entry exists. Missing locale titles are simply absent (the gap a future
- * translate-glossary run fills). `aliasesByLocale` is harvested from the EN
+ * translation pass fills). `aliasesByLocale` is harvested from the EN
  * entry's build-time-only frontmatter (the curated non-canonical variants to
  * normalise away — read by check:termbase).
  *

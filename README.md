@@ -23,9 +23,6 @@ The glossary doubles as the site's **canonical bilingual termbase**: each entry'
 per-locale `title` is the *standard* translation of that concept. A few scripts
 maintain that contract (run from the repo root):
 
-- `bun translate:glossary [slug…]` — translate glossary entries from `en` into the
-  other locales (path/batch mode, fills missing locales, termbase-aware prompt).
-  `translate:blog` is blog-only and cannot do this. Needs `GEMINI_API_KEY`.
 - `bun termbase:build` — regenerate `content/termbase.json` (the flattened
   `slug → {en, titles, aliasesByLocale}` lookup). `bun termbase:check` verifies it
   is committed up to date.

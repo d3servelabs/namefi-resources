@@ -67,7 +67,7 @@ function listMarkdownRec(dir: string): string[] {
 }
 
 // Resolve an en glossary entry to its canonical file via the shared resolver,
-// so this script targets the same file as build-termbase / translate-glossary.
+// so this script targets the same file as build-termbase.
 function resolveEnEntry(slug: string): string | null {
   return resolveEntryFile(GLOSSARY_EN, slug);
 }
