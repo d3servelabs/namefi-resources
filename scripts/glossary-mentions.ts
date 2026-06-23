@@ -43,6 +43,24 @@ function listEnSlugs(): string[] {
     .sort();
 }
 
+// Recursive markdown walk — link-suggest builds its inbound corpus this way, so
+// the linked-count half must match it (nested posts count too).
+function listMarkdownRec(dir: string): string[] {
+  let entries: string[] = [];
+  try {
+    entries = readdirSync(dir);
+  } catch {
+    return [];
+  }
+  const out: string[] = [];
+  for (const e of entries) {
+    const full = path.join(dir, e);
+    if (statSync(full).isDirectory()) out.push(...listMarkdownRec(full));
+    else if (e.endsWith('.md') || e.endsWith('.mdx')) out.push(full);
+  }
+  return out;
+}
+
 // Resolve an en glossary entry to its actual file, honouring both extensions
 // (build-termbase.ts and translate-glossary.ts already do) so an .mdx-only term
 // is never mistaken for missing.
@@ -68,14 +86,7 @@ function countAlreadyLinking(slug: string): number {
   let count = 0;
   const enRoots = ['blog', 'tld', 'partners', 'glossary'].map((c) => path.join(REPO_ROOT, 'content', c, 'en'));
   for (const root of enRoots) {
-    let files: string[] = [];
-    try {
-      files = readdirSync(root).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
-    } catch {
-      continue;
-    }
-    for (const f of files) {
-      const full = path.join(root, f);
+    for (const full of listMarkdownRec(root)) {
       if (selfEntry && full === selfEntry) continue; // don't count the entry itself
       let raw: string;
       try {
