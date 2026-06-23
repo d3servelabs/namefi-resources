@@ -77,7 +77,12 @@ function countAlreadyLinking(slug: string): number {
     for (const f of files) {
       const full = path.join(root, f);
       if (selfEntry && full === selfEntry) continue; // don't count the entry itself
-      const raw = readFileSync(full, 'utf8');
+      let raw: string;
+      try {
+        raw = readFileSync(full, 'utf8');
+      } catch {
+        continue; // one unreadable corpus file shouldn't abort the whole count
+      }
       // link-suggest excludes drafts from its inbound corpus; mirror that here so
       // a draft page linking the term can't inflate demand past the cross-link metric.
       let isDraft = false;
