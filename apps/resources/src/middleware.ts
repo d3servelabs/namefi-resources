@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest, MiddlewareConfig } from 'next/server';
 import { match as matchLocale } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
-import { i18n, type Locale } from '@/i18n-config';
-import { LEGACY_RESOURCES_HOSTNAME_MAP } from '@/lib/resources-host-map';
+import { i18n, type Locale } from './i18n-config';
+import { LEGACY_RESOURCES_HOSTNAME_MAP } from './lib/resources-host-map';
 
 const LOCALES: Locale[] = [...i18n.locales];
 const DEFAULT_LOCALE: Locale = i18n.defaultLocale;
@@ -120,6 +120,13 @@ export function middleware(request: NextRequest) {
   }
 
   const { pathname, search } = request.nextUrl;
+  if (pathname === '/brand-kit' || pathname === '/r/brand-kit') {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = '/en/brand-kit';
+    redirectUrl.search = '';
+    return NextResponse.redirect(redirectUrl, 307);
+  }
+
   const hasResourcesBasePath = pathname === '/r' || pathname.startsWith('/r/');
   const pathnameWithoutBasePath = stripResourcesBasePath(pathname);
   const pathnameHasLocale = hasLocalePrefix(pathnameWithoutBasePath);

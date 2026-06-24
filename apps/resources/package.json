@@ -8,7 +8,7 @@
     "dev": "next dev --port 3002",
     "prebuild": "bun run sync-blog-assets && bun run index:search",
     "build": "next build",
-    "sync-blog-assets": "mkdir -p public/blog-assets && cp -R data/content/assets/. public/blog-assets/",
+    "sync-blog-assets": "mkdir -p public/blog-assets && cp -R data/content/assets/. public/blog-assets/ && if [ -d data/static ]; then cp -R data/static/. public/blog-assets/; fi",
     "index:search": "bun run scripts/build-search-index.ts",
     "typecheck": "tsgo --noEmit",
     "start": "next start",
