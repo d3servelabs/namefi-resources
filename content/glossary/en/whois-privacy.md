@@ -1,11 +1,12 @@
 ---
-title: WHOIS Privacy (Privacy Protection)
+title: WHOIS Privacy
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: A service that masks a registrant's personal contact details in public WHOIS or RDAP records.
 keywords: ['WHOIS privacy', 'privacy protection', 'RDAP', 'registrant privacy', 'contact masking']
+also_known_as: ['Privacy Protection']
 level: 1
 sources:
   - https://www.icann.org/rdap

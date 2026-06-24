@@ -1,5 +1,5 @@
 ---
-title: DNS Hijacking (Spoofing, Cache Poisoning)
+title: DNS Hijacking
 date: '2026-06-22'
 language: en
 tags: ['glossary']

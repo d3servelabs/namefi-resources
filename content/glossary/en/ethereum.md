@@ -1,11 +1,12 @@
 ---
-title: Ethereum (ETH)
+title: Ethereum
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: The leading smart-contract blockchain, and the network most tokenized domains are issued on.
 keywords: ['ethereum', 'ETH', 'smart contract', 'EVM', 'decentralized applications']
+also_known_as: ['ETH']
 level: 1
 sources:
   - https://ethereum.org/en/what-is-ethereum/

@@ -1,11 +1,12 @@
 ---
-title: EPP (Extensible Provisioning Protocol)
+title: EPP
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: The standard protocol registrars use to register and manage domains with a registry.
 keywords: ['EPP', 'Extensible Provisioning Protocol', 'domain management', 'registry protocol', 'RFC 5730']
+also_known_as: ['Extensible Provisioning Protocol']
 level: 1
 sources:
   - https://datatracker.ietf.org/doc/html/rfc5730

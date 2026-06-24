@@ -1,11 +1,12 @@
 ---
-title: Minting (Mint)
+title: Minting
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: Creating a new token on a blockchain — for a domain, issuing the NFT that represents its ownership.
 keywords: ['minting', 'mint', 'NFT creation', 'token issuance', 'on-chain']
+also_known_as: ['Mint']
 level: 1
 sources:
   - https://ethereum.org/en/nft/

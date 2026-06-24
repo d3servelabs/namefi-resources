@@ -1,5 +1,5 @@
 ---
-title: EPP Status Codes (clientHold, …)
+title: EPP Status Codes
 date: '2026-06-22'
 language: en
 tags: ['glossary']

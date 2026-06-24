@@ -1,11 +1,12 @@
 ---
-title: SERP (Search Engine Results Page)
+title: SERP
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: The page of results a search engine returns for a query, where domains compete for visibility.
 keywords: ['serp', 'search results', 'seo', 'search engine', 'organic ranking', 'search visibility']
+also_known_as: ['Search Engine Results Page']
 level: 1
 sources:
   - https://developers.google.com/search/docs/fundamentals/seo-starter-guide

@@ -1,11 +1,12 @@
 ---
-title: Bridge (Cross-Chain)
+title: Cross-Chain Bridge
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: A protocol that moves tokens or messages between blockchains that cannot natively talk to each other.
 keywords: ['bridge', 'cross-chain', 'interoperability', 'token bridge', 'multi-chain']
+also_known_as: ['Bridge']
 level: 1
 sources:
   - https://ethereum.org/en/developers/docs/bridges/

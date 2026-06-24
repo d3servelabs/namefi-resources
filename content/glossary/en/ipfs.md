@@ -1,11 +1,12 @@
 ---
-title: IPFS (InterPlanetary File System)
+title: IPFS
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: A peer-to-peer protocol that addresses files by their content, used to host decentralized web data.
 keywords: ['IPFS', 'content addressing', 'peer-to-peer', 'decentralized storage', 'CID']
+also_known_as: ['InterPlanetary File System']
 level: 1
 sources:
   - https://docs.ipfs.tech/concepts/what-is-ipfs/

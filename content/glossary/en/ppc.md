@@ -1,11 +1,12 @@
 ---
-title: PPC (Pay-Per-Click)
+title: PPC
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: An ad model where the owner earns each time a visitor clicks an ad, used to monetize parked domains.
 keywords: ['PPC', 'pay-per-click', 'domain monetization', 'ad revenue', 'parking revenue']
+also_known_as: ['Pay-Per-Click']
 level: 1
 sources:
   - https://support.google.com/google-ads/answer/116495

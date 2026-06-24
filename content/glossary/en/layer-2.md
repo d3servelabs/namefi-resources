@@ -1,5 +1,5 @@
 ---
-title: Layer 2 (Rollup)
+title: Layer 2
 date: '2026-06-22'
 language: en
 tags: ['glossary']
