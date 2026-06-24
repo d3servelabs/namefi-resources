@@ -84,13 +84,15 @@ const PARKING_PAGE_SNIFF_BYTES = 64 * 1024;
 /**
  * Global rate limiter for parked-domain validations. One "validation" is a full
  * per-domain check (DNS + TLS + HTTP). Capped process-wide so the admin batch +
- * weekly sweep together never exceed 20 validations/minute or 5 concurrent —
+ * weekly sweep together never exceed 10 validations/minute or 5 concurrent —
  * bounding load on the park app (all parked domains resolve to the same host).
- * Module singleton, so the cap is process-wide regardless of caller.
+ * Module singleton, so the cap is process-wide regardless of caller. NOTE: the
+ * cap is per process — a separately-running Temporal worker (the weekly sweep)
+ * and each scaled-out API instance carry their own limiter.
  */
 const validationLimiter = new Bottleneck({
   maxConcurrent: 5,
-  minTime: 60_000 / 20, // 20 validations per minute (≥ 3s between starts)
+  minTime: 60_000 / 10, // 10 validations per minute (≥ 6s between starts)
 });
 
 /**

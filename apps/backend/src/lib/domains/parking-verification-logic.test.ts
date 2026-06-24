@@ -186,10 +186,12 @@ describe('evaluateRedirect', () => {
     ).toBe('fail');
   });
 
-  it('fails a forward-mode domain that does not redirect', () => {
+  it('skips (inconclusive) a reachable forward-mode domain with no HTTP redirect', () => {
+    // The park app redirects client-side (HTTP 200, empty chain), so we can't
+    // confirm the target at the HTTP layer — report `skipped`, not a false `fail`.
     expect(
       evaluateRedirect('forward', PARKING_200, 'shop.example.com').status,
-    ).toBe('fail');
+    ).toBe('skipped');
   });
 
   it('passes a park-mode domain that does not redirect', () => {

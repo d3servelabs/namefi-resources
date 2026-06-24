@@ -190,6 +190,15 @@ export function evaluateServing(
 /**
  * Redirect-aware check: forward-mode domains must 30x to their configured
  * target; park-mode domains must not redirect at all.
+ *
+ * NOTE: the park app performs the forward redirect CLIENT-SIDE (a JS / meta
+ * refresh in the rendered page), NOT via an HTTP 3xx. So a working forward-mode
+ * domain actually returns HTTP 200 here with no `Location`. We therefore report
+ * `skipped` (inconclusive) rather than `fail` for that case — a hard `fail`
+ * would be untruthful since the forward may well be fine. The configured target
+ * is still confirmable from the `--nfi-redirect=` DNS TXT (see
+ * `checkDnsPropagation`). TODO: detect the client-side redirect target from the
+ * response body so we can turn this back into a real pass/fail.
  */
 export function evaluateRedirect(
   mode: ParkingMode,
@@ -221,6 +230,11 @@ export function evaluateRedirect(
   }
 
   // forward mode
+  //
+  // NOTE: the park app redirect is CLIENT-SIDE, so this branch sees HTTP 200
+  // with an empty redirectChain for a working forward. We can't confirm the
+  // target at the HTTP layer yet, so that case is reported `skipped`
+  // (inconclusive) rather than `fail`.
   const expectedTarget = targetHost(forwardTo);
   if (!http.reachable) {
     return {
@@ -233,8 +247,8 @@ export function evaluateRedirect(
   }
   if (redirectChain.length === 0) {
     return {
-      status: 'fail',
-      detail: `Expected a redirect to ${forwardTo} but got HTTP ${http.status}.`,
+      status: 'skipped',
+      detail: `Host reachable (HTTP ${http.status}) but the forward to ${forwardTo} is performed client-side, so it can't be confirmed at the HTTP layer. Confirm the target via the --nfi-redirect= DNS TXT (see DNS check).`,
       expectedTarget,
       observedTarget,
       redirectChain,
