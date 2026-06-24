@@ -117,7 +117,7 @@
     "@temporalio/worker": "catalog:",
     "@temporalio/workflow": "catalog:",
     "@trpc/server": "^11.8.0",
-    "@valora/viem-account-hsm-gcp": "^1.2.2",
+    "@valora/viem-account-hsm-gcp": "^1.2.19",
     "@vercel/sdk": "^1.10.6",
     "@x402/core": "^2.0.0",
     "@x402/evm": "^2.0.0",
