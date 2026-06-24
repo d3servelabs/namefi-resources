@@ -78,13 +78,24 @@ const PARKING_PAGE_MARKERS = [
 const PARKING_PAGE_SNIFF_BYTES = 64 * 1024;
 
 /**
- * Global rate limiters so concurrent verifications (admin batch + weekly sweep,
- * each running its own pool of workers) don't burst the shared public DoH
- * resolvers or the park app (all parked domains resolve to the same host). These
- * are module singletons, so the cap is process-wide regardless of caller.
+ * Global rate limiter for parked-domain validations. One "validation" is a full
+ * per-domain check (DNS + TLS + HTTP). Capped process-wide so the admin batch +
+ * weekly sweep together never exceed 20 validations/minute or 5 concurrent —
+ * bounding load on the park app (all parked domains resolve to the same host).
+ * Module singleton, so the cap is process-wide regardless of caller.
  */
-const dohLimiter = new Bottleneck({ maxConcurrent: 8, minTime: 25 }); // ≲ 40 req/s
-const probeLimiter = new Bottleneck({ maxConcurrent: 8, minTime: 50 }); // ≲ 20 req/s
+const validationLimiter = new Bottleneck({
+  maxConcurrent: 5,
+  minTime: 60_000 / 20, // 20 validations per minute (≥ 3s between starts)
+});
+
+/**
+ * Inner guard on the shared public DoH resolvers (Google + Cloudflare). Each
+ * validation fans out ~6 DoH queries in parallel, so 5 concurrent validations
+ * could otherwise burst to ~30 simultaneous resolver requests; this caps that
+ * fan-out independently of (and below) the per-validation cap.
+ */
+const dohLimiter = new Bottleneck({ maxConcurrent: 8 });
 
 /** DoH numeric RR type codes (IANA); DoH JSON `Answer[].type` is numeric. */
 const DOH_TYPE = { A: 1, AAAA: 28, TXT: 16 } as const;
@@ -188,7 +199,8 @@ function queryDoh(
   name: string,
   type: keyof typeof DOH_TYPE,
 ): Promise<string[] | null> {
-  // Rate-limited so a large sweep doesn't 429 the public resolvers.
+  // Inner DoH limiter caps the resolver fan-out across all concurrent
+  // validations (the per-validation cap alone wouldn't bound it).
   return dohLimiter.schedule(async () => {
     try {
       const res = await fetch(resolver.url(name, type), {
@@ -615,9 +627,10 @@ function notVerifiableResult(
 
 /**
  * Verify a single parked domain across all four checks. Never throws — every
- * failure mode is encoded into the returned result.
+ * failure mode is encoded into the returned result. Internal: callers go through
+ * the rate-limited `verifyParkedDomain` wrapper.
  */
-export async function verifyParkedDomain(
+async function verifyParkedDomainImpl(
   domain: NamefiNormalizedDomain,
 ): Promise<ParkedDomainVerification> {
   const punycode = toPunycodeDomainName(domain);
@@ -685,11 +698,11 @@ export async function verifyParkedDomain(
     };
   }
 
-  // Rate-limited: all parked domains hit the same park app host, so cap the
-  // concurrent TLS/HTTP load process-wide.
+  // Concurrency to the park app is bounded by `validationLimiter` (one HTTP
+  // probe per validation, ≤ 5 concurrent validations).
   const [ssl, http] = await Promise.all([
-    probeLimiter.schedule(() => checkSsl(punycode)),
-    probeLimiter.schedule(() => probeHttp(punycode)),
+    checkSsl(punycode),
+    probeHttp(punycode),
   ]);
 
   const serving = evaluateServing(mode, http);
@@ -716,9 +729,20 @@ export async function verifyParkedDomain(
 }
 
 /**
+ * Verify a single parked domain, rate-limited process-wide via
+ * `validationLimiter` (≤ 20 validations/min, ≤ 5 concurrent). Never throws.
+ */
+export function verifyParkedDomain(
+  domain: NamefiNormalizedDomain,
+): Promise<ParkedDomainVerification> {
+  return validationLimiter.schedule(() => verifyParkedDomainImpl(domain));
+}
+
+/**
  * Verify many domains with bounded concurrency. Used by the admin on-demand
  * endpoint (small batch) and the weekly sweep activity (chunked). The returned
- * array preserves input order.
+ * array preserves input order. Overall throughput is governed by the global
+ * `validationLimiter` regardless of `concurrency`.
  */
 export async function verifyParkedDomains(
   domains: NamefiNormalizedDomain[],
