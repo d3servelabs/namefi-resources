@@ -13,6 +13,7 @@ import {
 import { ArrowUpRight } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Locale } from '@/i18n/config';
+import { getExternalLinkRel } from '@/lib/external-link';
 import { LanguageSelector } from '@/components/i18n/language-selector';
 import { useOrigin } from '@/components/providers/origin';
 import { useConsentManager } from '@c15t/nextjs';
@@ -258,7 +259,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                   data-testid={`footer.social.${name}`}
                   href={href}
                   target="_blank"
-                  rel="noreferrer noopener"
+                  rel={getExternalLinkRel(href)}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-white/70 transition hover:border-white/30 hover:text-white"
                   aria-label={name}
                 >
@@ -286,7 +287,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                             data-testid={`footer.link.${section.sectionKey}.${labelKey}`}
                             href={href}
                             target="_blank"
-                            rel="noreferrer noopener"
+                            rel={getExternalLinkRel(href)}
                             className="group inline-flex items-center gap-1 text-white/70 transition hover:text-white"
                             {...(description
                               ? { 'aria-description': description }
@@ -320,7 +321,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                 <a
                   href={LLMS_TXT_URL}
                   target="_blank"
-                  rel="noreferrer noopener"
+                  rel={getExternalLinkRel(LLMS_TXT_URL)}
                   className="font-medium text-white underline underline-offset-4 transition hover:text-white/80"
                 >
                   {chunks}

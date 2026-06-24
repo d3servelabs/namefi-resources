@@ -29,33 +29,18 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-// Hosts where we trust the destination enough to send a Referer header.
-// External links to any host NOT in this list get rel="noreferrer" so we
-// don't leak our visitors' browsing context to competitors or third
-// parties. `noopener` stays on every external link for tab-hijack safety.
-const TRUSTED_REFERRER_HOSTS = [
-  // First-party
-  'namefi.io',
-  'd3serve.xyz',
-  // Standards bodies / authoritative references
-  'icann.org',
-  'iana.org',
-  'ietf.org',
-  'w3.org',
-  'wikipedia.org',
-  'github.com',
-  'developer.mozilla.org',
-];
+// Hosts owned by us — links to these pass SEO equity (no nofollow).
+const FIRST_PARTY_HOSTS = ['namefi.io', 'd3serve.xyz'];
 
-const isTrustedReferrerHost = (href: string): boolean => {
+const isFirstPartyHost = (href: string): boolean => {
   let host: string;
   try {
     host = new URL(href).hostname.toLowerCase();
   } catch {
     return false;
   }
-  return TRUSTED_REFERRER_HOSTS.some(
-    (trusted) => host === trusted || host.endsWith(`.${trusted}`),
+  return FIRST_PARTY_HOSTS.some(
+    (entry) => host === entry || host.endsWith(`.${entry}`),
   );
 };
 
@@ -69,9 +54,12 @@ const Anchor = ({
     className,
   );
   if (href?.startsWith('http')) {
-    const rel = isTrustedReferrerHost(href)
-      ? 'noopener'
-      : 'noopener noreferrer';
+    // `noopener` severs window.opener on the new tab (reverse tab-nabbing
+    // safety) but leaves the Referer header intact, so destination sites still
+    // see namefi.io as the traffic source. We intentionally do NOT add
+    // `noreferrer`. `nofollow` on non-first-party links tells search engines
+    // not to pass PageRank to outbound citations.
+    const rel = isFirstPartyHost(href) ? 'noopener' : 'noopener nofollow';
     return (
       <a href={href} target="_blank" rel={rel} className={derivedClassName}>
         {children}

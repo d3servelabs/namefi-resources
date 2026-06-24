@@ -17,6 +17,7 @@ import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import EthNetwork from '@/components/chains/eth-network';
 import BaseNetwork from '@/components/chains/base-network';
+import { getExternalLinkRel } from '@/lib/external-link';
 import {
   DiscordBrandIcon,
   GitHubBrandIcon,
@@ -510,7 +511,7 @@ const LogoGrid = ({
         key={item.name}
         href={item.href}
         target="_blank"
-        rel="noreferrer"
+        rel={getExternalLinkRel(item.href)}
         className="group flex h-16 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-6 transition hover:border-white/40 hover:bg-white/10"
       >
         <span className="sr-only">{item.name}</span>
@@ -813,7 +814,7 @@ const CommunitySection = ({
               key={name}
               href={href}
               target="_blank"
-              rel="noreferrer"
+              rel={getExternalLinkRel(href)}
               className="group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-white/12 bg-white/[0.03] p-4 text-sm font-medium text-white transition duration-300 hover:border-brand-primary/40 hover:bg-brand-primary/10"
             >
               <span className="absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
@@ -907,7 +908,7 @@ export const MarketingSections = ({
                   <Link
                     href={contract.etherscanUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel={getExternalLinkRel(contract.etherscanUrl)}
                     className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
                   >
                     <EthNetwork className="h-4 w-4" />
@@ -916,7 +917,7 @@ export const MarketingSections = ({
                   <Link
                     href={contract.basescanUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel={getExternalLinkRel(contract.basescanUrl)}
                     className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
                   >
                     <BaseNetwork className="h-4 w-4" />
@@ -925,7 +926,7 @@ export const MarketingSections = ({
                   <Link
                     href={contract.githubUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel={getExternalLinkRel(contract.githubUrl)}
                     className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm text-muted-foreground transition hover:bg-white/10 hover:text-white"
                   >
                     <GitHubBrandIcon className="h-4 w-4" />

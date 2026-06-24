@@ -1,6 +1,7 @@
 import type { MDXComponents } from 'mdx/types';
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@namefi-astra/ui/lib/cn';
+import { getExternalLinkRel } from '@/lib/external-link';
 
 const Wrapper = ({ children }: { children: ReactNode }) => (
   <div className="mx-auto w-full max-w-3xl px-6 py-20 sm:py-24">
@@ -23,18 +24,28 @@ const Wrapper = ({ children }: { children: ReactNode }) => (
 const Anchor = ({
   children,
   className,
+  href,
   ...props
-}: AnchorHTMLAttributes<HTMLAnchorElement>) => (
-  <a
-    {...props}
-    className={cn(
-      'font-medium text-brand-primary underline decoration-transparent underline-offset-4 transition hover:decoration-current',
-      className,
-    )}
-  >
-    {children}
-  </a>
-);
+}: AnchorHTMLAttributes<HTMLAnchorElement>) => {
+  // External links open in a new tab and carry rel="...nofollow" so we don't
+  // pass SEO link equity to third parties; the Referer header still flows.
+  const isExternal = href?.startsWith('http');
+  return (
+    <a
+      {...props}
+      href={href}
+      className={cn(
+        'font-medium text-brand-primary underline decoration-transparent underline-offset-4 transition hover:decoration-current',
+        className,
+      )}
+      {...(isExternal
+        ? { target: '_blank', rel: getExternalLinkRel(href) }
+        : {})}
+    >
+      {children}
+    </a>
+  );
+};
 
 export function useMDXComponents(
   components: MDXComponents = {},
