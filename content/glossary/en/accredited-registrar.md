@@ -1,5 +1,5 @@
 ---
-title: ICANN-Accredited Registrar (RAA)
+title: ICANN-Accredited Registrar
 date: '2026-06-22'
 language: en
 tags: ['glossary']

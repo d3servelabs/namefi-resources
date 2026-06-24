@@ -1,5 +1,5 @@
 ---
-title: Bad Faith (UDRP Element)
+title: Bad Faith
 date: '2026-06-22'
 language: en
 tags: ['glossary']

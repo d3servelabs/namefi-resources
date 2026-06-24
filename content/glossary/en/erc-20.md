@@ -1,5 +1,5 @@
 ---
-title: ERC-20 (Token Standard)
+title: ERC-20
 date: '2026-06-22'
 language: en
 tags: ['glossary']

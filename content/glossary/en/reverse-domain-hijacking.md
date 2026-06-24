@@ -1,11 +1,12 @@
 ---
-title: Reverse Domain Hijacking (RDNH)
+title: Reverse Domain Hijacking
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: Abusing the UDRP in bad faith to try to seize a domain from its legitimate owner.
 keywords: ['reverse domain hijacking', 'RDNH', 'UDRP abuse', 'domain dispute', 'bad faith complainant']
+also_known_as: ['RDNH']
 level: 1
 sources:
   - https://www.wipo.int/amc/en/domains/

@@ -1,11 +1,12 @@
 ---
-title: ACPA (Anticybersquatting Consumer Protection Act)
+title: ACPA
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: A US law letting trademark owners sue cybersquatters in federal court, an alternative to the UDRP.
 keywords: ['ACPA', 'anticybersquatting', 'US trademark law', 'domain dispute', 'federal court']
+also_known_as: ['Anticybersquatting Consumer Protection Act']
 level: 1
 sources:
   - https://www.law.cornell.edu/uscode/text/15/1125

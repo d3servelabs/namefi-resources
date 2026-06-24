@@ -1,5 +1,5 @@
 ---
-title: Domain Forwarding (301 Redirect)
+title: Domain Forwarding
 date: '2026-06-22'
 language: en
 tags: ['glossary']

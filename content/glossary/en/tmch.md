@@ -1,11 +1,12 @@
 ---
-title: Trademark Clearinghouse (Sunrise)
+title: Trademark Clearinghouse
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: ICANN's central trademark database powering Sunrise pre-registration and brand claims in new gTLDs.
 keywords: ['TMCH', 'Trademark Clearinghouse', 'Sunrise period', 'brand protection', 'new gTLD']
+also_known_as: ['TMCH']
 level: 1
 sources:
   - https://newgtlds.icann.org/en/about/trademark-clearinghouse

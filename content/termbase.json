@@ -1,22 +1,22 @@
 {
   "301-redirect": {
-    "en": "301 Redirect (Permanent Redirect)",
+    "en": "301 Redirect",
     "titles": {
-      "en": "301 Redirect (Permanent Redirect)"
+      "en": "301 Redirect"
     },
     "level": 1
   },
   "accredited-registrar": {
-    "en": "ICANN-Accredited Registrar (RAA)",
+    "en": "ICANN-Accredited Registrar",
     "titles": {
-      "en": "ICANN-Accredited Registrar (RAA)"
+      "en": "ICANN-Accredited Registrar"
     },
     "level": 1
   },
   "acpa": {
-    "en": "ACPA (Anticybersquatting Consumer Protection Act)",
+    "en": "ACPA",
     "titles": {
-      "en": "ACPA (Anticybersquatting Consumer Protection Act)"
+      "en": "ACPA"
     },
     "level": 1
   },
@@ -43,6 +43,13 @@
       "zh": "AI 智能体",
       "ar": "وكيل الذكاء الاصطناعي",
       "hi": "AI एजेंट"
+    },
+    "level": 1
+  },
+  "aml": {
+    "en": "AML",
+    "titles": {
+      "en": "AML"
     },
     "level": 1
   },
@@ -105,6 +112,13 @@
     },
     "level": 1
   },
+  "backlink": {
+    "en": "Backlink",
+    "titles": {
+      "en": "Backlink"
+    },
+    "level": 1
+  },
   "backorder": {
     "en": "Backorder (Drop-Catching)",
     "titles": {
@@ -119,9 +133,9 @@
     "level": 1
   },
   "bad-faith": {
-    "en": "Bad Faith (UDRP Element)",
+    "en": "Bad Faith",
     "titles": {
-      "en": "Bad Faith (UDRP Element)"
+      "en": "Bad Faith"
     },
     "level": 1
   },
@@ -231,9 +245,9 @@
     "level": 1
   },
   "cross-chain-bridge": {
-    "en": "Bridge (Cross-Chain)",
+    "en": "Cross-Chain Bridge",
     "titles": {
-      "en": "Bridge (Cross-Chain)"
+      "en": "Cross-Chain Bridge"
     },
     "level": 1
   },
@@ -336,9 +350,9 @@
     "level": 1
   },
   "dns-hijacking": {
-    "en": "DNS Hijacking (Spoofing, Cache Poisoning)",
+    "en": "DNS Hijacking",
     "titles": {
-      "en": "DNS Hijacking (Spoofing, Cache Poisoning)"
+      "en": "DNS Hijacking"
     },
     "level": 1
   },
@@ -408,9 +422,9 @@
     "level": 1
   },
   "domain-authority": {
-    "en": "Backlink / Domain Authority",
+    "en": "Domain Authority",
     "titles": {
-      "en": "Backlink / Domain Authority"
+      "en": "Domain Authority"
     },
     "level": 1
   },
@@ -454,16 +468,16 @@
     "level": 1
   },
   "domain-financing": {
-    "en": "Domain Financing (Installment)",
+    "en": "Domain Financing",
     "titles": {
-      "en": "Domain Financing (Installment)"
+      "en": "Domain Financing"
     },
     "level": 1
   },
   "domain-forwarding": {
-    "en": "Domain Forwarding (301 Redirect)",
+    "en": "Domain Forwarding",
     "titles": {
-      "en": "Domain Forwarding (301 Redirect)"
+      "en": "Domain Forwarding"
     },
     "level": 1
   },
@@ -482,9 +496,9 @@
     "level": 1
   },
   "domain-landing-page": {
-    "en": "Landing Page (Lander)",
+    "en": "Domain Landing Page",
     "titles": {
-      "en": "Landing Page (Lander)"
+      "en": "Domain Landing Page"
     },
     "level": 1
   },
@@ -515,9 +529,9 @@
     "level": 1
   },
   "domain-parking": {
-    "en": "Domain Parking (Parked Domain)",
+    "en": "Domain Parking",
     "titles": {
-      "en": "Domain Parking (Parked Domain)"
+      "en": "Domain Parking"
     },
     "level": 1
   },
@@ -620,23 +634,23 @@
     "level": 1
   },
   "epp": {
-    "en": "EPP (Extensible Provisioning Protocol)",
+    "en": "EPP",
     "titles": {
-      "en": "EPP (Extensible Provisioning Protocol)"
+      "en": "EPP"
     },
     "level": 1
   },
   "epp-status-codes": {
-    "en": "EPP Status Codes (clientHold, …)",
+    "en": "EPP Status Codes",
     "titles": {
-      "en": "EPP Status Codes (clientHold, …)"
+      "en": "EPP Status Codes"
     },
     "level": 1
   },
   "erc-20": {
-    "en": "ERC-20 (Token Standard)",
+    "en": "ERC-20",
     "titles": {
-      "en": "ERC-20 (Token Standard)"
+      "en": "ERC-20"
     },
     "level": 1
   },
@@ -667,9 +681,9 @@
     "level": 1
   },
   "ethereum": {
-    "en": "Ethereum (ETH)",
+    "en": "Ethereum",
     "titles": {
-      "en": "Ethereum (ETH)"
+      "en": "Ethereum"
     },
     "level": 1
   },
@@ -843,9 +857,9 @@
     "level": 1
   },
   "ipfs": {
-    "en": "IPFS (InterPlanetary File System)",
+    "en": "IPFS",
     "titles": {
-      "en": "IPFS (InterPlanetary File System)"
+      "en": "IPFS"
     },
     "level": 1
   },
@@ -863,16 +877,16 @@
     "level": 1
   },
   "kyc": {
-    "en": "KYC / AML",
+    "en": "KYC",
     "titles": {
-      "en": "KYC / AML"
+      "en": "KYC"
     },
     "level": 1
   },
   "layer-2": {
-    "en": "Layer 2 (Rollup)",
+    "en": "Layer 2",
     "titles": {
-      "en": "Layer 2 (Rollup)"
+      "en": "Layer 2"
     },
     "level": 1
   },
@@ -949,9 +963,9 @@
     "level": 1
   },
   "minting": {
-    "en": "Minting (Mint)",
+    "en": "Minting",
     "titles": {
-      "en": "Minting (Mint)"
+      "en": "Minting"
     },
     "level": 1
   },
@@ -1054,9 +1068,9 @@
     "level": 1
   },
   "ppc": {
-    "en": "PPC (Pay-Per-Click)",
+    "en": "PPC",
     "titles": {
-      "en": "PPC (Pay-Per-Click)"
+      "en": "PPC"
     },
     "level": 1
   },
@@ -1073,6 +1087,13 @@
     },
     "level": 1
   },
+  "private-key": {
+    "en": "Private Key",
+    "titles": {
+      "en": "Private Key"
+    },
+    "level": 1
+  },
   "protocol-asset": {
     "en": "Protocol asset",
     "titles": {
@@ -1086,10 +1107,10 @@
     },
     "level": 1
   },
-  "public-private-key": {
-    "en": "Private Key / Public Key",
+  "public-key": {
+    "en": "Public Key",
     "titles": {
-      "en": "Private Key / Public Key"
+      "en": "Public Key"
     },
     "level": 1
   },
@@ -1233,9 +1254,9 @@
     "level": 1
   },
   "reverse-domain-hijacking": {
-    "en": "Reverse Domain Hijacking (RDNH)",
+    "en": "Reverse Domain Hijacking",
     "titles": {
-      "en": "Reverse Domain Hijacking (RDNH)"
+      "en": "Reverse Domain Hijacking"
     },
     "level": 1
   },
@@ -1305,9 +1326,9 @@
     "level": 1
   },
   "serp": {
-    "en": "SERP (Search Engine Results Page)",
+    "en": "SERP",
     "titles": {
-      "en": "SERP (Search Engine Results Page)"
+      "en": "SERP"
     },
     "level": 1
   },
@@ -1384,9 +1405,9 @@
     "level": 1
   },
   "tmch": {
-    "en": "Trademark Clearinghouse (Sunrise)",
+    "en": "Trademark Clearinghouse",
     "titles": {
-      "en": "Trademark Clearinghouse (Sunrise)"
+      "en": "Trademark Clearinghouse"
     },
     "level": 1
   },
@@ -1418,9 +1439,9 @@
     "level": 1
   },
   "transfer-lock": {
-    "en": "Registrar / Transfer Lock",
+    "en": "Transfer Lock",
     "titles": {
-      "en": "Registrar / Transfer Lock"
+      "en": "Transfer Lock"
     },
     "level": 1
   },
@@ -1465,9 +1486,9 @@
     "level": 1
   },
   "urs": {
-    "en": "URS (Uniform Rapid Suspension)",
+    "en": "URS",
     "titles": {
-      "en": "URS (Uniform Rapid Suspension)"
+      "en": "URS"
     },
     "level": 1
   },
@@ -1511,9 +1532,9 @@
     "level": 1
   },
   "whois-privacy": {
-    "en": "WHOIS Privacy (Privacy Protection)",
+    "en": "WHOIS Privacy",
     "titles": {
-      "en": "WHOIS Privacy (Privacy Protection)"
+      "en": "WHOIS Privacy"
     },
     "level": 1
   },
@@ -1531,9 +1552,9 @@
     "level": 1
   },
   "wipo": {
-    "en": "WIPO (World Intellectual Property Organization)",
+    "en": "WIPO",
     "titles": {
-      "en": "WIPO (World Intellectual Property Organization)"
+      "en": "WIPO"
     },
     "level": 1
   },

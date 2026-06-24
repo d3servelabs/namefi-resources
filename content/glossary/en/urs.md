@@ -1,11 +1,12 @@
 ---
-title: URS (Uniform Rapid Suspension)
+title: URS
 date: '2026-06-22'
 language: en
 tags: ['glossary']
 authors: ['namefiteam']
 description: A fast, low-cost remedy that suspends a clearly infringing domain, complementing the UDRP.
 keywords: ['URS', 'Uniform Rapid Suspension', 'domain suspension', 'trademark infringement', 'new gTLD']
+also_known_as: ['Uniform Rapid Suspension']
 level: 1
 sources:
   - https://www.icann.org/resources/pages/urs-2014-01-09-en
