@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Namefi Brand Kit</title>
+    <style>
+      :root {
+        --brand-primary: oklch(75.85% 0.1804 155.5);
+        --brand-hex: #1cd17d;
+        --bg: oklch(0.145 0 0);
+        --surface: oklch(0.205 0 0);
+        --surface-2: oklch(0.269 0 0);
+        --line: oklch(1 0 0 / 10%);
+        --text: oklch(0.985 0 0);
+        --muted: oklch(0.708 0 0);
+        --ink: #070908;
+        --warm: #ffd166;
+        --signal: #74d7ff;
+        --danger: #ff6b8a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          "Avenir Next", "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+        line-height: 1.45;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background:
+          linear-gradient(90deg, oklch(1 0 0 / 3%) 1px, transparent 1px),
+          linear-gradient(oklch(1 0 0 / 3%) 1px, transparent 1px),
+          radial-gradient(circle at 12% 8%, oklch(75.85% 0.1804 155.5 / 13%), transparent 24rem),
+          linear-gradient(180deg, #080a09 0%, var(--bg) 38%, #101211 100%);
+        background-size: 72px 72px, 72px 72px, auto, auto;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        border-bottom: 1px solid var(--line);
+        background: oklch(0.145 0 0 / 82%);
+        backdrop-filter: blur(18px);
+      }
+
+      .topbar .shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 64px;
+        gap: 20px;
+      }
+
+      .topbar svg {
+        display: block;
+        width: 132px;
+        height: auto;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        justify-content: flex-end;
+      }
+
+      .nav a {
+        border: 1px solid transparent;
+        border-radius: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 8px 10px;
+        text-decoration: none;
+      }
+
+      .nav a:hover {
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .hero {
+        min-height: 590px;
+        padding: 96px 0 52px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+        gap: clamp(28px, 6vw, 78px);
+        align-items: end;
+      }
+
+      .eyebrow {
+        color: var(--brand-primary);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0;
+        margin: 0 0 18px;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 720px;
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(56px, 10vw, 132px);
+        font-weight: 500;
+        line-height: 0.88;
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        max-width: 600px;
+        margin: 24px 0 0;
+        color: oklch(0.82 0 0);
+        font-size: clamp(17px, 2vw, 22px);
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 34px;
+      }
+
+      .button {
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        display: inline-flex;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 800;
+        min-height: 44px;
+        padding: 0 16px;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        background: var(--brand-primary);
+        color: #06100b;
+      }
+
+      .button.secondary {
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .download-icon {
+        display: block;
+        height: 17px;
+        width: 17px;
+      }
+
+      .logo-stage {
+        display: grid;
+        gap: 14px;
+      }
+
+      .specimen {
+        position: relative;
+        min-height: 248px;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background:
+          linear-gradient(135deg, oklch(1 0 0 / 9%), transparent 32%),
+          linear-gradient(180deg, #111312, #080908);
+        display: grid;
+        place-items: center;
+        padding: 36px;
+      }
+
+      .specimen::before,
+      .specimen::after {
+        content: "";
+        position: absolute;
+        inset: 22px;
+        border: 1px dashed oklch(1 0 0 / 13%);
+        pointer-events: none;
+      }
+
+      .specimen::after {
+        inset: 44px;
+        border-color: oklch(75.85% 0.1804 155.5 / 28%);
+      }
+
+      .specimen svg {
+        position: relative;
+        z-index: 1;
+        width: min(80%, 420px);
+        height: auto;
+      }
+
+      .meta-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: oklch(1 0 0 / 4%);
+        padding: 16px;
+      }
+
+      .metric b {
+        display: block;
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      .metric span {
+        color: var(--muted);
+        display: block;
+        font-size: 12px;
+        margin-top: 8px;
+      }
+
+      section {
+        padding: 72px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .section-head {
+        align-items: end;
+        display: grid;
+        gap: 16px;
+        grid-template-columns: minmax(0, 0.72fr) minmax(260px, 0.28fr);
+        margin-bottom: 28px;
+      }
+
+      h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(34px, 5vw, 62px);
+        font-weight: 500;
+        letter-spacing: 0;
+        line-height: 0.98;
+        margin: 0;
+      }
+
+      .section-head p,
+      .note {
+        color: var(--muted);
+        margin: 0;
+      }
+
+      .asset-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .asset {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 236px;
+        overflow: hidden;
+      }
+
+      .asset-preview {
+        align-items: center;
+        background:
+          linear-gradient(45deg, oklch(1 0 0 / 5%) 25%, transparent 25%),
+          linear-gradient(-45deg, oklch(1 0 0 / 5%) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, oklch(1 0 0 / 5%) 75%),
+          linear-gradient(-45deg, transparent 75%, oklch(1 0 0 / 5%) 75%),
+          #111312;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+        background-size: 20px 20px;
+        display: flex;
+        justify-content: center;
+        min-height: 152px;
+        padding: 24px;
+      }
+
+      .asset-preview.light {
+        background:
+          linear-gradient(45deg, oklch(0 0 0 / 4%) 25%, transparent 25%),
+          linear-gradient(-45deg, oklch(0 0 0 / 4%) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, oklch(0 0 0 / 4%) 75%),
+          linear-gradient(-45deg, transparent 75%, oklch(0 0 0 / 4%) 75%),
+          #f7fbf8;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+        background-size: 20px 20px;
+      }
+
+      .asset-preview svg {
+        max-width: 78%;
+        height: auto;
+      }
+
+      .asset-body {
+        border-top: 1px solid var(--line);
+        padding: 16px;
+      }
+
+      .asset-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .asset-actions {
+        align-items: center;
+        display: flex;
+        gap: 8px;
+      }
+
+      .icon-button {
+        align-items: center;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        color: var(--muted);
+        display: inline-flex;
+        height: 30px;
+        justify-content: center;
+        text-decoration: none;
+        width: 30px;
+      }
+
+      .icon-button:hover {
+        color: var(--text);
+        background: oklch(1 0 0 / 5%);
+      }
+
+      .nav .icon-button {
+        background: transparent;
+        border-color: transparent;
+        color: var(--muted);
+        height: 34px;
+        padding: 0;
+        width: 34px;
+      }
+
+      .nav .icon-button:hover {
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .asset h3 {
+        font-size: 16px;
+        margin: 0;
+      }
+
+      .tag {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        display: inline-flex;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 4px 8px;
+        white-space: nowrap;
+      }
+
+      code {
+        background: oklch(1 0 0 / 7%);
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: oklch(0.93 0 0);
+        display: block;
+        font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+        font-size: 12px;
+        overflow-x: auto;
+        padding: 9px 10px;
+        white-space: nowrap;
+      }
+
+      .palette {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .swatch {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 210px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+
+      .chip {
+        min-height: 112px;
+      }
+
+      .swatch-body {
+        padding: 14px;
+      }
+
+      .swatch strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .swatch small {
+        color: var(--muted);
+        display: block;
+        font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+        font-size: 11px;
+        line-height: 1.7;
+      }
+
+      .rules {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .rule {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: oklch(1 0 0 / 4%);
+        min-height: 178px;
+        padding: 18px;
+      }
+
+      .rule .num {
+        align-items: center;
+        background: var(--brand-primary);
+        border-radius: 999px;
+        color: var(--ink);
+        display: inline-flex;
+        font-size: 12px;
+        font-weight: 900;
+        height: 28px;
+        justify-content: center;
+        margin-bottom: 22px;
+        width: 28px;
+      }
+
+      .rule h3 {
+        margin: 0 0 10px;
+        font-size: 15px;
+      }
+
+      .rule p {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .type-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.45fr);
+        gap: 14px;
+      }
+
+      .type-sample {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f5f8f4;
+        color: #0b110e;
+        padding: clamp(24px, 5vw, 52px);
+      }
+
+      .type-sample .display {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(44px, 8vw, 92px);
+        line-height: 0.95;
+        margin: 0 0 22px;
+      }
+
+      .type-sample .body {
+        max-width: 660px;
+        font-size: clamp(18px, 2vw, 25px);
+        margin: 0;
+      }
+
+      .type-notes {
+        display: grid;
+        gap: 14px;
+      }
+
+      .usage-strip {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .usage {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 320px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+
+      .usage.dark {
+        background: #050706;
+      }
+
+      .usage.light {
+        background: #f8fbf7;
+        color: #07100b;
+      }
+
+      .usage.green {
+        background: var(--brand-primary);
+        color: #07100b;
+      }
+
+      .usage-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 320px;
+        padding: 22px;
+      }
+
+      .usage svg {
+        width: 132px;
+        height: auto;
+      }
+
+      .usage h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 38px;
+        font-weight: 500;
+        line-height: 1;
+        margin: 0 0 12px;
+      }
+
+      .usage p {
+        color: currentColor;
+        opacity: 0.72;
+        margin: 0;
+      }
+
+      .motion-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.52fr);
+        gap: 14px;
+      }
+
+      .motion-stage,
+      .size-lab {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background:
+          linear-gradient(90deg, oklch(1 0 0 / 4%) 1px, transparent 1px),
+          linear-gradient(oklch(1 0 0 / 4%) 1px, transparent 1px),
+          #070908;
+        background-size: 28px 28px;
+        overflow: hidden;
+      }
+
+      .motion-stage {
+        min-height: 360px;
+        display: grid;
+        place-items: center;
+        padding: 48px;
+      }
+
+      .lottie-rail {
+        --scale: 1;
+        --expanded-width: calc(66px * var(--scale));
+        --collapsed-width: calc(28px * var(--scale));
+        --rail-height: calc(19.8px * var(--scale));
+        display: flex;
+        align-items: center;
+        height: var(--rail-height);
+        width: var(--expanded-width);
+        overflow: hidden;
+        transition: width 1001ms linear(0 0%, 0 66.67%, 0.0440 69.05%, 0.1362 71.43%, 0.2463 73.81%, 0.3609 76.19%, 0.4728 78.57%, 0.5779 80.95%, 0.6736 83.33%, 0.7585 85.71%, 0.8314 88.10%, 0.8917 90.48%, 0.9389 92.86%, 0.9728 95.24%, 0.9932 97.62%, 1 100%);
+      }
+
+      .lottie-rail[data-expanded="false"] {
+        width: var(--collapsed-width);
+      }
+
+      .lottie-canvas {
+        flex: 0 0 var(--expanded-width);
+        height: var(--rail-height);
+        width: var(--expanded-width);
+      }
+
+      .lottie-canvas svg {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+
+      .lottie-rail[data-mono] {
+        color: var(--mono-color, currentColor);
+      }
+
+      .lottie-rail[data-mono] .lottie-canvas svg path,
+      .lottie-rail[data-mono] .lottie-canvas svg rect,
+      .lottie-rail[data-mono] .lottie-canvas svg polygon,
+      .lottie-rail[data-mono] .lottie-canvas svg ellipse {
+        fill: currentColor !important;
+        stroke: currentColor !important;
+      }
+
+      .lottie-rail--hero {
+        --scale: 4.4;
+      }
+
+      .lottie-rail--asset {
+        --scale: 2.6;
+      }
+
+      .lottie-fallback {
+        align-items: center;
+        display: flex;
+        height: var(--rail-height);
+        width: var(--expanded-width);
+      }
+
+      .legacy-nfsc-hidden {
+        display: none;
+      }
+
+      .motion-notes {
+        display: grid;
+        gap: 14px;
+      }
+
+      .size-lab {
+        margin-top: 14px;
+        padding: 18px;
+      }
+
+      .size-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .size-tile {
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: flex;
+        min-height: 180px;
+        justify-content: center;
+        padding: 18px;
+      }
+
+      .size-tile.round {
+        border-radius: 999px;
+        aspect-ratio: 1;
+        min-height: 0;
+      }
+
+      .size-tile.square {
+        aspect-ratio: 1;
+        min-height: 0;
+      }
+
+      .size-tile.big {
+        grid-column: span 2;
+      }
+
+      .size-label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        margin-top: 10px;
+        text-transform: uppercase;
+      }
+
+      .padding-lab {
+        border-top: 1px solid var(--line);
+        margin-top: 18px;
+        padding-top: 18px;
+      }
+
+      .padding-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 14px;
+      }
+
+      .padding-head h3 {
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .padding-head p {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 0;
+        max-width: 560px;
+      }
+
+      .padding-grid {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .icon-card {
+        min-width: 0;
+      }
+
+      .icon-frame {
+        --pad: 8px;
+        align-items: center;
+        aspect-ratio: 1;
+        background:
+          linear-gradient(135deg, oklch(1 0 0 / 7%), transparent),
+          #090b0a;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        padding: var(--pad);
+        width: 100%;
+      }
+
+      .icon-frame.round {
+        border-radius: 999px;
+      }
+
+      .icon-frame.favicon {
+        box-shadow:
+          inset 0 0 0 1px oklch(75.85% 0.1804 155.5 / 35%),
+          0 18px 50px -28px var(--brand-primary);
+      }
+
+      .padding-spec {
+        color: var(--muted);
+        display: block;
+        font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+        font-size: 11px;
+        margin-top: 4px;
+      }
+
+      .actual-groups {
+        display: grid;
+        gap: 18px;
+      }
+
+      .actual-group {
+        display: grid;
+        gap: 12px;
+      }
+
+      .actual-group h3 {
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .actual-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .actual-grid.padding-matrix {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+
+      .actual-frame-card {
+        min-width: 0;
+      }
+
+      .actual-frame {
+        --frame-w: 64px;
+        --frame-h: 64px;
+        --pad: 8px;
+        align-items: center;
+        background:
+          linear-gradient(135deg, oklch(1 0 0 / 7%), transparent),
+          #090b0a;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: inset 0 0 0 var(--pad) oklch(75.85% 0.1804 155.5 / 9%);
+        display: flex;
+        height: var(--frame-h);
+        justify-content: center;
+        padding: var(--pad);
+        position: relative;
+        width: var(--frame-w);
+      }
+
+      .actual-frame::after {
+        border: 1px dashed oklch(1 0 0 / 24%);
+        border-radius: inherit;
+        content: "";
+        inset: var(--pad);
+        pointer-events: none;
+        position: absolute;
+      }
+
+      .actual-frame.round {
+        border-radius: 999px;
+      }
+
+      .actual-frame.light {
+        background: #f7faf6;
+        color: #07100b;
+      }
+
+      .actual-frame.green {
+        background: var(--brand-primary);
+        color: #07100b;
+      }
+
+      .actual-frame.favicon {
+        box-shadow:
+          inset 0 0 0 var(--pad) oklch(75.85% 0.1804 155.5 / 14%),
+          0 18px 50px -28px var(--brand-primary);
+      }
+
+      .actual-stage {
+        align-items: center;
+        background:
+          linear-gradient(90deg, oklch(1 0 0 / 4%) 1px, transparent 1px),
+          linear-gradient(oklch(1 0 0 / 4%) 1px, transparent 1px),
+          #070908;
+        background-size: 16px 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        min-height: 178px;
+        overflow: auto;
+        padding: 18px;
+      }
+
+      .actual-measure {
+        color: var(--muted);
+        display: block;
+        font-size: 11px;
+        line-height: 1.35;
+        margin-top: 6px;
+      }
+
+      .svg-mark,
+      .svg-mask {
+        display: block;
+        flex: 0 0 auto;
+        height: var(--mark-h, auto);
+        width: var(--mark-w, auto);
+      }
+
+      .svg-mask {
+        background: currentColor;
+        color: var(--mono-color, currentColor);
+        -webkit-mask: var(--mask-url) center / contain no-repeat;
+        mask: var(--mask-url) center / contain no-repeat;
+      }
+
+      .svg-mask.compact {
+        --mask-url: url("./namefi-compact-mono.svg");
+      }
+
+      .svg-mask.wordmark {
+        --mask-url: url("./namefi-logotype-mono.svg");
+      }
+
+      .mono-strip {
+        border-top: 1px solid var(--line);
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        margin-top: 18px;
+        padding-top: 18px;
+      }
+
+      .mono-card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        min-height: 178px;
+        overflow: hidden;
+      }
+
+      .mono-preview {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        min-height: 116px;
+        padding: 24px;
+      }
+
+      .mono-preview.dark {
+        background: #050706;
+      }
+
+      .mono-preview.light {
+        background: #f6faf6;
+      }
+
+      .mono-preview.green {
+        background: var(--brand-primary);
+      }
+
+      .mono-preview.steel {
+        background: #242826;
+      }
+
+      .mono-body {
+        align-items: center;
+        border-top: 1px solid var(--line);
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        padding: 12px;
+      }
+
+      .mono-body strong {
+        display: block;
+        font-size: 13px;
+      }
+
+      .mono-type-mark {
+        color: currentColor;
+        display: inline-block;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: 700;
+        letter-spacing: 0;
+        line-height: 0.82;
+      }
+
+      .mono-type-mark.compact {
+        font-size: clamp(38px, 5vw, 56px);
+      }
+
+      .mono-type-mark.wordmark {
+        font-size: clamp(34px, 5vw, 50px);
+      }
+
+      .footer {
+        padding: 28px 0 48px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 980px) {
+        .hero-grid,
+        .section-head,
+        .type-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .asset-grid,
+        .motion-grid,
+        .usage-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .palette,
+        .rules,
+        .padding-grid,
+        .mono-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 680px) {
+        .topbar {
+          position: static;
+        }
+
+        .topbar .shell {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        .nav {
+          justify-content: flex-start;
+        }
+
+        .hero {
+          min-height: auto;
+          padding-top: 56px;
+        }
+
+        .meta-row,
+        .asset-grid,
+        .palette,
+        .rules,
+        .motion-grid,
+        .size-grid,
+        .padding-grid,
+        .mono-strip,
+        .usage-strip {
+          grid-template-columns: 1fr;
+        }
+
+        .padding-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .size-tile.big {
+          grid-column: auto;
+        }
+
+        section {
+          padding: 52px 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="shell">
+        <a href="#top" aria-label="Namefi brand kit home">
+          <svg width="132" height="43" viewBox="0 0 132 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.64 41.668V0.987998H28.72V41.668H0.64ZM24.868 14.704H27.388V10.6H16.984V14.704H20.368V24.496H20.224L8.416 10.6H2.044V14.704H4.96V29.896H2.44V34H12.7V29.896H9.46V19.168H9.604L22.168 34.036L24.868 34V14.704ZM31.5916 41.668V0.987998H50.5636V41.668H31.5916ZM34.3996 18.916L33.6796 23.128L37.3876 23.524L37.9996 21.22C38.3836 21.028 38.7676 20.908 39.1516 20.86C39.5596 20.788 40.0036 20.752 40.4836 20.752C41.8036 20.752 42.5716 21.148 42.7876 21.94C43.0276 22.732 43.1476 23.548 43.1476 24.388V24.928C42.4036 24.832 41.5156 24.784 40.4836 24.784C38.6356 24.784 36.9076 25.108 35.2996 25.756C33.7156 26.404 32.9236 27.724 32.9236 29.716C32.9236 31.42 33.4636 32.62 34.5436 33.316C35.6236 34.012 36.7516 34.36 37.9276 34.36C39.2476 34.36 40.3276 34.024 41.1676 33.352C42.0316 32.68 42.6916 31.936 43.1476 31.12V31.156C43.3876 33.292 44.5756 34.36 46.7116 34.36C47.7196 34.36 48.6916 34.108 49.6276 33.604L49.5916 31.156C49.3516 31.228 49.1236 31.264 48.9076 31.264C48.1636 31.264 47.7916 30.844 47.7916 30.004V22.948C47.7916 21.1 47.1556 19.72 45.8836 18.808C44.6116 17.896 43.0996 17.44 41.3476 17.44C40.0276 17.44 38.8876 17.548 37.9276 17.764C36.9916 17.956 35.8156 18.34 34.3996 18.916ZM43.1476 27.376C43.0276 28.648 42.6076 29.584 41.8876 30.184C41.1916 30.76 40.4356 31.048 39.6196 31.048C38.9236 31.048 38.4316 30.868 38.1436 30.508C37.8556 30.148 37.7116 29.704 37.7116 29.176C37.7116 28.288 38.0236 27.7 38.6476 27.412C39.2716 27.1 39.9916 26.944 40.8076 26.944C41.1916 26.944 41.5756 26.968 41.9596 27.016C42.3676 27.064 42.7636 27.112 43.1476 27.16V27.376ZM53.4025 41.668V0.987998H85.6945V41.668H53.4025ZM78.0625 34H84.8665V30.508H82.7065V23.056C82.7065 21.136 82.1425 19.72 81.0145 18.808C79.8865 17.896 78.5905 17.44 77.1265 17.44C74.5585 17.44 72.7945 18.604 71.8345 20.932C71.4505 19.756 70.7665 18.88 69.7825 18.304C68.7985 17.728 67.7185 17.44 66.5425 17.44C64.2865 17.44 62.6425 18.364 61.6105 20.212V17.764H54.8425V21.292H56.9665V30.508H54.8065V34H64.7065V30.508H61.6105V24.82C61.6105 23.692 61.8505 22.768 62.3305 22.048C62.8105 21.328 63.6145 20.968 64.7425 20.968C65.6545 20.968 66.3385 21.268 66.7945 21.868C67.2745 22.468 67.5145 23.464 67.5145 24.856V34H74.3185V30.508H72.1585V24.82C72.1585 23.692 72.3985 22.768 72.8785 22.048C73.3825 21.328 74.1865 20.968 75.2905 20.968C76.2025 20.968 76.8865 21.268 77.3425 21.868C77.8225 22.468 78.0625 23.464 78.0625 24.856V34ZM88.5377 41.668V0.987998H106.61V41.668H88.5377ZM105.566 28.888L101.678 28.168C101.582 28.648 101.306 29.188 100.85 29.788C100.418 30.388 99.5777 30.688 98.3297 30.688C96.0497 30.688 94.7777 29.404 94.5137 26.836H105.17C105.338 26.068 105.422 25.288 105.422 24.496C105.398 22.384 104.678 20.68 103.262 19.384C101.87 18.088 100.046 17.44 97.7897 17.44C95.2217 17.44 93.2177 18.28 91.7777 19.96C90.3617 21.616 89.6537 23.692 89.6537 26.188C89.6537 28.9 90.4337 30.94 91.9937 32.308C93.5777 33.676 95.5817 34.36 98.0057 34.36C100.334 34.36 102.146 33.808 103.442 32.704C104.738 31.6 105.446 30.328 105.566 28.888ZM100.634 24.136H94.5497C94.6937 23.128 95.0297 22.312 95.5577 21.688C96.0857 21.064 96.8297 20.752 97.7897 20.752C98.8937 20.752 99.6617 21.112 100.094 21.832C100.55 22.552 100.73 23.32 100.634 24.136ZM109.435 41.668V0.987998H131.683V41.668H109.435ZM123.835 21.292V30.472H121.675V34H130.639V30.472H128.479V17.764H117.607V15.208C117.607 14.512 117.799 13.864 118.183 13.264C118.591 12.664 119.503 12.364 120.919 12.364C121.615 12.364 122.203 12.436 122.683 12.58C123.187 12.7 123.523 12.784 123.691 12.832L124.375 15.136L127.975 14.74L127.255 10.348C126.199 9.796 125.107 9.412 123.979 9.196C122.851 8.98 121.831 8.872 120.919 8.872C118.303 8.872 116.323 9.52 114.979 10.816C113.635 12.112 112.963 13.6 112.963 15.28V17.764H110.983V21.292H112.963V30.472H110.803V34H120.307V30.472H117.607V21.292H123.835Z" fill="#1cd17d"></path></svg>
+        </a>
+        <nav class="nav" aria-label="Sections">
+          <a href="#logos">Logos</a>
+          <a href="#motion">Motion</a>
+          <a href="#palette">Palette</a>
+          <a href="#rules">Rules</a>
+          <a href="#type">Type</a>
+          <a href="#usage">Usage</a>
+          <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-brand-kit-assets.zip" download aria-label="Download Namefi brand kit ZIP" title="Download ZIP">
+            <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <div class="hero">
+        <div class="shell hero-grid">
+          <div>
+            <p class="eyebrow">Namefi brand kit</p>
+            <h1>Namefi owns the green.</h1>
+            <p class="hero-copy">
+              Official Namefi logos, marks, colors, and usage guidance for social media,
+              reports, partnership materials, and approved brand placements.
+            </p>
+            <div class="hero-actions">
+              <a id="download-brand-kit" class="button primary" href="/r/blog-assets/brand-kit/namefi-brand-kit-assets.zip" download>
+                <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ZIP
+              </a>
+            </div>
+          </div>
+
+          <div class="logo-stage" aria-label="Logo construction preview">
+            <div class="specimen">
+              <svg width="132" height="43" viewBox="0 0 132 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.64 41.668V0.987998H28.72V41.668H0.64ZM24.868 14.704H27.388V10.6H16.984V14.704H20.368V24.496H20.224L8.416 10.6H2.044V14.704H4.96V29.896H2.44V34H12.7V29.896H9.46V19.168H9.604L22.168 34.036L24.868 34V14.704ZM31.5916 41.668V0.987998H50.5636V41.668H31.5916ZM34.3996 18.916L33.6796 23.128L37.3876 23.524L37.9996 21.22C38.3836 21.028 38.7676 20.908 39.1516 20.86C39.5596 20.788 40.0036 20.752 40.4836 20.752C41.8036 20.752 42.5716 21.148 42.7876 21.94C43.0276 22.732 43.1476 23.548 43.1476 24.388V24.928C42.4036 24.832 41.5156 24.784 40.4836 24.784C38.6356 24.784 36.9076 25.108 35.2996 25.756C33.7156 26.404 32.9236 27.724 32.9236 29.716C32.9236 31.42 33.4636 32.62 34.5436 33.316C35.6236 34.012 36.7516 34.36 37.9276 34.36C39.2476 34.36 40.3276 34.024 41.1676 33.352C42.0316 32.68 42.6916 31.936 43.1476 31.12V31.156C43.3876 33.292 44.5756 34.36 46.7116 34.36C47.7196 34.36 48.6916 34.108 49.6276 33.604L49.5916 31.156C49.3516 31.228 49.1236 31.264 48.9076 31.264C48.1636 31.264 47.7916 30.844 47.7916 30.004V22.948C47.7916 21.1 47.1556 19.72 45.8836 18.808C44.6116 17.896 43.0996 17.44 41.3476 17.44C40.0276 17.44 38.8876 17.548 37.9276 17.764C36.9916 17.956 35.8156 18.34 34.3996 18.916ZM43.1476 27.376C43.0276 28.648 42.6076 29.584 41.8876 30.184C41.1916 30.76 40.4356 31.048 39.6196 31.048C38.9236 31.048 38.4316 30.868 38.1436 30.508C37.8556 30.148 37.7116 29.704 37.7116 29.176C37.7116 28.288 38.0236 27.7 38.6476 27.412C39.2716 27.1 39.9916 26.944 40.8076 26.944C41.1916 26.944 41.5756 26.968 41.9596 27.016C42.3676 27.064 42.7636 27.112 43.1476 27.16V27.376ZM53.4025 41.668V0.987998H85.6945V41.668H53.4025ZM78.0625 34H84.8665V30.508H82.7065V23.056C82.7065 21.136 82.1425 19.72 81.0145 18.808C79.8865 17.896 78.5905 17.44 77.1265 17.44C74.5585 17.44 72.7945 18.604 71.8345 20.932C71.4505 19.756 70.7665 18.88 69.7825 18.304C68.7985 17.728 67.7185 17.44 66.5425 17.44C64.2865 17.44 62.6425 18.364 61.6105 20.212V17.764H54.8425V21.292H56.9665V30.508H54.8065V34H64.7065V30.508H61.6105V24.82C61.6105 23.692 61.8505 22.768 62.3305 22.048C62.8105 21.328 63.6145 20.968 64.7425 20.968C65.6545 20.968 66.3385 21.268 66.7945 21.868C67.2745 22.468 67.5145 23.464 67.5145 24.856V34H74.3185V30.508H72.1585V24.82C72.1585 23.692 72.3985 22.768 72.8785 22.048C73.3825 21.328 74.1865 20.968 75.2905 20.968C76.2025 20.968 76.8865 21.268 77.3425 21.868C77.8225 22.468 78.0625 23.464 78.0625 24.856V34ZM88.5377 41.668V0.987998H106.61V41.668H88.5377ZM105.566 28.888L101.678 28.168C101.582 28.648 101.306 29.188 100.85 29.788C100.418 30.388 99.5777 30.688 98.3297 30.688C96.0497 30.688 94.7777 29.404 94.5137 26.836H105.17C105.338 26.068 105.422 25.288 105.422 24.496C105.398 22.384 104.678 20.68 103.262 19.384C101.87 18.088 100.046 17.44 97.7897 17.44C95.2217 17.44 93.2177 18.28 91.7777 19.96C90.3617 21.616 89.6537 23.692 89.6537 26.188C89.6537 28.9 90.4337 30.94 91.9937 32.308C93.5777 33.676 95.5817 34.36 98.0057 34.36C100.334 34.36 102.146 33.808 103.442 32.704C104.738 31.6 105.446 30.328 105.566 28.888ZM100.634 24.136H94.5497C94.6937 23.128 95.0297 22.312 95.5577 21.688C96.0857 21.064 96.8297 20.752 97.7897 20.752C98.8937 20.752 99.6617 21.112 100.094 21.832C100.55 22.552 100.73 23.32 100.634 24.136ZM109.435 41.668V0.987998H131.683V41.668H109.435ZM123.835 21.292V30.472H121.675V34H130.639V30.472H128.479V17.764H117.607V15.208C117.607 14.512 117.799 13.864 118.183 13.264C118.591 12.664 119.503 12.364 120.919 12.364C121.615 12.364 122.203 12.436 122.683 12.58C123.187 12.7 123.523 12.784 123.691 12.832L124.375 15.136L127.975 14.74L127.255 10.348C126.199 9.796 125.107 9.412 123.979 9.196C122.851 8.98 121.831 8.872 120.919 8.872C118.303 8.872 116.323 9.52 114.979 10.816C113.635 12.112 112.963 13.6 112.963 15.28V17.764H110.983V21.292H112.963V30.472H110.803V34H120.307V30.472H117.607V21.292H123.835Z" fill="#1cd17d"></path></svg>
+            </div>
+            <div class="meta-row">
+              <div class="metric"><b>#1CD17D</b><span>Logo SVG fill</span></div>
+              <div class="metric"><b>OKLCH</b><span>75.85% 0.1804 155.5</span></div>
+              <div class="metric"><b>132 x 43</b><span>Canonical color SVG</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="logos">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Logo Assets</h2>
+            <p>Download and use the approved Namefi logo assets for social media, reporting, partnerships, and approved brand placements.</p>
+          </div>
+          <div class="asset-grid">
+            <article class="asset">
+              <div class="asset-preview light">
+                <svg width="132" height="43" viewBox="0 0 132 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.64 41.668V0.987998H28.72V41.668H0.64ZM24.868 14.704H27.388V10.6H16.984V14.704H20.368V24.496H20.224L8.416 10.6H2.044V14.704H4.96V29.896H2.44V34H12.7V29.896H9.46V19.168H9.604L22.168 34.036L24.868 34V14.704ZM31.5916 41.668V0.987998H50.5636V41.668H31.5916ZM34.3996 18.916L33.6796 23.128L37.3876 23.524L37.9996 21.22C38.3836 21.028 38.7676 20.908 39.1516 20.86C39.5596 20.788 40.0036 20.752 40.4836 20.752C41.8036 20.752 42.5716 21.148 42.7876 21.94C43.0276 22.732 43.1476 23.548 43.1476 24.388V24.928C42.4036 24.832 41.5156 24.784 40.4836 24.784C38.6356 24.784 36.9076 25.108 35.2996 25.756C33.7156 26.404 32.9236 27.724 32.9236 29.716C32.9236 31.42 33.4636 32.62 34.5436 33.316C35.6236 34.012 36.7516 34.36 37.9276 34.36C39.2476 34.36 40.3276 34.024 41.1676 33.352C42.0316 32.68 42.6916 31.936 43.1476 31.12V31.156C43.3876 33.292 44.5756 34.36 46.7116 34.36C47.7196 34.36 48.6916 34.108 49.6276 33.604L49.5916 31.156C49.3516 31.228 49.1236 31.264 48.9076 31.264C48.1636 31.264 47.7916 30.844 47.7916 30.004V22.948C47.7916 21.1 47.1556 19.72 45.8836 18.808C44.6116 17.896 43.0996 17.44 41.3476 17.44C40.0276 17.44 38.8876 17.548 37.9276 17.764C36.9916 17.956 35.8156 18.34 34.3996 18.916ZM43.1476 27.376C43.0276 28.648 42.6076 29.584 41.8876 30.184C41.1916 30.76 40.4356 31.048 39.6196 31.048C38.9236 31.048 38.4316 30.868 38.1436 30.508C37.8556 30.148 37.7116 29.704 37.7116 29.176C37.7116 28.288 38.0236 27.7 38.6476 27.412C39.2716 27.1 39.9916 26.944 40.8076 26.944C41.1916 26.944 41.5756 26.968 41.9596 27.016C42.3676 27.064 42.7636 27.112 43.1476 27.16V27.376ZM53.4025 41.668V0.987998H85.6945V41.668H53.4025ZM78.0625 34H84.8665V30.508H82.7065V23.056C82.7065 21.136 82.1425 19.72 81.0145 18.808C79.8865 17.896 78.5905 17.44 77.1265 17.44C74.5585 17.44 72.7945 18.604 71.8345 20.932C71.4505 19.756 70.7665 18.88 69.7825 18.304C68.7985 17.728 67.7185 17.44 66.5425 17.44C64.2865 17.44 62.6425 18.364 61.6105 20.212V17.764H54.8425V21.292H56.9665V30.508H54.8065V34H64.7065V30.508H61.6105V24.82C61.6105 23.692 61.8505 22.768 62.3305 22.048C62.8105 21.328 63.6145 20.968 64.7425 20.968C65.6545 20.968 66.3385 21.268 66.7945 21.868C67.2745 22.468 67.5145 23.464 67.5145 24.856V34H74.3185V30.508H72.1585V24.82C72.1585 23.692 72.3985 22.768 72.8785 22.048C73.3825 21.328 74.1865 20.968 75.2905 20.968C76.2025 20.968 76.8865 21.268 77.3425 21.868C77.8225 22.468 78.0625 23.464 78.0625 24.856V34ZM88.5377 41.668V0.987998H106.61V41.668H88.5377ZM105.566 28.888L101.678 28.168C101.582 28.648 101.306 29.188 100.85 29.788C100.418 30.388 99.5777 30.688 98.3297 30.688C96.0497 30.688 94.7777 29.404 94.5137 26.836H105.17C105.338 26.068 105.422 25.288 105.422 24.496C105.398 22.384 104.678 20.68 103.262 19.384C101.87 18.088 100.046 17.44 97.7897 17.44C95.2217 17.44 93.2177 18.28 91.7777 19.96C90.3617 21.616 89.6537 23.692 89.6537 26.188C89.6537 28.9 90.4337 30.94 91.9937 32.308C93.5777 33.676 95.5817 34.36 98.0057 34.36C100.334 34.36 102.146 33.808 103.442 32.704C104.738 31.6 105.446 30.328 105.566 28.888ZM100.634 24.136H94.5497C94.6937 23.128 95.0297 22.312 95.5577 21.688C96.0857 21.064 96.8297 20.752 97.7897 20.752C98.8937 20.752 99.6617 21.112 100.094 21.832C100.55 22.552 100.73 23.32 100.634 24.136ZM109.435 41.668V0.987998H131.683V41.668H109.435ZM123.835 21.292V30.472H121.675V34H130.639V30.472H128.479V17.764H117.607V15.208C117.607 14.512 117.799 13.864 118.183 13.264C118.591 12.664 119.503 12.364 120.919 12.364C121.615 12.364 122.203 12.436 122.683 12.58C123.187 12.7 123.523 12.784 123.691 12.832L124.375 15.136L127.975 14.74L127.255 10.348C126.199 9.796 125.107 9.412 123.979 9.196C122.851 8.98 121.831 8.872 120.919 8.872C118.303 8.872 116.323 9.52 114.979 10.816C113.635 12.112 112.963 13.6 112.963 15.28V17.764H110.983V21.292H112.963V30.472H110.803V34H120.307V30.472H117.607V21.292H123.835Z" fill="#1cd17d"></path></svg>
+              </div>
+              <div class="asset-body">
+                <div class="asset-title">
+                  <h3>Primary logotype</h3>
+                  <div class="asset-actions">
+                    <span class="tag">SVG</span>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype.svg" download aria-label="Download primary Namefi logotype SVG" title="Download SVG">
+                      <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="asset">
+              <div class="asset-preview">
+                <svg width="90" height="28" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_33_177)"><path d="M0 28V-1H19.2853V28H0ZM16.6398 9.44072H18.3705V6.61594H11.2251V9.44072H13.5492V16.1805H13.4503L5.34056 6.61594H0.964268V9.44072H2.96698V19.8974H1.23624V22.7221H8.28281V19.8974H6.05758V12.5133H6.15648L14.7854 22.7469L16.6398 22.7221V9.44072ZM21.2575 28V1.16825e-05H34.2874V28H21.2575ZM23.186 12.3398L22.6915 15.2389L25.2382 15.5115L25.6585 13.9257C25.9223 13.7936 26.186 13.7109 26.4497 13.6779C26.73 13.6283 27.0349 13.6036 27.3645 13.6036C28.2711 13.6036 28.7987 13.8761 28.947 14.4212C29.1118 14.9664 29.1941 15.5281 29.1941 16.1062V16.4779C28.6832 16.4118 28.0733 16.3788 27.3645 16.3788C26.0953 16.3788 24.9085 16.6018 23.8041 17.0478C22.7162 17.4938 22.1723 18.4024 22.1723 19.7735C22.1723 20.9463 22.5431 21.7723 23.2849 22.2513C24.0266 22.7303 24.8015 22.9699 25.609 22.9699C26.5157 22.9699 27.2574 22.7387 27.8343 22.2761C28.4277 21.8135 28.881 21.3015 29.1941 20.7398V20.7646C29.359 22.2348 30.1749 22.9699 31.642 22.9699C32.3342 22.9699 33.0017 22.7965 33.6447 22.4496L33.6199 20.7646C33.4551 20.8142 33.2984 20.839 33.1501 20.839C32.6392 20.839 32.3838 20.5498 32.3838 19.9717V15.1151C32.3838 13.8431 31.9469 12.8932 31.0734 12.2655C30.1996 11.6378 29.1612 11.3239 27.9579 11.3239C27.0514 11.3239 26.2684 11.3982 25.609 11.5469C24.9662 11.679 24.1586 11.9434 23.186 12.3398ZM29.1941 18.1628C29.1118 19.0383 28.8233 19.6826 28.3288 20.0956C27.8508 20.492 27.3316 20.6903 26.7711 20.6903C26.2931 20.6903 25.9552 20.5664 25.7574 20.3186C25.5596 20.0708 25.4607 19.7653 25.4607 19.4018C25.4607 18.7905 25.675 18.3859 26.1035 18.1876C26.5322 17.9728 27.0267 17.8655 27.587 17.8655C27.8508 17.8655 28.1146 17.8821 28.3784 17.9151C28.6585 17.948 28.9305 17.9812 29.1941 18.0142V18.1628ZM36.2373 28V1.16825e-05H58.4154V28H36.2373ZM53.1738 22.7221H57.8468V20.3186H56.3633V15.1894C56.3633 13.8679 55.9759 12.8932 55.2012 12.2655C54.4266 11.6378 53.5365 11.3239 52.5309 11.3239C50.7673 11.3239 49.5558 12.125 48.8964 13.7274C48.6326 12.918 48.1628 12.3151 47.4871 11.9186C46.8113 11.5221 46.0696 11.3239 45.2618 11.3239C43.7124 11.3239 42.5834 11.9599 41.8745 13.2319V11.5469H37.2263V13.9752H38.6851V20.3186H37.2016V22.7221H44.0009V20.3186H41.8745V16.4036C41.8745 15.6272 42.0394 14.9912 42.369 14.4956C42.6987 14 43.2509 13.7522 44.0256 13.7522C44.6519 13.7522 45.1217 13.9587 45.4349 14.3717C45.7645 14.7847 45.9294 15.4702 45.9294 16.4283V22.7221H50.6024V20.3186H49.1189V16.4036C49.1189 15.6272 49.2838 14.9912 49.6134 14.4956C49.9596 14 50.5117 13.7522 51.27 13.7522C51.8963 13.7522 52.3661 13.9587 52.6793 14.3717C53.0089 14.7847 53.1738 15.4702 53.1738 16.4283V22.7221ZM60.3681 28V1.16825e-05H72.7799V28H60.3681ZM72.0629 19.2036L69.3926 18.708C69.3268 19.0383 69.1372 19.41 68.824 19.823C68.5273 20.2361 67.9504 20.4425 67.0932 20.4425C65.5274 20.4425 64.6538 19.5587 64.4724 17.7912H71.791C71.9064 17.2626 71.964 16.7257 71.964 16.1805C71.9476 14.7268 71.4531 13.554 70.4805 12.662C69.5246 11.7699 68.2718 11.3239 66.7224 11.3239C64.9587 11.3239 63.5823 11.902 62.5933 13.0584C61.6209 14.1982 61.1346 15.6272 61.1346 17.3451C61.1346 19.2118 61.6703 20.6159 62.7417 21.5575C63.8296 22.4991 65.206 22.9699 66.8707 22.9699C68.4696 22.9699 69.7141 22.59 70.6041 21.8301C71.4942 21.0702 71.9806 20.1947 72.0629 19.2036ZM68.6756 15.9328H64.4971C64.596 15.2389 64.8269 14.6772 65.1894 14.2478C65.5521 13.8184 66.0631 13.6036 66.7224 13.6036C67.4806 13.6036 68.0081 13.8513 68.3047 14.3469C68.618 14.8425 68.7416 15.3711 68.6756 15.9328ZM74.7201 28V1.16825e-05H90V28H74.7201ZM84.61 13.9752V20.2938H83.1265V22.7221H89.283V20.2938H87.7995V11.5469H80.3326V9.78762C80.3326 9.30862 80.4646 8.8626 80.7282 8.44957C81.0085 8.03654 81.6348 7.8301 82.6073 7.8301C83.0854 7.8301 83.4892 7.87966 83.8188 7.97877C84.1649 8.06132 84.3958 8.11924 84.5111 8.15222L84.9809 9.73806L87.4533 9.4655L86.9588 6.44249C86.2336 6.0626 85.4837 5.79824 84.7089 5.64957C83.9342 5.5009 83.2337 5.42656 82.6073 5.42656C80.8107 5.42656 79.4508 5.87258 78.5277 6.76461C77.6047 7.65665 77.1431 8.68079 77.1431 9.83718V11.5469H75.7832V13.9752H77.1431V20.2938H75.6596V22.7221H82.187V20.2938H80.3326V13.9752H84.61Z" fill="white"/></g><defs><clipPath id="clip0_33_177"><rect width="90" height="28" fill="white"/></clipPath></defs></svg>
+              </div>
+              <div class="asset-body">
+                <div class="asset-title">
+                  <h3>Mono logotype</h3>
+                  <div class="asset-actions">
+                    <span class="tag">SVG</span>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono.svg" download aria-label="Download mono Namefi logotype SVG" title="Download SVG">
+                      <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="asset">
+              <div class="asset-preview">
+                <div class="lottie-rail lottie-rail--asset" data-expanded="false" data-autoplay="false" aria-label="Compact Lottie first frame">
+                  <div class="lottie-canvas"></div>
+                </div>
+              </div>
+              <div class="asset-body">
+                <div class="asset-title">
+                  <h3>Compact mark</h3>
+                  <div class="asset-actions">
+                    <span class="tag">SVG</span>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact.svg" download aria-label="Download compact Namefi mark SVG" title="Download SVG">
+                      <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="motion">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Motion Mark</h2>
+            <p>The app uses `ExpandingLottieMark`: an 80x24 Lottie canvas rendered at 66x19.8, clipped to 28px in collapsed rail state, then expanded over 1001ms with the sampled Lottie easing.</p>
+          </div>
+          <div class="motion-grid">
+            <div class="motion-stage">
+              <div class="lottie-rail lottie-rail--hero" data-expanded="false" data-autoplay="true" aria-label="Animated expanding Namefi mark">
+                <div class="lottie-canvas"></div>
+              </div>
+            </div>
+            <div class="motion-notes">
+              <article class="rule">
+                <span class="num">JSON</span>
+                <h3>Animated mark</h3>
+                <p>Use the Lottie file when the mark should expand from compact to wordmark.</p>
+                <a class="icon-button" href="/r/blog-assets/brand-kit/namefi_to_nfi.json" download aria-label="Download animated Namefi Lottie JSON" title="Download JSON"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+              </article>
+              <article class="rule"><span class="num">F0</span><h3>Compact first frame</h3><p>Use this as the compact mark in rails, round avatars, app chips, and tight navigation, not the NFSC mark.</p></article>
+              <article class="rule"><span class="num">F29</span><h3>Expanded last frame</h3><p>The final frame resolves to the full Namefi wordmark. Keep the Lottie pinned left and clip the wrapper width.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="palette">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Color Palette</h2>
+            <p>The current Astra theme maps primary, secondary, and tertiary brand slots to the same green. The kit keeps that precision and pairs it with neutral UI tokens from the shared stylesheet.</p>
+          </div>
+          <div class="palette">
+            <div class="swatch"><div class="chip" style="background:#1cd17d"></div><div class="swatch-body"><strong>Namefi Green</strong><small>#1CD17D</small><small>oklch(75.85% 0.1804 155.5)</small></div></div>
+            <div class="swatch"><div class="chip" style="background:oklch(0.145 0 0)"></div><div class="swatch-body"><strong>Background</strong><small>oklch(0.145 0 0)</small><small>App root</small></div></div>
+            <div class="swatch"><div class="chip" style="background:oklch(0.205 0 0)"></div><div class="swatch-body"><strong>Surface</strong><small>oklch(0.205 0 0)</small><small>Cards and panels</small></div></div>
+            <div class="swatch"><div class="chip" style="background:oklch(0.269 0 0)"></div><div class="swatch-body"><strong>Secondary</strong><small>oklch(0.269 0 0)</small><small>Raised controls</small></div></div>
+            <div class="swatch"><div class="chip" style="background:oklch(0.985 0 0)"></div><div class="swatch-body"><strong>Foreground</strong><small>oklch(0.985 0 0)</small><small>Primary text</small></div></div>
+            <div class="swatch"><div class="chip" style="background:oklch(0.708 0 0)"></div><div class="swatch-body"><strong>Muted</strong><small>oklch(0.708 0 0)</small><small>Secondary text</small></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Logo Rules</h2>
+            <p>Use these rules to keep Namefi consistent, recognizable, and clear across every placement.</p>
+          </div>
+          <div class="rules">
+            <article class="rule"><span class="num">1</span><h3>Use green first</h3><p>The primary logotype should use #1CD17D on dark or light neutral fields when contrast holds.</p></article>
+            <article class="rule"><span class="num">2</span><h3>Reserve mono</h3><p>Use the white mono mark on dark photography, dense UI chrome, or partner lockups where green competes.</p></article>
+            <article class="rule"><span class="num">3</span><h3>Keep clearspace</h3><p>Use at least the height of the N counter block around the logotype. Do not crowd edges or badges.</p></article>
+            <article class="rule"><span class="num">4</span><h3>Protect color intent</h3><p>Avoid gradients, outlines, shadows, or arbitrary alternate hues for the main logotype. Use mono treatments only when the placement needs a single-color mark.</p></article>
+            <article class="rule"><span class="num">5</span><h3>Spell Namefi</h3><p>Use <strong>Namefi</strong> in running text. Do not write NameFi or NameFI. Use <strong>NAMEFI</strong> only where full capitalization is required.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="type">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Type Direction</h2>
+            <p>Use typography that supports a clear, credible financial brand voice across public materials and product-adjacent communications.</p>
+          </div>
+          <div class="type-grid">
+            <div class="type-sample">
+              <p class="display">Domains become financial rails.</p>
+              <p class="body">Namefi can use a high-contrast serif for brand-led moments, paired with a pragmatic sans for product interfaces, tables, and purchase flows.</p>
+            </div>
+            <div class="type-notes">
+              <article class="rule"><span class="num">A</span><h3>Display</h3><p>Use restrained serif display type for brand kit pages, campaign headlines, and investor-facing material.</p></article>
+              <article class="rule"><span class="num">B</span><h3>Product</h3><p>Keep product UI and support materials in a clean sans-serif style that stays legible at small sizes.</p></article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="usage">
+        <div class="shell">
+          <div class="section-head">
+            <h2>Usage Examples</h2>
+            <p>Quick visual tests for the mark across dark product chrome, light editorial backgrounds, and green-forward campaign surfaces.</p>
+          </div>
+          <div class="usage-strip">
+            <article class="usage dark"><div class="usage-inner"><svg width="132" height="43" viewBox="0 0 132 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.64 41.668V0.987998H28.72V41.668H0.64ZM24.868 14.704H27.388V10.6H16.984V14.704H20.368V24.496H20.224L8.416 10.6H2.044V14.704H4.96V29.896H2.44V34H12.7V29.896H9.46V19.168H9.604L22.168 34.036L24.868 34V14.704ZM31.5916 41.668V0.987998H50.5636V41.668H31.5916ZM34.3996 18.916L33.6796 23.128L37.3876 23.524L37.9996 21.22C38.3836 21.028 38.7676 20.908 39.1516 20.86C39.5596 20.788 40.0036 20.752 40.4836 20.752C41.8036 20.752 42.5716 21.148 42.7876 21.94C43.0276 22.732 43.1476 23.548 43.1476 24.388V24.928C42.4036 24.832 41.5156 24.784 40.4836 24.784C38.6356 24.784 36.9076 25.108 35.2996 25.756C33.7156 26.404 32.9236 27.724 32.9236 29.716C32.9236 31.42 33.4636 32.62 34.5436 33.316C35.6236 34.012 36.7516 34.36 37.9276 34.36C39.2476 34.36 40.3276 34.024 41.1676 33.352C42.0316 32.68 42.6916 31.936 43.1476 31.12V31.156C43.3876 33.292 44.5756 34.36 46.7116 34.36C47.7196 34.36 48.6916 34.108 49.6276 33.604L49.5916 31.156C49.3516 31.228 49.1236 31.264 48.9076 31.264C48.1636 31.264 47.7916 30.844 47.7916 30.004V22.948C47.7916 21.1 47.1556 19.72 45.8836 18.808C44.6116 17.896 43.0996 17.44 41.3476 17.44C40.0276 17.44 38.8876 17.548 37.9276 17.764C36.9916 17.956 35.8156 18.34 34.3996 18.916ZM43.1476 27.376C43.0276 28.648 42.6076 29.584 41.8876 30.184C41.1916 30.76 40.4356 31.048 39.6196 31.048C38.9236 31.048 38.4316 30.868 38.1436 30.508C37.8556 30.148 37.7116 29.704 37.7116 29.176C37.7116 28.288 38.0236 27.7 38.6476 27.412C39.2716 27.1 39.9916 26.944 40.8076 26.944C41.1916 26.944 41.5756 26.968 41.9596 27.016C42.3676 27.064 42.7636 27.112 43.1476 27.16V27.376ZM53.4025 41.668V0.987998H85.6945V41.668H53.4025ZM78.0625 34H84.8665V30.508H82.7065V23.056C82.7065 21.136 82.1425 19.72 81.0145 18.808C79.8865 17.896 78.5905 17.44 77.1265 17.44C74.5585 17.44 72.7945 18.604 71.8345 20.932C71.4505 19.756 70.7665 18.88 69.7825 18.304C68.7985 17.728 67.7185 17.44 66.5425 17.44C64.2865 17.44 62.6425 18.364 61.6105 20.212V17.764H54.8425V21.292H56.9665V30.508H54.8065V34H64.7065V30.508H61.6105V24.82C61.6105 23.692 61.8505 22.768 62.3305 22.048C62.8105 21.328 63.6145 20.968 64.7425 20.968C65.6545 20.968 66.3385 21.268 66.7945 21.868C67.2745 22.468 67.5145 23.464 67.5145 24.856V34H74.3185V30.508H72.1585V24.82C72.1585 23.692 72.3985 22.768 72.8785 22.048C73.3825 21.328 74.1865 20.968 75.2905 20.968C76.2025 20.968 76.8865 21.268 77.3425 21.868C77.8225 22.468 78.0625 23.464 78.0625 24.856V34ZM88.5377 41.668V0.987998H106.61V41.668H88.5377ZM105.566 28.888L101.678 28.168C101.582 28.648 101.306 29.188 100.85 29.788C100.418 30.388 99.5777 30.688 98.3297 30.688C96.0497 30.688 94.7777 29.404 94.5137 26.836H105.17C105.338 26.068 105.422 25.288 105.422 24.496C105.398 22.384 104.678 20.68 103.262 19.384C101.87 18.088 100.046 17.44 97.7897 17.44C95.2217 17.44 93.2177 18.28 91.7777 19.96C90.3617 21.616 89.6537 23.692 89.6537 26.188C89.6537 28.9 90.4337 30.94 91.9937 32.308C93.5777 33.676 95.5817 34.36 98.0057 34.36C100.334 34.36 102.146 33.808 103.442 32.704C104.738 31.6 105.446 30.328 105.566 28.888ZM100.634 24.136H94.5497C94.6937 23.128 95.0297 22.312 95.5577 21.688C96.0857 21.064 96.8297 20.752 97.7897 20.752C98.8937 20.752 99.6617 21.112 100.094 21.832C100.55 22.552 100.73 23.32 100.634 24.136ZM109.435 41.668V0.987998H131.683V41.668H109.435ZM123.835 21.292V30.472H121.675V34H130.639V30.472H128.479V17.764H117.607V15.208C117.607 14.512 117.799 13.864 118.183 13.264C118.591 12.664 119.503 12.364 120.919 12.364C121.615 12.364 122.203 12.436 122.683 12.58C123.187 12.7 123.523 12.784 123.691 12.832L124.375 15.136L127.975 14.74L127.255 10.348C126.199 9.796 125.107 9.412 123.979 9.196C122.851 8.98 121.831 8.872 120.919 8.872C118.303 8.872 116.323 9.52 114.979 10.816C113.635 12.112 112.963 13.6 112.963 15.28V17.764H110.983V21.292H112.963V30.472H110.803V34H120.307V30.472H117.607V21.292H123.835Z" fill="#1cd17d"></path></svg><div><h3>Product chrome</h3><p>Use the primary green against near-black app surfaces for maximum recognition.</p></div></div></article>
+            <article class="usage light"><div class="usage-inner"><svg width="132" height="43" viewBox="0 0 132 43" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.64 41.668V0.987998H28.72V41.668H0.64ZM24.868 14.704H27.388V10.6H16.984V14.704H20.368V24.496H20.224L8.416 10.6H2.044V14.704H4.96V29.896H2.44V34H12.7V29.896H9.46V19.168H9.604L22.168 34.036L24.868 34V14.704ZM31.5916 41.668V0.987998H50.5636V41.668H31.5916ZM34.3996 18.916L33.6796 23.128L37.3876 23.524L37.9996 21.22C38.3836 21.028 38.7676 20.908 39.1516 20.86C39.5596 20.788 40.0036 20.752 40.4836 20.752C41.8036 20.752 42.5716 21.148 42.7876 21.94C43.0276 22.732 43.1476 23.548 43.1476 24.388V24.928C42.4036 24.832 41.5156 24.784 40.4836 24.784C38.6356 24.784 36.9076 25.108 35.2996 25.756C33.7156 26.404 32.9236 27.724 32.9236 29.716C32.9236 31.42 33.4636 32.62 34.5436 33.316C35.6236 34.012 36.7516 34.36 37.9276 34.36C39.2476 34.36 40.3276 34.024 41.1676 33.352C42.0316 32.68 42.6916 31.936 43.1476 31.12V31.156C43.3876 33.292 44.5756 34.36 46.7116 34.36C47.7196 34.36 48.6916 34.108 49.6276 33.604L49.5916 31.156C49.3516 31.228 49.1236 31.264 48.9076 31.264C48.1636 31.264 47.7916 30.844 47.7916 30.004V22.948C47.7916 21.1 47.1556 19.72 45.8836 18.808C44.6116 17.896 43.0996 17.44 41.3476 17.44C40.0276 17.44 38.8876 17.548 37.9276 17.764C36.9916 17.956 35.8156 18.34 34.3996 18.916ZM43.1476 27.376C43.0276 28.648 42.6076 29.584 41.8876 30.184C41.1916 30.76 40.4356 31.048 39.6196 31.048C38.9236 31.048 38.4316 30.868 38.1436 30.508C37.8556 30.148 37.7116 29.704 37.7116 29.176C37.7116 28.288 38.0236 27.7 38.6476 27.412C39.2716 27.1 39.9916 26.944 40.8076 26.944C41.1916 26.944 41.5756 26.968 41.9596 27.016C42.3676 27.064 42.7636 27.112 43.1476 27.16V27.376ZM53.4025 41.668V0.987998H85.6945V41.668H53.4025ZM78.0625 34H84.8665V30.508H82.7065V23.056C82.7065 21.136 82.1425 19.72 81.0145 18.808C79.8865 17.896 78.5905 17.44 77.1265 17.44C74.5585 17.44 72.7945 18.604 71.8345 20.932C71.4505 19.756 70.7665 18.88 69.7825 18.304C68.7985 17.728 67.7185 17.44 66.5425 17.44C64.2865 17.44 62.6425 18.364 61.6105 20.212V17.764H54.8425V21.292H56.9665V30.508H54.8065V34H64.7065V30.508H61.6105V24.82C61.6105 23.692 61.8505 22.768 62.3305 22.048C62.8105 21.328 63.6145 20.968 64.7425 20.968C65.6545 20.968 66.3385 21.268 66.7945 21.868C67.2745 22.468 67.5145 23.464 67.5145 24.856V34H74.3185V30.508H72.1585V24.82C72.1585 23.692 72.3985 22.768 72.8785 22.048C73.3825 21.328 74.1865 20.968 75.2905 20.968C76.2025 20.968 76.8865 21.268 77.3425 21.868C77.8225 22.468 78.0625 23.464 78.0625 24.856V34ZM88.5377 41.668V0.987998H106.61V41.668H88.5377ZM105.566 28.888L101.678 28.168C101.582 28.648 101.306 29.188 100.85 29.788C100.418 30.388 99.5777 30.688 98.3297 30.688C96.0497 30.688 94.7777 29.404 94.5137 26.836H105.17C105.338 26.068 105.422 25.288 105.422 24.496C105.398 22.384 104.678 20.68 103.262 19.384C101.87 18.088 100.046 17.44 97.7897 17.44C95.2217 17.44 93.2177 18.28 91.7777 19.96C90.3617 21.616 89.6537 23.692 89.6537 26.188C89.6537 28.9 90.4337 30.94 91.9937 32.308C93.5777 33.676 95.5817 34.36 98.0057 34.36C100.334 34.36 102.146 33.808 103.442 32.704C104.738 31.6 105.446 30.328 105.566 28.888ZM100.634 24.136H94.5497C94.6937 23.128 95.0297 22.312 95.5577 21.688C96.0857 21.064 96.8297 20.752 97.7897 20.752C98.8937 20.752 99.6617 21.112 100.094 21.832C100.55 22.552 100.73 23.32 100.634 24.136ZM109.435 41.668V0.987998H131.683V41.668H109.435ZM123.835 21.292V30.472H121.675V34H130.639V30.472H128.479V17.764H117.607V15.208C117.607 14.512 117.799 13.864 118.183 13.264C118.591 12.664 119.503 12.364 120.919 12.364C121.615 12.364 122.203 12.436 122.683 12.58C123.187 12.7 123.523 12.784 123.691 12.832L124.375 15.136L127.975 14.74L127.255 10.348C126.199 9.796 125.107 9.412 123.979 9.196C122.851 8.98 121.831 8.872 120.919 8.872C118.303 8.872 116.323 9.52 114.979 10.816C113.635 12.112 112.963 13.6 112.963 15.28V17.764H110.983V21.292H112.963V30.472H110.803V34H120.307V30.472H117.607V21.292H123.835Z" fill="#1cd17d"></path></svg><div><h3>Editorial light</h3><p>Green mark remains legible on warm off-white when surrounded by enough quiet space.</p></div></div></article>
+            <article class="usage green"><div class="usage-inner"><svg width="90" height="28" viewBox="0 0 90 28" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0 28V-1H19.2853V28H0ZM16.6398 9.44072H18.3705V6.61594H11.2251V9.44072H13.5492V16.1805H13.4503L5.34056 6.61594H0.964268V9.44072H2.96698V19.8974H1.23624V22.7221H8.28281V19.8974H6.05758V12.5133H6.15648L14.7854 22.7469L16.6398 22.7221V9.44072ZM21.2575 28V1.16825e-05H34.2874V28H21.2575ZM23.186 12.3398L22.6915 15.2389L25.2382 15.5115L25.6585 13.9257C25.9223 13.7936 26.186 13.7109 26.4497 13.6779C26.73 13.6283 27.0349 13.6036 27.3645 13.6036C28.2711 13.6036 28.7987 13.8761 28.947 14.4212C29.1118 14.9664 29.1941 15.5281 29.1941 16.1062V16.4779C28.6832 16.4118 28.0733 16.3788 27.3645 16.3788C26.0953 16.3788 24.9085 16.6018 23.8041 17.0478C22.7162 17.4938 22.1723 18.4024 22.1723 19.7735C22.1723 20.9463 22.5431 21.7723 23.2849 22.2513C24.0266 22.7303 24.8015 22.9699 25.609 22.9699C26.5157 22.9699 27.2574 22.7387 27.8343 22.2761C28.4277 21.8135 28.881 21.3015 29.1941 20.7398V20.7646C29.359 22.2348 30.1749 22.9699 31.642 22.9699C32.3342 22.9699 33.0017 22.7965 33.6447 22.4496L33.6199 20.7646C33.4551 20.8142 33.2984 20.839 33.1501 20.839C32.6392 20.839 32.3838 20.5498 32.3838 19.9717V15.1151C32.3838 13.8431 31.9469 12.8932 31.0734 12.2655C30.1996 11.6378 29.1612 11.3239 27.9579 11.3239C27.0514 11.3239 26.2684 11.3982 25.609 11.5469C24.9662 11.679 24.1586 11.9434 23.186 12.3398ZM29.1941 18.1628C29.1118 19.0383 28.8233 19.6826 28.3288 20.0956C27.8508 20.492 27.3316 20.6903 26.7711 20.6903C26.2931 20.6903 25.9552 20.5664 25.7574 20.3186C25.5596 20.0708 25.4607 19.7653 25.4607 19.4018C25.4607 18.7905 25.675 18.3859 26.1035 18.1876C26.5322 17.9728 27.0267 17.8655 27.587 17.8655C27.8508 17.8655 28.1146 17.8821 28.3784 17.9151C28.6585 17.948 28.9305 17.9812 29.1941 18.0142V18.1628ZM36.2373 28V1.16825e-05H58.4154V28H36.2373ZM53.1738 22.7221H57.8468V20.3186H56.3633V15.1894C56.3633 13.8679 55.9759 12.8932 55.2012 12.2655C54.4266 11.6378 53.5365 11.3239 52.5309 11.3239C50.7673 11.3239 49.5558 12.125 48.8964 13.7274C48.6326 12.918 48.1628 12.3151 47.4871 11.9186C46.8113 11.5221 46.0696 11.3239 45.2618 11.3239C43.7124 11.3239 42.5834 11.9599 41.8745 13.2319V11.5469H37.2263V13.9752H38.6851V20.3186H37.2016V22.7221H44.0009V20.3186H41.8745V16.4036C41.8745 15.6272 42.0394 14.9912 42.369 14.4956C42.6987 14 43.2509 13.7522 44.0256 13.7522C44.6519 13.7522 45.1217 13.9587 45.4349 14.3717C45.7645 14.7847 45.9294 15.4702 45.9294 16.4283V22.7221H50.6024V20.3186H49.1189V16.4036C49.1189 15.6272 49.2838 14.9912 49.6134 14.4956C49.9596 14 50.5117 13.7522 51.27 13.7522C51.8963 13.7522 52.3661 13.9587 52.6793 14.3717C53.0089 14.7847 53.1738 15.4702 53.1738 16.4283V22.7221ZM60.3681 28V1.16825e-05H72.7799V28H60.3681ZM72.0629 19.2036L69.3926 18.708C69.3268 19.0383 69.1372 19.41 68.824 19.823C68.5273 20.2361 67.9504 20.4425 67.0932 20.4425C65.5274 20.4425 64.6538 19.5587 64.4724 17.7912H71.791C71.9064 17.2626 71.964 16.7257 71.964 16.1805C71.9476 14.7268 71.4531 13.554 70.4805 12.662C69.5246 11.7699 68.2718 11.3239 66.7224 11.3239C64.9587 11.3239 63.5823 11.902 62.5933 13.0584C61.6209 14.1982 61.1346 15.6272 61.1346 17.3451C61.1346 19.2118 61.6703 20.6159 62.7417 21.5575C63.8296 22.4991 65.206 22.9699 66.8707 22.9699C68.4696 22.9699 69.7141 22.59 70.6041 21.8301C71.4942 21.0702 71.9806 20.1947 72.0629 19.2036ZM68.6756 15.9328H64.4971C64.596 15.2389 64.8269 14.6772 65.1894 14.2478C65.5521 13.8184 66.0631 13.6036 66.7224 13.6036C67.4806 13.6036 68.0081 13.8513 68.3047 14.3469C68.618 14.8425 68.7416 15.3711 68.6756 15.9328ZM74.7201 28V1.16825e-05H90V28H74.7201ZM84.61 13.9752V20.2938H83.1265V22.7221H89.283V20.2938H87.7995V11.5469H80.3326V9.78762C80.3326 9.30862 80.4646 8.8626 80.7282 8.44957C81.0085 8.03654 81.6348 7.8301 82.6073 7.8301C83.0854 7.8301 83.4892 7.87966 83.8188 7.97877C84.1649 8.06132 84.3958 8.11924 84.5111 8.15222L84.9809 9.73806L87.4533 9.4655L86.9588 6.44249C86.2336 6.0626 85.4837 5.79824 84.7089 5.64957C83.9342 5.5009 83.2337 5.42656 82.6073 5.42656C80.8107 5.42656 79.4508 5.87258 78.5277 6.76461C77.6047 7.65665 77.1431 8.68079 77.1431 9.83718V11.5469H75.7832V13.9752H77.1431V20.2938H75.6596V22.7221H82.187V20.2938H80.3326V13.9752H84.61Z" fill="#07100b"/></svg><div><h3>Green surface</h3><p>Switch to ink or mono treatment when the surface itself carries the brand color.</p></div></div></article>
+          </div>
+          <div class="size-lab">
+            <div class="actual-groups">
+              <div class="actual-group">
+                <div class="padding-head">
+                  <h3>Actual Size Ladder</h3>
+                  <p>These frames use real SVG files. The compact mark is exported from frame 0 of the Lottie asset; the wordmarks use the source logotype SVG or the Lottie final-frame SVG.</p>
+                </div>
+                <div class="actual-grid">
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame favicon" data-asset="compact" data-frame-w="16" data-frame-h="16" data-pad="1" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Favicon / 16px</div>
+                    <span class="padding-spec">16 x 16 frame / 1px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame favicon" data-asset="compact" data-frame-w="32" data-frame-h="32" data-pad="2" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Favicon / 32px</div>
+                    <span class="padding-spec">32 x 32 frame / 2px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="4" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Square app icon / 64px</div>
+                    <span class="padding-spec">64 x 64 frame / 4px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame round" data-asset="compact" data-frame-w="96" data-frame-h="96" data-pad="10" data-shape="round">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Round avatar / 96px</div>
+                    <span class="padding-spec">96px circle / 10px radial padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame light" data-asset="logotype" data-frame-w="120" data-frame-h="40" data-pad="4" data-shape="rect">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype.svg" alt="Namefi logotype">
+                      </div>
+                    </div>
+                    <div class="size-label">Small nav wordmark</div>
+                    <span class="padding-spec">120 x 40 frame / source logotype</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame" data-asset="lottieWordmark" data-frame-w="220" data-frame-h="80" data-pad="14" data-shape="rect">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-lottie-wordmark.svg" alt="Namefi Lottie wordmark">
+                      </div>
+                    </div>
+                    <div class="asset-title">
+                      <div class="size-label">Animated final frame</div>
+                      <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-lottie-wordmark.svg" download aria-label="Download Lottie final wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                    </div>
+                    <span class="padding-spec">220 x 80 frame / Lottie frame 29</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame light" data-asset="logotype" data-frame-w="280" data-frame-h="96" data-pad="24" data-shape="rect">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype.svg" alt="Namefi logotype">
+                      </div>
+                    </div>
+                    <div class="size-label">Large wordmark</div>
+                    <span class="padding-spec">280 x 96 frame / source logotype</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame green" data-asset="logotypeMono" data-frame-w="160" data-frame-h="56" data-pad="10" data-shape="rect">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype-mono-ink.svg" alt="Namefi mono wordmark">
+                      </div>
+                    </div>
+                    <div class="size-label">Mono on green</div>
+                    <span class="padding-spec">160 x 56 frame / mono source SVG</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                </div>
+              </div>
+              <div class="actual-group">
+                <div class="padding-head">
+                  <h3>Icon Padding Matrix</h3>
+                  <p>All six cards below are 64 x 64 frames using the actual compact SVG. The square examples maximize against the inner rectangle; the round examples fit the compact mark inside the circle with radial padding.</p>
+                </div>
+                <div class="actual-grid padding-matrix">
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame favicon" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="2" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Square max</div>
+                    <span class="padding-spec">2px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="8" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Square tight</div>
+                    <span class="padding-spec">8px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="16" data-shape="square">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Square roomy</div>
+                    <span class="padding-spec">16px padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame round" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="4" data-shape="round">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Round max</div>
+                    <span class="padding-spec">4px radial padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame round" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="10" data-shape="round">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Round balanced</div>
+                    <span class="padding-spec">10px radial padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                  <article class="actual-frame-card">
+                    <div class="actual-stage">
+                      <div class="actual-frame round" data-asset="compact" data-frame-w="64" data-frame-h="64" data-pad="18" data-shape="round">
+                        <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact.svg" alt="Namefi compact mark">
+                      </div>
+                    </div>
+                    <div class="size-label">Round roomy</div>
+                    <span class="padding-spec">18px radial padding</span>
+                    <span class="actual-measure"></span>
+                  </article>
+                </div>
+              </div>
+            </div>
+            <div class="mono-strip">
+              <article class="mono-card">
+                <div class="mono-preview dark" style="--mono-color: #f5fcf9; color: #f5fcf9">
+                  <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact-white.svg" style="--mark-w: 86px; --mark-h: 61px" alt="Namefi compact mono mark in white">
+                </div>
+                <div class="mono-body">
+                  <strong>Mono compact / white</strong>
+                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-white.svg" download aria-label="Download white compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+              </article>
+              <article class="mono-card">
+                <div class="mono-preview light" style="--mono-color: #07100b; color: #07100b">
+                  <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-compact-black.svg" style="--mark-w: 86px; --mark-h: 61px" alt="Namefi compact mono mark in black">
+                </div>
+                <div class="mono-body">
+                  <strong>Mono compact / black</strong>
+                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-black.svg" download aria-label="Download black compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+              </article>
+              <article class="mono-card">
+                <div class="mono-preview steel" style="--mono-color: #1cd17d; color: #1cd17d">
+                  <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype-mono-green.svg" style="--mark-w: 154px; --mark-h: 48px" alt="Namefi mono wordmark in green">
+                </div>
+                <div class="mono-body">
+                  <strong>Mono wordmark / green</strong>
+                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-green.svg" download aria-label="Download green mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+              </article>
+              <article class="mono-card">
+                <div class="mono-preview green" style="--mono-color: #07100b; color: #07100b">
+                  <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype-mono-ink.svg" style="--mark-w: 154px; --mark-h: 48px" alt="Namefi mono wordmark in ink">
+                </div>
+                <div class="mono-body">
+                  <strong>Mono wordmark / ink</strong>
+                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-ink.svg" download aria-label="Download ink mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+              </article>
+              <article class="mono-card">
+                <div class="mono-preview dark">
+                  <img class="svg-mark" src="/r/blog-assets/brand-kit/namefi-logotype-mono-white.svg" style="--mark-w: 154px; --mark-h: 48px" alt="Namefi mono wordmark in white">
+                </div>
+                <div class="mono-body">
+                  <strong>Mono wordmark / white</strong>
+                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-white.svg" download aria-label="Download white mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="shell">
+        Namefi reserves all rights in its name, logos, marks, and related brand assets.
+      </div>
+    </footer>
+    <script src="/r/blog-assets/brand-kit/lottie_svg.min.js"></script>
+    <script src="/r/blog-assets/brand-kit/lottie-data.js"></script>
+    <script>
+      (() => {
+        const animationPath = './namefi_to_nfi.json';
+        const morphMs = 1001;
+
+        function addFallback(rail) {
+          const canvas = rail.querySelector('.lottie-canvas');
+          if (!canvas || canvas.childElementCount) return;
+          const compact = rail.dataset.expanded === 'false';
+          canvas.innerHTML = `
+            <svg class="lottie-fallback" viewBox="0 0 80 24" aria-hidden="true">
+              <rect x="0" y="0" width="${compact ? 34 : 80}" height="24" fill="#1cd17d"/>
+              <text x="5" y="17.2" fill="#07100b" font-family="Georgia, serif" font-size="17" font-weight="700">${compact ? 'Nfi' : 'Namefi'}</text>
+            </svg>
+          `;
+        }
+
+        function setExpanded(rail, animation, expanded) {
+          const frame = expanded ? 29 : 0;
+          rail.dataset.expanded = String(expanded);
+          if (!animation) return;
+          animation.setDirection(expanded ? 1 : -1);
+          animation.playSegments(expanded ? [0, 29] : [29, 0], true);
+          window.setTimeout(() => animation.goToAndStop(frame, true), morphMs + 40);
+        }
+
+        function applyActualFrames() {
+          const assetSize = {
+            compact: { w: 33.93939394, h: 24 },
+            logotype: { w: 132, h: 43 },
+            logotypeMono: { w: 90, h: 28 },
+            lottieWordmark: { w: 80, h: 24 },
+          };
+          const fmt = (value) => {
+            const rounded = Math.round(value * 10) / 10;
+            return Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(1);
+          };
+
+          document.querySelectorAll('.actual-frame[data-asset]').forEach((frame) => {
+            const dims = assetSize[frame.dataset.asset];
+            if (!dims) return;
+
+            const frameW = Number(frame.dataset.frameW || 64);
+            const frameH = Number(frame.dataset.frameH || frameW);
+            const pad = Number(frame.dataset.pad || 0);
+            const innerW = Math.max(frameW - pad * 2, 1);
+            const innerH = Math.max(frameH - pad * 2, 1);
+            const shape = frame.dataset.shape || 'rect';
+            let scale = Math.min(innerW / dims.w, innerH / dims.h);
+
+            if (shape === 'round') {
+              const radius = Math.max(Math.min(frameW, frameH) / 2 - pad, 1);
+              const halfDiagonal = Math.hypot(dims.w / 2, dims.h / 2);
+              scale = Math.min(scale, radius / halfDiagonal);
+            }
+
+            const markW = dims.w * scale;
+            const markH = dims.h * scale;
+            frame.style.setProperty('--frame-w', `${frameW}px`);
+            frame.style.setProperty('--frame-h', `${frameH}px`);
+            frame.style.setProperty('--pad', `${pad}px`);
+            frame.style.setProperty('--mark-w', `${markW}px`);
+            frame.style.setProperty('--mark-h', `${markH}px`);
+
+            const measure = frame.closest('.actual-frame-card')?.querySelector('.actual-measure');
+            if (measure) {
+              const padLabel = shape === 'round' ? 'radial padding' : 'padding';
+              measure.textContent = `Actual mark ${fmt(markW)} x ${fmt(markH)}px in ${fmt(frameW)} x ${fmt(frameH)}px; ${fmt(pad)}px ${padLabel}.`;
+            }
+          });
+        }
+
+        async function boot() {
+          applyActualFrames();
+          const rails = Array.from(document.querySelectorAll('.lottie-rail'));
+          if (!rails.length) return;
+          if (!window.lottie) {
+            rails.forEach(addFallback);
+            return;
+          }
+
+          let data = window.NAMEFI_LOTTIE_DATA;
+          if (!data) {
+            try {
+              const response = await fetch(animationPath);
+              data = await response.json();
+            } catch {
+              rails.forEach(addFallback);
+              return;
+            }
+          }
+
+          rails.forEach((rail, index) => {
+            const canvas = rail.querySelector('.lottie-canvas');
+            const expanded = rail.dataset.expanded !== 'false';
+            const animation = window.lottie.loadAnimation({
+              container: canvas,
+              renderer: 'svg',
+              loop: false,
+              autoplay: false,
+              animationData: JSON.parse(JSON.stringify(data)),
+              rendererSettings: { preserveAspectRatio: 'xMinYMid meet' },
+            });
+
+            animation.addEventListener('DOMLoaded', () => {
+              animation.goToAndStop(expanded ? 29 : 0, true);
+              if (rail.dataset.autoplay === 'true') {
+                let open = false;
+                window.setTimeout(() => {
+                  setExpanded(rail, animation, true);
+                  open = true;
+                  window.setInterval(() => {
+                    open = !open;
+                    setExpanded(rail, animation, open);
+                  }, 2100);
+                }, 650 + index * 70);
+              }
+            });
+          });
+        }
+
+        boot();
+      })();
+    </script>
+  </body>
+</html>
