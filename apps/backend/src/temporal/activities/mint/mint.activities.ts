@@ -14,10 +14,13 @@ import {
   type PublicClient,
   type SendTransactionErrorType,
   type WaitForTransactionReceiptErrorType,
+  BaseError,
+  ContractFunctionRevertedError,
   encodeFunctionData,
   formatUnits,
   getContract,
   parseUnits,
+  zeroAddress,
 } from 'viem';
 import { nftIdFromDomainName } from '@namefi-astra/utils/nft-hash';
 import { resolve } from '../../../utils/resolve';
@@ -537,6 +540,59 @@ export const prepareTxToBurnNamefiNftByName = async (
       nonce: preparedTx.nonce,
     },
   };
+};
+
+/**
+ * On-chain check: has the Namefi NFT for `domainNameLdh` been burned on
+ * `chainId`?
+ *
+ * Reads `ownerOf(tokenId)` and treats the token as burned when the owner is the
+ * zero address (or when the read reverts because the token no longer exists).
+ * Environments that share the same NFT contract can race to burn the same
+ * token — if another env already burned it, our burn TX reverts. This lets the
+ * caller skip the redundant TX and just record the burn.
+ *
+ * IMPORTANT: only a genuine zero-address owner or contract *revert* counts as
+ * "burned". Transient RPC/network failures are re-thrown so the activity
+ * retries — we must never mistake an unreachable node for a burned NFT and skip
+ * a real burn.
+ */
+export const isNamefiNftBurned = async (
+  chainId: number,
+  domainNameLdh: string,
+): Promise<boolean> => {
+  const ctx = Context.current();
+  const tokenId = nftIdFromDomainName(domainNameLdh);
+  const publicClient = getViemPublicClient(chainId);
+
+  try {
+    const owner = await publicClient.readContract({
+      address: NAMEFI_NFT_CONTRACT_ADDRESS,
+      abi: NftAbi,
+      functionName: 'ownerOf',
+      args: [tokenId],
+    });
+    const burned =
+      typeof owner !== 'string' || owner.toLowerCase() === zeroAddress;
+    ctx.log.info(
+      `NFT burned-check for ${domainNameLdh} on chain ${chainId}: ${burned ? 'burned (owner is zero address)' : 'still minted'}`,
+    );
+    return burned;
+  } catch (error) {
+    const reverted =
+      error instanceof BaseError &&
+      error.walk((e) => e instanceof ContractFunctionRevertedError) !== null;
+    if (reverted) {
+      ctx.log.info(
+        `ownerOf reverted for ${domainNameLdh} on chain ${chainId} — NFT is burned (non-existent token)`,
+      );
+      return true;
+    }
+    ctx.log.error(
+      `Failed to read ownerOf for ${domainNameLdh} on chain ${chainId} (non-revert error) - rethrowing for retry`,
+    );
+    throw error;
+  }
 };
 
 export async function getInitalGasPriceMultiplier(chainId: number) {

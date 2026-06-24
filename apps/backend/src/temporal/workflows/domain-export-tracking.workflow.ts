@@ -1,7 +1,8 @@
 import { executeChild, proxyActivities } from '@temporalio/workflow';
 import type { DomainsActivities } from '../activities/domain';
 import * as workflow from '@temporalio/workflow';
-import { TEMPORAL_QUEUES } from '../shared';
+import { TEMPORAL_ENUMS, TEMPORAL_QUEUES } from '../shared';
+import { typedProxyActivities } from '../shared/workflow-helpers/typed-proxy-activities';
 import { ensureNftIsLockedAndBurnByNftName } from './mint.workflow';
 
 // Short timeout for simple DB queries
@@ -30,6 +31,18 @@ const {
   startToCloseTimeout: '5 minutes',
   retry: {
     maximumAttempts: 3,
+  },
+});
+
+// On-chain NFT reads run on the MINT queue (where wallet/RPC config lives),
+// same as the burn child workflow.
+const { isNamefiNftBurned } = typedProxyActivities({
+  temporalEnum: TEMPORAL_ENUMS.MINT,
+  options: {
+    startToCloseTimeout: '30 seconds',
+    retry: {
+      maximumAttempts: 3,
+    },
   },
 });
 
@@ -347,6 +360,44 @@ export async function domainExportTrackingWorkflow(
               reason: burnCheck.reason,
             });
 
+            // Idempotency: another environment sharing this NFT contract may
+            // have already burned the token. Re-sending the burn TX would
+            // revert, so check on-chain first and just record the burn if it's
+            // already gone. On an inconclusive read, fall through to the burn
+            // (the child workflow has its own guards); never skip on doubt.
+            const alreadyBurned = await isNamefiNftBurned(
+              record.chainId,
+              record.domain,
+            ).catch((burnedCheckError) => {
+              workflow.log.warn(
+                'NFT burned-check failed; proceeding to burn attempt',
+                {
+                  domain: record.domain,
+                  chainId: record.chainId,
+                  error: burnedCheckError,
+                },
+              );
+              return false;
+            });
+
+            if (alreadyBurned) {
+              await recordNftBurn({
+                trackingRecordId: record.id,
+                domain: record.domain,
+                chainId: record.chainId,
+                alreadyBurned: true,
+              });
+              nftsBurned++;
+              workflow.log.info(
+                'NFT already burned on-chain; recorded without sending a TX',
+                {
+                  domain: record.domain,
+                  chainId: record.chainId,
+                },
+              );
+              continue;
+            }
+
             try {
               const burnTxHash = await executeChild(
                 ensureNftIsLockedAndBurnByNftName,
@@ -381,6 +432,44 @@ export async function domainExportTrackingWorkflow(
                 txHash: burnTxHash,
               });
             } catch (burnError) {
+              // The burn may have failed precisely because another environment
+              // burned the token between our pre-check and the child workflow.
+              // Re-check on-chain: if it's already gone, the desired state is
+              // reached — record it as already burned instead of a failure.
+              const burnedAfterFailure = await isNamefiNftBurned(
+                record.chainId,
+                record.domain,
+              ).catch((burnedCheckError) => {
+                workflow.log.warn(
+                  'Post-failure burned-check failed; recording burn failure',
+                  {
+                    domain: record.domain,
+                    chainId: record.chainId,
+                    error: burnedCheckError,
+                  },
+                );
+                return false;
+              });
+
+              if (burnedAfterFailure) {
+                await recordNftBurn({
+                  trackingRecordId: record.id,
+                  domain: record.domain,
+                  chainId: record.chainId,
+                  alreadyBurned: true,
+                });
+                nftsBurned++;
+                workflow.log.info(
+                  'Burn failed but NFT is already gone on-chain; recorded as already burned',
+                  {
+                    domain: record.domain,
+                    chainId: record.chainId,
+                    error: burnError,
+                  },
+                );
+                continue;
+              }
+
               nftBurnsFailed++;
               await recordNftBurn({
                 trackingRecordId: record.id,

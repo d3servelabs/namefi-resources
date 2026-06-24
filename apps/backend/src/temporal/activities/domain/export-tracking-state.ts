@@ -33,6 +33,68 @@ export type TransferDecisionAction =
   | 'UNDETERMINED';
 
 /**
+ * Approval-recency leeway for the "previously-pending transfer is now back in
+ * our account" heuristic. Registrar removal can lag the user's approval, so an
+ * *approved* row that is still in our account is graded by how long ago it was
+ * approved rather than failed outright. See {@link classifyApprovedStillInAccountFailure}.
+ */
+export const EXPORT_FAILURE_GRACE_HOURS = 8;
+export const EXPORT_FAILURE_REVIEW_HOURS = 24;
+
+/**
+ * Outcome tier for a previously-pending transfer that is now back in our
+ * account:
+ *  - `keep_watching`      → within the grace window; likely propagation lag,
+ *                           leave the row pending and re-check next tick.
+ *  - `needs_admin_review` → past grace but within the review window; escalate
+ *                           to a human rather than auto-failing.
+ *  - `failed`             → past the review window, or never approved.
+ */
+export type StillInAccountFailureTier =
+  | 'keep_watching'
+  | 'needs_admin_review'
+  | 'failed';
+
+/**
+ * Grade a still-in-account previously-pending transfer by how long ago it was
+ * approved. `null` (never approved) maps straight to `failed` — leeway only
+ * applies to approvals, since an unapproved transfer that didn't leave is a
+ * plain failure.
+ */
+export function classifyApprovedStillInAccountFailure(
+  hoursSinceApproval: number | null,
+): StillInAccountFailureTier {
+  if (hoursSinceApproval === null) {
+    return 'failed';
+  }
+  if (hoursSinceApproval < EXPORT_FAILURE_GRACE_HOURS) {
+    return 'keep_watching';
+  }
+  if (hoursSinceApproval < EXPORT_FAILURE_REVIEW_HOURS) {
+    return 'needs_admin_review';
+  }
+  return 'failed';
+}
+
+/** Latest of the client/admin approval timestamps, or null if neither is set. */
+export function mostRecentApprovalAt(
+  clientApprovedAt: Date | string | null,
+  adminVerifiedAt: Date | string | null,
+): Date | null {
+  const toDate = (value: Date | string | null): Date | null =>
+    value ? (value instanceof Date ? value : new Date(value)) : null;
+  const candidates = [toDate(clientApprovedAt), toDate(adminVerifiedAt)].filter(
+    (date): date is Date => date !== null && !Number.isNaN(date.getTime()),
+  );
+  if (candidates.length === 0) {
+    return null;
+  }
+  return candidates.reduce((latest, current) =>
+    current > latest ? current : latest,
+  );
+}
+
+/**
  * Snapshot of evidence that produced a single status transition. Mirrors
  * the per-source shape stored on `domainExportTracking.latestEvidence` so
  * the timeline UI can render every historical decision the same way it

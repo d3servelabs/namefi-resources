@@ -4,11 +4,15 @@ import {
   appendExportTrackingStatusHistory,
   canApproveExportTrackingStatus,
   canResolveExportTrackingStatus,
+  classifyApprovedStillInAccountFailure,
+  EXPORT_FAILURE_GRACE_HOURS,
+  EXPORT_FAILURE_REVIEW_HOURS,
   getExportTrackingEmailType,
   isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
   isTerminalStatus,
   mapDecisionToPersistedStatus,
+  mostRecentApprovalAt,
 } from './export-tracking-state';
 
 describe('export-tracking-state', () => {
@@ -252,6 +256,73 @@ describe('export-tracking-state', () => {
           },
         },
       ]);
+    });
+  });
+
+  describe('classifyApprovedStillInAccountFailure', () => {
+    it('fails outright when there is no approval (null)', () => {
+      expect(classifyApprovedStillInAccountFailure(null)).toBe('failed');
+    });
+
+    it('keeps watching strictly inside the grace window', () => {
+      expect(classifyApprovedStillInAccountFailure(0)).toBe('keep_watching');
+      expect(
+        classifyApprovedStillInAccountFailure(EXPORT_FAILURE_GRACE_HOURS - 1),
+      ).toBe('keep_watching');
+    });
+
+    it('escalates to admin review at the grace boundary and within the review window', () => {
+      // Boundary: exactly GRACE hours is no longer "keep watching".
+      expect(
+        classifyApprovedStillInAccountFailure(EXPORT_FAILURE_GRACE_HOURS),
+      ).toBe('needs_admin_review');
+      expect(
+        classifyApprovedStillInAccountFailure(EXPORT_FAILURE_REVIEW_HOURS - 1),
+      ).toBe('needs_admin_review');
+    });
+
+    it('fails at and beyond the review boundary', () => {
+      expect(
+        classifyApprovedStillInAccountFailure(EXPORT_FAILURE_REVIEW_HOURS),
+      ).toBe('failed');
+      expect(
+        classifyApprovedStillInAccountFailure(
+          EXPORT_FAILURE_REVIEW_HOURS + 100,
+        ),
+      ).toBe('failed');
+    });
+  });
+
+  describe('mostRecentApprovalAt', () => {
+    it('returns null when neither timestamp is set', () => {
+      expect(mostRecentApprovalAt(null, null)).toBeNull();
+    });
+
+    it('returns the only set timestamp', () => {
+      const client = new Date('2026-02-23T10:00:00.000Z');
+      expect(mostRecentApprovalAt(client, null)).toEqual(client);
+      expect(mostRecentApprovalAt(null, client)).toEqual(client);
+    });
+
+    it('returns the later of the two timestamps', () => {
+      const earlier = new Date('2026-02-23T10:00:00.000Z');
+      const later = new Date('2026-02-23T18:00:00.000Z');
+      expect(mostRecentApprovalAt(earlier, later)).toEqual(later);
+      expect(mostRecentApprovalAt(later, earlier)).toEqual(later);
+    });
+
+    it('parses ISO string timestamps', () => {
+      const result = mostRecentApprovalAt(
+        '2026-02-23T10:00:00.000Z',
+        '2026-02-23T18:00:00.000Z',
+      );
+      expect(result?.toISOString()).toBe('2026-02-23T18:00:00.000Z');
+    });
+
+    it('ignores invalid date strings', () => {
+      const valid = new Date('2026-02-23T10:00:00.000Z');
+      expect(mostRecentApprovalAt('not-a-date', valid)).toEqual(valid);
+      expect(mostRecentApprovalAt('not-a-date', null)).toBeNull();
     });
   });
 });

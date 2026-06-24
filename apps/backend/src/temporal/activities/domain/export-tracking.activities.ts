@@ -55,12 +55,14 @@ import { privyClient } from '../../../trpc/utils';
 import {
   appendExportTrackingStatusHistory,
   actionToTrackingStatus,
+  classifyApprovedStillInAccountFailure,
   EXPORT_BURN_ELIGIBLE_STATUSES,
   exportEvidenceMeaningfullyChanged,
   isAdminApprovedForPendingNotification,
   isBurnEligibleExportStatus,
   isTerminalStatus,
   mapDecisionToPersistedStatus,
+  mostRecentApprovalAt,
   type DomainExportTrackingStatus,
   type ExportTrackingStatusHistoryEntry,
   type TransferDecisionAction,
@@ -1927,13 +1929,85 @@ export async function checkSinglePendingTransfer(input: {
     const stillInAccount = accountCheck?.status === 'negative';
     if (stillInAccount) {
       const now = new Date();
+
+      // Registrar removal can lag the user's approval, so an *approved* row
+      // that is still in our account may just be mid-propagation rather than a
+      // failed transfer. Apply approval-recency leeway before failing:
+      //   - within the grace window  → keep watching (stay pending).
+      //   - within the review window → escalate to admin review (NOT failed).
+      //   - otherwise / unapproved   → TRANSFER_FAILED.
+      const approvedAt = mostRecentApprovalAt(
+        clientApprovedAt,
+        adminVerifiedAt,
+      );
+      const hoursSinceApproval = approvedAt
+        ? differenceInHours(now, approvedAt)
+        : null;
+      const failureTier =
+        classifyApprovedStillInAccountFailure(hoursSinceApproval);
+
+      if (failureTier === 'keep_watching') {
+        await db
+          .update(domainExportTrackingTable)
+          .set({
+            lastCheckedAt: now,
+            eppStatuses,
+            whoisData: rdapData as Json,
+            latestEvidence,
+          })
+          .where(eq(domainExportTrackingTable.id, id));
+        logger.debug(
+          { domain, hoursSinceApproval },
+          'Approved transfer still in account within grace window — keep watching',
+        );
+        return { action: 'still_pending', newStatus: currentStatus };
+      }
+
+      if (failureTier === 'needs_admin_review') {
+        const reviewHistory = appendExportTrackingStatusHistory(
+          statusHistory as ExportTrackingStatusHistoryEntry[] | null,
+          'NEEDS_ADMIN_REVIEW',
+          {
+            now,
+            reason: `Approved transfer still in our account ~${hoursSinceApproval}h after approval — needs admin review (registrar removal may be delayed)`,
+            evidence: { ...latestEvidence, actor: 'workflow' },
+            eppStatuses,
+          },
+        );
+        await db
+          .update(domainExportTrackingTable)
+          .set({
+            previousStatus: currentStatus as DomainExportTrackingStatus,
+            status: 'NEEDS_ADMIN_REVIEW',
+            statusHistory: reviewHistory,
+            eppStatuses,
+            whoisData: rdapData as Json,
+            latestEvidence,
+            statusChangedAt: now,
+            lastCheckedAt: now,
+          })
+          .where(eq(domainExportTrackingTable.id, id));
+        logger.debug(
+          { domain, hoursSinceApproval },
+          'Approved transfer still in account past grace — escalating to admin review',
+        );
+        return {
+          action: 'completed',
+          newStatus: 'NEEDS_ADMIN_REVIEW',
+          domain,
+          chainId,
+        };
+      }
+
       const updatedHistory = appendExportTrackingStatusHistory(
         statusHistory as ExportTrackingStatusHistoryEntry[] | null,
         'TRANSFER_FAILED',
         {
           now,
           reason:
-            'Heuristic: previously-pending transfer cleared and domain is back in our account — treating as failed transfer',
+            hoursSinceApproval === null
+              ? 'Heuristic: previously-pending transfer cleared and domain is back in our account — treating as failed transfer'
+              : `Approved transfer still in our account ~${hoursSinceApproval}h after approval (past review window) — treating as failed transfer`,
           evidence: { ...latestEvidence, actor: 'workflow' },
           eppStatuses,
         },
@@ -2739,16 +2813,23 @@ export async function recordNftBurn(input: {
   domain: NamefiNormalizedDomain;
   chainId: number;
   txHash?: string;
+  /**
+   * The NFT was found already burned on-chain (e.g. by another environment
+   * sharing the same contract), so no burn TX was sent. Resolve the row
+   * without a tx hash.
+   */
+  alreadyBurned?: boolean;
   error?: string;
 }): Promise<void> {
-  const { trackingRecordId, domain, chainId, txHash, error } = input;
+  const { trackingRecordId, domain, chainId, txHash, alreadyBurned, error } =
+    input;
 
   logger.debug(
-    { trackingRecordId, domain, chainId, txHash, error },
+    { trackingRecordId, domain, chainId, txHash, alreadyBurned, error },
     'Recording NFT burn result',
   );
 
-  if (txHash) {
+  if (txHash || alreadyBurned) {
     const existingRecord = await db
       .select({
         id: domainExportTrackingTable.id,
@@ -2766,22 +2847,28 @@ export async function recordNftBurn(input: {
     const record = existingRecord[0];
     if (!record) {
       logger.warn(
-        { trackingRecordId, domain, chainId, txHash },
-        'No unburned export-tracking row found for successful NFT burn',
+        { trackingRecordId, domain, chainId, txHash, alreadyBurned },
+        'No unburned export-tracking row found for NFT burn result',
       );
       return;
     }
 
+    const resolveReason = txHash
+      ? `NFT burn confirmed (tx ${txHash}); marking export tracking as resolved.`
+      : 'NFT already burned on-chain (by another environment); marking export tracking as resolved without a burn transaction.';
+    const decisionReason = txHash
+      ? 'NFT burn transaction landed on-chain'
+      : 'NFT already burned on-chain; no burn transaction was sent';
     const updatedHistory = appendExportTrackingStatusHistory(
       (record.statusHistory as ExportTrackingStatusHistoryEntry[] | null) ?? [],
       'RESOLVED',
       {
-        reason: `NFT burn confirmed (tx ${txHash}); marking export tracking as resolved.`,
+        reason: resolveReason,
         evidence: {
           actor: 'system',
           checkedAt: new Date().toISOString(),
           decisionAction: 'RESOLVED',
-          decisionReason: 'NFT burn transaction landed on-chain',
+          decisionReason,
         },
       },
     );
@@ -2793,15 +2880,15 @@ export async function recordNftBurn(input: {
         status: 'RESOLVED',
         statusHistory: updatedHistory,
         nftBurnedAt: new Date(),
-        nftBurnTxHash: txHash,
+        nftBurnTxHash: txHash ?? null,
         nftBurnLastError: null,
         isActive: false,
         updatedAt: new Date(),
       })
       .where(eq(domainExportTrackingTable.id, record.id));
     logger.debug(
-      { trackingRecordId, domain, chainId, txHash },
-      'Recorded successful NFT burn',
+      { trackingRecordId, domain, chainId, txHash, alreadyBurned },
+      'Recorded NFT burn result (resolved)',
     );
   } else if (error) {
     await db
