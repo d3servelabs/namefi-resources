@@ -22,6 +22,15 @@ import {
 } from 'react';
 import { useConsentIdentify } from '@/hooks/use-consent-identify';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from '@/hooks/use-skip-auth';
+import {
+  clearPerfSpan,
+  recordPerfSince,
+  startPerfSpan,
+} from '@/lib/perf/marks';
+
+// Per-attempt key for the sign-in timing span, so overlapping login attempts
+// never measure one attempt's completion against another's start.
+const signinPerfSpanKey = (requestId: number) => `signin:${requestId}`;
 import { withFallbackContactEmail } from './auth-display-profile';
 import type { LoginModalOptions, PrivyEvents } from '@privy-io/react-auth';
 import { TRPC_INCLUDE_PRIVY_ID_TOKEN_CONTEXT_KEY } from '@/lib/trpc-request-headers';
@@ -344,6 +353,8 @@ export function AuthProvider({
           current?.id === requestId ? null : current,
         );
       } else {
+        // Login was triggered without error == the Privy modal is now shown.
+        recordPerfSince(signinPerfSpanKey(requestId), 'signin.click_to_modal');
         pending.resolve();
         setLoginRequest((current) =>
           current?.id === requestId ? null : current,
@@ -356,12 +367,16 @@ export function AuthProvider({
 
   const handleLoginAuthenticated = useCallback(
     (requestId: number, result: AuthLoginSettledResult) => {
+      const spanKey = signinPerfSpanKey(requestId);
+      recordPerfSince(spanKey, 'signin.click_to_authed');
+      clearPerfSpan(spanKey);
       completeLoginRequest(requestId, result.privyUserId);
     },
     [completeLoginRequest],
   );
 
   const handleLoginFailed = useCallback((requestId: number, error: unknown) => {
+    clearPerfSpan(signinPerfSpanKey(requestId));
     const pending = loginRequestResolversRef.current.get(requestId);
     if (pending) {
       pending.reject(error);
@@ -427,6 +442,12 @@ export function AuthProvider({
       nextLoginRequestIdRef.current = requestId;
       const nextRequest = { ...request, id: requestId };
 
+      // Anchor the sign-in timing span here, at the single funnel every login
+      // path goes through (sidebar button, error page, hunt vote, post-auth
+      // intent). Keying by requestId keeps `signin.click_to_*` measured from
+      // THIS attempt's start, so a concurrent/overlapping login can't skew it.
+      startPerfSpan(signinPerfSpanKey(requestId));
+
       for (const pending of loginRequestResolversRef.current.values()) {
         pending.resolve();
       }
@@ -450,6 +471,7 @@ export function AuthProvider({
         }
 
         void mountPrivyLoginRuntime().catch((error) => {
+          clearPerfSpan(signinPerfSpanKey(requestId));
           setLoginRequest((current) =>
             current?.id === requestId ? null : current,
           );

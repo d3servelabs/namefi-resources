@@ -1,8 +1,16 @@
 'use client';
 
 import { useGoogleAnalyticsInteractionLogger } from '@/hooks/use-analytics';
+import { usePerfFlagSync } from '@/hooks/use-perf-flag';
 import type { InteractionLoggingEvent } from '@/lib/analytics-events';
-import { type ReactNode, createContext, useCallback, useContext } from 'react';
+import { recordPerfOnce } from '@/lib/perf/marks';
+import {
+  type ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 
 /**
  * Context for providing interaction logging capabilities to components
@@ -36,6 +44,14 @@ export function InteractionLoggersProvider({
   children,
 }: InteractionLoggersProviderProps) {
   const { logEvent } = useGoogleAnalyticsInteractionLogger();
+
+  // Sync the ?perf=1 teammate flag and stamp the app-shell hydration milestone.
+  // This provider mounts high in the tree, so its first commit is a good proxy
+  // for "the shell became interactive".
+  usePerfFlagSync();
+  useEffect(() => {
+    recordPerfOnce('app.hydrate');
+  }, []);
 
   const logEventWithInteractionLoggers = useCallback(
     (event: InteractionLoggingEvent) => {

@@ -27,3 +27,10 @@ To run the frontend in development mode:
 ```bash
 INFISICAL_TOKEN={TOKEN} bun with-env dev
 ```
+
+## Guides
+
+- [Performance instrumentation (RUM)](docs/dev-guides/performance-instrumentation.md) —
+  real-user timing for hydration, sidebar activation, and sign-in. Profile any
+  session (incl. production) with `?perf=1`; a sampled share of traffic ships to
+  Datadog for percentiles.

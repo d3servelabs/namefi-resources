@@ -444,6 +444,7 @@ function loadDatadogLogs(): Promise<DatadogLogs | null> {
       // for runtime errors so Datadog receives the original Error object.
       startRuntimeErrorCapture(datadogLogs);
       flushStartupCapture(datadogLogs);
+      flushPerfBuffer(datadogLogs);
       return datadogLogs;
     } catch {
       // SDK failed to load/init: the startup window is effectively over, so
@@ -493,6 +494,52 @@ export async function logDatadogError(
   try {
     const datadogLogs = await loadDatadogLogs();
     datadogLogs?.logger.error(message, context, error);
+  } catch {
+    // Never let observability failures surface to fire-and-forget callers.
+  }
+}
+
+// Perf measures (`@/lib/perf`) must NOT eagerly init Datadog: forcing the SDK
+// import/init pulls it onto the exact hydration/interaction window they measure,
+// biasing `sidebar.activate` / `signin.*` on sampled sessions. Instead buffer
+// them and flush once the (already idle-scheduled) init — or any error-triggered
+// load — completes. The values were captured at measure time, so a delayed flush
+// reports the same numbers.
+const MAX_BUFFERED_PERF_LOGS = 100;
+let bufferedPerfLogs: Array<{
+  message: string;
+  context: Record<string, unknown>;
+}> = [];
+let readyDatadogLogs: DatadogLogs | null = null;
+
+function flushPerfBuffer(datadogLogs: DatadogLogs) {
+  readyDatadogLogs = datadogLogs;
+  const buffered = bufferedPerfLogs;
+  bufferedPerfLogs = [];
+  for (const entry of buffered) {
+    datadogLogs.logger.info(entry.message, entry.context);
+  }
+}
+
+/**
+ * Record a perf measure (`@/lib/perf`) for Datadog WITHOUT forcing an eager SDK
+ * load. If init has already completed, log immediately; otherwise buffer
+ * (bounded) until the idle-scheduled init drains it — so sampled instrumentation
+ * never competes with the first-paint/hydration work it is measuring.
+ * Synchronous and fire-and-forget.
+ */
+export function logDatadogPerf(
+  message: string,
+  context: Record<string, unknown>,
+) {
+  try {
+    if (readyDatadogLogs) {
+      readyDatadogLogs.logger.info(message, context);
+      return;
+    }
+    if (bufferedPerfLogs.length < MAX_BUFFERED_PERF_LOGS) {
+      bufferedPerfLogs.push({ message, context });
+    }
   } catch {
     // Never let observability failures surface to fire-and-forget callers.
   }

@@ -45,6 +45,14 @@ export const configSchema = z.object({
     .string()
     .default('pub8e11bd5c37f5798e2df1b8b503c24ed8'),
   DATADOG_LOGS_SESSION_SAMPLE_RATE: z.number().min(0).max(100).default(100),
+  /**
+   * Percentage (0–100) of browser sessions that ship client performance
+   * measures (`@/lib/perf`) to Datadog. Rolled once per session and cached, so
+   * a sampled session reports all of its interaction timings (sidebar
+   * activation, sign-in, hydration). The `?perf=1` teammate flag forces a
+   * session in regardless of this rate. Set to 0 to disable automatic sampling.
+   */
+  PERF_SAMPLE_RATE: z.number().min(0).max(100).default(10),
   LAUNCHDARKLY_CLIENT_SIDE_ID: z.string().optional(),
   DOMAINS_SUGGESTIONS_TLDS_SET: z
     .enum(['test-tlds', 'real-prod-tlds'])

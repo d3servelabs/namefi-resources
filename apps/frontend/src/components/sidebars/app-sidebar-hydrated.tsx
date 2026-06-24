@@ -12,9 +12,10 @@ import { useWishlist } from '@/hooks/use-wishlist';
 import { config } from '@/lib/env';
 import type { NavItem } from '@/lib/types/nav-item';
 import { useTRPC } from '@/lib/trpc';
+import { recordPerfOnce } from '@/lib/perf/marks';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useMemo, type FC } from 'react';
+import { useEffect, useMemo, type FC } from 'react';
 
 export type AppSidebarHydratedContentProps = {
   items: NavItem[];
@@ -73,6 +74,19 @@ export const AppSidebarHydratedContent: FC<AppSidebarHydratedContentProps> = ({
   const t = useTranslations('nav');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const trpc = useTRPC();
+
+  // This component only mounts once its dynamic ({ ssr: false }) chunk has
+  // loaded after app-shell hydration, so mount marks the chunk-arrival
+  // milestone; `sidebar.activate` then marks when auth first resolves and the
+  // real (authenticated) sidebar items can render. recordPerfOnce dedups across
+  // re-renders AND remounts, so each fires at most once per page load.
+  useEffect(() => {
+    recordPerfOnce('sidebar.hydrated_mounted');
+  }, []);
+  useEffect(() => {
+    if (isAuthLoading) return;
+    recordPerfOnce('sidebar.activate', { authenticated: isAuthenticated });
+  }, [isAuthLoading, isAuthenticated]);
 
   const { wishlistData, isWishlistLoading } = useWishlist();
   const {
