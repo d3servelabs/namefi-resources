@@ -96,6 +96,10 @@ export const parkedDomainVerificationSchema = z.object({
   checkedAt: z.string(),
 });
 
+export type ParkedDomainVerificationResult = z.infer<
+  typeof parkedDomainVerificationSchema
+>;
+
 const verifyInputSchema = z.object({
   /** Domains to verify in one call — a page, a selection, or a batch of "all". */
   domains: z.array(namefiNormalizedDomainSchema).min(1).max(50),

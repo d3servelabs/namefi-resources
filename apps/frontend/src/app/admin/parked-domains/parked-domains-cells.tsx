@@ -6,6 +6,7 @@ import {
   MinusCircle,
   XCircle,
 } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 import type { z } from 'zod';
 import type { parkedDomainVerificationSchema } from '@namefi-astra/common/contract/admin/admin-parked-domains-contract';
 import { Badge } from '@namefi-astra/ui/components/shadcn/badge';
@@ -42,6 +43,10 @@ export type ParkedDomainRow = {
   chainId: number;
   forwardTo: string | null;
   mode: 'park' | 'forward';
+  /** ISO timestamp of the latest stored verification, or null if never verified. */
+  lastCheckedAt: string | null;
+  /** The latest stored verification result, or null if never verified. */
+  lastResult: VerificationResult | null;
 };
 
 export const STATUS_META: Record<
@@ -132,6 +137,26 @@ export function ForwardToValue({ forwardTo }: { forwardTo: string | null }) {
     >
       {forwardTo}
     </AutoTruncateTextV2>
+  );
+}
+
+/** When a domain was last verified — relative text, full timestamp on hover. */
+export function LastCheckedCell({ at }: { at: string | null }) {
+  if (!at) {
+    return <span className="text-xs text-muted-foreground">Never</span>;
+  }
+  const date = new Date(at);
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger render={<span className="cursor-help text-xs" />}>
+          {formatDistanceToNow(date, { addSuffix: true })}
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{date.toISOString()}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 

@@ -3,9 +3,10 @@ import {
   domainConfigTable,
   namefiNftCte,
   namefiNftView,
+  parkedDomainVerificationsTable,
 } from '@namefi-astra/db';
 import { Permission } from '@namefi-astra/utils';
-import { and, asc, sql, type SQL } from 'drizzle-orm';
+import { and, asc, eq, sql, type SQL } from 'drizzle-orm';
 import {
   buildSortClause,
   buildWhereClause,
@@ -34,6 +35,13 @@ export const parkedDomainsRouter = createContractTRPCRouter<
       const { page, pageSize, filters, sorting } = input;
       const offset = (page - 1) * pageSize;
 
+      // One verification row per domain (unique), so this LEFT JOIN never
+      // multiplies rows.
+      const verificationJoinOn = eq(
+        parkedDomainVerificationsTable.normalizedDomainName,
+        namefiNftView.normalizedDomainName,
+      );
+
       // Columns exposed to the drizzler filter/sort builder.
       const tableStructure = {
         normalizedDomainName: namefiNftView.normalizedDomainName,
@@ -43,6 +51,7 @@ export const parkedDomainsRouter = createContractTRPCRouter<
         autoParkEnabled: sql<
           string | null
         >`${domainConfigTable.autoParkEnabled}::text`,
+        lastCheckedAt: parkedDomainVerificationsTable.checkedAt,
       };
 
       const buildBase = () =>
@@ -54,9 +63,13 @@ export const parkedDomainsRouter = createContractTRPCRouter<
             chainId: namefiNftView.chainId,
             forwardTo: domainConfigTable.forwardTo,
             autoParkEnabled: domainConfigTable.autoParkEnabled,
+            lastCheckedAt: parkedDomainVerificationsTable.checkedAt,
+            lastOverall: parkedDomainVerificationsTable.overall,
+            lastResult: parkedDomainVerificationsTable.result,
           })
           .from(namefiNftView)
           .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+          .leftJoin(parkedDomainVerificationsTable, verificationJoinOn)
           .$dynamic();
 
       const whereClauses: SQL[] = [ACTIVE_PARKED_CONDITION];
@@ -79,6 +92,9 @@ export const parkedDomainsRouter = createContractTRPCRouter<
           .select({ count: sql<number>`COUNT(*)::int` })
           .from(namefiNftView)
           .leftJoin(domainConfigTable, parkedDomainConfigJoinOn)
+          // Mirror the base query's joins so a filter on `lastCheckedAt`
+          // (from parkedDomainVerificationsTable) is valid in the count path too.
+          .leftJoin(parkedDomainVerificationsTable, verificationJoinOn)
           .where(where);
 
         const [rows, countRow] = await Promise.all([
@@ -103,6 +119,11 @@ export const parkedDomainsRouter = createContractTRPCRouter<
             mode: row.forwardTo?.trim()
               ? ('forward' as const)
               : ('park' as const),
+            lastCheckedAt: row.lastCheckedAt
+              ? row.lastCheckedAt.toISOString()
+              : null,
+            lastOverall: row.lastOverall ?? null,
+            lastResult: row.lastResult ?? null,
           })),
           pagination: {
             page,

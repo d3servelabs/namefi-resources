@@ -26,7 +26,11 @@
 
 import { connect as tlsConnect, type PeerCertificate } from 'node:tls';
 import Bottleneck from 'bottleneck';
-import { db, domainConfigTable } from '@namefi-astra/db';
+import {
+  db,
+  domainConfigTable,
+  parkedDomainVerificationsTable,
+} from '@namefi-astra/db';
 import {
   FORWARDING_TXT_PREFIX,
   PARKED_DOMAIN_RECORDS,
@@ -729,13 +733,45 @@ async function verifyParkedDomainImpl(
 }
 
 /**
+ * Persist the latest verification for a domain (one row per domain, upserted).
+ * Best-effort — a write failure must not break the verification flow.
+ */
+async function recordLatestVerification(
+  result: ParkedDomainVerification,
+): Promise<void> {
+  const checkedAt = new Date(result.checkedAt);
+  await db
+    .insert(parkedDomainVerificationsTable)
+    .values({
+      normalizedDomainName: result.domain,
+      overall: result.overall,
+      result,
+      checkedAt,
+    })
+    .onConflictDoUpdate({
+      target: parkedDomainVerificationsTable.normalizedDomainName,
+      set: { overall: result.overall, result, checkedAt },
+    });
+}
+
+/**
  * Verify a single parked domain, rate-limited process-wide via
- * `validationLimiter` (≤ 20 validations/min, ≤ 5 concurrent). Never throws.
+ * `validationLimiter` (≤ 20 validations/min, ≤ 5 concurrent). Records the latest
+ * result per domain (best-effort). Never throws.
  */
 export function verifyParkedDomain(
   domain: NamefiNormalizedDomain,
 ): Promise<ParkedDomainVerification> {
-  return validationLimiter.schedule(() => verifyParkedDomainImpl(domain));
+  return validationLimiter.schedule(async () => {
+    const result = await verifyParkedDomainImpl(domain);
+    await recordLatestVerification(result).catch((error) =>
+      _logger.warn(
+        { error, domain },
+        'Failed to record latest parked-domain verification',
+      ),
+    );
+    return result;
+  });
 }
 
 /**

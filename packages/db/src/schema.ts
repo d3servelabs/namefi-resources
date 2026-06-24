@@ -905,6 +905,35 @@ export const domainConfigTable = pgTable(
 );
 
 /**
+ * Latest parked-domain verification per domain (one row per domain, upserted on
+ * every verification run — admin on-demand checks and the weekly sweep). Backs
+ * the admin "Last checked" column and lets the table show the last result
+ * without re-probing. `result` is the full ParkedDomainVerification (see
+ * `apps/backend/src/lib/domains/parking-verification.ts`).
+ */
+export const parkedDomainVerificationsTable = pgTable(
+  'parked_domain_verifications',
+  {
+    ...randomUuid,
+    normalizedDomainName: text('normalized_domain_name')
+      .notNull()
+      .$type<NamefiNormalizedDomain>(),
+    overall: text('overall')
+      .notNull()
+      .$type<'pass' | 'warn' | 'fail' | 'skipped'>(),
+    result: jsonb('result').notNull(),
+    checkedAt: timestamp('checked_at').notNull(),
+    ...timestamps,
+  },
+  (table) => [
+    unique('parked_domain_verifications_domain_unique').on(
+      table.normalizedDomainName,
+    ),
+    index('parked_domain_verifications_checked_at_idx').on(table.checkedAt),
+  ],
+);
+
+/**
  * Domain user preferences table
  * Stores user preferences for a given domain name
  */

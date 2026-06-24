@@ -25,6 +25,7 @@ import {
   type CheckStatus,
   DomainNameCell,
   ForwardToValue,
+  LastCheckedCell,
   ModeBadge,
   type ParkedDomainRow,
   StatusBadge,
@@ -163,7 +164,10 @@ function ParkedDomainsTable() {
     () => rows.map((row) => row.normalizedDomainName),
     [rows],
   );
-  const verifiedCount = visibleDomains.filter((d) => results[d]).length;
+  // A row is "verified" if it has an in-session result or a stored one.
+  const verifiedCount = rows.filter(
+    (r) => results[r.normalizedDomainName] ?? r.lastResult,
+  ).length;
   const selectedCount = selected.size;
   const allVisibleSelected =
     visibleDomains.length > 0 && visibleDomains.every((d) => selected.has(d));
@@ -234,6 +238,13 @@ function ParkedDomainsTable() {
   });
 
   const columns = useMemo<ColumnDef<ParkedDomainRow>[]>(() => {
+    // Latest result to display: an in-session re-verify wins, else the stored
+    // record from the list query (so badges show on load, not just after a click).
+    const effectiveResult = (
+      row: ParkedDomainRow,
+    ): VerificationResult | undefined =>
+      results[row.normalizedDomainName] ?? row.lastResult ?? undefined;
+
     const statusColumn = (
       id: string,
       header: string,
@@ -243,7 +254,7 @@ function ParkedDomainsTable() {
       header,
       enableSorting: false,
       cell: ({ row }) => {
-        const result = results[row.original.normalizedDomainName];
+        const result = effectiveResult(row.original);
         const check = result ? pick(result) : undefined;
         return <StatusBadge status={check?.status} detail={check?.detail} />;
       },
@@ -322,7 +333,7 @@ function ParkedDomainsTable() {
         header: 'Overall',
         enableSorting: false,
         cell: ({ row }) => {
-          const result = results[row.original.normalizedDomainName];
+          const result = effectiveResult(row.original);
           return (
             <StatusBadge
               status={result?.overall}
@@ -333,11 +344,18 @@ function ParkedDomainsTable() {
         size: 100,
       },
       {
+        id: 'lastCheckedAt',
+        header: 'Last checked',
+        enableSorting: true,
+        cell: ({ row }) => <LastCheckedCell at={row.original.lastCheckedAt} />,
+        size: 140,
+      },
+      {
         id: 'actions',
         header: 'Actions',
         enableSorting: false,
         cell: ({ row }) => {
-          const result = results[row.original.normalizedDomainName];
+          const result = effectiveResult(row.original);
           return (
             <div className="flex items-center gap-2">
               <AsyncButton
@@ -374,7 +392,11 @@ function ParkedDomainsTable() {
     (row: Row<ParkedDomainRow>) => (
       <ParkedDomainCard
         row={row.original}
-        result={results[row.original.normalizedDomainName]}
+        result={
+          results[row.original.normalizedDomainName] ??
+          row.original.lastResult ??
+          undefined
+        }
         isSelected={selected.has(row.original.normalizedDomainName)}
         onSelectedChange={toggleRow}
         onVerify={verifyDomains}

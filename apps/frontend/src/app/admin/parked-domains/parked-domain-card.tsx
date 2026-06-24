@@ -8,6 +8,7 @@ import { AddressWithChain as AddressWithChainId } from '@/components/address-wit
 import {
   DomainNameCell,
   ForwardToValue,
+  LastCheckedCell,
   ModeBadge,
   type ParkedDomainRow,
   StatusBadge,
@@ -130,6 +131,10 @@ export function ParkedDomainCard({
             status={result?.overall}
             detail={result ? undefined : 'Not yet verified'}
           />
+        </CardRow>
+
+        <CardRow label="Last checked">
+          <LastCheckedCell at={row.lastCheckedAt} />
         </CardRow>
       </dl>
 
