@@ -2,21 +2,39 @@
   "301-redirect": {
     "en": "301 Redirect",
     "titles": {
-      "en": "301 Redirect"
+      "en": "301 Redirect",
+      "es": "Redirección 301",
+      "de": "301-Weiterleitung",
+      "fr": "Redirection 301",
+      "zh": "301 重定向",
+      "ar": "إعادة توجيه 301",
+      "hi": "301 रीडायरेक्ट"
     },
     "level": 1
   },
   "accredited-registrar": {
     "en": "ICANN-Accredited Registrar",
     "titles": {
-      "en": "ICANN-Accredited Registrar"
+      "en": "ICANN-Accredited Registrar",
+      "es": "Registrador acreditado por ICANN",
+      "de": "ICANN-akkreditierter Registrar",
+      "fr": "Bureau d'enregistrement accrédité ICANN",
+      "zh": "ICANN 认证注册商",
+      "ar": "مسجِّل معتمد من ICANN",
+      "hi": "ICANN-मान्यताप्राप्त रजिस्ट्रार"
     },
     "level": 1
   },
   "acpa": {
     "en": "ACPA",
     "titles": {
-      "en": "ACPA"
+      "en": "ACPA",
+      "es": "ACPA",
+      "de": "ACPA",
+      "fr": "ACPA",
+      "zh": "ACPA",
+      "ar": "ACPA",
+      "hi": "ACPA"
     },
     "level": 1
   },
@@ -49,14 +67,26 @@
   "aml": {
     "en": "AML",
     "titles": {
-      "en": "AML"
+      "en": "AML",
+      "es": "AML",
+      "de": "AML",
+      "fr": "AML",
+      "zh": "AML",
+      "ar": "AML",
+      "hi": "AML"
     },
     "level": 1
   },
   "anchor-text": {
     "en": "Anchor Text",
     "titles": {
-      "en": "Anchor Text"
+      "en": "Anchor Text",
+      "es": "Texto de anclaje",
+      "de": "Ankertext",
+      "fr": "Texte d'ancre",
+      "zh": "锚文本",
+      "ar": "نص الرابط",
+      "hi": "एंकर टेक्स्ट"
     },
     "level": 1
   },
@@ -115,7 +145,13 @@
   "backlink": {
     "en": "Backlink",
     "titles": {
-      "en": "Backlink"
+      "en": "Backlink",
+      "es": "Backlink",
+      "de": "Backlink",
+      "fr": "Backlink",
+      "zh": "反向链接",
+      "ar": "رابط وارد",
+      "hi": "बैकलिंक"
     },
     "level": 1
   },
@@ -135,21 +171,39 @@
   "bad-faith": {
     "en": "Bad Faith",
     "titles": {
-      "en": "Bad Faith"
+      "en": "Bad Faith",
+      "es": "Mala fe",
+      "de": "Bösgläubigkeit",
+      "fr": "Mauvaise foi",
+      "zh": "恶意",
+      "ar": "النية السيئة",
+      "hi": "बुरा इरादा"
     },
     "level": 1
   },
   "bgp-hijack": {
     "en": "BGP Hijack",
     "titles": {
-      "en": "BGP Hijack"
+      "en": "BGP Hijack",
+      "es": "Secuestro BGP",
+      "de": "BGP-Hijack",
+      "fr": "Détournement BGP",
+      "zh": "BGP 劫持",
+      "ar": "اختطاف BGP",
+      "hi": "BGP हाइजैक"
     },
     "level": 1
   },
   "blockchain": {
     "en": "Blockchain",
     "titles": {
-      "en": "Blockchain"
+      "en": "Blockchain",
+      "es": "Blockchain",
+      "de": "Blockchain",
+      "fr": "Blockchain",
+      "zh": "区块链",
+      "ar": "بلوكتشين",
+      "hi": "ब्लॉकचेन"
     },
     "level": 1
   },
@@ -247,7 +301,13 @@
   "cross-chain-bridge": {
     "en": "Cross-Chain Bridge",
     "titles": {
-      "en": "Cross-Chain Bridge"
+      "en": "Cross-Chain Bridge",
+      "es": "Puente entre cadenas",
+      "de": "Cross-Chain-Bridge",
+      "fr": "Pont inter-chaînes",
+      "zh": "跨链桥",
+      "ar": "جسر التسلسلات المتقاطعة",
+      "hi": "क्रॉस-चेन ब्रिज"
     },
     "level": 1
   },
@@ -293,7 +353,13 @@
   "cybersquatting": {
     "en": "Cybersquatting",
     "titles": {
-      "en": "Cybersquatting"
+      "en": "Cybersquatting",
+      "es": "Cibersquatting",
+      "de": "Cybersquatting",
+      "fr": "Cybersquatting",
+      "zh": "网络抢注",
+      "ar": "احتلال النطاقات",
+      "hi": "साइबरस्क्वैटिंग"
     },
     "level": 1
   },
@@ -352,7 +418,13 @@
   "dns-hijacking": {
     "en": "DNS Hijacking",
     "titles": {
-      "en": "DNS Hijacking"
+      "en": "DNS Hijacking",
+      "es": "Secuestro DNS",
+      "de": "DNS-Hijacking",
+      "fr": "Détournement DNS",
+      "zh": "DNS 劫持",
+      "ar": "اختطاف DNS",
+      "hi": "DNS हाइजैकिंग"
     },
     "level": 1
   },
@@ -424,7 +496,13 @@
   "domain-authority": {
     "en": "Domain Authority",
     "titles": {
-      "en": "Domain Authority"
+      "en": "Domain Authority",
+      "es": "Autoridad de dominio",
+      "de": "Domain-Autorität",
+      "fr": "Autorité de domaine",
+      "zh": "域名权威度",
+      "ar": "سلطة النطاق",
+      "hi": "डोमेन अथॉरिटी"
     },
     "level": 1
   },
@@ -470,35 +548,65 @@
   "domain-financing": {
     "en": "Domain Financing",
     "titles": {
-      "en": "Domain Financing"
+      "en": "Domain Financing",
+      "es": "Financiación de dominio",
+      "de": "Domain-Finanzierung",
+      "fr": "Financement de domaine",
+      "zh": "域名融资",
+      "ar": "تمويل النطاق",
+      "hi": "डोमेन फाइनेंसिंग"
     },
     "level": 1
   },
   "domain-forwarding": {
     "en": "Domain Forwarding",
     "titles": {
-      "en": "Domain Forwarding"
+      "en": "Domain Forwarding",
+      "es": "Reenvío de dominio",
+      "de": "Domain-Weiterleitung",
+      "fr": "Transfert de domaine",
+      "zh": "域名转发",
+      "ar": "إعادة توجيه النطاق",
+      "hi": "डोमेन फॉरवर्डिंग"
     },
     "level": 1
   },
   "domain-hack": {
     "en": "Domain Hack",
     "titles": {
-      "en": "Domain Hack"
+      "en": "Domain Hack",
+      "es": "Domain hack",
+      "de": "Domain-Hack",
+      "fr": "Domain hack",
+      "zh": "域名创意拼接",
+      "ar": "حيلة النطاق",
+      "hi": "डोमेन हैक"
     },
     "level": 1
   },
   "domain-hijacking": {
     "en": "Domain Hijacking",
     "titles": {
-      "en": "Domain Hijacking"
+      "en": "Domain Hijacking",
+      "es": "Secuestro de dominio",
+      "de": "Domain-Hijacking",
+      "fr": "Piratage de domaine",
+      "zh": "域名劫持",
+      "ar": "اختطاف النطاق",
+      "hi": "डोमेन हाइजैकिंग"
     },
     "level": 1
   },
   "domain-landing-page": {
     "en": "Domain Landing Page",
     "titles": {
-      "en": "Domain Landing Page"
+      "en": "Domain Landing Page",
+      "es": "Página de aterrizaje de dominio",
+      "de": "Domain-Landingpage",
+      "fr": "Page d'atterrissage de domaine",
+      "zh": "域名着陆页",
+      "ar": "صفحة هبوط النطاق",
+      "hi": "डोमेन लैंडिंग पेज"
     },
     "level": 1
   },
@@ -531,7 +639,13 @@
   "domain-parking": {
     "en": "Domain Parking",
     "titles": {
-      "en": "Domain Parking"
+      "en": "Domain Parking",
+      "es": "Aparcamiento de dominios",
+      "de": "Domain-Parking",
+      "fr": "Parking de domaine",
+      "zh": "域名停放",
+      "ar": "توقيف النطاق",
+      "hi": "डोमेन पार्किंग"
     },
     "level": 1
   },
@@ -577,7 +691,13 @@
   "domain-theft": {
     "en": "Domain Theft",
     "titles": {
-      "en": "Domain Theft"
+      "en": "Domain Theft",
+      "es": "Robo de dominio",
+      "de": "Domain-Diebstahl",
+      "fr": "Vol de domaine",
+      "zh": "域名盗窃",
+      "ar": "سرقة النطاق",
+      "hi": "डोमेन चोरी"
     },
     "level": 1
   },
@@ -636,21 +756,39 @@
   "epp": {
     "en": "EPP",
     "titles": {
-      "en": "EPP"
+      "en": "EPP",
+      "es": "EPP",
+      "de": "EPP",
+      "fr": "EPP",
+      "zh": "EPP",
+      "ar": "EPP",
+      "hi": "EPP"
     },
     "level": 1
   },
   "epp-status-codes": {
     "en": "EPP Status Codes",
     "titles": {
-      "en": "EPP Status Codes"
+      "en": "EPP Status Codes",
+      "es": "Códigos de estado EPP",
+      "de": "EPP-Statuscodes",
+      "fr": "Codes de statut EPP",
+      "zh": "EPP 状态码",
+      "ar": "أكواد حالة EPP",
+      "hi": "EPP स्टेटस कोड"
     },
     "level": 1
   },
   "erc-20": {
     "en": "ERC-20",
     "titles": {
-      "en": "ERC-20"
+      "en": "ERC-20",
+      "es": "ERC-20",
+      "de": "ERC-20",
+      "fr": "ERC-20",
+      "zh": "ERC-20",
+      "ar": "ERC-20",
+      "hi": "ERC-20"
     },
     "level": 1
   },
@@ -683,7 +821,13 @@
   "ethereum": {
     "en": "Ethereum",
     "titles": {
-      "en": "Ethereum"
+      "en": "Ethereum",
+      "es": "Ethereum",
+      "de": "Ethereum",
+      "fr": "Ethereum",
+      "zh": "以太坊",
+      "ar": "Ethereum",
+      "hi": "Ethereum"
     },
     "level": 1
   },
