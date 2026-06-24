@@ -2,8 +2,8 @@
 
 # Enable BuildKit support
 # DOCKER_BUILDKIT=1 docker build -t namefi-astra-backend .
-ARG BASE_IMAGE=node:jod-bullseye-slim
-ARG BASE_PRUNER=node:jod-bullseye-slim
+ARG BASE_IMAGE=node:krypton-bullseye-slim
+ARG BASE_PRUNER=node:krypton-bullseye-slim
 ARG DEPS_BUILD=oven/bun:1.3.12-slim
 #
 # ##############################################################################
@@ -13,12 +13,12 @@ ARG DEPS_BUILD=oven/bun:1.3.12-slim
 FROM ${BASE_IMAGE} AS base_runner
 WORKDIR /app
 
-ARG BASE_IMAGE=node:jod-bullseye-slim
+ARG BASE_IMAGE=node:krypton-bullseye-slim
 # Set to production environment
 ENV NODE_ENV=production
 ENV ENVIRONMENT=production
 
-RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
+RUN if [ "$BASE_IMAGE" = "node:krypton-bullseye-slim" ]; then \
         apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils dns-root-data ca-certificates; \
         rm -rf /var/lib/apt/lists/*; \
     else \
@@ -37,9 +37,9 @@ ENV CI="true"
 FROM ${BASE_PRUNER} AS base_pruner
 WORKDIR /app
 
-ARG BASE_PRUNER=node:jod-bullseye-slim
+ARG BASE_PRUNER=node:krypton-bullseye-slim
 # Install turbo globally
-RUN if [ "$BASE_PRUNER" = "node:jod-bullseye-slim" ]; then \
+RUN if [ "$BASE_PRUNER" = "node:krypton-bullseye-slim" ]; then \
         npm install -g turbo@2.9.5; \
     else \
         echo "USING CACHED IMAGE"; \
