@@ -1,0 +1,14 @@
+---
+title: أكواد حالة EPP
+date: '2026-06-22'
+language: ar
+tags: ['glossary']
+authors: ['namefiteam']
+description: الأعلام القياسية على النطاق اللي بتوضح حالته — مقفول أو متوقف أو قيد النقل والمزيد.
+keywords: ['أكواد حالة EPP', 'clientHold', 'serverTransferProhibited', 'حالة النطاق', 'قيد الحذف']
+level: 1
+sources:
+  - https://www.icann.org/resources/pages/epp-status-codes-2014-06-16-en
+---
+
+**أكواد حالة EPP** هي الأعلام القابلة للقراءة آلياً المحددة في بروتوكول [EPP](/ar/glossary/epp/) اللي بتصف بالضبط العمليات المسموح بها على النطاق في أي وقت. بتيجي في فضائين من الأسماء: الأكواد التي تبدأ بـ`client*` بيضبطها [المسجِّل](/ar/glossary/registrar/) والأكواد التي تبدأ بـ`server*` بيضبطها السجل، مع أسبقية أكواد السيرفر. من الأكواد الشائعة: `clientTransferProhibited` ([قفل النقل](/ar/glossary/transfer-lock/) اللي بيمنع النقل الصادر)، و`serverDeleteProhibited` (حماية على مستوى السجل ضد الحذف)، و`clientHold` (بيوقف تحليل DNS، غالباً لعدم الدفع)، و`pendingDelete` اللي بيُعلّم النطاق في فترة السماح قبل تحريره وإتاحته للتسجيل من جديد — حالة مجاورة لـ[قيد الحذف](/ar/glossary/pending-delete/). فهم هذه الأكواد مهم عملياً: نطاق يُظهر `serverTransferProhibited` ما ينقلش حتى بعد فتح قفله من المسجِّل، وده بيفاجئ المشترين في منتصف المعاملة.
