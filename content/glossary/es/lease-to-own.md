@@ -1,0 +1,14 @@
+---
+title: Arrendamiento con Opción a Compra
+date: '2026-06-22'
+language: es
+tags: ['glossary']
+authors: ['namefiteam']
+description: Adquisición de un dominio mediante pagos periódicos que acumulan valor hacia la propiedad total, similar al alquiler con opción a compra.
+keywords: ['arrendamiento con opción a compra', 'adquisición de dominio', 'cuotas', 'financiación de dominio', 'alquiler con opción a compra']
+level: 1
+sources:
+  - https://www.investopedia.com/terms/l/lease-option.asp
+---
+
+**Arrendamiento con opción a compra** es una estructura de adquisición de dominio en la que el comprador realiza pagos periódicos regulares — mensuales o anuales — que se imputan al precio total de compra, transfiriéndose la propiedad únicamente cuando se liquida el último plazo. Se sitúa junto al [alquiler con opción a compra](/es/glossary/rent-to-own/) como forma de distribuir un elevado coste inicial a lo largo del tiempo mientras se utiliza el dominio desde el primer día. Durante el período de pago, el vendedor suele conservar el título legal, lo que genera el riesgo de que, ante un incumplimiento, el comprador no pueda recuperar el valor ya abonado. La [financiación de dominios](/es/glossary/domain-financing/) generaliza el concepto, mientras que los servicios de [depósito en garantía](/es/glossary/escrow/) se emplean para custodiar los pagos y hacer cumplir los hitos en operaciones de mayor valor.
