@@ -53,7 +53,7 @@
     },
     "apps/backend": {
       "name": "@namefi-astra/backend",
-      "version": "3.5.3",
+      "version": "3.5.4",
       "dependencies": {
         "@aws-sdk/client-kms": "^3.830.0",
         "@c15t/backend": "^2.1.0",
@@ -195,7 +195,7 @@
     },
     "apps/frontend": {
       "name": "@namefi-astra/frontend",
-      "version": "3.5.3",
+      "version": "3.5.4",
       "dependencies": {
         "@bprogress/next": "catalog:",
         "@c15t/nextjs": "catalog:",
@@ -416,7 +416,7 @@
     },
     "apps/resources": {
       "name": "@namefi-astra/resources",
-      "version": "3.4.11",
+      "version": "3.5.0",
       "dependencies": {
         "@bprogress/next": "catalog:",
         "@c15t/nextjs": "catalog:",
