@@ -859,7 +859,13 @@
   "ipfs": {
     "en": "IPFS",
     "titles": {
-      "en": "IPFS"
+      "en": "IPFS",
+      "es": "IPFS",
+      "de": "IPFS",
+      "fr": "IPFS",
+      "zh": "IPFS",
+      "ar": "IPFS",
+      "hi": "IPFS"
     },
     "level": 1
   },
@@ -879,21 +885,39 @@
   "kyc": {
     "en": "KYC",
     "titles": {
-      "en": "KYC"
+      "en": "KYC",
+      "es": "KYC",
+      "de": "KYC",
+      "fr": "KYC",
+      "zh": "KYC",
+      "ar": "KYC",
+      "hi": "KYC"
     },
     "level": 1
   },
   "layer-2": {
     "en": "Layer 2",
     "titles": {
-      "en": "Layer 2"
+      "en": "Layer 2",
+      "es": "Layer 2",
+      "de": "Layer 2",
+      "fr": "Layer 2",
+      "zh": "Layer 2",
+      "ar": "Layer 2",
+      "hi": "Layer 2"
     },
     "level": 1
   },
   "lease-to-own": {
     "en": "Lease-to-Own",
     "titles": {
-      "en": "Lease-to-Own"
+      "en": "Lease-to-Own",
+      "es": "Arrendamiento con Opción a Compra",
+      "de": "Mietkauf",
+      "fr": "Location-Vente",
+      "zh": "租购",
+      "ar": "الإيجار بهدف التملك",
+      "hi": "लीज़-टू-ओन"
     },
     "level": 1
   },
@@ -965,7 +989,13 @@
   "minting": {
     "en": "Minting",
     "titles": {
-      "en": "Minting"
+      "en": "Minting",
+      "es": "Acuñación",
+      "de": "Prägen",
+      "fr": "Frappe",
+      "zh": "铸造",
+      "ar": "السَّكّ",
+      "hi": "मिंटिंग"
     },
     "level": 1
   },
@@ -1063,14 +1093,26 @@
   "phishing": {
     "en": "Phishing",
     "titles": {
-      "en": "Phishing"
+      "en": "Phishing",
+      "es": "Phishing",
+      "de": "Phishing",
+      "fr": "Hameçonnage",
+      "zh": "网络钓鱼",
+      "ar": "التصيّد الإلكتروني",
+      "hi": "फ़िशिंग"
     },
     "level": 1
   },
   "ppc": {
     "en": "PPC",
     "titles": {
-      "en": "PPC"
+      "en": "PPC",
+      "es": "PPC",
+      "de": "PPC",
+      "fr": "PPC",
+      "zh": "PPC",
+      "ar": "PPC",
+      "hi": "PPC"
     },
     "level": 1
   },
@@ -1090,7 +1132,13 @@
   "private-key": {
     "en": "Private Key",
     "titles": {
-      "en": "Private Key"
+      "en": "Private Key",
+      "es": "Clave Privada",
+      "de": "Privater Schlüssel",
+      "fr": "Clé Privée",
+      "zh": "私钥",
+      "ar": "المفتاح الخاص",
+      "hi": "प्राइवेट की"
     },
     "level": 1
   },
@@ -1110,7 +1158,13 @@
   "public-key": {
     "en": "Public Key",
     "titles": {
-      "en": "Public Key"
+      "en": "Public Key",
+      "es": "Clave Pública",
+      "de": "Öffentlicher Schlüssel",
+      "fr": "Clé Publique",
+      "zh": "公钥",
+      "ar": "المفتاح العام",
+      "hi": "पब्लिक की"
     },
     "level": 1
   },
@@ -1177,7 +1231,13 @@
   "registry-lock": {
     "en": "Registry Lock",
     "titles": {
-      "en": "Registry Lock"
+      "en": "Registry Lock",
+      "es": "Bloqueo de Registro",
+      "de": "Registry-Sperre",
+      "fr": "Verrou de Registre",
+      "zh": "注册局锁定",
+      "ar": "قفل السجل",
+      "hi": "रजिस्ट्री लॉक"
     },
     "level": 1
   },
@@ -1197,7 +1257,13 @@
   "reseller": {
     "en": "Reseller",
     "titles": {
-      "en": "Reseller"
+      "en": "Reseller",
+      "es": "Revendedor",
+      "de": "Reseller",
+      "fr": "Revendeur",
+      "zh": "经销商",
+      "ar": "الموزّع",
+      "hi": "रीसेलर"
     },
     "level": 1
   },
@@ -1256,7 +1322,13 @@
   "reverse-domain-hijacking": {
     "en": "Reverse Domain Hijacking",
     "titles": {
-      "en": "Reverse Domain Hijacking"
+      "en": "Reverse Domain Hijacking",
+      "es": "Secuestro Inverso de Dominio",
+      "de": "Reverse Domain Hijacking",
+      "fr": "Détournement Inverse de Domaine",
+      "zh": "反向域名劫持",
+      "ar": "الاختطاف العكسي للدومين",
+      "hi": "रिवर्स डोमेन हाइजैकिंग"
     },
     "level": 1
   },
@@ -1328,7 +1400,13 @@
   "serp": {
     "en": "SERP",
     "titles": {
-      "en": "SERP"
+      "en": "SERP",
+      "es": "SERP",
+      "de": "SERP",
+      "fr": "SERP",
+      "zh": "SERP",
+      "ar": "SERP",
+      "hi": "SERP"
     },
     "level": 1
   },
@@ -1400,14 +1478,26 @@
   "tld-seo": {
     "en": "TLD SEO Impact",
     "titles": {
-      "en": "TLD SEO Impact"
+      "en": "TLD SEO Impact",
+      "es": "Impacto SEO del TLD",
+      "de": "TLD SEO Impact",
+      "fr": "Impact SEO du TLD",
+      "zh": "TLD SEO 影响",
+      "ar": "تأثير TLD على SEO",
+      "hi": "TLD SEO प्रभाव"
     },
     "level": 1
   },
   "tmch": {
     "en": "Trademark Clearinghouse",
     "titles": {
-      "en": "Trademark Clearinghouse"
+      "en": "Trademark Clearinghouse",
+      "es": "Trademark Clearinghouse",
+      "de": "Trademark Clearinghouse",
+      "fr": "Trademark Clearinghouse",
+      "zh": "商标信息交换所",
+      "ar": "Trademark Clearinghouse",
+      "hi": "Trademark Clearinghouse"
     },
     "level": 1
   },
@@ -1427,21 +1517,39 @@
   "tokenized-domain": {
     "en": "Tokenized Domain",
     "titles": {
-      "en": "Tokenized Domain"
+      "en": "Tokenized Domain",
+      "es": "Dominio Tokenizado",
+      "de": "Tokenisierte Domain",
+      "fr": "Domaine Tokenisé",
+      "zh": "代币化域名",
+      "ar": "الدومين المُرمَّز",
+      "hi": "टोकनाइज़्ड डोमेन"
     },
     "level": 1
   },
   "trademark": {
     "en": "Trademark",
     "titles": {
-      "en": "Trademark"
+      "en": "Trademark",
+      "es": "Marca Registrada",
+      "de": "Marke",
+      "fr": "Marque Commerciale",
+      "zh": "商标",
+      "ar": "العلامة التجارية",
+      "hi": "ट्रेडमार्क"
     },
     "level": 1
   },
   "transfer-lock": {
     "en": "Transfer Lock",
     "titles": {
-      "en": "Transfer Lock"
+      "en": "Transfer Lock",
+      "es": "Bloqueo de Transferencia",
+      "de": "Transfer-Sperre",
+      "fr": "Verrou de Transfert",
+      "zh": "转移锁定",
+      "ar": "قفل النقل",
+      "hi": "ट्रांसफर लॉक"
     },
     "level": 1
   },
@@ -1461,14 +1569,26 @@
   "type-in-traffic": {
     "en": "Type-In Traffic",
     "titles": {
-      "en": "Type-In Traffic"
+      "en": "Type-In Traffic",
+      "es": "Tráfico Directo",
+      "de": "Type-in-Traffic",
+      "fr": "Trafic en Saisie Directe",
+      "zh": "直输流量",
+      "ar": "حركة الكتابة المباشرة",
+      "hi": "टाइप-इन ट्रैफ़िक"
     },
     "level": 1
   },
   "typosquatting": {
     "en": "Typosquatting",
     "titles": {
-      "en": "Typosquatting"
+      "en": "Typosquatting",
+      "es": "Typosquatting",
+      "de": "Typosquatting",
+      "fr": "Typosquattage",
+      "zh": "误植抢注",
+      "ar": "الطغيان الكتابي",
+      "hi": "टाइपोस्क्वैटिंग"
     },
     "level": 1
   },
@@ -1488,7 +1608,13 @@
   "urs": {
     "en": "URS",
     "titles": {
-      "en": "URS"
+      "en": "URS",
+      "es": "URS",
+      "de": "URS",
+      "fr": "URS",
+      "zh": "URS",
+      "ar": "URS",
+      "hi": "URS"
     },
     "level": 1
   },
@@ -1534,7 +1660,13 @@
   "whois-privacy": {
     "en": "WHOIS Privacy",
     "titles": {
-      "en": "WHOIS Privacy"
+      "en": "WHOIS Privacy",
+      "es": "Privacidad WHOIS",
+      "de": "WHOIS-Datenschutz",
+      "fr": "Confidentialité WHOIS",
+      "zh": "WHOIS 隐私",
+      "ar": "خصوصية WHOIS",
+      "hi": "WHOIS गोपनीयता"
     },
     "level": 1
   },
@@ -1554,7 +1686,13 @@
   "wipo": {
     "en": "WIPO",
     "titles": {
-      "en": "WIPO"
+      "en": "WIPO",
+      "es": "WIPO",
+      "de": "WIPO",
+      "fr": "WIPO",
+      "zh": "WIPO",
+      "ar": "WIPO",
+      "hi": "WIPO"
     },
     "level": 1
   },
