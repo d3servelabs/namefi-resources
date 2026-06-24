@@ -19,7 +19,7 @@ ENV NODE_ENV=production
 ENV ENVIRONMENT=production
 
 RUN if [ "$BASE_IMAGE" = "node:jod-bullseye-slim" ]; then \
-        apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils dns-root-data; \
+        apt-get update && apt-get install --no-install-recommends -y bash curl dnsutils dns-root-data ca-certificates; \
         rm -rf /var/lib/apt/lists/*; \
     else \
         echo "USING CACHED IMAGE"; \
