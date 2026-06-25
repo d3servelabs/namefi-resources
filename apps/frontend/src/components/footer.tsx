@@ -11,6 +11,7 @@ import {
   forwardRef,
 } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import type { Locale } from '@/i18n/config';
 import { getExternalLinkRel } from '@/lib/external-link';
@@ -61,6 +62,24 @@ function localizeBlogHref(href: string, locale: Locale): string {
   return `/r/${resourcesLocale}${href.slice('/r/en'.length)}`;
 }
 const NAMEFI_API_DOCS_URL = 'https://api.namefi.io/v-next/openapi/doc';
+
+const HOMEPAGE_ONLY_FOOTER_LINK_KEYS = new Set([
+  'abuseReporting',
+  'educationHub',
+  'registrationAgreement',
+  'partners',
+]);
+
+function isLocalhostOrigin(origin: string | null) {
+  if (!origin) return false;
+
+  try {
+    const { hostname } = new URL(origin);
+    return hostname === 'localhost' || hostname === '127.0.0.1';
+  } catch {
+    return false;
+  }
+}
 
 const SOCIAL_LINKS = [
   {
@@ -213,6 +232,9 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   const { setActiveUI } = useConsentManager();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
+  const pathname = usePathname();
+  const showHomepageOnlyFooterLinks =
+    pathname === '/' && (isAstra || isLocalhostOrigin(origin.origin));
 
   const logo = isAstra
     ? {
@@ -271,14 +293,21 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
             </div>
           </div>
 
-          {FOOTER_SECTIONS.map((section) => (
-            <div key={section.sectionKey} className="space-y-4">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
-                {tDynamic(`sections.${section.sectionKey}.title`)}
-              </h3>
-              <ul className="space-y-3 text-sm">
-                {section.links.map(
-                  ({ labelKey, href, external, description }) => {
+          {FOOTER_SECTIONS.map((section) => {
+            const links = showHomepageOnlyFooterLinks
+              ? section.links
+              : section.links.filter(
+                  ({ labelKey }) =>
+                    !HOMEPAGE_ONLY_FOOTER_LINK_KEYS.has(labelKey),
+                );
+
+            return (
+              <div key={section.sectionKey} className="space-y-4">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">
+                  {tDynamic(`sections.${section.sectionKey}.title`)}
+                </h3>
+                <ul className="space-y-3 text-sm">
+                  {links.map(({ labelKey, href, external, description }) => {
                     const label = tDynamic(
                       `sections.${section.sectionKey}.links.${labelKey}`,
                     );
@@ -309,11 +338,11 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                         )}
                       </li>
                     );
-                  },
-                )}
-              </ul>
-            </div>
-          ))}
+                  })}
+                </ul>
+              </div>
+            );
+          })}
         </div>
 
         <div className="flex flex-col gap-6 border-t border-white/10 pt-8 text-sm text-white/60">

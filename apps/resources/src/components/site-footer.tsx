@@ -15,8 +15,9 @@ import { OPEN_COOKIE_SETTINGS_EVENT } from './providers/cookie-consent-event';
 
 // The resources app is a separate Next.js app served under namefi.io/r. It
 // cannot use the main app's typed internal routes, so every footer link is an
-// absolute namefi.io URL. The content mirrors the main site footer
-// (apps/frontend/src/components/footer.tsx) for parity — keep the two in sync.
+// absolute namefi.io URL. Most content mirrors the main site footer
+// (apps/frontend/src/components/footer.tsx), except links that are reserved for
+// the main homepage.
 const NAMEFI_URL = 'https://namefi.io';
 const LLMS_TXT_URL = `${NAMEFI_URL}/llms.txt`;
 const NAMEFI_API_DOCS_URL = 'https://api.namefi.io/v-next/openapi/doc';
@@ -90,16 +91,9 @@ const FOOTER_SECTIONS: Array<{
       { label: 'Watch', href: `${NAMEFI_URL}/r/en/watch` },
       { label: 'Careers', href: `${NAMEFI_URL}/r/en/careers` },
       { label: 'TLDs', href: `${NAMEFI_URL}/r/en/tld` },
-      { label: 'Partners', href: `${NAMEFI_URL}/r/en/partners` },
       { label: 'Glossary', href: `${NAMEFI_URL}/r/en/glossary` },
       { label: 'How We Hire', href: `${NAMEFI_URL}/r/en/careers/how-we-hire` },
-      { label: 'Abuse Reporting', href: `${NAMEFI_URL}/abuse` },
-      { label: 'Education Hub', href: `${NAMEFI_URL}/education` },
       { label: 'Brand Kit', href: `${NAMEFI_URL}/brand-kit` },
-      {
-        label: 'Registration Agreement',
-        href: `${NAMEFI_URL}/registration-agreement`,
-      },
       {
         label: 'Namefi API Docs',
         href: NAMEFI_API_DOCS_URL,
