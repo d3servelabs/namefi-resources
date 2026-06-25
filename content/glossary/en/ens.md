@@ -11,4 +11,4 @@ sources:
   - https://docs.ens.domains/
 ---
 
-**ENS (Ethereum Name Service)** is a decentralized naming system that maps human-readable names (like `vitalik.eth`) to Ethereum addresses, content hashes, and other resources. ENS names live entirely on-chain and are managed by [smart contracts](/en/glossary/smart-contract/) on Ethereum. They are not part of the traditional [DNS](/en/glossary/dns/) and do not resolve in standard browsers without a resolver gateway or browser extension. Official site: [ens.domains](https://ens.domains).
+**ENS (Ethereum Name Service)** is a decentralized naming system that maps human-readable names (like `vitalik.eth`) to Ethereum addresses, content hashes, and other resources. ENS names live entirely [on-chain](/en/glossary/on-chain/) and are managed by [smart contracts](/en/glossary/smart-contract/) on [Ethereum](/en/glossary/ethereum/). They are not part of the traditional [DNS](/en/glossary/dns/) and do not resolve in standard browsers without a resolver gateway or browser extension. Official site: [ens.domains](https://ens.domains).

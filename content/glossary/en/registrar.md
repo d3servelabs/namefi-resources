@@ -14,4 +14,4 @@ aliasesByLocale:
   de: ['Registrierungsdienst']
 ---
 
-A **registrar** is an [ICANN](/en/glossary/icann/)-accredited organization authorized to register and manage domain names within the traditional [DNS](/en/glossary/dns/) system. Registrars like GoDaddy, Namecheap, or Cloudflare act as intermediaries between domain holders and registry operators. They control renewals, transfers, and nameserver changes through their own policies and interfaces.
+A **registrar** is an [ICANN](/en/glossary/icann/)-accredited organization authorized to register and manage domain names within the traditional [DNS](/en/glossary/dns/) system. Registrars like GoDaddy, Namecheap, or Cloudflare act as intermediaries between domain holders and [registry](/en/glossary/registry/) operators. They control renewals, transfers, and [nameserver](/en/glossary/nameserver/) changes through their own policies and interfaces.

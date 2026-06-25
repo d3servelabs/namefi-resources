@@ -11,4 +11,4 @@ sources:
   - https://ethereum.org/en/wallets/
 ---
 
-A **wallet** in the crypto context is a digital tool that stores private keys and allows users to manage their blockchain-based assets. Unlike traditional wallets that hold physical currency, crypto wallets hold the [cryptographic security](/en/glossary/cryptographic-security/) keys that prove ownership of digital assets like cryptocurrencies and [NFTs](/en/glossary/nft/).
+A **wallet** in the crypto context is a digital tool that stores private keys and allows users to manage their [blockchain](/en/glossary/blockchain/)-based assets. Unlike traditional wallets that hold physical currency, crypto wallets hold the [cryptographic security](/en/glossary/cryptographic-security/) keys that prove ownership of digital assets like cryptocurrencies and [NFTs](/en/glossary/nft/).
