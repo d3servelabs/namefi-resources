@@ -335,6 +335,9 @@ jobs:
           RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
           DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
           PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          PARK_REQUESTED: ${{ needs.preview-label-gate.outputs.park_preview || 'false' }}
+          RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
+          DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
         with:
           script: |
@@ -351,6 +354,9 @@ jobs:
             const parkChanged = isTrue(process.env.PARK_CHANGED);
             const resourcesChanged = isTrue(process.env.RESOURCES_CHANGED);
             const docsChanged = isTrue(process.env.DOCS_CHANGED);
+            const parkRequested = isTrue(process.env.PARK_REQUESTED);
+            const resourcesRequested = isTrue(process.env.RESOURCES_REQUESTED);
+            const docsRequested = isTrue(process.env.DOCS_REQUESTED);
             const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
             const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
             const frontendUsesPreviewBackend = previewRequested && hasBackendChanges;
@@ -374,13 +380,19 @@ jobs:
                     )
                   : row('Frontend', '⚪ Not affected', [], 'No relevant changes'),
               parkChanged
-                ? row('Park', '🟡 Building', [buildLink], 'Affected-only')
+                ? parkRequested
+                  ? row('Park', '🟡 Building', [buildLink], 'Label-gated')
+                  : row('Park', '⚪ Not requested', [], 'Add `preview-park` label')
                 : row('Park', '⚪ Not affected', [], 'No relevant changes'),
               resourcesChanged
-                ? row('Resources', '🟡 Building', [buildLink], 'Affected-only')
+                ? resourcesRequested
+                  ? row('Resources', '🟡 Building', [buildLink], 'Label-gated')
+                  : row('Resources', '⚪ Not requested', [], 'Add `preview-resources` label')
                 : row('Resources', '⚪ Not affected', [], 'No relevant changes'),
               docsChanged
-                ? row('API Client Docs', '🟡 Building', [buildLink], 'Affected-only')
+                ? docsRequested
+                  ? row('API Client Docs', '🟡 Building', [buildLink], 'Label-gated')
+                  : row('API Client Docs', '⚪ Not requested', [], 'Add `preview-docs` label')
                 : row('API Client Docs', '⚪ Not affected', [], 'No relevant changes'),
               !previewRequested
                 ? row('Backend', '⚪ Not requested', [], 'Label-gated')
@@ -489,7 +501,7 @@ jobs:
   deploy-park:
     name: Deploy Park Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.park_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.park_changed == 'true' && needs.preview-label-gate.outputs.park_preview == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -523,7 +535,7 @@ jobs:
   deploy-resources:
     name: Deploy Resources Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.resources_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.resources_changed == 'true' && needs.preview-label-gate.outputs.resources_preview == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -566,7 +578,7 @@ jobs:
   deploy-api-client-docs:
     name: Deploy Docs Preview
     needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.docs_changed == 'true'
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.docs_changed == 'true' && needs.preview-label-gate.outputs.docs_preview == 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -712,6 +724,9 @@ jobs:
       head_sha: ${{ steps.check-label.outputs.head_sha }}
       base_sha: ${{ steps.check-label.outputs.base_sha }}
       head_ref: ${{ steps.check-label.outputs.head_ref }}
+      park_preview: ${{ steps.check-label.outputs.park_preview }}
+      resources_preview: ${{ steps.check-label.outputs.resources_preview }}
+      docs_preview: ${{ steps.check-label.outputs.docs_preview }}
     steps:
       - name: Check preview label
         id: check-label
@@ -730,12 +745,37 @@ jobs:
           LABEL_NAME_FROM_EVENT: ${{ github.event.label.name || '' }}
           HAS_FORCE_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'force-preview') }}
           HAS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+          HAS_PARK_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-park') }}
+          HAS_RESOURCES_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-resources') }}
+          HAS_DOCS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-docs') }}
         shell: bash
         run: |
           set -euo pipefail
 
           echo "Event name: $EVENT_NAME"
           echo "Event action: $EVENT_ACTION"
+
+          # Emit per-target preview opt-in outputs. Each of Park / Resources /
+          # Docs requires its own explicit label (preview-park /
+          # preview-resources / preview-docs); force preview enables all three.
+          emit_surface_targets() {
+            local force_all="$1"
+            local park resources docs
+            if [[ "$force_all" == "true" ]]; then
+              park="true"
+              resources="true"
+              docs="true"
+            else
+              park="$HAS_PARK_PREVIEW_LABEL"
+              resources="$HAS_RESOURCES_PREVIEW_LABEL"
+              docs="$HAS_DOCS_PREVIEW_LABEL"
+            fi
+            {
+              echo "park_preview=$park"
+              echo "resources_preview=$resources"
+              echo "docs_preview=$docs"
+            } >> "$GITHUB_OUTPUT"
+          }
 
           if [[ "$EVENT_NAME" == "workflow_dispatch" ]]; then
             PR_NUMBER="$INPUT_PR_NUMBER"
@@ -767,6 +807,7 @@ jobs:
               echo "should_run=true"
               echo "is_force_preview=$FORCE_PREVIEW"
             } >> "$GITHUB_OUTPUT"
+            emit_surface_targets "$FORCE_PREVIEW"
             exit 0
           fi
 
@@ -797,7 +838,7 @@ jobs:
                 echo "should_run=true"
                 echo "is_force_preview=true"
               } >> "$GITHUB_OUTPUT"
-            elif [[ "$LABEL_NAME" == "preview" ]]; then
+            elif [[ "$LABEL_NAME" == "preview" || "$LABEL_NAME" == "preview-park" || "$LABEL_NAME" == "preview-resources" || "$LABEL_NAME" == "preview-docs" ]]; then
               {
                 echo "should_run=true"
                 echo "is_force_preview=false"
@@ -808,6 +849,7 @@ jobs:
                 echo "is_force_preview=false"
               } >> "$GITHUB_OUTPUT"
             fi
+            emit_surface_targets "$HAS_FORCE_PREVIEW_LABEL"
             exit 0
           fi
 
@@ -827,6 +869,8 @@ jobs:
               echo "is_force_preview=false"
             } >> "$GITHUB_OUTPUT"
           fi
+
+          emit_surface_targets "$HAS_FORCE_PREVIEW_LABEL"
 
   head-branch-gate:
     name: Check Preview Branch
@@ -1367,6 +1411,9 @@ jobs:
           DOCS_PREVIEW_URL: ${{ needs.deploy-api-client-docs.outputs.deployment_url }}
           SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
           IS_FORCE_PREVIEW: ${{ needs.preview-label-gate.outputs.is_force_preview }}
+          PARK_REQUESTED: ${{ needs.preview-label-gate.outputs.park_preview || 'false' }}
+          RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
+          DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
           HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
           HEAD_BRANCH_ALLOWED: ${{ needs.head-branch-gate.outputs.should_run }}
@@ -1436,12 +1483,20 @@ jobs:
             frontend_note="not affected"
           fi
 
-          park_note="affected-only"
-          [[ "$PARK_CHANGED" == "true" ]] || park_note="not affected"
-          resources_note="affected-only"
-          [[ "$RESOURCES_CHANGED" == "true" ]] || resources_note="not affected"
-          docs_note="affected-only"
-          [[ "$DOCS_CHANGED" == "true" ]] || docs_note="not affected"
+          surface_note() {
+            local changed="$1" requested="$2" label="$3"
+            if [[ "$changed" != "true" ]]; then
+              echo "not affected"
+            elif [[ "$requested" != "true" ]]; then
+              echo "not requested (add \`$label\` label)"
+            else
+              echo "label-gated"
+            fi
+          }
+
+          park_note="$(surface_note "$PARK_CHANGED" "$PARK_REQUESTED" "preview-park")"
+          resources_note="$(surface_note "$RESOURCES_CHANGED" "$RESOURCES_REQUESTED" "preview-resources")"
+          docs_note="$(surface_note "$DOCS_CHANGED" "$DOCS_REQUESTED" "preview-docs")"
 
           {
             echo "## Preview Summary"
@@ -1460,9 +1515,9 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           row "Frontend" "$frontend_mode" "$frontend_result" "${frontend_url:-—}" "$frontend_note"
-          row "Park" "affected-only" "$(format_result "$PARK_PREVIEW_RESULT")" "${PARK_PREVIEW_URL:-—}" "$park_note"
-          row "Resources" "affected-only" "$(format_result "$RESOURCES_PREVIEW_RESULT")" "${RESOURCES_PREVIEW_URL:-—}" "$resources_note"
-          row "API Client Docs" "affected-only" "$(format_result "$DOCS_PREVIEW_RESULT")" "${DOCS_PREVIEW_URL:-—}" "$docs_note"
+          row "Park" "label-gated" "$(format_result "$PARK_PREVIEW_RESULT")" "${PARK_PREVIEW_URL:-—}" "$park_note"
+          row "Resources" "label-gated" "$(format_result "$RESOURCES_PREVIEW_RESULT")" "${RESOURCES_PREVIEW_URL:-—}" "$resources_note"
+          row "API Client Docs" "label-gated" "$(format_result "$DOCS_PREVIEW_RESULT")" "${DOCS_PREVIEW_URL:-—}" "$docs_note"
           backend_note="not requested or unchanged"
           if [[ "$IS_FORCE_PREVIEW" == "true" ]]; then
             backend_note="forced preview"
@@ -1529,6 +1584,9 @@ jobs:
           RESOURCES_CHANGED: ${{ needs.detect.outputs.resources_changed || 'false' }}
           DOCS_CHANGED: ${{ needs.detect.outputs.docs_changed || 'false' }}
           PREVIEW_REQUESTED: ${{ needs.preview-label-gate.outputs.should_run || 'false' }}
+          PARK_REQUESTED: ${{ needs.preview-label-gate.outputs.park_preview || 'false' }}
+          RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
+          DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
           FRONTEND_DEV_RESULT: ${{ needs.deploy-frontend.result }}
           FRONTEND_DEV_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
@@ -1565,6 +1623,9 @@ jobs:
             const parkChanged = isTrue(process.env.PARK_CHANGED);
             const resourcesChanged = isTrue(process.env.RESOURCES_CHANGED);
             const docsChanged = isTrue(process.env.DOCS_CHANGED);
+            const parkRequested = isTrue(process.env.PARK_REQUESTED);
+            const resourcesRequested = isTrue(process.env.RESOURCES_REQUESTED);
+            const docsRequested = isTrue(process.env.DOCS_REQUESTED);
             const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
             const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
 
@@ -1591,9 +1652,13 @@ jobs:
             const backendPreparationFailed =
               isFailure(buildBackendResult) || isFailure(prepareDatabaseResult);
 
-            const readyOrFailedRow = (surface, changed, result, url, affectedNote) => {
+            const readyOrFailedRow = (surface, changed, requested, requestNote, result, url, affectedNote) => {
               if (!changed) {
                 return row(surface, '⚪ Not affected', [], 'No relevant changes');
+              }
+
+              if (!requested) {
+                return row(surface, '⚪ Not requested', [], requestNote);
               }
 
               if (result === 'success') {
@@ -1688,20 +1753,32 @@ jobs:
 
             const rows = [
               frontendRow,
-              readyOrFailedRow('Park', parkChanged, parkResult, parkUrl, 'Affected-only'),
+              readyOrFailedRow(
+                'Park',
+                parkChanged,
+                parkRequested,
+                'Add `preview-park` label',
+                parkResult,
+                parkUrl,
+                'Label-gated',
+              ),
               readyOrFailedRow(
                 'Resources',
                 resourcesChanged,
+                resourcesRequested,
+                'Add `preview-resources` label',
                 resourcesResult,
                 resourcesUrl,
-                'Affected-only',
+                'Label-gated',
               ),
               readyOrFailedRow(
                 'API Client Docs',
                 docsChanged,
+                docsRequested,
+                'Add `preview-docs` label',
                 docsResult,
                 docsUrl,
-                'Affected-only',
+                'Label-gated',
               ),
               backendRow,
             ];

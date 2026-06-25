@@ -14,7 +14,7 @@ on:
         default: ''
         type: string
       canary:
-        description: 'Cut a canary release candidate: tags astra/v<version>-rc.N (deploys to canary only) instead of the normal astra/v<version> (dev → prod). Does not bump main.'
+        description: 'Release a canary candidate: creates an astra/v<version>-rc.N tag that deploys to canary only, instead of the normal astra/v<version> tag that deploys dev → prod. Leaves main''s version unchanged.'
         required: false
         default: false
         type: boolean
