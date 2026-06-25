@@ -38,7 +38,7 @@ This page covers what .academy is, who runs it, how people use it, the registrat
 
 ## What is .academy?
 
-The .academy domain is a [generic top-level domain (gTLD)](/en/glossary/tld) introduced during ICANN's new gTLD program — the same expansion that delivered hundreds of descriptive suffixes like `.app`, `.dev`, and `.shop`. Where a [.com](/en/tld/com) name is neutral and says nothing about purpose, .academy carries built-in meaning: a place of structured learning, instruction, and expertise. That semantic clarity is the entire value proposition.
+The .academy domain is a generic top-level domain (gTLD) introduced during ICANN's new gTLD program — the same expansion that delivered hundreds of descriptive suffixes like `.app`, `.dev`, and `.shop`. Where a [.com](/en/tld/com) name is neutral and says nothing about purpose, .academy carries built-in meaning: a place of structured learning, instruction, and expertise. That semantic clarity is the entire value proposition.
 
 You can confirm the delegation in the [IANA root zone database entry for .academy](https://www.iana.org/domains/root/db/academy.html), which lists it as a generic TLD with a registration date of 2013-12-12. Because it is generic and not a [country-code TLD](/en/blog/cctld-market-share-by-registration-volume), it has no geographic association — Google treats it as a neutral suffix with no geo-targeting, the same way it treats .com or [.org](/en/tld/org). Per [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/site-name), new gTLDs like .academy carry no built-in ranking advantage or disadvantage; the suffix is just a label.
 
