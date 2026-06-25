@@ -1,4 +1,5 @@
 import { config } from '@/lib/env';
+import { FRONTEND_VERSION_INFO } from '@/lib/version-info';
 
 // `config.DEPLOY_COMMIT_SHA` is inlined per build via `compiler.define`, so each
 // deployment's copy of this handler returns its own build id. `force-dynamic`
@@ -12,6 +13,7 @@ export function GET(): Response {
     {
       buildId: config.DEPLOY_COMMIT_SHA,
       appVersion: config.APP_VERSION,
+      versionInfo: FRONTEND_VERSION_INFO,
     },
     {
       headers: {

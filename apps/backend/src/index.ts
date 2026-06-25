@@ -8,7 +8,7 @@ import './lib/external-api/rdap-whois-init';
 // other imports
 import { serve } from '@hono/node-server';
 import { trpcServer } from '@hono/trpc-server'; // Deno 'npm:@hono/trpc-server'
-import { Hono } from 'hono';
+import { type Context, Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { prettyJSON } from 'hono/pretty-json';
 import { createLogger } from '#lib/logger';
@@ -39,6 +39,7 @@ import { statsRouter } from './routers/stats';
 import { tlsRouter } from './routers/tls';
 import { browserLogsProxyRouter } from './routers/browser-logs-proxy';
 import { validateApiKey } from './lib/validate-api-key';
+import { getBackendVersionInfo } from './lib/version-info';
 import { nftIndexSchema } from '@namefi-astra/db/schemas/onchain-indexers/schema-def';
 import { rdapRouter } from './routers/rdap';
 import { whoisRouter } from './routers/whois';
@@ -86,7 +87,12 @@ const DNS_RELATED_ROUTES = [
   /x402/,
   /mpp/,
 ];
-const SKIP_CORS_ROUTES = [...DNS_RELATED_ROUTES, /llms\.txt/];
+const VERSION_INFO_ROUTES = [/\/versionz(?:\.json)?\/?$/];
+const SKIP_CORS_ROUTES = [
+  ...DNS_RELATED_ROUTES,
+  /llms\.txt/,
+  ...VERSION_INFO_ROUTES,
+];
 const X402Headers = [
   'x-payment',
   'payment',
@@ -107,6 +113,10 @@ const AGENT_DISCOVERY_PATHS = new Set([
   '/outbound/llms.txt',
   '/outbound/llms.txt/',
   '/v-next/openapi/doc.json',
+  '/versionz',
+  '/versionz/',
+  '/versionz.json',
+  '/versionz.json/',
 ]);
 
 // Team-owned namefi-astra Vercel deployment URLs, e.g.
@@ -288,6 +298,14 @@ app.route('/mcp', mcpRouter);
 app.route('feed/rss.xml', mlsRssProxyRouter);
 app.get('mls/feed/rss.xml', (c) => c.redirect('/feed/rss.xml', 308));
 app.route(RAW_GITHUB_PROXY_MOUNT, rawGithubProxyRouter);
+const versionInfoHandler = (c: Context<{ Variables: HonoVariables }>) => {
+  c.header('Cache-Control', 'no-store, no-cache, must-revalidate');
+  return c.json(getBackendVersionInfo());
+};
+app.get('/versionz', versionInfoHandler);
+app.get('/versionz/', versionInfoHandler);
+app.get('/versionz.json', versionInfoHandler);
+app.get('/versionz.json/', versionInfoHandler);
 app.get('llms.txt', (c) => {
   return c.redirect('https://namefi.io/llms.txt');
 });

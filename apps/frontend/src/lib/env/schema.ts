@@ -12,6 +12,8 @@ export const configSchema = z.object({
   ]),
   APP_VERSION: z.string().default('unknown'),
   DEPLOY_COMMIT_SHA: z.string().default('unknown'),
+  DEPLOY_COMMIT_DATE: z.string().default(''),
+  DEPLOY_COMMIT_URL: z.union([z.url(), z.literal('')]).default(''),
   BACKEND_URL: z.url(),
   RESOURCES_URL: z.url(),
   DOCS_URL: z.url(),

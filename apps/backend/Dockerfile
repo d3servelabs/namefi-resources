@@ -106,7 +106,13 @@ RUN bun run bundle:workflows
 #
 FROM base AS runner
 WORKDIR /app
+ARG BUILD_VERSION=
+ARG BUILD_COMMIT_SHA=
+ARG BUILD_COMMIT_DATE=
 ENV NODE_OPTIONS="${NODE_OPTIONS} --max-semi-space-size=256 --max-old-space-size=4096"
+ENV BUILD_VERSION=${BUILD_VERSION}
+ENV BUILD_COMMIT_SHA=${BUILD_COMMIT_SHA}
+ENV BUILD_COMMIT_DATE=${BUILD_COMMIT_DATE}
 # Copy only the runtime dependency trees needed under isolated installs.
 COPY --from=deps_prod /app/node_modules ./node_modules
 COPY --from=deps_prod /app/apps/backend/node_modules ./apps/backend/node_modules

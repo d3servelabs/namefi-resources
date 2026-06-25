@@ -26,6 +26,11 @@ import {
   XBrandIcon,
   YouTubeBrandIcon,
 } from '@namefi-astra/ui/components/namefi/brand-icons';
+import {
+  API_VERSION_URL,
+  FRONTEND_COMMIT_URL,
+  FRONTEND_VERSION_STAMP,
+} from '@/lib/version-info';
 
 export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
@@ -363,6 +368,24 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
               <span>{t('copyright', { year: YEAR })}</span>
+              {FRONTEND_COMMIT_URL ? (
+                <a
+                  href={FRONTEND_COMMIT_URL}
+                  target="_blank"
+                  rel={getExternalLinkRel(FRONTEND_COMMIT_URL)}
+                  className="font-mono text-xs text-white/40 transition hover:text-white/70"
+                >
+                  {FRONTEND_VERSION_STAMP}
+                </a>
+              ) : null}
+              <a
+                href={API_VERSION_URL}
+                target="_blank"
+                rel={getExternalLinkRel(API_VERSION_URL)}
+                className="font-mono text-xs text-white/40 transition hover:text-white/70"
+              >
+                see api version
+              </a>
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <LanguageSelector />

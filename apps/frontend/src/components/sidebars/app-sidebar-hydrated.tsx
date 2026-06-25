@@ -9,10 +9,14 @@ import { useAuth } from '@/hooks/use-auth';
 import { useFreeMints } from '@/hooks/use-free-mints';
 import { useRecentDomains } from '@/hooks/use-recent-domains';
 import { useWishlist } from '@/hooks/use-wishlist';
-import { config } from '@/lib/env';
 import type { NavItem } from '@/lib/types/nav-item';
 import { useTRPC } from '@/lib/trpc';
 import { recordPerfOnce } from '@/lib/perf/marks';
+import {
+  API_VERSION_URL,
+  FRONTEND_COMMIT_URL,
+  FRONTEND_VERSION_STAMP,
+} from '@/lib/version-info';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, type FC } from 'react';
@@ -165,29 +169,30 @@ export type AppSidebarHydratedFooterProps = {
 export const AppSidebarHydratedFooter: FC<AppSidebarHydratedFooterProps> = ({
   isCollapsed,
 }) => {
-  const trpc = useTRPC();
-  const commitLabel = config.DEPLOY_COMMIT_SHA.startsWith('unknown')
-    ? config.DEPLOY_COMMIT_SHA
-    : config.DEPLOY_COMMIT_SHA.slice(0, 12);
-
-  const backendVersion = useQuery({
-    ...trpc.version.queryOptions(),
-    enabled: !isCollapsed,
-  });
-
   if (isCollapsed) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-1 text-xs font-medium text-secondary-foreground/40">
-      <div className="flex flex-col px-2 gap-1">
-        <span className="whitespace-nowrap">App: {config.APP_VERSION}</span>
-        <span className="whitespace-nowrap">Commit: {commitLabel}</span>
-      </div>
-      <div className="flex flex-row gap-1">
-        <span className="whitespace-nowrap">
-          API: {backendVersion.data?.version}
-        </span>
-      </div>
+    <div className="flex min-w-0 flex-col gap-1 px-2 text-xs font-medium text-secondary-foreground/40">
+      {FRONTEND_COMMIT_URL ? (
+        <a
+          href={FRONTEND_COMMIT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-all font-mono transition hover:text-secondary-foreground/70"
+        >
+          {FRONTEND_VERSION_STAMP}
+        </a>
+      ) : (
+        <span className="break-all font-mono">{FRONTEND_VERSION_STAMP}</span>
+      )}
+      <a
+        href={API_VERSION_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-fit font-mono transition hover:text-secondary-foreground/70"
+      >
+        see api version
+      </a>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { versionContract } from '@namefi-astra/common/contract/version-contract';
+import { getBackendVersionJson } from '#lib/version-info';
 import { createTRPCRouter, publicProcedure } from '../base';
 import { apiKeysRouter } from './apiKeysRouter';
 import { authRouter } from './authRouter';
@@ -64,14 +65,7 @@ export const appRouter = createTRPCRouter({
   version: publicProcedure
     .input(versionContract.input)
     .output(versionContract.output)
-    .query(() => {
-      const result = {
-        version: process.env.npm_package_version,
-        name: process.env.npm_package_name,
-      };
-
-      return result;
-    }),
+    .query(() => getBackendVersionJson()),
   testSignedPayload: testSignedPayloadRouter,
   x402: x402Router,
 });

@@ -4,6 +4,8 @@
  * @see https://nextjs.org/docs/pages/api-reference/config/typescript
  */
 import createMdx from '@next/mdx';
+// biome-ignore lint/correctness/noNodejsModules: next.config runs in Node and needs execSync to read build metadata.
+import { execSync } from 'node:child_process';
 import { createJiti } from 'jiti';
 import createNextIntlPlugin from 'next-intl/plugin';
 import {
@@ -29,13 +31,46 @@ const withMDX = createMdx({
   extension: /\.mdx?$/,
 });
 
+const git = (args) => {
+  try {
+    return execSync(`git ${args}`, { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString()
+      .trim();
+  } catch {
+    return '';
+  }
+};
+
+const normalizeCommitDate = (value) => {
+  const parsed = new Date(value || '');
+  return Number.isNaN(parsed.getTime())
+    ? new Date().toISOString()
+    : parsed.toISOString();
+};
+
+const resolveCommitUrl = (sha) => {
+  if (!sha || sha === 'unknown') return '';
+  const repo =
+    process.env.VERCEL_GIT_REPO_OWNER && process.env.VERCEL_GIT_REPO_SLUG
+      ? `${process.env.VERCEL_GIT_REPO_OWNER}/${process.env.VERCEL_GIT_REPO_SLUG}`
+      : process.env.GITHUB_REPOSITORY || 'd3servelabs/namefi-astra';
+  return `https://github.com/${repo}/commit/${sha}`;
+};
+
 /** @type {{ config: import('./src/lib/env/schema').ConfigInput }} */
 const { config: appConfig } = await jiti.import('./src/lib/env/load');
-const deployCommitSha = resolveDeployCommitSha() || 'unknown';
+const deployCommitSha =
+  resolveDeployCommitSha() || git('rev-parse HEAD') || 'unknown';
+const deployCommitDate = normalizeCommitDate(
+  process.env.DEPLOY_COMMIT_DATE ||
+    git(`show -s --format=%cI ${deployCommitSha}`),
+);
 const loadedClientConfig = {
   ...appConfig,
   APP_VERSION: packageJson.version,
   DEPLOY_COMMIT_SHA: deployCommitSha,
+  DEPLOY_COMMIT_DATE: deployCommitDate,
+  DEPLOY_COMMIT_URL: resolveCommitUrl(deployCommitSha),
 };
 // `/r` rewrites proxy to a dedicated resources upstream.
 const resourcesProxyOrigin =

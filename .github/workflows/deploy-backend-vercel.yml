@@ -333,6 +333,17 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           }
 
+      - name: Resolve backend version metadata
+        id: version-meta
+        if: steps.check-image.outputs.exists != 'true'
+        run: |
+          DEPLOY_SHA="${{ github.sha }}"
+          {
+            echo "version=$(jq -r .version apps/backend/package.json)"
+            echo "commit_sha=$DEPLOY_SHA"
+            echo "commit_date=$(git show -s --format=%cI "$DEPLOY_SHA")"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Set up Docker Buildx
         if: steps.check-image.outputs.exists != 'true'
         uses: useblacksmith/setup-docker-builder@v1
@@ -349,6 +360,9 @@ jobs:
             BASE_IMAGE=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-base-image:latest
             BASE_PRUNER=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-base-pruner:latest
             DEPS_BUILD=${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/cloud-run-source-deploy/${{ env.REPO_NAME }}/namefi-astra-api-deps-build:latest
+            BUILD_VERSION=${{ steps.version-meta.outputs.version }}
+            BUILD_COMMIT_SHA=${{ steps.version-meta.outputs.commit_sha }}
+            BUILD_COMMIT_DATE=${{ steps.version-meta.outputs.commit_date }}
 
       - name: Skip build
         if: steps.check-image.outputs.exists == 'true'
