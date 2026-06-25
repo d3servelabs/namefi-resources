@@ -47,9 +47,5 @@
     "refunded": "اترجعت فلوسه",
     "requiresCapture": "محتاج تأكيد",
     "unknown": "مش معروف"
-  },
-  "signIn": {
-    "loadFailedTitle": "مقدرناش نحمّل شاشة الدخول",
-    "loadFailedDescription": "في مشكلة في تحميل شاشة تسجيل الدخول، حاول تاني."
   }
 }

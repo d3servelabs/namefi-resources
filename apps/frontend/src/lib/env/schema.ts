@@ -72,15 +72,16 @@ export const clientSideEnvSchema = z.object({
   NEXT_PUBLIC_ALCHEMY_FRONTEND_API_KEY: z.string().optional(),
   /**
    * WalletConnect Cloud (Reown) project id — a **public** client id, safe in the
-   * browser. Powers the Reown AppKit connector used behind
-   * `ff_mobile_walletconnect` (see `components/providers/reown-wallet-stack`).
-   * Defaults to the id already configured in the Privy dashboard / observed in
-   * prod WC traffic, so it works on merge without new env wiring; override per
-   * environment via `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID`.
+   * browser. Powers the Reown AppKit connector
+   * (`components/providers/reown-wallet-stack`), which is the sole wallet stack.
+   * Sourced from the environment (Infisical) per deployment — use the same Namefi
+   * WalletConnect project id configured in the Privy dashboard. Kept optional here
+   * so the eagerly-parsed, widely-imported client env schema never throws in unit
+   * tests / no-Infisical builds. If unset, the Reown stack degrades gracefully
+   * (wallet routes still render) and surfaces a handled error only when the user
+   * actually tries to connect a wallet (see `ReownWalletStack`).
    */
-  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z
-    .string()
-    .default('34357d3c125c2bcf2ce2bc3309d98715'),
+  NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: z.string().optional(),
   /**
    * Optional OpenSea API key. The OpenSea adapter primarily uses a per-user
    * "instant" key it auto-requests + caches in the browser; this env key is a

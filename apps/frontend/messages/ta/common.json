@@ -47,9 +47,5 @@
     "refunded": "மீளடைவு",
     "requiresCapture": "கைப்பற்றல் தேவை",
     "unknown": "தெரியாத"
-  },
-  "signIn": {
-    "loadFailedTitle": "உள்நுழைவு ஏற்றல் தோல்வி",
-    "loadFailedDescription": "உள்நுழைவு செயல்முறை ஏற்றுவதில் தோல்வி ஏற்பட்டது."
   }
 }

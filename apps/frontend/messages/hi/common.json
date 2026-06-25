@@ -47,9 +47,5 @@
     "refunded": "वापस हुआ",
     "requiresCapture": "कैप्चर आवश्यक",
     "unknown": "अज्ञात"
-  },
-  "signIn": {
-    "loadFailedTitle": "साइन इन लोड नहीं हो सका",
-    "loadFailedDescription": "साइन इन प्रक्रिया लोड करने में समस्या आई।"
   }
 }

@@ -47,9 +47,5 @@
     "refunded": "Reembolsado",
     "requiresCapture": "Requiere captura",
     "unknown": "Desconocido"
-  },
-  "signIn": {
-    "loadFailedTitle": "Error al cargar el inicio de sesión",
-    "loadFailedDescription": "El flujo de inicio de sesión no se pudo cargar."
   }
 }

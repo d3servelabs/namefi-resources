@@ -47,9 +47,5 @@
     "refunded": "Erstattet",
     "requiresCapture": "Buchung ausstehend",
     "unknown": "Unbekannt"
-  },
-  "signIn": {
-    "loadFailedTitle": "Anmeldung konnte nicht geladen werden",
-    "loadFailedDescription": "Der Anmeldevorgang konnte nicht geladen werden."
   }
 }

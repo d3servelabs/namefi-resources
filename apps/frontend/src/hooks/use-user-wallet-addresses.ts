@@ -1,20 +1,18 @@
-import {
-  useWallets,
-  type LinkedAccountWithMetadata,
-  type WalletWithMetadata,
+import type {
+  LinkedAccountWithMetadata,
+  WalletWithMetadata,
 } from '@privy-io/react-auth';
 import { useMemo } from 'react';
 import { useAccount, useConfig } from 'wagmi';
 import { switchChain as wagmiSwitchChain } from 'wagmi/actions';
-import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
 import { useAuth } from './use-auth';
 
 /**
  * The connected-wallet shape the app actually consumes — `address` plus the two
- * methods `use-watch-assets` calls. Privy's `ConnectedWallet` structurally
- * satisfies it; in Reown mode we synthesize it from the wagmi connection (Reown,
- * not Privy, owns the live connection), so the connected-wallet surfaces
- * (add-token, API-key signing) work without Privy. See namefi-astra#4753.
+ * methods `use-watch-assets` calls. Reown AppKit (not Privy) owns the live
+ * connection, so we synthesize this from the wagmi connection — the
+ * connected-wallet surfaces (add-token, API-key signing) work without Privy
+ * owning the wagmi runtime. See namefi-astra#4753.
  */
 export interface AppConnectedWallet {
   address: string;
@@ -28,9 +26,9 @@ export interface AppConnectedWallet {
 }
 
 /**
- * Reown mode: the single live wallet lives in wagmi (`useAccount`), not Privy's
- * `useWallets`. Back `switchChain`/`getEthereumProvider` with wagmi + the
- * connector so consumers behave the same as with a Privy `ConnectedWallet`.
+ * The single live wallet lives in wagmi (`useAccount`), owned by Reown AppKit.
+ * Back `switchChain`/`getEthereumProvider` with wagmi + the connector so
+ * consumers behave the same as with a Privy `ConnectedWallet`.
  */
 function useReownConnectedEthereumWallets(): AppConnectedWallet[] {
   const { address, isConnected, connector } = useAccount();
@@ -62,32 +60,19 @@ function useReownConnectedEthereumWallets(): AppConnectedWallet[] {
 }
 
 /**
- * Connected Ethereum wallets. In Privy mode this is Privy's connected wallets;
- * in Reown mode it's the wagmi connection (Privy's `useWallets` is empty there).
+ * Connected Ethereum wallets — the live wagmi connection owned by Reown AppKit.
  */
 export function useConnectedWallets() {
-  const { mode } = useWalletConnectionRuntime();
-  const { ready, wallets } = useWallets();
-  const reownWallets = useReownConnectedEthereumWallets();
-
-  const connectedEthereumWallets = useMemo<AppConnectedWallet[]>(() => {
-    if (mode === 'reown') {
-      return reownWallets;
-    }
-    return wallets.filter(
-      (wallet) => wallet.type === 'ethereum',
-    ) as unknown as AppConnectedWallet[];
-  }, [mode, wallets, reownWallets]);
+  const connectedEthereumWallets = useReownConnectedEthereumWallets();
 
   return {
-    connectedWalletsReady: mode === 'reown' ? true : ready,
+    connectedWalletsReady: true,
     connectedEthereumWallets,
   };
 }
 
 /**
- * Addresses of the connected Ethereum wallets (mode-aware, via
- * {@link useConnectedWallets}).
+ * Addresses of the connected Ethereum wallets (via {@link useConnectedWallets}).
  */
 export function useConnectedWalletAddresses() {
   const { connectedWalletsReady, connectedEthereumWallets } =

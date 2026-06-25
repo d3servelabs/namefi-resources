@@ -1,4 +1,16 @@
 {
+  "signInChooser": {
+    "title": "Se connecter à Namefi",
+    "description": "Choisissez comment vous souhaitez vous connecter.",
+    "walletHeading": "Connecter un portefeuille",
+    "otherWallets": "Autres portefeuilles",
+    "connecting": "Connexion…",
+    "or": "ou",
+    "loginButton": "Se connecter ou créer un compte",
+    "tos": "En connectant un portefeuille ou en vous connectant, vous acceptez les <link>conditions d'utilisation</link> de Namefi.",
+    "errorTitle": "Échec de la connexion avec le portefeuille",
+    "errorDescription": "Nous n'avons pas pu finaliser la connexion avec le portefeuille. Veuillez réessayer."
+  },
   "authRequired": {
     "title": "Connexion requise",
     "description": "Veuillez vous connecter pour continuer",

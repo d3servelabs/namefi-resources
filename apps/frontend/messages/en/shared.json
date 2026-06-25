@@ -1,4 +1,16 @@
 {
+  "signInChooser": {
+    "title": "Sign in to Namefi",
+    "description": "Choose how you'd like to sign in.",
+    "walletHeading": "Connect a wallet",
+    "otherWallets": "Other wallets",
+    "connecting": "Connecting…",
+    "or": "or",
+    "loginButton": "Log in or Create Account",
+    "tos": "By connecting a wallet or logging in, you agree to Namefi's <link>Terms of Service</link>.",
+    "errorTitle": "Couldn't sign in with wallet",
+    "errorDescription": "We couldn't complete wallet sign in. Please try again."
+  },
   "authRequired": {
     "title": "Sign in required",
     "description": "Please sign in to continue",

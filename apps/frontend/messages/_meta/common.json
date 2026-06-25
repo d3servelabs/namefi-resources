@@ -153,12 +153,6 @@
     "description": "Global fallback status label for an unrecognized order/payment state. Shown in status badges; keep short.",
     "maxLength": 12
   },
-  "signIn.loadFailedTitle": {
-    "description": "Error toast title shown when the sign-in flow fails to load (header/sidebar account button)."
-  },
-  "signIn.loadFailedDescription": {
-    "description": "Default error toast description when the sign-in flow fails to load, used when no specific error message is available."
-  },
   "actions.signOut": {
     "description": "Global action atom: sign the user out. Used in the account dropdown.",
     "maxLength": 14

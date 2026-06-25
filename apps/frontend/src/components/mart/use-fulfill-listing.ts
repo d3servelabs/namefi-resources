@@ -1,6 +1,5 @@
 'use client';
 
-import { useConnectWallet } from '@privy-io/react-auth';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
@@ -11,6 +10,7 @@ import {
   waitForTransactionReceipt,
   watchAccount,
 } from 'wagmi/actions';
+import { useWalletConnectionRuntime } from '@/components/providers/wallet-connection-runtime';
 import { useWalletActionClient } from '@/hooks/use-wallet-action-client';
 import { getMarketplace } from '@/lib/marketplaces/factory';
 import { toBuyErrorMessage } from './fulfill-error';
@@ -33,7 +33,7 @@ export function useFulfillListing(options?: {
   const t = useTranslations('mart');
   const config = useConfig();
   const queryClient = useQueryClient();
-  const { connectWallet } = useConnectWallet();
+  const { connectWallet } = useWalletConnectionRuntime();
   const resolveWalletClient = useWalletActionClient();
 
   return useMutation({
@@ -43,10 +43,10 @@ export function useFulfillListing(options?: {
       // state distinctly:
       const status = getAccount(config).status;
       if (status === 'disconnected') {
-        // No session — open Privy's connect modal. It resolves even if the user
-        // dismisses it, and Privy can settle before wagmi reflects the account,
-        // so wait briefly for `connected`; only a window that never resolves is
-        // a genuine dismissal.
+        // No session — open the wallet connect modal (Reown AppKit). The runtime
+        // resolves once the modal closes (connect or dismiss), and the connector
+        // can settle a beat before wagmi reflects the account, so wait briefly
+        // for `connected`; only a window that never resolves is a real dismissal.
         await connectWallet();
         if (
           !(await waitForAccountConnected(config, CONNECT_READY_TIMEOUT_MS))
@@ -109,9 +109,9 @@ export function useFulfillListing(options?: {
   });
 }
 
-/** How long to wait for wagmi to reflect a wallet connection after Privy's
- *  `connectWallet` resolves. Long enough to absorb the Privy→wagmi sync, short
- *  enough that a dismissed modal fails fast (vs. the 5s readiness timeout). */
+/** How long to wait for wagmi to reflect a wallet connection after the connect
+ *  modal closes. Long enough to absorb the connector→wagmi sync, short enough
+ *  that a dismissed modal fails fast (vs. the 5s readiness timeout). */
 const CONNECT_READY_TIMEOUT_MS = 2500;
 
 /** Longer window for an in-progress session restore (`reconnecting` /

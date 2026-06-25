@@ -2,34 +2,22 @@
 
 import { createContext, useContext } from 'react';
 
-/**
- * Which stack currently owns the live wallet connection.
- * - `privy`      — the default: `@privy-io/wagmi` owns the wagmi runtime and the
- *                  connect flow goes through Privy's modal (`useConnectWallet`).
- * - `reown`      — behind `ff_mobile_walletconnect`: plain `wagmi` + Reown AppKit
- *                  own the connection so the wallet deep-link uses universal /
- *                  app links instead of Privy's `window.open('metamask://…')`.
- */
-export type WalletStackMode = 'privy' | 'reown';
-
 export interface ConnectWalletOptions {
   /**
-   * A hint for which wallet to surface in the connect flow. Honored in `privy`
-   * mode (passed to Privy's `connectWallet`); ignored in `reown` mode,
-   * where the AppKit modal lets the user pick the wallet.
+   * A hint for which wallet to surface in the connect flow. Currently a no-op:
+   * Reown AppKit's modal lets the user pick the wallet and cannot be pinned to a
+   * specific address. Kept so callers can express intent without branching.
    */
   suggestedAddress?: string;
 }
 
 /**
  * The provider-agnostic wallet-connection operations consumed by the wallet
- * dialogs. Both the Privy and the Reown AppKit stacks publish an implementation
- * through {@link WalletConnectionRuntimeContext}, so the dialogs never call a
- * stack-specific hook (e.g. `@privy-io/wagmi`'s `useSetActiveWallet`, which is
- * unavailable once Reown owns the runtime) directly.
+ * dialogs. The Reown AppKit stack publishes an implementation through
+ * {@link WalletConnectionRuntimeContext}, so the dialogs never depend on a
+ * stack-specific hook directly.
  */
 export interface WalletConnectionRuntime {
-  mode: WalletStackMode;
   /**
    * Open the wallet-connect flow. Resolves once the flow has been kicked off —
    * callers gate success on wagmi's `useAccount()` reaching the target wallet,
@@ -37,10 +25,9 @@ export interface WalletConnectionRuntime {
    */
   connectWallet: (options?: ConnectWalletOptions) => Promise<void>;
   /**
-   * Make `address` the active wagmi account. In `privy` mode this switches among
-   * Privy's connected wallets; in `reown` mode the connection is singular,
-   * so this is a best-effort that re-opens the connect modal when the active
-   * account does not already match.
+   * Make `address` the active wagmi account. AppKit holds a single live
+   * connection, so this is a best-effort that re-opens the connect modal when
+   * the active account does not already match.
    */
   setActiveWalletByAddress: (address: string) => Promise<void>;
 }
@@ -52,7 +39,6 @@ export interface WalletConnectionRuntime {
  * `WagmiProvider`.
  */
 const FALLBACK_WALLET_CONNECTION_RUNTIME: WalletConnectionRuntime = {
-  mode: 'privy',
   async connectWallet() {
     console.warn(
       '[wallet] connectWallet() called with no WalletConnectionRuntime mounted',

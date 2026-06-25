@@ -47,9 +47,5 @@
     "refunded": "Refunded",
     "requiresCapture": "Requires Capture",
     "unknown": "Unknown"
-  },
-  "signIn": {
-    "loadFailedTitle": "Failed to load sign in",
-    "loadFailedDescription": "The sign in flow failed to load."
   }
 }

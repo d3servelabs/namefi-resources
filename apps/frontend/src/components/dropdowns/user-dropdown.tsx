@@ -27,7 +27,7 @@ import {
   type HTMLAttributes,
 } from 'react';
 import type { HeaderActionVariant } from '@/components/header-action-button';
-import { toast } from 'sonner';
+import { SignInChooserDialog } from '@/components/dialogs/sign-in-chooser';
 import { shouldShowUserDropdownLoading } from './user-dropdown-state';
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
@@ -60,7 +60,6 @@ type SignedOutButtonProps = {
 };
 
 type LoginButtonProps = SignedOutButtonProps & {
-  isLoginPending: boolean;
   onLogin: () => void;
   onLoginIntent: () => void;
 };
@@ -84,14 +83,13 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       privyUser,
       unsafeDisplayProfile,
       preloadLoginRuntime,
-      requestLogin: requestAuthLogin,
     } = useAuth();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [hasOpenedMenu, setHasOpenedMenu] = useState(false);
     const [hasRequestedMenu, setHasRequestedMenu] = useState(false);
     const [UserDropdownMenu, setUserDropdownMenu] =
       useState<UserDropdownFullComponent | null>(null);
-    const [isLoginPending, setIsLoginPending] = useState(false);
+    const [isSignInChooserOpen, setIsSignInChooserOpen] = useState(false);
 
     useEffect(() => {
       if (isAuthenticated) return;
@@ -126,21 +124,8 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
     );
 
     const handleLoginRequest = useCallback(() => {
-      setIsLoginPending(true);
-      void requestAuthLogin({})
-        .catch((error) => {
-          const message =
-            error instanceof Error
-              ? error.message
-              : t('signIn.loadFailedDescription');
-          toast.error(t('signIn.loadFailedTitle'), {
-            description: message,
-          });
-        })
-        .finally(() => {
-          setIsLoginPending(false);
-        });
-    }, [requestAuthLogin, t]);
+      setIsSignInChooserOpen(true);
+    }, []);
 
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
@@ -296,12 +281,15 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
               disableBackdropBlur={disableBackdropBlur}
               isExpanded={isExpanded}
               stretch={shouldStretch}
-              isLoginPending={isLoginPending}
               onLogin={handleLoginRequest}
               onLoginIntent={preloadLoginRuntime}
             />
           )}
         </AnimatePresence>
+        <SignInChooserDialog
+          open={isSignInChooserOpen}
+          onOpenChange={setIsSignInChooserOpen}
+        />
       </div>
     );
   },
@@ -359,7 +347,6 @@ function SignedOutButton({
   disableBackdropBlur,
   isExpanded,
   stretch,
-  isLoginPending,
   onLogin,
   onLoginIntent,
 }: LoginButtonProps) {
@@ -387,18 +374,10 @@ function SignedOutButton({
         onClick={onLogin}
         onFocus={onLoginIntent}
         onMouseEnter={onLoginIntent}
-        disabled={isLoginPending}
+        data-testid="nav.user-menu.sign-in"
       >
-        {isLoginPending ? (
-          <Loader2Icon className="size-5 animate-spin" />
-        ) : (
-          <WalletIcon className="size-5" />
-        )}
-        {isExpanded && (
-          <span>
-            {isLoginPending ? t('actions.loading') : t('actions.signIn')}
-          </span>
-        )}
+        <WalletIcon className="size-5" />
+        {isExpanded && <span>{t('actions.signIn')}</span>}
       </HeaderActionButton>
     </motion.div>
   );

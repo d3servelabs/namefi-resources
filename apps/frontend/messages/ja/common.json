@@ -47,9 +47,5 @@
     "refunded": "返金済み",
     "requiresCapture": "キャプチャ待ち",
     "unknown": "不明"
-  },
-  "signIn": {
-    "loadFailedTitle": "ログイン読み込み失敗",
-    "loadFailedDescription": "ログインフローを読み込めませんでした。"
   }
 }

@@ -1,4 +1,3 @@
-import { createConfig } from '@privy-io/wagmi';
 import { fallback } from 'viem';
 import { http } from 'wagmi';
 import { CHAINS } from '@namefi-astra/utils/chains';
@@ -32,10 +31,10 @@ const PUBLIC_RPC_FALLBACKS: Record<number, string> = {
 };
 
 /**
- * Per-chain HTTP transports shared by every wagmi config we build — the
- * Privy-owned default (`getWagmiConfig`) and the Reown AppKit adapter behind
- * `ff_mobile_walletconnect` (see `components/providers/reown-wallet-stack`).
- * Kept here (without importing Reown) so the default path stays light.
+ * Per-chain HTTP transports for the wagmi config — consumed by the Reown AppKit
+ * adapter (see `components/providers/reown-wallet-stack`). Kept here (without
+ * importing Reown) so the chain/transport config stays a light, standalone
+ * source of truth.
  */
 export const getSupportedChainTransports = () => {
   const generateAlchemyRpcUrlForChain =
@@ -60,11 +59,4 @@ export const getSupportedChainTransports = () => {
     [CHAINS.baseSepolia.id]: getHttpTransport(CHAINS.baseSepolia.id),
     [CHAINS.robinhoodTestnet.id]: getHttpTransport(CHAINS.robinhoodTestnet.id),
   };
-};
-
-export const getWagmiConfig = () => {
-  return createConfig({
-    chains: supportedChains,
-    transports: getSupportedChainTransports(),
-  });
 };

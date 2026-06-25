@@ -47,9 +47,5 @@
     "refunded": "已退款",
     "requiresCapture": "待请款",
     "unknown": "未知"
-  },
-  "signIn": {
-    "loadFailedTitle": "登录加载失败",
-    "loadFailedDescription": "登录流程加载失败。"
   }
 }

@@ -121,13 +121,9 @@ function NFSCSwapDialogInner(props: Props) {
   const { address: connectedAddress, chainId } = useAccount();
   const walletRuntime = useWalletConnectionRuntime();
   // `buyWithEthers` always credits the *connected* signer, and Reown AppKit
-  // can't honor a suggested address — so once a wallet is connected, target it.
-  // (Flag-off Privy mode keeps prioritizing the requested `walletAddress`, since
-  // its connect flow can switch to that exact wallet.)
-  const displayAddress =
-    walletRuntime.mode === 'reown'
-      ? connectedAddress || walletAddress
-      : walletAddress || connectedAddress;
+  // can't honor a suggested address — so once a wallet is connected, target it
+  // and fall back to the requested `walletAddress` only before one is connected.
+  const displayAddress = connectedAddress || walletAddress;
   const checksummedAddress = useMemo(
     () =>
       displayAddress ? attemptGetChecksummedAddress(displayAddress) : null,

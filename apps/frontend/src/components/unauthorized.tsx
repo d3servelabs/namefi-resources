@@ -12,23 +12,24 @@ import { useAuth } from '@/hooks/use-auth';
 import { ShieldAlert } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useState } from 'react';
 import { ErrorHelpLinks } from '@/components/error-help-links';
+import { SignInChooserDialog } from '@/components/dialogs/sign-in-chooser';
 
 export interface UnauthorizedProps {
   title?: string;
   description?: string;
-  authUrl?: Route;
   homeUrl?: Route;
 }
 
 export function Unauthorized({
   title,
   description,
-  authUrl = '/',
   homeUrl = '/',
 }: UnauthorizedProps) {
   const t = useTranslations('error');
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth();
+  const [isSignInChooserOpen, setIsSignInChooserOpen] = useState(false);
   const resolvedTitle = title ?? t('unauthorized.title');
   const resolvedDescription = description ?? t('unauthorized.description');
 
@@ -48,9 +49,9 @@ export function Unauthorized({
           <div className="flex flex-col space-y-2 sm:gap-x-2 sm:space-y-0 gap-2">
             {!isAuthenticated && !isAuthLoading && (
               <Button
-                render={<Link href={authUrl} />}
-                nativeButton={false}
                 className="w-full"
+                onClick={() => setIsSignInChooserOpen(true)}
+                data-testid="error.unauthorized.sign-in"
               >
                 {t('actions.signIn')}
               </Button>
@@ -70,6 +71,10 @@ export function Unauthorized({
           <ErrorHelpLinks className="mt-1" />
         </CardFooter>
       </Card>
+      <SignInChooserDialog
+        open={isSignInChooserOpen}
+        onOpenChange={setIsSignInChooserOpen}
+      />
     </div>
   );
 }

@@ -1,4 +1,16 @@
 {
+  "signInChooser": {
+    "title": "登录 Namefi",
+    "description": "请选择登录方式。",
+    "walletHeading": "连接钱包",
+    "otherWallets": "其他钱包",
+    "connecting": "连接中…",
+    "or": "或",
+    "loginButton": "登录或创建账户",
+    "tos": "连接钱包或登录，即表示您同意 Namefi 的<link>服务条款</link>。",
+    "errorTitle": "钱包登录失败",
+    "errorDescription": "无法完成钱包登录，请重试。"
+  },
   "authRequired": {
     "title": "需要登录",
     "description": "请登录后继续操作",

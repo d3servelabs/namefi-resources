@@ -47,9 +47,5 @@
     "refunded": "Remboursé",
     "requiresCapture": "Capture requise",
     "unknown": "Inconnu"
-  },
-  "signIn": {
-    "loadFailedTitle": "Échec du chargement de la connexion",
-    "loadFailedDescription": "Le processus de connexion n'a pas pu être chargé."
   }
 }

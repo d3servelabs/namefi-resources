@@ -1,4 +1,40 @@
 {
+  "signInChooser.title": {
+    "description": "Title of the sign-in chooser dialog shown when a signed-out user clicks Sign In; offers wallet vs email.",
+    "maxLength": 28
+  },
+  "signInChooser.description": {
+    "description": "Body of the sign-in chooser dialog: invites the user to pick a sign-in method."
+  },
+  "signInChooser.walletHeading": {
+    "description": "Section heading above the featured-wallet list in the sign-in chooser.",
+    "maxLength": 20
+  },
+  "signInChooser.otherWallets": {
+    "description": "Link below the featured wallets in the sign-in chooser that opens the full wallet list (AppKit modal).",
+    "maxLength": 18
+  },
+  "signInChooser.or": {
+    "description": "Divider label between the wallet options and the email login option in the sign-in chooser.",
+    "maxLength": 6
+  },
+  "signInChooser.loginButton": {
+    "description": "Button in the sign-in chooser that opens Privy email login (sign in or create an account).",
+    "maxLength": 28
+  },
+  "signInChooser.tos": {
+    "description": "Terms-of-Service consent line under the sign-in chooser actions. Contains a <link>...</link> tag wrapping the linked Terms of Service text."
+  },
+  "signInChooser.connecting": {
+    "description": "Busy label on the Connect wallet option while the wallet connection is in progress. Includes a trailing ellipsis.",
+    "maxLength": 16
+  },
+  "signInChooser.errorTitle": {
+    "description": "Error toast title shown when wallet sign in fails in the sign-in chooser."
+  },
+  "signInChooser.errorDescription": {
+    "description": "Default error toast description when wallet sign in fails, used when no specific error message is available."
+  },
   "authRequired.title": {
     "description": "Title of the auth-required prompt shown when a signed-out user tries a gated action; means 'Sign in required'."
   },
