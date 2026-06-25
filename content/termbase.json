@@ -957,9 +957,9 @@
       "fr": "ICANN",
       "zh": "ICANN",
       "ar": "ICANN",
-      "hi": "आईसीएएनएन"
+      "hi": "ICANN"
     },
-    "level": 1
+    "level": 2
   },
   "idn": {
     "en": "IDN (Internationalized Domain Name) / Punycode",
@@ -1360,17 +1360,17 @@
     }
   },
   "registry": {
-    "en": "Registry (Registry Operator)",
+    "en": "Registry",
     "titles": {
-      "en": "Registry (Registry Operator)",
-      "es": "Registro (Operador de Registro)",
-      "de": "Registry (Registry-Betreiber)",
-      "fr": "Registre (Opérateur de registre)",
-      "zh": "注册局（注册局运营商）",
-      "ar": "السجل (مشغل السجل)",
-      "hi": "रजिस्ट्री (Registry Operator)"
+      "en": "Registry",
+      "es": "Registro",
+      "de": "Registry",
+      "fr": "Registre",
+      "zh": "注册局",
+      "ar": "السجل",
+      "hi": "रजिस्ट्री"
     },
-    "level": 1
+    "level": 2
   },
   "registry-lock": {
     "en": "Registry Lock",
@@ -1607,17 +1607,17 @@
     "level": 1
   },
   "tld": {
-    "en": "TLD (Top-Level Domain)",
+    "en": "TLD",
     "titles": {
-      "en": "TLD (Top-Level Domain)",
-      "es": "TLD (dominio de nivel superior)",
-      "de": "TLD (Top-Level-Domain)",
-      "fr": "TLD (domaine de premier niveau)",
-      "zh": "TLD（顶级域名）",
-      "ar": "TLD (نطاق المستوى الأعلى)",
-      "hi": "TLD (टॉप-लेवल डोमेन)"
+      "en": "TLD",
+      "es": "TLD",
+      "de": "TLD",
+      "fr": "TLD",
+      "zh": "TLD",
+      "ar": "TLD",
+      "hi": "TLD"
     },
-    "level": 1
+    "level": 2
   },
   "tld-seo": {
     "en": "TLD SEO Impact",
