@@ -19,8 +19,9 @@ import {
   useConfig,
   useSignMessage,
 } from 'wagmi';
-import { getAccount, watchAccount } from 'wagmi/actions';
+import { disconnect, getAccount, watchAccount } from 'wagmi/actions';
 import { isClientDebugFlagEnabled } from '@/lib/debug-flag';
+import { registerWalletDisconnectHandler } from '@/lib/wallet-disconnect';
 import { clientSideEnv } from '@/lib/env';
 import {
   getSupportedChainTransports,
@@ -134,6 +135,13 @@ function getReownWagmiAdapter(projectId: string): WagmiAdapter {
       // Reown owns only the external-wallet connection + deep-link; Privy stays
       // for identity, so AppKit's own email/social login is disabled.
       features: { analytics: false, email: false, socials: false },
+    });
+    // Let logout drop this wallet connection. Privy logout only clears the
+    // identity session; without this the next wallet-SIWE is a no-op ("Modal
+    // closed"). Registered against the module-singleton config so it still works
+    // after the React WagmiProvider unmounts (it persists for the page session).
+    registerWalletDisconnectHandler(async () => {
+      if (wagmiAdapter) await disconnect(wagmiAdapter.wagmiConfig);
     });
   }
   return wagmiAdapter;

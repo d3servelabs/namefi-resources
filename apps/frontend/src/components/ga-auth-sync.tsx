@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useConsentManager } from '@c15t/nextjs';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
 import { useAuth } from '@/hooks/use-auth';
 import { config } from '@/lib/env';
 
 export function GoogleAnalyticsAuthenticatedUserSync() {
-  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const { consents, isLoadingConsentInfo } = useNamefiConsent();
   const hasMeasurement = consents.measurement;
   const { user, isAuthenticated, isLoading: isAuthLoading } = useAuth();
   const gaUserId =

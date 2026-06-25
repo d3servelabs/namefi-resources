@@ -17,6 +17,7 @@ import {
 } from 'react';
 import { toHex } from '@/lib/color';
 import { registerAuthTokenSupplier } from '@/lib/auth-token-supplier';
+import { runRuntimeLogout } from '@/lib/wallet-disconnect';
 import { PrivyAuthBridge } from './privy-auth-bridge';
 import {
   PrivyRuntimeContext,
@@ -99,7 +100,11 @@ function PrivySessionRuntimeServices({ children }: PropsWithChildren) {
       logoutSettledRef.current = false;
 
       try {
-        await logout();
+        // Disconnect the external wagmi/Reown wallet FIRST, then clear the Privy
+        // identity session. Privy logout alone leaves the wallet connected, which
+        // makes the next wallet-SIWE a no-op ("Modal closed"). See
+        // lib/wallet-disconnect for the full rationale + regression tests.
+        await runRuntimeLogout(logout);
         settleLogoutSuccess();
       } finally {
         logoutCallbacksRef.current = null;

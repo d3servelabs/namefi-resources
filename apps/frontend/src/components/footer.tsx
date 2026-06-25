@@ -17,7 +17,7 @@ import type { Locale } from '@/i18n/config';
 import { getExternalLinkRel } from '@/lib/external-link';
 import { LanguageSelector } from '@/components/i18n/language-selector';
 import { useOrigin } from '@/components/providers/origin';
-import { useConsentManager } from '@c15t/nextjs';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
 import {
   DiscordBrandIcon,
   GitHubBrandIcon,
@@ -229,7 +229,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
   // the static t() calls type-checked while allowing the dynamic ones.
   const tDynamic = t as (key: string) => string;
   const locale = useLocale();
-  const { setActiveUI } = useConsentManager();
+  const { openConsentDialog } = useNamefiConsent();
   const origin = useOrigin();
   const isAstra = origin?.isFirstPartyOrigin ?? false;
   const pathname = usePathname();
@@ -371,7 +371,7 @@ export const Footer: ForwardRefExoticComponent<FooterProps> = forwardRef<
                 data-testid="footer.legal.cookie-settings"
                 className="text-white/70 transition hover:text-white"
                 aria-label={t('cookieSettingsAriaLabel')}
-                onClick={() => setActiveUI('dialog', { force: true })}
+                onClick={openConsentDialog}
               >
                 {t('cookieSettings')}
               </button>

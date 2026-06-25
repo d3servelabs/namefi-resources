@@ -8,7 +8,7 @@ import { LocalStorageKeys } from '@/lib/local-storage-keys';
 import { capturePostHogEvent, isPostHogConfigured } from '@/lib/posthog';
 import { useTRPC } from '@/lib/trpc';
 import type { feedbackTriggerSchema } from '@/lib/feedback-triggers';
-import { useConsentManager } from '@c15t/nextjs';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
 import { useMutation } from '@tanstack/react-query';
 import type { PropsWithChildren } from 'react';
 import {
@@ -103,7 +103,7 @@ export function useFeedback() {
 
 export function FeedbackProvider({ children }: PropsWithChildren) {
   const trpc = useTRPC();
-  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const { consents, isLoadingConsentInfo } = useNamefiConsent();
   const { user } = useAuth();
   const userId = user?.id ?? null;
   const canMirrorFeedbackToPostHog =

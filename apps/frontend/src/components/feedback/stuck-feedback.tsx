@@ -10,7 +10,7 @@ import {
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
-import { useConsentManager } from '@c15t/nextjs';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
 import { XIcon } from 'lucide-react';
 import {
   type CSSProperties,
@@ -58,7 +58,7 @@ export function StuckFeedback({
   source,
   delayMs = DEFAULT_DELAY_MS,
 }: StuckFeedbackProps) {
-  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const { consents, isLoadingConsentInfo } = useNamefiConsent();
   const hasMeasurementConsent = consents.measurement;
   const { isConnected } = useAccount();
   const { state: sidebarState, isMobile } = useSidebar();

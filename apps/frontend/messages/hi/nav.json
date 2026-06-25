@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "क्या आप वाकई साइन आउट करना चाहते हैं? कोई भी न सहेजे गए परिवर्तन खो जाएंगे।",
     "signOutFailedTitle": "साइन आउट करने में विफल",
     "signOutFailedFallback": "कृपया पुनः प्रयास करें।"
+  },
+  "mobileDrawer": {
+    "open": "मेनू खोलें",
+    "close": "मेनू बंद करें"
   }
 }

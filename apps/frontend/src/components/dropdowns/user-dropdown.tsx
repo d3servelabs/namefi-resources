@@ -16,7 +16,6 @@ import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { Loader2Icon, MoreHorizontalIcon, WalletIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { AnimatePresence, motion } from 'motion/react';
 import {
   forwardRef,
   useCallback,
@@ -28,6 +27,8 @@ import {
 } from 'react';
 import type { HeaderActionVariant } from '@/components/header-action-button';
 import { SignInChooserDialog } from '@/components/dialogs/sign-in-chooser';
+import { useOpenSignInFromQuery } from '@/hooks/use-login-from-query';
+import { useSearchParams } from 'next/navigation';
 import { shouldShowUserDropdownLoading } from './user-dropdown-state';
 
 export type UserDropdownProps = HTMLAttributes<HTMLDivElement> & {
@@ -127,6 +128,10 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
       setIsSignInChooserOpen(true);
     }, []);
 
+    // Pre-hydration fallback for the native-link Sign in control: open the
+    // chooser when the URL carries ?login=1 (module-guarded to a single instance).
+    useOpenSignInFromQuery(handleLoginRequest);
+
     const isExpanded = useMemo(() => {
       return forceExpanded || sidebarState !== 'collapsed' || isMobile;
     }, [forceExpanded, sidebarState, isMobile]);
@@ -166,126 +171,75 @@ export const UserDropdown = forwardRef<HTMLDivElement, UserDropdownProps>(
         )}
         {...rest}
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          {shouldShowLoading || isAuthenticated ? (
-            isAuthenticated && !shouldShowLoading ? (
-              <motion.div
-                key="user-authed"
-                initial={{ opacity: 0, y: -12 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.32, ease: 'easeOut' },
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -12,
-                  transition: { duration: 0.22, ease: 'easeIn' },
-                }}
-                layout
+        {shouldShowLoading || isAuthenticated ? (
+          isAuthenticated && !shouldShowLoading ? (
+            <div key="user-authed">
+              <DropdownMenu
+                open={isMenuOpen}
+                onOpenChange={handleMenuOpenChange}
               >
-                <DropdownMenu
-                  open={isMenuOpen}
-                  onOpenChange={handleMenuOpenChange}
+                <DropdownMenuTrigger
+                  render={
+                    <HeaderActionButton
+                      actionVariant={actionVariant}
+                      disableBackdropBlur={disableBackdropBlur}
+                      stretch={shouldStretch}
+                      className={expandedAvatarPaddingClass}
+                    />
+                  }
                 >
-                  <DropdownMenuTrigger
-                    render={
-                      <HeaderActionButton
-                        actionVariant={actionVariant}
-                        disableBackdropBlur={disableBackdropBlur}
-                        stretch={shouldStretch}
-                        className={expandedAvatarPaddingClass}
-                      />
-                    }
-                  >
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{
-                        opacity: 1,
-                        y: 0,
-                        transition: { duration: 0.28, ease: 'easeOut' },
-                      }}
-                      className="shrink-0"
-                      layout
-                    >
-                      <UserWalletAvatar
-                        address={avatarAddress}
-                        fallback={avatarFallback}
-                        enableWalletImage={true}
-                        eager={true}
-                        imageSizes="32px"
-                        isLoading={isAvatarIdentityLoading}
-                      />
-                    </motion.div>
-                    {isExpanded && (
-                      <>
-                        <motion.span
-                          className="hidden text-sm md:block"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.24,
-                              ease: 'easeOut',
-                              delay: 0.03,
-                            },
-                          }}
-                          layout
-                        >
-                          <UserDropdownLabel value={displayLabel} />
-                        </motion.span>
-                        <motion.span
-                          className="ms-auto"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            transition: {
-                              duration: 0.24,
-                              ease: 'easeOut',
-                              delay: 0.05,
-                            },
-                          }}
-                          layout
-                        >
-                          <MoreHorizontalIcon className="h-5 w-5" />
-                        </motion.span>
-                      </>
-                    )}
-                  </DropdownMenuTrigger>
+                  <div className="shrink-0">
+                    <UserWalletAvatar
+                      address={avatarAddress}
+                      fallback={avatarFallback}
+                      enableWalletImage={true}
+                      eager={true}
+                      imageSizes="32px"
+                      isLoading={isAvatarIdentityLoading}
+                    />
+                  </div>
+                  {isExpanded && (
+                    <>
+                      <span className="hidden text-sm md:block">
+                        <UserDropdownLabel value={displayLabel} />
+                      </span>
+                      <span className="ms-auto">
+                        <MoreHorizontalIcon className="h-5 w-5" />
+                      </span>
+                    </>
+                  )}
+                </DropdownMenuTrigger>
 
-                  {UserDropdownMenu && hasOpenedMenu ? (
-                    <UserDropdownMenu />
-                  ) : isMenuOpen && hasRequestedMenu ? (
-                    <DropdownMenuContent align="end" className="w-56">
-                      <DropdownMenuItem disabled>
-                        <Loader2Icon className="me-2 h-4 w-4 animate-spin" />
-                        <span>Loading...</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  ) : null}
-                </DropdownMenu>
-              </motion.div>
-            ) : (
-              <LoadingButton
-                actionVariant={actionVariant}
-                disableBackdropBlur={disableBackdropBlur}
-                isExpanded={isExpanded}
-                stretch={shouldStretch}
-              />
-            )
+                {UserDropdownMenu && hasOpenedMenu ? (
+                  <UserDropdownMenu />
+                ) : isMenuOpen && hasRequestedMenu ? (
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem disabled>
+                      <Loader2Icon className="me-2 h-4 w-4 animate-spin" />
+                      <span>Loading...</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                ) : null}
+              </DropdownMenu>
+            </div>
           ) : (
-            <SignedOutButton
+            <LoadingButton
               actionVariant={actionVariant}
               disableBackdropBlur={disableBackdropBlur}
               isExpanded={isExpanded}
               stretch={shouldStretch}
-              onLogin={handleLoginRequest}
-              onLoginIntent={preloadLoginRuntime}
             />
-          )}
-        </AnimatePresence>
+          )
+        ) : (
+          <SignedOutButton
+            actionVariant={actionVariant}
+            disableBackdropBlur={disableBackdropBlur}
+            isExpanded={isExpanded}
+            stretch={shouldStretch}
+            onLogin={handleLoginRequest}
+            onLoginIntent={preloadLoginRuntime}
+          />
+        )}
         <SignInChooserDialog
           open={isSignInChooserOpen}
           onOpenChange={setIsSignInChooserOpen}
@@ -313,21 +267,7 @@ function LoadingButton({
 }: SignedOutButtonProps) {
   const t = useTranslations('common');
   return (
-    <motion.div
-      key="user-loading"
-      initial={{ opacity: 0, y: -12 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.28, ease: 'easeOut' },
-      }}
-      exit={{
-        opacity: 0,
-        y: -12,
-        transition: { duration: 0.2, ease: 'easeIn' },
-      }}
-      layout
-    >
+    <div key="user-loading">
       <HeaderActionButton
         actionVariant={actionVariant}
         disableBackdropBlur={disableBackdropBlur}
@@ -338,7 +278,7 @@ function LoadingButton({
         <Loader2Icon className="size-5 animate-spin" />
         {isExpanded && <span>{t('actions.loading')}</span>}
       </HeaderActionButton>
-    </motion.div>
+    </div>
   );
 }
 
@@ -351,34 +291,43 @@ function SignedOutButton({
   onLoginIntent,
 }: LoginButtonProps) {
   const t = useTranslations('common');
+  // Preserve any existing query params (e.g. ?query=…) when the pre-hydration
+  // native link navigates — append login=1 instead of replacing the whole query
+  // string. (Post-hydration the onClick preventDefaults, so this only matters
+  // for the native pre-hydration navigation.)
+  const searchParams = useSearchParams();
+  const loginHref = useMemo(() => {
+    const params = new URLSearchParams(searchParams?.toString() ?? '');
+    params.set('login', '1');
+    return `?${params.toString()}`;
+  }, [searchParams]);
   return (
-    <motion.div
-      key="user-signedout"
-      initial={{ opacity: 0, y: -12 }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.3, ease: 'easeOut' },
-      }}
-      exit={{
-        opacity: 0,
-        y: -12,
-        transition: { duration: 0.22, ease: 'easeIn' },
-      }}
-      layout
-    >
+    <div key="user-signedout">
       <HeaderActionButton
+        // Native link so Sign in is usable at first paint, before the heavy app
+        // tree hydrates: pre-hydration a tap performs a native navigation to
+        // ?login=1, which useOpenSignInFromQuery turns into the sign-in chooser
+        // once auth is ready. After hydration, onClick opens the chooser inline
+        // (no nav). onTouchStart/onFocus preload the wallet runtime on intent.
+        render={
+          // biome-ignore lint/a11y/useAnchorContent: base-ui's render prop injects the button's icon + "Sign in" label as the anchor children at runtime; aria-label also set for the icon-only variant.
+          <a href={loginHref} rel="nofollow" aria-label={t('actions.signIn')} />
+        }
         actionVariant={actionVariant}
         disableBackdropBlur={disableBackdropBlur}
         stretch={stretch}
-        onClick={onLogin}
+        onClick={(event) => {
+          event.preventDefault();
+          onLogin();
+        }}
         onFocus={onLoginIntent}
         onMouseEnter={onLoginIntent}
+        onTouchStart={onLoginIntent}
         data-testid="nav.user-menu.sign-in"
       >
         <WalletIcon className="size-5" />
         {isExpanded && <span>{t('actions.signIn')}</span>}
       </HeaderActionButton>
-    </motion.div>
+    </div>
   );
 }

@@ -20,7 +20,6 @@ import {
   type ComponentType,
   type PropsWithChildren,
 } from 'react';
-import { useConsentIdentify } from '@/hooks/use-consent-identify';
 import { useSkipAuth, SKIP_AUTH_MOCK_USER } from '@/hooks/use-skip-auth';
 import {
   clearPerfSpan,
@@ -899,11 +898,9 @@ export function AuthProvider({
       (Boolean(runtimeState) &&
         (!runtimeState?.ready || Boolean(runtimeState.authenticated))));
 
-  useConsentIdentify({
-    ready: authReady,
-    authenticated: isAuthenticated,
-    userId: userDataForCurrentSubject?.id,
-  });
+  // NOTE: consent-identify moved into the idle-loaded DeferredC15t runtime
+  // (it reads the same auth state via useAuth) so AuthProvider no longer pulls
+  // the heavy @c15t SDK onto the homepage hydration critical path.
 
   const value = useMemo<AuthContextValue>(() => {
     return {

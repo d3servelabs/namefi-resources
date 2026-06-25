@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { ConsentManagerProvider } from '@c15t/nextjs';
+import { NamefiConsentProvider } from '@/components/providers/consent/namefi-consent';
 import type { ReactNode } from 'react';
 import { Footer } from '@/components/footer';
 import { LocaleChangeProvider } from '@/components/i18n/use-change-locale';
@@ -36,7 +36,7 @@ function StoryProviders({ children }: { children: ReactNode }) {
     >
       <OriginProvider originInfo={astraOrigin}>
         <TrpcProvider>
-          <ConsentManagerProvider options={{ mode: 'offline' }}>
+          <NamefiConsentProvider>
             <StorybookAuthProvider isAuthenticated={false}>
               <PreAuthSignalsProvider>
                 <InteractionLoggersProvider>
@@ -51,7 +51,7 @@ function StoryProviders({ children }: { children: ReactNode }) {
                 </InteractionLoggersProvider>
               </PreAuthSignalsProvider>
             </StorybookAuthProvider>
-          </ConsentManagerProvider>
+          </NamefiConsentProvider>
         </TrpcProvider>
       </OriginProvider>
     </MockPrivyProvider>

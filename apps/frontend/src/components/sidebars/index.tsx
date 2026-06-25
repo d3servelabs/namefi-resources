@@ -45,7 +45,7 @@ import { useEffect, useState } from 'react';
  * via `t(item.title)` in `SidebarItems`. Keys are also used for the `manage`
  * visibility check, so they double as stable identifiers, not copy.
  */
-const ITEMS: NavItem[] = [
+export const ITEMS: NavItem[] = [
   { title: 'items.discover', href: '/', icon: Compass },
   {
     title: 'items.myDomains',
@@ -92,7 +92,7 @@ const ITEMS: NavItem[] = [
   { title: 'items.feed', href: '/feed', icon: Rss },
   { title: 'items.hunt', href: '/hunt', icon: TrendingUp },
 ];
-const PUBLIC_ITEMS = filterSidebarItemsByAuth(ITEMS, false);
+export const PUBLIC_ITEMS = filterSidebarItemsByAuth(ITEMS, false);
 
 const AppSidebarHydratedContent = dynamic(
   () =>

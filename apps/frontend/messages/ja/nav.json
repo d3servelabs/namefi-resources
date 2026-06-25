@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "サインアウトしますか？保存されていない変更は失われます。",
     "signOutFailedTitle": "サインアウトに失敗しました",
     "signOutFailedFallback": "再試行してください。"
+  },
+  "mobileDrawer": {
+    "open": "メニューを開く",
+    "close": "メニューを閉じる"
   }
 }

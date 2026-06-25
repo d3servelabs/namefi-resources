@@ -59,5 +59,11 @@
   },
   "userDropdown.signOutFailedFallback": {
     "description": "Generic fallback error toast body shown when sign-out fails with no specific message."
+  },
+  "mobileDrawer.open": {
+    "description": "Accessible label for the control that opens the mobile navigation drawer."
+  },
+  "mobileDrawer.close": {
+    "description": "Accessible label for the control that closes the mobile navigation drawer."
   }
 }

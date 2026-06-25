@@ -1,6 +1,7 @@
 import { Main } from '@/components/main';
 import OriginBackground from '@/components/origin-background';
 import { AppSidebar } from '@/components/sidebars';
+import { MobileNavDrawer } from '@/components/sidebars/mobile-nav-drawer';
 import { SidebarProvider } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { Toaster } from '@namefi-astra/ui/components/shadcn/sonner';
 import { getOriginRuntime } from '@/lib/origin/utils.server';
@@ -144,6 +145,9 @@ function RootLayoutInner({ children }: PropsWithChildren) {
           <AddToCartFromUrl />
           <SidebarProvider defaultOpen={false}>
             <AppSidebar />
+            {/* No-JS, CSS-toggled mobile drawer. SSR-rendered so the hamburger
+                opens the sidebar (nav + sign-in) before hydration. md:hidden. */}
+            <MobileNavDrawer />
             <Main>{children}</Main>
             <UnofficialTldsInjector />
           </SidebarProvider>

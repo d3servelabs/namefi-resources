@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "வெளியேற விரும்புகிறீர்களா? சேமிக்கப்படாத மாற்றங்கள் இழக்கப்படும்.",
     "signOutFailedTitle": "வெளியேறுவதில் தோல்வி",
     "signOutFailedFallback": "மீண்டும் முயற்சிக்கவும்."
+  },
+  "mobileDrawer": {
+    "open": "மெனுவைத் திற",
+    "close": "மெனுவை மூடு"
   }
 }

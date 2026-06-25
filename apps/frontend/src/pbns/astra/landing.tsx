@@ -10,7 +10,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { motion, AnimatePresence, useInView } from 'motion/react';
+import { useInView } from '@/hooks/use-in-view';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSearch } from '@/hooks/use-search';
@@ -131,68 +131,54 @@ const HeroSection = ({
             />
           </div>
           <div className="relative z-10 flex w-full justify-center">
-            <motion.div
+            <div
               aria-hidden
-              className="pointer-events-none absolute -inset-x-12 -inset-y-6 z-0 rounded-full bg-gradient-to-r from-brand-primary/40 via-emerald-300/25 to-sky-400/25 blur-3xl mix-blend-screen"
-              animate={{
-                opacity: [0.55, 0.75, 0.66, 0.72, 0.58, 0.55],
-                scale: [0.93, 1.08, 0.97, 1.04, 0.99, 0.93],
-                x: [0, -18, 12, 22, -14, 0],
-                y: [0, 14, -12, 18, -16, 0],
-                rotate: [0, 4, -3, 2, -2, 0],
-              }}
-              transition={{
-                duration: 7.5,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: 'easeInOut',
-              }}
+              className="animate-hero-glow-1 pointer-events-none absolute -inset-x-12 -inset-y-6 z-0 rounded-full bg-gradient-to-r from-brand-primary/40 via-emerald-300/25 to-sky-400/25 blur-3xl mix-blend-screen"
             />
-            <motion.div
+            <div
               aria-hidden
-              className="pointer-events-none absolute -inset-x-4 -inset-y-4 z-0 rounded-[120px] bg-[radial-gradient(circle_at_top,rgba(94,255,220,0.6),rgba(92,176,255,0.32)_45%,transparent_75%)] blur-2xl mix-blend-screen"
-              animate={{
-                rotate: [0, 8, 3, -6, -2, 0],
-                scale: [1.02, 1.12, 1.06, 1.08, 1.04, 1.02],
-                x: [0, 14, -18, 10, -12, 0],
-                y: [0, -10, 16, -18, 12, 0],
-                opacity: [0.45, 0.7, 0.58, 0.64, 0.5, 0.45],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: 'easeInOut',
-              }}
+              className="animate-hero-glow-2 pointer-events-none absolute -inset-x-4 -inset-y-4 z-0 rounded-[120px] bg-[radial-gradient(circle_at_top,rgba(94,255,220,0.6),rgba(92,176,255,0.32)_45%,transparent_75%)] blur-2xl mix-blend-screen"
             />
-            <motion.div
+            <div
               aria-hidden
-              className="pointer-events-none absolute -inset-x-2 -inset-y-1 z-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.55)0%,rgba(196,255,243,0.2)45%,transparent_75%)] blur-3xl mix-blend-screen"
-              animate={{
-                opacity: [0.25, 0.45, 0.36, 0.42, 0.3, 0.25],
-                scale: [0.98, 1.04, 1.02, 1.05, 1, 0.98],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: 'easeInOut',
-              }}
+              className="animate-hero-glow-3 pointer-events-none absolute -inset-x-2 -inset-y-1 z-0 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.55)0%,rgba(196,255,243,0.2)45%,transparent_75%)] blur-3xl mix-blend-screen"
             />
             <div
               id="domain-search"
               ref={searchAnchorRef}
               className="relative z-20 w-full"
             >
-              <SearchInput
-                query={query}
-                setQuery={setQuery}
-                isLoading={isLoading}
-                searchMode={searchMode}
-                onSearch={runSearch}
-                parentDomain={parentDomain}
-                onClearParentDomain={onClearParentDomain}
-                isFirstPartyOrigin
-                ctaClassName="text-primary-foreground"
-                onSearchIntent={onSearchIntent}
-              />
+              {/* Native GET form so the search box is usable at first paint
+                  (the streaming-revealed HTML) with zero React: Enter / tapping
+                  the submit button navigates to /?query=… without waiting for the
+                  heavy app tree to hydrate. useSearchFromQuery picks the param up
+                  once hydrated. After hydration, onSubmit intercepts and runs the
+                  inline streaming search instead of navigating. */}
+              <search>
+                <form
+                  method="GET"
+                  onSubmit={(e) => {
+                    // Hydrated path: the input's onKeyDown (Enter) and the submit
+                    // button's onClick already run the inline streaming search, so
+                    // here we only cancel the native GET navigation. Pre-hydration
+                    // there is no handler, so the browser performs the native GET.
+                    e.preventDefault();
+                  }}
+                >
+                  <SearchInput
+                    query={query}
+                    setQuery={setQuery}
+                    isLoading={isLoading}
+                    searchMode={searchMode}
+                    onSearch={runSearch}
+                    parentDomain={parentDomain}
+                    onClearParentDomain={onClearParentDomain}
+                    isFirstPartyOrigin
+                    ctaClassName="text-primary-foreground"
+                    onSearchIntent={onSearchIntent}
+                  />
+                </form>
+              </search>
               <div className="mt-4 flex justify-center">
                 <Link
                   href="https://search.labs.namefi.io"
@@ -200,25 +186,11 @@ const HeroSection = ({
                   onClick={onV3BetaClick}
                   className="flex items-center gap-2 text-sm"
                 >
-                  <motion.div
-                    className="flex items-center gap-2"
-                    animate={{
-                      color: [
-                        'var(--muted-foreground)',
-                        'var(--brand-primary)',
-                        'var(--muted-foreground)',
-                      ],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Number.POSITIVE_INFINITY,
-                      ease: 'easeInOut',
-                    }}
-                  >
+                  <div className="animate-hero-v3-pulse flex items-center gap-2">
                     <Sparkles className="h-3.5 w-3.5" />
                     <span>{t('hero.tryV3Beta')}</span>
                     <ArrowLeft className="h-3.5 w-3.5 rtl:-scale-x-100" />
-                  </motion.div>
+                  </div>
                 </Link>
               </div>
             </div>
@@ -244,45 +216,22 @@ const ScrollIndicator = ({
   onClick?: () => void;
 }) => {
   const t = useTranslations('landing');
+  if (!visible) {
+    return <div className="mt-8 flex h-16 items-center justify-center" />;
+  }
   return (
     <div className="mt-8 flex h-16 items-center justify-center">
-      <AnimatePresence initial={true}>
-        {visible ? (
-          <motion.button
-            key="scroll-indicator"
-            type="button"
-            onClick={onClick}
-            aria-label={t('scrollIndicator.ariaLabel')}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 0.75, y: 0 }}
-            exit={{ opacity: 0, y: 12 }}
-            transition={{ delay: 0.4, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col items-center gap-2 text-[11px] font-medium text-white/65 transition hover:text-white focus:outline-none"
-          >
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{
-                duration: 2.6,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: 'easeInOut',
-              }}
-              className="flex h-10 w-6 items-center justify-center rounded-full border border-white/25 bg-white/12 backdrop-blur-sm"
-            >
-              <motion.span
-                animate={{ y: [0, 4, 0] }}
-                transition={{
-                  duration: 2.6,
-                  repeat: Number.POSITIVE_INFINITY,
-                  ease: 'easeInOut',
-                  delay: 0.25,
-                }}
-                className="block h-2 w-0.5 rounded-full bg-white"
-              />
-            </motion.div>
-            <span>{t('scrollIndicator.label')}</span>
-          </motion.button>
-        ) : null}
-      </AnimatePresence>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={t('scrollIndicator.ariaLabel')}
+        className="flex flex-col items-center gap-2 text-[11px] font-medium text-white/65 opacity-75 transition hover:text-white focus:outline-none"
+      >
+        <div className="animate-scroll-indicator-shell flex h-10 w-6 items-center justify-center rounded-full border border-white/25 bg-white/12 backdrop-blur-sm">
+          <span className="animate-scroll-indicator-pip block h-2 w-0.5 rounded-full bg-white" />
+        </div>
+        <span>{t('scrollIndicator.label')}</span>
+      </button>
     </div>
   );
 };
@@ -314,13 +263,7 @@ const FloatingSearchBar = ({
 }) => {
   const t = useTranslations('landing');
   return (
-    <motion.div
-      initial={{ y: -72, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      exit={{ y: -72, opacity: 0 }}
-      transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-      className="fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0"
-    >
+    <div className="animate-floating-bar-enter fixed inset-x-0 top-[calc(var(--announcement-strip-height,0px)+4rem)] z-30 border-b border-white/10 bg-[#04050A]/85 backdrop-blur md:top-16 lg:top-0">
       <div className="mx-auto flex w-full max-w-3xl items-center px-4 py-2.5">
         <div className="flex flex-1 items-center gap-2 rounded-full border border-white/14 bg-[#14161D] py-1.5 ps-4 pe-2 text-white transition-[border-color,box-shadow] focus-within:border-brand-primary/60 focus-within:ring-2 focus-within:ring-brand-primary/35">
           {isLoading ? (
@@ -350,7 +293,7 @@ const FloatingSearchBar = ({
           </NamefiButton>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -594,70 +537,52 @@ export const Landing: LandingComponent = ({ origin }) => {
           onSearchIntent={preloadSearchResults}
         />
 
-        <AnimatePresence>
-          {showFloatingSearch && (
-            <FloatingSearchBar
-              query={query}
-              setQuery={setQuery}
-              onSearch={runSearch}
-              isLoading={isLoading}
-            />
-          )}
-        </AnimatePresence>
+        {showFloatingSearch && (
+          <FloatingSearchBar
+            query={query}
+            setQuery={setQuery}
+            onSearch={runSearch}
+            isLoading={isLoading}
+          />
+        )}
 
         <div className="relative z-10">
-          <AnimatePresence mode="wait">
-            {showSearchResults ? (
-              <motion.div
-                key="results"
-                initial={{ opacity: 0, y: -12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -12 }}
-                transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                className="mx-auto max-w-6xl px-6 pb-16 pt-2 md:pt-4"
+          {showSearchResults ? (
+            <div className="animate-enter-fade-down mx-auto max-w-6xl px-6 pb-16 pt-2 md:pt-4">
+              <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
+                <LazySearchResults
+                  isLoading={isLoading}
+                  isError={isError}
+                  error={error}
+                  hasData={hasData}
+                  domainInfos={domainInfos}
+                  authoritativeDomainInfos={authoritativeDomainInfos}
+                  domains={domains}
+                  query={query}
+                  eppAuthorizationCodes={eppAuthorizationCodes}
+                  onEppCodeChange={handleEppCodeChange}
+                  searchMode={searchMode}
+                  onRequestImportForDomain={startImportForDomain}
+                  freeClaimEligibility={freeClaimEligibility}
+                  canLoadMore={canLoadMore}
+                  onLoadMore={loadMore}
+                  isLoadingMore={isLoadingMore}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="-mt-32">
+              <div
+                ref={marketingSectionsRef}
+                className="min-h-screen [contain-intrinsic-size:1400px] [content-visibility:auto]"
               >
-                <div className="rounded-3xl border border-white/10 bg-white/[0.02] p-4 backdrop-blur">
-                  <LazySearchResults
-                    isLoading={isLoading}
-                    isError={isError}
-                    error={error}
-                    hasData={hasData}
-                    domainInfos={domainInfos}
-                    authoritativeDomainInfos={authoritativeDomainInfos}
-                    domains={domains}
-                    query={query}
-                    eppAuthorizationCodes={eppAuthorizationCodes}
-                    onEppCodeChange={handleEppCodeChange}
-                    searchMode={searchMode}
-                    onRequestImportForDomain={startImportForDomain}
-                    freeClaimEligibility={freeClaimEligibility}
-                    canLoadMore={canLoadMore}
-                    onLoadMore={loadMore}
-                    isLoadingMore={isLoadingMore}
-                  />
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="marketing"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 16 }}
-                transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
-                className="-mt-32"
-              >
-                <div
-                  ref={marketingSectionsRef}
-                  className="min-h-screen [contain-intrinsic-size:1400px] [content-visibility:auto]"
-                >
-                  <MarketingSections
-                    newsletterRef={newsletterRef}
-                    onStorylineEnter={handleStorylineEnter}
-                  />
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <MarketingSections
+                  newsletterRef={newsletterRef}
+                  onStorylineEnter={handleStorylineEnter}
+                />
+              </div>
+            </div>
+          )}
         </div>
         <FloatingCart
           searchMode={searchMode}

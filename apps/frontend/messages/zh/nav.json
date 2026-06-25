@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "确定要退出登录吗？未保存的更改将会丢失。",
     "signOutFailedTitle": "退出登录失败",
     "signOutFailedFallback": "请重试。"
+  },
+  "mobileDrawer": {
+    "open": "打开菜单",
+    "close": "关闭菜单"
   }
 }

@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "Êtes-vous sûr de vouloir vous déconnecter ? Toute modification non enregistrée sera perdue.",
     "signOutFailedTitle": "Échec de la déconnexion",
     "signOutFailedFallback": "Veuillez réessayer."
+  },
+  "mobileDrawer": {
+    "open": "Ouvrir le menu",
+    "close": "Fermer le menu"
   }
 }

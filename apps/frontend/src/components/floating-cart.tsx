@@ -17,7 +17,6 @@ import type { DomainAvailabilityInfo } from '@namefi-astra/common/domain-availab
 import type { NamefiNormalizedDomain } from '@namefi-astra/utils/namefi-flavor';
 import { SearchMode } from './search/types';
 import { useCart } from '@/hooks/use-cart';
-import { AnimatePresence, motion } from 'motion/react';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import NumberFlow from '@number-flow/react';
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
@@ -206,30 +205,25 @@ export const FloatingCart = ({
   }, [shouldShowFloatingCart, cartStateSignature, recalcPosition]);
 
   return (
-    <AnimatePresence>
+    <>
       {shouldShowFloatingCart ? (
-        <motion.aside
+        <aside
           key="floating-cart"
-          initial={{ opacity: 0, y: 28, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 20, scale: 0.97 }}
-          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="pointer-events-none fixed z-40 w-full max-w-sm -translate-x-1/2 px-4 sm:max-w-xl"
+          className={cn(
+            'animate-enter-fade-down',
+            'pointer-events-none fixed z-40 w-full max-w-sm -translate-x-1/2 px-4 sm:max-w-xl',
+          )}
           style={{
             bottom: `calc(${bottomOffset}px + env(safe-area-inset-bottom, 0px))`,
             left: leftOffset,
           }}
         >
-          <motion.div
-            layout
+          <div
             ref={cartRef}
             className="pointer-events-auto overflow-hidden rounded-[24px] border border-white/12 bg-black/55 backdrop-blur-xl shadow-[0_22px_48px_-26px_rgba(0,0,0,0.78),0_0_40px_-24px_rgba(94,255,220,0.24)]"
           >
             <div className="flex flex-col gap-2.5 p-3.5 sm:px-5 sm:py-4 sm:gap-3">
-              <motion.div
-                layout
-                className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4"
-              >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 {/* Show cart info only when there are items in cart */}
                 {hasItems && (
                   <div className="flex w-full items-center gap-2 sm:gap-3">
@@ -351,11 +345,11 @@ export const FloatingCart = ({
                     </Button>
                   )}
                 </div>
-              </motion.div>
+              </div>
             </div>
-          </motion.div>
-        </motion.aside>
+          </div>
+        </aside>
       ) : null}
-    </AnimatePresence>
+    </>
   );
 };

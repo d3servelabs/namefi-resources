@@ -11,7 +11,6 @@ import {
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { motion, useInView } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import { Card } from '@namefi-astra/ui/components/shadcn/card';
 import { cn } from '@namefi-astra/ui/lib/cn';
@@ -566,24 +565,33 @@ const StoryBlock = ({
   // next-intl's typed keys can't verify data-driven keys; this alias keeps
   // the static t() calls type-checked while allowing the dynamic ones.
   const tDynamic = t as (key: string) => string;
-  const blockRef = useRef<HTMLDivElement>(null);
+  const blockRef = useRef<HTMLElement>(null);
   const hasDispatchedRef = useRef(false);
-  const isInView = useInView(blockRef, { amount: 0.3 });
 
   useEffect(() => {
-    if (!hasDispatchedRef.current && isInView) {
-      hasDispatchedRef.current = true;
-      onVisible?.();
+    const node = blockRef.current;
+    if (!node || !onVisible) {
+      return;
     }
-  }, [isInView, onVisible]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !hasDispatchedRef.current) {
+            hasDispatchedRef.current = true;
+            onVisible();
+            observer.disconnect();
+          }
+        }
+      },
+      { threshold: 0.3 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [onVisible]);
 
   return (
-    <motion.section
+    <section
       ref={blockRef}
-      initial={{ opacity: 0, y: 56 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: 0.8, ease: [0.215, 0.61, 0.355, 1] }}
       className="relative overflow-hidden rounded-[28px] border border-white/12 bg-white/[0.02] px-6 py-12 shadow-[0_24px_90px_rgba(8,12,36,0.35)] backdrop-blur-xl md:px-12 md:py-16"
     >
       <div
@@ -595,48 +603,20 @@ const StoryBlock = ({
       />
       <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
         <div className="space-y-5 text-start">
-          <motion.span
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-white/70"
-          >
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[11px] uppercase tracking-[0.16em] text-white/70">
             <span
               className="h-1.5 w-1.5 rounded-full bg-white/80"
               aria-hidden
             />
             {tDynamic(`story.${panel.key}.badge`)}
-          </motion.span>
-          <motion.h3
-            initial={{ opacity: 0, y: 22 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
-            className="text-2xl font-semibold leading-snug md:text-3xl"
-          >
+          </span>
+          <h3 className="text-2xl font-semibold leading-snug md:text-3xl">
             {tDynamic(`story.${panel.key}.title`)}
-          </motion.h3>
-          <motion.p
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{ duration: 0.55, ease: [0.215, 0.61, 0.355, 1] }}
-            className="max-w-xl text-base text-white/70 md:text-lg"
-          >
+          </h3>
+          <p className="max-w-xl text-base text-white/70 md:text-lg">
             {tDynamic(`story.${panel.key}.description`)}
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.8 }}
-            transition={{
-              duration: 0.55,
-              ease: [0.215, 0.61, 0.355, 1],
-              delay: 0.05,
-            }}
-            className="flex flex-wrap gap-2.5"
-          >
+          </p>
+          <div className="flex flex-wrap gap-2.5">
             {panel.highlightKeys.map((highlightKey) => (
               <span
                 key={highlightKey}
@@ -645,23 +625,13 @@ const StoryBlock = ({
                 {tDynamic(`story.${panel.key}.highlights.${highlightKey}`)}
               </span>
             ))}
-          </motion.div>
+          </div>
         </div>
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{
-            duration: 0.65,
-            ease: [0.215, 0.61, 0.355, 1],
-            delay: 0.05,
-          }}
-          className="relative flex justify-end"
-        >
+        <div className="relative flex justify-end">
           <div className="w-full max-w-md">{panel.renderMedia(t)}</div>
-        </motion.div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
@@ -855,31 +825,15 @@ export const MarketingSections = ({
       ref={marketingRef}
       className="mx-auto flex max-w-6xl flex-col gap-28 px-6 pb-32"
     >
-      <motion.div
-        initial={{ opacity: 0, y: 48 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div>
         <StorylineSection onStorylineEnter={onStorylineEnter} />
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div>
         <FeaturesSection />
-      </motion.div>
+      </div>
 
-      <motion.section
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="space-y-10"
-      >
+      <section className="space-y-10">
         <SectionHeading
           title={t('smartContracts.heading')}
           description={t('smartContracts.description')}
@@ -937,48 +891,27 @@ export const MarketingSections = ({
             ))}
           </div>
         </Card>
-      </motion.section>
+      </section>
 
-      <motion.section
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="space-y-10"
-      >
+      <section className="space-y-10">
         <SectionHeading
           title={t('poweredBy.heading')}
           description={t('poweredBy.description')}
         />
         <LogoGrid items={POWERED_BY} />
-      </motion.section>
+      </section>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div>
         <SupportingSection />
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div>
         <BackersSection />
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 60 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      >
+      <div>
         <CommunitySection newsletterRef={newsletterRef} />
-      </motion.div>
+      </div>
     </div>
   );
 };

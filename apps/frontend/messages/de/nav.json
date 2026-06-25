@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "Möchten Sie sich wirklich abmelden? Nicht gespeicherte Änderungen gehen verloren.",
     "signOutFailedTitle": "Abmeldung fehlgeschlagen",
     "signOutFailedFallback": "Bitte versuchen Sie es erneut."
+  },
+  "mobileDrawer": {
+    "open": "Menü öffnen",
+    "close": "Menü schließen"
   }
 }

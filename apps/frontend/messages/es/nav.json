@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "¿Estás seguro de que deseas cerrar sesión? Se perderán los cambios no guardados.",
     "signOutFailedTitle": "Error al cerrar sesión",
     "signOutFailedFallback": "Por favor, inténtalo de nuevo."
+  },
+  "mobileDrawer": {
+    "open": "Abrir menú",
+    "close": "Cerrar menú"
   }
 }

@@ -216,3 +216,199 @@ html {
     transform: translateX(4px);
   }
 }
+
+/*
+ * CSS entrance animations that replace the decorative framer-motion entrances on
+ * the homepage's eager path (header dropdowns, user/sign-in trigger, search
+ * input, notifications/cart badges). Keeping these in CSS lets the interactive
+ * shell hydrate without downloading/parsing the framer-motion bundle. Exit
+ * (fade-out) micro-animations are intentionally dropped — pure CSS can't keep an
+ * unmounting node around, and an instant removal is acceptable here.
+ */
+@keyframes enter-fade-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes badge-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-enter-fade-down {
+  animation: enter-fade-down 0.3s ease-out both;
+}
+
+.animate-badge-pop {
+  animation: badge-pop 0.22s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-enter-fade-down,
+  .animate-badge-pop {
+    animation: none;
+  }
+}
+
+/*
+ * Landing-page decorative animations, moved from framer-motion to CSS so the
+ * hero search input hydrates without the framer-motion bundle. Pure-compositor
+ * transforms/opacity, so they stay cheap even running on the eager path.
+ */
+@keyframes hero-glow-1 {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(0, 0) scale(0.93) rotate(0deg);
+  }
+  20% {
+    opacity: 0.75;
+    transform: translate(-18px, 14px) scale(1.08) rotate(4deg);
+  }
+  40% {
+    opacity: 0.66;
+    transform: translate(12px, -12px) scale(0.97) rotate(-3deg);
+  }
+  60% {
+    opacity: 0.72;
+    transform: translate(22px, 18px) scale(1.04) rotate(2deg);
+  }
+  80% {
+    opacity: 0.58;
+    transform: translate(-14px, -16px) scale(0.99) rotate(-2deg);
+  }
+}
+
+@keyframes hero-glow-2 {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translate(0, 0) scale(1.02) rotate(0deg);
+  }
+  20% {
+    opacity: 0.7;
+    transform: translate(14px, -10px) scale(1.12) rotate(8deg);
+  }
+  40% {
+    opacity: 0.58;
+    transform: translate(-18px, 16px) scale(1.06) rotate(3deg);
+  }
+  60% {
+    opacity: 0.64;
+    transform: translate(10px, -18px) scale(1.08) rotate(-6deg);
+  }
+  80% {
+    opacity: 0.5;
+    transform: translate(-12px, 12px) scale(1.04) rotate(-2deg);
+  }
+}
+
+@keyframes hero-glow-3 {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.98);
+  }
+  20% {
+    opacity: 0.45;
+    transform: scale(1.04);
+  }
+  40% {
+    opacity: 0.36;
+    transform: scale(1.02);
+  }
+  60% {
+    opacity: 0.42;
+    transform: scale(1.05);
+  }
+  80% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+}
+
+.animate-hero-glow-1 {
+  animation: hero-glow-1 7.5s ease-in-out infinite;
+}
+.animate-hero-glow-2 {
+  animation: hero-glow-2 10s ease-in-out infinite;
+}
+.animate-hero-glow-3 {
+  animation: hero-glow-3 6s ease-in-out infinite;
+}
+
+@keyframes hero-v3-pulse {
+  0%,
+  100% {
+    color: var(--muted-foreground);
+  }
+  50% {
+    color: var(--brand-primary);
+  }
+}
+.animate-hero-v3-pulse {
+  animation: hero-v3-pulse 2s ease-in-out infinite;
+}
+
+@keyframes scroll-indicator-shell {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+@keyframes scroll-indicator-pip {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+.animate-scroll-indicator-shell {
+  animation: scroll-indicator-shell 2.6s ease-in-out infinite;
+}
+.animate-scroll-indicator-pip {
+  animation: scroll-indicator-pip 2.6s ease-in-out 0.25s infinite;
+}
+
+@keyframes floating-bar-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-floating-bar-enter {
+  animation: floating-bar-enter 0.25s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-hero-glow-1,
+  .animate-hero-glow-2,
+  .animate-hero-glow-3,
+  .animate-hero-v3-pulse,
+  .animate-scroll-indicator-shell,
+  .animate-scroll-indicator-pip,
+  .animate-floating-bar-enter {
+    animation: none;
+  }
+}

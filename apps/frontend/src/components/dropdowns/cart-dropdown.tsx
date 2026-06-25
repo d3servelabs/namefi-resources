@@ -15,13 +15,15 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import { Loader2, ShoppingCart } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import dynamic from 'next/dynamic';
-import { forwardRef, useMemo, useState } from 'react';
-import { motion, type HTMLMotionProps, AnimatePresence } from 'motion/react';
+import {
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  useMemo,
+  useState,
+} from 'react';
 import NumberFlow from '@number-flow/react';
 import { HEADER_BADGE_CLASS } from '@/components/header.tokens';
 import type { CartDropdownContentProps } from './cart-dropdown-content';
-
-const MotionHeaderActionButton = motion.create(HeaderActionButton);
 
 const CartDropdownContent = dynamic<CartDropdownContentProps>(
   () =>
@@ -32,7 +34,7 @@ const CartDropdownContent = dynamic<CartDropdownContentProps>(
   },
 );
 
-export type CartDropdownProps = Omit<HTMLMotionProps<'div'>, 'ref'> & {
+export type CartDropdownProps = Omit<ComponentPropsWithoutRef<'div'>, 'ref'> & {
   disableBackdropBlur?: boolean;
 };
 
@@ -64,11 +66,11 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
     );
 
     return (
-      <motion.div ref={ref} className={cn('', className)} {...rest} layout>
+      <div ref={ref} className={cn('', className)} {...rest}>
         <DropdownMenu open={open} onOpenChange={setOpen}>
           <DropdownMenuTrigger
             render={
-              <MotionHeaderActionButton
+              <HeaderActionButton
                 actionVariant="icon"
                 disableBackdropBlur={disableBackdropBlur}
                 className="text-white/90"
@@ -76,19 +78,14 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
             }
           >
             <ShoppingCart className="h-5 w-5" />
-            <AnimatePresence initial={false} mode="popLayout">
-              {items.length > 0 && (
-                <motion.div
-                  key="cart-badge"
-                  className={HEADER_BADGE_CLASS}
-                  initial={{ opacity: 0, scale: 0.9, y: -6 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: -6 }}
-                >
-                  <NumberFlow value={items.length} />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {items.length > 0 && (
+              <div
+                key="cart-badge"
+                className={cn('animate-badge-pop', HEADER_BADGE_CLASS)}
+              >
+                <NumberFlow value={items.length} />
+              </div>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end">
             {open ? (
@@ -99,7 +96,7 @@ export const CartDropdown = forwardRef<HTMLDivElement, CartDropdownProps>(
             ) : null}
           </DropdownMenuContent>
         </DropdownMenu>
-      </motion.div>
+      </div>
     );
   },
 );

@@ -4,7 +4,8 @@ import { OriginProvider } from '@/components/providers/origin';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren, FC } from 'react';
 import { CartProvider } from './cart';
-import { ConsentProvider } from './consent-provider';
+import { NamefiConsentProvider } from './consent/namefi-consent';
+import { DeferredC15t } from './consent/deferred-c15t';
 import { ProgressProvider } from './progress';
 import { ThemeProvider } from './theme';
 import { TrpcProvider } from './trpc';
@@ -37,7 +38,10 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
         <TrpcProvider>
           <NuqsAdapter>
             <ProgressProvider>
-              <ConsentProvider>
+              {/* Lightweight, eager consent context. The heavy @c15t SDK loads
+                  on idle via <DeferredC15t/> (inside AuthProvider) and feeds its
+                  state back here — keeping ~200KB off the hydration path. */}
+              <NamefiConsentProvider>
                 <PreAuthSignalsProvider>
                   <AuthProvider
                     initialCookieSnapshot={initialCookieSnapshot}
@@ -50,9 +54,12 @@ export const Providers: FC<PropsWithChildren> = async ({ children }) => {
                         </CartProvider>
                       </WishlistProvider>
                     </InteractionLoggersProvider>
+                    {/* Inside AuthProvider so it can run the auth-gated
+                        consent-identify; idle-mounts the real c15t. */}
+                    <DeferredC15t />
                   </AuthProvider>
                 </PreAuthSignalsProvider>
-              </ConsentProvider>
+              </NamefiConsentProvider>
             </ProgressProvider>
           </NuqsAdapter>
         </TrpcProvider>

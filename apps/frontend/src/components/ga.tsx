@@ -3,7 +3,7 @@
 import { config } from '@/lib/env';
 import { useEffect, useState } from 'react';
 import { useOrigin } from '@/components/providers/origin';
-import { useConsentManager } from '@c15t/nextjs';
+import { useNamefiConsent } from '@/components/providers/consent/namefi-consent';
 import {
   getGoogleAnalyticsConfig,
   getGoogleConsentState,
@@ -19,7 +19,7 @@ const GoogleAnalyticsAuthenticatedUserSync = dynamic(
 );
 
 export function GoogleAnalyticsCookieConsentGated() {
-  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const { consents, isLoadingConsentInfo } = useNamefiConsent();
   const hasMeasurement = consents.measurement;
   const originInfo = useOrigin();
 
@@ -52,7 +52,7 @@ export function GoogleAnalyticsCookieConsentGated() {
 }
 
 export function GoogleAnalyticsAuthenticatedUserGated() {
-  const { consents, isLoadingConsentInfo } = useConsentManager();
+  const { consents, isLoadingConsentInfo } = useNamefiConsent();
   const [shouldMountUserSync, setShouldMountUserSync] = useState(false);
 
   // Keep the sync mounted after first grant so logout or consent revocation can

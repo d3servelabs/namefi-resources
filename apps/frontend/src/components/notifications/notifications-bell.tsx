@@ -7,7 +7,6 @@ import { cn } from '@namefi-astra/ui/lib/cn';
 import type { NotificationRelatedResource } from '@namefi-astra/common/shared-schemas';
 import NumberFlow from '@number-flow/react';
 import { Bell } from 'lucide-react';
-import { AnimatePresence, motion } from 'motion/react';
 import { useTranslations } from 'next-intl';
 import {
   forwardRef,
@@ -120,33 +119,27 @@ const NotificationsBellInner = forwardRef<
     // cause repeated surfaces inside the 2.5s bump window.
   }, [autoSurfaceOnIncrease, justIncreased, count, filter]);
 
-  const badge = (
-    <AnimatePresence initial={false} mode="popLayout">
-      {count > 0 && (
-        <motion.div
-          key="notif-badge"
-          data-testid="notifications.bell.unread-badge"
-          className={cn(
-            HEADER_BADGE_CLASS,
-            variant === 'sidebar' &&
-              'right-2 top-[calc(50%-0.625rem)] group-data-[collapsible=icon]:right-1 group-data-[collapsible=icon]:top-1',
-            justIncreased && 'animate-bounce',
-          )}
-          initial={{ opacity: 0, scale: 0.9, y: -6 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.9, y: -6 }}
-        >
-          <NumberFlow value={count} />
-          {justIncreased && (
-            <span
-              aria-hidden
-              className="pointer-events-none absolute inset-0 rounded-full bg-brand-primary opacity-75 animate-ping"
-            />
-          )}
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
+  const badge =
+    count > 0 ? (
+      <div
+        data-testid="notifications.bell.unread-badge"
+        className={cn(
+          'animate-badge-pop',
+          HEADER_BADGE_CLASS,
+          variant === 'sidebar' &&
+            'right-2 top-[calc(50%-0.625rem)] group-data-[collapsible=icon]:right-1 group-data-[collapsible=icon]:top-1',
+          justIncreased && 'animate-bounce',
+        )}
+      >
+        <NumberFlow value={count} />
+        {justIncreased && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 rounded-full bg-brand-primary opacity-75 animate-ping"
+          />
+        )}
+      </div>
+    ) : null;
 
   const bellInner = (() => {
     if (variant === 'topbar') {

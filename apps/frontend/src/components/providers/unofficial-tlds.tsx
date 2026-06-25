@@ -28,6 +28,9 @@ const PERSISTENCE_KEY = 'unofficial-tlds-config';
 const PERSISTENCE_EXPIRY = 60 * 60 * 1000;
 const SEARCH_INPUT_NAMES = new Set([
   'floating-search-input',
+  // The hero search input's name is now `query` (it became a native GET form
+  // submitting to /?query=…); keep `search-input` for any other consumers.
+  'query',
   'search-input',
   'search-textarea',
 ]);

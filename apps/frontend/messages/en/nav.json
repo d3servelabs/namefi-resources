@@ -16,6 +16,10 @@
     "marketplace": "Marketplace"
   },
   "recentDomains": "Recent domains",
+  "mobileDrawer": {
+    "open": "Open menu",
+    "close": "Close menu"
+  },
   "userDropdown": {
     "unableToLoadMenu": "Unable to load menu.",
     "signOutConfirmTitle": "Are you sure you want to sign out?",

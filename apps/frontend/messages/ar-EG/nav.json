@@ -22,5 +22,9 @@
     "signOutConfirmDescription": "هل أنت متأكد من تسجيل الخروج؟ سيتم فقدان أي تغييرات غير محفوظة.",
     "signOutFailedTitle": "فشل تسجيل الخروج",
     "signOutFailedFallback": "حاول مرة أخرى."
+  },
+  "mobileDrawer": {
+    "open": "فتح القائمة",
+    "close": "إغلاق القائمة"
   }
 }
