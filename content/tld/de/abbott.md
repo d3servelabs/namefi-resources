@@ -28,17 +28,17 @@ keywords:
 
 ## **Was ist .abbott?**
 
-Die **.abbott** Domain ist eine sogenannte "Brand TLD" (Marken-Top-Level-Domain) innerhalb des Domain Name Systems (DNS). Im Gegensatz zu offenen generischen Top-Level-Domains (gTLDs) wie .com oder .net, wurde .abbott exklusiv für **Abbott Laboratories**, ein weltweit führendes Gesundheitsunternehmen, eingerichtet.
+Die **.abbott** Domain ist eine sogenannte "Brand [TLD](/de/glossary/tld/)" (Marken-Top-Level-Domain) innerhalb des Domain Name Systems (DNS). Im Gegensatz zu offenen generischen Top-Level-Domains (gTLDs) wie [.com](/de/tld/com/) oder .net, wurde .abbott exklusiv für **Abbott Laboratories**, ein weltweit führendes Gesundheitsunternehmen, eingerichtet.
 
 Diese TLD ist Teil des [ICANN](https://www.icann.org/resources/pages/new-gtld-program-2012-02-25-en) Programms für neue gTLDs, das es großen Organisationen und Unternehmen ermöglichte, ihre eigene digitale Endung zu beantragen. Der Hauptzweck von .abbott besteht darin, die digitale Präsenz des Unternehmens zu konsolidieren, das Markenvertrauen zu stärken und eine sichere Umgebung für Kunden und Partner zu schaffen.
 
-Da es sich um eine geschlossene Registry handelt, wird diese Endung hauptsächlich intern vom Unternehmen für Marketingkampagnen, Unternehmenskommunikation und spezifische Produktseiten genutzt. Für Domain-Investoren und Web3-Enthusiasten ist .abbott ein hervorragendes Beispiel dafür, wie große Konzerne Blockchain-Technologie und Tokenisierung nutzen könnten, um in Zukunft ihre digitalen Assets zu verwalten.
+Da es sich um eine geschlossene [Registry](/de/glossary/registry/) handelt, wird diese Endung hauptsächlich intern vom Unternehmen für Marketingkampagnen, Unternehmenskommunikation und spezifische Produktseiten genutzt. Für Domain-Investoren und Web3-Enthusiasten ist .abbott ein hervorragendes Beispiel dafür, wie große Konzerne [Blockchain](/de/glossary/blockchain/)-Technologie und Tokenisierung nutzen könnten, um in Zukunft ihre digitalen Assets zu verwalten.
 
 ## **Wie Menschen .abbott nutzen**
 
 Da .abbott eine exklusive Marken-TLD ist, unterscheidet sich die Nutzung von herkömmlichen Domains. Die Verwendung konzentriert sich auf strategische Unternehmensziele:
 
-*   **Markenschutz und Sicherheit:** Durch die Nutzung der eigenen Endung stellt Abbott sicher, dass keine Phishing-Seiten oder betrügerische Websites unter ihrem Namen existieren können. Jede .abbott-Domain ist authentifiziert.
+*   **Markenschutz und Sicherheit:** Durch die Nutzung der eigenen Endung stellt Abbott sicher, dass keine [Phishing](/de/glossary/phishing/)-Seiten oder betrügerische Websites unter ihrem Namen existieren können. Jede .abbott-Domain ist authentifiziert.
 *   **Klare Kommunikation:** Das Unternehmen nutzt die TLD für spezifische Abteilungen oder Kampagnen, um URLs kürzer und merkfähiger zu gestalten.
 *   **Investoren- und Karriereportale:** Gezielte Ansprache von Stakeholdern durch dedizierte Subdomains.
 *   **Digitale Innovation:** Als Vorreiter im Gesundheitswesen dient die TLD als Basis für innovative digitale Gesundheitsdienste und Apps.
@@ -67,7 +67,7 @@ Warum entscheiden sich Unternehmen für eine eigene TLD wie .abbott, und was kö
 
 Auch wenn .abbott eine geschlossene Marken-Domain ist, zeigt sie doch, wie wichtig die richtige Domain-Strategie für Ihren Erfolg ist. Egal, ob Sie nach einer klassischen .com, einer modernen .io oder spezialisierten Web3-Domains suchen – **Namefi** ist Ihr Partner.
 
-Bei Namefi kombinieren wir die Sicherheit einer **ICANN-akkreditierten** Registrierungsstelle mit der Innovation der Blockchain-Technologie.
+Bei Namefi kombinieren wir die Sicherheit einer **[ICANN](/de/glossary/icann/)-akkreditierten** Registrierungsstelle mit der Innovation der Blockchain-Technologie.
 
 *   **Nahtlose Web3-Integration:** Verwalten Sie Ihre Domains so einfach wie Ihre Krypto-Assets.
 *   **Einfache Übertragung:** Nutzen Sie unsere Technologie, um Domains sicher und schnell zu handeln oder zu transferieren.

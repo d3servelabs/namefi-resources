@@ -13,9 +13,9 @@ keywords: ['.aaa domains', '.aaa TLD', 'top-level domain', 'was ist .aaa', 'waru
 
 Die Domainendung **.aaa** ist eine sogenannte generische Top-Level-Domain (gTLD), die im Rahmen des Programms für neue gTLDs der [ICANN](https://www.icann.org/) (Internet Corporation for Assigned Names and Numbers) eingeführt wurde. Während viele neue Endungen wie .tech oder .store für breite Märkte geschaffen wurden, gehört .aaa zu einer exklusiveren Kategorie, die oft als "Brand TLDs" (Marken-TLDs) bezeichnet wird.
 
-Ursprünglich wurde diese TLD von der **American Automobile Association (AAA)** beantragt und verwaltet. Das Kürzel "AAA" (ausgesprochen "Triple A") ist jedoch weltweit ein Synonym für **höchste Qualität, Bonität und Exzellenz** (denken Sie an Finanzratings oder Videospiele-Produktionen).
+Ursprünglich wurde diese [TLD](/de/glossary/tld/) von der **American Automobile Association (AAA)** beantragt und verwaltet. Das Kürzel "AAA" (ausgesprochen "Triple A") ist jedoch weltweit ein Synonym für **höchste Qualität, Bonität und Exzellenz** (denken Sie an Finanzratings oder Videospiele-Produktionen).
 
-Obwohl diese Endung ursprünglich als geschlossene Marken-Registry startete, beobachten Domain-Investoren und Entwickler genau, wie sich solche kurzen, repetitiven Buchstabenfolgen ("Repeating Letter Domains") auf dem Markt verhalten. Im Kontext von Web3 und tokenisierten Domains gewinnen kurze, einprägsame Endungen zunehmend an Bedeutung für digitale Identitäten.
+Obwohl diese Endung ursprünglich als geschlossene Marken-[Registry](/de/glossary/registry/) startete, beobachten Domain-Investoren und Entwickler genau, wie sich solche kurzen, repetitiven Buchstabenfolgen ("Repeating Letter Domains") auf dem Markt verhalten. Im Kontext von [Web3](/de/glossary/web3/) und tokenisierten Domains gewinnen kurze, einprägsame Endungen zunehmend an Bedeutung für digitale Identitäten.
 
 ## **Wie .aaa genutzt wird**
 
@@ -24,7 +24,7 @@ Die Nutzung von .aaa konzentriert sich stark auf Vertrauen, Service und Markenid
 *   **Dienstleistungen und Bewertungen:** Unternehmen nutzen (oder streben danach), diese Endung zu nutzen, um Premium-Service zu signalisieren.
 *   **Finanzsektor:** Aufgrund der Assoziation mit "AAA-Ratings" (die beste Bewertung für Kreditwürdigkeit) ist diese Endung für Finanzdienstleister und Berater von hohem Interesse.
 *   **Digitale Portfolios:** Entwickler und Kreative suchen nach kurzen Domains wie .aaa, um ihre besten Arbeiten ("A-Game") zu präsentieren.
-*   **Web3 und Blockchain:** In der Welt der dezentralen Domains werden kurze Endungen oft als Statussymbol oder für spezifische Smart-Contract-Interaktionen genutzt.
+*   **Web3 und [Blockchain](/de/glossary/blockchain/):** In der Welt der dezentralen Domains werden kurze Endungen oft als Statussymbol oder für spezifische Smart-Contract-Interaktionen genutzt.
 
 Mehr über die Delegierung und technische Details finden Sie bei der [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/aaa.html).
 

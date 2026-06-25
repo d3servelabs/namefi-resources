@@ -26,13 +26,13 @@ keywords:
   - 'neue domainendungen'
 ---
 
-Die Wahl der richtigen Domain-Endung (Top-Level Domain oder TLD) ist einer der wichtigsten Schritte beim Aufbau einer Online-Präsenz. In einer Welt, in der traditionelle Endungen wie `.com` oder `.de` oft überlaufen sind, suchen Innovatoren nach frischen Alternativen. Hier kommt **.able** ins Spiel – eine Endung, die Kreativität, Fähigkeit und Modernität ausstrahlt.
+Die Wahl der richtigen Domain-Endung (Top-Level Domain oder [TLD](/de/glossary/tld/)) ist einer der wichtigsten Schritte beim Aufbau einer Online-Präsenz. In einer Welt, in der traditionelle Endungen wie `.com` oder `.de` oft überlaufen sind, suchen Innovatoren nach frischen Alternativen. Hier kommt **.able** ins Spiel – eine Endung, die Kreativität, Fähigkeit und Modernität ausstrahlt.
 
 Besonders im Bereich des **Domain-Investings** und der **Blockchain-Technologie** gewinnen solche spezialisierten oder alternativen TLDs an Bedeutung. Als zukunftsorientierter Registrar hilft Ihnen Namefi dabei, diese Potenziale zu verstehen und zu nutzen.
 
 ## **Was ist .able?**
 
-Die Endung **.able** gehört zur Kategorie der beschreibenden oder generischen Top-Level-Domains (bzw. alternativen Roots im Web3-Kontext). Im Gegensatz zu geographischen Endungen (ccTLDs wie `.de` für Deutschland) definiert `.able` nicht *wo* Sie sind, sondern *was* Sie tun oder *wer* Sie sind.
+Die Endung **.able** gehört zur Kategorie der beschreibenden oder generischen Top-Level-Domains (bzw. alternativen Roots im [Web3](/de/glossary/web3/)-Kontext). Im Gegensatz zu geographischen Endungen (ccTLDs wie `.de` für Deutschland) definiert `.able` nicht *wo* Sie sind, sondern *was* Sie tun oder *wer* Sie sind.
 
 Der Begriff "able" (aus dem Englischen für "fähig" oder als Suffix "-bar") steht für Kompetenz, Möglichkeit und Positivität.
 
@@ -73,7 +73,7 @@ Warum sollten Sie sich für eine `.able` Domain entscheiden, anstatt bei den Kla
 
 Sind Sie bereit, eine Domain zu sichern, die Ihre Marke "fähig" für die Zukunft macht? Egal, ob Sie ein cleveres Wortspiel für Ihr Startup suchen oder in digitale Assets investieren möchten – Namefi ist Ihr Partner.
 
-Bei **Namefi** verbinden wir die Sicherheit der ICANN-akkreditierten Welt mit der Flexibilität der Blockchain-Technologie.
+Bei **Namefi** verbinden wir die Sicherheit der [ICANN](/de/glossary/icann/)-akkreditierten Welt mit der Flexibilität der Blockchain-Technologie.
 
 *   **Einfache Verwaltung:** Managen Sie Ihre Domains so einfach wie Ihre Krypto-Assets.
 *   **Nahtlose Web3-Integration:** Nutzen Sie fortschrittliche Funktionen für tokenisierte Domains.

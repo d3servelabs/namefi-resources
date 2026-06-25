@@ -11,7 +11,7 @@ keywords: ['dominios .abarth', 'TLD', 'top-level domain', 'qué es .abarth', 'po
 
 ## **¿Qué es .abarth?**
 
-El **.abarth** es un Dominio de Nivel Superior (TLD, por sus siglas en inglés) clasificado específicamente como un "Brand TLD" o TLD de marca. A diferencia de las extensiones genéricas como .com o .net, el dominio .abarth fue creado para el uso exclusivo de la marca de automóviles italiana **Abarth**, famosa por sus vehículos de alto rendimiento y su icónico logotipo del escorpión.
+El **.abarth** es un Dominio de Nivel Superior ([TLD](/es/glossary/tld/), por sus siglas en inglés) clasificado específicamente como un "Brand TLD" o TLD de marca. A diferencia de las extensiones genéricas como .com o .net, el dominio .abarth fue creado para el uso exclusivo de la marca de automóviles italiana **Abarth**, famosa por sus vehículos de alto rendimiento y su icónico logotipo del escorpión.
 
 Este dominio forma parte del programa de nuevos gTLD supervisado por la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es), diseñado para permitir que grandes organizaciones gestionen su propia identidad digital de manera integral. Al ser un dominio de marca, su propósito principal es garantizar la autenticidad, la seguridad y la exclusividad del contenido digital asociado con Abarth y su empresa matriz (actualmente parte del grupo Stellantis).
 
@@ -57,7 +57,7 @@ Aunque .abarth es un dominio exclusivo de marca, el mundo de los dominios ofrece
 
 **Namefi** no es solo un registrador acreditado; somos pioneros en la fusión de la web tradicional con la tecnología blockchain.
 
-*   **Acreditación ICANN:** Garantía y seguridad en cada registro.
+*   **Acreditación [ICANN](/es/glossary/icann/):** Garantía y seguridad en cada registro.
 *   **Integración Web3:** Convierte tus dominios en activos tokenizados, facilitando la transferencia y la gestión de tu cartera de inversiones.
 *   **Soporte Experto:** Te ayudamos a encontrar el nombre perfecto para tu proyecto.
 

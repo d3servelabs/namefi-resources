@@ -28,7 +28,7 @@ keywords:
 
 ## **Was ist .akdn?**
 
-Die Domain-Endung **.akdn** ist eine spezifische Top-Level-Domain (TLD), die als „Brand TLD“ (Marken-TLD) klassifiziert wird. Sie wurde exklusiv dem **Aga Khan Development Network (AKDN)** zugewiesen. Im Gegensatz zu generischen Endungen wie .com oder .net, die für die breite Öffentlichkeit zugänglich sind, gehört .akdn zu den neuen gTLDs, die Organisationen helfen sollen, ihre digitale Identität zu stärken und zu zentralisieren.
+Die Domain-Endung **.akdn** ist eine spezifische Top-Level-Domain ([TLD](/de/glossary/tld/)), die als „Brand TLD“ (Marken-TLD) klassifiziert wird. Sie wurde exklusiv dem **Aga Khan Development Network (AKDN)** zugewiesen. Im Gegensatz zu generischen Endungen wie [.com](/de/tld/com/) oder [.net](/de/tld/net/), die für die breite Öffentlichkeit zugänglich sind, gehört .akdn zu den neuen gTLDs, die Organisationen helfen sollen, ihre digitale Identität zu stärken und zu zentralisieren.
 
 Das Aga Khan Development Network ist eine Gruppe privater, internationaler Entwicklungsagenturen, die sich der Verbesserung der Lebensbedingungen und Möglichkeiten von Menschen in bestimmten Regionen der Entwicklungsländer widmen. Die Einführung der .akdn-TLD dient dazu, die verschiedenen Agenturen, Institutionen und Programme unter einem verifizierten und vertrauenswürdigen digitalen Dach zu vereinen.
 
@@ -38,7 +38,7 @@ Weitere Informationen zur Delegierung dieser TLD finden Sie bei der [IANA (Inter
 
 Da es sich bei .akdn um eine restriktive Marken-TLD handelt, unterscheidet sich die Nutzung von herkömmlichen Domains. Sie wird primär strategisch eingesetzt, um:
 
-*   **Digitale Authentizität zu gewährleisten:** Jede Webseite, die auf .akdn endet, ist garantiert ein offizieller Teil des Netzwerks. Dies schützt Nutzer vor Phishing oder gefälschten Webseiten.
+*   **Digitale Authentizität zu gewährleisten:** Jede Webseite, die auf .akdn endet, ist garantiert ein offizieller Teil des Netzwerks. Dies schützt Nutzer vor [Phishing](/de/glossary/phishing/) oder gefälschten Webseiten.
 *   **Interne Infrastruktur zu stärken:** Nutzung für Mitarbeiterportale, interne Kommunikation und Projektmanagement-Tools innerhalb des globalen Netzwerks.
 *   **Markenkonsistenz:** Schaffung einer einheitlichen Namenskonvention für die vielen verschiedenen Agenturen (z. B. im Gesundheitswesen, in der Bildung oder Kultur), die zum Netzwerk gehören.
 
@@ -70,8 +70,8 @@ Auch wenn die .akdn-Domain exklusiv dem Aga Khan Development Network vorbehalten
 
 Bei **Namefi** bieten wir Ihnen eine hochmoderne Plattform, um Ihre perfekte Domain zu finden und zu sichern.
 
-*   **Nahtlose Web3-Integration:** Wir machen Domains handelbar und nutzbar in der Blockchain-Ökonomie.
-*   **ICANN-akkreditiert:** Vertrauen Sie auf einen offiziell anerkannten Registrar.
+*   **Nahtlose [Web3](/de/glossary/web3/)-Integration:** Wir machen Domains handelbar und nutzbar in der [Blockchain](/de/glossary/blockchain/)-Ökonomie.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Vertrauen Sie auf einen offiziell anerkannten [Registrar](/de/glossary/registrar/).
 *   **Große Auswahl:** Egal ob .com, .io, .ai oder andere spezialisierte TLDs – finden Sie den Namen, der Ihre Marke definiert.
 
 Sichern Sie sich noch heute Ihre digitale Identität und profitieren Sie von der einfachen Verwaltung und dem innovativen Ansatz von Namefi.

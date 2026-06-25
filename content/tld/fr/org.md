@@ -24,7 +24,7 @@ L'utilisation du .org a évolué, mais elle reste fidèle à ses racines communa
 *   **Organisations à but non lucratif et ONG :** C'est l'utilisation la plus classique. Les associations caritatives, les fondations et les groupes humanitaires l'utilisent pour établir leur légitimité instantanée.
 *   **Projets Open-Source et Technologiques :** De nombreux développeurs et communautés logicielles choisissent le .org pour héberger la documentation et les dépôts de code de leurs projets (par exemple, des frameworks ou des langages de programmation).
 *   **Institutions Éducatives et Culturelles :** Les musées, les bibliothèques et les initiatives éducatives libres utilisent ce domaine pour partager le savoir.
-*   **Communautés Web3 et DAOs :** Avec l'émergence de la blockchain, de nombreuses Organisations Autonomes Décentralisées (DAOs) et protocoles DeFi choisissent le .org pour souligner leur nature communautaire et décentralisée, s'éloignant de l'aspect purement commercial du .com.
+*   **Communautés [Web3](/fr/glossary/web3/) et DAOs :** Avec l'émergence de la blockchain, de nombreuses Organisations Autonomes Décentralisées (DAOs) et protocoles DeFi choisissent le .org pour souligner leur nature communautaire et décentralisée, s'éloignant de l'aspect purement commercial du .com.
 *   **Réseaux Professionnels et Forums :** Les groupes qui cherchent à rassembler des personnes autour d'un intérêt commun ou d'une cause professionnelle.
 
 ## **Entités notables utilisant le .org**

@@ -18,7 +18,7 @@ faqs:
     answer: "Pas comme un fait établi. En 2026, .io est entièrement opérationnel. Tout retrait nécessiterait d'abord une modification du code pays ISO, puis suivrait une transition IANA de plusieurs années — c'est donc une situation à surveiller plutôt qu'une raison de paniquer."
 ---
 
-Le **domaine .io** est techniquement une extension de code pays pour un territoire éloigné de l'océan Indien, mais en pratique il est devenu le lieu de prédilection des startups logicielles, des outils pour développeurs et des projets Web3. Pour la plupart des acheteurs, la **signification du domaine .io** n'a rien à voir avec la géographie et tout à voir avec la façon dont « io » est lu par les ingénieurs : comme **Entrée/Sortie (Input/Output)**, l'un des concepts les plus fondamentaux de l'informatique.
+Le **domaine .io** est techniquement une extension de code pays pour un territoire éloigné de l'océan Indien, mais en pratique il est devenu le lieu de prédilection des startups logicielles, des outils pour développeurs et des projets [Web3](/fr/glossary/web3/). Pour la plupart des acheteurs, la **signification du domaine .io** n'a rien à voir avec la géographie et tout à voir avec la façon dont « io » est lu par les ingénieurs : comme **Entrée/Sortie (Input/Output)**, l'un des concepts les plus fondamentaux de l'informatique.
 
 Si vous lancez un produit SaaS, une API, un projet open-source ou une venture blockchain, .io est l'un des signaux les plus reconnus que vous puissiez placer après votre nom de marque. Cette page explique son origine, qui peut en enregistrer un, comment fonctionne la tarification et comment il se compare aux alternatives.
 
@@ -62,7 +62,7 @@ Le suffixe se regroupe étroitement autour des niches technologiques :
 ## Sites notables utilisant .io
 
 - **GitHub Pages** (`github.io`) — des millions de sites de développeurs hébergés depuis des dépôts
-- **Etherscan** (`etherscan.io`) — le principal explorateur de blockchain Ethereum
+- **Etherscan** (`etherscan.io`) — le principal explorateur de blockchain [Ethereum](/fr/glossary/ethereum/)
 - **itch.io** — un marché ouvert populaire pour les créateurs de jeux indépendants
 - **Agar.io** et **Slither.io** — les jeux navigateur qui ont défini le genre des « io games »
 
@@ -82,7 +82,7 @@ Choisissez [.com](/fr/tld/com/) comme valeur universelle par défaut lorsque vou
 ## Pourquoi choisir .io ?
 
 - **Reconnaissance industrielle.** Parmi les fondateurs, les ingénieurs et les investisseurs, .io se lit instantanément comme « entreprise technologique ».
-- **Meilleure disponibilité de noms courts.** L'espace de noms est plus jeune et plus petit que [.com](/fr/tld/com/), ce qui rend les noms concis et brandables bien plus faciles à trouver.
+- **Meilleure disponibilité de noms courts.** L'espace de noms est plus jeune et plus petit que .com, ce qui rend les noms concis et brandables bien plus faciles à trouver.
 - **Potentiel de domain hack.** Le suffixe à deux lettres s'intègre parfaitement dans des mots (`rad.io`, `stud.io`), permettant des noms astucieux et mémorables.
 - **Référencement mondial.** Les moteurs de recherche le traitent comme générique, donc votre site peut se classer dans le monde entier sans être limité à une seule région.
 
@@ -160,5 +160,5 @@ DNSSEC est pris en charge par le registre .io. La disponibilité de la confident
 - [Pourquoi les domaines .io sont-ils chers ?](/fr/blog/why-are-io-domains-expensive/)
 - [Domaine .ai vs .io](/fr/blog/ai-vs-io-domain/)
 - [Cas d'utilisation des domaines tokenisés (2026)](/fr/blog/tokenized-domain-use-cases-2026/)
-- Guides TLD : [.com](/fr/tld/com/), [.ai](/fr/tld/ai/), [.dev](/fr/tld/dev/), [.app](/fr/tld/app/), [.tech](/fr/tld/tech/)
-- Glossaire : [ICANN](/fr/glossary/icann/), [bureau d'enregistrement](/fr/glossary/registrar/), [DNS](/fr/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- Guides TLD : .com, .ai, .dev, [.app](/fr/tld/app/), [.tech](/fr/tld/tech/)
+- Glossaire : ICANN, bureau d'enregistrement, DNS, [DNSSEC](/fr/glossary/dnssec/)

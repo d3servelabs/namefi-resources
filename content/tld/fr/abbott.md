@@ -11,7 +11,7 @@ keywords: [".abbott domains", ".abbott TLD", "top-level domain .abbott", "what i
 
 ## **Qu'est-ce que le .abbott ?**
 
-L'extension **.abbott** est un domaine de premier niveau (TLD) de type "marque" (Brand TLD). Contrairement aux domaines génériques comme .com ou .org, le .abbott a été créé spécifiquement pour **Abbott Laboratories**, l'une des plus grandes entreprises mondiales dans le secteur de la santé et des dispositifs médicaux.
+L'extension **.abbott** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) de type "marque" (Brand TLD). Contrairement aux domaines génériques comme [.com](/fr/tld/com/) ou .org, le .abbott a été créé spécifiquement pour **Abbott Laboratories**, l'une des plus grandes entreprises mondiales dans le secteur de la santé et des dispositifs médicaux.
 
 Lancé lors du programme des nouveaux gTLD (New gTLD Program) de l'[ICANN](https://www.icann.org/fr), ce domaine a pour but principal de consolider la présence numérique de l'entreprise, d'assurer l'authenticité de ses produits et de garantir un environnement en ligne sécurisé pour ses patients et partenaires. En tant que "dot-brand", cette extension signale immédiatement à l'internaute qu'il navigue sur une propriété numérique officielle et vérifiée d'Abbott.
 
@@ -28,7 +28,7 @@ Pour en savoir plus sur la gestion des extensions de marque, vous pouvez consult
 
 ## **Entités notables utilisant .abbott**
 
-Étant donné que le .abbott est un TLD restreint (Specification 13 auprès de l'ICANN), son usage est exclusif à Abbott Laboratories et ses filiales. On ne retrouvera donc pas d'entités tierces utilisant cette extension. Cependant, elle est utilisée pour des segments clés de l'entreprise :
+Étant donné que le .abbott est un TLD restreint (Specification 13 auprès de l'[ICANN](/fr/glossary/icann/)), son usage est exclusif à Abbott Laboratories et ses filiales. On ne retrouvera donc pas d'entités tierces utilisant cette extension. Cependant, elle est utilisée pour des segments clés de l'entreprise :
 
 *   **Abbott Laboratories (Siège) :** L'entité principale utilise cette extension pour renforcer sa marque corporate.
 *   **Divisions Nutrition et Diagnostics :** Des sous-domaines spécifiques peuvent être créés pour distinguer les différentes branches d'activité (ex: nutrition pédiatrique, diabétologie).

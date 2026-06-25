@@ -11,7 +11,7 @@ keywords: ["tld", "dominio eth", "identidad web3", "blockchain", "ENS", "dominio
 
 ## **¿Qué es .eth?**
 
-El dominio **.eth** no es un dominio de nivel superior (TLD, un sufijo de dominio que viene después del punto final en una dirección de internet) tradicional, sino un **sistema de nombres basado en blockchain** impulsado por el **Ethereum Name Service (ENS)**. A diferencia de los dominios convencionales gestionados por ICANN, los dominios `.eth` son **descentralizados, se poseen como NFT y se almacenan en la blockchain de Ethereum**.
+El dominio **.eth** no es un dominio de nivel superior (TLD, un sufijo de dominio que viene después del punto final en una dirección de internet) tradicional, sino un **sistema de nombres basado en blockchain** impulsado por el **[Ethereum](/es/glossary/ethereum/) Name Service (ENS)**. A diferencia de los dominios convencionales gestionados por [ICANN](/es/glossary/icann/), los dominios `.eth` son **descentralizados, se poseen como NFT y se almacenan en la blockchain de Ethereum**.
 
 Los dominios `.eth` sirven como **nombres legibles por humanos para las direcciones de Ethereum**, reemplazando las complejas direcciones de billetera de 42 caracteres (como 0x742d35Cc6...) con nombres simples y memorables (como alice.eth). Este sistema revolucionario está transformando la forma en que las personas interactúan con **Web3, DeFi, NFTs y la internet descentralizada**.
 
@@ -22,7 +22,7 @@ Los dominios `.eth` sirven como **nombres legibles por humanos para las direccio
 Desde el lanzamiento de ENS, los dominios `.eth` se han convertido en una infraestructura esencial para los usuarios y organizaciones de Web3. Son ampliamente utilizados para:
 
 *   **Direcciones de billeteras de criptomonedas** — reemplazando largas direcciones hexadecimales con nombres memorables como john.eth.
-*   **Sitios web descentralizados** — alojando sitios web resistentes a la censura en IPFS y otras redes descentralizadas.
+*   **Sitios web descentralizados** — alojando sitios web resistentes a la censura en [IPFS](/es/glossary/ipfs/) y otras redes descentralizadas.
 *   **Identidad Web3** — sirviendo como nombres de usuario universales en protocolos DeFi, mercados NFT y dApps.
 *   **Gobernanza de DAO** — organizaciones que usan dominios .eth para sus organizaciones autónomas descentralizadas.
 *   **Colecciones de NFT** — artistas y creadores que usan dominios .eth para sus plataformas de arte digital.

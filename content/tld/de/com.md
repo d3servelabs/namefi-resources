@@ -20,7 +20,7 @@ faqs:
 
 Die **.com-Domain** ist das, was dem Internet am nächsten kommt an einem Standard. Als Abkürzung für „commercial" ist sie die ursprüngliche generische Top-Level-Domain, die durch jahrzehntelange Allgegenwart zur Endung wurde, die Menschen automatisch erwarten, wenn sie einen Website-Namen hören. Für die meisten Unternehmen und Marken lässt sich **was ist .com** auf eine Sache reduzieren: Es ist die Adresse, die Nutzer erwarten, eingeben und ohne Nachdenken vertrauen.
 
-Wenn Sie ein Unternehmen gründen, eine Marke schützen oder etwas aufbauen, das für ein breites oder globales Publikum gedacht ist, bleibt .com der Maßstab, an dem jede andere Endung gemessen wird. Diese Seite erläutert die Herkunft der Domain, wer eine registrieren kann, wie die Preisgestaltung funktioniert und wie sie im Vergleich zu den nächsten Alternativen abschneidet.
+Wenn Sie ein Unternehmen gründen, eine [Marke](/de/glossary/trademark/) schützen oder etwas aufbauen, das für ein breites oder globales Publikum gedacht ist, bleibt .com der Maßstab, an dem jede andere Endung gemessen wird. Diese Seite erläutert die Herkunft der Domain, wer eine registrieren kann, wie die Preisgestaltung funktioniert und wie sie im Vergleich zu den nächsten Alternativen abschneidet.
 
 ## .com auf einen Blick
 
@@ -44,7 +44,7 @@ Das Label „com" verweist auf einen kommerziellen Zweck, aber diese Einschränk
 
 .com wurde am **1. Januar 1985** delegiert und ist damit eine der Gründungs-TLDs des modernen Domain Name Systems. Die allererste je registrierte .com-Domain war **symbolics.com**, die am 15. März 1985 vom Computerhersteller Symbolics eingetragen wurde – eine Domain, die heute noch auflöst und oft als Stück Internetgeschichte zitiert wird.
 
-Der kommerzielle Web-Boom der späten 1990er Jahre verwandelte .com in die Standard-Ladenfront des Internets. Verisign meldet nun mehr als **160 Millionen .com-Registrierungen** weltweit – mit Abstand die größte einzelne TLD. Diese Größe hat auch den .com-Aftermarket zum aktivsten der Branche gemacht: kategorie-definierende Namen wie voice.com und cars.com haben für achtstellige Summen den Besitzer gewechselt – zu den höchsten öffentlich berichteten Domain-Verkäufen überhaupt.
+Der kommerzielle Web-Boom der späten 1990er Jahre verwandelte .com in die Standard-Ladenfront des Internets. Verisign meldet nun mehr als **160 Millionen .com-Registrierungen** weltweit – mit Abstand die größte einzelne TLD. Diese Größe hat auch den .com-[Aftermarket](/de/glossary/aftermarket/) zum aktivsten der Branche gemacht: kategorie-definierende Namen wie voice.com und cars.com haben für achtstellige Summen den Besitzer gewechselt – zu den höchsten öffentlich berichteten Domain-Verkäufen überhaupt.
 
 ## Wie Menschen .com nutzen
 
@@ -76,7 +76,7 @@ Diese spannen Suche, Einzelhandel, Hardware und Geschichte selbst auf und verans
 | Verfügbarkeit kurzer Namen | Sehr selten | Selten | Mäßig | Gut |
 | Typisches Preisniveau | Standard | Standard | Standard | Premium |
 
-Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden oder sich leisten können. Wählen Sie [.net](/de/tld/net/) als klassische Alternative, wenn die passende .com vergeben ist, [.org](/de/tld/org/), wenn Sie eine Community-, gemeinnützige oder Open-Project-Konnotation wünschen, oder [.io](/de/tld/io/), wenn ein technisches, startup-geprägtes Signal und die Verfügbarkeit kurzer Namen wichtiger sind als Mainstream-Bekanntheit.
+Wählen Sie **.com** als universellen Standard, wann immer Sie den Namen finden oder sich leisten können. Wählen Sie [.net](/de/tld/net/) als klassische Alternative, wenn die passende .com vergeben ist, [.org](/de/tld/org/), wenn Sie eine Community-, gemeinnützige oder Open-Project-Konnotation wünschen, oder .io, wenn ein technisches, startup-geprägtes Signal und die Verfügbarkeit kurzer Namen wichtiger sind als Mainstream-Bekanntheit.
 
 ## Warum .com wählen?
 
@@ -125,7 +125,7 @@ Achten Sie auf zwei Fallstricke. Erstens: Vermeiden Sie unangenehme Bindestriche
 2. **Wählen** Sie das .com-Ergebnis (und alle Alternativen, die es wert sind, gesichert zu werden).
 3. **Registrieren** und DNS konfigurieren.
 
-Als [ICANN-akkreditierter](/de/glossary/icann/) [Registrar](/de/glossary/registrar/) verbindet Namefi Web2 und Web3: transparente Preisgestaltung, schnelles [DNS](/de/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) für überprüfbares [Domain-Eigentum](/de/glossary/domain-ownership/) und einfache Übertragbarkeit zu halten. Sie können sogar eine [bestehende .com tokenisieren](/de/blog/how-to-tokenize-your-com/), die Sie bereits besitzen. Beginnen Sie bei [Namefi](https://namefi.io).
+Als [ICANN-akkreditierter](/de/glossary/icann/) [Registrar](/de/glossary/registrar/) verbindet Namefi Web2 und [Web3](/de/glossary/web3/): transparente Preisgestaltung, schnelles [DNS](/de/glossary/dns/)-Management und die Möglichkeit, Ihren Namen als [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) für überprüfbares [Domain-Eigentum](/de/glossary/domain-ownership/) und einfache Übertragbarkeit zu halten. Sie können sogar eine [bestehende .com tokenisieren](/de/blog/how-to-tokenize-your-com/), die Sie bereits besitzen. Beginnen Sie bei [Namefi](https://namefi.io).
 
 ## Häufig gestellte Fragen
 
@@ -147,7 +147,7 @@ Bei über 160 Millionen registrierten .com-Namen ist das Angebot an kurzen, lexi
 
 ### Unterstützt .com WHOIS-Datenschutz und DNSSEC?
 
-DNSSEC wird von der .com-Registry unterstützt. Die Verfügbarkeit von WHOIS-Datenschutz hängt von Ihrem Registrar ab; die meisten modernen Registrare, einschließlich Namefi, bieten Datenschutzschutz für berechtigte Registrierungen an.
+DNSSEC wird von der .com-Registry unterstützt. Die Verfügbarkeit von [WHOIS-Datenschutz](/de/glossary/whois-privacy/) hängt von Ihrem Registrar ab; die meisten modernen Registrare, einschließlich Namefi, bieten Datenschutzschutz für berechtigte Registrierungen an.
 
 ## Verwandte Ressourcen
 
@@ -156,5 +156,5 @@ DNSSEC wird von der .com-Registry unterstützt. Die Verfügbarkeit von WHOIS-Dat
 - [Domain-Terminologieleitfaden](/de/blog/domain-terminology-guide/)
 - [So tokenisieren Sie Ihre .com](/de/blog/how-to-tokenize-your-com/)
 - [So verkaufen Sie einen Domainnamen, den Sie besitzen](/de/blog/how-to-sell-a-domain-name-you-own/)
-- TLD-Leitfäden: [.net](/de/tld/net/), [.org](/de/tld/org/), [.io](/de/tld/io/), [.ai](/de/tld/ai/), [.xyz](/de/tld/xyz/)
-- Glossar: [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), [DNS](/de/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- TLD-Leitfäden: .net, .org, .io, .ai, [.xyz](/de/tld/xyz/)
+- Glossar: ICANN, Registrar, DNS, [DNSSEC](/de/glossary/dnssec/)

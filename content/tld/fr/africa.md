@@ -19,11 +19,11 @@ Le **.africa** est un domaine de premier niveau générique (gTLD) conçu spéci
 
 Contrairement aux extensions nationales (ccTLD) comme le *.ng* pour le Nigeria ou le *.za* pour l'Afrique du Sud, le **.africa** a une portée continentale. Il s'adresse à ceux qui ne veulent pas se limiter aux frontières d'un seul pays mais qui visent une audience panafricaine ou mondiale avec un lien fort avec l'Afrique.
 
-Il représente une opportunité majeure pour les investisseurs de domaines et les développeurs Web3 cherchant à capitaliser sur l'un des marchés technologiques à la croissance la plus rapide au monde. Pour plus d'informations techniques sur la délégation de ce domaine, vous pouvez consulter les [ressources de l'ICANN](https://www.icann.org/resources/pages/africa-2013-05-23-en).
+Il représente une opportunité majeure pour les investisseurs de domaines et les développeurs [Web3](/fr/glossary/web3/) cherchant à capitaliser sur l'un des marchés technologiques à la croissance la plus rapide au monde. Pour plus d'informations techniques sur la délégation de ce domaine, vous pouvez consulter les [ressources de l'ICANN](https://www.icann.org/resources/pages/africa-2013-05-23-en).
 
 ## **Comment le domaine .africa est-il utilisé ?**
 
-L'adoption du .africa ne cesse de croître, car il offre une alternative pertinente aux extensions saturées comme le .com. Voici comment différents acteurs l'utilisent :
+L'adoption du .africa ne cesse de croître, car il offre une alternative pertinente aux extensions saturées comme le [.com](/fr/tld/com/). Voici comment différents acteurs l'utilisent :
 
 *   **Entreprises Panafricaines :** Les sociétés opérant dans plusieurs pays africains (banques, télécoms, logistique) l'utilisent pour consolider leur présence sous une seule adresse web cohérente.
 *   **Startups Technologiques (Fintech & AgriTech) :** L'écosystème startup africain est vibrant. De nombreuses nouvelles entreprises technologiques choisissent cette extension pour affirmer leur origine et leur marché cible dès le premier regard.
@@ -34,7 +34,7 @@ L'adoption du .africa ne cesse de croître, car il offre une alternative pertine
 
 Bien que l'extension soit relativement jeune, elle a déjà été adoptée par des institutions et des marques influentes qui comprennent la valeur d'une identité continentale.
 
-1.  **L'Union Africaine (au.int / africa-union.africa) :** L'organisation continentale a été l'un des principaux promoteurs du lancement de ce TLD pour favoriser l'unité numérique.
+1.  **L'Union Africaine (au.int / africa-union.africa) :** L'organisation continentale a été l'un des principaux promoteurs du lancement de ce [TLD](/fr/glossary/tld/) pour favoriser l'unité numérique.
 2.  **Startups innovantes :** De nombreuses plateformes émergentes dans les hubs technologiques comme Nairobi, Lagos et Le Cap adoptent cette extension pour se démarquer sur la scène internationale.
 3.  **Marques internationales :** De grandes entreprises mondiales protègent leur marque en enregistrant leur nom en .africa (par exemple, des marques de luxe ou de technologie) pour éviter le cybersquatting et préparer leur expansion sur le marché africain.
 
@@ -51,7 +51,7 @@ Investir dans un domaine .africa présente des avantages stratégiques indéniab
 
 Que vous lanciez la prochaine licorne africaine ou que vous souhaitiez simplement protéger votre marque, le moment est idéal pour sécuriser votre nom de domaine .africa.
 
-Chez **Namefi**, nous rendons l'enregistrement de domaines simple, sécurisé et tourné vers l'avenir. En tant que bureau d'enregistrement accrédité par l'ICANN, nous offrons une fiabilité totale tout en intégrant des fonctionnalités Web3 révolutionnaires. Avec Namefi, votre domaine n'est pas seulement une adresse web ; il peut être minté et géré comme un actif numérique sur la blockchain, facilitant les transferts et la gestion de portefeuille.
+Chez **Namefi**, nous rendons l'enregistrement de domaines simple, sécurisé et tourné vers l'avenir. En tant que bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann/), nous offrons une fiabilité totale tout en intégrant des fonctionnalités Web3 révolutionnaires. Avec Namefi, votre domaine n'est pas seulement une adresse web ; il peut être minté et géré comme un actif numérique sur la blockchain, facilitant les transferts et la gestion de portefeuille.
 
 Ne laissez pas quelqu'un d'autre prendre le nom parfait pour votre projet.
 

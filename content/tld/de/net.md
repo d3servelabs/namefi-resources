@@ -50,7 +50,7 @@ Warum sollten Sie sich bei Ihrer nächsten Registrierung für eine .net-Domain e
 *   **Vertrauen und Wiedererkennung:** Genau wie .com ist .net weltweit bekannt. Nutzer vertrauen dieser Endung instinktiv mehr als vielen neueren, unbekannten gTLDs.
 *   **Bessere Verfügbarkeit:** Während der Namensraum unter .com extrem überlaufen ist, haben Sie bei .net eine wesentlich höhere Chance, Ihren gewünschten kurzen und prägnanten Markennamen zu finden.
 *   **SEO-Relevanz:** Suchmaschinen wie Google behandeln .net gleichwertig zu .com. Es gibt keinen direkten Nachteil im Ranking. Mehr dazu können Sie in den Richtlinien von [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/design/keeping-a-domain?hl=de) nachlesen.
-*   **Branding für Tech:** Wenn Sie in der IT, im Web3 oder im Netzwerkbereich tätig sind, passt .net oft besser zu Ihrer Markenidentität als eine generische Endung.
+*   **Branding für Tech:** Wenn Sie in der IT, im [Web3](/de/glossary/web3/) oder im Netzwerkbereich tätig sind, passt .net oft besser zu Ihrer Markenidentität als eine generische Endung.
 
 ## **Registrieren Sie Ihre .net-Domain bei Namefi**
 

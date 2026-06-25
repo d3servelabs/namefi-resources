@@ -28,7 +28,7 @@ keywords:
 
 ## **¿Qué es .accenture?**
 
-El dominio **.accenture** pertenece a una categoría exclusiva conocida como "Brand TLDs" (TLDs de marca) dentro del ecosistema de los nuevos dominios genéricos de nivel superior (new gTLDs). A diferencia de las extensiones tradicionales como .com o .net, el TLD .accenture fue creado específicamente para representar la identidad digital de **Accenture**, una de las empresas líderes a nivel mundial en consultoría y servicios profesionales.
+El dominio **.accenture** pertenece a una categoría exclusiva conocida como "Brand TLDs" (TLDs de marca) dentro del ecosistema de los nuevos dominios genéricos de nivel superior (new gTLDs). A diferencia de las extensiones tradicionales como [.com](/es/tld/com/) o [.net](/es/tld/net/), el [TLD](/es/glossary/tld/) .accenture fue creado específicamente para representar la identidad digital de **Accenture**, una de las empresas líderes a nivel mundial en consultoría y servicios profesionales.
 
 Este dominio fue delegado a través del programa de nuevos gTLDs de la **[ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es)**, con el objetivo de consolidar la presencia online de la compañía, mejorar la seguridad y ofrecer una garantía de autenticidad inquebrantable a sus clientes. Al utilizar una extensión propietaria, se elimina el riesgo de *phishing* o suplantación de identidad bajo ese nombre, ya que el registro está altamente controlado.
 
@@ -76,7 +76,7 @@ Para inversores de dominios y entusiastas de la tecnología, el éxito de .accen
 
 En **Namefi**, no solo somos un registrador acreditado; somos pioneros en la integración de Web3. Ofrecemos:
 *   **Custodia simplificada:** Tus dominios están seguros y listos para ser tokenizados.
-*   **Integración Blockchain:** Convierte tus dominios en activos líquidos on-chain.
+*   **Integración [Blockchain](/es/glossary/blockchain/):** Convierte tus dominios en activos líquidos on-chain.
 *   **Gestión eficiente:** Una plataforma diseñada para desarrolladores y empresas modernas.
 
 No dejes pasar la oportunidad de asegurar el nombre perfecto para tu proyecto hoy mismo.

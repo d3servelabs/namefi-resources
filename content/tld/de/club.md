@@ -32,7 +32,7 @@ Die Endung **.club** ist eine generische Top-Level-Domain (gTLD), die speziell f
 
 Im Gegensatz zu traditionellen Endungen wie .com oder .de, die oft geografisch oder rein kommerziell geprägt sind, steht .club für **Leidenschaft, Gemeinschaft und Exklusivität**. Sie wurde eingeführt, um Gruppen, Vereinen und Unternehmen eine digitale Heimat zu bieten, die sofort suggeriert: "Hier gehörst du dazu."
 
-Laut Statistiken von [ntldstats.com](https://ntldstats.com/tld/club) gehört .club beständig zu den am häufigsten registrierten neuen gTLDs weltweit, was ihre hohe Akzeptanz und Relevanz unterstreicht. Ob für einen traditionellen Sportverein, ein Treueprogramm oder eine moderne Web3-Community – diese TLD schafft sofortige Identität.
+Laut Statistiken von [ntldstats.com](https://ntldstats.com/tld/club) gehört .club beständig zu den am häufigsten registrierten neuen gTLDs weltweit, was ihre hohe Akzeptanz und Relevanz unterstreicht. Ob für einen traditionellen Sportverein, ein Treueprogramm oder eine moderne [Web3](/de/glossary/web3/)-Community – diese TLD schafft sofortige Identität.
 
 ## **Wie Menschen und Unternehmen .club nutzen**
 
@@ -62,7 +62,7 @@ Es gibt überzeugende Gründe, warum eine .club-Domain die richtige Wahl für Ih
 *   **Verfügbarkeit:** Während die meisten guten .com-Domains vergeben oder extrem teuer sind, bietet der .club-Namensraum noch viele hochwertige, kurze Begriffe ("Keyword-Domains") zu regulären Preisen.
 *   **Community-Fokus:** Die Endung impliziert sofort soziale Interaktion. Für Foren, soziale Netzwerke oder DAOs ist dies ein unschätzbarer Branding-Vorteil.
 *   **SEO-Relevanz:** Suchmaschinen wie Google behandeln neue gTLDs genauso wie traditionelle Endungen. Wenn Ihr Markenname oder Ihr Keyword "Club" enthält, ist die Domainendung selbst Teil Ihrer SEO-Strategie.
-*   **Perfekt für Tokenisierung:** Für Investoren, die sich für **Real World Assets (RWA)** und tokenisierte Domains interessieren, bieten .club-Domains einen hohen Wiederverkaufswert, da sie spezifische Nischen (Golf, Yachting, Krypto) perfekt bedienen.
+*   **Perfekt für [Tokenisierung](/de/glossary/tokenize/):** Für Investoren, die sich für **Real World Assets (RWA)** und tokenisierte Domains interessieren, bieten .club-Domains einen hohen Wiederverkaufswert, da sie spezifische Nischen (Golf, Yachting, Krypto) perfekt bedienen.
 
 ## **Registrieren Sie Ihre .club Domain bei Namefi**
 

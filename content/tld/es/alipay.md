@@ -26,13 +26,13 @@ keywords:
   - 'Namefi'
 ---
 
-En el vasto universo de internet, la elección de un dominio es mucho más que una simple dirección web; es una declaración de identidad, seguridad y propósito. Hoy analizaremos un dominio de nivel superior (TLD) muy particular que resuena con fuerza en el mundo del comercio electrónico y las tecnologías financieras: el **.alipay**.
+En el vasto universo de internet, la elección de un dominio es mucho más que una simple dirección web; es una declaración de identidad, seguridad y propósito. Hoy analizaremos un dominio de nivel superior ([TLD](/es/glossary/tld/)) muy particular que resuena con fuerza en el mundo del comercio electrónico y las tecnologías financieras: el **.alipay**.
 
-A medida que el mundo avanza hacia la Web3 y la tokenización de activos —una especialidad aquí en **Namefi**—, entender la jerarquía y el propósito de dominios corporativos y financieros es crucial para inversores y desarrolladores.
+A medida que el mundo avanza hacia la [Web3](/es/glossary/web3/) y la tokenización de activos —una especialidad aquí en **Namefi**—, entender la jerarquía y el propósito de dominios corporativos y financieros es crucial para inversores y desarrolladores.
 
 ## **¿Qué es .alipay?**
 
-El **.alipay** es un [gTLD (Dominio de Nivel Superior Genérico)](https://newgtlds.icann.org/en/program-status/delegated-strings) de tipo "marca" (.brand). A diferencia de los dominios abiertos como .com o .net, el TLD .alipay fue creado y delegado específicamente para **Alibaba Group**, la empresa matriz de la plataforma de pagos más grande del mundo, Alipay.
+El **.alipay** es un [gTLD (Dominio de Nivel Superior Genérico)](https://newgtlds.icann.org/en/program-status/delegated-strings) de tipo "marca" (.brand). A diferencia de los dominios abiertos como [.com](/es/tld/com/) o .net, el TLD .alipay fue creado y delegado específicamente para **Alibaba Group**, la empresa matriz de la plataforma de pagos más grande del mundo, Alipay.
 
 Este tipo de extensión se clasifica como un **dominio cerrado o restringido**, diseñado para garantizar que cualquier sitio web que termine en esta extensión sea propiedad legítima de la entidad Alipay o sus afiliados directos. Su propósito fundamental es la **seguridad**. En un mundo plagado de phishing y fraudes financieros, ver una URL que termina en .alipay ofrece una garantía criptográfica y administrativa de que el usuario está interactuando con el ecosistema oficial.
 
@@ -75,7 +75,7 @@ Las ventajas que este TLD representa son:
 Aunque el TLD **.alipay** tiene restricciones de registro exclusivas para la marca propietaria, en **Namefi** entendemos el valor de poseer el nombre perfecto. Si eres parte del ecosistema autorizado o buscas dominios premium similares que proyecten la misma autoridad financiera y tecnológica, estás en el lugar correcto.
 
 En **Namefi**, revolucionamos la forma de gestionar dominios mediante la **tecnología blockchain**. Ofrecemos:
-*   **Acreditación ICANN:** Somos un registrador oficial y seguro.
+*   **Acreditación [ICANN](/es/glossary/icann/):** Somos un registrador oficial y seguro.
 *   **Integración Web3:** Tus dominios pueden ser tokenizados, permitiéndote transferirlos o venderlos con la facilidad de una transacción NFT, sin papeleos burocráticos.
 *   **Gestión Simplificada:** Una plataforma única para tus dominios tradicionales (Web2) y tus activos digitales.
 

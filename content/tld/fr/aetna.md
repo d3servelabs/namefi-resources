@@ -11,9 +11,9 @@ keywords: [".aetna domains", ".aetna TLD", "top-level domain .aetna", "what is .
 
 ## **Qu'est-ce que le .aetna ?**
 
-Le **.aetna** est un domaine de premier niveau (TLD - Top-Level Domain) qui appartient à la catégorie des "Brand TLDs" (TLD de marque). Contrairement aux extensions génériques comme le .com ou le .org, le .aetna a été créé spécifiquement pour l'usage exclusif de **Aetna Life Insurance Company**, une filiale majeure de CVS Health.
+Le **.aetna** est un domaine de premier niveau ([TLD](/fr/glossary/tld/) - Top-Level Domain) qui appartient à la catégorie des "Brand TLDs" (TLD de marque). Contrairement aux extensions génériques comme le [.com](/fr/tld/com/) ou le .org, le .aetna a été créé spécifiquement pour l'usage exclusif de **Aetna Life Insurance Company**, une filiale majeure de CVS Health.
 
-Cette extension fait partie du programme des nouveaux gTLD (generic Top-Level Domains) lancé par l'ICANN (Internet Corporation for Assigned Names and Numbers) pour permettre aux marques de créer leur propre espace numérique sécurisé. L'objectif principal de cette extension est de fournir un environnement en ligne certifié, sécurisé et immédiatement identifiable pour les clients et les partenaires de l'entreprise d'assurance.
+Cette extension fait partie du programme des nouveaux gTLD (generic Top-Level Domains) lancé par l'[ICANN](/fr/glossary/icann/) (Internet Corporation for Assigned Names and Numbers) pour permettre aux marques de créer leur propre espace numérique sécurisé. L'objectif principal de cette extension est de fournir un environnement en ligne certifié, sécurisé et immédiatement identifiable pour les clients et les partenaires de l'entreprise d'assurance.
 
 Pour plus de détails techniques sur la délégation de ce domaine, vous pouvez consulter le [dossier IANA pour .aetna](https://www.iana.org/domains/root/db/aetna.html).
 
@@ -28,7 +28,7 @@ L'utilisation du TLD .aetna est stratégique et centrée sur la confiance numér
 
 ## **Entités notables utilisant .aetna**
 
-Comme il s'agit d'un registre fermé (Closed Registry), les seules entités autorisées à utiliser ce domaine sont la société mère et ses affiliés. Cependant, cela en fait un exemple fascinant de la manière dont les grandes corporations structurent leur identité Web3 et Web2.
+Comme il s'agit d'un registre fermé (Closed Registry), les seules entités autorisées à utiliser ce domaine sont la société mère et ses affiliés. Cependant, cela en fait un exemple fascinant de la manière dont les grandes corporations structurent leur identité [Web3](/fr/glossary/web3/) et Web2.
 
 Voici les types d'usages et d'entités au sein de l'écosystème :
 

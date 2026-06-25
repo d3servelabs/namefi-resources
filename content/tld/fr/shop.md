@@ -38,7 +38,7 @@ En tant que nouveau gTLD moderne et ouvert disposant d'un vaste pool de noms non
 
 ## Qu'est-ce que .shop ?
 
-**.shop** est un [domaine générique de premier niveau (gTLD)](/en/glossary/tld) introduit dans le cadre du Programme Nouveaux gTLD de l'[ICANN](/fr/glossary/icann) — l'expansion de 2012 qui a ajouté des centaines de suffixes basés sur des mots à la zone racine. Sa signification est explicite : « shop » est un mot anglais quasi-universel pour désigner une destination commerciale, et il fonctionne comme une étiquette sémantique claire pour le commerce.
+**.shop** est un [domaine générique de premier niveau (gTLD)](/fr/glossary/tld) introduit dans le cadre du Programme Nouveaux gTLD de l'[ICANN](/fr/glossary/icann) — l'expansion de 2012 qui a ajouté des centaines de suffixes basés sur des mots à la zone racine. Sa signification est explicite : « shop » est un mot anglais quasi-universel pour désigner une destination commerciale, et il fonctionne comme une étiquette sémantique claire pour le commerce.
 
 Parce qu'il est générique plutôt qu'un ccTLD (code pays), les moteurs de recherche ne rattachent pas **.shop** à une géographie particulière. Les directives de Google indiquent qu'il traite les nouveaux gTLD de la même façon que les extensions héritées et n'applique pas de ciblage géographique basé sur un nom comme `.shop` — ainsi, un site `.shop` peut être classé mondialement comme un `.com`. Vous pouvez consulter les détails du registre sur l'entrée officielle de [la zone racine IANA pour .shop](https://www.iana.org/domains/root/db/shop.html).
 
@@ -97,7 +97,7 @@ Choisissez `.com` quand la reconnaissance par défaut prime sur tout et que vous
 
 **Restrictions d'enregistrement : ouvert à tous.** Il n'y a aucune condition d'éligibilité pour **.shop** — aucun justificatif, présence locale ou adhésion à une communauté n'est nécessaire. Tout particulier ou organisation dans le monde peut enregistrer un nom disponible selon le principe du premier arrivé, premier servi, ce que le registre confirme en n'indiquant aucune restriction d'enregistrement pour cette chaîne.
 
-Les pratiques standard des nouveaux gTLD s'appliquent. Les titulaires de marques déposées ont pu utiliser la période de lever de soleil ICANN au lancement, et la Trademark Clearinghouse continue de soutenir la protection des droits. Le registre prend en charge les noms de domaine internationalisés (IDN) et le [DNSSEC](/en/glossary/dnssec) pour un DNS signé et inviolable. La confidentialité WHOIS est proposée par la plupart des bureaux d'enregistrement pour masquer les détails personnels dans les enregistrements [WHOIS](/en/glossary/whois), et le comportement de transfert, de renouvellement et de grâce de rédemption suit la politique standard de l'ICANN. Les règles faisant autorité se trouvent dans l'[Accord de registre ICANN pour .shop](https://www.icann.org/en/registry-agreements/details/shop).
+Les pratiques standard des nouveaux gTLD s'appliquent. Les titulaires de marques déposées ont pu utiliser la période de lever de soleil ICANN au lancement, et la [Trademark Clearinghouse](/fr/glossary/tmch/) continue de soutenir la protection des droits. Le registre prend en charge les noms de domaine internationalisés (IDN) et le [DNSSEC](/fr/glossary/dnssec) pour un DNS signé et inviolable. La confidentialité WHOIS est proposée par la plupart des bureaux d'enregistrement pour masquer les détails personnels dans les enregistrements [WHOIS](/fr/glossary/whois), et le comportement de transfert, de renouvellement et de grâce de rédemption suit la politique standard de l'ICANN. Les règles faisant autorité se trouvent dans l'[Accord de registre ICANN pour .shop](https://www.icann.org/en/registry-agreements/details/shop).
 
 ## Tarification et valeur de .shop
 
@@ -124,7 +124,7 @@ Pour les e-mails, l'extension elle-même n'est pas ce que les filtres anti-spam 
 2. Choisissez le nom exact (et toutes les variantes défensives comme `.store` ou `.com`).
 3. Finalisez l'enregistrement et configurez le DNS.
 
-[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann) avec une tarification transparente et une gestion [DNS](/fr/glossary/dns) rapide. Il vous permet également de tokeniser votre domaine pour une propriété Web3 — transformant votre adresse `.shop` en un actif on-chain transférable — tout en conservant les fonctionnalités standard d'un bureau d'enregistrement.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann) avec une tarification transparente et une gestion [DNS](/fr/glossary/dns) rapide. Il vous permet également de tokeniser votre domaine pour une propriété [Web3](/fr/glossary/web3/) — transformant votre adresse `.shop` en un actif on-chain transférable — tout en conservant les fonctionnalités standard d'un bureau d'enregistrement.
 
 ## Foire aux questions
 
@@ -157,4 +157,4 @@ Oui. **.shop** prend en charge DNSSEC au niveau du registre, et la plupart des b
 - [Domaine .store](/fr/tld/store)
 - [Domaine .online](/fr/tld/online)
 - [Domaine .com](/fr/tld/com)
-- Glossaire : [bureau d'enregistrement](/fr/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)
+- Glossaire : [bureau d'enregistrement](/fr/glossary/registrar), [DNSSEC](/fr/glossary/dnssec), [WHOIS](/fr/glossary/whois)

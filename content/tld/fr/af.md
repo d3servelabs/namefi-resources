@@ -26,8 +26,8 @@ L'utilisation du .af est variée, allant de la nécessité locale à l'ingénios
 
 *   **Entreprises et Institutions Locales :** C'est l'usage principal. Les banques, les universités, les agences gouvernementales et les commerces basés en Afghanistan utilisent le .af pour affirmer leur identité locale et gagner la confiance des résidents.
 *   **Organisations Non Gouvernementales (ONG) :** De nombreuses organisations humanitaires internationales opérant dans la région utilisent cette extension pour leurs portails locaux, facilitant ainsi la communication avec la population.
-*   **Domain Hacks (Jeux de mots) :** Bien que moins courant que le .io ou le .ai, le .af est parfois utilisé pour des "domain hacks" en anglais (mots se terminant par "af", comme *le.af* ou *lo.af*) ou pour des abréviations. Dans le langage courant sur internet, "AF" est parfois utilisé comme un amplificateur d'argot (bien que nous recommandions un usage professionnel !).
-*   **Investisseurs de Domaines (Domaining) :** Les investisseurs cherchant des noms courts (2 ou 3 lettres) trouvent souvent plus de disponibilité dans le .af que dans les extensions saturées comme le .com.
+*   **Domain Hacks (Jeux de mots) :** Bien que moins courant que le [.io](/fr/tld/io/) ou le .ai, le .af est parfois utilisé pour des "domain hacks" en anglais (mots se terminant par "af", comme *le.af* ou *lo.af*) ou pour des abréviations. Dans le langage courant sur internet, "AF" est parfois utilisé comme un amplificateur d'argot (bien que nous recommandions un usage professionnel !).
+*   **Investisseurs de Domaines (Domaining) :** Les investisseurs cherchant des noms courts (2 ou 3 lettres) trouvent souvent plus de disponibilité dans le .af que dans les extensions saturées comme le [.com](/fr/tld/com/).
 
 ## **Entités notables utilisant le .af**
 
@@ -52,7 +52,7 @@ Que vous soyez un développeur, une entreprise locale ou un investisseur, le .af
 
 Vous êtes prêt à sécuriser votre nom de domaine en **.af** ? Ne cherchez plus. Chez **Namefi**, nous simplifions le processus d'enregistrement tout en vous propulsant vers l'avenir du web.
 
-Non seulement nous sommes une plateforme accréditée et sécurisée, mais nous offrons également une intégration transparente avec le **Web3**. Avec Namefi, votre domaine n'est pas juste une adresse web ; il peut être "tokenisé", vous offrant une propriété réelle, une gestion simplifiée et une liquidité accrue sur la blockchain.
+Non seulement nous sommes une plateforme accréditée et sécurisée, mais nous offrons également une intégration transparente avec le **[Web3](/fr/glossary/web3/)**. Avec Namefi, votre domaine n'est pas juste une adresse web ; il peut être "tokenisé", vous offrant une propriété réelle, une gestion simplifiée et une liquidité accrue sur la blockchain.
 
 *   **Gestion facile :** Une interface utilisateur intuitive pour gérer vos DNS.
 *   **Innovation :** Liez votre identité Web2 traditionnelle à la puissance du Web3.

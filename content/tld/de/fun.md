@@ -23,7 +23,7 @@ Die .fun-Domain ist unglaublich vielseitig und wird von einer breiten Palette an
 *   **Unterhaltungsmedien:** Blogs, die sich mit Filmen, Musik, Memes oder Comedy beschäftigen, finden hier ein perfektes Zuhause.
 *   **Veranstaltungen und Festivals:** Organisatoren von Partys, Festivals oder Firmenfeiern nutzen die Endung für Landingpages, um Tickets zu verkaufen und Vorfreude zu wecken.
 *   **Startups und Kreative:** Junge Unternehmen, die sich als unkonventionell und frisch positionieren wollen, nutzen .fun, um sich von konservativen Wettbewerbern abzuheben.
-*   **Web3 und NFT-Projekte:** Im Blockchain-Bereich wird die Endung oft für Community-Events oder spielerische NFT-Kollektionen (Play-to-Earn) verwendet.
+*   **[Web3](/de/glossary/web3/) und NFT-Projekte:** Im Blockchain-Bereich wird die Endung oft für Community-Events oder spielerische NFT-Kollektionen (Play-to-Earn) verwendet.
 
 ## **Bekannte Unternehmen und Beispiele für .fun**
 
@@ -49,10 +49,10 @@ Die Wahl einer .fun-Domain bietet mehrere strategische Vorteile gegenüber herk�
 Sind Sie bereit, Ihre Online-Präsenz mit einer Prise Humor und Leichtigkeit zu versehen? Eine **.fun** Domain ist der perfekte Startpunkt für Ihr nächstes kreatives Projekt, Ihren Gaming-Server oder Ihre Marketingkampagne.
 
 Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Domain-Registrierung:
-*   **ICANN-akkreditiert:** Wir sind ein voll lizenzierter und vertrauenswürdiger Partner.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Wir sind ein voll lizenzierter und vertrauenswürdiger Partner.
 *   **Web3-Integration:** Namefi revolutioniert den Domain-Markt, indem wir traditionelle Web2-Domains (wie .fun) als NFTs auf der Blockchain tokenisieren. Das erleichtert den Transfer und das Domain-Investment erheblich.
 *   **Einfache Verwaltung:** Unser Dashboard ist benutzerfreundlich und effizient gestaltet.
 
-Sichern Sie sich Ihren Wunschnamen, bevor es jemand anderes tut. Spaß muss sein – aber bei der Sicherung Ihrer Marke verstehen wir keinen Spaß!
+Sichern Sie sich Ihren Wunschnamen, bevor es jemand anderes tut. Spaß muss sein – aber bei der Sicherung Ihrer [Marke](/de/glossary/trademark/) verstehen wir keinen Spaß!
 
 [Registrieren Sie Ihre Domain jetzt bei Namefi](https://namefi.io)

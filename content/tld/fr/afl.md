@@ -11,7 +11,7 @@ keywords: [".afl domains", ".afl TLD", "top-level domain", "what is .afl", "why 
 
 ## **Qu'est-ce que le .afl ?**
 
-L'extension de domaine **.afl** est un domaine de premier niveau (TLD) spécialisé, intrinsèquement lié à l'univers du sport, et plus précisément à l'**Australian Football League** (Ligue de football australien). Il fait partie de la catégorie des "Brand TLDs" (TLD de marque) ou des nouveaux gTLD (generic Top-Level Domains), conçus pour offrir une identité numérique précise et authentifiée.
+L'extension de domaine **.afl** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) spécialisé, intrinsèquement lié à l'univers du sport, et plus précisément à l'**Australian Football League** (Ligue de football australien). Il fait partie de la catégorie des "Brand TLDs" (TLD de marque) ou des nouveaux gTLD (generic Top-Level Domains), conçus pour offrir une identité numérique précise et authentifiée.
 
 Contrairement aux extensions classiques comme le .com ou le .net, le .afl a été créé pour structurer la présence en ligne de l'écosystème du football australien. L'objectif principal de ce TLD est de fournir un espace de confiance pour les clubs, les organisations et les entités affiliées à ce sport très populaire en Australie. Pour plus d'informations sur la classification des TLDs, vous pouvez consulter les ressources de l'[ICANN](https://www.icann.org/fr).
 
@@ -24,7 +24,7 @@ L'utilisation du .afl est stratégique et ciblée. Voici comment les différents
 *   **Identité officielle des clubs :** Il permet aux équipes et aux franchises d'avoir des adresses web concises et officielles, renforçant leur image de marque.
 *   **Engagement des fans :** Création de portails dédiés aux supporters, aux statistiques de matchs et à la billetterie, garantissant aux fans qu'ils naviguent sur une plateforme approuvée.
 *   **Merchandising et e-commerce :** Les boutiques en ligne utilisant .afl bénéficient d'une crédibilité immédiate auprès des acheteurs, réduisant les risques de contrefaçon.
-*   **Projets numériques innovants :** Avec l'essor du Web3, certaines entités sportives explorent l'utilisation de domaines de marque pour lier des actifs numériques ou des expériences de fans tokenisées.
+*   **Projets numériques innovants :** Avec l'essor du [Web3](/fr/glossary/web3/), certaines entités sportives explorent l'utilisation de domaines de marque pour lier des actifs numériques ou des expériences de fans tokenisées.
 
 ## **Entités notables utilisant le .afl**
 

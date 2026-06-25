@@ -32,11 +32,11 @@ Si vous évaluez une extension moderne face à une extension classique, .xyz con
 | Support IDN | Oui |
 | DNSSEC | Pris en charge |
 | Restrictions d'enregistrement | Ouvert à tous — aucune condition d'éligibilité |
-| Idéal pour | Startups, projets Web3/crypto, développeurs, marques vierges |
+| Idéal pour | Startups, projets [Web3](/fr/glossary/web3/)/crypto, développeurs, marques vierges |
 
 ## Qu'est-ce que .xyz ?
 
-Le domaine .xyz est un domaine générique de premier niveau (gTLD) introduit dans le cadre du [programme New gTLD de l'ICANN](https://newgtlds.icann.org/). La chaîne « xyz » a été choisie précisément parce qu'elle ne porte aucune charge sémantique : les trois dernières lettres de l'alphabet latin, souvent présentées comme un clin d'œil aux générations X, Y et Z. Là où .org évoque une organisation et où .io est devenu synonyme de « tech », .xyz ne signale rien de particulier — et c'est précisément son intérêt : il laisse au nom de second niveau le soin de porter toute la signification.
+Le domaine .xyz est un domaine générique de premier niveau (gTLD) introduit dans le cadre du [programme New gTLD de l'ICANN](https://newgtlds.icann.org/). La chaîne « xyz » a été choisie précisément parce qu'elle ne porte aucune charge sémantique : les trois dernières lettres de l'alphabet latin, souvent présentées comme un clin d'œil aux générations X, Y et Z. Là où [.org](/fr/tld/org/) évoque une organisation et où .io est devenu synonyme de « tech », .xyz ne signale rien de particulier — et c'est précisément son intérêt : il laisse au nom de second niveau le soin de porter toute la signification.
 
 Parce qu'il s'agit d'un gTLD générique et non d'un TLD de code pays, Google ne géo-cible pas .xyz sur une région spécifique. Selon [Google Search Central](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages), les nouveaux gTLD génériques sont traités comme n'importe quel autre gTLD pour la recherche, de sorte qu'un site en .xyz peut se positionner mondialement sans être associé à un pays. Vous pouvez consulter les détails du registre dans la [fiche officielle de la zone racine IANA pour .xyz](https://www.iana.org/domains/root/db/xyz.html).
 
@@ -91,7 +91,7 @@ Le même faible tarif qui alimente l'adoption de .xyz attire également le spam 
 
 **Restrictions d'enregistrement : ouvert à tous.** Le domaine .xyz est un gTLD générique sans restriction. Il n'existe aucune condition de qualification, d'adhésion, d'immatriculation commerciale ou de présence locale — n'importe qui, où que ce soit, peut en enregistrer un selon le principe du premier arrivé, premier servi. Le registre ne vend pas directement aux utilisateurs finaux ; vous enregistrez via un bureau d'enregistrement accrédité par l'ICANN.
 
-Les règles standard des nouveaux gTLD s'appliquent : les titulaires de marques pouvaient revendiquer des noms pendant la période sunrise initiale, et la Trademark Clearinghouse continue de fournir des protections de préavis. Le TLD prend en charge les noms de domaine internationalisés (IDN), le DNSSEC pour l'intégrité cryptographique, et la confidentialité WHOIS au niveau du bureau d'enregistrement. Les transferts, renouvellements et la période de grâce de rachat pour les noms expirés suivent la politique gTLD standard de l'ICANN. La source officielle des obligations de l'opérateur est le [contrat de registre ICANN pour .xyz](https://www.icann.org/en/registry-agreements/details/xyz), et le registre officiel est [Generation XYZ](https://gen.xyz/).
+Les règles standard des nouveaux gTLD s'appliquent : les titulaires de marques pouvaient revendiquer des noms pendant la période sunrise initiale, et la [Trademark Clearinghouse](/fr/glossary/tmch/) continue de fournir des protections de préavis. Le TLD prend en charge les noms de domaine internationalisés (IDN), le DNSSEC pour l'intégrité cryptographique, et la confidentialité WHOIS au niveau du bureau d'enregistrement. Les transferts, renouvellements et la période de grâce de rachat pour les noms expirés suivent la politique gTLD standard de l'ICANN. La source officielle des obligations de l'opérateur est le [contrat de registre ICANN pour .xyz](https://www.icann.org/en/registry-agreements/details/xyz), et le registre officiel est [Generation XYZ](https://gen.xyz/).
 
 ## Tarification et valeur de .xyz
 

@@ -25,13 +25,13 @@ keywords:
   - buy .aigo domain
 ---
 
-El panorama digital está en constante evolución y, con él, la forma en que nos identificamos en internet. Elegir el nombre de dominio adecuado es el primer paso crítico para establecer una presencia en línea sólida. En este contexto, surge el TLD **.aigo**, una extensión que está captando la atención de inversores, desarrolladores y empresas tecnológicas.
+El panorama digital está en constante evolución y, con él, la forma en que nos identificamos en internet. Elegir el nombre de dominio adecuado es el primer paso crítico para establecer una presencia en línea sólida. En este contexto, surge el [TLD](/es/glossary/tld/) **.aigo**, una extensión que está captando la atención de inversores, desarrolladores y empresas tecnológicas.
 
 ## **¿Qué es .aigo?**
 
 El dominio **.aigo** es una extensión de dominio de nivel superior (TLD) emergente que se posiciona en la intersección de la tecnología avanzada y la acción. Aunque el nombre evoca inmediatamente conceptos como "AI" (Inteligencia Artificial) y "Go" (ir, avanzar, o el lenguaje de programación), su versatilidad lo convierte en una opción atractiva para una amplia gama de proyectos digitales.
 
-En el ecosistema actual, donde la transición hacia la **Web3** y los [dominios tokenizados](https://ethereum.org/es/web3/) está redefiniendo la propiedad digital, extensiones como .aigo representan modernidad. A diferencia de los dominios tradicionales (.com o .net), .aigo ofrece una identidad fresca, a menudo asociada con proyectos innovadores, startups de blockchain y aplicaciones descentralizadas.
+En el ecosistema actual, donde la transición hacia la **[Web3](/es/glossary/web3/)** y los [dominios tokenizados](https://ethereum.org/es/web3/) está redefiniendo la propiedad digital, extensiones como .aigo representan modernidad. A diferencia de los dominios tradicionales ([.com](/es/tld/com/) o [.net](/es/tld/net/)), .aigo ofrece una identidad fresca, a menudo asociada con proyectos innovadores, startups de blockchain y aplicaciones descentralizadas.
 
 Para entender mejor cómo funcionan los nuevos gTLDs (Dominios Genéricos de Nivel Superior) y su impacto en la estructura de internet, puedes consultar recursos de la [ICANN](https://www.icann.org/es).
 
@@ -42,7 +42,7 @@ La flexibilidad del TLD .aigo permite que sea utilizado por diversos sectores. A
 *   **Startups de Inteligencia Artificial:** Dado que contiene "AI" en el nombre, es una elección natural para empresas que desarrollan algoritmos, aprendizaje automático o robótica.
 *   **Desarrolladores y Programadores:** La terminación "go" resuena con la comunidad de desarrollo (especialmente usuarios de Golang) y con aplicaciones que implican movilidad o rapidez.
 *   **Inversores de Dominios (Domainers):** Los inversores buscan nombres cortos y memorables. .aigo ofrece un inventario fresco de nombres "premium" que ya no están disponibles en extensiones heredadas.
-*   **Proyectos Web3 y Blockchain:** Al ser compatible con la tokenización de activos del mundo real (RWA), muchos entusiastas de las criptomonedas utilizan .aigo para identidades digitales descentralizadas.
+*   **Proyectos Web3 y [Blockchain](/es/glossary/blockchain/):** Al ser compatible con la tokenización de activos del mundo real (RWA), muchos entusiastas de las criptomonedas utilizan .aigo para identidades digitales descentralizadas.
 
 ## **Entidades Notables que usan .aigo**
 

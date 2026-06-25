@@ -28,7 +28,7 @@ keywords:
 
 ## **Was ist .alstom?**
 
-Die Domainendung **.alstom** gehört zu einer speziellen Kategorie der neuen generischen Top-Level-Domains (new gTLDs), die als **„Brand TLD“** (Marken-TLD) bekannt sind. Im Gegensatz zu offenen Endungen wie .com oder .net, die für die breite Öffentlichkeit zugänglich sind, wurde .alstom exklusiv von **Alstom**, dem französischen multinationalen Konzern, der im Bereich Schienenverkehrsinfrastruktur tätig ist, registriert.
+Die Domainendung **.alstom** gehört zu einer speziellen Kategorie der neuen generischen Top-Level-Domains (new gTLDs), die als **„Brand [TLD](/de/glossary/tld/)“** (Marken-TLD) bekannt sind. Im Gegensatz zu offenen Endungen wie [.com](/de/tld/com/) oder [.net](/de/tld/net/), die für die breite Öffentlichkeit zugänglich sind, wurde .alstom exklusiv von **Alstom**, dem französischen multinationalen Konzern, der im Bereich Schienenverkehrsinfrastruktur tätig ist, registriert.
 
 Diese TLD wurde eingeführt, um dem Unternehmen die volle Kontrolle über seine digitale Präsenz zu geben. Es handelt sich um einen strategischen Schritt, der Marke im digitalen Raum mehr Gewicht, Sicherheit und Wiedererkennungswert zu verleihen. Die Verwaltung dieser TLD erfolgt unter den strengen Richtlinien der [ICANN (Internet Corporation for Assigned Names and Numbers)](https://www.icann.org/), um sicherzustellen, dass sie den globalen Internetstandards entspricht.
 
@@ -59,7 +59,7 @@ Obwohl Sie keine „fremden“ Unternehmen auf dieser TLD finden werden, dient s
 Warum entscheidet sich ein Unternehmen wie Alstom für eine eigene TLD? Hier sind die entscheidenden Vorteile, die auch für Domain-Investoren interessant sind, um den Wert von Premium- oder Marken-Domains zu verstehen:
 
 *   **Absolutes Vertrauen:** Wenn ein Nutzer eine .alstom-Adresse sieht, weiß er zu 100 %, dass die Inhalte direkt vom Unternehmen stammen. Es gibt keine Verwechslungsgefahr.
-*   **Sicherheit:** Da die Registry (Verwaltungsstelle) Alstom selbst gehört, ist das Risiko von Domain-Hijacking oder missbräuchlichen Registrierungen durch Dritte eliminiert.
+*   **Sicherheit:** Da die [Registry](/de/glossary/registry/) (Verwaltungsstelle) Alstom selbst gehört, ist das Risiko von Domain-Hijacking oder missbräuchlichen Registrierungen durch Dritte eliminiert.
 *   **Branding & SEO:** Kurze, prägnante URLs stärken die Marke. Suchmaschinen wie Google erkennen Marken-TLDs als hochrelevante Signale für die Authentizität einer Website.
 *   **Innovation:** Es zeigt technologische Vorreiterschaft, was besonders in der High-Tech-Bahnindustrie wichtig ist.
 
@@ -70,8 +70,8 @@ Auch wenn die TLD **.alstom** exklusiv dem Alstom-Konzern vorbehalten ist und ni
 Suchen Sie nach einer ähnlich starken Domain für Ihr Technologie-Startup, Ihr Portfolio oder Ihr Unternehmen? Bei **Namefi** bieten wir Ihnen Zugang zu einer riesigen Auswahl an Top-Level-Domains.
 
 **Warum Namefi?**
-*   **ICANN-akkreditiert:** Wir sind ein voll lizenziertes und vertrauenswürdiges Unternehmen.
-*   **Web3-Integration:** Namefi revolutioniert den Domain-Markt. Bei uns können Sie traditionelle Web2-Domains (wie .com, .de, .tech) kaufen und diese nahtlos als **NFTs auf der Blockchain** minten.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Wir sind ein voll lizenziertes und vertrauenswürdiges Unternehmen.
+*   **[Web3](/de/glossary/web3/)-Integration:** Namefi revolutioniert den Domain-Markt. Bei uns können Sie traditionelle Web2-Domains (wie .com, .de, .tech) kaufen und diese nahtlos als **NFTs auf der Blockchain** minten.
 *   **Einfaches Management:** Verwalten Sie Ihre digitalen Assets effizient und sicher.
 
 Starten Sie noch heute und sichern Sie sich Ihre perfekte digitale Identität.

@@ -33,7 +33,7 @@ Während viele Großkonzerne ihre Hauptpräsenz weiterhin auf .com haben, nutzen
 
 Einige Kategorien von "Notable Entities" und Beispielen:
 
-1.  **USA Today:** Eines der bekanntesten Beispiele für die starke Assoziation des Wortes "Today" mit Nachrichten. Zwar ist die Hauptdomain .com, aber die Marke zeigt, wie stark der Begriff im Medienbereich verankert ist. Viele moderne Medien-Startups folgen diesem Beispiel direkt mit der .today-Endung.
+1.  **USA Today:** Eines der bekanntesten Beispiele für die starke Assoziation des Wortes "Today" mit Nachrichten. Zwar ist die Hauptdomain .com, aber die [Marke](/de/glossary/trademark/) zeigt, wie stark der Begriff im Medienbereich verankert ist. Viele moderne Medien-Startups folgen diesem Beispiel direkt mit der .today-Endung.
 2.  **Tech- und Krypto-News:** Im schnelllebigen Web3- und Blockchain-Sektor nutzen viele Aggregatoren .today-Domains, um Kurse und News in Echtzeit darzustellen.
 3.  **Wetterdienste:** Lokale Wetterdienste nutzen oft Formate wie *[Stadtname]-wetter.today*, um sofortige Prognosen zu suggerieren.
 
@@ -53,7 +53,7 @@ Die Wahl einer .today-Domain bietet strategische Vorteile für Unternehmen und E
 
 Sind Sie bereit, Ihre Online-Präsenz mit einer Domain zu starten, die Relevanz und Aktualität ausstrahlt? Eine **.today**-Domain ist die perfekte Wahl für moderne Projekte.
 
-Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als **ICANN-akkreditierter Registrar** verbinden wir die traditionelle Domain-Welt nahtlos mit der Web3-Technologie.
+Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als **[ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/)** verbinden wir die traditionelle Domain-Welt nahtlos mit der Web3-Technologie.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Nutzen Sie unsere benutzerfreundliche Plattform.

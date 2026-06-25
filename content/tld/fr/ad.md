@@ -19,7 +19,7 @@ Bien que l'extension soit historiquement associée à des critères d'éligibili
 
 ## **Comment les gens utilisent le .ad**
 
-L'utilisation du TLD .ad se divise généralement en deux catégories distinctes, alliant identité locale et stratégie marketing globale :
+L'utilisation du [TLD](/fr/glossary/tld/) .ad se divise généralement en deux catégories distinctes, alliant identité locale et stratégie marketing globale :
 
 *   **Entreprises locales et institutions :** Les banques, les services gouvernementaux et les commerces situés en Andorre utilisent cette extension pour affirmer leur présence locale et garantir la confiance des résidents.
 *   **Agences de publicité et marketing :** De nombreuses agences créatives à travers le monde adoptent le .ad pour des URL courtes et percutantes (ex: `votreagence.ad`), signalant immédiatement leur secteur d'activité.
@@ -31,7 +31,7 @@ L'utilisation du TLD .ad se divise généralement en deux catégories distinctes
 Bien que le .ad soit un domaine de niche par rapport aux géants comme le .com, il est utilisé par des acteurs stratégiques :
 
 1.  **Andorra Telecom :** L'opérateur national et registre du domaine utilise naturellement cette extension pour ses services.
-2.  **Agences Web3 et Marketing :** Diverses startups innovantes dans le domaine de la blockchain et du marketing digital enregistrent des domaines .ad pour se démarquer, jouant sur le mot "Ad" pour attirer des clients B2B cherchant des solutions de croissance.
+2.  **Agences [Web3](/fr/glossary/web3/) et Marketing :** Diverses startups innovantes dans le domaine de la blockchain et du marketing digital enregistrent des domaines .ad pour se démarquer, jouant sur le mot "Ad" pour attirer des clients B2B cherchant des solutions de croissance.
 3.  **Plateformes de tourisme :** Des sites comme [VisitAndorra.com](https://visitandorra.com) utilisent souvent des redirections ou des domaines secondaires en .ad pour capter le trafic local et international spécifique à la région.
 
 *Note : En raison de la nature exclusive de certains ccTLD, le .ad reste un espace moins saturé, permettant aux nouvelles entités de sécuriser des noms qui seraient inaccessibles ailleurs.*
@@ -49,7 +49,7 @@ Opter pour un domaine .ad présente plusieurs avantages stratégiques, que vous 
 
 Que vous souhaitiez renforcer votre présence en Andorre ou lancer la prochaine grande agence de publicité Web3, le choix de votre domaine est la première étape vers le succès.
 
-Chez **Namefi**, nous facilitons l'acquisition et la gestion de vos domaines. En tant que registrar accrédité par l'ICANN et pionnier de l'intégration Web3, nous vous permettons de gérer votre portefeuille de domaines traditionnels avec la flexibilité et la sécurité de la technologie blockchain.
+Chez **Namefi**, nous facilitons l'acquisition et la gestion de vos domaines. En tant que registrar accrédité par l'[ICANN](/fr/glossary/icann/) et pionnier de l'intégration Web3, nous vous permettons de gérer votre portefeuille de domaines traditionnels avec la flexibilité et la sécurité de la technologie blockchain.
 
 Ne laissez pas votre nom idéal vous échapper. Vérifiez la disponibilité de votre domaine .ad dès aujourd'hui.
 

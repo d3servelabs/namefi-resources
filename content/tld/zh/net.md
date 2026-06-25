@@ -27,7 +27,7 @@ keywords: ['.net domains', '.net TLD', '.net top-level domain', 'what is .net', 
 
 *   **科技初创公司与 SaaS 平台**：许多科技公司选择 .net 来强调其在线服务属性，特别是当理想的 .com 被占用时。
 *   **网络基础设施与 ISP**：忠于其起源，许多互联网服务提供商、网络托管公司和云服务平台仍首选 .net。
-*   **Web3 与区块链项目**：在去中心化网络（Decentralized Networks）的世界里，后缀 "Network" (.net) 与区块链项目的核心理念完美契合。
+*   **[Web3](/zh/glossary/web3/) 与区块链项目**：在去中心化网络（Decentralized Networks）的世界里，后缀 "Network" (.net) 与区块链项目的核心理念完美契合。
 *   **在线社区与论坛**：旨在连接人们的平台经常使用 .net 来象征社区网络。
 *   **域名投资者**：作为一种既定的、高价值的传统顶级域名（Legacy TLD），优质的 .net 域名一直是域名投资组合中的稳健资产。
 
@@ -49,7 +49,7 @@ keywords: ['.net domains', '.net TLD', '.net top-level domain', 'what is .net', 
 *   **更好的可用性**：虽然 .net 很受欢迎，但相比于极度饱和的 .com，您更有可能在 .net 中注册到简短、易记且符合品牌名称的域名。
 *   **强调技术属性**：如果您的业务涉及互联网、应用程序、SaaS 或 Web3，.net 是比 .com 更能体现行业属性的选择。
 *   **SEO 友好**：Google 等搜索引擎将 .net 视为标准的通用顶级域名，在搜索排名权重上与 .com 平起平坐。
-*   **投资价值**：对于域名投资者而言，简短的单词或双词 .net 域名始终保持着良好的二级市场价值。
+*   **投资价值**：对于域名投资者而言，简短的单词或双词 .net 域名始终保持着良好的[二级市场](/zh/glossary/aftermarket/)价值。
 
 ## **在 Namefi 注册您的 .net 域名**
 

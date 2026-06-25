@@ -24,7 +24,7 @@ Grâce à sa simplicité et à sa signification positive, le .top est utilisé d
 *   **Sites de classement et d'avis :** De nombreux sites web proposant des "Top 10" ou des comparatifs de produits utilisent cette extension pour renforcer la pertinence de leur contenu (ex: `meilleurlogiciel.top`).
 *   **Startups et marques ambitieuses :** Les nouvelles entreprises choisissent souvent le .top pour signaler leur ambition de devenir leader sur leur marché.
 *   **Portfolios créatifs :** Les freelances, designers et développeurs l'utilisent pour mettre en avant leurs meilleurs travaux.
-*   **Projets Web3 et Blockchain :** Avec la saturation des extensions traditionnelles, de nombreux projets innovants dans l'espace crypto et Web3 se tournent vers le .top pour son association avec la "haute performance".
+*   **Projets [Web3](/fr/glossary/web3/) et Blockchain :** Avec la saturation des extensions traditionnelles, de nombreux projets innovants dans l'espace crypto et Web3 se tournent vers le .top pour son association avec la "haute performance".
 
 ## **Entités notables utilisant le .top**
 

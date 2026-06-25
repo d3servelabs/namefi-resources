@@ -11,7 +11,7 @@ keywords: ['.adult domains', '.adult TLD', 'top-level domain .adult', 'what is .
 
 ## **¿Qué es .adult?**
 
-El dominio **.adult** es un dominio de nivel superior genérico (gTLD) lanzado específicamente para la industria del entretenimiento para adultos. A diferencia de los dominios tradicionales como el .com o .net, el TLD .adult señala de manera clara e inequívoca la naturaleza del contenido del sitio web antes de que el usuario haga clic.
+El dominio **.adult** es un dominio de nivel superior genérico (gTLD) lanzado específicamente para la industria del entretenimiento para adultos. A diferencia de los dominios tradicionales como el [.com](/es/tld/com/) o .net, el TLD .adult señala de manera clara e inequívoca la naturaleza del contenido del sitio web antes de que el usuario haga clic.
 
 Este dominio fue introducido como parte del [Programa de Nuevos gTLD de la ICANN](https://newgtlds.icann.org/en/about/program), con el objetivo de organizar mejor internet y proporcionar un espacio seguro y confiable para el contenido restringido por edad. Al categorizar este tipo de contenido bajo una extensión específica, se facilita tanto a los proveedores de servicios como a los usuarios la identificación y el filtrado de sitios web, promoviendo una navegación más segura y transparente.
 
@@ -30,7 +30,7 @@ Los usuarios principales incluyen:
 Debido a la naturaleza de la industria, muchas de las "entidades notables" son grandes marcas del sector del entretenimiento para adultos que utilizan esta extensión para segmentar sus ofertas. Sin embargo, existen dos categorías principales de uso destacado:
 
 1.  **Líderes de la Industria:** Grandes redes de contenido para adultos han adoptado el .adult para sitios de nicho o portales específicos, aprovechando la disponibilidad de nombres cortos y memorables que ya no están disponibles en .com.
-2.  **Protección Corporativa (Registro Defensivo):** Marcas globales reconocidas y celebridades (como Microsoft, Taylor Swift o grandes bancos) a menudo registran sus nombres bajo la extensión .adult. No para alojar contenido, sino para evitar que terceros malintencionados utilicen su nombre de marca en un contexto que podría dañar su imagen corporativa.
+2.  **Protección Corporativa ([Registro](/es/glossary/registry/) Defensivo):** Marcas globales reconocidas y celebridades (como Microsoft, Taylor Swift o grandes bancos) a menudo registran sus nombres bajo la extensión .adult. No para alojar contenido, sino para evitar que terceros malintencionados utilicen su nombre de marca en un contexto que podría dañar su imagen corporativa.
 
 ## **¿Por qué elegir .adult?**
 
@@ -40,7 +40,7 @@ Elegir un dominio .adult ofrece ventajas estratégicas específicas para aquello
 *   **Claridad y Confianza:** El dominio actúa como una etiqueta de contenido inmediata. Los visitantes saben exactamente qué esperar, lo que reduce la tasa de rebote de usuarios que llegaron por error y aumenta la confianza de los usuarios objetivo.
 *   **Seguridad y Cumplimiento:** Ayuda a cumplir con las regulaciones de protección al menor y filtros parentales, ya que la extensión es fácilmente reconocible por el software de control parental.
 *   **Relevancia SEO:** Para búsquedas específicas del sector, tener una extensión relevante puede ayudar a señalar a los motores de búsqueda la categoría del sitio web.
-*   **Innovación con Web3:** Al registrarlo a través de plataformas modernas, puedes tokenizar este activo digital, facilitando su transferencia y gestión en la blockchain.
+*   **Innovación con [Web3](/es/glossary/web3/):** Al registrarlo a través de plataformas modernas, puedes tokenizar este activo digital, facilitando su transferencia y gestión en la blockchain.
 
 ## **Registra tu dominio .adult en Namefi**
 

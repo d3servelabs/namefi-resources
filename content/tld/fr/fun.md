@@ -11,7 +11,7 @@ keywords: [".fun domains", ".fun TLD", "top-level domain .fun", "what is .fun", 
 
 Choisir le bon nom de domaine est la première étape cruciale pour établir une présence en ligne mémorable. Si les extensions classiques comme le .com sont souvent saturées, les nouveaux gTLD (domaines génériques de premier niveau) offrent des opportunités créatives exceptionnelles. L'un des plus dynamiques et des plus engageants est sans doute le **.fun**.
 
-Dans cet article, nous explorons ce que représente ce TLD, pourquoi il gagne en popularité dans les secteurs du divertissement et du Web3, et comment vous pouvez sécuriser le vôtre via Namefi.
+Dans cet article, nous explorons ce que représente ce TLD, pourquoi il gagne en popularité dans les secteurs du divertissement et du [Web3](/fr/glossary/web3/), et comment vous pouvez sécuriser le vôtre via Namefi.
 
 ## **Qu'est-ce que le .fun ?**
 
@@ -54,7 +54,7 @@ Si vous hésitez encore à enregistrer un domaine .fun, voici les avantages stra
 
 Que vous lanciez la prochaine plateforme de jeu virale, un projet NFT ludique ou simplement un blog personnel, le .fun est l'extension idéale pour capturer l'attention de votre audience.
 
-Chez **Namefi**, nous ne sommes pas un simple registraire. En tant qu'entité accréditée par l'ICANN, nous combinons la sécurité traditionnelle des domaines avec l'innovation du Web3.
+Chez **Namefi**, nous ne sommes pas un simple registraire. En tant qu'entité accréditée par l'[ICANN](/fr/glossary/icann/), nous combinons la sécurité traditionnelle des domaines avec l'innovation du Web3.
 
 **Pourquoi choisir Namefi ?**
 *   **Intégration Web3 transparente :** Namefi vous permet de "tokeniser" vos domaines. Votre domaine .fun peut être représenté par un NFT, facilitant son transfert, sa vente ou son utilisation comme collatéral dans la DeFi.

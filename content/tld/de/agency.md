@@ -41,7 +41,7 @@ Da es sich um eine spezifische TLD handelt, wird sie weniger von globalen Megako
 Die Wahl einer `.agency` Domain bietet strategische Vorteile für Ihr Unternehmen:
 
 *   **Verfügbarkeit:** Während die meisten kurzen Begriffe unter `.com` oder `.de` seit Jahren belegt sind, bietet der Namensraum von `.agency` noch eine Fülle an kurzen, einprägsamen Namen.
-*   **Klare Positionierung:** Der Nutzer weiß sofort, womit er es zu tun hat. Der Begriff ist Teil Ihrer Marke und spart Erklärungsbedarf.
+*   **Klare Positionierung:** Der Nutzer weiß sofort, womit er es zu tun hat. Der Begriff ist Teil Ihrer [Marke](/de/glossary/trademark/) und spart Erklärungsbedarf.
 *   **SEO-Relevanz:** Suchmaschinen wie Google behandeln neue gTLDs gleichwertig zu traditionellen Domains. Wenn Nutzer jedoch spezifisch nach einer "Agentur" suchen, kann die Übereinstimmung im URL-Pfad ein positives Signal für die Klickrate (CTR) sein. Lesen Sie mehr dazu im [Google Search Central Blog](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level).
 *   **Modernes Image:** Die Endung signalisiert, dass Ihr Unternehmen am Puls der Zeit ist und sich traut, neue Wege im Branding zu gehen.
 

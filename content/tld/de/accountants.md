@@ -51,7 +51,7 @@ Es gibt überzeugende Gründe, warum Sie sich für diese TLD entscheiden sollten
 
 Sind Sie bereit, Ihre Kanzlei oder Ihr Finanz-Startup digital professionell aufzustellen?
 
-Bei **Namefi** machen wir die Domain-Registrierung so einfach und sicher wie nie zuvor. Als ICANN-akkreditierter Registrar bieten wir Ihnen nicht nur klassische Domain-Dienstleistungen, sondern schlagen die Brücke in die Zukunft des Web3.
+Bei **Namefi** machen wir die Domain-Registrierung so einfach und sicher wie nie zuvor. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) bieten wir Ihnen nicht nur klassische Domain-Dienstleistungen, sondern schlagen die Brücke in die Zukunft des Web3.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Nutzen Sie unser intuitives Dashboard.

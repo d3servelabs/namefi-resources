@@ -26,7 +26,7 @@ Los usos más comunes incluyen:
 *   **Organizaciones Sin Fines de Lucro y ONGs:** Es el estándar de oro para fundaciones, organizaciones benéficas e instituciones filantrópicas que buscan donaciones o apoyo público.
 *   **Proyectos de Código Abierto (Open Source):** Los desarrolladores y comunidades tecnológicas utilizan .org para alojar documentación y repositorios de software libre (por ejemplo, lenguajes de programación y herramientas).
 *   **Instituciones Educativas y Culturales:** Museos, bibliotecas, grupos de expertos (think tanks) y comunidades de aprendizaje a menudo prefieren .org para destacar su misión educativa sobre el lucro.
-*   **Comunidades Web3 y DAOs:** En el espacio blockchain, muchas Organizaciones Autónomas Descentralizadas (DAOs) y proyectos de gobernanza comunitaria eligen .org para señalar que el proyecto pertenece a la comunidad, diferenciándose de las empresas comerciales tradicionales.
+*   **Comunidades [Web3](/es/glossary/web3/) y DAOs:** En el espacio blockchain, muchas Organizaciones Autónomas Descentralizadas (DAOs) y proyectos de gobernanza comunitaria eligen .org para señalar que el proyecto pertenece a la comunidad, diferenciándose de las empresas comerciales tradicionales.
 *   **Responsabilidad Social Corporativa (RSC):** Grandes empresas comerciales a veces registran la versión .org de su marca para sus fundaciones benéficas o iniciativas sociales.
 
 ## **Entidades notables que utilizan .org**

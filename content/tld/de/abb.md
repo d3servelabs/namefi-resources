@@ -28,9 +28,9 @@ keywords:
 
 ## **Was ist .abb?**
 
-Die Endung **.abb** ist eine sogenannte generische Top-Level-Domain (gTLD), die spezifisch als "Brand TLD" (Marken-TLD) kategorisiert wird. Im Gegensatz zu offenen Endungen wie .com oder .net, wurde diese TLD primär für die exklusive Nutzung durch den globalen Technologiekonzern **ABB (Asea Brown Boveri)** geschaffen.
+Die Endung **.abb** ist eine sogenannte generische Top-Level-Domain (gTLD), die spezifisch als "Brand [TLD](/de/glossary/tld/)" (Marken-TLD) kategorisiert wird. Im Gegensatz zu offenen Endungen wie [.com](/de/tld/com/) oder [.net](/de/tld/net/), wurde diese TLD primär für die exklusive Nutzung durch den globalen Technologiekonzern **ABB (Asea Brown Boveri)** geschaffen.
 
-In der Welt der Domain-Namen repräsentiert .abb ein modernes Phänomen, bei dem große Organisationen ihre eigene digitale Infrastruktur im Internet-Namensraum besitzen. Dies wurde durch das [New gTLD Program der ICANN](https://newgtlds.icann.org/en/about/program) ermöglicht. Obwohl sie ursprünglich als geschlossene Registrierung konzipiert wurde, ist das Verständnis solcher TLDs für Domain-Investoren und Web3-Entwickler essenziell, da sie den Trend zu kürzeren, markenspezifischen und hochsicheren Namensräumen verdeutlichen.
+In der Welt der Domain-Namen repräsentiert .abb ein modernes Phänomen, bei dem große Organisationen ihre eigene digitale Infrastruktur im Internet-Namensraum besitzen. Dies wurde durch das [New gTLD Program der ICANN](https://newgtlds.icann.org/en/about/program) ermöglicht. Obwohl sie ursprünglich als geschlossene Registrierung konzipiert wurde, ist das Verständnis solcher TLDs für Domain-Investoren und [Web3](/de/glossary/web3/)-Entwickler essenziell, da sie den Trend zu kürzeren, markenspezifischen und hochsicheren Namensräumen verdeutlichen.
 
 Im Kontext von Web3 und tokenisierten Domains (Real World Assets) zeigt .abb, wie wertvoll kurze, dreistellige Endungen sind, da sie Autorität und sofortige Wiedererkennung signalisieren.
 
@@ -39,7 +39,7 @@ Im Kontext von Web3 und tokenisierten Domains (Real World Assets) zeigt .abb, wi
 Die Nutzung von .abb unterscheidet sich stark von herkömmlichen Domains, da sie oft nicht für die breite Öffentlichkeit zur Registrierung offensteht, sondern strategisch eingesetzt wird. Die Hauptanwendungsbereiche umfassen:
 
 *   **Unternehmenskommunikation:** Zentralisierung aller digitalen Assets unter einer vertrauenswürdigen Endung (z.B. `reports.abb`).
-*   **Markenschutz:** Verhinderung von Phishing und Cybersquatting, da nur die verifizierte Organisation Domains unter dieser Endung erstellen kann.
+*   **Markenschutz:** Verhinderung von [Phishing](/de/glossary/phishing/) und [Cybersquatting](/de/glossary/cybersquatting/), da nur die verifizierte Organisation Domains unter dieser Endung erstellen kann.
 *   **Technische Infrastruktur:** Nutzung für interne IoT-Geräte, Mitarbeiterportale oder spezifische Produktseiten im Technologiesektor.
 *   **Digitale Innovation:** Als Vorzeigebeispiel für die Verschmelzung von traditioneller Industrie und digitaler Identität.
 
@@ -52,7 +52,7 @@ Da es sich um eine Brand-TLD handelt, sind die bekanntesten Beispiele direkt mit
 3.  **sustainability.abb**: Um Umweltinitiativen und ESG-Ziele gesondert hervorzuheben.
 4.  **Technologie-Showcases**: Spezifische Produktlinien im Bereich Robotik oder Automation, die unter einer kurzen .abb-URL erreichbar sind.
 
-Diese Nutzung demonstriert die Macht einer "sauberen" URL-Struktur, ein Prinzip, das auch für Web3-Identitäten und Blockchain-Domains bei Namefi zentral ist.
+Diese Nutzung demonstriert die Macht einer "sauberen" URL-Struktur, ein Prinzip, das auch für Web3-Identitäten und [Blockchain](/de/glossary/blockchain/)-Domains bei Namefi zentral ist.
 
 ## **Warum .abb wählen?**
 

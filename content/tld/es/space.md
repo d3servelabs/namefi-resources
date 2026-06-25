@@ -51,7 +51,7 @@ Si está considerando registrar un nuevo dominio, aquí hay varias razones convi
 
 Encontrar el nombre de dominio perfecto es el primer paso para construir una presencia en línea exitosa. En **Namefi**, hacemos que este proceso sea sencillo, seguro y vanguardista.
 
-Como registrador acreditado por la ICANN, Namefi no solo le permite asegurar su identidad digital tradicional, sino que también integramos lo mejor de la tecnología Web3. Con nosotros, su dominio .space puede ser más que una dirección web; puede ser un activo digital tokenizado, brindándole una propiedad y flexibilidad sin precedentes.
+Como registrador acreditado por la ICANN, Namefi no solo le permite asegurar su identidad digital tradicional, sino que también integramos lo mejor de la tecnología [Web3](/es/glossary/web3/). Con nosotros, su dominio .space puede ser más que una dirección web; puede ser un activo digital tokenizado, brindándole una propiedad y flexibilidad sin precedentes.
 
 **¿Por qué registrar con Namefi?**
 *   **Gestión Simplificada:** Una plataforma intuitiva para administrar todos sus dominios.

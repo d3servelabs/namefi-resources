@@ -76,7 +76,7 @@ Estos abarcan búsqueda, comercio minorista, hardware e historia misma, ilustran
 | Disponibilidad de nombres cortos | Muy escasa | Escasa | Moderada | Buena |
 | Nivel de precio típico | Estándar | Estándar | Estándar | Premium |
 
-Elige **.com** como el predeterminado universal siempre que puedas encontrar o pagar el nombre. Elige [.net](/es/tld/net/) como alternativa clásica cuando el .com equivalente está tomado, [.org](/es/tld/org/) cuando quieres una connotación de comunidad, sin fines de lucro o proyecto abierto, o [.io](/es/tld/io/) cuando una señal técnica con sabor a startup y la disponibilidad de nombres cortos importan más que la familiaridad general.
+Elige **.com** como el predeterminado universal siempre que puedas encontrar o pagar el nombre. Elige [.net](/es/tld/net/) como alternativa clásica cuando el .com equivalente está tomado, [.org](/es/tld/org/) cuando quieres una connotación de comunidad, sin fines de lucro o proyecto abierto, o .io cuando una señal técnica con sabor a startup y la disponibilidad de nombres cortos importan más que la familiaridad general.
 
 ## ¿Por qué elegir .com?
 
@@ -125,7 +125,7 @@ Atención a dos errores frecuentes. Primero, evita hifenaciones incómodas o sus
 2. **Elige** el resultado .com (y cualquier alternativa que valga la pena asegurar).
 3. **Registra** y configura el DNS.
 
-Como [registrador](/es/glossary/registrar/) [acreditado por la ICANN](/es/glossary/icann/), Namefi conecta Web2 y Web3: precios transparentes, gestión rápida de [DNS](/es/glossary/dns/) y la opción de mantener tu nombre como un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) para una [propiedad de dominio](/es/glossary/domain-ownership/) verificable y una transferibilidad sencilla. Incluso puedes [tokenizar un .com existente](/es/blog/how-to-tokenize-your-com/) que ya poseas. Comienza en [Namefi](https://namefi.io).
+Como [registrador](/es/glossary/registrar/) [acreditado por la ICANN](/es/glossary/icann/), Namefi conecta Web2 y [Web3](/es/glossary/web3/): precios transparentes, gestión rápida de [DNS](/es/glossary/dns/) y la opción de mantener tu nombre como un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) para una [propiedad de dominio](/es/glossary/domain-ownership/) verificable y una transferibilidad sencilla. Incluso puedes [tokenizar un .com existente](/es/blog/how-to-tokenize-your-com/) que ya poseas. Comienza en [Namefi](https://namefi.io).
 
 ## Preguntas frecuentes
 
@@ -156,5 +156,5 @@ El registro de .com admite DNSSEC. La disponibilidad de privacidad WHOIS depende
 - [Guía de terminología de dominios](/es/blog/domain-terminology-guide/)
 - [Cómo tokenizar tu .com](/es/blog/how-to-tokenize-your-com/)
 - [Cómo vender un nombre de dominio que posees](/es/blog/how-to-sell-a-domain-name-you-own/)
-- Guías de TLD: [.net](/es/tld/net/), [.org](/es/tld/org/), [.io](/es/tld/io/), [.ai](/es/tld/ai/), [.xyz](/es/tld/xyz/)
-- Glosario: [ICANN](/es/glossary/icann/), [registrador](/es/glossary/registrar/), [DNS](/es/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- Guías de TLD: .net, .org, .io, .ai, [.xyz](/es/tld/xyz/)
+- Glosario: ICANN, registrador, DNS, [DNSSEC](/es/glossary/dnssec/)

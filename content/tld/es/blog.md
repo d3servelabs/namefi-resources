@@ -31,7 +31,7 @@ El dominio **.blog** es un Dominio Genérico de Nivel Superior (gTLD) diseñado 
 
 Lanzado al público general en 2016, este dominio fue adquirido y es gestionado por **Knock Knock WHOIS There, LLC**, una subsidiaria de Automattic (la empresa detrás de WordPress.com). Su propósito fundamental es ofrecer una identidad clara e inmediata: cuando un usuario ve un enlace que termina en .blog, sabe instantáneamente que encontrará contenido escrito, historias o actualizaciones.
 
-En el contexto actual de la Web3 y la inversión en dominios, el .blog sigue siendo una opción sólida para la identidad digital, permitiendo a los creadores diferenciar su sección de noticias de su sitio comercial principal. Puedes leer más sobre la delegación de este dominio en el sitio oficial de la [ICANN](https://www.icann.org/resources/pages/agreements-2015-06-30-en).
+En el contexto actual de la [Web3](/es/glossary/web3/) y la inversión en dominios, el .blog sigue siendo una opción sólida para la identidad digital, permitiendo a los creadores diferenciar su sección de noticias de su sitio comercial principal. Puedes leer más sobre la delegación de este dominio en el sitio oficial de la [ICANN](https://www.icann.org/resources/pages/agreements-2015-06-30-en).
 
 ## **Cómo la gente está usando .blog**
 
@@ -63,7 +63,7 @@ Si estás considerando registrar un nuevo dominio, el .blog ofrece ventajas comp
 
 Asegurar tu identidad digital es el primer paso hacia el éxito en línea. En **Namefi**, hacemos que este proceso sea más simple, seguro y preparado para el futuro.
 
-Como registrador acreditado por la ICANN, Namefi no solo te permite registrar dominios tradicionales como el .blog, sino que también integramos la tecnología blockchain para ofrecerte **dominios tokenizados**. Esto significa que puedes gestionar, transferir e invertir en tus dominios con la misma facilidad y seguridad con la que manejas activos digitales, eliminando el papeleo tedioso de las transferencias tradicionales.
+Como registrador acreditado por la [ICANN](/es/glossary/icann/), Namefi no solo te permite registrar dominios tradicionales como el .blog, sino que también integramos la tecnología blockchain para ofrecerte **dominios tokenizados**. Esto significa que puedes gestionar, transferir e invertir en tus dominios con la misma facilidad y seguridad con la que manejas activos digitales, eliminando el papeleo tedioso de las transferencias tradicionales.
 
 **¿Estás listo para contar tu historia al mundo?**
 

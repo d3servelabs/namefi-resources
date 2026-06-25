@@ -28,9 +28,9 @@ keywords:
 
 ## **¿Qué es .aaa?**
 
-El dominio **.aaa** es una extensión de nivel superior (TLD) única que evoca inmediatamente asociaciones con calidad, excelencia y primacía. En el mundo de los negocios y la tecnología, el término "Triple A" se utiliza a menudo para denotar la calificación más alta posible, ya sea en bonos financieros, videojuegos de alto presupuesto o servicios de primer nivel.
+El dominio **.aaa** es una extensión de nivel superior ([TLD](/es/glossary/tld/)) única que evoca inmediatamente asociaciones con calidad, excelencia y primacía. En el mundo de los negocios y la tecnología, el término "Triple A" se utiliza a menudo para denotar la calificación más alta posible, ya sea en bonos financieros, videojuegos de alto presupuesto o servicios de primer nivel.
 
-Originalmente delegado como un TLD de marca (Brand TLD) gestionado por la [Asociación Americana del Automóvil (AAA)](https://www.iana.org/domains/root/db/aaa.html), esta extensión representa un caso de estudio fascinante sobre cómo las organizaciones protegen su identidad digital. Sin embargo, en el contexto más amplio de la inversión en dominios y el ecosistema Web3, las combinaciones de letras repetitivas como "aaa" tienen un valor inmenso por su rareza y facilidad de memorización.
+Originalmente delegado como un TLD de marca (Brand TLD) gestionado por la [Asociación Americana del Automóvil (AAA)](https://www.iana.org/domains/root/db/aaa.html), esta extensión representa un caso de estudio fascinante sobre cómo las organizaciones protegen su identidad digital. Sin embargo, en el contexto más amplio de la inversión en dominios y el ecosistema [Web3](/es/glossary/web3/), las combinaciones de letras repetitivas como "aaa" tienen un valor inmenso por su rareza y facilidad de memorización.
 
 Como parte del programa de [nuevos gTLD de la ICANN](https://newgtlds.icann.org/en/about/program), extensiones como esta han abierto el debate sobre la importancia de las cadenas de caracteres cortas y premium en la era de los dominios tokenizados y la identidad digital en la blockchain.
 
@@ -41,7 +41,7 @@ Aunque su uso principal ha estado restringido históricamente a la entidad propi
 *   **Servicios de Alta Calidad:** Empresas que desean proyectar que sus servicios son de "Clase A" o superiores.
 *   **Sector Financiero:** En referencia a las calificaciones crediticias "AAA", simbolizando máxima seguridad y solvencia.
 *   **Industria de los Videojuegos:** Desarrolladores y estudios que producen juegos "Triple A" (blockbusters con altos presupuestos).
-*   **Proyectos Web3 y Blockchain:** Donde la brevedad de la dirección de la billetera o el dominio es sinónimo de estatus y facilidad de transacción.
+*   **Proyectos Web3 y [Blockchain](/es/glossary/blockchain/):** Donde la brevedad de la dirección de la billetera o el dominio es sinónimo de estatus y facilidad de transacción.
 
 ## **Entidades Notables que utilizan .aaa**
 

@@ -13,7 +13,7 @@ keywords: [".active domains", ".active TLD", "top-level domain", "what is .activ
 
 El dominio **.active** es un Dominio de Nivel Superior Genérico (gTLD) que se destaca por su energía y dinamismo. Fue delegado oficialmente a la Zona Raíz de Internet en 2014, como parte del programa de expansión de nuevos gTLDs supervisado por la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es).
 
-Originalmente gestionado por The Active Network, este TLD fue diseñado para servir a un propósito claro: conectar a personas, comunidades y empresas centradas en el movimiento, la participación y el compromiso. A diferencia de dominios más tradicionales como el `.com` o el `.net`, el **.active** funciona como una palabra clave en sí misma, describiendo inmediatamente la naturaleza del sitio web.
+Originalmente gestionado por The Active Network, este [TLD](/es/glossary/tld/) fue diseñado para servir a un propósito claro: conectar a personas, comunidades y empresas centradas en el movimiento, la participación y el compromiso. A diferencia de dominios más tradicionales como el `.com` o el `.net`, el **.active** funciona como una palabra clave en sí misma, describiendo inmediatamente la naturaleza del sitio web.
 
 En la actualidad, este dominio es utilizado por una variedad de sectores que buscan transmitir vitalidad. Es una extensión ideal para quienes desean señalar que su proyecto está vivo, en constante evolución y listo para la acción.
 
@@ -24,7 +24,7 @@ Debido a su significado inherente, el dominio .active ha encontrado un hogar nat
 *   **Industria del Fitness y Deportes:** Gimnasios, entrenadores personales, aplicaciones de *running* y organizadores de maratones utilizan este dominio para motivar a sus usuarios (ej. `entrenamiento.active`).
 *   **Desarrollo de Software y Tecnología:** En el mundo del desarrollo, "active" a menudo denota un estado o un proceso en ejecución. Startups tecnológicas y proyectos de código abierto lo usan para documentación o demostraciones en vivo.
 *   **Estilos de Vida y Blogs:** Blogueros de viajes, aventuras y bienestar lo eligen para diferenciarse de los sitios estáticos, prometiendo contenido fresco y dinámico.
-*   **Comunidades Web3 y DAOs:** Dado que el espacio Web3 se mueve rápidamente, muchos proyectos descentralizados y comunidades de gobernanza activa encuentran en este TLD una identidad perfecta para demostrar participación continua.
+*   **Comunidades [Web3](/es/glossary/web3/) y DAOs:** Dado que el espacio Web3 se mueve rápidamente, muchos proyectos descentralizados y comunidades de gobernanza activa encuentran en este TLD una identidad perfecta para demostrar participación continua.
 
 ## **Entidades notables que usan .active**
 

@@ -11,7 +11,7 @@ keywords: [".alfaromeo domains", ".alfaromeo TLD", "top-level domain", "what is 
 
 ## **Qu'est-ce que .alfaromeo ?**
 
-L'extension **.alfaromeo** est un domaine de premier niveau générique (gTLD) de type "marque" (Brand TLD). Contrairement aux extensions classiques comme .com ou .fr, qui sont ouvertes au public, le .alfaromeo a été créé spécifiquement pour l'usage exclusif du constructeur automobile italien **Alfa Romeo** (qui fait partie du groupe Stellantis).
+L'extension **.alfaromeo** est un domaine de premier niveau générique (gTLD) de type "marque" (Brand [TLD](/fr/glossary/tld/)). Contrairement aux extensions classiques comme [.com](/fr/tld/com/) ou .fr, qui sont ouvertes au public, le .alfaromeo a été créé spécifiquement pour l'usage exclusif du constructeur automobile italien **Alfa Romeo** (qui fait partie du groupe Stellantis).
 
 Ce TLD a vu le jour lors du programme d'expansion des nouveaux gTLD lancé par l'[ICANN](https://www.icann.org/fr) (Internet Corporation for Assigned Names and Numbers). L'objectif principal de cette extension est de consolider l'identité numérique de la marque, d'offrir une sécurité accrue aux clients et de créer un écosystème en ligne officiel et certifié.
 
@@ -45,7 +45,7 @@ Bien que le .alfaromeo ne soit pas ouvert à l'enregistrement public pour les pa
 *   **Branding innovant :** Cela permet des URL élégantes et percutantes qui renforcent le prestige de la marque.
 *   **Sécurité des données :** En contrôlant le registre, la marque peut imposer des protocoles de sécurité stricts sur tous les domaines associés.
 
-Pour les investisseurs de domaines et les passionnés du Web3, l'existence de ces TLDs exclusifs souligne la valeur croissante de l'immobilier numérique personnalisé.
+Pour les investisseurs de domaines et les passionnés du [Web3](/fr/glossary/web3/), l'existence de ces TLDs exclusifs souligne la valeur croissante de l'immobilier numérique personnalisé.
 
 ## **Enregistrez votre domaine chez Namefi**
 

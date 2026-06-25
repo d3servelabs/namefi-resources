@@ -23,7 +23,7 @@ L'adaptabilité du mot "monde" permet une variété infinie d'utilisations. Voic
 
 *   **Marques internationales et E-commerce :** Les entreprises qui expédient leurs produits partout sur la planète utilisent .world pour signaler immédiatement qu'elles ne sont pas limitées à un marché local.
 *   **Création de communautés et Forums :** C'est l'extension idéale pour les sites qui regroupent des passionnés (ex: *runners.world*, *crypto.world*). Elle suggère un espace inclusif et vaste.
-*   **Web3 et Métavers :** Avec l'essor de la blockchain et des environnements virtuels, de nombreux développeurs utilisent .world pour désigner des mondes numériques, des jeux "play-to-earn" ou des écosystèmes décentralisés.
+*   **[Web3](/fr/glossary/web3/) et Métavers :** Avec l'essor de la blockchain et des environnements virtuels, de nombreux développeurs utilisent .world pour désigner des mondes numériques, des jeux "play-to-earn" ou des écosystèmes décentralisés.
 *   **Organisations non gouvernementales (ONG) :** Pour les causes humanitaires ou écologiques qui concernent la planète entière, cette extension renforce le message d'unité et d'impact global.
 *   **Blogs de voyage et Portfolios :** Les voyageurs et photographes utilisent souvent cette extension pour partager leurs aventures autour du globe.
 
@@ -50,7 +50,7 @@ Opter pour un domaine .world présente plusieurs avantages stratégiques pour vo
 
 Si vous êtes prêt à donner une dimension internationale à votre projet, c'est le moment idéal pour sécuriser votre identité numérique.
 
-Chez **Namefi**, nous repensons la gestion des noms de domaine. En tant que registrar accrédité par l'ICANN, nous vous offrons non seulement la sécurité traditionnelle, mais aussi une intégration **Web3** fluide.
+Chez **Namefi**, nous repensons la gestion des noms de domaine. En tant que registrar accrédité par l'[ICANN](/fr/glossary/icann/), nous vous offrons non seulement la sécurité traditionnelle, mais aussi une intégration **Web3** fluide.
 
 Avec Namefi, votre domaine .world peut être **tokenisé**, ce qui facilite le transfert, la gestion et l'utilisation de votre domaine comme un actif numérique réel sur la blockchain. Profitez d'une tarification transparente et d'une technologie de pointe.
 

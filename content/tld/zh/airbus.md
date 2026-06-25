@@ -11,7 +11,7 @@ keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'wha
 
 ## **什么是 .airbus?**
 
-**.airbus** 是互联网域名系统（DNS）中的一个独特的**品牌顶级域名（Brand TLD）**。与常见的 `.com` 或 `.org` 不同，它是专门为全球航空航天领域的领导者——**空中客车公司（Airbus）** 设立的。
+**.airbus** 是互联网域名系统（DNS）中的一个独特的**品牌顶级域名（Brand [TLD](/zh/glossary/tld/)）**。与常见的 `.com` 或 `.org` 不同，它是专门为全球航空航天领域的领导者——**空中客车公司（Airbus）** 设立的。
 
 作为 ICANN（互联网名称与数字地址分配机构）新通用顶级域名（new gTLD）计划的一部分，.airbus 的推出标志着大型企业在数字品牌保护和身份识别方面迈出了重要一步。它不仅仅是一个网址后缀，更是空中客车公司数字化战略的核心组成部分，代表着航空创新、工程卓越和品牌权威。
 
@@ -30,14 +30,14 @@ keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'wha
 
 ## **使用 .airbus 的知名实体**
 
-作为一个封闭的品牌注册局（Closed Registry），目前只有空中客车公司（Airbus S.A.S.）及其授权的子公司和部门能够使用该域名。虽然普通大众无法注册，但我们可以看到以下类型的实体或页面正在或可能使用它：
+作为一个封闭的品牌[注册局](/zh/glossary/registry/)（Closed Registry），目前只有空中客车公司（Airbus S.A.S.）及其授权的子公司和部门能够使用该域名。虽然普通大众无法注册，但我们可以看到以下类型的实体或页面正在或可能使用它：
 
 1.  **Airbus Corporate (空中客车集团)**：作为主要的入口点，展示公司新闻、投资者关系和可持续发展报告。
 2.  **Airbus Defence and Space (空中客车防务与航天)**：展示国防安全解决方案和卫星技术。
 3.  **Airbus Helicopters (空中客车直升机)**：专注于旋翼飞机的产品和服务。
 4.  **创新实验室 (Airbus UpNext)**：用于展示未来飞行技术的研发项目。
 
-这种独占性确保了当用户访问以 .airbus 结尾的网站时，他们可以 100% 确定这是官方渠道，没有任何网络钓鱼或仿冒的风险。
+这种独占性确保了当用户访问以 .airbus 结尾的网站时，他们可以 100% 确定这是官方渠道，没有任何[网络钓鱼](/zh/glossary/phishing/)或仿冒的风险。
 
 ## **为什么选择 .airbus? (品牌域名的优势)**
 
@@ -48,7 +48,7 @@ keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'wha
 *   **SEO 与品牌相关性**：
     搜索引擎通常会识别品牌 TLD 的权威性。像 `jobs.airbus` 或 `news.airbus` 这样的结构比 `airbus.com/news` 更直观、更利于传播。
 *   **完全的控制权**：
-    注册局拥有者可以完全控制域名的生命周期、解析策略和安全协议，这在 Web3 和区块链域名日益兴起的今天，显得尤为重要。
+    注册局拥有者可以完全控制域名的生命周期、解析策略和安全协议，这在 [Web3](/zh/glossary/web3/) 和[区块链](/zh/glossary/blockchain/)域名日益兴起的今天，显得尤为重要。
 *   **创新形象**：
     拥有专属 TLD 标志着企业处于数字技术的前沿，展示了强大的企业实力和前瞻性思维。
 
@@ -63,7 +63,7 @@ keywords: ['.airbus', '.airbus domains', '.airbus TLD', 'top-level domain', 'wha
 *   **无缝体验**：享受极简的注册流程，无论是为了商业项目、个人博客还是作为数字资产投资。
 *   **透明与安全**：利用区块链技术确保您的域名所有权不可篡改。
 
-立即行动，寻找属于您的“数字领地”。虽然您可能无法注册 .airbus，但在 Namefi，成千上万个优质的顶级域名（如 .io, .xyz, .eth, .com 等）正等待着您的发掘。
+立即行动，寻找属于您的“数字领地”。虽然您可能无法注册 .airbus，但在 Namefi，成千上万个优质的顶级域名（如 .io, [.xyz](/zh/tld/xyz/), .eth, [.com](/zh/tld/com/) 等）正等待着您的发掘。
 
 👉 **[立即访问 Namefi 搜索您的完美域名](https://namefi.io)**
 

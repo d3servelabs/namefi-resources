@@ -52,7 +52,7 @@ Obwohl viele große Marken primär auf .com setzen, gibt es prominente Beispiele
 *   **Scamadviser.info:** Verschiedene Sicherheits- und Überprüfungsdienste nutzen die Endung, um Verbraucheraufklärung zu betreiben.
 *   **Registrierungsstellen:** Viele technische Infrastruktur-Seiten nutzen .info, um Transparenzberichte oder technische Daten zu veröffentlichen.
 
-Es ist auch üblich, dass große Unternehmen ihre Marke unter .info schützen (z.B. `markenname.info`) und diese auf ihre Hauptseite weiterleiten, um Markenschutz (Brand Protection) zu betreiben.
+Es ist auch üblich, dass große Unternehmen ihre [Marke](/de/glossary/trademark/) unter .info schützen (z.B. `markenname.info`) und diese auf ihre Hauptseite weiterleiten, um Markenschutz (Brand Protection) zu betreiben.
 
 ## **Warum eine .info Domain wählen?**
 
@@ -68,7 +68,7 @@ Für Investoren, Entwickler und Unternehmen gibt es überzeugende Gründe, sich 
 
 Sind Sie bereit, Ihre Idee mit der Welt zu teilen? Eine .info-Domain ist der perfekte Startpunkt für Ihr nächstes Informationsprojekt, Ihren Blog oder Ihre Support-Seite.
 
-Bei **Namefi** kombinieren wir traditionelle Domain-Registrierung mit modernster Web3-Technologie. Als ICANN-akkreditierter Registrar bieten wir Ihnen nicht nur eine sichere Registrierung, sondern auch die Möglichkeit, Ihre Domains als NFTs zu tokenisieren. Dies erleichtert den Transfer, den Handel und die Verwaltung Ihrer digitalen Assets enorm.
+Bei **Namefi** kombinieren wir traditionelle Domain-Registrierung mit modernster [Web3](/de/glossary/web3/)-Technologie. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) bieten wir Ihnen nicht nur eine sichere Registrierung, sondern auch die Möglichkeit, Ihre Domains als NFTs zu tokenisieren. Dies erleichtert den Transfer, den Handel und die Verwaltung Ihrer digitalen Assets enorm.
 
 **Vorteile bei Namefi:**
 *   Einfache und schnelle Registrierung.

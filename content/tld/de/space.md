@@ -25,7 +25,7 @@ Die Flexibilität des Wortes "Space" hat dazu geführt, dass diese Domainendung 
 *   **Startups und Tech-Innovatoren:** Vor allem junge Unternehmen, die nach kurzen, prägnanten Namen suchen, die unter .com bereits vergeben sind, greifen oft zu .space.
 *   **Coworking und Events:** Physische Orte wie Bürogemeinschaften, Event-Locations oder Maker-Spaces nutzen die Endung, um ihre Räumlichkeiten zu bewerben.
 *   **Luft- und Raumfahrt:** Natürlich ist die Endung prädestiniert für Unternehmen, die sich tatsächlich mit der Raumfahrt, Astronomie oder Wissenschaft beschäftigen.
-*   **Web3 und Metaverse:** In der Welt der [Blockchain und tokenisierten Domains](https://namefi.io) wird .space oft für Projekte im Metaverse oder für digitale Immobilien ("Digital Spaces") verwendet.
+*   **[Web3](/de/glossary/web3/) und Metaverse:** In der Welt der [Blockchain und tokenisierten Domains](https://namefi.io) wird .space oft für Projekte im Metaverse oder für digitale Immobilien ("Digital Spaces") verwendet.
 
 ## **Bekannte Unternehmen und Projekte unter .space**
 
@@ -50,7 +50,7 @@ Die Wahl der richtigen Domainendung ist entscheidend für Ihre Markenidentität.
 
 Sind Sie bereit, Ihren eigenen "Raum" im Internet zu schaffen? Eine .space Domain ist der perfekte Startpunkt für Ihr nächstes großes Projekt, sei es ein Web2-Startup oder ein Web3-Venture.
 
-Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Registrierung. Als ICANN-akkreditierter Registrar kombinieren wir traditionelle Domain-Sicherheit mit moderner Blockchain-Technologie.
+Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Registrierung. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) kombinieren wir traditionelle Domain-Sicherheit mit moderner Blockchain-Technologie.
 
 **Warum Namefi?**
 *   **Nahtlose Web3-Integration:** Machen Sie Ihre .space Domain zu einem handelbaren Asset (NFT).

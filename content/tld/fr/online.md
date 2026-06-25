@@ -24,7 +24,7 @@ La polyvalence du mot "online" permet à cette extension d'être utilisée dans 
 *   **Startups et entreprises technologiques :** Les nouvelles entreprises utilisent souvent .online pour signaler qu'elles sont modernes, agiles et axées sur le numérique.
 *   **Boutiques e-commerce :** Pour les magasins physiques qui lancent une branche numérique, une adresse comme `votre-boutique.online` est une transition logique et claire pour les clients.
 *   **Portfolios et freelances :** Les développeurs, designers et rédacteurs utilisent cette extension pour créer des CV numériques ou des portfolios (ex : `nomprenom.online`), montrant qu'ils sont actifs et disponibles.
-*   **Projets Web3 et Blockchain :** Avec l'émergence des domaines tokenisés, de nombreux développeurs Web3 choisissent des extensions modernes comme .online pour se différencier des institutions financières traditionnelles.
+*   **Projets [Web3](/fr/glossary/web3/) et Blockchain :** Avec l'émergence des domaines tokenisés, de nombreux développeurs Web3 choisissent des extensions modernes comme .online pour se différencier des institutions financières traditionnelles.
 
 ## **Entités notables utilisant le .online**
 

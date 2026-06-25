@@ -11,7 +11,7 @@ keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .aga
 
 ## **什么是 .agakhan?**
 
-**.agakhan** 是互联网域名系统（DNS）中的一个独特的顶级域名（TLD）。与常见的通用顶级域名（如 .com 或 .net）不同，.agakhan 属于“品牌顶级域名”（Brand TLD）的范畴。它是专门为 **阿迦汗（Aga Khan）** 及其相关的发展网络（AKDN）和机构设立的数字标识。
+**.agakhan** 是互联网域名系统（DNS）中的一个独特的顶级域名（[TLD](/zh/glossary/tld/)）。与常见的通用顶级域名（如 [.com](/zh/tld/com/) 或 [.net](/zh/tld/net/)）不同，.agakhan 属于“品牌顶级域名”（Brand TLD）的范畴。它是专门为 **阿迦汗（Aga Khan）** 及其相关的发展网络（AKDN）和机构设立的数字标识。
 
 申请和设立此类域名的主要目的是为了在互联网上建立一个高度可信、统一且安全的数字空间。对于关注域名投资和数字资产的人来说，了解此类专属 TLD 的运作方式，有助于理解域名作为数字资产的真正价值。它不仅仅是一个网址后缀，更是品牌权威性和数字主权的象征。
 
@@ -39,10 +39,10 @@ keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .aga
 
 ## **为何选择 .agakhan?**
 
-虽然普通用户可能无法随意注册受限的品牌 TLD，但理解 .agakhan 的优势对于选择您自己的域名（无论是 .com, .io 还是 Web3 域名）具有重要的借鉴意义。以下是此类顶级域名的核心优势：
+虽然普通用户可能无法随意注册受限的品牌 TLD，但理解 .agakhan 的优势对于选择您自己的域名（无论是 .com, .io 还是 [Web3](/zh/glossary/web3/) 域名）具有重要的借鉴意义。以下是此类顶级域名的核心优势：
 
 *   **极致的信任与权威 (Trust)**
-    拥有 .agakhan 后缀的网站天然带有官方背书。用户一眼就能识别出这是经过验证的合法来源，极大地降低了网络钓鱼和欺诈的风险。
+    拥有 .agakhan 后缀的网站天然带有官方背书。用户一眼就能识别出这是经过验证的合法来源，极大地降低了[网络钓鱼](/zh/glossary/phishing/)和欺诈的风险。
 
 *   **品牌清晰度 (Branding)**
     它消除了品牌名称与通用后缀之间的混淆。例如，使用 `museum.agakhan` 比 `agakhanmuseum.org` 更加简洁、直观，且强化了品牌归属感。
@@ -57,9 +57,9 @@ keywords: ['.agakhan domains', '.agakhan TLD', 'top-level domain', 'what is .aga
 
 无论您是寻找像 .agakhan 这样具有极高权威性的域名，还是希望为您的企业、Web3 项目或个人品牌注册一个完美的数字身份，**Namefi** 都是您的最佳选择。
 
-Namefi 不仅仅是一个传统的域名注册商，我们利用区块链技术重新定义了域名所有权。
-*   **ICANN 认证**：我们提供安全、合规的传统域名注册服务。
-*   **Web3 集成**：通过 Namefi，您可以将域名“代币化”，像管理 NFT 一样轻松交易和管理您的域名资产。
+Namefi 不仅仅是一个传统的域名注册商，我们利用[区块链](/zh/glossary/blockchain/)技术重新定义了域名所有权。
+*   **[ICANN](/zh/glossary/icann/) 认证**：我们提供安全、合规的传统域名注册服务。
+*   **Web3 集成**：通过 Namefi，您可以将域名“[代币化](/zh/glossary/tokenize/)”，像管理 NFT 一样轻松交易和管理您的域名资产。
 *   **无缝体验**：只需几步，即可完成从搜索到上链的全过程。
 
 虽然 .agakhan 属于限制性注册的品牌域名，但在 Namefi，您可以探索成千上万个其他优质后缀。不要让完美的域名被别人抢先一步！

@@ -28,7 +28,7 @@ keywords:
 
 ## **Was ist .ag?**
 
-Die Top-Level-Domain (TLD) **.ag** ist offiziell die länderspezifische Domainendung (ccTLD) für den Inselstaat **Antigua und Barbuda** in der Karibik. Sie wird vom Antigua & Barbuda Network Information Centre verwaltet.
+Die Top-Level-Domain ([TLD](/de/glossary/tld/)) **.ag** ist offiziell die länderspezifische Domainendung (ccTLD) für den Inselstaat **Antigua und Barbuda** in der Karibik. Sie wird vom Antigua & Barbuda Network Information Centre verwaltet.
 
 Obwohl ihr ursprünglicher Zweck darin besteht, Unternehmen und Einzelpersonen in dieser karibischen Nation zu repräsentieren, hat die **.ag**-Domain eine einzigartige und äußerst wertvolle Bedeutung im deutschsprachigen Raum (DACH-Region: Deutschland, Österreich, Schweiz) erlangt.
 
@@ -72,9 +72,9 @@ Die Wahl einer .ag-Domain bietet spezifische Vorteile, insbesondere wenn Sie im 
 
 Ob Sie eine neu gegründete Aktiengesellschaft sind, ein AgTech-Startup oder ein Domain-Investor, der nach wertvollen Assets sucht – die .ag Domain ist eine starke Wahl.
 
-Bei **Namefi** machen wir die Domain-Registrierung so einfach und zukunftssicher wie möglich. Wir sind nicht nur ein ICANN-akkreditierter Registrar, sondern Pioniere in der Verbindung von Web2 und Web3. Wenn Sie Ihre Domain bei uns registrieren, profitieren Sie von:
+Bei **Namefi** machen wir die Domain-Registrierung so einfach und zukunftssicher wie möglich. Wir sind nicht nur ein [ICANN](/de/glossary/icann/)-akkreditierter Registrar, sondern Pioniere in der Verbindung von Web2 und [Web3](/de/glossary/web3/). Wenn Sie Ihre Domain bei uns registrieren, profitieren Sie von:
 
-*   **Tokenisierung:** Ihre Domain kann als NFT auf der Blockchain repräsentiert werden, was den Transfer und Handel unglaublich sicher und schnell macht.
+*   **[Tokenisierung](/de/glossary/tokenize/):** Ihre Domain kann als NFT auf der Blockchain repräsentiert werden, was den Transfer und Handel unglaublich sicher und schnell macht.
 *   **Einfache Verwaltung:** Ein intuitives Dashboard für DNS-Einstellungen und Web3-Integrationen.
 *   **Transparente Preise:** Keine versteckten Gebühren.
 

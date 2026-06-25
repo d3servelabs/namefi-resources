@@ -32,11 +32,11 @@ Si estás evaluando una extensión moderna frente a una heredada, .xyz es el cas
 | Soporte IDN | Sí |
 | DNSSEC | Compatible |
 | Restricciones de registro | Abierto a todos — sin requisito de elegibilidad |
-| Ideal para | Startups, proyectos Web3/cripto, desarrolladores, marcas en blanco |
+| Ideal para | Startups, proyectos [Web3](/es/glossary/web3/)/cripto, desarrolladores, marcas en blanco |
 
 ## ¿Qué es .xyz?
 
-El dominio .xyz es un dominio de nivel superior genérico (gTLD) introducido a través del [Programa de Nuevos gTLD de ICANN](https://newgtlds.icann.org/). La cadena "xyz" fue elegida precisamente porque no tiene ninguna carga semántica: las tres últimas letras del alfabeto latino, a menudo presentadas como un guiño a las Generaciones X, Y y Z. Donde .org implica una organización y .io se ha convertido en sinónimo de "tech," .xyz no señala nada en particular, y ese es precisamente el objetivo — permite que el nombre de segundo nivel lleve todo el significado.
+El dominio .xyz es un dominio de nivel superior genérico (gTLD) introducido a través del [Programa de Nuevos gTLD de ICANN](https://newgtlds.icann.org/). La cadena "xyz" fue elegida precisamente porque no tiene ninguna carga semántica: las tres últimas letras del alfabeto latino, a menudo presentadas como un guiño a las Generaciones X, Y y Z. Donde [.org](/es/tld/org/) implica una organización y .io se ha convertido en sinónimo de "tech," .xyz no señala nada en particular, y ese es precisamente el objetivo — permite que el nombre de segundo nivel lleve todo el significado.
 
 Al ser un TLD genérico y no un ccTLD de código de país, Google no geolocaliza .xyz en ninguna región. Según [Google Search Central](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages), los nuevos TLD genéricos reciben el mismo trato que cualquier otro gTLD para la búsqueda, por lo que un sitio .xyz puede posicionarse globalmente sin estar vinculado a ningún país. Puedes confirmar los detalles del registro en el [registro oficial de la zona raíz de IANA para .xyz](https://www.iana.org/domains/root/db/xyz.html).
 
@@ -91,7 +91,7 @@ El mismo bajo precio que impulsa la adopción de .xyz también atrae spam y regi
 
 **Restricciones de registro: abierto a todos.** El dominio .xyz es un TLD genérico sin restricciones. No hay requisito de credencial, membresía, registro mercantil ni presencia local — cualquier persona, en cualquier lugar, puede registrar uno por orden de llegada. El registro no vende directamente a los usuarios finales; debes registrarte a través de un registrador acreditado por ICANN.
 
-Se aplican las reglas estándar de los nuevos gTLD: los titulares de marcas podían reclamar nombres durante el período original de amanecer (sunrise), y el Trademark Clearinghouse continúa proporcionando protecciones de aviso. El TLD admite nombres de dominio internacionalizados (IDN), DNSSEC para integridad criptográfica y privacidad WHOIS a nivel de registrador. Las transferencias, renovaciones y el período de gracia de redención para los nombres vencidos siguen la política estándar de gTLD de ICANN. La fuente autorizada de las obligaciones del operador es el [Acuerdo de Registro de ICANN para .xyz](https://www.icann.org/en/registry-agreements/details/xyz), y el registro oficial es [Generation XYZ](https://gen.xyz/).
+Se aplican las reglas estándar de los nuevos gTLD: los titulares de marcas podían reclamar nombres durante el período original de amanecer (sunrise), y el [Trademark Clearinghouse](/es/glossary/tmch/) continúa proporcionando protecciones de aviso. El TLD admite nombres de dominio internacionalizados (IDN), DNSSEC para integridad criptográfica y privacidad WHOIS a nivel de registrador. Las transferencias, renovaciones y el período de gracia de redención para los nombres vencidos siguen la política estándar de gTLD de ICANN. La fuente autorizada de las obligaciones del operador es el [Acuerdo de Registro de ICANN para .xyz](https://www.icann.org/en/registry-agreements/details/xyz), y el registro oficial es [Generation XYZ](https://gen.xyz/).
 
 ## Precios y valor de .xyz
 

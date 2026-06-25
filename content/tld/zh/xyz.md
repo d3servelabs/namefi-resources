@@ -32,11 +32,11 @@ faqs:
 | IDN 支持 | 支持 |
 | DNSSEC | 支持 |
 | 注册限制 | 向所有人开放——无资质要求 |
-| 最适合 | 初创企业、Web3/加密货币项目、开发者、空白品牌 |
+| 最适合 | 初创企业、[Web3](/zh/glossary/web3/)/加密货币项目、开发者、空白品牌 |
 
 ## 什么是 .xyz？
 
-.xyz 域名是通过 [ICANN 新 gTLD 计划](https://newgtlds.icann.org/)引入的通用顶级域名（gTLD）。选择"xyz"这一字符串，正是因为它没有语义包袱：拉丁字母表的最后三个字母，常被解读为对 X、Y、Z 三代人的致意。.org 意味着组织，.io 已约定俗成地代表"技术"，而 .xyz 则不传达任何特定含义——这恰恰是它的价值所在，让二级名称承载所有意义。
+.xyz 域名是通过 [ICANN 新 gTLD 计划](https://newgtlds.icann.org/)引入的通用顶级域名（gTLD）。选择"xyz"这一字符串，正是因为它没有语义包袱：拉丁字母表的最后三个字母，常被解读为对 X、Y、Z 三代人的致意。[.org](/zh/tld/org/) 意味着组织，.io 已约定俗成地代表"技术"，而 .xyz 则不传达任何特定含义——这恰恰是它的价值所在，让二级名称承载所有意义。
 
 由于它是通用顶级域名而非国家代码顶级域名，谷歌不会将 .xyz 地理定向到任何特定地区。根据 [Google Search Central](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages) 的说明，新通用顶级域名在搜索中与其他 gTLD 同等对待，因此 .xyz 网站可在全球范围内排名，而不受任何国家的限制。你可以在官方 [IANA .xyz 根区记录](https://www.iana.org/domains/root/db/xyz.html)中查看注册局详情。
 
@@ -60,7 +60,7 @@ faqs:
 ## 使用 .xyz 的知名网站
 
 - **abc.xyz** —— 谷歌母公司 Alphabet Inc. 在此托管其投资者和企业网站。这是任何新顶级域名所获得的最具影响力的背书。
-- **block.xyz** —— 由 Jack Dorsey 领导的金融科技公司 Block, Inc.（前身为 Square）以 block.xyz 作为企业主页，进一步强化了该顶级域名与支付和区块链的关联。
+- **block.xyz** —— 由 Jack Dorsey 领导的金融科技公司 Block, Inc.（前身为 Square）以 block.xyz 作为企业主页，进一步强化了该顶级域名与支付和[区块链](/zh/glossary/blockchain/)的关联。
 
 这些都是真实的高知名度部署，而非虚名重定向，这也是 .xyz 被视为可信赖的生产级后缀而非新奇玩意儿的原因。
 
@@ -91,7 +91,7 @@ faqs:
 
 **注册限制：向所有人开放。** .xyz 域名是无限制的通用顶级域名。注册无需任何资质证明、会员身份、企业注册或本地存在要求——全球任何人均可按先到先得的原则注册。注册局不直接向终端用户销售；你需要通过 ICANN 认可的注册商进行注册。
 
-标准新 gTLD 规则适用：商标持有人可在原始日出期内主张名称，商标交换所（Trademark Clearinghouse）持续提供通知保护。该顶级域名支持国际化域名（IDN）、用于加密完整性验证的 DNSSEC，以及注册商级别的 WHOIS 隐私保护。转移、续费及过期域名的赎回宽限期均遵循标准 ICANN gTLD 政策。运营商义务的权威来源是 [ICANN .xyz 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz)，官方注册局为 [Generation XYZ](https://gen.xyz/)。
+标准新 gTLD 规则适用：[商标](/zh/glossary/trademark/)持有人可在原始日出期内主张名称，商标交换所（Trademark Clearinghouse）持续提供通知保护。该顶级域名支持国际化域名（IDN）、用于加密完整性验证的 DNSSEC，以及注册商级别的 [WHOIS 隐私](/zh/glossary/whois-privacy/)保护。转移、续费及过期域名的赎回[宽限期](/zh/glossary/grace-period/)均遵循标准 ICANN gTLD 政策。运营商义务的权威来源是 [ICANN .xyz 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz)，官方注册局为 [Generation XYZ](https://gen.xyz/)。
 
 ## .xyz 的定价与价值
 
@@ -99,7 +99,7 @@ faqs:
 
 ## 声誉与电子邮件送达率
 
-这是最需要坦诚面对的方面。由于 .xyz 价格低廉且注册开放，它吸引了大量垃圾邮件、网络钓鱼和恶意软件注册，安全追踪机构和反滥用团体已多次将其列为恶意活动较高的后缀之一。一些激进的垃圾邮件过滤器和企业白名单对陌生新 gTLD 发件人的审查比 .com 更严格，这可能影响全新 .xyz 域名的冷邮件送达率。
+这是最需要坦诚面对的方面。由于 .xyz 价格低廉且注册开放，它吸引了大量垃圾邮件、[网络钓鱼](/zh/glossary/phishing/)和恶意软件注册，安全追踪机构和反滥用团体已多次将其列为恶意活动较高的后缀之一。一些激进的垃圾邮件过滤器和企业白名单对陌生新 gTLD 发件人的审查比 .com 更严格，这可能影响全新 .xyz 域名的冷邮件送达率。
 
 这些都不意味着该顶级域名本身不合法——Alphabet 和 Block 都在其上运营着真实业务。声誉附着于单个域名，而非后缀本身。缓解措施包括：逐步预热任何发件域名，正确配置 SPF、DKIM 和 DMARC，避免名称与共享/受滥用的 IP 范围关联，并建立干净的发送历史。维护良好的 .xyz 域名送达率完全没问题；但用于批量推广的全新域名可能面临额外审查。
 
@@ -111,7 +111,7 @@ faqs:
 
 1. **搜索** 你心仪的名称，访问 [Namefi](https://namefi.io) 查看可用性和透明定价。
 2. **选择** .xyz 后缀（以及任何你希望防御性注册的其他后缀）。
-3. **注册** 并即时管理 DNS，同时可选择将域名代币化，实现 Web3 原生所有权和转让。
+3. **注册** 并即时管理 DNS，同时可选择将域名[代币化](/zh/glossary/tokenize/)，实现 Web3 原生所有权和转让。
 
 [Namefi](https://namefi.io) 是一家连接 Web2 与 Web3 的 ICANN 认可注册商，你既可以运营传统的 .xyz 网站，也可以将其作为链上代币化资产持有——价格透明，续费无隐藏惊喜。
 

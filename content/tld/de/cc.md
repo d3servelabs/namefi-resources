@@ -26,7 +26,7 @@ Dieser Leitfaden erläutert, was .cc wirklich ist, wer sie betreibt, wer eine re
 
 | Merkmal | Detail |
 | --- | --- |
-| TLD-Typ | Länderspezifische TLD (ccTLD) für die Kokosinseln (Keelinginseln) |
+| [TLD](/de/glossary/tld/)-Typ | Länderspezifische TLD (ccTLD) für die Kokosinseln (Keelinginseln) |
 | Registry-Betreiber | eNIC Cocos (Keeling) Islands Pty. Ltd. (firmierend als Island Internet Services), eine Verisign-Tochtergesellschaft |
 | Jahr der Delegierung | 1997 |
 | IDN-Unterstützung | Ja (internationalisierte Domainnamen werden unterstützt) |
@@ -36,7 +36,7 @@ Dieser Leitfaden erläutert, was .cc wirklich ist, wer sie betreibt, wer eine re
 
 ## Was ist .cc?
 
-**.cc** ist die länderspezifische [Top-Level-Domain](/en/glossary/tld/) (ccTLD), die den **Kokosinseln (Keelinginseln)** nach dem ISO-3166-1-Standard zugewiesen ist – demselben zweistelligen System, das die [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/cc.html) zur Delegierung von Ländercodes verwendet. Auf dem Papier ist es der nationale Namensraum eines abgelegenen australischen Außengebiets mit ein paar Hundert Einwohnern im Indischen Ozean.
+**.cc** ist die länderspezifische [Top-Level-Domain](/de/glossary/tld/) (ccTLD), die den **Kokosinseln (Keelinginseln)** nach dem ISO-3166-1-Standard zugewiesen ist – demselben zweistelligen System, das die [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/cc.html) zur Delegierung von Ländercodes verwendet. Auf dem Papier ist es der nationale Namensraum eines abgelegenen australischen Außengebiets mit ein paar Hundert Einwohnern im Indischen Ozean.
 
 In der Praxis wird die **.cc-Domain** seit den späten 1990er Jahren fast ausschließlich als **generische, globale** Endung verwendet. Da die Inseln selbst kaum lokale Nachfrage erzeugen, öffnete der Betreiber den Namensraum für die Welt und vermarktete ihn breit. Die Zeichenfolge „cc" trägt keine einzelne feste Bedeutung, was genau ihr Reiz ist: Sie liest sich als „commercial company", nickt zu „creative commons" und „carbon copy" und funktioniert sauber als zwei zusammenpassende Initialen. Diese Mehrdeutigkeit macht sie ungewöhnlich anpassungsfähig für das Branding.
 
@@ -70,14 +70,14 @@ Anstatt bestimmte Seiten zu nennen, die im Laufe der Zeit den Besitzer wechseln 
 
 ## .cc vs. andere Domains
 
-| Merkmal | .cc | [.com](/de/tld/com/) | [.co](/de/tld/co/) | [.io](/de/tld/io/) |
+| Merkmal | .cc | .com | [.co](/de/tld/co/) | [.io](/de/tld/io/) |
 | --- | --- | --- | --- | --- |
 | Typ | ccTLD (global genutzt) | Legacy-gTLD | ccTLD (global genutzt) | ccTLD (global genutzt) |
 | Kern-Assoziation | Flexibel / zusammenpassende Initialen | Der Standard des Webs | Company / Corporation | Tech / „Input-Output" |
 | Verfügbarkeit kurzer Namen | Gut | Sehr schlecht | Gut | Mäßig |
 | Typisches Preisniveau | Niedrig bis mittel | Niedrig bis mittel | Mittel | Hoch |
 
-Wählen Sie **[.com](/de/tld/com/)**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard. Greifen Sie zu **.cc**, wenn Sie eine kurze, flexible, markenfähige Endung und eine clevere Konstruktion oder einen Domain-Hack wünschen, besonders wenn die .com vergeben ist. Erwägen Sie **[.co](/de/tld/co/)**, wenn Sie speziell „Company"-Konnotationen wünschen, und **[.io](/de/tld/io/)** für entwickler- und infrastrukturorientierte Tech-Marken.
+Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard. Greifen Sie zu **.cc**, wenn Sie eine kurze, flexible, markenfähige Endung und eine clevere Konstruktion oder einen [Domain-Hack](/de/glossary/domain-hack/) wünschen, besonders wenn die .com vergeben ist. Erwägen Sie **.co**, wenn Sie speziell „Company"-Konnotationen wünschen, und **.io** für entwickler- und infrastrukturorientierte Tech-Marken.
 
 ## Warum .cc wählen?
 
@@ -97,7 +97,7 @@ Wählen Sie **[.com](/de/tld/com/)**, wenn Sie den exakten Namen bekommen könne
 
 **Registrierungsbeschränkungen: offen für alle.** Es gibt **keine Anforderung an lokale Präsenz, Wohnsitz oder Staatsangehörigkeit**, um eine .cc-Domain auf der zweiten Ebene zu registrieren. Sie benötigen keinerlei Verbindung zu den Kokosinseln (Keelinginseln). Die Registrierung erfolgt nach dem Prinzip **„first-come, first-served"** und steht Privatpersonen und Organisationen überall auf der Welt über jeden teilnehmenden [Registrar](/de/glossary/registrar/) offen.
 
-Es gelten die üblichen Praktiken: Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **[DNSSEC](/en/glossary/dnssec/)** ist für zusätzliche DNS-Sicherheit verfügbar. [WHOIS](/en/glossary/whois/)-Datenschutz sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen Registrar- und Registry-Konventionen. Da .cc eine ccTLD ist, ist die maßgebliche Quelle für aktuelle Regeln der Registry-Betreiber unter seiner IANA-Delegierung – [eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html), eine Verisign-Tochtergesellschaft.
+Es gelten die üblichen Praktiken: Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **[DNSSEC](/de/glossary/dnssec/)** ist für zusätzliche DNS-Sicherheit verfügbar. [WHOIS](/de/glossary/whois/)-Datenschutz sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen Registrar- und Registry-Konventionen. Da .cc eine ccTLD ist, ist die maßgebliche Quelle für aktuelle Regeln der Registry-Betreiber unter seiner IANA-Delegierung – [eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html), eine Verisign-Tochtergesellschaft.
 
 ## .cc-Preisgestaltung und -Wert
 
@@ -105,7 +105,7 @@ Es gelten die üblichen Praktiken: Namen folgen herkömmlichen Längen- und Zeic
 
 - **Premium-Namen existieren.** Die Registry klassifiziert viele kurze, Wörterbuch- oder stark nachgefragte .cc-Namen als **Premium**, was höhere Registrierungs- und manchmal höhere Verlängerungsgebühren mit sich bringt.
 - **Erstjahres- vs. Verlängerungspreise unterscheiden sich.** Wie bei den meisten TLDs ist ein einführender Erstjahrespreis nicht der Verlängerungspreis; prüfen Sie vor der Bindung an eine Marke stets die Standardverlängerung.
-- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-Großhandelspreis sind die wichtigsten Faktoren. Aftermarket-Wiederverkaufswerte für kurze, markenfähige .cc-Namen – besonders zwei- und dreistellige oder Wörterbuchwörter – können erheblich sein.
+- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-[Großhandelspreis](/de/glossary/wholesale-pricing/) sind die wichtigsten Faktoren. [Aftermarket](/de/glossary/aftermarket/)-Wiederverkaufswerte für kurze, markenfähige .cc-Namen – besonders zwei- und dreistellige oder Wörterbuchwörter – können erheblich sein.
 
 Für exakte, aktuelle Zahlen prüfen Sie die Live-Preise zum Registrierungszeitpunkt – diese Seite nennt bewusst keine Zahlen.
 
@@ -128,7 +128,7 @@ Für die E-Mail-Zustellbarkeit ist die Endung selbst selten der ausschlaggebende
 2. **Wählen** Sie einen verfügbaren Namen (und prüfen Sie, ob er als Premium klassifiziert ist).
 3. **Registrieren** und DNS konfigurieren.
 
-[Namefi](https://namefi.io) ist ein ICANN-akkreditierter Registrar, der Web2 und [Web3](/de/glossary/web3/) verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
+[Namefi](https://namefi.io) ist ein [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der Web2 und [Web3](/de/glossary/web3/) verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
 
 ## Häufig gestellte Fragen
 
@@ -150,10 +150,10 @@ Die .cc-Registry wird von eNIC Cocos (Keeling) Islands Pty. Ltd. (firmierend als
 
 ## Verwandte Ressourcen
 
-- [.com TLD-Leitfaden](/de/tld/com/)
-- [.co TLD-Leitfaden](/de/tld/co/)
-- [.io TLD-Leitfaden](/de/tld/io/)
+- .com TLD-Leitfaden
+- .co TLD-Leitfaden
+- .io TLD-Leitfaden
 - [.xyz TLD-Leitfaden](/de/tld/xyz/)
 - [Domain-Hacks erklärt](/de/blog/domain-hacks-explained/)
 - [Was ist eine Domain?](/de/blog/what-is-domain/)
-- [Glossar: Registrar](/de/glossary/registrar/)
+- Glossar: Registrar

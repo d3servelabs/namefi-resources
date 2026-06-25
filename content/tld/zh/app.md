@@ -31,7 +31,7 @@ keywords: [".app domains", ".app TLD", "top-level domain", "what is .app", "why 
 *   **Web 应用程序（SaaS）**：许多基于浏览器的工具和服务直接使用 .app 作为其主域名，让用户一目了然地知道這是一个在线工具而非仅仅是内容博客。
 *   **开发者个人作品集**：程序员和 UI/UX 设计师喜欢使用 `firstname.app` 或 `lastname.app` 来展示他们开发的软件项目。
 *   **开源项目文档**：许多 GitHub 上的开源项目会注册 .app 域名来托管其官方文档或演示版本。
-*   **区块链与 Web3 DApps**：去中心化应用（DApp）非常青睐此后缀，因为它完美契合 Web3 项目的“应用”属性。
+*   **区块链与 [Web3](/zh/glossary/web3/) DApps**：去中心化应用（DApp）非常青睐此后缀，因为它完美契合 Web3 项目的“应用”属性。
 
 ## **使用 .app 的知名案例**
 

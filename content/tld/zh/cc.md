@@ -26,7 +26,7 @@ faqs:
 
 | 信息 | 详情 |
 | --- | --- |
-| TLD 类型 | 科科斯（基林）群岛的国家代码顶级域名（ccTLD） |
+| [TLD](/zh/glossary/tld/) 类型 | 科科斯（基林）群岛的国家代码顶级域名（ccTLD） |
 | 注册局运营商 | eNIC Cocos (Keeling) Islands Pty. Ltd.（以 Island Internet Services 名义经营），Verisign 子公司 |
 | 授权年份 | 1997 年 |
 | IDN 支持 | 是（支持国际化域名） |
@@ -36,7 +36,7 @@ faqs:
 
 ## 什么是 .cc？
 
-**.cc** 是根据 ISO 3166-1 标准分配给**科科斯（基林）群岛**的国家代码[顶级域名](/en/glossary/tld/)（ccTLD），该标准与[互联网号码分配机构（IANA）](https://www.iana.org/domains/root/db/cc.html)用于授权国家代码的两字母系统相同。从纸面上看，它是印度洋上一处仅有数百名居民的偏远澳大利亚外部领地的国家命名空间。
+**.cc** 是根据 ISO 3166-1 标准分配给**科科斯（基林）群岛**的国家代码[顶级域名](/zh/glossary/tld/)（ccTLD），该标准与[互联网号码分配机构（IANA）](https://www.iana.org/domains/root/db/cc.html)用于授权国家代码的两字母系统相同。从纸面上看，它是印度洋上一处仅有数百名居民的偏远澳大利亚外部领地的国家命名空间。
 
 但在实践中，自 1990 年代末以来，**.cc 域名**几乎完全被用作**通用、全球性**的扩展名。由于群岛本身几乎不产生本地需求，运营商向全球开放了该命名空间并广泛营销。"cc" 这一字符串没有单一固定的含义，这恰恰是它的魅力所在：它读作 "commercial company（商业公司）"，呼应 "creative commons（知识共享）" 和 "carbon copy（抄送）"，并能作为两个相同首字母利落地使用。这种多义性使它在品牌化方面异常灵活。
 
@@ -70,14 +70,14 @@ faqs:
 
 ## .cc 与其他域名对比
 
-| 特性 | .cc | [.com](/zh/tld/com/) | [.co](/zh/tld/co/) | [.io](/zh/tld/io/) |
+| 特性 | .cc | .com | [.co](/zh/tld/co/) | [.io](/zh/tld/io/) |
 | --- | --- | --- | --- | --- |
 | 类型 | ccTLD（全球使用） | 传统 gTLD | ccTLD（全球使用） | ccTLD（全球使用） |
 | 核心联想 | 灵活 / 相同首字母 | 默认的网络标准 | 公司 / 企业 | 科技 / "输入输出" |
 | 短名称可用性 | 较好 | 极差 | 较好 | 一般 |
 | 典型价格档次 | 低至中等 | 低至中等 | 中等 | 高 |
 
-在能拿到确切名称时优先选 **[.com](/zh/tld/com/)**——它仍是信任的默认选项。当您想要一个简短、灵活、易于品牌化的后缀以及一个巧妙的构造或域名拼接时，尤其是在 .com 已被注册的情况下，选择 **.cc**。当您特别想要 "company" 内涵时考虑 **[.co](/zh/tld/co/)**，面向开发者和基础设施的科技品牌则选 **[.io](/zh/tld/io/)**。
+在能拿到确切名称时优先选 **.com**——它仍是信任的默认选项。当您想要一个简短、灵活、易于品牌化的后缀以及一个巧妙的构造或域名拼接时，尤其是在 .com 已被注册的情况下，选择 **.cc**。当您特别想要 "company" 内涵时考虑 **.co**，面向开发者和基础设施的科技品牌则选 **.io**。
 
 ## 为什么选择 .cc？
 
@@ -97,7 +97,7 @@ faqs:
 
 **注册限制：向所有人开放。** 注册二级 .cc 域名**无本地存在、居住或国籍要求**。您无需与科科斯（基林）群岛有任何联系。注册采取**先到先得**原则，可通过任何参与的[注册商](/zh/glossary/registrar/)向全球任何地方的个人和组织开放。
 
-适用标准惯例：名称遵循常规的长度和字符规则；支持**国际化域名（IDN）**；并提供 **[DNSSEC](/en/glossary/dnssec/)** 以增强 DNS 安全性。[WHOIS](/en/glossary/whois/) 隐私保护、转移、续费和赎回宽限期处理均遵循标准的注册商和注册局惯例。由于 .cc 是 ccTLD，当前规则的权威来源是其 IANA 授权下的注册局运营商——[eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html)，一家 Verisign 子公司。
+适用标准惯例：名称遵循常规的长度和字符规则；支持**国际化域名（IDN）**；并提供 **[DNSSEC](/zh/glossary/dnssec/)** 以增强 DNS 安全性。[WHOIS](/zh/glossary/whois/) 隐私保护、转移、续费和赎回宽限期处理均遵循标准的注册商和注册局惯例。由于 .cc 是 ccTLD，当前规则的权威来源是其 IANA 授权下的注册局运营商——[eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html)，一家 Verisign 子公司。
 
 ## .cc 定价与价值
 
@@ -105,7 +105,7 @@ faqs:
 
 - **存在溢价名称。** 注册局将许多简短、词典词或高需求的 .cc 名称归类为**溢价**，承担更高的注册费，有时续费费用也更高。
 - **首年价与续费价不同。** 与大多数 TLD 一样，首年优惠价并非续费价；在为品牌投入之前，请务必查看标准续费价。
-- **成本驱动因素。** 名称长度与吸引力、溢价分类，以及注册局批发定价是主要因素。简短、可品牌化的 .cc 名称——尤其是两到三个字符或词典词——在二级市场的转售价值可能相当可观。
+- **成本驱动因素。** 名称长度与吸引力、溢价分类，以及注册局[批发定价](/zh/glossary/wholesale-pricing/)是主要因素。简短、可品牌化的 .cc 名称——尤其是两到三个字符或词典词——在[二级市场](/zh/glossary/aftermarket/)的转售价值可能相当可观。
 
 如需确切的实时价格，请在注册时查询实时报价——本页面有意不引用任何具体数字。
 
@@ -128,7 +128,7 @@ faqs:
 2. **选择**一个可用名称（并查看它是否被归类为溢价）。
 3. **注册**并配置 DNS。
 
-[Namefi](https://namefi.io) 是一家连接 Web2 与 [Web3](/zh/glossary/web3/) 的 ICANN 认证注册商，提供透明定价、快速 DNS 管理，以及将您的域名持有为代币化域名的选项，实现更便捷的转移和可验证的所有权。
+[Namefi](https://namefi.io) 是一家连接 Web2 与 [Web3](/zh/glossary/web3/) 的 [ICANN 认证注册商](/zh/glossary/accredited-registrar/)，提供透明定价、快速 DNS 管理，以及将您的域名持有为[代币化域名](/zh/glossary/tokenized-domain/)的选项，实现更便捷的转移和可验证的所有权。
 
 ## 常见问题
 
@@ -150,10 +150,10 @@ faqs:
 
 ## 相关资源
 
-- [.com TLD 指南](/zh/tld/com/)
-- [.co TLD 指南](/zh/tld/co/)
-- [.io TLD 指南](/zh/tld/io/)
+- .com TLD 指南
+- .co TLD 指南
+- .io TLD 指南
 - [.xyz TLD 指南](/zh/tld/xyz/)
 - [域名拼接详解](/zh/blog/domain-hacks-explained/)
 - [什么是域名？](/zh/blog/what-is-domain/)
-- [术语表：注册商](/zh/glossary/registrar/)
+- 术语表：注册商

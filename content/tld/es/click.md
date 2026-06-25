@@ -33,7 +33,7 @@ Aunque muchas grandes corporaciones utilizan sus dominios `.com` principales par
 
 *   **Agencias de Marketing Digital:** Numerosas agencias boutique utilizan esta extensión para resaltar su enfoque en el rendimiento y la conversión (PPC y CTR).
 *   **Plataformas de Comercio Electrónico de Nicho:** Tiendas que dependen de compras impulsivas o ventas flash a menudo adoptan este TLD para subdominios de ofertas.
-*   **Proyectos Web3 y Blockchain:** Dada la naturaleza nativa digital del ecosistema Web3, muchos proyectos descentralizados y herramientas de utilidad eligen extensiones nuevas como .click para diferenciarse de la web tradicional.
+*   **Proyectos [Web3](/es/glossary/web3/) y Blockchain:** Dada la naturaleza nativa digital del ecosistema Web3, muchos proyectos descentralizados y herramientas de utilidad eligen extensiones nuevas como .click para diferenciarse de la web tradicional.
 
 Si bien no siempre verás una empresa del Fortune 500 migrar su sitio principal a un .click, es común verlas registrar estos dominios para proteger su marca y redirigir tráfico a sus campañas promocionales. Puedes consultar tendencias de registro de nuevos gTLDs en sitios de análisis como [nTLDStats](https://ntldstats.com/).
 

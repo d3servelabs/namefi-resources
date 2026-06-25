@@ -49,10 +49,10 @@ Si estás dudando entre un dominio tradicional y un `.tech`, aquí te presentamo
 
 ## **Registra tu dominio .tech en Namefi**
 
-Elegir el dominio perfecto es el primer paso, pero elegir dónde registrarlo y gestionarlo es igual de importante. En **Namefi**, no solo somos un registrador acreditado por la ICANN, sino que estamos revolucionando la propiedad de dominios.
+Elegir el dominio perfecto es el primer paso, pero elegir dónde registrarlo y gestionarlo es igual de importante. En **Namefi**, no solo somos un registrador acreditado por la [ICANN](/es/glossary/icann/), sino que estamos revolucionando la propiedad de dominios.
 
 Al registrar tu dominio `.tech` con nosotros, obtienes:
-*   **Integración Web3:** La capacidad de tokenizar tu dominio, facilitando transferencias instantáneas y seguras mediante tecnología blockchain.
+*   **Integración [Web3](/es/glossary/web3/):** La capacidad de tokenizar tu dominio, facilitando transferencias instantáneas y seguras mediante tecnología blockchain.
 *   **Gestión Simplificada:** Una plataforma diseñada tanto para inversores de dominios como para desarrolladores que buscan eficiencia.
 *   **Precios Transparentes:** Sin tarifas ocultas y con un proceso de renovación claro.
 

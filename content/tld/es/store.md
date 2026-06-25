@@ -24,7 +24,7 @@ La versatilidad del dominio .store permite que una amplia gama de usuarios se be
 *   **Startups de Ecommerce:** Nuevas empresas que buscan un nombre corto y memorable que defina su actividad desde el primer clic.
 *   **Secciones de "Merchandising" para Creadores:** Influencers, YouTubers y artistas utilizan subdominios (ej. *tienda.mimarca.store*) o dominios primarios para vender su mercancía oficial, separando claramente su contenido de sus productos.
 *   **Negocios Locales:** Tiendas físicas que están dando el salto a la digitalización encuentran en .store una forma fácil de indicar que ahora aceptan pedidos en línea.
-*   **Desarrolladores y Proyectos Web3:** En el ecosistema blockchain, proyectos que venden NFTs o tokens de utilidad a menudo utilizan .store para diferenciar su marketplace de su sitio informativo principal.
+*   **Desarrolladores y Proyectos [Web3](/es/glossary/web3/):** En el ecosistema blockchain, proyectos que venden NFTs o tokens de utilidad a menudo utilizan .store para diferenciar su marketplace de su sitio informativo principal.
 
 ## **Entidades destacadas que usan .store**
 
@@ -48,7 +48,7 @@ Si estás indeciso sobre qué extensión registrar, aquí hay algunas razones co
 
 ## **Registra tu dominio .store en Namefi**
 
-Elegir el dominio perfecto es el primer paso hacia el éxito de tu negocio online. En **Namefi**, no solo te ofrecemos un registro sencillo y seguro como registrador acreditado por la ICANN, sino que llevamos tu dominio al futuro.
+Elegir el dominio perfecto es el primer paso hacia el éxito de tu negocio online. En **Namefi**, no solo te ofrecemos un registro sencillo y seguro como registrador acreditado por la [ICANN](/es/glossary/icann/), sino que llevamos tu dominio al futuro.
 
 Al registrar tu dominio con nosotros, obtienes la integración perfecta con la tecnología Web3. Esto significa que tu dominio .store puede ser tokenizado, facilitando su transferencia, gestión y seguridad a través de la blockchain, sin sacrificar la compatibilidad con la web tradicional (Web2).
 

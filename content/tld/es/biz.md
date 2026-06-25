@@ -60,7 +60,7 @@ En 2020, GoDaddy adquirió el negocio de registro de NeuStar, y **.biz** ha sido
 - **Registros defensivos** — marcas que ya poseen el **.com** registrando el **.biz** para proteger su nombre y evitar imitaciones.
 - **Inversores en dominios** — compradores que adquieren nombres **.biz** cortos, de diccionario o de palabra clave para reventa o para [tokenizar on-chain](/es/blog/what-are-tokenized-domains).
 
-**Para quién no es ideal:** proyectos no comerciales (blogs personales, sitios de aficiones, organizaciones sin fines de lucro donde **.org** encaja mejor) y marcas cuyo **.com** está fácilmente disponible y es asequible — en ese caso el **.com** casi siempre gana por reconocimiento predeterminado.
+**Para quién no es ideal:** proyectos no comerciales (blogs personales, sitios de aficiones, organizaciones sin fines de lucro donde **[.org](/es/tld/org/)** encaja mejor) y marcas cuyo **.com** está fácilmente disponible y es asequible — en ese caso el **.com** casi siempre gana por reconocimiento predeterminado.
 
 ## Sitios destacados que usan .biz
 
@@ -94,7 +94,7 @@ Sé honesto contigo mismo sobre las contrapartidas. La mayor es el **recuerdo pr
 
 **Restricciones de registro: abierto a todos, con una expectativa de uso empresarial.** No hay requisito de credencial, licencia, marca registrada o presencia local para registrar un dominio **.biz** — cualquier persona, en cualquier parte del mundo, puede comprar uno a través de un [registrador](/es/glossary/registrar) acreditado. La única condición incorporada al espacio de nombres desde el primer día es que los nombres están destinados a un **uso comercial o de negocios de buena fe** en lugar de a fines puramente personales o especulativos. Históricamente, esto estaba respaldado por el proceso de disputas RDRP, así que en principio un registro puede impugnarse si es claramente no comercial; en la práctica diaria, la aplicación es laxa y el sufijo funciona como un TLD abierto.
 
-Se aplican las reglas estándar de los gTLD: los nombres tienen entre 1 y 63 caracteres, se admiten nombres de dominio internacionalizados (IDN) y las protecciones de marca registrada (incluida la Trademark Clearinghouse de la ICANN durante los períodos sunrise en los nuevos lanzamientos) se aplican como con cualquier gTLD. En el plano administrativo, **.biz** admite [DNSSEC](/en/glossary/dnssec) para un DNS firmado, los registradores ofrecen privacidad WHOIS y se aplica el ciclo de vida habitual de transferencia, renovación y período de gracia de redención. Las reglas autorizadas residen en el [Acuerdo de Registro .biz de la ICANN](https://www.icann.org/en/registry-agreements/details/biz), que rige las obligaciones del operador.
+Se aplican las reglas estándar de los gTLD: los nombres tienen entre 1 y 63 caracteres, se admiten nombres de dominio internacionalizados (IDN) y las protecciones de marca registrada (incluida la [Trademark Clearinghouse](/es/glossary/tmch/) de la ICANN durante los períodos sunrise en los nuevos lanzamientos) se aplican como con cualquier gTLD. En el plano administrativo, **.biz** admite [DNSSEC](/es/glossary/dnssec) para un DNS firmado, los registradores ofrecen privacidad WHOIS y se aplica el ciclo de vida habitual de transferencia, renovación y período de gracia de redención. Las reglas autorizadas residen en el [Acuerdo de Registro .biz de la ICANN](https://www.icann.org/en/registry-agreements/details/biz), que rige las obligaciones del operador.
 
 ## Precios y valor de .biz
 
@@ -116,7 +116,7 @@ El impacto práctico para un negocio legítimo es pequeño y totalmente manejabl
 2. **Elige** el resultado **.biz** (y consigue el **.com** equivalente u otras extensiones si las quieres).
 3. **Registra** y completa el pago para asegurar el nombre.
 
-Namefi combina un [registrador](/es/glossary/registrar) acreditado por la ICANN con capacidades Web3: precios transparentes, gestión rápida de DNS y la opción de [tokenizar tu dominio](/es/blog/why-tokenize-domains) para una transferencia y liquidez más sencillas. [Registra tu dominio .biz en Namefi](https://namefi.io).
+Namefi combina un [registrador](/es/glossary/registrar) acreditado por la ICANN con capacidades [Web3](/es/glossary/web3/): precios transparentes, gestión rápida de DNS y la opción de [tokenizar tu dominio](/es/blog/why-tokenize-domains) para una transferencia y liquidez más sencillas. [Registra tu dominio .biz en Namefi](https://namefi.io).
 
 ## Preguntas frecuentes
 
@@ -146,4 +146,4 @@ Sí. Los registradores ofrecen privacidad WHOIS en **.biz** igual que en otros g
 - [¿Qué es un dominio?](/es/blog/what-is-domain)
 - [Principales TLD que asegurar para tu negocio](/es/blog/top-tlds-to-secure-for-your-business)
 - [TLD .com](/es/tld/com) · [TLD .net](/es/tld/net) · [TLD .info](/es/tld/info)
-- Glosario: [ICANN](/es/glossary/icann) · [Registrador](/es/glossary/registrar) · [DNSSEC](/en/glossary/dnssec) · [WHOIS](/en/glossary/whois)
+- Glosario: [ICANN](/es/glossary/icann) · [Registrador](/es/glossary/registrar) · [DNSSEC](/es/glossary/dnssec) · [WHOIS](/es/glossary/whois)

@@ -11,7 +11,7 @@ keywords: ['.website domains', '.website TLD', 'top-level domain', 'qué es el d
 
 ## **¿Qué es el dominio .website?**
 
-El dominio de nivel superior (TLD, por sus siglas en inglés) **.website** es una de las extensiones más versátiles e intuitivas disponibles en el mercado digital actual. A diferencia de las extensiones tradicionales como .com (comercial) o .net (redes), que originalmente tenían propósitos específicos, **.website** pertenece a la categoría de los "nuevos gTLDs" (dominios genéricos de nivel superior).
+El dominio de nivel superior (TLD, por sus siglas en inglés) **.website** es una de las extensiones más versátiles e intuitivas disponibles en el mercado digital actual. A diferencia de las extensiones tradicionales como .com (comercial) o [.net](/es/tld/net/) (redes), que originalmente tenían propósitos específicos, **.website** pertenece a la categoría de los "nuevos gTLDs" (dominios genéricos de nivel superior).
 
 Lanzado al público general en 2014 como parte del programa de expansión de [ICANN](https://www.icann.org/es), este dominio es gestionado por el registro **Radix**. Su propósito es simple pero poderoso: ofrecer una identidad en línea que se explique por sí misma. La palabra "website" es reconocida mundialmente y es sinónimo de presencia en Internet, lo que elimina cualquier barrera lingüística o confusión sobre la naturaleza del sitio.
 
@@ -25,7 +25,7 @@ La belleza del **.website** radica en su flexibilidad. No está restringido a un
 *   **Portafolios Creativos y Personales:** Diseñadores, desarrolladores y escritores utilizan combinaciones como `nombreapellido.website` para crear una tarjeta de presentación digital profesional.
 *   **Micrositios y Campañas de Marketing:** Las grandes empresas a menudo registran un .website para lanzar un producto específico o una landing page temporal, separándola de su dominio corporativo principal.
 *   **Inversores de Dominios (Domainers):** Dado que es un término genérico con alto potencial de reventa, los inversores buscan palabras clave valiosas (keyword domains) bajo esta extensión.
-*   **Proyectos Web3 y Blockchain:** En el ecosistema descentralizado, la claridad es clave. Los desarrolladores están utilizando .website para dApps y plataformas educativas sobre criptomonedas.
+*   **Proyectos [Web3](/es/glossary/web3/) y Blockchain:** En el ecosistema descentralizado, la claridad es clave. Los desarrolladores están utilizando .website para dApps y plataformas educativas sobre criptomonedas.
 
 ## **Entidades Notables que usan .website**
 
@@ -43,7 +43,7 @@ Si estás dudando entre varias extensiones, aquí te presentamos las ventajas co
 
 *   **Disponibilidad de Nombres Premium:** La ventaja más significativa. Mientras que es casi imposible encontrar un nombre de una sola palabra en .com, en .website todavía hay una gran cantidad de nombres cortos, impactantes y de marca disponibles ("brandables").
 *   **Reconocimiento Global:** La palabra "website" se entiende en casi todos los idiomas. No necesitas explicar qué es tu enlace; los usuarios saben instintivamente que les llevará a una página web.
-*   **Relevancia SEO:** Google ha confirmado en múltiples ocasiones a través de su [Blog de la Central de Búsqueda](https://developers.google.com/search/blog) que trata a los nuevos gTLDs (como .website) con la misma autoridad que a los .com o .org. Lo que importa es la calidad de tu contenido, no la extensión.
+*   **Relevancia SEO:** Google ha confirmado en múltiples ocasiones a través de su [Blog de la Central de Búsqueda](https://developers.google.com/search/blog) que trata a los nuevos gTLDs (como .website) con la misma autoridad que a los .com o [.org](/es/tld/org/). Lo que importa es la calidad de tu contenido, no la extensión.
 *   **Seguridad de Marca:** Para las empresas establecidas, registrar la versión .website de su marca es una estrategia defensiva vital para evitar que competidores o ciberdelincuentes la utilicen.
 *   **Costo-Efectividad:** A menudo, el precio de registro y renovación de un .website es muy competitivo, lo que lo hace ideal para proyectos con presupuesto ajustado pero que no quieren sacrificar profesionalismo.
 

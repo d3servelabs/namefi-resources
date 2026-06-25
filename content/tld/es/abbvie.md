@@ -11,7 +11,7 @@ keywords: [".abbvie", "dominios .abbvie", "TLD .abbvie", "top-level domain .abbv
 
 ## **¿Qué es .abbvie?**
 
-El dominio **.abbvie** es un Dominio de Nivel Superior (TLD, por sus siglas en inglés) que pertenece a la categoría de los "Brand TLDs" o dominios de marca. A diferencia de dominios genéricos como `.com` o `.net` que están abiertos al público general, el TLD .abbvie es una extensión de dominio privada y restringida, gestionada exclusivamente por **AbbVie Inc.**, una de las compañías biofarmacéuticas líderes a nivel mundial.
+El dominio **.abbvie** es un Dominio de Nivel Superior ([TLD](/es/glossary/tld/), por sus siglas en inglés) que pertenece a la categoría de los "Brand TLDs" o dominios de marca. A diferencia de dominios genéricos como `.com` o `.net` que están abiertos al público general, el TLD .abbvie es una extensión de dominio privada y restringida, gestionada exclusivamente por **AbbVie Inc.**, una de las compañías biofarmacéuticas líderes a nivel mundial.
 
 Este dominio fue creado como parte del programa de [nuevos gTLD de la ICANN](https://newgtlds.icann.org/en/about/program), cuyo objetivo era expandir el sistema de nombres de dominio de Internet. Para una empresa farmacéutica, poseer su propia extensión de dominio no es solo una cuestión de vanidad, sino una estrategia crítica de **seguridad digital y autenticación**. Permite a la empresa crear un entorno en línea confiable donde pacientes, médicos y socios comerciales pueden interactuar con la certeza de que están accediendo a información oficial y verificada.
 
@@ -46,7 +46,7 @@ Aunque los usuarios individuales no pueden registrar un dominio .abbvie, entende
 *   **Innovación y Branding:** Permite nombres de dominio más cortos y memorables (ej. `bursitis.abbvie` en lugar de `abbvie-bursitis-info.com`), lo cual mejora la experiencia del usuario y el SEO semántico.
 *   **Seguridad DNS:** Los requisitos para los nuevos gTLDs suelen ser más estrictos en términos de seguridad técnica, lo que beneficia a la infraestructura de la empresa.
 
-Para los inversores de dominios y entusiastas de la tecnología blockchain, el caso de .abbvie ilustra el valor inmenso de la **propiedad digital verificada**, un principio que también es fundamental en los dominios Web3.
+Para los inversores de dominios y entusiastas de la tecnología blockchain, el caso de .abbvie ilustra el valor inmenso de la **propiedad digital verificada**, un principio que también es fundamental en los dominios [Web3](/es/glossary/web3/).
 
 ## **Registra tu dominio en Namefi**
 

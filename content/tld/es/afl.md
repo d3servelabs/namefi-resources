@@ -28,7 +28,7 @@ keywords:
 
 ## **¿Qué es .afl?**
 
-El TLD **.afl** es una extensión de dominio de nivel superior (gTLD) delegada específicamente para la **Australian Football League (AFL)**. A diferencia de los dominios genéricos como .com o .net, el .afl pertenece a una categoría conocida como "Brand TLDs" (Dominios de Marca) o dominios restringidos. Este tipo de dominio fue introducido como parte del Programa de Nuevos gTLD de la [ICANN](https://www.icann.org/es) para permitir que organizaciones establecidas tengan un control total sobre su identidad digital.
+El [TLD](/es/glossary/tld/) **.afl** es una extensión de dominio de nivel superior (gTLD) delegada específicamente para la **Australian Football League (AFL)**. A diferencia de los dominios genéricos como .com o .net, el .afl pertenece a una categoría conocida como "Brand TLDs" (Dominios de Marca) o dominios restringidos. Este tipo de dominio fue introducido como parte del Programa de Nuevos gTLD de la [ICANN](https://www.icann.org/es) para permitir que organizaciones establecidas tengan un control total sobre su identidad digital.
 
 El propósito principal de .afl es consolidar la presencia digital de la liga, sus clubes y sus iniciativas bajo un paraguas de marca unificado y seguro. Al utilizar esta extensión, la liga garantiza a los usuarios que están navegando en un sitio oficial, auténtico y libre de suplantaciones. Aunque su uso está restringido principalmente a la organización, representa un caso de estudio fascinante sobre cómo las grandes entidades deportivas protegen su propiedad intelectual en la web.
 
@@ -60,7 +60,7 @@ Si bien el registro público de dominios .afl está restringido a la organizaci�
 *   **Confianza y Autenticidad Inigualables:** Un dominio que termina en .afl solo puede provenir de la liga oficial. Esto elimina el riesgo de phishing y aumenta la confianza del usuario al instante.
 *   **Relevancia SEO y Branding:** Permite el uso de palabras clave muy cortas y relevantes a la derecha del punto, lo que facilita la memorización de las URL (ej. *shop.afl* en lugar de *afl-shop.com.au*).
 *   **Seguridad del Ecosistema:** Al controlar quién puede registrar dominios, la organización elimina la ciberocupación y protege a sus usuarios de sitios maliciosos.
-*   **Innovación Digital:** Muestra un compromiso con la tecnología moderna, algo esencial en la era de la Web3 y la tokenización de activos.
+*   **Innovación Digital:** Muestra un compromiso con la tecnología moderna, algo esencial en la era de la [Web3](/es/glossary/web3/) y la tokenización de activos.
 
 ## **Registra tu dominio .afl en Namefi**
 

@@ -11,7 +11,7 @@ keywords: ["domaines .vip", "TLD .vip", "top-level domain .vip", "qu'est-ce que 
 
 Le monde des noms de domaine a considérablement évolué au cours de la dernière décennie. Si le `.com` reste un classique, de nouvelles extensions (gTLD) offrent désormais des opportunités de branding uniques et percutantes. Parmi elles, l'extension **.vip** se distingue par sa capacité à évoquer instantanément le prestige, l'exclusivité et la qualité supérieure.
 
-Que vous soyez une entreprise cherchant à lancer un programme de fidélité, un développeur Web3 créant une communauté exclusive, ou un investisseur en domaines, comprendre la valeur du `.vip` est essentiel.
+Que vous soyez une entreprise cherchant à lancer un programme de fidélité, un développeur [Web3](/fr/glossary/web3/) créant une communauté exclusive, ou un investisseur en domaines, comprendre la valeur du `.vip` est essentiel.
 
 ## **Qu'est-ce que le .vip ?**
 

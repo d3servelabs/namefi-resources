@@ -11,9 +11,9 @@ keywords: [".aigo domains", ".aigo TLD", "top-level domain .aigo", "what is .aig
 
 ## **Qu'est-ce que le .aigo ?**
 
-Dans le paysage en constante évolution d'Internet, le choix d'une extension de domaine (TLD) est crucial pour définir l'identité numérique d'une marque. Le **.aigo** est une extension émergente qui se positionne à l'intersection de l'innovation technologique, de l'Intelligence Artificielle (IA) et de l'écosystème Web3.
+Dans le paysage en constante évolution d'Internet, le choix d'une extension de domaine ([TLD](/fr/glossary/tld/)) est crucial pour définir l'identité numérique d'une marque. Le **.aigo** est une extension émergente qui se positionne à l'intersection de l'innovation technologique, de l'Intelligence Artificielle (IA) et de l'écosystème [Web3](/fr/glossary/web3/).
 
-Bien que moins connu que les extensions historiques comme le .com ou le .net, le **.aigo** gagne rapidement du terrain en tant que choix privilégié pour les projets avant-gardistes. Il est souvent associé à l'acronyme "AI" (Intelligence Artificielle) combiné au suffixe "Go", suggérant le mouvement, l'action et la performance algorithmique. C'est une extension qui s'adresse à la nouvelle génération d'internet, facilitant souvent le pont entre les domaines traditionnels (Web2) et les actifs numériques tokenisés (Web3).
+Bien que moins connu que les extensions historiques comme le [.com](/fr/tld/com/) ou le [.net](/fr/tld/net/), le **.aigo** gagne rapidement du terrain en tant que choix privilégié pour les projets avant-gardistes. Il est souvent associé à l'acronyme "AI" (Intelligence Artificielle) combiné au suffixe "Go", suggérant le mouvement, l'action et la performance algorithmique. C'est une extension qui s'adresse à la nouvelle génération d'internet, facilitant souvent le pont entre les domaines traditionnels (Web2) et les actifs numériques tokenisés (Web3).
 
 Pour mieux comprendre la structure des nouveaux gTLD (generic Top-Level Domains), vous pouvez consulter les ressources de l'[ICANN](https://www.icann.org/fr), l'organisation qui coordonne le système des noms de domaine au niveau mondial.
 
@@ -22,7 +22,7 @@ Pour mieux comprendre la structure des nouveaux gTLD (generic Top-Level Domains)
 L'extension .aigo est particulièrement prisée par les communautés technologiques et les investisseurs avertis. Voici comment différents secteurs l'utilisent :
 
 *   **Startups en Intelligence Artificielle :** En raison de la présence de "ai" dans le nom, c'est un choix naturel pour les entreprises développant des chatbots, des algorithmes d'apprentissage automatique ou des solutions d'automatisation.
-*   **Projets Blockchain et Web3 :** Le .aigo est souvent utilisé pour identifier des projets décentralisés, des portefeuilles numériques ou des plateformes d'échange, tirant parti de la nature tokenisée que proposent des registrars modernes comme Namefi.
+*   **Projets [Blockchain](/fr/glossary/blockchain/) et Web3 :** Le .aigo est souvent utilisé pour identifier des projets décentralisés, des portefeuilles numériques ou des plateformes d'échange, tirant parti de la nature tokenisée que proposent des registrars modernes comme Namefi.
 *   **Développeurs et Portfolios Tech :** Les développeurs l'utilisent pour des sites personnels ou des dépôts de code, signalant immédiatement leur compétence dans les technologies modernes.
 *   **Applications de Gaming et de Stratégie :** Le terme "Go" faisant référence au célèbre jeu de stratégie (et au langage de programmation Golang), cette extension attire également les créateurs de jeux et les programmeurs.
 

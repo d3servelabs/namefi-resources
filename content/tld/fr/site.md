@@ -51,7 +51,7 @@ Pourquoi devriez-vous opter pour un .site plutôt qu'une autre extension ? Voici
 
 ## **Enregistrez votre domaine .site chez Namefi**
 
-Le choix de votre bureau d'enregistrement (registrar) est tout aussi important que le choix de votre extension. Chez **Namefi**, nous combinons la sécurité traditionnelle et l'innovation Web3.
+Le choix de votre bureau d'enregistrement (registrar) est tout aussi important que le choix de votre extension. Chez **Namefi**, nous combinons la sécurité traditionnelle et l'innovation [Web3](/fr/glossary/web3/).
 
 En tant que registrar accrédité par l'ICANN, nous vous offrons la fiabilité que vous attendez, mais avec une différence majeure : la possibilité de **tokeniser votre domaine**. Cela signifie que votre domaine .site peut être géré comme un actif numérique sur la blockchain, facilitant les transferts instantanés, la sécurité accrue et l'intégration avec les services DeFi.
 

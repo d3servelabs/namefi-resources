@@ -26,7 +26,7 @@ Esta guía cubre qué es realmente .tv, quién lo gestiona (el operador del back
 
 | Dato | Detalle |
 | --- | --- |
-| Tipo de TLD | TLD de código de país (ccTLD) de Tuvalu |
+| Tipo de [TLD](/es/glossary/tld/) | TLD de código de país (ccTLD) de Tuvalu |
 | Operador del registro | GoDaddy Registry (operador técnico), bajo el Ministerio de Transporte, Energía, Comunicaciones e Innovaciones de Tuvalu |
 | Año de delegación | 1996 |
 | Soporte IDN | Sí (admite nombres de dominio internacionalizados) |
@@ -36,7 +36,7 @@ Esta guía cubre qué es realmente .tv, quién lo gestiona (el operador del back
 
 ## ¿Qué es .tv?
 
-**.tv** es el [dominio de nivel superior](/en/glossary/tld/) de código de país (ccTLD) asignado a **Tuvalu** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/tv.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de Tuvalu; la IANA lista al **Ministerio de Transporte, Energía, Comunicaciones e Innovaciones** del país como administrador del ccTLD, con **GoDaddy Registry** encargándose de la operación técnica.
+**.tv** es el [dominio de nivel superior](/es/glossary/tld/) de código de país (ccTLD) asignado a **Tuvalu** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/tv.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de Tuvalu; la IANA lista al **Ministerio de Transporte, Energía, Comunicaciones e Innovaciones** del país como administrador del ccTLD, con **GoDaddy Registry** encargándose de la operación técnica.
 
 En la práctica, el **dominio .tv** se usa casi por completo como una extensión **genérica y global**. La cadena "tv" tiene un significado abrumador en todos los mercados — es la abreviatura universal de **televisión** — y cada vez más, por extensión, de **video**, **streaming** y **contenido en vivo** de todo tipo. Esa fortuna lingüística es justo la que Tuvalu y sus operadores aprovecharon al licenciar el espacio de nombres al mundo.
 
@@ -75,11 +75,11 @@ Estos casos muestran a .tv siendo confiado no como alternativa de respaldo, sino
 | Característica | .tv | [.com](/es/tld/com/) | [.io](/es/tld/io/) | [.xyz](/es/tld/xyz/) |
 | --- | --- | --- | --- | --- |
 | Tipo | ccTLD (usado globalmente) | gTLD heredado | ccTLD (usado globalmente) | Nuevo gTLD |
-| Asociación principal | Televisión / video / streaming | El estándar web predeterminado | Tecnología / "Entrada-Salida" | Genérico / Web3 |
+| Asociación principal | Televisión / video / streaming | El estándar web predeterminado | Tecnología / "Entrada-Salida" | Genérico / [Web3](/es/glossary/web3/) |
 | Disponibilidad de nombres cortos | Moderada (muchos premium) | Muy escasa | Moderada | Excelente |
 | Nivel de precio típico | Medio-alto | Bajo-medio | Alto | Bajo |
 
-Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.tv** cuando tu marca esté construida en torno al video, la radiodifusión o el contenido en vivo y quieras un sufijo que lo diga de un vistazo. Escoge **[.io](/es/tld/io/)** para marcas tecnológicas centradas en desarrolladores e infraestructura, y **[.xyz](/es/tld/xyz/)** para proyectos genéricos o nativos de Web3 donde un sufijo fresco y neutral es una ventaja.
+Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.tv** cuando tu marca esté construida en torno al video, la radiodifusión o el contenido en vivo y quieras un sufijo que lo diga de un vistazo. Escoge **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura, y **.xyz** para proyectos genéricos o nativos de Web3 donde un sufijo fresco y neutral es una ventaja.
 
 ## ¿Por qué elegir .tv?
 
@@ -98,7 +98,7 @@ Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el pred
 
 **Restricciones de registro: abierto a todos.** **No hay requisito de presencia local, residencia ni nacionalidad tuvaluana** para registrar un dominio .tv de segundo nivel. El registro es **por orden de llegada** y está disponible para particulares y organizaciones de cualquier parte del mundo a través de cualquier [registrador](/es/glossary/registrar/) participante.
 
-Se aplican las prácticas estándar: muchos nombres cortos, genéricos o de alta demanda están clasificados como **premium** y tienen un precio acorde, los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/en/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/en/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de registradores y registros. Como .tv es un ccTLD, se rige por la política tuvaluana en lugar de por un acuerdo de registro de la ICANN — la fuente autorizada para los detalles de gestión vigentes es la [entrada de la zona raíz de la IANA](https://www.iana.org/domains/root/db/tv.html).
+Se aplican las prácticas estándar: muchos nombres cortos, genéricos o de alta demanda están clasificados como **premium** y tienen un precio acorde, los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/es/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/es/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de registradores y registros. Como .tv es un ccTLD, se rige por la política tuvaluana en lugar de por un acuerdo de registro de la ICANN — la fuente autorizada para los detalles de gestión vigentes es la [entrada de la zona raíz de la IANA](https://www.iana.org/domains/root/db/tv.html).
 
 ## Precios y valor de .tv
 
@@ -151,11 +151,11 @@ Pura coincidencia lingüística. "TV" es el código de país ISO de Tuvalu y la 
 
 ## Recursos relacionados
 
-- [Guía del TLD .com](/es/tld/com/)
-- [Guía del TLD .io](/es/tld/io/)
+- Guía del TLD .com
+- Guía del TLD .io
 - [Guía del TLD .co](/es/tld/co/)
-- [Guía del TLD .xyz](/es/tld/xyz/)
+- Guía del TLD .xyz
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
 - [Domain hacks explicados](/es/blog/domain-hacks-explained/)
-- [Glosario: registrador](/es/glossary/registrar/)
-- [Glosario: ICANN](/es/glossary/icann/)
+- Glosario: registrador
+- Glosario: ICANN

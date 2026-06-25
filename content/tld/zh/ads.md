@@ -19,7 +19,7 @@ keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why 
 
 与表示商业的 `.com` 或表示网络的 `.net` 不同，**.ads** 具有极强的垂直属性。它的诞生旨在为全球的广告代理商、营销平台、分类广告网站以及任何涉及推广业务的实体提供一个清晰、专业的网络标识。
 
-随着 Web3 和去中心化身份的发展，像 .ads 这样具有明确语义的域名，在数字资产投资和品牌保护方面也正变得越来越重要。
+随着 [Web3](/zh/glossary/web3/) 和去中心化身份的发展，像 .ads 这样具有明确语义的域名，在数字资产投资和品牌保护方面也正变得越来越重要。
 
 ## **人们如何使用 .ads**
 
@@ -37,7 +37,7 @@ keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why 
 
 1.  **数字营销工具**：假设一家提供 SEO 或 PPC 服务的 SaaS 公司，使用 `Optimize.ads` 比冗长的 `.com` 域名更具冲击力。
 2.  **联盟营销（Affiliate Marketing）**：联盟客可以使用 `BestDeals.ads` 来建立高转化率的导购网站。
-3.  **区块链广告网络**：在 Web3 领域，去中心化的广告协议正在兴起，使用 `ProtocolName.ads` 可以完美契合其业务内容，并在链上身份识别中独树一帜。
+3.  **[区块链](/zh/glossary/blockchain/)广告网络**：在 Web3 领域，去中心化的广告协议正在兴起，使用 `ProtocolName.ads` 可以完美契合其业务内容，并在链上身份识别中独树一帜。
 
 *相关阅读：[了解更多关于新通用顶级域名计划 (New gTLD Program)](https://newgtlds.icann.org/en/about/program)*
 
@@ -57,7 +57,7 @@ keywords: ['.ads domains', '.ads TLD', 'top-level domain', 'what is .ads', 'why 
 
 **Namefi** 不仅仅是一个域名注册商，我们还是您进入 Web3 世界的桥梁。
 *   **无缝集成**：在 Namefi 注册的域名可以轻松代币化，通过区块链技术确权，让您的域名交易和管理更加透明、安全。
-*   **ICANN 认证**：我们提供符合国际标准的服务，确保您的域名资产安全无忧。
+*   **[ICANN](/zh/glossary/icann/) 认证**：我们提供符合国际标准的服务，确保您的域名资产安全无忧。
 *   **智能管理**：体验下一代域名管理后台，轻松配置 DNS 与链上记录。
 
 不要等到您心仪的名字被别人抢注。立即行动，为您的广告业务确立数字领地。

@@ -28,7 +28,7 @@ keywords:
 
 ## **Qu'est-ce que .accenture ?**
 
-Le TLD **.accenture** est un domaine de premier niveau générique (gTLD) un peu particulier : il appartient à la catégorie des **"Brand TLDs"** (domaines de marque). Contrairement aux extensions publiques comme .com ou .org, le .accenture a été créé exclusivement pour l'usage de la société mondiale de services professionnels, **Accenture**.
+Le [TLD](/fr/glossary/tld/) **.accenture** est un domaine de premier niveau générique (gTLD) un peu particulier : il appartient à la catégorie des **"Brand TLDs"** (domaines de marque). Contrairement aux extensions publiques comme [.com](/fr/tld/com/) ou .org, le .accenture a été créé exclusivement pour l'usage de la société mondiale de services professionnels, **Accenture**.
 
 Lancé lors du programme des nouveaux gTLD de l'[ICANN](https://www.icann.org/fr), ce domaine a pour objectif de consolider l'identité numérique de l'entreprise, d'offrir une sécurité accrue et de garantir l'authenticité de ses communications en ligne. En possédant son propre registre, Accenture s'assure qu'aucun tiers ne peut enregistrer de noms de domaine sous cette extension, éliminant ainsi les risques de cybersquatting ou de phishing liés à sa marque.
 
@@ -67,10 +67,10 @@ Si vous vous demandez pourquoi une entreprise investirait dans son propre TLD co
 
 Bien que le TLD **.accenture** soit réservé exclusivement à l'entreprise Accenture, cela ne doit pas vous empêcher de sécuriser votre propre identité numérique unique !
 
-Chez **Namefi**, nous comprenons que le bon nom de domaine est le fondement de votre succès en ligne, que vous soyez une entreprise, un développeur ou un investisseur. Nous offrons une vaste gamme de TLDs (de .com à .io, en passant par .ai et les domaines Web3).
+Chez **Namefi**, nous comprenons que le bon nom de domaine est le fondement de votre succès en ligne, que vous soyez une entreprise, un développeur ou un investisseur. Nous offrons une vaste gamme de TLDs (de .com à [.io](/fr/tld/io/), en passant par .ai et les domaines Web3).
 
 **Pourquoi choisir Namefi ?**
-*   **Accréditation ICANN :** Un service fiable et conforme aux normes mondiales.
+*   **Accréditation [ICANN](/fr/glossary/icann/) :** Un service fiable et conforme aux normes mondiales.
 *   **Intégration Web3 Transparente :** Namefi facilite la tokenisation de vos domaines, vous permettant de gérer votre portefeuille comme des actifs numériques (RWA) sur la blockchain.
 *   **Gestion Simplifiée :** Une interface utilisateur conçue pour les entrepreneurs modernes.
 

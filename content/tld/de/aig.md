@@ -26,18 +26,18 @@ keywords:
   - Namefi
 ---
 
-In der sich rasant entwickelnden digitalen Landschaft ist die Wahl des richtigen Domainnamens entscheidender denn je. Während klassische Endungen wie .com oder .de oft überlaufen sind, eröffnen neue Top-Level-Domains (TLDs) spannende Möglichkeiten für Branding und Identität. Eine dieser aufstrebenden Endungen, die besonders in der Tech- und Web3-Community für Aufsehen sorgt, ist **.aig**.
+In der sich rasant entwickelnden digitalen Landschaft ist die Wahl des richtigen Domainnamens entscheidender denn je. Während klassische Endungen wie [.com](/de/tld/com/) oder .de oft überlaufen sind, eröffnen neue Top-Level-Domains (TLDs) spannende Möglichkeiten für Branding und Identität. Eine dieser aufstrebenden Endungen, die besonders in der Tech- und [Web3](/de/glossary/web3/)-Community für Aufsehen sorgt, ist **.aig**.
 
-In diesem Artikel beleuchten wir, was hinter der .aig TLD steckt, warum sie für Innovatoren unverzichtbar ist und wie Sie Ihre eigene .aig Domain bei Namefi sichern können.
+In diesem Artikel beleuchten wir, was hinter der .aig [TLD](/de/glossary/tld/) steckt, warum sie für Innovatoren unverzichtbar ist und wie Sie Ihre eigene .aig Domain bei Namefi sichern können.
 
 ## **Was ist .aig?**
 
 Die Endung **.aig** ist eine spezialisierte Top-Level-Domain, die zunehmend mit den Bereichen **Artificial Intelligence (AI)** und **Generative Technologies** (Generative KI) sowie innovativen Tech-Gruppen ("Groups") in Verbindung gebracht wird.
 
-Obwohl sie in der breiten Öffentlichkeit noch als Nische gilt, positioniert sich .aig als eine moderne Alternative zu der extrem beliebten, aber oft teuren und vergriffenen .ai-Endung (die eigentlich die Ländercendung für Anguilla ist).
+Obwohl sie in der breiten Öffentlichkeit noch als Nische gilt, positioniert sich .aig als eine moderne Alternative zu der extrem beliebten, aber oft teuren und vergriffenen [.ai](/de/tld/ai/)-Endung (die eigentlich die Ländercendung für Anguilla ist).
 
 *   **Kategorie:** Neue generische Top-Level-Domain (New gTLD) oder Web3-assoziierte TLD.
-*   **Zweck:** Sie dient als digitale Heimat für Unternehmen, Entwickler und Forscher, die an der Schnittstelle von künstlicher Intelligenz, algorithmischer Generierung und Blockchain-Technologie arbeiten.
+*   **Zweck:** Sie dient als digitale Heimat für Unternehmen, Entwickler und Forscher, die an der Schnittstelle von künstlicher Intelligenz, algorithmischer Generierung und [Blockchain](/de/glossary/blockchain/)-Technologie arbeiten.
 *   **Aktuelle Trends:** Mit dem Boom von ChatGPT, Midjourney und anderen generativen KI-Modellen suchen Unternehmen händeringend nach Domains, die "Intelligenz" und "Innovation" signalisieren. Die .aig TLD füllt diese Lücke perfekt.
 
 Für tiefergehende Informationen über die Struktur des Domain Name Systems (DNS) und neue gTLDs empfiehlt sich ein Blick auf die Ressourcen von [ICANN](https://www.icann.org/resources/pages/tlds-2012-02-25-en).

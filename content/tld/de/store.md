@@ -31,7 +31,7 @@ Die Nutzung von .store ist vielseitig, konzentriert sich jedoch fast immer auf k
 Die Glaubwürdigkeit der .store-Domain wird durch ihre Nutzung von weltweit bekannten Marken und Persönlichkeiten unterstrichen. Dies zeigt, dass die Endung nicht nur für kleine Nischenanbieter, sondern auch für globale Player relevant ist:
 
 1.  **Emirates (emirates.store):** Die weltbekannte Fluggesellschaft nutzt diese Domain für ihren offiziellen Merchandise-Store.
-2.  **Cristiano Ronaldo (cr7.store):** Einer der berühmtesten Fußballspieler der Welt vertreibt seine eigene Marke unter dieser prägnanten Domain.
+2.  **Cristiano Ronaldo (cr7.store):** Einer der berühmtesten Fußballspieler der Welt vertreibt seine eigene [Marke](/de/glossary/trademark/) unter dieser prägnanten Domain.
 3.  **Lorde (lorde.store):** Die preisgekrönte Sängerin nutzt die Domain für ihren offiziellen Fanshop.
 4.  **Dude Perfect (dudeperfect.store):** Die YouTube-Sensation mit Millionen von Abonnenten wickelt ihre massiven Merchandise-Verkäufe über eine .store-Adresse ab.
 
@@ -39,7 +39,7 @@ Diese Beispiele zeigen, dass .store eine professionelle und vertrauenswürdige W
 
 ## **Warum sollten Sie sich für .store entscheiden?**
 
-Für Domain-Investoren, Web3-Enthusiasten und Geschäftsinhaber bietet die Wahl einer .store-Domain entscheidende Vorteile:
+Für Domain-Investoren, [Web3](/de/glossary/web3/)-Enthusiasten und Geschäftsinhaber bietet die Wahl einer .store-Domain entscheidende Vorteile:
 
 *   **Verfügbarkeit von Premium-Namen:** Während kurze, einprägsame Namen unter .com oft vergriffen oder extrem teuer sind, bietet .store noch eine Fülle an hochwertigen, kurzen Domainnamen.
 *   **Sofortige Markenbotschaft:** Die Endung ist selbsterklärend. Sie sagt "Wir verkaufen hier etwas". Dies verkürzt die Customer Journey und setzt die richtige Erwartungshaltung beim Besucher.
@@ -52,7 +52,7 @@ Sind Sie bereit, Ihren Online-Shop zu starten oder Ihr Domain-Portfolio um eine 
 
 Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Registrierung. Als innovativer Registrar verbinden wir die traditionelle Welt der Domains mit der Zukunft des Web3:
 
-*   **ICANN-akkreditiert:** Genießen Sie die Sicherheit und den Trust eines offiziell akkreditierten Registrars.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Genießen Sie die Sicherheit und den Trust eines offiziell akkreditierten Registrars.
 *   **Nahtlose Web3-Integration:** Bei Namefi können Ihre Domains als NFTs auf der Blockchain gemintet werden ("Tokenized Domains"). Dies erleichtert den Handel, die Übertragung und die Verwaltung Ihrer digitalen Assets enorm.
 *   **Einfache Verwaltung:** Unsere Plattform ist benutzerfreundlich gestaltet, egal ob Sie Entwickler, Investor oder Geschäftsinhaber sind.
 

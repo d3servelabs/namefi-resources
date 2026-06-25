@@ -11,9 +11,9 @@ keywords: ['.allstate', '.allstate domains', '.allstate TLD', 'top-level domain'
 
 ## **什么是 .allstate?**
 
-**.allstate** 是一个专属的**品牌顶级域名（Brand TLD）**，属于互联网名称与数字地址分配机构（ICANN）新通用顶级域名（New gTLD）计划的一部分。与 `.com` 或 `.net` 等开放注册的公共域名不同，`.allstate` 是由美国知名的保险巨头 **Allstate Insurance Company（全州保险公司）** 独家拥有和运营的。
+**.allstate** 是一个专属的**品牌顶级域名（Brand [TLD](/zh/glossary/tld/)）**，属于互联网名称与数字地址分配机构（ICANN）新通用顶级域名（New gTLD）计划的一部分。与 `.com` 或 `.net` 等开放注册的公共域名不同，`.allstate` 是由美国知名的保险巨头 **Allstate Insurance Company（全州保险公司）** 独家拥有和运营的。
 
-作为一个封闭的注册局，`.allstate` 的主要目的是为 Allstate 及其附属机构提供一个高度安全、可信且品牌统一的数字空间。这代表了域名行业的一种趋势，即大型企业通过拥有自己的 TLD 来增强品牌权威性并打击网络钓鱼。
+作为一个封闭的[注册局](/zh/glossary/registry/)，`.allstate` 的主要目的是为 Allstate 及其附属机构提供一个高度安全、可信且品牌统一的数字空间。这代表了域名行业的一种趋势，即大型企业通过拥有自己的 TLD 来增强品牌权威性并打击[网络钓鱼](/zh/glossary/phishing/)。
 
 有关顶级域名的更多官方信息，您可以参考 [ICANN 官网](https://www.icann.org/) 或 [IANA 根域数据库](https://www.iana.org/domains/root/db/allstate.html)。
 
@@ -21,7 +21,7 @@ keywords: ['.allstate', '.allstate domains', '.allstate TLD', 'top-level domain'
 
 由于 `.allstate` 是一个品牌专用域名，普通公众通常无法注册将其用于个人博客或小型企业。然而，了解它的使用方式对于理解现代域名策略非常有价值。目前，它的主要应用场景包括：
 
-*   **官方服务门户**：用于托管客户登录页面、索赔处理中心等高敏感度服务，确保用户确信自己访问的是官方网站。
+*   **官方服务门户**：用于[托管](/zh/glossary/escrow/)客户登录页面、索赔处理中心等高敏感度服务，确保用户确信自己访问的是官方网站。
 *   **营销活动**：创建简短、易记的营销链接（例如 `auto.allstate` 或 `claims.allstate`），以便于在广告中推广。
 *   **代理商及内部通讯**：为旗下的保险代理人或内部员工系统分配标准化的子域名，便于管理和识别。
 *   **品牌保护**：防止第三方抢注与品牌相关的域名，从而减少网络诈骗和品牌稀释的风险。
@@ -53,7 +53,7 @@ keywords: ['.allstate', '.allstate domains', '.allstate TLD', 'top-level domain'
 
 **为什么选择 Namefi？**
 *   **ICANN 认证**：我们提供安全、合规的全球域名注册服务。
-*   **Web3 集成**：Namefi 率先引入了将传统 Web2 域名“通证化”（Tokenization）的技术，让您可以像管理 NFT 一样轻松交易和管理您的域名资产。
+*   **[Web3](/zh/glossary/web3/) 集成**：Namefi 率先引入了将传统 Web2 域名“通证化”（Tokenization）的技术，让您可以像管理 NFT 一样轻松交易和管理您的域名资产。
 *   **智能推荐**：找不到 `.allstate`？我们的 AI 搜索工具将为您推荐最适合您保险或金融业务的可用顶级域名。
 
 不要让好名字溜走。无论您是寻找行业特定的 TLD 还是经典的 `.com`，立即行动，确立您的在线品牌。

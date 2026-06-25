@@ -38,7 +38,7 @@ faqs:
 
 ## 什么是 .ai？
 
-.ai 是分配给安圭拉的 [ccTLD](/en/glossary/tld/)。"AI"两个字母只是安圭拉的 ISO 3166-1 国家代码——正如 .io（印度洋领地）和 .tv（图瓦卢）因巧合而成为科技圈宠儿一样。该后缀于 1995 年获得授权，比现代 AI 热潮早了数十年，这一点可在 [.ai 的 IANA 根区记录](https://www.iana.org/domains/root/db/ai.html)中得到证实。
+.ai 是分配给安圭拉的 [ccTLD](/zh/glossary/tld/)。"AI"两个字母只是安圭拉的 ISO 3166-1 国家代码——正如 .io（印度洋领地）和 [.tv](/zh/tld/tv/)（图瓦卢）因巧合而成为科技圈宠儿一样。该后缀于 1995 年获得授权，比现代 AI 热潮早了数十年，这一点可在 [.ai 的 IANA 根区记录](https://www.iana.org/domains/root/db/ai.html)中得到证实。
 
 .ai 与众不同之处在于搜索引擎对它的处理方式。尽管它在官方层面属于 ccTLD，[Google 并不将其地理定位到安圭拉](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites)。Google 维护着一份被视为通用的 ccTLD 列表（即"gccTLD"），.ai 便在其中。这意味着 .ai 网站可以在全球范围内排名，而不会被推向加勒比海受众——这也是全球 AI 公司乐于将其主品牌建立在 .ai 上的重要原因。
 
@@ -80,7 +80,7 @@ faqs:
 | 典型价格 | 高，溢价 | 中高 | 低，但短域名稀缺 |
 | 最短注册期 | 两年 | 一年 | 一年 |
 
-当人工智能*本身就是*您的产品，且您希望将这层含义融入名称时，选择 **.ai**。若面向更广泛的开发者、SaaS 或基础设施领域，且希望体现"输入/输出"含义且价格更实惠，则选择 **[.io](/zh/tld/io/)**——参见[为什么 .io 域名这么贵](/zh/blog/why-are-io-domains-expensive/)。**[.com](/zh/tld/com/)** 作为通用默认选项也不应忽视；许多团队会在持有 .ai 的同时防御性地注册 .com。若想深入对比，请阅读 [.ai 与 .io：哪个域名更适合您的初创公司？](/zh/blog/ai-vs-io-domain/)
+当人工智能*本身就是*您的产品，且您希望将这层含义融入名称时，选择 **.ai**。若面向更广泛的开发者、SaaS 或基础设施领域，且希望体现"输入/输出"含义且价格更实惠，则选择 **.io**——参见[为什么 .io 域名这么贵](/zh/blog/why-are-io-domains-expensive/)。**[.com](/zh/tld/com/)** 作为通用默认选项也不应忽视；许多团队会在持有 .ai 的同时防御性地注册 .com。若想深入对比，请阅读 [.ai 与 .io：哪个域名更适合您的初创公司？](/zh/blog/ai-vs-io-domain/)
 
 ## 为什么选择 .ai？
 
@@ -92,7 +92,7 @@ faqs:
 ## 需要考虑的因素
 
 - **两年最短注册期：** 无法按年注册或续期，提高了初始成本。
-- **溢价定价：** 无论注册还是续费，.ai 的价格始终高于 .com 或 .net。
+- **溢价定价：** 无论注册还是续费，.ai 的价格始终高于 .com 或 [.net](/zh/tld/net/)。
 - **细分含义：** 如果您的产品与 AI 并无关联，这个后缀可能会让访客感到困惑或显得牵强。
 - **热点周期风险：** 将品牌与"AI"深度绑定，意味着将身份与一个快速演变的趋势紧密相连。
 
@@ -100,7 +100,7 @@ faqs:
 
 **注册限制：向所有人开放。** 注册 .ai 域名无需本地存在、国籍或资质要求——全球任何人均可通过认证[注册商](/zh/glossary/registrar/)注册。核心规则是**两年最短注册期**：.ai 域名以两年至十年为期注册和续期，而非其他地方常见的一年周期。
 
-域名使用标准 ASCII 字符（a–z、0–9 及连字符，不得置于开头或结尾），对国际化域名的支持有限。注册局支持 [DNSSEC](/en/glossary/dnssec/) 以保证加密完整性，并通过注册局提供现代 WHOIS/RDAP 查询服务。权威政策和注册规则由安圭拉注册局在官方网站 [nic.ai](https://nic.ai/) 上发布。由于 .ai 是 ccTLD，不受 [ICANN](/zh/glossary/icann/) 注册协议约束；安圭拉自行制定相关政策。
+域名使用标准 ASCII 字符（a–z、0–9 及连字符，不得置于开头或结尾），对国际化域名的支持有限。注册局支持 [DNSSEC](/zh/glossary/dnssec/) 以保证加密完整性，并通过注册局提供现代 WHOIS/RDAP 查询服务。权威政策和注册规则由安圭拉注册局在官方网站 [nic.ai](https://nic.ai/) 上发布。由于 .ai 是 ccTLD，不受 [ICANN](/zh/glossary/icann/) 注册协议约束；安圭拉自行制定相关政策。
 
 ## .ai 的定价与价值
 
@@ -124,7 +124,7 @@ faqs:
 2. **选择**注册期限（请记住两年最短限制），并确认该域名为标准价还是溢价价。
 3. **注册**并完成结账。
 
-[Namefi](https://namefi.io) 是一家 ICANN 认证注册商，同时支持 Web3 代币化域名，因此您的 .ai 可以作为链上 [NFT](/zh/glossary/nft/) 进行管理，实现更便捷的转让和可验证的所有权——参见[什么是代币化域名](/zh/blog/what-are-tokenized-domains/)。您可以在一个平台上获得透明定价、可靠 DNS 和可选代币化服务。
+[Namefi](https://namefi.io) 是一家 [ICANN 认证注册商](/zh/glossary/accredited-registrar/)，同时支持 [Web3](/zh/glossary/web3/) 代币化域名，因此您的 .ai 可以作为链上 [NFT](/zh/glossary/nft/) 进行管理，实现更便捷的转让和可验证的所有权——参见[什么是代币化域名](/zh/blog/what-are-tokenized-domains/)。您可以在一个平台上获得透明定价、可靠 DNS 和可选代币化服务。
 
 ## 常见问题
 
@@ -142,7 +142,7 @@ faqs:
 
 ### 谁拥有并运营 .ai 注册局？
 
-安圭拉政府持有 .ai 的 IANA 授权。自 2025 年 1 月起，技术注册后端由 Identity Digital 运营。但您注册的每个 .ai 域名归您（注册人）所有。
+安圭拉政府持有 .ai 的 IANA 授权。自 2025 年 1 月起，技术注册后端由 Identity Digital 运营。但您注册的每个 .ai 域名归您（[注册人](/zh/glossary/registrant/)）所有。
 
 ### 为什么 .ai 最短注册期为两年？
 
@@ -154,5 +154,5 @@ faqs:
 - [.ai 与 .io：哪个域名更适合您的初创公司？](/zh/blog/ai-vs-io-domain/)
 - [2026 年代币化域名使用案例](/zh/blog/tokenized-domain-use-cases-2026/)
 - [什么是代币化域名？](/zh/blog/what-are-tokenized-domains/)
-- [.io 域名](/zh/tld/io/) · [.com 域名](/zh/tld/com/) · [.dev 域名](/zh/tld/dev/)
-- 术语表：[注册商](/zh/glossary/registrar/) · [ICANN](/zh/glossary/icann/) · [DNSSEC](/en/glossary/dnssec/) · [SEO](/zh/glossary/seo/)
+- .io 域名 · .com 域名 · [.dev 域名](/zh/tld/dev/)
+- 术语表：注册商 · ICANN · DNSSEC · [SEO](/zh/glossary/seo/)

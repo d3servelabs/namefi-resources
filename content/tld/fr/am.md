@@ -23,7 +23,7 @@ L'extension .am est extrêmement polyvalente. Voici comment différents secteurs
 
 *   **Radiodiffusion et Médias** : L'acronyme "AM" (Amplitude Modulation) est universellement reconnu dans le monde de la radio. De nombreuses stations de radio et podcasts utilisent cette extension pour renforcer leur identité sonore et médiatique.
 *   **Domain Hacking (Jeux de mots)** : C'est l'un des usages les plus créatifs. En anglais, "am" est la première personne du singulier du verbe être (*I am*). Cela permet de créer des phrases complètes ou des marques mémorables se terminant par "am" (ex: *progr.am*, *stre.am*, *te.am*).
-*   **Startups et Tech** : La pénurie de noms courts en .com pousse les startups à chercher des alternatives. Le .am offre une image moderne et permet souvent d'obtenir des noms plus courts et percutants.
+*   **Startups et Tech** : La pénurie de noms courts en [.com](/fr/tld/com/) pousse les startups à chercher des alternatives. Le .am offre une image moderne et permet souvent d'obtenir des noms plus courts et percutants.
 *   **Entreprises Arméniennes** : Naturellement, il reste le choix de prédilection pour les entreprises locales, les institutions gouvernementales et les organisations situées en Arménie.
 
 ## **Entités notables utilisant le .am**
@@ -53,7 +53,7 @@ Que vous soyez une station de radio, une startup innovante ou un investisseur à
 Chez **Namefi**, nous rendons l'acquisition et la gestion de vos domaines plus simples et plus puissantes que jamais.
 
 *   **Accréditation et Confiance** : Nous respectons les normes les plus strictes de l'industrie.
-*   **Intégration Web3** : Namefi n'est pas un registrar classique. Nous permettons la **tokenisation** de vos domaines. Vous pouvez gérer vos domaines .am comme des actifs numériques (NFTs), facilitant les transferts instantanés et la gestion via la blockchain, tout en restant parfaitement compatible avec le web traditionnel (Web2).
+*   **Intégration [Web3](/fr/glossary/web3/)** : Namefi n'est pas un registrar classique. Nous permettons la **tokenisation** de vos domaines. Vous pouvez gérer vos domaines .am comme des actifs numériques (NFTs), facilitant les transferts instantanés et la gestion via la blockchain, tout en restant parfaitement compatible avec le web traditionnel (Web2).
 *   **Transparence** : Pas de frais cachés, une interface fluide et un support dédié.
 
 Ne laissez pas quelqu'un d'autre enregistrer votre idée.

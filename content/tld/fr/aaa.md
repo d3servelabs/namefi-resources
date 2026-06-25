@@ -11,7 +11,7 @@ keywords: [".aaa domains", ".aaa TLD", "top-level domain .aaa", "what is .aaa", 
 
 ## **Qu'est-ce que le .aaa ?**
 
-Le **.aaa** est un domaine de premier niveau (TLD) qui appartient à la catégorie des "Brand TLDs" (TLD de marque). Contrairement aux extensions génériques comme le .com ou le .net, ou aux extensions géographiques comme le .fr, le .aaa a été créé spécifiquement pour une organisation unique.
+Le **.aaa** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) qui appartient à la catégorie des "Brand TLDs" (TLD de marque). Contrairement aux extensions génériques comme le .com ou le .net, ou aux extensions géographiques comme le .fr, le .aaa a été créé spécifiquement pour une organisation unique.
 
 Il s'agit de l'extension officielle de l'**American Automobile Association (AAA)**, une fédération d'associations automobiles en Amérique du Nord. Cette extension a été déléguée dans le cadre du programme des nouveaux gTLD de l'[ICANN](https://www.icann.org/) (Internet Corporation for Assigned Names and Numbers), permettant aux grandes marques de posséder leur propre espace numérique.
 
@@ -51,7 +51,7 @@ Que vous soyez une entreprise cherchant à protéger sa marque ou un investisseu
 Chez **Namefi**, nous comprenons que l'avenir des domaines ne réside pas seulement dans le nom, mais dans la technologie qui le soutient.
 
 *   **Accréditation ICANN :** Nous sommes un registraire de confiance, respectant les normes mondiales.
-*   **Intégration Web3 Transparente :** Namefi vous permet de "tokeniser" vos domaines DNS standards (comme .com, .net, .io, etc.). Cela signifie que vous pouvez transférer, vendre et gérer vos domaines aussi facilement qu'un NFT, sans paperasse complexe.
+*   **Intégration [Web3](/fr/glossary/web3/) Transparente :** Namefi vous permet de "tokeniser" vos domaines [DNS](/fr/glossary/dns/) standards (comme .com, .net, .io, etc.). Cela signifie que vous pouvez transférer, vendre et gérer vos domaines aussi facilement qu'un NFT, sans paperasse complexe.
 *   **Gestion Simplifiée :** Profitez d'une interface fluide conçue pour les développeurs et les entrepreneurs modernes.
 
 Ne laissez pas votre identité numérique au hasard. Bien que le .aaa soit réservé, des millions d'autres opportunités vous attendent.

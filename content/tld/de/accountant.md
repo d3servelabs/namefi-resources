@@ -53,7 +53,7 @@ Es gibt überzeugende Gründe, warum Sie sich für eine .accountant Domain entsc
 
 Sind Sie bereit, Ihre digitale Präsenz auf das nächste Level zu heben? Eine .accountant Domain ist mehr als nur eine Webadresse – sie ist ein Statement für Ihre finanzielle Expertise.
 
-Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als ICANN-akkreditierter Registrar verbinden wir die traditionelle Welt der Domains mit der Innovation des Web3.
+Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) verbinden wir die traditionelle Welt der Domains mit der Innovation des Web3.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Nutzen Sie unser intuitives Dashboard.

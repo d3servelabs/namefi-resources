@@ -50,7 +50,7 @@ Die Wahl einer `.now` Domain bietet mehrere strategische Vorteile gegenüber tra
 
 Sind Sie bereit, Ihre digitale Präsenz ins "Hier und Jetzt" zu holen? Eine `.now` Domain ist mehr als nur eine Webadresse – sie ist ein Statement.
 
-Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als ICANN-akkreditierter Registrar, der die Brücke zwischen traditionellem Web2 und dem modernen Web3 schlägt, profitieren Sie von einzigartigen Vorteilen:
+Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der die Brücke zwischen traditionellem Web2 und dem modernen Web3 schlägt, profitieren Sie von einzigartigen Vorteilen:
 
 *   **Tokenisierte Domains:** Machen Sie Ihre `.now` Domain handelbar und liquide durch unsere NFT-Technologie.
 *   **Nahtlose Verwaltung:** Einfache DNS-Konfiguration und transparente Preisgestaltung.

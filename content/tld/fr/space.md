@@ -11,7 +11,7 @@ keywords: [".space domains", ".space TLD", ".space top-level domain", "what is .
 
 Le paysage numérique est en constante expansion, et le choix de la bonne extension de domaine (TLD) est crucial pour définir votre identité en ligne. Si les extensions traditionnelles comme le .com sont souvent saturées, de nouvelles alternatives offrent des opportunités de branding uniques. L'une des plus polyvalentes et créatives est le **.space**.
 
-Dans cet article, nous explorerons ce qu'est le TLD .space, qui l'utilise et pourquoi il pourrait être le choix parfait pour votre prochain projet Web3 ou traditionnel.
+Dans cet article, nous explorerons ce qu'est le TLD .space, qui l'utilise et pourquoi il pourrait être le choix parfait pour votre prochain projet [Web3](/fr/glossary/web3/) ou traditionnel.
 
 ## **Qu'est-ce que le .space ?**
 

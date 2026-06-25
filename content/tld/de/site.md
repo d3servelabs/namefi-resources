@@ -24,7 +24,7 @@ Der Begriff "Site" ist die universelle Abkürzung für "Website" und wird weltwe
 Die Vielseitigkeit von .site erlaubt fast jeden Anwendungsfall. Da der Begriff "Site" im Englischen direkt "Ort" oder "Platz" (im Sinne von Webplatz) bedeutet, wirkt er wie eine natürliche Erweiterung des Firmennamens. Hier sind einige der häufigsten Nutzungsszenarien:
 
 *   **Technologie-Startups und SaaS:** Viele junge Unternehmen, die keinen kurzen .com-Namen finden konnten, weichen auf .site aus, um ihre Webpräsenz modern und global wirken zu lassen.
-*   **Web3 und Blockchain-Projekte:** In der dezentralen Welt suchen Entwickler oft nach klaren, verfügbaren Namen für ihre dApps oder Protokolle. .site bietet hier eine neutrale und professionelle Alternative zu "crypto-spezifischen" Endungen.
+*   **[Web3](/de/glossary/web3/) und Blockchain-Projekte:** In der dezentralen Welt suchen Entwickler oft nach klaren, verfügbaren Namen für ihre dApps oder Protokolle. .site bietet hier eine neutrale und professionelle Alternative zu "crypto-spezifischen" Endungen.
 *   **Kreative Portfolios:** Freelancer, Designer und Architekten nutzen die Endung oft in Kombination mit ihrem Nachnamen (z.B. `mueller.site`), um ihre Arbeiten zu präsentieren.
 *   **E-Commerce und lokale Geschäfte:** Da "Site" oft als Synonym für "Online-Präsenz" verstanden wird, nutzen Händler diese Endung, um ihren Onlineshop klar vom physischen Geschäft abzugrenzen.
 
@@ -51,7 +51,7 @@ Es gibt handfeste Gründe, warum Entwickler und Unternehmer sich heute für eine
 
 Die .site-Domain ist modern, kurz und auf den Punkt gebracht. Sie ist die perfekte Leinwand für Ihre nächste große Idee, sei es ein Web2-Onlineshop oder ein Web3-Projekt.
 
-Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer als je zuvor. Als ICANN-akkreditierter Registrar bieten wir Ihnen nicht nur klassische Domain-Dienstleistungen, sondern schlagen auch die Brücke zur Blockchain-Technologie.
+Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer als je zuvor. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) bieten wir Ihnen nicht nur klassische Domain-Dienstleistungen, sondern schlagen auch die Brücke zur Blockchain-Technologie.
 
 **Warum Namefi?**
 *   **Tokenisierte Domains:** Machen Sie Ihre Domain handelbar und integrieren Sie sie nahtlos in DeFi- und NFT-Ökosysteme.

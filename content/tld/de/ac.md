@@ -11,7 +11,7 @@ keywords: [".ac domains", ".ac TLD", ".ac top-level domain", "was ist .ac", "war
 
 ## **Was ist .ac?**
 
-Die Top-Level-Domain (TLD) **.ac** ist die länderspezifische Domainendung (ccTLD) für **Ascension**, eine abgelegene Vulkaninsel im Südatlantik, die zum britischen Überseegebiet St. Helena, Ascension und Tristan da Cunha gehört. Obwohl sie geografisch einer kleinen Insel mit wenigen Einwohnern zugeordnet ist, hat sich die .ac-Domain zu einer beliebten Wahl auf dem globalen Domainmarkt entwickelt.
+Die Top-Level-Domain ([TLD](/de/glossary/tld/)) **.ac** ist die länderspezifische Domainendung (ccTLD) für **Ascension**, eine abgelegene Vulkaninsel im Südatlantik, die zum britischen Überseegebiet St. Helena, Ascension und Tristan da Cunha gehört. Obwohl sie geografisch einer kleinen Insel mit wenigen Einwohnern zugeordnet ist, hat sich die .ac-Domain zu einer beliebten Wahl auf dem globalen Domainmarkt entwickelt.
 
 Verwaltet wird die TLD von der [Internet Computer Bureau (ICB)](http://www.nic.ac/), einem Unternehmen mit Sitz in Großbritannien. Ein entscheidender Vorteil der .ac-Domain ist, dass sie von Google und anderen Suchmaschinen als **"Generic Country Code Top-Level Domain" (gccTLD)** behandelt wird. Das bedeutet, dass sie – ähnlich wie .io oder .co – in den Suchergebnissen nicht auf eine bestimmte geografische Region (wie Ascension Island) beschränkt ist, sondern weltweit ohne SEO-Nachteile genutzt werden kann.
 
@@ -28,11 +28,11 @@ Die Vielseitigkeit der .ac-Domain macht sie für verschiedene Zielgruppen attrak
 
 ## **Bekannte Beispiele und Nutzungskategorien**
 
-Während große globale Konzerne oft bei .com bleiben, gibt es spezifische Nischen, in denen .ac glänzt.
+Während große globale Konzerne oft bei [.com](/de/tld/com/) bleiben, gibt es spezifische Nischen, in denen .ac glänzt.
 
 1.  **Universitäre Subdomains:** In Ländern wie Großbritannien, Japan (.ac.jp) und Belgien (.ac.be) ist das Kürzel "ac" fest im Bildungssystem verankert. Eine direkte .ac-Domain signalisiert sofortige Zugehörigkeit zum Bildungssektor.
 2.  **Kurz-URL-Dienste:** Aufgrund der Kürze (nur zwei Buchstaben) wird .ac gerne für URL-Shortener verwendet.
-3.  **Innovative Startups:** Viele moderne Web3- oder FinTech-Projekte nutzen Domain-Hacks, die auf "ac" enden (z.B. Wörter, die auf -ac enden wie "tarmac" oder "zodiac").
+3.  **Innovative Startups:** Viele moderne [Web3](/de/glossary/web3/)- oder FinTech-Projekte nutzen Domain-Hacks, die auf "ac" enden (z.B. Wörter, die auf -ac enden wie "tarmac" oder "zodiac").
 
 Mehr Informationen zur Verwaltung und den Richtlinien finden Sie direkt bei der [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/ac.html).
 
@@ -43,16 +43,16 @@ Die Entscheidung für eine .ac-Domain bietet mehrere strategische Vorteile für 
 *   **Verfügbarkeit:** Im Gegensatz zu den überfüllten .com- oder .de-Namensräumen haben Sie bei .ac noch hervorragende Chancen, kurze, prägnante und generische Begriffe zu registrieren.
 *   **Glaubwürdigkeit:** Durch die Assoziation mit Universitäten ("Academic") strahlt die Endung Seriosität und Wissen aus.
 *   **Lokale Identität (DACH-Region):** Für Unternehmen im Raum Aachen ist es die ultimative "Local SEO"-Endung, die sofortige regionale Verbundenheit zeigt.
-*   **Sicherheit und Stabilität:** Die Registry gilt als professionell und stabil, was für langfristige Projekte essenziell ist.
+*   **Sicherheit und Stabilität:** Die [Registry](/de/glossary/registry/) gilt als professionell und stabil, was für langfristige Projekte essenziell ist.
 *   **Globales SEO:** Da Google sie als generisch einstuft, können Sie internationale Zielgruppen ansprechen, ohne auf lokale Rankings beschränkt zu sein.
 
 ## **Registrieren Sie Ihre .ac Domain bei Namefi**
 
 Sind Sie bereit, Ihre digitale Präsenz mit einer kurzen und einprägsamen Domain zu stärken? Egal, ob Sie ein Bildungsinstitut leiten, ein stolzes Unternehmen aus Aachen sind oder ein innovatives Tech-Startup gründen – die .ac-Domain ist eine exzellente Wahl.
 
-Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als innovativer Registrar kombinieren wir die klassische Web2-Welt mit den Vorteilen von Web3.
+Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als innovativer [Registrar](/de/glossary/registrar/) kombinieren wir die klassische Web2-Welt mit den Vorteilen von Web3.
 
-*   **ICANN-akkreditiert:** Höchste Sicherheitsstandards für Ihre Domains.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Höchste Sicherheitsstandards für Ihre Domains.
 *   **Tokenisierte Domains:** Nutzen Sie Ihre Domain als digitales Asset auf der Blockchain.
 *   **Einfache Verwaltung:** Ein nahtloses Erlebnis für Entwickler und Investoren.
 

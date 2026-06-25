@@ -15,7 +15,7 @@ Le **.live** est un domaine de premier niveau générique (new gTLD) qui a rapid
 
 Géré par le registre [Identity Digital](https://www.identity.digital/), ce domaine a été conçu pour répondre aux besoins croissants du web en matière de diffusion de contenu en direct. Que ce soit pour le streaming de jeux vidéo, les actualités en continu, l'enseignement à distance ou les événements sportifs, le .live indique aux visiteurs que le contenu qu'ils s'apprêtent à voir est frais, interactif et dynamique.
 
-Dans le contexte actuel de l'investissement de domaine et de l'innovation Web3, le .live est également pertinent pour les projets nécessitant des mises à jour constantes ou des interactions en temps réel sur la blockchain. Pour en savoir plus sur la classification des domaines, vous pouvez consulter le site de l'[ICANN](https://www.icann.org/fr).
+Dans le contexte actuel de l'investissement de domaine et de l'innovation [Web3](/fr/glossary/web3/), le .live est également pertinent pour les projets nécessitant des mises à jour constantes ou des interactions en temps réel sur la blockchain. Pour en savoir plus sur la classification des domaines, vous pouvez consulter le site de l'[ICANN](https://www.icann.org/fr).
 
 ## **Comment le domaine .live est-il utilisé ?**
 

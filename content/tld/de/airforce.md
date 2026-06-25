@@ -11,7 +11,7 @@ keywords: ['.airforce domains', '.airforce TLD', '.airforce top-level domain', '
 
 ## **Was ist .airforce?**
 
-Die Top-Level-Domain (TLD) **.airforce** ist eine spezialisierte Domainendung, die im Rahmen des Programms für neue generische Top-Level-Domains (new gTLDs) eingeführt wurde. Sie wird von [Identity Digital](https://identity.digital/) verwaltet und richtet sich speziell an Einzelpersonen, Organisationen und Gemeinschaften, die mit der Luftwaffe, der militärischen Luftfahrt oder der Unterstützung von Veteranen verbunden sind.
+Die Top-Level-Domain ([TLD](/de/glossary/tld/)) **.airforce** ist eine spezialisierte Domainendung, die im Rahmen des Programms für neue generische Top-Level-Domains (new gTLDs) eingeführt wurde. Sie wird von [Identity Digital](https://identity.digital/) verwaltet und richtet sich speziell an Einzelpersonen, Organisationen und Gemeinschaften, die mit der Luftwaffe, der militärischen Luftfahrt oder der Unterstützung von Veteranen verbunden sind.
 
 Im Gegensatz zu herkömmlichen Endungen wie .com oder .org bietet .airforce sofortigen Kontext. Sie wurde geschaffen, um Luftwaffenangehörigen, Veteranengruppen, Luftfahrtmuseen, Personalvermittlern und Enthusiasten einen dedizierten digitalen Raum zu bieten. Diese TLD signalisiert Stolz, Zugehörigkeit und fachliche Kompetenz im Bereich der Luftverteidigung und Luftfahrtgeschichte. Sie ist für jedermann registrierbar, wird aber hauptsächlich von jenen genutzt, die eine starke Verbindung zu diesem Sektor demonstrieren möchten.
 
@@ -52,7 +52,7 @@ Die Wahl einer .airforce Domain bietet strategische Vorteile gegenüber gesätti
 
 Sind Sie bereit, Ihre Online-Präsenz mit einer starken und aussagekräftigen Domain zu starten? Eine .airforce Domain ist der perfekte Startbahn für Ihr Projekt.
 
-Bei **Namefi** machen wir die Domain-Registrierung einfacher und moderner denn je. Als ICANN-akkreditierter Anbieter kombinieren wir traditionelle Zuverlässigkeit mit fortschrittlicher Technologie. Wir ermöglichen Ihnen eine nahtlose Integration in das Web3-Ökosystem, was bedeutet, dass Ihre Domain nicht nur eine Webadresse ist, sondern ein digitaler Vermögenswert, den Sie einfach verwalten können.
+Bei **Namefi** machen wir die Domain-Registrierung einfacher und moderner denn je. Als ICANN-akkreditierter Anbieter kombinieren wir traditionelle Zuverlässigkeit mit fortschrittlicher Technologie. Wir ermöglichen Ihnen eine nahtlose Integration in das [Web3](/de/glossary/web3/)-Ökosystem, was bedeutet, dass Ihre Domain nicht nur eine Webadresse ist, sondern ein digitaler Vermögenswert, den Sie einfach verwalten können.
 
 **Sichern Sie sich noch heute Ihren Wunschnamen, bevor er vergeben ist.**
 

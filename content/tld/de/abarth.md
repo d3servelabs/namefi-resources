@@ -13,7 +13,7 @@ keywords: [".abarth domains", ".abarth TLD", "top-level domain", "was ist .abart
 
 Die Endung **.abarth** gehört zu einer speziellen Kategorie von Top-Level-Domains (TLDs), die als "Dot Brand" oder Marken-TLDs bekannt sind. Im Gegensatz zu generischen Endungen wie .com oder länderspezifischen Endungen wie .de, ist .abarth explizit mit der legendären italienischen Automobilmarke **Abarth** verbunden, die für ihre leistungsstarken Fahrzeuge und ihr Rennsport-Erbe bekannt ist.
 
-Diese TLD wurde als Teil des Programms für neue generische Top-Level-Domains (new gTLD) der [ICANN](https://www.icann.org/) eingeführt. Der Hauptzweck dieser Domainendung besteht darin, dem Automobilhersteller (einem Teil von Stellantis) eine sichere, markengeschützte und unverwechselbare digitale Identität im Internet zu bieten. Sie repräsentiert Geschwindigkeit, Leistung und das ikonische Skorpion-Logo der Marke im digitalen Raum.
+Diese [TLD](/de/glossary/tld/) wurde als Teil des Programms für neue generische Top-Level-Domains (new gTLD) der [ICANN](https://www.icann.org/) eingeführt. Der Hauptzweck dieser Domainendung besteht darin, dem Automobilhersteller (einem Teil von Stellantis) eine sichere, markengeschützte und unverwechselbare digitale Identität im Internet zu bieten. Sie repräsentiert Geschwindigkeit, Leistung und das ikonische Skorpion-Logo der Marke im digitalen Raum.
 
 ## **Wie Menschen .abarth nutzen**
 
@@ -51,9 +51,9 @@ Für Investoren und Unternehmen unterstreicht dies die Wichtigkeit, frühzeitig 
 
 Egal, ob Sie an exklusiven Marken-Domains interessiert sind, eine Investition in die Zukunft planen oder die perfekte Domain für Ihr nächstes Web3-Projekt suchen – **Namefi** ist Ihr Partner.
 
-Namefi ist nicht nur ein herkömmlicher Registrar, sondern schlägt die Brücke zwischen dem traditionellen Web2 und der modernen Blockchain-Technologie. Wir bieten Ihnen:
+Namefi ist nicht nur ein herkömmlicher [Registrar](/de/glossary/registrar/), sondern schlägt die Brücke zwischen dem traditionellen Web2 und der modernen Blockchain-Technologie. Wir bieten Ihnen:
 
-*   **ICANN-Akkreditierung:** Höchste Sicherheitsstandards und offizielle Anerkennung.
+*   **[ICANN](/de/glossary/icann/)-Akkreditierung:** Höchste Sicherheitsstandards und offizielle Anerkennung.
 *   **Web3 Integration:** Machen Sie Ihre Domain handelbar und tokenisieren Sie sie für maximale Flexibilität.
 *   **Einfache Verwaltung:** Ein nahtloses Erlebnis für Entwickler, Unternehmen und Investoren.
 

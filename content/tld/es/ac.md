@@ -30,7 +30,7 @@ keywords:
 
 El dominio **.ac** es el dominio de nivel superior geográfico (ccTLD) asignado a la **Isla de la Ascensión** (Ascension Island), un territorio británico de ultramar situado en el Océano Atlántico Sur. Aunque técnicamente es un código de país, el registro de este dominio está abierto a cualquier persona o entidad en el mundo, sin requisitos de residencia local.
 
-A pesar de su origen geográfico, el TLD .ac ha ganado una popularidad significativa más allá de la isla. Es administrado por el *Internet Computer Bureau* y opera bajo las directrices reconocidas por la [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/ac.html).
+A pesar de su origen geográfico, el [TLD](/es/glossary/tld/) .ac ha ganado una popularidad significativa más allá de la isla. Es administrado por el *Internet Computer Bureau* y opera bajo las directrices reconocidas por la [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/ac.html).
 
 La razón principal de su éxito global es lingüística y cultural: "**AC**" es ampliamente reconocido como la abreviatura de "**Academy**" (Academia), "**Academic**" (Académico) o incluso "**Activity**" (Actividad). Esto lo ha convertido en una extensión premium para el sector educativo, tecnológico y profesional.
 
@@ -44,7 +44,7 @@ Debido a su versatilidad, el dominio .ac ha trascendido su propósito geográfic
     Muchas startups utilizan .ac para denotar "Action" (Acción) o simplemente porque permite nombres de dominio cortos, memorables y creativos (domain hacks).
 *   **Servicios Profesionales y Consultoría:**
     En algunos contextos, "AC" se asocia con "Accounting" (Contabilidad) o "Consulting" (Consultoría), lo que lo hace atractivo para firmas que buscan proyectar seriedad y profesionalismo.
-*   **Comunidad Web3 y Cripto:**
+*   **Comunidad [Web3](/es/glossary/web3/) y Cripto:**
     Dada la naturaleza innovadora de los nuevos dominios, proyectos de educación sobre blockchain y academias descentralizadas están adoptando el .ac para educar a sus comunidades.
 
 ## **Entidades destacadas que usan .ac**
@@ -55,14 +55,14 @@ El uso del dominio .ac es variado y abarca desde grandes instituciones hasta her
 2.  **Instituciones Educativas Internacionales:** Numerosas academias de idiomas y escuelas técnicas fuera del Reino Unido utilizan .ac para señalar inmediatamente su propósito educativo.
 3.  **Proyectos de Software y Herramientas:** Sitios de documentación y herramientas para desarrolladores a menudo utilizan esta extensión para denotar aprendizaje o "activity".
 
-Aunque gigantes como Google o Amazon poseen sus variantes .ac para protección de marca, el verdadero valor brilla en las **PyMEs y startups** que logran registrar nombres de una sola palabra que estarían indisponibles o costarían miles de dólares en un .com.
+Aunque gigantes como Google o Amazon poseen sus variantes .ac para protección de marca, el verdadero valor brilla en las **PyMEs y startups** que logran registrar nombres de una sola palabra que estarían indisponibles o costarían miles de dólares en un [.com](/es/tld/com/).
 
 ## **¿Por qué elegir .ac?**
 
 Registrar un dominio .ac ofrece ventajas estratégicas claras para su presencia en línea:
 
 *   **Credibilidad Académica:** Si su negocio está relacionado con la enseñanza, la investigación o la formación, ninguna otra extensión comunica "educación" tan rápido como .ac.
-*   **Disponibilidad de Nombres:** A diferencia de los dominios .com o .net, que están saturados, el mercado de .ac aún ofrece una gran cantidad de nombres cortos, genéricos y de marca disponibles para registro inmediato.
+*   **Disponibilidad de Nombres:** A diferencia de los dominios .com o [.net](/es/tld/net/), que están saturados, el mercado de .ac aún ofrece una gran cantidad de nombres cortos, genéricos y de marca disponibles para registro inmediato.
 *   **Seguridad y Confianza:** El registro .ac es estable, seguro y reconocido internacionalmente, lo que garantiza que su sitio web sea accesible y respetado en todo el mundo.
 *   **Potencial de Inversión:** Los dominios de dos letras (ccTLDs) mantienen un valor de reventa alto. Un nombre .ac corto y atractivo es un activo digital valioso, especialmente en el ecosistema de [inversión en dominios](https://namefi.io/blog).
 

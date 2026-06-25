@@ -42,7 +42,7 @@ Si vous hésitez encore pour votre prochain nom de domaine, voici pourquoi le .n
 
 *   **Crédibilité et Confiance :** Étant l'une des premières extensions d'Internet, le .net bénéficie d'une reconnaissance instantanée. Les utilisateurs savent qu'il s'agit d'une entreprise établie, contrairement à certaines extensions plus récentes et moins connues.
 *   **Meilleure Disponibilité :** Le marché des .com est saturé. Il est souvent plus facile de trouver un nom court, mémorable et percutant en .net qu'en .com.
-*   **Connotation Technologique :** Si votre entreprise opère dans le secteur du Web3, de la blockchain, du développement logiciel ou des réseaux, le .net renforce votre identité de marque en tant qu'acteur technique.
+*   **Connotation Technologique :** Si votre entreprise opère dans le secteur du [Web3](/fr/glossary/web3/), de la blockchain, du développement logiciel ou des réseaux, le .net renforce votre identité de marque en tant qu'acteur technique.
 *   **Potentiel SEO (Référencement) :** Google et les autres moteurs de recherche traitent le .net exactement comme le .com. C'est un domaine de premier niveau générique qui ne souffre d'aucun désavantage géographique. Pour en savoir plus sur la manière dont Google gère les TLDs, vous pouvez consulter les [guides de Google Search Central](https://developers.google.com/search/docs/crawling-indexing/design-and-content-guidelines?hl=fr).
 *   **Investissement de Domaine :** Les domaines .net conservent bien leur valeur. Pour les investisseurs de noms de domaine, acquérir des mots-clés premium en .net reste une stratégie solide.
 

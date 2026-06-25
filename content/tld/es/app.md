@@ -32,7 +32,7 @@ Debido a su seguridad y relevancia semántica, muchas marcas reconocidas y proye
 
 1.  **Cash App (cash.app):** Uno de los ejemplos más famosos. El servicio de pago móvil utiliza este dominio como su sitio web principal, demostrando que un .app puede sostener una marca corporativa masiva.
 2.  **Sitios de Google:** Como gestor del registro, Google utiliza varios dominios bajo esta extensión para sus propios productos y herramientas de desarrollo.
-3.  **Startups Blockchain y Web3:** Dada la naturaleza técnica y la necesidad de seguridad en el espacio cripto, muchas dApps (aplicaciones descentralizadas) eligen .app para transmitir confianza a sus usuarios.
+3.  **Startups Blockchain y [Web3](/es/glossary/web3/):** Dada la naturaleza técnica y la necesidad de seguridad en el espacio cripto, muchas dApps (aplicaciones descentralizadas) eligen .app para transmitir confianza a sus usuarios.
 4.  **Aplicaciones de Productividad:** Herramientas de gestión de tareas, calendarios y utilidades de software suelen migrar a este dominio para diferenciarse de los blogs o tiendas online.
 
 ## **¿Por qué elegir .app?**

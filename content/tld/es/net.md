@@ -27,7 +27,7 @@ Así es como diferentes sectores están aprovechando este TLD:
 *   **Startups Innovadoras:** Muchas startups eligen .net cuando el .com de su nombre ideal no está disponible, aprovechando su credibilidad inmediata.
 *   **Comunidades y Foros:** Dado que implica una "red" de personas o dispositivos, es muy popular para sitios que fomentan la comunidad y la conexión.
 *   **Portafolios y Creativos:** Diseñadores y arquitectos web a menudo lo utilizan para mostrar su trabajo en la red.
-*   **Infraestructura Web3:** En el espacio blockchain, muchos proyectos de infraestructura y redes descentralizadas optan por .net para señalar su función como conectores en el ecosistema.
+*   **Infraestructura [Web3](/es/glossary/web3/):** En el espacio blockchain, muchos proyectos de infraestructura y redes descentralizadas optan por .net para señalar su función como conectores en el ecosistema.
 
 ## **Entidades notables que usan .net**
 

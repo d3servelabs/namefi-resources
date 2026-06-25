@@ -11,7 +11,7 @@ keywords: ["tld", "eth domain", "web3 identität", "blockchain", "ens", "dezentr
 
 ## **Was ist .eth?**
 
-Die **.eth** Domain ist keine traditionelle Top-Level-Domain (TLD, ein Domain-Suffix, das nach dem letzten Punkt in einer Internetadresse steht), sondern ein **Blockchain-basiertes Benennungssystem**, das vom **Ethereum Name Service (ENS)** betrieben wird. Im Gegensatz zu konventionellen Domains, die von ICANN verwaltet werden, sind `.eth`-Domains **dezentralisiert, als NFTs im Besitz und auf der Ethereum-Blockchain gespeichert**.
+Die **.eth** Domain ist keine traditionelle Top-Level-Domain (TLD, ein Domain-Suffix, das nach dem letzten Punkt in einer Internetadresse steht), sondern ein **Blockchain-basiertes Benennungssystem**, das vom **[Ethereum](/de/glossary/ethereum/) Name Service (ENS)** betrieben wird. Im Gegensatz zu konventionellen Domains, die von [ICANN](/de/glossary/icann/) verwaltet werden, sind `.eth`-Domains **dezentralisiert, als NFTs im Besitz und auf der Ethereum-Blockchain gespeichert**.
 
 `.eth`-Domains dienen als **menschenlesbare Namen für Ethereum-Adressen**, indem sie komplexe 42-stellige Wallet-Adressen (wie 0x742d35Cc6...) durch einfache, einprägsame Namen (wie alice.eth) ersetzen. Dieses revolutionäre System verändert, wie Menschen mit **Web3, DeFi, NFTs und dem dezentralen Internet** interagieren.
 
@@ -22,7 +22,7 @@ Die **.eth** Domain ist keine traditionelle Top-Level-Domain (TLD, ein Domain-Su
 Seit dem Start von ENS sind `.eth`-Domains zu einer wesentlichen Infrastruktur für Web3-Nutzer und -Organisationen geworden. Sie werden weit verbreitet verwendet für:
 
 *   **Krypto-Wallet-Adressen** – Ersetzen langer Hex-Adressen durch einprägsame Namen wie john.eth.
-*   **Dezentrale Websites** – Hosten zensurresistenter Websites auf IPFS und anderen dezentralen Netzwerken.
+*   **Dezentrale Websites** – Hosten zensurresistenter Websites auf [IPFS](/de/glossary/ipfs/) und anderen dezentralen Netzwerken.
 *   **Web3-Identität** – Dienen als universelle Benutzernamen über DeFi-Protokolle, NFT-Marktplätze und dApps hinweg.
 *   **DAO-Governance** – Organisationen nutzen .eth-Domains für ihre dezentralen autonomen Organisationen.
 *   **NFT-Sammlungen** – Künstler und Kreative nutzen .eth-Domains für ihre digitalen Kunstplattformen.

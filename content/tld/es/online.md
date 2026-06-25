@@ -11,7 +11,7 @@ keywords: ['.online domains', 'TLD', 'top-level domain', 'what is .online', 'why
 
 En el vasto universo de internet, elegir el nombre de dominio adecuado es el primer paso crucial para establecer una identidad digital sólida. Con la saturación de las extensiones tradicionales, han surgido nuevas alternativas que ofrecen frescura y disponibilidad. Una de las más destacadas y de mayor crecimiento es el dominio **.online**.
 
-En este artículo, exploraremos qué es exactamente este TLD, quiénes lo están utilizando y por qué podría ser la elección perfecta para tu próximo proyecto, ya sea una startup, una tienda virtual o una inversión en dominios Web3.
+En este artículo, exploraremos qué es exactamente este TLD, quiénes lo están utilizando y por qué podría ser la elección perfecta para tu próximo proyecto, ya sea una startup, una tienda virtual o una inversión en dominios [Web3](/es/glossary/web3/).
 
 ## **¿Qué es .online?**
 
@@ -46,7 +46,7 @@ La popularidad del registro es tal que el [Registro Radix](https://radix.website
 
 Si estás dudando entre varias extensiones, aquí te presentamos las ventajas clave de optar por un dominio .online:
 
-*   **Disponibilidad de Nombres:** Es mucho más probable encontrar tu nombre ideal, corto y sin guiones en .online que en .com o .net. Esto es crucial para la recordación de marca.
+*   **Disponibilidad de Nombres:** Es mucho más probable encontrar tu nombre ideal, corto y sin guiones en .online que en .com o [.net](/es/tld/net/). Esto es crucial para la recordación de marca.
 *   **Comprensión Universal:** La palabra "online" se entiende en inglés, español, alemán, francés y muchos otros idiomas. Esto le da a tu sitio un atractivo internacional inmediato.
 *   **Relevancia SEO:** Motores de búsqueda como Google tratan a los nuevos gTLDs (como .online) de la misma manera que a los tradicionales (.com). No hay penalización por usar esta extensión; lo que importa es la calidad de tu contenido y tus enlaces. Puedes leer más sobre esto en las [guías de búsqueda de Google](https://developers.google.com/search/docs/crawling-indexing/design/new-top-level-domains?hl=es).
 *   **Imagen Moderna:** Proyecta una imagen actual y tecnológica, ideal para negocios que quieren mostrarse a la vanguardia.
