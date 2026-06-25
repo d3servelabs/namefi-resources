@@ -11,4 +11,4 @@ sources:
   - https://www.namebio.com/
 ---
 
-**Domain trading** refers to the buying and selling of domain names as investment assets, similar to trading stocks or real estate. Traditional domain trading involves lengthy transfer processes, [escrow](/en/glossary/escrow/) services, and limited liquidity. [Tokenized](/en/glossary/tokenize/) domains can also be traded as [NFTs](/en/glossary/nft/) on [marketplaces](/en/glossary/marketplace/), which enables on-chain transfer and price history transparency.
+**Domain trading** refers to the buying and selling of domain names as investment assets, similar to trading stocks or real estate. Traditional domain trading involves lengthy transfer processes, [escrow](/en/glossary/escrow/) services, and limited [liquidity](/en/glossary/domain-liquidity/). [Tokenized](/en/glossary/tokenize/) domains can also be traded as [NFTs](/en/glossary/nft/) on [marketplaces](/en/glossary/marketplace/), which enables [on-chain](/en/glossary/on-chain/) transfer and price history transparency.

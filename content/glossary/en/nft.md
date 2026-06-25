@@ -12,4 +12,4 @@ sources:
   - https://ethereum.org/en/nft/
 ---
 
-An **NFT (Non-Fungible Token)** is a unique digital asset that exists on a blockchain, representing ownership of a specific item that cannot be replicated or substituted. Unlike cryptocurrencies which are fungible (one Bitcoin equals another Bitcoin), each NFT has distinct properties and metadata.
+An **NFT (Non-Fungible Token)** is a unique digital asset that exists on a [blockchain](/en/glossary/blockchain/), representing ownership of a specific item that cannot be replicated or substituted. Unlike cryptocurrencies which are fungible (one Bitcoin equals another Bitcoin), each NFT has distinct properties and metadata.
