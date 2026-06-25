@@ -11,7 +11,7 @@ keywords: [".cloud domains", ".cloud TLD", "top-level domain .cloud", "was ist .
 
 In der heutigen digitalen Landschaft ist die Wahl der richtigen Domainendung (Top-Level-Domain oder TLD) fast so wichtig wie der Markenname selbst. Während traditionelle Endungen wie .com oder .de nach wie vor beliebt sind, gewinnen spezifische und moderne Endungen immer mehr an Bedeutung. Eine der prominentesten unter den "neuen gTLDs" ist **.cloud**.
 
-In diesem Artikel erfahren Sie alles, was Sie über die **.cloud-Domain** wissen müssen: von ihrer Bedeutung und Geschichte bis hin zu den Gründen, warum sie die perfekte Wahl für Ihr nächstes Projekt sein könnte – insbesondere in einer Ära, in der Web2 und Web3 zunehmend verschmelzen.
+In diesem Artikel erfahren Sie alles, was Sie über die **.cloud-Domain** wissen müssen: von ihrer Bedeutung und Geschichte bis hin zu den Gründen, warum sie die perfekte Wahl für Ihr nächstes Projekt sein könnte – insbesondere in einer Ära, in der Web2 und [Web3](/de/glossary/web3/) zunehmend verschmelzen.
 
 ## **Was ist .cloud?**
 

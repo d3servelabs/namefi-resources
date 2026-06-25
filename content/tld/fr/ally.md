@@ -11,7 +11,7 @@ keywords: ['.ally', 'domaines .ally', 'TLD .ally', 'qu''est-ce que .ally', 'pour
 
 ## **Qu'est-ce que le .ally ?**
 
-L'extension de domaine **.ally** est un domaine de premier niveau (TLD) qui évoque instantanément les notions de partenariat, de soutien et de collaboration. Le terme "ally" (allié en français) est universellement reconnu pour désigner une entité ou une personne qui s'unit à une autre pour une cause commune.
+L'extension de domaine **.ally** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) qui évoque instantanément les notions de partenariat, de soutien et de collaboration. Le terme "ally" (allié en français) est universellement reconnu pour désigner une entité ou une personne qui s'unit à une autre pour une cause commune.
 
 Bien que certaines extensions soient géographiques (comme .fr ou .ca), le **.ally** fait partie de la catégorie des **gTLD (generic Top-Level Domains)** ou des nouvelles extensions génériques. Son objectif est de fournir un espace numérique aux organisations, entreprises et communautés qui souhaitent mettre en avant leurs valeurs d'inclusion, d'entraide et de solidarité.
 
@@ -24,7 +24,7 @@ L'utilisation du TLD .ally est variée et créative, attirant divers secteurs gr
 *   **Organisations à but non lucratif et causes sociales :** De nombreuses associations utilisent .ally pour signaler qu'elles sont des espaces sûrs et inclusifs (par exemple, pour les droits LGBTQ+, l'accessibilité numérique ou la justice sociale).
 *   **Partenariats B2B et Tech :** Les entreprises technologiques et les startups utilisent cette extension pour des portails dédiés à leurs partenaires ou affiliés (ex: `partners.brand.ally`).
 *   **Réseaux de soutien et santé mentale :** Les plateformes offrant du coaching, du mentorat ou du soutien psychologique adoptent ce domaine pour instaurer une confiance immédiate avec l'utilisateur.
-*   **Web3 et DAO :** Dans l'univers de la blockchain, les Organisations Autonomes Décentralisées (DAO) et les collectifs utilisent le .ally pour souligner l'aspect communautaire et collaboratif de leurs projets.
+*   **[Web3](/fr/glossary/web3/) et DAO :** Dans l'univers de la blockchain, les Organisations Autonomes Décentralisées (DAO) et les collectifs utilisent le .ally pour souligner l'aspect communautaire et collaboratif de leurs projets.
 
 ## **Entités notables utilisant le .ally**
 
@@ -39,7 +39,7 @@ Bien que le .ally soit une extension plus récente et parfois utilisée comme "B
 Opter pour un nom de domaine en .ally présente plusieurs avantages stratégiques pour votre présence en ligne :
 
 *   **Confiance et Valeurs :** Le mot "ally" inspire immédiatement la confiance. Il positionne votre marque comme bienveillante, coopérative et orientée vers le client ou la communauté.
-*   **Disponibilité :** Contrairement aux extensions saturées comme le .com ou le .net, le .ally offre une bien meilleure disponibilité. Vous avez plus de chances de trouver un nom court, mémorable et percutant (ex: `votrebrand.ally` ou `support.ally`).
+*   **Disponibilité :** Contrairement aux extensions saturées comme le [.com](/fr/tld/com/) ou le [.net](/fr/tld/net/), le .ally offre une bien meilleure disponibilité. Vous avez plus de chances de trouver un nom court, mémorable et percutant (ex: `votrebrand.ally` ou `support.ally`).
 *   **SEO et Pertinence Sémantique :** Pour les moteurs de recherche, avoir un mot-clé pertinent directement dans l'extension peut aider à clarifier l'intention du site. Si votre activité tourne autour du conseil, du partenariat ou du social, c'est un atout naturel.
 *   **Modernité :** C'est une extension qui sonne moderne et internationale, idéale pour les entreprises qui visent un public mondial anglophone ou multilingue.
 

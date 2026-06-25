@@ -60,7 +60,7 @@ Le **.biz** justifie sa raison d'être partout où un nom doit se lire sans ambi
 - **Enregistrements défensifs** — marques qui possèdent déjà le **.com** et enregistrent le **.biz** pour protéger leur nom et empêcher les imitations.
 - **Investisseurs en domaines** — acheteurs acquérant des noms **.biz** courts, de dictionnaire ou par mots-clés pour la revente ou pour les [tokeniser on-chain](/fr/blog/what-are-tokenized-domains).
 
-**Pour qui ce n'est pas idéal :** les projets non commerciaux (blogs personnels, sites de loisirs, organisations à but non lucratif où le **.org** convient mieux), et les marques dont le **.com** est facilement disponible et abordable — dans ce cas, le **.com** l'emporte presque toujours en matière de reconnaissance par défaut.
+**Pour qui ce n'est pas idéal :** les projets non commerciaux (blogs personnels, sites de loisirs, organisations à but non lucratif où le **[.org](/fr/tld/org/)** convient mieux), et les marques dont le **.com** est facilement disponible et abordable — dans ce cas, le **.com** l'emporte presque toujours en matière de reconnaissance par défaut.
 
 ## Sites notables utilisant le .biz
 
@@ -94,7 +94,7 @@ Soyez honnête avec vous-même quant aux compromis. Le plus important est le **r
 
 **Restrictions d'enregistrement : ouvert à tous, avec une attente d'usage professionnel.** Il n'existe aucune exigence de qualification, de licence, de marque déposée ou de présence locale pour enregistrer un domaine **.biz** — n'importe qui, n'importe où dans le monde, peut en acheter un via un [bureau d'enregistrement](/fr/glossary/registrar) accrédité. La seule condition inscrite dans l'espace de noms dès le premier jour est que les noms sont destinés à un **usage professionnel ou commercial de bonne foi** plutôt qu'à des fins purement personnelles ou spéculatives. Historiquement, cela était soutenu par le processus de litige RDRP, de sorte qu'en principe un enregistrement peut être contesté s'il est manifestement non commercial ; dans la pratique quotidienne, l'application est légère et le suffixe fonctionne comme un TLD ouvert.
 
-Les règles standard des gTLD s'appliquent : les noms comportent 1 à 63 caractères, les noms de domaine internationalisés (IDN) sont pris en charge, et les protections des marques (y compris le Trademark Clearinghouse de l'ICANN pendant les périodes sunrise pour les nouveaux lancements) s'appliquent comme pour tout gTLD. Sur le plan administratif, le **.biz** prend en charge le [DNSSEC](/en/glossary/dnssec) pour un DNS signé, les bureaux d'enregistrement proposent la confidentialité WHOIS, et le cycle de vie habituel de transfert, de renouvellement et de période de grâce de récupération s'applique. Les règles faisant autorité figurent dans l'[accord de registre .biz de l'ICANN](https://www.icann.org/en/registry-agreements/details/biz), qui régit les obligations de l'opérateur.
+Les règles standard des gTLD s'appliquent : les noms comportent 1 à 63 caractères, les noms de domaine internationalisés (IDN) sont pris en charge, et les protections des marques (y compris le [Trademark Clearinghouse](/fr/glossary/tmch/) de l'ICANN pendant les périodes sunrise pour les nouveaux lancements) s'appliquent comme pour tout gTLD. Sur le plan administratif, le **.biz** prend en charge le [DNSSEC](/fr/glossary/dnssec) pour un DNS signé, les bureaux d'enregistrement proposent la confidentialité WHOIS, et le cycle de vie habituel de transfert, de renouvellement et de période de grâce de récupération s'applique. Les règles faisant autorité figurent dans l'[accord de registre .biz de l'ICANN](https://www.icann.org/en/registry-agreements/details/biz), qui régit les obligations de l'opérateur.
 
 ## Tarification et valeur du .biz
 
@@ -116,7 +116,7 @@ Le **.biz** fonctionne le mieux lorsque le nom de second niveau est un vrai mot 
 2. **Choisissez** le résultat en **.biz** (et attrapez le **.com** correspondant ou d'autres extensions si vous le souhaitez).
 3. **Enregistrez** et finalisez le paiement pour sécuriser le nom.
 
-Namefi combine un [bureau d'enregistrement](/fr/glossary/registrar) accrédité ICANN avec des capacités Web3 : tarification transparente, gestion rapide des DNS, et la possibilité de [tokeniser votre domaine](/fr/blog/why-tokenize-domains) pour un transfert et une liquidité facilités. [Enregistrez votre domaine .biz sur Namefi](https://namefi.io).
+Namefi combine un [bureau d'enregistrement](/fr/glossary/registrar) accrédité ICANN avec des capacités [Web3](/fr/glossary/web3/) : tarification transparente, gestion rapide des DNS, et la possibilité de [tokeniser votre domaine](/fr/blog/why-tokenize-domains) pour un transfert et une liquidité facilités. [Enregistrez votre domaine .biz sur Namefi](https://namefi.io).
 
 ## Foire aux questions
 
@@ -146,4 +146,4 @@ Oui. Les bureaux d'enregistrement proposent la confidentialité WHOIS sur le **.
 - [Qu'est-ce qu'un domaine ?](/fr/blog/what-is-domain)
 - [Principaux TLD à sécuriser pour votre entreprise](/fr/blog/top-tlds-to-secure-for-your-business)
 - [.com TLD](/fr/tld/com) · [.net TLD](/fr/tld/net) · [.info TLD](/fr/tld/info)
-- Glossaire : [ICANN](/fr/glossary/icann) · [Registrar](/fr/glossary/registrar) · [DNSSEC](/en/glossary/dnssec) · [WHOIS](/en/glossary/whois)
+- Glossaire : [ICANN](/fr/glossary/icann) · [Registrar](/fr/glossary/registrar) · [DNSSEC](/fr/glossary/dnssec) · [WHOIS](/fr/glossary/whois)

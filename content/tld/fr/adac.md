@@ -11,9 +11,9 @@ keywords: [".adac domains", "domaine .adac", "TLD .adac", "top-level domain", "q
 
 ## **Qu'est-ce que le .adac ?**
 
-L'extension **.adac** est un domaine de premier niveau générique (gTLD) un peu particulier : il s'agit d'un "Brand TLD" (TLD de marque). L'acronyme **ADAC** signifie *Allgemeiner Deutscher Automobil-Club* (Club automobile général allemand). C'est la plus grande association automobile d'Europe, basée en Allemagne.
+L'extension **.adac** est un domaine de premier niveau générique (gTLD) un peu particulier : il s'agit d'un "Brand [TLD](/fr/glossary/tld/)" (TLD de marque). L'acronyme **ADAC** signifie *Allgemeiner Deutscher Automobil-Club* (Club automobile général allemand). C'est la plus grande association automobile d'Europe, basée en Allemagne.
 
-Lancée lors du programme des nouveaux gTLD de l'[ICANN](https://www.icann.org/), cette extension a été créée pour offrir un espace numérique sécurisé, authentifié et exclusif aux services et affiliés de l'organisation. Contrairement aux domaines ouverts comme le .com ou le .net, le .adac représente un sceau d'authenticité immédiat, garantissant aux internautes qu'ils naviguent sur une plateforme officielle validée par l'organisation.
+Lancée lors du programme des nouveaux gTLD de l'[ICANN](https://www.icann.org/), cette extension a été créée pour offrir un espace numérique sécurisé, authentifié et exclusif aux services et affiliés de l'organisation. Contrairement aux domaines ouverts comme le [.com](/fr/tld/com/) ou le [.net](/fr/tld/net/), le .adac représente un sceau d'authenticité immédiat, garantissant aux internautes qu'ils naviguent sur une plateforme officielle validée par l'organisation.
 
 Bien que son usage soit historiquement restreint à l'organisation, l'existence de telles extensions montre l'évolution d'Internet vers des espaces de noms hautement spécialisés et sécurisés.
 
@@ -40,7 +40,7 @@ Si cette extension venait à s'ouvrir davantage à des partenaires ou franchisé
 
 ## **Pourquoi choisir le .adac ?**
 
-Si vous avez l'opportunité d'enregistrer ou d'interagir avec un domaine .adac (ou si vous envisagez l'impact des domaines de marque pour votre propre stratégie Web3), voici les avantages majeurs :
+Si vous avez l'opportunité d'enregistrer ou d'interagir avec un domaine .adac (ou si vous envisagez l'impact des domaines de marque pour votre propre stratégie [Web3](/fr/glossary/web3/)), voici les avantages majeurs :
 
 *   **Confiance et Sécurité Absolues :** Les moteurs de recherche et les utilisateurs savent qu'un domaine en .adac est légitime. Il élimine pratiquement tout risque de phishing (hameçonnage) par des tiers malveillants.
 *   **Autorité de Marque :** L'association avec la plus grande organisation automobile d'Europe confère une crédibilité instantanée.
@@ -51,7 +51,7 @@ Si vous avez l'opportunité d'enregistrer ou d'interagir avec un domaine .adac (
 
 Que vous soyez un professionnel de l'automobile cherchant à sécuriser votre présence en ligne ou un investisseur en domaines intéressé par les actifs numériques rares, le choix de votre registrar est crucial.
 
-Chez **Namefi**, nous simplifions la gestion de vos actifs numériques. En tant que plateforme accréditée par l'ICANN et pionnière dans l'intégration Web3, nous vous offrons :
+Chez **Namefi**, nous simplifions la gestion de vos actifs numériques. En tant que plateforme accréditée par l'[ICANN](/fr/glossary/icann/) et pionnière dans l'intégration Web3, nous vous offrons :
 *   Une intégration fluide de vos domaines sur la blockchain (tokenisation).
 *   Une gestion simplifiée sans paperasse complexe.
 *   Une sécurité de niveau entreprise pour votre portefeuille de domaines.

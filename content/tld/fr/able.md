@@ -11,7 +11,7 @@ keywords: ['.able', 'domaines .able', 'TLD .able', 'qu''est-ce que .able', 'pour
 
 ## **Qu'est-ce que le .able ?**
 
-Le TLD (Top-Level Domain) **.able** est une extension de domaine qui se distingue par sa polyvalence et son potentiel créatif. Contrairement aux extensions géographiques (comme le .fr ou .ca) ou aux extensions génériques traditionnelles (comme le .com), le **.able** se positionne comme un suffixe signifiant la "capacité", la "possibilité" ou la "compétence".
+Le [TLD](/fr/glossary/tld/) (Top-Level Domain) **.able** est une extension de domaine qui se distingue par sa polyvalence et son potentiel créatif. Contrairement aux extensions géographiques (comme le .fr ou .ca) ou aux extensions génériques traditionnelles (comme le [.com](/fr/tld/com/)), le **.able** se positionne comme un suffixe signifiant la "capacité", la "possibilité" ou la "compétence".
 
 Bien que moins répandu que les géants historiques du web, le .able gagne en traction, notamment dans l'écosystème de l'innovation et du [Web3](https://en.wikipedia.org/wiki/Web3). Il est souvent associé à des projets qui souhaitent démontrer leur expertise ou créer des jeux de mots mémorables (ce que l'on appelle des "domain hacks"). Dans le contexte des nouveaux gTLD et des racines alternatives (comme celles supportées par certains protocoles blockchain), le .able représente une opportunité de branding moderne.
 
@@ -24,7 +24,7 @@ L'extension .able est particulièrement prisée pour sa flexibilité linguistiqu
 *   **Les "Domain Hacks" créatifs :** C'est l'usage le plus populaire. De nombreuses entreprises utilisent le .able pour compléter un mot. Par exemple, une entreprise de développement durable pourrait choisir `sustain.able` ou une startup technologique `scal.able`.
 *   **Les startups et la Tech :** Pour les entreprises SaaS (Software as a Service) et les développeurs, cette extension évoque l'efficacité et la fonctionnalité (ex: "capacité à faire").
 *   **Coachs et consultants :** Les professionnels cherchant à mettre en avant l'autonomisation (empowerment) de leurs clients utilisent cette extension pour des sites de développement personnel.
-*   **L'écosystème Web3 et Blockchain :** Avec l'essor des domaines tokenisés, le .able est utilisé pour des identités numériques décentralisées, signalant qu'un portefeuille ou une entité est "compatible" ou "prêt" pour l'avenir.
+*   **L'écosystème [Web3](/fr/glossary/web3/) et Blockchain :** Avec l'essor des domaines tokenisés, le .able est utilisé pour des identités numériques décentralisées, signalant qu'un portefeuille ou une entité est "compatible" ou "prêt" pour l'avenir.
 
 ## **Entités notables utilisant le .able**
 

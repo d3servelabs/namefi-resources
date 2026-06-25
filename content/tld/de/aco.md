@@ -11,11 +11,11 @@ keywords: ['.aco domains', 'TLD', 'top-level domain', 'was ist .aco', 'warum .ac
 
 ## **Was ist .aco?**
 
-Die digitale Landschaft entwickelt sich ständig weiter, und mit ihr die Vielfalt der verfügbaren Domain-Endungen. Die **.aco** Top-Level-Domain (TLD) ist eine spezifische Domainendung, die in bestimmten Nischen und Branchen für Aufsehen sorgt. Während viele Nutzer mit klassischen Endungen wie .com oder .de vertraut sind, bieten spezialisierte TLDs wie .aco die Möglichkeit, eine prägnante und bedeutungsvolle Online-Identität zu schaffen.
+Die digitale Landschaft entwickelt sich ständig weiter, und mit ihr die Vielfalt der verfügbaren Domain-Endungen. Die **.aco** Top-Level-Domain ([TLD](/de/glossary/tld/)) ist eine spezifische Domainendung, die in bestimmten Nischen und Branchen für Aufsehen sorgt. Während viele Nutzer mit klassischen Endungen wie [.com](/de/tld/com/) oder .de vertraut sind, bieten spezialisierte TLDs wie .aco die Möglichkeit, eine prägnante und bedeutungsvolle Online-Identität zu schaffen.
 
 Ursprünglich wird das Kürzel "ACO" häufig mit **"Accountable Care Organizations"** im Gesundheitswesen oder als Abkürzung für Firmennamen assoziiert. Als Domain-Endung fällt sie in die Kategorie der generischen Top-Level-Domains (gTLDs) oder Brand-TLDs, die Unternehmen dabei helfen, ihre Marke im Internet unverwechselbar zu positionieren.
 
-Für Domain-Investoren und Web3-Enthusiasten stellt .aco zudem eine interessante Anlageklasse dar, insbesondere wenn man die Möglichkeiten von [ICANN](https://www.icann.org/) und modernen Blockchain-Lösungen betrachtet.
+Für Domain-Investoren und [Web3](/de/glossary/web3/)-Enthusiasten stellt .aco zudem eine interessante Anlageklasse dar, insbesondere wenn man die Möglichkeiten von [ICANN](https://www.icann.org/) und modernen [Blockchain](/de/glossary/blockchain/)-Lösungen betrachtet.
 
 ## **Wie Menschen .aco nutzen**
 
@@ -49,7 +49,7 @@ Die Entscheidung für eine .aco Domain kann aus mehreren Gründen strategisch kl
 
 Sind Sie bereit, Ihre digitale Präsenz zu sichern? Bei **Namefi** machen wir den Prozess der Domain-Registrierung und -Verwaltung so einfach und zukunftssicher wie möglich.
 
-Namefi ist nicht nur ein gewöhnlicher Registrar. Wir verbinden die traditionelle Welt der ICANN-akkreditierten Domains mit der Innovation des Web3. Wenn Sie Ihre Domain bei uns registrieren, profitieren Sie von:
+Namefi ist nicht nur ein gewöhnlicher [Registrar](/de/glossary/registrar/). Wir verbinden die traditionelle Welt der [ICANN](/de/glossary/icann/)-akkreditierten Domains mit der Innovation des Web3. Wenn Sie Ihre Domain bei uns registrieren, profitieren Sie von:
 
 *   **Nahtloser Web3-Integration:** Tokenisieren Sie Ihre Domain als NFT für einfaches Handeln und Verwalten.
 *   **Transparenz und Sicherheit:** Nutzen Sie die Vorteile der Blockchain-Technologie für Ihre digitalen Assets.

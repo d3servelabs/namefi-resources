@@ -38,7 +38,7 @@ Cette page explique ce qu'est réellement le .ai, qui le gère, les règles d'en
 
 ## Qu'est-ce que le .ai ?
 
-.ai est le [ccTLD](/en/glossary/tld/) attribué à Anguilla. Les deux lettres « AI » correspondent simplement au code pays ISO 3166-1 d'Anguilla — la même coïncidence qui a transformé le .io (Territoire de l'Océan Indien) et le .tv (Tuvalu) en favoris de la tech. L'extension a été déléguée en 1995, des décennies avant le boom actuel de l'IA, comme le confirme l'[enregistrement de la zone racine IANA pour le .ai](https://www.iana.org/domains/root/db/ai.html).
+.ai est le [ccTLD](/fr/glossary/tld/) attribué à Anguilla. Les deux lettres « AI » correspondent simplement au code pays ISO 3166-1 d'Anguilla — la même coïncidence qui a transformé le .io (Territoire de l'Océan Indien) et le [.tv](/fr/tld/tv/) (Tuvalu) en favoris de la tech. L'extension a été déléguée en 1995, des décennies avant le boom actuel de l'IA, comme le confirme l'[enregistrement de la zone racine IANA pour le .ai](https://www.iana.org/domains/root/db/ai.html).
 
 Ce qui rend le .ai particulier, c'est la façon dont les moteurs de recherche le traitent. Bien qu'il s'agisse officiellement d'un ccTLD, [Google ne le géo-cible pas vers Anguilla](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites). Google maintient une liste de ccTLDs qu'il traite comme génériques (« gccTLDs »), et le .ai en fait partie. Cela signifie qu'un site .ai peut se positionner dans le monde entier plutôt que d'être cantonné à un public caribéen — une raison essentielle pour laquelle les entreprises IA mondiales n'hésitent pas à construire leur marque principale sur cette extension.
 
@@ -80,7 +80,7 @@ Ce sont des propriétés établies et à fort trafic, ce qui explique en partie 
 | Prix typique | Élevé, premium | Moyen-élevé | Bas, mais noms courts rares |
 | Durée min. | Deux ans | Un an | Un an |
 
-Choisissez **.ai** quand l'intelligence artificielle *est* votre produit et que vous voulez que cette signification soit intégrée dans le nom. Optez pour **[.io](/fr/tld/io/)** pour des projets developer, SaaS ou infrastructure plus larges où il se lit comme « entrée/sortie » et tend à être moins cher — voir [pourquoi les domaines .io sont chers](/fr/blog/why-are-io-domains-expensive/). Gardez à l'esprit le **[.com](/fr/tld/com/)** comme valeur universelle par défaut ; de nombreuses équipes sécurisent le .com à titre défensif en complément de leur .ai. Pour une comparaison approfondie, lisez [.ai vs .io : quel domaine choisir pour votre startup ?](/fr/blog/ai-vs-io-domain/).
+Choisissez **.ai** quand l'intelligence artificielle *est* votre produit et que vous voulez que cette signification soit intégrée dans le nom. Optez pour **.io** pour des projets developer, SaaS ou infrastructure plus larges où il se lit comme « entrée/sortie » et tend à être moins cher — voir [pourquoi les domaines .io sont chers](/fr/blog/why-are-io-domains-expensive/). Gardez à l'esprit le **[.com](/fr/tld/com/)** comme valeur universelle par défaut ; de nombreuses équipes sécurisent le .com à titre défensif en complément de leur .ai. Pour une comparaison approfondie, lisez [.ai vs .io : quel domaine choisir pour votre startup ?](/fr/blog/ai-vs-io-domain/).
 
 ## Pourquoi choisir le .ai ?
 
@@ -92,7 +92,7 @@ Choisissez **.ai** quand l'intelligence artificielle *est* votre produit et que 
 ## Points à considérer
 
 - **Durée minimale de deux ans :** vous ne pouvez pas enregistrer ou renouveler pour une seule année, ce qui augmente le coût d'entrée.
-- **Tarification premium :** le .ai coûte systématiquement plus cher que le .com ou le .net, aussi bien à l'enregistrement qu'au renouvellement.
+- **Tarification premium :** le .ai coûte systématiquement plus cher que le .com ou le [.net](/fr/tld/net/), aussi bien à l'enregistrement qu'au renouvellement.
 - **Signification de niche :** si votre produit n'est pas réellement lié à l'IA, l'extension peut dérouter les visiteurs ou sembler artificielle.
 - **Risque lié à l'effet de mode :** associer étroitement votre marque à « l'IA » lie votre identité à une tendance en évolution rapide.
 
@@ -100,7 +100,7 @@ Choisissez **.ai** quand l'intelligence artificielle *est* votre produit et que 
 
 **Restrictions d'enregistrement : ouvert à tous.** Il n'y a aucune condition de présence locale, de citoyenneté ou de justificatif pour enregistrer un domaine .ai — toute personne dans le monde peut en enregistrer un via un [bureau d'enregistrement](/fr/glossary/registrar/) accrédité. La règle fondamentale est la **durée minimale de deux ans** : les noms .ai s'enregistrent et se renouvellent par tranches de deux à dix ans plutôt que selon le cycle annuel courant ailleurs.
 
-Les noms utilisent des caractères ASCII standard (a–z, 0–9 et tirets, pas en début ou en fin), avec un support limité des noms de domaine internationalisés. Le registre prend en charge le [DNSSEC](/en/glossary/dnssec/) pour l'intégrité cryptographique, et des consultations modernes WHOIS/RDAP sont disponibles via le registre. La politique officielle et les règles d'enregistrement sont publiées par le registre d'Anguilla sur le site officiel, [nic.ai](https://nic.ai/). Étant un ccTLD, il n'est pas régi par un accord de registre [ICANN](/fr/glossary/icann/) ; Anguilla définit sa propre politique.
+Les noms utilisent des caractères ASCII standard (a–z, 0–9 et tirets, pas en début ou en fin), avec un support limité des noms de domaine internationalisés. Le registre prend en charge le [DNSSEC](/fr/glossary/dnssec/) pour l'intégrité cryptographique, et des consultations modernes WHOIS/RDAP sont disponibles via le registre. La politique officielle et les règles d'enregistrement sont publiées par le registre d'Anguilla sur le site officiel, [nic.ai](https://nic.ai/). Étant un ccTLD, il n'est pas régi par un accord de registre [ICANN](/fr/glossary/icann/) ; Anguilla définit sa propre politique.
 
 ## Tarification et valeur du .ai
 
@@ -124,7 +124,7 @@ Faites attention à deux écueils. Premièrement, certaines personnes peuvent ma
 2. **Choisissez** la durée d'enregistrement (n'oubliez pas la durée minimale de deux ans) et vérifiez si le nom est standard ou premium.
 3. **Enregistrez** et finalisez votre commande.
 
-[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'ICANN qui prend également en charge les domaines tokenisés Web3, de sorte que votre .ai peut être géré comme un [NFT](/fr/glossary/nft/) on-chain pour des transferts facilités et une propriété vérifiable — voir [que sont les domaines tokenisés](/fr/blog/what-are-tokenized-domains/). Vous bénéficiez d'une tarification transparente, d'un DNS fiable et d'une tokenisation optionnelle en un seul endroit.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'ICANN qui prend également en charge les domaines tokenisés [Web3](/fr/glossary/web3/), de sorte que votre .ai peut être géré comme un [NFT](/fr/glossary/nft/) on-chain pour des transferts facilités et une propriété vérifiable — voir [que sont les domaines tokenisés](/fr/blog/what-are-tokenized-domains/). Vous bénéficiez d'une tarification transparente, d'un DNS fiable et d'une tokenisation optionnelle en un seul endroit.
 
 ## Foire aux questions
 
@@ -154,5 +154,5 @@ Le registre d'Anguilla définit cette politique : les domaines .ai s'enregistren
 - [.ai vs .io : quel domaine choisir pour votre startup ?](/fr/blog/ai-vs-io-domain/)
 - [Cas d'usage des domaines tokenisés en 2026](/fr/blog/tokenized-domain-use-cases-2026/)
 - [Que sont les domaines tokenisés ?](/fr/blog/what-are-tokenized-domains/)
-- [Domaine .io](/fr/tld/io/) · [Domaine .com](/fr/tld/com/) · [Domaine .dev](/fr/tld/dev/)
-- Glossaire : [bureau d'enregistrement](/fr/glossary/registrar/) · [ICANN](/fr/glossary/icann/) · [DNSSEC](/en/glossary/dnssec/) · [SEO](/fr/glossary/seo/)
+- Domaine .io · Domaine .com · [Domaine .dev](/fr/tld/dev/)
+- Glossaire : bureau d'enregistrement · ICANN · DNSSEC · [SEO](/fr/glossary/seo/)

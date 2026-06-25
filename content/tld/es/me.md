@@ -26,7 +26,7 @@ Esta guía cubre qué es realmente .me, quién lo gestiona, quién puede registr
 
 | Dato | Detalle |
 | --- | --- |
-| Tipo de TLD | TLD de código de país (ccTLD) de Montenegro |
+| Tipo de [TLD](/es/glossary/tld/) | TLD de código de país (ccTLD) de Montenegro |
 | Administrador del registro (IANA) | Gobierno de Montenegro |
 | Operador comercial | doMEn d.o.o. (con Identity Digital, antes Afilias, como backend técnico) |
 | Año de delegación | 2007 (abierto al público global en 2008) |
@@ -37,7 +37,7 @@ Esta guía cubre qué es realmente .me, quién lo gestiona, quién puede registr
 
 ## ¿Qué es .me?
 
-**.me** es el [dominio de nivel superior](/en/glossary/tld/) de código de país (ccTLD) asignado a **Montenegro** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/me.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de Montenegro: la IANA lista al **Gobierno de Montenegro** como organización patrocinadora y administrador del registro, con la Facultad de Ingeniería Eléctrica de la Universidad de Montenegro como contacto administrativo.
+**.me** es el [dominio de nivel superior](/es/glossary/tld/) de código de país (ccTLD) asignado a **Montenegro** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/me.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de Montenegro: la IANA lista al **Gobierno de Montenegro** como organización patrocinadora y administrador del registro, con la Facultad de Ingeniería Eléctrica de la Universidad de Montenegro como contacto administrativo.
 
 En la práctica, el **dominio .me** se usa casi por completo como una extensión **genérica y global**. La cadena "me" es el pronombre inglés de primera persona, y ese solo hecho le da una calidez y una cercanía que ningún otro sufijo convencional puede igualar. "about.me", "hire.me", "follow.me", "read.me" — el sufijo completa una frase, que es justo el ángulo que sus operadores aprovecharon al abrir el espacio de nombres al mundo.
 
@@ -80,7 +80,7 @@ Estos casos muestran a .me siendo confiado no solo como alternativa de respaldo,
 | Disponibilidad de nombres cortos | Excelente | Muy escasa | Moderada | Buena | Excelente |
 | Nivel de precio típico | Medio | Bajo-medio | Alto | Medio | Bajo |
 
-Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza para los negocios. Recurre a **.me** cuando el proyecto sea *personal* — un portafolio, una biografía, una marca de una sola persona — o cuando el nombre forme una frase natural que termine en "me". Escoge **[.io](/es/tld/io/)** para marcas tecnológicas centradas en desarrolladores e infraestructura, **[.co](/es/tld/co/)** para el sustituto de .com con mayor credibilidad empresarial, y **[.xyz](/es/tld/xyz/)** para proyectos genéricos o nativos de [Web3](/es/glossary/web3/).
+Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza para los negocios. Recurre a **.me** cuando el proyecto sea *personal* — un portafolio, una biografía, una marca de una sola persona — o cuando el nombre forme una frase natural que termine en "me". Escoge **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura, **.co** para el sustituto de .com con mayor credibilidad empresarial, y **.xyz** para proyectos genéricos o nativos de [Web3](/es/glossary/web3/).
 
 ## ¿Por qué elegir .me?
 
@@ -99,7 +99,7 @@ Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el pred
 
 **Restricciones de registro: abierto a todos.** **No hay requisito de presencia local, residencia ni nacionalidad montenegrina** para registrar un dominio .me de segundo nivel. Desde el lanzamiento público de 2008, el registro es **por orden de llegada** y está disponible para particulares y organizaciones de cualquier parte del mundo.
 
-Se aplican las prácticas estándar: los titulares de marcas pudieron participar en las fases sunrise durante el lanzamiento original, los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/en/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/en/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de [registradores](/es/glossary/registrar/) y registros. Como .me es un ccTLD, se rige por la política montenegrina bajo el Gobierno de Montenegro, con doMEn d.o.o. como operador — la fuente autorizada para las reglas vigentes es el sitio oficial del operador, [domain.me](https://domain.me/).
+Se aplican las prácticas estándar: los titulares de marcas pudieron participar en las fases sunrise durante el lanzamiento original, los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/es/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/es/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de [registradores](/es/glossary/registrar/) y registros. Como .me es un ccTLD, se rige por la política montenegrina bajo el Gobierno de Montenegro, con doMEn d.o.o. como operador — la fuente autorizada para las reglas vigentes es el sitio oficial del operador, [domain.me](https://domain.me/).
 
 ## Precios y valor de .me
 
@@ -130,7 +130,7 @@ Para la entregabilidad del correo, el sufijo en sí mismo rara vez es el factor 
 2. **Elige** un nombre disponible (y comprueba si está clasificado como premium).
 3. **Registra** y configura el DNS.
 
-[Namefi](https://namefi.io) es un [registrador](/es/glossary/registrar/) acreditado por la ICANN que conecta Web2 y Web3, con precios transparentes, gestión rápida de DNS y la opción de mantener tu nombre como un dominio tokenizado para una transferencia más sencilla y una propiedad demostrable.
+[Namefi](https://namefi.io) es un registrador acreditado por la ICANN que conecta Web2 y Web3, con precios transparentes, gestión rápida de DNS y la opción de mantener tu nombre como un dominio tokenizado para una transferencia más sencilla y una propiedad demostrable.
 
 ## Preguntas frecuentes
 
@@ -152,12 +152,12 @@ Sí. .me es posiblemente la extensión convencional más personal. Como "me" es 
 
 ## Recursos relacionados
 
-- [Guía del TLD .com](/es/tld/com/)
-- [Guía del TLD .io](/es/tld/io/)
-- [Guía del TLD .co](/es/tld/co/)
-- [Guía del TLD .xyz](/es/tld/xyz/)
+- Guía del TLD .com
+- Guía del TLD .io
+- Guía del TLD .co
+- Guía del TLD .xyz
 - [Domain hacks explicados](/es/blog/domain-hacks-explained/)
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
 - [Guía de terminología de dominios](/es/blog/domain-terminology-guide/)
-- [Glosario: registrador](/es/glossary/registrar/)
-- [Glosario: ICANN](/es/glossary/icann/)
+- Glosario: registrador
+- Glosario: ICANN

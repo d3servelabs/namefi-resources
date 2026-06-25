@@ -9,7 +9,7 @@ description: '想展示空军荣耀或服务于航空社区吗？深入了解 .a
 keywords: ['.airforce domains', '.airforce TLD', 'top-level domain airforce', 'what is .airforce', 'why choose .airforce', 'what is the .airforce domain', 'why choose the .airforce domain', '.airforce 域名', 'buy .airforce domain', 'air force community domains', 'aviation domains', 'tokenized domains', 'Web3 domains', 'military domains', 'domain investing airforce']
 ---
 
-在广阔的数字天空中，选择一个能够精准传达身份和使命的域名至关重要。对于航空爱好者、退伍军人、现役军人家属以及相关支持组织来说，`.airforce` 是一个极具力量和象征意义的顶级域名（TLD）。
+在广阔的数字天空中，选择一个能够精准传达身份和使命的域名至关重要。对于航空爱好者、退伍军人、现役军人家属以及相关支持组织来说，`.airforce` 是一个极具力量和象征意义的顶级域名（[TLD](/zh/glossary/tld/)）。
 
 本文将带您深入了解 `.airforce` 域名的背景、用途以及为什么它可能是您下一个项目的完美选择。
 
@@ -53,11 +53,11 @@ keywords: ['.airforce domains', '.airforce TLD', 'top-level domain airforce', 'w
 
 如果您准备好翱翔天际并锁定您的数字资产，Namefi 是您的最佳选择。
 
-作为一家获得 ICANN 认证的创新型域名注册商，**Namefi** 不仅提供传统的域名注册服务，还无缝集成了 Web3 技术。
+作为一家获得 ICANN 认证的创新型域名[注册商](/zh/glossary/registrar/)，**Namefi** 不仅提供传统的域名注册服务，还无缝集成了 [Web3](/zh/glossary/web3/) 技术。
 
 **为什么选择 Namefi？**
 *   **ICANN 认证**：安全、合规，值得信赖。
-*   **Web3 集成**：在 Namefi，您的域名可以被铸造为 NFT。这意味着您可以像交易任何其他数字资产一样，轻松地在区块链上管理、交易或转移您的域名所有权，无需繁琐的文书工作。
+*   **Web3 集成**：在 Namefi，您的域名可以被铸造为 NFT。这意味着您可以像交易任何其他数字资产一样，轻松地在[区块链](/zh/glossary/blockchain/)上管理、交易或转移您的域名所有权，无需繁琐的文书工作。
 *   **透明定价**：没有隐藏费用，续费价格合理。
 
 无论您是想建立一个退伍军人论坛，还是通过域名投资来捕捉航空领域的价值，现在就是行动的最佳时机。

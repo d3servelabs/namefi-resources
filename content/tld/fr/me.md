@@ -26,7 +26,7 @@ Ce guide explique ce qu'est réellement le .me, qui le gère, qui peut en enregi
 
 | Fait | Détail |
 | --- | --- |
-| Type de TLD | TLD national (ccTLD) du Monténégro |
+| Type de [TLD](/fr/glossary/tld/) | TLD national (ccTLD) du Monténégro |
 | Gestionnaire de registre (IANA) | Gouvernement du Monténégro |
 | Opérateur commercial | doMEn d.o.o. (avec Identity Digital, anciennement Afilias, comme infrastructure technique) |
 | Année de délégation | 2007 (ouvert au grand public mondial en 2008) |
@@ -37,7 +37,7 @@ Ce guide explique ce qu'est réellement le .me, qui le gère, qui peut en enregi
 
 ## Qu'est-ce que le .me ?
 
-Le **.me** est le [domaine de premier niveau](/en/glossary/tld/) national (ccTLD) attribué au **Monténégro** selon la norme ISO 3166-1, le même système à deux lettres que l'[Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/me.html) utilise pour déléguer les codes pays. Sur le papier, il s'agit de l'espace de noms national du Monténégro : l'IANA répertorie le **gouvernement du Monténégro** comme organisation parrainante et gestionnaire du registre, avec la Faculté de génie électrique de l'Université du Monténégro comme contact administratif.
+Le **.me** est le [domaine de premier niveau](/fr/glossary/tld/) national (ccTLD) attribué au **Monténégro** selon la norme ISO 3166-1, le même système à deux lettres que l'[Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/me.html) utilise pour déléguer les codes pays. Sur le papier, il s'agit de l'espace de noms national du Monténégro : l'IANA répertorie le **gouvernement du Monténégro** comme organisation parrainante et gestionnaire du registre, avec la Faculté de génie électrique de l'Université du Monténégro comme contact administratif.
 
 En pratique, le **domaine .me** est utilisé presque entièrement comme une extension **générique et mondiale**. La chaîne « me » est le pronom anglais de la première personne, et ce seul fait lui confère une chaleur et une franchise qu'aucun autre suffixe grand public ne peut égaler. « about.me », « hire.me », « follow.me », « read.me » — le suffixe complète une phrase, ce qui est précisément l'angle que ses opérateurs ont exploité lorsqu'ils ont ouvert l'espace de noms au monde entier.
 
@@ -80,7 +80,7 @@ Ces cas montrent que le .me est adopté en toute confiance non pas seulement com
 | Disponibilité de noms courts | Excellente | Très faible | Modérée | Bonne | Excellente |
 | Niveau de prix typique | Moyen | Bas à moyen | Élevé | Moyen | Bas |
 
-Choisissez le **.com** lorsque vous pouvez obtenir le nom exact — il reste la référence en matière de confiance pour les entreprises. Optez pour le **.me** lorsque le projet est *personnel* — un portfolio, une bio, une marque d'une seule personne — ou lorsque le nom forme une phrase naturelle se terminant par « me ». Choisissez le **[.io](/fr/tld/io/)** pour les marques tech axées sur les développeurs et l'infrastructure, le **[.co](/fr/tld/co/)** pour le substitut le plus proche et le plus crédible sur le plan professionnel au .com, et le **[.xyz](/fr/tld/xyz/)** pour les projets génériques ou natifs du [Web3](/fr/glossary/web3/).
+Choisissez le **.com** lorsque vous pouvez obtenir le nom exact — il reste la référence en matière de confiance pour les entreprises. Optez pour le **.me** lorsque le projet est *personnel* — un portfolio, une bio, une marque d'une seule personne — ou lorsque le nom forme une phrase naturelle se terminant par « me ». Choisissez le **.io** pour les marques tech axées sur les développeurs et l'infrastructure, le **.co** pour le substitut le plus proche et le plus crédible sur le plan professionnel au .com, et le **.xyz** pour les projets génériques ou natifs du [Web3](/fr/glossary/web3/).
 
 ## Pourquoi choisir le .me ?
 
@@ -99,7 +99,7 @@ Choisissez le **.com** lorsque vous pouvez obtenir le nom exact — il reste la 
 
 **Restrictions d'enregistrement : ouvert à tous.** Il n'existe **aucune exigence de présence locale, de résidence ou de nationalité monténégrine** pour enregistrer un domaine .me de second niveau. Depuis le lancement public de 2008, l'enregistrement se fait selon le principe du **premier arrivé, premier servi** et est accessible aux particuliers et aux organisations du monde entier.
 
-Les pratiques standard s'appliquent : les titulaires de marques pouvaient participer aux phases sunrise lors du lancement initial, les noms suivent les règles classiques de longueur et de caractères, les **noms de domaine internationalisés (IDN)** sont pris en charge, et le **[DNSSEC](/en/glossary/dnssec/)** est disponible pour une sécurité DNS renforcée. La confidentialité [WHOIS](/en/glossary/whois/), le transfert, le renouvellement et la gestion de la période de grâce de récupération suivent les conventions standard des [bureaux d'enregistrement](/fr/glossary/registrar/) et des registres. Comme le .me est un ccTLD, il est régi par la politique monténégrine sous l'égide du gouvernement du Monténégro, avec doMEn d.o.o. comme opérateur — la source faisant autorité pour les règles actuelles est le site officiel de l'opérateur, [domain.me](https://domain.me/).
+Les pratiques standard s'appliquent : les titulaires de marques pouvaient participer aux phases sunrise lors du lancement initial, les noms suivent les règles classiques de longueur et de caractères, les **noms de domaine internationalisés (IDN)** sont pris en charge, et le **[DNSSEC](/fr/glossary/dnssec/)** est disponible pour une sécurité DNS renforcée. La confidentialité [WHOIS](/fr/glossary/whois/), le transfert, le renouvellement et la gestion de la période de grâce de récupération suivent les conventions standard des [bureaux d'enregistrement](/fr/glossary/registrar/) et des registres. Comme le .me est un ccTLD, il est régi par la politique monténégrine sous l'égide du gouvernement du Monténégro, avec doMEn d.o.o. comme opérateur — la source faisant autorité pour les règles actuelles est le site officiel de l'opérateur, [domain.me](https://domain.me/).
 
 ## Tarification et valeur du .me
 
@@ -130,7 +130,7 @@ Pour la délivrabilité des e-mails, le suffixe lui-même est rarement le facteu
 2. **Choisissez** un nom disponible (et vérifiez s'il est classé comme premium).
 3. **Enregistrez** et configurez vos DNS.
 
-[Namefi](https://namefi.io) est un [bureau d'enregistrement](/fr/glossary/registrar/) accrédité ICANN qui fait le pont entre le Web2 et le Web3, avec une tarification transparente, une gestion rapide des DNS et la possibilité de conserver votre nom sous forme de domaine tokenisé pour un transfert facilité et une propriété vérifiable.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité ICANN qui fait le pont entre le Web2 et le Web3, avec une tarification transparente, une gestion rapide des DNS et la possibilité de conserver votre nom sous forme de domaine tokenisé pour un transfert facilité et une propriété vérifiable.
 
 ## Foire aux questions
 
@@ -152,12 +152,12 @@ Oui. Le .me est sans doute l'extension grand public la plus personnelle. Parce q
 
 ## Ressources connexes
 
-- [Guide du TLD .com](/fr/tld/com/)
-- [Guide du TLD .io](/fr/tld/io/)
-- [Guide du TLD .co](/fr/tld/co/)
-- [Guide du TLD .xyz](/fr/tld/xyz/)
+- Guide du TLD .com
+- Guide du TLD .io
+- Guide du TLD .co
+- Guide du TLD .xyz
 - [Les domain hacks expliqués](/fr/blog/domain-hacks-explained/)
 - [Qu'est-ce qu'un domaine ?](/fr/blog/what-is-domain/)
 - [Guide de terminologie des domaines](/fr/blog/domain-terminology-guide/)
-- [Glossaire : registrar](/fr/glossary/registrar/)
-- [Glossaire : ICANN](/fr/glossary/icann/)
+- Glossaire : registrar
+- Glossaire : ICANN

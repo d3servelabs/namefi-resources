@@ -25,7 +25,7 @@ Aquí te mostramos cómo diversos usuarios están aprovechando este TLD:
 
 *   **Sitios web informativos y Wikis:** Es la elección natural para bases de conocimiento, wikis de proyectos de código abierto y enciclopedias temáticas.
 *   **Páginas de eventos:** Organizadores de conferencias, bodas o festivales utilizan .info para separar la logística del evento de la marca comercial principal (ej. `nombreevento2025.info`).
-*   **Documentación de proyectos Web3 y Software:** Muchos desarrolladores eligen esta extensión para alojar la documentación técnica ("docs"), *whitepapers* o guías de usuario, manteniendo el .com o .io para la aplicación principal.
+*   **Documentación de proyectos [Web3](/es/glossary/web3/) y Software:** Muchos desarrolladores eligen esta extensión para alojar la documentación técnica ("docs"), *whitepapers* o guías de usuario, manteniendo el .com o .io para la aplicación principal.
 *   **Portales de turismo y guías locales:** Las oficinas de turismo y guías de viaje lo utilizan frecuentemente para ofrecer datos sobre destinos, horarios y transporte.
 *   **Campañas de concientización:** Organizaciones sin fines de lucro a menudo registran la versión .info de su nombre para campañas educativas específicas.
 

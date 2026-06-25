@@ -11,7 +11,7 @@ keywords: [".alibaba domains", ".alibaba TLD", "top-level domain", "what is .ali
 
 ## **什么是 .alibaba？**
 
-**.alibaba** 是互联网域名系统（DNS）中的一个**新通用顶级域名（New gTLD）**。与公众熟知的 `.com` 或 `.net` 不同，`.alibaba` 属于一种特殊的类别，被称为**品牌顶级域名（Brand TLD）**。
+**.alibaba** 是互联网域名系统（DNS）中的一个**新通用顶级域名（New gTLD）**。与公众熟知的 `.com` 或 `.net` 不同，`.alibaba` 属于一种特殊的类别，被称为**品牌顶级域名（Brand [TLD](/zh/glossary/tld/)）**。
 
 该域名后缀由全球知名的科技巨头**阿里巴巴集团（Alibaba Group）**独家拥有和运营。作为 ICANN（互联网名称与数字地址分配机构）新 gTLD 计划的一部分，阿里巴巴申请此域名的目的是为了整合其庞大的数字生态系统，增强品牌安全性，并为其全球用户提供更加可信的访问体验。
 
@@ -28,7 +28,7 @@ keywords: [".alibaba domains", ".alibaba TLD", "top-level domain", "what is .ali
 *   **企业基础设施与内网**：用于集团内部员工的访问入口、开发测试环境以及云服务后台管理。
 *   **品牌保护与防伪**：通过将官方服务迁移至 `.alibaba`，用户可以确信他们访问的是官方页面，有效防止钓鱼攻击。
 *   **统一数字身份**：整合旗下复杂的业务线（如电商、云计算、物流），在互联网上建立统一的“阿里巴巴”数字指纹。
-*   **创新技术测试**：作为科技巨头，该域名也可能用于测试新的区块链或 Web3 相关技术部署。
+*   **创新技术测试**：作为科技巨头，该域名也可能用于测试新的[区块链](/zh/glossary/blockchain/)或 [Web3](/zh/glossary/web3/) 相关技术部署。
 
 ## **使用 .alibaba 的知名实体与案例**
 
@@ -42,12 +42,12 @@ keywords: [".alibaba domains", ".alibaba TLD", "top-level domain", "what is .ali
 
 ## **为何选择 .alibaba？（品牌域名的优势）**
 
-虽然普通用户无法注册 `.alibaba`，但了解它的优势有助于我们在选择其他**顶级域名（TLD）**时做出更明智的决策，尤其是在考虑**域名代币化（Tokenized Domain）**和品牌建设时。
+虽然普通用户无法注册 `.alibaba`，但了解它的优势有助于我们在选择其他**顶级域名（TLD）**时做出更明智的决策，尤其是在考虑**域名[代币化](/zh/glossary/tokenize/)（Tokenized Domain）**和品牌建设时。
 
 *   **极致的信任度（Trust）**：
     当用户看到 `.alibaba` 结尾的网址时，他们百分之百确定这是阿里巴巴官方的。这种信任是品牌资产的核心。
 *   **安全性（Security）**：
-    由于注册局（Registry）本身就是品牌方，不存在第三方抢注或滥用域名的风险，极大地降低了网络安全威胁。
+    由于[注册局](/zh/glossary/registry/)（Registry）本身就是品牌方，不存在第三方抢注或滥用域名的风险，极大地降低了网络安全威胁。
 *   **SEO 权威性**：
     搜索引擎会将此类域名视为高权重的品牌信号，有助于内容在特定搜索意图中获得更好的排名。
 *   **短域名可用性**：

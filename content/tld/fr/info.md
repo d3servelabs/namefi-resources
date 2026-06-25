@@ -11,7 +11,7 @@ keywords: ['.info domains', '.info TLD', 'top-level domain', 'what is .info', 'w
 
 Dans le vaste univers des noms de domaine, peu d'extensions sont aussi universellement reconnues et comprises que le **.info**. Que vous soyez un développeur lançant une base de connaissances, une entreprise souhaitant éduquer ses clients, ou un investisseur en domaines explorant des actifs numériques, le .info reste un choix stratégique majeur.
 
-Chez Namefi, nous croyons en la puissance de choisir la bonne identité numérique. Plongeons dans les détails de cette extension historique et découvrons pourquoi elle reste pertinente à l'ère du Web3.
+Chez Namefi, nous croyons en la puissance de choisir la bonne identité numérique. Plongeons dans les détails de cette extension historique et découvrons pourquoi elle reste pertinente à l'ère du [Web3](/fr/glossary/web3/).
 
 ## **Qu'est-ce que le .info ?**
 

@@ -60,7 +60,7 @@ Sie wurde am 26. Juni 2001 delegiert und ursprünglich von NeuStar betrieben, da
 - **Defensive Registrierungen** – Marken, die bereits die **.com** besitzen und die **.biz** registrieren, um ihren Namen zu schützen und Nachahmer zu verhindern.
 - **Domain-Investoren** – Käufer, die kurze, Wörterbuch- oder Keyword-**.biz**-Namen zum Wiederverkauf oder zum [Tokenisieren on-chain](/de/blog/what-are-tokenized-domains) erwerben.
 
-**Für wen es nicht ideal ist:** nicht-kommerzielle Projekte (persönliche Blogs, Hobby-Seiten, gemeinnützige Organisationen, bei denen **.org** besser passt) sowie Marken, deren **.com** ohne Weiteres verfügbar und bezahlbar ist – in diesem Fall gewinnt die **.com** fast immer bei der standardmäßigen Wiedererkennung.
+**Für wen es nicht ideal ist:** nicht-kommerzielle Projekte (persönliche Blogs, Hobby-Seiten, gemeinnützige Organisationen, bei denen **[.org](/de/tld/org/)** besser passt) sowie Marken, deren **.com** ohne Weiteres verfügbar und bezahlbar ist – in diesem Fall gewinnt die **.com** fast immer bei der standardmäßigen Wiedererkennung.
 
 ## Bekannte Websites mit .biz
 
@@ -94,7 +94,7 @@ Seien Sie ehrlich zu sich selbst bezüglich der Kompromisse. Der größte ist di
 
 **Registrierungsbeschränkungen: offen für alle, mit einer Erwartung an geschäftliche Nutzung.** Es gibt keine Anforderung an Qualifikation, Lizenz, Marke oder lokale Präsenz, um eine **.biz**-Domain zu registrieren – jeder, überall auf der Welt, kann eine über einen akkreditierten [Registrar](/de/glossary/registrar) kaufen. Die eine Bedingung, die dem Namensraum von Anfang an eingebaut ist, lautet, dass Namen für **echte geschäftliche oder kommerzielle Nutzung** gedacht sind und nicht für rein persönliche oder spekulative Zwecke. Historisch wurde dies durch das RDRP-Streitverfahren gestützt, sodass eine Registrierung im Prinzip angefochten werden kann, wenn sie offensichtlich nicht-kommerziell ist; im Alltag ist die Durchsetzung jedoch gering und die Endung funktioniert als offene TLD.
 
-Es gelten die üblichen gTLD-Regeln: Namen umfassen 1–63 Zeichen, internationalisierte Domainnamen (IDNs) werden unterstützt, und Markenschutzmaßnahmen (einschließlich des ICANN Trademark Clearinghouse während der Sunrise-Phasen für neue Starts) gelten wie bei jeder gTLD. Auf administrativer Seite unterstützt **.biz** [DNSSEC](/en/glossary/dnssec) für signiertes DNS, Registrare bieten WHOIS-Datenschutz an, und der übliche Transfer-, Verlängerungs- und Redemption-Grace-Period-Lebenszyklus gilt. Die maßgeblichen Regeln finden sich im [ICANN .biz Registry Agreement](https://www.icann.org/en/registry-agreements/details/biz), das die Pflichten des Betreibers regelt.
+Es gelten die üblichen gTLD-Regeln: Namen umfassen 1–63 Zeichen, internationalisierte Domainnamen (IDNs) werden unterstützt, und Markenschutzmaßnahmen (einschließlich des ICANN [Trademark Clearinghouse](/de/glossary/tmch/) während der Sunrise-Phasen für neue Starts) gelten wie bei jeder gTLD. Auf administrativer Seite unterstützt **.biz** [DNSSEC](/de/glossary/dnssec) für signiertes DNS, Registrare bieten [WHOIS-Datenschutz](/de/glossary/whois-privacy/) an, und der übliche Transfer-, Verlängerungs- und Redemption-Grace-Period-Lebenszyklus gilt. Die maßgeblichen Regeln finden sich im [ICANN .biz Registry Agreement](https://www.icann.org/en/registry-agreements/details/biz), das die Pflichten des Betreibers regelt.
 
 ## .biz-Preisgestaltung und -Wert
 
@@ -116,7 +116,7 @@ Die praktische Auswirkung für ein seriöses Unternehmen ist gering und vollstä
 2. **Wählen** Sie das **.biz**-Ergebnis (und greifen Sie nach der passenden **.com** oder anderen Endungen, wenn Sie sie möchten).
 3. **Registrieren** und schließen Sie den Checkout ab, um den Namen zu sichern.
 
-Namefi verbindet einen ICANN-akkreditierten [Registrar](/de/glossary/registrar) mit Web3-Funktionen: transparente Preisgestaltung, schnelles DNS-Management und die Möglichkeit, [Ihre Domain zu tokenisieren](/de/blog/why-tokenize-domains) für einfachere Übertragung und Liquidität. [Registrieren Sie Ihre .biz-Domain bei Namefi](https://namefi.io).
+Namefi verbindet einen ICANN-akkreditierten [Registrar](/de/glossary/registrar) mit [Web3](/de/glossary/web3/)-Funktionen: transparente Preisgestaltung, schnelles DNS-Management und die Möglichkeit, [Ihre Domain zu tokenisieren](/de/blog/why-tokenize-domains) für einfachere Übertragung und [Liquidität](/de/glossary/domain-liquidity/). [Registrieren Sie Ihre .biz-Domain bei Namefi](https://namefi.io).
 
 ## Häufig gestellte Fragen
 
@@ -146,4 +146,4 @@ Ja. Registrare bieten WHOIS-Datenschutz für **.biz** an, wie sie es bei anderen
 - [Was ist eine Domain?](/de/blog/what-is-domain)
 - [Top-TLDs, die Sie für Ihr Unternehmen sichern sollten](/de/blog/top-tlds-to-secure-for-your-business)
 - [.com TLD](/de/tld/com) · [.net TLD](/de/tld/net) · [.info TLD](/de/tld/info)
-- Glossar: [ICANN](/de/glossary/icann) · [Registrar](/de/glossary/registrar) · [DNSSEC](/en/glossary/dnssec) · [WHOIS](/en/glossary/whois)
+- Glossar: [ICANN](/de/glossary/icann) · [Registrar](/de/glossary/registrar) · [DNSSEC](/de/glossary/dnssec) · [WHOIS](/de/glossary/whois)

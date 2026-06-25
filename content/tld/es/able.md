@@ -28,9 +28,9 @@ keywords:
 
 ## **¿Qué es .able?**
 
-El dominio **.able** es una extensión de dominio innovadora y versátil que ha captado la atención de creativos, startups y desarrolladores por igual. A diferencia de los dominios tradicionales como el .com o el .net, que indican un propósito comercial o de red, **.able** funciona principalmente como un sufijo semántico. Pertenece a la categoría de nuevos dominios genéricos de nivel superior (new gTLDs), diseñados para ofrecer más disponibilidad y especificidad en la web.
+El dominio **.able** es una extensión de dominio innovadora y versátil que ha captado la atención de creativos, startups y desarrolladores por igual. A diferencia de los dominios tradicionales como el [.com](/es/tld/com/) o el [.net](/es/tld/net/), que indican un propósito comercial o de red, **.able** funciona principalmente como un sufijo semántico. Pertenece a la categoría de nuevos dominios genéricos de nivel superior (new gTLDs), diseñados para ofrecer más disponibilidad y especificidad en la web.
 
-Históricamente, la saturación del espacio de nombres en internet obligó a [ICANN](https://www.icann.org/) (la Corporación de Internet para la Asignación de Nombres y Números) a ampliar el universo de dominios. El TLD **.able** surge en este contexto como una herramienta lingüística poderosa. Su propósito principal es permitir la creación de "domain hacks" (juegos de palabras con dominios) que forman palabras o frases completas en inglés que terminan en el sufijo "-able" (que indica capacidad o posibilidad), como por ejemplo "reli.able" (confiable) o "scal.able" (escalable).
+Históricamente, la saturación del espacio de nombres en internet obligó a [ICANN](https://www.icann.org/) (la Corporación de Internet para la Asignación de Nombres y Números) a ampliar el universo de dominios. El [TLD](/es/glossary/tld/) **.able** surge en este contexto como una herramienta lingüística poderosa. Su propósito principal es permitir la creación de "domain hacks" (juegos de palabras con dominios) que forman palabras o frases completas en inglés que terminan en el sufijo "-able" (que indica capacidad o posibilidad), como por ejemplo "reli.able" (confiable) o "scal.able" (escalable).
 
 Actualmente, su uso está creciendo exponencialmente en sectores tecnológicos y creativos, donde la brevedad y el ingenio de la marca son cruciales para destacar en un mercado digital abarrotado.
 
@@ -40,7 +40,7 @@ La flexibilidad lingüística del TLD .able permite una variedad de usos creativ
 
 *   **Startups Tecnológicas y SaaS:** Muchas empresas de software utilizan este dominio para resaltar una característica clave de su producto directamente en la URL. Por ejemplo, una empresa de análisis de datos podría usar `measure.able` (medible).
 *   **Portafolios Creativos y Freelancers:** Diseñadores y consultores lo utilizan para crear marcas personales memorables. Un consultor podría usar `hiri.able` (contratable) o un artista `remark.able` (notable).
-*   **Proyectos Web3 y Blockchain:** Dado el auge de la identidad digital descentralizada, muchos desarrolladores buscan nombres cortos y con significado para sus proyectos o identidades en la cadena de bloques.
+*   **Proyectos [Web3](/es/glossary/web3/) y Blockchain:** Dado el auge de la identidad digital descentralizada, muchos desarrolladores buscan nombres cortos y con significado para sus proyectos o identidades en la cadena de bloques.
 *   **Campañas de Marketing:** Las grandes marcas a veces registran estos dominios para campañas específicas que requieren un "Call to Action" (llamada a la acción) implícito en el nombre, como `do.able` (hacible/posible).
 
 Para entender más sobre cómo las nuevas extensiones están cambiando el panorama de internet, puedes leer reportes de la industria en sitios como [Domain Name Wire](https://domainnamewire.com/).

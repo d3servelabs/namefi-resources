@@ -25,7 +25,7 @@ L'extension .app a rapidement trouvé sa place sur le marché. Elle offre une cl
 
 *   **Pages de destination d'applications mobiles :** Les créateurs d'applications iOS et Android utilisent souvent *nomdemarque.app* comme hub central pour fournir des liens de téléchargement vers l'App Store et Google Play.
 *   **Applications Web (SaaS) :** De nombreuses startups choisissent cette extension pour héberger leur logiciel en tant que service, profitant de la connotation technique et moderne du terme.
-*   **Projets Web3 et Blockchain :** Avec l'essor des applications décentralisées, le .app est devenu très populaire pour les interfaces de trading, les wallets et les projets DeFi.
+*   **Projets [Web3](/fr/glossary/web3/) et Blockchain :** Avec l'essor des applications décentralisées, le .app est devenu très populaire pour les interfaces de trading, les wallets et les projets DeFi.
 *   **Portfolios de développeurs :** Les freelances et ingénieurs utilisent cette extension pour présenter leurs créations logicielles.
 
 ## **Entités notables utilisant le .app**

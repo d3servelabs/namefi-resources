@@ -9,7 +9,7 @@ description: "Découvrez tout sur l'extension .airbus : une plongée dans les do
 keywords: [".airbus domains", ".airbus TLD", "top-level domain .airbus", "what is .airbus", "why choose .airbus", "what is the .airbus domain", "why choose the .airbus domain", "investir nom de domaine", "domaines tokenisés", "blockchain domains", "Web3 domains", "achat nom de domaine .airbus", "extension internet airbus", "domain investing", "Namefi"]
 ---
 
-Les extensions de domaine (TLD) ont considérablement évolué depuis les débuts d'Internet. Au-delà des classiques `.com` ou `.org`, nous voyons aujourd'hui l'essor des **Brand TLDs** (TLD de marque). L'un des exemples les plus fascinants de cette catégorie est le **.airbus**.
+Les extensions de domaine ([TLD](/fr/glossary/tld/)) ont considérablement évolué depuis les débuts d'Internet. Au-delà des classiques `.com` ou `.org`, nous voyons aujourd'hui l'essor des **Brand TLDs** (TLD de marque). L'un des exemples les plus fascinants de cette catégorie est le **.airbus**.
 
 Dans cet article, nous explorerons ce que représente cette extension unique, son fonctionnement au sein de l'écosystème numérique et ce qu'elle signifie pour l'avenir des noms de domaine et de l'identité numérique.
 
@@ -50,7 +50,7 @@ Si vous êtes une entreprise ou un développeur s'intéressant aux domaines, com
 
 ## **Enregistrez votre domaine sur Namefi**
 
-Que vous cherchiez à sécuriser un nom de domaine traditionnel, à investir dans des domaines Web3, ou que vous soyez intéressé par les futures opportunités des gTLD, **Namefi** est votre partenaire de confiance.
+Que vous cherchiez à sécuriser un nom de domaine traditionnel, à investir dans des domaines [Web3](/fr/glossary/web3/), ou que vous soyez intéressé par les futures opportunités des gTLD, **Namefi** est votre partenaire de confiance.
 
 Chez Namefi, nous combinons la fiabilité d'un registrar accrédité par l'ICANN avec la flexibilité de la technologie blockchain. Nous facilitons l'achat, la gestion et le transfert de domaines sous forme d'actifs tokenisés, vous offrant une liquidité et une sécurité sans précédent.
 

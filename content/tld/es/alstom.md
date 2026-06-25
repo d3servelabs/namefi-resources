@@ -28,11 +28,11 @@ keywords:
 
 ## **¿Qué es .alstom?**
 
-El dominio **.alstom** es un Dominio de Nivel Superior (TLD, por sus siglas en inglés) perteneciente a la categoría de los "gTLD de marca" (Brand TLDs). A diferencia de los dominios genéricos como .com o .net, este TLD fue solicitado y delegado específicamente para el uso exclusivo de **Alstom**, el gigante multinacional francés especializado en la generación de energía y el transporte ferroviario (conocido por sus trenes de alta velocidad TGV y Eurostar).
+El dominio **.alstom** es un Dominio de Nivel Superior ([TLD](/es/glossary/tld/), por sus siglas en inglés) perteneciente a la categoría de los "gTLD de marca" (Brand TLDs). A diferencia de los dominios genéricos como [.com](/es/tld/com/) o [.net](/es/tld/net/), este TLD fue solicitado y delegado específicamente para el uso exclusivo de **Alstom**, el gigante multinacional francés especializado en la generación de energía y el transporte ferroviario (conocido por sus trenes de alta velocidad TGV y Eurostar).
 
 La creación del TLD .alstom forma parte del programa de nuevos gTLDs facilitado por la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es), diseñado para permitir que grandes corporaciones gestionen su propia identidad digital de manera más segura y controlada. El propósito principal de este dominio es consolidar la presencia digital de la compañía, garantizando a los usuarios que cualquier sitio web que termine en .alstom es una propiedad oficial y verificada de la empresa.
 
-Para los inversores de dominios y entusiastas de la tecnología blockchain, entender el funcionamiento de los "Brand TLDs" como .alstom es crucial para comprender cómo las grandes empresas están tokenizando y protegiendo sus activos digitales en la Web2 y la Web3.
+Para los inversores de dominios y entusiastas de la tecnología blockchain, entender el funcionamiento de los "Brand TLDs" como .alstom es crucial para comprender cómo las grandes empresas están tokenizando y protegiendo sus activos digitales en la Web2 y la [Web3](/es/glossary/web3/).
 
 ## **Cómo se utiliza .alstom**
 
@@ -69,7 +69,7 @@ Entender la exclusividad de dominios como .alstom resalta la importancia de aseg
 
 En **Namefi**, facilitamos el proceso de registro e inversión en dominios, combinando la facilidad de la Web2 con la innovación de la Web3.
 
-*   **Acreditación ICANN:** Garantía y seguridad en cada registro.
+*   **Acreditación [ICANN](/es/glossary/icann/):** Garantía y seguridad en cada registro.
 *   **Integración Web3:** Tokeniza tus dominios como NFTs para una transferencia y gestión simplificada.
 *   **Gestión sin fricción:** Olvídate del papeleo complejo; compra, vende y gestiona tus dominios con la eficiencia de la blockchain.
 

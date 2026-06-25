@@ -15,7 +15,7 @@ L'extension de domaine **.club** est un domaine de premier niveau générique (g
 
 Le mot "club" est unique car il s'écrit et se comprend de la même manière dans de nombreuses langues à travers le monde. Cela en fait une extension mondialement reconnue, idéale pour rassembler des gens autour d'une passion commune, d'un produit exclusif ou d'une organisation. Selon les registres officiels, le .club a rapidement grimpé les échelons pour devenir l'un des [nouveaux gTLD les plus populaires](https://ntldstats.com/tld/club) en termes de volume d'enregistrement.
 
-Dans le contexte actuel du Web3 et de l'investissement en noms de domaine, le .club prend une nouvelle dimension, servant souvent de point de ralliement pour les communautés numériques modernes et les organisations décentralisées.
+Dans le contexte actuel du [Web3](/fr/glossary/web3/) et de l'investissement en noms de domaine, le .club prend une nouvelle dimension, servant souvent de point de ralliement pour les communautés numériques modernes et les organisations décentralisées.
 
 ## **Comment le domaine .club est-il utilisé ?**
 

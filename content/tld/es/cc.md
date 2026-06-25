@@ -26,7 +26,7 @@ Esta guía cubre qué es realmente .cc, quién lo gestiona, quién puede registr
 
 | Dato | Detalle |
 | --- | --- |
-| Tipo de TLD | TLD de código de país (ccTLD) de las Islas Cocos (Keeling) |
+| Tipo de [TLD](/es/glossary/tld/) | TLD de código de país (ccTLD) de las Islas Cocos (Keeling) |
 | Operador del registro | eNIC Cocos (Keeling) Islands Pty. Ltd. (operando como Island Internet Services), una subsidiaria de Verisign |
 | Año de delegación | 1997 |
 | Soporte IDN | Sí (admite nombres de dominio internacionalizados) |
@@ -36,7 +36,7 @@ Esta guía cubre qué es realmente .cc, quién lo gestiona, quién puede registr
 
 ## ¿Qué es .cc?
 
-**.cc** es el [dominio de nivel superior](/en/glossary/tld/) de código de país (ccTLD) asignado a las **Islas Cocos (Keeling)** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/cc.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de un remoto territorio externo australiano de unos pocos cientos de residentes en el océano Índico.
+**.cc** es el [dominio de nivel superior](/es/glossary/tld/) de código de país (ccTLD) asignado a las **Islas Cocos (Keeling)** según el estándar ISO 3166-1, el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/cc.html) utiliza para delegar códigos de país. Sobre el papel es el espacio de nombres nacional de un remoto territorio externo australiano de unos pocos cientos de residentes en el océano Índico.
 
 En la práctica, el **dominio .cc** se ha usado casi por completo como una extensión **genérica y global** desde finales de los años noventa. Como las islas mismas generan casi nula demanda local, el operador abrió el espacio de nombres al mundo y lo comercializó ampliamente. La cadena "cc" no tiene un único significado fijo, que es precisamente su atractivo: se lee como "commercial company", evoca "creative commons" y "carbon copy", y funciona limpiamente como dos iniciales coincidentes. Esa ambigüedad la hace inusualmente adaptable para el branding.
 
@@ -70,14 +70,14 @@ En lugar de nombrar sitios específicos que pueden cambiar de manos o caducar co
 
 ## .cc frente a otros dominios
 
-| Característica | .cc | [.com](/es/tld/com/) | [.co](/es/tld/co/) | [.io](/es/tld/io/) |
+| Característica | .cc | .com | [.co](/es/tld/co/) | [.io](/es/tld/io/) |
 | --- | --- | --- | --- | --- |
 | Tipo | ccTLD (usado globalmente) | gTLD heredado | ccTLD (usado globalmente) | ccTLD (usado globalmente) |
 | Asociación principal | Flexible / iniciales coincidentes | El estándar web predeterminado | Company / corporation | Tecnología / "Entrada-Salida" |
 | Disponibilidad de nombres cortos | Buena | Muy escasa | Buena | Moderada |
 | Nivel de precio típico | Bajo-medio | Bajo-medio | Medio | Alto |
 
-Elige **[.com](/es/tld/com/)** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.cc** cuando quieras un sufijo corto, flexible y con potencial de marca y una construcción ingeniosa o un domain hack, especialmente si el .com está tomado. Considera **[.co](/es/tld/co/)** cuando quieras específicamente connotaciones de "company", y **[.io](/es/tld/io/)** para marcas tecnológicas centradas en desarrolladores e infraestructura.
+Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.cc** cuando quieras un sufijo corto, flexible y con potencial de marca y una construcción ingeniosa o un domain hack, especialmente si el .com está tomado. Considera **.co** cuando quieras específicamente connotaciones de "company", y **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura.
 
 ## ¿Por qué elegir .cc?
 
@@ -97,7 +97,7 @@ Elige **[.com](/es/tld/com/)** cuando puedas conseguir el nombre exacto — sigu
 
 **Restricciones de registro: abierto a todos.** **No hay requisito de presencia local, residencia ni nacionalidad** para registrar un dominio .cc de segundo nivel. No necesitas ninguna conexión con las Islas Cocos (Keeling). El registro es **por orden de llegada** y está disponible para particulares y organizaciones de cualquier parte del mundo a través de cualquier [registrador](/es/glossary/registrar/) participante.
 
-Se aplican las prácticas estándar: los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/en/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/en/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de registradores y registros. Como .cc es un ccTLD, la fuente autorizada para las reglas vigentes es el operador del registro bajo su delegación de la IANA — [eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html), una subsidiaria de Verisign.
+Se aplican las prácticas estándar: los nombres siguen las reglas convencionales de longitud y caracteres, se admiten **nombres de dominio internacionalizados (IDN)** y **[DNSSEC](/es/glossary/dnssec/)** está disponible para mayor seguridad del DNS. La privacidad [WHOIS](/es/glossary/whois/), la transferencia, la renovación y el manejo del período de gracia de redención siguen las convenciones estándar de registradores y registros. Como .cc es un ccTLD, la fuente autorizada para las reglas vigentes es el operador del registro bajo su delegación de la IANA — [eNIC / Island Internet Services](https://www.iana.org/domains/root/db/cc.html), una subsidiaria de Verisign.
 
 ## Precios y valor de .cc
 
@@ -150,10 +150,10 @@ El registro .cc es operado por eNIC Cocos (Keeling) Islands Pty. Ltd. (que opera
 
 ## Recursos relacionados
 
-- [Guía del TLD .com](/es/tld/com/)
-- [Guía del TLD .co](/es/tld/co/)
-- [Guía del TLD .io](/es/tld/io/)
+- Guía del TLD .com
+- Guía del TLD .co
+- Guía del TLD .io
 - [Guía del TLD .xyz](/es/tld/xyz/)
 - [Domain hacks explicados](/es/blog/domain-hacks-explained/)
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
-- [Glosario: registrador](/es/glossary/registrar/)
+- Glosario: registrador

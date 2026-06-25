@@ -11,9 +11,9 @@ keywords: [".alstom domains", "TLD", "top-level domain", "what is .alstom", "why
 
 ## **Qu'est-ce que .alstom ?**
 
-L'extension **.alstom** est ce que l'on appelle un "Brand TLD" (Top-Level Domain de marque) ou une nouvelle extension générique (new gTLD). Contrairement aux extensions classiques comme le .com ou le .fr, le .alstom a été créé spécifiquement pour l'usage exclusif d'**Alstom**, le géant multinational français spécialisé dans le secteur des transports ferroviaires et de la mobilité durable.
+L'extension **.alstom** est ce que l'on appelle un "Brand [TLD](/fr/glossary/tld/)" (Top-Level Domain de marque) ou une nouvelle extension générique (new gTLD). Contrairement aux extensions classiques comme le [.com](/fr/tld/com/) ou le .fr, le .alstom a été créé spécifiquement pour l'usage exclusif d'**Alstom**, le géant multinational français spécialisé dans le secteur des transports ferroviaires et de la mobilité durable.
 
-Lancé lors du programme d'expansion des gTLD par l'**ICANN** (Internet Corporation for Assigned Names and Numbers), ce domaine a pour but de consolider la présence numérique de l'entreprise, d'assurer une sécurité maximale contre le cybersquatting et de garantir l'authenticité de ses communications en ligne. Il représente un espace numérique de confiance, certifiant que tout site se terminant par cette extension émane directement de l'organisation officielle.
+Lancé lors du programme d'expansion des gTLD par l'**[ICANN](/fr/glossary/icann/)** (Internet Corporation for Assigned Names and Numbers), ce domaine a pour but de consolider la présence numérique de l'entreprise, d'assurer une sécurité maximale contre le cybersquatting et de garantir l'authenticité de ses communications en ligne. Il représente un espace numérique de confiance, certifiant que tout site se terminant par cette extension émane directement de l'organisation officielle.
 
 Pour plus de détails techniques sur la délégation de ce domaine, vous pouvez consulter la [base de données de l'IANA](https://www.iana.org/domains/root/db/alstom.html).
 
@@ -36,7 +36,7 @@ Puisque le .alstom est un registre "fermé" (réservé à l'entité Alstom et se
 2.  **Filiales Régionales :** Les branches internationales du groupe peuvent utiliser des sous-domaines spécifiques pour localiser leur communication tout en gardant l'extension globale de la marque.
 3.  **Divisions Produits (Hypothétique/Stratégique) :** Des entités dédiées à des produits phares (comme le TGV ou les tramways Citadis) pourraient bénéficier d'une adresse en `produit.alstom` pour une clarté immédiate.
 
-Bien que vous ne trouviez pas de blogs personnels ou de petites entreprises sur ce TLD, son existence sert d'exemple puissant de la manière dont les grandes corporations gèrent leur territoire numérique à l'ère du Web3 et de l'identité tokenisée.
+Bien que vous ne trouviez pas de blogs personnels ou de petites entreprises sur ce TLD, son existence sert d'exemple puissant de la manière dont les grandes corporations gèrent leur territoire numérique à l'ère du [Web3](/fr/glossary/web3/) et de l'identité tokenisée.
 
 ## **Pourquoi choisir .alstom ?**
 

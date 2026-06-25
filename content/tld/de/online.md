@@ -25,7 +25,7 @@ Die Vielseitigkeit von .online macht sie für fast jede Nische attraktiv. Da das
 *   **Tech-Startups und SaaS:** Junge Unternehmen, die keinen kurzen .com-Namen finden konnten, greifen auf .online zurück, da es modern und technisch versiert klingt.
 *   **E-Commerce:** Shops nutzen die Endung, um klarzustellen, dass ihre Produkte rund um die Uhr verfügbar sind.
 *   **Kreative Portfolios und Blogs:** Freelancer und Blogger nutzen die Endung für eine persönliche Marke, die "immer live" ist.
-*   **Web3 und Blockchain-Projekte:** Da die digitale Welt das Zuhause von Krypto und Web3 ist, passt diese Endung perfekt zu dezentralen Projekten.
+*   **[Web3](/de/glossary/web3/) und Blockchain-Projekte:** Da die digitale Welt das Zuhause von Krypto und Web3 ist, passt diese Endung perfekt zu dezentralen Projekten.
 
 ## **Bekannte Unternehmen und Nutzung von .online**
 
@@ -53,7 +53,7 @@ Es gibt viele Gründe, sich für diese TLD zu entscheiden, besonders wenn Ihre W
 
 Sind Sie bereit, Ihre digitale Präsenz zu starten oder Ihr Domain-Portfolio zu erweitern?
 
-Bei **Namefi** bieten wir Ihnen nicht nur die einfache Registrierung Ihrer .online-Wunschdomain, sondern revolutionieren auch, wie Sie diese verwalten. Als ICANN-akkreditierter Registrar verbinden wir die Sicherheit der traditionellen Domainwelt mit der Flexibilität der Blockchain-Technologie.
+Bei **Namefi** bieten wir Ihnen nicht nur die einfache Registrierung Ihrer .online-Wunschdomain, sondern revolutionieren auch, wie Sie diese verwalten. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) verbinden wir die Sicherheit der traditionellen Domainwelt mit der Flexibilität der Blockchain-Technologie.
 
 **Warum Namefi?**
 *   **Einfaches Management:** Verwalten Sie Ihre Domains so einfach wie nie zuvor.

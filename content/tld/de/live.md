@@ -48,7 +48,7 @@ Warum sollten Sie sich für eine .live Domain entscheiden, anstatt bei den Klass
 
 *   **Verfügbarkeit:** Während kurze, prägnante Namen unter .com oder .de oft vergeben oder extrem teuer sind, bietet der .live Namensraum noch viele Möglichkeiten für erstklassige, kurze Begriffe ("Exact Match Domains").
 *   **Sofortige Botschaft:** Der Nutzer weiß sofort, dass der Inhalt frisch, aktuell und interaktiv ist. Das erhöht die Klickrate (CTR) bei zielgerichtetem Traffic.
-*   **Markenbildung (Branding):** Eine .live Domain wirkt modern und energiegeladen. Sie positioniert Ihre Marke als technologisch fortschrittlich und kundennahe.
+*   **Markenbildung (Branding):** Eine .live Domain wirkt modern und energiegeladen. Sie positioniert Ihre [Marke](/de/glossary/trademark/) als technologisch fortschrittlich und kundennahe.
 *   **SEO-Relevanz:** Suchmaschinen wie Google verstehen die Semantik von Domain-Endungen. Wenn Nutzer nach "Live Stream [Thema]" suchen, kann eine Domain, die genau diese Wörter enthält, positive Signale senden, insbesondere in Kombination mit hochwertigem Inhalt.
 *   **Investitionspotenzial:** Kurze, generische Wörter in Kombination mit .live (z.B. `concerts.live` oder `football.live`) haben ein hohes Wertsteigerungspotenzial im Domain-Investing-Sektor.
 
@@ -56,7 +56,7 @@ Warum sollten Sie sich für eine .live Domain entscheiden, anstatt bei den Klass
 
 Sind Sie bereit, "live" zu gehen? Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung, sondern bringen Ihre Domain in die Zukunft des Internets.
 
-Als ICANN-akkreditierter Registrar kombinieren wir traditionelle Zuverlässigkeit mit modernster **Web3-Technologie**.
+Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) kombinieren wir traditionelle Zuverlässigkeit mit modernster **[Web3](/de/glossary/web3/)-Technologie**.
 
 **Warum Namefi?**
 *   **Nahtlose Web3-Integration:** Bei Namefi können Sie Ihre .live Domain als NFT "minten". Das macht den Handel, Transfer und die Verwaltung so einfach wie eine Krypto-Transaktion – sicher und transparent auf der Blockchain.

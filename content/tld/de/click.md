@@ -46,13 +46,13 @@ Die .click-Domain ist vielseitig und wird von verschiedenen Gruppen auf kreative
 *   **Link-Shortener (Kurz-URL-Dienste):** Unternehmen erstellen oft benutzerdefinierte Kurzlinks für soziale Medien. Eine Adresse wie `marke.click` ist kurz, prägnant und sagt dem Nutzer genau, was er tun soll.
 *   **Fotografie:** Das "Klicken" ist nicht nur ein Mausklick, sondern auch das Geräusch des Auslösers einer Kamera. Fotografen nutzen Domains wie `name.click`, um ihre Portfolios zu präsentieren.
 *   **Software- und App-Entwicklung:** Entwickler nutzen die Endung für Benutzeroberflächen-Projekte, Maustreiber-Software oder Produktivitäts-Apps, die "mit einem Klick" funktionieren.
-*   **Web3 und Blockchain-Projekte:** Da die Krypto-Community oft nach modernen und technisch klingenden Namen sucht, wird .click zunehmend auch für Projekte registriert, die einfache Interaktionen ("One-Click-Connect") im Web3-Raum versprechen.
+*   **[Web3](/de/glossary/web3/) und Blockchain-Projekte:** Da die Krypto-Community oft nach modernen und technisch klingenden Namen sucht, wird .click zunehmend auch für Projekte registriert, die einfache Interaktionen ("One-Click-Connect") im Web3-Raum versprechen.
 
 ## **Bekannte Beispiele für die Nutzung von .click**
 
 Obwohl viele große Marken ihre Hauptpräsenz oft noch auf .com haben, nutzen sie .click häufig für spezifische Kampagnen oder Weiterleitungen. Da es sich um eine Nischen-TLD handelt, sind die "Stars" hier oft die Anwendungsfälle selbst:
 
-1.  **Amazon (AWS) & Tech-Riesen:** Viele Technologieunternehmen registrieren ihre Markennamen unter .click als defensive Maßnahme oder für interne Link-Shortener-Dienste, um ihre Marke zu schützen und Traffic zu lenken.
+1.  **Amazon (AWS) & Tech-Riesen:** Viele Technologieunternehmen registrieren ihre Markennamen unter .click als defensive Maßnahme oder für interne Link-Shortener-Dienste, um ihre [Marke](/de/glossary/trademark/) zu schützen und Traffic zu lenken.
 2.  **Marketing-Agenturen:** Agenturen wie *Just Click* oder *Double Click* (als generische Begriffe) nutzen die TLD, um ihre Expertise im Performance-Marketing zu unterstreichen.
 3.  **Domain-Hacks:** Kreative Köpfe nutzen die Endung für Sätze. Ein hypothetisches Beispiel wäre `one.click` oder `donot.click`, um Neugier zu wecken.
 

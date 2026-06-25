@@ -11,9 +11,9 @@ keywords: ['.agakhan domains', 'TLD', 'top-level domain', 'was ist .agakhan', 'w
 
 ## **Was ist .agakhan?**
 
-Die Endung **.agakhan** gehört zur Kategorie der „Neuen generischen Top-Level-Domains“ (new gTLDs), stellt jedoch eine besondere Unterkategorie dar: Sie ist eine sogenannte **Brand TLD** (Marken-TLD). Diese Domain-Endung wurde speziell für das [Aga Khan Development Network (AKDN)](https://www.akdn.org/) und seine assoziierten Institutionen geschaffen.
+Die Endung **.agakhan** gehört zur Kategorie der „Neuen generischen Top-Level-Domains“ (new gTLDs), stellt jedoch eine besondere Unterkategorie dar: Sie ist eine sogenannte **Brand [TLD](/de/glossary/tld/)** (Marken-TLD). Diese Domain-Endung wurde speziell für das [Aga Khan Development Network (AKDN)](https://www.akdn.org/) und seine assoziierten Institutionen geschaffen.
 
-Im Gegensatz zu offenen Endungen wie .com oder .de, die für die breite Öffentlichkeit zugänglich sind, dient .agakhan primär dazu, die digitale Identität der Institutionen des Imamat und der Aga Khan Stiftung zu stärken. Sie symbolisiert Authentizität, philantropisches Engagement und globale Entwicklung. Die Einführung dieser TLD durch die [ICANN](https://www.icann.org/) ermöglicht es der Organisation, ihre vielfältigen humanitären, kulturellen und wirtschaftlichen Aktivitäten unter einem vertrauenswürdigen digitalen Dach zu bündeln.
+Im Gegensatz zu offenen Endungen wie [.com](/de/tld/com/) oder .de, die für die breite Öffentlichkeit zugänglich sind, dient .agakhan primär dazu, die digitale Identität der Institutionen des Imamat und der Aga Khan Stiftung zu stärken. Sie symbolisiert Authentizität, philantropisches Engagement und globale Entwicklung. Die Einführung dieser TLD durch die [ICANN](https://www.icann.org/) ermöglicht es der Organisation, ihre vielfältigen humanitären, kulturellen und wirtschaftlichen Aktivitäten unter einem vertrauenswürdigen digitalen Dach zu bündeln.
 
 Obwohl diese TLD stark reglementiert ist, ist sie ein hervorragendes Beispiel dafür, wie Organisationen ihre digitale Souveränität durch maßgeschneiderte Domain-Endungen sichern können.
 
@@ -40,16 +40,16 @@ Diese Nutzung unterstreicht, dass eine Domain mehr ist als nur eine Adresse – 
 
 Auch wenn die Registrierung für die breite Öffentlichkeit oft nicht möglich ist, zeigt die .agakhan TLD beispielhaft die Vorteile einer spezialisierten Domain-Strategie. Für berechtigte Entitäten oder im Kontext von Marken-TLDs gelten folgende Vorteile:
 
-*   **Höchstes Vertrauen:** Nutzer wissen sofort, dass sie sich auf einer offiziellen Seite des Netzwerks befinden. Phishing und Betrug werden massiv erschwert.
+*   **Höchstes Vertrauen:** Nutzer wissen sofort, dass sie sich auf einer offiziellen Seite des Netzwerks befinden. [Phishing](/de/glossary/phishing/) und Betrug werden massiv erschwert.
 *   **Starkes Branding:** Die Endung selbst ist die Marke. Es sind keine langen, komplizierten URLs nötig (z.B. `health.agakhan` statt `agakhan-health-services.com`).
 *   **SEO-Relevanz:** Suchmaschinen erkennen die Relevanz der Endung für spezifische Suchanfragen, die sich auf die Organisation beziehen.
-*   **Sicherheit:** Da die Registry (Vergabestelle) geschlossen ist, gibt es kein „Domain Squatting“ (Besetzen von Namen durch Dritte).
+*   **Sicherheit:** Da die [Registry](/de/glossary/registry/) (Vergabestelle) geschlossen ist, gibt es kein „Domain Squatting“ (Besetzen von Namen durch Dritte).
 
 ## **Registrieren Sie Ihre Domain bei Namefi**
 
-Egal, ob Sie an exklusiven TLDs interessiert sind, eine klassische .com suchen oder in die Welt der **Web3-Domains** eintauchen möchten – **Namefi** ist Ihr Partner für die nächste Generation des Domain-Managements.
+Egal, ob Sie an exklusiven TLDs interessiert sind, eine klassische .com suchen oder in die Welt der **[Web3](/de/glossary/web3/)-Domains** eintauchen möchten – **Namefi** ist Ihr Partner für die nächste Generation des Domain-Managements.
 
-Bei Namefi verbinden wir die traditionelle Sicherheit eines ICANN-akkreditierten Registrars mit der Flexibilität der Blockchain-Technologie.
+Bei Namefi verbinden wir die traditionelle Sicherheit eines [ICANN](/de/glossary/icann/)-akkreditierten Registrars mit der Flexibilität der [Blockchain](/de/glossary/blockchain/)-Technologie.
 
 *   **Nahtlose Web3-Integration:** Verwalten Sie Ihre Domains so einfach wie Ihre Krypto-Assets.
 *   **Tokenisierte Domains:** Machen Sie Ihre Domain handelbar und liquide.

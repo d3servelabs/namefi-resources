@@ -30,7 +30,7 @@ La belleza del TLD .world radica en su flexibilidad. No está restringido a una 
 
 *   **Comercio Electrónico y Logística:** Empresas que realizan envíos a nivel mundial utilizan este dominio para señalar inmediatamente a los clientes que sus servicios no tienen fronteras (ej. `tuempresa.world`).
 *   **Comunidades y Aficiones:** Es ideal para agrupar todo lo relacionado con un tema específico bajo un mismo techo digital. Por ejemplo, un blog sobre café podría usar `coffee.world` para denotar autoridad y exhaustividad.
-*   **Proyectos Web3 y Metaverso:** En la era de la blockchain, el término "world" es sinónimo de creación de mundos virtuales. Muchos desarrolladores de juegos y plataformas descentralizadas lo eligen para nombrar sus ecosistemas digitales.
+*   **Proyectos [Web3](/es/glossary/web3/) y Metaverso:** En la era de la blockchain, el término "world" es sinónimo de creación de mundos virtuales. Muchos desarrolladores de juegos y plataformas descentralizadas lo eligen para nombrar sus ecosistemas digitales.
 *   **Fan Clubs y Franquicias:** Grandes marcas de entretenimiento lo utilizan para crear centros de contenido para sus seguidores globales (ej. `wizarding.world` para los fans de Harry Potter).
 
 ## **Entidades y casos de uso de .world**
@@ -56,11 +56,11 @@ Si estás indeciso sobre qué extensión registrar, aquí hay algunas ventajas c
 
 En un mundo digital cada vez más conectado, tener un dominio que refleje una visión global es un activo invaluable.
 
-En **Namefi**, no solo te ofrecemos el registro de dominios tradicionales; llevamos tu propiedad digital al siguiente nivel. Como registrador acreditado por la ICANN, combinamos la seguridad tradicional con la innovación de la **Web3**.
+En **Namefi**, no solo te ofrecemos el registro de dominios tradicionales; llevamos tu propiedad digital al siguiente nivel. Como registrador acreditado por la [ICANN](/es/glossary/icann/), combinamos la seguridad tradicional con la innovación de la **Web3**.
 
 Al registrar tu dominio .world con nosotros, obtienes:
 *   **Propiedad Real:** La posibilidad de tokenizar tu dominio como un NFT.
-*   **Gestión Simplificada:** Transferencias y configuraciones de DNS fáciles y rápidas.
+*   **Gestión Simplificada:** Transferencias y configuraciones de [DNS](/es/glossary/dns/) fáciles y rápidas.
 *   **Transparencia:** Sin tarifas ocultas y con un soporte dedicado.
 
 ¿Estás listo para conquistar el mundo digital?

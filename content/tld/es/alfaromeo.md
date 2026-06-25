@@ -11,7 +11,7 @@ keywords: ['.alfaromeo domains', 'TLD .alfaromeo', 'top-level domain', 'qué es 
 
 ## **¿Qué es .alfaromeo?**
 
-El dominio **.alfaromeo** es un **Dominio de Nivel Superior (TLD)** categorizado específicamente como un "Brand TLD" (TLD de marca). A diferencia de los dominios genéricos como .com o .org, este dominio fue creado y gestionado para el uso exclusivo y la protección de la marca automotriz italiana **Alfa Romeo**, que forma parte del grupo Stellantis.
+El dominio **.alfaromeo** es un **Dominio de Nivel Superior ([TLD](/es/glossary/tld/))** categorizado específicamente como un "Brand TLD" (TLD de marca). A diferencia de los dominios genéricos como [.com](/es/tld/com/) o .org, este dominio fue creado y gestionado para el uso exclusivo y la protección de la marca automotriz italiana **Alfa Romeo**, que forma parte del grupo Stellantis.
 
 Este tipo de extensión nació gracias al programa de **nuevos gTLD de la ICANN** (Corporación de Internet para la Asignación de Nombres y Números), cuyo objetivo es expandir el espacio de nombres en Internet y permitir que organizaciones y marcas globales tengan un control total sobre su presencia digital. El propósito principal del .alfaromeo es garantizar la autenticidad, mejorar la seguridad contra el phishing y centralizar la identidad digital de la marca bajo un mismo paraguas de confianza.
 
@@ -53,7 +53,7 @@ Si usted es parte del ecosistema autorizado de la marca o si en el futuro este T
 
 En el cambiante mundo de los dominios, la propiedad y la gestión eficiente son claves. Ya sea que esté buscando dominios de marca exclusivos, invirtiendo en TLDs automotrices o buscando la próxima gran oportunidad en la web descentralizada, **Namefi** es su aliado.
 
-En **Namefi**, no solo facilitamos el registro de dominios tradicionales acreditados por la ICANN, sino que también integramos la tecnología Web3 para ofrecerle **dominios tokenizados**. Esto le permite comerciar, transferir y gestionar sus activos digitales con la velocidad y seguridad de la blockchain.
+En **Namefi**, no solo facilitamos el registro de dominios tradicionales acreditados por la ICANN, sino que también integramos la tecnología [Web3](/es/glossary/web3/) para ofrecerle **dominios tokenizados**. Esto le permite comerciar, transferir y gestionar sus activos digitales con la velocidad y seguridad de la blockchain.
 
 ¿Está listo para asegurar su identidad digital o expandir su cartera de inversiones?
 

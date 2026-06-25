@@ -28,9 +28,9 @@ keywords:
 
 ## **¿Qué es .allstate?**
 
-El dominio **.allstate** es un Dominio de Nivel Superior Genérico (gTLD) que pertenece a la categoría de los "Brand TLDs" o TLDs de marca. A diferencia de las extensiones abiertas como .com o .org, el dominio .allstate fue creado y delegado específicamente para el uso exclusivo de **Allstate Insurance Company**, una de las aseguradoras más grandes y reconocidas de Estados Unidos.
+El dominio **.allstate** es un Dominio de Nivel Superior Genérico (gTLD) que pertenece a la categoría de los "Brand TLDs" o TLDs de marca. A diferencia de las extensiones abiertas como [.com](/es/tld/com/) o [.org](/es/tld/org/), el dominio .allstate fue creado y delegado específicamente para el uso exclusivo de **Allstate Insurance Company**, una de las aseguradoras más grandes y reconocidas de Estados Unidos.
 
-Este TLD surgió como parte del programa de nuevos gTLDs de la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es), diseñado para permitir a las grandes corporaciones gestionar su propia identidad digital con un control total sobre su espacio de nombres. El propósito principal de .allstate es proporcionar un entorno digital seguro, autenticado y de confianza para los clientes, empleados y agentes de la compañía de seguros.
+Este [TLD](/es/glossary/tld/) surgió como parte del programa de nuevos gTLDs de la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es), diseñado para permitir a las grandes corporaciones gestionar su propia identidad digital con un control total sobre su espacio de nombres. El propósito principal de .allstate es proporcionar un entorno digital seguro, autenticado y de confianza para los clientes, empleados y agentes de la compañía de seguros.
 
 En la actualidad, su uso se centra en consolidar la presencia digital de la marca, garantizando que cualquier sitio web que termine en esta extensión sea verificado y legítimo.
 
@@ -66,7 +66,7 @@ Aunque el registro público general está restringido, entender las ventajas de 
 
 ## **Registra tu dominio en Namefi**
 
-Si bien .allstate es un dominio exclusivo de marca, el mundo de los dominios ofrece miles de oportunidades para asegurar tu identidad digital. En **Namefi**, entendemos el valor de un buen nombre de dominio, ya sea para inversión, desarrollo Web3 o protección de marca.
+Si bien .allstate es un dominio exclusivo de marca, el mundo de los dominios ofrece miles de oportunidades para asegurar tu identidad digital. En **Namefi**, entendemos el valor de un buen nombre de dominio, ya sea para inversión, desarrollo [Web3](/es/glossary/web3/) o protección de marca.
 
 Namefi facilita el registro y la gestión de dominios con una ventaja única: **somos un registrador acreditado por la ICANN que integra la tecnología blockchain**. Esto significa que puedes tokenizar tus dominios, facilitando su transferencia, venta y gestión con la seguridad de la Web3, sin fricciones innecesarias.
 

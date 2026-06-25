@@ -11,7 +11,7 @@ keywords: ['.active domains', '.active TLD', 'top-level domain', 'what is .activ
 
 ## **Qu'est-ce que le .active ?**
 
-Le domaine **.active** est une extension internet (TLD - Top-Level Domain) qui fait partie du programme des nouveaux domaines génériques de premier niveau (new gTLDs). Contrairement aux extensions traditionnelles comme le .com ou le .net, le **.active** a été conçu pour transmettre immédiatement une notion de mouvement, d'énergie, de santé et d'engagement.
+Le domaine **.active** est une extension internet ([TLD](/fr/glossary/tld/) - Top-Level Domain) qui fait partie du programme des nouveaux domaines génériques de premier niveau (new gTLDs). Contrairement aux extensions traditionnelles comme le [.com](/fr/tld/com/) ou le [.net](/fr/tld/net/), le **.active** a été conçu pour transmettre immédiatement une notion de mouvement, d'énergie, de santé et d'engagement.
 
 Cette extension est particulièrement pertinente dans une ère numérique où l'engagement communautaire et le bien-être personnel sont au cœur des préoccupations. Elle s'adresse aux entités qui souhaitent afficher leur dynamisme dès la lecture de leur adresse web.
 
@@ -25,7 +25,7 @@ L'extension .active est polyvalente et s'adapte à divers secteurs, bien qu'elle
 *   **Technologie et Développement :** Dans le monde de la tech, "active" peut désigner un statut (en ligne, opérationnel). Des développeurs l'utilisent pour des pages de statut de service ou des projets open-source dynamiques.
 *   **Tourisme et Loisirs :** Les agences de voyage spécialisées dans les vacances sportives ou l'écotourisme adoptent ce TLD pour cibler les aventuriers.
 *   **Organisations à But Non Lucratif :** Pour les associations qui encouragent l'action sociale ou environnementale, ce domaine incite à la participation (ex: `be.active` pour des campagnes de sensibilisation).
-*   **Investisseurs de Domaines (Domainers) :** Avec l'essor des [domaines tokenisés](https://namefi.io) et du Web3, les investisseurs cherchent des mots-clés forts et universels comme "active".
+*   **Investisseurs de Domaines (Domainers) :** Avec l'essor des [domaines tokenisés](https://namefi.io) et du [Web3](/fr/glossary/web3/), les investisseurs cherchent des mots-clés forts et universels comme "active".
 
 ## **Entités notables utilisant le .active**
 
@@ -50,7 +50,7 @@ Opter pour une extension .active présente plusieurs avantages stratégiques pou
 
 Que vous soyez une startup tech, un coach sportif ou un investisseur en noms de domaine, le **.active** est un choix puissant pour définir votre identité numérique.
 
-Chez **Namefi**, nous ne sommes pas un simple registraire. En tant que plateforme accréditée par l'ICANN, nous combinons la sécurité traditionnelle avec l'innovation du Web3.
+Chez **Namefi**, nous ne sommes pas un simple registraire. En tant que plateforme accréditée par l'[ICANN](/fr/glossary/icann/), nous combinons la sécurité traditionnelle avec l'innovation du Web3.
 *   **Intégration Web3 Transparente :** Gérez vos domaines comme des actifs numériques (NFTs) tout en conservant une compatibilité totale avec le DNS classique.
 *   **Gestion Simplifiée :** Une interface fluide pour les développeurs et les entreprises.
 *   **Prix Compétitifs :** Sécurisez votre marque sans vous ruiner.

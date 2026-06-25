@@ -11,9 +11,9 @@ keywords: ['.alsace domains', 'TLD .alsace', 'top-level domain .alsace', 'what i
 
 ## **Qu'est-ce que le .alsace ?**
 
-Le **.alsace** est une extension géographique de premier niveau (GeoTLD) dédiée à la région Alsace, en France. Lancée dans le cadre du programme des nouveaux gTLD (New gTLDs) initié par l'ICANN, cette extension a été créée pour offrir une identité numérique distincte aux particuliers, aux entreprises et aux institutions liés à cette région historique et culturelle forte.
+Le **.alsace** est une extension géographique de premier niveau (GeoTLD) dédiée à la région Alsace, en France. Lancée dans le cadre du programme des nouveaux gTLD (New gTLDs) initié par l'[ICANN](/fr/glossary/icann/), cette extension a été créée pour offrir une identité numérique distincte aux particuliers, aux entreprises et aux institutions liés à cette région historique et culturelle forte.
 
-Contrairement aux domaines génériques comme le .com ou nationaux comme le .fr, le .alsace permet d'ancrer immédiatement une présence en ligne dans un territoire spécifique. C'est un outil puissant pour revendiquer son appartenance à la communauté alsacienne et promouvoir le savoir-faire local à l'échelle mondiale. La gestion technique et administrative de ce TLD est supervisée pour garantir son intégrité et sa pertinence pour la région (plus d'informations sur le programme des gTLDs sur le [site de l'ICANN](https://newgtlds.icann.org/en/about/program)).
+Contrairement aux domaines génériques comme le [.com](/fr/tld/com/) ou nationaux comme le .fr, le .alsace permet d'ancrer immédiatement une présence en ligne dans un territoire spécifique. C'est un outil puissant pour revendiquer son appartenance à la communauté alsacienne et promouvoir le savoir-faire local à l'échelle mondiale. La gestion technique et administrative de ce [TLD](/fr/glossary/tld/) est supervisée pour garantir son intégrité et sa pertinence pour la région (plus d'informations sur le programme des gTLDs sur le [site de l'ICANN](https://newgtlds.icann.org/en/about/program)).
 
 Depuis son lancement, le .alsace a connu une adoption croissante, devenant un symbole de fierté régionale et un levier économique numérique pour le Grand Est.
 
@@ -49,7 +49,7 @@ Opter pour un domaine en .alsace présente des avantages stratégiques indéniab
 
 Que vous soyez un vigneron, une startup technologique ou un fier habitant de la région, le .alsace est le choix idéal pour votre identité numérique.
 
-Chez **Namefi**, nous ne nous contentons pas d'être un bureau d'enregistrement accrédité par l'ICANN. Nous révolutionnons la propriété de domaine. En enregistrant votre .alsace chez nous, vous bénéficiez d'une intégration Web3 transparente. Votre domaine peut être représenté comme un actif sur la blockchain (NFT), facilitant les transferts instantanés, la sécurité accrue et l'intégration future avec les technologies décentralisées.
+Chez **Namefi**, nous ne nous contentons pas d'être un bureau d'enregistrement accrédité par l'ICANN. Nous révolutionnons la propriété de domaine. En enregistrant votre .alsace chez nous, vous bénéficiez d'une intégration [Web3](/fr/glossary/web3/) transparente. Votre domaine peut être représenté comme un actif sur la blockchain (NFT), facilitant les transferts instantanés, la sécurité accrue et l'intégration future avec les technologies décentralisées.
 
 Ne laissez pas votre nom idéal être pris par quelqu'un d'autre. Rejoignez l'avenir de l'internet tout en célébrant vos racines.
 

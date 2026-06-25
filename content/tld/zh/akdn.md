@@ -9,7 +9,7 @@ description: 深入了解 .akdn 顶级域名：它代表了什么，阿迦汗发
 keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'why choose .akdn', 'what is the .akdn domain', 'why choose the .akdn domain', 'domain investing', 'blockchain', 'tokenized domain', 'Aga Khan Development Network domain', 'Web3 domains', 'digital identity', 'brand TLD', 'trustworthy domains']
 ---
 
-在不断扩展的数字世界中，选择正确的域名后缀（顶级域名或 TLD）对于建立在线身份至关重要。虽然 .com 和 .net 仍然是常见的选择，但像 **.akdn** 这样的专业顶级域名正在为特定的组织和社区重新定义数字信任的标准。
+在不断扩展的数字世界中，选择正确的域名后缀（顶级域名或 [TLD](/zh/glossary/tld/)）对于建立在线身份至关重要。虽然 [.com](/zh/tld/com/) 和 [.net](/zh/tld/net/) 仍然是常见的选择，但像 **.akdn** 这样的专业顶级域名正在为特定的组织和社区重新定义数字信任的标准。
 
 ## **什么是 .akdn？**
 
@@ -17,7 +17,7 @@ keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'w
 
 阿迦汗发展网络是一个致力于改善发展中国家生活质量的私人国际发展机构网络。.akdn 域名的推出，标志着该组织在建立统一、可信的数字身份方面迈出了重要一步。您可以访问 [ICANN 官网](https://icann.org) 或 [IANA 根区域数据库](https://www.iana.org/domains/root/db/akdn.html) 了解更多关于该顶级域名的注册信息。
 
-对于域名投资和 Web3 领域的关注者来说，了解像 .akdn 这样的专属域名有助于理解数字资产的未来趋势——即向着更高程度的身份验证和品牌专属权发展。
+对于域名投资和 [Web3](/zh/glossary/web3/) 领域的关注者来说，了解像 .akdn 这样的专属域名有助于理解数字资产的未来趋势——即向着更高程度的身份验证和品牌专属权发展。
 
 ## **人们如何使用 .akdn**
 
@@ -26,7 +26,7 @@ keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'w
 *   **机构官方门户**：用于 AKDN 旗下的各个机构、基金会和服务的官方网站，确保访问者知道他们正在访问经过验证的官方资源。
 *   **项目展示**：用于特定的文化、教育或医疗项目，例如历史名城修复计划或全球健康倡议。
 *   **内部通信与开发**：开发人员和内部团队使用该域名进行安全的内部网络通信，确保数据传输的安全性。
-*   **数字身份验证**：在网络钓鱼和欺诈盛行的时代，使用 .akdn 结尾的网址即代表了该站点由 AKDN 直接管理，为用户提供了极高的安全保障。
+*   **数字身份验证**：在[网络钓鱼](/zh/glossary/phishing/)和欺诈盛行的时代，使用 .akdn 结尾的网址即代表了该站点由 AKDN 直接管理，为用户提供了极高的安全保障。
 
 ## **使用 .akdn 的知名实体**
 
@@ -53,9 +53,9 @@ keywords: ['.akdn domains', '.akdn TLD', 'top-level domain', 'what is .akdn', 'w
 
 ## **在 Namefi 注册您的 .akdn 域名**
 
-无论您是寻找特定的行业域名，还是对通过 NFT 技术进行域名代币化感兴趣，**Namefi** 都是您的最佳合作伙伴。
+无论您是寻找特定的行业域名，还是对通过 NFT 技术进行域名[代币化](/zh/glossary/tokenize/)感兴趣，**Namefi** 都是您的最佳合作伙伴。
 
-虽然 .akdn 目前是受限的品牌域名，但了解其背后的价值逻辑对于选择您自己的域名至关重要。在 Namefi，我们提供无缝的 Web3 集成体验，作为 ICANN 认证的注册商，我们致力于帮助您通过区块链技术轻松管理和交易您的数字资产。
+虽然 .akdn 目前是受限的品牌域名，但了解其背后的价值逻辑对于选择您自己的域名至关重要。在 Namefi，我们提供无缝的 Web3 集成体验，作为 [ICANN](/zh/glossary/icann/) 认证的[注册商](/zh/glossary/registrar/)，我们致力于帮助您通过[区块链](/zh/glossary/blockchain/)技术轻松管理和交易您的数字资产。
 
 如果您是相关的授权实体，或者正在寻找类似的优质域名来提升您的品牌形象：
 

@@ -25,7 +25,7 @@ Die Nutzung von .app ist vielfältig, konzentriert sich aber stark auf den Techn
 *   **Web-Anwendungen & SaaS:** Viele moderne Dienste laufen direkt im Browser. Eine .app-Adresse signalisiert dem Nutzer sofort: "Hier können Sie etwas tun/nutzen", anstatt nur Informationen zu lesen.
 *   **Entwickler-Portfolios:** Programmierer und Design-Studios nutzen die Endung, um ihre Dienstleistungen im Bereich App-Entwicklung anzubieten.
 *   **Produkt-Demos:** Große Unternehmen nutzen .app-Domains oft für spezifische Produktseiten oder Demos ihrer Software.
-*   **Kryptowährung & Web3-Projekte:** Aufgrund der Affinität zur Technologie nutzen viele dApps (dezentrale Apps) und Blockchain-Projekte diese TLD.
+*   **Kryptowährung & [Web3](/de/glossary/web3/)-Projekte:** Aufgrund der Affinität zur Technologie nutzen viele dApps (dezentrale Apps) und Blockchain-Projekte diese TLD.
 
 ## **Bekannte Beispiele für .app**
 
@@ -52,7 +52,7 @@ Es gibt überzeugende Gründe, warum eine .app-Domain für Ihr nächstes Projekt
 
 Sind Sie bereit, Ihre Anwendung oder Ihr Projekt mit einer sicheren und einprägsamen Adresse zu starten?
 
-Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als ICANN-akkreditierter Registrar verbinden wir die traditionelle Domain-Welt mit der Innovation des Web3.
+Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Registrierung. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) verbinden wir die traditionelle Domain-Welt mit der Innovation des Web3.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Verwalten Sie Ihre Domains mit unserer benutzerfreundlichen Oberfläche.

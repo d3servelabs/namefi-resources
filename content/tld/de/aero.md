@@ -13,7 +13,7 @@ keywords: [".aero domains", ".aero TLD", "top-level domain", "was ist .aero", "w
 
 Die Endung **.aero** ist eine gesponserte Top-Level-Domain (sTLD), die exklusiv für die Luftfahrtindustrie reserviert ist. Sie leitet sich vom englischen Begriff "aeronautics" ab und dient als digitales Erkennungszeichen für die Welt der Fliegerei.
 
-Im Gegensatz zu offenen generischen Domains (wie .com oder .net) wurde .aero im Jahr 2002 als erste TLD eingeführt, die auf ein einziges Industriegebiet beschränkt ist. Sie wird von [SITA (Société Internationale de Télécommunications Aéronautiques)](https://www.sita.aero/) verwaltet und reguliert. Das bedeutet, dass nicht jeder eine solche Domain registrieren kann; sie ist strengen Zulassungsbeschränkungen unterworfen, um die Integrität des Namensraums zu wahren.
+Im Gegensatz zu offenen generischen Domains (wie [.com](/de/tld/com/) oder [.net](/de/tld/net/)) wurde .aero im Jahr 2002 als erste [TLD](/de/glossary/tld/) eingeführt, die auf ein einziges Industriegebiet beschränkt ist. Sie wird von [SITA (Société Internationale de Télécommunications Aéronautiques)](https://www.sita.aero/) verwaltet und reguliert. Das bedeutet, dass nicht jeder eine solche Domain registrieren kann; sie ist strengen Zulassungsbeschränkungen unterworfen, um die Integrität des Namensraums zu wahren.
 
 Die .aero-Domain ist mehr als nur eine Webadresse – sie ist ein Gütesiegel. Sie signalisiert sofortige Zugehörigkeit zu einem globalen Netzwerk von Luftfahrtprofis, von großen Fluggesellschaften bis hin zu privaten Piloten.
 
@@ -34,7 +34,7 @@ Um eine .aero-Domain zu registrieren, müssen Antragsteller in der Regel eine g�
 Obwohl .aero eine Nischen-Domain ist, wird sie von hochkarätigen Akteuren genutzt. Da die Domain oft für spezifische Infrastruktur-Dienste verwendet wird, sind die bekanntesten Beispiele oft funktionale Portale oder Branchenriesen:
 
 1.  **Flughäfen:** Viele internationale Flughäfen nutzen ihren 3-Letter-Code als Domain (z.B. `fra.aero` oder ähnliche Strukturen für interne Kommunikation), da diese kurz, prägnant und weltweit standardisiert sind.
-2.  **SITA:** Als Verwalter der Registry nutzt SITA selbstverständlich `sita.aero` als primäre Webpräsenz.
+2.  **SITA:** Als Verwalter der [Registry](/de/glossary/registry/) nutzt SITA selbstverständlich `sita.aero` als primäre Webpräsenz.
 3.  **Innovative Luftfahrt-Startups:** Unternehmen im Bereich "Urban Air Mobility" (Flugtaxis) greifen vermehrt auf diese Endung zurück, um sich von generischen Tech-Startups abzuheben.
 
 Wenn Sie im Bereich Domain-Investing oder Web3-Assets tätig sind, stellen kurze .aero-Domains (wie z.B. `jet.aero` oder `fly.aero`) aufgrund ihrer Seltenheit und Branchenrelevanz extrem wertvolle digitale Vermögenswerte dar.
@@ -50,7 +50,7 @@ Die Entscheidung für eine .aero-Domain bietet strategische Vorteile, die über 
 
 ## **Registrieren Sie Ihre .aero-Domain bei Namefi**
 
-Sind Sie bereit, Ihre Identität in der Luftfahrtbranche zu sichern? Bei **Namefi** machen wir den Prozess so einfach wie möglich. Als ICANN-akkreditierter Registrar bieten wir Ihnen nicht nur die klassische Domain-Registrierung, sondern auch die Brücke in die Zukunft des Internets.
+Sind Sie bereit, Ihre Identität in der Luftfahrtbranche zu sichern? Bei **Namefi** machen wir den Prozess so einfach wie möglich. Als [ICANN](/de/glossary/icann/)-akkreditierter Registrar bieten wir Ihnen nicht nur die klassische Domain-Registrierung, sondern auch die Brücke in die Zukunft des Internets.
 
 Mit Namefi können Sie Ihre Domains nahtlos in das Web3 integrieren. Nutzen Sie unsere Technologie, um Ihre .aero-Domain als NFT zu tokenisieren, was den Handel, die Verwaltung und die Sicherheit Ihres digitalen Eigentums revolutioniert. Egal ob Sie eine Flugschule betreiben, Drohnen entwickeln oder als Domain-Investor tätig sind – Namefi ist Ihr Copilot.
 

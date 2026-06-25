@@ -11,7 +11,7 @@ keywords: ['.abc domains', 'dominios .abc', 'TLD .abc', 'top-level domain', 'wha
 
 ## **¿Qué es .abc?**
 
-El Top-Level Domain (TLD) **.abc** es una extensión de dominio que evoca simplicidad, fundamentos y el inicio de algo nuevo. En el vasto universo de internet, donde los dominios tradicionales como el .com están saturados, las nuevas extensiones genéricas (new gTLDs) ofrecen una oportunidad fresca para destacar.
+El Top-Level Domain ([TLD](/es/glossary/tld/)) **.abc** es una extensión de dominio que evoca simplicidad, fundamentos y el inicio de algo nuevo. En el vasto universo de internet, donde los dominios tradicionales como el [.com](/es/tld/com/) están saturados, las nuevas extensiones genéricas (new gTLDs) ofrecen una oportunidad fresca para destacar.
 
 El término "ABC" es universalmente reconocido como sinónimo de **alfabetización, aprendizaje y los pasos básicos** de cualquier disciplina. Aunque técnicamente el TLD .abc ha tenido usos específicos (incluyendo su gestión como "Brand TLD" por entidades corporativas o su presencia en ecosistemas de [dominios descentralizados y Web3](https://en.wikipedia.org/wiki/Blockchain_domain_name_system)), representa una categoría de nombres de dominio cortos, intuitivos y fáciles de deletrear.
 
@@ -32,7 +32,7 @@ Aunque el acceso a ciertos TLDs puede estar restringido a marcas específicas en
 
 1.  **Alphabet Inc. (Google):** Quizás el ejemplo más famoso de branding relacionado. La empresa matriz de Google utiliza el dominio `abc.xyz`. Aunque técnicamente es un dominio .xyz, la elección de "abc" como nombre subraya la importancia de estas tres letras en el mundo corporativo global.
 2.  **Australian Broadcasting Corporation:** Históricamente asociada con la gestión del TLD .abc como una marca propietaria, demostrando la autoridad y confianza que estas letras transmiten en los medios de comunicación.
-3.  **Proyectos Web3 y Blockchain:** En el ecosistema descentralizado, desarrolladores y DAOs están registrando variaciones de .abc para herramientas de onboarding, tutoriales de DeFi y guías para principiantes en criptoactivos.
+3.  **Proyectos [Web3](/es/glossary/web3/) y [Blockchain](/es/glossary/blockchain/):** En el ecosistema descentralizado, desarrolladores y DAOs están registrando variaciones de .abc para herramientas de onboarding, tutoriales de DeFi y guías para principiantes en criptoactivos.
 
 ## **¿Por qué elegir .abc?**
 

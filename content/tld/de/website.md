@@ -23,7 +23,7 @@ Die Stärke der .website Domain liegt in ihrer Vielseitigkeit. Da das Wort selbs
 *   **Persönliche Portfolios:** Designer, Entwickler und Autoren nutzen oft `vorname-nachname.website`, um ihre Arbeiten zu präsentieren.
 *   **Digitale Visitenkarten:** Ideal für Personen, die eine einfache Seite mit ihren Kontaktinformationen und Social-Media-Links erstellen möchten.
 *   **Marketing-Kampagnen:** Unternehmen registrieren oft spezifische Domains für zeitlich begrenzte Kampagnen oder Produktlaunches (z.B. `neuesprodukt.website`).
-*   **Web3 und Blockchain-Projekte:** Aufgrund der hohen Verfügbarkeit kurzer Namen nutzen auch viele Projekte im dezentralen Web diese Endung für ihre Landingpages oder Dokumentationen.
+*   **[Web3](/de/glossary/web3/) und Blockchain-Projekte:** Aufgrund der hohen Verfügbarkeit kurzer Namen nutzen auch viele Projekte im dezentralen Web diese Endung für ihre Landingpages oder Dokumentationen.
 
 ## **Bekannte Beispiele für .website**
 
@@ -50,7 +50,7 @@ Die Entscheidung für eine Domain-Endung ist ein wichtiger Schritt. Hier sind di
 Sind Sie bereit, Ihre Idee online zu bringen? Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer als je zuvor.
 
 Warum Namefi?
-*   **ICANN-akkreditiert:** Vertrauen Sie auf einen zertifizierten Registrar.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Vertrauen Sie auf einen zertifizierten Registrar.
 *   **Web3-Integration:** Bei Namefi können Sie Ihre Domain als NFT tokenisieren. Das bedeutet, Sie haben volle Kontrolle, einfache Übertragbarkeit und können Ihre Domain nahtlos in DeFi- und Blockchain-Ökosysteme integrieren.
 *   **Transparente Preise:** Keine versteckten Gebühren.
 

@@ -26,7 +26,7 @@ faqs:
 
 | 信息 | 详情 |
 | --- | --- |
-| TLD 类型 | 美国的国家代码顶级域名（ccTLD） |
+| [TLD](/zh/glossary/tld/) 类型 | 美国的国家代码顶级域名（ccTLD） |
 | 注册局运营商 | Registry Services, LLC（一家 GoDaddy Registry 公司），受美国商务部 / NTIA 监督 |
 | 授权年份 | 1985 年（最早的 ccTLD 之一） |
 | IDN 支持 | 有限 / 以标准 ASCII 为主 |
@@ -36,7 +36,7 @@ faqs:
 
 ## 什么是 .us？
 
-**.us** 是根据 ISO 3166-1 标准（国家代码 **US**）分配给**美国**的国家代码顶级域名（ccTLD），该标准与[互联网号码分配机构（IANA）](https://www.iana.org/domains/root/db/us.html)用于授权国家代码的两字母系统相同。与 [.com](/zh/tld/com/) 这类 [gTLD](/en/glossary/tld/) 不同，.us 代表单一国家的命名空间，并按该国政策管理，而非按标准的 [ICANN](/zh/glossary/icann/) 注册局协议管理。
+**.us** 是根据 ISO 3166-1 标准（国家代码 **US**）分配给**美国**的国家代码顶级域名（ccTLD），该标准与[互联网号码分配机构（IANA）](https://www.iana.org/domains/root/db/us.html)用于授权国家代码的两字母系统相同。与 [.com](/zh/tld/com/) 这类 [gTLD](/zh/glossary/tld/) 不同，.us 代表单一国家的命名空间，并按该国政策管理，而非按标准的 [ICANN](/zh/glossary/icann/) 注册局协议管理。
 
 .us 的独特之处在于，它确实表现得像一个国家级 ccTLD——而非被重新利用的全球性 ccTLD。该命名空间隶属于**美国商务部**，通过**国家电信和信息管理局（NTIA）**管理，IANA 将注册局运营商列为 **Registry Services, LLC**，位于亚利桑那州坦佩市。注册仅向与美国有真实联系的各方开放，这一政策被称为 **Nexus 关联要求**（详见下文）。
 
@@ -71,14 +71,14 @@ faqs:
 
 ## .us 与其他域名对比
 
-| 特性 | .us | [.com](/zh/tld/com/) | [.co](/zh/tld/co/) | [.io](/zh/tld/io/) |
+| 特性 | .us | .com | .co | [.io](/zh/tld/io/) |
 | --- | --- | --- | --- | --- |
 | 类型 | ccTLD（国家定向） | 传统 gTLD | ccTLD（全球使用） | ccTLD（全球使用） |
 | 核心联想 | 美国 | 默认的网络标准 | 公司 / 企业 | 科技 / "输入输出" |
 | 对 Google 的地理信号 | 美国定向 | 通用 | 通用 | 通用 |
 | 注册限制 | 需要美国 Nexus 关联 | 开放 | 开放 | 开放 |
 
-在能拿到确切名称且想要全球中性的默认选项时，选择 **.com**。当明确的美国身份是一项资产且您的受众位于美国时，选择 **.us**。当您想要一个简短、全球性、带有 "company" 风味且无地理定向的替代品时选 **[.co](/zh/tld/co/)**，面向开发者和基础设施的科技品牌则选 **[.io](/zh/tld/io/)**。
+在能拿到确切名称且想要全球中性的默认选项时，选择 **.com**。当明确的美国身份是一项资产且您的受众位于美国时，选择 **.us**。当您想要一个简短、全球性、带有 "company" 风味且无地理定向的替代品时选 **.co**，面向开发者和基础设施的科技品牌则选 **.io**。
 
 ## 为什么选择 .us？
 
@@ -91,7 +91,7 @@ faqs:
 
 - **非全球性。** 这是其优势的另一面：搜索引擎将 .us 局限于美国，因此它不适合国际化抱负。
 - **Nexus 关联要求是真实存在的。** 您必须符合资格。如果注册者没有真实的美国存在，注册可能被质疑甚至撤销。
-- **历来透明的 WHOIS。** .us 政策长期强调与 nexus 规则挂钩的准确、公开的注册者数据，因此其匿名程度低于某些其他 TLD——尽管 [WHOIS](/en/glossary/whois/) 隐私选项已随时间演变。
+- **历来透明的 WHOIS。** .us 政策长期强调与 nexus 规则挂钩的准确、公开的注册者数据，因此其匿名程度低于某些其他 TLD——尽管 [WHOIS](/zh/glossary/whois/) 隐私选项已随时间演变。
 - **国家治理的 ccTLD。** 长期规则由美国商务部 / NTIA 政策及指定运营商制定，而非由标准的 ICANN 注册局协议约束。
 
 ## 谁可以注册 .us 域名？
@@ -102,7 +102,7 @@ faqs:
 - **美国实体或组织**——例如，根据美国某州或美国法律组建的公司、非营利组织或其他组织。
 - **在美国拥有真实存在的外国实体或组织**——意味着在该国有常规、合法的活动或经营，而不仅仅是注册该域名的意图。
 
-除资格之外，.us 历来要求**准确、公开的 WHOIS 数据**，体现了与 nexus 政策挂钩的透明度标准；匿名代理注册历来受到限制，尽管隐私处理已有所演变。支持 **[DNSSEC](/en/glossary/dnssec/)** 以增强 DNS 安全性。由于 .us 是国家治理的 ccTLD，当前资格和政策的权威来源是受美国商务部 / NTIA 监督的运营商，您应在通过任何[注册商](/zh/glossary/registrar/)注册前确认自己的资格。
+除资格之外，.us 历来要求**准确、公开的 WHOIS 数据**，体现了与 nexus 政策挂钩的透明度标准；匿名代理注册历来受到限制，尽管隐私处理已有所演变。支持 **[DNSSEC](/zh/glossary/dnssec/)** 以增强 DNS 安全性。由于 .us 是国家治理的 ccTLD，当前资格和政策的权威来源是受美国商务部 / NTIA 监督的运营商，您应在通过任何[注册商](/zh/glossary/registrar/)注册前确认自己的资格。
 
 ## .us 定价与价值
 
@@ -110,7 +110,7 @@ faqs:
 
 - **存在溢价名称。** 简短、词典词或高需求的 .us 名称可能承担溢价注册费，有时续费费用也更高。
 - **首年价与续费价不同。** 与大多数 TLD 一样，首年优惠价并非续费价；在为品牌投入之前，请务必查看标准续费价。
-- **成本驱动因素。** 名称长度与吸引力、溢价分类，以及注册局批发定价是主要因素。最佳的一两个字符或适合域名拼接的 .us 名称在二级市场的价值可能相当可观。
+- **成本驱动因素。** 名称长度与吸引力、溢价分类，以及注册局[批发定价](/zh/glossary/wholesale-pricing/)是主要因素。最佳的一两个字符或适合域名拼接的 .us 名称在[二级市场](/zh/glossary/aftermarket/)的价值可能相当可观。
 
 如需确切的实时价格，请在注册时查询实时报价——本页面有意不引用任何具体数字。
 
@@ -134,7 +134,7 @@ faqs:
 3. **选择**一个可用名称（并查看它是否被归类为溢价）。
 4. **注册**并配置 DNS。
 
-[Namefi](https://namefi.io) 是一家连接 Web2 与 [Web3](/zh/glossary/web3/) 的 ICANN 认证注册商，提供透明定价、快速 DNS 管理，以及将您的域名持有为代币化域名的选项，实现更便捷的转移和可验证的所有权。如果您刚接触扩展名及其运作方式，请从我们关于[什么是域名](/zh/blog/what-is-domain/)的入门指南和更全面的[域名术语指南](/zh/blog/domain-terminology-guide/)开始。
+[Namefi](https://namefi.io) 是一家连接 Web2 与 [Web3](/zh/glossary/web3/) 的 [ICANN 认证注册商](/zh/glossary/accredited-registrar/)，提供透明定价、快速 DNS 管理，以及将您的域名持有为[代币化域名](/zh/glossary/tokenized-domain/)的选项，实现更便捷的转移和可验证的所有权。如果您刚接触扩展名及其运作方式，请从我们关于[什么是域名](/zh/blog/what-is-domain/)的入门指南和更全面的[域名术语指南](/zh/blog/domain-terminology-guide/)开始。
 
 ## 常见问题
 
@@ -156,11 +156,11 @@ Nexus 关联要求是将 .us 限制于与美国有真实联系的各方的资格
 
 ## 相关资源
 
-- [.com TLD 指南](/zh/tld/com/)
-- [.co TLD 指南](/zh/tld/co/)
-- [.io TLD 指南](/zh/tld/io/)
+- .com TLD 指南
+- .co TLD 指南
+- .io TLD 指南
 - [域名拼接详解](/zh/blog/domain-hacks-explained/)
 - [什么是域名？](/zh/blog/what-is-domain/)
 - [域名术语指南](/zh/blog/domain-terminology-guide/)
-- [术语表：注册商](/zh/glossary/registrar/)
-- [术语表：WHOIS](/en/glossary/whois/)
+- 术语表：注册商
+- 术语表：WHOIS

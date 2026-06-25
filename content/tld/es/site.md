@@ -27,7 +27,7 @@ La mayor fortaleza del .site es su neutralidad y versatilidad. No encasilla tu p
 
 *   **Empresas y Startups:** Muchas empresas que encuentran su nombre ideal ocupado en .com optan por .site para mantener su marca corta y memorable.
 *   **Portafolios Personales:** Desarrolladores, diseñadores y escritores utilizan `nombreapellido.site` como un hub central para mostrar su trabajo.
-*   **Proyectos Web3 y Blockchain:** Dada la escasez de nombres cortos en el mercado tradicional, muchos proyectos de tecnología blockchain y dominios tokenizados están adoptando el .site para sus plataformas y dApps.
+*   **Proyectos [Web3](/es/glossary/web3/) y Blockchain:** Dada la escasez de nombres cortos en el mercado tradicional, muchos proyectos de tecnología blockchain y dominios tokenizados están adoptando el .site para sus plataformas y dApps.
 *   **Sitios de Construcción y Arquitectura:** Jugando con el doble sentido de la palabra "site" (que también significa "lugar de obra" o "emplazamiento" en inglés), muchas empresas de bienes raíces y construcción lo utilizan creativamente.
 
 ## **Entidades notables que usan .site**

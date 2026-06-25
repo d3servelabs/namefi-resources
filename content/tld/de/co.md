@@ -20,7 +20,7 @@ faqs:
 
 Die **.co**-Domain ist eines der erfolgreichsten Beispiele für eine Länderendung, die sich von ihren Grenzen befreit hat. Offiziell die ccTLD für **Kolumbien**, wurde sie weltweit als kurzer, markenfähiger Ersatz für „.com" vermarktet und übernommen – wobei „co" sofort als **Company**, **Corporation** oder schlicht als verkürztes „.com" gelesen wird. Für Gründer, deren Traum-**.com** vergeben ist, ist **.co** oft die erste Anlaufstelle.
 
-Dieser Leitfaden erläutert, was .co wirklich ist, wer sie betreibt (der Betreiber wechselte 2025), wer eine registrieren kann, wie sie bepreist wird und wie sie für SEO und E-Mail wahrgenommen wird – damit Sie entscheiden können, ob sie zu Ihrer Marke passt.
+Dieser Leitfaden erläutert, was .co wirklich ist, wer sie betreibt (der Betreiber wechselte 2025), wer eine registrieren kann, wie sie bepreist wird und wie sie für SEO und E-Mail wahrgenommen wird – damit Sie entscheiden können, ob sie zu Ihrer [Marke](/de/glossary/trademark/) passt.
 
 ## .co auf einen Blick
 
@@ -75,11 +75,11 @@ Diese Fälle zeigen, dass .co von großen, traffic-starken Plattformen vertraut 
 | Merkmal | .co | [.com](/de/tld/com/) | [.io](/de/tld/io/) | [.xyz](/de/tld/xyz/) |
 | --- | --- | --- | --- | --- |
 | Typ | ccTLD (global genutzt) | Legacy-gTLD | ccTLD (global genutzt) | Neue gTLD |
-| Kern-Assoziation | Company / Corporation | Der Standard des Webs | Tech / „Input-Output" | Generisch / Web3 |
+| Kern-Assoziation | Company / Corporation | Der Standard des Webs | Tech / „Input-Output" | Generisch / [Web3](/de/glossary/web3/) |
 | Verfügbarkeit kurzer Namen | Gut | Sehr schlecht | Mäßig | Ausgezeichnet |
 | Typisches Preisniveau | Mittel | Niedrig bis mittel | Hoch | Niedrig |
 
-Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard. Greifen Sie zu **.co**, wenn die .com vergeben ist und Sie den nächstgelegenen, geschäftlich glaubwürdigsten Ersatz wünschen. Wählen Sie **[.io](/de/tld/io/)** für entwickler- und infrastrukturorientierte Tech-Marken und **[.xyz](/de/tld/xyz/)** für generische oder Web3-native Projekte, bei denen eine frische, neutrale Endung von Vorteil ist.
+Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard. Greifen Sie zu **.co**, wenn die .com vergeben ist und Sie den nächstgelegenen, geschäftlich glaubwürdigsten Ersatz wünschen. Wählen Sie **.io** für entwickler- und infrastrukturorientierte Tech-Marken und **.xyz** für generische oder Web3-native Projekte, bei denen eine frische, neutrale Endung von Vorteil ist.
 
 ## Warum .co wählen?
 
@@ -98,7 +98,7 @@ Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt
 
 **Registrierungsbeschränkungen: offen für alle.** Es gibt **keine Anforderung an lokale Präsenz, Wohnsitz oder kolumbianische Staatsangehörigkeit**, um eine .co-Domain auf der zweiten Ebene zu registrieren. Seit dem Neustart 2010 erfolgt die Registrierung nach dem Prinzip **„first-come, first-served"** und steht Privatpersonen und Organisationen überall auf der Welt offen.
 
-Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprünglichen Starts an Sunrise-Phasen teilnehmen, Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **DNSSEC** ist für zusätzliche DNS-Sicherheit verfügbar. WHOIS-Datenschutz sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen Registrar- und Registry-Konventionen. Da .co eine ccTLD ist, unterliegt sie kolumbianischer Politik statt einem ICANN-Registry-Agreement – die maßgebliche Quelle für aktuelle Regeln ist die offizielle Website des Betreibers, [Registry.co](https://registry.co/), unter Aufsicht des MinTIC.
+Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprünglichen Starts an Sunrise-Phasen teilnehmen, Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **DNSSEC** ist für zusätzliche DNS-Sicherheit verfügbar. [WHOIS-Datenschutz](/de/glossary/whois-privacy/) sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen Registrar- und Registry-Konventionen. Da .co eine ccTLD ist, unterliegt sie kolumbianischer Politik statt einem ICANN-Registry-Agreement – die maßgebliche Quelle für aktuelle Regeln ist die offizielle Website des Betreibers, [Registry.co](https://registry.co/), unter Aufsicht des MinTIC.
 
 ## .co-Preisgestaltung und -Wert
 
@@ -106,7 +106,7 @@ Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprüngl
 
 - **Premium-Namen existieren.** Die Registry klassifiziert viele kurze, Wörterbuch- oder stark nachgefragte .co-Namen als **Premium**, was höhere Registrierungs- und manchmal höhere Verlängerungsgebühren mit sich bringt.
 - **Erstjahres- vs. Verlängerungspreise unterscheiden sich.** Wie bei den meisten TLDs ist ein einführender Erstjahrespreis nicht der Verlängerungspreis; prüfen Sie vor der Bindung an eine Marke stets die Standardverlängerung.
-- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-Großhandelspreis sind die wichtigsten Faktoren. Aftermarket-Wiederverkaufswerte für erstklassige ein- und zweistellige oder Wörterbuch-.co-Namen können erheblich sein.
+- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-[Großhandelspreis](/de/glossary/wholesale-pricing/) sind die wichtigsten Faktoren. [Aftermarket](/de/glossary/aftermarket/)-Wiederverkaufswerte für erstklassige ein- und zweistellige oder Wörterbuch-.co-Namen können erheblich sein.
 
 Für exakte, aktuelle Zahlen prüfen Sie die Live-Preise zum Registrierungszeitpunkt – diese Seite nennt bewusst keine Zahlen.
 
@@ -129,7 +129,7 @@ Für die E-Mail-Zustellbarkeit ist die Endung selbst selten der ausschlaggebende
 2. **Wählen** Sie einen verfügbaren Namen (und prüfen Sie, ob er als Premium klassifiziert ist).
 3. **Registrieren** und DNS konfigurieren.
 
-[Namefi](https://namefi.io) ist ein ICANN-akkreditierter Registrar, der Web2 und Web3 verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
+[Namefi](https://namefi.io) ist ein [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der Web2 und Web3 verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
 
 ## Häufig gestellte Fragen
 
@@ -151,9 +151,9 @@ Nein. Es handelt sich um separate TLDs, die von unterschiedlichen Betreibern gef
 
 ## Verwandte Ressourcen
 
-- [.com TLD-Leitfaden](/de/tld/com/)
-- [.io TLD-Leitfaden](/de/tld/io/)
-- [.xyz TLD-Leitfaden](/de/tld/xyz/)
+- .com TLD-Leitfaden
+- .io TLD-Leitfaden
+- .xyz TLD-Leitfaden
 - [Was ist eine Domain?](/de/blog/what-is-domain/)
 - [Domain-Terminologieleitfaden](/de/blog/domain-terminology-guide/)
 - [Glossar: Registrar](/de/glossary/registrar/)

@@ -75,11 +75,11 @@ Estos casos muestran a .co siendo confiado por plataformas grandes y de alto tr�
 | Característica | .co | [.com](/es/tld/com/) | [.io](/es/tld/io/) | [.xyz](/es/tld/xyz/) |
 | --- | --- | --- | --- | --- |
 | Tipo | ccTLD (usado globalmente) | gTLD heredado | ccTLD (usado globalmente) | Nuevo gTLD |
-| Asociación principal | Company / corporation | El estándar web predeterminado | Tecnología / "Entrada-Salida" | Genérico / Web3 |
+| Asociación principal | Company / corporation | El estándar web predeterminado | Tecnología / "Entrada-Salida" | Genérico / [Web3](/es/glossary/web3/) |
 | Disponibilidad de nombres cortos | Buena | Muy escasa | Moderada | Excelente |
 | Nivel de precio típico | Medio | Bajo-medio | Alto | Bajo |
 
-Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.co** cuando el .com ya no está disponible y quieres el sustituto más cercano y con mayor credibilidad empresarial. Escoge **[.io](/es/tld/io/)** para marcas tecnológicas centradas en desarrolladores e infraestructura, y **[.xyz](/es/tld/xyz/)** para proyectos genéricos o nativos de Web3 donde un sufijo fresco y neutral es una ventaja.
+Elige **.com** cuando puedas conseguir el nombre exacto — sigue siendo el predeterminado de confianza. Recurre a **.co** cuando el .com ya no está disponible y quieres el sustituto más cercano y con mayor credibilidad empresarial. Escoge **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura, y **.xyz** para proyectos genéricos o nativos de Web3 donde un sufijo fresco y neutral es una ventaja.
 
 ## ¿Por qué elegir .co?
 
@@ -151,9 +151,9 @@ No. Son TLD distintos gestionados por operadores diferentes. El riesgo es que lo
 
 ## Recursos relacionados
 
-- [Guía del TLD .com](/es/tld/com/)
-- [Guía del TLD .io](/es/tld/io/)
-- [Guía del TLD .xyz](/es/tld/xyz/)
+- Guía del TLD .com
+- Guía del TLD .io
+- Guía del TLD .xyz
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
 - [Guía de terminología de dominios](/es/blog/domain-terminology-guide/)
 - [Glosario: registrador](/es/glossary/registrar/)

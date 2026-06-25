@@ -22,7 +22,7 @@ Im Gegensatz zu offenen Domains wie .com oder .net wurde .abogado ursprünglich 
 Die Nutzung von .abogado konzentriert sich stark auf professionelle Dienstleistungen im Rechtssektor. Hier sind die häufigsten Anwendungsfälle:
 
 *   **Rechtsanwaltskanzleien:** Kanzleien in Spanien, Lateinamerika und den USA nutzen diese Endung, um ihre Spezialisierung und Sprachkompetenz sofort im Domainnamen zu signalisieren (z. B. `rechtsberatung-meier.abogado` für spanischsprachige Klienten).
-*   **Einzelanwälte:** Selbstständige Anwälte nutzen die TLD für ihre persönliche Marke, oft in der Form `vorname-nachname.abogado`.
+*   **Einzelanwälte:** Selbstständige Anwälte nutzen die TLD für ihre persönliche [Marke](/de/glossary/trademark/), oft in der Form `vorname-nachname.abogado`.
 *   **Juristische Dienstleister:** Notare, Rechtsberater und juristische Technologieunternehmen (Legal Tech) verwenden die Domain, um ihre Nische zu definieren.
 *   **Domain-Investoren:** Da kurze und prägnante Namen unter .com oft vergeben sind, sichern sich Investoren wertvolle Schlüsselwörter unter .abogado, insbesondere im Hinblick auf die wachsende Bedeutung des hispanischen Marktes im Web3 und digitalen Raum.
 
@@ -50,7 +50,7 @@ Die Wahl einer .abogado-Domain bietet spezifische Vorteile, die über eine stand
 
 Ob Sie ein praktizierender Anwalt sind, der seinen Mandantenstamm erweitern möchte, oder ein Investor, der das Potenzial nischenspezifischer TLDs erkannt hat – jetzt ist der richtige Zeitpunkt, um sich Ihre .abogado-Domain zu sichern.
 
-Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Registrierung. Als ICANN-akkreditierter Registrar verbinden wir die traditionelle Domainwelt mit der Innovation des Web3.
+Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Registrierung. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/) verbinden wir die traditionelle Domainwelt mit der Innovation des Web3.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Verwalten Sie Ihre Domains nahtlos über unsere benutzerfreundliche Plattform.

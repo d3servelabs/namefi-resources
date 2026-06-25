@@ -24,7 +24,7 @@ Die .tech-Domain hat sich weit über eine Nischenerscheinung hinaus entwickelt. 
 *   **Technologie-Startups:** Für neue Unternehmen ist es oft schwierig, den gewünschten Namen unter .com zu finden. Mit .tech können sie ihren Wunschnamen sichern und gleichzeitig ihre Branche definieren.
 *   **Entwickler und Ingenieure:** Viele Programmierer nutzen diese TLD für ihre persönlichen Portfolios, GitHub-Pages-Weiterleitungen oder CV-Webseiten.
 *   **Tech-Blogs und Nachrichtenportale:** Medienseiten, die über Gadgets, Software oder KI berichten, nutzen die Endung zur Kategorisierung ihrer Inhalte.
-*   **Web3- und Blockchain-Projekte:** Da Namefi sich auf die Schnittstelle von traditionellen Domains und Blockchain-Technologie spezialisiert, sehen wir eine massive Zunahme von Web3-Projekten, die .tech nutzen, um ihre technische Expertise zu unterstreichen.
+*   **[Web3](/de/glossary/web3/)- und Blockchain-Projekte:** Da Namefi sich auf die Schnittstelle von traditionellen Domains und Blockchain-Technologie spezialisiert, sehen wir eine massive Zunahme von Web3-Projekten, die .tech nutzen, um ihre technische Expertise zu unterstreichen.
 *   **Hackathons und Events:** Veranstalter von Coding-Wettbewerben nutzen oft .tech für Event-Landingpages.
 
 ## **Bekannte Unternehmen mit .tech-Domains**
@@ -51,7 +51,7 @@ Warum sollten Sie sich bei Ihrer nächsten Registrierung für .tech entscheiden?
 
 Sind Sie bereit, Ihre Idee in die Realität umzusetzen? Eine starke Online-Präsenz beginnt mit dem richtigen Namen. Bei **Namefi** bieten wir Ihnen nicht nur eine einfache Domain-Registrierung, sondern verbinden die traditionelle Web2-Welt mit den Vorteilen von Web3.
 
-Als ICANN-akkreditierter Registrar ermöglichen wir es Ihnen, Ihre Domains nahtlos zu verwalten und bei Bedarf zu tokenisieren. Dies eröffnet völlig neue Möglichkeiten für Domain-Investing und sicheren Besitznachweis auf der Blockchain.
+Als [ICANN](/de/glossary/icann/)-akkreditierter Registrar ermöglichen wir es Ihnen, Ihre Domains nahtlos zu verwalten und bei Bedarf zu tokenisieren. Dies eröffnet völlig neue Möglichkeiten für Domain-Investing und sicheren Besitznachweis auf der Blockchain.
 
 Warten Sie nicht, bis Ihr Wunschname vergeben ist.
 

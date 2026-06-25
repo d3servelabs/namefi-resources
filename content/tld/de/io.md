@@ -18,9 +18,9 @@ faqs:
     answer: 'Das ist keine feststehende Tatsache. Stand 2026 ist .io vollständig in Betrieb. Eine Einstellung würde zunächst eine Änderung des ISO-Ländercodes erfordern und anschließend einen mehrjährigen IANA-Übergangsprozess auslösen – es ist also eine Entwicklung, die man beobachten, aber nicht überstürzt reagieren sollte.'
 ---
 
-Die **.io-Domain** ist technisch gesehen eine Ländercode-Endung für ein abgelegenes Territorium im Indischen Ozean, hat sich in der Praxis jedoch zur inoffiziellen Heimat von Software-Startups, Entwickler-Tools und Web3-Projekten entwickelt. Für die meisten Nutzer hat die **.io-Domain-Bedeutung** nichts mit Geografie zu tun – stattdessen dreht sich alles darum, wie „io" für Ingenieure klingt: als **Input/Output**, eines der grundlegendsten Konzepte in der Informatik.
+Die **.io-Domain** ist technisch gesehen eine Ländercode-Endung für ein abgelegenes Territorium im Indischen Ozean, hat sich in der Praxis jedoch zur inoffiziellen Heimat von Software-Startups, Entwickler-Tools und [Web3](/de/glossary/web3/)-Projekten entwickelt. Für die meisten Nutzer hat die **.io-Domain-Bedeutung** nichts mit Geografie zu tun – stattdessen dreht sich alles darum, wie „io" für Ingenieure klingt: als **Input/Output**, eines der grundlegendsten Konzepte in der Informatik.
 
-Wenn Sie ein SaaS-Produkt, eine API, ein Open-Source-Projekt oder ein Blockchain-Vorhaben starten, ist .io eines der bekanntesten Signale, die Sie nach Ihrem Markennamen setzen können. Diese Seite erklärt den Ursprung der Endung, wer eine registrieren kann, wie die Preisgestaltung funktioniert und wie sie im Vergleich zu Alternativen abschneidet.
+Wenn Sie ein SaaS-Produkt, eine API, ein Open-Source-Projekt oder ein [Blockchain](/de/glossary/blockchain/)-Vorhaben starten, ist .io eines der bekanntesten Signale, die Sie nach Ihrem Markennamen setzen können. Diese Seite erklärt den Ursprung der Endung, wer eine registrieren kann, wie die Preisgestaltung funktioniert und wie sie im Vergleich zu Alternativen abschneidet.
 
 ## .io auf einen Blick
 
@@ -62,7 +62,7 @@ Das Suffix konzentriert sich stark auf Technologie-Nischen:
 ## Bekannte Websites mit .io
 
 - **GitHub Pages** (`github.io`) – Millionen von Entwickler-Websites, die aus Repositories gehostet werden
-- **Etherscan** (`etherscan.io`) – der führende Ethereum-Blockchain-Explorer
+- **Etherscan** (`etherscan.io`) – der führende [Ethereum](/de/glossary/ethereum/)-Blockchain-Explorer
 - **itch.io** – ein beliebter offener Marktplatz für Indie-Game-Entwickler
 - **Agar.io** und **Slither.io** – die Browser-Spiele, die das „io-Games"-Genre definierten
 
@@ -82,7 +82,7 @@ Wählen Sie [.com](/de/tld/com/) als universellen Standard, wenn Sie den Namen f
 ## Warum .io wählen?
 
 - **Branchenbekanntheit.** Unter Gründern, Ingenieuren und Investoren wird .io sofort als „Technologieunternehmen" wahrgenommen.
-- **Bessere Verfügbarkeit kurzer Namen.** Der Namensraum ist jünger und kleiner als [.com](/de/tld/com/), daher sind prägnante, markenfähige Namen wesentlich leichter zu finden.
+- **Bessere Verfügbarkeit kurzer Namen.** Der Namensraum ist jünger und kleiner als .com, daher sind prägnante, markenfähige Namen wesentlich leichter zu finden.
 - **Domain-Hack-Potenzial.** Das zweistellige Suffix lässt sich elegant in Wörter integrieren (`rad.io`, `stud.io`) und ermöglicht clevere, einprägsame Namen.
 - **Globale SEO.** Suchmaschinen behandeln es als generisch, sodass Ihre Website weltweit ranken kann, ohne auf eine Region beschränkt zu sein.
 
@@ -160,5 +160,5 @@ DNSSEC wird von der .io-Registry unterstützt. Die Verfügbarkeit des WHOIS-Date
 - [Warum sind .io-Domains so teuer?](/de/blog/why-are-io-domains-expensive/)
 - [.ai vs. .io-Domain](/de/blog/ai-vs-io-domain/)
 - [Anwendungsfälle für tokenisierte Domains (2026)](/de/blog/tokenized-domain-use-cases-2026/)
-- TLD-Leitfäden: [.com](/de/tld/com/), [.ai](/de/tld/ai/), [.dev](/de/tld/dev/), [.app](/de/tld/app/), [.tech](/de/tld/tech/)
-- Glossar: [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), [DNS](/de/glossary/dns/), [DNSSEC](/en/glossary/dnssec/)
+- TLD-Leitfäden: .com, .ai, .dev, [.app](/de/tld/app/), [.tech](/de/tld/tech/)
+- Glossar: ICANN, Registrar, DNS, [DNSSEC](/de/glossary/dnssec/)

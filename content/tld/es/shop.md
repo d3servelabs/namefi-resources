@@ -38,7 +38,7 @@ Como un nuevo gTLD moderno y abierto con un amplio grupo de nombres no registrad
 
 ## ¿Qué es .shop?
 
-**.shop** es un [dominio genérico de nivel superior (gTLD)](/en/glossary/tld) introducido en el marco del Programa de Nuevos gTLD de [ICANN](/es/glossary/icann) — la expansión de 2012 que añadió cientos de sufijos basados en palabras a la zona raíz. Su significado es autoexplicativo: "shop" es una palabra en inglés casi universal para un destino minorista, y funciona como una etiqueta semántica clara para el comercio.
+**.shop** es un [dominio genérico de nivel superior (gTLD)](/es/glossary/tld) introducido en el marco del Programa de Nuevos gTLD de [ICANN](/es/glossary/icann) — la expansión de 2012 que añadió cientos de sufijos basados en palabras a la zona raíz. Su significado es autoexplicativo: "shop" es una palabra en inglés casi universal para un destino minorista, y funciona como una etiqueta semántica clara para el comercio.
 
 Dado que es genérico y no un TLD de código de país, los motores de búsqueda no asocian **.shop** con ninguna geografía. La orientación de Google indica que trata los nuevos gTLD igual que las extensiones heredadas y no aplica orientación geográfica basada en un nombre como `.shop` — por lo tanto, un sitio `.shop` puede posicionarse globalmente igual que un `.com`. Puedes confirmar los detalles del registro en la [entrada oficial de IANA en la zona raíz para .shop](https://www.iana.org/domains/root/db/shop.html).
 
@@ -97,7 +97,7 @@ Elige `.com` cuando el reconocimiento predeterminado supera todo lo demás y pue
 
 **Restricciones de registro: abierto a todos.** No existen requisitos de elegibilidad para **.shop** — no se necesita credencial, presencia local ni membresía en ninguna comunidad. Cualquier individuo u organización en todo el mundo puede registrar un nombre disponible por orden de llegada, lo cual el registro confirma al no establecer restricciones de registro para la cadena.
 
-Se aplican las prácticas estándar de nuevos gTLD. Los titulares de marcas comerciales podían usar el período de amanecer (sunrise) de ICANN en el lanzamiento, y la Cámara de Compensación de Marcas Comerciales aún respalda la protección de derechos. El registro admite nombres de dominio internacionalizados (IDN) y [DNSSEC](/en/glossary/dnssec) para DNS firmado y resistente a manipulaciones. La mayoría de los registradores ofrecen privacidad WHOIS para enmascarar datos personales en los registros [WHOIS](/en/glossary/whois), y los comportamientos de transferencia, renovación y período de gracia de redención siguen la política estándar de ICANN. Las reglas autorizadas se encuentran en el [Acuerdo de Registro de ICANN para .shop](https://www.icann.org/en/registry-agreements/details/shop).
+Se aplican las prácticas estándar de nuevos gTLD. Los titulares de marcas comerciales podían usar el período de amanecer (sunrise) de ICANN en el lanzamiento, y la Cámara de Compensación de Marcas Comerciales aún respalda la protección de derechos. El registro admite nombres de dominio internacionalizados (IDN) y [DNSSEC](/es/glossary/dnssec) para DNS firmado y resistente a manipulaciones. La mayoría de los registradores ofrecen privacidad WHOIS para enmascarar datos personales en los registros [WHOIS](/es/glossary/whois), y los comportamientos de transferencia, renovación y período de gracia de redención siguen la política estándar de ICANN. Las reglas autorizadas se encuentran en el [Acuerdo de Registro de ICANN para .shop](https://www.icann.org/en/registry-agreements/details/shop).
 
 ## Precios y valor de .shop
 
@@ -124,7 +124,7 @@ Para el correo electrónico, la extensión en sí no es lo que juzgan los filtro
 2. Elige el nombre exacto (y cualquier variante defensiva como `.store` o `.com`).
 3. Completa el registro y configura el DNS.
 
-[Namefi](https://namefi.io) es un registrador acreditado por [ICANN](/es/glossary/icann) con precios transparentes y gestión rápida de [DNS](/es/glossary/dns). También te permite tokenizar tu dominio para la propiedad Web3 — convirtiendo tu dirección `.shop` en un activo en cadena transferible — mientras mantiene intactas las funciones estándar del registrador.
+[Namefi](https://namefi.io) es un registrador acreditado por [ICANN](/es/glossary/icann) con precios transparentes y gestión rápida de [DNS](/es/glossary/dns). También te permite tokenizar tu dominio para la propiedad [Web3](/es/glossary/web3/) — convirtiendo tu dirección `.shop` en un activo en cadena transferible — mientras mantiene intactas las funciones estándar del registrador.
 
 ## Preguntas frecuentes
 
@@ -157,4 +157,4 @@ Sí. **.shop** admite DNSSEC a nivel de registro, y la mayoría de los registrad
 - [Dominio .store](/es/tld/store)
 - [Dominio .online](/es/tld/online)
 - [Dominio .com](/es/tld/com)
-- Glosario: [registrador](/es/glossary/registrar), [DNSSEC](/en/glossary/dnssec), [WHOIS](/en/glossary/whois)
+- Glosario: [registrador](/es/glossary/registrar), [DNSSEC](/es/glossary/dnssec), [WHOIS](/es/glossary/whois)

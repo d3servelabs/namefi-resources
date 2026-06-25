@@ -11,7 +11,7 @@ keywords: ['dominios .adac', 'comprar dominio .adac', 'qué es el dominio .adac'
 
 En el vasto universo de internet, la elección de un dominio es mucho más que una dirección web; es una declaración de identidad, seguridad y pertenencia. Mientras que la mayoría de los usuarios están familiarizados con los clásicos `.com` o `.org`, existe un segmento exclusivo conocido como "Brand TLDs" (Dominios de Nivel Superior de Marca). Uno de los más prestigiosos en Europa es el **.adac**.
 
-En este artículo, exploraremos qué hace que el TLD **.adac** sea único, su conexión con la industria automotriz y cómo la gestión moderna de dominios se está fusionando con tecnologías Web3 y blockchain a través de plataformas como Namefi.
+En este artículo, exploraremos qué hace que el [TLD](/es/glossary/tld/) **.adac** sea único, su conexión con la industria automotriz y cómo la gestión moderna de dominios se está fusionando con tecnologías [Web3](/es/glossary/web3/) y blockchain a través de plataformas como Namefi.
 
 ## **¿Qué es .adac?**
 
@@ -56,7 +56,7 @@ Para más información sobre las tendencias de los nuevos gTLDs, puedes consulta
 
 Ya sea que busques proteger tu marca, invertir en nombres de dominio premium o explorar el futuro de la identidad digital, **Namefi** es tu socio ideal.
 
-En Namefi, no solo actuamos como un registrador acreditado por la ICANN, sino que cerramos la brecha entre la Web2 y la Web3. Ofrecemos una integración perfecta que te permite gestionar tus dominios tradicionales con la facilidad y seguridad de la tecnología blockchain.
+En Namefi, no solo actuamos como un registrador acreditado por la [ICANN](/es/glossary/icann/), sino que cerramos la brecha entre la Web2 y la Web3. Ofrecemos una integración perfecta que te permite gestionar tus dominios tradicionales con la facilidad y seguridad de la tecnología blockchain.
 
 **¿Por qué elegir Namefi?**
 *   **Gestión Simplificada:** Compra y gestiona dominios con facilidad.

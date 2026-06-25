@@ -18,7 +18,7 @@ faqs:
     answer: 'Ja. .me ist wohl die persönlichste Mainstream-Endung. Da „me" das Pronomen der ersten Person ist, fühlt sich „yourname.me" oder „hire.me" wie eine direkte Einladung an, weshalb sie ein Favorit für Portfolios, Bios und individuelle Marken ist.'
 ---
 
-Die **.me**-Domain ist eines der klarsten Beispiele für eine Länderendung, die als globale Marke ein zweites Leben fand. Offiziell die ccTLD für **Montenegro**, wurde sie weltweit als die **persönlichste** Endung des Internets vermarktet und übernommen – denn „me" ist das englische Pronomen der ersten Person, sodass sich „yourname.me" sofort als *du* liest. Für Privatpersonen, die ein Portfolio, eine Lebenslauf-Seite oder eine Bio-Seite aufbauen – und für alle, die einen cleveren **Domain-Hack** gestalten, der mit „me" vervollständigt wird –, ist sie oft die erste Anlaufstelle.
+Die **.me**-Domain ist eines der klarsten Beispiele für eine Länderendung, die als globale [Marke](/de/glossary/trademark/) ein zweites Leben fand. Offiziell die ccTLD für **Montenegro**, wurde sie weltweit als die **persönlichste** Endung des Internets vermarktet und übernommen – denn „me" ist das englische Pronomen der ersten Person, sodass sich „yourname.me" sofort als *du* liest. Für Privatpersonen, die ein Portfolio, eine Lebenslauf-Seite oder eine Bio-Seite aufbauen – und für alle, die einen cleveren **[Domain-Hack](/de/glossary/domain-hack/)** gestalten, der mit „me" vervollständigt wird –, ist sie oft die erste Anlaufstelle.
 
 Dieser Leitfaden erläutert, was .me wirklich ist, wer sie betreibt, wer eine registrieren kann, wie sie bepreist wird und wie sie für SEO und E-Mail wahrgenommen wird – damit Sie entscheiden können, ob sie zu Ihrer Marke passt.
 
@@ -26,7 +26,7 @@ Dieser Leitfaden erläutert, was .me wirklich ist, wer sie betreibt, wer eine re
 
 | Merkmal | Detail |
 | --- | --- |
-| TLD-Typ | Länderspezifische TLD (ccTLD) für Montenegro |
+| [TLD](/de/glossary/tld/)-Typ | Länderspezifische TLD (ccTLD) für Montenegro |
 | Registry-Manager (IANA) | Regierung von Montenegro |
 | Kommerzieller Betreiber | doMEn d.o.o. (mit Identity Digital, ehemals Afilias, als technischem Backend) |
 | Jahr der Delegierung | 2007 (2008 für die globale Öffentlichkeit geöffnet) |
@@ -37,7 +37,7 @@ Dieser Leitfaden erläutert, was .me wirklich ist, wer sie betreibt, wer eine re
 
 ## Was ist .me?
 
-**.me** ist die länderspezifische [Top-Level-Domain](/en/glossary/tld/) (ccTLD), die **Montenegro** nach dem ISO-3166-1-Standard zugewiesen ist – demselben zweistelligen System, das die [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/me.html) zur Delegierung von Ländercodes verwendet. Auf dem Papier ist es der nationale Namensraum Montenegros: Die IANA führt die **Regierung von Montenegro** als Sponsororganisation und Registry-Manager auf, mit der Fakultät für Elektrotechnik der Universität Montenegro als administrativem Kontakt.
+**.me** ist die länderspezifische [Top-Level-Domain](/de/glossary/tld/) (ccTLD), die **Montenegro** nach dem ISO-3166-1-Standard zugewiesen ist – demselben zweistelligen System, das die [Internet Assigned Numbers Authority (IANA)](https://www.iana.org/domains/root/db/me.html) zur Delegierung von Ländercodes verwendet. Auf dem Papier ist es der nationale Namensraum Montenegros: Die IANA führt die **Regierung von Montenegro** als Sponsororganisation und Registry-Manager auf, mit der Fakultät für Elektrotechnik der Universität Montenegro als administrativem Kontakt.
 
 In der Praxis wird die **.me-Domain** fast ausschließlich als **generische, globale** Endung verwendet. Die Zeichenfolge „me" ist das englische Pronomen der ersten Person, und allein diese Tatsache verleiht ihr eine Wärme und Direktheit, mit der keine andere Mainstream-Endung mithalten kann. „about.me", „hire.me", „follow.me", „read.me" – die Endung vervollständigt einen Satz, was genau der Blickwinkel ist, den ihre Betreiber aufgriffen, als sie den Namensraum für die Welt öffneten.
 
@@ -80,7 +80,7 @@ Diese Fälle zeigen, dass .me nicht nur als Notlösung vertraut wird, sondern al
 | Verfügbarkeit kurzer Namen | Ausgezeichnet | Sehr schlecht | Mäßig | Gut | Ausgezeichnet |
 | Typisches Preisniveau | Mittel | Niedrig bis mittel | Hoch | Mittel | Niedrig |
 
-Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard für Unternehmen. Greifen Sie zu **.me**, wenn das Projekt *persönlich* ist – ein Portfolio, eine Bio, eine Ein-Personen-Marke – oder wenn der Name eine natürliche Phrase bildet, die auf „me" endet. Wählen Sie **[.io](/de/tld/io/)** für entwickler- und infrastrukturorientierte Tech-Marken, **[.co](/de/tld/co/)** für den geschäftlich glaubwürdigsten Ersatz für .com und **[.xyz](/de/tld/xyz/)** für generische oder [Web3](/de/glossary/web3/)-native Projekte.
+Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt der Vertrauensstandard für Unternehmen. Greifen Sie zu **.me**, wenn das Projekt *persönlich* ist – ein Portfolio, eine Bio, eine Ein-Personen-Marke – oder wenn der Name eine natürliche Phrase bildet, die auf „me" endet. Wählen Sie **.io** für entwickler- und infrastrukturorientierte Tech-Marken, **.co** für den geschäftlich glaubwürdigsten Ersatz für .com und **.xyz** für generische oder [Web3](/de/glossary/web3/)-native Projekte.
 
 ## Warum .me wählen?
 
@@ -99,7 +99,7 @@ Wählen Sie **.com**, wenn Sie den exakten Namen bekommen können – sie bleibt
 
 **Registrierungsbeschränkungen: offen für alle.** Es gibt **keine Anforderung an lokale Präsenz, Wohnsitz oder montenegrinische Staatsangehörigkeit**, um eine .me-Domain auf der zweiten Ebene zu registrieren. Seit dem öffentlichen Start 2008 erfolgt die Registrierung nach dem Prinzip **„first-come, first-served"** und steht Privatpersonen und Organisationen überall auf der Welt offen.
 
-Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprünglichen Starts an Sunrise-Phasen teilnehmen, Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **[DNSSEC](/en/glossary/dnssec/)** ist für zusätzliche DNS-Sicherheit verfügbar. [WHOIS](/en/glossary/whois/)-Datenschutz sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen [Registrar](/de/glossary/registrar/)- und Registry-Konventionen. Da .me eine ccTLD ist, unterliegt sie montenegrinischer Politik unter der Regierung von Montenegro, mit doMEn d.o.o. als Betreiber – die maßgebliche Quelle für aktuelle Regeln ist die offizielle Website des Betreibers, [domain.me](https://domain.me/).
+Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprünglichen Starts an Sunrise-Phasen teilnehmen, Namen folgen herkömmlichen Längen- und Zeichenregeln, **internationalisierte Domainnamen (IDNs)** werden unterstützt und **[DNSSEC](/de/glossary/dnssec/)** ist für zusätzliche DNS-Sicherheit verfügbar. [WHOIS](/de/glossary/whois/)-Datenschutz sowie das Transfer-, Verlängerungs- und Redemption-Grace-Verhalten folgen den standardmäßigen [Registrar](/de/glossary/registrar/)- und Registry-Konventionen. Da .me eine ccTLD ist, unterliegt sie montenegrinischer Politik unter der Regierung von Montenegro, mit doMEn d.o.o. als Betreiber – die maßgebliche Quelle für aktuelle Regeln ist die offizielle Website des Betreibers, [domain.me](https://domain.me/).
 
 ## .me-Preisgestaltung und -Wert
 
@@ -107,7 +107,7 @@ Es gelten die üblichen Praktiken: Markeninhaber konnten während des ursprüngl
 
 - **Premium-Namen existieren.** Die Registry klassifiziert viele kurze, Wörterbuch-, Vornamen- oder stark nachgefragte .me-Namen als **Premium**, was höhere Registrierungs- und manchmal höhere Verlängerungsgebühren mit sich bringt.
 - **Erstjahres- vs. Verlängerungspreise unterscheiden sich.** Wie bei den meisten TLDs ist ein einführender Erstjahrespreis nicht der Verlängerungspreis; prüfen Sie vor der Bindung an eine Marke stets die Standardverlängerung.
-- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-Großhandelspreis sind die wichtigsten Faktoren. Aftermarket-Wiederverkaufswerte für gängige Vornamen und saubere Domain-Hacks in .me können erheblich sein.
+- **Was die Kosten treibt.** Namenlänge und Begehrtheit, Premium-Klassifizierung und der Registry-[Großhandelspreis](/de/glossary/wholesale-pricing/) sind die wichtigsten Faktoren. [Aftermarket](/de/glossary/aftermarket/)-Wiederverkaufswerte für gängige Vornamen und saubere Domain-Hacks in .me können erheblich sein.
 
 Für exakte, aktuelle Zahlen prüfen Sie die Live-Preise zum Registrierungszeitpunkt – diese Seite nennt bewusst keine Zahlen.
 
@@ -130,7 +130,7 @@ Für die E-Mail-Zustellbarkeit ist die Endung selbst selten der ausschlaggebende
 2. **Wählen** Sie einen verfügbaren Namen (und prüfen Sie, ob er als Premium klassifiziert ist).
 3. **Registrieren** und DNS konfigurieren.
 
-[Namefi](https://namefi.io) ist ein ICANN-akkreditierter [Registrar](/de/glossary/registrar/), der Web2 und Web3 verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
+[Namefi](https://namefi.io) ist ein ICANN-akkreditierter Registrar, der Web2 und Web3 verbindet – mit transparenter Preisgestaltung, schnellem DNS-Management und der Möglichkeit, Ihren Namen als tokenisierte Domain für einfachere Übertragung und nachweisbares Eigentum zu halten.
 
 ## Häufig gestellte Fragen
 
@@ -152,12 +152,12 @@ Ja. .me ist wohl die persönlichste Mainstream-Endung. Da „me" das Pronomen de
 
 ## Verwandte Ressourcen
 
-- [.com TLD-Leitfaden](/de/tld/com/)
-- [.io TLD-Leitfaden](/de/tld/io/)
-- [.co TLD-Leitfaden](/de/tld/co/)
-- [.xyz TLD-Leitfaden](/de/tld/xyz/)
+- .com TLD-Leitfaden
+- .io TLD-Leitfaden
+- .co TLD-Leitfaden
+- .xyz TLD-Leitfaden
 - [Domain-Hacks erklärt](/de/blog/domain-hacks-explained/)
 - [Was ist eine Domain?](/de/blog/what-is-domain/)
 - [Domain-Terminologieleitfaden](/de/blog/domain-terminology-guide/)
-- [Glossar: Registrar](/de/glossary/registrar/)
-- [Glossar: ICANN](/de/glossary/icann/)
+- Glossar: Registrar
+- Glossar: ICANN

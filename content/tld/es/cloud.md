@@ -50,7 +50,7 @@ Si estás considerando registrar un nuevo dominio, aquí hay razones convincente
 
 Elegir el dominio perfecto es el primer paso, pero elegir el registrador adecuado es igual de importante para proteger tu activo digital.
 
-En **Namefi**, no solo somos un registrador acreditado por la ICANN; estamos revolucionando la propiedad de dominios mediante la integración con la Web3. Al registrar tu dominio .cloud con nosotros, obtienes:
+En **Namefi**, no solo somos un registrador acreditado por la ICANN; estamos revolucionando la propiedad de dominios mediante la integración con la [Web3](/es/glossary/web3/). Al registrar tu dominio .cloud con nosotros, obtienes:
 
 *   **Propiedad Tokenizada:** La posibilidad de gestionar tu dominio como un activo real en la blockchain.
 *   **Gestión Simplificada:** Una interfaz intuitiva diseñada tanto para principiantes como para expertos en tecnología.

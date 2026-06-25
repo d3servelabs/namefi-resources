@@ -11,9 +11,9 @@ keywords: ['.active domains', '.active TLD', 'top-level domain', 'was ist .activ
 
 ## **Was ist .active?**
 
-Die Domain-Endung **.active** ist eine sogenannte "New gTLD" (neue generische Top-Level-Domain), die speziell dafür entwickelt wurde, Dynamik, Engagement und Bewegung zu kommunizieren. Im Gegensatz zu traditionellen Endungen wie .com oder .de, die oft sehr allgemein gehalten sind, vermittelt .active sofort eine klare Botschaft: Hier passiert etwas, hier ist Energie im Spiel.
+Die Domain-Endung **.active** ist eine sogenannte "[New gTLD](/de/glossary/new-gtld/)" (neue generische Top-Level-Domain), die speziell dafür entwickelt wurde, Dynamik, Engagement und Bewegung zu kommunizieren. Im Gegensatz zu traditionellen Endungen wie [.com](/de/tld/com/) oder .de, die oft sehr allgemein gehalten sind, vermittelt .active sofort eine klare Botschaft: Hier passiert etwas, hier ist Energie im Spiel.
 
-Ursprünglich wurde die .active TLD eingeführt, um den wachsenden Markt für aktiven Lebensstil, Sport und Outdoor-Aktivitäten zu bedienen. Sie wird von der Registry *The Active Network, Inc.* verwaltet. Sie bietet eine hervorragende Gelegenheit für Unternehmen und Einzelpersonen, eine moderne und einprägsame Webadresse zu sichern, die im überfüllten digitalen Raum hervorsticht. Weitere technische Details zur Delegierung finden Sie bei der [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/active.html).
+Ursprünglich wurde die .active [TLD](/de/glossary/tld/) eingeführt, um den wachsenden Markt für aktiven Lebensstil, Sport und Outdoor-Aktivitäten zu bedienen. Sie wird von der [Registry](/de/glossary/registry/) *The Active Network, Inc.* verwaltet. Sie bietet eine hervorragende Gelegenheit für Unternehmen und Einzelpersonen, eine moderne und einprägsame Webadresse zu sichern, die im überfüllten digitalen Raum hervorsticht. Weitere technische Details zur Delegierung finden Sie bei der [IANA (Internet Assigned Numbers Authority)](https://www.iana.org/domains/root/db/active.html).
 
 Der Begriff "active" ist international verständlich und positiv konnotiert. Er wird nicht nur im Sportbereich verwendet, sondern auch in der Technologie (z. B. "Active Directory", "Active Status") und im sozialen Engagement.
 
@@ -51,7 +51,7 @@ Die Wahl einer .active Domain bietet mehrere strategische Vorteile für Ihre Onl
 
 Sind Sie bereit, Ihre Online-Präsenz zu aktivieren? Eine .active Domain ist der perfekte Startpunkt für dynamische Projekte.
 
-Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer als je zuvor. Wir sind nicht nur ein gewöhnlicher Registrar, sondern verbinden die traditionelle Welt der ICANN-akkreditierten Domains mit der Innovation des Web3.
+Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer als je zuvor. Wir sind nicht nur ein gewöhnlicher [Registrar](/de/glossary/registrar/), sondern verbinden die traditionelle Welt der [ICANN](/de/glossary/icann/)-akkreditierten Domains mit der Innovation des [Web3](/de/glossary/web3/).
 
 **Warum Namefi?**
 *   **Einfaches Management:** Verwalten Sie Ihre Domains so einfach wie Ihre Krypto-Assets.

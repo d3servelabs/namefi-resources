@@ -11,7 +11,7 @@ keywords: ['.airtel', 'domaines .airtel', 'TLD .airtel', 'top-level domain', "qu
 
 ## **Qu'est-ce que .airtel ?**
 
-L'extension **.airtel** est un domaine de premier niveau (TLD) de type "marque" (Brand TLD). Contrairement aux domaines génériques comme .com ou .org, le .airtel a été créé spécifiquement pour **Bharti Airtel Limited**, l'une des plus grandes entreprises de télécommunications au monde, basée en Inde.
+L'extension **.airtel** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) de type "marque" (Brand TLD). Contrairement aux domaines génériques comme [.com](/fr/tld/com/) ou .org, le .airtel a été créé spécifiquement pour **Bharti Airtel Limited**, l'une des plus grandes entreprises de télécommunications au monde, basée en Inde.
 
 Ce TLD fait partie du programme des nouveaux gTLD (New gTLD Program) initié par l'[ICANN](https://www.icann.org/fr) (Internet Corporation for Assigned Names and Numbers) pour diversifier l'espace de nommage sur Internet. L'objectif principal de .airtel est de consolider la présence numérique du géant des télécoms, d'offrir une sécurité accrue à ses utilisateurs et de renforcer l'identité de sa marque à travers le monde.
 
@@ -50,7 +50,7 @@ Bien que l'enregistrement public de .airtel soit restreint à l'entreprise propr
 
 Que vous soyez intéressé par les dernières tendances des TLDs de marque comme **.airtel** ou que vous cherchiez à sécuriser le nom de domaine parfait pour votre propre projet, **Namefi** est votre partenaire de confiance.
 
-Chez Namefi, nous repensons la gestion de domaines en combinant la fiabilité d'un registrar accrédité par l'ICANN avec la flexibilité du Web3.
+Chez Namefi, nous repensons la gestion de domaines en combinant la fiabilité d'un registrar accrédité par l'[ICANN](/fr/glossary/icann/) avec la flexibilité du [Web3](/fr/glossary/web3/).
 
 **Pourquoi choisir Namefi ?**
 *   **Intégration Web3 transparente :** Vos domaines peuvent être tokenisés, facilitant le transfert et la gestion via la blockchain.

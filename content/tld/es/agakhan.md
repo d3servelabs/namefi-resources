@@ -11,7 +11,7 @@ keywords: ['.agakhan domains', 'dominio .agakhan', 'qué es el dominio .agakhan'
 
 ## **¿Qué es .agakhan?**
 
-El dominio de nivel superior (TLD) **.agakhan** es una extensión de dominio única y altamente especializada. A diferencia de los dominios genéricos como .com o .net, el TLD .agakhan se clasifica generalmente como un "Brand TLD" o TLD de marca/organización. Fue establecido para representar la presencia digital de Su Alteza el Aga Khan y la **Aga Khan Development Network (AKDN)**, una red de agencias de desarrollo privadas dedicadas a mejorar la calidad de vida de las comunidades en el mundo en desarrollo.
+El dominio de nivel superior ([TLD](/es/glossary/tld/)) **.agakhan** es una extensión de dominio única y altamente especializada. A diferencia de los dominios genéricos como [.com](/es/tld/com/) o [.net](/es/tld/net/), el TLD .agakhan se clasifica generalmente como un "Brand TLD" o TLD de marca/organización. Fue establecido para representar la presencia digital de Su Alteza el Aga Khan y la **Aga Khan Development Network (AKDN)**, una red de agencias de desarrollo privadas dedicadas a mejorar la calidad de vida de las comunidades en el mundo en desarrollo.
 
 La creación de este dominio responde a la necesidad de crear un espacio digital seguro, confiable y fácilmente identificable para las numerosas agencias, instituciones educativas y programas culturales bajo el paraguas del Imamat Ismaili.
 
@@ -50,10 +50,10 @@ Si bien el registro puede estar sujeto a estrictos criterios de elegibilidad ges
 
 ## **Registra y gestiona tus dominios en Namefi**
 
-Ya sea que estés buscando información sobre TLDs exclusivos como **.agakhan**, o desees registrar dominios comerciales populares para tu próximo gran proyecto, **Namefi** es tu socio ideal en el mundo Web3.
+Ya sea que estés buscando información sobre TLDs exclusivos como **.agakhan**, o desees registrar dominios comerciales populares para tu próximo gran proyecto, **Namefi** es tu socio ideal en el mundo [Web3](/es/glossary/web3/).
 
 En Namefi, no solo registramos dominios; revolucionamos la forma en que los posees. Ofrecemos:
-*   **Acreditación ICANN:** Cumplimiento total con los estándares globales.
+*   **Acreditación [ICANN](/es/glossary/icann/):** Cumplimiento total con los estándares globales.
 *   **Integración Web3:** Tokenizamos tus dominios como NFTs, permitiéndote transferirlos, venderlos o gestionarlos con la facilidad de una transacción en la blockchain.
 *   **Soporte Experto:** Nuestro equipo te ayuda a navegar el complejo mundo de los nuevos gTLDs y las inversiones en dominios.
 

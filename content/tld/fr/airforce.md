@@ -15,7 +15,7 @@ Le domaine **.airforce** est un domaine de premier niveau générique (gTLD) con
 
 Contrairement aux domaines traditionnels comme le .com ou le .net, le .airforce offre une identité numérique immédiate et précise. Il n'est pas réservé exclusivement aux entités gouvernementales officielles ; il est ouvert à tous, ce qui permet aux entreprises privées, aux associations de soutien, aux blogs historiques et aux familles de militaires de créer un espace en ligne dédié à l'esprit de l'armée de l'air et de l'aviation.
 
-Ce TLD sert de point de ralliement numérique pour honorer le service, partager l'histoire de l'aviation ou promouvoir des technologies aérospatiales innovantes.
+Ce [TLD](/fr/glossary/tld/) sert de point de ralliement numérique pour honorer le service, partager l'histoire de l'aviation ou promouvoir des technologies aérospatiales innovantes.
 
 ## **Comment le domaine .airforce est-il utilisé ?**
 
@@ -33,7 +33,7 @@ Bien que le .airforce soit un TLD de niche, il offre des opportunités de "brand
 
 *   **Fournisseurs d'équipement tactique :** Des boutiques en ligne spécialisées dans l'équipement pour pilotes ou le surplus militaire utilisent souvent ce TLD pour cibler directement leur clientèle (ex: *tactical.airforce* ou *gear.airforce*).
 *   **Blogs de passionnés :** Des sites personnels ou collaboratifs documentant des meetings aériens ou des restaurations d'avions anciens.
-*   **Innovateurs Web3 :** Dans l'écosystème émergent des domaines tokenisés, des investisseurs acquièrent des noms premium sur .airforce (comme *jets.airforce* ou *pilot.airforce*) pour développer des projets futurs ou pour la spéculation sur les actifs numériques.
+*   **Innovateurs [Web3](/fr/glossary/web3/) :** Dans l'écosystème émergent des domaines tokenisés, des investisseurs acquièrent des noms premium sur .airforce (comme *jets.airforce* ou *pilot.airforce*) pour développer des projets futurs ou pour la spéculation sur les actifs numériques.
 
 *Note : Comme il s'agit d'un domaine de niche, les "grandes marques" grand public l'utilisent moins que les acteurs spécialisés qui bénéficient directement de la pertinence des mots-clés.*
 

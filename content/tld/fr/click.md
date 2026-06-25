@@ -25,7 +25,7 @@ L'utilisation du .click est variée et créative. Voici les cas d'usage les plus
 *   **Photographie et Arts Visuels :** Le mot "click" rappelle le bruit de l'obturateur d'un appareil photo. C'est une alternative moderne au .photo ou .photography pour les portfolios.
 *   **Raccourcisseurs d'URL :** Les marques créent souvent des liens courts personnalisés (Branded Short Links) pour les réseaux sociaux. Un lien tel que `nommarque.click/promo` inspire plus confiance qu'une suite de caractères aléatoires.
 *   **Applications et Outils en Ligne :** Les développeurs choisissent cette extension pour des outils web qui nécessitent une interaction simple et rapide (convertisseurs, générateurs, etc.).
-*   **Projets Web3 et Blockchain :** Avec l'essor des domaines tokenisés, le .click est parfois utilisé pour des projets décentralisés promettant une facilité d'utilisation en "un clic".
+*   **Projets [Web3](/fr/glossary/web3/) et Blockchain :** Avec l'essor des domaines tokenisés, le .click est parfois utilisé pour des projets décentralisés promettant une facilité d'utilisation en "un clic".
 
 ## **Exemples notables d'utilisation du .click**
 

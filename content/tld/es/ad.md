@@ -32,7 +32,7 @@ Elegir la extensión de dominio adecuada es el primer paso crucial para establec
 
 El dominio de nivel superior **.ad** es el código de país oficial (ccTLD) asignado al **Principado de Andorra**, una pequeña nación soberana situada entre Francia y España, en los Pirineos.
 
-Aunque geográficamente representa a Andorra, el TLD .ad ha captado la atención mundial debido a una feliz coincidencia lingüística: "Ad" es la abreviatura universal en inglés para **"Advertisement"** (Publicidad) o **"Advertising"**. Esto lo convierte en un "domain hack" (truco de dominio) muy codiciado para agencias de marketing, empresas de tecnología publicitaria (AdTech) y creativos.
+Aunque geográficamente representa a Andorra, el [TLD](/es/glossary/tld/) .ad ha captado la atención mundial debido a una feliz coincidencia lingüística: "Ad" es la abreviatura universal en inglés para **"Advertisement"** (Publicidad) o **"Advertising"**. Esto lo convierte en un "domain hack" (truco de dominio) muy codiciado para agencias de marketing, empresas de tecnología publicitaria (AdTech) y creativos.
 
 Históricamente, el registro de dominios .ad estaba sujeto a restricciones muy estrictas, limitadas a titulares de marcas en Andorra. Sin embargo, con la modernización de las normativas por parte de [Andorra Telecom](https://www.andorratelecom.ad/), el registro se ha vuelto más accesible, abriendo las puertas a la innovación digital. Para más detalles técnicos, puedes consultar la información de delegación de la [IANA sobre .ad](https://www.iana.org/domains/root/db/ad.html).
 
@@ -68,7 +68,7 @@ Si estás considerando registrar un nuevo dominio, aquí tienes las razones clav
 
 Ya sea que estés lanzando la próxima gran plataforma de tecnología publicitaria o estableciendo tu presencia en los Pirineos, asegurar tu dominio .ad es un paso estratégico inteligente.
 
-En **Namefi**, hacemos que el proceso sea sencillo, seguro y vanguardista. Como registrador acreditado por la ICANN, no solo te ofrecemos la seguridad tradicional, sino que también integramos la tecnología Web3. Esto te permite gestionar tus dominios tradicionales con la facilidad y liquidez de la tecnología blockchain si así lo deseas.
+En **Namefi**, hacemos que el proceso sea sencillo, seguro y vanguardista. Como registrador acreditado por la [ICANN](/es/glossary/icann/), no solo te ofrecemos la seguridad tradicional, sino que también integramos la tecnología [Web3](/es/glossary/web3/). Esto te permite gestionar tus dominios tradicionales con la facilidad y liquidez de la tecnología blockchain si así lo deseas.
 
 **¿Por qué registrar con nosotros?**
 *   Gestión de DNS simplificada.

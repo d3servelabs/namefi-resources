@@ -32,7 +32,7 @@ keywords:
 
 ## **¿Qué es .abb?**
 
-El dominio **.abb** es un Dominio de Nivel Superior (TLD, por sus siglas en inglés) perteneciente a la categoría de **gTLD de marca** (Brand TLD). A diferencia de los dominios genéricos como .com o .net, el TLD .abb fue solicitado y delegado específicamente para el uso exclusivo de **ABB Ltd**, la multinacional sueco-suiza líder en tecnologías de automatización y electrificación.
+El dominio **.abb** es un Dominio de Nivel Superior ([TLD](/es/glossary/tld/), por sus siglas en inglés) perteneciente a la categoría de **gTLD de marca** (Brand TLD). A diferencia de los dominios genéricos como [.com](/es/tld/com/) o [.net](/es/tld/net/), el TLD .abb fue solicitado y delegado específicamente para el uso exclusivo de **ABB Ltd**, la multinacional sueco-suiza líder en tecnologías de automatización y electrificación.
 
 La creación de este dominio surge tras la decisión de la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es) de expandir el espacio de nombres de Internet, permitiendo a grandes corporaciones gestionar su propia extensión de dominio. El propósito principal de .abb es consolidar la presencia digital de la compañía, garantizando a los usuarios que cualquier sitio web que termine en esta extensión es una propiedad digital oficial y verificada de ABB.
 
@@ -71,7 +71,7 @@ Si bien el registro de .abb está restringido a la corporación, entender las ve
     Un dominio que termina en .abb ofrece una garantía inmediata de autenticidad. Los usuarios saben que no es un sitio de *phishing*, ya que solo la compañía propietaria puede crear registros en esta extensión.
 *   **Relevancia SEO y Branding:**
     Tener un TLD propio permite URLs cortas, memorables y directamente asociadas a la marca (ej. `reporte.abb` en lugar de `abb.com/reporte`), mejorando la experiencia del usuario y la percepción de innovación.
-*   **Control Total del Registro:**
+*   **Control Total del [Registro](/es/glossary/registry/):**
     La entidad propietaria tiene control total sobre el DNS, lo que permite implementar protocolos de seguridad avanzados sin depender de terceros.
 *   **Mitigación de Riesgos:**
     Al no compartir el espacio de nombres con otros registrantes, se eliminan los riesgos de "vecindario" (bad neighborhoods) asociados a dominios utilizados para spam o malware.
@@ -80,7 +80,7 @@ Si bien el registro de .abb está restringido a la corporación, entender las ve
 
 Aunque el dominio **.abb** es exclusivo para el Grupo ABB, la filosofía de seguridad, propiedad y vanguardia tecnológica es algo que tú también puedes tener. En **Namefi**, creemos que tu dominio es más que una dirección web; es un activo digital.
 
-Si buscas proyectar la misma autoridad y profesionalismo que las grandes tecnológicas, te invitamos a buscar tu dominio perfecto con nosotros. Namefi no es solo un registrador tradicional; somos una plataforma que combina la acreditación de la ICANN con la tecnología Web3.
+Si buscas proyectar la misma autoridad y profesionalismo que las grandes tecnológicas, te invitamos a buscar tu dominio perfecto con nosotros. Namefi no es solo un registrador tradicional; somos una plataforma que combina la acreditación de la ICANN con la tecnología [Web3](/es/glossary/web3/).
 
 **¿Por qué registrar en Namefi?**
 *   **Integración Web3:** Tokeniza tus dominios para una gestión y transferencia simplificada.

@@ -30,7 +30,7 @@ keywords:
 
 Die Endung **.ad** ist die länderspezifische Top-Level-Domain (ccTLD) für das **Fürstentum Andorra**. Sie wird offiziell von *Andorra Telecom* verwaltet. Ursprünglich war diese Domainendung ausschließlich für Einwohner und Unternehmen mit Sitz in Andorra gedacht, was ihr einen Hauch von Exklusivität und Sicherheit verlieh.
 
-In der Welt der Domain-Investitionen und der Webentwicklung hat die .ad-Domain jedoch eine zweite, äußerst wertvolle Bedeutung erlangt. Da "Ad" die weltweit gebräuchliche Abkürzung für "Advertisement" (Werbung) ist, hat sich diese TLD zu einem Geheimtipp für Marketingagenturen, Ad-Tech-Unternehmen und kreative "Domain Hacks" entwickelt.
+In der Welt der Domain-Investitionen und der Webentwicklung hat die .ad-Domain jedoch eine zweite, äußerst wertvolle Bedeutung erlangt. Da "Ad" die weltweit gebräuchliche Abkürzung für "Advertisement" (Werbung) ist, hat sich diese [TLD](/de/glossary/tld/) zu einem Geheimtipp für Marketingagenturen, Ad-Tech-Unternehmen und kreative "Domain Hacks" entwickelt.
 
 Obwohl sie technisch gesehen eine geografische Zuordnung hat, wird sie im modernen Internet oft zweckentfremdet, ähnlich wie .io (Input/Output) oder .ai (Artificial Intelligence).
 
@@ -53,7 +53,7 @@ Die Nutzung der .ad-Domain ist vielfältig und teilt sich im Wesentlichen in zwe
 
 Während viele große Marken ihre Hauptpräsenz auf .com haben, gibt es spezifische Nischen, in denen .ad glänzt:
 
-1.  **Andorra Telecom:** Als Registry und Telekommunikationsanbieter des Landes ist ihre Nutzung der Domain maßgebend für die lokale Infrastruktur.
+1.  **Andorra Telecom:** Als [Registry](/de/glossary/registry/) und Telekommunikationsanbieter des Landes ist ihre Nutzung der Domain maßgebend für die lokale Infrastruktur.
 2.  **Tourismusverbände:** Seiten wie `visitandorra.com` nutzen oft ergänzende .ad-Weiterleitungen für lokale Kampagnen.
 3.  **Kreative "Hacks":**
     *   Stellen Sie sich eine Werbeplattform vor, die `my.ad` nutzt. Dies ist kurz, einprägsam und erklärt sofort den Zweck der Seite.
@@ -74,9 +74,9 @@ Mehr über die Hintergründe zu ccTLDs können Sie bei [ICANN](https://www.icann
 
 ## **Registrieren Sie Ihre .ad-Domain bei Namefi**
 
-Sind Sie bereit, Ihre Marke mit einer einzigartigen Endung zu stärken? Egal, ob Sie eine Verbindung zu Andorra haben oder das perfekte Wortspiel für Ihr nächstes Ad-Tech-Startup suchen – **Namefi** ist Ihr Partner.
+Sind Sie bereit, Ihre [Marke](/de/glossary/trademark/) mit einer einzigartigen Endung zu stärken? Egal, ob Sie eine Verbindung zu Andorra haben oder das perfekte Wortspiel für Ihr nächstes Ad-Tech-Startup suchen – **Namefi** ist Ihr Partner.
 
-Bei Namefi verbinden wir traditionelle Domain-Registrierung mit modernster Web3-Technologie.
+Bei Namefi verbinden wir traditionelle Domain-Registrierung mit modernster [Web3](/de/glossary/web3/)-Technologie.
 
 **Warum Namefi?**
 *   **Einfache Verwaltung:** Nutzen Sie unser intuitives Dashboard.

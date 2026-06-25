@@ -11,7 +11,7 @@ keywords: [".abbvie", "domaines .abbvie", "TLD .abbvie", "top-level domain .abbv
 
 ## **Qu'est-ce que .abbvie ?**
 
-Le **.abbvie** est une extension de domaine de premier niveau (TLD) un peu particulière. Contrairement aux extensions classiques comme le `.com` ou le `.net`, le `.abbvie` est classé comme un **"Brand TLD"** (TLD de marque). Il a été créé lors du programme des nouveaux gTLD (generic Top-Level Domains) lancé par l'[ICANN](https://www.icann.org/) pour permettre aux grandes organisations de posséder leur propre identité numérique souveraine sur Internet.
+Le **.abbvie** est une extension de domaine de premier niveau ([TLD](/fr/glossary/tld/)) un peu particulière. Contrairement aux extensions classiques comme le `.com` ou le `.net`, le `.abbvie` est classé comme un **"Brand TLD"** (TLD de marque). Il a été créé lors du programme des nouveaux gTLD (generic Top-Level Domains) lancé par l'[ICANN](https://www.icann.org/) pour permettre aux grandes organisations de posséder leur propre identité numérique souveraine sur Internet.
 
 Cette extension est la propriété exclusive de **AbbVie Inc.**, une société biopharmaceutique mondiale majeure. L'objectif principal de ce TLD n'est pas d'être vendu au grand public, mais de servir l'infrastructure numérique de l'entreprise, garantissant une authenticité absolue. Lorsqu'un internaute visite un site se terminant par `.abbvie`, il a la garantie immédiate qu'il interagit directement avec l'entreprise officielle, sans risque d'intermédiaire frauduleux.
 
@@ -49,7 +49,7 @@ Bien que les particuliers ne puissent pas enregistrer un domaine `.abbvie`, comp
 
 Bien que le TLD `.abbvie` soit réservé exclusivement à AbbVie Inc., cela ne doit pas vous empêcher de sécuriser votre propre identité numérique ! Le monde des domaines est vaste et offre des milliers d'autres extensions (gTLDs) pertinentes pour votre projet, que vous soyez une startup tech, un créatif ou un investisseur.
 
-Chez **Namefi**, nous révolutionnons l'enregistrement de noms de domaine en combinant la simplicité du Web2 avec la puissance du Web3.
+Chez **Namefi**, nous révolutionnons l'enregistrement de noms de domaine en combinant la simplicité du Web2 avec la puissance du [Web3](/fr/glossary/web3/).
 
 **Pourquoi choisir Namefi ?**
 *   **Accréditation ICANN :** Nous sommes un registrar de confiance, respectant les normes internationales.

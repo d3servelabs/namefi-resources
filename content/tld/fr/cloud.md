@@ -32,7 +32,7 @@ L'adoption du .cloud par des acteurs majeurs a renforcé sa crédibilité et sa 
 
 1.  **Fashion.cloud** : Une plateforme B2B majeure dans l'industrie de la mode qui connecte les marques et les détaillants. Ils ont choisi cette extension pour souligner l'aspect digital et connecté de leur solution.
 2.  **Arduino Cloud (cloud.arduino.cc)** : Bien qu'utilisé souvent en sous-domaine, la célèbre plateforme de matériel open-source utilise la terminologie cloud pour son service IoT, permettant aux créateurs de connecter leurs objets à Internet.
-3.  **Entreprises de la Blockchain** : De nombreux projets Web3 et décentralisés adoptent le .cloud pour signifier que leur infrastructure est distribuée et accessible partout, s'alignant avec la philosophie de la décentralisation.
+3.  **Entreprises de la Blockchain** : De nombreux projets [Web3](/fr/glossary/web3/) et décentralisés adoptent le .cloud pour signifier que leur infrastructure est distribuée et accessible partout, s'alignant avec la philosophie de la décentralisation.
 
 ## **Pourquoi choisir le .cloud ?**
 

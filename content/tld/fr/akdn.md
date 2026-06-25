@@ -9,7 +9,7 @@ description: "Découvrez tout sur l'extension de domaine .akdn : son origine, so
 keywords: [".akdn", "domaine .akdn", "TLD .akdn", "extension .akdn", "qu'est-ce que le .akdn", "pourquoi choisir .akdn", "investir nom de domaine", "achat nom de domaine", "domaines blockchain", "domaines tokenisés", "registraire de domaine", "Namefi", "top-level domain", "signification .akdn", "réseau aga khan"]
 ---
 
-Dans le monde vaste et en constante expansion d'Internet, les extensions de domaine (ou TLD pour *Top-Level Domains*) jouent un rôle crucial dans l'identité numérique. Si nous sommes tous habitués aux classiques `.com` ou `.org`, il existe des extensions plus spécifiques et prestigieuses, connues sous le nom de "Brand TLDs" (TLD de marque). L'un de ces exemples fascinants est le **.akdn**.
+Dans le monde vaste et en constante expansion d'Internet, les extensions de domaine (ou [TLD](/fr/glossary/tld/) pour *Top-Level Domains*) jouent un rôle crucial dans l'identité numérique. Si nous sommes tous habitués aux classiques `.com` ou `.org`, il existe des extensions plus spécifiques et prestigieuses, connues sous le nom de "Brand TLDs" (TLD de marque). L'un de ces exemples fascinants est le **.akdn**.
 
 Dans cet article, nous explorons ce que représente le **.akdn**, comment il est utilisé, et pourquoi le choix de la bonne extension est vital pour votre présence en ligne.
 
@@ -59,7 +59,7 @@ Si vous ne pouvez pas enregistrer un `.akdn`, vous devez chercher l'équivalent 
 
 Que vous soyez un développeur cherchant à lancer la prochaine grande application décentralisée (dApp), une entreprise locale ou un investisseur en domaines, **Namefi** est votre partenaire de confiance.
 
-Chez Namefi, nous révolutionnons l'industrie des noms de domaine en combinant la fiabilité de l'accréditation ICANN avec la flexibilité du Web3.
+Chez Namefi, nous révolutionnons l'industrie des noms de domaine en combinant la fiabilité de l'accréditation [ICANN](/fr/glossary/icann/) avec la flexibilité du [Web3](/fr/glossary/web3/).
 
 **Pourquoi choisir Namefi ?**
 *   **Intégration Web3 Transparente :** Gérez vos domaines comme des actifs numériques (NFTs) tout en gardant une compatibilité Web2 totale.

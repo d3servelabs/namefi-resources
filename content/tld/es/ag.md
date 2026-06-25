@@ -23,7 +23,7 @@ Para más detalles técnicos sobre la delegación de este dominio, puedes consul
 
 ## **Cómo se utiliza el dominio .ag**
 
-La versatilidad del TLD .ag ha permitido que diversos sectores lo adopten de manera creativa y profesional. A continuación, te mostramos cómo diferentes grupos están aprovechando este dominio:
+La versatilidad del [TLD](/es/glossary/tld/) .ag ha permitido que diversos sectores lo adopten de manera creativa y profesional. A continuación, te mostramos cómo diferentes grupos están aprovechando este dominio:
 
 *   **Corporaciones Alemanas (Aktiengesellschaft):** Es el uso más prestigioso. Empresas grandes y medianas en Alemania utilizan .ag para reforzar su identidad corporativa y seriedad empresarial.
 *   **Sector Agrícola y Tech-Ag:** Startups y empresas tecnológicas enfocadas en la agricultura (*AgTech*) utilizan este dominio para señalar inmediatamente su industria.
@@ -38,7 +38,7 @@ Debido a su asociación con el término corporativo alemán, muchas de las empre
 Algunos ejemplos del tipo de entidades que valoran este TLD incluyen:
 
 1.  **Volkswagen AG:** Las grandes automotrices alemanas a menudo aseguran sus dominios .ag para reflejar su estructura legal exacta.
-2.  **Siemens AG:** Gigantes industriales utilizan estas extensiones para separar su portal corporativo/inversionista de sus portales de consumo (.com).
+2.  **Siemens AG:** Gigantes industriales utilizan estas extensiones para separar su portal corporativo/inversionista de sus portales de consumo ([.com](/es/tld/com/)).
 3.  **Mercedes-Benz Group AG:** Similar a los anteriores, el uso refuerza la identidad de *Aktiengesellschaft*.
 4.  **Startups de AgTech:** Numerosas plataformas modernas de gestión de cultivos y biotecnología están adoptando el .ag para diferenciarse del saturado mercado .com.
 
@@ -57,7 +57,7 @@ Si estás considerando registrar un nuevo nombre de dominio, el .ag ofrece venta
 
 El dominio .ag es una herramienta poderosa para corporaciones, innovadores agrícolas y creativos por igual. En el mundo digital actual, asegurar el nombre correcto es el primer paso hacia el éxito.
 
-En **Namefi**, llevamos el registro de dominios al siguiente nivel. No somos solo un registrador acreditado por la ICANN; somos pioneros en la integración de la Web3.
+En **Namefi**, llevamos el registro de dominios al siguiente nivel. No somos solo un registrador acreditado por la [ICANN](/es/glossary/icann/); somos pioneros en la integración de la [Web3](/es/glossary/web3/).
 
 **¿Por qué registrar con nosotros?**
 *   **Propiedad Real:** Al registrarte con Namefi, puedes optar por tokenizar tu dominio, convirtiéndolo en un activo digital que realmente posees y puedes transferir tan fácilmente como una criptomoneda.

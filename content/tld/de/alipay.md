@@ -11,11 +11,11 @@ keywords: ['.alipay domains', '.alipay TLD', 'top-level domain', 'was ist .alipa
 
 ## **Was ist .alipay?**
 
-Die Domain-Endung **.alipay** gehört zur Kategorie der sogenannten **Brand TLDs** (Marken-Top-Level-Domains). Im Gegensatz zu generischen Endungen wie .com oder .net, die für die breite Öffentlichkeit gedacht sind, signalisiert .alipay eine direkte Zugehörigkeit oder Assoziation mit dem globalen Zahlungsriesen **Alipay**, einem Unternehmen der Ant Group (verbunden mit der Alibaba Group).
+Die Domain-Endung **.alipay** gehört zur Kategorie der sogenannten **Brand TLDs** (Marken-Top-Level-Domains). Im Gegensatz zu generischen Endungen wie [.com](/de/tld/com/) oder .net, die für die breite Öffentlichkeit gedacht sind, signalisiert .alipay eine direkte Zugehörigkeit oder Assoziation mit dem globalen Zahlungsriesen **Alipay**, einem Unternehmen der Ant Group (verbunden mit der Alibaba Group).
 
-Ursprünglich wurde diese TLD eingeführt, um dem Unternehmen eine exklusive, sichere und markenbezogene Infrastruktur im Internet zu bieten. In der Welt des Domain-Investings und der digitalen Identitäten stehen Brand TLDs für ein Höchstmaß an Authentizität. Für Entwickler und Unternehmen im Fintech-Sektor repräsentiert diese Endung Innovation im digitalen Zahlungsverkehr.
+Ursprünglich wurde diese [TLD](/de/glossary/tld/) eingeführt, um dem Unternehmen eine exklusive, sichere und markenbezogene Infrastruktur im Internet zu bieten. In der Welt des Domain-Investings und der digitalen Identitäten stehen Brand TLDs für ein Höchstmaß an Authentizität. Für Entwickler und Unternehmen im Fintech-Sektor repräsentiert diese Endung Innovation im digitalen Zahlungsverkehr.
 
-Da sich das Internet weiterentwickelt – insbesondere durch das Aufkommen von **Web3** und [ICANN](https://www.icann.org/)-Initiativen zur Erweiterung des Namensraums – beobachten Investoren genau, wie solche exklusiven TLDs genutzt werden, um Vertrauen in der Blockchain- und Finanzwelt zu schaffen.
+Da sich das Internet weiterentwickelt – insbesondere durch das Aufkommen von **[Web3](/de/glossary/web3/)** und [ICANN](https://www.icann.org/)-Initiativen zur Erweiterung des Namensraums – beobachten Investoren genau, wie solche exklusiven TLDs genutzt werden, um Vertrauen in der [Blockchain](/de/glossary/blockchain/)- und Finanzwelt zu schaffen.
 
 ## **Wie .alipay genutzt wird**
 
@@ -24,7 +24,7 @@ Obwohl .alipay primär als geschlossene Marken-TLD konzipiert wurde, zeigt die N
 *   **Sichere Zahlungsportale:** Domains unter dieser Endung werden oft für dedizierte Gateways genutzt, bei denen Sicherheit an erster Stelle steht.
 *   **Offizielle Markenkommunikation:** Nutzung für Marketingkampagnen, die direkt auf die Authentizität des Finanzdienstleisters hinweisen.
 *   **Web3 und Tokenisierung:** Im Kontext von **Namefi** und der modernen Domain-Wirtschaft betrachten wir TLDs auch als Assets. Eine solche Domain könnte hypothetisch als Identifikator für Krypto-Wallets oder tokenisierte Assets innerhalb des Alibaba-Ökosystems dienen.
-*   **Schutz vor Phishing:** Durch die exklusive Natur wissen Nutzer sofort, dass sie sich in einer verifizierten Umgebung befinden.
+*   **Schutz vor [Phishing](/de/glossary/phishing/):** Durch die exklusive Natur wissen Nutzer sofort, dass sie sich in einer verifizierten Umgebung befinden.
 
 ## **Bekannte Unternehmen und Beispiele für .alipay**
 
@@ -49,7 +49,7 @@ Für Investoren und Markenbeobachter, die sich für das Potenzial von Finanz-Dom
 
 Sind Sie bereit, Ihre digitale Präsenz auf das nächste Level zu heben? Egal, ob Sie an spezifischen Marken-Domains interessiert sind oder nach hochwertigen Alternativen im Fintech- und Blockchain-Bereich suchen – **Namefi** ist Ihr Partner.
 
-Bei Namefi verbinden wir die traditionelle Welt der **ICANN-akkreditierten** Domains mit der Flexibilität des Web3. Unsere Plattform ermöglicht es Ihnen, Domains nahtlos zu registrieren, zu verwalten und sogar als NFTs zu handeln, was Ihnen volle Eigentumskontrolle und einfache Transfers ermöglicht.
+Bei Namefi verbinden wir die traditionelle Welt der **[ICANN](/de/glossary/icann/)-akkreditierten** Domains mit der Flexibilität des Web3. Unsere Plattform ermöglicht es Ihnen, Domains nahtlos zu registrieren, zu verwalten und sogar als NFTs zu handeln, was Ihnen volle Eigentumskontrolle und einfache Transfers ermöglicht.
 
 **Warum Namefi?**
 *   Einfache Web3-Integration.

@@ -11,7 +11,7 @@ keywords: ["tld", "dominio loan", "servicios financieros", "préstamos", "fintec
 
 ## **¿Qué es .loan?**
 
-La extensión de dominio **.loan** es un dominio de nivel superior (TLD) especializado lanzado en **2014** específicamente para la **industria de servicios financieros**. Este dominio está diseñado para empresas y organizaciones involucradas en **préstamos, créditos y servicios financieros**. Ya seas un banco tradicional, una plataforma de préstamos en línea, un corredor hipotecario o un asesor financiero especializado en préstamos, `.loan` proporciona una identidad en línea **clara, profesional y específica de la industria**.
+La extensión de dominio **.loan** es un dominio de nivel superior ([TLD](/es/glossary/tld/)) especializado lanzado en **2014** específicamente para la **industria de servicios financieros**. Este dominio está diseñado para empresas y organizaciones involucradas en **préstamos, créditos y servicios financieros**. Ya seas un banco tradicional, una plataforma de préstamos en línea, un corredor hipotecario o un asesor financiero especializado en préstamos, `.loan` proporciona una identidad en línea **clara, profesional y específica de la industria**.
 
 La extensión `.loan` comunica inmediatamente el enfoque de tu negocio a los clientes potenciales, facilitando que encuentren y confíen en tus **servicios financieros**.
 
@@ -59,11 +59,11 @@ Estas entidades aprovechan `.loan` para generar confianza y comunicar claramente
 
 ¿Listo para establecer tu presencia profesional en la industria de servicios financieros?
 
-Puedes registrar tu **dominio .loan hoy mismo en [Namefi](https://namefi.io)** — un registrador **acreditado por ICANN** que combina servicios de dominio tradicionales con innovaciones modernas de internet. Namefi facilita la búsqueda, el registro y la gestión de tus dominios, al tiempo que ofrece funciones avanzadas como:
+Puedes registrar tu **dominio .loan hoy mismo en [Namefi](https://namefi.io)** — un registrador **acreditado por [ICANN](/es/glossary/icann/)** que combina servicios de dominio tradicionales con innovaciones modernas de internet. Namefi facilita la búsqueda, el registro y la gestión de tus dominios, al tiempo que ofrece funciones avanzadas como:
 
 *   Mercado de dominios premium y subastas
 *   Gestión y seguridad de DNS avanzadas
-*   Integración con Web3 y servicios descentralizados
+*   Integración con [Web3](/es/glossary/web3/) y servicios descentralizados
 *   Herramientas de gestión de cartera de dominios
 
 Ya sea que estés lanzando una plataforma de préstamos, estableciendo una correduría hipotecaria o construyendo una práctica de consultoría financiera — **.loan te brinda la credibilidad específica de la industria que necesitas para tener éxito.**

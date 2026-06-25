@@ -13,7 +13,7 @@ keywords: ['.africa domains', '.africa TLD', '.africa top-level domain', 'was is
 
 Die Endung **.africa** ist eine generische Top-Level-Domain (gTLD), die speziell geschaffen wurde, um dem gesamten afrikanischen Kontinent eine vereinte digitale Identität zu geben. Im Gegensatz zu länderspezifischen Top-Level-Domains (ccTLDs) wie `.de` für Deutschland oder `.za` für Südafrika, die an nationale Grenzen gebunden sind, repräsentiert `.africa` die kulturelle, geschäftliche und technologische Einheit von 54 Ländern.
 
-Die Einführung dieser Domain war ein bedeutender Meilenstein, der von der [Afrikanischen Union (AU)](https://au.int/) stark unterstützt wurde, um Afrika als dynamischen Akteur in der globalen digitalen Wirtschaft zu positionieren. Verwaltet wird die TLD von der *ZA Central Registry* (ZACR), die sicherstellt, dass die Domain stabil und vertrauenswürdig bleibt. Seit ihrer allgemeinen Verfügbarkeit im Jahr 2017 hat sie sich zu einer beliebten Wahl für Unternehmen und Einzelpersonen entwickelt, die ihr Engagement für den afrikanischen Markt demonstrieren wollen.
+Die Einführung dieser Domain war ein bedeutender Meilenstein, der von der [Afrikanischen Union (AU)](https://au.int/) stark unterstützt wurde, um Afrika als dynamischen Akteur in der globalen digitalen Wirtschaft zu positionieren. Verwaltet wird die [TLD](/de/glossary/tld/) von der *ZA Central Registry* (ZACR), die sicherstellt, dass die Domain stabil und vertrauenswürdig bleibt. Seit ihrer allgemeinen Verfügbarkeit im Jahr 2017 hat sie sich zu einer beliebten Wahl für Unternehmen und Einzelpersonen entwickelt, die ihr Engagement für den afrikanischen Markt demonstrieren wollen.
 
 ## **Wie wird .africa genutzt?**
 
@@ -47,7 +47,7 @@ Die Entscheidung für eine .africa Domain bietet strategische Vorteile, insbeson
 
 Sind Sie bereit, Ihre Marke auf dem afrikanischen Kontinent zu etablieren? **Namefi** ist Ihr idealer Partner für die Registrierung Ihrer .africa Domain.
 
-Als innovativer Domain-Registrar bieten wir Ihnen nicht nur die Sicherheit einer ICANN-akkreditierten Plattform, sondern auch modernste Technologie. Bei Namefi können Sie traditionelle Web2-Domains nahtlos mit der Web3-Welt verbinden. Unsere Plattform ermöglicht es Ihnen, Ihre Domains als NFTs zu minten, was den Handel, die Übertragung und die Verwaltung Ihrer digitalen Assets so einfach und sicher wie nie zuvor macht.
+Als innovativer Domain-Registrar bieten wir Ihnen nicht nur die Sicherheit einer [ICANN](/de/glossary/icann/)-akkreditierten Plattform, sondern auch modernste Technologie. Bei Namefi können Sie traditionelle Web2-Domains nahtlos mit der [Web3](/de/glossary/web3/)-Welt verbinden. Unsere Plattform ermöglicht es Ihnen, Ihre Domains als NFTs zu minten, was den Handel, die Übertragung und die Verwaltung Ihrer digitalen Assets so einfach und sicher wie nie zuvor macht.
 
 Sichern Sie sich noch heute Ihren Wunschnamen, bevor er vergeben ist.
 

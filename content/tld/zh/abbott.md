@@ -11,21 +11,21 @@ keywords: ['.abbott domains', 'TLD', 'top-level domain', 'what is .abbott', 'why
 
 ## **什么是 .abbott？**
 
-**.abbott** 是互联网域名系统（DNS）中的一个通用顶级域名（gTLD）。与向公众开放注册的 `.com` 或 `.net` 不同，`.abbott` 属于一类特殊的域名，被称为 **“品牌顶级域名” (.brand TLD)**。
+**.abbott** 是互联网域名系统（DNS）中的一个通用顶级域名（gTLD）。与向公众开放注册的 `.com` 或 `.net` 不同，`.abbott` 属于一类特殊的域名，被称为 **“品牌顶级域名” (.brand [TLD](/zh/glossary/tld/))**。
 
-这一专属域名扩展后缀由全球知名的医疗保健公司 **Abbott Laboratories（雅培）** 管理和运营。作为 ICANN（互联网名称与数字地址分配机构）新 gTLD 计划的一部分，Abbott 申请并获得了该域名的管理权，旨在为其数字资产创建一个安全、可信且统一的在线命名空间。
+这一专属域名扩展后缀由全球知名的医疗保健公司 **Abbott Laboratories（雅培）** 管理和运营。作为 [ICANN](/zh/glossary/icann/)（互联网名称与数字地址分配机构）新 gTLD 计划的一部分，Abbott 申请并获得了该域名的管理权，旨在为其数字资产创建一个安全、可信且统一的在线命名空间。
 
 从历史角度来看，`.abbott` 的推出标志着大企业开始从依赖公共域名转向构建私有化、品牌化的数字生态系统。它不仅是一个网址后缀，更是品牌在数字世界中的身份认证。
 
 *   **相关阅读：** 了解更多关于 [ICANN 新 gTLD 计划](https://newgtlds.icann.org/en/about/program) 的信息。
-*   **注册局信息：** 访问 [IANA 委派记录](https://www.iana.org/domains/root/db/abbott.html) 以确认所有权详情。
+*   **[注册局](/zh/glossary/registry/)信息：** 访问 [IANA 委派记录](https://www.iana.org/domains/root/db/abbott.html) 以确认所有权详情。
 
 ## **人们如何使用 .abbott 域名**
 
 由于 `.abbott` 是一个封闭的品牌注册局（Closed Registry），普通大众无法随意注册和使用该域名。目前，它主要由 Abbott 公司及其附属机构用于以下目的：
 
 *   **企业官方通信：** 用于发布官方新闻、投资者关系报告和公司公告，确保信息的权威性。
-*   **产品验证与安全：** 医疗保健行业对信任度要求极高。使用 `.abbott` 域名可以向患者和消费者保证，他们访问的是经过验证的官方网站，而非网络钓鱼站点。
+*   **产品验证与安全：** 医疗保健行业对信任度要求极高。使用 `.abbott` 域名可以向患者和消费者保证，他们访问的是经过验证的官方网站，而非[网络钓鱼](/zh/glossary/phishing/)站点。
 *   **特定营销活动：** 为特定的医疗产品、健康计划或全球倡议创建简短、易记的网址。
 *   **员工与内部系统：** 用于企业内部网（Intranet）和员工门户，增强网络安全管理。
 
@@ -53,7 +53,7 @@ keywords: ['.abbott domains', 'TLD', 'top-level domain', 'what is .abbott', 'why
     作为注册局的拥有者，Abbott 对谁能注册该后缀下的域名拥有完全的控制权。这意味着零抢注风险，且能够实施最严格的 DNS 安全协议。
 
 *   **域名投资与资产代币化的启示：**
-    `.abbott` 的案例展示了域名的资产属性。在 Web3 时代，域名不仅仅是地址，更是数字资产。虽然您不能拥有 `.abbott`，但您可以投资其他具有升值潜力的 **代币化域名（Tokenized Domain）** 或 **区块链域名**。
+    `.abbott` 的案例展示了域名的资产属性。在 Web3 时代，域名不仅仅是地址，更是数字资产。虽然您不能拥有 `.abbott`，但您可以投资其他具有升值潜力的 **代币化域名（Tokenized Domain）** 或 **[区块链](/zh/glossary/blockchain/)域名**。
 
 ## **在 Namefi 注册您的域名**
 

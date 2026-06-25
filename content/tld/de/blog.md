@@ -27,9 +27,9 @@ Die Einführung der [neuen gTLDs durch die ICANN](https://newgtlds.icann.org/en/
 Die Nutzungsmöglichkeiten für eine .blog-Domain sind vielfältig und gehen weit über das klassische Online-Tagebuch hinaus. Hier sind die häufigsten Anwendungsfälle:
 
 *   **Unternehmensblogs:** Viele Firmen nutzen eine Subdomain oder eine separate .blog-Domain (z. B. `firma.blog` statt `blog.firma.com`), um ihre Unternehmensnachrichten, Fallstudien und Branchen-Insights vom reinen Produktverkauf optisch und technisch zu trennen.
-*   **Persönliche Marken & Influencer:** Für Experten, die ihre persönliche Marke (Personal Branding) aufbauen, wirkt eine Adresse wie `vorname.blog` oft moderner und relevanter als eine lange .com-Adresse.
+*   **Persönliche Marken & Influencer:** Für Experten, die ihre persönliche [Marke](/de/glossary/trademark/) (Personal Branding) aufbauen, wirkt eine Adresse wie `vorname.blog` oft moderner und relevanter als eine lange .com-Adresse.
 *   **Nischen-Publikationen:** Themen-spezifische Seiten, etwa über Kochen, Technik oder Reisen, profitieren von der sofortigen thematischen Einordnung.
-*   **Web3 und Entwickler-Updates:** Im Blockchain-Bereich nutzen Projekte .blog-Domains oft für Release-Notes, Whitepaper-Erklärungen und Community-Updates.
+*   **[Web3](/de/glossary/web3/) und Entwickler-Updates:** Im Blockchain-Bereich nutzen Projekte .blog-Domains oft für Release-Notes, Whitepaper-Erklärungen und Community-Updates.
 
 ## **Bekannte Unternehmen und Seiten mit .blog**
 
@@ -55,7 +55,7 @@ Warum sollten Sie sich bei Namefi für eine .blog-Domain entscheiden, anstatt be
 Sind Sie bereit, Ihre Stimme im Internet zu etablieren? Eine .blog-Domain ist das perfekte Fundament für Ihre Content-Strategie.
 
 Bei **Namefi** bieten wir Ihnen mehr als nur eine einfache Domain-Registrierung. Wir revolutionieren den Domain-Besitz:
-*   **ICANN-akkreditiert:** Sicherheit und Vertrauen stehen bei uns an erster Stelle.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Sicherheit und Vertrauen stehen bei uns an erster Stelle.
 *   **Web3-Integration:** Bei Namefi können Sie Ihre "Web2"-Domain (wie .blog) tokenisieren. Das bedeutet, Sie besitzen Ihre Domain als NFT, was den Transfer, Handel und die Verwaltung so einfach macht wie eine Krypto-Transaktion.
 *   **Einfaches Management:** Keine komplizierten Formulare – verwalten Sie Ihre Domains nahtlos und effizient.
 

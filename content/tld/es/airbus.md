@@ -28,7 +28,7 @@ keywords:
 
 ## **¿Qué es .airbus?**
 
-El dominio **.airbus** es un Dominio de Nivel Superior (TLD, por sus siglas en inglés) que pertenece a la categoría de **"Brand TLDs"** o TLDs de marca. A diferencia de los dominios genéricos como .com o .net, el .airbus fue creado y delegado exclusivamente para el uso de **Airbus S.A.S.**, el gigante aeroespacial europeo.
+El dominio **.airbus** es un Dominio de Nivel Superior ([TLD](/es/glossary/tld/), por sus siglas en inglés) que pertenece a la categoría de **"Brand TLDs"** o TLDs de marca. A diferencia de los dominios genéricos como [.com](/es/tld/com/) o [.net](/es/tld/net/), el .airbus fue creado y delegado exclusivamente para el uso de **Airbus S.A.S.**, el gigante aeroespacial europeo.
 
 Este dominio surgió como parte del programa de nuevos gTLDs (generic Top-Level Domains) de la [ICANN (Corporación de Internet para la Asignación de Nombres y Números)](https://www.icann.org/es), que permitió a grandes corporaciones solicitar sus propias extensiones de dominio para proteger su propiedad intelectual y crear un ecosistema digital cerrado y seguro.
 
@@ -56,7 +56,7 @@ Para verificar la información oficial sobre la delegación de este dominio, pue
 
 ## **¿Por qué elegir .airbus? (El valor de los TLDs de marca)**
 
-Aunque el registro de .airbus no está abierto al público general, entender "por qué" una empresa elige operar su propio TLD es vital para inversores de dominios y desarrolladores que buscan comprender el futuro de la web y la Web3:
+Aunque el registro de .airbus no está abierto al público general, entender "por qué" una empresa elige operar su propio TLD es vital para inversores de dominios y desarrolladores que buscan comprender el futuro de la web y la [Web3](/es/glossary/web3/):
 
 *   **Confianza Absoluta:** Para los usuarios, ver una URL que termina en .airbus elimina cualquier duda sobre la legitimidad del sitio. Es imposible que un tercero malintencionado registre un dominio allí.
 *   **Relevancia SEO y Branding:** Permite el uso de palabras clave muy cortas y directas (ej. *career.airbus* en lugar de *airbus.com/careers*), lo cual es limpio y moderno.
@@ -65,7 +65,7 @@ Aunque el registro de .airbus no está abierto al público general, entender "po
 
 ## **Registra tu dominio ideal en Namefi**
 
-Si bien el dominio **.airbus** es exclusivo para la corporación, el mundo de los dominios es vasto y está lleno de oportunidades para tu proyecto, startup o portafolio de inversión. En **Namefi**, te ayudamos a encontrar la alternativa perfecta, ya sea un dominio **.tech**, **.aero** (si calificas), **.io** o un clásico **.com**.
+Si bien el dominio **.airbus** es exclusivo para la corporación, el mundo de los dominios es vasto y está lleno de oportunidades para tu proyecto, startup o portafolio de inversión. En **Namefi**, te ayudamos a encontrar la alternativa perfecta, ya sea un dominio **[.tech](/es/tld/tech/)**, **.aero** (si calificas), **.io** o un clásico **.com**.
 
 Namefi revoluciona la forma en que gestionas tus dominios:
 *   **Acreditación ICANN:** Somos un registrador oficial y seguro.

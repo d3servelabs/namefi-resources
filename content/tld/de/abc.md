@@ -28,7 +28,7 @@ keywords:
 
 ## **Was ist .abc?**
 
-Die **.abc** Top-Level-Domain (TLD) gehört zu den sogenannten "neuen generischen Top-Level-Domains" (new gTLDs), die eingeführt wurden, um das Internet über die klassischen Endungen wie .com oder .net hinaus zu erweitern. Der Name selbst ist selbsterklärend: "ABC" steht weltweit symbolisch für den Anfang, die Grundlagen und absolute Einfachheit.
+Die **.abc** Top-Level-Domain ([TLD](/de/glossary/tld/)) gehört zu den sogenannten "neuen generischen Top-Level-Domains" (new gTLDs), die eingeführt wurden, um das Internet über die klassischen Endungen wie [.com](/de/tld/com/) oder .net hinaus zu erweitern. Der Name selbst ist selbsterklärend: "ABC" steht weltweit symbolisch für den Anfang, die Grundlagen und absolute Einfachheit.
 
 Ursprünglich wurde diese Domain-Endung konzipiert, um Unternehmen, Bildungseinrichtungen und Einzelpersonen eine Plattform zu bieten, die Kompetenz und Zugänglichkeit ausstrahlt. Sie wird oft mit Lernen, Alphabetisierung oder dem einfachen Einstieg in ein Thema assoziiert. Da "ABC" in fast allen Sprachen, die das lateinische Alphabet nutzen, verstanden wird, besitzt diese TLD eine enorme internationale Reichweite.
 
@@ -52,7 +52,7 @@ Während viele der "neuen" TLDs noch dabei sind, den Massenmarkt zu erobern, hat
 *   **ABC News / Medien:** In verschiedenen Ländern nutzen Medienhäuser mit "ABC" im Namen diese TLD als Weiterleitung oder für spezifische Kampagnenseiten, um ihre Marke im digitalen Raum zu schützen.
 *   **Nischen-Blogs:** Zahlreiche erfolgreiche Nischenseiten nutzen die Endung, um Autorität in einem spezifischen Fachgebiet zu signalisieren (z.B. `krypto.abc` für Einsteiger-Guides).
 
-Da .abc eine offene gTLD ist, gibt es keine strengen Restriktionen, was sie ideal für innovative Web3-Projekte oder Blockchain-Initiativen macht, die eine klare und kurze Adresse suchen.
+Da .abc eine offene gTLD ist, gibt es keine strengen Restriktionen, was sie ideal für innovative [Web3](/de/glossary/web3/)-Projekte oder [Blockchain](/de/glossary/blockchain/)-Initiativen macht, die eine klare und kurze Adresse suchen.
 
 ## **Warum .abc wählen?**
 
@@ -70,7 +70,7 @@ Sind Sie bereit, Ihre Idee mit einer starken und einfachen Adresse ins Internet 
 
 Bei **Namefi** gehen wir einen Schritt weiter als herkömmliche Registrare. Wir verbinden die klassische Web2-Welt mit den Vorteilen des Web3.
 
-*   **ICANN-akkreditiert:** Wir bieten höchste Sicherheitsstandards und offizielle Registrierungen.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Wir bieten höchste Sicherheitsstandards und offizielle Registrierungen.
 *   **Nahtlose Web3-Integration:** Bei Namefi können Ihre Domains als NFTs auf der Blockchain minten. Das erleichtert den Transfer, den Handel und die Verwaltung Ihrer digitalen Assets enorm.
 *   **Einfaches Management:** Verwalten Sie Ihre .abc Domain mit unserer benutzerfreundlichen Oberfläche, die speziell für moderne Entwickler und Unternehmer gebaut wurde.
 

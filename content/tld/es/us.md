@@ -26,7 +26,7 @@ Esta guía cubre qué es realmente .us, quién lo gestiona (el operador cambió 
 
 | Dato | Detalle |
 | --- | --- |
-| Tipo de TLD | TLD de código de país (ccTLD) de Estados Unidos |
+| Tipo de [TLD](/es/glossary/tld/) | TLD de código de país (ccTLD) de Estados Unidos |
 | Operador del registro | Registry Services, LLC (una empresa de GoDaddy Registry), bajo la supervisión del Departamento de Comercio de EE. UU. / NTIA |
 | Año de delegación | 1985 (uno de los ccTLD más antiguos) |
 | Soporte IDN | Limitado / enfoque estándar en ASCII |
@@ -36,7 +36,7 @@ Esta guía cubre qué es realmente .us, quién lo gestiona (el operador cambió 
 
 ## ¿Qué es .us?
 
-**.us** es el dominio de nivel superior de código de país (ccTLD) asignado a **Estados Unidos** según el estándar ISO 3166-1 (código de país **US**), el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/us.html) utiliza para delegar códigos de país. A diferencia de un [gTLD](/en/glossary/tld/) como [.com](/es/tld/com/), .us representa el espacio de nombres de una sola nación y se administra bajo la política de esa nación en lugar de un acuerdo de registro estándar de la [ICANN](/es/glossary/icann/).
+**.us** es el dominio de nivel superior de código de país (ccTLD) asignado a **Estados Unidos** según el estándar ISO 3166-1 (código de país **US**), el mismo sistema de dos letras que la [Autoridad de Números Asignados de Internet (IANA)](https://www.iana.org/domains/root/db/us.html) utiliza para delegar códigos de país. A diferencia de un [gTLD](/es/glossary/tld/) como [.com](/es/tld/com/), .us representa el espacio de nombres de una sola nación y se administra bajo la política de esa nación en lugar de un acuerdo de registro estándar de la [ICANN](/es/glossary/icann/).
 
 Lo que hace distintivo a .us es que realmente se comporta como un ccTLD nacional — no como uno global reutilizado. El espacio de nombres está bajo el **Departamento de Comercio de EE. UU.**, gestionado a través de la **Administración Nacional de Telecomunicaciones e Información (NTIA)**, y la IANA lista al operador del registro como **Registry Services, LLC**, con sede en Tempe, Arizona. El registro está abierto solo a partes con una conexión real con Estados Unidos, una política conocida como el **Nexus Requirement** (más sobre esto a continuación).
 
@@ -71,14 +71,14 @@ Estos casos muestran las dos caras de .us: una extensión seria y anclada en el 
 
 ## .us frente a otros dominios
 
-| Característica | .us | [.com](/es/tld/com/) | [.co](/es/tld/co/) | [.io](/es/tld/io/) |
+| Característica | .us | .com | .co | [.io](/es/tld/io/) |
 | --- | --- | --- | --- | --- |
 | Tipo | ccTLD (orientado al país) | gTLD heredado | ccTLD (usado globalmente) | ccTLD (usado globalmente) |
 | Asociación principal | Estados Unidos | El estándar web predeterminado | Company / corporation | Tecnología / "Entrada-Salida" |
 | Señal geográfica para Google | Orientado a EE. UU. | Genérico | Genérico | Genérico |
 | Restricciones de registro | Se requiere US Nexus | Abierto | Abierto | Abierto |
 
-Elige **.com** cuando puedas conseguir el nombre exacto y quieras un predeterminado globalmente neutral. Recurre a **.us** cuando una identidad explícitamente estadounidense sea un activo y tu audiencia esté basada en EE. UU. Escoge **[.co](/es/tld/co/)** cuando quieras una alternativa corta, global y con sabor a "company" sin orientación geográfica, y **[.io](/es/tld/io/)** para marcas tecnológicas centradas en desarrolladores e infraestructura.
+Elige **.com** cuando puedas conseguir el nombre exacto y quieras un predeterminado globalmente neutral. Recurre a **.us** cuando una identidad explícitamente estadounidense sea un activo y tu audiencia esté basada en EE. UU. Escoge **.co** cuando quieras una alternativa corta, global y con sabor a "company" sin orientación geográfica, y **.io** para marcas tecnológicas centradas en desarrolladores e infraestructura.
 
 ## ¿Por qué elegir .us?
 
@@ -91,7 +91,7 @@ Elige **.com** cuando puedas conseguir el nombre exacto y quieras un predetermin
 
 - **No global.** Esta es la otra cara de su fortaleza: los motores de búsqueda encasillan a .us en Estados Unidos, así que es una mala opción para ambiciones internacionales.
 - **El Nexus Requirement es real.** Debes calificar. Los registros pueden impugnarse e incluso revocarse si un registrante no tiene una presencia genuina en EE. UU.
-- **WHOIS históricamente transparente.** La política de .us ha enfatizado durante mucho tiempo datos de registrante precisos y públicos ligados a la regla del nexus, así que espera menos anonimato que en algunos otros TLD — aunque las opciones de privacidad [WHOIS](/en/glossary/whois/) han evolucionado con el tiempo.
+- **WHOIS históricamente transparente.** La política de .us ha enfatizado durante mucho tiempo datos de registrante precisos y públicos ligados a la regla del nexus, así que espera menos anonimato que en algunos otros TLD — aunque las opciones de privacidad [WHOIS](/es/glossary/whois/) han evolucionado con el tiempo.
 - **Un ccTLD gobernado nacionalmente.** Las reglas a largo plazo se establecen bajo la política del Departamento de Comercio de EE. UU. / NTIA y el operador designado, no por un acuerdo de registro estándar de la ICANN.
 
 ## ¿Quién puede registrar un dominio .us?
@@ -102,7 +102,7 @@ Elige **.com** cuando puedas conseguir el nombre exacto y quieras un predetermin
 - **Una entidad u organización de EE. UU.** — por ejemplo, una empresa, organización sin fines de lucro u otra organización constituida bajo las leyes de un estado de EE. UU. o de Estados Unidos.
 - **Una entidad u organización extranjera con una presencia de buena fe en Estados Unidos** — es decir, una actividad u operación regular y lícita en el país, no meramente la intención de registrar el dominio.
 
-Más allá de la elegibilidad, .us ha requerido históricamente **datos WHOIS precisos y públicos**, reflejando un estándar de transparencia ligado a la política del nexus; los registros de proxy anonimizadores tradicionalmente han estado restringidos, aunque el manejo de la privacidad ha evolucionado. **[DNSSEC](/en/glossary/dnssec/)** es compatible para mayor seguridad del DNS. Como .us es un ccTLD gobernado nacionalmente, la fuente autorizada para la elegibilidad y la política vigentes es el operador bajo la supervisión del Departamento de Comercio de EE. UU. / NTIA, y debes confirmar tu elegibilidad antes de registrar a través de cualquier [registrador](/es/glossary/registrar/).
+Más allá de la elegibilidad, .us ha requerido históricamente **datos WHOIS precisos y públicos**, reflejando un estándar de transparencia ligado a la política del nexus; los registros de proxy anonimizadores tradicionalmente han estado restringidos, aunque el manejo de la privacidad ha evolucionado. **[DNSSEC](/es/glossary/dnssec/)** es compatible para mayor seguridad del DNS. Como .us es un ccTLD gobernado nacionalmente, la fuente autorizada para la elegibilidad y la política vigentes es el operador bajo la supervisión del Departamento de Comercio de EE. UU. / NTIA, y debes confirmar tu elegibilidad antes de registrar a través de cualquier [registrador](/es/glossary/registrar/).
 
 ## Precios y valor de .us
 
@@ -156,11 +156,11 @@ El Nexus Requirement es la regla de elegibilidad que limita .us a partes con una
 
 ## Recursos relacionados
 
-- [Guía del TLD .com](/es/tld/com/)
-- [Guía del TLD .co](/es/tld/co/)
-- [Guía del TLD .io](/es/tld/io/)
+- Guía del TLD .com
+- Guía del TLD .co
+- Guía del TLD .io
 - [Domain hacks explicados](/es/blog/domain-hacks-explained/)
 - [¿Qué es un dominio?](/es/blog/what-is-domain/)
 - [Guía de terminología de dominios](/es/blog/domain-terminology-guide/)
-- [Glosario: registrador](/es/glossary/registrar/)
-- [Glosario: WHOIS](/en/glossary/whois/)
+- Glosario: registrador
+- Glosario: WHOIS

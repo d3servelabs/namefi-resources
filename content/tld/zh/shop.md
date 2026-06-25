@@ -38,7 +38,7 @@ faqs:
 
 ## 什么是 .shop？
 
-**.shop** 是在 [ICANN](/zh/glossary/icann) 新通用顶级域名计划下推出的[通用顶级域名（gTLD）](/en/glossary/tld)——该计划于 2012 年启动，向根区域添加了数百个基于单词的后缀。其含义不言自明："shop"在英语中几乎是零售目的地的代名词，作为商业活动的语义标签清晰有力。
+**.shop** 是在 [ICANN](/zh/glossary/icann) 新通用顶级域名计划下推出的[通用顶级域名（gTLD）](/zh/glossary/tld)——该计划于 2012 年启动，向根区域添加了数百个基于单词的后缀。其含义不言自明："shop"在英语中几乎是零售目的地的代名词，作为商业活动的语义标签清晰有力。
 
 由于它是通用型域名而非国家代码顶级域名，搜索引擎不会将 **.shop** 与任何特定地区挂钩。Google 的官方指引明确表示，对新通用顶级域名的处理方式与传统后缀相同，不会基于 `.shop` 这样的名称进行地理定向——因此 `.shop` 网站可以像 `.com` 一样在全球范围内获得排名。您可在官方 [IANA 根区域 .shop 条目](https://www.iana.org/domains/root/db/shop.html) 上查看注册局详情。
 
@@ -83,7 +83,7 @@ faqs:
 - **即时商业含义。** 后缀本身就是隐含的行动号召，在页面加载之前就建立了买家预期。
 - **真实可用性。** 更新、更大的命名空间意味着简短、精准匹配的零售域名远比在 `.com` 上更容易获得。
 - **全球可读性。** "Shop"在大多数市场中无需翻译便能理解。
-- **品牌保护。** 成熟企业会防御性地注册商标对应的 `.shop` 版本，掌控自己品牌名称在商业空间的呈现。
+- **品牌保护。** 成熟企业会防御性地注册[商标](/zh/glossary/trademark/)对应的 `.shop` 版本，掌控自己品牌名称在商业空间的呈现。
 - **经主要品牌验证。** Netflix、MrBeast 等品牌的采用证明了它适用于正规网店。
 
 ## 注意事项
@@ -97,13 +97,13 @@ faqs:
 
 **注册限制：向所有人开放。** **.shop** 无任何资格要求——无需证明资质、本地存在或社区成员身份。全球任何个人或组织均可按先到先得原则注册可用域名，注册局也确认该字符串无注册限制。
 
-标准新通用顶级域名惯例适用。商标持有人可在启动时利用 ICANN 日出期，商标交换所仍提供权利保护支持。注册局支持国际化域名（IDN）和 [DNSSEC](/en/glossary/dnssec)，提供签名、防篡改的 DNS。大多数注册商提供 WHOIS 隐私保护，可在 [WHOIS](/en/glossary/whois) 记录中隐藏个人信息；转移、续费和赎回宽限期行为遵循标准 ICANN 政策。权威规则详见 [ICANN .shop 注册局协议](https://www.icann.org/en/registry-agreements/details/shop)。
+标准新通用顶级域名惯例适用。商标持有人可在启动时利用 ICANN 日出期，商标交换所仍提供权利保护支持。注册局支持国际化域名（IDN）和 [DNSSEC](/zh/glossary/dnssec)，提供签名、防篡改的 DNS。大多数注册商提供 [WHOIS 隐私](/zh/glossary/whois-privacy/)保护，可在 [WHOIS](/zh/glossary/whois) 记录中隐藏个人信息；转移、续费和赎回宽限期行为遵循标准 ICANN 政策。权威规则详见 [ICANN .shop 注册局协议](https://www.icann.org/en/registry-agreements/details/shop)。
 
 ## .shop 的定价与价值
 
 本页不提供实时报价，但以下**规律**值得了解。标准 `.shop` 域名的价格处于典型新通用顶级域名范围内，与大多数此类后缀一样，**首年价格与续费价格可能不同**——低价首年促销很常见，因此请务必确认每年的续费费用。
 
-注册局还会将部分高需求域名指定为**溢价域名**，注册费（有时还有续费费）会相应提高；通用单词零售类目词最有可能属于溢价档。影响整体费用的因素包括：注册局的批发费用、域名是否被标记为溢价，以及您的[注册商](/zh/glossary/registrar)的利润空间和任何首推优惠。在二级市场上，一个理想的精准匹配 `.shop` 域名在转手时也可能溢价出售。
+注册局还会将部分高需求域名指定为**溢价域名**，注册费（有时还有续费费）会相应提高；通用单词零售类目词最有可能属于溢价档。影响整体费用的因素包括：注册局的批发费用、域名是否被标记为溢价，以及您的[注册商](/zh/glossary/registrar)的利润空间和任何首推优惠。在[二级市场](/zh/glossary/aftermarket/)上，一个理想的精准匹配 `.shop` 域名在转手时也可能溢价出售。
 
 ## 声誉与邮件送达率
 
@@ -124,7 +124,7 @@ faqs:
 2. 选择精准域名（以及任何防御性变体，如 `.store` 或 `.com`）。
 3. 完成注册并配置 DNS。
 
-[Namefi](https://namefi.io) 是经 [ICANN](/zh/glossary/icann) 认证的注册商，提供透明定价和快速 [DNS](/zh/glossary/dns) 管理。它还支持将您的域名通证化以实现 Web3 所有权——将您的 `.shop` 地址转化为可在链上转让的资产——同时保留标准注册商的全部功能。
+[Namefi](https://namefi.io) 是经 [ICANN](/zh/glossary/icann) 认证的注册商，提供透明定价和快速 [DNS](/zh/glossary/dns) 管理。它还支持将您的域名通证化以实现 [Web3](/zh/glossary/web3/) 所有权——将您的 `.shop` 地址转化为可在链上转让的资产——同时保留标准注册商的全部功能。
 
 ## 常见问题
 
@@ -157,4 +157,4 @@ faqs:
 - [.store 域名](/zh/tld/store)
 - [.online 域名](/zh/tld/online)
 - [.com 域名](/zh/tld/com)
-- 术语表：[注册商](/zh/glossary/registrar)、[DNSSEC](/en/glossary/dnssec)、[WHOIS](/en/glossary/whois)
+- 术语表：[注册商](/zh/glossary/registrar)、[DNSSEC](/zh/glossary/dnssec)、[WHOIS](/zh/glossary/whois)

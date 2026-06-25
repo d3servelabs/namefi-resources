@@ -9,7 +9,7 @@ description: 'Descubre el potencial del TLD .fun para marcas de entretenimiento,
 keywords: ['dominios .fun', 'dominio de nivel superior', 'TLD', 'qué es .fun', 'por qué elegir .fun', 'registro de dominios', 'inversión en dominios', 'dominios blockchain', 'dominios tokenizados', 'Namefi', 'comprar dominio .fun', 'dominios web3', 'nombres para sitios de juegos', 'estrategia de dominios', 'nuevo gTLD']
 ---
 
-En el vasto universo de internet, elegir el nombre correcto es crucial, pero elegir la extensión adecuada (TLD) puede ser lo que defina la personalidad de tu marca. Mientras que las extensiones tradicionales siguen siendo populares, los nuevos dominios genéricos de nivel superior (new gTLDs) están abriendo puertas a la creatividad. Hoy analizaremos el **dominio .fun**, una extensión vibrante que está capturando la atención de industrias creativas y del ecosistema Web3.
+En el vasto universo de internet, elegir el nombre correcto es crucial, pero elegir la extensión adecuada (TLD) puede ser lo que defina la personalidad de tu marca. Mientras que las extensiones tradicionales siguen siendo populares, los nuevos dominios genéricos de nivel superior (new gTLDs) están abriendo puertas a la creatividad. Hoy analizaremos el **dominio .fun**, una extensión vibrante que está capturando la atención de industrias creativas y del ecosistema [Web3](/es/glossary/web3/).
 
 ## **¿Qué es .fun?**
 
@@ -53,7 +53,7 @@ Si estás considerando registrar un nuevo nombre de dominio, aquí tienes las ra
 
 En un mundo digital cada vez más serio, a veces la mejor estrategia es ofrecer un poco de diversión. Ya seas un desarrollador lanzando el próximo gran juego, una comunidad de Web3 o simplemente alguien con una idea brillante para hacer reír al mundo, el dominio .fun es tu aliado perfecto.
 
-En **Namefi**, no solo te ofrecemos el registro de dominios; revolucionamos la propiedad digital. Somos un registrador acreditado por la ICANN que facilita la integración perfecta con la Web3.
+En **Namefi**, no solo te ofrecemos el registro de dominios; revolucionamos la propiedad digital. Somos un registrador acreditado por la [ICANN](/es/glossary/icann/) que facilita la integración perfecta con la Web3.
 
 **¿Por qué registrar con nosotros?**
 *   **Propiedad Real:** Convertimos tu dominio en un activo tokenizado, dándote control total y facilidad de transferencia.

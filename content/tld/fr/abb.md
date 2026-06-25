@@ -11,7 +11,7 @@ keywords: [".abb domains", "TLD .abb", "top-level domain", "qu'est-ce que le .ab
 
 ## **Qu'est-ce que le .abb ?**
 
-L'extension **.abb** est un domaine de premier niveau générique (gTLD) actif sur Internet. Contrairement aux extensions classiques comme le .com ou le .net, le **.abb** fait partie de la catégorie des "Brand TLDs" (TLD de marque). Il a été délégué et est géré par **ABB Ltd**, la célèbre multinationale helvético-suédoise spécialisée dans les technologies de l'énergie et de l'automatisation.
+L'extension **.abb** est un domaine de premier niveau générique (gTLD) actif sur Internet. Contrairement aux extensions classiques comme le [.com](/fr/tld/com/) ou le [.net](/fr/tld/net/), le **.abb** fait partie de la catégorie des "Brand TLDs" ([TLD](/fr/glossary/tld/) de marque). Il a été délégué et est géré par **ABB Ltd**, la célèbre multinationale helvético-suédoise spécialisée dans les technologies de l'énergie et de l'automatisation.
 
 Lancé lors du programme des nouveaux gTLD de l'ICANN, ce domaine a pour but principal de consolider l'identité numérique de la marque, d'assurer la sécurité de ses actifs en ligne et de structurer son écosystème numérique. En tant que domaine de marque, il représente un gage d'authenticité et de confiance technique.
 
@@ -47,7 +47,7 @@ Bien que ce TLD soit très spécifique, il illustre parfaitement pourquoi le cho
 
 ## **Enregistrez votre domaine chez Namefi**
 
-Que vous cherchiez à sécuriser un nom de domaine pour votre entreprise technologique, votre portefeuille d'investissement ou votre projet Web3, **Namefi** est votre partenaire de confiance.
+Que vous cherchiez à sécuriser un nom de domaine pour votre entreprise technologique, votre portefeuille d'investissement ou votre projet [Web3](/fr/glossary/web3/), **Namefi** est votre partenaire de confiance.
 
 Chez Namefi, nous révolutionnons la gestion des noms de domaine en combinant la simplicité du Web2 avec la puissance du Web3.
 

@@ -11,7 +11,7 @@ keywords: [".alibaba domains", "domaine .alibaba", "TLD .alibaba", "top-level do
 
 ## **Qu'est-ce que .alibaba ?**
 
-Le **.alibaba** est une extension de domaine de premier niveau (TLD) qui fait partie du programme des "nouveaux gTLD" (generic Top-Level Domains). Contrairement aux extensions classiques comme le .com ou le .net, le .alibaba est ce que l'on appelle un **"Brand TLD"** (TLD de marque). Il est géré et exploité par le géant technologique chinois, **Alibaba Group Holding Limited**.
+Le **.alibaba** est une extension de domaine de premier niveau ([TLD](/fr/glossary/tld/)) qui fait partie du programme des "nouveaux gTLD" (generic Top-Level Domains). Contrairement aux extensions classiques comme le [.com](/fr/tld/com/) ou le .net, le .alibaba est ce que l'on appelle un **"Brand TLD"** (TLD de marque). Il est géré et exploité par le géant technologique chinois, **Alibaba Group Holding Limited**.
 
 L'objectif principal de ce TLD est de consolider la présence numérique de l'écosystème Alibaba, offrant une authenticité et une sécurité accrues pour les services, les filiales et les partenaires associés à la marque. Dans un monde numérique où le *phishing* et la contrefaçon sont des menaces constantes, une extension comme .alibaba sert de sceau de confiance numérique.
 
@@ -24,7 +24,7 @@ L'utilisation du TLD .alibaba est stratégique et centrée sur la confiance. Voi
 *   **Infrastructure Corporative :** Il est utilisé pour héberger les pages institutionnelles, les portails employés et les infrastructures cloud du groupe.
 *   **Écosystème E-commerce :** Il permet d'unifier les différentes branches du groupe (logistique, finance, commerce de détail) sous une bannière numérique cohérente.
 *   **Partenariats Stratégiques :** Dans certains cas, l'utilisation peut s'étendre aux partenaires clés ou aux développeurs intégrant les API d'Alibaba Cloud, garantissant aux utilisateurs finaux qu'ils interagissent avec une entité vérifiée.
-*   **Innovation Web3 :** Avec l'essor de l'internet décentralisé, des domaines de marque comme celui-ci pourraient jouer un rôle clé dans l'identité numérique sur la blockchain.
+*   **Innovation [Web3](/fr/glossary/web3/) :** Avec l'essor de l'internet décentralisé, des domaines de marque comme celui-ci pourraient jouer un rôle clé dans l'identité numérique sur la blockchain.
 
 ## **Entités notables utilisant .alibaba**
 

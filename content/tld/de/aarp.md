@@ -11,17 +11,17 @@ keywords: [".aarp domains", ".aarp TLD", "top-level domain", "was ist .aarp", "w
 
 ## **Was ist .aarp?**
 
-Die Endung **.aarp** ist eine sogenannte generische Top-Level-Domain (gTLD), die jedoch zu einer speziellen Kategorie gehört: den **Brand TLDs** (Marken-TLDs). Im Gegensatz zu offenen Endungen wie .com oder .net, die für die Allgemeinheit verfügbar sind, wird die .aarp-Domain exklusiv von der **American Association of Retired Persons (AARP)** verwaltet und genutzt.
+Die Endung **.aarp** ist eine sogenannte generische Top-Level-Domain (gTLD), die jedoch zu einer speziellen Kategorie gehört: den **Brand TLDs** (Marken-TLDs). Im Gegensatz zu offenen Endungen wie [.com](/de/tld/com/) oder [.net](/de/tld/net/), die für die Allgemeinheit verfügbar sind, wird die .aarp-Domain exklusiv von der **American Association of Retired Persons (AARP)** verwaltet und genutzt.
 
 Die [Internet Corporation for Assigned Names and Numbers (ICANN)](https://www.icann.org/) führte das Programm für neue gTLDs ein, um Organisationen und Marken die Möglichkeit zu geben, ihre eigene digitale Identität im Namensraum des Internets zu verankern. Die AARP, eine der größten Non-Profit-Organisationen in den USA, die sich für die Interessen von Menschen ab 50 Jahren einsetzt, sicherte sich diese Endung, um ihren Mitgliedern höchste Sicherheit und Vertrauen zu bieten.
 
-Historisch gesehen dient diese TLD dazu, eine verifizierte und geschützte Online-Umgebung zu schaffen. Wenn Sie eine Webseite mit der Endung .aarp sehen, wissen Sie sofort, dass diese Inhalte direkt von der Organisation stammen und authentisch sind.
+Historisch gesehen dient diese [TLD](/de/glossary/tld/) dazu, eine verifizierte und geschützte Online-Umgebung zu schaffen. Wenn Sie eine Webseite mit der Endung .aarp sehen, wissen Sie sofort, dass diese Inhalte direkt von der Organisation stammen und authentisch sind.
 
 ## **Wie Menschen und Organisationen .aarp nutzen**
 
 Da es sich um eine eingeschränkte Brand TLD handelt, wird .aarp nicht von der breiten Öffentlichkeit registriert, sondern strategisch von der Organisation selbst eingesetzt. Die Nutzung konzentriert sich auf folgende Bereiche:
 
-*   **Verifizierte Kommunikation:** Nutzung für offizielle Kampagnen, um Phishing und Betrug zu vermeiden.
+*   **Verifizierte Kommunikation:** Nutzung für offizielle Kampagnen, um [Phishing](/de/glossary/phishing/) und Betrug zu vermeiden.
 *   **Mitglieder-Services:** Bereitstellung von sicheren Portalen für Gesundheitsvorsorge, Versicherungen und finanzielle Beratung.
 *   **Bildungsressourcen:** Spezifische Landingpages für Themen, die für Senioren relevant sind, ohne die Ablenkung durch externe Werbung oder unsichere Drittanbieter.
 *   **Markenschutz:** Durch die Kontrolle der gesamten TLD verhindert die AARP, dass Dritte ihren Namen für betrügerische Zwecke (Cybersquatting) missbrauchen.
@@ -49,10 +49,10 @@ Obwohl die Registrierung für die Öffentlichkeit geschlossen ist, zeigt die Exi
 
 ## **Registrieren Sie Ihre Domain bei Namefi**
 
-Auch wenn die Endung .aarp exklusiv der AARP vorbehalten ist, zeigt sie doch, wie wichtig die richtige Domain für Ihren Erfolg im Internet ist. Egal ob Sie eine eigene Marke aufbauen, in Domain-Namen investieren oder die nächste große Web3-App entwickeln – bei **Namefi** finden Sie die perfekte TLD für Ihr Projekt.
+Auch wenn die Endung .aarp exklusiv der AARP vorbehalten ist, zeigt sie doch, wie wichtig die richtige Domain für Ihren Erfolg im Internet ist. Egal ob Sie eine eigene Marke aufbauen, in Domain-Namen investieren oder die nächste große [Web3](/de/glossary/web3/)-App entwickeln – bei **Namefi** finden Sie die perfekte TLD für Ihr Projekt.
 
 **Warum Namefi?**
-*   **ICANN-akkreditiert:** Wir sind ein voll lizensierter Registrar, dem Sie vertrauen können.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Wir sind ein voll lizensierter [Registrar](/de/glossary/registrar/), dem Sie vertrauen können.
 *   **Web3-Integration:** Namefi revolutioniert den Domain-Markt durch die Tokenisierung von Domains. Ihre Domain ist nicht nur eine Adresse, sondern ein digitales Asset auf der Blockchain.
 *   **Einfaches Management:** Verwalten Sie traditionelle Domains und Blockchain-Identitäten nahtlos auf einer Plattform.
 

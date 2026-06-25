@@ -36,7 +36,7 @@ La versatilidad de la palabra "top" permite que esta extensión se adapte a casi
 Aunque muchas grandes corporaciones protegen su marca registrando el .top (como Google o Amazon), el verdadero poder de este dominio se ve en el mercado de las PYMES y el ecosistema digital emergente.
 
 *   **Plataformas de Ranking:** Existen numerosos sitios de nicho dedicados a reviews de tecnología y software que han optado por esta terminación para mejorar su *branding*.
-*   **Proyectos Blockchain:** Dada la saturación de dominios .io o .xyz, muchos proyectos nuevos de criptomonedas y Web3 están optando por .top para sus landing pages o redes secundarias, aprovechando la asociación con "estar en la cima" del mercado.
+*   **Proyectos Blockchain:** Dada la saturación de dominios .io o .xyz, muchos proyectos nuevos de criptomonedas y [Web3](/es/glossary/web3/) están optando por .top para sus landing pages o redes secundarias, aprovechando la asociación con "estar en la cima" del mercado.
 *   **Comunidades en línea:** Foros y grupos de discusión que aspiran a ser el destino número uno para su temática específica.
 
 *Nota: Debido a la naturaleza democrática y abierta de este registro, es utilizado por millones de usuarios, desde pequeños blogueros hasta grandes redes de afiliados.*
@@ -47,7 +47,7 @@ Si todavía estás dudando entre un .com largo y complicado o un .top corto y di
 
 *   **Significado Positivo Instantáneo:** La palabra "top" es reconocida mundialmente como sinónimo de éxito y calidad. Crea una predisposición positiva en la mente del usuario antes incluso de visitar la web.
 *   **Disponibilidad de Nombres:** Encontrar un nombre de una sola palabra o de tres letras en .com es casi imposible o extremadamente costoso. Con .top, tienes muchas más posibilidades de registrar el nombre exacto de tu marca.
-*   **Relevancia SEO:** Google y otros motores de búsqueda tratan al .top igual que a cualquier otro gTLD (como .com o .org). Lo que importa es la calidad de tu contenido, no la extensión en sí misma. Puedes leer más sobre cómo Google maneja los nuevos dominios en su [blog oficial de la Central de Búsqueda](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level).
+*   **Relevancia SEO:** Google y otros motores de búsqueda tratan al .top igual que a cualquier otro gTLD (como .com o [.org](/es/tld/org/)). Lo que importa es la calidad de tu contenido, no la extensión en sí misma. Puedes leer más sobre cómo Google maneja los nuevos dominios en su [blog oficial de la Central de Búsqueda](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level).
 *   **Ideal para Branding:** Permite juegos de palabras creativos (domain hacks) y frases cortas memorables (ejemplo: *TuMarca.top*).
 
 ## **Registre su dominio .top en Namefi**

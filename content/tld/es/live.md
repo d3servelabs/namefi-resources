@@ -11,7 +11,7 @@ keywords: [".live domains", ".live TLD", "top-level domain", "what is .live", "w
 
 El mundo digital avanza hacia la inmediatez. En una era dominada por el streaming, las noticias de última hora y la interacción en tiempo real, la elección de un nombre de dominio que refleje dinamismo es crucial. Aquí es donde entra en juego el dominio **.live**.
 
-Si estás buscando una extensión de dominio que comunique acción, presencia y conexión instantánea, esta guía te explicará todo lo que necesitas saber sobre el TLD (Top-Level Domain) .live y por qué podría ser la inversión perfecta para tu marca digital en la Web2 o la Web3.
+Si estás buscando una extensión de dominio que comunique acción, presencia y conexión instantánea, esta guía te explicará todo lo que necesitas saber sobre el TLD (Top-Level Domain) .live y por qué podría ser la inversión perfecta para tu marca digital en la Web2 o la [Web3](/es/glossary/web3/).
 
 ## **¿Qué es .live?**
 

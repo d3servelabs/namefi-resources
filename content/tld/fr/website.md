@@ -27,7 +27,7 @@ La beauté du .website réside dans sa simplicité. Il est utilisé par une gran
 
 *   **Les créateurs de contenu et portefeuilles personnels :** Pour les freelances, les designers ou les consultants, un domaine *prenomnom.website* est clair et professionnel.
 *   **Les petites et moyennes entreprises (PME) :** De nombreuses entreprises locales ou startups, trouvant leur nom idéal indisponible en .com, se tournent vers le .website pour conserver un nom court et mémorable.
-*   **Les projets Web3 et Blockchain :** Dans l'écosystème décentralisé, la clarté est essentielle. De nombreux projets utilisent cette extension pour diriger les utilisateurs vers leur interface principale ou leur application décentralisée (dApp).
+*   **Les projets [Web3](/fr/glossary/web3/) et Blockchain :** Dans l'écosystème décentralisé, la clarté est essentielle. De nombreux projets utilisent cette extension pour diriger les utilisateurs vers leur interface principale ou leur application décentralisée (dApp).
 *   **Les pages de renvoi (Landing Pages) :** Les marques utilisent souvent cette extension pour des campagnes marketing spécifiques ou des sites temporaires, car elle indique clairement à l'utilisateur qu'il va consulter un site dédié.
 
 ## **Entités notables utilisant le .website**
@@ -46,7 +46,7 @@ L'absence de restriction sur ce TLD signifie que n'importe qui, de l'artiste ind
 
 Pourquoi devriez-vous envisager cette extension pour votre prochain enregistrement ? Voici les avantages majeurs :
 
-*   **Disponibilité exceptionnelle :** C'est l'atout numéro un. Il est très probable que le nom court, percutant et exact de votre marque soit encore disponible en .website, alors qu'il est pris depuis des années en .com ou .net.
+*   **Disponibilité exceptionnelle :** C'est l'atout numéro un. Il est très probable que le nom court, percutant et exact de votre marque soit encore disponible en .website, alors qu'il est pris depuis des années en .com ou [.net](/fr/tld/net/).
 *   **Compréhension universelle :** Le mot "website" est l'un des mots les plus reconnus au monde. Il n'y a aucune ambiguïté sur ce que l'utilisateur trouvera en cliquant sur le lien.
 *   **Neutralité pour le SEO :** Google et les autres moteurs de recherche traitent le .website exactement comme un .com. Il n'y a pas de pénalité de référencement pour l'utilisation d'une nouvelle extension gTLD. Un contenu de qualité sur un domaine .website se classe tout aussi bien.
 *   **Idéal pour le Branding :** Il permet des jeux de mots ou des phrases complètes (ex: *visitmy.website* ou *bestfood.website*), rendant l'URL facile à retenir pour vos visiteurs.
@@ -55,7 +55,7 @@ Pourquoi devriez-vous envisager cette extension pour votre prochain enregistreme
 
 Si vous cherchez un nom de domaine qui dit exactement ce qu'il est, tout en vous offrant une grande liberté de choix, le **.website** est fait pour vous.
 
-Chez **Namefi**, nous ne nous contentons pas de vous vendre un domaine ; nous modernisons la façon dont vous le gérez. En tant que bureau d'enregistrement accrédité par l'ICANN, nous combinons la sécurité traditionnelle avec l'innovation du Web3.
+Chez **Namefi**, nous ne nous contentons pas de vous vendre un domaine ; nous modernisons la façon dont vous le gérez. En tant que bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann/), nous combinons la sécurité traditionnelle avec l'innovation du Web3.
 
 **Pourquoi enregistrer votre .website avec Namefi ?**
 *   **Propriété réelle :** Vos domaines peuvent être tokenisés (transformés en NFT), vous donnant un contrôle absolu et facilitant les transferts instantanés.

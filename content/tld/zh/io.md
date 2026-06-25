@@ -18,9 +18,9 @@ faqs:
     answer: '这并非确定事实。截至 2026 年，.io 运行完全正常。任何退役都需要先更改 ISO 国家代码，随后经历多年的 IANA 过渡期，因此这是一个需要持续关注而非恐慌的动态局势。'
 ---
 
-**.io 域名**从技术上说是分配给印度洋偏远领地的国家代码后缀，但在实践中，它已成为软件初创公司、开发者工具和 Web3 项目的非官方聚集地。对大多数购买者而言，**.io 域名的含义**与地理位置毫无关系，而是与"io"在工程师眼中的读法息息相关：即**输入/输出（Input/Output）**——计算机科学中最基础的概念之一。
+**.io 域名**从技术上说是分配给印度洋偏远领地的国家代码后缀，但在实践中，它已成为软件初创公司、开发者工具和 [Web3](/zh/glossary/web3/) 项目的非官方聚集地。对大多数购买者而言，**.io 域名的含义**与地理位置毫无关系，而是与"io"在工程师眼中的读法息息相关：即**输入/输出（Input/Output）**——计算机科学中最基础的概念之一。
 
-如果您正在推出 SaaS 产品、API、开源项目或区块链项目，.io 是您能在品牌名称后缀加上的最具认知度的信号之一。本页将介绍它的来源、注册资格、定价机制，以及与其他域名选项的对比。
+如果您正在推出 SaaS 产品、API、开源项目或[区块链](/zh/glossary/blockchain/)项目，.io 是您能在品牌名称后缀加上的最具认知度的信号之一。本页将介绍它的来源、注册资格、定价机制，以及与其他域名选项的对比。
 
 ## .io 概览
 
@@ -62,7 +62,7 @@ faqs:
 ## 使用 .io 的知名网站
 
 - **GitHub Pages**（`github.io`）——数百万开发者托管在仓库中的网站
-- **Etherscan**（`etherscan.io`）——领先的以太坊区块链浏览器
+- **Etherscan**（`etherscan.io`）——领先的[以太坊](/zh/glossary/ethereum/)区块链浏览器
 - **itch.io**——深受欢迎的独立游戏创作者开放市场
 - **Agar.io** 和 **Slither.io**——定义了"io 游戏"类型的浏览器游戏
 
@@ -82,7 +82,7 @@ faqs:
 ## 为什么选择 .io？
 
 - **行业认可度。** 在创始人、工程师和投资者中，.io 立即传达出"科技公司"的印象。
-- **更好的短名称可用性。** 该命名空间比 [.com](/zh/tld/com/) 更年轻、规模更小，因此简洁、易于打造品牌的名称更容易获取。
+- **更好的短名称可用性。** 该命名空间比 .com 更年轻、规模更小，因此简洁、易于打造品牌的名称更容易获取。
 - **域名创意拼接潜力。** 两字母后缀能巧妙融入词汇（`rad.io`、`stud.io`），创造出聪明而令人难忘的名称。
 - **全球 SEO 友好。** 搜索引擎将其视为通用域名，网站可在全球排名，不被局限于某一地区。
 
@@ -160,5 +160,5 @@ faqs:
 - [为什么 .io 域名这么贵？](/zh/blog/why-are-io-domains-expensive/)
 - [.ai 与 .io 域名对比](/zh/blog/ai-vs-io-domain/)
 - [代币化域名使用案例（2026）](/zh/blog/tokenized-domain-use-cases-2026/)
-- TLD 指南：[.com](/zh/tld/com/)、[.ai](/zh/tld/ai/)、[.dev](/zh/tld/dev/)、[.app](/zh/tld/app/)、[.tech](/zh/tld/tech/)
-- 术语表：[ICANN](/zh/glossary/icann/)、[注册商](/zh/glossary/registrar/)、[DNS](/zh/glossary/dns/)、[DNSSEC](/en/glossary/dnssec/)
+- TLD 指南：.com、.ai、.dev、[.app](/zh/tld/app/)、[.tech](/zh/tld/tech/)
+- 术语表：ICANN、注册商、DNS、[DNSSEC](/zh/glossary/dnssec/)

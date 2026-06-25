@@ -75,11 +75,11 @@ Ces cas montrent que le .co est adopté en toute confiance par de grandes platef
 | Fonctionnalité | .co | [.com](/fr/tld/com/) | [.io](/fr/tld/io/) | [.xyz](/fr/tld/xyz/) |
 | --- | --- | --- | --- | --- |
 | Type | ccTLD (usage mondial) | gTLD historique | ccTLD (usage mondial) | Nouveau gTLD |
-| Association principale | Company / corporation | La norme par défaut du web | Tech / « Input-Output » | Générique / Web3 |
+| Association principale | Company / corporation | La norme par défaut du web | Tech / « Input-Output » | Générique / [Web3](/fr/glossary/web3/) |
 | Disponibilité de noms courts | Bonne | Très faible | Modérée | Excellente |
 | Niveau de prix typique | Moyen | Bas à moyen | Élevé | Bas |
 
-Choisissez le **.com** lorsque vous pouvez obtenir le nom exact — il reste la référence en matière de confiance. Optez pour le **.co** lorsque le .com a disparu et que vous voulez le substitut le plus proche et le plus crédible sur le plan professionnel. Choisissez le **[.io](/fr/tld/io/)** pour les marques tech axées sur les développeurs et l'infrastructure, et le **[.xyz](/fr/tld/xyz/)** pour les projets génériques ou natifs du Web3 où un suffixe neuf et neutre constitue un avantage.
+Choisissez le **.com** lorsque vous pouvez obtenir le nom exact — il reste la référence en matière de confiance. Optez pour le **.co** lorsque le .com a disparu et que vous voulez le substitut le plus proche et le plus crédible sur le plan professionnel. Choisissez le **.io** pour les marques tech axées sur les développeurs et l'infrastructure, et le **.xyz** pour les projets génériques ou natifs du Web3 où un suffixe neuf et neutre constitue un avantage.
 
 ## Pourquoi choisir le .co ?
 
@@ -151,9 +151,9 @@ Non. Ce sont des TLD distincts gérés par des opérateurs différents. Le risqu
 
 ## Ressources connexes
 
-- [Guide du TLD .com](/fr/tld/com/)
-- [Guide du TLD .io](/fr/tld/io/)
-- [Guide du TLD .xyz](/fr/tld/xyz/)
+- Guide du TLD .com
+- Guide du TLD .io
+- Guide du TLD .xyz
 - [Qu'est-ce qu'un domaine ?](/fr/blog/what-is-domain/)
 - [Guide de terminologie des domaines](/fr/blog/domain-terminology-guide/)
 - [Glossaire : registrar](/fr/glossary/registrar/)

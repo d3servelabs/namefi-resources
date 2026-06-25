@@ -50,7 +50,7 @@ Investir dans un domaine .tech présente des avantages stratégiques indéniable
 
 Choisir le bon nom de domaine est la première étape vers le succès, mais choisir le bon registrar est tout aussi crucial. Chez **Namefi**, nous ne nous contentons pas de vendre des domaines ; nous révolutionnons la façon dont vous les possédez.
 
-En tant que registrar accrédité par l'ICANN, Namefi vous offre la sécurité et la fiabilité que vous attendez, couplées à la puissance du Web3.
+En tant que registrar accrédité par l'[ICANN](/fr/glossary/icann/), Namefi vous offre la sécurité et la fiabilité que vous attendez, couplées à la puissance du [Web3](/fr/glossary/web3/).
 
 *   **Intégration Web3 transparente :** Avec Namefi, votre domaine .tech peut être "tokenisé", vous permettant de le gérer et de le transférer aussi facilement qu'un NFT, tout en conservant une compatibilité totale avec le Web2 traditionnel (DNS).
 *   **Gestion simplifiée :** Une interface utilisateur conçue pour les développeurs et les entrepreneurs modernes.

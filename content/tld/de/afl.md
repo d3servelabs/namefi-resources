@@ -13,9 +13,9 @@ keywords: [".afl domains", ".afl TLD", "top-level domain", "was ist .afl", "waru
 
 Die Endung **.afl** ist eine sogenannte generische Top-Level-Domain (gTLD), die speziell der Kategorie der "Brand TLDs" (Marken-Domains) zugeordnet ist. Sie steht exklusiv für die **Australian Football League (AFL)**, die höchste Spielklasse im australischen Football.
 
-Im Gegensatz zu offenen Endungen wie .com oder .net, wurde .afl eingeführt, um der Liga, ihren Clubs und ihren Partnern eine unverwechselbare und vertrauenswürdige digitale Identität zu verleihen. Die Einführung dieser TLD war Teil des [ICANN New gTLD Programms](https://newgtlds.icann.org/en/about/program), das darauf abzielte, die Vielfalt und Verfügbarkeit im Internet zu erweitern.
+Im Gegensatz zu offenen Endungen wie .com oder .net, wurde .afl eingeführt, um der Liga, ihren Clubs und ihren Partnern eine unverwechselbare und vertrauenswürdige digitale Identität zu verleihen. Die Einführung dieser [TLD](/de/glossary/tld/) war Teil des [ICANN New gTLD Programms](https://newgtlds.icann.org/en/about/program), das darauf abzielte, die Vielfalt und Verfügbarkeit im Internet zu erweitern.
 
-Die Nutzung dieser Domain signalisiert sofortige Zugehörigkeit zu einer der populärsten Sportarten Australiens. Während sie ursprünglich als geschlossene Registrierung für die Liga gedacht war, beobachten Domain-Investoren und Web3-Enthusiasten solche Nischen-TLDs genau, da sie ein hohes Potenzial für spezifisches Branding und Tokenisierung bieten.
+Die Nutzung dieser Domain signalisiert sofortige Zugehörigkeit zu einer der populärsten Sportarten Australiens. Während sie ursprünglich als geschlossene Registrierung für die Liga gedacht war, beobachten Domain-Investoren und [Web3](/de/glossary/web3/)-Enthusiasten solche Nischen-TLDs genau, da sie ein hohes Potenzial für spezifisches Branding und Tokenisierung bieten.
 
 ## **Wie Menschen .afl nutzen**
 

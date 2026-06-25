@@ -31,11 +31,11 @@ keywords:
 
 ## **¿Qué es .akdn?**
 
-El dominio de nivel superior (TLD) **.akdn** es una extensión de dominio patrocinada y exclusiva, creada específicamente para representar a la **Aga Khan Development Network (AKDN)** en el ecosistema digital. A diferencia de dominios genéricos como .com o .net, el TLD .akdn pertenece a la categoría de "Brand TLDs" (TLD de marca), una iniciativa facilitada por la [ICANN](https://www.icann.org/) para permitir que organizaciones globales gestionen su propia identidad en internet de manera segura y centralizada.
+El dominio de nivel superior ([TLD](/es/glossary/tld/)) **.akdn** es una extensión de dominio patrocinada y exclusiva, creada específicamente para representar a la **Aga Khan Development Network (AKDN)** en el ecosistema digital. A diferencia de dominios genéricos como [.com](/es/tld/com/) o [.net](/es/tld/net/), el TLD .akdn pertenece a la categoría de "Brand TLDs" (TLD de marca), una iniciativa facilitada por la [ICANN](https://www.icann.org/) para permitir que organizaciones globales gestionen su propia identidad en internet de manera segura y centralizada.
 
 El propósito fundamental de este dominio es unificar las numerosas agencias, instituciones y programas que operan bajo el paraguas de la red AKDN, una organización dedicada a mejorar la calidad de vida en Asia y África. Al utilizar una extensión propia, la organización garantiza a los usuarios que están interactuando con una fuente verificada y legítima.
 
-En el contexto actual de la inversión en dominios y la evolución hacia la **Web3**, los TLDs de nicho y de marca representan un movimiento hacia una internet más segmentada, segura y auténtica.
+En el contexto actual de la inversión en dominios y la evolución hacia la **[Web3](/es/glossary/web3/)**, los TLDs de nicho y de marca representan un movimiento hacia una internet más segmentada, segura y auténtica.
 
 ## **Cómo se utiliza el dominio .akdn**
 
@@ -71,7 +71,7 @@ Si bien el registro público de .akdn está restringido a entidades afiliadas, e
 
 La elección del dominio correcto es el primer paso para establecer una presencia digital sólida, ya sea para una organización global, una startup tecnológica o un portafolio de inversión.
 
-En **Namefi**, entendemos que el futuro de los dominios está en la propiedad real y la flexibilidad. Somos un registrador acreditado por la **ICANN** que revoluciona la industria al integrar la tecnología **Web3**.
+En **Namefi**, entendemos que el futuro de los dominios está en la propiedad real y la flexibilidad. Somos un registrador acreditado por la **[ICANN](/es/glossary/icann/)** que revoluciona la industria al integrar la tecnología **Web3**.
 
 **¿Por qué registrar con Namefi?**
 *   **Integración Web3:** Convierte tus dominios en activos tokenizados (NFTs), facilitando su transferencia, venta y gestión sin burocracia.

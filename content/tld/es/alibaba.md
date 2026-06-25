@@ -13,7 +13,7 @@ keywords: ['.alibaba domains', 'TLD .alibaba', 'top-level domain', 'what is .ali
 
 El dominio **.alibaba** es un Dominio de Nivel Superior Genérico (gTLD) que pertenece a la categoría de "Brand TLDs" (TLDs de marca). Fue creado como parte del [Programa de Nuevos gTLD de la ICANN](https://newgtlds.icann.org/en/about/program), diseñado para permitir que grandes corporaciones y organizaciones gestionen su propio espacio de nombres en internet de manera exclusiva y segura.
 
-A diferencia de los dominios tradicionales como `.com` o `.org`, el TLD **.alibaba** es gestionado y operado por **Alibaba Group**, el gigante mundial del comercio electrónico y la tecnología. Su propósito principal es consolidar la identidad digital de la empresa, proteger su propiedad intelectual y ofrecer una experiencia de navegación segura y autenticada para sus usuarios. Al ser un registro cerrado, representa un sello de autenticidad inigualable en el ecosistema digital.
+A diferencia de los dominios tradicionales como `.com` o `.org`, el [TLD](/es/glossary/tld/) **.alibaba** es gestionado y operado por **Alibaba Group**, el gigante mundial del comercio electrónico y la tecnología. Su propósito principal es consolidar la identidad digital de la empresa, proteger su propiedad intelectual y ofrecer una experiencia de navegación segura y autenticada para sus usuarios. Al ser un registro cerrado, representa un sello de autenticidad inigualable en el ecosistema digital.
 
 ## **Cómo se utiliza el dominio .alibaba**
 
@@ -51,7 +51,7 @@ Aunque no puedes registrar un dominio `.alibaba` (a menos que seas el Grupo Alib
 
 En **Namefi**, estamos revolucionando la industria de los dominios. No somos solo un registrador acreditado por la ICANN; somos el puente hacia el futuro.
 
-*   **Integración Web3:** Convierte tus dominios en activos tokenizados fácilmente transferibles.
+*   **Integración [Web3](/es/glossary/web3/):** Convierte tus dominios en activos tokenizados fácilmente transferibles.
 *   **Gestión Simplificada:** Una plataforma intuitiva diseñada para inversores, desarrolladores y empresarios.
 *   **Precios Transparentes:** Sin tarifas ocultas, solo la mejor tecnología para asegurar tu nombre en internet.
 

@@ -38,7 +38,7 @@ Esta página explica qué es realmente .ai, quién lo gestiona, las reglas de re
 
 ## ¿Qué es .ai?
 
-.ai es el [ccTLD](/en/glossary/tld/) asignado a Anguila. Las dos letras "AI" son simplemente el código de país ISO 3166-1 de Anguila — la misma coincidencia que convirtió a .io (Territorio del Océano Índico) y .tv (Tuvalu) en favoritas de la tecnología. La extensión fue delegada en 1995, décadas antes del auge moderno de la IA, tal como confirma el [registro de la zona raíz de IANA para .ai](https://www.iana.org/domains/root/db/ai.html).
+.ai es el [ccTLD](/es/glossary/tld/) asignado a Anguila. Las dos letras "AI" son simplemente el código de país ISO 3166-1 de Anguila — la misma coincidencia que convirtió a .io (Territorio del Océano Índico) y [.tv](/es/tld/tv/) (Tuvalu) en favoritas de la tecnología. La extensión fue delegada en 1995, décadas antes del auge moderno de la IA, tal como confirma el [registro de la zona raíz de IANA para .ai](https://www.iana.org/domains/root/db/ai.html).
 
 Lo que hace inusual a .ai es la forma en que los motores de búsqueda lo tratan. Aunque oficialmente es un ccTLD, [Google no lo geolocaliza hacia Anguila](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites). Google mantiene una lista de ccTLD que trata como genéricos ("gccTLD"), y .ai es uno de ellos. Esto significa que un sitio .ai puede posicionarse en todo el mundo sin que se le dirija hacia audiencias caribeñas — una razón clave por la que las empresas de IA globales están cómodas construyendo su marca principal sobre él.
 
@@ -80,7 +80,7 @@ Estas son propiedades consolidadas con alto tráfico, lo que es parte de la raz�
 | Precio típico | Alto, premium | Medio-alto | Bajo, pero los nombres cortos escasean |
 | Plazo mínimo | Dos años | Un año | Un año |
 
-Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que el significado esté incorporado en el nombre. Opta por **[.io](/es/tld/io/)** para proyectos más amplios de desarrollo, SaaS o infraestructura donde se interpreta como "entrada/salida" y tiende a ser más económico — consulta [por qué los dominios .io son caros](/es/blog/why-are-io-domains-expensive/). Ten en cuenta **[.com](/es/tld/com/)** como la opción universal predeterminada; muchos equipos aseguran el .com de forma defensiva junto con su .ai. Para una comparación más detallada, lee [.ai vs .io: ¿qué dominio es el adecuado para tu startup?](/es/blog/ai-vs-io-domain/).
+Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que el significado esté incorporado en el nombre. Opta por **.io** para proyectos más amplios de desarrollo, SaaS o infraestructura donde se interpreta como "entrada/salida" y tiende a ser más económico — consulta [por qué los dominios .io son caros](/es/blog/why-are-io-domains-expensive/). Ten en cuenta **[.com](/es/tld/com/)** como la opción universal predeterminada; muchos equipos aseguran el .com de forma defensiva junto con su .ai. Para una comparación más detallada, lee [.ai vs .io: ¿qué dominio es el adecuado para tu startup?](/es/blog/ai-vs-io-domain/).
 
 ## ¿Por qué elegir .ai?
 
@@ -92,7 +92,7 @@ Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que e
 ## Aspectos a considerar
 
 - **Plazo mínimo de dos años:** no puedes registrar ni renovar por un solo año, lo que incrementa el costo inicial.
-- **Precios premium:** .ai consistentemente cuesta más que .com o .net, tanto en el registro como en la renovación.
+- **Precios premium:** .ai consistentemente cuesta más que .com o [.net](/es/tld/net/), tanto en el registro como en la renovación.
 - **Significado específico:** si tu producto no está realmente relacionado con la IA, la extensión puede confundir a los visitantes o parecer forzada.
 - **Riesgo del ciclo de moda:** vincular tu marca estrechamente a "IA" ata tu identidad a una tendencia en rápida evolución.
 
@@ -100,7 +100,7 @@ Elige **.ai** cuando la inteligencia artificial *es* tu producto y quieres que e
 
 **Restricciones de registro: abierto a todos.** No hay requisitos de presencia local, ciudadanía ni acreditación para registrar un dominio .ai — cualquier persona en el mundo puede registrar uno a través de un [registrador](/es/glossary/registrar/) acreditado. La regla definitoria es el **plazo mínimo de dos años**: los nombres .ai se registran y renuevan en incrementos de dos a diez años en lugar del ciclo anual habitual.
 
-Los nombres usan caracteres ASCII estándar (a–z, 0–9 y guiones, no al principio ni al final), con soporte limitado para nombres de dominio internacionalizados. El registro admite [DNSSEC](/en/glossary/dnssec/) para integridad criptográfica, y las consultas modernas de WHOIS/RDAP están disponibles a través del registro. La política autorizada y las reglas de registro las publica el registro de Anguila en el sitio oficial, [nic.ai](https://nic.ai/). Dado que .ai es un ccTLD, no está regido por un acuerdo de registro de [ICANN](/es/glossary/icann/); Anguila establece su propia política.
+Los nombres usan caracteres ASCII estándar (a–z, 0–9 y guiones, no al principio ni al final), con soporte limitado para nombres de dominio internacionalizados. El registro admite [DNSSEC](/es/glossary/dnssec/) para integridad criptográfica, y las consultas modernas de WHOIS/RDAP están disponibles a través del registro. La política autorizada y las reglas de registro las publica el registro de Anguila en el sitio oficial, [nic.ai](https://nic.ai/). Dado que .ai es un ccTLD, no está regido por un acuerdo de registro de [ICANN](/es/glossary/icann/); Anguila establece su propia política.
 
 ## Precios y valor de .ai
 
@@ -124,7 +124,7 @@ Ten en cuenta dos riesgos. Primero, las personas pueden escuchar mal "punto A-I"
 2. **Elige** el plazo de registro (recuerda el mínimo de dos años) y verifica si el nombre es estándar o premium.
 3. **Regístrate** y completa el proceso de pago.
 
-[Namefi](https://namefi.io) es un registrador acreditado por ICANN que también admite dominios tokenizados Web3, por lo que tu .ai puede gestionarse como un [NFT](/es/glossary/nft/) en cadena para facilitar las transferencias y la propiedad verificable — consulta [qué son los dominios tokenizados](/es/blog/what-are-tokenized-domains/). Obtienes precios transparentes, DNS fiable y tokenización opcional en un solo lugar.
+[Namefi](https://namefi.io) es un registrador acreditado por ICANN que también admite dominios tokenizados [Web3](/es/glossary/web3/), por lo que tu .ai puede gestionarse como un [NFT](/es/glossary/nft/) en cadena para facilitar las transferencias y la propiedad verificable — consulta [qué son los dominios tokenizados](/es/blog/what-are-tokenized-domains/). Obtienes precios transparentes, DNS fiable y tokenización opcional en un solo lugar.
 
 ## Preguntas frecuentes
 
@@ -154,5 +154,5 @@ El registro de Anguila establece la política: los dominios .ai se registran y r
 - [.ai vs .io: ¿qué dominio es el adecuado para tu startup?](/es/blog/ai-vs-io-domain/)
 - [Casos de uso de dominios tokenizados en 2026](/es/blog/tokenized-domain-use-cases-2026/)
 - [¿Qué son los dominios tokenizados?](/es/blog/what-are-tokenized-domains/)
-- [Dominio .io](/es/tld/io/) · [Dominio .com](/es/tld/com/) · [Dominio .dev](/es/tld/dev/)
-- Glosario: [registrador](/es/glossary/registrar/) · [ICANN](/es/glossary/icann/) · [DNSSEC](/en/glossary/dnssec/) · [SEO](/es/glossary/seo/)
+- Dominio .io · Dominio .com · [Dominio .dev](/es/tld/dev/)
+- Glosario: registrador · ICANN · DNSSEC · [SEO](/es/glossary/seo/)

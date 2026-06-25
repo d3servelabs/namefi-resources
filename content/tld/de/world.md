@@ -23,7 +23,7 @@ Die Vielseitigkeit der .world-Endung hat dazu geführt, dass sie in verschiedens
 
 *   **Online-Communities und Foren:** Da "World" oft ein Gefühl der Zugehörigkeit vermittelt, nutzen viele Fan-Clubs, Hobby-Gruppen und soziale Netzwerke diese Endung (z.B. `runners.world` für eine Lauf-Community).
 *   **Reise- und Lifestyle-Blogs:** Reisebüros und Blogger verwenden .world, um Abenteuerlust und globale Reichweite zu signalisieren.
-*   **Videospiele und Metaverse:** Entwickler nutzen die Endung oft für immersive Spielewelten oder MMORPGs. Im Web3-Bereich wird sie gerne für virtuelle Landprojekte oder Metaverse-Hubs verwendet.
+*   **Videospiele und Metaverse:** Entwickler nutzen die Endung oft für immersive Spielewelten oder MMORPGs. Im [Web3](/de/glossary/web3/)-Bereich wird sie gerne für virtuelle Landprojekte oder Metaverse-Hubs verwendet.
 *   **Internationale Unternehmen:** Firmen, die über lokale Grenzen hinauswachsen, nutzen .world oft für ihre globale Landingpage, die verschiedene regionale Seiten verknüpft.
 *   **Wissensdatenbanken:** Ähnlich wie Enzyklopädien nutzen Informationsportale die Endung, um zu zeigen, dass sie eine "Welt des Wissens" bieten.
 
@@ -46,11 +46,11 @@ Die Wahl der richtigen Domain-Endung ist entscheidend für Ihre Markenstrategie.
 
 ## **Registrieren Sie Ihre .world Domain bei Namefi**
 
-Sind Sie bereit, Ihre Marke auf die globale Bühne zu bringen? Eine **.world** Domain ist der perfekte Startpunkt für internationale Ambitionen, lebendige Communities oder das nächste große Web3-Projekt.
+Sind Sie bereit, Ihre [Marke](/de/glossary/trademark/) auf die globale Bühne zu bringen? Eine **.world** Domain ist der perfekte Startpunkt für internationale Ambitionen, lebendige Communities oder das nächste große Web3-Projekt.
 
 Bei **Namefi** machen wir die Domain-Registrierung einfacher und zukunftssicherer denn je.
 
-*   **ICANN-akkreditiert:** Vertrauen Sie auf einen zertifizierten Registrar.
+*   **[ICANN](/de/glossary/icann/)-akkreditiert:** Vertrauen Sie auf einen zertifizierten Registrar.
 *   **Web3-Integration:** Namefi ist darauf spezialisiert, traditionelle Domains (Web2) nahtlos mit der Blockchain-Technologie (Web3) zu verbinden. Ihre Domain wird als NFT geminted, was den Transfer und die Verwaltung revolutioniert.
 *   **Transparente Preise:** Keine versteckten Gebühren, volle Kontrolle über Ihre Assets.
 

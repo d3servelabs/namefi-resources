@@ -32,7 +32,7 @@ El dominio **.club** es un dominio de nivel superior genérico (gTLD) que fue la
 
 Lo que hace que este TLD sea excepcionalmente poderoso es que la palabra "club" se escribe y significa lo mismo en muchos idiomas alrededor del mundo, incluyendo inglés, español, francés y alemán. Esto lo convierte en una opción universalmente reconocible para construir comunidades globales.
 
-Originalmente pensado para clubes sociales y deportivos, su uso ha evolucionado significativamente. Hoy en día, es una opción predilecta tanto para programas de lealtad exclusivos como para las nuevas Organizaciones Autónomas Descentralizadas (DAOs) en el espacio Web3.
+Originalmente pensado para clubes sociales y deportivos, su uso ha evolucionado significativamente. Hoy en día, es una opción predilecta tanto para programas de lealtad exclusivos como para las nuevas Organizaciones Autónomas Descentralizadas (DAOs) en el espacio [Web3](/es/glossary/web3/).
 
 ## **Cómo utiliza la gente el dominio .club**
 

@@ -50,7 +50,7 @@ Opter pour un domaine .store présente plusieurs avantages stratégiques par rap
 
 Que vous lanciez votre première boutique en ligne, que vous cherchiez à investir dans des noms de domaine à fort potentiel, ou que vous soyez un développeur construisant la prochaine grande plateforme e-commerce, le .store est un choix solide et tourné vers l'avenir.
 
-Chez **Namefi**, nous révolutionnons la gestion des noms de domaine. En tant que registraire accrédité par l'ICANN, nous combinons la sécurité traditionnelle avec l'innovation du Web3.
+Chez **Namefi**, nous révolutionnons la gestion des noms de domaine. En tant que registraire accrédité par l'[ICANN](/fr/glossary/icann/), nous combinons la sécurité traditionnelle avec l'innovation du [Web3](/fr/glossary/web3/).
 
 **Pourquoi choisir Namefi ?**
 *   **Propriété réelle :** Vos domaines peuvent être "tokenisés", vous offrant une propriété et une transférabilité fluides via la blockchain.

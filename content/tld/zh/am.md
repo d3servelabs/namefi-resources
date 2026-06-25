@@ -28,7 +28,7 @@ keywords: ['.am domains', '.am TLD', 'top-level domain', 'what is .am', 'why cho
 
 .am 域名的灵活性吸引了许多知名品牌和公众人物：
 
-1.  **Instagr.am**：这是最著名的 .am 域名案例之一。在 Instagram 早期，他们使用了这种极具创意的域名拼接方式作为主要入口，即便现在已转向 .com，`instagr.am` 仍是域名历史上的经典。
+1.  **Instagr.am**：这是最著名的 .am 域名案例之一。在 Instagram 早期，他们使用了这种极具创意的域名拼接方式作为主要入口，即便现在已转向 [.com](/zh/tld/com/)，`instagr.am` 仍是域名历史上的经典。
 2.  **Will.i.am**：著名音乐人、黑眼豆豆成员 Will.i.am 巧妙地利用这一域名完美呈现了他的艺名。这展示了 .am 在个人品牌塑造上的强大潜力。
 3.  **Stre.am**：流媒体视频服务平台利用 "stream" 一词的结尾，创建了一个极短且易于记忆的品牌域名。
 
@@ -45,7 +45,7 @@ keywords: ['.am domains', '.am TLD', 'top-level domain', 'what is .am', 'why cho
 
 无论您是想创办下一个热门播客，还是为您的科技初创公司寻找一个简短的名字，.am 都是一个充满潜力的选择。
 
-在 **Namefi**，我们不仅提供传统的域名注册服务，更将域名带入了 Web3 时代。作为 ICANN 认证的注册商，Namefi 允许您轻松注册 .am 域名，并体验我们独特的**代币化域名**技术。这意味着您的域名可以像 NFT 一样轻松交易、转移，并与区块链生态系统无缝集成，同时享受企业级的安全保护。
+在 **Namefi**，我们不仅提供传统的域名注册服务，更将域名带入了 [Web3](/zh/glossary/web3/) 时代。作为 [ICANN](/zh/glossary/icann/) 认证的[注册商](/zh/glossary/registrar/)，Namefi 允许您轻松注册 .am 域名，并体验我们独特的**[代币化](/zh/glossary/tokenize/)域名**技术。这意味着您的域名可以像 NFT 一样轻松交易、转移，并与[区块链](/zh/glossary/blockchain/)生态系统无缝集成，同时享受企业级的安全保护。
 
 不要让那个完美的创意名字被别人抢走。
 

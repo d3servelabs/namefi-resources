@@ -11,7 +11,7 @@ keywords: ["tld", "domaine loan", "services financiers", "prêt", "fintech", "cr
 
 ## **Qu'est-ce que .loan ?**
 
-L'extension de domaine **.loan** est un domaine de premier niveau (TLD) spécialisé lancé en **2014** spécifiquement pour l'**industrie des services financiers**. Ce domaine est conçu pour les entreprises et les organisations impliquées dans le **prêt, l'emprunt et les services financiers**. Que vous soyez une banque traditionnelle, une plateforme de prêt en ligne, un courtier hypothécaire ou un conseiller financier spécialisé dans les prêts, `.loan` offre une identité en ligne **claire, professionnelle et spécifique à l'industrie**.
+L'extension de domaine **.loan** est un domaine de premier niveau ([TLD](/fr/glossary/tld/)) spécialisé lancé en **2014** spécifiquement pour l'**industrie des services financiers**. Ce domaine est conçu pour les entreprises et les organisations impliquées dans le **prêt, l'emprunt et les services financiers**. Que vous soyez une banque traditionnelle, une plateforme de prêt en ligne, un courtier hypothécaire ou un conseiller financier spécialisé dans les prêts, `.loan` offre une identité en ligne **claire, professionnelle et spécifique à l'industrie**.
 
 L'extension `.loan` communique immédiatement votre objectif commercial aux clients potentiels, ce qui leur permet de trouver et de faire confiance plus facilement à vos **services financiers**.
 
@@ -59,11 +59,11 @@ Ces entités exploitent `.loan` pour renforcer la confiance et communiquer clair
 
 Prêt à établir votre présence professionnelle dans l'industrie des services financiers ?
 
-Vous pouvez enregistrer votre **domaine .loan dès aujourd'hui sur [Namefi](https://namefi.io)** — un registrar **accrédité par l'ICANN** qui combine des services de domaine traditionnels avec les innovations internet modernes. Namefi facilite la recherche, l'enregistrement et la gestion de vos domaines tout en offrant des fonctionnalités avancées comme :
+Vous pouvez enregistrer votre **domaine .loan dès aujourd'hui sur [Namefi](https://namefi.io)** — un registrar **accrédité par l'[ICANN](/fr/glossary/icann/)** qui combine des services de domaine traditionnels avec les innovations internet modernes. Namefi facilite la recherche, l'enregistrement et la gestion de vos domaines tout en offrant des fonctionnalités avancées comme :
 
 *   Un marché de domaines premium et des enchères
 *   Une gestion DNS avancée et la sécurité
-*   L'intégration avec Web3 et les services décentralisés
+*   L'intégration avec [Web3](/fr/glossary/web3/) et les services décentralisés
 *   Des outils de gestion de portefeuille de domaines
 
 Que vous lanciez une plateforme de prêt, établissiez un courtage hypothécaire ou bâtissiez un cabinet de conseil financier — **.loan vous donne la crédibilité spécifique à l'industrie dont vous avez besoin pour réussir.**

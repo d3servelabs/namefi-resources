@@ -23,7 +23,7 @@ La versatilidad del dominio .af permite que sea utilizado por una amplia varieda
 
 *   **Identidad Nacional y Negocios Locales:** Naturalmente, es la primera opción para empresas, ONGs y entidades gubernamentales que operan dentro de Afganistán y desean establecer una presencia local confiable y oficial.
 *   **"Domain Hacks" y Creatividad de Marca:** Este es uno de los usos más populares a nivel mundial. En la jerga de internet y las redes sociales, "AF" es un acrónimo muy utilizado para añadir énfasis o intensidad a un adjetivo (por ejemplo, "fast.af" o "cool.af"). Las startups y marcas disruptivas lo utilizan para proyectar una imagen moderna y audaz.
-*   **Sector Fotográfico y Tecnológico:** Las letras "AF" también son el acrónimo universal para **Auto-Focus** (Enfoque Automático) en fotografía y **Audio Frequency** (Frecuencia de Audio) en ingeniería de sonido. Esto lo convierte en un TLD ideal para fotógrafos, estudios de grabación y empresas de tecnología audiovisual.
+*   **Sector Fotográfico y Tecnológico:** Las letras "AF" también son el acrónimo universal para **Auto-Focus** (Enfoque Automático) en fotografía y **Audio Frequency** (Frecuencia de Audio) en ingeniería de sonido. Esto lo convierte en un [TLD](/es/glossary/tld/) ideal para fotógrafos, estudios de grabación y empresas de tecnología audiovisual.
 *   **Fuerza Aérea (Air Force):** Diversos sitios relacionados con la aviación o veteranos han adoptado este dominio debido a la coincidencia con las siglas de "Air Force".
 
 ## **Entidades notables que usan .af**
@@ -38,7 +38,7 @@ Si bien muchas grandes corporaciones registran sus marcas en todos los TLDs por 
 
 ## **¿Por qué elegir .af?**
 
-Elegir un dominio .af puede ofrecer ventajas estratégicas únicas frente a dominios saturados como el .com o .net:
+Elegir un dominio .af puede ofrecer ventajas estratégicas únicas frente a dominios saturados como el [.com](/es/tld/com/) o [.net](/es/tld/net/):
 
 *   **Disponibilidad de Nombres Cortos:** A diferencia de los dominios genéricos donde casi todos los nombres cortos están tomados, el mercado de .af aún ofrece muchas oportunidades para registrar palabras clave de 3 o 4 letras.
 *   **Memorabilidad y Branding:** Un dominio que forma una frase completa o un juego de palabras (como `safe.af` para una empresa de ciberseguridad) es extremadamente fácil de recordar para los usuarios.
@@ -52,7 +52,7 @@ Si buscas un nombre de dominio que sea corto, impactante y lleno de personalidad
 En **Namefi**, hacemos que el proceso de registro sea sencillo, seguro y vanguardista.
 
 *   **Acreditación y Confianza:** Operamos con los más altos estándares de la industria.
-*   **Integración Web3:** Somos pioneros en la tokenización de dominios. Con Namefi, tu dominio .af no es solo una dirección web; puede ser un activo digital real en la blockchain, facilitando su transferencia y gestión.
+*   **Integración [Web3](/es/glossary/web3/):** Somos pioneros en la tokenización de dominios. Con Namefi, tu dominio .af no es solo una dirección web; puede ser un activo digital real en la blockchain, facilitando su transferencia y gestión.
 *   **Gestión Simplificada:** Nuestra plataforma está diseñada para desarrolladores y empresarios que valoran la eficiencia.
 
 **No dejes que tu idea creativa se pierda.** Encuentra ese nombre perfecto que ya no está disponible en otros lugares.
