@@ -1,15 +1,6 @@
 name: Preview PR
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-    branches-ignore:
-      - prod
-      - gtmq_spec_*
-      - "*_nopreview_*"
   workflow_dispatch:
     inputs:
       pr_number:

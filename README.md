@@ -15,18 +15,17 @@ How each app reaches production:
 ### Frontend & backend (`apps/frontend`, `apps/backend`)
 
 Released by promoting `main` → the `prod` branch via the **Create Release** workflow
-(`.github/workflows/release.yml`). It runs on a nightly cron (`0 11 * * *`, 11:00 UTC) or a manual
-`workflow_dispatch`, bumps the app versions, and opens/merges a `main → prod` release PR. The `prod`
-branch drives the production deployment.
+(`.github/workflows/release.yml`). It runs only by manual `workflow_dispatch`, bumps the app
+versions, and opens/merges a `main → prod` release PR. The `prod` branch drives the production
+deployment.
 
 ### Park (`apps/park`) — parked-domain landing pages
 
 **The park production deploy is a manual step. It is _not_ automated, _not_ triggered by pushing
 `main`, and _not_ part of the Create Release flow.**
 
-- `apps/park/vercel.json` enables Vercel Git deploys **only on `main`**
-  (`deploymentEnabled: { "*": false, "main": true }`). Every push to `main` therefore creates a
-  **preview/dev**-target park build — never a production one. The `prod` branch does **not** build
+- The `namefi-astra-park` Vercel project is configured from the Vercel dashboard for requested-only
+  builds. Pushing to `main` does not publish park automatically. The `prod` branch does **not** build
   park, so the release / `prod`-branch flow has no effect on it.
 - Real parked domains (e.g. `82228.net`) resolve via DNS to Namefi's **Caddy** reverse proxy, which
   forwards to the project's production custom domains (`park.namefi.io`, `park.astra.namefi.io`, …).

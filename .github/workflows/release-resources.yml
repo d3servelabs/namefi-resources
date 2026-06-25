@@ -17,10 +17,6 @@ on:
         required: false
         default: false
         type: boolean
-  schedule:
-    # Run daily at 11:00 UTC
-    - cron: '0 11 * * *'
-
 permissions:
   contents: write
   pull-requests: write
@@ -671,6 +667,7 @@ jobs:
               ref: tagName,
               inputs: {
                 environment: 'production',
+                confirm_production: 'deploy-resources-production',
               },
             });
 
