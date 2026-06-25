@@ -95,7 +95,7 @@ There is no free lunch. The flavors of ZK trade off against each other and again
 
 ## How Namefi thinks about this
 
-In [domain ownership](/en/glossary/domain-ownership/) flows, the most interesting use of ZK is proving you own a name without revealing *which* name. Ownership proofs against an [on-chain](/en/glossary/on-chain/) registry can be made computational ZK with very mature tooling (Groth16, PLONK), and that is what production systems run on today. For more sensitive flows—say, proving a domain belongs to a *set* of trusted entities without revealing which—statistical or perfect ZK schemes on restricted statements may become relevant. The point of this post is to make the trade-off legible: pick what you actually need, and write down the assumptions you are buying.
+In [domain ownership](/en/glossary/domain-ownership/) flows, the most interesting use of ZK is proving you own a name without revealing *which* name. Ownership proofs against an [on-chain](/en/glossary/on-chain/) [registry](/en/glossary/registry/) can be made computational ZK with very mature tooling (Groth16, PLONK), and that is what production systems run on today. For more sensitive flows—say, proving a domain belongs to a *set* of trusted entities without revealing which—statistical or perfect ZK schemes on restricted statements may become relevant. The point of this post is to make the trade-off legible: pick what you actually need, and write down the assumptions you are buying.
 
 ## Sources and further reading
 

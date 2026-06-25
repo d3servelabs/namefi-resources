@@ -27,7 +27,7 @@ You'll have a much smoother time if these are true before you click anything:
 
 - **You control the domain at its current [registrar](/en/glossary/registrar/).** You can log in, change nameservers, and approve transfer / [auth codes](/en/glossary/auth-code/).
 - **You have a self-custodied [wallet](/en/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet, or any standard EVM wallet. Make sure you actually have the [seed phrase](/en/glossary/seed-phrase/) — not just an exchange account.
-- **The wallet has a small amount of [gas](/en/glossary/gas/).** A few dollars of ETH or Base ETH covers the [on-chain](/en/glossary/on-chain/) minting transaction. You don't need much.
+- **The wallet has a small amount of [gas](/en/glossary/gas/).** A few dollars of ETH or Base ETH covers the [on-chain](/en/glossary/on-chain/) [minting](/en/glossary/minting/) transaction. You don't need much.
 - **The domain isn't locked, expiring, or mid-transfer.** Domains within ~60 days of a recent [cross-registrar transfer](/en/glossary/cross-registrar-transfer/), or within 30 days of expiry, often can't move. Check first.
 - **You have time.** Plan for ~30 minutes of attention, plus up to 5–7 days of background processing for cross-registrar moves.
 
@@ -37,7 +37,7 @@ If any of those is shaky, fix it before you start. The process tolerates patienc
 
 ## Step 1: Connect Your Wallet at namefi.io
 
-Head to [namefi.io](https://namefi.io) and click "Connect Wallet". Approve the connection in your wallet. This wallet will become the **owner** of the tokenized domain — the NFT will live here, and whoever holds this wallet holds the domain.
+Head to [namefi.io](https://namefi.io) and click "Connect Wallet". Approve the connection in your wallet. This wallet will become the **owner** of the [tokenized domain](/en/glossary/tokenized-domain/) — the NFT will live here, and whoever holds this wallet holds the domain.
 
 > **Take this seriously.** If you lose this wallet, you lose the on-chain side of your domain. We have a separate guide on [recovering a tokenized domain after wallet loss](/en/blog/recovering-a-tokenized-domain-after-wallet-loss/) — read it now, not later.
 
@@ -59,7 +59,7 @@ You'll see one of three statuses:
 
 Namefi typically offers a few paths depending on the domain's current registrar:
 
-1. **Transfer-in then tokenize.** Move the domain to Namefi's accredited registrar partner, then mint the on-chain token. This is the most common path. It takes a few days because of ICANN's transfer flow, not because of anything blockchain-related.
+1. **Transfer-in then tokenize.** Move the domain to Namefi's accredited registrar partner, then mint the on-chain token. This is the most common path. It takes a few days because of ICANN's transfer flow, not because of anything [blockchain](/en/glossary/blockchain/)-related.
 2. **In-place tokenize (where supported).** For some registrar integrations, the domain stays where it is and the on-chain layer is added on top. Faster, but only available for specific partner registrars.
 
 You'll see the path that applies to your domain. The dashboard will show the estimated time and any fees up front.
@@ -71,7 +71,7 @@ You'll see the path that applies to your domain. The dashboard will show the est
 For the transfer-in path, you'll grab the [**auth code**](/en/glossary/auth-code/) (sometimes called EPP code) from your current registrar and paste it into Namefi. You may also need to:
 
 - Unlock the domain at your current registrar.
-- Approve a confirmation email sent to the registrant contact.
+- Approve a confirmation email sent to the [registrant](/en/glossary/registrant/) contact.
 
 This is the slowest part of the whole process. Plan for 5–7 days for the cross-registrar move to complete, though it often finishes faster.
 
@@ -112,8 +112,8 @@ Renewals continue to happen through the registrar layer. Namefi handles the regi
 
 You're paying for three things, roughly:
 
-- **Registrar fees.** Normal annual domain renewal pricing, plus any transfer-in fee. These are real-world costs that exist regardless of tokenization.
-- **Gas.** A few dollars for the mint transaction, depending on which chain (Base is cheaper than Ethereum L1).
+- **Registrar fees.** Normal annual [domain renewal](/en/glossary/domain-renewal/) pricing, plus any transfer-in fee. These are real-world costs that exist regardless of tokenization.
+- **Gas.** A few dollars for the mint transaction, depending on which chain (Base is cheaper than [Ethereum](/en/glossary/ethereum/) L1).
 - **Protocol fees.** Namefi's own fees for the tokenization service. These are shown in the dashboard before you confirm.
 
 There is no hidden surprise. If a number isn't on the confirmation screen, it isn't a charge.

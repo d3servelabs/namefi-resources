@@ -13,7 +13,7 @@ keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 
 
 ## What Is a TLD?
 
-A **TLD (top-level domain)** is the part of a domain name that comes **after the last dot**. In `namefi.io`, the TLD is `.io`. In `google.com`, the TLD is `.com`. In `wikipedia.org`, the TLD is `.org`.
+A **TLD ([top-level domain](/en/glossary/tld/))** is the part of a domain name that comes **after the last dot**. In `namefi.io`, the TLD is `.io`. In `google.com`, the TLD is `.com`. In `wikipedia.org`, the TLD is `.org`.
 
 That's the whole **TLD definition** in one sentence: the rightmost label of a [domain name](/en/blog/what-is-domain/). People also call it a **domain extension** or **domain suffix**, but the technically correct term is *top-level domain*. It sits at the very top of the internet's naming hierarchy — hence the name.
 
@@ -53,7 +53,7 @@ For a deeper walkthrough of how domains are structured, see [What Is a Domain Na
 
 ## The Types of TLD
 
-Not all TLDs are the same. ICANN and IANA classify them into a handful of categories. Here are the main **types of TLD** you'll encounter.
+Not all TLDs are the same. ICANN and [IANA](/en/glossary/iana/) classify them into a handful of categories. Here are the main **types of TLD** you'll encounter.
 
 ### 1. Generic TLDs (gTLDs)
 
@@ -72,11 +72,11 @@ These are open to anyone and remain the most trusted, liquid endings on the inte
 
 Here's the interesting part — many ccTLDs have been repurposed far beyond their home country because the letters spell something useful:
 
-- [`.ai`](/en/tld/ai/) is technically Anguilla's ccTLD, but it's become *the* extension for artificial-intelligence companies.
+- [`.ai`](/en/tld/ai/) is technically Anguilla's [ccTLD](/en/glossary/cctld/), but it's become *the* extension for artificial-intelligence companies.
 - [`.io`](/en/tld/io/) belongs to the British Indian Ocean Territory, yet dominates tech and startup branding ("I/O").
 - `.co` (Colombia) is widely used as a short stand-in for `.com`.
 
-This is the **gTLD vs ccTLD** distinction in a nutshell: gTLDs are governed directly under ICANN contracts and open globally, while ccTLDs are delegated to national authorities, each with its own rules (some require local presence, some don't).
+This is the **[gTLD](/en/glossary/gtld/) vs ccTLD** distinction in a nutshell: gTLDs are governed directly under ICANN contracts and open globally, while ccTLDs are delegated to national authorities, each with its own rules (some require local presence, some don't).
 
 ### 3. Sponsored TLDs (sTLDs)
 
@@ -84,7 +84,7 @@ This is the **gTLD vs ccTLD** distinction in a nutshell: gTLDs are governed dire
 
 ### 4. New gTLDs
 
-Starting in 2013, ICANN opened the floodgates with the **new gTLD program**, expanding the namespace from a couple dozen endings to well over a thousand. These cover keywords, industries, hobbies, and brands:
+Starting in 2013, ICANN opened the floodgates with the **[new gTLD](/en/glossary/new-gtld/) program**, expanding the namespace from a couple dozen endings to well over a thousand. These cover keywords, industries, hobbies, and brands:
 
 | Category | Examples |
 |----------|----------|
@@ -102,7 +102,7 @@ New gTLDs gave the internet breathing room: when every good `.com` was taken, en
 
 ### A note on Web3 endings
 
-You may also have seen blockchain-native endings like `.eth` or `.crypto`. These are *not* ICANN TLDs — they live outside the traditional DNS root and resolve only through special wallets or resolvers. Namefi catalogs them too (see [`.eth`](/en/tld/eth/)), but it's worth knowing they're a different category. We unpack that distinction in [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/).
+You may also have seen [blockchain](/en/glossary/blockchain/)-native endings like `.eth` or `.crypto`. These are *not* ICANN TLDs — they live outside the traditional DNS root and resolve only through special wallets or resolvers. Namefi catalogs them too (see [`.eth`](/en/tld/eth/)), but it's worth knowing they're a different category. We unpack that distinction in [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/).
 
 ---
 
@@ -111,7 +111,7 @@ You may also have seen blockchain-native endings like `.eth` or `.crypto`. These
 Behind every TLD is a layered system of governance. Here's who does what:
 
 - **ICANN** — the [Internet Corporation for Assigned Names and Numbers](/en/glossary/icann/) is the nonprofit that coordinates the global namespace, sets policy for gTLDs, and accredits registrars. Founded in 1998, it's the closest thing the domain world has to a referee.
-- **IANA** — the Internet Assigned Numbers Authority (operated under ICANN) maintains the authoritative **root zone**: the master list of every valid TLD and which registry runs it.
+- **IANA** — the Internet Assigned Numbers Authority (operated under ICANN) maintains the authoritative **[root zone](/en/glossary/root-zone/)**: the master list of every valid TLD and which [registry](/en/glossary/registry/) runs it.
 - **Registries** — each TLD is operated by a *registry*, the organization that runs the central database for that ending. For example, **Verisign** operates `.com` and `.net`, and the **Public Interest Registry (PIR)** runs `.org`. ccTLD registries are typically national bodies — for instance, [`.ae`](/en/tld/ae/) is administered by the UAE's TDRA.
 - **Registrars** — a [registrar](/en/glossary/registrar/) is the retailer you buy from. ICANN-accredited registrars (like Namefi, GoDaddy, and Namecheap) sell names to the public and pass registrations up to the registry.
 
@@ -159,17 +159,17 @@ A good rule of thumb: **choose the TLD your audience will trust and remember**, 
 
 ## TLDs and Tokenization
 
-Here's where it gets interesting for the next era of domains. Your TLD doesn't just shape your branding — it also affects whether your domain can be brought **on-chain**.
+Here's where it gets interesting for the next era of domains. Your TLD doesn't just shape your branding — it also affects whether your domain can be brought **[on-chain](/en/glossary/on-chain/)**.
 
-A [tokenized domain](/en/blog/what-are-tokenized-domains/) is a real, ICANN-recognized domain whose ownership is *also* represented as a token (typically an [NFT](/en/glossary/nft/)) in your wallet. The DNS layer keeps working exactly as before; you simply gain a second, programmable layer of ownership on top.
+A [tokenized domain](/en/blog/what-are-tokenized-domains/) is a real, ICANN-recognized domain whose ownership is *also* represented as a token (typically an [NFT](/en/glossary/nft/)) in your [wallet](/en/glossary/wallet/). The DNS layer keeps working exactly as before; you simply gain a second, programmable layer of ownership on top.
 
 But not every TLD is equally ready for this. Some registries have moved early to support on-chain ownership layers; others haven't moved at all. That's why the TLD you pick matters if you ever want to:
 
 - Hold your domain directly in your own wallet
 - Transfer it on-chain in seconds (the DNS record follows)
-- List it on NFT marketplaces or use it as collateral in [DeFi](/en/glossary/defi/)
+- List it on NFT marketplaces or use it as [collateral](/en/glossary/collateral/) in [DeFi](/en/glossary/defi/)
 
-**Namefi** was the first platform to tokenize real ICANN domains on Ethereum mainnet — and the first to do so on Base — across many of the TLDs above, including [`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/), and more. You keep a real, browser-resolvable domain *and* wallet-native ownership in one product.
+**Namefi** was the first platform to [tokenize](/en/glossary/tokenize/) real ICANN domains on [Ethereum](/en/glossary/ethereum/) mainnet — and the first to do so on Base — across many of the TLDs above, including [`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/), and more. You keep a real, browser-resolvable domain *and* wallet-native ownership in one product.
 
 > Curious how the two layers fit together? Read [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains/) or visit [namefi.io](https://namefi.io) to register or tokenize a domain.
 

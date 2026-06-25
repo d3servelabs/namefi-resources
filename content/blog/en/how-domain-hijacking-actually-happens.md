@@ -14,9 +14,9 @@ ogImage: ../../assets/how-domain-hijacking-actually-happens-og.jpg
 keywords: ['domain hijacking', 'domain security', 'registrar lock', 'transfer lock', 'dnssec', 'two factor authentication', 'social engineering', 'dangling dns', 'namefi']
 ---
 
-"Domain hijacking" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A [registrar](/en/glossary/registrar/) account taken over by a phishing email is a hijack. A nameserver record quietly swapped at a [DNS](/en/glossary/dns/) provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.
+"[Domain hijacking](/en/glossary/domain-hijacking/)" is one of those phrases that sounds dramatic but means very different things depending on how it happens. A [registrar](/en/glossary/registrar/) account taken over by a [phishing](/en/glossary/phishing/) email is a hijack. A [nameserver](/en/glossary/nameserver/) record quietly swapped at a [DNS](/en/glossary/dns/) provider is a hijack. An expired domain that someone else grabs and re-points is, in a sense, also a hijack.
 
-In every case, the result is the same: someone else is now telling the world where your name points. Email, payments, login flows, and SaaS integrations all start sending traffic to the attacker. Recovery often takes days, sometimes weeks. If the domain was transferred to another registrar, [ICANN](/en/glossary/icann/)'s [Transfer Dispute Resolution Policy (TDRP)](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.) may be relevant; other cases often require registrar escalation, registry escalation, platform recovery, or a court order. The fastest fix is to never get into that position in the first place.
+In every case, the result is the same: someone else is now telling the world where your name points. Email, payments, login flows, and SaaS integrations all start sending traffic to the attacker. Recovery often takes days, sometimes weeks. If the domain was transferred to another registrar, [ICANN](/en/glossary/icann/)'s [Transfer Dispute Resolution Policy (TDRP)](https://www.icann.org/en/contracted-parties/consensus-policies/uniform-domain-name-dispute-resolution-policy/domain-name-dispute-resolution-policies-25-02-2012-en#:~:text=The%20Transfer%20Dispute%20Resolution%20Policy%20(TDRP)%20applies%20to%20transactions%20in%20which%20a%20domain%2Dname%20holder%20transfers%20or%20attempts%20to%20transfer%20a%20domain%20name%20to%20a%20new%20registrar.) may be relevant; other cases often require registrar escalation, [registry](/en/glossary/registry/) escalation, platform recovery, or a court order. The fastest fix is to never get into that position in the first place.
 
 This post walks through the five attack paths we see most often, what each one looks like from the defender's side, and the specific controls that actually stop it.
 
@@ -30,8 +30,8 @@ This was the mechanism behind several of the most damaging hijacks involving cry
 
 **What stops it:**
 
-- **A hard registrar-side rule** that ownership changes require either a notarized document or a multi-factor challenge against the registrant's existing channel.
-- **Registry lock** (separate from registrar lock), where the registry operator itself refuses to act on transfer or contact changes without an out-of-band confirmation. Available on `.com`, `.net`, and many ccTLDs.
+- **A hard registrar-side rule** that ownership changes require either a notarized document or a multi-factor challenge against the [registrant](/en/glossary/registrant/)'s existing channel.
+- **[Registry lock](/en/glossary/registry-lock/)** (separate from registrar lock), where the registry operator itself refuses to act on transfer or contact changes without an out-of-band confirmation. Available on `.com`, `.net`, and many ccTLDs.
 - **Verifying which registrar you actually use** and removing the others. Brands that started in 2007 often have stale accounts at three or four registrars with weak credentials.
 
 ## 2. Registrar account compromise (the credential path)
@@ -58,7 +58,7 @@ This is often the easier path for attackers, because brands invest in registrar 
 
 ## 4. Nameserver hijacks via stale delegations and dangling records
 
-A subtler variant: the domain itself is fine, but a *subdomain* points (via CNAME or NS record) at a third-party service that the original owner no longer controls. The attacker registers the resource on the third-party side and now answers for the subdomain.
+A subtler variant: the domain itself is fine, but a *[subdomain](/en/glossary/subdomain/)* points (via CNAME or NS record) at a third-party service that the original owner no longer controls. The attacker registers the resource on the third-party side and now answers for the subdomain.
 
 Examples:
 
@@ -75,7 +75,7 @@ These are catalogued under the umbrella term **dangling DNS**, and they are the 
 
 ## 5. Expired-domain reclamation
 
-The simplest and least sympathetic attack: the registrant forgot to renew. The grace period passes. The domain drops back into the pool. Someone else registers it.
+The simplest and least sympathetic attack: the registrant forgot to renew. The [grace period](/en/glossary/grace-period/) passes. The domain drops back into the pool. Someone else registers it.
 
 This sounds like an operational failure, not a security incident, but the impact is identical—someone else now controls the name, and all of the trust signals that were built up over years (SPF, DKIM, OAuth callbacks, password reset emails, payment integrations) start flowing to a stranger. Several public incidents involved attackers buying [expired domains](/en/blog/expired-domains-and-the-drop-cycle/) specifically because the previous owner had registered them as the `iss` claim in OAuth tokens or as the sender for transactional email.
 

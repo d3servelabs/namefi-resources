@@ -105,7 +105,7 @@ The cleanest answer is the same as Strategy B above: run your own DoH resolver, 
 
 If you run a domain that is consumed by enterprises—a SaaS app, a developer tool, an API—the relevant facts are:
 
-- Some fraction of your users will resolve you through a public DoH endpoint, especially on unmanaged devices or explicitly configured browsers. CNAME chains, subdomain delegations, and any clever DNS tricks you do for personalization need to work the same when resolved from an arbitrary public resolver as from a customer's internal one.
+- Some fraction of your users will resolve you through a public DoH endpoint, especially on unmanaged devices or explicitly configured browsers. CNAME chains, [subdomain](/en/glossary/subdomain/) delegations, and any clever DNS tricks you do for personalization need to work the same when resolved from an arbitrary public resolver as from a customer's internal one.
 - DNS-based censorship circumvention is a real use case for DoH. If your domain is blocked by a government's DNS filter (as several encrypted-messaging and VPN domains have been), users will reach you over DoH from a public resolver. The mechanics are the same; the political stakes are different.
 - Internal split-horizon should never resolve a public-facing name to something *only meaningful internally*, in a way that would break if a user accidentally queried over DoH. The classic failure is internal-only `app.example.com` returning a private IP that no DoH user can reach—then a remote employee in a hotel finds the same hostname unreachable and files a bug. Use a clearly separate internal-only zone (`app.example.internal`).
 

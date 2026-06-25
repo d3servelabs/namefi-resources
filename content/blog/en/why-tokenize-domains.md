@@ -21,7 +21,7 @@ In this article, we break it down in plain language: what "tokenizing domains" a
 
 Tokenizing domains is like switching from **physical mail via a post office** to **email over the internet**.
 
-In the traditional system, domain ownership and transfers are handled by [registrars](/en/glossary/registrar/) (like "authorized post offices"). If a [registrar](/en/glossary/registrar/) refuses service, or if your region only allows licensed operators, your transfer may be delayed or blocked entirely.
+In the traditional system, [domain ownership](/en/glossary/domain-ownership/) and transfers are handled by [registrars](/en/glossary/registrar/) (like "authorized post offices"). If a [registrar](/en/glossary/registrar/) refuses service, or if your region only allows licensed operators, your transfer may be delayed or blocked entirely.
 
 On-chain domains work more like email: **any compatible [wallet](/en/glossary/wallet/), platform, or protocol can freely send, receive, trade, or build around them**. No gatekeepers.
 
@@ -33,7 +33,7 @@ This doesn't just cut costs (from high brokerage fees to near-zero), or slash de
 
 ## 💡 What Does "Tokenizing" Actually Mean?
 
-To tokenize simply means:
+To [tokenize](/en/glossary/tokenize/) simply means:
 
 > Representing a real-world asset (like a domain) as a token—making it transferable, composable, and programmable.
 
@@ -50,7 +50,7 @@ This brings new flexibility and utility to domain ownership.
 
 ## 🌉 Bridging Real Assets to the On-Chain World
 
-By tokenizing domains, Namefi acts as a **bridge** between traditional [DNS](/en/glossary/dns/) infrastructure and open blockchain protocols:
+By tokenizing domains, Namefi acts as a **bridge** between traditional [DNS](/en/glossary/dns/) infrastructure and open [blockchain](/en/glossary/blockchain/) protocols:
 
 | Traditional System       | On-Chain World                         |
 |--------------------------|----------------------------------------|
@@ -86,7 +86,7 @@ With Namefi:
 - You manage it with your own [wallet](/en/glossary/wallet/)—not a hosted account  
 - While still subject to real-world DNS rules (renewals, lawful use), your **control is cryptographically secured**
 
-> It's not about "permanent, censorship-free domains"—it's about *clearer, user-first ownership*.
+> It's not about "permanent, [censorship-free](/en/glossary/censorship-free/) domains"—it's about *clearer, user-first ownership*.
 
 ### ✅ 3. Unlocking New Use Cases
 
@@ -129,7 +129,7 @@ With Namefi:
 
 ### ✅ Plug into a Composable Market Structure
 
-Traditional domain trading is closed:
+Traditional [domain trading](/en/glossary/domain-trading/) is closed:
 
 - You list only on approved marketplaces  
 - You rely on them to build [auctions](/en/glossary/auction/) or lease features  
@@ -153,7 +153,7 @@ Even though you hold an NFT on-chain, the **underlying asset is still a real-wor
 
 - ✅ It must be renewed annually (or it expires)  
 - ✅ It must comply with legal and [ICANN](/en/glossary/icann/) rules  
-- ✅ It may be subject to dispute (e.g. [UDRP](/en/glossary/udrp/), trademark)  
+- ✅ It may be subject to dispute (e.g. [UDRP](/en/glossary/udrp/), [trademark](/en/glossary/trademark/))  
 - ✅ It may be frozen or revoked by court orders or sanctions
 
 ### 🧩 Analogy: Real Estate NFT ≠ Legal Exemption

@@ -55,7 +55,7 @@ The dollar figure is almost beside the point. The real damage was to the thing B
 
 ![Vivid colorful concept art of a redirected road signpost at a glowing fork, one arrow secretly repainted to point traffic toward a golden funnel trap shaped like a coin, the original safe path left dark](../../assets/the-bitcoin-org-dns-hijack-02-fake-giveaway.jpg)
 
-Here is the detail that makes this a *Domain Mayday* story and not just another phishing tale: **the attackers never had to break into Bitcoin.org's servers at all.**
+Here is the detail that makes this a *Domain Mayday* story and not just another [phishing](/en/glossary/phishing/) tale: **the attackers never had to break into Bitcoin.org's servers at all.**
 
 Cobra was adamant on this point. The origin server, he said, was untouched — [my actual server didn't get any traffic during the hack](https://news.bitcoin.com/hackers-compromise-web-portal-bitcoin-org-dns-hijack-replaces-site-with-btc-doubler-scam/#:~:text=my%20actual%20server%20didn%27t%20get%20any%20traffic%20during%20the%20hack). Instead, the attack happened one layer up, at the part of the internet that decides *where a domain name points*. Observers watching the incident noted that [the WHOIS info was updated at the time of the hack, the nameservers + DNS changed](https://news.bitcoin.com/hackers-compromise-web-portal-bitcoin-org-dns-hijack-replaces-site-with-btc-doubler-scam/#:~:text=The%20WHOIS%20info%20was%20updated%20at%20the%20time%20of%20the%20hack). Once you control the nameservers, you control the answer to the question "what server *is* bitcoin.org?" — and you can quietly point a trusted name at a server you own.
 
@@ -77,13 +77,13 @@ After a few hours of investigation, the domain was repointed correctly and the s
 
 The most uncomfortable lesson of the Bitcoin.org hijack is that **being crypto-native saves you from almost none of it.**
 
-Bitcoin is decentralized. Its ledger is famously hard to tamper with. Its keys, when held properly, are yours alone. None of that mattered here — because the *front door* to all of it was a perfectly ordinary domain name, riding on the same DNS, registrar, and nameserver plumbing as any e-commerce shop or local bakery. The blockchain was untouched. The website was untouchable in the way that mattered, but the **name pointing at it was not.**
+Bitcoin is decentralized. Its ledger is famously hard to tamper with. Its keys, when held properly, are yours alone. None of that mattered here — because the *front door* to all of it was a perfectly ordinary domain name, riding on the same DNS, registrar, and [nameserver](/en/glossary/nameserver/) plumbing as any e-commerce shop or local bakery. The [blockchain](/en/glossary/blockchain/) was untouched. The website was untouchable in the way that mattered, but the **name pointing at it was not.**
 
 A few durable takeaways fall out of this:
 
 1. **Your domain is part of your attack surface — often the *largest* part.** You can write flawless code, hold your keys in cold storage, and harden every server, and an attacker who controls your nameservers or your registrar account can still impersonate you completely. The name is the front door, and a hijacked name lets a stranger answer it.
 
-2. **DNS/registrar changes are silent and high-leverage.** When [nameservers + DNS changed](https://news.bitcoin.com/hackers-compromise-web-portal-bitcoin-org-dns-hijack-replaces-site-with-btc-doubler-scam/#:~:text=nameservers%20%2B%20DNS%20changed), nothing "broke" in a way most monitoring would catch instantly — the site still loaded, just from the wrong place. Registrar lock, registry lock, [DNSSEC](/en/glossary/dnssec/), and tight access control on registrar/DNS-provider accounts aren't optional hygiene; they're the locks on the door everyone forgets.
+2. **DNS/registrar changes are silent and high-leverage.** When [nameservers + DNS changed](https://news.bitcoin.com/hackers-compromise-web-portal-bitcoin-org-dns-hijack-replaces-site-with-btc-doubler-scam/#:~:text=nameservers%20%2B%20DNS%20changed), nothing "broke" in a way most monitoring would catch instantly — the site still loaded, just from the wrong place. Registrar lock, [registry lock](/en/glossary/registry-lock/), [DNSSEC](/en/glossary/dnssec/), and tight access control on registrar/DNS-provider accounts aren't optional hygiene; they're the locks on the door everyone forgets.
 
 3. **Reputation is the thing actually being stolen.** The attackers didn't really want Bitcoin.org's $17,000 server; they wanted its *credibility*, borrowed for a few hours to make an ancient scam believable. The more trusted your domain, the more valuable it is to hijack — and the more careful you have to be about who can change where it points.
 

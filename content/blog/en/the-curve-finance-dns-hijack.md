@@ -15,7 +15,7 @@ keywords: ['curve finance dns hijack', 'curve.fi hijack', 'dns hijacking defi', 
 
 The smart contracts were fine.
 
-That is the first thing to understand about what happened to Curve Finance on August 9, 2022, and it is the part that still unsettles security engineers years later. Curve's [on-chain](/en/glossary/on-chain/) code — the audited, battle-tested automated market maker holding billions in stablecoins — was never touched. No reentrancy bug. No oracle manipulation. No flash-loan exploit. The blockchain did exactly what it was supposed to do.
+That is the first thing to understand about what happened to Curve Finance on August 9, 2022, and it is the part that still unsettles security engineers years later. Curve's [on-chain](/en/glossary/on-chain/) code — the audited, battle-tested automated market maker holding billions in stablecoins — was never touched. No reentrancy bug. No oracle manipulation. No flash-loan exploit. The [blockchain](/en/glossary/blockchain/) did exactly what it was supposed to do.
 
 And users still lost roughly **$570,000**.
 
@@ -27,7 +27,7 @@ This is *Domain Mayday* Episode 13. It's a story about how the most secure part 
 
 [DeFi](/en/glossary/defi/) spent years building a culture of contract security. Audits became table stakes. Bug bounties scaled into the millions. "Verified on Etherscan" became a trust signal. The collective mental model hardened into something like: *if the contracts are safe, the protocol is safe.*
 
-But a user almost never interacts with a contract directly. They go to a website. They type `curve.fi`, their browser resolves that name to an IP address, it loads a page, and that page tells their wallet what to sign. Every one of those steps happens *before* a single line of audited Solidity executes — and every one of them lives in infrastructure the audit never covered.
+But a user almost never interacts with a contract directly. They go to a website. They type `curve.fi`, their browser resolves that name to an [IP address](/en/glossary/ip-address/), it loads a page, and that page tells their wallet what to sign. Every one of those steps happens *before* a single line of audited Solidity executes — and every one of them lives in infrastructure the audit never covered.
 
 The domain name is the very first link in that chain. It's also the link most teams treat as set-and-forget: register it once, point the DNS, never think about it again. As one explainer put it after the incident, this kind of attack ["exploits the trust layer" between the user and a decentralized app's interface](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/) rather than breaching the protocol's blockchain at all. The contracts can be flawless. If an attacker controls where `curve.fi` *points*, none of that matters.
 
@@ -61,9 +61,9 @@ And here is the part worth sitting with. Tronweekly captured it cleanly: this at
 
 So how does an attacker make `curve.fi` resolve to *their* server instead of Curve's?
 
-Start with what DNS does. A domain name like `curve.fi` is a human-friendly label. Computers need an IP address. The [Domain Name System](/en/glossary/dns/) is the lookup layer that translates one into the other — Cointelegraph's explainer compares it to ["a phonebook"](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/) that ["converts these user-friendly domain names into the IP addresses computers require to connect."](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/) DNS hijacking means tampering with that lookup so the phonebook gives the wrong number — ["altering how DNS queries are resolved, rerouting users to malicious sites without their knowledge."](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/)
+Start with what DNS does. A domain name like `curve.fi` is a human-friendly label. Computers need an IP address. The [Domain Name System](/en/glossary/dns/) is the lookup layer that translates one into the other — Cointelegraph's explainer compares it to ["a phonebook"](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/) that ["converts these user-friendly domain names into the IP addresses computers require to connect."](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/) [DNS hijacking](/en/glossary/dns-hijacking/) means tampering with that lookup so the phonebook gives the wrong number — ["altering how DNS queries are resolved, rerouting users to malicious sites without their knowledge."](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/)
 
-Crucially, you don't break the user's computer to do this. You change the authoritative answer at its source — the **nameserver** that the domain delegates to. And that source sits with the domain's registrar.
+Crucially, you don't break the user's computer to do this. You change the authoritative answer at its source — the **[nameserver](/en/glossary/nameserver/)** that the domain delegates to. And that source sits with the domain's registrar.
 
 Curve's founder Michael Egorov was direct about where the failure lived. As quoted by rekt.news, ["dns registrar iwantmyname had their ns compromised,"](https://rekt.news/curve-finance-rekt) and the team's read was that ["Curve believes that the underlying nameserver was compromised, rather than a vulnerability at the account level."](https://rekt.news/curve-finance-rekt) In other words: this wasn't (as far as Curve could tell) a stolen password on Curve's own registrar account. It was a problem one layer deeper — at the nameserver infrastructure the registrar itself operated. Cointelegraph's explainer later confirmed the registrar by name, noting the project ["was using the same registrar, 'iwantmyname,' at the time of the previous attack."](https://www.tradingview.com/news/cointelegraph:9a15fa371094b:0-what-is-dns-hijacking-how-it-took-down-curve-finance-s-website/)
 
@@ -93,7 +93,7 @@ The Curve incident is a compact lesson in where DeFi's real attack surface lives
 
 3. **Users can't see DNS.** The clone looked identical because the *name* was identical. The padlock was green; the URL was right. Nothing a careful user normally checks would have flagged it. This is what makes DNS hijacking so effective against even sophisticated audiences — the deception happens below the layer humans inspect.
 
-4. **Have a clean fallback.** Curve's saving grace was `curve.exchange` on separate infrastructure. A second front-end path — a different domain, a different DNS provider, an IPFS or [ENS](/en/glossary/ens/)-based mirror — gives you somewhere to send users when your primary name is poisoned.
+4. **Have a clean fallback.** Curve's saving grace was `curve.exchange` on separate infrastructure. A second front-end path — a different domain, a different DNS provider, an [IPFS](/en/glossary/ipfs/) or [ENS](/en/glossary/ens/)-based mirror — gives you somewhere to send users when your primary name is poisoned.
 
 5. **Token approvals are the payload.** Every front-end attack in this family ends the same way: a routine-looking approval to a hostile contract. Wallets, interfaces, and users all need to treat approval prompts on a freshly-loaded page as the high-risk action they are.
 

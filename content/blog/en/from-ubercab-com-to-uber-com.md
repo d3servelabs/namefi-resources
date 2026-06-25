@@ -21,7 +21,7 @@ For that first audience, UberCab.com was clear. It explained the product.
 
 But the name had a problem the founders didn't choose. In October 2010, San Francisco's transportation regulators read the word "Cab" literally — and decided UberCab was operating an unlicensed taxi company. The startup got a cease-and-desist. And within a day, the logo dropped the word "Cab."
 
-That regulatory accident pushed Uber toward a decision it would have had to make anyway: it needed the exact-match domain, **Uber.com**. The catch was that Uber.com already belonged to someone else — a music label — and Uber had almost no cash. So it paid in something else.
+That regulatory accident pushed Uber toward a decision it would have had to make anyway: it needed the [exact-match domain](/en/glossary/exact-match-domain/), **Uber.com**. The catch was that Uber.com already belonged to someone else — a music label — and Uber had almost no cash. So it paid in something else.
 
 In a deal that now reads like one of the most lopsided trades in startup history, Uber acquired Uber.com from Universal Music Group [in exchange for a 2% stake in the company](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=Uber%20offered%20UMG%202%25%20equity%20in%20the%20company%20in%20exchange%20for%20the%20domain%20name) — a stake [worth just $107,000](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=that%20stake%20was%20worth%20just%20%24107%2C000) at the time.
 

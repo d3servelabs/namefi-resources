@@ -21,7 +21,7 @@ For that first audience, UrbanCompass.com was clear. It explained the product.
 
 But the word the founders chose to anchor their brand was the same word that would eventually cap it. "Urban" said *city*. And a company that wanted to sell homes from Manhattan to Miami to the suburbs of Texas could not stay a city tool forever.
 
-So in February 2015, Urban Compass did two things at once: it dropped "Urban" from its name, and it upgraded to the exact-match domain it would carry to a national rollout — **Compass.com**, an address that had been [listed in an auction back in 2013 for US$ 1 Million](https://smartbranding.com/urbancompass-com-rebrands-to-compass-com/#:~:text=Compass.com%20was%20listed%20in%20an%20auction%20back%20in%202013%20for%20US%24%201%20Million).
+So in February 2015, Urban Compass did two things at once: it dropped "Urban" from its name, and it upgraded to the [exact-match domain](/en/glossary/exact-match-domain/) it would carry to a national rollout — **Compass.com**, an address that had been [listed in an auction back in 2013 for US$ 1 Million](https://smartbranding.com/urbancompass-com-rebrands-to-compass-com/#:~:text=Compass.com%20was%20listed%20in%20an%20auction%20back%20in%202013%20for%20US%24%201%20Million).
 
 ## 2012–2014: the "Urban" that did real work
 

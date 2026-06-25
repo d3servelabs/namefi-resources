@@ -14,9 +14,9 @@ description: 'Discover the top TLDs to secure for your startup, from .com to .ai
 keywords: ['top TLDs for startups', 'best domain extensions for startups', 'startup domain names', 'defensive domain registration', 'TLDs to secure', '.com vs .io', '.ai domain for startups', 'brand protection domains', 'tech startup domains', 'how to choose a TLD']
 ---
 
-When you launch a company, your domain name is the front door to everything you build: your website, your email, your product, and your reputation. But securing a single domain is rarely enough. The smartest founders register the top TLDs for startups early, before a competitor, a typosquatter, or an opportunistic domain investor does it for them. A top-level domain (TLD) is the suffix at the end of a web address, the part after the final dot, and choosing the right ones is a strategic decision, not an afterthought.
+When you launch a company, your domain name is the front door to everything you build: your website, your email, your product, and your reputation. But securing a single domain is rarely enough. The smartest founders register the top TLDs for startups early, before a competitor, a typosquatter, or an opportunistic domain investor does it for them. A [top-level domain](/en/glossary/tld/) (TLD) is the suffix at the end of a web address, the part after the final dot, and choosing the right ones is a strategic decision, not an afterthought.
 
-Securing multiple TLDs gives your startup three concrete advantages: brand protection (so customers always find the real you), defensive registration (denying lookalike addresses to bad actors), and runway (room to grow into new products, sub-brands, or a future rebrand). The cost of registering a handful of extensions today is trivial compared with buying back a hijacked domain later, or losing customers to a phishing clone. This guide walks through the ten extensions most worth grabbing and how to deploy them.
+Securing multiple TLDs gives your startup three concrete advantages: brand protection (so customers always find the real you), defensive registration (denying lookalike addresses to bad actors), and runway (room to grow into new products, sub-brands, or a future rebrand). The cost of registering a handful of extensions today is trivial compared with buying back a hijacked domain later, or losing customers to a [phishing](/en/glossary/phishing/) clone. This guide walks through the ten extensions most worth grabbing and how to deploy them.
 
 ## How to choose TLDs for your startup
 
@@ -30,7 +30,7 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 2. .io — the tech and SaaS favorite
 
-[.io](/en/tld/io) became a darling of startups because "I/O" means input/output in software, giving it built-in technical resonance. It is the country-code TLD assigned to the British Indian Ocean Territory, with the registry now operated by Internet Computer Bureau under [Identity Digital](https://www.identity.digital/), per its [IANA delegation record](https://www.iana.org/domains/root/db/io.html). Registration is open to anyone worldwide. Note that the territory's long-term geopolitical status has been [discussed publicly](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/), so treat .io as a strong complement to, not a replacement for, your .com.
+[.io](/en/tld/io) became a darling of startups because "I/O" means input/output in software, giving it built-in technical resonance. It is the country-code TLD assigned to the British Indian Ocean Territory, with the [registry](/en/glossary/registry/) now operated by Internet Computer Bureau under [Identity Digital](https://www.identity.digital/), per its [IANA delegation record](https://www.iana.org/domains/root/db/io.html). Registration is open to anyone worldwide. Note that the territory's long-term geopolitical status has been [discussed publicly](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/), so treat .io as a strong complement to, not a replacement for, your .com.
 
 ### 3. .ai — the obvious choice for AI startups
 
@@ -50,7 +50,7 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ### 7. .xyz — flexible and startup-friendly
 
-[.xyz](/en/tld/xyz) is a deliberately generic, unrestricted extension operated by XYZ.COM LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/xyz). Its open, neutral branding has made it popular with startups and Web3 projects alike (Alphabet's abc.xyz is a well-known example). With no relevance constraints, it is a versatile pick for a landing page, campaign, or experimental product.
+[.xyz](/en/tld/xyz) is a deliberately generic, unrestricted extension operated by XYZ.COM LLC under an [ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/xyz). Its open, neutral branding has made it popular with startups and [Web3](/en/glossary/web3/) projects alike (Alphabet's abc.xyz is a well-known example). With no relevance constraints, it is a versatile pick for a landing page, campaign, or experimental product.
 
 ### 8. .co — the short stand-in for .com
 
@@ -66,13 +66,13 @@ Focus on four criteria. **Relevance**: does the suffix signal what you do (a dev
 
 ## Defensive registration strategy
 
-You do not need all ten extensions on day one. A practical baseline: register the exact-match version of your brand across the top two to four extensions your audience actually types (almost always your .com plus one or two of .io, .ai, or .co), then add the one category TLD that fits your product, such as .app, .dev, .tech, or .club. This blocks the most likely typosquatting and impersonation targets while keeping costs reasonable.
+You do not need all ten extensions on day one. A practical baseline: register the exact-match version of your brand across the top two to four extensions your audience actually types (almost always your .com plus one or two of .io, .ai, or .co), then add the one category TLD that fits your product, such as .app, .dev, .tech, or .club. This blocks the most likely [typosquatting](/en/glossary/typosquatting/) and impersonation targets while keeping costs reasonable.
 
-From there, treat your portfolio like any other critical asset. Watch your renewal dates closely, since an expired core domain can be snapped up within hours and is expensive or impossible to recover. Enable auto-renew, keep your registrant contact information current, and consider redirecting your defensive registrations to your primary site so they all funnel traffic and reputation back to one canonical brand.
+From there, treat your portfolio like any other critical asset. Watch your renewal dates closely, since an expired core domain can be snapped up within hours and is expensive or impossible to recover. Enable [auto-renew](/en/glossary/domain-renewal/), keep your [registrant](/en/glossary/registrant/) contact information current, and consider redirecting your defensive registrations to your primary site so they all funnel traffic and reputation back to one canonical brand.
 
 ## Register your startup domains at Namefi
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar built for founders who want to manage their entire domain portfolio in one place. You get transparent pricing with no surprise upsells, fast DNS so changes propagate quickly, and support for the extensions above and many more. Namefi also supports Web3 tokenization, letting you hold eligible domains as NFTs, which makes ownership portable and programmable in a way traditional registrars cannot match. Secure your startup's core .com alongside its category and defensive extensions, then manage renewals and DNS from a single dashboard at [Namefi](https://namefi.io).
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) built for founders who want to manage their entire [domain portfolio](/en/glossary/domain-portfolio/) in one place. You get transparent pricing with no surprise upsells, fast DNS so changes propagate quickly, and support for the extensions above and many more. Namefi also supports Web3 tokenization, letting you hold eligible domains as NFTs, which makes ownership portable and programmable in a way traditional registrars cannot match. Secure your startup's core .com alongside its category and defensive extensions, then manage renewals and DNS from a single dashboard at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

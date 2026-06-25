@@ -25,7 +25,7 @@ This is **EP11 of Domain Mayday** — and it is the episode where the call is co
 
 To understand why this story landed so hard, you have to understand what ICANN actually does.
 
-ICANN is not a company you buy a domain from. It sits one layer above that. It coordinates the global system of unique identifiers that makes the internet navigable: the top-level domains (`.com`, `.org`, `.io`, and the hundreds of newer ones), the rules registries and registrars follow, and — through its IANA function — the very top of the DNS hierarchy, the root zone that every other lookup ultimately depends on.
+ICANN is not a company you buy a domain from. It sits one layer above that. It coordinates the global system of unique identifiers that makes the internet navigable: the top-level domains (`.com`, `.org`, `.io`, and the hundreds of newer ones), the rules registries and registrars follow, and — through its [IANA](/en/glossary/iana/) function — the very top of the DNS hierarchy, the [root zone](/en/glossary/root-zone/) that every other lookup ultimately depends on.
 
 If domains are the addresses of the internet, ICANN runs the post office's master directory. A breach at a [registrar](/en/glossary/registrar/) is bad. A breach at ICANN is symbolic, because ICANN is supposed to be the *authority* — the one institution whose job is to keep the naming system orderly and trustworthy. When the authority on internet names gets compromised, the uncomfortable question is obvious: if *they* can be phished, who can't?
 

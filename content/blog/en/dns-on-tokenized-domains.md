@@ -15,7 +15,7 @@ keywords: ['DNS tokenized domain', 'DNSSEC NFT domain', 'tokenized domain namese
 
 A common worry about [tokenizing](/en/glossary/tokenize/) a domain: *"Will my website still work? Will my email still work? Will I have to learn a whole new DNS stack?"*
 
-Short answer: **yes, yes, no.** A tokenized domain is still a real ICANN domain. DNS keeps doing exactly what DNS does. This post is a tour of what changes (a little) and what doesn't (most of it).
+Short answer: **yes, yes, no.** A [tokenized domain](/en/glossary/tokenized-domain/) is still a real ICANN domain. DNS keeps doing exactly what DNS does. This post is a tour of what changes (a little) and what doesn't (most of it).
 
 ---
 
@@ -23,10 +23,10 @@ Short answer: **yes, yes, no.** A tokenized domain is still a real ICANN domain.
 
 A tokenized domain has **two layers**:
 
-1. **The [DNS](/en/glossary/dns/) / registry layer** — the same one your `.com` has always lived in. [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), root servers, recursive resolvers.
+1. **The [DNS](/en/glossary/dns/) / [registry](/en/glossary/registry/) layer** — the same one your `.com` has always lived in. [ICANN](/en/glossary/icann/), [registrar](/en/glossary/registrar/), [root servers](/en/glossary/root-zone/), recursive resolvers.
 2. **The [on-chain](/en/glossary/on-chain/) layer** — an [NFT](/en/glossary/nft/) in your [wallet](/en/glossary/wallet/) that represents *ownership*.
 
-DNS resolution — turning `example.com` into an IP address — happens entirely on layer 1. The on-chain layer is about **who controls the domain**, not how it resolves. Browsers, email servers, CDNs, and certificate authorities never need to know that a blockchain exists.
+DNS resolution — turning `example.com` into an [IP address](/en/glossary/ip-address/) — happens entirely on layer 1. The on-chain layer is about **who controls the domain**, not how it resolves. Browsers, email servers, CDNs, and certificate authorities never need to know that a [blockchain](/en/glossary/blockchain/) exists.
 
 That's why "DNS still works." It's not magic. It's the same DNS.
 

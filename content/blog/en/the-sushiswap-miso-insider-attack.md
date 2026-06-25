@@ -15,7 +15,7 @@ keywords: ['sushiswap miso hack', 'miso supply chain attack', 'aristok3', 'jay p
 
 Most attacks force a door. This one walked in through the front.
 
-In September 2021, the people running SushiSwap's MISO launchpad did not get phished, did not lose a private key, and did not ship a buggy [smart contract](/en/glossary/smart-contract/). They did something far more ordinary: they trusted a contributor. An anonymous contractor with commit access to the code put their own [wallet](/en/glossary/wallet/) address into the [auction](/en/glossary/auction/) front-end, pushed it, and let the deployment pipeline do the rest. When a single NFT auction settled, roughly **864.8 ETH — about $3 million** — flowed not to the project that ran the sale, but to the developer who had quietly rewritten where the money should go.
+In September 2021, the people running SushiSwap's MISO launchpad did not get phished, did not lose a [private key](/en/glossary/private-key/), and did not ship a buggy [smart contract](/en/glossary/smart-contract/). They did something far more ordinary: they trusted a contributor. An anonymous contractor with commit access to the code put their own [wallet](/en/glossary/wallet/) address into the [auction](/en/glossary/auction/) front-end, pushed it, and let the deployment pipeline do the rest. When a single NFT auction settled, roughly **864.8 ETH — about $3 million** — flowed not to the project that ran the sale, but to the developer who had quietly rewritten where the money should go.
 
 No exploit. No zero-day. Just a line of code that nobody double-checked, signed by someone who was supposed to be on the team.
 

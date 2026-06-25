@@ -15,7 +15,7 @@ keywords: ['domain name', 'DNS', 'Domain Name System', 'IP address', 'web addres
 
 A **domain name** is the easy-to-remember address you type into a web browser to visit a website—like `google.com`, `wikipedia.org`, or `namefi.io`. You can think of it as a street address for the web: it tells your computer where on the internet to find a specific site.
 
-The internet relies on a system called the **[Domain Name System](/en/glossary/dns/) (DNS)**, which functions like a giant phonebook. Every website is hosted on a server with a numerical IP address (like `192.0.2.1`), but numbers are hard to remember—so we use domain names instead. When you type a domain name into your browser, the DNS translates it into the corresponding IP address, allowing your browser to load the correct website.
+The internet relies on a system called the **[Domain Name System](/en/glossary/dns/) (DNS)**, which functions like a giant phonebook. Every website is hosted on a server with a numerical [IP address](/en/glossary/ip-address/) (like `192.0.2.1`), but numbers are hard to remember—so we use domain names instead. When you type a domain name into your browser, the DNS translates it into the corresponding IP address, allowing your browser to load the correct website.
 
 ---
 
@@ -24,8 +24,8 @@ The internet relies on a system called the **[Domain Name System](/en/glossary/d
 A domain name is made up of several parts:
 
 *   **[Top-Level Domain](/en/glossary/tld/) (TLD):** This is the suffix at the end of the address, like `.com`, `.org`, `.net`, or more recently, `.xyz`, `.app`, and even `.ninja`. Some are generic (gTLDs), while others are country-specific (ccTLDs, like `.us`, `.uk`, or `.cn`).
-*   **Second-Level Domain (SLD):** This is the core part of the name—the `google` in `google.com`.
-*   **Subdomain:** These are optional prefixes that help organize content, like `blog.example.com` or `mail.example.org`.
+*   **[Second-Level Domain](/en/glossary/second-level-domain/) (SLD):** This is the core part of the name—the `google` in `google.com`.
+*   **[Subdomain](/en/glossary/subdomain/):** These are optional prefixes that help organize content, like `blog.example.com` or `mail.example.org`.
 
 Every domain name is unique—once someone registers `example.com`, no one else can use it.
 
@@ -41,7 +41,7 @@ ICANN also accredits registries—the organizations responsible for managing spe
 
 ## **How to Register a Domain Name**
 
-To get a domain name, you use an **ICANN-accredited registrar**. You search for an available domain, pay a registration fee (usually annually), and you "own" the rights to use that domain as long as you keep renewing it.
+To get a domain name, you use an **[ICANN-accredited registrar](/en/glossary/accredited-registrar/)**. You search for an available domain, pay a registration fee (usually annually), and you "own" the rights to use that domain as long as you keep renewing it.
 
 Here’s how it works:
 
@@ -50,7 +50,7 @@ Here’s how it works:
 3.  If it’s available, you can register it.
 4.  You now have control over where the domain points (e.g., to your website or email).
 
-Compared to other registrars, [Namefi](https://namefi.io) offers advanced features like subdomain management, DNS security tools, and integration with decentralized systems like blockchain domains.
+Compared to other registrars, [Namefi](https://namefi.io) offers advanced features like subdomain management, DNS security tools, and integration with decentralized systems like [blockchain](/en/glossary/blockchain/) domains.
 
 ---
 

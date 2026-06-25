@@ -48,7 +48,7 @@ This works because the **NFT is the canonical ownership record**, and [on-chain]
 
 Same idea, different surface. Marketplaces still take a cut and still curate listings. The big change: tokenized listings can show up on **multiple marketplaces at once** because they're standard NFTs. List once on the platform that originated the domain; OpenSea/Blur may aggregate it automatically.
 
-This is a meaningful liquidity improvement over the legacy domain world, where Sedo and Afternic ran walled gardens.
+This is a meaningful [liquidity](/en/glossary/domain-liquidity/) improvement over the legacy domain world, where Sedo and Afternic ran walled gardens.
 
 ### Escrow.com
 

@@ -35,7 +35,7 @@ Both involve NFTs in wallets. Both get called "domains." Both have ICANN in the 
 Here's the cleanest mental model:
 
 - If you type the name into a normal browser and it resolves to a website without any extension, plugin, or special resolver — it's a **DNS domain**. Tokenizing it doesn't change that.
-- If you need a browser extension, a special wallet feature, or a resolver gateway to make it work — it's a **Web3 domain**.
+- If you need a browser extension, a special [wallet](/en/glossary/wallet/) feature, or a resolver gateway to make it work — it's a **Web3 domain**.
 
 Both are valid. They do different things.
 
@@ -67,7 +67,7 @@ Best when:
 - You're running a real website, app, or business and you want it to work for **everyone**, regardless of whether they've installed any Web3 software.
 - You want email at your domain, SSL certificates from standard CAs, CDN configs, etc.
 - You want **wallet-native ownership and transferability** for the domain itself — selling, gifting, lending — without the registrar bureaucracy.
-- You want the domain to be usable as on-chain collateral in DeFi while still operating as a normal website.
+- You want the domain to be usable as on-chain [collateral](/en/glossary/collateral/) in [DeFi](/en/glossary/defi/) while still operating as a normal website.
 
 Examples: a company's `.com`, a SaaS app's `.io`, a creator's `.xyz`, a brand's `.art`. Anything that needs to function in the real internet.
 
@@ -88,13 +88,13 @@ Examples: your personal Web3 identity, a profile on a wallet, a memorable addres
 
 ### DNS (the world tokenized domains live in)
 
-You type `example.com`. Your computer asks a DNS resolver. The resolver walks the DNS hierarchy. You get an IP address. The browser fetches the site. All of this works the same whether the domain is tokenized or not, because tokenization adds an *ownership* layer, not a *resolution* layer.
+You type `example.com`. Your computer asks a [DNS resolver](/en/glossary/dns-resolver/). The resolver walks the DNS hierarchy. You get an [IP address](/en/glossary/ip-address/). The browser fetches the site. All of this works the same whether the domain is tokenized or not, because tokenization adds an *ownership* layer, not a *resolution* layer.
 
 See [DNS Still Works](/en/blog/dns-on-tokenized-domains/) for the practical details on this side.
 
 ### ENS / Web3-name resolution
 
-You type `vitalik.eth`. A Web3-aware client (MetaMask, a dapp, certain browsers with [ENS](/en/glossary/ens/) support) queries the ENS [smart contract](/en/glossary/smart-contract/) on Ethereum, gets the associated address or content hash, and renders accordingly. A non-Web3-aware client (Chrome without extensions, your office email server, your SSL CA) doesn't know what `.eth` means and won't resolve it.
+You type `vitalik.eth`. A Web3-aware client (MetaMask, a dapp, certain browsers with [ENS](/en/glossary/ens/) support) queries the ENS [smart contract](/en/glossary/smart-contract/) on [Ethereum](/en/glossary/ethereum/), gets the associated address or content hash, and renders accordingly. A non-Web3-aware client (Chrome without extensions, your office email server, your SSL CA) doesn't know what `.eth` means and won't resolve it.
 
 That's not a flaw — it's the design. ENS and similar systems are built for a Web3-native experience, not for replacing the broader internet's naming layer. See the [official ENS documentation](https://docs.ens.domains/) for the underlying architecture.
 

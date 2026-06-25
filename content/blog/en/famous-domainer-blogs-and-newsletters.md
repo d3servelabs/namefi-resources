@@ -26,7 +26,7 @@ The most consistently published blog in the industry. Elliot is a working domain
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos posts frequently from a European, data-driven perspective. Strong on registry/registrar policy changes, ccTLD movements, and big public sales. Often the first to surface stories that the U.S.-centric blogs miss.
+Konstantinos posts frequently from a European, data-driven perspective. Strong on registry/registrar policy changes, [ccTLD](/en/glossary/cctld/) movements, and big public sales. Often the first to surface stories that the U.S.-centric blogs miss.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 

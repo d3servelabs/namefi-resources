@@ -25,7 +25,7 @@ This guide is for the normal domain owner who has a name they no longer need, or
 If you only remember one flow, make it this:
 
 1. Decide whether the domain has a believable buyer.
-2. Price it from comparable sales, not hope.
+2. Price it from [comparable sales](/en/glossary/comparable-sales/), not hope.
 3. Check legal, transfer, expiration, and DNS risks before you pitch it.
 4. Choose your sale path: inbound, outbound, or both.
 5. Use [Namefi Outbound](https://namefi.io/outbound) to research possible buyers, buyer angles, public contacts when available, and editable first-message drafts.
@@ -45,7 +45,7 @@ Start by describing the domain in plain English. Not "premium." Not "rare." What
 - A one-word or two-word category name.
 - A city plus service name.
 - A domain tied to an old project.
-- A name that gets type-in traffic, backlinks, or revenue.
+- A name that gets [type-in traffic](/en/glossary/type-in-traffic/), backlinks, or revenue.
 - A speculative name you registered because it felt promising.
 
 Each type sells differently. A city-service name might have a narrow list of local businesses that could use it. A short brandable name might fit startups, funds, apps, or communities. A domain with real traffic may be interesting to a buyer because it already has demand. A random unused domain may simply have no market.
@@ -56,13 +56,13 @@ If you can, the domain may be worth selling actively. If you cannot, it may stil
 
 Also check the uncomfortable stuff early:
 
-- Does the domain look confusingly similar to someone else's trademark?
+- Does the domain look confusingly similar to someone else's [trademark](/en/glossary/trademark/)?
 - Did you register it mainly because of a specific company's brand?
 - Is the current website, [parking page](/en/blog/domain-parking-and-monetization/), or ad content creating confusion?
 - Is the domain close to expiration?
 - Is it locked from transfer because it was recently registered or transferred?
 
-Trademark risk is not a tiny footnote. Under [ICANN's UDRP](https://www.icann.org/resources/pages/policy-2024-02-21-en), a complainant must show confusing similarity, no rights or legitimate interests, and bad-faith registration and use. One example ICANN lists as evidence of bad faith is acquiring a domain primarily to sell it to the trademark owner or a competitor for more than documented out-of-pocket costs. If that sounds uncomfortably close to your plan, pause and talk to a lawyer before you pitch anyone.
+Trademark risk is not a tiny footnote. Under [ICANN's UDRP](https://www.icann.org/resources/pages/policy-2024-02-21-en), a complainant must show confusing similarity, no rights or legitimate interests, and [bad-faith](/en/glossary/bad-faith/) registration and use. One example ICANN lists as evidence of bad faith is acquiring a domain primarily to sell it to the trademark owner or a competitor for more than documented out-of-pocket costs. If that sounds uncomfortably close to your plan, pause and talk to a lawyer before you pitch anyone.
 
 This is not a reason to panic. It is a reason to sell clean names in clean ways.
 
@@ -91,7 +91,7 @@ Before you list or pitch, write down three numbers:
 Then choose the pricing style:
 
 - **Fixed price / buy now:** best when you want speed and less back-and-forth.
-- **Make offer:** best when the domain is unusual or buyer value varies widely.
+- **[Make offer](/en/glossary/make-offer/):** best when the domain is unusual or buyer value varies widely.
 - **[Auction](/en/glossary/auction/):** best when there is visible demand from multiple buyers.
 - **Private negotiation:** best when the buyer pool is small and strategic.
 
@@ -103,11 +103,11 @@ Do this part before outreach. It saves awkward emails later.
 
 ### Confirm control
 
-Make sure you can log in to the [registrar](/en/glossary/registrar/) account, access the registrant/admin email, and prove that you control the domain. If the domain belongs to a company, confirm who has authority to sell it.
+Make sure you can log in to the [registrar](/en/glossary/registrar/) account, access the [registrant](/en/glossary/registrant/)/admin email, and prove that you control the domain. If the domain belongs to a company, confirm who has authority to sell it.
 
 ### Check expiration
 
-If the domain is close to expiration, renew it before serious outreach. A buyer will not love hearing that the domain they are about to buy might drop next week.
+If the domain is close to expiration, renew it before serious outreach. A buyer will not love hearing that the domain they are about to buy might [drop](/en/glossary/pending-delete/) next week.
 
 ### Check transfer status
 
@@ -256,7 +256,7 @@ Be careful with scams. The [FTC](https://consumer.ftc.gov/articles/how-avoid-sca
 
 Do not click escrow links from a buyer and assume they are real. Type the escrow or checkout URL yourself. Confirm the transaction inside your own account. Do not transfer the domain until the payment path says funds are secured.
 
-For a cross-registrar transfer, the seller usually unlocks the domain and provides the auth code, then the buyer starts the transfer at the receiving registrar. For a same-registrar push, both sides use accounts at the current registrar. Escrow.com notes that a same-registrar push can be useful when an ICANN 60-day transfer lock prevents a cross-registrar move.
+For a cross-registrar transfer, the seller usually unlocks the domain and provides the auth code, then the buyer starts the transfer at the receiving registrar. For a same-registrar push, both sides use accounts at the current registrar. Escrow.com notes that a same-registrar push can be useful when an ICANN 60-day [transfer lock](/en/glossary/transfer-lock/) prevents a cross-registrar move.
 
 After closing:
 

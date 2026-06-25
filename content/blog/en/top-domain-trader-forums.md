@@ -35,7 +35,7 @@ One of the oldest domain forums on the internet. Much smaller than it used to be
 
 ### 3. DomainState — [domainstate.com](https://www.domainstate.com/)
 
-Half community, half toolset. [DomainState](https://www.domainstate.com/) is best known for its drop and auction tracking tools, but it also hosts a forum that picks up traffic around expired-domain strategy and platform discussion.
+Half community, half toolset. [DomainState](https://www.domainstate.com/) is best known for its [drop](/en/glossary/pending-delete/) and auction tracking tools, but it also hosts a forum that picks up traffic around expired-domain strategy and platform discussion.
 
 ### 4. DNGeek and smaller niche forums
 

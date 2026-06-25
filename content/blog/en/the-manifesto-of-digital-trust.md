@@ -12,7 +12,7 @@ description: A vision statement of D3Serve — why digitizing trust, much like t
 keywords: ['digital trust', 'D3Serve', 'blockchain', 'web3', 'smart contracts', 'cryptography', 'consensus', 'manifesto', 'vision', 'trust digitization', 'group trust', 'automation']
 ---
 
-At **D3Serve**, we are dedicated to building *digital trust* by leveraging blockchain and other advanced technologies.
+At **D3Serve**, we are dedicated to building *digital trust* by leveraging [blockchain](/en/glossary/blockchain/) and other advanced technologies.
 
 We are convinced that the future holds vast improvements in productivity and a superior version of the world, made possible by the digitization of trust.
 

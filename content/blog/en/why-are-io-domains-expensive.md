@@ -15,13 +15,13 @@ If you have priced a `.io` domain lately and winced, you are not alone. Compared
 
 ## The Short Answer
 
-**`.io` domains are expensive because the registry charges a relatively high wholesale price, and on top of that the extension is in heavy demand from tech startups, developers, and investors who are willing to pay for its "input/output" branding.** Strong demand plus a limited supply of short, memorable names pushes both registration prices and secondary-market resale values well above legacy TLDs like `.com`. Recurring wholesale price increases keep renewals high year after year.
+**`.io` domains are expensive because the [registry](/en/glossary/registry/) charges a relatively high wholesale price, and on top of that the extension is in heavy demand from tech startups, developers, and investors who are willing to pay for its "input/output" branding.** Strong demand plus a limited supply of short, memorable names pushes both registration prices and secondary-market resale values well above legacy TLDs like `.com`. Recurring wholesale price increases keep renewals high year after year.
 
-In other words, the cost is part **wholesale pricing**, part **demand and prestige**, and part **scarcity**. Below, we unpack each driver — and a newer geopolitical wrinkle that some buyers now weigh.
+In other words, the cost is part **[wholesale pricing](/en/glossary/wholesale-pricing/)**, part **demand and prestige**, and part **scarcity**. Below, we unpack each driver — and a newer geopolitical wrinkle that some buyers now weigh.
 
 ## 1. Registry Wholesale Pricing Is Simply Higher
 
-Every domain has two price layers: the **wholesale price** the registry charges registrars, and the **retail markup** your registrar adds. For `.io`, the wholesale floor sits well above commodity extensions.
+Every domain has two price layers: the **wholesale price** the registry charges [registrars](/en/glossary/registrar/), and the **retail markup** your registrar adds. For `.io`, the wholesale floor sits well above commodity extensions.
 
 The `.io` registry is operated by **Identity Digital** (which acquired the operator behind `.io` from Afilias). Unlike a `.com`, whose wholesale price is contractually capped and changes slowly, `.io` has seen a series of meaningful wholesale increases — including a large hike around 2021, further increases in 2024 and 2025, and another adjustment scheduled for early 2026. ([Domain Name Wire](https://domainnamewire.com/))
 
@@ -58,7 +58,7 @@ For a single brand domain this is an annoyance. For anyone holding a **portfolio
 
 Here is a driver that did not exist a few years ago, and which thoughtful buyers now factor in.
 
-`.io` is technically the **country-code TLD (ccTLD)** assigned to the **British Indian Ocean Territory (BIOT)** — the Chagos Archipelago. In May 2025 the UK and Mauritius **signed a treaty** to transfer sovereignty over the islands. Because ccTLDs are tied to the ISO 3166-1 country-code list, a change to BIOT's status raised a question: *what happens to `.io`?*
+`.io` is technically the **country-code TLD ([ccTLD](/en/glossary/cctld/))** assigned to the **British Indian Ocean Territory (BIOT)** — the Chagos Archipelago. In May 2025 the UK and Mauritius **signed a treaty** to transfer sovereignty over the islands. Because ccTLDs are tied to the ISO 3166-1 country-code list, a change to BIOT's status raised a question: *what happens to `.io`?*
 
 It is important to be **measured and accurate** here:
 
@@ -87,7 +87,7 @@ If `.io` checks your boxes, the premium is often justified. If certainty and low
 
 ## Buy, Sell, or Tokenize .io on Namefi
 
-Wherever you land, **[Namefi](https://namefi.io)** can help you act on it. As an ICANN-accredited registrar bridging Web2 and Web3, Namefi lets you **register, buy, sell, and tokenize `.io` domains** — turning a name into a [tokenized domain](/en/blog/what-are-tokenized-domains/) whose ownership is mirrored on-chain for easier, trust-minimized transfers. If you are investing in or trading `.io`, that makes moving names between buyers and sellers far smoother than the traditional process.
+Wherever you land, **[Namefi](https://namefi.io)** can help you act on it. As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) bridging Web2 and Web3, Namefi lets you **register, buy, sell, and [tokenize](/en/glossary/tokenize/) `.io` domains** — turning a name into a [tokenized domain](/en/blog/what-are-tokenized-domains/) whose ownership is mirrored [on-chain](/en/glossary/on-chain/) for easier, trust-minimized transfers. If you are investing in or trading `.io`, that makes moving names between buyers and sellers far smoother than the traditional process.
 
 ## Frequently Asked Questions
 

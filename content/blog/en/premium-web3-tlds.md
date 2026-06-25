@@ -31,7 +31,7 @@ The strength: they're [wallet](/en/glossary/wallet/)-native by design—turning 
 
 ### Meaning B: Real ICANN TLDs that are tokenized on-chain (Namefi's model)
 
-This is a different design entirely. You take a standard, globally recognized extension—`.com`, `.ai`, `.io`, `.xyz`—register a real DNS domain, and add an **on-chain ownership token** on top. The result is one domain with two synchronized layers: the DNS/registry record *and* an [NFT](/en/glossary/nft/) in your wallet.
+This is a different design entirely. You take a standard, globally recognized extension—`.com`, `.ai`, `.io`, `.xyz`—register a real DNS domain, and add an **on-chain ownership token** on top. The result is one domain with two synchronized layers: the DNS/[registry](/en/glossary/registry/) record *and* an [NFT](/en/glossary/nft/) in your wallet.
 
 A tokenized `.com` is still a real `.com`. It resolves natively in Chrome and Safari, supports email and SSL, and pays normal annual renewals—while *also* being a tradable, composable on-chain asset you can sell, transfer, or use as [collateral](/en/glossary/collateral/) in seconds.
 
@@ -53,7 +53,7 @@ If your goal is a premium asset that is *also* Web3-ready, tokenizing a real ext
 | Usable as DeFi collateral | Yes | Yes |
 | Universal Web2 + Web3 reach | No | Yes |
 
-The "premium" in *premium domain* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. [Tokenizing](/en/glossary/tokenize/) it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/defi/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
+The "premium" in *[premium domain](/en/glossary/premium-domain/)* has always come from scarcity, brand strength, and decades of universal support. A short, memorable `.com` or a category-defining `.ai` carries that value precisely *because* the whole internet already recognizes it. [Tokenizing](/en/glossary/tokenize/) it keeps every bit of that value and adds wallet-native ownership and on-chain [composability](/en/glossary/defi/)—without inheriting the resolution and compatibility problems of names that live only on-chain.
 
 You don't have to choose sides, either. Many owners hold a tokenized `.com` for their real product *and* an [`.eth`](/en/tld/eth/) name as a wallet identity. They do different jobs. (See [Tokenized Domain vs Web3 Domain](/en/blog/tokenized-domain-vs-web3-domain/) for the full breakdown.)
 
@@ -65,11 +65,11 @@ Not every extension carries the same weight. When investors and builders talk ab
 
 ### `.com` — the default premium standard
 
-[`.com`](/en/tld/com/) remains the most universally trusted and most valuable extension overall, with the largest registered base and the deepest aftermarket history. A short, brandable, dictionary, or single-word `.com` is the blue-chip of domain investing. Tokenizing one combines that blue-chip status with instant, [registrar](/en/glossary/registrar/)-free transferability. See [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
+[`.com`](/en/tld/com/) remains the most universally trusted and most valuable extension overall, with the largest registered base and the deepest [aftermarket](/en/glossary/aftermarket/) history. A short, brandable, dictionary, or single-word `.com` is the blue-chip of domain investing. Tokenizing one combines that blue-chip status with instant, [registrar](/en/glossary/registrar/)-free transferability. See [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
 
 ### `.ai` — the highest-momentum premium extension
 
-[`.ai`](/en/tld/ai/) has become the standout premium extension of this era, commanding high average aftermarket prices as demand from AI companies outstrips supply. For founders building in AI, a strong `.ai` is both a branding asset and a scarce investment—an ideal candidate for tokenization so it can trade with the liquidity of an NFT.
+[`.ai`](/en/tld/ai/) has become the standout premium extension of this era, commanding high average aftermarket prices as demand from AI companies outstrips supply. For founders building in AI, a strong `.ai` is both a branding asset and a scarce investment—an ideal candidate for tokenization so it can trade with the [liquidity](/en/glossary/domain-liquidity/) of an NFT.
 
 ### `.io` — the developer and startup favorite
 

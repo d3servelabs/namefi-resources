@@ -12,7 +12,7 @@ ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['cctld market share', 'country code domains', '.cn', '.de', '.uk', '.tk', '.io', 'domain statistics', 'registry data', 'namefi']
 ---
 
-When most people picture the internet, they picture `.com`. And in raw numbers, `.com` is still the largest [top-level domain](/en/glossary/tld/) on the planet, with roughly 160 million names under management. But `.com` is a gTLD—a *generic* top-level domain. Shift the lens to **country-code TLDs (ccTLDs)**—the two-letter suffixes assigned to nations and territories under [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—and the picture gets much more interesting, and much less predictable.
+When most people picture the internet, they picture `.com`. And in raw numbers, `.com` is still the largest [top-level domain](/en/glossary/tld/) on the planet, with roughly 160 million names under management. But `.com` is a [gTLD](/en/glossary/gtld/)—a *generic* top-level domain. Shift the lens to **country-code TLDs (ccTLDs)**—the two-letter suffixes assigned to nations and territories under [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html)—and the picture gets much more interesting, and much less predictable.
 
 This post walks through which ccTLDs lead by registration volume, why the leaders are not who you would guess, and what those numbers reveal about how the internet is *actually used* in different parts of the world.
 
@@ -20,7 +20,7 @@ This post walks through which ccTLDs lead by registration volume, why the leader
 
 Public registry data (from operators that publish counts, plus aggregator snapshots like [DNIB's Q1 2026 Domain Name Industry Brief](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) and [DENIC's .de statistics](https://www.denic.de/en/products/statistics-about-de/)) puts the top tier of ccTLDs in roughly this order:
 
-- **.cn (China)** — somewhere in the range of 20 million names. Largest ccTLD on most days.
+- **.cn (China)** — somewhere in the range of 20 million names. Largest [ccTLD](/en/glossary/cctld/) on most days.
 - **.de (Germany)** — around 17 million. Run by DENIC; remarkably stable year over year.
 - **.uk (United Kingdom)** — around 10 million across `.uk` and `.co.uk` combined.
 - **.nl (Netherlands)** — about 6 million. Outsized for a country of 17 million people.
@@ -46,9 +46,9 @@ This is the single biggest reason ccTLD market share looks unfamiliar. The denom
 Several small-country ccTLDs are operated more like generic extensions, and most of their registrations come from outside the country.
 
 - **[.io](/en/tld/io/)** (British Indian Ocean Territory) — beloved by tech startups for "input/output" wordplay.
-- **.tv** (Tuvalu) — leased to media and streaming brands.
+- **[.tv](/en/tld/tv/)** (Tuvalu) — leased to media and streaming brands.
 - **[.co](/en/tld/co/)** (Colombia) — marketed globally as a `.com` alternative.
-- **.me** (Montenegro) — pronoun-friendly, popular for personal sites.
+- **[.me](/en/tld/me/)** (Montenegro) — pronoun-friendly, popular for personal sites.
 - **[.ai](/en/tld/ai/)** (Anguilla) — recently exploded thanks to the AI boom.
 - **.tk** (Tokelau) — historically inflated by free-registration programs, since [discontinued](https://en.wikipedia.org/wiki/.tk).
 
@@ -56,11 +56,11 @@ These zones can show very large volume numbers, but the volume reflects *global 
 
 ### Free registration distorts the table
 
-For most of the 2010s, Freenom offered free registrations on `.tk`, `.ml`, `.ga`, `.cf`, and `.gq`. At its peak, `.tk` alone was reported as having more registrations than `.de`. Industry observers consistently flagged that most of those names were either unused or actively abused for phishing. After [ICANN proceedings and registry takeovers](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf), Freenom suspended new registrations, and the apparent market share evaporated. The lesson: registration *volume* and registration *value* are different metrics.
+For most of the 2010s, Freenom offered free registrations on `.tk`, `.ml`, `.ga`, `.cf`, and `.gq`. At its peak, `.tk` alone was reported as having more registrations than `.de`. Industry observers consistently flagged that most of those names were either unused or actively abused for [phishing](/en/glossary/phishing/). After [ICANN proceedings and registry takeovers](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf), Freenom suspended new registrations, and the apparent market share evaporated. The lesson: registration *volume* and registration *value* are different metrics.
 
 ### Restricted ccTLDs stay small on purpose
 
-Some ccTLDs have eligibility rules—you need a local address, a local company, a national ID. `.jp` and `.no` fall squarely in this category: JPRS requires a permanent postal address in Japan for `.jp`, and Norid requires Norwegian identity or organization eligibility plus a Norwegian mailing address for `.no`. `.fi` is a useful counterexample: Traficom now allows companies, organizations, and private persons to register regardless of domicile. Restricted zones will never compete on raw volume with fully open zones, but the names that exist there are often unusually clean: low abuse rates, low parking rates, and high renewal rates. If you want a registry whose volume number you can actually trust, restricted ccTLDs are a good place to look.
+Some ccTLDs have eligibility rules—you need a local address, a local company, a national ID. `.jp` and `.no` fall squarely in this category: JPRS requires a permanent postal address in Japan for `.jp`, and Norid requires Norwegian identity or organization eligibility plus a Norwegian mailing address for `.no`. `.fi` is a useful counterexample: Traficom now allows companies, organizations, and private persons to register regardless of domicile. Restricted zones will never compete on raw volume with fully open zones, but the names that exist there are often unusually clean: low abuse rates, low parking rates, and high renewal rates. If you want a [registry](/en/glossary/registry/) whose volume number you can actually trust, restricted ccTLDs are a good place to look.
 
 ## Volume vs. value: what the numbers do and don't tell you
 

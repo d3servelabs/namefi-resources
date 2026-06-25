@@ -12,7 +12,7 @@ description: Tokenized domains explained in plain language. Learn what a tokeniz
 keywords: ['tokenized domains', 'tokenized domain', 'tokenize a domain', 'tokenize a domain name', 'tokenize domains', 'tokenize domain', 'tokenizing a domain', 'tokenizing domains', 'domain tokenization', 'tokenization of domains', 'tokenization of a domain', 'domain name tokenization', 'how to tokenize a domain', 'what is a tokenized domain', 'what are tokenized domains', 'tokenized domain ownership explained', 'domain ownership tokens', 'tokenized domain ownership', 'NFT domains', 'NFT domain', 'on-chain domains', 'on-chain domain', 'blockchain domains', 'blockchain domain', 'DNS', 'ICANN domains', 'web3 domains', 'web3 domain', 'domain NFT', 'domain as NFT', 'namefi', 'domain ownership', 'domain asset tokenization', 'Namefi', 'D3', 'D3 Global Inc', 'D3 Inc', 'Doma', 'Doma Protocol', 'Domora', 'WebUnited', 'GBM', 'GBM Auctions', 'ENS', 'Ethereum Name Service', 'Unstoppable Domains', 'Freename', 'GoDaddy', 'Identity Digital', 'Namefi vs ENS', 'Namefi vs Unstoppable Domains', 'Namefi vs D3', 'tokenized domain vs ENS', 'tokenized domain vs web3 domain', 'ICANN domain vs web3 domain', 'compare tokenized domain platforms']
 ---
 
-**Tokenized domains** are regular, [ICANN](/en/glossary/icann/)-recognized domain names—like `mybrand.xyz` or `example.com`—whose ownership is *also* represented as a token on a blockchain, usually an [NFT](/en/glossary/nft/). The process of creating that token is called **domain tokenization**, and the act itself is what people mean when they say *tokenize a domain* or *tokenize a domain name*.
+**Tokenized domains** are regular, [ICANN](/en/glossary/icann/)-recognized domain names—like `mybrand.xyz` or `example.com`—whose ownership is *also* represented as a token on a [blockchain](/en/glossary/blockchain/), usually an [NFT](/en/glossary/nft/). The process of creating that token is called **domain tokenization**, and the act itself is what people mean when they say *tokenize a domain* or *tokenize a domain name*.
 
 You may have heard these phrases and wondered what they actually mean. Is a tokenized domain a new kind of domain? A blockchain-only name? A replacement for `.com`? And what does it mean to *tokenize* a domain in the first place?
 
@@ -55,7 +55,7 @@ A few common misconceptions about domain tokenization worth clearing up:
 
 ### Not a new TLD
 
-A tokenized domain isn't a `.crypto`, `.eth`, or `.x` style name. When you tokenize a domain through Namefi, you use the same TLDs you already know—[`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/), [`.ai`](/en/tld/ai/), [`.app`](/en/tld/app/), and many more—that resolve in any browser, email client, or DNS resolver in the world.
+A tokenized domain isn't a `.crypto`, `.eth`, or `.x` style name. When you tokenize a domain through Namefi, you use the same TLDs you already know—[`.com`](/en/tld/com/), [`.xyz`](/en/tld/xyz/), [`.io`](/en/tld/io/), [`.ai`](/en/tld/ai/), [`.app`](/en/tld/app/), and many more—that resolve in any browser, email client, or [DNS resolver](/en/glossary/dns-resolver/) in the world.
 
 ### Not the same as ENS or "blockchain names"
 
@@ -84,7 +84,7 @@ Here is what actually happens when you tokenize a domain (or register a brand-ne
 3. **Synchronization** — The platform keeps DNS-level ownership aligned with on-chain ownership for every tokenized domain. If you transfer the NFT, the DNS record follows.
 4. **Use** — You can point the tokenized domain at a website, set DNS records, or use the NFT in on-chain applications (marketplaces, identity, [DeFi](/en/glossary/defi/), etc.).
 
-The end user experience is: *one domain, two ways to interact with it*—the familiar DNS world, and the programmable on-chain world that domain tokenization unlocks. For a step-by-step walkthrough on a real name, see [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
+The [end user](/en/glossary/end-user/) experience is: *one domain, two ways to interact with it*—the familiar DNS world, and the programmable on-chain world that domain tokenization unlocks. For a step-by-step walkthrough on a real name, see [How to Tokenize Your .com](/en/blog/how-to-tokenize-your-com/).
 
 ---
 
@@ -97,7 +97,7 @@ Because both layers exist, you get the union of capabilities:
 - **Transfer it in seconds** — send the NFT to another wallet; the DNS record follows.
 - **List it on NFT marketplaces** — OpenSea, Blur, and others.
 - **Sell it without escrow** — buyer pays and the token transfers atomically, with no third-party middleman holding the asset (see [how tokenized marketplaces replace escrow](/en/blog/how-tokenized-marketplaces-replace-escrow/)).
-- **Use it in smart contracts** — collateral, [auctions](/en/glossary/auction/), [leasing](/en/glossary/leasing/), [fractional ownership](/en/glossary/fractional-ownership/), and more.
+- **Use it in smart contracts** — [collateral](/en/glossary/collateral/), [auctions](/en/glossary/auction/), [leasing](/en/glossary/leasing/), [fractional ownership](/en/glossary/fractional-ownership/), and more.
 - **Tie it to on-chain identity** — link to [Farcaster](/en/glossary/farcaster/), [Lens](/en/glossary/lens/), or [DID](/en/glossary/did/) systems.
 
 For a fuller tour of what people are actually building, read [Use Cases for Tokenized Domains in 2026](/en/blog/tokenized-domain-use-cases-2026/).
@@ -114,7 +114,7 @@ Domain tokenization is no longer a single-vendor experiment—several platforms 
 
 **Approach:** Tokenize real ICANN domains (`.com`, `.xyz`, `.io`, and many more) as NFTs while keeping the DNS layer fully functional. Both layers are kept in sync via accredited [registrars](/en/glossary/registrar/).
 
-**What sets Namefi apart:** Namefi was the **first platform to tokenize real ICANN domains on Ethereum mainnet, and the first to do so on Base**. Because Namefi-tokenized domains live on Ethereum and Base, they integrate naturally with **most major NFT marketplaces and lending protocols**—OpenSea, Blur, NFTfi, and others—thanks to Ethereum's deep, mature [DeFi](/en/glossary/defi/) ecosystem. Other platforms have made thoughtful chain choices of their own that suit their goals; Ethereum and Base happen to give Namefi users the broadest out-of-the-box compatibility with existing NFT and DeFi tooling today.
+**What sets Namefi apart:** Namefi was the **first platform to tokenize real ICANN domains on [Ethereum](/en/glossary/ethereum/) mainnet, and the first to do so on Base**. Because Namefi-tokenized domains live on Ethereum and Base, they integrate naturally with **most major NFT marketplaces and lending protocols**—OpenSea, Blur, NFTfi, and others—thanks to Ethereum's deep, mature [DeFi](/en/glossary/defi/) ecosystem. Other platforms have made thoughtful chain choices of their own that suit their goals; Ethereum and Base happen to give Namefi users the broadest out-of-the-box compatibility with existing NFT and DeFi tooling today.
 
 **Best for:** Owners who want a real, browser-resolvable domain *and* wallet-native, composable ownership in one product, on the chain with the broadest DeFi and NFT support. Visit [namefi.io](https://namefi.io) to get started.
 
@@ -156,7 +156,7 @@ Some incumbent ICANN [registrars](/en/glossary/registrar/) and registries (e.g. 
 
 ## A Sibling Category: ENS, Unstoppable Domains, Freename and Web3 Domains
 
-A close cousin to tokenized domains is the family of **Web3 domains**—a category pioneered by excellent projects like ENS, Unstoppable Domains, and Freename. We want to be clear about the distinction not to diminish their work (they've contributed enormously to on-chain naming and identity), but to help readers pick the right tool for their goals.
+A close cousin to tokenized domains is the family of **[Web3](/en/glossary/web3/) domains**—a category pioneered by excellent projects like ENS, Unstoppable Domains, and Freename. We want to be clear about the distinction not to diminish their work (they've contributed enormously to on-chain naming and identity), but to help readers pick the right tool for their goals.
 
 Web3 domains are a thoughtfully different design from tokenized ICANN domains. Here's how to think about them:
 
@@ -236,7 +236,7 @@ You sell the token, and the underlying domain follows automatically. You can lis
 - **Domain tokenization** (also called *domain name tokenization* or *tokenization of a domain*) is the process of creating and maintaining that on-chain representation.
 - To **tokenize a domain** (or *tokenize domains* in bulk) is to add this wallet-native ownership layer to a real ICANN domain—without giving up the traditional DNS layer.
 - A tokenized domain is **not** a new TLD, not an ENS-style name, and not a way to bypass DNS or the law.
-- It gives you everything a traditional domain does, *plus* wallet-native ownership and composability with on-chain applications.
+- It gives you everything a traditional domain does, *plus* wallet-native ownership and [composability](/en/glossary/composability/) with on-chain applications.
 
 ---
 

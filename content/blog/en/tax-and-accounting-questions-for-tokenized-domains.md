@@ -28,7 +28,7 @@ The combination is novel. Don't assume your CPA has seen one before. Don't assum
 
 Tokenized domains have ongoing [on-chain](/en/glossary/on-chain/) events that traditional domains don't:
 
-- Minting (the moment of [tokenization](/en/glossary/tokenize/) itself — is that a taxable event? Probably not in most jurisdictions, but ask.)
+- [Minting](/en/glossary/minting/) (the moment of [tokenization](/en/glossary/tokenize/) itself — is that a taxable event? Probably not in most jurisdictions, but ask.)
 - On-chain transfers, including gifts and inheritance flows.
 - Sales conducted entirely on-chain, paid in crypto or [stablecoins](/en/glossary/stablecoin/).
 - Possible use as [DeFi](/en/glossary/defi/) [collateral](/en/glossary/collateral/) (e.g., borrowing against the domain).
@@ -42,9 +42,9 @@ Each of those interactions has tax implications in some jurisdictions and not ot
 
 ### Cost basis
 
-- What is the cost basis of a domain I newly registered and tokenized? Just the registrar cost? Plus gas? Plus protocol fees?
+- What is the cost basis of a domain I newly registered and tokenized? Just the [registrar](/en/glossary/registrar/) cost? Plus gas? Plus protocol fees?
 - What about a domain I owned for years on a registrar, and only recently tokenized? Does the basis reset, carry over, or stay unchanged?
-- If I bought the tokenized domain on a marketplace using ETH, what's the basis — the ETH's USD value at the time of sale? The marketplace's reported number?
+- If I bought the tokenized domain on a [marketplace](/en/glossary/marketplace/) using ETH, what's the basis — the ETH's USD value at the time of sale? The marketplace's reported number?
 - How do I document basis in a way that survives an audit?
 
 ### Holding period
@@ -74,13 +74,13 @@ Each of those interactions has tax implications in some jurisdictions and not ot
 
 ### DeFi collateral / borrowing
 
-- If I lock the tokenized domain in a lending protocol as collateral and borrow stablecoins against it, is the borrow itself taxable? (Usually not — but ask.)
+- If I lock the tokenized domain in a [lending protocol](/en/glossary/lending-protocol/) as collateral and borrow stablecoins against it, is the borrow itself taxable? (Usually not — but ask.)
 - If the position is liquidated and the domain is sold to repay the debt, what's the tax event?
 - How do I track interest payments made in crypto for deductibility?
 
 ### Cross-chain / bridging
 
-- If I move the token from Ethereum mainnet to Base (or vice versa), is the bridge event a disposition?
+- If I move the token from [Ethereum](/en/glossary/ethereum/) mainnet to Base (or vice versa), is the bridge event a disposition?
 - Does wrapping/unwrapping count as a taxable event?
 
 ### Sales tax / VAT
@@ -115,7 +115,7 @@ These are not exotic questions — they're the same questions companies ask abou
 ## Things That Are Almost Certainly Not Going to Save You
 
 - "It's only on-chain, so it's invisible to tax authorities." It isn't. On-chain is more visible than off-chain.
-- "I used a privacy wallet, so it doesn't count." It counts. Compliance still exists.
+- "I used a privacy [wallet](/en/glossary/wallet/), so it doesn't count." It counts. Compliance still exists.
 - "The IRS / HMRC / equivalent doesn't have guidance yet." Lack of specific guidance is not the same as no obligation.
 - "My friend on Discord said…" Your friend on Discord is not your CPA.
 

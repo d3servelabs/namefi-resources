@@ -17,7 +17,7 @@ For about one minute on the night of September 29, 2015, the most valuable addre
 
 It belonged to a former Google employee named Sanmay Ved, who had just bought **google.com** for **$12**.
 
-He did not break in. He did not exploit a buffer overflow or phish an administrator. He went to Google's own retail storefront — Google Domains — typed in the most famous domain in the world, and watched the checkout flow do something it should never have done: it let him pay. His card was charged. The order went through. And for roughly sixty seconds, the registrant of record for google.com was a graduate student in Massachusetts.
+He did not break in. He did not exploit a buffer overflow or phish an administrator. He went to Google's own retail storefront — Google Domains — typed in the most famous domain in the world, and watched the checkout flow do something it should never have done: it let him pay. His card was charged. The order went through. And for roughly sixty seconds, the [registrant](/en/glossary/registrant/) of record for google.com was a graduate student in Massachusetts.
 
 This is **Domain Mayday / 域名浩劫**, our series on the moments when domain security failed in public. Most episodes are about names stolen by attackers. This one is different — and more unsettling — because nobody was attacking anything. The single most important domain on earth was sold, at list price, to the first person who happened to put it in a shopping cart.
 
