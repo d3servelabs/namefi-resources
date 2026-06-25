@@ -501,7 +501,6 @@ jobs:
           # Use --target=production or --target=dev based on environment
           COMMON_DEPLOY_ARGS=(
             --yes
-            --force
             --scope=${{ secrets.VERCEL_ORG_ID }}
             --token=${{ secrets.VERCEL_ACCOUNT_TOKEN }}
             --meta "githubDeployment=1"

@@ -69,5 +69,9 @@
     "clean": {
       "cache": false
     }
+  },
+  "remoteCache": {
+    "signature": true,
+    "enabled": true
   }
 }
