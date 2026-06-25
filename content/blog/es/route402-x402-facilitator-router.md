@@ -15,7 +15,7 @@ Route402 le permite integrar [x402](https://www.x402.org/) una sola vez y, a con
 
 ## x402, en palabras sencillas
 
-x402 define un protocolo de enlace (handshake) estándar para solicitudes pagadas. Proporciona a los clientes y facilitadores una estructura común para los flujos de verificación y liquidación, por lo que no es necesario crear código de integración personalizado para cada proveedor.
+[x402](/es/glossary/x402/) define un protocolo de enlace (handshake) estándar para solicitudes pagadas. Proporciona a los clientes y facilitadores una estructura común para los flujos de verificación y liquidación, por lo que no es necesario crear código de integración personalizado para cada proveedor.
 
 Esa estandarización es excelente. La parte difícil comienza cuando se tiene más de un facilitador, red o entorno.
 

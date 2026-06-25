@@ -27,4 +27,4 @@ Techniquement, l'UCP agit comme une [couche d'abstraction](https://www.strata.io
 
 Cette initiative est un coup de semonce clair à l'encontre d'[Amazon](http://amazon.com), qui s'est montré de plus en plus litigieux envers les moteurs de recherche IA comme [Perplexity](http://perplexity.ai) pour le scraping de ses données produits. En créant un standard ouvert où les marchands choisissent d'être « scrapés » et vendus par des agents, Google bâtit une coalition de volontaires — offrant essentiellement aux détaillants un moyen de contourner le jardin clos d'Amazon et de vendre directement via les modèles d'IA les plus populaires au monde.
 
-Pour l'instant, l'UCP est déployé avec une sélection de partenaires aux États-Unis, mais le message est clair : l'ère du SEO touche à sa fin ; l'ère de l'AEO (Optimisation pour les Moteurs d'Agents) a commencé.
+Pour l'instant, l'UCP est déployé avec une sélection de partenaires aux États-Unis, mais le message est clair : l'ère du [SEO](/fr/glossary/seo/) touche à sa fin ; l'ère de l'AEO (Optimisation pour les Moteurs d'Agents) a commencé.

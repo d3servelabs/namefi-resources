@@ -19,7 +19,7 @@ Voici **Domain Mayday EP08** — le jour où des caméras intelligentes non séc
 
 ## Le DNS : l'annuaire d'Internet, et la place de Dyn dans cet écosystème
 
-Chaque fois que vous tapez un nom de domaine, votre ordinateur doit le traduire en adresse IP numérique avant de pouvoir se connecter à quoi que ce soit. Cette traduction est le rôle du DNS, le système de noms de domaine. Il constitue la couche de résolution entre le nom lisible par l'homme et la machine vers laquelle ce nom pointe.
+Chaque fois que vous tapez un nom de domaine, votre ordinateur doit le traduire en [adresse IP](/fr/glossary/ip-address/) numérique avant de pouvoir se connecter à quoi que ce soit. Cette traduction est le rôle du [DNS](/fr/glossary/dns/), le système de noms de domaine. Il constitue la couche de résolution entre le nom lisible par l'homme et la machine vers laquelle ce nom pointe.
 
 Dyn était l'un des grands fournisseurs gérés de ce service de résolution. Lorsqu'un site externalisait son DNS à Dyn, les serveurs de noms de Dyn devenaient la source faisant autorité pour répondre à la question « où ce domaine réside-t-il ? ». The Register l'a exprimé clairement lors de l'attaque : en mettant Dyn hors ligne, les résolveurs DNS publics exploités par Google et les FAI étaient [dans l'incapacité de contacter Dyn pour résoudre les noms d'hôtes pour les internautes, empêchant les gens d'accéder aux sites utilisant Dyn pour le DNS](https://www.theregister.com/2016/10/21/dns_devastation_as_dyn_dies_under_denialofservice_attack/#:~:text=unable%20to%20contact%20Dyn%20to%20lookup%20hostnames).
 

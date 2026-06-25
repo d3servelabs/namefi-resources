@@ -17,7 +17,7 @@ Para ese primer público, Massdrop.com era perfecto. Nombraba el movimiento.
 
 Pero la empresa detrás del nombre no dejaba de cambiar. En 2019, Massdrop ya no era solo un coordinador de pedidos al por mayor. Estaba diseñando sus propios teclados y auriculares, gestionando una plataforma de comercio real y preparándose para llegar a nuevos mercados. El "Mass" — la palabra que hacía el modelo legible desde el primer día — había comenzado a describir a una empresa más pequeña y antigua de lo que se había convertido.
 
-Así que en abril de 2019, Massdrop hizo lo que un sorprendente número de empresas en crecimiento termina haciendo: eliminó la mitad de su nombre. Se convirtió simplemente en **Drop**, y se trasladó al dominio de coincidencia exacta que había asegurado discretamente de antemano — **Drop.com**, un .com premium de una sola palabra que alguna vez tuvo un [precio de venta de $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
+Así que en abril de 2019, Massdrop hizo lo que un sorprendente número de empresas en crecimiento termina haciendo: eliminó la mitad de su nombre. Se convirtió simplemente en **Drop**, y se trasladó al [dominio de coincidencia exacta](/es/glossary/exact-match-domain/) que había asegurado discretamente de antemano — **Drop.com**, un [.com](/es/tld/com/) premium de una sola palabra que alguna vez tuvo un [precio de venta de $800,000](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000).
 
 ## 2012–2019: el "Mass" que hacía un trabajo real
 

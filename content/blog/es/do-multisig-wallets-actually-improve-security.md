@@ -10,23 +10,23 @@ ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['billetera multifirma', 'multifirma', 'safe wallet', 'gnosis safe', 'gestión de claves', 'autocustodia', 'firma umbral', 'recuperación social', 'namefi']
 ---
 
-Las billeteras multifirma (aquellas donde M de N claves deben firmar antes de que una transacción sea válida) generalmente se presentan como la mejora obvia respecto a una *hot wallet* de clave única. La mayoría de las configuraciones de tesorería en DAOs, *exchanges* y empresas serias nativas del sector cripto funcionan con alguna variante de multifirma (Safe, Squads, Multisig.js o variantes de firma umbral).
+Las billeteras [multifirma](/es/glossary/multi-sig/) (aquellas donde M de N claves deben firmar antes de que una transacción sea válida) generalmente se presentan como la mejora obvia respecto a una *hot wallet* de clave única. La mayoría de las configuraciones de tesorería en DAOs, *exchanges* y empresas serias nativas del sector cripto funcionan con alguna variante de multifirma (Safe, Squads, Multisig.js o variantes de firma umbral).
 
 Esa reputación está bien ganada, pero solo frente a un modelo de amenazas *específico*. La multifirma neutraliza algunas de las formas más comunes en que se roban fondos y no hace casi nada contra otras. A continuación presentamos la versión honesta: en qué es realmente buena la multifirma, en qué se queda corta y los casos en los que adoptarla puede hacer que una configuración sea *menos* segura.
 
 ## Qué es la multifirma, de forma muy resumida
 
-En una multifirma 2 de 3, existen tres claves privadas; cualquier combinación de dos de ellas debe firmar una transacción para que se ejecute *on-chain*. La billetera en sí es un contrato inteligente (en el mundo de Ethereum / EVM) o un tipo de salida multifirma nativa (en Bitcoin a través de [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). El contrato verifica las firmas y luego reenvía la transacción.
+En una multifirma 2 de 3, existen tres claves privadas; cualquier combinación de dos de ellas debe firmar una transacción para que se ejecute *[on-chain](/es/glossary/on-chain/)*. La billetera en sí es un [contrato inteligente](/es/glossary/smart-contract/) (en el mundo de [Ethereum](/es/glossary/ethereum/) / EVM) o un tipo de salida multifirma nativa (en Bitcoin a través de [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). El contrato verifica las firmas y luego reenvía la transacción.
 
 La implementación más utilizada en los ecosistemas EVM es [Safe](https://safe.global/) (anteriormente Gnosis Safe). En Solana, [Squads](https://squads.so/) cumple la misma función. Bitcoin tiene una larga historia de soporte nativo para multifirma, a menudo combinado con billeteras de hardware a través de [flujos de trabajo PSBT](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 
-Los esquemas de firma umbral (TSS, FROST, MPC) logran un resultado similar con una sola clave *on-chain*: cada firmante posee una *parte* (o fragmento) de la clave privada y firman de manera conjunta sin llegar a reconstruirla nunca. Desde la perspectiva del modelo de amenazas, la mayoría de los puntos a continuación se aplican por igual a ambos métodos, con algunas salvedades que se señalarán más adelante.
+Los esquemas de firma umbral (TSS, FROST, MPC) logran un resultado similar con una sola clave *on-chain*: cada firmante posee una *parte* (o fragmento) de la [clave privada](/es/glossary/private-key/) y firman de manera conjunta sin llegar a reconstruirla nunca. Desde la perspectiva del modelo de amenazas, la mayoría de los puntos a continuación se aplican por igual a ambos métodos, con algunas salvedades que se señalarán más adelante.
 
 ## Lo que la multifirma logra neutralizar (las buenas noticias)
 
 ### Compromiso de una clave única
 
-Este es el beneficio principal. Si se roba la billetera de *hardware* de un firmante, si el teléfono de uno de ellos se infecta con *malware*, o si se filtra la frase semilla de un firmante, un atacante que posea solo esa clave no podrá mover los fondos. Necesita comprometer al menos otras M-1 claves al mismo tiempo.
+Este es el beneficio principal. Si se roba la billetera de *hardware* de un firmante, si el teléfono de uno de ellos se infecta con *malware*, o si se filtra la [frase semilla](/es/glossary/seed-phrase/) de un firmante, un atacante que posea solo esa clave no podrá mover los fondos. Necesita comprometer al menos otras M-1 claves al mismo tiempo.
 
 Para una configuración 2 de 3, esto significa que el atacante debe comprometer *dos puntos de acceso independientes*, idealmente en manos de personas distintas, en *hardware* diferente y en ubicaciones físicas distintas. La probabilidad de que ocurran dos compromisos independientes en la misma ventana de tiempo suele ser órdenes de magnitud menor que la probabilidad de uno solo.
 
@@ -40,7 +40,7 @@ En una configuración M de N donde N > M, perder una clave no es catastrófico. 
 
 ### Ataques de *phishing* al usuario
 
-Muchos ataques de *phishing* a billeteras (sitios web falsos de *airdrops*, aprobaciones maliciosas de tokens, contratos drenadores) dependen de que el usuario firme una transacción maliciosa en una sola sesión de navegador. Una multifirma añade un paso de confirmación en una interfaz diferente (una interfaz de coordinación como la de Safe, o una aprobación por *hardware* en múltiples dispositivos), lo que le da al usuario otro momento para darse cuenta de que está firmando algo que no tenía intención de firmar.
+Muchos ataques de *[phishing](/es/glossary/phishing/)* a billeteras (sitios web falsos de *airdrops*, aprobaciones maliciosas de tokens, contratos drenadores) dependen de que el usuario firme una transacción maliciosa en una sola sesión de navegador. Una multifirma añade un paso de confirmación en una interfaz diferente (una interfaz de coordinación como la de Safe, o una aprobación por *hardware* en múltiples dispositivos), lo que le da al usuario otro momento para darse cuenta de que está firmando algo que no tenía intención de firmar.
 
 ## Lo que la multifirma *no* logra neutralizar (la parte incómoda)
 
@@ -108,7 +108,7 @@ Esto requiere más disciplina de la que la mayoría de los equipos imaginan al p
 
 ## Cómo se conecta esto con los dominios
 
-La asignación de nombres de dominio es una de las analogías más fuertes de la multifirma en el mundo *off-chain*. Un dominio controlado por la cuenta de un solo registrador detrás de una sola contraseña es como una billetera de clave única. Un dominio protegido por el bloqueo del registrador + bloqueo del registro + 2FA en el proveedor de DNS + múltiples proveedores autoritativos es, estructuralmente, una multifirma: múltiples factores independientes deben verse comprometidos antes de que el nombre pueda moverse.
+La asignación de nombres de dominio es una de las analogías más fuertes de la multifirma en el mundo *off-chain*. Un dominio controlado por la cuenta de un solo [registrador](/es/glossary/registrar/) detrás de una sola contraseña es como una billetera de clave única. Un dominio protegido por el bloqueo del registrador + bloqueo del registro + 2FA en el proveedor de DNS + múltiples proveedores autoritativos es, estructuralmente, una multifirma: múltiples factores independientes deben verse comprometidos antes de que el nombre pueda moverse.
 
 Namefi lleva esto más allá al representar la propiedad como un registro *on-chain* que puede mantenerse directamente en una billetera multifirma. El mismo esquema de umbral que protege una tesorería ahora puede proteger el *plano de control del DNS*; así que una sola persona víctima de *phishing* ya no podrá perder el dominio de la empresa, de la misma forma en que no podría vaciar la tesorería por sí sola. La mejora en el modelo de amenazas es la misma en ambos mundos: reemplazar "confiar en una credencial" con "comprometer M de N factores independientes".
 

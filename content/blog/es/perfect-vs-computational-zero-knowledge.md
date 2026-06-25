@@ -93,7 +93,7 @@ Nada es gratis. Las diferentes variantes de ZK tienen compensaciones (*trade-off
 
 ## Cómo Namefi piensa sobre esto
 
-En los flujos de propiedad de dominios, el uso más interesante de ZK es probar que posees un nombre sin revelar *qué* nombre. Las pruebas de propiedad contra un registro on-chain se pueden realizar mediante ZK computacional con herramientas muy maduras (Groth16, PLONK), y en eso es en lo que se basan los sistemas de producción en la actualidad. Para flujos más sensibles (digamos, probar que un dominio pertenece a un *conjunto* de entidades de confianza sin revelar a cuál de ellas), los esquemas de ZK perfectos o estadísticos en declaraciones restringidas podrían volverse relevantes. El propósito de esta publicación es hacer que la compensación sea comprensible: elige lo que realmente necesitas y deja por escrito las suposiciones que estás asumiendo.
+En los flujos de propiedad de dominios, el uso más interesante de ZK es probar que posees un nombre sin revelar *qué* nombre. Las pruebas de propiedad contra un [registro](/es/glossary/registry/) [on-chain](/es/glossary/on-chain/) se pueden realizar mediante ZK computacional con herramientas muy maduras (Groth16, PLONK), y en eso es en lo que se basan los sistemas de producción en la actualidad. Para flujos más sensibles (digamos, probar que un dominio pertenece a un *conjunto* de entidades de confianza sin revelar a cuál de ellas), los esquemas de ZK perfectos o estadísticos en declaraciones restringidas podrían volverse relevantes. El propósito de esta publicación es hacer que la compensación sea comprensible: elige lo que realmente necesitas y deja por escrito las suposiciones que estás asumiendo.
 
 ## Fuentes y lecturas adicionales
 

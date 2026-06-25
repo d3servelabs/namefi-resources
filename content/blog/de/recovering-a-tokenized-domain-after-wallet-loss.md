@@ -19,7 +19,7 @@ Dieser Beitrag erklärt ehrlich, wie Ihre Optionen tatsächlich aussehen – und
 
 ## Die unbequeme Wahrheit zuerst
 
-Der Verlust kryptografischer Schlüssel ist nicht wie der Verlust eines Registrar-Passworts. Es gibt keinen „Passwort vergessen“-Link, der Ihnen eine E-Mail schickt. Wenn Sie die Seed-Phrase verloren haben, haben Sie die Wallet verloren, und niemand – weder Namefi noch Ethereum noch sonst jemand – kann den privaten Schlüssel für Sie wiederherstellen. Das ist der Kompromiss, den die Selbstverwahrung (Self-Custody) mit sich bringt.
+Der Verlust kryptografischer Schlüssel ist nicht wie der Verlust eines Registrar-Passworts. Es gibt keinen „Passwort vergessen“-Link, der Ihnen eine E-Mail schickt. Wenn Sie die Seed-Phrase verloren haben, haben Sie die Wallet verloren, und niemand – weder Namefi noch [Ethereum](/de/glossary/ethereum/) noch sonst jemand – kann den privaten Schlüssel für Sie wiederherstellen. Das ist der Kompromiss, den die Selbstverwahrung (Self-Custody) mit sich bringt.
 
 Die gute Nachricht: Zusätzlich zur kryptografischen Ebene **existieren Wiederherstellungswege auf Plattform-Ebene**. Tokenisierte Domains haben eine Off-Chain-Seite (den Registrar / DNS-Eintrag), die Plattformen je nach Situation manchmal nutzen können, um zu helfen.
 
@@ -35,7 +35,7 @@ Erledigen Sie dies *bevor* Sie tokenisieren, oder direkt danach.
 
 ### 1. Schreiben Sie Ihre Seed-Phrase auf. Zweimal. Auf Papier. Oder Stahl.
 
-Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind [Seed-Phrasen](/en/glossary/seed-phrase/), die nur an einem einzigen Ort existierten und dieser Ort nun weg ist.
+Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind [Seed-Phrasen](/de/glossary/seed-phrase/), die nur an einem einzigen Ort existierten und dieser Ort nun weg ist.
 
 - Schreiben Sie die 12 oder 24 Wörter auf Papier. Zweimal. An verschiedenen physischen Orten. (Die [BIP-39-Spezifikation](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) definiert die Wortliste, die die meisten Wallets verwenden.)
 - Verwenden Sie für höherwertige Portfolios eine Backup-Platte aus Metall. Feuer und Wasser können ihr nichts anhaben.
@@ -43,7 +43,7 @@ Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind [Seed-Phr
 
 ### 2. Nutzen Sie eine Hardware-Wallet zur Aufbewahrung
 
-Die Wallet, die Sie verwenden, um mit Apps zu *interagieren*, kann eine Hot Wallet sein (MetaMask, Rabby). Die Wallet, die das Domain-NFT langfristig *hält*, sollte eine [**Hardware-Wallet**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone usw.) sein. Übertragen Sie das NFT nach dem Minten dorthin.
+Die Wallet, die Sie verwenden, um mit Apps zu *interagieren*, kann eine Hot Wallet sein (MetaMask, Rabby). Die Wallet, die das Domain-NFT langfristig *hält*, sollte eine [**Hardware-Wallet**](/de/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone usw.) sein. Übertragen Sie das NFT nach dem Minten dorthin.
 
 ### 3. Ziehen Sie eine Multisig-Wallet für wertvolle Domains in Betracht
 
@@ -83,8 +83,8 @@ Kaufen Sie ein neues Gerät. Stellen Sie es über den Seed wieder her. Der Domai
 
 Das ist der schwierigste Fall. Kryptografisch ist das NFT nun unzugänglich. Ihre Optionen:
 
-1. **Plattformseitige Wiederherstellung.** Wenn die Plattform (z. B. Namefi) über eine kontogebundene Identität verfügt, die mit Ihrer Registrierungs-E-Mail und KYC (sofern anwendbar) verknüpft ist, können Sie möglicherweise beweisen, dass Sie der Registrant sind, und eine von der Plattform verwaltete Fehlerbehebung anfordern. Dies ist **nicht garantiert**, erfordert eine Identitätsprüfung und gilt in der Regel nur unter bestimmten Bedingungen. Kontaktieren Sie den Support sofort – je länger Sie warten, desto schwieriger wird es.
-2. **Einsprüche bei Registry / Registrar.** Da es sich um eine echte [ICANN](/de/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/de/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/en/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
+1. **Plattformseitige Wiederherstellung.** Wenn die Plattform (z. B. Namefi) über eine kontogebundene Identität verfügt, die mit Ihrer Registrierungs-E-Mail und KYC (sofern anwendbar) verknüpft ist, können Sie möglicherweise beweisen, dass Sie der [Registrant](/de/glossary/registrant/) sind, und eine von der Plattform verwaltete Fehlerbehebung anfordern. Dies ist **nicht garantiert**, erfordert eine Identitätsprüfung und gilt in der Regel nur unter bestimmten Bedingungen. Kontaktieren Sie den Support sofort – je länger Sie warten, desto schwieriger wird es.
+2. **Einsprüche bei Registry / Registrar.** Da es sich um eine echte [ICANN](/de/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/de/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/de/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
 3. **Der Rechtsweg.** Für wertvolle Domains, die in einem Unternehmens- oder Nachlasskontext gehalten werden, gibt es Anwälte und Recovery-Firmen, die sich darauf spezialisieren. Teuer, langsam und fallabhängig.
 
 Was niemand tun kann: Den privaten Schlüssel per Brute-Force knacken. Vertrauen Sie niemandem, der behauptet, das zu können.

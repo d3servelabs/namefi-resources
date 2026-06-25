@@ -31,7 +31,7 @@ Dies senkt nicht nur die Kosten (von hohen Maklergebühren auf nahezu null) oder
 
 ## 💡 Was bedeutet „Tokenisierung“ eigentlich?
 
-Tokenisierung bedeutet einfach:
+[Tokenisierung](/de/glossary/tokenize/) bedeutet einfach:
 
 > Die Darstellung eines realen Assets (wie einer Domain) als Token – wodurch es übertragbar, komponierbar und programmierbar wird.
 
@@ -48,7 +48,7 @@ Dies bringt neue Flexibilität und Nützlichkeit für den Domainbesitz.
 
 ## 🌉 Brücke zwischen realen Vermögenswerten und der On-Chain-Welt
 
-Durch die Tokenisierung von Domains fungiert Namefi als **Brücke** zwischen der traditionellen [DNS](/de/glossary/dns/)-Infrastruktur und offenen Blockchain-Protokollen:
+Durch die Tokenisierung von Domains fungiert Namefi als **Brücke** zwischen der traditionellen [DNS](/de/glossary/dns/)-Infrastruktur und offenen [Blockchain](/de/glossary/blockchain/)-Protokollen:
 
 | Traditionelles System       | On-Chain-Welt                         |
 |--------------------------|----------------------------------------|

@@ -10,7 +10,7 @@ description: 'Entdecken Sie die wichtigsten TLDs, die Sie für Ihr Unternehmen s
 keywords: ['wichtigste TLDs für Ihr Unternehmen', 'beste Domain-Endungen für Unternehmen', 'defensive Domain-Registrierung', 'Markenschutz-Domains', 'Unternehmens-TLDs', 'Domain für Unternehmen registrieren', 'Typosquatting-Schutz', 'Domain-Endungen für Firmen', 'TLD auswählen', 'gTLD vs ccTLD']
 ---
 
-Wenn Sie eine Marke aufbauen, wird Ihr Domainname Teil Ihrer Identität — und eine Top-Level-Domain (TLD) ist das Suffix am Ende davon, wie das `.com` in `example.com`. Die richtigen TLDs für Ihr Unternehmen zu sichern bedeutet nicht nur, eine einzelne Webadresse zu besitzen; es geht um Markenschutz. Wenn Sie nur eine Endung registrieren, kann ein Typosquatter, ein Mitbewerber oder ein Opportunist die entsprechenden Namen unter anderen beliebten Suffixen registrieren und vom Vertrauen profitieren, das Sie sich erarbeitet haben.
+Wenn Sie eine Marke aufbauen, wird Ihr Domainname Teil Ihrer Identität — und eine [Top-Level-Domain](/de/glossary/tld/) (TLD) ist das Suffix am Ende davon, wie das `.com` in `example.com`. Die richtigen TLDs für Ihr Unternehmen zu sichern bedeutet nicht nur, eine einzelne Webadresse zu besitzen; es geht um Markenschutz. Wenn Sie nur eine Endung registrieren, kann ein Typosquatter, ein Mitbewerber oder ein Opportunist die entsprechenden Namen unter anderen beliebten Suffixen registrieren und vom Vertrauen profitieren, das Sie sich erarbeitet haben.
 
 Deshalb betreiben kluge Unternehmen eine defensive Registrierung: Sie sichern ihren exakten Markennamen für die TLDs, die am wichtigsten sind. Die richtigen Top-TLDs für Ihr Unternehmen zu wählen gibt Ihnen Raum zum Wachsen, hält Look-alike-Websites von Ihren Kunden fern und bewahrt die Flexibilität für zukünftige Produktlinien, regionale Seiten und Marketingkampagnen. Nachfolgend finden Sie einen praktischen Leitfaden zu den Suffixen, die es sich lohnt abzusichern.
 
@@ -22,11 +22,11 @@ Berücksichtigen Sie vier Kriterien. **Relevanz**: Passt das Suffix zu Ihrer Bra
 
 ### 1. .com — der Standard des Webs
 
-[.com](/de/tld/com) ist die ursprüngliche kommerzielle gTLD und bleibt das weltweit bekannteste und vertrauenswürdigste Suffix. Es wird von [Verisign](https://www.icann.org/en/registry-agreements/details/com) im Auftrag von ICANN betrieben. Für die meisten Unternehmen ist das exakt übereinstimmende `.com` der wichtigste Name, den es zu besitzen gilt, denn Kunden tippen es reflexartig ein und Mitbewerber begehren es am meisten.
+[.com](/de/tld/com) ist die ursprüngliche kommerzielle [gTLD](/de/glossary/gtld/) und bleibt das weltweit bekannteste und vertrauenswürdigste Suffix. Es wird von [Verisign](https://www.icann.org/en/registry-agreements/details/com) im Auftrag von [ICANN](/de/glossary/icann/) betrieben. Für die meisten Unternehmen ist das exakt übereinstimmende `.com` der wichtigste Name, den es zu besitzen gilt, denn Kunden tippen es reflexartig ein und Mitbewerber begehren es am meisten.
 
 ### 2. .co — die moderne, markentaugliche Alternative
 
-[.co](/de/tld/co) liest sich als saubere Kurzform für „company" (Unternehmen) und ist bei Startups beliebt, wenn das `.com` bereits vergeben ist. Es ist die Länder-Code-TLD für Kolumbien, wird nun von [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) nach der Übernahme des Registry-Geschäfts von Neustar betrieben und ist für globale, uneingeschränkte Registrierung geöffnet. Es ist kurz, einprägsam und eine starke defensive Ergänzung zu `.com`.
+[.co](/de/tld/co) liest sich als saubere Kurzform für „company" (Unternehmen) und ist bei Startups beliebt, wenn das `.com` bereits vergeben ist. Es ist die Länder-Code-TLD für Kolumbien, wird nun von [GoDaddy Registry](https://www.iana.org/domains/root/db/co.html) nach der Übernahme des [Registry](/de/glossary/registry/)-Geschäfts von Neustar betrieben und ist für globale, uneingeschränkte Registrierung geöffnet. Es ist kurz, einprägsam und eine starke defensive Ergänzung zu `.com`.
 
 ### 3. .net — der vertrauenswürdige Klassiker
 
@@ -64,15 +64,15 @@ Zwei weitere, die kurz erwähnenswert sind, wenn Sie ein Portfolio aufbauen: [.a
 
 ## Strategie für defensive Registrierung
 
-Sie benötigen nicht jede jemals erstellte TLD — Sie benötigen die richtigen. Ein praktischer Ansatz besteht darin, Ihren exakten Markennamen für die zwei bis vier wichtigsten Endungen zu sichern (typischerweise `.com`, `.co`, `.net` und `.org`) sowie die Kategorie-TLD, die zu Ihrer Branche passt, wie `.io` für ein Technologieunternehmen oder `.biz` für ein kommerzielles Vorhaben. Dies blockiert die wahrscheinlichsten Typosquatting- und Imitationsvektoren, während die Kosten im Rahmen bleiben.
+Sie benötigen nicht jede jemals erstellte TLD — Sie benötigen die richtigen. Ein praktischer Ansatz besteht darin, Ihren exakten Markennamen für die zwei bis vier wichtigsten Endungen zu sichern (typischerweise `.com`, `.co`, `.net` und `.org`) sowie die Kategorie-TLD, die zu Ihrer Branche passt, wie `.io` für ein Technologieunternehmen oder `.biz` für ein kommerzielles Vorhaben. Dies blockiert die wahrscheinlichsten [Typosquatting](/de/glossary/typosquatting/)- und Imitationsvektoren, während die Kosten im Rahmen bleiben.
 
-Über die exakte Übereinstimmung hinaus sollten Sie offensichtliche Schreibfehler und die Singular-/Pluralform Ihrer Marke bei Ihrer primären Endung in Betracht ziehen. Stellen Sie dann jede Registrierung auf automatische Verlängerung ein und behalten Sie Ihre Verlängerungstermine genau im Blick — eine abgelaufene defensive Domain ist genau die Art von verfallenen Asset, die böse Akteure überwachen und im Moment ihrer Verfügbarkeit registrieren. Behandeln Sie Ihr Domain-Portfolio wie jeden anderen Geschäftswert: registrieren Sie gezielt, dokumentieren Sie, was Sie besitzen, und überprüfen Sie es mindestens einmal im Jahr.
+Über die exakte Übereinstimmung hinaus sollten Sie offensichtliche Schreibfehler und die Singular-/Pluralform Ihrer Marke bei Ihrer primären Endung in Betracht ziehen. Stellen Sie dann jede Registrierung auf automatische Verlängerung ein und behalten Sie Ihre Verlängerungstermine genau im Blick — eine abgelaufene defensive Domain ist genau die Art von verfallenen Asset, die böse Akteure überwachen und im Moment ihrer Verfügbarkeit registrieren. Behandeln Sie Ihr [Domain-Portfolio](/de/glossary/domain-portfolio/) wie jeden anderen Geschäftswert: registrieren Sie gezielt, dokumentieren Sie, was Sie besitzen, und überprüfen Sie es mindestens einmal im Jahr.
 
 ## Registrieren Sie Ihre Geschäftsdomains bei Namefi
 
-[Namefi](https://namefi.io) ist ein ICANN-akkreditierter Registrar, der entwickelt wurde, um die Sicherung Ihrer Geschäftsdomains unkompliziert zu gestalten. Sie können alle oben genannten TLDs an einem Ort registrieren und verwalten, mit transparenter Preisgestaltung und ohne überraschende Zusatzkosten beim Checkout. Schnelle, moderne DNS-Verwaltung ermöglicht es Ihnen, Ihre Domains schnell auf Ihre Websites und Dienste zu verweisen, sodass Ihre defensiven Registrierungen sofort einsatzbereit sind, wenn Sie sie benötigen.
+[Namefi](https://namefi.io) ist ein [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der entwickelt wurde, um die Sicherung Ihrer Geschäftsdomains unkompliziert zu gestalten. Sie können alle oben genannten TLDs an einem Ort registrieren und verwalten, mit transparenter Preisgestaltung und ohne überraschende Zusatzkosten beim Checkout. Schnelle, moderne DNS-Verwaltung ermöglicht es Ihnen, Ihre Domains schnell auf Ihre Websites und Dienste zu verweisen, sodass Ihre defensiven Registrierungen sofort einsatzbereit sind, wenn Sie sie benötigen.
 
-Namefi unterstützt auch Web3-tokenisierte Domains — Domains, die als NFTs ausgegeben werden — und gibt Ihnen die Möglichkeit, berechtigte Namen als On-Chain-Assets zu halten, zu übertragen oder zu handeln, während Sie sie weiterhin als gewöhnliche Websites nutzen. Ob Sie eine einzige Flaggschiff-Adresse oder ein vollständiges defensives Portfolio wünschen, Sie können auf [Namefi](https://namefi.io) loslegen.
+Namefi unterstützt auch [Web3](/de/glossary/web3/)-tokenisierte Domains — Domains, die als NFTs ausgegeben werden — und gibt Ihnen die Möglichkeit, berechtigte Namen als [On-Chain](/de/glossary/on-chain/)-Assets zu halten, zu übertragen oder zu handeln, während Sie sie weiterhin als gewöhnliche Websites nutzen. Ob Sie eine einzige Flaggschiff-Adresse oder ein vollständiges defensives Portfolio wünschen, Sie können auf [Namefi](https://namefi.io) loslegen.
 
 ## Häufig gestellte Fragen
 
@@ -86,7 +86,7 @@ Nein. Google behandelt generische TLDs neutral — seine Systeme verarbeiten neu
 
 ### Was ist der Unterschied zwischen einer gTLD und einer ccTLD?
 
-Eine generische TLD (gTLD) wie `.com`, `.org` oder `.online` ist nicht an ein Land gebunden und ist in der Regel weltweit offen. Eine Länder-Code-TLD (ccTLD) wie `.co` (Kolumbien) oder `.io` (Britisches Territorium im Indischen Ozean) ist einem Gebiet zugewiesen, obwohl viele ccTLDs — einschließlich `.co` und `.io` — weltweit ohne lokale Anforderungen vermarktet und verkauft werden. Überprüfen Sie immer die Richtlinien einer bestimmten ccTLD, da einige Registrierungen einschränken.
+Eine generische TLD (gTLD) wie `.com`, `.org` oder `.online` ist nicht an ein Land gebunden und ist in der Regel weltweit offen. Eine Länder-Code-TLD ([ccTLD](/de/glossary/cctld/)) wie `.co` (Kolumbien) oder `.io` (Britisches Territorium im Indischen Ozean) ist einem Gebiet zugewiesen, obwohl viele ccTLDs — einschließlich `.co` und `.io` — weltweit ohne lokale Anforderungen vermarktet und verkauft werden. Überprüfen Sie immer die Richtlinien einer bestimmten ccTLD, da einige Registrierungen einschränken.
 
 ### Gibt es Registrierungsbeschränkungen für diese TLDs?
 

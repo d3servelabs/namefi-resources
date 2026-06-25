@@ -9,9 +9,9 @@ description: "Ein praktischer Blick darauf, wie reguläres DNS – Nameserver, A
 keywords: ['DNS tokenisierte Domain', 'DNSSEC NFT-Domain', 'tokenisierte Domain Nameserver', 'tokenisierte Domain E-Mail', 'MX-Einträge NFT-Domain', 'CAA-Einträge tokenisierte Domain', 'tokenisierte Domain DNS-Verwaltung', 'On-Chain-Domain DNS', 'NFT-Domain MX', 'NFT-Domain DNSSEC', 'tokenisierte Domain Cloudflare', 'tokenisierte Domain Route53', 'wie DNS tokenisiert funktioniert', 'tokenisierte Domain Auflösung']
 ---
 
-Eine häufige Sorge bei der Tokenisierung einer Domain: *"Wird meine Website weiterhin funktionieren? Wird meine E-Mail noch funktionieren? Muss ich einen komplett neuen DNS-Stack erlernen?"*
+Eine häufige Sorge bei der [Tokenisierung](/de/glossary/tokenize/) einer Domain: *"Wird meine Website weiterhin funktionieren? Wird meine E-Mail noch funktionieren? Muss ich einen komplett neuen DNS-Stack erlernen?"*
 
-Kurze Antwort: **Ja, ja, nein.** Eine tokenisierte Domain ist immer noch eine echte ICANN-Domain. Das DNS tut weiterhin genau das, was das DNS immer tut. Dieser Beitrag ist ein Rundgang durch das, was sich (ein wenig) ändert und was nicht (das meiste).
+Kurze Antwort: **Ja, ja, nein.** Eine [tokenisierte Domain](/de/glossary/tokenized-domain/) ist immer noch eine echte ICANN-Domain. Das DNS tut weiterhin genau das, was das DNS immer tut. Dieser Beitrag ist ein Rundgang durch das, was sich (ein wenig) ändert und was nicht (das meiste).
 
 ---
 
@@ -19,10 +19,10 @@ Kurze Antwort: **Ja, ja, nein.** Eine tokenisierte Domain ist immer noch eine ec
 
 Eine tokenisierte Domain hat **zwei Ebenen**:
 
-1. **Die [DNS](/de/glossary/dns/) / Registry-Ebene** – dieselbe, auf der Ihre `.com` schon immer existiert hat. [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), Root-Server, rekursive Resolver.
+1. **Die [DNS](/de/glossary/dns/) / [Registry](/de/glossary/registry/)-Ebene** – dieselbe, auf der Ihre `.com` schon immer existiert hat. [ICANN](/de/glossary/icann/), [Registrar](/de/glossary/registrar/), [Root-Server](/de/glossary/root-zone/), rekursive Resolver.
 2. **Die [On-Chain](/de/glossary/on-chain/)-Ebene** – ein [NFT](/de/glossary/nft/) in Ihrem [Wallet](/de/glossary/wallet/), das das *Eigentum* repräsentiert.
 
-Die DNS-Auflösung – die Umwandlung von `example.com` in eine IP-Adresse – findet vollständig auf Ebene 1 statt. Auf der On-Chain-Ebene geht es darum, **wer die Domain kontrolliert**, nicht darum, wie sie aufgelöst wird. Browser, E-Mail-Server, CDNs und Zertifizierungsstellen müssen nie wissen, dass eine Blockchain existiert.
+Die DNS-Auflösung – die Umwandlung von `example.com` in eine [IP-Adresse](/de/glossary/ip-address/) – findet vollständig auf Ebene 1 statt. Auf der On-Chain-Ebene geht es darum, **wer die Domain kontrolliert**, nicht darum, wie sie aufgelöst wird. Browser, E-Mail-Server, CDNs und Zertifizierungsstellen müssen nie wissen, dass eine [Blockchain](/de/glossary/blockchain/) existiert.
 
 Deshalb "funktioniert DNS weiterhin". Es ist keine Magie. Es ist dasselbe DNS.
 
@@ -75,7 +75,7 @@ Die meisten Eigentümer verwalten ihre DNS-Einträge nach der Tokenisierung übe
 
 ### Übertragung der Domain
 
-Vorher: Der [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/)-Ablauf, mit [Auth-Codes](/en/glossary/auth-code/) und 60-tägigen Sperrfristen.
+Vorher: Der [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/)-Ablauf, mit [Auth-Codes](/de/glossary/auth-code/) und 60-tägigen Sperrfristen.
 Nachher: [**Übertragung des NFTs**](/de/glossary/atomic-transfer/). Eine einzige On-Chain-Transaktion überträgt das Eigentum. Der Eintrag aufseiten des Registrars wird durch das Protokoll synchron gehalten. Das ist drastisch schneller – und der Grund, warum Marktplätze für tokenisierte Domains kein traditionelles [Treuhandverfahren (Escrow)](/de/glossary/escrow/) benötigen (siehe [Vom Angebot bis zur Abwicklung](/de/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Sie können weiterhin einen traditionellen Registrar-Transfer durchführen, wenn Sie dies wünschen; die On-Chain-Ebene verhindert dies nicht.
@@ -84,7 +84,7 @@ Sie können weiterhin einen traditionellen Registrar-Transfer durchführen, wenn
 
 ## DNSSEC bei einer tokenisierten Domain
 
-[DNSSEC](/en/glossary/dnssec/) funktioniert. Wenn Sie es zuvor aktiviert hatten, bleibt es aktiviert. Wenn nicht, können Sie es nach der Tokenisierung aktivieren. Die Vertrauenskette (Chain of Trust) verläuft wie gewohnt über die Registry – die On-Chain-Ebene befindet sich nirgendwo auf diesem Pfad. (Hintergrund: [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) definiert das Protokoll; [ICANNs Erklärung zur KSK-Zeremonie](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) beschreibt den Root-of-Trust-Prozess.)
+[DNSSEC](/de/glossary/dnssec/) funktioniert. Wenn Sie es zuvor aktiviert hatten, bleibt es aktiviert. Wenn nicht, können Sie es nach der Tokenisierung aktivieren. Die Vertrauenskette (Chain of Trust) verläuft wie gewohnt über die Registry – die On-Chain-Ebene befindet sich nirgendwo auf diesem Pfad. (Hintergrund: [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) definiert das Protokoll; [ICANNs Erklärung zur KSK-Zeremonie](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) beschreibt den Root-of-Trust-Prozess.)
 
 Ein paar praktische Hinweise:
 

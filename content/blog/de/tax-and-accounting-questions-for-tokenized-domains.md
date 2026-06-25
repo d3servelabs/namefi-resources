@@ -26,8 +26,8 @@ Tokenisierte Domains haben fortlaufende [On-Chain](/de/glossary/on-chain/)-Ereig
 
 - Minting (der Moment der [Tokenisierung](/de/glossary/tokenize/) selbst – ist das ein steuerpflichtiges Ereignis? In den meisten Rechtsordnungen wahrscheinlich nicht, aber fragen Sie nach.)
 - On-Chain-Transfers, einschließlich Schenkungen und Erbschaften.
-- Verkäufe, die vollständig On-Chain abgewickelt und in Krypto oder [Stablecoins](/en/glossary/stablecoin/) bezahlt werden.
-- Mögliche Nutzung als [DeFi](/en/glossary/defi/)-[Sicherheit](/de/glossary/collateral/) (z. B. Kreditaufnahme gegen die Domain).
+- Verkäufe, die vollständig On-Chain abgewickelt und in Krypto oder [Stablecoins](/de/glossary/stablecoin/) bezahlt werden.
+- Mögliche Nutzung als [DeFi](/de/glossary/defi/)-[Sicherheit](/de/glossary/collateral/) (z. B. Kreditaufnahme gegen die Domain).
 - Bridging oder das Verschieben des Tokens zwischen Chains.
 
 Jede dieser Interaktionen hat in einigen Rechtsordnungen steuerliche Auswirkungen, in anderen wiederum nicht. Die nachstehende Liste bietet eine Auswahl an Fragen, die es wert sind, mit einem Fachexperten durchgegangen zu werden.
@@ -39,8 +39,8 @@ Jede dieser Interaktionen hat in einigen Rechtsordnungen steuerliche Auswirkunge
 ### Anschaffungskosten (Cost Basis)
 
 - Wie hoch sind die Anschaffungskosten einer Domain, die ich neu registriert und tokenisiert habe? Nur die Kosten des Registrars? Plus Gas-Gebühren? Plus Protokollgebühren?
-- Was ist mit einer Domain, die ich jahrelang bei einem Registrar besessen und erst kürzlich tokenisiert habe? Wird der Basiswert neu festgesetzt, übernommen oder bleibt er unverändert?
-- Wenn ich die tokenisierte Domain auf einem Marktplatz mit ETH gekauft habe, wie lautet die Berechnungsbasis – der USD- bzw. EUR-Wert der ETH zum Zeitpunkt des Verkaufs? Die vom Marktplatz gemeldete Zahl?
+- Was ist mit einer Domain, die ich jahrelang bei einem [Registrar](/de/glossary/registrar/) besessen und erst kürzlich tokenisiert habe? Wird der Basiswert neu festgesetzt, übernommen oder bleibt er unverändert?
+- Wenn ich die tokenisierte Domain auf einem [Marktplatz](/de/glossary/marketplace/) mit ETH gekauft habe, wie lautet die Berechnungsbasis – der USD- bzw. EUR-Wert der ETH zum Zeitpunkt des Verkaufs? Die vom Marktplatz gemeldete Zahl?
 - Wie dokumentiere ich die Anschaffungskosten so, dass sie einer Betriebsprüfung standhalten?
 
 ### Haltedauer
@@ -76,7 +76,7 @@ Jede dieser Interaktionen hat in einigen Rechtsordnungen steuerliche Auswirkunge
 
 ### Cross-Chain / Bridging
 
-- Wenn ich den Token vom Ethereum-Mainnet zu Base (oder umgekehrt) verschiebe, gilt das Bridge-Ereignis als Veräußerung?
+- Wenn ich den Token vom [Ethereum](/de/glossary/ethereum/)-Mainnet zu Base (oder umgekehrt) verschiebe, gilt das Bridge-Ereignis als Veräußerung?
 - Zählt Wrapping/Unwrapping als steuerpflichtiges Ereignis?
 
 ### Umsatzsteuer / Mehrwertsteuer (VAT)
@@ -111,7 +111,7 @@ Das sind keine exotischen Fragen – es sind dieselben Fragen, die Unternehmen b
 ## Dinge, die Sie höchstwahrscheinlich nicht retten werden
 
 - „Es ist nur On-Chain, also ist es für die Steuerbehörden unsichtbar.“ Ist es nicht. On-Chain ist oft sichtbarer als Off-Chain.
-- „Ich habe eine Privacy-Wallet benutzt, also zählt es nicht.“ Es zählt. Compliance-Regeln gelten trotzdem.
+- „Ich habe eine Privacy-[Wallet](/de/glossary/wallet/) benutzt, also zählt es nicht.“ Es zählt. Compliance-Regeln gelten trotzdem.
 - „Die Steuerbehörde (IRS / HMRC / Finanzamt etc.) hat noch keine Richtlinien.“ Das Fehlen spezifischer Richtlinien ist nicht dasselbe wie das Fehlen einer Verpflichtung.
 - „Mein Freund auf Discord meinte…“ Ihr Freund auf Discord ist nicht Ihr Steuerberater.
 

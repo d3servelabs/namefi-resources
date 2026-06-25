@@ -11,7 +11,7 @@ keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 
 
 ## 什么是 TLD？
 
-**TLD（顶级域名）** 是域名中**最后一个点之后**的部分。在 `namefi.io` 中，TLD 是 `.io`；在 `google.com` 中，TLD 是 `.com`；在 `wikipedia.org` 中，TLD 是 `.org`。
+**[TLD](/zh/glossary/tld/)（顶级域名）** 是域名中**最后一个点之后**的部分。在 `namefi.io` 中，TLD 是 `.io`；在 `google.com` 中，TLD 是 `.com`；在 `wikipedia.org` 中，TLD 是 `.org`。
 
 一句话即可概括 **TLD 的定义**：它是[域名](/zh/blog/what-is-domain/)中最右边的标签。人们也将其称为**域名扩展名**或**域名后缀**，但技术上正确的术语是*顶级域名*。它位于互联网命名层级的最顶端——这也正是其名称的由来。
 
@@ -51,7 +51,7 @@ blog . namefi . io
 
 ## TLD 的类型
 
-并非所有 TLD 都相同。ICANN 和 IANA 将其划分为几个类别。以下是你会遇到的主要 **TLD 类型**。
+并非所有 TLD 都相同。ICANN 和 [IANA](/zh/glossary/iana/) 将其划分为几个类别。以下是你会遇到的主要 **TLD 类型**。
 
 ### 1. 通用顶级域名（gTLD）
 
@@ -66,7 +66,7 @@ blog . namefi . io
 
 ### 2. 国家代码顶级域名（ccTLD）
 
-**ccTLD** 是与某个国家或地区绑定的两字母顶级域名，基于 ISO 3166 国家代码列表。示例包括 `.us`（美国）、`.uk`（英国）、`.de`（德国）、`.cn`（中国）、[`.ae`](/zh/tld/ae/)（阿联酋）和 [`.ac`](/zh/tld/ac/)（阿森松岛）。
+**[ccTLD](/zh/glossary/cctld/)** 是与某个国家或地区绑定的两字母顶级域名，基于 ISO 3166 国家代码列表。示例包括 `.us`（美国）、`.uk`（英国）、`.de`（德国）、`.cn`（中国）、[`.ae`](/zh/tld/ae/)（阿联酋）和 [`.ac`](/zh/tld/ac/)（阿森松岛）。
 
 有趣的是，许多 ccTLD 因为字母拼写上的意义而被广泛应用于本国以外：
 
@@ -74,7 +74,7 @@ blog . namefi . io
 - [`.io`](/zh/tld/io/) 属于英属印度洋领地，却在科技和初创公司品牌中占据主导地位（对应"I/O"）。
 - `.co`（哥伦比亚）被广泛用作 `.com` 的简短替代。
 
-这就是 **gTLD 与 ccTLD** 区别的核心：gTLD 直接在 ICANN 合同框架下管理，向全球开放；而 ccTLD 则委托给各国主管机构，每个机构有其自己的规则（有些要求本地注册主体，有些则不要求）。
+这就是 **[gTLD](/zh/glossary/gtld/) 与 ccTLD** 区别的核心：gTLD 直接在 ICANN 合同框架下管理，向全球开放；而 ccTLD 则委托给各国主管机构，每个机构有其自己的规则（有些要求本地注册主体，有些则不要求）。
 
 ### 3. 赞助型顶级域名（sTLD）
 
@@ -82,7 +82,7 @@ blog . namefi . io
 
 ### 4. 新通用顶级域名（新 gTLD）
 
-从 2013 年开始，ICANN 通过**新 gTLD 计划**大幅扩展了命名空间，将后缀数量从几十个增加到一千多个。这些新后缀涵盖关键词、行业、爱好和品牌：
+从 2013 年开始，ICANN 通过**[新 gTLD](/zh/glossary/new-gtld/) 计划**大幅扩展了命名空间，将后缀数量从几十个增加到一千多个。这些新后缀涵盖关键词、行业、爱好和品牌：
 
 | 类别 | 示例 |
 |------|------|
@@ -100,7 +100,7 @@ blog . namefi . io
 
 ### 关于 Web3 后缀的说明
 
-你可能也见过区块链原生后缀，如 `.eth` 或 `.crypto`。这些*不是* ICANN TLD——它们存在于传统 DNS 根之外，只能通过特殊钱包或解析器访问。Namefi 同样收录了这些后缀（参见 [`.eth`](/zh/tld/eth/)），但值得注意的是，它们属于不同的类别。我们在[代币化域名与 Web3 域名](/zh/blog/tokenized-domain-vs-web3-domain/)中详细阐述了这一区别。
+你可能也见过[区块链](/zh/glossary/blockchain/)原生后缀，如 `.eth` 或 `.crypto`。这些*不是* ICANN TLD——它们存在于传统 DNS 根之外，只能通过特殊钱包或解析器访问。Namefi 同样收录了这些后缀（参见 [`.eth`](/zh/tld/eth/)），但值得注意的是，它们属于不同的类别。我们在[代币化域名与 Web3 域名](/zh/blog/tokenized-domain-vs-web3-domain/)中详细阐述了这一区别。
 
 ---
 
@@ -110,7 +110,7 @@ blog . namefi . io
 
 - **ICANN** — [互联网名称与数字地址分配机构](/zh/glossary/icann/)是协调全球命名空间、制定 gTLD 政策并认证注册商的非营利组织。成立于 1998 年，是域名领域最接近"裁判"角色的机构。
 - **IANA** — 互联网号码分配机构（由 ICANN 管理）维护着权威的**根区**：包含所有有效 TLD 及其对应注册机构的主列表。
-- **注册局（Registries）** — 每个 TLD 由一个*注册局*运营，该组织负责维护该后缀的中央数据库。例如，**Verisign** 运营 `.com` 和 `.net`，**公共利益注册机构（PIR）** 运营 `.org`。ccTLD 注册局通常是国家机构——例如，[`.ae`](/zh/tld/ae/) 由阿联酋的 TDRA 管理。
+- **[注册局](/zh/glossary/registry/)（Registries）** — 每个 TLD 由一个*注册局*运营，该组织负责维护该后缀的中央数据库。例如，**Verisign** 运营 `.com` 和 `.net`，**公共利益注册机构（PIR）** 运营 `.org`。ccTLD 注册局通常是国家机构——例如，[`.ae`](/zh/tld/ae/) 由阿联酋的 TDRA 管理。
 - **注册商（Registrars）** — [注册商](/zh/glossary/registrar/)是你购买域名的零售商。经 ICANN 认证的注册商（如 Namefi、GoDaddy 和 Namecheap）向公众销售域名，并将注册信息提交给注册局。
 
 整个链条如下：**ICANN/IANA** 制定规则并维护根区 → **注册局**运营各个 TLD → **注册商**向**你**销售域名。当你注册 `yourname.com` 时，你从注册商购买，注册商将其记录到注册局（Verisign），整个过程均遵循 ICANN 政策。
@@ -159,17 +159,17 @@ blog . namefi . io
 
 这里是下一个域名时代最令人兴奋的部分。你的 TLD 不仅塑造你的品牌形象，还影响你的域名能否被**上链**。
 
-[代币化域名](/zh/blog/what-are-tokenized-domains/)是一个真实的、经 ICANN 认可的域名，其所有权*同时*以代币（通常是[NFT](/zh/glossary/nft/)）的形式存储在你的钱包中。DNS 层的运行方式与以前完全相同；你只是在其之上获得了第二层可编程的所有权。
+[代币化域名](/zh/blog/what-are-tokenized-domains/)是一个真实的、经 ICANN 认可的域名，其所有权*同时*以代币（通常是[NFT](/zh/glossary/nft/)）的形式存储在你的[钱包](/zh/glossary/wallet/)中。DNS 层的运行方式与以前完全相同；你只是在其之上获得了第二层可编程的所有权。
 
-但并非每个 TLD 都为此做好了准备。部分注册局已提前布局，支持链上所有权层；其他的则尚未行动。这正是为什么如果你希望：
+但并非每个 TLD 都为此做好了准备。部分注册局已提前布局，支持[链上](/zh/glossary/on-chain/)所有权层；其他的则尚未行动。这正是为什么如果你希望：
 
 - 将域名直接持有在自己的钱包中
 - 在数秒内完成链上转移（DNS 记录同步跟随）
-- 在 NFT 市场上挂单或将其用作 [DeFi](/en/glossary/defi/) 中的抵押品
+- 在 NFT 市场上挂单或将其用作 [DeFi](/zh/glossary/defi/) 中的[抵押品](/zh/glossary/collateral/)
 
 ……那么你选择的 TLD 就至关重要。
 
-**Namefi** 是首个在以太坊主网上代币化真实 ICANN 域名的平台——也是首个在 Base 上实现这一功能的平台——覆盖上述众多 TLD，包括 [`.com`](/zh/tld/com/)、[`.xyz`](/zh/tld/xyz/)、[`.io`](/zh/tld/io/) 等。你可以在一个产品中同时拥有一个真实的、浏览器可解析的域名*和*钱包原生所有权。
+**Namefi** 是首个在[以太坊](/zh/glossary/ethereum/)主网上[代币化](/zh/glossary/tokenize/)真实 ICANN 域名的平台——也是首个在 Base 上实现这一功能的平台——覆盖上述众多 TLD，包括 [`.com`](/zh/tld/com/)、[`.xyz`](/zh/tld/xyz/)、[`.io`](/zh/tld/io/) 等。你可以在一个产品中同时拥有一个真实的、浏览器可解析的域名*和*钱包原生所有权。
 
 > 想了解两个层次如何配合？阅读[什么是代币化域名？](/zh/blog/what-are-tokenized-domains/)，或访问 [namefi.io](https://namefi.io) 注册或代币化你的域名。
 

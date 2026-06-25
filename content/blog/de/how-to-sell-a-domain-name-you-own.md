@@ -27,7 +27,7 @@ Wenn Sie sich nur einen Ablauf merken, dann diesen:
 5. Nutzen Sie [Namefi Outbound](https://namefi.io/outbound), um mögliche Käufer, Käuferansätze, öffentliche Kontakte (sofern verfügbar) und bearbeitbare Entwürfe für die Erstansprache zu recherchieren.
 6. Senden Sie kurze, spezifische Nachrichten nur an Personen, die sich tatsächlich dafür interessieren könnten.
 7. Verhandeln Sie schriftlich: Preis, Gebührenaufteilung, Transfermethode, enthaltene Vermögenswerte und Zeitplan.
-8. Schließen Sie über einen sicheren Zahlungs- oder Treuhand-Workflow (Escrow) ab, transferieren Sie die Domain und bewahren Sie dann die Unterlagen auf.
+8. Schließen Sie über einen sicheren Zahlungs- oder [Treuhand](/de/glossary/escrow/)-Workflow (Escrow) ab, transferieren Sie die Domain und bewahren Sie dann die Unterlagen auf.
 
 Der Transfer ist der letzte Schritt. Die Passgenauigkeit für den Käufer ist der erste.
 
@@ -41,7 +41,7 @@ Beginnen Sie damit, die Domain in einfachen Worten zu beschreiben. Nicht als „
 - Ein Kategorie-Name aus ein oder zwei Wörtern.
 - Eine Stadt plus Dienstleistungsname.
 - Eine Domain, die mit einem alten Projekt verbunden ist.
-- Ein Name, der Type-in-Traffic, Backlinks oder Einnahmen generiert.
+- Ein Name, der [Type-in-Traffic](/de/glossary/type-in-traffic/), Backlinks oder Einnahmen generiert.
 - Ein spekulativer Name, den Sie registriert haben, weil er vielversprechend klang.
 
 Jeder Typ verkauft sich anders. Ein Stadt-Dienstleistungs-Name könnte eine enge Liste lokaler Unternehmen haben, die ihn nutzen könnten. Ein kurzer, markenfähiger Name könnte zu Start-ups, Fonds, Apps oder Communities passen. Eine Domain mit echtem Traffic kann für einen Käufer interessant sein, weil bereits eine Nachfrage besteht. Eine zufällige, ungenutzte Domain hat möglicherweise einfach keinen Markt.
@@ -52,7 +52,7 @@ Wenn ja, könnte es sich lohnen, die Domain aktiv zu verkaufen. Wenn nicht, verk
 
 Prüfen Sie auch unangenehme Dinge frühzeitig:
 
-- Sieht die Domain der Marke eines anderen zum Verwechseln ähnlich?
+- Sieht die Domain der [Marke](/de/glossary/trademark/) eines anderen zum Verwechseln ähnlich?
 - Haben Sie sie hauptsächlich wegen der Marke eines bestimmten Unternehmens registriert?
 - Verursacht die aktuelle Website, die geparkte Seite oder der Werbeinhalt Verwirrung?
 - Steht die Domain kurz vor dem Ablauf?
@@ -70,7 +70,7 @@ Dennoch ergibt sich ein vertretbarer Preis in der Regel aus fünf Faktoren:
 
 | Faktor | Was zu prüfen ist |
 | --- | --- |
-| Vergleichbare Verkäufe | Jüngste Verkäufe mit ähnlicher Länge, Wortzahl, Kategorie und TLD |
+| Vergleichbare Verkäufe | Jüngste Verkäufe mit ähnlicher Länge, Wortzahl, Kategorie und [TLD](/de/glossary/tld/) |
 | TLD-Stärke | Ob die Endung weltweit liquide ist oder hauptsächlich in einer Nische nützlich ist |
 | Anwendungsfall für den Käufer | Wie direkt der Name einem echten Unternehmen, einer Kampagne, einem Produkt oder einer Kategorie hilft |
 | Vorhandener Wert | Traffic, Backlinks, Umsatz, Alter, saubere Historie oder entwickelte Assets |
@@ -88,7 +88,7 @@ Wählen Sie dann die Art der Preisgestaltung:
 
 - **Festpreis / Sofortkauf:** am besten, wenn Sie Geschwindigkeit und weniger Hin-und-Her wollen.
 - **Angebot machen:** am besten, wenn die Domain ungewöhnlich ist oder der Wert für Käufer stark variiert.
-- **Auktion:** am besten, wenn es sichtbare Nachfrage von mehreren Käufern gibt.
+- **[Auktion](/de/glossary/auction/):** am besten, wenn es sichtbare Nachfrage von mehreren Käufern gibt.
 - **Private Verhandlung:** am besten, wenn der Käuferkreis klein und strategisch ist.
 
 Je wertvoller die Domain, desto wichtiger ist es, seine Schmerzgrenze zu kennen, bevor die erste Antwort eintrifft. Verhandlungen verlaufen viel ruhiger, wenn man seinen Preis nicht erst mitten im Gespräch erfinden muss.
@@ -107,7 +107,7 @@ Wenn die Domain kurz vor dem Ablauf steht, verlängern Sie sie vor einer ernstha
 
 ### Überprüfen Sie den Transferstatus
 
-ICANN erklärt, dass Registrare Transfers in bestimmten Fällen ablehnen können, unter anderem, wenn sich eine Domain im Sperrstatus (Lock-Status) befindet, innerhalb von 60 Tagen nach der Erstregistrierung oder innerhalb von 60 Tagen nach einem vorherigen Transfer. Für viele Transfers zwischen verschiedenen Registraren benötigen Sie außerdem einen [AuthInfo/Auth-Code](/en/glossary/auth-code/), und laut ICANN müssen Registrare Ihnen entweder erlauben, einen zu erstellen, oder ihn innerhalb von fünf Kalendertagen nach der Beantragung bereitstellen.
+[ICANN](/de/glossary/icann/) erklärt, dass Registrare Transfers in bestimmten Fällen ablehnen können, unter anderem, wenn sich eine Domain im Sperrstatus (Lock-Status) befindet, innerhalb von 60 Tagen nach der Erstregistrierung oder innerhalb von 60 Tagen nach einem vorherigen Transfer. Für viele Transfers zwischen verschiedenen Registraren benötigen Sie außerdem einen [AuthInfo/Auth-Code](/de/glossary/auth-code/), und laut ICANN müssen Registrare Ihnen entweder erlauben, einen zu erstellen, oder ihn innerhalb von fünf Kalendertagen nach der Beantragung bereitstellen.
 
 Das bedeutet nicht, dass jeder Verkauf warten muss. Wenn der Käufer bereit ist, die Domain beim aktuellen Registrar zu empfangen, ist möglicherweise ein kontoübergreifender Push (beim selben Registrar) oder ein Inhaberwechsel möglich. Aber Sie müssen den Transferweg kennen, bevor Sie ein Abschlussdatum versprechen.
 
@@ -268,7 +268,7 @@ In den USA behandelt die IRS den Verkauf von Vermögenswerten nach Steuervorschr
 
 Wenn Ihre Domain eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/) ist, können die Abschlussmechanismen anders aussehen.
 
-Bei einem traditionellen Verkauf gibt es Treuhandservices (Escrow), weil Zahlung und Registrar-Transfer in separaten Schritten erfolgen. Bei einem tokenisierten Domainverkauf kann das Eigentum durch ein [NFT](/de/glossary/nft/) repräsentiert und durch eine [On-Chain](/de/glossary/on-chain/)-Transaktion übertragen werden. Das kann die Abwicklung komprimieren, beseitigt aber nicht alle Risiken. Sie benötigen weiterhin die Passgenauigkeit für den Käufer, eine saubere Rechtslage, Wallet-Sicherheit, Steuerunterlagen und ein klares Verständnis dessen, was der Käufer zu erhalten erwartet.
+Bei einem traditionellen Verkauf gibt es Treuhandservices (Escrow), weil Zahlung und Registrar-Transfer in separaten Schritten erfolgen. Bei einem tokenisierten Domainverkauf kann das Eigentum durch ein [NFT](/de/glossary/nft/) repräsentiert und durch eine [On-Chain](/de/glossary/on-chain/)-Transaktion übertragen werden. Das kann die Abwicklung komprimieren, beseitigt aber nicht alle Risiken. Sie benötigen weiterhin die Passgenauigkeit für den Käufer, eine saubere Rechtslage, [Wallet](/de/glossary/wallet/)-Sicherheit, Steuerunterlagen und ein klares Verständnis dessen, was der Käufer zu erhalten erwartet.
 
 Mehr darüber, wie tokenisierte Verkäufe die Treuhand-Mechanismen verändern, lesen Sie unter [From Listing to Settlement: How Tokenized Marketplaces Replace Escrow](/de/blog/how-tokenized-marketplaces-replace-escrow/).
 

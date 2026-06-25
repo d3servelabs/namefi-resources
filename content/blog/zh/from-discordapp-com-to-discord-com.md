@@ -15,7 +15,7 @@ keywords: ['discordapp.com', 'discord.com', 'Discord 域名', '域名升级', 'J
 
 公司想要的名字与实际能拿到的名字之间的落差，是初创公司品牌建设中最常见的困境之一。产品的名字一直叫 Discord，只是世界还无法通过 Discord.com 找到它。
 
-案例 13 之所以有别于寻常的"买下精确匹配域名"故事，在于这个变通方案留下的*缝隙*。五年间，Discord 同时运营着两个地址——它实际使用的品牌（discordapp.com）和它真正想要的品牌（discord.com）——而这种双域名分裂，恰好是钓鱼者、骗子和恶意软件团伙赖以生存的模糊地带。这是一个域名升级的故事，既关乎品牌整洁，也关乎封堵公司自上线以来一直带着的安全漏洞。
+案例 13 之所以有别于寻常的"买下[精确匹配域名](/zh/glossary/exact-match-domain/)"故事，在于这个变通方案留下的*缝隙*。五年间，Discord 同时运营着两个地址——它实际使用的品牌（discordapp.com）和它真正想要的品牌（discord.com）——而这种双域名分裂，恰好是钓鱼者、骗子和恶意软件团伙赖以生存的模糊地带。这是一个域名升级的故事，既关乎品牌整洁，也关乎封堵公司自上线以来一直带着的安全漏洞。
 
 ## 2015 年：那个需要一个得不到的名字的工具
 
@@ -23,7 +23,7 @@ Discord 并非一开始就是消费级现象，它起步于对一个具体痛点
 
 Citron 带着资金和伤疤入局。他曾创立社交游戏网络 OpenFeint，而后——据维基百科记载——[于 2011 年以 1.04 亿美元将其出售给 GREE，并用这笔资金于 2012 年创立了游戏开发工作室 Hammer & Chisel](https://en.wikipedia.org/wiki/Discord_%28software%29#:~:text=later%20sold%20it%20to%20GREE%20in%202011%20for%20%24104%20million%2C%20which%20he%20used%20to%20found%20Hammer%20%26%20Chisel)。工作室的游戏没能起飞，但团队为协调副本攻略而搭建的聊天工具却大放异彩，工具本身成了产品。
 
-名字很早就定下来了，原因也很平常。根据维基百科，["Discord"这个名字之所以被选中，是因为它"听起来很酷，而且与交流有关"，易于发音、拼写、记忆，商标和网站都可用](https://en.wikipedia.org/wiki/Discord_%28software%29#:~:text=The%20name%20%22Discord%22%20was%20chosen%20because%20it%20%22sounds%20cool%20and%20has%20to%20do%20with%20talking%22)。注意最后一句话——*商标和网站都可用*。"可用"在这里暗藏玄机：商标是干净的，裸词 .com 域名却不是。
+名字很早就定下来了，原因也很平常。根据维基百科，["Discord"这个名字之所以被选中，是因为它"听起来很酷，而且与交流有关"，易于发音、拼写、记忆，商标和网站都可用](https://en.wikipedia.org/wiki/Discord_%28software%29#:~:text=The%20name%20%22Discord%22%20was%20chosen%20because%20it%20%22sounds%20cool%20and%20has%20to%20do%20with%20talking%22)。注意最后一句话——*商标和网站都可用*。"可用"在这里暗藏玄机：商标是干净的，裸词 [.com](/zh/tld/com/) 域名却不是。
 
 于是团队做了无数初创公司会做的事：加上修饰词，然后上线。品牌"Discord"以地址"DiscordApp"登场，效果出奇得好。用户基数几乎立刻滚雪球式地增长。根据维基百科，[2016 年 1 月，Hammer & Chisel 报告称 Discord 已有 300 万用户，月增长量达 100 万](https://en.wikipedia.org/wiki/Discord_%28software%29#:~:text=By%20January%202016%2C%20Hammer%20%26%20Chisel%20reported%20Discord%20had%20been%20used%20by%203%20million%20people%2C%20with%20growth%20of%201%20million%20per%20month)，到同年 7 月达到 1100 万用户，年底更突破 2500 万。
 

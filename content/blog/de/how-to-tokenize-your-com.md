@@ -21,9 +21,9 @@ Dieser Beitrag geht davon aus, dass Sie es bereits tun möchten.
 
 Der Ablauf wird viel reibungsloser sein, wenn folgende Punkte erfüllt sind, bevor Sie irgendwo klicken:
 
-- **Sie kontrollieren die Domain bei ihrem aktuellen [Registrar](/de/glossary/registrar/).** Sie können sich einloggen, Nameserver ändern und Transfers / [Auth-Codes](/en/glossary/auth-code/) genehmigen.
-- **Sie besitzen eine selbstverwaltete (self-custodial) [Wallet](/de/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet oder jede andere Standard-EVM-Wallet. Stellen Sie sicher, dass Sie tatsächlich über die [Seed-Phrase](/en/glossary/seed-phrase/) verfügen – und nicht nur über ein Konto bei einer Kryptobörse.
-- **Die Wallet verfügt über eine kleine Menge an [Gas](/en/glossary/gas/).** Ein paar Dollar in ETH oder Base-ETH decken die [On-Chain](/de/glossary/on-chain/)-Mint-Transaktion ab. Sie benötigen nicht viel.
+- **Sie kontrollieren die Domain bei ihrem aktuellen [Registrar](/de/glossary/registrar/).** Sie können sich einloggen, Nameserver ändern und Transfers / [Auth-Codes](/de/glossary/auth-code/) genehmigen.
+- **Sie besitzen eine selbstverwaltete (self-custodial) [Wallet](/de/glossary/wallet/).** MetaMask, Rabby, Coinbase Wallet oder jede andere Standard-EVM-Wallet. Stellen Sie sicher, dass Sie tatsächlich über die [Seed-Phrase](/de/glossary/seed-phrase/) verfügen – und nicht nur über ein Konto bei einer Kryptobörse.
+- **Die Wallet verfügt über eine kleine Menge an [Gas](/de/glossary/gas/).** Ein paar Dollar in ETH oder Base-ETH decken die [On-Chain](/de/glossary/on-chain/)-Mint-Transaktion ab. Sie benötigen nicht viel.
 - **Die Domain ist nicht gesperrt, läuft nicht bald ab und befindet sich nicht mitten in einem Transfer.** Domains innerhalb von etwa 60 Tagen nach einem kürzlichen [Registrar-Transfer](/de/glossary/cross-registrar-transfer/) oder innerhalb von 30 Tagen vor Ablauf können oft nicht übertragen werden. Prüfen Sie dies im Voraus.
 - **Sie haben Zeit.** Planen Sie etwa 30 Minuten aktive Aufmerksamkeit ein, plus bis zu 5–7 Tage für die Hintergrundverarbeitung bei Registrar-Transfers.
 
@@ -41,7 +41,7 @@ Gehen Sie zu [namefi.io](https://namefi.io) und klicken Sie auf „Connect Walle
 
 ## Schritt 2: Fügen Sie die Domain hinzu, die Sie tokenisieren möchten
 
-Suchen oder fügen Sie in Ihrem Namefi-Dashboard die Domain hinzu, die Sie bereits besitzen. Namefi prüft die Eignung – den [Registrar](/de/glossary/registrar/), bei dem sie sich derzeit befindet, ob sie gesperrt werden kann, ob sie den [ICANN](/de/glossary/icann/)-Transferregeln entspricht und ob die [TLD](/en/glossary/tld/) unterstützt wird.
+Suchen oder fügen Sie in Ihrem Namefi-Dashboard die Domain hinzu, die Sie bereits besitzen. Namefi prüft die Eignung – den [Registrar](/de/glossary/registrar/), bei dem sie sich derzeit befindet, ob sie gesperrt werden kann, ob sie den [ICANN](/de/glossary/icann/)-Transferregeln entspricht und ob die [TLD](/de/glossary/tld/) unterstützt wird.
 
 Sie werden einen von drei Status sehen:
 
@@ -55,7 +55,7 @@ Sie werden einen von drei Status sehen:
 
 Namefi bietet in der Regel einige verschiedene Pfade an, abhängig vom aktuellen Registrar der Domain:
 
-1. **Transferieren und dann tokenisieren.** Verschieben Sie die Domain zum akkreditierten Registrar-Partner von Namefi und minten Sie dann den On-Chain-Token. Dies ist der häufigste Weg. Er dauert aufgrund des ICANN-Transferablaufs einige Tage, nicht wegen irgendetwas Blockchain-spezifischem.
+1. **Transferieren und dann tokenisieren.** Verschieben Sie die Domain zum akkreditierten Registrar-Partner von Namefi und minten Sie dann den On-Chain-Token. Dies ist der häufigste Weg. Er dauert aufgrund des ICANN-Transferablaufs einige Tage, nicht wegen irgendetwas [Blockchain](/de/glossary/blockchain/)-spezifischem.
 2. **Direkte Tokenisierung (wo unterstützt).** Bei einigen Registrar-Integrationen (in-place) bleibt die Domain dort, wo sie ist, und die On-Chain-Schicht wird darüber gelegt. Dies ist schneller, aber nur für bestimmte Partner-Registrare verfügbar.
 
 Sie sehen den Pfad, der für Ihre Domain infrage kommt. Das Dashboard zeigt Ihnen im Voraus die geschätzte Dauer und anfallende Gebühren an.
@@ -64,7 +64,7 @@ Sie sehen den Pfad, der für Ihre Domain infrage kommt. Das Dashboard zeigt Ihne
 
 ## Schritt 4: Auth-Code bestätigen / Transfer genehmigen (falls erforderlich)
 
-Für den Transfer-Pfad holen Sie sich den [**Auth-Code**](/en/glossary/auth-code/) (manchmal auch EPP-Code genannt) von Ihrem aktuellen Registrar und fügen ihn bei Namefi ein. Möglicherweise müssen Sie auch:
+Für den Transfer-Pfad holen Sie sich den [**Auth-Code**](/de/glossary/auth-code/) (manchmal auch EPP-Code genannt) von Ihrem aktuellen Registrar und fügen ihn bei Namefi ein. Möglicherweise müssen Sie auch:
 
 - Die Domain bei Ihrem aktuellen Registrar entsperren (Unlock).
 - Eine Bestätigungs-E-Mail genehmigen, die an den Kontakt des Domaininhabers gesendet wird.
@@ -75,7 +75,7 @@ Dies ist der langsamste Teil des gesamten Prozesses. Planen Sie 5–7 Tage für 
 
 ## Schritt 5: Den On-Chain-Token minten
 
-Sobald sich die Domain unter der Namefi-Registrar-Integration befindet, werden Sie aufgefordert, die [NFT](/de/glossary/nft/)-Darstellung (ein Standard-[ERC-721](/en/glossary/erc-721/)-Token) zu **minten**. Ihre Wallet öffnet sich; Sie bestätigen eine Transaktion; [Gas](/en/glossary/gas/) wird bezahlt; der Token landet in Ihrer Wallet.
+Sobald sich die Domain unter der Namefi-Registrar-Integration befindet, werden Sie aufgefordert, die [NFT](/de/glossary/nft/)-Darstellung (ein Standard-[ERC-721](/de/glossary/erc-721/)-Token) zu **minten**. Ihre Wallet öffnet sich; Sie bestätigen eine Transaktion; [Gas](/de/glossary/gas/) wird bezahlt; der Token landet in Ihrer Wallet.
 
 Dies ist der Moment, in dem die Domain [*tokenisiert*](/de/glossary/tokenize/) wird. Sie haben nun:
 
@@ -90,13 +90,13 @@ Beide werden fortan durch das Protokoll synchron gehalten.
 
 Öffnen Sie den NFT-Tab Ihrer Wallet. Sie sollten den neuen NFT der tokenisierten Domain sehen. Klicken Sie sich zu einem Block-Explorer (Etherscan, Basescan usw.) durch, um den Smart Contract und die Eigentümeradresse zu bestätigen. Dies ist ein guter Moment, um einen Screenshot für Ihre eigenen Unterlagen zu machen.
 
-Wenn Sie eine [Hardware-Wallet](/en/glossary/hardware-wallet/) haben, ist dies ein hervorragender Moment, um den NFT dorthin zu übertragen. Die Übertragung ist ein normaler NFT-Transfer und kostet Gas.
+Wenn Sie eine [Hardware-Wallet](/de/glossary/hardware-wallet/) haben, ist dies ein hervorragender Moment, um den NFT dorthin zu übertragen. Die Übertragung ist ein normaler NFT-Transfer und kostet Gas.
 
 ---
 
 ## Schritt 7: DNS und Verlängerungen verwalten
 
-Die Tokenisierung einer Domain ändert nichts daran, wie sie aufgelöst wird. Ihre Nameserver, A-Records, MX-Records, DNSSEC – all das funktioniert weiterhin. Sie können diese über das Namefi-Dashboard verwalten oder sie wie bisher an Ihren bestehenden DNS-Anbieter (Cloudflare, Route53 usw.) delegieren.
+Die Tokenisierung einer Domain ändert nichts daran, wie sie aufgelöst wird. Ihre Nameserver, A-Records, MX-Records, [DNSSEC](/de/glossary/dnssec/) – all das funktioniert weiterhin. Sie können diese über das Namefi-Dashboard verwalten oder sie wie bisher an Ihren bestehenden DNS-Anbieter (Cloudflare, Route53 usw.) delegieren.
 
 Details darüber, was sich auf der DNS-Ebene ändert (und was nicht), finden Sie unter [DNS funktioniert weiterhin: Nameserver, E-Mail und DNSSEC bei einer tokenisierten Domain](/de/blog/dns-on-tokenized-domains/).
 
@@ -109,7 +109,7 @@ Verlängerungen (Renewals) erfolgen weiterhin über die Registrar-Ebene. Namefi 
 Sie zahlen im Grunde für drei Dinge:
 
 - **Registrar-Gebühren.** Die normalen jährlichen Preise für Domainverlängerungen plus etwaige Transfergebühren. Dies sind reale Kosten, die unabhängig von der Tokenisierung anfallen.
-- **Gas.** Ein paar Dollar für die Mint-Transaktion, je nachdem auf welcher Blockchain (Base ist günstiger als Ethereum L1).
+- **Gas.** Ein paar Dollar für die Mint-Transaktion, je nachdem auf welcher Blockchain (Base ist günstiger als [Ethereum](/de/glossary/ethereum/) L1).
 - **Protokollgebühren.** Die eigenen Gebühren von Namefi für den Tokenisierungs-Dienst. Diese werden im Dashboard angezeigt, bevor Sie bestätigen.
 
 Es gibt keine versteckten Überraschungen. Wenn eine Zahl nicht auf dem Bestätigungsbildschirm steht, handelt es sich auch nicht um eine Gebühr.

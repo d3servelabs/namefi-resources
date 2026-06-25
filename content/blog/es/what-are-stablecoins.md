@@ -9,9 +9,9 @@ description: 'Descubre cómo las stablecoins cierran la brecha entre el dinero f
 keywords: ['qué son las stablecoins', 'definición de stablecoin', 'USDT vs USDC', 'volatilidad cripto', 'pagos web3', 'dominios blockchain', 'finanzas descentralizadas', 'colateralizado por fiat', 'comprar dominios con cripto', 'namefi']
 ---
 
-En el vertiginoso y a menudo turbulento mundo de las criptomonedas, los precios pueden oscilar drásticamente en cuestión de minutos. Bitcoin y Ethereum pueden ser el motor del ecosistema, pero su volatilidad dificulta su uso para transacciones cotidianas, liquidaciones comerciales o la fijación de precios de activos del mundo real. Aquí entran las **stablecoins** (monedas estables): el puente crucial entre la estabilidad de la moneda fiat tradicional y la innovación tecnológica de la blockchain.
+En el vertiginoso y a menudo turbulento mundo de las criptomonedas, los precios pueden oscilar drásticamente en cuestión de minutos. Bitcoin y [Ethereum](/es/glossary/ethereum/) pueden ser el motor del ecosistema, pero su volatilidad dificulta su uso para transacciones cotidianas, liquidaciones comerciales o la fijación de precios de activos del mundo real. Aquí entran las **stablecoins** (monedas estables): el puente crucial entre la estabilidad de la moneda fiat tradicional y la innovación tecnológica de la [blockchain](/es/glossary/blockchain/).
 
-Para cualquiera que navegue por el panorama de la [Web3](https://en.wikipedia.org/wiki/Web3) —ya seas desarrollador, inversor de dominios o propietario de un negocio— entender las stablecoins ya no es opcional. Son el motor de liquidez de la internet descentralizada.
+Para cualquiera que navegue por el panorama de la [Web3](https://en.wikipedia.org/wiki/Web3) —ya seas desarrollador, inversor de dominios o propietario de un negocio— entender las stablecoins ya no es opcional. Son el motor de [liquidez](/es/glossary/domain-liquidity/) de la internet descentralizada.
 
 ## El concepto central: Estabilidad en medio de la volatilidad
 
@@ -42,18 +42,18 @@ Estas no utilizan colateral. En su lugar, usan contratos inteligentes y algoritm
 Las stablecoins se han convertido en un mercado multimillonario porque resuelven problemas prácticos que las criptomonedas puras no pueden solucionar.
 
 *   **Transacciones fluidas**: Puedes enviar millones de dólares en stablecoins a cualquier parte del mundo en segundos por una fracción del costo de una transferencia bancaria, 24/7/365.
-*   **DeFi (Finanzas Descentralizadas)**: Las stablecoins son el alma de las [DeFi](https://ethereum.org/en/defi/). Los usuarios pueden prestar sus stablecoins para obtener rendimientos (intereses) a menudo significativamente más altos que los de las cuentas de ahorro tradicionales.
+*   **[DeFi](/es/glossary/defi/) (Finanzas Descentralizadas)**: Las stablecoins son el alma de las [DeFi](https://ethereum.org/en/defi/). Los usuarios pueden prestar sus stablecoins para obtener rendimientos (intereses) a menudo significativamente más altos que los de las cuentas de ahorro tradicionales.
 *   **Refugio seguro**: Cuando los mercados de criptomonedas caen, los traders intercambian sus activos volátiles por stablecoins para proteger el valor de su cartera sin necesidad de retirar dinero a un banco.
 
 ## El enfoque de Namefi: Pagos estables para activos on-chain
 
-En **Namefi**, estamos cerrando la brecha entre el internet tradicional (DNS) y la web descentralizada (blockchain). Permitimos a los usuarios comprar, gestionar y transferir dominios *on-chain* (en cadena) como NFTs. Las stablecoins juegan un papel fundamental en este ecosistema.
+En **Namefi**, estamos cerrando la brecha entre el internet tradicional (DNS) y la web descentralizada (blockchain). Permitimos a los usuarios comprar, gestionar y transferir dominios *[on-chain](/es/glossary/on-chain/)* (en cadena) como NFTs. Las stablecoins juegan un papel fundamental en este ecosistema.
 
 ### 1. Previsibilidad de precios
 Cuando compras un nombre de dominio premium, quieres saber exactamente cuánto estás pagando. Aunque pagar en ETH es posible, el precio de ETH podría cambiar un 5% mientras estás en la pantalla de pago. Las stablecoins permiten a los usuarios de Namefi realizar transacciones con la precisión de la moneda fiat mientras disfrutan de la velocidad de la blockchain.
 
 ### 2. Comercio global sin fricciones
-La inversión en dominios es una industria global. Tradicionalmente, comprar un dominio de alto valor implica servicios de custodia (Escrow), transferencias bancarias y tarifas de conversión de moneda. Con Namefi y las stablecoins, un comprador en Tokio puede adquirir instantáneamente un dominio de un vendedor en Nueva York usando USDC o USDT. La transacción se liquida *on-chain* inmediatamente, y la propiedad (el NFT) se transfiere al instante.
+La inversión en dominios es una industria global. Tradicionalmente, comprar un dominio de alto valor implica servicios de custodia ([Escrow](/es/glossary/escrow/)), transferencias bancarias y tarifas de conversión de moneda. Con Namefi y las stablecoins, un comprador en Tokio puede adquirir instantáneamente un dominio de un vendedor en Nueva York usando USDC o USDT. La transacción se liquida *on-chain* inmediatamente, y la propiedad (el NFT) se transfiere al instante.
 
 ### 3. Futuras integraciones DeFi
 Dado que Namefi trata los dominios como Activos del Mundo Real (RWAs, por sus siglas en inglés) en la blockchain, las posibilidades futuras son enormes. Imagina usar tu cartera de dominios de alto valor como garantía para pedir prestado stablecoins a través de un protocolo DeFi. Esto desbloquea liquidez para los dueños de negocios sin obligarlos a vender su identidad digital.

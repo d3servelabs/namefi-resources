@@ -19,7 +19,7 @@ keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan cl
 
 认证账户是一种信任捷径。当 `@BarackObama` 发推时，你不会重新验证那是否真的是他本人；用户名加上认证徽章*本身就是*验证。这种捷径价值极高——却也极为脆弱，因为所有的信任都积累在账户上，而对账户的控制权却可能完全处于另一个地方。
 
-这与域名的结构如出一辙。`whitehouse.gov` 之所以受到信任，不是因为每位访客都会检查证书链，而是因为这个名字本身就承载着权威。控制这个名字——在注册商、在DNS、在管理面板——你就立刻继承了人们倾注其中的所有信任，无论这个名字曾经是否属于你。
+这与域名的结构如出一辙。`whitehouse.gov` 之所以受到信任，不是因为每位访客都会检查证书链，而是因为这个名字本身就承载着权威。控制这个名字——在[注册商](/zh/glossary/registrar/)、在[DNS](/zh/glossary/dns/)、在管理面板——你就立刻继承了人们倾注其中的所有信任，无论这个名字曾经是否属于你。
 
 2020年Twitter黑客事件是我们所见过的最清晰的案例，展示了*信任*与*控制*之间的这道鸿沟。纽约金融监管机构对此进行了调查，因为受害者中包含受监管的加密货币公司。该机构直言不讳地指出：这次攻击是"[一个警示性案例，说明即便是不那么老练的网络罪犯也能造成极大的破坏](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Twitter%20Hack%20is%20a%20cautionary%20tale%20about%20the%20extraordinary%20damage%20that%20can%20be%20caused%20even%20by%20unsophisticated%20cybercriminals)"。
 
@@ -29,7 +29,7 @@ keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan cl
 
 事件发生得很快，而且是在光天化日之下。根据维基百科的重建记录，"[2020年7月15日，20:00至22:00 UTC之间，130个知名度极高的Twitter账户遭到入侵](https://en.wikipedia.org/wiki/2020_Twitter_account_hijacking#:~:text=On%20July%2015%2C%202020%2C%20between%2020%3A00%20and%2022%3A00%20UTC%2C%20130%20high%2Dprofile%20Twitter%20accounts%20were%20compromised)"。
 
-纽约金融服务局（DFS）报告详细描述了事件的来龙去脉。攻击者首先拿加密货币账户热身："[黑客首先操控了与知名加密货币公司及个人相关的Twitter账户](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Hackers%20first%20manipulated%20Twitter%20accounts%20connected%20to%20well%2Dknown%20cryptocurrency%20companies%20and%20individuals)"，在私信和推文中植入比特币钱包地址。随后他们升级了攻击："[黑客随后大幅提高了赌注，将目标锁定在拥有数百万粉丝的Twitter认证账户](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Hackers%20then%20raised%20the%20stakes%20significantly%20and%20targeted%20verified%20Twitter%20accounts%20with%20millions%20of%20followers)"。
+纽约金融服务局（DFS）报告详细描述了事件的来龙去脉。攻击者首先拿加密货币账户热身："[黑客首先操控了与知名加密货币公司及个人相关的Twitter账户](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Hackers%20first%20manipulated%20Twitter%20accounts%20connected%20to%20well%2Dknown%20cryptocurrency%20companies%20and%20individuals)"，在私信和推文中植入比特币[钱包](/zh/glossary/wallet/)地址。随后他们升级了攻击："[黑客随后大幅提高了赌注，将目标锁定在拥有数百万粉丝的Twitter认证账户](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Hackers%20then%20raised%20the%20stakes%20significantly%20and%20targeted%20verified%20Twitter%20accounts%20with%20millions%20of%20followers)"。
 
 遭受攻击的账户名单，读起来就像平台上最受信任账户的宾客名录。维基百科指出，"[疑似遭入侵的账户包括巴拉克·奥巴马、乔·拜登、比尔·盖茨、杰夫·贝索斯等知名人士，以及苹果、Uber和Cash App等公司](https://en.wikipedia.org/wiki/2020_Twitter_account_hijacking#:~:text=well%2Dknown%20individuals%20such%20as%20Barack%20Obama%2C%20Joe%20Biden%2C%20Bill%20Gates%2C%20Jeff%20Bezos)"的账户。
 
@@ -51,7 +51,7 @@ keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan cl
 
 事件中并没有利用任何漏洞。DFS报告明确指出："[Twitter黑客事件没有涉及网络攻击中常见的任何高技术或复杂手段——没有恶意软件、没有漏洞利用、也没有后门](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Twitter%20Hack%20did%20not%20involve%20any%20of%20the%20high%2Dtech%20or%20sophisticated%20techniques%20often%20used%20in%20cyberattacks%20%E2%80%93%20no%20malware%2C%20no%20exploits%2C%20and%20no%20backdoors)"。取而代之的是："[黑客使用的是更接近传统诈骗犯的基本手段：打电话冒充Twitter信息技术部门的人员](https://www.dfs.ny.gov/Twitter_Report#:~:text=The%20Hackers%20used%20basic%20techniques%20more%20akin%20to%20those%20of%20a%20traditional%20scam%20artist%3A%20phone%20calls%20where%20they%20pretended%20to%20be%20from%20Twitter%E2%80%99s%20Information%20Technology%20department)"。
 
-这就是**语音钓鱼（vishing）**——即语音版网络钓鱼。攻击者"[致电多名Twitter员工，声称自己是Twitter IT部门帮助台的工作人员](https://www.dfs.ny.gov/Twitter_Report#:~:text=called%20several%20Twitter%20employees%20and%20claimed%20to%20be%20calling%20from%20the%20Help%20Desk%20in%20Twitter%E2%80%99s%20IT%20department)"，并"[声称是在回应员工反映的Twitter虚拟私人网络问题](https://www.dfs.ny.gov/Twitter_Report#:~:text=claimed%20they%20were%20responding%20to%20a%20reported%20problem%20the%20employee%20was%20having%20with%20Twitter%E2%80%99s%20Virtual%20Private%20Network)"。Twitter自己后来将其描述为一次"[电话鱼叉式网络钓鱼攻击](https://krebsonsecurity.com/2020/07/three-charged-in-july-15-twitter-compromise/#:~:text=phone%20spear%20phishing%20attack)"，依赖的是"[对特定员工进行大规模、有组织的误导，并利用人性弱点](https://krebsonsecurity.com/2020/07/three-charged-in-july-15-twitter-compromise/#:~:text=a%20significant%20and%20concerted%20attempt%20to%20mislead%20certain%20employees%20and%20exploit%20human%20vulnerabilities)"。
+这就是**语音钓鱼（vishing）**——即语音版[网络钓鱼](/zh/glossary/phishing/)。攻击者"[致电多名Twitter员工，声称自己是Twitter IT部门帮助台的工作人员](https://www.dfs.ny.gov/Twitter_Report#:~:text=called%20several%20Twitter%20employees%20and%20claimed%20to%20be%20calling%20from%20the%20Help%20Desk%20in%20Twitter%E2%80%99s%20IT%20department)"，并"[声称是在回应员工反映的Twitter虚拟私人网络问题](https://www.dfs.ny.gov/Twitter_Report#:~:text=claimed%20they%20were%20responding%20to%20a%20reported%20problem%20the%20employee%20was%20having%20with%20Twitter%E2%80%99s%20Virtual%20Private%20Network)"。Twitter自己后来将其描述为一次"[电话鱼叉式网络钓鱼攻击](https://krebsonsecurity.com/2020/07/three-charged-in-july-15-twitter-compromise/#:~:text=phone%20spear%20phishing%20attack)"，依赖的是"[对特定员工进行大规模、有组织的误导，并利用人性弱点](https://krebsonsecurity.com/2020/07/three-charged-in-july-15-twitter-compromise/#:~:text=a%20significant%20and%20concerted%20attempt%20to%20mislead%20certain%20employees%20and%20exploit%20human%20vulnerabilities)"。
 
 让人信服的是情报收集，而非技术能力。正如安全记者布莱恩·克雷布斯所记录的，攻击者依靠人物资料数据——从LinkedIn和此前数据泄露事件中获取的姓名、职务和个人详情——来听起来像真正的同事。一旦某位员工相信了来电者，就会交出凭证，而凭证打开了通往"战利品"的大门：Twitter的内部账户管理工具。
 
@@ -89,7 +89,7 @@ keywords: ['2020年推特黑客事件', '推特比特币诈骗', 'graham ivan cl
 
 域名是一种网络身份，与Twitter认证用户名所面临的信任与控制之间的鸿沟完全相同——而且通常拥有同样不透明的后台管理。对于大多数域名而言，"所有权"存在于一个注册商账户中，依靠密码和客服团队来守护。一通令人信服的电话、一次被社会工程学攻破的客服代表、一次通过内部面板推送的邮箱修改——2020年Twitter事件的剧本几乎可以一一对应注册商账户劫持。世界对你的域名倾注的信任，并不能保护它，如果对该域名的控制权就藏在一个可以被人说服接受任何请求的客服台后面。
 
-[Namefi](https://namefi.io) 的存在正是为了弥合这一差距。其核心理念是：域名的控制权应该是*可验证且归所有者持有的*，而不是存在于别人管理工具中的一个设置项。通过将域名所有权表示为一种代币化的链上资产，同时保持与DNS的兼容性，Namefi让"谁控制这个名字？"这个问题能够通过密码学来回答，而不是由承压下的客服代理来判断。没有任何一个内部面板能让一千名员工默默地重新分配你的名字；控制权的证明存在于所有者手中，转让是可审计的而非随意进行的。
+[Namefi](https://namefi.io) 的存在正是为了弥合这一差距。其核心理念是：域名的控制权应该是*可验证且归所有者持有的*，而不是存在于别人管理工具中的一个设置项。通过将[域名所有权](/zh/glossary/domain-ownership/)表示为一种代币化的链上资产，同时保持与DNS的兼容性，Namefi让"谁控制这个名字？"这个问题能够通过密码学来回答，而不是由承压下的客服代理来判断。没有任何一个内部面板能让一千名员工默默地重新分配你的名字；控制权的证明存在于所有者手中，转让是可审计的而非随意进行的。
 
 2020年Twitter黑客事件之所以得逞，是因为身份与控制权已经悄然分离——名字显示的是一件事，而隐藏的管理工具却决定着另一件事。对于任何依赖一个名字的人来说，这一事件的教训是：让控制权像名字所承载的信任一样清晰可见，并且牢牢掌握在所有者手中。用户名、认证徽章、域名：每一个都只有其背后的后台足够安全时才是安全的。Namefi 的赌注是：后台应该是一个你自己控制的可验证账本，而不是一条可以被别人骗着接听的电话热线。
 

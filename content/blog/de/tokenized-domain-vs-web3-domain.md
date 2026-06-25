@@ -33,7 +33,7 @@ Beide beinhalten NFTs in Wallets. Beide werden als „Domains“ bezeichnet. Bei
 Hier ist das klarste mentale Modell:
 
 - Wenn Sie den Namen in einen normalen Browser eingeben und er ohne Erweiterung, Plugin oder speziellen Resolver zu einer Website führt – dann ist es eine **DNS-Domain**. Diese zu tokenisieren, ändert daran nichts.
-- Wenn Sie eine Browser-Erweiterung, eine spezielle Wallet-Funktion oder ein Resolver-Gateway benötigen, damit es funktioniert – dann ist es eine **Web3-Domain**.
+- Wenn Sie eine Browser-Erweiterung, eine spezielle [Wallet](/de/glossary/wallet/)-Funktion oder ein Resolver-Gateway benötigen, damit es funktioniert – dann ist es eine **Web3-Domain**.
 
 Beides hat seine Berechtigung. Sie erfüllen nur unterschiedliche Zwecke.
 
@@ -65,7 +65,7 @@ Ideal, wenn:
 - Sie eine echte Website, App oder ein Unternehmen betreiben und möchten, dass diese für **jeden** funktioniert, unabhängig davon, ob Web3-Software installiert ist.
 - Sie E-Mails unter Ihrer Domain, SSL-Zertifikate von Standard-CAs (Zertifizierungsstellen), CDN-Konfigurationen usw. benötigen.
 - Sie **Wallet-natives Eigentum und Übertragbarkeit** für die Domain selbst wünschen – Verkaufen, Verschenken, Verleihen – und das ohne die Bürokratie eines Registrars.
-- Sie die Domain als On-Chain-Sicherheit im DeFi-Bereich nutzen möchten, während sie gleichzeitig als normale Website weiterläuft.
+- Sie die Domain als On-Chain-[Sicherheit](/de/glossary/collateral/) im [DeFi](/de/glossary/defi/)-Bereich nutzen möchten, während sie gleichzeitig als normale Website weiterläuft.
 
 Beispiele: Die `.com` eines Unternehmens, die `.io` einer SaaS-App, die `.xyz` eines Creators, die `.art` einer Marke. Alles, was im „echten“ Internet funktionieren muss.
 
@@ -86,13 +86,13 @@ Beispiele: Ihre persönliche Web3-Identität, ein Wallet-Profil, eine einprägsa
 
 ### DNS (die Welt, in der tokenisierte Domains leben)
 
-Sie tippen `example.com` ein. Ihr Computer fragt einen DNS-Resolver. Der Resolver durchläuft die DNS-Hierarchie. Sie erhalten eine IP-Adresse. Der Browser ruft die Seite ab. All das funktioniert immer gleich, unabhängig davon, ob die Domain tokenisiert ist oder nicht, denn die Tokenisierung fügt eine *Eigentumsebene* hinzu, keine *Auflösungsebene*.
+Sie tippen `example.com` ein. Ihr Computer fragt einen [DNS-Resolver](/de/glossary/dns-resolver/). Der Resolver durchläuft die DNS-Hierarchie. Sie erhalten eine [IP-Adresse](/de/glossary/ip-address/). Der Browser ruft die Seite ab. All das funktioniert immer gleich, unabhängig davon, ob die Domain tokenisiert ist oder nicht, denn die Tokenisierung fügt eine *Eigentumsebene* hinzu, keine *Auflösungsebene*.
 
 Praktische Details dazu finden Sie unter [DNS funktioniert weiterhin](/de/blog/dns-on-tokenized-domains/).
 
 ### ENS / Web3-Namensauflösung
 
-Sie tippen `vitalik.eth` ein. Ein Web3-fähiger Client (MetaMask, eine DApp, bestimmte Browser mit [ENS](/en/glossary/ens/)-Unterstützung) fragt den ENS-[Smart Contract](/de/glossary/smart-contract/) auf Ethereum ab, erhält die zugehörige Adresse oder den Content Hash und rendert die Inhalte entsprechend. Ein nicht Web3-fähiger Client (Chrome ohne Erweiterungen, Ihr Büro-E-Mail-Server, Ihre SSL-Zertifizierungsstelle) weiß nicht, was `.eth` bedeutet, und wird es nicht auflösen.
+Sie tippen `vitalik.eth` ein. Ein Web3-fähiger Client (MetaMask, eine DApp, bestimmte Browser mit [ENS](/de/glossary/ens/)-Unterstützung) fragt den ENS-[Smart Contract](/de/glossary/smart-contract/) auf [Ethereum](/de/glossary/ethereum/) ab, erhält die zugehörige Adresse oder den Content Hash und rendert die Inhalte entsprechend. Ein nicht Web3-fähiger Client (Chrome ohne Erweiterungen, Ihr Büro-E-Mail-Server, Ihre SSL-Zertifizierungsstelle) weiß nicht, was `.eth` bedeutet, und wird es nicht auflösen.
 
 Das ist kein Fehler, sondern so gewollt. ENS und ähnliche Systeme sind für ein Web3-natives Erlebnis gebaut, nicht um die Namensebene des breiten Internets zu ersetzen. Details zur zugrunde liegenden Architektur finden Sie in der [offiziellen ENS-Dokumentation](https://docs.ens.domains/).
 

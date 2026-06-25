@@ -9,11 +9,11 @@ description: 'En julio de 2024, una migración de registrador de Google Domains 
 keywords: ['secuestro de dominio squarespace', 'migración google domains', 'secuestro dns defi', 'secuestro compound finance', 'secuestro celer network', 'vaciador de carteras', 'inferno drainer', 'seguridad de dominios', 'migración de registrador', 'mfa autenticación multifactor', 'toma de cuenta oauth', 'secuestro dns', 'phishing cripto']
 ---
 
-En julio de 2024, lo más peligroso del sitio web de un proyecto cripto no era un error en el contrato inteligente ni una clave privada filtrada. Era el registrador que controlaba el dominio.
+En julio de 2024, lo más peligroso del sitio web de un proyecto cripto no era un error en el [contrato inteligente](/es/glossary/smart-contract/) ni una [clave privada](/es/glossary/private-key/) filtrada. Era el [registrador](/es/glossary/registrar/) que controlaba el dominio.
 
-Durante varios días de ese mes, los usuarios que escribían una dirección familiar en su navegador — el sitio oficial de un protocolo de préstamos en el que confiaban, un puente que habían utilizado cien veces — llegaban exactamente donde esperaban, a una página de apariencia completamente normal, y entonces veían cómo sus carteras se vaciaban. Nada había sido hackeado en el sentido habitual. Nadie había descifrado una contraseña ni robado una frase semilla. Los atacantes simplemente habían entrado por la puerta principal del *dominio* en sí, porque esa puerta había quedado sin cerrar durante una mudanza corporativa que la mayoría de estos proyectos nunca notó.
+Durante varios días de ese mes, los usuarios que escribían una dirección familiar en su navegador — el sitio oficial de un protocolo de préstamos en el que confiaban, un puente que habían utilizado cien veces — llegaban exactamente donde esperaban, a una página de apariencia completamente normal, y entonces veían cómo sus carteras se vaciaban. Nada había sido hackeado en el sentido habitual. Nadie había descifrado una contraseña ni robado una [frase semilla](/es/glossary/seed-phrase/). Los atacantes simplemente habían entrado por la puerta principal del *dominio* en sí, porque esa puerta había quedado sin cerrar durante una mudanza corporativa que la mayoría de estos proyectos nunca notó.
 
-La mudanza fue la migración de Google Domains a Squarespace. La puerta sin cerrar eran los valores predeterminados de autenticación de Squarespace. Y el resultado fue una oleada coordinada de secuestros de DNS contra proyectos cripto y DeFi que controlaban, en palabras de un investigador, miles de millones de dólares en activos.
+La mudanza fue la migración de Google Domains a Squarespace. La puerta sin cerrar eran los valores predeterminados de autenticación de Squarespace. Y el resultado fue una oleada coordinada de secuestros de [DNS](/es/glossary/dns/) contra proyectos cripto y [DeFi](/es/glossary/defi/) que controlaban, en palabras de un investigador, miles de millones de dólares en activos.
 
 ## Cómo una migración de registrador creó una superficie de ataque masiva
 
@@ -39,7 +39,7 @@ La lista de víctimas confirmadas parecía un recuento del ecosistema. Las entid
 
 La crueldad de un secuestro de dominio radica en que anula todos los hábitos en los que los usuarios aprenden a confiar. Verifica la URL. Asegúrate de que es el sitio real. Busca el icono de candado. Todo ese consejo asume que el dominio aún apunta a donde debe. Cuando el atacante controla el DNS del dominio, la URL *es* real — es la dirección genuina del proyecto — y se resuelve en el servidor del atacante. El candado está en verde. La barra de direcciones dice la verdad. La página es una trampa.
 
-Por eso los kits de vaciado de carteras como Inferno combinan tan bien con el secuestro de DNS. El vaciador no necesita robar una contraseña; necesita que la víctima *conecte una cartera y firme*. Y un usuario que llegó al dominio real de su protocolo de préstamos no tiene motivo para dudar antes de aprobar una transacción. El sitio de phishing hereda toda la confianza que el dominio legítimo tardó años en ganarse.
+Por eso los kits de vaciado de carteras como Inferno combinan tan bien con el secuestro de DNS. El vaciador no necesita robar una contraseña; necesita que la víctima *conecte una cartera y firme*. Y un usuario que llegó al dominio real de su protocolo de préstamos no tiene motivo para dudar antes de aprobar una transacción. El sitio de [phishing](/es/glossary/phishing/) hereda toda la confianza que el dominio legítimo tardó años en ganarse.
 
 ¿Qué tan grave podría haber sido? El número que capturó la dimensión del problema no fue la cantidad de robos confirmados, sino la de proyectos *expuestos*. El análisis de Blockaid, reportado por Decrypt, fue directo: [aproximadamente 228 interfaces de usuario de protocolos DeFi siguen en riesgo](https://decrypt.co/239524/220-defi-protocols-risk-squarespace-dns-hijack#:~:text=roughly%20228%20DeFi%20protocol%20front%20ends%20are%20still%20at%20risk), porque todas se encontraban detrás de la misma vulnerabilidad de cuenta migrada. Los secuestros que ocurrieron fueron una muestra. La superficie de ataque era todo el colectivo cripto que había transitado la migración de Google a Squarespace.
 
@@ -65,11 +65,11 @@ El consejo de mitigación inmediata fue el mismo para todos los que aún tenían
 
 ## Lo que esto enseña sobre la seguridad del registrador y el MFA
 
-Los secuestros de Squarespace no son realmente la historia de la mala configuración de una empresa. Son la historia de dónde reside realmente el control de los dominios, y cuán frágil sigue siendo la capa por encima de la blockchain.
+Los secuestros de Squarespace no son realmente la historia de la mala configuración de una empresa. Son la historia de dónde reside realmente el control de los dominios, y cuán frágil sigue siendo la capa por encima de la [blockchain](/es/glossary/blockchain/).
 
 Algunas lecciones se generalizan mucho más allá de julio de 2024:
 
-1. **La cuenta del registrador es la verdadera raíz de confianza — no el contrato inteligente.** Ninguno de los protocolos afectados tenía un error en el contrato. Su código on-chain estaba bien. Los atacantes se apoderaron del *dominio*, y el dominio es lo que los usuarios escriben, en lo que confían y a lo que conectan sus carteras. Un proyecto puede ser impecable on-chain y aun así entregar sus usuarios a un atacante si el plano de control de su DNS es débil.
+1. **La cuenta del registrador es la verdadera raíz de confianza — no el contrato inteligente.** Ninguno de los protocolos afectados tenía un error en el contrato. Su código [on-chain](/es/glossary/on-chain/) estaba bien. Los atacantes se apoderaron del *dominio*, y el dominio es lo que los usuarios escriben, en lo que confían y a lo que conectan sus carteras. Un proyecto puede ser impecable on-chain y aun así entregar sus usuarios a un atacante si el plano de control de su DNS es débil.
 
 2. **El MFA solo es una protección si sobrevive a las migraciones.** El doloroso detalle aquí es que el MFA no falló bajo ataque — fue *eliminado* antes del ataque, como una concesión de comodidad en la migración. Trata el estado del MFA como algo que hay que reverificar después de cada movimiento de cuenta, transferencia o cambio de proveedor, no como algo que se configura una vez y se olvida.
 

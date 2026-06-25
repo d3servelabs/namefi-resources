@@ -10,7 +10,7 @@ ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['noticias de la industria de dominios', 'medios de nombres de dominio', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'noticias de icann']
 ---
 
-Si los [blogs individuales de domainers](/blog/famous-domainer-blogs-and-newsletters) son voces personales, los *medios de la industria de dominios* son los canales que operan más como redacciones: a veces redacciones de una sola persona, pero con la postura editorial del periodismo en lugar del diario de un comerciante. Cubren acuerdos, políticas, movimientos de registros/registradores, la ICANN y algún drama ocasional, y son las fuentes que otras personas citan.
+Si los [blogs individuales de domainers](/blog/famous-domainer-blogs-and-newsletters) son voces personales, los *medios de la industria de dominios* son los canales que operan más como redacciones: a veces redacciones de una sola persona, pero con la postura editorial del periodismo en lugar del diario de un comerciante. Cubren acuerdos, políticas, movimientos de registros/registradores, la [ICANN](/es/glossary/icann/) y algún drama ocasional, y son las fuentes que otras personas citan.
 
 Esta es la lista breve de medios que vale la pena conocer en 2026.
 
@@ -22,7 +22,7 @@ Fundado por Andrew Allemann en 2005. Lo más parecido que tiene la industria de 
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-Blog de larga trayectoria fundado originalmente por Mike Berkens (uno de los mayores titulares de carteras de dominios de la industria) y ahora editado principalmente por Raymond Hackney. Es una mezcla de noticias, análisis y opinión. Destaca en historias sobre políticas: casos de UDRP, cambios en contratos de registro, movimientos de la ICANN.
+Blog de larga trayectoria fundado originalmente por Mike Berkens (uno de los mayores titulares de carteras de dominios de la industria) y ahora editado principalmente por Raymond Hackney. Es una mezcla de noticias, análisis y opinión. Destaca en historias sobre políticas: casos de [UDRP](/es/glossary/udrp/), cambios en contratos de registro, movimientos de la ICANN.
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -34,7 +34,7 @@ Tanto [OnlineDomain](https://onlinedomain.com/) como [DomainInvesting](https://d
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-No es estrictamente una publicación para inversores de dominios; CircleID cubre los temas más amplios de DNS, la ICANN, gobernanza de Internet y la infraestructura. Pero si te interesa la capa de *políticas* (contratos de registros, nuevas rondas de gTLD, regulación de WHOIS, DNSSEC), CircleID es donde se redactan los contenidos de mayor relevancia, y entre las firmas se incluyen muchos de los mismos nombres que aparecen en las reuniones de la ICANN.
+No es estrictamente una publicación para inversores de dominios; CircleID cubre los temas más amplios de [DNS](/es/glossary/dns/), la ICANN, gobernanza de Internet y la infraestructura. Pero si te interesa la capa de *políticas* (contratos de registros, nuevas rondas de gTLD, regulación de [WHOIS](/es/glossary/whois/), [DNSSEC](/es/glossary/dnssec/)), CircleID es donde se redactan los contenidos de mayor relevancia, y entre las firmas se incluyen muchos de los mismos nombres que aparecen en las reuniones de la ICANN.
 
 ## Sitios de referencia y datos de ventas
 

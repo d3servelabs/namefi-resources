@@ -11,7 +11,7 @@ description: Una declaración de visión de D3Serve — por qué la digitalizaci
 keywords: ['confianza digital', 'D3Serve', 'blockchain', 'web3', 'contratos inteligentes', 'criptografía', 'consenso', 'manifiesto', 'visión', 'digitalización de la confianza', 'confianza grupal', 'automatización']
 ---
 
-En **D3Serve**, estamos dedicados a construir *confianza digital* aprovechando blockchain y otras tecnologías avanzadas.
+En **D3Serve**, estamos dedicados a construir *confianza digital* aprovechando [blockchain](/es/glossary/blockchain/) y otras tecnologías avanzadas.
 
 Estamos convencidos de que el futuro traerá enormes mejoras en productividad y una versión superior del mundo, hecha posible por la digitalización de la confianza.
 

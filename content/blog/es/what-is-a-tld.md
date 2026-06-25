@@ -11,7 +11,7 @@ keywords: ['tld', 'tld meaning', 'what is a tld', 'what is a top level domain', 
 
 ## ¿Qué es un TLD?
 
-Un **TLD (dominio de nivel superior)** es la parte de un nombre de dominio que aparece **después del último punto**. En `namefi.io`, el TLD es `.io`. En `google.com`, el TLD es `.com`. En `wikipedia.org`, el TLD es `.org`.
+Un **[TLD](/es/glossary/tld/) (dominio de nivel superior)** es la parte de un nombre de dominio que aparece **después del último punto**. En `namefi.io`, el TLD es `.io`. En `google.com`, el TLD es `.com`. En `wikipedia.org`, el TLD es `.org`.
 
 Esa es la **definición de TLD** en una sola frase: la etiqueta más a la derecha de un [nombre de dominio](/es/blog/what-is-domain/). También se le llama **extensión de dominio** o **sufijo de dominio**, pero el término técnicamente correcto es *dominio de nivel superior*. Se sitúa en lo más alto de la jerarquía de nomenclatura de internet — de ahí su nombre.
 
@@ -51,7 +51,7 @@ Para un recorrido más detallado sobre cómo se estructuran los dominios, consul
 
 ## Los Tipos de TLD
 
-No todos los TLDs son iguales. ICANN e IANA los clasifican en varias categorías. Estos son los principales **tipos de TLD** que encontrarás.
+No todos los TLDs son iguales. ICANN e [IANA](/es/glossary/iana/) los clasifican en varias categorías. Estos son los principales **tipos de TLD** que encontrarás.
 
 ### 1. TLDs Genéricos (gTLDs)
 
@@ -70,11 +70,11 @@ Los **ccTLDs** son TLDs de dos letras vinculados a un país o territorio, basado
 
 Lo interesante es que muchos ccTLDs han sido reutilizados mucho más allá de su país de origen porque las letras deletrean algo útil:
 
-- [`.ai`](/es/tld/ai/) es técnicamente el ccTLD de Anguila, pero se ha convertido en *la* extensión para empresas de inteligencia artificial.
+- [`.ai`](/es/tld/ai/) es técnicamente el [ccTLD](/es/glossary/cctld/) de Anguila, pero se ha convertido en *la* extensión para empresas de inteligencia artificial.
 - [`.io`](/es/tld/io/) pertenece al Territorio Británico del Océano Índico, pero domina el branding tecnológico y de startups ("E/S").
 - `.co` (Colombia) se usa ampliamente como sustituto corto de `.com`.
 
-Esta es la distinción **gTLD vs ccTLD** en pocas palabras: los gTLDs son gestionados directamente bajo contratos de ICANN y están abiertos globalmente, mientras que los ccTLDs son delegados a autoridades nacionales, cada una con sus propias reglas (algunos requieren presencia local, otros no).
+Esta es la distinción **[gTLD](/es/glossary/gtld/) vs ccTLD** en pocas palabras: los gTLDs son gestionados directamente bajo contratos de ICANN y están abiertos globalmente, mientras que los ccTLDs son delegados a autoridades nacionales, cada una con sus propias reglas (algunos requieren presencia local, otros no).
 
 ### 3. TLDs Patrocinados (sTLDs)
 
@@ -100,7 +100,7 @@ Los **IDN TLDs** son dominios de nivel superior escritos en alfabetos no latinos
 
 ### Una nota sobre las extensiones Web3
 
-Es posible que también hayas visto extensiones nativas de blockchain como `.eth` o `.crypto`. Estas *no* son TLDs de ICANN — viven fuera de la raíz DNS tradicional y solo se resuelven a través de carteras digitales o resolvers especiales. Namefi también los cataloga (ver [`.eth`](/es/tld/eth/)), pero conviene saber que son una categoría diferente. Explicamos esa distinción en [Dominio Tokenizado vs Dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/).
+Es posible que también hayas visto extensiones nativas de [blockchain](/es/glossary/blockchain/) como `.eth` o `.crypto`. Estas *no* son TLDs de ICANN — viven fuera de la raíz DNS tradicional y solo se resuelven a través de carteras digitales o resolvers especiales. Namefi también los cataloga (ver [`.eth`](/es/tld/eth/)), pero conviene saber que son una categoría diferente. Explicamos esa distinción en [Dominio Tokenizado vs Dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/).
 
 ---
 
@@ -109,7 +109,7 @@ Es posible que también hayas visto extensiones nativas de blockchain como `.eth
 Detrás de cada TLD hay un sistema de gobernanza en capas. Esto es lo que hace cada uno:
 
 - **ICANN** — la [Corporación de Internet para la Asignación de Nombres y Números](/es/glossary/icann/) es la organización sin fines de lucro que coordina el espacio de nombres global, establece la política para los gTLDs y acredita a los registradores. Fundada en 1998, es lo más parecido a un árbitro que tiene el mundo de los dominios.
-- **IANA** — la Autoridad de Números Asignados de Internet (operada bajo ICANN) mantiene la **zona raíz** autoritativa: la lista maestra de cada TLD válido y qué registro lo gestiona.
+- **IANA** — la Autoridad de Números Asignados de Internet (operada bajo ICANN) mantiene la **zona raíz** autoritativa: la lista maestra de cada TLD válido y qué [registro](/es/glossary/registry/) lo gestiona.
 - **Registros** — cada TLD es operado por un *registro*, la organización que administra la base de datos central para esa extensión. Por ejemplo, **Verisign** opera `.com` y `.net`, y el **Public Interest Registry (PIR)** gestiona `.org`. Los registros de ccTLD suelen ser organismos nacionales — por ejemplo, [`.ae`](/en/tld/ae/) es administrado por el TDRA de los Emiratos Árabes Unidos.
 - **Registradores** — un [registrador](/es/glossary/registrar/) es el minorista al que le compras. Los registradores acreditados por ICANN (como Namefi, GoDaddy y Namecheap) venden nombres al público y transmiten los registros al registro.
 
@@ -161,13 +161,13 @@ Aquí es donde se pone interesante para la próxima era de los dominios. Tu TLD 
 
 Un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) es un dominio real reconocido por ICANN cuya propiedad *también* está representada como un token (normalmente un [NFT](/es/glossary/nft/)) en tu cartera digital. La capa DNS sigue funcionando exactamente igual que antes; simplemente obtienes una segunda capa de propiedad programable por encima.
 
-Pero no todos los TLDs están igual de preparados para esto. Algunos registros se han adelantado para admitir capas de propiedad en cadena; otros no se han movido en absoluto. Por eso el TLD que elijas importa si alguna vez quieres:
+Pero no todos los TLDs están igual de preparados para esto. Algunos registros se han adelantado para admitir capas de propiedad [en cadena](/es/glossary/on-chain/); otros no se han movido en absoluto. Por eso el TLD que elijas importa si alguna vez quieres:
 
 - Mantener tu dominio directamente en tu propia cartera digital
 - Transferirlo en cadena en segundos (el registro DNS lo sigue)
-- Listarlo en mercados de NFTs o usarlo como garantía en [DeFi](/en/glossary/defi/)
+- Listarlo en mercados de NFTs o usarlo como garantía en [DeFi](/es/glossary/defi/)
 
-**Namefi** fue la primera plataforma en tokenizar dominios ICANN reales en la red principal de Ethereum — y la primera en hacerlo en Base — en muchos de los TLDs anteriores, incluyendo [`.com`](/es/tld/com/), [`.xyz`](/es/tld/xyz/), [`.io`](/es/tld/io/), y más. Obtienes un dominio real resoluble en el navegador *y* propiedad nativa de cartera en un solo producto.
+**Namefi** fue la primera plataforma en [tokenizar](/es/glossary/tokenize/) dominios ICANN reales en la red principal de [Ethereum](/es/glossary/ethereum/) — y la primera en hacerlo en Base — en muchos de los TLDs anteriores, incluyendo [`.com`](/es/tld/com/), [`.xyz`](/es/tld/xyz/), [`.io`](/es/tld/io/), y más. Obtienes un dominio real resoluble en el navegador *y* propiedad nativa de cartera en un solo producto.
 
 > ¿Tienes curiosidad sobre cómo encajan las dos capas? Lee [¿Qué Son los Dominios Tokenizados?](/es/blog/what-are-tokenized-domains/) o visita [namefi.io](https://namefi.io) para registrar o tokenizar un dominio.
 

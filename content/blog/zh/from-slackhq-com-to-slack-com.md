@@ -11,7 +11,7 @@ keywords: ['slackhq.com', 'slack.com', 'slack域名', '域名升级', 'stewart b
 
 在 Slack 成为职场沟通动词之前，它有一个更长的网址：**SlackHQ.com**。
 
-"HQ"并非品牌点缀，而是一个变通方案。当 Stewart Butterfield 的团队将内部聊天工具打磨成产品时，精确匹配域名 Slack.com 已经属于他人。Twitter 上的 @Slack 账号同样如此——早在多年前，[来自密歇根州霍兰的软件工程师](https://www.cnbc.com/2020/12/04/meet-matt-slack-who-owns-twitter-handle-slack-like-the-tech-company.html#:~:text=a%20software%20engineer%20from%20Holland%2C%20Michigan) Matt Slack 便已注册。一家想叫"Slack"的年轻公司，起初只能将就用"Slack 总部版"这个名字。
+"HQ"并非品牌点缀，而是一个变通方案。当 Stewart Butterfield 的团队将内部聊天工具打磨成产品时，[精确匹配域名](/zh/glossary/exact-match-domain/) Slack.com 已经属于他人。Twitter 上的 @Slack 账号同样如此——早在多年前，[来自密歇根州霍兰的软件工程师](https://www.cnbc.com/2020/12/04/meet-matt-slack-who-owns-twitter-handle-slack-like-the-tech-company.html#:~:text=a%20software%20engineer%20from%20Holland%2C%20Michigan) Matt Slack 便已注册。一家想叫"Slack"的年轻公司，起初只能将就用"Slack 总部版"这个名字。
 
 公司想要的名字和实际能用的名字之间的落差，是创业品牌中最常见、也最容易被低估的问题之一。产品已经叫 Slack，只是世界还无法通过 Slack.com 找到它。
 
@@ -35,7 +35,7 @@ Slack 最初并不是一款产品，而是一套基础设施。
 
 解决方案并非重新品牌化。产品无需改名，只需改地址——从 SlackHQ.com 改为 Slack.com。
 
-要做到这一点，Slack 必须从现有持有者手中买下这个精确匹配域名。创始人后来在 Quora 上披露了价格，并经域名媒体广泛传播：通讯应用 [Slack 以 6 万美元购入该域名](https://www.thedomains.com/2018/04/12/slack-com-was-purchased-for-60000/#:~:text=Communications%20app%20Slack%20paid%20%2060%2C000%20for%20the%20domain%20slack)。这个数字颇为引人注目——不因为它大，而恰恰因为它小。一个精确匹配的五字母英文字典词 .com 域名，后来成为软件行业最知名品牌的基石，而 6 万美元在回望之下，简直像是特卖价。
+要做到这一点，Slack 必须从现有持有者手中买下这个精确匹配域名。创始人后来在 Quora 上披露了价格，并经域名媒体广泛传播：通讯应用 [Slack 以 6 万美元购入该域名](https://www.thedomains.com/2018/04/12/slack-com-was-purchased-for-60000/#:~:text=Communications%20app%20Slack%20paid%20%2060%2C000%20for%20the%20domain%20slack)。这个数字颇为引人注目——不因为它大，而恰恰因为它小。一个精确匹配的五字母英文字典词 [.com](/zh/tld/com/) 域名，后来成为软件行业最知名品牌的基石，而 6 万美元在回望之下，简直像是特卖价。
 
 联合创始人兼 CTO Cal Henderson 解释过为何这个词值得追求：[这是一个五字母域名，是一个我们真的能拿到的英语单词——没有比这更好的了](https://www.siliconrepublic.com/start-ups/slack-cal-henderson-interview#:~:text=It%27s%20a%20five-letter%20domain%20name%2C%20it%27s%20an%20English%20word%20that%20we%20could%20actually%20get%20%E2%80%93%20it%20doesn%27t%20get%20better%20than%20that)。这个名字的全部吸引力在于：它是一个真实存在的单词，一家真实的公司可以将其据为己有。横亘在 Slack 与 Slack.com 之间的，只有一个持有它的人。
 

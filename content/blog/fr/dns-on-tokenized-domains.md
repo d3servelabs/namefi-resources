@@ -19,10 +19,10 @@ Réponse courte : **oui, oui, non.** Un domaine tokenisé reste un véritable do
 
 Un domaine tokenisé comporte **deux couches** :
 
-1. **La couche [DNS](/fr/glossary/dns/) / registre** — celle dans laquelle votre `.com` a toujours vécu. [ICANN](/fr/glossary/icann/), [bureau d'enregistrement](/fr/glossary/registrar/) (registrar), serveurs racines, résolveurs récursifs.
+1. **La couche [DNS](/fr/glossary/dns/) / [registre](/fr/glossary/registry/)** — celle dans laquelle votre `.com` a toujours vécu. [ICANN](/fr/glossary/icann/), [bureau d'enregistrement](/fr/glossary/registrar/) (registrar), serveurs racines, résolveurs récursifs.
 2. **La couche [on-chain](/fr/glossary/on-chain/)** — un [NFT](/fr/glossary/nft/) dans votre [portefeuille](/fr/glossary/wallet/) (wallet) qui représente la *propriété*.
 
-La résolution DNS — c'est-à-dire transformer `example.com` en une adresse IP — s'effectue entièrement sur la couche 1. La couche on-chain concerne **qui contrôle le domaine**, et non la manière dont il est résolu. Les navigateurs, les serveurs de messagerie, les CDN et les autorités de certification n'ont jamais besoin de savoir qu'une blockchain existe.
+La résolution DNS — c'est-à-dire transformer `example.com` en une [adresse IP](/fr/glossary/ip-address/) — s'effectue entièrement sur la couche 1. La couche on-chain concerne **qui contrôle le domaine**, et non la manière dont il est résolu. Les navigateurs, les serveurs de messagerie, les CDN et les autorités de certification n'ont jamais besoin de savoir qu'une [blockchain](/fr/glossary/blockchain/) existe.
 
 C'est pourquoi "le DNS fonctionne toujours". Ce n'est pas de la magie. C'est le même DNS.
 
@@ -75,7 +75,7 @@ La plupart des propriétaires gèrent les enregistrements DNS depuis le tableau 
 
 ### Le transfert du domaine
 
-Avant : le processus de [transfert inter-bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) (cross-registrar transfer), avec des [codes d'autorisation](/en/glossary/auth-code/) (auth codes) et des délais de carence de 60 jours.
+Avant : le processus de [transfert inter-bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) (cross-registrar transfer), avec des [codes d'autorisation](/fr/glossary/auth-code/) (auth codes) et des délais de carence de 60 jours.
 Après : le [**transfert du NFT**](/fr/glossary/atomic-transfer/). Une seule transaction on-chain transfère la propriété. L'enregistrement côté bureau d'enregistrement est synchronisé par le protocole. C'est considérablement plus rapide — et c'est pourquoi les places de marché de domaines tokenisés n'ont pas besoin de services d'[entiercement](/fr/glossary/escrow/) (escrow) traditionnels (voir [De la mise en vente au règlement](/fr/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Vous pouvez toujours effectuer un transfert de bureau d'enregistrement traditionnel si vous le souhaitez ; la couche on-chain ne l'empêche pas.
@@ -84,7 +84,7 @@ Vous pouvez toujours effectuer un transfert de bureau d'enregistrement tradition
 
 ## DNSSEC sur un domaine tokenisé
 
-[DNSSEC](/en/glossary/dnssec/) fonctionne. Si vous l'aviez activé auparavant, il reste activé. Si ce n'était pas le cas, vous pouvez l'activer après la tokenisation. La chaîne de confiance passe par le registre comme d'habitude — la couche on-chain n'intervient nulle part sur ce chemin. (Contexte : la [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) définit le protocole ; l'[explication de la cérémonie KSK de l'ICANN](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) décrit le processus de racine de confiance).
+[DNSSEC](/fr/glossary/dnssec/) fonctionne. Si vous l'aviez activé auparavant, il reste activé. Si ce n'était pas le cas, vous pouvez l'activer après la tokenisation. La chaîne de confiance passe par le registre comme d'habitude — la couche on-chain n'intervient nulle part sur ce chemin. (Contexte : la [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) définit le protocole ; l'[explication de la cérémonie KSK de l'ICANN](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) décrit le processus de racine de confiance).
 
 Quelques remarques pratiques :
 

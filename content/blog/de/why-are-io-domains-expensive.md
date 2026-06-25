@@ -13,13 +13,13 @@ Wer in letzter Zeit den Preis einer `.io`-Domain nachgeschlagen hat und zusammen
 
 ## Die kurze Antwort
 
-**`.io`-Domains sind teuer, weil die Registry einen vergleichsweise hohen Großhandelspreis verlangt und die Endung zudem stark von Tech-Startups, Entwicklern und Investoren nachgefragt wird, die für das „Input/Output"-Branding bereit sind zu zahlen.** Hohe Nachfrage kombiniert mit einem begrenzten Angebot an kurzen, einprägsamen Namen treibt sowohl die Registrierungspreise als auch die Wiederverkaufswerte auf dem Sekundärmarkt weit über Legacy-TLDs wie `.com`. Wiederkehrende Großpreiserhöhungen halten die Verlängerungskosten Jahr für Jahr hoch.
+**`.io`-Domains sind teuer, weil die [Registry](/de/glossary/registry/) einen vergleichsweise hohen [Großhandelspreis](/de/glossary/wholesale-pricing/) verlangt und die Endung zudem stark von Tech-Startups, Entwicklern und Investoren nachgefragt wird, die für das „Input/Output"-Branding bereit sind zu zahlen.** Hohe Nachfrage kombiniert mit einem begrenzten Angebot an kurzen, einprägsamen Namen treibt sowohl die Registrierungspreise als auch die Wiederverkaufswerte auf dem Sekundärmarkt weit über Legacy-TLDs wie `.com`. Wiederkehrende Großpreiserhöhungen halten die Verlängerungskosten Jahr für Jahr hoch.
 
 Anders ausgedrückt: Die Kosten setzen sich aus **Großhandelspreisen**, **Nachfrage und Prestige** sowie **Knappheit** zusammen. Im Folgenden beleuchten wir jeden dieser Treiber – sowie eine neuere geopolitische Besonderheit, die manche Käufer inzwischen berücksichtigen.
 
 ## 1. Der Großhandelspreis der Registry ist schlicht höher
 
-Jede Domain hat zwei Preisebenen: den **Großhandelspreis**, den die Registry den Registraren berechnet, und den **Einzelhandelsaufschlag**, den Ihr Registrar hinzufügt. Bei `.io` liegt der Großhandelssockel deutlich über dem von Commodity-Endungen.
+Jede Domain hat zwei Preisebenen: den **Großhandelspreis**, den die Registry den Registraren berechnet, und den **Einzelhandelsaufschlag**, den Ihr [Registrar](/de/glossary/registrar/) hinzufügt. Bei `.io` liegt der Großhandelssockel deutlich über dem von Commodity-Endungen.
 
 Die `.io`-Registry wird von **Identity Digital** betrieben (das den Betreiber hinter `.io` von Afilias übernommen hat). Anders als bei `.com`, dessen Großhandelspreis vertraglich gedeckelt ist und sich nur langsam verändert, hat `.io` eine Reihe erheblicher Großpreiserhöhungen erlebt – darunter eine große Anhebung um 2021, weitere Erhöhungen in 2024 und 2025 sowie eine weitere Anpassung für Anfang 2026. ([Domain Name Wire](https://domainnamewire.com/))
 
@@ -56,7 +56,7 @@ Für eine einzelne Markendomain ist das ein Ärgernis. Für alle, die ein **Port
 
 Dies ist ein Treiber, der vor einigen Jahren noch nicht existierte und den nachdenkliche Käufer inzwischen einkalkulieren.
 
-`.io` ist technisch gesehen die **Ländercode-TLD (ccTLD)**, die dem **Britischen Territorium im Indischen Ozean (BIOT)** – dem Chagos-Archipel – zugewiesen ist. Im Mai 2025 unterzeichneten das Vereinigte Königreich und Mauritius **einen Vertrag** zur Übertragung der Souveränität über die Inseln. Da ccTLDs an die ISO-3166-1-Ländercodes gebunden sind, warf eine Änderung des BIOT-Status eine Frage auf: *Was passiert mit `.io`?*
+`.io` ist technisch gesehen die **Ländercode-TLD ([ccTLD](/de/glossary/cctld/))**, die dem **Britischen Territorium im Indischen Ozean (BIOT)** – dem Chagos-Archipel – zugewiesen ist. Im Mai 2025 unterzeichneten das Vereinigte Königreich und Mauritius **einen Vertrag** zur Übertragung der Souveränität über die Inseln. Da ccTLDs an die ISO-3166-1-Ländercodes gebunden sind, warf eine Änderung des BIOT-Status eine Frage auf: *Was passiert mit `.io`?*
 
 Hier ist **Besonnenheit und Genauigkeit** angebracht:
 
@@ -85,7 +85,7 @@ Wenn `.io` Ihre Anforderungen erfüllt, ist die Prämie oft gerechtfertigt. Wenn
 
 ## .io auf Namefi kaufen, verkaufen oder tokenisieren
 
-Egal, wie Sie sich entscheiden – **[Namefi](https://namefi.io)** kann Ihnen dabei helfen. Als ICANN-akkreditierter Registrar, der Web2 und Web3 verbindet, ermöglicht Namefi die **Registrierung, den Kauf, Verkauf und die Tokenisierung von `.io`-Domains** – und verwandelt einen Namen in eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/), deren Eigentümerschaft auf der Blockchain gespiegelt wird, was vertrauensminimierte Übertragungen erleichtert. Wenn Sie in `.io`-Domains investieren oder handeln, macht das den Wechsel von Namen zwischen Käufern und Verkäufern wesentlich reibungsloser als der traditionelle Prozess.
+Egal, wie Sie sich entscheiden – **[Namefi](https://namefi.io)** kann Ihnen dabei helfen. Als [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der Web2 und Web3 verbindet, ermöglicht Namefi die **Registrierung, den Kauf, Verkauf und die [Tokenisierung](/de/glossary/tokenize/) von `.io`-Domains** – und verwandelt einen Namen in eine [tokenisierte Domain](/de/blog/what-are-tokenized-domains/), deren Eigentümerschaft auf der Blockchain gespiegelt wird, was vertrauensminimierte Übertragungen erleichtert. Wenn Sie in `.io`-Domains investieren oder handeln, macht das den Wechsel von Namen zwischen Käufern und Verkäufern wesentlich reibungsloser als der traditionelle Prozess.
 
 ## Häufig gestellte Fragen
 

@@ -17,7 +17,7 @@ keywords: ['massdrop.com', 'drop.com', 'drop domain name', 'massdrop rebrand', '
 
 लेकिन नाम के पीछे की कंपनी बदलती रही। 2019 तक, Massdrop केवल बल्क ऑर्डर का समन्वयक नहीं रहा था। वह अपने खुद के कीबोर्ड और हेडफोन डिज़ाइन कर रहा था, एक असली कॉमर्स प्लेटफॉर्म चला रहा था, और नए बाजारों में भेजने की तैयारी कर रहा था। "Mass" — वह शब्द जिसने पहले दिन मॉडल को समझाया था — उस कंपनी से छोटी और पुरानी कंपनी का वर्णन करने लगा था जो यह बन चुकी थी।
 
-तो अप्रैल 2019 में, Massdrop ने वही किया जो कई बढ़ती कंपनियाँ अंततः करती हैं: उसने अपने नाम का आधा हिस्सा छोड़ दिया। वह बस **Drop** बन गया, और वह उस exact-match डोमेन पर चला गया जिसे उसने पहले से चुपचाप सुरक्षित कर लिया था — **Drop.com**, एक प्रीमियम एक-शब्द .com जिसकी कभी [$800,000 की मांगी कीमत](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000) थी।
+तो अप्रैल 2019 में, Massdrop ने वही किया जो कई बढ़ती कंपनियाँ अंततः करती हैं: उसने अपने नाम का आधा हिस्सा छोड़ दिया। वह बस **Drop** बन गया, और वह उस exact-match डोमेन पर चला गया जिसे उसने पहले से चुपचाप सुरक्षित कर लिया था — **Drop.com**, एक प्रीमियम एक-शब्द [.com](/hi/tld/com/) जिसकी कभी [$800,000 की मांगी कीमत](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=the%20asking%20price%20for%20Drop.com%20was%20%24800%2C000) थी।
 
 ## 2012–2019: वह "Mass" जिसने असली काम किया
 
@@ -93,7 +93,7 @@ Massdrop विज्ञापन पर नहीं बढ़ा। वह प
 
 घटनाओं का क्रम ही इस मामले को शिक्षाप्रद बनाता है।
 
-Drop.com के लिए $800,000 की मांगी कीमत 2017 की शुरुआत में सामने आई। डोमेन [अगस्त 2017](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=Whois%20privacy%20enabled%20at%20GoDaddy%20since%20August%20of%202017) में Whois गोपनीयता के पीछे चला गया। Drop का सार्वजनिक रीब्रांड [29 अप्रैल 2019](https://www.notebookcheck.net/Massdrop-becomes-Drop-announces-new-range-of-own-brand-products.419780.0.html#:~:text=29%20April%2C%202019) तक नहीं हुआ। महंगी, बाहरी स्वामित्व वाली संपत्ति नाम के सार्वजनिक होने से बहुत पहले लॉक हो गई थी।
+Drop.com के लिए $800,000 की मांगी कीमत 2017 की शुरुआत में सामने आई। डोमेन [अगस्त 2017](https://domaininvesting.com/massdrop-rebrands-as-drop-with-drop-com-domain-name/#:~:text=Whois%20privacy%20enabled%20at%20GoDaddy%20since%20August%20of%202017) में [Whois](/hi/glossary/whois/) गोपनीयता के पीछे चला गया। Drop का सार्वजनिक रीब्रांड [29 अप्रैल 2019](https://www.notebookcheck.net/Massdrop-becomes-Drop-announces-new-range-of-own-brand-products.419780.0.html#:~:text=29%20April%2C%202019) तक नहीं हुआ। महंगी, बाहरी स्वामित्व वाली संपत्ति नाम के सार्वजनिक होने से बहुत पहले लॉक हो गई थी।
 
 निर्भरता पर ध्यान दें। Massdrop विश्वसनीय रूप से "Drop" *नहीं बन सकता था* जबकि उसकी वेबसाइट Massdrop.com पर थी और कोई और Drop.com का मालिक था। ब्रांड, सोशल हैंडल, और डोमेन को एक साथ आगे बढ़ना था — और जो हिस्सा कंपनी के नियंत्रण में सबसे कम था, वह डोमेन था, क्योंकि उसकी कीमत और एक मालिक था। Drop.com (और @Drop हैंडल) सुरक्षित करने ने ही कंपनी को एक ही घोषणा में स्विच पलटने दिया, पहले दिन से ही [Massdrop.com Drop.com पर जाता है](https://smartbranding.com/massdrop-rebrands-to-drop/#:~:text=Massdrop.com%20now%20directs%20to%20Drop.com)।
 

@@ -16,13 +16,13 @@ Il existe également une raison produit de détenir plusieurs TLD. Les entrepris
 
 ## Comment choisir des TLD pour votre SaaS
 
-Sélectionnez les TLD selon trois filtres : **adéquation à la marque** (l'extension renforce-t-elle ce que vous faites ?), **défensivité** (un squatteur sur cette extension pourrait-il tromper ou nuire à vos utilisateurs ?) et **contraintes techniques** (le registre impose-t-il des exigences comme le HTTPS obligatoire ?). Votre nom principal voudra presque toujours l'extension la plus reconnue que vous puissiez obtenir ; les enregistrements secondaires visent à combler les lacunes que des concurrents ou des acteurs malveillants pourraient exploiter. Voici dix extensions à évaluer, avec les informations qui comptent.
+Sélectionnez les TLD selon trois filtres : **adéquation à la marque** (l'extension renforce-t-elle ce que vous faites ?), **défensivité** (un squatteur sur cette extension pourrait-il tromper ou nuire à vos utilisateurs ?) et **contraintes techniques** (le [registre](/fr/glossary/registry/) impose-t-il des exigences comme le HTTPS obligatoire ?). Votre nom principal voudra presque toujours l'extension la plus reconnue que vous puissiez obtenir ; les enregistrements secondaires visent à combler les lacunes que des concurrents ou des acteurs malveillants pourraient exploiter. Voici dix extensions à évaluer, avec les informations qui comptent.
 
 ## Les 10 meilleurs TLD à sécuriser pour votre SaaS
 
 ### 1. .com — la valeur par défaut en laquelle tout le monde a encore confiance
 
-[.com](/fr/tld/com) est le gTLD commercial d'origine et demeure l'extension la plus reconnue sur Internet, exploitée par Verisign en tant que [registre de référence](https://www.iana.org/domains/root/db/com.html). Pour la plupart des marques SaaS, le `.com` est le nom canonique que les utilisateurs devineront en premier et taperont sans réfléchir. Même si vous lancez sur une autre extension, sécuriser le `.com` correspondant est l'enregistrement défensif le plus prioritaire que vous puissiez effectuer.
+[.com](/fr/tld/com) est le [gTLD](/fr/glossary/gtld/) commercial d'origine et demeure l'extension la plus reconnue sur Internet, exploitée par Verisign en tant que [registre de référence](https://www.iana.org/domains/root/db/com.html). Pour la plupart des marques SaaS, le `.com` est le nom canonique que les utilisateurs devineront en premier et taperont sans réfléchir. Même si vous lancez sur une autre extension, sécuriser le `.com` correspondant est l'enregistrement défensif le plus prioritaire que vous puissiez effectuer.
 
 ### 2. .io — le favori des outils pour développeurs
 
@@ -30,7 +30,7 @@ Sélectionnez les TLD selon trois filtres : **adéquation à la marque** (l'exte
 
 ### 3. .ai — le signal pour les produits d'IA
 
-[.ai](/fr/tld/ai) est le ccTLD d'Anguilla, [délégué au territoire par l'IANA](https://www.iana.org/domains/root/db/ai.html) et désormais géré avec Identity Digital comme opérateur technique. Parce que « AI » correspond à l'abréviation d'intelligence artificielle, l'extension est devenue un signal puissant pour les produits SaaS d'IA et de machine learning. L'enregistrement est ouvert à l'échelle mondiale sans condition de résidence à Anguilla, ce qui explique la croissance rapide de son adoption.
+[.ai](/fr/tld/ai) est le [ccTLD](/fr/glossary/cctld/) d'Anguilla, [délégué au territoire par l'IANA](https://www.iana.org/domains/root/db/ai.html) et désormais géré avec Identity Digital comme opérateur technique. Parce que « AI » correspond à l'abréviation d'intelligence artificielle, l'extension est devenue un signal puissant pour les produits SaaS d'IA et de machine learning. L'enregistrement est ouvert à l'échelle mondiale sans condition de résidence à Anguilla, ce qui explique la croissance rapide de son adoption.
 
 ### 4. .app — sécurisé par défaut
 
@@ -58,13 +58,13 @@ Sélectionnez les TLD selon trois filtres : **adéquation à la marque** (l'exte
 
 ### 10. .xyz — flexible et largement adopté
 
-[.xyz](/fr/tld/xyz) est un gTLD à usage général exploité par XYZ.com LLC, [répertorié dans la base de données racine de l'IANA](https://www.iana.org/domains/root/db/xyz.html). Il ne porte aucun bagage catégoriel, ce qui en fait une option à l'ardoise vierge pour les marques qui veulent un nom court et distinctif. Il est également populaire dans les communautés Web3, ce qui en fait un choix naturel si votre SaaS a une dimension tokenisée ou on-chain.
+[.xyz](/fr/tld/xyz) est un gTLD à usage général exploité par XYZ.com LLC, [répertorié dans la base de données racine de l'IANA](https://www.iana.org/domains/root/db/xyz.html). Il ne porte aucun bagage catégoriel, ce qui en fait une option à l'ardoise vierge pour les marques qui veulent un nom court et distinctif. Il est également populaire dans les communautés [Web3](/fr/glossary/web3/), ce qui en fait un choix naturel si votre SaaS a une dimension tokenisée ou [on-chain](/fr/glossary/on-chain/).
 
 ## Stratégie d'enregistrement défensif
 
 L'enregistrement défensif signifie sécuriser les extensions qu'un acteur malveillant pourrait utiliser pour vous usurper l'identité, et non collecter chaque TLD qui existe. Commencez par un noyau serré : votre marque exacte en `.com`, plus l'extension qui correspond à votre nom de produit canonique. À partir de là, ajoutez les une ou deux alternatives que les utilisateurs sont le plus susceptibles de mal saisir — typiquement `.net`, `.co` et le voisin le plus proche de votre extension de lancement.
 
-Ajoutez les extensions de catégorie uniquement là où elles protègent une vraie sous-marque ou un vrai parcours client : un `.app` si vous livrez une application, un `.dev` si vous publiez de la documentation développeur, un `.ai` si l'IA est au cœur de votre positionnement. Évitez de vous disperser sur des dizaines d'extensions obscures ; la protection marginale diminue rapidement tandis que les coûts de renouvellement s'accumulent. Enfin, configurez chaque enregistrement défensif en renouvellement automatique et regroupez-les sous un seul compte afin que rien ne lapside inaperçu — une expiration oubliée est exactement la faille que guettent les squatteurs.
+Ajoutez les extensions de catégorie uniquement là où elles protègent une vraie sous-marque ou un vrai parcours client : un `.app` si vous livrez une application, un `.dev` si vous publiez de la documentation développeur, un `.ai` si l'IA est au cœur de votre positionnement. Évitez de vous disperser sur des dizaines d'extensions obscures ; la protection marginale diminue rapidement tandis que les coûts de renouvellement s'accumulent. Enfin, configurez chaque enregistrement défensif en [renouvellement automatique](/fr/glossary/domain-renewal/) et regroupez-les sous un seul compte afin que rien ne lapside inaperçu — une expiration oubliée est exactement la faille que guettent les squatteurs.
 
 ## Enregistrez vos domaines SaaS chez Namefi
 

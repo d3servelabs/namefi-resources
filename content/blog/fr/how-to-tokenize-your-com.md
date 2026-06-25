@@ -21,9 +21,9 @@ Cet article suppose que votre décision est déjà prise.
 
 Le processus sera beaucoup plus fluide si ces conditions sont remplies avant même de cliquer sur quoi que ce soit :
 
-- **Vous contrôlez le domaine chez son [bureau d'enregistrement](/fr/glossary/registrar/) (registrar) actuel.** Vous pouvez vous connecter, modifier les serveurs de noms et approuver les transferts / [codes d'autorisation](/en/glossary/auth-code/).
-- **Vous possédez un [portefeuille](/fr/glossary/wallet/) (wallet) auto-hébergé.** MetaMask, Rabby, Coinbase Wallet, ou tout portefeuille EVM standard. Assurez-vous de bien détenir la [phrase de récupération](/en/glossary/seed-phrase/) (seed phrase) — et pas seulement un compte sur une plateforme d'échange.
-- **Le portefeuille contient un peu de [gaz](/en/glossary/gas/) (gas).** Quelques dollars en ETH ou Base ETH suffisent pour couvrir la transaction de création (*mint*) [sur la blockchain](/fr/glossary/on-chain/). Vous n'avez pas besoin de beaucoup.
+- **Vous contrôlez le domaine chez son [bureau d'enregistrement](/fr/glossary/registrar/) (registrar) actuel.** Vous pouvez vous connecter, modifier les serveurs de noms et approuver les transferts / [codes d'autorisation](/fr/glossary/auth-code/).
+- **Vous possédez un [portefeuille](/fr/glossary/wallet/) (wallet) auto-hébergé.** MetaMask, Rabby, Coinbase Wallet, ou tout portefeuille EVM standard. Assurez-vous de bien détenir la [phrase de récupération](/fr/glossary/seed-phrase/) (seed phrase) — et pas seulement un compte sur une plateforme d'échange.
+- **Le portefeuille contient un peu de [gaz](/fr/glossary/gas/) (gas).** Quelques dollars en ETH ou Base ETH suffisent pour couvrir la transaction de création (*mint*) [sur la blockchain](/fr/glossary/on-chain/). Vous n'avez pas besoin de beaucoup.
 - **Le domaine n'est ni verrouillé, ni sur le point d'expirer, ni en cours de transfert.** Les domaines ayant subi un récent [transfert entre bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) il y a moins de 60 jours environ, ou expirant dans moins de 30 jours, ne peuvent souvent pas être déplacés. Vérifiez d'abord.
 - **Vous avez du temps.** Prévoyez environ 30 minutes d'attention, plus jusqu'à 5 à 7 jours de traitement en arrière-plan pour les transferts entre registrars.
 
@@ -41,7 +41,7 @@ Rendez-vous sur [namefi.io](https://namefi.io) et cliquez sur « Connect Wallet 
 
 ## Étape 2 : Ajoutez le domaine que vous souhaitez tokéniser
 
-Dans votre tableau de bord Namefi, recherchez ou ajoutez le domaine que vous possédez déjà. Namefi vérifiera son éligibilité : le [bureau d'enregistrement](/fr/glossary/registrar/) actuel, s'il est verrouillable, s'il respecte les règles de transfert de l'[ICANN](/fr/glossary/icann/), et si l'extension ([TLD](/en/glossary/tld/)) est prise en charge.
+Dans votre tableau de bord Namefi, recherchez ou ajoutez le domaine que vous possédez déjà. Namefi vérifiera son éligibilité : le [bureau d'enregistrement](/fr/glossary/registrar/) actuel, s'il est verrouillable, s'il respecte les règles de transfert de l'[ICANN](/fr/glossary/icann/), et si l'extension ([TLD](/fr/glossary/tld/)) est prise en charge.
 
 Vous verrez l'un des trois statuts suivants :
 
@@ -55,7 +55,7 @@ Vous verrez l'un des trois statuts suivants :
 
 Namefi propose généralement quelques parcours en fonction du registrar actuel du domaine :
 
-1. **Transfert entrant puis tokénisation.** Déplacez le domaine vers le bureau d'enregistrement partenaire accrédité de Namefi, puis *mintez* le jeton sur la blockchain. C'est le parcours le plus courant. Cela prend quelques jours en raison du processus de transfert de l'ICANN, et non à cause de contraintes liées à la blockchain.
+1. **Transfert entrant puis tokénisation.** Déplacez le domaine vers le bureau d'enregistrement partenaire accrédité de Namefi, puis *mintez* le jeton sur la [blockchain](/fr/glossary/blockchain/). C'est le parcours le plus courant. Cela prend quelques jours en raison du processus de transfert de l'ICANN, et non à cause de contraintes liées à la blockchain.
 2. **Tokénisation sur place (si pris en charge).** Pour certaines intégrations de registrars, le domaine reste là où il est et la couche blockchain est ajoutée par-dessus. Plus rapide, mais disponible uniquement pour certains bureaux d'enregistrement partenaires.
 
 Vous verrez le parcours qui s'applique à votre domaine. Le tableau de bord affichera le temps estimé et tous les frais à l'avance.
@@ -64,7 +64,7 @@ Vous verrez le parcours qui s'applique à votre domaine. Le tableau de bord affi
 
 ## Étape 4 : Confirmez le code d'autorisation / Approuvez le transfert (si nécessaire)
 
-Pour le parcours avec transfert entrant, vous devrez récupérer le [**code d'autorisation**](/en/glossary/auth-code/) (parfois appelé code EPP) auprès de votre registrar actuel et le coller dans Namefi. Vous pourriez également avoir besoin de :
+Pour le parcours avec transfert entrant, vous devrez récupérer le [**code d'autorisation**](/fr/glossary/auth-code/) (parfois appelé code EPP) auprès de votre registrar actuel et le coller dans Namefi. Vous pourriez également avoir besoin de :
 
 - Déverrouiller le domaine chez votre bureau d'enregistrement actuel.
 - Approuver un e-mail de confirmation envoyé au contact du titulaire (registrant).
@@ -75,7 +75,7 @@ C'est la partie la plus lente de tout le processus. Prévoyez 5 à 7 jours pour 
 
 ## Étape 5 : *Mintez* le jeton sur la blockchain
 
-Une fois le domaine passé sous l'intégration du registrar Namefi, vous serez invité à **minter** (créer) sa représentation [NFT](/fr/glossary/nft/) (un jeton standard [ERC-721](/en/glossary/erc-721/)). Votre portefeuille s'ouvre ; vous confirmez la transaction ; le [gaz](/en/glossary/gas/) est payé ; et le jeton atterrit dans votre portefeuille.
+Une fois le domaine passé sous l'intégration du registrar Namefi, vous serez invité à **minter** (créer) sa représentation [NFT](/fr/glossary/nft/) (un jeton standard [ERC-721](/fr/glossary/erc-721/)). Votre portefeuille s'ouvre ; vous confirmez la transaction ; le [gaz](/fr/glossary/gas/) est payé ; et le jeton atterrit dans votre portefeuille.
 
 C'est à ce moment précis que le domaine devient [*tokénisé*](/fr/glossary/tokenize/). Vous disposez désormais de :
 
@@ -90,13 +90,13 @@ Les deux sont désormais maintenus synchronisés par le protocole.
 
 Ouvrez l'onglet NFT de votre portefeuille. Vous devriez y voir le nouveau NFT de votre domaine tokénisé. Cliquez pour ouvrir un explorateur de blocs (Etherscan, Basescan, etc.) afin de confirmer le contrat et l'adresse du propriétaire. C'est le bon moment pour faire une capture d'écran pour vos archives.
 
-Si vous avez un [portefeuille matériel](/en/glossary/hardware-wallet/) (hardware wallet), c'est l'occasion idéale d'y transférer le NFT. Le transfert se fait comme n'importe quel transfert de NFT classique et consomme du gaz.
+Si vous avez un [portefeuille matériel](/fr/glossary/hardware-wallet/) (hardware wallet), c'est l'occasion idéale d'y transférer le NFT. Le transfert se fait comme n'importe quel transfert de NFT classique et consomme du gaz.
 
 ---
 
 ## Étape 7 : Gérez les DNS et les renouvellements
 
-Tokéniser un domaine ne modifie en rien sa résolution. Vos serveurs de noms, enregistrements A, enregistrements MX, DNSSEC : tout continue de fonctionner normalement. Vous pouvez gérer cela depuis le tableau de bord Namefi, ou bien déléguer la gestion à votre fournisseur DNS existant (Cloudflare, Route53, etc.) exactement comme avant.
+Tokéniser un domaine ne modifie en rien sa résolution. Vos serveurs de noms, enregistrements A, enregistrements MX, [DNSSEC](/fr/glossary/dnssec/) : tout continue de fonctionner normalement. Vous pouvez gérer cela depuis le tableau de bord Namefi, ou bien déléguer la gestion à votre fournisseur DNS existant (Cloudflare, Route53, etc.) exactement comme avant.
 
 Pour plus de détails sur ce qui change (ou pas) au niveau de la couche DNS, consultez [Le DNS fonctionne toujours : serveurs de noms, e-mails et DNSSEC sur un domaine tokénisé](/fr/blog/dns-on-tokenized-domains/).
 
@@ -109,7 +109,7 @@ Les renouvellements continuent de s'effectuer via la couche du bureau d'enregist
 Pour simplifier, vous payez pour trois choses :
 
 - **Frais de bureau d'enregistrement.** Le tarif annuel normal de renouvellement du domaine, plus d'éventuels frais de transfert entrant. Ce sont des coûts bien réels qui existent indépendamment de la tokénisation.
-- **Frais de gaz.** Quelques dollars pour la transaction de *mint*, selon la blockchain utilisée (Base est moins chère que la couche 1 d'Ethereum).
+- **Frais de gaz.** Quelques dollars pour la transaction de *mint*, selon la blockchain utilisée (Base est moins chère que la couche 1 d'[Ethereum](/fr/glossary/ethereum/)).
 - **Frais de protocole.** Les frais prélevés par Namefi pour le service de tokénisation. Ceux-ci sont affichés dans le tableau de bord avant que vous ne confirmiez.
 
 Il n'y a aucune surprise cachée. Si un montant ne figure pas sur l'écran de confirmation, il ne vous sera pas facturé.

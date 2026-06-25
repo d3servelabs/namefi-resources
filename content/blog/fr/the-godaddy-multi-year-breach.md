@@ -9,7 +9,7 @@ description: "Entre 2020 et 2022, un seul groupe de menaces a vécu à l'intéri
 keywords: ['violation godaddy', 'fuite de données godaddy', 'violation managed wordpress', 'sécurité registraire', 'sécurité domaine', 'violation pluriannuelle', 'malware cpanel', 'attaque de redirection de site', 'exposition clé privée ssl', 'violation mot de passe sftp', 'cybersécurité sec 10-k', 'risque de concentration registraire', 'point unique de défaillance']
 ---
 
-Un registraire de noms de domaine est l'entreprise la plus ennuyeuse dont vous dépendrez entièrement.
+Un [registraire](/fr/glossary/registrar/) de noms de domaine est l'entreprise la plus ennuyeuse dont vous dépendrez entièrement.
 
 Vous le payez une fois par an. Vous vous connectez peut-être deux fois. Et en échange, il détient la seule chose qui rend votre activité joignable : le droit de dire « ce nom pointe ici. » E-mail, site web, connexion, paiements — chaque fil numérique que vous possédez passe par celui qui contrôle le DNS de votre domaine. La plupart des gens ne pensent plus jamais à cette entreprise après l'achat.
 

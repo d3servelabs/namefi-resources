@@ -10,7 +10,7 @@ ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['域名行业新闻', '域名媒体', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann新闻']
 ---
 
-如果说[个人域名投资者博客](/blog/famous-domainer-blogs-and-newsletters)代表了个人的声音，那么*域名行业媒体*则更像是新闻机构——有时虽是“一人新闻室”，但它们秉持的是新闻报道的编辑立场，而非仅仅是交易者的日记。它们报道交易、政策、注册局/注册商的动态、ICANN 资讯以及偶尔发生的行业风波，且往往是其他人引用的信息来源。
+如果说[个人域名投资者博客](/blog/famous-domainer-blogs-and-newsletters)代表了个人的声音，那么*域名行业媒体*则更像是新闻机构——有时虽是“一人新闻室”，但它们秉持的是新闻报道的编辑立场，而非仅仅是交易者的日记。它们报道交易、政策、注册局/[注册商](/zh/glossary/registrar/)的动态、[ICANN](/zh/glossary/icann/) 资讯以及偶尔发生的行业风波，且往往是其他人引用的信息来源。
 
 以下是 2026 年值得了解的行业媒体精选名单。
 
@@ -22,7 +22,7 @@ keywords: ['域名行业新闻', '域名媒体', 'domainnamewire', 'dnjournal', 
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-这个历史悠久的博客最初由 Mike Berkens（业内最大的域名投资组合持有者之一）创立，现主要由 Raymond Hackney 担任编辑。内容涵盖新闻、分析和观点。在政策报道方面表现尤为突出——如 UDRP 案件、注册局合同变更和 ICANN 动态。
+这个历史悠久的博客最初由 Mike Berkens（业内最大的[域名投资组合](/zh/glossary/domain-portfolio/)持有者之一）创立，现主要由 Raymond Hackney 担任编辑。内容涵盖新闻、分析和观点。在政策报道方面表现尤为突出——如 [UDRP](/zh/glossary/udrp/) 案件、注册局合同变更和 ICANN 动态。
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -34,7 +34,7 @@ keywords: ['域名行业新闻', '域名媒体', 'domainnamewire', 'dnjournal', 
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-严格来说，这不完全是一本面向域名投资者的出版物——CircleID 的报道范围涵盖了更广泛的 DNS、ICANN、互联网治理和基础设施领域。但如果你关注*政策*层面（注册局合同、新 gTLD 轮次、WHOIS 监管、DNSSEC），CircleID 提供了许多具有实质内容的文章，且作者往往是那些经常出现在 ICANN 会议上的大咖。
+严格来说，这不完全是一本面向域名投资者的出版物——CircleID 的报道范围涵盖了更广泛的 [DNS](/zh/glossary/dns/)、ICANN、互联网治理和基础设施领域。但如果你关注*政策*层面（注册局合同、[新 gTLD](/zh/glossary/new-gtld/) 轮次、[WHOIS](/zh/glossary/whois/) 监管、[DNSSEC](/zh/glossary/dnssec/)），CircleID 提供了许多具有实质内容的文章，且作者往往是那些经常出现在 ICANN 会议上的大咖。
 
 ## 销售数据与参考网站
 

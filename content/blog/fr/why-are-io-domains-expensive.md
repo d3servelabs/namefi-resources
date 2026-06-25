@@ -13,7 +13,7 @@ Si vous avez récemment regardé le prix d'un domaine `.io` et que cela vous a f
 
 ## La réponse courte
 
-**Les domaines `.io` sont chers parce que le registre facture un prix de gros relativement élevé, et en plus de cela, l'extension est très demandée par les startups technologiques, les développeurs et les investisseurs qui sont prêts à payer pour son image « entrée/sortie ».** Une forte demande combinée à une offre limitée de noms courts et mémorables pousse les prix d'enregistrement et les valeurs de revente sur le marché secondaire bien au-dessus des TLD historiques comme `.com`. Les augmentations récurrentes du prix de gros maintiennent les renouvellements élevés d'année en année.
+**Les domaines `.io` sont chers parce que le [registre](/fr/glossary/registry/) facture un [prix de gros](/fr/glossary/wholesale-pricing/) relativement élevé, et en plus de cela, l'extension est très demandée par les startups technologiques, les développeurs et les investisseurs qui sont prêts à payer pour son image « entrée/sortie ».** Une forte demande combinée à une offre limitée de noms courts et mémorables pousse les prix d'enregistrement et les valeurs de revente sur le marché secondaire bien au-dessus des TLD historiques comme `.com`. Les augmentations récurrentes du prix de gros maintiennent les renouvellements élevés d'année en année.
 
 En d'autres termes, le coût est en partie lié à la **tarification de gros**, en partie à la **demande et au prestige**, et en partie à la **rareté**. Ci-dessous, nous détaillons chacun de ces facteurs — ainsi qu'une complication géopolitique plus récente que certains acheteurs prennent désormais en compte.
 
@@ -56,7 +56,7 @@ Pour un seul domaine de marque, c'est une contrainte. Pour quiconque détient un
 
 Voici un facteur qui n'existait pas il y a quelques années, et que les acheteurs avisés prennent désormais en compte.
 
-`.io` est techniquement le **ccTLD (code pays)** attribué au **Territoire britannique de l'océan Indien (BIOT)** — l'archipel des Chagos. En mai 2025, le Royaume-Uni et Maurice ont **signé un traité** pour transférer la souveraineté sur les îles. Étant donné que les ccTLD sont liés à la liste des codes pays ISO 3166-1, un changement de statut du BIOT a soulevé une question : *que se passe-t-il avec `.io` ?*
+`.io` est techniquement le **[ccTLD](/fr/glossary/cctld/) (code pays)** attribué au **Territoire britannique de l'océan Indien (BIOT)** — l'archipel des Chagos. En mai 2025, le Royaume-Uni et Maurice ont **signé un traité** pour transférer la souveraineté sur les îles. Étant donné que les ccTLD sont liés à la liste des codes pays ISO 3166-1, un changement de statut du BIOT a soulevé une question : *que se passe-t-il avec `.io` ?*
 
 Il est important d'être **mesuré et précis** ici :
 
@@ -85,7 +85,7 @@ Si `.io` coche vos cases, la prime est souvent justifiée. Si la certitude et le
 
 ## Achetez, vendez ou tokenisez des domaines .io sur Namefi
 
-Quelle que soit votre décision, **[Namefi](https://namefi.io)** peut vous aider à agir. En tant que bureau d'enregistrement accrédité par l'ICANN faisant le lien entre Web2 et Web3, Namefi vous permet d'**enregistrer, acheter, vendre et tokeniser des domaines `.io`** — transformant un nom en [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) dont la propriété est reflétée on-chain pour des transferts plus simples et sans besoin de confiance. Si vous investissez dans `.io` ou en faites le commerce, cela rend le transfert de noms entre acheteurs et vendeurs bien plus fluide que le processus traditionnel.
+Quelle que soit votre décision, **[Namefi](https://namefi.io)** peut vous aider à agir. En tant que bureau d'enregistrement accrédité par l'ICANN faisant le lien entre Web2 et Web3, Namefi vous permet d'**enregistrer, acheter, vendre et [tokeniser](/fr/glossary/tokenize/) des domaines `.io`** — transformant un nom en [domaine tokenisé](/fr/blog/what-are-tokenized-domains/) dont la propriété est reflétée [on-chain](/fr/glossary/on-chain/) pour des transferts plus simples et sans besoin de confiance. Si vous investissez dans `.io` ou en faites le commerce, cela rend le transfert de noms entre acheteurs et vendeurs bien plus fluide que le processus traditionnel.
 
 ## Questions fréquemment posées
 

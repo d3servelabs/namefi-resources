@@ -34,7 +34,7 @@ Voici le processus classique pour vendre un nom de domaine via un service de sé
 1. **Accord sur les conditions.** L'acheteur et le vendeur s'entendent sur un prix et sur qui paie les frais de séquestre. Ils ouvrent une transaction auprès du service de séquestre.
 2. **L'acheteur approvisionne le séquestre.** L'acheteur envoie le montant convenu sur le compte séquestre — par virement, carte ou crypto. Fait important, le vendeur ne dispose *pas* encore de cet argent ; le séquestre le conserve simplement.
 3. **Le séquestre confirme les fonds.** Le service de séquestre vérifie que le paiement a bien été reçu et notifie le vendeur : *« L'argent est disponible. Vous pouvez transférer le domaine en toute sécurité. »*
-4. **Le vendeur transfère le domaine.** Le vendeur déverrouille le domaine auprès de son [registrar](/fr/glossary/registrar/) et fournit le [code auth](/en/glossary/auth-code/) (également appelé code EPP) — un mot de passe qui autorise le déplacement du domaine vers un autre registrar.
+4. **Le vendeur transfère le domaine.** Le vendeur déverrouille le domaine auprès de son [registrar](/fr/glossary/registrar/) et fournit le [code auth](/fr/glossary/auth-code/) (également appelé code EPP) — un mot de passe qui autorise le déplacement du domaine vers un autre registrar.
 5. **L'acheteur initie le transfert.** En utilisant ce code auth, l'acheteur lance un transfert vers son propre registrar. Un transfert inter-registrar [ICANN](https://www.icann.org/) prend généralement entre cinq et sept jours pour être entièrement finalisé.
 6. **L'acheteur confirme la réception.** Une fois le domaine arrivé dans le compte de l'acheteur, celui-ci le confirme via le service de séquestre.
 7. **Le séquestre libère les fonds.** Maintenant — et seulement maintenant — le séquestre paie le vendeur. La transaction est terminée.
@@ -63,7 +63,7 @@ Pour en savoir plus sur le paysage des menaces, consultez [comment le piratage d
 Le modèle de séquestre est la norme dans les domaines depuis deux décennies, et il fonctionne. Mais il comporte de réels coûts :
 
 - **Les frais.** Un pourcentage du prix de vente va au service de séquestre — de l'argent qui sort de la transaction.
-- **Le temps.** Entre l'approvisionnement, le transfert du registrar et la fenêtre de compensation ICANN, une vente peut prendre une semaine ou plus.
+- **Le temps.** Entre l'approvisionnement, le transfert du registrar et la fenêtre de compensation [ICANN](/fr/glossary/icann/), une vente peut prendre une semaine ou plus.
 - **Les étapes manuelles.** Codes auth, déverrouillages, confirmations de transfert — chacun est une occasion d'erreur ou de retard.
 - **Vous faites toujours confiance à un tiers.** Le séquestre déplace la confiance de « l'autre personne » vers « la société de séquestre ». C'est une grande amélioration, mais ce n'est pas zéro confiance. La société de séquestre conserve votre argent pendant toute la durée de la transaction.
 
@@ -75,7 +75,7 @@ Ces compromis étaient simplement le prix de la sécurité — jusqu'à l'arriv�
 
 Lorsqu'un domaine est [tokenisé](/fr/blog/what-are-tokenized-domains/), la propriété est représentée par un jeton en chaîne (un NFT) plutôt que par une simple entrée dans la base de données d'un registrar. Cela change ce qui est possible au moment du règlement.
 
-Un [contrat intelligent](/fr/glossary/smart-contract/) est un code qui s'exécute sur une blockchain et s'active automatiquement lorsque ses conditions sont remplies. Fait crucial, une transaction en chaîne est **atomique** : le paiement et le transfert d'actif se produisent dans la *même* transaction, dans le même bloc — ou aucun des deux ne se produit. Il n'existe pas d'état intermédiaire où un côté a bougé et l'autre non.
+Un [contrat intelligent](/fr/glossary/smart-contract/) est un code qui s'exécute sur une [blockchain](/fr/glossary/blockchain/) et s'active automatiquement lorsque ses conditions sont remplies. Fait crucial, une transaction en chaîne est **atomique** : le paiement et le transfert d'actif se produisent dans la *même* transaction, dans le même bloc — ou aucun des deux ne se produit. Il n'existe pas d'état intermédiaire où un côté a bougé et l'autre non.
 
 Cette propriété accomplit exactement ce pour quoi le séquestre a été inventé, sans qu'un tiers ne retienne quoi que ce soit :
 
@@ -85,7 +85,7 @@ Cette propriété accomplit exactement ce pour quoi le séquestre a été invent
 
 En d'autres termes, le contrat intelligent devient le séquestre — mais il est transparent, automatique, instantané et ne prélève pas de commission pour conserver votre argent. Pour une présentation détaillée du flux complet de la place de marché et de l'évolution des risques, consultez [De la mise en vente au règlement : comment les places de marché tokenisées remplacent le séquestre](/fr/blog/how-tokenized-marketplaces-replace-escrow/).
 
-Ce n'est pas sans risque — cela déplace simplement les risques. Au lieu de faire confiance à une société de séquestre, vous dépendez désormais de la sécurité du portefeuille et de la solidité du contrat intelligent. L'objectif n'est pas que le règlement tokenisé soit magique ; c'est que *le travail qu'accomplit le séquestre* peut être réalisé par du code plutôt que par un intermédiaire rémunéré.
+Ce n'est pas sans risque — cela déplace simplement les risques. Au lieu de faire confiance à une société de séquestre, vous dépendez désormais de la sécurité du [portefeuille](/fr/glossary/wallet/) et de la solidité du contrat intelligent. L'objectif n'est pas que le règlement tokenisé soit magique ; c'est que *le travail qu'accomplit le séquestre* peut être réalisé par du code plutôt que par un intermédiaire rémunéré.
 
 ---
 

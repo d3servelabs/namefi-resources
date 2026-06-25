@@ -21,7 +21,7 @@ En juillet 2023, neuf mois après avoir racheté l'entreprise [pour 44 milliards
 
 Au commencement, il n'y avait aucun problème de domaine à résoudre.
 
-Quand Twitter a été lancé en 2006, il possédait ce que la plupart des startups de cette série ont mis des années et des millions à obtenir : l'exact-match .com correspondant à son nom. Twitter.com *était* Twitter. L'oiseau bleu, le verbe « tweeter », l'@-réponse, le hashtag — tout un vocabulaire a grandi sur une adresse qui n'avait besoin d'aucune explication. Pendant la majeure partie de sa vie, Twitter était le contre-exemple de toute leçon du type « achetez votre exact-match », car il n'en a jamais eu besoin.
+Quand Twitter a été lancé en 2006, il possédait ce que la plupart des startups de cette série ont mis des années et des millions à obtenir : l'exact-match [.com](/fr/tld/com/) correspondant à son nom. Twitter.com *était* Twitter. L'oiseau bleu, le verbe « tweeter », l'@-réponse, le hashtag — tout un vocabulaire a grandi sur une adresse qui n'avait besoin d'aucune explication. Pendant la majeure partie de sa vie, Twitter était le contre-exemple de toute leçon du type « achetez votre exact-match », car il n'en a jamais eu besoin.
 
 C'est ce qui rend ce cas différent. La pression de changer de domaine n'est pas venue du produit qui dépassait le nom, comme « Motors » a dépassé Tesla ou « Cab » a dépassé Uber. Elle est venue d'un nouveau propriétaire qui avait déjà un autre nom en tête — et qui attendait depuis très longtemps.
 

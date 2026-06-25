@@ -11,7 +11,7 @@ keywords: ['bufferapp.com', 'buffer.com', 'buffer 域名', '域名升级', 'joel
 
 在它成为那款可以设定好一切然后放手不管的社交媒体工具之前，Buffer 曾有一个更长的名字：**BufferApp.com**。
 
-"App" 并非品牌选择，而是一种变通之举。当 Joel Gascoigne 在 2010 年底发布 Buffer 的第一个版本时，那个简洁的精确匹配域名 Buffer.com 已被他人注册，在这家公司诞生多年之前便落入别人手中。于是，这个想要叫做"Buffer"的产品，以"Buffer，the app"的名义上线了。
+"App" 并非品牌选择，而是一种变通之举。当 Joel Gascoigne 在 2010 年底发布 Buffer 的第一个版本时，那个简洁的[精确匹配域名](/zh/glossary/exact-match-domain/) Buffer.com 已被他人注册，在这家公司诞生多年之前便落入别人手中。于是，这个想要叫做"Buffer"的产品，以"Buffer，the app"的名义上线了。
 
 最初的名字甚至比这还要奇怪。据 Buffer 自述，[我们最初用的是 bfffr.com，那是 Joel 在 2010 年底推出 Buffer 时的域名](https://buffer.com/resources/acquired-buffer-com/#:~:text=we%20originally%20started%20out%20with%20bfffr.com%2C%20when%20Joel%20launched%20Buffer%20in%20late%202010)——这个去掉所有元音字母的奇特名字，是那个时代创业公司的流行风格。没有人能顺口说出它。Joel [后来将其改为 bufferapp.com，以便让名字更加清晰易记](https://buffer.com/resources/acquired-buffer-com/#:~:text=to%20make%20things%20more%20clear%20and%20worry%20less%20about%20not%20having%20the%20exact%20domain%20of%20your%20startup%27s%20name)，同时也是为了[不再纠结于没有完全匹配创业公司名称的域名](https://buffer.com/resources/acquired-buffer-com/#:~:text=to%20make%20things%20more%20clear%20and%20worry%20less%20about%20not%20having%20the%20exact%20domain%20of%20your%20startup%27s%20name)。
 
@@ -111,7 +111,7 @@ Buffer 坦率地承认了这个疏漏，解释说[前任业主也不愿意披露
 
 ## 创始人应从这个案例中学到什么
 
-容易得出的结论——"在上线前务必拥有精确匹配的 .com"——是错误的，因为 Buffer 字面上做不到；那个域名自 1997 年起就已被注册。更有用的教训在于修饰词、时机，以及谈判方式：
+容易得出的结论——"在上线前务必拥有精确匹配的 [.com](/zh/tld/com/)"——是错误的，因为 Buffer 字面上做不到；那个域名自 1997 年起就已被注册。更有用的教训在于修饰词、时机，以及谈判方式：
 
 1. **修饰词是合理的入口。**"App"让 Buffer 在 Buffer.com 还在他人手中时，以真实名称上线。在 BufferApp.com 发布并非失败，而是在裸词可能永远无法获得的情况下，合理地起步。
 2. **留意修饰词开始流失流量的那个时刻。**这个信号不是自我感觉，而是[越来越多的人以为 buffer.com 就是我们的域名](https://buffer.com/resources/acquired-buffer-com/#:~:text=more%20and%20more%20people%20thought%20that%20buffer.com%20was%20our%20domain)。当世界已经在猜那个裸名时，升级就能收回成本。
@@ -128,7 +128,7 @@ Buffer 坦率地承认了这个疏漏，解释说[前任业主也不愿意披露
 
 战略判断从未有过疑问——一个叫做 Buffer 的产品当然应该住在 Buffer.com。真正艰难的是围绕资产的一切：找到一个自 1997 年起便持有该域名的长期业主、建立足够的信任促成交易、在没有公开参照价格的情况下商定价格，以及干净地完成控制权转移而不影响正在运行的产品。这一切花了 [624 天](https://buffer.com/resources/acquired-buffer-com/#:~:text=624%20days)——即便是一家能打印自己资产负债表的公司，最终也无法披露价格，因为域名交易摩擦重重、高度依赖信任，使大量价值都不透明。
 
-[Namefi](https://namefi.io) 构建于这样一个理念之上：域名应当像互联网原生资产一样运作。代币化所有权可以让域名控制权更易于验证、转移，并融入现代工作流，同时与 DNS 保持兼容——将这类交易中缓慢、依赖信任的部分（确认谁拥有什么、商定条款、安全转移资产）转化为更接近干净、可审计的交易。在一个所有权和转移均可在链上证明的世界里，一场 624 天的追逐，不必再依赖临时邮箱、打印的银行对账单和两年的耐心等待。
+[Namefi](https://namefi.io) 构建于这样一个理念之上：域名应当像互联网原生资产一样运作。代币化所有权可以让域名控制权更易于验证、转移，并融入现代工作流，同时与 [DNS](/zh/glossary/dns/) 保持兼容——将这类交易中缓慢、依赖信任的部分（确认谁拥有什么、商定条款、安全转移资产）转化为更接近干净、可审计的交易。在一个所有权和转移均可在[链上](/zh/glossary/on-chain/)证明的世界里，一场 624 天的追逐，不必再依赖临时邮箱、打印的银行对账单和两年的耐心等待。
 
 Buffer.com 如今看起来理所当然，是因为 Buffer 成长为了大公司。但这个教训在最初就已成立：当一个名字注定要承载整个业务时，域名就不是装饰。它是差异所在——是你的用户流向陌生人地址，还是流向那个所有人已经在输入的词。
 

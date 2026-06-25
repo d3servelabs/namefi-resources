@@ -31,7 +31,7 @@ Esto no solo reduce los costos (de altas tarifas de corretaje a casi cero), o re
 
 ## 💡 ¿Qué significa realmente "Tokenizar"?
 
-Tokenizar simplemente significa:
+[Tokenizar](/es/glossary/tokenize/) simplemente significa:
 
 > Representar un activo del mundo real (como un dominio) como un token, haciéndolo transferible, componible y programable.
 
@@ -48,7 +48,7 @@ Esto aporta nueva flexibilidad y utilidad a la propiedad de dominios.
 
 ## 🌉 Conectando Activos Reales al Mundo On-Chain
 
-Al tokenizar dominios, Namefi actúa como un **puente** entre la infraestructura tradicional de [DNS](/es/glossary/dns/) y los protocolos blockchain abiertos:
+Al tokenizar dominios, Namefi actúa como un **puente** entre la infraestructura tradicional de [DNS](/es/glossary/dns/) y los protocolos [blockchain](/es/glossary/blockchain/) abiertos:
 
 | Sistema Tradicional       | Mundo On-Chain                         |
 |--------------------------|----------------------------------------|
@@ -84,7 +84,7 @@ Con Namefi:
 - Lo gestionas con tu propia [billetera](/es/glossary/wallet/) — no con una cuenta alojada
 - Si bien aún está sujeto a las reglas de DNS del mundo real (renovaciones, uso legal), tu **control está criptográficamente asegurado**
 
-> No se trata de "dominios permanentes y sin censura", sino de una *propiedad más clara y centrada en el usuario*.
+> No se trata de "dominios permanentes y [sin censura](/es/glossary/censorship-free/)", sino de una *propiedad más clara y centrada en el usuario*.
 
 ### ✅ 3. Desbloqueando Nuevos Casos de Uso
 
@@ -151,7 +151,7 @@ Aunque usted posea un NFT en cadena, el **activo subyacente sigue siendo un domi
 
 - ✅ Debe renovarse anualmente (o caduca)
 - ✅ Debe cumplir con las normas legales y de [ICANN](/es/glossary/icann/)
-- ✅ Puede estar sujeto a disputas (por ejemplo [UDRP](/es/glossary/udrp/), marca registrada)
+- ✅ Puede estar sujeto a disputas (por ejemplo [UDRP](/es/glossary/udrp/), [marca registrada](/es/glossary/trademark/))
 - ✅ Puede ser congelado o revocado por órdenes judiciales o sanciones
 
 ### 🧩 Analogía: NFT Inmobiliario ≠ Exención Legal

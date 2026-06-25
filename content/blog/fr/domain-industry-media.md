@@ -10,7 +10,7 @@ ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['actualités des noms de domaine', 'médias des noms de domaine', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'actualités icann']
 ---
 
-Si les [blogs individuels de domainers](/blog/famous-domainer-blogs-and-newsletters) représentent des voix personnelles, *les médias de l'industrie des noms de domaine* sont les organes qui fonctionnent davantage comme des salles de rédaction — parfois des rédactions d'une seule personne, mais avec une posture éditoriale journalistique plutôt que celle d'un journal de trader. Ils couvrent les transactions, les politiques, les mouvements des registres et des bureaux d'enregistrement (registrars), l'ICANN et les drames occasionnels ; ce sont d'ailleurs les sources que les autres finissent par citer.
+Si les [blogs individuels de domainers](/blog/famous-domainer-blogs-and-newsletters) représentent des voix personnelles, *les médias de l'industrie des noms de domaine* sont les organes qui fonctionnent davantage comme des salles de rédaction — parfois des rédactions d'une seule personne, mais avec une posture éditoriale journalistique plutôt que celle d'un journal de trader. Ils couvrent les transactions, les politiques, les mouvements des registres et des bureaux d'enregistrement (registrars), l'[ICANN](/fr/glossary/icann/) et les drames occasionnels ; ce sont d'ailleurs les sources que les autres finissent par citer.
 
 Voici la liste restreinte des médias qu'il faut connaître en 2026.
 
@@ -22,7 +22,7 @@ Fondé par Andrew Allemann en 2005. Ce qui se rapproche le plus d'une agence de 
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-Blog historique fondé à l'origine par Mike Berkens (l'un des plus grands détenteurs de portefeuilles de noms de domaine de l'industrie) et aujourd'hui principalement édité par Raymond Hackney. Un mélange d'actualités, d'analyses et d'opinions. Très solide sur les questions de politiques — affaires UDRP, modifications des contrats de registre, mouvements de l'ICANN.
+Blog historique fondé à l'origine par Mike Berkens (l'un des plus grands détenteurs de portefeuilles de noms de domaine de l'industrie) et aujourd'hui principalement édité par Raymond Hackney. Un mélange d'actualités, d'analyses et d'opinions. Très solide sur les questions de politiques — affaires [UDRP](/fr/glossary/udrp/), modifications des contrats de registre, mouvements de l'ICANN.
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -34,7 +34,7 @@ Le média d'information et de satire de l'industrie. Édité par Theo, qui poss�
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-Ce n'est pas strictement une publication pour les investisseurs de noms de domaine — CircleID couvre plus largement le DNS, l'ICANN, la gouvernance d'Internet et les infrastructures. Mais si vous vous intéressez à la dimension *politique* (contrats de registre, nouvelles séries de gTLD, réglementation WHOIS, DNSSEC), CircleID est l'endroit où s'écrivent les articles de fond, et les auteurs incluent bon nombre des personnes qui sont également présentes aux réunions de l'ICANN.
+Ce n'est pas strictement une publication pour les investisseurs de noms de domaine — CircleID couvre plus largement le [DNS](/fr/glossary/dns/), l'ICANN, la gouvernance d'Internet et les infrastructures. Mais si vous vous intéressez à la dimension *politique* (contrats de registre, nouvelles séries de gTLD, réglementation [WHOIS](/fr/glossary/whois/), [DNSSEC](/fr/glossary/dnssec/)), CircleID est l'endroit où s'écrivent les articles de fond, et les auteurs incluent bon nombre des personnes qui sont également présentes aux réunions de l'ICANN.
 
 ## Données de ventes et sites de référence
 

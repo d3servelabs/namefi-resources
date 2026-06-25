@@ -23,7 +23,7 @@ keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'd
 
 ## أكتوبر 2010: الإطلاق اللي انهار تحت ثقل نجاحه
 
-إنستجرام جاء من تحوّل جذري. Kevin Systrom وMike Krieger كانوا يبنون تطبيق تسجيل الأماكن اسمه Burbn؛ لما جرّدوه وخلّوه للصور والفلاتر والمشاركة فقط، ظهر التطبيق بصورته الحديثة. وفقًا لويكيبيديا، [أطلق إنستجرام لنظام iOS في أكتوبر 2010 على يد Kevin Systrom والمهندس البرمجي البرازيلي Mike Krieger](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger). وتُحدد وثيقة WIPO لاحقًا التاريخ الدقيق: [أطلق إنستجرام في 6 أكتوبر 2010](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010).
+إنستجرام جاء من تحوّل جذري. Kevin Systrom وMike Krieger كانوا يبنون تطبيق تسجيل الأماكن اسمه Burbn؛ لما جرّدوه وخلّوه للصور والفلاتر والمشاركة فقط، ظهر التطبيق بصورته الحديثة. وفقًا لويكيبيديا، [أطلق إنستجرام لنظام iOS في أكتوبر 2010 على يد Kevin Systrom والمهندس البرمجي البرازيلي Mike Krieger](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger). وتُحدد وثيقة [WIPO](/ar/glossary/wipo/) لاحقًا التاريخ الدقيق: [أطلق إنستجرام في 6 أكتوبر 2010](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010).
 
 الاستقبال كان فوريًا وساحقًا. يُسجّل جدول أحداث ويكيبيديا أن [أكثر من 25,000 مستخدم سجّلوا في يوم الإطلاق، وأكثر من 100,000 في أيام قليلة بعده](https://en.wikipedia.org/wiki/Timeline_of_Instagram#:~:text=Over%2025%2C000%20users%20registered%20on%20launch%20day). وتُشير Entrepreneur أن Systrom وKrieger أطلقا التطبيق بـ[80 مستخدمًا أوليًا](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=launch%20the%20Instagram%20photo-sharing%20iPhone%20app%20with%2080%20initial%20users) في اليوم السابق — وفي غضون ساعات [انهار الموقع أكثر من مرة](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=The%20site%20crashed%20multiple%20times) من كثرة الزيارات. ولم يتوقف النمو: وصل إنستجرام إلى [مليون مستخدم مسجّل في شهرين، و10 ملايين في سنة](https://en.wikipedia.org/wiki/Instagram#:~:text=reaching%201%20million%20registered%20users%20in%20two%20months%2C%2010%20million%20in%20a%20year)، وجاء [تحديث سبتمبر 2011 بفلاتر جديدة ومباشرة](https://en.wikipedia.org/wiki/Instagram#:~:text=In%20September%202011%2C%20a%20new%20version%20of%20the%20app%20included%20new%20and%20live%20filters) رسّخت الهوية البصرية للتطبيق.
 
@@ -37,7 +37,7 @@ keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'd
 
 بالنسبة لشركة ناشئة في 2010، كان الإغراء واضحًا:
 
-- **كان دقيقًا تمامًا.** "instagr" + ".am" يُقرأ كاسم العلامة بالكامل، من غير أي شرح إضافي — الجوهرة النادرة لأي إطلاق بدون تمويل.
+- **كان دقيقًا تمامًا.** "instagr" + "[.am](/ar/tld/am/)" يُقرأ كاسم العلامة بالكامل، من غير أي شرح إضافي — الجوهرة النادرة لأي إطلاق بدون تمويل.
 - **كان قصيرًا وقابلًا للمشاركة.** تطبيق الصور يعيش أو يموت بحسب مدى سهولة تداول الرابط. instagr.am كان مناسبًا للطباعة والرسائل والتغريدات.
 - **كان متاحًا على الفور.** Instagram.com كان مملوكًا لشخص آخر، وتطبيق جديد لم يكن عنده لا المال ولا النفوذ ليستردّه في اليوم الأول.
 

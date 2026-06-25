@@ -22,7 +22,7 @@ Le blog publié avec le plus de régularité dans le secteur. Elliot est un inve
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos publie fréquemment avec une perspective européenne axée sur les données. Très pertinent sur les changements de politique des registres/registrars, les mouvements de ccTLD et les grandes ventes publiques. Il est souvent le premier à faire émerger des histoires qui échappent aux blogs centrés sur les États-Unis.
+Konstantinos publie fréquemment avec une perspective européenne axée sur les données. Très pertinent sur les changements de politique des registres/registrars, les mouvements de [ccTLD](/fr/glossary/cctld/) et les grandes ventes publiques. Il est souvent le premier à faire émerger des histoires qui échappent aux blogs centrés sur les États-Unis.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 

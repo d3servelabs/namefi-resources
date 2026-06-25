@@ -10,7 +10,7 @@ ogImage: ../../assets/dns-over-https-vs-enterprise-split-horizon-dns-og.jpg
 keywords: ['dns sobre https', 'doh', 'dns de horizonte dividido', 'dns empresarial', 'dot', 'dns cifrado', 'dns interno', 'resolución de nombres', 'namefi']
 ---
 
-Durante la mayor parte de la historia de Internet, las consultas DNS viajaron en texto plano a través del puerto 53. Cualquiera en la ruta de la red podía leerlas, registrarlas y modificarlas. Ese era un problema de privacidad que el IETF finalmente abordó con dos alternativas encriptadas (cifradas): [DNS sobre TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 y [DNS sobre HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.
+Durante la mayor parte de la historia de Internet, las consultas [DNS](/es/glossary/dns/) viajaron en texto plano a través del puerto 53. Cualquiera en la ruta de la red podía leerlas, registrarlas y modificarlas. Ese era un problema de privacidad que el IETF finalmente abordó con dos alternativas encriptadas (cifradas): [DNS sobre TLS (DoT, RFC 7858)](https://datatracker.ietf.org/doc/html/rfc7858) en 2016 y [DNS sobre HTTPS (DoH, RFC 8484)](https://datatracker.ietf.org/doc/html/rfc8484) en 2018.
 
 DoH en particular cambió las reglas del juego, porque oculta el DNS *dentro* de un flujo HTTPS normal. Para un observador de la red, una consulta DoH se ve idéntica a cualquier otra conexión TLS a un servidor de contenido. Esto es excelente para los usuarios que navegan en una red hostil de una cafetería. Pero es mucho menos ideal para un equipo de TI corporativo que depende de ver —y dirigir— cada consulta DNS que cruza el perímetro.
 

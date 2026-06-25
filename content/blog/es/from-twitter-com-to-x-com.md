@@ -21,7 +21,7 @@ En julio de 2023, nueve meses después de comprar la empresa [por 44.000 millone
 
 Al principio, no había ningún problema de dominio que resolver.
 
-Cuando Twitter se lanzó en 2006, tenía lo que la mayoría de las startups de esta serie pasaron años y millones de dólares persiguiendo: el .com exact-match que coincidía con su nombre. Twitter.com *era* Twitter. El pájaro azul, el verbo "tuitear", el @-reply, el hashtag — todo un vocabulario creció sobre una dirección que no necesitaba explicación. Durante la mayor parte de su vida, Twitter fue el contraejemplo a toda lección de "compra tu exact-match", porque nunca tuvo que hacerlo.
+Cuando Twitter se lanzó en 2006, tenía lo que la mayoría de las startups de esta serie pasaron años y millones de dólares persiguiendo: el [.com](/es/tld/com/) exact-match que coincidía con su nombre. Twitter.com *era* Twitter. El pájaro azul, el verbo "tuitear", el @-reply, el hashtag — todo un vocabulario creció sobre una dirección que no necesitaba explicación. Durante la mayor parte de su vida, Twitter fue el contraejemplo a toda lección de "compra tu exact-match", porque nunca tuvo que hacerlo.
 
 Eso es lo que hace diferente este caso. La presión para cambiar el dominio no vino del producto que superaba el nombre, de la misma manera en que "Motors" superó a Tesla o "Cab" superó a Uber. Vino de un nuevo propietario que ya tenía un nombre diferente en mente — y que había estado esperando con él durante mucho tiempo.
 

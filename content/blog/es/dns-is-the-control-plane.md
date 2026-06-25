@@ -21,7 +21,7 @@ Dicho esto, el equipo de ingeniería de Namefi revisa las interrupciones globale
 
 ## Qué salió mal realmente en AWS (sin tecnicismos)
 
-Cada aplicación y sitio web necesita una forma de "buscar" dónde conectarse. Esa libreta de direcciones de internet se llama DNS (abreviatura de Domain Name System o Sistema de Nombres de Dominio). El 20 de octubre, un problema de nomenclatura dentro de AWS impidió que algunas computadoras encontraran un servicio clave de base de datos de AWS por su nombre. Si la libreta de direcciones no puede proporcionar la entrada correcta en el momento adecuado, incluso los sistemas saludables no pueden hablar entre sí.
+Cada aplicación y sitio web necesita una forma de "buscar" dónde conectarse. Esa libreta de direcciones de internet se llama [DNS](/es/glossary/dns/) (abreviatura de Domain Name System o Sistema de Nombres de Dominio). El 20 de octubre, un problema de nomenclatura dentro de AWS impidió que algunas computadoras encontraran un servicio clave de base de datos de AWS por su nombre. Si la libreta de direcciones no puede proporcionar la entrada correcta en el momento adecuado, incluso los sistemas saludables no pueden hablar entre sí.
 
 AWS solucionó el problema inmediato de nomenclatura en un par de horas y luego pasó el resto del día permitiendo que las colas acumuladas se despejaran y facilitando el regreso de los sistemas a la normalidad. A última hora de la tarde (hora del Pacífico), AWS dijo que todo estaba operando normalmente de nuevo, aunque algunos servicios tardaron más en ponerse al día.
 

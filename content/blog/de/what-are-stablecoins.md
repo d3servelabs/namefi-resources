@@ -9,9 +9,9 @@ description: 'Entdecken Sie, wie Stablecoins die Lücke zwischen traditionellem 
 keywords: ['was sind stablecoins', 'stablecoin definition', 'USDT vs USDC', 'krypto volatilität', 'web3 zahlungen', 'blockchain domains', 'dezentralisierte finanzen', 'fiat-besichert', 'domains mit krypto kaufen', 'namefi']
 ---
 
-In der schnelllebigen und oft turbulenten Welt der Kryptowährungen können Preise innerhalb von Minuten extrem schwanken. Bitcoin und Ethereum mögen das Ökosystem antreiben, aber ihre Volatilität macht es schwierig, sie für alltägliche Transaktionen, geschäftliche Abrechnungen oder die Bepreisung realer Vermögenswerte zu nutzen. Hier kommen **Stablecoins** ins Spiel – die entscheidende Brücke zwischen der Stabilität traditioneller Fiat-Währungen und der technologischen Innovation der Blockchain.
+In der schnelllebigen und oft turbulenten Welt der Kryptowährungen können Preise innerhalb von Minuten extrem schwanken. Bitcoin und [Ethereum](/de/glossary/ethereum/) mögen das Ökosystem antreiben, aber ihre Volatilität macht es schwierig, sie für alltägliche Transaktionen, geschäftliche Abrechnungen oder die Bepreisung realer Vermögenswerte zu nutzen. Hier kommen **Stablecoins** ins Spiel – die entscheidende Brücke zwischen der Stabilität traditioneller Fiat-Währungen und der technologischen Innovation der [Blockchain](/de/glossary/blockchain/).
 
-Für jeden, der sich in der [Web3](https://en.wikipedia.org/wiki/Web3)-Landschaft bewegt – sei es als Entwickler, Domain-Investor oder Geschäftsinhaber – ist das Verständnis von Stablecoins keine Option mehr, sondern ein Muss. Sie sind der Liquiditätsmotor des dezentralisierten Internets.
+Für jeden, der sich in der [Web3](https://en.wikipedia.org/wiki/Web3)-Landschaft bewegt – sei es als Entwickler, Domain-Investor oder Geschäftsinhaber – ist das Verständnis von Stablecoins keine Option mehr, sondern ein Muss. Sie sind der [Liquidität](/de/glossary/domain-liquidity/)smotor des dezentralisierten Internets.
 
 ## Das Kernkonzept: Stabilität inmitten von Volatilität
 
@@ -34,7 +34,7 @@ Diese sind durch andere Kryptowährungen gedeckt, anstatt durch Fiat-Geld auf ei
 *   **Warum das wichtig ist**: Dies ermöglicht einen dezentralen Stablecoin, der nicht auf eine Zentralbank oder ein Unternehmen angewiesen ist.
 
 ### 3. Algorithmische Stablecoins
-Diese verwenden keine Sicherheiten (Collateral). Stattdessen nutzen sie Smart Contracts und Algorithmen, um das Angebot an Token zu steuern. Steigt der Preis über 1,00 $, erzeugt das System mehr Token, um den Preis zu senken. Fällt er, werden Token "verbrannt" (vernichtet), um den Preis zu erhöhen.
+Diese verwenden keine Sicherheiten ([Collateral](/de/glossary/collateral/)). Stattdessen nutzen sie Smart Contracts und Algorithmen, um das Angebot an Token zu steuern. Steigt der Preis über 1,00 $, erzeugt das System mehr Token, um den Preis zu senken. Fällt er, werden Token "verbrannt" (vernichtet), um den Preis zu erhöhen.
 *   **Hinweis**: Dies ist die riskanteste Klasse von Stablecoins, wie beim [Terra/Luna-Crash von 2022](https://www.coindesk.com/learn/the-fall-of-terra-a-timeline-of-the-algorithmic-stablecoins-crash/) zu sehen war.
 
 ## Warum Stablecoins essenziell für die Zukunft des Webs sind
@@ -42,12 +42,12 @@ Diese verwenden keine Sicherheiten (Collateral). Stattdessen nutzen sie Smart Co
 Stablecoins sind zu einem Multi-Milliarden-Dollar-Markt herangewachsen, weil sie praktische Probleme lösen, die reine Kryptowährungen nicht bewältigen können.
 
 *   **Nahtlose Transaktionen**: Sie können Millionen von Dollar in Stablecoins in Sekundenschnelle rund um den Globus senden, und das zu einem Bruchteil der Kosten einer Banküberweisung, 24/7/365.
-*   **DeFi (Dezentralisierte Finanzen)**: Stablecoins sind das Lebenselixier von [DeFi](https://ethereum.org/en/defi/). Nutzer können ihre Stablecoins verleihen, um Renditen (Zinsen) zu erzielen, die oft deutlich höher sind als bei traditionellen Sparkonten.
+*   **[DeFi](/de/glossary/defi/) (Dezentralisierte Finanzen)**: Stablecoins sind das Lebenselixier von [DeFi](https://ethereum.org/en/defi/). Nutzer können ihre Stablecoins verleihen, um Renditen (Zinsen) zu erzielen, die oft deutlich höher sind als bei traditionellen Sparkonten.
 *   **Sicherer Hafen**: Wenn die Krypto-Märkte fallen, tauschen Händler ihre volatilen Vermögenswerte in Stablecoins, um ihren Portfoliowert zu schützen, ohne sich auf ein Bankkonto auszahlen lassen zu müssen.
 
 ## Die Perspektive von Namefi: Stabile Zahlungen für On-Chain-Vermögenswerte
 
-Bei **Namefi** schließen wir die Lücke zwischen dem traditionellen Internet (DNS) und dem dezentralen Web (Blockchain). Wir ermöglichen Nutzern, Domains on-chain als NFTs zu kaufen, zu verwalten und zu übertragen. Stablecoins spielen in diesem Ökosystem eine zentrale Rolle.
+Bei **Namefi** schließen wir die Lücke zwischen dem traditionellen Internet (DNS) und dem dezentralen Web (Blockchain). Wir ermöglichen Nutzern, Domains [on-chain](/de/glossary/on-chain/) als NFTs zu kaufen, zu verwalten und zu übertragen. Stablecoins spielen in diesem Ökosystem eine zentrale Rolle.
 
 ### 1. Preisvorhersehbarkeit
 Wenn Sie einen Premium-Domainnamen kaufen, wollen Sie genau wissen, was Sie bezahlen. Während die Zahlung in ETH möglich ist, könnte sich der Preis von ETH um 5 % ändern, während Sie sich im Checkout-Prozess befinden. Stablecoins ermöglichen es Namefi-Nutzern, mit der Präzision einer Fiat-Währung zu handeln und gleichzeitig die Geschwindigkeit der Blockchain zu genießen.

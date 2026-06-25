@@ -31,11 +31,11 @@ Ces catégories se chevauchent. Certaines plateformes couvrent plus d'un domaine
 
 ### Namefi
 
-**Idéal pour :** les propriétaires qui souhaitent qu'un vrai `.com`/`.xyz`/`.io` soit [tokenisé](/fr/glossary/tokenize/) sur Ethereum ou Base, avec une large compatibilité avec les marketplaces de NFT et les prêts [DeFi](/en/glossary/defi/), et une gestion DNS qui ne donne pas l'impression de régresser par rapport à Cloudflare.
+**Idéal pour :** les propriétaires qui souhaitent qu'un vrai `.com`/`.xyz`/`.io` soit [tokenisé](/fr/glossary/tokenize/) sur [Ethereum](/fr/glossary/ethereum/) ou Base, avec une large compatibilité avec les marketplaces de NFT et les prêts [DeFi](/fr/glossary/defi/), et une gestion DNS qui ne donne pas l'impression de régresser par rapport à Cloudflare.
 
-**À noter :** Domaines reconnus par l'[ICANN](/fr/glossary/icann/) couvrant de nombreux [TLDs](/en/glossary/tld/), propriété on-chain via des [NFTs](/fr/glossary/nft/) standards ([ERC-721](/en/glossary/erc-721/), ce qui permet aux portefeuilles, marketplaces et outils on-chain de fonctionner sans effort), gestion DNS complète incluant [DNSSEC](/en/glossary/dnssec/), une [marketplace](/fr/glossary/marketplace/) intégrée, et des intégrations avec les paiements on-chain ([x402](/en/glossary/x402/)). Multi-chaînes. Auto-garde (self-custody) dès le premier jour.
+**À noter :** Domaines reconnus par l'[ICANN](/fr/glossary/icann/) couvrant de nombreux [TLDs](/fr/glossary/tld/), propriété [on-chain](/fr/glossary/on-chain/) via des [NFTs](/fr/glossary/nft/) standards ([ERC-721](/fr/glossary/erc-721/), ce qui permet aux portefeuilles, marketplaces et outils on-chain de fonctionner sans effort), gestion DNS complète incluant [DNSSEC](/fr/glossary/dnssec/), une [marketplace](/fr/glossary/marketplace/) intégrée, et des intégrations avec les paiements on-chain ([x402](/fr/glossary/x402/)). Multi-chaînes. Auto-garde (self-custody) dès le premier jour.
 
-**Moins adapté pour :** les personnes qui souhaitent une toute nouvelle extension (TLD) qu'elles ne possèdent pas encore, ou celles qui ne veulent qu'un nom natif du Web3 comme `name.eth`.
+**Moins adapté pour :** les personnes qui souhaitent une toute nouvelle extension (TLD) qu'elles ne possèdent pas encore, ou celles qui ne veulent qu'un nom natif du [Web3](/fr/glossary/web3/) comme `name.eth`.
 
 ### Doma Protocol
 
@@ -97,7 +97,7 @@ Lorsque vous hésitez entre plusieurs plateformes, les pages marketing ne vous d
 - **Gestion DNS.** Pouvez-vous gérer le DNS directement sur la plateforme ? Utiliser des serveurs de noms externes (Cloudflare, Route53) ? Le DNSSEC est-il pris en charge ?
 - **Prêts / collatéralisation.** Pouvez-vous emprunter contre votre domaine tokenisé sur les marchés monétaires existants, ou uniquement au sein d'un silo spécifique à la plateforme ?
 - **Compatibilité des marketplaces.** Blur, OpenSea, etc. afficheront-ils l'annonce, ou n'est-elle visible que sur la marketplace de la plateforme ?
-- **Modèle de garde.** Auto-garde (votre portefeuille, vos clés, votre responsabilité) ou gardé par la plateforme ? Les deux ont leurs avantages et inconvénients.
+- **Modèle de garde.** Auto-garde (votre [portefeuille](/fr/glossary/wallet/), vos clés, votre responsabilité) ou gardé par la plateforme ? Les deux ont leurs avantages et inconvénients.
 - **Processus de renouvellement.** Qui paie le bureau d'enregistrement ? Comment le renouvellement annuel est-il facturé ? Que se passe-t-il si vous arrêtez de payer ?
 - **Voie de sortie.** Si vous souhaitez un jour *dé-tokeniser* et revenir à une configuration de bureau d'enregistrement classique, le pouvez-vous ?
 - **Frais.** Frais de mint, frais de marketplace, frais de transfert, frais de renouvellement, gaz. Additionnez-les pour votre scénario spécifique avant de vous engager.
@@ -117,7 +117,7 @@ Si la documentation d'une plateforme ne clarifie pas l'un de ces points, c'est e
 | Le fractionnement / la copropriété de noms premium | Domora |
 | Des ponts DNS Web2↔Web3 | WebUnited |
 | Une infrastructure de vente sous forme d'enchères | GBM |
-| Une identité purement on-chain (ex: `name.eth`) — *catégorie différente* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
+| Une identité purement on-chain (ex: `name.eth`) — *catégorie différente* | [ENS](/fr/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
 La dernière ligne est importante : **les noms d'identité on-chain comme `.eth` appartiennent à une catégorie cousine, et non à un domaine ICANN tokenisé.** Ils sont utiles pour différentes choses. Consultez [Domaine Tokenisé vs Domaine Web3](/fr/blog/tokenized-domain-vs-web3-domain/) pour en comprendre la distinction.
 

@@ -30,11 +30,11 @@ Ese cambio convirtió a Privy en la base de productos como friend.tech, donde el
 
 ## Trazando la frontera de la usabilidad
 
-Henri ve la evolución de la usabilidad en cripto como un viaje por fases. Los primeros años estuvieron dominados por barreras técnicas: claves privadas, tarifas de gas y conectores de billeteras fragmentados.
+Henri ve la evolución de la usabilidad en cripto como un viaje por fases. Los primeros años estuvieron dominados por barreras técnicas: claves privadas, tarifas de [gas](/es/glossary/gas/) y conectores de billeteras fragmentados.
 
 Para 2025, cree que estos problemas han sido en gran medida solucionados — o al menos controlados. Las tarifas de gas son manejables. La creación y recuperación de billeteras es más fluida. El cuello de botella restante, según él, son las *on-ramps* — el proceso que permite a los usuarios comunes entrar al ecosistema cripto de forma segura e intuitiva.
 
-Una vez que los usuarios puedan entrar fácilmente al ecosistema, el siguiente paso es empoderarlos con herramientas financieras útiles: billeteras con rendimiento, pagos fluidos y aplicaciones basadas en stablecoins que mezclan la familiaridad del Web2 con la capacidad del Web3.
+Una vez que los usuarios puedan entrar fácilmente al ecosistema, el siguiente paso es empoderarlos con herramientas financieras útiles: billeteras con rendimiento, pagos fluidos y aplicaciones basadas en stablecoins que mezclan la familiaridad del Web2 con la capacidad del [Web3](/es/glossary/web3/).
 
 Para Henri, la misión ya no es solo reducir fricción — es convertir la cripto en una infraestructura que la gente use sin siquiera notarlo.
 

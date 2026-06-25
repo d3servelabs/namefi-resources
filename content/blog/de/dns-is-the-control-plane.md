@@ -21,7 +21,7 @@ Dennoch analysiert das Namefi-Engineering-Team globale Ausfälle wie diesen und 
 
 ## Was bei AWS tatsächlich schiefging – ohne Fachchinesisch
 
-Jede App und jede Website benötigt eine Möglichkeit, „nachzuschlagen“, wohin sie sich verbinden soll. Dieses Adressbuch des Internets nennt sich DNS – kurz für Domain Name System. Am 20. Oktober führte ein Benennungsproblem innerhalb von AWS dazu, dass einige Computer einen wichtigen AWS-Datenbankdienst nicht namentlich finden konnten. Wenn das Adressbuch im richtigen Moment nicht den richtigen Eintrag liefern kann, können selbst gesunde Systeme nicht miteinander kommunizieren.
+Jede App und jede Website benötigt eine Möglichkeit, „nachzuschlagen“, wohin sie sich verbinden soll. Dieses Adressbuch des Internets nennt sich [DNS](/de/glossary/dns/) – kurz für Domain Name System. Am 20. Oktober führte ein Benennungsproblem innerhalb von AWS dazu, dass einige Computer einen wichtigen AWS-Datenbankdienst nicht namentlich finden konnten. Wenn das Adressbuch im richtigen Moment nicht den richtigen Eintrag liefern kann, können selbst gesunde Systeme nicht miteinander kommunizieren.
 
 AWS behob das unmittelbare Benennungsproblem innerhalb weniger Stunden und verbrachte den Rest des Tages damit, Rückstaus abzubauen und die Systeme wieder in den Normalzustand zu versetzen. Am späten Nachmittag (pazifische Zeit) erklärte AWS, dass alles wieder normal funktioniere, obwohl einige Dienste länger brauchten, um aufzuholen.
 

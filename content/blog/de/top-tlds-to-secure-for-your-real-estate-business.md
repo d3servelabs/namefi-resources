@@ -68,7 +68,7 @@ Behalten Sie drei Gewohnheiten bei. Leiten Sie jede defensive Domain per Weiterl
 
 ## Registrieren Sie Ihre Immobilien-Domains bei Namefi
 
-Sie können Ihr gesamtes Immobilien-Domain-Portfolio bei [Namefi](https://namefi.io) aufbauen und verwalten – einem ICANN-akkreditierten Registrar mit transparenten Preisen und schnellem DNS, damit Ihre Angebotseiten und Weiterleitungen schnell online gehen. Da Namefi auch die Web3-Domain-Tokenisierung unterstützt, können Sie berechtigte Domains als NFTs halten und so leicht übertragen wie jedes andere On-Chain-Asset – nützlich, wenn eine Marke oder ein Portfolio den Besitzer wechselt. Registrieren Sie Ihre Ankerdomain `.com`, fügen Sie Ihre branchen- und defensiven Endungen hinzu, und halten Sie die automatische Verlängerung aktiv, damit Ihnen nichts durch die Lappen geht.
+Sie können Ihr gesamtes Immobilien-[Domain-Portfolio](/de/glossary/domain-portfolio/) bei [Namefi](https://namefi.io) aufbauen und verwalten – einem ICANN-akkreditierten Registrar mit transparenten Preisen und schnellem DNS, damit Ihre Angebotseiten und Weiterleitungen schnell online gehen. Da Namefi auch die [Web3](/de/glossary/web3/)-Domain-Tokenisierung unterstützt, können Sie berechtigte Domains als NFTs halten und so leicht übertragen wie jedes andere On-Chain-Asset – nützlich, wenn eine Marke oder ein Portfolio den Besitzer wechselt. Registrieren Sie Ihre Ankerdomain `.com`, fügen Sie Ihre branchen- und defensiven Endungen hinzu, und halten Sie die automatische Verlängerung aktiv, damit Ihnen nichts durch die Lappen geht.
 
 ## Häufig gestellte Fragen
 
@@ -86,4 +86,4 @@ Für die meisten Makler sind drei bis fünf ausreichend: Ihre Ankerdomain `.com`
 
 ### Sollte ich Immobilien-TLDs als tokenisierte (Web3-)Domains registrieren?
 
-Das ist möglich. Die Tokenisierung einer Domain als NFT macht den Besitz portabel und leicht übertragbar, was praktisch ist, wenn Sie eine Marke verkaufen oder ein Portfolio zwischen Einheiten verschieben. Für Ihre alltäglichen öffentlichen Angebotseiten ist eine Standardregistrierung mit zuverlässigem DNS der einfachste Weg; die Tokenisierung ist eine Option, die Sie hinzufügen können, wenn Portabilität oder On-Chain-Nutzung wichtig ist.
+Das ist möglich. Die Tokenisierung einer Domain als NFT macht den Besitz portabel und leicht übertragbar, was praktisch ist, wenn Sie eine Marke verkaufen oder ein Portfolio zwischen Einheiten verschieben. Für Ihre alltäglichen öffentlichen Angebotseiten ist eine Standardregistrierung mit zuverlässigem DNS der einfachste Weg; die Tokenisierung ist eine Option, die Sie hinzufügen können, wenn Portabilität oder [On-Chain](/de/glossary/on-chain/)-Nutzung wichtig ist.

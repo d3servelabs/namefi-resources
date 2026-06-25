@@ -24,10 +24,10 @@ Esta combinación es novedosa. No asuma que su CPA ha visto uno antes. Tampoco a
 
 Los dominios tokenizados tienen eventos continuos [en cadena (on-chain)](/es/glossary/on-chain/) que los dominios tradicionales no tienen:
 
-- Acuñación (minting) (el momento de la [tokenización](/es/glossary/tokenize/) en sí — ¿es un evento imponible? Probablemente no en la mayoría de las jurisdicciones, pero pregunte).
+- [Acuñación](/es/glossary/minting/) (minting) (el momento de la [tokenización](/es/glossary/tokenize/) en sí — ¿es un evento imponible? Probablemente no en la mayoría de las jurisdicciones, pero pregunte).
 - Transferencias on-chain, incluyendo flujos de donaciones y herencias.
-- Ventas realizadas íntegramente on-chain, pagadas en criptomonedas o [monedas estables (stablecoins)](/en/glossary/stablecoin/).
-- Posible uso como [garantía](/es/glossary/collateral/) [DeFi](/en/glossary/defi/) (por ejemplo, obtener un préstamo respaldado por el dominio).
+- Ventas realizadas íntegramente on-chain, pagadas en criptomonedas o [monedas estables (stablecoins)](/es/glossary/stablecoin/).
+- Posible uso como [garantía](/es/glossary/collateral/) [DeFi](/es/glossary/defi/) (por ejemplo, obtener un préstamo respaldado por el dominio).
 - Uso de puentes (bridging) o movimiento del token entre cadenas.
 
 Cada una de esas interacciones tiene implicaciones fiscales en algunas jurisdicciones y en otras no. La siguiente lista es el menú de preguntas que vale la pena analizar con un profesional.
@@ -38,9 +38,9 @@ Cada una de esas interacciones tiene implicaciones fiscales en algunas jurisdicc
 
 ### Base de coste
 
-- ¿Cuál es la base de coste de un dominio que he registrado y tokenizado recientemente? ¿Solo el coste del registrador? ¿Más el gas? ¿Más las tarifas del protocolo?
+- ¿Cuál es la base de coste de un dominio que he registrado y tokenizado recientemente? ¿Solo el coste del [registrador](/es/glossary/registrar/)? ¿Más el gas? ¿Más las tarifas del protocolo?
 - ¿Qué pasa con un dominio que he poseído durante años en un registrador y que recién he tokenizado? ¿La base se restablece, se transfiere o permanece sin cambios?
-- Si compré el dominio tokenizado en un mercado usando ETH, ¿cuál es la base: el valor en USD del ETH en el momento de la venta? ¿La cifra reportada por el mercado?
+- Si compré el dominio tokenizado en un [mercado](/es/glossary/marketplace/) usando ETH, ¿cuál es la base: el valor en USD del ETH en el momento de la venta? ¿La cifra reportada por el mercado?
 - ¿Cómo documento la base de manera que sobreviva a una auditoría?
 
 ### Período de tenencia
@@ -76,7 +76,7 @@ Cada una de esas interacciones tiene implicaciones fiscales en algunas jurisdicc
 
 ### Cadenas cruzadas (Cross-chain) / Uso de puentes (Bridging)
 
-- Si muevo el token de la red principal de Ethereum a Base (o viceversa), ¿es el evento del puente una enajenación (disposition)?
+- Si muevo el token de la red principal de [Ethereum](/es/glossary/ethereum/) a Base (o viceversa), ¿es el evento del puente una enajenación (disposition)?
 - ¿El empaquetado/desempaquetado (wrapping/unwrapping) cuenta como un evento imponible?
 
 ### Impuesto sobre las ventas / IVA
@@ -111,7 +111,7 @@ Estas no son preguntas exóticas; son las mismas preguntas que las empresas hace
 ## Cosas que casi con seguridad no le salvarán
 
 - "Solo está on-chain, por lo que es invisible para las autoridades fiscales". No lo es. La actividad on-chain es más visible que la actividad off-chain.
-- "Usé una billetera de privacidad, así que no cuenta". Sí cuenta. El cumplimiento tributario sigue existiendo.
+- "Usé una [billetera](/es/glossary/wallet/) de privacidad, así que no cuenta". Sí cuenta. El cumplimiento tributario sigue existiendo.
 - "El IRS / Hacienda / equivalente no tiene directrices al respecto todavía". La falta de directrices específicas no es lo mismo que no tener ninguna obligación.
 - "Mi amigo en Discord dijo..." Su amigo en Discord no es su contador (CPA).
 

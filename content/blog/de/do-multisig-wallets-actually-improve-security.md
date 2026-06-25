@@ -10,13 +10,13 @@ ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['Multisig-Wallet', 'Multisignatur', 'Safe Wallet', 'Gnosis Safe', 'Schlüsselverwaltung', 'Self-Custody', 'Threshold-Signatur', 'Social Recovery', 'Namefi']
 ---
 
-Multisignatur-Wallets – Wallets, bei denen M von N Schlüsseln signieren müssen, bevor eine Transaktion gültig ist – werden in der Regel als das offensichtliche Upgrade einer Single-Key Hot Wallet präsentiert. Die meisten Treasury-Setups in DAOs, Börsen und ernsthaften Krypto-Unternehmen laufen über irgendeine Form von Multisig (Safe, Squads, Multisig.js, Threshold-Signatur-Varianten).
+Multisignatur-Wallets – Wallets, bei denen M von N Schlüsseln signieren müssen, bevor eine Transaktion gültig ist – werden in der Regel als das offensichtliche Upgrade einer Single-Key Hot [Wallet](/de/glossary/wallet/) präsentiert. Die meisten Treasury-Setups in DAOs, Börsen und ernsthaften Krypto-Unternehmen laufen über irgendeine Form von Multisig (Safe, Squads, Multisig.js, Threshold-Signatur-Varianten).
 
 Dieser Ruf ist wohlverdient, aber nur gegenüber einem *spezifischen* Bedrohungsmodell. Multisig wehrt einige der häufigsten Methoden ab, mit denen Gelder gestohlen werden, und bewirkt bei anderen fast gar nichts. Hier ist die ehrliche Version: worin Multisig wirklich gut ist, wo es zu kurz kommt und in welchen Fällen seine Einführung ein Setup *weniger* sicher machen kann.
 
 ## Was Multisig ist, ganz kurz
 
-In einem 2-von-3-Multisig existieren drei private Schlüssel; beliebige zwei davon müssen eine Transaktion signieren, damit sie On-Chain ausgeführt wird. Die Wallet selbst ist ein Smart Contract (in der Ethereum/EVM-Welt) oder ein nativer Multisig-Ausgabetyp (bei Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). Der Contract verifiziert die Signaturen und leitet die Transaktion dann weiter.
+In einem 2-von-3-Multisig existieren drei private Schlüssel; beliebige zwei davon müssen eine Transaktion signieren, damit sie [On-Chain](/de/glossary/on-chain/) ausgeführt wird. Die Wallet selbst ist ein [Smart Contract](/de/glossary/smart-contract/) (in der [Ethereum](/de/glossary/ethereum/)/EVM-Welt) oder ein nativer Multisig-Ausgabetyp (bei Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). Der Contract verifiziert die Signaturen und leitet die Transaktion dann weiter.
 
 Die am weitesten verbreitete Implementierung in EVM-Ökosystemen ist [Safe](https://safe.global/) (ehemals Gnosis Safe). Auf Solana übernimmt [Squads](https://squads.so/) dieselbe Rolle. Bitcoin hat eine lange Geschichte der nativen Multisig-Unterstützung, oft in Kombination mit Hardware-Wallets über [PSBT-Workflows](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 
@@ -26,7 +26,7 @@ Schwellenwert-Signaturverfahren (Threshold-Signature Schemes: TSS, FROST, MPC) e
 
 ### Kompromittierung eines einzelnen Schlüssels
 
-Das ist der Hauptvorteil. Wenn die Hardware-Wallet eines Unterzeichners gestohlen wird, das Telefon eines Unterzeichners mit Malware infiziert ist oder die Seed-Phrase eines Unterzeichners durchsickert, kann ein Angreifer, der diesen einzigen Schlüssel besitzt, keine Gelder bewegen. Er muss gleichzeitig mindestens M-1 weitere Schlüssel kompromittieren.
+Das ist der Hauptvorteil. Wenn die [Hardware-Wallet](/de/glossary/hardware-wallet/) eines Unterzeichners gestohlen wird, das Telefon eines Unterzeichners mit Malware infiziert ist oder die [Seed-Phrase](/de/glossary/seed-phrase/) eines Unterzeichners durchsickert, kann ein Angreifer, der diesen einzigen Schlüssel besitzt, keine Gelder bewegen. Er muss gleichzeitig mindestens M-1 weitere Schlüssel kompromittieren.
 
 Für ein 2-von-3-Setup bedeutet dies, dass der Angreifer *zwei unabhängige Endpunkte* kompromittieren muss, die idealerweise von verschiedenen Personen, auf unterschiedlicher Hardware und an unterschiedlichen physischen Orten gehalten werden. Die Wahrscheinlichkeit von zwei unabhängigen Kompromittierungen im selben Zeitfenster ist in der Regel um Größenordnungen geringer als die Wahrscheinlichkeit einer einzigen.
 
@@ -40,7 +40,7 @@ In einem M-von-N-Setup mit N > M ist der Verlust eines Schlüssels nicht katastr
 
 ### Phishing von Benutzern
 
-Viele Wallet-Phishing-Angriffe (gefälschte Airdrop-Seiten, bösartige Token-Freigaben, Drainer-Contracts) beruhen darauf, dass der Benutzer in einer einzigen Browser-Sitzung eine bösartige Transaktion signiert. Ein Multisig fügt einen Bestätigungsschritt auf einer anderen Ebene hinzu – eine koordinierende Benutzeroberfläche wie die von Safe oder eine Hardware-Zustimmung auf mehreren Geräten –, was dem Benutzer einen weiteren Moment gibt, um zu bemerken, dass er etwas signiert, was er nicht beabsichtigt hat.
+Viele Wallet-[Phishing](/de/glossary/phishing/)-Angriffe (gefälschte Airdrop-Seiten, bösartige Token-Freigaben, Drainer-Contracts) beruhen darauf, dass der Benutzer in einer einzigen Browser-Sitzung eine bösartige Transaktion signiert. Ein Multisig fügt einen Bestätigungsschritt auf einer anderen Ebene hinzu – eine koordinierende Benutzeroberfläche wie die von Safe oder eine Hardware-Zustimmung auf mehreren Geräten –, was dem Benutzer einen weiteren Moment gibt, um zu bemerken, dass er etwas signiert, was er nicht beabsichtigt hat.
 
 ## Was Multisig *nicht* abwehrt (der unbequeme Teil)
 
@@ -108,7 +108,7 @@ Das erfordert mehr Disziplin, als den meisten Teams anfangs bewusst ist. Die gut
 
 ## Wie das mit Domains zusammenhängt
 
-Naming ist eine der stärksten Analogien zu Multisig in der Off-Chain-Welt. Eine Domain, die von einem einzigen Registrar-Konto hinter einem einzigen Passwort kontrolliert wird, ist eine Single-Key-Wallet. Eine Domain, die durch Registrar Lock + Registry Lock + 2FA beim DNS-Anbieter + mehrere autoritative Anbieter geschützt ist, ist strukturell ein Multisig: Mehrere unabhängige Faktoren müssen jeweils kompromittiert werden, bevor der Name den Besitzer wechselt.
+Naming ist eine der stärksten Analogien zu Multisig in der Off-Chain-Welt. Eine Domain, die von einem einzigen [Registrar](/de/glossary/registrar/)-Konto hinter einem einzigen Passwort kontrolliert wird, ist eine Single-Key-Wallet. Eine Domain, die durch Registrar Lock + Registry Lock + 2FA beim DNS-Anbieter + mehrere autoritative Anbieter geschützt ist, ist strukturell ein Multisig: Mehrere unabhängige Faktoren müssen jeweils kompromittiert werden, bevor der Name den Besitzer wechselt.
 
 Namefi geht noch einen Schritt weiter, indem es das Eigentum als On-Chain-Eintrag repräsentiert, der direkt in einer Multisig-Wallet gehalten werden kann. Dasselbe Schwellenwertsystem, das ein Treasury schützt, kann nun auch die *DNS-Kontrollebene* (DNS Control Plane) schützen – so kann eine einzelne gephishte Person die Domain des Unternehmens genauso wenig verlieren, wie sie allein das Treasury plündern könnte. Das Upgrade des Bedrohungsmodells ist in beiden Welten dasselbe: Ersetze "Vertraue auf ein Zugangssignal" durch "Kompromittiere M von N unabhängigen Faktoren".
 

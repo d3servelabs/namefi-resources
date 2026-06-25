@@ -28,7 +28,7 @@ Un dominio tokenizado *amplía* el mundo DNS existente. Un dominio Web3 lo *reem
 
 ## De dónde viene la confusión
 
-Ambos implican tener un NFT en una wallet (billetera). A ambos se les llama "dominios". Ambos tienen a la ICANN en la conversación de alguna manera, pero en sentidos opuestos. El marketing de ambas categorías suele desdibujar esta distinción.
+Ambos implican tener un NFT en una wallet ([billetera](/es/glossary/wallet/)). A ambos se les llama "dominios". Ambos tienen a la ICANN en la conversación de alguna manera, pero en sentidos opuestos. El marketing de ambas categorías suele desdibujar esta distinción.
 
 Aquí tienes el modelo mental más claro:
 
@@ -65,7 +65,7 @@ Son mejores cuando:
 - Administras un sitio web, una aplicación o un negocio real y quieres que funcione para **todos**, independientemente de si han instalado o no software Web3.
 - Quieres correo electrónico en tu dominio, certificados SSL de autoridades de certificación (CA) estándar, configuraciones de CDN, etc.
 - Deseas **propiedad y transferibilidad nativa desde tu wallet** para el dominio en sí (vender, regalar, prestar) sin la burocracia del registrador.
-- Quieres que el dominio pueda utilizarse como garantía (collateral) on-chain en DeFi mientras sigue funcionando como un sitio web normal.
+- Quieres que el dominio pueda utilizarse como garantía (collateral) on-chain en [DeFi](/es/glossary/defi/) mientras sigue funcionando como un sitio web normal.
 
 Ejemplos: el `.com` de una empresa, el `.io` de una aplicación SaaS, el `.xyz` de un creador, el `.art` de una marca. Cualquier cosa que necesite funcionar en la internet real.
 
@@ -92,7 +92,7 @@ Consulta [El DNS sigue funcionando](/es/blog/dns-on-tokenized-domains/) para ver
 
 ### Resolución de nombres ENS / Web3
 
-Escribes `vitalik.eth`. Un cliente compatible con Web3 (MetaMask, una dapp, ciertos navegadores con soporte para [ENS](/en/glossary/ens/)) consulta el [contrato inteligente (smart contract)](/es/glossary/smart-contract/) de ENS en Ethereum, obtiene la dirección o el hash de contenido asociado, y lo muestra en consecuencia. Un cliente que no sea compatible con Web3 (Chrome sin extensiones, el servidor de correo de tu oficina, tu CA de SSL) no sabe qué significa `.eth` y no lo resolverá.
+Escribes `vitalik.eth`. Un cliente compatible con Web3 (MetaMask, una dapp, ciertos navegadores con soporte para [ENS](/es/glossary/ens/)) consulta el [contrato inteligente (smart contract)](/es/glossary/smart-contract/) de ENS en [Ethereum](/es/glossary/ethereum/), obtiene la dirección o el hash de contenido asociado, y lo muestra en consecuencia. Un cliente que no sea compatible con Web3 (Chrome sin extensiones, el servidor de correo de tu oficina, tu CA de SSL) no sabe qué significa `.eth` y no lo resolverá.
 
 Esto no es un fallo, así es el diseño. ENS y sistemas similares están construidos para una experiencia nativa de Web3, no para reemplazar la capa de nombres de la internet en general. Consulta la [documentación oficial de ENS](https://docs.ens.domains/) para conocer la arquitectura subyacente.
 
