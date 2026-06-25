@@ -4,8 +4,6 @@
   "type": "module",
   "scripts": {
     "data:validate": "bun scripts/validate-data.ts",
-    "translate:blog": "bun scripts/translate-blog.ts",
-    "generate:blog": "bun scripts/generate-blog.ts",
     "termbase:build": "bun scripts/build-termbase.ts",
     "termbase:check": "bun scripts/build-termbase.ts --check",
     "glossary:mentions": "bun scripts/glossary-mentions.ts",
@@ -13,7 +11,6 @@
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""
   },
   "dependencies": {
-    "@google/generative-ai": "^0.24.1",
     "gray-matter": "^4.0.3",
     "p-limit": "^7.2.0"
   },
