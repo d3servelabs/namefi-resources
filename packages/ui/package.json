@@ -8,6 +8,7 @@
     "./components/namefi/brand-icons": "./src/components/namefi/brand-icons.tsx",
     "./components/namefi/edge-fade-scroll-area": "./src/components/namefi/edge-fade-scroll-area.tsx",
     "./components/namefi/namefi-button": "./src/components/namefi/namefi-button.tsx",
+    "./components/namefi/omni-search": "./src/components/namefi/omni-search.tsx",
     "./components/namefi/wallet-avatar-fallback": "./src/components/namefi/wallet-avatar-fallback.tsx",
     "./components/namefi/progress-timeline": "./src/components/namefi/progress-timeline/index.ts",
     "./components/namefi/gradient-card": "./src/components/namefi/gradient-card.tsx",

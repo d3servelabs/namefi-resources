@@ -114,5 +114,59 @@
   },
   "results.noResultsDescription": {
     "description": "Body text shown when a search returns no domains, suggesting a different term. {query} is the user's search term, echoed back inside quotes."
+  },
+  "omniSearch.placeholder": {
+    "description": "OmniSearch header bar placeholder text."
+  },
+  "omniSearch.empty": {
+    "description": "Shown when an OmniSearch query returns nothing."
+  },
+  "omniSearch.premium": {
+    "description": "Badge for premium domain results."
+  },
+  "omniSearch.taken": {
+    "description": "Status shown for an already-registered domain."
+  },
+  "omniSearch.importable": {
+    "description": "Status shown for a taken-but-importable domain."
+  },
+  "omniSearch.ownedBadge": {
+    "description": "Badge marking a result as one the user owns."
+  },
+  "omniSearch.pageBadge": {
+    "description": "Badge marking an app page/action result."
+  },
+  "omniSearch.seeAll": {
+    "description": "Footer row linking to full search results. {query} is the search term echoed back."
+  },
+  "omniSearch.groups.domains": {
+    "description": "Heading for the domain-availability results group."
+  },
+  "omniSearch.groups.ownedDomains": {
+    "description": "Heading for the user's owned-domains results group."
+  },
+  "omniSearch.groups.destinations": {
+    "description": "Heading for the app pages/actions results group."
+  },
+  "omniSearch.groups.resources": {
+    "description": "Heading for the help/resources results group."
+  },
+  "omniSearch.cart.add": {
+    "description": "Add-to-cart button label (idle)."
+  },
+  "omniSearch.cart.adding": {
+    "description": "Add-to-cart button label while adding."
+  },
+  "omniSearch.cart.inCart": {
+    "description": "Cart button label when the domain is in the cart."
+  },
+  "omniSearch.cart.removing": {
+    "description": "Cart button label while removing."
+  },
+  "omniSearch.cart.import": {
+    "description": "Button label to import a domain."
+  },
+  "omniSearch.all": {
+    "description": "Label for the \"All\" scope tab in OmniSearch (shows every result group)."
   }
 }

@@ -50,5 +50,29 @@
     "errorDescription": "An error occurred while searching. Please try again.",
     "noResultsTitle": "No domains found",
     "noResultsDescription": "No domains matching \"{query}\" were found. Try a different search term."
+  },
+  "omniSearch": {
+    "placeholder": "Search domains, your domains, pages, and help",
+    "empty": "No results found",
+    "premium": "Premium",
+    "taken": "Taken",
+    "importable": "Importable",
+    "ownedBadge": "Owned",
+    "pageBadge": "Page",
+    "seeAll": "See all results for \"{query}\"",
+    "groups": {
+      "domains": "Domains",
+      "ownedDomains": "Your domains",
+      "destinations": "Pages & actions",
+      "resources": "Help & resources"
+    },
+    "cart": {
+      "add": "Add to cart",
+      "adding": "Adding…",
+      "inCart": "In cart",
+      "removing": "Removing…",
+      "import": "Import"
+    },
+    "all": "All"
   }
 }

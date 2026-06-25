@@ -50,5 +50,29 @@
     "errorDescription": "Une erreur s'est produite lors de la recherche. Veuillez réessayer.",
     "noResultsTitle": "Aucun domaine trouvé",
     "noResultsDescription": "Aucun domaine correspondant à \"{query}\" n'a été trouvé. Essayez un autre terme de recherche."
+  },
+  "omniSearch": {
+    "placeholder": "Rechercher des domaines, vos domaines, pages et aide",
+    "empty": "Aucun résultat trouvé",
+    "premium": "Premium",
+    "taken": "Pris",
+    "importable": "Importable",
+    "ownedBadge": "Possédé",
+    "pageBadge": "Page",
+    "seeAll": "Voir tous les résultats pour « {query} »",
+    "groups": {
+      "domains": "Domaines",
+      "ownedDomains": "Vos domaines",
+      "destinations": "Pages et actions",
+      "resources": "Aide et ressources"
+    },
+    "cart": {
+      "add": "Ajouter au panier",
+      "adding": "Ajout…",
+      "inCart": "Dans le panier",
+      "removing": "Suppression…",
+      "import": "Importer"
+    },
+    "all": "Tout"
   }
 }

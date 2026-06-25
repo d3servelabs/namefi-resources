@@ -50,5 +50,29 @@
     "errorDescription": "حصل خطأ أثناء البحث. حاول تاني.",
     "noResultsTitle": "مفيش دومينات",
     "noResultsDescription": "مفيش دومينات بتطابق \"{query}\". جرب كلمة تانية."
+  },
+  "omniSearch": {
+    "placeholder": "ابحث في النطاقات وصفحاتك والمساعدة",
+    "empty": "لا توجد نتائج",
+    "premium": "مميز",
+    "taken": "محجوز",
+    "importable": "قابل للاستيراد",
+    "ownedBadge": "مملوك",
+    "pageBadge": "صفحة",
+    "seeAll": "عرض كل النتائج لـ «{query}»",
+    "groups": {
+      "domains": "النطاقات",
+      "ownedDomains": "نطاقاتك",
+      "destinations": "الصفحات والإجراءات",
+      "resources": "المساعدة والموارد"
+    },
+    "cart": {
+      "add": "أضف للسلة",
+      "adding": "جارٍ الإضافة…",
+      "inCart": "في السلة",
+      "removing": "جارٍ الحذف…",
+      "import": "استيراد"
+    },
+    "all": "الكل"
   }
 }

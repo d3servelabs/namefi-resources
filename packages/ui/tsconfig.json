@@ -12,6 +12,9 @@
       "@namefi-astra/ui/components/namefi/namefi-button": [
         "./src/components/namefi/namefi-button.tsx"
       ],
+      "@namefi-astra/ui/components/namefi/omni-search": [
+        "./src/components/namefi/omni-search.tsx"
+      ],
       "@namefi-astra/ui/components/namefi/progress-timeline": [
         "./src/components/namefi/progress-timeline/index.ts"
       ],

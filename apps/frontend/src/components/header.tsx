@@ -9,17 +9,33 @@ import { NotificationsBell } from '@/components/notifications/notifications-bell
 import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useOrigin } from '@/components/providers/origin';
+import { isLandingPath } from '@/lib/origin/keys';
 import { MOBILE_NAV_TOGGLE_ID } from '@/components/sidebars/mobile-nav-toggle-id';
 import { Menu } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   type ForwardRefExoticComponent,
   type ForwardedRef,
   type HTMLAttributes,
   forwardRef,
 } from 'react';
+
+// Lazy-loaded so the search/cart/tRPC/Pagefind graph stays out of the app-shell
+// bundle (the header is rendered on every route).
+const HeaderOmniSearch = dynamic(
+  () =>
+    import('@/components/search/header-omni-search').then(
+      (m) => m.HeaderOmniSearch,
+    ),
+  {
+    ssr: false,
+    loading: () => <div className="h-9 w-full rounded-lg bg-input/40" />,
+  },
+);
 
 export type HeaderProps = HTMLAttributes<HTMLDivElement>;
 
@@ -34,6 +50,11 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
   const origin = useOrigin();
   const tNav = useTranslations('nav');
   const isBlurredHeader = origin.config.landingPage?.headerIsBlurred;
+
+  // The landing page (`/`) keeps its own hero search; the header search appears
+  // on every other route as part of the header.
+  const pathname = usePathname();
+  const showOmniSearch = !isLandingPath(pathname);
 
   return (
     <header
@@ -83,6 +104,13 @@ export const Header: ForwardRefExoticComponent<HeaderProps> = forwardRef<
         />
       </Link>
       <div className="flex min-w-0 flex-1 items-center gap-2 sm:gap-4">
+        {showOmniSearch && (
+          <div className="flex min-w-0 flex-1 justify-center">
+            <div className="w-full max-w-xl">
+              <HeaderOmniSearch />
+            </div>
+          </div>
+        )}
         <div className="ms-auto flex items-center gap-2 sm:gap-4">
           <div className="hidden sm:block">
             <HeaderMissingEmailWarning />

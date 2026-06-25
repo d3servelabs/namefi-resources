@@ -50,5 +50,29 @@
     "errorDescription": "Bei der Suche ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "noResultsTitle": "Keine Domains gefunden",
     "noResultsDescription": "Es wurden keine Domains für „{query}“ gefunden. Bitte versuchen Sie einen anderen Suchbegriff."
+  },
+  "omniSearch": {
+    "placeholder": "Domains, eigene Domains, Seiten und Hilfe suchen",
+    "empty": "Keine Ergebnisse gefunden",
+    "premium": "Premium",
+    "taken": "Vergeben",
+    "importable": "Importierbar",
+    "ownedBadge": "Eigene",
+    "pageBadge": "Seite",
+    "seeAll": "Alle Ergebnisse für „{query}“ anzeigen",
+    "groups": {
+      "domains": "Domains",
+      "ownedDomains": "Eigene Domains",
+      "destinations": "Seiten & Aktionen",
+      "resources": "Hilfe & Ressourcen"
+    },
+    "cart": {
+      "add": "In den Warenkorb",
+      "adding": "Wird hinzugefügt…",
+      "inCart": "Im Warenkorb",
+      "removing": "Wird entfernt…",
+      "import": "Importieren"
+    },
+    "all": "Alle"
   }
 }

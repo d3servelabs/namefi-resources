@@ -50,5 +50,29 @@
     "errorDescription": "Ocurrió un error al buscar. Por favor, inténtalo de nuevo.",
     "noResultsTitle": "No se encontraron dominios",
     "noResultsDescription": "No se encontraron dominios que coincidan con \"{query}\". Prueba con otro término."
+  },
+  "omniSearch": {
+    "placeholder": "Buscar dominios, tus dominios, páginas y ayuda",
+    "empty": "Sin resultados",
+    "premium": "Premium",
+    "taken": "No disponible",
+    "importable": "Importable",
+    "ownedBadge": "Tuyo",
+    "pageBadge": "Página",
+    "seeAll": "Ver todos los resultados de \"{query}\"",
+    "groups": {
+      "domains": "Dominios",
+      "ownedDomains": "Tus dominios",
+      "destinations": "Páginas y acciones",
+      "resources": "Ayuda y recursos"
+    },
+    "cart": {
+      "add": "Agregar al carrito",
+      "adding": "Agregando…",
+      "inCart": "En el carrito",
+      "removing": "Eliminando…",
+      "import": "Importar"
+    },
+    "all": "Todo"
   }
 }

@@ -50,5 +50,29 @@
     "errorDescription": "検索中にエラーが発生しました。もう一度お試しください。",
     "noResultsTitle": "ドメインが見つかりません",
     "noResultsDescription": "\"{query}\" に一致するドメインは見つかりませんでした。別の検索ワードをお試しください。"
+  },
+  "omniSearch": {
+    "placeholder": "ドメイン、マイドメイン、ページ、ヘルプを検索",
+    "empty": "結果が見つかりません",
+    "premium": "プレミアム",
+    "taken": "取得済み",
+    "importable": "インポート可能",
+    "ownedBadge": "所有",
+    "pageBadge": "ページ",
+    "seeAll": "「{query}」の検索結果をすべて表示",
+    "groups": {
+      "domains": "ドメイン",
+      "ownedDomains": "マイドメイン",
+      "destinations": "ページ＆操作",
+      "resources": "ヘルプ＆リソース"
+    },
+    "cart": {
+      "add": "カートに追加",
+      "adding": "追加中…",
+      "inCart": "カート内",
+      "removing": "削除中…",
+      "import": "インポート"
+    },
+    "all": "すべて"
   }
 }

@@ -50,5 +50,29 @@
     "errorDescription": "搜索时发生错误，请重试。",
     "noResultsTitle": "未找到域名",
     "noResultsDescription": "未找到与「{query}」匹配的域名。请尝试其他搜索词。"
+  },
+  "omniSearch": {
+    "placeholder": "搜索域名、我的域名、页面和帮助",
+    "empty": "无结果",
+    "premium": "高级域名",
+    "taken": "已注册",
+    "importable": "可导入",
+    "ownedBadge": "已拥有",
+    "pageBadge": "页面",
+    "seeAll": "查看\"{query}\"的全部结果",
+    "groups": {
+      "domains": "域名",
+      "ownedDomains": "我的域名",
+      "destinations": "页面与操作",
+      "resources": "帮助与资源"
+    },
+    "cart": {
+      "add": "加入购物车",
+      "adding": "添加中…",
+      "inCart": "已在购物车",
+      "removing": "移除中…",
+      "import": "导入"
+    },
+    "all": "全部"
   }
 }
