@@ -8,6 +8,7 @@ const backendEnvironments = [
   'preview',
   'production',
   'test',
+  'canary',
 ] as const;
 
 type BackendEnvironment = (typeof backendEnvironments)[number];
@@ -19,6 +20,7 @@ const configLoaders = {
   preview: () => import('./configs/preview'),
   production: () => import('./configs/production'),
   test: () => import('./configs/test'),
+  canary: () => import('./configs/canary'),
 } satisfies Record<BackendEnvironment, () => Promise<ConfigModule>>;
 
 function isBackendEnvironment(
