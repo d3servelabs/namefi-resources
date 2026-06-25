@@ -136,8 +136,13 @@ bun run db:studio    # Open Drizzle Studio
 
 - **Read Before Writing**: Always examine existing code before making changes
 - **Preserve Functionality**: Ensure changes don't break existing features
-- **Update Related Files**: When changing core functionality, update tests, documentation, and related code  
+- **Update Related Files**: When changing core functionality, update tests, documentation, and related code
 - **Validate Changes**: Run tests after making changes to ensure nothing breaks
+
+### Vercel Preview Builds
+
+- **Preview builds are on-demand**: Automated Vercel preview build triggers are turned off. Do not assume a push or PR update will create a preview deployment.
+- **Trigger only when needed**: If a preview deployment is needed for review or validation, explicitly trigger it on Vercel/GitHub. Use your judgment about whether it is absolutely necessary; most changes do not need one.
 
 ### Git & Version Control
 

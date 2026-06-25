@@ -43,7 +43,7 @@ alwaysApply: false
   ```yaml
   # Context-based rule (most common)
   globs:
-  
+
   # File-pattern rule (less common)
   globs: "*.ts, *.tsx, src/**/*.js"
   ```

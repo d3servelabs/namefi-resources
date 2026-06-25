@@ -67,7 +67,7 @@ cursor:
   - *Example:*
     ```
     feat(ui): add localstorage
-    
+
     #NFI-1234
     ```
 - **PR Titles:** Append the Task ID to the end of the PR title.
