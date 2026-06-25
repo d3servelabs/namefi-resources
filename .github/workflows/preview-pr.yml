@@ -10,7 +10,7 @@ on:
       force_preview:
         description: "Force all preview targets"
         required: false
-        default: true
+        default: false
         type: boolean
 
 concurrency:
@@ -44,7 +44,7 @@ jobs:
           )
         )
       )
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    runs-on: blacksmith-4vcpu-ubuntu-2404
     outputs:
       frontend_changed: ${{ steps.evaluate.outputs.frontend_changed }}
       park_changed: ${{ steps.evaluate.outputs.park_changed }}
@@ -439,13 +439,14 @@ jobs:
     # deploy. The backend URL is resolved deterministically by
     # resolve-backend-state (templated preview URL or the shared API), so the
     # frontend never waits for the Cloud Run deploy to finish.
-    needs: [detect, preview-label-gate, head-branch-gate, resolve-backend-state]
+    needs: [detect, preview-label-gate, head-branch-gate, resolve-backend-state, deploy-ledger]
     if: |-
       always() &&
       needs.detect.result == 'success' &&
       needs.resolve-backend-state.result == 'success' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
       needs.head-branch-gate.outputs.should_run == 'true' &&
+      needs.deploy-ledger.outputs.frontend_deployed != 'true' &&
       (
         needs.detect.outputs.frontend_changed == 'true' ||
         needs.resolve-backend-state.outputs.has_backend_preview == 'true'
@@ -493,8 +494,8 @@ jobs:
 
   deploy-park:
     name: Deploy Park Preview
-    needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.park_changed == 'true' && needs.preview-label-gate.outputs.park_preview == 'true'
+    needs: [detect, preview-label-gate, deploy-ledger]
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.park_changed == 'true' && needs.preview-label-gate.outputs.park_preview == 'true' && needs.deploy-ledger.outputs.park_deployed != 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -527,8 +528,8 @@ jobs:
 
   deploy-resources:
     name: Deploy Resources Preview
-    needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.resources_changed == 'true' && needs.preview-label-gate.outputs.resources_preview == 'true'
+    needs: [detect, preview-label-gate, deploy-ledger]
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.resources_changed == 'true' && needs.preview-label-gate.outputs.resources_preview == 'true' && needs.deploy-ledger.outputs.resources_deployed != 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -570,8 +571,8 @@ jobs:
 
   deploy-api-client-docs:
     name: Deploy Docs Preview
-    needs: [detect, preview-label-gate]
-    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.docs_changed == 'true' && needs.preview-label-gate.outputs.docs_preview == 'true'
+    needs: [detect, preview-label-gate, deploy-ledger]
+    if: needs.detect.result == 'success' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect.outputs.docs_changed == 'true' && needs.preview-label-gate.outputs.docs_preview == 'true' && needs.deploy-ledger.outputs.docs_deployed != 'true'
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
       deployed: ${{ steps.deploy.outputs.deployed }}
@@ -636,6 +637,102 @@ jobs:
             echo "backend_url=${SHARED_BACKEND_URL}" >> "$GITHUB_OUTPUT"
           fi
 
+  deploy-ledger:
+    name: Read Deploy Ledger
+    # Reads the per-PR deploy-ledger comment to learn which surfaces were
+    # already successfully deployed at the CURRENT head SHA, so a later
+    # label-triggered run does not redeploy surfaces that are already up to
+    # date. The ledger is written once per run by publish-preview-results
+    # (single writer, no races). Frontend is keyed by SHA *and* its backend
+    # target so a shared→preview-backend switch still redeploys.
+    needs: [preview-label-gate, head-branch-gate, resolve-backend-state]
+    if: needs.preview-label-gate.outputs.pr_number != '' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    outputs:
+      frontend_deployed: ${{ steps.ledger.outputs.frontend_deployed }}
+      backend_deployed: ${{ steps.ledger.outputs.backend_deployed }}
+      park_deployed: ${{ steps.ledger.outputs.park_deployed }}
+      resources_deployed: ${{ steps.ledger.outputs.resources_deployed }}
+      docs_deployed: ${{ steps.ledger.outputs.docs_deployed }}
+      frontend_url: ${{ steps.ledger.outputs.frontend_url }}
+      backend_url: ${{ steps.ledger.outputs.backend_url }}
+      park_url: ${{ steps.ledger.outputs.park_url }}
+      resources_url: ${{ steps.ledger.outputs.resources_url }}
+      docs_url: ${{ steps.ledger.outputs.docs_url }}
+    steps:
+      - name: Read deploy ledger
+        id: ledger
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
+          BACKEND_URL: ${{ needs.resolve-backend-state.outputs.backend_url }}
+          IS_FORCE_PREVIEW: ${{ needs.preview-label-gate.outputs.is_force_preview }}
+        with:
+          script: |
+            const marker = '<!-- preview-deploy-ledger:v1 -->';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA || '';
+            const backendUrl = process.env.BACKEND_URL || '';
+            const isForcePreview = process.env.IS_FORCE_PREVIEW === 'true';
+
+            const surfaces = ['frontend', 'backend', 'park', 'resources', 'docs'];
+            // Each ledger entry is { sha, url, backend? }; an absent entry (or a
+            // SHA mismatch) means the surface must (re)deploy this run.
+            const reportNone = () => {
+              for (const surface of surfaces) {
+                core.setOutput(`${surface}_deployed`, 'false');
+                core.setOutput(`${surface}_url`, '');
+              }
+            };
+
+            // A force preview must redeploy everything, so report nothing as
+            // already-deployed. On any read error, fail open (report false) so
+            // we deploy rather than wrongly skip.
+            if (isForcePreview) {
+              reportNone();
+              return;
+            }
+
+            let ledger = {};
+            try {
+              const comments = await github.paginate(github.rest.issues.listComments, {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                per_page: 100,
+              });
+              const existing = [...comments]
+                .reverse()
+                .find((comment) => comment.body?.includes(marker));
+              const match = existing?.body?.match(/<!-- ledger-data:\s*(\{.*?\})\s*-->/s);
+              if (match) {
+                ledger = JSON.parse(match[1]);
+              }
+            } catch (error) {
+              core.warning(`Failed to read deploy ledger, deploying all surfaces: ${error}`);
+              reportNone();
+              return;
+            }
+
+            const report = (surface, deployed, url) => {
+              core.setOutput(`${surface}_deployed`, deployed ? 'true' : 'false');
+              core.setOutput(`${surface}_url`, deployed ? url || '' : '');
+            };
+
+            // Frontend is deployed only if the recorded SHA AND backend target
+            // both match the current run; the others key on SHA alone.
+            const frontend = ledger.frontend || {};
+            report(
+              'frontend',
+              Boolean(headSha) && frontend.sha === headSha && frontend.backend === backendUrl,
+              frontend.url,
+            );
+            for (const surface of ['backend', 'park', 'resources', 'docs']) {
+              const entry = ledger[surface] || {};
+              report(surface, Boolean(headSha) && entry.sha === headSha, entry.url);
+            }
+
   preview-label-gate:
     name: Check Backend Preview Label
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
@@ -668,7 +765,7 @@ jobs:
           HEAD_REPO_FULL_NAME_FROM_EVENT: ${{ github.event.pull_request.head.repo.full_name || '' }}
           LABEL_NAME_FROM_EVENT: ${{ github.event.label.name || '' }}
           HAS_FORCE_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'force-preview') }}
-          HAS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview') }}
+          HAS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-backend') }}
           HAS_PARK_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-park') }}
           HAS_RESOURCES_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-resources') }}
           HAS_DOCS_PREVIEW_LABEL: ${{ contains(github.event.pull_request.labels.*.name, 'preview-docs') }}
@@ -709,11 +806,41 @@ jobs:
             fi
             echo "Workflow dispatch triggered for PR #$PR_NUMBER"
 
-            PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref, head_repo_full_name: .head.repo.full_name}')
+            # A dispatch only carries the PR number + force flag (it is how a
+            # `labeled` event reaches this workflow). The label set is the source
+            # of truth for which surfaces to deploy, so resolve it from the API.
+            PR_DATA=$(gh api "repos/$REPOSITORY/pulls/$PR_NUMBER" --jq '{head_sha: .head.sha, base_sha: .base.sha, head_ref: .head.ref, head_repo_full_name: .head.repo.full_name, labels: [.labels[].name]}')
             HEAD_SHA=$(echo "$PR_DATA" | jq -r '.head_sha')
             BASE_SHA=$(echo "$PR_DATA" | jq -r '.base_sha')
             HEAD_REF=$(echo "$PR_DATA" | jq -r '.head_ref')
             HEAD_REPO_FULL_NAME=$(echo "$PR_DATA" | jq -r '.head_repo_full_name')
+            LABELS_JSON=$(echo "$PR_DATA" | jq -c '.labels')
+
+            has_label() {
+              jq -e --arg name "$1" 'index($name) != null' <<<"$LABELS_JSON" >/dev/null 2>&1
+            }
+
+            # `force_preview` input (or the force-preview label) enables every
+            # surface; otherwise each surface is opt-in via its own label.
+            if [[ "$FORCE_PREVIEW" == "true" ]] || has_label force-preview; then
+              FORCE_ALL="true"
+            else
+              FORCE_ALL="false"
+            fi
+
+            # Backend preview (should_run) is driven only by preview-backend /
+            # force-preview — never by the app-surface labels, so adding
+            # preview-park/-resources/-docs does not spin up the backend.
+            if [[ "$FORCE_ALL" == "true" ]] || has_label preview-backend; then
+              BACKEND_PREVIEW="true"
+            else
+              BACKEND_PREVIEW="false"
+            fi
+
+            # Per-surface labels feed emit_surface_targets via these globals.
+            HAS_PARK_PREVIEW_LABEL="false"; has_label preview-park && HAS_PARK_PREVIEW_LABEL="true"
+            HAS_RESOURCES_PREVIEW_LABEL="false"; has_label preview-resources && HAS_RESOURCES_PREVIEW_LABEL="true"
+            HAS_DOCS_PREVIEW_LABEL="false"; has_label preview-docs && HAS_DOCS_PREVIEW_LABEL="true"
 
             {
               echo "pr_number=$PR_NUMBER"
@@ -728,10 +855,10 @@ jobs:
               echo "is_same_repo=false" >> "$GITHUB_OUTPUT"
             fi
             {
-              echo "should_run=true"
-              echo "is_force_preview=$FORCE_PREVIEW"
+              echo "should_run=$BACKEND_PREVIEW"
+              echo "is_force_preview=$FORCE_ALL"
             } >> "$GITHUB_OUTPUT"
-            emit_surface_targets "$FORCE_PREVIEW"
+            emit_surface_targets "$FORCE_ALL"
             exit 0
           fi
 
@@ -757,12 +884,16 @@ jobs:
           if [[ "$EVENT_ACTION" == "labeled" ]]; then
             LABEL_NAME="$LABEL_NAME_FROM_EVENT"
             echo "Label added: $LABEL_NAME"
+            # Backend preview (should_run) is driven only by preview-backend /
+            # force-preview. App-surface labels (preview-park/-resources/-docs)
+            # do not enable the backend; they only set their own surface output
+            # via emit_surface_targets below.
             if [[ "$LABEL_NAME" == "force-preview" ]]; then
               {
                 echo "should_run=true"
                 echo "is_force_preview=true"
               } >> "$GITHUB_OUTPUT"
-            elif [[ "$LABEL_NAME" == "preview" || "$LABEL_NAME" == "preview-park" || "$LABEL_NAME" == "preview-resources" || "$LABEL_NAME" == "preview-docs" ]]; then
+            elif [[ "$LABEL_NAME" == "preview-backend" ]]; then
               {
                 echo "should_run=true"
                 echo "is_force_preview=false"
@@ -962,8 +1093,8 @@ jobs:
 
   build-backend:
     name: Build Backend Image
-    needs: [preview-label-gate, detect-backend-changes]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    needs: [preview-label-gate, detect-backend-changes, deploy-ledger]
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     runs-on: "blacksmith-8vcpu-ubuntu-2404"
     timeout-minutes: 10
     permissions:
@@ -1064,8 +1195,8 @@ jobs:
   prepare-database:
     name: Prepare Preview DB
     timeout-minutes: 5
-    needs: [preview-label-gate, detect-backend-changes]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    needs: [preview-label-gate, detect-backend-changes, deploy-ledger]
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     runs-on: "blacksmith-4vcpu-ubuntu-2404"
     outputs:
       branch_id: ${{ steps.branch-name.outputs.branch_id }}
@@ -1138,8 +1269,8 @@ jobs:
 
   deploy-preview:
     name: Deploy Backend Preview
-    needs: [preview-label-gate, detect-backend-changes, build-backend, prepare-database]
-    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true'
+    needs: [preview-label-gate, detect-backend-changes, build-backend, prepare-database, deploy-ledger]
+    if: needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.detect-backend-changes.outputs.has-backend-changes == 'true' && needs.deploy-ledger.outputs.backend_deployed != 'true'
     timeout-minutes: 10
     runs-on: ubuntu-latest
     permissions:
@@ -1435,6 +1566,7 @@ jobs:
       - prepare-database
       - resolve-backend-state
       - deploy-preview
+      - deploy-ledger
       - workflow-summary
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     steps:
@@ -1465,6 +1597,16 @@ jobs:
           PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
           DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
           BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          FRONTEND_ALREADY: ${{ needs.deploy-ledger.outputs.frontend_deployed || 'false' }}
+          BACKEND_ALREADY: ${{ needs.deploy-ledger.outputs.backend_deployed || 'false' }}
+          PARK_ALREADY: ${{ needs.deploy-ledger.outputs.park_deployed || 'false' }}
+          RESOURCES_ALREADY: ${{ needs.deploy-ledger.outputs.resources_deployed || 'false' }}
+          DOCS_ALREADY: ${{ needs.deploy-ledger.outputs.docs_deployed || 'false' }}
+          FRONTEND_LEDGER_URL: ${{ needs.deploy-ledger.outputs.frontend_url }}
+          BACKEND_LEDGER_URL: ${{ needs.deploy-ledger.outputs.backend_url }}
+          PARK_LEDGER_URL: ${{ needs.deploy-ledger.outputs.park_url }}
+          RESOURCES_LEDGER_URL: ${{ needs.deploy-ledger.outputs.resources_url }}
+          DOCS_LEDGER_URL: ${{ needs.deploy-ledger.outputs.docs_url }}
         with:
           script: |
             const marker = '<!-- preview-surface-status:v1 -->';
@@ -1507,11 +1649,24 @@ jobs:
             const deployPreviewResult = process.env.DEPLOY_PREVIEW_RESULT || '';
             const backendPreviewUrl = process.env.BACKEND_PREVIEW_URL || '';
 
+            // A surface skipped this run because the ledger shows it is already
+            // deployed at the current head SHA (so it is up to date, not failed).
+            const frontendAlready = isTrue(process.env.FRONTEND_ALREADY);
+            const backendAlready = isTrue(process.env.BACKEND_ALREADY);
+            const parkAlready = isTrue(process.env.PARK_ALREADY);
+            const resourcesAlready = isTrue(process.env.RESOURCES_ALREADY);
+            const docsAlready = isTrue(process.env.DOCS_ALREADY);
+            const frontendLedgerUrl = process.env.FRONTEND_LEDGER_URL || '';
+            const backendLedgerUrl = process.env.BACKEND_LEDGER_URL || '';
+            const parkLedgerUrl = process.env.PARK_LEDGER_URL || '';
+            const resourcesLedgerUrl = process.env.RESOURCES_LEDGER_URL || '';
+            const docsLedgerUrl = process.env.DOCS_LEDGER_URL || '';
+
             const backendAttempted = previewRequested && hasBackendChanges;
             const backendPreparationFailed =
               isFailure(buildBackendResult) || isFailure(prepareDatabaseResult);
 
-            const readyOrFailedRow = (surface, changed, requested, requestNote, result, url, affectedNote) => {
+            const readyOrFailedRow = (surface, changed, requested, requestNote, result, url, affectedNote, already, ledgerUrl) => {
               if (!changed) {
                 return row(surface, '⚪ Not affected', [], 'No relevant changes');
               }
@@ -1522,6 +1677,15 @@ jobs:
 
               if (result === 'success') {
                 return row(surface, '🟢 Ready', url ? [previewLink(url)] : [], affectedNote);
+              }
+
+              if (already) {
+                return row(
+                  surface,
+                  '🟢 Ready',
+                  ledgerUrl ? [previewLink(ledgerUrl)] : [],
+                  'Already deployed at this commit',
+                );
               }
 
               return row(surface, '🔴 Failed', [buildLink], affectedNote);
@@ -1545,6 +1709,13 @@ jobs:
                 frontendUrl ? [previewLink(frontendUrl)] : [],
                 frontendBackendNote,
               );
+            } else if (frontendAlready) {
+              frontendRow = row(
+                'Frontend',
+                '🟢 Ready',
+                frontendLedgerUrl ? [previewLink(frontendLedgerUrl)] : [],
+                'Already deployed at this commit',
+              );
             } else if (isFailure(frontendResult)) {
               frontendRow = row('Frontend', '🔴 Failed', [buildLink], frontendBackendNote);
             } else {
@@ -1554,6 +1725,13 @@ jobs:
             let backendRow;
             if (!previewRequested) {
               backendRow = row('Backend', '⚪ Not requested', [], 'Label-gated');
+            } else if (backendAlready) {
+              backendRow = row(
+                'Backend',
+                '🟢 Ready',
+                backendLedgerUrl ? [previewLink(backendLedgerUrl)] : [],
+                'Already deployed at this commit',
+              );
             } else if (
               backendAttempted &&
               (backendPreparationFailed ||
@@ -1587,6 +1765,8 @@ jobs:
                 parkResult,
                 parkUrl,
                 'Label-gated',
+                parkAlready,
+                parkLedgerUrl,
               ),
               readyOrFailedRow(
                 'Resources',
@@ -1596,6 +1776,8 @@ jobs:
                 resourcesResult,
                 resourcesUrl,
                 'Label-gated',
+                resourcesAlready,
+                resourcesLedgerUrl,
               ),
               readyOrFailedRow(
                 'API Client Docs',
@@ -1605,6 +1787,8 @@ jobs:
                 docsResult,
                 docsUrl,
                 'Label-gated',
+                docsAlready,
+                docsLedgerUrl,
               ),
               backendRow,
             ];
@@ -1638,6 +1822,126 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: existingComment.id,
+                body,
+              });
+              return;
+            }
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              body,
+            });
+
+      - name: Update deploy ledger comment
+        uses: actions/github-script@v8
+        env:
+          PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
+          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
+          BACKEND_URL: ${{ needs.resolve-backend-state.outputs.backend_url }}
+          FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
+          PARK_RESULT: ${{ needs.deploy-park.result }}
+          RESOURCES_RESULT: ${{ needs.deploy-resources.result }}
+          DOCS_RESULT: ${{ needs.deploy-api-client-docs.result }}
+          DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
+          FRONTEND_DEPLOY_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
+          PARK_DEPLOY_URL: ${{ needs.deploy-park.outputs.deployment_url }}
+          RESOURCES_DEPLOY_URL: ${{ needs.deploy-resources.outputs.deployment_url }}
+          DOCS_DEPLOY_URL: ${{ needs.deploy-api-client-docs.outputs.deployment_url }}
+          BACKEND_DEPLOY_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+        with:
+          script: |
+            // Single writer for the per-PR deploy ledger (read by the
+            // deploy-ledger job on later runs to skip redundant redeploys).
+            // Records the head SHA each surface was last successfully deployed
+            // at; surfaces skipped or not run this run keep their prior value,
+            // so a SHA stays "deployed" across follow-up label runs.
+            const marker = '<!-- preview-deploy-ledger:v1 -->';
+            const prNumber = Number(process.env.PR_NUMBER);
+            const headSha = process.env.HEAD_SHA || '';
+            const backendUrl = process.env.BACKEND_URL || '';
+            const updatedAt = new Date().toISOString();
+            const succeeded = (value) => value === 'success';
+
+            if (!headSha) {
+              core.info('No head SHA resolved; skipping deploy ledger update.');
+              return;
+            }
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: prNumber,
+              per_page: 100,
+            });
+            const existing = [...comments]
+              .reverse()
+              .find((comment) => comment.body?.includes(marker));
+
+            let ledger = {};
+            const match = existing?.body?.match(/<!-- ledger-data:\s*(\{.*?\})\s*-->/s);
+            if (match) {
+              try {
+                ledger = JSON.parse(match[1]);
+              } catch (error) {
+                core.warning(`Could not parse existing deploy ledger, rewriting: ${error}`);
+                ledger = {};
+              }
+            }
+
+            // Each entry is { sha, url } (frontend also stores the backend it
+            // targeted, so a shared->preview-backend switch at the same SHA
+            // still redeploys). Surfaces not deployed this run keep their prior
+            // entry, so a SHA stays "deployed" across follow-up label runs.
+            if (succeeded(process.env.FRONTEND_RESULT)) {
+              ledger.frontend = {
+                sha: headSha,
+                backend: backendUrl,
+                url: process.env.FRONTEND_DEPLOY_URL || '',
+              };
+            }
+            if (succeeded(process.env.DEPLOY_PREVIEW_RESULT)) {
+              ledger.backend = { sha: headSha, url: process.env.BACKEND_DEPLOY_URL || '' };
+            }
+            if (succeeded(process.env.PARK_RESULT)) {
+              ledger.park = { sha: headSha, url: process.env.PARK_DEPLOY_URL || '' };
+            }
+            if (succeeded(process.env.RESOURCES_RESULT)) {
+              ledger.resources = { sha: headSha, url: process.env.RESOURCES_DEPLOY_URL || '' };
+            }
+            if (succeeded(process.env.DOCS_RESULT)) {
+              ledger.docs = { sha: headSha, url: process.env.DOCS_DEPLOY_URL || '' };
+            }
+
+            const shortSha = (value) => (value ? value.slice(0, 7) : '-');
+            const ledgerRow = (surface, entry) =>
+              `| ${surface} | \`${shortSha(entry?.sha)}\` | ${entry?.url ? `[Preview](${entry.url})` : '—'} |`;
+            const body = [
+              marker,
+              `<!-- ledger-data: ${JSON.stringify(ledger)} -->`,
+              '### Preview Deploy Ledger',
+              '',
+              'Tracks the head SHA each surface was last successfully deployed at,',
+              'so adding a label later does not redeploy surfaces already current.',
+              '',
+              `- Head SHA: \`${shortSha(headSha)}\``,
+              `- Updated: \`${updatedAt}\``,
+              '',
+              '| Surface | Last deployed SHA | Preview |',
+              '|---|---|---|',
+              ledgerRow('Frontend', ledger.frontend),
+              ledgerRow('Backend', ledger.backend),
+              ledgerRow('Park', ledger.park),
+              ledgerRow('Resources', ledger.resources),
+              ledgerRow('API Client Docs', ledger.docs),
+            ].join('\n');
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
                 body,
               });
               return;

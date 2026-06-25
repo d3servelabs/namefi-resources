@@ -16,7 +16,12 @@ permissions:
 jobs:
   dispatch:
     name: Dispatch Preview PR
-    if: github.event.label.name == 'preview' || github.event.label.name == 'force-preview'
+    if: |-
+      github.event.label.name == 'preview-backend' ||
+      github.event.label.name == 'force-preview' ||
+      github.event.label.name == 'preview-park' ||
+      github.event.label.name == 'preview-resources' ||
+      github.event.label.name == 'preview-docs'
     runs-on: ubuntu-latest
     steps:
       - name: Dispatch Preview PR workflow
