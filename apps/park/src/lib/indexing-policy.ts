@@ -31,12 +31,25 @@ export function isIndexableParkHost(host: string | null | undefined): boolean {
   return INDEXABLE_PARK_ROOT_HOSTS.has(bareHost(host));
 }
 
+function isTrustedDomainOverrideHost(host: string | null | undefined): boolean {
+  const normalized = bareHost(host);
+  return (
+    normalized === 'localhost' ||
+    normalized.endsWith('.localhost') ||
+    normalized === '127.0.0.1' ||
+    normalized === '0.0.0.0' ||
+    normalized === '::1' ||
+    normalized.endsWith('-d3servelabs.vercel.app')
+  );
+}
+
 function effectiveIndexableHost(options: {
   host: string | null | undefined;
   domainOverride?: string | null | undefined;
 }): string {
   const overrideHost = normalizeParkDomainParam(options.domainOverride);
-  return isIndexableParkHost(overrideHost)
+  return isTrustedDomainOverrideHost(options.host) &&
+    isIndexableParkHost(overrideHost)
     ? overrideHost
     : bareHost(options.host);
 }
@@ -62,6 +75,7 @@ function isAllowedRootSearch(options: {
   return (
     key === 'domain' &&
     normalizeParkDomainParam(value) === overrideHost &&
+    isTrustedDomainOverrideHost(options.host) &&
     !isIndexableParkHost(options.host)
   );
 }

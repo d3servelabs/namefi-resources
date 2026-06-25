@@ -58,6 +58,14 @@ describe('park indexing policy', () => {
     ).toBe(true);
     expect(
       isIndexableParkRoot({
+        host: 'namefi-astra-git-park-index-d3servelabs.vercel.app',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(true);
+    expect(
+      isIndexableParkRoot({
         host: 'localhost',
         pathname: '/',
         search: '?domain=30003.click&utm_source=test',
@@ -75,6 +83,22 @@ describe('park indexing policy', () => {
     expect(isIndexableParkRoot({ host: 'example.com', pathname: '/' })).toBe(
       false,
     );
+    expect(
+      isIndexableParkRoot({
+        host: 'example.com',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(false);
+    expect(
+      isIndexableParkRoot({
+        host: 'example.vercel.app',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(false);
   });
 
   it('keeps subpaths crawlable but noindexed by header policy', () => {
@@ -107,6 +131,14 @@ describe('park indexing policy', () => {
         domainOverride: '30003.click',
       }),
     ).toBe(true);
+    expect(
+      shouldNoindexParkRequest({
+        host: 'example.com',
+        pathname: '/',
+        search: '?domain=30003.click',
+        domainOverride: '30003.click',
+      }),
+    ).toBe(true);
   });
 
   it('builds canonical URLs only for allowlisted park roots', () => {
@@ -114,6 +146,16 @@ describe('park indexing policy', () => {
     expect(buildParkCanonicalUrl('localhost', '30003.click')).toBe(
       'https://30003.click/',
     );
+    expect(
+      buildParkCanonicalUrl(
+        'namefi-astra-git-park-index-d3servelabs.vercel.app',
+        '30003.click',
+      ),
+    ).toBe('https://30003.click/');
+    expect(
+      buildParkCanonicalUrl('example.vercel.app', '30003.click'),
+    ).toBeNull();
+    expect(buildParkCanonicalUrl('example.com', '30003.click')).toBeNull();
     expect(buildParkCanonicalUrl('www.30003.click')).toBeNull();
   });
 });

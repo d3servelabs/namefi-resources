@@ -409,6 +409,8 @@ function resolvePbnBrandStyle(
 const loadPageData = cache(async function loadPageData(
   host: string,
 ): Promise<PageData> {
+  // Dedupes generateMetadata/ParkPage work per request for the same canonical
+  // host; React cache does not persist this data across requests.
   // Relay resolution: if host ends with the relay zone (e.g.
   // `gtld.namefi.dev`), strip the suffix to get the logical host (e.g.
   // `sami.nfi.gtld.namefi.dev` → `sami.nfi`) and use it for internal metadata
