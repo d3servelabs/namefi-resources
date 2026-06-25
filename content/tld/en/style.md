@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As a standard Identity Digital generic TLD, .style supports DNSSEC, and most registrars including Namefi offer WHOIS privacy so personal contact details are not published publicly.'
 ---
 
-The **.style** domain is an open generic top-level domain (gTLD) built for the world of fashion, beauty, design, and lifestyle. Where a legacy suffix like .com says nothing about what a site does, **.style** puts the theme right in the address — a clear signal that the brand behind it cares about aesthetics, trends, and self-expression.
+The **.style** domain is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the world of fashion, beauty, design, and lifestyle. Where a legacy suffix like .com says nothing about what a site does, **.style** puts the theme right in the address — a clear signal that the brand behind it cares about aesthetics, trends, and self-expression.
 
 If you are a designer, stylist, label, salon, or lifestyle creator, this guide covers what **.style** is, who operates it, who can register one, how its pricing works, and how it compares to the alternatives — so you can decide whether it belongs in your brand.
 
@@ -38,7 +38,7 @@ If you are a designer, stylist, label, salon, or lifestyle creator, this guide c
 
 ## What is .style?
 
-**.style** is a [new generic top-level domain](/en/blog/what-is-a-tld) — one of the hundreds of themed extensions introduced under ICANN's 2012 new gTLD program, which expanded the domain name system far beyond the original handful of suffixes like .com, .net, and .org. Unlike a country-code TLD such as .uk or .de, **.style** is not tied to any nation, so it carries no geographic meaning and is not geo-targeted by search engines.
+**.style** is a [new generic top-level domain](/en/blog/what-is-a-tld) — one of the hundreds of themed extensions introduced under [ICANN](/en/glossary/icann/)'s 2012 new gTLD program, which expanded the [domain name system](/en/glossary/dns/) far beyond the original handful of suffixes like .com, [.net](/en/tld/net/), and [.org](/en/tld/org/). Unlike a country-code TLD such as .uk or .de, **.style** is not tied to any nation, so it carries no geographic meaning and is not geo-targeted by search engines.
 
 The string itself is plain English: *style*. That makes it instantly readable to a global audience and naturally evocative of fashion, grooming, interior design, architecture, and personal taste. You can confirm its delegation details in the authoritative [IANA root zone database entry for .style](https://www.iana.org/domains/root/db/style.html), which lists Binky Moon, LLC as the sponsoring organization.
 
@@ -46,7 +46,7 @@ Because it is a generic rather than a country-code extension, **.style** is gove
 
 ## History of .style
 
-**.style** was one of many descriptive-word strings Donuts applied for during the new gTLD expansion. After a private auction resolved the contention set in late 2014, the string was delegated to the DNS root zone in February 2015 and reached general availability in May 2015.
+**.style** was one of many descriptive-word strings Donuts applied for during the new gTLD expansion. After a private [auction](/en/glossary/auction/) resolved the contention set in late 2014, the string was delegated to the DNS [root zone](/en/glossary/root-zone/) in February 2015 and reached general availability in May 2015.
 
 Donuts — which ran one of the largest portfolios of new gTLDs — later merged with Afilias to form **Identity Digital**, the company that operates **.style** today through its **Binky Moon, LLC** registry subsidiary. This matters for buyers: it means **.style** sits inside a large, professionally run registry alongside hundreds of sibling extensions, with consistent, well-documented policies rather than the patchwork rules that smaller standalone registries sometimes have.
 
@@ -58,7 +58,7 @@ Donuts — which ran one of the largest portfolios of new gTLDs — later merged
 - **Stylists, makeup artists, and salons** building a portfolio or booking site.
 - **Interior design, architecture, and home-decor studios** where "style" speaks to aesthetic taste.
 - **Lifestyle bloggers and creators** covering fashion, beauty, and trends.
-- **Brand-protection registrations**, where an established label secures the .style version of its trademark defensively.
+- **Brand-protection registrations**, where an established label secures the .style version of its [trademark](/en/glossary/trademark/) defensively.
 - **Domain investors** holding descriptive terms (e.g. `street.style`, `life.style`) as digital assets.
 
 **Who it's not ideal for:** businesses outside the design and lifestyle space, or anyone whose audience expects the reassurance of a conventional .com. If your customers are unlikely to associate "style" with what you sell, the thematic advantage disappears.
@@ -97,7 +97,7 @@ Pick **.com** when broad recognition matters more than theme. Choose [.shop](/en
 
 **Registration restrictions: open to all.** **.style** has no eligibility gate — there is no credential, professional-membership, trademark, or local-presence requirement. Any individual, business, or organization worldwide can register an available name on a first-come, first-served basis, exactly as with .com.
 
-As a standard Identity Digital generic TLD, **.style** follows ICANN's consensus policies: it supported a sunrise period at launch for trademark holders, supports internationalized domain names (IDNs), and supports DNSSEC for cryptographic integrity of DNS responses. Most registrars, including Namefi, offer WHOIS privacy to keep personal contact details off the public record. Transfers use the standard authorization-code process, and registrations follow ICANN's normal renewal and redemption-grace lifecycle. Domain disputes are handled through ICANN's [UDRP](/en/glossary/udrp). For the operator's own policies and full registry details, see the official [Identity Digital](https://www.identity.digital/) site.
+As a standard Identity Digital generic TLD, **.style** follows ICANN's consensus policies: it supported a sunrise period at launch for trademark holders, supports internationalized domain names (IDNs), and supports DNSSEC for cryptographic integrity of DNS responses. Most registrars, including Namefi, offer WHOIS privacy to keep personal contact details off the public record. Transfers use the standard authorization-code process, and registrations follow ICANN's normal renewal and redemption-grace lifecycle. Domain disputes are handled through ICANN's [UDRP](/en/glossary/udrp). Most registrars, including Namefi, offer [WHOIS privacy](/en/glossary/whois-privacy/) to keep personal contact details off the public record. For the operator's own policies and full registry details, see the official [Identity Digital](https://www.identity.digital/) site.
 
 ## .style pricing and value
 
@@ -113,7 +113,7 @@ If you send email from a **.style** domain, deliverability depends far more on y
 
 ## Branding and naming tips
 
-The strength of **.style** is the domain hack: let the suffix finish the phrase. `life.style`, `free.style`, and `my.style` read as natural words, which is more memorable than bolting "style" onto an unrelated brand. Keep the second-level label short and easy to spell aloud — you want a name that survives being shared verbally without confusion.
+The strength of **.style** is the [domain hack](/en/glossary/domain-hack/): let the suffix finish the phrase. `life.style`, `free.style`, and `my.style` read as natural words, which is more memorable than bolting "style" onto an unrelated brand. Keep the second-level label short and easy to spell aloud — you want a name that survives being shared verbally without confusion.
 
 Because some users still assume .com, say and show your full domain (suffix included) in marketing, and consider registering the .com equivalent defensively if it is available. Avoid names that only make sense in writing or that invite the wrong .com to capture your traffic.
 
@@ -123,7 +123,7 @@ Because some users still assume .com, say and show your full domain (suffix incl
 2. **Choose** your exact name, noting whether it is a standard or premium registration.
 3. **Register** and configure DNS, WHOIS privacy, and renewals from one dashboard.
 
-As an ICANN-accredited [registrar](/en/glossary/registrar), Namefi offers transparent pricing and fast DNS management, plus something most registrars do not: the option to [tokenize your domain](/en/blog/what-are-tokenized-domains) as an on-chain asset, bridging your Web2 name into Web3. Whether you are launching a label or building a portfolio of fashion names, Namefi gives you the tools to manage and move them.
+As an ICANN-accredited [registrar](/en/glossary/registrar), Namefi offers transparent pricing and fast DNS management, plus something most registrars do not: the option to [tokenize your domain](/en/blog/what-are-tokenized-domains) as an on-chain asset, bridging your Web2 name into [Web3](/en/glossary/web3/). Whether you are launching a label or building a portfolio of fashion names, Namefi gives you the tools to manage and move them.
 
 [Register your .style domain at Namefi](https://namefi.io) and put your aesthetic right in the address.
 

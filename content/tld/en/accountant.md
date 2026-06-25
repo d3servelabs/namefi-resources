@@ -20,7 +20,7 @@ faqs:
     answer: 'The ICANN Registry Agreement for .accountant is held by dot Accountant Limited, a Gibraltar entity from the Famous Four Media portfolio. Technical registry operations have since been run by Global Registry Services (GRS Domains).'
 ---
 
-The **.accountant domain** is a niche new generic top-level domain (gTLD) built for one of the world's most established professions: accounting. It lets accountants, bookkeepers, tax advisers, and audit firms put their specialty directly in the web address — `yourname.accountant` — instead of competing for an ever-scarcer `.com`.
+The **.accountant domain** is a niche new [generic top-level domain](/en/glossary/gtld/) (gTLD) built for one of the world's most established professions: accounting. It lets accountants, bookkeepers, tax advisers, and audit firms put their specialty directly in the web address — `yourname.accountant` — instead of competing for an ever-scarcer `.com`.
 
 If you are weighing whether a descriptive extension is worth it, this page covers what `.accountant` is, who runs it, who can register one, how it is perceived, and how it compares to the alternatives — including its near-identical plural cousin, `.accountants`.
 
@@ -85,7 +85,7 @@ Pick `.com` when broad recognition matters most. Choose `.accountant` for a desc
 
 ## Things to consider
 
-- **Default-typing bias.** Many users still assume `.com`, so you may lose direct type-in traffic to a `.com` you don't own.
+- **Default-typing bias.** Many users still assume `.com`, so you may lose direct [type-in traffic](/en/glossary/type-in-traffic/) to a `.com` you don't own.
 - **Niche meaning.** The word locks you into accounting — great for focus, limiting if you pivot.
 - **Singular/plural confusion.** `.accountant` and `.accountants` are easy to mix up; clients may land on the wrong one.
 - **Family reputation.** The FFM/GRS low-cost extensions have at times attracted spam, affecting how filters perceive the cohort (see Reputation below).
@@ -94,7 +94,7 @@ Pick `.com` when broad recognition matters most. Choose `.accountant` for a desc
 
 **Registration restrictions: open to all.** `.accountant` is an unrestricted, open new gTLD. You do **not** need to be a chartered or certified accountant, hold a CPA or ACCA credential, belong to a professional body, or have any local presence to register one. This is a key difference from credential-gated professional TLDs such as `.cpa`, where eligibility is verified.
 
-Standard new-gTLD mechanics apply: a sunrise period for trademark holders ran at launch, names follow the usual length and IDN rules, DNSSEC is supported, and WHOIS, transfer, renewal, and redemption-grace behavior follow standard ICANN registry/registrar practice. The authoritative source is the [ICANN Registry Agreement for .accountant](https://www.icann.org/en/registry-agreements/details/accountant), with registry policies published at `nic.accountant`.
+Standard new-gTLD mechanics apply: a sunrise period for [trademark](/en/glossary/trademark/) holders ran at launch, names follow the usual length and IDN rules, DNSSEC is supported, and WHOIS, transfer, renewal, and redemption-grace behavior follow standard ICANN registry/registrar practice. The authoritative source is the [ICANN Registry Agreement for .accountant](https://www.icann.org/en/registry-agreements/details/accountant), with registry policies published at `nic.accountant`.
 
 ## .accountant pricing and value
 
@@ -119,7 +119,7 @@ That does not doom a legitimate `.accountant` site, but be deliberate: authentic
 2. **Choose** the exact name and review whether it is a standard or premium registration, and note the renewal terms.
 3. **Register** and configure DNS — and, if you want it, mint your domain as an on-chain asset.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional Web3 tokenization, so you can hold a `.accountant` name as a portable, verifiable digital asset. Get started at [Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, fast DNS, and optional Web3 tokenization, so you can hold a `.accountant` name as a portable, verifiable digital asset. Get started at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

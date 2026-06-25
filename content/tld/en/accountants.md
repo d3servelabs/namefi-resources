@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The registry supports DNSSEC for signed, tamper-resistant DNS, and registrars including Namefi offer WHOIS privacy so your personal contact details are not exposed in public records, subject to standard registrar policy.'
 ---
 
-The **.accountants domain** is a descriptive new generic top-level domain (gTLD) built for the accounting and financial-services world. Where a generic suffix like `.com` says nothing about what you do, a web address such as `clarity.accountants` or `riverside.accountants` states the profession before a visitor reads a single word of your homepage. That clarity is the whole pitch, and it is why CPAs, bookkeepers, tax preparers, and audit firms consider it.
+The **.accountants domain** is a descriptive new [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the accounting and financial-services world. Where a generic suffix like `.com` says nothing about what you do, a web address such as `clarity.accountants` or `riverside.accountants` states the profession before a visitor reads a single word of your homepage. That clarity is the whole pitch, and it is why CPAs, bookkeepers, tax preparers, and audit firms consider it.
 
 This page covers what the suffix is, who actually runs it, who is allowed to register it, how its pricing behaves, and how it is perceived for trust and email — so you can decide whether it belongs on your shortlist or whether a mainstream alternative serves you better.
 
@@ -40,13 +40,13 @@ This page covers what the suffix is, who actually runs it, who is allowed to reg
 
 `.accountants` is a new gTLD — one of the hundreds of descriptive suffixes introduced through ICANN's New gTLD Program in the 2010s, rather than a country code like `.uk` or a legacy extension like `.com` or `.net`. Its meaning is self-evident: it signals an accounting or financial-services context directly in the domain name.
 
-The official delegation record is held by [IANA](https://www.iana.org/domains/root/db/accountants.html), which lists the technical and administrative facts for the suffix. Importantly, search engines do **not** treat `.accountants` as tied to any country. [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) confirms that most new gTLDs are handled as generic, non-geographic domains, so using `.accountants` does not geo-target your site to one nation the way a ccTLD can.
+The official delegation record is held by [IANA](https://www.iana.org/domains/root/db/accountants.html), which lists the technical and administrative facts for the suffix. Importantly, search engines do **not** treat `.accountants` as tied to any country. [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) confirms that most new gTLDs are handled as generic, non-geographic domains, so using `.accountants` does not geo-target your site to one nation the way a [ccTLD](/en/glossary/cctld/) can.
 
 A practical note on confusables: there is a separate, singular **`.accountant`** suffix run by a different operator, plus credential-oriented options like `.cpa`. They are easy to mix up in conversation and on a business card, which is worth keeping in mind when you pick one.
 
 ## History of .accountants
 
-`.accountants` was delegated to the root zone in 2014 as part of the first major wave of the New gTLD Program. It originated under Donuts Inc., the company that launched one of the largest portfolios of descriptive gTLDs. Through corporate consolidation, the registry contract now sits with **Binky Moon, LLC**, and the day-to-day registry services are run by **Identity Digital**, the successor brand to Donuts. You can confirm the current operator on the [IANA delegation record](https://www.iana.org/domains/root/db/accountants.html), which is updated as registry details change.
+`.accountants` was delegated to the [root zone](/en/glossary/root-zone/) in 2014 as part of the first major wave of the New gTLD Program. It originated under Donuts Inc., the company that launched one of the largest portfolios of descriptive gTLDs. Through corporate consolidation, the registry contract now sits with **Binky Moon, LLC**, and the day-to-day registry services are run by **Identity Digital**, the successor brand to Donuts. You can confirm the current operator on the [IANA delegation record](https://www.iana.org/domains/root/db/accountants.html), which is updated as registry details change.
 
 Adoption has followed the pattern typical of profession-specific gTLDs: steady, niche, and concentrated among small and mid-sized firms and independent practitioners rather than large public brands. It is a working professional suffix, not a viral consumer one, and registration volumes reflect that focused audience.
 
@@ -94,7 +94,7 @@ Pick `.com` when broad recognition and instant familiarity matter most. Choose `
 
 **Registration restrictions: open to all.** This is the single most important eligibility fact: `.accountants` is an unrestricted gTLD with no credential gate. You do **not** need a CPA license, firm registration, or membership in any accounting body to register one — it is genuinely open to the public. That is the key difference from a credential-gated suffix like `.cpa`, which requires verified CPA status.
 
-Standard new-gTLD rules apply: domains run from 1 to 63 characters, internationalized domain names (IDNs) are supported subject to your registrar, and trademark holders had a Sunrise window at launch via the Trademark Clearinghouse. The registry supports **DNSSEC** for signed DNS, registrars including Namefi offer **WHOIS privacy**, and renewal, transfer, and redemption-grace handling follow standard ICANN-accredited registrar practice. A subset of high-value keyword names is reserved or classified as premium by the registry. For the authoritative rules, see the suffix's [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/accountants) and the operator's site, [Identity Digital](https://www.identity.digital/).
+Standard new-gTLD rules apply: domains run from 1 to 63 characters, internationalized domain names (IDNs) are supported subject to your registrar, and [trademark](/en/glossary/trademark/) holders had a Sunrise window at launch via the [Trademark Clearinghouse](/en/glossary/tmch/). The registry supports **DNSSEC** for signed DNS, registrars including Namefi offer **[WHOIS privacy](/en/glossary/whois-privacy/)**, and renewal, transfer, and redemption-grace handling follow standard [ICANN-accredited registrar](/en/glossary/accredited-registrar/) practice. A subset of high-value keyword names is reserved or classified as premium by the registry. For the authoritative rules, see the suffix's [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/accountants) and the operator's site, [Identity Digital](https://www.identity.digital/).
 
 ## .accountants pricing and value
 
@@ -114,7 +114,7 @@ The most effective `.accountants` names read as a natural phrase: a firm name, a
 2. **Choose** the best available option — and consider grabbing a defensive `.com` alongside it.
 3. **Register** and configure DNS from one dashboard.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS management, and — uniquely — the option to **tokenize your domain** as an on-chain asset for Web3 use cases. You can read more in [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains) and [Why Tokenize Domains?](/en/blog/why-tokenize-domains).
+As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS management, and — uniquely — the option to **[tokenize](/en/glossary/tokenize/) your domain** as an on-chain asset for Web3 use cases. You can read more in [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains) and [Why Tokenize Domains?](/en/blog/why-tokenize-domains).
 
 ## Frequently asked questions
 

@@ -11,9 +11,9 @@ keywords: [".abbott domains", ".abbott TLD", "top-level domain", "what is .abbot
 
 ## **What is .abbott?**
 
-The **.abbott** [Top-Level Domain](/en/glossary/tld/) (TLD) is a unique and specific extension in the landscape of the internet. Unlike open domains such as [`.com`](/en/tld/com/) or `.net` that anyone can register, **.abbott** is classified as a **Brand TLD** (or "dot brand"). It is a generic Top-Level Domain (gTLD) that was acquired during [ICANN’s new gTLD program](https://newgtlds.icann.org/en/about/program), specifically delegated to **Abbott Laboratories**, the global healthcare and pharmaceutical giant.
+The **.abbott** [Top-Level Domain](/en/glossary/tld/) (TLD) is a unique and specific extension in the landscape of the internet. Unlike open domains such as [`.com`](/en/tld/com/) or `.net` that anyone can register, **.abbott** is classified as a **Brand TLD** (or "dot brand"). It is a generic Top-Level Domain ([gTLD](/en/glossary/gtld/)) that was acquired during [ICANN’s new gTLD program](https://newgtlds.icann.org/en/about/program), specifically delegated to **Abbott Laboratories**, the global healthcare and pharmaceutical giant.
 
-The primary purpose of the .abbott TLD is to serve as a trusted, digital namespace exclusively for Abbott Laboratories and its affiliates. By operating their own registry, Abbott creates a closed loop of digital identity. When a user sees a URL ending in `.abbott`, they can be 100% certain that the content is published by the official healthcare company, ensuring authenticity in an industry where trust is paramount.
+The primary purpose of the .abbott TLD is to serve as a trusted, digital namespace exclusively for Abbott Laboratories and its affiliates. By operating their own [registry](/en/glossary/registry/), Abbott creates a closed loop of digital identity. When a user sees a URL ending in `.abbott`, they can be 100% certain that the content is published by the official healthcare company, ensuring authenticity in an industry where trust is paramount.
 
 ## **How People Are Using .abbott**
 
@@ -24,7 +24,7 @@ Here is how the TLD is effectively deployed:
 *   **Corporate Identity & Communications:** It allows the company to move away from long, complex URLs (like `abbott-healthcare-division.com`) to clean, branded navigation.
 *   **Product Verification:** In the pharmaceutical and medical device sector, counterfeit products are a major risk. A `.abbott` domain acts as a digital seal of authenticity for product information.
 *   **Campaign Specific Sites:** Marketing campaigns for new health initiatives or medical devices can be hosted on intuitive domains (e.g., `heart.abbott` or `nutrition.abbott`).
-*   **Investor and Employee Relations:** Secure portals for stakeholders can be managed under the brand umbrella, reducing the risk of phishing attacks targeting sensitive corporate data.
+*   **Investor and Employee Relations:** Secure portals for stakeholders can be managed under the brand umbrella, reducing the risk of [phishing](/en/glossary/phishing/) attacks targeting sensitive corporate data.
 
 ## **Notable Entities Using .abbott**
 
@@ -53,10 +53,10 @@ Here are the advantages of a controlled namespace:
 
 While `.abbott` is exclusive to the healthcare giant, the power of a distinct, secure, and memorable domain name is available to everyone. Whether you are looking for a professional `.com`, a tech-savvy `.io`, or exploring the future of **tokenized domains**, Namefi is your gateway.
 
-At **Namefi**, we simplify the domain registration process by combining traditional ICANN-accredited reliability with seamless Web3 integration.
+At **Namefi**, we simplify the domain registration process by combining traditional [ICANN](/en/glossary/icann/)-accredited reliability with seamless Web3 integration.
 
 *   **Secure your brand:** Search for short, impactful names across hundreds of available TLDs.
-*   **Tokenized Real-World Assets:** Namefi treats your domain as a true asset, allowing for easy transfer and management on the blockchain.
+*   **Tokenized Real-World Assets:** Namefi treats your domain as a true asset, allowing for easy transfer and management on the [blockchain](/en/glossary/blockchain/).
 *   **Instant Setup:** Get your business online in minutes.
 
 Don't wait for your perfect name to be taken. Secure your digital identity today.

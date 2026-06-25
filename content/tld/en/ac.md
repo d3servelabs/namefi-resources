@@ -11,9 +11,9 @@ keywords: ['.ac domains', '.ac TLD', 'top-level domain .ac', 'what is .ac', 'why
 
 ## **What is .ac?**
 
-The **.ac** domain is the **Country Code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** designated for **Ascension Island**, a remote British Overseas Territory located in the South Atlantic Ocean. Despite its geographic origins, the .ac TLD has transcended its physical borders to become a versatile and highly sought-after extension in the global digital landscape.
+The **.ac** domain is the **Country Code [Top-Level Domain](/en/glossary/tld/) ([ccTLD](/en/glossary/cctld/))** designated for **Ascension Island**, a remote British Overseas Territory located in the South Atlantic Ocean. Despite its geographic origins, the .ac TLD has transcended its physical borders to become a versatile and highly sought-after extension in the global digital landscape.
 
-While it is technically a geographic domain, .ac is widely recognized and managed as an open registry. This means that anyone, regardless of their location, can register a .ac domain. It is managed by the [Internet Computer Bureau (ICB)](http://www.nic.ac/), ensuring a stable and reliable infrastructure.
+While it is technically a geographic domain, .ac is widely recognized and managed as an open [registry](/en/glossary/registry/). This means that anyone, regardless of their location, can register a .ac domain. It is managed by the [Internet Computer Bureau (ICB)](http://www.nic.ac/), ensuring a stable and reliable infrastructure.
 
 The domain has gained significant traction for two primary reasons:
 1.  **Academic Association:** "AC" is the universal abbreviation for "Academic" or "Academy."

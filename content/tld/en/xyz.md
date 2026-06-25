@@ -18,7 +18,7 @@ faqs:
     answer: 'Its low pricing and open registration have attracted bulk and abusive registrations, and security trackers have flagged .xyz among extensions with high malicious volume. The TLD itself is legitimate; reputation depends on the individual domain and how it is used.'
 ---
 
-The **.xyz domain** is one of the most widely adopted new generic top-level domains (gTLDs) of the post-2014 era, and arguably the best-known alternative to .com. Its three-letter, end-of-the-alphabet name carries no built-in industry meaning, which makes it a true blank canvas for any brand, project, or personal site.
+The **.xyz domain** is one of the most widely adopted new [generic top-level domains](/en/glossary/gtld/) (gTLDs) of the post-2014 era, and arguably the best-known alternative to .com. Its three-letter, end-of-the-alphabet name carries no built-in industry meaning, which makes it a true blank canvas for any brand, project, or personal site.
 
 If you are weighing a modern extension against a legacy one, .xyz is the reference case: it is open to everyone, deliberately generic, and validated at the highest level by Alphabet Inc., Google's parent company, which runs its investor site at abc.xyz.
 
@@ -36,7 +36,7 @@ If you are weighing a modern extension against a legacy one, .xyz is the referen
 
 ## What is .xyz?
 
-The .xyz domain is a generic top-level domain (gTLD) introduced through [ICANN's New gTLD Program](https://newgtlds.icann.org/). The string "xyz" was chosen precisely because it has no semantic baggage: the last three letters of the Latin alphabet, often framed as a nod to Generations X, Y, and Z. Where .org implies an organization and .io has come to read as "tech," .xyz signals nothing in particular, which is the entire point — it lets the second-level name carry all the meaning.
+The .xyz domain is a generic top-level domain (gTLD) introduced through [ICANN's New gTLD Program](https://newgtlds.icann.org/). The string "xyz" was chosen precisely because it has no semantic baggage: the last three letters of the Latin alphabet, often framed as a nod to Generations X, Y, and Z. Where [.org](/en/tld/org/) implies an organization and .io has come to read as "tech," .xyz signals nothing in particular, which is the entire point — it lets the second-level name carry all the meaning.
 
 Because it is a generic rather than a country-code TLD, Google does not geo-target .xyz to any region. According to [Google Search Central](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages), generic new TLDs are treated like any other gTLD for search, so a .xyz site can rank globally without being tied to a country. You can confirm the registry details in the official [IANA root-zone record for .xyz](https://www.iana.org/domains/root/db/xyz.html).
 
@@ -50,7 +50,7 @@ Adoption was unusually fast. Within roughly eighteen months the TLD had passed 1
 
 The .xyz domain is genuinely industry-agnostic, but a few niches have gravitated to it:
 
-- **Web3, crypto, and DAO projects** — .xyz has become something of a default among decentralized and on-chain teams; it reads as crypto-native without being limited to it.
+- **[Web3](/en/glossary/web3/), crypto, and DAO projects** — .xyz has become something of a default among decentralized and [on-chain](/en/glossary/on-chain/) teams; it reads as crypto-native without being limited to it.
 - **Startups priced out of .com** — founders whose exact-match .com is taken or expensive often pick the matching .xyz to keep a short, clean brand.
 - **Developers and side projects** — cheap registration makes it a low-stakes home for experiments, portfolios, and demos.
 - **Personal brands and creators** — the neutral suffix works for a name-based site without committing to a category.
@@ -60,7 +60,7 @@ The .xyz domain is genuinely industry-agnostic, but a few niches have gravitated
 ## Notable sites using .xyz
 
 - **abc.xyz** — Alphabet Inc., the parent company of Google, hosts its investor and corporate site here. This is the single most influential endorsement any new gTLD has received.
-- **block.xyz** — Block, Inc. (formerly Square), the fintech company led by Jack Dorsey, uses block.xyz as its corporate home, reinforcing the TLD's association with payments and blockchain.
+- **block.xyz** — Block, Inc. (formerly Square), the fintech company led by Jack Dorsey, uses block.xyz as its corporate home, reinforcing the TLD's association with payments and [blockchain](/en/glossary/blockchain/).
 
 These are real, high-profile deployments rather than vanity redirects, which is why .xyz is treated as a credible production extension rather than a novelty.
 
@@ -89,9 +89,9 @@ The same low pricing that fuels .xyz adoption also attracts spam and bulk abusiv
 
 ## Who can register a .xyz domain?
 
-**Registration restrictions: open to all.** The .xyz domain is an unrestricted generic TLD. There is no credential, membership, business-registration, or local-presence requirement — anyone, anywhere can register one on a first-come, first-served basis. The registry does not sell directly to end users; you register through an ICANN-accredited registrar.
+**Registration restrictions: open to all.** The .xyz domain is an unrestricted generic TLD. There is no credential, membership, business-registration, or local-presence requirement — anyone, anywhere can register one on a first-come, first-served basis. The registry does not sell directly to end users; you register through an [ICANN-accredited registrar](/en/glossary/accredited-registrar/).
 
-Standard new-gTLD rules apply: trademark holders could claim names during the original sunrise period, and the Trademark Clearinghouse continues to provide notice protections. The TLD supports internationalized domain names (IDNs), DNSSEC for cryptographic integrity, and registrar-level WHOIS privacy. Transfers, renewals, and the redemption grace period for expired names follow standard ICANN gTLD policy. The authoritative source for the operator's obligations is the [ICANN Registry Agreement for .xyz](https://www.icann.org/en/registry-agreements/details/xyz), and the official registry is [Generation XYZ](https://gen.xyz/).
+Standard new-gTLD rules apply: [trademark](/en/glossary/trademark/) holders could claim names during the original sunrise period, and the [Trademark Clearinghouse](/en/glossary/tmch/) continues to provide notice protections. The TLD supports internationalized domain names (IDNs), DNSSEC for cryptographic integrity, and registrar-level [WHOIS privacy](/en/glossary/whois-privacy/). Transfers, renewals, and the redemption [grace period](/en/glossary/grace-period/) for expired names follow standard ICANN gTLD policy. The authoritative source for the operator's obligations is the [ICANN Registry Agreement for .xyz](https://www.icann.org/en/registry-agreements/details/xyz), and the official registry is [Generation XYZ](https://gen.xyz/).
 
 ## .xyz pricing and value
 
@@ -99,7 +99,7 @@ The .xyz domain is positioned as an affordable extension, but a few pricing dyna
 
 ## Reputation and email deliverability
 
-This is where honesty matters most. Because .xyz is cheap and open, it has attracted a high volume of spam, phishing, and malware registrations, and security trackers and anti-abuse groups have repeatedly listed it among extensions with elevated malicious activity. Some aggressive spam filters and corporate allowlists treat unfamiliar new-gTLD senders more skeptically than .com, which can affect cold-email deliverability for a brand-new .xyz domain.
+This is where honesty matters most. Because .xyz is cheap and open, it has attracted a high volume of spam, [phishing](/en/glossary/phishing/), and malware registrations, and security trackers and anti-abuse groups have repeatedly listed it among extensions with elevated malicious activity. Some aggressive spam filters and corporate allowlists treat unfamiliar new-gTLD senders more skeptically than .com, which can affect cold-email deliverability for a brand-new .xyz domain.
 
 None of this makes the TLD illegitimate — Alphabet and Block run real businesses on it. Reputation attaches to the individual domain, not the suffix. To mitigate: warm up any sending domain gradually, configure SPF, DKIM, and DMARC correctly, keep the name off shared/abused IP ranges, and build a clean sending history. A well-maintained .xyz domain delivers fine; a brand-new one used for bulk outreach may face extra scrutiny.
 
@@ -111,7 +111,7 @@ The .xyz suffix invites playful constructions and is easy to say aloud, but spel
 
 1. **Search** for your desired name on [Namefi](https://namefi.io) to check availability and see transparent pricing.
 2. **Choose** the .xyz extension (and any alternates you want to secure defensively).
-3. **Register** and manage DNS instantly, with the option to tokenize your domain for Web3-native ownership and transfer.
+3. **Register** and manage DNS instantly, with the option to [tokenize](/en/glossary/tokenize/) your domain for Web3-native ownership and transfer.
 
 [Namefi](https://namefi.io) is an ICANN-accredited registrar bridging Web2 and Web3, so you can run a conventional .xyz site or hold it as a tokenized on-chain asset — with clear pricing and no hidden renewal surprises.
 

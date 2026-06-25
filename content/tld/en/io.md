@@ -18,9 +18,9 @@ faqs:
     answer: 'Not as a settled fact. As of 2026 .io is fully operational. Any retirement would require the ISO country code to change first and would then follow a multi-year IANA transition, so it is an evolving situation to monitor rather than panic over.'
 ---
 
-The **.io domain** is technically a country-code extension for a remote Indian Ocean territory, but in practice it has become the unofficial home of software startups, developer tools, and Web3 projects. For most buyers, the **.io domain meaning** has nothing to do with geography and everything to do with how "io" reads to engineers: as **Input/Output**, one of the most fundamental concepts in computing.
+The **.io domain** is technically a country-code extension for a remote Indian Ocean territory, but in practice it has become the unofficial home of software startups, developer tools, and [Web3](/en/glossary/web3/) projects. For most buyers, the **.io domain meaning** has nothing to do with geography and everything to do with how "io" reads to engineers: as **Input/Output**, one of the most fundamental concepts in computing.
 
-If you are launching a SaaS product, an API, an open-source project, or a blockchain venture, .io is one of the most recognized signals you can put after your brand name. This page covers where it came from, who can register one, how pricing works, and how it stacks up against the alternatives.
+If you are launching a SaaS product, an API, an open-source project, or a [blockchain](/en/glossary/blockchain/) venture, .io is one of the most recognized signals you can put after your brand name. This page covers where it came from, who can register one, how pricing works, and how it stacks up against the alternatives.
 
 ## .io at a glance
 
@@ -62,8 +62,8 @@ The suffix clusters tightly around technology niches:
 ## Notable sites using .io
 
 - **GitHub Pages** (`github.io`) — millions of developer sites hosted from repositories
-- **Etherscan** (`etherscan.io`) — the leading Ethereum blockchain explorer
-- **itch.io** — a popular open marketplace for indie game creators
+- **Etherscan** (`etherscan.io`) — the leading [Ethereum](/en/glossary/ethereum/) blockchain explorer
+- **itch.io** — a popular open [marketplace](/en/glossary/marketplace/) for indie game creators
 - **Agar.io** and **Slither.io** — the browser games that defined the "io games" genre
 
 These span developer infrastructure, Web3, indie publishing, and gaming, illustrating why .io reads as credible to a technical audience.
@@ -101,7 +101,7 @@ The registry supports **DNSSEC**, and standard transfer, renewal, and redemption
 
 ### The Chagos sovereignty question
 
-In 2024 the UK announced plans to transfer sovereignty of the Chagos Archipelago to Mauritius, and an agreement was signed on May 22, 2025. Because .io rests on the "IO" ISO 3166-1 code, this sparked retirement speculation. As of 2026, **.io is fully operational** — registrations and renewals continue normally. Any retirement would require the ISO code to change first and would then trigger a multi-year IANA transition (often cited as roughly five years), so this is a situation to monitor, not a reason to avoid the suffix.
+In 2024 the UK announced plans to transfer sovereignty of the Chagos Archipelago to Mauritius, and an agreement was signed on May 22, 2025. Because .io rests on the "IO" ISO 3166-1 code, this sparked retirement speculation. As of 2026, **.io is fully operational** — registrations and renewals continue normally. Any retirement would require the ISO code to change first and would then trigger a multi-year [IANA](/en/glossary/iana/) transition (often cited as roughly five years), so this is a situation to monitor, not a reason to avoid the suffix.
 
 ## .io pricing and value
 

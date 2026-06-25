@@ -18,7 +18,7 @@ faqs:
     answer: 'The Nexus Requirement is the eligibility rule that limits .us to parties with a genuine connection to the United States. It covers US citizens and residents, entities organized in the US, and foreign organizations that maintain a bona fide US presence such as a regular operation or activity.'
 ---
 
-The **.us** domain is the official country-code Top-Level Domain (ccTLD) for the **United States** — and one of the very first ccTLDs ever delegated. Where extensions like [.co](/en/tld/co/) are marketed as borderless ".com" substitutes, .us is deliberately the opposite: a namespace tied to American identity, governed under US federal policy, and reserved for registrants with a genuine US presence. For a business, brand, or organization that wants to say "we are American" in its web address, .us is the most literal way to do it.
+The **.us** domain is the official [country-code Top-Level Domain](/en/glossary/cctld/) (ccTLD) for the **United States** — and one of the very first ccTLDs ever delegated. Where extensions like [.co](/en/tld/co/) are marketed as borderless ".com" substitutes, .us is deliberately the opposite: a namespace tied to American identity, governed under US federal policy, and reserved for registrants with a genuine US presence. For a business, brand, or organization that wants to say "we are American" in its web address, .us is the most literal way to do it.
 
 This guide covers what .us really is, who runs it (the operator changed in recent years), the all-important **Nexus Requirement** that decides who can register, how it is priced, and how it behaves for SEO and email — so you can decide whether it fits your project.
 
@@ -46,7 +46,7 @@ Crucially for international businesses, search engines **do** treat .us as a cou
 
 The .us TLD was delegated on **February 15, 1985**, making it one of the earliest country-code domains on the internet. In its early years it was administered by **Jon Postel** and the **Information Sciences Institute (ISI)** at the University of Southern California, and was organized largely as a rigid geographic hierarchy — names structured by locality and state, such as `city.state.us`. This made .us technically tidy but awkward to use, and it never gained the everyday popularity of .com.
 
-The modern era began around the turn of the millennium. Oversight consolidated under the **US Department of Commerce / NTIA**, and in **2001 Neustar won the contract** to operate the namespace. Neustar's biggest change came in **April 2002**, when it opened up flat **second-level registration** — letting people register `yourname.us` directly instead of navigating the old geographic tree. That single change unlocked the creative, brandable side of .us, including the famous domain hack **del.icio.us**, registered in May 2002.
+The modern era began around the turn of the millennium. Oversight consolidated under the **US Department of Commerce / NTIA**, and in **2001 Neustar won the contract** to operate the namespace. Neustar's biggest change came in **April 2002**, when it opened up flat **second-level registration** — letting people register `yourname.us` directly instead of navigating the old geographic tree. That single change unlocked the creative, brandable side of .us, including the famous [domain hack](/en/glossary/domain-hack/) **del.icio.us**, registered in May 2002.
 
 The most consequential recent milestone is the **operator transition**. **GoDaddy Registry** acquired Neustar's registry business, and the .us contract moved to **Registry Services, LLC** — the GoDaddy Registry entity that IANA now lists as the manager. Throughout these changes, the defining policy constant has remained: a US presence is required, and registrant information has historically been held to a high transparency standard.
 
@@ -90,7 +90,7 @@ Choose **.com** when you can get the exact name and want a globally neutral defa
 ## Things to consider
 
 - **Not global.** This is the flip side of its strength: search engines box .us into the United States, so it is a poor fit for international ambitions.
-- **The Nexus Requirement is real.** You must qualify. Registrations can be challenged and even revoked if a registrant has no genuine US presence.
+- **The Nexus Requirement is real.** You must qualify. Registrations can be challenged and even revoked if a [registrant](/en/glossary/registrant/) has no genuine US presence.
 - **Historically transparent WHOIS.** .us policy has long emphasized accurate, public registrant data tied to the nexus rule, so expect less anonymity than some other TLDs — though [WHOIS](/en/glossary/whois/) privacy options have evolved over time.
 - **A nationally governed ccTLD.** Long-term rules are set under US Department of Commerce / NTIA policy and the appointed operator, not by a standard ICANN registry agreement.
 
@@ -110,7 +110,7 @@ Beyond eligibility, .us has historically required **accurate, public WHOIS data*
 
 - **Premium names exist.** Short, dictionary, or high-demand .us names may carry premium registration and sometimes higher renewal fees.
 - **First-year vs. renewal pricing differ.** As with most TLDs, an introductory rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry wholesale pricing are the main factors. Aftermarket values for the best one- and two-character or domain-hack-friendly .us names can be significant.
+- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) values for the best one- and two-character or domain-hack-friendly .us names can be significant.
 
 For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
 
@@ -134,7 +134,7 @@ For email deliverability, the suffix itself is rarely the deciding factor — mo
 3. **Choose** an available name (and check whether it is classified as premium).
 4. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to hold your name as a tokenized domain for easier transfer and provable ownership. If you are new to extensions and how they work, start with our primer on [what is a domain](/en/blog/what-is-domain/) and the broader [domain terminology guide](/en/blog/domain-terminology-guide/).
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and [Web3](/en/glossary/web3/), with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership. If you are new to extensions and how they work, start with our primer on [what is a domain](/en/blog/what-is-domain/) and the broader [domain terminology guide](/en/blog/domain-terminology-guide/).
 
 ## Frequently asked questions
 

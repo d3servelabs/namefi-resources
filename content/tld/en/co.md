@@ -18,7 +18,7 @@ faqs:
     answer: 'No. They are separate TLDs run by different operators. The risk is that visitors who type your address from memory may add the trailing "m" and land on the .com instead, so the suffixes can be confused in conversation and typed traffic.'
 ---
 
-The **.co** domain is one of the most successful examples of a country-code extension that broke free of its borders. Officially the ccTLD for **Colombia**, it has been marketed and adopted worldwide as a short, brandable stand-in for ".com" — where "co" reads instantly as **company**, **corporation**, or simply a clipped ".com." For founders who find their dream **.com** taken, **.co** is often the first place they look.
+The **.co** domain is one of the most successful examples of a country-code extension that broke free of its borders. Officially the [ccTLD](/en/glossary/cctld/) for **Colombia**, it has been marketed and adopted worldwide as a short, brandable stand-in for ".com" — where "co" reads instantly as **company**, **corporation**, or simply a clipped ".com." For founders who find their dream **.com** taken, **.co** is often the first place they look.
 
 This guide covers what .co really is, who runs it (the operator changed hands in 2025), who can register one, how it is priced, and how it is perceived for SEO and email — so you can decide whether it fits your brand.
 
@@ -79,7 +79,7 @@ These cases show .co being trusted by major, high-traffic platforms — not just
 | Availability of short names | Good | Very poor | Moderate | Excellent |
 | Typical price tier | Mid | Low-to-mid | High | Low |
 
-Choose **.com** when you can get the exact name — it remains the trust default. Reach for **.co** when the .com is gone and you want the closest, most business-credible substitute. Pick **[.io](/en/tld/io/)** for developer- and infrastructure-focused tech brands, and **[.xyz](/en/tld/xyz/)** for generic or Web3-native projects where a fresh, neutral suffix is an advantage.
+Choose **.com** when you can get the exact name — it remains the trust default. Reach for **.co** when the .com is gone and you want the closest, most business-credible substitute. Pick **[.io](/en/tld/io/)** for developer- and infrastructure-focused tech brands, and **[.xyz](/en/tld/xyz/)** for generic or [Web3](/en/glossary/web3/)-native projects where a fresh, neutral suffix is an advantage.
 
 ## Why choose .co?
 
@@ -98,7 +98,7 @@ Choose **.com** when you can get the exact name — it remains the trust default
 
 **Registration restrictions: open to all.** There is **no local-presence, residency, or Colombian-nationality requirement** to register a second-level .co domain. Since the 2010 relaunch, registration has been **first-come, first-served** and available to individuals and organizations anywhere in the world.
 
-Standard practices apply: trademark holders could participate in sunrise phases during the original launch, names follow conventional length and character rules, **internationalized domain names (IDNs)** are supported, and **DNSSEC** is available for added DNS security. WHOIS privacy, transfer, renewal, and redemption-grace handling follow standard registrar and registry conventions. Because .co is a ccTLD, it is governed by Colombian policy rather than an ICANN registry agreement — the authoritative source for current rules is the operator's official site, [Registry.co](https://registry.co/), under MinTIC oversight.
+Standard practices apply: [trademark](/en/glossary/trademark/) holders could participate in sunrise phases during the original launch, names follow conventional length and character rules, **internationalized domain names (IDNs)** are supported, and **DNSSEC** is available for added DNS security. [WHOIS privacy](/en/glossary/whois-privacy/), transfer, renewal, and redemption-grace handling follow standard registrar and registry conventions. Because .co is a ccTLD, it is governed by Colombian policy rather than an ICANN registry agreement — the authoritative source for current rules is the operator's official site, [Registry.co](https://registry.co/), under MinTIC oversight.
 
 ## .co pricing and value
 
@@ -106,7 +106,7 @@ Standard practices apply: trademark holders could participate in sunrise phases 
 
 - **Premium names exist.** The registry classifies many short, dictionary, or high-demand .co names as **premium**, carrying higher registration and sometimes higher renewal fees.
 - **First-year vs. renewal pricing differ.** As with most TLDs, an introductory first-year rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry wholesale pricing are the main factors. Aftermarket resale values for top one- and two-character or dictionary .co names can be substantial.
+- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) resale values for top one- and two-character or dictionary .co names can be substantial.
 
 For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
 
@@ -129,7 +129,7 @@ For email deliverability, the suffix itself is rarely the deciding factor — mo
 2. **Choose** an available name (and check whether it is classified as premium).
 3. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a tokenized domain for easier transfer and provable ownership.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership.
 
 ## Frequently asked questions
 

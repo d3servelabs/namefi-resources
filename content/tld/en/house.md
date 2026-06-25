@@ -46,7 +46,7 @@ The authoritative record for the suffix is the [IANA .house delegation record](h
 
 The .house string was entered into the IANA root with a registration date of 2013-12-19 and reached general availability in 2014, during the first wave of new-gTLD launches. It was applied for and originally delegated within the Donuts portfolio (the largest applicant in the 2012 round), and its registry back end is now operated by Binky Moon, LLC, the registry entity that sits under [Identity Digital](https://identity.digital/registry) following the consolidation of the Donuts and Afilias businesses.
 
-Identity Digital runs one of the largest portfolios of descriptive gTLDs in the world — well over a hundred suffixes — and .house belongs to a cluster of property- and place-themed extensions in that catalog (alongside names such as .properties, .estate, and .realty). Adoption has been steady rather than explosive: .house is a mid-sized niche TLD whose registrations skew toward real estate and home-related businesses that value the literal meaning of the word over raw volume.
+Identity Digital runs one of the largest portfolios of descriptive gTLDs in the world — well over a hundred suffixes — and .house belongs to a cluster of property- and place-themed extensions in that catalog (alongside names such as [.properties](/en/tld/properties/), [.estate](/en/tld/estate/), and [.realty](/en/tld/realty/)). Adoption has been steady rather than explosive: .house is a mid-sized niche TLD whose registrations skew toward real estate and home-related businesses that value the literal meaning of the word over raw volume.
 
 ## How people use .house
 
@@ -68,7 +68,7 @@ The .house TLD is used mainly by small and mid-sized real estate, home-services,
 - Home-renovation, design-studio, and trades portfolios.
 - Independent house-music labels and event brands.
 
-Rather than cite a specific third-party site that could change hands or lapse, the honest summary is this: .house is a working niche extension whose typical registrant is a home-focused small business.
+Rather than cite a specific third-party site that could change hands or lapse, the honest summary is this: .house is a working niche extension whose typical [registrant](/en/glossary/registrant/) is a home-focused small business.
 
 ## .house vs other domains
 
@@ -85,7 +85,7 @@ Pick [.com](/en/tld/com) when you want the most universally trusted suffix and c
 
 - **Descriptive by default** — the suffix is a real word, so the domain reads as a phrase and tells visitors the category instantly.
 - **Stronger name availability** — short, meaningful names that are long gone in [.com](/en/tld/com) are frequently still open in .house.
-- **Brandable domain hacks** — pairings like *open.house*, *full.house*, or *your.house* turn the extension into the second half of the brand.
+- **[Brandable domain](/en/glossary/brandable-domain/) hacks** — pairings like *open.house*, *full.house*, or *your.house* turn the extension into the second half of the brand.
 - **Reputable operator** — run by Binky Moon under Identity Digital, an established registry with reliable infrastructure and DNSSEC support.
 - **No geo-lock** — as a generic gTLD it works for an audience anywhere, with no country targeting baked in.
 
@@ -100,7 +100,7 @@ Pick [.com](/en/tld/com) when you want the most universally trusted suffix and c
 
 **Registration restrictions: open to all.** The .house TLD has no eligibility gating — there is no credential check, no industry membership, and no local-presence requirement. Any person or organization anywhere in the world can register an available .house name on a first-come, first-served basis, the same way you would register a [.com](/en/tld/com).
 
-As a 2012-round gTLD operated by Binky Moon, .house follows standard new-gTLD policy, including Trademark Clearinghouse–based sunrise and claims protections at launch and the usual Uniform Domain-Name Dispute-Resolution Policy ([UDRP](/en/glossary/udrp)) for trademark disputes. Standard administrative rules apply: normal length and character limits, internationalized domain names, available DNSSEC, and — through most registrars including Namefi — [WHOIS](/en/glossary/whois) privacy plus the usual transfer, renewal, and redemption-grace lifecycle. You can read the registry operator's overview at [Identity Digital](https://identity.digital/registry).
+As a 2012-round gTLD operated by Binky Moon, .house follows standard new-gTLD policy, including [Trademark Clearinghouse](/en/glossary/tmch/)–based sunrise and claims protections at launch and the usual Uniform Domain-Name Dispute-Resolution Policy ([UDRP](/en/glossary/udrp)) for [trademark](/en/glossary/trademark/) disputes. Standard administrative rules apply: normal length and character limits, internationalized domain names, available DNSSEC, and — through most registrars including Namefi — [WHOIS](/en/glossary/whois) privacy plus the usual transfer, renewal, and redemption-grace lifecycle. You can read the registry operator's overview at [Identity Digital](https://identity.digital/registry).
 
 ## .house pricing and value
 
@@ -112,7 +112,7 @@ Because .house is a descriptive, real-world suffix tied to a legitimate industry
 
 ## Branding and naming tips
 
-The .house sweet spot is the **domain hack**, where the suffix completes a phrase: *open.house*, *full.house*, *the.house*, or *bright.house*. Because "house" is a common, easy-to-spell word, your names stay memorable and pronounceable — a real advantage over invented or heavily abbreviated strings. Keep the part before the dot short and concrete, and read the whole address aloud to make sure it scans as a phrase rather than two random words. The main pitfall is the type-in habit: people may reflexively add ".com," so reinforce the full ".house" address in your marketing and consider a defensive [.com](/en/tld/com) if the budget allows.
+The .house sweet spot is the **[domain hack](/en/glossary/domain-hack/)**, where the suffix completes a phrase: *open.house*, *full.house*, *the.house*, or *bright.house*. Because "house" is a common, easy-to-spell word, your names stay memorable and pronounceable — a real advantage over invented or heavily abbreviated strings. Keep the part before the dot short and concrete, and read the whole address aloud to make sure it scans as a phrase rather than two random words. The main pitfall is the type-in habit: people may reflexively add ".com," so reinforce the full ".house" address in your marketing and consider a defensive [.com](/en/tld/com) if the budget allows.
 
 ## How to register a .house domain at Namefi
 
@@ -120,7 +120,7 @@ The .house sweet spot is the **domain hack**, where the suffix completes a phras
 2. **Choose** the exact .house domain that fits your brand, and review the renewal terms, not just the first-year cost.
 3. **Register** and complete checkout, then manage DNS and settings from your dashboard.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS, WHOIS privacy, and optional Web3 [tokenization](/en/glossary/tokenize) so your domain can become an on-chain asset. Secure your .house name with [Namefi](https://namefi.io) today.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing, fast DNS, [WHOIS privacy](/en/glossary/whois-privacy/), and optional [Web3](/en/glossary/web3/) [tokenization](/en/glossary/tokenize) so your domain can become an on-chain asset. Secure your .house name with [Namefi](https://namefi.io) today.
 
 ## Frequently asked questions
 

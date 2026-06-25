@@ -10,7 +10,7 @@ description: "Discover the creative power of the .able domain extension. Learn h
 
 ## **What is .able?**
 
-The **.able** [Top-Level Domain](/en/glossary/tld/) (TLD) is one of the most versatile and linguistically powerful extensions in the new generic Top-Level Domain (new gTLD) landscape. Unlike traditional domains that signify a type of organization (like [.com](/en/tld/com/) for commercial or [.org](/en/tld/org/) for organizations), **.able** is designed to play a functional grammatical role in your web address.
+The **.able** [Top-Level Domain](/en/glossary/tld/) (TLD) is one of the most versatile and linguistically powerful extensions in the new [generic Top-Level Domain](/en/glossary/gtld/) ([new gTLD](/en/glossary/new-gtld/)) landscape. Unlike traditional domains that signify a type of organization (like [.com](/en/tld/com/) for commercial or [.org](/en/tld/org/) for organizations), **.able** is designed to play a functional grammatical role in your web address.
 
 It serves as a suffix that transforms nouns into adjectives, signifying capability, possibility, and fitness. The primary purpose of this TLD is to allow businesses and individuals to create "domain hacks"—URL structures that form complete, readable words (e.g., *sustain.able* or *reli.able*).
 

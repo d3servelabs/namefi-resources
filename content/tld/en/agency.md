@@ -20,7 +20,7 @@ faqs:
 
 If your business is an agency, the .agency domain lets you say so in the URL itself. Instead of stacking the word "agency" on the left of a legacy suffix — as in *brightagency.com* — you can move it to the right of the dot and register the cleaner, more descriptive *bright.agency*. For marketing, creative, real-estate, recruitment, and consulting firms, that single change turns the web address into a plain-language label of what the company does.
 
-This is a reference for the **.agency domain**: who runs the registry, who can register, how the suffix is perceived, what drives its pricing, and how it compares to the alternatives — so you can decide whether it belongs on your shortlist.
+This is a reference for the **.agency domain**: who runs the [registry](/en/glossary/registry/), who can register, how the suffix is perceived, what drives its pricing, and how it compares to the alternatives — so you can decide whether it belongs on your shortlist.
 
 ## .agency at a glance
 
@@ -36,13 +36,13 @@ This is a reference for the **.agency domain**: who runs the registry, who can r
 
 ## What is .agency?
 
-The **.agency domain** is a generic top-level domain (gTLD) introduced through ICANN's New gTLD Program, the 2012 expansion round that added hundreds of descriptive word-based suffixes to the root zone. According to its [IANA root-zone record](https://www.iana.org/domains/root/db/agency.html), .agency was delegated in 2014 and is sponsored by Binky Moon, LLC, the registry-operator entity of [Identity Digital](https://www.identity.digital/) (formerly Donuts), which runs one of the largest portfolios of new gTLDs in the world.
+The **.agency domain** is a generic top-level domain (gTLD) introduced through ICANN's New gTLD Program, the 2012 expansion round that added hundreds of descriptive word-based suffixes to the [root zone](/en/glossary/root-zone/). According to its [IANA root-zone record](https://www.iana.org/domains/root/db/agency.html), .agency was delegated in 2014 and is sponsored by Binky Moon, LLC, the registry-operator entity of [Identity Digital](https://www.identity.digital/) (formerly Donuts), which runs one of the largest portfolios of new gTLDs in the world.
 
 Because .agency is a generic gTLD rather than a country-code TLD, it is not tied to any nation or region. [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats most new gTLDs as generic — they carry no built-in geo-targeting, so a .agency site can rank globally just like a .com.
 
 ## History of .agency
 
-.agency was part of the first wave of Identity Digital's (then Donuts') professional and business-oriented strings. After delegation in 2014, the .agency name was held under Steel Falls, LLC before the portfolio consolidated; in 2018 the IANA record was updated to reflect Binky Moon, LLC as the sponsoring organization, the standard registry entity Identity Digital now uses across its TLDs.
+.agency was part of the first wave of Identity Digital's (then Donuts') professional and business-oriented strings. After delegation in 2014, the .agency name was held under Steel Falls, LLC before the portfolio consolidated; in 2018 the [IANA](/en/glossary/iana/) record was updated to reflect Binky Moon, LLC as the sponsoring organization, the standard registry entity Identity Digital now uses across its TLDs.
 
 Adoption has been steady rather than explosive. The suffix found a durable niche among service firms that wanted an exact-match, on-brand address when the equivalent short .com names had long since been taken. Unlike speculative or meme-driven extensions, .agency's growth has been tied to genuine business use.
 
@@ -96,7 +96,7 @@ No suffix is free of trade-offs. Honest points to weigh:
 
 **Registration restrictions: open to all.** .agency is an unrestricted new gTLD. There is no credential gate (unlike [.law](/en/tld/law) or [.cpa](/en/tld/cpa)), no membership requirement, and no local-presence rule. Any individual or organization worldwide can register an available .agency name on a first-come, first-served basis through any accredited registrar.
 
-Standard policies apply. At launch it ran the usual ICANN Sunrise period giving trademark holders (via the Trademark Clearinghouse) first claim, but that phase is long closed. Names follow conventional length and character rules and support IDNs. The registry supports DNSSEC, registrars commonly offer WHOIS privacy, and transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The governing rules are set out in the [ICANN Registry Agreement for .agency](https://www.icann.org/en/registry-agreements/details/agency); for registrar-level policies, check your registrar's terms.
+Standard policies apply. At launch it ran the usual ICANN Sunrise period giving [trademark](/en/glossary/trademark/) holders (via the [Trademark Clearinghouse](/en/glossary/tmch/)) first claim, but that phase is long closed. Names follow conventional length and character rules and support IDNs. The registry supports DNSSEC, registrars commonly offer [WHOIS privacy](/en/glossary/whois-privacy/), and transfer, renewal, and redemption-grace handling follow standard ICANN gTLD lifecycle rules. The governing rules are set out in the [ICANN Registry Agreement for .agency](https://www.icann.org/en/registry-agreements/details/agency); for registrar-level policies, check your registrar's terms.
 
 ## .agency pricing and value
 
@@ -123,7 +123,7 @@ Deliverability ultimately depends on configuration, not the suffix. To land in t
 2. **Choose** the exact .agency name (and any defensive variants) you want to secure.
 3. **Register** and complete checkout to lock it in.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing and fast DNS management. Namefi also bridges Web2 and Web3: you can mint your .agency as a [tokenized domain](/en/blog/what-are-tokenized-domains), giving you on-chain ownership and transfer flexibility alongside the conventional registration. [Register your .agency domain at Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing and fast DNS management. Namefi also bridges Web2 and Web3: you can mint your .agency as a [tokenized domain](/en/blog/what-are-tokenized-domains), giving you [on-chain](/en/glossary/on-chain/) ownership and transfer flexibility alongside the conventional registration. [Register your .agency domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

@@ -11,9 +11,9 @@ keywords: [.airforce domains, .airforce TLD, .airforce top-level domain, what is
 
 ## **What is .airforce?**
 
-The **.airforce** domain is a specialized New Generic [Top-Level Domain](/en/glossary/tld/) (new gTLD) explicitly designed to serve the global air force community. Unlike the traditional `.com` or `.org`, which are broad and crowded, .airforce provides a dedicated digital namespace for active service members, veterans, recruitment agencies, aerospace suppliers, and aviation enthusiasts.
+The **.airforce** domain is a specialized New Generic [Top-Level Domain](/en/glossary/tld/) ([new gTLD](/en/glossary/new-gtld/)) explicitly designed to serve the global air force community. Unlike the traditional `.com` or `.org`, which are broad and crowded, .airforce provides a dedicated digital namespace for active service members, veterans, recruitment agencies, aerospace suppliers, and aviation enthusiasts.
 
-Launched as part of [ICANN’s](https://www.icann.org/) program to expand the internet's namespace, the .airforce TLD is managed by the registry **Identity Digital** (formerly Donuts). It was created to allow organizations and individuals associated with air defense and aviation to establish a clear, authoritative, and instantly recognizable online identity.
+Launched as part of [ICANN’s](https://www.icann.org/) program to expand the internet's namespace, the .airforce TLD is managed by the [registry](/en/glossary/registry/) **Identity Digital** (formerly Donuts). It was created to allow organizations and individuals associated with air defense and aviation to establish a clear, authoritative, and instantly recognizable online identity.
 
 While it carries a tone of official authority, it is generally open for registration, making it a versatile asset for anyone looking to build a community, sell equipment, or honor history within this specific sector.
 
@@ -53,7 +53,7 @@ Whether you are launching a veteran support blog, an aerospace startup, or simpl
 
 At **Namefi**, we make securing your digital identity seamless and future-proof. We are not just a [registrar](/en/glossary/registrar/); we are bridging the gap between Web2 and Web3. When you register with us, you enjoy:
 *   **ICANN-Accredited Security:** Trustworthy and compliant registration.
-*   **Web3 Integration:** The unique ability to ["tokenize"](/en/glossary/tokenize/) your domain, turning it into a transferable asset on the blockchain for easier trading and management.
+*   **Web3 Integration:** The unique ability to ["tokenize"](/en/glossary/tokenize/) your domain, turning it into a transferable asset on the [blockchain](/en/glossary/blockchain/) for easier trading and management.
 *   **Transparent Pricing:** No hidden fees, just straightforward management of your portfolio.
 
 Don't let your perfect domain fly under the radar. Secure your namespace today.

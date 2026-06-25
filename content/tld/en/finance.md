@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As an Identity Digital gTLD, .finance supports DNSSEC for registrants who enable it, and most registrars including Namefi offer WHOIS privacy so personal contact details are not published publicly.'
 ---
 
-The **.finance domain** is one of the most literal addresses on the internet: it says exactly what the site is about. It is an open generic top-level domain (gTLD) aimed at banks, fintech companies, financial advisors, lenders, accountants, and anyone publishing money-related content. For a sector where clarity and credibility matter, a name like `yourbrand.finance` puts the industry right in the URL.
+The **.finance domain** is one of the most literal addresses on the internet: it says exactly what the site is about. It is an open [generic top-level domain](/en/glossary/gtld/) (gTLD) aimed at banks, fintech companies, financial advisors, lenders, accountants, and anyone publishing money-related content. For a sector where clarity and credibility matter, a name like `yourbrand.finance` puts the industry right in the URL.
 
 This page covers what .finance is, who operates it, who can register one, how pricing works, how the suffix is perceived, and the alternatives worth weighing before you buy.
 
@@ -38,9 +38,9 @@ This page covers what .finance is, who operates it, who can register one, how pr
 
 ## What is .finance?
 
-`.finance` is a **descriptive generic gTLD** — a domain extension whose meaning is in the word itself. It was introduced through ICANN's New gTLD Program, the 2012 expansion that took the root zone beyond legacy endings like .com, .net, and .org and added hundreds of keyword TLDs. According to its [IANA root-zone entry](https://www.iana.org/domains/root/db/finance.html), .finance is classified as a generic top-level domain and is administered by Binky Moon, LLC.
+`.finance` is a **descriptive generic gTLD** — a domain extension whose meaning is in the word itself. It was introduced through [ICANN](/en/glossary/icann/)'s New gTLD Program, the 2012 expansion that took the [root zone](/en/glossary/root-zone/) beyond legacy endings like .com, .net, and .org and added hundreds of keyword TLDs. According to its [IANA root-zone entry](https://www.iana.org/domains/root/db/finance.html), .finance is classified as a generic top-level domain and is administered by Binky Moon, LLC.
 
-Because it is a generic rather than a country-code TLD, .finance is **not tied to any geography**. Google's guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats generic TLDs as global by default, so a .finance site is not geo-targeted to a specific country the way a ccTLD such as `.de` or `.fr` would be. That makes it a fit for firms operating across borders.
+Because it is a generic rather than a country-code TLD, .finance is **not tied to any geography**. Google's guidance on [managing multi-regional sites](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats generic TLDs as global by default, so a .finance site is not geo-targeted to a specific country the way a [ccTLD](/en/glossary/cctld/) such as `.de` or `.fr` would be. That makes it a fit for firms operating across borders.
 
 ## History of .finance
 
@@ -88,22 +88,22 @@ Pick **.com** when broad familiarity outranks everything and you can secure (or 
 ## Things to consider
 
 - **Mainstream recall still favors .com.** Some users instinctively type `.com`, so you may want to defensively hold the matching .com if it exists.
-- **Phishing-sensitive category.** Money-themed suffixes attract impersonation; you will need to lean on brand consistency and security to earn trust (see the reputation section below).
+- **[Phishing](/en/glossary/phishing/)-sensitive category.** Money-themed suffixes attract impersonation; you will need to lean on brand consistency and security to earn trust (see the reputation section below).
 - **Premium pricing on desirable names.** The registry reserves a tier of premium keywords that cost more than standard registrations.
 - **Renewal economics.** Like most new gTLDs, the first-year and renewal prices differ; budget for the ongoing rate, not just year one.
 - **Niche framing.** "Finance" is descriptive but also limiting if your scope later broadens beyond money.
 
 ## Who can register a .finance domain?
 
-**Registration restrictions: open to all.** There are **no eligibility requirements** for .finance — no financial licence, professional accreditation, membership, or local-presence rule. Any individual, business, or organization can register an available name, subject to the registrar's standard terms and acceptable-use policies. This contrasts sharply with credential-gated TLDs such as `.cpa` or `.bank`, which verify the registrant.
+**Registration restrictions: open to all.** There are **no eligibility requirements** for .finance — no financial licence, professional accreditation, membership, or local-presence rule. Any individual, business, or organization can register an available name, subject to the [registrar](/en/glossary/registrar/)'s standard terms and acceptable-use policies. This contrasts sharply with credential-gated TLDs such as `.cpa` or `.bank`, which verify the [registrant](/en/glossary/registrant/).
 
 Other administrative facts:
 
 - **Length and characters:** standard label rules apply — 1–63 characters, letters, digits, and hyphens, not starting or ending with a hyphen.
 - **IDNs:** internationalized domain names are supported.
 - **Registration term:** typically 1–10 years.
-- **DNSSEC and WHOIS privacy:** DNSSEC is supported, and WHOIS privacy is offered by most registrars including Namefi.
-- **Trademark / sunrise:** like all new gTLDs, .finance went through a Trademark Clearinghouse sunrise period at launch; rights holders can use the Clearinghouse for ongoing claims protection.
+- **DNSSEC and WHOIS privacy:** [DNSSEC](/en/glossary/dnssec/) is supported, and [WHOIS privacy](/en/glossary/whois-privacy/) is offered by most registrars including Namefi.
+- **Trademark / sunrise:** like all new gTLDs, .finance went through a [Trademark Clearinghouse](/en/glossary/tmch/) sunrise period at launch; rights holders can use the Clearinghouse for ongoing claims protection.
 
 The authoritative rules live in the [.finance Registry Agreement](https://www.icann.org/en/registry-agreements/details/finance) on ICANN's site, which governs the operator's obligations and reserved-name policies.
 
@@ -127,7 +127,7 @@ For email, deliverability depends on **your sending practices, not the TLD**. Ne
 
 - **Use the suffix as the noun.** The cleanest .finance names read as a phrase: `personal.finance`, `green.finance`, `brand.finance`. Domain-hack constructions where the word before the dot completes "X finance" are the most memorable.
 - **Keep it pronounceable.** Avoid stacked consonants or numbers that force people to spell it out loud.
-- **Mind look-alikes.** Finance is a high-stakes category for typosquatting; consider registering close variants and the matching .com if budget allows.
+- **Mind look-alikes.** Finance is a high-stakes category for [typosquatting](/en/glossary/typosquatting/); consider registering close variants and the matching .com if budget allows.
 - **Don't over-narrow.** If you may expand beyond money services, pick a name that still works as a brand, not just a literal description.
 
 ## How to register a .finance domain at Namefi
@@ -136,7 +136,7 @@ For email, deliverability depends on **your sending practices, not the TLD**. Ne
 2. **Choose** the registration term and add WHOIS privacy and DNSSEC as needed.
 3. **Register** and complete checkout with transparent pricing — no surprise renewal traps.
 
-As an ICANN-accredited registrar, Namefi also supports **Web3 tokenization**, so you can mint eligible domains as on-chain assets, plus fast DNS management from the same dashboard. Start your search at [Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi also supports **[Web3](/en/glossary/web3/) tokenization**, so you can mint eligible domains as [on-chain](/en/glossary/on-chain/) assets, plus fast DNS management from the same dashboard. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

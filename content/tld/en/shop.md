@@ -83,7 +83,7 @@ Pick `.com` when default recognition outweighs everything and you can get the ex
 - **Instant commercial meaning.** The suffix is an implicit call to action that sets buyer expectations before the page loads.
 - **Real availability.** A newer, large namespace means short, exact-match retail names are far more attainable than on `.com`.
 - **Global legibility.** "Shop" is understood across most markets without translation.
-- **Brand protection.** Established companies register the `.shop` version of a trademark defensively, to control how their name appears in the commerce space.
+- **Brand protection.** Established companies register the `.shop` version of a [trademark](/en/glossary/trademark/) defensively, to control how their name appears in the commerce space.
 - **Proven by major brands.** Adoption by names like Netflix and MrBeast demonstrates it works for serious storefronts.
 
 ## Things to consider
@@ -97,13 +97,13 @@ Pick `.com` when default recognition outweighs everything and you can get the ex
 
 **Registration restrictions: open to all.** There are no eligibility requirements for **.shop** — no credential, local presence, or community membership is needed. Any individual or organization worldwide can register an available name on a first-come, first-served basis, which the registry confirms by listing no registration restrictions for the string.
 
-Standard new gTLD practices apply. Trademark holders could use the ICANN sunrise period at launch, and the Trademark Clearinghouse still supports rights protection. The registry supports internationalized domain names (IDNs) and [DNSSEC](/en/glossary/dnssec) for signed, tamper-resistant DNS. WHOIS privacy is offered by most registrars to mask personal details in [WHOIS](/en/glossary/whois) records, and transfer, renewal, and redemption-grace behavior follow standard ICANN policy. The authoritative rules live in the [ICANN Registry Agreement for .shop](https://www.icann.org/en/registry-agreements/details/shop).
+Standard new gTLD practices apply. Trademark holders could use the ICANN sunrise period at launch, and the [Trademark Clearinghouse](/en/glossary/tmch/) still supports rights protection. The registry supports internationalized domain names (IDNs) and [DNSSEC](/en/glossary/dnssec) for signed, tamper-resistant DNS. [WHOIS privacy](/en/glossary/whois-privacy/) is offered by most registrars to mask personal details in [WHOIS](/en/glossary/whois) records, and transfer, renewal, and redemption-grace behavior follow standard ICANN policy. The authoritative rules live in the [ICANN Registry Agreement for .shop](https://www.icann.org/en/registry-agreements/details/shop).
 
 ## .shop pricing and value
 
 This page never quotes live prices, but the **dynamics** are worth understanding. Standard `.shop` names sit in the typical new gTLD range, and as with most such extensions the **first-year price and the renewal price can differ** — promotional first years are common, so always check what the name costs to keep year after year.
 
-The registry also designates some high-demand names as **premium**, with elevated registration and sometimes elevated renewal fees; generic one-word retail terms are the most likely to be premium-tier. What drives cost overall is the registry's wholesale fee, whether a name is flagged premium, and your [registrar](/en/glossary/registrar)'s margin and any introductory offer. For aftermarket sales, a desirable exact-match `.shop` can also command a resale premium between owners.
+The registry also designates some high-demand names as **premium**, with elevated registration and sometimes elevated renewal fees; generic one-word retail terms are the most likely to be premium-tier. What drives cost overall is the registry's wholesale fee, whether a name is flagged premium, and your [registrar](/en/glossary/registrar)'s margin and any introductory offer. For [aftermarket](/en/glossary/aftermarket/) sales, a desirable exact-match `.shop` can also command a resale premium between owners.
 
 ## Reputation and email deliverability
 
@@ -124,7 +124,7 @@ For email, the extension itself is not what spam filters judge — sender authen
 2. Choose the exact name (and any defensive variants like `.store` or `.com`).
 3. Complete registration and configure DNS.
 
-[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar with transparent pricing and fast [DNS](/en/glossary/dns) management. It also lets you tokenize your domain for Web3 ownership — turning your `.shop` address into a transferable on-chain asset — while keeping standard registrar features intact.
+[Namefi](https://namefi.io) is an [ICANN](/en/glossary/icann)-accredited registrar with transparent pricing and fast [DNS](/en/glossary/dns) management. It also lets you [tokenize](/en/glossary/tokenize/) your domain for [Web3](/en/glossary/web3/) ownership — turning your `.shop` address into a transferable [on-chain](/en/glossary/on-chain/) asset — while keeping standard registrar features intact.
 
 ## Frequently asked questions
 

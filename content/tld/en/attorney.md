@@ -20,9 +20,9 @@ faqs:
     answer: 'The .attorney registry is operated by Dog Beach, LLC, a subsidiary of Identity Digital (formerly Donuts), under an ICANN registry agreement. The TLD was delegated to the DNS root zone in 2014.'
 ---
 
-The **.attorney** domain is a new generic top-level domain (new gTLD) created specifically for the legal profession. For lawyers, law firms, and legal-service businesses, it offers a self-explanatory web address that says exactly what the site is about before a visitor reads a single word. If you practice law and the matching `.com` is taken or generic, a `.attorney` name is one of the clearest ways to claim a descriptive, on-brand presence.
+The **.attorney** domain is a new [generic top-level domain](/en/glossary/gtld/) ([new gTLD](/en/glossary/new-gtld/)) created specifically for the legal profession. For lawyers, law firms, and legal-service businesses, it offers a self-explanatory web address that says exactly what the site is about before a visitor reads a single word. If you practice law and the matching `.com` is taken or generic, a `.attorney` name is one of the clearest ways to claim a descriptive, on-brand presence.
 
-Crucially, `.attorney` is an **open** TLD. Despite its professional focus, it does not check bar membership or any credential — so it is positioned very differently from gated legal extensions like `.law` or `.cpa`. That openness is its biggest strength and its biggest caveat, and this page covers both.
+Crucially, `.attorney` is an **open** TLD. Despite its professional focus, it does not check bar membership or any credential — so it is positioned very differently from gated legal extensions like [`.law`](/en/tld/law/) or `.cpa`. That openness is its biggest strength and its biggest caveat, and this page covers both.
 
 ## .attorney at a glance
 
@@ -96,7 +96,7 @@ Choose `.com` when broad familiarity and resale value matter most and your brand
 
 **Registration restrictions: open to all.** `.attorney` is an unrestricted, open generic TLD. There is **no requirement** to be a licensed attorney, bar member, or legal professional — anyone may register one. This is the key difference from credential-gated legal TLDs such as `.law` (which verifies legal-sector eligibility) or `.cpa` (which requires accounting credentials). The suffix communicates a legal focus, but it is an open marketplace, not a verified registry.
 
-Standard new gTLD rules apply: registrations went through the usual sunrise and trademark-claims phases at launch (handled via ICANN's Trademark Clearinghouse), names follow normal length and IDN conventions, and the registry supports **DNSSEC** for signed-zone integrity. WHOIS privacy, transfer, renewal, and the redemption grace period are administered per the operator's and your registrar's policies. The authoritative rules live in the [ICANN .attorney Registry Agreement](https://www.icann.org/en/registry-agreements/details/attorney), held by Dog Beach, LLC.
+Standard new gTLD rules apply: registrations went through the usual sunrise and trademark-claims phases at launch (handled via ICANN's [Trademark Clearinghouse](/en/glossary/tmch/)), names follow normal length and IDN conventions, and the registry supports **DNSSEC** for signed-zone integrity. [WHOIS privacy](/en/glossary/whois-privacy/), transfer, renewal, and the redemption [grace period](/en/glossary/grace-period/) are administered per the operator's and your registrar's policies. The authoritative rules live in the [ICANN .attorney Registry Agreement](https://www.icann.org/en/registry-agreements/details/attorney), held by Dog Beach, LLC.
 
 ## .attorney pricing and value
 
@@ -127,7 +127,7 @@ That said, deliverability depends far more on how you configure email than on th
 2. **Choose** the exact `.attorney` name that fits your firm, practice area, or campaign.
 3. **Register** and configure DNS — Namefi provides fast, reliable DNS management out of the box.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, and it also supports Web3 tokenization, so you can optionally tokenize your domain for easier transfer and on-chain liquidity. [Search and register your .attorney domain at Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, and it also supports [Web3](/en/glossary/web3/) tokenization, so you can optionally [tokenize](/en/glossary/tokenize/) your domain for easier transfer and [on-chain](/en/glossary/on-chain/) liquidity. [Search and register your .attorney domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

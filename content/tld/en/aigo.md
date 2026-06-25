@@ -25,7 +25,7 @@ Because of its unique phonetic appeal and tech-forward connotation, the usage of
 
 *   **AI Startups and SaaS:** Companies building machine learning models, chatbots, or automation tools use .aigo to signal their industry immediately (e.g., *chat.aigo*, *vision.aigo*).
 *   **Mobile Tech Applications:** "Go" implies mobility. App developers are using the extension for mobile-first AI solutions.
-*   **Web3 and Blockchain Projects:** Given the crossover between AI and blockchain (DePIN, AI agents), developers use .aigo for decentralized identifiers (DIDs) and wallet naming.
+*   **Web3 and Blockchain Projects:** Given the crossover between AI and [blockchain](/en/glossary/blockchain/) (DePIN, AI agents), developers use .aigo for decentralized identifiers (DIDs) and [wallet](/en/glossary/wallet/) naming.
 *   **Strategy Gaming:** Playing on the ancient strategy game "Go," gaming communities and AI researchers focused on game theory utilize this domain for forums and educational hubs.
 *   **Personal Portfolios:** Developers and data scientists are registering *firstname.aigo* to showcase their resume and coding projects.
 

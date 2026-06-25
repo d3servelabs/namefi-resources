@@ -13,13 +13,13 @@ keywords: [".alstom domains", ".alstom TLD", "top-level domain", "what is .alsto
 
 The **.alstom** extension is a specialized type of [Top-Level Domain (TLD)](/en/glossary/tld/) known as a "dot-brand" or **Brand TLD**. Unlike open domains like [.com](/en/tld/com/) or [.net](/en/tld/net/) that generally allow public registration, .alstom was created specifically for **Alstom**, a global leader in the green and smart mobility sector, primarily known for manufacturing trains and rail infrastructure.
 
-Launched during [ICANN's new gTLD program](https://newgtlds.icann.org/en/about/program), this domain extension allows the corporation to create a trusted, secure, and branded digital ecosystem. It is categorized as a generic Top-Level Domain (gTLD) but operates with restricted eligibility, meaning it is managed exclusively by the company to protect its intellectual property and ensure consumer safety.
+Launched during [ICANN's new gTLD program](https://newgtlds.icann.org/en/about/program), this domain extension allows the corporation to create a trusted, secure, and branded digital ecosystem. It is categorized as a [generic Top-Level Domain](/en/glossary/gtld/) (gTLD) but operates with restricted eligibility, meaning it is managed exclusively by the company to protect its intellectual property and ensure consumer safety.
 
 For domain investors and developers, .alstom serves as a prime example of how major corporations are moving away from crowded legacy TLDs to establish their own sovereign digital territory on the internet.
 
 ## **How People Are Using .alstom**
 
-Because .alstom is a closed registry, general public usage is not the primary function. Instead, usage is strategic and focused on corporate governance. Here is how the namespace is utilized:
+Because .alstom is a closed [registry](/en/glossary/registry/), general public usage is not the primary function. Instead, usage is strategic and focused on corporate governance. Here is how the namespace is utilized:
 
 *   **Corporate Identity & Branding:** Alstom uses the TLD to reinforce its brand name at the root level of the internet, ensuring that any website ending in .alstom is authentically connected to the company.
 *   **Internal Infrastructure:** Large corporations often use brand TLDs for internal portals, employee resources, and project management systems (e.g., `staff.alstom` or `cloud.alstom`).
@@ -30,7 +30,7 @@ Because .alstom is a closed registry, general public usage is not the primary fu
 
 As a restricted Brand TLD, the "notable entities" are exclusively the parent company and its subsidiaries.
 
-1.  **Alstom (Parent Company):** The primary registrant and user. Alstom is a French multinational rolling stock manufacturer operating worldwide.
+1.  **Alstom (Parent Company):** The primary [registrant](/en/glossary/registrant/) and user. Alstom is a French multinational rolling stock manufacturer operating worldwide.
 2.  **Alstom Subsidiaries:** Various regional divisions or specific project entities falling under the Alstom umbrella utilize the infrastructure for secure communications.
 3.  **Digital Mobility Projects:** While specific public-facing URLs often redirect to their main .com or regional sites, the infrastructure supports their extensive digital mobility and signaling portfolio.
 

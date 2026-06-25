@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. Egypt also has .مصر (romanized as "Misr," meaning Egypt in Arabic), an internationalized ccTLD delegated in April 2010 by ICANN and managed by the National Telecommunications Regulatory Authority (NTRA). It is a fully separate TLD from .eg.'
 ---
 
-The **.eg** domain is Egypt's official country-code top-level domain, one of the oldest in the Arab world. Delegated in late 1990, it has served as the national internet namespace for Egyptian government portals, universities, major telecoms, and private enterprises for over three decades. Unlike many ccTLDs that have been repositioned as generic lifestyle domains, **.eg** has remained firmly rooted in its geographic identity — it signals Egypt, and Google treats it that way.
+The **.eg** domain is Egypt's official [country-code top-level domain](/en/glossary/cctld/), one of the oldest in the Arab world. Delegated in late 1990, it has served as the national internet namespace for Egyptian government portals, universities, major telecoms, and private enterprises for over three decades. Unlike many ccTLDs that have been repositioned as generic lifestyle domains, **.eg** has remained firmly rooted in its geographic identity — it signals Egypt, and Google treats it that way.
 
 Understanding .eg means understanding its unique tiered structure, its local-presence eligibility requirements, and why those restrictions exist. This guide gives you everything you need to decide whether a .eg domain belongs in your strategy.
 
@@ -69,7 +69,7 @@ The .eg namespace is used by a defined, Egypt-connected audience rather than a g
 
 ## Notable sites using .eg
 
-Because .eg requires local connection or trademark presence, its registrant pool is dominated by Egyptian institutions and established businesses rather than speculative registrants. Real examples in active use include:
+Because .eg requires local connection or trademark presence, its [registrant](/en/glossary/registrant/) pool is dominated by Egyptian institutions and established businesses rather than speculative registrants. Real examples in active use include:
 
 - **egypt.gov.eg** — the official portal of the Egyptian government, providing citizen access to public services, e-government information, and ministry links across the country.
 - **vodafone.com.eg** — the Egyptian arm of Vodafone, the largest mobile network operator in Egypt by active subscribers, serving millions of consumer and enterprise customers.
@@ -100,11 +100,11 @@ Choose **.eg** when your business or organization genuinely operates in Egypt an
 
 ## Things to consider
 
-- **Eligibility is genuinely restrictive.** The local-presence requirement is not a technicality — foreign companies must hold a trademark registered in Egypt or internationally under the Madrid Convention with WIPO representation, and must appoint a local agent. This is a real barrier and should be confirmed before starting the registration process.
-- **Third-level structure adds complexity.** Most .eg names are registered at the third level (e.g., `yourbrand.com.eg`), not the second level (e.g., `yourbrand.eg`). The second-level domain category you choose must match your organization type, adding a compliance step absent in open gTLDs.
+- **Eligibility is genuinely restrictive.** The local-presence requirement is not a technicality — foreign companies must hold a trademark registered in Egypt or internationally under the Madrid Convention with [WIPO](/en/glossary/wipo/) representation, and must appoint a local agent. This is a real barrier and should be confirmed before starting the registration process.
+- **Third-level structure adds complexity.** Most .eg names are registered at the third level (e.g., `yourbrand.com.eg`), not the second level (e.g., `yourbrand.eg`). The [second-level domain](/en/glossary/second-level-domain/) category you choose must match your organization type, adding a compliance step absent in open gTLDs.
 - **Hard geo-targeting limits global reach.** Because Google treats .eg as Egypt-specific, a .eg domain will not rank globally for non-Egyptian audiences. International brands need separate domains for markets outside Egypt.
 - **Political and infrastructure risk.** The 2011 internet shutdown demonstrated that a ccTLD's availability is partly subject to national government decisions. This is an unusual risk compared to globally distributed gTLD infrastructure, and worth considering for business-critical applications.
-- **Limited registrar availability.** Fewer international registrars support .eg registration than handle major gTLDs, and the process may require working with an Egypt-based reseller or accredited local provider.
+- **Limited registrar availability.** Fewer international registrars support .eg registration than handle major gTLDs, and the process may require working with an Egypt-based [reseller](/en/glossary/reseller/) or accredited local provider.
 
 ## Who can register a .eg domain?
 
@@ -129,7 +129,7 @@ Because .eg is a ccTLD, its rules are set by national policy and the EUN, **not*
 .eg domains sit in a **higher price tier** than most open gTLDs, reflecting the restricted-access model and the administrative overhead of eligibility verification. A few dynamics shape the cost:
 
 - **No commodity pricing.** Because registration requires document review and eligibility confirmation, .eg is not priced like a mass-market extension. Registrar fees are typically higher than for open ccTLDs.
-- **Limited secondary market.** The requirement that names connect to the registrant's trademark or company name restricts speculative buying, so the aftermarket for .eg names is smaller and less liquid than for gTLDs.
+- **Limited secondary market.** The requirement that names connect to the registrant's trademark or company name restricts speculative buying, so the [aftermarket](/en/glossary/aftermarket/) for .eg names is smaller and less liquid than for gTLDs.
 - **Renewal pricing.** As with all TLDs, first-year and renewal rates may differ; always verify the renewal price before committing to a brand on .eg.
 - **Third-level simplicity.** Because registrations typically happen under a second-level category (com.eg, org.eg, etc.), the pricing model is usually per registration under that category rather than for premium second-level .eg names.
 
@@ -153,7 +153,7 @@ This page intentionally quotes no specific figures — check current pricing at 
 3. **Choose** an available name and confirm it matches your brand or trademark (generic terms are not accepted by the registry).
 4. **Register** through an accredited registrar, submit the required documents, and configure your DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar offering transparent pricing, fast DNS management, and Web3 tokenization — letting you hold your domain as a tokenized asset for streamlined transfer and provable on-chain ownership alongside your traditional DNS configuration.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) offering transparent pricing, fast DNS management, and [Web3](/en/glossary/web3/) tokenization — letting you hold your domain as a tokenized asset for streamlined transfer and provable [on-chain](/en/glossary/on-chain/) ownership alongside your traditional DNS configuration.
 
 ## Frequently asked questions
 

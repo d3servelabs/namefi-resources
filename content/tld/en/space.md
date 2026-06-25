@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The .space registry supports DNSSEC for signed, tamper-resistant DNS, and most registrars including Namefi offer WHOIS privacy to keep your personal contact details out of the public directory.'
 ---
 
-The **.space domain** is one of the most literal, brandable new generic top-level domains (gTLDs) on the market: a short, evocative word that works equally well for a SaaS startup, a designer's portfolio, a coworking brand, or an actual aerospace project. Operated by the registry Radix, it launched in the first wave of ICANN's gTLD expansion and has become a familiar alternative for anyone whose ideal `.com` is taken or priced out of reach.
+The **.space domain** is one of the most literal, brandable new generic top-level domains ([gTLDs](/en/glossary/gtld/)) on the market: a short, evocative word that works equally well for a SaaS startup, a designer's portfolio, a coworking brand, or an actual aerospace project. Operated by the [registry](/en/glossary/registry/) Radix, it launched in the first wave of ICANN's gTLD expansion and has become a familiar alternative for anyone whose ideal `.com` is taken or priced out of reach.
 
 This page covers what `.space` is, who really uses it, how search engines treat it, the registration rules, and the honest trade-offs — so you can decide whether it fits your project before you buy.
 
@@ -44,7 +44,7 @@ Because `.space` is generic and not tied to any country, Google treats it as a s
 
 ## History of .space
 
-`.space` was part of ICANN's New gTLD Program, the 2012-era expansion that opened the root zone to hundreds of new word-based extensions. It was delegated to the DNS root in 2014 and reached general availability in 2015, after the standard sunrise and landrush phases.
+`.space` was part of ICANN's New gTLD Program, the 2012-era expansion that opened the [root zone](/en/glossary/root-zone/) to hundreds of new word-based extensions. It was delegated to the DNS root in 2014 and reached general availability in 2015, after the standard sunrise and landrush phases.
 
 The registry is **Radix**, one of the larger new-gTLD portfolio operators, which also runs extensions such as [`.store`](/en/tld/store), [`.online`](/en/tld/online), [`.site`](/en/tld/site), [`.tech`](/en/tld/tech), and `.website`. Radix runs `.space` on professional registry infrastructure and distributes it through ICANN-accredited registrars worldwide. Over the years `.space` has settled into a steady mid-tier adoption pattern: it is widely available and inexpensive, with a meaningful share of registrations from startups, creators, and the space-and-science community.
 
@@ -101,7 +101,7 @@ Pick [`.com`](/en/tld/com) when maximum mainstream trust and muscle-memory typin
 
 **Registration restrictions: none.** `.space` is **open to everyone** — there is no credential, profession, community, or local-presence requirement. Any individual, business, or organization worldwide can register an available `.space` name on a first-come, first-served basis.
 
-Standard new-gTLD rules apply: names run from 1 to 63 characters, IDNs are supported, and trademark holders had a sunrise window at launch (the [Trademark Clearinghouse](https://www.trademark-clearinghouse.com/) still provides ongoing claims protection). The registry supports DNSSEC, most registrars including Namefi offer WHOIS privacy, and transfers, renewals, and the redemption-grace period follow ICANN's standard policies. The authoritative rulebook is the [ICANN Registry Agreement for .space](https://www.icann.org/en/registry-agreements/details/space), and the operator's portfolio details are published by [Radix](https://radix.website/).
+Standard new-gTLD rules apply: names run from 1 to 63 characters, IDNs are supported, and [trademark](/en/glossary/trademark/) holders had a sunrise window at launch (the [Trademark Clearinghouse](https://www.trademark-clearinghouse.com/) still provides ongoing claims protection). The registry supports DNSSEC, most registrars including Namefi offer [WHOIS privacy](/en/glossary/whois-privacy/), and transfers, renewals, and the redemption-grace period follow ICANN's standard policies. The authoritative rulebook is the [ICANN Registry Agreement for .space](https://www.icann.org/en/registry-agreements/details/space), and the operator's portfolio details are published by [Radix](https://radix.website/).
 
 ## .space pricing and value
 
@@ -110,7 +110,7 @@ This page never quotes live prices, but the **dynamics** are worth understanding
 - **Premium tiers.** The registry classifies short, common, or high-demand strings as premium names, which carry higher registration *and* renewal fees set by Radix, not the registrar.
 - **First-year vs. renewal.** Promotional first-year pricing is common across new gTLDs and can differ sharply from the ongoing renewal rate. Always confirm the renewal price before you buy a name you intend to keep long-term.
 
-Aftermarket value follows the same logic as any gTLD: short, dictionary, and brandable `.space` names resell for more, while the long tail stays inexpensive.
+[Aftermarket](/en/glossary/aftermarket/) value follows the same logic as any gTLD: short, dictionary, and brandable `.space` names resell for more, while the long tail stays inexpensive.
 
 ## Reputation and email deliverability
 
@@ -131,7 +131,7 @@ The mitigation is standard email hygiene and applies to any domain: publish **SP
 2. **Choose** the exact name (and note whether it is a standard or premium tier).
 3. **Register** and complete checkout, then point your DNS or enable WHOIS privacy.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS, and optional Web3 [tokenization](/en/glossary/tokenize) so you can hold your domain as an on-chain asset. Start at [Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing, fast DNS, and optional [Web3](/en/glossary/web3/) [tokenization](/en/glossary/tokenize) so you can hold your domain as an on-chain asset. Start at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

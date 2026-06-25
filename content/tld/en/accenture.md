@@ -17,16 +17,16 @@ This TLD was created during [ICANN’s New gTLD Program](https://newgtlds.icann.
 
 ## **How People Are Using .accenture**
 
-Because .accenture is a **closed registry**, it is not available for general public registration. Instead, it is used strategically by the corporation itself. Here is how the domain is utilized within the digital ecosystem:
+Because .accenture is a **closed [registry](/en/glossary/registry/)**, it is not available for general public registration. Instead, it is used strategically by the corporation itself. Here is how the domain is utilized within the digital ecosystem:
 
-*   **Corporate Identity & Trust:** By operating their own registry, Accenture ensures that any website ending in .accenture is an official corporate asset. This eliminates the risk of phishing or cybersquatting on that specific extension.
+*   **Corporate Identity & Trust:** By operating their own registry, Accenture ensures that any website ending in .accenture is an official corporate asset. This eliminates the risk of [phishing](/en/glossary/phishing/) or [cybersquatting](/en/glossary/cybersquatting/) on that specific extension.
 *   **Marketing Campaigns:** Companies with Brand TLDs often create memorable campaign links (e.g., `future.accenture` or `vision.accenture`) to drive traffic to specific landing pages.
 *   **Internal Infrastructure:** Large corporations often use these domains for employee portals, cloud infrastructure, and intranet systems, ensuring a secure environment for data exchange.
 *   **Client Deliverables:** Providing secure login portals for clients under a verified brand extension enhances professional perception and security.
 
 ## **Notable Entities Using .accenture**
 
-As a single-registrant TLD, the only entity using this extension is **Accenture PLC** and its subsidiaries. However, the usage of the domain highlights best practices in corporate branding.
+As a single-[registrant](/en/glossary/registrant/) TLD, the only entity using this extension is **Accenture PLC** and its subsidiaries. However, the usage of the domain highlights best practices in corporate branding.
 
 While specific internal subdomains are private, the structure generally follows these patterns:
 
@@ -51,7 +51,7 @@ While **.accenture** is exclusive to the corporate giant, you can still build a 
 
 At **Namefi**, we make [domain ownership](/en/glossary/domain-ownership/) easier and more versatile than ever before.
 *   **[ICANN](/en/glossary/icann/)-Accredited:** We are a fully compliant and trusted [registrar](/en/glossary/registrar/).
-*   **Web3 Integration:** We specialize in **[tokenized domains](/en/blog/what-are-tokenized-domains/)**, allowing you to manage your Web2 domains with the ease and security of blockchain technology.
+*   **Web3 Integration:** We specialize in **[tokenized domains](/en/blog/what-are-tokenized-domains/)**, allowing you to manage your Web2 domains with the ease and security of [blockchain](/en/glossary/blockchain/) technology.
 *   **Seamless Management:** Connect your traditional domains to the decentralized web instantly.
 
 Don't wait for the perfect name to disappear. Secure your brand's future today.

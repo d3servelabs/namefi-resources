@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As a modern new gTLD, .store supports DNSSEC for cryptographic DNS integrity, and most registrars including Namefi offer WHOIS privacy to keep your personal contact details out of public records.'
 ---
 
-The **.store** domain is a generic top-level domain (gTLD) built for one job: signaling that a website sells things. Where a neutral suffix tells visitors nothing about a site's purpose, a .store address puts the word *store* directly in the URL, so shoppers and search engines know they are looking at a place to buy before they even click.
+The **.store** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for one job: signaling that a website sells things. Where a neutral suffix tells visitors nothing about a site's purpose, a .store address puts the word *store* directly in the URL, so shoppers and search engines know they are looking at a place to buy before they even click.
 
 For online retailers, direct-to-consumer brands, and creators launching a merchandise hub, this clarity is the whole pitch. It is also one of the more widely adopted retail-focused extensions, with well over a million registrations worldwide, which makes it a serious mainstream option rather than a novelty.
 
@@ -39,13 +39,13 @@ For online retailers, direct-to-consumer brands, and creators launching a mercha
 
 ## What is .store?
 
-The **.store** suffix is a descriptive new gTLD introduced through [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the initiative that expanded the domain name system far beyond legacy extensions like .com and .net. Its meaning is self-evident in English and widely understood internationally: a store is a place where you buy goods, so the suffix instantly frames a website as a commercial, transactional destination.
+The **.store** suffix is a descriptive [new gTLD](/en/glossary/new-gtld/) introduced through [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program), the initiative that expanded the domain name system far beyond legacy extensions like .com and .net. Its meaning is self-evident in English and widely understood internationally: a store is a place where you buy goods, so the suffix instantly frames a website as a commercial, transactional destination.
 
 Because .store is a *generic* TLD and not a country-code TLD, it carries no geographic targeting. According to [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites), generic top-level domains are treated as global by default, so a .store site is not tied to any single country and can rank for audiences anywhere. You can confirm the technical record on the [IANA root-zone entry for .store](https://www.iana.org/domains/root/db/store.html).
 
 ## History of .store
 
-The .store TLD was delegated to the root zone in February 2016 and reached general availability in June 2016. It was among the first new gTLDs created explicitly for e-commerce, arriving as the namespace race for retail-friendly suffixes heated up. Multiple major applicants — including Amazon and several large registry portfolios — originally competed for the string, and Radix ultimately secured the rights to operate it.
+The .store TLD was delegated to the [root zone](/en/glossary/root-zone/) in February 2016 and reached general availability in June 2016. It was among the first new gTLDs created explicitly for e-commerce, arriving as the namespace race for retail-friendly suffixes heated up. Multiple major applicants — including Amazon and several large registry portfolios — originally competed for the string, and Radix ultimately secured the rights to operate it.
 
 The registry has changed hands over the suffix's life: the delegation moved through different Radix entities and the back-end registry services are now provided by Tucows. Adoption has grown steadily; the namespace has accumulated well over a million active registrations, and notable early sales such as Hanes acquiring **t-shirts.store** demonstrated brand-level interest in short, exact-match retail names.
 
@@ -91,9 +91,9 @@ A descriptive extension cuts both ways. The suffix pins your domain to a retail 
 
 ## Who can register a .store domain?
 
-**Registration restrictions: open to all.** The .store domain has no eligibility gate. Unlike credential-restricted suffixes such as .cpa or membership-gated ones like .realtor, .store requires no proof of a retail license, no local presence, and no community membership. Any individual, brand, or business worldwide can register an available name on a first-come, first-served basis.
+**Registration restrictions: open to all.** The .store domain has no eligibility gate. Unlike credential-restricted suffixes such as [.cpa](/en/tld/cpa/) or membership-gated ones like [.realtor](/en/tld/realtor/), .store requires no proof of a retail license, no local presence, and no community membership. Any individual, brand, or business worldwide can register an available name on a first-come, first-served basis.
 
-Standard new gTLD rules apply: names follow the usual length limits, internationalized domain names (IDNs) are supported, and the registry operates DNSSEC for DNS integrity. Trademark holders could use ICANN's Trademark Clearinghouse protections during the launch sunrise period, and ordinary registrant safeguards — WHOIS privacy, transfer locks, and a redemption grace period after expiry — are available through registrars. You can review the governing rules in the [ICANN Registry Agreement for .store](https://www.icann.org/en/registry-agreements/details/store) and the operator's policies at the [Radix registry site](https://radix.website/).
+Standard new gTLD rules apply: names follow the usual length limits, internationalized domain names (IDNs) are supported, and the registry operates DNSSEC for DNS integrity. [Trademark](/en/glossary/trademark/) holders could use [ICANN](/en/glossary/icann/)'s [Trademark Clearinghouse](/en/glossary/tmch/) protections during the launch sunrise period, and ordinary [registrant](/en/glossary/registrant/) safeguards — [WHOIS privacy](/en/glossary/whois-privacy/), transfer locks, and a redemption [grace period](/en/glossary/grace-period/) after expiry — are available through registrars. You can review the governing rules in the [ICANN Registry Agreement for .store](https://www.icann.org/en/registry-agreements/details/store) and the operator's policies at the [Radix registry site](https://radix.website/).
 
 ## .store pricing and value
 
@@ -105,7 +105,7 @@ Because .store is unmistakably commercial, it reads as a legitimate retail addre
 
 ## Branding and naming tips
 
-The strongest .store names treat the suffix as part of the phrase rather than an afterthought. Single-word brand or category names — think `yourbrand.store` or `coffee.store` — are crisp and memorable. Avoid stacking redundant words; `shop.store` or `mystoreonline.store` waste the clarity the suffix already provides. Spelling is rarely an issue since *store* is a common English word, but if your audience is heavily non-English-speaking, test that the meaning translates. Where practical, secure the matching .com to protect against type-in traffic loss.
+The strongest .store names treat the suffix as part of the phrase rather than an afterthought. Single-word brand or category names — think `yourbrand.store` or `coffee.store` — are crisp and memorable. Avoid stacking redundant words; `shop.store` or `mystoreonline.store` waste the clarity the suffix already provides. Spelling is rarely an issue since *store* is a common English word, but if your audience is heavily non-English-speaking, test that the meaning translates. Where practical, secure the matching .com to protect against [type-in traffic](/en/glossary/type-in-traffic/) loss.
 
 ## How to register a .store domain at Namefi
 
@@ -113,7 +113,7 @@ The strongest .store names treat the suffix as part of the phrase rather than an
 2. **Choose** the .store option from the results and review whether it is a standard or premium name.
 3. **Register** it through Namefi's ICANN-accredited checkout, then manage DNS and renewals from your dashboard.
 
-As an ICANN-accredited registrar, [Namefi](https://namefi.io) offers transparent pricing with no hidden fees, fast DNS management, and the option to tokenize your domain as an on-chain asset — bridging Web2 convenience with Web3 ownership and liquidity.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), [Namefi](https://namefi.io) offers transparent pricing with no hidden fees, fast DNS management, and the option to tokenize your domain as an on-chain asset — bridging Web2 convenience with [Web3](/en/glossary/web3/) ownership and [liquidity](/en/glossary/domain-liquidity/).
 
 ## Frequently asked questions
 

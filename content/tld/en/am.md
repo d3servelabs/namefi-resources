@@ -49,7 +49,7 @@ The utility of the .am TLD goes far beyond Armenian borders. Its unique letter c
 Several high-profile brands and celebrities have utilized the .am extension, proving its legitimacy and cool factor in the digital space.
 
 *   **Instagram (Historically):** Before acquiring their .com, the social media giant famously launched as `instagr.am`, popularizing the concept of domain hacking.
-*   **Will.i.am:** The famous musician and tech entrepreneur uses his own name as a domain hack (`will.i.am`) for his personal brand and philanthropic foundation.
+*   **Will.i.am:** The famous musician and tech entrepreneur uses his own name as a [domain hack](/en/glossary/domain-hack/) (`will.i.am`) for his personal brand and philanthropic foundation.
 *   **Stre.am:** A notable live video platform that utilized the TLD to complete the word "stream."
 *   **Ucom:** As a major Armenian telecommunications company (`ucom.am`), it represents the standard corporate usage of the TLD within its home country.
 
@@ -59,13 +59,13 @@ If you are considering a new web address, here is why .am might be the perfect f
 
 *   **Creative Branding:** It offers some of the best opportunities for "domain hacks" (using the extension to finish a word), making your URL memorable and conversational.
 *   **Availability:** While .com is saturated, you have a much higher chance of finding short, premium keywords or 3-letter names with a .am extension.
-*   **[Search Engine Optimization](/en/glossary/seo/) (SEO):** While it is a ccTLD, Google and other search engines crawl .am sites effectively. For businesses in Armenia, it provides a local SEO boost. For global brands, it is treated similarly to generic domains due to its widespread use.
+*   **[Search Engine Optimization](/en/glossary/seo/) (SEO):** While it is a [ccTLD](/en/glossary/cctld/), Google and other search engines crawl .am sites effectively. For businesses in Armenia, it provides a local SEO boost. For global brands, it is treated similarly to generic domains due to its widespread use.
 *   **Versatility:** Whether you are an **A**sset **M**anager or an **AM** radio station, the acronym fits multiple major industries perfectly.
 
 ## **Register Your .am Domain at Namefi**
 
 Ready to secure a domain that defines who you are? Whether you are building a creative portfolio, a financial platform, or the next big tech startup, .am offers the flexibility you need.
 
-At **Namefi**, we make domain registration effortless. As an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/), we combine traditional reliability with cutting-edge [Web3](/en/glossary/web3/) innovation. When you register with us, you can enjoy seamless [NFT](/en/glossary/nft/) integration, allowing you to [tokenize](/en/glossary/tokenize/) your domain for easier transfer and management on the blockchain.
+At **Namefi**, we make domain registration effortless. As an [ICANN](/en/glossary/icann/)-accredited [registrar](/en/glossary/registrar/), we combine traditional reliability with cutting-edge [Web3](/en/glossary/web3/) innovation. When you register with us, you can enjoy seamless [NFT](/en/glossary/nft/) integration, allowing you to [tokenize](/en/glossary/tokenize/) your domain for easier transfer and management on the [blockchain](/en/glossary/blockchain/).
 
 **[Register your .am domain at Namefi today](https://namefi.io)** and start building your digital identity on a foundation that stands out.

@@ -18,7 +18,7 @@ faqs:
     answer: 'Yes. .me is arguably the most personal mainstream extension. Because "me" is the first-person pronoun, "yourname.me" or "hire.me" feels like a direct invitation, which is why it is a favorite for portfolios, bios, and individual brands.'
 ---
 
-The **.me** domain is one of the clearest examples of a country-code extension that found a second life as a global brand. Officially the ccTLD for **Montenegro**, it has been marketed and adopted worldwide as the internet's most **personal** extension — because "me" is the English first-person pronoun, "yourname.me" reads instantly as *you*. For individuals building a portfolio, a resume site, or a bio page — and for anyone crafting a clever **domain hack** that completes with "me" — it is often the first place they look.
+The **.me** domain is one of the clearest examples of a country-code extension that found a second life as a global brand. Officially the [ccTLD](/en/glossary/cctld/) for **Montenegro**, it has been marketed and adopted worldwide as the internet's most **personal** extension — because "me" is the English first-person pronoun, "yourname.me" reads instantly as *you*. For individuals building a portfolio, a resume site, or a bio page — and for anyone crafting a clever **[domain hack](/en/glossary/domain-hack/)** that completes with "me" — it is often the first place they look.
 
 This guide covers what .me really is, who runs it, who can register one, how it is priced, and how it is perceived for SEO and email — so you can decide whether it fits your brand.
 
@@ -99,7 +99,7 @@ Choose **.com** when you can get the exact name — it remains the trust default
 
 **Registration restrictions: open to all.** There is **no local-presence, residency, or Montenegrin-nationality requirement** to register a second-level .me domain. Since the 2008 public launch, registration has been **first-come, first-served** and available to individuals and organizations anywhere in the world.
 
-Standard practices apply: trademark holders could participate in sunrise phases during the original launch, names follow conventional length and character rules, **internationalized domain names (IDNs)** are supported, and **[DNSSEC](/en/glossary/dnssec/)** is available for added DNS security. [WHOIS](/en/glossary/whois/) privacy, transfer, renewal, and redemption-grace handling follow standard [registrar](/en/glossary/registrar/) and registry conventions. Because .me is a ccTLD, it is governed by Montenegrin policy under the Government of Montenegro, with doMEn d.o.o. as the operator — the authoritative source for current rules is the operator's official site, [domain.me](https://domain.me/).
+Standard practices apply: [trademark](/en/glossary/trademark/) holders could participate in sunrise phases during the original launch, names follow conventional length and character rules, **internationalized domain names (IDNs)** are supported, and **[DNSSEC](/en/glossary/dnssec/)** is available for added DNS security. [WHOIS](/en/glossary/whois/) privacy, transfer, renewal, and redemption-grace handling follow standard [registrar](/en/glossary/registrar/) and registry conventions. Because .me is a ccTLD, it is governed by Montenegrin policy under the Government of Montenegro, with doMEn d.o.o. as the operator — the authoritative source for current rules is the operator's official site, [domain.me](https://domain.me/).
 
 ## .me pricing and value
 
@@ -107,7 +107,7 @@ Standard practices apply: trademark holders could participate in sunrise phases 
 
 - **Premium names exist.** The registry classifies many short, dictionary, first-name, or high-demand .me names as **premium**, carrying higher registration and sometimes higher renewal fees.
 - **First-year vs. renewal pricing differ.** As with most TLDs, an introductory first-year rate is not the renewal rate; always check the standard renewal before committing a brand.
-- **What drives cost.** Name length and desirability, premium classification, and registry wholesale pricing are the main factors. Aftermarket resale values for common first names and clean domain hacks in .me can be substantial.
+- **What drives cost.** Name length and desirability, premium classification, and registry [wholesale pricing](/en/glossary/wholesale-pricing/) are the main factors. [Aftermarket](/en/glossary/aftermarket/) resale values for common first names and clean domain hacks in .me can be substantial.
 
 For exact, current figures, check live pricing at registration time — this page intentionally quotes no numbers.
 
@@ -130,7 +130,7 @@ For email deliverability, the suffix itself is rarely the deciding factor — mo
 2. **Choose** an available name (and check whether it is classified as premium).
 3. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited [registrar](/en/glossary/registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a tokenized domain for easier transfer and provable ownership.
+[Namefi](https://namefi.io) is an ICANN-accredited [registrar](/en/glossary/registrar/) that bridges Web2 and Web3, with transparent pricing, fast DNS management, and the option to hold your name as a [tokenized domain](/en/glossary/tokenized-domain/) for easier transfer and provable ownership.
 
 ## Frequently asked questions
 

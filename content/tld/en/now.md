@@ -91,7 +91,7 @@ The decisive trade-off with `.now` is availability: it is **not for sale to you*
 
 **Registration restrictions: closed.** `.now` is governed under **Specification 13** of its [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/now), the provision that defines a **dotBrand** TLD. Under Specification 13, the registry operator's trademark *is* the TLD string, and registrations are limited to the operator and a small set of affiliated or authorized parties. In concrete terms, only **Amazon Registry Services and Amazon-affiliated entities** can hold `.now` domains.
 
-That means there are no sunrise periods, no landrush, and no general availability for the public. Length rules, IDN options, WHOIS privacy, and renewal/redemption behavior are managed internally by the registry rather than exposed to outside registrants, because there are no outside registrants. If you need an authoritative confirmation, the Registry Agreement and its Specification 13 designation are the source of truth.
+That means there are no sunrise periods, no landrush, and no general availability for the public. Length rules, IDN options, [WHOIS privacy](/en/glossary/whois-privacy/), and renewal/redemption behavior are managed internally by the registry rather than exposed to outside registrants, because there are no outside registrants. If you need an authoritative confirmation, the Registry Agreement and its Specification 13 designation are the source of truth.
 
 ## .now pricing and value
 
@@ -103,7 +103,7 @@ There is no meaningful public **pricing** for `.now`, and any number you encount
 
 ## Branding and naming tips
 
-`.now` is a textbook **domain-hack** string — `act.now`, `buy.now`, `shop.now` all read cleanly — and that is exactly why it is so tempting and so frustrating. The branding lesson here is broader than `.now` itself: a perfect domain hack is worthless if the suffix is closed. Before designing a brand around any clever extension, confirm it is openly registrable. If immediacy is your theme, open suffixes like [.app](/en/tld/app), [.io](/en/tld/io), or even an action word on [.xyz](/en/tld/xyz) let you build the same energy on a name you can actually own.
+`.now` is a textbook [**domain-hack**](/en/glossary/domain-hack/) string — `act.now`, `buy.now`, `shop.now` all read cleanly — and that is exactly why it is so tempting and so frustrating. The branding lesson here is broader than `.now` itself: a perfect domain hack is worthless if the suffix is closed. Before designing a brand around any clever extension, confirm it is openly registrable. If immediacy is your theme, open suffixes like [.app](/en/tld/app), [.io](/en/tld/io), or even an action word on [.xyz](/en/tld/xyz) let you build the same energy on a name you can actually own.
 
 ## How to register a .now domain at Namefi
 
@@ -115,7 +115,7 @@ If you want a short, action-oriented domain you *can* own, here is the practical
 2. **Choose** the name that best fits your brand and confirm it is available.
 3. **Register** it with transparent pricing, fast DNS, and optional Web3 tokenization so you hold a verifiable, ownable asset.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar that also supports tokenized domains — a real path to ownership, unlike a brand TLD that will never be yours.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) that also supports tokenized domains — a real path to ownership, unlike a brand TLD that will never be yours.
 
 ## Frequently asked questions
 

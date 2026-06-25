@@ -11,7 +11,7 @@ keywords: [".af domains", ".af TLD", "top-level domain", "what is .af", "why cho
 
 ## **What is .af?**
 
-The **.af** extension is the **country code [Top-Level Domain](/en/glossary/tld/) (ccTLD)** for **Afghanistan**. It was originally delegated in 1997 and is managed by the [Afghanistan Network Information Center (AFGNIC)](https://nic.af/). 
+The **.af** extension is the **country code [Top-Level Domain](/en/glossary/tld/) ([ccTLD](/en/glossary/cctld/))** for **Afghanistan**. It was originally delegated in 1997 and is managed by the [Afghanistan Network Information Center (AFGNIC)](https://nic.af/). 
 
 While its primary purpose was to serve entities, organizations, and individuals connected to Afghanistan, the .af domain has transcended its geographic borders to become a favorite among the global tech and creative communities. This is largely due to the serendipitous linguistic coincidence in internet slang where "AF" is an acronym for "as f***" (used to emphasize an adjective, e.g., "cool af"). 
 
@@ -34,7 +34,7 @@ The usage of .af is distinctly divided into two categories: local utility and gl
 
 While many major corporations stick to .com, the .af extension is dominated by agile startups, tech projects, and media platforms leveraging the "slang" aspect.
 
-1.  **Spot.af:** Often cited in domain hack lists, representing how common words are paired with the extension.
+1.  **Spot.af:** Often cited in [domain hack](/en/glossary/domain-hack/) lists, representing how common words are paired with the extension.
 2.  **Health.af:** Examples of generic dictionary words being registered to create authoritative-sounding, yet modern, category-defining websites.
 3.  **Tech Startups & URL Shorteners:** Many tech companies use .af domains for custom URL shorteners or marketing campaigns to emphasize speed or intensity.
 
@@ -61,7 +61,7 @@ Whether you are launching a bold new startup, building a personal portfolio, or 
 
 At **Namefi**, we make the registration process seamless and future-proof.
 *   **Easy Management:** Manage your traditional DNS settings with ease.
-*   **Web3 Integration:** Namefi specializes in **tokenized domains**. When you register with us, you can mint your domain as an NFT, allowing for instant transfer, [fractional ownership](/en/glossary/fractional-ownership/), and integration with blockchain applications.
+*   **Web3 Integration:** Namefi specializes in **tokenized domains**. When you register with us, you can mint your domain as an NFT, allowing for instant transfer, [fractional ownership](/en/glossary/fractional-ownership/), and integration with [blockchain](/en/glossary/blockchain/) applications.
 *   **Transparent Pricing:** No hidden fees, just straightforward access to the domains you need.
 
 Don't let your perfect domain hack get taken by someone else. Secure your brand's intensity today.

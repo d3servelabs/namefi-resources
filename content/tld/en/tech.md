@@ -18,7 +18,7 @@ faqs:
     answer: 'Yes. The .tech registry supports DNSSEC for cryptographic DNS integrity, and most registrars offer WHOIS privacy that masks personal contact details in the public directory. Both are widely available, though privacy is provided by the registrar rather than the registry.'
 ---
 
-The **.tech domain** is a generic top-level domain built explicitly for the technology world. Where a name like `acme.com` says nothing about what you do, `acme.tech` signals "we build technology" before a visitor reads a single line of copy. That descriptive clarity is the core reason startups, developers, and tech events reach for it.
+The **.tech domain** is a [generic top-level domain](/en/glossary/gtld/) built explicitly for the technology world. Where a name like `acme.com` says nothing about what you do, `acme.tech` signals "we build technology" before a visitor reads a single line of copy. That descriptive clarity is the core reason startups, developers, and tech events reach for it.
 
 It is one of the most widely adopted new gTLDs launched in the 2012 ICANN expansion, and because it reads the same in every language, it travels well for founders going global. This page covers what `.tech` is, who runs it, who actually uses it, its honest trade-offs, and how to register one.
 
@@ -37,13 +37,13 @@ It is one of the most widely adopted new gTLDs launched in the 2012 ICANN expans
 
 ## What is .tech?
 
-`.tech` is a **new gTLD** — a generic extension introduced through ICANN's New gTLD Program, which opened in 2012 and dramatically widened the namespace beyond legacy options like `.com`, `.net`, and `.org`. It is a dictionary word for "technology," so its meaning is instantly legible to a global audience.
+`.tech` is a **[new gTLD](/en/glossary/new-gtld/)** — a generic extension introduced through [ICANN](/en/glossary/icann/)'s New gTLD Program, which opened in 2012 and dramatically widened the namespace beyond legacy options like `.com`, `.net`, and `.org`. It is a dictionary word for "technology," so its meaning is instantly legible to a global audience.
 
 Unlike a country-code TLD such as `.io` or `.co`, `.tech` is generic and carries no geographic association. That matters for international projects: [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) treats most new gTLDs as generic by default, so a `.tech` site is not geo-targeted to any country and competes globally on equal footing. You can confirm the delegation in the [IANA root-zone database entry for .tech](https://www.iana.org/domains/root/db/tech.html).
 
 ## History of .tech
 
-`.tech` was delegated to the root zone in 2015 and reached general availability on 21 March 2015. It launched into a crowded field of new gTLDs but stood out because its meaning is unambiguous and universally understood, which helped it accumulate hundreds of thousands of registrations and become one of Radix's flagship extensions alongside [.store](/en/tld/store), [.online](/en/tld/online), and [.site](/en/tld/site).
+`.tech` was delegated to the [root zone](/en/glossary/root-zone/) in 2015 and reached general availability on 21 March 2015. It launched into a crowded field of new gTLDs but stood out because its meaning is unambiguous and universally understood, which helped it accumulate hundreds of thousands of registrations and become one of Radix's flagship extensions alongside [.store](/en/tld/store), [.online](/en/tld/online), and [.site](/en/tld/site).
 
 The most visible adoption milestone came when the Consumer Technology Association moved the Consumer Electronics Show to **CES.tech**, [retiring its older `.org` web address](https://www.prnewswire.com/news-releases/the-worlds-largest-technology-conference-is-now-on-a-tech-domain-extension-582361021.html) — a high-profile endorsement that signaled the extension was ready for major brands, not just experiments.
 
@@ -61,7 +61,7 @@ The most visible adoption milestone came when the Consumer Technology Associatio
 
 - **CES.tech** — official home of the Consumer Electronics Show, run by the Consumer Technology Association.
 - **CTA.tech** — the Consumer Technology Association's own corporate site.
-- **live.ces.tech** — CES's content and on-demand discovery platform, showing the extension used at subdomain scale.
+- **live.ces.tech** — CES's content and on-demand discovery platform, showing the extension used at [subdomain](/en/glossary/subdomain/) scale.
 
 These are large, public, actively maintained sites, which is why `.tech` reads as a credible business choice rather than a novelty.
 
@@ -95,11 +95,11 @@ Pick [.com](/en/tld/com) when broad familiarity outweighs everything else. Pick 
 
 **Registration restrictions: open to all.** `.tech` has no eligibility gate — there is no credential, professional membership, or local-presence requirement (unlike restricted extensions such as `.cpa` or `.realtor`). Any individual or organization worldwide can register one on a first-come, first-served basis.
 
-Standard new-gTLD operational rules apply: names follow normal length and character conventions, [internationalized domain names](/en/tld/io) (IDNs) are supported, and **DNSSEC** can be enabled for cryptographic integrity of DNS responses. WHOIS privacy is typically available through your registrar to mask personal contact details, and transfer, renewal, and redemption-grace behavior follows ICANN's standard gTLD lifecycle. The authoritative source for the rules is the registry's own [Radix policies page](https://radix.website/policies) and the ICANN Registry Agreement for `.tech`. Sunrise and trademark-claims periods closed years ago, so brand owners now rely on the [Trademark Clearinghouse](https://www.icann.org/resources/pages/tmch-2014-01-09-en) and ordinary dispute mechanisms.
+Standard new-gTLD operational rules apply: names follow normal length and character conventions, [internationalized domain names](/en/tld/io) (IDNs) are supported, and **DNSSEC** can be enabled for cryptographic integrity of DNS responses. [WHOIS privacy](/en/glossary/whois-privacy/) is typically available through your registrar to mask personal contact details, and transfer, renewal, and redemption-grace behavior follows ICANN's standard gTLD lifecycle. The authoritative source for the rules is the registry's own [Radix policies page](https://radix.website/policies) and the ICANN Registry Agreement for `.tech`. Sunrise and trademark-claims periods closed years ago, so brand owners now rely on the [Trademark Clearinghouse](https://www.icann.org/resources/pages/tmch-2014-01-09-en) and ordinary dispute mechanisms.
 
 ## .tech pricing and value
 
-Pricing for `.tech` is **dynamic and tiered rather than flat.** A large pool of standard names registers at a common rate, while short, common-word, or otherwise high-demand names are designated **premium** and carry higher fees — sometimes substantially so — that also apply at renewal. As is typical for new gTLDs, the **first-year price and the renewal price are set separately**, so it is worth checking the renewal figure before you commit to a name. Aftermarket value is driven by length, dictionary relevance, and brandability. (This page lists no specific prices; check current pricing at registration time.)
+Pricing for `.tech` is **dynamic and tiered rather than flat.** A large pool of standard names registers at a common rate, while short, common-word, or otherwise high-demand names are designated **premium** and carry higher fees — sometimes substantially so — that also apply at renewal. As is typical for new gTLDs, the **first-year price and the renewal price are set separately**, so it is worth checking the renewal figure before you commit to a name. [Aftermarket](/en/glossary/aftermarket/) value is driven by length, dictionary relevance, and brandability. (This page lists no specific prices; check current pricing at registration time.)
 
 ## Reputation and email deliverability
 
@@ -115,7 +115,7 @@ Pricing for `.tech` is **dynamic and tiered rather than flat.** A large pool of 
 2. **Choose** the exact name and confirm the registration term.
 3. **Register** and complete checkout — Namefi supports both card and crypto payments.
 
-As an [ICANN-accredited registrar](/en/glossary/registrar), Namefi offers transparent pricing, fast DNS management, and optional **Web3 tokenization**, letting you hold your `.tech` domain as an NFT while retaining full traditional DNS functionality. [Register your .tech domain at Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/registrar), Namefi offers transparent pricing, fast DNS management, and optional **[Web3](/en/glossary/web3/) tokenization**, letting you hold your `.tech` domain as an NFT while retaining full traditional DNS functionality. [Register your .tech domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

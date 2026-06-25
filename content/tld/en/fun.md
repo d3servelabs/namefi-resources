@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The .fun registry supports DNSSEC, and most registrars offer WHOIS privacy so your personal contact details are not published publicly. Availability of privacy depends on your registrar and applicable law.'
 ---
 
-The **.fun domain** is one of the more expressive choices in the modern domain landscape: a short, readable word that tells visitors a site is playful or entertaining before they even click. It is a generic top-level domain (gTLD) from ICANN's new gTLD program, open to anyone, and it has found a genuine home with game studios, event organizers, creative side-projects, and high-traffic Web3 platforms.
+The **.fun domain** is one of the more expressive choices in the modern domain landscape: a short, readable word that tells visitors a site is playful or entertaining before they even click. It is a [generic top-level domain](/en/glossary/gtld/) (gTLD) from [ICANN](/en/glossary/icann/)'s [new gTLD](/en/glossary/new-gtld/) program, open to anyone, and it has found a genuine home with game studios, event organizers, creative side-projects, and high-traffic Web3 platforms.
 
 If you are weighing a memorable, on-theme extension against a crowded `.com` market, this page covers what .fun is, who runs it, who really uses it, and the trade-offs before you register.
 
@@ -40,11 +40,11 @@ If you are weighing a memorable, on-theme extension against a crowded `.com` mar
 
 The **.fun** suffix is a generic top-level domain, not a country-code TLD, so it carries no geographic meaning and is available worldwide. It was delegated to the internet's root zone in late 2016 as part of [ICANN's new gTLD program](https://newgtlds.icann.org/en/), the expansion that added hundreds of descriptive word-based extensions alongside legacy names like `.com` and `.net`. You can confirm the delegation and operator details on its [IANA root-zone record](https://www.iana.org/domains/root/db/fun.html).
 
-Because .fun is generic, search engines treat it that way: there is no geo-targeting tied to it as there is with a ccTLD, and Google does not favor or penalize it relative to `.com`. The literal meaning of the word does the work — a `.fun` address signals enjoyment and approachability, which is exactly why brands reach for it.
+Because .fun is generic, search engines treat it that way: there is no geo-targeting tied to it as there is with a [ccTLD](/en/glossary/cctld/), and Google does not favor or penalize it relative to `.com`. The literal meaning of the word does the work — a `.fun` address signals enjoyment and approachability, which is exactly why brands reach for it.
 
 ## History of .fun
 
-The .fun registry was delegated on 2016-11-30 and became broadly available shortly after, joining the wave of word-based gTLDs from the mid-2010s. It is operated by **Radix**, which also runs several other well-known new gTLDs, including `.online`, `.store`, `.tech`, `.site`, and `.space`. That portfolio matters: Radix is an established operator with broad registrar distribution, so .fun is widely sold rather than a niche extension.
+The .fun registry was delegated on 2016-11-30 and became broadly available shortly after, joining the wave of word-based gTLDs from the mid-2010s. It is operated by **Radix**, which also runs several other well-known new gTLDs, including `.online`, `.store`, `.tech`, `.site`, and `.space`. That portfolio matters: Radix is an established operator with broad [registrar](/en/glossary/registrar/) distribution, so .fun is widely sold rather than a niche extension.
 
 Adoption has been steady. Figures cited on the [.fun Wikipedia entry](https://en.wikipedia.org/wiki/.fun) put registrations in the hundreds of thousands, and the extension got a major boost from Web3 — pump.fun became one of the most-trafficked applications on Solana and made the suffix instantly recognizable to a crypto-native audience.
 
@@ -95,9 +95,9 @@ Pick `.com` when broad, conventional trust is the priority and you can find (or 
 
 **Registration restrictions: open to all.** There are no eligibility requirements for .fun — you do not need a credential, a local presence, or community membership. Individuals, businesses, and projects anywhere in the world can register on a first-come, first-served basis.
 
-The only limits are standard registry and ICANN reservations: two-character labels are initially reserved under ICANN policy, certain names are held back as premium or for registry operations, and names protected for bodies such as the International Olympic Committee and the Red Cross/Red Crescent movement are unavailable. Trademark holders can use ICANN's Trademark Clearinghouse sunrise and claims mechanisms for protection.
+The only limits are standard registry and ICANN reservations: two-character labels are initially reserved under ICANN policy, certain names are held back as premium or for registry operations, and names protected for bodies such as the International Olympic Committee and the Red Cross/Red Crescent movement are unavailable. [Trademark](/en/glossary/trademark/) holders can use ICANN's [Trademark Clearinghouse](/en/glossary/tmch/) sunrise and claims mechanisms for protection.
 
-On the administrative side, the registry supports **DNSSEC**, most registrars offer **WHOIS privacy** to keep personal contact data off public records, and standard gTLD transfer, renewal, and redemption-grace processes apply. Because .fun is a gTLD rather than a ccTLD, its rules are governed by an ICANN contract — see the [.fun ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/fun) for the authoritative policy source.
+On the administrative side, the registry supports **[DNSSEC](/en/glossary/dnssec/)**, most registrars offer **[WHOIS privacy](/en/glossary/whois-privacy/)** to keep personal contact data off public records, and standard gTLD transfer, renewal, and redemption-grace processes apply. Because .fun is a gTLD rather than a ccTLD, its rules are governed by an ICANN contract — see the [.fun ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/fun) for the authoritative policy source.
 
 ## .fun pricing and value
 
@@ -119,7 +119,7 @@ The strongest `.fun` names treat the suffix as part of the phrase rather than a 
 2. Choose the `.fun` name that fits your brand and budget.
 3. Complete registration and configure DNS.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional **Web3 tokenization** — mint your domain as an NFT so ownership and transfer are as simple as moving a token. Start at [Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, fast DNS, and optional **[Web3](/en/glossary/web3/) tokenization** — mint your domain as an NFT so ownership and transfer are as simple as moving a token. Start at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

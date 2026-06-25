@@ -13,7 +13,7 @@ keywords: [".alipay domains", ".alipay TLD", "top-level domain", "what is .alipa
 
 The **.alipay** extension is a specialized **generic [Top-Level Domain (gTLD)](/en/glossary/tld/)** that falls under the category of a "Brand TLD." Unlike standard open domains like [.com](/en/tld/com/) or [.io](/en/tld/io/), the .alipay TLD was applied for and secured by the **Alibaba Group** specifically for its digital payment arm, Alipay.
 
-Introduced during [ICANN](/en/glossary/icann/)'s massive expansion of the [domain name system](/en/glossary/dns/), the primary purpose of .alipay is to provide a dedicated, secure, and authenticated namespace for one of the world's largest mobile payment platforms. By operating its own registry, Alipay ensures that every domain ending in .alipay is legitimate, significantly reducing the risk of phishing and fraud.
+Introduced during [ICANN](/en/glossary/icann/)'s massive expansion of the [domain name system](/en/glossary/dns/), the primary purpose of .alipay is to provide a dedicated, secure, and authenticated namespace for one of the world's largest mobile payment platforms. By operating its own [registry](/en/glossary/registry/), Alipay ensures that every domain ending in .alipay is legitimate, significantly reducing the risk of [phishing](/en/glossary/phishing/) and fraud.
 
 Currently, this TLD serves as a hallmark of digital trust within the fintech sector, representing a move away from shared public spaces toward fortified digital ecosystems.
 
@@ -32,7 +32,7 @@ Because .alipay is a **closed registry** (a "dot brand"), it is currently used e
 
 As a restricted Brand TLD, the "notable entities" are strictly internal to the parent company. However, the ecosystem covers massive sectors of the digital economy:
 
-1.  **Ant Group (Alipay):** The primary registrant and operator, using the extension for core financial services infrastructure.
+1.  **Ant Group (Alipay):** The primary [registrant](/en/glossary/registrant/) and operator, using the extension for core financial services infrastructure.
 2.  **Alibaba Group Affiliates:** Various e-commerce and logistics branches that integrate directly with the Alipay payment system may utilize subdomains within this namespace.
 3.  **Cross-Border Payment Solutions:** The domain is utilized to streamline international gateways, ensuring merchants worldwide recognize the authenticity of the payment interface.
 
@@ -43,18 +43,18 @@ As a restricted Brand TLD, the "notable entities" are strictly internal to the p
 While general registration is restricted, understanding the *value* of the .alipay TLD is essential for domain investors and developers looking at the future of **fintech** and **[Web3](/en/glossary/web3/)** naming conventions. The advantages demonstrated by .alipay include:
 
 *   **Unparalleled Trust:** In the financial sector, trust is the currency. A Brand TLD signals maximum security credentials.
-*   **Zero Phishing Risk:** Because only the brand owner can create domains, users are protected from "typosquatting" attacks (e.g., `alipay-login.com`).
+*   **Zero Phishing Risk:** Because only the brand owner can create domains, users are protected from "[typosquatting](/en/glossary/typosquatting/)" attacks (e.g., `alipay-login.com`).
 *   **SEO Authority:** Search engines increasingly recognize Brand TLDs as authoritative sources for queries related to that specific company.
 *   **Short & Memorable Names:** Without public competition, the registry can utilize premium keywords (like `pay.alipay` or `help.alipay`) without worrying about availability.
 
 ## **Register Your .alipay Domain at Namefi**
 
-Are you looking to secure high-value domains for your fintech startup, blockchain project, or investment portfolio?
+Are you looking to secure high-value domains for your fintech startup, [blockchain](/en/glossary/blockchain/) project, or investment portfolio?
 
 While **.alipay** is currently a restricted Brand TLD reserved for the Alibaba Group, the landscape of domains is evolving rapidly. At **Namefi**, we specialize in identifying and securing the most valuable digital assets available, including premium fintech domains and Web3-ready identities.
 
 **Why use Namefi?**
-*   **Seamless Web3 Integration:** We allow you to mint your DNS domains as NFTs, giving you instant liquidity and easy transferability.
+*   **Seamless Web3 Integration:** We allow you to mint your DNS domains as NFTs, giving you instant [liquidity](/en/glossary/domain-liquidity/) and easy transferability.
 *   **ICANN Accredited:** We bridge the gap between traditional Web2 compliance and Web3 innovation.
 *   **Future-Ready:** Be the first to know if restricted TLDs open up or if new, relevant financial TLDs hit the market.
 

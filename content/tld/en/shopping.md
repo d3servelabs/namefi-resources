@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. The .shopping registry supports DNSSEC for cryptographic DNS integrity and internationalized domain names. WHOIS privacy is offered by most registrars, including Namefi, so personal contact details are not published in public records.'
 ---
 
-If you sell products online, your web address is the first thing a customer reads. The **.shopping** domain is a generic Top-Level Domain (gTLD) built for exactly that moment: it names the activity of browsing and buying, and tells visitors and search engines what your site is for before they click. This page explains what .shopping is, who operates it, how it stacks up against the better-known .shop and .store, and what to weigh before you register.
+If you sell products online, your web address is the first thing a customer reads. The **.shopping** domain is a [generic Top-Level Domain](/en/glossary/gtld/) (gTLD) built for exactly that moment: it names the activity of browsing and buying, and tells visitors and search engines what your site is for before they click. This page explains what .shopping is, who operates it, how it stacks up against the better-known .shop and .store, and what to weigh before you register.
 
 It is a descriptive, open extension — no credentials, no membership, no local presence required — which makes it a practical option for retailers, marketplaces, and content sites whose ideal .com is long gone.
 
@@ -38,7 +38,7 @@ It is a descriptive, open extension — no credentials, no membership, no local 
 
 ## What is .shopping?
 
-The **.shopping** TLD is a generic, non-sponsored extension delegated to the internet's root zone in 2016 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/), the expansion that introduced hundreds of word-based suffixes alongside the legacy set of .com, .net, and .org. Where .com is a catch-all for any commercial entity, .shopping is semantic: the label itself describes a purpose, so a name like `vintage.shopping` or `compare.shopping` communicates intent at a glance.
+The **.shopping** TLD is a generic, non-sponsored extension delegated to the internet's [root zone](/en/glossary/root-zone/) in 2016 as part of [ICANN's New gTLD Program](https://newgtlds.icann.org/), the expansion that introduced hundreds of word-based suffixes alongside the legacy set of .com, [.net](/en/tld/net/), and [.org](/en/tld/org/). Where .com is a catch-all for any commercial entity, .shopping is semantic: the label itself describes a purpose, so a name like `vintage.shopping` or `compare.shopping` communicates intent at a glance.
 
 Because .shopping is a generic gTLD rather than a country-code TLD, it is not tied to any nation and is not geo-targeted. Google's guidance is explicit that its systems treat new gTLDs the same as any other generic extension — a .shopping site is not pinned to a region and competes globally on the usual signals of content and links. You can confirm the suffix's root-zone status on its [IANA delegation record](https://www.iana.org/domains/root/db/shopping.html).
 
@@ -94,7 +94,7 @@ All three retail extensions are open and SEO-equivalent, so the decision is most
 
 **Registration restrictions: open to all.** There are no eligibility requirements for .shopping — no credential, trademark, community membership, or local-presence rule. Any person or organization, anywhere, can register an available name on a first-come, first-served basis.
 
-Standard generic-gTLD policies apply. A Trademark Clearinghouse–backed sunrise period ran at launch to let trademark holders claim matching names first; that window has long closed, so today registration is ordinary general availability. Names follow the usual DNS rules (broadly 1–63 characters, letters, digits, and hyphens, with IDN support for non-Latin scripts). The registry supports DNSSEC, and registrars including Namefi offer WHOIS privacy. Renewal, transfer, and redemption-grace handling follow ICANN's standard gTLD lifecycle. For the authoritative rules, see the [ICANN Registry Agreement for .shopping](https://www.icann.org/en/registry-agreements/details/shopping).
+Standard generic-gTLD policies apply. A [Trademark Clearinghouse](/en/glossary/tmch/)–backed sunrise period ran at launch to let trademark holders claim matching names first; that window has long closed, so today registration is ordinary general availability. Names follow the usual DNS rules (broadly 1–63 characters, letters, digits, and hyphens, with IDN support for non-Latin scripts). The registry supports DNSSEC, and registrars including Namefi offer [WHOIS privacy](/en/glossary/whois-privacy/). Renewal, transfer, and redemption-grace handling follow ICANN's standard gTLD lifecycle. For the authoritative rules, see the [ICANN Registry Agreement for .shopping](https://www.icann.org/en/registry-agreements/details/shopping).
 
 ## .shopping pricing and value
 
@@ -102,7 +102,7 @@ Standard generic-gTLD policies apply. A Trademark Clearinghouse–backed sunrise
 
 - **Premium names.** The registry classifies certain short or high-demand keyword domains as premium, which carry higher standing registration and renewal fees set by the registry, not the registrar.
 - **First-year vs. renewal.** Introductory or promotional first-year pricing does not predict the renewal rate — always check the standard renewal price before you commit to a name you plan to keep.
-- **What drives cost.** Registry wholesale pricing, premium tiering, and registrar margin together determine the final price; resale value depends on the quality and brevity of the keyword.
+- **What drives cost.** Registry [wholesale pricing](/en/glossary/wholesale-pricing/), premium tiering, and registrar margin together determine the final price; resale value depends on the quality and brevity of the keyword.
 
 We do not quote live prices here; check Namefi's current rate at registration time.
 
@@ -120,7 +120,7 @@ The word "shopping" is the asset — lean into it. The strongest .shopping names
 2. **Choose** the best match — and consider grabbing the .shop or .store version to protect your brand.
 3. **Register** and complete checkout with transparent pricing and no hidden add-ons.
 
-As an ICANN-accredited registrar, Namefi gives you straightforward DNS management and fast propagation, plus the option to tokenize your domain as an on-chain asset for true Web3 ownership and easy transfer. [Register your .shopping domain at Namefi](https://namefi.io) and put a clear, transactional address to work.
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi gives you straightforward DNS management and fast propagation, plus the option to [tokenize](/en/glossary/tokenize/) your domain as an on-chain asset for true [Web3](/en/glossary/web3/) ownership and easy transfer. [Register your .shopping domain at Namefi](https://namefi.io) and put a clear, transactional address to work.
 
 ## Frequently asked questions
 

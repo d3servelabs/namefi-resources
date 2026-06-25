@@ -20,9 +20,9 @@ faqs:
     answer: 'The .legal registry is operated by Binky Moon, LLC, a subsidiary of Identity Digital (formerly Donuts), under an ICANN registry agreement. The TLD was delegated to the DNS root zone in November 2014.'
 ---
 
-The **.legal** domain is a new generic top-level domain (new gTLD) built around one of the most recognizable words in professional services. For law firms, legal-tech companies, and anyone publishing legal information, it offers a web address that announces its subject before a visitor reads a single line. If the matching `.com` is taken or generic, a `.legal` name is one of the most direct ways to claim a descriptive, on-brand presence.
+The **.legal** domain is a [new generic top-level domain](/en/glossary/new-gtld/) (new gTLD) built around one of the most recognizable words in professional services. For law firms, legal-tech companies, and anyone publishing legal information, it offers a web address that announces its subject before a visitor reads a single line. If the matching `.com` is taken or generic, a `.legal` name is one of the most direct ways to claim a descriptive, on-brand presence.
 
-The single most important fact to understand about `.legal` is that it is **open**. Despite its professional meaning, the registry does **not** check bar membership, licensure, or any credential — so it is positioned very differently from the credential-gated `.law` extension. That openness is its biggest strength and its biggest caveat, and this page covers both.
+The single most important fact to understand about `.legal` is that it is **open**. Despite its professional meaning, the [registry](/en/glossary/registry/) does **not** check bar membership, licensure, or any credential — so it is positioned very differently from the credential-gated `.law` extension. That openness is its biggest strength and its biggest caveat, and this page covers both.
 
 ## .legal at a glance
 
@@ -40,7 +40,7 @@ The single most important fact to understand about `.legal` is that it is **open
 
 "Legal" is a plain-English adjective that frames anything it touches as relating to the law. As a domain suffix it instantly signals that a site deals with legal matters — advice, services, compliance, documents, or information — which is exactly why it appeals to a profession that depends on clear communication.
 
-`.legal` is a **generic** new gTLD, not a country-code extension. According to its [IANA root-zone entry](https://www.iana.org/domains/root/db/legal.html), it was delegated to the DNS root in November 2014 as part of ICANN's New gTLD Program. Because it is generic rather than geographic, Google does not tie it to any single country. As [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) explains, many newer gTLDs are treated as generic and can be geo-targeted in Search Console just like a `.com`. In practice a `.legal` site can rank globally and target whatever market you choose.
+`.legal` is a **generic** new gTLD, not a country-code extension. According to its [IANA root-zone entry](https://www.iana.org/domains/root/db/legal.html), it was delegated to the DNS [root zone](/en/glossary/root-zone/) in November 2014 as part of ICANN's New gTLD Program. Because it is generic rather than geographic, Google does not tie it to any single country. As [Google Search Central](https://developers.google.com/search/docs/specialty/international/managing-multi-regional-sites) explains, many newer gTLDs are treated as generic and can be geo-targeted in Search Console just like a `.com`. In practice a `.legal` site can rank globally and target whatever market you choose.
 
 ## History of .legal
 
@@ -92,9 +92,9 @@ Choose `.com` when broad familiarity and resale value matter most and your brand
 
 ## Who can register a .legal domain?
 
-**Registration restrictions: open to all.** `.legal` is an unrestricted, open generic TLD. There is **no requirement** to be a licensed attorney, bar member, accredited firm, or legal professional of any kind — any individual or organization may register one. This is the defining difference from `.law`, which is **credential-gated** and verifies that the registrant is part of the legal sector before the name is activated. With `.legal`, no such verification takes place: the suffix communicates a legal focus, but it is an open marketplace, not a vetted registry. The same openness distinguishes it from gated professional suffixes such as `.cpa`, which requires accounting credentials.
+**Registration restrictions: open to all.** `.legal` is an unrestricted, open generic TLD. There is **no requirement** to be a licensed attorney, bar member, accredited firm, or legal professional of any kind — any individual or organization may register one. This is the defining difference from `.law`, which is **credential-gated** and verifies that the [registrant](/en/glossary/registrant/) is part of the legal sector before the name is activated. With `.legal`, no such verification takes place: the suffix communicates a legal focus, but it is an open [marketplace](/en/glossary/marketplace/), not a vetted registry. The same openness distinguishes it from gated professional suffixes such as `.cpa`, which requires accounting credentials.
 
-Standard new gTLD rules apply. Registrations went through the usual sunrise and trademark-claims phases at launch via ICANN's Trademark Clearinghouse, giving trademark holders a window to secure matching names first. Names follow normal length and IDN conventions, and the registry supports **DNSSEC**. WHOIS privacy, transfer, renewal, and the redemption grace period follow the operator's and your registrar's policies. The authoritative rules live in the [ICANN .legal Registry Agreement](https://www.icann.org/en/registry-agreements/details/legal), held by Binky Moon, LLC, with operator-level policy published by [Identity Digital](https://www.identity.digital/).
+Standard new gTLD rules apply. Registrations went through the usual sunrise and [trademark](/en/glossary/trademark/)-claims phases at launch via ICANN's [Trademark Clearinghouse](/en/glossary/tmch/), giving trademark holders a window to secure matching names first. Names follow normal length and IDN conventions, and the registry supports **DNSSEC**. [WHOIS privacy](/en/glossary/whois-privacy/), transfer, renewal, and the redemption [grace period](/en/glossary/grace-period/) follow the operator's and your registrar's policies. The authoritative rules live in the [ICANN .legal Registry Agreement](https://www.icann.org/en/registry-agreements/details/legal), held by Binky Moon, LLC, with operator-level policy published by [Identity Digital](https://www.identity.digital/).
 
 ## .legal pricing and value
 
@@ -125,7 +125,7 @@ That said, deliverability depends far more on how you configure email than on th
 2. **Choose** the exact `.legal` name that fits your firm, product, or practice area.
 3. **Register** and configure DNS — Namefi provides fast, reliable DNS management out of the box.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, and it also supports Web3 tokenization, so you can optionally tokenize your domain for easier transfer and on-chain liquidity. [Search and register your .legal domain at Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, and it also supports [Web3](/en/glossary/web3/) tokenization, so you can optionally [tokenize](/en/glossary/tokenize/) your domain for easier transfer and [on-chain](/en/glossary/on-chain/) [liquidity](/en/glossary/domain-liquidity/). [Search and register your .legal domain at Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

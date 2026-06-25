@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As a generic gTLD, .app supports standard registrar WHOIS privacy or proxy services, and most personal registrant data is already redacted in public WHOIS output under current ICANN policy.'
 ---
 
-The **.app** domain is a generic top-level domain (gTLD) built for the one corner of the web everyone now lives in: software. Operated by Google Registry, it carries a clear, universally understood meaning, and it is best known for one defining rule: every .app site must be served over HTTPS. If you build mobile apps, web apps, or developer tools, a `.app` address tells visitors exactly what they are about to open before they click.
+The **.app** domain is a [generic top-level domain](/en/glossary/gtld/) (gTLD) built for the one corner of the web everyone now lives in: software. Operated by Google Registry, it carries a clear, universally understood meaning, and it is best known for one defining rule: every .app site must be served over HTTPS. If you build mobile apps, web apps, or developer tools, a `.app` address tells visitors exactly what they are about to open before they click.
 
 This page covers what makes .app different from generic extensions like .com, who actually uses it, how Google treats it for ranking, the registration rules, and how to register one at Namefi.
 
@@ -40,15 +40,15 @@ This page covers what makes .app different from generic extensions like .com, wh
 
 The word "app" needs no translation: it is global shorthand for an application, whether on a phone, in a browser, or on a desktop. That makes .app one of the most self-explanatory new gTLDs available. A name like `getproduct.app` communicates "functional software" instantly, in a way `getproduct.com` cannot.
 
-.app is a generic gTLD, not a country-code TLD, so it carries no geographic association. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), new gTLDs like .app are treated as generic by default and are not tied to any single country for geo-targeting — your audience can be global. You can confirm its delegation and operator details on the [IANA root-zone entry for .app](https://www.iana.org/domains/root/db/app.html).
+.app is a generic gTLD, not a country-code TLD, so it carries no geographic association. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), [new gTLD](/en/glossary/new-gtld/)s like .app are treated as generic by default and are not tied to any single country for geo-targeting — your audience can be global. You can confirm its delegation and operator details on the [IANA root-zone entry for .app](https://www.iana.org/domains/root/db/app.html).
 
 The defining technical fact about .app is its security model. It was the first TLD made available for general registration with **HTTPS enforced for every site**, baked in at the registry level via the HSTS preload list. We cover the practical consequences in the eligibility and reputation sections below.
 
 ## History of .app
 
-Charleston Road Registry Inc. applied for .app during ICANN's new-gTLD program. The string was contested by multiple applicants, and Google won it at a 2015 ICANN auction with a reported bid of around $25 million — at the time one of the highest amounts paid for a new gTLD. IANA records show the delegation completed in 2015.
+Charleston Road Registry Inc. applied for .app during ICANN's new-gTLD program. The string was contested by multiple applicants, and Google won it at a 2015 ICANN [auction](/en/glossary/auction/) with a reported bid of around $25 million — at the time one of the highest amounts paid for a new gTLD. [IANA](/en/glossary/iana/) records show the delegation completed in 2015.
 
-The namespace opened to the public in 2018. After a sunrise period for trademark holders and an early-access window with descending fees, .app reached general availability in May 2018, when anyone could register an available name at standard pricing. Google marketed it as the first TLD with built-in HTTPS security to launch for general registration. It has since become a recognizable home for app-related products, though it remains niche relative to legacy extensions.
+The namespace opened to the public in 2018. After a sunrise period for [trademark](/en/glossary/trademark/) holders and an early-access window with descending fees, .app reached general availability in May 2018, when anyone could register an available name at standard pricing. Google marketed it as the first TLD with built-in HTTPS security to launch for general registration. It has since become a recognizable home for app-related products, though it remains niche relative to legacy extensions.
 
 ## How people use .app
 
@@ -97,7 +97,7 @@ Choose **.app** when the thing you are publishing is itself an application and y
 
 **Registration restrictions: open to all.** .app is an unrestricted generic gTLD. There is no credential, membership, industry, or local-presence requirement — anyone, anywhere can register an available name. The only real condition is technical: because the zone is on the HSTS preload list, a .app domain will not display in a browser until you attach a valid HTTPS certificate. You can buy and own the name without one, but it will not resolve as a website.
 
-Standard gTLD policies apply otherwise: a sunrise phase ran at launch for trademark holders, IDN names and DNSSEC are supported, and registrars offer WHOIS privacy or proxy services (with most personal data already redacted under current ICANN policy). Transfers, renewals, and the redemption grace period follow ordinary gTLD rules. The authoritative governing document is the [ICANN Registry Agreement for .app](https://www.icann.org/en/registry-agreements/details/app); launch and policy details are published by [Google Registry](https://www.registry.google/).
+Standard gTLD policies apply otherwise: a sunrise phase ran at launch for trademark holders, IDN names and DNSSEC are supported, and registrars offer [WHOIS privacy](/en/glossary/whois-privacy/) or proxy services (with most personal data already redacted under current ICANN policy). Transfers, renewals, and the redemption [grace period](/en/glossary/grace-period/) follow ordinary gTLD rules. The authoritative governing document is the [ICANN Registry Agreement for .app](https://www.icann.org/en/registry-agreements/details/app); launch and policy details are published by [Google Registry](https://www.registry.google/).
 
 ## .app pricing and value
 
@@ -119,7 +119,7 @@ The cleanest .app names are ones where "app" completes the brand, not just trail
 2. Choose the name and confirm whether it is a standard or premium registration.
 3. Register, then point the domain at your host and ensure HTTPS is configured so the site loads.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, and it bridges Web2 and Web3: you can register a .app and optionally mint it as an on-chain asset (an NFT) for easier transfer and trading, while keeping full ICANN-compliant ownership and fast DNS. To understand tokenization first, see [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains)
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, and it bridges Web2 and [Web3](/en/glossary/web3/): you can register a .app and optionally mint it as an on-chain asset (an NFT) for easier transfer and trading, while keeping full ICANN-compliant ownership and fast DNS. To understand tokenization first, see [What Are Tokenized Domains?](/en/blog/what-are-tokenized-domains)
 
 [Register your .app domain at Namefi](https://namefi.io)
 

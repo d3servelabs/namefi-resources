@@ -19,14 +19,14 @@ As a Brand TLD, .airbus represents the pinnacle of corporate digital identity. I
 
 Because .airbus is a restricted Brand TLD, its usage is strategic and focused on corporate governance, product differentiation, and partner ecosystems. It is not generally used by the public for personal blogs, but rather serves as a digital infrastructure tool for the aviation industry.
 
-*   **Digital Authenticity:** The primary use is to guarantee trust. When a user sees a URL ending in .airbus, they know immediately it is an official channel, mitigating the risk of phishing or cybersquatting.
+*   **Digital Authenticity:** The primary use is to guarantee trust. When a user sees a URL ending in .airbus, they know immediately it is an official channel, mitigating the risk of [phishing](/en/glossary/phishing/) or [cybersquatting](/en/glossary/cybersquatting/).
 *   **Product Showcases:** It is used to highlight specific aircraft families or technological innovations within the Airbus group.
 *   **Internal Infrastructure:** Large corporations use proprietary TLDs for employee portals, cloud systems, and internal developer tools, streamlining their network architecture.
 *   **Partner Portals:** Secure gateways for suppliers and airlines to interact with Airbus logistics and data services.
 
 ## **Notable Entities Using .airbus**
 
-As this is a closed registry, the "notable entities" are exclusively divisions and initiatives within the Airbus ecosystem. However, this strategy highlights how major players utilize domain names to assert authority.
+As this is a closed [registry](/en/glossary/registry/), the "notable entities" are exclusively divisions and initiatives within the Airbus ecosystem. However, this strategy highlights how major players utilize domain names to assert authority.
 
 *   **Airbus Official Registry:** The core management of the domain infrastructure is handled by Airbus's IT and legal divisions to ensure total compliance.
 *   **nic.airbus:** Often used as the network information center for the TLD, providing technical details about the namespace.
@@ -49,8 +49,8 @@ Are you looking to secure a high-value domain name that offers the same level of
 
 At Namefi, we are revolutionizing domain registration by bridging the gap between Web2 and [Web3](/en/glossary/web3/).
 
-*   **Seamless Integration:** We are an ICANN-accredited [registrar](/en/glossary/registrar/) that allows you to manage traditional domains with the ease of blockchain technology.
-*   **Tokenized Domains:** When you register a domain with Namefi, you can mint it as an [NFT](/en/glossary/nft/), giving you true ownership, easy transferability, and liquidity for domain investing.
+*   **Seamless Integration:** We are an ICANN-accredited [registrar](/en/glossary/registrar/) that allows you to manage traditional domains with the ease of [blockchain](/en/glossary/blockchain/) technology.
+*   **Tokenized Domains:** When you register a domain with Namefi, you can mint it as an [NFT](/en/glossary/nft/), giving you true ownership, easy transferability, and [liquidity](/en/glossary/domain-liquidity/) for domain investing.
 *   **Bulk Search & AI Tools:** Use our advanced tools to find the perfect alternative to .airbus for your aerospace, travel, or tech business.
 
 Don't let your perfect name fly away. Secure your digital real estate today with the most innovative registrar in the market.

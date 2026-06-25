@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. Because .academy has no special verification rules, most registrars offer WHOIS privacy on it like any standard gTLD, and the registry supports DNSSEC for cryptographic protection of DNS responses.'
 ---
 
-The **.academy domain** is one of the clearest "does-what-it-says" extensions on the internet: the suffix itself names the product. For anyone building a school, an online course, a coaching brand, or a corporate training hub, a .academy address tells visitors what they're getting before they read a word of copy. It is an open generic top-level domain, so the only real question is whether the name fits your brand — not whether you qualify.
+The **.academy domain** is one of the clearest "does-what-it-says" extensions on the internet: the suffix itself names the product. For anyone building a school, an online course, a coaching brand, or a corporate training hub, a .academy address tells visitors what they're getting before they read a word of copy. It is an open [generic top-level domain](/en/glossary/gtld/), so the only real question is whether the name fits your brand — not whether you qualify.
 
 This page covers what .academy is, who runs it, how people use it, the registration rules, pricing dynamics, and how it compares to the alternatives.
 
@@ -46,7 +46,7 @@ You can confirm the delegation in the [IANA root zone database entry for .academ
 
 The .academy string was delegated on 2013-12-12 and entered general availability in March 2014, an early mover in the new gTLD program. It launched under Donuts Inc., the registry that pioneered a large portfolio of descriptive "vertical" extensions. Through consolidation that portfolio became Identity Digital, and the registry-of-record for .academy today is **Binky Moon, LLC**, the Identity Digital entity holding many of its dot-word agreements.
 
-Adoption has tracked the boom in online education and the creator economy. As independent instructors, bootcamps, and corporate L&D teams moved learning online, an exact-match .academy name became an easy way to stake out a category-defining address without paying premium aftermarket prices for a crowded .com. There are no verified blockbuster public sales to report for this suffix — its strength is everyday utility, not speculative resale.
+Adoption has tracked the boom in online education and the creator economy. As independent instructors, bootcamps, and corporate L&D teams moved learning online, an exact-match .academy name became an easy way to stake out a category-defining address without paying premium [aftermarket](/en/glossary/aftermarket/) prices for a crowded .com. There are no verified blockbuster public sales to report for this suffix — its strength is everyday utility, not speculative resale.
 
 ## How people use .academy
 
@@ -56,7 +56,7 @@ Real, common niches for .academy include:
 - **Coding, data, and trading bootcamps** — intensive skills programs that want "academy" to signal rigor.
 - **Sports and performance academies** — football, tennis, martial-arts, and esports programs, a genuinely heavy user category here.
 - **Arts and music schools** — dance studios, language schools, and conservatory-style brands.
-- **Corporate training portals** — internal "Acme Academy" learning hubs, often on a subdomain.
+- **Corporate training portals** — internal "Acme Academy" learning hubs, often on a [subdomain](/en/glossary/subdomain/).
 - **Certification and professional development** — short-course providers and upskilling brands.
 
 **Who it's not ideal for:** general retailers, [e-commerce stores](/en/tld/shop), SaaS products with no teaching angle, or any brand where "academy" misrepresents what you sell. If learning is not central to your identity, a neutral suffix will serve you better.
@@ -94,7 +94,7 @@ Pick **.academy** when teaching is your core identity and you want the address t
 
 **Registration restrictions: open to all.** The .academy domain has no eligibility requirements — no accreditation, no proof that you run a real school, no residency or local-presence rule, and no community membership. Anyone, individual or organization, can register an available name on a first-come, first-served basis. This is unlike credential-gated suffixes such as `.cpa` or `.law`, where verification is mandatory.
 
-As a new gTLD, .academy is governed by an [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements?first-letter=a) rather than a country-manager policy, and it ran the standard sunrise and trademark-claims processes (via the Trademark Clearinghouse) at launch. Administratively, the registry supports **DNSSEC**, most registrars offer **WHOIS privacy** on it, and transfers, renewals, and the redemption-grace period follow normal ICANN gTLD lifecycle rules. Label-length and IDN support are standard and registrar-dependent.
+As a new gTLD, .academy is governed by an [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements?first-letter=a) rather than a country-manager policy, and it ran the standard sunrise and [trademark](/en/glossary/trademark/)-claims processes (via the [Trademark Clearinghouse](/en/glossary/tmch/)) at launch. Administratively, the registry supports **DNSSEC**, most registrars offer **WHOIS privacy** on it, and transfers, renewals, and the redemption-grace period follow normal ICANN gTLD lifecycle rules. Label-length and IDN support are standard and registrar-dependent.
 
 ## .academy pricing and value
 
@@ -143,7 +143,7 @@ It suits schools, online course creators, coding and trading bootcamps, sports a
 
 ### Who operates the .academy registry?
 
-The .academy registry is operated by Binky Moon, LLC, a subsidiary in the Identity Digital portfolio (formerly Donuts). It was delegated in the root zone in December 2013 and reached general availability in March 2014 as part of ICANN's new gTLD program.
+The .academy registry is operated by Binky Moon, LLC, a subsidiary in the Identity Digital portfolio (formerly Donuts). It was delegated in the [root zone](/en/glossary/root-zone/) in December 2013 and reached general availability in March 2014 as part of ICANN's new gTLD program.
 
 ### Does .academy support WHOIS privacy and DNSSEC?
 

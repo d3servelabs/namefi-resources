@@ -36,7 +36,7 @@ If your ideal **.net** name is available, you get a legacy extension that signal
 
 ## What is .net?
 
-**.net** is a generic top-level domain, not a country-code one, which means it is not tied to any nation and search engines treat it as global rather than geo-targeted. The IANA root-zone entry lists its registration date as 1985-01-01 and its sponsoring organization as VeriSign Global Registry Services — you can confirm both on the official [IANA delegation record for .net](https://www.iana.org/domains/root/db/net.html).
+**.net** is a [generic top-level domain](/en/glossary/gtld/), not a country-code one, which means it is not tied to any nation and search engines treat it as global rather than geo-targeted. The [IANA](/en/glossary/iana/) root-zone entry lists its registration date as 1985-01-01 and its sponsoring organization as VeriSign Global Registry Services — you can confirm both on the official [IANA delegation record for .net](https://www.iana.org/domains/root/db/net.html).
 
 The "net" label comes from "network." In the early internet it was intended for the entities that operated the network — internet service providers, network hardware vendors, and infrastructure providers. That original intent was never strictly enforced, and the registry has been effectively open to anyone for decades.
 
@@ -91,15 +91,15 @@ Pick **.com** when you can get it and you want zero friction. Pick **.net** when
 
 ## Things to consider
 
-- **.com is still the default.** Users may type .com out of habit, so you may want to own the .com too — or at least be ready to lose some direct type-in traffic.
+- **.com is still the default.** Users may type .com out of habit, so you may want to own the .com too — or at least be ready to lose some direct [type-in traffic](/en/glossary/type-in-traffic/).
 - **Word association is mild but real.** "Network" can feel slightly off for, say, a bakery or a clothing brand.
 - **Confusion risk with the bigger sibling.** Because .com is so dominant, some visitors mentally autocorrect a .net brand to .com; pick a name that is unambiguous when spoken.
 
 ## Who can register a .net domain?
 
-**Registration restrictions: open to all.** .net is an unrestricted generic gTLD. There is no membership, credential, profession, or local-presence requirement — anyone in any country can register an available .net name. This is the same open model as .com, and it differs sharply from gated suffixes such as .law or .cpa.
+**Registration restrictions: open to all.** .net is an unrestricted generic gTLD. There is no membership, credential, profession, or local-presence requirement — anyone in any country can register an available .net name. This is the same open model as .com, and it differs sharply from gated suffixes such as [.law](/en/tld/law/) or [.cpa](/en/tld/cpa/).
 
-Standard rules still apply. Names must meet ICANN syntax requirements (length and allowed characters), and internationalized domain names are supported. Trademark holders had the usual sunrise opportunities historically, and ordinary registrar policies for renewal, transfer, and the redemption grace period apply after expiry. **DNSSEC** is supported at the registry, and WHOIS privacy is available through most registrars, including Namefi. For the authoritative rules, see the [ICANN registry agreement for .net](https://www.icann.org/en/registry-agreements/details/net).
+Standard rules still apply. Names must meet ICANN syntax requirements (length and allowed characters), and internationalized domain names are supported. [Trademark](/en/glossary/trademark/) holders had the usual sunrise opportunities historically, and ordinary registrar policies for renewal, transfer, and the redemption [grace period](/en/glossary/grace-period/) apply after expiry. **DNSSEC** is supported at the registry, and [WHOIS privacy](/en/glossary/whois-privacy/) is available through most registrars, including Namefi. For the authoritative rules, see the [ICANN registry agreement for .net](https://www.icann.org/en/registry-agreements/details/net).
 
 ## .net pricing and value
 
@@ -107,7 +107,7 @@ Standard rules still apply. Names must meet ICANN syntax requirements (length an
 
 - **First-year and renewal pricing can differ.** Introductory rates are common, and the renewal price is what matters long term — always check it before you commit.
 - **Premium names exist.** Short, dictionary, or high-demand .net names may be reserved as registry premiums and priced above the standard rate.
-- **The aftermarket sets value for the best names.** Because .net has been around since 1985, the most desirable short names were registered long ago and trade on the secondary market.
+- **The [aftermarket](/en/glossary/aftermarket/) sets value for the best names.** Because .net has been around since 1985, the most desirable short names were registered long ago and trade on the secondary market.
 
 We do not list live prices here; check current registration and renewal pricing at checkout.
 
@@ -130,7 +130,7 @@ In practice, deliverability for a .net domain depends far more on your sending h
 2. **Choose** the .net result (and any companion extensions you want to protect).
 3. **Register** and complete checkout.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing and fast DNS, and it also lets you tokenize eligible domains as on-chain assets for easier transfer and Web3 use. To learn more about that option, see [what are tokenized domains](/en/blog/what-are-tokenized-domains).
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also lets you [tokenize](/en/glossary/tokenize/) eligible domains as [on-chain](/en/glossary/on-chain/) assets for easier transfer and [Web3](/en/glossary/web3/) use. To learn more about that option, see [what are tokenized domains](/en/blog/what-are-tokenized-domains).
 
 ## Frequently asked questions
 

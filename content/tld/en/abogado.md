@@ -20,7 +20,7 @@ faqs:
     answer: 'Generally no. Because eligibility depends on verified identity, the registry requires the qualified lawyer or legal institution name to appear in the registration record, so standard WHOIS/RDAP privacy redaction is typically not available.'
 ---
 
-The **.abogado** domain is one of the few top-level domains where you cannot simply buy a name — you have to prove you are a lawyer first. "Abogado" is the Spanish word for *lawyer* or *attorney*, and the extension is the Spanish-language sibling of restricted legal TLDs like [.law](/en/tld/law) and [.attorney](/en/tld/attorney). For verified attorneys and firms serving Hispanic and Latin American clients, a .abogado address is a built-in trust badge: the suffix itself certifies that a real legal regulator has the registrant on record.
+The **.abogado** domain is one of the few top-level domains where you cannot simply buy a name — you have to prove you are a lawyer first. "Abogado" is the Spanish word for *lawyer* or *attorney*, and the extension is the Spanish-language sibling of restricted legal TLDs like [.law](/en/tld/law) and [.attorney](/en/tld/attorney). For verified attorneys and firms serving Hispanic and Latin American clients, a .abogado address is a built-in trust badge: the suffix itself certifies that a real legal regulator has the [registrant](/en/glossary/registrant/) on record.
 
 If you are not a licensed legal professional, you will not be able to register one — and that scarcity is exactly what gives the namespace its credibility. This page covers who runs .abogado, who qualifies, how it compares to other legal extensions, and what to weigh before registering.
 
@@ -38,15 +38,15 @@ If you are not a licensed legal professional, you will not be able to register o
 
 ## What is .abogado?
 
-.abogado is a **generic top-level domain (gTLD)** introduced under [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program). The word means "lawyer" in Spanish, which positions the extension squarely at the Spanish-speaking legal market — the United States' large Hispanic population, Spain, Mexico, and the rest of Latin America.
+.abogado is a **[generic top-level domain](/en/glossary/gtld/) (gTLD)** introduced under [ICANN's New gTLD Program](https://newgtlds.icann.org/en/about/program). The word means "lawyer" in Spanish, which positions the extension squarely at the Spanish-speaking legal market — the United States' large Hispanic population, Spain, Mexico, and the rest of Latin America.
 
-Technically, .abogado is delegated in the root zone to **Registry Services, LLC** (GoDaddy Registry), as recorded in the [IANA root database entry for .abogado](https://www.iana.org/domains/root/db/abogado.html). It runs alongside the English-language [.law](/en/tld/law) namespace under a shared verified-legal registry policy.
+Technically, .abogado is delegated in the [root zone](/en/glossary/root-zone/) to **Registry Services, LLC** (GoDaddy Registry), as recorded in the [IANA root database entry for .abogado](https://www.iana.org/domains/root/db/abogado.html). It runs alongside the English-language [.law](/en/tld/law) namespace under a shared verified-legal registry policy.
 
-Because it is a generic gTLD rather than a ccTLD, Google does **not** geo-target .abogado to any single country. Per [Google Search Central's guidance on generic TLDs](https://developers.google.com/search/docs/specialty/international/locale-specific-urls), the suffix is treated as global, and you signal geographic intent through content, language, and hreflang — not the extension.
+Because it is a generic gTLD rather than a [ccTLD](/en/glossary/cctld/), Google does **not** geo-target .abogado to any single country. Per [Google Search Central's guidance on generic TLDs](https://developers.google.com/search/docs/specialty/international/locale-specific-urls), the suffix is treated as global, and you signal geographic intent through content, language, and hreflang — not the extension.
 
 ## History of .abogado
 
-.abogado was delegated in **2014**, in the first wave of New gTLD Program launches. It was originally delegated to Top Level Domain Holdings Limited, the registry group later known as Minds + Machines, and the delegation subsequently transferred to **Registry Services, LLC (GoDaddy Registry)**, which holds the IANA record today.
+.abogado was delegated in **2014**, in the first wave of New gTLD Program launches. It was originally delegated to Top Level Domain Holdings Limited, the registry group later known as Minds + Machines, and the delegation subsequently transferred to **Registry Services, LLC (GoDaddy Registry)**, which holds the [IANA](/en/glossary/iana/) record today.
 
 From the outset, .abogado was positioned as a **restricted, verified** namespace rather than an open land-rush extension. That deliberate gating kept registration volumes modest compared with open gTLDs, but it preserved the suffix's core promise: every .abogado holder is a checked, licensed practitioner. Adoption has been steady within the Spanish-speaking legal niche rather than explosive.
 
@@ -87,14 +87,14 @@ Choose **.abogado** when your clients search and think in Spanish and you want a
 - **You must qualify.** Non-lawyers are excluded entirely, and verification adds a step and lead time before your name goes live.
 - **Niche recognition.** Outside Spanish-speaking audiences, fewer users instantly recognize the extension; pair it with a mainstream domain.
 - **Pricing.** Verified legal TLDs typically sit in a higher price band than open gTLDs (see below).
-- **Privacy limits.** Identity verification means your verified name appears in the record; WHOIS/RDAP privacy is usually unavailable.
+- **Privacy limits.** Identity verification means your verified name appears in the record; [WHOIS](/en/glossary/whois/)/RDAP privacy is usually unavailable.
 - **Renewal eligibility.** You generally must remain a licensed practitioner; lapsed eligibility can affect renewal.
 
 ## Who can register a .abogado domain?
 
 **Registration restrictions: credential-gated.** .abogado is **not** open to the general public. Eligibility is limited to a **Qualified Lawyer** — an individual verified as a currently licensed legal professional in an appropriately regulated jurisdiction — or an **authorized legal institution** such as a law firm, law school, court of law, or bar association. The registry engages an **independent third party** to verify each applicant against public records kept by legal regulators before a name is activated.
 
-This mirrors the verification model of [.law](/en/tld/law); both run under the same verified-legal registry program (see the [Join.Law eligibility and FAQ pages](https://www.join.law/faq.htm) for the operator's current policy). Practically, you should expect to supply documentation of your bar admission or institutional status, and the registrant name on record must match your verified legal identity. Standard sunrise/trademark protections applied at launch, names follow normal length and Latin-script rules, DNSSEC is supported, and — because identity is the point — WHOIS/RDAP privacy redaction is typically not offered. Because eligibility can be tied to continued licensure, keep your credentials current to avoid renewal complications.
+This mirrors the verification model of [.law](/en/tld/law); both run under the same verified-legal registry program (see the [Join.Law eligibility and FAQ pages](https://www.join.law/faq.htm) for the operator's current policy). Practically, you should expect to supply documentation of your bar admission or institutional status, and the registrant name on record must match your verified legal identity. Standard sunrise/[trademark](/en/glossary/trademark/) protections applied at launch, names follow normal length and Latin-script rules, DNSSEC is supported, and — because identity is the point — WHOIS/RDAP privacy redaction is typically not offered. Because eligibility can be tied to continued licensure, keep your credentials current to avoid renewal complications.
 
 ## .abogado pricing and value
 
@@ -114,7 +114,7 @@ The strongest .abogado names read as a natural Spanish phrase: `apellido.abogado
 2. **Choose** the exact name or keyword-descriptive variant that fits your practice.
 3. **Complete verification** of your status as a qualified lawyer or legal institution, then register.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing and fast DNS, and it also supports Web3 tokenization — so once registered, you can manage your portfolio and optionally tokenize domains for easier transfer and liquidity on-chain.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also supports Web3 tokenization — so once registered, you can manage your portfolio and optionally tokenize domains for easier transfer and [liquidity](/en/glossary/domain-liquidity/) on-chain.
 
 ## Frequently asked questions
 

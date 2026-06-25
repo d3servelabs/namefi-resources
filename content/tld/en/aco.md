@@ -11,11 +11,11 @@ keywords: ['.aco domains', '.aco TLD', 'top-level domain .aco', 'what is .aco', 
 
 ## **What is .aco?**
 
-In the expanding universe of the internet, choosing the right digital identity is crucial. The **.aco** extension is a unique [Top-Level Domain](/en/glossary/tld/) (TLD) that has garnered attention for its brevity and specific branding utility. Originally delegated as a [generic Top-Level Domain (gTLD)](https://www.icann.org/resources/pages/tlds-2012-02-25-en) under [ICANN](/en/glossary/icann/)’s New gTLD Program, .aco represents a modern class of domains designed to move beyond the saturated [.com](/en/tld/com/) market.
+In the expanding universe of the internet, choosing the right digital identity is crucial. The **.aco** extension is a unique [Top-Level Domain](/en/glossary/tld/) (TLD) that has garnered attention for its brevity and specific branding utility. Originally delegated as a [generic Top-Level Domain (gTLD)](https://www.icann.org/resources/pages/tlds-2012-02-25-en) under [ICANN](/en/glossary/icann/)’s [New gTLD](/en/glossary/new-gtld/) Program, .aco represents a modern class of domains designed to move beyond the saturated [.com](/en/tld/com/) market.
 
 While .aco has roots as a "Brand TLD" managed by ACO Severin Ahlmann GmbH & Co. KG, the interest in this extension has grown within the domain investing and development communities due to its versatility. Acronyms drive the internet, and "ACO" is a powerful one. It is widely recognized in the medical field standing for **Accountable Care Organization**, and in the corporate world as a shorthand for "A Company" or "Associated Company."
 
-As we move toward a more decentralized web, TLDs like .aco are also being evaluated for their potential in **[tokenized domain](/en/blog/what-are-tokenized-domains/)** portfolios, where brevity and distinctiveness translate to higher value on the blockchain.
+As we move toward a more decentralized web, TLDs like .aco are also being evaluated for their potential in **[tokenized domain](/en/blog/what-are-tokenized-domains/)** portfolios, where brevity and distinctiveness translate to higher value on the [blockchain](/en/glossary/blockchain/).
 
 ## **How People Are Using .aco**
 
@@ -28,7 +28,7 @@ The .aco domain offers specific utility for distinct market sectors. Because it 
 
 ## **Notable Entities Using .aco**
 
-While .aco started as a restricted brand registry, its footprint serves as a case study for high-level corporate infrastructure.
+While .aco started as a restricted brand [registry](/en/glossary/registry/), its footprint serves as a case study for high-level corporate infrastructure.
 
 *   **ACO Group:** As the registry operator, the ACO Group (a world leader in drainage technology) utilizes the domain for its global digital infrastructure, ensuring distinct brand protection and security.
 *   **Healthcare Alliances (Hypothetical/Emerging):** Various healthcare alliances utilize the "ACO" acronym in their sub-branding. While many still sit on [.org](/en/tld/org/) or .com, the migration to exact-match TLDs is a growing trend in the industry.
@@ -50,7 +50,7 @@ Ready to secure a domain that is short, professional, and industry-relevant? Whe
 
 At **Namefi**, we make [domain ownership](/en/glossary/domain-ownership/) seamless. We are not just a [registrar](/en/glossary/registrar/); we are your bridge to the future of digital identity.
 *   **ICANN Accredited:** Safe, secure, and compliant registration.
-*   **Web3 Integration:** Mint your domain as an [NFT](/en/glossary/nft/), manage it via your [wallet](/en/glossary/wallet/), and enjoy the liquidity of the blockchain market.
+*   **Web3 Integration:** Mint your domain as an [NFT](/en/glossary/nft/), manage it via your [wallet](/en/glossary/wallet/), and enjoy the [liquidity](/en/glossary/domain-liquidity/) of the blockchain market.
 *   **Instant Setup:** seamless DNS management and easy transfers.
 
 Don't let the perfect name slip away. Secure your digital identity today.

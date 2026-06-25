@@ -40,7 +40,7 @@ If you are a solo attorney, a boutique firm, or a legal professional building a 
 
 ## What is .esq?
 
-.esq is a **new generic top-level domain (gTLD)** delegated to the internet's root zone during ICANN's 2012 new-gTLD expansion. The string is derived from "Esquire," a courtesy title that, in modern American usage, is appended to the names of practicing attorneys (for example, "Jane Smith, Esq."). The suffix therefore carries an immediate, profession-specific meaning that a generic extension like .com cannot.
+.esq is a **new [generic top-level domain](/en/glossary/gtld/) (gTLD)** delegated to the internet's [root zone](/en/glossary/root-zone/) during ICANN's 2012 new-gTLD expansion. The string is derived from "Esquire," a courtesy title that, in modern American usage, is appended to the names of practicing attorneys (for example, "Jane Smith, Esq."). The suffix therefore carries an immediate, profession-specific meaning that a generic extension like .com cannot.
 
 Because it is a generic gTLD and not a country-code domain, Google does not tie .esq to any country or region. As Google's own [Search Central documentation](https://developers.google.com/search/docs/specialty/international/locale-adaptive-pages) explains, generic new gTLDs are treated like any other generic domain for ranking purposes and are not geo-targeted by default. A .esq site can rank globally; the suffix neither helps nor hurts on its own.
 
@@ -78,7 +78,7 @@ These early adopters share a pattern: individual attorneys using `firstname.esq`
 | .law | Legal profession | No — bar verification required | Medium |
 | .attorney | Legal profession | Yes | Long |
 
-Pick **.com** for the most universally trusted, broadest-reach address when the legal angle is secondary. Pick **.law** when verified credentialing matters most and you want a registry that confirms every registrant is a licensed legal professional. Pick **.esq** for the shortest, most recognizable legal suffix when you value brevity and personal branding over gatekept exclusivity.
+Pick **.com** for the most universally trusted, broadest-reach address when the legal angle is secondary. Pick [**.law**](/en/tld/law/) when verified credentialing matters most and you want a registry that confirms every [registrant](/en/glossary/registrant/) is a licensed legal professional. Pick **.esq** for the shortest, most recognizable legal suffix when you value brevity and personal branding over gatekept exclusivity.
 
 ## Why choose .esq?
 
@@ -96,9 +96,9 @@ Pick **.com** for the most universally trusted, broadest-reach address when the 
 
 ## Who can register a .esq domain?
 
-**Registration restrictions: open to all.** This is the single most misunderstood fact about .esq. Although it is named after an attorney's honorific and marketed to "lawyers and law firms," the registry **does not gate registration behind any credential check**. Anyone can register an available .esq domain on a first-come, first-served basis, with no requirement to prove bar membership, a law degree, or any legal qualification. It differs sharply from [.law](https://www.icann.org/en/registry-agreements/details/law), where the registry verifies registrants are licensed legal professionals, and from .cpa, restricted to accountants.
+**Registration restrictions: open to all.** This is the single most misunderstood fact about .esq. Although it is named after an attorney's honorific and marketed to "lawyers and law firms," the registry **does not gate registration behind any credential check**. Anyone can register an available .esq domain on a first-come, first-served basis, with no requirement to prove bar membership, a law degree, or any legal qualification. It differs sharply from [.law](/en/tld/law/), where the registry verifies registrants are licensed legal professionals, and from [.cpa](/en/tld/cpa/), restricted to accountants.
 
-The governing rules live in the ICANN [Registry Agreement for .esq](https://www.icann.org/en/registry-agreements/details/esq) with Charleston Road Registry. Standard new-gTLD policies apply: a Sunrise period gave trademark holders first claim, and Google Registry honors all of ICANN's Rights Protection Mechanisms, including a Trademark Claims service that alerts brand owners to matching registrations. Domain strings follow the usual rules — 1 to 63 characters, letters, numbers, and hyphens (no hyphens in the third and fourth positions), with internationalized domain names (IDNs) supported. DNSSEC is available, and WHOIS privacy is typically offered by registrars subject to the registry's policies.
+The governing rules live in the ICANN [Registry Agreement for .esq](https://www.icann.org/en/registry-agreements/details/esq) with Charleston Road Registry. Standard new-gTLD policies apply: a Sunrise period gave [trademark](/en/glossary/trademark/) holders first claim, and Google Registry honors all of ICANN's Rights Protection Mechanisms, including a Trademark Claims service that alerts brand owners to matching registrations. Domain strings follow the usual rules — 1 to 63 characters, letters, numbers, and hyphens (no hyphens in the third and fourth positions), with internationalized domain names (IDNs) supported. DNSSEC is available, and [WHOIS privacy](/en/glossary/whois-privacy/) is typically offered by registrars subject to the registry's policies.
 
 One technical rule is non-negotiable: the **entire .esq zone is on the HSTS preload list**, so HTTPS is mandatory for every site, with no opt-out.
 
@@ -126,7 +126,7 @@ The natural .esq domain hack is your **own name as the second-level label**: `ja
 2. **Choose** an available .esq string — shorter, name-based labels work best.
 3. **Register** and configure your DNS, remembering that a valid TLS certificate is required because .esq forces HTTPS.
 
-Namefi is an ICANN-accredited registrar with transparent pricing and fast DNS, and it also supports Web3 tokenization if you later want to hold your domain as an on-chain asset. Start your search at [Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it also supports [Web3](/en/glossary/web3/) tokenization if you later want to hold your domain as an on-chain asset. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

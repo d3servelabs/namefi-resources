@@ -94,7 +94,7 @@ Choose **.com** when you want the universally expected default and it is availab
 
 **Registration restrictions: open to all.** .info is an unrestricted generic TLD — there are no eligibility requirements whatsoever. You do not need a license, a registered business, membership in any community, or a presence in any country. If a name is available, you can register it.
 
-The full registry rules are governed by .info's [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/info) and the operator's published policies at [Identity Digital](https://www.identity.digital/). On the administrative side: the registry supports **internationalized domain names (IDNs)** across multiple scripts; **DNSSEC** has been available since the .info zone was signed in 2010; and standard gTLD lifecycle behavior applies, including WHOIS-privacy availability through registrars, an auto-renew grace period, and a redemption-grace window after expiry. Trademark holders can rely on the standard ICANN rights-protection mechanisms (such as the Trademark Clearinghouse) that apply across gTLDs.
+The full registry rules are governed by .info's [ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/info) and the operator's published policies at [Identity Digital](https://www.identity.digital/). On the administrative side: the registry supports **internationalized domain names (IDNs)** across multiple scripts; **DNSSEC** has been available since the .info zone was signed in 2010; and standard gTLD lifecycle behavior applies, including WHOIS-privacy availability through registrars, an auto-renew grace period, and a redemption-grace window after expiry. [Trademark](/en/glossary/trademark/) holders can rely on the standard ICANN rights-protection mechanisms (such as the [Trademark Clearinghouse](/en/glossary/tmch/)) that apply across gTLDs.
 
 ## .info pricing and value
 
@@ -113,10 +113,10 @@ This is manageable, not disqualifying. Mitigation is the same disciplined sendin
 ## How to register a .info domain at Namefi
 
 1. **Search** your desired name and confirm the .info is available.
-2. **Choose** the exact name (and consider grabbing the matching .com to protect type-in traffic).
+2. **Choose** the exact name (and consider grabbing the matching .com to protect [type-in traffic](/en/glossary/type-in-traffic/)).
 3. **Register** and configure DNS.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing and fast DNS management, and it can additionally tokenize your domain for Web3 ownership and easier transfer. Note your renewal rate at checkout and enable DNSSEC if your setup supports it.
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS management, and it can additionally [tokenize](/en/glossary/tokenize/) your domain for [Web3](/en/glossary/web3/) ownership and easier transfer. Note your renewal rate at checkout and enable DNSSEC if your setup supports it.
 
 ## Frequently asked questions
 

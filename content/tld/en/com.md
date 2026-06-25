@@ -18,7 +18,7 @@ faqs:
     answer: 'With over 160 million .com names registered, the supply of short, dictionary, and exact-match brand names is largely exhausted. Most premium .com names are already owned, so many are only available on the secondary market.'
 ---
 
-The **.com domain** is the closest thing the internet has to a default. Short for "commercial," it is the original generic top-level domain that, through decades of ubiquity, became the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.
+The **.com domain** is the closest thing the internet has to a default. Short for "commercial," it is the original [generic top-level domain](/en/glossary/gtld/) that, through decades of ubiquity, became the suffix people assume when they hear a website name. For most businesses and brands, **what is .com** really comes down to one thing: it is the address users expect, type, and trust without thinking.
 
 If you are launching a company, protecting a brand, or building anything meant for a mainstream or global audience, .com remains the benchmark every other extension is measured against. This page covers where it came from, who can register one, how pricing works, and how it stacks up against the closest alternatives.
 
@@ -44,7 +44,7 @@ The "com" label points back to a commercial purpose, but that restriction was ne
 
 .com was delegated on **January 1, 1985**, making it one of the founding TLDs of the modern Domain Name System. The very first .com ever registered was **symbolics.com**, recorded on March 15, 1985 by the computer manufacturer Symbolics — a domain that still resolves today and is often cited as a piece of internet history.
 
-The commercial web boom of the late 1990s turned .com into the default storefront of the internet. Verisign now reports more than **160 million .com registrations** worldwide, by far the largest single TLD. That scale has also made the .com aftermarket the most active in the industry: category-defining names such as voice.com and cars.com have changed hands for eight-figure sums, among the highest publicly reported domain sales on record.
+The commercial web boom of the late 1990s turned .com into the default storefront of the internet. Verisign now reports more than **160 million .com registrations** worldwide, by far the largest single TLD. That scale has also made the .com [aftermarket](/en/glossary/aftermarket/) the most active in the industry: category-defining names such as voice.com and cars.com have changed hands for eight-figure sums, among the highest publicly reported domain sales on record.
 
 ## How people use .com
 
@@ -97,7 +97,7 @@ Pick **.com** as the universal default whenever you can find or afford the name.
 
 **Registration restrictions: open to all.** Anyone in the world can register a .com domain. There is **no local-presence requirement**, no business-eligibility check, and no credential or community gate. The original "commercial" intent has never been enforced, so individuals, nonprofits, and companies register .com names freely.
 
-Names run **1–63 characters**, allow letters, digits, and hyphens (not at the start or end), and **internationalized domain names (IDNs)** are supported for non-Latin scripts. The registry supports **DNSSEC**, and standard transfer, renewal, and redemption-grace-period behavior applies, including the usual auth-code transfer process and a 60-day post-transfer lock. Because .com is an ICANN gTLD, the binding rules are set out in the [.com Registry Agreement between ICANN and Verisign](https://www.icann.org/en/registry-agreements/details/com), and trademark holders can use ICANN dispute mechanisms such as the [UDRP](/en/blog/what-is-udrp/) against infringing registrations.
+Names run **1–63 characters**, allow letters, digits, and hyphens (not at the start or end), and **internationalized domain names (IDNs)** are supported for non-Latin scripts. The registry supports **DNSSEC**, and standard transfer, renewal, and redemption-grace-period behavior applies, including the usual auth-code transfer process and a 60-day post-transfer lock. Because .com is an ICANN gTLD, the binding rules are set out in the [.com Registry Agreement between ICANN and Verisign](https://www.icann.org/en/registry-agreements/details/com), and [trademark](/en/glossary/trademark/) holders can use ICANN dispute mechanisms such as the [UDRP](/en/blog/what-is-udrp/) against infringing registrations.
 
 ## .com pricing and value
 
@@ -125,7 +125,7 @@ Watch two pitfalls. First, avoid awkward hyphenation or number substitutions tha
 2. **Choose** the .com result (and any alternates worth securing).
 3. **Register** and configure DNS.
 
-As an [ICANN-accredited](/en/glossary/icann/) [registrar](/en/glossary/registrar/), Namefi bridges Web2 and Web3: transparent pricing, fast [DNS](/en/glossary/dns/) management, and the option to hold your name as a [tokenized domain](/en/blog/what-are-tokenized-domains/) for verifiable [domain ownership](/en/glossary/domain-ownership/) and easy transferability. You can even [tokenize an existing .com](/en/blog/how-to-tokenize-your-com/) you already own. Get started at [Namefi](https://namefi.io).
+As an [ICANN-accredited](/en/glossary/icann/) [registrar](/en/glossary/registrar/), Namefi bridges Web2 and [Web3](/en/glossary/web3/): transparent pricing, fast [DNS](/en/glossary/dns/) management, and the option to hold your name as a [tokenized domain](/en/blog/what-are-tokenized-domains/) for verifiable [domain ownership](/en/glossary/domain-ownership/) and easy transferability. You can even [tokenize an existing .com](/en/blog/how-to-tokenize-your-com/) you already own. Get started at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 
@@ -147,7 +147,7 @@ With over 160 million .com names registered, the supply of short, dictionary, an
 
 ### Does .com support WHOIS privacy and DNSSEC?
 
-DNSSEC is supported by the .com registry. WHOIS privacy availability depends on your registrar; most modern registrars, including Namefi, offer privacy protection on eligible registrations.
+DNSSEC is supported by the .com registry. [WHOIS privacy](/en/glossary/whois-privacy/) availability depends on your registrar; most modern registrars, including Namefi, offer privacy protection on eligible registrations.
 
 ## Related resources
 

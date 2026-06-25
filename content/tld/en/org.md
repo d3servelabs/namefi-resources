@@ -59,7 +59,7 @@ Real, specific niches where .org is the convention rather than the exception:
 - **Foundations and standards bodies** — protocol foundations, working groups, and consortia.
 - **Encyclopedias, archives, and public-knowledge resources.**
 - **Advocacy, civic-tech, and community groups.**
-- **Web3 DAOs and protocol foundations** that want to emphasize community ownership over corporate identity.
+- **[Web3](/en/glossary/web3/) DAOs and protocol foundations** that want to emphasize community ownership over corporate identity.
 
 **Who it's not ideal for:** a purely commercial product, an e-commerce store, or a consumer SaaS brand is usually better served by .com or a niche gTLD — visitors instinctively type `.com`, and a storefront on .org can feel slightly off-genre.
 
@@ -103,7 +103,7 @@ Pick **.org** when your identity is a cause, community, or open project; pick **
 
 **Registration restrictions: open to all.** The .org extension is unrestricted. You do not need to be a registered nonprofit, hold any credential, or prove a local presence — any individual, company, project, or DAO can register any available .org name. PIR explicitly states that anyone may register and use .org domains.
 
-Standard gTLD rules apply: names follow ASCII or internationalized-domain-name (IDN) conventions, the registry honored its **sunrise and trademark-claims** processes during launches, and registrants are covered by ICANN's Uniform Domain-Name Dispute-Resolution Policy (UDRP). On the administrative side, **DNSSEC is supported**, most registrars offer **WHOIS privacy**, and .org follows the standard transfer, renewal, and redemption-grace-period lifecycle. The authoritative source for the rules is the [.org ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/org) and the registry operator's site at [pir.org](https://pir.org/).
+Standard gTLD rules apply: names follow ASCII or internationalized-domain-name (IDN) conventions, the registry honored its **sunrise and [trademark](/en/glossary/trademark/)-claims** processes during launches, and registrants are covered by ICANN's [Uniform Domain-Name Dispute-Resolution Policy](/en/glossary/udrp/) (UDRP). On the administrative side, **DNSSEC is supported**, most registrars offer **[WHOIS privacy](/en/glossary/whois-privacy/)**, and .org follows the standard transfer, renewal, and redemption-grace-period lifecycle. The authoritative source for the rules is the [.org ICANN Registry Agreement](https://www.icann.org/en/registry-agreements/details/org) and the registry operator's site at [pir.org](https://pir.org/).
 
 ## .org pricing and value
 
@@ -111,7 +111,7 @@ The .org extension sits in the standard "legacy gTLD" pricing band — typically
 
 - **Premium names exist.** Short, dictionary, or high-demand .org strings can carry elevated registry-set premium pricing.
 - **First-year vs renewal differ.** Promotional first-year rates do not always match the renewal rate, so look at the long-term cost, not just year one.
-- **Aftermarket value.** Clean one-word and brandable .org names hold real resale value, increasingly so as DAOs and foundations seek "clean" community identities. (For the mechanics, see [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own).)
+- **[Aftermarket](/en/glossary/aftermarket/) value.** Clean one-word and brandable .org names hold real resale value, increasingly so as DAOs and foundations seek "clean" community identities. (For the mechanics, see [how to sell a domain name you own](/en/blog/how-to-sell-a-domain-name-you-own).)
 
 We don't quote live numbers here — registrar pricing changes — but expect .org to be predictable and mainstream.
 
@@ -132,9 +132,9 @@ That said, deliverability is earned at the domain level, not the suffix level. T
 
 1. Search your desired name on [Namefi](https://namefi.io) to check .org availability.
 2. Choose your exact `.org` string (and consider grabbing the matching .com defensively).
-3. Complete registration with an ICANN-accredited registrar and configure DNS.
+3. Complete registration with an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) and configure DNS.
 
-Namefi combines a traditional ICANN-accredited registrar experience with Web3 tokenization, so you can register a .org with transparent pricing and fast DNS — and optionally tokenize it for on-chain ownership and transfer. **[Register your .org domain at Namefi](https://namefi.io).**
+Namefi combines a traditional ICANN-accredited registrar experience with Web3 tokenization, so you can register a .org with transparent pricing and fast DNS — and optionally [tokenize](/en/glossary/tokenize/) it for [on-chain](/en/glossary/on-chain/) ownership and transfer. **[Register your .org domain at Namefi](https://namefi.io).**
 
 ## Frequently asked questions
 

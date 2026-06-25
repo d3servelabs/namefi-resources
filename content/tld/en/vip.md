@@ -38,7 +38,7 @@ If you are building a members area, a loyalty program, a premium brand, or a fan
 
 ## What is .vip?
 
-`.vip` is a generic top-level domain whose label is the universally understood acronym for "Very Important Person." Unlike traditional extensions such as `.com` or [`.net`](/en/tld/net), which carry no specific meaning, `.vip` arrives pre-loaded with connotations of status, inclusion, and premium treatment.
+`.vip` is a [generic top-level domain](/en/glossary/gtld/) whose label is the universally understood acronym for "Very Important Person." Unlike traditional extensions such as `.com` or [`.net`](/en/tld/net), which carry no specific meaning, `.vip` arrives pre-loaded with connotations of status, inclusion, and premium treatment.
 
 Critically, it is a **generic** gTLD, not a country-code domain. That means Google does not geo-target it to any single country. As the [IANA root database entry for .vip](https://www.iana.org/domains/root/db/vip.html) confirms, the suffix is delegated globally, so a `.vip` site competes worldwide rather than being algorithmically tied to one region. For search engines it behaves like any other generic suffix: the extension itself is neutral, and ranking comes from content, links, and site quality.
 
@@ -54,7 +54,7 @@ A defining feature of `.vip`'s story is its strength in Asia, and China in parti
 - **Premium and luxury brands** — boutique labels, concierge services, and high-end agencies that want a name reading as upscale.
 - **Fan clubs and personal brands** — creators, athletes, and musicians hosting communities or premium content.
 - **Events and access** — ticketing and backstage pages for galas, launches, and private webinars.
-- **Web3 and token-gated communities** — whitelist gateways and exclusive groups, where "VIP" already signals tiered access.
+- **[Web3](/en/glossary/web3/) and token-gated communities** — whitelist gateways and exclusive groups, where "VIP" already signals tiered access.
 
 **Who it's not ideal for:** organizations whose audience expects a conventional corporate `.com`, public-sector or non-commercial bodies, or anyone whose brand is undercut rather than helped by a status-laden word. If "VIP" doesn't describe your offer, a neutral suffix is the safer pick.
 
@@ -89,9 +89,9 @@ Choose `.com` when you simply need the most trusted, default address and the nam
 
 ## Who can register a .vip domain?
 
-**Registration restrictions: open to all.** `.vip` is an unrestricted new gTLD. There is no credential, membership, profession, or local-presence requirement — individuals, companies, creators, and communities can all register, subject only to availability and the registry's standard rules (which apply equally to every registrant).
+**Registration restrictions: open to all.** `.vip` is an unrestricted new gTLD. There is no credential, membership, profession, or local-presence requirement — individuals, companies, creators, and communities can all register, subject only to availability and the registry's standard rules (which apply equally to every [registrant](/en/glossary/registrant/)).
 
-Standard new-gTLD safeguards apply: trademark holders could protect their marks during the launch sunrise period, and the Trademark Clearinghouse continues to support rights protection. The namespace supports internationalized domain names (IDNs), DNSSEC for DNS integrity, and WHOIS privacy through most registrars including Namefi. Transfer, renewal, and redemption-grace handling follow ICANN's standard generic-TLD lifecycle. Because `.vip` is a gTLD governed by an ICANN Registry Agreement, its authoritative rules live in the registry operator's published policies at [nic.vip](https://nic.vip/) and the [IANA root database entry for .vip](https://www.iana.org/domains/root/db/vip.html), rather than in any country-specific policy.
+Standard new-gTLD safeguards apply: [trademark](/en/glossary/trademark/) holders could protect their marks during the launch sunrise period, and the [Trademark Clearinghouse](/en/glossary/tmch/) continues to support rights protection. The namespace supports internationalized domain names (IDNs), DNSSEC for DNS integrity, and [WHOIS privacy](/en/glossary/whois-privacy/) through most registrars including Namefi. Transfer, renewal, and redemption-grace handling follow ICANN's standard generic-TLD lifecycle. Because `.vip` is a gTLD governed by an ICANN Registry Agreement, its authoritative rules live in the registry operator's published policies at [nic.vip](https://nic.vip/) and the [IANA root database entry for .vip](https://www.iana.org/domains/root/db/vip.html), rather than in any country-specific policy.
 
 ## .vip pricing and value
 
@@ -111,7 +111,7 @@ To keep deliverability and trust high on a `.vip` domain: configure SPF, DKIM, a
 
 1. **Search** your desired name at [Namefi](https://namefi.io) to check `.vip` availability.
 2. **Choose** the exact label, reviewing both first-year and renewal terms.
-3. **Register** and configure DNS — and optionally tokenize the domain on-chain.
+3. **Register** and configure DNS — and optionally [tokenize](/en/glossary/tokenize/) the domain [on-chain](/en/glossary/on-chain/).
 
 As an [ICANN-accredited registrar](/en/glossary/registrar), Namefi offers transparent pricing, fast DNS, [DNSSEC](/en/glossary/dnssec), and the option to mint your domain as an [NFT](/en/glossary/nft) so it can be transferred or traded as a [tokenized domain](/en/blog/what-are-tokenized-domains). Get started at [Namefi](https://namefi.io).
 

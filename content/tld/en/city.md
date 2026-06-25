@@ -44,7 +44,7 @@ Because it is a generic suffix rather than a country-code domain, **Google does 
 
 ## History of .city
 
-The `.city` string was delegated to the root zone in **2014**, part of the wave of new gTLDs that operator Donuts Inc. applied for and launched in that era. Donuts rebranded as **Identity Digital** in 2022 and, following an earlier consolidation, holds its original gTLD contracts under the subsidiary **Binky Moon, LLC** — the entity now named as the registry operator for `.city`.
+The `.city` string was delegated to the [root zone](/en/glossary/root-zone/) in **2014**, part of the wave of new gTLDs that operator Donuts Inc. applied for and launched in that era. Donuts rebranded as **Identity Digital** in 2022 and, following an earlier consolidation, holds its original gTLD contracts under the subsidiary **Binky Moon, LLC** — the entity now named as the registry operator for `.city`.
 
 Identity Digital runs one of the largest portfolios of descriptive gTLDs in the industry, which means `.city` sits alongside a consistent family of place- and topic-based extensions (`.town`, `.land`, `.house`, `.realty`, and many more) sharing the same registry policies and infrastructure. The suffix has settled into a steady niche role: it is not a mass-market giant like `.com`, but it has durable, ongoing use for local and community-oriented sites.
 
@@ -93,7 +93,7 @@ Pick `.com` when it is available and the brand is global. Choose `.city` when yo
 
 **Registration restrictions: open to all.** `.city` has **no eligibility requirements** — you do not need to be a municipality, a resident, a local business, or hold any credential. Anyone worldwide can register an available `.city` name on a first-come, first-served basis, subject to the registry's standard acceptable-use rules. Unlike credential-gated suffixes such as `.law` or `.cpa`, there is no verification step.
 
-Standard practices apply: the registry's sunrise period for trademark holders closed long ago, IDN (internationalized domain name) registrations are supported, and the namespace follows normal length rules. On the administrative side, `.city` supports **DNSSEC**, most registrars offer **WHOIS privacy**, and the suffix follows the usual gTLD lifecycle for transfers, renewals, and the redemption grace period after expiry. The authoritative rules — including the Acceptable Use Policy and reserved-names policy — are published on [Identity Digital's policies page](https://www.identity.digital/policies/).
+Standard practices apply: the registry's sunrise period for [trademark](/en/glossary/trademark/) holders closed long ago, IDN (internationalized domain name) registrations are supported, and the namespace follows normal length rules. On the administrative side, `.city` supports **DNSSEC**, most registrars offer **[WHOIS privacy](/en/glossary/whois-privacy/)**, and the suffix follows the usual gTLD lifecycle for transfers, renewals, and the redemption grace period after expiry. The authoritative rules — including the Acceptable Use Policy and reserved-names policy — are published on [Identity Digital's policies page](https://www.identity.digital/policies/).
 
 ## .city pricing and value
 
@@ -124,7 +124,7 @@ The practical fix is the same as for any domain: **build sender reputation delib
 2. **Choose** the exact string that best fits your brand or place.
 3. **Register** it and configure DNS.
 
-Namefi is an ICANN-accredited registrar with transparent pricing and fast DNS, and it can additionally **tokenize** your domain as a Web3 asset for on-chain ownership and transfer. Start your search at [Namefi](https://namefi.io).
+Namefi is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing and fast DNS, and it can additionally **[tokenize](/en/glossary/tokenize/)** your domain as a [Web3](/en/glossary/web3/) asset for on-chain ownership and transfer. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

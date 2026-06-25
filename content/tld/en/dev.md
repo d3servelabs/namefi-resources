@@ -18,7 +18,7 @@ faqs:
     answer: 'Software engineers, dev tooling and API products, open-source projects, technical blogs, and engineering teams who want a name that instantly signals a developer audience and enforces a secure, HTTPS-only setup by default.'
 ---
 
-The **.dev** domain is a generic top-level domain run by Google's registry and aimed squarely at the developer world: engineers, dev-tooling companies, open-source maintainers, and technical teams. What makes it unusual among extensions is a hard security rule baked into the TLD itself: every .dev site must be served over HTTPS, with no exceptions. That single property has shaped who adopts it and how.
+The **.dev** domain is a [generic top-level domain](/en/glossary/gtld/) run by Google's registry and aimed squarely at the developer world: engineers, dev-tooling companies, open-source maintainers, and technical teams. What makes it unusual among extensions is a hard security rule baked into the TLD itself: every .dev site must be served over HTTPS, with no exceptions. That single property has shaped who adopts it and how.
 
 If you want a name that reads as "this is built by and for developers" and that forces a secure setup from day one, **.dev** is one of the few extensions purpose-built for that signal.
 
@@ -37,13 +37,13 @@ If you want a name that reads as "this is built by and for developers" and that 
 
 ## What is .dev?
 
-.dev is a new gTLD operated by **Charleston Road Registry Inc.**, the registry subsidiary Google uses to run its domain extensions. Its meaning is self-explanatory in software circles — "dev" is universal shorthand for *developer* and *development* — which is why it needs no localization to land with a technical audience worldwide.
+.dev is a [new gTLD](/en/glossary/new-gtld/) operated by **Charleston Road Registry Inc.**, the registry subsidiary Google uses to run its domain extensions. Its meaning is self-explanatory in software circles — "dev" is universal shorthand for *developer* and *development* — which is why it needs no localization to land with a technical audience worldwide.
 
 Because .dev is generic rather than country-coded, search engines treat it as geo-neutral. Per [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites), generic TLDs carry no built-in geographic association, so a .dev site is not pinned to any single market and ranks on its own merits. You can confirm the registry details on the [IANA root-zone entry for .dev](https://www.iana.org/domains/root/db/dev.html).
 
 ## History of .dev
 
-Google applied for .dev during ICANN's new-gTLD program and the string was delegated to the root zone in 2014. For years afterward Google held it internally — many engineers knew `*.dev` as a popular local development hostname (e.g. `myapp.dev` on a developer's own machine), which created a quirky collision later on.
+Google applied for .dev during ICANN's new-gTLD program and the string was delegated to the [root zone](/en/glossary/root-zone/) in 2014. For years afterward Google held it internally — many engineers knew `*.dev` as a popular local development hostname (e.g. `myapp.dev` on a developer's own machine), which created a quirky collision later on.
 
 When Google moved to open .dev to the public, it placed the entire TLD on the browser **HSTS preload list** before launch. That meant Chrome and other browsers began forcing HTTPS on anything ending in .dev — and broke countless local dev setups that had relied on plain-HTTP `.dev` hostnames. Developers migrated those local environments to `.test` or `.localhost`, and .dev was freed up as a real, public, secure-by-default extension. General availability opened on **March 1, 2019**, following a brief Early Access Period. The ICANN registry agreement for the string is listed at [icann.org](https://www.icann.org/en/registry-agreements/details/dev).
 
@@ -82,7 +82,7 @@ Choose **.dev** when your audience is explicitly developers and you value the fo
 - **Unambiguous audience signal.** The suffix tells visitors immediately that the site is technical, which sharpens positioning for tools, docs, and portfolios.
 - **Security enforced at the TLD level.** Because .dev is HSTS-preloaded, browsers only load it over HTTPS. You cannot accidentally ship an insecure .dev site, and visitors never see a mixed-content downgrade.
 - **Strong availability of short names.** Compared with the crowded **.com** space, many concise, brandable .dev names are still registrable.
-- **Backed by Google's registry infrastructure.** The TLD runs on stable, well-resourced nameserver infrastructure.
+- **Backed by Google's registry infrastructure.** The TLD runs on stable, well-resourced [nameserver](/en/glossary/nameserver/) infrastructure.
 
 ## Things to consider
 
@@ -97,15 +97,15 @@ Choose **.dev** when your audience is explicitly developers and you value the fo
 
 A few operational notes:
 
-- **Sunrise/trademark:** like other new gTLDs, .dev ran a Sunrise phase at launch for trademark holders via the Trademark Clearinghouse; that phase is long closed and general registration is now standard.
+- **Sunrise/trademark:** like other new gTLDs, .dev ran a Sunrise phase at launch for [trademark](/en/glossary/trademark/) holders via the [Trademark Clearinghouse](/en/glossary/tmch/); that phase is long closed and general registration is now standard.
 - **Length and IDN:** standard label-length rules apply, and internationalized domain names (IDNs) are supported.
-- **Admin facts:** **DNSSEC** is supported for signed, tamper-evident DNS; WHOIS privacy is typically offered by registrars; and standard gTLD transfer, renewal, and redemption-grace-period behaviors apply.
+- **Admin facts:** **DNSSEC** is supported for signed, tamper-evident DNS; [WHOIS privacy](/en/glossary/whois-privacy/) is typically offered by registrars; and standard gTLD transfer, renewal, and redemption-grace-period behaviors apply.
 
 The governing rules live in the [.dev ICANN registry agreement](https://www.icann.org/en/registry-agreements/details/dev), the authoritative source for this gTLD's policy obligations.
 
 ## .dev pricing and value
 
-This page never lists live prices, but the pricing **dynamics** are worth understanding. .dev generally sits above commodity gTLDs in cost, reflecting its developer-premium positioning. Registries also designate **premium-tier names** — short, generic, or high-demand strings — which carry higher recurring fees than standard names. Expect **first-year and renewal pricing to differ**, and budget for the renewal rate rather than an introductory figure. The main cost drivers are the name's tier (standard vs premium), the registrar's margin, and any privacy or add-on services you select.
+This page never lists live prices, but the pricing **dynamics** are worth understanding. .dev generally sits above commodity gTLDs in cost, reflecting its developer-premium positioning. Registries also designate **premium-tier names** — short, generic, or high-demand strings — which carry higher recurring fees than standard names. Expect **first-year and renewal pricing to differ**, and budget for the renewal rate rather than an introductory figure. The main cost drivers are the name's tier (standard vs premium), the [registrar](/en/glossary/registrar/)'s margin, and any privacy or add-on services you select.
 
 ## Reputation and email deliverability
 
@@ -126,7 +126,7 @@ For email, .dev is not widely abused, but as with any non-.com extension, delive
 2. **Choose** the exact name and review the term and renewal details.
 3. **Register** and complete checkout, then point your DNS and provision a TLS certificate so the site loads over HTTPS.
 
-Namefi is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional **Web3 tokenization** if you want to hold your domain as an on-chain asset. Get started at [Namefi](https://namefi.io).
+Namefi is an ICANN-accredited registrar with transparent pricing, fast DNS, and optional **[Web3](/en/glossary/web3/) tokenization** if you want to hold your domain as an on-chain asset. Get started at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

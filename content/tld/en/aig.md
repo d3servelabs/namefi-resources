@@ -15,7 +15,7 @@ The digital landscape is constantly evolving, and with the explosive growth of t
 
 While country-code TLDs like [.ai (Anguilla)](https://en.wikipedia.org/wiki/.ai) became the standard for the first wave of AI startups, the market has become incredibly saturated. The .aig extension offers a fresh territory for the next generation of innovators. It is designed to signal advanced capability, typically associating a brand with Generative AI, AI Governance, or AI-driven Gaming.
 
-Whether utilized in a traditional DNS setting or bridged on the blockchain as a [tokenized domain](https://namefi.io), .aig represents the cutting edge of the modern web.
+Whether utilized in a traditional DNS setting or bridged on the [blockchain](/en/glossary/blockchain/) as a [tokenized domain](https://namefi.io), .aig represents the cutting edge of the modern web.
 
 ## **How People Are Using .aig**
 
@@ -34,7 +34,7 @@ As a newer entrant to the domain space compared to legacy extensions like [.com]
 2.  **Next-Gen Tech Incubators:** Forward-thinking accelerators are using the extension to host portfolio sites for their AI-native cohorts.
 3.  **Strategic Domain Investors:** recognizing the scarcity of short [.ai](/en/tld/ai/) domains, investors are securing premium .aig keywords (e.g., *chat.aig*, *draw.aig*, *play.aig*) anticipating the next boom in tech naming conventions.
 
-*Note: As this TLD grows, early adopters have the unique advantage of defining the namespace before major corporations dominate the registry.*
+*Note: As this TLD grows, early adopters have the unique advantage of defining the namespace before major corporations dominate the [registry](/en/glossary/registry/).*
 
 ## **Why Choose .aig?**
 

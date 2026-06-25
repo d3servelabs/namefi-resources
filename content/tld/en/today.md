@@ -20,7 +20,7 @@ faqs:
     answer: 'Yes. As an Identity Digital gTLD, .today supports DNSSEC at the registry level, and most registrars including Namefi offer free WHOIS privacy to mask personal contact details in public records.'
 ---
 
-The **.today domain** is a new generic top-level domain (gTLD) built around one of the most action-oriented words in English. Where a legacy suffix simply ends an address, ".today" finishes a thought — `deals.today`, `events.today`, `launch.today` — turning the domain itself into a promise of fresh, time-sensitive content.
+The **.today domain** is a new [generic top-level domain](/en/glossary/gtld/) (gTLD) built around one of the most action-oriented words in English. Where a legacy suffix simply ends an address, ".today" finishes a thought — `deals.today`, `events.today`, `launch.today` — turning the domain itself into a promise of fresh, time-sensitive content.
 
 For news outlets, event organizers, daily-deal sites, and anyone publishing on a recurring cadence, .today is an open, unrestricted extension that signals immediacy in a way `.com` cannot. This page covers who runs it, who uses it, the registration rules, and whether it is the right fit for your project.
 
@@ -38,13 +38,13 @@ For news outlets, event organizers, daily-deal sites, and anyone publishing on a
 
 ## What is .today?
 
-.today is a [new gTLD](/en/blog/what-is-a-tld) introduced during ICANN's 2012 New gTLD Program, the largest expansion of the domain name space in the Internet's history. Unlike a [country-code TLD](/en/blog/cctld-market-share-by-registration-volume) such as `.uk` or `.de`, .today carries no geographic meaning. It is a dictionary-word gTLD: the suffix simply *is* the word "today," which is why so many registrations read as complete phrases rather than awkward abbreviations.
+.today is a [new gTLD](/en/glossary/new-gtld/) introduced during ICANN's 2012 New gTLD Program, the largest expansion of the domain name space in the Internet's history. Unlike a [country-code TLD](/en/blog/cctld-market-share-by-registration-volume) such as `.uk` or `.de`, .today carries no geographic meaning. It is a dictionary-word gTLD: the suffix simply *is* the word "today," which is why so many registrations read as complete phrases rather than awkward abbreviations.
 
 Because it is a generic extension, [Google](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites) treats .today like any other gTLD — it is not tied to a region for geo-targeting, and it confers no ranking advantage or penalty on its own. You can read the official root-zone record at the [IANA database entry for .today](https://www.iana.org/domains/root/db/today.html).
 
 ## History of .today
 
-.today was delegated to the DNS root zone in November 2013, among the first wave of dictionary-word gTLDs to launch under the 2012 program. It originally came to market through Donuts Inc., the registry that pioneered hundreds of generic new gTLDs. Following the consolidation of Donuts, Afilias, and other operators, the extension is now part of the portfolio of [Identity Digital](https://www.identity.digital/), one of the largest new-gTLD registry operators in the world, with the contractual registry entity being Binky Moon, LLC.
+.today was delegated to the DNS [root zone](/en/glossary/root-zone/) in November 2013, among the first wave of dictionary-word gTLDs to launch under the 2012 program. It originally came to market through Donuts Inc., the registry that pioneered hundreds of generic new gTLDs. Following the consolidation of Donuts, Afilias, and other operators, the extension is now part of the portfolio of [Identity Digital](https://www.identity.digital/), one of the largest new-gTLD registry operators in the world, with the contractual registry entity being Binky Moon, LLC.
 
 Adoption grew steadily from 2014 onward as blogs, news aggregators, and event sites adopted the suffix to convey a sense of "happening now." Like most new gTLDs, .today did not displace `.com`, but it carved out a durable niche among publishers and marketers who value a descriptive, on-message address.
 
@@ -93,7 +93,7 @@ Choose [.com](/en/tld/com) when you want maximum familiarity and your name is av
 
 **Registration restrictions: open to all.** .today is an unrestricted generic top-level domain. There is no credential gate, no community-membership requirement, and no local-presence rule — unlike restricted suffixes such as `.law` (bar membership) or some ccTLDs (in-country presence). Any individual or organization worldwide can register an available .today name on a first-come, first-served basis.
 
-Standard new-gTLD policies apply: trademark holders can use ICANN's Trademark Clearinghouse for sunrise and claims protections, names follow normal length and IDN rules, and the registry supports DNSSEC. Most registrars, including Namefi, offer free WHOIS privacy, and the suffix follows ICANN's standard transfer, renewal, and redemption-grace lifecycle. The governing rules live in the [ICANN Registry Agreement for .today](https://www.icann.org/en/registry-agreements/details/today) and in the registry policies published by [Identity Digital](https://www.identity.digital/).
+Standard new-gTLD policies apply: [trademark](/en/glossary/trademark/) holders can use ICANN's [Trademark Clearinghouse](/en/glossary/tmch/) for sunrise and claims protections, names follow normal length and IDN rules, and the registry supports DNSSEC. Most registrars, including Namefi, offer free [WHOIS privacy](/en/glossary/whois-privacy/), and the suffix follows ICANN's standard transfer, renewal, and redemption-grace lifecycle. The governing rules live in the [ICANN Registry Agreement for .today](https://www.icann.org/en/registry-agreements/details/today) and in the registry policies published by [Identity Digital](https://www.identity.digital/).
 
 ## .today pricing and value
 
@@ -113,7 +113,7 @@ The strongest .today names treat the suffix as the final word of a phrase, not a
 2. **Choose** the exact name and confirm whether it is a standard or premium registration.
 3. **Register** and configure DNS in minutes.
 
-As an ICANN-accredited registrar, Namefi offers transparent pricing, fast DNS, free WHOIS privacy, and optional [Web3 tokenization](/en/blog/what-are-tokenized-domains) so you can hold your domain as an on-chain asset. Start your search at [Namefi](https://namefi.io).
+As an [ICANN-accredited registrar](/en/glossary/accredited-registrar/), Namefi offers transparent pricing, fast DNS, free WHOIS privacy, and optional [Web3 tokenization](/en/blog/what-are-tokenized-domains) so you can hold your domain as an on-chain asset. Start your search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 

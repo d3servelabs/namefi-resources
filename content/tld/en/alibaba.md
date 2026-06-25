@@ -17,9 +17,9 @@ Launched following [ICANN’s New gTLD Program](https://newgtlds.icann.org/en/ab
 
 ## **How People Are Using .alibaba**
 
-Because .alibaba is a closed Registry, "usage" is currently defined by how the Alibaba Group and its affiliates utilize the extension to streamline their massive digital infrastructure.
+Because .alibaba is a closed [Registry](/en/glossary/registry/), "usage" is currently defined by how the Alibaba Group and its affiliates utilize the extension to streamline their massive digital infrastructure.
 
-*   **Brand Verification**: It serves as a hallmark of trust. A URL ending in .alibaba guarantees the user that they are interacting with a legitimate entity of the Alibaba Group, mitigating the risk of phishing.
+*   **Brand Verification**: It serves as a hallmark of trust. A URL ending in .alibaba guarantees the user that they are interacting with a legitimate entity of the Alibaba Group, mitigating the risk of [phishing](/en/glossary/phishing/).
 *   **Infrastructure Management**: Developers within the ecosystem use the TLD for internal routing, cloud resource management, and backend services that require secure, recognizable naming conventions.
 *   **Marketing Campaigns**: Specific product launches or corporate communications can utilize short, memorable .alibaba links that reinforce brand recall.
 *   **Digital Innovation**: As the web evolves toward [Web3](/en/glossary/web3/), entities like Alibaba are positioned to use their TLDs for digital identities and verified endpoints within their proprietary networks.
@@ -38,10 +38,10 @@ You can view the official delegation details on the [IANA .alibaba Delegation Re
 
 While the general public cannot currently register .alibaba domains, understanding "why" a company chooses to operate its own TLD highlights the immense value of [domain ownership](/en/glossary/domain-ownership/).
 
-*   **Ultimate Trust and Security**: The primary advantage is security. Since the registry is closed, there is zero chance of cybersquatting or typosquatting. Users know that *any* site ending in .alibaba is official.
+*   **Ultimate Trust and Security**: The primary advantage is security. Since the registry is closed, there is zero chance of [cybersquatting](/en/glossary/cybersquatting/) or [typosquatting](/en/glossary/typosquatting/). Users know that *any* site ending in .alibaba is official.
 *   **SEO and Brand Authority**: Search engines recognize the authority of a Brand TLD. It signals a verified entity, which can indirectly boost ranking signals for transactional queries within that ecosystem.
 *   **Availability of Short Names**: In a public TLD like .com, a name like `cloud.com` is incredibly expensive or unavailable. In a Brand TLD, the owner has instant access to premium, single-word domains like `cloud.alibaba` or `pay.alibaba` without competition.
-*   **Future-Proofing**: Owning the TLD gives the brand complete control over policy, pricing, and technical implementation, which is crucial for integrating with future technologies like blockchain and tokenized assets.
+*   **Future-Proofing**: Owning the TLD gives the brand complete control over policy, pricing, and technical implementation, which is crucial for integrating with future technologies like [blockchain](/en/glossary/blockchain/) and tokenized assets.
 
 ## **Register Your .alibaba Domain at Namefi**
 

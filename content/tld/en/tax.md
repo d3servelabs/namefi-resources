@@ -36,7 +36,7 @@ If you run a tax practice or build tools for one, a .tax name puts your specialt
 
 ## What is .tax?
 
-.tax is a **new generic top-level domain (gTLD)** introduced through ICANN's 2012 New gTLD Program, the expansion that brought hundreds of word-based suffixes to the root zone. It is not a country-code TLD, so it carries no national association and is not geo-targeted. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/international/managing-multi-regional-sites), generic new gTLDs like .tax are treated as global, with no geographic targeting applied by default.
+.tax is a **new [generic top-level domain](/en/glossary/gtld/) (gTLD)** introduced through [ICANN](/en/glossary/icann/)'s 2012 New gTLD Program, the expansion that brought hundreds of word-based suffixes to the [root zone](/en/glossary/root-zone/). It is not a country-code TLD, so it carries no national association and is not geo-targeted. According to [Google Search Central](https://developers.google.com/search/docs/crawling-indexing/international/managing-multi-regional-sites), generic new gTLDs like .tax are treated as global, with no geographic targeting applied by default.
 
 The string itself does the marketing. Where a generic suffix like .com or [.net](/en/tld/net) tells a visitor nothing, *tax* names the subject before the page loads. That self-describing quality is the whole point of topic gTLDs, and it is why the extension concentrates among firms and products in one clear niche.
 
@@ -73,7 +73,7 @@ Real, specific uses of .tax cluster tightly around the obvious theme:
 | .tax | New gTLD | Names the tax/accounting niche | Open to all |
 | [.info](/en/tld/info) | Legacy gTLD | Informational, generic | Open to all |
 
-Pick **.com** when you want the most recognized, trust-by-default address and the exact name is available. Pick **.tax** when the matching .com is taken or pricey and you want the suffix itself to advertise your specialty. **[.info](/en/tld/info)** is a broader, cheaper generic option for reference content, but it does not signal the tax niche the way .tax does. For credential-locked alternatives, note that .cpa exists but is restricted to licensed CPAs — .tax has no such gate.
+Pick **.com** when you want the most recognized, trust-by-default address and the exact name is available. Pick **.tax** when the matching .com is taken or pricey and you want the suffix itself to advertise your specialty. **[.info](/en/tld/info)** is a broader, cheaper generic option for reference content, but it does not signal the tax niche the way .tax does. For credential-locked alternatives, note that [.cpa](/en/tld/cpa/) exists but is restricted to licensed CPAs — .tax has no such gate.
 
 ## Why choose .tax?
 
@@ -91,9 +91,9 @@ Pick **.com** when you want the most recognized, trust-by-default address and th
 
 ## Who can register a .tax domain?
 
-**Registration restrictions: open to all.** .tax is an **unrestricted generic gTLD**. There is no credential, license, professional-membership, or local-presence requirement — you do not need to be a CPA, enrolled agent, or registered firm to hold a .tax name. This sets it apart from gated professional TLDs such as .cpa (CPA license required) or .law (bar admission required). Registration is first-come, first-served, subject only to standard domain syntax and any names the registry reserves or prices as premium.
+**Registration restrictions: open to all.** .tax is an **unrestricted generic gTLD**. There is no credential, license, professional-membership, or local-presence requirement — you do not need to be a CPA, enrolled agent, or registered firm to hold a .tax name. This sets it apart from gated professional TLDs such as .cpa (CPA license required) or [.law](/en/tld/law/) (bar admission required). Registration is first-come, first-served, subject only to standard domain syntax and any names the registry reserves or prices as premium.
 
-At launch, trademark holders had a **sunrise** window to claim matching strings before general availability, the standard practice for new gTLDs. Standard administrative behaviors apply: DNSSEC is supported, WHOIS privacy is typically offered through your registrar, and the suffix follows the usual transfer, renewal, and redemption-grace lifecycle.
+At launch, [trademark](/en/glossary/trademark/) holders had a **sunrise** window to claim matching strings before general availability, the standard practice for new gTLDs. Standard administrative behaviors apply: DNSSEC is supported, [WHOIS privacy](/en/glossary/whois-privacy/) is typically offered through your registrar, and the suffix follows the usual transfer, renewal, and redemption-grace lifecycle.
 
 The authoritative source for the rules is the [.tax Registry Agreement on ICANN's site](https://www.icann.org/en/registry-agreements/details/tax), governing the operator as a base, non-sponsored gTLD. For background, see our glossary entries on [ICANN](/en/glossary/icann) and the [registrar](/en/glossary/registrar) role.
 
@@ -126,7 +126,7 @@ For email, mail providers treat the suffix like any other new gTLD: deliverabili
 2. **Choose** an available standard or premium name that fits your brand.
 3. **Register** and configure DNS to point at your site or landing page.
 
-[Namefi](https://namefi.io) is an ICANN-accredited registrar with transparent pricing, fast DNS management, and optional Web3 tokenization that lets you hold a domain as an on-chain asset. Start your .tax search at [Namefi](https://namefi.io).
+[Namefi](https://namefi.io) is an [ICANN-accredited registrar](/en/glossary/accredited-registrar/) with transparent pricing, fast DNS management, and optional [Web3](/en/glossary/web3/) tokenization that lets you hold a domain as an on-chain asset. Start your .tax search at [Namefi](https://namefi.io).
 
 ## Frequently asked questions
 
