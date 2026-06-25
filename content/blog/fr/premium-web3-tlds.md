@@ -51,7 +51,7 @@ Si votre objectif est un actif premium qui est *aussi* prêt pour le Web3, [toke
 | Utilisable comme garantie DeFi | Oui | Oui |
 | Portée universelle Web2 + Web3 | Non | Oui |
 
-La valeur « premium » d'un *[domaine premium](/fr/glossary/premium-domain/)* a toujours reposé sur la rareté, la force de la marque et des décennies de support universel. Un `.com` court et mémorable ou un `.ai` définissant une catégorie porte cette valeur précisément *parce que* l'ensemble d'internet le reconnaît déjà. Le tokeniser préserve toute cette valeur et ajoute la propriété native en portefeuille et la [composabilité](/fr/glossary/defi/) on-chain — sans hériter des problèmes de résolution et de compatibilité des noms qui n'existent que sur une blockchain.
+La valeur « premium » d'un *[domaine premium](/fr/glossary/premium-domain/)* a toujours reposé sur la rareté, la force de la marque et des décennies de support universel. Un `.com` court et mémorable ou un `.ai` définissant une catégorie porte cette valeur précisément *parce que* l'ensemble d'internet le reconnaît déjà. Le tokeniser préserve toute cette valeur et ajoute la propriété native en portefeuille et la [composabilité](/fr/glossary/composability/) on-chain — sans hériter des problèmes de résolution et de compatibilité des noms qui n'existent que sur une blockchain.
 
 Vous n'avez pas non plus à choisir un camp. Beaucoup de propriétaires détiennent un `.com` tokenisé pour leur produit réel *et* un nom [`.eth`](/fr/tld/eth/) comme identité de portefeuille. Ils servent des objectifs différents. (Voir [Domaine tokenisé vs domaine Web3](/fr/blog/tokenized-domain-vs-web3-domain/) pour l'analyse complète.)
 

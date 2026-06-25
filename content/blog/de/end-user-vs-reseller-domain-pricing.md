@@ -22,7 +22,7 @@ Dies ist die vertiefte Analyse, die wir in unserem Bewertungs-Grundlagenartikel 
 
 ![Redaktionelle Illustration einer Domain, die von zwei verschiedenen Käufern bewertet wird: links ein Großhandelsinvestor, der Inventar hält und in Münzen denkt, und rechts ein Endverbraucher-Unternehmen vor einem Geschäft, das in Bargeld denkt](../../assets/end-user-vs-reseller-domain-pricing-01-two-buyers.jpg)
 
-Jede Domain im [Aftermarket](/de/glossary/marketplace/) befindet sich gleichzeitig in zwei Märkten.
+Jede Domain im [Aftermarket](/de/glossary/aftermarket/) befindet sich gleichzeitig in zwei Märkten.
 
 Der **Wiederverkäuferpreis (Großhandelspreis)** ist das, was ein anderer Investor Ihnen zahlt. Er kauft einen Namen nicht, um sein Unternehmen darauf aufzubauen. Er kauft Inventar, um es später weiterzuverkaufen, also bewertet er es so, wie jeder Wiederverkäufer Lagerbestände bewertet: Er zahlt einen Bruchteil dessen, was er erwartet, letztendlich zu bekommen, und dieser Abschlag ist seine Marge, seine Haltungskosten und sein Risiko, dass der Name sich nie verkauft. Ein Großhandelskäufer erledigt Ihre zukünftige Arbeit für Sie und setzt den Preis entsprechend an. Das ist der **niedrige Preis**.
 

@@ -22,7 +22,7 @@ Ceci est l'analyse approfondie promise par notre pilier sur l'évaluation, [comm
 
 ![Illustration éditoriale d'un domaine évalué par deux acheteurs différents, un investisseur en gros détenant un inventaire pensant en pièces de monnaie à gauche et une entreprise utilisatrice finale devant une vitrine pensant en billets de banque à droite](../../assets/end-user-vs-reseller-domain-pricing-01-two-buyers.jpg)
 
-Chaque domaine sur le [marché secondaire](/fr/glossary/marketplace/) se trouve simultanément sur deux marchés.
+Chaque domaine sur le [marché secondaire](/fr/glossary/aftermarket/) se trouve simultanément sur deux marchés.
 
 Le **prix pour [revendeur](/fr/glossary/reseller/) (de gros)** est ce qu'un autre investisseur vous paiera. Il n'achète pas un nom pour y installer son entreprise. Il achète un inventaire pour le revendre plus tard, donc il le tarifie comme tout revendeur tarifie son stock : il paie une fraction de ce qu'il espère obtenir à terme, et cette décote représente sa marge, ses coûts de détention, et le risque que le nom ne se vende jamais. Un acheteur en gros fait votre futur travail à votre place, et il fixe son prix en conséquence. C'est le **prix le plus bas**.
 

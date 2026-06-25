@@ -20,7 +20,7 @@ keywords: ['手动注册域名', '手动注册的域名', '可用于转售的可
 
 ## 什么是手动注册，以及为何它是风险最高的渠道
 
-手动注册（业内简称“手注”）指的是直接从 [注册商](/zh/glossary/registrar/) 处以标准注册费注册一个全新的域名，而不是在 [二级市场](/zh/glossary/marketplace/) 购买现有域名或在域名删除期抢注。它之所以是入门点，是因为成本低廉：根据维基百科，一个普通的 `.com` 域名每年的费用 [从大约 $9.70 到 $35 不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)，而且这个领域是域名空间的开放前沿——域名投机活动的字面定义就是 [为了投资而注册或收购通用互联网域名，意图在日后出售以获取利润](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)。
+手动注册（业内简称“手注”）指的是直接从 [注册商](/zh/glossary/registrar/) 处以标准注册费注册一个全新的域名，而不是在 [二级市场](/zh/glossary/aftermarket/) 购买现有域名或在域名删除期抢注。它之所以是入门点，是因为成本低廉：根据维基百科，一个普通的 `.com` 域名每年的费用 [从大约 $9.70 到 $35 不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)，而且这个领域是域名空间的开放前沿——域名投机活动的字面定义就是 [为了投资而注册或收购通用互联网域名，意图在日后出售以获取利润](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)。
 
 但“便宜”和“容易”恰恰是大多数新手在这个渠道亏损的原因。一个在删除期 [拍卖](/zh/glossary/auction/) 中抢注到的域名带有一些信号——它至少曾被注册过一次，可能拥有建站历史或反向链接（请参阅 [过期域名与删除周期](/zh/blog/expired-domains-and-the-drop-cycle/)）。一个新手动注册的域名则不带任何信号。它从未被任何人需要过。您完全是在赌自己对未来需求的判断，而错误的判断只会给您本已每年都在花钱的域名组合增加一笔续费开销。
 

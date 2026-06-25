@@ -51,7 +51,7 @@ Si tu objetivo es un activo premium que *también* sea compatible con Web3, [tok
 | Utilizable como garantía en DeFi | Sí | Sí |
 | Alcance universal Web2 + Web3 | No | Sí |
 
-Lo "premium" en *[dominio premium](/es/glossary/premium-domain/)* siempre ha provenido de la escasez, la solidez de marca y décadas de soporte universal. Un `.com` corto y memorable o un `.ai` que define una categoría tiene ese valor precisamente *porque* toda la internet ya lo reconoce. Tokenizarlo conserva todo ese valor y añade la propiedad nativa de cartera y la [componibilidad](/es/glossary/defi/) en cadena—sin heredar los problemas de resolución y compatibilidad de los nombres que solo viven en cadena.
+Lo "premium" en *[dominio premium](/es/glossary/premium-domain/)* siempre ha provenido de la escasez, la solidez de marca y décadas de soporte universal. Un `.com` corto y memorable o un `.ai` que define una categoría tiene ese valor precisamente *porque* toda la internet ya lo reconoce. Tokenizarlo conserva todo ese valor y añade la propiedad nativa de cartera y la [componibilidad](/es/glossary/composability/) en cadena—sin heredar los problemas de resolución y compatibilidad de los nombres que solo viven en cadena.
 
 Tampoco tienes que elegir un bando. Muchos propietarios tienen un `.com` tokenizado para su producto real *y* un nombre [`.eth`](/es/tld/eth/) como identidad de cartera. Hacen trabajos distintos. (Consulta [Dominio tokenizado vs. dominio Web3](/es/blog/tokenized-domain-vs-web3-domain/) para el análisis completo.)
 

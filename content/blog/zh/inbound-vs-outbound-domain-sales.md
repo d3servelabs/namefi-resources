@@ -24,7 +24,7 @@ keywords: ['主动式与被动式域名销售对比', '被动式域名销售', '
 
 被动式销售意味着你让一个域名变得可被发现，然后等待。具体操作很熟悉：在域名本身上设置一个待售停放页，在[二级市场](/zh/glossary/aftermarket/)上挂牌出售，为任何直接输入域名的人显示一个可见的价格。你只需设置一次，之后它就会在你睡觉时为你工作。
 
-被动式销售之所以有效，是因为一个真实、流动的[市场](/zh/glossary/marketplace/)为你完成了寻找工作。域名二级市场，正如维基百科所定义，是[互联网域名的二次转售市场，有意获取已注册域名的​​一方通过出价或谈判价格](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names)以实现转让。这个市场交易量巨大：根据维基百科，[据 NameBio 统计，2024 年共记录了 144,700 笔域名销售，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)，而这还仅仅是公开披露的部分。这些交易本质上大多是被动式的，[由 Afternic 和 Sedo 等二级市场平台促成](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=Transactions%20are%20facilitated%20by%20aftermarket%20platforms%20such%20as%20Afternic%20and%20Sedo)，这些平台将你的挂售信息展示在买家已经在寻找的地方。
+被动式销售之所以有效，是因为一个真实、流动的市场为你完成了寻找工作。域名二级市场，正如维基百科所定义，是[互联网域名的二次转售市场，有意获取已注册域名的​​一方通过出价或谈判价格](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=the%20secondary%20resale%20market%20for%20Internet%20domain%20names)以实现转让。这个市场交易量巨大：根据维基百科，[据 NameBio 统计，2024 年共记录了 144,700 笔域名销售，总额达 1.85 亿美元](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=According%20to%20NameBio%2C%20144%2C700%20domain%20name%20sales%20totaling%20US%24185%20million%20were%20recorded%20in%202024)，而这还仅仅是公开披露的部分。这些交易本质上大多是被动式的，[由 Afternic 和 Sedo 等二级市场平台促成](https://en.wikipedia.org/wiki/Domain_aftermarket#:~:text=Transactions%20are%20facilitated%20by%20aftermarket%20platforms%20such%20as%20Afternic%20and%20Sedo)，这些平台将你的挂售信息展示在买家已经在寻找的地方。
 
 你能从被动式销售中得到什么：
 

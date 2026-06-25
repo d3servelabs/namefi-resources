@@ -22,7 +22,7 @@ Esta es la inmersión profunda que prometimos en nuestro pilar de tasación, [c�
 
 ![Ilustración editorial de un dominio valorado por dos compradores diferentes, un inversor mayorista con inventario pensando en monedas a la izquierda y una empresa de usuario final en una tienda pensando en efectivo a la derecha](../../assets/end-user-vs-reseller-domain-pricing-01-two-buyers.jpg)
 
-Cada dominio en el [mercado secundario](/es/glossary/marketplace/) se encuentra en dos mercados a la vez.
+Cada dominio en el [mercado secundario](/es/glossary/aftermarket/) se encuentra en dos mercados a la vez.
 
 El **precio de [revendedor](/es/glossary/reseller/) (al por mayor)** es lo que otro inversor te pagará. No están comprando un nombre para poner su empresa en él. Están comprando inventario para revender más tarde, por lo que lo valoran de la misma manera que cualquier revendedor valora su mercancía: pagan una fracción de lo que esperan obtener eventualmente, y ese descuento es su margen, su [costo de mantenimiento](/es/glossary/holding-cost/) y su riesgo de que el nombre nunca se venda. Un comprador mayorista está haciendo tu trabajo futuro por ti, y valora en consecuencia. Esta es la **cifra baja**.
 

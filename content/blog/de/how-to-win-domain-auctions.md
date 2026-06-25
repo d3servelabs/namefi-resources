@@ -26,7 +26,7 @@ In der Praxis werden Sie drei Arten von Plattformen antreffen:
 
 - **GoDaddy Auctions**, der umsatzstärkste Markt für auslaufende Domains, der von Namen gespeist wird, die vom größten [Registrar](/de/glossary/registrar/) der Welt auslaufen. Die meisten Angebote sind abgelaufene Namen mit einem öffentlichen Timer.
 - **NameJet** (und das eng verwandte Snapnames), die als Backorder-plus-Auktionsdienste fungieren. Sie platzieren eine [Backorder](/de/blog/domain-backorders-and-drop-catching/) auf einen Namen, der zur Löschung ansteht; wenn mehr als eine Person ihn möchte, geht er in eine private Auktion unter den Backorderern.
-- **Sedo**, das sich mehr auf von Eigentümern gelistete Bestände als auf auslaufende Domains konzentriert. Sedo ist ein amerikanisches Unternehmen für den Domain-[Aftermarket](/de/glossary/marketplace/), das 2006 [Domain-Namen-Auktionen einführte](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) und eine der Hauptplattformen für vom Verkäufer initiierte und vermittelte Verkäufe bleibt.
+- **Sedo**, das sich mehr auf von Eigentümern gelistete Bestände als auf auslaufende Domains konzentriert. Sedo ist ein amerikanisches Unternehmen für den Domain-Aftermarket, das 2006 [Domain-Namen-Auktionen einführte](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) und eine der Hauptplattformen für vom Verkäufer initiierte und vermittelte Verkäufe bleibt.
 
 Das Angebot unterscheidet sich, aber die Gebotsmechanismen sind nahezu identisch. Lernen Sie sie einmal, und Sie können überall bieten.
 

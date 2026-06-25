@@ -22,7 +22,7 @@ This is the deep dive promised by our appraisal pillar, [how to value a domain n
 
 ![Editorial illustration of one domain valued by two different buyers, a wholesale investor holding inventory thinking in coins on the left and an end-user business at a storefront thinking in cash on the right](../../assets/end-user-vs-reseller-domain-pricing-01-two-buyers.jpg)
 
-Every domain in the [aftermarket](/en/glossary/marketplace/) sits inside two markets at once.
+Every domain in the [aftermarket](/en/glossary/aftermarket/) sits inside two markets at once.
 
 The **[reseller](/en/glossary/reseller/) (wholesale) price** is what another investor will pay you. They are not buying a name to put their company on it. They are buying inventory to resell later, so they price it the way any reseller prices stock: they pay a fraction of what they expect to eventually get, and that discount is their margin, their [holding cost](/en/glossary/holding-cost/), and their risk that the name never moves. A wholesale buyer is doing your future job for you, and they price accordingly. This is the **low number**.
 

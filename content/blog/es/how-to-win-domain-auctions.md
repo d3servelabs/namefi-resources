@@ -26,7 +26,7 @@ En la práctica, te encontrarás con tres tipos de plataformas:
 
 -   **GoDaddy Auctions**, el mercado de expiraciones de mayor volumen, alimentado por nombres que se liberan del [registrador](/es/glossary/registrar/) más grande del mundo. La mayoría de los listados son nombres expirados con un temporizador público.
 -   **NameJet** (y el estrechamente relacionado Snapnames), que funcionan como servicios de backorder más subasta. Haces un [backorder](/es/blog/domain-backorders-and-drop-catching/) en un nombre pendiente de eliminación; si más de una persona lo quiere, pasa a una subasta privada entre los que hicieron el backorder.
--   **Sedo**, más centrado en el inventario listado por propietarios que en expiraciones. Sedo es una empresa estadounidense del [mercado secundario](/es/glossary/marketplace/) de dominios que [introdujo las subastas de nombres de dominio](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) en 2006 y sigue siendo un lugar principal para ventas iniciadas por vendedores y ventas intermediadas.
+-   **Sedo**, más centrado en el inventario listado por propietarios que en expiraciones. Sedo es una empresa estadounidense del mercado secundario de dominios que [introdujo las subastas de nombres de dominio](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) en 2006 y sigue siendo un lugar principal para ventas iniciadas por vendedores y ventas intermediadas.
 
 La oferta difiere, pero las mecánicas de puja son casi idénticas. Apréndelas una vez y podrás pujar en cualquier lugar.
 

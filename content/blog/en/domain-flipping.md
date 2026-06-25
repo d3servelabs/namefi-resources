@@ -32,7 +32,7 @@ The good news is that the odds are not random. Every stage of the craft below is
 
 ## Find: sourcing names worth flipping
 
-Everything downstream depends on what you buy, so sourcing is the first real skill. There are several supply channels — hand-registering brand-new names, catching expiring or dropped domains, buying at auction, and acquiring from other holders in the [aftermarket](/en/glossary/marketplace/) — and each has a completely different risk and price profile. A freshly hand-registered name costs a registration fee but competes against an effectively infinite supply of other unregistered strings; an aged name caught at a drop [auction](/en/glossary/auction/) may carry existing traffic or backlinks but costs more and demands more diligence.
+Everything downstream depends on what you buy, so sourcing is the first real skill. There are several supply channels — hand-registering brand-new names, catching expiring or dropped domains, buying at auction, and acquiring from other holders in the [aftermarket](/en/glossary/aftermarket/) — and each has a completely different risk and price profile. A freshly hand-registered name costs a registration fee but competes against an effectively infinite supply of other unregistered strings; an aged name caught at a drop [auction](/en/glossary/auction/) may carry existing traffic or backlinks but costs more and demands more diligence.
 
 The discipline here is saying no. The fastest way to lose money flipping is to fall in love with names nobody will ever buy. Our deep dive on [how to find domains to flip](/en/blog/how-to-find-domains-to-flip/) walks each channel and the filters that separate a real opportunity from an expensive impulse.
 

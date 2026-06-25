@@ -26,7 +26,7 @@ keywords: ['域名拍卖', '如何赢得域名拍卖', '域名拍卖策略', 'Go
 
 - **GoDaddy Auctions**，交易量最大的过期域名市场，其域名来源是全球最大的[注册商](/zh/glossary/registrar/)掉落的域名。大多数上架的都是有公开倒计时的过期域名。
 - **NameJet**（以及与其密切相关的 Snapnames），它们作为“预订+拍卖”服务运作。你对一个即将删除的域名进行[预订](/zh/blog/domain-backorders-and-drop-catching/)；如果有多人想要同一个域名，它就会进入一个仅限预订者参与的私人拍卖。
-- **Sedo**，更多是所有者挂牌的域名库存，而非过期域名。Sedo 是一家美国的域名[二级市场](/zh/glossary/marketplace/)公司，于 2006 年[引入了域名拍卖](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions)，至今仍是卖家发起和经纪人销售的主要场所。
+- **Sedo**，更多是所有者挂牌的域名库存，而非过期域名。Sedo 是一家美国的域名二级市场公司，于 2006 年[引入了域名拍卖](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions)，至今仍是卖家发起和经纪人销售的主要场所。
 
 虽然供应来源不同，但出价机制几乎完全相同。学会一次，你就可以在任何地方出价。
 

@@ -26,7 +26,7 @@ En pratique, vous rencontrerez trois types de plateformes :
 
 - **GoDaddy Auctions**, le marché d'expiration au plus haut volume, alimenté par les noms provenant du plus grand [bureau d'enregistrement](/fr/glossary/registrar/) au monde. La plupart des listes sont des noms expirés avec un compte à rebours public.
 - **NameJet** (et son proche parent Snapnames), qui fonctionnent comme des services de backorder et d'enchères. Vous placez un [backorder](/fr/blog/domain-backorders-and-drop-catching/) sur un nom en attente de suppression ; si plus d'une personne le veut, il est mis aux enchères privées entre les demandeurs.
-- **Sedo**, plus axé sur l'inventaire listé par les propriétaires que sur les expirations. Sedo est une entreprise américaine du [marché secondaire](/fr/glossary/marketplace/) des domaines qui a [introduit les enchères de noms de domaine](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) en 2006, et reste un lieu principal pour les ventes initiées par les vendeurs et les courtiers.
+- **Sedo**, plus axé sur l'inventaire listé par les propriétaires que sur les expirations. Sedo est une entreprise américaine du [marché secondaire](/fr/glossary/aftermarket/) des domaines qui a [introduit les enchères de noms de domaine](https://en.wikipedia.org/wiki/Sedo#:~:text=introduced%20domain%20name%20auctions) en 2006, et reste un lieu principal pour les ventes initiées par les vendeurs et les courtiers.
 
 L'offre diffère, mais les mécanismes d'enchère sont presque identiques. Apprenez-les une fois et vous pourrez enchérir n'importe où.
 
