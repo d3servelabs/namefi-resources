@@ -8,6 +8,7 @@
     "termbase:check": "bun scripts/build-termbase.ts --check",
     "glossary:mentions": "bun scripts/glossary-mentions.ts",
     "check:termbase": "bun scripts/check-termbase.ts",
+    "brandkit:build": "python3 scripts/build-brand-kit-assets.py",
     "lint:mdx": "bunx eslint \"content/**/*.{md,mdx}\""
   },
   "dependencies": {

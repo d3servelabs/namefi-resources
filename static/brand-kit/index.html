@@ -378,6 +378,34 @@
         white-space: nowrap;
       }
 
+      .format-select {
+        appearance: none;
+        background:
+          linear-gradient(45deg, transparent 50%, currentColor 50%) calc(100% - 10px) 50% / 5px 5px no-repeat,
+          oklch(1 0 0 / 5%);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 800;
+        height: 30px;
+        min-width: 70px;
+        padding: 0 22px 0 10px;
+        text-transform: uppercase;
+      }
+
+      .format-select:focus-visible,
+      .icon-button:focus-visible {
+        outline: 2px solid var(--brand-primary);
+        outline-offset: 2px;
+      }
+
+      .format-select:hover {
+        color: var(--text);
+      }
+
       code {
         background: oklch(1 0 0 / 7%);
         border: 1px solid var(--line);
@@ -1095,8 +1123,13 @@
                 <div class="asset-title">
                   <h3>Primary logotype</h3>
                   <div class="asset-actions">
-                    <span class="tag">SVG</span>
-                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype.svg" download aria-label="Download primary Namefi logotype SVG" title="Download SVG">
+                    <select class="format-select" aria-label="Download format for primary Namefi logotype">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype.svg" download data-download-base="namefi-logotype" data-download-label="primary Namefi logotype" aria-label="Download primary Namefi logotype SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -1114,8 +1147,13 @@
                 <div class="asset-title">
                   <h3>Mono logotype</h3>
                   <div class="asset-actions">
-                    <span class="tag">SVG</span>
-                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono.svg" download aria-label="Download mono Namefi logotype SVG" title="Download SVG">
+                    <select class="format-select" aria-label="Download format for mono Namefi logotype">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono.svg" download data-download-base="namefi-logotype-mono" data-download-label="mono Namefi logotype" aria-label="Download mono Namefi logotype SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -1135,8 +1173,13 @@
                 <div class="asset-title">
                   <h3>Compact mark</h3>
                   <div class="asset-actions">
-                    <span class="tag">SVG</span>
-                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact.svg" download aria-label="Download compact Namefi mark SVG" title="Download SVG">
+                    <select class="format-select" aria-label="Download format for compact Namefi mark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact.svg" download data-download-base="namefi-compact" data-download-label="compact Namefi mark" aria-label="Download compact Namefi mark SVG" title="Download SVG">
                       <svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                         <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                       </svg>
@@ -1304,7 +1347,15 @@
                     </div>
                     <div class="asset-title">
                       <div class="size-label">Animated final frame</div>
-                      <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-lottie-wordmark.svg" download aria-label="Download Lottie final wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      <div class="asset-actions">
+                        <select class="format-select" aria-label="Download format for Lottie final wordmark">
+                          <option value="svg">SVG</option>
+                          <option value="png">PNG</option>
+                          <option value="jpg">JPG</option>
+                          <option value="webp">WEBP</option>
+                        </select>
+                        <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-lottie-wordmark.svg" download data-download-base="namefi-lottie-wordmark" data-download-label="Lottie final wordmark" aria-label="Download Lottie final wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                      </div>
                     </div>
                     <span class="padding-spec">220 x 80 frame / Lottie frame 29</span>
                     <span class="actual-measure"></span>
@@ -1407,7 +1458,15 @@
                 </div>
                 <div class="mono-body">
                   <strong>Mono compact / white</strong>
-                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-white.svg" download aria-label="Download white compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <div class="asset-actions">
+                    <select class="format-select" aria-label="Download format for white compact mark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-white.svg" download data-download-base="namefi-compact-white" data-download-label="white compact mark" aria-label="Download white compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  </div>
                 </div>
               </article>
               <article class="mono-card">
@@ -1416,7 +1475,15 @@
                 </div>
                 <div class="mono-body">
                   <strong>Mono compact / black</strong>
-                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-black.svg" download aria-label="Download black compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <div class="asset-actions">
+                    <select class="format-select" aria-label="Download format for black compact mark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-compact-black.svg" download data-download-base="namefi-compact-black" data-download-label="black compact mark" aria-label="Download black compact mark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  </div>
                 </div>
               </article>
               <article class="mono-card">
@@ -1425,7 +1492,15 @@
                 </div>
                 <div class="mono-body">
                   <strong>Mono wordmark / green</strong>
-                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-green.svg" download aria-label="Download green mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <div class="asset-actions">
+                    <select class="format-select" aria-label="Download format for green mono wordmark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-green.svg" download data-download-base="namefi-logotype-mono-green" data-download-label="green mono wordmark" aria-label="Download green mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  </div>
                 </div>
               </article>
               <article class="mono-card">
@@ -1434,7 +1509,15 @@
                 </div>
                 <div class="mono-body">
                   <strong>Mono wordmark / ink</strong>
-                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-ink.svg" download aria-label="Download ink mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <div class="asset-actions">
+                    <select class="format-select" aria-label="Download format for ink mono wordmark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-ink.svg" download data-download-base="namefi-logotype-mono-ink" data-download-label="ink mono wordmark" aria-label="Download ink mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  </div>
                 </div>
               </article>
               <article class="mono-card">
@@ -1443,7 +1526,15 @@
                 </div>
                 <div class="mono-body">
                   <strong>Mono wordmark / white</strong>
-                  <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-white.svg" download aria-label="Download white mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  <div class="asset-actions">
+                    <select class="format-select" aria-label="Download format for white mono wordmark">
+                      <option value="svg">SVG</option>
+                      <option value="png">PNG</option>
+                      <option value="jpg">JPG</option>
+                      <option value="webp">WEBP</option>
+                    </select>
+                    <a class="icon-button" href="/r/blog-assets/brand-kit/namefi-logotype-mono-white.svg" download data-download-base="namefi-logotype-mono-white" data-download-label="white mono wordmark" aria-label="Download white mono wordmark SVG" title="Download SVG"><svg class="download-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v12m0 0 5-5m-5 5-5-5M5 21h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+                  </div>
                 </div>
               </article>
             </div>
@@ -1531,8 +1622,118 @@
           });
         }
 
+        function hydrateDownloadSelectors() {
+          const downloadAssets = {
+            'namefi-logotype': {
+              label: 'primary Namefi logotype',
+              files: {
+                svg: 'namefi-logotype.svg',
+                png: 'namefi-logotype.png',
+                jpg: 'namefi-logotype.jpg',
+                webp: 'namefi-logotype.webp',
+              },
+            },
+            'namefi-logotype-mono': {
+              label: 'mono Namefi logotype',
+              files: {
+                svg: 'namefi-logotype-mono.svg',
+                png: 'namefi-logotype-mono.png',
+                jpg: 'namefi-logotype-mono.jpg',
+                webp: 'namefi-logotype-mono.webp',
+              },
+            },
+            'namefi-compact': {
+              label: 'compact Namefi mark',
+              files: {
+                svg: 'namefi-compact.svg',
+                png: 'namefi-compact.png',
+                jpg: 'namefi-compact.jpg',
+                webp: 'namefi-compact.webp',
+              },
+            },
+            'namefi-lottie-wordmark': {
+              label: 'Lottie final wordmark',
+              files: {
+                svg: 'namefi-lottie-wordmark.svg',
+                png: 'namefi-lottie-wordmark.png',
+                jpg: 'namefi-lottie-wordmark.jpg',
+                webp: 'namefi-lottie-wordmark.webp',
+              },
+            },
+            'namefi-compact-white': {
+              label: 'white compact mark',
+              files: {
+                svg: 'namefi-compact-white.svg',
+                png: 'namefi-compact-white.png',
+                jpg: 'namefi-compact-white.jpg',
+                webp: 'namefi-compact-white.webp',
+              },
+            },
+            'namefi-compact-black': {
+              label: 'black compact mark',
+              files: {
+                svg: 'namefi-compact-black.svg',
+                png: 'namefi-compact-black.png',
+                jpg: 'namefi-compact-black.jpg',
+                webp: 'namefi-compact-black.webp',
+              },
+            },
+            'namefi-logotype-mono-green': {
+              label: 'green mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-green.svg',
+                png: 'namefi-logotype-mono-green.png',
+                jpg: 'namefi-logotype-mono-green.jpg',
+                webp: 'namefi-logotype-mono-green.webp',
+              },
+            },
+            'namefi-logotype-mono-ink': {
+              label: 'ink mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-ink.svg',
+                png: 'namefi-logotype-mono-ink.png',
+                jpg: 'namefi-logotype-mono-ink.jpg',
+                webp: 'namefi-logotype-mono-ink.webp',
+              },
+            },
+            'namefi-logotype-mono-white': {
+              label: 'white mono wordmark',
+              files: {
+                svg: 'namefi-logotype-mono-white.svg',
+                png: 'namefi-logotype-mono-white.png',
+                jpg: 'namefi-logotype-mono-white.jpg',
+                webp: 'namefi-logotype-mono-white.webp',
+              },
+            },
+          };
+
+          document.querySelectorAll('[data-download-base]').forEach((button) => {
+            const controls = button.closest('.asset-actions');
+            const select = controls?.querySelector('.format-select');
+            if (!select) return;
+
+            const asset = downloadAssets[button.dataset.downloadBase];
+            if (!asset) return;
+
+            const update = () => {
+              const format = select.value;
+              const filename = asset.files[format];
+              if (!filename) return;
+              const upper = format.toUpperCase();
+              button.href = `/r/blog-assets/brand-kit/${filename}`;
+              button.download = filename;
+              button.title = `Download ${upper}`;
+              button.setAttribute('aria-label', `Download ${asset.label} ${upper}`);
+            };
+
+            select.addEventListener('change', update);
+            update();
+          });
+        }
+
         async function boot() {
           applyActualFrames();
+          hydrateDownloadSelectors();
           const rails = Array.from(document.querySelectorAll('.lottie-rail'));
           if (!rails.length) return;
           if (!window.lottie) {
