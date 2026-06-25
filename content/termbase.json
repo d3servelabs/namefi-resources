@@ -403,17 +403,17 @@
     "level": 1
   },
   "dns": {
-    "en": "DNS (Domain Name System)",
+    "en": "DNS",
     "titles": {
-      "en": "DNS (Domain Name System)",
-      "es": "DNS (Sistema de Nombres de Dominio)",
-      "de": "DNS (Domain Name System)",
-      "fr": "DNS (Système de Noms de Domaine)",
-      "zh": "DNS (域名系统)",
-      "ar": "DNS (نظام أسماء النطاقات)",
-      "hi": "DNS (डोमेन नेम सिस्टम)"
+      "en": "DNS",
+      "es": "DNS",
+      "de": "DNS",
+      "fr": "DNS",
+      "zh": "DNS",
+      "ar": "DNS",
+      "hi": "DNS"
     },
-    "level": 1
+    "level": 2
   },
   "dns-hijacking": {
     "en": "DNS Hijacking",
@@ -1344,12 +1344,12 @@
       "en": "Registrar",
       "es": "Registrador",
       "de": "Registrar",
-      "fr": "Registraire",
+      "fr": "Bureau d'enregistrement",
       "zh": "注册商",
-      "ar": "مسجل النطاقات",
+      "ar": "المُسجِّل",
       "hi": "रजिस्ट्रार"
     },
-    "level": 1,
+    "level": 2,
     "aliasesByLocale": {
       "zh": [
         "注册服务商"
@@ -1784,9 +1784,9 @@
       "fr": "Web3",
       "zh": "Web3",
       "ar": "Web3",
-      "hi": "वेब3"
+      "hi": "Web3"
     },
-    "level": 1
+    "level": 2
   },
   "whois": {
     "en": "WHOIS (and RDAP)",
