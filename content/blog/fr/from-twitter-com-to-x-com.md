@@ -21,7 +21,7 @@ En juillet 2023, neuf mois après avoir racheté l'entreprise [pour 44 milliards
 
 Au commencement, il n'y avait aucun problème de domaine à résoudre.
 
-Quand Twitter a été lancé en 2006, il possédait ce que la plupart des startups de cette série ont mis des années et des millions à obtenir : l'exact-match .com correspondant à son nom. Twitter.com *était* Twitter. L'oiseau bleu, le verbe « tweeter », l'@-réponse, le hashtag — tout un vocabulaire a grandi sur une adresse qui n'avait besoin d'aucune explication. Pendant la majeure partie de sa vie, Twitter était le contre-exemple de toute leçon du type « achetez votre exact-match », car il n'en a jamais eu besoin.
+Quand Twitter a été lancé en 2006, il possédait ce que la plupart des startups de cette série ont mis des années et des millions à obtenir : l'exact-match [.com](/fr/tld/com/) correspondant à son nom. Twitter.com *était* Twitter. L'oiseau bleu, le verbe « tweeter », l'@-réponse, le hashtag — tout un vocabulaire a grandi sur une adresse qui n'avait besoin d'aucune explication. Pendant la majeure partie de sa vie, Twitter était le contre-exemple de toute leçon du type « achetez votre exact-match », car il n'en a jamais eu besoin.
 
 C'est ce qui rend ce cas différent. La pression de changer de domaine n'est pas venue du produit qui dépassait le nom, comme « Motors » a dépassé Tesla ou « Cab » a dépassé Uber. Elle est venue d'un nouveau propriétaire qui avait déjà un autre nom en tête — et qui attendait depuis très longtemps.
 
@@ -49,7 +49,7 @@ Puis Musk a perdu le contrôle de son propre nom. [En septembre 2000, alors que 
 
 ## « Une grande valeur sentimentale pour moi » : le rachat en 2017
 
-Pendant seize ans, X.com a siégé dans le portefeuille de PayPal, dormant. Puis en juillet 2017, Musk l'a discrètement racheté.
+Pendant seize ans, X.com a siégé dans le [portefeuille](/fr/glossary/wallet/) de PayPal, dormant. Puis en juillet 2017, Musk l'a discrètement racheté.
 
 Il n'y avait aucun plan d'affaires attaché. PYMNTS a simplement rapporté que [l'entrepreneur spatial Elon Musk, patron de Tesla, a acheté le nom de domaine X.com à PayPal](https://www.pymnts.com/news/merchant-innovation/2017/elon-musk-purchases-domain-from-paypal/#:~:text=Elon%20Musk%2C%20the%20head%20of%20Tesla%2C%20has%20purchased%20the%20X.com%20domain%20name%20from%20PayPal), et que [X.com était le nom de marque créé par Musk pour une startup de services financiers qui a ensuite fusionné avec Confinity pour devenir PayPal](https://www.pymnts.com/news/merchant-innovation/2017/elon-musk-purchases-domain-from-paypal/#:~:text=X.com%20was%20the%20brand%20name%20Musk%20created%20for%20a%20financial%20service%20startup%20that%20later%20merged%20with%20Confinity%20to%20become%20PayPal). Musk lui-même a présenté cela comme de la pure nostalgie. Engadget a cité son tweet : « [Merci à PayPal de m'avoir permis de racheter X.com ! Pas de plans pour l'instant, mais il a une grande valeur sentimentale pour moi](https://www.engadget.com/2017-07-11-elon-musk-buys-his-old-x-com-domain-from-paypal.html#:~:text=Thanks%20PayPal%20for%20allowing%20me%20to%20buy%20back%20X.com!%20No%20plans%20right%20now%2C%20but%20it%20has%20great%20sentimental%20value%20to%20me). »
 

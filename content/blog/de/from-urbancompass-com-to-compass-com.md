@@ -15,7 +15,7 @@ Der ursprüngliche Name hatte seine Berechtigung. Als Robert Reffkin und Ori All
 
 Für dieses erste Publikum war UrbanCompass.com klar. Es erklärte das Produkt.
 
-Doch das Wort, das die Gründer zur Verankerung ihrer Marke wählten, war dasselbe Wort, das sie schließlich deckeln würde. „Urban" stand für *Stadt*. Und ein Unternehmen, das Häuser von Manhattan bis Miami bis in die Vororte von Texas verkaufen wollte, konnte kein Stadtwerk­zeug für immer bleiben.
+Doch das Wort, das die Gründer zur Verankerung ihrer [Marke](/de/glossary/trademark/) wählten, war dasselbe Wort, das sie schließlich deckeln würde. „Urban" stand für *Stadt*. Und ein Unternehmen, das Häuser von Manhattan bis Miami bis in die Vororte von Texas verkaufen wollte, konnte kein Stadtwerk­zeug für immer bleiben.
 
 So machte Urban Compass im Februar 2015 zwei Dinge auf einmal: Es strich „Urban" aus seinem Namen und wechselte zur exakten Domain, die es für den nationalen Rollout nutzen würde – **Compass.com**, eine Adresse, die [2013 bei einer Auktion für 1 Million US-Dollar angeboten worden war](https://smartbranding.com/urbancompass-com-rebrands-to-compass-com/#:~:text=Compass.com%20was%20listed%20in%20an%20auction%20back%20in%202013%20for%20US%24%201%20Million).
 
@@ -49,7 +49,7 @@ Sobald der Name „Compass" wurde, war die offensichtliche Adresse Compass.com. 
 
 Der Markt hatte bereits eine Zahl darauf gesetzt. Bevor Compass den Namen überhaupt brauchte, [wurde Compass.com 2013 bei einer Auktion für 1 Million US-Dollar angeboten](https://smartbranding.com/urbancompass-com-rebrands-to-compass-com/#:~:text=Compass.com%20was%20listed%20in%20an%20auction%20back%20in%202013%20for%20US%24%201%20Million). Was Compass tatsächlich zahlte, blieb hinter verschlossenen Türen. Wie Smart Branding feststellte, [war die Transaktion privat, sodass wir nicht wissen, welche Investition für die Sicherung des passenden Domainnamens getätigt wurde](https://smartbranding.com/urbancompass-com-rebrands-to-compass-com/#:~:text=The%20transaction%20was%20private).
 
-Diese Geheimhaltung ist bei Premium-Einwort-.com-Deals die Norm. Das siebenstellige Auktionsangebot ist der öffentliche Mindestpreis; der Abschlusspreis ist eine Zahl, die beide Seiten in der Regel für sich behalten. Wie dem auch sei, das Signal ist klar: Das Fallenlassen von „Urban" war nicht kostenlos. Die Exact-Match-Version des Namens kostete echtes Geld, weil das Wort „Compass" für die Welt wertvoll war, lange bevor es für dieses Unternehmen wertvoll war.
+Diese Geheimhaltung ist bei Premium-Einwort-[.com](/de/tld/com/)-Deals die Norm. Das siebenstellige Auktionsangebot ist der öffentliche [Mindestpreis](/de/glossary/reserve-price/); der Abschlusspreis ist eine Zahl, die beide Seiten in der Regel für sich behalten. Wie dem auch sei, das Signal ist klar: Das Fallenlassen von „Urban" war nicht kostenlos. Die Exact-Match-Version des Namens kostete echtes Geld, weil das Wort „Compass" für die Welt wertvoll war, lange bevor es für dieses Unternehmen wertvoll war.
 
 ## Das Geld sah damals anders aus
 

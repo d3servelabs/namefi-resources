@@ -17,7 +17,7 @@ Für jenes erste Publikum war AirBedAndBreakfast.com perfekt. Der Name sagte gen
 
 Doch die Ambitionen des Produkts überwuchsen die Matratze fast sofort. Innerhalb von zwei Jahren vermittelte das Unternehmen Buchungen für einzelne Zimmer, ganze Wohnungen und besondere Häuser — und eine Domain, die nach aufblasbaren Betten benannt war, beschrieb ein Geschäft, das es längst nicht mehr war. Im März 2009 kürzte das Unternehmen alles zu einem Wort und zog nach **Airbnb.com** um.
 
-Das war keine kosmetische URL-Bereinigung. Es war ein junges Start-up, das bewusst die wörtlichste Version seines Namens ablegte, damit die Marke etwas Größeres bedeuten konnte als ihre Ursprungsgeschichte.
+Das war keine kosmetische URL-Bereinigung. Es war ein junges Start-up, das bewusst die wörtlichste Version seines Namens ablegte, damit die [Marke](/de/glossary/trademark/) etwas Größeres bedeuten konnte als ihre Ursprungsgeschichte.
 
 ## 2007–2008: Das Unternehmen, das nach einer Matratze benannt war
 
@@ -55,7 +55,7 @@ Es ist verlockend, das Rebranding als eine offensichtliche, kostenlose Entscheid
 
 Die Gründer waren so knapp bei Kasse, dass sie das Unternehmen nach dem Nationalen Parteitag der Demokraten 2008 — der jeden von ihnen etwa zwanzigtausend Dollar in die Schulden trieb — durch den Verkauf von wahlkampfthematisierten Müsliboxen finanzierten. Sie verpackten handelsübliches Müsli in „Obama O's" und „Cap'n McCains" um, wobei [jede Schachtel 39 Dollar kostete](https://techcrunch.com/2008/10/09/whats-for-breakfast-at-your-house-obama-os-or-capn-mccains/#:~:text=each%20box%20costs%20%2439). Dieser Müsli-Stunt, nicht das Geschäftsmodell, half ihnen, Anfang 2009 in Y Combinator aufgenommen zu werden, wo das Programm [20.000 US-Dollar Startkapital und Mentoring von Paul Graham und anderen im Austausch gegen einen sechsprozentigen Unternehmensanteil bereitstellte](https://en.wikipedia.org/wiki/Brian_Chesky#:~:text=The%20course%20provided%20US%2420%2C000%20in%20seed%20money%20and%20training%20from%20Paul%20Graham).
 
-Erst [im April 2009 erhielt das Unternehmen 600.000 Dollar Startkapital von Sequoia Capital](https://en.wikipedia.org/wiki/Airbnb#:~:text=the%20company%20received%20%24600%2C000%20in%20seed%20money%20from%20Sequoia%20Capital). Die Umbenennung zu Airbnb.com erfolgte also *vor* dem ersten echten Venture-Capital-Scheck — als der gesamte Betrieb nur einige tausend Dollar Müsligeld und ein YC-Stipendium vom Scheitern entfernt war. Die Entscheidung, einen Namen aufzugeben, der bereits eine gewisse Bekanntheit hatte — die Presse hatte über „AirBed & Breakfast" berichtet, Gäste hatten ihn genutzt — war eine Wette zum Zeitpunkt maximaler Ungewissheit, nicht aus der Sicherheit des Erfolgs heraus.
+Erst [im April 2009 erhielt das Unternehmen 600.000 Dollar Startkapital von Sequoia Capital](https://en.wikipedia.org/wiki/Airbnb#:~:text=the%20company%20received%20%24600%2C000%20in%20seed%20money%20from%20Sequoia%20Capital). Die Umbenennung zu Airbnb.com erfolgte also *vor* dem ersten echten Venture-Capital-Scheck — als der gesamte Betrieb nur einige tausend Dollar Müsligeld und ein YC-Stipendium vom Scheitern entfernt war. Die Entscheidung, einen Namen aufzugeben, der bereits eine gewisse Bekanntheit hatte — die Presse hatte über „AirBed & Breakfast" berichtet, Gäste hatten ihn genutzt — war eine Wette zum Zeitpunkt maximaler Ungewissheit, nicht aus der [Sicherheit](/de/glossary/collateral/) des Erfolgs heraus.
 
 Genau dann zählte die Entscheidung. Das Unternehmen war klein genug, dass der sauberere Name noch kanonisch werden konnte, und ernst genug mit dem Skalieren, dass der wörtliche Name zur Bremse geworden war.
 
@@ -104,7 +104,7 @@ Die zentrale Domain eines Unternehmens taucht an Stellen auf, die das Marketingt
 
 Jede dieser Wiederholungen erzeugt entweder Reibung oder beseitigt sie. AirBedAndBreakfast.com machte jede Erwähnung länger, schwerer zu buchstabieren und sachlich falsch — er bestand beharrlich darauf, dass das Produkt Luftmatratzen betraf. Airbnb.com machte jede Erwähnung kurz, sagbar und kategorieunabhängig. Multipliziert man das mit Millionen von Gastgebern und Hunderten von Millionen von Gästen, sieht die Umbenennung nicht mehr wie ein Branding-Feinschliff von 2009 aus, sondern wie eine dauerhafte Reibungsminderung.
 
-Die Domain hat Airbnbs Marktplatz nicht aufgebaut. Aber sobald Airbnb.com die Adresse war, baute sich jede zukünftige Wiederholung des Namens auf einem saubereren Fundament auf.
+Die Domain hat Airbnbs [Marktplatz](/de/glossary/marketplace/) nicht aufgebaut. Aber sobald Airbnb.com die Adresse war, baute sich jede zukünftige Wiederholung des Namens auf einem saubereren Fundament auf.
 
 ## Was Gründer aus Fall 15 lernen sollten
 
@@ -123,7 +123,7 @@ Das Domain-Upgrade hat Airbnb nicht zum Sieger gemacht. Produkt, Design, unermü
 
 Airbnbs Umbenennung war im Kern eine Asset-Entscheidung, die als Branding-Entscheidung verkleidet war.
 
-Der schwierige Teil der meisten Domain-Upgrades ist selten die Erkenntnis, dass der bessere Name wichtig ist. Es geht darum, den Wechsel sicher durchzuführen: die neue Domain zu sichern, das Eigentum nachzuweisen, die Kontrolle zu übertragen, ohne die Live-Website zu beschädigen, und sicherzustellen, dass das Asset nicht fragil und undokumentiert im Registrar-Konto eines Gründers liegt, während das chaotischste Jahr des Unternehmens läuft. Airbnb hatte das Glück, seine kurze Domain früh registriert zu haben — aber die meisten Unternehmen entdecken den Namen, den sie wollen, erst, nachdem ihn jemand anderes bereits besitzt.
+Der schwierige Teil der meisten Domain-Upgrades ist selten die Erkenntnis, dass der bessere Name wichtig ist. Es geht darum, den Wechsel sicher durchzuführen: die neue Domain zu sichern, das Eigentum nachzuweisen, die Kontrolle zu übertragen, ohne die Live-Website zu beschädigen, und sicherzustellen, dass das Asset nicht fragil und undokumentiert im [Registrar](/de/glossary/registrar/)-Konto eines Gründers liegt, während das chaotischste Jahr des Unternehmens läuft. Airbnb hatte das Glück, seine [kurze Domain](/de/glossary/short-domain/) früh registriert zu haben — aber die meisten Unternehmen entdecken den Namen, den sie wollen, erst, nachdem ihn jemand anderes bereits besitzt.
 
 [Namefi](https://namefi.io) basiert auf der Idee, dass Domains sich wie internet-native Assets verhalten sollten. Tokenisiertes Eigentum kann die Domain-Kontrolle einfacher zu verifizieren, zu übertragen und in moderne Workflows zu integrieren machen, während es DNS-kompatibel bleibt — und so den unübersichtlichsten Teil eines Rebrandings, den Nachweis, wem was gehört und die saubere Übertragung, zu etwas näher an einer prüfbaren Transaktion macht.
 
@@ -137,7 +137,7 @@ Airbnb.com wirkt heute unvermeidlich, weil Airbnb enorm wurde. Aber die Lektion 
 - TechCrunch — [What's For Breakfast At Your House: Obama O's or Cap'n McCain's?](https://techcrunch.com/2008/10/09/whats-for-breakfast-at-your-house-obama-os-or-capn-mccains/#:~:text=peer%2Dto%2Dpeer%20pad%20crashing%20site%20for%20travelers)
 - AirROI — [Warum heißt Airbnb Airbnb?](https://www.airroi.com/resources/tips-guides/why-is-it-called-airbnb#:~:text=the%20need%20for%20a%20shorter%2C%20catchier%2C%20and%20more%20scalable%20name%20became%20apparent)
 - Hostaway — [Airbnb-Gründer: Brian Chesky, Nathan Blecharczyk und Joe Gebbia](https://www.hostaway.com/blog/airbnb-founders/#:~:text=the%20website%20only%20received%20two%20bookings%2C%20one%20of%20which%20was%20Chesky%20himself)
-- Whois.com — [airbnb.com WHOIS-Eintrag](https://www.whois.com/whois/airbnb.com#:~:text=Registered%20On%3A%202008%2D08%2D05)
+- [Whois](/de/glossary/whois/).com — [airbnb.com WHOIS-Eintrag](https://www.whois.com/whois/airbnb.com#:~:text=Registered%20On%3A%202008%2D08%2D05)
 - iGMS — [Airbnb-Geschichte: Von der Luftmatratze zum Allgemeinbegriff](https://www.igms.com/airbnb-history/)
 - Knowledge at Wharton — [Die Geschichte hinter dem unwahrscheinlichen Aufstieg von Airbnb](https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/the-inside-story-behind-the-unlikely-rise-of-airbnb/)
 - CNBC — [Im Jahr 2009 erhob Airbnb in einer Woche 734 Dollar an Gebühren und kämpfte um die „Ramen-Rentabilität"](https://www.cnbc.com/2020/11/17/airbnb-was-clawing-toward-ramen-profitability.html)

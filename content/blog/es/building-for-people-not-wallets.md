@@ -34,7 +34,7 @@ Henri ve la evolución de la usabilidad en cripto como un viaje por fases. Los p
 
 Para 2025, cree que estos problemas han sido en gran medida solucionados — o al menos controlados. Las tarifas de gas son manejables. La creación y recuperación de billeteras es más fluida. El cuello de botella restante, según él, son las *on-ramps* — el proceso que permite a los usuarios comunes entrar al ecosistema cripto de forma segura e intuitiva.
 
-Una vez que los usuarios puedan entrar fácilmente al ecosistema, el siguiente paso es empoderarlos con herramientas financieras útiles: billeteras con rendimiento, pagos fluidos y aplicaciones basadas en stablecoins que mezclan la familiaridad del Web2 con la capacidad del Web3.
+Una vez que los usuarios puedan entrar fácilmente al ecosistema, el siguiente paso es empoderarlos con herramientas financieras útiles: billeteras con rendimiento, pagos fluidos y aplicaciones basadas en stablecoins que mezclan la familiaridad del Web2 con la capacidad del [Web3](/es/glossary/web3/).
 
 Para Henri, la misión ya no es solo reducir fricción — es convertir la cripto en una infraestructura que la gente use sin siquiera notarlo.
 
@@ -79,7 +79,7 @@ Ese equilibrio — entre comprensión técnica profunda y empatía por el usuari
 
 El recorrido de recaudación de fondos de Privy refleja la misma filosofía que su desarrollo de producto: **moverse rápido cuando el impulso es real**. Con inversores tempranos como Sequoia, el equipo de Henri aprendió a recaudar capital no basándose en proyecciones, sino en progreso.
 
-Construían cuando la energía era alta, iteraban rápido y se mantenían cerca de sus usuarios. Su confianza no provenía de predecir el mercado, sino de estar en movimiento constante — escuchando, construyendo y ajustándose más rápido que cualquiera.
+Construían cuando la energía era alta, iteraban rápido y se mantenían cerca de sus usuarios. Su confianza no provenía de predecir el [mercado](/es/glossary/marketplace/), sino de estar en movimiento constante — escuchando, construyendo y ajustándose más rápido que cualquiera.
 
 ---
 

@@ -19,9 +19,9 @@ Esta publicación explica, con honestidad, cuáles son realmente tus opciones, y
 
 ## Primero, la verdad incómoda
 
-La pérdida de claves criptográficas no es como perder la contraseña de un registrador. No hay un enlace de "olvidé mi contraseña" que te envíe un correo electrónico. Si has perdido la frase semilla, has perdido la billetera, y nadie —ni Namefi, ni Ethereum, ni nadie— puede recuperar la clave privada por ti. Ese es el precio que conlleva la autocustodia.
+La pérdida de claves criptográficas no es como perder la contraseña de un registrador. No hay un enlace de "olvidé mi contraseña" que te envíe un correo electrónico. Si has perdido la [frase semilla](/es/glossary/seed-phrase/), has perdido la billetera, y nadie —ni Namefi, ni [Ethereum](/es/glossary/ethereum/), ni nadie— puede recuperar la [clave privada](/es/glossary/private-key/) por ti. Ese es el precio que conlleva la autocustodia.
 
-La buena noticia: **existen vías de recuperación a nivel de plataforma** además de la capa criptográfica. Los dominios tokenizados tienen un lado fuera de la cadena (*off-chain*, como el registrador / registro DNS) que las plataformas a veces pueden usar para ayudar, dependiendo de la situación.
+La buena noticia: **existen vías de recuperación a nivel de plataforma** además de la capa criptográfica. Los dominios tokenizados tienen un lado fuera de la cadena (*off-chain*, como el registrador / [registro](/es/glossary/registry/) DNS) que las plataformas a veces pueden usar para ayudar, dependiendo de la situación.
 
 La mala noticia: esas vías son limitadas, lentas, a menudo requieren prueba legal de identidad y no se aplican en todos los casos.
 
@@ -31,11 +31,11 @@ Por lo tanto: **la prevención es la estrategia de recuperación.** Hablemos de 
 
 ## Prevención: Configura la capacidad de recuperación *antes* de necesitarla
 
-Haz esto *antes* de tokenizar, o justo después.
+Haz esto *antes* de [tokenizar](/es/glossary/tokenize/), o justo después.
 
 ### 1. Anota tu frase semilla. Dos veces. En papel. O en acero.
 
-La mayor fuente de pérdida permanente son las [frases semilla](/en/glossary/seed-phrase/) que se guardaron en un solo lugar y ese lugar ahora ha desaparecido.
+La mayor fuente de pérdida permanente son las frases semilla que se guardaron en un solo lugar y ese lugar ahora ha desaparecido.
 
 - Escribe las 12 o 24 palabras en papel. Dos veces. En ubicaciones físicas diferentes. (La [especificación BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) define la lista de palabras que usan la mayoría de las billeteras).
 - Para carteras de mayor valor, usa una placa de respaldo de metal. El fuego y el agua no la destruirán.
@@ -43,7 +43,7 @@ La mayor fuente de pérdida permanente son las [frases semilla](/en/glossary/see
 
 ### 2. Usa una billetera de hardware para el almacenamiento
 
-La billetera que usas para *interactuar* con las aplicaciones puede ser una billetera caliente o *hot wallet* (MetaMask, Rabby). La billetera que *almacena* el NFT del dominio a largo plazo debe ser una [**billetera de hardware**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transfiere el NFT a ella después de acuñarlo (*minting*).
+La billetera que usas para *interactuar* con las aplicaciones puede ser una billetera caliente o *hot wallet* (MetaMask, Rabby). La billetera que *almacena* el NFT del dominio a largo plazo debe ser una [**billetera de hardware**](/es/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transfiere el NFT a ella después de acuñarlo (*minting*).
 
 ### 3. Considera una multifirma (multisig) para dominios de alto valor
 
@@ -83,8 +83,8 @@ Transfiere el NFT a una nueva billetera *ahora mismo*, mientras el dispositivo a
 
 Esta es la situación difícil. Criptográficamente, el NFT ahora es inaccesible. Opciones:
 
-1. **Recuperación del lado de la plataforma.** Si la plataforma (por ejemplo, Namefi) tiene una identidad vinculada a tu correo electrónico de registro y KYC (cuando corresponda), es posible que puedas demostrar que eres el registrante y solicitar una remediación gestionada por la plataforma. Esto **no está garantizado**, requiere verificación de identidad y, por lo general, solo se aplica bajo condiciones específicas. Contacta a soporte inmediatamente: cuanto más esperes, más difícil será.
-2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/es/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/es/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/en/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
+1. **Recuperación del lado de la plataforma.** Si la plataforma (por ejemplo, Namefi) tiene una identidad vinculada a tu correo electrónico de registro y KYC (cuando corresponda), es posible que puedas demostrar que eres el [registrante](/es/glossary/registrant/) y solicitar una remediación gestionada por la plataforma. Esto **no está garantizado**, requiere verificación de identidad y, por lo general, solo se aplica bajo condiciones específicas. Contacta a soporte inmediatamente: cuanto más esperes, más difícil será.
+2. **Apelaciones de registro / registrador.** Al ser un dominio real de la [ICANN](/es/glossary/icann/), el registro subyacente todavía existe. Los [registradores](/es/glossary/registrar/) tienen procesos para probar la propiedad (historial [WHOIS / RDAP](/es/glossary/whois/), registros de facturación, identificación gubernamental). Estos son lentos, requieren mucho papeleo y no son seguros, pero existen.
 3. **Vía legal.** Para dominios de alto valor mantenidos en un contexto corporativo o patrimonial, hay abogados y empresas de recuperación que se especializan en esto. Es costoso, lento y depende del caso.
 
 Lo que nadie puede hacer: usar fuerza bruta para descifrar la clave privada. No confíes en nadie que afirme poder hacerlo.
@@ -94,7 +94,7 @@ Lo que nadie puede hacer: usar fuerza bruta para descifrar la clave privada. No 
 Este es un problema diferente. Es posible que el NFT haya sido transferido a un atacante. Pasos a seguir:
 
 1. **Deja de usar la billetera comprometida.** Transfiere cualquier activo restante inmediatamente.
-2. **Rastrea el movimiento en la cadena (on-chain).** Los exploradores de bloques mostrarán a dónde fue a parar el NFT. Esto es una evidencia.
+2. **Rastrea el movimiento en la cadena ([on-chain](/es/glossary/on-chain/)).** Los exploradores de bloques mostrarán a dónde fue a parar el NFT. Esto es una evidencia.
 3. **Notifica a la plataforma.** Es posible que puedan marcar la dirección por su parte, evitar actualizaciones a nivel del registrador o coordinar con los mercados (*marketplaces*) para eliminar el dominio de sus listas.
 4. **Presenta una denuncia policial y contacta a un abogado.** Un robo es un robo. La capa legal es importante aquí, porque el dominio también es un activo real registrado, no solo un NFT.
 5. **Coordina con los mercados.** OpenSea, Blur, etc. tienen procesos para marcar los NFT robados que pueden prevenir la reventa.
@@ -121,10 +121,10 @@ La desventaja es la carga operativa: cada transferencia / firma requiere coordin
 
 ## Billeteras de recuperación social
 
-Las billeteras de abstracción de cuentas ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) con módulos de recuperación social, cuentas inteligentes [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) te permiten nominar "guardianes" que pueden ayudarte colectivamente a recuperar el acceso. Esto es excelente para personas que no quieren administrar una [multifirma](/es/glossary/multi-sig/) directamente.
+Las billeteras de abstracción de cuentas ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) con módulos de recuperación social, cuentas inteligentes [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) te permiten nominar "guardianes" que pueden ayudarte colectivamente a recuperar el acceso. Esto es excelente para personas que no quieren administrar una multifirma directamente.
 
 Ventajas: indulgentes, fáciles de usar.
-Desventajas: todavía son relativamente nuevas, el conjunto de guardianes tiene que existir y responder realmente, y el código del contrato inteligente en sí es una cosa más en la que confiar.
+Desventajas: todavía son relativamente nuevas, el conjunto de guardianes tiene que existir y responder realmente, y el código del [contrato inteligente](/es/glossary/smart-contract/) en sí es una cosa más en la que confiar.
 
 ---
 

@@ -13,7 +13,7 @@ keywords: ['instagr.am', 'instagram.com', 'Instagram 域名', '域名创意', 'c
 
 这个地址不是拼写错误，也不是重定向技巧。它是一种*域名创意*（domain hack）——域名后缀本身完成了整个单词的拼写。维基百科对这种形式有精确定义：域名创意是[当把域名的两个或多个相邻层级连接起来时，能够暗示某个单词、短语或名称的域名](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name)，并将 Instagram 的案例列为典型：[instagr.am 利用 ccTLD .am（亚美尼亚）拼出了照片分享服务"Instagram"的名称](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name)。
 
-再读一遍。为了拼出自己的品牌名，一家旧金山的图片应用借用了**亚美尼亚**——一个距离大约 7000 英里的国家——的国家代码顶级域名。Instagram 中的"am"在技术上归属于叶里温。
+再读一遍。为了拼出自己的品牌名，一家旧金山的图片应用借用了**亚美尼亚**——一个距离大约 7000 英里的国家——的[国家代码顶级域名](/zh/glossary/cctld/)。Instagram 中的"am"在技术上归属于叶里温。
 
 对于一家在竞争激烈的 App Store 中发布产品的初创公司来说，这个技巧简直是天赐之礼。它简短、精准、读起来像一个完整的单词，而且——最关键的是——当显而易见的地址 Instagram.com 无法获得时，它是*可用的*。
 
@@ -37,7 +37,7 @@ Instagram 脱胎于一次产品转型。Kevin Systrom 和 Mike Krieger 原本在
 
 对于 2010 年的初创公司来说，这种吸引力显而易见：
 
-- **精准无误。** "instagr" + ".am" 读起来就是完整的品牌名，无需任何额外解释——这是未获融资的发布阶段的理想选择。
+- **精准无误。** "instagr" + "[.am](/zh/tld/am/)" 读起来就是完整的品牌名，无需任何额外解释——这是未获融资的发布阶段的理想选择。
 - **简短易传播。** 图片应用的生死取决于链接的传播难易程度。instagr.am 简洁到可以印在名片上、通过短信发送、用于推文。
 - **即时可用。** Instagram.com 已被他人持有，一个全新的应用既没有资金也没有筹码在第一天就将其夺回。
 
@@ -131,7 +131,7 @@ instagr.am 和 Instagram.com 之间相差一个点和两个字母。从战略层
 
 没有人质疑一家叫 Instagram 的公司应该拥有 Instagram.com。困难的部分是围绕这个资产的一切：将精确匹配的 `.com` 从一个停放它的第三方手中夺回，就价格达成一致，通过市场完成干净的控制权转移，以及——多年后——当[卖家的亲属对该交易提出异议](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China)时，还要捍卫真正拥有授权出售的人是谁。一笔 10 万美元的收购演变成了一长串的权属问题。
 
-[Namefi](https://namefi.io) 的建立理念是：域名应该像互联网原生资产一样运作。代币化所有权可以让域名控制权更易于验证、转让，并集成到现代工作流中，同时与 DNS 保持兼容——将此类交易中最混乱的部分（证明谁真正拥有一个名称、就价值达成共识，以及安全转移而无需多年的纸质记录）转变为更接近于干净、可审计的交易。
+[Namefi](https://namefi.io) 的建立理念是：域名应该像[互联网原生资产](/zh/glossary/internet-native-asset/)一样运作。代币化所有权可以让域名控制权更易于验证、转让，并集成到现代工作流中，同时与 DNS 保持兼容——将此类交易中最混乱的部分（证明谁真正拥有一个名称、就价值达成共识，以及安全转移而无需多年的纸质记录）转变为更接近于干净、可审计的交易。
 
 Instagram.com 之所以看起来是必然的，是因为 Instagram 变得无比庞大。但这个教训在那个规模到来之前就已成立：一个聪明的域名技巧可以帮你起步，然而当一个名称将要承载整个业务时，域名不是装饰品，也不是可以从外国注册机构*租用*的东西。它是品牌中值得购买、保障和证明你拥有的那一部分。
 

@@ -10,13 +10,13 @@ ogImage: ../../assets/do-multisig-wallets-actually-improve-security-og.jpg
 keywords: ['portefeuille multisig', 'multisignature', 'portefeuille safe', 'gnosis safe', 'gestion des clés', 'auto-conservation', 'signature à seuil', 'récupération sociale', 'namefi']
 ---
 
-Les portefeuilles multisignatures (multisig) — des portefeuilles où M clés sur N doivent signer pour qu'une transaction soit valide — sont généralement présentés comme l'évolution évidente par rapport à un *hot wallet* (portefeuille chaud) à clé unique. La plupart des systèmes de trésorerie des DAO, des plateformes d'échange et des entreprises sérieuses du secteur crypto utilisent une forme ou une autre de multisig (Safe, Squads, Multisig.js, ou des variantes à signature à seuil).
+Les portefeuilles multisignatures (multisig) — des portefeuilles où M clés sur N doivent signer pour qu'une transaction soit valide — sont généralement présentés comme l'évolution évidente par rapport à un *hot wallet* ([portefeuille](/fr/glossary/wallet/) chaud) à clé unique. La plupart des systèmes de trésorerie des DAO, des plateformes d'échange et des entreprises sérieuses du secteur crypto utilisent une forme ou une autre de multisig (Safe, Squads, Multisig.js, ou des variantes à signature à seuil).
 
 Cette réputation est amplement méritée, mais uniquement face à un modèle de menace *spécifique*. Le multisig permet de déjouer certaines des méthodes de vol de fonds les plus courantes, mais s'avère presque inutile contre d'autres. Voici la version honnête : ce pour quoi le multisig est réellement efficace, ses lacunes, et les cas où son adoption peut rendre une configuration *moins* sûre.
 
 ## Ce qu'est le multisig, très brièvement
 
-Dans un multisig 2-sur-3, il existe trois clés privées ; deux d'entre elles doivent signer une transaction pour qu'elle soit exécutée sur la chaîne (*on-chain*). Le portefeuille lui-même est un contrat intelligent (dans l'écosystème Ethereum / EVM) ou un type de sortie multisig natif (sur Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). Le contrat vérifie les signatures puis transmet la transaction.
+Dans un multisig 2-sur-3, il existe trois clés privées ; deux d'entre elles doivent signer une transaction pour qu'elle soit exécutée sur la chaîne (*[on-chain](/fr/glossary/on-chain/)*). Le portefeuille lui-même est un contrat intelligent (dans l'écosystème [Ethereum](/fr/glossary/ethereum/) / EVM) ou un type de sortie multisig natif (sur Bitcoin via [P2SH/P2WSH](https://en.bitcoin.it/wiki/BIP_0016)). Le contrat vérifie les signatures puis transmet la transaction.
 
 L'implémentation la plus utilisée dans les écosystèmes EVM est [Safe](https://safe.global/) (anciennement Gnosis Safe). Sur Solana, [Squads](https://squads.so/) joue le même rôle. Bitcoin possède une longue histoire de prise en charge native du multisig, souvent combinée à des portefeuilles matériels (*hardware wallets*) via des [flux de travail PSBT](https://github.com/bitcoin/bips/blob/master/bip-0174.mediawiki).
 
@@ -26,7 +26,7 @@ Les schémas de signature à seuil (TSS, FROST, MPC) permettent d'obtenir un ré
 
 ### La compromission d'une clé unique
 
-C'est le principal avantage. Si le portefeuille matériel d'un signataire est volé, si son téléphone est infecté par un malware, ou si sa phrase de récupération (*seed phrase*) est divulguée, un attaquant détenant cette seule clé ne peut pas déplacer les fonds. Il lui faut compromettre simultanément au moins M-1 autres clés.
+C'est le principal avantage. Si le portefeuille matériel d'un signataire est volé, si son téléphone est infecté par un malware, ou si sa [phrase de récupération](/fr/glossary/seed-phrase/) (*seed phrase*) est divulguée, un attaquant détenant cette seule clé ne peut pas déplacer les fonds. Il lui faut compromettre simultanément au moins M-1 autres clés.
 
 Pour une configuration 2-sur-3, cela signifie que l'attaquant doit compromettre *deux points d'accès indépendants*, idéalement détenus par des personnes différentes, sur du matériel différent, dans des lieux physiques différents. La probabilité de deux compromissions indépendantes dans le même laps de temps est généralement de plusieurs ordres de grandeur inférieure à celle d'une seule.
 
@@ -48,7 +48,7 @@ C'est la section que la plupart des analyses rapides omettent.
 
 ### Les bugs de contrat intelligent dans le multisig lui-même
 
-Le multisig est un contrat intelligent (*smart contract*). Si le contrat comporte un bug, toute la gestion rigoureuse des clés du monde ne sera d'aucun secours. L'incident lié à un multisig le plus coûteux de l'histoire — le [gel du multisig Parity](https://www.parity.io/blog/security-alert/) en novembre 2017 — était dû à un bug de contrat, et non à la compromission d'une clé. Environ 150 millions de dollars en ETH ont été rendus définitivement inaccessibles par une seule transaction.
+Le multisig est un contrat intelligent (*[smart contract](/fr/glossary/smart-contract/)*). Si le contrat comporte un bug, toute la gestion rigoureuse des clés du monde ne sera d'aucun secours. L'incident lié à un multisig le plus coûteux de l'histoire — le [gel du multisig Parity](https://www.parity.io/blog/security-alert/) en novembre 2017 — était dû à un bug de contrat, et non à la compromission d'une clé. Environ 150 millions de dollars en ETH ont été rendus définitivement inaccessibles par une seule transaction.
 
 De nos jours, Safe est l'un des contrats les plus audités sur Ethereum et a fait ses preuves, mais le principe demeure : vous échangez « une clé privée à protéger » contre « un contrat intelligent à qui faire confiance ». Cette confiance doit être gagnée et regagnée au fil du temps et des audits.
 
@@ -108,7 +108,7 @@ Cela requiert bien plus de discipline que la plupart des équipes ne l'imaginent
 
 ## Le lien avec les noms de domaine
 
-La gestion des noms de domaine offre l'une des analogies les plus parlantes au multisig dans le monde hors chaîne (*off-chain*). Un domaine contrôlé par un compte unique chez un bureau d'enregistrement (*registrar*), protégé par un seul mot de passe, équivaut à un portefeuille à clé unique. Un domaine protégé par un verrouillage du *registrar* + un verrouillage du registre + une authentification à double facteur (2FA) chez le fournisseur DNS + de multiples fournisseurs faisant autorité, constitue, structurellement parlant, un multisig : plusieurs facteurs indépendants doivent tous être compromis avant que le nom de domaine ne puisse être transféré.
+La gestion des noms de domaine offre l'une des analogies les plus parlantes au multisig dans le monde hors chaîne (*off-chain*). Un domaine contrôlé par un compte unique chez un bureau d'enregistrement (*registrar*), protégé par un seul mot de passe, équivaut à un portefeuille à clé unique. Un domaine protégé par un verrouillage du *registrar* + un verrouillage du [registre](/fr/glossary/registry/) + une authentification à double facteur (2FA) chez le fournisseur DNS + de multiples fournisseurs faisant autorité, constitue, structurellement parlant, un multisig : plusieurs facteurs indépendants doivent tous être compromis avant que le nom de domaine ne puisse être transféré.
 
 Namefi va plus loin en matérialisant la propriété sous la forme d'un enregistrement on-chain qui peut être directement détenu dans un portefeuille multisig. Le même mécanisme à seuil qui protège une trésorerie peut désormais protéger le *plan de contrôle DNS* — ainsi, une seule personne victime d'hameçonnage ne peut pas plus perdre le domaine de l'entreprise qu'elle ne peut vider la trésorerie à elle seule. L'amélioration du modèle de menace est identique dans les deux mondes : remplacer « faire confiance à un seul identifiant » par « compromettre M facteurs indépendants sur N ».
 

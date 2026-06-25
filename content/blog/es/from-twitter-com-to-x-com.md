@@ -21,7 +21,7 @@ En julio de 2023, nueve meses después de comprar la empresa [por 44.000 millone
 
 Al principio, no había ningún problema de dominio que resolver.
 
-Cuando Twitter se lanzó en 2006, tenía lo que la mayoría de las startups de esta serie pasaron años y millones de dólares persiguiendo: el .com exact-match que coincidía con su nombre. Twitter.com *era* Twitter. El pájaro azul, el verbo "tuitear", el @-reply, el hashtag — todo un vocabulario creció sobre una dirección que no necesitaba explicación. Durante la mayor parte de su vida, Twitter fue el contraejemplo a toda lección de "compra tu exact-match", porque nunca tuvo que hacerlo.
+Cuando Twitter se lanzó en 2006, tenía lo que la mayoría de las startups de esta serie pasaron años y millones de dólares persiguiendo: el [.com](/es/tld/com/) exact-match que coincidía con su nombre. Twitter.com *era* Twitter. El pájaro azul, el verbo "tuitear", el @-reply, el hashtag — todo un vocabulario creció sobre una dirección que no necesitaba explicación. Durante la mayor parte de su vida, Twitter fue el contraejemplo a toda lección de "compra tu exact-match", porque nunca tuvo que hacerlo.
 
 Eso es lo que hace diferente este caso. La presión para cambiar el dominio no vino del producto que superaba el nombre, de la misma manera en que "Motors" superó a Tesla o "Cab" superó a Uber. Vino de un nuevo propietario que ya tenía un nombre diferente en mente — y que había estado esperando con él durante mucho tiempo.
 
@@ -71,7 +71,7 @@ La lección es una que los fundadores raramente internalizan: el dominio que def
 
 ![Ilustración editorial colorida del pájaro azul de Twitter disolviéndose en una marcada X negra en la pantalla de un smartphone, con la barra de URL transformándose de twitter.com a x.com, sobre un collage de "aplicación todo en uno" con burbujas de chat, una tarjeta de pago y un ícono de video](../../assets/from-twitter-com-to-x-com-01-rebrand.jpg)
 
-Reemplazar "Twitter" por "X" no fue una *mejora* de dominio en el sentido habitual de esta serie. Por casi todos los parámetros convencionales, Twitter.com era el mejor dominio de marca: pronunciable, mundialmente famoso, ligado a un verbo que la gente usaba sin pensar. X.com es una sola letra ambigua.
+Reemplazar "Twitter" por "X" no fue una *mejora* de dominio en el sentido habitual de esta serie. Por casi todos los parámetros convencionales, Twitter.com era el mejor [dominio de marca](/es/glossary/brandable-domain/): pronunciable, mundialmente famoso, ligado a un verbo que la gente usaba sin pensar. X.com es una sola letra ambigua.
 
 ¿Entonces por qué hacerlo? Porque Musk no intentaba nombrar una red social. Intentaba nombrar una [aplicación todo en uno](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=buying%20Twitter%20is%20an%20accelerant%20to%20creating%20X%2C%20the%20everything%20app). "Twitter" describe una cosa — mensajes públicos cortos. "X" no describe nada en particular, que es exactamente el punto: es un contenedor sin ningún producto integrado, con espacio suficiente para mensajería, pagos, video y todo lo que quisiera añadir. La misma lógica que llevó a Tesla de "Motors" a "Tesla" opera aquí, solo que de forma más extrema. Musk no intercambió una palabra estrecha por otra ligeramente más amplia. Intercambió una palabra específica y querida por una letra maximalmente genérica.
 

@@ -9,7 +9,7 @@ description: 'Zwischen 2020 und 2022 lebte eine einzelne Bedrohungsakteurgruppe 
 keywords: ['godaddy einbruch', 'godaddy datenpanne', 'managed wordpress breach', 'registrar sicherheit', 'domain sicherheit', 'mehrjähriger einbruch', 'cpanel malware', 'website redirect angriff', 'ssl private key offenlegung', 'sftp passwort breach', 'sec 10-k cybersicherheit', 'registrar konzentrationsrisiko', 'single point of failure']
 ---
 
-Ein Domain-Registrar ist das langweiligste Unternehmen, von dem man jemals vollständig abhängig sein wird.
+Ein Domain-[Registrar](/de/glossary/registrar/) ist das langweiligste Unternehmen, von dem man jemals vollständig abhängig sein wird.
 
 Man bezahlt es einmal im Jahr. Man meldet sich vielleicht zweimal an. Und im Gegenzug hält es das eine, was das eigene Unternehmen erreichbar macht: das Recht zu sagen „dieser Name zeigt hierhin." E-Mail, Website, Login, Zahlungen — jeder digitale Faden, den man besitzt, läuft durch denjenigen, der die DNS der eigenen Domain kontrolliert. Die meisten Menschen denken nach dem Checkout nie wieder an dieses Unternehmen.
 
@@ -55,7 +55,7 @@ Zusammengenommen ergibt das ein Worst-Case-Set. Das Admin-Passwort verschafft Zu
 
 | Was durchgesickert ist | Wer betroffen war | Was es freischaltet |
 | --- | --- | --- |
-| E-Mail + Kundennummer | Bis zu 1,2 Mio. aktive und inaktive Kunden | Gezieltes Phishing, Konto-Mapping |
+| E-Mail + Kundennummer | Bis zu 1,2 Mio. aktive und inaktive Kunden | Gezieltes [Phishing](/de/glossary/phishing/), Konto-Mapping |
 | Ursprüngliches WordPress-Admin-Passwort | Betroffene Kunden (falls noch in Verwendung) | Vollständige Kontrolle über die WordPress-Installation |
 | sFTP + Datenbank-Zugangsdaten | Aktive Kunden | Datei- und datenbankebene Website-Manipulation |
 | Privater SSL-Schlüssel | Eine Teilmenge aktiver Kunden | Site-Imitation, Verkehrs-Entschlüsselung |
@@ -80,7 +80,7 @@ Die Erkennungslücke ist die andere Hälfte der Geschichte. Zweieinhalb Monate b
 
 GoDaddys unmittelbare technische Reaktion auf den Einbruch von 2021 folgte dem Standardvorgehen: Zurücksetzen der offengelegten sFTP- und Datenbankpasswörter und Beginn der Neuausstellung und Installation neuer SSL-Zertifikate für die Kunden, deren private Schlüssel durchgesickert waren. Zur Offenlegung im Februar 2023 erklärte das Unternehmen, es habe externe Forensik-Experten und Strafverfolgungsbehörden eingeschaltet und den Akteur als ausgeklügelte, organisierte Gruppe charakterisiert, die auf Hosting-Anbieter abzielt — kein einsamer Opportunist.
 
-Aber die Reputations- und Regulierungsnachwirkungen überdauerten die Reaktion auf den Vorfall. Die Serie von Einbrüchen zog die Aufmerksamkeit der U.S. Federal Trade Commission auf sich, die 2025 [eine Anordnung mit GoDaddy wegen Datensicherheitsmängeln abschloss](https://www.ftc.gov/news-events/news/press-releases/2025/05/ftc-finalizes-order-godaddy-over-data-security-failures). Darin wurde behauptet, das Unternehmen habe trotz der Vermarktung seiner Dienste mit Sicherheitszusagen keine angemessene Sicherheit implementiert, und es wurde verpflichtet, ein umfassendes Informationssicherheitsprogramm aufzubauen. Ein Einbruch, der mit einem geliehenen Passwort begann, endete Jahre später als bundesbehördliche Einwilligungsanordnung.
+Aber die Reputations- und Regulierungsnachwirkungen überdauerten die Reaktion auf den Vorfall. Die Serie von Einbrüchen zog die Aufmerksamkeit der U.S. Federal Trade Commission auf sich, die 2025 [eine Anordnung mit GoDaddy wegen Datensicherheitsmängeln abschloss](https://www.ftc.gov/news-events/news/press-releases/2025/05/ftc-finalizes-order-godaddy-over-data-security-failures). Darin wurde behauptet, das Unternehmen habe trotz der Vermarktung seiner Dienste mit Sicherheitszusagen keine angemessene [Sicherheit](/de/glossary/collateral/) implementiert, und es wurde verpflichtet, ein umfassendes Informationssicherheitsprogramm aufzubauen. Ein Einbruch, der mit einem geliehenen Passwort begann, endete Jahre später als bundesbehördliche Einwilligungsanordnung.
 
 Die Offenlegungszeitleiste selbst zog Kritik auf sich: Die mehrjährige Rahmung wurde erst durch eine SEC-10-K-Einreichung im Februar 2023 öffentlich, was bedeutete, dass Kunden lange nach der individuellen Meldung jedes Vorfalls erfuhren, dass die Vorfälle von 2020, 2021 und 2022 miteinander zusammenhingen.
 

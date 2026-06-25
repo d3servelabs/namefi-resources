@@ -104,7 +104,7 @@ El dominio principal de una empresa aparece en lugares que el equipo de marketin
 
 Cada una de esas repeticiones añade fricción o la elimina. AirBedAndBreakfast.com hacía cada mención más larga, más difícil de escribir y sutilmente incorrecta — seguía insistiendo en que el producto era sobre colchones de aire. Airbnb.com hizo cada mención corta, pronunciable y libre de categoría. Multiplica eso por millones de anfitriones y cientos de millones de huéspedes, y el cambio de nombre deja de parecer un ajuste de marca de 2009 y comienza a parecer una reducción permanente de la resistencia.
 
-El dominio no construyó el mercado de Airbnb. Pero una vez que Airbnb.com fue la dirección, cada repetición futura del nombre se acumuló sobre una base más limpia.
+El dominio no construyó el [mercado](/es/glossary/marketplace/) de Airbnb. Pero una vez que Airbnb.com fue la dirección, cada repetición futura del nombre se acumuló sobre una base más limpia.
 
 ## Lo que los fundadores deberían aprender del Caso 15
 
@@ -123,7 +123,7 @@ La actualización del dominio no hizo que Airbnb ganara. El producto, el diseño
 
 El cambio de nombre de Airbnb fue, en esencia, una decisión de activo disfrazada de decisión de marca.
 
-La parte difícil de la mayoría de las actualizaciones de dominio rara vez es decidir que el mejor nombre importa. Es ejecutar el movimiento de forma segura: asegurar el nuevo dominio, demostrar la propiedad, transferir el control sin romper el sitio activo y asegurarse de que el activo no quede frágil y sin documentar dentro de la cuenta del registrador de un fundador durante el año más caótico de la vida de la empresa. Airbnb tuvo la suerte de haber registrado su dominio corto con anticipación — pero la mayoría de las empresas descubren el nombre que quieren solo después de que alguien más ya lo posee.
+La parte difícil de la mayoría de las actualizaciones de dominio rara vez es decidir que el mejor nombre importa. Es ejecutar el movimiento de forma segura: asegurar el nuevo dominio, demostrar la propiedad, transferir el control sin romper el sitio activo y asegurarse de que el activo no quede frágil y sin documentar dentro de la cuenta del [registrador](/es/glossary/registrar/) de un fundador durante el año más caótico de la vida de la empresa. Airbnb tuvo la suerte de haber registrado su [dominio corto](/es/glossary/short-domain/) con anticipación — pero la mayoría de las empresas descubren el nombre que quieren solo después de que alguien más ya lo posee.
 
 [Namefi](https://namefi.io) está construido en torno a la idea de que los dominios deberían comportarse como activos nativos de internet. La propiedad tokenizada puede hacer que el control del dominio sea más fácil de verificar, transferir e integrar en flujos de trabajo modernos mientras se mantiene compatible con DNS — convirtiendo la parte más complicada de un rebranding, demostrar quién posee qué y moverlo limpiamente, en algo más parecido a una transacción auditable.
 
@@ -137,7 +137,7 @@ Airbnb.com parece inevitable ahora porque Airbnb se volvió enorme. Pero la lecc
 - TechCrunch — [What's For Breakfast At Your House: Obama O's or Cap'n McCain's?](https://techcrunch.com/2008/10/09/whats-for-breakfast-at-your-house-obama-os-or-capn-mccains/#:~:text=peer%2Dto%2Dpeer%20pad%20crashing%20site%20for%20travelers)
 - AirROI — [¿Por qué se llama Airbnb?](https://www.airroi.com/resources/tips-guides/why-is-it-called-airbnb#:~:text=the%20need%20for%20a%20shorter%2C%20catchier%2C%20and%20more%20scalable%20name%20became%20apparent)
 - Hostaway — [Fundadores de Airbnb: Brian Chesky, Nathan Blecharczyk y Joe Gebbia](https://www.hostaway.com/blog/airbnb-founders/#:~:text=the%20website%20only%20received%20two%20bookings%2C%20one%20of%20which%20was%20Chesky%20himself)
-- Whois.com — [Registro WHOIS de airbnb.com](https://www.whois.com/whois/airbnb.com#:~:text=Registered%20On%3A%202008%2D08%2D05)
+- [Whois](/es/glossary/whois/).com — [Registro WHOIS de airbnb.com](https://www.whois.com/whois/airbnb.com#:~:text=Registered%20On%3A%202008%2D08%2D05)
 - iGMS — [Historia de Airbnb: De colchón de aire a nombre familiar](https://www.igms.com/airbnb-history/)
 - Knowledge at Wharton — [La historia detrás del improbable ascenso de Airbnb](https://knowledge.wharton.upenn.edu/podcast/knowledge-at-wharton-podcast/the-inside-story-behind-the-unlikely-rise-of-airbnb/)
 - CNBC — [In 2009, Airbnb collected $734 in fees in a week, and was clawing toward 'ramen profitability'](https://www.cnbc.com/2020/11/17/airbnb-was-clawing-toward-ramen-profitability.html)

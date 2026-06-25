@@ -45,13 +45,13 @@ keywords: ['snapchat.com', 'snap.com', 'snap inc', 'snap 域名', '域名升级'
 
 与 Tesla.com 那段漫长而高调的十年争夺不同，Snap.com 的收购在当时几乎无声无息。没有新闻稿，没有创始人的推文，也没有经过确认的价格。整个故事必须靠逆向工程还原。
 
-该域名的前任持有者是 **Idealab**——Bill Gross 经营多年的科技孵化器，多年来一直持有 Snap.com。域名研究人员通过公开的 WHOIS 记录追溯了这次易主：[根据 DomainTools 的 WHOIS 历史记录，Snap.com 于 2014 年 11 月中旬从 Idealab 转出](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=According%20to%20the%20WHOIS%20history%20at%20DomainTools%2C%20Snap.com%20changed%20from%20Idealab%20in%20mid-November%20of%202014)，随即转入隐私保护，再进入企业注册商账户——这是一家不想泄露意图的公司悄然完成收购的经典指纹。
+该域名的前任持有者是 **Idealab**——Bill Gross 经营多年的科技孵化器，多年来一直持有 Snap.com。域名研究人员通过公开的 [WHOIS](/zh/glossary/whois/) 记录追溯了这次易主：[根据 DomainTools 的 WHOIS 历史记录，Snap.com 于 2014 年 11 月中旬从 Idealab 转出](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=According%20to%20the%20WHOIS%20history%20at%20DomainTools%2C%20Snap.com%20changed%20from%20Idealab%20in%20mid-November%20of%202014)，随即转入隐私保护，再进入企业注册商账户——这是一家不想泄露意图的公司悄然完成收购的经典指纹。
 
 价格浮出水面，是在 Snap 提交 IPO 文件之后。财务报表中一个与域名相关的摊销条目，立刻被域名投资者识别出来。正如分析所指出的：[财务数据中有一个与域名相关的 500 万美元数字，很难想象公司还有其他域名采购能达到这一规模。](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=There%20is%20a%20%245%20million%20number%20for%20domain%20names%2C%20can%27t%20imagine%20any%20other%20domain%20purchases%20by%20the%20company%20that%20would%20account%20for%20this%20number) 摊销时间表与一笔单次大额收购高度吻合：[这与 2014 年 11 月/12 月的一笔 500 万美元交易几乎完全吻合。](https://www.thedomains.com/2017/02/02/snap-pay-5million-snap-com/#:~:text=this%20lines%20up%20almost%20perfectly%20with%20a%20single%20%245%20million%20deal%20in%20November%2FDecember%202014)
 
 在这里有必要精确说明，因为严谨性至关重要：**Snap 从未公开确认 Snap.com 的收购价格。** 500 万美元这一数字，是基于 SEC 文件中摊销计算与 WHOIS 时间节点所做出的有据可查的推断，并非官方公布的数字。这个故事的诚实版本是：对公开记录的仔细解读强烈指向 2014 年 11 月前后向 Idealab 支付了约 500 万美元——而 Snap 方面从未有人在公开场合作出过不同的表述。
 
-这同样是一种规律。许多最重要的域名交易，都是买家在资产锁定之前最努力保持沉默的那些。
+这同样是一种规律。许多最重要的[域名交易](/zh/glossary/domain-trading/)，都是买家在资产锁定之前最努力保持沉默的那些。
 
 ## 彼时的 500 万，意义迥然不同
 
@@ -109,7 +109,7 @@ Snapchat.com 与 Snap.com 之间，只差一个音节。而在战略上，这是
 
 ## 创始人应从案例 12 中学到什么
 
-那个简单的结论——"买下你的简短 .com"——忽略了更有价值的底层逻辑。Snap 的教训关乎的是*顺序与静默时机*：
+那个简单的结论——"买下你的简短 [.com](/zh/tld/com/)"——忽略了更有价值的底层逻辑。Snap 的教训关乎的是*顺序与静默时机*：
 
 1. **字面、自我描述的域名是一个很好的起点。** Snapchat.com 与应用完美匹配，让产品通过口耳相传得以传播。一个描述性的名字是一个入口，而不是一种失败。
 2. **留意产品名称何时成为公司的天花板。** 触发升级的信号不是审美，而是战略。一旦"chat"不再能描述野心（硬件、相机、AR），应用名称就无法同时作为公司名称。
@@ -126,7 +126,7 @@ Snap 的故事，从本质上说是一个静默转让的问题。
 
 战略决策其实从未真正存疑——一家想被称为 Snap 的公司理应拥有 Snap.com。真正困难的，是围绕这项资产的一切：识别出 Idealab 这样的长期持有者掌控着它，私下谈判，在没有公开可比案例的情况下商定价格，转移数百万美元，干净地完成控制权交接——而且这一切都要*悄悄进行*，这样品牌重塑才能按公司自己的时间表公布，而不是被卖家牵着走。价格最终只是通过 SEC 文件被逆向还原才浮出水面，这本身就说明这些交易至今仍是多么不透明、多么依赖人工操作。
 
-[Namefi](https://namefi.io) 正是建立在域名应当像互联网原生资产一样运作的理念之上。代币化所有权可以让域名控制权更易于验证、转让，并与现代工作流集成，同时保持与 DNS 的兼容——将这类交易中最繁琐的环节（证明谁拥有什么、商定条款、安全转移资产）转变为更接近干净、可审计的交易。
+[Namefi](https://namefi.io) 正是建立在域名应当像[互联网原生资产](/zh/glossary/internet-native-asset/)一样运作的理念之上。代币化所有权可以让域名控制权更易于验证、转让，并与现代工作流集成，同时保持与 DNS 的兼容——将这类交易中最繁琐的环节（证明谁拥有什么、商定条款、安全转移资产）转变为更接近干净、可审计的交易。
 
 Snap.com 如今看来势在必然，是因为 Snap 成为了一家上市公司。但这个教训在远未达到那种规模之前就已成立：当一个名字将要承载整个公司——而不仅仅是某款产品——时，域名就不是装饰品，它是那个值得在早年悄然买下的品牌资产，如此一来，品牌重塑才能简单地*成为*那个地址。
 

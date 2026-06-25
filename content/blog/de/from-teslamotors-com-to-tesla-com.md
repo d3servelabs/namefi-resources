@@ -13,9 +13,9 @@ In seinen ersten dreizehn Jahren war das wertvollste Autounternehmen des nächst
 
 Der Name war ehrlich. Als das Unternehmen 2003 gegründet wurde, stellte es Autos her – und nur Autos. „Tesla Motors" beschrieb genau, was es war, und TeslaMotors.com beschrieb genau, wo man es finden konnte. Das zusätzliche Wort leistete echte Arbeit: Es verriet, dass dies ein nach Nikola Tesla benannter Autohersteller war – kein Batteriestart-up, kein Energieversorger und auch nicht die Domain, die irgendein anderer „Tesla" seit den frühen Tagen des Webs besetzt hielt.
 
-Denn jemand anderes *hatte* Tesla.com tatsächlich besetzt. Die exakt passende Domain gehörte Stuart Grossman, einem Silicon-Valley-Ingenieur, der sie schon lange vor der Existenz eines Elektroautounternehmens hielt und der sie bereits in einem UDRP-Streit erfolgreich [verteidigt hatte](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/), den ein anderes Unternehmen namens Tesla Industries angestrengt hatte. Tesla Motors konnte nicht einfach nach dem Namen fragen. Es musste ihn kaufen – und der Eigentümer hatte es nicht eilig zu verkaufen.
+Denn jemand anderes *hatte* Tesla.com tatsächlich besetzt. Die exakt passende Domain gehörte Stuart Grossman, einem Silicon-Valley-Ingenieur, der sie schon lange vor der Existenz eines Elektroautounternehmens hielt und der sie bereits in einem [UDRP](/de/glossary/udrp/)-Streit erfolgreich [verteidigt hatte](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/), den ein anderes Unternehmen namens Tesla Industries angestrengt hatte. Tesla Motors konnte nicht einfach nach dem Namen fragen. Es musste ihn kaufen – und der Eigentümer hatte es nicht eilig zu verkaufen.
 
-So baute das Unternehmen über mehr als ein Jahrzehnt eine der bekanntesten Marken der Welt auf einer Domain auf, die nicht ganz zur Marke passte.
+So baute das Unternehmen über mehr als ein Jahrzehnt eine der bekanntesten Marken der Welt auf einer Domain auf, die nicht ganz zur [Marke](/de/glossary/trademark/) passte.
 
 Das änderte sich im Februar 2016. Tesla erwarb schließlich **Tesla.com** – und 2018 nannte Elon Musk eine Zahl: **[11 Millionen Dollar](https://domaininvesting.com/elon-musk-on-what-it-took-to-acquire-tesla-com/)** und „ein erstaunliches Maß an Aufwand."
 
@@ -55,7 +55,7 @@ Der Grund, warum es zehn Jahre dauerte, liegt darin, dass der Eigentümer nicht 
 
 Stuart Grossman hatte Tesla.com jahrelang gehalten, durch mindestens eine Eigentumsanfechtung, und hatte kein kommerzielles Projekt, das darauf aufbaute. Das ist die schwierigste Art von Gegenpartei in einer Domain-Verhandlung: kein Flipper, der einen schnellen Ausstieg sucht, sondern ein Langzeithalter, der bequem auf unbestimmte Zeit „Nein" sagen kann. Gegen jemanden, der nicht zu gewinnen versucht, gibt es keinen Hebel.
 
-Was den Deal schließlich ins Rollen brachte, war nicht Druck, sondern Erschöpfung. Grossman beschrieb die Domain am Ende als mehr Last denn Vermögenswert – zu einem Zeitpunkt [ging eine Welle von Spam mit tesla.com als gefälschter Absenderadresse aus](https://jamesnames.com/2021/08/case-study-why-musk-acquired-tesla-com-for-11-million/), die Art von Kopfschmerzen, die eine ruhende Premium-Domain leise erzeugen kann. Wie er in einem Interview von 2016 erklärte, erkannte er, dass er den Namen nie produktiv nutzen würde, und [er wurde zur Last](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/).
+Was den Deal schließlich ins Rollen brachte, war nicht Druck, sondern Erschöpfung. Grossman beschrieb die Domain am Ende als mehr Last denn Vermögenswert – zu einem Zeitpunkt [ging eine Welle von Spam mit tesla.com als gefälschter Absenderadresse aus](https://jamesnames.com/2021/08/case-study-why-musk-acquired-tesla-com-for-11-million/), die Art von Kopfschmerzen, die eine ruhende [Premium-Domain](/de/glossary/premium-domain/) leise erzeugen kann. Wie er in einem Interview von 2016 erklärte, erkannte er, dass er den Namen nie produktiv nutzen würde, und [er wurde zur Last](https://electrek.co/2016/02/18/tesla-motors-domain-tesla-com/).
 
 Das ist die unspektakuläre Realität hinter den meisten Rekord-Domain-Verkäufen. Der Käufer hat einen strategischen Bedarf und einen termingebundenen Ehrgeiz. Der Verkäufer hat Zeit. Der Preis ist das, was die Lücke zwischen „Ich muss nicht verkaufen" und „Das ist endlich die Mühe wert" schließt. Für Tesla kostete das Schließen dieser Lücke 11 Millionen Dollar und den größten Teil eines Jahrzehnts.
 
@@ -123,7 +123,7 @@ Die Domain baute Teslas Marke nicht auf. Aber sobald Tesla.com die Adresse war, 
 
 ![Redaktionelles Vier-Schritte-Diagramm für Gründer, die von einer beschreibenden Launch-Domain zu einer exakt passenden Marken-Domain wechseln](../../assets/from-teslamotors-com-to-tesla-com-08-founders-lessons.jpg)
 
-Die einfache Erkenntnis – „Kauf deine exakt passende .com frühzeitig" – ist die falsche. Tesla *konnte* Tesla.com nicht frühzeitig kaufen; der Eigentümer wollte nicht verkaufen. Die nützlicheren Lektionen betreffen Timing und Behandlung:
+Die einfache Erkenntnis – „Kauf deine exakt passende [.com](/de/tld/com/) frühzeitig" – ist die falsche. Tesla *konnte* Tesla.com nicht frühzeitig kaufen; der Eigentümer wollte nicht verkaufen. Die nützlicheren Lektionen betreffen Timing und Behandlung:
 
 1. **Eine beschreibende Domain ist für den Start in Ordnung.** TeslaMotors.com erfüllte seinen Zweck dreizehn Jahre lang und durch einige der wichtigsten Produkteinführungen in der Geschichte des Unternehmens. Ein Zusatz wie „Motors", „App" oder „HQ" ist kein Scheitern; er ist eine vernünftige Auffahrt.
 2. **Achte auf den Moment, in dem der Zusatz zur Decke wird.** Das Signal zum Upgrade ist nicht ästhetisch. Es ist der Moment, wenn dein Name ein kleineres Unternehmen beschreibt, als das, das du gerade wirst. Für Tesla war das die Wende über Autos hinaus.

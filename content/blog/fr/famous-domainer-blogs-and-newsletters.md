@@ -22,7 +22,7 @@ Le blog publié avec le plus de régularité dans le secteur. Elliot est un inve
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos publie fréquemment avec une perspective européenne axée sur les données. Très pertinent sur les changements de politique des registres/registrars, les mouvements de ccTLD et les grandes ventes publiques. Il est souvent le premier à faire émerger des histoires qui échappent aux blogs centrés sur les États-Unis.
+Konstantinos publie fréquemment avec une perspective européenne axée sur les données. Très pertinent sur les changements de politique des registres/registrars, les mouvements de [ccTLD](/fr/glossary/cctld/) et les grandes ventes publiques. Il est souvent le premier à faire émerger des histoires qui échappent aux blogs centrés sur les États-Unis.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 
@@ -30,15 +30,15 @@ Konstantinos publie fréquemment avec une perspective européenne axée sur les 
 
 ### Morgan Linton — [morganlinton.com](https://morganlinton.com/)
 
-Morgan associe l'investissement dans les noms de domaine à la perspective plus large d'un fondateur technologique. Très utile lorsque vous souhaitez vous informer sur les domaines auprès de quelqu'un qui pense également comme un acheteur : ce qui rend un nom réellement précieux pour une startup, et pas seulement pour un revendeur (flipper).
+Morgan associe l'investissement dans les noms de domaine à la perspective plus large d'un fondateur technologique. Très utile lorsque vous souhaitez vous informer sur les domaines auprès de quelqu'un qui pense également comme un acheteur : ce qui rend un nom réellement précieux pour une startup, et pas seulement pour un [revendeur](/fr/glossary/reseller/) (flipper).
 
 ### Jamie Zoch — [DotWeekly.com](https://www.dotweekly.com/)
 
-Un blog de longue date axé sur les tendances d'enregistrement, les nouveaux TLD et les données au niveau du registre. Idéal si vous vous intéressez à la *plomberie* de l'espace de noms : qui enregistre quoi, où, et en quel volume.
+Un blog de longue date axé sur les tendances d'enregistrement, les nouveaux TLD et les données au niveau du [registre](/fr/glossary/registry/). Idéal si vous vous intéressez à la *plomberie* de l'espace de noms : qui enregistre quoi, où, et en quel volume.
 
 ### Shane Cultra — [DomainShane.com](https://domainshane.com/)
 
-Le blog de Shane est l'une des lectures les plus divertissantes de ce milieu : l'investissement dans les noms de domaine vu à travers le prisme d'une personne qui est également propriétaire d'une petite entreprise. Toujours honnête sur ce qui fonctionne ou non dans son propre portefeuille.
+Le blog de Shane est l'une des lectures les plus divertissantes de ce milieu : l'investissement dans les noms de domaine vu à travers le prisme d'une personne qui est également propriétaire d'une petite entreprise. Toujours honnête sur ce qui fonctionne ou non dans son propre [portefeuille](/fr/glossary/wallet/).
 
 ### Mike Mann — [MikeMann.com](https://www.mikemann.com/)
 

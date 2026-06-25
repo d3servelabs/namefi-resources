@@ -11,9 +11,9 @@ keywords: ['myetherwallet', 'bgp hijack', 'dns-hijacking', 'amazon route 53', 'r
 
 Wenn Sie den Namen einer Website in einen Browser eingeben, vertrauen Sie zwei unsichtbaren Systemen, die Ihnen die Wahrheit sagen.
 
-Das erste ist **DNS** — das Telefonbuch des Internets — das einen Namen wie `myetherwallet.com` in eine numerische IP-Adresse umwandelt. Das zweite ist **BGP**, das Border Gateway Protocol, das entscheidet, welchen physischen Weg Ihre Datenpakete nehmen, um diese Adresse zu erreichen. Kaum jemand denkt über eines davon nach. Sie funktionieren einfach, milliardenfach täglich, still und leise.
+Das erste ist **DNS** — das Telefonbuch des Internets — das einen Namen wie `myetherwallet.com` in eine numerische [IP-Adresse](/de/glossary/ip-address/) umwandelt. Das zweite ist **BGP**, das Border Gateway Protocol, das entscheidet, welchen physischen Weg Ihre Datenpakete nehmen, um diese Adresse zu erreichen. Kaum jemand denkt über eines davon nach. Sie funktionieren einfach, milliardenfach täglich, still und leise.
 
-Am Morgen des **24. April 2018** logen beide gleichzeitig. Für etwa zwei Stunden wurde jeder, der `myetherwallet.com` eintippte und eine Browserwarnung wegklickte, zu einem Phishing-Klon weitergeleitet, der auf einem Server lief, der weit entfernt von dem war, wohin sie zu gehen glaubten. Als das Routing korrigiert wurde, hatten die Angreifer bereits rund **150.000 $ in Ethereum** aus echten Nutzer-Wallets abgezogen.
+Am Morgen des **24. April 2018** logen beide gleichzeitig. Für etwa zwei Stunden wurde jeder, der `myetherwallet.com` eintippte und eine Browserwarnung wegklickte, zu einem [Phishing](/de/glossary/phishing/)-Klon weitergeleitet, der auf einem Server lief, der weit entfernt von dem war, wohin sie zu gehen glaubten. Als das Routing korrigiert wurde, hatten die Angreifer bereits rund **150.000 $ in [Ethereum](/de/glossary/ethereum/)** aus echten Nutzer-Wallets abgezogen.
 
 Was diesen Vorfall zu einem festen Bestandteil von Sicherheits-Lehrplänen macht, ist nicht der Geldbetrag — Krypto-Diebstähle haben ihn seitdem weit in den Schatten gestellt. Es ist der *Mechanismus*. Die Angreifer drangen nie in MyEtherWallets Server ein. Sie erraten kein einziges Passwort. Sie griffen die **Straße** an, nicht das Gebäude — indem sie die Routing-Schicht des Internets kaperten, um DNS selbst zu vergiften.
 
@@ -27,7 +27,7 @@ Hier liegt der Haken. BGP ist von Natur aus ein vertrauensbasiertes System. Wie 
 
 Mit anderen Worten: Wenn ein Netzwerkbetreiber aufsteht und der Welt ankündigt „Datenverkehr für *diese* IP-Adressen soll durch *mich* fließen", hat der Rest des Internets das historisch gesehen einfach geglaubt. In BGP ist ein Tiebreaker für spezifischere Routen eingebaut — wenn zwei Netzwerke dieselben Adressen beanspruchen, gewinnt das, das den *engeren*, spezifischeren Block ankündigt. Genau dieser Tiebreaker ist der Hebel, den ein Angreifer nutzt.
 
-Die Angriffsfläche für jede Domain ist also größer als ihr Registrar, größer als ihr DNS-Anbieter und größer als ihr Web-Host. Sie umfasst das gesamte globale Routing-Geflecht, das Ihre DNS-Anfrage an den richtigen Ort bringt. MyEtherWallet musste das auf die harte Tour lernen.
+Die Angriffsfläche für jede Domain ist also größer als ihr [Registrar](/de/glossary/registrar/), größer als ihr DNS-Anbieter und größer als ihr Web-Host. Sie umfasst das gesamte globale Routing-Geflecht, das Ihre DNS-Anfrage an den richtigen Ort bringt. MyEtherWallet musste das auf die harte Tour lernen.
 
 ## Was Nutzer am 24. April 2018 verloren
 
@@ -39,7 +39,7 @@ Der Betrüger war überzeugend. Er sah aus wie MyEtherWallet, weil er ein nahezu
 
 Die Schadenssumme wird in verschiedenen Quellen leicht unterschiedlich angegeben, aber die Kerngröße ist konsistent. BleepingComputer bezifferte sie auf [215 Ether, zum Zeitpunkt der Transaktion dem Gegenwert von 160.000 $](https://www.bleepingcomputer.com/news/security/hacker-hijacks-dns-server-of-myetherwallet-to-steal-160-000/#:~:text=215%20Ether%2C%20the%20equivalent%20of%20%24160%2C000). CyberScoop berichtete, dass die Diebe [215 Ether stehlen konnten, was zu dem Zeitpunkt etwa 152.000 $ entsprach](https://cyberscoop.com/ether-dns-bgp-amazon-route-53-heist/#:~:text=215%20Ether%2C%20amounting%20to%20about%20%24152%2C000). Help Net Security fasste zusammen, dass Angreifer [rund 150.000 $ in Ethereum stehlen konnten](https://www.helpnetsecurity.com/2018/04/25/myetherwallet-dns-hijacking/#:~:text=approximately%20%24150%2C000%20in%20Ethereum). Dieselben 215 ETH; der Dollarbetrag schwankt nur mit dem Wechselkurs zum Zeitpunkt des Diebstahls.
 
-Das ist die brutale Ökonomie eines Routing-plus-DNS-Angriffs auf eine Krypto-Wallet. Es gibt keine Betrugs-Rückbuchungsabteilung, keine Rückbuchung, keine Bank, die man anrufen kann. Sobald private Schlüssel in den Klon eines Angreifers eingegeben und Gelder on-chain bewegt wurden, sind sie weg.
+Das ist die brutale Ökonomie eines Routing-plus-DNS-Angriffs auf eine Krypto-[Wallet](/de/glossary/wallet/). Es gibt keine Betrugs-Rückbuchungsabteilung, keine Rückbuchung, keine Bank, die man anrufen kann. Sobald private Schlüssel in den Klon eines Angreifers eingegeben und Gelder [on-chain](/de/glossary/on-chain/) bewegt wurden, sind sie weg.
 
 ## Wie es geschah: Route kapern, Antwort vergiften, Klon bereitstellen
 
@@ -67,7 +67,7 @@ MyEtherWallet selbst betonte nachdrücklich, dass seine eigene Infrastruktur nic
 
 Die tiefgreifendere Lösung landete auf der Routing-Ebene. Der Vorfall wurde zu einem der am häufigsten zitierten Argumente für **RPKI** (Resource Public Key Infrastructure) und **ROAs** (Route Origin Authorizations) — kryptografische Einträge, die es Netzwerken ermöglichen, auf überprüfbare Weise zu erklären, welche autonomen Systeme *berechtigt* sind, welche IP-Präfixe anzukündigen. Mit gültigen ROAs an Ort und Stelle kann eine verirrte „Ich übernehme Amazons Adressen"-Ankündigung von einem ISP in Ohio als **RPKI-ungültig** markiert und verworfen werden, anstatt [blind weitergeleitet](https://en.wikipedia.org/wiki/BGP_hijacking#:~:text=blindly%20propagated%20the%20announcements) zu werden. Kentik stellt die Konsequenz direkt fest: Wenn dieselbe Ankündigung heute gegen ein ordnungsgemäß signiertes Präfix gemacht würde, [würde sie als RPKI-ungültig bewertet werden](https://www.kentik.com/blog/bgp-hijacks-targeting-cryptocurrency-services/#:~:text=it%20would%20have%20been%20evaluated%20as%20RPKI-invalid). In den Jahren nach solchen Angriffen beschleunigten große Netzwerke die Veröffentlichung von ROAs genau für diese Art von Route.
 
-Aber die RPKI-Übernahme ist ein globaler, mehrjähriger, freiwilliger Prozess. Die Lehre für alle anderen war einfacher und unmittelbarer: Die Sicherheit Ihrer Domain hängt von Schichten ab, die Sie nicht besitzen und nicht sehen können.
+Aber die RPKI-Übernahme ist ein globaler, mehrjähriger, freiwilliger Prozess. Die Lehre für alle anderen war einfacher und unmittelbarer: Die [Sicherheit](/de/glossary/collateral/) Ihrer Domain hängt von Schichten ab, die Sie nicht besitzen und nicht sehen können.
 
 ## Was das über BGP und DNS als standardmäßig vertrauend lehrt
 
@@ -91,7 +91,7 @@ Einige dauerhafte Erkenntnisse:
 
 ![Bunte Illustration von verifizierbarem, manipulationssicherem Domain-Besitz — eine Domain-Karte, gesichert durch ein grünes Schild, ein grünes Namefi-Token und DNS-Kontinuität](../../assets/the-myetherwallet-bgp-dns-attack-03-namefi-angle.jpg)
 
-Der MyEtherWallet-Angriff ist eine scharfe Erinnerung daran, dass eine Domain keine einzelne Sache ist, die man „besitzt" — es ist ein Stapel von Vertrauensbeziehungen, von denen jede Schicht untergraben werden kann: die Registry, der Registrar, der DNS-Anbieter und das globale Routing-Geflecht, das Anfragen an diesen Anbieter liefert.
+Der MyEtherWallet-Angriff ist eine scharfe Erinnerung daran, dass eine Domain keine einzelne Sache ist, die man „besitzt" — es ist ein Stapel von Vertrauensbeziehungen, von denen jede Schicht untergraben werden kann: die [Registry](/de/glossary/registry/), der Registrar, der DNS-Anbieter und das globale Routing-Geflecht, das Anfragen an diesen Anbieter liefert.
 
 [Namefi](https://namefi.io) ist darauf ausgerichtet, die *Eigentums*-Schicht dieses Stapels überprüfbar und manipulationssicher zu machen. Tokenisierter Domain-Besitz bedeutet, dass die Kontrolle über eine Domain kryptografisch nachgewiesen und auf eine überprüfbare Weise übertragen werden kann, anstatt ausschließlich auf einem Kontopasswort bei einem einzigen Anbieter zu beruhen — während sie dennoch mit DNS kompatibel bleibt. Es behebt für sich allein nicht BGP; nichts auf der Eigentums-Schicht schreibt um, wie das Internet Pakete routet. Aber es greift dieselbe zugrundeliegende Krankheit an, die dieser Vorfall aufdeckte: **Zu viel kritisches Internet-Vertrauen ist implizit, nicht überprüfbar und durch jeden, der die richtige Nachricht fälschen kann, umkehrbar.**
 

@@ -11,13 +11,13 @@ keywords: ['badgerdao hack', 'badgerdao frontend-angriff', 'cloudflare api-schl�
 
 Das Audit war sauber. Die Contracts waren in Ordnung. Das Geld verschwand trotzdem.
 
-In den Tagen rund um den 2. Dezember 2021 verlor BadgerDAO — ein DeFi-Projekt, das darauf ausgerichtet war, Bitcoin in die dezentrale Finanzwelt zu bringen — rund **120 Millionen Dollar** an Nutzervermögen. Es gab keinen Flash-Loan-Trick, keinen Reentrancy-Bug, keinen cleveren mathematischen Exploit gegen die Vaults. Die Smart Contracts taten genau das, wozu sie geschrieben worden waren. Der Angreifer musste sie nicht knacken, weil er sie gar nicht angriff.
+In den Tagen rund um den 2. Dezember 2021 verlor BadgerDAO — ein [DeFi](/de/glossary/defi/)-Projekt, das darauf ausgerichtet war, Bitcoin in die dezentrale Finanzwelt zu bringen — rund **120 Millionen Dollar** an Nutzervermögen. Es gab keinen Flash-Loan-Trick, keinen Reentrancy-Bug, keinen cleveren mathematischen Exploit gegen die Vaults. Die Smart Contracts taten genau das, wozu sie geschrieben worden waren. Der Angreifer musste sie nicht knacken, weil er sie gar nicht angriff.
 
 Er griff die *Website* an.
 
-Jemand hatte heimlich ein bösartiges Skript in das Frontend von app.badger.com eingeschleust. Für jeden Nutzer, der die Seite aufrief, sah sie genauso aus wie die vertraute dApp, die er täglich nutzte. Doch wenn sie mit ihr interagierten, forderte die Seite deren Wallet eine zusätzliche, unsichtbare Berechtigung ab — und sobald sie auf „Approve" klickten, gehörten ihre Token nicht mehr ihnen.
+Jemand hatte heimlich ein bösartiges Skript in das Frontend von app.badger.com eingeschleust. Für jeden Nutzer, der die Seite aufrief, sah sie genauso aus wie die vertraute dApp, die er täglich nutzte. Doch wenn sie mit ihr interagierten, forderte die Seite deren [Wallet](/de/glossary/wallet/) eine zusätzliche, unsichtbare Berechtigung ab — und sobald sie auf „Approve" klickten, gehörten ihre Token nicht mehr ihnen.
 
-Dies ist die Geschichte davon, wie ein Projekt mit auditierten Contracts neunstellige Beträge durch eine einzige eingeschleuste Zeile Frontend-Code verlor — und warum das dauerhaft verändern sollte, wie Sie die Grenzen Ihrer Sicherheit betrachten.
+Dies ist die Geschichte davon, wie ein Projekt mit auditierten Contracts neunstellige Beträge durch eine einzige eingeschleuste Zeile Frontend-Code verlor — und warum das dauerhaft verändern sollte, wie Sie die Grenzen Ihrer [Sicherheit](/de/glossary/collateral/) betrachten.
 
 ## Die beruhigende Lüge: „Die Contracts sind auditiert"
 
@@ -25,9 +25,9 @@ Die Krypto-Kultur hat Nutzer trainiert, vor dem Vertrauen in ein Protokoll eine 
 
 Das ist er nicht.
 
-Ein Audit untersucht den On-Chain-Code: die Vaults, die Token-Logik, die Zugriffskontrollen. Es sagt nichts über den Laptop aus, auf dem ein Entwickler eingeloggt blieb, über die DNS-Einträge, die Ihren Browser irgendwohin leiten, über das CDN vor der Website oder über das JavaScript, das Ihr Browser tatsächlich herunterlädt und ausführt, wenn Sie die dApp besuchen. All das lebt in *Web2* — in Cloud-Konten, API-Schlüsseln und Domain-Infrastruktur — und ist genauso tragend wie das Solidity-Fundament.
+Ein Audit untersucht den [On-Chain](/de/glossary/on-chain/)-Code: die Vaults, die Token-Logik, die Zugriffskontrollen. Es sagt nichts über den Laptop aus, auf dem ein Entwickler eingeloggt blieb, über die DNS-Einträge, die Ihren Browser irgendwohin leiten, über das CDN vor der Website oder über das JavaScript, das Ihr Browser tatsächlich herunterlädt und ausführt, wenn Sie die dApp besuchen. All das lebt in *Web2* — in Cloud-Konten, API-Schlüsseln und Domain-Infrastruktur — und ist genauso tragend wie das Solidity-Fundament.
 
-BadgerDAO ist der deutlichste Beweis für diese Lücke. Wie eine technische Analyse des Vorfalls es nüchtern formuliert: [Aus der Perspektive der Smart Contracts des Projekts war nichts schiefgelaufen](https://www.halborn.com/blog/post/explained-the-badgerdao-hack-december-2021#:~:text=From%20the%20perspective%20of%20the%20project%27s%20smart%20contracts%2C%20nothing%20had%20gone%20wrong), und der Angreifer nutzte lediglich die von Nutzern gewährten Freigaben. Die Blockchain verhielt sich einwandfrei. Die Website log.
+BadgerDAO ist der deutlichste Beweis für diese Lücke. Wie eine technische Analyse des Vorfalls es nüchtern formuliert: [Aus der Perspektive der Smart Contracts des Projekts war nichts schiefgelaufen](https://www.halborn.com/blog/post/explained-the-badgerdao-hack-december-2021#:~:text=From%20the%20perspective%20of%20the%20project%27s%20smart%20contracts%2C%20nothing%20had%20gone%20wrong), und der Angreifer nutzte lediglich die von Nutzern gewährten Freigaben. Die [Blockchain](/de/glossary/blockchain/) verhielt sich einwandfrei. Die Website log.
 
 ## Der Angriff: ein manipuliertes Schaufenster mit sauberem Kassenbon
 
@@ -37,11 +37,11 @@ Stellen Sie sich vor, Sie betreten ein Geschäft, das Sie hundert Mal besucht ha
 
 Genau das ist, im Wesentlichen, BadgerDAO-Nutzern passiert.
 
-Die Einordnung ist hier entscheidend, denn sie macht diesen Vorfall so lehrreich. Wie *Vice* es zusammenfasste, [beinhaltete der Hack keine komplizierten Smart-Contract-Exploits. Stattdessen handelte es sich um einen Frontend-Angriff auf BadgerDAOs Web-Infrastruktur](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — insbesondere auf das Cloudflare-Konto. In ihrer Formulierung war es ein *altmodischer* Web-Angriff auf ein Web3-Ziel.
+Die Einordnung ist hier entscheidend, denn sie macht diesen Vorfall so lehrreich. Wie *Vice* es zusammenfasste, [beinhaltete der Hack keine komplizierten Smart-Contract-Exploits. Stattdessen handelte es sich um einen Frontend-Angriff auf BadgerDAOs Web-Infrastruktur](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — insbesondere auf das Cloudflare-Konto. In ihrer Formulierung war es ein *altmodischer* Web-Angriff auf ein [Web3](/de/glossary/web3/)-Ziel.
 
 Der Mechanismus war elegant und unauffällig. Das bösartige Skript bat die Wallet des Nutzers darum, der Adresse des Angreifers eine Token-Ausgabegenehmigung zu erteilen. In Vices Worten [hat das bösartige Skript Menschen im Grunde dazu verleitet, der Adresse das Recht zu geben, die Token an die Exploit-Adresse zu senden](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=The%20malicious%20script%20basically%20tricked%20people%20into%20giving). Der Nutzer glaubte, normale dApp-Geschäfte zu erledigen. Er unterschrieb in Wirklichkeit die Schlüssel zu seinen Token weg.
 
-Sicherheitsforscher nennen dieses Muster *Ice Phishing*: Anstatt Ihren privaten Schlüssel zu stehlen, werden Sie dazu verleitet, freiwillig einen bösartigen Ausgeber zu genehmigen. Die Signatur ist echt. Die Freigabe ist echt. Die On-Chain-Transaktion ist gültig. Genau deshalb ist es so gefährlich — und deshalb hätte kein Contract-Audit es verhindern können.
+Sicherheitsforscher nennen dieses Muster *Ice [Phishing](/de/glossary/phishing/)*: Anstatt Ihren privaten Schlüssel zu stehlen, werden Sie dazu verleitet, freiwillig einen bösartigen Ausgeber zu genehmigen. Die Signatur ist echt. Die Freigabe ist echt. Die On-Chain-Transaktion ist gültig. Genau deshalb ist es so gefährlich — und deshalb hätte kein Contract-Audit es verhindern können.
 
 ## Was Nutzer verloren: rund 120 Millionen Dollar, eine Signatur nach der anderen
 
@@ -59,7 +59,7 @@ Das grausamste Detail: Es gab nichts, was ein vorsichtiger Nutzer hätte überpr
 
 ![Lebhaftes, farbiges Konzeptbild einer unsichtbaren Hand, die still und leise eine zusätzliche, leuchtende „Approve"-Schaltfläche in ein Wallet-Popup einfügt, während die echte Benutzeroberfläche ruhig und vertrauenswürdig wirkt — eine einzelne bösartige Codezeile schleicht sich in eine freundliche Webseite ein](../../assets/the-badgerdao-frontend-attack-02-injected-script.jpg)
 
-Die Eingangstür, die der Angreifer benutzte, war kein Smart Contract. Es war ein Cloud-Konto.
+Die Eingangstür, die der Angreifer benutzte, war kein [Smart Contract](/de/glossary/smart-contract/). Es war ein Cloud-Konto.
 
 BadgerDAO befand sich, wie ein erheblicher Teil des modernen Webs, hinter Cloudflare — der Content-Delivery- und Edge-Compute-Schicht, die Websites ausliefert und beschleunigt. Die Kontrolle über dieses Konto bedeutete die Kontrolle darüber, welchen Code BadgerDAOs Website an Besucher auslieferte. Und der Angreifer erlangte diese Kontrolle durch einen gestohlenen Schlüssel.
 
@@ -77,7 +77,7 @@ Die vollständige Angriffskette sah also so aus: Eine Schwachstelle bei der Clou
 
 Als die Entnahme-Transaktionen in den frühen Stunden des 2. Dezember in großem Umfang auftraten, wurde der On-Chain-Fußabdruck schließlich unmöglich zu übersehen, und BadgerDAO handelte schnell — und nutzte seine Smart Contracts, um ein Problem zu stoppen, das vollständig außerhalb der Blockchain entstanden war.
 
-Das Team bestätigte den Vorfall öffentlich und, so CryptoBriefing, bestätigte, dass [alle Smart Contracts pausiert wurden, um weitere Abhebungen zu verhindern](https://cryptobriefing.com/120m-lost-badgerdao-defi-hack/). Da Badgers Vaults über eine Pause-Funktion verfügten, unterbrach das Einfrieren von Transfers die Möglichkeit des Angreifers, frisch genehmigte Gelder weiterzubewegen. Ein technischer Bericht beschreibt den Halt als die Ausübung der Befugnis des Teams, alle Aufrufe der `transferFrom`-Funktion einzufrieren — genau der ERC-20-Mechanismus, den die bösartigen Freigaben ausnutzten. Diese Pause ist auch der Grund, warum ein erheblicher Teil des Verlustes theoretisch wiedererlangbar war: Einige Vermögenswerte waren vom Angreifer bewegt worden, aber noch nicht vollständig aus Badgers Vaults abgezogen worden, bevor das Einfrieren einsetzte.
+Das Team bestätigte den Vorfall öffentlich und, so CryptoBriefing, bestätigte, dass [alle Smart Contracts pausiert wurden, um weitere Abhebungen zu verhindern](https://cryptobriefing.com/120m-lost-badgerdao-defi-hack/). Da Badgers Vaults über eine Pause-Funktion verfügten, unterbrach das Einfrieren von Transfers die Möglichkeit des Angreifers, frisch genehmigte Gelder weiterzubewegen. Ein technischer Bericht beschreibt den Halt als die Ausübung der Befugnis des Teams, alle Aufrufe der `transferFrom`-Funktion einzufrieren — genau der [ERC-20](/de/glossary/erc-20/)-Mechanismus, den die bösartigen Freigaben ausnutzten. Diese Pause ist auch der Grund, warum ein erheblicher Teil des Verlustes theoretisch wiedererlangbar war: Einige Vermögenswerte waren vom Angreifer bewegt worden, aber noch nicht vollständig aus Badgers Vaults abgezogen worden, bevor das Einfrieren einsetzte.
 
 Auf der Infrastrukturseite war die Bereinigung die ernüchternde Web2-Checkliste eines Zugangsdaten-Einbruchs: die Cloudflare-API-Schlüssel rotieren, das Konto-Passwort ändern, die Multi-Faktor-Authentifizierung härten und jeden Schlüssel auditieren, der nicht hätte existieren sollen. BadgerDAO arbeitete dann mit Mandiant zusammen, um ein technisches Post-Mortem zu untersuchen und zu veröffentlichen, das die Zeitleiste rekonstruiert — die Cloudflare-Konto-Schwachstellen, die in den vorangegangenen Monaten erstellten nicht autorisierten Schlüssel, die Skript-Einschleusung im November und die Entnahme im Dezember.
 
@@ -89,7 +89,7 @@ Die wichtigste Lektion aus BadgerDAO ist eine Grenzkorrektur. Die meisten Teams 
 
 **1. Ihr Frontend ist immer in der Schusslinie.** Der Code, den der Browser eines Nutzers ausführt, ist Teil Ihres Protokolls, unabhängig davon, ob er On-Chain lebt oder nicht. Wenn ein Angreifer kontrolliert, welches JavaScript Ihre Website ausliefert, kontrolliert er die Wallets Ihrer Nutzer — auditierte Contracts hin oder her. Die Website ist nicht „nur die Benutzeroberfläche". Sie ist der Ort, an dem die Zustimmung eingeholt wird.
 
-**2. Ihre Cloud- und Domain-Infrastruktur sind Teil des Vertrags.** Ein Cloudflare-Konto, ein DNS-Anbieter-Login, ein Registrar-Konto, ein CI/CD-Schlüssel — jedes ist ein Pfad, um das umzuschreiben, was Ihre Nutzer sehen. BadgerDAO wurde nicht beim Vault gebrochen; es wurde beim *Konto, das die Website kontrollierte*, gebrochen. Behandeln Sie diese Zugangsdaten mit derselben Paranoia, die Sie einem Deployer-Private-Key vorbehalten.
+**2. Ihre Cloud- und Domain-Infrastruktur sind Teil des Vertrags.** Ein Cloudflare-Konto, ein DNS-Anbieter-Login, ein [Registrar](/de/glossary/registrar/)-Konto, ein CI/CD-Schlüssel — jedes ist ein Pfad, um das umzuschreiben, was Ihre Nutzer sehen. BadgerDAO wurde nicht beim Vault gebrochen; es wurde beim *Konto, das die Website kontrollierte*, gebrochen. Behandeln Sie diese Zugangsdaten mit derselben Paranoia, die Sie einem Deployer-Private-Key vorbehalten.
 
 **3. API-Schlüssel und Konto-Erstellungsabläufe sind echte Angriffsflächen.** Die gesamte Katastrophe hing von einem nicht autorisierten API-Schlüssel ab, der niemals hätte existieren dürfen, ermöglicht durch eine Verifizierungslücke. Inventarisieren Sie jeden Schlüssel. Beschränken Sie deren Geltungsbereich. Rotieren Sie sie. Alarmieren Sie bei neuen. Ein Schlüssel, den Sie vergessen haben, ist ein Schlüssel, den ein Angreifer benutzen kann.
 

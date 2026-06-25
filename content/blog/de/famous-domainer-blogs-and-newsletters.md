@@ -10,7 +10,7 @@ ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['Domainer Blogs', 'Domain-Investing Blogs', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'Domain Newsletter', 'Domain Substack']
 ---
 
-Wenn [Foren](/blog/top-domain-trader-forums) der Ort sind, an dem die Domain-Community *diskutiert*, dann sind individuelle Domainer-Blogs der Ort, an dem die Community *laut nachdenkt*. Die meisten der langjährigen, fundierten Analysen in der Branche – Nachbetrachtungen von Verkäufen, Kritik an Registrar-Richtlinien, Markteinschätzungen – finden auf einer kleinen Anzahl persönlicher Blogs statt, die bereits seit fünfzehn oder zwanzig Jahren betrieben werden.
+Wenn [Foren](/blog/top-domain-trader-forums) der Ort sind, an dem die Domain-Community *diskutiert*, dann sind individuelle Domainer-Blogs der Ort, an dem die Community *laut nachdenkt*. Die meisten der langjährigen, fundierten Analysen in der Branche – Nachbetrachtungen von Verkäufen, Kritik an [Registrar](/de/glossary/registrar/)-Richtlinien, Markteinschätzungen – finden auf einer kleinen Anzahl persönlicher Blogs statt, die bereits seit fünfzehn oder zwanzig Jahren betrieben werden.
 
 Dies ist die Liste, die es wert ist, als Lesezeichen gespeichert zu werden. Sie ist meinungsstark und konzentriert sich auf Personen, die tatsächlich Domains kaufen und verkaufen (und weniger auf Berater oder Registries, die ihre Dienstleistungen vermarkten).
 
@@ -22,7 +22,7 @@ Der am beständigsten publizierende Blog der Branche. Elliot ist ein aktiver Dom
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos postet häufig aus einer europäischen, datengesteuerten Perspektive. Stark bei Änderungen von Registry-/Registrar-Richtlinien, ccTLD-Entwicklungen und großen öffentlichen Verkäufen. Oft ist er der Erste, der Geschichten ans Licht bringt, die den US-zentrierten Blogs entgehen.
+Konstantinos postet häufig aus einer europäischen, datengesteuerten Perspektive. Stark bei Änderungen von [Registry](/de/glossary/registry/)-/Registrar-Richtlinien, [ccTLD](/de/glossary/cctld/)-Entwicklungen und großen öffentlichen Verkäufen. Oft ist er der Erste, der Geschichten ans Licht bringt, die den US-zentrierten Blogs entgehen.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 

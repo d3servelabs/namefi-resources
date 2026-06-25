@@ -72,11 +72,11 @@ La plupart d'entre eux fonctionnent sur invitation et se développent autour de 
 
 ### LinkedIn
 
-Souvent négligé, [LinkedIn](https://www.linkedin.com/) est pourtant de plus en plus utile pour le côté *utilisateur final* des ventes de noms de domaine — les responsables de marque, les fondateurs et les experts en propriété intellectuelle en entreprise qui achètent réellement les noms. Ce n'est pas un endroit pour flâner, mais c'est un endroit stratégique pour trouver des acheteurs.
+Souvent négligé, [LinkedIn](https://www.linkedin.com/) est pourtant de plus en plus utile pour le côté *[utilisateur final](/fr/glossary/end-user/)* des ventes de noms de domaine — les responsables de marque, les fondateurs et les experts en propriété intellectuelle en entreprise qui achètent réellement les noms. Ce n'est pas un endroit pour flâner, mais c'est un endroit stratégique pour trouver des acheteurs.
 
 ## Faire un choix si vous débutez
 
-Si vous souhaitez une seule recommandation : **commencez par NamePros, suivez cinq ou six comptes sérieux sur les noms de domaine sur X, et abonnez-vous à deux ou trois des blogs agrégés par Domaining.com**. Cette combinaison vous donne accès à presque tout ce dont l'industrie parle publiquement, et ce, à peu près dans l'ordre où ces sujets sont abordés — des réactions rapides sur X, des fils de discussion plus approfondis sur NamePros, et des analyses réfléchies sur les blogs.
+Si vous souhaitez une seule recommandation : **commencez par NamePros, suivez cinq ou six comptes sérieux sur les noms de domaine sur X, et abonnez-vous à deux ou trois des blogs agrégés par [Domaining](/fr/glossary/domaining/).com**. Cette combinaison vous donne accès à presque tout ce dont l'industrie parle publiquement, et ce, à peu près dans l'ordre où ces sujets sont abordés — des réactions rapides sur X, des fils de discussion plus approfondis sur NamePros, et des analyses réfléchies sur les blogs.
 
 Vous pourrez y superposer Telegram, Discord, DNForum et les plus petites communautés une fois que vous saurez quel type d'investisseur vous êtes. Essayer d'être présent partout dès le premier jour est le moyen le plus rapide de se noyer.
 

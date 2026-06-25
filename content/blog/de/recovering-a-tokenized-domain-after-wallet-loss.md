@@ -13,13 +13,13 @@ Von allen Dingen, über die sich Menschen vor der [Tokenisierung einer Domain](/
 
 Dieser Beitrag erklärt ehrlich, wie Ihre Optionen tatsächlich aussehen – und wie Sie die Dinge *jetzt* so einrichten, dass der Worst Case behebbar ist.
 
-> **Der Haftungsausschluss (Disclaimer) am Ende gilt für diesen Beitrag ganz besonders.** Die Wiederherstellungsoptionen hängen von der Plattform, der Blockchain, Ihrer Gerichtsbarkeit und den genauen Umständen Ihres Zugriffsverlusts ab. Betrachten Sie nichts in diesem Text als Garantie.
+> **Der Haftungsausschluss (Disclaimer) am Ende gilt für diesen Beitrag ganz besonders.** Die Wiederherstellungsoptionen hängen von der Plattform, der [Blockchain](/de/glossary/blockchain/), Ihrer Gerichtsbarkeit und den genauen Umständen Ihres Zugriffsverlusts ab. Betrachten Sie nichts in diesem Text als Garantie.
 
 ---
 
 ## Die unbequeme Wahrheit zuerst
 
-Der Verlust kryptografischer Schlüssel ist nicht wie der Verlust eines Registrar-Passworts. Es gibt keinen „Passwort vergessen“-Link, der Ihnen eine E-Mail schickt. Wenn Sie die Seed-Phrase verloren haben, haben Sie die Wallet verloren, und niemand – weder Namefi noch Ethereum noch sonst jemand – kann den privaten Schlüssel für Sie wiederherstellen. Das ist der Kompromiss, den die Selbstverwahrung (Self-Custody) mit sich bringt.
+Der Verlust kryptografischer Schlüssel ist nicht wie der Verlust eines Registrar-Passworts. Es gibt keinen „Passwort vergessen“-Link, der Ihnen eine E-Mail schickt. Wenn Sie die [Seed-Phrase](/de/glossary/seed-phrase/) verloren haben, haben Sie die Wallet verloren, und niemand – weder Namefi noch [Ethereum](/de/glossary/ethereum/) noch sonst jemand – kann den privaten Schlüssel für Sie wiederherstellen. Das ist der Kompromiss, den die Selbstverwahrung (Self-Custody) mit sich bringt.
 
 Die gute Nachricht: Zusätzlich zur kryptografischen Ebene **existieren Wiederherstellungswege auf Plattform-Ebene**. Tokenisierte Domains haben eine Off-Chain-Seite (den Registrar / DNS-Eintrag), die Plattformen je nach Situation manchmal nutzen können, um zu helfen.
 
@@ -35,7 +35,7 @@ Erledigen Sie dies *bevor* Sie tokenisieren, oder direkt danach.
 
 ### 1. Schreiben Sie Ihre Seed-Phrase auf. Zweimal. Auf Papier. Oder Stahl.
 
-Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind [Seed-Phrasen](/en/glossary/seed-phrase/), die nur an einem einzigen Ort existierten und dieser Ort nun weg ist.
+Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind Seed-Phrasen, die nur an einem einzigen Ort existierten und dieser Ort nun weg ist.
 
 - Schreiben Sie die 12 oder 24 Wörter auf Papier. Zweimal. An verschiedenen physischen Orten. (Die [BIP-39-Spezifikation](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) definiert die Wortliste, die die meisten Wallets verwenden.)
 - Verwenden Sie für höherwertige Portfolios eine Backup-Platte aus Metall. Feuer und Wasser können ihr nichts anhaben.
@@ -43,11 +43,11 @@ Die mit Abstand häufigste Ursache für einen dauerhaften Verlust sind [Seed-Phr
 
 ### 2. Nutzen Sie eine Hardware-Wallet zur Aufbewahrung
 
-Die Wallet, die Sie verwenden, um mit Apps zu *interagieren*, kann eine Hot Wallet sein (MetaMask, Rabby). Die Wallet, die das Domain-NFT langfristig *hält*, sollte eine [**Hardware-Wallet**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone usw.) sein. Übertragen Sie das NFT nach dem Minten dorthin.
+Die Wallet, die Sie verwenden, um mit Apps zu *interagieren*, kann eine Hot Wallet sein (MetaMask, Rabby). Die Wallet, die das Domain-NFT langfristig *hält*, sollte eine [**Hardware-Wallet**](/de/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone usw.) sein. Übertragen Sie das NFT nach dem Minten dorthin.
 
 ### 3. Ziehen Sie eine Multisig-Wallet für wertvolle Domains in Betracht
 
-Für Domains, die ein Unternehmen repräsentieren – die primäre `.com` Ihres Unternehmens, eine wichtige Marke – ist eine [**Multisig-Wallet**](/de/glossary/multi-sig/) ([Safe](https://safe.global/), ehemals Gnosis Safe) eine hervorragende Wahl. Richten Sie 2-aus-3 oder 3-aus-5 Unterzeichner (Signers) über verschiedene Geräte und Personen hinweg ein. Wenn ein Unterzeichner wegfällt, ist die Domain nicht verloren.
+Für Domains, die ein Unternehmen repräsentieren – die primäre `.com` Ihres Unternehmens, eine wichtige [Marke](/de/glossary/trademark/) – ist eine [**Multisig-Wallet**](/de/glossary/multi-sig/) ([Safe](https://safe.global/), ehemals Gnosis Safe) eine hervorragende Wahl. Richten Sie 2-aus-3 oder 3-aus-5 Unterzeichner (Signers) über verschiedene Geräte und Personen hinweg ein. Wenn ein Unterzeichner wegfällt, ist die Domain nicht verloren.
 
 Stellen Sie sicher, dass Sie tatsächlich verstehen, wie man Multisig-Transaktionen *ausführt*, nicht nur, wie man sie hält. Bei einer Multisig-Wallet, bei der Sie Unterzeichner verloren haben, haben Sie auch die Domain verloren. Üben Sie die Übertragung eines kleinen Tokens, bevor es wirklich darauf ankommt.
 
@@ -83,8 +83,8 @@ Kaufen Sie ein neues Gerät. Stellen Sie es über den Seed wieder her. Der Domai
 
 Das ist der schwierigste Fall. Kryptografisch ist das NFT nun unzugänglich. Ihre Optionen:
 
-1. **Plattformseitige Wiederherstellung.** Wenn die Plattform (z. B. Namefi) über eine kontogebundene Identität verfügt, die mit Ihrer Registrierungs-E-Mail und KYC (sofern anwendbar) verknüpft ist, können Sie möglicherweise beweisen, dass Sie der Registrant sind, und eine von der Plattform verwaltete Fehlerbehebung anfordern. Dies ist **nicht garantiert**, erfordert eine Identitätsprüfung und gilt in der Regel nur unter bestimmten Bedingungen. Kontaktieren Sie den Support sofort – je länger Sie warten, desto schwieriger wird es.
-2. **Einsprüche bei Registry / Registrar.** Da es sich um eine echte [ICANN](/de/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/de/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/en/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
+1. **Plattformseitige Wiederherstellung.** Wenn die Plattform (z. B. Namefi) über eine kontogebundene Identität verfügt, die mit Ihrer Registrierungs-E-Mail und KYC (sofern anwendbar) verknüpft ist, können Sie möglicherweise beweisen, dass Sie der [Registrant](/de/glossary/registrant/) sind, und eine von der Plattform verwaltete Fehlerbehebung anfordern. Dies ist **nicht garantiert**, erfordert eine Identitätsprüfung und gilt in der Regel nur unter bestimmten Bedingungen. Kontaktieren Sie den Support sofort – je länger Sie warten, desto schwieriger wird es.
+2. **Einsprüche bei [Registry](/de/glossary/registry/) / Registrar.** Da es sich um eine echte [ICANN](/de/glossary/icann/)-Domain handelt, existiert der zugrunde liegende Registrierungseintrag noch. [Registrare](/de/glossary/registrar/) haben Prozesse zum Eigentumsnachweis ([WHOIS / RDAP](/de/glossary/whois/)-Historie, Rechnungsbelege, amtliche Ausweise). Diese sind langsam, papierkramlastig und keine sichere Sache – aber es gibt sie.
 3. **Der Rechtsweg.** Für wertvolle Domains, die in einem Unternehmens- oder Nachlasskontext gehalten werden, gibt es Anwälte und Recovery-Firmen, die sich darauf spezialisieren. Teuer, langsam und fallabhängig.
 
 Was niemand tun kann: Den privaten Schlüssel per Brute-Force knacken. Vertrauen Sie niemandem, der behauptet, das zu können.
@@ -94,7 +94,7 @@ Was niemand tun kann: Den privaten Schlüssel per Brute-Force knacken. Vertrauen
 Ein anderes Problem. Das NFT wurde möglicherweise an einen Angreifer übertragen. Schritte:
 
 1. **Hören Sie auf, die kompromittierte Wallet zu nutzen.** Ziehen Sie alle verbleibenden Vermögenswerte sofort ab.
-2. **Verfolgen Sie die On-Chain-Bewegungen.** Block-Explorer zeigen, wohin das NFT gewandert ist. Das ist Ihr Beweismaterial.
+2. **Verfolgen Sie die [On-Chain](/de/glossary/on-chain/)-Bewegungen.** Block-Explorer zeigen, wohin das NFT gewandert ist. Das ist Ihr Beweismaterial.
 3. **Benachrichtigen Sie die Plattform.** Diese kann die Adresse möglicherweise plattformseitig markieren, Updates auf Registrar-Ebene verhindern oder mit Marktplätzen koordinieren, um das NFT aus dem Listing zu nehmen (Delisting).
 4. **Erstatten Sie Anzeige bei der Polizei und kontaktieren Sie einen Anwalt.** Diebstahl ist Diebstahl. Die rechtliche Ebene ist hier von Bedeutung, da die Domain auch ein echtes, registriertes Asset ist und nicht nur ein NFT.
 5. **Koordinieren Sie sich mit Marktplätzen.** OpenSea, Blur usw. haben Prozesse zur Markierung gestohlener NFTs, die einen Weiterverkauf verhindern können.
@@ -121,7 +121,7 @@ Der Nachteil ist der administrative Aufwand: Jede Übertragung / Signatur erford
 
 ## Social Recovery Wallets
 
-Account-Abstraction-Wallets ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) mit Social-Recovery-Modulen, [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Accounts) ermöglichen es Ihnen, „Wächter“ (Guardians) zu ernennen, die Ihnen gemeinsam helfen können, den Zugang wiederherzustellen. Dies ist hervorragend für Personen, die keine [Multisig](/de/glossary/multi-sig/) direkt verwalten möchten.
+Account-Abstraction-Wallets ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) mit Social-Recovery-Modulen, [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) Smart Accounts) ermöglichen es Ihnen, „Wächter“ (Guardians) zu ernennen, die Ihnen gemeinsam helfen können, den Zugang wiederherzustellen. Dies ist hervorragend für Personen, die keine Multisig direkt verwalten möchten.
 
 Vorteile: fehlertolerant, benutzerfreundlich.
 Nachteile: noch relativ neu, die Guardian-Gruppe muss tatsächlich existieren und reagieren, und der Smart-Contract-Code selbst ist eine weitere Komponente, der man vertrauen muss.

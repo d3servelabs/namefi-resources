@@ -20,8 +20,8 @@ Dieser Beitrag ist unser ehrlicher Versuch, darzulegen, wer worin gut ist. Da wi
 Grob gesagt lassen sich die Plattformen in drei Lager einteilen:
 
 1. **Eigentümerorientierte Tokenisierungsdienste.** Sie bringen eine echte ICANN-Domain mit (oder registrieren eine) und die Plattform tokenisiert sie. Beispiele: **Namefi, 3DNS**.
-2. **Protokollschichten und Registry-orientierte Infrastruktur.** Die Plattform entwickelt Standards, Smart Contracts oder Registry-Partnerschaften, auf denen andere Plattformen (und Registrare) aufbauen. Beispiele: **Doma Protocol, D3 Global Inc**.
-3. **Spezialisierte Tools für Verkauf und Liquidität.** Auktionen, Fraktionierung (Fractionalization), Kreditvergabe (Lending) – diese bauen auf tokenisierten Domains auf, anstatt sie selbst zu erzeugen. Beispiele: **GBM** (Auktionen), **Doma Prime** (Liquidität), **Domora** (Fokus auf Fraktionierung).
+2. **Protokollschichten und [Registry](/de/glossary/registry/)-orientierte Infrastruktur.** Die Plattform entwickelt Standards, Smart Contracts oder Registry-Partnerschaften, auf denen andere Plattformen (und Registrare) aufbauen. Beispiele: **Doma Protocol, D3 Global Inc**.
+3. **Spezialisierte Tools für Verkauf und [Liquidität](/de/glossary/domain-liquidity/).** Auktionen, Fraktionierung (Fractionalization), Kreditvergabe (Lending) – diese bauen auf tokenisierten Domains auf, anstatt sie selbst zu erzeugen. Beispiele: **GBM** (Auktionen), **Doma Prime** (Liquidität), **Domora** (Fokus auf Fraktionierung).
 
 Diese Kategorien überschneiden sich. Einige Plattformen decken mehr als eine ab. Aber die erste Frage, die man stellen sollte, lautet: „In welchem Lager befindet sich diese Plattform?“
 
@@ -31,11 +31,11 @@ Diese Kategorien überschneiden sich. Einige Plattformen decken mehr als eine ab
 
 ### Namefi
 
-**Am besten für:** Eigentümer, die eine echte `.com`/`.xyz`/`.io` auf Ethereum oder Base [tokenisiert](/de/glossary/tokenize/) haben möchten, mit breiter Unterstützung für NFT-Marktplätze und [DeFi](/en/glossary/defi/)-Lending sowie einer DNS-Verwaltung, die sich nicht wie ein Rückschritt gegenüber Cloudflare anfühlt.
+**Am besten für:** Eigentümer, die eine echte `.com`/`.xyz`/`.io` auf [Ethereum](/de/glossary/ethereum/) oder Base [tokenisiert](/de/glossary/tokenize/) haben möchten, mit breiter Unterstützung für NFT-Marktplätze und [DeFi](/de/glossary/defi/)-Lending sowie einer DNS-Verwaltung, die sich nicht wie ein Rückschritt gegenüber Cloudflare anfühlt.
 
-**Besonderheiten:** [ICANN](/de/glossary/icann/)-anerkannte Domains über viele [TLDs](/en/glossary/tld/) hinweg, On-Chain-Eigentum über Standard-[NFTs](/de/glossary/nft/) ([ERC-721](/en/glossary/erc-721/), sodass Wallets, Marktplätze und On-Chain-Tools einfach funktionieren), vollständige DNS-Verwaltung inklusive [DNSSEC](/en/glossary/dnssec/), ein in die App integrierter [Marktplatz](/de/glossary/marketplace/) und Integrationen mit On-Chain-Zahlungen ([x402](/en/glossary/x402/)). Multi-Chain. Self-Custody (Selbstverwahrung) vom ersten Tag an.
+**Besonderheiten:** [ICANN](/de/glossary/icann/)-anerkannte Domains über viele [TLDs](/de/glossary/tld/) hinweg, [On-Chain](/de/glossary/on-chain/)-Eigentum über Standard-[NFTs](/de/glossary/nft/) ([ERC-721](/de/glossary/erc-721/), sodass Wallets, Marktplätze und On-Chain-Tools einfach funktionieren), vollständige DNS-Verwaltung inklusive [DNSSEC](/de/glossary/dnssec/), ein in die App integrierter [Marktplatz](/de/glossary/marketplace/) und Integrationen mit On-Chain-Zahlungen ([x402](/de/glossary/x402/)). Multi-Chain. Self-Custody (Selbstverwahrung) vom ersten Tag an.
 
-**Weniger geeignet für:** Personen, die eine brandneue TLD möchten, die sie noch nicht besitzen, oder Personen, die nur einen Web3-nativen Namen wie `name.eth` wollen.
+**Weniger geeignet für:** Personen, die eine brandneue TLD möchten, die sie noch nicht besitzen, oder Personen, die nur einen [Web3](/de/glossary/web3/)-nativen Namen wie `name.eth` wollen.
 
 ### Doma Protocol
 
@@ -92,13 +92,13 @@ Diese Kategorien überschneiden sich. Einige Plattformen decken mehr als eine ab
 Wenn Sie sich zwischen verschiedenen Plattformen entscheiden, werden Ihnen die Marketingseiten nicht verraten, welche die richtige ist. Diese Fragen hingegen schon:
 
 - **TLD-Abdeckung.** Unterstützt die Plattform die spezifischen TLDs, die Ihnen wichtig sind (`.com`, `.io`, `.xyz`, `.art`, ccTLDs wie `.de`/`.uk`)?
-- **Blockchain-Abdeckung.** Ethereum Mainnet, Base, Polygon, andere? Wo lebt das NFT? Auf welcher Chain wird das Gas bezahlt?
+- **[Blockchain](/de/glossary/blockchain/)-Abdeckung.** Ethereum Mainnet, Base, Polygon, andere? Wo lebt das NFT? Auf welcher Chain wird das Gas bezahlt?
 - **NFT-Standards.** Standard ERC-721? Das ist wichtig für die Marktplatz-Kompatibilität (OpenSea, Blur, Magic Eden usw.) und für On-Chain-Lending.
-- **DNS-Verwaltung.** Können Sie das DNS in der Plattform verwalten? Externe Nameserver (Cloudflare, Route53) verwenden? Wird DNSSEC unterstützt?
-- **Lending / Besicherung.** Können Sie die tokenisierte Domain auf bestehenden Geldmärkten beleihen oder nur innerhalb eines plattformspezifischen Silos?
+- **DNS-Verwaltung.** Können Sie das DNS in der Plattform verwalten? Externe [Nameserver](/de/glossary/nameserver/) (Cloudflare, Route53) verwenden? Wird DNSSEC unterstützt?
+- **Lending / Besicherung.** Können Sie die [tokenisierte Domain](/de/glossary/tokenized-domain/) auf bestehenden Geldmärkten beleihen oder nur innerhalb eines plattformspezifischen Silos?
 - **Marktplatz-Kompatibilität.** Werden Blur, OpenSea usw. das Listing anzeigen oder ist es nur auf dem plattforminternen Marktplatz sichtbar?
-- **Verwahrungsmodell (Custody).** Self-Custody (Ihr Wallet, Ihre Schlüssel, Ihre Verantwortung) oder Verwahrung durch die Plattform? Beides hat Vor- und Nachteile.
-- **Verlängerungsprozess.** Wer bezahlt den Registrar? Wie wird die jährliche Verlängerung abgerechnet? Was passiert, wenn Sie nicht mehr zahlen?
+- **Verwahrungsmodell (Custody).** Self-Custody (Ihr [Wallet](/de/glossary/wallet/), Ihre Schlüssel, Ihre Verantwortung) oder Verwahrung durch die Plattform? Beides hat Vor- und Nachteile.
+- **Verlängerungsprozess.** Wer bezahlt den [Registrar](/de/glossary/registrar/)? Wie wird die jährliche Verlängerung abgerechnet? Was passiert, wenn Sie nicht mehr zahlen?
 - **Ausstiegsstrategie.** Wenn Sie jemals *de-tokenisieren* und zu einem normalen Registrar-Setup zurückkehren möchten, ist das möglich?
 - **Gebühren.** Minting-Gebühr, Marktplatz-Gebühr, Transfer-Gebühr, Verlängerungsgebühr, Gas. Rechnen Sie diese für Ihr spezifisches Szenario zusammen, bevor Sie sich binden.
 
@@ -117,7 +117,7 @@ Wenn die Dokumentation einer Plattform in diesen Punkten unklar ist, ist das an 
 | Fraktionierung / Co-Ownership von Premium-Namen | Domora |
 | Web2↔Web3 DNS-Bridging | WebUnited |
 | Vertriebsinfrastruktur im Auktionsstil | GBM |
-| Reine On-Chain-Identität (z. B. `name.eth`) — *andere Kategorie* | [ENS](/en/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
+| Reine On-Chain-Identität (z. B. `name.eth`) — *andere Kategorie* | [ENS](/de/glossary/ens/), [Unstoppable Domains](https://unstoppabledomains.com), [Freename](https://freename.io) |
 
 Die letzte Zeile ist wichtig: **On-Chain-Identitätsnamen wie `.eth` sind eine verwandte Kategorie, aber keine tokenisierten ICANN-Domains.** Sie sind für unterschiedliche Dinge nützlich. Eine genaue Aufschlüsselung finden Sie unter [Tokenized Domain vs Web3 Domain](/de/blog/tokenized-domain-vs-web3-domain/).
 
@@ -130,7 +130,7 @@ Es gibt keine universell „beste“ Plattform. Die richtige Antwort hängt davo
 - Welche TLDs für Sie wichtig sind.
 - Ob Sie Eigentümer, Entwickler oder ein Marktplatz sind.
 - Wie viel Wert Sie auf Self-Custody legen.
-- Ob Sie die Domain als DeFi-Sicherheit nutzen oder einfach nur halten möchten.
+- Ob Sie die Domain als DeFi-[Sicherheit](/de/glossary/collateral/) nutzen oder einfach nur halten möchten.
 - Wie sehr Sie einer einzelnen Plattform vertrauen.
 
 Wir denken natürlich, dass Namefi für viele Eigentümer die richtige Antwort ist. Aber das Beste, was Sie tun können, ist, **mindestens eine neben uns auszuprobieren**. Wenn wir besser sind, werden Sie es nach einem direkten Vergleich wissen. Wenn etwas anderes für Ihren Anwendungsfall besser ist, sollten Sie das nutzen.

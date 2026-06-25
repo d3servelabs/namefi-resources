@@ -23,7 +23,7 @@ La práctica de comprar nombres de dominio a un precio más bajo y luego venderl
 **Ejemplo**: Comprar `TechStartup.com` por $500 y venderlo a una empresa emergente por $5,000.
 
 ### **Dominio Premium**
-Un nombre de dominio que se considera de alto valor debido a su corta longitud, palabras clave comunes o capacidad de marca. Estos dominios pueden alcanzar precios elevados en el mercado, a veces millones de dólares.
+Un nombre de dominio que se considera de alto valor debido a su corta longitud, palabras clave comunes o capacidad de marca. Estos dominios pueden alcanzar precios elevados en el [mercado](/es/glossary/marketplace/), a veces millones de dólares.
 
 **Ejemplo**: `Insurance.com` se vendió por 35,6 millones de dólares, convirtiéndose en una de las ventas de dominio más caras de la historia.
 
@@ -47,7 +47,7 @@ El mercado donde se compran y venden nombres de dominio previamente poseídos. E
 ## **💰 Precios y Ventas**
 
 ### **BIN (Comprar Ahora)**
-Un precio fijo al que un nombre de dominio se lista para su compra inmediata. En lugar de participar en una subasta, el comprador puede optar por pagar el precio BIN listado para adquirir el dominio instantáneamente.
+Un precio fijo al que un nombre de dominio se lista para su [compra inmediata](/es/glossary/buy-it-now/). En lugar de participar en una [subasta](/es/glossary/auction/), el comprador puede optar por pagar el precio BIN listado para adquirir el dominio instantáneamente.
 
 **Ejemplo**: `SmartHome.tech` listado con precio BIN de $2,500 para compra inmediata.
 
@@ -55,7 +55,7 @@ Un precio fijo al que un nombre de dominio se lista para su compra inmediata. En
 La estrategia utilizada por los inversores de dominios para fijar el precio de sus nombres de dominio. Esto puede incluir establecer un precio para una venta rápida, fijar un precio alto para la negociación, o usar el precio BIN para fomentar las compras instantáneas.
 
 **Estrategias**:
-- **Venta Rápida**: Precio 20-30% por debajo del valor de mercado para una liquidez rápida
+- **Venta Rápida**: Precio 20-30% por debajo del valor de mercado para una [liquidez](/es/glossary/domain-liquidity/) rápida
 - **Negociación**: Establecer un precio inicial alto con margen para negociar
 - **Posicionamiento Premium**: Fijar precios a la prima del mercado para dominios de prestigio
 
@@ -67,7 +67,7 @@ Una plataforma o servicio donde los nombres de dominio se venden a través de of
 ### **Servicio de Fideicomiso (Escrow Service)**
 Un servicio de terceros de confianza utilizado para facilitar el intercambio seguro de dinero y la propiedad del dominio durante una venta de dominio. El comprador paga al servicio de fideicomiso y, una vez que el dominio se transfiere, los fondos se liberan al vendedor.
 
-**Servicios Populares**: Escrow.com (recomendado por ICANN), PayPal, Dan.com
+**Servicios Populares**: [Escrow](/es/glossary/escrow/)[.com](/es/tld/com/) (recomendado por [ICANN](/es/glossary/icann/)), PayPal, Dan.com
 
 ---
 
@@ -89,15 +89,15 @@ Un individuo o negocio que compra nombres de dominio al por mayor y los revende 
 ## **⚙️ Términos Técnicos**
 
 ### **TLD (Dominio de Nivel Superior)**
-La parte de un nombre de dominio que viene después del último punto (por ejemplo, .com, .org, .net, .ai, etc.). La elección del TLD puede afectar el valor y la percepción de un nombre de dominio.
+La parte de un nombre de dominio que viene después del último punto (por ejemplo, .com, [.org](/es/tld/org/), [.net](/es/tld/net/), [.ai](/es/tld/ai/), etc.). La elección del TLD puede afectar el valor y la percepción de un nombre de dominio.
 
 **Categorías**:
-- **TLD Genéricos**: .com, .org, .net, .info
-- **TLD de Código de País**: .us, .uk, .de, .cn
-- **Nuevos TLDs**: .ai, .io, .tech, .shop
+- **TLD Genéricos**: .com, .org, .net, [.info](/es/tld/info/)
+- **TLD de Código de País**: [.us](/es/tld/us/), .uk, .de, .cn
+- **Nuevos TLDs**: .ai, [.io](/es/tld/io/), [.tech](/es/tld/tech/), [.shop](/es/tld/shop/)
 
 ### **Subdominio**
-Un dominio que forma parte de un dominio más grande. Por ejemplo, "blog.example.com" es un subdominio de "example.com". Los subdominios se pueden utilizar para organizar diferentes secciones de un sitio web.
+Un dominio que forma parte de un dominio más grande. Por ejemplo, "blog.example.com" es un [subdominio](/es/glossary/subdomain/) de "example.com". Los subdominios se pueden utilizar para organizar diferentes secciones de un sitio web.
 
 **Usos Comunes**: blog.domain.com, shop.domain.com, api.domain.com
 
@@ -107,13 +107,13 @@ El sistema que traduce los nombres de dominio legibles por humanos en direccione
 **Función**: Convierte `namefi.io` a `192.168.1.1` para la comunicación del navegador
 
 ### **WHOIS**
-Un protocolo utilizado para consultar bases de datos que almacenan información de nombres de dominio registrados. WHOIS proporciona detalles como el propietario del dominio, las fechas de registro y la información de contacto.
+Un protocolo utilizado para consultar bases de datos que almacenan información de nombres de dominio registrados. [WHOIS](/es/glossary/whois/) proporciona detalles como el propietario del dominio, las fechas de [registro](/es/glossary/registry/) y la información de contacto.
 
 **Información proporcionada**:
 - Detalles del propietario del dominio
 - Fechas de registro y vencimiento
 - Servidores de nombres
-- Información del registrador
+- Información del [registrador](/es/glossary/registrar/)
 
 ---
 
@@ -168,7 +168,7 @@ La práctica de registrar y mantener un dominio sin desarrollarlo como un sitio 
 ## **📈 Perspectivas del Mercado**
 
 ### **Categorías de Alto Valor**
-- **Tecnología**: Términos de IA, blockchain, fintech
+- **Tecnología**: Términos de IA, [blockchain](/es/glossary/blockchain/), fintech
 - **Salud**: Médico, bienestar, farmacéutico
 - **Finanzas**: Banca, inversión, criptomonedas
 - **Comercio electrónico**: Compras, venta minorista, mercado
@@ -186,14 +186,14 @@ La práctica de registrar y mantener un dominio sin desarrollarlo como un sitio 
 
 ¿Listo para iniciar tu viaje de inversión en dominios o asegurar tu nombre de dominio perfecto?
 
-**[Namefi](https://namefi.io)** es tu registrador acreditado por ICANN de confianza que ofrece:
+**[Namefi](https://namefi.io)** es tu [registrador acreditado por ICANN](/es/glossary/accredited-registrar/) de confianza que ofrece:
 
 - **Precios Competitivos**: Las mejores tarifas para todos los TLD principales
 - **Herramientas Profesionales**: Gestión de cartera y análisis
 - **Soporte Experto**: Orientación para inversores de dominios
 - **Transacciones Seguras**: Plataforma segura de compra y venta
 
-👉 **Visita [namefi.io](https://namefi.io) y comienza a construir tu cartera de dominios hoy mismo.**
+👉 **Visita [namefi.io](https://namefi.io) y comienza a construir tu [cartera de dominios](/es/glossary/domain-portfolio/) hoy mismo.**
 
 Domina estos términos, comprende el mercado y toma decisiones informadas en tu viaje de inversión en dominios. ¡El conocimiento es tu activo más valioso en la industria de los dominios!
 

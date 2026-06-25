@@ -15,13 +15,13 @@ Siebzehn Jahre lang lebte Twitter genau an der Adresse, die man erwarten würde:
 
 Dann wechselte der Eigentümer – und damit auch das Ziel.
 
-Im Juli 2023, neun Monate nach dem Kauf des Unternehmens [für 44 Milliarden Dollar](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), tat Musk etwas, das kein anderer Gründer in dieser Reihe getan hat: Er warf eine einwandfrei funktionierende Exact-Match-Domain weg und ersetzte sie durch eine Ein-Buchstaben-Marke, die er persönlich seit 24 Jahren mit sich trug. Twitter wurde **X**, und die Website begann die lange Migration zu **X.com** – einer Domain, deren Geschichte älter ist als Twitter selbst.
+Im Juli 2023, neun Monate nach dem Kauf des Unternehmens [für 44 Milliarden Dollar](https://www.aljazeera.com/news/2023/7/23/elon-musk-says-he-will-change-twitters-blue-bird-logo-to-an-x#:~:text=Musk%20bought%20the%20social%20media%20platform%20for%20%2444bn%20last%20year), tat Musk etwas, das kein anderer Gründer in dieser Reihe getan hat: Er warf eine einwandfrei funktionierende Exact-Match-Domain weg und ersetzte sie durch eine Ein-Buchstaben-[Marke](/de/glossary/trademark/), die er persönlich seit 24 Jahren mit sich trug. Twitter wurde **X**, und die Website begann die lange Migration zu **X.com** – einer Domain, deren Geschichte älter ist als Twitter selbst.
 
 ## Twitter.com: das seltene Startup, das von Anfang an seinen eigenen Namen trug
 
 Am Anfang gab es kein Domain-Problem zu lösen.
 
-Als Twitter 2006 an den Start ging, hatte es etwas, das die meisten Startups in dieser Reihe jahrelang und für Millionen Dollar gejagt hatten: die Exact-Match-.com, die zu seinem Namen passte. Twitter.com *war* Twitter. Der blaue Vogel, das Verb „to tweet", die @-Antwort, der Hashtag – ein ganzes Vokabular wuchs auf einer Adresse, die keiner Erklärung bedurfte. Der Großteil seines Lebens war Twitter das Gegenbeispiel zu jeder „Kauf dein Exact-Match"-Lektion, denn es musste es nie tun.
+Als Twitter 2006 an den Start ging, hatte es etwas, das die meisten Startups in dieser Reihe jahrelang und für Millionen Dollar gejagt hatten: die Exact-Match-[.com](/de/tld/com/), die zu seinem Namen passte. Twitter.com *war* Twitter. Der blaue Vogel, das Verb „to tweet", die @-Antwort, der Hashtag – ein ganzes Vokabular wuchs auf einer Adresse, die keiner Erklärung bedurfte. Der Großteil seines Lebens war Twitter das Gegenbeispiel zu jeder „Kauf dein Exact-Match"-Lektion, denn es musste es nie tun.
 
 Das ist der Unterschied in diesem Fall. Der Druck, die Domain zu ändern, kam nicht davon, dass das Produkt seinen Namen überwachsen hatte – so wie „Motors" für Tesla oder „Cab" für Uber zu eng wurde. Er kam von einem neuen Eigentümer, der bereits einen anderen Namen im Sinn hatte – und seit sehr langer Zeit darauf gewartet hatte.
 

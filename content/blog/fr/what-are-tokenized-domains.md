@@ -9,7 +9,7 @@ description: "Une introduction en langage clair aux domaines tokenisés et à la
 keywords: ["domaine tokenisé", "domaines tokenisés", "tokeniser un domaine", "tokeniser des domaines", "tokeniser domaine", "tokenisation d'un domaine", "tokenisation de domaines", "tokenisation de domaine", "tokenisation des domaines", "tokenisation de nom de domaine", "comment tokeniser un domaine", "qu'est-ce qu'un domaine tokenisé", "que sont les domaines tokenisés", "domaines NFT", "domaine NFT", "domaines on-chain", "domaine on-chain", "domaines blockchain", "domaine blockchain", "DNS", "domaines ICANN", "domaines web3", "domaine web3", "NFT de domaine", "domaine en tant que NFT", "namefi", "propriété de domaine", "tokenisation d'actif de domaine", "Namefi", "D3", "D3 Global Inc", "D3 Inc", "Doma", "Doma Protocol", "Domora", "WebUnited", "GBM", "GBM Auctions", "ENS", "Ethereum Name Service", "Unstoppable Domains", "Freename", "GoDaddy", "Identity Digital", "Namefi vs ENS", "Namefi vs Unstoppable Domains", "Namefi vs D3", "domaine tokenisé vs ENS", "domaine tokenisé vs domaine web3", "domaine ICANN vs domaine web3", "comparer les plateformes de domaines tokenisés"]
 ---
 
-Vous avez peut-être entendu des expressions telles que "domaine tokenisé", "tokeniser un domaine" ou "tokenisation de domaine" et vous vous êtes demandé ce qu'elles signifiaient réellement. Un domaine tokenisé est-il un nouveau type de domaine ? Un nom exclusivement basé sur la blockchain ? Un remplaçant pour le `.com` ? Et que signifie le fait de *tokeniser* un domaine en premier lieu ?
+Vous avez peut-être entendu des expressions telles que "domaine tokenisé", "[tokeniser](/fr/glossary/tokenize/) un domaine" ou "tokenisation de domaine" et vous vous êtes demandé ce qu'elles signifiaient réellement. Un domaine tokenisé est-il un nouveau type de domaine ? Un nom exclusivement basé sur la [blockchain](/fr/glossary/blockchain/) ? Un remplaçant pour le `.com` ? Et que signifie le fait de *tokeniser* un domaine en premier lieu ?
 
 Cet article répond directement à la question **"quoi"** : ce qu'*est* un domaine tokenisé, ce que *signifie* la tokenisation de domaine, ce que *n'est pas* la tokenisation d'un domaine, et comment tout ce concept se rapporte aux noms de domaine que vous connaissez déjà.
 
@@ -23,7 +23,7 @@ Un **domaine tokenisé** est un [nom de domaine](/fr/blog/what-is-domain/) class
 
 En d'autres termes :
 
-> Un domaine tokenisé est un seul domaine doté de **deux couches de propriété synchronisées** : l'enregistrement traditionnel dans le registre [DNS](/fr/glossary/dns/), *et* un jeton on-chain qui le reflète. **Tokeniser un domaine** consiste à ajouter cette deuxième couche on-chain à un nom de domaine existant ou nouvellement enregistré.
+> Un domaine tokenisé est un seul domaine doté de **deux couches de propriété synchronisées** : l'enregistrement traditionnel dans le [registre](/fr/glossary/registry/) [DNS](/fr/glossary/dns/), *et* un jeton [on-chain](/fr/glossary/on-chain/) qui le reflète. **Tokeniser un domaine** consiste à ajouter cette deuxième couche on-chain à un nom de domaine existant ou nouvellement enregistré.
 
 Lorsque vous transférez le jeton, le domaine sous-jacent suit. Lorsque le domaine expire ou est renouvelé, le jeton reflète cet état.
 
@@ -35,8 +35,8 @@ Il est utile de se représenter un domaine tokenisé comme ayant deux enregistre
 
 | Couche           | Ce que c'est                                          | Qui la maintient                          |
 |------------------|-------------------------------------------------------|-------------------------------------------|
-| DNS / Registre   | L'enregistrement officiel auprès du [bureau d'enregistrement (registrar)](/fr/glossary/registrar/) et du registre | Les [bureaux d'enregistrement](/fr/glossary/registrar/) accrédités par l'[ICANN](/fr/glossary/icann/) |
-| Jeton on-chain   | Un [NFT](/fr/glossary/nft/) dans votre [portefeuille (wallet)](/fr/glossary/wallet/) qui représente la propriété | Un [contrat intelligent (smart contract)](/fr/glossary/smart-contract/) sur une blockchain publique |
+| DNS / Registre   | L'enregistrement officiel auprès du [bureau d'enregistrement (registrar)](/fr/glossary/registrar/) et du registre | Les bureaux d'enregistrement accrédités par l'ICANN |
+| Jeton on-chain   | Un NFT dans votre [portefeuille (wallet)](/fr/glossary/wallet/) qui représente la propriété | Un [contrat intelligent (smart contract)](/fr/glossary/smart-contract/) sur une blockchain publique |
 
 Les deux couches sont maintenues synchronisées par la plateforme de tokenisation de domaine (dans le cas de Namefi, par le protocole Namefi et ses intégrations avec les bureaux d'enregistrement). Chaque fois que nous parlons de *tokeniser un domaine*, de *tokeniser des domaines* ou de la *tokenisation de nom de domaine*, nous parlons d'établir et de maintenir cette relation à deux couches pour un domaine spécifique.
 
@@ -54,7 +54,7 @@ Un domaine tokenisé n'est pas un nom de type `.crypto`, `.eth` ou `.x`. Lorsque
 
 ### Pas la même chose que l'ENS ou les "noms blockchain"
 
-Les noms [ENS](/en/glossary/ens/) (comme `vitalik.eth`) vivent entièrement on-chain et ne se résolvent pas dans le DNS standard sans ponts (bridges) ou résolveurs spéciaux. Les domaines tokenisés, en revanche, sont de **véritables domaines DNS** qui possèdent *également* une représentation on-chain. La tokenisation de domaine ajoute la couche on-chain à un véritable nom DNS ; elle ne remplace pas le DNS par un système de nommage parallèle.
+Les noms [ENS](/fr/glossary/ens/) (comme `vitalik.eth`) vivent entièrement on-chain et ne se résolvent pas dans le DNS standard sans ponts (bridges) ou résolveurs spéciaux. Les domaines tokenisés, en revanche, sont de **véritables domaines DNS** qui possèdent *également* une représentation on-chain. La tokenisation de domaine ajoute la couche on-chain à un véritable nom DNS ; elle ne remplace pas le DNS par un système de nommage parallèle.
 
 | Fonctionnalité                   | Domaine traditionnel | Nom ENS / Blockchain   | Domaine tokenisé |
 |----------------------------------|----------------------|------------------------|------------------|
@@ -66,7 +66,7 @@ Les noms [ENS](/en/glossary/ens/) (comme `vitalik.eth`) vivent entièrement on-c
 
 ### Pas à l'épreuve de la censure ni "en dehors de la loi"
 
-Étant donné que l'actif sous-jacent est un véritable domaine DNS, les domaines tokenisés restent soumis au renouvellement, aux politiques de l'[ICANN](/fr/glossary/icann/), aux litiges [UDRP](/fr/glossary/udrp/) et à la loi en vigueur. Le jeton reflète la propriété ; il n'exempte pas le domaine des règles du monde réel.
+Étant donné que l'actif sous-jacent est un véritable domaine DNS, les domaines tokenisés restent soumis au renouvellement, aux politiques de l'ICANN, aux litiges [UDRP](/fr/glossary/udrp/) et à la loi en vigueur. Le jeton reflète la propriété ; il n'exempte pas le domaine des règles du monde réel.
 
 ---
 
@@ -74,12 +74,12 @@ Les noms [ENS](/en/glossary/ens/) (comme `vitalik.eth`) vivent entièrement on-c
 
 Voici ce qui se passe réellement lorsque vous tokenisez un domaine (ou enregistrez un tout nouveau domaine tokenisé) sur Namefi :
 
-1. **Enregistrement** — Un véritable domaine DNS est enregistré (ou transféré) par l'intermédiaire d'un [bureau d'enregistrement](/fr/glossary/registrar/) accrédité.
-2. **Frappe (Minting)** — Dans le cadre de la tokenisation du domaine, un [NFT](/fr/glossary/nft/) représentant ce domaine est frappé (minted) vers votre [portefeuille](/fr/glossary/wallet/).
+1. **Enregistrement** — Un véritable domaine DNS est enregistré (ou transféré) par l'intermédiaire d'un bureau d'enregistrement accrédité.
+2. **[Frappe](/fr/glossary/minting/) (Minting)** — Dans le cadre de la tokenisation du domaine, un NFT représentant ce domaine est frappé (minted) vers votre portefeuille.
 3. **Synchronisation** — La plateforme maintient la propriété au niveau du DNS alignée avec la propriété on-chain pour chaque domaine tokenisé. Si vous transférez le NFT, l'enregistrement DNS suit.
-4. **Utilisation** — Vous pouvez faire pointer le domaine tokenisé vers un site web, configurer des enregistrements DNS, ou utiliser le NFT dans des applications on-chain (places de marché, identité, [DeFi](/en/glossary/defi/), etc.).
+4. **Utilisation** — Vous pouvez faire pointer le domaine tokenisé vers un site web, configurer des enregistrements DNS, ou utiliser le NFT dans des applications on-chain (places de marché, identité, [DeFi](/fr/glossary/defi/), etc.).
 
-L'expérience pour l'utilisateur final est la suivante : *un seul domaine, deux façons d'interagir avec* — le monde familier du DNS et le monde on-chain programmable que la tokenisation de domaine débloque.
+L'expérience pour l'[utilisateur final](/fr/glossary/end-user/) est la suivante : *un seul domaine, deux façons d'interagir avec* — le monde familier du DNS et le monde on-chain programmable que la tokenisation de domaine débloque.
 
 ---
 
@@ -104,9 +104,9 @@ La tokenisation de domaine n'est plus une expérimentation menée par un seul fo
 
 ### 1. Namefi (c'est nous)
 
-**Approche :** Tokeniser de véritables domaines ICANN (`.com`, `.xyz`, `.io`, `.art`, et bien d'autres) sous forme de NFT tout en gardant la couche DNS pleinement fonctionnelle. Les deux couches sont maintenues synchronisées via des [bureaux d'enregistrement](/fr/glossary/registrar/) accrédités.
+**Approche :** Tokeniser de véritables domaines ICANN (`.com`, `.xyz`, `.io`, `.art`, et bien d'autres) sous forme de NFT tout en gardant la couche DNS pleinement fonctionnelle. Les deux couches sont maintenues synchronisées via des bureaux d'enregistrement accrédités.
 
-**Ce qui distingue Namefi :** Namefi a été la **première plateforme à tokeniser de véritables domaines ICANN sur le réseau principal Ethereum (mainnet), et la première à le faire sur Base**. Comme les domaines tokenisés par Namefi vivent sur Ethereum et Base, ils s'intègrent naturellement avec **la plupart des grandes places de marché NFT et des protocoles de prêt** — OpenSea, Blur, NFTfi, et d'autres — grâce à l'écosystème [DeFi](/en/glossary/defi/) profond et mature d'Ethereum. D'autres plateformes ont fait leurs propres choix réfléchis de blockchain en fonction de leurs objectifs ; Ethereum et Base se trouvent être celles qui offrent aujourd'hui aux utilisateurs de Namefi la plus large compatibilité native avec les outils NFT et DeFi existants.
+**Ce qui distingue Namefi :** Namefi a été la **première plateforme à tokeniser de véritables domaines ICANN sur le réseau principal [Ethereum](/fr/glossary/ethereum/) (mainnet), et la première à le faire sur Base**. Comme les domaines tokenisés par Namefi vivent sur Ethereum et Base, ils s'intègrent naturellement avec **la plupart des grandes places de marché NFT et des protocoles de prêt** — OpenSea, Blur, NFTfi, et d'autres — grâce à l'écosystème DeFi profond et mature d'Ethereum. D'autres plateformes ont fait leurs propres choix réfléchis de blockchain en fonction de leurs objectifs ; Ethereum et Base se trouvent être celles qui offrent aujourd'hui aux utilisateurs de Namefi la plus large compatibilité native avec les outils NFT et DeFi existants.
 
 **Idéal pour :** Les propriétaires qui souhaitent un véritable domaine résolvable dans un navigateur *et* une propriété composable native au portefeuille dans un seul produit, sur la blockchain offrant le plus grand support DeFi et NFT. Visitez [namefi.io](https://namefi.io) pour commencer.
 
@@ -142,24 +142,24 @@ La tokenisation de domaine n'est plus une expérimentation menée par un seul fo
 
 ### 7. Les bureaux d'enregistrement traditionnels explorant la tokenisation
 
-Certains [bureaux d'enregistrement](/fr/glossary/registrar/) et registres historiques de l'ICANN (par ex. [GoDaddy](https://www.godaddy.com), [Identity Digital](https://www.identity.digital)) ont annoncé des initiatives ou des partenariats exploratoires en matière de tokenisation. La couverture et la disponibilité varient considérablement, et l'essentiel de leur activité principale reste l'enregistrement DNS traditionnel exclusif.
+Certains bureaux d'enregistrement et registres historiques de l'ICANN (par ex. [GoDaddy](https://www.godaddy.com), [Identity Digital](https://www.identity.digital)) ont annoncé des initiatives ou des partenariats exploratoires en matière de tokenisation. La couverture et la disponibilité varient considérablement, et l'essentiel de leur activité principale reste l'enregistrement DNS traditionnel exclusif.
 
 ---
 
 ## Une catégorie cousine : ENS, Unstoppable Domains, Freename et les domaines Web3
 
-Une cousine proche des domaines tokenisés est la famille des **domaines Web3** — une catégorie lancée par d'excellents projets comme l'ENS, Unstoppable Domains et Freename. Nous tenons à être clairs sur cette distinction, non pas pour minimiser leur travail (ils ont énormément contribué au nommage et à l'identité on-chain), mais pour aider les lecteurs à choisir le bon outil en fonction de leurs objectifs.
+Une cousine proche des domaines tokenisés est la famille des **domaines [Web3](/fr/glossary/web3/)** — une catégorie lancée par d'excellents projets comme l'ENS, Unstoppable Domains et Freename. Nous tenons à être clairs sur cette distinction, non pas pour minimiser leur travail (ils ont énormément contribué au nommage et à l'identité on-chain), mais pour aider les lecteurs à choisir le bon outil en fonction de leurs objectifs.
 
 Les domaines Web3 ont une conception délibérément différente de celle des domaines ICANN tokenisés. Voici comment les envisager :
 
-- **Un espace de noms différent par conception.** Les domaines Web3 (`.eth`, `.crypto`, `.x`, `.nft` et les TLD créés par les utilisateurs) vivent intentionnellement en dehors de la racine de l'[ICANN](/fr/glossary/icann/), ce qui leur permet d'itérer rapidement et d'expérimenter de nouveaux modèles de nommage. Le compromis est qu'ils se situent à côté de la hiérarchie DNS traditionnelle plutôt qu'à l'intérieur de celle-ci.
+- **Un espace de noms différent par conception.** Les domaines Web3 (`.eth`, `.crypto`, `.x`, `.nft` et les TLD créés par les utilisateurs) vivent intentionnellement en dehors de la racine de l'ICANN, ce qui leur permet d'itérer rapidement et d'expérimenter de nouveaux modèles de nommage. Le compromis est qu'ils se situent à côté de la hiérarchie DNS traditionnelle plutôt qu'à l'intérieur de celle-ci.
 - **La résolution dans les navigateurs et les e-mails nécessite des étapes supplémentaires.** Visiter un domaine Web3 dans un navigateur classique, ou lui envoyer un e-mail, nécessite généralement un résolveur, une extension ou un pont. L'écosystème de portefeuilles, dApps et navigateurs crypto-natifs qui les prennent *réellement* en charge se développe régulièrement — mais la parité avec les navigateurs standard, les serveurs de messagerie, les CDN, les outils de référencement (SEO) et les autorités de certification SSL/TLS est toujours en cours.
 - **De véritables cas d'utilisation inédits natifs au portefeuille.** C'est là que les domaines Web3 excellent : remplacer les longues adresses `0x...` par des noms lisibles par l'humain, simplifier les transferts de jetons, faciliter les connexions aux dApps et servir de primitives d'identité on-chain. Bon nombre de ces modèles n'existaient tout simplement pas avant l'ENS et ses pairs, et les domaines tokenisés s'appuient sur ces idées.
 - **Le profil d'adoption diffère de celui des véritables domaines DNS / ICANN.** Les vrais domaines (également appelés *domaines DNS*, *domaines ICANN* ou *vrais domaines* — par ex. `.com`, `.org`, `.xyz`, `.io`) bénéficient de décennies de support universel sur tous les navigateurs, fournisseurs de messagerie, CDN et autorités de certification. Les domaines Web3 ont une portée impressionnante et croissante au sein de l'écosystème crypto-natif, tandis que l'adoption plus large sur Internet est encore en phase de rattrapage.
 
 Les principales plateformes de domaines Web3, avec une reconnaissance pour la contribution de chacune :
 
-- [ENS](https://ens.domains) — un système de nommage fondamental natif d'Ethereum (`.eth`) et l'une des primitives les plus importantes du Web3. L'ENS offre également des ponts bien pensés vers de vrais noms DNS via [DNSSEC](/en/glossary/dnssec/).
+- [ENS](https://ens.domains) — un système de nommage fondamental natif d'Ethereum (`.eth`) et l'une des primitives les plus importantes du Web3. L'ENS offre également des ponts bien pensés vers de vrais noms DNS via [DNSSEC](/fr/glossary/dnssec/).
 - [Unstoppable Domains](https://unstoppabledomains.com) — un pionnier précoce et influent des noms natifs de la blockchain tels que `.crypto`, `.x` et `.nft`, avec de larges intégrations de portefeuilles et de dApps.
 - [Freename](https://freename.io) — une approche inventive des TLD Web3 et des espaces de noms créés par les utilisateurs.
 

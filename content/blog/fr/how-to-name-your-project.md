@@ -136,7 +136,7 @@ Effectuez les vérifications. Puis faites confiance à celui que vous ne pouvez 
 
 ## Comment Namefi peut vous aider
 
-Nommer et posséder sont les deux moitiés d'une même décision. [Namefi](https://namefi.io) est conçu pour la moitié « puis-je réellement posséder ceci ? » : vérifier la disponibilité du `.com` et des TLD alternatifs, voir **depuis combien de temps un nom est enregistré** et **sur combien d'extensions il s'étend** (votre signal contesté vs. libre), explorer des noms brandables, et — quand vous avez trouvé le bon — sécuriser et même tokeniser la propriété pour que l'actif derrière votre marque vous appartienne de façon vérifiable. Choisissez un nom que vous aimez ; assurez-vous que c'est un nom que vous pouvez détenir.
+Nommer et posséder sont les deux moitiés d'une même décision. [Namefi](https://namefi.io) est conçu pour la moitié « puis-je réellement posséder ceci ? » : vérifier la disponibilité du `.com` et des TLD alternatifs, voir **depuis combien de temps un nom est enregistré** et **sur combien d'extensions il s'étend** (votre signal contesté vs. libre), explorer des noms brandables, et — quand vous avez trouvé le bon — sécuriser et même [tokeniser](/fr/glossary/tokenize/) la propriété pour que l'actif derrière votre marque vous appartienne de façon vérifiable. Choisissez un nom que vous aimez ; assurez-vous que c'est un nom que vous pouvez détenir.
 
 ## Sources et lectures complémentaires
 

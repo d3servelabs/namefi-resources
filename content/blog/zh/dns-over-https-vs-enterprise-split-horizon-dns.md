@@ -28,7 +28,7 @@ DoH 客户端以 HTTPS POST 或 GET 请求的形式发送 DNS 查询，通常发
 
 ## 企业水平分割 DNS (Split-Horizon DNS) 实际上是如何工作的
 
-大多数大型组织都在运行**水平分割 DNS**。同一个域名（如 `vpn.example.corp`、`git.example.com`、`intranet.example.com`），根据查询是来自网络内部还是外部，会被解析到不同的 IP 地址。
+大多数大型组织都在运行**水平分割 DNS**。同一个域名（如 `vpn.example.corp`、`git.example.com`、`intranet.example.com`），根据查询是来自网络内部还是外部，会被解析到不同的 [IP 地址](/zh/glossary/ip-address/)。
 
 在网络内部：
 - 解析器是公司的内部 DNS，通常与 Active Directory 集成。

@@ -15,7 +15,7 @@ Route402 ermöglicht es Ihnen, [x402](https://www.x402.org/) einmalig zu integri
 
 ## x402, einfach erklärt
 
-x402 definiert einen Standard-Handshake für kostenpflichtige Anfragen. Es bietet Clients und Facilitatoren eine gemeinsame Struktur für Verifizierungs- und Abwicklungsabläufe (Verify und Settle), sodass Sie nicht für jeden Anbieter individuellen Verbindungs-Code (Glue-Code) benötigen.
+[x402](/de/glossary/x402/) definiert einen Standard-Handshake für kostenpflichtige Anfragen. Es bietet Clients und Facilitatoren eine gemeinsame Struktur für Verifizierungs- und Abwicklungsabläufe (Verify und Settle), sodass Sie nicht für jeden Anbieter individuellen Verbindungs-Code (Glue-Code) benötigen.
 
 Diese Standardisierung ist großartig. Der schwierige Teil beginnt, wenn Sie mehr als einen Facilitator, ein Netzwerk oder eine Umgebung haben.
 

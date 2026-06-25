@@ -9,7 +9,7 @@ description: "La UDRP explicada para propietarios e inversores de dominios: los 
 keywords: ['udrp', 'qué es la udrp', 'proceso udrp', 'política udrp', 'reclamación udrp', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'disputa de dominio', 'disputa por nombre de dominio', 'ciberocupación', 'secuestro inverso de nombre de dominio', 'registro de mala fe', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'disputa de dominio por marca registrada', 'inversor de dominios legal', 'responder a una reclamación udrp']
 ---
 
-Si posees nombres de dominio durante suficiente tiempo, tarde o temprano oirás hablar de la UDRP — por lo general porque alguien amenaza con utilizarla en tu contra, o porque te preguntas si algún nombre de tu cartera es seguro de mantener. Para los inversores en dominios, entender la UDRP no es opcional. Es el mecanismo más habitual por el que un dominio que registraste puede serte arrebatado sin necesidad de un tribunal.
+Si posees nombres de dominio durante suficiente tiempo, tarde o temprano oirás hablar de la [UDRP](/es/glossary/udrp/) — por lo general porque alguien amenaza con utilizarla en tu contra, o porque te preguntas si algún nombre de tu cartera es seguro de mantener. Para los inversores en dominios, entender la UDRP no es opcional. Es el mecanismo más habitual por el que un dominio que registraste puede serte arrebatado sin necesidad de un tribunal.
 
 Esta guía explica qué es la UDRP, cuándo se aplica, qué debe probar realmente un reclamante, cómo funciona el proceso y cómo los propietarios de nombres valiosos pueden evitar una reclamación y responder a ella.
 
@@ -17,11 +17,11 @@ Esta guía explica qué es la UDRP, cuándo se aplica, qué debe probar realment
 
 ## ¿Qué es la UDRP?
 
-La **UDRP** — la **Política Uniforme de Resolución de Disputas sobre Nombres de Dominio** (en alemán, **UDRP-Verfahren**) — es una política creada por [ICANN](/es/glossary/icann/) en 1999 para resolver disputas sobre nombres de dominio que presuntamente infringen la marca registrada de alguien. Todo registrador acreditado te exige que aceptes la UDRP al registrar un dominio. Ese acuerdo es la razón por la que un panel de arbitraje privado, en lugar de un tribunal nacional, puede ordenar que te transfieran el dominio.
+La **UDRP** — la **Política Uniforme de Resolución de Disputas sobre Nombres de Dominio** (en alemán, **UDRP-Verfahren**) — es una política creada por [ICANN](/es/glossary/icann/) en 1999 para resolver disputas sobre nombres de dominio que presuntamente infringen la [marca registrada](/es/glossary/trademark/) de alguien. Todo [registrador](/es/glossary/registrar/) acreditado te exige que aceptes la UDRP al registrar un dominio. Ese acuerdo es la razón por la que un panel de arbitraje privado, en lugar de un tribunal nacional, puede ordenar que te transfieran el dominio.
 
-La UDRP existe para hacer frente a la **ciberocupación**: registrar un dominio que coincide con la marca de otra persona con el fin de beneficiarse de ello. Es deliberadamente restrictiva. No es una herramienta para resolver cualquier desacuerdo sobre quién "merece" un nombre. Tiene como objetivo el registro de mala fe de dominios que infringen marcas registradas, y nada más.
+La UDRP existe para hacer frente a la **ciberocupación**: registrar un dominio que coincide con la marca de otra persona con el fin de beneficiarse de ello. Es deliberadamente restrictiva. No es una herramienta para resolver cualquier desacuerdo sobre quién "merece" un nombre. Tiene como objetivo el [registro](/es/glossary/registry/) de [mala fe](/es/glossary/bad-faith/) de dominios que infringen marcas registradas, y nada más.
 
-La UDRP se aplica a todos los dominios genéricos de nivel superior (`.com`, `.net`, `.org` y los nuevos gTLD) y a los dominios de código de país cuyos operadores la han adoptado voluntariamente. Muchos ccTLD cuentan con sus propias políticas de disputas independientes.
+La UDRP se aplica a todos los dominios genéricos de nivel superior (`.com`, `.net`, `.org` y los nuevos [gTLD](/es/glossary/gtld/)) y a los dominios de código de país cuyos operadores la han adoptado voluntariamente. Muchos [ccTLD](/es/glossary/cctld/) cuentan con sus propias políticas de disputas independientes.
 
 ## Los tres elementos que debe probar el reclamante
 
@@ -103,9 +103,9 @@ También vale la pena entender que una transferencia por UDRP es un problema dif
 
 Para los nombres de alto valor, una reclamación UDRP es un riesgo existencial — y es una de las razones por las que la procedencia y los registros claros son tan importantes cuando [vendes un dominio de tu propiedad](/es/blog/how-to-sell-a-domain-name-you-own/). Un historial de registro limpio y una historia de uso legítimo son activos que protegen el valor del nombre.
 
-Aquí es también donde los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) encajan en el panorama. La tokenización cambia *quién controla de manera verificable* un nombre y crea un registro duradero en la cadena de bloques de la propiedad y las transferencias — una procedencia útil si alguna vez se cuestiona una fecha de registro o una cadena de custodia. Sin embargo, **no** coloca un dominio fuera del alcance de la UDRP: el nombre subyacente sigue operando en el DNS bajo un registrador acreditado por ICANN, y la UDRP sigue aplicándose. La tokenización fortalece tus pruebas y tu control; no te exime del derecho de marcas.
+Aquí es también donde los [dominios tokenizados](/es/blog/what-are-tokenized-domains/) encajan en el panorama. La tokenización cambia *quién controla de manera verificable* un nombre y crea un registro duradero en la cadena de bloques de la propiedad y las transferencias — una procedencia útil si alguna vez se cuestiona una fecha de registro o una cadena de custodia. Sin embargo, **no** coloca un dominio fuera del alcance de la UDRP: el nombre subyacente sigue operando en el DNS bajo un [registrador acreditado por ICANN](/es/glossary/accredited-registrar/), y la UDRP sigue aplicándose. La tokenización fortalece tus pruebas y tu control; no te exime del derecho de marcas.
 
-[Namefi](https://namefi.io) tokeniza la relación de titular manteniendo el dominio completamente conforme con ICANN, de modo que los propietarios obtienen procedencia en cadena y autocustodia sin salirse del sistema que rige la UDRP. El objetivo es sencillo: poseer nombres valiosos con registros más sólidos y un control más limpio, manteniéndose firmemente dentro de las normas.
+[Namefi](https://namefi.io) tokeniza la relación de titular manteniendo el dominio completamente conforme con ICANN, de modo que los propietarios obtienen procedencia [en cadena](/es/glossary/on-chain/) y autocustodia sin salirse del sistema que rige la UDRP. El objetivo es sencillo: poseer nombres valiosos con registros más sólidos y un control más limpio, manteniéndose firmemente dentro de las normas.
 
 ## Preguntas frecuentes
 
@@ -132,4 +132,4 @@ No. La tokenización mejora la procedencia, el control y la autocustodia, pero e
 
 ---
 
-*Fuentes: ICANN — [Uniform Domain-Name Dispute-Resolution Policy](https://www.icann.org/resources/pages/policy-2012-02-25-en); WIPO — [Guide to the UDRP](https://www.wipo.int/amc/en/domains/guide/). Este artículo es información general, no asesoramiento legal.*
+*Fuentes: ICANN — [Uniform Domain-Name Dispute-Resolution Policy](https://www.icann.org/resources/pages/policy-2012-02-25-en); [WIPO](/es/glossary/wipo/) — [Guide to the UDRP](https://www.wipo.int/amc/en/domains/guide/). Este artículo es información general, no asesoramiento legal.*

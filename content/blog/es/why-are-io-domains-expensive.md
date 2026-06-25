@@ -13,13 +13,13 @@ Si recientemente has buscado el precio de un dominio `.io` y te ha sorprendido, 
 
 ## La respuesta corta
 
-**Los dominios `.io` son caros porque el registro cobra un precio mayorista relativamente alto, y además la extensión tiene una gran demanda de startups tecnológicas, desarrolladores e inversores dispuestos a pagar por su marca de "input/output".** La fuerte demanda más una oferta limitada de nombres cortos y memorables empuja tanto los precios de registro como los valores de reventa en el mercado secundario muy por encima de los TLD heredados como `.com`. Los aumentos recurrentes en los precios mayoristas mantienen las renovaciones altas año tras año.
+**Los dominios `.io` son caros porque el [registro](/es/glossary/registry/) cobra un [precio mayorista](/es/glossary/wholesale-pricing/) relativamente alto, y además la extensión tiene una gran demanda de startups tecnológicas, desarrolladores e inversores dispuestos a pagar por su marca de "input/output".** La fuerte demanda más una oferta limitada de nombres cortos y memorables empuja tanto los precios de registro como los valores de reventa en el [mercado secundario](/es/glossary/aftermarket/) muy por encima de los TLD heredados como `.com`. Los aumentos recurrentes en los precios mayoristas mantienen las renovaciones altas año tras año.
 
 En otras palabras, el costo es en parte **precio mayorista**, en parte **demanda y prestigio**, y en parte **escasez**. A continuación, desglosamos cada factor — y una nueva complicación geopolítica que algunos compradores ahora consideran.
 
 ## 1. El precio mayorista del registro es simplemente más alto
 
-Cada dominio tiene dos capas de precio: el **precio mayorista** que el registro cobra a los registradores, y el **margen minorista** que tu registrador agrega. Para `.io`, el piso mayorista está muy por encima de las extensiones básicas.
+Cada dominio tiene dos capas de precio: el **precio mayorista** que el registro cobra a los registradores, y el **margen minorista** que tu [registrador](/es/glossary/registrar/) agrega. Para `.io`, el piso mayorista está muy por encima de las extensiones básicas.
 
 El registro `.io` es operado por **Identity Digital** (que adquirió al operador de `.io` de Afilias). A diferencia de un `.com`, cuyo precio mayorista está contractualmente limitado y cambia lentamente, `.io` ha experimentado una serie de aumentos mayoristas significativos — incluido un gran incremento alrededor de 2021, más aumentos en 2024 y 2025, y otro ajuste programado para principios de 2026. ([Domain Name Wire](https://domainnamewire.com/))
 
@@ -32,7 +32,7 @@ El precio sigue a la demanda, y la demanda de `.io` es excepcionalmente fuerte p
 Para los ingenieros, `.io` se lee como **I/O — input/output**, un concepto fundamental de la computación. Esa feliz coincidencia convirtió un pequeño código de isla en la insignia de facto del ecosistema tecnológico moderno. Como explica nuestra [guía de TLD `.io`](/es/tld/io/), la extensión es ahora estándar para:
 
 - **Startups de SaaS e IA** que señalan credibilidad técnica inmediata a usuarios e inversores
-- **Proyectos de Web3 y blockchain** (piensa en exploradores de bloques y dApps)
+- **Proyectos de [Web3](/es/glossary/web3/) y [blockchain](/es/glossary/blockchain/)** (piensa en exploradores de bloques y dApps)
 - **Desarrolladores** que alojan portafolios, documentación y proyectos (GitHub Pages usa famosamente `github.io`)
 - **Gaming**, gracias a la ola de juegos de navegador "`.io` games"
 
@@ -56,12 +56,12 @@ Para un dominio de una sola marca, esto es una molestia. Para cualquiera que ten
 
 Aquí hay un factor que no existía hace unos años y que los compradores reflexivos ahora consideran.
 
-`.io` es técnicamente el **TLD de código de país (ccTLD)** asignado al **Territorio Británico del Océano Índico (BIOT)** — el Archipiélago de Chagos. En mayo de 2025, el Reino Unido y Mauricio **firmaron un tratado** para transferir la soberanía sobre las islas. Dado que los ccTLD están vinculados a la lista de códigos de país ISO 3166-1, un cambio en el estatus de BIOT planteó una pregunta: *¿qué sucede con `.io`?*
+`.io` es técnicamente el **TLD de código de país ([ccTLD](/es/glossary/cctld/))** asignado al **Territorio Británico del Océano Índico (BIOT)** — el Archipiélago de Chagos. En mayo de 2025, el Reino Unido y Mauricio **firmaron un tratado** para transferir la soberanía sobre las islas. Dado que los ccTLD están vinculados a la lista de códigos de país ISO 3166-1, un cambio en el estatus de BIOT planteó una pregunta: *¿qué sucede con `.io`?*
 
 Es importante ser **mesurado y preciso** aquí:
 
 - **No hay ninguna eliminación en curso ni programada.** A mediados de 2026, el tratado no había completado la ratificación parlamentaria del Reino Unido, y `.io` continúa operando normalmente.
-- **ICANN ha señalado que no hay un interruptor de apagado automático.** Sus políticas prevén una larga **transición por fases** — generalmente medida en *años* — si alguna vez fuera necesario retirar un ccTLD, no un cierre de la noche a la mañana. ([ICANN](https://www.icann.org/en/blogs/details/the-chagos-archipelago-and-the-io-domain-14-11-2024-en))
+- **[ICANN](/es/glossary/icann/) ha señalado que no hay un interruptor de apagado automático.** Sus políticas prevén una larga **transición por fases** — generalmente medida en *años* — si alguna vez fuera necesario retirar un ccTLD, no un cierre de la noche a la mañana. ([ICANN](https://www.icann.org/en/blogs/details/the-chagos-archipelago-and-the-io-domain-14-11-2024-en))
 - **Cualquier cambio sería gradual.** ISO e ICANN necesitarían actuar en secuencia, y aun así los registros existentes no desaparecerían sin un período de cierre extendido.
 
 Entonces la conclusión realista es **incertidumbre, no emergencia**. La probabilidad de interrupción es baja y cualquier cronograma sería largo — pero es un riesgo no nulo y difícil de cuantificar que simplemente no aplica a un `.com`. Algunos compradores ahora valoran ese pequeño riesgo de cola en cuánto están dispuestos a comprometerse con `.io`, mientras que muchos otros lo consideran insignificante. De cualquier manera, es un factor legítimo que *entender* en lugar de entrar en pánico.
@@ -85,7 +85,7 @@ Si `.io` cumple con tus criterios, la prima a menudo está justificada. Si la ce
 
 ## Compra, vende o tokeniza .io en Namefi
 
-Donde sea que te decidas, **[Namefi](https://namefi.io)** puede ayudarte a actuar. Como registrador acreditado por ICANN que une Web2 y Web3, Namefi te permite **registrar, comprar, vender y tokenizar dominios `.io`** — convirtiendo un nombre en un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) cuya propiedad se refleja en la cadena para transferencias más sencillas y con menor necesidad de confianza. Si estás invirtiendo o negociando en `.io`, eso hace que mover nombres entre compradores y vendedores sea mucho más fluido que el proceso tradicional.
+Donde sea que te decidas, **[Namefi](https://namefi.io)** puede ayudarte a actuar. Como [registrador acreditado por ICANN](/es/glossary/accredited-registrar/) que une Web2 y Web3, Namefi te permite **registrar, comprar, vender y [tokenizar](/es/glossary/tokenize/) dominios `.io`** — convirtiendo un nombre en un [dominio tokenizado](/es/blog/what-are-tokenized-domains/) cuya propiedad se refleja en la cadena para transferencias más sencillas y con menor necesidad de confianza. Si estás invirtiendo o negociando en `.io`, eso hace que mover nombres entre compradores y vendedores sea mucho más fluido que el proceso tradicional.
 
 ## Preguntas frecuentes
 
@@ -115,4 +115,4 @@ Las principales alternativas son `.com` (confianza universal, precios limitados,
 
 ---
 
-*¿Listo para asegurar, intercambiar o tokenizar un nombre `.io`? Explora el [TLD `.io` en Namefi](/es/tld/io/) o [comienza en namefi.io](https://namefi.io).*
+*¿Listo para asegurar, intercambiar o tokenizar un nombre `.io`? Explora el TLD `.io` en Namefi o [comienza en namefi.io](https://namefi.io).*

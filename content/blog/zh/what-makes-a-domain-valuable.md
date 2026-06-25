@@ -14,7 +14,7 @@ ogImage: ../../assets/what-makes-a-domain-valuable-og.jpg
 keywords: ['什么决定了域名的价值', '域名价值因素', '好域名的标准', '域名价值', '为什么域名很贵', '短域名', '关键词域名', '品牌域名', 'com溢价', '域名后缀价值', '商业意图域名', '易记域名', '域名投资基础', '域名估值方法', '优质域名']
 ---
 
-两个域名可能仅相差一个字母，价格却可能相差千倍。`cars.com` 是一项家喻户晓的资产；而 `carz.net` 只是一张续费账单。相同的长度，大致相同的概念，价值却天差地别。一旦你能够解释*为什么*，大部分域名投资就不再像碰运气，而更像是读懂市场。
+两个域名可能仅相差一个字母，价格却可能相差千倍。`cars.com` 是一项家喻户晓的资产；而 `carz.net` 只是一张续费账单。相同的长度，大致相同的概念，价值却天差地别。一旦你能够解释*为什么*，大部分[域名投资](/zh/glossary/domaining/)就不再像碰运气，而更像是读懂市场。
 
 这是理解本系列其他文章的基础。估价是给域名一个数字；而本篇解释性文章探讨的是数字之下的层面——那些让一串字母从根本上值得拥有的几个特性。熟练掌握这些特性后，你只需看一眼域名，就能大致判断它是一项资产还是一笔负债。这是我们更全面的[域名交易](/zh/blog/domain-flipping/)指南中一切内容的基础。
 
@@ -50,7 +50,7 @@ keywords: ['什么决定了域名的价值', '域名价值因素', '好域名的
 
 然后是点后面的部分，有一个后缀至今仍是所有其他后缀的基准。`.com` 是衡量网络其余部分的默认标准。维基百科指出它[是 *commercial* 的缩写](https://en.wikipedia.org/wiki/.com#:~:text=it%20is%20short%20for%20commercial)，并且[已发展成为最大的顶级域名](https://en.wikipedia.org/wiki/.com#:~:text=It%20has%20grown%20into%20the%20largest%20top%2Dlevel%20domain)，截至 2025 年末注册量已达 [1.61 亿](https://en.wikipedia.org/wiki/.com#:~:text=161%20Million)。
 
-这种普遍性就是关键所在。因为 `.com` 是人们默认的后缀，是他们不假思索输入的后缀，是他们在半记不清一个品牌时猜测的后缀，也是他们凭直觉信任的后缀。因此，一个在 [`.com`](/zh/tld/com/) 上的域名通常比在其他[顶级域名（TLD）](/en/glossary/tld/)上的相同名称拥有实实在在的溢价——你是在为那个所有人都默认的后缀付费。这并不意味着其他后缀毫无价值；它意味着你应该了解你正在交易的差价。一家初创公司可能会理性地选择 [`.io`](/zh/tld/io/)、[`.co`](/zh/tld/co/)、[`.app`](/zh/tld/app/) 或 [`.xyz`](/zh/tld/xyz/)，以求得契合度、价格或可用性，并且在[品牌域名和关键词 `.com` 域名](/zh/blog/brandable-vs-keyword-domains/)之间的选择是一个真正的战略岔路口。但一个好词的 `.com` 域名仍然是基准，对于大多数大众市场买家来说，它仍然是他们愿意支付最高价拥有的。
+这种普遍性就是关键所在。因为 `.com` 是人们默认的后缀，是他们不假思索输入的后缀，是他们在半记不清一个品牌时猜测的后缀，也是他们凭直觉信任的后缀。因此，一个在 [`.com`](/zh/tld/com/) 上的域名通常比在其他[顶级域名（TLD）](/zh/glossary/tld/)上的相同名称拥有实实在在的溢价——你是在为那个所有人都默认的后缀付费。这并不意味着其他后缀毫无价值；它意味着你应该了解你正在交易的差价。一家初创公司可能会理性地选择 [`.io`](/zh/tld/io/)、[`.co`](/zh/tld/co/)、[`.app`](/zh/tld/app/) 或 [`.xyz`](/zh/tld/xyz/)，以求得契合度、价格或可用性，并且在[品牌域名和关键词 `.com` 域名](/zh/blog/brandable-vs-keyword-domains/)之间的选择是一个真正的战略岔路口。但一个好词的 `.com` 域名仍然是基准，对于大多数大众市场买家来说，它仍然是他们愿意支付最高价拥有的。
 
 ## 关键词和商业意图
 
@@ -58,7 +58,7 @@ keywords: ['什么决定了域名的价值', '域名价值因素', '好域名的
 
 并非每个词的价值都相同，即使长度和后缀都一样。一个与交易相关的词比一个与爱好相关的词更有价值，因为所有者可以将该词上的注意力转化为收入。
 
-最明显的证据是保险行业支付的价格。据 Domain Investing 报道，QuinStreet 在 2010 年以 [$35,600,000](https://domaininvesting.com/quinstreet-paid-356-million-for-insurance-com/#:~:text=paid%20%2435%2C600%2C000%20for%20Insurance.com) 的价格收购了 `Insurance.com`，并在同年以 [4970 万美元现金](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash)收购了 `CarInsurance.com`。没有人会为一个巧妙的名字支付八位数的价格；他们支付这个价格是因为每个访问保险门户的访客都可能成为付费潜在客户。相比之下，`Hotels.com` 在 [2001 年以 11,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Hotels.com)的价格售出——价格很高，但这个类别的每次点击利润率比保险业要薄。这个模式贯穿整个市场：一个词越接近金钱交易的时刻，终端用户就越愿意为拥有那个入口付费。当你评估一个关键词域名时，问问自己，对于会使用它的企业来说，一个访客价值多少。这个数字，而不是词语的优美程度，决定了其价值的上限。
+最明显的证据是保险行业支付的价格。据 Domain Investing 报道，QuinStreet 在 2010 年以 [$35,600,000](https://domaininvesting.com/quinstreet-paid-356-million-for-insurance-com/#:~:text=paid%20%2435%2C600%2C000%20for%20Insurance.com) 的价格收购了 `Insurance.com`，并在同年以 [4970 万美元现金](https://www.globenewswire.com/news-release/2010/11/08/433738/12254/en/QuinStreet-Announces-Acquisition-of-CarInsurance-com-Inc.html#:~:text=for%20%2449.7%20million%20in%20cash)收购了 `CarInsurance.com`。没有人会为一个巧妙的名字支付八位数的价格；他们支付这个价格是因为每个访问保险门户的访客都可能成为付费潜在客户。相比之下，`Hotels.com` 在 [2001 年以 11,000,000 美元](https://en.wikipedia.org/wiki/List_of_most_expensive_domain_names#:~:text=Hotels.com)的价格售出——价格很高，但这个类别的每次点击利润率比保险业要薄。这个模式贯穿整个市场：一个词越接近金钱交易的时刻，[终端用户](/zh/glossary/end-user/)就越愿意为拥有那个入口付费。当你评估一个[关键词域名](/zh/glossary/keyword-domain/)时，问问自己，对于会使用它的企业来说，一个访客价值多少。这个数字，而不是词语的优美程度，决定了其价值的上限。
 
 ## 品牌潜力：当自创词获胜时
 
@@ -68,9 +68,9 @@ keywords: ['什么决定了域名的价值', '域名价值因素', '好域名的
 
 ## 后缀稳定性：将国家因素计入价格
 
-还有一个更微妙的因素，是域名交易者通常在吃亏后才学到的：后缀的*持久性*也是价值的一部分。一个 `.com` 域名由一个稳定、全球中立的框架管理。而一个[国家代码顶级域名](/en/glossary/tld/)则由一个国家管理，根据维基百科，它是[通常为一个国家、主权国家或附属领土使用或保留的互联网顶级域名](https://en.wikipedia.org/wiki/Country_code_top-level_domain#:~:text=is%20an%20Internet%20top%2Dlevel%20domain%20generally%20used%20or%20reserved%20for%20a%20country)——这意味着它的规则，甚至它的存在，都可能改变。
+还有一个更微妙的因素，是域名交易者通常在吃亏后才学到的：后缀的*持久性*也是价值的一部分。一个 `.com` 域名由一个稳定、全球中立的框架管理。而一个国家代码顶级域名则由一个国家管理，根据维基百科，它是[通常为一个国家、主权国家或附属领土使用或保留的互联网顶级域名](https://en.wikipedia.org/wiki/Country_code_top-level_domain#:~:text=is%20an%20Internet%20top%2Dlevel%20domain%20generally%20used%20or%20reserved%20for%20a%20country)——这意味着它的规则，甚至它的存在，都可能改变。
 
-一个活生生的例子是 `.io`，科技界最喜欢的 ccTLD。它的地位取决于英属印度洋领地作为一个独立实体的存在，而维基百科指出，在计划中的查戈斯主权移交后，[当前的 IANA 规则可能要求 .io 域名被逐步淘汰，这至少需要 5 年时间](https://en.wikipedia.org/wiki/.io#:~:text=current%20IANA%20rules%20may%20require%20the%20.io%20domain%20to%20be%20phased%20out)。目前还没有任何域名被关闭，时间线也很长，我们在[为什么 .io 域名价格昂贵](/zh/blog/why-are-io-domains-expensive/)一文中有更审慎的阐述——但这是 `.com` 根本不带有的风险类别。另一方面，一个后缀的价值也可能因为外部需求而*上涨*：安圭拉的 ccTLD [`.ai`](/zh/tld/ai/) 变得如此抢手，以至于根据维基百科，[2023年，安圭拉政府通过收取 .ai 域名注册费获得了约 3200 万美元的收入](https://en.wikipedia.org/wiki/.ai#:~:text=In%202023%2C%20Anguilla%27s%20government%20made%20about%20US%2432%20million)。稳定性是把双刃剑。原则是相同的：当你评估一个 ccTLD 上的域名时，你不仅在评估那些字母，还在评估该地区的规则和发展轨迹。我们在[按注册量划分的 ccTLD 市场份额](/zh/blog/cctld-market-share-by-registration-volume/)中分析了哪些后缀真正具有流动性市场。
+一个活生生的例子是 `.io`，科技界最喜欢的 [ccTLD](/zh/glossary/cctld/)。它的地位取决于英属印度洋领地作为一个独立实体的存在，而维基百科指出，在计划中的查戈斯主权移交后，[当前的 IANA 规则可能要求 .io 域名被逐步淘汰，这至少需要 5 年时间](https://en.wikipedia.org/wiki/.io#:~:text=current%20IANA%20rules%20may%20require%20the%20.io%20domain%20to%20be%20phased%20out)。目前还没有任何域名被关闭，时间线也很长，我们在[为什么 .io 域名价格昂贵](/zh/blog/why-are-io-domains-expensive/)一文中有更审慎的阐述——但这是 `.com` 根本不带有的风险类别。另一方面，一个后缀的价值也可能因为外部需求而*上涨*：安圭拉的 ccTLD [`.ai`](/zh/tld/ai/) 变得如此抢手，以至于根据维基百科，[2023年，安圭拉政府通过收取 .ai 域名注册费获得了约 3200 万美元的收入](https://en.wikipedia.org/wiki/.ai#:~:text=In%202023%2C%20Anguilla%27s%20government%20made%20about%20US%2432%20million)。稳定性是把双刃剑。原则是相同的：当你评估一个 ccTLD 上的域名时，你不仅在评估那些字母，还在评估该地区的规则和发展轨迹。我们在[按注册量划分的 ccTLD 市场份额](/zh/blog/cctld-market-share-by-registration-volume/)中分析了哪些后缀真正具有流动性市场。
 
 ## 综合所有因素
 
@@ -84,7 +84,7 @@ keywords: ['什么决定了域名的价值', '域名价值因素', '好域名的
 
 知道一个域名的价值是一项技能。安全地利用这份知识进行交易则是另一项。当一个有价值的域名易手时，价值因素就不再重要，取而代之的是交易机制：买家不想在控制资产前付款，而卖家不想在收到款项前放弃控制权。这种信任差距是高价值[域名交易](/zh/glossary/domain-trading/)变得紧张的地方。
 
-这正是 [Namefi](https://namefi.io) 旨在缩小的差距。将一个真实的 ICANN 域名代币化，使所有权更容易验证和转移，并保证 DNS 的连续性，从而使域名在交接过程中能够持续正常解析。先读懂域名；然后让交易可审计。
+这正是 [Namefi](https://namefi.io) 旨在缩小的差距。将一个真实的 [ICANN](/zh/glossary/icann/) 域名代币化，使所有权更容易验证和转移，并保证 DNS 的连续性，从而使域名在交接过程中能够持续正常解析。先读懂域名；然后让交易可审计。
 
 ## 友好免责声明 (请阅读！)
 

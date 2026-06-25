@@ -14,7 +14,7 @@ Der traditionelle Ablauf beim Verkauf einer `.com`-Domain sieht in etwa so aus:
 1. Listing bei [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) oder Dan.com.
 2. Verhandeln.
 3. Einrichten eines [Treuhandkontos (Escrow)](/de/glossary/escrow/) bei [Escrow.com](https://www.escrow.com/) oder ähnlichen Anbietern. Der Käufer überweist das Geld.
-4. Der Verkäufer entsperrt die Domain und stellt den [Auth-Code](/en/glossary/auth-code/) zur Verfügung.
+4. Der Verkäufer entsperrt die Domain und stellt den [Auth-Code](/de/glossary/auth-code/) zur Verfügung.
 5. Der Käufer leitet einen [Cross-Registrar-Transfer](/de/glossary/cross-registrar-transfer/) bei seinem [Registrar](/de/glossary/registrar/) ein.
 6. 5–7 Tage warten, bis der [ICANN](/de/glossary/icann/)-Transfer abgeschlossen ist.
 7. Bestätigung des Transfers; der Treuhanddienst gibt die Gelder frei.
@@ -29,10 +29,10 @@ Der Verkauf tokenisierter Domains komprimiert das Ganze in eine einzige Transakt
 ## Der neue Ablauf von A bis Z
 
 1. Listing der [tokenisierten Domain](/de/blog/what-are-tokenized-domains/) auf einem [Marktplatz](/de/glossary/marketplace/) (dem eigenen von Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/) usw.).
-2. Der Käufer bezahlt. Das [NFT](/de/glossary/nft/) wandert in das [Wallet](/de/glossary/wallet/) des Käufers. Der Eintrag aufseiten des [Registrars](/de/glossary/registrar/) wird von der Plattform synchron gehalten.
+2. Der Käufer bezahlt. Das [NFT](/de/glossary/nft/) wandert in das [Wallet](/de/glossary/wallet/) des Käufers. Der Eintrag aufseiten des Registrars wird von der Plattform synchron gehalten.
 3. Fertig.
 
-Das war's. Zwei Schritte. Kein [Auth-Code](/en/glossary/auth-code/), kein [Treuhanddienst (Escrow)](/de/glossary/escrow/), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
+Das war's. Zwei Schritte. Kein Auth-Code, kein Treuhanddienst (Escrow), keine 5-tägige Registrar-Sperre, keine „Ich habe das Geld überwiesen, jetzt vertraue ich dir“-Lücke.
 
 Das funktioniert, weil das **NFT der kanonische Eigentumsnachweis ist** und [On-Chain](/de/glossary/on-chain/)-Transaktionen [atomar](/de/glossary/atomic-transfer/) sind: Zahlung und Vermögensübertragung finden im selben Block statt, oder keines von beiden passiert.
 
@@ -66,7 +66,7 @@ Es gibt eine damit zusammenhängende Regel – die 60-tägige Sperrfrist (Cooldo
 
 ### Banküberweisungen und Bankverzögerungen
 
-**Ersetzt durch Zahlungen mit Krypto und [Stablecoins](/en/glossary/stablecoin/).** USDC, ETH und andere On-Chain-Zahlungen werden in Sekunden abgewickelt. Banküberweisungen dauern Tage. Am deutlichsten ist der Unterschied bei internationalen Verkäufen.
+**Ersetzt durch Zahlungen mit Krypto und [Stablecoins](/de/glossary/stablecoin/).** USDC, ETH und andere On-Chain-Zahlungen werden in Sekunden abgewickelt. Banküberweisungen dauern Tage. Am deutlichsten ist der Unterschied bei internationalen Verkäufen.
 
 ### „Ich vertraue darauf, dass die andere Person ihren Teil erfüllt“
 
@@ -84,7 +84,7 @@ Sie senden nun ein NFT an eine Wallet-Adresse. Wenn der Käufer Ihnen eine falsc
 
 ### Smart-Contract-Risiko
 
-Der Smart Contract des Marktplatzes ist das neue „Treuhandkonto“. Wenn er einen Fehler hat, können seltsame Dinge passieren. Aus diesem Grund sind geprüfte (audited), praxiserprobte Marktplätze wichtig. Seien Sie nicht der Erste, der einen brandneuen Vertrag für einen hochwertigen Verkauf nutzt.
+Der [Smart Contract](/de/glossary/smart-contract/) des Marktplatzes ist das neue „Treuhandkonto“. Wenn er einen Fehler hat, können seltsame Dinge passieren. Aus diesem Grund sind geprüfte (audited), praxiserprobte Marktplätze wichtig. Seien Sie nicht der Erste, der einen brandneuen Vertrag für einen hochwertigen Verkauf nutzt.
 
 ### Front-Running und MEV
 
@@ -164,7 +164,7 @@ All dies ist in Arbeit und verbessert sich von Jahr zu Jahr zusehends.
 - Marktplätze für tokenisierte Domains komprimieren den traditionellen Ablauf (Listen → Verhandeln → Treuhand → Transfer → Abwicklung) in eine einzige On-Chain-Transaktion.
 - Das Element, das am deutlichsten verschwindet, ist der **Treuhanddienst (Escrow)**: Kryptografische Atomarität macht einen externen Geldeinbehalter überflüssig.
 - Auth-Codes, Registrar-Sperren und Banküberweisungen entfallen ebenfalls für die tokenisierte Hälfte der Transaktion.
-- An ihrer Stelle treten neue Risiken auf: Wallet-Sicherheit, Smart-Contract-Fehler, MEV, Koordination bei gestohlenen Assets. Diese Risiken verlagern sich auf andere Bereiche, sie verschwinden nicht völlig.
+- An ihrer Stelle treten neue Risiken auf: Wallet-[Sicherheit](/de/glossary/collateral/), Smart-Contract-Fehler, MEV, Koordination bei gestohlenen Assets. Diese Risiken verlagern sich auf andere Bereiche, sie verschwinden nicht völlig.
 - Nettoeffekt: Schnellerer, günstigerer und transparenterer Verkauf mit einer anderen (und verbesserungsfähigen) Nutzererfahrung (UX). Hybride Listings bleiben für Premium-Domains üblich.
 
 Wenn Sie den Verkauf einer tokenisierten Domain selbst ausprobieren möchten, besuchen Sie [namefi.io](https://namefi.io). Für ein umfassenderes Bild lesen Sie [Anwendungsfälle für tokenisierte Domains im Jahr 2026](/de/blog/tokenized-domain-use-cases-2026/).

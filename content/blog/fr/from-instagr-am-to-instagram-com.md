@@ -11,9 +11,9 @@ keywords: ['instagr.am', 'instagram.com', 'nom de domaine instagram', 'domain ha
 
 Avant qu'Instagram ne devienne une plateforme à un milliard d'utilisateurs, un verbe pour décrire le fait de prendre des photos et l'une des applications les plus précieuses que Facebook ait jamais achetées, elle portait un nom qui était aussi un tour d'ingénierie astucieux : **instagr.am**.
 
-Cette adresse n'était pas une faute de frappe et pas une astuce de redirection. C'était un *domain hack* — un nom de domaine dans lequel l'extension elle-même complète le mot. Wikipedia définit précisément la forme : un domain hack est [un nom de domaine qui suggère un mot, une phrase ou un nom lorsqu'on concatène deux niveaux adjacents ou plus de ce domaine](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name), et il cite celui d'Instagram comme un cas d'école : [instagr.am utilise le ccTLD .am (Arménie) pour épeler le nom du service de partage de photos « Instagram »](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name).
+Cette adresse n'était pas une faute de [frappe](/fr/glossary/minting/) et pas une astuce de redirection. C'était un *[domain hack](/fr/glossary/domain-hack/)* — un nom de domaine dans lequel l'extension elle-même complète le mot. Wikipedia définit précisément la forme : un domain hack est [un nom de domaine qui suggère un mot, une phrase ou un nom lorsqu'on concatène deux niveaux adjacents ou plus de ce domaine](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=a%20domain%20name%20that%20suggests%20a%20word%2C%20phrase%2C%20or%20name), et il cite celui d'Instagram comme un cas d'école : [instagr.am utilise le ccTLD .am (Arménie) pour épeler le nom du service de partage de photos « Instagram »](https://en.wikipedia.org/wiki/Domain_hacks#:~:text=instagr.am%20makes%20use%20of%20the%20ccTLD%20.am%20%28Armenia%29%20to%20spell%20the%20name).
 
-Relisez cela. Pour épeler son propre nom de marque, une application photo de San Francisco a emprunté le domaine de premier niveau géographique de l'**Arménie**, un pays situé à environ 11 000 kilomètres. Le « am » d'Instagram vivait, techniquement, à Erevan.
+Relisez cela. Pour épeler son propre nom de marque, une application photo de San Francisco a emprunté le [domaine de premier niveau](/fr/glossary/tld/) géographique de l'**Arménie**, un pays situé à environ 11 000 kilomètres. Le « am » d'Instagram vivait, techniquement, à Erevan.
 
 Pour une toute petite startup se lançant dans un App Store très concurrencé, le hack était un cadeau. Il était court, il était exact, il se lisait comme un seul mot, et — point crucial — il était *disponible* quand l'adresse évidente, Instagram.com, ne l'était pas.
 
@@ -37,7 +37,7 @@ Pour comprendre pourquoi instagr.am était si attrayant, il faut comprendre ce q
 
 Pour une startup de 2010, l'attrait était évident :
 
-- **C'était exact.** « instagr » + « .am » se lit comme la marque complète, sans rien d'autre à expliquer — le saint Graal d'un lancement sans financement.
+- **C'était exact.** « instagr » + « [.am](/fr/tld/am/) » se lit comme la marque complète, sans rien d'autre à expliquer — le saint Graal d'un lancement sans financement.
 - **C'était court et partageable.** Une application photo vit ou meurt selon la facilité avec laquelle un lien circule. instagr.am était assez court pour être imprimé, envoyé par SMS et tweeté.
 - **C'était disponible immédiatement.** Instagram.com était déjà détenu par quelqu'un d'autre, et une toute nouvelle application n'avait ni l'argent ni le levier pour le récupérer dès le premier jour.
 
@@ -49,7 +49,7 @@ Le problème est ce qu'une fondation empruntée coûte une fois qu'on n'est plus
 
 Un domain hack construit sur un code de pays comporte un ensemble silencieux de dépendances qu'un simple `.com` n'a pas.
 
-Premièrement, **vous êtes un invité dans l'espace de noms de quelqu'un d'autre.** Les politiques, les tarifs et la stabilité du `.am` sont fixés par le registre d'Arménie, pas par vous. C'est bien jusqu'à ce que votre marque vaille des milliards et que votre adresse réponde à un registre à l'autre bout du monde.
+Premièrement, **vous êtes un invité dans l'espace de noms de quelqu'un d'autre.** Les politiques, les tarifs et la stabilité du `.am` sont fixés par le [registre](/fr/glossary/registry/) d'Arménie, pas par vous. C'est bien jusqu'à ce que votre marque vaille des milliards et que votre adresse réponde à un registre à l'autre bout du monde.
 
 Deuxièmement, **le hack peut se lire comme une faute de frappe.** « instagr.am » ressemble, pour un utilisateur peu attentif, à « instagram » mal tapé. Les gens suppriment le point, supposent `.com` et tapent « instagram.com » par réflexe — ce qui signifie que chaque partage fuit du trafic vers celui qui possède l'adresse évidente.
 
@@ -67,7 +67,7 @@ Mais revenons en janvier 2011. Instagram avait quelques mois. Elle avait une app
 
 Et la transaction elle-même n'était pas propre. Les reportages sur un procès Facebook ultérieur ont révélé que le vendeur était un ressortissant chinois ; [l'achat a été traité par Sedo, selon une copie de l'accord soumise comme preuve](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=The%20purchase%20was%20processed%20by%20Sedo%2C%20according%20to%20a%20copy%20of%20the%20deal). Des années plus tard, la transaction a pris une tournure juridique : comme l'indique un récit, [la mère et les sœurs de Murong la poursuivent ainsi qu'Instagram en Chine, affirmant qu'elle n'avait pas l'autorité pour vendre le domaine](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China). Instagram avait acheté son propre nom — et s'est quand même retrouvée à plaider en justice pour savoir qui possédait vraiment quoi.
 
-C'est la vérité peu reluisante derrière presque toutes les histoires de domaine premium : l'appel stratégique (« nous devons posséder Instagram.com ») est la partie facile. Prouver la propriété propre et transférer l'actif en toute sécurité est la partie difficile.
+C'est la vérité peu reluisante derrière presque toutes les histoires de [domaine premium](/fr/glossary/premium-domain/) : l'appel stratégique (« nous devons posséder Instagram.com ») est la partie facile. Prouver la propriété propre et transférer l'actif en toute sécurité est la partie difficile.
 
 ## Pourquoi le passage à Instagram.com était important
 
@@ -117,7 +117,7 @@ Le hack n'a pas construit la croissance d'Instagram — les filtres, le timing e
 La conclusion facile — « n'utilisez jamais un domain hack » — est fausse. Le hack était *bon*. Les leçons les plus utiles portent sur la façon d'en utiliser un sans se laisser piéger par lui :
 
 1. **Un domain hack est une excellente porte d'entrée de lancement.** instagr.am était exact, court, partageable et disponible quand le `.com` ne l'était pas. Pour un lancement avant financement, c'est un vrai avantage, pas un échec.
-2. **Sachez ce que vous empruntez.** Un hack ccTLD signifie qu'un registre étranger fixe vos politiques et vos tarifs. C'est bien à petite échelle et c'est une responsabilité une fois que votre marque a de la valeur. Traitez le hack comme une [URL secondaire](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs), pas le domicile permanent.
+2. **Sachez ce que vous empruntez.** Un hack [ccTLD](/fr/glossary/cctld/) signifie qu'un registre étranger fixe vos politiques et vos tarifs. C'est bien à petite échelle et c'est une responsabilité une fois que votre marque a de la valeur. Traitez le hack comme une [URL secondaire](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=secondary%20URLs), pas le domicile permanent.
 3. **Sécurisez le `.com` canonique tôt — pendant qu'il peut encore devenir celui dont les gens se souviennent.** Instagram a acheté Instagram.com dans ses premiers mois, pas après être devenue célèbre. La fenêtre pour rendre le nom propre canonique est étroite.
 4. **Budgétisez pour la transaction, pas seulement pour le prix.** L'appel stratégique est évident ; la propriété propre ne l'est pas. Instagram a payé 100 000 $ et s'est *quand même* retrouvée dans un litige de propriété de plusieurs années sur qui avait l'autorité pour vendre.
 
@@ -142,6 +142,6 @@ Instagram.com semble inévitable maintenant parce qu'Instagram est devenue énor
 - Wikipedia — [Instagram](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger)
 - Wikipedia — [Timeline of Instagram](https://en.wikipedia.org/wiki/Timeline_of_Instagram#:~:text=Over%2025%2C000%20users%20registered%20on%20launch%20day)
 - DomainIncite — [Instagram paid Chinese cybersquatter $100,000 for instagram.com, Facebook lawsuit reveals](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=made%20the%20decision%20to%20pay%20%24100%2C000%20for%20the%20domain%20in%20January%202011)
-- WIPO Arbitration and Mediation Center — [Instagram, LLC v. Zhou Murong, Case No. D2014-1550](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010)
+- [WIPO](/fr/glossary/wipo/) Arbitration and Mediation Center — [Instagram, LLC v. Zhou Murong, Case No. D2014-1550](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010)
 - Entrepreneur — [How Instagram Went From Idea to $1 Billion in Less Than Two Years](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=launch%20the%20Instagram%20photo-sharing%20iPhone%20app%20with%2080%20initial%20users)
 - Domain Gravity — [instagr.am to Instagram.com](https://www.domaingravity.com/instagr.am-Instagram.com.htm#:~:text=not%20even%20a%20permanent%20web%20address%20since%20it%20was%20still%20using%20instagr.am)

@@ -11,7 +11,7 @@ keywords: ['del.icio.us', 'delicious.com', 'اسم نطاق delicious', 'domain 
 
 لمدة خمس سنين تقريبًا، كان واحد من أكتر المواقع تأثيرًا في حقبة Web 2.0 موجود على عنوان بالكاد تقدر تقوله بصوت عالي: **del.icio.us**.
 
-الاسم ده كان ذكي. كان، في الحقيقة، أشهر مثال على الـ *domain hack* — وهي حيلة بيبقى فيها النطاق نفسه بيكتب كلمة عن طريق استعارة لاحقة دولة. Joshua Schachter سجّل `icio.us` على الـ .us ccTLD، وحط `del` قدامها كـ subdomain، والسلسلة كلها اتقرت "delicious" يعني "لذيذ". زي ما وضّح شرح مبكر للتركيبة دي، [`del` هو في الأصل subdomain لـ `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain)، وإن تجميع الـ subdomain مع الـ ccTLD ده كان، بكلامهم، [طريقة عبقرية لتسجيل اسم نطاق](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
+الاسم ده كان ذكي. كان، في الحقيقة، أشهر مثال على الـ *domain hack* — وهي حيلة بيبقى فيها النطاق نفسه بيكتب كلمة عن طريق استعارة لاحقة دولة. Joshua Schachter سجّل `icio.us` على الـ [.us](/ar/tld/us/) [ccTLD](/ar/glossary/cctld/)، وحط `del` قدامها كـ subdomain، والسلسلة كلها اتقرت "delicious" يعني "لذيذ". زي ما وضّح شرح مبكر للتركيبة دي، [`del` هو في الأصل subdomain لـ `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain)، وإن تجميع الـ subdomain مع الـ ccTLD ده كان، بكلامهم، [طريقة عبقرية لتسجيل اسم نطاق](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
 
 بالنسبة لمشروع جانبي بيديره مهندس للمتعة، الذكاء ده كان هو الهدف. النقط كانت نكتة داخلية. كأنها بتقول: دي أداة هاكر، اتبنت من حد بيفكر إن طريقة شغل البنية التحتية للويب هي نفسها مساحة للإبداع.
 
@@ -39,7 +39,7 @@ Schachter ماكنش بانيها شركة. بنى أداة لنفسه. لما [
 
 الحيلة كانت أنيقة فعلًا. زي ما الشرح التفصيلي وضّح، [icio كان اسم النطاق المختار و.us كان كود الدولة المسجّل على مستوى النطاق الأعلى (ccTLD) واللي اتجمعوا عشان يكوّنوا icio.us](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=icio%20was%20the%20selected%20domain%20name%20and%20.us%20was%20the%20registered%20country%20code%20level%20top%20level%20domain)، مع `del` فوقيهم كـ subdomain. العنوان ماكانش *بيشير* لكلمة. العنوان *نفسه* كان كلمة. لجمهور المهندسين، ده كان جذاب جدًا.
 
-المشكلة إن بقية العالم مش بتقرأ DNS للمتعة. النقط الأربع دي حوّلت العلامة التجارية لاختبار إملاء، ومعظم الناس رسبوا فيه. لما الفريق أخيرًا فسّر نقلة 2008، حدّدوا الضرر: [شفنا ألف نوع من الارتباك والأخطاء الإملائية في "del.icio.us" على مر السنين (زي "de.licio.us" و"del.icio.us.com" و"del.licio.us")](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=zillion%20different%20confusions%20and%20misspellings). كل نقطة في المكان الغلط كانت مستخدم ماوصلش، ورابط اتشارك ماشتغلش، وتوصية ماتت في الفراغ بين سماع الاسم وكتابته.
+المشكلة إن بقية العالم مش بتقرأ DNS للمتعة. النقط الأربع دي حوّلت [العلامة التجارية](/ar/glossary/trademark/) لاختبار إملاء، ومعظم الناس رسبوا فيه. لما الفريق أخيرًا فسّر نقلة 2008، حدّدوا الضرر: [شفنا ألف نوع من الارتباك والأخطاء الإملائية في "del.icio.us" على مر السنين (زي "de.licio.us" و"del.icio.us.com" و"del.licio.us")](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=zillion%20different%20confusions%20and%20misspellings). كل نقطة في المكان الغلط كانت مستخدم ماوصلش، ورابط اتشارك ماشتغلش، وتوصية ماتت في الفراغ بين سماع الاسم وكتابته.
 
 Schachter كان عارف. كان عارف من تقريبًا الأول. زي ما Domain Name Wire لاحظت، من 2004 كان بيتكلم عن غلطة التسمية، وعزله مباشرةً: [أنا شوية بندم على استخدام اسم النطاق ده، لأنه يكاد يكون مستحيلًا تناقشه أو تتحقق منه من غير ما تبان مضحك.](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=I%20somewhat%20regret%20using%20the%20domain%20name)
 
@@ -63,7 +63,7 @@ Domain Name Wire وثّقت التحوّل بدقة: [موقع الـ social boo
 
 تفسير السبب ماكانش فيه عاطفة. زي ما Domain Name Wire نقلت كلام الفريق نفسه، الهدف الكامل من الانتقال لـ delicious.com إنه [هيسهّل على الناس يلاقوا الموقع ويشاركوه مع أصحابهم](https://domainnamewire.com/2008/08/01/delicious-rebrands-as-deliciouscom-a-lesson-for-entrepreneurs/#:~:text=will%20make%20it%20easier%20for%20people%20to%20find%20the%20site%20and%20share%20it%20with%20their%20friends). يلاقوه. يشاركوه. دول الفعلين اللي الـ domain hack بيكسرهم بصمت، وهم نفس الفعلين اللي منتج في مرحلة النمو بيعيش وبيموت بيهم.
 
-دي الترقية النادرة اللي الشركة فيها اتحركت *ناحية* الـ `.com` البسيط وابتعدت عن السلسلة الذكية — الاتجاه المعاكس للمسار المعتاد من الاسم الوصفي للاسم المطابق بالظبط. لكنها نفس الحركة في الأساس: التخلص من اسم كان بيعبّر عن ذكاء المؤسس لصالح اسم السوق كله يقدر يستخدمه من غير تفكير.
+دي الترقية النادرة اللي الشركة فيها اتحركت *ناحية* الـ `.com` البسيط وابتعدت عن السلسلة الذكية — الاتجاه المعاكس للمسار المعتاد من الاسم الوصفي للاسم المطابق بالظبط. لكنها نفس الحركة في الأساس: التخلص من اسم كان بيعبّر عن ذكاء المؤسس لصالح اسم [السوق](/ar/glossary/marketplace/) كله يقدر يستخدمه من غير تفكير.
 
 ## الفلوس كانت شايلة شكل تاني وقتها
 
@@ -86,7 +86,7 @@ Domain Name Wire اتقبّلت الموقف ده بالظبط، وده الفه
 | قبل | بعد |
 | --- | --- |
 | del.icio.us | Delicious.com |
-| Domain hack (الـ .us ccTLD بتكتب كلمة) | كلمة .com عادية ومطابقة بالظبط |
+| Domain hack (الـ .us ccTLD بتكتب كلمة) | كلمة [.com](/ar/tld/com/) عادية ومطابقة بالظبط |
 | ذكي تقرأه على الشاشة | سهل تقوله بصوت عالٍ وتشاركه |
 | أربع نقط = أربع أماكن للخطأ في الكتابة | كلمة واحدة، هجاء واحد |
 | "de.licio.us"، "del.licio.us"، "del.icio.us.com" | delicious.com |

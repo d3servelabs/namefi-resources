@@ -9,7 +9,7 @@ description: "UDRP erklärt für Domain-Inhaber und -Investoren: die drei Elemen
 keywords: ['udrp', 'was ist udrp', 'udrp prozess', 'udrp richtlinie', 'udrp beschwerde', 'udrp verfahren', 'udrp-verfahren', 'uniform domain-name dispute-resolution policy', 'domain streit', 'domain name streit', 'cybersquatting', 'reverse domain name hijacking', 'bösgläubige registrierung', 'icann udrp', 'wipo', 'urs', 'uniform rapid suspension', 'marken domain streit', 'domain investor rechtlich', 'udrp beschwerde beantworten']
 ---
 
-Wer Domain-Namen lange genug besitzt, wird früher oder später mit dem Begriff UDRP in Berührung kommen — meistens weil jemand damit droht, das Verfahren gegen einen einzuleiten, oder weil man sich fragt, ob ein Name im eigenen Portfolio sicher ist. Für Domain-Investoren ist das Verständnis des UDRP keine Option. Es ist das mit Abstand häufigste Mittel, mit dem eine registrierte Domain ohne Gerichtsverfahren entzogen werden kann.
+Wer Domain-Namen lange genug besitzt, wird früher oder später mit dem Begriff [UDRP](/de/glossary/udrp/) in Berührung kommen — meistens weil jemand damit droht, das Verfahren gegen einen einzuleiten, oder weil man sich fragt, ob ein Name im eigenen Portfolio sicher ist. Für Domain-Investoren ist das Verständnis des UDRP keine Option. Es ist das mit Abstand häufigste Mittel, mit dem eine registrierte Domain ohne Gerichtsverfahren entzogen werden kann.
 
 Dieser Leitfaden erklärt, was das UDRP ist, wann es gilt, was ein Beschwerdeführer tatsächlich beweisen muss, wie der Ablauf funktioniert und wie Inhaber wertvoller Namen sowohl eine Beschwerde vermeiden als auch darauf reagieren können.
 
@@ -17,9 +17,9 @@ Dieser Leitfaden erklärt, was das UDRP ist, wann es gilt, was ein Beschwerdefü
 
 ## Was ist das UDRP?
 
-Das **UDRP** — die **Uniform Domain-Name Dispute-Resolution Policy** (auf Deutsch: **UDRP-Verfahren**) — ist eine Richtlinie, die [ICANN](/de/glossary/icann/) im Jahr 1999 geschaffen hat, um Streitigkeiten über Domain-Namen zu lösen, die angeblich Markenrechte einer Person verletzen. Jeder akkreditierte Registrar verlangt, dass Sie bei der Registrierung einer Domain dem UDRP zustimmen. Durch diese Vereinbarung kann ein privates Schiedsgremium — und nicht ein nationales Gericht — die Übertragung Ihrer Domain anordnen.
+Das **UDRP** — die **Uniform Domain-Name Dispute-Resolution Policy** (auf Deutsch: **UDRP-Verfahren**) — ist eine Richtlinie, die [ICANN](/de/glossary/icann/) im Jahr 1999 geschaffen hat, um Streitigkeiten über Domain-Namen zu lösen, die angeblich Markenrechte einer Person verletzen. Jeder akkreditierte [Registrar](/de/glossary/registrar/) verlangt, dass Sie bei der Registrierung einer Domain dem UDRP zustimmen. Durch diese Vereinbarung kann ein privates Schiedsgremium — und nicht ein nationales Gericht — die Übertragung Ihrer Domain anordnen.
 
-Das UDRP wurde geschaffen, um **Cybersquatting** zu bekämpfen: die Registrierung einer Domain, die dem Markennamen einer anderen Person entspricht, um daraus Profit zu schlagen. Die Richtlinie ist bewusst eng gefasst. Sie ist kein Instrument zur Beilegung jedes Streits darüber, wer einen Namen „verdient". Sie zielt auf bösgläubige Registrierungen markenverletzender Domains ab — und auf nichts anderes.
+Das UDRP wurde geschaffen, um **[Cybersquatting](/de/glossary/cybersquatting/)** zu bekämpfen: die Registrierung einer Domain, die dem Markennamen einer anderen Person entspricht, um daraus Profit zu schlagen. Die Richtlinie ist bewusst eng gefasst. Sie ist kein Instrument zur Beilegung jedes Streits darüber, wer einen Namen „verdient". Sie zielt auf bösgläubige Registrierungen markenverletzender Domains ab — und auf nichts anderes.
 
 Das UDRP gilt für alle generischen Top-Level-Domains (`.com`, `.net`, `.org` und die neueren gTLDs) sowie für Ländercode-TLDs, deren Betreiber es freiwillig übernommen haben. Viele ccTLDs führen stattdessen eigene Streitbeilegungsverfahren durch.
 
@@ -27,15 +27,15 @@ Das UDRP gilt für alle generischen Top-Level-Domains (`.com`, `.net`, `.org` un
 
 Eine UDRP-Beschwerde führt nicht allein deshalb zum Erfolg, weil ein Markeninhaber unzufrieden ist. Der Beschwerdeführer muss **alle drei** der folgenden Elemente beweisen. Scheitert auch nur eines davon, wird die Beschwerde abgewiesen und die Domain verbleibt beim Registranten.
 
-1. **Identisch oder verwechslungsfähig ähnlich.** Die Domain ist identisch oder verwechslungsfähig ähnlich zu einer Marke oder Dienstleistungsmarke, an der der Beschwerdeführer Rechte besitzt. In der Praxis fungiert dieses erste Element hauptsächlich als Voraussetzung der Klagebefugnis — es bestätigt, dass der Beschwerdeführer tatsächlich Inhaber einer relevanten Marke ist.
+1. **Identisch oder verwechslungsfähig ähnlich.** Die Domain ist identisch oder verwechslungsfähig ähnlich zu einer [Marke](/de/glossary/trademark/) oder Dienstleistungsmarke, an der der Beschwerdeführer Rechte besitzt. In der Praxis fungiert dieses erste Element hauptsächlich als Voraussetzung der Klagebefugnis — es bestätigt, dass der Beschwerdeführer tatsächlich Inhaber einer relevanten Marke ist.
 
-2. **Keine Rechte oder berechtigten Interessen.** Der Registrant hat keine Rechte oder berechtigten Interessen an der Domain. Sobald der Beschwerdeführer hier einen glaubwürdigen Nachweis erbracht hat, verschiebt sich die Beweislast effektiv auf den Registranten, der ein berechtigtes Interesse nachweisen muss — zum Beispiel, dass er den Namen für ein legitimes Unternehmen, einen beschreibenden Begriff oder nichtkommerzielle Meinungsäußerung nutzt.
+2. **Keine Rechte oder berechtigten Interessen.** Der [Registrant](/de/glossary/registrant/) hat keine Rechte oder berechtigten Interessen an der Domain. Sobald der Beschwerdeführer hier einen glaubwürdigen Nachweis erbracht hat, verschiebt sich die Beweislast effektiv auf den Registranten, der ein berechtigtes Interesse nachweisen muss — zum Beispiel, dass er den Namen für ein legitimes Unternehmen, einen beschreibenden Begriff oder nichtkommerzielle Meinungsäußerung nutzt.
 
 3. **Bösgläubig registriert *und* genutzt.** Die Domain wurde sowohl **bösgläubig registriert als auch bösgläubig genutzt.** Dieses konjunktive „und" ist das wichtigste Wort in der gesamten Richtlinie für Domain-Investoren. Ein Name, der Jahre vor dem Entstehen der Marke des Beschwerdeführers registriert wurde, kann im Allgemeinen nicht bösgläubig registriert worden sein — man kann keine Marke ins Visier nehmen, die damals noch nicht existierte.
 
 Dieses dritte Element ist es, durch das die meisten vertretbaren Portfolios bestehen. Das UDRP erkennt spezifische bösgläubige Muster an: die Registrierung eines Namens vorwiegend mit der Absicht, ihn dem Markeninhaber zu einem überhöhten Preis zu verkaufen; die Registrierung, um zu verhindern, dass die Marke ihren eigenen Namen registriert (als Teil eines Musters); die Registrierung, um einen Wettbewerber zu stören; oder die Nutzung des Namens, um Besucher durch Verwechslungsgefahr mit der Marke anzuziehen.
 
-Entscheidend ist: **Das Besitzen und Anbieten generischer oder beschreibender Domains zum Verkauf stellt für sich genommen keine Bösgläubigkeit dar.** Domain-Investing ist ein legitimes Geschäftsmodell. Die Grenze liegt in der Absicht: Haben Sie mit Wörtern aus dem Wörterbuch und brandingfähigen Begriffen gehandelt, oder haben Sie eine bestimmte Marke ins Visier genommen?
+Entscheidend ist: **Das Besitzen und Anbieten generischer oder beschreibender Domains zum Verkauf stellt für sich genommen keine [Bösgläubigkeit](/de/glossary/bad-faith/) dar.** Domain-Investing ist ein legitimes Geschäftsmodell. Die Grenze liegt in der Absicht: Haben Sie mit Wörtern aus dem Wörterbuch und brandingfähigen Begriffen gehandelt, oder haben Sie eine bestimmte Marke ins Visier genommen?
 
 ## UDRP-Verfahren und Zeitplan
 
@@ -103,7 +103,7 @@ Es ist auch wichtig zu verstehen, dass eine UDRP-Übertragung ein anderes Proble
 
 Bei hochwertigen Namen stellt eine UDRP-Beschwerde ein existenzielles Risiko dar — und es ist einer der Gründe, warum Herkunftsnachweis und klare Aufzeichnungen so wichtig sind, wenn Sie [eine eigene Domain verkaufen](/de/blog/how-to-sell-a-domain-name-you-own/). Eine saubere Registrierungshistorie und eine glaubwürdige Geschichte zur legitimen Nutzung sind Werte, die den Namen schützen.
 
-Hier fügen sich auch [tokenisierte Domains](/de/blog/what-are-tokenized-domains/) ins Bild ein. Tokenisierung verändert, *wer nachweislich die Kontrolle* über einen Namen hat, und schafft ein dauerhaftes, on-chain-Eigentums- und Übertragungsprotokoll — nützlicher Herkunftsnachweis, wenn ein Registrierungsdatum oder eine Besitzkette jemals in Frage gestellt wird. Sie stellt eine Domain jedoch **nicht** außerhalb des UDRP: Der zugrundeliegende Name existiert weiterhin im DNS unter einem akkreditierten Registrar, und das UDRP gilt nach wie vor. Tokenisierung stärkt Ihre Beweise und Ihre Kontrolle; sie befreit Sie nicht vom Markenrecht.
+Hier fügen sich auch [tokenisierte Domains](/de/blog/what-are-tokenized-domains/) ins Bild ein. [Tokenisierung](/de/glossary/tokenize/) verändert, *wer nachweislich die Kontrolle* über einen Namen hat, und schafft ein dauerhaftes, [on-chain](/de/glossary/on-chain/)-Eigentums- und Übertragungsprotokoll — nützlicher Herkunftsnachweis, wenn ein Registrierungsdatum oder eine Besitzkette jemals in Frage gestellt wird. Sie stellt eine Domain jedoch **nicht** außerhalb des UDRP: Der zugrundeliegende Name existiert weiterhin im DNS unter einem akkreditierten Registrar, und das UDRP gilt nach wie vor. Tokenisierung stärkt Ihre Beweise und Ihre Kontrolle; sie befreit Sie nicht vom Markenrecht.
 
 [Namefi](https://namefi.io) tokenisiert die Registrantenbeziehung, während die Domain vollständig ICANN-konform bleibt, sodass Inhaber on-chain-Herkunftsnachweis und Selbstverwahrung erhalten, ohne das System zu verlassen, das das UDRP regelt. Das Ziel ist einfach: wertvolle Namen mit besseren Nachweisen und saubererer Kontrolle besitzen und dabei vollständig innerhalb der geltenden Regeln bleiben.
 
@@ -132,4 +132,4 @@ Nein. Tokenisierung verbessert Herkunftsnachweis, Kontrolle und Selbstverwahrung
 
 ---
 
-*Quellen: ICANN — [Uniform Domain-Name Dispute-Resolution Policy](https://www.icann.org/resources/pages/policy-2012-02-25-en); WIPO — [Guide to the UDRP](https://www.wipo.int/amc/en/domains/guide/). Dieser Artikel enthält allgemeine Informationen und stellt keine Rechtsberatung dar.*
+*Quellen: ICANN — [Uniform Domain-Name Dispute-Resolution Policy](https://www.icann.org/resources/pages/policy-2012-02-25-en); [WIPO](/de/glossary/wipo/) — [Guide to the UDRP](https://www.wipo.int/amc/en/domains/guide/). Dieser Artikel enthält allgemeine Informationen und stellt keine Rechtsberatung dar.*

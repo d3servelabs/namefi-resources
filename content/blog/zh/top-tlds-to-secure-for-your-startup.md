@@ -10,7 +10,7 @@ description: '探索初创公司应优先抢注的顶级域名后缀，从 .com 
 keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创公司域名', '防御性域名注册', '必须抢注的 TLD', '.com 与 .io 对比', '初创公司 .ai 域名', '品牌保护域名', '科技初创公司域名', '如何选择域名后缀']
 ---
 
-当你创办一家公司时，域名就是你所构建一切的前门：你的网站、你的电子邮件、你的产品以及你的声誉。但仅仅注册一个域名往往远远不够。最聪明的创始人会尽早注册适合初创公司的顶级域名后缀，抢在竞争对手、抢注者或机会主义域名投资者之前行动。顶级域名（TLD）是网址末尾的后缀——也就是最后一个点之后的部分——选择正确的后缀是一项战略决策，而非事后才考虑的细节。
+当你创办一家公司时，域名就是你所构建一切的前门：你的网站、你的电子邮件、你的产品以及你的声誉。但仅仅注册一个域名往往远远不够。最聪明的创始人会尽早注册适合初创公司的[顶级域名](/zh/glossary/tld/)后缀，抢在竞争对手、[抢注](/zh/glossary/backorder/)者或机会主义域名投资者之前行动。顶级域名（TLD）是网址末尾的后缀——也就是最后一个点之后的部分——选择正确的后缀是一项战略决策，而非事后才考虑的细节。
 
 注册多个 TLD 能为你的初创公司带来三个实实在在的优势：品牌保护（让客户始终找到真正的你）、防御性注册（阻止不法分子使用高度相似的地址）以及发展空间（为未来拓展新产品、子品牌或重新定位预留余地）。今天注册几个后缀的费用微不足道，与日后赎回被劫持域名、或因钓鱼仿冒网站流失客户相比，完全不值一提。本指南将带你了解最值得注册的十个后缀以及如何善加利用。
 
@@ -26,11 +26,11 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ### 2. .io — 科技与 SaaS 创业公司的最爱
 
-[.io](/zh/tld/io) 因"I/O"在软件领域代表输入/输出而深受初创公司喜爱，天然带有技术气息。它是分配给英属印度洋领地的国家代码顶级域名，注册局现由 [Identity Digital](https://www.identity.digital/) 旗下的 Internet Computer Bureau 运营，详见 [IANA 授权记录](https://www.iana.org/domains/root/db/io.html)。全球任何人均可注册。需要注意的是，该领地的长期地缘政治状态已有[公开讨论](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)，因此应将 .io 视为 .com 的有力补充，而非替代品。
+[.io](/zh/tld/io) 因"I/O"在软件领域代表输入/输出而深受初创公司喜爱，天然带有技术气息。它是分配给英属印度洋领地的[国家代码顶级域名](/zh/glossary/cctld/)，注册局现由 [Identity Digital](https://www.identity.digital/) 旗下的 Internet Computer Bureau 运营，详见 [IANA 授权记录](https://www.iana.org/domains/root/db/io.html)。全球任何人均可注册。需要注意的是，该领地的长期地缘政治状态已有[公开讨论](https://www.theregister.com/2024/10/10/io_domain_uk_mauritius/)，因此应将 .io 视为 .com 的有力补充，而非替代品。
 
 ### 3. .ai — AI 初创公司的不二之选
 
-[.ai](/zh/tld/ai) 随着人工智能热潮的兴起而迅速走红，几乎成为所有 AI 方向公司的标配。它是安圭拉的国家代码顶级域名，由安圭拉政府管理，该政府于 [2024 年宣布与 Identity Digital 建立合作关系](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses)，共同应对 .ai 域名的爆炸式增长；详见 [IANA 记录](https://www.iana.org/domains/root/db/ai.html)。注册无需 AI 行业资质，但定价和续费条款与常规通用顶级域名有所不同，需提前做好规划。
+[.ai](/zh/tld/ai) 随着人工智能热潮的兴起而迅速走红，几乎成为所有 AI 方向公司的标配。它是安圭拉的国家代码顶级域名，由安圭拉政府管理，该政府于 [2024 年宣布与 Identity Digital 建立合作关系](https://www.businesswire.com/news/home/20241015024971/en/The-Government-of-Anguilla-and-Identity-Digital-Announce-New-Partnership-to-Manage-Explosive-Growth-of-.AI-Web-Addresses)，共同应对 .ai 域名的爆炸式增长；详见 [IANA 记录](https://www.iana.org/domains/root/db/ai.html)。注册无需 AI 行业资质，但定价和续费条款与常规[通用顶级域名](/zh/glossary/gtld/)有所不同，需提前做好规划。
 
 ### 4. .app — 默认安全的应用域名
 
@@ -46,7 +46,7 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ### 7. .xyz — 灵活通用、初创友好
 
-[.xyz](/zh/tld/xyz) 是由 XYZ.COM LLC 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz) 运营的通用开放型后缀。其开放、中性的品牌属性使其在初创公司和 Web3 项目中广受欢迎（Alphabet 的 abc.xyz 便是广为人知的例子）。没有相关性限制，是落地页、营销活动或实验性产品的灵活之选。
+[.xyz](/zh/tld/xyz) 是由 XYZ.COM LLC 依据 [ICANN 注册局协议](https://www.icann.org/en/registry-agreements/details/xyz) 运营的通用开放型后缀。其开放、中性的品牌属性使其在初创公司和 [Web3](/zh/glossary/web3/) 项目中广受欢迎（Alphabet 的 abc.xyz 便是广为人知的例子）。没有相关性限制，是落地页、营销活动或实验性产品的灵活之选。
 
 ### 8. .co — .com 的简洁替代
 
@@ -68,7 +68,7 @@ keywords: ['初创公司顶级域名', '初创公司最佳域名后缀', '初创
 
 ## 在 Namefi 注册你的初创公司域名
 
-[Namefi](https://namefi.io) 是经 ICANN 认证的域名注册商，专为希望在一处管理整个域名组合的创始人而生。你将获得透明定价（无隐性追加销售）、快速 DNS 解析（变更可迅速生效），以及对上述所有后缀及更多后缀的支持。Namefi 还支持 Web3 代币化，让你以 NFT 形式持有符合条件的域名，使所有权具备传统注册商无法实现的可移植性和可编程性。立即注册核心 .com 及其类别后缀与防御性后缀，并在 [Namefi](https://namefi.io) 的统一控制台管理续费和 DNS。
+[Namefi](https://namefi.io) 是经 [ICANN](/zh/glossary/icann/) 认证的域名注册商，专为希望在一处管理整个域名组合的创始人而生。你将获得透明定价（无隐性追加销售）、快速 DNS 解析（变更可迅速生效），以及对上述所有后缀及更多后缀的支持。Namefi 还支持 Web3 代币化，让你以 NFT 形式持有符合条件的域名，使所有权具备传统注册商无法实现的可移植性和可编程性。立即注册核心 .com 及其类别后缀与防御性后缀，并在 [Namefi](https://namefi.io) 的统一控制台管理续费和 DNS。
 
 ## 常见问题
 

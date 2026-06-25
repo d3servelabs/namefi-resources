@@ -14,7 +14,7 @@ El flujo tradicional para vender un `.com` es más o menos así:
 1. Listar en [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) o Dan.com.
 2. Negociar.
 3. Abrir un [depósito en garantía o escrow](/es/glossary/escrow/) en [Escrow.com](https://www.escrow.com/) o similar. El comprador transfiere los fondos.
-4. El vendedor desbloquea el dominio y proporciona el [código de autorización](/en/glossary/auth-code/).
+4. El vendedor desbloquea el dominio y proporciona el [código de autorización](/es/glossary/auth-code/).
 5. El comprador inicia la [transferencia entre registradores](/es/glossary/cross-registrar-transfer/) en su [registrador](/es/glossary/registrar/).
 6. Esperar de 5 a 7 días para que se complete la transferencia de la [ICANN](/es/glossary/icann/).
 7. Confirmar la transferencia; el escrow libera los fondos.
@@ -29,10 +29,10 @@ Las ventas de dominios tokenizados comprimen todo esto en una sola transacción.
 ## El nuevo flujo, de principio a fin
 
 1. Listar el [dominio tokenizado](/es/blog/what-are-tokenized-domains/) en un [mercado](/es/glossary/marketplace/) (el propio de Namefi, Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
-2. El comprador paga. El [NFT](/es/glossary/nft/) se transfiere a la [billetera (wallet)](/es/glossary/wallet/) del comprador. El registro del lado del [registrador](/es/glossary/registrar/) es mantenido en sincronía por la plataforma.
+2. El comprador paga. El [NFT](/es/glossary/nft/) se transfiere a la [billetera (wallet)](/es/glossary/wallet/) del comprador. El [registro](/es/glossary/registry/) del lado del registrador es mantenido en sincronía por la plataforma.
 3. Listo.
 
-Eso es todo. Dos pasos. Sin [código de autorización](/en/glossary/auth-code/), sin [escrow](/es/glossary/escrow/), sin bloqueo de registrador de 5 días, sin la incertidumbre de "ya envié el dinero, ahora confío en ti".
+Eso es todo. Dos pasos. Sin código de autorización, sin escrow, sin bloqueo de registrador de 5 días, sin la incertidumbre de "ya envié el dinero, ahora confío en ti".
 
 Esto funciona porque el **NFT es el registro de propiedad canónico**, y las transacciones [en cadena (on-chain)](/es/glossary/on-chain/) son [atómicas](/es/glossary/atomic-transfer/): el pago y la transferencia del activo ocurren en el mismo bloque, o no ocurre ninguno de los dos.
 
@@ -44,7 +44,7 @@ Esto funciona porque el **NFT es el registro de propiedad canónico**, y las tra
 
 La misma idea, pero en una superficie diferente. Los mercados siguen cobrando una comisión y siguen seleccionando los listados. El gran cambio: los listados tokenizados pueden aparecer en **múltiples mercados a la vez** porque son NFT estándar. Se listan una vez en la plataforma que originó el dominio; y plataformas como OpenSea o Blur pueden agregarlo automáticamente.
 
-Esta es una mejora significativa de la liquidez en comparación con el mundo de los dominios tradicionales, donde Sedo y Afternic funcionaban como ecosistemas cerrados (walled gardens).
+Esta es una mejora significativa de la [liquidez](/es/glossary/domain-liquidity/) en comparación con el mundo de los dominios tradicionales, donde Sedo y Afternic funcionaban como ecosistemas cerrados (walled gardens).
 
 ### Escrow.com
 
@@ -66,7 +66,7 @@ Existe una regla relacionada (el período de espera de 60 días después de una 
 
 ### Transferencias bancarias y retrasos
 
-**Reemplazados por pagos con criptomonedas y [monedas estables (stablecoins)](/en/glossary/stablecoin/).** USDC, ETH y otros pagos en cadena se liquidan en segundos. Las transferencias bancarias tardan días en liquidarse. La diferencia es mucho más evidente en las ventas internacionales.
+**Reemplazados por pagos con criptomonedas y [monedas estables (stablecoins)](/es/glossary/stablecoin/).** USDC, ETH y otros pagos en cadena se liquidan en segundos. Las transferencias bancarias tardan días en liquidarse. La diferencia es mucho más evidente en las ventas internacionales.
 
 ### "Confío en que la otra persona haga su parte"
 
@@ -84,7 +84,7 @@ Ahora estás enviando un NFT a una dirección de billetera. Si el comprador te d
 
 ### Riesgo de los contratos inteligentes
 
-El contrato inteligente del mercado es el nuevo "escrow". Si tiene un error, pueden ocurrir cosas extrañas. Es por esto que los mercados auditados y probados son importantes. No seas el primero en usar un contrato completamente nuevo para una venta de alto valor.
+El [contrato inteligente](/es/glossary/smart-contract/) del mercado es el nuevo "escrow". Si tiene un error, pueden ocurrir cosas extrañas. Es por esto que los mercados auditados y probados son importantes. No seas el primero en usar un contrato completamente nuevo para una venta de alto valor.
 
 ### Front-running y MEV
 
@@ -128,7 +128,7 @@ La otra cara de la moneda: renuncias al alcance de marketing (a veces considerab
 
 ## Listados híbridos
 
-Nada en un dominio tokenizado te impide listarlo también a la antigua. Muchos propietarios listan:
+Nada en un [dominio tokenizado](/es/glossary/tokenized-domain/) te impide listarlo también a la antigua. Muchos propietarios listan:
 
 - En el propio mercado de la plataforma.
 - En mercados generales de NFT (OpenSea, Blur).

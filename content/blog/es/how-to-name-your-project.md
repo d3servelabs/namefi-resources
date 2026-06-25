@@ -118,8 +118,8 @@ Los casos *reales* son menos conocidos pero instructivos. Mitsubishi vendió su 
 Una vez que tengas un finalista, haz un recorrido consolidado antes de comprometer un solo dólar en un logo. Busca, en este orden:
 
 1. **Búsqueda web** — ¿está la primera página libre de competidores?
-2. **Marca registrada** — [USPTO](https://www.uspto.gov/trademarks/search), [EUIPO](https://www.euipo.europa.eu/en/trade-marks/before-applying) y [Base de Datos Global de Marcas de la OMPI](https://branddb.wipo.int/) para tu categoría.
-3. **Dominio** — ¿está disponible o es adquirible el `.com`? En [Namefi](https://namefi.io), verifica la **antigüedad de registro del `.com`** y el **número de TLDs ya registrados** para calibrar qué tan disputado está el nombre.
+2. **[Marca registrada](/es/glossary/trademark/)** — [USPTO](https://www.uspto.gov/trademarks/search), [EUIPO](https://www.euipo.europa.eu/en/trade-marks/before-applying) y [Base de Datos Global de Marcas de la OMPI](https://branddb.wipo.int/) para tu categoría.
+3. **Dominio** — ¿está disponible o es adquirible el `.com`? En [Namefi](https://namefi.io), verifica la **antigüedad de [registro](/es/glossary/registry/) del `.com`** y el **número de TLDs ya registrados** para calibrar qué tan disputado está el nombre.
 4. **GitHub** — ¿está libre la organización/handle? (Fundamental para cualquier proyecto orientado a desarrolladores.)
 5. **Handles sociales** — X, Reddit, LinkedIn, Instagram, YouTube — lo que sea relevante para tu audiencia, idealmente todos coincidentes.
 6. **Tiendas de aplicaciones**, si vas a lanzar una app.

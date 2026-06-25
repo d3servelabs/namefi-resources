@@ -21,9 +21,9 @@ Esta publicación asume que ya quieres hacerlo.
 
 Tendrás una experiencia mucho más fluida si estas condiciones se cumplen antes de hacer clic en cualquier lugar:
 
-- **Controlas el dominio en su [registrador](/es/glossary/registrar/) actual.** Puedes iniciar sesión, cambiar los servidores de nombres (nameservers) y aprobar transferencias / [códigos de autorización (auth codes)](/en/glossary/auth-code/).
-- **Tienes una [billetera (wallet)](/es/glossary/wallet/) de autocustodia.** MetaMask, Rabby, Coinbase Wallet, o cualquier billetera EVM estándar. Asegúrate de tener realmente la [frase semilla (seed phrase)](/en/glossary/seed-phrase/), no solo una cuenta en un exchange.
-- **La billetera tiene una pequeña cantidad de [gas](/en/glossary/gas/).** Unos pocos dólares de ETH o Base ETH cubren la transacción de minteo (acuñación) [on-chain](/es/glossary/on-chain/). No necesitas mucho.
+- **Controlas el dominio en su [registrador](/es/glossary/registrar/) actual.** Puedes iniciar sesión, cambiar los servidores de nombres (nameservers) y aprobar transferencias / [códigos de autorización (auth codes)](/es/glossary/auth-code/).
+- **Tienes una [billetera (wallet)](/es/glossary/wallet/) de autocustodia.** MetaMask, Rabby, Coinbase Wallet, o cualquier billetera EVM estándar. Asegúrate de tener realmente la [frase semilla (seed phrase)](/es/glossary/seed-phrase/), no solo una cuenta en un exchange.
+- **La billetera tiene una pequeña cantidad de [gas](/es/glossary/gas/).** Unos pocos dólares de ETH o Base ETH cubren la transacción de minteo (acuñación) [on-chain](/es/glossary/on-chain/). No necesitas mucho.
 - **El dominio no está bloqueado, a punto de expirar ni en medio de una transferencia.** Los dominios que están dentro de los ~60 días posteriores a una [transferencia entre registradores](/es/glossary/cross-registrar-transfer/) reciente, o a 30 días de su expiración, a menudo no se pueden mover. Compruébalo primero.
 - **Tienes tiempo.** Calcula unos 30 minutos de atención, más hasta 5–7 días de procesamiento en segundo plano para movimientos entre registradores.
 
@@ -33,7 +33,7 @@ Si algo de esto no es seguro, soluciónalo antes de empezar. El proceso tolera l
 
 ## Paso 1: Conecta tu billetera en namefi.io
 
-Dirígete a [namefi.io](https://namefi.io) y haz clic en "Connect Wallet" (Conectar Billetera). Aprueba la conexión en tu billetera. Esta billetera se convertirá en la **propietaria** del dominio tokenizado: el NFT vivirá aquí, y quien posea esta billetera, posee el dominio.
+Dirígete a [namefi.io](https://namefi.io) y haz clic en "Connect Wallet" (Conectar Billetera). Aprueba la conexión en tu billetera. Esta billetera se convertirá en la **propietaria** del [dominio tokenizado](/es/glossary/tokenized-domain/): el NFT vivirá aquí, y quien posea esta billetera, posee el dominio.
 
 > **Toma esto en serio.** Si pierdes esta billetera, pierdes el lado on-chain de tu dominio. Tenemos una guía separada sobre [cómo recuperar un dominio tokenizado tras la pérdida de la billetera](/es/blog/recovering-a-tokenized-domain-after-wallet-loss/); léela ahora, no después.
 
@@ -41,7 +41,7 @@ Dirígete a [namefi.io](https://namefi.io) y haz clic en "Connect Wallet" (Conec
 
 ## Paso 2: Añade el dominio que quieres tokenizar
 
-En tu panel de control de Namefi, busca o añade el dominio que ya posees. Namefi verificará su elegibilidad: el [registrador](/es/glossary/registrar/) en el que se encuentra actualmente, si se puede bloquear, si cumple con las reglas de transferencia de la [ICANN](/es/glossary/icann/) y si el [TLD](/en/glossary/tld/) es compatible.
+En tu panel de control de Namefi, busca o añade el dominio que ya posees. Namefi verificará su elegibilidad: el registrador en el que se encuentra actualmente, si se puede bloquear, si cumple con las reglas de transferencia de la [ICANN](/es/glossary/icann/) y si el [TLD](/es/glossary/tld/) es compatible.
 
 Verás uno de estos tres estados:
 
@@ -55,7 +55,7 @@ Verás uno de estos tres estados:
 
 Namefi suele ofrecer un par de rutas dependiendo del registrador actual del dominio:
 
-1. **Transferir y luego tokenizar.** Mueve el dominio al socio registrador acreditado de Namefi y luego mintea el token on-chain. Esta es la ruta más común. Tarda unos días debido al flujo de transferencia de la ICANN, no por nada relacionado con la blockchain.
+1. **Transferir y luego tokenizar.** Mueve el dominio al socio registrador acreditado de Namefi y luego mintea el token on-chain. Esta es la ruta más común. Tarda unos días debido al flujo de transferencia de la ICANN, no por nada relacionado con la [blockchain](/es/glossary/blockchain/).
 2. **Tokenizar en el lugar (donde sea compatible).** Para algunas integraciones de registradores, el dominio permanece donde está y la capa on-chain se añade encima. Es más rápido, pero solo está disponible para ciertos registradores asociados.
 
 Verás la ruta que se aplica a tu dominio. El panel de control mostrará el tiempo estimado y cualquier tarifa por adelantado.
@@ -64,10 +64,10 @@ Verás la ruta que se aplica a tu dominio. El panel de control mostrará el tiem
 
 ## Paso 4: Confirma el código de autorización / Aprueba la transferencia (si es necesario)
 
-Para la ruta de transferencia, tomarás el [**código de autorización (auth code)**](/en/glossary/auth-code/) (a veces llamado código EPP) de tu registrador actual y lo pegarás en Namefi. Es posible que también necesites:
+Para la ruta de transferencia, tomarás el **código de autorización (auth code)** (a veces llamado código EPP) de tu registrador actual y lo pegarás en Namefi. Es posible que también necesites:
 
 - Desbloquear el dominio en tu registrador actual.
-- Aprobar un correo electrónico de confirmación enviado al contacto del solicitante de registro.
+- Aprobar un correo electrónico de confirmación enviado al contacto del solicitante de [registro](/es/glossary/registry/).
 
 Esta es la parte más lenta de todo el proceso. Planifica entre 5 y 7 días para que se complete el movimiento entre registradores, aunque a menudo termina más rápido.
 
@@ -75,12 +75,12 @@ Esta es la parte más lenta de todo el proceso. Planifica entre 5 y 7 días para
 
 ## Paso 5: Mintear el token on-chain
 
-Una vez que el dominio esté bajo la integración del registrador de Namefi, se te pedirá que **mintees** la representación [NFT](/es/glossary/nft/) (un token [ERC-721](/en/glossary/erc-721/) estándar). Tu billetera aparecerá; confirmas una transacción; se paga el [gas](/en/glossary/gas/); el token aterriza en tu billetera.
+Una vez que el dominio esté bajo la integración del registrador de Namefi, se te pedirá que **mintees** la representación [NFT](/es/glossary/nft/) (un token [ERC-721](/es/glossary/erc-721/) estándar). Tu billetera aparecerá; confirmas una transacción; se paga el gas; el token aterriza en tu billetera.
 
 Este es el momento en que el dominio queda [*tokenizado*](/es/glossary/tokenize/). Ahora tienes:
 
 - El registro [DNS](/es/glossary/dns/) / registrador tradicional (sigue siendo real, sigue siendo reconocido por la ICANN).
-- Un NFT [on-chain](/es/glossary/on-chain/) en tu billetera que representa la propiedad.
+- Un NFT on-chain en tu billetera que representa la propiedad.
 
 En adelante, el protocolo mantendrá a ambos sincronizados.
 
@@ -90,13 +90,13 @@ En adelante, el protocolo mantendrá a ambos sincronizados.
 
 Abre la pestaña de NFTs de tu billetera. Deberías ver el nuevo NFT del dominio tokenizado. Haz clic en él para ir a un explorador de bloques (Etherscan, Basescan, etc.) y confirmar el contrato y la dirección de propiedad. Este es un buen momento para tomar una captura de pantalla para tus propios registros.
 
-Si tienes una [billetera de hardware (hardware wallet)](/en/glossary/hardware-wallet/), este es un gran momento para mover el NFT hacia ella. La transferencia es una transferencia de NFT normal y cuesta gas.
+Si tienes una [billetera de hardware (hardware wallet)](/es/glossary/hardware-wallet/), este es un gran momento para mover el NFT hacia ella. La transferencia es una transferencia de NFT normal y cuesta gas.
 
 ---
 
 ## Paso 7: Gestiona los DNS y las renovaciones
 
-Tokenizar un dominio no cambia cómo se resuelve. Tus servidores de nombres, registros A, registros MX, DNSSEC... todo sigue funcionando. Puedes gestionarlos desde el panel de control de Namefi, o delegarlos a tu proveedor de DNS existente (Cloudflare, Route53, etc.) tal como antes.
+Tokenizar un dominio no cambia cómo se resuelve. Tus servidores de nombres, registros A, registros MX, [DNSSEC](/es/glossary/dnssec/)... todo sigue funcionando. Puedes gestionarlos desde el panel de control de Namefi, o delegarlos a tu proveedor de DNS existente (Cloudflare, Route53, etc.) tal como antes.
 
 Para obtener detalles sobre qué cambia (y qué no) en la capa DNS, consulta [El DNS sigue funcionando: Servidores de nombres, correo electrónico y DNSSEC en un dominio tokenizado](/es/blog/dns-on-tokenized-domains/).
 
@@ -109,7 +109,7 @@ Las renovaciones siguen ocurriendo a través de la capa del registrador. Namefi 
 Aproximadamente, estás pagando por tres cosas:
 
 - **Tarifas del registrador.** El precio normal de renovación anual del dominio, más cualquier tarifa de transferencia. Estos son costos del mundo real que existen independientemente de la tokenización.
-- **Gas.** Unos pocos dólares para la transacción de minteo, dependiendo de en qué cadena (Base es más barato que Ethereum L1).
+- **Gas.** Unos pocos dólares para la transacción de minteo, dependiendo de en qué cadena (Base es más barato que [Ethereum](/es/glossary/ethereum/) L1).
 - **Tarifas del protocolo.** Las tarifas propias de Namefi por el servicio de tokenización. Estas se muestran en el panel de control antes de que confirmes.
 
 No hay sorpresas ocultas. Si un número no está en la pantalla de confirmación, no es un cargo.

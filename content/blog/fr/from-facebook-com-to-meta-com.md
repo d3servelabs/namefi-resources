@@ -64,7 +64,7 @@ L'écart entre Facebook.com et Meta.com n'est pas une montée en gamme d'un mauv
 | Avant | Après |
 | --- | --- |
 | Facebook.com (société + application) | Meta.com (société) + Facebook.com (application) |
-| Société mère nommée d'après un seul produit | Société mère nommée d'après l'ensemble du portefeuille |
+| Société mère nommée d'après un seul produit | Société mère nommée d'après l'ensemble du [portefeuille](/fr/glossary/wallet/) |
 | Une controverse sur l'application atteint la marque corporate | La marque corporate est une couche au-dessus de chaque application |
 | Identité ancrée aux réseaux sociaux | Identité ancrée au « métavers », ouverte sur l'avenir |
 | Un seul nom porte tout | Un nom de holding laisse les sous-marques respirer |
@@ -116,7 +116,7 @@ Meta n'a pas gagné grâce à un domaine. Elle avait déjà gagné, sur le dos d
 
 Mettez de côté le métavers et le cas 7 est une étude de tout ce qui rend les accords domaine-plus-nom difficiles — et un avant-goût de comment ils pourraient être plus simples.
 
-Regardez combien de fils séparés et laborieux Meta a dû tisser ensemble : un domaine détenu par une entité philanthropique, qui renvoyait vers un *second* domaine (meta.org) ; une marque commerciale concurrente propriété d'une banque, effacée via une société écran confidentielle pour 60 millions de dollars avec 10 millions retenus en séquestre contre une période de transition ; une redirection qui devait basculer à une date précise ; et une marque qui devait être propre dans le monde entier pour que la nouvelle identité soit sûre partout. Même pour une société avec des avocats à n'en plus finir, prouver qui possédait quoi, s'accorder sur la valeur, structurer le séquestre et transférer le contrôle proprement a nécessité une LLC du Delaware et un dépôt SEC pour émerger.
+Regardez combien de fils séparés et laborieux Meta a dû tisser ensemble : un domaine détenu par une entité philanthropique, qui renvoyait vers un *second* domaine (meta.org) ; une [marque commerciale](/fr/glossary/trademark/) concurrente propriété d'une banque, effacée via une société écran confidentielle pour 60 millions de dollars avec 10 millions retenus en séquestre contre une période de transition ; une redirection qui devait basculer à une date précise ; et une marque qui devait être propre dans le monde entier pour que la nouvelle identité soit sûre partout. Même pour une société avec des avocats à n'en plus finir, prouver qui possédait quoi, s'accorder sur la valeur, structurer le séquestre et transférer le contrôle proprement a nécessité une LLC du Delaware et un dépôt SEC pour émerger.
 
 [Namefi](https://namefi.io) est construit autour de l'idée que les domaines devraient se comporter comme des actifs natifs d'internet. La propriété tokenisée peut rendre le contrôle des domaines plus facile à vérifier, à transférer et à intégrer dans les flux de travail modernes tout en restant compatible avec le DNS — transformant les parties les plus opaques d'un accord comme celui-ci (qui détient réellement Meta.com, quelle est la valeur du nom, comment le déplacer sans casser la redirection, comment libérer le séquestre à une condition vérifiable) en quelque chose de plus proche d'une transaction propre, auditable et programmable.
 

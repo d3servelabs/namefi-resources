@@ -13,13 +13,13 @@ De toutes les choses auxquelles les gens ne pensent pas avant de [tokeniser un d
 
 Cet article explique, en toute honnêteté, quelles sont réellement vos options — et comment configurer les choses *dès maintenant* pour que le pire des scénarios reste récupérable.
 
-> **L'avertissement figurant au bas de cet article s'applique particulièrement ici.** Les options de récupération dépendent de la plateforme, de la blockchain, de votre juridiction et des circonstances spécifiques de votre perte d'accès. Ne considérez rien ici comme une garantie.
+> **L'avertissement figurant au bas de cet article s'applique particulièrement ici.** Les options de récupération dépendent de la plateforme, de la [blockchain](/fr/glossary/blockchain/), de votre juridiction et des circonstances spécifiques de votre perte d'accès. Ne considérez rien ici comme une garantie.
 
 ---
 
 ## Commençons par la vérité qui dérange
 
-La perte d'une clé cryptographique n'a rien à voir avec la perte d'un mot de passe de bureau d'enregistrement. Il n'y a pas de lien "Mot de passe oublié" qui vous envoie un e-mail. Si vous avez perdu votre phrase de récupération (seed phrase), vous avez perdu le portefeuille, et personne — ni Namefi, ni Ethereum, ni qui que ce soit d'autre — ne peut récupérer la clé privée pour vous. C'est le compromis qu'implique l'auto-garde (self-custody).
+La perte d'une clé cryptographique n'a rien à voir avec la perte d'un mot de passe de bureau d'enregistrement. Il n'y a pas de lien "Mot de passe oublié" qui vous envoie un e-mail. Si vous avez perdu votre [phrase de récupération](/fr/glossary/seed-phrase/) (seed phrase), vous avez perdu le portefeuille, et personne — ni Namefi, ni [Ethereum](/fr/glossary/ethereum/), ni qui que ce soit d'autre — ne peut récupérer la clé privée pour vous. C'est le compromis qu'implique l'auto-garde (self-custody).
 
 La bonne nouvelle : **il existe des voies de récupération au niveau de la plateforme** en plus de la couche cryptographique. Les domaines tokenisés ont une composante hors-chaîne (le bureau d'enregistrement / l'enregistrement DNS) que les plateformes peuvent parfois utiliser pour vous aider, selon la situation.
 
@@ -31,11 +31,11 @@ Ainsi : **la prévention est la stratégie de récupération.** Parlons des deux
 
 ## Prévention : configurez la récupération *avant* d'en avoir besoin
 
-Faites ceci *avant* de tokeniser, ou juste après.
+Faites ceci *avant* de [tokeniser](/fr/glossary/tokenize/), ou juste après.
 
 ### 1. Notez votre phrase de récupération. Deux fois. Sur du papier. Ou sur de l'acier.
 
-La principale cause de perte permanente est liée aux [phrases de récupération](/en/glossary/seed-phrase/) qui n'existaient qu'à un seul endroit, un endroit qui a désormais disparu.
+La principale cause de perte permanente est liée aux phrases de récupération qui n'existaient qu'à un seul endroit, un endroit qui a désormais disparu.
 
 - Écrivez les 12 ou 24 mots sur du papier. Deux fois. Dans des lieux physiques différents. (La [spécification BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) définit la liste de mots qu'utilisent la plupart des portefeuilles.)
 - Pour les portefeuilles de plus grande valeur, utilisez une plaque de sauvegarde en métal. Ni le feu ni l'eau ne pourront la détruire.
@@ -43,7 +43,7 @@ La principale cause de perte permanente est liée aux [phrases de récupération
 
 ### 2. Utilisez un portefeuille matériel pour le stockage
 
-Le portefeuille que vous utilisez pour *interagir* avec les applications peut être un portefeuille en ligne dit "hot wallet" (MetaMask, Rabby). Le portefeuille qui *détient* le NFT du domaine à long terme doit être un [**portefeuille matériel**](/en/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transférez-y le NFT après sa création (minting).
+Le portefeuille que vous utilisez pour *interagir* avec les applications peut être un portefeuille en ligne dit "hot wallet" (MetaMask, Rabby). Le portefeuille qui *détient* le NFT du domaine à long terme doit être un [**portefeuille matériel**](/fr/glossary/hardware-wallet/) (Ledger, Trezor, GridPlus, Keystone, etc.). Transférez-y le NFT après sa création (minting).
 
 ### 3. Envisagez un multisig pour les domaines de grande valeur
 
@@ -84,7 +84,7 @@ Transférez le NFT vers un nouveau portefeuille *immédiatement*, pendant que l'
 C'est le cas le plus difficile. Cryptographiquement parlant, le NFT est désormais inaccessible. Vos options :
 
 1. **Récupération côté plateforme.** Si la plateforme (par ex., Namefi) possède une identité liée à votre e-mail d'inscription et à un processus KYC (le cas échéant), vous pourriez être en mesure de prouver que vous êtes le titulaire et de demander une solution gérée par la plateforme. Ce n'est **pas garanti**, cela nécessite une vérification d'identité et ne s'applique généralement que sous des conditions très spécifiques. Contactez le support immédiatement — plus vous attendez, plus cela devient difficile.
-2. **Recours auprès du registre / bureau d'enregistrement.** S'agissant d'un véritable domaine [ICANN](/fr/glossary/icann/), l'enregistrement sous-jacent existe toujours. Les [bureaux d'enregistrement](/fr/glossary/registrar/) ont des procédures pour prouver la propriété (historique [WHOIS / RDAP](/en/glossary/whois/), factures, pièce d'identité officielle). Ces démarches sont lentes, très administratives et ne garantissent pas un résultat positif — mais elles existent.
+2. **Recours auprès du [registre](/fr/glossary/registry/) / bureau d'enregistrement.** S'agissant d'un véritable domaine [ICANN](/fr/glossary/icann/), l'enregistrement sous-jacent existe toujours. Les [bureaux d'enregistrement](/fr/glossary/registrar/) ont des procédures pour prouver la propriété (historique [WHOIS / RDAP](/fr/glossary/whois/), factures, pièce d'identité officielle). Ces démarches sont lentes, très administratives et ne garantissent pas un résultat positif — mais elles existent.
 3. **Voie légale.** Pour les domaines de grande valeur détenus dans le cadre d'une entreprise ou d'une succession, des avocats et des sociétés de récupération se spécialisent dans ce domaine. C'est coûteux, lent et dépend de chaque cas.
 
 Ce que personne ne peut faire : forcer (brute-force) la clé privée. Ne faites confiance à personne qui prétend le contraire.
@@ -94,7 +94,7 @@ Ce que personne ne peut faire : forcer (brute-force) la clé privée. Ne faites 
 Problème différent. Le NFT a peut-être été transféré à un attaquant. Les étapes :
 
 1. **Cessez d'utiliser le portefeuille compromis.** Déplacez immédiatement tous les actifs restants.
-2. **Tracez les mouvements sur la chaîne (on-chain).** Les explorateurs de blocs montreront où le NFT est allé. Cela constitue une preuve.
+2. **Tracez les mouvements sur la chaîne ([on-chain](/fr/glossary/on-chain/)).** Les explorateurs de blocs montreront où le NFT est allé. Cela constitue une preuve.
 3. **Avertissez la plateforme.** Ils pourraient être en mesure de signaler l'adresse de leur côté, d'empêcher les mises à jour au niveau du bureau d'enregistrement, ou de se coordonner avec les places de marché pour retirer l'actif de la vente.
 4. **Déposez plainte à la police et contactez un avocat.** Un vol reste un vol. L'aspect légal a toute son importance ici, car le domaine est également un véritable actif enregistré, et pas seulement un NFT.
 5. **Coordonnez-vous avec les places de marché.** OpenSea, Blur, etc. ont des processus pour signaler les NFT volés, ce qui peut empêcher leur revente.
@@ -121,7 +121,7 @@ L'inconvénient est la charge de travail opérationnelle : chaque transfert / si
 
 ## Portefeuilles à récupération sociale
 
-Les portefeuilles reposant sur l'abstraction de compte ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) avec des modules de récupération sociale, comptes intelligents [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) vous permettent de nommer des "gardiens" qui peuvent collectivement vous aider à récupérer votre accès. C'est excellent pour les particuliers qui ne veulent pas gérer directement un [multisig](/fr/glossary/multi-sig/).
+Les portefeuilles reposant sur l'abstraction de compte ([Argent](https://www.argent.xyz/), [Safe](https://safe.global/) avec des modules de récupération sociale, comptes intelligents [ERC-4337](https://eips.ethereum.org/EIPS/eip-4337)) vous permettent de nommer des "gardiens" qui peuvent collectivement vous aider à récupérer votre accès. C'est excellent pour les particuliers qui ne veulent pas gérer directement un multisig.
 
 Avantages : tolérant aux erreurs, convivial.
 Inconvénients : encore relativement récent, le groupe de gardiens doit réellement exister et répondre, et le code du contrat intelligent en lui-même est un élément de plus auquel il faut accorder sa confiance.

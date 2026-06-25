@@ -17,9 +17,9 @@ En este artículo, lo desglosamos en un lenguaje sencillo: qué significa realme
 
 ## 📧 Analogía #1: Correo Tradicional vs. Correo Electrónico
 
-Tokenizar dominios es como cambiar del **correo físico a través de una oficina de correos** al **correo electrónico a través de Internet**.
+[Tokenizar](/es/glossary/tokenize/) dominios es como cambiar del **correo físico a través de una oficina de correos** al **correo electrónico a través de Internet**.
 
-En el sistema tradicional, la propiedad y las transferencias de dominio son gestionadas por los [registradores](/es/glossary/registrar/) (como "oficinas de correos autorizadas"). Si un [registrador](/es/glossary/registrar/) se niega a prestar servicio, o si su región solo permite operadores con licencia, su transferencia puede retrasarse o bloquearse por completo.
+En el sistema tradicional, la propiedad y las transferencias de dominio son gestionadas por los [registradores](/es/glossary/registrar/) (como "oficinas de correos autorizadas"). Si un registrador se niega a prestar servicio, o si su región solo permite operadores con licencia, su transferencia puede retrasarse o bloquearse por completo.
 
 Los dominios en cadena funcionan más como el correo electrónico: **cualquier [billetera](/es/glossary/wallet/), plataforma o protocolo compatible puede enviarlos, recibirlos, comercializarlos o construir sobre ellos libremente**. Sin guardianes.
 
@@ -48,16 +48,16 @@ Esto aporta nueva flexibilidad y utilidad a la propiedad de dominios.
 
 ## 🌉 Conectando Activos Reales al Mundo On-Chain
 
-Al tokenizar dominios, Namefi actúa como un **puente** entre la infraestructura tradicional de [DNS](/es/glossary/dns/) y los protocolos blockchain abiertos:
+Al tokenizar dominios, Namefi actúa como un **puente** entre la infraestructura tradicional de [DNS](/es/glossary/dns/) y los protocolos [blockchain](/es/glossary/blockchain/) abiertos:
 
 | Sistema Tradicional       | Mundo On-Chain                         |
 |--------------------------|----------------------------------------|
-| Base de datos propiedad del [Registrador](/es/glossary/registrar/) | [Contratos inteligentes](/es/glossary/smart-contract/) en blockchains públicas  |
+| Base de datos propiedad del Registrador | [Contratos inteligentes](/es/glossary/smart-contract/) en blockchains públicas  |
 | Transferencias manuales, fricción | Transferencias [atómicas](/es/glossary/atomic-transfer/) instantáneas             |
-| Registros estáticos            | [Componibles](/es/glossary/composability/) en DeFi, identidad, [DAOs](/es/glossary/dao/)  |
+| Registros estáticos            | [Componibles](/es/glossary/composability/) en [DeFi](/es/glossary/defi/), identidad, DAOs  |
 | Verificación centralizada  | Propiedad verificable en cadena         |
 
-Ya no solo estás "arrendando un nombre", sino que estás sosteniendo un **activo de puerta de enlace digital programable** en tu propia [billetera](/es/glossary/wallet/).
+Ya no solo estás "arrendando un nombre", sino que estás sosteniendo un **activo de puerta de enlace digital programable** en tu propia billetera.
 
 ---
 
@@ -72,19 +72,19 @@ La transferencia de dominios tradicionalmente implica:
 - Correos electrónicos, períodos de espera y aprobaciones manuales
 - Retrasos entre registradores (a menudo 5-7+ días)
 
-Con Namefi, la propiedad se transfiere a través de una sola transacción, en cuestión de segundos. También puedes configurar aprobaciones, asignar gestores o automatizar la delegación a través de [contratos inteligentes](/es/glossary/smart-contract/).
+Con Namefi, la propiedad se transfiere a través de una sola transacción, en cuestión de segundos. También puedes configurar aprobaciones, asignar gestores o automatizar la delegación a través de contratos inteligentes.
 
 ### ✅ 2. Propiedad Más Clara y Acceso Controlado por el Usuario
 
-Con los [registradores](/es/glossary/registrar/) tradicionales (como GoDaddy), puedes tener una licencia de un dominio, pero el **verdadero control es a menudo [custodial](/es/glossary/custodial-ownership/)** —sujeto a su interfaz de usuario, sus términos, sus políticas de plataforma.
+Con los registradores tradicionales (como GoDaddy), puedes tener una licencia de un dominio, pero el **verdadero control es a menudo [custodial](/es/glossary/custodial-ownership/)** —sujeto a su interfaz de usuario, sus términos, sus políticas de plataforma.
 
 Con Namefi:
 
-- Tu propiedad se registra [on-chain](/es/glossary/on-chain/) como un [NFT](/es/glossary/nft/)
-- Lo gestionas con tu propia [billetera](/es/glossary/wallet/) — no con una cuenta alojada
+- Tu propiedad se registra [on-chain](/es/glossary/on-chain/) como un NFT
+- Lo gestionas con tu propia billetera — no con una cuenta alojada
 - Si bien aún está sujeto a las reglas de DNS del mundo real (renovaciones, uso legal), tu **control está criptográficamente asegurado**
 
-> No se trata de "dominios permanentes y sin censura", sino de una *propiedad más clara y centrada en el usuario*.
+> No se trata de "dominios permanentes y [sin censura](/es/glossary/censorship-free/)", sino de una *propiedad más clara y centrada en el usuario*.
 
 ### ✅ 3. Desbloqueando Nuevos Casos de Uso
 
@@ -93,7 +93,7 @@ Los dominios tokenizados pueden ser:
 - Utilizados como [garantía](/es/glossary/collateral/) en [protocolos de préstamo](/es/glossary/lending-protocol/)
 - Adjuntos a identidades descentralizadas ([DID](/es/glossary/did/)), [Farcaster](/es/glossary/farcaster/), [Lens](/es/glossary/lens/), etc.
 - Vinculados instantáneamente a sitios web generados por IA a través de Namefi
-- Gestionados por equipos, [DAO](/es/glossary/dao/) o configuraciones [multifirma](/es/glossary/multi-sig/)
+- Gestionados por equipos, DAO o configuraciones [multifirma](/es/glossary/multi-sig/)
 
 ---
 
@@ -107,10 +107,10 @@ Esta es quizás la característica más revolucionaria pero más pasada por alto
 
 Los [mercados](/es/glossary/marketplace/) de dominios tradicionales (por ejemplo, GoDaddy, Sedo) a menudo cobran **15%–30%+ en tarifas**, retiros lentos y API cerradas.
 
-En contraste, las plataformas [NFT](/es/glossary/nft/) [on-chain](/es/glossary/on-chain/) como OpenSea o Blur:
+En contraste, las plataformas NFT on-chain como OpenSea o Blur:
 
 - Cobran 0%–2% de tarifas de trading
-- Permiten transferencias directas de [billetera](/es/glossary/wallet/) a [billetera](/es/glossary/wallet/)
+- Permiten transferencias directas de billetera a billetera
 - Se liquidan rápidamente, escalan globalmente y admiten automatización
 
 ### ✅ De "Días" a "Segundos" en Tiempo de Transferencia
@@ -123,23 +123,23 @@ Con Namefi:
 
 - Las transferencias se finalizan en segundos
 - Sin códigos de autorización ni aprobaciones por correo electrónico
-- Todo es compatible con [contratos inteligentes](/es/glossary/smart-contract/) y automatización
+- Todo es compatible con contratos inteligentes y automatización
 
 ### ✅ Conectar a una Estructura de Mercado Componible
 
 El trading de dominios tradicional está cerrado:
 
 - Solo listas en mercados aprobados
-- Dependes de ellos para construir funciones de [subasta](/es/glossary/auction/) o arrendamiento
+- Dependes de ellos para construir funciones de subasta o arrendamiento
 - La innovación depende de lo que la plataforma elija ofrecer
 
 Los dominios tokenizados de Namefi son **activos de capa abierta**. Cualquiera puede construir:
 
-- Mecanismos de [subasta](/es/glossary/auction/) inglesa/holandesa/dinámica
-- Protocolos de [arrendamiento](/es/glossary/leasing/) y [alquiler con opción a compra](/es/glossary/rent-to-own/)
-- Herramientas de [propiedad fraccionada](/es/glossary/fractional-ownership/)
+- Mecanismos de subasta inglesa/holandesa/dinámica
+- Protocolos de arrendamiento y [alquiler con opción a compra](/es/glossary/rent-to-own/)
+- Herramientas de propiedad fraccionada
 - [Paquetes de dominios](/es/glossary/domain-bundle/) y ofertas combinadas
-- Lógica de reventa con [reparto de ingresos](/es/glossary/revenue-sharing/) y [mercados](/es/glossary/marketplace/) controlados por [DAO](/es/glossary/dao/)
+- Lógica de reventa con [reparto de ingresos](/es/glossary/revenue-sharing/) y mercados controlados por DAO
 
 > Los dominios se convierten en bloques de Lego para la propiedad y las finanzas programables, no solo en registros estáticos.
 
@@ -151,7 +151,7 @@ Aunque usted posea un NFT en cadena, el **activo subyacente sigue siendo un domi
 
 - ✅ Debe renovarse anualmente (o caduca)
 - ✅ Debe cumplir con las normas legales y de [ICANN](/es/glossary/icann/)
-- ✅ Puede estar sujeto a disputas (por ejemplo [UDRP](/es/glossary/udrp/), marca registrada)
+- ✅ Puede estar sujeto a disputas (por ejemplo [UDRP](/es/glossary/udrp/), [marca registrada](/es/glossary/trademark/))
 - ✅ Puede ser congelado o revocado por órdenes judiciales o sanciones
 
 ### 🧩 Analogía: NFT Inmobiliario ≠ Exención Legal
@@ -164,8 +164,8 @@ Tokenizar bienes raíces no los exime de la zonificación municipal, los impuest
 
 ## 🛡️ El Papel de Namefi: Un Puente Legal, No un Atajo Legal
 
-- Solo admitimos TLDs aprobados por [ICANN](/es/glossary/icann/) (`.xyz`, `.com`, `.art`, etc.)
-- Trabajamos con [registradores](/es/glossary/registrar/) acreditados
+- Solo admitimos TLDs aprobados por ICANN (`.xyz`, `.com`, `.art`, etc.)
+- Trabajamos con registradores acreditados
 - La propiedad del token se mantiene sincronizada con los registros DNS fuera de la cadena
 - Los dominios siguen funcionando con [SEO](/es/glossary/seo/), correo electrónico, compatibilidad con navegadores, etc.
 
@@ -189,7 +189,7 @@ Esto:
 
 1.  Visita [namefi.io](https://namefi.io)
 2.  Busca un dominio del mundo real que te guste
-3.  Regístrate y conecta tu [billetera](/es/glossary/wallet/) para recibir su [NFT](/es/glossary/nft/)
+3.  Regístrate y conecta tu billetera para recibir su NFT
 4.  Experimenta: ponlo a la venta, construye con él, arriéndalo o combínalo
 
-Bienvenido a un mundo donde los **dominios no son solo herramientas para sitios web, son [activos de protocolo](/es/glossary/protocol-asset/) abiertos**.
+Bienvenido a un mundo donde los **dominios no son solo herramientas para sitios web, son activos de protocolo abiertos**.

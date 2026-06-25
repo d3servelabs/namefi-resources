@@ -10,7 +10,7 @@ ogImage: ../../assets/domain-industry-media-og.jpg
 keywords: ['domain branchennews', 'domainnamen medien', 'domainnamewire', 'dnjournal', 'namebio', 'domain sherpa', 'thedomains', 'domain gang', 'circleid', 'icann news']
 ---
 
-Wenn [individuelle Domainer-Blogs](/blog/famous-domainer-blogs-and-newsletters) persönliche Stimmen sind, dann sind *Medien der Domain-Branche* die Plattformen, die eher wie Nachrichtenredaktionen arbeiten — manchmal Ein-Personen-Redaktionen, aber mit der redaktionellen Haltung von Journalismus statt eines Händler-Tagebuchs. Sie berichten über Deals, Richtlinien, Schritte von Registrierungsstellen (Registries)/Registraren, ICANN und das gelegentliche Drama, und sie sind die Quellen, die andere zitieren.
+Wenn [individuelle Domainer-Blogs](/blog/famous-domainer-blogs-and-newsletters) persönliche Stimmen sind, dann sind *Medien der Domain-Branche* die Plattformen, die eher wie Nachrichtenredaktionen arbeiten — manchmal Ein-Personen-Redaktionen, aber mit der redaktionellen Haltung von Journalismus statt eines Händler-Tagebuchs. Sie berichten über Deals, Richtlinien, Schritte von Registrierungsstellen (Registries)/Registraren, [ICANN](/de/glossary/icann/) und das gelegentliche Drama, und sie sind die Quellen, die andere zitieren.
 
 Dies ist die kurze Liste der Medienangebote, die man im Jahr 2026 kennen sollte.
 
@@ -18,11 +18,11 @@ Dies ist die kurze Liste der Medienangebote, die man im Jahr 2026 kennen sollte.
 
 ### DomainNameWire — [domainnamewire.com](https://domainnamewire.com/)
 
-Gegründet von Andrew Allemann im Jahr 2005. Das, was einem Nachrichtendienst in der Domain-Branche am nächsten kommt: kurze, faktenbasierte Beiträge über Deals, Gerichtsverfahren, Registry-Richtlinien und ICANN. Wenn eine Geschichte für die gesamte Branche von Bedeutung ist, berichtet DomainNameWire in der Regel innerhalb eines Tages darüber. Veröffentlicht auch den langjährigen **DNW Podcast**, der zu den besseren Interview-Shows in diesem Bereich gehört.
+Gegründet von Andrew Allemann im Jahr 2005. Das, was einem Nachrichtendienst in der Domain-Branche am nächsten kommt: kurze, faktenbasierte Beiträge über Deals, Gerichtsverfahren, [Registry](/de/glossary/registry/)-Richtlinien und ICANN. Wenn eine Geschichte für die gesamte Branche von Bedeutung ist, berichtet DomainNameWire in der Regel innerhalb eines Tages darüber. Veröffentlicht auch den langjährigen **DNW Podcast**, der zu den besseren Interview-Shows in diesem Bereich gehört.
 
 ### TheDomains — [thedomains.com](https://thedomains.com/)
 
-Ein langjähriger Blog, ursprünglich von Mike Berkens (einem der größten Inhaber von Domain-Portfolios der Branche) gegründet und nun hauptsächlich von Raymond Hackney redigiert. Eine Mischung aus Nachrichten, Analysen und Meinungen. Stark bei rechtlichen und politischen Themen — UDRP-Fälle, Vertragsänderungen bei Registries, ICANN-Entwicklungen.
+Ein langjähriger Blog, ursprünglich von Mike Berkens (einem der größten Inhaber von Domain-Portfolios der Branche) gegründet und nun hauptsächlich von Raymond Hackney redigiert. Eine Mischung aus Nachrichten, Analysen und Meinungen. Stark bei rechtlichen und politischen Themen — [UDRP](/de/glossary/udrp/)-Fälle, Vertragsänderungen bei Registries, ICANN-Entwicklungen.
 
 ### DomainGang — [domaingang.com](https://domaingang.com/)
 
@@ -34,7 +34,7 @@ Sowohl [OnlineDomain](https://onlinedomain.com/) als auch [DomainInvesting](http
 
 ### CircleID — [circleid.com](https://www.circleid.com/)
 
-Keine Publikation, die sich ausschließlich an Domain-Investoren richtet — CircleID deckt die breiteren Themenbereiche DNS, ICANN, Internet-Governance und Infrastruktur ab. Wenn Sie sich jedoch für die *politische* und regulatorische Ebene interessieren (Registry-Verträge, neue gTLD-Runden, WHOIS-Regulierung, DNSSEC), ist CircleID der Ort für fundierte Artikel, und unter den Autorennamen finden sich viele Personen, die auch bei ICANN-Meetings präsent sind.
+Keine Publikation, die sich ausschließlich an Domain-Investoren richtet — CircleID deckt die breiteren Themenbereiche DNS, ICANN, Internet-Governance und Infrastruktur ab. Wenn Sie sich jedoch für die *politische* und regulatorische Ebene interessieren (Registry-Verträge, neue [gTLD](/de/glossary/gtld/)-Runden, [WHOIS](/de/glossary/whois/)-Regulierung, [DNSSEC](/de/glossary/dnssec/)), ist CircleID der Ort für fundierte Artikel, und unter den Autorennamen finden sich viele Personen, die auch bei ICANN-Meetings präsent sind.
 
 ## Verkaufsdaten und Referenzseiten
 

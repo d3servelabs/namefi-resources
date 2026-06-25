@@ -13,7 +13,7 @@ keywords: ["nom de domaine","DNS","système de noms de domaine","adresse IP","ad
 
 Un **nom de domaine** est l'adresse facile à retenir que vous tapez dans un navigateur web pour visiter un site web — comme `google.com`, `wikipedia.org`, ou `namefi.io`. Vous pouvez le considérer comme une adresse physique pour le web : il indique à votre ordinateur où trouver un site spécifique sur internet.
 
-Internet repose sur un système appelé le **Domain Name System (DNS)**, qui fonctionne comme un annuaire téléphonique géant. Chaque site web est hébergé sur un serveur avec une adresse IP numérique (comme `192.0.2.1`), mais les chiffres sont difficiles à retenir — c'est pourquoi nous utilisons des noms de domaine à la place. Lorsque vous tapez un nom de domaine dans votre navigateur, le DNS le traduit en adresse IP correspondante, permettant à votre navigateur de charger le bon site web.
+Internet repose sur un système appelé le **Domain Name System (DNS)**, qui fonctionne comme un annuaire téléphonique géant. Chaque site web est hébergé sur un serveur avec une [adresse IP](/fr/glossary/ip-address/) numérique (comme `192.0.2.1`), mais les chiffres sont difficiles à retenir — c'est pourquoi nous utilisons des noms de domaine à la place. Lorsque vous tapez un nom de domaine dans votre navigateur, le DNS le traduit en adresse IP correspondante, permettant à votre navigateur de charger le bon site web.
 
 ---
 
@@ -21,9 +21,9 @@ Internet repose sur un système appelé le **Domain Name System (DNS)**, qui fon
 
 Un nom de domaine est composé de plusieurs parties:
 
-*   **Domaine de premier niveau (TLD):** C'est le suffixe à la fin de l'adresse, comme `.com`, `.org`, `.net`, ou plus récemment, `.xyz`, `.app`, et même `.ninja`. Certains sont génériques (gTLDs), tandis que d'autres sont spécifiques à un pays (ccTLDs, comme `.us`, `.uk`, ou `.cn`).
+*   **[Domaine de premier niveau](/fr/glossary/tld/) (TLD):** C'est le suffixe à la fin de l'adresse, comme `.com`, `.org`, `.net`, ou plus récemment, `.xyz`, `.app`, et même `.ninja`. Certains sont génériques (gTLDs), tandis que d'autres sont spécifiques à un pays (ccTLDs, comme `.us`, `.uk`, ou `.cn`).
 *   **Domaine de second niveau (SLD):** C'est la partie principale du nom — le `google` dans `google.com`.
-*   **Sous-domaine:** Ce sont des préfixes facultatifs qui aident à organiser le contenu, comme `blog.example.com` ou `mail.example.org`.
+*   **[Sous-domaine](/fr/glossary/subdomain/):** Ce sont des préfixes facultatifs qui aident à organiser le contenu, comme `blog.example.com` ou `mail.example.org`.
 
 Chaque nom de domaine est unique — une fois que quelqu'un enregistre `example.com`, personne d'autre ne peut l'utiliser.
 
@@ -31,7 +31,7 @@ Chaque nom de domaine est unique — une fois que quelqu'un enregistre `example.
 
 ## **Qui gère les noms de domaine?**
 
-La coordination mondiale des noms de domaine est supervisée par une organisation à but non lucratif appelée **ICANN** (**Internet Corporation for Assigned Names and Numbers**). Fondée en 1998, l'ICANN gère l'allocation des noms de domaine et des adresses IP. Elle travaille avec des registraires (comme GoDaddy, Namecheap et Namefi) qui vendent des noms de domaine au public.
+La coordination mondiale des noms de domaine est supervisée par une organisation à but non lucratif appelée **[ICANN](/fr/glossary/icann/)** (**Internet Corporation for Assigned Names and Numbers**). Fondée en 1998, l'ICANN gère l'allocation des noms de domaine et des adresses IP. Elle travaille avec des registraires (comme GoDaddy, Namecheap et Namefi) qui vendent des noms de domaine au public.
 
 L'ICANN accrédite également les registres — les organisations responsables de la gestion de TLDs spécifiques. Par exemple, Verisign opère `.com` et `.net`, tandis que le Public Interest Registry gère `.org`.
 
@@ -39,7 +39,7 @@ L'ICANN accrédite également les registres — les organisations responsables d
 
 ## **Comment enregistrer un nom de domaine**
 
-Pour obtenir un nom de domaine, vous utilisez un **registraire accrédité par l'ICANN**. Vous recherchez un domaine disponible, payez des frais d'enregistrement (généralement annuels), et vous "possédez" les droits d'utiliser ce domaine tant que vous continuez à le renouveler.
+Pour obtenir un nom de domaine, vous utilisez un **[registraire](/fr/glossary/registrar/) accrédité par l'ICANN**. Vous recherchez un domaine disponible, payez des frais d'enregistrement (généralement annuels), et vous "possédez" les droits d'utiliser ce domaine tant que vous continuez à le renouveler.
 
 Voici comment cela fonctionne:
 
@@ -48,7 +48,7 @@ Voici comment cela fonctionne:
 3.  S'il est disponible, vous pouvez l'enregistrer.
 4.  Vous avez maintenant le contrôle sur l'endroit où le domaine pointe (par exemple, vers votre site web ou votre e-mail).
 
-Comparé à d'autres registraires, [Namefi](https://namefi.io/fr) offre des fonctionnalités avancées telles que la gestion des sous-domaines, les outils de sécurité DNS et l'intégration avec des systèmes décentralisés comme les domaines blockchain.
+Comparé à d'autres registraires, [Namefi](https://namefi.io/fr) offre des fonctionnalités avancées telles que la gestion des sous-domaines, les outils de sécurité DNS et l'intégration avec des systèmes décentralisés comme les domaines [blockchain](/fr/glossary/blockchain/).
 
 ---
 

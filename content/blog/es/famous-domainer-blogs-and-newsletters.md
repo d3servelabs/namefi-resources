@@ -10,7 +10,7 @@ ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['blogs de domainers', 'blogs de inversión en dominios', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', 'boletín de dominios', 'substack de dominios']
 ---
 
-Si los [foros](/blog/top-domain-trader-forums) son donde la comunidad de dominios *discute*, los blogs individuales de domainers son donde la comunidad *piensa en voz alta*. La mayor parte de los análisis profundos y de larga trayectoria en la industria —evaluaciones posteriores a ventas, críticas a las políticas de los registradores, lecturas del mercado— se llevan a cabo en un pequeño número de blogs personales que han estado en funcionamiento durante quince o veinte años.
+Si los [foros](/blog/top-domain-trader-forums) son donde la comunidad de dominios *discute*, los blogs individuales de domainers son donde la comunidad *piensa en voz alta*. La mayor parte de los análisis profundos y de larga trayectoria en la industria —evaluaciones posteriores a ventas, críticas a las políticas de los registradores, lecturas del [mercado](/es/glossary/marketplace/)— se llevan a cabo en un pequeño número de blogs personales que han estado en funcionamiento durante quince o veinte años.
 
 Esta es la lista que vale la pena guardar en favoritos. Es subjetiva y se inclina hacia las personas que realmente compran y venden dominios (en lugar de hacia consultores o registros que comercializan sus servicios).
 
@@ -22,7 +22,7 @@ El blog con publicaciones más constantes de la industria. Elliot es un inversor
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos publica con frecuencia desde una perspectiva europea y basada en datos. Es fuerte en los cambios de políticas de registros/registradores, movimientos de ccTLD y grandes ventas públicas. A menudo es el primero en sacar a la luz historias que pasan desapercibidas para los blogs centrados en EE. UU.
+Konstantinos publica con frecuencia desde una perspectiva europea y basada en datos. Es fuerte en los cambios de políticas de registros/registradores, movimientos de [ccTLD](/es/glossary/cctld/) y grandes ventas públicas. A menudo es el primero en sacar a la luz historias que pasan desapercibidas para los blogs centrados en EE. UU.
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 
@@ -30,11 +30,11 @@ Konstantinos publica con frecuencia desde una perspectiva europea y basada en da
 
 ### Morgan Linton — [morganlinton.com](https://morganlinton.com/)
 
-Morgan combina la inversión en dominios con una perspectiva más amplia de fundador tecnológico. Es útil cuando quieres leer sobre dominios de parte de alguien que también piensa como un comprador: qué es lo que realmente hace que un nombre sea valioso para una startup, no solo para un revendedor (flipper).
+Morgan combina la inversión en dominios con una perspectiva más amplia de fundador tecnológico. Es útil cuando quieres leer sobre dominios de parte de alguien que también piensa como un comprador: qué es lo que realmente hace que un nombre sea valioso para una startup, no solo para un [revendedor](/es/glossary/reseller/) (flipper).
 
 ### Jamie Zoch — [DotWeekly.com](https://www.dotweekly.com/)
 
-Un blog de larga trayectoria centrado en tendencias de registro, nuevos TLD y datos a nivel de registro. Ideal si te interesa la *infraestructura* del espacio de nombres: quién registra qué, dónde y en qué volumen.
+Un blog de larga trayectoria centrado en tendencias de [registro](/es/glossary/registry/), nuevos TLD y datos a nivel de registro. Ideal si te interesa la *infraestructura* del espacio de nombres: quién registra qué, dónde y en qué volumen.
 
 ### Shane Cultra — [DomainShane.com](https://domainshane.com/)
 

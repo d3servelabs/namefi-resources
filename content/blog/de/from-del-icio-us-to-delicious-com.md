@@ -11,13 +11,13 @@ keywords: ['del.icio.us', 'delicious.com', 'delicious domainname', 'domain hack'
 
 Etwa fünf Jahre lang war eine der einflussreichsten Websites der Web-2.0-Ära unter einer Adresse erreichbar, die man kaum laut aussprechen konnte: **del.icio.us**.
 
-Der Name war clever. Er war tatsächlich das bekannteste Beispiel eines *Domain-Hacks* — einem Trick, bei dem die Domain selbst ein Wort buchstabiert, indem sie ein Ländercode-Suffix entleiht. Joshua Schachter registrierte `icio.us` unter dem .us-ccTLD, stellte `del` als Subdomain davor, und die gesamte Zeichenkette las sich als „delicious" (englisch für „köstlich"). Wie ein frühes Erklärstück zur Konstruktion festhielt, [ist `del` tatsächlich eine Subdomain von `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain), und diese Kombination aus Subdomain und ccTLD war nach seinen Worten [eine geniale Art, einen Domainnamen zu registrieren](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
+Der Name war clever. Er war tatsächlich das bekannteste Beispiel eines *Domain-Hacks* — einem Trick, bei dem die Domain selbst ein Wort buchstabiert, indem sie ein Ländercode-Suffix entleiht. Joshua Schachter registrierte `icio.us` unter dem [.us](/de/tld/us/)-[ccTLD](/de/glossary/cctld/), stellte `del` als [Subdomain](/de/glossary/subdomain/) davor, und die gesamte Zeichenkette las sich als „delicious" (englisch für „köstlich"). Wie ein frühes Erklärstück zur Konstruktion festhielt, [ist `del` tatsächlich eine Subdomain von `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain), und diese Kombination aus Subdomain und ccTLD war nach seinen Worten [eine geniale Art, einen Domainnamen zu registrieren](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
 
 Für ein Nebenprojekt, das ein Ingenieur zum Vergnügen betrieb, war diese Cleverness der eigentliche Witz. Die Punkte waren ein Augenzwinkern. Sie sagten: Das ist ein Hacker-Werkzeug, gebaut von jemandem, der die Funktionsweise der Web-Infrastruktur selbst als kreativen Spielraum betrachtet.
 
 Doch ein Augenzwinkern skaliert nicht. Jeder Punkt in `del.icio.us` war eine Stelle, an der ein neuer Nutzer sich verirren konnte — ein Komma statt eines Punktes, ein fehlender Buchstabe, ein überzähliger. Und die Website hinter diesen Punkten blieb kein Nebenprojekt. Sie prägte eine ganze Kategorie, gewann Hunderttausende von Nutzern und wurde von Yahoo aufgekauft. Bis 2008, unter Yahoos Eigentümerschaft, wurde der cleverste Domain-Name im Web gegen den langweiligen, richtigen eingetauscht: **Delicious.com**.
 
-Dies ist die Geschichte davon, wann ein Domain-Hack aufhört, charmant zu sein, und anfängt, eine Bürde zu werden — und was es kostet, das zu korrigieren, nachdem Millionen von Menschen bereits gelernt haben, Ihren Namen falsch einzutippen.
+Dies ist die Geschichte davon, wann ein [Domain-Hack](/de/glossary/domain-hack/) aufhört, charmant zu sein, und anfängt, eine Bürde zu werden — und was es kostet, das zu korrigieren, nachdem Millionen von Menschen bereits gelernt haben, Ihren Namen falsch einzutippen.
 
 ## 2003: Ein Nebenprojekt, benannt nach einem Ländercode
 
@@ -29,7 +29,7 @@ Er tat es in seiner Freizeit. Laut Computerworld [betrieb Schachter es in seiner
 
 Und das Produkt funktionierte. Ohne Marketingbudget verbreitete es sich durch Cleverness und Mundpropaganda. Computerworld berichtete, dass [del.icio.us ohne formales Marketing heute etwa 200.000 registrierte Nutzer hat](https://www.computerworld.com/article/1588198/del-icio-us-social-bookmarking-phenomenon.html#:~:text=With%20no%20formal%20marketing%2C%20today%20del.icio.us%20has%20about%20200%2C000%20registered%20users), und Wikipedia schreibt dem Dienst mehr als nur Nutzerzahlen zu: [Der Dienst prägte den Begriff „Social Bookmarking"](https://en.wikipedia.org/wiki/Joshua_Schachter#:~:text=The%20service%20coined%20the%20term%20social%20bookmarking).
 
-Hier ist also die Ausgangslage. Ein Unternehmen, das *eine gesamte Kategorie benannte*, trug eine Domain, die für ein Ein-Personen-Hobby entworfen worden war. Der Name war ein Hacker-Scherz, der versehentlich zu einer Marke geworden war.
+Hier ist also die Ausgangslage. Ein Unternehmen, das *eine gesamte Kategorie benannte*, trug eine Domain, die für ein Ein-Personen-Hobby entworfen worden war. Der Name war ein Hacker-Scherz, der versehentlich zu einer [Marke](/de/glossary/trademark/) geworden war.
 
 ## Der cleverste Domain-Name im Web — und der am häufigsten falsch eingetippte
 
@@ -86,7 +86,7 @@ Der Unterschied zwischen `del.icio.us` und `Delicious.com` sieht aus wie Interpu
 | Vorher | Nachher |
 | --- | --- |
 | del.icio.us | Delicious.com |
-| Ein Domain-Hack (das .us ccTLD buchstabiert ein Wort) | Ein einfaches, genaues .com-Wort |
+| Ein Domain-Hack (das .us ccTLD buchstabiert ein Wort) | Ein einfaches, genaues [.com](/de/tld/com/)-Wort |
 | Clever auf dem Bildschirm zu lesen | Leicht laut auszusprechen und zu teilen |
 | Vier Punkte = vier Stellen zum Vertippen | Ein Wort, eine Schreibweise |
 | „de.licio.us", „del.licio.us", „del.icio.us.com" | delicious.com |

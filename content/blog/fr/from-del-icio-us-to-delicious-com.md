@@ -11,7 +11,7 @@ keywords: ['del.icio.us', 'delicious.com', 'nom de domaine delicious', 'hack de 
 
 Pendant environ cinq ans, l'un des sites les plus influents de l'ère Web 2.0 a vécu à une adresse qu'on ne pouvait presque pas dire à voix haute : **del.icio.us**.
 
-Le nom était astucieux. C'était, en fait, l'exemple le plus célèbre d'un *hack de domaine* — une astuce où le domaine lui-même épelle un mot en empruntant un suffixe de pays. Joshua Schachter a enregistré `icio.us` sur le ccTLD .us, a placé `del` devant en tant que sous-domaine, et l'ensemble lisait « delicious » (délicieux). Comme l'expliquait un premier article décortiquant la construction, [`del` est en réalité un sous-domaine de `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain), et cet assemblage sous-domaine + ccTLD était, selon ses propres termes, [une façon ingénieuse d'enregistrer un nom de domaine](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
+Le nom était astucieux. C'était, en fait, l'exemple le plus célèbre d'un *hack de domaine* — une astuce où le domaine lui-même épelle un mot en empruntant un suffixe de pays. Joshua Schachter a enregistré `icio.us` sur le [ccTLD](/fr/glossary/cctld/) [.us](/fr/tld/us/), a placé `del` devant en tant que [sous-domaine](/fr/glossary/subdomain/), et l'ensemble lisait « delicious » (délicieux). Comme l'expliquait un premier article décortiquant la construction, [`del` est en réalité un sous-domaine de `icio.us`](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=del%20is%20actually%20a%20subdomain), et cet assemblage sous-domaine + ccTLD était, selon ses propres termes, [une façon ingénieuse d'enregistrer un nom de domaine](https://www.quickonlinetips.com/archives/2005/02/decoding-the-domain-name-delicious/#:~:text=an%20ingenious%20way%20to%20register%20a%20domain%20name).
 
 Pour un projet annexe géré par un ingénieur pour le plaisir, cette ingéniosité était le propos même. Les points étaient un clin d'œil. Ils disaient : c'est l'outil d'un hacker, construit par quelqu'un qui pense que le fonctionnement de la plomberie du web est lui-même un espace de créativité.
 
@@ -86,7 +86,7 @@ L'écart entre `del.icio.us` et `Delicious.com` ressemble à de la ponctuation. 
 | Avant | Après |
 | --- | --- |
 | del.icio.us | Delicious.com |
-| Un hack de domaine (le ccTLD .us épelant un mot) | Un .com simple, mot en correspondance exacte |
+| Un hack de domaine (le ccTLD .us épelant un mot) | Un [.com](/fr/tld/com/) simple, mot en correspondance exacte |
 | Astucieux à lire sur un écran | Facile à dire à voix haute et à partager |
 | Quatre points = quatre endroits où se tromper | Un mot, une orthographe |
 | « de.licio.us », « del.licio.us », « del.icio.us.com » | delicious.com |
@@ -112,7 +112,7 @@ L'adresse principale d'un site apparaît dans des endroits qu'aucune équipe mar
 
 - Dans le bouche-à-oreille : « vous devriez essayer del-icio-us... non, ça s'écrit avec des points. »
 - Dans la barre du navigateur, où un mauvais point mène nulle part.
-- Dans les liens partagés entre amis, où une faute de frappe échoue silencieusement.
+- Dans les liens partagés entre amis, où une faute de [frappe](/fr/glossary/minting/) échoue silencieusement.
 - Dans la presse, les podcasts et les conversations, où un nom doit survivre à être *dit*.
 - Dans les trente premières secondes de chaque nouvel utilisateur, où trouver le site est la première étape.
 

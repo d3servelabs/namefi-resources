@@ -23,7 +23,7 @@ Wenn man alles Romantische beiseitelässt, muss ein Name genau zwei Dinge leiste
 1. **Besitzbar sein** — rechtlich verteidigbar und technisch verfügbar, damit er wirklich *Ihnen* gehören kann.
 2. **Leicht vermarktbar sein** — leicht zu sagen, zu buchstabieren, zu merken und weiterzugeben, damit der Name Ihre Werbung für Sie macht und andere ihn mühelos verbreiten können.
 
-Die meisten Namensratgeber optimieren nur den zweiten Punkt. Gründer, die den ersten überspringen, bringen einen wunderschönen Namen auf den Markt, bauen eine Marke darauf auf und erhalten dann eine Abmahnung oder stellen fest, dass die `.com`-Domain von jemandem gehalten wird, der fünfstellige Beträge dafür verlangt. Klären Sie die Einschränkungen zuerst. Sie sind günstiger zu überprüfen als zu beheben.
+Die meisten Namensratgeber optimieren nur den zweiten Punkt. Gründer, die den ersten überspringen, bringen einen wunderschönen Namen auf den Markt, bauen eine [Marke](/de/glossary/trademark/) darauf auf und erhalten dann eine Abmahnung oder stellen fest, dass die `.com`-Domain von jemandem gehalten wird, der fünfstellige Beträge dafür verlangt. Klären Sie die Einschränkungen zuerst. Sie sind günstiger zu überprüfen als zu beheben.
 
 ## Teil 1 — Den Namen freimachen (rechtliche und technische Einschränkungen)
 

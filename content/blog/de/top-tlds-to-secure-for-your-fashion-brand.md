@@ -10,13 +10,13 @@ description: 'Ein praktischer Leitfaden zu den 10 wichtigsten TLDs, die Sie für
 keywords: ['TLDs für Modemarke', 'Domainnamen für Modemarken', 'beste TLDs für den Einzelhandel', 'defensive Domain-Registrierung', 'Markenschutz-Domains', '.fashion Domain', '.boutique Domain', '.shop Domain', '.store Domain', 'Domains für Mode-E-Commerce', 'Typosquatting-Schutz', 'Marken-Domain-Schutz']
 ---
 
-Eine Modemarke steht und fällt mit ihrem Namen. Dasselbe Wort, das auf dem eingenähten Etikett einer Jacke steht, muss auch als Schaufenster, Instagram-Handle, Lookbook-URL für den Großhandel und als E-Mail-Domain funktionieren. Genau deshalb ist die Sicherung der richtigen **TLDs für Ihre Modemarke** keine Eitelkeitsübung – es ist Markenschutz. Jede Top-Level-Domain, die Sie unregistriert lassen, bietet einem Fälscher, einem Typosquatter oder einem Konkurrenten die Möglichkeit, von Ihrem Ruf zu profitieren.
+Eine Modemarke steht und fällt mit ihrem Namen. Dasselbe Wort, das auf dem eingenähten Etikett einer Jacke steht, muss auch als Schaufenster, Instagram-Handle, Lookbook-URL für den Großhandel und als E-Mail-Domain funktionieren. Genau deshalb ist die Sicherung der richtigen **TLDs für Ihre Modemarke** keine Eitelkeitsübung – es ist Markenschutz. Jede [Top-Level-Domain](/de/glossary/tld/), die Sie unregistriert lassen, bietet einem Fälscher, einem Typosquatter oder einem Konkurrenten die Möglichkeit, von Ihrem Ruf zu profitieren.
 
 Mode ist auch eine der am stärksten gefälschten Kategorien im Internet, was die Domain-Ebene zu einem Teil Ihres defensiven Schutzwalls macht. Wenn Sie Ihren Namen über die relevantesten Endungen hinweg besitzen, können Sie eine saubere E-Commerce-Website betreiben, Microsites für Untermarken oder Kapselkollektionen aufbauen und falsch eingetippten Traffic zu Ihnen zurückleiten – statt zu einem Nachahmungsshop. Nachfolgend erfahren Sie, wie Sie dabei vorgehen sollten, welche zehn Endungen Priorität verdienen und wie Sie diese registrieren.
 
 ## Wie Sie TLDs für Ihre Modemarke auswählen
 
-Drei Kriterien sollten Ihre Auswahl bestimmen. **Markentauglichkeit**: Passt die Endung natürlich zu Ihrem Namen und signalisiert sie, was Sie tun (`ihrelabel.shop` vermittelt sofort „hier kaufen")? **Einzelhandelsrelevanz**: Ordnet sie sich dem Bereich Commerce und Entdeckung zu, wo Käufer und Suchmaschinen ein Geschäft erwarten? **Defensiver Schutz**: Selbst Endungen, die Sie nie aktiv nutzen werden, sind es wert zu halten, wenn sie günstig sind, weit verbreitet und leicht von einem böswilligen Akteur gegen Ihre Marke eingesetzt werden können.
+Drei Kriterien sollten Ihre Auswahl bestimmen. **Markentauglichkeit**: Passt die Endung natürlich zu Ihrem Namen und signalisiert sie, was Sie tun (`ihrelabel.shop` vermittelt sofort „hier kaufen")? **Einzelhandelsrelevanz**: Ordnet sie sich dem Bereich Commerce und Entdeckung zu, wo Käufer und Suchmaschinen ein Geschäft erwarten? **Defensiver Schutz**: Selbst Endungen, die Sie nie aktiv nutzen werden, sind es wert zu halten, wenn sie günstig sind, weit verbreitet und leicht von einem böswilligen Akteur gegen Ihre [Marke](/de/glossary/trademark/) eingesetzt werden können.
 
 Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, eine kleine Gruppe einzelhandelsfreundlicher Endungen, die Sie tatsächlich nutzen werden, und einen defensiven Ring um die offensichtlichen Tipp- und Missbrauchsziele herum.
 
@@ -24,11 +24,11 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 1. .com — Ihr unverzichtbarer Anker
 
-[.com](/de/tld/com) bleibt die Standard-Endung, die Käufer eintippen und der sie vertrauen, betrieben von [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Für eine Modemarke ist sie das primäre Schaufenster und die E-Mail-Domain – Punkt. Sichern Sie sie zuerst; alles andere wird darum herum aufgebaut. Es gibt keine Berechtigungseinschränkungen – jeder Registrant kann eine `.com` halten.
+[.com](/de/tld/com) bleibt die Standard-Endung, die Käufer eintippen und der sie vertrauen, betrieben von [VeriSign Global Registry Services](https://www.iana.org/domains/root/db/com.html). Für eine Modemarke ist sie das primäre Schaufenster und die E-Mail-Domain – Punkt. Sichern Sie sie zuerst; alles andere wird darum herum aufgebaut. Es gibt keine Berechtigungseinschränkungen – jeder [Registrant](/de/glossary/registrant/) kann eine `.com` halten.
 
 ### 2. .shop — Einzelhandelsabsicht im Namen
 
-[.shop](/de/tld/shop) wird von [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) aus Tokio betrieben und ist speziell für den Handel konzipiert. Für eine Marke liest sich `ihrebrand.shop` als eindeutiges „hier kaufen"-Signal, was ideal für eine dedizierte E-Commerce-Präsenz oder einen saisonalen Drop ist. Offen für alle Registranten, ohne besondere Einschränkungen.
+[.shop](/de/tld/shop) wird von [GMO Registry, Inc.](https://www.iana.org/domains/root/db/shop.html) aus Tokio betrieben und ist speziell für den Handel konzipiert. Für eine Marke liest sich `ihrebrand.shop` als eindeutiges „hier kaufen"-Signal, was ideal für eine dedizierte E-Commerce-Präsenz oder einen saisonalen [Drop](/de/glossary/pending-delete/) ist. Offen für alle Registranten, ohne besondere Einschränkungen.
 
 ### 3. .store — für das Schaufenster konzipiert
 
@@ -44,7 +44,7 @@ Sie brauchen keine Hunderte von Domains. Sie brauchen die kanonische `.com`, ein
 
 ### 6. .co — die kurze, hochwertige Alternative
 
-[.co](/de/tld/co) ist die Ländercode-Domain für Kolumbien, verwaltet vom kolumbianischen [Ministerium für Informations- und Kommunikationstechnologien (MinTIC)](https://www.iana.org/domains/root/db/co.html) mit technischem Betrieb durch CentralNic, wird jedoch weltweit als kurze Alternative für „company" oder „commerce" vermarktet und genutzt. Viele Mode-Startups wählen `.co`, wenn die `.com` nicht verfügbar ist. Die Registrierung ist weltweit offen; da es sich um eine ccTLD handelt, die unter einer nationalen Behörde betrieben wird, lesen Sie die Nutzungsbedingungen der Registry, bevor Sie sie als Ihr einziges Schaufenster nutzen.
+[.co](/de/tld/co) ist die Ländercode-Domain für Kolumbien, verwaltet vom kolumbianischen [Ministerium für Informations- und Kommunikationstechnologien (MinTIC)](https://www.iana.org/domains/root/db/co.html) mit technischem Betrieb durch CentralNic, wird jedoch weltweit als kurze Alternative für „company" oder „commerce" vermarktet und genutzt. Viele Mode-Startups wählen `.co`, wenn die `.com` nicht verfügbar ist. Die Registrierung ist weltweit offen; da es sich um eine [ccTLD](/de/glossary/cctld/) handelt, die unter einer nationalen Behörde betrieben wird, lesen Sie die Nutzungsbedingungen der [Registry](/de/glossary/registry/), bevor Sie sie als Ihr einziges Schaufenster nutzen.
 
 ### 7. .fashion — kategorieprägende Relevanz
 
@@ -70,13 +70,13 @@ Erstens, **decken Sie die häufigen Tippfehler und Homoglyphen** Ihrer `.com` ab
 
 Zweitens, **halten Sie die risikoreichen generischen Endungen**, auch wenn Sie darauf nie bauen. `.shop`, `.store` und `.online` sind günstig im Vergleich zu den Kosten eines Markenrechtsstreits oder eines gefälschten Schaufensters, das Ihren Namen trägt. Diese selbst zu registrieren ist fast immer günstiger, als sie später zurückzugewinnen.
 
-Drittens, **dokumentieren und konsolidieren Sie**. Halten Sie jede Registrierung unter einem Konto mit konsistenten Kontaktdaten, aktivieren Sie die automatische Verlängerung, damit nichts ausläuft, und schalten Sie Registrar-Sperren ein. Für Marken, die im Web3-Bereich tätig sind, bietet das Halten des Namens als tokenisierte Domain (ein NFT) einen portablen, verifizierbaren Eigentumsnachweis neben der konventionellen DNS-Registrierung. Wenn Ihre Marke eingetragen ist, qualifizieren Sie sich möglicherweise auch für die [ICANN Trademark Clearinghouse](https://www.icann.org/resources/pages/tmch-2014-04-04-en), die Prioritäts-Sunrise-Registrierungen und Markenrechtsmitteilungen für neue TLDs freischaltet.
+Drittens, **dokumentieren und konsolidieren Sie**. Halten Sie jede Registrierung unter einem Konto mit konsistenten Kontaktdaten, aktivieren Sie die automatische Verlängerung, damit nichts ausläuft, und schalten Sie [Registrar](/de/glossary/registrar/)-Sperren ein. Für Marken, die im [Web3](/de/glossary/web3/)-Bereich tätig sind, bietet das Halten des Namens als [tokenisierte Domain](/de/glossary/tokenized-domain/) (ein NFT) einen portablen, verifizierbaren Eigentumsnachweis neben der konventionellen DNS-Registrierung. Wenn Ihre Marke eingetragen ist, qualifizieren Sie sich möglicherweise auch für die [ICANN Trademark Clearinghouse](https://www.icann.org/resources/pages/tmch-2014-04-04-en), die Prioritäts-Sunrise-Registrierungen und Markenrechtsmitteilungen für neue TLDs freischaltet.
 
 ## Registrieren Sie Ihre Modemarken-Domains bei Namefi
 
-[Namefi](https://namefi.io) ist ein ICANN-akkreditierter Registrar, der den markenübergreifenden Markenschutz über mehrere Endungen hinweg vereinfacht. Sie können Ihren Namen über die oben genannten Endungen aus einem Konto heraus suchen und registrieren, mit transparenten Preisen und ohne versteckte Zusatzkosten, und dann alles – Verlängerungen, Sperren und DNS – in einem einzigen Dashboard verwalten.
+[Namefi](https://namefi.io) ist ein [ICANN-akkreditierter Registrar](/de/glossary/accredited-registrar/), der den markenübergreifenden Markenschutz über mehrere Endungen hinweg vereinfacht. Sie können Ihren Namen über die oben genannten Endungen aus einem Konto heraus suchen und registrieren, mit transparenten Preisen und ohne versteckte Zusatzkosten, und dann alles – Verlängerungen, Sperren und DNS – in einem einzigen Dashboard verwalten.
 
-Namefi bietet außerdem schnelles, zuverlässiges DNS, damit Ihr Schaufenster und Ihre Kampagnenseiten schnell auflösen, plus optionale Web3-Tokenisierung, mit der Sie eine Domain als NFT für portablen, verifizierbaren Eigentumsnachweis halten können. Ob Sie Ihre erste Kapsel lancieren oder ein etabliertes Haus schützen – Sie können Ihre Kern-`.com` und Ihren defensiven Ring an einem Ort sichern.
+Namefi bietet außerdem schnelles, zuverlässiges DNS, damit Ihr Schaufenster und Ihre Kampagnenseiten schnell auflösen, plus optionale Web3-[Tokenisierung](/de/glossary/tokenize/), mit der Sie eine Domain als NFT für portablen, verifizierbaren Eigentumsnachweis halten können. Ob Sie Ihre erste Kapsel lancieren oder ein etabliertes Haus schützen – Sie können Ihre Kern-`.com` und Ihren defensiven Ring an einem Ort sichern.
 
 ## Häufig gestellte Fragen
 
@@ -90,7 +90,7 @@ Es gibt keine feste Zahl, aber ein praktischer Kern ist Ihre `.com` plus eine Ha
 
 ### Sind diese Endungen auf Modeunternehmen beschränkt?
 
-Nein. Trotz ihrer Namen sind `.fashion`, `.boutique`, `.style` und die Einzelhandelsendungen wie `.shop` und `.store` gemäß ihren IANA-Delegierungsunterlagen für alle Registranten ohne Branchenmitgliedschaftspflicht offen. Die einzige Nuance ist `.co`, eine ccTLD, die unter der nationalen Behörde Kolumbiens betrieben wird; sie ist weltweit verfügbar, aber lesen Sie die Bedingungen der Registry, bevor Sie sie als Ihr einziges Schaufenster verwenden.
+Nein. Trotz ihrer Namen sind `.fashion`, `.boutique`, `.style` und die Einzelhandelsendungen wie `.shop` und `.store` gemäß ihren [IANA](/de/glossary/iana/)-Delegierungsunterlagen für alle Registranten ohne Branchenmitgliedschaftspflicht offen. Die einzige Nuance ist `.co`, eine ccTLD, die unter der nationalen Behörde Kolumbiens betrieben wird; sie ist weltweit verfügbar, aber lesen Sie die Bedingungen der Registry, bevor Sie sie als Ihr einziges Schaufenster verwenden.
 
 ### Sollte ich den gleichen Namen auch als tokenisierte (Web3-)Domain registrieren?
 

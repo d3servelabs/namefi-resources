@@ -10,7 +10,7 @@ ogImage: ../../assets/cctld-market-share-by-registration-volume-og.jpg
 keywords: ['ccTLD 市场份额', '国家代码域名', '.cn', '.de', '.uk', '.tk', '.io', '域名统计', '注册局数据', 'namefi']
 ---
 
-当大多数人想到互联网时，他们脑海中浮现的是 `.com`。单纯从数字来看，`.com` 依然是全球最大的顶级域名，管理着约 1.6 亿个域名。但 `.com` 是一个 gTLD——即*通用*顶级域名（Generic Top-Level Domain）。如果我们将视角转向**国家代码顶级域名（ccTLD）**——即根据 [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) 分配给国家和地区的双字母后缀——情况就会变得非常有趣，且远超预期。
+当大多数人想到互联网时，他们脑海中浮现的是 `.com`。单纯从数字来看，`.com` 依然是全球最大的[顶级域名](/zh/glossary/tld/)，管理着约 1.6 亿个域名。但 `.com` 是一个 [gTLD](/zh/glossary/gtld/)——即*通用*顶级域名（Generic Top-Level Domain）。如果我们将视角转向**国家代码顶级域名（[ccTLD](/zh/glossary/cctld/)）**——即根据 [ISO 3166-1](https://www.iso.org/iso-3166-country-codes.html) 分配给国家和地区的双字母后缀——情况就会变得非常有趣，且远超预期。
 
 本文将带您了解哪些 ccTLD 在注册量上处于领先地位，为什么这些领先者并不是您所猜测的那些，以及这些数据揭示了世界不同地区互联网的*真实使用情况*。
 
@@ -18,7 +18,7 @@ keywords: ['ccTLD 市场份额', '国家代码域名', '.cn', '.de', '.uk', '.tk
 
 公开的注册局数据（来自发布统计数据的运营商，以及类似 [DNIB 的 2026 年第一季度域名行业简报](https://www.dnib.com/articles/the-domain-name-industry-brief-q1-2026#:~:text=The%20top%2010%20ccTLDs%2C%20as%20of%20March%2031%2C%202026%2C%20were%20.cn%2C%20.de%2C%20.uk%2C%20.ru%2C%20.nl%2C%20.br%2C%20.fr%2C%20.au%2C%20.in%20and%20.eu.) 和 [DENIC 的 .de 统计数据](https://www.denic.de/en/products/statistics-about-de/) 的聚合快照）将顶级 ccTLD 大致排列如下：
 
-- **.cn（中国）**—— 域名数量约在 2000 万左右。在大多数时间里都是最大的 ccTLD。
+- **[.cn](/zh/tld/cn/)（中国）**—— 域名数量约在 2000 万左右。在大多数时间里都是最大的 ccTLD。
 - **.de（德国）**—— 约 1700 万。由 DENIC 运营；年复一年保持着非凡的稳定性。
 - **.uk（英国）**—— `.uk` 和 `.co.uk` 合计约 1000 万。
 - **.nl（荷兰）**—— 约 600 万。对于一个人口仅 1700 万的国家来说，这个数字非常庞大。
@@ -43,18 +43,18 @@ keywords: ['ccTLD 市场份额', '国家代码域名', '.cn', '.de', '.uk', '.tk
 
 几个小国的 ccTLD 运营模式更像是通用后缀，它们的大部分注册量都来自该国境外。
 
-- **.io**（英属印度洋领地）—— 因“输入/输出 (Input/Output)”的双关语而深受科技初创企业喜爱。
-- **.tv**（图瓦卢）—— 出租给媒体和流媒体品牌。
-- **.co**（哥伦比亚）—— 在全球范围内作为 `.com` 的替代品进行营销。
-- **.me**（黑山）—— 具有代词含义（“我”），在个人网站中很受欢迎。
-- **.ai**（安圭拉）—— 近期由于人工智能（AI）热潮而出现爆发式增长。
+- **[.io](/zh/tld/io/)**（英属印度洋领地）—— 因“输入/输出 (Input/Output)”的双关语而深受科技初创企业喜爱。
+- **[.tv](/zh/tld/tv/)**（图瓦卢）—— 出租给媒体和流媒体品牌。
+- **[.co](/zh/tld/co/)**（哥伦比亚）—— 在全球范围内作为 `.com` 的替代品进行营销。
+- **[.me](/zh/tld/me/)**（黑山）—— 具有代词含义（“我”），在个人网站中很受欢迎。
+- **[.ai](/zh/tld/ai/)**（安圭拉）—— 近期由于人工智能（AI）热潮而出现爆发式增长。
 - **.tk**（托克劳）—— 历史上曾因免费注册计划而导致数量虚高，该计划现已[中止](https://en.wikipedia.org/wiki/.tk)。
 
 这些区域可能会显示出极其庞大的注册量，但这些数量反映的是*全球品牌需求*，而非该分配国家的人口或经济活动。图瓦卢只有约 11,000 名居民，却拥有世界上最受关注的 ccTLD 之一。
 
 ### 免费注册扭曲了排行榜
 
-在 2010 年代的大部分时间里，Freenom 提供了 `.tk`、`.ml`、`.ga`、`.cf` 和 `.gq` 的免费注册。在最高峰时，仅 `.tk` 报告的注册量就超过了 `.de`。行业观察家不断指出，这些域名绝大多数要么闲置，要么被积极用于网络钓鱼滥用。在经历 [ICANN 程序和注册局接管](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf) 后，Freenom 暂停了新注册，表面上的庞大市场份额也随之蒸发。这给我们的教训是：注册*数量*和注册*质量（价值）*是截然不同的衡量标准。
+在 2010 年代的大部分时间里，Freenom 提供了 `.tk`、`.ml`、`.ga`、`.cf` 和 `.gq` 的免费注册。在最高峰时，仅 `.tk` 报告的注册量就超过了 `.de`。行业观察家不断指出，这些域名绝大多数要么闲置，要么被积极用于[网络钓鱼](/zh/glossary/phishing/)滥用。在经历 [ICANN 程序和注册局接管](https://www.icann.org/en/system/files/files/proposed-renewal-tk-redelegation-12sep23-en.pdf) 后，Freenom 暂停了新注册，表面上的庞大市场份额也随之蒸发。这给我们的教训是：注册*数量*和注册*质量（价值）*是截然不同的衡量标准。
 
 ### 受限的 ccTLD 刻意保持小众
 
@@ -94,5 +94,5 @@ keywords: ['ccTLD 市场份额', '国家代码域名', '.cn', '.de', '.uk', '.tk
 - JPRS — [.jp 注册资格](https://jprs.co.jp/en/jpdomain.html#:~:text=Any%20individual%2C%20group%20or%20organization%20having%20a%20permanent%20postal%20address%20in%20Japan%20is%20eligible%20for%20registration.)。
 - Norid — [.no 一般要求](https://teknisk.norid.no/en/administrere-domenenavn/generelle-krav/#:~:text=must%20have%20a%20mailing%20address%20in%20Norway)。
 - Traficom — [.fi 注册资格](https://traficom.fi/en/fi-domains/applying-and-using-fi-domains/how-get-fi-domain-name#:~:text=Companies%2C%20organisations%20and%20private%20persons%2C%20regardless%20of%20their%20domicile%2C%20can%20all%20have%20fi%2Ddomain%20names%20registered%20for%20them.)。
-- ICANN — [集中区域数据服务](https://czds.icann.org/)，用于访问可用的区域文件。
+- [ICANN](/zh/glossary/icann/) — [集中区域数据服务](https://czds.icann.org/)，用于访问可用的[区域文件](/zh/glossary/zone-file/)。
 - ISO — [ISO 3166-1 国家/地区代码](https://www.iso.org/iso-3166-country-codes.html)，每个 ccTLD 标签的来源。

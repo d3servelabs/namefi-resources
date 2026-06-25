@@ -21,7 +21,7 @@ Ce guide s'adresse au propriétaire de domaine ordinaire qui a un nom dont il n'
 Si vous ne devez retenir qu'un seul processus, que ce soit celui-ci :
 
 1. Déterminez si le domaine a un acheteur plausible.
-2. Fixez son prix à partir de ventes comparables, et non sur la base de l'espoir.
+2. Fixez son prix à partir de [ventes comparables](/fr/glossary/comparable-sales/), et non sur la base de l'espoir.
 3. Vérifiez les risques juridiques, de transfert, d'expiration et de DNS avant de le proposer.
 4. Choisissez votre approche de vente : entrante (inbound), sortante (outbound), ou les deux.
 5. Utilisez [Namefi Outbound](https://namefi.io/outbound) pour rechercher des acheteurs potentiels, des angles d'approche, des contacts publics lorsqu'ils sont disponibles, et des modèles de premiers messages personnalisables.
@@ -58,7 +58,7 @@ Vérifiez également les points délicats dès le début :
 - Le domaine est-il proche de son expiration ?
 - Le transfert est-il bloqué parce qu'il a été récemment enregistré ou transféré ?
 
-Le risque lié aux marques n'est pas un détail mineur. Selon [la politique UDRP de l'ICANN](https://www.icann.org/resources/pages/policy-2024-02-21-en), un plaignant doit démontrer une similarité prêtant à confusion, l'absence de droits ou d'intérêts légitimes, ainsi que l'enregistrement et l'utilisation de mauvaise foi. Un exemple cité par l'ICANN comme preuve de mauvaise foi est l'acquisition d'un domaine dans le but principal de le vendre au propriétaire de la marque ou à un concurrent pour un montant supérieur aux frais déboursés et documentés. Si cela ressemble un peu trop à votre projet, faites une pause et parlez à un avocat avant de contacter qui que ce soit.
+Le risque lié aux marques n'est pas un détail mineur. Selon [la politique UDRP de l'ICANN](https://www.icann.org/resources/pages/policy-2024-02-21-en), un plaignant doit démontrer une similarité prêtant à confusion, l'absence de droits ou d'intérêts légitimes, ainsi que l'enregistrement et l'utilisation de [mauvaise foi](/fr/glossary/bad-faith/). Un exemple cité par l'[ICANN](/fr/glossary/icann/) comme preuve de mauvaise foi est l'acquisition d'un domaine dans le but principal de le vendre au propriétaire de la marque ou à un concurrent pour un montant supérieur aux frais déboursés et documentés. Si cela ressemble un peu trop à votre projet, faites une pause et parlez à un avocat avant de contacter qui que ce soit.
 
 Ce n'est pas une raison pour paniquer. C'est une raison pour vendre des noms propres de manière propre.
 
@@ -87,7 +87,7 @@ Avant de lister ou de faire une proposition, notez trois chiffres :
 Choisissez ensuite le style de tarification :
 
 - **Prix fixe / Acheter maintenant (Buy now) :** idéal quand vous voulez de la rapidité et moins d'allers-retours.
-- **Faire une offre (Make offer) :** idéal quand le domaine est atypique ou que la valeur pour l'acheteur varie considérablement.
+- **[Faire une offre](/fr/glossary/make-offer/) (Make offer) :** idéal quand le domaine est atypique ou que la valeur pour l'acheteur varie considérablement.
 - **Enchères :** idéal quand il y a une demande visible de la part de plusieurs acheteurs.
 - **Négociation privée :** idéal quand le vivier d'acheteurs est restreint et stratégique.
 
@@ -107,7 +107,7 @@ Si le domaine est proche de sa date d'expiration, renouvelez-le avant d'entamer 
 
 ### Vérifiez le statut de transfert
 
-L'ICANN explique que les bureaux d'enregistrement peuvent refuser les transferts dans certains cas, notamment lorsque le domaine est verrouillé, qu'il a été enregistré pour la première fois il y a moins de 60 jours, ou qu'il a été transféré il y a moins de 60 jours. Vous aurez également besoin d'un [code d'autorisation (AuthInfo/auth code)](/en/glossary/auth-code/) pour de nombreux transferts entre différents bureaux d'enregistrement. L'ICANN précise que ces derniers doivent soit vous permettre d'en créer un, soit vous le fournir dans un délai de cinq jours civils après votre demande.
+L'ICANN explique que les bureaux d'enregistrement peuvent refuser les transferts dans certains cas, notamment lorsque le domaine est verrouillé, qu'il a été enregistré pour la première fois il y a moins de 60 jours, ou qu'il a été transféré il y a moins de 60 jours. Vous aurez également besoin d'un [code d'autorisation (AuthInfo/auth code)](/fr/glossary/auth-code/) pour de nombreux transferts entre différents bureaux d'enregistrement. L'ICANN précise que ces derniers doivent soit vous permettre d'en créer un, soit vous le fournir dans un délai de cinq jours civils après votre demande.
 
 Cela ne signifie pas que chaque vente doit attendre. Si l'acheteur est prêt à recevoir le domaine chez le bureau d'enregistrement actuel, un transfert interne au même bureau (account push) ou un changement de propriétaire peut être possible. Mais vous devez connaître les possibilités de transfert avant de promettre une date de conclusion.
 
@@ -268,7 +268,7 @@ Aux États-Unis, l'IRS traite les ventes d'actifs selon des règles fiscales qui
 
 Si votre domaine est un [domaine tokenisé](/fr/blog/what-are-tokenized-domains/), la mécanique de conclusion peut être différente.
 
-Dans une vente traditionnelle, le séquestre existe parce que le paiement et le transfert du bureau d'enregistrement se déroulent en deux étapes distinctes. Dans la vente d'un domaine tokenisé, la propriété peut être représentée par un [NFT](/fr/glossary/nft/) et transférée via une transaction [sur la blockchain (on-chain)](/fr/glossary/on-chain/). Cela peut réduire le temps de règlement, mais n'élimine pas tous les risques. Vous avez toujours besoin de l'adéquation avec l'acheteur, d'une situation légale propre, d'une sécurité du portefeuille (wallet), de registres fiscaux, et d'une compréhension claire de ce que l'acheteur s'attend à recevoir.
+Dans une vente traditionnelle, le séquestre existe parce que le paiement et le transfert du bureau d'enregistrement se déroulent en deux étapes distinctes. Dans la vente d'un domaine tokenisé, la propriété peut être représentée par un [NFT](/fr/glossary/nft/) et transférée via une transaction [sur la blockchain (on-chain)](/fr/glossary/on-chain/). Cela peut réduire le temps de règlement, mais n'élimine pas tous les risques. Vous avez toujours besoin de l'adéquation avec l'acheteur, d'une situation légale propre, d'une sécurité du [portefeuille](/fr/glossary/wallet/) (wallet), de registres fiscaux, et d'une compréhension claire de ce que l'acheteur s'attend à recevoir.
 
 Pour en savoir plus sur la façon dont les ventes tokenisées modifient la mécanique de séquestre, lisez [De l'annonce au règlement : Comment les marchés tokenisés remplacent le séquestre (Escrow)](/fr/blog/how-tokenized-marketplaces-replace-escrow/).
 

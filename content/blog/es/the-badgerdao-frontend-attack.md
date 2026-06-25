@@ -11,11 +11,11 @@ keywords: ['hackeo badgerdao', 'ataque front-end badgerdao', 'compromiso clave a
 
 La auditoría estaba limpia. Los contratos estaban bien. El dinero se fue de todas formas.
 
-En los días alrededor del 2 de diciembre de 2021, BadgerDAO — un proyecto DeFi construido en torno a llevar Bitcoin a las finanzas descentralizadas — perdió aproximadamente **$120 millones** de los fondos de sus usuarios. No hubo ningún truco de flash loan, ningún error de reentrancy, ningún exploit matemático inteligente contra las bóvedas. Los contratos inteligentes hicieron exactamente lo que fueron programados para hacer. El atacante nunca tuvo que romperlos, porque el atacante nunca los atacó.
+En los días alrededor del 2 de diciembre de 2021, BadgerDAO — un proyecto [DeFi](/es/glossary/defi/) construido en torno a llevar Bitcoin a las finanzas descentralizadas — perdió aproximadamente **$120 millones** de los fondos de sus usuarios. No hubo ningún truco de flash loan, ningún error de reentrancy, ningún exploit matemático inteligente contra las bóvedas. Los contratos inteligentes hicieron exactamente lo que fueron programados para hacer. El atacante nunca tuvo que romperlos, porque el atacante nunca los atacó.
 
 Atacó el *sitio web*.
 
-Alguien había introducido silenciosamente un script malicioso en el front-end de app.badger.com. Para cada usuario que cargaba la página, parecía la misma dApp de confianza que usaban todos los días. Pero cuando iban a interactuar con ella, la página pedía a su billetera un permiso adicional e invisible — y una vez que hacían clic en "aprobar", sus tokens ya no les pertenecían.
+Alguien había introducido silenciosamente un script malicioso en el front-end de app.badger.com. Para cada usuario que cargaba la página, parecía la misma dApp de confianza que usaban todos los días. Pero cuando iban a interactuar con ella, la página pedía a su [billetera](/es/glossary/wallet/) un permiso adicional e invisible — y una vez que hacían clic en "aprobar", sus tokens ya no les pertenecían.
 
 Esta es la historia de cómo un proyecto con contratos auditados perdió nueve cifras a través de una sola línea de código front-end inyectada, y por qué debería cambiar permanentemente la forma en que piensas sobre los límites de tu seguridad.
 
@@ -37,11 +37,11 @@ Imagina entrar en una tienda que has visitado cien veces. El mismo letrero, el m
 
 Eso es, en efecto, lo que les ocurrió a los usuarios de BadgerDAO.
 
-La clasificación importa aquí, porque es lo que hace que este incidente sea tan instructivo. Como *Vice* lo resumió, el hackeo [no involucró exploits complicados de contratos inteligentes. En cambio, fue un ataque front-end dirigido a la infraestructura web de BadgerDAO](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — en particular su cuenta de Cloudflare. Fue, en sus palabras, un ataque web *a la vieja escuela* dirigido a un objetivo Web3.
+La clasificación importa aquí, porque es lo que hace que este incidente sea tan instructivo. Como *Vice* lo resumió, el hackeo [no involucró exploits complicados de contratos inteligentes. En cambio, fue un ataque front-end dirigido a la infraestructura web de BadgerDAO](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=injected%20a%20malicious%20script%20into%20BadgerDAO%27s%20frontend) — en particular su cuenta de Cloudflare. Fue, en sus palabras, un ataque web *a la vieja escuela* dirigido a un objetivo [Web3](/es/glossary/web3/).
 
 El mecanismo fue elegante y silencioso. El script malicioso pedía a la billetera del usuario que otorgara una asignación de gasto de tokens a la dirección del atacante. En palabras de Vice, [el script malicioso básicamente engañó a las personas para que le dieran a la dirección derechos para enviar los tokens a la dirección del explotador](https://www.vice.com/en/article/hackers-steal-dollar119m-from-web3-crypto-project-with-old-school-attack/#:~:text=The%20malicious%20script%20basically%20tricked%20people%20into%20giving). El usuario pensaba que estaba haciendo negocios normales en la dApp. Estaba firmando para ceder las llaves de sus tokens.
 
-Los investigadores de seguridad llaman a este patrón *ice phishing*: en lugar de robar tu clave privada, te engañan para que apruebes voluntariamente a un gastador malicioso. La firma es real. La aprobación es real. La transacción en la cadena es válida. Es exactamente por eso que es tan peligroso — y por qué ninguna auditoría de contratos podría haberlo detenido.
+Los investigadores de seguridad llaman a este patrón *ice [phishing](/es/glossary/phishing/)*: en lugar de robar tu [clave privada](/es/glossary/private-key/), te engañan para que apruebes voluntariamente a un gastador malicioso. La firma es real. La aprobación es real. La transacción en la cadena es válida. Es exactamente por eso que es tan peligroso — y por qué ninguna auditoría de contratos podría haberlo detenido.
 
 ## Lo que perdieron los usuarios: ~$120 millones, una firma a la vez
 
@@ -59,7 +59,7 @@ El detalle más cruel: no había nada que un usuario cuidadoso pudiera haber ver
 
 ![Arte conceptual colorido y vívido de una mano invisible que agrega silenciosamente un botón de aprobación brillante adicional a una ventana emergente de billetera mientras la interfaz real parece tranquila y confiable, una sola línea maliciosa de código que se desliza en una página web amigable](../../assets/the-badgerdao-frontend-attack-02-injected-script.jpg)
 
-La puerta principal que usó el atacante no era un contrato inteligente. Era una cuenta en la nube.
+La puerta principal que usó el atacante no era un [contrato inteligente](/es/glossary/smart-contract/). Era una cuenta en la nube.
 
 BadgerDAO, como una enorme proporción de la web moderna, se encontraba detrás de Cloudflare — la capa de entrega de contenido y computación en el borde que sirve y acelera los sitios web. El control de esa cuenta significaba controlar qué código el sitio web de BadgerDAO entregaba a los visitantes. Y el atacante obtuvo ese control a través de una clave robada.
 
@@ -77,7 +77,7 @@ Así que la cadena completa se vio así: una debilidad en la verificación de cu
 
 Una vez que las transacciones de vaciado llegaron a escala en las primeras horas del 2 de diciembre, la huella en la cadena finalmente se volvió imposible de ignorar, y BadgerDAO actuó rápidamente — usando sus contratos inteligentes para detener un problema que había originado completamente fuera de la cadena.
 
-El equipo reconoció el incidente públicamente y, según CryptoBriefing, confirmó que [todos los contratos inteligentes han sido pausados para prevenir más retiros](https://cryptobriefing.com/120m-lost-badgerdao-defi-hack/). Dado que las bóvedas de Badger tenían capacidad de pausa, congelar las transferencias cortó la capacidad del atacante de seguir moviendo fondos recién aprobados. Un análisis técnico describe la detención como el equipo ejerciendo el poder de congelar todas las llamadas a la función `transferFrom` — el mecanismo ERC-20 mismo que las aprobaciones maliciosas estaban explotando. Esa pausa también es la razón por la que una porción significativa de la pérdida era teóricamente recuperable: algunos activos habían sido movidos por el atacante pero aún no habían sido completamente retirados de las bóvedas de Badger antes de que llegara la congelación.
+El equipo reconoció el incidente públicamente y, según CryptoBriefing, confirmó que [todos los contratos inteligentes han sido pausados para prevenir más retiros](https://cryptobriefing.com/120m-lost-badgerdao-defi-hack/). Dado que las bóvedas de Badger tenían capacidad de pausa, congelar las transferencias cortó la capacidad del atacante de seguir moviendo fondos recién aprobados. Un análisis técnico describe la detención como el equipo ejerciendo el poder de congelar todas las llamadas a la función `transferFrom` — el mecanismo [ERC-20](/es/glossary/erc-20/) mismo que las aprobaciones maliciosas estaban explotando. Esa pausa también es la razón por la que una porción significativa de la pérdida era teóricamente recuperable: algunos activos habían sido movidos por el atacante pero aún no habían sido completamente retirados de las bóvedas de Badger antes de que llegara la congelación.
 
 En el lado de la infraestructura, la limpieza fue la sombría lista de verificación Web2 de una brecha de credenciales: rotar las claves API de Cloudflare, cambiar la contraseña de la cuenta, reforzar la autenticación multifactor y auditar cada clave que no debería haber existido. BadgerDAO luego se asoció con Mandiant para investigar y publicar un post-mortem técnico que reconstruyó la línea de tiempo — las debilidades de la cuenta de Cloudflare, las claves no autorizadas creadas en los meses anteriores, la inyección de script de noviembre y el vaciado de diciembre.
 
@@ -89,7 +89,7 @@ La lección más importante de BadgerDAO es una corrección de límites. La mayo
 
 **1. Tu front-end está en el ámbito. Siempre.** El código que ejecuta el navegador de un usuario es parte de tu protocolo, ya sea que viva en la cadena o no. Si un atacante controla qué JavaScript sirve tu sitio, controla las billeteras de tus usuarios — contratos auditados o no. El sitio no es "solo la interfaz de usuario". Es el lugar donde se captura el consentimiento.
 
-**2. Tu infraestructura de nube y dominio es parte del contrato.** Una cuenta de Cloudflare, un inicio de sesión en un proveedor DNS, una cuenta de registrador, una clave CI/CD — cada una es un camino para reescribir lo que ven tus usuarios. BadgerDAO no fue vulnerado en la bóveda; fue vulnerado en la *cuenta que controlaba el sitio web*. Trata esas credenciales con la misma paranoia que reservas para una clave privada de desplegador.
+**2. Tu infraestructura de nube y dominio es parte del contrato.** Una cuenta de Cloudflare, un inicio de sesión en un proveedor DNS, una cuenta de [registrador](/es/glossary/registrar/), una clave CI/CD — cada una es un camino para reescribir lo que ven tus usuarios. BadgerDAO no fue vulnerado en la bóveda; fue vulnerado en la *cuenta que controlaba el sitio web*. Trata esas credenciales con la misma paranoia que reservas para una clave privada de desplegador.
 
 **3. Las claves API y los flujos de creación de cuentas son superficie de ataque real.** Todo el desastre dependió de una clave API no autorizada que nunca debería haber existido, posibilitada por una brecha de verificación. Haz un inventario de cada clave. Limita su alcance. Rótalas. Alerta sobre nuevas. Una clave que olvidaste es una clave que un atacante puede usar.
 

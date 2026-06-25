@@ -13,13 +13,13 @@ La plupart des catastrophes liées aux domaines portent sur qui *possède* un no
 
 Il n'y a eu aucune intrusion dans un serveur web. Pas de logiciel malveillant sur la page d'accueil. Aucun défacement, aucune rançon, aucune preuve accablante dans les journaux applicatifs. Les attaquants n'ont jamais eu besoin de s'introduire physiquement dans les bâtiments. Ils ont emprunté la seule porte que presque personne ne garde : l'**enregistrement DNS** qui indique où vivent réellement les e-mails et les sites web d'un domaine. Ils l'ont modifié — discrètement, avec des identifiants valides, derrière un certificat TLS valide — et le trafic mondial a suivi les nouvelles instructions sans se plaindre.
 
-Cisco Talos a nommé cela **DNSpionage**. C'est l'une des démonstrations les plus claires jamais enregistrées que le Système de Noms de Domaine n'est pas qu'une simple plomberie. C'est une infrastructure de sécurité nationale.
+Cisco Talos a nommé cela **DNSpionage**. C'est l'une des démonstrations les plus claires jamais enregistrées que le [Système de Noms de Domaine](/fr/glossary/dns/) n'est pas qu'une simple plomberie. C'est une infrastructure de sécurité nationale.
 
 ## Le DNS comme arme de politique d'État
 
 Pour comprendre pourquoi DNSpionage a secoué les gouvernements, il faut se rappeler ce que le DNS fait réellement.
 
-Chaque fois que vous envoyez un e-mail à un ministère, que vous vous connectez à un VPN d'entreprise, ou que vous chargez une page de webmail, votre appareil pose d'abord une question au DNS : *quelle adresse IP correspond à ce nom ?* Quelle que soit la réponse du DNS, vous lui faites confiance. Votre client de messagerie s'y connecte. Votre VPN s'y authentifie. Votre navigateur y transmet la session. Le DNS est l'annuaire de tout l'internet, et presque rien ne vérifie si cet annuaire a été modifié.
+Chaque fois que vous envoyez un e-mail à un ministère, que vous vous connectez à un VPN d'entreprise, ou que vous chargez une page de webmail, votre appareil pose d'abord une question au DNS : *quelle [adresse IP](/fr/glossary/ip-address/) correspond à ce nom ?* Quelle que soit la réponse du DNS, vous lui faites confiance. Votre client de messagerie s'y connecte. Votre VPN s'y authentifie. Votre navigateur y transmet la session. Le DNS est l'annuaire de tout l'internet, et presque rien ne vérifie si cet annuaire a été modifié.
 
 C'est cette propriété qu'a exploitée DNSpionage. Si vous pouvez modifier l'enregistrement — non pas briser le chiffrement, non pas craquer le fichier de mots de passe, juste changer le *pointeur* — vous pouvez vous placer invisiblement entre une cible et les services auxquels elle fait confiance. Les e-mails passent par vous. Les connexions VPN passent par vous. Et comme le nom de domaine de la victime apparaît toujours dans la barre du navigateur, rien ne semble anormal.
 

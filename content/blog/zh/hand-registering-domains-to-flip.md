@@ -20,9 +20,9 @@ keywords: ['手动注册域名', '手动注册的域名', '可用于转售的可
 
 ## 什么是手动注册，以及为何它是风险最高的渠道
 
-手动注册（业内简称“手注”）指的是直接从 [注册商](/zh/glossary/registrar/) 处以标准注册费注册一个全新的域名，而不是在 [二级市场](/zh/glossary/marketplace/) 购买现有域名或在域名删除期抢注。它之所以是入门点，是因为成本低廉：根据维基百科，一个普通的 `.com` 域名每年的费用 [从大约 $9.70 到 $35 不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)，而且这个领域是域名空间的开放前沿——域名投机活动的字面定义就是 [为了投资而注册或收购通用互联网域名，意图在日后出售以获取利润](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)。
+手动注册（业内简称“手注”）指的是直接从 [注册商](/zh/glossary/registrar/) 处以标准注册费注册一个全新的域名，而不是在 [二级市场](/zh/glossary/marketplace/) 购买现有域名或在域名删除期[抢注](/zh/glossary/backorder/)。它之所以是入门点，是因为成本低廉：根据维基百科，一个普通的 `.com` 域名每年的费用 [从大约 $9.70 到 $35 不等](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=the%20retail%20cost%20generally%20ranges%20from%20a%20low%20of%20about%20%249.70%20per%20year)，而且这个领域是域名空间的开放前沿——域名投机活动的字面定义就是 [为了投资而注册或收购通用互联网域名，意图在日后出售以获取利润](https://en.wikipedia.org/wiki/Domain_name_speculation#:~:text=registering%20or%20acquiring%20generic%20Internet%20domain%20names%20as%20an%20investment)。
 
-但“便宜”和“容易”恰恰是大多数新手在这个渠道亏损的原因。一个在删除期 [拍卖](/zh/glossary/auction/) 中抢注到的域名带有一些信号——它至少曾被注册过一次，可能拥有建站历史或反向链接（请参阅 [过期域名与删除周期](/zh/blog/expired-domains-and-the-drop-cycle/)）。一个新手动注册的域名则不带任何信号。它从未被任何人需要过。您完全是在赌自己对未来需求的判断，而错误的判断只会给您本已每年都在花钱的域名组合增加一笔续费开销。
+但“便宜”和“容易”恰恰是大多数新手在这个渠道亏损的原因。一个在删除期 [拍卖](/zh/glossary/auction/) 中抢注到的域名带有一些信号——它至少曾被注册过一次，可能拥有建站历史或[反向链接](/zh/glossary/backlink/)（请参阅 [过期域名与删除周期](/zh/blog/expired-domains-and-the-drop-cycle/)）。一个新手动注册的域名则不带任何信号。它从未被任何人需要过。您完全是在赌自己对未来需求的判断，而错误的判断只会给您本已每年都在花钱的域名组合增加一笔续费开销。
 
 所以，坦白地说：手动注册不是“您可能卖掉的免费域名”。这是一场与无限供应的对赌，您需要提供全部的判断力。整个技巧的核心就在于判断力。
 
@@ -34,7 +34,7 @@ keywords: ['手动注册域名', '手动注册的域名', '可用于转售的可
 
 **词汇表，系统化运作。** 专业的手动注册者不靠头脑风暴，他们靠生成。首先，在您了解的领域中，准备一个高价值核心术语的种子列表——例如在金融科技领域，可以是 *pay, bank, fund, ledger, vault, capital*——再准备一个修饰词列表——例如 *get, try, go, hq, app, labs, flow, stack*。以编程方式将它们组合（`getledger`, `vaultflow`, `payhq`）然后批量检查可用性。系统化运作的意义在于有纪律地进行批量操作：扫描数百种组合，只为找到那个听起来像真实产品名称且碰巧还可用的稀有域名。
 
-**顶级域名（TLD）排列组合。** 同一个字符串在不同的 [扩展名](/en/glossary/tld/) 下是不同的资产。一个在 `.com` 上早已被注册的词，在 [`.io`](/zh/tld/io/)、[`.ai`](/zh/tld/ai/)、[`.co`](/zh/tld/co/)、[`.app`](/zh/tld/app/) 或 [`.xyz`](/zh/tld/xyz/) 上通常还完全可用，并且对合适的买家来说，这些扩展名很有分量——`.ai` 适用于人工智能产品，`.io` 适用于开发者工具，`.xyz` 适用于 web3。这可以说是手动注册领域里最接近真正优势的方法，因为较新的扩展名在简短、品牌化的域名上仍有可用库存，而 `.com` 在多年前就已耗尽了这类资源。但问题在于流动性：大多数转售需求仍然集中在 `.com` 上，并且不同扩展名的用户画像差异巨大（请参阅 [为什么.io域名价格昂贵](/zh/blog/why-are-io-domains-expensive/) 和 [按注册量计算的cctld市场份额](/zh/blog/cctld-market-share-by-registration-volume/)）。只有当买家特别想要某个高级扩展名时，它才能成为顺风车。
+**[顶级域名](/zh/glossary/tld/)（TLD）排列组合。** 同一个字符串在不同的 扩展名 下是不同的资产。一个在 `.com` 上早已被注册的词，在 [`.io`](/zh/tld/io/)、[`.ai`](/zh/tld/ai/)、[`.co`](/zh/tld/co/)、[`.app`](/zh/tld/app/) 或 [`.xyz`](/zh/tld/xyz/) 上通常还完全可用，并且对合适的买家来说，这些扩展名很有分量——`.ai` 适用于人工智能产品，`.io` 适用于开发者工具，`.xyz` 适用于 [web3](/zh/glossary/web3/)。这可以说是手动注册领域里最接近真正优势的方法，因为较新的扩展名在简短、品牌化的域名上仍有可用库存，而 `.com` 在多年前就已耗尽了这类资源。但问题在于流动性：大多数转售需求仍然集中在 `.com` 上，并且不同扩展名的用户画像差异巨大（请参阅 [为什么.io域名价格昂贵](/zh/blog/why-are-io-domains-expensive/) 和 [按注册量计算的cctld市场份额](/zh/blog/cctld-market-share-by-registration-volume/)）。只有当买家特别想要某个高级扩展名时，它才能成为顺风车。
 
 **品牌化模式。** 手动注册域名的很大一部分价值在于自创的、可发音的词，而不是字典词汇——就像 *Stripe / Vimeo / Zillow* 这种形式：简短、自创、易于发音和拼写，而且因为它们不是现有词汇，所以没有原主人。有效的模式包括辅音-元音节奏、真实词汇后缀（`-ly`、`-ify`、`-ster`）、与词根结合的短前缀，以及两个短词融合成一个词（`Facebook`、`Salesforce`）。这些域名之所以能被找到，恰恰因为它们不与字典词汇竞争——您在创造新词，而新词尚未被注册。我们关于 [如何为您的项目命名](/zh/blog/how-to-name-your-project/) 的文章介绍了如何让一个自创名称深入人心。
 
@@ -46,9 +46,9 @@ keywords: ['手动注册域名', '手动注册的域名', '可用于转售的可
 
 首先，*可用*和*有价值*是两码事。注册商的搜索工具会很乐意地为您推荐上百个可用域名；但推荐不等于认可。这个工具的目的是销售注册服务，而不是评估资产价值。
 
-其次，系统内置了一个真实的冷静期机制。ICANN 监管的注册带有一个 [为期五天的添加宽限期（Add Grace Period）](https://en.wikipedia.org/wiki/Domain_tasting#:~:text=the%20five%2Dday%20Add%20Grace%20Period)，在此期间，正如维基百科所指出的，[如果取消注册，域名注册局必须全额退款](https://en.wikipedia.org/wiki/Domain_tasting#:~:text=a%20registration%20must%20be%20fully%20refunded%20by%20the%20domain%20name%20registry%20if%20cancelled)。这一机制曾被大规模滥用（即“域名品尝”），所以现在大多数注册商会限制或对取消注册收费——不要围绕这一点制定策略，并且在依赖它作为安全网之前，请先查阅您注册商的政策。
+其次，系统内置了一个真实的冷静期机制。[ICANN](/zh/glossary/icann/) 监管的注册带有一个 [为期五天的添加宽限期（Add Grace Period）](https://en.wikipedia.org/wiki/Domain_tasting#:~:text=the%20five%2Dday%20Add%20Grace%20Period)，在此期间，正如维基百科所指出的，[如果取消注册，域名注册局必须全额退款](https://en.wikipedia.org/wiki/Domain_tasting#:~:text=a%20registration%20must%20be%20fully%20refunded%20by%20the%20domain%20name%20registry%20if%20cancelled)。这一机制曾被大规模滥用（即“域名品尝”），所以现在大多数注册商会限制或对取消注册收费——不要围绕这一点制定策略，并且在依赖它作为安全网之前，请先查阅您注册商的政策。
 
-始终要关注持有成本。您持有的每个域名在售出或放弃之前，每年都有一笔续费账单——而且一个 gTLD 在再次续费前最多可以持有 [10年](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)。二十个冲动之下手动注册的域名，每个 12 美元，每年就是 240 美元的开销，而且是永久性的，而这些域名可能永远也卖不出去。克制是一种美德。
+始终要关注[持有成本](/zh/glossary/holding-cost/)。您持有的每个域名在售出或放弃之前，每年都有一笔续费账单——而且一个 [gTLD](/zh/glossary/gtld/) 在再次续费前最多可以持有 [10年](https://en.wikipedia.org/wiki/Domain_name_registrar#:~:text=The%20maximum%20period%20of%20registration%20for%20a%20gTLD%20domain%20name%20is%2010%20years)。二十个冲动之下手动注册的域名，每个 12 美元，每年就是 240 美元的开销，而且是永久性的，而这些域名可能永远也卖不出去。克制是一种美德。
 
 ## 为什么大多数手动注册的域名永远卖不出去
 
@@ -71,7 +71,7 @@ keywords: ['手动注册域名', '手动注册的域名', '可用于转售的可
 
 1. **大声说两遍。** 把域名读给别人听，让他们拼写出来。如果他们做不到，或者加了连字符，或者问“这是一个词还是两个词”，那么这个域名就未能通过最重要的测试。易于口述是不可协商的。
 2. **明确买家身份。** 大声完成这个句子：“那个愿意为这个域名支付四位数的人是一个 ______，他需要它是因为 ______。”如果您说不出一个可信的买家和一个具体的原因，那您拥有的只是一个直觉，而不是一项资产。
-3. **检查明显的冲突。** 完全匹配的 `.com` 域名是否已经是一个活跃的业务？这个术语是否是别人的商标？注册一个通用词汇是投资；注册一个依赖于某个品牌的东西是网络抢注，一个 [UDRP](/zh/glossary/udrp/) 投诉可能会让您失去这个域名（可以从 [什么是 UDRP](/zh/blog/what-is-udrp/) 开始了解）。一次 [WHOIS](/en/glossary/whois/) 查询和商标搜索只需几分钟，却能避免灾难。
+3. **检查明显的冲突。** 完全匹配的 `.com` 域名是否已经是一个活跃的业务？这个术语是否是别人的商标？注册一个通用词汇是投资；注册一个依赖于某个品牌的东西是[网络抢注](/zh/glossary/cybersquatting/)，一个 [UDRP](/zh/glossary/udrp/) 投诉可能会让您失去这个域名（可以从 [什么是 UDRP](/zh/blog/what-is-udrp/) 开始了解）。一次 [WHOIS](/zh/glossary/whois/) 查询和商标搜索只需几分钟，却能避免灾难。
 4. **将扩展名与需求匹配。** 这个字符串在这个*特定*的扩展名上真的有需求吗？还是您只是想用一个高级 TLD 来包装一个平庸的域名？`.ai` 救不了一个人工智能公司根本不会用的域名。
 5. **根据实际售价评估续费成本。** 如果可能的售价是 200 美元，而域名每年花费 40 美元，那么只要它闲置两年，这笔账就不划算了。注册便宜不等于持有便宜。
 

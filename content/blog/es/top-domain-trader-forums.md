@@ -39,7 +39,7 @@ Las comunidades más nuevas y pequeñas ([DNGeek](https://www.dngeek.com/) y sim
 
 ### 5. Reddit — [r/Domains](https://www.reddit.com/r/Domains/) y [r/Domaining](https://www.reddit.com/r/Domaining/)
 
-Reddit es donde los principiantes hacen sus primeras preguntas. La calidad es desigual, pero [r/Domains](https://www.reddit.com/r/Domains/) y [r/Domaining](https://www.reddit.com/r/Domaining/) son lugares razonables para observar si quieres tener una idea de qué es lo que confunde a los recién llegados, lo cual es, en sí mismo, una señal de mercado muy útil.
+Reddit es donde los principiantes hacen sus primeras preguntas. La calidad es desigual, pero [r/Domains](https://www.reddit.com/r/Domains/) y [r/Domaining](https://www.reddit.com/r/Domaining/) son lugares razonables para observar si quieres tener una idea de qué es lo que confunde a los recién llegados, lo cual es, en sí mismo, una señal de [mercado](/es/glossary/marketplace/) muy útil.
 
 ## No son foros, pero es donde ocurre la verdadera conversación
 
@@ -72,11 +72,11 @@ La mayoría de estos funcionan por invitación y crecen alrededor de brókers in
 
 ### LinkedIn
 
-A menudo pasado por alto, [LinkedIn](https://www.linkedin.com/) es cada vez más útil para el *lado del usuario final* en las ventas de dominios: los gestores de marca, fundadores y responsables corporativos de propiedad intelectual que son quienes realmente compran los nombres. No es un lugar para pasar el rato, pero es el lugar ideal para encontrar compradores.
+A menudo pasado por alto, [LinkedIn](https://www.linkedin.com/) es cada vez más útil para el *lado del [usuario final](/es/glossary/end-user/)* en las ventas de dominios: los gestores de marca, fundadores y responsables corporativos de propiedad intelectual que son quienes realmente compran los nombres. No es un lugar para pasar el rato, pero es el lugar ideal para encontrar compradores.
 
 ## Elegir uno si eres nuevo
 
-Si quieres una única recomendación: **empieza en NamePros, sigue a cinco o seis cuentas serias de dominios en X, y suscríbete a dos o tres de los blogs que agrega Domaining.com**. Ese conjunto te proporciona casi todo de lo que habla públicamente la industria, más o menos en el orden en que se debate: reacciones rápidas en X, hilos más profundos en NamePros y análisis reflexivos en los blogs.
+Si quieres una única recomendación: **empieza en NamePros, sigue a cinco o seis cuentas serias de dominios en X, y suscríbete a dos o tres de los blogs que agrega [Domaining](/es/glossary/domaining/).com**. Ese conjunto te proporciona casi todo de lo que habla públicamente la industria, más o menos en el orden en que se debate: reacciones rápidas en X, hilos más profundos en NamePros y análisis reflexivos en los blogs.
 
 Puedes añadir Telegram, Discord, DNForum y las comunidades más pequeñas a todo lo anterior una vez que sepas qué tipo de inversor eres. Intentar estar presente en todas partes desde el primer día es la forma más rápida de saturarse.
 

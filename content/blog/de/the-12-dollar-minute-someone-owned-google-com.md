@@ -15,7 +15,7 @@ Sie gehörte einem ehemaligen Google-Mitarbeiter namens Sanmay Ved, der gerade *
 
 Er hat nichts gehackt. Er hat keinen Buffer-Overflow ausgenutzt oder einen Administrator gephisht. Er ging zu Googles eigenem Vertriebsshop — Google Domains — tippte die bekannteste Domain der Welt ein und beobachtete, wie der Checkout-Prozess etwas tat, was er niemals hätte tun sollen: Er ließ ihn bezahlen. Seine Karte wurde belastet. Die Bestellung ging durch. Und für ungefähr sechzig Sekunden war ein Masterstudent in Massachusetts als eingetragener Inhaber von google.com verzeichnet.
 
-Dies ist **Domain Mayday / 域名浩劫**, unsere Serie über die Momente, in denen die Domain-Sicherheit öffentlich versagte. Die meisten Folgen handeln von Namen, die von Angreifern gestohlen wurden. Diese ist anders — und beunruhigender — weil niemand einen Angriff durchführte. Die bei weitem wichtigste Domain der Erde wurde zum Listenpreis an die erste Person verkauft, die sie zufällig in einen Warenkorb legte.
+Dies ist **Domain Mayday / 域名浩劫**, unsere Serie über die Momente, in denen die Domain-[Sicherheit](/de/glossary/collateral/) öffentlich versagte. Die meisten Folgen handeln von Namen, die von Angreifern gestohlen wurden. Diese ist anders — und beunruhigender — weil niemand einen Angriff durchführte. Die bei weitem wichtigste Domain der Erde wurde zum Listenpreis an die erste Person verkauft, die sie zufällig in einen Warenkorb legte.
 
 ## Was google.com normalerweise ist
 
@@ -23,7 +23,7 @@ Es ist schwer zu übertreiben, was google.com wert ist, denn die Zahl ist eigent
 
 Google.com ist das Eingangsportal zur meistgenutzten Suchmaschine des Planeten, der Anker für Gmail, Maps, Ads, YouTube-Kontoabläufe und das Authentifizierungsfundament für Milliarden von Menschen. Slate bezeichnete es anlässlich des Vorfalls als ["die meistbesuchte Domain der Welt"](https://slate.com/business/2015/10/google-com-domain-buy-ex-googler-sanmay-ved-bought-the-search-engine-s-domain-for-one-minute-in-cute-stunt.html#:~:text=The%20cost%20to%20buy%20the%20most%2Dtrafficked%20domain%20in%20the%20world%3F%20Only%20%2412.). Was auch immer Tesla.com oder Cars.com eingebracht haben — google.com ist in einer eigenen Kategorie: Es ist kein Marken-Asset, sondern *Infrastruktur*, die ein großer Teil der Weltbevölkerung täglich berührt.
 
-Eine solche Domain sollte unantastbar sein. Sie sollte gesperrt, markiert, registry-gesichert, server-gesperrt und übertragungsverboten sein — in jeden Schutz eingehüllt, den ein Registrar anwenden kann. Das gesamte Prinzip der Domain-Sicherheit besagt: Je kritischer der Name, desto schwieriger ist es, ihn zu verschieben.
+Eine solche Domain sollte unantastbar sein. Sie sollte gesperrt, markiert, [registry](/de/glossary/registry/)-gesichert, server-gesperrt und übertragungsverboten sein — in jeden Schutz eingehüllt, den ein [Registrar](/de/glossary/registrar/) anwenden kann. Das gesamte Prinzip der Domain-Sicherheit besagt: Je kritischer der Name, desto schwieriger ist es, ihn zu verschieben.
 
 Und dann, für 12 Dollar, wurde er verschoben.
 
@@ -83,7 +83,7 @@ Aus der 12-Dollar-Minute lassen sich einige dauerhafte Lehren ziehen:
 
 2. **Kritikalität und Schutz korrelieren nicht automatisch.** Man würde annehmen, dass die wichtigste Domain der Welt am stärksten gesperrt ist. Für eine Minute war sie es nicht. Wichtigkeit setzt sich nicht von selbst durch; explizite Sperren, Holds und Genehmigungsgates tun es. Prüfe sie; nehme sie nicht als gegeben hin.
 
-3. **Die Kontrollebene ist größer als DNS.** Menschen sichern ihre Nameserver und vergessen dabei das Registrar-Konto, den Support-Kanal, die Abrechnungs-E-Mail und die interne Werkzeugausstattung. Eine Domain kann durch jede Tür verloren gehen, die Eigentumsrechte neu schreiben kann — nicht nur durch die mit der Aufschrift „DNS."
+3. **Die Kontrollebene ist größer als DNS.** Menschen sichern ihre [Nameserver](/de/glossary/nameserver/) und vergessen dabei das Registrar-Konto, den Support-Kanal, die Abrechnungs-E-Mail und die interne Werkzeugausstattung. Eine Domain kann durch jede Tür verloren gehen, die Eigentumsrechte neu schreiben kann — nicht nur durch die mit der Aufschrift „DNS."
 
 4. **Man ist oft nur eine ehrliche Person von einer Katastrophe entfernt.** Google hatte Glück, dass der Käufer ein sicherheitsbewusster Ex-Mitarbeiter war, der es sofort meldete. Sicherheit, die vom guten Willen desjenigen abhängt, der zufällig hereinkommt, ist keine Sicherheit. Das System, nicht der Besucher, sollte das sein, was Nein sagt.
 
@@ -99,7 +99,7 @@ Die 12-Dollar-Minute ist im Kern eine Frage nach einem Datensatz: *Wer ist der v
 
 Im traditionellen Modell lebt die Antwort in der Datenbank eines Registrars, veränderbar durch alle Schnittstellen, die der Registrar bereitstellt — Einzelhandels-Checkout, Admin-Override, Support-Ticket, API. Die meisten dieser Schnittstellen sind gut gesichert. Aber Eigentumsrechte sind nur so sicher wie die am wenigsten gesicherte — und der Eigentümer kann normalerweise nicht in Echtzeit den Moment sehen, in dem sein Datensatz die Hände wechselt. Sanmay Ved erfuhr, dass er google.com „besaß", weil sein Posteingang aufleuchtete — nicht weil ein gehärtetes Hauptbuch eine verifizierte, autorisierte Übertragung ankündigte.
 
-[Namefi](https://namefi.io) geht von der Prämisse aus, dass Domain-Eigentum **verifizierbar und manipulationserkennbar** sein sollte, nicht in einer einzelnen veränderbaren Zeile vergraben. Indem Domain-Kontrolle als tokenisiertes, On-Chain-Asset dargestellt wird, das mit DNS kompatibel bleibt, wird der Vorgang „wem gehört diese Domain" zu etwas, das man unabhängig überprüfen und prüfen kann — und eine Übertragung wird zu einem expliziten, autorisierten, sichtbaren Ereignis, anstatt zu einem Checkout, der still und heimlich erfolgreich ist. Das Ziel ist nicht, Domains exotisch zu machen; es geht darum, den Hauptschlüssel schwerer aus Versehen in die falschen Hände zu geben und unmöglich zu verschieben, ohne eine Spur zu hinterlassen.
+[Namefi](https://namefi.io) geht von der Prämisse aus, dass [Domain-Eigentum](/de/glossary/domain-ownership/) **verifizierbar und manipulationserkennbar** sein sollte, nicht in einer einzelnen veränderbaren Zeile vergraben. Indem Domain-Kontrolle als tokenisiertes, On-Chain-Asset dargestellt wird, das mit DNS kompatibel bleibt, wird der Vorgang „wem gehört diese Domain" zu etwas, das man unabhängig überprüfen und prüfen kann — und eine Übertragung wird zu einem expliziten, autorisierten, sichtbaren Ereignis, anstatt zu einem Checkout, der still und heimlich erfolgreich ist. Das Ziel ist nicht, Domains exotisch zu machen; es geht darum, den Hauptschlüssel schwerer aus Versehen in die falschen Hände zu geben und unmöglich zu verschieben, ohne eine Spur zu hinterlassen.
 
 Google.com schnappte in einer Minute zurück, weil Google schnelle Erkennung auf einem fragilen Primitiv aufgebaut hat. Die bessere Antwort ist, das Primitiv selbst vertrauenswürdig zu machen: Eigentum, das man beweisen kann, Übertragungen, die man sehen kann, und Kontrolle, die nicht von einem einzelnen Formular abhängt, das sich daran erinnern muss, „Nein" zu sagen.
 

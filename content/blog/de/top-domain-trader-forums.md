@@ -20,7 +20,7 @@ Das Gravitationszentrum. Wenn Sie nur einer einzigen Community beitreten, dann d
 
 - **Verkaufs-Boards (Sales boards)** für Festpreisangebote, Verhandlungsbasis (Make-Offer) und Auktionen.
 - **Bewertungs-Threads (Appraisal threads)**, in denen Ihnen die Community mit unterschiedlichem Maß an Taktgefühl mitteilt, was Ihr Name wert ist.
-- **Registrar-spezifische Threads** für [GoDaddy](https://www.godaddy.com/), [Dynadot](https://www.dynadot.com/), [Namecheap](https://www.namecheap.com/), [Afternic](https://www.afternic.com/), [Sav](https://www.sav.com/) und Konsorten – sehr nützlich, wenn eine Plattform ihre Richtlinien ändert und Sie wissen möchten, ob nur Sie davon betroffen sind.
+- **[Registrar](/de/glossary/registrar/)-spezifische Threads** für [GoDaddy](https://www.godaddy.com/), [Dynadot](https://www.dynadot.com/), [Namecheap](https://www.namecheap.com/), [Afternic](https://www.afternic.com/), [Sav](https://www.sav.com/) und Konsorten – sehr nützlich, wenn eine Plattform ihre Richtlinien ändert und Sie wissen möchten, ob nur Sie davon betroffen sind.
 - **Endkunden-Diskussionen (End-user discussion)**, der Bereich mit der geringsten Aktivität, aber oft der wertvollste, denn beim Abschluss von Endkundenverkäufen wird das eigentliche Geld verdient.
 
 NamePros ist nicht perfekt – insbesondere das Bewertungs-Unterforum ist bekannt für hartes, manchmal falsches und gelegentlich sogar grausames Feedback –, aber das Signal-Rausch-Verhältnis ist immer noch das beste in der englischsprachigen Domain-Welt.
@@ -31,7 +31,7 @@ Eines der ältesten Domain-Foren im Internet. Viel kleiner als früher, aber imm
 
 ### 3. DomainState — [domainstate.com](https://www.domainstate.com/)
 
-Zur Hälfte Community, zur Hälfte Tool-Sammlung. [DomainState](https://www.domainstate.com/) ist am besten für seine Drop- und Auktions-Tracking-Tools bekannt, beherbergt aber auch ein Forum, das viel Traffic rund um Expired-Domain-Strategien und Plattform-Diskussionen anzieht.
+Zur Hälfte Community, zur Hälfte Tool-Sammlung. [DomainState](https://www.domainstate.com/) ist am besten für seine [Drop](/de/glossary/pending-delete/)- und Auktions-Tracking-Tools bekannt, beherbergt aber auch ein Forum, das viel Traffic rund um Expired-Domain-Strategien und Plattform-Diskussionen anzieht.
 
 ### 4. DNGeek und kleinere Nischenforen
 
@@ -76,7 +76,7 @@ Oft übersehen, aber [LinkedIn](https://www.linkedin.com/) wird für die *Endkun
 
 ## Die richtige Wahl für Einsteiger
 
-Wenn Sie eine einzige, klare Empfehlung möchten: **Fangen Sie bei NamePros an, folgen Sie fünf oder sechs seriösen Domain-Accounts auf X und abonnieren Sie zwei oder drei der Blogs, die von Domaining.com aggregiert werden**. Mit diesem Set-up bekommen Sie fast alles mit, worüber die Branche öffentlich spricht, und zwar in etwa in der Reihenfolge, in der darüber gesprochen wird – schnelle Meinungen auf X, tiefere Threads auf NamePros, fundierte Analysen in den Blogs.
+Wenn Sie eine einzige, klare Empfehlung möchten: **Fangen Sie bei NamePros an, folgen Sie fünf oder sechs seriösen Domain-Accounts auf X und abonnieren Sie zwei oder drei der Blogs, die von [Domaining](/de/glossary/domaining/).com aggregiert werden**. Mit diesem Set-up bekommen Sie fast alles mit, worüber die Branche öffentlich spricht, und zwar in etwa in der Reihenfolge, in der darüber gesprochen wird – schnelle Meinungen auf X, tiefere Threads auf NamePros, fundierte Analysen in den Blogs.
 
 Sie können Telegram, Discord, DNForum und die kleineren Communities später hinzufügen, sobald Sie wissen, welche Art von Investor Sie sind. Der Versuch, vom ersten Tag an überall präsent zu sein, ist der schnellste Weg, um den Überblick zu verlieren.
 

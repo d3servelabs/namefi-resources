@@ -11,7 +11,7 @@ keywords: ['dominio tokenizado DNS', 'dominio NFT DNSSEC', 'servidores de nombre
 
 Una preocupación común sobre la tokenización de un dominio: *"¿Seguirá funcionando mi sitio web? ¿Seguirá funcionando mi correo electrónico? ¿Tendré que aprender toda una nueva pila de DNS?"*
 
-Respuesta corta: **sí, sí, no.** Un dominio tokenizado sigue siendo un dominio real de la ICANN. El DNS sigue haciendo exactamente lo que hace el DNS. Esta publicación es un recorrido por lo que cambia (un poco) y lo que no (la mayor parte).
+Respuesta corta: **sí, sí, no.** Un [dominio tokenizado](/es/glossary/tokenized-domain/) sigue siendo un dominio real de la ICANN. El DNS sigue haciendo exactamente lo que hace el DNS. Esta publicación es un recorrido por lo que cambia (un poco) y lo que no (la mayor parte).
 
 ---
 
@@ -19,10 +19,10 @@ Respuesta corta: **sí, sí, no.** Un dominio tokenizado sigue siendo un dominio
 
 Un dominio tokenizado tiene **dos capas**:
 
-1. **La capa de [DNS](/es/glossary/dns/) / registro**: la misma en la que tu `.com` siempre ha vivido. [ICANN](/es/glossary/icann/), el [registrador](/es/glossary/registrar/), los servidores raíz, los resolutores recursivos.
+1. **La capa de [DNS](/es/glossary/dns/) / [registro](/es/glossary/registry/)**: la misma en la que tu `.com` siempre ha vivido. [ICANN](/es/glossary/icann/), el [registrador](/es/glossary/registrar/), los servidores raíz, los resolutores recursivos.
 2. **La capa [on-chain](/es/glossary/on-chain/)**: un [NFT](/es/glossary/nft/) en tu [billetera](/es/glossary/wallet/) que representa la *propiedad*.
 
-La resolución de DNS (convertir `example.com` en una dirección IP) ocurre completamente en la capa 1. La capa on-chain trata sobre **quién controla el dominio**, no sobre cómo se resuelve. Los navegadores, servidores de correo electrónico, CDN y autoridades de certificación nunca necesitan saber que existe una blockchain.
+La resolución de DNS (convertir `example.com` en una dirección IP) ocurre completamente en la capa 1. La capa on-chain trata sobre **quién controla el dominio**, no sobre cómo se resuelve. Los navegadores, servidores de correo electrónico, CDN y autoridades de certificación nunca necesitan saber que existe una [blockchain](/es/glossary/blockchain/).
 
 Por eso "el DNS sigue funcionando". No es magia. Es el mismo DNS.
 
@@ -32,7 +32,7 @@ Por eso "el DNS sigue funcionando". No es magia. Es el mismo DNS.
 
 ### Servidores de nombres
 
-Sigues configurando los servidores de nombres para tu dominio. Usa Cloudflare, Route53, Namecheap, Google Cloud DNS, dnsimple: cualquiera que hayas usado antes está bien. Muchas personas dejan a su proveedor de DNS exactamente donde estaba al tokenizar y nunca lo vuelven a tocar.
+Sigues configurando los servidores de nombres para tu dominio. Usa Cloudflare, Route53, Namecheap, Google Cloud DNS, dnsimple: cualquiera que hayas usado antes está bien. Muchas personas dejan a su proveedor de DNS exactamente donde estaba al [tokenizar](/es/glossary/tokenize/) y nunca lo vuelven a tocar.
 
 ### Registros A, AAAA, CNAME, ALIAS
 
@@ -75,7 +75,7 @@ La mayoría de los propietarios gestionan los registros DNS dentro del panel de 
 
 ### Transferencia del dominio
 
-Antes: flujo de [transferencia entre registradores](/es/glossary/cross-registrar-transfer/), con [códigos de autorización](/en/glossary/auth-code/) y periodos de espera de 60 días.
+Antes: flujo de [transferencia entre registradores](/es/glossary/cross-registrar-transfer/), con [códigos de autorización](/es/glossary/auth-code/) y periodos de espera de 60 días.
 Después: [**transferir el NFT**](/es/glossary/atomic-transfer/). Una sola transacción on-chain transfiere la propiedad. El protocolo mantiene sincronizado el registro en el lado del registrador. Esto es radicalmente más rápido y es la razón por la que los mercados de dominios tokenizados no necesitan el tradicional [depósito de garantía (escrow)](/es/glossary/escrow/) (consulta [Del listado a la liquidación](/es/blog/how-tokenized-marketplaces-replace-escrow/)).
 
 Todavía puedes hacer una transferencia de registrador tradicional si lo deseas; la capa on-chain no lo impide.
@@ -84,7 +84,7 @@ Todavía puedes hacer una transferencia de registrador tradicional si lo deseas;
 
 ## DNSSEC en un dominio tokenizado
 
-[DNSSEC](/en/glossary/dnssec/) funciona. Si lo tenías habilitado antes, seguirá habilitado. Si no, puedes habilitarlo después de tokenizar. La cadena de confianza pasa a través del registro como de costumbre: la capa on-chain no interfiere en ninguna parte de esa ruta. (Contexto: el [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) define el protocolo; [la explicación de la ceremonia KSK de la ICANN](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) describe el proceso de la raíz de confianza).
+[DNSSEC](/es/glossary/dnssec/) funciona. Si lo tenías habilitado antes, seguirá habilitado. Si no, puedes habilitarlo después de tokenizar. La cadena de confianza pasa a través del registro como de costumbre: la capa on-chain no interfiere en ninguna parte de esa ruta. (Contexto: el [RFC 4033](https://datatracker.ietf.org/doc/html/rfc4033) define el protocolo; [la explicación de la ceremonia KSK de la ICANN](https://www.icann.org/dns-resolvers-checking-current-trust-anchors) describe el proceso de la raíz de confianza).
 
 Algunas notas prácticas:
 

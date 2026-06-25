@@ -23,7 +23,7 @@ keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'd
 
 ## أكتوبر 2010: الإطلاق اللي انهار تحت ثقل نجاحه
 
-إنستجرام جاء من تحوّل جذري. Kevin Systrom وMike Krieger كانوا يبنون تطبيق تسجيل الأماكن اسمه Burbn؛ لما جرّدوه وخلّوه للصور والفلاتر والمشاركة فقط، ظهر التطبيق بصورته الحديثة. وفقًا لويكيبيديا، [أطلق إنستجرام لنظام iOS في أكتوبر 2010 على يد Kevin Systrom والمهندس البرمجي البرازيلي Mike Krieger](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger). وتُحدد وثيقة WIPO لاحقًا التاريخ الدقيق: [أطلق إنستجرام في 6 أكتوبر 2010](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010).
+إنستجرام جاء من تحوّل جذري. Kevin Systrom وMike Krieger كانوا يبنون تطبيق تسجيل الأماكن اسمه Burbn؛ لما جرّدوه وخلّوه للصور والفلاتر والمشاركة فقط، ظهر التطبيق بصورته الحديثة. وفقًا لويكيبيديا، [أطلق إنستجرام لنظام iOS في أكتوبر 2010 على يد Kevin Systrom والمهندس البرمجي البرازيلي Mike Krieger](https://en.wikipedia.org/wiki/Instagram#:~:text=Instagram%20was%20launched%20for%20iOS%20in%20October%202010%20by%20Kevin%20Systrom%20and%20the%20Brazilian%20software%20engineer%20Mike%20Krieger). وتُحدد وثيقة [WIPO](/ar/glossary/wipo/) لاحقًا التاريخ الدقيق: [أطلق إنستجرام في 6 أكتوبر 2010](https://www.wipo.int/amc/en/domains/decisions/text/2014/d2014-1550.html#:~:text=Instagram%20was%20launched%20on%20October%206%2C%202010).
 
 الاستقبال كان فوريًا وساحقًا. يُسجّل جدول أحداث ويكيبيديا أن [أكثر من 25,000 مستخدم سجّلوا في يوم الإطلاق، وأكثر من 100,000 في أيام قليلة بعده](https://en.wikipedia.org/wiki/Timeline_of_Instagram#:~:text=Over%2025%2C000%20users%20registered%20on%20launch%20day). وتُشير Entrepreneur أن Systrom وKrieger أطلقا التطبيق بـ[80 مستخدمًا أوليًا](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=launch%20the%20Instagram%20photo-sharing%20iPhone%20app%20with%2080%20initial%20users) في اليوم السابق — وفي غضون ساعات [انهار الموقع أكثر من مرة](https://www.entrepreneur.com/science-technology/how-instagram-went-from-idea-to-1-billion-in-less-than-two/223310#:~:text=The%20site%20crashed%20multiple%20times) من كثرة الزيارات. ولم يتوقف النمو: وصل إنستجرام إلى [مليون مستخدم مسجّل في شهرين، و10 ملايين في سنة](https://en.wikipedia.org/wiki/Instagram#:~:text=reaching%201%20million%20registered%20users%20in%20two%20months%2C%2010%20million%20in%20a%20year)، وجاء [تحديث سبتمبر 2011 بفلاتر جديدة ومباشرة](https://en.wikipedia.org/wiki/Instagram#:~:text=In%20September%202011%2C%20a%20new%20version%20of%20the%20app%20included%20new%20and%20live%20filters) رسّخت الهوية البصرية للتطبيق.
 
@@ -37,7 +37,7 @@ keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'd
 
 بالنسبة لشركة ناشئة في 2010، كان الإغراء واضحًا:
 
-- **كان دقيقًا تمامًا.** "instagr" + ".am" يُقرأ كاسم العلامة بالكامل، من غير أي شرح إضافي — الجوهرة النادرة لأي إطلاق بدون تمويل.
+- **كان دقيقًا تمامًا.** "instagr" + "[.am](/ar/tld/am/)" يُقرأ كاسم العلامة بالكامل، من غير أي شرح إضافي — الجوهرة النادرة لأي إطلاق بدون تمويل.
 - **كان قصيرًا وقابلًا للمشاركة.** تطبيق الصور يعيش أو يموت بحسب مدى سهولة تداول الرابط. instagr.am كان مناسبًا للطباعة والرسائل والتغريدات.
 - **كان متاحًا على الفور.** Instagram.com كان مملوكًا لشخص آخر، وتطبيق جديد لم يكن عنده لا المال ولا النفوذ ليستردّه في اليوم الأول.
 
@@ -127,13 +127,13 @@ keywords: ['instagr.am', 'instagram.com', 'اسم نطاق إنستجرام', 'd
 
 ![رسم ملوّن يصور نطاقًا مميزًا ينتقل عبر نقل موثّق، مع رمز Namefi الأخضر واستمرارية DNS](../../assets/from-instagr-am-to-instagram-com-03-namefi-angle.jpg)
 
-هذه القضية في جوهرها مشكلة نقل وملكية مُتنكّرة في زي تحديات العلامة التجارية.
+هذه القضية في جوهرها مشكلة نقل وملكية مُتنكّرة في زي تحديات [العلامة التجارية](/ar/glossary/trademark/).
 
 لم يشك أحد في أن شركة اسمها Instagram ينبغي أن تمتلك Instagram.com. الجزء الصعب كان كل شيء حول الأصل: انتزاع الـ `.com` الدقيق من طرف ثالث كان يُوقفه للمتابعة، والاتفاق على سعر، ونقل السيطرة بشكل نظيف عبر سوق، ثم — بعد سنوات — الدفاع عمّن كان مخوّلًا فعلًا ببيعه حين [طعن أقارب البائعة في الصفقة](http://domainincite.com/19813-instagram-paid-chinese-cyberquatter-100000-for-instagram-com-facebook-lawsuit-reveals#:~:text=Murong%27s%20mother%20and%20sisters%20are%20suing%20her%20and%20Instagram%20in%20China). صفقة بـ 100,000 دولار تحوّلت إلى ذيل طويل من أسئلة المصدر والملكية.
 
 [Namefi](https://namefi.io) مبني على فكرة أن النطاقات ينبغي أن تتصرف كأصول أصيلة في الإنترنت. الملكية عبر التوكنيزيشن تجعل التحقق من التحكم في النطاق ونقله ودمجه في سير العمل الحديث أسهل مع الحفاظ على التوافق مع DNS — فتحوّل الأجزاء الأكثر تعقيدًا في صفقة كهذه (إثبات من يمتلك الاسم حقًا، والاتفاق على القيمة، ونقله بأمان دون سلسلة ورقية ممتدة لسنوات) إلى شيء أقرب إلى معاملة نظيفة وقابلة للتدقيق.
 
-Instagram.com تبدو حتمية الآن لأن إنستجرام أصبح عملاقًا. لكن الدرس يصل قبل ذلك بكثير: حيلة النطاق الذكية قادرة على إطلاقك، غير أنه حين يُراد للاسم أن يحمل العمل كاملًا، النطاق ليس زينة وليس شيئًا تكتفي بـ*استئجاره* من سجلات أجنبية. هو الجزء من العلامة التجارية الذي يستحق أن تشتريه وتؤمّنه وتُثبت امتلاكك له.
+Instagram.com تبدو حتمية الآن لأن إنستجرام أصبح عملاقًا. لكن الدرس يصل قبل ذلك بكثير: [حيلة النطاق](/ar/glossary/domain-hack/) الذكية قادرة على إطلاقك، غير أنه حين يُراد للاسم أن يحمل العمل كاملًا، النطاق ليس زينة وليس شيئًا تكتفي بـ*استئجاره* من سجلات أجنبية. هو الجزء من العلامة التجارية الذي يستحق أن تشتريه وتؤمّنه وتُثبت امتلاكك له.
 
 ## المصادر وقراءات إضافية
 

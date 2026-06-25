@@ -53,7 +53,7 @@ Die Geschichte reichte zu einem anderen Startup zurück. Universal Music Group h
 
 Die exakt passende Domain, die das Fahrdienst-Unternehmen nun benötigte, lag also ungenutzt im Portfolio eines großen Plattenlabels – ein Überbleibsel eines gescheiterten Web-2.0-Startups, das auf einen Käufer mit dem richtigen Angebot wartete.
 
-Das Problem des widerstrebenden Eigentümers, das die meisten Premium-Domain-Deals langsam macht, war in diesem Fall weniger eine Frage der Sturheit als vielmehr eine des Käufer-Geldbeutels: Uber war brandneu und knapp bei Kasse, sodass es die Domain nicht mit Geld, sondern mit einem Stück von sich selbst kaufen würde.
+Das Problem des widerstrebenden Eigentümers, das die meisten [Premium-Domain](/de/glossary/premium-domain/)-Deals langsam macht, war in diesem Fall weniger eine Frage der Sturheit als vielmehr eine des Käufer-Geldbeutels: Uber war brandneu und knapp bei Kasse, sodass es die Domain nicht mit Geld, sondern mit einem Stück von sich selbst kaufen würde.
 
 ## Der Tausch: 2 % des Unternehmens für ein Wort
 
@@ -75,7 +75,7 @@ Universal behielt das Eigenkapital nicht. Irgendwann [entschied Universal Music,
 
 Domain-Beobachter, die Jahre vor Ubers Bewertungshöhepunkt schrieben, sahen den Irrtum bereits kommen. Späteren Schätzungen zufolge wäre derselbe Anteil – wenn er gehalten worden wäre – [zum damaligen Aktienkurs rund 3,46 Milliarden USD wert gewesen](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=that%20equity%20would%20be%20worth%20roughly%20%243.46B).
 
-Das ist das unrühmliche Spiegelbild jeder spektakulären Domain-Geschichte. Der Käufer hatte einen strategischen Bedarf und kaum Bargeld, also zahlte er mit dem Einzigen, wovon er reichlich hatte: dem Glauben an sich selbst. Der Verkäufer hatte den übrig gebliebenen Vermögenswert eines gescheiterten Startups und wählte Sicherheit über Überzeugung. Uber bekam die Domain *und* das Eigenkapital zurück. Universal bekam einen Domain-Verkauf, der auf lange Sicht Milliarden kostete.
+Das ist das unrühmliche Spiegelbild jeder spektakulären Domain-Geschichte. Der Käufer hatte einen strategischen Bedarf und kaum Bargeld, also zahlte er mit dem Einzigen, wovon er reichlich hatte: dem Glauben an sich selbst. Der Verkäufer hatte den übrig gebliebenen Vermögenswert eines gescheiterten Startups und wählte [Sicherheit](/de/glossary/collateral/) über Überzeugung. Uber bekam die Domain *und* das Eigenkapital zurück. Universal bekam einen Domain-Verkauf, der auf lange Sicht Milliarden kostete.
 
 ## Das Geld sah damals anders aus
 
@@ -96,7 +96,7 @@ Die Lektion lautet nicht: „Universal war töricht." Es ist vielmehr so, dass e
 
 Der Unterschied zwischen UberCab.com und Uber.com ist ein einziges Wort. Strategisch ist es der Unterschied zwischen einem Produkt und einer Kategorie.
 
-**UberCab.com** beschreibt etwas, das man bereits kennt: ein nobles Taxi. **Uber.com** benennt etwas ohne Deckel – eine Marke, die in gebündelte Fahrten, Essenslieferung, Güterverkehr, Zweiräder und schließlich ein Verb expandieren konnte, das Menschen verwenden, ohne überhaupt an Autos zu denken. Ein Wort bindet an die Taxibranche und ihre Regulierer. Das andere erlaubt, selbst die Kategorie zu werden.
+**UberCab.com** beschreibt etwas, das man bereits kennt: ein nobles Taxi. **Uber.com** benennt etwas ohne Deckel – eine [Marke](/de/glossary/trademark/), die in gebündelte Fahrten, Essenslieferung, Güterverkehr, Zweiräder und schließlich ein Verb expandieren konnte, das Menschen verwenden, ohne überhaupt an Autos zu denken. Ein Wort bindet an die Taxibranche und ihre Regulierer. Das andere erlaubt, selbst die Kategorie zu werden.
 
 | Vorher | Nachher |
 | --- | --- |
@@ -138,7 +138,7 @@ Die Domain hat Ubers Marke nicht aufgebaut. Aber sobald Uber.com die Adresse war
 
 ## Was Gründer aus Fall 4 lernen sollten
 
-Die einfache Schlussfolgerung – „Streiche das beschreibende Wort und kauf deine exakt passende .com" – ist zu plump. Die nützlicheren Lektionen handeln von Reihenfolge, Hebelwirkung und der Art der Bezahlung:
+Die einfache Schlussfolgerung – „Streiche das beschreibende Wort und kauf deine exakt passende [.com](/de/tld/com/)" – ist zu plump. Die nützlicheren Lektionen handeln von Reihenfolge, Hebelwirkung und der Art der Bezahlung:
 
 1. **Eine beschreibende Domain ist ein guter Anfang.** UberCab.com leistete echte Arbeit: Es machte eine fremdartige Idee – ein Auto per Smartphone bestellen – sofort verständlich. Ein Zusatz wie „Cab", „App" oder „HQ" ist eine vernünftige Einstiegshilfe, kein Versagen.
 2. **Achte auf den Moment, in dem der Zusatz zur Haftung wird, nicht nur zur Decke.** Für die meisten Unternehmen ist das Signal, dass der Ehrgeiz über den Namen hinauswächst. Für Uber war es schärfer: Das Wort „Cab" lud buchstäblich eine [Unterlassungsaufforderung](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=cease%20and%20desist) ein. Wenn dein Name die Zielmarkierung der Regulierer für sie setzt, ist das Upgrade dringend.

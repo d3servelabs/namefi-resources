@@ -16,7 +16,7 @@ También existe una dimensión defensiva. Si solo registras [`.com`](/es/tld/com
 
 ## Cómo elegir TLDs para tu firma de abogados
 
-Tres criterios son los más importantes. Primero, **señales de confianza**: extensiones como `.com` y los TLDs de temática legal transmiten un peso profesional inmediato. Segundo, **TLDs "verificados" restringidos**: entre las extensiones legales, solo `.law` realmente condiciona el registro a la comprobación de credenciales legales, lo cual es una ventaja — señala a los clientes que el registrante fue verificado. A pesar de estar orientado a abogados, [`.esq`](/en/tld/esq) está disponible abiertamente sin verificación de credenciales a nivel de registro, al igual que [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney) y [`.lawyer`](/en/tld/lawyer). Tercero, **cobertura defensiva**: registra las variantes obvias y los nombres de socios para que nadie más pueda hacerlo. No necesitas cada extensión en internet; necesitas las pocas que tus clientes y competidores realmente buscarían.
+Tres criterios son los más importantes. Primero, **señales de confianza**: extensiones como `.com` y los TLDs de temática legal transmiten un peso profesional inmediato. Segundo, **TLDs "verificados" restringidos**: entre las extensiones legales, solo `.law` realmente condiciona el [registro](/es/glossary/registry/) a la comprobación de credenciales legales, lo cual es una ventaja — señala a los clientes que el [registrante](/es/glossary/registrant/) fue verificado. A pesar de estar orientado a abogados, [`.esq`](/en/tld/esq) está disponible abiertamente sin verificación de credenciales a nivel de registro, al igual que [`.legal`](/en/tld/legal), [`.attorney`](/en/tld/attorney) y [`.lawyer`](/en/tld/lawyer). Tercero, **cobertura defensiva**: registra las variantes obvias y los nombres de socios para que nadie más pueda hacerlo. No necesitas cada extensión en internet; necesitas las pocas que tus clientes y competidores realmente buscarían.
 
 ## Los 10 principales TLDs que debes asegurar para tu firma de abogados
 
@@ -68,9 +68,9 @@ No comprarás — ni deberías — cada extensión que existe. Concéntrate en l
 
 ## Registra los dominios de tu firma de abogados en Namefi
 
-[Namefi](https://namefi.io) es un registrador acreditado por ICANN diseñado exactamente para este tipo de estrategia de múltiples dominios. Obtienes precios transparentes sin ventas adicionales sorpresivas, DNS rápido y confiable para que tus sitios resuelvan rápidamente, y un panel único para gestionar toda tu cartera y sus renovaciones.
+[Namefi](https://namefi.io) es un [registrador acreditado por ICANN](/es/glossary/accredited-registrar/) diseñado exactamente para este tipo de estrategia de múltiples dominios. Obtienes precios transparentes sin ventas adicionales sorpresivas, DNS rápido y confiable para que tus sitios resuelvan rápidamente, y un panel único para gestionar toda tu cartera y sus renovaciones.
 
-Namefi también admite la tokenización de dominios Web3, lo que te permite mantener dominios elegibles como NFTs — útil si tu firma asesora sobre activos digitales o desea una propiedad en cadena verificable y transferible de sus nombres. Ya sea que estés asegurando un solo `.com` o un conjunto defensivo completo, puedes registrar y gestionar los dominios de tu firma de abogados en un solo lugar.
+Namefi también admite la tokenización de dominios [Web3](/es/glossary/web3/), lo que te permite mantener dominios elegibles como NFTs — útil si tu firma asesora sobre activos digitales o desea una propiedad [en cadena](/es/glossary/on-chain/) verificable y transferible de sus nombres. Ya sea que estés asegurando un solo `.com` o un conjunto defensivo completo, puedes registrar y gestionar los dominios de tu firma de abogados en un solo lugar.
 
 ## Preguntas frecuentes
 

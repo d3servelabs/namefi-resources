@@ -33,7 +33,7 @@ Un nom de domaine accrocheur, unique et facile à mémoriser, souvent utilisé p
 **Exemple**: `Spotify.com`, `Google.com`, `Airbnb.com` - des mots inventés qui sont devenus des marques puissantes.
 
 ### **Portefeuille de Domaines**
-Une collection de noms de domaine possédés par un individu ou une entreprise. Un portefeuille peut inclure des domaines en cours de développement, stationnés ou conservés pour une vente future.
+Une collection de noms de domaine possédés par un individu ou une entreprise. Un [portefeuille](/fr/glossary/wallet/) peut inclure des domaines en cours de développement, stationnés ou conservés pour une vente future.
 
 **Exemple**: Un investisseur de domaine pourrait posséder plus de 100 domaines dans différentes niches comme la technologie, la finance et la santé.
 
@@ -67,7 +67,7 @@ Une plateforme ou un service où les noms de domaine sont vendus par le biais d'
 ### **Service d'Entiercement (Escrow Service)**
 Un service tiers de confiance utilisé pour faciliter l'échange sécurisé d'argent et de propriété de domaine lors d'une vente de domaine. L'acheteur paie le service d'entiercement, et une fois le domaine transféré, les fonds sont libérés au vendeur.
 
-**Services Populaires**: Escrow.com (recommandé par l'ICANN), PayPal, Dan.com
+**Services Populaires**: Escrow.com (recommandé par l'[ICANN](/fr/glossary/icann/)), PayPal, Dan.com
 
 ---
 
@@ -82,22 +82,22 @@ Un propriétaire ou investisseur de domaine qui gère la vente de ses propres no
 ### **Revendeur de Domaines**
 Un individu ou une entreprise qui achète des noms de domaine en vrac et les revend à des utilisateurs finaux ou à d'autres investisseurs, souvent pour un profit. Les revendeurs peuvent travailler via des plateformes ou directement avec les acheteurs.
 
-**Modèle Commercial**: Acheter des domaines à des prix de gros, ajouter une marge pour les ventes au détail
+**Modèle Commercial**: Acheter des domaines à des [prix de gros](/fr/glossary/wholesale-pricing/), ajouter une marge pour les ventes au détail
 
 ---
 
 ## **⚙️ Termes Techniques**
 
 ### **TLD (Domaine de Premier Niveau)**
-La partie d'un nom de domaine qui vient après le dernier point (par exemple, .com, .org, .net, .ai, etc.). Le choix du TLD peut affecter la valeur et la perception d'un nom de domaine.
+La partie d'un nom de domaine qui vient après le dernier point (par exemple, [.com](/fr/tld/com/), [.org](/fr/tld/org/), [.net](/fr/tld/net/), [.ai](/fr/tld/ai/), etc.). Le choix du TLD peut affecter la valeur et la perception d'un nom de domaine.
 
 **Catégories**:
-- **TLD Génériques**: .com, .org, .net, .info
-- **TLD de Codes de Pays**: .us, .uk, .de, .cn
-- **Nouveaux TLDs**: .ai, .io, .tech, .shop
+- **TLD Génériques**: .com, .org, .net, [.info](/fr/tld/info/)
+- **TLD de Codes de Pays**: [.us](/fr/tld/us/), .uk, .de, .cn
+- **Nouveaux TLDs**: .ai, [.io](/fr/tld/io/), [.tech](/fr/tld/tech/), [.shop](/fr/tld/shop/)
 
 ### **Sous-domaine**
-Un domaine qui fait partie d'un domaine plus grand. Par exemple, "blog.example.com" est un sous-domaine de "example.com". Les sous-domaines peuvent être utilisés pour organiser différentes sections d'un site web.
+Un domaine qui fait partie d'un domaine plus grand. Par exemple, "blog.example.com" est un [sous-domaine](/fr/glossary/subdomain/) de "example.com". Les sous-domaines peuvent être utilisés pour organiser différentes sections d'un site web.
 
 **Utilisations Courantes**: blog.domain.com, shop.domain.com, api.domain.com
 
@@ -107,13 +107,13 @@ Le système qui traduit les noms de domaine lisibles par l'homme en adresses IP 
 **Fonction**: Convertit `namefi.io` en `192.168.1.1` pour la communication du navigateur
 
 ### **WHOIS**
-Un protocole utilisé pour interroger des bases de données qui stockent des informations sur les noms de domaine enregistrés. WHOIS fournit des détails tels que le propriétaire du domaine, les dates d'enregistrement et les informations de contact.
+Un protocole utilisé pour interroger des bases de données qui stockent des informations sur les noms de domaine enregistrés. [WHOIS](/fr/glossary/whois/) fournit des détails tels que le propriétaire du domaine, les dates d'enregistrement et les informations de contact.
 
 **Informations Fournies**:
 - Détails du propriétaire du domaine
 - Dates d'enregistrement et d'expiration
 - Serveurs de noms
-- Informations du registraire
+- Informations du [registraire](/fr/glossary/registrar/)
 
 ---
 
@@ -168,7 +168,7 @@ La pratique de l'enregistrement et de la détention d'un domaine sans le dévelo
 ## **📈 Perspectives du Marché**
 
 ### **Catégories à Forte Valeur**
-- **Technologie**: Termes liés à l'IA, à la blockchain, à la fintech
+- **Technologie**: Termes liés à l'IA, à la [blockchain](/fr/glossary/blockchain/), à la fintech
 - **Santé**: Médical, bien-être, pharmaceutique
 - **Finance**: Bancaire, investissement, cryptomonnaie
 - **E-commerce**: Shopping, vente au détail, marché
@@ -193,7 +193,7 @@ Prêt à commencer votre parcours d'investissement de domaine ou à sécuriser v
 - **Support Expert**: Conseils pour les investisseurs de domaine
 - **Transactions Sécurisées**: Plateforme d'achat et de vente sécurisée
 
-👉 **Visitez [namefi.io](https://namefi.io) et commencez à construire votre portefeuille de domaines dès aujourd'hui.**
+👉 **Visitez [namefi.io](https://namefi.io) et commencez à construire votre [portefeuille de domaines](/fr/glossary/domain-portfolio/) dès aujourd'hui.**
 
 Maîtrisez ces termes, comprenez le marché et prenez des décisions éclairées dans votre parcours d'investissement de domaine. La connaissance est votre atout le plus précieux dans l'industrie des domaines !
 

@@ -53,7 +53,7 @@ La historia se remontaba a una startup diferente. Universal Music Group había i
 
 Así que el dominio exacto que la empresa de transporte ahora necesitaba estaba parado, sin uso, dentro del portafolio de un importante sello discográfico —un remanente de una startup muerta de la Web 2.0, esperando a un comprador con la oferta correcta.
 
-El problema del propietario reluctante que hace que la mayoría de los acuerdos de dominios premium sean lentos tenía que ver, en este caso, menos con la terquedad y más con la billetera del comprador: Uber era completamente nueva y tenía poco dinero en efectivo, así que compraría el dominio no con dinero sino con una porción de sí misma.
+El problema del propietario reluctante que hace que la mayoría de los acuerdos de dominios premium sean lentos tenía que ver, en este caso, menos con la terquedad y más con la [billetera](/es/glossary/wallet/) del comprador: Uber era completamente nueva y tenía poco dinero en efectivo, así que compraría el dominio no con dinero sino con una porción de sí misma.
 
 ## El intercambio: el 2% de la empresa por una sola palabra
 
@@ -138,11 +138,11 @@ El dominio no construyó la marca de Uber. Pero una vez que Uber.com fue la dire
 
 ## Lo que los fundadores deberían aprender del Caso 4
 
-La conclusión fácil —"elimina la palabra descriptiva y compra tu .com de coincidencia exacta"— es demasiado contundente. Las lecciones más útiles son sobre secuencia, apalancamiento y cómo pagar:
+La conclusión fácil —"elimina la palabra descriptiva y compra tu [.com](/es/tld/com/) de coincidencia exacta"— es demasiado contundente. Las lecciones más útiles son sobre secuencia, apalancamiento y cómo pagar:
 
 1. **Un dominio descriptivo está bien para empezar.** UberCab.com hizo un trabajo real: convirtió una idea ajena —invocar un auto con tu teléfono— en algo inmediatamente legible. Un modificador como "Cab," "App," o "HQ" es una rampa de acceso razonable, no un fracaso.
 2. **Observa el momento en que el modificador se convierte en una responsabilidad, no solo en un techo.** Para la mayoría de las empresas, la señal es que la ambición supera el nombre. Para Uber fue más aguda: la palabra "Cab" literalmente invitó una [orden de cese y desistimiento](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=cease%20and%20desist). Cuando tu nombre está haciendo el trabajo de apuntamiento del regulador por ellos, la actualización es urgente.
-3. **Asegura el dominio de coincidencia exacta antes de que el cambio de nombre sea real.** Uber no podía ser "Uber" mientras vivía en UberCab.com. El activo lento y de propiedad externa —el dominio— tenía que ser asegurado para que el cambio de nombre corporativo significara algo.
+3. **Asegura el [dominio de coincidencia exacta](/es/glossary/exact-match-domain/) antes de que el cambio de nombre sea real.** Uber no podía ser "Uber" mientras vivía en UberCab.com. El activo lento y de propiedad externa —el dominio— tenía que ser asegurado para que el cambio de nombre corporativo significara algo.
 4. **Cuando no tienes dinero en efectivo, el dominio aún puede moverse —si puedes estructurar el intercambio.** Uber pagó en acciones porque tenía que hacerlo. Esa creatividad le consiguió el nombre. Pero el acuerdo también muestra el riesgo del vendedor: un dominio valorado en acciones de startup es una apuesta por la startup, y Universal cobró [por solo $863 000](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=Universal%20Music%20decided%20to%20sell%20its%202%25%20stake%20back%20to%20Uber%E2%80%94for%20just%20%24863%2C000) antes de que llegara la ventaja.
 
 La actualización de dominio no hizo que Uber ganara. El producto, el capital, la agresividad, el momento y la ejecución importaron mucho más. Pero Uber.com hizo que la reinvención de la empresa —de "un mejor taxi" a una categoría— fuera *nombrable*, y tuvo que ser asegurado en el momento en que el nombre antiguo se volvió tóxico.

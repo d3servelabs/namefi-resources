@@ -47,11 +47,11 @@ Le changement de nom de l'entreprise était un mouvement forcé. Mais il pointai
 
 ## Le domaine qui appartenait à un label musical
 
-Une fois que le nom est devenu « Uber », l'adresse évidente était Uber.com. Mais ce domaine était pris — et pas par un concurrent ou un revendeur de domaines.
+Une fois que le nom est devenu « Uber », l'adresse évidente était Uber.com. Mais ce domaine était pris — et pas par un concurrent ou un [revendeur](/fr/glossary/reseller/) de domaines.
 
 L'histoire remontait à une startup différente. Universal Music Group avait investi dans une entreprise antérieure également appelée Uber. Cette société [avait levé des fonds auprès d'investisseurs comme Discovery Communications et Sterling Stamos Capital Management](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=raised%20money%20from%20backers%20like%20Discovery%20Communications), mais elle a rapidement périclité. Lorsqu'elle a coulé, [UMG s'est retrouvé avec un seul actif de valeur : le nom de domaine](https://www.snagged.com/post/uber-com-the-3-46b-domain-that-universal-music-let-go#:~:text=UMG%20was%20left%20with%20one%20asset%20of%20value).
 
-Ainsi, le domaine exact-match dont la société de covoiturage avait maintenant besoin était posé, inutilisé, dans le portefeuille d'un grand label musical — un vestige d'une startup Web 2.0 disparue, attendant un acheteur avec la bonne offre.
+Ainsi, le domaine exact-match dont la société de covoiturage avait maintenant besoin était posé, inutilisé, dans le [portefeuille](/fr/glossary/wallet/) d'un grand label musical — un vestige d'une startup Web 2.0 disparue, attendant un acheteur avec la bonne offre.
 
 Le problème du propriétaire réticent, qui ralentit la plupart des transactions de domaines premium, tenait dans ce cas moins à l'obstination qu'au portefeuille de l'acheteur : Uber était toute récente et manquait de liquidités, elle allait donc acheter le domaine non pas avec de l'argent, mais avec une part d'elle-même.
 
@@ -138,7 +138,7 @@ Le domaine n'a pas construit la marque Uber. Mais une fois qu'Uber.com était l'
 
 ## Ce que les fondateurs devraient retenir du cas 4
 
-La conclusion facile — « supprimez le mot descriptif et achetez votre .com exact-match » — est trop simpliste. Les leçons les plus utiles portent sur la séquence, l'effet de levier et la manière de payer :
+La conclusion facile — « supprimez le mot descriptif et achetez votre [.com](/fr/tld/com/) exact-match » — est trop simpliste. Les leçons les plus utiles portent sur la séquence, l'effet de levier et la manière de payer :
 
 1. **Un domaine descriptif convient pour démarrer.** UberCab.com a fait un vrai travail : il a rendu une idée étrange — appeler une voiture avec son téléphone — immédiatement intelligible. Un qualificatif comme « Cab », « App », ou « HQ » est une rampe d'accès raisonnable, pas un échec.
 2. **Guettez le moment où le qualificatif devient un passif, pas seulement un plafond.** Pour la plupart des entreprises, le signal est l'ambition qui dépasse le nom. Pour Uber, c'était plus net : le mot « Cab » a littéralement attiré une [mise en demeure](https://techcrunch.com/2010/10/24/ubercab-ordered-to-cease-and-desist/#:~:text=cease%20and%20desist). Quand votre nom fait le ciblage des régulateurs à votre place, l'upgrade est urgent.

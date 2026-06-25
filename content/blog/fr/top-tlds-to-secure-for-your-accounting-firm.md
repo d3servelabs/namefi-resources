@@ -26,7 +26,7 @@ L'extension [.com](/fr/tld/com) reste la référence par défaut pour tout site 
 
 ### 2. .cpa — le signal de confiance de référence (accès restreint)
 
-L'extension [.cpa](https://www.iana.org/domains/root/db/cpa.html) est le domaine le plus crédible qu'un cabinet comptable puisse détenir — et aussi le plus restrictif. Elle est administrée en association avec l'American Institute of CPAs (AICPA), dont la filiale technologique CPA.com gère le registre. L'éligibilité est limitée aux cabinets CPA agréés et aux CPA individuels : selon le [programme officiel .cpa de CPA.com](https://register.domains.cpa/faqs/), vous devez détenir une licence de cabinet CPA délivrée par un conseil d'État de la comptabilité ou une licence individuelle de CPA, la disponibilité étant actuellement limitée aux cabinets basés aux États-Unis, au Canada et en Irlande. Étant donné que la licence est validée à l'achat et à chaque renouvellement, une adresse [.cpa](/en/tld/cpa) prouve aux clients que votre cabinet a été vérifié — une garantie qu'aucun TLD ouvert ne peut offrir.
+L'extension [.cpa](https://www.iana.org/domains/root/db/cpa.html) est le domaine le plus crédible qu'un cabinet comptable puisse détenir — et aussi le plus restrictif. Elle est administrée en association avec l'American Institute of CPAs (AICPA), dont la filiale technologique CPA.com gère le [registre](/fr/glossary/registry/). L'éligibilité est limitée aux cabinets CPA agréés et aux CPA individuels : selon le [programme officiel .cpa de CPA.com](https://register.domains.cpa/faqs/), vous devez détenir une licence de cabinet CPA délivrée par un conseil d'État de la comptabilité ou une licence individuelle de CPA, la disponibilité étant actuellement limitée aux cabinets basés aux États-Unis, au Canada et en Irlande. Étant donné que la licence est validée à l'achat et à chaque renouvellement, une adresse [.cpa](/en/tld/cpa) prouve aux clients que votre cabinet a été vérifié — une garantie qu'aucun TLD ouvert ne peut offrir.
 
 ### 3. .tax — clair, descriptif et thématique
 
@@ -58,7 +58,7 @@ L'extension [.agency](/fr/tld/agency) convient aux cabinets qui se présentent c
 
 ### 10. .info — informatif et défensif
 
-L'extension [.info](/fr/tld/info), gérée par Identity Digital dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/info), est un TLD ouvert bien adapté aux centres de ressources, portails clients et bases de connaissances — ou simplement comme enregistrement défensif peu coûteux pour compléter votre portefeuille.
+L'extension [.info](/fr/tld/info), gérée par Identity Digital dans le cadre d'un [accord de registre ICANN](https://www.icann.org/en/registry-agreements/details/info), est un TLD ouvert bien adapté aux centres de ressources, portails clients et bases de connaissances — ou simplement comme enregistrement défensif peu coûteux pour compléter votre [portefeuille](/fr/glossary/wallet/).
 
 ## Stratégie d'enregistrement défensif
 
@@ -68,7 +68,7 @@ Vous n'avez pas besoin d'enregistrer des centaines de permutations. Concentrez-v
 
 ## Enregistrez les domaines de votre cabinet comptable sur Namefi
 
-[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'ICANN conçu pour les professionnels qui souhaitent clarté et contrôle sur leur portefeuille de domaines. Vous bénéficiez d'une tarification transparente sans surprises lors des renouvellements, d'un DNS rapide pour que vos sites et e-mails se résolvent de manière fiable, et d'un tableau de bord unique pour gérer toutes les extensions que détient votre cabinet. Namefi prend également en charge la tokenisation de domaines Web3, vous permettant de détenir des domaines éligibles sous forme de NFT pour une propriété portable et vérifiable — une option tournée vers l'avenir à mesure que l'identité numérique évolue. Consolidez vos enregistrements phares, sectoriels et défensifs en un seul endroit et protégez la marque de votre cabinet.
+[Namefi](https://namefi.io) est un bureau d'enregistrement accrédité par l'[ICANN](/fr/glossary/icann/) conçu pour les professionnels qui souhaitent clarté et contrôle sur leur [portefeuille de domaines](/fr/glossary/domain-portfolio/). Vous bénéficiez d'une tarification transparente sans surprises lors des renouvellements, d'un DNS rapide pour que vos sites et e-mails se résolvent de manière fiable, et d'un tableau de bord unique pour gérer toutes les extensions que détient votre cabinet. Namefi prend également en charge la tokenisation de domaines [Web3](/fr/glossary/web3/), vous permettant de détenir des domaines éligibles sous forme de NFT pour une propriété portable et vérifiable — une option tournée vers l'avenir à mesure que l'identité numérique évolue. Consolidez vos enregistrements phares, sectoriels et défensifs en un seul endroit et protégez la marque de votre cabinet.
 
 ## Foire aux questions
 
@@ -78,7 +78,7 @@ L'extension .cpa est restreinte. Elle est administrée en association avec l'Ame
 
 ### Le TLD choisi influence-t-il mon référencement ?
 
-Non — le choix du TLD ne vous confère pas d'avantage ou de pénalité de classement en lui-même. Google a déclaré via [Google Search Central](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains) que les nouveaux gTLD (comme .cpa ou .accountant) sont traités de la même manière que les extensions traditionnelles telles que .com, et qu'un mot-clé dans votre TLD n'apporte aucun avantage inhérent. Choisissez votre extension pour la marque, la confiance et la mémorabilité plutôt que pour le référencement.
+Non — le choix du TLD ne vous confère pas d'avantage ou de pénalité de classement en lui-même. Google a déclaré via [Google Search Central](https://developers.google.com/search/blog/2015/07/googles-handling-of-new-top-level-domains) que les nouveaux [gTLD](/fr/glossary/gtld/) (comme .cpa ou .accountant) sont traités de la même manière que les extensions traditionnelles telles que .com, et qu'un mot-clé dans votre TLD n'apporte aucun avantage inhérent. Choisissez votre extension pour la marque, la confiance et la mémorabilité plutôt que pour le référencement.
 
 ### Combien de domaines un cabinet comptable doit-il enregistrer ?
 
@@ -86,4 +86,4 @@ Il n'y a pas de nombre fixe, mais la plupart des cabinets sont bien servis par u
 
 ### Qu'est-ce qu'un domaine Web3 ou tokenisé ?
 
-Un domaine tokenisé est un domaine traditionnel dont la propriété est représentée sous forme de NFT sur une blockchain, rendant la propriété portable et vérifiable en chaîne. Namefi prend en charge cette option pour les TLD éligibles, ce qui peut être utile pour les cabinets qui explorent des initiatives d'identité numérique et de web décentralisé tout en conservant leur DNS conventionnel opérationnel.
+Un domaine tokenisé est un domaine traditionnel dont la propriété est représentée sous forme de NFT sur une [blockchain](/fr/glossary/blockchain/), rendant la propriété portable et vérifiable en chaîne. Namefi prend en charge cette option pour les TLD éligibles, ce qui peut être utile pour les cabinets qui explorent des initiatives d'identité numérique et de web décentralisé tout en conservant leur DNS conventionnel opérationnel.

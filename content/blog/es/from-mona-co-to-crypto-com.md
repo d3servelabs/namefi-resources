@@ -11,11 +11,11 @@ keywords: ['mona.co', 'crypto.com', 'dominio crypto.com', 'monaco mco', 'matt bl
 
 Durante sus primeros años, una de las marcas más agresivas del mundo cripto vivía en una dirección discretamente ingeniosa: **Mona.co** — la empresa "Monaco," escrita a través de un dominio y un TLD de código de país, al estilo de bit.ly o goo.gl, que convertían un `.ly` o `.gl` en parte de la palabra.
 
-El nombre era un juego de palabras, y uno bueno. La startup, fundada en Hong Kong en 2016, estaba construyendo una tarjeta Visa y una billetera para gastar criptomonedas. "Monaco" evocaba riqueza, lujo, la Riviera — y el `.co` permitía a la marca tener una URL corta y memorable mientras el equipo esperaba ver hasta dónde podía llegar la idea. Mona.co decía el nombre de la empresa. No decía la categoría.
+El nombre era un juego de palabras, y uno bueno. La startup, fundada en Hong Kong en 2016, estaba construyendo una tarjeta Visa y una [billetera](/es/glossary/wallet/) para gastar criptomonedas. "Monaco" evocaba riqueza, lujo, la Riviera — y el `.co` permitía a la marca tener una URL corta y memorable mientras el equipo esperaba ver hasta dónde podía llegar la idea. Mona.co decía el nombre de la empresa. No decía la categoría.
 
 Ese era el vacío. Monaco no intentaba ser una empresa de tarjetas de lujo. Intentaba ser *el* lugar donde la gente corriente tocara la criptomoneda por primera vez. Y la palabra única que nombraba a toda esa categoría —la palabra que cada titular, cada regulador, cada recién llegado ya usaba— no era "Monaco". Era **crypto**.
 
-El dominio de coincidencia exacta para esa ambición era Crypto.com. Y había pertenecido, desde 1993, a un hombre que pasó 25 años negándose a venderlo: el criptógrafo Matt Blaze.
+El [dominio de coincidencia exacta](/es/glossary/exact-match-domain/) para esa ambición era Crypto.com. Y había pertenecido, desde 1993, a un hombre que pasó 25 años negándose a venderlo: el criptógrafo Matt Blaze.
 
 En julio de 2018, eso finalmente cambió. Monaco compró Crypto.com en un acuerdo que nunca hizo público —pero que expertos dijeron a The Verge podría valer hasta **[$10 millones](https://techcrunch.com/2018/07/05/crypto-com-mco/#:~:text=Experts%20told%20The%20Verge%20that%20Crypto.com%20could%20have%20attracted%20as%20much%20as%20%2410%20million)**— y se rebautizó de arriba a abajo como Crypto.com.
 
@@ -23,7 +23,7 @@ En julio de 2018, eso finalmente cambió. Monaco compró Crypto.com en un acuerd
 
 Cuando la empresa [fue fundada inicialmente en Hong Kong por Bobby Bao, Gary Or, Kris Marszalek y Rafael Melo en 2016 como "Monaco"](https://en.wikipedia.org/wiki/Crypto.com#:~:text=initially%20founded%20in%20Hong%20Kong%20by%20Bobby%20Bao%2C%20Gary%20Or%2C%20Kris%20Marszalek%2C%20and%20Rafael%20Melo%20in%202016), la propuesta era concreta: una tarjeta de débito cripto. TechCrunch describió a Monaco en aquel momento como [un proyecto cripto conocido principalmente por desarrollar una tarjeta de débito cripto](https://techcrunch.com/2018/07/05/crypto-com-mco/#:~:text=a%20crypto%20project%20best%2Dknown%20for%20developing%20a%20crypto%20debit%20card). Cargabas cripto, pasabas una Visa, y lo gastabas como efectivo. La empresa incluso realizó una ICO y emitió un token, MCO, para impulsar el sistema de tarifas y recompensas de la tarjeta.
 
-"Monaco" hacía trabajo real para ese primer producto. Era corto, sonaba premium, y la construcción Mona.co le daba a la marca una URL limpia sin pagar dinero de dominio premium. Para una empresa joven que necesitaba parecer suficientemente confiable como para pedirle a desconocidos que cargaran dinero real en una tarjeta, un nombre que susurraba "lujo y discreción" era un activo, no un lastre.
+"Monaco" hacía trabajo real para ese primer producto. Era corto, sonaba premium, y la construcción Mona.co le daba a la marca una URL limpia sin pagar dinero de [dominio premium](/es/glossary/premium-domain/). Para una empresa joven que necesitaba parecer suficientemente confiable como para pedirle a desconocidos que cargaran dinero real en una tarjeta, un nombre que susurraba "lujo y discreción" era un activo, no un lastre.
 
 Pero la ambición seguía ampliándose más allá del nombre. El liderazgo de Monaco no quería ser un emisor de tarjetas nicho para entusiastas de las criptomonedas. Querían ser la rampa de acceso para toda la categoría —la billetera, la tarjeta, el exchange, la marca que un comprador primerizo escribiría sin pensarlo. Y "Monaco" apuntaba exactamente en la dirección equivocada. Nombraba un principado en el Mediterráneo, no lo que la empresa realmente hacía.
 
@@ -41,7 +41,7 @@ El CEO Kris Marszalek lo enmarcó no como comprar una URL sino como heredar una 
 
 ![Ilustración editorial vívida y colorida del nombre "Mona.co" de Monaco disolviéndose en la marca azul marino de Crypto.com con su logo de cabeza de león dorado, una tarjeta estilo Visa brillando en el centro](../../assets/from-mona-co-to-crypto-com-01-rebrand.jpg)
 
-La diferencia entre Mona.co y Crypto.com no es una palabra —es toda una dimensión. Uno nombra la empresa. El otro nombra el mercado.
+La diferencia entre Mona.co y Crypto.com no es una palabra —es toda una dimensión. Uno nombra la empresa. El otro nombra el [mercado](/es/glossary/marketplace/).
 
 **Mona.co** es una URL de marca inteligente: memorable, premium, pero muda en cuanto a categoría. Un recién llegado que lo lee no aprende nada sobre lo que hay dentro. **Crypto.com** es lo contrario —no tiene casi personalidad de marca y en su lugar irradia categoría pura. Escríbelo, y ya sabes lo que encontrarás. Es la dirección a la que acude alguien cuando decide, por primera vez, que quiere "meterse en cripto" y no tiene idea por dónde empezar.
 
@@ -104,13 +104,13 @@ El dominio principal de una empresa aparece en lugares que el equipo de marketin
 - En los resultados de búsqueda y la barra del navegador —donde "crypto.com" es algo que un recién llegado podría escribir *antes* de conocer ninguna marca.
 - En cada recomendación de boca en boca: "solo ve a crypto punto com".
 
-Cada una de esas repeticiones o añade fricción o la elimina. Mona.co requería un pequeño acto de traducción —*Monaco, escrito con el .co*— y no le decía nada a un principiante sobre la categoría. Crypto.com eliminaba la traducción por completo y precargaba la categoría en el nombre. Para una empresa cuya estrategia completa era ser la rampa de acceso predeterminada para personas que no sabían nada del espacio, esa precarga *era* el producto.
+Cada una de esas repeticiones o añade fricción o la elimina. Mona.co requería un pequeño acto de traducción —*Monaco, escrito con el [.co](/es/tld/co/)*— y no le decía nada a un principiante sobre la categoría. Crypto.com eliminaba la traducción por completo y precargaba la categoría en el nombre. Para una empresa cuya estrategia completa era ser la rampa de acceso predeterminada para personas que no sabían nada del espacio, esa precarga *era* el producto.
 
 El dominio no construyó la marca de Crypto.com. Pero una vez que Crypto.com fue la dirección, cada mención futura de la categoría —en titulares, en conversaciones, en la búsqueda angustiada de alguien que acaba de escuchar hablar de Bitcoin en una cena— tenía la posibilidad de aterrizar en la puerta principal de la empresa en lugar de en la de otro.
 
 ## Lo que los fundadores deberían aprender del Caso 20
 
-La conclusión fácil —"compra el .com que define la categoría"— es la lección equivocada, porque casi ningún fundador *puede* hacerlo. Crypto.com existió durante 25 años y fue imposible de comprar durante 24 de ellos. Las lecciones útiles son más precisas:
+La conclusión fácil —"compra el [.com](/es/tld/com/) que define la categoría"— es la lección equivocada, porque casi ningún fundador *puede* hacerlo. Crypto.com existió durante 25 años y fue imposible de comprar durante 24 de ellos. Las lecciones útiles son más precisas:
 
 1. **Un dominio con un truco de marca inteligente es una buena rampa de acceso.** Mona.co hizo un trabajo genuino: corto, premium, memorable, barato en comparación con la coincidencia exacta. Un juego de palabras con `.co` o un dominio con modificador es un punto de partida razonable, no un fracaso.
 2. **Conoce la diferencia entre tu nombre y tu categoría.** La mayoría de las actualizaciones de dominio cambian un nombre descriptivo por el nombre de marca. La actualización más rara y poderosa cambia la marca por el nombre de la *categoría* —pero solo es rentable si tienes la intención de ser el predeterminado, no una boutique.
@@ -125,7 +125,7 @@ La actualización del dominio no hizo ganar a Crypto.com. El producto, el capita
 
 Este caso es, en su esencia, un problema de transferencia envuelto en un enfrentamiento de 25 años.
 
-La decisión estratégica nunca estuvo realmente en duda —por supuesto que una empresa que quería ser la dueña de la categoría cripto debería poseer Crypto.com. La parte difícil era todo lo que rodeaba al activo: encontrar términos que un propietario a largo plazo reticente e ideológicamente motivado finalmente aceptara, negociar en privado sin comparables públicos para un nombre único en su clase, acordar un precio que nunca fue revelado, y mover el control de uno de los dominios más valiosos de la tierra de forma limpia y segura desde el registro personal de un criptógrafo hasta las manos de una empresa. Un cuarto de siglo de "no" tenía que resolverse en una sola transferencia limpia.
+La decisión estratégica nunca estuvo realmente en duda —por supuesto que una empresa que quería ser la dueña de la categoría cripto debería poseer Crypto.com. La parte difícil era todo lo que rodeaba al activo: encontrar términos que un propietario a largo plazo reticente e ideológicamente motivado finalmente aceptara, negociar en privado sin comparables públicos para un nombre único en su clase, acordar un precio que nunca fue revelado, y mover el control de uno de los dominios más valiosos de la tierra de forma limpia y segura desde el [registro](/es/glossary/registry/) personal de un criptógrafo hasta las manos de una empresa. Un cuarto de siglo de "no" tenía que resolverse en una sola transferencia limpia.
 
 [Namefi](https://namefi.io) está construido sobre la idea de que los dominios deberían comportarse como activos nativos de internet. La propiedad tokenizada puede hacer que el control de dominios sea más fácil de verificar, transferir e integrar en flujos de trabajo modernos, manteniéndose compatible con el DNS —convirtiendo las partes más complicadas de un acuerdo como este (demostrar quién posee qué, acordar el valor sin comparables y mover un activo singular de forma segura) en algo más parecido a una transacción limpia y auditable. La ironía es difícil de ignorar: la empresa que compró *Crypto.com* lo hizo a través exactamente del tipo de proceso lento, privado y basado en la confianza que la infraestructura nativa de cripto pretende optimizar.
 

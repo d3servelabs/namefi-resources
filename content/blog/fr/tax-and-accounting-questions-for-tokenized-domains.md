@@ -26,8 +26,8 @@ Les domaines tokenisés impliquent des événements [on-chain](/fr/glossary/on-c
 
 - Le minting (le moment de la [tokenisation](/fr/glossary/tokenize/) en lui-même — est-ce un événement imposable ? Probablement pas dans la plupart des juridictions, mais posez la question).
 - Les transferts on-chain, y compris les donations et les successions.
-- Les ventes réalisées entièrement on-chain, payées en cryptomonnaies ou en [stablecoins](/en/glossary/stablecoin/).
-- L'utilisation possible comme [collatéral](/fr/glossary/collateral/) en [DeFi](/en/glossary/defi/) (par exemple, un emprunt adossé au domaine).
+- Les ventes réalisées entièrement on-chain, payées en cryptomonnaies ou en [stablecoins](/fr/glossary/stablecoin/).
+- L'utilisation possible comme [collatéral](/fr/glossary/collateral/) en [DeFi](/fr/glossary/defi/) (par exemple, un emprunt adossé au domaine).
 - Le bridging ou le déplacement du jeton entre différentes blockchains.
 
 Chacune de ces interactions a des implications fiscales dans certaines juridictions et pas dans d'autres. La liste ci-dessous regroupe les questions qu'il est utile d'examiner avec un professionnel.
@@ -76,7 +76,7 @@ Chacune de ces interactions a des implications fiscales dans certaines juridicti
 
 ### Cross-chain / Bridging
 
-- Si je transfère le jeton du mainnet Ethereum vers Base (ou vice versa), cet événement de « bridge » constitue-t-il une cession ?
+- Si je transfère le jeton du mainnet [Ethereum](/fr/glossary/ethereum/) vers Base (ou vice versa), cet événement de « bridge » constitue-t-il une cession ?
 - Le wrapping / unwrapping est-il considéré comme un événement imposable ?
 
 ### Taxe de vente / TVA
@@ -96,7 +96,7 @@ Chacune de ces interactions a des implications fiscales dans certaines juridicti
 
 Si votre entreprise détient des domaines tokenisés, votre comptable se posera une autre série de questions :
 
-- Comment les domaines tokenisés sont-ils comptabilisés au bilan ? Actif incorporel ? Durée de vie indéfinie ? Soumis à des tests de dépréciation ?
+- Comment les domaines tokenisés sont-ils comptabilisés au bilan ? Actif incorporel ? [Durée de vie](/fr/glossary/ttl/) indéfinie ? Soumis à des tests de dépréciation ?
 - Pour les normes US GAAP / IFRS / ou votre référentiel local, quelle est la classification appropriée ?
 - Les frais de renouvellement doivent-ils être passés en charges ou immobilisés ?
 - Comment traiter les frais de gaz et de minting : sont-ils intégrés au coût de l'actif ou passés en charges ?
@@ -111,7 +111,7 @@ Ces questions n'ont rien d'exotique : ce sont les mêmes que se posent les entre
 ## Ce qui ne vous sauvera presque certainement pas
 
 - « C'est uniquement on-chain, donc c'est invisible pour les autorités fiscales. » Faux. Ce qui est on-chain est bien plus visible que ce qui est off-chain.
-- « J'ai utilisé un portefeuille privé (privacy wallet), donc ça ne compte pas. » Ça compte. Les obligations de conformité existent toujours.
+- « J'ai utilisé un [portefeuille](/fr/glossary/wallet/) privé (privacy wallet), donc ça ne compte pas. » Ça compte. Les obligations de conformité existent toujours.
 - « L'IRS / le fisc / ou l'équivalent n'a pas encore publié de directives. » L'absence de directives spécifiques ne signifie pas une absence d'obligations.
 - « Mon ami sur Discord a dit que… » Votre ami sur Discord n'est pas votre expert-comptable.
 
@@ -125,7 +125,7 @@ Si vous avez gagné des sommes importantes avec les domaines tokenisés, le coû
 - Vous détenez des domaines tokenisés dans le cadre d'une activité professionnelle (SARL, SAS, etc.).
 - Vous envisagez d'utiliser un domaine tokenisé comme collatéral en DeFi.
 - Vous donnez, héritez ou transférez un domaine tokenisé entre différentes entités.
-- Vous avez transféré le jeton d'une blockchain à une autre.
+- Vous avez transféré le jeton d'une [blockchain](/fr/glossary/blockchain/) à une autre.
 - Vous vivez dans une juridiction avec des règles strictes de déclaration crypto (ce qui est le cas de la plupart d'entre elles aujourd'hui).
 
 En résumé : si c'est plus qu'un simple passe-temps, faites-vous accompagner.

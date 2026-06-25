@@ -21,13 +21,13 @@ keywords: ['thefacebook.com', 'facebook.com', 'fb.com', 'facebook domain name', 
 
 ده مكانش مجرد تنظيف URL تجميلي. كان مثال مبكر على شركة ناشئة بتستخدم دومين متميز تحوّل الزخم لحتمية.
 
-القصة ما وقفتش هنا. بعد خمس سنين، Facebook دفعت **[$8.5 مليون دولار لـFB.com](https://www.nbcbayarea.com/news/local/facebook-paid-big-bucks-to-farm-bureau/1913822/#:~:text=Farm%20Bureau%20officials%20said%20the%20organization%20earned%20%248.5%20million)**، وحوّلت درس الدومين من قرار تسمية لاستراتيجية محفظة.
+القصة ما وقفتش هنا. بعد خمس سنين، Facebook دفعت **[$8.5 مليون دولار لـFB.com](https://www.nbcbayarea.com/news/local/facebook-paid-big-bucks-to-farm-bureau/1913822/#:~:text=Farm%20Bureau%20officials%20said%20the%20organization%20earned%20%248.5%20million)**، وحوّلت درس الدومين من قرار تسمية لاستراتيجية [محفظة](/ar/glossary/wallet/).
 
 ## 2004: شبكة الحرم الجامعي اللي كانت محتاجة اسماً حرفياً
 
 ![رسم تحريري لـTheFacebook.com كدليل حرمي بيتحوّل لشبكة طلاب قابلة للبحث](../../assets/from-thefacebook-com-to-facebook-com-01-campus-network.jpg)
 
-TheFacebook.com انطلق في لحظة تاريخية محددة جداً. [Friendster كانت رائدة شبكات التواصل في أوائل 2004](https://www.wired.com/2011/02/0204facebook-debuts/#:~:text=Friendster%20was%20the%20social%20media%20leader%20in%20early%202004)، وMySpace كانت بتبدأ رحلتها نحو هيمنة السوق الواسع. بس معظم شبكات التواصل في العصر ده كانت مفتوحة وفوضوية وخفيفة الهوية.
+TheFacebook.com انطلق في لحظة تاريخية محددة جداً. [Friendster كانت رائدة شبكات التواصل في أوائل 2004](https://www.wired.com/2011/02/0204facebook-debuts/#:~:text=Friendster%20was%20the%20social%20media%20leader%20in%20early%202004)، وMySpace كانت بتبدأ رحلتها نحو هيمنة [السوق](/ar/glossary/marketplace/) الواسع. بس معظم شبكات التواصل في العصر ده كانت مفتوحة وفوضوية وخفيفة الهوية.
 
 الميزة الأولى لـFacebook كانت العكس تماماً: مقيّدة ومنظّمة ومرتبطة بهوية حرم جامعي حقيقي.
 
@@ -63,7 +63,7 @@ TheFacebook.com مكانش دومين سيئ. كان النوع الصح من ا
 
 ![رسم تحريري لعملية شراء FB.com كأصل إيميل داخلي ونقل دومين](../../assets/from-thefacebook-com-to-facebook-com-03-fb-operational-shorthand.jpg)
 
-شراء Facebook.com خلّى العلامة التجارية العامة أنظف. شراء **FB.com** اللاحق كان مختلف. مكانش بيهدف لاستبدال الاسم الموجّه للمستهلك. كان بيهدف لامتلاك أقصر اختصار ممكن لشركة بنيتها التحتية وموظفيها ومنتجاتها واتصالاتها تجاوزت الدومين الرئيسي.
+شراء Facebook.com خلّى [العلامة التجارية](/ar/glossary/trademark/) العامة أنظف. شراء **FB.com** اللاحق كان مختلف. مكانش بيهدف لاستبدال الاسم الموجّه للمستهلك. كان بيهدف لامتلاك أقصر اختصار ممكن لشركة بنيتها التحتية وموظفيها ومنتجاتها واتصالاتها تجاوزت الدومين الرئيسي.
 
 في نوفمبر 2010، كانت Facebook بتطرح منتج الرسائل المُجدَّد، والتغطيات في الوقت ده قالت إن زوكربيرج كشف إن Facebook اشترت **FB.com** من الاتحاد الأمريكي للمزارعين للاستخدام في الإيميل الداخلي لأن Facebook Messages كانت بتستخدم نطاق Facebook.com. TechCrunch لخّصت الوضع: Facebook اشترت FB.com من Farm Bureau [لاستخدامها دومين لعناوين الإيميل الداخلية](https://techcrunch.com/2011/01/11/facebook-paid-farm-bureau-8-5-million-to-acquire-fb-com/#:~:text=to%20use%20as%20the%20domain%20for%20internal%20email%20addresses).
 

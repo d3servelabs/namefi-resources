@@ -33,7 +33,7 @@ Les deux impliquent des NFT dans des portefeuilles (wallets). Les deux sont appe
 Voici le modèle mental le plus clair :
 
 - Si vous tapez le nom dans un navigateur classique et qu'il mène à un site web sans aucune extension, plugin ou résolveur spécial — c'est un **domaine DNS**. Le tokeniser n'y change rien.
-- Si vous avez besoin d'une extension de navigateur, d'une fonctionnalité de portefeuille spécifique ou d'une passerelle de résolution pour qu'il fonctionne — c'est un **domaine Web3**.
+- Si vous avez besoin d'une extension de navigateur, d'une fonctionnalité de [portefeuille](/fr/glossary/wallet/) spécifique ou d'une passerelle de résolution pour qu'il fonctionne — c'est un **domaine Web3**.
 
 Les deux sont valides. Ils ont des fonctions différentes.
 
@@ -65,7 +65,7 @@ Idéal quand :
 - Vous gérez un vrai site web, une application ou une entreprise et vous voulez que cela fonctionne pour **tout le monde**, peu importe s'ils ont installé un logiciel Web3.
 - Vous souhaitez des adresses e-mail liées à votre domaine, des certificats SSL émis par des Autorités de Certification (CA) standards, des configurations CDN, etc.
 - Vous souhaitez une **propriété et une transférabilité natives au portefeuille** pour le domaine lui-même — vente, don, prêt — sans la bureaucratie du bureau d'enregistrement (registrar).
-- Vous voulez que le domaine puisse être utilisé comme garantie on-chain (collatéral) dans la DeFi tout en continuant de fonctionner comme un site web normal.
+- Vous voulez que le domaine puisse être utilisé comme garantie on-chain (collatéral) dans la [DeFi](/fr/glossary/defi/) tout en continuant de fonctionner comme un site web normal.
 
 Exemples : le `.com` d'une entreprise, le `.io` d'une application SaaS, le `.xyz` d'un créateur, le `.art` d'une marque. Tout ce qui doit fonctionner sur l'internet traditionnel.
 
@@ -86,13 +86,13 @@ Exemples : votre identité Web3 personnelle, un profil sur un portefeuille, une 
 
 ### DNS (le monde dans lequel vivent les domaines tokenisés)
 
-Vous tapez `example.com`. Votre ordinateur interroge un résolveur DNS. Le résolveur parcourt la hiérarchie DNS. Vous obtenez une adresse IP. Le navigateur récupère le site. Tout cela fonctionne de la même manière, que le domaine soit tokenisé ou non, car la tokenisation ajoute une couche de *propriété*, et non une couche de *résolution*.
+Vous tapez `example.com`. Votre ordinateur interroge un résolveur DNS. Le résolveur parcourt la hiérarchie DNS. Vous obtenez une [adresse IP](/fr/glossary/ip-address/). Le navigateur récupère le site. Tout cela fonctionne de la même manière, que le domaine soit tokenisé ou non, car la tokenisation ajoute une couche de *propriété*, et non une couche de *résolution*.
 
 Voir [Le DNS fonctionne toujours](/fr/blog/dns-on-tokenized-domains/) pour les détails pratiques de ce côté.
 
 ### Résolution de noms ENS / Web3
 
-Vous tapez `vitalik.eth`. Un client compatible Web3 (MetaMask, une dApp, certains navigateurs avec support [ENS](/en/glossary/ens/)) interroge le [smart contract](/fr/glossary/smart-contract/) ENS sur Ethereum, récupère l'adresse ou le hash de contenu associé, et l'affiche en conséquence. Un client non compatible Web3 (Chrome sans extensions, votre serveur de messagerie professionnel, votre Autorité de Certification SSL) ne sait pas ce que signifie `.eth` et ne le résoudra pas.
+Vous tapez `vitalik.eth`. Un client compatible Web3 (MetaMask, une dApp, certains navigateurs avec support [ENS](/fr/glossary/ens/)) interroge le [smart contract](/fr/glossary/smart-contract/) ENS sur [Ethereum](/fr/glossary/ethereum/), récupère l'adresse ou le hash de contenu associé, et l'affiche en conséquence. Un client non compatible Web3 (Chrome sans extensions, votre serveur de messagerie professionnel, votre Autorité de Certification SSL) ne sait pas ce que signifie `.eth` et ne le résoudra pas.
 
 Ce n'est pas un défaut — c'est conçu ainsi. L'ENS et les systèmes similaires sont construits pour une expérience native Web3, et non pour remplacer la couche de nommage de l'internet dans son ensemble. Consultez la [documentation officielle de l'ENS](https://docs.ens.domains/) pour découvrir l'architecture sous-jacente.
 

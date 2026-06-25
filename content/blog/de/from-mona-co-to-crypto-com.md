@@ -11,7 +11,7 @@ keywords: ['mona.co', 'crypto.com', 'crypto.com domain', 'monaco mco', 'matt bla
 
 In den ersten Jahren lebte eine der aggressivsten Marken der Kryptowelt unter einer still-cleveren Adresse: **Mona.co** – das Unternehmen „Monaco", buchstabiert über eine Domain und eine Ländercode-TLD, so wie bit.ly oder goo.gl ein `.ly` oder `.gl` zum Teil des Wortes machten.
 
-Der Name war ein Wortspiel – und ein gelungenes. Das 2016 in Hongkong gegründete Startup baute eine Visa-Karte und ein Wallet zum Ausgeben von Kryptowährung. „Monaco" evozierte Reichtum, Luxus, die Riviera – und das `.co` erlaubte der Marke, auf einer kurzen, einprägsamen URL zu sitzen, während das Team abwartete, wie groß die Idee noch werden könnte. Mona.co verriet den Firmennamen. Es verriet nicht die Kategorie.
+Der Name war ein Wortspiel – und ein gelungenes. Das 2016 in Hongkong gegründete Startup baute eine Visa-Karte und ein [Wallet](/de/glossary/wallet/) zum Ausgeben von Kryptowährung. „Monaco" evozierte Reichtum, Luxus, die Riviera – und das `.co` erlaubte der [Marke](/de/glossary/trademark/), auf einer kurzen, einprägsamen URL zu sitzen, während das Team abwartete, wie groß die Idee noch werden könnte. Mona.co verriet den Firmennamen. Es verriet nicht die Kategorie.
 
 Das war die Lücke. Monaco wollte kein Nischen-Kartenunternehmen für Luxus sein. Es wollte *der* Ort sein, an dem gewöhnliche Menschen zum ersten Mal Kryptowährung berühren. Und das einzige Wort, das diese gesamte Kategorie benannte – das Wort, das jede Schlagzeile, jeder Regulierer, jeder Neueinsteiger bereits verwendete – war nicht „Monaco". Es war **crypto**.
 
@@ -23,7 +23,7 @@ Im Juli 2018 änderte sich das schließlich. Monaco kaufte Crypto.com in einem D
 
 Als das Unternehmen [ursprünglich 2016 in Hongkong von Bobby Bao, Gary Or, Kris Marszalek und Rafael Melo als „Monaco" gegründet wurde](https://en.wikipedia.org/wiki/Crypto.com#:~:text=initially%20founded%20in%20Hong%20Kong%20by%20Bobby%20Bao%2C%20Gary%20Or%2C%20Kris%20Marszalek%2C%20and%20Rafael%20Melo%20in%202016), war das Angebot klar: eine Krypto-Debitkarte. TechCrunch beschrieb Monaco damals als [ein Krypto-Projekt, das vor allem für die Entwicklung einer Krypto-Debitkarte bekannt war](https://techcrunch.com/2018/07/05/crypto-com-mco/#:~:text=a%20crypto%20project%20best%2Dknown%20for%20developing%20a%20crypto%20debit%20card). Man lud Krypto auf, zog eine Visa-Karte, und gab es wie Bargeld aus. Das Unternehmen führte sogar ein ICO durch und gab einen Token, MCO, aus, um das Gebühren- und Belohnungssystem der Karte zu betreiben.
 
-„Monaco" leistete echte Arbeit für dieses erste Produkt. Es war kurz, klang hochwertig, und die Mona.co-Konstruktion verschaffte der Marke eine saubere URL, ohne den Preis einer Premium-Domain zahlen zu müssen. Für ein junges Unternehmen, das vertrauenswürdig genug wirken musste, um Fremde dazu zu bringen, echtes Geld auf eine Karte zu laden, war ein Name, der „Luxus und Diskretion" flüsterte, ein Vorteil, kein Nachteil.
+„Monaco" leistete echte Arbeit für dieses erste Produkt. Es war kurz, klang hochwertig, und die Mona.co-Konstruktion verschaffte der Marke eine saubere URL, ohne den Preis einer [Premium-Domain](/de/glossary/premium-domain/) zahlen zu müssen. Für ein junges Unternehmen, das vertrauenswürdig genug wirken musste, um Fremde dazu zu bringen, echtes Geld auf eine Karte zu laden, war ein Name, der „Luxus und Diskretion" flüsterte, ein Vorteil, kein Nachteil.
 
 Aber der Ehrgeiz wuchs weit über den Namen hinaus. Monacos Führung wollte kein Nischen-Kartenaussteller für Krypto-Enthusiasten sein. Sie wollten die Einfahrt für die gesamte Kategorie sein – das Wallet, die Karte, die Börse, die Marke, die ein Erstanwender ohne Nachdenken eintippen würde. Und „Monaco" zeigte in genau die falsche Richtung. Es benannte ein Fürstentum am Mittelmeer, nicht das, was das Unternehmen tatsächlich tat.
 
@@ -104,13 +104,13 @@ Die Kerndomain eines Unternehmens taucht an Orten auf, die das Marketingteam nie
 - In Suchergebnissen und der Browserleiste – wo „crypto.com" etwas ist, das ein Neueinsteiger tippen könnte, *bevor* er überhaupt eine Marke kennt.
 - In jeder Mundpropaganda-Empfehlung: „Geh einfach zu crypto dot com."
 
-Jede dieser Wiederholungen fügt entweder Reibung hinzu oder entfernt sie. Mona.co erforderte einen kleinen Übersetzungsakt – *Monaco, geschrieben mit dem .co* – und verriet einem Erstanwender nichts über die Kategorie. Crypto.com entfernte die Übersetzung vollständig und lud die Kategorie vorab in den Namen. Für ein Unternehmen, dessen gesamte Strategie darin bestand, der Standard-Einstieg für Menschen zu sein, die nichts über den Bereich wussten, war diese Vorbeladung das Produkt.
+Jede dieser Wiederholungen fügt entweder Reibung hinzu oder entfernt sie. Mona.co erforderte einen kleinen Übersetzungsakt – *Monaco, geschrieben mit dem [.co](/de/tld/co/)* – und verriet einem Erstanwender nichts über die Kategorie. Crypto.com entfernte die Übersetzung vollständig und lud die Kategorie vorab in den Namen. Für ein Unternehmen, dessen gesamte Strategie darin bestand, der Standard-Einstieg für Menschen zu sein, die nichts über den Bereich wussten, war diese Vorbeladung das Produkt.
 
 Die Domain hat die Marke von Crypto.com nicht aufgebaut. Aber sobald Crypto.com die Adresse war, hatte jede zukünftige Erwähnung der Kategorie – in Schlagzeilen, in Gesprächen, in der panischen ersten Suche von jemandem, der gerade beim Abendessen von Bitcoin gehört hat – die Chance, auf der Eingangstür des Unternehmens statt der eines anderen zu landen.
 
 ## Was Gründer aus Fall 20 lernen sollten
 
-Die einfache Schlussfolgerung – „kauf die kategoriendefinierte .com" – ist die falsche Lektion, denn fast kein Gründer *kann* das. Crypto.com existierte 25 Jahre lang und war 24 Jahre lang unverkäuflich. Die nützlichen Lektionen sind enger gefasst:
+Die einfache Schlussfolgerung – „kauf die kategoriendefinierte [.com](/de/tld/com/)" – ist die falsche Lektion, denn fast kein Gründer *kann* das. Crypto.com existierte 25 Jahre lang und war 24 Jahre lang unverkäuflich. Die nützlichen Lektionen sind enger gefasst:
 
 1. **Eine clevere Marken-Hack-Domain ist ein guter Einstieg.** Mona.co leistete echte Arbeit: kurz, hochwertig, einprägsam, günstig im Vergleich zum Exact Match. Ein `.co`-Wortspiel oder eine Modifier-Domain ist ein vernünftiger Ausgangspunkt, kein Versagen.
 2. **Kennen Sie den Unterschied zwischen Ihrem Namen und Ihrer Kategorie.** Die meisten Domain-Upgrades tauschen einen beschreibenden Namen gegen den Markennamen. Das seltenste und mächtigste Upgrade tauscht die Marke gegen den *Kategorienamen* – aber es zahlt sich nur aus, wenn man der Standard sein will, kein Nischenanbieter.

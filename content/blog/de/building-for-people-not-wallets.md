@@ -22,7 +22,7 @@ In unserem Gespräch erforschten wir, wie Usability zum Kernproblem wurde, das P
 
 Als Henri Stern Privy gründete, war es das Ziel des Unternehmens, Entwicklern zu helfen, Datenschutz in ihre Produkte einzubauen. Doch er bemerkte schnell: Datenschutz war nicht das dringlichste Problem – **Benutzerfreundlichkeit war es**. Entwickler ignorierten Datenschutz nicht aus Desinteresse; sie konnten ihn schlicht nicht implementieren, ohne ihre eigenen Produkte zu beschädigen.
 
-Diese Erkenntnis wurde zum Wendepunkt. Statt sich ausschließlich auf Verschlüsselung oder Infrastruktur zu konzentrieren, richteten Henri und sein Team den Fokus auf Usability – darauf, Kryptotools zu entwickeln, die für den Nutzer unsichtbar sind. Es ging nicht mehr darum, Probleme der Blockchain oder Wallets zu lösen, sondern **Probleme der Menschen**.
+Diese Erkenntnis wurde zum Wendepunkt. Statt sich ausschließlich auf Verschlüsselung oder Infrastruktur zu konzentrieren, richteten Henri und sein Team den Fokus auf Usability – darauf, Kryptotools zu entwickeln, die für den Nutzer unsichtbar sind. Es ging nicht mehr darum, Probleme der [Blockchain](/de/glossary/blockchain/) oder Wallets zu lösen, sondern **Probleme der Menschen**.
 
 Dieser Wandel machte Privy schließlich zur Grundlage für Produkte wie friend.tech, bei denen es nicht darum ging, den Nutzern Krypto beizubringen, sondern die Komplexität von Krypto zu verbergen.
 
@@ -30,11 +30,11 @@ Dieser Wandel machte Privy schließlich zur Grundlage für Produkte wie friend.t
 
 ## Die neue Grenze der Usability
 
-Henri sieht die Entwicklung der Benutzerfreundlichkeit im Kryptobereich als eine Reise in mehreren Phasen. Die frühen Jahre waren von technischen Hindernissen geprägt: Private Keys, Gas Fees und fragmentierte Wallet-Connectoren.
+Henri sieht die Entwicklung der Benutzerfreundlichkeit im Kryptobereich als eine Reise in mehreren Phasen. Die frühen Jahre waren von technischen Hindernissen geprägt: Private Keys, Gas Fees und fragmentierte [Wallet](/de/glossary/wallet/)-Connectoren.
 
 Bis 2025, glaubt er, seien diese Probleme weitgehend gelöst – oder zumindest gezähmt. Gasgebühren sind handhabbar. Wallet-Erstellung und Wiederherstellung sind deutlich reibungsloser. Das verbleibende Nadelöhr ist seiner Ansicht nach der **On-Ramp-Prozess** – also der sichere und intuitive Einstieg für alltägliche Nutzer.
 
-Sobald Nutzer leicht in das Ökosystem eintreten können, folgt der nächste Schritt: sie mit nützlichen Finanzwerkzeugen auszustatten — ertragsgenerierenden Wallets, nahtlosen Zahlungen und Stablecoin-basierten Anwendungen, die Web2-Vertrautheit mit Web3-Fähigkeiten verbinden.
+Sobald Nutzer leicht in das Ökosystem eintreten können, folgt der nächste Schritt: sie mit nützlichen Finanzwerkzeugen auszustatten — ertragsgenerierenden Wallets, nahtlosen Zahlungen und [Stablecoin](/de/glossary/stablecoin/)-basierten Anwendungen, die Web2-Vertrautheit mit [Web3](/de/glossary/web3/)-Fähigkeiten verbinden.
 
 Für Henri geht es nun nicht mehr nur darum, Reibung zu reduzieren — sondern darum, Krypto zu einer **unsichtbaren Infrastruktur** zu machen, die Menschen ganz selbstverständlich nutzen.
 

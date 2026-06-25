@@ -10,7 +10,7 @@ ogImage: ../../assets/famous-domainer-blogs-and-newsletters-og.jpg
 keywords: ['域名投资者博客', '域名投资博客', 'elliot silver', 'rick schwartz', 'morgan linton', 'konstantinos zournas', 'mike mann', 'jamie zoch', 'domainshane', '域名新闻通讯', '域名 substack']
 ---
 
-如果说[论坛](/blog/top-domain-trader-forums)是域名社区*争论*的地方，那么独立域名投资者的博客就是社区*大声思考*的阵地。业内大多数长期的、经过深思熟虑的分析——包括销售复盘、注册商政策批评、市场解读——都发生在少数几个已经运营了十五或二十年的个人博客上。
+如果说[论坛](/blog/top-domain-trader-forums)是域名社区*争论*的地方，那么独立[域名投资](/zh/glossary/domaining/)者的博客就是社区*大声思考*的阵地。业内大多数长期的、经过深思熟虑的分析——包括销售复盘、注册商政策批评、市场解读——都发生在少数几个已经运营了十五或二十年的个人博客上。
 
 这是一份值得收藏的列表。它带有明确的观点，并且更侧重于那些真正买卖域名的实战派（而不是推销服务的顾问或注册局）。
 
@@ -22,7 +22,7 @@ keywords: ['域名投资者博客', '域名投资博客', 'elliot silver', 'rick
 
 ### Konstantinos Zournas — [OnlineDomain.com](https://onlinedomain.com/)
 
-Konstantinos 经常从欧洲大陆和数据驱动的视角发布文章。在注册局/注册商政策变化、国家/地区顶级域名（ccTLD）动态以及大型公开销售方面有着敏锐的洞察。他通常是第一个曝光那些以美国为中心的博客所忽略的新闻的人。
+Konstantinos 经常从欧洲大陆和数据驱动的视角发布文章。在注册局/注册商政策变化、国家/地区[顶级域名](/zh/glossary/tld/)（[ccTLD](/zh/glossary/cctld/)）动态以及大型公开销售方面有着敏锐的洞察。他通常是第一个曝光那些以美国为中心的博客所忽略的新闻的人。
 
 ### Rick Schwartz — [RicksBlog.com](https://www.ricksblog.com/)
 

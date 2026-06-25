@@ -14,7 +14,7 @@ Le processus traditionnel de vente d'un `.com` ressemble à peu près à ceci :
 1. Mettre en vente sur [Sedo](https://sedo.com/), [Afternic](https://www.afternic.com/) ou Dan.com.
 2. Négocier.
 3. Ouvrir un [séquestre](/fr/glossary/escrow/) sur [Escrow.com](https://www.escrow.com/) ou un site similaire. L'acheteur transfère les fonds.
-4. Le vendeur déverrouille le domaine et fournit le [code d'autorisation](/en/glossary/auth-code/).
+4. Le vendeur déverrouille le domaine et fournit le [code d'autorisation](/fr/glossary/auth-code/).
 5. L'acheteur initie un [transfert inter-bureaux d'enregistrement](/fr/glossary/cross-registrar-transfer/) chez son [bureau d'enregistrement](/fr/glossary/registrar/).
 6. Attendre 5 à 7 jours que le transfert [ICANN](/fr/glossary/icann/) soit validé.
 7. Confirmer le transfert ; le séquestre libère les fonds.
@@ -29,10 +29,10 @@ Les ventes de domaines tokénisés compressent tout cela en une seule transactio
 ## Le nouveau processus, de bout en bout
 
 1. Mettez le [domaine tokénisé](/fr/blog/what-are-tokenized-domains/) en vente sur une [place de marché](/fr/glossary/marketplace/) (celle de Namefi, de Doma, [OpenSea](https://opensea.io/), [Blur](https://blur.io/), etc.).
-2. L'acheteur paie. Le [NFT](/fr/glossary/nft/) est transféré dans le [portefeuille](/fr/glossary/wallet/) de l'acheteur. L'enregistrement côté [bureau d'enregistrement](/fr/glossary/registrar/) est maintenu synchronisé par la plateforme.
+2. L'acheteur paie. Le [NFT](/fr/glossary/nft/) est transféré dans le [portefeuille](/fr/glossary/wallet/) de l'acheteur. L'enregistrement côté bureau d'enregistrement est maintenu synchronisé par la plateforme.
 3. Terminé.
 
-C'est tout. Deux étapes. Aucun [code d'autorisation](/en/glossary/auth-code/), aucun [séquestre](/fr/glossary/escrow/), aucun verrouillage de 5 jours du bureau d'enregistrement, aucun vide du type « J'ai envoyé le virement, maintenant je te fais confiance ».
+C'est tout. Deux étapes. Aucun code d'autorisation, aucun séquestre, aucun verrouillage de 5 jours du bureau d'enregistrement, aucun vide du type « J'ai envoyé le virement, maintenant je te fais confiance ».
 
 Cela fonctionne car le **NFT est la preuve de propriété canonique**, et les transactions [sur la chaîne (on-chain)](/fr/glossary/on-chain/) sont [atomiques](/fr/glossary/atomic-transfer/) : le paiement et le transfert de l'actif se produisent dans le même bloc, ou aucun des deux n'a lieu.
 
@@ -66,7 +66,7 @@ Il existe une règle connexe — la période de restriction de 60 jours après u
 
 ### Virements bancaires et délais bancaires
 
-**Remplacés par les paiements en crypto et en [stablecoins](/en/glossary/stablecoin/).** Les paiements en USDC, en ETH et les autres paiements sur la chaîne sont réglés en quelques secondes. Les virements bancaires prennent des jours. La différence est d'autant plus frappante pour les ventes internationales.
+**Remplacés par les paiements en crypto et en [stablecoins](/fr/glossary/stablecoin/).** Les paiements en USDC, en ETH et les autres paiements sur la chaîne sont réglés en quelques secondes. Les virements bancaires prennent des jours. La différence est d'autant plus frappante pour les ventes internationales.
 
 ### « Je fais confiance à l'autre personne pour faire sa part »
 
