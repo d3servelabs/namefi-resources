@@ -86,6 +86,9 @@
   "sections.resources.links.educationHub": {
     "description": "Footer 'Resources' link to the education hub."
   },
+  "sections.resources.links.brandKit": {
+    "description": "Footer 'Resources' link to the Namefi brand kit."
+  },
   "sections.resources.links.registrationAgreement": {
     "description": "Footer 'Resources' link to the registration agreement."
   },

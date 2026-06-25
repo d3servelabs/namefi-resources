@@ -95,6 +95,7 @@ const FOOTER_SECTIONS: Array<{
       { label: 'How We Hire', href: `${NAMEFI_URL}/r/en/careers/how-we-hire` },
       { label: 'Abuse Reporting', href: `${NAMEFI_URL}/abuse` },
       { label: 'Education Hub', href: `${NAMEFI_URL}/education` },
+      { label: 'Brand Kit', href: `${NAMEFI_URL}/brand-kit` },
       {
         label: 'Registration Agreement',
         href: `${NAMEFI_URL}/registration-agreement`,

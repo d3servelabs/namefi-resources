@@ -30,6 +30,7 @@ export type FooterProps = HTMLAttributes<HTMLDivElement>;
 
 const YEAR = new Date().getFullYear();
 const LLMS_TXT_URL = 'https://namefi.io/llms.txt';
+const BRAND_KIT_URL = 'https://namefi.io/brand-kit';
 
 /**
  * Maps an app locale to the resources app's locale (`/r/<lang>/…`). The
@@ -143,6 +144,7 @@ const FOOTER_SECTIONS: Array<{
       { labelKey: 'howWeHire', href: '/r/en/careers/how-we-hire' },
       { labelKey: 'abuseReporting', href: '/abuse' },
       { labelKey: 'educationHub', href: '/education' },
+      { labelKey: 'brandKit', href: BRAND_KIT_URL },
       { labelKey: 'registrationAgreement', href: '/registration-agreement' },
       {
         labelKey: 'apiDocs',
