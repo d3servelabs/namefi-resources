@@ -241,6 +241,17 @@ export const CUJS: readonly Cuj[] = [
     routes: ['/faucet'],
     routers: ['users'],
   },
+  {
+    id: 'CUJ-Owner.13',
+    area: 'Owner',
+    title:
+      'Import one or many domains owned elsewhere (transfer-in via EPP auth code → NFT mint)',
+    status: 'live',
+    routes: ['/'],
+    routers: ['search', 'carts'],
+    notes:
+      'Inverse of CUJ-Owner.10. Search Import mode (SearchMode.IMPORT tab) → enter per-domain EPP auth codes → add a single domain or bulk "Add all" to cart, then checkout via CUJ-Owner.2; the acquire-domain IMPORT path (sld/epp-register-or-import workflows) mints the NFT. Admin EPP transfer-in lives at /admin/epp-testing.',
+  },
 
   // ── Trader (profit-driven) ────────────────────────────────────────────────
   {

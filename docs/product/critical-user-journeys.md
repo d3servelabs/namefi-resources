@@ -8,7 +8,7 @@ Canonical catalog of the product's critical user journeys. Each journey has a
 stable, hierarchical id (`CUJ-<Area>.<n>`) used as the join key across this doc,
 e2e test tags, `data-cuj` markers, and the preview-recording generator.
 
-**Inventory:** 🟢 live 27 · 🟡 partial 4 · 📝 draft 11 · ⚠️ deprecated 3 (total 45)
+**Inventory:** 🟢 live 28 · 🟡 partial 4 · 📝 draft 11 · ⚠️ deprecated 3 (total 46)
 
 `Owner` is a shared journey library (the mechanics every owner performs), not a
 persona. The Trader, Collector and DAO personas all reference it, so shared
@@ -46,6 +46,7 @@ marked deprecated, never deleted or renumbered.
 | `CUJ-Owner.10` | Export / transfer a domain out (auth code, export approval) | 🟢 live | `/manage` | `domainConfig` | — | — |
 | `CUJ-Owner.11` | Generate AI branding (logo / poster) for an owned domain | 🟢 live | `/studio`, `/gallery` | `ai` | — | — |
 | `CUJ-Owner.12` | Get NFSC tokens from the faucet | 🟢 live | `/faucet` | `users` | — | — |
+| `CUJ-Owner.13` | Import one or many domains owned elsewhere (transfer-in via EPP auth code → NFT mint) | 🟢 live | `/` | `search`, `carts` | — | Inverse of CUJ-Owner.10. Search Import mode (SearchMode.IMPORT tab) → enter per-domain EPP auth codes → add a single domain or bulk "Add all" to cart, then checkout via CUJ-Owner.2; the acquire-domain IMPORT path (sld/epp-register-or-import workflows) mints the NFT. Admin EPP transfer-in lives at /admin/epp-testing. |
 
 ### Domain Trader — signature journeys (profit-driven)
 
