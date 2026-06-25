@@ -1,6 +1,6 @@
 {
-  "description": "Usamos cookies para analítica.",
-  "privacy": "Privacidad",
+  "descriptionSmall": "Ayúdanos a mejorar Namefi con analítica permitiendo <cookiesLink>cookies</cookiesLink>.",
+  "descriptionDesktop": "Usamos analítica para mejorar Namefi para ti y otros usuarios. Por favor, ayúdanos permitiendo <cookiesLink>cookies</cookiesLink>.",
   "reject": "Rechazar",
   "accept": "Aceptar"
 }

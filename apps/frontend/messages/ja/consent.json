@@ -1,6 +1,6 @@
 {
-  "description": "分析のためにCookieを使用しています。",
-  "privacy": "プライバシー",
+  "descriptionSmall": "<cookiesLink>Cookie</cookiesLink>を許可して、分析によるNamefiの改善にご協力ください。",
+  "descriptionDesktop": "Namefiをあなたや他のユーザーにとってより良くするため、分析を使用しています。<cookiesLink>Cookie</cookiesLink>の許可にご協力ください。",
   "reject": "拒否",
   "accept": "同意"
 }

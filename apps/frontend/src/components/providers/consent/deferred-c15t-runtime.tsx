@@ -13,19 +13,23 @@ import {
 
 const C15T_BROWSER_BACKEND_URL = '/api/c15t';
 
-const c15tTheme = {
+export const c15tTheme = {
   consentActions: {
     accept: { variant: 'primary', mode: 'filled' },
     reject: { variant: 'neutral', mode: 'ghost' },
     customize: { variant: 'neutral', mode: 'ghost' },
   },
   slots: {
-    consentBanner: { style: { left: 'auto', right: 0 } },
-    consentBannerFooterSubGroup: 'order-1 sm:order-2 sm:ms-auto',
+    consentBanner: 'namefi-consent-banner',
+    consentBannerCard: 'namefi-consent-card',
+    consentBannerHeader: 'namefi-consent-header',
+    consentBannerTitle: 'namefi-consent-title',
+    consentBannerDescription: 'namefi-consent-description',
+    consentBannerFooter: 'namefi-consent-footer',
+    consentBannerFooterSubGroup: 'namefi-consent-actions',
     consentWidgetFooterSubGroup: 'sm:ms-auto',
-    buttonPrimary:
-      '!bg-brand-primary !text-primary-foreground hover:!bg-brand-primary/90 !shadow-none',
-    buttonSecondary: 'c15t-customize-like-reject',
+    buttonPrimary: 'namefi-consent-action',
+    buttonSecondary: 'namefi-consent-action',
   },
 } as const;
 

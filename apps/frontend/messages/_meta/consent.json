@@ -1,10 +1,9 @@
 {
-  "description": {
-    "description": "Cookie-consent banner body. States that the site uses cookies for analytics; followed by a 'Privacy' link to the policy. Keep it to one short sentence."
+  "descriptionSmall": {
+    "description": "Cookie-consent banner body for small and extra-small screens. Keep it short and wrap the word meaning 'cookies' in <cookiesLink>...</cookiesLink>."
   },
-  "privacy": {
-    "description": "Link text in the consent banner pointing to the privacy/terms policy. Means 'Privacy'.",
-    "maxLength": 16
+  "descriptionDesktop": {
+    "description": "Cookie-consent banner body for medium and larger screens. Explains analytics improve Namefi for the user and others; wrap the word meaning 'cookies' in <cookiesLink>...</cookiesLink>."
   },
   "reject": {
     "description": "Consent banner button: decline non-essential (analytics) cookies. Essential cookies still run.",

@@ -1,7 +1,30 @@
 'use client';
 
 import { ConsentBanner, ConsentDialog } from '@c15t/nextjs';
+import { Check, X } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
+
+function ResponsiveActionLabel({
+  label,
+  icon,
+}: {
+  label: string;
+  icon: 'accept' | 'reject';
+}) {
+  const Icon = icon === 'accept' ? Check : X;
+  return (
+    <>
+      <span className="sr-only">{label}</span>
+      <span className="namefi-consent-action-icon" aria-hidden="true">
+        <Icon className="size-3.5" strokeWidth={2.75} />
+      </span>
+      <span className="namefi-consent-action-text" aria-hidden="true">
+        {label}
+      </span>
+    </>
+  );
+}
 
 /**
  * Client-only consent UI components.
@@ -16,14 +39,18 @@ import { useTranslations } from 'next-intl';
  *   review and later changes stay available via the footer "Cookie Settings"
  *   entry, which opens the <ConsentDialog /> below.
  * - "Reject" here is necessary-only: essential cookies always run (GDPR exempt)
- *   while `measurement` is declined. Both buttons stay equally prominent, as
- *   GDPR requires.
- * - The one-line description names the purpose and links to the policy so the
- *   choice stays informed; `hideBranding` drops the vendor tag for a cleaner,
- *   more compact bar.
+ *   while `measurement` is declined.
+ * - The responsive description names the purpose and links to the policy so
+ *   the choice stays informed; `hideBranding` drops the vendor tag for a
+ *   cleaner, more compact bar.
  */
 export function ConsentUIComponents() {
   const t = useTranslations('consent');
+  const cookiesLink = (chunks: ReactNode) => (
+    <a href="https://namefi.io/tos" className="underline">
+      {chunks}
+    </a>
+  );
   return (
     <>
       <ConsentBanner
@@ -33,14 +60,20 @@ export function ConsentUIComponents() {
         title=""
         description={
           <>
-            {t('description')}{' '}
-            <a href="/tos" className="underline">
-              {t('privacy')}
-            </a>
+            <span className="namefi-consent-copy-small">
+              {t.rich('descriptionSmall', { cookiesLink })}
+            </span>
+            <span className="namefi-consent-copy-desktop">
+              {t.rich('descriptionDesktop', { cookiesLink })}
+            </span>
           </>
         }
-        rejectButtonText={t('reject')}
-        acceptButtonText={t('accept')}
+        rejectButtonText={
+          <ResponsiveActionLabel label={t('reject')} icon="reject" />
+        }
+        acceptButtonText={
+          <ResponsiveActionLabel label={t('accept')} icon="accept" />
+        }
       />
       <ConsentDialog />
     </>

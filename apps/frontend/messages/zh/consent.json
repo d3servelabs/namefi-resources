@@ -1,6 +1,6 @@
 {
-  "description": "我们使用 Cookie 进行分析。",
-  "privacy": "隐私",
+  "descriptionSmall": "请允许<cookiesLink>Cookie</cookiesLink>，帮助我们通过分析改进 Namefi。",
+  "descriptionDesktop": "我们使用分析来为你和其他用户改进 Namefi。请允许<cookiesLink>Cookie</cookiesLink>，帮助我们改进。",
   "reject": "拒绝",
   "accept": "接受"
 }

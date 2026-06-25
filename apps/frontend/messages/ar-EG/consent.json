@@ -1,6 +1,6 @@
 {
-  "description": "إحنا بنستخدم كوكيز للتحليلات.",
-  "privacy": "الخصوصية",
+  "descriptionSmall": "ساعدنا نحسّن Namefi بالتحليلات عن طريق السماح بـ<cookiesLink>الكوكيز</cookiesLink>.",
+  "descriptionDesktop": "إحنا بنستخدم التحليلات لتحسين Namefi ليك وللمستخدمين الآخرين. من فضلك ساعدنا بالسماح بـ<cookiesLink>الكوكيز</cookiesLink>.",
   "reject": "ارفض",
   "accept": "قبول"
 }

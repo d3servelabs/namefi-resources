@@ -1,6 +1,6 @@
 {
-  "description": "பகுப்பாய்வுக்காக நாங்கள் cookies-ஐ பயன்படுத்துகிறோம்.",
-  "privacy": "தனியுரிமை",
+  "descriptionSmall": "பகுப்பாய்வுக்காக <cookiesLink>cookies</cookiesLink> அனுமதித்து Namefi-ஐ மேம்படுத்த எங்களுக்கு உதவுங்கள்.",
+  "descriptionDesktop": "உங்களுக்கும் பிற பயனர்களுக்கும் Namefi-ஐ மேம்படுத்த நாங்கள் பகுப்பாய்வைப் பயன்படுத்துகிறோம். <cookiesLink>cookies</cookiesLink> அனுமதிப்பதன் மூலம் தயவுசெய்து எங்களுக்கு உதவுங்கள்.",
   "reject": "நிராகரி",
   "accept": "ஏற்க"
 }
