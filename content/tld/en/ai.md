@@ -38,7 +38,7 @@ This page covers what .ai really is, who runs it, the registration rules that ma
 
 ## What is .ai?
 
-.ai is the [ccTLD](/en/glossary/tld/) assigned to Anguilla. The two letters "AI" are simply Anguilla's ISO 3166-1 country code — the same coincidence that turned .io (Indian Ocean Territory) and [.tv](/en/tld/tv/) (Tuvalu) into tech favorites. The extension was delegated in 1995, decades before the modern AI boom, as confirmed by the [IANA root-zone record for .ai](https://www.iana.org/domains/root/db/ai.html).
+.ai is the ccTLD assigned to Anguilla. The two letters "AI" are simply Anguilla's ISO 3166-1 country code — the same coincidence that turned .io (Indian Ocean Territory) and [.tv](/en/tld/tv/) (Tuvalu) into tech favorites. The extension was delegated in 1995, decades before the modern AI boom, as confirmed by the [IANA root-zone record for .ai](https://www.iana.org/domains/root/db/ai.html).
 
 What makes .ai unusual is how search engines treat it. Although it is officially a ccTLD, [Google does not geo-target it to Anguilla](https://developers.google.com/search/docs/crawling-indexing/managing-multi-regional-sites). Google maintains a list of ccTLDs it treats as generic ("gccTLDs"), and .ai is one of them. That means a .ai site can rank worldwide rather than being nudged toward Caribbean audiences — a key reason global AI companies are comfortable building their primary brand on it.
 
