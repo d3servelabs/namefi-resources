@@ -434,20 +434,21 @@ jobs:
             });
 
   deploy-frontend:
-    name: "Frontend Preview (Dev Backend)"
-    needs:
-      [detect, preview-label-gate, detect-backend-changes, resolve-backend-preview-context]
+    name: "Frontend Preview"
+    # Single frontend deployment that runs early, in parallel with the backend
+    # deploy. The backend URL is resolved deterministically by
+    # resolve-backend-state (templated preview URL or the shared API), so the
+    # frontend never waits for the Cloud Run deploy to finish.
+    needs: [detect, preview-label-gate, head-branch-gate, resolve-backend-state]
     if: |-
       always() &&
       needs.detect.result == 'success' &&
+      needs.resolve-backend-state.result == 'success' &&
       needs.preview-label-gate.outputs.is_same_repo == 'true' &&
-      needs.detect.outputs.frontend_changed == 'true' &&
+      needs.head-branch-gate.outputs.should_run == 'true' &&
       (
-        needs.preview-label-gate.outputs.should_run != 'true' ||
-        (
-          needs.detect-backend-changes.outputs.has-backend-changes != 'true' &&
-          needs.resolve-backend-preview-context.outputs.backend_preview_url == ''
-        )
+        needs.detect.outputs.frontend_changed == 'true' ||
+        needs.resolve-backend-state.outputs.has_backend_preview == 'true'
       )
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     outputs:
@@ -469,19 +470,20 @@ jobs:
           pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
           additional_meta_json: |
             {
-              "previewMode": "standard"
+              "previewMode": "${{ needs.resolve-backend-state.outputs.has_backend_preview == 'true' && 'backend-preview' || 'standard' }}",
+              "backendPreviewUrl": "${{ needs.resolve-backend-state.outputs.has_backend_preview == 'true' && needs.resolve-backend-state.outputs.backend_url || '' }}"
             }
           build_env_json: |
             {
               "ENVIRONMENT": "preview",
-              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "BACKEND_URL": "${{ needs.resolve-backend-state.outputs.backend_url }}",
               "RESOURCES_URL": "https://r.namefi.dev",
               "DOCS_URL": "https://docs.namefi.dev"
             }
           runtime_env_json: |
             {
               "ENVIRONMENT": "preview",
-              "BACKEND_URL": "https://backend.astra.namefi.dev",
+              "BACKEND_URL": "${{ needs.resolve-backend-state.outputs.backend_url }}",
               "RESOURCES_URL": "https://r.namefi.dev",
               "DOCS_URL": "https://docs.namefi.dev"
             }
@@ -592,116 +594,47 @@ jobs:
           vercel_project_id: ${{ secrets.VERCEL_ASTRA_API_CLIENT_DOCS_PROJECT_ID }}
           vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
 
-  resolve-backend-preview-context:
+  resolve-backend-state:
     name: Resolve Backend State
-    needs:
-      [preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview]
-    if: needs.preview-label-gate.outputs.should_run == 'true' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
+    # Resolves whether this PR gets a preview backend and the URL the frontend
+    # should target — WITHOUT waiting for the Cloud Run deploy to finish. The
+    # preview backend is published as a Cloud Run tagged revision (tag
+    # `pr-<number>`), whose tagged URL is just the persistent service host with a
+    # `pr-<number>---` prefix, so it is fully deterministic ahead of deploy.
+    needs: [preview-label-gate, head-branch-gate, detect-backend-changes]
+    if: needs.preview-label-gate.outputs.pr_number != '' && needs.preview-label-gate.outputs.is_same_repo == 'true' && needs.head-branch-gate.outputs.should_run == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
+    env:
+      # Persistent Cloud Run host of the namefi-astra-backend-preview service.
+      # Tagged preview URLs are `https://pr-<number>---<this host>`.
+      BACKEND_PREVIEW_HOST: namefi-astra-backend-preview-ixzjobhowq-uc.a.run.app
+      # Shared backend used when this PR has no preview backend.
+      SHARED_BACKEND_URL: https://api.namefi.dev
     outputs:
-      backend_preview_url: ${{ steps.backend-preview.outputs.backend_preview_url }}
-      has_matching_frontend_backend_preview: ${{ steps.frontend-preview.outputs.has_matching_frontend_backend_preview }}
-      existing_frontend_backend_preview_url: ${{ steps.frontend-preview.outputs.existing_frontend_backend_preview_url }}
+      has_backend_preview: ${{ steps.url.outputs.has_backend_preview }}
+      backend_url: ${{ steps.url.outputs.backend_url }}
     steps:
-      - name: Google Auth
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
-          service_account: ${{ vars.GCP_WIF_SERVICE_ACCOUNT }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v3
-
-      - name: Resolve backend preview URL
-        id: backend-preview
+      - name: Resolve backend URL
+        id: url
         env:
-          DEPLOYED_BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          SHOULD_RUN: ${{ needs.preview-label-gate.outputs.should_run }}
+          HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
         shell: bash
         run: |
           set -euo pipefail
 
-          if [[ -n "$DEPLOYED_BACKEND_PREVIEW_URL" ]]; then
-            echo "backend_preview_url=$DEPLOYED_BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
-            exit 0
+          # A preview backend is deployed only when the backend preview label is
+          # active and the backend actually changed (a force preview is reported
+          # by detect-backend-changes as a change). This decision needs no Cloud
+          # Run lookup, so the frontend can deploy in parallel with the backend.
+          if [[ "$SHOULD_RUN" == "true" && "$HAS_BACKEND_CHANGES" == "true" ]]; then
+            echo "has_backend_preview=true" >> "$GITHUB_OUTPUT"
+            echo "backend_url=https://pr-${PR_NUMBER}---${BACKEND_PREVIEW_HOST}" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_backend_preview=false" >> "$GITHUB_OUTPUT"
+            echo "backend_url=${SHARED_BACKEND_URL}" >> "$GITHUB_OUTPUT"
           fi
-
-          TAG="pr-$PR_NUMBER"
-          BACKEND_PREVIEW_URL=$(
-            gcloud run services describe namefi-astra-backend-preview \
-              --region "${{ env.REGION }}" \
-              --project "${{ env.PROJECT_ID }}" \
-              --format="json" |
-              jq -r ".status.traffic.[] | select(.tag == \"$TAG\") | .url" |
-              head -n 1
-          )
-
-          if [[ -z "$BACKEND_PREVIEW_URL" || "$BACKEND_PREVIEW_URL" == "null" ]]; then
-            echo "backend_preview_url=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          echo "backend_preview_url=$BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
-
-      - name: Detect matching backend-linked frontend preview
-        id: frontend-preview
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
-          VERCEL_TEAM_ID: ${{ secrets.VERCEL_ORG_ID }}
-          FRONTEND_PROJECT_ID: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
-          HEAD_REF: ${{ needs.preview-label-gate.outputs.head_ref }}
-          HEAD_SHA: ${{ needs.preview-label-gate.outputs.head_sha }}
-          BACKEND_PREVIEW_URL: ${{ steps.backend-preview.outputs.backend_preview_url }}
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          if [[ -z "$BACKEND_PREVIEW_URL" ]]; then
-            echo "has_matching_frontend_backend_preview=false" >> "$GITHUB_OUTPUT"
-            echo "existing_frontend_backend_preview_url=" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          ENCODED_BRANCH="$(jq -rn --arg value "$HEAD_REF" '$value|@uri')"
-          RESPONSE="$(
-            curl --silent --show-error --fail \
-              --header "Authorization: Bearer $VERCEL_TOKEN" \
-              "https://api.vercel.com/v6/deployments?projectId=$FRONTEND_PROJECT_ID&teamId=$VERCEL_TEAM_ID&branch=$ENCODED_BRANCH&state=QUEUED,INITIALIZING,BUILDING,READY&limit=20"
-          )"
-
-          HAS_MATCHING_FRONTEND_BACKEND_PREVIEW="$(
-            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" --arg head_sha "$HEAD_SHA" '
-              .deployments | any(
-                (.meta.previewMode // "") == "backend-preview" and
-                (.meta.backendPreviewUrl // "") == $backend_preview_url and
-                (.meta.githubCommitSha // "") == $head_sha
-              )
-            ' <<<"$RESPONSE"
-          )"
-
-          MATCHING_FRONTEND_BACKEND_PREVIEW_URL="$(
-            jq -r --arg backend_preview_url "$BACKEND_PREVIEW_URL" --arg head_sha "$HEAD_SHA" '
-              .deployments
-              | map(
-                  select(
-                    (.meta.previewMode // "") == "backend-preview" and
-                    (.meta.backendPreviewUrl // "") == $backend_preview_url and
-                    (.meta.githubCommitSha // "") == $head_sha
-                  )
-                )
-              | .[0].url // ""
-            ' <<<"$RESPONSE"
-          )"
-
-          if [[ -n "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" && "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" != http://* && "$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" != https://* ]]; then
-            MATCHING_FRONTEND_BACKEND_PREVIEW_URL="https://$MATCHING_FRONTEND_BACKEND_PREVIEW_URL"
-          fi
-
-          echo "has_matching_frontend_backend_preview=$HAS_MATCHING_FRONTEND_BACKEND_PREVIEW" >> "$GITHUB_OUTPUT"
-          echo "existing_frontend_backend_preview_url=$MATCHING_FRONTEND_BACKEND_PREVIEW_URL" >> "$GITHUB_OUTPUT"
 
   preview-label-gate:
     name: Check Backend Preview Label
@@ -1303,66 +1236,6 @@ jobs:
           fi
           echo "revision_tag_url=$REVISION_TAG_URL" >> "$GITHUB_OUTPUT"
 
-  deploy-frontend-preview:
-    name: "Frontend Preview (Preview Backend)"
-    needs:
-      [detect, preview-label-gate, head-branch-gate, detect-backend-changes, deploy-preview, resolve-backend-preview-context]
-    if: |-
-      needs.preview-label-gate.outputs.should_run == 'true' &&
-      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
-      needs.head-branch-gate.outputs.should_run == 'true' &&
-      needs.resolve-backend-preview-context.outputs.backend_preview_url != '' &&
-      (
-        (needs.detect.result == 'success' && needs.detect.outputs.frontend_changed == 'true') ||
-        (
-          needs.resolve-backend-preview-context.outputs.has_matching_frontend_backend_preview != 'true' &&
-          (
-            github.event_name == 'workflow_dispatch' ||
-            needs.detect-backend-changes.outputs.has-backend-changes == 'true'
-          )
-        )
-      )
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
-    outputs:
-      deployed: ${{ steps.deploy.outputs.deployed }}
-      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ needs.preview-label-gate.outputs.checkout_ref }}
-
-      - name: Deploy frontend preview
-        id: deploy
-        uses: ./.github/actions/vercel-preview-deploy
-        with:
-          turbo_prune_scope: "@namefi-astra/frontend"
-          head_ref: ${{ needs.preview-label-gate.outputs.head_ref }}
-          head_sha: ${{ needs.preview-label-gate.outputs.head_sha }}
-          pr_number: ${{ needs.preview-label-gate.outputs.pr_number }}
-          additional_meta_json: |
-            {
-              "previewMode": "backend-preview",
-              "backendPreviewUrl": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}"
-            }
-          build_env_json: |
-            {
-              "ENVIRONMENT": "preview",
-              "BACKEND_URL": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}",
-              "RESOURCES_URL": "https://r.namefi.dev",
-              "DOCS_URL": "https://docs.namefi.dev"
-            }
-          runtime_env_json: |
-            {
-              "ENVIRONMENT": "preview",
-              "BACKEND_URL": "${{ needs.resolve-backend-preview-context.outputs.backend_preview_url }}",
-              "RESOURCES_URL": "https://r.namefi.dev",
-              "DOCS_URL": "https://docs.namefi.dev"
-            }
-          vercel_org_id: ${{ secrets.VERCEL_ORG_ID }}
-          vercel_project_id: ${{ secrets.VERCEL_ASTRA_PROJECT_ID }}
-          vercel_token: ${{ secrets.VERCEL_ACCOUNT_TOKEN }}
-
   workflow-summary:
     name: Preview Summary
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
@@ -1377,11 +1250,10 @@ jobs:
       - head-branch-gate
       - detect-synchronize-type
       - detect-backend-changes
-      - resolve-backend-preview-context
+      - resolve-backend-state
       - build-backend
       - prepare-database
       - deploy-preview
-      - deploy-frontend-preview
     steps:
       - name: Generate workflow summary
         env:
@@ -1413,18 +1285,16 @@ jobs:
           COMPARISON_SHA: ${{ needs.detect-synchronize-type.outputs.comparison_sha }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes }}
           BACKEND_CHANGED: ${{ needs.detect-backend-changes.outputs.backend-changed }}
-          BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.backend_preview_url || needs.deploy-preview.outputs.revision_tag_url }}
+          BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
+          HAS_BACKEND_PREVIEW: ${{ needs.resolve-backend-state.outputs.has_backend_preview }}
           PREVIEW_LABEL_GATE_RESULT: ${{ needs.preview-label-gate.result }}
           HEAD_BRANCH_GATE_RESULT: ${{ needs.head-branch-gate.result }}
           DETECT_SYNC_TYPE_RESULT: ${{ needs.detect-synchronize-type.result }}
           DETECT_BACKEND_CHANGES_RESULT: ${{ needs.detect-backend-changes.result }}
-          RESOLVE_BACKEND_PREVIEW_CONTEXT_RESULT: ${{ needs.resolve-backend-preview-context.result }}
+          RESOLVE_BACKEND_STATE_RESULT: ${{ needs.resolve-backend-state.result }}
           BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
           PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
           DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
-          DEPLOY_FRONTEND_BACKEND_URL: ${{ needs.deploy-frontend-preview.outputs.deployment_url }}
-          FRONTEND_BACKEND_PREVIEW_RESULT: ${{ needs.deploy-frontend-preview.result }}
-          EXISTING_FRONTEND_BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.existing_frontend_backend_preview_url }}
         run: |
           set -euo pipefail
 
@@ -1451,27 +1321,19 @@ jobs:
             esac
           }
 
-          frontend_mode="dev backend"
           frontend_result="$(format_result "$FRONTEND_PREVIEW_RESULT")"
           frontend_url="${FRONTEND_PREVIEW_URL:-}"
-          frontend_note="affected-only"
 
-          if [[ "$SHOULD_RUN" == "true" && -n "$BACKEND_PREVIEW_URL" ]]; then
+          if [[ "$HAS_BACKEND_PREVIEW" == "true" ]]; then
             frontend_mode="preview backend"
             frontend_note="backend preview active"
-            if [[ "$FRONTEND_BACKEND_PREVIEW_RESULT" == "success" ]]; then
-              frontend_result="deployed"
-              frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
-            elif [[ "$FRONTEND_BACKEND_PREVIEW_RESULT" == "skipped" && -n "$EXISTING_FRONTEND_BACKEND_PREVIEW_URL" ]]; then
-              frontend_result="reused"
-              frontend_url="$EXISTING_FRONTEND_BACKEND_PREVIEW_URL"
-              frontend_note="backend preview active (existing preview reused)"
+          else
+            frontend_mode="shared backend"
+            if [[ "$FRONTEND_CHANGED" != "true" ]]; then
+              frontend_note="not affected"
             else
-              frontend_result="$(format_result "$FRONTEND_BACKEND_PREVIEW_RESULT")"
-              frontend_url="${DEPLOY_FRONTEND_BACKEND_URL:-}"
+              frontend_note="affected-only"
             fi
-          elif [[ "$FRONTEND_CHANGED" != "true" ]]; then
-            frontend_note="not affected"
           fi
 
           surface_note() {
@@ -1529,10 +1391,9 @@ jobs:
             echo "| Preview branch check | $HEAD_BRANCH_GATE_RESULT |"
             echo "| Compare base resolution | $DETECT_SYNC_TYPE_RESULT |"
             echo "| Backend change check | $DETECT_BACKEND_CHANGES_RESULT |"
-            echo "| Backend state resolution | $RESOLVE_BACKEND_PREVIEW_CONTEXT_RESULT |"
+            echo "| Backend state resolution | $RESOLVE_BACKEND_STATE_RESULT |"
             echo "| Backend image build | $BUILD_BACKEND_RESULT |"
             echo "| Preview database | $PREPARE_DATABASE_RESULT |"
-            echo "| Frontend via backend | $FRONTEND_BACKEND_PREVIEW_RESULT |"
           } >> "$GITHUB_STEP_SUMMARY"
 
   publish-preview-results:
@@ -1559,9 +1420,8 @@ jobs:
       - detect-backend-changes
       - build-backend
       - prepare-database
-      - resolve-backend-preview-context
+      - resolve-backend-state
       - deploy-preview
-      - deploy-frontend-preview
       - workflow-summary
     runs-on: blacksmith-2vcpu-ubuntu-2404-arm
     steps:
@@ -1579,8 +1439,9 @@ jobs:
           RESOURCES_REQUESTED: ${{ needs.preview-label-gate.outputs.resources_preview || 'false' }}
           DOCS_REQUESTED: ${{ needs.preview-label-gate.outputs.docs_preview || 'false' }}
           HAS_BACKEND_CHANGES: ${{ needs.detect-backend-changes.outputs.has-backend-changes || 'false' }}
-          FRONTEND_DEV_RESULT: ${{ needs.deploy-frontend.result }}
-          FRONTEND_DEV_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
+          HAS_BACKEND_PREVIEW: ${{ needs.resolve-backend-state.outputs.has_backend_preview || 'false' }}
+          FRONTEND_RESULT: ${{ needs.deploy-frontend.result }}
+          FRONTEND_URL: ${{ needs.deploy-frontend.outputs.deployment_url }}
           PARK_RESULT: ${{ needs.deploy-park.result }}
           PARK_URL: ${{ needs.deploy-park.outputs.deployment_url }}
           RESOURCES_RESULT: ${{ needs.deploy-resources.result }}
@@ -1590,10 +1451,7 @@ jobs:
           BUILD_BACKEND_RESULT: ${{ needs.build-backend.result }}
           PREPARE_DATABASE_RESULT: ${{ needs.prepare-database.result }}
           DEPLOY_PREVIEW_RESULT: ${{ needs.deploy-preview.result }}
-          BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.backend_preview_url || needs.deploy-preview.outputs.revision_tag_url }}
-          FRONTEND_BACKEND_RESULT: ${{ needs.deploy-frontend-preview.result }}
-          FRONTEND_BACKEND_URL: ${{ needs.deploy-frontend-preview.outputs.deployment_url }}
-          EXISTING_FRONTEND_BACKEND_PREVIEW_URL: ${{ needs.resolve-backend-preview-context.outputs.existing_frontend_backend_preview_url }}
+          BACKEND_PREVIEW_URL: ${{ needs.deploy-preview.outputs.revision_tag_url }}
         with:
           script: |
             const marker = '<!-- preview-surface-status:v1 -->';
@@ -1619,13 +1477,10 @@ jobs:
             const docsRequested = isTrue(process.env.DOCS_REQUESTED);
             const previewRequested = isTrue(process.env.PREVIEW_REQUESTED);
             const hasBackendChanges = isTrue(process.env.HAS_BACKEND_CHANGES);
+            const hasBackendPreview = isTrue(process.env.HAS_BACKEND_PREVIEW);
 
-            const frontendDevResult = process.env.FRONTEND_DEV_RESULT || '';
-            const frontendDevUrl = process.env.FRONTEND_DEV_URL || '';
-            const frontendBackendResult = process.env.FRONTEND_BACKEND_RESULT || '';
-            const frontendBackendUrl = process.env.FRONTEND_BACKEND_URL || '';
-            const existingFrontendBackendPreviewUrl =
-              process.env.EXISTING_FRONTEND_BACKEND_PREVIEW_URL || '';
+            const frontendResult = process.env.FRONTEND_RESULT || '';
+            const frontendUrl = process.env.FRONTEND_URL || '';
 
             const parkResult = process.env.PARK_RESULT || '';
             const parkUrl = process.env.PARK_URL || '';
@@ -1659,59 +1514,26 @@ jobs:
               return row(surface, '🔴 Failed', [buildLink], affectedNote);
             };
 
-            let frontendRow;
-            const frontendUsesPreviewBackend = backendPreviewUrl !== '' || backendAttempted;
-            const canReuseFrontendBackendPreview =
-              !frontendChanged &&
-              existingFrontendBackendPreviewUrl !== '' &&
-              frontendBackendResult === 'skipped' &&
-              !backendPreparationFailed &&
-              !isFailure(deployPreviewResult);
+            // Single frontend deployment: it runs whenever the frontend changed
+            // or a preview backend is active. Its backend target (templated
+            // preview URL vs the shared API) is resolved up front, so the note
+            // just reflects which backend it points at.
+            const frontendBackendNote = hasBackendPreview
+              ? 'Preview backend'
+              : 'Shared backend';
 
-            if (frontendUsesPreviewBackend) {
-              if (frontendBackendResult === 'success') {
-                frontendRow = row(
-                  'Frontend',
-                  '🟢 Ready',
-                  frontendBackendUrl ? [previewLink(frontendBackendUrl)] : [],
-                  'Preview backend',
-                );
-              } else if (
-                isFailure(frontendBackendResult) ||
-                isFailure(deployPreviewResult) ||
-                backendPreparationFailed ||
-                (backendAttempted &&
-                  frontendBackendResult === 'skipped' &&
-                  !canReuseFrontendBackendPreview)
-              ) {
-                frontendRow = row('Frontend', '🔴 Failed', [buildLink], 'Preview backend');
-              } else if (canReuseFrontendBackendPreview) {
-                frontendRow = row(
-                  'Frontend',
-                  '🟢 Ready (reused)',
-                  [previewLink(existingFrontendBackendPreviewUrl)],
-                  'Existing preview reused',
-                );
-              } else if (frontendChanged && frontendDevResult === 'success') {
-                frontendRow = row(
-                  'Frontend',
-                  '🟢 Ready',
-                  frontendDevUrl ? [previewLink(frontendDevUrl)] : [],
-                  'Dev backend',
-                );
-              } else {
-                frontendRow = row('Frontend', '⚪ Not affected', [], 'No relevant changes');
-              }
-            } else if (frontendChanged) {
-              frontendRow =
-                frontendDevResult === 'success'
-                  ? row(
-                      'Frontend',
-                      '🟢 Ready',
-                      frontendDevUrl ? [previewLink(frontendDevUrl)] : [],
-                      'Dev backend',
-                    )
-                  : row('Frontend', '🔴 Failed', [buildLink], 'Dev backend');
+            let frontendRow;
+            if (!frontendChanged && !hasBackendPreview) {
+              frontendRow = row('Frontend', '⚪ Not affected', [], 'No relevant changes');
+            } else if (frontendResult === 'success') {
+              frontendRow = row(
+                'Frontend',
+                '🟢 Ready',
+                frontendUrl ? [previewLink(frontendUrl)] : [],
+                frontendBackendNote,
+              );
+            } else if (isFailure(frontendResult)) {
+              frontendRow = row('Frontend', '🔴 Failed', [buildLink], frontendBackendNote);
             } else {
               frontendRow = row('Frontend', '⚪ Not affected', [], 'No relevant changes');
             }
