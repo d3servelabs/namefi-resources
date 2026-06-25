@@ -1398,6 +1398,7 @@ jobs:
       - build-backend
       - prepare-database
       - deploy-preview
+      - deploy-ledger
     steps:
       - name: Generate workflow summary
         env:
@@ -1540,37 +1541,21 @@ jobs:
             echo "| Preview database | $PREPARE_DATABASE_RESULT |"
           } >> "$GITHUB_STEP_SUMMARY"
 
-  publish-preview-results:
-    name: Publish Preview Results
-    if: |-
-      !cancelled() &&
-      needs.preview-label-gate.outputs.pr_number != '' &&
-      needs.preview-label-gate.outputs.is_same_repo == 'true' &&
-      needs.detect.outputs.resources_only_sync != 'true' &&
-      needs.head-branch-gate.outputs.should_run == 'true' &&
-      (
-        github.event_name == 'workflow_dispatch' ||
-        github.event.action != 'labeled' ||
-        needs.preview-label-gate.outputs.should_run == 'true'
-      )
-    needs:
-      - detect
-      - deploy-frontend
-      - deploy-park
-      - deploy-resources
-      - deploy-api-client-docs
-      - preview-label-gate
-      - head-branch-gate
-      - detect-backend-changes
-      - build-backend
-      - prepare-database
-      - resolve-backend-state
-      - deploy-preview
-      - deploy-ledger
-      - workflow-summary
-    runs-on: blacksmith-2vcpu-ubuntu-2404-arm
-    steps:
       - name: Publish preview results comment
+        # Gated at the step level (the step summary above always runs): only
+        # post/refresh the PR comment for same-repo PRs on a preview-eligible
+        # branch that actually requested a preview.
+        if: |-
+          !cancelled() &&
+          needs.preview-label-gate.outputs.pr_number != '' &&
+          needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+          needs.detect.outputs.resources_only_sync != 'true' &&
+          needs.head-branch-gate.outputs.should_run == 'true' &&
+          (
+            github.event_name == 'workflow_dispatch' ||
+            github.event.action != 'labeled' ||
+            needs.preview-label-gate.outputs.should_run == 'true'
+          )
         uses: actions/github-script@v8
         env:
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
@@ -1835,6 +1820,17 @@ jobs:
             });
 
       - name: Update deploy ledger comment
+        if: |-
+          !cancelled() &&
+          needs.preview-label-gate.outputs.pr_number != '' &&
+          needs.preview-label-gate.outputs.is_same_repo == 'true' &&
+          needs.detect.outputs.resources_only_sync != 'true' &&
+          needs.head-branch-gate.outputs.should_run == 'true' &&
+          (
+            github.event_name == 'workflow_dispatch' ||
+            github.event.action != 'labeled' ||
+            needs.preview-label-gate.outputs.should_run == 'true'
+          )
         uses: actions/github-script@v8
         env:
           PR_NUMBER: ${{ needs.preview-label-gate.outputs.pr_number }}
