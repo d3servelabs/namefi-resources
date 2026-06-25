@@ -1,8 +1,11 @@
+import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { cache } from 'react';
 import type { CSSProperties } from 'react';
+import { ParkFaqSection } from '@/components/faq-section';
 import { Footer } from '@/components/footer';
 import { ParkHeader } from '@/components/header';
 import { InstantBuy } from '@/components/instant-buy';
@@ -17,12 +20,20 @@ import {
 } from '@/lib/frontend-url';
 import { getDomainQueryParam } from '@/lib/request';
 import {
+  buildParkCanonicalUrl,
+  isIndexableParkRoot,
+} from '@/lib/indexing-policy';
+import {
   countDomainsByOwner,
   type DomainDocument,
   getDomainDocument,
   getTagsByDomain,
 } from '@/lib/metadata';
 import { resolveLogicalHost } from '@/lib/relay';
+import {
+  buildParkFaqItems,
+  buildParkStructuredData,
+} from '@/lib/structured-data';
 
 type MarketplaceKey = 'manage' | 'opensea' | 'magiceden' | 'looksrare' | 'okx';
 
@@ -70,6 +81,10 @@ const DEFAULT_NAMEFI_NFT_ADDRESS =
   config.NAMEFI_NFT_ADDRESS ?? '0x0000000000cf80e7cf8fa4480907f692177f8e06';
 
 const GOOGLE_DOH_ENDPOINT = 'https://dns.google/resolve';
+const DEFAULT_METADATA_TITLE = 'Namefi Park';
+const DEFAULT_METADATA_DESCRIPTION =
+  'Namefi Park provides a simple landing page for parked domains with marketplace links, AI previews, and ownership details.';
+const METADATA_DESCRIPTION_MAX_LENGTH = 180;
 const MARKETPLACE_META = {
   manage: {
     label: 'Manage on Namefi',
@@ -140,6 +155,14 @@ function stripPort(rawHost: string): string {
   return rawHost.split(':')[0] ?? rawHost;
 }
 
+async function getActualRequestHost(): Promise<string> {
+  const requestHeaders = await headers();
+  const hostHeader =
+    requestHeaders.get('x-original-host') ?? requestHeaders.get('host');
+  if (!hostHeader) return 'localhost';
+  return stripPort(hostHeader);
+}
+
 async function getRequestHost(domainOverride?: string | null): Promise<string> {
   if (domainOverride) {
     return domainOverride;
@@ -151,10 +174,7 @@ async function getRequestHost(domainOverride?: string | null): Promise<string> {
     return domainFromQuery;
   }
 
-  const hostHeader =
-    requestHeaders.get('x-original-host') ?? requestHeaders.get('host');
-  if (!hostHeader) return 'localhost';
-  return stripPort(hostHeader);
+  return getActualRequestHost();
 }
 
 async function fetchDnsTxtRecords(domain: string): Promise<string[]> {
@@ -383,7 +403,9 @@ function resolvePbnBrandStyle(
   return undefined;
 }
 
-async function loadPageData(host: string): Promise<PageData> {
+const loadPageData = cache(async function loadPageData(
+  host: string,
+): Promise<PageData> {
   // Relay resolution: if host ends with the relay zone (e.g.
   // `gtld.namefi.dev`), strip the suffix to get the logical host (e.g.
   // `sami.nfi.gtld.namefi.dev` → `sami.nfi`) and use it for internal metadata
@@ -457,10 +479,11 @@ async function loadPageData(host: string): Promise<PageData> {
     host,
     logicalHost,
   };
-}
+});
 
 interface ParkPageSearchParams {
   domain?: string | string[] | undefined;
+  [key: string]: string | string[] | undefined;
 }
 
 function coerceSearchParam(value?: string | string[]): string | null {
@@ -472,13 +495,150 @@ function coerceSearchParam(value?: string | string[]): string | null {
   return sanitized ? sanitized.toLowerCase() : null;
 }
 
+function hasSearchParams(searchParams?: ParkPageSearchParams): boolean {
+  return Object.values(searchParams ?? {}).some((value) => value !== undefined);
+}
+
+function getDisplayDomainName(
+  document: DomainDocument | null | undefined,
+  fallback: string,
+): string {
+  const unicode = document?.unicode?.trim();
+  const ldh = document?.ldh?.trim();
+  if (unicode && ldh && unicode.toLowerCase() !== ldh.toLowerCase()) {
+    return `${unicode} (${ldh})`;
+  }
+  return unicode || ldh || fallback;
+}
+
+function buildMetadataTitle(domainName: string): string {
+  return `${domainName} - Parked domain for sale | Namefi`;
+}
+
+function buildMetadataDescription(
+  document: DomainDocument | null | undefined,
+  domainName: string,
+): string {
+  const source =
+    document?.explain ??
+    `${domainName} is a parked domain available through Namefi. Explore ownership details, expiration, domain highlights, and marketplace links.`;
+  const normalized = source.replace(/\s+/g, ' ').trim();
+  if (normalized.length <= METADATA_DESCRIPTION_MAX_LENGTH) {
+    return normalized;
+  }
+  return `${normalized.slice(0, METADATA_DESCRIPTION_MAX_LENGTH - 3).trimEnd()}...`;
+}
+
+function faviconMetadata(): Metadata['icons'] {
+  return {
+    icon: [{ url: '/favicon.ico', sizes: '32x32', type: 'image/x-icon' }],
+    shortcut: ['/favicon.ico'],
+  };
+}
+
+function noindexMetadata(): Metadata {
+  return {
+    title: DEFAULT_METADATA_TITLE,
+    description: DEFAULT_METADATA_DESCRIPTION,
+    icons: faviconMetadata(),
+    robots: {
+      index: false,
+      follow: false,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
+  };
+}
+
+function jsonLdScriptContent(value: Record<string, unknown>): string {
+  return JSON.stringify(value).replace(/</g, '\\u003c');
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams?: Promise<ParkPageSearchParams>;
+}): Promise<Metadata> {
+  const resolvedSearchParams = await searchParams;
+  const requestHasSearchParams = hasSearchParams(resolvedSearchParams);
+  const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
+  const actualHost = await getActualRequestHost();
+  const host = await getRequestHost(domainFromQuery);
+  const canonicalUrl = buildParkCanonicalUrl(actualHost);
+  const isIndexable = isIndexableParkRoot({
+    host: actualHost,
+    pathname: '/',
+    search: requestHasSearchParams ? '?' : '',
+  });
+
+  if (!isIndexable || !canonicalUrl) {
+    return noindexMetadata();
+  }
+
+  const data = await loadPageData(host);
+  if (data.type !== 'park_page') {
+    return noindexMetadata();
+  }
+
+  const canonical = new URL(canonicalUrl);
+  const domainName = getDisplayDomainName(
+    data.domainDocument,
+    data.logicalHost,
+  );
+  const title = buildMetadataTitle(domainName);
+  const description = buildMetadataDescription(data.domainDocument, domainName);
+  const imageUrl = data.aiGenerations.at(0)?.url;
+  const images = imageUrl
+    ? [{ url: imageUrl, alt: `Artwork for ${domainName}` }]
+    : undefined;
+
+  return {
+    metadataBase: new URL(canonical.origin),
+    title,
+    description,
+    icons: faviconMetadata(),
+    alternates: {
+      canonical: canonical.toString(),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
+    openGraph: {
+      type: 'website',
+      siteName: 'Namefi',
+      title,
+      description,
+      url: canonical.toString(),
+      ...(images ? { images } : {}),
+    },
+    twitter: {
+      card: imageUrl ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
+    },
+  };
+}
+
 export default async function ParkPage({
   searchParams,
 }: {
-  searchParams?: Promise<ParkPageSearchParams> | ParkPageSearchParams;
+  searchParams?: Promise<ParkPageSearchParams>;
 }) {
   const resolvedSearchParams = await searchParams;
+  const requestHasSearchParams = hasSearchParams(resolvedSearchParams);
   const domainFromQuery = coerceSearchParam(resolvedSearchParams?.domain);
+  const actualHost = await getActualRequestHost();
   const host = await getRequestHost(domainFromQuery);
   const data = await loadPageData(host);
   if (data.type === 'redirect_url') {
@@ -530,12 +690,51 @@ export default async function ParkPage({
     .filter(Boolean)
     .filter((value, index, self) => self.indexOf(value) === index)
     .slice(0, 12);
+  const canonicalUrl = buildParkCanonicalUrl(actualHost);
+  const shouldIndexCurrentPage = Boolean(
+    canonicalUrl &&
+      isIndexableParkRoot({
+        host: actualHost,
+        pathname: '/',
+        search: requestHasSearchParams ? '?' : '',
+      }),
+  );
+  const domainName = getDisplayDomainName(
+    data.domainDocument,
+    data.logicalHost,
+  );
+  const faqItems = shouldIndexCurrentPage
+    ? buildParkFaqItems({ domainName, marketplaceLinks })
+    : [];
+  const structuredData =
+    canonicalUrl && shouldIndexCurrentPage
+      ? buildParkStructuredData({
+          canonicalUrl,
+          domainName,
+          description,
+          imageUrl: aiPreview?.url,
+          marketplaceLinks,
+          manageUrl,
+          ownerAddress: data.domainDocument.currentOwner,
+          expiration: data.domainDocument.expiration,
+          tags: insightTags,
+        })
+      : null;
 
   return (
     <div
       className="flex min-h-screen flex-col bg-background text-foreground"
       style={pbnBrandStyle}
     >
+      {structuredData ? (
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD is serialized from typed server data and '<' is escaped.
+          dangerouslySetInnerHTML={{
+            __html: jsonLdScriptContent(structuredData),
+          }}
+        />
+      ) : null}
       <ParkHeader homeUrl={homeUrl} searchUrl={searchUrl} />
       <main className="flex-1">
         <section className="park-hero relative isolate px-6 pb-16 pt-10 sm:pb-20 sm:pt-12">
@@ -676,6 +875,8 @@ export default async function ParkPage({
             </div>
           </div>
         </section>
+
+        <ParkFaqSection items={faqItems} />
       </main>
 
       <Footer

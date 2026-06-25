@@ -1,38 +1,49 @@
 import { type NextRequest, NextResponse } from 'next/server';
+import { shouldNoindexParkRequest } from '@/lib/indexing-policy';
 
 /**
- * Set X-Robots-Tag: noindex, nofollow on every response.
+ * Set X-Robots-Tag: noindex, nofollow on non-indexable park responses.
  *
  * The park app exclusively serves tenant subdomains (CV brand pages,
- * parked-domain landing pages) under namefi.io. None of these are
- * intended for public search indexing. Paired with robots.txt Disallow
- * for crawl-time blocking; this header prevents indexing even on URLs
- * Google reaches via backlinks.
+ * parked-domain landing pages) under namefi.io. Default policy is
+ * non-indexable, with explicit host/path exceptions for parked roots that
+ * should appear in Google. Robots.txt remains permissive on allowlisted hosts
+ * so Google can crawl subpaths and observe this noindex header.
  *
- * Unconditional because every host this app serves is non-indexable —
- * there's no allowlisted host on this Vercel project.
+ * The current allowlist indexes only https://30003.click/ and no subpaths.
  */
 const ALLOWED_METHODS = 'GET, HEAD';
 
-function methodHeaders() {
-  return {
+function methodHeaders(shouldNoindex: boolean) {
+  const headers: Record<string, string> = {
     Allow: ALLOWED_METHODS,
     'Access-Control-Allow-Methods': ALLOWED_METHODS,
-    'X-Robots-Tag': 'noindex, nofollow',
   };
+  if (shouldNoindex) {
+    headers['X-Robots-Tag'] = 'noindex, nofollow';
+  }
+  return headers;
 }
 
 export function proxy(request: NextRequest) {
+  const shouldNoindex = shouldNoindexParkRequest({
+    host: request.headers.get('x-original-host') ?? request.headers.get('host'),
+    pathname: request.nextUrl.pathname,
+    search: request.nextUrl.search,
+  });
+
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new NextResponse(null, {
       status: 405,
-      headers: methodHeaders(),
+      headers: methodHeaders(true),
     });
   }
 
   const response = NextResponse.next();
 
-  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  if (shouldNoindex) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  }
   response.headers.set('Allow', ALLOWED_METHODS);
   response.headers.set('Access-Control-Allow-Methods', ALLOWED_METHODS);
 
