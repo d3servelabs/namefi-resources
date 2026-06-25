@@ -8,10 +8,19 @@ import {
   RadioGroupItem,
 } from '@namefi-astra/ui/components/shadcn/radio-group';
 import { Textarea } from '@namefi-astra/ui/components/shadcn/textarea';
+import { useSidebar } from '@namefi-astra/ui/components/shadcn/sidebar';
 import { cn } from '@namefi-astra/ui/lib/cn';
 import { useConsentManager } from '@c15t/nextjs';
 import { XIcon } from 'lucide-react';
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import {
+  type CSSProperties,
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { useAccount } from 'wagmi';
 import { capturePostHogEvent, isPostHogConfigured } from '@/lib/posthog';
 
@@ -52,6 +61,7 @@ export function StuckFeedback({
   const { consents, isLoadingConsentInfo } = useConsentManager();
   const hasMeasurementConsent = consents.measurement;
   const { isConnected } = useAccount();
+  const { state: sidebarState, isMobile } = useSidebar();
 
   const storageKey = `namefi:stuck-feedback:${source}`;
 
@@ -143,6 +153,15 @@ export function StuckFeedback({
     storageKey,
   ]);
 
+  const desktopInlineStart =
+    sidebarState === 'expanded'
+      ? 'calc(var(--sidebar-width) + 1rem)'
+      : 'calc(var(--sidebar-width-icon) + 1rem)';
+  const feedbackStyle = useMemo<CSSProperties | undefined>(
+    () => (isMobile ? undefined : { insetInlineStart: desktopInlineStart }),
+    [desktopInlineStart, isMobile],
+  );
+
   if (!visible) return null;
 
   const canSubmit = intent !== '' || noCryptoWallet || message.trim() !== '';
@@ -151,10 +170,11 @@ export function StuckFeedback({
     <section
       aria-label="Feedback"
       data-testid="stuck-feedback"
+      style={feedbackStyle}
       className={cn(
-        // Bottom-left to avoid the bottom-right zone used by Sonner toasts and
-        // the dev/preview skip-auth banner.
-        'fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] left-4 z-50 w-[calc(100vw-2rem)] sm:w-[360px]',
+        // Bottom-start keeps clear of bottom-right Sonner toasts. The inline
+        // style above shifts the desktop card past the sidebar rail.
+        'fixed bottom-[calc(1rem_+_env(safe-area-inset-bottom,0px))] start-4 z-50 w-[calc(100vw-2rem)] sm:w-[360px]',
         'rounded-xl border border-border bg-card p-4 shadow-lg',
         'transition-all duration-200 ease-out',
         entered ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-0',
