@@ -10,6 +10,28 @@ cursor:
 ---
 # git related
 
+## Never bypass git hooks
+
+- **Do NOT use `--no-verify`** on `git commit` or `git push`, and **do NOT set
+  `LEFTHOOK=0`** (or otherwise skip lefthook). The pre-commit/pre-push hooks run
+  fast (pre-commit ~0.3s auto-formats staged files; pre-push runs
+  typecheck-affected + biome + sherif + i18n + cuj, all offline). Letting them
+  run is what keeps biome/format/lint failures from bouncing back from CI.
+- **The hooks run headless** (lefthook ≥ 2.x — it no longer needs a TTY), so a
+  non-interactive / agent / CI shell is **not** a reason to skip them. If you see
+  lefthook fail with `device not configured` (a TTY error), your lefthook is too
+  old — run `bun install` to pick up the pinned 2.x, don't bypass.
+- **If a hook fails, fix the underlying issue — never bypass it.** A red hook is
+  signal, not an obstacle.
+- **If a hook is slow, hangs, or fails for a reason unrelated to your change**
+  (e.g. a pre-existing typecheck error in a package you did not touch, or a
+  missing/stale `node_modules`): run `bun install` to sync deps first; if it
+  still misbehaves, stop and report it so the hook gets fixed — do not reach for
+  `--no-verify` as a workaround.
+- A fresh worktree has no `node_modules` until you run `bun install`; without it
+  the hook cannot find lefthook and silently does nothing. Always `bun install`
+  in a new worktree before committing.
+
 ## Cloud Agent PR behavior (when committing)
 
 - If running **as a Cursor Cloud Agent** and you are committing work, you must ensure there is an open PR for the current branch:
