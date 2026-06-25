@@ -27,6 +27,7 @@ import { MOBILE_BOTTOM_SHEET_DIALOG } from '@/components/dialogs/mobile-bottom-s
 import { WagmiProvider } from '@/components/providers/wagmi';
 import { waitForConnectFlowSettled } from '@/components/providers/reown-wallet-stack';
 import { useLogin } from '@/hooks/use-login';
+import { clientSideEnv } from '@/lib/env';
 import { isClientDebugFlagEnabled } from '@/lib/debug-flag';
 
 /**
@@ -45,7 +46,7 @@ import { isClientDebugFlagEnabled } from '@/lib/debug-flag';
  * chooser's `aria-hidden`, so the wallet path keeps the chooser open and only
  * this email→Privy handoff needs the delay.
  */
-const PRIVY_HANDOFF_DELAY_MS = 180;
+const PRIVY_HANDOFF_DELAY_MS = 300;
 
 /**
  * Featured wallets shown as one-tap rows (Uniswap-style), top of the chooser.
@@ -61,6 +62,9 @@ const FEATURED_WALLETS: ReadonlyArray<{ id: Wallet; name: string }> = [
   { id: 'trust', name: 'Trust Wallet' },
   { id: 'rainbow', name: 'Rainbow' },
 ];
+const isWalletSignInEnabled = Boolean(
+  clientSideEnv.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+);
 
 export interface SignInChooserDialogProps {
   open: boolean;
@@ -93,6 +97,7 @@ export function SignInChooserDialog({
   const t = useTranslations('shared');
   const { login } = useLogin();
   const handoffTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [hasPendingEmailHandoff, setHasPendingEmailHandoff] = useState(false);
 
   // Clear any pending email-handoff timer if the chooser unmounts before it
   // fires, so we never pop Privy's modal after the flow was abandoned.
@@ -104,24 +109,42 @@ export function SignInChooserDialog({
     };
   }, []);
 
-  const handleLoginOrCreateAccount = useCallback(() => {
-    // Close the chooser FIRST, then open Privy's modal after the close settles
-    // (see PRIVY_HANDOFF_DELAY_MS) so the two modals don't fight and Privy stays
-    // open. `login` is the app-level command, so it still fires after this
-    // dialog unmounts.
-    onOpenChange(false);
-    // Guard against a rapid double-tap scheduling two handoffs (each would fire
-    // its own login()): clear any pending timer before scheduling a new one.
+  useEffect(() => {
+    if (!hasPendingEmailHandoff || open) return;
+
     if (handoffTimerRef.current !== null) {
       clearTimeout(handoffTimerRef.current);
     }
+
     handoffTimerRef.current = setTimeout(() => {
       handoffTimerRef.current = null;
+      setHasPendingEmailHandoff(false);
       void login({ loginMethods: ['email'] }).catch(() => {
         // The app login machinery surfaces its own load failures via a toast.
       });
     }, PRIVY_HANDOFF_DELAY_MS);
-  }, [login, onOpenChange]);
+
+    return () => {
+      if (handoffTimerRef.current !== null) {
+        clearTimeout(handoffTimerRef.current);
+        handoffTimerRef.current = null;
+      }
+    };
+  }, [hasPendingEmailHandoff, login, open]);
+
+  const handleLoginOrCreateAccount = useCallback(() => {
+    // Close the chooser first. The effect above waits until `open=false` has
+    // committed before opening Privy's modal, so the two modal stacks do not
+    // fight over aria-hidden/focus state.
+    // Guard against a rapid double-tap scheduling two handoffs (each would fire
+    // its own login()): clear any pending timer before scheduling a new one.
+    if (handoffTimerRef.current !== null) {
+      clearTimeout(handoffTimerRef.current);
+      handoffTimerRef.current = null;
+    }
+    setHasPendingEmailHandoff(true);
+    onOpenChange(false);
+  }, [onOpenChange]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -148,25 +171,29 @@ export function SignInChooserDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-4 py-1">
-          <div className="flex flex-col gap-2">
-            <p
-              className="text-center text-xs font-medium uppercase tracking-wide text-muted-foreground"
-              data-testid="shared.sign-in-chooser.wallet-heading"
-            >
-              {t('signInChooser.walletHeading')}
-            </p>
-            <WagmiProvider>
-              <WalletList onSignedIn={() => onOpenChange(false)} />
-            </WagmiProvider>
-          </div>
+          {isWalletSignInEnabled ? (
+            <>
+              <div className="flex flex-col gap-2">
+                <p
+                  className="text-center text-xs font-medium uppercase tracking-wide text-muted-foreground"
+                  data-testid="shared.sign-in-chooser.wallet-heading"
+                >
+                  {t('signInChooser.walletHeading')}
+                </p>
+                <WagmiProvider>
+                  <WalletList onSignedIn={() => onOpenChange(false)} />
+                </WagmiProvider>
+              </div>
 
-          <div className="flex items-center gap-3" aria-hidden="true">
-            <span className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">
-              {t('signInChooser.or')}
-            </span>
-            <span className="h-px flex-1 bg-border" />
-          </div>
+              <div className="flex items-center gap-3" aria-hidden="true">
+                <span className="h-px flex-1 bg-border" />
+                <span className="text-xs text-muted-foreground">
+                  {t('signInChooser.or')}
+                </span>
+                <span className="h-px flex-1 bg-border" />
+              </div>
+            </>
+          ) : null}
 
           <Button
             variant="outline"

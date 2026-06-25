@@ -24,6 +24,8 @@ const verifyButtonPattern = /verify/i;
 const clearCartButtonPattern = /^Clear Cart$/;
 const acceptAllButtonPattern = /^Accept(?: All)?$/i;
 const rejectAllButtonPattern = /^Reject(?: All)?$/i;
+const signInChooserDialogTestId = 'shared.sign-in-chooser.dialog';
+const signInChooserLoginTestId = 'shared.sign-in-chooser.login';
 const clearCartEndpointPattern = '/trpc/carts.clear';
 const cartSectionPattern =
   /In your cart(?<cartSection>[\s\S]*?)Payment Method/i;
@@ -179,6 +181,14 @@ function getPrivyAuthDialog(page: Page) {
   return page.getByRole('dialog', { name: privyAuthDialogPattern }).first();
 }
 
+function getSignInChooserDialog(page: Page) {
+  return page.getByTestId(signInChooserDialogTestId).first();
+}
+
+function getSignInChooserLoginButton(dialog: Locator) {
+  return dialog.getByTestId(signInChooserLoginTestId).first();
+}
+
 function getPrivyEmailInput(dialog: Locator) {
   return dialog
     .locator(
@@ -235,6 +245,20 @@ async function fillPrivyOtp(dialog: Locator, otp: string) {
   await digitInputs.first().fill(otp);
 }
 
+async function openPrivyEmailLogin(page: Page) {
+  const signInChooserDialog = getSignInChooserDialog(page);
+  await expect(signInChooserDialog).toBeVisible({ timeout: 10_000 });
+
+  const loginButton = getSignInChooserLoginButton(signInChooserDialog);
+  await expect(loginButton).toBeVisible({ timeout: 10_000 });
+  await loginButton.click();
+  await expect(signInChooserDialog).toBeHidden({ timeout: 10_000 });
+
+  const privyDialog = getPrivyAuthDialog(page);
+  await privyDialog.waitFor({ state: 'attached', timeout: 30_000 });
+  return privyDialog;
+}
+
 async function signInWithTestAccount(page: Page) {
   const email = getRequiredEnv('PRIVY_TEST_ACCOUNT_EMAIL');
   const otp = getRequiredEnv('PRIVY_TEST_ACCOUNT_OTP');
@@ -252,8 +276,7 @@ async function signInWithTestAccount(page: Page) {
 
   await signInButton.click();
 
-  const privyDialog = getPrivyAuthDialog(page);
-  await privyDialog.waitFor({ state: 'attached', timeout: 30_000 });
+  const privyDialog = await openPrivyEmailLogin(page);
 
   const emailInput = getPrivyEmailInput(privyDialog);
   if (!(await isVisibleWithin(emailInput, 5_000))) {
